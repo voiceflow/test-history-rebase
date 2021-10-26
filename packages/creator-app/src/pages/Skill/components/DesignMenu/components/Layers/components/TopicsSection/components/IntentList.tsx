@@ -25,14 +25,14 @@ interface IntentListProps {
 }
 
 const IntentList: React.FC<IntentListProps> = ({ isRoot, isSearch, isActive, diagramID, intentItems, focusedNodeID, searchMatchValue }) => {
-  const saveDiagramIntentSteps = useDispatch(Diagram.saveDiagramIntentSteps, diagramID);
+  const updateIntenSteps = useDispatch(Diagram.updateIntentSteps, diagramID);
 
   const getItemKey = useConst((item: TopicIntentItem) => item.id);
   const canDrag = usePersistFunction(() => !isSearch);
 
   const onReorderIntentSteps = React.useCallback(
     (from: number, to: number) =>
-      saveDiagramIntentSteps(
+      updateIntenSteps(
         reorder(
           intentItems.map((item) => item.id),
           from,

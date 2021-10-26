@@ -1,12 +1,16 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
+import { FeatureFlag } from '@/config/features';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { withoutFeatureGate } from '@/hocs';
 import { useDispatch, useSelector } from '@/hooks';
 
-// TODO: remove after atomic actions
+/**
+ * @deprecated no longer reqiured with atomic actions
+ */
 const WorkspaceMembersLoadingGate: React.FC = ({ children }) => {
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const members = useSelector(WorkspaceV2.active.membersSelector);
@@ -20,4 +24,4 @@ const WorkspaceMembersLoadingGate: React.FC = ({ children }) => {
   );
 };
 
-export default WorkspaceMembersLoadingGate;
+export default withoutFeatureGate(FeatureFlag.ATOMIC_ACTIONS)(WorkspaceMembersLoadingGate);

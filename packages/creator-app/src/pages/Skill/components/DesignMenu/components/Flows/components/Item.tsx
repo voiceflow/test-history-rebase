@@ -7,7 +7,7 @@ import { FeatureFlag } from '@/config/features';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { useFeature, useSelector } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Skill/hooks';
@@ -71,7 +71,7 @@ const Item: React.FC<ItemProps & ConnectedItemProps> = ({ id, name, isActive, vi
 };
 
 const mapStateToProps = {
-  rootDiagramID: Version.activeRootDiagramIDSelector,
+  rootDiagramID: VersionV2.active.rootDiagramIDSelector,
   getDiagramViewers: Realtime.diagramViewersSelector,
 };
 

@@ -18,10 +18,7 @@ export const useCursorControls = () => {
   const engine = React.useContext(EngineContext)!;
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
   const creatorID = useSelector(Account.userIDSelector)!;
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
-  const versionID = useSelector(Session.activeVersionIDSelector)!;
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const awarenessMoveCursor = useSyncDispatch(Realtime.diagram.awareness.moveCursor);
   const hasDiagramViewers = useSelector((state) => DiagramV2.hasExternalDiagramViewersByIDSelector(state, { id: diagramID }));
   const prevCoords = React.useRef<Point | null>(null);
@@ -31,7 +28,7 @@ export const useCursorControls = () => {
       if (atomicActions.isEnabled) {
         if (hasDiagramViewers && prevCoords.current !== nextCoords) {
           prevCoords.current = nextCoords;
-          awarenessMoveCursor({ projectID, versionID, diagramID, creatorID, workspaceID, coords: nextCoords });
+          awarenessMoveCursor({ ...engine.context, creatorID, coords: nextCoords });
         }
       } else {
         engine.realtime.sendVolatileUpdate(RealtimeDuck.moveMouse(nextCoords));

@@ -5,8 +5,8 @@ import { Select } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
-import { AnyVoice } from '@/ducks/version';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { ConnectedProps, MergeArguments } from '@/types';
@@ -24,7 +24,7 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
   platformMeta,
   defaultVoice,
   platformDefaultVoice,
-  saveDefaultVoice,
+  updateDefaultVoice,
 }) => {
   const { descriptors } = platformMeta;
 
@@ -40,10 +40,6 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
     );
     return voices.filter((voice) => voice !== 'audio');
   }, [platform]);
-
-  const selectDefaultVoice = (val: string) => {
-    saveDefaultVoice(val as AnyVoice);
-  };
 
   const assistantLogic = (
     <AssistantConversationLogic
@@ -63,7 +59,7 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
         contentSuffix={descriptors.defaultVoice}
         customContentStyling={{ paddingBottom: '24px' }}
       >
-        <Select value={defaultVoice} options={platformVoices} onSelect={selectDefaultVoice} searchable placeholder={defaultVoice} />
+        <Select value={defaultVoice} options={platformVoices} onSelect={updateDefaultVoice} searchable placeholder={defaultVoice} />
       </Section>
 
       {getPlatformValue(
@@ -80,11 +76,11 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
 };
 
 const mapStateToProps = {
-  defaultVoice: Version.activeDefaultVoiceSelector,
+  defaultVoice: VersionV2.active.defaultVoiceSelector,
 };
 
 const mapDispatchToProps = {
-  saveDefaultVoice: Version.saveDefaultVoice,
+  updateDefaultVoice: Version.updateDefaultVoice,
 };
 
 const mergeProps = (

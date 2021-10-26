@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import AceEditor from '@/components/AceEditor';
 import OverflowMenu from '@/components/OverflowMenu';
 import * as Documentation from '@/config/documentation';
-import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
@@ -21,7 +21,7 @@ const CodeEditor: NodeEditor<NodeData.Code> = ({ data, onChange, onExpand, expan
   const [editorState, onUpdateEditorState] = React.useState(data.code);
   const onUpdateCode = React.useCallback(() => onChange({ code: editorState }), [editorState, onChange]);
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const variables = useSelector(Diagram.activeDiagramAllVariablesSelector);
+  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
 
   const completer = React.useMemo<AceEditorType['editor']['completers'][number]>(
     () => ({

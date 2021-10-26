@@ -22,7 +22,7 @@ const TAB_COMPONENTS = {
   domain: Domain,
 };
 
-function AccountLinkingEditor({ data, isOpen, setError, loadAccountLinking, saveSettings }) {
+function AccountLinkingEditor({ data, isOpen, setError, loadAccountLinking, patchSettings }) {
   const [activeTab, setActiveTab] = React.useState(null);
   const [isLoading, setLoading] = React.useState(true);
   const [state, actions] = useSmartReducer(EMPTY_ACCOUNT_DATA);
@@ -32,11 +32,11 @@ function AccountLinkingEditor({ data, isOpen, setError, loadAccountLinking, save
 
   const save = React.useCallback(async () => {
     try {
-      await saveSettings({ accountLinking: stateRef.current });
+      await patchSettings({ accountLinking: stateRef.current });
     } catch (err) {
       setError({ message: 'Unable to save template' });
     }
-  }, [saveSettings, setError]);
+  }, []);
 
   const getState = React.useCallback(async () => {
     try {
@@ -163,7 +163,7 @@ function AccountLinkingEditor({ data, isOpen, setError, loadAccountLinking, save
 
 const mapDispatchToProps = {
   setError: Modal.setError,
-  saveSettings: Version.alexa.saveSettings,
+  patchSettings: Version.alexa.patchSettings,
   loadAccountLinking: Version.alexa.loadAccountLinking,
 };
 

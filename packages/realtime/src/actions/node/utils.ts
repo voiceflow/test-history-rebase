@@ -1,21 +1,22 @@
-/* eslint-disable max-classes-per-file, @typescript-eslint/ban-types */
-import type { Context } from '@logux/server';
+/* eslint-disable max-classes-per-file */
 import * as Realtime from '@voiceflow/realtime-sdk';
 import type { Action } from 'typescript-fsa';
+
+import { BaseContextData, Context } from '@/types';
 
 import { AbstractActionControl, Resend } from '../utils';
 
 export abstract class AbstractNodeActionControl<
   P extends Realtime.BaseNodePayload | Realtime.BaseBlockPayload,
-  D extends object = {}
+  D extends BaseContextData = BaseContextData
 > extends AbstractActionControl<P, D> {
   protected access = (ctx: Context<D>, action: Action<P>): Promise<boolean> =>
-    this.services.diagram.canRead(Number(ctx.userId), action.payload.diagramID);
+    this.services.diagram.canRead(ctx.data.creatorID, action.payload.diagramID);
 }
 
 export abstract class AbstractResendNodeActionControl<
   P extends Realtime.BaseNodePayload | Realtime.BaseBlockPayload,
-  D extends object = {}
+  D extends BaseContextData = BaseContextData
 > extends AbstractNodeActionControl<P, D> {
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
     channel: Realtime.Channels.diagram.build({
@@ -28,7 +29,7 @@ export abstract class AbstractResendNodeActionControl<
 
 export abstract class NoopNodeActionControl<
   P extends Realtime.BaseNodePayload | Realtime.BaseBlockPayload,
-  D extends object = {}
+  D extends BaseContextData = BaseContextData
 > extends AbstractResendNodeActionControl<P, D> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   process = async (): Promise<void> => {};

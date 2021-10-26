@@ -26,7 +26,7 @@ const ProjectAndDiagramActions: React.FC = () => {
 
   const lockResource = useDispatch(() => Realtime.sendRealtimeProjectUpdate(Realtime.lockResource(Realtime.ResourceType.SETTINGS)));
   const unlockResource = useDispatch(() => Realtime.sendRealtimeProjectUpdate(Realtime.unlockResource(Realtime.ResourceType.SETTINGS)));
-  const saveProjectName = useDispatch(Project.saveProjectName);
+  const updateProjectName = useDispatch(Project.updateActiveProjectName);
 
   const isLocked = useSelector((state) => Realtime.isResourceLockedSelector(state)(Realtime.ResourceType.SETTINGS));
   const projectID = useSelector(Session.activeProjectIDSelector);
@@ -53,7 +53,7 @@ const ProjectAndDiagramActions: React.FC = () => {
     const formattedName = formatProjectName(formValue);
 
     updateFormValue(formattedName);
-    saveProjectName(formattedName);
+    updateProjectName(formattedName);
 
     setFocused(false);
     unlockResource();

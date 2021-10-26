@@ -7,6 +7,7 @@ import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
 import * as IntentDuck from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
@@ -27,10 +28,10 @@ export interface IntentsManagerProps {
 
 const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProps> = ({
   intents,
-  newIntent,
+  createIntent,
   selectedID = intents[0]?.id,
-  intentsIDs,
-  removeIntent,
+  intentIDs,
+  deleteIntent,
   setSelectedID,
   platform,
 }) => {
@@ -54,13 +55,13 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
 
   const onDelete = React.useCallback(
     (index: string | number, { item }: { item: Intent }) => {
-      removeIntent(item.id);
+      deleteIntent(item.id);
 
       if (selectedID === item.id) {
-        updateSelected(intentsIDs[index === 0 ? 1 : 0]);
+        updateSelected(intentIDs[index === 0 ? 1 : 0]);
       }
     },
-    [removeIntent, intentsIDs, selectedID]
+    [intentIDs, selectedID]
   );
 
   const onDeleteFromManager = React.useCallback(
@@ -82,8 +83,8 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   );
 
   const addNewIntent = React.useCallback(() => {
-    updateSelected(newIntent());
-  }, [newIntent]);
+    updateSelected(createIntent());
+  }, []);
 
   return (
     <>
@@ -132,20 +133,19 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   );
 };
 
-const sortedIntentsSelector = createSelector(IntentDuck.allCustomIntentsSelector, (intents) =>
+const sortedIntentsSelector = createSelector(IntentV2.allCustomIntentsSelector, (intents) =>
   _sortBy(intents, isCustomizableBuiltInIntent, (intent) => intent.name.toLowerCase())
 );
 
 const mapStateToProps = {
   intents: sortedIntentsSelector,
-  intentsMap: IntentDuck.mapIntentsSelector,
-  intentsIDs: IntentDuck.allIntentIDsSelector,
+  intentIDs: IntentV2.allIntentIDsSelector,
   platform: ProjectV2.active.platformSelector,
 };
 
 const mapDispatchToProps = {
-  newIntent: IntentDuck.newIntent,
-  removeIntent: IntentDuck.removeIntent,
+  createIntent: IntentDuck.createIntent,
+  deleteIntent: IntentDuck.deleteIntent,
 };
 
 type ConnectedIntentsManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

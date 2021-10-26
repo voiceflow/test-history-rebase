@@ -39,9 +39,10 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
     const api = axios.create({ baseURL: config.CREATOR_API_ENDPOINT, headers: { authorization: token } });
     const alexa = axios.create({ baseURL: config.ALEXA_SERVICE_ENDPOINT, headers: { authorization: token } });
     const google = axios.create({ baseURL: config.GOOGLE_SERVICE_ENDPOINT, headers: { authorization: token } });
+    const dialogflow = axios.create({ baseURL: config.DIALOGFLOW_SERVICE_ENDPOINT, headers: { authorization: token } });
     const general = axios.create({ baseURL: config.GENERAL_SERVICE_ENDPOINT, headers: { authorization: token } });
 
-    const extraOptions: ExtraOptions = { config, api, alexa, google, general };
+    const extraOptions: ExtraOptions = { config, api, alexa, google, dialogflow, general };
 
     const extraClient: ExtraClient = {
       workspace: ExtraWorkspaceClient(extraOptions),

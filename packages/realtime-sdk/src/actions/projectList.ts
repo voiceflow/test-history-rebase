@@ -16,8 +16,8 @@ export interface AddProjectToListPayload extends BaseProjectListPayload {
 }
 
 export interface TransplantProjectBetweenListsPayload extends BaseWorkspacePayload {
-  to: { listID: string; projectID: string };
   from: { listID: string; projectID: string };
+  to: { listID: string; target: string | number };
 }
 
 export const addProjectToList = createAction<AddProjectToListPayload>(projectListType('ADD_PROJECT'));

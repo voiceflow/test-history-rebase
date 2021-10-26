@@ -6,7 +6,8 @@ import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { withFeatureGate } from '@/hocs';
-import { useFeature, usePageAwareTeardown, useSelector } from '@/hooks';
+import { useBeforeUnload, useSelector, useSetup, useStore, useTeardown } from '@/hooks';
+import { noop } from '@/utils/functional';
 
 import ConnectionWarning from './RealtimeLoadingGate/components/RealtimeConnectionWarning';
 
@@ -15,43 +16,61 @@ import ConnectionWarning from './RealtimeLoadingGate/components/RealtimeConnecti
  */
 const RealtimeConnectionGate: React.FC = ({ children }) => {
   const client = useClient();
+  const store = useStore();
   const userID = useSelector(Account.userIDSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
   const authToken = useSelector(Session.authTokenSelector);
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
-  const [isSynchronized, setSynchronized] = React.useState(!atomicActions.isEnabled);
+  const [isSynchronized, setSynchronized] = React.useState(false);
+  const [isConnected, setConnected] = React.useState(false);
+  const unsubscribeRef = React.useRef(noop);
 
-  // not leader nodes are connected by default if leader is connected
-  const [isConnected, setConnected] = React.useState(client.connected);
+  useSetup(() => {
+    if (client.connected) return;
+
+    client.start();
+
+    client.node.catch((err) => {
+      if (err.description === 'Wrong credentials') {
+        const isLoggedIn = Account.isLoggedInSelector(store.getState());
+
+        if (isLoggedIn) {
+          throw new Error('failed to authenticate against realtime service');
+        } else {
+          // not an error state if user is logged out
+          return;
+        }
+      }
+
+      // eslint-disable-next-line no-console
+      console.error(err);
+    });
+  });
+
+  useTeardown(() => {
+    unsubscribeRef.current();
+  });
+
+  useBeforeUnload(client.destroy);
 
   React.useEffect(() => {
-    let unsubscribe: VoidFunction | null = null;
-
     if (isLoggedIn) {
-      client.changeUser(String(userID), authToken!);
+      unsubscribeRef.current = client.on('state', () => setConnected(client.connected));
 
-      unsubscribe = client.on('state', () => setConnected(client.connected));
+      client.changeUser(String(userID), authToken!);
 
       // eslint-disable-next-line promise/catch-or-return
       client.waitFor('synchronized').then(() => setSynchronized(true));
-
-      client.start();
     } else {
+      // allow anonymous connections when logged out
       setConnected(true);
       setSynchronized(true);
     }
 
     return () => {
-      unsubscribe?.();
       setSynchronized(false);
-      client.destroy();
     };
-  }, [isLoggedIn, !!atomicActions.isEnabled]);
-
-  usePageAwareTeardown(() => {
-    client.destroy();
-  });
+  }, [isLoggedIn]);
 
   return (
     <LoadingGate label="Collaboration" isLoaded={isSynchronized}>

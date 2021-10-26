@@ -4,7 +4,7 @@ import _isNumber from 'lodash/isNumber';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import { transformVariableToString } from '@/utils/slot';
 
 import { useEnableDisable } from './toggle';
@@ -25,7 +25,7 @@ type Expression = estree.BinaryExpression & estree.LogicalExpression & estree.Ca
 export const useExpressionValidation = (): [boolean, () => void, (arg: string) => boolean, string] => {
   const [error, setError, reset] = useEnableDisable(false);
   const [errorMessage, setErrorMessage] = React.useState<string>('');
-  const variables = useSelector(Diagram.activeDiagramAllVariablesSelector);
+  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
 
   const resetError = () => {
     setErrorMessage('');

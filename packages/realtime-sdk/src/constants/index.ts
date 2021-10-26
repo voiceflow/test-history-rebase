@@ -4,7 +4,6 @@ export * from './block';
 export * from './variable';
 
 export const PROTOCOL_KEY = 'protocol';
-export const USER_KEY = 'user';
 export const CREATOR_KEY = 'creator';
 export const WORKSPACE_KEY = 'workspace';
 export const PROJECT_KEY = 'project';

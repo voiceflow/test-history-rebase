@@ -1,39 +1,28 @@
 import { Version } from '@voiceflow/google-dfes-types';
-import { createSelector } from 'reselect';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
-import { Nullable } from '@/types';
 
 import { UpdatePublishing, updatePublishingByVersionID, UpdateSettings, updateSettingsByVersionID } from '../actions';
-import { activeVersionSelector } from '../selectors/common';
-import { DialogflowVersion } from '../types';
-
-// selectors
-
-export const activeDialogflowVersionSelector = createSelector([activeVersionSelector], (version) => version as Nullable<DialogflowVersion>);
-
-export const activeSettingsSelector = createSelector([activeDialogflowVersionSelector], (version) => version?.settings ?? null);
-
-export const activePublishingSelector = createSelector([activeDialogflowVersionSelector], (version) => version?.publishing ?? null);
-
-export const activeLocalesSelector = createSelector([activePublishingSelector], (publishing) => publishing?.locales ?? []);
-
-export const activeTriggerPhraseSelector = createSelector([activePublishingSelector], (publishing) => publishing?.triggerPhrase ?? []);
-
-export const activeInvocationNameSelector = createSelector([activePublishingSelector], (publishing) => publishing?.pronunciation ?? null);
-
-export const activeInvocationsSelector = createSelector([activePublishingSelector], (publishing) => publishing?.sampleInvocations ?? []);
+import { getActiveVersionContext } from '../utils';
 
 // action creators
 
+/**
+ * @deprecated moved to the realtime service
+ */
 export const updateSettings = (
   versionID: string,
   settings: Partial<Version.GoogleDFESVersionSettings>
 ): UpdateSettings<Version.GoogleDFESVersionSettings> => updateSettingsByVersionID<Version.GoogleDFESVersionSettings>(versionID, settings);
 
+/**
+ * @deprecated moved to the realtime service
+ */
 export const updatePublishing = (
   versionID: string,
   publishing: Partial<Version.GoogleDFESVersionPublishing>
@@ -41,26 +30,42 @@ export const updatePublishing = (
 
 // side effects
 
-export const saveSettings =
+export const patchSettings =
   (settings: Partial<Version.GoogleDFESVersionSettings>): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
+  async (dispatch, getState) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          const versionID = Session.activeVersionIDSelector(getState());
 
-    Errors.assertVersionID(versionID);
+          Errors.assertVersionID(versionID);
 
-    dispatch(updateSettings(versionID, settings));
-    await client.platform.dialogflow.version.updateSettings(versionID, settings);
-  };
+          dispatch(updateSettings(versionID, settings));
+          await client.platform.dialogflow.version.updateSettings(versionID, settings);
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.version.patchSettings({ ...context, settings }));
+        }
+      )
+    );
 
-export const savePublishing =
+export const patchPublishing =
   (publishing: Partial<Version.GoogleDFESVersionPublishing>): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
+  async (dispatch, getState) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          const versionID = Session.activeVersionIDSelector(getState());
 
-    Errors.assertVersionID(versionID);
+          Errors.assertVersionID(versionID);
 
-    dispatch(updatePublishing(versionID, publishing));
-    await client.platform.dialogflow.version.updatePublishing(versionID, publishing);
-  };
+          dispatch(updatePublishing(versionID, publishing));
+          await client.platform.dialogflow.version.updatePublishing(versionID, publishing);
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.version.patchPublishing({ ...context, publishing }));
+        }
+      )
+    );

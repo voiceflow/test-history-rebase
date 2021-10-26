@@ -8,7 +8,7 @@ import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandl
 import IntentSelect from '@/components/IntentSelect';
 import { SectionToggleVariant } from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
-import * as IntentDuck from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import { connect } from '@/hocs';
 import { useSetup } from '@/hooks';
 import { Intent } from '@/models';
@@ -114,7 +114,7 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
 };
 
 const mapStateToProps = {
-  intent: IntentDuck.platformIntentByIDSelector,
+  intent: IntentV2.getPlatformIntentByIDSelector,
 };
 
 const mergeProps = (...[{ intent: getIntentByID }, , { item }]: MergeArguments<typeof mapStateToProps, {}, ItemProps>) => {

@@ -1,29 +1,20 @@
 import { Version } from '@voiceflow/general-types';
-import { createSelector } from 'reselect';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import * as ProjectV2 from '@/ducks/projectV2';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
-import { Nullable } from '@/types';
 
 import { UpdateSettings, updateSettingsByVersionID } from '../actions';
-import { activeVersionSelector } from '../selectors/common';
-import { GeneralVersion } from '../types';
-
-// selectors
-
-export const activeGeneralVersionSelector = createSelector([activeVersionSelector], (version) => version as Nullable<GeneralVersion>);
-
-export const activeSettingsSelector = createSelector([activeGeneralVersionSelector], (version) => version?.settings ?? null);
-
-export const activeLocalesSelector = createSelector([activeSettingsSelector], (settings) => settings?.locales ?? []);
-
-export const activeInvocationNameSelector = ProjectV2.active.nameSelector;
+import { getActiveVersionContext } from '../utils';
 
 // action creators
 
+/**
+ * @deprecated moved to the realtime service
+ */
 export const updateSettings = (
   versionID: string,
   settings: Partial<Version.GeneralVersionSettings>
@@ -31,7 +22,7 @@ export const updateSettings = (
 
 // side effects
 
-export const saveSettings =
+export const patchSettings =
   (settings: Partial<Version.GeneralVersionSettings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
@@ -39,6 +30,16 @@ export const saveSettings =
 
     Errors.assertVersionID(versionID);
 
-    dispatch(updateSettings(versionID, settings));
-    await client.platform.general.version.updateSettings(versionID, settings);
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          dispatch(updateSettings(versionID, settings));
+          await client.platform.general.version.updateSettings(versionID, settings);
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.version.patchSettings({ ...context, settings }));
+        }
+      )
+    );
   };

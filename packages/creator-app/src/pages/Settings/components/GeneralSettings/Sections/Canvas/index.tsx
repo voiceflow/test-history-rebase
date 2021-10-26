@@ -15,8 +15,8 @@ import { ConnectedProps } from '@/types';
 
 import { LINK_TYPE_OPTIONS, NAVIGATION_DESCRIPTIONS, NAVIGATION_OPTIONS } from './constants';
 
-const Canvas: React.FC<ConnectedBasicProps> = ({ activeProjectID, activeLinkType, canvasNavigation, setCanvasNavigation, saveProjectLinkType }) => {
-  const setLinkType = React.useCallback((linkType: ProjectLinkType) => saveProjectLinkType(activeProjectID!, linkType), [activeProjectID]);
+const Canvas: React.FC<ConnectedBasicProps> = ({ activeProjectID, activeLinkType, canvasNavigation, setCanvasNavigation, updateProjectLinkType }) => {
+  const setLinkType = React.useCallback((linkType: ProjectLinkType) => updateProjectLinkType(activeProjectID!, linkType), [activeProjectID]);
 
   return (
     <>
@@ -59,7 +59,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   setCanvasNavigation: UI.setCanvasNavigation,
-  saveProjectLinkType: Project.saveProjectLinkType,
+  updateProjectLinkType: Project.updateProjectLinkType,
 };
 
 type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

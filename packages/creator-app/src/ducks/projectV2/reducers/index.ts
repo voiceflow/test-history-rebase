@@ -1,9 +1,12 @@
 import { createRootCRUDReducer } from '@/ducks/utils/crudV2';
 
-import { PROJECT_INITIAL_STATE } from '../constants';
-import { RealtimeProjectState } from '../types';
+import { INITIAL_STATE } from '../constants';
+import { ProjectState } from '../types';
 import crudReducers from './crud';
+import updateVendor from './updateVendor';
 
-const realtimeProjectReducer = createRootCRUDReducer<RealtimeProjectState>(PROJECT_INITIAL_STATE, crudReducers).build();
+const realtimeProjectReducer = createRootCRUDReducer<ProjectState>(INITIAL_STATE, crudReducers)
+  .immerCase(...updateVendor)
+  .build();
 
 export default realtimeProjectReducer;

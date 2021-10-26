@@ -41,7 +41,7 @@ interface MemberRowProps {
   member: DBMember;
   inline?: boolean;
   pending: boolean;
-  resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<boolean>;
+  resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
 }
 
 const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendInvite }) => {

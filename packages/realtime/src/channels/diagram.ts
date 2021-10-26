@@ -42,7 +42,8 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
 
     const viewers = await this.getViewers(ctx.params.diagramID);
 
-    await ctx.server.process(
+    await this.server.processAs(
+      user.creator_id,
       Realtime.project.awareness.updateViewers({
         viewers,
         diagramID: ctx.params.diagramID,
@@ -66,7 +67,8 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
 
     const viewers = await this.getViewers(ctx.params.diagramID);
 
-    await ctx.server.process(
+    await this.server.processAs(
+      Number(ctx.userId),
       Realtime.project.awareness.updateViewers({
         viewers,
         diagramID: ctx.params.diagramID,

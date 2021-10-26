@@ -2,7 +2,7 @@ import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import TextEditor, { PluginType } from '@/components/TextEditor';
-import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { compose } from '@/utils/functional';
@@ -89,7 +89,7 @@ const VariablesInput = (
 };
 
 const mapStateToProps = {
-  variables: Diagram.activeDiagramAllVariablesSelector,
+  variables: DiagramV2.active.allSlotsAndVariablesSelector,
 };
 
 const mapDispatchToProps = {

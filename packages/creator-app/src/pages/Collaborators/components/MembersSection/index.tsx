@@ -11,7 +11,7 @@ import MemberRow from './components/MemberRow';
 interface MemberSectionProps {
   inline?: boolean;
   members: DBMember[];
-  resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<boolean>;
+  resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
 }
 
 const MemberSection: React.FC<MemberSectionProps> = ({ inline, members, resendInvite }) => {

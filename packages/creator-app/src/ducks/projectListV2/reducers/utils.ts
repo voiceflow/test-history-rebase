@@ -1,6 +1,6 @@
 import { createReducerFactory } from '@/ducks/utils';
 
-import { RealtimeProjectListState } from '../types';
+import { ProjectListState } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const createReducer = createReducerFactory<RealtimeProjectListState>();
+export const createReducer = createReducerFactory<ProjectListState>();

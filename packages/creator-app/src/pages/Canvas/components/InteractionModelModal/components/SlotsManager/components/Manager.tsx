@@ -1,11 +1,10 @@
 import React from 'react';
 
 import * as SlotDuck from '@/ducks/slot';
-import { connect } from '@/hocs';
-import { Slot } from '@/models';
+import * as SlotV2 from '@/ducks/slotV2';
+import { useDispatch, useSelector } from '@/hooks';
 import SlotEdit from '@/pages/Canvas/components/SlotEdit';
 import { FadeLeftContainer } from '@/styles/animations';
-import { ConnectedProps } from '@/types';
 
 export interface ManagerProps {
   id: string;
@@ -14,24 +13,15 @@ export interface ManagerProps {
 
 const SlotEditComponent = SlotEdit as React.FC<any>;
 
-const Manager: React.FC<ManagerProps & ConnectedManagerProps> = ({ id, slotsMap, removeSlot, updateSlot }) => {
-  const slot = slotsMap[id];
+const Manager: React.FC<ManagerProps> = ({ id, removeSlot }) => {
+  const slot = useSelector((state) => SlotV2.slotByIDSelector(state, { id }));
+  const patchSlot = useDispatch(SlotDuck.patchSlot, id);
 
   return !slot ? null : (
     <FadeLeftContainer style={{ marginTop: 10 }}>
-      <SlotEditComponent {...slot} key={slot.id} onSave={(data: Partial<Slot>) => updateSlot(id, data, true)} onRemove={removeSlot} isInteraction />
+      <SlotEditComponent {...slot} key={slot.id} onSave={patchSlot} onRemove={removeSlot} isInteraction />
     </FadeLeftContainer>
   );
 };
 
-const mapStateToProps = {
-  slotsMap: SlotDuck.mapSlotsSelector,
-};
-
-const mapDispatchToProps = {
-  updateSlot: SlotDuck.updateSlot,
-};
-
-type ConnectedManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(Manager) as React.FC<ManagerProps>;
+export default Manager;

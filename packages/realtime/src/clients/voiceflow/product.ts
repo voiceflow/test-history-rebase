@@ -11,11 +11,11 @@ export interface ProductClient {
 }
 
 const Client = ({ alexa }: ExtraOptions): ProductClient => ({
-  create: (projectID, product) => alexa.post<Project.AlexaProduct>(`/${projectID}/products/`, product).then((res) => res.data),
+  create: (projectID, product) => alexa.post<Project.AlexaProduct>(`/project/${projectID}/products/`, product).then((res) => res.data),
 
-  delete: (projectID, productID) => alexa.delete(`/${projectID}/products/${productID}`),
+  delete: (projectID, productID) => alexa.delete(`/project/${projectID}/products/${productID}`),
 
-  update: (projectID, productID, product) => alexa.put(`/${projectID}/products/${productID}`, product),
+  update: (projectID, productID, product) => alexa.put(`/project/${projectID}/products/${productID}`, product),
 });
 
 export default Client;

@@ -18,7 +18,7 @@ setConfig({ reloadHooks: false });
 Sentry.init();
 
 const history = createBrowserHistory();
-const logux = client.realtime(null, null);
+const logux = client.realtime();
 const { store, persistor } = createStore(logux, history);
 
 // Render ReactDOM

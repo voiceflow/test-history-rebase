@@ -1,12 +1,12 @@
 import { LoguxControlOptions } from '../control';
+import CreatorChannel from './creator';
 import DiagramChannel from './diagram';
 import ProjectChannel from './project';
-import UserChannel from './user';
 import VersionChannel from './version';
 import WorkspaceChannel from './workspace';
 
 export interface ChannelMap {
-  user: UserChannel;
+  creator: CreatorChannel;
   diagram: DiagramChannel;
   project: ProjectChannel;
   version: VersionChannel;
@@ -14,7 +14,7 @@ export interface ChannelMap {
 }
 
 const buildChannels = (options: LoguxControlOptions): ChannelMap => ({
-  user: new UserChannel(options),
+  creator: new CreatorChannel(options),
   diagram: new DiagramChannel(options),
   project: new ProjectChannel(options),
   version: new VersionChannel(options),

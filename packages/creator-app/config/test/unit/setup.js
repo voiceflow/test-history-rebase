@@ -1,8 +1,11 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-process-env */
 
+require('regenerator-runtime/runtime');
+
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const chaiSubset = require('chai-subset');
 const sinonChai = require('sinon-chai');
 const ignoreStyles = require('ignore-styles');
 
@@ -18,6 +21,7 @@ ignoreStyles.default([...ignoreStyles.DEFAULT_EXTENSIONS, '.csv']);
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
+chai.use(chaiSubset);
 
 // env variables
 

@@ -1,9 +1,7 @@
-import { CRUD_INITIAL_STATE } from '@/ducks/utils/crudV2';
+import { createCRUDState } from '@/ducks/utils/crudV2';
 
-import { RealtimeProjectListState } from './types';
+import { ProjectListState } from './types';
 
 export const STATE_KEY = 'projectListV2';
 
-export const PROJECT_LIST_INITIAL_STATE: RealtimeProjectListState = {
-  ...CRUD_INITIAL_STATE,
-};
+export const INITIAL_STATE: ProjectListState = createCRUDState();

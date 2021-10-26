@@ -9,6 +9,7 @@ import {
   addAllNormalizedByKeys,
   addNormalizedByKey,
   addToStartNormalizedByKey,
+  createEmptyNormalized,
   defaultGetKey,
   denormalize,
   GetKey,
@@ -33,10 +34,7 @@ export interface Meta {
   receivedAction?: boolean;
 }
 
-export const INITIAL_STATE: CRUDState<any> = {
-  allKeys: [],
-  byKey: {},
-};
+export const createCRUDState: () => CRUDState<any> = createEmptyNormalized;
 
 // actions
 
@@ -136,9 +134,10 @@ const createCRUDReducer: {
     S,
     AnyCRUDAction<T>
   >;
-} =
-  (modelType: string, getKey?: (obj: any) => string) =>
-  (state = INITIAL_STATE, action: AnyCRUDAction<any>) => {
+} = (modelType: string, getKey?: (obj: any) => string) => {
+  const initialState = createCRUDState();
+
+  return (state = initialState, action: AnyCRUDAction<any>) => {
     const keyGetter = getKey ?? defaultGetKey;
 
     if (!action.meta || action.meta.modelType !== modelType) {
@@ -168,6 +167,7 @@ const createCRUDReducer: {
         return state;
     }
   };
+};
 
 export default createCRUDReducer;
 
@@ -217,17 +217,17 @@ export const crudAction = <T extends CRUDAction, P, M extends Meta = Meta>(model
 
 export const addModel =
   <T>(modelType: string) =>
-  (key: string, value: T) =>
+  (key: string, value: T): CRUDAdd<T> =>
     crudAction(modelType, CRUDAction.CRUD_ADD, { key, value });
 
 export const addManyModels =
   <T>(modelType: string) =>
-  (values: T[]) =>
+  (values: T[]): CRUDAddMany<T> =>
     crudAction(modelType, CRUDAction.CRUD_ADD_MANY, values);
 
 export const prependModel =
   <T>(modelType: string) =>
-  (key: string, value: T) =>
+  (key: string, value: T): CRUDPrepend<T> =>
     crudAction(modelType, CRUDAction.CRUD_PREPEND, { key, value });
 
 export const updateModel =
@@ -242,16 +242,22 @@ export const updateModel =
 
 export const patchModel =
   <T, M extends Meta = Meta>(modelType: string) =>
-  (key: string, value: Partial<T>, meta?: M) =>
+  (key: string, value: Partial<T>, meta?: M): CRUDPatch<T> =>
     crudAction(modelType, CRUDAction.CRUD_UPDATE, { key, value, patch: true }, meta);
 
-export const removeModel = (modelType: string) => (key: string) => crudAction(modelType, CRUDAction.CRUD_REMOVE, key);
+export const removeModel =
+  (modelType: string) =>
+  (key: string): CRUDRemove =>
+    crudAction(modelType, CRUDAction.CRUD_REMOVE, key);
 
-export const removeManyModels = (modelType: string) => (keys: string[]) => crudAction(modelType, CRUDAction.CRUD_REMOVE_MANY, keys);
+export const removeManyModels =
+  (modelType: string) =>
+  (keys: string[]): CRUDRemoveMany =>
+    crudAction(modelType, CRUDAction.CRUD_REMOVE_MANY, keys);
 
 export const replaceModels =
   <T, M extends Meta = Meta>(modelType: string) =>
-  (values: T[], meta?: M) =>
+  (values: T[], meta?: M): CRUDReplace<T> =>
     crudAction(modelType, CRUDAction.CRUD_REPLACE, values, meta);
 
 export const reorderModels = (modelType: string) => (keyArray: string[]) => crudAction(modelType, CRUDAction.CRUD_REORDER, keyArray);

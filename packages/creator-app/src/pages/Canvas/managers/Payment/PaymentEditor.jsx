@@ -1,13 +1,11 @@
-/* eslint-disable no-shadow */
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
-import { allProductsSelector, hasProductsSelector, productByIDSelector } from '@/ducks/product';
-import { goToEditProduct, goToNewProduct, goToProducts } from '@/ducks/router';
+import * as ProductV2 from '@/ducks/productV2';
+import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { useCurried } from '@/hooks';
+import { useCurried, useDispatch, useSelector } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import NoProducts from '@/pages/Canvas/components/NoProducts';
 import ProductTile from '@/pages/Canvas/components/ProductTile';
@@ -16,10 +14,16 @@ import { FadeLeftContainer } from '@/styles/animations';
 import { AllProductsLink } from './components';
 import SelectedProduct from './SelectedProduct';
 
-function PaymentEditor({ selectedProduct, goToEditProduct, goToProducts, goToNewProduct, onChange, hasProducts, products }) {
+function PaymentEditor({ onChange, data }) {
+  const versionID = useSelector(Session.activeVersionIDSelector);
+  const selectedProduct = useSelector((state) => ProductV2.productByIDSelector(state, { id: data.productID }));
+  const products = useSelector(ProductV2.allProductsSelector);
   const updateProduct = useCurried(onChange);
+  const goToEditProduct = useDispatch(Router.goToEditProduct, versionID, data.productID);
+  const goToProducts = useDispatch(Router.goToProducts, versionID);
+  const goToNewProduct = useDispatch(Router.goToNewProduct, versionID);
 
-  if (!hasProducts) {
+  if (!products.length) {
     return <NoProducts goToNewProduct={goToNewProduct} />;
   }
 
@@ -54,24 +58,4 @@ function PaymentEditor({ selectedProduct, goToEditProduct, goToProducts, goToNew
   );
 }
 
-const mapStateToProps = {
-  versionID: Session.activeVersionIDSelector,
-  selectedProduct: productByIDSelector,
-  hasProducts: hasProductsSelector,
-  products: allProductsSelector,
-};
-
-const mapDispatchToProps = {
-  goToEditProduct,
-  goToProducts,
-  goToNewProduct,
-};
-
-const mergeProps = ({ selectedProduct: getProductByID, versionID }, { goToEditProduct, goToProducts, goToNewProduct }, { data }) => ({
-  selectedProduct: data.productID && getProductByID(data.productID),
-  goToEditProduct: () => data.productID && goToEditProduct(versionID, data.productID),
-  goToProducts: () => goToProducts(versionID),
-  goToNewProduct: () => goToNewProduct(versionID),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(PaymentEditor);
+export default PaymentEditor;

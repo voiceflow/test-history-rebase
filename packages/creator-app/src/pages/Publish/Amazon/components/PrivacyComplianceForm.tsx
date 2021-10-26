@@ -7,36 +7,37 @@ import Checkbox from '@/components/Checkbox';
 import TextBox from '@/components/Form/TextBox';
 import RadioGroup from '@/components/RadioGroup';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useBoundValue, useDispatch } from '@/hooks';
 import { getTargetValue } from '@/utils/dom';
 
 import { useValidator } from '../hooks';
 
-const hasPurchaseSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => !!publishing?.hasPurchase);
-const collectsPersonalInfoSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => !!publishing?.personal);
-const hasAdsSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => !!publishing?.hasAds);
-const instructionsSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.instructions ?? '');
-const forExportSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => !!publishing?.forExport);
+const hasPurchaseSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => !!publishing?.hasPurchase);
+const collectsPersonalInfoSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => !!publishing?.personal);
+const hasAdsSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => !!publishing?.hasAds);
+const instructionsSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.instructions ?? '');
+const forExportSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => !!publishing?.forExport);
 
 const PrivacyComplianceForm: React.FC = () => {
   const hasPurchase = useSelector(hasPurchaseSelector);
-  const saveHasPurchase = useDispatch((hasPurchase: boolean) => Version.alexa.savePublishing({ hasPurchase }));
+  const saveHasPurchase = useDispatch((hasPurchase: boolean) => Version.alexa.patchPublishing({ hasPurchase }));
 
   const forExport = useSelector(forExportSelector);
-  const saveForExport = useDispatch((forExport: boolean) => Version.alexa.savePublishing({ forExport }));
+  const saveForExport = useDispatch((forExport: boolean) => Version.alexa.patchPublishing({ forExport }));
 
   const collectsPersonalInfo = useSelector(collectsPersonalInfoSelector);
-  const saveCollectsPersonalInfo = useDispatch((personal: boolean) => Version.alexa.savePublishing({ personal }));
+  const saveCollectsPersonalInfo = useDispatch((personal: boolean) => Version.alexa.patchPublishing({ personal }));
 
   const hasAds = useSelector(hasAdsSelector);
-  const saveHasAds = useDispatch((hasAds: boolean) => Version.alexa.savePublishing({ hasAds }));
+  const saveHasAds = useDispatch((hasAds: boolean) => Version.alexa.patchPublishing({ hasAds }));
 
   const [instructionsError, instructionsValidator] = useValidator('instructions', (instructions: string) =>
     instructions ? false : 'Testing instructions are required.'
   );
   const [instructions, setInstructions, saveInstructions] = useBoundValue(
     instructionsSelector,
-    instructionsValidator((instructions: string) => Version.alexa.savePublishing({ instructions }))
+    instructionsValidator((instructions: string) => Version.alexa.patchPublishing({ instructions }))
   );
 
   return (

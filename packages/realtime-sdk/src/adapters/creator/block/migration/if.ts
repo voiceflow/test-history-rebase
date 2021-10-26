@@ -1,7 +1,7 @@
 import { Node } from '@voiceflow/base-types';
 
 import { NodeData } from '../../../../models';
-import { defaultNoMatch } from '../general/ifV2';
+import { defaultNoMatch } from '../general/if';
 import { createBlockAdapter } from '../utils';
 import expressionV1toV2Adapter from './expression';
 

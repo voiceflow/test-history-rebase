@@ -8,29 +8,27 @@ import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as Session from '@/ducks/session';
+import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
 import { ProjectList } from '@/models';
 import { Thunk } from '@/store/types';
-import { replace, unique, withoutValue } from '@/utils/array';
+import { replace, unique } from '@/utils/array';
 import { cuid } from '@/utils/string';
 import * as Sentry from '@/vendors/sentry';
 
-import { addProjectList, removeProjectFromList, removeProjectList, replaceProjectLists, updateProjectList } from '../actions';
-import { addProjectToList, listNotFoundError, saveRealtimeProjectListsForWorkspace } from './shared';
+import { crud, removeProjectFromList, transplantProject } from '../actions';
+import { addProjectToList } from './shared';
 
-export { addProjectToList, saveRealtimeProjectListsForWorkspace } from './shared';
+export * from './shared';
 
+/**
+ * @deprecated these are now loaded automatically by the subscription to the workspace/:workspaceID realtime event channel
+ */
 export const loadProjectLists =
   (workspaceID: string): Thunk =>
   async (dispatch, getState) => {
     try {
-      const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
-
-      // TODO: remove when project duck will be moved to realtime
-      if (atomicActionsEnabled) {
-        await dispatch(Project.loadProjectsByWorkspaceID(workspaceID));
-
-        return;
-      }
+      const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+      if (isAtomicActions) return;
 
       const lists = await client.projectList.find(workspaceID);
 
@@ -70,36 +68,29 @@ export const loadProjectLists =
         }
       }
 
-      dispatch(replaceProjectLists(normalizedLists));
+      dispatch(crud.replace(normalizedLists));
     } catch (err) {
       Sentry.error(err);
       dispatch(Modal.setError('Unable to retrieve lists'));
     }
   };
 
+/**
+ * @deprecated list management behaviour has been moved to the realtime service
+ */
 export const saveProjectListsForWorkspace =
   (workspaceID: string): Thunk =>
   async (_, getState) => {
-    const projectLists = ProjectListV2.allProjectListsSelector(getState());
+    const state = getState();
+    const projectLists = ProjectListV2.allProjectListsSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+
+    if (isAtomicActions) return;
 
     if (projectLists.length) {
       await client.projectList.update(workspaceID, projectLists);
     }
   };
-
-export const saveRealtimeProjectListsForActiveWorkspace = (): Thunk => async (dispatch, getState) => {
-  const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
-
-  if (!atomicActionsEnabled) {
-    return;
-  }
-
-  const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
-
-  Errors.assertWorkspaceID(activeWorkspaceID);
-
-  await dispatch(saveRealtimeProjectListsForWorkspace(activeWorkspaceID));
-};
 
 export const createProjectList =
   (workspaceID?: string, name?: string): Thunk<ProjectList> =>
@@ -107,26 +98,23 @@ export const createProjectList =
     const state = getState();
 
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     const id = cuid();
-    const list = {
+    const list: ProjectList = {
       id,
       name: name ?? 'New List',
-      isNew: true,
       projects: [],
     };
 
-    if (atomicActionsEnabled) {
-      const _workspaceID = workspaceID || activeWorkspaceID;
+    if (isAtomicActions) {
+      const targetWorkspaceID = workspaceID || activeWorkspaceID;
 
-      Errors.assertWorkspaceID(_workspaceID);
+      Errors.assertWorkspaceID(targetWorkspaceID);
 
-      await dispatch.sync(Realtime.projectList.crud.add({ workspaceID: _workspaceID, key: id, value: list }));
-
-      await dispatch(saveRealtimeProjectListsForWorkspace(_workspaceID));
+      await dispatch.sync(Realtime.projectList.crud.add({ workspaceID: targetWorkspaceID, key: id, value: list }));
     } else {
-      dispatch(addProjectList(id, list));
+      dispatch(crud.add(id, list));
     }
 
     return list;
@@ -134,77 +122,48 @@ export const createProjectList =
 
 export const renameProjectList =
   (listID: string, name: string): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+  (dispatch) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveWorkspaceContext,
+        async () => {
+          dispatch(crud.patch(listID, { name }));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.projectList.crud.patch({ ...context, key: listID, value: { name } }));
+        }
+      )
+    );
 
-    if (atomicActionsEnabled) {
-      Errors.assertWorkspaceID(activeWorkspaceID);
-
-      await dispatch.sync(
-        Realtime.projectList.crud.patch({
-          key: listID,
-          value: { name },
-          workspaceID: activeWorkspaceID,
-        })
-      );
-
-      await dispatch(saveRealtimeProjectListsForWorkspace(activeWorkspaceID));
-    } else {
-      dispatch(updateProjectList(listID, { name }, true));
-    }
-  };
-
-export const clearNewProjectList =
-  (listID: string): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-
-    if (atomicActionsEnabled) {
-      Errors.assertWorkspaceID(activeWorkspaceID);
-
-      await dispatch.sync(
-        Realtime.projectList.crud.patch({
-          key: listID,
-          value: { isNew: false },
-          workspaceID: activeWorkspaceID,
-        })
-      );
-
-      await dispatch(saveRealtimeProjectListsForWorkspace(activeWorkspaceID));
-    } else {
-      dispatch(updateProjectList(listID, { isNew: false }, true));
-    }
-  };
-
+/**
+ * @deprecated list management behaviour has been moved to the realtime service
+ */
 export const saveProjectToList =
   (workspaceID: string, lists: ProjectList[], projectID: string): Thunk =>
-  async (dispatch, getState) => {
+  async (_dispatch, getState) => {
     try {
       const state = getState();
-      const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+      const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+      if (isAtomicActions) return;
 
       const newList = { ...lists[0], projects: [projectID, ...lists[0].projects] };
 
       await client.projectList.update(workspaceID, replace(lists, 0, newList));
-
-      if (atomicActionsEnabled) {
-        await dispatch.sync(Realtime.projectList.crud.patch({ workspaceID, key: newList.id, value: { projects: newList.projects } }));
-      }
     } catch (err) {
       Sentry.error(err);
       throw err;
     }
   };
 
+/**
+ * @deprecated list management behaviour has been moved to the realtime service
+ */
 export const addProjectToDefaultList =
   (projectID: string, workspaceID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    if (isAtomicActions) return;
 
     let defaultList = ProjectListV2.defaultProjectListSelector(state);
 
@@ -212,63 +171,86 @@ export const addProjectToDefaultList =
       defaultList = await dispatch(createProjectList(workspaceID, Realtime.DEFAULT_PROJECT_LIST_NAME));
     }
 
-    if (atomicActionsEnabled) {
-      await dispatch.sync(Realtime.projectList.crud.patch({ workspaceID, key: defaultList.id, value: { projects: defaultList.projects } }));
-
-      await dispatch(saveRealtimeProjectListsForWorkspace(workspaceID));
-    } else {
-      dispatch(addProjectToList(defaultList.id, projectID));
-    }
+    dispatch(addProjectToList(defaultList.id, projectID));
   };
 
 export const deleteProjectList =
   (listID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
     const list = ProjectListV2.projectListByIDSelector(state, { id: listID });
 
-    Errors.assert(list, listNotFoundError());
+    Errors.assertProjectList(listID, list);
 
-    await dispatch(Project.deleteManyProjects(list.projects));
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveWorkspaceContext,
+        async () => {
+          await dispatch(Project.deleteManyProjects(list.projects));
 
-    if (atomicActionsEnabled) {
-      Errors.assertWorkspaceID(activeWorkspaceID);
-
-      await dispatch.sync(Realtime.projectList.crud.remove({ workspaceID: activeWorkspaceID, key: listID }));
-
-      await dispatch(saveRealtimeProjectListsForWorkspace(activeWorkspaceID));
-    } else {
-      dispatch(removeProjectList(listID));
-    }
+          dispatch(crud.remove(listID));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.projectList.crud.remove({ ...context, key: listID }));
+        }
+      )
+    );
   };
 
 export const deleteProjectFromList =
   (listID: string, projectID: string): Thunk =>
+  async (dispatch) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveWorkspaceContext,
+        async () => {
+          await dispatch(Project.deleteProject(projectID));
+
+          dispatch(removeProjectFromList(listID, projectID));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.projectList.removeProjectFromList({ ...context, listID, projectID }));
+        }
+      )
+    );
+
+export const moveProjectList =
+  (fromID: string, toID: string): Thunk =>
+  (dispatch) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveWorkspaceContext,
+        async () => {
+          dispatch(crud.move(fromID, toID));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.projectList.crud.move({ ...context, from: fromID, to: toID }));
+        }
+      )
+    );
+
+export const transplantProjectBetweenLists =
+  (projectID: string, fromListID: string, toListID: string, target: string | number): Thunk =>
   async (dispatch, getState) => {
-    const state = getState();
-    const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    const fromList = ProjectListV2.projectListByIDSelector(getState(), { id: fromListID });
 
-    await dispatch(Project.deleteProject(projectID));
+    if (fromListID === toListID && target === fromList?.projects.indexOf(projectID)) return;
 
-    if (atomicActionsEnabled) {
-      const list = ProjectListV2.projectListByIDSelector(state, { id: listID });
-
-      Errors.assertWorkspaceID(activeWorkspaceID);
-      Errors.assert(list, listNotFoundError());
-
-      await dispatch.sync(
-        Realtime.projectList.crud.patch({
-          key: listID,
-          value: { projects: withoutValue(list.projects, projectID) },
-          workspaceID: activeWorkspaceID,
-        })
-      );
-
-      await dispatch(saveRealtimeProjectListsForWorkspace(activeWorkspaceID));
-    } else {
-      dispatch(removeProjectFromList(listID, projectID));
-    }
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveWorkspaceContext,
+        async () => {
+          dispatch(transplantProject({ listID: fromListID, projectID }, { listID: toListID, target }));
+        },
+        async (context) => {
+          await dispatch.sync(
+            Realtime.projectList.transplantProjectBetweenLists({
+              ...context,
+              from: { listID: fromListID, projectID },
+              to: { listID: toListID, target },
+            })
+          );
+        }
+      )
+    );
   };

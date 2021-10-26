@@ -2,14 +2,18 @@ import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import SSML from '@/components/SSML';
-import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { compose } from '@/utils/functional';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
-const SSMLWithVars = ({ icon = 'alexa', voice, variables, locales, defaultVoice, platform, addGlobalVariable, saveDefaultVoice, ...props }, ref) => {
+const SSMLWithVars = (
+  { icon = 'alexa', voice, variables, locales, defaultVoice, platform, addGlobalVariable, updateDefaultVoice, ...props },
+  ref
+) => {
   const vars = React.useMemo(() => variables.map((name) => ({ id: name, name, isVariable: true })), [variables]);
   const platformDefaultVoice = getPlatformDefaultVoice(platform);
   const onAddVariable = React.useCallback(
@@ -39,7 +43,7 @@ const SSMLWithVars = ({ icon = 'alexa', voice, variables, locales, defaultVoice,
       defaultVoice={defaultVoice || platformDefaultVoice}
       onAddVariable={onAddVariable}
       platformDefaultVoice={platformDefaultVoice}
-      onChangeDefaultVoice={saveDefaultVoice}
+      onChangeDefaultVoice={updateDefaultVoice}
       {...props}
     />
   );
@@ -47,13 +51,13 @@ const SSMLWithVars = ({ icon = 'alexa', voice, variables, locales, defaultVoice,
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
-  variables: Diagram.activeDiagramAllVariablesSelector,
-  defaultVoice: Version.activeDefaultVoiceSelector,
-  locales: Version.activeLocalesSelector,
+  variables: DiagramV2.active.allSlotsAndVariablesSelector,
+  defaultVoice: VersionV2.active.defaultVoiceSelector,
+  locales: VersionV2.active.localesSelector,
 };
 
 const mapDispatchToProps = {
-  saveDefaultVoice: Version.saveDefaultVoice,
+  updateDefaultVoice: Version.updateDefaultVoice,
   addGlobalVariable: Version.addGlobalVariable,
 };
 

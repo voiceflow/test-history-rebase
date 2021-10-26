@@ -1,11 +1,11 @@
 import React from 'react';
 
-import * as Diagram from '@/ducks/diagram';
-import * as Intent from '@/ducks/intent';
-import * as Product from '@/ducks/product';
+import * as DiagramV2 from '@/ducks/diagramV2';
+import * as IntentV2 from '@/ducks/intentV2';
+import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { createSelectorContext } from '@/utils/redux';
 
 export const {
@@ -30,25 +30,25 @@ export const {
   Context: AccountLinkingContext,
   Provider: AccountLinkingProvider,
   Consumer: AccountLinkingConsumer,
-} = createSelectorContext(Version.alexa.accountLinkingSelector);
+} = createSelectorContext(VersionV2.active.alexa.accountLinkingSelector);
 
 export const {
   Context: ProductMapContext,
   Provider: ProductMapProvider,
   Consumer: ProductMapConsumer,
-} = createSelectorContext(Product.productMapSelector);
+} = createSelectorContext(ProductV2.productMapSelector);
 
 export const {
   Context: CustomIntentMapContext,
   Provider: CustomIntentMapProvider,
   Consumer: CustomIntentMapConsumer,
-} = createSelectorContext(Intent.mapCustomIntentsSelector);
+} = createSelectorContext(IntentV2.customIntentMapSelector);
 
 export const {
   Context: DiagramMapContext,
   Provider: DiagramMapProvider,
   Consumer: DiagramMapConsumer,
-} = createSelectorContext(Diagram.diagramMapSelector);
+} = createSelectorContext(DiagramV2.diagramMapSelector);
 
 export const ReduxContextsProviders: React.FC = ({ children }) => (
   <IsCanvasOnlyProvider>

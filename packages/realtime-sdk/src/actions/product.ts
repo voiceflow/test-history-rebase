@@ -1,14 +1,18 @@
+import { Constants } from '@voiceflow/alexa-types';
+
 import { PRODUCT_KEY } from '../constants';
 import { Product } from '../models';
 import { BaseVersionPayload } from '../types';
-import { createCRUDActions, typeFactory } from './utils';
+import { createAction, createCRUDActions, typeFactory } from './utils';
 
 const productType = typeFactory(PRODUCT_KEY);
 
-export interface CopyProductPayload extends BaseVersionPayload {
-  productID: string;
+// Other
+
+export interface UpdateLocalesPayload extends BaseVersionPayload {
+  locales: Constants.Locale[];
 }
 
-// Other
+export const updateLocales = createAction<UpdateLocalesPayload>(productType('UPDATE_LOCALES'));
 
 export const crud = createCRUDActions<BaseVersionPayload, Product>(productType);

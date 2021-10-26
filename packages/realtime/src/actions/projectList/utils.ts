@@ -1,15 +1,15 @@
-import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { AbstractActionControl, ActionAccessor, BoundActionAccessor, sanitizePatch } from '@/actions/utils';
+import { AbstractActionControl, ActionAccessor, sanitizePatch } from '@/actions/utils';
 import { accessWorkspaces, resendWorkspaceChannels, WorkspaceContextData } from '@/actions/workspace/utils';
+import { Context } from '@/types';
 
 // eslint-disable-next-line import/prefer-default-export
 export abstract class AbstractProjectListResourceControl<
   P extends Realtime.BaseWorkspacePayload,
   D extends WorkspaceContextData = WorkspaceContextData
 > extends AbstractActionControl<P, D> {
-  protected access: ActionAccessor<P, D> = accessWorkspaces.bind<BoundActionAccessor<P, D>>(this);
+  protected access: ActionAccessor<P, D> = accessWorkspaces(this);
 
   protected resend = resendWorkspaceChannels;
 
@@ -19,7 +19,7 @@ export abstract class AbstractProjectListResourceControl<
     listID: string,
     transform: (data: Realtime.ProjectList) => Partial<Realtime.ProjectList>
   ) => {
-    const creatorID = Number(ctx.userId);
+    const { creatorID } = ctx.data;
     const projectLists = await this.services.projectList.getAll(creatorID, workspaceID);
 
     const patched = projectLists.map((dbList) => {

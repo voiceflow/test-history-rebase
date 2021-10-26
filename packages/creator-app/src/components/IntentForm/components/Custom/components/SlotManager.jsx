@@ -3,7 +3,7 @@ import React from 'react';
 import DraggableList from '@/components/DraggableList';
 import { SectionToggleVariant } from '@/components/Section';
 import * as Intent from '@/ducks/intent';
-import * as Slot from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import { connect } from '@/hocs';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { reorder } from '@/utils/array';
@@ -61,7 +61,7 @@ function SlotManager({ intent, slotsMap, reorderIntentSlots, pushToPath, isNeste
 }
 
 const mapStateToProps = {
-  slotsMap: Slot.mapSlotsSelector,
+  slotsMap: SlotV2.slotMapSelector,
 };
 
 const mapDispatchToProps = {

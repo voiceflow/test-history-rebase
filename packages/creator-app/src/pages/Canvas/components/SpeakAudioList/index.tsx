@@ -4,7 +4,7 @@ import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType } from '@/constants';
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { SpeakData } from '@/models';
 import { ControlOptions } from '@/pages/Canvas/components/Editor';
@@ -126,7 +126,7 @@ const SpeakAudioList = ({
 };
 
 const mapStateToProps = {
-  defaultVoice: Version.activeDefaultVoiceSelector,
+  defaultVoice: VersionV2.active.defaultVoiceSelector,
 };
 
 type ConnectedSpeakAndAudioListProps = ConnectedProps<typeof mapStateToProps, {}>;

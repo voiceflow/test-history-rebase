@@ -6,8 +6,9 @@ import React from 'react';
 
 import { CUSTOMIZABLE_INTENT_PREFIXS, SPACE_REGEXP } from '@/constants';
 import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Slot from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import { connect } from '@/hocs';
 import { ClassName } from '@/styles/constants';
 import {
@@ -74,7 +75,7 @@ function IntentSelect({
   onChange,
   inDropdownSearch = false,
   platform,
-  newIntent,
+  createIntent,
   creatable = true,
   clearable = undefined,
   iconProps = undefined,
@@ -109,7 +110,7 @@ function IntentSelect({
       const isDefaultBuiltIn = CUSTOMIZABLE_INTENT_PREFIXS.includes(value?.split('.')[0]) || value === Constants.IntentName.NONE;
 
       if (isDefaultBuiltIn && !intentsMap[intentID]) {
-        newIntent({ id: intentID, name: value, builtIn: true });
+        createIntent({ id: intentID, name: value, builtIn: true });
       }
 
       onChange({ intent: intentID });
@@ -131,10 +132,10 @@ function IntentSelect({
       if (error) {
         toast.error(error);
       } else {
-        onSelectIntent(newIntent({ name: preparedName }));
+        onSelectIntent(createIntent({ name: preparedName }));
       }
     },
-    [newIntent, intentLookup, onSelectIntent]
+    [intentLookup, onSelectIntent]
   );
 
   React.useEffect(() => {
@@ -184,13 +185,13 @@ function IntentSelect({
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
-  slots: Slot.allSlotsSelector,
-  intents: Intent.allPlatformIntentsSelector,
-  intentsMap: Intent.mapCustomIntentsSelector,
+  slots: SlotV2.allSlotsSelector,
+  intents: IntentV2.allPlatformIntentsSelector,
+  intentsMap: IntentV2.customIntentMapSelector,
 };
 
 const mapDispatchToProps = {
-  newIntent: Intent.newIntent,
+  createIntent: Intent.createIntent,
 };
 
 const mergeProps = ({ intents }, _, { intents: intentOverrides }) => ({

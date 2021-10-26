@@ -379,7 +379,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
           const { versionID } = await createProject({ platform: state.selectChannelMeta.channel as Constants.PlatformType }, templateTag);
-          await goToCanvas(versionID!);
+          goToCanvas(versionID!);
           await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
         }
       } else {

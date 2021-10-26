@@ -4,8 +4,8 @@ import React from 'react';
 import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
 import { Paragraph } from '@/components/Tooltip';
 import { SlotTag, VariableTag } from '@/components/VariableTag';
-import { setConfirm } from '@/ducks/modal';
-import * as Slot from '@/ducks/slot';
+import * as Modal from '@/ducks/modal';
+import * as SlotV2 from '@/ducks/slotV2';
 import { connect, styled } from '@/hocs';
 
 // TODO: Deprecate this component once legacy mapping is completely deprecated
@@ -99,11 +99,11 @@ function LegacyMappings({ intent, setConfirm, onDelete, slotByID, mappings = [],
 }
 
 const mapStateToProps = {
-  slotByID: Slot.slotByIDSelector,
+  slotByID: SlotV2.getSlotByIDSelector,
 };
 
 const mapDispatchToProps = {
-  setConfirm,
+  setConfirm: Modal.setConfirm,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LegacyMappings);

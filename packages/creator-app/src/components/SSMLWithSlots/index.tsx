@@ -4,6 +4,7 @@ import React from 'react';
 import SSML from '@/components/SSML';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { Slot } from '@/models';
 import { ConnectedProps } from '@/types';
@@ -41,7 +42,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnected
   locales,
   defaultVoice,
   platform,
-  saveDefaultVoice,
+  updateDefaultVoice,
   ...props
 }) => {
   const platformDefaultVoice = getPlatformDefaultVoice(platform);
@@ -56,7 +57,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnected
       platform={platform}
       space
       creatable={false}
-      onChangeDefaultVoice={saveDefaultVoice}
+      onChangeDefaultVoice={updateDefaultVoice}
       withVariablesPlugin={isSlotsInRepromptValid(platform)}
       {...props}
     />
@@ -65,12 +66,12 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnected
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
-  defaultVoice: Version.activeDefaultVoiceSelector,
-  locales: Version.activeLocalesSelector,
+  defaultVoice: VersionV2.active.defaultVoiceSelector,
+  locales: VersionV2.active.localesSelector,
 };
 
 const mapDispatchToProps = {
-  saveDefaultVoice: Version.saveDefaultVoice,
+  updateDefaultVoice: Version.updateDefaultVoice,
 };
 
 type SSMLWithSlotsConnectedProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

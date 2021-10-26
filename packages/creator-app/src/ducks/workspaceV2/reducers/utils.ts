@@ -1,6 +1,6 @@
 import { createReducerFactory } from '@/ducks/utils';
 
-import { RealtimeWorkspaceState } from '../types';
+import { WorkspaceState } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const createReducer = createReducerFactory<RealtimeWorkspaceState>();
+export const createReducer = createReducerFactory<WorkspaceState>();

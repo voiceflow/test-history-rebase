@@ -7,7 +7,6 @@ import { APIKey } from '@/models/APIKey';
 import { DBBilling } from '@/models/Billing';
 
 import invoiceAdapter from './adapters/invoice';
-import memberAdapter from './adapters/member';
 import { api, apiV2 } from './fetch';
 
 export const LEGACY_WORKSPACE_PATH = 'team';
@@ -21,7 +20,8 @@ const workspaceClient = {
   createWorkspace: (data: { name: string; image?: string }) =>
     api.post<DBWorkspace>(WORKSPACES_PATH, data).then(Realtime.Adapters.workspaceAdapter.fromDB),
 
-  findMembers: (workspaceID: string) => api.get<DBMember[]>(`${WORKSPACES_PATH}/${workspaceID}/members`).then(memberAdapter.mapFromDB),
+  findMembers: (workspaceID: string) =>
+    api.get<DBMember[]>(`${WORKSPACES_PATH}/${workspaceID}/members`).then(Realtime.Adapters.memberAdapter.mapFromDB),
 
   deleteWorkspace: (workspaceID: string) => api.delete(`${WORKSPACES_PATH}/${workspaceID}`),
 

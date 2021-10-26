@@ -40,7 +40,7 @@ export function Item(props) {
 
   const [isEditing, setIsEditing] = React.useState(false);
   const [formValue, updateFormValue] = useLinkedState(name);
-  const saveProjectName = useDispatch(Project.saveProjectName);
+  const saveProjectName = useDispatch(Project.updateProjectNameByID, id);
   const onRename = () => {
     titleRef.current?.startEditing();
     setIsEditing(true);
@@ -49,7 +49,7 @@ export function Item(props) {
     titleRef.current?.stopEditing();
 
     updateFormValue(formatProjectName(formValue));
-    saveProjectName(formatProjectName(formValue), id);
+    saveProjectName(formatProjectName(formValue));
 
     setIsEditing(false);
   };

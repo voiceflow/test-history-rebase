@@ -5,7 +5,7 @@ import React from 'react';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
-import * as Product from '@/ducks/product';
+import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
@@ -148,7 +148,7 @@ const mapStateToProps = {
   projectID: Session.activeProjectIDSelector,
   amazonAccount: Account.amazonAccountSelector,
   selectedVendor: ProjectV2.active.alexa.ownVendorIDSelector,
-  productMap: Product.productMapSelector,
+  productMap: ProductV2.productMapSelector,
 };
 
 type ConnectedMigrationProps = ConnectedProps<typeof mapStateToProps>;

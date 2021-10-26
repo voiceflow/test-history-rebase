@@ -1,21 +1,25 @@
 import React from 'react';
 
 import Section from '@/components/Section';
-import * as Product from '@/ducks/product';
+import * as ProductV2 from '@/ducks/productV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { useCurried } from '@/hooks';
+import { useCurried, useDispatch, useSelector } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
 import NoProducts from '@/pages/Canvas/components/NoProducts';
 import ProductTile from '@/pages/Canvas/components/ProductTile';
 
 import { CancelPaymentFooter } from './components';
 
-function CancelPaymentEditor({ products, onChange, goToNewProduct, goToEditProduct, selectedProduct, hasProducts, data }) {
+function CancelPaymentEditor({ onChange, data }) {
+  const versionID = useSelector(Session.activeVersionIDSelector);
+  const selectedProduct = useSelector((state) => ProductV2.productByIDSelector(state, { id: data.productID }));
+  const products = useSelector(ProductV2.allProductsSelector);
   const updateProduct = useCurried(onChange);
+  const goToEditProduct = useDispatch(Router.goToEditProduct, versionID, data.productID);
+  const goToNewProduct = useDispatch(Router.goToNewProduct, versionID);
 
-  if (!hasProducts) {
+  if (!products.length) {
     return <NoProducts goToNewProduct={goToNewProduct} />;
   }
 
@@ -40,24 +44,4 @@ function CancelPaymentEditor({ products, onChange, goToNewProduct, goToEditProdu
   );
 }
 
-const mapStateToProps = {
-  versionID: Session.activeVersionIDSelector,
-  selectedProduct: Product.productByIDSelector,
-  hasProducts: Product.hasProductsSelector,
-  products: Product.allProductsSelector,
-};
-
-const mapDispatchToProps = {
-  goToEditProduct: Router.goToEditProduct,
-  goToProducts: Router.goToProducts,
-  goToNewProduct: Router.goToNewProduct,
-};
-
-const mergeProps = ({ selectedProduct: getProductByID, versionID }, { goToEditProduct, goToProducts, goToNewProduct }, { data }) => ({
-  selectedProduct: data.productID && getProductByID(data.productID),
-  goToEditProduct: () => data.productID && goToEditProduct(versionID, data.productID),
-  goToProducts: () => goToProducts(versionID),
-  goToNewProduct: () => goToNewProduct(versionID),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(CancelPaymentEditor);
+export default CancelPaymentEditor;

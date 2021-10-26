@@ -5,18 +5,26 @@ import { AbstractActionControl, terminateResend, unrestrictedAccess } from '@/ac
 class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.member.AcceptInvitePayload> {
   protected actionCreator = Realtime.workspace.member.acceptInvite.started;
 
-  protected access = unrestrictedAccess.bind(this);
+  protected access = unrestrictedAccess(this);
 
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.workspace.member.acceptInvite, async (ctx, { payload }) => {
-    const creatorID = Number(ctx.userId);
-
+    const { creatorID } = ctx.data;
     const workspaceID = await this.services.workspace.member.acceptInvite(creatorID, payload.invite);
 
-    // broadcast updated member list
-    const members = await this.services.workspace.member.getAll(creatorID, workspaceID);
-    await this.server.process(Realtime.workspace.member.replace({ workspaceID, members }));
+    const [workspace, members] = await Promise.all([
+      this.services.workspace.get(creatorID, workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB),
+      this.services.workspace.member.getAll(creatorID, workspaceID),
+    ]);
+
+    // broadcast new workspace and updated member list
+    await Promise.all([
+      this.server.process(Realtime.workspace.crud.add({ key: workspaceID, value: workspace }), {
+        channel: Realtime.Channels.creator.build({ creatorID: ctx.userId }),
+      }),
+      this.server.processAs(creatorID, Realtime.workspace.member.replace({ workspaceID, members })),
+    ]);
 
     return workspaceID;
   });

@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { PREFILLED_UTTERANCE_PARAM } from '@/components/IntentForm/components/Custom/components/UtteranceManager';
 import IntentSelect from '@/components/IntentSelect';
 import { ModalType } from '@/constants';
-import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { IntentInput } from '@/models';
@@ -41,7 +41,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   const { open: openIMM, isOpened: isOpenedIMM } = useModals(ModalType.INTERACTION_MODEL);
   const [initialUtterances, setInitialUtterances] = React.useState<IntentInput[] | null>(null);
   const [targetIntentID, setTargetIntentID] = React.useState<string | null>(null);
-  const selectIntentByID = useSelector(Intent.intentByIDSelector);
+  const selectIntentByID = useSelector(IntentV2.getIntentByIDSelector);
   const activeTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
   const dispatchAddUtteranceToIntent = useDispatch(Transcript.setUtteranceAddedTo);
   const [isDropdownOpened, setIsDropdownOpened] = React.useState(false);
@@ -61,7 +61,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     const params = new URLSearchParams();
 
     const targetIntent = selectIntentByID(intentID);
-    setInitialUtterances(targetIntent.inputs);
+    setInitialUtterances(targetIntent?.inputs ?? []);
 
     params.append(PREFILLED_UTTERANCE_PARAM, utterance);
     history.replace({
@@ -83,11 +83,11 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   };
 
   const handleIMMClose = async (intentID: string, initialUtterancesArray: IntentInput[]) => {
-    if (!activeTranscriptID) {
-      return;
-    }
+    if (!activeTranscriptID) return;
 
     const targetIntent = selectIntentByID(intentID);
+    if (!targetIntent) return;
+
     const updatedUtterances = targetIntent.inputs;
 
     const netNewUtterances = determineNewUtterances(initialUtterancesArray, updatedUtterances);

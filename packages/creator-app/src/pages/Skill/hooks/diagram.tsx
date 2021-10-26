@@ -6,6 +6,7 @@ import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Modal from '@/ducks/modal';
 import { useDispatch, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
@@ -97,12 +98,12 @@ interface DiagramOptionsOptions {
 }
 
 export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOptionsOptions): MenuOption<undefined>[] => {
-  const copyDiagram = useDispatch(Diagram.copyDiagram);
+  const duplicateDiagram = useDispatch(Diagram.duplicateDiagram);
   const deleteDiagram = useDispatch(Diagram.deleteDiagram);
   const setErrorModal = useDispatch(Modal.setError);
   const setConfirmModal = useDispatch(Modal.setConfirm);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const getDiagramByID = useSelector(Diagram.diagramByIDSelector);
+  const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
 
   const onDuplicate = React.useCallback(() => {
@@ -112,7 +113,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
       return;
     }
 
-    copyDiagram(diagramID, { openDiagram: true });
+    duplicateDiagram(diagramID, { openDiagram: true });
   }, [diagramID]);
 
   const onDelete = React.useCallback(() => {

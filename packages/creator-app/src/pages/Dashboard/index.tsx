@@ -1,6 +1,5 @@
 import './DashBoard.css';
 
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Alert, AlertVariant, BoxFlex, BoxFlexCenter, FullSpinner, IconButton, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -34,7 +33,6 @@ import {
   useScrollHelpers,
   useSelector,
   useSetup,
-  useSyncDispatch,
   useWorkspaceTracking,
 } from '@/hooks';
 import * as Models from '@/models';
@@ -65,6 +63,7 @@ export type DashboardProps = RouteComponentProps;
 
 export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+  const [newListID, setNewListID] = React.useState<string | null>(null);
 
   const workspace = useActiveWorkspace();
   const projects = useSelector(ProjectV2.allProjectsSelector);
@@ -78,16 +77,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const setError = useDispatch(Modal.setError);
   const deleteList = useDispatch(ProjectList.deleteProjectList);
   const renameList = useDispatch(ProjectList.renameProjectList);
-  const clearNewList = useDispatch(ProjectList.clearNewProjectList);
-  const transplantProject = useDispatch(ProjectList.transplantProject);
-  const moveList = useDispatch(ProjectList.moveProjectList);
+  const transplantProjectBetweenLists = useDispatch(ProjectList.transplantProjectBetweenLists);
+  const moveProjectList = useDispatch(ProjectList.moveProjectList);
   const fetchNotifications = useDispatch(Notifications.fetchNotifications);
   const goToNewProject = useDispatch(Router.goToNewProject);
   const goToNewIntroProject = useDispatch(Router.goToNewIntroProject);
   const clearSearch = useDispatch(Router.clearSearch);
-  const moveProjectList = useSyncDispatch(Realtime.projectList.crud.move);
-  const transplantProjectBetweenLists = useSyncDispatch(Realtime.projectList.transplantProjectBetweenLists);
-  const saveRealtimeProjectLists = useDispatch(ProjectList.saveRealtimeProjectListsForActiveWorkspace);
 
   const query = location?.search ? Query.parse(location.search) : null;
 
@@ -100,6 +95,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
+
+  const onCreateList = React.useCallback(async () => {
+    const list = await createList();
+
+    setNewListID(list.id);
+  }, []);
+
+  const onClearNewList = React.useCallback(() => setNewListID(null), []);
 
   const onCreateProject = React.useCallback(
     (id: string) => {
@@ -126,31 +129,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
     });
   }, []);
 
-  const onMove = React.useCallback(
-    (drag, hover) => {
-      if (atomicActions.isEnabled) {
-        moveProjectList({ workspaceID: activeWorkspaceID!, from: drag.id, to: hover.id });
-      } else {
-        moveList(drag.id, hover.id);
-      }
-    },
-    [atomicActions, activeWorkspaceID]
-  );
+  const onMove = React.useCallback((drag, hover) => {
+    moveProjectList(drag.id, hover.id);
+  }, []);
 
-  const onMoveProject = React.useCallback(
-    (drag, hover) => {
-      if (atomicActions.isEnabled) {
-        transplantProjectBetweenLists({
-          workspaceID: activeWorkspaceID!,
-          from: { listID: drag.listId, projectID: drag.id },
-          to: { listID: hover.listId, projectID: hover.id },
-        });
-      } else {
-        transplantProject({ listID: drag.listId, projectID: drag.id }, { listID: hover.listId, projectID: hover.id });
-      }
-    },
-    [atomicActions, activeWorkspaceID]
-  );
+  const onMoveProject = React.useCallback((drag, hover) => transplantProjectBetweenLists(drag.id, drag.listId, hover.listId, hover.id), []);
 
   useAsyncEffect(async () => {
     if (!activeWorkspaceID) return;
@@ -241,18 +224,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
                             <List
                               id={list.id}
                               key={list.id}
-                              isNew={list.isNew}
+                              isNew={list.id === newListID}
                               index={idx}
                               name={list.name}
                               onRename={renameList}
                               onRemove={onDeleteBoard}
                               projects={projects}
                               createProject={onCreateProject}
-                              onDrop={saveRealtimeProjectLists}
-                              onDropProject={saveRealtimeProjectLists}
                               onMove={onMove}
                               onMoveProject={onMoveProject}
-                              clearNewBoard={clearNewList}
+                              clearNewBoard={onClearNewList}
                               disableDragging={!!filter}
                             />
                           );
@@ -278,7 +259,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
                             style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}
                           >
                             <TippyTooltip distance={8} title="Add new list" position="bottom">
-                              <IconButton large icon="addStep" onClick={() => createList()} size={13} />
+                              <IconButton large icon="addStep" onClick={onCreateList} size={13} />
                             </TippyTooltip>
                           </BoxFlex>
                         )}

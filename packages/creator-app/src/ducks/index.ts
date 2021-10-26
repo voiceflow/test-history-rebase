@@ -10,9 +10,11 @@ import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
 import feature, * as Feature from '@/ducks/feature';
 import integrationUsers, * as IntegrationUsers from '@/ducks/integration';
 import intent, * as Intent from '@/ducks/intent';
+import intentV2, * as IntentV2 from '@/ducks/intentV2';
 import modal, * as Modal from '@/ducks/modal';
 import notifications, * as Notifications from '@/ducks/notifications';
 import product, * as Product from '@/ducks/product';
+import productV2, * as ProductV2 from '@/ducks/productV2';
 import project, * as Project from '@/ducks/project';
 import projectList, * as ProjectList from '@/ducks/projectList';
 import projectListV2, * as ProjectListV2 from '@/ducks/projectListV2';
@@ -24,12 +26,14 @@ import reportTag, * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import session, * as Session from '@/ducks/session';
 import slot, * as Slot from '@/ducks/slot';
+import slotV2, * as SlotV2 from '@/ducks/slotV2';
 import template, * as Template from '@/ducks/template';
 import thread, * as Thread from '@/ducks/thread';
 import tracking, * as Tracking from '@/ducks/tracking';
 import transcript, * as Transcript from '@/ducks/transcript';
 import ui, * as UI from '@/ducks/ui';
 import version, * as Version from '@/ducks/version';
+import versionV2, * as VersionV2 from '@/ducks/versionV2';
 import viewport, * as Viewport from '@/ducks/viewport';
 import workspace, * as Workspace from '@/ducks/workspace';
 import workspaceV2, * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -52,10 +56,13 @@ const getCombinedReducer = (history: History) =>
     [Diagram.STATE_KEY]: diagram,
     [DiagramV2.STATE_KEY]: diagramV2,
     [Product.STATE_KEY]: product,
+    [ProductV2.STATE_KEY]: productV2,
     [Project.STATE_KEY]: project,
     [ProjectV2.STATE_KEY]: projectV2,
     [Intent.STATE_KEY]: intent,
+    [IntentV2.STATE_KEY]: intentV2,
     [Slot.STATE_KEY]: slot,
+    [SlotV2.STATE_KEY]: slotV2,
     [Recent.STATE_KEY]: recent,
     [UI.STATE_KEY]: ui,
     [Realtime.STATE_KEY]: realtime,
@@ -65,6 +72,7 @@ const getCombinedReducer = (history: History) =>
     [Template.STATE_KEY]: template,
     [Feature.STATE_KEY]: feature,
     [Version.STATE_KEY]: version,
+    [VersionV2.STATE_KEY]: versionV2,
     [ReportTag.STATE_KEY]: reportTag,
     [Transcript.STATE_KEY]: transcript,
   });
@@ -88,6 +96,8 @@ const createReducer = (history: History) => {
 };
 
 export default createReducer;
+
+export const allRPCs = [...Workspace.rpcs, ...Version.rpcs];
 
 export type State = ReturnType<ReturnType<typeof getCombinedReducer>>;
 

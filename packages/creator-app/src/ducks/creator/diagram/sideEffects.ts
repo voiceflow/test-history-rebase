@@ -9,12 +9,12 @@ import client from '@/client';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
 import { BlockType, DiagramState } from '@/constants';
+import * as CreatorDiagramSelectors from '@/ducks/creator/diagram/selectors';
 import * as DiagramActions from '@/ducks/diagram/actions';
-import * as DiagramSelectors from '@/ducks/diagram/selectors';
+import * as DiagramSelectorsV2 from '@/ducks/diagramV2/selectors';
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import * as VersionSelectors from '@/ducks/version/selectors';
 import * as Viewport from '@/ducks/viewport';
 import { NodeData } from '@/models';
 import mutableStore from '@/store/mutable';
@@ -51,8 +51,8 @@ export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) 
     return;
   }
 
-  const diagramType = DiagramSelectors.activeDiagramTypeSelector(state);
-  const isRootDiagramActive = VersionSelectors.isRootDiagramActiveSelector(state);
+  const diagramType = DiagramSelectorsV2.active.typeSelector(state);
+  const isRootDiagramActive = CreatorDiagramSelectors.isRootDiagramActiveSelector(state);
 
   if (isRootDiagramActive || diagramType !== DiagramType.TOPIC) {
     return;
@@ -85,8 +85,9 @@ export const initializeCreatorForDiagram =
   async (dispatch, getState) => {
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
-    const diagramType = DiagramSelectors.activeDiagramTypeSelector(state);
+    const diagramType = DiagramSelectorsV2.active.typeSelector(state);
     const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     const { diagram: dbDiagram, timestamp } = await client.api.diagram.getRTC(diagramID);
 
@@ -100,13 +101,15 @@ export const initializeCreatorForDiagram =
 
     batch(() => {
       dispatch(ReduxUndo.ActionCreators.clearHistory());
-      dispatch(DiagramActions.replaceLocalVariables(diagramID, variables));
+      if (!isAtomicActions) {
+        dispatch(DiagramActions.crud.patch(diagramID, { variables }));
+      }
       dispatch(Viewport.rehydrateViewport(diagramID, { x, y, zoom }));
       dispatch(initializeCreator(creator));
       dispatch(saveHistory());
 
       if (isTopicsAndComponents && diagramType === DiagramType.TOPIC && !dbDiagram.intentStepIDs?.length) {
-        dispatch(DiagramActions.replaceIntentStepIDs(diagramID, getIntentStepIDs()));
+        dispatch(DiagramActions.crud.patch(diagramID, { intentStepIDs: getIntentStepIDs() }));
       }
     });
   };

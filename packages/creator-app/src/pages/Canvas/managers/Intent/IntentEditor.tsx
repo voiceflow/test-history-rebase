@@ -9,7 +9,7 @@ import Section from '@/components/Section';
 import { FeatureFlag } from '@/config/features';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
-import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
 import { useDispatch, useFeature } from '@/hooks';
@@ -58,8 +58,7 @@ const IntentEditor: NodeEditor<NodeData.Intent, ConnectedIntentEditorProps> = ({
       <Section>
         <IntentSelect intent={intent} onChange={onChangeIntent} />
       </Section>
-
-      <NamespaceProvider value={['intent', intent?.id]}>
+      <NamespaceProvider value={['intent', intent?.id ?? '']}>
         <IntentForm intent={intent} pushToPath={pushToPath} />
       </NamespaceProvider>
 
@@ -71,7 +70,7 @@ const IntentEditor: NodeEditor<NodeData.Intent, ConnectedIntentEditorProps> = ({
 };
 
 const mapStateToProps = {
-  intent: Intent.platformIntentByIDSelector,
+  intent: IntentV2.getPlatformIntentByIDSelector,
   platform: ProjectV2.active.platformSelector,
 };
 

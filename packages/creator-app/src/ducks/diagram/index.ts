@@ -7,7 +7,6 @@ export * from './actions';
 export * from './constants';
 export * from './selectors';
 export * from './sideEffects';
-export * from './types';
 
 const diagramReducer = createCRUDReducer<Diagram>(STATE_KEY);
 

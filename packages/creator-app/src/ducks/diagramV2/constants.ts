@@ -1,14 +1,14 @@
-import { RealtimeDiagramAwarenessState, RealtimeDiagramState } from './types';
+import { createCRUDState } from '@/ducks/utils/crudV2';
+
+import { DiagramAwarenessState, DiagramState } from './types';
 
 export const STATE_KEY = 'diagramV2';
 
-export const INITIAL_DIAGRAM_STATE: RealtimeDiagramState = {
+export const INITIAL_STATE: DiagramState = {
+  ...createCRUDState(),
   awareness: {
     viewers: {},
-    cursors: {},
   },
 };
 
-export const INITIAL_CURSORS: RealtimeDiagramAwarenessState['cursors'][string] = {};
-
-export const INITIAL_DIAGRAM_VIEWERS: RealtimeDiagramAwarenessState['viewers'][string] = [];
+export const INITIAL_DIAGRAM_VIEWERS: DiagramAwarenessState['viewers'][string] = [];

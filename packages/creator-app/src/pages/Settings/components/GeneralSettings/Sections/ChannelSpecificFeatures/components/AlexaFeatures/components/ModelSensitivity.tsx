@@ -4,6 +4,7 @@ import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { ConnectedProps } from '@/types';
@@ -17,7 +18,7 @@ const OPTIONS = [
   { name: 'High', value: AlexaVersion.ModelSensitivity.HIGH },
 ];
 
-const ModelSensitivity: React.FC<ConnectedModelSensitivityProps & ModelSensitivityOwnProps> = ({ modelSensitivity, platformMeta, saveSettings }) => (
+const ModelSensitivity: React.FC<ConnectedModelSensitivityProps & ModelSensitivityOwnProps> = ({ modelSensitivity, platformMeta, patchSettings }) => (
   <Section
     header="Skill Model Sensitivity"
     variant={SectionVariant.QUATERNARY}
@@ -29,7 +30,7 @@ const ModelSensitivity: React.FC<ConnectedModelSensitivityProps & ModelSensitivi
       placeholder="Model Sensitivity"
       value={modelSensitivity ?? AlexaVersion.ModelSensitivity.LOW}
       options={OPTIONS}
-      onSelect={(value) => saveSettings({ modelSensitivity: value })}
+      onSelect={(value) => patchSettings({ modelSensitivity: value })}
       getOptionValue={(option) => option?.value || AlexaVersion.ModelSensitivity.LOW}
       getOptionLabel={(value) => OPTIONS.find((option) => option.value === value)?.name ?? 'Low'}
     />
@@ -37,11 +38,11 @@ const ModelSensitivity: React.FC<ConnectedModelSensitivityProps & ModelSensitivi
 );
 
 const mapStateToProps = {
-  modelSensitivity: Version.alexa.activeModelSensitivitySelector,
+  modelSensitivity: VersionV2.active.alexa.modelSensitivitySelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings: Version.alexa.saveSettings,
+  patchSettings: Version.alexa.patchSettings,
 };
 
 type ConnectedModelSensitivityProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

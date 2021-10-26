@@ -5,17 +5,22 @@ import { AbstractActionControl, terminateResend, unrestrictedAccess } from '@/ac
 class CreateWorkspace extends AbstractActionControl<Realtime.workspace.CreateWorkspacePayload> {
   protected actionCreator = Realtime.workspace.create.started;
 
-  protected access = unrestrictedAccess.bind(this);
+  protected access = unrestrictedAccess(this);
 
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.workspace.create, async (ctx, action) => {
-    const workspace = await this.services.workspace.create(Number(ctx.userId), action.payload.data).then(Realtime.Adapters.workspaceAdapter.fromDB);
+    const { creatorID } = ctx.data;
+    const workspace = await this.services.workspace.create(creatorID, action.payload.data);
+    const workspaceID = workspace.team_id;
+
+    const members = await this.services.workspace.member.getAll(creatorID, workspaceID);
+    const workspaceWithMembers = Realtime.Adapters.workspaceWithMembersAdapter.fromDB({ workspace, members });
 
     // only need to send this back to the initiating client
-    await ctx.sendBack(Realtime.workspace.crud.add({ key: workspace.id, value: workspace }));
+    await ctx.sendBack(Realtime.workspace.crud.add({ key: workspaceID, value: workspaceWithMembers }));
 
-    return workspace;
+    return workspaceWithMembers;
   });
 }
 

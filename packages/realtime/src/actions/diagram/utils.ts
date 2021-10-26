@@ -1,20 +1,23 @@
-/* eslint-disable max-classes-per-file, @typescript-eslint/ban-types */
-import type { Context } from '@logux/server';
+// eslint-disable-next-line max-classes-per-file
 import * as Realtime from '@voiceflow/realtime-sdk';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractActionControl, Resend } from '@/actions/utils';
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
 import { WorkspaceContextData } from '@/actions/workspace/utils';
+import { BaseContextData, Context } from '@/types';
 
-export abstract class AbstractDiagramActionControl<P extends Realtime.BaseDiagramPayload, D extends object = {}> extends AbstractActionControl<P, D> {
+export abstract class AbstractDiagramActionControl<
+  P extends Realtime.BaseDiagramPayload,
+  D extends BaseContextData = BaseContextData
+> extends AbstractActionControl<P, D> {
   protected access = (ctx: Context<D>, action: Action<P>): Promise<boolean> =>
-    this.services.diagram.canRead(Number(ctx.userId), action.payload.diagramID);
+    this.services.diagram.canRead(ctx.data.creatorID, action.payload.diagramID);
 }
 
 export abstract class AbstractResendDiagramActionControl<
   P extends Realtime.BaseDiagramPayload,
-  D extends object = {}
+  D extends BaseContextData = BaseContextData
 > extends AbstractDiagramActionControl<P, D> {
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
     channel: Realtime.Channels.diagram.build({
@@ -27,7 +30,7 @@ export abstract class AbstractResendDiagramActionControl<
 
 export abstract class AbstractNoopDiagramActionControl<
   P extends Realtime.BaseDiagramPayload,
-  D extends object = {}
+  D extends BaseContextData = BaseContextData
 > extends AbstractResendDiagramActionControl<P, D> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   process = async (): Promise<void> => {};
@@ -42,18 +45,19 @@ export abstract class AbstractDiagramResourceControl<
     payload: P,
     primitiveDiagram: Realtime.Utils.diagram.PrimitiveDiagram
   ): Promise<Realtime.Diagram> => {
-    const creatorID = Number(ctx.userId);
+    const { creatorID } = ctx.data;
     const { rootDiagramID } = await this.services.version.get(creatorID, payload.versionID);
 
     const diagram = await this.services.diagram
-      .create(Number(ctx.userId), {
+      .create(creatorID, {
         ...primitiveDiagram,
         creatorID,
         versionID: payload.versionID,
       })
       .then((dbDiagram) => Realtime.Adapters.diagramAdapter.fromDB(dbDiagram, { rootDiagramID }));
 
-    await this.server.process(
+    await this.server.processAs(
+      creatorID,
       Realtime.diagram.crud.add({
         key: diagram.id,
         value: diagram,

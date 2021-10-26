@@ -14,6 +14,7 @@ import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
 import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS, getDialogflowLocaleLanguage } from '@/pages/Publish/Dialogflow/utils';
@@ -45,10 +46,10 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   project,
   platform,
   platformMeta,
-  saveLocales,
-  saveProjectName,
-  saveProjectImage,
-  saveInvocationName,
+  updateLocales,
+  updateProjectName,
+  updateProjectImage,
+  updateInvocationName,
 }) => {
   const { descriptors, localeText } = platformMeta;
 
@@ -80,23 +81,23 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       _constant(null)
     )(newInvocation, isGooglePlatform(platform) ? GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language] : alexaLocales);
 
-  const saveAlexaLocales = () => (isAlexaPlatform(platform) && locales !== alexaLocales ? saveLocales(alexaLocales) : null);
+  const saveAlexaLocales = () => (isAlexaPlatform(platform) && locales !== alexaLocales ? updateLocales(alexaLocales) : null);
 
   const saveGoogleLocales = () =>
     isGooglePlatform(platform) && googleLanguage !== initialGoogleLanguage
-      ? saveLocales(GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language])
+      ? updateLocales(GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language])
       : null;
 
   const saveDialogflowLocales = () =>
     isDialogflowPlatform(platform) && dialogflowLanguage !== initialDialogflowLanguage
-      ? saveLocales(DialogflowConstants.LanguageToLocale[dialogflowLanguage as DialogflowConstants.Language])
+      ? updateLocales(DialogflowConstants.LanguageToLocale[dialogflowLanguage as DialogflowConstants.Language])
       : null;
 
   const saveSettings = async () => {
     await Promise.all([
-      saveProjectName(newProjectName),
-      !isAnyGeneralPlatform(platform) ? saveInvocationName(newInvocation) : null,
-      project && projectImage ? saveProjectImage(project.id, projectImage) : null,
+      updateProjectName(newProjectName),
+      !isAnyGeneralPlatform(platform) ? updateInvocationName(newInvocation) : null,
+      project && projectImage ? updateProjectImage(project.id, projectImage) : null,
       saveAlexaLocales(),
       saveGoogleLocales(),
       saveDialogflowLocales(),
@@ -216,15 +217,15 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 const mapStateToProps = {
   versionID: Session.activeVersionIDSelector,
   project: ProjectV2.active.projectSelector,
-  invocationName: Version.activeInvocationNameSelector,
-  locales: Version.activeLocalesSelector,
+  invocationName: VersionV2.active.invocationNameSelector,
+  locales: VersionV2.active.localesSelector,
 };
 
 const mapDispatchToProps = {
-  saveInvocationName: Version.saveInvocationName,
-  saveProjectName: Project.saveProjectName,
-  saveLocales: Version.saveLocales,
-  saveProjectImage: Project.saveProjectImage,
+  updateInvocationName: Version.updateInvocationName,
+  updateProjectName: Project.updateActiveProjectName,
+  updateLocales: Version.updateLocales,
+  updateProjectImage: Project.updateProjectImage,
 };
 
 type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

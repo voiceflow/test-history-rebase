@@ -2,19 +2,21 @@ import React from 'react';
 
 import * as Creator from '@/ducks/creator';
 import * as DiagramDuck from '@/ducks/diagram';
-import * as IntentDuck from '@/ducks/intent';
+import * as DiagramV2 from '@/ducks/diagramV2';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
-import { Intent } from '@/models';
+import * as Models from '@/models';
 import { TopicsContext } from '@/pages/Skill/components/DesignMenu/TopicsContext';
 import { Nullable } from '@/types';
 import { reorder } from '@/utils/array';
 
 export interface TopicIntentItem {
   id: string;
-  intent: Nullable<Intent>;
+  intent: Nullable<Models.Intent>;
   intentID: Nullable<string>;
 }
 export interface TopicItem {
@@ -42,10 +44,10 @@ interface TopicsAPI {
 export const useTopics = (): TopicsAPI => {
   const { intentStepMapPerTopic } = React.useContext(TopicsContext);
 
-  const topics = useSelector(Version.activeTopicsSelector);
-  const intentByID = useSelector(IntentDuck.intentByIDSelector);
-  const rootDiagramID = useSelector(Version.activeRootDiagramIDSelector);
-  const topicsDiagrams = useSelector(DiagramDuck.activeTopicsDiagramsSelector);
+  const topics = useSelector(VersionV2.active.topicsSelector);
+  const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
+  const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
+  const topicDiagrams = useSelector(DiagramV2.active.topicDiagramsSelector);
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
   const { target: focusedNodeID, isActive: isFocusedNodeActive } = useSelector(Creator.creatorFocusSelector);
 
@@ -61,11 +63,11 @@ export const useTopics = (): TopicsAPI => {
   const onCreateTopic = React.useCallback(async () => {
     setSearchValue('');
 
-    const newDiagramID = await createTopicDiagram(`Topic ${topicsDiagrams.length + 1}`);
+    const newDiagramID = await createTopicDiagram(`Topic ${topicDiagrams.length + 1}`);
 
     setLastCreatedDiagramID(newDiagramID);
     goToDiagram(newDiagramID);
-  }, [topicsDiagrams]);
+  }, [topicDiagrams]);
 
   const onClearLastCreatedDiagramID = React.useCallback(() => {
     setLastCreatedDiagramID(null);
@@ -73,7 +75,7 @@ export const useTopics = (): TopicsAPI => {
 
   const topicsItems = React.useMemo(
     () =>
-      topicsDiagrams.map<TopicItem>((diagram) => {
+      topicDiagrams.map<TopicItem>((diagram) => {
         const topicIntentStepMap = intentStepMapPerTopic[diagram.id] ?? {};
 
         return {
@@ -81,13 +83,13 @@ export const useTopics = (): TopicsAPI => {
           name: rootDiagramID === diagram.id ? 'Home' : diagram.name,
           intentItems: diagram.intentStepIDs.map<TopicIntentItem>((stepID) => {
             const intentID = topicIntentStepMap[stepID]?.intent ?? null;
-            const intent = intentID ? intentByID(intentID) ?? null : null;
+            const intent = intentID ? getIntentByID(intentID) ?? null : null;
 
             return { id: stepID, intent, intentID };
           }),
         };
       }),
-    [intentByID, rootDiagramID, topicsDiagrams, intentStepMapPerTopic]
+    [getIntentByID, rootDiagramID, topicDiagrams, intentStepMapPerTopic]
   );
 
   const lowerCasedSearchValue = searchValue.trim().toLowerCase();

@@ -10,5 +10,6 @@ export interface ExtraOptions extends BaseOptions {
   api: AxiosInstance;
   alexa: AxiosInstance;
   google: AxiosInstance;
+  dialogflow: AxiosInstance;
   general: AxiosInstance;
 }

@@ -2,6 +2,7 @@ import React from 'react';
 
 import Section from '@/components/Section';
 import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { Content } from '@/pages/Canvas/components/Editor';
@@ -57,7 +58,7 @@ function FlowEditor({ data, onChange, diagram, loadFlowVariables, goToDiagram })
 }
 
 const mapStateToProps = {
-  diagramByID: Diagram.diagramByIDSelector,
+  diagramByID: DiagramV2.getDiagramByIDSelector,
 };
 
 const mapDispatchToProps = {

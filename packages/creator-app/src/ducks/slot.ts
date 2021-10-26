@@ -1,7 +1,9 @@
-import { createSelector } from 'reselect';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { allIntentsSelector } from '@/ducks/intent/selectors';
+import * as Feature from '@/ducks/feature';
+import { getActiveVersionContext } from '@/ducks/version/utils';
 import { Slot } from '@/models';
+import { Thunk } from '@/store/types';
 
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
 
@@ -13,33 +15,97 @@ export default slotReducer;
 
 // selectors
 
-export const {
-  root: rootSlotsSelector,
-  all: allSlotsSelector,
-  map: mapSlotsSelector,
-  findByIDs: findSlotsByIDsSelector,
-  byID: slotByIDSelector,
-  has: hasSlotsSelector,
-} = createCRUDSelectors(STATE_KEY);
+const slotSelectors = createCRUDSelectors(STATE_KEY);
+
+/**
+ * @deprecated
+ */
+export const allSlotsSelector = slotSelectors.all;
+/**
+ * @deprecated
+ */
+export const allSlotIDsSelector = slotSelectors.allIDs;
+/**
+ * @deprecated
+ */
+export const mapSlotsSelector = slotSelectors.map;
+/**
+ * @deprecated
+ */
+export const findSlotsByIDsSelector = slotSelectors.findByIDs;
+/**
+ * @deprecated
+ */
+export const slotByIDSelector = slotSelectors.byID;
 
 // action creators
 
-export const { add: addSlot, addMany: addSlots, update: updateSlot, remove: removeSlot, replace: replaceSlots } = createCRUDActionCreators(STATE_KEY);
+/**
+ * @deprecated
+ */
+export const crud = createCRUDActionCreators(STATE_KEY);
 
-// selectors
+// side effects
 
-export const allSlotIDsSelector = createSelector([allSlotsSelector], (slots) => slots.map(({ id }) => id));
+export const createSlot =
+  (slotID: string, slot: Slot): Thunk =>
+  (dispatch) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          dispatch(crud.add(slotID, slot));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.slot.crud.add({ ...context, key: slotID, value: slot }));
+        }
+      )
+    );
 
-export const intentsUsingSlotSelector = createSelector(
-  [allIntentsSelector],
-  (intents) => (slotID: string) =>
-    intents.reduce<typeof intents>((acc, intent) => {
-      if (intent.slots.allKeys.includes(slotID)) {
-        acc.push(intent);
-      }
+export const addManySlots =
+  (slots: Slot[]): Thunk =>
+  async (dispatch) => {
+    if (!slots.length) return;
 
-      return acc;
-    }, [])
-);
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          dispatch(crud.addMany(slots));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.slot.crud.addMany({ ...context, values: slots }));
+        }
+      )
+    );
+  };
 
-export const slotNamesSelector = createSelector([allSlotsSelector], (slots) => slots.map(({ name }) => name));
+export const patchSlot =
+  (slotID: string, data: Partial<Slot>): Thunk =>
+  (dispatch) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          dispatch(crud.patch(slotID, data));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.slot.crud.patch({ ...context, key: slotID, value: data }));
+        }
+      )
+    );
+
+export const deleteSlot =
+  (slotID: string): Thunk =>
+  (dispatch) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          dispatch(crud.remove(slotID));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.slot.crud.remove({ ...context, key: slotID }));
+        }
+      )
+    );

@@ -28,21 +28,25 @@ export type AnyVersionAction =
 
 // action creators
 
-export const {
-  add: addVersion,
-  update: updateVersion,
-  patch: patchVersion,
-  remove: removeVersion,
-  replace: replaceVersions,
-} = CRUD.createCRUDActionCreators(STATE_KEY);
+/**
+ * @deprecated
+ */
+export const crud = CRUD.createCRUDActionCreators(STATE_KEY);
 
-export const replaceLocalVariables = (versionID: string, variables: string[], meta?: object) => patchVersion(versionID, { variables }, meta);
-
+/**
+ * @deprecated
+ */
 export const updatePublishingByVersionID = <T extends AnyVersionPublishing>(id: string, publishing: Partial<T>): UpdatePublishing<T> =>
   createAction(VersionAction.UPDATE_PUBLISHING, { id, publishing });
 
+/**
+ * @deprecated
+ */
 export const updateSettingsByVersionID = <T extends AnyVersionSettings>(id: string, settings: Partial<T>): UpdateSettings<T> =>
   createAction(VersionAction.UPDATE_SETTINGS, { id, settings });
 
+/**
+ * @deprecated
+ */
 export const updateSessionByVersionID = (id: string, session: Partial<Version.Session>): UpdateSession =>
   createAction(VersionAction.UPDATE_SESSION, { id, session });

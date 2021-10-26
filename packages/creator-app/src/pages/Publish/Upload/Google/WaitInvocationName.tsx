@@ -4,6 +4,7 @@ import React from 'react';
 import { Assign } from 'utility-types';
 
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { GoogleExportJob, GooglePublishJob } from '@/models';
 import { ConnectedProps, Nullable } from '@/types';
@@ -20,7 +21,7 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
   stage,
   locales,
   invocationName,
-  saveInvocationName,
+  updateInvocationName,
   updateCurrentStage,
 }) => {
   const [state, api] = useSmartReducerV2({
@@ -45,7 +46,7 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
 
     try {
       // save the name to backend and redux
-      await saveInvocationName(state.name);
+      await updateInvocationName(state.name);
       await updateCurrentStage(state.name);
     } catch (err) {
       Sentry.error(err);
@@ -99,12 +100,12 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
 };
 
 const mapStateToProps = {
-  locales: Version.activeLocalesSelector,
-  invocationName: Version.activeInvocationNameSelector,
+  locales: VersionV2.active.localesSelector,
+  invocationName: VersionV2.active.invocationNameSelector,
 };
 
 const mapDispatchToProps = {
-  saveInvocationName: Version.saveInvocationName,
+  updateInvocationName: Version.updateInvocationName,
 };
 
 type WaitInvocationNameConnectedProps = Assign<ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>, { locales: Constants.Locale[] }>;

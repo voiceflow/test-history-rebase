@@ -10,14 +10,15 @@ class ImportProjectFromFile extends AbstractProjectResourceControl<Realtime.proj
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.project.importFromFile, async (ctx, { payload }) => {
+    const { creatorID } = ctx.data;
     const [listID, project] = await Promise.all([
       this.getTargetListID(ctx, payload.workspaceID),
-      this.services.project.importFromFile(Number(ctx.userId), payload.workspaceID, payload.data).then(Realtime.Adapters.projectAdapter.fromDB),
+      this.services.project.importFromFile(creatorID, payload.workspaceID, payload.data).then(Realtime.Adapters.projectAdapter.fromDB),
     ]);
 
     await Promise.all([
-      this.server.process(Realtime.project.crud.add({ key: project.id, value: project, workspaceID: payload.workspaceID })),
-      this.server.process(Realtime.projectList.addProjectToList({ projectID: project.id, listID, workspaceID: payload.workspaceID })),
+      this.server.processAs(creatorID, Realtime.project.crud.add({ key: project.id, value: project, workspaceID: payload.workspaceID })),
+      this.server.processAs(creatorID, Realtime.projectList.addProjectToList({ projectID: project.id, listID, workspaceID: payload.workspaceID })),
     ]);
 
     return project;

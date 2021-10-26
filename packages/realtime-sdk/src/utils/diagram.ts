@@ -22,10 +22,10 @@ export const getUniqueCopyName = (originalName: string, existingNames: string[])
   return uniqueName;
 };
 
-export const startNodeFactory = (): BaseDiagramNode<AnyRecord> => ({
+export const startNodeFactory = (coords: [number, number] = [360, 120]): BaseDiagramNode<AnyRecord> => ({
   nodeID: objectID(),
   type: BlockType.START,
-  coords: [360, 120],
+  coords,
   data: {
     name: 'Start',
     color: BlockVariant.STANDARD,
@@ -59,11 +59,11 @@ export const diagramFactory = <T extends BaseDiagramNode>({
   intentStepIDs,
 });
 
-export const componentDiagramFactory = (name: string) =>
+export const componentDiagramFactory = (name: string, startNodeCoords?: [number, number]) =>
   diagramFactory({
     name,
     type: DiagramType.COMPONENT,
-    nodes: [startNodeFactory()],
+    nodes: [startNodeFactory(startNodeCoords)],
   });
 
 export const topicDiagramFactory = (name: string) => {

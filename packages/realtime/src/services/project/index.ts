@@ -107,7 +107,7 @@ class ProjectService extends AbstractControl {
   public async delete(creatorID: number, projectID: string): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.project.delete(projectID);
+    await client.project.deleteV2(projectID);
   }
 }
 

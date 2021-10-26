@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import { MapManaged, useDispatch, useSelector } from '@/hooks';
 import { NodeData } from '@/models';
 
@@ -15,8 +16,8 @@ interface MappingVariablesProps {
 }
 
 const MappingVariables: React.FC<MappingVariablesProps> = ({ items, reverse, diagramID, mapManaged }) => {
-  const activeVariables = useSelector(Diagram.activeDiagramAllVariablesSelector);
-  const getComponentVariables = useSelector(Diagram.localVariablesByDiagramIDSelector);
+  const activeVariables = useSelector(DiagramV2.active.localVariablesSelector);
+  const componentVariables = useSelector((state) => DiagramV2.localVariablesByDiagramIDSelector(state, { id: diagramID }));
 
   const addLocalVariable = useDispatch(Diagram.addActiveDiagramVariable);
 
@@ -51,7 +52,7 @@ const MappingVariables: React.FC<MappingVariablesProps> = ({ items, reverse, dia
             value={mapping.to}
             onChange={updateTo}
             placeholder="Select Variable"
-            options={getComponentVariables(diagramID!)}
+            options={componentVariables}
             fullWidth
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore

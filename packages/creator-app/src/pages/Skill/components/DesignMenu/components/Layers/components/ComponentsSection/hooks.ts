@@ -1,9 +1,10 @@
 import { VersionFolderItem, VersionFolderItemType } from '@voiceflow/api-sdk';
 import React from 'react';
 
-import * as DiagramDuck from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { LastCreatedComponentContext } from '@/pages/Skill/contexts';
 import { Nullable } from '@/types';
@@ -32,9 +33,9 @@ export interface ComponentsAPI {
 export const useComponents = (): ComponentsAPI => {
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext);
 
-  const folders = useSelector(Version.activeFoldersSelector);
-  const components = useSelector(Version.activeComponentsSelector);
-  const getDiagramByID = useSelector(DiagramDuck.diagramByIDSelector);
+  const folders = useSelector(VersionV2.active.foldersSelector);
+  const components = useSelector(VersionV2.active.componentsSelector);
+  const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
 
   const saveComponents = useDispatch(Version.saveComponents);

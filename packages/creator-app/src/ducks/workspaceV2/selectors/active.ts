@@ -62,8 +62,10 @@ export const hasMemberByIDSelector = createSelector([getMemberByIDSelector], (ge
 export const userRoleSelector = createSelector(
   [getMemberByIDSelector, workspaceSelector, Account.userIDSelector],
   (getMember, workspace, creatorID) => {
+    if (!creatorID) return null;
+
     // template workspace has empty members array since the volume can be very high
-    if (workspace?.templates && creatorID) {
+    if (workspace?.templates) {
       if (creatorID === TEMPLATES_ADMIN_ID) return UserRole.ADMIN;
 
       if (TEMPLATES_EDITORS_ID.includes(creatorID)) return UserRole.EDITOR;
@@ -71,7 +73,7 @@ export const userRoleSelector = createSelector(
       return UserRole.LIBRARY;
     }
 
-    return creatorID ? getMember(creatorID)?.role : null;
+    return getMember(creatorID)?.role;
   }
 );
 

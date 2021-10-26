@@ -3,7 +3,7 @@ import startCase from 'lodash/startCase';
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
-import * as IntentDuck from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import { useSelector } from '@/hooks';
 
 import { ExportContext } from '../contexts';
@@ -28,7 +28,7 @@ const customMenuLabelRenderer = (option: IntentOption, isSelectedFunc: (val: str
 
 const ModelIntentsSelect: React.FC = () => {
   const { setModelExportIntents: setSelectedIntents, modelExportIntents: selectedIntents } = React.useContext(ExportContext)!;
-  const intents = useSelector(IntentDuck.allIntentsSelector);
+  const intents = useSelector(IntentV2.allIntentsSelector);
 
   const intentMap = React.useMemo(
     () => intents.reduce((intents, intent) => ({ ...intents, [intent.id]: getIntentName(intent.name) }), {} as Record<string, string>),

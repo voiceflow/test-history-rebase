@@ -2,7 +2,6 @@ import React from 'react';
 
 import * as Creator from '@/ducks/creator';
 import * as Router from '@/ducks/router';
-import * as Version from '@/ducks/version';
 import { useDispatch, useEventualEngine, useSelector } from '@/hooks';
 import { Nullable } from '@/types';
 
@@ -19,7 +18,7 @@ const StartIntent: React.FC<StartIntentProps> = ({ isActive, diagramID, focusedN
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
 
   const startNodeID = useSelector(Creator.startNodeIDSelector);
-  const isRootDiagramActive = useSelector(Version.isRootDiagramActiveSelector);
+  const isRootDiagramActive = useSelector(Creator.isRootDiagramActiveSelector);
 
   const onClickRootItem = () => {
     const engine = getEngine();

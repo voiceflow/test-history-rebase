@@ -6,31 +6,32 @@ import { createSelector } from 'reselect';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useBoundValue, useDispatch } from '@/hooks';
 import { getTargetValue } from '@/utils/dom';
 
 import { DEFAULT_TERM_ENDPOINT, generateTerms } from '../utils';
 
 const generatedTermsSelector = createSelector(
-  [Version.alexa.activePublishingSelector, Account.userSelector, ProjectV2.active.nameSelector],
+  [VersionV2.active.alexa.publishingSelector, Account.userSelector, ProjectV2.active.nameSelector],
   (publishing, user, projectName) => generateTerms(user.name!, projectName!, publishing?.forChildren)
 );
-const privacyPolicySelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.privacyPolicy);
-const termsAndConditionsSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.termsAndConditions);
-const forChildrenSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => !!publishing?.forChildren);
+const privacyPolicySelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.privacyPolicy);
+const termsAndConditionsSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.termsAndConditions);
+const forChildrenSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => !!publishing?.forChildren);
 
 const PrivacyTermsForm: React.FC = () => {
   const generatedTerms = useSelector(generatedTermsSelector);
   const [privacyPolicy, setPrivacyPolicy, savePrivacyPolicy] = useBoundValue(privacyPolicySelector, (privacyPolicy) =>
-    Version.alexa.savePublishing({ privacyPolicy })
+    Version.alexa.patchPublishing({ privacyPolicy })
   );
 
   const [termsAndConditions, setTermsAndConditions, saveTermsAndConditions] = useBoundValue(termsAndConditionsSelector, (termsAndConditions) =>
-    Version.alexa.savePublishing({ termsAndConditions })
+    Version.alexa.patchPublishing({ termsAndConditions })
   );
 
   const forChildren = useSelector(forChildrenSelector);
-  const saveForChildren = useDispatch((forChildren: boolean) => Version.alexa.savePublishing({ forChildren }));
+  const saveForChildren = useDispatch((forChildren: boolean) => Version.alexa.patchPublishing({ forChildren }));
 
   React.useEffect(() => {
     if (!termsAndConditions || termsAndConditions.startsWith(DEFAULT_TERM_ENDPOINT)) {

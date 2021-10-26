@@ -1,50 +1,28 @@
-import { Constants, Version } from '@voiceflow/alexa-types';
-import { createSelector } from 'reselect';
+import { Version } from '@voiceflow/alexa-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
 import { Nullable } from '@/types';
 
 import { UpdatePublishing, updatePublishingByVersionID, UpdateSettings, updateSettingsByVersionID } from '../actions';
-import { activeVersionSelector } from '../selectors/common';
-import { AlexaVersion } from '../types';
-
-// selectors
-
-export const activeAlexaVersionSelector = createSelector([activeVersionSelector], (version) => version as Nullable<AlexaVersion>);
-
-export const activeSettingsSelector = createSelector([activeAlexaVersionSelector], (version) => version?.settings ?? null);
-
-export const activeModelSensitivitySelector = createSelector([activeSettingsSelector], (settings) => settings?.modelSensitivity ?? null);
-
-export const activeCustomInterfaceSelector = createSelector([activeSettingsSelector], (settings) => settings?.customInterface ?? null);
-
-export const eventsSelector = createSelector([activeSettingsSelector], (settings) => settings?.events ?? null);
-
-export const accountLinkingSelector = createSelector([activeSettingsSelector], (settings) => settings?.accountLinking ?? null);
-
-export const activePublishingSelector = createSelector([activeAlexaVersionSelector], (version) => version?.publishing ?? null);
-
-export const activeLocalesSelector = createSelector([activePublishingSelector], (publishing): Constants.Locale[] => publishing?.locales ?? []);
-
-export const activeInvocationNameSelector = createSelector([activePublishingSelector], (publishing) => publishing?.invocationName ?? null);
-
-export const activeInvocationsSelector = createSelector([activePublishingSelector], (publishing) => publishing?.invocations ?? []);
-
-export const parentalControlSelector = createSelector(
-  [activePublishingSelector, activeLocalesSelector],
-  (publishing, locales) => publishing?.forChildren && locales.includes(Constants.Locale.EN_US)
-);
-
-export const inReviewSelector = createSelector([activeAlexaVersionSelector], (version) => version?.status?.stage === Version.AlexaStage.REVIEW);
+import { getActiveVersionContext } from '../utils';
 
 // action creators
 
+/**
+ * @deprecated moved to the realtime service
+ */
 export const updateSettings = (versionID: string, settings: Partial<Version.AlexaVersionSettings>): UpdateSettings<Version.AlexaVersionSettings> =>
   updateSettingsByVersionID<Version.AlexaVersionSettings>(versionID, settings);
 
+/**
+ * @deprecated moved to the realtime service
+ */
 export const updatePublishing = (
   versionID: string,
   publishing: Partial<Version.AlexaVersionPublishing>
@@ -52,7 +30,7 @@ export const updatePublishing = (
 
 // side effects
 
-export const saveSettings =
+export const patchSettings =
   (settings: Partial<Version.AlexaVersionSettings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
@@ -60,11 +38,21 @@ export const saveSettings =
 
     Errors.assertVersionID(versionID);
 
-    dispatch(updateSettings(versionID, settings));
-    await client.platform.alexa.version.updateSettings(versionID, settings);
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          dispatch(updateSettings(versionID, settings));
+          await client.platform.alexa.version.updateSettings(versionID, settings);
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.version.patchSettings({ ...context, settings }));
+        }
+      )
+    );
   };
 
-export const savePublishing =
+export const patchPublishing =
   (publishing: Partial<Version.AlexaVersionPublishing>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
@@ -72,12 +60,24 @@ export const savePublishing =
 
     Errors.assertVersionID(versionID);
 
-    dispatch(updatePublishing(versionID, publishing));
-    await client.platform.alexa.version.updatePublishing(versionID, publishing);
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          dispatch(updatePublishing(versionID, publishing));
+          await client.platform.alexa.version.updatePublishing(versionID, publishing);
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.version.patchPublishing({ ...context, publishing }));
+        }
+      )
+    );
   };
 
 export const loadAccountLinking = (): Thunk<Nullable<Version.AccountLinking>> => async (dispatch, getState) => {
-  const versionID = Session.activeVersionIDSelector(getState());
+  const state = getState();
+  const versionID = Session.activeVersionIDSelector(state);
+  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
   Errors.assertVersionID(versionID);
 
@@ -87,7 +87,9 @@ export const loadAccountLinking = (): Thunk<Nullable<Version.AccountLinking>> =>
     },
   } = await client.api.version.get<{ platformData: Version.AlexaVersionData }>(versionID, ['platformData']);
 
-  dispatch(updateSettings(versionID, { accountLinking }));
+  if (!isAtomicActions) {
+    dispatch(updateSettings(versionID, { accountLinking }));
+  }
 
   return accountLinking;
 };

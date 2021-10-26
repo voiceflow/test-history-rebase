@@ -7,41 +7,42 @@ import TextBox from '@/components/Form/TextBox';
 import TextInput from '@/components/Form/TextInput';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useBoundValue, useDispatch } from '@/hooks';
 import { AMAZON_CATEGORIES } from '@/services/Categories';
 import { getTargetValue } from '@/utils/dom';
 
 import { useValidator } from '../hooks';
 
-const updatesDescriptionSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.updatesDescription);
-const categorySelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.category);
-const keywordsSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.keywords);
-const summarySelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.summary);
-const descriptionSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.description);
+const updatesDescriptionSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.updatesDescription);
+const categorySelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.category);
+const keywordsSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.keywords);
+const summarySelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.summary);
+const descriptionSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.description);
 
 const SkillDescriptionForm: React.FC = () => {
   const isLive = useSelector(ProjectV2.active.isLiveSelector);
 
   const category = useSelector(categorySelector);
-  const saveCategory = useDispatch((category: string) => Version.alexa.savePublishing({ category }));
+  const saveCategory = useDispatch((category: string) => Version.alexa.patchPublishing({ category }));
 
   const [updatesDescription, setUpdatesDescription, saveUpdatesDescription] = useBoundValue(updatesDescriptionSelector, (updatesDescription) =>
-    Version.alexa.savePublishing({ updatesDescription })
+    Version.alexa.patchPublishing({ updatesDescription })
   );
 
   const [summaryError, summaryValidator] = useValidator('summary', (name: string) => (name ? false : 'Display Summary is required.'));
   const [summary, setSummary, saveSummary] = useBoundValue(
     summarySelector,
-    summaryValidator((summary) => Version.alexa.savePublishing({ summary }))
+    summaryValidator((summary) => Version.alexa.patchPublishing({ summary }))
   );
 
   const [descriptionError, descriptionValidator] = useValidator('description', (name: string) => (name ? false : 'Display description is required.'));
   const [description, setDescription, saveDescription] = useBoundValue(
     descriptionSelector,
-    descriptionValidator((description) => Version.alexa.savePublishing({ description }))
+    descriptionValidator((description) => Version.alexa.patchPublishing({ description }))
   );
 
-  const [keywords, setKeywords, saveKeywords] = useBoundValue(keywordsSelector, (keywords) => Version.alexa.savePublishing({ keywords }));
+  const [keywords, setKeywords, saveKeywords] = useBoundValue(keywordsSelector, (keywords) => Version.alexa.patchPublishing({ keywords }));
 
   return (
     <>

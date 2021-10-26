@@ -7,7 +7,7 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import OverflowMenu from '@/components/OverflowMenu';
 import { DistinctPlatform } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as IntentDuck from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
 import { NodeData } from '@/models';
@@ -91,7 +91,7 @@ const focusedNodeWithButtonsSelector = createSelector(
 
 const mapStateToProps = {
   focus: Creator.creatorFocusSelector,
-  intents: IntentDuck.allPlatformIntentsSelector,
+  intents: IntentV2.allPlatformIntentsSelector,
   focusedNode: focusedNodeWithButtonsSelector,
 };
 

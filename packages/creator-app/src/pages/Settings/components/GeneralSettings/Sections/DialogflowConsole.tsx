@@ -3,6 +3,7 @@ import React, { ChangeEvent } from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 
 import { PlatformSettingsMetaProps } from '../../../constants';
@@ -17,7 +18,7 @@ const sectionStyling = {
 
 const DialogflowConsole: React.FC<DialogflowConsoleProps> = ({ platformMeta }) => {
   const { descriptors } = platformMeta;
-  const triggerPhrase = useSelector(Version.activeTriggerPhraseSelector);
+  const triggerPhrase = useSelector(VersionV2.active.triggerPhraseSelector);
   const [newTriggerPhrase, setNewTriggerPhrase] = React.useState(triggerPhrase[0] ?? 'Hello');
   const saveTriggerPhrase = useDispatch(Version.saveTriggerPhrase);
 

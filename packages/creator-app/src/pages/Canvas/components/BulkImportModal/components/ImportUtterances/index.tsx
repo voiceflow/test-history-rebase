@@ -9,8 +9,8 @@ import RadioGroup from '@/components/RadioGroup';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import * as Documentation from '@/config/documentation';
 import { ModalType } from '@/constants';
-import * as Intent from '@/ducks/intent';
-import * as Slot from '@/ducks/slot';
+import * as IntentV2 from '@/ducks/intentV2';
+import * as SlotV2 from '@/ducks/slotV2';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useModals } from '@/hooks';
 import { ConnectedProps } from '@/types';
@@ -243,9 +243,9 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
 };
 
 const mapStateToProps = {
-  slots: Slot.allSlotsSelector,
-  intents: Intent.allIntentsSelector,
-  intentByID: Intent.intentByIDSelector,
+  slots: SlotV2.allSlotsSelector,
+  intents: IntentV2.allIntentsSelector,
+  intentByID: IntentV2.getIntentByIDSelector,
 };
 
 type ConnectedImportUtterancesProps = ConnectedProps<typeof mapStateToProps>;

@@ -6,13 +6,16 @@ import { get, set } from 'idb-keyval';
 import * as Errors from '@/config/errors';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as Diagrams from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intent';
-import * as Product from '@/ducks/product';
+import * as IntentV2 from '@/ducks/intentV2';
+import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import * as Models from '@/models';
 import * as Clipboard from '@/utils/clipboard';
 import { synchronous as synchronousCrypto } from '@/utils/crypto';
@@ -90,21 +93,25 @@ class ClipboardEngine extends EngineConsumer {
       const state = this.engine.store.getState();
       const targetPlatform = ProjectV2.active.platformSelector(state);
       const isPlatformConversion = sourcePlatform !== targetPlatform;
-      const slotTypes = Version.activeSlotTypesSelector(state).map((slot) => slot.value);
+      const slotTypes = VersionV2.active.slotTypesSelector(state).map((slot) => slot.value);
       const validSlots = isPlatformConversion ? slots.filter((slot) => slotTypes.includes(slot.type!)) : slots;
       const isValidSlot = validSlots.reduce<Record<string, boolean>>(
         (acc, slot) => Object.assign(acc, { [slot.id]: slotTypes.includes(slot.type!) }),
         {}
       );
 
-      this.dispatch(Slot.addSlots(slots.filter((slot) => slotTypes.includes(slot.type!))));
-      this.dispatch(
-        Intent.addIntents(
-          intents.filter((intent) => intent.slots.allKeys.every((key) => isValidSlot[key])).map((intent) => ({ ...intent, platform: targetPlatform }))
-        )
-      );
-
       const nodesWithData = nodes.map((node) => ({ node, data: data[node.id] }));
+
+      await Promise.all([
+        this.dispatch(Slot.addManySlots(validSlots)),
+        this.dispatch(
+          Intent.addManyIntents(
+            intents
+              .filter((intent) => intent.slots.allKeys.every((key) => isValidSlot[key]))
+              .map((intent) => ({ ...intent, platform: targetPlatform }))
+          )
+        ),
+      ]);
 
       return this.dispatch(
         Version.importProjectContext({
@@ -176,10 +183,11 @@ class ClipboardEngine extends EngineConsumer {
 
     const { intents: intentIDs, products: productIDs, diagrams: diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes, platform);
 
-    const products = Product.productsByIDsSelector(state)(productIDs);
-    const diagrams = Diagrams.diagramsByIDsSelector(state)(diagramIDs);
-    const intents = Intent.intentsByIDsSelector(state)(intentIDs);
-    const slots = Slot.findSlotsByIDsSelector(state)(Intent.allSlotsIDsByIntentIDsSelector(state)(intentIDs));
+    const products = ProductV2.productsByIDsSelector(state, { ids: productIDs });
+    const diagrams = DiagramV2.diagramsByIDsSelector(state, { ids: diagramIDs });
+    const intents = IntentV2.intentsByIDsSelector(state, { ids: intentIDs });
+    const slotIDs = IntentV2.allSlotsIDsByIntentIDsSelector(state, { ids: intentIDs });
+    const slots = SlotV2.slotsByIDsSelector(state, { ids: slotIDs });
 
     return {
       versionID,

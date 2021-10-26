@@ -7,9 +7,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { Persistor, persistStore } from 'redux-persist';
 
 import { DEBUG_REALTIME, IS_DEVELOPMENT } from '@/config';
-import createReducer from '@/ducks';
+import createReducer, { allRPCs } from '@/ducks';
 
 import createMiddleware from './middleware';
+import { RPCController } from './rpc';
 import { Dispatchable, Store } from './types';
 
 declare global {
@@ -26,8 +27,13 @@ export const composeEnhancers = composeWithDevTools({
 const createStore = (realtime: Client, history: History): { store: Store; persistor: Persistor } => {
   const rootReducer = createReducer(history);
   const createStore = createStoreCreator(realtime);
+  const rpcController = new RPCController();
 
-  const store = createStore(rootReducer, undefined, composeEnhancers(Redux.applyMiddleware(...createMiddleware(history, () => store)))) as Store;
+  const store = createStore(
+    rootReducer,
+    undefined,
+    composeEnhancers(Redux.applyMiddleware(...createMiddleware(history, rpcController.createMiddleware(allRPCs), () => store)))
+  ) as Store;
 
   // thunk
   const originalDispatch = store.dispatch;
@@ -43,7 +49,10 @@ const createStore = (realtime: Client, history: History): { store: Store; persis
   const persistor = persistStore(store);
 
   if (IS_DEVELOPMENT && module.hot) {
-    module.hot.accept('@/ducks', () => store.replaceReducer(createReducer(history)));
+    module.hot.accept('@/ducks', () => {
+      store.replaceReducer(createReducer(history));
+      rpcController.replaceHandlers(allRPCs);
+    });
   }
 
   window.store = store;

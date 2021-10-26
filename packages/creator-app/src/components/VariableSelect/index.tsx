@@ -1,7 +1,7 @@
 import { Select, SelectProps, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Version from '@/ducks/version';
 import { useDispatch, useSelector } from '@/hooks';
 
@@ -11,7 +11,7 @@ export type VariableSelectProps = Omit<Partial<SelectProps<string, string>>, 'on
 };
 
 const VariableSelect: React.FC<VariableSelectProps> = ({ value, onChange, ...props }) => {
-  const variables = useSelector(Diagram.activeDiagramAllVariablesSelector);
+  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
   const addVariable = useDispatch(Version.addGlobalVariable);
 
   const onCreate = (item: string) => {

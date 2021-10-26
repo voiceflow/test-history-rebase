@@ -7,8 +7,9 @@ import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
 import * as Intents from '@/ducks/intent';
 import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Slot from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
@@ -21,7 +22,7 @@ export interface ManagerProps {
 }
 
 const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, ManagerProps & ConnectedManagerProps> = (
-  { id, intent: selectedIntent, platform, slots, removeIntent, patchIntent, allIntents },
+  { id: intentID, intent: selectedIntent, platform, slots, removeIntent, patchIntent, allIntents },
   ref
 ) => {
   const [name, setName] = React.useState(selectedIntent?.name ?? '');
@@ -35,7 +36,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
   const validateName = (intentName?: string | null) =>
     validateIntentName(
       intentName ?? '',
-      allIntents.filter((intent) => intent.id !== selectedIntent.id),
+      allIntents.filter((intent) => intent.id !== intentID),
       slots
     );
 
@@ -50,7 +51,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
     }
 
     setNameError(null);
-    patchIntent(id, { id, name: formattedName });
+    patchIntent(intentID, { id: intentID, name: formattedName });
   };
 
   const localNameUpdate = ({ value }: { value: string }) => {
@@ -59,15 +60,17 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
   };
 
   React.useEffect(() => {
-    setNameError(validateName(selectedIntent.name));
-  }, [selectedIntent.id]);
+    if (selectedIntent) {
+      setNameError(validateName(selectedIntent?.name));
+    }
+  }, [intentID]);
 
   React.useImperativeHandle(ref, () => ({ resetPath }), []);
 
   React.useEffect(() => {
     resetPath();
     setName(selectedIntent?.name || '');
-  }, [id]);
+  }, [intentID]);
 
   return !selectedIntent ? null : (
     <>
@@ -81,7 +84,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
             placeholder="Intent Name"
             disabled={isCustomizableBuiltInIntent(selectedIntent)}
           />
-          <RemoveDropdown deleteText={isBuiltIn ? 'Remove' : undefined} onRemove={() => removeIntent(id)} />
+          <RemoveDropdown deleteText={isBuiltIn ? 'Remove' : undefined} onRemove={() => removeIntent(intentID)} />
         </FlexApart>
 
         {nameError && (
@@ -93,9 +96,9 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 
       <FadeLeftContainer key={(!slotEdit).toString()}>
         {slotEdit ? (
-          <StandaloneIntentSlotForm key={id} activePath={path} isInModal />
+          <StandaloneIntentSlotForm key={intentID} activePath={path} isInModal />
         ) : (
-          <IntentForm key={id} intent={selectedIntent} pushToPath={setPath} isInModal />
+          <IntentForm key={intentID} intent={selectedIntent} pushToPath={setPath} isInModal />
         )}
       </FadeLeftContainer>
 
@@ -109,9 +112,9 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 };
 
 const mapStateToProps = {
-  slots: Slot.allSlotsSelector,
-  intent: Intents.intentByIDSelector,
-  allIntents: Intents.allIntentsSelector,
+  slots: SlotV2.allSlotsSelector,
+  intent: IntentV2.getIntentByIDSelector,
+  allIntents: IntentV2.allIntentsSelector,
   platform: ProjectV2.active.platformSelector,
 };
 
@@ -121,9 +124,13 @@ const mapDispatchToProps = {
 
 const mergeProps = (
   ...[{ intent: intentByIDSelector, platform }, , { id }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, ManagerProps>
-) => ({
-  intent: applySingleIntentNameFormatting(platform, intentByIDSelector(id)),
-});
+) => {
+  const intent = intentByIDSelector(id);
+
+  return {
+    intent: intent ? applySingleIntentNameFormatting(platform, intent) : null,
+  };
+};
 
 type ConnectedManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 

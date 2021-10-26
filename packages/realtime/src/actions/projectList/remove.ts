@@ -1,8 +1,8 @@
-import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '@/actions/workspace/utils';
+import { Context } from '@/types';
 
 type RemoveProjectListPayload = Realtime.BaseWorkspacePayload & Realtime.actionUtils.CRUDKeyPayload;
 
@@ -10,14 +10,14 @@ class RemoveProjectList extends AbstractWorkspaceChannelControl<RemoveProjectLis
   protected actionCreator = Realtime.projectList.crud.remove;
 
   protected process = async (ctx: Context, { payload }: Action<RemoveProjectListPayload>) => {
-    const creatorID = Number(ctx.userId);
+    const { creatorID } = ctx.data;
     const projectLists = await this.services.projectList.getAll(creatorID, payload.workspaceID);
     const targetProjectList = projectLists.find((list) => list.board_id === payload.key);
 
     if (!targetProjectList) return;
 
     await Promise.all([
-      this.server.process(Realtime.project.crud.removeMany({ keys: targetProjectList.projects, workspaceID: payload.workspaceID })),
+      this.server.processAs(creatorID, Realtime.project.crud.removeMany({ keys: targetProjectList.projects, workspaceID: payload.workspaceID })),
       this.services.projectList.replaceAll(creatorID, payload.workspaceID, Realtime.Utils.array.withoutValue(projectLists, targetProjectList)),
     ]);
   };

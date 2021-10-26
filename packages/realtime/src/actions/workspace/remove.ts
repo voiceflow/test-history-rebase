@@ -1,6 +1,7 @@
-import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
+
+import { Context } from '@/types';
 
 import { AbstractWorkspaceChannelControl } from './utils';
 
@@ -10,7 +11,7 @@ class RemoveWorkspace extends AbstractWorkspaceChannelControl<RemoveWorkspacePay
   protected actionCreator = Realtime.workspace.crud.remove;
 
   protected process = async (ctx: Context, { payload }: Action<RemoveWorkspacePayload>) => {
-    await this.services.workspace.delete(Number(ctx.userId), payload.key);
+    await this.services.workspace.delete(ctx.data.creatorID, payload.key);
   };
 }
 

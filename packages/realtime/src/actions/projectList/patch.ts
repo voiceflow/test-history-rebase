@@ -1,7 +1,8 @@
-import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _ from 'lodash';
 import { Action } from 'typescript-fsa';
+
+import { Context } from '@/types';
 
 import { AbstractProjectListResourceControl } from './utils';
 

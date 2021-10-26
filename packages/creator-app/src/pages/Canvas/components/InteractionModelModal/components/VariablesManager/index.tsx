@@ -6,10 +6,12 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
 import { InteractionModelTabType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import * as SlotDuck from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { useEnableDisable, useSetup } from '@/hooks';
 import { ConnectedProps } from '@/types';
@@ -176,10 +178,10 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
 };
 
 const mapStateToProps = {
-  slots: SlotDuck.allSlotsSelector,
+  slots: SlotV2.allSlotsSelector,
   diagramID: Session.activeDiagramIDSelector,
-  localVariables: Diagram.activeDiagramLocalVariablesSelector,
-  globalVariables: Version.activeGlobalVariablesSelector,
+  localVariables: DiagramV2.active.localVariablesSelector,
+  globalVariables: VersionV2.active.globalVariablesSelector,
   platform: ProjectV2.active.platformSelector,
 };
 

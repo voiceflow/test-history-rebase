@@ -1,6 +1,7 @@
-import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
+
+import { Context } from '@/types';
 
 import { AbstractVersionResourceControl } from './utils';
 
@@ -8,7 +9,7 @@ class PatchVersionSession extends AbstractVersionResourceControl<Realtime.versio
   protected actionCreator = Realtime.version.patchSession;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.version.PatchSessionPayload>) => {
-    await this.services.version.patchSession(Number(ctx.userId), payload.versionID, payload.session);
+    await this.services.version.patchSession(ctx.data.creatorID, payload.versionID, payload.session);
   };
 }
 

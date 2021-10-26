@@ -14,15 +14,20 @@ const PlatformClient = <P extends Project<any, any>>(axios: AxiosInstance): Proj
 });
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const Client = ({ api, alexa, google, general }: ExtraOptions) => {
+const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
   const alexaClient = PlatformClient<Realtime.AlexaProject>(alexa);
   const googleClient = PlatformClient<Realtime.GoogleProject>(google);
+  const dialogflowClient = PlatformClient<Realtime.DialogflowProject>(dialogflow);
   const generalClient = PlatformClient<Realtime.GeneralProject>(general);
 
-  const getPlatform = Realtime.Utils.platform.createPlatformSelector<typeof alexaClient | typeof googleClient | typeof generalClient>(
+  const getPlatform = Realtime.Utils.platform.createPlatformSelector<
+    typeof alexaClient | typeof googleClient | typeof dialogflowClient | typeof generalClient
+  >(
     {
       [Constants.PlatformType.ALEXA]: alexaClient,
       [Constants.PlatformType.GOOGLE]: googleClient,
+      [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflowClient,
+      [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowClient,
     },
     generalClient
   );
@@ -34,9 +39,12 @@ const Client = ({ api, alexa, google, general }: ExtraOptions) => {
         .then(() => true)
         .catch(() => false),
 
+    deleteV2: (projectID: string): Promise<boolean> => api.delete(`/v3/projects/${projectID}`),
+
     platform: Object.assign(getPlatform, {
       alexa: alexaClient,
       google: googleClient,
+      dialogflow: dialogflowClient,
       general: generalClient,
     }),
   };

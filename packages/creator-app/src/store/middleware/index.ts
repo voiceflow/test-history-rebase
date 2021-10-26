@@ -6,12 +6,14 @@ import { createStructuredSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
 import * as Diagram from '@/ducks/diagram';
-import * as Intent from '@/ducks/intent';
-import * as ProjectList from '@/ducks/projectList';
+import * as DiagramV2 from '@/ducks/diagramV2';
+import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as Session from '@/ducks/session';
-import * as Slot from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import { CRUDAction } from '@/ducks/utils/crud';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import * as Workspace from '@/ducks/workspace';
 
 import { Middleware, Store } from '../types';
@@ -33,26 +35,27 @@ const createLoggedInMiddleware =
     return next(action);
   };
 
-const createMiddleware = (history: History, getStore: () => Store) => {
+const createMiddleware = (history: History, rpcMiddleware: Middleware, getStore: () => Store) => {
   const middleware = [
     routerMiddleware(history),
     ...mapMiddleware(
       [
+        rpcMiddleware,
         ...creatorMiddleware,
 
         ...[
           createAutosaveMiddleware(
-            createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }),
+            createStructuredSelector({ intent: IntentV2.allIntentsSelector, slot: SlotV2.allSlotsSelector }),
             Version.saveIntentsAndSlots,
             { ignore: [CRUDAction.CRUD_REPLACE] }
           ),
-          createAutosaveMiddleware(Version.activeGlobalVariablesSelector, Version.saveGlobalVariables, {
+          createAutosaveMiddleware(VersionV2.active.globalVariablesSelector, Version.saveGlobalVariables, {
             ignore: [CRUDAction.CRUD_REPLACE, Session.SessionAction.SET_ACTIVE_VERSION_ID],
           }),
-          createAutosaveMiddleware(Diagram.activeDiagramLocalVariablesSelector, Diagram.saveActiveDiagramVariables, {
+          createAutosaveMiddleware(DiagramV2.active.localVariablesSelector, Diagram.saveActiveDiagramVariables, {
             ignore: [CRUDAction.CRUD_REPLACE, Session.SessionAction.SET_ACTIVE_DIAGRAM_ID],
           }),
-          createAutosaveMiddleware(ProjectList.allProjectListsSelector, Workspace.saveActiveWorkspaceProjectLists, {
+          createAutosaveMiddleware(ProjectListV2.allProjectListsSelector, Workspace.saveActiveWorkspaceProjectLists, {
             ignore: [CRUDAction.CRUD_REPLACE, Session.SessionAction.SET_ACTIVE_WORKSPACE_ID],
           }),
         ].map(createLoggedInMiddleware),

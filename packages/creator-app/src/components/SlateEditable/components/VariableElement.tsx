@@ -4,7 +4,7 @@ import { RenderElementProps } from 'slate-react';
 
 import { InteractionModelTabType } from '@/constants';
 import * as Router from '@/ducks/router';
-import * as SlotDuck from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useSelector } from '@/hooks';
 
 import { usePluginOptions } from '../contexts';
@@ -17,7 +17,7 @@ interface VariableElementProps extends Omit<RenderElementProps, 'element'> {
 }
 
 const VariableElement: React.FC<VariableElementProps> = ({ attributes, element, children }) => {
-  const getSlotByID = useSelector(SlotDuck.slotByIDSelector);
+  const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
   const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
   const { withSlots } = usePluginOptions(PluginType.VARIABLES) ?? {};

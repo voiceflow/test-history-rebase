@@ -6,7 +6,7 @@ import { ReducerBuilder } from 'typescript-fsa-reducers';
 import { PickByValue } from 'utility-types';
 
 import { reorder as arrayReorder, unique } from '@/utils/array';
-import { defaultGetKey, denormalize, getNormalizedByKey, NormalizedValue, ObjectWithId } from '@/utils/normalized';
+import { defaultGetKey, denormalize, NormalizedValue, ObjectWithId, safeGetNormalizedByKey } from '@/utils/normalized';
 
 import type { State } from '..';
 import { CRUDState } from './crud';
@@ -14,6 +14,7 @@ import { CreateReducer, createRootReducer, ImmerHandler } from './reducer';
 import { createParameterSelector, createRootSelector } from './selector';
 
 export type { CRUDState } from './crud';
+export { createCRUDState } from './crud';
 
 export interface IDSelectorParam {
   id: string | undefined | null;
@@ -22,11 +23,6 @@ export interface IDSelectorParam {
 export interface IDsSelectorParam {
   ids: string[];
 }
-
-export const CRUD_INITIAL_STATE: CRUDState<any> = {
-  byKey: {},
-  allKeys: [],
-};
 
 // reducers
 
@@ -37,7 +33,7 @@ type CRUDReducers<T extends Realtime.actionUtils.CRUDActionCreators<any, any, an
 export const createCRUDReducers = <T, D extends ObjectWithId, P extends Partial<D> = Partial<D>>(
   createReducer: CreateReducer<CRUDState<any>>,
   actionCreators: Realtime.actionUtils.CRUDActionCreators<T, D, P>
-): CRUDReducers<Realtime.actionUtils.CRUDActionCreators<T, D, P>> => {
+): Omit<CRUDReducers<Realtime.actionUtils.CRUDActionCreators<T, D, P>>, 'refresh'> => {
   const add = createReducer(actionCreators.add, (state, { key, value }) => {
     state.byKey[key] = value;
 
@@ -65,7 +61,11 @@ export const createCRUDReducers = <T, D extends ObjectWithId, P extends Partial<
   });
 
   const patch = createReducer(actionCreators.patch, (state, { key, value }) => {
-    Object.assign(state.byKey[key], value);
+    const currValue = safeGetNormalizedByKey(state, key);
+
+    if (currValue) {
+      Object.assign(currValue, value);
+    }
   });
 
   const remove = createReducer(actionCreators.remove, (state, { key }) => {
@@ -119,7 +119,7 @@ export const createCRUDReducers = <T, D extends ObjectWithId, P extends Partial<
 
 export const createRootCRUDReducer = <T extends CRUDState<any>>(
   initialState: T,
-  crudReducers: CRUDReducers<Realtime.actionUtils.CRUDActionCreators<any, any, any>>
+  crudReducers: Omit<CRUDReducers<Realtime.actionUtils.CRUDActionCreators<any, any, any>>, 'refresh'>
 ): ReducerBuilder<T> => {
   const rootReducer = createRootReducer(initialState);
 
@@ -157,8 +157,8 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
   const map = createSelector([root], ({ byKey }) => byKey as Record<string, T>);
   const allIDs = createSelector([root], ({ allKeys }) => allKeys);
 
-  const byIDGetter = (normalized: CRUDState<any>, id: string | null | undefined) => (id ? getNormalizedByKey(normalized, id) : null);
-  const byIDsGetter = (normalized: CRUDState<any>, ids: string[]) =>
+  const byIDGetter = (normalized: CRUDState<any>, id: string | null | undefined): T | null => (id ? safeGetNormalizedByKey<T>(normalized, id) : null);
+  const byIDsGetter = (normalized: CRUDState<any>, ids: string[]): T[] =>
     ids.reduce<any[]>((acc, id) => {
       const value = byIDGetter(normalized, id);
 

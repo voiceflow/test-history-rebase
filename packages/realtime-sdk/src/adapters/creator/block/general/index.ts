@@ -7,13 +7,13 @@ import componentAdapter from './component';
 import directiveAdapter from './directive';
 import exitAdapter from './exit';
 import flowAdapter from './flow';
-import ifAdapterV2, { ifPortsAdapter } from './ifV2';
+import ifAdapter, { ifPortsAdapter } from './if';
 import integrationAdapter from './integration';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
 import promptAdapter, { promptPortsAdapter } from './prompt';
 import randomAdapter from './random';
-import setAdapterV2 from './setV2';
+import setAdapter from './set';
 import speakAdapter from './speak';
 import textAdapter from './text';
 import traceAdapter, { tracePortsAdapter } from './trace';
@@ -24,9 +24,9 @@ export const generalBlockAdapter = {
   [BlockType.COMMAND]: commandAdapter,
 
   // user defined
-  [BlockType.IFV2]: ifAdapterV2,
+  [BlockType.IFV2]: ifAdapter,
   [BlockType.TEXT]: textAdapter,
-  [BlockType.SETV2]: setAdapterV2,
+  [BlockType.SETV2]: setAdapter,
   [BlockType.EXIT]: exitAdapter,
   [BlockType.CODE]: codeAdapter,
   [BlockType.FLOW]: flowAdapter,

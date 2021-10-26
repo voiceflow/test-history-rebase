@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useTeardown } from '@/hooks';
@@ -133,7 +133,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
 const mapStateToProps = {
   buttons: PrototypeDuck.prototypeButtonsSelector,
   status: PrototypeDuck.prototypeStatusSelector,
-  locales: Version.activeLocalesSelector,
+  locales: VersionV2.active.localesSelector,
   autoplay: PrototypeDuck.prototypeAutoplaySelector,
   showButtons: PrototypeDuck.prototypeShowButtonsSelector,
   config: Recent.recentPrototypeSelector,

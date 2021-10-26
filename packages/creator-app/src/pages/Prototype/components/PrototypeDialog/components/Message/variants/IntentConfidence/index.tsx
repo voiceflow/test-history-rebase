@@ -1,11 +1,8 @@
 import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
-import * as Diagram from '@/ducks/diagram';
-import { connect } from '@/hocs';
 import { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
 import { Message, MessageType, UserMessage } from '@/pages/Prototype/types';
-import { ConnectedProps } from '@/types';
 
 import { MessageProps } from '../../components/Message';
 import { ConfidenceScore, Container, IntentText } from './components';
@@ -28,7 +25,7 @@ const isRepromptMessage = (message: Message) => {
   return message.type === MessageType.PATH && message.path === 'reprompt';
 };
 
-export const IntentConfidence: React.FC<IntentConfidenceProps & ConnectedIntentConfidenceProps> = ({
+export const IntentConfidence: React.FC<IntentConfidenceProps> = ({
   message,
   intentConfidence,
   lastUserMessage,
@@ -71,10 +68,4 @@ export const IntentConfidence: React.FC<IntentConfidenceProps & ConnectedIntentC
   );
 };
 
-const mapStateToProps = {
-  getDiagram: Diagram.diagramByIDSelector,
-};
-
-type ConnectedIntentConfidenceProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(IntentConfidence) as React.FC<IntentConfidenceProps>;
+export default IntentConfidence;

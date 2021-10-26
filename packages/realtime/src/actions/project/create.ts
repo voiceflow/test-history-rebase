@@ -11,18 +11,18 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.project.create, async (ctx, { payload }) => {
-    const creatorID = Number(ctx.userId);
+    const { creatorID } = ctx.data;
 
     const [listID, project] = await Promise.all([
       this.getTargetListID(ctx, payload.workspaceID, payload.listID),
       this.services.project
-        .create(creatorID, payload.templateID, payload.channel, _.pick(payload.data, 'name', 'image', 'platform'))
+        .create(creatorID, payload.templateID, payload.channel, { ..._.pick(payload.data, 'name', 'image'), teamID: payload.workspaceID })
         .then(Realtime.Adapters.projectAdapter.fromDB),
     ]);
 
     await Promise.all([
-      this.server.process(Realtime.project.crud.add({ workspaceID: payload.workspaceID, key: project.id, value: project })),
-      this.server.process(Realtime.projectList.addProjectToList({ workspaceID: payload.workspaceID, projectID: project.id, listID })),
+      this.server.processAs(creatorID, Realtime.project.crud.add({ workspaceID: payload.workspaceID, key: project.id, value: project })),
+      this.server.processAs(creatorID, Realtime.projectList.addProjectToList({ workspaceID: payload.workspaceID, projectID: project.id, listID })),
     ]);
 
     return project;

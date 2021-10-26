@@ -10,16 +10,16 @@ class WorkspaceMemberService extends AbstractControl {
     return client.workspace.listMembers(workspaceID);
   }
 
-  public async patch(creatorID: number, workspaceID: string, { role }: Pick<Realtime.DBMember, 'role'>): Promise<void> {
+  public async patch(creatorID: number, workspaceID: string, memberCreatorID: number, { role }: Pick<Realtime.DBMember, 'role'>): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.workspace.patchMember(creatorID, workspaceID, { role });
+    await client.workspace.patchMember(workspaceID, memberCreatorID, { role });
   }
 
-  public async remove(creatorID: number, workspaceID: string): Promise<void> {
+  public async remove(creatorID: number, workspaceID: string, memberCreatorID: number): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.workspace.removeMember(creatorID, workspaceID);
+    await client.workspace.removeMember(workspaceID, memberCreatorID);
   }
 
   public async removeSelf(creatorID: number, workspaceID: string): Promise<void> {

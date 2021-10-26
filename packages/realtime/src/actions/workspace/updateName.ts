@@ -1,6 +1,7 @@
-import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
+
+import { Context } from '@/types';
 
 import { AbstractWorkspaceChannelControl } from './utils';
 
@@ -8,7 +9,7 @@ class UpdateWorkspaceName extends AbstractWorkspaceChannelControl<Realtime.works
   protected actionCreator = Realtime.workspace.updateName;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.workspace.UpdateWorkspaceNamePayload>) => {
-    await this.services.workspace.updateName(Number(ctx.userId), payload.workspaceID, payload.name);
+    await this.services.workspace.updateName(ctx.data.creatorID, payload.workspaceID, payload.name);
   };
 }
 

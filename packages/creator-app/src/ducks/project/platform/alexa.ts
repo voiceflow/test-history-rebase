@@ -8,7 +8,7 @@ import { projectSelector as alexaProjectSelector } from '@/ducks/projectV2/selec
 import * as Session from '@/ducks/session';
 import { SyncThunk } from '@/store/types';
 
-import { patchProject } from '../actions';
+import { crud } from '../actions';
 
 // side effects
 
@@ -19,10 +19,12 @@ export const updateActiveVendor =
     const state = getState();
     const activeProject = alexaProjectSelector(state);
     const activeCreatorID = userIDSelector(state);
+    const projectID = Session.activeProjectIDSelector(state);
     const workspaceID = Session.activeWorkspaceIDSelector(state);
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-    if (!activeProject) throw Errors.noActiveProjectID();
+    Errors.assertProjectID(projectID);
+    Errors.assertProject(projectID, activeProject);
     Errors.assertCreatorID(activeCreatorID);
 
     const updatedMembers = activeProject.members.map((member) =>
@@ -43,8 +45,8 @@ export const updateActiveVendor =
     if (isAtomicActions) {
       Errors.assertWorkspaceID(workspaceID);
 
-      dispatch.local(Realtime.project.crud.patch({ workspaceID, key: activeProject.id, value: { members: updatedMembers } }));
+      dispatch.local(Realtime.project.crud.patch({ workspaceID, key: projectID, value: { members: updatedMembers } }));
     } else {
-      dispatch(patchProject(activeProject.id, { members: updatedMembers }));
+      dispatch(crud.patch(projectID, { members: updatedMembers }));
     }
   };

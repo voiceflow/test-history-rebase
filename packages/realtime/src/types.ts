@@ -1,3 +1,5 @@
+import { Context as LoguxContext } from '@logux/server';
+
 export interface Config {
   NODE_ENV: string;
   PORT: number;
@@ -8,6 +10,7 @@ export interface Config {
   CREATOR_API_ENDPOINT: string;
   ALEXA_SERVICE_ENDPOINT: string;
   GOOGLE_SERVICE_ENDPOINT: string;
+  DIALOGFLOW_SERVICE_ENDPOINT: string;
   GENERAL_SERVICE_ENDPOINT: string;
 
   // Release information
@@ -24,3 +27,9 @@ export interface Config {
   LOG_LEVEL: string | null;
   MIDDLEWARE_VERBOSITY: string | null;
 }
+
+export interface BaseContextData {
+  creatorID: number;
+}
+
+export type Context<D extends BaseContextData = BaseContextData> = LoguxContext<D>;

@@ -1,13 +1,15 @@
 import { DiagramType } from '@voiceflow/api-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import client from '@/client';
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Session from '@/ducks/session';
-import * as Version from '@/ducks/version';
-import { useDispatch, useSelector } from '@/hooks';
+import * as VersionV2 from '@/ducks/versionV2';
+import { useDispatch, useFeature, useLocalDispatch, useSelector } from '@/hooks';
 import { delay } from '@/utils/promise';
 
 export interface TopicIntentStep {
@@ -25,15 +27,16 @@ export interface TopicsContextValue {
 export const TopicsContext = React.createContext<TopicsContextValue>({ intentStepMapPerTopic: {} });
 
 export const TopicsProvider: React.FC = ({ children }) => {
-  const rootDiagramID = useSelector(Version.activeRootDiagramIDSelector);
-  const activeVersionID = useSelector(Session.activeVersionIDSelector);
+  const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector)!;
+  const activeVersionID = useSelector(Session.activeVersionIDSelector)!;
   const intentsStepData = useSelector(Creator.intentStepsDataSelector);
   const allDiagramIDs = useSelector(Diagram.allDiagramIDsSelector);
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
   const refetchRevision = React.useRef(0);
 
-  // TODO: replace with the realtime
-  const replaceIntentStepIDs = useDispatch(Diagram.replaceIntentStepIDs)!;
+  const patchDiagramV1 = useDispatch(Diagram.crud.patch);
+  const patchDiagramV2 = useLocalDispatch(Realtime.diagram.crud.patch);
 
   const [value, setValue] = React.useState<TopicsContextValue>({ intentStepMapPerTopic: {} });
 
@@ -84,11 +87,16 @@ export const TopicsProvider: React.FC = ({ children }) => {
         intentStepMap[node.nodeID] = { id: node.nodeID, intent: node.data.intent };
       }, []);
 
-      replaceIntentStepIDs(diagramID, stepIDs);
+      if (atomicActions.isEnabled) {
+        // passing empty params since this will only be evaluated locally
+        patchDiagramV2({ workspaceID: '', projectID: '', versionID: '', key: diagramID, value: { intentStepIDs: stepIDs } });
+      } else {
+        patchDiagramV1(diagramID, { intentStepIDs: stepIDs });
+      }
     });
 
     setValue({ intentStepMapPerTopic: stepMapPerTopic });
-  }, [activeVersionID, rootDiagramID]);
+  }, [activeVersionID, rootDiagramID, atomicActions.isEnabled]);
 
   // fetching topics on every intentsStepData and size of allDiagramIDs change
   React.useEffect(() => {

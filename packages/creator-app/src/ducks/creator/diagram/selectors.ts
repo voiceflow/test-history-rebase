@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 
 import { BlockType } from '@/constants';
 import { createKeyedSelector } from '@/ducks/utils';
+import * as VersionV2 from '@/ducks/versionV2';
 import { NodeData } from '@/models';
 import { denormalize, getAllNormalizedByKeys, getNormalizedByKey } from '@/utils/normalized';
 
@@ -24,6 +25,11 @@ const normalizedNodesSelector = createSelector([rootSelector], ({ nodes }) => no
 export { rootSelector as creatorDiagramSelector };
 
 export const creatorDiagramIDSelector = createSelector([rootSelector], ({ diagramID }) => diagramID);
+
+export const isRootDiagramActiveSelector = createSelector(
+  [VersionV2.active.rootDiagramIDSelector, creatorDiagramIDSelector],
+  (rootDiagramID, activeDiagramID) => !!rootDiagramID && !!activeDiagramID && rootDiagramID === activeDiagramID
+);
 
 export const rootNodeIDsSelector = createSelector([rootSelector], ({ rootNodeIDs }) => rootNodeIDs);
 

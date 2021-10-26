@@ -1,37 +1,37 @@
-/* eslint-disable max-classes-per-file, @typescript-eslint/ban-types */
-import type { Context } from '@logux/server';
-import { Eventual } from '@voiceflow/common';
+/* eslint-disable max-classes-per-file */
 import * as Realtime from '@voiceflow/realtime-sdk';
 import cuid from 'cuid';
 import type { Action } from 'typescript-fsa';
 
-import { AbstractActionControl, ActionAccessor, BoundActionAccessor, Resender } from '@/actions/utils';
+import { AbstractActionControl, ActionAccessor, Resender } from '@/actions/utils';
 import { accessWorkspaces, resendWorkspaceChannels, WorkspaceContextData } from '@/actions/workspace/utils';
+import { Context } from '@/types';
 
-export async function accessProject<C extends AbstractActionControl<P, D>, P extends Realtime.BaseProjectPayload, D extends object = {}>(
-  this: C,
-  ctx: Context<D>,
-  action: Action<P>
-): Promise<boolean> {
-  const creatorID = Number(ctx.userId);
+export const accessProject = <P extends Realtime.BaseProjectPayload, D extends WorkspaceContextData>(
+  self: AbstractActionControl<P, D>
+): ActionAccessor<P, D> =>
+  async function (this: AbstractActionControl<P, D>, ctx: Context<D>, action: Action<P>): Promise<boolean> {
+    const { creatorID } = ctx.data;
 
-  return (
-    await Promise.all([
-      this.services.workspace.canRead(creatorID, action.payload.workspaceID),
-      this.services.project.canRead(creatorID, action.payload.projectID),
-    ])
-  ).every(Boolean);
-}
+    ctx.data.workspaceIDs = [action.payload.workspaceID];
+
+    return (
+      await Promise.all([
+        this.services.workspace.canRead(creatorID, action.payload.workspaceID),
+        this.services.project.canRead(creatorID, action.payload.projectID),
+      ])
+    ).every(Boolean);
+  }.bind(self);
 
 export const resendProjectChannel: Resender<Realtime.BaseProjectPayload, any> = (_, { payload: { projectID, workspaceID } }) => ({
   channel: Realtime.Channels.project.build({ projectID, workspaceID }),
 });
 
-export abstract class AbstractProjectChannelControl<P extends Realtime.BaseProjectPayload, D extends object = {}> extends AbstractActionControl<
-  P,
-  D
-> {
-  protected access: ActionAccessor<P, D> = accessProject.bind<BoundActionAccessor<P, D>>(this);
+export abstract class AbstractProjectChannelControl<
+  P extends Realtime.BaseProjectPayload,
+  D extends WorkspaceContextData = WorkspaceContextData
+> extends AbstractActionControl<P, D> {
+  protected access: ActionAccessor<P, D> = accessProject(this);
 
   protected resend = resendProjectChannel;
 }
@@ -40,13 +40,12 @@ export abstract class AbstractProjectResourceControl<
   P extends Realtime.BaseWorkspacePayload,
   D extends WorkspaceContextData = WorkspaceContextData
 > extends AbstractActionControl<P, D> {
-  protected access: ActionAccessor<P, D> =
-    accessWorkspaces.bind<(this: AbstractActionControl<P, D>, ctx: Context<D>, action: Action<P>) => Eventual<boolean>>(this);
+  protected access: ActionAccessor<P, D> = accessWorkspaces(this);
 
   protected resend = resendWorkspaceChannels;
 
   protected getTargetListID = async (ctx: Context, workspaceID: string, overrideListID?: string): Promise<string> => {
-    const creatorID = Number(ctx.userId);
+    const { creatorID } = ctx.data;
     let listID = overrideListID;
 
     // check for an existing default list
@@ -59,7 +58,8 @@ export abstract class AbstractProjectResourceControl<
     // create a new default list
     if (!listID) {
       listID = cuid();
-      await this.server.process(
+      await this.server.processAs(
+        creatorID,
         Realtime.projectList.crud.add({
           key: listID,
           value: { id: listID, name: Realtime.DEFAULT_PROJECT_LIST_NAME, projects: [] },

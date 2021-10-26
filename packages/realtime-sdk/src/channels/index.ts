@@ -1,10 +1,10 @@
-import { DIAGRAM_KEY, PROJECT_KEY, USER_KEY, VERSION_KEY, WORKSPACE_KEY } from '../constants';
+import { CREATOR_KEY, DIAGRAM_KEY, PROJECT_KEY, VERSION_KEY, WORKSPACE_KEY } from '../constants';
 import { ChannelParams, createChannel } from './utils';
 
 export type { Channel } from './utils';
 
-export const user = createChannel(['creatorID'], ({ creatorID }) => `${USER_KEY}/${creatorID}`);
-export type UserChannelParams = ChannelParams<typeof user>;
+export const creator = createChannel(['creatorID'], ({ creatorID }) => `${CREATOR_KEY}/${creatorID}`);
+export type CreatorChannelParams = ChannelParams<typeof creator>;
 
 export const workspace = createChannel(['workspaceID'], ({ workspaceID }) => `${WORKSPACE_KEY}/${workspaceID}`);
 export type WorkspaceChannelParams = ChannelParams<typeof workspace>;

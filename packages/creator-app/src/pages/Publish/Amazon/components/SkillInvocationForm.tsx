@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import TextInput from '@/components/Form/TextInput';
 import Multiple from '@/components/Forms/Multiple';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useLinkedState } from '@/hooks';
 import { getTargetValue } from '@/utils/dom';
 import { arrayStringReplace } from '@/utils/string';
@@ -12,30 +13,25 @@ import { arrayStringReplace } from '@/utils/string';
 import { useValidator } from '../hooks';
 
 const SkillInvocationForm: React.FC = () => {
-  const prevInvocationName = useSelector(Version.alexa.activeInvocationNameSelector);
-  const invocations = useSelector(Version.alexa.activeInvocationsSelector);
+  const prevInvocationName = useSelector(VersionV2.active.alexa.invocationNameSelector);
+  const invocations = useSelector(VersionV2.active.alexa.invocationsSelector);
   const [invocationName, setInvocationName] = useLinkedState(prevInvocationName);
   const [invocationNameError, invocationNameValidator] = useValidator('invocationName', (invocationName: string) =>
     invocationName ? false : 'Invocation name is required.'
   );
-  const savePublishing = useDispatch(Version.alexa.savePublishing);
+  const patchPublishing = useDispatch(Version.alexa.patchPublishing);
 
   const saveInvocationName = React.useCallback(
     () =>
       invocationNameValidator((nextInvocationName) => {
-        if (prevInvocationName) {
-          const nextInvocations = arrayStringReplace(prevInvocationName, nextInvocationName, invocations);
+        const nextInvocations = prevInvocationName
+          ? arrayStringReplace(prevInvocationName, nextInvocationName, invocations)
+          : [`open ${nextInvocationName}`, `start ${nextInvocationName}`, `launch ${nextInvocationName}`];
 
-          savePublishing({
-            invocationName: nextInvocationName,
-            invocations: nextInvocations,
-          });
-        } else {
-          savePublishing({
-            invocationName: nextInvocationName,
-            invocations: [`open ${nextInvocationName}`, `start ${nextInvocationName}`, `launch ${nextInvocationName}`],
-          });
-        }
+        patchPublishing({
+          invocationName: nextInvocationName,
+          invocations: nextInvocations,
+        });
       })(invocationName ?? ''),
     [prevInvocationName, invocationName, invocations]
   );
@@ -64,7 +60,7 @@ const SkillInvocationForm: React.FC = () => {
           list={invocations}
           prepend="Alexa,"
           placeholder={`open/start/launch ${invocationName}`}
-          update={(invocations: string[]) => savePublishing({ invocations })}
+          update={(invocations: string[]) => patchPublishing({ invocations })}
         />
       </Box>
     </>

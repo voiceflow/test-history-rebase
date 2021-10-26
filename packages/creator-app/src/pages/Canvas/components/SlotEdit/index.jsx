@@ -8,9 +8,9 @@ import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
 import { Permission } from '@/config/permissions';
 import { CUSTOM_SLOT_TYPE, ModalType, SLOT_COLORS } from '@/constants';
-import * as Intent from '@/ducks/intent';
-import * as Slot from '@/ducks/slot';
-import * as Version from '@/ducks/version';
+import * as IntentV2 from '@/ducks/intentV2';
+import * as SlotV2 from '@/ducks/slotV2';
+import * as VersionV2 from '@/ducks/versionV2';
 import { styled } from '@/hocs';
 import { useModals, usePermission, useSelector, useTeardown } from '@/hooks';
 import { replace, without } from '@/utils/array';
@@ -44,10 +44,10 @@ const FlexModalFooter = styled(ModalFooter)`
 
 function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = [], onSave, onRemove, isCreate, onDelete, isInteraction }) {
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
-  const slots = useSelector(Slot.allSlotsSelector);
-  const intents = useSelector(Intent.allIntentsSelector);
-  const slotTypes = useSelector(Version.activeSlotTypesSelector) ?? [];
-  const intentsUsingSlot = useSelector(Slot.intentsUsingSlotSelector);
+  const slots = useSelector(SlotV2.allSlotsSelector);
+  const intents = useSelector(IntentV2.allIntentsSelector);
+  const slotTypes = useSelector(VersionV2.active.slotTypesSelector) ?? [];
+  const intentsUsingSlot = useSelector(IntentV2.intentsUsingSlotSelector);
 
   const isDeleteable = !isCreate && !!onDelete;
 

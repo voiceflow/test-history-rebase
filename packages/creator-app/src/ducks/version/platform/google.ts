@@ -1,35 +1,26 @@
 import { Version } from '@voiceflow/google-types';
-import { createSelector } from 'reselect';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
-import { Nullable } from '@/types';
 
 import { UpdatePublishing, updatePublishingByVersionID, UpdateSettings, updateSettingsByVersionID } from '../actions';
-import { activeVersionSelector } from '../selectors/common';
-import { GoogleVersion } from '../types';
-
-// selectors
-
-export const activeGoogleVersionSelector = createSelector([activeVersionSelector], (version) => version as Nullable<GoogleVersion>);
-
-export const activeSettingsSelector = createSelector([activeGoogleVersionSelector], (version) => version?.settings ?? null);
-
-export const activePublishingSelector = createSelector([activeGoogleVersionSelector], (version) => version?.publishing ?? null);
-
-export const activeLocalesSelector = createSelector([activePublishingSelector], (publishing) => publishing?.locales ?? []);
-
-export const activeInvocationNameSelector = createSelector([activePublishingSelector], (publishing) => publishing?.pronunciation ?? null);
-
-export const activeInvocationsSelector = createSelector([activePublishingSelector], (publishing) => publishing?.sampleInvocations ?? []);
+import { getActiveVersionContext } from '../utils';
 
 // action creators
 
+/**
+ * @deprecated moved to the realtime service
+ */
 export const updateSettings = (versionID: string, settings: Partial<Version.GoogleVersionSettings>): UpdateSettings<Version.GoogleVersionSettings> =>
   updateSettingsByVersionID<Version.GoogleVersionSettings>(versionID, settings);
 
+/**
+ * @deprecated moved to the realtime service
+ */
 export const updatePublishing = (
   versionID: string,
   publishing: Partial<Version.GoogleVersionPublishing>
@@ -37,7 +28,7 @@ export const updatePublishing = (
 
 // side effects
 
-export const saveSettings =
+export const patchSettings =
   (settings: Partial<Version.GoogleVersionSettings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
@@ -45,11 +36,21 @@ export const saveSettings =
 
     Errors.assertVersionID(versionID);
 
-    dispatch(updateSettings(versionID, settings));
-    await client.platform.google.version.updateSettings(versionID, settings);
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          dispatch(updateSettings(versionID, settings));
+          await client.platform.google.version.updateSettings(versionID, settings);
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.version.patchSettings({ ...context, settings }));
+        }
+      )
+    );
   };
 
-export const savePublishing =
+export const patchPublishing =
   (publishing: Partial<Version.GoogleVersionPublishing>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
@@ -57,6 +58,16 @@ export const savePublishing =
 
     Errors.assertVersionID(versionID);
 
-    dispatch(updatePublishing(versionID, publishing));
-    await client.platform.google.version.updatePublishing(versionID, publishing);
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          dispatch(updatePublishing(versionID, publishing));
+          await client.platform.google.version.updatePublishing(versionID, publishing);
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.version.patchPublishing({ ...context, publishing }));
+        }
+      )
+    );
   };

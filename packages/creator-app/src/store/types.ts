@@ -57,3 +57,7 @@ export type AnyThunk = UI.SyncThunk<any, any, Dispatch, ThunkExtra>;
 export type SyncThunk<R = void> = UI.SyncThunk<State, R, Dispatch, ThunkExtra>;
 
 export type Thunk<R = void> = UI.Thunk<State, R, Dispatch, ThunkExtra>;
+
+// RPC
+
+export type RPCHandler = (action: AnyAction, dispatch: Dispatch) => boolean;

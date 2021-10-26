@@ -1,27 +1,23 @@
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
-import { allProductsSelector, productByIDSelector } from '@/ducks/product';
-import { connect } from '@/hocs';
+import * as ProductV2 from '@/ducks/productV2';
+import { useSelector } from '@/hooks';
 
-const ProductSelect = ({ selected, onChange, products }) => (
-  <Select
-    value={selected ? selected.name : null}
-    placeholder={products.length > 0 ? 'Select Product' : 'No Products Exist'}
-    onSelect={onChange}
-    options={products.map((product) => ({ value: product.id, label: product.name }))}
-    getOptionValue={(option) => option.value}
-    renderOptionLabel={(option) => option.label}
-  />
-);
+const ProductSelect = ({ value, onChange }) => {
+  const products = useSelector(ProductV2.allProductsSelector);
+  const selected = useSelector((state) => ProductV2.productByIDSelector(state, { id: value }));
 
-const mapStateToProps = {
-  products: allProductsSelector,
-  selected: productByIDSelector,
+  return (
+    <Select
+      value={selected ? selected.name : null}
+      placeholder={products.length > 0 ? 'Select Product' : 'No Products Exist'}
+      onSelect={onChange}
+      options={products.map((product) => ({ value: product.id, label: product.name }))}
+      getOptionValue={(option) => option.value}
+      renderOptionLabel={(option) => option.label}
+    />
+  );
 };
 
-const mergeProps = ({ selected: getProductByID }, _, { value }) => ({
-  selected: value && getProductByID(value),
-});
-
-export default connect(mapStateToProps, null, mergeProps)(ProductSelect);
+export default ProductSelect;

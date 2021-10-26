@@ -1,7 +1,7 @@
 import { Constants } from '@voiceflow/alexa-types';
 import React from 'react';
 
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { ConnectedProps } from '@/types';
@@ -36,7 +36,7 @@ const AlexaFeatures: React.FC<ConnectedAlexaFeaturesProps & AlexaFeaturesOwnProp
 };
 
 const mapStateToProps = {
-  locales: Version.alexa.activeLocalesSelector,
+  locales: VersionV2.active.alexa.localesSelector,
 };
 
 type ConnectedAlexaFeaturesProps = ConnectedProps<typeof mapStateToProps, {}>;

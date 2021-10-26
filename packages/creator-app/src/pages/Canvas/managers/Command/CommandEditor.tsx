@@ -4,8 +4,8 @@ import React from 'react';
 import IntentForm, { HelpTooltip as IntentTooltip, LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import Section, { SectionVariant } from '@/components/Section';
-import * as Diagram from '@/ducks/diagram';
-import * as Intent from '@/ducks/intent';
+import * as DiagramV2 from '@/ducks/diagramV2';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
@@ -38,7 +38,7 @@ const CommandEditor: NodeEditor<NodeData.Command, ConnectedCommandEditorProps> =
   useDidUpdateEffect(() => {
     if (selectedFlowID) {
       const selectedFlow = diagramByID(selectedFlowID);
-      if (selectedFlow.name) {
+      if (selectedFlow?.name) {
         onChange({ name: selectedFlow.name });
       }
     }
@@ -81,9 +81,9 @@ const CommandEditor: NodeEditor<NodeData.Command, ConnectedCommandEditorProps> =
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
-  diagrams: Diagram.allDiagramsSelector,
-  diagramByID: Diagram.diagramByIDSelector,
-  getIntentByID: Intent.platformIntentByIDSelector,
+  diagrams: DiagramV2.allDiagramsSelector,
+  diagramByID: DiagramV2.getDiagramByIDSelector,
+  getIntentByID: IntentV2.getPlatformIntentByIDSelector,
 };
 
 const mapDispatchToProps = {

@@ -3,6 +3,7 @@ import React from 'react';
 
 import { DIAGRAM_ID_SEPARATOR, ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 
@@ -82,7 +83,7 @@ function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCrea
 }
 
 const mapStateToProps = {
-  diagrams: Diagram.allDiagramsSelector,
+  diagrams: DiagramV2.allDiagramsSelector,
 };
 
 const mapDispatchToProps = {

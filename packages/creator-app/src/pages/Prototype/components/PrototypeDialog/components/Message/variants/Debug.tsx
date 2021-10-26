@@ -2,7 +2,7 @@ import { Box, colors, ThemeColor } from '@voiceflow/ui';
 import Markdown from 'markdown-to-jsx';
 import React from 'react';
 
-import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import { connect, styled } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
@@ -20,9 +20,9 @@ const SubjectText = styled.div`
   }
 
   em {
+    color: ${colors(ThemeColor.PRIMARY)};
     font-weight: bold;
     font-style: normal;
-    color: ${colors(ThemeColor.PRIMARY)};
   }
 `;
 
@@ -60,7 +60,7 @@ export const Debug: React.FC<DebugProps & ConnectedDebugProps> = ({ message, get
 };
 
 const mapStateToProps = {
-  getDiagram: Diagram.diagramByIDSelector,
+  getDiagram: DiagramV2.getDiagramByIDSelector,
 };
 
 type ConnectedDebugProps = ConnectedProps<typeof mapStateToProps>;

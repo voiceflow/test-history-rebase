@@ -7,7 +7,7 @@ import IntentForm, { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import { DistinctPlatform } from '@/constants';
-import * as IntentDuck from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import { connect } from '@/hocs';
 import { Intent, NodeData } from '@/models';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -88,8 +88,8 @@ const DraggableItem = React.forwardRef(
 );
 
 const mapStateToProps = {
-  intents: IntentDuck.allPlatformIntentsSelector,
-  intent: IntentDuck.platformIntentByIDSelector,
+  intents: IntentV2.allPlatformIntentsSelector,
+  intent: IntentV2.getPlatformIntentByIDSelector,
 };
 
 const mergeProps = (

@@ -4,19 +4,19 @@ import React from 'react';
 import ProductSelect from '@/components/ProductSelect';
 import VariableSelect from '@/components/VariableSelect';
 import { PERMISSIONS_WITH_VARIABLE_MAPS } from '@/constants';
-import * as Product from '@/ducks/product';
-import { connect } from '@/hocs';
+import * as ProductV2 from '@/ducks/productV2';
+import { useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
-const PermissionInfo = ({ permission, onChange, getProduct }) => {
+const PermissionInfo = ({ permission, onChange }) => {
+  const product = useSelector((state) => ProductV2.productByIDSelector(state, { id: permission.product }));
   const isProductPermission = permission.selected === Node.PermissionType.UNOFFICIAL_PRODUCT;
   const isMappable = permission.selected && PERMISSIONS_WITH_VARIABLE_MAPS.includes(permission.selected);
 
   const updateVariable = React.useCallback((mapTo) => onChange({ mapTo }), [onChange]);
-  const updateProduct = React.useCallback((product) => onChange({ product }), [onChange]);
+  const updateProduct = React.useCallback((productID) => onChange({ product: productID }), [onChange]);
 
   if (isProductPermission) {
-    const product = getProduct(permission.product);
     const isConsumable = product?.type === Constants.ProductType.CONSUMABLE;
 
     return (
@@ -44,8 +44,4 @@ const PermissionInfo = ({ permission, onChange, getProduct }) => {
   return null;
 };
 
-const mapStateToProps = {
-  getProduct: Product.productByIDSelector,
-};
-
-export default connect(mapStateToProps)(PermissionInfo);
+export default PermissionInfo;

@@ -3,23 +3,17 @@ import React from 'react';
 import LoadingGate from '@/components/LoadingGate';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { ConnectedProps } from '@/types';
+import { useDispatch, useSelector } from '@/hooks';
 
-const AccountLoadingGate: React.FC<ConnectedAccountLoadingGateProps> = ({ children, isLoggingIn, restoreSession }) => (
-  <LoadingGate label="Account" isLoaded={!isLoggingIn} load={restoreSession}>
-    {children}
-  </LoadingGate>
-);
+const AccountLoadingGate: React.FC = ({ children }) => {
+  const isLoggingIn = useSelector(Account.isLoggingInSelector);
+  const restoreSession = useDispatch(Session.restoreSession);
 
-const mapStateToProps = {
-  isLoggingIn: Account.isLoggingInSelector,
+  return (
+    <LoadingGate label="Account" isLoaded={!isLoggingIn} load={restoreSession}>
+      {children}
+    </LoadingGate>
+  );
 };
 
-const mapDispatchToProps = {
-  restoreSession: Session.restoreSession,
-};
-
-type ConnectedAccountLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(AccountLoadingGate);
+export default AccountLoadingGate;

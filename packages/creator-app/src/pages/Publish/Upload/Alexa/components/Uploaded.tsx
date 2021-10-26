@@ -5,7 +5,7 @@ import { ThemeContext } from 'styled-components';
 
 import Section from '@/components/Section';
 import * as Project from '@/ducks/project';
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { AlexaPublishJob, JobStageData } from '@/models';
 import { ConnectedProps } from '@/types';
@@ -81,7 +81,7 @@ const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData,
 };
 
 const mapStateToProps = {
-  locales: Version.activeLocalesSelector,
+  locales: VersionV2.active.localesSelector,
 };
 
 const mapDispatchToProps = {

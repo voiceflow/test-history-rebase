@@ -1,6 +1,7 @@
-import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
+
+import { Context } from '@/types';
 
 import { AbstractProjectListResourceControl } from './utils';
 
@@ -9,7 +10,7 @@ class RemoveProjectFromList extends AbstractProjectListResourceControl<Realtime.
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.projectList.BaseProjectListPayload>) => {
     await Promise.all([
-      this.server.process(Realtime.project.crud.remove({ key: payload.projectID, workspaceID: payload.workspaceID })),
+      this.server.processAs(ctx.data.creatorID, Realtime.project.crud.remove({ key: payload.projectID, workspaceID: payload.workspaceID })),
       this.applyPatch(ctx, payload.workspaceID, payload.listID, (list) => ({
         projects: Realtime.Utils.array.withoutValue(list.projects, payload.projectID),
       })),

@@ -20,9 +20,9 @@ export interface WorkspaceClient {
 
   listMembers: (workspaceID: string) => Promise<Realtime.DBMember[]>;
 
-  patchMember: (creatorID: number, workspaceID: string, data: Pick<Realtime.DBMember, 'role'>) => Promise<void>;
+  patchMember: (workspaceID: string, memberCreatorID: number, data: Pick<Realtime.DBMember, 'role'>) => Promise<void>;
 
-  removeMember: (creatorID: number, workspaceID: string) => Promise<void>;
+  removeMember: (workspaceID: string, memberCreatorID: number) => Promise<void>;
 
   removeSelf: (workspaceID: string) => Promise<void>;
 
@@ -50,17 +50,17 @@ const Client = ({ api }: ExtraOptions): WorkspaceClient => ({
 
   updateName: (workspaceID, name) => api.patch(`/team/${workspaceID}/update_name`, { name }),
 
-  updateImage: (workspaceID, url) => api.patch(`/team/${workspaceID}/picture`, { url }).then((res) => res.data),
+  updateImage: (workspaceID, url) => api.post(`/team/${workspaceID}/picture`, { url }).then((res) => res.data),
 
-  delete: (workspaceID) => api.delete(`/workspaces/${workspaceID}`),
+  delete: (workspaceID) => api.delete(`/v2/workspaces/${workspaceID}`),
 
   // members
 
   listMembers: (workspaceID) => api.get<Realtime.DBMember[]>(`/workspaces/${workspaceID}/members`).then((res) => res.data),
 
-  patchMember: (creatorID, workspaceID, data) => api.patch(`/workspaces/${workspaceID}/members/${creatorID}`, data),
+  patchMember: (workspaceID, memberCreatorID, data) => api.patch(`/workspaces/${workspaceID}/members/${memberCreatorID}`, data),
 
-  removeMember: (creatorID, workspaceID) => api.delete(`/workspaces/${workspaceID}/members/${creatorID}`),
+  removeMember: (workspaceID, memberCreatorID) => api.delete(`/workspaces/${workspaceID}/members/${memberCreatorID}`),
 
   removeSelf: (workspaceID) => api.delete(`/workspaces/${workspaceID}/members/self`),
 

@@ -10,7 +10,7 @@ import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { EntityMap, Node, NodeData } from '@/models';
 import { Pair, Point } from '@/types';
 import { objectID } from '@/utils';
@@ -125,9 +125,9 @@ class NodeManager extends EngineConsumer {
 
     getNodeFactoryOptions: () => {
       const platform = this.select(ProjectV2.active.platformSelector);
-      const defaultVoice = this.select(Version.activeDefaultVoiceSelector);
+      const defaultVoice = this.select(VersionV2.active.defaultVoiceSelector);
       const allActiveFeatures = this.select(Feature.allActiveFeaturesSelector);
-      const canvasNodeVisibility = this.select(Version.activeCanvasNodeVisibilitySelector);
+      const canvasNodeVisibility = this.select(VersionV2.active.canvasNodeVisibilitySelector);
 
       return {
         features: allActiveFeatures,

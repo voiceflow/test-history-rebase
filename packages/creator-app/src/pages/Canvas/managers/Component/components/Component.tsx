@@ -3,6 +3,7 @@ import { Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
 import { NodeData } from '@/models';
@@ -14,15 +15,15 @@ interface ComponentProps {
 }
 
 const Component: React.FC<ComponentProps> = ({ onChange, diagramID }) => {
-  const componentsDiagrams = useSelector(Diagram.activeComponentsDiagramsSelector);
+  const componentDiagrams = useSelector(DiagramV2.active.componentDiagramsSelector);
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
   const createEmptyComponent = useDispatch(Diagram.createEmptyComponent);
   const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
-  const optionsMap = React.useMemo<Record<string, typeof componentsDiagrams[number]>>(
-    () => componentsDiagrams.reduce((acc, diagram) => Object.assign(acc, { [diagram.id]: diagram }), {}),
-    [componentsDiagrams]
+  const optionsMap = React.useMemo<Record<string, typeof componentDiagrams[number]>>(
+    () => componentDiagrams.reduce((acc, diagram) => Object.assign(acc, { [diagram.id]: diagram }), {}),
+    [componentDiagrams]
   );
 
   const setSelectedDiagram = React.useCallback((diagramID: Nullable<string>) => onChange({ diagramID, inputs: [], outputs: [] }), [onChange]);
@@ -50,7 +51,7 @@ const Component: React.FC<ComponentProps> = ({ onChange, diagramID }) => {
     (name: string) => {
       const lowerCasedName = name.trim().toLowerCase();
 
-      componentsDiagrams.forEach((component) => {
+      componentDiagrams.forEach((component) => {
         if (component.name.toLowerCase() === lowerCasedName) {
           throw new Error('Component name already in use, choose a different name.');
         }
@@ -58,13 +59,13 @@ const Component: React.FC<ComponentProps> = ({ onChange, diagramID }) => {
 
       return true;
     },
-    [componentsDiagrams]
+    [componentDiagrams]
   );
 
   return (
     <Select
       value={diagramID}
-      options={componentsDiagrams}
+      options={componentDiagrams}
       onSelect={setComponent}
       onCreate={onCreate}
       clearable={!!diagramID}

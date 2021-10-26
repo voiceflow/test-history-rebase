@@ -32,7 +32,7 @@ const ImportModal: React.FC = () => {
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
 
-  const importProject = useDispatch(Workspace.importProjectToActiveWorkspace);
+  const importProject = useDispatch(Workspace.importProject);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
 
   const [trackEvents] = useTrackingEvents();

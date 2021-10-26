@@ -1,11 +1,12 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { AbstractProjectChannelControl } from '../utils';
+import { resendProjectChannel } from '@/actions/project/utils';
+import { AbstractNoopActionControl } from '@/actions/utils';
 
-class UpdateProjectViewers extends AbstractProjectChannelControl<Realtime.project.awareness.UpdateViewersPayload> {
+class UpdateProjectViewers extends AbstractNoopActionControl<Realtime.project.awareness.UpdateViewersPayload> {
   protected actionCreator = Realtime.project.awareness.updateViewers;
 
-  protected process = Realtime.Utils.functional.noop;
+  protected resend = resendProjectChannel;
 }
 
 export default UpdateProjectViewers;

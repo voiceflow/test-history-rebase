@@ -10,7 +10,9 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
 import { ModalType } from '@/constants';
 import * as IntentDuck from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotDuck from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import { connect } from '@/hocs';
 import { useEnableDisable, useModals } from '@/hooks';
 import { Slot } from '@/models';
@@ -28,9 +30,9 @@ export interface SlotsManagerProps {
 
 const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = ({
   slots,
-  addSlot,
+  createSlot,
   slotsIDs,
-  removeSlot,
+  deleteSlot,
   selectedID = slots[0]?.id,
   setSelectedID,
   intentsUsingSlot,
@@ -53,13 +55,13 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
         toast.info('Utterances containing this entity have been modified to remove the slot reference.');
       }
 
-      removeSlot(item.id);
+      deleteSlot(item.id);
 
       if (selectedID === item.id) {
         setSelectedID(slotsIDs[index === 0 ? 1 : 0]);
       }
     },
-    [removeSlot, slotsIDs, selectedID, setSelectedID]
+    [slotsIDs, selectedID, setSelectedID]
   );
   const onDeleteFromManager = React.useCallback(
     (id: string) => {
@@ -84,7 +86,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
       onSave: ({ type, name, color, inputs = [] }: Slot) => {
         const id = cuid.slug();
 
-        addSlot(id, { id, type, name, color, inputs });
+        createSlot(id, { id, type, name, color, inputs });
         closeSlotEdit();
         setSelectedID(id);
       },
@@ -137,18 +139,17 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
   );
 };
 
-const sortedSlotsSelector = createSelector(SlotDuck.allSlotsSelector, (slots) => _sortBy(slots, (slot) => slot.name.toLowerCase()));
+const sortedSlotsSelector = createSelector(SlotV2.allSlotsSelector, (slots) => _sortBy(slots, (slot) => slot.name.toLowerCase()));
 
 const mapStateToProps = {
   slots: sortedSlotsSelector,
-  slotsMap: SlotDuck.mapSlotsSelector,
-  slotsIDs: SlotDuck.allSlotIDsSelector,
-  intentsUsingSlot: SlotDuck.intentsUsingSlotSelector,
+  slotsIDs: SlotV2.allSlotIDsSelector,
+  intentsUsingSlot: IntentV2.intentsUsingSlotSelector,
 };
 
 const mapDispatchToProps = {
-  addSlot: SlotDuck.addSlot,
-  removeSlot: SlotDuck.removeSlot,
+  createSlot: SlotDuck.createSlot,
+  deleteSlot: SlotDuck.deleteSlot,
   removeIntentSlot: IntentDuck.removeIntentSlot,
 };
 

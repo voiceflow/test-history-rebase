@@ -1,7 +1,7 @@
 import { FlexApart, Select, SelectProps } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useSelector } from '@/hooks';
 
 export interface SlotOption {
@@ -17,7 +17,7 @@ type SlotSelectProps = Omit<Partial<SelectProps<SlotOption, string>>, 'onSelect'
 const slotOptionRenderer = (option: SlotOption) => <FlexApart fullWidth>{option.label}</FlexApart>;
 
 const SlotSelect: React.FC<SlotSelectProps> = ({ value, onChange, className, filter, ...props }) => {
-  const slotTypes = useSelector(Version.activeSlotTypesSelector);
+  const slotTypes = useSelector(VersionV2.active.slotTypesSelector);
 
   const selected = slotTypes.find((slotType) => slotType.value === value) || null;
   const options = React.useMemo(() => (filter ? slotTypes.filter(filter) : slotTypes), [slotTypes, filter]);

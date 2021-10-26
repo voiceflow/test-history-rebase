@@ -70,12 +70,12 @@ export const goToConversations = (versionID: string, search = window.location.se
 
 export const goToProducts = (versionID: string) => goTo(generatePath(Path.PRODUCT_LIST, { versionID }));
 
-export const goToNewProduct = (versionID: string) => goTo(generatePath(Path.PRODUCT_DETAILS, { versionID, id: 'new' }));
+export const goToNewProduct = (versionID: string) => goTo(generatePath(Path.NEW_PRODUCT, { versionID }));
 
 export const goToTranscript = (versionID: string, transcriptID?: string, search = window.location.search) =>
   goTo(`${generatePath(Path.CONVERSATIONS, { versionID, transcriptID })}${search}`);
 
-export const goToEditProduct = (versionID: string, productID: string) => goTo(generatePath(Path.PRODUCT_DETAILS, { versionID, id: productID }));
+export const goToEditProduct = (versionID: string, productID: string) => goTo(generatePath(Path.PRODUCT_DETAILS, { versionID, productID }));
 
 export const goToInteractionModel = (versionID: string, diagramID: string, modelType?: string, entityID?: string) =>
   goTo(`${generatePath(Path.CANVAS_MODEL, { versionID, diagramID, modelType, entityID })}`);

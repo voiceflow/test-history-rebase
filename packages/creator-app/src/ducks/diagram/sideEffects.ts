@@ -1,5 +1,5 @@
 import { DiagramType, VersionFolderItemType } from '@voiceflow/api-sdk';
-import { Adapters } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -7,15 +7,18 @@ import { FeatureFlag } from '@/config/features';
 import { RESERVED_JS_WORDS } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { activeComponentsSelector, activeRootDiagramIDSelector, activeTopicsSelector, activeVersionSelector } from '@/ducks/version/selectors';
+import { waitAsync } from '@/ducks/utils';
 import { saveComponents, saveTopics } from '@/ducks/version/sideEffects/common/topicsComponents';
-import { CreatorDiagram, DBDiagram, Diagram, Link, Node, NodeData, Port } from '@/models';
+import { getActiveVersionContext } from '@/ducks/version/utils';
+import * as VersionV2 from '@/ducks/versionV2';
+import * as Models from '@/models';
 import mutableStore from '@/store/mutable';
-import { SyncThunk, Thunk } from '@/store/types';
+import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { PathPoint, Point } from '@/types';
 import { append, insert, unique, withoutValue, withoutValues } from '@/utils/array';
@@ -24,138 +27,201 @@ import { normalize } from '@/utils/normalized';
 import { getCurrentTimestamp } from '@/utils/time';
 import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
-import { addDiagram, patchDiagram, replaceDiagrams, replaceLocalVariables, updateDiagram } from './actions';
-import { generateDefaultComponentDiagram, generateDefaultTopicDiagram } from './constants';
-import { allDiagramsSelector, diagramByIDSelector, fullActiveDiagramSelector, localVariablesByDiagramIDSelector } from './selectors';
-import { PrimitiveComponentDiagram, PrimitiveTopicDiagram } from './types';
+import { crud } from './actions';
+import { diagramByIDSelector, fullActiveDiagramSelector } from './selectors';
 
 // side effects
 
+/**
+ * @deprecated resource sync is handled by subscription to the project/:projectID channel
+ */
 export const loadDiagrams =
-  (versionID: string, rootDiagramID: string): Thunk<Diagram[]> =>
-  async (dispatch) => {
-    const dbDiagrams = await client.api.version.getDiagrams<DBDiagram>(versionID, ['_id', 'type', 'name', 'variables', 'children', 'intentStepIDs']);
+  (versionID: string, rootDiagramID: string): Thunk<Models.Diagram[]> =>
+  async (dispatch, getState) => {
+    const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+    if (isAtomicActions) return [];
 
-    const diagrams = Adapters.diagramAdapter.mapFromDB(dbDiagrams, { rootDiagramID });
+    const dbDiagrams = await client.api.version.getDiagrams<Models.DBDiagram>(versionID, [
+      '_id',
+      'type',
+      'name',
+      'variables',
+      'children',
+      'intentStepIDs',
+    ]);
 
-    dispatch(replaceDiagrams(diagrams));
+    const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbDiagrams, { rootDiagramID });
+
+    dispatch(crud.replace(diagrams));
 
     return diagrams;
   };
 
-// TODO: no longer need to load diagram variables individually in the future
+/**
+ * @deprecated no longer need to load diagram variables individually in the future
+ */
 export const loadLocalVariables =
-  (diagramID: string): Thunk<string[]> =>
-  async (dispatch) => {
+  (diagramID: string): Thunk =>
+  async (dispatch, getState) => {
+    const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+    if (isAtomicActions) return;
+
     const fields = ['variables'] as const;
 
-    const { variables } = await client.api.diagram.get<Pick<Diagram, typeof fields[number]>>(diagramID, fields);
+    const { variables } = await client.api.diagram.get(diagramID, fields);
 
-    dispatch(replaceLocalVariables(diagramID, variables));
-
-    return variables;
+    dispatch(crud.patch(diagramID, { variables }));
   };
 
-export const saveDiagramVariables =
-  (diagramID: string): Thunk =>
-  async (_, getState) => {
-    const state = getState();
-    const variables = localVariablesByDiagramIDSelector(state)(diagramID);
-
-    const rtctimestamp = mutableStore.getRTCTimestamp();
-    await client.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { variables });
-  };
-
-export const saveDiagramIntentSteps =
+export const updateIntentSteps =
   (diagramID: string, intentStepIDs: string[]): Thunk =>
-  async (dispatch) => {
-    const rtctimestamp = mutableStore.getRTCTimestamp();
+  (dispatch) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          const rtctimestamp = mutableStore.getRTCTimestamp();
 
-    dispatch(patchDiagram(diagramID, { intentStepIDs }));
-    await client.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { intentStepIDs });
-  };
+          dispatch(crud.patch(diagramID, { intentStepIDs }));
+          await client.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { intentStepIDs });
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.diagram.crud.patch({ ...context, key: diagramID, value: { intentStepIDs } }));
+        }
+      )
+    );
 
 export const removeLocalVariable =
-  (diagramID: string, variable: string): SyncThunk =>
-  (dispatch, getState) => {
-    const variables = localVariablesByDiagramIDSelector(getState())(diagramID);
+  (diagramID: string, variable: string): Thunk =>
+  (dispatch, getState) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          const variables = DiagramV2.localVariablesByDiagramIDSelector(getState(), { id: diagramID });
 
-    dispatch(replaceLocalVariables(diagramID, withoutValue(variables, variable)));
-  };
+          dispatch(crud.patch(diagramID, { variables: withoutValue(variables, variable) }));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.diagram.removeLocalVariable({ ...context, variable, diagramID }));
+        }
+      )
+    );
 
 export const addLocalVariable =
-  (diagramID: string, variable: string): SyncThunk =>
+  (diagramID: string, variable: string): Thunk =>
   (dispatch, getState) => {
     if (RESERVED_JS_WORDS.includes(variable)) {
-      throw new Error(`Reserved word. You can prefix with '_' to fix this issue`);
+      throw new Error("Reserved word. You can prefix with '_' to fix this issue");
     }
-    const variables = localVariablesByDiagramIDSelector(getState())(diagramID);
 
-    dispatch(replaceLocalVariables(diagramID, unique(append(variables, variable))));
+    return dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          const variables = DiagramV2.localVariablesByDiagramIDSelector(getState(), { id: diagramID });
+
+          dispatch(crud.patch(diagramID, { variables: append(variables, variable) }));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.diagram.addLocalVariable({ ...context, variable, diagramID }));
+        }
+      )
+    );
   };
 
-export const createDiagram =
-  (name: string, diagram: PrimitiveTopicDiagram | PrimitiveComponentDiagram): Thunk<string> =>
+const createDiagram =
+  (primitiveDiagram: Realtime.Utils.diagram.PrimitiveDiagram): Thunk<string> =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
     const creatorID = Account.userIDSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+
+    if (isAtomicActions) return '';
 
     Errors.assertVersionID(versionID);
     Errors.assertCreatorID(creatorID);
 
-    const { _id: diagramID } = await client.api.diagram.create({
-      ...diagram,
-      name,
+    const diagram = {
+      ...primitiveDiagram,
       modified: getCurrentTimestamp(),
       versionID,
       creatorID,
-    });
+    };
+
+    const { _id: diagramID } = await client.api.diagram.create(diagram);
 
     dispatch(
-      addDiagram(diagramID, { name, type: diagram.type, id: diagramID, subDiagrams: [], variables: [], intentStepIDs: diagram.intentStepIDs })
+      crud.add(diagramID, {
+        name: diagram.name,
+        type: diagram.type,
+        id: diagramID,
+        subDiagrams: [],
+        variables: [],
+        intentStepIDs: diagram.intentStepIDs,
+      })
     );
 
     return diagramID;
   };
 
 export const createTopicDiagram =
-  (name: string, diagram: PrimitiveTopicDiagram = generateDefaultTopicDiagram(name)): Thunk<string> =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
-    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+  (name: string): Thunk<string> =>
+  (dispatch, getState) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          const diagram = Realtime.Utils.diagram.topicDiagramFactory(name);
+          const diagramID = await dispatch(createDiagram(diagram));
 
-    const diagramID = await dispatch(createDiagram(name, diagram));
+          const state = getState();
+          const activeTopics = VersionV2.active.topicsSelector(state);
+          const activeDiagramID = Session.activeDiagramIDSelector(state);
 
-    if (isTopicsAndComponents) {
-      Errors.assertVersionID(versionID);
+          const newTopicItem = { type: VersionFolderItemType.DIAGRAM, sourceID: diagramID };
+          const activeTopicIndex = activeDiagramID ? activeTopics.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
 
-      const activeTopics = activeTopicsSelector(state);
-      const activeDiagramID = Session.activeDiagramIDSelector(state);
+          const topics = activeTopicIndex === -1 ? append(activeTopics, newTopicItem) : insert(activeTopics, activeTopicIndex + 1, newTopicItem);
 
-      const newTopicItem = { type: VersionFolderItemType.DIAGRAM, sourceID: diagramID };
-      const activeTopicIndex = activeDiagramID ? activeTopics.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
+          await dispatch(saveTopics(topics));
 
-      const topics = activeTopicIndex === -1 ? append(activeTopics, newTopicItem) : insert(activeTopics, activeTopicIndex + 1, newTopicItem);
+          return diagramID;
+        },
+        async (context) => {
+          const diagram = await dispatch(waitAsync(Realtime.diagram.createTopic, { ...context, name }));
 
-      await dispatch(saveTopics(topics));
-    }
-
-    return diagramID;
-  };
+          return diagram.id;
+        }
+      )
+    );
 
 export const createComponentDiagram =
-  (name: string, diagram: PrimitiveComponentDiagram = generateDefaultComponentDiagram()): Thunk<string> =>
-  async (dispatch) =>
-    dispatch(createDiagram(name, diagram));
+  (name: string): Thunk<string> =>
+  (dispatch) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        () => {
+          const diagram = Realtime.Utils.diagram.componentDiagramFactory(name);
+
+          return dispatch(createDiagram(diagram));
+        },
+        async (context) => {
+          const diagram = await dispatch(waitAsync(Realtime.diagram.createComponent, { ...context, name }));
+
+          return diagram.id;
+        }
+      )
+    );
 
 const addDiagramIDIntoComponentsList =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const activeDiagramID = Session.activeDiagramIDSelector(state);
-    const activeComponents = activeComponentsSelector(state);
+    const activeComponents = VersionV2.active.componentsSelector(state);
 
     const newTopicItem = { type: VersionFolderItemType.DIAGRAM, sourceID: diagramID };
     const activeComponentIndex = activeDiagramID ? activeComponents.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
@@ -166,25 +232,36 @@ const addDiagramIDIntoComponentsList =
     await dispatch(saveComponents(components));
   };
 
-export const createComponent =
+export const createEmptyComponent =
+  (name: string): Thunk<string> =>
+  async (dispatch) => {
+    const diagramID = await dispatch(createComponentDiagram(name));
+
+    await dispatch(addDiagramIDIntoComponentsList(diagramID));
+
+    return diagramID;
+  };
+
+export const convertToComponent =
   ({
     nodes,
     links,
     ports,
     data,
   }: {
-    nodes: Node[];
-    links: Link[];
-    ports: Port[];
-    data: Record<string, NodeData<unknown>>;
+    nodes: Models.Node[];
+    links: Models.Link[];
+    ports: Models.Port[];
+    data: Record<string, Models.NodeData<unknown>>;
   }): Thunk<{ name: string; diagramID: string }> =>
   async (dispatch, getState) => {
     const startCoords: Point = [360, 120];
 
     const state = getState();
-    const diagram = generateDefaultComponentDiagram({ coords: startCoords });
     const platform = ProjectV2.active.platformSelector(state);
-    const activeComponents = activeComponentsSelector(state);
+    const activeComponents = VersionV2.active.componentsSelector(state);
+    const name = `Component ${activeComponents.length + 1}`;
+    const diagram = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
 
     const combinedAndMarkupNodes = nodes.filter(({ type }) => isMarkupOrCombinedBlockType(type)).map((node) => ({ data: data[node.id], node }));
     const { center, minX } = getNodesGroupCenter(combinedAndMarkupNodes, links);
@@ -205,69 +282,78 @@ export const createComponent =
       link.data?.points ? { ...link, data: { ...link.data, points: link.data.points.map(adjustPathPoint) } } : link
     );
 
-    const convertedDiagram = Adapters.creatorAdapter.toDB(
+    const convertedDiagram = Realtime.Adapters.creatorAdapter.toDB(
       {
         data,
         links: adjustedLinks,
         viewport: { zoom: 1, x: 0, y: 0 },
         diagramID: '',
-      } as CreatorDiagram,
+      } as Models.CreatorDiagram,
       { nodes: normalize(adjustedNodes), ports: normalize(adjustedPorts), platform, context: {} }
     );
 
     diagram.nodes = { ...diagram.nodes, ...convertedDiagram.nodes };
     diagram.children = [...diagram.children, ...convertedDiagram.children];
 
-    const name = `Component ${activeComponents.length + 1}`;
+    const diagramID = await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          const diagramID = await dispatch(createDiagram(diagram));
 
-    const diagramID = await dispatch(createComponentDiagram(name, diagram));
+          await dispatch(addDiagramIDIntoComponentsList(diagramID));
 
-    await dispatch(addDiagramIDIntoComponentsList(diagramID));
+          return diagramID;
+        },
+        // eslint-disable-next-line sonarjs/no-identical-functions
+        async (context) => {
+          const diagram = await dispatch(waitAsync(Realtime.diagram.createComponent, { ...context, name }));
+
+          return diagram.id;
+        }
+      )
+    );
 
     return { name, diagramID };
   };
 
-export const createEmptyComponent =
-  (name: string): Thunk<string> =>
-  async (dispatch) => {
-    const diagramID = await dispatch(createComponentDiagram(name));
-
-    await dispatch(addDiagramIDIntoComponentsList(diagramID));
-
-    return diagramID;
-  };
-
-export const copyDiagram =
+export const duplicateDiagram =
   (diagramID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> =>
   async (dispatch, getState) => {
-    const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
-    const rootDiagramID = activeRootDiagramIDSelector(state);
-    const allDiagrams = allDiagramsSelector(state);
-    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+    const newDiagramID = await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          const state = getState();
+          const versionID = Session.activeVersionIDSelector(state);
+          const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
+          const allDiagrams = DiagramV2.allDiagramsSelector(state);
+          const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
 
-    Errors.assertVersionID(versionID);
-    Errors.assertDiagramID(rootDiagramID);
+          Errors.assertVersionID(versionID);
+          Errors.assertDiagramID(rootDiagramID);
 
-    const { _id, type = DiagramType.COMPONENT, ...diagram } = await client.api.diagram.get(diagramID);
+          const { _id, type = DiagramType.COMPONENT, ...diagram } = await client.api.diagram.get(diagramID);
 
-    const existingNames = unique(allDiagrams.map(({ name }) => name));
+          const newFlowName = Realtime.Utils.diagram.getUniqueCopyName(diagram.name, unique(allDiagrams.map(({ name }) => name)));
 
-    let newFlowName = existingNames.includes(diagram.name) ? `${diagram.name} (COPY)` : diagram.name;
-    let index = 1;
+          const newDiagramID = await dispatch(createDiagram({ ...diagram, intentStepIDs: diagram.intentStepIDs ?? [], type, name: newFlowName }));
 
-    while (existingNames.includes(newFlowName)) {
-      newFlowName = `${diagram.name} (COPY ${index})`;
-      index++;
-    }
+          if (isTopicsAndComponents) {
+            await dispatch(addDiagramIDIntoComponentsList(newDiagramID));
+          }
 
-    const newDiagramID = await dispatch(createDiagram(newFlowName, { type, ...diagram } as PrimitiveTopicDiagram | PrimitiveComponentDiagram));
+          await dispatch(loadDiagrams(versionID, rootDiagramID));
 
-    if (isTopicsAndComponents) {
-      await dispatch(addDiagramIDIntoComponentsList(newDiagramID));
-    }
+          return newDiagramID;
+        },
+        async (context) => {
+          const diagram = await dispatch(waitAsync(Realtime.diagram.duplicate, { ...context, diagramID }));
 
-    await dispatch(loadDiagrams(versionID, rootDiagramID));
+          return diagram.id;
+        }
+      )
+    );
 
     if (openDiagram) {
       await dispatch(Router.goToDiagram(newDiagramID));
@@ -281,29 +367,11 @@ export const deleteDiagram =
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
-    const rootDiagramID = activeRootDiagramIDSelector(state);
+    const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
     const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
 
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(rootDiagramID);
-
-    if (isTopicsAndComponents) {
-      const { type } = diagramByIDSelector(state)(diagramID) ?? {};
-      const { topics = [], components = [] } = activeVersionSelector(state) ?? {};
-
-      if (type === DiagramType.TOPIC) {
-        const newTopics = topics.filter(({ sourceID }) => sourceID !== diagramID);
-
-        await dispatch(saveTopics(newTopics));
-      } else if (type === DiagramType.COMPONENT) {
-        const newComponents = components.filter(({ sourceID }) => sourceID !== diagramID);
-
-        await dispatch(saveComponents(newComponents));
-      }
-    }
-
-    await client.api.diagram.options({ headers: { rtctimestamp: mutableStore.getRTCTimestamp() } }).delete(diagramID);
-    await dispatch(loadDiagrams(versionID, rootDiagramID));
 
     // if the user is on the deleted diagram, redirect to root
     const activeDiagramID = Session.activeDiagramIDSelector(state);
@@ -311,22 +379,65 @@ export const deleteDiagram =
     if (diagramID === activeDiagramID) {
       await dispatch(Router.goToRootDiagram());
     }
+
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          if (isTopicsAndComponents) {
+            const { type } = diagramByIDSelector(state)(diagramID) ?? {};
+            const { topics = [], components = [] } = VersionV2.active.versionSelector(state) ?? {};
+
+            if (type === DiagramType.TOPIC) {
+              const newTopics = topics.filter(({ sourceID }) => sourceID !== diagramID);
+
+              await dispatch(saveTopics(newTopics));
+            } else if (type === DiagramType.COMPONENT) {
+              const newComponents = components.filter(({ sourceID }) => sourceID !== diagramID);
+
+              await dispatch(saveComponents(newComponents));
+            }
+          }
+
+          await client.api.diagram.options({ headers: { rtctimestamp: mutableStore.getRTCTimestamp() } }).delete(diagramID);
+          await dispatch(loadDiagrams(versionID, rootDiagramID));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.diagram.crud.remove({ ...context, key: diagramID }));
+        }
+      )
+    );
   };
 
 export const renameDiagram =
   (diagramID: string, name: string): Thunk =>
   async (dispatch) => {
-    dispatch(updateDiagram(diagramID, { name }, true));
+    return dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          dispatch(crud.patch(diagramID, { name }));
 
-    await client.api.diagram.options({ headers: { rtctimestamp: mutableStore.getRTCTimestamp() } }).update(diagramID, { name });
+          await client.api.diagram.options({ headers: { rtctimestamp: mutableStore.getRTCTimestamp() } }).update(diagramID, { name });
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.diagram.crud.patch({ ...context, key: diagramID, value: { name } }));
+        }
+      )
+    );
   };
 
 // active diagram
 
+/**
+ * @deprecated changes will be synched by the new realtime service
+ */
 export const saveActiveDiagram = (): Thunk => async (_, getState) => {
   const state = getState();
   const fullDiagram = fullActiveDiagramSelector(state);
   const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+  if (isAtomicActions) return;
 
   if (!fullDiagram) throw Errors.noActiveDiagramID();
 
@@ -343,42 +454,40 @@ export const saveActiveDiagram = (): Thunk => async (_, getState) => {
   await client.api.diagram.options({ headers: { rtctimestamp: mutableStore.getRTCTimestamp() } }).update(_id, activeDiagram);
 };
 
-export const saveActiveDiagramVariables = (): Thunk => async (dispatch, getState) => {
-  const diagramID = Creator.creatorDiagramIDSelector(getState());
+/**
+ * @deprecated changes will be synched by the new realtime service
+ */
+export const saveActiveDiagramVariables = (): Thunk => async (_dispatch, getState) => {
+  const state = getState();
+  const diagramID = Creator.creatorDiagramIDSelector(state);
+  const variables = DiagramV2.localVariablesByDiagramIDSelector(state, { id: diagramID });
+  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+  if (isAtomicActions) return;
 
   Errors.assertDiagramID(diagramID);
 
-  await dispatch(saveDiagramVariables(diagramID));
+  const rtctimestamp = mutableStore.getRTCTimestamp();
+  await client.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { variables });
 };
 
 export const addActiveDiagramVariable =
-  (variable: string): SyncThunk =>
+  (variable: string): Thunk =>
   (dispatch, getState) => {
     const activeDiagramID = Creator.creatorDiagramIDSelector(getState());
 
     Errors.assertDiagramID(activeDiagramID);
 
-    dispatch(addLocalVariable(activeDiagramID, variable));
+    return dispatch(addLocalVariable(activeDiagramID, variable));
   };
 
 export const removeActiveDiagramVariable =
-  (variable: string): SyncThunk =>
+  (variable: string): Thunk =>
   (dispatch, getState) => {
     const activeDiagramID = Creator.creatorDiagramIDSelector(getState());
 
     Errors.assertDiagramID(activeDiagramID);
 
-    dispatch(removeLocalVariable(activeDiagramID, variable));
-  };
-
-export const replaceActiveDiagramVariables =
-  (variables: string[]): SyncThunk =>
-  (dispatch, getState) => {
-    const activeDiagramID = Creator.creatorDiagramIDSelector(getState());
-
-    Errors.assertDiagramID(activeDiagramID);
-
-    dispatch(replaceLocalVariables(activeDiagramID, variables));
+    return dispatch(removeLocalVariable(activeDiagramID, variable));
   };
 
 export const removeActiveDiagramIntentStepIDs =
@@ -391,7 +500,7 @@ export const removeActiveDiagramIntentStepIDs =
 
     const activeDiagram = diagramByIDSelector(state)(activeDiagramID);
 
-    dispatch(saveDiagramIntentSteps(activeDiagramID, withoutValues(activeDiagram?.intentStepIDs ?? [], intentStepIDs)));
+    dispatch(updateIntentSteps(activeDiagramID, withoutValues(activeDiagram?.intentStepIDs ?? [], intentStepIDs)));
   };
 
 export const addActiveDiagramIntentStepIDs =
@@ -404,5 +513,5 @@ export const addActiveDiagramIntentStepIDs =
 
     const activeDiagram = diagramByIDSelector(state)(activeDiagramID);
 
-    dispatch(saveDiagramIntentSteps(activeDiagramID, [...(activeDiagram?.intentStepIDs ?? []), ...intentStepIDs]));
+    dispatch(updateIntentSteps(activeDiagramID, [...(activeDiagram?.intentStepIDs ?? []), ...intentStepIDs]));
   };

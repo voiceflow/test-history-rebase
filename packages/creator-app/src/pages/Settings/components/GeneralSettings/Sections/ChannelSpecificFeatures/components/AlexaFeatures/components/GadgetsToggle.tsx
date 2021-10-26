@@ -3,6 +3,7 @@ import React from 'react';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 import { FeatureFlag } from '@/config/features';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { Alexa } from '@/pages/Settings/components/ContentDescriptors';
@@ -14,7 +15,7 @@ interface AlexaGadgetsToggleOwnProps {
 
 const AlexaGadgetsToggle: React.FC<AlexaGadgetsToggleOwnProps & ConnectedAlexaGadgetsToggleProps> = ({
   customInterfaceEnabled,
-  saveSettings,
+  patchSettings,
   modelSensitivityShown,
 }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
@@ -30,7 +31,7 @@ const AlexaGadgetsToggle: React.FC<AlexaGadgetsToggleOwnProps & ConnectedAlexaGa
           dividers={modelSensitivityShown}
           isDividerNested
           isCollapsed={!customInterfaceEnabled}
-          onClick={() => saveSettings({ customInterface: !customInterfaceEnabled })}
+          onClick={() => patchSettings({ customInterface: !customInterfaceEnabled })}
           variant={SectionVariant.SECONDARY}
           collapseVariant={SectionToggleVariant.TOGGLE}
         />
@@ -40,11 +41,11 @@ const AlexaGadgetsToggle: React.FC<AlexaGadgetsToggleOwnProps & ConnectedAlexaGa
 };
 
 const mapStateToProps = {
-  customInterfaceEnabled: Version.alexa.activeCustomInterfaceSelector,
+  customInterfaceEnabled: VersionV2.active.alexa.customInterfaceSelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings: Version.saveSettings,
+  patchSettings: Version.patchSettings,
 };
 
 type ConnectedAlexaGadgetsToggleProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

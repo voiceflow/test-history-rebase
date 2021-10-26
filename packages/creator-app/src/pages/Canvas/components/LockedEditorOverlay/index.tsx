@@ -2,7 +2,9 @@ import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import User from '@/components/User';
+import { FeatureFlag } from '@/config/features';
 import * as Realtime from '@/ducks/realtime';
+import { useFeature } from '@/hooks';
 import { LockOwner } from '@/models';
 import { useEditLock, useResourceLock } from '@/pages/Canvas/hooks';
 
@@ -63,6 +65,11 @@ export interface LockedResourceOverlayProps {
 
 export const LockedResourceOverlay: React.FC<LockedResourceOverlayProps> = ({ type, disabled = false, children }) => {
   const { lockOwner, prevOwner, acquireLock, forceUpdateKey } = useResourceLock(type, disabled);
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+
+  if (atomicActions.isEnabled) {
+    return <>{children?.({ lockOwner: null, prevOwner: null, forceUpdateKey })}</>;
+  }
 
   return (
     <>

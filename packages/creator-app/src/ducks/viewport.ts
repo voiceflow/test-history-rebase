@@ -19,6 +19,8 @@ export type ViewportModel = Viewport & { diagramID: string };
 
 export type ViewportState = CRUD.CRUDState<ViewportModel>;
 
+export const INITIAL_STATE: ViewportState = CRUD.createCRUDState();
+
 // actions
 
 export enum ViewportAction {
@@ -41,7 +43,7 @@ export const rehydrateViewportReducer: Reducer<ViewportState, RehydrateViewport>
 
 const viewportCRUDReducer = createCRUDReducer<ViewportModel>(STATE_KEY, ({ diagramID }) => diagramID);
 
-const viewportReducer: RootReducer<ViewportState, AnyViewportAction> = (state = CRUD.INITIAL_STATE, action) => {
+const viewportReducer: RootReducer<ViewportState, AnyViewportAction> = (state = INITIAL_STATE, action) => {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
     case ViewportAction.REHYDRATE_VIEWPORT:

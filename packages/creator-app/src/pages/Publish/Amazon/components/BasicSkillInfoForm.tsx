@@ -8,6 +8,7 @@ import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useBoundValue, useDispatch } from '@/hooks';
 import { getTargetValue } from '@/utils/dom';
 
@@ -15,18 +16,21 @@ import { useValidator } from '../hooks';
 
 const UploadJustIconComponent = UploadJustIcon as React.FC<any>;
 
-const largeIconSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.largeIcon);
-const smallIconSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.smallIcon);
+const largeIconSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.largeIcon);
+const smallIconSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.smallIcon);
 
 const BasicSkillInfoForm: React.FC = () => {
   const [projectNameError, projectNameValidator] = useValidator('name', (name: string) => (name ? false : 'Display name is required.'));
-  const [projectName, setProjectName, saveProjectName] = useBoundValue(ProjectV2.active.nameSelector, projectNameValidator(Project.saveProjectName));
+  const [projectName, setProjectName, saveProjectName] = useBoundValue(
+    ProjectV2.active.nameSelector,
+    projectNameValidator(Project.updateActiveProjectName)
+  );
 
   const largeIcon = useSelector(largeIconSelector);
-  const saveLargeIcon = useDispatch((largeIcon: string) => Version.alexa.savePublishing({ largeIcon }));
+  const saveLargeIcon = useDispatch((largeIcon: string) => Version.alexa.patchPublishing({ largeIcon }));
 
   const smallIcon = useSelector(smallIconSelector);
-  const saveSmallIcon = useDispatch((smallIcon: string) => Version.alexa.savePublishing({ smallIcon }));
+  const saveSmallIcon = useDispatch((smallIcon: string) => Version.alexa.patchPublishing({ smallIcon }));
 
   return (
     <>

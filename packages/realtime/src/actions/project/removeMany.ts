@@ -1,8 +1,8 @@
-import type { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '@/actions/workspace/utils';
+import { Context } from '@/types';
 
 type RemoveManyProjectsPayload = Realtime.BaseWorkspacePayload & Realtime.actionUtils.CRUDKeysPayload;
 
@@ -10,7 +10,7 @@ class RemoveManyProjects extends AbstractWorkspaceChannelControl<RemoveManyProje
   protected actionCreator = Realtime.project.crud.removeMany;
 
   protected process = async (ctx: Context, { payload }: Action<RemoveManyProjectsPayload>): Promise<void> => {
-    const creatorID = Number(ctx.userId);
+    const { creatorID } = ctx.data;
 
     // TODO: add remove many endpoint and method to ApiSdk and project service
     await Promise.all(payload.keys.map((key) => this.services.project.delete(creatorID, key)));

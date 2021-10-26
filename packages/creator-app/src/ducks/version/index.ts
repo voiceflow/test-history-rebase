@@ -1,9 +1,9 @@
-import createCRUDReducer, * as CRUD from '@/ducks/utils/crud';
+import createCRUDReducer from '@/ducks/utils/crud';
 import { Reducer, RootReducer } from '@/store/types';
 import { getNormalizedByKey, patchNormalizedByKey } from '@/utils/normalized';
 
 import { AnyVersionAction, UpdatePublishing, UpdateSession, UpdateSettings, VersionAction } from './actions';
-import { STATE_KEY } from './constants';
+import { INITIAL_STATE, STATE_KEY } from './constants';
 import * as alexa from './platform/alexa';
 import * as general from './platform/general';
 import * as google from './platform/google';
@@ -13,6 +13,7 @@ export { alexa, general, google };
 
 export * from './actions';
 export * from './constants';
+export * from './rpcs';
 export * from './selectors';
 export * from './sideEffects';
 export * from './types';
@@ -52,7 +53,7 @@ export const updateSessionReducer: Reducer<VersionState, UpdateSession> = (state
   });
 };
 
-const versionReducer: RootReducer<VersionState, AnyVersionAction> = (state = CRUD.INITIAL_STATE, action) => {
+const versionReducer: RootReducer<VersionState, AnyVersionAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case VersionAction.UPDATE_SETTINGS:
       return updateSettingsReducer(state, action);

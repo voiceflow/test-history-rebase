@@ -4,7 +4,7 @@ import client from '@/client';
 import { IS_PRODUCTION } from '@/config';
 import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
 import * as Session from '@/ducks/session';
-import { Action, Reducer, RootReducer, Selector, Thunk } from '@/store/types';
+import { Action, Reducer, RootReducer, Selector, SyncThunk, Thunk } from '@/store/types';
 
 import { createAction, createRootSelector } from './utils';
 
@@ -151,3 +151,17 @@ export const loadWorkspaceFeatures = (): Thunk => async (dispatch, getState) => 
 
   dispatch(setWorkspaceFeaturesLoaded(features));
 };
+
+export const applyAtomicSideEffect =
+  <C, R = void>(contextThunk: () => SyncThunk<C>, thunkV1: () => R, thunkV2: (context: C) => R): SyncThunk<R> =>
+  (dispatch, getState) => {
+    const isAtomicActions = isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+
+    if (isAtomicActions) {
+      const context = dispatch(contextThunk());
+
+      return thunkV2(context);
+    }
+
+    return thunkV1();
+  };

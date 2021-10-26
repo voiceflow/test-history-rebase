@@ -1,19 +1,22 @@
-/* eslint-disable max-classes-per-file, @typescript-eslint/ban-types */
-import type { Context } from '@logux/server';
+/* eslint-disable max-classes-per-file */
 import * as Realtime from '@voiceflow/realtime-sdk';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractActionControl, Resend } from '@/actions/utils';
+import { BaseContextData, Context } from '@/types';
 
-export abstract class AbstractLinkActionControl<P extends Realtime.BaseLinkPayload, D extends object = {}> extends AbstractActionControl<P, D> {
+export abstract class AbstractLinkActionControl<
+  P extends Realtime.BaseLinkPayload,
+  D extends BaseContextData = BaseContextData
+> extends AbstractActionControl<P, D> {
   protected access = (ctx: Context<D>, action: Action<P>): Promise<boolean> =>
-    this.services.diagram.canRead(Number(ctx.userId), action.payload.diagramID);
+    this.services.diagram.canRead(ctx.data.creatorID, action.payload.diagramID);
 }
 
-export abstract class AbstractResendLinkActionControl<P extends Realtime.BaseLinkPayload, D extends object = {}> extends AbstractLinkActionControl<
-  P,
-  D
-> {
+export abstract class AbstractResendLinkActionControl<
+  P extends Realtime.BaseLinkPayload,
+  D extends BaseContextData = BaseContextData
+> extends AbstractLinkActionControl<P, D> {
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
     channel: Realtime.Channels.diagram.build({
       diagramID: action.payload.diagramID,
@@ -25,7 +28,7 @@ export abstract class AbstractResendLinkActionControl<P extends Realtime.BaseLin
 
 export abstract class AbstractNoopLinkActionControl<
   P extends Realtime.BaseLinkPayload,
-  D extends object = {}
+  D extends BaseContextData = BaseContextData
 > extends AbstractResendLinkActionControl<P, D> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   process = async (): Promise<void> => {};

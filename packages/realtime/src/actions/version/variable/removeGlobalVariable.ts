@@ -1,6 +1,7 @@
-import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
+
+import { Context } from '@/types';
 
 import { AbstractVersionResourceControl } from '../utils';
 
@@ -8,7 +9,7 @@ class RemoveGlobalVariable extends AbstractVersionResourceControl<Realtime.versi
   protected actionCreator = Realtime.version.removeGlobalVariable;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.version.GlobalVariablePayload>) => {
-    const creatorID = Number(ctx.userId);
+    const { creatorID } = ctx.data;
     const { variables } = await this.services.version.get(creatorID, payload.versionID);
 
     await this.services.version.updateVariables(creatorID, payload.versionID, Realtime.Utils.array.withoutValue(variables, payload.variable));

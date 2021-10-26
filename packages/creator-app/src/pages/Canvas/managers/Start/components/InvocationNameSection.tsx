@@ -6,6 +6,7 @@ import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
 import { getSettingsMetaProps } from '@/pages/Settings/constants';
@@ -16,10 +17,10 @@ import { getPlatformValue } from '@/utils/platform';
 const InvocationNameSection: React.FC = () => {
   const platform = React.useContext(PlatformContext)!;
 
-  const saveInvocationName = useDispatch(Version.saveInvocationName);
+  const updateInvocationName = useDispatch(Version.updateInvocationName);
 
-  const locales = useSelector(Version.activeLocalesSelector);
-  const invocationName = useSelector(Version.activeInvocationNameSelector);
+  const locales = useSelector(VersionV2.active.localesSelector);
+  const invocationName = useSelector(VersionV2.active.invocationNameSelector);
 
   const { descriptors } = getSettingsMetaProps(platform);
 
@@ -51,7 +52,7 @@ const InvocationNameSection: React.FC = () => {
       <Input
         error={!!invocationError}
         value={newInvocation}
-        onBlur={() => !invocationError && saveInvocationName(newInvocation)}
+        onBlur={() => !invocationError && updateInvocationName(newInvocation)}
         onChange={getTargetValue(setNewInvocation)}
         placeholder="Enter an invocation name"
       />

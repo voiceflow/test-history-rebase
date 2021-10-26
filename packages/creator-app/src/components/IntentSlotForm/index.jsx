@@ -10,8 +10,9 @@ import Utterance from '@/components/Utterance';
 import { SlotTag } from '@/components/VariableTag';
 import { NamespaceProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Slot from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import { connect } from '@/hocs';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -27,7 +28,7 @@ import {
   VoicePromptForm,
 } from './components';
 
-function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalone = false, updateIntentSlot, updateIntentSlotDialog }) {
+function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalone = false, patchIntentSlot, updateIntentSlotDialog }) {
   const isAlexa = isAlexaPlatform(platform);
   const isChatbot = isChatbotPlatform(platform);
   const isGeneral = isAnyGeneralPlatform(platform);
@@ -94,7 +95,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
           isDividerNested={standalone}
           prefix={<SlotTag color={slot.color}>{slot.name}</SlotTag>}
           header={<SlotRequiredMessage required={required} />}
-          onClick={() => updateIntentSlot(intent.id, slot.id, { required: !required })}
+          onClick={() => patchIntentSlot(intent.id, slot.id, { required: !required })}
           collapseVariant={SectionToggleVariant.TOGGLE}
         >
           <Section header="Entity Prompt" tooltip={<SlotPromptTooltip />} isNested dividerIsNested>
@@ -206,13 +207,13 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
-  slotsMap: Slot.mapSlotsSelector,
-  getIntentByID: Intent.intentByIDSelector,
-  getIntentSlotByIntentIDSlotID: Intent.intentSlotByIntentIDSlotIDSelector,
+  slotsMap: SlotV2.slotMapSelector,
+  getIntentByID: IntentV2.getIntentByIDSelector,
+  getIntentSlotByIntentIDSlotID: IntentV2.intentSlotByIntentIDSlotIDSelector,
 };
 
 const mapDispatchToProps = {
-  updateIntentSlot: Intent.updateIntentSlot,
+  patchIntentSlot: Intent.patchIntentSlot,
   updateIntentSlotDialog: Intent.updateIntentSlotDialog,
 };
 

@@ -11,6 +11,7 @@ import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { useSetup } from '@/hooks';
 import { ConnectedProps } from '@/types';
@@ -71,7 +72,7 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps & ConnectedPublishAmazo
   loadProject,
   loadVersion,
   projectName,
-  saveProductLocales,
+  updateAllProductLocales,
 }) => {
   const [loaded, setLoaded] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
@@ -119,7 +120,7 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps & ConnectedPublishAmazo
         try {
           setSaving(true);
 
-          await saveProductLocales(locales!);
+          await updateAllProductLocales(locales!);
 
           onPublish();
 
@@ -233,16 +234,16 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps & ConnectedPublishAmazo
 const mapStateToProps = {
   user: Account.userSelector,
   versionID: Session.activeVersionIDSelector,
-  publishing: Version.alexa.activePublishingSelector,
+  publishing: VersionV2.active.alexa.publishingSelector,
   projectName: ProjectV2.active.nameSelector,
   skillID: ProjectV2.active.alexa.ownSkillIDSelector,
   isLive: ProjectV2.active.isLiveSelector,
-  inReview: Version.alexa.inReviewSelector,
+  inReview: VersionV2.active.alexa.isInReviewSelector,
 };
 
 const mapDispatchToProps = {
   setError: Modal.setError,
-  saveProductLocales: Product.saveAllProductLocales,
+  updateAllProductLocales: Product.updateAllProductLocales,
   loadProject: Project.loadActiveProject,
   loadVersion: Version.loadVersionByID,
 };

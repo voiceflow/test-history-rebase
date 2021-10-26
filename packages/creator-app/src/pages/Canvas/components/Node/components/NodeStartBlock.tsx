@@ -2,9 +2,10 @@ import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockVariant } from '@/constants/canvas';
-import * as Diagram from '@/ducks/diagram';
+import * as Creator from '@/ducks/creator';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { compose, connect } from '@/hocs';
 import PlayButton from '@/pages/Canvas/components/PlayButton';
 import { EngineContext, NodeEntityContext, NodeEntityProvider } from '@/pages/Canvas/contexts';
@@ -80,10 +81,10 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
 };
 
 const mapStateToProps = {
-  diagram: Diagram.activeDiagramSelector,
+  diagram: DiagramV2.active.diagramSelector,
   projectName: ProjectV2.active.nameSelector,
-  invocationName: Version.activeInvocationNameSelector,
-  isRootDiagram: Version.isRootDiagramActiveSelector,
+  invocationName: VersionV2.active.invocationNameSelector,
+  isRootDiagram: Creator.isRootDiagramActiveSelector,
 };
 
 const mergeProps = (...[{ invocationName, projectName }]: MergeArguments<typeof mapStateToProps>) => ({

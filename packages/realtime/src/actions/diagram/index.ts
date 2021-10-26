@@ -1,5 +1,6 @@
 import { LoguxControlOptions } from '@/control';
 
+import AddDiagramControl from './add';
 import AddBlocksControl from './addBlocks';
 import CreateComponentControl from './createComponent';
 import CreateTopicControl from './createTopic';
@@ -7,12 +8,14 @@ import DragBlocksControl from './dragBlocks';
 import DuplicateDiagramControl from './duplicate';
 import MoveBlocksControl from './moveBlocks';
 import MoveCursorControl from './moveCursor';
+import PatchDiagramControl from './patch';
 import RemoveDiagramControl from './remove';
 import RemoveBlockControl from './removeBlocks';
 import { AddLocalVariableControl, RemoveLocalVariableControl } from './variable';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const buildDiagramActionControls = (options: LoguxControlOptions) => ({
+  addDiagramControl: new AddDiagramControl(options),
   createComponentControl: new CreateComponentControl(options),
   createTopicControl: new CreateTopicControl(options),
   duplicateDiagramControl: new DuplicateDiagramControl(options),
@@ -22,6 +25,7 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   addBlocksControl: new AddBlocksControl(options),
   dragBlocksControl: new DragBlocksControl(options),
   moveBlocksControl: new MoveBlocksControl(options),
+  patchDiagramControl: new PatchDiagramControl(options),
   removeBlockControl: new RemoveBlockControl(options),
 
   // variables

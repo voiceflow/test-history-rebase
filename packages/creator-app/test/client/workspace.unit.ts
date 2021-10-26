@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { generate } from '@voiceflow/ui';
 
 import invoiceAdapter from '@/client/adapters/invoice';
-import memberAdapter from '@/client/adapters/member';
 import client, { LEGACY_WORKSPACE_PATH, WORKSPACES_PATH } from '@/client/workspace';
 
 import suite from './_suite';
@@ -86,7 +85,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
   describe('findMembers()', () => {
     it('should create a new workspace', async () => {
       const dbMembers: any[] = generate.array(3, generate.object);
-      const [members, mapMembersFromDB] = stubAdapter(memberAdapter, 'mapFromDB', generate.array);
+      const [members, mapMembersFromDB] = stubAdapter(Realtime.Adapters.memberAdapter, 'mapFromDB', generate.array);
       const fetch = stubFetch('api').resolves(dbMembers);
 
       const result = await client.findMembers(WORKSPACE_ID);

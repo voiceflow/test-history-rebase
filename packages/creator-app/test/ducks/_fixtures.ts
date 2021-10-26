@@ -1,0 +1,88 @@
+import * as Account from '@/ducks/account';
+import * as Creator from '@/ducks/creator';
+import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
+import * as Feature from '@/ducks/feature';
+import * as IntegrationUsers from '@/ducks/integration';
+import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
+import * as Modal from '@/ducks/modal';
+import * as Notifications from '@/ducks/notifications';
+import * as Product from '@/ducks/product';
+import * as ProductV2 from '@/ducks/productV2';
+import * as Project from '@/ducks/project';
+import * as ProjectList from '@/ducks/projectList';
+import * as ProjectListV2 from '@/ducks/projectListV2';
+import * as ProjectV2 from '@/ducks/projectV2';
+import * as Prototype from '@/ducks/prototype';
+import * as Realtime from '@/ducks/realtime';
+import * as Recent from '@/ducks/recent';
+import * as ReportTag from '@/ducks/reportTag';
+import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
+import * as Slot from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
+import * as Template from '@/ducks/template';
+import * as Thread from '@/ducks/thread';
+import * as Tracking from '@/ducks/tracking';
+import * as Transcript from '@/ducks/transcript';
+import * as UI from '@/ducks/ui';
+import { createCRUDState } from '@/ducks/utils/crud';
+import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
+import * as Viewport from '@/ducks/viewport';
+import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { State } from '@/store/types';
+
+export const MOCK_STATE: State = {
+  form: {},
+
+  [Account.STATE_KEY]: Account.INITIAL_STATE,
+  [Creator.STATE_KEY]: {
+    [Creator.FOCUS_STATE_KEY]: Creator.INITIAL_FOCUS_STATE,
+    [Creator.DIAGRAM_STATE_KEY]: { past: [], future: [], present: Creator.INITIAL_DIAGRAM_STATE },
+    [Creator.DIAGRAMS_HISTORY_STATE_KEY]: Creator.INITIAL_DIAGRAMS_HISTORY_STATE,
+  },
+  [Diagram.STATE_KEY]: createCRUDState(),
+  [DiagramV2.STATE_KEY]: DiagramV2.INITIAL_STATE,
+  [Feature.STATE_KEY]: Feature.INITIAL_STATE,
+  [IntegrationUsers.STATE_KEY]: IntegrationUsers.INITIAL_STATE,
+  [Intent.STATE_KEY]: createCRUDState(),
+  [IntentV2.STATE_KEY]: createCRUDState(),
+  [Modal.STATE_KEY]: Modal.INITIAL_STATE,
+  [Notifications.STATE_KEY]: Notifications.INITIAL_STATE,
+  [Product.STATE_KEY]: createCRUDState(),
+  [ProductV2.STATE_KEY]: createCRUDState(),
+  [Project.STATE_KEY]: createCRUDState(),
+  [ProjectV2.STATE_KEY]: createCRUDState(),
+  [ProjectList.STATE_KEY]: createCRUDState(),
+  [ProjectListV2.STATE_KEY]: createCRUDState(),
+  [Prototype.STATE_KEY]: Prototype.INITIAL_STATE as ReturnType<typeof Prototype.default>,
+  [Realtime.STATE_KEY]: Realtime.INITIAL_STATE,
+  [Recent.STATE_KEY]: Recent.INITIAL_STATE as ReturnType<typeof Recent.default>,
+  [ReportTag.STATE_KEY]: createCRUDState(),
+  [Router.STATE_KEY]: { location: Object.assign(new URL('http://foo.bar'), { query: {}, state: {} }), action: 'REPLACE' },
+  [Session.STATE_KEY]: {
+    ...Session.INITIAL_STATE,
+    token: { value: null },
+    intercomUserHMAC: null,
+    activeWorkspaceID: null,
+    activeProjectID: null,
+    activeVersionID: null,
+    tabID: '',
+    browserID: '',
+  },
+  [Slot.STATE_KEY]: createCRUDState(),
+  [SlotV2.STATE_KEY]: createCRUDState(),
+  [Template.STATE_KEY]: createCRUDState(),
+  [Thread.STATE_KEY]: Thread.INITIAL_STATE,
+  [Tracking.STATE_KEY]: {},
+  [Transcript.STATE_KEY]: Transcript.INITIAL_STATE,
+  [UI.STATE_KEY]: UI.INITIAL_STATE as ReturnType<typeof UI.default>,
+  [Version.STATE_KEY]: createCRUDState(),
+  [VersionV2.STATE_KEY]: createCRUDState(),
+  [Viewport.STATE_KEY]: Viewport.INITIAL_STATE as ReturnType<typeof Viewport.default>,
+  [Workspace.STATE_KEY]: createCRUDState(),
+  [WorkspaceV2.STATE_KEY]: createCRUDState(),
+};

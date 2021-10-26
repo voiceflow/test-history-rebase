@@ -4,10 +4,6 @@ export interface ProjectList {
   id: string;
   name: string;
   projects: string[];
-  /**
-   * @deprecated
-   */
-  isNew?: boolean;
 }
 
 export interface DBProjectList {

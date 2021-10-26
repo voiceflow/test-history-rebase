@@ -20,8 +20,8 @@ WORKDIR /usr/src/app
 COPY ./ ./
 
 RUN echo $NPM_TOKEN > .npmrc && \
-  yarn install --registry $REGISTRY_URL --production && \
   sed -i -e "s#https://registry.yarnpkg.com#${REGISTRY_URL}#g" yarn.lock && \
+  yarn install --registry $REGISTRY_URL --production && \
   rm -f .npmrc && \
   yarn cache clean
 

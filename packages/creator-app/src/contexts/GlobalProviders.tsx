@@ -8,7 +8,15 @@ import { IntercomProvider } from 'react-use-intercom';
 import { ThemeProvider } from 'styled-components';
 
 import { INTERCOM_APP_ID, IS_PRODUCTION_ENV } from '@/config';
-import { AccountLoadingGate, CapabilitiesGate, FeatureLoadingGate, MaintenanceGate, RealtimeConnectionGate, SocketLoadingGate } from '@/gates';
+import {
+  AccountLoadingGate,
+  AccountSubscriptionGate,
+  CapabilitiesGate,
+  FeatureLoadingGate,
+  MaintenanceGate,
+  RealtimeConnectionGate,
+  SocketLoadingGate,
+} from '@/gates';
 import THEME from '@/styles/theme';
 
 import { DragProvider } from './DragContext';
@@ -40,7 +48,9 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                         <ModalsContextProvider>
                           <SocketLoadingGate>
                             <AccountLoadingGate>
-                              <RealtimeConnectionGate>{children}</RealtimeConnectionGate>
+                              <RealtimeConnectionGate>
+                                <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
+                              </RealtimeConnectionGate>
                             </AccountLoadingGate>
                           </SocketLoadingGate>
                         </ModalsContextProvider>

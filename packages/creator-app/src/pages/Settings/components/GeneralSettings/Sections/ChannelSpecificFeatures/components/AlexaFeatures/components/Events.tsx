@@ -6,6 +6,7 @@ import Section, { SectionVariant } from '@/components/Section';
 import { FeatureFlag } from '@/config/features';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -21,7 +22,7 @@ interface AlexaEventsOwnProps {
 const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({
   propAlexaEvents,
   platformMeta,
-  saveSettings,
+  patchSettings,
   modelSensitivityShown,
 }) => {
   const { descriptors } = platformMeta;
@@ -45,7 +46,7 @@ const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({
 
   const save = async () => {
     try {
-      await saveSettings({ events: alexaEvents });
+      await patchSettings({ events: alexaEvents });
     } catch (err) {
       toast.error('Settings Save Error');
     }
@@ -85,12 +86,12 @@ const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({
 };
 
 const mapStateToProps = {
-  propAlexaEvents: Version.alexa.eventsSelector,
+  propAlexaEvents: VersionV2.active.alexa.eventsSelector,
   projectID: Session.activeProjectIDSelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings: Version.alexa.saveSettings,
+  patchSettings: Version.alexa.patchSettings,
 };
 
 type ConnectedAlexaEvents = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

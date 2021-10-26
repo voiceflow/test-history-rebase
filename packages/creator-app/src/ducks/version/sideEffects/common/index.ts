@@ -12,50 +12,60 @@ import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
 import * as Integration from '@/ducks/integration';
 import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import * as Thread from '@/ducks/thread';
+import * as VersionV2 from '@/ducks/versionV2';
 import * as Models from '@/models';
 import { Thunk } from '@/store/types';
 import { storeLogger } from '@/store/utils';
 import { isChoiceNode, isFlowNode, isIntentNode, isProductLinkedNode } from '@/utils/node';
 import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 
-import { addVersion, updateSessionByVersionID } from '../../actions';
-import { activeDefaultVoiceSelector, activeSessionSelector } from '../../selectors';
-import { AnyLocale, AnyVersion } from '../../types';
-import { updateLocalesByVersionID } from '../platform';
+import { crud, updateSessionByVersionID } from '../../actions';
+import { getActiveVersionContext } from '../../utils';
 
 export * from './topicsComponents';
 export * from './variables';
 
+/**
+ * @deprecated these are now loaded automatically by the subscription to the project/:projectID realtime event channel
+ */
 export const loadVersionByID =
-  (versionID: string): Thunk<AnyVersion> =>
+  (versionID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+
+    if (isAtomicActions) return;
 
     const dbVersion = (await client.api.version.get(versionID)) as Realtime.AnyDBVersion;
     const version = Realtime.Adapters.versionAdapter.fromDB(dbVersion, { platform });
 
-    dispatch(addVersion(version.id, version));
-
-    return version;
+    dispatch(crud.add(version.id, version));
   };
 
+/**
+ * @deprecated
+ */
 export const activateVersion =
-  (versionID: string, diagramID?: string): Thunk<AnyVersion> =>
+  (versionID: string, diagramID?: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
     const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
 
+    if (isAtomicActions) return;
+
     const dbVersion = await client.api.version.get<Realtime.AnyDBVersion>(versionID);
+    const { projectID } = dbVersion;
 
     const diagrams = await dispatch(Diagram.loadDiagrams(versionID, dbVersion.rootDiagramID));
 
@@ -73,31 +83,27 @@ export const activateVersion =
     // not a dependency for project to load
     dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
 
-    const dbProject = await client.api.project.get<Realtime.AnyProjectData, Realtime.AnyProjectMemberData>(dbVersion.projectID);
+    const project = await client.api.project
+      .get<Realtime.AnyProjectData, Realtime.AnyProjectMemberData>(projectID)
+      .then(Realtime.Adapters.projectAdapter.fromDB);
+    const { platform, workspaceID, platformData: projectPlatformData } = project;
 
-    const platform = dbProject.platform as Constants.PlatformType;
-
-    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject);
     const version = Realtime.Adapters.versionAdapter.fromDB(dbVersion, { platform });
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbVersion.platformData.slots);
     const intents = Realtime.Adapters.getPlatformIntentAdapter<any>(platform).mapFromDB(dbVersion.platformData.intents, { platform });
 
     const products =
-      'products' in dbProject.platformData
-        ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((dbProject.platformData as AlexaProject.AlexaProjectData).products))
+      'products' in projectPlatformData
+        ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((projectPlatformData as AlexaProject.AlexaProjectData).products))
         : [];
 
     batch(() => {
       dispatch(Creator.resetCreator());
       dispatch(Product.replaceProducts(products));
       dispatch(Intent.replaceIntents(intents));
-      dispatch(Slot.replaceSlots(slots));
-
-      if (!isAtomicActions) {
-        dispatch(Project.addProject(project.id, project));
-      }
-
-      dispatch(addVersion(version.id, version));
+      dispatch(Slot.crud.replace(slots));
+      dispatch(Project.crud.add(projectID, project));
+      dispatch(crud.add(versionID, version));
       dispatch(
         Prototype.updatePrototypeSettings(
           {
@@ -107,14 +113,46 @@ export const activateVersion =
           false
         )
       );
-      dispatch(Thread.loadThreads(version.projectID));
+      dispatch(Thread.loadThreads(projectID));
       dispatch(Session.setActiveDiagramID(diagramID || version.rootDiagramID));
-      dispatch(Session.setActiveProjectID(version.projectID));
+      dispatch(Session.setActiveProjectID(projectID));
       dispatch(Session.setActiveVersionID(versionID));
-      dispatch(Session.setActiveWorkspaceID(dbProject.teamID));
+      dispatch(Session.setActiveWorkspaceID(workspaceID));
     });
 
-    return version;
+    await client.socket?.project.initialize(projectID);
+  };
+
+export const activateVersionV2 =
+  ({ workspaceID, projectID, versionID, diagramID }: Realtime.version.ActivateVersionPayload): Thunk =>
+  async (dispatch, getState) => {
+    const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+    if (!isAtomicActions) return;
+
+    const dbVersion = await client.api.version.get<Models.AnyDBVersion>(versionID);
+
+    // not a dependency for project to load
+    dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
+
+    batch(() => {
+      dispatch(Creator.resetCreator());
+      dispatch(
+        Prototype.updatePrototypeSettings(
+          {
+            ...dbVersion.prototype?.settings,
+            layout: (dbVersion.prototype?.settings.layout as Prototype.PrototypeLayout | undefined) ?? Prototype.PrototypeLayout.TEXT_DIALOG,
+          },
+          false
+        )
+      );
+      dispatch(Thread.loadThreads(projectID));
+      dispatch(Session.setActiveDiagramID(diagramID));
+      dispatch(Session.setActiveProjectID(projectID));
+      dispatch(Session.setActiveVersionID(versionID));
+      dispatch(Session.setActiveWorkspaceID(workspaceID));
+    });
+
+    await client.socket?.project.initialize(projectID);
   };
 
 export const importProjectContext =
@@ -162,7 +200,7 @@ export const importProjectContext =
 
     await Promise.all(
       products.map(async (product) => {
-        const newProductID = await dispatch(Product.copyNewProduct(product));
+        const newProductID = await dispatch(Product.cloneProduct(product));
 
         mappedNodes = mappedNodes.map((node) =>
           isProductLinkedNode(node.data) && node.data.productID === product.id ? { ...node, data: { ...node.data, productID: newProductID } } : node
@@ -172,7 +210,7 @@ export const importProjectContext =
 
     await Promise.all(
       diagrams.map(async (diagram) => {
-        const newDiagramID = await dispatch(Diagram.copyDiagram(diagram.id));
+        const newDiagramID = await dispatch(Diagram.duplicateDiagram(diagram.id));
 
         mappedNodes = mappedNodes.map((node) =>
           isFlowNode(node.data) && node.data.diagramID === diagram.id ? { ...node, data: { ...node.data, diagramID: newDiagramID } } : node
@@ -185,65 +223,65 @@ export const importProjectContext =
 
 // active version
 
-export const saveIntentsAndSlots = (): Thunk => async (_, getState) => {
+/**
+ * @deprecated intent and slot changes are synchronized by the new realtime system
+ */
+export const saveIntentsAndSlots = (): Thunk => async (_dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
   const platform = ProjectV2.active.platformSelector(state);
+  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+
+  if (isAtomicActions) return;
 
   Errors.assertVersionID(versionID);
 
-  const slots = Realtime.Adapters.slotAdapter.mapToDB(Slot.allSlotsSelector(state));
+  const slots = Realtime.Adapters.slotAdapter.mapToDB(SlotV2.allSlotsSelector(state));
   const intents = Realtime.Adapters.getPlatformIntentAdapter(platform).mapToDB(
-    Intent.allIntentsSelector(state) as any /* TODO: find a way to fix this typing, update adapters */
+    IntentV2.allIntentsSelector(state) as any /* TODO: find a way to fix this typing, update adapters */
   );
 
   await client.api.version.updatePlatformData(versionID, { slots, intents });
 };
 
-export const saveLocales =
-  (locales: AnyLocale[]): Thunk =>
-  async (dispatch, getState) => {
-    if (!locales?.length) return;
-
-    const state = getState();
-    const platform = ProjectV2.active.platformSelector(state);
-    const versionID = Session.activeVersionIDSelector(state);
-
-    Errors.assertVersionID(versionID);
-
-    await client.platform(platform).version.updatePublishing(versionID, { locales: locales as any });
-
-    dispatch(updateLocalesByVersionID(versionID, locales));
-  };
-
-export const saveSession =
+export const patchSession =
   (session: Partial<Models.Version.Session>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
-    const activeSession = activeSessionSelector(state);
-    const defaultVoice = activeDefaultVoiceSelector(state);
+    const activeSession = VersionV2.active.sessionSelector(state);
+    const defaultVoice = VersionV2.active.defaultVoiceSelector(state);
     const platform = ProjectV2.active.platformSelector(state);
 
     if (!versionID || !activeSession) throw Errors.noActiveVersionID();
 
-    dispatch(updateSessionByVersionID(versionID, session));
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          const dbSession = Realtime.Adapters.createSessionAdapter({ platform }).toDB({ ...activeSession, ...session }, { defaultVoice }) as any;
 
-    await client.platform(platform).version.updateSettings(versionID, {
-      session: Realtime.Adapters.createSessionAdapter({ platform }).toDB({ ...activeSession, ...session }, { defaultVoice }) as any,
-    });
+          dispatch(updateSessionByVersionID(versionID, session));
+
+          await client.platform(platform).version.updateSettings(versionID, { session: dbSession });
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.version.patchSession({ ...context, session }));
+        }
+      )
+    );
   };
 
-export const saveResumePrompt =
+export const updateResumePrompt =
   (resumePrompt: Partial<Models.Version.Session['resumePrompt']>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const activeSession = activeSessionSelector(state);
+    const activeSession = VersionV2.active.sessionSelector(state);
 
     if (!activeSession) throw Errors.noActiveVersionID();
 
     await dispatch(
-      saveSession({
+      patchSession({
         resumePrompt: {
           ...activeSession.resumePrompt,
           ...resumePrompt,

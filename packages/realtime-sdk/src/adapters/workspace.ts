@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
-import { DBWorkspace, Workspace, WorkspaceActivationState } from '../models';
+import { DBMember, DBWorkspace, Workspace, WorkspaceActivationState } from '../models';
 import { sortWorkspaces } from '../utils/workspace';
+import memberAdapter from './member';
 import { AdapterNotImplementedError, createAdapter } from './utils';
 
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
@@ -59,4 +60,16 @@ const workspaceAdapter = createAdapter<DBWorkspace, Workspace>(
 export default {
   ...workspaceAdapter,
   mapFromDB: (dbWorkspaces: DBWorkspace[]) => sortWorkspaces(workspaceAdapter.mapFromDB(dbWorkspaces)),
+};
+
+export const workspaceWithMembersAdapter = {
+  ...createAdapter<{ workspace: DBWorkspace; members: DBMember[] }, Workspace>(
+    ({ workspace, members }) => ({ ...workspaceAdapter.fromDB(workspace), members: memberAdapter.mapFromDB(members) }),
+    () => {
+      throw new AdapterNotImplementedError();
+    }
+  ),
+  mapFromDB: (_dbWorkspaces: any[]) => {
+    throw new AdapterNotImplementedError();
+  },
 };

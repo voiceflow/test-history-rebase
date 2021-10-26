@@ -63,7 +63,7 @@ export function List(props) {
   useEffect(() => {
     if (isNew) {
       inputRef.current.focus();
-      clearNewBoard(id);
+      clearNewBoard();
     }
   }, []);
 

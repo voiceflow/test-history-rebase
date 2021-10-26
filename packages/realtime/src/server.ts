@@ -1,7 +1,8 @@
 import * as Logux from '@logux/server';
+import { ServerMeta } from '@logux/server';
 import Logger from '@voiceflow/logger';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { AnyAction } from 'typescript-fsa';
+import { Action, AnyAction } from 'typescript-fsa';
 
 import type { Config } from './types';
 
@@ -37,7 +38,7 @@ class Server extends Logux.Server {
       },
       env: config.NODE_ENV === 'production' ? 'production' : 'development',
 
-      ...((config.NODE_ENV === 'e2e' || config.NODE_ENV === 'local') && {
+      ...(config.NODE_ENV === 'e2e' && {
         cert: 'certs/localhost.crt',
         key: 'certs/localhost.key',
       }),
@@ -50,6 +51,10 @@ class Server extends Logux.Server {
 
   async stop(): Promise<void> {
     await this.destroy();
+  }
+
+  public async processAs(creatorID: number, action: Action<any>, meta?: Partial<ServerMeta>): Promise<Readonly<ServerMeta>> {
+    return super.process({ ...action, meta: { ...action?.meta, creatorID } }, meta);
   }
 }
 

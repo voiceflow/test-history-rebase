@@ -22,7 +22,9 @@ import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as Slot from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -35,7 +37,7 @@ import { BuiltInIntentMessage } from './components';
 
 export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
-function UtteranceManager({ intent, focus, slots, addSlot, patchIntent, customIntents, isNested, isInModal }) {
+function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, customIntents, isNested, isInModal }) {
   const { search } = useLocation();
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM];
@@ -88,7 +90,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, patchIntent, customIn
 
               resolve({ id, name, color });
 
-              await addSlot(id, { id, type, name, color, inputs });
+              await createSlot(id, { id, type, name, color, inputs });
 
               closeSlotEdit();
             },
@@ -227,13 +229,13 @@ function UtteranceManager({ intent, focus, slots, addSlot, patchIntent, customIn
 }
 
 const mapStateToProps = {
-  slots: Slot.allSlotsSelector,
-  customIntents: Intent.allCustomIntentsSelector,
+  slots: SlotV2.allSlotsSelector,
+  customIntents: IntentV2.allCustomIntentsSelector,
   focus: Creator.creatorFocusSelector,
 };
 
 const mapDispatchToProps = {
-  addSlot: Slot.addSlot,
+  createSlot: Slot.createSlot,
   patchIntent: Intent.patchIntent,
 };
 

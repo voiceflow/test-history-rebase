@@ -1,9 +1,9 @@
-import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
 import { sanitizePatch } from '@/actions/utils';
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
+import { Context } from '@/types';
 
 type PatchIntentPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.Intent>>;
 
@@ -11,7 +11,7 @@ class PatchIntent extends AbstractVersionResourceControl<PatchIntentPayload> {
   protected actionCreator = Realtime.intent.crud.patch;
 
   process = async (ctx: Context, { payload }: Action<PatchIntentPayload>) => {
-    const creatorID = Number(ctx.userId);
+    const { creatorID } = ctx.data;
     const platform = await this.services.project.getPlatform(creatorID, payload.projectID);
     const intents: Realtime.Intent[] = await this.services.intent
       .getAll(creatorID, payload.versionID)

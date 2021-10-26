@@ -7,6 +7,7 @@ setupEnv();
 const NODE_ENV = getRequiredProcessEnv('NODE_ENV');
 const CLOUD_ENV = getOptionalProcessEnv('CLOUD_ENV', 'public');
 
+const GOOGLE_SERVICE_ENDPOINT = getRequiredProcessEnv('GOOGLE_SERVICE_ENDPOINT');
 const CONFIG: Config = {
   NODE_ENV,
   PORT: parseInt(getRequiredProcessEnv('PORT'), 10),
@@ -17,7 +18,8 @@ const CONFIG: Config = {
   // TODO: undo
   CREATOR_API_ENDPOINT: getRequiredProcessEnv('CREATOR_API_ENDPOINT'),
   ALEXA_SERVICE_ENDPOINT: getRequiredProcessEnv('ALEXA_SERVICE_ENDPOINT'),
-  GOOGLE_SERVICE_ENDPOINT: getRequiredProcessEnv('GOOGLE_SERVICE_ENDPOINT'),
+  GOOGLE_SERVICE_ENDPOINT,
+  DIALOGFLOW_SERVICE_ENDPOINT: `${GOOGLE_SERVICE_ENDPOINT}/dialogflow/es`,
   GENERAL_SERVICE_ENDPOINT: getRequiredProcessEnv('GENERAL_SERVICE_ENDPOINT'),
 
   // Release information

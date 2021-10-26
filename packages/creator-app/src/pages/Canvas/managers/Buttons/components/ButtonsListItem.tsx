@@ -7,7 +7,7 @@ import IntentSelect from '@/components/IntentSelect';
 import { CheckboxGroup } from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import { NamespaceProvider } from '@/contexts';
-import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useLinkedState, useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -40,7 +40,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
   ref
 ) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const getIntentByID = useSelector(Intent.platformIntentByIDSelector);
+  const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
   const buttonOptions = getButtonActions(platform);
 
   const [url, setUrl] = useLinkedState(item.url ?? '');

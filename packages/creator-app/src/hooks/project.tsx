@@ -104,8 +104,8 @@ export const useProjectOptions = ({
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
 
-  const copyProject = useDispatch(Workspace.copyProject);
-  const saveProjectPrivacy = useDispatch(Project.saveProjectPrivacy);
+  const duplicateProject = useDispatch(Workspace.duplicateProject);
+  const updateProjectPrivacy = useDispatch(Project.updateProjectPrivacy);
 
   const { open: onOpenCloneModal } = useModals(ModalType.IMPORT_PROJECT);
   const { toggle: onToggleLoadingModal } = useModals(ModalType.LOADING);
@@ -138,7 +138,7 @@ export const useProjectOptions = ({
 
     trackingEvents.trackProjectDuplicate({ versionID: getProjectByID(projectID)?.versionID, projectID });
 
-    await copyProject(projectID, workspace.id, boardID);
+    await duplicateProject(projectID, workspace.id, boardID);
 
     onToggleLoadingModal(false);
     onDuplicated?.();
@@ -159,7 +159,7 @@ export const useProjectOptions = ({
 
         trackingEvents.trackActiveProjectDownloadLinkShare();
 
-        saveProjectPrivacy(projectID, ProjectPrivacy.PUBLIC);
+        updateProjectPrivacy(projectID, ProjectPrivacy.PUBLIC);
       } catch {
         toast.error('Error getting import link');
       }

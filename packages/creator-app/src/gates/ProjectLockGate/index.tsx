@@ -1,13 +1,16 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
+import { FeatureFlag } from '@/config/features';
 import * as Realtime from '@/ducks/realtime';
-import { connect } from '@/hocs';
-import { ConnectedProps } from '@/types';
+import { withoutFeatureGate } from '@/hocs';
+import { useDispatch, useSelector } from '@/hooks';
 
 import { Warning } from './components';
 
-const ProjectLockGate: React.FC<ConnectedProjectLockGateProps> = ({ isSessionBusy, handleSessionTakeover, children }) => {
+const ProjectLockGate: React.FC = ({ children }) => {
+  const isSessionBusy = useSelector(Realtime.isSessionBusy);
+  const handleSessionTakeover = useDispatch(Realtime.handleRealtimeTakeover);
   const [errorScreen, setErrorScreen] = React.useState<JSX.Element | null>(null);
 
   const lockProject = () => {
@@ -35,14 +38,4 @@ const ProjectLockGate: React.FC<ConnectedProjectLockGateProps> = ({ isSessionBus
   );
 };
 
-const mapStateToProps = {
-  isSessionBusy: Realtime.isSessionBusy,
-};
-
-const mapDispatchToProps = {
-  handleSessionTakeover: Realtime.handleRealtimeTakeover,
-};
-
-type ConnectedProjectLockGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectLockGate);
+export default withoutFeatureGate(FeatureFlag.ATOMIC_ACTIONS)(ProjectLockGate);

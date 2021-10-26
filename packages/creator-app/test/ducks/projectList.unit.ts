@@ -4,10 +4,11 @@ import { DeepPartial } from 'utility-types';
 
 import client from '@/client';
 import * as Feature from '@/ducks/feature';
+import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectListSelectorsV2 from '@/ducks/projectListV2/selectors';
-import { CRUDState, INITIAL_STATE as CRUD_INITIAL_STATE } from '@/ducks/utils/crud';
+import { createCRUDState, CRUDState } from '@/ducks/utils/crud';
 import * as Models from '@/models';
 import { State } from '@/store/types';
 import { normalize } from '@/utils/normalized';
@@ -23,7 +24,6 @@ const LIST = {
   id: LIST_ID,
   name: LIST_NAME,
   projects: [PROJECT_ID, ...PROJECT_IDS],
-  isNew: true,
 } as Models.ProjectList;
 const MOCK_STATE: CRUDState<Models.ProjectList> = {
   byKey: {
@@ -32,7 +32,7 @@ const MOCK_STATE: CRUDState<Models.ProjectList> = {
   allKeys: [LIST_ID],
 };
 const ROOT_STATE: DeepPartial<State> = {
-  [ProjectListV2.STATE_KEY]: CRUD_INITIAL_STATE,
+  [ProjectListV2.STATE_KEY]: createCRUDState(),
   [Feature.STATE_KEY]: {
     features: {},
   },
@@ -40,11 +40,13 @@ const ROOT_STATE: DeepPartial<State> = {
 
 suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describeCRUDReducer, describeSelectors, describeSideEffects }) => {
   describeCRUDReducer(({ expectAction, applyAction }) => {
-    describe('updateProjectList()', () => {
-      it('should rename the list', () => {
-        const name = generate.string();
+    describe('crud', () => {
+      describe('update()', () => {
+        it('should rename the list', () => {
+          const name = generate.string();
 
-        expectAction(ProjectList.updateProjectList(LIST_ID, { name }, true)).toModifyByKey(LIST_ID, { name });
+          expectAction(ProjectList.crud.patch(LIST_ID, { name })).toModifyByKey(LIST_ID, { name });
+        });
       });
     });
 
@@ -75,8 +77,15 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
     describe('transplantProject()', () => {
       it('should reorder project in list', () => {
         expectAction(
-          ProjectList.transplantProject({ listID: LIST_ID, projectID: PROJECT_ID }, { listID: LIST_ID, projectID: PROJECT_IDS[2] })
+          ProjectList.transplantProject({ listID: LIST_ID, projectID: PROJECT_ID }, { listID: LIST_ID, target: PROJECT_IDS[2] })
         ).toModifyByKey(LIST_ID, { projects: [...PROJECT_IDS, PROJECT_ID] });
+      });
+
+      it('should reorder project in list by index', () => {
+        expectAction(ProjectList.transplantProject({ listID: LIST_ID, projectID: PROJECT_ID }, { listID: LIST_ID, target: 1 })).toModifyByKey(
+          LIST_ID,
+          { projects: [PROJECT_IDS[0], PROJECT_ID, PROJECT_IDS[1], PROJECT_IDS[2]] }
+        );
       });
 
       it('should move project between lists', () => {
@@ -85,9 +94,9 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
         const projectIDs = generate.array();
         const otherList = { id: listID, name: generate.string(), projects: [...projectIDs, projectID] };
 
-        const state = applyAction(ProjectList.addProjectList(listID, otherList));
+        const state = applyAction(ProjectList.crud.add(listID, otherList));
 
-        expectAction(ProjectList.transplantProject({ listID: LIST_ID, projectID: PROJECT_ID }, { listID, projectID }))
+        expectAction(ProjectList.transplantProject({ listID: LIST_ID, projectID: PROJECT_ID }, { listID, target: projectID }))
           .withState(state)
           .toModifyByKey(LIST_ID, { projects: PROJECT_IDS })
           .toModifyByKey(listID, { projects: [...projectIDs, PROJECT_ID, projectID] });
@@ -121,7 +130,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
     });
   });
 
-  describeSideEffects(({ applyEffect }) => {
+  describeSideEffects(({ applyEffect, expectEffect }) => {
     const rootState = {
       ...ROOT_STATE,
       session: {},
@@ -131,26 +140,15 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
       it('should rename the list', async () => {
         const name = generate.string();
 
-        const { expectDispatch } = await applyEffect(ProjectList.renameProjectList(LIST_ID, name), rootState);
-
-        expectDispatch(ProjectList.updateProjectList(LIST_ID, { name }, true));
+        await expectEffect(ProjectList.renameProjectList(LIST_ID, name), [ProjectList.crud.patch(LIST_ID, { name })], rootState);
       });
     });
 
-    describe('clearNewProjectList()', () => {
-      it('should clear the isNew flag', async () => {
-        const { expectDispatch } = await applyEffect(ProjectList.clearNewProjectList(LIST_ID), rootState);
-
-        expectDispatch(ProjectList.updateProjectList(LIST_ID, { isNew: false }, true));
-      });
-    });
     describe('addProjectToList()', () => {
       it('should add project to end of list', async () => {
         const projectID = generate.id();
 
-        const { expectDispatch } = await applyEffect(ProjectList.addProjectToList(LIST_ID, projectID), rootState);
-
-        expectDispatch(ProjectList.addProjectToListAction(LIST_ID, projectID));
+        await expectEffect(ProjectList.addProjectToList(LIST_ID, projectID), [ProjectList.addProjectToListAction(LIST_ID, projectID)], rootState);
       });
     });
 
@@ -161,7 +159,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
         const updateLists = stub(client.projectList, 'update');
         stub(ProjectListSelectorsV2, 'allProjectListsSelector').returns(lists);
 
-        await applyEffect(ProjectList.saveProjectListsForWorkspace(workspaceID));
+        await applyEffect(ProjectList.saveProjectListsForWorkspace(workspaceID), { feature: { features: {} } });
 
         expect(updateLists).to.be.calledWithExactly(workspaceID, lists);
       });
@@ -175,7 +173,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
         const { result, expectDispatch } = await applyEffect(ProjectList.createProjectList(), rootState);
 
         expect(result.id).to.eq(listID);
-        expectDispatch(ProjectList.addProjectList(listID, { id: listID, name: 'New List', projects: [], isNew: true }));
+        expectDispatch(ProjectList.crud.add(listID, { id: listID, name: 'New List', projects: [] }));
       });
     });
 
@@ -194,17 +192,29 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
     describe('deleteProjectList()', () => {
       it('should remove a project list and all the projects in it', async () => {
-        const { dispatch } = await applyEffect(ProjectList.deleteProjectList(LIST_ID), rootState);
+        const deleteProject = stub(client.api.project, 'delete');
 
-        expect(dispatch).to.be.calledWithExactly(ProjectList.removeProjectList(LIST_ID));
+        await expectEffect(
+          ProjectList.deleteProjectList(LIST_ID),
+          [Project.crud.removeMany(LIST.projects), ProjectList.crud.remove(LIST_ID)],
+          rootState
+        );
+
+        LIST.projects.forEach((projectID) => expect(deleteProject).to.be.calledWithExactly(projectID));
       });
     });
 
     describe('deleteProjectFromList()', () => {
       it('should the the projects in the list', async () => {
-        const { dispatch } = await applyEffect(ProjectList.deleteProjectFromList(LIST_ID, PROJECT_ID), rootState);
+        const deleteProject = stub(client.api.project, 'delete');
 
-        expect(dispatch).to.be.calledWithExactly(ProjectList.removeProjectFromList(LIST_ID, PROJECT_ID));
+        await expectEffect(
+          ProjectList.deleteProjectFromList(LIST_ID, PROJECT_ID),
+          [Project.crud.remove(PROJECT_ID), ProjectList.removeProjectFromList(LIST_ID, PROJECT_ID)],
+          rootState
+        );
+
+        expect(deleteProject).to.be.calledWithExactly(PROJECT_ID);
       });
     });
   });

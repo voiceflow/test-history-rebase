@@ -38,7 +38,8 @@ export type AnyVersionSettings =
   | AlexaVersion.AlexaVersionSettings
   | GoogleVersion.GoogleVersionSettings
   | GeneralVersion.GeneralVersionSettings
-  | DialogflowVersion.GoogleDFESVersionSettings;
+  | DialogflowVersion.GoogleDFESVersionSettings
+  | ChatVersion.ChatVersionSettings;
 export type AnyVersionPublishing =
   | AlexaVersion.AlexaVersionPublishing
   | GoogleVersion.GoogleVersionPublishing

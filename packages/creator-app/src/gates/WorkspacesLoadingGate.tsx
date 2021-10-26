@@ -1,7 +1,9 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
+import { FeatureFlag } from '@/config/features';
 import * as Workspace from '@/ducks/workspace';
+import { withoutFeatureGate } from '@/hocs';
 import { useDispatch } from '@/hooks';
 
 const WorkspacesLoadingGate: React.FC = ({ children }) => {
@@ -22,4 +24,7 @@ const WorkspacesLoadingGate: React.FC = ({ children }) => {
   );
 };
 
-export default WorkspacesLoadingGate;
+/**
+ * @deprecated
+ */
+export default withoutFeatureGate(FeatureFlag.ATOMIC_ACTIONS)(WorkspacesLoadingGate);

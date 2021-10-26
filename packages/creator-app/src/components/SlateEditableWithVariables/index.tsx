@@ -18,7 +18,7 @@ import SlateEditable, {
   useSetupSlateEditor,
   useSlateEditorForceNormalize,
 } from '@/components/SlateEditable';
-import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Version from '@/ducks/version';
 import { useDispatch, useLinkedState, useSelector } from '@/hooks';
 import { Nullish } from '@/types';
@@ -55,7 +55,7 @@ const SlateEditableWithVariables: React.ForwardRefRenderFunction<SlateEditableRe
 ) => {
   const editor = useSetupSlateEditor(SlatePluginType.LINKS, SlatePluginType.VARIABLES);
 
-  const localVariables = useSelector(Diagram.activeDiagramAllVariablesNormalizedSelector);
+  const localVariables = useSelector(DiagramV2.active.allSlotsAndVariablesNormalizedSelector);
   const addGlobalVariable = useDispatch(Version.addGlobalVariable);
 
   const defaultValue = useCreateConst(() => SlateEditorAPI.getEmptyState());

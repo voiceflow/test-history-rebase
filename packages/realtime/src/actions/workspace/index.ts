@@ -1,4 +1,5 @@
 import { LoguxControlOptions } from '../../control';
+import AddWorkspaceControl from './add';
 import CreateWorkspaceControl from './create';
 import LeaveWorkspaceControl from './leave';
 import {
@@ -6,6 +7,7 @@ import {
   AddMemberControl,
   CancelInviteControl,
   EjectMemberControl,
+  PatchWorkspaceMemberControl,
   RemoveWorkspaceMemberControl,
   ReplaceWorkspaceMembersControl,
   SendInviteControl,
@@ -17,6 +19,7 @@ import UpdateWorkspaceNameControl from './updateName';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
+  addWorkspaceControl: new AddWorkspaceControl(options),
   createWorkspaceControl: new CreateWorkspaceControl(options),
   leaveWorkspaceControl: new LeaveWorkspaceControl(options),
   removeWorkspaceControl: new RemoveWorkspaceControl(options),
@@ -28,6 +31,7 @@ const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
   addMemberControl: new AddMemberControl(options),
   cancelInviteControl: new CancelInviteControl(options),
   ejectMemberControl: new EjectMemberControl(options),
+  patchWorkspaceMemberControl: new PatchWorkspaceMemberControl(options),
   removeWorkspaceMemberControl: new RemoveWorkspaceMemberControl(options),
   replaceWorkspaceMembersControl: new ReplaceWorkspaceMembersControl(options),
   sendInviteControl: new SendInviteControl(options),

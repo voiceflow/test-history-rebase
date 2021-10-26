@@ -1,21 +1,21 @@
 import { Box, BoxFlex, Button, Input } from '@voiceflow/ui';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import Section, { SectionVariant } from '@/components/Section';
 import { ActionSection, SectionVariants, SettingsSection } from '@/components/Settings';
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
-import { useActiveWorkspace, useModals } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useModals } from '@/hooks';
 
 import BoardDeleteModal from './components/BoardDeleteModal';
 
 const UploadJustIconComponent: React.FC<any> = UploadJustIcon;
 
 const GeneralSettingsPage: React.FC = () => {
-  const dispatch = useDispatch();
   const workspace = useActiveWorkspace()!;
+  const updateActiveWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
+  const updateActiveWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
 
   const [name, updateName] = React.useState(workspace.name);
 
@@ -27,7 +27,7 @@ const GeneralSettingsPage: React.FC = () => {
 
   const saveName = React.useCallback(() => {
     if (name && name !== workspace.name) {
-      dispatch(Workspace.updateActiveWorkspaceName(name));
+      updateActiveWorkspaceName(name);
     } else {
       updateName(workspace.name);
     }
@@ -42,7 +42,7 @@ const GeneralSettingsPage: React.FC = () => {
             <Box ml={16}>
               <UploadJustIconComponent
                 size={UploadIconVariant.EXTRA_SMALL}
-                update={(image: string) => dispatch(Workspace.updateActiveWorkspaceImage(image))}
+                update={updateActiveWorkspaceImage}
                 image={workspace.image}
                 endpoint="/image"
               />

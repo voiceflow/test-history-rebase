@@ -83,7 +83,7 @@ export const MarketPlaceAvailability = [
     countries: ['AT', 'DE', 'LI', 'LU'],
   },
   {
-    marketPlace: 'amazon.es',
+    marketPlace: Project.MarketPlace.ES,
     currency: 'EUR',
     icon: '€',
     min: 0.99,
@@ -107,7 +107,7 @@ export const MarketPlaceAvailability = [
     countries: ['FR'],
   },
   {
-    marketPlace: 'amazon.it',
+    marketPlace: Project.MarketPlace.IT,
     currency: 'EUR',
     icon: '€',
     min: 0.99,

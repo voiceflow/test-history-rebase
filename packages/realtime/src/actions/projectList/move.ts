@@ -1,8 +1,8 @@
-import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '@/actions/workspace/utils';
+import { Context } from '@/types';
 
 type MoveProjectListPayload = Realtime.BaseWorkspacePayload & Realtime.actionUtils.CRUDMovePayload;
 
@@ -10,7 +10,7 @@ class MoveProjectList extends AbstractWorkspaceChannelControl<MoveProjectListPay
   protected actionCreator = Realtime.projectList.crud.move;
 
   protected process = async (ctx: Context, { payload }: Action<MoveProjectListPayload>) => {
-    const creatorID = Number(ctx.userId);
+    const { creatorID } = ctx.data;
     const projectLists = await this.services.projectList.getAll(creatorID, payload.workspaceID);
     const fromIndex = projectLists.findIndex((list) => list.board_id === payload.from);
     const toIndex = projectLists.findIndex((list) => list.board_id === payload.to);

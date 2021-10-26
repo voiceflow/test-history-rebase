@@ -2,11 +2,13 @@ import * as Redux from 'redux';
 import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { DiagramState } from '@/constants';
 import type { State } from '@/ducks';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
+import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { unique } from '@/utils/array';
@@ -25,6 +27,9 @@ const isIgnored = (action: AnyAction, ignore: ActionIgnore) =>
 const getDiffKeys = (lhs: Record<string, any>, rhs: Record<string, any>) =>
   unique([...Object.keys(lhs), ...Object.keys(rhs)]).filter((key) => lhs[key] !== rhs[key]);
 
+/**
+ * @deprecated
+ */
 export const createAutosaveMiddleware = <T>(
   selector: Selector<T>,
   createSaveAction: (changedKeys: string[] | null) => Dispatchable,
@@ -42,9 +47,10 @@ export const createAutosaveMiddleware = <T>(
     const state = store.getState();
     const currentState = selector(state);
     const canEditCanvas = WorkspaceV2.active.hasPermissionSelector(state, Permission.EDIT_CANVAS);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     try {
-      if (!canEditCanvas) return;
+      if (isAtomicActions || !canEditCanvas) return;
 
       // do not autosave on realtime updates
       if (action.meta?.receivedAction) return;
@@ -62,6 +68,9 @@ export const createAutosaveMiddleware = <T>(
   };
 };
 
+/**
+ * @deprecated
+ */
 export const createRealtimeResourceUpdateMiddleware = <T>(
   resourceID: Realtime.ResourceType,
   selector: Selector<T>,
@@ -76,9 +85,10 @@ export const createRealtimeResourceUpdateMiddleware = <T>(
     const state = store.getState();
     const currentState = selector(state);
     const isRealtimeConnected = Realtime.isRealtimeConnectedSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     try {
-      if (!isRealtimeConnected) return;
+      if (isAtomicActions || !isRealtimeConnected) return;
 
       // do not autosave on realtime updates
       if (action.meta?.receivedAction) return;

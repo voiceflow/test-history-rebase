@@ -8,6 +8,7 @@ import Section, { SectionToggleVariant, SectionVariant } from '@/components/Sect
 import SSML from '@/components/SSML';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import * as VersionDuck from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { ErrorMessage } from '@/pages/Settings/components';
@@ -32,10 +33,10 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
   platformMeta,
   defaultVoice,
   platformDefaultVoice,
-  saveSettings,
-  saveSession,
-  saveResumePrompt,
-  saveDefaultVoice,
+  patchSettings,
+  patchSession,
+  updateResumePrompt,
+  updateDefaultVoice,
 }) => {
   const { descriptors } = platformMeta;
   const { continuePrevious, allowRepeat, repeatDialog, repeatEverything } = descriptors;
@@ -59,18 +60,18 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
   const resumePromptType = session?.resumePrompt.voice || defaultVoice;
 
   const onChangeResumePromptType = React.useCallback((resumePromptType: string) => {
-    saveResumePrompt({ content: '', voice: resumePromptType });
+    updateResumePrompt({ content: '', voice: resumePromptType });
   }, []);
 
   const onChangeFollowUpType = React.useCallback((followUpType: string) => {
-    saveResumePrompt({ followContent: '', followVoice: followUpType });
+    updateResumePrompt({ followContent: '', followVoice: followUpType });
   }, []);
 
   const onToggleHasFollowUp = React.useCallback(() => {
     if (resumePrompt?.followVoice) {
-      saveResumePrompt({ followContent: undefined, followVoice: undefined });
+      updateResumePrompt({ followContent: undefined, followVoice: undefined });
     } else {
-      saveResumePrompt({ followContent: undefined, followVoice: defaultVoice });
+      updateResumePrompt({ followContent: undefined, followVoice: defaultVoice });
     }
   }, [resumePrompt?.followVoice, defaultVoice]);
 
@@ -82,14 +83,14 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
 
       const valid = text.length <= RESUME_PROMPT_MAX_LENGTH;
 
-      saveResumePrompt({ content: text });
+      updateResumePrompt({ content: text });
       setPreviousSessionDialogError(!valid);
     },
     [resumePrompt.content]
   );
 
   const onChangeFollowUpVoice = React.useCallback((voice: string) => {
-    saveResumePrompt({ followVoice: voice });
+    updateResumePrompt({ followVoice: voice });
   }, []);
 
   const onChangeFollowUpContent = React.useCallback(
@@ -98,13 +99,13 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
         return;
       }
 
-      saveResumePrompt({ followContent: text });
+      updateResumePrompt({ followContent: text });
     },
     [resumePrompt.followContent]
   );
 
   const onChangeResumePromptVoice = React.useCallback((voice: string) => {
-    saveResumePrompt({ voice });
+    updateResumePrompt({ voice });
   }, []);
 
   return (
@@ -118,7 +119,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
         dividers
         isDividerNested
         initialOpen={!restart}
-        onToggleChange={(nextRestart) => saveSession({ restart: nextRestart })}
+        onToggleChange={(nextRestart) => patchSession({ restart: nextRestart })}
       >
         <FormControl>
           <FormControl>
@@ -145,7 +146,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
                 defaultVoice={defaultVoice}
                 onChangeVoice={onChangeResumePromptVoice}
                 platformDefaultVoice={platformDefaultVoice}
-                onChangeDefaultVoice={saveDefaultVoice}
+                onChangeDefaultVoice={updateDefaultVoice}
               />
 
               {previousSessionDialogError && <ErrorMessage>Confirmation message must not exceed 160 symbols.</ErrorMessage>}
@@ -185,7 +186,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
                   defaultVoice={defaultVoice}
                   onChangeVoice={onChangeFollowUpVoice}
                   platformDefaultVoice={platformDefaultVoice}
-                  onChangeDefaultVoice={saveDefaultVoice}
+                  onChangeDefaultVoice={updateDefaultVoice}
                 />
               </FormControl>
             )}
@@ -198,7 +199,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
         collapseVariant={SectionToggleVariant.TOGGLE}
         header="Allow Users to Repeat"
         isDividerNested
-        onToggleChange={(collapsed) => saveSettings({ repeat: collapsed ? Version.RepeatType.OFF : Version.RepeatType.DIALOG })}
+        onToggleChange={(collapsed) => patchSettings({ repeat: collapsed ? Version.RepeatType.OFF : Version.RepeatType.DIALOG })}
         headerToggle
         initialOpen={repeat !== Version.RepeatType.OFF}
       >
@@ -207,7 +208,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
             options={REPEAT_OPTIONS}
             name="multiple"
             checked={repeat ?? Version.RepeatType.DIALOG}
-            onChange={(repeat) => saveSettings({ repeat })}
+            onChange={(repeat) => patchSettings({ repeat })}
           />
           {repeat === Version.RepeatType.DIALOG ? repeatDialog : repeatEverything}
         </FormControl>
@@ -217,15 +218,15 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
 };
 
 const mapStateToProps = {
-  settings: VersionDuck.alexa.activeSettingsSelector,
-  session: VersionDuck.activeSessionSelector,
+  settings: VersionV2.active.alexa.settingsSelector,
+  session: VersionV2.active.sessionSelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings: VersionDuck.alexa.saveSettings,
-  saveSession: VersionDuck.saveSession,
-  saveResumePrompt: VersionDuck.saveResumePrompt,
-  saveDefaultVoice: VersionDuck.saveDefaultVoice,
+  patchSettings: VersionDuck.alexa.patchSettings,
+  patchSession: VersionDuck.patchSession,
+  updateResumePrompt: VersionDuck.updateResumePrompt,
+  updateDefaultVoice: VersionDuck.updateDefaultVoice,
 };
 
 type ConnectedAssistantConversationLogic = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

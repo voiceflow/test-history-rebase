@@ -1,4 +1,5 @@
 export { default as AccountLoadingGate } from './AccountLoadingGate';
+export { default as AccountSubscriptionGate } from './AccountSubscriptionGate';
 export { default as CapabilitiesGate } from './CapabilitiesGate';
 export { default as CheckInvitationGate } from './CheckInvitationGate';
 export { default as DiagramLoadingGate } from './DiagramLoadingGate';

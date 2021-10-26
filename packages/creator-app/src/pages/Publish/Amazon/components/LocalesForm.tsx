@@ -4,22 +4,23 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { css, styled, transition } from '@/hocs';
 import { useDispatch } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { toggleMembership } from '@/utils/array';
 
 const LocaleButton = styled.button<{ 'data-active': boolean }>`
+  flex: 1 1 auto;
   width: 130px;
   margin: 4px;
-  background-color: #fff;
-  border-radius: 5px;
+  padding: 0.375rem 0.75rem;
   color: #62778c;
   font-weight: 600;
   font-size: 13px;
+  background-color: #fff;
   border: 1px solid #dfe3ed;
-  padding: 0.375rem 0.75rem;
-  flex: 1 1 auto;
+  border-radius: 5px;
   ${transition()};
 
   ${(props) =>
@@ -40,15 +41,15 @@ const LocaleButton = styled.button<{ 'data-active': boolean }>`
 `;
 
 const LocalesForm: React.FC = () => {
-  const locales = useSelector(Version.alexa.activeLocalesSelector);
-  const saveLocales = useDispatch(Version.saveLocales);
+  const locales = useSelector(VersionV2.active.alexa.localesSelector);
+  const updateLocales = useDispatch(Version.updateLocales);
 
   const toggleLocale = React.useCallback(
     (locale: Constants.Locale) => {
       const nextLocales = toggleMembership(locales, locale);
 
       if (nextLocales.length) {
-        saveLocales(nextLocales);
+        updateLocales(nextLocales);
       }
     },
     [locales]

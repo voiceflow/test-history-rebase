@@ -10,6 +10,12 @@ class UserService extends AbstractControl {
     return `users:${userID}:token`;
   }
 
+  private static validateUserID(userID: number) {
+    if (Number.isNaN(userID)) {
+      throw new Error(`invalid user ID: ${userID}`);
+    }
+  }
+
   private userCache = this.clients.cache.createKeyValue({
     adapter: this.clients.cache.adapters.jsonAdapterCreator<User | null>(),
     keyCreator: UserService.getTokenUserKey,
@@ -42,10 +48,14 @@ class UserService extends AbstractControl {
   }
 
   public async getUserTokenByID(userID: number): Promise<string | null> {
+    UserService.validateUserID(userID);
+
     return this.tokenCache.get({ userID });
   }
 
   public async getUserByID(userID: number): Promise<User | null> {
+    UserService.validateUserID(userID);
+
     const token = await this.getUserTokenByID(userID);
 
     if (!token) {

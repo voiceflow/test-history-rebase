@@ -1,4 +1,3 @@
-import { useTeardown } from '@voiceflow/ui';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 
 export { LifecyclePhase, useDidUpdateEffect, useLifecycle, useOnScreen, useSetup, useTeardown } from '@voiceflow/ui';
@@ -24,9 +23,4 @@ export const useBeforeUnload = (callback: VoidFunction, dependencies: any[] = []
       window.removeEventListener('beforeunload', callback);
     };
   }, dependencies);
-};
-
-export const usePageAwareTeardown = (callback: VoidFunction, dependencies: any[] = []) => {
-  useTeardown(callback, dependencies);
-  useBeforeUnload(callback, dependencies);
 };

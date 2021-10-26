@@ -13,13 +13,13 @@ import { BlockType } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
-import * as Version from '@/ducks/version';
 import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { useMouseMove } from '@/hooks';
 import { NodeData } from '@/models';
@@ -207,9 +207,9 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   isRootNode = (nodeID: string) => this.select(Creator.isRootNodeSelector)(nodeID);
 
-  getDiagramByID = (diagramID: string) => this.select(Diagram.diagramByIDSelector)(diagramID);
+  getDiagramByID = (diagramID: string) => this.select(DiagramV2.diagramByIDSelector, { id: diagramID });
 
-  isRootDiagram = () => this.select(Version.isRootDiagramActiveSelector);
+  isRootDiagram = () => this.select(Creator.isRootDiagramActiveSelector);
 
   getDiagramID = () => this.select(Session.activeDiagramIDSelector);
 
@@ -402,8 +402,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   }
 
   focusStart(options: { open?: boolean } = {}): void {
-    const diagram = this.select(Diagram.activeDiagramSelector);
-    const isRootDiagramActive = this.select(Version.isRootDiagramActiveSelector);
+    const diagram = this.select(DiagramV2.active.diagramSelector);
+    const isRootDiagramActive = this.select(Creator.isRootDiagramActiveSelector);
 
     // topics do not have start node, focus first intent step
     if (!isRootDiagramActive && diagram?.type === DiagramType.TOPIC) {
@@ -495,7 +495,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
     const coords = this.canvas!.toCoords(center);
 
-    const { name, diagramID } = await this.store.dispatch(Diagram.createComponent(clipboardData));
+    const { name, diagramID } = await this.store.dispatch(Diagram.convertToComponent(clipboardData));
 
     await this.node.removeMany(targets, { disableConfirmPrompt: true });
 

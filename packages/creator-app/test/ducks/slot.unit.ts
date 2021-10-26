@@ -1,10 +1,10 @@
 import { generate } from '@voiceflow/ui';
 
-import * as Intent from '@/ducks/intent';
+import * as Feature from '@/ducks/feature';
 import * as Slot from '@/ducks/slot';
-import { CRUDState } from '@/ducks/utils/crud';
+import * as SlotV2 from '@/ducks/slotV2';
+import { createCRUDState, CRUDState } from '@/ducks/utils/crud';
 import * as Models from '@/models';
-import { normalize } from '@/utils/normalized';
 
 import suite from './_suite';
 
@@ -22,23 +22,14 @@ suite(Slot, MOCK_STATE)('Ducks - Slot', ({ expect, describeCRUDReducer, describe
   describeCRUDReducer();
 
   describeSelectors(({ select }) => {
-    describe('intentsUsingSlotSelector()', () => {
-      it('should select intents using a slot by ID', () => {
-        const slotID = generate.id();
-        const intentWithSlot = generate.array(3, () => ({ id: generate.id(), slots: { allKeys: [slotID, ...generate.array()] } }));
-        const intentWithoutSlot = generate.array(3, () => ({ id: generate.id(), slots: { allKeys: generate.array() } }));
-
-        expect(
-          select(Slot.intentsUsingSlotSelector, {
-            [Intent.STATE_KEY]: normalize([...intentWithSlot, ...intentWithoutSlot]),
-          })(slotID)
-        ).to.eql(intentWithSlot);
-      });
-    });
-
     describe('slotNamesSelector()', () => {
       it('should select all slot names', () => {
-        expect(select(Slot.slotNamesSelector)).to.eql([SLOT_NAME]);
+        expect(
+          select(SlotV2.slotNamesSelector, {
+            [SlotV2.STATE_KEY]: createCRUDState(),
+            [Feature.STATE_KEY]: { features: {} },
+          })
+        ).to.eql([SLOT_NAME]);
       });
     });
   });

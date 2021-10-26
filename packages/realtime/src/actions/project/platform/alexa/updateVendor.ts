@@ -1,16 +1,21 @@
-import type { Context, ServerMeta } from '@logux/server';
+import type { ServerMeta } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
-import { AbstractWorkspaceChannelControl, WorkspaceContextData } from '@/actions/workspace/utils';
+import { AbstractWorkspaceChannelControl, accessWorkspaces, WorkspaceContextData } from '@/actions/workspace/utils';
+import { Context } from '@/types';
 
 class UpdateVendor extends AbstractWorkspaceChannelControl<Realtime.project.alexa.UpdateVendorPayload> {
   protected actionCreator = Realtime.project.alexa.updateVendor;
 
-  protected access = async (ctx: Context<WorkspaceContextData>, action: Action<Realtime.project.alexa.UpdateVendorPayload>, meta: ServerMeta) => {
-    const hasResoureAccess = await super.access(ctx, action, meta);
+  protected access = async (
+    ctx: Context<WorkspaceContextData>,
+    action: Action<Realtime.project.alexa.UpdateVendorPayload>,
+    meta: ServerMeta
+  ): Promise<boolean> => {
+    const hasResoureAccess = await accessWorkspaces(this)(ctx, action, meta);
 
-    return hasResoureAccess && action.payload.creatorID === Number(ctx.userId);
+    return hasResoureAccess && action.payload.creatorID === ctx.data.creatorID;
   };
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.project.alexa.UpdateVendorPayload>): Promise<void> => {

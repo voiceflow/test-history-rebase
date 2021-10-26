@@ -2,4 +2,4 @@
 import { CRUDState } from '@/ducks/utils/crudV2';
 import { ProjectList } from '@/models';
 
-export interface RealtimeProjectListState extends CRUDState<ProjectList> {}
+export interface ProjectListState extends CRUDState<ProjectList> {}

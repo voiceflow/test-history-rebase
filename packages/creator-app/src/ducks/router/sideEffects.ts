@@ -7,7 +7,7 @@ import * as Creator from '@/ducks/creator';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
-import { activeRootDiagramIDSelector, activeVersionSelector } from '@/ducks/version/selectors';
+import * as VersionV2 from '@/ducks/versionV2';
 import { SyncThunk, Thunk } from '@/store/types';
 import * as Query from '@/utils/query';
 
@@ -83,7 +83,7 @@ export const redirectToCurrentCanvasCommenting = (): Thunk => async (dispatch, g
 export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
-  const rootDiagramID = activeRootDiagramIDSelector(state);
+  const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
 
   Errors.assertVersionID(versionID);
   if (!rootDiagramID) throw new Error('no active root diagram ID');
@@ -92,7 +92,7 @@ export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
 };
 
 export const redirectToRootDiagram = (): Thunk => async (dispatch, getState) => {
-  const version = activeVersionSelector(getState());
+  const version = VersionV2.active.versionSelector(getState());
 
   if (!version) throw Errors.noActiveVersionID();
 

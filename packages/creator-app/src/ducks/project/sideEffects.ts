@@ -11,10 +11,11 @@ import { addProjectToList } from '@/ducks/projectList/sideEffects/shared';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
+import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
 import { AnyProject } from '@/models';
 import { Thunk } from '@/store/types';
 
-import { addProject, patchProject, removeManyProjects, removeProject, replaceProjects } from './actions';
+import { crud } from './actions';
 
 export interface CreateProjectParams {
   platform: Constants.PlatformType;
@@ -25,31 +26,29 @@ export interface CreateProjectParams {
 
 // side effects
 
-/**
- * @deprecated remove after atomic actions complete
- */
-export const loadProjectByID =
-  (projectID: string): Thunk<AnyProject> =>
-  async (dispatch) => {
-    const dbProject = await client.api.project.get(projectID);
+const loadProjectByID =
+  (projectID: string): Thunk =>
+  async (dispatch, getState) => {
+    const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+    if (isAtomicActions) return;
 
-    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject);
+    const project = await client.api.project.get(projectID).then(Realtime.Adapters.projectAdapter.fromDB);
 
-    dispatch(addProject(projectID, project));
-
-    return project;
+    dispatch(crud.add(projectID, project));
   };
 
 /**
- * @deprecated remove after atomic actions complete
+ * @deprecated these are now loaded automatically by the subscription to the workspace/:workspaceID realtime event channel
  */
 export const loadProjectsByWorkspaceID =
   (workspaceID: string): Thunk<AnyProject[]> =>
-  async (dispatch) => {
-    const dbProjects = await client.api.project.list(workspaceID);
+  async (dispatch, getState) => {
+    const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+    if (isAtomicActions) return [];
 
-    const projects = Realtime.Adapters.projectAdapter.mapFromDB(dbProjects);
-    dispatch(replaceProjects(projects));
+    const projects = await client.api.project.list(workspaceID).then(Realtime.Adapters.projectAdapter.mapFromDB);
+
+    dispatch(crud.replace(projects));
 
     return projects;
   };
@@ -59,6 +58,7 @@ export const createProject =
   async (dispatch, getState) => {
     const state = getState();
     const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     Errors.assertWorkspaceID(workspaceID);
 
@@ -72,13 +72,29 @@ export const createProject =
 
     try {
       const channel = templateTag?.split(':')[1] || platformType;
-      const newProject = await client.platform(platformType).project.copy(templateProjectID, { name, image, teamID: workspaceID }, { channel });
 
-      if (listID) {
-        dispatch(addProjectToList(listID, newProject._id));
+      if (isAtomicActions) {
+        return dispatch(
+          waitAsync(Realtime.project.create, {
+            workspaceID,
+            templateID: templateProjectID,
+            platform: platformType,
+            channel,
+            data: { name, image },
+          })
+        );
       }
 
-      return Realtime.Adapters.projectAdapter.fromDB(newProject);
+      const newProject = await client
+        .platform(platformType)
+        .project.copy(templateProjectID, { name, image, teamID: workspaceID }, { channel })
+        .then(Realtime.Adapters.projectAdapter.fromDB);
+
+      if (listID) {
+        dispatch(addProjectToList(listID, newProject.id));
+      }
+
+      return newProject;
     } catch (err) {
       toast.error('Error creating project, please try again later or contact support.');
       throw new Error('error creating project');
@@ -94,115 +110,111 @@ export const importProjectFromFile =
       return dispatch(waitAsync(Realtime.project.importFromFile, { workspaceID, data }));
     }
 
-    const project = await client.api.version.import(workspaceID, JSON.parse(data));
-    return Realtime.Adapters.projectAdapter.fromDB(project);
+    return client.api.version.import(workspaceID, JSON.parse(data)).then(Realtime.Adapters.projectAdapter.fromDB);
   };
 
 export const deleteProject =
   (projectID: string): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const workspaceID = Session.activeWorkspaceIDSelector(state);
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+  (dispatch) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveWorkspaceContext,
+        async () => {
+          await client.api.project.delete(projectID);
 
-    if (isAtomicActions) {
-      Errors.assertWorkspaceID(workspaceID);
-
-      await dispatch.sync(Realtime.project.crud.remove({ key: projectID, workspaceID }));
-    } else {
-      await client.api.project.delete(projectID);
-
-      dispatch(removeProject(projectID));
-    }
-  };
+          dispatch(crud.remove(projectID));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.project.crud.remove({ ...context, key: projectID }));
+        }
+      )
+    );
 
 export const deleteManyProjects =
   (projectIDs: string[]): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const workspaceID = Session.activeWorkspaceIDSelector(state);
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+  (dispatch) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveWorkspaceContext,
+        async () => {
+          await Promise.all(projectIDs.map((projectID) => client.api.project.delete(projectID)));
 
-    if (isAtomicActions) {
-      Errors.assertWorkspaceID(workspaceID);
-
-      await dispatch.sync(Realtime.project.crud.removeMany({ keys: projectIDs, workspaceID }));
-    } else {
-      await Promise.all(projectIDs.map((projectID) => client.api.project.delete(projectID)));
-
-      dispatch(removeManyProjects(projectIDs));
-    }
-  };
-
-export const setupProjectSocketConnection = (projectID: string) => async () => {
-  await client.socket?.project.initialize(projectID);
-};
+          dispatch(crud.removeMany(projectIDs));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.project.crud.removeMany({ ...context, keys: projectIDs }));
+        }
+      )
+    );
 
 // mutations
 
-export const saveProjectPrivacy =
+export const updateProjectPrivacy =
   (projectID: string, privacy: ProjectPrivacy): Thunk =>
   async (dispatch, getState) => {
-    const state = getState();
-    const workspaceID = Session.activeWorkspaceIDSelector(state);
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
 
-    if (isAtomicActions) {
-      Errors.assertWorkspaceID(workspaceID);
+    if (project?.privacy === privacy) return;
 
-      await dispatch.sync(Realtime.project.crud.patch({ key: projectID, value: { privacy }, workspaceID }));
-    } else {
-      const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveWorkspaceContext,
+        async () => {
+          await client.api.project.update(projectID, { privacy });
 
-      if (project?.privacy !== privacy) {
-        await client.api.project.update(projectID, { privacy });
-        dispatch(patchProject(projectID, { privacy }));
-      }
-    }
+          dispatch(crud.patch(projectID, { privacy }));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.project.crud.patch({ ...context, key: projectID, value: { privacy } }));
+        }
+      )
+    );
   };
 
-export const saveProjectImage =
+export const updateProjectImage =
   (projectID: string, image: string): Thunk =>
   async (dispatch, getState) => {
-    const state = getState();
-    const workspaceID = Session.activeWorkspaceIDSelector(state);
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
 
-    if (isAtomicActions) {
-      Errors.assertWorkspaceID(workspaceID);
+    if (project?.image === image) return;
 
-      await dispatch.sync(Realtime.project.crud.patch({ key: projectID, value: { image }, workspaceID }));
-    } else {
-      const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveWorkspaceContext,
+        async () => {
+          await client.api.project.update(projectID, { image });
 
-      if (project?.image !== image) {
-        await client.api.project.update(projectID, { image });
-
-        dispatch(patchProject(projectID, { image }));
-      }
-    }
+          dispatch(crud.patch(projectID, { image }));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.project.crud.patch({ ...context, key: projectID, value: { image } }));
+        }
+      )
+    );
   };
 
-export const saveProjectLinkType =
+export const updateProjectLinkType =
   (projectID: string, linkType: ProjectLinkType): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const workspaceID = Session.activeWorkspaceIDSelector(state);
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+  (dispatch) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveWorkspaceContext,
+        async () => {
+          await client.api.project.update(projectID, { linkType });
 
-    if (isAtomicActions) {
-      Errors.assertWorkspaceID(workspaceID);
-
-      await dispatch.sync(Realtime.project.crud.patch({ key: projectID, value: { linkType }, workspaceID }));
-    } else {
-      await client.api.project.update(projectID, { linkType });
-
-      dispatch(patchProject(projectID, { linkType }));
-    }
-  };
+          dispatch(crud.patch(projectID, { linkType }));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.project.crud.patch({ ...context, key: projectID, value: { linkType } }));
+        }
+      )
+    );
 
 // active project
 
+/**
+ * @deprecated project is loaded automatically by the subscription to the workspace/:workspaceID realtime event channel
+ */
 export const loadActiveProject = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const projectID = Session.activeProjectIDSelector(state);
@@ -215,39 +227,32 @@ export const loadActiveProject = (): Thunk => async (dispatch, getState) => {
   await dispatch(loadProjectByID(projectID));
 };
 
-export const saveProjectName =
-  (name: string, customProjectID?: string): Thunk =>
+export const updateProjectNameByID =
+  (projectID: string, name: string): Thunk =>
   async (dispatch, getState) => {
-    const state = getState();
-    const projectID = customProjectID ?? Session.activeProjectIDSelector(state);
-    const workspaceID = Session.activeWorkspaceIDSelector(state);
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    if (name === ProjectV2.active.nameSelector(getState())) return;
 
-    Errors.assertProjectID(projectID);
+    await dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveWorkspaceContext,
+        async () => {
+          await client.api.project.update(projectID, { name });
 
-    if (isAtomicActions) {
-      Errors.assertWorkspaceID(workspaceID);
-
-      await dispatch.sync(Realtime.project.crud.patch({ key: projectID, value: { name }, workspaceID }));
-    } else {
-      if (name === ProjectV2.active.nameSelector(state)) return;
-
-      await client.api.project.update(projectID, { name });
-
-      dispatch(patchProject(projectID, { name }));
-    }
+          dispatch(crud.patch(projectID, { name }));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.project.crud.patch({ ...context, key: projectID, value: { name } }));
+        }
+      )
+    );
   };
 
-/**
- * @deprecated remove after atomic actions complete
- */
 export const updateActiveProjectName =
-  (name: string, meta?: object): Thunk =>
+  (name: string): Thunk =>
   async (dispatch, getState) => {
-    const state = getState();
-    const projectID = Session.activeProjectIDSelector(state);
+    const projectID = Session.activeProjectIDSelector(getState());
 
     Errors.assertProjectID(projectID);
 
-    dispatch(patchProject(projectID, { name }, meta));
+    await dispatch(updateProjectNameByID(projectID, name));
   };

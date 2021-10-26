@@ -3,8 +3,8 @@ import { batch } from 'react-redux';
 import { BuiltInVariable } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import * as Slot from '@/ducks/slot';
-import { activeGlobalVariablesSelector } from '@/ducks/version/selectors';
+import * as SlotV2 from '@/ducks/slotV2';
+import * as VersionV2 from '@/ducks/versionV2';
 import { Store } from '@/models';
 import { SyncThunk } from '@/store/types';
 import { cuid } from '@/utils/string';
@@ -17,8 +17,8 @@ import { PrototypeStatus } from '../types';
 const resetPrototype = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const visualState = prototypeVisualSelector(state);
-  const globalVariables = activeGlobalVariablesSelector(state);
-  const slotNames = Slot.slotNamesSelector(state);
+  const globalVariables = VersionV2.active.globalVariablesSelector(state);
+  const slotNames = SlotV2.slotNamesSelector(state);
   const platform = ProjectV2.active.platformSelector(state);
 
   let variables: Store = {};

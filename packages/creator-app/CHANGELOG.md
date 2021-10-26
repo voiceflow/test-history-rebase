@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.525.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.525.0...@voiceflow/creator-app@1.525.1) (2021-10-26)
+
+
+### Bug Fixes
+
+* rename "none" into "fallback" intent (VF-1991) ([#4363](https://github.com/voiceflow/creator-app/issues/4363)) ([9c21bb0](https://github.com/voiceflow/creator-app/commit/9c21bb079afee4e22c3d9692365bcb29adeeef2b))
+
+
+
+
+
 # [1.525.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.524.0...@voiceflow/creator-app@1.525.0) (2021-10-26)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.13.0...@voiceflow/realtime@1.14.0) (2021-10-26)
+
+
+### Features
+
+* introduce pubsub client and sync service (VF-930) ([#4370](https://github.com/voiceflow/creator-app/issues/4370)) ([b143b02](https://github.com/voiceflow/creator-app/commit/b143b02b55f7e6ae44bc7ad3cf3d8a9df05dbad3))
+
+
+
+
+
 # [1.13.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.12.7...@voiceflow/realtime@1.13.0) (2021-10-26)
 
 

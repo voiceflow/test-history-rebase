@@ -39,6 +39,8 @@ const ModelIntentsSelect: React.FC = () => {
 
   const displayName = React.useMemo(() => selectedIntents.map((intentID: string) => intentMap[intentID]).join(', '), [selectedIntents]);
 
+  const selectedAllIntents = selectedIntents.length === intentsOptions.length;
+
   const handleSelectIntent = (option: IntentOption) => {
     if (selectedIntents.includes(option.id)) {
       const newSelectedIntents = selectedIntents.filter((intentID) => intentID !== option.id);
@@ -49,7 +51,12 @@ const ModelIntentsSelect: React.FC = () => {
   };
 
   const handleSelectAll = () => {
-    const allOptionsValues = intentsOptions.map((option) => option.id);
+    let allOptionsValues: string[] = [];
+
+    if (!selectedAllIntents) {
+      allOptionsValues = intentsOptions.map((option) => option.id);
+    }
+
     setSelectedIntents(allOptionsValues);
   };
 
@@ -60,7 +67,7 @@ const ModelIntentsSelect: React.FC = () => {
       autoWidth
       renderOptionLabel={(option) => customMenuLabelRenderer(option, isOptionSelected)}
       footerAction
-      footerActionLabel="Select all"
+      footerActionLabel={selectedAllIntents ? 'Unselect all' : 'Select all'}
       onClickFooterAction={handleSelectAll}
       fullWidth
       selectedOptions={selectedIntents}

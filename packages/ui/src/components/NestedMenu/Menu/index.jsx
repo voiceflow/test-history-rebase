@@ -4,7 +4,7 @@ import React from 'react';
 import { Popper } from 'react-popper';
 
 import { useDidUpdateEffect } from '../../../hooks';
-import { setRef, swallowEvent } from '../../../utils';
+import { setRef, stopImmediatePropagation, swallowEvent } from '../../../utils';
 import Menu from '../../Menu';
 import Portal from '../../Portal';
 import MenuHeader from '../MenuHeader';
@@ -300,7 +300,9 @@ function BaseNestedMenu({
               <Menu
                 id={id}
                 footerAction={footerAction}
-                footerActionComponent={() => <FooterActionContainer onClick={onClickFooterAction}>{footerActionLabel}</FooterActionContainer>}
+                footerActionComponent={() => (
+                  <FooterActionContainer onClick={stopImmediatePropagation(onClickFooterAction)}>{footerActionLabel}</FooterActionContainer>
+                )}
                 ref={menuRef}
                 maxHeight={maxHeight}
                 fullWidth

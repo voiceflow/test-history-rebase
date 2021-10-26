@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { stopImmediatePropagation } from '../../../utils';
 import Box from '../../Box';
 import Input from '../../Input';
 import SvgIcon from '../../SvgIcon';
@@ -34,7 +35,7 @@ function MenuHeader({
     <>
       {inDropdownSearch && (
         <>
-          <SearchContainer>
+          <SearchContainer onClick={stopImmediatePropagation(() => {})}>
             <Box mr={12}>
               <SvgIcon icon="search" size={16} color="#6E849A" />
             </Box>

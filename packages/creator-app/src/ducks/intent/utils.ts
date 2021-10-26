@@ -3,7 +3,7 @@ import { Adapters } from '@voiceflow/realtime-sdk';
 import _isPlainObject from 'lodash/isPlainObject';
 
 import { ChatIntentSlot, Intent, IntentInput, VoiceIntentSlot } from '@/models';
-import { isCustomizableBuiltInIntent, removeBuiltInPrefix } from '@/utils/intent';
+import { getIntentNameLabel, isCustomizableBuiltInIntent, removeBuiltInPrefix } from '@/utils/intent';
 import { Normalized } from '@/utils/normalized';
 import { createAdvancedPlatformSelector } from '@/utils/platform';
 import { capitalizeFirstLetter } from '@/utils/string';
@@ -44,6 +44,8 @@ export const intentProcessor = (platform: Constants.PlatformType, { inputs = [],
 export const applySingleIntentNameFormatting = (platform: Constants.PlatformType, intent: Intent): Intent => {
   let { name } = intent ?? { name: '' };
 
+  name = getIntentNameLabel(name);
+
   if (isCustomizableBuiltInIntent(intent)) {
     name = removeBuiltInPrefix(name);
 
@@ -53,6 +55,7 @@ export const applySingleIntentNameFormatting = (platform: Constants.PlatformType
       name = name.replace(/(\w)Intent/g, '$1');
     }
   }
+
   return {
     ...intent,
     name,

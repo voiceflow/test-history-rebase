@@ -30,7 +30,7 @@ const amazonBuiltInIntentsArray = Object.values(AlexaConstants.AmazonIntent) as 
 const generalBuiltInIntentsArray = Object.values(GeneralConstants.IntentName) as string[];
 const builtInIntentMap = new Map([...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray].map((id) => [id, true]));
 
-const intentLabel: { [key in GeneralConstants.IntentName]?: string } = {
+const INTENT_LABELS: Partial<Record<string, string>> = {
   [GeneralConstants.IntentName.NONE]: 'Fallback',
 };
 
@@ -53,12 +53,7 @@ export const prettifyIntentName = (name = ''): string =>
 export const prettifyIntentNames = <T extends Intent>(intents: T[]): T[] =>
   intents.map((intent) => ({ ...intent, name: prettifyIntentName(intent.name) }));
 
-export const applyIntentNameChanges = (name = ''): string => {
-  return intentLabel[name as GeneralConstants.IntentName] ?? name;
-};
-
-export const applyIntentsNameChanges = <T extends Intent>(intents: T[]): T[] =>
-  intents.map((intent) => ({ ...intent, name: applyIntentNameChanges(intent.name) }));
+export const getIntentNameLabel = (name = ''): string => INTENT_LABELS[name] ?? name;
 
 export const filterIntents = <T extends Intent>(intents: T[], activeIntent: T): T[] =>
   intents.filter((intent) => {
@@ -82,7 +77,7 @@ export const intentFactory =
 
     return {
       id: intent.name,
-      name: truncatedName ?? intent.name,
+      name: truncatedName ?? getIntentNameLabel(intent.name),
       slots: { byKey: {}, allKeys: [] },
       inputs: [{ text: '', slots: intent.slots ?? [] }],
       platform,

@@ -13,7 +13,7 @@ import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Intent } from '@/models';
 import { ConnectedProps } from '@/types';
-import { applyIntentNameChanges, applyIntentsNameChanges, formatIntentName, isCustomizableBuiltInIntent } from '@/utils/intent';
+import { formatIntentName, isCustomizableBuiltInIntent } from '@/utils/intent';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import EmptyContainer from '../EmptyContainer';
@@ -41,9 +41,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   const scrollbarsRef = React.useRef<Scrollbars>(null);
 
   const getItemKey = React.useCallback((item: Intent) => item.id, []);
-  const getItemLabel = React.useCallback((item: Intent) => applyIntentNameChanges(item.name), []);
-
-  const renamedIntents = React.useMemo(() => applyIntentsNameChanges(intents), [intents]);
+  const getItemLabel = React.useCallback((item: Intent) => item.name, []);
 
   const updateSelected = React.useCallback(
     (id: string) => {
@@ -106,7 +104,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
           {({ renderItem }) => (
             <SearchableList
               ref={scrollbarsRef}
-              items={renamedIntents}
+              items={intents}
               onAdd={addNewIntent}
               onChange={onChange}
               getLabel={getItemLabel}

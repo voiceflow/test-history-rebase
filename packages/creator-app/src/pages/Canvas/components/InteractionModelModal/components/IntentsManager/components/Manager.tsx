@@ -13,7 +13,7 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { applyIntentNameChanges, applyPlatformIntentNameFormatting, isCustomizableBuiltInIntent, validateIntentName } from '@/utils/intent';
+import { applyPlatformIntentNameFormatting, isCustomizableBuiltInIntent, validateIntentName } from '@/utils/intent';
 import { removeTrailingUnderscores } from '@/utils/string';
 
 export interface ManagerProps {
@@ -78,11 +78,11 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
         <FlexApart onClick={resetPath}>
           <Input
             error={!!nameError}
-            value={applyIntentNameChanges(name)}
+            value={name}
             onBlur={onBlur}
             onChange={({ currentTarget }) => localNameUpdate(currentTarget)}
-            placeholder="Intent Name"
             disabled={isCustomizableBuiltInIntent(selectedIntent)}
+            placeholder="Intent Name"
           />
           <RemoveDropdown deleteText={isBuiltIn ? 'Remove' : undefined} onRemove={() => removeIntent(intentID)} />
         </FlexApart>

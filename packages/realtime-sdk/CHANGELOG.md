@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.32.0...@voiceflow/realtime-sdk@1.33.0) (2021-10-26)
+
+
+### Features
+
+* update ducks for realtime (VF-1483) ([#4308](https://github.com/voiceflow/creator-app/issues/4308)) ([db6a66b](https://github.com/voiceflow/creator-app/commit/db6a66b542bc66390858f161839600914300f92c))
+
+
+
+
+
 # [1.32.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.31.0...@voiceflow/realtime-sdk@1.32.0) (2021-10-26)
 
 

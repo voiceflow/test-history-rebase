@@ -7,7 +7,7 @@ export const DayPickerContainer = styled.div`
   border-radius: 5px;
   background-color: ${THEME.backgrounds.white};
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
-  z-index: 1100 !important;
+  z-index: ${({ theme }) => theme.zIndex.popper} !important;
   left: 20px !important;
   padding-top: 10px;
 

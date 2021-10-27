@@ -1,6 +1,8 @@
 import { Spinner } from '@voiceflow/ui';
 import React from 'react';
 
+import { Permission } from '@/config/permissions';
+import { usePermission } from '@/hooks';
 import { compose } from '@/utils/functional';
 
 import Checkout from './Checkout';
@@ -15,6 +17,8 @@ const Payment = ({
   },
   focus,
 }) => {
+  const [isAllowed] = usePermission(Permission.UPGRADE_WORKSPACE);
+
   React.useEffect(() => {
     if (focus) setFocus(focus);
   }, [focus]);
@@ -28,7 +32,11 @@ const Payment = ({
     return <Details />;
   }
 
-  return <PaymentContainer isLoading={loading.plan}>{content}</PaymentContainer>;
+  return (
+    <PaymentContainer isLoading={loading.plan} notAllowed={!isAllowed}>
+      {content}
+    </PaymentContainer>
+  );
 };
 
 // provider and consumer within the same component

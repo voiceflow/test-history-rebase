@@ -34,8 +34,8 @@ const UncontrolledInteractionModel: React.FC<UncontrolledInteractionModelProps> 
       id={ModalType.INTERACTION_MODEL}
       ref={setModalRef}
       title={<Tabs selected={activeTab} options={TABS} onChange={onChangeTab} />}
-      icon={<SvgIcon icon="exportModel" variant={IconVariant.STANDARD} clickable size={16} onClick={openExportModal} />}
-      isSmall={false}
+      maxWidth={780}
+      headerActions={<SvgIcon icon="exportModel" variant={IconVariant.STANDARD} clickable size={16} onClick={openExportModal} />}
     >
       {!!modalRef && (
         <TextEditorVariablesPopoverProvider value={modalRef}>

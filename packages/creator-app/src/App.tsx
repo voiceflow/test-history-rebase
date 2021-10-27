@@ -13,9 +13,7 @@ import { hot } from 'react-hot-loader/root';
 
 import ConfirmModalV2 from '@/components/ConfirmModal';
 import IntercomChat from '@/components/IntercomChat';
-import { ConfirmModal, ErrorModal, ModalBackdrop, SuccessModal } from '@/components/LegacyModal';
-import LoadingModal from '@/components/LegacyModal/LoadingModal';
-import Modal from '@/components/LegacyModal/Modal';
+import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, SuccessModal } from '@/components/modals';
 import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
 import { SeoPage } from '@/constants/seo';
@@ -46,12 +44,12 @@ const App = () => {
   return (
     <>
       <SeoHelmet page={SeoPage.ROOT} />
+      <ModalBackdrop />
       <SuccessModal />
       <ConfirmModal />
       <ConfirmModalV2 />
       <ErrorModal />
-      <ModalBackdrop />
-      <Modal />
+      <StandardModal />
       <ToastContainer />
       <Routes />
       <IntercomChat />

@@ -25,7 +25,7 @@ const PopupContainer = styled.div<PopupContainerProps>`
   position: absolute;
   top: 62px;
   right: 15px;
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.popper};
   flex-direction: column;
   align-items: center;
   min-width: 350px;

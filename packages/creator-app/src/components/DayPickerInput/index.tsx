@@ -94,7 +94,7 @@ const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
 
       {isShown && (
         <Portal>
-          <DayPickerContainer ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 1100 }} {...popper.attributes.popper}>
+          <DayPickerContainer ref={popper.setPopperElement} style={{ ...popper.styles.popper }} {...popper.attributes.popper}>
             <TimeRangePicker
               weekdaysShort={WEEKDAYS}
               initialMonth={selectedDay}

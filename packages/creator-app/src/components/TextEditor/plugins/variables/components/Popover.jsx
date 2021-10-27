@@ -7,7 +7,7 @@ import { FadeDownDelayedContainer } from '@/styles/animations';
 import { withKeyPress } from '@/utils/dom';
 
 const PopoverContainer = styled.div`
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.popper};
   position: absolute;
 `;
 

@@ -3,7 +3,9 @@ import React from 'react';
 import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
 import { Manager, Popper as ReactPopper, PopperProps as ReactPopperProps, Reference } from 'react-popper';
 import { MemoryRouter } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 
+import { useTheme } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { Body, Container } from './components';
@@ -51,6 +53,8 @@ const Popper: React.FC<PopperProps> = ({
   renderContent,
   preventOverflowPadding = 16,
 }) => {
+  const theme = useTheme();
+
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [isOpened, onToggle, onForceClose] = useDismissable(opened, { ref: containerRef, onClose });
@@ -64,6 +68,8 @@ const Popper: React.FC<PopperProps> = ({
   const rendererProps = { onClose: onForceClose, isOpened, onToggle };
 
   const Wrapper = renderNav ? MemoryRouter : React.Fragment;
+
+  const nestedTheme = React.useMemo(() => ({ ...theme, zIndex: { ...theme.zIndex, popper: theme.zIndex.popper + 1 } }), [theme]);
 
   return (
     <Manager>
@@ -79,32 +85,34 @@ const Popper: React.FC<PopperProps> = ({
             : {})}
         >
           <DismissableLayerProvider>
-            <Portal portalNode={portalNode}>
-              <ReactPopper
-                innerRef={containerRef}
-                placement={placement}
-                modifiers={{
-                  offset: { offset: '0,5' },
-                  preventOverflow: { boundariesElement: portalNode, padding: preventOverflowPadding },
-                  ...modifiers,
-                }}
-                positionFixed
-              >
-                {({ ref, style }) => (
-                  <div ref={ref} style={{ ...style, zIndex: 1000 }}>
-                    <Container className={ClassName.POPPER} style={{ width, height }}>
-                      {renderNav?.(rendererProps)}
+            <ThemeProvider theme={nestedTheme}>
+              <Portal portalNode={portalNode}>
+                <ReactPopper
+                  innerRef={containerRef}
+                  placement={placement}
+                  modifiers={{
+                    offset: { offset: '0,5' },
+                    preventOverflow: { boundariesElement: portalNode, padding: preventOverflowPadding },
+                    ...modifiers,
+                  }}
+                  positionFixed
+                >
+                  {({ ref, style }) => (
+                    <div ref={ref} style={{ ...style, zIndex: theme.zIndex.popper }}>
+                      <Container className={ClassName.POPPER} style={{ width, height }}>
+                        {renderNav?.(rendererProps)}
 
-                      <Body>
-                        {renderContent(rendererProps)}
+                        <Body>
+                          {renderContent(rendererProps)}
 
-                        {renderFooter?.(rendererProps)}
-                      </Body>
-                    </Container>
-                  </div>
-                )}
-              </ReactPopper>
-            </Portal>
+                          {renderFooter?.(rendererProps)}
+                        </Body>
+                      </Container>
+                    </div>
+                  )}
+                </ReactPopper>
+              </Portal>
+            </ThemeProvider>
           </DismissableLayerProvider>
         </Wrapper>
       )}

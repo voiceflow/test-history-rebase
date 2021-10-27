@@ -7,6 +7,7 @@ import { Redirect, Route, RouteComponentProps, Switch, useRouteMatch } from 'rea
 import { RemoveIntercom } from '@/components/IntercomChat';
 import ProjectPage from '@/components/ProjectPage';
 import { Path } from '@/config/routes';
+import { ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
@@ -22,7 +23,7 @@ import {
   WorkspaceSubscriptionGate,
 } from '@/gates';
 import { connect, lazy, withBatchLoadingGate } from '@/hocs';
-import { useCanvasTracking, useEnableDisable, useEventualEngine, useLayoutDidUpdate, useSelector, useTeardown, useTheme } from '@/hooks';
+import { useCanvasTracking, useEventualEngine, useLayoutDidUpdate, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRouteIMM';
 import InactivityModal from '@/pages/Inactivity';
@@ -68,19 +69,19 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const isDiagramRoute = useRouteMatch(DIAGRAM_ROUTES);
 
-  const [isIdle, onIdle, onActive] = useEnableDisable();
+  const inactivityModal = useModals(ModalType.INACTIVITY);
 
   const idleTimer = React.useRef<IdleTimer | null>(null);
 
   const setActive = React.useCallback(() => {
-    onActive();
+    inactivityModal.close();
     idleTimer.current?.reset();
-  }, [onActive]);
+  }, [inactivityModal.close]);
 
   const setIdle = React.useCallback(() => {
-    onIdle();
+    inactivityModal.open();
     idleTimer.current?.pause();
-  }, [onIdle]);
+  }, []);
 
   useCanvasTracking();
 
@@ -123,7 +124,7 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
               timeout={TIMEOUT_COUNT}
             />
 
-            <InactivityModal open={isIdle} onActive={setActive} />
+            <InactivityModal onActive={setActive} />
           </>
         )}
 

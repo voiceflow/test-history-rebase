@@ -5,7 +5,8 @@ import { FadeDownDelayed } from '@/styles/animations';
 
 export interface ModalContainerProps {
   fade: boolean;
-  isSmall?: boolean;
+  centered?: boolean;
+  maxWidth?: number;
   isOpened?: boolean;
 }
 
@@ -13,14 +14,14 @@ const ModalContainer = styled.section<ModalContainerProps>`
   ${({ fade }) => fade && FadeDownDelayed}
 
   border-radius: 5px;
-  margin: 28px auto;
+  margin: ${({ centered }) => (centered ? 'auto' : '28px auto')};
   width: 100%;
   max-height: calc(100% - 56px);
   background: #fff;
-  max-width: ${({ isSmall }) => (isSmall ? 500 : 780)}px;
+  max-width: ${({ maxWidth = 500 }) => maxWidth}px;
   overflow-x: hidden;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.modal};
   pointer-events: all;
 
   ${down('sm')} {

@@ -44,7 +44,7 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
     }
 
     setConfirm({
-      size: 'rg',
+      maxWidth: 450,
       text: (
         <Alert mb={0}>
           Voiceflow Creator will go under planned maintenance
@@ -54,6 +54,7 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
           Live Projects will not be affected
         </Alert>
       ),
+      confirm: () => {},
     });
   }, []);
 

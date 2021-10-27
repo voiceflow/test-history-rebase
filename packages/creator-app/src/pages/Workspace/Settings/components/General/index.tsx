@@ -50,6 +50,7 @@ const GeneralSettingsPage: React.FC = () => {
           </BoxFlex>
         </Section>
       </SettingsSection>
+
       <SettingsSection title="Danger Zone" variant={SectionVariants.SECONDARY}>
         <ActionSection
           heading="Delete Workspace"
@@ -57,6 +58,7 @@ const GeneralSettingsPage: React.FC = () => {
           action={<Button onClick={openDeleteModal}>Delete Workspace</Button>}
         />
       </SettingsSection>
+
       <BoardDeleteModal workspace={workspace} />
     </>
   );

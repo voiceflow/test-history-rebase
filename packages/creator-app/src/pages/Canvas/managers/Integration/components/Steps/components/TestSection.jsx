@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
-import DefaultModal from '@/components/LegacyModal/DefaultModal';
+import { DefaultModal } from '@/components/modals';
 import { setConfirm, setError } from '@/ducks/modal';
 import { connect } from '@/hocs';
 import { PrefixText } from '@/pages/Canvas/components/PrefixedVariableSelect/components/Prefix';

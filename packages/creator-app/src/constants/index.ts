@@ -217,6 +217,7 @@ export enum ModalType {
   SLOT_EDIT = 'slot-edit',
   INTERACTION_MODEL = 'interaction-model',
   EXPORT_MODEL = 'export-model',
+  FULLSCREEN_EDITOR = 'fullscreen-editor',
 
   APL_PREVIEW = 'apl-preview',
 
@@ -227,6 +228,7 @@ export enum ModalType {
   PROJECT_DOWNLOAD = 'project-download',
   TESTABLE_LINKS = 'testable-links',
   CANVAS_EXPORT = 'canvas-export',
+  PUBLISH_AMAZON = 'publish-amazon',
 
   SHORTCUTS = 'shortcuts',
 
@@ -238,6 +240,7 @@ export enum ModalType {
   LOADING = 'loading',
   CONFIRM = 'confirm',
   REFRESH = 'refresh',
+  INACTIVITY = 'inactivity',
 
   CONNECT = 'connect',
   TAG_MANAGER = 'tag-manager',

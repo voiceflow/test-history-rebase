@@ -1,36 +1,30 @@
-import { Box } from '@voiceflow/ui';
 import React from 'react';
 
-import Modal, { ModalHeader } from '@/components/LegacyModal';
-import { JobStatus } from '@/constants';
+import Modal, { ModalBody } from '@/components/Modal';
+import { JobStatus, ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
-import { connect } from '@/hocs';
-import { useSetup, useTrackingEvents } from '@/hooks';
+import { useDidUpdateEffect, useDispatch, useModals, useSetup, useTrackingEvents } from '@/hooks';
 import { Alexa } from '@/pages/Publish/Upload';
 import { PublishContext } from '@/pages/Skill/contexts';
-import { ConnectedProps } from '@/types';
 
 import PublishAmazonForm from './Form';
 
-const ModalComponent = Modal as React.FC<any>;
+export const PublishAmazon: React.FC = () => {
+  const syncSelectedVendor = useDispatch(Account.amazon.syncSelectedVendor);
 
-export const PublishAmazon: React.FC<ConnectedPublishAmazonProps> = ({ syncSelectedVendor }) => {
-  const [open, setOpen] = React.useState(false);
-  const [close, setClose] = React.useState(false);
   const { job, publish, cancel } = React.useContext(PublishContext)!;
+
+  const publishAmazonModal = useModals(ModalType.PUBLISH_AMAZON);
+
+  const [closable, setClosable] = React.useState(false);
 
   const [trackingEvents] = useTrackingEvents();
 
   const onPublish = () => {
-    setOpen(true);
+    publishAmazonModal.open();
+
     publish(true);
   };
-
-  React.useEffect(() => {
-    if (job && job.status === JobStatus.FINISHED) {
-      setClose(true);
-    }
-  }, [job?.status]);
 
   useSetup(() => {
     trackingEvents.trackActiveProjectAlexaPublishPage();
@@ -38,29 +32,29 @@ export const PublishAmazon: React.FC<ConnectedPublishAmazonProps> = ({ syncSelec
     syncSelectedVendor();
   });
 
+  React.useEffect(() => {
+    if (job?.status === JobStatus.FINISHED) {
+      setClosable(true);
+    }
+  }, [job?.status]);
+
+  useDidUpdateEffect(() => {
+    if (!publishAmazonModal.isOpened) {
+      cancel();
+    }
+  }, [publishAmazonModal.isOpened]);
+
   return (
     <>
       <PublishAmazonForm onPublish={onPublish} />
 
-      <ModalComponent isOpen={open} onClosed={cancel} centered contentClassName="overflow-hidden">
-        {close && (
-          <Box position="absolute" width="100%">
-            <ModalHeader toggle={() => setOpen(false)} />
-          </Box>
-        )}
-
-        <Box p={10}>
+      <Modal id={ModalType.PUBLISH_AMAZON} title="" closable={closable}>
+        <ModalBody>
           <Alexa loader />
-        </Box>
-      </ModalComponent>
+        </ModalBody>
+      </Modal>
     </>
   );
 };
 
-const mapDispatchToProps = {
-  syncSelectedVendor: Account.amazon.syncSelectedVendor,
-};
-
-type ConnectedPublishAmazonProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(PublishAmazon);
+export default PublishAmazon;

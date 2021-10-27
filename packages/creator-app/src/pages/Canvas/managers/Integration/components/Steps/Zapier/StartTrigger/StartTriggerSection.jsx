@@ -2,7 +2,7 @@ import { Spinner } from '@voiceflow/ui';
 import cn from 'classnames';
 import React, { Component } from 'react';
 
-import DefaultModal from '@/components/LegacyModal/DefaultModal';
+import { DefaultModal } from '@/components/modals';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import * as Modal from '@/ducks/modal';

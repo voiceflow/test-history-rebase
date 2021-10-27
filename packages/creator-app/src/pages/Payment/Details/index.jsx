@@ -4,8 +4,7 @@ import React from 'react';
 
 import BubbleText from '@/components/BubbleText';
 import ImageCarousel from '@/components/ImageCarousel';
-import { ModalFooter } from '@/components/LegacyModal';
-import CarouselButtons from '@/components/LegacyModal/CarouselButtons';
+import { ModalFooter } from '@/components/Modal';
 import Tabs from '@/components/Tabs';
 import { PLAN_TYPE_META } from '@/constants';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
@@ -13,6 +12,7 @@ import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import ChatWithUsLink from '../components/ChatWithUsLink';
+import CarouselButtons from './CarouselButtons';
 import {
   ContentContainer,
   DetailsSection,

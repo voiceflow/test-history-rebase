@@ -45,12 +45,7 @@ const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...p
 
       {isOpen && (
         <Portal portalNode={document.body}>
-          <div
-            id={Identifier.CONTEXT_MENU}
-            ref={popper.setPopperElement}
-            style={{ ...popper.styles.popper, zIndex: 1100 }}
-            {...popper.attributes.popper}
-          >
+          <div id={Identifier.CONTEXT_MENU} ref={popper.setPopperElement} style={{ ...popper.styles.popper }} {...popper.attributes.popper}>
             <Menu onToggle={onToggle} {...props} />
           </div>
         </Portal>

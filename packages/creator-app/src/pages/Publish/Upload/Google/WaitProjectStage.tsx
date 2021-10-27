@@ -2,14 +2,12 @@ import { Alert, AlertVariant, BlockText, Box, BoxFlex, Button, ButtonVariant, Li
 import React from 'react';
 
 import client from '@/client';
-import { ModalFooter } from '@/components/LegacyModal';
+import { ModalFooter } from '@/components/Modal';
 import * as Documentation from '@/config/documentation';
 import { useAsyncMountUnmount, useTeardown } from '@/hooks';
 import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
 
 import { ButtonLink, LoaderStage, ProjectItem, StageContainer } from '../components';
-
-const Footer = ModalFooter as React.FC<any>;
 
 interface WaitProjectStageProps {
   cancel: () => void;
@@ -103,18 +101,19 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ cancel, updateCurre
                 </BlockText>
               </div>
 
-              <Footer>
+              <ModalFooter>
                 <Container>
                   <DropdownContainer>
                     <span>
                       <Link href={Documentation.PROTOTYPE_SHARE}>The Tutorial</Link>
                     </span>
                   </DropdownContainer>
+
                   <ButtonLink href="https://console.actions.google.com/" onClick={cancel}>
                     <Button variant={ButtonVariant.PRIMARY}>Create Actions Project</Button>
                   </ButtonLink>
                 </Container>
-              </Footer>
+              </ModalFooter>
             </StageContainer>
           )}
         </StageContainer>

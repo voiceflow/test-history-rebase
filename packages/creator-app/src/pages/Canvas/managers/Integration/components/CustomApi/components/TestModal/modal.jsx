@@ -4,11 +4,11 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import pretty from 'prettysize';
 import React from 'react';
-import { Modal, ModalBody } from 'reactstrap';
 
 import ButtonGroupRouter from '@/components/ButtonGroupRouter';
 import DropdownCollapse from '@/components/DropdownCollapse';
-import { ModalHeader } from '@/components/LegacyModal';
+import { ModalBody, UncontrolledModal } from '@/components/Modal';
+import { UncontrolledBackdrop } from '@/components/modals/ModalBackdrop';
 import { styled } from '@/hocs';
 import { PrefixText } from '@/pages/Canvas/components/PrefixedVariableSelect/components/Prefix';
 import { copyJSONPath } from '@/utils/dom';
@@ -37,6 +37,7 @@ const API_TEST_TABS = [
 ];
 
 const SendRequestBar = styled.div`
+  width: 100%;
   display: flex;
   padding: 16px;
   background-color: #f9f9f9;
@@ -151,7 +152,11 @@ function APITestModal({ data, closeTestModal, testModalOpened }) {
       });
   });
 
-  const initialize = React.useCallback(() => {
+  React.useEffect(() => {
+    if (!testModalOpened) {
+      return;
+    }
+
     const normalizedData = normalize(data);
     const usedVariables = deepVariableSearch(normalizedData);
 
@@ -161,51 +166,55 @@ function APITestModal({ data, closeTestModal, testModalOpened }) {
     if (usedVariables.length === 0) {
       makeRequest();
     }
-  }, [data, makeRequest]);
+  }, [testModalOpened]);
 
   return (
-    <Modal toggle={closeTestModal} isOpen={testModalOpened} onClosed={closeTestModal} size="lg" onOpened={initialize}>
-      <ModalHeader toggle={closeTestModal} header="API TEST" />
-      <ModalBody>
-        {!_isEmpty(variableValues) && (
-          <DropdownCollapseContainer>
-            <DropdownCollapse text="Set Variable Values" ref={dropdownRef}>
-              <div className="pb-2">
-                {Object.keys(variableValues).map((name) => (
-                  <Input
-                    leftAction={<PrefixText>{name.toUpperCase()}</PrefixText>}
-                    placeholder="Enter value"
-                    key={name}
-                    onChange={(e) => setVarValue(name, e.target.value)}
-                  />
-                ))}
-              </div>
-            </DropdownCollapse>
-          </DropdownCollapseContainer>
-        )}
+    <>
+      {testModalOpened && <UncontrolledBackdrop onClose={closeTestModal} />}
 
-        {hasResponse && (
-          <TabContentContainer
-            maxHeight={400}
-            selected={activeTabIndex}
-            onChange={(tab) => {
-              updateTabIndex(tab);
-            }}
-            routes={API_TEST_TABS}
-            routeProps={{ requestResponse, responseMetaData, copyJSONPath, variableMap }}
-          />
-        )}
-      </ModalBody>
-      <SendRequestBar>
-        <div style={{ flex: 1, textAlign: 'right' }}>
-          <Button style={{ float: 'right' }} variant={ButtonVariant.PRIMARY} onClick={makeRequest}>
-            {hasResponse && !sendingRequest && <span>Re-Send Request</span>}
-            {!sendingRequest && !hasResponse && <span>Send Request</span>}
-            {sendingRequest && <span>Sending...</span>}
-          </Button>
-        </div>
-      </SendRequestBar>
-    </Modal>
+      <UncontrolledModal title="API TEST" onClose={closeTestModal} maxWidth={800} isOpened={testModalOpened}>
+        <ModalBody>
+          {!_isEmpty(variableValues) && (
+            <DropdownCollapseContainer>
+              <DropdownCollapse text="Set Variable Values" ref={dropdownRef}>
+                <div className="pb-2">
+                  {Object.keys(variableValues).map((name) => (
+                    <Input
+                      leftAction={<PrefixText>{name.toUpperCase()}</PrefixText>}
+                      placeholder="Enter value"
+                      key={name}
+                      onChange={(e) => setVarValue(name, e.target.value)}
+                    />
+                  ))}
+                </div>
+              </DropdownCollapse>
+            </DropdownCollapseContainer>
+          )}
+
+          {hasResponse && (
+            <TabContentContainer
+              maxHeight={400}
+              selected={activeTabIndex}
+              onChange={(tab) => {
+                updateTabIndex(tab);
+              }}
+              routes={API_TEST_TABS}
+              routeProps={{ requestResponse, responseMetaData, copyJSONPath, variableMap }}
+            />
+          )}
+        </ModalBody>
+
+        <SendRequestBar>
+          <div style={{ flex: 1, textAlign: 'right' }}>
+            <Button style={{ float: 'right' }} variant={ButtonVariant.PRIMARY} onClick={makeRequest}>
+              {hasResponse && !sendingRequest && <span>Re-Send Request</span>}
+              {!sendingRequest && !hasResponse && <span>Send Request</span>}
+              {sendingRequest && <span>Sending...</span>}
+            </Button>
+          </div>
+        </SendRequestBar>
+      </UncontrolledModal>
+    </>
   );
 }
 

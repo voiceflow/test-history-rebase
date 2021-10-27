@@ -20,7 +20,7 @@ const CanvasMenu: React.FC = () => {
 
       {helpOpened && (
         <Portal>
-          <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 1100 }} {...popper.attributes.popper}>
+          <div ref={popper.setPopperElement} style={{ ...popper.styles.popper }} {...popper.attributes.popper}>
             <Menu options={helpOptions} />
           </div>
         </Portal>

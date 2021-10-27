@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import { Box, MenuContainer, Portal, stopPropagation, useCachedValue, usePopper } from '@voiceflow/ui';
+import { Box, Portal, stopPropagation, useCachedValue, usePopper } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
@@ -15,6 +15,7 @@ import ConditionDisplay from '../ConditionDisplay';
 import ConditionValueSelect from '../ConditionValueSelect';
 import ConditionVariableSelect from '../ConditionVariableSelect';
 import ConditionLogicSelect from './components/ConditionLogicSelect';
+import MenuContainer from './components/MenuContainer';
 
 export type ValueSelectExpressionType = Node.Utils.ExpressionTypeV2.VARIABLE | Node.Utils.ExpressionTypeV2.VALUE;
 
@@ -83,18 +84,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
             <SlideContainer onClick={stopPropagation(null, true)}>
               <Container style={{ padding: '0px', overflowY: 'hidden' }}>
                 <FadeDownDelayedContainer>
-                  <MenuContainer
-                    style={{
-                      zIndex: 1000,
-                      maxWidth: '440px',
-                      width: '440px',
-                      maxHeight: '350px',
-                      padding: '24px 32px',
-                      overflowX: 'hidden',
-                      overflowY: 'scroll',
-                    }}
-                    onClick={stopPropagation()}
-                  >
+                  <MenuContainer onClick={stopPropagation()}>
                     {/* to add left side value */}
                     <>
                       {expression.logicInterface === Node.Utils.ConditionsLogicInterface.VARIABLE && (

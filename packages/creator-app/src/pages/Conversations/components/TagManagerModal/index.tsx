@@ -73,7 +73,7 @@ const TagManagerModal: React.FC<RouteComponentProps> = () => {
   };
 
   return (
-    <Modal id={ModalType.TAG_MANAGER} ref={setModalRef} title="Manage Tags" isSmall>
+    <Modal id={ModalType.TAG_MANAGER} ref={setModalRef} title="Manage Tags">
       {!!modalRef && (
         <Box width="100%">
           <ModalBody style={{ padding: '0' }}>
@@ -100,9 +100,9 @@ const TagManagerModal: React.FC<RouteComponentProps> = () => {
               )}
             </NewTagInputContainer>
             <Content>
-              {editableTags.map((tag) => {
-                return <TagLineItem key={tag.id} onUndoDelete={onUndoDelete} onDelete={onDeleteTag} tags={allTags} tag={tag} />;
-              })}
+              {editableTags.map((tag) => (
+                <TagLineItem key={tag.id} onUndoDelete={onUndoDelete} onDelete={onDeleteTag} tags={allTags} tag={tag} />
+              ))}
             </Content>
           </ModalBody>
           <ModalFooter justifyContent="flex-end">

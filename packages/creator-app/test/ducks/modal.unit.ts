@@ -4,7 +4,7 @@ import { noop } from '@/utils/functional';
 import suite from './_suite';
 
 const MOCK_STATE: Modal.ModalState = {
-  confirmModal: { message: 'something', confirm: noop },
+  confirmModal: { text: 'something', confirm: noop },
   errorModal: { message: 'something' },
   modal: { value: 'something' },
 };
@@ -12,29 +12,18 @@ const MOCK_STATE: Modal.ModalState = {
 suite(Modal, MOCK_STATE)('Ducks - Modal', ({ expect, spy, describeReducer }) => {
   describeReducer(({ applyAction, expectAction }) => {
     describe('setConfirm()', () => {
-      const message = 'are you sure you want to quit?';
+      const text = 'are you sure you want to quit?';
 
       it('should set a confirmation modal', () => {
         const confirmCallback = spy();
 
-        const nextState = applyAction(Modal.setConfirm({ message, confirm: confirmCallback }));
+        const nextState = applyAction(Modal.setConfirm({ text, confirm: confirmCallback }));
 
-        expect(nextState.confirmModal!.message).to.eq(message);
+        expect(nextState.confirmModal!.text).to.eq(text);
 
         nextState.confirmModal!.confirm();
 
         expect(confirmCallback).to.be.calledWithExactly();
-      });
-
-      it('should set a confirmation modal with params', () => {
-        const params = ['a', 'b', 'c'];
-        const confirmCallback = spy();
-
-        const nextState = applyAction(Modal.setConfirm({ message, params, confirm: confirmCallback }));
-
-        nextState.confirmModal!.confirm();
-
-        expect(confirmCallback).to.be.calledWithExactly(...params);
       });
     });
 

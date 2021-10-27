@@ -1,18 +1,16 @@
 import React from 'react';
 
-import Modal from '@/components/LegacyModal';
-import { Permission } from '@/config/permissions';
+import Modal from '@/components/Modal';
 import { ModalType } from '@/constants';
-import { useModals, usePermission, useTrackingEvents } from '@/hooks';
+import { useModals, useTrackingEvents } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 import Payment from '.';
 
 const PaymentModal = () => {
-  const [isAllowed] = usePermission(Permission.UPGRADE_WORKSPACE);
   const [trackingEvents] = useTrackingEvents();
 
-  const { isOpened, toggle, data } = useModals(ModalType.PAYMENT);
+  const { isOpened, data } = useModals(ModalType.PAYMENT);
 
   React.useEffect(() => {
     if (!isOpened) return;
@@ -21,7 +19,7 @@ const PaymentModal = () => {
   }, [isOpened]);
 
   return (
-    <Modal className={`${ClassName.MODAL}--payment`} modalname="plan" isOpen={isOpened} toggle={toggle} notAllowed={!isAllowed}>
+    <Modal id={ModalType.PAYMENT} className={`${ClassName.MODAL}--payment`} maxWidth={545} withHeader={false}>
       <Payment focus={data?.focus} />
     </Modal>
   );

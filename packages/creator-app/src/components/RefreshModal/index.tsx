@@ -5,15 +5,10 @@ import { takeoffGraphic } from '@/assets';
 import Modal, { ModalFooter } from '@/components/Modal';
 import { IS_DEVELOPMENT } from '@/config';
 import { ModalType } from '@/constants';
-import { styled } from '@/hocs';
 import { useModals, useScheduled, useSetup } from '@/hooks';
 import { BodyContainer, ContentContainer } from '@/pages/Dashboard/components/ModalComponents';
 
 const log = logger.child('refreshModal');
-
-const StyledModal = styled(Modal)`
-  max-width: 392px;
-`;
 
 const CHANGELOG_LINK = 'https://www.notion.so/voiceflow/Voiceflow-Changelog-b5e32e269b204106b5b51014cd049346';
 
@@ -54,7 +49,7 @@ const RefreshModal: React.FC = () => {
   });
 
   return (
-    <StyledModal id={ModalType.REFRESH} title="New Version" isSmall>
+    <Modal id={ModalType.REFRESH} maxWidth={392} title="New Version">
       <Box width="100%">
         <BodyContainer column>
           <img src={takeoffGraphic} alt="new version" height={80} />
@@ -67,7 +62,7 @@ const RefreshModal: React.FC = () => {
           <Button onClick={() => window.location.reload()}>Refresh</Button>
         </ModalFooter>
       </Box>
-    </StyledModal>
+    </Modal>
   );
 };
 

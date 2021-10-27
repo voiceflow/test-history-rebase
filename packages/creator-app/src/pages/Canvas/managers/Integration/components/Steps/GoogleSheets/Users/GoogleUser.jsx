@@ -4,7 +4,7 @@ import cn from 'classnames';
 import _get from 'lodash/get';
 import React from 'react';
 
-import DefaultModal from '@/components/LegacyModal/DefaultModal';
+import { DefaultModal } from '@/components/modals';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import * as Modal from '@/ducks/modal';

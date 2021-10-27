@@ -39,7 +39,7 @@ const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({
   };
 
   return (
-    <StyledModal id={modalType} className={className} title={header} isSmall>
+    <StyledModal id={modalType} className={className} title={header}>
       <Box width="100%">
         <BodyContainer column>
           <img src={icon} alt="plan restriction" height={80} />

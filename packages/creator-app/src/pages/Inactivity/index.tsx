@@ -2,10 +2,10 @@ import { Button, ButtonVariant, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import Countdown from 'react-countdown';
 
-import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
+import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
+import { ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
-import { Callback, ConnectedProps } from '@/types';
+import { useDispatch } from '@/hooks';
 
 import { BodyContainer } from './components/BodyContainer';
 
@@ -17,37 +17,32 @@ const countdownRenderer = ({ minutes, seconds }: { minutes: number; seconds: num
   </span>
 );
 
-const ModalComponent: React.FC<any> = Modal;
-
 export interface InactivityModalProps {
-  open: boolean;
-  onActive: Callback;
+  onActive: VoidFunction;
 }
 
-const InactivityModal: React.FC<InactivityModalProps & ConnectedInactivityModalProps> = ({ open, onActive, goToDashboard }) => (
-  <ModalComponent isOpen={open} toggle={onActive}>
-    <ModalHeader toggle={onActive} header="INACTIVITY" />
-    <ModalBody>
-      <BodyContainer>
-        <SvgIcon size={100} icon="globe" />
-        <div>
-          Your session is about to expire due to inactivity. You will be returned to the dashboard in
-          <Countdown onComplete={goToDashboard} date={Date.now() + TIMER_COUNT} renderer={countdownRenderer} />
-        </div>
-      </BodyContainer>
-    </ModalBody>
-    <ModalFooter>
-      <Button variant={ButtonVariant.TERTIARY} onClick={onActive}>
-        Dismiss
-      </Button>
-    </ModalFooter>
-  </ModalComponent>
-);
+const InactivityModal: React.FC<InactivityModalProps> = ({ onActive }) => {
+  const goToDashboard = useDispatch(Router.goToDashboard);
 
-const mapDispatchToProps = {
-  goToDashboard: Router.goToDashboard,
+  return (
+    <Modal id={ModalType.INACTIVITY} title="INACTIVITY">
+      <ModalBody>
+        <BodyContainer>
+          <SvgIcon size={100} icon="globe" />
+          <div>
+            Your session is about to expire due to inactivity. You will be returned to the dashboard in
+            <Countdown onComplete={goToDashboard} date={Date.now() + TIMER_COUNT} renderer={countdownRenderer} />
+          </div>
+        </BodyContainer>
+      </ModalBody>
+
+      <ModalFooter>
+        <Button variant={ButtonVariant.TERTIARY} onClick={onActive}>
+          Dismiss
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
 };
 
-type ConnectedInactivityModalProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(InactivityModal) as React.FC<InactivityModalProps>;
+export default InactivityModal;

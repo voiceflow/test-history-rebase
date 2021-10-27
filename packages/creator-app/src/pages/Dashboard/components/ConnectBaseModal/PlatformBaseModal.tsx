@@ -5,21 +5,14 @@ import React from 'react';
 import { linkGraphic } from '@/assets';
 import AmazonLoginButton from '@/components/Forms/AmazonLogin';
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
-import { ModalFooter } from '@/components/Modal';
+import Modal, { ModalFooter } from '@/components/Modal';
 import { FeatureFlag } from '@/config/features';
 import { GOOGLE_OAUTH_SCOPES, GOOGLE_OAUTH_SCOPES_V2, ModalType } from '@/constants';
 import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
 import { useFeature, useModals } from '@/hooks';
 import { Account } from '@/models';
 import * as Models from '@/models';
-import {
-  ActionContainer,
-  BodyContainer,
-  BoldText,
-  ButtonContainer,
-  ConnectStyledModal,
-  ContentContainer,
-} from '@/pages/Dashboard/components/ModalComponents';
+import { ActionContainer, BodyContainer, BoldText, ButtonContainer, ContentContainer } from '@/pages/Dashboard/components/ModalComponents';
 import { Nullable } from '@/types';
 import { getPlatformValue } from '@/utils/platform';
 
@@ -79,7 +72,7 @@ export const PlatformBaseModal: React.FC<PlatformBaseModalProps> = ({
   };
 
   return (
-    <ConnectStyledModal id={modalType} className={className} title={title} isSmall>
+    <Modal id={modalType} maxWidth={392} className={className} title={title}>
       <Box width="100%">
         <BodyContainer column>
           {state.loading ? (
@@ -134,6 +127,6 @@ export const PlatformBaseModal: React.FC<PlatformBaseModalProps> = ({
           </ActionContainer>
         </ModalFooter>
       </Box>
-    </ConnectStyledModal>
+    </Modal>
   );
 };

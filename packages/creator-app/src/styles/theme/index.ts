@@ -30,17 +30,6 @@ const THEME = createTheme({
     menuDrawer: {
       width: 250,
     },
-    modals: {
-      plan: {
-        width: 545,
-      },
-      collaborators: {
-        width: 545,
-      },
-      planRestriction: {
-        width: 392,
-      },
-    },
     block: BLOCK_THEME,
     blockStep: BLOCK_STEP_THEME,
     audioPlayer: {

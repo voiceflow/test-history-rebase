@@ -35,8 +35,7 @@ const CheckInvitationGate: React.FC<RouteComponentProps & CheckInvitationGatePro
     if (!newWorkspaceID) return;
 
     setModal({
-      size: 'sm',
-      header: true,
+      withHeader: true,
       body: (
         <div className="text-center py-1 mb-5 text-muted">
           <img src={takeoffGraphic} height={140} alt="blast off" />

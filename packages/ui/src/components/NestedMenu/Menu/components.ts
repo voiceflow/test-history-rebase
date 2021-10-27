@@ -1,7 +1,7 @@
 import { styled, transition } from '../../../styles';
 
-export const MenuPopoverContainer = styled.div`
-  z-index: 1100;
+export const MenuPopoverContainer = styled.div<{ autoWidth?: boolean; isRoot?: boolean }>`
+  z-index: ${({ theme }) => theme.zIndex.popper};
   width: ${({ autoWidth }) => !autoWidth && 'auto !important'};
   margin-top: ${({ isRoot }) => (isRoot ? 0 : -13)}px;
 `;

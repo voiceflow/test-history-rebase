@@ -3,7 +3,7 @@ import './ImportModal.css';
 import { Button, ButtonVariant, StatusCode, toast } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
-import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
+import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { hasRolePermission, Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
@@ -139,9 +139,7 @@ const ImportModal: React.FC = () => {
   };
 
   return renderModal ? (
-    <Modal isOpen={isOpened} toggle={toggle} className="import-modal">
-      <ModalHeader toggle={toggle} header={cloning ? 'Clone Project' : 'Copy Project'}></ModalHeader>
-
+    <Modal id={ModalType.IMPORT_PROJECT} title={cloning ? 'Clone Project' : 'Copy Project'}>
       <ModalBody>
         <ImportSelect
           prefix={cloning ? 'CLONE TO' : 'COPY TO'}

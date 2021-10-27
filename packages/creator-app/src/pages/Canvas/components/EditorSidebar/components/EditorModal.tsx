@@ -1,32 +1,22 @@
 import React from 'react';
 
-import Modal from '@/components/LegacyModal';
+import Modal, { ModalBody } from '@/components/Modal';
+import { ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import { connect } from '@/hocs';
-import { NodeData } from '@/models';
-
-import EditorModalBody from './EditorModalBody';
-import EditorModalHeader from './EditorModalHeader';
-
-const ModalComponent: React.FC<any> = Modal;
+import { useSelector } from '@/hooks';
 
 export interface EditorModalProps {
-  disableModalMode?: () => void;
-  data: NodeData<unknown>;
   editor: React.ReactNode;
 }
 
-const EditorModal: React.FC<EditorModalProps> = ({ disableModalMode, editor, data }) => (
-  <ModalComponent toggle={disableModalMode} isOpen onClosed={disableModalMode} size="lg">
-    <EditorModalHeader style={{ paddingBottom: '0' }} toggle={disableModalMode} header={`${data.name} Settings`} />
-    <EditorModalBody>{editor}</EditorModalBody>
-  </ModalComponent>
-);
+const EditorModal: React.FC<EditorModalProps> = ({ editor }) => {
+  const data = useSelector(Creator.focusedNodeDataSelector);
 
-const mapStateToProps = {
-  data: Creator.focusedNodeDataSelector,
+  return (
+    <Modal id={ModalType.FULLSCREEN_EDITOR} title={`${data?.name} Settings`} maxWidth={800}>
+      <ModalBody padding="0 11px !important">{editor}</ModalBody>
+    </Modal>
+  );
 };
 
-export type ConnectedEditorModalProps = Omit<EditorModalProps, keyof typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(EditorModal) as React.FC<ConnectedEditorModalProps>;
+export default EditorModal;

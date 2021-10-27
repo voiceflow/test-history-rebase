@@ -7,7 +7,7 @@ interface PopoverContainerProps {
 }
 
 const PopoverContainer = styled.div<PopoverContainerProps>`
-  z-index: ${({ zIndex = 1100 }) => zIndex};
+  z-index: ${({ theme, zIndex = theme.zIndex.popper }) => zIndex};
 
   /* to override default width css from react-popper */
   width: ${({ autoWidth }) => !autoWidth && 'auto !important'};

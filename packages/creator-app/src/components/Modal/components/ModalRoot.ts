@@ -1,11 +1,12 @@
 import { css, styled } from '@/hocs';
 
-const ModalRoot = styled.div`
+const ModalRoot = styled.div<{ hidden?: boolean; centered?: boolean }>`
+  display: ${({ centered }) => (centered ? 'flex' : 'block')};
   position: fixed;
   padding: 0 0.5rem;
   width: 100%;
   height: 100%;
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.modal};
   overflow-y: auto;
   pointer-events: none;
 

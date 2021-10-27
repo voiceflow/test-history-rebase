@@ -29,7 +29,7 @@ const Tooltip: React.FC<TooltipProps> = ({ anchorRenderer, placement = 'auto-end
       {anchorRenderer({ ref: popper.setReferenceElement, isOpen, onToggle })}
       {isOpen && (
         <Portal portalNode={portalNode}>
-          <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 1100 }} {...popper.attributes.popper}>
+          <div ref={popper.setPopperElement} style={{ ...popper.styles.popper }} {...popper.attributes.popper}>
             <SlideContainer onClick={stopPropagation(null, true)}>
               <Container>
                 <FadeDownDelayedContainer>{children}</FadeDownDelayedContainer>

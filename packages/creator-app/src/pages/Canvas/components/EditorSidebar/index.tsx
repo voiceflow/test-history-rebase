@@ -5,10 +5,10 @@ import { useSelector } from 'react-redux';
 
 import Drawer from '@/components/Drawer';
 import { RemoveIntercom } from '@/components/IntercomChat';
-import { BlockType } from '@/constants';
+import { BlockType, ModalType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
-import { useEnableDisable, useTeardown, useTheme } from '@/hooks';
+import { useModals, useTeardown, useTheme } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
@@ -31,15 +31,16 @@ const EditSidebar = () => {
   const focus = useSelector(Creator.creatorFocusSelector);
   const focusedNodeData = useSelector(Creator.focusedNodeDataSelector);
 
+  const fullscreenEditorModal = useModals(ModalType.FULLSCREEN_EDITOR);
+
   const isEditingMode = useEditingMode();
   const { node, path, goToPath, pushToPath, popFromPath } = useEditorPath();
   const getManager = React.useContext(ManagerContext)!;
   const platform = React.useContext(PlatformContext)!;
   const prevPathLength = React.useRef(0);
   const prevAnimationDistance = React.useRef(40);
-  const [isModal, enableModalMode, disableModalMode] = useEnableDisable(false);
   const shouldRender = !!node && !UNEDITABLE_BLOCKS.includes(node.type);
-  const isOpen = isEditingMode && shouldRender && focus.isActive && !!focusedNodeData && !isModal;
+  const isOpen = isEditingMode && shouldRender && focus.isActive && !!focusedNodeData && !fullscreenEditorModal.isOpened;
   const updateData = useUpdateData(node?.id);
   const withMemoizedManagerProps = React.useMemo(() => moize.simple(withManagerProps as (editor: any) => React.FC), [updateData]);
   const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
@@ -71,8 +72,8 @@ const EditSidebar = () => {
       <Manager
         nodeID={node.id}
         onChange={updateData}
-        onExpand={enableModalMode}
-        expanded={isModal}
+        onExpand={fullscreenEditorModal.open}
+        expanded={fullscreenEditorModal.isOpened}
         goToPath={goToPath}
         activePath={activePath}
         pushToPath={pushToPath}
@@ -87,7 +88,7 @@ const EditSidebar = () => {
           <MarkupEditor key={node.id} animationDistance={prevAnimationDistance.current}>
             {managerEl}
           </MarkupEditor>
-          <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !isModal} />
+          <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !fullscreenEditorModal.isOpened} />
         </NamespaceProvider>
       );
     } else {
@@ -98,12 +99,12 @@ const EditSidebar = () => {
             path={path}
             goToPath={goToPath}
             onRename={onRename}
-            hideHeader={isModal}
+            hideHeader={fullscreenEditorModal.isOpened}
             animationDistance={prevAnimationDistance.current}
           >
             {managerEl}
           </BlockEditor>
-          <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !isModal} />
+          <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !fullscreenEditorModal.isOpened} />
         </NamespaceProvider>
       );
     }
@@ -125,10 +126,10 @@ const EditSidebar = () => {
         direction={SlideOutDirection.LEFT}
         disableAnimation={!shouldRender}
       >
-        {!isModal && !!path.length && editor}
+        {!fullscreenEditorModal.isOpened && !!path.length && editor}
       </Drawer>
-      {isOpen && !isModal && <RemoveIntercom />}
-      {isModal && <EditorModal disableModalMode={disableModalMode} editor={editor} />}
+      {isOpen && !fullscreenEditorModal.isOpened && <RemoveIntercom />}
+      {fullscreenEditorModal.isOpened && <EditorModal editor={editor} />}
     </SidebarProvider>
   );
 };

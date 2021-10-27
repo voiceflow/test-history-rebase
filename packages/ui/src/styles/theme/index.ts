@@ -63,6 +63,11 @@ const THEME = {
     m: 15,
     l: 28,
   },
+  zIndex: {
+    modal: 1010,
+    popper: 1000,
+    backdrop: 1005,
+  },
   components: {
     button: {
       height: 42,

@@ -2,12 +2,13 @@ import { Constants } from '@voiceflow/general-types';
 import { Box, LoadCircle, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import Modal from '@/components/Modal';
 import { ModalType } from '@/constants';
 import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
-import { BodyContainer, ConnectStyledModal } from '@/pages/Dashboard/components/ModalComponents';
+import { BodyContainer } from '@/pages/Dashboard/components/ModalComponents';
 import { ConnectedProps } from '@/types';
 import { createPlatformSelector } from '@/utils/platform';
 
@@ -96,10 +97,10 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
 
   if (stage === AlexaStageType.IDLE || stage === GoogleStageType.IDLE) {
     return (
-      <ConnectStyledModal
+      <Modal
         id={modalType}
         title={`connect to ${platform === Constants.PlatformType.ALEXA ? 'amazon' : 'google'}`}
-        isSmall
+        maxWidth={392}
         className={className}
       >
         <Box width="100%">
@@ -107,18 +108,18 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
             <LoadCircle />
           </BodyContainer>
         </Box>
-      </ConnectStyledModal>
+      </Modal>
     );
   }
   if (stage === DialogflowStageType.IDLE) {
     return (
-      <ConnectStyledModal id={modalType} title="connect to dialogflow" isSmall className={className}>
+      <Modal id={modalType} title="connect to dialogflow" maxWidth={392} className={className}>
         <Box width="100%">
           <BodyContainer column>
             <LoadCircle />
           </BodyContainer>
         </Box>
-      </ConnectStyledModal>
+      </Modal>
     );
   }
 

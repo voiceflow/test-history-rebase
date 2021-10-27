@@ -1,18 +1,44 @@
+import React from 'react';
+
 import { Action, RootReducer } from '@/store/types';
 
 import { createAction } from './utils';
 
+interface ErrorModal {
+  error?: React.ReactNode;
+  message?: React.ReactNode;
+  violations?: { message: React.ReactNode }[];
+  [key: string]: unknown;
+}
+
+interface ConfirmModal {
+  text: React.ReactNode;
+  confirm: VoidFunction;
+  warning?: boolean;
+  maxWidth?: number;
+  cancelable?: boolean;
+}
+
+interface StandardModal {
+  body?: React.ReactNode;
+  title?: React.ReactNode;
+  footer?: React.ReactNode;
+  maxWidth?: number;
+  withHeader?: boolean;
+}
+
 export interface ModalState {
-  confirmModal: { confirm: () => void; [key: string]: unknown } | null;
-  errorModal: { message?: string | unknown; [key: string]: unknown } | null;
-  modal: unknown | null;
+  modal: StandardModal | null;
+  errorModal: ErrorModal | null;
+  confirmModal: ConfirmModal | null;
 }
 
 export const STATE_KEY = 'modal';
+
 export const INITIAL_STATE: ModalState = {
-  confirmModal: null,
-  errorModal: null,
   modal: null,
+  errorModal: null,
+  confirmModal: null,
 };
 
 export enum ModalAction {
@@ -24,11 +50,11 @@ export enum ModalAction {
 
 // action types
 
-export type SetConfirm = Action<ModalAction.SET_CONFIRM, { confirm: () => void; [key: string]: unknown }>;
+export type SetConfirm = Action<ModalAction.SET_CONFIRM, ConfirmModal>;
 
-export type SetError = Action<ModalAction.SET_ERROR, { message?: string | unknown; [key: string]: unknown }>;
+export type SetError = Action<ModalAction.SET_ERROR, ErrorModal>;
 
-export type SetModal = Action<ModalAction.SET_MODAL, unknown>;
+export type SetModal = Action<ModalAction.SET_MODAL, StandardModal>;
 
 export type ClearModal = Action<ModalAction.CLEAR_MODAL>;
 
@@ -64,19 +90,7 @@ export default modalReducer;
 
 // action creators
 
-export const setConfirm = (confirm: { params?: any[]; confirm?: (...args: any[]) => void; [key: string]: unknown }): SetConfirm =>
-  createAction(ModalAction.SET_CONFIRM, {
-    ...confirm,
-    confirm: () => {
-      if (typeof confirm.confirm !== 'function') return;
-
-      if (confirm.params) {
-        confirm.confirm(...confirm.params);
-      } else {
-        confirm.confirm();
-      }
-    },
-  });
+export const setConfirm = (confirm: ConfirmModal): SetConfirm => createAction(ModalAction.SET_CONFIRM, confirm);
 
 export const setError = (rawError: string | { message?: unknown; data?: unknown; [key: string]: unknown }): SetError => {
   let error = rawError;
@@ -88,11 +102,11 @@ export const setError = (rawError: string | { message?: unknown; data?: unknown;
     error = { ...error, message: error.data };
   }
 
-  return createAction(ModalAction.SET_ERROR, error);
+  return createAction(ModalAction.SET_ERROR, error as ErrorModal);
 };
 
 export const setGenericError = () => setError('Something went wrong - please refresh your page');
 
-export const setModal = (def: unknown): SetModal => createAction(ModalAction.SET_MODAL, def);
+export const setModal = (modal: StandardModal): SetModal => createAction(ModalAction.SET_MODAL, modal);
 
 export const clearModal = (): ClearModal => createAction(ModalAction.CLEAR_MODAL);

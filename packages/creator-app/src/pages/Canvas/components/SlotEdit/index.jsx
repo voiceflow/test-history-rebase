@@ -3,7 +3,7 @@ import { Button, ClickableText, Flex, FlexApart, flexApartStyles, Input, Select,
 import _sample from 'lodash/sample';
 import React from 'react';
 
-import { ModalFooter } from '@/components/LegacyModal';
+import { ModalFooter } from '@/components/Modal';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
 import { Permission } from '@/config/permissions';

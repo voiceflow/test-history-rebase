@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ModalFooter } from '@/components/LegacyModal';
+import { ModalFooter } from '@/components/Modal';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
 import ChatWithUsLink from '@/pages/Payment/components/ChatWithUsLink';

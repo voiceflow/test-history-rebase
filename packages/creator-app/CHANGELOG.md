@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.526.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.525.2...@voiceflow/creator-app@1.526.0) (2021-10-27)
+
+
+### Features
+
+* persisted IMM state (VF-2039) ([#4372](https://github.com/voiceflow/creator-app/issues/4372)) ([2f0ea1a](https://github.com/voiceflow/creator-app/commit/2f0ea1a3575dd1fefebde00c98a72b02e6ada865))
+
+
+
+
+
 ## [1.525.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.525.1...@voiceflow/creator-app@1.525.2) (2021-10-27)
 
 

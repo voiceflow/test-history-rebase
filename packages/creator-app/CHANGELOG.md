@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.525.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.525.1...@voiceflow/creator-app@1.525.2) (2021-10-27)
+
+
+### Bug Fixes
+
+* modal/popper z-indexes (VF-2023) ([#4365](https://github.com/voiceflow/creator-app/issues/4365)) ([e2cad8c](https://github.com/voiceflow/creator-app/commit/e2cad8c8e264f6944686356f4363f95898a34e79))
+
+
+
+
+
 ## [1.525.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.525.0...@voiceflow/creator-app@1.525.1) (2021-10-26)
 
 

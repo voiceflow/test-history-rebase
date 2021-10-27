@@ -63,6 +63,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
     },
     [slotsIDs, selectedID, setSelectedID]
   );
+
   const onDeleteFromManager = React.useCallback(
     (id: string) => {
       const index = slots.findIndex((slot) => slot.id === id);

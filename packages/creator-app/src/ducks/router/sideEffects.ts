@@ -194,7 +194,6 @@ export const goToCurrentCanvasInteractionModel =
     const diagramID = Session.activeDiagramIDSelector(state);
 
     if (!versionID || !diagramID) return;
-
     dispatch(goTo(generatePath(Path.CANVAS_MODEL, { versionID, diagramID, modelType: entityType })));
   };
 

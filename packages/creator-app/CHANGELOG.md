@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.526.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.526.0...@voiceflow/creator-app@1.526.1) (2021-10-27)
+
+
+### Bug Fixes
+
+* reminder bug (VF-1948) ([#4376](https://github.com/voiceflow/creator-app/issues/4376)) ([630ede4](https://github.com/voiceflow/creator-app/commit/630ede462be0ccf9b008137e98f2839f50a96a8a))
+* update project content option from responses to dialogs (VF-2121) ([#4375](https://github.com/voiceflow/creator-app/issues/4375)) ([44680b6](https://github.com/voiceflow/creator-app/commit/44680b61fb828899763ff7c82d50a937e45f9a27))
+
+
+
+
+
 # [1.526.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.525.2...@voiceflow/creator-app@1.526.0) (2021-10-27)
 
 

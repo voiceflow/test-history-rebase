@@ -225,11 +225,18 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
   [PlatformFeature.PUBLISH]: {
     name: 'Publish',
     color: '#558b2f',
-    description: (platform) => {
-      const platformMeta = getPlatformMeta(platform);
-
-      return `Publish live apps to the ${platformMeta.company} ${platformMeta.platformAppType} store`;
-    },
+    description: (platform) =>
+      getPlatformValue(
+        platform,
+        {
+          [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Publish agents directly through Dialogflow',
+          // eslint-disable-next-line sonarjs/no-identical-functions
+          [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Publish agents directly through Dialogflow',
+          [Constants.PlatformType.ALEXA]: 'Publish live apps to the Amazon Skill store',
+          [Constants.PlatformType.GOOGLE]: 'Publish live apps to the Google Action store',
+        },
+        ''
+      ),
   },
 
   [PlatformFeature.DESIGN_AND_PROTO]: {

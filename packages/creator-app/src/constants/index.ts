@@ -359,7 +359,7 @@ export enum ExportFormat {
   PNG = 'png',
   PDF = 'pdf',
   JSON = 'json',
-  RESPONSES = 'responses',
+  DIALOGS = 'dialogs',
   VF = 'vf',
 }
 

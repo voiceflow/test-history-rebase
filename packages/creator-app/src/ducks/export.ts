@@ -22,7 +22,7 @@ export const exportCanvas =
 
     Errors.assertVersionID(versionID);
 
-    if (type === ExportFormat.RESPONSES) {
+    if (type === ExportFormat.DIALOGS) {
       const projectName = ProjectV2.active.nameSelector(state);
       const json2csvParser = new Parser();
 

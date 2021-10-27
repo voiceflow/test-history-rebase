@@ -68,9 +68,9 @@ const SlateEditableWithVariables: React.ForwardRefRenderFunction<SlateEditableRe
     onPersistedChange?.(nextValue);
   }, []);
 
-  const onCreateVariable = React.useCallback((name: string) => {
+  const onCreateVariable = React.useCallback(async (name: string) => {
     try {
-      addGlobalVariable(name);
+      await addGlobalVariable(name);
 
       return { id: name, name };
     } catch (err) {

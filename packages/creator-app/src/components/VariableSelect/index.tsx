@@ -14,11 +14,11 @@ const VariableSelect: React.FC<VariableSelectProps> = ({ value, onChange, ...pro
   const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
   const addVariable = useDispatch(Version.addGlobalVariable);
 
-  const onCreate = (item: string) => {
+  const onCreate = async (item: string) => {
     if (!item) return;
 
     try {
-      addVariable(item);
+      await addVariable(item);
       onChange(item);
     } catch (err) {
       toast.error(err.message);

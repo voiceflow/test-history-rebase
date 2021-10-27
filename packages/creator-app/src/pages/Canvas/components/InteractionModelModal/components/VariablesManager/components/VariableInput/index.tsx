@@ -48,14 +48,14 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
     []
   );
 
-  const onAdd = React.useCallback(() => {
+  const onAdd = React.useCallback(async () => {
     if (!value.trim()) return;
 
     try {
       if (isFlow) {
-        addLocalVariable(value);
+        await addLocalVariable(value);
       } else {
-        addGlobalVariable(value);
+        await addGlobalVariable(value);
       }
 
       setSelected(variableType, value);

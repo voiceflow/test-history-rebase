@@ -17,9 +17,9 @@ const SSMLWithVars = (
   const vars = React.useMemo(() => variables.map((name) => ({ id: name, name, isVariable: true })), [variables]);
   const platformDefaultVoice = getPlatformDefaultVoice(platform);
   const onAddVariable = React.useCallback(
-    (name) => {
+    async (name) => {
       try {
-        addGlobalVariable(name);
+        await addGlobalVariable(name);
 
         return { id: name, name, isVariable: true };
       } catch (err) {

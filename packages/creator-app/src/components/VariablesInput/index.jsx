@@ -31,11 +31,11 @@ const VariablesInput = (
   const vars = React.useMemo(() => variables.map((name) => ({ id: name, name, isVariable: true })), [variables]);
 
   const onAddVariable = React.useCallback(
-    (name) => {
+    async (name) => {
       if (!name) return null;
 
       try {
-        addGlobalVariable(name);
+        await addGlobalVariable(name);
 
         return { id: name, name, isVariable: true };
       } catch (err) {

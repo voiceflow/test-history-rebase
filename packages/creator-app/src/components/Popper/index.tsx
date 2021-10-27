@@ -1,6 +1,6 @@
 import { Portal, portalRootNode, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
-import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
+import { DismissableLayerProvider, DismissEventType, useDismissable } from 'react-dismissable-layers';
 import { Manager, Popper as ReactPopper, PopperProps as ReactPopperProps, Reference } from 'react-popper';
 import { MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -33,6 +33,7 @@ export interface PopperProps {
   placement?: ReactPopperProps['placement'];
   portalNode?: HTMLElement;
   initialTab?: string;
+  dismissEvent?: DismissEventType;
   renderFooter?: (props: RendererProps) => React.ReactNode;
   renderContent: (props: RendererProps) => React.ReactNode;
   preventOverflowPadding?: number;
@@ -49,6 +50,7 @@ const Popper: React.FC<PopperProps> = ({
   placement = 'bottom',
   initialTab,
   portalNode = portalRootNode,
+  dismissEvent,
   renderFooter,
   renderContent,
   preventOverflowPadding = 16,
@@ -57,7 +59,7 @@ const Popper: React.FC<PopperProps> = ({
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const [isOpened, onToggle, onForceClose] = useDismissable(opened, { ref: containerRef, onClose });
+  const [isOpened, onToggle, onForceClose] = useDismissable(opened, { ref: containerRef, onClose, dismissEvent });
 
   useDidUpdateEffect(() => {
     if ((opened && !isOpened) || (!opened && isOpened)) {

@@ -21,6 +21,10 @@ export const Container = styled.div`
         padding-bottom: ${Math.max(SCROLLBAR_WIDTH, MINIMUM_SCROLLBAR_WIDTH)}px;
       }
 
+      .public-DraftStyleDefault-block {
+        white-space: pre;
+      }
+
       .public-DraftStyleDefault-block > span {
         white-space: pre;
       }

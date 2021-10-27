@@ -1,9 +1,9 @@
-import { Portal, usePopper } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 
+import Popper from '@/components/Popper';
 import VariablesInput from '@/components/VariablesInput';
-import { useEnableDisable } from '@/hooks';
+import { chain } from '@/utils/functional';
 
 import { DayPickerContainer, FORMAT, TimeRangePicker, WEEKDAYS } from './components';
 
@@ -14,17 +14,7 @@ export interface DayPickerInputProps {
   onChange: (date: string | Date) => void;
 }
 
-const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
-  const popper = usePopper({
-    placement: 'bottom-start',
-    modifiers: [
-      { name: 'offset', options: { offset: [0, 5] } },
-      { name: 'preventOverflow', options: { boundary: document.body } },
-    ],
-  });
-
-  const variablesInputRef = React.useRef<{ blur: Function; getEditorState: Function } | null>(null);
-  const [isShown, onShow, onHide] = useEnableDisable(false);
+const DayPickerInput: React.FC<DayPickerInputProps> = ({ date, onChange }) => {
   const currentDate = React.useMemo(() => new Date(), []);
 
   const [selectedDay, formattedDate] = React.useMemo(() => {
@@ -34,78 +24,38 @@ const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
     return [isValid ? ddate.toDate() : undefined, isValid ? ddate.format(FORMAT) : (date && `${date}`) || ''];
   }, [date]);
 
-  const onBlur = React.useCallback(
-    ({ text }: { text: string }) => {
-      const ddate = dayjs(text);
+  const onBlur = ({ text }: { text: string }) => {
+    const ddate = dayjs(text);
 
-      if (ddate.isValid()) {
-        onChange(ddate.toDate());
-      } else {
-        onChange(text);
-      }
-    },
-    [onChange]
-  );
-
-  const onDayClick = React.useCallback(
-    (newDate: Date) => {
-      onChange(newDate);
-      onHide();
-      variablesInputRef.current?.blur();
-    },
-    [onChange]
-  );
-
-  React.useEffect(() => {
-    // eslint-disable-next-line xss/no-mixed-html
-    const clickHandler = (e: MouseEvent) => {
-      const isEditorFocused = variablesInputRef.current?.getEditorState().getSelection().hasFocus;
-
-      // eslint-disable-next-line xss/no-mixed-html
-      if (isEditorFocused || (e.currentTarget && popper.popperElement?.contains(e.target as HTMLElement))) {
-        return;
-      }
-
-      onHide();
-    };
-
-    if (isShown) {
-      window.document.body.addEventListener('click', clickHandler, true);
+    if (ddate.isValid()) {
+      onChange(ddate.toDate());
+    } else {
+      onChange(text);
     }
+  };
 
-    return () => {
-      window.document.body.removeEventListener('click', clickHandler, true);
-    };
-  }, [isShown]);
+  const onDayClick = (newDate: Date) => onChange(newDate);
 
   return (
-    <>
-      <div ref={popper.setReferenceElement} onClick={onShow}>
-        <VariablesInputComponent
-          ref={(editor: any) => {
-            variablesInputRef.current = editor;
-          }}
-          value={formattedDate}
-          onBlur={onBlur}
-          onFocus={onShow}
-          placeholder={FORMAT}
-        />
-      </div>
-
-      {isShown && (
-        <Portal>
-          <DayPickerContainer ref={popper.setPopperElement} style={{ ...popper.styles.popper }} {...popper.attributes.popper}>
-            <TimeRangePicker
-              weekdaysShort={WEEKDAYS}
-              initialMonth={selectedDay}
-              selectedDays={selectedDay}
-              disabledDays={{ before: currentDate }}
-              onDayClick={onDayClick}
-            />
-          </DayPickerContainer>
-        </Portal>
+    <Popper
+      renderContent={({ onToggle }) => (
+        <DayPickerContainer>
+          <TimeRangePicker
+            onDayClick={chain(onDayClick, onToggle)}
+            initialMonth={selectedDay}
+            selectedDays={selectedDay}
+            disabledDays={{ before: currentDate }}
+            weekdaysShort={WEEKDAYS}
+          />
+        </DayPickerContainer>
       )}
-    </>
+    >
+      {({ ref, onToggle }) => (
+        <div ref={ref} onClick={onToggle}>
+          <VariablesInputComponent value={formattedDate} onBlur={onBlur} placeholder={FORMAT} />
+        </div>
+      )}
+    </Popper>
   );
 };
 

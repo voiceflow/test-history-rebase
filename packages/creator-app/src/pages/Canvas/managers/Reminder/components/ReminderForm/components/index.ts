@@ -29,7 +29,7 @@ export const TimeLabel = styled.label`
   font-size: 13px !important;
 `;
 
-export const VariableInputContainer = styled.div`
+export const VariableInputContainer = styled.div<{ width: number }>`
   width: ${({ width }) => width}px;
 `;
 

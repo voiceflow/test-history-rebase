@@ -4,7 +4,7 @@ import { BlockType, ReminderType } from '@/constants';
 import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
-import ReminderForm from './components/ReminderForm';
+import ReminderForm, { ReminderFormProps } from './components/ReminderForm';
 
 export const REMINDER_ROUTES = [
   {
@@ -15,7 +15,7 @@ export const REMINDER_ROUTES = [
   {
     id: ReminderType.SCHEDULED,
     label: 'Scheduled',
-    component: withProps({ withDate: true })(ReminderForm),
+    component: withProps<Pick<ReminderFormProps, 'withDate'>, Omit<ReminderFormProps, 'withDate'>>({ withDate: true })(ReminderForm),
   },
 ];
 

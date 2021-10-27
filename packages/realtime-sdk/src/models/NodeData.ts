@@ -154,6 +154,11 @@ export namespace NodeData {
     outputs?: VariableMapping[];
   }
 
+  export interface ReminderRecurrence {
+    byDay?: string;
+    freq: AlexaNode.Reminder.RecurrenceFreq;
+  }
+
   export interface Reminder {
     name: string;
     reminderType: string;
@@ -163,7 +168,7 @@ export namespace NodeData {
     seconds: string;
     date?: string;
     timezone?: string;
-    recurrence?: { byDay?: string; freq: AlexaNode.Reminder.RecurrenceFreq };
+    recurrence?: ReminderRecurrence;
     recurrenceBool: boolean;
   }
 

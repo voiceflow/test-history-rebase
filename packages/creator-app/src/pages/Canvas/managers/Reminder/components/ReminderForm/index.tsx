@@ -1,4 +1,5 @@
 import { Node } from '@voiceflow/alexa-types';
+import { NodeData } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import DayPickerInput from '@/components/DayPickerInput';
@@ -24,15 +25,22 @@ import { RECURRENCE_OPTIONS } from './constants';
 const USER_TIMEZONE = 'User Timezone';
 const TIMEZONE_OPTIONS = [USER_TIMEZONE, ...TIMEZONES];
 
-function ReminderForm({ data, withDate, onChange }) {
+const VariablesInputComponent: any = VariablesInput;
+
+export interface ReminderFormProps {
+  data: NodeData.Reminder & { voice?: string };
+  onChange: (data: Partial<NodeData.Reminder>) => void;
+  withDate?: boolean;
+}
+
+const ReminderForm: React.FC<ReminderFormProps> = ({ data, withDate, onChange }) => {
   const { text, voice, recurrence, recurrenceBool, reminderType, date, hours, minutes, seconds, timezone } = data;
 
-  const updateTime = React.useCallback(
-    (key) =>
-      ({ text }) =>
-        onChange({ [key]: text }),
-    [onChange]
-  );
+  const updateTime =
+    <T extends keyof NodeData.Reminder>(key: T) =>
+    ({ text }: { text: string }) =>
+      onChange({ [key]: text });
+
   const updateDate = React.useCallback((date) => onChange({ date }), [onChange]);
   const updateTimezone = React.useCallback((timezone) => onChange({ timezone }), [onChange]);
 
@@ -101,13 +109,13 @@ function ReminderForm({ data, withDate, onChange }) {
           <TimeLabel>MINUTES</TimeLabel>
           <TimeLabel>SECONDS</TimeLabel>
           <VariableInputContainer width={107}>
-            <VariablesInput placeholder="24" value={hours} onBlur={updateTime('hours')} />
+            <VariablesInputComponent placeholder="24" value={hours} onBlur={updateTime('hours')} />
           </VariableInputContainer>
           <VariableInputContainer width={118}>
-            <VariablesInput placeholder="60" value={minutes} onBlur={updateTime('minutes')} />
+            <VariablesInputComponent placeholder="60" value={minutes} onBlur={updateTime('minutes')} />
           </VariableInputContainer>
           <VariableInputContainer width={122}>
-            <VariablesInput placeholder="60" value={seconds} onBlur={updateTime('seconds')} />
+            <VariablesInputComponent placeholder="60" value={seconds} onBlur={updateTime('seconds')} />
           </VariableInputContainer>
         </TimeContainer>
       </Section>
@@ -133,6 +141,6 @@ function ReminderForm({ data, withDate, onChange }) {
       )}
     </>
   );
-}
+};
 
 export default ReminderForm;

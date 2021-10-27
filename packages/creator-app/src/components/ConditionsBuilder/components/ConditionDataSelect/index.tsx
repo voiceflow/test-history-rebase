@@ -61,6 +61,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
       onToggle();
     }
   }, [expression.logicInterface]);
+
   React.useEffect(() => {
     // if pop-up is open remove error
     if (isShown && invalidCondition) {

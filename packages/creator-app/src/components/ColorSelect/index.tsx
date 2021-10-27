@@ -1,8 +1,8 @@
-import { Portal, useCachedValue, usePopper } from '@voiceflow/ui';
 import React from 'react';
-import { useDismissable } from 'react-dismissable-layers';
 
 import ColorPicker from '@/components/ColorPicker';
+import Popper from '@/components/Popper';
+import { chainVoid } from '@/utils/functional';
 
 import { ColorPreview } from './components';
 
@@ -22,52 +22,20 @@ const ColorSelect: React.FC<ColorSelectProps> = ({
   onPickerPreviewMouseDown,
   onPickerContainerMouseDown,
   ...colorPickerProps
-}) => {
-  const popper = usePopper({
-    placement: 'bottom-start',
-    modifiers: [
-      { name: 'offset', options: { offset: [0, 5] } },
-      { name: 'preventOverflow', options: { boundary: document.body } },
-    ],
-  });
-
-  const dismissableRef = useCachedValue(popper.popperElement as Element);
-  const [open, toggleOpen] = useDismissable(false, {
-    onClose,
-    ref: dismissableRef,
-    dismissEvent: 'mousedown',
-  });
-
-  const onOpen = () => {
-    if (!disabled) {
-      if (!open) {
-        onShow?.();
-      }
-
-      toggleOpen();
-    }
-  };
-
-  return (
-    <>
+}) => (
+  <Popper onClose={onClose} renderContent={() => <ColorPicker {...colorPickerProps} />}>
+    {({ ref, onToggle, isOpened }) => (
       <ColorPreview
-        ref={popper.setReferenceElement}
+        ref={ref}
         style={{
           color: `rgba(${colorPickerProps.color.r}, ${colorPickerProps.color.g}, ${colorPickerProps.color.b}, ${colorPickerProps.color.a})`,
         }}
+        onClick={disabled ? undefined : chainVoid(onToggle, () => !isOpened && onShow?.())}
         disabled={disabled}
-        onClick={onOpen}
         onMouseDown={onPickerPreviewMouseDown}
       />
-      {open && (
-        <Portal portalNode={document.body}>
-          <div ref={popper.setPopperElement} style={popper.styles.popper} onMouseDown={onPickerContainerMouseDown} {...popper.attributes.popper}>
-            <ColorPicker {...colorPickerProps} />
-          </div>
-        </Portal>
-      )}
-    </>
-  );
-};
+    )}
+  </Popper>
+);
 
 export default ColorSelect;

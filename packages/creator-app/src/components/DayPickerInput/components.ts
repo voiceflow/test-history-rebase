@@ -34,16 +34,16 @@ export const TimeRangePicker = styled(DayPicker)<{ isConversation?: boolean; isR
     &:after {
       ${({ isRangeSelected }) =>
         isRangeSelected &&
-        `
-        content: '';
-        position: absolute;
-        background-color: ${THEME.backgrounds.lightBlue};
-        width: 50%;
-        height: 100%;
-        right: 0;
-        top: 0;
-        z-index: -1;
-      `}
+        css`
+          content: '';
+          position: absolute;
+          background-color: ${THEME.backgrounds.lightBlue};
+          width: 50%;
+          height: 100%;
+          right: 0;
+          top: 0;
+          z-index: -1;
+        `}
     }
   }
 
@@ -58,16 +58,16 @@ export const TimeRangePicker = styled(DayPicker)<{ isConversation?: boolean; isR
     &:before {
       ${({ isRangeSelected }) =>
         isRangeSelected &&
-        `
-        content: '';
-        position: absolute;
-        background-color: ${THEME.backgrounds.lightBlue};
-        width: 50%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        z-index: -1;
-      `}
+        css`
+          content: '';
+          position: absolute;
+          background-color: ${THEME.backgrounds.lightBlue};
+          width: 50%;
+          height: 100%;
+          left: 0;
+          top: 0;
+          z-index: -1;
+        `}
     }
   }
 
@@ -78,19 +78,19 @@ export const TimeRangePicker = styled(DayPicker)<{ isConversation?: boolean; isR
   & .DayPicker-Day--sundays {
     ${({ isRangeSelected }) =>
       isRangeSelected &&
-      `
-      border-start-start-radius: 50% !important;
-      border-end-start-radius: 50% !important;
-    `};
+      css`
+        border-start-start-radius: 50% !important;
+        border-end-start-radius: 50% !important;
+      `};
   }
 
   & .DayPicker-Day--saturdays {
     ${({ isRangeSelected }) =>
       isRangeSelected &&
-      `
-      border-start-end-radius: 50% !important;
-      border-end-end-radius: 50% !important;
-    `}
+      css`
+        border-start-end-radius: 50% !important;
+        border-end-end-radius: 50% !important;
+      `}
   }
 
   & .DayPicker-Weekdays {
@@ -158,10 +158,6 @@ export const TimeRangePicker = styled(DayPicker)<{ isConversation?: boolean; isR
 `;
 
 export const DayPickerContainer = styled.div`
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
-
   & * {
     outline: none !important;
   }

@@ -56,7 +56,7 @@
     "local": "vfcli mesh connect realtime",
     "start": "PORT=8013 CREATOR_API_ENDPOINT=https:// NODE_ENV=production node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",
     "start:e2e": "NODE_ENV=e2e node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",
-    "start:meshed": "NODE_ENV=local && IS_MESHED=true && NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon src/index.ts",
+    "start:meshed": "NODE_ENV=local IS_MESHED=true NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon src/index.ts",
     "test": "yarn test:unit",
     "test:dependencies": "depcheck",
     "test:integration": "exit 0",

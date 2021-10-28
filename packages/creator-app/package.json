@@ -254,7 +254,7 @@
     "start": "vf-dev-server --action serve",
     "start:e2e": "scripts/start_e2e.sh",
     "start:hidden": "yarn start --no-open",
-    "start:meshed": "scripts/generate_certs.sh && IS_MESHED=true && NODE_ENV=local && E2E=true yarn start --typecheck",
+    "start:meshed": "scripts/generate_certs.sh && IS_MESHED=true E2E=true yarn start --typecheck",
     "start:proxy": "scripts/generate_certs.sh && docker compose up -d proxy",
     "tdd:integration": "yarn test:integration --watchAll=true",
     "tdd:unit": "NODE_ENV=test ts-mocha --project tsconfig.test.json --paths --watch --config config/test/unit/mocharc.yml",

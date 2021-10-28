@@ -3,13 +3,12 @@ import React from 'react';
 
 import { DiagramState, ModalType } from '@/constants';
 import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
+import { PublishContext, PublishContextValue } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { useDidUpdateEffect, useModals, useSelector, useToggle, useTrackingEvents } from '@/hooks';
 import { AlexaPublishJob, DialogflowPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
 import { isNotify, isReady } from '@/utils/job';
-
-import { PublishContext, PublishContextValue } from '../contexts';
 
 type PublishStageType = typeof GoogleStageType | typeof AlexaStageType | typeof DialogflowStageType;
 type PublishJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob;

@@ -1,11 +1,11 @@
 import React from 'react';
 
 import Modal, { ModalBody } from '@/components/Modal';
+import Alexa from '@/components/PlatformUploadPopup/Alexa';
 import { JobStatus, ModalType } from '@/constants';
+import { PublishContext } from '@/contexts';
 import * as Account from '@/ducks/account';
 import { useDidUpdateEffect, useDispatch, useModals, useSetup, useTrackingEvents } from '@/hooks';
-import { Alexa } from '@/pages/Publish/Upload';
-import { PublishContext } from '@/pages/Skill/contexts';
 
 import PublishAmazonForm from './Form';
 

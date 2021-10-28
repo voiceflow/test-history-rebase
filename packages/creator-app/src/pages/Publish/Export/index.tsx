@@ -1,26 +1,25 @@
-import { Constants } from '@voiceflow/general-types';
-import { Box, BoxFlex, Link, Text } from '@voiceflow/ui';
+import { BoxFlex, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Account from '@/ducks/account';
+import PlatformUploadPopup from '@/components/PlatformUploadPopup';
+import { getPlatformContent } from '@/components/PlatformUploadPopup/constants';
+import { ExportContext } from '@/contexts';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { connect } from '@/hocs';
-import { useAsyncMountUnmount, useSetup, useToggle, useTrackingEvents } from '@/hooks';
-import AlexaUploadButton from '@/pages/Canvas/header/ActionGroup/components/AlexaUploadGroup/Button';
-import GoogleUploadButton from '@/pages/Canvas/header/ActionGroup/components/GoogleUploadGroup/Button';
-import UploadButton from '@/pages/Canvas/header/ActionGroup/components/UploadButton';
-import UploadPopup from '@/pages/Canvas/header/ActionGroup/components/UploadPopup';
-import { Alexa, General, Google } from '@/pages/Publish/Upload';
-import { ExportContext } from '@/pages/Skill/contexts';
-import { ConnectedProps } from '@/types';
+import { useAsyncMountUnmount, useDispatch, useSelector, useSetup, useToggle, useTrackingEvents } from '@/hooks';
 import { isNotify, isReady, isRunning } from '@/utils/job';
-import { getPlatformValue } from '@/utils/platform';
 
 import { ActionContainer, ContentContainer, ContentSection, Section } from '../components';
+import { getPlatformSyncAction, getUploadButton, getUploadLink } from './constants';
 
-const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }) => {
+const Export: React.FC = () => {
   const [open, toggleOpen] = useToggle(false);
   const { cancel, job, start } = React.useContext(ExportContext)!;
+  const platform = useSelector(ProjectV2.active.platformSelector);
+  const platformSyncAction = getPlatformSyncAction(platform);
+  const syncPlatform = useDispatch(platformSyncAction);
+  const PlatformUploadLink = getUploadLink(platform);
+  const PlatformUploadButton = getUploadButton(platform);
+  const PlatformUploadContent = getPlatformContent(platform);
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -43,9 +42,7 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
   });
 
   useAsyncMountUnmount(async () => {
-    if (platform !== Constants.PlatformType.ALEXA) return;
-
-    await syncSelectedVendor();
+    await syncPlatform();
   });
 
   React.useEffect(() => {
@@ -54,63 +51,21 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
     }
   }, [job?.status]);
 
-  const ExportPopup = getPlatformValue(
-    platform,
-    {
-      [Constants.PlatformType.ALEXA]: Alexa,
-      [Constants.PlatformType.GOOGLE]: Google,
-    },
-    General
-  );
-
   return (
     <ContentContainer>
       <ContentSection>
         <Section title="Runtime Export">
           <BoxFlex>
             <Text>
-              {getPlatformValue(
-                platform,
-                {
-                  [Constants.PlatformType.ALEXA]: (
-                    <>
-                      Upload to Alexa and generate an executable project version to run on your own infrastructure.
-                      <Box mt={10}>
-                        <Link href="https://github.com/voiceflow/alexa-runtime#configurations">Learn More</Link>
-                      </Box>
-                    </>
-                  ),
-                  [Constants.PlatformType.GOOGLE]: (
-                    <>
-                      Upload to Google and generate an executable project version to run on your own infrastructure.
-                      <Box mt={10}>
-                        <Link href="https://github.com/voiceflow/google-runtime#configurations">Learn More</Link>
-                      </Box>
-                    </>
-                  ),
-                },
-                <>
-                  Generate an executable project version to run on your own infrastructure.
-                  <Box mt={10}>
-                    <Link href="https://github.com/voiceflow/general-runtime#configurations">Learn More</Link>
-                  </Box>
-                </>
-              )}
+              <PlatformUploadLink />
             </Text>
 
             <ActionContainer>
-              {getPlatformValue(
-                platform,
-                {
-                  [Constants.PlatformType.ALEXA]: <AlexaUploadButton isActive={isRunning(job)} onClick={exportClick} label="Export" />,
-                  [Constants.PlatformType.GOOGLE]: <GoogleUploadButton isActive={isRunning(job)} onClick={exportClick} label="Export" />,
-                },
-                <UploadButton isActive={isRunning(job)} onClick={exportClick} label="Export" />
-              )}
+              <PlatformUploadButton isActive={isRunning(job)} onClick={exportClick} label="Export" />
 
-              <UploadPopup open={!isReady(job) && open} onClose={onClose}>
-                <ExportPopup export />
-              </UploadPopup>
+              <PlatformUploadPopup open={!isReady(job) && open} onClose={onClose}>
+                <PlatformUploadContent export />
+              </PlatformUploadPopup>
             </ActionContainer>
           </BoxFlex>
         </Section>
@@ -119,14 +74,4 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
   );
 };
 
-const mapStateToProps = {
-  platform: ProjectV2.active.platformSelector,
-};
-
-const mapDispatchToProps = {
-  syncSelectedVendor: Account.amazon.syncSelectedVendor,
-};
-
-type ConnectedExportProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(Export);
+export default Export;

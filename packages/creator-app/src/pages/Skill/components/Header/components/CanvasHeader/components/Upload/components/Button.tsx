@@ -3,32 +3,13 @@ import { Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { HeaderIconButtonProps } from '@/components/ProjectPage';
+import { getPlatformName } from '@/constants/platforms';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
-import { createPlatformSelector } from '@/utils/platform';
 
+import { getPlatformIconProps } from '../constants';
 import StyledButton from './StyledButton';
-
-const getPlatformIconProps = createPlatformSelector<HeaderIconButtonProps>(
-  {
-    [Constants.PlatformType.ALEXA]: { icon: 'amazonAlexa', iconProps: { color: '#5fcaf4' } },
-    [Constants.PlatformType.GOOGLE]: { icon: 'googleAssistant' },
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: { icon: 'dialogflow', iconProps: { height: '18px', width: '18px' } },
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: { icon: 'dialogflow', iconProps: { height: '18px', width: '18px' } },
-  },
-  { icon: 'ban' }
-);
-
-const getPlatformName = createPlatformSelector(
-  {
-    [Constants.PlatformType.ALEXA]: 'Alexa',
-    [Constants.PlatformType.GOOGLE]: 'Google',
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow',
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow',
-  },
-  ''
-);
 
 export enum ButtonVariant {
   UPLOAD = 'UPLOAD',

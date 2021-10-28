@@ -1,9 +1,8 @@
+import PlatformUploadPopup from '@/components/PlatformUploadPopup';
 import { styled } from '@/hocs';
-// TODO: after the feature release move UploadPopup component to other place
-import UploadPopup from '@/pages/Canvas/header/ActionGroup/components/UploadPopup';
 
-const Popup = styled(UploadPopup)`
-  top: ${({ theme }) => theme.components.projectPage.header.height + 12}px !important;
+const Popup = styled(PlatformUploadPopup)`
+  top: ${({ theme }) => theme.components.projectPage.header.height + -3}px !important;
   right: 16px !important;
 `;
 

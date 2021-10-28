@@ -3,7 +3,9 @@ import React from 'react';
 
 import { platformAware } from '@/hocs';
 
-import { Alexa, Dialogflow, Google } from './components';
+import Alexa from './Alexa';
+import Dialogflow from './Dialogflow';
+import Google from './Google';
 
 const UploadGroup = platformAware(
   {

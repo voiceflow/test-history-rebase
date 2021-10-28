@@ -5,13 +5,13 @@ import React from 'react';
 import BubbleText from '@/components/BubbleText';
 import ChatWithUsLink from '@/components/ChatLink';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
+import PlatformUploadButton from '@/components/PlatformUploadButton';
 import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { ModalType, NLPProvider, NLPProviderLabels, PLAN_TYPE_META } from '@/constants';
 import * as Export from '@/ducks/export';
 import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
-import UploadButton from '@/pages/Canvas/header/ActionGroup/components/UploadButton';
 import { ConnectedProps } from '@/types';
 
 const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ exportModel }) => {
@@ -61,7 +61,9 @@ const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ exportMode
           <FlexApart fullWidth>
             <Link href={Documentation.MODEL_EXPORT}>Learn More</Link>
             {!canExport && <Button onClick={openPaymentsModal}>Upgrade</Button>}
-            {canExport && <UploadButton isActive={!!isExporting} label="Export" icon="publishSpin" onClick={stopImmediatePropagation(onClick)} />}
+            {canExport && (
+              <PlatformUploadButton isActive={!!isExporting} label="Export" icon="publishSpin" onClick={stopImmediatePropagation(onClick)} />
+            )}
           </FlexApart>
         </ModalFooter>
       </Box>

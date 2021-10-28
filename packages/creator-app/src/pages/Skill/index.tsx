@@ -8,6 +8,7 @@ import { RemoveIntercom } from '@/components/IntercomChat';
 import ProjectPage from '@/components/ProjectPage';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
+import { ExportProvider, PublishProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
@@ -34,15 +35,7 @@ import { compose } from '@/utils/functional';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import { TIMEOUT_COUNT } from './constants';
-import {
-  ExportProvider,
-  LastCreatedComponentProvider,
-  MarkupProvider,
-  NLPProvider,
-  PlatformProvider,
-  PublishProvider,
-  SelectionProvider,
-} from './contexts';
+import { LastCreatedComponentProvider, MarkupProvider, NLPProvider, PlatformProvider, SelectionProvider } from './contexts';
 
 const Diagram = lazy(() => import(/* webpackPrefetch: true */ './components/Diagram'));
 const Business = lazy(() => import('@/pages/Business'));

@@ -2,8 +2,8 @@ import { BoxFlex, FlexApart, FlexEnd, SVG, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { BackButton } from '@/components/Header/components';
-import { ProgressStage } from '@/pages/Publish/Upload/components';
-import { PublishContext } from '@/pages/Skill/contexts';
+import { ProgressStage } from '@/components/PlatformUploadPopup/components';
+import { PublishContext } from '@/contexts';
 import { Identifier } from '@/styles/constants';
 
 import { HeaderContainer, NavigateBackTextContainer, SubHeader } from './components';

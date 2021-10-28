@@ -2,7 +2,7 @@ import { useCache, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { Scrollbars } from '@/components/CustomScrollbars';
-import { ScrollContext, ScrollContextValue } from '@/contexts';
+import { ScrollContext, ScrollContextValue } from '@/contexts/ScrollContext';
 import { getOffsetLeftToNode, getOffsetToNode, scrollTo, setScrollbarOffset } from '@/utils/dom';
 import { xnor, xor } from '@/utils/logic';
 

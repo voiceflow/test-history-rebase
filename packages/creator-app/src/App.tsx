@@ -14,6 +14,7 @@ import { hot } from 'react-hot-loader/root';
 import ConfirmModalV2 from '@/components/ConfirmModal';
 import IntercomChat from '@/components/IntercomChat';
 import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, SuccessModal } from '@/components/modals';
+import LoginModal from '@/components/PlatformUploadPopup/components/LoginModal';
 import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
 import { SeoPage } from '@/constants/seo';
@@ -32,7 +33,6 @@ import {
   TestableLinkModal,
 } from '@/pages/Dashboard/RestrictionModals';
 import PaymentModal from '@/pages/Payment/PaymentModal';
-import LoginModal from '@/pages/Publish/Upload/common/LoginModal';
 import { compose } from '@/utils/functional';
 
 import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';

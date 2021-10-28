@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Popper, { PopperContent, PopperFooter, PopperNav, PopperNavItem, PopperProps } from '@/components/Popper';
+import Popper, { PopperContent, PopperProps } from '@/components/Popper';
 import { Permission } from '@/config/permissions';
 import * as Session from '@/ducks/session';
 import { usePermission, useSelector, useSessionStorageState } from '@/hooks';
@@ -11,7 +11,7 @@ import InviteFooter from '@/pages/Collaborators/components/InviteByLink';
 
 import { ShareProjectTab } from '../../constants';
 import { SharePopperContext } from '../../contexts';
-import { ExportContent, ExportFooter } from './components';
+import { ExportContent, ExportFooter, ExportNavItem, ExportPopperFooter, ExportPopperNav } from './components';
 import { ExportProvider } from './contexts';
 
 interface SharePopperProps {
@@ -63,23 +63,23 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
         initialTab={sharePopper?.data?.defaultTab ?? persistedTab}
         preventOverflowPadding={24}
         renderNav={() => (
-          <PopperNav>
+          <ExportPopperNav>
             {canAddCollaborators && (
-              <PopperNavItem onClick={() => setPersistedTab(ShareProjectTab.INVITE)} to={ShareProjectTab.INVITE}>
+              <ExportNavItem onClick={() => setPersistedTab(ShareProjectTab.INVITE)} to={ShareProjectTab.INVITE}>
                 Invite collaborators
-              </PopperNavItem>
+              </ExportNavItem>
             )}
 
             {canSharePrototype && (
-              <PopperNavItem onClick={() => setPersistedTab(ShareProjectTab.SHARE)} to={ShareProjectTab.SHARE}>
+              <ExportNavItem onClick={() => setPersistedTab(ShareProjectTab.SHARE)} to={ShareProjectTab.SHARE}>
                 Share prototype
-              </PopperNavItem>
+              </ExportNavItem>
             )}
 
-            <PopperNavItem onClick={() => setPersistedTab(ShareProjectTab.EXPORT)} to={ShareProjectTab.EXPORT}>
+            <ExportNavItem onClick={() => setPersistedTab(ShareProjectTab.EXPORT)} to={ShareProjectTab.EXPORT}>
               Export as…
-            </PopperNavItem>
-          </PopperNav>
+            </ExportNavItem>
+          </ExportPopperNav>
         )}
         renderContent={() => (
           <PopperContent>
@@ -91,13 +91,13 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
           </PopperContent>
         )}
         renderFooter={() => (
-          <PopperFooter>
+          <ExportPopperFooter>
             <Switch>
               <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter />} />
               <Route path={ShareProjectTab.SHARE} render={() => <ShareFooter compile inline />} />
               <Route path={ShareProjectTab.EXPORT} render={() => <ExportFooter />} />
             </Switch>
-          </PopperFooter>
+          </ExportPopperFooter>
         )}
       >
         {children}

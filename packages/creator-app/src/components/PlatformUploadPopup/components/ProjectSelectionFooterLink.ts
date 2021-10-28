@@ -7,7 +7,7 @@ const ProjectSelectionFooterLink = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4986da;
+  color: #5d9df5;
   cursor: pointer;
 `;
 

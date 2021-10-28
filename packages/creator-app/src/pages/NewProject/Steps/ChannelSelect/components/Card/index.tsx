@@ -7,7 +7,7 @@ import { useSelector } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { ChannelMetaType, IconType, PLATFORM_FEATURE_META } from '../../../constants';
-import { ComingSoonBubble, Container, IconImage, PlatformDescription, PlatformFeatureBubble, PlatformIcon, PlatformName } from './components';
+import { Container, FeatureStatusBubble, IconImage, PlatformDescription, PlatformFeatureBubble, PlatformIcon, PlatformName } from './components';
 
 interface CardProps extends ChannelMetaType {
   onClick: () => void;
@@ -27,9 +27,20 @@ const Card: React.FC<CardProps> = ({
   comingSoon,
   featureFlag,
   description,
+  isNew,
 }) => {
   const getIsFeatureEnabled = useSelector(Feature.isFeatureEnabledSelector);
   const isComingSoon = comingSoon && (!featureFlag || !getIsFeatureEnabled(featureFlag));
+
+  const featureStatusContent = React.useMemo(() => {
+    const isComingSoon = comingSoon && (!featureFlag || !getIsFeatureEnabled(featureFlag));
+    const isNewFeature = isNew && featureFlag && getIsFeatureEnabled(featureFlag);
+
+    if (isComingSoon) return 'Coming soon';
+    if (isNewFeature) return 'New';
+
+    return null;
+  }, [comingSoon, isNew, featureFlag]);
 
   return (
     <Box position="relative">
@@ -63,7 +74,7 @@ const Card: React.FC<CardProps> = ({
         )}
       </Container>
 
-      {isComingSoon && <ComingSoonBubble>Coming soon</ComingSoonBubble>}
+      {featureStatusContent && <FeatureStatusBubble>{featureStatusContent}</FeatureStatusBubble>}
     </Box>
   );
 };

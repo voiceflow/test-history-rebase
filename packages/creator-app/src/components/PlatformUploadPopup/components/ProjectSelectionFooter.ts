@@ -1,6 +1,8 @@
 import { Box } from '@voiceflow/ui';
 import styled from 'styled-components';
 
+import ProjectSelectionFooterLink from './ProjectSelectionFooterLink';
+
 const ProjectSelectionFooter = styled(Box)`
   height: 68px;
   border-top: 1px solid #eaeff4;
@@ -8,6 +10,12 @@ const ProjectSelectionFooter = styled(Box)`
   overflow: hidden;
   white-space: nowrap;
   width: 100%;
+
+  :hover {
+    ${ProjectSelectionFooterLink} {
+      color: #4986da;
+    }
+  }
 `;
 
 export default ProjectSelectionFooter;

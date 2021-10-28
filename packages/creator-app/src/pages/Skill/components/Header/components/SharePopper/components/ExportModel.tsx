@@ -6,6 +6,7 @@ import ChatWithUsLink from '@/components/ChatLink';
 import Divider from '@/components/Divider';
 import RadioGroup from '@/components/RadioGroup';
 import { NLPProviderLabels } from '@/constants';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 
 import { getNplModelProvider, MODEL_EXPORT_OPTIONS, ModelExportConfig } from '../constants';
@@ -15,6 +16,8 @@ import ModelIntentsSelect from './ModelIntentsSelect';
 const ExportModel: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const { modelExportConfig, setModelExportConfig, modelExportProvider, setModelExportProvider } = React.useContext(ExportContext)!;
+  const intents = useSelector(IntentV2.allIntentsSelector);
+  const noModelData = intents.length === 0;
 
   const nplProviderOptions = React.useMemo(() => getNplModelProvider(platform), [platform]);
 
@@ -51,7 +54,13 @@ const ExportModel: React.FC = () => {
         <RadioGroup isFlat options={MODEL_EXPORT_OPTIONS} checked={modelExportConfig} onChange={setModelExportConfig} />
       </Box>
 
-      {modelExportConfig === ModelExportConfig.INTENTS && <ModelIntentsSelect />}
+      {noModelData && (
+        <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={12}>
+          No model data currently exists
+        </BlockText>
+      )}
+
+      {!noModelData && modelExportConfig === ModelExportConfig.INTENTS && <ModelIntentsSelect />}
     </>
   );
 };

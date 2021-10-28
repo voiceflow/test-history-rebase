@@ -42,6 +42,7 @@ export interface ChannelMetaType {
   iconSize: number;
   iconColor?: string;
   comingSoon?: boolean;
+  isNew?: boolean;
   description: string;
   featureFlag?: FeatureFlag;
 }
@@ -135,7 +136,7 @@ export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
     features: [PlatformFeature.DESIGN, PlatformFeature.EXPORT, PlatformFeature.PUBLISH],
     iconType: IconType.ICON,
     iconSize: 24,
-    comingSoon: true,
+    isNew: true,
     description: 'Design, test and export or publish conversational agents',
     featureFlag: FeatureFlag.DIALOGFLOW,
   },
@@ -146,7 +147,7 @@ export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
     features: [PlatformFeature.DESIGN, PlatformFeature.EXPORT, PlatformFeature.PUBLISH],
     iconType: IconType.ICON,
     iconSize: 24,
-    comingSoon: true,
+    isNew: true,
     description: 'Design, test and export or publish conversational agents',
     featureFlag: FeatureFlag.DIALOGFLOW,
   },

@@ -1,6 +1,6 @@
 import { styled } from '@/hocs';
 
-const ComingSoonBubble = styled.div`
+const FeatureStatusBubble = styled.div`
   position: absolute;
   top: 24px;
   right: 24px;
@@ -15,4 +15,4 @@ const ComingSoonBubble = styled.div`
   color: #5d9df5;
 `;
 
-export default ComingSoonBubble;
+export default FeatureStatusBubble;

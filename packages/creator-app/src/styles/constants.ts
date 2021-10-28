@@ -50,6 +50,8 @@ export enum Identifier {
   PROTO_MENU_SETTINGS_BUTTON = 'vf-proto-menu-settings-button',
   PROTO_MENU_CANVAS_BUTTON = 'vf-proto-menu-canvas-button',
 
+  STEP_MENU_LOCK_BUTTON = 'vf-step-menu-lock',
+
   VERIFY_EMAIL_TITLE = 'vf-verify-email-title',
 
   DISPLAY_CANVAS_CONTAINER = 'vf-display-canvas-container',

@@ -1,13 +1,8 @@
-import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
-import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
-import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
-import { Constants as GoogleConstants } from '@voiceflow/google-types';
+import { Constants } from '@voiceflow/general-types';
 import _constant from 'lodash/constant';
 
 import { createPlatformSelector } from '@/utils/platform';
-import { capitalizeFirstLetter } from '@/utils/string';
-
-import { prettifyAzureVoiceID, prettifyGoogleVoicesShort } from './utils';
+import { getAlexaVoiceOptions, getGeneralVoiceOptions, getGoogleDialogflowVoiceOptions, getGoogleVoiceOptions } from '@/utils/voice';
 
 const PROSODY_RATE_REGEXP = /^\d+(m?s)?$/;
 const PROSODY_PITCH_REGEXP = /^(\+|-)\d+(\.\d+)?%$/;
@@ -744,8 +739,7 @@ const ALEXA_SSML_META = {
   canChangeVoice: true,
   platformTags: ALEXA_DEFAULT_TAGS,
   addOptions: ALEXA_ADD_OPTIONS,
-  voiceOptions: () =>
-    AlexaConstants.REGIONAL_VOICE.map(({ label, options }) => ({ label, options: options.map((voice) => ({ label: voice, value: voice })) })),
+  voiceOptions: () => getAlexaVoiceOptions(),
 };
 
 const GOOGLE_SSML_META = {
@@ -753,26 +747,7 @@ const GOOGLE_SSML_META = {
   canChangeVoice: true,
   platformTags: GOOGLE_DEFAULT_TAGS,
   addOptions: UNIVERSAL_ADD_OPTIONS,
-  voiceOptions: (locales, useWavenet) => {
-    const localeMeta = locales?.map((locale) => ({
-      locale,
-      languageCode: GoogleConstants.LocaleToVoiceLanguageCode[locale] ?? GoogleConstants.VoiceLanguageCode.EN_US,
-    }));
-
-    return localeMeta?.map((meta) => ({
-      label: GoogleConstants.LocaleCodeToCountryLanguage[meta.locale] || meta.locale,
-      options: GoogleConstants.VoiceLanguageCodeToVoice[meta.languageCode]
-        .map((voiceMeta) =>
-          voiceMeta.voiceName
-            .filter((voiceName) => useWavenet || voiceName.includes(GoogleConstants.VoiceType.STANDARD))
-            .map((voiceName) => ({
-              value: voiceName,
-              label: prettifyGoogleVoicesShort(voiceName),
-            }))
-        )
-        .flat(),
-    }));
-  },
+  voiceOptions: (locales, useWavenet) => getGoogleVoiceOptions({ locales, useWavenet }),
 };
 
 const GOOGLE_DIALOGFLOW_SSML_META = {
@@ -780,30 +755,7 @@ const GOOGLE_DIALOGFLOW_SSML_META = {
   canChangeVoice: true,
   platformTags: GOOGLE_DIALOGFLOW_DEFAULT_TAGS,
   addOptions: UNIVERSAL_ADD_OPTIONS,
-  voiceOptions: () => {
-    const allDialogflowLocales = Object.values(DialogflowConstants.Locale);
-
-    const localeMeta = allDialogflowLocales?.map((locale) => ({
-      locale,
-      languageCode: DialogflowConstants.LocaleToVoiceLanguageCode[locale] ?? DialogflowConstants.VoiceLanguageCode.EN_US,
-    }));
-
-    return localeMeta
-      ?.filter((meta) => DialogflowConstants.LocaleCodeToCountryLanguage[meta.locale])
-      .map((meta) => ({
-        label: DialogflowConstants.LocaleCodeToCountryLanguage[meta.locale],
-        options: DialogflowConstants.VoiceLanguageCodeToVoice[meta.languageCode]
-          .map((voiceMeta) =>
-            voiceMeta.voiceName
-              .filter((voiceName) => voiceName.includes(GoogleConstants.VoiceType.STANDARD))
-              .map((voiceName) => ({
-                value: voiceName,
-                label: prettifyGoogleVoicesShort(voiceName),
-              }))
-          )
-          .flat(),
-      }));
-  },
+  voiceOptions: () => getGoogleDialogflowVoiceOptions(),
 };
 
 const GENERAL_SSML_META = {
@@ -811,31 +763,7 @@ const GENERAL_SSML_META = {
   canChangeVoice: true,
   platformTags: ALEXA_DEFAULT_TAGS,
   addOptions: ALEXA_ADD_OPTIONS,
-  voiceOptions: (locales, useWavenet) => {
-    const allGoogleLocales = Object.values(GoogleConstants.Locale);
-
-    return [
-      {
-        value: 'Amazon',
-        label: 'Amazon',
-        options: ALEXA_SSML_META.voiceOptions(),
-      },
-      {
-        value: capitalizeFirstLetter(Constants.PlatformType.GOOGLE),
-        label: capitalizeFirstLetter(Constants.PlatformType.GOOGLE),
-        options: GOOGLE_SSML_META.voiceOptions(allGoogleLocales, useWavenet),
-      },
-      {
-        value: 'Microsoft',
-        label: 'Microsoft',
-        options: Object.values(GeneralConstants.AZURE_LOCALE_VOICE_META).map((meta) => ({
-          value: meta.language,
-          label: meta.language,
-          options: meta.voices.map((voice) => ({ value: voice.voiceID, label: prettifyAzureVoiceID(voice.voiceID) })),
-        })),
-      },
-    ];
-  },
+  voiceOptions: (locales, useWavenet) => getGeneralVoiceOptions(locales, useWavenet),
 };
 
 export const getPlatformSSML = createPlatformSelector(

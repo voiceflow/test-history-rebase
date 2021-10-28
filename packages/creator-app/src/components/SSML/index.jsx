@@ -4,39 +4,18 @@ import cn from 'classnames';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import { prettifyGoogleVoicesLong, prettifyVoice } from '@/components/SSML/utils';
 import { PluginType } from '@/components/TextEditor';
 import { FeatureFlag } from '@/config/features';
 import { useFeature } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { capitalizeFirstLetter } from '@/utils/string';
+import { prettifyGoogleVoicesLong, prettifyVoice, voiceOptionsFilter } from '@/utils/voice';
 
 import { DefaultVoiceContainer, Editor, Speaker, VoiceItem, VoiceSelect } from './components';
 import { getPlatformSSML } from './constants';
 
 const pluginsTypes = [PluginType.XML, PluginType.VARIABLES];
 const pluginsWithoutVariablesTypes = [PluginType.XML];
-
-const optionsFilter = (options, searchLabel) => {
-  const filterChildren = (childOptions) =>
-    childOptions.reduce((acc, option) => {
-      if (option.label?.toLowerCase().includes(searchLabel.toLowerCase())) {
-        return [...acc, option];
-      }
-
-      const filteredChildren = filterChildren(option.options || []);
-
-      if (filteredChildren.length) {
-        return [...acc, { ...option, options: filteredChildren }];
-      }
-
-      return acc;
-    }, []);
-
-  const matchedOptions = searchLabel ? filterChildren(options) : options;
-
-  return { matchedOptions, filteredOptions: matchedOptions, notMatchedOptions: [] };
-};
 
 const SSML = (
   {
@@ -115,7 +94,7 @@ const SSML = (
               minWidth={false}
               autoWidth={false}
               borderLess
-              optionsFilter={optionsFilter}
+              optionsFilter={voiceOptionsFilter}
               getOptionValue={getOptionValue}
               getOptionLabel={getOptionLabel}
               renderOptionLabel={(option) => (

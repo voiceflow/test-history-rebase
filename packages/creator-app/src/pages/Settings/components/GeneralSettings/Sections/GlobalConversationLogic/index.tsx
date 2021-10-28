@@ -1,16 +1,16 @@
-import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
-import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
-import { Constants as GoogleConstants } from '@voiceflow/google-types';
+import { Constants } from '@voiceflow/general-types';
+import { AnyVoice } from '@voiceflow/realtime-sdk';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
+import { FeatureFlag } from '@/config/features';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs';
+import { useDispatch, useFeature, useSelector } from '@/hooks';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
-import { ConnectedProps, MergeArguments } from '@/types';
 import { getPlatformDefaultVoice, getPlatformValue } from '@/utils/platform';
+import { getPlatformVoiceOptions, prettifyVoice } from '@/utils/voice';
 
 import { AssistantConversationLogic } from './components';
 
@@ -19,27 +19,22 @@ interface GlobalConversationLogicProps {
   platformMeta: PlatformSettingsMetaProps;
 }
 
-const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & GlobalConversationLogicProps> = ({
-  platform,
-  platformMeta,
-  defaultVoice,
-  platformDefaultVoice,
-  updateDefaultVoice,
-}) => {
-  const { descriptors } = platformMeta;
+const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platform, platformMeta }) => {
+  const wavenetVoices = useFeature(FeatureFlag.WAVENET_VOICES);
 
-  const platformVoices = React.useMemo(() => {
-    const voices = getPlatformValue<string[]>(
-      platform,
-      {
-        [Constants.PlatformType.ALEXA]: Object.values(AlexaConstants.Voice),
-        [Constants.PlatformType.GOOGLE]: Object.values(GoogleConstants.Voice),
-        [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: Object.values(GoogleConstants.Voice),
-      },
-      Object.values(GeneralConstants.Voice)
-    );
-    return voices.filter((voice) => voice !== 'audio');
-  }, [platform]);
+  const locales = useSelector(VersionV2.active.localesSelector);
+  const defaultVoiceStore = useSelector(VersionV2.active.defaultVoiceSelector);
+
+  const updateDefaultVoice = useDispatch(Version.updateDefaultVoice);
+
+  const voiceOptions = React.useMemo(
+    () => getPlatformVoiceOptions(platform, { locales, useWavenet: !!wavenetVoices.isEnabled }),
+    [locales, platform, wavenetVoices.isEnabled]
+  );
+  const platformDefaultVoice = getPlatformDefaultVoice(platform);
+  const defaultVoice = defaultVoiceStore || platformDefaultVoice;
+
+  const { descriptors } = platformMeta;
 
   const assistantLogic = (
     <AssistantConversationLogic
@@ -59,7 +54,19 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
         contentSuffix={descriptors.defaultVoice}
         customContentStyling={{ paddingBottom: '24px' }}
       >
-        <Select value={defaultVoice} options={platformVoices} onSelect={updateDefaultVoice} searchable placeholder={defaultVoice} />
+        <Select
+          value={defaultVoice}
+          options={voiceOptions}
+          onSelect={updateDefaultVoice}
+          autoWidth={false}
+          fullWidth={false}
+          searchable
+          placeholder={defaultVoice}
+          getOptionValue={(option) => (option?.value ?? null) as AnyVoice | null}
+          getOptionLabel={(value) => prettifyVoice(value ?? '')}
+          renderOptionLabel={(option) => option.label || option.value}
+          multiLevelDropdown
+        />
       </Section>
 
       {getPlatformValue(
@@ -75,25 +82,4 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
   );
 };
 
-const mapStateToProps = {
-  defaultVoice: VersionV2.active.defaultVoiceSelector,
-};
-
-const mapDispatchToProps = {
-  updateDefaultVoice: Version.updateDefaultVoice,
-};
-
-const mergeProps = (
-  ...[{ defaultVoice }, , { platform }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, GlobalConversationLogicProps>
-) => {
-  const platformDefaultVoice = getPlatformDefaultVoice(platform);
-
-  return {
-    platformDefaultVoice,
-    defaultVoice: defaultVoice || platformDefaultVoice,
-  };
-};
-
-type ConnectedGlobalConversationLogic = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(GlobalConversationLogic);
+export default GlobalConversationLogic;

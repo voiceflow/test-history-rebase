@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.527.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.527.0...@voiceflow/creator-app@1.527.1) (2021-10-28)
+
+
+### Bug Fixes
+
+* added evgenys vite e2e fixes (VF-000) ([#4398](https://github.com/voiceflow/creator-app/issues/4398)) ([f2c2536](https://github.com/voiceflow/creator-app/commit/f2c253681a0cba90e7cb19ea11ec63c8e45069ef))
+
+
+
+
+
 # [1.527.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.526.2...@voiceflow/creator-app@1.527.0) (2021-10-28)
 
 

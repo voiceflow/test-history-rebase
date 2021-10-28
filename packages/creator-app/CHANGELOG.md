@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.527.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.526.2...@voiceflow/creator-app@1.527.0) (2021-10-28)
+
+
+### Bug Fixes
+
+* flakey e2e bug (VF-000) ([#4383](https://github.com/voiceflow/creator-app/issues/4383)) ([5abff1c](https://github.com/voiceflow/creator-app/commit/5abff1cd50a3f6d30bb50a1603fc6656d401aa8b))
+* show project title tooltip on dashboard (VF-2034) ([#4393](https://github.com/voiceflow/creator-app/issues/4393)) ([3d19a11](https://github.com/voiceflow/creator-app/commit/3d19a118478064d3ffe9e3a30b08ca38bda323a8))
+
+
+### Features
+
+* default voice select (VF-2087) ([#4396](https://github.com/voiceflow/creator-app/issues/4396)) ([05ae5d0](https://github.com/voiceflow/creator-app/commit/05ae5d09d03860b36c1210d5a2797587e6303878))
+
+
+
+
+
 ## [1.526.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.526.1...@voiceflow/creator-app@1.526.2) (2021-10-28)
 
 

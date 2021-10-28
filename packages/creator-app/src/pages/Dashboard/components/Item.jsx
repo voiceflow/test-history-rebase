@@ -1,9 +1,8 @@
-import { Dropdown, stopPropagation, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import Avatar from '@/components/Avatar';
 import { Permission } from '@/config/permissions';
@@ -54,7 +53,7 @@ export function Item(props) {
     setIsEditing(false);
   };
 
-  const TitleWrapper = titleOverflowing ? Tooltip : React.Fragment;
+  const TitleWrapper = titleOverflowing ? TippyTooltip : React.Fragment;
   const options = useProjectOptions({
     boardID: listId,
     projectID: id,
@@ -63,8 +62,14 @@ export function Item(props) {
   });
 
   React.useEffect(() => {
-    setTitleOverflowing(titleRef?.current?.scrollWidth > titleRef?.current?.clientWidth);
-  }, [titleRef]);
+    if (!titleRef.current?.titleRef.current) {
+      return;
+    }
+
+    const spanTitleRef = titleRef.current.titleRef.current;
+
+    setTitleOverflowing(spanTitleRef.scrollWidth > spanTitleRef.clientWidth);
+  }, [name]);
 
   const hasOptions = !!options.length;
 
@@ -111,14 +116,14 @@ export function Item(props) {
             </ProjectTitleCaption>
           </ProjectTitleDetails>
 
-          <Tooltip position="top" title={isLive ? 'Live' : 'Design'} className={DashboardClassName.PROJECT_LIST_ITEM_STATUS} distance={10}>
+          <TippyTooltip position="top" title={isLive ? 'Live' : 'Design'} className={DashboardClassName.PROJECT_LIST_ITEM_STATUS} distance={10}>
             <SvgIcon
               icon={isLive ? 'outlinedFilledCircle' : 'outlinedCircle'}
               color={isLive ? '#43A047' : '#059fe4'}
               size={12}
               className="status-indicator"
             />
-          </Tooltip>
+          </TippyTooltip>
         </ProjectNameWrapper>
       </ProjectListItem>
 

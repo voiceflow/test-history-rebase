@@ -3,31 +3,48 @@ import React from 'react';
 import { AutosizeInputProps } from 'react-input-autosize';
 import { Assign } from 'utility-types';
 
+import { withTargetValue } from '@/utils/dom';
+import { chainVoid } from '@/utils/functional';
+
 import { UnstyledInput, UnstyledText } from './components';
 
 export type EditableTextProps = Assign<
   Omit<AutosizeInputProps, 'ref'>,
   {
-    className?: string;
     id?: string;
     value: string;
-    onChange: (value: string) => void;
     onBlur?: VoidFunction;
     onFocus?: VoidFunction;
+    onChange: (value: string) => void;
+    className?: string;
   }
 >;
 
 export interface EditableTextAPI {
+  inputRef: React.MutableRefObject<HTMLInputElement | null>;
+  titleRef: React.MutableRefObject<HTMLSpanElement | null>;
   stopEditing: VoidFunction;
   startEditing: VoidFunction;
 }
 
-// eslint-disable-next-line react/display-name
-const EditableText = React.forwardRef<EditableTextAPI, EditableTextProps>(({ value, onChange, onBlur, onFocus, id, className, ...props }, ref) => {
+const EditableText = React.forwardRef<EditableTextAPI, EditableTextProps>(({ id, value, onChange, onBlur, onFocus, className, ...props }, ref) => {
   const [isEditing, startEditing, stopEditing] = useEnableDisable();
   const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const titleRef = React.useRef<HTMLSpanElement | null>(null);
 
-  const api = React.useMemo(() => ({ startEditing, stopEditing }), []);
+  const onInputRef = (node: HTMLInputElement | null) => {
+    inputRef.current = node;
+  };
+
+  const api = React.useMemo(
+    () => ({
+      inputRef,
+      titleRef,
+      stopEditing,
+      startEditing,
+    }),
+    []
+  );
 
   React.useImperativeHandle(ref, () => api, [api]);
 
@@ -39,31 +56,16 @@ const EditableText = React.forwardRef<EditableTextAPI, EditableTextProps>(({ val
 
   return isEditing ? (
     <UnstyledInput
-      value={value}
-      inputRef={(node) => {
-        inputRef.current = node;
-      }}
-      onChange={(event) => onChange(event.target.value)}
-      onBlur={() => {
-        stopEditing();
-        onBlur?.();
-      }}
       id={id}
+      value={value}
+      onBlur={chainVoid(stopEditing, onBlur)}
+      inputRef={onInputRef}
+      onChange={withTargetValue(onChange)}
       className={className}
       {...props}
     />
   ) : (
-    <UnstyledText
-      tabIndex={-1}
-      onFocus={() => {
-        if (props.readOnly) return;
-
-        startEditing();
-        onFocus?.();
-      }}
-      id={id}
-      className={className}
-    >
+    <UnstyledText id={id} ref={titleRef} onFocus={props.readOnly ? undefined : chainVoid(startEditing, onFocus)} tabIndex={-1} className={className}>
       {value}
     </UnstyledText>
   );

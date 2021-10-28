@@ -26,6 +26,7 @@ export const ProjectTitleDetails = styled.div`
 `;
 
 export const ProjectTitle = styled(EditableText)`
+  display: block !important;
   margin-bottom: 1px;
   overflow: hidden;
   white-space: nowrap;

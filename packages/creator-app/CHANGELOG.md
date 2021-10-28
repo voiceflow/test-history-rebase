@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.526.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.526.1...@voiceflow/creator-app@1.526.2) (2021-10-28)
+
+
+### Bug Fixes
+
+* async add variable (VF-2133) ([#4387](https://github.com/voiceflow/creator-app/issues/4387)) ([1bf4a16](https://github.com/voiceflow/creator-app/commit/1bf4a16bbfd630bca951667b5cedf150577af75b))
+* update publish chip text for dfes projects (VF-2120) ([#4373](https://github.com/voiceflow/creator-app/issues/4373)) ([5095c8f](https://github.com/voiceflow/creator-app/commit/5095c8f51f8fa79fa39f7e181fa299277e7c050d))
+
+
+
+
+
 ## [1.526.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.526.0...@voiceflow/creator-app@1.526.1) (2021-10-27)
 
 

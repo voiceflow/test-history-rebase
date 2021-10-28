@@ -82,7 +82,7 @@
     "start": "vf-dev-server --action serve",
     "start:e2e": "scripts/start_e2e.sh",
     "start:hidden": "yarn start --no-open",
-    "start:meshed": "yarn start:proxy && NODE_ENV=local && yarn start --typecheck",
+    "start:meshed": "yarn start:proxy && NODE_ENV=local && IS_MESHED=true && yarn start --typecheck",
     "start:proxy": "scripts/generate_certs.sh && docker compose up -d proxy",
     "test": "exit 0",
     "test:dependencies": "depcheck",

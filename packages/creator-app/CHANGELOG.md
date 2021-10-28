@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.527.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.527.1...@voiceflow/creator-app@1.527.2) (2021-10-28)
+
+
+### Bug Fixes
+
+* dialogflow small layout details (VF-000) ([#4386](https://github.com/voiceflow/creator-app/issues/4386)) ([90c4bf1](https://github.com/voiceflow/creator-app/commit/90c4bf1b5c83caa26160b32ac9b112eef3b37be9))
+
+
+
+
+
 ## [1.527.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.527.0...@voiceflow/creator-app@1.527.1) (2021-10-28)
 
 

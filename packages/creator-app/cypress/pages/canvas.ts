@@ -21,6 +21,9 @@ export default {
     get modalTitle() {
       return cy.get(`.${ExternalClassName.MODAL_CONTENT} h5`);
     },
+    get newLink() {
+      return cy.get(`#${Identifier.NEW_LINK}`);
+    },
     get node() {
       return cy.get(`.${ClassName.CANVAS_NODE}`);
     },

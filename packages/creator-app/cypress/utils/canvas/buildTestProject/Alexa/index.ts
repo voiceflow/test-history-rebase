@@ -9,6 +9,7 @@ const init = () => {
 
 export const createSimpleSpeakChoice = () => {
   init();
+  canvasUtils.interceptSave();
   canvasUtils.spawnNodeInGrid('speak', 1, 0);
   canvasUtils.focusLastStep();
   canvasUtils.editor.speak.addText('Test');
@@ -36,6 +37,7 @@ export const createSimpleSpeakChoice = () => {
 
 export const createSimple2BlockSpeak = () => {
   init();
+  canvasUtils.interceptSave();
   canvasUtils.spawnNodeInGrid('speak', 1, 0);
   canvasUtils.focusLastStep();
   canvasUtils.editor.speak.addText('Speak 1, welcome to a simple Alexa project');
@@ -51,6 +53,7 @@ export const createSimple2BlockSpeak = () => {
 
 export const createSimpleDisplay = () => {
   init();
+  canvasUtils.interceptSave();
   canvasUtils.spawnNodeInGrid('display', 1, 0);
   canvasUtils.clickHomeBlockPort();
   canvasUtils.clickLastBlock();

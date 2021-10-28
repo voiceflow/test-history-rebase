@@ -11,9 +11,15 @@ context('Canvas - Links', () => {
   it('add link via clicks', () => {
     cy.awaitCanvasAnimation();
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(120);
+
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 50]);
 
     canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click();
+    canvasPage.el.newLink.should('have.length', 1);
+    canvasPage.el.node.eq(1).trigger('mouseover');
+    canvasPage.el.node.eq(1).trigger('hover');
     canvasPage.el.node.eq(1).click();
 
     canvasPage.el.link.should('have.length', 1);
@@ -21,11 +27,13 @@ context('Canvas - Links', () => {
 
   it('remove link', () => {
     cy.awaitCanvasAnimation();
-
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 50]);
 
     canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click();
-    canvasPage.el.node.eq(1).click();
+    canvasPage.el.newLink.should('have.length', 1);
+    canvasPage.el.node.eq(1).trigger('mouseover');
+    canvasPage.el.node.eq(1).trigger('hover');
+    canvasPage.el.node.eq(1).click(2, 10, { force: true });
 
     canvasPage.el.canvas.click(0, 0, { force: true });
 

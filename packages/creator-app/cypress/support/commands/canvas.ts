@@ -1,9 +1,14 @@
 /* eslint-disable promise/always-return */
 
 import canvasPage from '../../pages/canvas';
+import buildTools from '../../utils/canvas/buildTools';
 
 Cypress.Commands.add('awaitCanvasAnimation', () => {
   canvasPage.el.canvas.children().then(($el) => cy.wrap($el, { timeout: 1000 }).invoke('css', 'transition').should('eq', 'all 0s ease 0s'));
+
+  // extra wait time to be sure the animation is finished
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(150);
 });
 
 Cypress.Commands.add(
@@ -11,6 +16,9 @@ Cypress.Commands.add(
   { prevSubject: 'element' },
   ($node: Cypress.Chainable<JQuery<HTMLElement>>, movementX: number, movementY: number) => {
     cy.wrap($node).trigger('dragstart', { force: true, waitForAnimations: true });
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(10);
 
     cy.document().then(($doc) => {
       const { clientHeight, clientWidth } = $doc.body;
@@ -49,21 +57,29 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add('addBlockToCanvasViaSpotlight', (blockName: string) => {
+  buildTools.interceptSave();
   cy.sendHotkey('{shift} ');
 
   cy.get('#vf-spotlight input').type(`${blockName}{enter}`);
+  buildTools.waitForSave();
 });
 
 Cypress.Commands.add('addBlockToCanvasViaStepMenu', (blockName: string, [offsetX, offsetY]: Cypress.Coords) => {
+  buildTools.interceptSave();
+
   canvasPage.el.stepMenu
     .contains('.vf-step-menu__item', blockName)
     .scrollIntoView()
     .reactDnD('#vf-canvas', { offsetY, offsetX })
     .awaitCanvasAnimation();
+
+  buildTools.waitForSave();
 });
 
 Cypress.Commands.add('selectAllCanvasNodes', () => {
   canvasPage.el.node.each(($node) => cy.wrap($node).click({ shiftKey: true, force: true }));
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(50);
 });
 
 Cypress.Commands.add('addSpeakAndChoiceBlocks', (speakBlockMessage: string) => {

@@ -73,6 +73,8 @@ export enum Identifier {
   EMPTY_TRANSCRIPTS_CONTAINER = 'vf-empty-transcripts-container',
   EMPTY_REPORTS_CONTAINER = 'vf-empty-reports-container',
   CONVERSATIONS_PAGE = 'vf-conversations-container',
+
+  NEW_LINK = 'vf-new-link',
 }
 
 export enum ClassName {

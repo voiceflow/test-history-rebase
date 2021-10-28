@@ -5,8 +5,10 @@ import { ClassName, Identifier } from '../../../src/styles/constants';
 const GRID_BLOCK_PIXEL_UNIT = 300;
 
 const canvasUtils = {
-  waitForSave: () => {
+  interceptSave: () => {
     cy.intercept('/v2/diagrams/*').as('diagramSave');
+  },
+  waitForSave: () => {
     cy.wait('@diagramSave');
   },
   focusCanvas: () => {
@@ -21,6 +23,9 @@ const canvasUtils = {
   focusHome: () => {
     canvasUtils.focusCanvas();
     cy.sendHotkey('s');
+  },
+  toggleDesignMenu: () => {
+    cy.sendHotkey('/');
   },
   spawnNodeInGrid: (blockName: string, xUnits: number, yUnits: number) => {
     canvasUtils.focusHome();

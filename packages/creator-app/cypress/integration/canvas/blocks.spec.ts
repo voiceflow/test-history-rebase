@@ -11,6 +11,9 @@ context('Canvas - Blocks', () => {
   afterEach(() => cy.teardown());
 
   it('has a home block', () => {
+    cy.awaitCanvasAnimation();
+    buildTools.unStickCanvas();
+    buildTools.toggleDesignMenu();
     canvasPage.el.node.should('have.length', 1);
     canvasPage.el.homeBlock.should('be.visible');
     canvasPage.el.homeBlock.find('.vf-canvas__block__section__title').first().should('have.text', 'Start');
@@ -41,17 +44,18 @@ context('Canvas - Blocks', () => {
   it('drag added block via spotlight on canvas', () => {
     cy.awaitCanvasAnimation();
 
+    buildTools.unStickCanvas();
     cy.addBlockToCanvasViaSpotlight('Audio');
-
+    cy.awaitCanvasAnimation();
     canvasPage.el.node.eq(1).should('have.coords', [399, 356]).dragNode(200, 200).should('have.coords', [599, 556]);
   });
 
   it('drag added block via step menu on canvas', () => {
     cy.awaitCanvasAnimation();
 
-    cy.addBlockToCanvasViaStepMenu('Speak', [600, 400]);
-
-    buildTools.getLastBlock().should('have.coords', [268, 249]).dragNode(200, 200).should('have.coords', [468, 449]);
+    buildTools.unStickCanvas();
+    cy.addBlockToCanvasViaStepMenu('Speak', [400, 400]);
+    buildTools.getLastBlock().should('have.coords', [268, 465]).dragNode(200, 200).should('have.coords', [468, 665]);
   });
 
   it('copy/paste block via hotkey', () => {
@@ -99,7 +103,6 @@ context('Canvas - Blocks', () => {
     cy.awaitCanvasAnimation();
 
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 50]);
-    buildTools.waitForSave();
 
     buildTools.getLastBlock().rightclick();
     sharedPage.el.contextMenu.contains('Duplicate').click();
@@ -113,16 +116,16 @@ context('Canvas - Blocks', () => {
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 500]);
 
-    cy.selectAllCanvasNodes();
-
     canvasPage.el.node.eq(0).should('have.coords', [400, 249]);
     canvasPage.el.node.eq(1).should('have.coords', [400, 165]);
     canvasPage.el.node.eq(2).should('have.coords', [400, 565]);
 
-    canvasPage.el.node.eq(0).dragNode(100, 100);
+    cy.selectAllCanvasNodes();
+
+    canvasPage.el.node.eq(2).dragNode(100, 100);
 
     canvasPage.el.node.eq(0).should('have.coords', [500, 349]);
-    canvasPage.el.node.eq(1).should('have.coords', [400, 165]);
-    canvasPage.el.node.eq(2).should('have.coords', [400, 565]);
+    canvasPage.el.node.eq(1).should('have.coords', [500, 265]);
+    canvasPage.el.node.eq(2).should('have.coords', [500, 665]);
   });
 });

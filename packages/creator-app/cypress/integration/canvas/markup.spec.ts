@@ -14,6 +14,9 @@ context('Canvas - Markup', () => {
 
     canvasPage.el.canvas.click(500, 100);
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(120);
+
     canvasPage.el.markupText.should('be.visible').and('have.canvasFocus');
     canvasPage.el.markupTextInput.type('madagascar');
 

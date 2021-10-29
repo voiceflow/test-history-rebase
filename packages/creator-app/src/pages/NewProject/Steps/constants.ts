@@ -136,9 +136,10 @@ export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
     features: [PlatformFeature.DESIGN, PlatformFeature.EXPORT, PlatformFeature.PUBLISH],
     iconType: IconType.ICON,
     iconSize: 24,
-    isNew: true,
     description: 'Design, test and export or publish conversational agents',
     featureFlag: FeatureFlag.DIALOGFLOW,
+    comingSoon: true,
+    isNew: true,
   },
   [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: {
     name: 'Dialogflow Voice',
@@ -147,9 +148,10 @@ export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
     features: [PlatformFeature.DESIGN, PlatformFeature.EXPORT, PlatformFeature.PUBLISH],
     iconType: IconType.ICON,
     iconSize: 24,
-    isNew: true,
     description: 'Design, test and export or publish conversational agents',
     featureFlag: FeatureFlag.DIALOGFLOW,
+    comingSoon: true,
+    isNew: true,
   },
   [Constants.PlatformType.GENERAL]: {
     name: 'Voice Assistant',

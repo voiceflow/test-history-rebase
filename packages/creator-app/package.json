@@ -58,7 +58,7 @@
     "idb-keyval": "^6.0.1",
     "immer": "^9.0.5",
     "immutability-helper": "^2.9.0",
-    "immutable": "3.8.2",
+    "immutable": "4.0.0",
     "json2csv": "^5.0.6",
     "lodash": "^4.17.20",
     "loglevel": "^1.7.1",
@@ -225,7 +225,7 @@
     "url": "git+https://github.com/voiceflow/creator-app.git"
   },
   "resolutions": {
-    "immutable": "3.8.2"
+    "immutable": "4.0.0"
   },
   "scripts": {
     "build": "wp --prod",

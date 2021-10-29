@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.528.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.527.2...@voiceflow/creator-app@1.528.0) (2021-10-29)
+
+
+### Features
+
+* sync intent step ids (VF-1988) ([#4394](https://github.com/voiceflow/creator-app/issues/4394)) ([d878526](https://github.com/voiceflow/creator-app/commit/d8785265824aa57465c8e5d17175caea7272366b))
+
+
+
+
+
 ## [1.527.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.527.1...@voiceflow/creator-app@1.527.2) (2021-10-28)
 
 

@@ -10,7 +10,6 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import * as Models from '@/models';
-import { TopicsContext } from '@/pages/Skill/components/DesignMenu/TopicsContext';
 import { Nullable } from '@/types';
 import { reorder } from '@/utils/array';
 
@@ -42,8 +41,7 @@ interface TopicsAPI {
 }
 
 export const useTopics = (): TopicsAPI => {
-  const { intentStepMapPerTopic } = React.useContext(TopicsContext);
-
+  const intentSteps = useSelector(DiagramV2.intentStepsSelector);
   const topics = useSelector(VersionV2.active.topicsSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
   const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
@@ -76,20 +74,20 @@ export const useTopics = (): TopicsAPI => {
   const topicsItems = React.useMemo(
     () =>
       topicDiagrams.map<TopicItem>((diagram) => {
-        const topicIntentStepMap = intentStepMapPerTopic[diagram.id] ?? {};
+        const topicIntentStepMap = intentSteps[diagram.id] ?? {};
 
         return {
           id: diagram.id,
           name: rootDiagramID === diagram.id ? 'Home' : diagram.name,
           intentItems: diagram.intentStepIDs.map<TopicIntentItem>((stepID) => {
-            const intentID = topicIntentStepMap[stepID]?.intent ?? null;
+            const intentID = topicIntentStepMap[stepID] ?? null;
             const intent = intentID ? getIntentByID(intentID) ?? null : null;
 
             return { id: stepID, intent, intentID };
           }),
         };
       }),
-    [getIntentByID, rootDiagramID, topicDiagrams, intentStepMapPerTopic]
+    [getIntentByID, rootDiagramID, topicDiagrams, intentSteps]
   );
 
   const lowerCasedSearchValue = searchValue.trim().toLowerCase();

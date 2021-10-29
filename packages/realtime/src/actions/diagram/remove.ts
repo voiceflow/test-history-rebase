@@ -11,7 +11,17 @@ class RemoveDiagram extends AbstractDiagramResourceControl<RemoveDiagramPayload>
   protected actionCreator = Realtime.diagram.crud.remove;
 
   protected process = async (ctx: Context, { payload }: Action<RemoveDiagramPayload>) => {
-    await this.services.diagram.delete(ctx.data.creatorID, payload.key);
+    const { creatorID } = ctx.data;
+
+    const [version] = await Promise.all([
+      this.services.version.get(creatorID, payload.versionID),
+      this.services.diagram.delete(creatorID, payload.key),
+    ]);
+
+    await this.services.version.patch(creatorID, payload.versionID, {
+      topics: (version.topics ?? []).filter((topic) => topic.sourceID !== payload.key),
+      components: (version.components ?? []).filter((component) => component.sourceID !== payload.key),
+    });
   };
 }
 

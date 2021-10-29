@@ -1,52 +1,23 @@
-import { Constants } from '@voiceflow/general-types';
-import { Overwrite } from 'utility-types';
+import { Utils } from '@voiceflow/realtime-sdk';
 
-import { BlockType, DistinctPlatform } from '@/constants';
-import { Link, NodeData, NodeWithData } from '@/models';
-import { NonNullishRecord, Point } from '@/types';
+import { Link, NodeWithData } from '@/models';
+import { Point } from '@/types';
 
-import { getDistinctPlatformValue } from './platform';
 import { isMarkupOrCombinedBlockType } from './typeGuards';
 
-const checkNodeType =
-  <T>(type: BlockType) =>
-  (data: { type: BlockType }): data is NodeData<T> =>
-    data.type === type;
-
-export const isFlowNode = checkNodeType<NodeData.Flow>(BlockType.FLOW);
-
-export const isLinkedFlowNode = (
-  data: NodeData<unknown>
-): data is Overwrite<NodeData<NodeData.Flow>, NonNullishRecord<Pick<NodeData.Flow, 'diagramID'>>> => isFlowNode(data) && !!data.diagramID;
-
-export const isCommandNode = checkNodeType<NodeData.Command>(BlockType.COMMAND);
-
-export const isLinkedCommandNode = (
-  data: NodeData<unknown>,
-  platform: Constants.PlatformType
-): data is NodeData<NodeData.Command> & Record<DistinctPlatform, NonNullishRecord<Pick<NodeData.Command.PlatformData, 'diagramID'>>> =>
-  isCommandNode(data) && !!getDistinctPlatformValue(platform, data).diagramID;
-
-export const isIntentNode = checkNodeType<NodeData.Intent>(BlockType.INTENT);
-
-export const isLinkedIntentNode = (
-  data: NodeData<unknown>,
-  platform: Constants.PlatformType
-): data is NodeData<NodeData.Intent> & Record<DistinctPlatform, NonNullishRecord<Pick<NodeData.Intent.PlatformData, 'intent'>>> =>
-  isIntentNode(data) && !!getDistinctPlatformValue(platform, data).intent;
-
-export const isChoiceNode = checkNodeType<NodeData.Interaction>(BlockType.CHOICE);
-
-export const isPaymentNode = checkNodeType<NodeData.Payment>(BlockType.PAYMENT);
-
-export const isLinkedPaymentNode = (
-  data: NodeData<unknown>
-): data is Overwrite<NodeData<NodeData.Payment>, NonNullishRecord<Pick<NodeData.Payment, 'productID'>>> => isPaymentNode(data) && !!data.productID;
-
-export const isCancelPaymentNode = checkNodeType<NodeData.CancelPayment>(BlockType.CANCEL_PAYMENT);
-
-export const isProductLinkedNode = (data: NodeData<unknown>): data is NodeData<{ productID: string }> =>
-  (isPaymentNode(data) || isCancelPaymentNode(data)) && !!data.productID;
+export const {
+  isFlowNode,
+  isLinkedFlowNode,
+  isCommandNode,
+  isLinkedCommandNode,
+  isIntentNode,
+  isLinkedIntentNode,
+  isChoiceNode,
+  isPaymentNode,
+  isLinkedPaymentNode,
+  isCancelPaymentNode,
+  isProductLinkedNode,
+} = Utils.node;
 
 export const getNodesGroupCenter = (
   nodes: NodeWithData[],

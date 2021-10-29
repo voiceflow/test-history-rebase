@@ -40,3 +40,5 @@ export const diagramsByIDsSelector = Feature.createAtomicActionsSelector(
 export const getDiagramsByIDsSelector = Feature.createAtomicActionsSelector([DiagramSelectorsV1.diagramsByIDsSelector, _getDiagramsByIDsSelector]);
 
 export const localVariablesByDiagramIDSelector = createSelector([diagramByIDSelector], (diagram) => diagram?.variables || []);
+
+export const intentStepsSelector = createSelector([rootDiagramSelector], ({ intentSteps }) => intentSteps);

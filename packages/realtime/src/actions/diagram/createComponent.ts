@@ -1,3 +1,4 @@
+import { VersionFolderItemType } from '@voiceflow/api-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractDiagramResourceControl } from './utils';
@@ -5,9 +6,20 @@ import { AbstractDiagramResourceControl } from './utils';
 class CreateComponent extends AbstractDiagramResourceControl<Realtime.diagram.CreateDiagramPayload> {
   protected actionCreator = Realtime.diagram.createComponent.started;
 
-  protected process = this.reply(Realtime.diagram.createComponent, (ctx, { payload }) =>
-    this.createDiagram(ctx, payload, Realtime.Utils.diagram.componentDiagramFactory(payload.name))
-  );
+  protected process = this.reply(Realtime.diagram.createComponent, async (ctx, { payload }) => {
+    const { creatorID } = ctx.data;
+
+    const [diagram, version] = await Promise.all([
+      this.createDiagram(ctx, payload, Realtime.Utils.diagram.componentDiagramFactory(payload.name)),
+      this.services.version.get(creatorID, payload.versionID),
+    ]);
+
+    await this.services.version.patch(creatorID, payload.versionID, {
+      components: [...(version.components ?? []), { sourceID: diagram.id, type: VersionFolderItemType.DIAGRAM }],
+    });
+
+    return diagram;
+  });
 }
 
 export default CreateComponent;

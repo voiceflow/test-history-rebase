@@ -20,9 +20,10 @@ const GlobalSocketSubscriptionsLoadingGate: React.FC<ConnectedGlobalSocketSubscr
 }) => {
   const isPrototypingMode = usePrototypingMode();
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+  const atomicActionsPhase2 = useFeature(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
 
   React.useEffect(() => {
-    if (atomicActions.isEnabled) return undefined;
+    if (atomicActionsPhase2.isEnabled) return undefined;
 
     return client.socket.global.watchForceRefresh(() => window.location.reload());
   }, []);

@@ -38,4 +38,4 @@ const ProjectLockGate: React.FC = ({ children }) => {
   );
 };
 
-export default withoutFeatureGate(FeatureFlag.ATOMIC_ACTIONS)(ProjectLockGate);
+export default withoutFeatureGate(FeatureFlag.ATOMIC_ACTIONS_PHASE_2)(ProjectLockGate);

@@ -9,6 +9,7 @@ export const INITIAL_STATE: DiagramState = {
   awareness: {
     viewers: {},
   },
+  intentSteps: {},
 };
 
 export const INITIAL_DIAGRAM_VIEWERS: DiagramAwarenessState['viewers'][string] = [];

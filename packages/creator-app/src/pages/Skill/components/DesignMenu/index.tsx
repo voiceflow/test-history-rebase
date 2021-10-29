@@ -11,7 +11,6 @@ import { Identifier } from '@/styles/constants';
 import { Container, Content, Flows, Header, Layers, Steps } from './components';
 import { Tab } from './constants';
 import { useDropLagFix, useMenuHotKeys, useTabs } from './hooks';
-import { TopicsProvider } from './TopicsContext';
 
 const SIDEBAR_CALCULATION_BUFFER = 50;
 
@@ -82,19 +81,17 @@ const DesignMenu: React.FC = () => {
       onMouseEnter={canBeOpened ? openByHover : undefined}
       onMouseLeave={canBeOpened ? mouseLeaveHandler : undefined}
     >
-      <TopicsProvider>
-        <Content isOpen={isOpen} activeTab={selectedTab} ref={designMenuRef}>
-          <Header tabs={tabs} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={setActiveTab} />
+      <Content isOpen={isOpen} activeTab={selectedTab} ref={designMenuRef}>
+        <Header tabs={tabs} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={setActiveTab} />
 
-          {selectedTab === Tab.STEPS && canEditCanvas && <Steps />}
-          {selectedTab === Tab.LAYERS && <Layers />}
+        {selectedTab === Tab.STEPS && canEditCanvas && <Steps />}
+        {selectedTab === Tab.LAYERS && <Layers />}
 
-          {/**
-           * TODO: remove when topics and components are merged
-           */}
-          {selectedTab === Tab.FLOWS && <Flows />}
-        </Content>
-      </TopicsProvider>
+        {/**
+         * TODO: remove when topics and components are merged
+         */}
+        {selectedTab === Tab.FLOWS && <Flows />}
+      </Content>
     </Container>
   );
 };

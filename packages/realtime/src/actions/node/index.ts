@@ -2,26 +2,24 @@ import { LoguxControlOptions } from '../../control';
 import AppendPortControl from './appendPort';
 import AppendStepControl from './appendStep';
 import InsertStepControl from './insertStep';
+import RemoveManyNodesControl from './removeMany';
 import RemovePortControl from './removePort';
-import RemoveStepControl from './removeStep';
 import UpdateNodeDataControl from './updateData';
 
-export interface NodeActionControlMap {
-  appendPortControl: AppendPortControl;
-  appendStepControl: AppendStepControl;
-  insertStepControl: InsertStepControl;
-  removePortControl: RemovePortControl;
-  removeStepControl: RemoveStepControl;
-  updateNodeDataControl: UpdateNodeDataControl;
-}
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const buildNodeActionControls = (options: LoguxControlOptions) => ({
+  removeManyNodesControl: new RemoveManyNodesControl(options),
+  updateNodeDataControl: new UpdateNodeDataControl(options),
 
-const buildNodeActionControls = (options: LoguxControlOptions): NodeActionControlMap => ({
-  appendPortControl: new AppendPortControl(options),
+  // steps
   appendStepControl: new AppendStepControl(options),
   insertStepControl: new InsertStepControl(options),
+
+  // ports
+  appendPortControl: new AppendPortControl(options),
   removePortControl: new RemovePortControl(options),
-  removeStepControl: new RemoveStepControl(options),
-  updateNodeDataControl: new UpdateNodeDataControl(options),
 });
 
 export default buildNodeActionControls;
+
+export type NodeActionControlMap = ReturnType<typeof buildNodeActionControls>;

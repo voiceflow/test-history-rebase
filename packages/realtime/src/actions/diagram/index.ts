@@ -6,6 +6,7 @@ import CreateComponentControl from './createComponent';
 import CreateTopicControl from './createTopic';
 import DragBlocksControl from './dragBlocks';
 import DuplicateDiagramControl from './duplicate';
+import { RegisterIntentStepsControl, ReorderIntentStepsControl, UpdateIntentStepsControl } from './intentSteps';
 import MoveBlocksControl from './moveBlocks';
 import MoveCursorControl from './moveCursor';
 import PatchDiagramControl from './patch';
@@ -31,6 +32,11 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   // variables
   addLocalVariableControl: new AddLocalVariableControl(options),
   removeLocalVariableControl: new RemoveLocalVariableControl(options),
+
+  // intent steps
+  registerIntentStepsControl: new RegisterIntentStepsControl(options),
+  reorderIntentStepsControl: new ReorderIntentStepsControl(options),
+  updateIntentStepsControl: new UpdateIntentStepsControl(options),
 
   // awareness
   moveCursorControl: new MoveCursorControl(options),

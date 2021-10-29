@@ -1,5 +1,6 @@
 import { Node } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import IntentForm, { HelpTooltip, LegacyMappings } from '@/components/IntentForm';
@@ -12,9 +13,10 @@ import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
-import { useDispatch, useFeature } from '@/hooks';
+import { useDispatch, useFeature, useSyncDispatch } from '@/hooks';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
+import { EngineContext } from '@/pages/Canvas/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 
@@ -32,13 +34,19 @@ const DEFAULT_INTENT = {
 const LegacyMappingsComponent = LegacyMappings as React.FC<any>;
 
 const IntentEditor: NodeEditor<NodeData.Intent, ConnectedIntentEditorProps> = ({ intent, data, platformData, patchPlatformData, pushToPath }) => {
+  const engine = React.useContext(EngineContext)!;
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const validateTopicAvailability = useDispatch(Creator.validateTopicAvailability);
+  const updateIntentSteps = useSyncDispatch(Realtime.diagram.updateIntentSteps);
 
   const isGlobalIntent = platformData.availability === Node.Intent.IntentAvailability.GLOBAL;
 
   const onChangeIntent = async ({ intent }: { intent: Nullable<string> }) => {
     await patchPlatformData({ intent });
+
+    if (topicsAndComponents.isEnabled) {
+      updateIntentSteps({ ...engine.context, stepID: data.nodeID, intentID: intent });
+    }
 
     validateTopicAvailability();
   };

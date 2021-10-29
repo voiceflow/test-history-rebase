@@ -21,7 +21,7 @@ import mutableStore from '@/store/mutable';
 import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { PathPoint, Point } from '@/types';
-import { append, insert, unique, withoutValue, withoutValues } from '@/utils/array';
+import { append, insert, reorder, unique, withoutValue } from '@/utils/array';
 import { getNodesGroupCenter } from '@/utils/node';
 import { normalize } from '@/utils/normalized';
 import { getCurrentTimestamp } from '@/utils/time';
@@ -73,24 +73,6 @@ export const loadLocalVariables =
     dispatch(crud.patch(diagramID, { variables }));
   };
 
-export const updateIntentSteps =
-  (diagramID: string, intentStepIDs: string[]): Thunk =>
-  (dispatch) =>
-    dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          const rtctimestamp = mutableStore.getRTCTimestamp();
-
-          dispatch(crud.patch(diagramID, { intentStepIDs }));
-          await client.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { intentStepIDs });
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.diagram.crud.patch({ ...context, key: diagramID, value: { intentStepIDs } }));
-        }
-      )
-    );
-
 export const removeLocalVariable =
   (diagramID: string, variable: string): Thunk =>
   (dispatch, getState) =>
@@ -136,9 +118,6 @@ const createDiagram =
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
     const creatorID = Account.userIDSelector(state);
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-
-    if (isAtomicActions) return '';
 
     Errors.assertVersionID(versionID);
     Errors.assertCreatorID(creatorID);
@@ -436,7 +415,7 @@ export const saveActiveDiagram = (): Thunk => async (_, getState) => {
   const state = getState();
   const fullDiagram = fullActiveDiagramSelector(state);
   const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
-  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
   if (isAtomicActions) return;
 
   if (!fullDiagram) throw Errors.noActiveDiagramID();
@@ -490,28 +469,28 @@ export const removeActiveDiagramVariable =
     return dispatch(removeLocalVariable(activeDiagramID, variable));
   };
 
-export const removeActiveDiagramIntentStepIDs =
-  (intentStepIDs: string[]): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const activeDiagramID = Creator.creatorDiagramIDSelector(state);
+const updateIntentSteps =
+  (diagramID: string, intentStepIDs: string[]): Thunk =>
+  async (dispatch) => {
+    const rtctimestamp = mutableStore.getRTCTimestamp();
 
-    Errors.assertDiagramID(activeDiagramID);
-
-    const activeDiagram = diagramByIDSelector(state)(activeDiagramID);
-
-    dispatch(updateIntentSteps(activeDiagramID, withoutValues(activeDiagram?.intentStepIDs ?? [], intentStepIDs)));
+    dispatch(crud.patch(diagramID, { intentStepIDs }));
+    await client.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { intentStepIDs });
   };
 
-export const addActiveDiagramIntentStepIDs =
-  (intentStepIDs: string[]): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const activeDiagramID = Creator.creatorDiagramIDSelector(state);
+export const reorderIntentStepIDs =
+  (diagramID: string, from: number, to: number): Thunk =>
+  (dispatch, getState) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          const activeDiagram = DiagramV2.diagramByIDSelector(getState(), { id: diagramID });
 
-    Errors.assertDiagramID(activeDiagramID);
-
-    const activeDiagram = diagramByIDSelector(state)(activeDiagramID);
-
-    dispatch(updateIntentSteps(activeDiagramID, [...(activeDiagram?.intentStepIDs ?? []), ...intentStepIDs]));
-  };
+          await dispatch(updateIntentSteps(diagramID, reorder(activeDiagram?.intentStepIDs ?? [], from, to)));
+        },
+        async (context) => {
+          await dispatch.sync(Realtime.diagram.reorderIntentSteps({ ...context, diagramID, from, to }));
+        }
+      )
+    );

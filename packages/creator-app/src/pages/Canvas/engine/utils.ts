@@ -10,7 +10,7 @@ import { FeatureFlagMap } from '@/ducks/feature';
 import { EntityMap, Link, Node, NodeData, NodeWithData, Port } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptor } from '@/pages/Canvas/managers/types';
-import { Dispatchable, Dispatcher, DispatchResult, Selector } from '@/store/types';
+import { Dispatcher, DispatchResult, Selector } from '@/store/types';
 import { NullableRecord, Pair, Point } from '@/types';
 import { objectID } from '@/utils';
 import { unique } from '@/utils/array';
@@ -52,15 +52,14 @@ export class ComponentManager<C extends Record<string, unknown> = Record<string,
 }
 
 export class EngineConsumer<C extends Record<string, unknown> = Record<string, unknown>> extends ComponentManager<C> {
-  // eslint-disable-next-line no-useless-constructor
   constructor(protected engine: Engine) {
     super();
 
     engine.log.debug(this.engine.log.init('initializing'), this.engine.log.value(Object.getPrototypeOf(this).constructor.name));
   }
 
-  dispatch<T extends Dispatchable>(dispatchable: T) {
-    return this.engine.store.dispatch<T>(dispatchable);
+  get dispatch() {
+    return this.engine.store.dispatch;
   }
 
   bind<T extends Dispatcher<any[]>>(dispatcher: T) {

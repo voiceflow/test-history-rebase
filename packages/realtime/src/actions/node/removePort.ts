@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractNodeActionControl } from './utils';
 
-class RemovePort extends AbstractNodeActionControl<Realtime.node.AppendRemovePortPayload> {
+class RemovePort extends AbstractNodeActionControl<Realtime.node.PortPayload> {
   actionCreator = Realtime.node.removePort;
 
   process = async (): Promise<void> => {

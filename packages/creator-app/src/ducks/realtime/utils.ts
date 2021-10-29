@@ -8,20 +8,14 @@ import { LockType, ServerAction } from './constants';
 import { RealtimeLocks } from './types';
 
 export const createServerAction = (action: AnyAction): { type: ServerAction; targets: string[] } | null => {
-  switch (action.type) {
-    case DiagramAction.REMOVE_NODE:
-      return {
-        type: ServerAction.DELETE_BLOCK,
-        targets: [action.payload],
-      };
-    case DiagramAction.REMOVE_MANY_NODES:
-      return {
-        type: ServerAction.DELETE_BLOCK,
-        targets: action.payload,
-      };
-    default:
-      return null;
+  if (action.type === DiagramAction.REMOVE_MANY_NODES) {
+    return {
+      type: ServerAction.DELETE_BLOCK,
+      targets: action.payload,
+    };
   }
+
+  return null;
 };
 
 export const removeSelfFromLocks = ({ blocks, resources, users }: WithOptional<RealtimeLocks, 'users'>, tabID: string) => {

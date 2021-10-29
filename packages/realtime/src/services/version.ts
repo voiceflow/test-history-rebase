@@ -1,4 +1,4 @@
-import { Version, VersionPlatformData } from '@voiceflow/api-sdk';
+import { DiagramType, Version, VersionPlatformData } from '@voiceflow/api-sdk';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -41,10 +41,14 @@ class VersionService extends AbstractControl {
     return this.services.project.getPlatform(creatorID, version.projectID);
   }
 
-  public async updateVariables(creatorID: number, versionID: string, variables: string[]): Promise<void> {
+  public async patch(creatorID: number, versionID: string, data: Partial<Realtime.AnyVersion>): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.version.update(versionID, { variables });
+    await client.version.update(versionID, data);
+  }
+
+  public async updateVariables(creatorID: number, versionID: string, variables: string[]): Promise<void> {
+    await this.patch(creatorID, versionID, { variables });
   }
 
   public async patchSettings<T extends Realtime.AnyVersionSettings>(creatorID: number, versionID: string, settings: Partial<T>): Promise<void> {
@@ -84,6 +88,33 @@ class VersionService extends AbstractControl {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.version.updatePlatformData(versionID, platformData);
+  }
+
+  public async getIntentSteps(creatorID: number, versionID: string, rootDiagramID: string): Promise<Record<string, Record<string, string | null>>> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    const { diagrams: dbDiagrams } = await client.version.export(versionID);
+
+    const intentSteps: Record<string, Record<string, string | null>> = {};
+
+    Object.keys(dbDiagrams).forEach((diagramID) => {
+      const dbDiagram = dbDiagrams[diagramID];
+      const isRootDiagram = rootDiagramID === diagramID;
+      const type = dbDiagram.type ?? (isRootDiagram ? DiagramType.TOPIC : DiagramType.COMPONENT);
+
+      if (type !== DiagramType.TOPIC) return;
+
+      const diagramIntentSteps: Record<string, string | null> = {};
+      intentSteps[diagramID] = diagramIntentSteps;
+
+      Object.values(dbDiagram.nodes).forEach((node) => {
+        if (node.type !== Realtime.BlockType.INTENT) return;
+
+        diagramIntentSteps[node.nodeID] = node.data.intent ?? null;
+      }, []);
+    });
+
+    return intentSteps;
   }
 }
 

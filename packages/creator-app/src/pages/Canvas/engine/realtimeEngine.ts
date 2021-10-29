@@ -85,10 +85,6 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
 
       return this.engine.node.internal.unmerge(nodeID, position, parentNode);
     },
-    [Realtime.SocketAction.REMOVE_NODE]: (nodeID: ActionPayload<Realtime.RemoveNode>, tabID) => {
-      Sentry.breadcrumb('realtime', 'Remote user removed node', { tabID });
-      return this.engine.node.internal.remove(nodeID);
-    },
     [Realtime.SocketAction.REMOVE_MANY_NODES]: (nodeIDs: ActionPayload<Realtime.RemoveManyNodes>, tabID) => {
       Sentry.breadcrumb('realtime', 'Remote user removed multiple nodes', { tabID });
 

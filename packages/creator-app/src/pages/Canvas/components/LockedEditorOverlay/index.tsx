@@ -65,7 +65,7 @@ export interface LockedResourceOverlayProps {
 
 export const LockedResourceOverlay: React.FC<LockedResourceOverlayProps> = ({ type, disabled = false, children }) => {
   const { lockOwner, prevOwner, acquireLock, forceUpdateKey } = useResourceLock(type, disabled);
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
 
   if (atomicActions.isEnabled) {
     return <>{children?.({ lockOwner: null, prevOwner: null, forceUpdateKey })}</>;

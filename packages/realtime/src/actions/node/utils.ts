@@ -7,7 +7,7 @@ import { BaseContextData, Context } from '@/types';
 import { AbstractActionControl, Resend } from '../utils';
 
 export abstract class AbstractNodeActionControl<
-  P extends Realtime.BaseNodePayload | Realtime.BaseBlockPayload,
+  P extends Realtime.BaseDiagramPayload,
   D extends BaseContextData = BaseContextData
 > extends AbstractActionControl<P, D> {
   protected access = (ctx: Context<D>, action: Action<P>): Promise<boolean> =>
@@ -15,7 +15,7 @@ export abstract class AbstractNodeActionControl<
 }
 
 export abstract class AbstractResendNodeActionControl<
-  P extends Realtime.BaseNodePayload | Realtime.BaseBlockPayload,
+  P extends Realtime.BaseDiagramPayload,
   D extends BaseContextData = BaseContextData
 > extends AbstractNodeActionControl<P, D> {
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
@@ -28,7 +28,7 @@ export abstract class AbstractResendNodeActionControl<
 }
 
 export abstract class NoopNodeActionControl<
-  P extends Realtime.BaseNodePayload | Realtime.BaseBlockPayload,
+  P extends Realtime.BaseDiagramPayload,
   D extends BaseContextData = BaseContextData
 > extends AbstractResendNodeActionControl<P, D> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function

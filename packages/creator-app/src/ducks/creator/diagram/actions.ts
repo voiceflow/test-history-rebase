@@ -16,7 +16,6 @@ export enum DiagramAction {
   ADD_NESTED_NODE = 'CREATOR:NODE:ADD_NESTED',
   ADD_MARKUP_NODE = 'CREATOR:NODE:ADD_MARKUP',
   ADD_WRAPPED_NODE = 'CREATOR:NODE:ADD_WRAPPED',
-  REMOVE_NODE = 'CREATOR:NODE:REMOVE',
   REMOVE_MANY_NODES = 'CREATOR:NODE:REMOVE_MANY',
   ADD_PORT = 'CREATOR:PORT:ADD',
   REMOVE_PORT = 'CREATOR:PORT:REMOVE',
@@ -67,8 +66,6 @@ export type AddNestedNode = Action<
 
 export type AddWrappedNode = Action<DiagramAction.ADD_WRAPPED_NODE, { node: NodeDescriptor; data: DataDescriptor; parentNode: ParentNodeDescriptor }>;
 
-export type RemoveNode = Action<DiagramAction.REMOVE_NODE, string>;
-
 export type RemoveManyNodes = Action<DiagramAction.REMOVE_MANY_NODES, string[]>;
 
 export type AddPort = Action<DiagramAction.ADD_PORT, { nodeID: string; port: PartialModel<Port> }>;
@@ -106,7 +103,6 @@ export type AnyDiagramAction =
   | AddManyNodes
   | AddNestedNode
   | AddWrappedNode
-  | RemoveNode
   | RemoveManyNodes
   | AddPort
   | RemovePort
@@ -158,8 +154,6 @@ export const addNestedNode = (parentNodeID: string, node: NodeDescriptor, data: 
 
 export const addWrappedNode = (node: NodeDescriptor, data: DataDescriptor, parentNode: ParentNodeDescriptor): AddWrappedNode =>
   createAction(DiagramAction.ADD_WRAPPED_NODE, { node, data, parentNode });
-
-export const removeNode = (nodeID: string): RemoveNode => createAction(DiagramAction.REMOVE_NODE, nodeID);
 
 export const removeNodes = (nodeIDs: string[]): RemoveManyNodes => createAction(DiagramAction.REMOVE_MANY_NODES, nodeIDs);
 

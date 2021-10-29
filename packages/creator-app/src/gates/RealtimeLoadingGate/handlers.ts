@@ -71,9 +71,9 @@ export const createHandlers = (dispatch: Dispatch, getState: GetState) => {
   const resourceUpdateHandlers = createResourceUpdateHandlers(dispatch, getState);
 
   const wrapHandler =
-    <T>(handler: (payload: T, tabID: string) => void) =>
+    <T>(handler: (payload: T, tabID: string) => void, feature: FeatureFlag) =>
     (payload: T, tabID: string) => {
-      const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+      const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(feature);
 
       if (!isAtomicActions) {
         handler(payload, tabID);
@@ -81,14 +81,17 @@ export const createHandlers = (dispatch: Dispatch, getState: GetState) => {
     };
 
   return {
-    [Realtime.SocketAction.LOCK_RESOURCE]: wrapHandler<ActionPayload<Realtime.LockResource>>(({ targets: [resourceID] }, tabID) =>
-      dispatch(Realtime.addResourceLock(resourceID, tabID))
+    [Realtime.SocketAction.LOCK_RESOURCE]: wrapHandler<ActionPayload<Realtime.LockResource>>(
+      ({ targets: [resourceID] }, tabID) => dispatch(Realtime.addResourceLock(resourceID, tabID)),
+      FeatureFlag.ATOMIC_ACTIONS_PHASE_2
     ),
-    [Realtime.SocketAction.UNLOCK_RESOURCE]: wrapHandler<ActionPayload<Realtime.UnlockResource>>(({ targets: [resourceID] }) =>
-      dispatch(Realtime.removeResourceLock(resourceID))
+    [Realtime.SocketAction.UNLOCK_RESOURCE]: wrapHandler<ActionPayload<Realtime.UnlockResource>>(
+      ({ targets: [resourceID] }) => dispatch(Realtime.removeResourceLock(resourceID)),
+      FeatureFlag.ATOMIC_ACTIONS_PHASE_2
     ),
-    [Realtime.SocketAction.UPDATE_RESOURCE]: wrapHandler<ActionPayload<Realtime.UpdateResource>>(({ resourceID, data }) =>
-      resourceUpdateHandlers[resourceID](data as any, { receivedAction: true })
+    [Realtime.SocketAction.UPDATE_RESOURCE]: wrapHandler<ActionPayload<Realtime.UpdateResource>>(
+      ({ resourceID, data }) => resourceUpdateHandlers[resourceID](data as any, { receivedAction: true }),
+      FeatureFlag.ATOMIC_ACTIONS
     ),
   } as Record<string, (payload: any, tabID: string) => Eventual<void> | AnyAction>;
 };

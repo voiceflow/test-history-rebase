@@ -9,6 +9,7 @@ export * as awareness from './awareness';
 const diagramTopicType = typeFactory(diagramType(TOPIC_KEY));
 const diagramComponentType = typeFactory(diagramType(COMPONENT_KEY));
 const diagramVariablesType = typeFactory(diagramType(VARIABLES_KEY));
+const diagramIntentStepsType = typeFactory(diagramType('intent_steps'));
 
 // variables
 
@@ -17,8 +18,32 @@ export interface LocalVariablePayload extends BaseDiagramPayload {
 }
 
 export const addLocalVariable = createAction<LocalVariablePayload>(diagramVariablesType('ADD'));
-
 export const removeLocalVariable = createAction<LocalVariablePayload>(diagramVariablesType('REMOVE'));
+
+// intent steps
+
+export interface LoadIntentStepsPayload extends BaseVersionPayload {
+  intentSteps: { [diagramID: string]: { [nodeID: string]: string | null } };
+}
+
+export interface UpdateIntentStepsPayload extends BaseDiagramPayload {
+  stepID: string;
+  intentID: string | null;
+}
+
+export interface RegisterIntentStepsPayload extends BaseDiagramPayload {
+  intentSteps: { stepID: string; intentID: string | null }[];
+}
+
+export interface ReorderIntentStepsPayload extends BaseDiagramPayload {
+  from: number;
+  to: number;
+}
+
+export const loadIntentSteps = createAction<LoadIntentStepsPayload>(diagramIntentStepsType('LOAD'));
+export const updateIntentSteps = createAction<UpdateIntentStepsPayload>(diagramIntentStepsType('UPDATE'));
+export const registerIntentSteps = createAction<RegisterIntentStepsPayload>(diagramIntentStepsType('REGISTER'));
+export const reorderIntentSteps = createAction<ReorderIntentStepsPayload>(diagramIntentStepsType('REORDER'));
 
 // nodes
 

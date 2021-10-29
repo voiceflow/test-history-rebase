@@ -1,5 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Redux from 'redux';
 import undoable, { includeAction } from 'redux-undo';
+import { isType } from 'typescript-fsa';
 
 import { DiagramState } from '@/constants';
 import { NodeData } from '@/models';
@@ -14,6 +16,7 @@ import {
   AnyDiagramAction,
   DiagramAction,
   RemoveLink,
+  removeNodes,
   RemovePort,
   ReorderPorts,
   SetDiagramState,
@@ -44,7 +47,7 @@ import {
 import addLinkReducer from './addLink';
 import addNodeReducer, { addManyNodesReducer, addNestedNodeReducer, addWrappedNodeReducer } from './addNode';
 import insertNestedNodeReducer from './insertNestedNode';
-import removeNodeReducer, { removeManyNodesReducer } from './removeNode';
+import { removeManyNodesReducer } from './removeNode';
 import unmergeNodeReducer from './unmergeNode';
 
 // reducers
@@ -145,6 +148,10 @@ export const updateHiddenReducer: Reducer<DiagramStateType, UpdateHidden> = (sta
 });
 
 const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | AnyCreatorAction> = (state = INITIAL_DIAGRAM_STATE, action) => {
+  if (isType(action, Realtime.node.removeMany)) {
+    return removeManyNodesReducer(state, removeNodes(action.payload.nodeIDs));
+  }
+
   switch (action.type) {
     case CreatorAction.INITIALIZE_CREATOR:
       return initializeCreatorReducer(state, action);
@@ -170,8 +177,6 @@ const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | An
       return addNestedNodeReducer(state, action);
     case DiagramAction.ADD_WRAPPED_NODE:
       return addWrappedNodeReducer(state, action);
-    case DiagramAction.REMOVE_NODE:
-      return removeNodeReducer(state, action);
     case DiagramAction.REMOVE_MANY_NODES:
       return removeManyNodesReducer(state, action);
     case DiagramAction.ADD_PORT:

@@ -5,7 +5,7 @@ import { without } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import { getAllNormalizedByKeys, getNormalizedByKey } from '@/utils/normalized';
 
-import { RemoveManyNodes, RemoveNode } from '../actions';
+import { RemoveManyNodes } from '../actions';
 import { DiagramState } from '../types';
 import { patchNodeInState, removeAllBlocksFromState, removeBlockFromState } from '../utils';
 
@@ -49,7 +49,3 @@ export const removeSingleNode = (nodeID: string) => (state: DiagramState) => {
 
 export const removeManyNodesReducer: Reducer<DiagramState, RemoveManyNodes> = (state, { payload: nodeIDs }) =>
   compose(...nodeIDs.map(removeSingleNode))(state);
-
-const removeNodeReducer: Reducer<DiagramState, RemoveNode> = (state, { payload: nodeID }) => removeSingleNode(nodeID)(state);
-
-export default removeNodeReducer;

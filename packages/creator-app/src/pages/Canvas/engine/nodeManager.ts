@@ -1,22 +1,23 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import _partition from 'lodash/partition';
 import { batch } from 'react-redux';
 
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
-import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Realtime from '@/ducks/realtime';
+import * as RealtimeDuck from '@/ducks/realtime';
 import * as VersionV2 from '@/ducks/versionV2';
 import { EntityMap, Node, NodeData } from '@/models';
 import { Pair, Point } from '@/types';
 import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
 import { getNodesGroupCenter, isCommandNode } from '@/utils/node';
-import { getPlatformDefaultVoice } from '@/utils/platform';
+import { getDistinctPlatformValue, getPlatformDefaultVoice } from '@/utils/platform';
 import reduxBatchUndo from '@/utils/reduxBatchUndo';
 import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
@@ -65,18 +66,6 @@ class NodeManager extends EngineConsumer {
       this.dispatch(Creator.updateNodeData(nodeID, data));
     },
 
-    remove: (nodeID: string) => {
-      this.engine.activation.deactivate(nodeID);
-      const { parentNode } = this.engine.getNodeByID(nodeID);
-
-      // save last location of parent node in case unmerging
-      if (parentNode) {
-        this.saveLocation(parentNode);
-      }
-
-      this.dispatch(Creator.removeNode(nodeID));
-    },
-
     removeMany: (nodeIDs: string[]) => {
       const nodes = nodeIDs.map(this.engine.getNodeByID);
       const removedIDs: string[] = [];
@@ -87,6 +76,7 @@ class NodeManager extends EngineConsumer {
 
         if (node.parentNode) {
           if (!parentIDs.includes(node.parentNode)) {
+            // save last location of parent node in case unmerging
             this.saveLocation(node.parentNode);
             parentIDs.push(node.parentNode);
           }
@@ -99,7 +89,11 @@ class NodeManager extends EngineConsumer {
         }
       });
 
-      this.dispatch(Creator.removeNodes(removedIDs));
+      if (this.engine.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS)) {
+        this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodeIDs: removedIDs }));
+      } else {
+        this.dispatch(Creator.removeNodes(removedIDs));
+      }
     },
 
     translate: (nodeID: string, movement: Pair<number>) => {
@@ -185,19 +179,18 @@ class NodeManager extends EngineConsumer {
 
   // crud methods
 
-  async removeIntentStepIDs(removedNodes: Node[]): Promise<void> {
-    const removedIntentStepIDs = removedNodes.filter(({ type }) => type === BlockType.INTENT).map(({ id }) => id);
+  async registerIntentSteps<T extends { node: { id: string; type: BlockType }; data: NodeData<any> }>(addedNodes: T[]): Promise<void> {
+    const platform = this.select(ProjectV2.active.platformSelector);
+    const addedIntentSteps = addedNodes.reduce<Realtime.diagram.RegisterIntentStepsPayload['intentSteps']>((acc, { node, data }) => {
+      if (node.type === BlockType.INTENT) {
+        acc.push({ stepID: node.id, intentID: getDistinctPlatformValue(platform, data as Realtime.NodeData.Intent).intent ?? null });
+      }
 
-    if (removedIntentStepIDs.length) {
-      await this.dispatch(Diagram.removeActiveDiagramIntentStepIDs(removedIntentStepIDs));
-    }
-  }
+      return acc;
+    }, []);
 
-  async addIntentStepIDs<T extends { node: { id: string; type: BlockType } }>(addNodes: T[]): Promise<void> {
-    const addedIntentStepIDs = addNodes.filter(({ node }) => node.type === BlockType.INTENT).map(({ node }) => node.id);
-
-    if (addedIntentStepIDs.length) {
-      await this.dispatch(Diagram.addActiveDiagramIntentStepIDs(addedIntentStepIDs));
+    if (addedIntentSteps.length) {
+      await this.dispatch.sync(Realtime.diagram.registerIntentSteps({ ...this.engine.context, intentSteps: addedIntentSteps }));
     }
   }
 
@@ -216,12 +209,12 @@ class NodeManager extends EngineConsumer {
 
     this.log.debug(this.log.pending('adding node'), this.log.slug(nodeID));
 
-    await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, parentNode));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.addNode(augmentedNode, data, parentNode));
     this.internal.add(augmentedNode, data, parentNode);
 
     this.engine.saveHistory();
 
-    await this.addIntentStepIDs([{ node: augmentedNode, data }]);
+    await this.registerIntentSteps([{ node: augmentedNode, data }]);
 
     if (autoFocus) {
       this.engine.setActive(nodeID);
@@ -237,12 +230,12 @@ class NodeManager extends EngineConsumer {
 
     const point = this.engine.canvas!.fromCoords(coords);
 
-    await this.engine.realtime.sendUpdate(Realtime.addManyNodes(entities, point));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.addManyNodes(entities, point));
 
     this.internal.addMany(entities, point);
     this.engine.saveHistory();
 
-    await this.addIntentStepIDs(entities.nodesWithData);
+    await this.registerIntentSteps(entities.nodesWithData);
 
     this.log.info(this.log.success('added many nodes'), this.log.value(entities.nodesWithData.length));
   }
@@ -256,7 +249,7 @@ class NodeManager extends EngineConsumer {
       this.engine.saveHistory();
       this.engine.setActive(duplicateNodeWithData.node.id);
 
-      await this.addIntentStepIDs([duplicateNodeWithData]);
+      await this.registerIntentSteps([duplicateNodeWithData]);
 
       this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
     }
@@ -285,15 +278,15 @@ class NodeManager extends EngineConsumer {
 
     this.engine.selection.replace(parentNodes);
 
-    await this.engine.saveHistory();
+    this.engine.saveHistory();
 
-    await this.addIntentStepIDs(nodesWithData);
+    await this.registerIntentSteps(nodesWithData);
   }
 
   async updateData<T extends unknown = unknown>(nodeID: string, data: Partial<NodeData<T>>, save = true): Promise<void> {
     this.log.debug(this.log.pending('updating node data'), this.log.slug(nodeID), data);
 
-    await this.engine.realtime.sendUpdate(Realtime.updateNodeData(nodeID, data));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.updateNodeData(nodeID, data));
     this.internal.updateData(nodeID, data);
     this.redraw(nodeID);
 
@@ -401,40 +394,34 @@ class NodeManager extends EngineConsumer {
 
     return this.validateRemove([nodeID], async ([removeNodeID]) => {
       const allNodeIDs = [removeNodeID, ...this.select(Creator.combinedNodeIDsSelector)(removeNodeID)];
-      const nodesToRemove = this.select(Creator.allNodesByIDsSelector)(allNodeIDs);
 
       await this.engine.comment.handleNodesDelete(allNodeIDs);
 
-      await this.engine.realtime.sendUpdate(Realtime.removeNode(removeNodeID));
-      this.internal.remove(removeNodeID);
+      await this.engine.realtime.sendUpdate(RealtimeDuck.removeManyNodes([removeNodeID]));
+      this.internal.removeMany([removeNodeID]);
 
       this.engine.saveHistory();
 
-      await this.removeIntentStepIDs(nodesToRemove);
-
       this.dispatch(Creator.validateTopicAvailability());
 
-      this.log.info(this.log.success('remove node'), this.log.slug(removeNodeID));
+      this.log.info(this.log.success('removed node'), this.log.slug(removeNodeID));
     });
   }
 
   removeMany(nodeIDs: string[], { disableConfirmPrompt }: { disableConfirmPrompt?: boolean } = {}): Promise<void> {
-    this.log.debug(this.log.pending('removed multiple nodes'), nodeIDs);
+    this.log.debug(this.log.pending('removing multiple nodes'), nodeIDs);
 
     return this.validateRemove(
       nodeIDs,
       async (removableNodeIDs) => {
         const allNodeIDs = [...removableNodeIDs, ...removableNodeIDs.flatMap(this.select(Creator.combinedNodeIDsSelector))];
-        const nodesToRemove = this.select(Creator.allNodesByIDsSelector)(allNodeIDs);
 
         await this.engine.comment.handleNodesDelete(allNodeIDs);
 
-        await this.engine.realtime.sendUpdate(Realtime.removeManyNodes(removableNodeIDs));
+        await this.engine.realtime.sendUpdate(RealtimeDuck.removeManyNodes(removableNodeIDs));
         this.internal.removeMany(removableNodeIDs);
 
         this.engine.saveHistory();
-
-        await this.removeIntentStepIDs(nodesToRemove);
 
         this.dispatch(Creator.validateTopicAvailability());
 
@@ -454,13 +441,13 @@ class NodeManager extends EngineConsumer {
 
     this.log.debug(this.log.pending('adding nested node'), this.log.slug(nodeID));
 
-    await this.engine.realtime.sendUpdate(Realtime.addNestedNode(parentNodeID, augmentedNode, data, mergedNodeID));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.addNestedNode(parentNodeID, augmentedNode, data, mergedNodeID));
 
     this.internal.addNested(parentNodeID, augmentedNode, data, mergedNodeID);
     this.engine.saveHistory();
     this.engine.setActive(nodeID);
 
-    await this.addIntentStepIDs([{ node: augmentedNode, data }]);
+    await this.registerIntentSteps([{ node: augmentedNode, data }]);
 
     this.log.info(this.log.success('added nested node'), this.log.slug(nodeID));
 
@@ -499,14 +486,14 @@ class NodeManager extends EngineConsumer {
       this.internal.insertNested(parentNodeID, index, nodeID);
     });
 
-    await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, parentNode));
-    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.addNode(augmentedNode, data, parentNode));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.insertNestedNode(parentNodeID, index, nodeID));
 
     this.engine.saveHistory();
 
     this.engine.setActive(childID);
 
-    await this.addIntentStepIDs([{ node: augmentedNode, data }]);
+    await this.registerIntentSteps([{ node: augmentedNode, data }]);
 
     this.log.info(this.log.success('added nested node'), this.log.slug(childID));
   }
@@ -515,7 +502,7 @@ class NodeManager extends EngineConsumer {
     this.log.debug(this.log.pending('inserting nested node'), this.log.slug(nodeID));
 
     this.internal.insertNested(parentNodeID, index, nodeID);
-    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.insertNestedNode(parentNodeID, index, nodeID));
 
     this.engine.saveHistory();
 
@@ -532,7 +519,7 @@ class NodeManager extends EngineConsumer {
 
     this.log.debug(this.log.pending('unmerging node'), this.log.slug(nodeID));
 
-    await this.engine.realtime.sendUpdate(Realtime.unmergeNode(nodeID, position, parentNode));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.unmergeNode(nodeID, position, parentNode));
     this.internal.unmerge(nodeID, position, parentNode);
     this.engine.saveHistory();
 
@@ -549,7 +536,7 @@ class NodeManager extends EngineConsumer {
 
     this.internal.translate(nodeID, movement);
 
-    const action = Realtime.moveNode(nodeID, movement, origin);
+    const action = RealtimeDuck.moveNode(nodeID, movement, origin);
     await this.engine.realtime[volatile ? 'sendVolatileUpdate' : 'sendUpdate'](action);
   }
 
@@ -563,7 +550,7 @@ class NodeManager extends EngineConsumer {
 
     this.internal.translateMany(activeNodeIDs, movement);
 
-    const action = Realtime.moveManyNodes(activeNodeIDs, movement, origins);
+    const action = RealtimeDuck.moveManyNodes(activeNodeIDs, movement, origins);
     await this.engine.realtime[volatile ? 'sendVolatileUpdate' : 'sendUpdate'](action);
   }
 

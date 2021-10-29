@@ -5,6 +5,7 @@ export * as functional from './functional';
 export * as globalVariables from './globalVariables';
 export * as id from './id';
 export * as mathjs from './mathjs';
+export * as node from './node';
 export * as normalized from './normalized';
 export * as object from './object';
 export * as platform from './platform';

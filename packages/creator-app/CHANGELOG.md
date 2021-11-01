@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.529.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.529.0...@voiceflow/creator-app@1.529.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* update password length requirements (VF-2050) ([#4417](https://github.com/voiceflow/creator-app/issues/4417)) ([1fe47d5](https://github.com/voiceflow/creator-app/commit/1fe47d5a3765e569124e8c97e15184a7a8b029a1))
+
+
+
+
+
 # [1.529.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.528.1...@voiceflow/creator-app@1.529.0) (2021-11-01)
 
 

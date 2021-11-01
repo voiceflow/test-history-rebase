@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.16.0...@voiceflow/realtime@1.17.0) (2021-11-01)
+
+
+### Features
+
+* **dialogflow:** enables users to create and edit agent name (VF-2126) ([#4397](https://github.com/voiceflow/creator-app/issues/4397)) ([8250e05](https://github.com/voiceflow/creator-app/commit/8250e051f8bea6299d52a05452eefa7a1a3b4e54))
+
+
+
+
+
 # [1.16.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.15.2...@voiceflow/realtime@1.16.0) (2021-10-29)
 
 

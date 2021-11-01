@@ -22,7 +22,7 @@ const ImportModal: React.FC = () => {
     if (!saveName.trim() || saving) return;
     setSaving(true);
     try {
-      await client.version.getVersionSnapshot(activeVersionID);
+      await client.version.getVersionSnapshot(activeVersionID, saveName.trim());
       toast.success(`Saved new version '${saveName}'`);
       reset();
       close();

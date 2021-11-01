@@ -5,7 +5,7 @@ import { EditableTextAPI } from '@/components/EditableText';
 import { BlockVariant } from '@/constants/canvas';
 import { useLinkedState, useTheme } from '@/hooks';
 import { BLOCK_SECTION_TITLE_CLASSNAME } from '@/pages/Canvas/constants';
-import { useEditingMode } from '@/pages/Skill/hooks';
+import { useEditingMode } from '@/pages/Project/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import {

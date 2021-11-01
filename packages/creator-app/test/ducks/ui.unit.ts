@@ -1,7 +1,7 @@
 import { ControlScheme } from '@/components/Canvas/constants';
 import { BlockCategory } from '@/constants';
 import * as UI from '@/ducks/ui';
-import { Tab } from '@/pages/Skill/components/DesignMenu/constants';
+import { Tab } from '@/pages/Project/components/DesignMenu/constants';
 
 import suite from './_suite';
 

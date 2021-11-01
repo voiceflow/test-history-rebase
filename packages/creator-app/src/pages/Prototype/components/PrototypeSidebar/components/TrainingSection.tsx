@@ -13,7 +13,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useTrackingEvents } from '@/hooks';
-import { NLPContext } from '@/pages/Skill/contexts';
+import { NLPContext } from '@/pages/Project/contexts';
 import { ConnectedProps } from '@/types';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
 import * as Sentry from '@/vendors/sentry';

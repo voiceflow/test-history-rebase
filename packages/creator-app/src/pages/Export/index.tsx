@@ -18,7 +18,7 @@ import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
 import useEngine from '@/pages/Canvas/engine';
 import { getManager } from '@/pages/Canvas/managers';
-import { MarkupProvider, PlatformProvider } from '@/pages/Skill/contexts';
+import { MarkupProvider, PlatformProvider } from '@/pages/Project/contexts';
 import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { ConnectedProps, Point } from '@/types';

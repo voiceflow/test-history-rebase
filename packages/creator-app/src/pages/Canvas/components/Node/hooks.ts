@@ -7,7 +7,7 @@ import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useDragTranslate, useEntityDrag } from '@/pages/Canvas/hooks';
 import { BlockAPI } from '@/pages/Canvas/types';
-import { useEditingMode } from '@/pages/Skill/hooks';
+import { useEditingMode } from '@/pages/Project/hooks';
 import { Point } from '@/types';
 
 import { InternalNodeInstance } from './types';

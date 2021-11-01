@@ -8,7 +8,7 @@ import { connect } from '@/hocs';
 import { useTheme } from '@/hooks';
 import { Thread as ThreadType } from '@/models';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
-import { useCommentingMode } from '@/pages/Skill/hooks';
+import { useCommentingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut';
 import { ConnectedProps } from '@/types';

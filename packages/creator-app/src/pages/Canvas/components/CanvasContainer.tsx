@@ -12,8 +12,8 @@ import { useActiveModal, useFeature, useHotKeys, useRegistration } from '@/hooks
 import { Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
-import { LastCreatedComponentContext, MarkupContext } from '@/pages/Skill/contexts';
-import { useCommentingMode, useEditingMode, usePrototypingMode } from '@/pages/Skill/hooks';
+import { LastCreatedComponentContext, MarkupContext } from '@/pages/Project/contexts';
+import { useCommentingMode, useEditingMode, usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 

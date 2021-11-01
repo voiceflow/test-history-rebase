@@ -11,7 +11,7 @@ import PlayButton from '@/pages/Canvas/components/PlayButton';
 import { EngineContext, NodeEntityContext, NodeEntityProvider } from '@/pages/Canvas/contexts';
 import { FlowStartBlock, HomeStartBlock } from '@/pages/Canvas/managers/Start/StartBlock';
 import { BlockAPI } from '@/pages/Canvas/types';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
 
 import NodeStep from './NodeStep';

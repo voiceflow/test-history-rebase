@@ -2,7 +2,7 @@ import React from 'react';
 
 import { InfoSection } from '@/components/Section';
 import { Content } from '@/pages/Canvas/components/Editor';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 
 import { getPlatformLabel } from './constants';
 

@@ -2,8 +2,8 @@ import { Portal, swallowEvent, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
-import { PlatformContext } from '@/pages/Skill/contexts';
-import { useEditingMode } from '@/pages/Skill/hooks';
+import { PlatformContext } from '@/pages/Project/contexts';
+import { useEditingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { Caption, Group, HeadMarker, Overlay, Path, Settings, Styles } from './components';

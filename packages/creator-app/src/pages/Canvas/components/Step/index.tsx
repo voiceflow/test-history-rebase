@@ -2,7 +2,7 @@ import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import User from '@/components/User';
-import { useEditingMode } from '@/pages/Skill/hooks';
+import { useEditingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { Container, HoverContainer, Image, ImageContainer } from './components';

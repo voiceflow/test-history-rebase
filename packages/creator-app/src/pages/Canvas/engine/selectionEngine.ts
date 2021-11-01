@@ -1,4 +1,4 @@
-import { SelectionSetTargetsContextValue } from '@/pages/Skill/contexts';
+import { SelectionSetTargetsContextValue } from '@/pages/Project/contexts';
 import { hasIdenticalMembers } from '@/utils/array';
 
 import { ActivationMode } from './constants';

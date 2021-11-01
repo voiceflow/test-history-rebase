@@ -11,7 +11,7 @@ import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
-import { SelectionSetTargetsContext } from '@/pages/Skill/contexts';
+import { SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import { compose } from '@/utils/functional';
 import * as Query from '@/utils/query';
 

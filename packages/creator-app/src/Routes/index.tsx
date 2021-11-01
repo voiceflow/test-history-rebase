@@ -24,7 +24,7 @@ import PublicRoute from './PublicRoute';
 
 const SSML = lazy(() => import('@/pages/SSML'));
 const Legal = lazy(() => import('@/components/Legal'));
-const Skill = lazy(() => import(/* webpackPrefetch: true */ '@/pages/Skill'));
+const Project = lazy(() => import(/* webpackPrefetch: true */ '@/pages/Project'));
 const Account = lazy(() => import('@/pages/Account'));
 const Runtime = lazy(() => import('@/pages/Runtime'));
 const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));
@@ -78,7 +78,7 @@ const Routes: React.FC = () => {
 
         <PrivateRoute path={Path.PROJECT_EXPORT} component={Export} />
 
-        <PrivateRoute path={Path.PROJECT_VERSION} component={Skill} />
+        <PrivateRoute path={Path.PROJECT_VERSION} component={Project} />
 
         <PrivateRoute path={Path.ACCOUNT} component={Account} />
         <PrivateRoute path={Path.RUNTIME} component={Runtime} />

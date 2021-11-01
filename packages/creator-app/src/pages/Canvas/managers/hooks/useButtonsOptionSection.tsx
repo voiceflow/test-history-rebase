@@ -6,7 +6,7 @@ import React from 'react';
 import ButtonsSection, { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons/Section';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { Nullable } from '@/types';
 import { getPlatformValue } from '@/utils/platform';
 import { isAlexaPlatform } from '@/utils/typeGuards';

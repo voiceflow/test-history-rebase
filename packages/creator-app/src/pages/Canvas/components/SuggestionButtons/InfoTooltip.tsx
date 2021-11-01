@@ -2,7 +2,7 @@ import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
 import { Section as TooltipSection, Title } from '@/components/Tooltip';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { getPlatformValue } from '@/utils/platform';
 
 const InfoTooltip: React.FC = () => {

@@ -14,7 +14,7 @@ import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import { useButtonLayoutOption } from '@/pages/Canvas/managers/hooks';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';
 import { getDistinctPlatformValue, getPlatformValue } from '@/utils/platform';

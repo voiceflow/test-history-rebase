@@ -4,7 +4,7 @@ import React from 'react';
 
 import { EngineContext, PortEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
-import { useEditingMode } from '@/pages/Skill/hooks';
+import { useEditingMode } from '@/pages/Project/hooks';
 
 import { InternalPortInstance } from './types';
 

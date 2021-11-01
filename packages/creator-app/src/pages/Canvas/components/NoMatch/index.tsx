@@ -12,7 +12,7 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 import NoMatchPath from '@/pages/Canvas/components/NoMatchPath';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { PushToPath } from '@/pages/Canvas/managers/types';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { head } from '@/utils/array';
 import { isChatbotPlatform } from '@/utils/typeGuards';

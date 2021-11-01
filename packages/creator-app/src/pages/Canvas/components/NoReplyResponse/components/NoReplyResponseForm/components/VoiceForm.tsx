@@ -8,7 +8,7 @@ import VariablesInput from '@/components/VariablesInput';
 import { RepromptType } from '@/constants';
 import { NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { isGooglePlatform } from '@/utils/typeGuards';
 
 import { useFocusedNodeReprompt } from './hooks';

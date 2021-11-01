@@ -6,7 +6,7 @@ import OverflowMenu from '@/components/OverflowMenu';
 import { NodeData } from '@/models/NodeData';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 
 import { HelpTooltip } from './components';
 

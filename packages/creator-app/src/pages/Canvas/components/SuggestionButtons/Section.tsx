@@ -4,7 +4,7 @@ import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Section from '@/components/Section';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { getPlatformValue } from '@/utils/platform';
 
 import InfoTooltip from './InfoTooltip';

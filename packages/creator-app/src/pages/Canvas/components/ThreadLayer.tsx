@@ -7,7 +7,7 @@ import { useTrackingEvents } from '@/hooks';
 import CommentThread from '@/pages/Canvas/components/CommentThread';
 import { EngineContext, FocusThreadContext, ThreadEntityProvider } from '@/pages/Canvas/contexts';
 import { CanvasRenderGate } from '@/pages/Canvas/gates';
-import { useCommentingMode } from '@/pages/Skill/hooks';
+import { useCommentingMode } from '@/pages/Project/hooks';
 import { ConnectedProps } from '@/types';
 
 import NewCommentThread from './NewCommentThread';

@@ -9,8 +9,8 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { getSettingsMetaProps } from '@/pages/Settings/constants';
-import { PlatformContext } from '@/pages/Skill/contexts';
 import { getTargetValue } from '@/utils/dom';
 import { getPlatformValue } from '@/utils/platform';
 

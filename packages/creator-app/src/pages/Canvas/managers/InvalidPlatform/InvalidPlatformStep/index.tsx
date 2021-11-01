@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 
 import { getPlatformLabel } from '../constants';
 

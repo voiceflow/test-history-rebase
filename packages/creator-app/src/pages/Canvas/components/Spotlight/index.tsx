@@ -7,8 +7,8 @@ import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { useFeature, useTrackingEvents } from '@/hooks';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
-import { getSections, MenuStep } from '@/pages/Skill/components/DesignMenu/components/Steps/constants';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { getSections, MenuStep } from '@/pages/Project/components/DesignMenu/components/Steps/constants';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { withKeyPress } from '@/utils/dom';
 

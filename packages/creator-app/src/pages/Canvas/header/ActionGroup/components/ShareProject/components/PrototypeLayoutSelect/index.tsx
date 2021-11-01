@@ -5,7 +5,7 @@ import DropdownWithCaret from '@/components/DropdownWithCaret';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeLayout } from '@/ducks/prototype/types';
 import { connect } from '@/hocs';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 

@@ -11,7 +11,7 @@ import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { useButtonsOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 
 import { NODE_CONFIG } from '../constants';
 import DraggableItem from './DraggableItem';

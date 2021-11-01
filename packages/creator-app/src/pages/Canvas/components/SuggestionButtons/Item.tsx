@@ -14,7 +14,7 @@ import { useSetup } from '@/hooks';
 import { Intent } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
 import { getPlatformValue } from '@/utils/platform';

@@ -6,7 +6,7 @@ import { ModalType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { useModals, useTrackingEvents } from '@/hooks';
 import { STATIC_RESOURCES, StaticResource } from '@/pages/Canvas/components/CanvasControls/constants';
-import { useDashboardMode } from '@/pages/Skill/hooks';
+import { useDashboardMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
 import OptionLabel from './ResourceOptionLabel';

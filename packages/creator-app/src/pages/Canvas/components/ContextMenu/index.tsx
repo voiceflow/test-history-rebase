@@ -8,7 +8,7 @@ import * as UIDuck from '@/ducks/ui';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useModals, usePermission, useSelector } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
-import { MarkupContext } from '@/pages/Skill/contexts';
+import { MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { buildVirtualElement } from '@/utils/dom';
 import { noop } from '@/utils/functional';

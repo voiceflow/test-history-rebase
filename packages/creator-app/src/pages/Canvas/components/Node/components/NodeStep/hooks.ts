@@ -10,7 +10,7 @@ import { ContextMenuContext, EngineContext, NodeEntityContext } from '@/pages/Ca
 import { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { StepAPI } from '@/pages/Canvas/types';
-import { useEditingMode } from '@/pages/Skill/hooks';
+import { useEditingMode } from '@/pages/Project/hooks';
 import { Coords } from '@/utils/geometry';
 
 export type InternalNodeInstance = NodeInstance & {

@@ -2,7 +2,7 @@ import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { useEnableDisable } from '@/hooks';
-import { usePrototypingMode } from '@/pages/Skill/hooks';
+import { usePrototypingMode } from '@/pages/Project/hooks';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import { Container } from './style';

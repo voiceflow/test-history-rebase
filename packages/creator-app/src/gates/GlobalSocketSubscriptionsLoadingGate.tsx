@@ -8,7 +8,7 @@ import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
-import { usePrototypingMode } from '@/pages/Skill/hooks';
+import { usePrototypingMode } from '@/pages/Project/hooks';
 import { ConnectedProps } from '@/types';
 
 const GlobalSocketSubscriptionsLoadingGate: React.FC<ConnectedGlobalSocketSubscriptionsLoadingGateProps> = ({

@@ -9,7 +9,7 @@ import { Content } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { HelpMessage, HelpTooltip } from '@/pages/Canvas/managers/Command/components';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { isPlatformWithInvocationName } from '@/utils/typeGuards';
 
 import { InvocationNameSection, StartLabelSection } from './components';

@@ -6,7 +6,7 @@ import { NodeData } from '@/models/NodeData';
 import NoReplyResponse from '@/pages/Canvas/components/NoReplyResponse';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 import { getPlatformPromptFactory } from '@/utils/prompt';
 
 import { OptionSection } from './types';

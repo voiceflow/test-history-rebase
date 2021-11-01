@@ -13,7 +13,7 @@ import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 
 import { HelpMessage, HelpTooltip, VisualsForm } from './components';
 

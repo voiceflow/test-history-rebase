@@ -3,7 +3,7 @@ import { toast } from '@voiceflow/ui';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
-import { SyncThunk } from '@/store/types';
+import { SyncThunk, Thunk } from '@/store/types';
 
 import { updatePrototypeMode, updatePrototypeSettings } from '../actions';
 import { prototypeSettingsSelector } from '../selectors';
@@ -28,7 +28,7 @@ export const updateActivePrototypeMode =
   };
 
 export const updateSharePrototypeSettings =
-  (data: Partial<PrototypeShareViewSettings>): SyncThunk =>
+  (data: Partial<PrototypeShareViewSettings>): Thunk =>
   async (dispatch, getState) => {
     const versionID = Session.activeVersionIDSelector(getState());
     const currentState = prototypeSettingsSelector(getState());

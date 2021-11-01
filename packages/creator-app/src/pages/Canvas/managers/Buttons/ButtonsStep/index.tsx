@@ -8,7 +8,7 @@ import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
 import { Intent, NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
-import { PlatformContext } from '@/pages/Skill/contexts';
+import { PlatformContext } from '@/pages/Project/contexts';
 
 import { NODE_CONFIG } from '../constants';
 

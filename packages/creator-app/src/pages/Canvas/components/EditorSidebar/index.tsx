@@ -13,8 +13,8 @@ import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverla
 import { ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
 import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
-import { PlatformContext } from '@/pages/Skill/contexts';
-import { useEditingMode } from '@/pages/Skill/hooks';
+import { PlatformContext } from '@/pages/Project/contexts';
+import { useEditingMode } from '@/pages/Project/hooks';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 

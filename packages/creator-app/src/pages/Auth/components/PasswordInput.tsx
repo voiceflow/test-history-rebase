@@ -9,10 +9,19 @@ export type PasswordInputProps = ControlProps<string> & {
   showPassword?: boolean;
   isInvalid?: boolean;
   name?: string;
+  minLength?: number;
   placeholder?: string;
 };
 
-const PasswordInput: React.FC<PasswordInputProps> = ({ value, onChange, showPassword, name = 'password', placeholder = 'Password', isInvalid }) => (
+const PasswordInput: React.FC<PasswordInputProps> = ({
+  value,
+  minLength,
+  onChange,
+  showPassword,
+  name = 'password',
+  placeholder = 'Password',
+  isInvalid,
+}) => (
   <Input
     className={cn({ invalid: isInvalid })}
     type={showPassword ? 'text' : 'password'}
@@ -20,7 +29,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ value, onChange, showPass
     onChange={getTargetValue(onChange)}
     placeholder={placeholder}
     required
-    minLength={8}
+    minLength={minLength}
     value={value}
   />
 );

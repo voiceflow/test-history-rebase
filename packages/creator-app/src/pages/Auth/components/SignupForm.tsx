@@ -28,6 +28,8 @@ export interface SignupFormProps {
   promo?: boolean;
 }
 
+const SIGNUP_MIN_PASSWORD_LENGTH = 11;
+
 export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormProps> = ({ signup, promo, query, goToLogin }) => {
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
   const [password, setPassword] = React.useState('');
@@ -131,7 +133,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
               )}
             </InputContainer>
             <Box mb={22}>
-              <PasswordInput value={password} onChange={setPassword} />
+              <PasswordInput minLength={SIGNUP_MIN_PASSWORD_LENGTH} value={password} onChange={setPassword} />
             </Box>
             {promo && (
               <InputContainer>

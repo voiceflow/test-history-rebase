@@ -5,8 +5,6 @@ import React from 'react';
 import { ControlProps } from '@/types';
 import { getTargetValue } from '@/utils/dom';
 
-const MIN_PASSWORD_LENGTH = 11;
-
 export type PasswordInputProps = ControlProps<string> & {
   showPassword?: boolean;
   isInvalid?: boolean;
@@ -22,7 +20,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ value, onChange, showPass
     onChange={getTargetValue(onChange)}
     placeholder={placeholder}
     required
-    minLength={MIN_PASSWORD_LENGTH}
+    minLength={8}
     value={value}
   />
 );

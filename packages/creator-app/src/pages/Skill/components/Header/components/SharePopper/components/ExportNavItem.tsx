@@ -5,6 +5,11 @@ import styled from 'styled-components';
 import { PopperNavItem } from '@/components/Popper';
 
 const PopperNavContainer = styled.div`
+  a {
+    border-top: solid 1px transparent;
+    border-bottom: solid 1px transparent;
+  }
+
   .active {
     background-color: #eef4f6;
     border-top: solid 1px #dfe3ed;

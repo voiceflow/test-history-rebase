@@ -12,16 +12,15 @@ interface WaitDFESProjectStageProps {
   cancel: () => void;
   onClose?: () => void;
   setMultiProjects?: (value: boolean) => void;
+  createNewAgent: () => void;
   updateCurrentStage: (selected: UploadProject.Dialogflow | null) => void;
 }
 
-const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurrentStage, setMultiProjects }) => {
+const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurrentStage, setMultiProjects, createNewAgent }) => {
   const [projects, setProjects] = React.useState<UploadProject.Dialogflow[]>([]);
   const projectList = projects.map((project) => ({ id: project.googleProjectID, name: project.agentName }));
 
   const [state, api] = useSmartReducerV2({ error: false, loading: true });
-
-  const handleCreateNewAgent = () => updateCurrentStage(null);
 
   const handleProjectSelected = (selectedProject: Project) =>
     updateCurrentStage({ googleProjectID: selectedProject.id, agentName: selectedProject.name });
@@ -52,7 +51,7 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
           projects={projectList}
           title="Connect to Agent"
           footerSubmitText="Create New Agent"
-          onFooterSubmit={handleCreateNewAgent}
+          onFooterSubmit={createNewAgent}
           onProjectSelected={handleProjectSelected}
         />
       );
@@ -61,7 +60,7 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
       <StageEmpty
         description="No agents exist on the Dialogflow ES Console to connect to. Create a new agent now"
         footerSubmitText="Create New Agent"
-        onFooterClick={handleCreateNewAgent}
+        onFooterClick={createNewAgent}
       />
     );
   }, [state, projects]);

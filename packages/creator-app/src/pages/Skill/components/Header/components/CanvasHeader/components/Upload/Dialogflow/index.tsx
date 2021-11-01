@@ -14,15 +14,26 @@ import DialogflowUploadButton from './components/DialogflowUploadButton';
 const JOB_STARTED_STAGES = [DialogflowStageType.IDLE, DialogflowStageType.PROGRESS, DialogflowStageType.SUCCESS];
 
 const DialogflowPublish: React.FC = () => {
-  const { job, noPopup, onCancel, onPublish, needsLogin, popupOpened, multiProjects, setMultiProjects, successfullyPublished } =
-    useDialogflowPublish();
+  const {
+    job,
+    noPopup,
+    onCancel,
+    onPublish,
+    needsLogin,
+    popupOpened,
+    multiProjects,
+    setMultiProjects,
+    successfullyPublished,
+    createNewAgent,
+    createNewAgentModalOpened,
+  } = useDialogflowPublish();
 
   const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.includes(job?.stage.type));
 
   useHotKeys(Hotkey.UPLOAD_PROJECT, onPublish, { disable: hotkeyDisabled, preventDefault: true }, [onPublish]);
 
   const isSelectProjectStage = job?.stage.type === DialogflowStageType.WAIT_PROJECT;
-  const isUploadPopupOpen = popupOpened && (isSelectProjectStage || !noPopup);
+  const isUploadPopupOpen = popupOpened && (isSelectProjectStage || !noPopup) && !createNewAgentModalOpened;
   const shouldRenderPopupContent = isSelectProjectStage || !noPopup;
 
   return (
@@ -38,7 +49,7 @@ const DialogflowPublish: React.FC = () => {
         <DialogflowProgressStage dialogflowPublishJob={job} />
 
         <Popup open={isUploadPopupOpen} onClose={onCancel} jobStage={job?.stage.type} multiSelect={multiProjects}>
-          {shouldRenderPopupContent && <Dialogflow setMultiProjects={setMultiProjects} />}
+          {shouldRenderPopupContent && <Dialogflow setMultiProjects={setMultiProjects} createNewAgent={createNewAgent} />}
         </Popup>
       </Portal>
     </>

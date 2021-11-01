@@ -43,12 +43,16 @@ const ALEXA_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, displayIc
 
 const GOOGLE_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, developerIcon, settingsIcon];
 
+const DIALOGFLOW_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, developerIcon, settingsIcon];
+
 const GENERAL_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
 
 export const getMenuOptions = createPlatformSelector(
   {
     [Constants.PlatformType.ALEXA]: ALEXA_PROTOTYPE_MENU_OPTIONS,
     [Constants.PlatformType.GOOGLE]: GOOGLE_PROTOTYPE_MENU_OPTIONS,
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: DIALOGFLOW_PROTOTYPE_MENU_OPTIONS,
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: DIALOGFLOW_PROTOTYPE_MENU_OPTIONS,
   },
   GENERAL_PROTOTYPE_MENU_OPTIONS
 );

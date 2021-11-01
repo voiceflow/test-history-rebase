@@ -149,3 +149,17 @@ export const saveTriggerPhrase =
 
     await dispatch(dialogflow.patchPublishing({ triggerPhrase }));
   };
+
+export const updateAgentName =
+  (agentName?: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
+    const activeAgentName = VersionV2.active.agentNameSelector(state);
+
+    Errors.assertVersionID(versionID);
+
+    if (activeAgentName === agentName) return;
+
+    await dispatch(dialogflow.patchPublishing({ agentName }));
+  };

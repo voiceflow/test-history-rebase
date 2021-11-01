@@ -1,9 +1,16 @@
 import { Project } from '@voiceflow/api-sdk';
 import { Constants } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/general-types/build/constants';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { AxiosInstance } from 'axios';
 
 import { ExtraOptions } from './types';
+
+interface ProjectClient {
+  canRead: (creatorID: number, projectID: string) => Promise<boolean>;
+  deleteV2: (projectID: string) => Promise<boolean>;
+  platform: (platform?: Realtime.Nullish<PlatformType>) => any;
+}
 
 export interface ProjectPlatformClient<P extends Project<any, any>> {
   duplicate: (projectID: string, data: Realtime.NewProject, params?: { channel: string }) => Promise<P>;
@@ -13,8 +20,7 @@ const PlatformClient = <P extends Project<any, any>>(axios: AxiosInstance): Proj
   duplicate: (projectID, data, params?) => axios.post<P>(`/project/${projectID}/copy`, data, { params }).then((res) => res.data),
 });
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
+const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions): ProjectClient => {
   const alexaClient = PlatformClient<Realtime.AlexaProject>(alexa);
   const googleClient = PlatformClient<Realtime.GoogleProject>(google);
   const dialogflowClient = PlatformClient<Realtime.DialogflowProject>(dialogflow);

@@ -33,6 +33,7 @@ export interface PlatformSettingsMetaProps {
     modelSensitivity?: React.FC | string;
     defaultVoice?: React.FC | string;
     triggerPhraseDescriptor?: React.FC | string;
+    agentName?: React.FC | string;
   };
   localeText?: string;
 }
@@ -84,6 +85,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       sections: [SettingSections.BASIC, SettingSections.DIALOGFLOW_CONSOLE, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
       descriptors: {
         projectName: General.ProjectName,
+        agentName: Dialogflow.AgentName,
         localesDescriptor: Dialogflow.Locales,
         triggerPhraseDescriptor: Dialogflow.TriggerPhrase,
         repeatEverything: General.RepeatEverything,
@@ -95,6 +97,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       sections: [SettingSections.BASIC, SettingSections.DIALOGFLOW_CONSOLE, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
       descriptors: {
         projectName: General.ProjectName,
+        agentName: Dialogflow.AgentName,
         localesDescriptor: Dialogflow.Locales,
         triggerPhraseDescriptor: Dialogflow.TriggerPhrase,
         repeatEverything: General.RepeatEverything,

@@ -16,6 +16,8 @@ export const localesSelector = createSelector([publishingSelector], (publishing)
 
 export const triggerPhraseSelector = createSelector([publishingSelector], (publishing) => publishing?.triggerPhrase ?? []);
 
+export const agentNameSelector = createSelector([publishingSelector], (publishing) => publishing?.agentName ?? null);
+
 export const invocationNameSelector = createSelector([publishingSelector], (publishing) => publishing?.pronunciation ?? null);
 
 export const invocationsSelector = createSelector([publishingSelector], (publishing) => publishing?.sampleInvocations ?? []);

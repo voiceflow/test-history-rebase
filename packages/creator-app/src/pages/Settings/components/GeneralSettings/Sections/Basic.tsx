@@ -42,6 +42,7 @@ const sectionStyling = {
 
 const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   invocationName,
+  agentName,
   locales,
   project,
   platform,
@@ -50,6 +51,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   updateProjectName,
   updateProjectImage,
   updateInvocationName,
+  updateAgentName,
 }) => {
   const { descriptors, localeText } = platformMeta;
 
@@ -59,6 +61,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   const [newInvocation, setNewInvocation] = React.useState(invocationName ?? '');
   const [newProjectName, setNewProjectName] = React.useState(project?.name ?? '');
   const [projectImage, setProjectImage] = React.useState(project?.image ?? '');
+  const [newAgentName, setNewAgentName] = React.useState(agentName || '');
 
   const [alexaLocales, setAlexaLocales] = React.useState<AlexaConstants.Locale[]>((locales || []) as AlexaConstants.Locale[]);
   const [generalLocale, setGeneralLocale] = React.useState<Constants.Locale>((locales as Constants.Locale[])[0]);
@@ -98,6 +101,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       updateProjectName(newProjectName),
       !isAnyGeneralPlatform(platform) ? updateInvocationName(newInvocation) : null,
       project && projectImage ? updateProjectImage(project.id, projectImage) : null,
+      newAgentName ? updateAgentName(newAgentName as string) : null,
       saveAlexaLocales(),
       saveGoogleLocales(),
       saveDialogflowLocales(),
@@ -134,6 +138,30 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
           </Box>
         </BoxFlex>
       </Section>
+
+      {isDialogflowPlatform(platform) && (
+        <Section
+          customContentStyling={sectionStyling}
+          variant={SectionVariant.QUATERNARY}
+          isDividerNested
+          contentSuffix={
+            !newAgentName
+              ? () => <SectionErrorMessage marginTop={12}>Your agent requires a valid name to be uploaded</SectionErrorMessage>
+              : descriptors.agentName
+          }
+          header="Agent Name"
+        >
+          <BoxFlex>
+            <Input
+              value={newAgentName}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setNewAgentName(e.target.value)}
+              placeholder="Enter agent name"
+              onBlur={saveSettings}
+              error={!newAgentName}
+            />
+          </BoxFlex>
+        </Section>
+      )}
 
       {isPlatformWithInvocationName(platform) && (
         <Section
@@ -218,6 +246,7 @@ const mapStateToProps = {
   versionID: Session.activeVersionIDSelector,
   project: ProjectV2.active.projectSelector,
   invocationName: VersionV2.active.invocationNameSelector,
+  agentName: VersionV2.active.agentNameSelector,
   locales: VersionV2.active.localesSelector,
 };
 
@@ -226,6 +255,7 @@ const mapDispatchToProps = {
   updateProjectName: Project.updateActiveProjectName,
   updateLocales: Version.updateLocales,
   updateProjectImage: Project.updateProjectImage,
+  updateAgentName: Version.updateAgentName,
 };
 
 type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

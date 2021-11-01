@@ -74,3 +74,15 @@ export const triggerPhraseSelector = createSelector([ProjectV2.active.projectSel
       return [];
   }
 });
+
+export const agentNameSelector = createSelector([ProjectV2.active.projectSelector, identity], (activeProject, rootState) => {
+  if (!activeProject) return null;
+
+  switch (activeProject.platform) {
+    case Constants.PlatformType.DIALOGFLOW_ES_CHAT:
+    case Constants.PlatformType.DIALOGFLOW_ES_VOICE:
+      return dialogflow.agentNameSelector(rootState);
+    default:
+      return null;
+  }
+});

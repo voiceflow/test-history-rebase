@@ -246,6 +246,8 @@ export enum ModalType {
 
   CONNECT = 'connect',
   TAG_MANAGER = 'tag-manager',
+
+  DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agen',
 }
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER]; // billing not included in seat roles

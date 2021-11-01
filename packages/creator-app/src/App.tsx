@@ -15,6 +15,7 @@ import ConfirmModalV2 from '@/components/ConfirmModal';
 import IntercomChat from '@/components/IntercomChat';
 import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, SuccessModal } from '@/components/modals';
 import LoginModal from '@/components/PlatformUploadPopup/components/LoginModal';
+import CreateNewAgentModal from '@/components/PlatformUploadPopup/Dialogflow/CreateNewAgentModal';
 import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
 import { SeoPage } from '@/constants/seo';
@@ -67,6 +68,7 @@ const App = () => {
       <PaymentModal />
       <RefreshModal />
       <LoginModal />
+      <CreateNewAgentModal />
     </>
   );
 };

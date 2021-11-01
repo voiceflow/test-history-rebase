@@ -8,7 +8,7 @@ import { PlatformContentProps } from '../constants';
 import SuccessStage from './SuccessStage';
 import WaitProjectStage from './WaitProjectState';
 
-export const Dialogflow: React.FC<PlatformContentProps> = ({ export: isExport, setMultiProjects }) => {
+export const Dialogflow: React.FC<PlatformContentProps> = ({ export: isExport, setMultiProjects, createNewAgent }) => {
   const exportContextValue = React.useContext(ExportContext)!;
   const publishContextValue = React.useContext(PublishContext)!;
 
@@ -25,7 +25,12 @@ export const Dialogflow: React.FC<PlatformContentProps> = ({ export: isExport, s
       return <SuccessStage stage={contextValue.job.stage} cancel={contextValue.cancel} />;
     case DialogflowStageType.WAIT_PROJECT:
       return (
-        <WaitProjectStage updateCurrentStage={contextValue.updateCurrentStage} cancel={contextValue.cancel} setMultiProjects={setMultiProjects} />
+        <WaitProjectStage
+          updateCurrentStage={contextValue.updateCurrentStage}
+          cancel={contextValue.cancel}
+          setMultiProjects={setMultiProjects}
+          createNewAgent={createNewAgent!}
+        />
       );
     default:
       return null;

@@ -18,6 +18,7 @@ export interface PlatformContentProps {
   showSelectVendor?: boolean;
   setVendorSelected?: (vendorSelected: boolean) => void;
   setMultiProjects?: (value: boolean) => void;
+  createNewAgent?: () => void;
 }
 
 export const getPlatformContent = createPlatformSelector(

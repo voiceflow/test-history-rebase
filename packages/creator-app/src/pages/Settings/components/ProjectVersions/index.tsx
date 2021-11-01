@@ -1,3 +1,4 @@
+import { Version, VersionPlatformData } from '@voiceflow/api-sdk';
 import { Constants } from '@voiceflow/general-types';
 import { Box, BoxFlexCenter, ClickableText, LoadCircle, SvgIcon, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
@@ -31,7 +32,9 @@ import { PLATFORM_VERSION_HEADER_TEXT } from './constants';
 // Need to move this to general types
 export interface ProjectVersion {
   versionID: string;
+  creatorID: number;
   name?: string;
+  manualSave?: boolean;
   created: string;
   platform: Constants.PlatformType;
 }
@@ -85,9 +88,12 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
         (version) => (version.platformData as any).status?.stage !== 'LIVE'
       );
       setVersions(
-        dbVersions.map((version) => ({
+        dbVersions.map((version: Version<VersionPlatformData> & { manualSave?: boolean }) => ({
+          creatorID: version.creatorID,
           versionID: version._id,
           platform,
+          manualSave: version.manualSave,
+          name: version.name,
           created: ObjectID.isValid(version._id) ? new ObjectID(version._id).getTimestamp().toString() : '',
         }))
       );

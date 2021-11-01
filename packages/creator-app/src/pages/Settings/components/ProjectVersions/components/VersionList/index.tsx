@@ -20,7 +20,7 @@ const VersionList: React.FC<VersionListProps> = ({ versions, swapVersions }) => 
         <span style={{ textAlign: 'right' }}>Actions</span>
       </TableHeader>
       {versions.map((version) => (
-        <VersionItem userName="Placeholder" version={version} key={version.versionID} swapVersions={swapVersions} />
+        <VersionItem creatorID={version.creatorID} version={version} key={version.versionID} swapVersions={swapVersions} />
       ))}
     </TableContainer>
   );

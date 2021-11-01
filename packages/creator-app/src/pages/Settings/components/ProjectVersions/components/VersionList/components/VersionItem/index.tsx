@@ -1,6 +1,6 @@
 import { Constants } from '@voiceflow/general-types';
 import { createPlatformSelector } from '@voiceflow/realtime-sdk/build/module/utils/platform';
-import { Box, Button, ButtonVariant, SvgIcon } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
@@ -8,6 +8,7 @@ import { Tooltip } from 'react-tippy';
 import { ConfirmProps } from '@/components/ConfirmModal';
 import { ModalType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useModals, useSelector } from '@/hooks';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
 
@@ -23,12 +24,18 @@ const RESTORE_VERSION_MESSAGE = createPlatformSelector(
 interface Index {
   version: ProjectVersion;
   swapVersions: (versionID: string) => void;
-  userName: string;
+  creatorID: number;
 }
 
-const VersionItem: React.FC<Index> = ({ version, swapVersions, userName }) => {
+const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
   const { open: openConfirmModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
   const platform = useSelector(ProjectV2.active.platformSelector);
+  const memberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+  const member = React.useMemo(() => memberByID(creatorID), [creatorID]);
+  const { manualSave } = version;
+  const name = React.useMemo(() => (manualSave ? version.name : 'Automatic'), [manualSave]);
+
+  const NameWrapper = manualSave ? TippyTooltip : React.Fragment;
 
   const confirmRestore = (versionID: string) => {
     openConfirmModal({
@@ -52,8 +59,10 @@ const VersionItem: React.FC<Index> = ({ version, swapVersions, userName }) => {
   return (
     <RowItem>
       <ColumnItemContainer>{dayjs(version.created).fromNow()}</ColumnItemContainer>
-      <ColumnItemContainer style={{ color: '#62778c' }}>Automatic</ColumnItemContainer>
-      <ColumnItemContainer>{userName}</ColumnItemContainer>
+      <ColumnItemContainer style={{ color: manualSave ? 'black' : '#62778c' }}>
+        <NameWrapper title={name}>{name}</NameWrapper>
+      </ColumnItemContainer>
+      <ColumnItemContainer>{member?.name}</ColumnItemContainer>
       <ActionsItemContainer>
         <Box display="inline-block">
           <Tooltip title="Restore Version">

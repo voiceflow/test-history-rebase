@@ -12,6 +12,7 @@ export const ColumnItemContainer = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: default;
   gap: 16px;
 `;
 

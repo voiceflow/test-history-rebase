@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.529.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.528.1...@voiceflow/creator-app@1.529.0) (2021-11-01)
+
+
+### Features
+
+* manual save modal (VF-816) ([#4399](https://github.com/voiceflow/creator-app/issues/4399)) ([af5c254](https://github.com/voiceflow/creator-app/commit/af5c254b7bba21981d1c7b1d4d2ecb0809ab21d6))
+
+
+
+
+
 ## [1.528.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.528.0...@voiceflow/creator-app@1.528.1) (2021-10-29)
 
 

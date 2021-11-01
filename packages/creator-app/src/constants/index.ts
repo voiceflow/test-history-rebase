@@ -217,6 +217,8 @@ export enum ModalType {
   SLOT_EDIT = 'slot-edit',
   INTERACTION_MODEL = 'interaction-model',
   EXPORT_MODEL = 'export-model',
+
+  MANUAL_SAVE_MODAL = 'manual-save-modal',
   FULLSCREEN_EDITOR = 'fullscreen-editor',
 
   APL_PREVIEW = 'apl-preview',

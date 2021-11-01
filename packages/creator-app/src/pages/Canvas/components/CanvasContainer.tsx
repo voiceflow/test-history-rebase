@@ -3,11 +3,12 @@ import cn from 'classnames';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import { connect, styled } from '@/hocs';
-import { useActiveModal, useHotKeys, useRegistration } from '@/hooks';
+import { useActiveModal, useFeature, useHotKeys, useRegistration } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
@@ -62,6 +63,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
+  const projectVersionsEnabled = useFeature(FeatureFlag.PROJECT_VERSIONS)?.isEnabled;
 
   const isEditingMode = useEditingMode();
   const isCommentingMode = useCommentingMode();
@@ -90,7 +92,10 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
     []
   );
 
-  const onSave = React.useCallback(() => toast.info('Voiceflow automatically saves your work', { toastId: 'canvas-container-save-hotkey-info' }), []);
+  const onSave = React.useCallback(() => {
+    if (projectVersionsEnabled) return;
+    toast.info('Voiceflow automatically saves your work', { toastId: 'canvas-container-save-hotkey-info' });
+  }, []);
 
   const onDuplicate = React.useCallback(() => {
     const targets = engine.activation.getTargets();

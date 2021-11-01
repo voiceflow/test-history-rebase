@@ -24,6 +24,7 @@ const HotKeys: React.FC = () => {
   const [, trackingEventsWrapper] = useTrackingEvents();
 
   const imModal = useModals(ModalType.INTERACTION_MODEL);
+  const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
 
   const onDisableModes = useDisableModes();
   const onToggleCommenting = useCommentingToggle();
@@ -55,6 +56,8 @@ const HotKeys: React.FC = () => {
   useHotKeys(Hotkey.MOVE_MODE, onDisableModes, { preventDefault: true, disable: imModal.isOpened }, [onDisableModes]);
   useHotKeys(Hotkey.SHOW_HIDE_UI, toggleCanvasOnly, { preventDefault: true });
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenImModel, { preventDefault: true, disable: !canEditCanvas }, [onOpenImModel]);
+  useHotKeys(Hotkey.OPEN_MANUAL_SAVE_MODAL, manualSaveModal.open, { preventDefault: true, disable: !canEditCanvas }, [manualSaveModal.open]);
+
   useHotKeys(Hotkey.OPEN_COMMENTING, onToggleCommenting, { preventDefault: true, disable: !showHintFeatures || imModal.isOpened }, [
     onToggleCommenting,
   ]);

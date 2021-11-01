@@ -20,11 +20,12 @@ suite('Client - Root', ({ expect }) => {
       'socket',
       'sso',
       'saml',
-      'user',
       'template',
       'thread',
+      'user',
       'workspace',
       'transcript',
+      'version',
       'reportTags',
       'realtime',
     ]);

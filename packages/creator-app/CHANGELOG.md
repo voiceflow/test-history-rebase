@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.531.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.530.1...@voiceflow/creator-app@1.531.0) (2021-11-02)
+
+
+### Features
+
+* multiline link caption (VF-2101) ([#4384](https://github.com/voiceflow/creator-app/issues/4384)) ([c8f90c7](https://github.com/voiceflow/creator-app/commit/c8f90c78801bfe43e3713bbeab6f02e103604bd4))
+* new versions UI updates (VF-000) ([#4426](https://github.com/voiceflow/creator-app/issues/4426)) ([a8e58c5](https://github.com/voiceflow/creator-app/commit/a8e58c5146b3777fe0223d6ccaef08b4e5dd2068))
+
+
+
+
+
 ## [1.530.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.530.0...@voiceflow/creator-app@1.530.1) (2021-11-01)
 
 

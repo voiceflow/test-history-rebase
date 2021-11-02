@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.17.0...@voiceflow/realtime@1.18.0) (2021-11-02)
+
+
+### Features
+
+* choice goto editor/step/prototype + bumped types (VF-1999) ([#4412](https://github.com/voiceflow/creator-app/issues/4412)) ([249b60e](https://github.com/voiceflow/creator-app/commit/249b60ec18d36227560251cdd5db54241a5db777))
+
+
+
+
+
 # [1.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.16.0...@voiceflow/realtime@1.17.0) (2021-11-01)
 
 

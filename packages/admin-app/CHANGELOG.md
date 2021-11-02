@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.6.14...@voiceflow/admin-app@1.7.0) (2021-11-02)
+
+
+### Features
+
+* choice goto editor/step/prototype + bumped types (VF-1999) ([#4412](https://github.com/voiceflow/creator-app/issues/4412)) ([249b60e](https://github.com/voiceflow/creator-app/commit/249b60ec18d36227560251cdd5db54241a5db777))
+
+
+
+
+
 ## [1.6.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.6.13...@voiceflow/admin-app@1.6.14) (2021-11-02)
 
 **Note:** Version bump only for package @voiceflow/admin-app

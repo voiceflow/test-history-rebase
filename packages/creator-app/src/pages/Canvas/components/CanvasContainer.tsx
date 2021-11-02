@@ -30,6 +30,7 @@ const Wrapper = styled.div`
   width: ${IS_SAFARI ? '100vw' : '100%'};
   height: ${({ theme }) => (IS_SAFARI ? `calc(100vh - ${theme.components.projectPage.header.height}px)` : '100%')};
   overflow: hidden;
+  overflow: clip;
 
   &.${CANVAS_MARKUP_CREATING_CLASSNAME}[data-markup-creating-type="${BlockType.MARKUP_TEXT}"] {
     cursor: text;

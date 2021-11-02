@@ -1,15 +1,12 @@
-import { Box, useDidUpdateEffect, usePersistFunction } from '@voiceflow/ui';
+import { Box, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { EditableTextAPI } from '@/components/EditableText';
-import { useDebouncedCallback } from '@/hooks';
 import { LinkDataCaption } from '@/models';
 import { LinkEntityContext } from '@/pages/Canvas/contexts';
-import { withEnterPress } from '@/utils/dom';
 
 import { InternalLinkInstance } from '../types';
-import { getPathPointsCenter } from '../utils';
 import CaptionInput from './LinkCaptionInput';
+import CaptionText from './LinkCaptionText';
 
 interface LinkCaptionProps {
   color: string;
@@ -39,80 +36,12 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
   onToggleActive,
   onToggleEditing,
 }) => {
-  const textRef = React.useRef<EditableTextAPI | null>(null);
   const linkEntity = React.useContext(LinkEntityContext)!;
 
-  const center = instance.getCenter();
-  const points = instance.getPoints();
   const captionRect = instance.getCaptionRect();
   const { linkData } = linkEntity.useState((e) => ({ linkData: e.resolve().data }));
 
   const linkValue = linkData?.caption?.value ?? '';
-  const [value, setValue] = React.useState(linkValue);
-
-  const onFocus = () => {
-    if (!isEditing) {
-      onToggleEditing(true);
-    }
-  };
-
-  const onSave = async () => {
-    const containerInstance = instance.captionContainerRef.current;
-    if (!value) {
-      await onChange(null);
-    } else if (containerInstance) {
-      await onChange({ value, width: containerInstance.clientWidth, height: containerInstance.clientHeight });
-    }
-  };
-
-  const persistedSave = usePersistFunction(onSave);
-
-  const debouncedSave = useDebouncedCallback(500, persistedSave);
-
-  const onEnterPress = async () => {
-    await persistedSave();
-    onToggleEditing(false);
-  };
-
-  const onAutosize = () => {
-    if (instance.captionContainerRef.current && center.current) {
-      const width = instance.captionContainerRef.current.clientWidth;
-      const height = instance.captionContainerRef.current.clientHeight;
-
-      captionRect.current = {
-        x: center.current[0] - width / 2,
-        y: center.current[1] - height / 2,
-        width,
-        height,
-      };
-
-      instance.updateCaptionPosition();
-    }
-  };
-
-  React.useEffect(() => {
-    if (isEditing) {
-      if (!linkData?.caption) {
-        center.current = getPathPointsCenter(points.current!, { straight: instance.isStraight() });
-      }
-
-      setValue(linkValue);
-      textRef.current?.startEditing();
-    } else {
-      textRef.current?.stopEditing();
-    }
-  }, [isEditing]);
-
-  const handleOnChange = (val: string) => {
-    setValue(val);
-    debouncedSave();
-  };
-
-  useDidUpdateEffect(() => {
-    if (linkValue !== value) {
-      setValue(linkValue);
-    }
-  }, [linkValue]);
 
   return (
     <foreignObject
@@ -123,20 +52,26 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
       onMouseLeave={onMouseLeave}
       {...captionRect.current}
     >
-      <Box display="inline-block" ref={instance.captionContainerRef} onClick={isLineActive ? undefined : onToggleActive}>
-        <CaptionInput
-          ref={textRef}
-          value={value}
-          color={color}
-          onBlur={onSave}
-          onFocus={onFocus}
-          onChange={handleOnChange}
-          onAutosize={onAutosize}
-          onKeyPress={withEnterPress(onEnterPress)}
-          placeholder="Type something"
-          isLineActive={isLineActive}
-          isHighlighted={isHighlighted}
-        />
+      <Box
+        ref={instance.captionContainerRef}
+        display="inline-block"
+        onClick={stopPropagation((event) => (isLineActive ? onToggleEditing(true) : onToggleActive(event)))}
+      >
+        {isEditing ? (
+          <CaptionInput
+            value={linkValue}
+            color={color}
+            instance={instance}
+            onChange={onChange}
+            isLineActive={isLineActive}
+            isHighlighted={isHighlighted}
+            onToggleEditing={onToggleEditing}
+          />
+        ) : (
+          <CaptionText color={color} isLineActive={isLineActive} isHighlighted={isHighlighted}>
+            {linkValue}
+          </CaptionText>
+        )}
       </Box>
     </foreignObject>
   );

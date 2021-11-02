@@ -37,7 +37,10 @@ export const usePopper = <TriggerRef extends Nullable<Element | PopperJS.Virtual
   const popperProps = usePopperBase(referenceElement, popperElement, popperOptions);
 
   if (popperProps.styles.popper) {
-    popperProps.styles.popper.zIndex = theme.zIndex.popper;
+    popperProps.styles.popper = {
+      ...popperProps.styles.popper,
+      zIndex: theme.zIndex.popper,
+    };
   }
 
   return {

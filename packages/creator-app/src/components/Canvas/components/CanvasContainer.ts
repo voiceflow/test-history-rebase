@@ -8,6 +8,7 @@ const CanvasContainer = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
+  overflow: clip;
   user-select: none;
 
   .${CANVAS_INTERACTING_CLASSNAME} & {

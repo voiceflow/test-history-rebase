@@ -1,39 +1,95 @@
-import EditableText from '@/components/EditableText';
-import { css, styled } from '@/hocs';
-import { LINK_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
+import { useCreateConst, usePersistFunction } from '@voiceflow/ui';
+import React from 'react';
 
-import { getHighlightedStrokeColor } from './LinkPath';
+import SlateEditable, { SlateEditorAPI, useSetupSlateEditor } from '@/components/SlateEditable';
+import { useSetup, useTeardown } from '@/hooks';
+import { LinkDataCaption } from '@/models';
+import { withEnterPress } from '@/utils/dom';
 
-export interface LinkCaptionInput {
+import { InternalLinkInstance } from '../types';
+import { getPathPointsCenter } from '../utils';
+import CaptionText, { MIN_HEIGHT, PLACEHOLDER_WIDTH } from './LinkCaptionText';
+
+interface LinkCaptionInputProps {
   color: string;
-  isLineActive?: boolean;
+  value?: string;
+  instance: InternalLinkInstance;
+  onChange: (caption: LinkDataCaption | null) => Promise<void>;
+  isLineActive: boolean;
   isHighlighted?: boolean;
+  onToggleEditing: (value: unknown) => void;
 }
 
-const LinkCaptionInput = styled(EditableText)<LinkCaptionInput>`
-  display: inline-block;
-  font-size: 14.3px;
-  font-weight: 600;
-  color: ${({ color }) => color};
-  pointer-events: all;
-  line-height: 20px;
-  height: 24px;
-  padding: 2px 4px;
-  position: relative;
-  top: -1px;
-  background-color: #f9f9f9 !important;
-  cursor: pointer !important;
-  pointer-events: ${({ isLineActive }) => (isLineActive ? 'all' : 'none')};
+const LinkCaptionInput: React.FC<LinkCaptionInputProps> = ({ color, value, instance, onChange, isLineActive, isHighlighted, onToggleEditing }) => {
+  const editor = useSetupSlateEditor();
+  const initialValue = useCreateConst(() => (value ? SlateEditorAPI.createTextState(value) : SlateEditorAPI.getEmptyState()));
+  const [localValue, setLocalValue] = React.useState(initialValue);
 
-  ${({ color, isHighlighted }) =>
-    isHighlighted &&
-    css`
-      color: ${getHighlightedStrokeColor({ strokeColor: color })};
-    `}
+  const center = instance.getCenter();
+  const points = instance.getPoints();
+  const captionRect = instance.getCaptionRect();
 
-  .${LINK_HIGHLIGHTED_CLASSNAME} && {
-    color: ${({ color, isHighlighted }) => getHighlightedStrokeColor({ strokeColor: color, isHighlighted })};
-  }
-`;
+  const isEmpty = SlateEditorAPI.isNewState(localValue);
+
+  const onSave = usePersistFunction(async () => {
+    const newValue = SlateEditorAPI.serialize(localValue);
+
+    if (!newValue) {
+      await onChange(null);
+    } else if (captionRect.current) {
+      await onChange({ value: newValue, width: captionRect.current.width, height: captionRect.current.height });
+    }
+  });
+
+  const onEnterPress = async (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!event.shiftKey) {
+      event.preventDefault();
+      onToggleEditing(false);
+    }
+  };
+
+  useSetup(() => {
+    SlateEditorAPI.focus(editor);
+    SlateEditorAPI.setSelection(editor, SlateEditorAPI.fullRange(editor));
+  });
+
+  useTeardown(() => onSave());
+
+  React.useLayoutEffect(() => {
+    if (!center.current) {
+      center.current = getPathPointsCenter(points.current!, { straight: instance.isStraight() });
+    }
+
+    if (!instance.captionContainerRef.current && !isEmpty) {
+      return;
+    }
+
+    const width = isEmpty ? PLACEHOLDER_WIDTH : instance.captionContainerRef.current?.clientWidth ?? PLACEHOLDER_WIDTH;
+    const height = isEmpty ? MIN_HEIGHT : instance.captionContainerRef.current?.clientHeight ?? MIN_HEIGHT;
+
+    captionRect.current = {
+      x: center.current[0] - width / 2,
+      y: center.current[1] - height / 2,
+      width,
+      height,
+    };
+
+    instance.updateCaptionPosition();
+    instance.settingsRef.current?.setPosition();
+  }, [value, isEmpty, localValue]);
+
+  return (
+    <CaptionText color={color} isEmpty={isEmpty} isLineActive={isLineActive} isHighlighted={isHighlighted}>
+      <SlateEditable
+        value={localValue}
+        editor={editor}
+        onBlur={() => onToggleEditing(false)}
+        onChange={setLocalValue}
+        onKeyPress={withEnterPress(onEnterPress)}
+        placeholder="Type something"
+      />
+    </CaptionText>
+  );
+};
 
 export default LinkCaptionInput;

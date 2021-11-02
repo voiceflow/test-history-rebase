@@ -9,6 +9,7 @@ import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { Nullable } from '@/types';
 
+import { MIN_HEIGHT, PLACEHOLDER_WIDTH } from '../components/LinkCaptionText';
 import { STROKE_DEFAULT_COLOR } from '../constants';
 import { InternalLinkInstance } from '../types';
 import {
@@ -130,12 +131,13 @@ const useLinkInstance = () => {
 
   const captionRect = useLinkedRef(
     React.useMemo(() => {
-      const width = linkData?.caption?.width ?? captionContainerRef.current?.clientWidth ?? 150;
-      const height = linkData?.caption?.height ?? captionContainerRef.current?.clientHeight ?? 20;
+      const width = linkData?.caption?.width ?? captionContainerRef.current?.clientWidth ?? PLACEHOLDER_WIDTH;
+      const height = linkData?.caption?.height ?? captionContainerRef.current?.clientHeight ?? MIN_HEIGHT;
+      const centerPoints = center.current ?? (points.current ? getPathPointsCenter(points.current, { straight }) : [0, 0]);
 
       return {
-        x: (center.current?.[0] ?? 0) - width / 2,
-        y: (center.current?.[1] ?? 0) - height / 2,
+        x: (centerPoints[0] ?? 0) - width / 2,
+        y: (centerPoints[1] ?? 0) - height / 2,
         width,
         height,
       };

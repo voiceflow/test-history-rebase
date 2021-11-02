@@ -1,0 +1,60 @@
+import { PlaceholderText } from '@/components/SlateEditable/components/Placeholder';
+import { css, styled } from '@/hocs';
+import { LINK_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
+
+import { getHighlightedStrokeColor } from './LinkPath';
+
+export interface LinkCaptionTextProps {
+  color: string;
+  isEmpty?: boolean;
+  isLineActive?: boolean;
+  isHighlighted?: boolean;
+}
+
+export const MIN_HEIGHT = 24;
+export const PLACEHOLDER_WIDTH = 115;
+
+const LinkCaptionText = styled.div<LinkCaptionTextProps>`
+  display: inline-block;
+  font-size: 14.3px;
+  font-weight: 600;
+  white-space: pre;
+  color: ${({ color }) => color};
+  pointer-events: all;
+  line-height: 20px;
+  min-height: ${MIN_HEIGHT}px;
+  padding: 2px 4px;
+  position: relative;
+  top: -1px;
+  background-color: #f9f9f9 !important;
+  cursor: pointer !important;
+  pointer-events: ${({ isLineActive }) => (isLineActive ? 'all' : 'none')};
+  margin: 0;
+
+  ${({ color, isHighlighted }) =>
+    isHighlighted &&
+    css`
+      color: ${getHighlightedStrokeColor({ strokeColor: color })};
+    `}
+
+  .${LINK_HIGHLIGHTED_CLASSNAME} && {
+    color: ${({ color, isHighlighted }) => getHighlightedStrokeColor({ strokeColor: color, isHighlighted })};
+  }
+
+  & [data-slate-node='element'] {
+    width: fit-content;
+    min-width: ${({ isEmpty }) => (isEmpty ? PLACEHOLDER_WIDTH : 1)}px;
+
+    & [data-slate-node='text'] {
+      white-space: pre;
+    }
+  }
+
+  & ${PlaceholderText} {
+    color: #132144 !important;
+    opacity: 0.333 !important;
+    font-size: 14.3px;
+  }
+`;
+
+export default LinkCaptionText;

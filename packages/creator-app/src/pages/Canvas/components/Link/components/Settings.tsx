@@ -17,6 +17,8 @@ import Divider from './SettingsDivider';
 import SettingsType from './SettingsType';
 
 const OFFSET = 20;
+const NAV_WIDTH = 65;
+const HEADER_HEIGHT = 64;
 const SIDEBAR_WIDTH = 250;
 const SETTINGS_WIDTH = 195;
 const SETTINGS_HEIGHT_WITH_OFFSET = 48;
@@ -47,24 +49,29 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
   const cache = useCache({ isCanvasOnly, isSidebarHidden }, { isCanvasOnly, isSidebarHidden });
 
   const setPosition = React.useCallback(() => {
-    const canvasRect = cache.current.isCanvasOnly ? engine.canvas!.getRect() : engine.canvas!.getCachedRect();
     const pathRect = instance.hiddenPathRef.current?.getBoundingClientRect();
-    const sidebarWidth = cache.current.isCanvasOnly || cache.current.isSidebarHidden ? 0 : SIDEBAR_WIDTH;
+    const canvasRect = cache.current.isCanvasOnly ? engine.canvas!.getRect() : engine.canvas!.getCachedRect();
+    const captionRect = instance.getCaptionRect();
+    const sidebarWidth = (cache.current.isCanvasOnly || cache.current.isSidebarHidden ? 0 : SIDEBAR_WIDTH) + NAV_WIDTH;
 
     let x = 0;
     let y = 0;
+    const zoom = engine.canvas?.getZoom() ?? 1;
+    const zoomedOffset = OFFSET * zoom;
 
     if (!pathRect) {
       x = canvasRect.width / 2 - SETTINGS_WIDTH / 2;
-      y = canvasRect.top + OFFSET;
+      y = canvasRect.top + zoomedOffset;
     } else {
-      y = pathRect.top - SETTINGS_HEIGHT_WITH_OFFSET - OFFSET;
+      y = pathRect.top - SETTINGS_HEIGHT_WITH_OFFSET - zoomedOffset - ((captionRect.current.height ?? 0) * zoom) / 2;
       x = pathRect.left + pathRect.width / 2 - SETTINGS_WIDTH / 2;
 
-      if (y - OFFSET < canvasRect.top && canvasRect.bottom > pathRect.bottom + SETTINGS_HEIGHT_WITH_OFFSET + OFFSET) {
-        y = Math.max(pathRect.bottom + OFFSET, canvasRect.top + OFFSET);
+      if (y - zoomedOffset < canvasRect.top && canvasRect.bottom > pathRect.bottom + SETTINGS_HEIGHT_WITH_OFFSET + zoomedOffset) {
+        y = Math.max(pathRect.bottom + zoomedOffset, canvasRect.top + zoomedOffset);
       } else if (y + SETTINGS_HEIGHT_WITH_OFFSET + OFFSET > canvasRect.bottom) {
-        y = canvasRect.bottom - SETTINGS_HEIGHT_WITH_OFFSET - OFFSET;
+        y = canvasRect.bottom - SETTINGS_HEIGHT_WITH_OFFSET - zoomedOffset;
+      } else if (y < HEADER_HEIGHT + zoomedOffset) {
+        y = HEADER_HEIGHT + zoomedOffset;
       }
 
       if (pathRect.left < sidebarWidth && pathRect.right > canvasRect.right) {

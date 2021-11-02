@@ -1,12 +1,11 @@
-import { VersionPrototype } from '@voiceflow/api-sdk';
-import { Button, Node, Request } from '@voiceflow/base-types';
+import { Button, Models as BaseModels, Node, Request } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { PlanType } from '@voiceflow/internal';
 
 import { AnyLocale } from '@/ducks/version';
 import { PrototypeContext } from '@/models';
 
-export type PrototypeSettings = Omit<VersionPrototype['settings'], 'layout'> & {
+export type PrototypeSettings = Omit<BaseModels.VersionPrototype['settings'], 'layout'> & {
   plan: PlanType;
   platform: Constants.PlatformType;
   layout: PrototypeLayout;

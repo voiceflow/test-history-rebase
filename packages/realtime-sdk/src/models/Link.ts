@@ -1,4 +1,4 @@
-import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 
 import { Nullable, PathPoints } from '../types';
 
@@ -9,7 +9,7 @@ export interface LinkDataCaption {
 }
 
 export interface LinkData {
-  type?: Nullable<ProjectLinkType>;
+  type?: Nullable<BaseModels.ProjectLinkType>;
   color?: Nullable<string>;
   points?: Nullable<PathPoints>;
   caption?: Nullable<LinkDataCaption>;

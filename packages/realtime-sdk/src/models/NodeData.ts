@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import { Node as AlexaNode } from '@voiceflow/alexa-types';
-import { SlotMapping } from '@voiceflow/api-sdk';
-import { Button, Node as BaseNode } from '@voiceflow/base-types';
+import { Button, Models as BaseModels, Node as BaseNode, Nullable } from '@voiceflow/base-types';
 import { Types as ChatTypes } from '@voiceflow/chat-types';
 import { Node as GeneralNode } from '@voiceflow/general-types';
 
@@ -69,8 +68,10 @@ export namespace NodeData {
 
   export interface InteractionChoice {
     id: string;
+    goTo: Nullable<{ intentID: Nullable<string> }>;
+    action: BaseNode.Interaction.ChoiceAction;
     intent: string | null;
-    mappings: SlotMapping[];
+    mappings: BaseModels.SlotMapping[];
   }
 
   export interface Interaction {
@@ -98,7 +99,7 @@ export namespace NodeData {
       // only added some properties here
       intent: string | null;
       diagramID: string | null;
-      mappings: SlotMapping[];
+      mappings: BaseModels.SlotMapping[];
     }
   }
 
@@ -249,7 +250,7 @@ export namespace NodeData {
   export namespace Intent {
     export interface PlatformData {
       intent: string | null;
-      mappings: SlotMapping[];
+      mappings: BaseModels.SlotMapping[];
       availability: BaseNode.Intent.IntentAvailability;
     }
   }

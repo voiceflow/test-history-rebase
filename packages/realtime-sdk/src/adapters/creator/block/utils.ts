@@ -1,6 +1,5 @@
 import { Constants } from '@voiceflow/alexa-types';
-import { BaseDiagramNode as DBNode, BasePort as DBPort } from '@voiceflow/api-sdk';
-import { Button, Node as BaseNode } from '@voiceflow/base-types';
+import { Button, Models as BaseModels, Node as BaseNode } from '@voiceflow/base-types';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
 import cuid from 'cuid';
 import _pickBy from 'lodash/pickBy';
@@ -14,8 +13,8 @@ import { generateOutPort } from '../utils';
 export const createBlockAdapter = createSimpleAdapter;
 
 export interface PortsAdapter<D = unknown> {
-  toDB: (ports: { port: Port; target: string | null; link?: Link }[], node: Node, data: D) => DBPort<LinkData>[];
-  fromDB: (ports: DBPort<LinkData>[], node: DBNode) => { port: Port; target: string | null }[];
+  toDB: (ports: { port: Port; target: string | null; link?: Link }[], node: Node, data: D) => BaseModels.BasePort<LinkData>[];
+  fromDB: (ports: BaseModels.BasePort<LinkData>[], node: BaseModels.BaseDiagramNode) => { port: Port; target: string | null }[];
 }
 
 export const voiceRepromptAdapter = createAdapter<VoiceTypes.Prompt<any>, NodeData.VoicePrompt>(
@@ -78,3 +77,19 @@ export const getPortByLabel = (ports: { port: Port; target: string | null; link?
 
 export const chipsToIntentButtons = (chips?: Nullable<Button.Chip[]>): Nullable<Button.IntentButton[]> =>
   chips?.map(({ label: name }) => ({ name, type: Button.ButtonType.INTENT, payload: { intentID: null } })) ?? null;
+
+export const choiceAdapter = createAdapter<BaseNode.Interaction.Choice, NodeData.InteractionChoice>(
+  ({ goTo = null, intent, action = BaseNode.Interaction.ChoiceAction.PATH, mappings = [] }) => ({
+    id: cuid.slug(),
+    goTo,
+    intent,
+    action,
+    mappings,
+  }),
+  ({ goTo, intent, action, mappings }) => ({
+    goTo: goTo ?? undefined,
+    intent: intent ?? '',
+    action,
+    mappings,
+  })
+);

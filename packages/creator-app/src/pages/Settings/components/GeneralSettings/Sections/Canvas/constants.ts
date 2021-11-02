@@ -1,4 +1,4 @@
-import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 
 import { ControlScheme } from '@/components/Canvas/constants';
 
@@ -13,6 +13,6 @@ export const NAVIGATION_OPTIONS = [
 ];
 
 export const LINK_TYPE_OPTIONS = [
-  { id: ProjectLinkType.STRAIGHT, label: 'Straight' },
-  { id: ProjectLinkType.CURVED, label: 'Curved' },
+  { id: BaseModels.ProjectLinkType.STRAIGHT, label: 'Straight' },
+  { id: BaseModels.ProjectLinkType.CURVED, label: 'Curved' },
 ];

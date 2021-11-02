@@ -1,5 +1,5 @@
 import * as Alexa from '@voiceflow/alexa-types';
-import { Member, ProjectLinkType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { generate } from '@voiceflow/ui';
@@ -26,7 +26,7 @@ const VENDOR: Alexa.Project.Vendor = {
   products: {},
 };
 
-const PROJECT_MEMBER: Member<Alexa.Project.AlexaProjectMemberData> = {
+const PROJECT_MEMBER: BaseModels.Member<Alexa.Project.AlexaProjectMemberData> = {
   creatorID: CREATOR_ID,
   platformData: {
     selectedVendor: VENDOR_ID,
@@ -45,7 +45,7 @@ const PROJECT: Realtime.AnyProject = {
   created: '',
   isLive: true,
   platform: Constants.PlatformType.ALEXA,
-  linkType: ProjectLinkType.STRAIGHT,
+  linkType: BaseModels.ProjectLinkType.STRAIGHT,
   locales: ['en-us', 'eu-sp'],
   members: [PROJECT_MEMBER],
   platformData: {},
@@ -65,7 +65,7 @@ const MOCK_STATE: Project.ProjectState = {
       created: '',
       isLive: false,
       platform: Constants.PlatformType.GENERAL,
-      linkType: ProjectLinkType.CURVED,
+      linkType: BaseModels.ProjectLinkType.CURVED,
       locales: [],
       members: [],
       platformData: {},

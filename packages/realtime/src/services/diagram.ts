@@ -1,4 +1,4 @@
-import { BaseDiagramNode, Diagram } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 
 import { AbstractControl } from '../control';
 
@@ -49,25 +49,32 @@ class DiagramService extends AbstractControl {
     return this.connectedNodesCache.size({ diagramID });
   }
 
-  public async get<T extends BaseDiagramNode>(creatorID: number, diagramID: string): Promise<Diagram<T>> {
+  public async get<T extends BaseModels.BaseDiagramNode>(creatorID: number, diagramID: string): Promise<BaseModels.Diagram<T>> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.diagram.get(diagramID);
   }
 
-  public async getAll<T extends BaseDiagramNode>(creatorID: number, versionID: string): Promise<Diagram<T>[]> {
+  public async getAll<T extends BaseModels.BaseDiagramNode>(creatorID: number, versionID: string): Promise<BaseModels.Diagram<T>[]> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.version.getDiagrams(versionID);
   }
 
-  public async create<T extends BaseDiagramNode>(creatorID: number, data: Omit<Diagram<T>, '_id'>): Promise<Diagram<T>> {
+  public async create<T extends BaseModels.BaseDiagramNode>(
+    creatorID: number,
+    data: Omit<BaseModels.Diagram<T>, '_id'>
+  ): Promise<BaseModels.Diagram<T>> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.diagram.create(data);
   }
 
-  public async patch<T extends BaseDiagramNode>(creatorID: number, diagramID: string, { _id, ...data }: Partial<Diagram<T>>): Promise<void> {
+  public async patch<T extends BaseModels.BaseDiagramNode>(
+    creatorID: number,
+    diagramID: string,
+    { _id, ...data }: Partial<BaseModels.Diagram<T>>
+  ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.patch(diagramID, data);

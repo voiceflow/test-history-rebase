@@ -32,8 +32,13 @@ function MenuOptions({
   childFocusItemIndex,
   onChildFocusItemIndex,
   portalNode,
+  renderEmpty,
 }) {
   let groupedIndex = 0;
+
+  if (!options.length && renderEmpty) {
+    return <SelectItem disabled>{renderEmpty({ search: searchLabel, close: onHide })}</SelectItem>;
+  }
 
   // eslint-disable-next-line no-shadow
   const renderOptions = (options, optionsPath) =>

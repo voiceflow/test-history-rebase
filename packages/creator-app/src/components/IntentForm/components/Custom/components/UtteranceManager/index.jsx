@@ -37,7 +37,7 @@ import { BuiltInIntentMessage } from './components';
 
 export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
-function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, customIntents, isNested, isInModal }) {
+function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, customIntents, isNested, isInModal, children }) {
   const { search } = useLocation();
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM];
@@ -135,95 +135,99 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
 
   const SampleUtteranceMessageContainer = isNested ? React.Fragment : ContentContainer;
 
-  return (
+  return !showUtterances ? (
     <>
-      {!showUtterances ? (
-        <SampleUtteranceMessageContainer>
-          <BuiltInIntentMessage>
-            You do not need to provide any sample utterances for this intent, although you can if you want to{' '}
-            <ClickableText onClick={() => setShowUtterances(true)}>extend the intent.</ClickableText>
-          </BuiltInIntentMessage>
-        </SampleUtteranceMessageContainer>
-      ) : (
-        <EditorSection
-          skipRerender={slotEditOpen}
-          namespace="utterances"
-          header="Utterances"
-          initialOpen={intent.inputs.length === 0 || interactionModelInstance}
-          infix={
-            <TippyTooltip title="Bulk Import">
-              <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
-            </TippyTooltip>
-          }
-          count={intent.inputs.length}
-          tooltip={<UtterancesTooltip />}
-          headerToggle
-          isNested={isNested}
-          isDividerNested
-          collapseVariant={SectionToggleVariant.ARROW}
-        >
-          <FormControl>
-            <ListManagerWrapper>
-              <ListManager
-                items={intent.inputs}
-                addToStart
-                initialValue={prefilledNewUtterance ? { text: prefilledNewUtterance, slots: [] } : null}
-                beforeAdd={() => utteranceRef.current?.forceUpdate()}
-                renderForm={({ value, onAdd, onChange, addError }) => {
-                  const placeholder = intent.inputs.length ? 'Add synonyms, {} to add entities' : 'What might the user say to invoke this intent?';
-                  return (
-                    <>
-                      <Utterance
-                        noSlots={isCustomizableBuiltInIntent(intent)}
-                        ref={utteranceRef}
-                        space
-                        icon="user"
-                        slots={slots}
-                        value={value?.text || ''}
-                        onBlur={onChange}
-                        onEmpty={updateIsEmpty}
-                        onAddSlot={onAddSlot}
-                        iconProps={{ variant: 'blue' }}
-                        rightAction={
-                          !isEmpty && (
-                            <Badge
-                              slide
-                              onClick={() => {
-                                onAdd(utteranceRef.current?.getCurrentUtterance());
-                              }}
-                            >
-                              Enter
-                            </Badge>
-                          )
-                        }
-                        placeholder={placeholder}
-                        onEnterPress={onAdd}
-                        error={!isValidUtterance}
-                        readOnly={!isInModal && interactionModelInstance}
-                      />
-                      {!isValidUtterance && <ErrorMessage>{addError}</ErrorMessage>}
-                    </>
-                  );
-                }}
-                addValidation={addValidation}
-                onUpdate={onUpdateUtterances}
-                renderItem={(item, { onUpdate }) => (
-                  <Utterance
-                    noSlots={isCustomizableBuiltInIntent(intent)}
-                    space
-                    slots={slots}
-                    value={item.text}
-                    onBlur={onUpdate}
-                    onEnterPress={onUpdate}
-                    onAddSlot={onAddSlot}
-                    readOnly={!isInModal && interactionModelInstance}
-                  />
-                )}
-              />
-            </ListManagerWrapper>
-          </FormControl>
-        </EditorSection>
-      )}
+      <SampleUtteranceMessageContainer>
+        <BuiltInIntentMessage>
+          You do not need to provide any sample utterances for this intent, although you can if you want to{' '}
+          <ClickableText onClick={() => setShowUtterances(true)}>extend the intent.</ClickableText>
+        </BuiltInIntentMessage>
+      </SampleUtteranceMessageContainer>
+
+      {children}
+    </>
+  ) : (
+    <>
+      {children}
+
+      <EditorSection
+        skipRerender={slotEditOpen}
+        namespace="utterances"
+        header="Utterances"
+        initialOpen={intent.inputs.length === 0 || interactionModelInstance}
+        infix={
+          <TippyTooltip title="Bulk Import">
+            <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
+          </TippyTooltip>
+        }
+        count={intent.inputs.length}
+        tooltip={<UtterancesTooltip />}
+        headerToggle
+        isNested={isNested}
+        isDividerNested
+        collapseVariant={SectionToggleVariant.ARROW}
+      >
+        <FormControl>
+          <ListManagerWrapper>
+            <ListManager
+              items={intent.inputs}
+              addToStart
+              initialValue={prefilledNewUtterance ? { text: prefilledNewUtterance, slots: [] } : null}
+              beforeAdd={() => utteranceRef.current?.forceUpdate()}
+              renderForm={({ value, onAdd, onChange, addError }) => {
+                const placeholder = intent.inputs.length ? 'Add synonyms, {} to add entities' : 'What might the user say to invoke this intent?';
+                return (
+                  <>
+                    <Utterance
+                      noSlots={isCustomizableBuiltInIntent(intent)}
+                      ref={utteranceRef}
+                      space
+                      icon="user"
+                      slots={slots}
+                      value={value?.text || ''}
+                      onBlur={onChange}
+                      onEmpty={updateIsEmpty}
+                      onAddSlot={onAddSlot}
+                      iconProps={{ variant: 'blue' }}
+                      rightAction={
+                        !isEmpty && (
+                          <Badge
+                            slide
+                            onClick={() => {
+                              onAdd(utteranceRef.current?.getCurrentUtterance());
+                            }}
+                          >
+                            Enter
+                          </Badge>
+                        )
+                      }
+                      placeholder={placeholder}
+                      onEnterPress={onAdd}
+                      error={!isValidUtterance}
+                      readOnly={!isInModal && interactionModelInstance}
+                    />
+                    {!isValidUtterance && <ErrorMessage>{addError}</ErrorMessage>}
+                  </>
+                );
+              }}
+              addValidation={addValidation}
+              onUpdate={onUpdateUtterances}
+              renderItem={(item, { onUpdate }) => (
+                <Utterance
+                  noSlots={isCustomizableBuiltInIntent(intent)}
+                  space
+                  slots={slots}
+                  value={item.text}
+                  onBlur={onUpdate}
+                  onEnterPress={onUpdate}
+                  onAddSlot={onAddSlot}
+                  readOnly={!isInModal && interactionModelInstance}
+                />
+              )}
+            />
+          </ListManagerWrapper>
+        </FormControl>
+      </EditorSection>
     </>
   );
 }

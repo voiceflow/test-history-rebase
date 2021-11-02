@@ -1,4 +1,4 @@
-import { PrototypeModel } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { Box, Button, ButtonVariant, Link, Text } from '@voiceflow/ui';
 import React from 'react';
@@ -23,7 +23,7 @@ interface TrainedProps {
   diff: ModelDiff;
   platform: Constants.PlatformType;
   isTrained?: boolean;
-  trainedModel: PrototypeModel | null;
+  trainedModel: BaseModels.PrototypeModel | null;
   lastTrainedTime: number;
   onStartTraining: () => void;
 }

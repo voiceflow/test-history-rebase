@@ -1,4 +1,4 @@
-import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import React from 'react';
 
 import { LinkInstance } from '@/pages/Canvas/engine/entities/linkEntity';
@@ -17,7 +17,7 @@ export type InternalLinkInstance = LinkInstance & {
 
   getCenter: () => React.MutableRefObject<Point | null>;
   isStraight: () => boolean;
-  getLinkType: () => ProjectLinkType;
+  getLinkType: () => BaseModels.ProjectLinkType;
   getLinkColor: () => string;
   getCaptionRect: () => React.MutableRefObject<{ x: number; y: number; width: number; height: number }>;
 

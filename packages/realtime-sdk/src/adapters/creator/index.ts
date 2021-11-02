@@ -1,4 +1,4 @@
-import { BaseBlock, BaseDiagramNode, Diagram, NodeID } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 
 import { BlockType } from '../../constants';
@@ -13,7 +13,7 @@ import nodeAdapter from './node';
 import { isBlock } from './utils';
 
 // we will be doing a patch request.
-export type DBCreatorDiagram = Omit<Diagram, 'created' | 'creatorID' | 'variables' | 'versionID' | 'name'>;
+export type DBCreatorDiagram = Omit<BaseModels.Diagram, 'created' | 'creatorID' | 'variables' | 'versionID' | 'name'>;
 
 const creatorAdapter = createSimpleAdapter<
   DBCreatorDiagram,
@@ -48,7 +48,7 @@ const creatorAdapter = createSimpleAdapter<
 
     const nodeList = cleanupDBNodes(diagram.nodes);
 
-    const parentNodes = nodeList.reduce<Record<string, BaseBlock>>((acc, node) => {
+    const parentNodes = nodeList.reduce<Record<string, BaseModels.BaseBlock>>((acc, node) => {
       if (isBlock(node)) {
         node.data.steps.forEach((stepID) => {
           acc[stepID] = node;
@@ -57,7 +57,7 @@ const creatorAdapter = createSimpleAdapter<
       return acc;
     }, {});
 
-    const registerNode = (dbNode: BaseDiagramNode) => {
+    const registerNode = (dbNode: BaseModels.BaseDiagramNode) => {
       const {
         node,
         data: nodeData,
@@ -114,7 +114,7 @@ const creatorAdapter = createSimpleAdapter<
   ({ diagramID, viewport, links, data }, { nodes, ports, platform, context }) => {
     const nodeList = denormalize(nodes);
 
-    const portToTargets = links.reduce<Record<string, NodeID>>((acc, link) => {
+    const portToTargets = links.reduce<Record<string, BaseModels.NodeID>>((acc, link) => {
       if (link.source.portID in ports.byKey && link.target.nodeID in nodes.byKey) {
         acc[link.source.portID] = link.target.nodeID;
       }
@@ -129,7 +129,7 @@ const creatorAdapter = createSimpleAdapter<
       return acc;
     }, {});
 
-    const stepMap = nodeList.reduce<Record<NodeID, NodeID>>((acc, node) => {
+    const stepMap = nodeList.reduce<Record<BaseModels.NodeID, BaseModels.NodeID>>((acc, node) => {
       if (node.combinedNodes) {
         for (let i = 1; i < node.combinedNodes.length; i++) {
           acc[node.combinedNodes[i - 1]] = node.combinedNodes[i];
@@ -144,7 +144,7 @@ const creatorAdapter = createSimpleAdapter<
       offsetY: viewport.y,
       zoom: viewport.zoom,
       modified: getCurrentTimestamp(),
-      nodes: nodeList.reduce<Record<string, BaseDiagramNode>>(
+      nodes: nodeList.reduce<Record<string, BaseModels.BaseDiagramNode>>(
         (acc, node) => ({
           ...acc,
           [node.id]: nodeAdapter.toDB(

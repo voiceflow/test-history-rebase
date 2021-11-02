@@ -1,24 +1,16 @@
 import { Node } from '@voiceflow/alexa-types';
-import { Node as BaseNode } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
-import cuid from 'cuid';
 
 import { NodeData } from '../../../../models';
 import { distinctPlatformsData } from '../../../../utils/platform';
-import { createAdapter } from '../../../utils';
-import { createBlockAdapter, voiceNoMatchAdapter, voiceRepromptAdapter } from '../utils';
-
-const choiceAdapter = createAdapter<BaseNode.Interaction.Choice, NodeData.InteractionChoice>(
-  ({ intent, mappings = [] }) => ({ id: cuid.slug(), intent, mappings }),
-  ({ intent, mappings }) => ({ intent: intent ?? '', mappings })
-);
+import { choiceAdapter, createBlockAdapter, voiceNoMatchAdapter, voiceRepromptAdapter } from '../utils';
 
 const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeData.Interaction>(
   ({ name, else: elseData, choices, reprompt }) => ({
     name,
     else: voiceNoMatchAdapter.fromDB(elseData),
     choices: choices.map((choice) => ({
-      ...distinctPlatformsData({ id: cuid.slug(), intent: null, mappings: [] }),
+      ...distinctPlatformsData(choiceAdapter.fromDB({ intent: '', mappings: [] })),
       [Constants.PlatformType.ALEXA]: choiceAdapter.fromDB(choice),
     })),
     reprompt: reprompt && voiceRepromptAdapter.fromDB(reprompt),

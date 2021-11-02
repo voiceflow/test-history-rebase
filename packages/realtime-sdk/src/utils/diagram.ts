@@ -1,4 +1,4 @@
-import { AnyRecord, BaseDiagramNode, Diagram, DiagramType } from '@voiceflow/api-sdk';
+import { AnyRecord, Models as BaseModels } from '@voiceflow/base-types';
 
 import { BlockType, BlockVariant } from '../constants';
 import { objectID } from './id';
@@ -8,7 +8,9 @@ export interface DiagramFactoryOptions {
   intentStepIDs?: string[];
 }
 
-export type PrimitiveDiagram<T extends BaseDiagramNode = BaseDiagramNode> = Required<Omit<Diagram<T>, '_id' | 'creatorID' | 'versionID'>>;
+export type PrimitiveDiagram<T extends BaseModels.BaseDiagramNode = BaseModels.BaseDiagramNode> = Required<
+  Omit<BaseModels.Diagram<T>, '_id' | 'creatorID' | 'versionID'>
+>;
 
 export const getUniqueCopyName = (originalName: string, existingNames: string[]) => {
   let uniqueName = existingNames.includes(originalName) ? `${originalName} (COPY)` : originalName;
@@ -22,7 +24,7 @@ export const getUniqueCopyName = (originalName: string, existingNames: string[])
   return uniqueName;
 };
 
-export const startNodeFactory = (coords: [number, number] = [360, 120]): BaseDiagramNode<AnyRecord> => ({
+export const startNodeFactory = (coords: [number, number] = [360, 120]): BaseModels.BaseDiagramNode<AnyRecord> => ({
   nodeID: objectID(),
   type: BlockType.START,
   coords,
@@ -38,14 +40,14 @@ export const startNodeFactory = (coords: [number, number] = [360, 120]): BaseDia
   },
 });
 
-export const diagramFactory = <T extends BaseDiagramNode>({
+export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   name,
   type,
   nodes,
   intentStepIDs = [],
 }: DiagramFactoryOptions & {
-  type: DiagramType;
-  nodes: BaseDiagramNode[];
+  type: BaseModels.DiagramType;
+  nodes: BaseModels.BaseDiagramNode[];
 }): PrimitiveDiagram<T> => ({
   name,
   type,
@@ -62,7 +64,7 @@ export const diagramFactory = <T extends BaseDiagramNode>({
 export const componentDiagramFactory = (name: string, startNodeCoords?: [number, number]) =>
   diagramFactory({
     name,
-    type: DiagramType.COMPONENT,
+    type: BaseModels.DiagramType.COMPONENT,
     nodes: [startNodeFactory(startNodeCoords)],
   });
 
@@ -71,7 +73,7 @@ export const topicDiagramFactory = (name: string) => {
 
   return diagramFactory({
     name,
-    type: DiagramType.TOPIC,
+    type: BaseModels.DiagramType.TOPIC,
     intentStepIDs: [intentNodeID],
     nodes: [
       {

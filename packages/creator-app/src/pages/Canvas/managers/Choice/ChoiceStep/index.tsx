@@ -1,8 +1,10 @@
-import { Node } from '@voiceflow/base-types';
+import { Node, Nullable } from '@voiceflow/base-types';
 import React from 'react';
 
+import { InteractionModelTabType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import { useSyncedLookup } from '@/hooks';
+import * as Router from '@/ducks/router';
+import { useDispatch, useSyncedLookup } from '@/hooks';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
@@ -12,9 +14,17 @@ import { getDistinctPlatformValue } from '@/utils/platform';
 
 import { NODE_CONFIG } from '../constants';
 
+interface ChoiceItem {
+  label: Nullable<string>;
+  portID: Nullable<string>;
+  attachment?: boolean;
+  linkedLabel?: Nullable<string>;
+  onAttachmentClick?: VoidFunction;
+}
+
 export interface ChoiceStepProps {
   isPath: boolean;
-  choices: { label: string | null; portID: string }[];
+  choices: ChoiceItem[];
   nodeID: string;
   elsePortID: string;
   elsePathName: string;
@@ -24,16 +34,19 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID,
   <Step nodeID={nodeID}>
     {!!choices.length && (
       <Section>
-        {choices.map(({ label, portID }, index) => (
+        {choices.map(({ label, linkedLabel, portID, attachment, onAttachmentClick }, index) => (
           <Item
             key={portID}
             icon={index === 0 ? NODE_CONFIG.icon : null}
             label={label}
             portID={portID}
             iconColor={NODE_CONFIG.iconColor}
-            placeholder={`Path ${index + 1}`}
+            attachment={attachment}
+            linkedLabel={linkedLabel}
+            placeholder={attachment ? 'Create or select an intent' : `Path ${index + 1}`}
             multilineLabel
             labelLineClamp={5}
+            onAttachmentClick={onAttachmentClick}
           />
         ))}
       </Section>
@@ -53,6 +66,7 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID,
 
 const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction>> = ({ node, data, platform }) => {
   const intentsMap = React.useContext(CustomIntentMapContext)!;
+  const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const choicesByPortID = useSyncedLookup(nodeOutPorts, data.choices);
@@ -62,12 +76,18 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction>> = 
     () =>
       nodeOutPorts
         .filter((portID) => choicesByPortID[portID])
-        .map((portID) => {
-          const { intent } = getDistinctPlatformValue(platform, choicesByPortID[portID]);
+        .map<ChoiceItem>((portID) => {
+          const { goTo, intent, action } = getDistinctPlatformValue(platform, choicesByPortID[portID]);
+
+          const isPath = action === Node.Interaction.ChoiceAction.PATH;
+          const goToIntent = goTo?.intentID && intentsMap[goTo.intentID] ? intentsMap[goTo.intentID] ?? null : null;
 
           return {
-            label: intentsMap[intent!] ? prettifyIntentName(intentsMap[intent!].name) : null,
-            portID,
+            label: intent && intentsMap[intent] ? prettifyIntentName(intentsMap[intent].name) : null,
+            portID: isPath ? portID : null,
+            attachment: !isPath && !!goToIntent,
+            linkedLabel: isPath ? null : prettifyIntentName(goToIntent?.name),
+            onAttachmentClick: () => goToIntent && goToInteractionModelEntity(InteractionModelTabType.INTENTS, goToIntent.id),
           };
         }),
     [platform, choicesByPortID, nodeOutPorts, intentsMap]

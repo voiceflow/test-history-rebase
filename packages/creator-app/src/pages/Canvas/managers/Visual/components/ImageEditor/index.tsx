@@ -1,5 +1,4 @@
-import { Nullable } from '@voiceflow/api-sdk';
-import { Node } from '@voiceflow/base-types';
+import { Node, Nullable } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { Box, defaultMenuLabelRenderer, Flex, Input, Link, Select, Text } from '@voiceflow/ui';
 import React from 'react';

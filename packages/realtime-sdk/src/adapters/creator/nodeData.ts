@@ -1,4 +1,4 @@
-import { BaseDiagramNode } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 
 import { BlockType } from '../../constants';
@@ -9,7 +9,7 @@ import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP, getBlockAdapter } from 
 import { needsMigration } from './utils';
 
 const nodeDataAdapter = createSimpleAdapter<
-  { data: BaseDiagramNode['data']; type: string },
+  { data: BaseModels.BaseDiagramNode['data']; type: string },
   NodeData<unknown>,
   [{ platform: Constants.PlatformType; nodeID: string; context: AdapterContext }],
   [{ platform: Constants.PlatformType; context: AdapterContext }]
@@ -41,7 +41,7 @@ const nodeDataAdapter = createSimpleAdapter<
     const getNodeType = DB_BLOCK_TYPE_FROM_APP[type];
     const dbType = typeof getNodeType === 'function' ? getNodeType(appData, { context }) : getNodeType || deprecatedType || type;
 
-    let data: BaseDiagramNode['data'] = {};
+    let data: BaseModels.BaseDiagramNode['data'] = {};
 
     try {
       const adapters = getBlockAdapter(platform);

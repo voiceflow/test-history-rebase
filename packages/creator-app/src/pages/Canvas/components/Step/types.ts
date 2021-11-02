@@ -13,15 +13,18 @@ export interface ConnectedStepProps<T = {}> {
 }
 
 export interface ItemProps {
-  portID?: string | null;
   icon?: Icon | null;
   label?: React.ReactNode | null;
+  portID?: string | null;
   onClick?: React.ReactEventHandler;
   iconColor?: string;
   portColor?: string;
+  attachment?: boolean;
+  linkedLabel?: React.ReactNode | null;
   placeholder?: string;
   labelVariant?: StepLabelVariant;
   withNewLines?: boolean;
   multilineLabel?: boolean;
   labelLineClamp?: number;
+  onAttachmentClick?: React.MouseEventHandler<HTMLButtonElement>;
 }

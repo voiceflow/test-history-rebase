@@ -1,5 +1,4 @@
-import { BaseDiagramNode } from '@voiceflow/api-sdk';
-import { Node } from '@voiceflow/base-types';
+import { Models as BaseModels, Node } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import moize from 'moize';
 
@@ -25,7 +24,7 @@ const BLOCK_TYPE_MAPPING: [string, BlockType][] = [['block', BlockType.COMBINED]
 
 export const APP_BLOCK_TYPE_FROM_DB: Record<
   string,
-  BlockType | ((data: BaseDiagramNode['data'], options: { context: AdapterContext }) => BlockType)
+  BlockType | ((data: BaseModels.BaseDiagramNode['data'], options: { context: AdapterContext }) => BlockType)
 > = {
   ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [key]: value }), {}),
   [Node.NodeType.API]: BlockType.INTEGRATION,

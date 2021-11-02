@@ -4,31 +4,36 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { HelpTooltip } from '@/components/IntentForm';
 import OverflowMenu from '@/components/OverflowMenu';
 import * as Creator from '@/ducks/creator';
-import { connect } from '@/hocs';
-import { useManager, useToggle } from '@/hooks';
+import * as IntentV2 from '@/ducks/intentV2';
+import { useManager, useSelector, useToggle } from '@/hooks';
+import { NodeData } from '@/models';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { useButtonsOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { PlatformContext } from '@/pages/Project/contexts';
 
-import { NODE_CONFIG } from '../constants';
-import DraggableItem from './DraggableItem';
+import DraggableItem from './components/DraggableItem';
+import { NODE_CONFIG } from './constants';
 
 const choiceFactory = () => NODE_CONFIG.factory().data.choices[0];
 
-function ChoiceManager({ data, onChange, focusedNode, pushToPath }) {
-  const { choices } = data;
+const ChoiceEditor: NodeEditor<NodeData.Interaction> = ({ data, onChange, pushToPath }) => {
+  const engine = React.useContext(EngineContext)!;
+  const platform = React.useContext(PlatformContext)!;
 
-  const platform = React.useContext(PlatformContext);
-  const engine = React.useContext(EngineContext);
+  const openIntents = useSelector(IntentV2.openIntentsSelector);
+  const focusedNode = useSelector(Creator.focusedNodeSelector)!;
+
   const [isDragging, toggleDragging] = useToggle(false);
+  const { choices } = data;
 
   const updateChoices = React.useCallback((choices, save) => onChange({ choices }, save), [onChange]);
   const onRemoveChoice = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index + 1]), [engine.port, focusedNode.ports.out]);
 
-  const { onAdd, mapManaged, onRemove, onReorder, latestCreatedKey, items } = useManager(choices, updateChoices, {
+  const { onAdd, mapManaged, onRemove, onReorder, latestCreatedKey } = useManager(choices, updateChoices, {
     factory: choiceFactory,
     autosave: false,
     handleRemove: onRemoveChoice,
@@ -37,7 +42,7 @@ function ChoiceManager({ data, onChange, focusedNode, pushToPath }) {
   const addChoice = React.useCallback(
     async (scrollToBottom) => {
       onAdd();
-      await engine.port.add(focusedNode.id, { label: choices.length + 1 });
+      await engine.port.add(focusedNode.id, { label: String(choices.length + 1) });
       scrollToBottom();
     },
     [onAdd, engine.port, focusedNode.id, choices.length]
@@ -58,14 +63,15 @@ function ChoiceManager({ data, onChange, focusedNode, pushToPath }) {
   return (
     <Content
       footer={({ scrollToBottom }) =>
-        items.length < MAX_ITEMS_PER_EDITOR ? (
+        choices.length < MAX_ITEMS_PER_EDITOR ? (
           <Controls
             menu={<OverflowMenu placement="top-end" options={[noReplyOption, buttonsOption]} />}
             options={[
               {
+                icon: NODE_CONFIG.icon,
                 label: 'Add Path',
-                icon: 'choice',
                 onClick: () => addChoice(scrollToBottom),
+                iconProps: { color: NODE_CONFIG.iconColor },
               },
             ]}
             tutorial={{
@@ -81,7 +87,6 @@ function ChoiceManager({ data, onChange, focusedNode, pushToPath }) {
     >
       <DraggableList
         type="interaction-editor"
-        items={items}
         footer={
           <>
             {buttonsSection}
@@ -92,7 +97,7 @@ function ChoiceManager({ data, onChange, focusedNode, pushToPath }) {
         onDelete={onRemove}
         onReorder={reorderChoice}
         onEndDrag={toggleDragging}
-        itemProps={{ latestCreatedKey, pushToPath, items, isOnlyItem: items.length === 1, platform }}
+        itemProps={{ latestCreatedKey, pushToPath, isOnlyItem: choices.length === 1, platform, openIntents, choices }}
         mapManaged={mapManaged}
         onStartDrag={toggleDragging}
         itemComponent={DraggableItem}
@@ -103,10 +108,6 @@ function ChoiceManager({ data, onChange, focusedNode, pushToPath }) {
       />
     </Content>
   );
-}
-
-const mapStateToProps = {
-  focusedNode: Creator.focusedNodeSelector,
 };
 
-export default connect(mapStateToProps)(ChoiceManager);
+export default ChoiceEditor;

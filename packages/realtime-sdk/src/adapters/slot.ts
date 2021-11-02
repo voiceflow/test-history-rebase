@@ -1,4 +1,4 @@
-import { Slot as DBSlot } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import cuid from 'cuid';
 
 import { CUSTOM_SLOT_TYPE, LEGACY_CUSTOM_SLOT_TYPE } from '../constants';
@@ -18,7 +18,7 @@ export const slotInputAdapter = createAdapter<string, SlotInput>(
   ({ value, synonyms }) => (synonyms ? `${value},${synonyms}` : value)
 );
 
-const slotAdapter = createAdapter<DBSlot, Slot>(
+const slotAdapter = createAdapter<BaseModels.Slot, Slot>(
   ({ key, name, type, color, inputs }) => ({
     id: key,
     name,
@@ -35,7 +35,7 @@ const slotAdapter = createAdapter<DBSlot, Slot>(
   })
 );
 
-export const spreadSynonyms = (slot: DBSlot) => ({
+export const spreadSynonyms = (slot: BaseModels.Slot) => ({
   ...slot,
   inputs: slot.inputs.reduce<string[]>(
     (acc, input) => [

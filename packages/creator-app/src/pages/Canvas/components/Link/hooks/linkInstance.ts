@@ -1,4 +1,4 @@
-import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { useCache } from '@voiceflow/ui';
 import moize from 'moize';
 import React from 'react';
@@ -55,7 +55,7 @@ const useLinkInstance = () => {
     const targetNodeIsBlock = targetNode.type === BlockType.COMBINED;
 
     return {
-      straight: linkData?.type ? linkData.type === ProjectLinkType.STRAIGHT : straight,
+      straight: linkData?.type ? linkData.type === BaseModels.ProjectLinkType.STRAIGHT : straight,
       targetNode,
       sourceNode,
       targetNodeIsBlock,
@@ -176,7 +176,8 @@ const useLinkInstance = () => {
       updateMarkerPosition,
       updateCaptionPosition,
 
-      getLinkType: () => cache.current.linkData?.type ?? (cache.current.straight ? ProjectLinkType.STRAIGHT : ProjectLinkType.CURVED),
+      getLinkType: () =>
+        cache.current.linkData?.type ?? (cache.current.straight ? BaseModels.ProjectLinkType.STRAIGHT : BaseModels.ProjectLinkType.CURVED),
       getLinkColor: () => cache.current.linkData?.color ?? STROKE_DEFAULT_COLOR,
 
       getCenter: () => center,

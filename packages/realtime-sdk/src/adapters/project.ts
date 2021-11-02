@@ -1,4 +1,4 @@
-import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 
 import { AnyProject, DBProject } from '../models';
@@ -14,7 +14,7 @@ const projectAdapter = createAdapter<DBProject, AnyProject>(
     privacy,
     image = null,
     liveVersion,
-    linkType = ProjectLinkType.CURVED,
+    linkType = BaseModels.ProjectLinkType.CURVED,
     members,
     platformData,
     reportTags = {},

@@ -1,4 +1,4 @@
-import { PrototypeModel } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { BlockText, Box, Flex } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +8,7 @@ import { ModelDiff } from '@/utils/prototypeModel';
 
 interface ModelStateProps {
   diff: ModelDiff;
-  trainedModel: PrototypeModel;
+  trainedModel: BaseModels.PrototypeModel;
   lastTrainedTime: number;
 }
 

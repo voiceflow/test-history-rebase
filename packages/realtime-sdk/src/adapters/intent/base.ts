@@ -1,4 +1,4 @@
-import { Intent as DBIntent, IntentSlot, IntentSlotDialog } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { Optional, Required } from 'utility-types';
 
@@ -15,20 +15,24 @@ export const baseIntentSlotDialogSanitizer = ({
   confirm = [],
   utterances = [],
   confirmEnabled = false,
-}: Partial<IntentSlotDialog> = {}): IntentSlotDialog => ({
+}: Partial<BaseModels.IntentSlotDialog> = {}): BaseModels.IntentSlotDialog => ({
   prompt,
   confirm,
   utterances: utterances.map(intentInputSanitizer),
   confirmEnabled,
 });
 
-export const baseIntentSlotSanitizer = ({ id, dialog, required = false }: Required<Optional<IntentSlot>, 'id'>): IntentSlot => ({
+export const baseIntentSlotSanitizer = ({
+  id,
+  dialog,
+  required = false,
+}: Required<Optional<BaseModels.IntentSlot>, 'id'>): BaseModels.IntentSlot => ({
   id,
   dialog: baseIntentSlotDialogSanitizer(dialog),
   required,
 });
 
-export const baseIntentAdapter = createAdapter<DBIntent, Omit<BaseIntent, 'slots'>, [{ platform: Constants.PlatformType }]>(
+export const baseIntentAdapter = createAdapter<BaseModels.Intent, Omit<BaseIntent, 'slots'>, [{ platform: Constants.PlatformType }]>(
   ({ key, name, inputs = [] }, { platform }) => ({
     id: key,
     name,

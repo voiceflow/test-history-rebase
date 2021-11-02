@@ -1,4 +1,4 @@
-import { DiagramType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 
 import { DBDiagram, Diagram } from '../models';
 import { AdapterNotImplementedError, createAdapter } from './utils';
@@ -7,7 +7,7 @@ const diagramAdapter = createAdapter<DBDiagram, Diagram, [{ rootDiagramID: strin
   ({ _id, name, type, children, variables, intentStepIDs = [] }, { rootDiagramID }) => ({
     id: _id,
     name,
-    type: type ?? (rootDiagramID === _id ? DiagramType.TOPIC : DiagramType.COMPONENT),
+    type: type ?? (rootDiagramID === _id ? BaseModels.DiagramType.TOPIC : BaseModels.DiagramType.COMPONENT),
     variables,
     subDiagrams: children,
     intentStepIDs,

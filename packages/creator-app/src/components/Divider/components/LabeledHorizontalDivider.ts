@@ -2,9 +2,13 @@ import { Flex } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
-import { horizontalDividerStyles } from './HorizontalDivider';
+import { getSimpleDividerStyles } from './SimpleDivider';
 
-const LabeledHorizontalDivider = styled(Flex)`
+export interface LabeledHorizontalDividerProps {
+  isLast?: boolean;
+}
+
+const LabeledHorizontalDivider = styled(Flex)<LabeledHorizontalDividerProps>`
   margin-bottom: 12px;
 
   ${({ isLast }) =>
@@ -13,6 +17,7 @@ const LabeledHorizontalDivider = styled(Flex)`
       margin-bottom: 0;
       margin-top: 12px;
     `}
+
   font-size: 13px;
   font-weight: 500;
   color: #8da2b5;
@@ -20,7 +25,7 @@ const LabeledHorizontalDivider = styled(Flex)`
 
   &::before,
   &::after {
-    ${horizontalDividerStyles};
+    ${getSimpleDividerStyles};
 
     display: block;
     content: '';

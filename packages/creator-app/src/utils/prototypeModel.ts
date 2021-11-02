@@ -1,4 +1,4 @@
-import { PrototypeModel } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { MD5 } from 'object-hash';
 
 export interface HashedRecordDiff {
@@ -26,7 +26,7 @@ export const getHashedRecordsDiffs = (baseRecord: Record<string, string>, newRec
   };
 };
 
-export const getModelsDiffs = (projectModel: PrototypeModel, versionModel: PrototypeModel): ModelDiff => {
+export const getModelsDiffs = (projectModel: BaseModels.PrototypeModel, versionModel: BaseModels.PrototypeModel): ModelDiff => {
   const projectHashedSlotsRecord = getHashedRecordByKey(projectModel.slots);
   const projectHashedIntentsRecord = getHashedRecordByKey(projectModel.intents);
 

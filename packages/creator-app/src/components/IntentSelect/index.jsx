@@ -76,12 +76,14 @@ function IntentSelect({
   inDropdownSearch = false,
   platform,
   createIntent,
+  clearable = false,
   creatable = true,
-  clearable = undefined,
   iconProps = undefined,
   intentsMap,
+  renderEmpty = undefined,
   triggerRenderer = undefined,
   alwaysShowCreate = false,
+  withMissingAlert = true,
   placeholder = 'Name new intent or select existing intent',
 }) {
   const intentID = intent?.id;
@@ -95,7 +97,7 @@ function IntentSelect({
       }, {}),
     [filteredIntents]
   );
-  const intentMissing = intent?.id && !intentLookup[intent?.id] && !isCustomizableBuiltInIntent(intent);
+  const intentMissing = withMissingAlert && intent?.id && !intentLookup[intent?.id] && !isCustomizableBuiltInIntent(intent);
 
   const getOptionLabel = React.useCallback((value) => intentLookup[value], [intentLookup]);
   const isButtonDisabled = React.useCallback(
@@ -152,12 +154,13 @@ function IntentSelect({
         iconProps={iconProps}
         className={ClassName.INTENT_SELECT_INPUT}
         value={intentID}
-        clearable={clearable ?? intentID}
         options={filteredIntents}
         onCreate={onCreate}
         onSelect={onSelectIntent}
+        clearable={clearable && !!intent}
         creatable={creatable}
         searchable
+        renderEmpty={renderEmpty}
         inDropdownSearch={inDropdownSearch}
         placeholder={placeholder}
         optionsFilter={(...args) => optionsFilter(...args, platform)}

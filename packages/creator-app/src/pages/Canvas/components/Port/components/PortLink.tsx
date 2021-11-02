@@ -1,4 +1,4 @@
-import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { useDidUpdateEffect, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
@@ -26,7 +26,7 @@ const PortLink: React.FC<PortLinkProps> = ({ linkID, isHighlighted }) => {
 
   const [reversed, toggleReversed] = useToggle(false);
 
-  const straight = link?.data?.type ? link.data.type === ProjectLinkType.STRAIGHT : isStraightLinks;
+  const straight = link?.data?.type ? link.data.type === BaseModels.ProjectLinkType.STRAIGHT : isStraightLinks;
 
   const onReverseUpdate = React.useCallback((points: PathPoints | null) => {
     toggleReversed(points?.[0].reversed ?? false);

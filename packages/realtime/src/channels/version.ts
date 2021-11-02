@@ -1,5 +1,5 @@
 import { SendBackActions } from '@logux/server';
-import { DiagramType, VersionFolderItemType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractChannelControl, ChannelContext } from './utils';
@@ -40,12 +40,12 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     // perform initial conversion
     if (isTopicsAndComponents && !version.topics.length) {
       const topics = diagrams
-        .filter((diagram) => diagram.type === DiagramType.TOPIC)
-        .map((diagram) => ({ sourceID: diagram.id, type: VersionFolderItemType.DIAGRAM }));
+        .filter((diagram) => diagram.type === BaseModels.DiagramType.TOPIC)
+        .map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
 
       const components = diagrams
-        .filter((diagram) => diagram.type === DiagramType.COMPONENT)
-        .map((diagram) => ({ sourceID: diagram.id, type: VersionFolderItemType.DIAGRAM }));
+        .filter((diagram) => diagram.type === BaseModels.DiagramType.COMPONENT)
+        .map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
 
       version.topics = topics;
       version.components = components;

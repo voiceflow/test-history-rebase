@@ -1,26 +1,39 @@
 import { Node } from '@voiceflow/base-types';
-import { Badge, Input, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
+import { Badge, Box, BoxFlex, Input, Link, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import Checkbox from '@/components/Checkbox';
+import DividerLine from '@/components/DividerLine';
 import IntentForm from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
-import { CheckboxGroup } from '@/components/RadioGroup';
+import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
+import * as Documentation from '@/config/documentation';
+import { FeatureFlag } from '@/config/features';
 import { NamespaceProvider } from '@/contexts';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as ProjectV2 from '@/ducks/projectV2';
-import { useLinkedState, useSelector } from '@/hooks';
+import { useFeature, useLinkedState, useSelector } from '@/hooks';
+import { Intent } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
+import { unique, withoutValue } from '@/utils/array';
 import { getTargetValue } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 import { getValidHref, isAnyLink } from '@/utils/string';
 
-import { getButtonActions } from '../constants';
+import { BUTTON_OPTIONS, ButtonAction } from '../constants';
 import HelpTooltip from './HelpTooltip';
 
-export type ButtonsListItemProps = ListItemComponentProps<Node.Buttons.Button, { pushToPath: (path: { type: string; label: string }) => void }>;
+const IntentSelectComponent = IntentSelect as React.FC<any>;
+
+export type ButtonsListItemProps = ListItemComponentProps<
+  Node.Buttons.Button,
+  {
+    pushToPath: (path: { type: string; label: string }) => void;
+    openIntents: Intent[];
+  }
+>;
 
 const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsListItemProps> = (
   {
@@ -31,6 +44,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
     isOnlyItem,
     isDragging,
     pushToPath,
+    openIntents,
     onContextMenu,
     latestCreatedKey,
     connectedDragRef,
@@ -39,17 +53,39 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
   },
   ref
 ) => {
-  const platform = useSelector(ProjectV2.active.platformSelector);
   const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
-  const buttonOptions = getButtonActions(platform);
+
+  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
 
   const [url, setUrl] = useLinkedState(item.url ?? '');
   const [name, setName] = useLinkedState(item.name);
 
   const isNew = latestCreatedKey === itemKey;
   const urlChecked = item.actions.includes(Node.Buttons.ButtonAction.URL);
-  const intentChecked = item.actions.includes(Node.Buttons.ButtonAction.INTENT);
-  const intent = intentChecked && item.intent ? getIntentByID(item.intent) : null;
+  const isPathChecked = item.actions.includes(Node.Buttons.ButtonAction.PATH);
+  const isIntentChecked = item.actions.includes(Node.Buttons.ButtonAction.INTENT);
+  const isGoToIntent = isIntentChecked && !isPathChecked;
+
+  const checkedOption = isGoToIntent ? ButtonAction.GO_TO_INTENT : ButtonAction.FOLLOW_PATH;
+  const intent = item.intent ? getIntentByID(item.intent) : null;
+
+  const onUpdateButtonAction = (action: ButtonAction) => {
+    let nextActions = item.actions;
+
+    if (action === ButtonAction.GO_TO_INTENT) {
+      nextActions = withoutValue(nextActions, Node.Buttons.ButtonAction.PATH);
+    } else {
+      nextActions = [...nextActions, Node.Buttons.ButtonAction.PATH];
+    }
+
+    onUpdate({ intent: null, actions: unique([...nextActions, Node.Buttons.ButtonAction.INTENT]) });
+  };
+
+  const onToggleURL = () => {
+    const nextActions = urlChecked ? withoutValue(item.actions, Node.Buttons.ButtonAction.URL) : [...item.actions, Node.Buttons.ButtonAction.URL];
+
+    onUpdate({ actions: nextActions });
+  };
 
   return (
     <EditorSection
@@ -79,12 +115,20 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
             />
           </FormControl>
 
-          <FormControl label="Button Action" tooltip={<HelpTooltip />} contentBottomUnits={intentChecked || urlChecked ? 0 : 2.5}>
-            <CheckboxGroup isFlat options={buttonOptions} checked={item.actions} onChange={(actions) => onUpdate({ actions })} />
+          <FormControl label="Button Action" tooltip={<HelpTooltip />} contentBottomUnits={0}>
+            <BoxFlex>
+              <RadioGroup options={BUTTON_OPTIONS} checked={checkedOption} onChange={onUpdateButtonAction} />
+
+              <DividerLine isVertical height={18} offset={18} />
+
+              <Checkbox isFlat checked={urlChecked} onChange={onToggleURL}>
+                URL
+              </Checkbox>
+            </BoxFlex>
           </FormControl>
 
           {urlChecked && (
-            <Section isNested dividers={intentChecked} isDividerNested isDividerBottom>
+            <Section isNested isDividerNested isDividerBottom>
               <Input
                 value={url}
                 onBlur={() => (!url || isAnyLink(url) ? onUpdate({ url }) : toast.error('URL is not valid, please enter valid link'))}
@@ -103,16 +147,33 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
             </Section>
           )}
 
-          {intentChecked && (
-            <>
-              <Section isNested dividers={false}>
-                <IntentSelect intent={intent} onChange={({ intent }: { intent: string }) => onUpdate({ intent })} />
-              </Section>
+          <Section isNested dividers={false}>
+            <IntentSelectComponent
+              intent={intent}
+              intents={isGoToIntent && topicsAndComponents.isEnabled ? openIntents : undefined}
+              onChange={({ intent }: { intent: string }) => onUpdate({ intent })}
+              clearable={!isGoToIntent}
+              creatable={!isGoToIntent}
+              placeholder={isGoToIntent ? 'Behave as user triggered intent' : 'Attach intent to path (optional)'}
+              renderEmpty={
+                isGoToIntent
+                  ? ({ close, search }: { search: string; close: VoidFunction }) => (
+                      <Box flex={1} textAlign="center">
+                        {!search ? 'No open intents exists in your project. ' : 'No open intents found. '}
+                        <Link href={Documentation.OPEN_INTENT} onClick={close}>
+                          Learn more
+                        </Link>
+                      </Box>
+                    )
+                  : undefined
+              }
+            />
+          </Section>
 
-              <NamespaceProvider value={['intent', intent?.id ?? 'new']}>
-                <IntentForm intent={intent} pushToPath={pushToPath} isNested />
-              </NamespaceProvider>
-            </>
+          {!isGoToIntent && (
+            <NamespaceProvider value={['intent', intent?.id ?? 'new']}>
+              <IntentForm intent={intent} pushToPath={pushToPath} isNested />
+            </NamespaceProvider>
           )}
         </>
       )}

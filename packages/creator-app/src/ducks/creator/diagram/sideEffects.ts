@@ -1,5 +1,4 @@
-import { DiagramType } from '@voiceflow/api-sdk';
-import { Node } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import { batch } from 'react-redux';
@@ -54,7 +53,7 @@ export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) 
   const diagramType = DiagramSelectorsV2.active.typeSelector(state);
   const isRootDiagramActive = CreatorDiagramSelectors.isRootDiagramActiveSelector(state);
 
-  if (isRootDiagramActive || diagramType !== DiagramType.TOPIC) {
+  if (isRootDiagramActive || diagramType !== Models.DiagramType.TOPIC) {
     return;
   }
 
@@ -108,7 +107,7 @@ export const initializeCreatorForDiagram =
       dispatch(initializeCreator(creator));
       dispatch(saveHistory());
 
-      if (isTopicsAndComponents && diagramType === DiagramType.TOPIC && !dbDiagram.intentStepIDs?.length) {
+      if (isTopicsAndComponents && diagramType === Models.DiagramType.TOPIC && !dbDiagram.intentStepIDs?.length) {
         dispatch(DiagramActions.crud.patch(diagramID, { intentStepIDs: getIntentStepIDs() }));
       }
     });

@@ -1,4 +1,4 @@
-import { Intent, Slot } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -11,8 +11,8 @@ const VOICEFLOW_PREBUILT_PREFIX = 'VF.';
 
 export interface Validation {
   invalid: {
-    slots: Slot[];
-    intents: Intent[];
+    slots: BaseModels.Slot[];
+    intents: BaseModels.Intent[];
   };
 }
 

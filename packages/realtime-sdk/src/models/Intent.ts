@@ -1,4 +1,4 @@
-import { IntentInput, IntentSlot as BaseIntentSlot, IntentSlotDialog as BaseIntentSlotDialog } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Types as ChatTypes } from '@voiceflow/chat-types';
 import { Constants } from '@voiceflow/general-types';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
@@ -6,7 +6,9 @@ import { Types as VoiceTypes } from '@voiceflow/voice-types';
 import { Normalized } from '../utils/normalized';
 import { AnyVersionPlatformData } from './Version';
 
-export type { BaseIntentSlot, BaseIntentSlotDialog, IntentInput };
+export type IntentInput = BaseModels.IntentInput;
+export type BaseIntentSlot = BaseModels.IntentSlot;
+export type BaseIntentSlotDialog = BaseModels.IntentSlotDialog;
 
 export interface VoiceIntentSlotDialog<V = string> extends BaseIntentSlotDialog {
   prompt: VoiceTypes.IntentPrompt<V>[];

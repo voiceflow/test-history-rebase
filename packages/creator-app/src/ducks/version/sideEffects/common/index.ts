@@ -1,5 +1,5 @@
 import { Project as AlexaProject } from '@voiceflow/alexa-types';
-import { DiagramType, VersionFolderItemType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { batch } from 'react-redux';
@@ -70,14 +70,14 @@ export const activateVersion =
     const diagrams = await dispatch(Diagram.loadDiagrams(versionID, dbVersion.rootDiagramID));
 
     if (isTopicsAndComponents && !dbVersion.topics?.length) {
-      dbVersion.topics = [{ type: VersionFolderItemType.DIAGRAM, sourceID: dbVersion.rootDiagramID }];
+      dbVersion.topics = [{ type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: dbVersion.rootDiagramID }];
     }
 
     if (isTopicsAndComponents && !dbVersion.components?.length) {
       dbVersion.folders = { ...dbVersion.folders };
       dbVersion.components = diagrams
-        .filter((diagram) => diagram.id !== dbVersion.rootDiagramID && (!diagram.type || diagram.type === DiagramType.COMPONENT))
-        .map((diagram) => ({ type: VersionFolderItemType.DIAGRAM, sourceID: diagram.id }));
+        .filter((diagram) => diagram.id !== dbVersion.rootDiagramID && (!diagram.type || diagram.type === BaseModels.DiagramType.COMPONENT))
+        .map((diagram) => ({ type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: diagram.id }));
     }
 
     // not a dependency for project to load

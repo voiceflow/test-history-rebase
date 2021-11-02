@@ -1,4 +1,4 @@
-import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { createSelector } from 'reselect';
 
@@ -14,8 +14,8 @@ export const platformSelector = createSelector([projectSelector], (project) => p
 
 export const nameSelector = createSelector([projectSelector], (project) => project?.name ?? null);
 
-export const linkTypeSelector = createSelector([projectSelector], (project) => project?.linkType || ProjectLinkType.STRAIGHT);
+export const linkTypeSelector = createSelector([projectSelector], (project) => project?.linkType || BaseModels.ProjectLinkType.STRAIGHT);
 
-export const isStraightLinksSelector = createSelector([linkTypeSelector], (linkType) => linkType === ProjectLinkType.STRAIGHT);
+export const isStraightLinksSelector = createSelector([linkTypeSelector], (linkType) => linkType === BaseModels.ProjectLinkType.STRAIGHT);
 
 export const isLiveSelector = createSelector([projectSelector], (project) => !!project?.isLive);

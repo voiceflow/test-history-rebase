@@ -1,3 +1,4 @@
+import { Node as BaseNode } from '@voiceflow/base-types';
 import cuid from 'cuid';
 
 import { BlockType } from '@/constants';
@@ -29,7 +30,15 @@ export const NODE_CONFIG: NodeConfig<NodeData.Interaction> = {
       name: 'Choice',
       else: getPlatformNoMatchesFactory(platform)({ defaultVoice }),
       buttons: isChatbotPlatform(platform) ? buttonsFactory() : null,
-      choices: [distinctPlatformsData({ id: cuid.slug(), intent: null, mappings: [] })],
+      choices: [
+        distinctPlatformsData({
+          id: cuid.slug(),
+          goTo: null,
+          intent: null,
+          action: BaseNode.Interaction.ChoiceAction.PATH,
+          mappings: [],
+        }),
+      ],
       reprompt: null,
     },
   }),

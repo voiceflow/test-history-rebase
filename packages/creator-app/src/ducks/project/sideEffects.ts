@@ -1,4 +1,4 @@
-import { ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
@@ -150,7 +150,7 @@ export const deleteManyProjects =
 // mutations
 
 export const updateProjectPrivacy =
-  (projectID: string, privacy: ProjectPrivacy): Thunk =>
+  (projectID: string, privacy: BaseModels.ProjectPrivacy): Thunk =>
   async (dispatch, getState) => {
     const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
 
@@ -194,7 +194,7 @@ export const updateProjectImage =
   };
 
 export const updateProjectLinkType =
-  (projectID: string, linkType: ProjectLinkType): Thunk =>
+  (projectID: string, linkType: BaseModels.ProjectLinkType): Thunk =>
   (dispatch) =>
     dispatch(
       Feature.applyAtomicSideEffect(

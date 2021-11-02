@@ -1,3 +1,4 @@
+import { Node as BaseNode } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
 import cuid from 'cuid';
@@ -36,17 +37,23 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
           {
             [Constants.PlatformType.GENERAL]: {
               id,
-              intent: null,
+              goTo: null,
+              intent: '',
+              action: BaseNode.Interaction.ChoiceAction.PATH,
               mappings: [],
             },
             [Constants.PlatformType.GOOGLE]: {
               id,
-              intent: null,
+              goTo: null,
+              intent: '',
+              action: BaseNode.Interaction.ChoiceAction.PATH,
               mappings: [],
             },
             [Constants.PlatformType.ALEXA]: {
               id,
+              goTo: null,
               intent: data.choices[0].intent,
+              action: BaseNode.Interaction.ChoiceAction.PATH,
               mappings: data.choices[0].mappings,
             },
           },
@@ -90,7 +97,14 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
       expect(result).eql({
         name: data.name,
         else: elseData,
-        choices: [{ intent: data.choices[0].alexa.intent, mappings: data.choices[0].alexa.mappings }],
+        choices: [
+          {
+            goTo: undefined,
+            action: undefined,
+            intent: data.choices[0].alexa.intent,
+            mappings: data.choices[0].alexa.mappings,
+          },
+        ],
         reprompt,
         chips: null,
         buttons: null,

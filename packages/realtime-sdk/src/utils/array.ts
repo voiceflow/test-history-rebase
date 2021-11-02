@@ -107,3 +107,5 @@ export const asyncForEach = async <T>(array: T[], callback: (item: T, index: num
     await callback(array[index], index, array);
   }
 };
+
+export const filterOutNullable = <T>(items: (T | null | undefined)[]): T[] => items.filter((item = null) => item !== null) as T[];

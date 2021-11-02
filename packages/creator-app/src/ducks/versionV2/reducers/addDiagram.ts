@@ -1,4 +1,4 @@
-import { DiagramType, VersionFolderItemType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { safeGetNormalizedByKey } from '@/utils/normalized';
@@ -10,10 +10,10 @@ const addDiagramReducer = createReducer(Realtime.diagram.crud.add, (state, { ver
 
   if (!version) return;
 
-  if (value.type === DiagramType.TOPIC) {
-    version.topics.push({ sourceID: key, type: VersionFolderItemType.DIAGRAM });
-  } else if (value.type === DiagramType.COMPONENT) {
-    version.components.push({ sourceID: key, type: VersionFolderItemType.DIAGRAM });
+  if (value.type === BaseModels.DiagramType.TOPIC) {
+    version.topics.push({ sourceID: key, type: BaseModels.VersionFolderItemType.DIAGRAM });
+  } else if (value.type === BaseModels.DiagramType.COMPONENT) {
+    version.components.push({ sourceID: key, type: BaseModels.VersionFolderItemType.DIAGRAM });
   }
 });
 

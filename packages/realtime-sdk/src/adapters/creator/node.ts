@@ -1,4 +1,4 @@
-import { BaseBlock, BaseDiagramNode, NodeID } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 
 import { BlockType } from '../../constants';
@@ -11,11 +11,11 @@ import nodeDataAdapter from './nodeData';
 import { generateInPort, getInPortID, isBlock, isStep } from './utils';
 
 const nodeAdapter = createAdapter<
-  BaseDiagramNode,
+  BaseModels.BaseDiagramNode,
   { node: Node; data: NodeData<unknown>; ports: Port[] },
   [
     {
-      parentNode: BaseBlock | null;
+      parentNode: BaseModels.BaseBlock | null;
       links: Link[];
       platform: Constants.PlatformType;
       context: AdapterContext;
@@ -23,8 +23,8 @@ const nodeAdapter = createAdapter<
   ],
   [
     {
-      portToTargets: Record<string, NodeID>;
-      stepMap: Record<NodeID, NodeID>;
+      portToTargets: Record<string, BaseModels.NodeID>;
+      stepMap: Record<BaseModels.NodeID, BaseModels.NodeID>;
       platform: Constants.PlatformType;
       portLinksMap: Record<string, Link>;
       context: AdapterContext;
@@ -51,7 +51,7 @@ const nodeAdapter = createAdapter<
       },
     };
 
-    const registerPort = (port: Port, target?: NodeID | null) => {
+    const registerPort = (port: Port, target?: BaseModels.NodeID | null) => {
       ports.push(port);
 
       if (port.id.endsWith(IN_PORT_KEY)) {
@@ -108,7 +108,7 @@ const nodeAdapter = createAdapter<
     const portMap = ports.reduce<Record<string, Port>>((acc, port) => ({ ...acc, [port.id]: port }), {});
     const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform, context });
 
-    const diagramNode: BaseDiagramNode = {
+    const diagramNode: BaseModels.BaseDiagramNode = {
       nodeID: node.id,
       type,
       coords: node.parentNode ? undefined : [node.x, node.y],

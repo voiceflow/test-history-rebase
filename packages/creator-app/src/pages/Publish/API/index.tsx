@@ -1,4 +1,4 @@
-import { APIKey } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { BlockText, Box, BoxFlex, Button, ButtonVariant, FullSpinner, Link, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -22,7 +22,7 @@ const AdminMessage = 'Only workspace admins can manage API Keys';
 
 const API: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
-  const [keys, setKeys] = React.useState<APIKey[]>([]);
+  const [keys, setKeys] = React.useState<BaseModels.APIKey[]>([]);
   const [activeKey, setActiveKey] = React.useState('');
 
   const isAdmin = useIsAdmin();

@@ -1,4 +1,4 @@
-import { DiagramType, VersionFolderItemType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
@@ -159,7 +159,7 @@ export const createTopicDiagram =
           const activeTopics = VersionV2.active.topicsSelector(state);
           const activeDiagramID = Session.activeDiagramIDSelector(state);
 
-          const newTopicItem = { type: VersionFolderItemType.DIAGRAM, sourceID: diagramID };
+          const newTopicItem = { type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: diagramID };
           const activeTopicIndex = activeDiagramID ? activeTopics.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
 
           const topics = activeTopicIndex === -1 ? append(activeTopics, newTopicItem) : insert(activeTopics, activeTopicIndex + 1, newTopicItem);
@@ -202,7 +202,7 @@ const addDiagramIDIntoComponentsList =
     const activeDiagramID = Session.activeDiagramIDSelector(state);
     const activeComponents = VersionV2.active.componentsSelector(state);
 
-    const newTopicItem = { type: VersionFolderItemType.DIAGRAM, sourceID: diagramID };
+    const newTopicItem = { type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: diagramID };
     const activeComponentIndex = activeDiagramID ? activeComponents.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
 
     const components =
@@ -312,7 +312,7 @@ export const duplicateDiagram =
           Errors.assertVersionID(versionID);
           Errors.assertDiagramID(rootDiagramID);
 
-          const { _id, type = DiagramType.COMPONENT, ...diagram } = await client.api.diagram.get(diagramID);
+          const { _id, type = BaseModels.DiagramType.COMPONENT, ...diagram } = await client.api.diagram.get(diagramID);
 
           const newFlowName = Realtime.Utils.diagram.getUniqueCopyName(diagram.name, unique(allDiagrams.map(({ name }) => name)));
 
@@ -367,11 +367,11 @@ export const deleteDiagram =
             const { type } = diagramByIDSelector(state)(diagramID) ?? {};
             const { topics = [], components = [] } = VersionV2.active.versionSelector(state) ?? {};
 
-            if (type === DiagramType.TOPIC) {
+            if (type === BaseModels.DiagramType.TOPIC) {
               const newTopics = topics.filter(({ sourceID }) => sourceID !== diagramID);
 
               await dispatch(saveTopics(newTopics));
-            } else if (type === DiagramType.COMPONENT) {
+            } else if (type === BaseModels.DiagramType.COMPONENT) {
               const newComponents = components.filter(({ sourceID }) => sourceID !== diagramID);
 
               await dispatch(saveComponents(newComponents));
@@ -426,7 +426,7 @@ export const saveActiveDiagram = (): Thunk => async (_, getState) => {
     delete activeDiagram.type;
   }
 
-  if (activeDiagram.type !== DiagramType.TOPIC) {
+  if (activeDiagram.type !== BaseModels.DiagramType.TOPIC) {
     delete activeDiagram.intentStepIDs;
   }
 

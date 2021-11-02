@@ -1,17 +1,22 @@
-import { BaseDiagramNode, BasePort, NodeID } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 
 import { BlockType } from '../../constants';
 import { isBlock, isStep } from './utils';
 
-type NodesMap = Record<NodeID, BaseDiagramNode>;
-type ValidNodeIDsMap = Record<NodeID, boolean>;
+type NodesMap = Record<BaseModels.NodeID, BaseModels.BaseDiagramNode>;
+type ValidNodeIDsMap = Record<BaseModels.NodeID, boolean>;
 
-const cleanupBlockSteps = (nodesMap: NodesMap, stepsIDs: NodeID[]): NodeID[] => stepsIDs.filter((stepID) => !!(stepID in nodesMap));
-const cleanupStepPorts = (ports: BasePort[], validNodesMap: ValidNodeIDsMap): [BasePort, ...BasePort[]] =>
-  ports.map((port) => ({ ...port, target: port.target && validNodesMap[port.target] ? port.target : null })) as [BasePort, ...BasePort[]];
+const cleanupBlockSteps = (nodesMap: NodesMap, stepsIDs: BaseModels.NodeID[]): BaseModels.NodeID[] =>
+  stepsIDs.filter((stepID) => !!(stepID in nodesMap));
+
+const cleanupStepPorts = (ports: BaseModels.BasePort[], validNodesMap: ValidNodeIDsMap): [BaseModels.BasePort, ...BaseModels.BasePort[]] =>
+  ports.map((port) => ({ ...port, target: port.target && validNodesMap[port.target] ? port.target : null })) as [
+    BaseModels.BasePort,
+    ...BaseModels.BasePort[]
+  ];
 
 // eslint-disable-next-line import/prefer-default-export
-export const cleanupDBNodes = (nodesMap: NodesMap): BaseDiagramNode[] => {
+export const cleanupDBNodes = (nodesMap: NodesMap): BaseModels.BaseDiagramNode[] => {
   const validNodeIDsMap: ValidNodeIDsMap = {};
 
   // remove the steps ids which are not exists in the nodesMap as well as empty combined nodes

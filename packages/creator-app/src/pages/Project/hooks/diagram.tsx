@@ -1,4 +1,4 @@
-import { DiagramType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { MenuOption, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -126,7 +126,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
     let label = 'flow';
 
     if (topicsAndComponents.isEnabled) {
-      label = getDiagramByID(diagramID)?.type === DiagramType.TOPIC ? 'topic' : 'component';
+      label = getDiagramByID(diagramID)?.type === BaseModels.DiagramType.TOPIC ? 'topic' : 'component';
     }
 
     setConfirmModal({
@@ -154,7 +154,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
         : [
             ...(onEdit ? [{ label: 'Edit', onClick: onEdit }] : []),
             { label: 'Rename', onClick: onRename },
-            ...(!topicsAndComponents.isEnabled || !diagramID || getDiagramByID(diagramID)?.type !== DiagramType.TOPIC
+            ...(!topicsAndComponents.isEnabled || !diagramID || getDiagramByID(diagramID)?.type !== BaseModels.DiagramType.TOPIC
               ? [{ label: 'Duplicate', onClick: onDuplicate }]
               : []),
             { label: 'Divider', divider: true },

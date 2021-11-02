@@ -14,10 +14,18 @@ const IntentForm = ({ intent, isInModal = false, ...props }) => {
   }
 
   if (isCustomizableBuiltInIntent(intent)) {
-    return <UtteranceManager intent={intent} isInModal={isInModal} isNested={!!props.isNested} />;
+    return (
+      <UtteranceManager intent={intent} isInModal={isInModal} isNested={!!props.isNested}>
+        {props.children}
+      </UtteranceManager>
+    );
   }
 
-  return <CustomIntentForm intent={intent} isInModal={isInModal} {...props} />;
+  return (
+    <CustomIntentForm intent={intent} isInModal={isInModal} {...props}>
+      {props.children}
+    </CustomIntentForm>
+  );
 };
 
 export default IntentForm;

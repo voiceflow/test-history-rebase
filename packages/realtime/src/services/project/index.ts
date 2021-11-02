@@ -1,4 +1,4 @@
-import { BasePlatformData, Project } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Optional } from 'utility-types';
@@ -57,7 +57,10 @@ class ProjectService extends AbstractControl {
     return this.connectedDiagramsCache.values({ projectID });
   }
 
-  public async get<P extends BasePlatformData, M extends BasePlatformData>(creatorID: number, projectID: string): Promise<Project<P, M>> {
+  public async get<P extends BaseModels.BasePlatformData, M extends BaseModels.BasePlatformData>(
+    creatorID: number,
+    projectID: string
+  ): Promise<BaseModels.Project<P, M>> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.project.get(projectID);

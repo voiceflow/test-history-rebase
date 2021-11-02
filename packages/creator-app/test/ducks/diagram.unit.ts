@@ -1,5 +1,5 @@
 /* eslint-disable mocha/no-identical-title */
-import { DiagramType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { generate } from '@voiceflow/ui';
 
@@ -24,7 +24,7 @@ const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versi
 const DIAGRAM: Realtime.Diagram = {
   id: DIAGRAM_ID,
   name: 'diagram',
-  type: DiagramType.COMPONENT,
+  type: BaseModels.DiagramType.COMPONENT,
   variables: ['fizz', 'buzz'],
   subDiagrams: [],
   intentStepIDs: [],
@@ -43,7 +43,7 @@ const MOCK_STATE: Diagram.DiagramState = {
     abc: {
       id: 'abc',
       name: 'alphabet diagram',
-      type: DiagramType.TOPIC,
+      type: BaseModels.DiagramType.TOPIC,
       variables: ['xyz'],
       subDiagrams: [],
       intentStepIDs: [],

@@ -6,20 +6,21 @@ import { BaseContainerProps } from './IconButtonContainer';
 
 export interface SquareContainerProps extends BaseContainerProps {
   variant: IconButtonVariant.SQUARE;
+  outlined?: boolean;
 }
 
 const SquareContainer = styled(ButtonContainer)<SquareContainerProps>`
   ${transition('background', 'border')}
 
   padding: 12px;
-  border: solid 1px transparent;
+  border: solid 1px ${({ outlined }) => (outlined ? colors(ThemeColor.BORDERS) : 'transparent')};
   border-radius: 5px;
 
   & ${SvgIconContainer} {
     max-width: 16px;
 
     color: ${colors(ThemeColor.SECONDARY)};
-    opacity: 0.65;
+    opacity: ${({ outlined }) => (outlined ? 0.8 : 0.65)};
   }
 
   &:hover {
@@ -27,7 +28,7 @@ const SquareContainer = styled(ButtonContainer)<SquareContainerProps>`
     border: solid 1px ${colors(ThemeColor.BORDERS)};
 
     & ${SvgIconContainer} {
-      opacity: 0.85;
+      opacity: ${({ outlined }) => (outlined ? 1 : 0.85)};
     }
   }
 
@@ -36,6 +37,7 @@ const SquareContainer = styled(ButtonContainer)<SquareContainerProps>`
     border: solid 1px ${colors(ThemeColor.BORDERS)};
 
     & ${SvgIconContainer} {
+      color: ${({ outlined }) => colors(outlined ? ThemeColor.PRIMARY : ThemeColor.SECONDARY)};
       opacity: 1;
     }
   }

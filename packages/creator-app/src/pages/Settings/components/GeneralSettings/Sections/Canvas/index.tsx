@@ -1,4 +1,4 @@
-import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Link } from '@voiceflow/ui';
 import React from 'react';
 
@@ -16,7 +16,10 @@ import { ConnectedProps } from '@/types';
 import { LINK_TYPE_OPTIONS, NAVIGATION_DESCRIPTIONS, NAVIGATION_OPTIONS } from './constants';
 
 const Canvas: React.FC<ConnectedBasicProps> = ({ activeProjectID, activeLinkType, canvasNavigation, setCanvasNavigation, updateProjectLinkType }) => {
-  const setLinkType = React.useCallback((linkType: ProjectLinkType) => updateProjectLinkType(activeProjectID!, linkType), [activeProjectID]);
+  const setLinkType = React.useCallback(
+    (linkType: BaseModels.ProjectLinkType) => updateProjectLinkType(activeProjectID!, linkType),
+    [activeProjectID]
+  );
 
   return (
     <>

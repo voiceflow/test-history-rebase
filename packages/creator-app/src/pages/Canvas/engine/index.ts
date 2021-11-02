@@ -1,4 +1,4 @@
-import { DiagramType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { logger } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
 import moize from 'moize';
@@ -406,7 +406,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     const isRootDiagramActive = this.select(Creator.isRootDiagramActiveSelector);
 
     // topics do not have start node, focus first intent step
-    if (!isRootDiagramActive && diagram?.type === DiagramType.TOPIC) {
+    if (!isRootDiagramActive && diagram?.type === BaseModels.DiagramType.TOPIC) {
       const intentStepID = diagram.intentStepIDs[0];
 
       if (intentStepID) {

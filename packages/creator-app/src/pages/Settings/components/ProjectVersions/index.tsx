@@ -1,4 +1,4 @@
-import { Version, VersionPlatformData } from '@voiceflow/api-sdk';
+import { Models } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { Box, BoxFlexCenter, ClickableText, LoadCircle, SvgIcon, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
@@ -88,7 +88,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
         (version) => (version.platformData as any).status?.stage !== 'LIVE'
       );
       setVersions(
-        dbVersions.map((version: Version<VersionPlatformData> & { manualSave?: boolean }) => ({
+        dbVersions.map((version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean }) => ({
           creatorID: version.creatorID,
           versionID: version._id,
           platform,

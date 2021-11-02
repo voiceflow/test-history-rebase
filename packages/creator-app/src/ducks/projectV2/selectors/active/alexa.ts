@@ -1,5 +1,5 @@
 import { Project as AlexaProject } from '@voiceflow/alexa-types';
-import { Member } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { createSelector } from 'reselect';
 
 import { userIDSelector } from '@/ducks/account/selectors';
@@ -10,7 +10,7 @@ import { projectSelector as baseProjectSelector } from './base';
 
 export const projectSelector = createSelector(
   [baseProjectSelector],
-  (activeProject) => activeProject as Nullable<Project<AlexaProject.AlexaProjectData, Member<AlexaProject.AlexaProjectMemberData>>>
+  (activeProject) => activeProject as Nullable<Project<AlexaProject.AlexaProjectData, BaseModels.Member<AlexaProject.AlexaProjectMemberData>>>
 );
 
 const membersSelector = createSelector([projectSelector], (project) => project?.members ?? []);

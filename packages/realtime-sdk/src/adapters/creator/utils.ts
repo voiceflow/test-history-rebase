@@ -1,4 +1,4 @@
-import { BaseBlock, BaseDiagramNode, BasePort, BaseStep } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';
 
@@ -9,9 +9,9 @@ import { IN_PORT_KEY, MIGRATION_BLOCKS } from './constants';
 
 export const getInPortID = (nodeID: string): string => `${nodeID}${IN_PORT_KEY}`;
 
-export const isBlock = (node: BaseDiagramNode): node is BaseBlock => Array.isArray(node.data.steps) && !!node.coords;
+export const isBlock = (node: BaseModels.BaseDiagramNode): node is BaseModels.BaseBlock => Array.isArray(node.data.steps) && !!node.coords;
 
-export const isStep = (node: BaseDiagramNode): node is BaseStep => Array.isArray(node.data.ports);
+export const isStep = (node: BaseModels.BaseDiagramNode): node is BaseModels.BaseStep => Array.isArray(node.data.ports);
 
 export const generateInPort = (nodeID: string, { platform = null, virtual = false, label = '' }: Partial<Port> = {}): Port => ({
   platform,
@@ -21,7 +21,7 @@ export const generateInPort = (nodeID: string, { platform = null, virtual = fals
   nodeID,
 });
 
-export const generateOutPort = (nodeID: string, port: BasePort<LinkData>, settings?: Partial<Port>): Port => ({
+export const generateOutPort = (nodeID: string, port: BaseModels.BasePort<LinkData>, settings?: Partial<Port>): Port => ({
   ...generateInPort(nodeID, settings),
   id: (_isString(port.id) && port.id) || objectID(),
   linkData: port.data,

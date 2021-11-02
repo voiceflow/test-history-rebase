@@ -69,6 +69,7 @@ function BaseNestedMenu({
   createInputPlaceholder,
   portalNode,
   menuProps,
+  renderEmpty,
 }) {
   const cachedRef = React.useRef({ blockOptionHover: false, scrollToFocusedOption: true });
   const menuRef = React.useRef();
@@ -337,7 +338,6 @@ function BaseNestedMenu({
                 {...menuProps}
               >
                 <MenuOptions
-                  updatePosition={scheduleUpdate}
                   onHide={onHide}
                   options={options}
                   grouped={grouped}
@@ -349,8 +349,10 @@ function BaseNestedMenu({
                   optionsPath={optionsPath}
                   onFocusItem={(index) => !cachedRef.current.blockOptionHover && onFocusItem(index)}
                   onBackFocus={onBackFocus}
+                  renderEmpty={renderEmpty}
                   getOptionKey={getOptionKey}
                   getOptionLabel={getOptionLabel}
+                  updatePosition={scheduleUpdate}
                   getOptionValue={getOptionValue}
                   inputWrapperRef={inputWrapperRef}
                   firstOptionIndex={firstOptionIndex}

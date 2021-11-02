@@ -1,4 +1,4 @@
-import { ProjectPrivacy } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { MenuOption, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -159,7 +159,7 @@ export const useProjectOptions = ({
 
         trackingEvents.trackActiveProjectDownloadLinkShare();
 
-        updateProjectPrivacy(projectID, ProjectPrivacy.PUBLIC);
+        updateProjectPrivacy(projectID, BaseModels.ProjectPrivacy.PUBLIC);
       } catch {
         toast.error('Error getting import link');
       }

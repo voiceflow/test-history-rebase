@@ -1,4 +1,4 @@
-import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { stopPropagation, SvgIcon, useCache, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
@@ -28,7 +28,7 @@ interface SettingsProps {
   onRemove: () => void;
   isTextActive: boolean;
   onToggleText: (nextValue?: unknown) => void;
-  onChangeType: (type: ProjectLinkType) => void;
+  onChangeType: (type: BaseModels.ProjectLinkType) => void;
   onChangeColor: (color: string) => void;
 }
 
@@ -100,7 +100,7 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
     }
   }, [instance]);
 
-  const onChangeLinkType = (type: ProjectLinkType) => {
+  const onChangeLinkType = (type: BaseModels.ProjectLinkType) => {
     onChangeType(type);
     toggleLinkTypeOpened(false);
   };

@@ -1,4 +1,4 @@
-import { DiagramType, Version, VersionPlatformData } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -29,7 +29,7 @@ class VersionService extends AbstractControl {
     return canRead;
   }
 
-  public async get<P extends VersionPlatformData>(creatorID: number, versionID: string): Promise<Version<P>> {
+  public async get<P extends BaseModels.VersionPlatformData>(creatorID: number, versionID: string): Promise<BaseModels.Version<P>> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.version.get(versionID);
@@ -84,7 +84,11 @@ class VersionService extends AbstractControl {
     await client.version.platform(platform).patchPublishing(versionID, publishing);
   }
 
-  public async patchPlatformData<T extends VersionPlatformData>(creatorID: number, versionID: string, platformData: Partial<T>): Promise<void> {
+  public async patchPlatformData<T extends BaseModels.VersionPlatformData>(
+    creatorID: number,
+    versionID: string,
+    platformData: Partial<T>
+  ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.version.updatePlatformData(versionID, platformData);
@@ -100,9 +104,9 @@ class VersionService extends AbstractControl {
     Object.keys(dbDiagrams).forEach((diagramID) => {
       const dbDiagram = dbDiagrams[diagramID];
       const isRootDiagram = rootDiagramID === diagramID;
-      const type = dbDiagram.type ?? (isRootDiagram ? DiagramType.TOPIC : DiagramType.COMPONENT);
+      const type = dbDiagram.type ?? (isRootDiagram ? BaseModels.DiagramType.TOPIC : BaseModels.DiagramType.COMPONENT);
 
-      if (type !== DiagramType.TOPIC) return;
+      if (type !== BaseModels.DiagramType.TOPIC) return;
 
       const diagramIntentSteps: Record<string, string | null> = {};
       intentSteps[diagramID] = diagramIntentSteps;

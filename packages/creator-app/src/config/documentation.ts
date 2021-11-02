@@ -50,3 +50,6 @@ export const DIALOG_MANAGER_API = 'https://www.voiceflow.com/api/dialog-manager'
 
 // TODO: this document hasn't been written yet
 export const COMPONENTS_LAYER = 'https://docs.voiceflow.com/#/platform/steps/response-steps/response?id=components';
+
+// TODO: this document hasn't been written yet
+export const OPEN_INTENT = 'https://docs.voiceflow.com/#/platform/steps/input-steps/user-input?id=open-intent';

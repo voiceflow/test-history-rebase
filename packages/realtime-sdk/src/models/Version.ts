@@ -1,5 +1,5 @@
 import { Constants as AlexaConstants, Version as AlexaVersion } from '@voiceflow/alexa-types';
-import { Version as DBVersion, VersionPlatformData } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Version as ChatVersion } from '@voiceflow/chat-types';
 import { Constants as GeneralConstants, Version as GeneralVersion } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants, Version as DialogflowVersion } from '@voiceflow/google-dfes-types';
@@ -8,11 +8,15 @@ import { Version as VoiceVersion } from '@voiceflow/voice-types';
 
 import { Nullable } from '../types';
 
-export { DBVersion };
+export type DBVersion<
+  P extends BaseModels.VersionPlatformData,
+  C extends BaseModels.BaseCommand = BaseModels.BaseCommand,
+  L extends string = string
+> = BaseModels.Version<P, C, L>;
 
 export type AnyDBVersion = AlexaVersion.AlexaVersion | GeneralVersion.GeneralVersion | GoogleVersion.GoogleVersion | ChatVersion.ChatVersion;
 
-export interface Version<P extends VersionPlatformData<VoiceVersion.VoiceVersionSettings<string>, any>>
+export interface Version<P extends BaseModels.VersionPlatformData<VoiceVersion.VoiceVersionSettings<string>, any>>
   extends Pick<DBVersion<P>, 'creatorID' | 'variables' | 'projectID' | 'rootDiagramID'>,
     Required<Pick<DBVersion<P>, 'folders' | 'topics' | 'components'>> {
   id: string;
@@ -60,6 +64,6 @@ export type GeneralVersion = Version<GeneralVersion.GeneralVersionData>;
 
 export type AnyVersion = AlexaVersion | GoogleVersion | GeneralVersion | DialogflowVersion;
 
-export type VersionIntent<T extends VersionPlatformData> = T['intents'][number];
+export type VersionIntent<T extends BaseModels.VersionPlatformData> = T['intents'][number];
 
-export type VersionSlot<T extends VersionPlatformData> = T['slots'][number];
+export type VersionSlot<T extends BaseModels.VersionPlatformData> = T['slots'][number];

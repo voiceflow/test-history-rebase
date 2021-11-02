@@ -1,4 +1,4 @@
-import { VersionFolderItem, VersionFolderItemType } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import React from 'react';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -51,8 +51,8 @@ export const useComponents = (): ComponentsAPI => {
   const lowerCasedSearchValue = searchValue.trim().toLowerCase();
 
   const componentsItems = React.useMemo(() => {
-    const createComponentItem = ({ type, sourceID }: VersionFolderItem): ComponentItem => {
-      const isFolder = type === VersionFolderItemType.FOLDER;
+    const createComponentItem = ({ type, sourceID }: BaseModels.VersionFolderItem): ComponentItem => {
+      const isFolder = type === BaseModels.VersionFolderItemType.FOLDER;
 
       return {
         id: sourceID,

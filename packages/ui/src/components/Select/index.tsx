@@ -102,8 +102,10 @@ export type SelectProps<O, V> = {
   searchable?: boolean;
   rightAction?: React.ReactNode;
   placeholder?: string;
+  renderEmpty?: (options: { search: string }) => React.ReactNode;
   onMouseDown?: React.MouseEventHandler;
   renderAsSpan?: boolean;
+
   getOptionKey?: (option: O) => string;
   optionsFilter?: OptionsFilter<O, V>;
   getOptionValue?: GetOptionValue<O, V>;
@@ -221,6 +223,7 @@ const Select = <O, V = O>({
   validateCreate,
   tags,
   searchLabel: searchLabelProp = '',
+  renderEmpty,
 }: // eslint-disable-next-line sonarjs/cognitive-complexity
 SelectProps<O, V>) => {
   const optionLabel = searchLabelProp || getOptionLabel(value) || '';
@@ -240,7 +243,7 @@ SelectProps<O, V>) => {
   const labelSearchable = !label && searchable;
   const isDropDownOpened = isDropdown && opened;
 
-  const renderDropdown = opened && (!!options.length || searchLabel || !searchable);
+  const renderDropdown = opened && (!!options.length || searchLabel || !searchable || !!renderEmpty);
 
   const cache = useCache({
     value,
@@ -634,6 +637,7 @@ SelectProps<O, V>) => {
           placement={placement}
           searchable={searchable}
           isDropdown={isDropdown}
+          renderEmpty={renderEmpty}
           directSearchMatch={directMatch}
           searchLabel={searchLabel}
           alwaysShowCreate={alwaysShowCreate}

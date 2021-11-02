@@ -18,4 +18,5 @@ export const {
   head,
   tail,
   asyncForEach,
+  filterOutNullable,
 } = Utils.array;

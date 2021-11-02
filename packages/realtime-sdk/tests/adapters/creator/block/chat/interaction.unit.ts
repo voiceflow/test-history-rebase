@@ -1,3 +1,4 @@
+import { Node as BaseNode } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
 import cuid from 'cuid';
@@ -34,9 +35,27 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
         else: elseData,
         choices: [
           {
-            [Constants.PlatformType.ALEXA]: { id, intent: null, mappings: [] },
-            [Constants.PlatformType.GENERAL]: { id, intent: data.choices[0].intent, mappings: data.choices[0].mappings },
-            [Constants.PlatformType.GOOGLE]: { id, intent: null, mappings: [] },
+            [Constants.PlatformType.ALEXA]: {
+              id,
+              goTo: null,
+              action: BaseNode.Interaction.ChoiceAction.PATH,
+              intent: '',
+              mappings: [],
+            },
+            [Constants.PlatformType.GENERAL]: {
+              id,
+              goTo: null,
+              action: BaseNode.Interaction.ChoiceAction.PATH,
+              intent: data.choices[0].intent,
+              mappings: data.choices[0].mappings,
+            },
+            [Constants.PlatformType.GOOGLE]: {
+              id,
+              goTo: null,
+              action: BaseNode.Interaction.ChoiceAction.PATH,
+              intent: '',
+              mappings: [],
+            },
           },
         ],
         reprompt,
@@ -60,7 +79,14 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
       expect(result).eql({
         name: data.name,
         else: elseData,
-        choices: [{ intent: data.choices[0].general.intent, mappings: data.choices[0].general.mappings }],
+        choices: [
+          {
+            goTo: undefined,
+            action: undefined,
+            intent: data.choices[0].general.intent,
+            mappings: data.choices[0].general.mappings,
+          },
+        ],
         reprompt,
         buttons: data.buttons,
         chips: null,

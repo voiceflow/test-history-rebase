@@ -1,4 +1,4 @@
-import { Project } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { PlatformType } from '@voiceflow/general-types/build/constants';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -12,11 +12,11 @@ interface ProjectClient {
   platform: (platform?: Realtime.Nullish<PlatformType>) => any;
 }
 
-export interface ProjectPlatformClient<P extends Project<any, any>> {
+export interface ProjectPlatformClient<P extends BaseModels.Project<any, any>> {
   duplicate: (projectID: string, data: Realtime.NewProject, params?: { channel: string }) => Promise<P>;
 }
 
-const PlatformClient = <P extends Project<any, any>>(axios: AxiosInstance): ProjectPlatformClient<P> => ({
+const PlatformClient = <P extends BaseModels.Project<any, any>>(axios: AxiosInstance): ProjectPlatformClient<P> => ({
   duplicate: (projectID, data, params?) => axios.post<P>(`/project/${projectID}/copy`, data, { params }).then((res) => res.data),
 });
 

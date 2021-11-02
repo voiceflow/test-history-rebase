@@ -6,7 +6,7 @@ import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
-import { BlockTrace, ChoiceTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace, V1Trace, VisualTrace } from '@/models';
+import { BlockTrace, ChoiceTrace, FlowTrace, GoToTrace, Link, Node, SpeakTrace, StreamTrace, Trace, V1Trace, VisualTrace } from '@/models';
 import { Engine } from '@/pages/Canvas/engine';
 import { tail, unique } from '@/utils/array';
 import { loadImage } from '@/utils/dom';
@@ -242,6 +242,7 @@ class TraceController {
     if (!this.isPublicPrototype) {
       await this.waitEngineAndNodes();
     }
+
     switch (topTrace.type) {
       case BaseNode.Utils.TraceType.CHOICE: {
         this.processChoiceTrace(topTrace);
@@ -272,12 +273,16 @@ class TraceController {
         break;
       }
       case BaseNode.Utils.TraceType.VISUAL: {
-        await this.processVisual(topTrace);
+        await this.processVisualTrace(topTrace);
         break;
       }
       case BaseNode.Utils.TraceType.DEBUG: {
         await this.message.debug(topTrace);
         break;
+      }
+      case BaseNode.Utils.TraceType.GOTO: {
+        this.processGoToTrace(topTrace);
+        return; // don't process the rest of the traces
       }
       default:
         if (isV1Trace(topTrace) && !tailTrace.length) {
@@ -354,7 +359,7 @@ class TraceController {
     await this.timeout.set(MIN_FOCUSED_NODE_TIME);
   }
 
-  private async processVisual(trace: VisualTrace) {
+  private async processVisualTrace(trace: VisualTrace) {
     const { payload } = trace;
     const { visualType } = payload;
     const isImageType = visualType === BaseNode.Visual.VisualType.IMAGE;
@@ -469,6 +474,10 @@ class TraceController {
     if (!this.isPublicPrototype) {
       await this.navigateToFlow(diagramID);
     }
+  }
+
+  private async processGoToTrace({ payload: { request } }: GoToTrace) {
+    await this.next(request);
   }
 
   private async navigateToFlow(diagramID: string) {

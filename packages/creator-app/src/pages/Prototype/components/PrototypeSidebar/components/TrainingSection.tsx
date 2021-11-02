@@ -1,4 +1,4 @@
-import { PrototypeModel } from '@voiceflow/api-sdk';
+import { Models as BaseModels } from '@voiceflow/base-types';
 import { ClickableText, Flex, logger, TippyTooltip, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -52,7 +52,7 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
       intents: { new: [], deleted: [], updated: [] },
     } as ModelDiff,
     fetching: false,
-    trainedModel: null as PrototypeModel | null,
+    trainedModel: null as BaseModels.PrototypeModel | null,
     lastTrainedTime: 0,
   });
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.533.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.532.0...@voiceflow/creator-app@1.533.0) (2021-11-03)
+
+
+### Bug Fixes
+
+* handle new dialogflow scopes (VF-2155) ([#4435](https://github.com/voiceflow/creator-app/issues/4435)) ([734d9b8](https://github.com/voiceflow/creator-app/commit/734d9b815f50801fc410460a6da11863f47144c7))
+
+
+### Features
+
+* set all cookies to SameSite: strict by default (VF-2061) ([#4436](https://github.com/voiceflow/creator-app/issues/4436)) ([f4f1445](https://github.com/voiceflow/creator-app/commit/f4f14453d0c324d7197e6d0754b27e8dbceef3b1))
+
+
+
+
+
 # [1.532.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.531.0...@voiceflow/creator-app@1.532.0) (2021-11-02)
 
 

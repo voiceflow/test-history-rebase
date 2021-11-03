@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.30.0...@voiceflow/ui@1.31.0) (2021-11-03)
+
+
+### Bug Fixes
+
+* force release ([23d8a97](https://github.com/voiceflow/creator-app/commit/23d8a97b16e73ba4969a6b013e9ad0a4e5ea6bf2))
+
+
+### Features
+
+* set all cookies to SameSite: strict by default (VF-2061) ([#4436](https://github.com/voiceflow/creator-app/issues/4436)) ([f4f1445](https://github.com/voiceflow/creator-app/commit/f4f14453d0c324d7197e6d0754b27e8dbceef3b1))
+
+
+
+
+
 # [1.30.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.29.0...@voiceflow/ui@1.30.0) (2021-11-02)
 
 

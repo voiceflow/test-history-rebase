@@ -5,7 +5,7 @@ import { DiagramState, ModalType } from '@/constants';
 import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
 import { PublishContext, PublishContextValue } from '@/contexts';
 import * as Creator from '@/ducks/creator';
-import { useDidUpdateEffect, useModals, useSelector, useToggle, useTrackingEvents } from '@/hooks';
+import { useDidUpdateEffect, useLazyState, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { AlexaPublishJob, DialogflowPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
 import { isNotify, isReady } from '@/utils/job';
@@ -42,7 +42,8 @@ export const useBasePublish = <T extends PublishStageType, J extends PublishJob>
   canBePublished = true,
   onStateChanged,
 }: PublishOptions<T, J>): BasePublishApi<J> => {
-  const NO_POPUP_STAGES = [StageType.WAIT_INVOCATION_NAME, StageType.IDLE, StageType.PROGRESS, StageType.WAIT_ACCOUNT];
+  const waitAccountStages = [StageType.WAIT_ACCOUNT, StageType.FORCE_WAIT_ACCOUNT];
+  const noPopupStages = [StageType.WAIT_INVOCATION_NAME, StageType.IDLE, StageType.PROGRESS, ...waitAccountStages];
 
   const { job, cancel, publish, updateCurrentStage } = React.useContext(PublishContext)! as PublishContextValue<J>;
 
@@ -52,21 +53,18 @@ export const useBasePublish = <T extends PublishStageType, J extends PublishJob>
 
   const diagramState = useSelector(Creator.diagramStateSelector);
 
-  const [popupOpened, togglePopupOpened] = useToggle(false);
+  const [isPopupOpened, setPopupOpened] = useLazyState(false);
   const [invalidInvName, setInvalidInvName] = React.useState(false);
   const [waitingForCancel, setWaitingForCancel] = React.useState(false);
   const [successfullyPublished, setSuccessfullyPublished] = React.useState(false);
 
-  const popupOpenedRef = React.useRef(popupOpened);
-  popupOpenedRef.current = popupOpened;
-
   const stageType = job?.stage.type;
 
-  const noPopup = !!stageType && NO_POPUP_STAGES.includes(stageType);
+  const noPopup = !!stageType && noPopupStages.includes(stageType);
   const jobIsReady = isReady(job);
 
   const toggleLoginModal = React.useCallback(() => {
-    if (!needsLogin) {
+    if (!needsLogin && stageType !== StageType.FORCE_WAIT_ACCOUNT) {
       if (loginModalOpened) {
         closeLoginModal();
       } else {
@@ -76,20 +74,20 @@ export const useBasePublish = <T extends PublishStageType, J extends PublishJob>
 
     if (stageType === StageType.IDLE) {
       openLoginModal({ stage: stageType, onCancel, updateCurrentStage });
-    } else if (stageType === StageType.WAIT_ACCOUNT) {
+    } else if (waitAccountStages.includes(stageType!)) {
       if (loginModalOpened) {
         closeLoginModal();
         openLoginModal({ stage: stageType, onCancel, updateCurrentStage });
-      } else if (popupOpenedRef.current) {
+      } else if (isPopupOpened()) {
         openLoginModal({ stage: stageType, onCancel, updateCurrentStage });
       }
     } else {
       closeLoginModal();
     }
-  }, [needsLogin, stageType, popupOpened, loginModalOpened, closeLoginModal, openLoginModal, updateCurrentStage]);
+  }, [needsLogin, stageType, loginModalOpened, closeLoginModal, openLoginModal, updateCurrentStage]);
 
   const onCancel = React.useCallback(async () => {
-    togglePopupOpened(false);
+    setPopupOpened(false);
     setWaitingForCancel(true);
 
     await cancel();
@@ -98,9 +96,7 @@ export const useBasePublish = <T extends PublishStageType, J extends PublishJob>
   }, [cancel]);
 
   const onPublish = React.useCallback(() => {
-    popupOpenedRef.current = true;
-
-    togglePopupOpened(true);
+    setPopupOpened(true);
     toggleLoginModal();
 
     if (canBePublished) {
@@ -127,12 +123,18 @@ export const useBasePublish = <T extends PublishStageType, J extends PublishJob>
   React.useEffect(() => {
     if (job == null && invalidInvName) {
       setInvalidInvName(false);
-      togglePopupOpened(false);
+      setPopupOpened(false);
       return;
     }
 
-    if (!popupOpened && isNotify(job) && stageType !== StageType.WAIT_ACCOUNT && !waitingForCancel) {
-      togglePopupOpened(true);
+    const popupOpened = isPopupOpened();
+
+    if (!popupOpened && isNotify(job) && !waitAccountStages.includes(stageType!) && !waitingForCancel) {
+      setPopupOpened(true);
+    }
+
+    if (stageType === StageType.FORCE_WAIT_ACCOUNT) {
+      setPopupOpened(true);
     }
 
     toggleLoginModal();
@@ -149,7 +151,7 @@ export const useBasePublish = <T extends PublishStageType, J extends PublishJob>
     }
 
     onStateChanged({ cancel, stageType, popupOpened });
-  }, [popupOpened, stageType, onStateChanged]);
+  }, [stageType, onStateChanged]);
 
   return {
     job,
@@ -157,7 +159,7 @@ export const useBasePublish = <T extends PublishStageType, J extends PublishJob>
     onCancel,
     onPublish,
     needsLogin,
-    popupOpened,
+    popupOpened: isPopupOpened(),
     successfullyPublished,
   };
 };

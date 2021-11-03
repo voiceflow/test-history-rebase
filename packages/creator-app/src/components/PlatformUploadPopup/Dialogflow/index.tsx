@@ -6,7 +6,7 @@ import { ExportContext, PublishContext } from '@/contexts';
 import { ErrorStage, LoaderStage, ProgressStage } from '../components';
 import { PlatformContentProps } from '../constants';
 import SuccessStage from './SuccessStage';
-import WaitProjectStage from './WaitProjectState';
+import WaitProjectStage from './WaitProjectStage';
 
 export const Dialogflow: React.FC<PlatformContentProps> = ({ export: isExport, setMultiProjects, createNewAgent }) => {
   const exportContextValue = React.useContext(ExportContext)!;

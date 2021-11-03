@@ -71,11 +71,15 @@ export namespace AlexaPublishJob {
 
   export type WaitAccountStage = JobStage<AlexaStageType.WAIT_ACCOUNT>;
 
+  export type ForceWaitAccountStage = JobStage<AlexaStageType.FORCE_WAIT_ACCOUNT>;
+
   export type WaitVendorsStage = JobStage<AlexaStageType.WAIT_VENDORS>;
 
   export type WaitInvocationNameStage = JobStage<AlexaStageType.WAIT_INVOCATION_NAME, { error: string }>;
 
-  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | WaitInvocationNameStage>;
+  export type AnyJob = Job<
+    IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | ForceWaitAccountStage | WaitVendorsStage | WaitInvocationNameStage
+  >;
 }
 
 export namespace AlexaExportJob {
@@ -139,11 +143,15 @@ export namespace DialogflowPublishJob {
 
   export type WaitAccountStage = JobStage<DialogflowStageType.WAIT_ACCOUNT>;
 
+  export type ForceWaitAccountStage = JobStage<DialogflowStageType.FORCE_WAIT_ACCOUNT>;
+
   export type WaitProjectStage = JobStage<DialogflowStageType.WAIT_PROJECT>;
 
   export type WaitInvocationNameStage = JobStage<DialogflowStageType.WAIT_INVOCATION_NAME, { error: string }>;
 
-  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
+  export type AnyJob = Job<
+    IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | ForceWaitAccountStage | WaitProjectStage | WaitInvocationNameStage
+  >;
 }
 
 export namespace DialogflowExportJob {
@@ -207,11 +215,15 @@ export namespace GooglePublishJob {
 
   export type WaitAccountStage = JobStage<GoogleStageType.WAIT_ACCOUNT>;
 
+  export type ForceWaitAccountStage = JobStage<GoogleStageType.FORCE_WAIT_ACCOUNT>;
+
   export type WaitProjectStage = JobStage<GoogleStageType.WAIT_PROJECT>;
 
   export type WaitInvocationNameStage = JobStage<GoogleStageType.WAIT_INVOCATION_NAME, { error: string }>;
 
-  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
+  export type AnyJob = Job<
+    IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | ForceWaitAccountStage | WaitProjectStage | WaitInvocationNameStage
+  >;
 }
 
 export namespace GoogleExportJob {

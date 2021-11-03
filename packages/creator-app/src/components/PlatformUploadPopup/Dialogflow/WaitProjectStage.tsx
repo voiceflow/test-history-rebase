@@ -5,7 +5,7 @@ import client from '@/client';
 import { useAsyncMountUnmount, useTeardown } from '@/hooks';
 import { UploadProject } from '@/models';
 
-import { LoaderStage, StageAlert, StageContainer, StageEmpty, StageProjectList } from '../components';
+import { LoaderStage, StageAlert, StageContainer, StageProjectList } from '../components';
 import { Project } from '../constants';
 
 interface WaitDFESProjectStageProps {
@@ -29,10 +29,9 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
     try {
       const projectIDs = await client.platform.dialogflow.project.getDialogFlowESProjects();
 
-      api.update({ error: false, loading: false });
-
       setProjects(projectIDs);
       setMultiProjects?.(projectIDs.length > 0);
+      api.update({ error: false, loading: false });
     } catch {
       api.update({ error: true, loading: false });
     }
@@ -45,7 +44,7 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
 
     if (state.error) return <StageAlert>Failed to retrieve projects for your Google developer account</StageAlert>;
 
-    if (projects.length > 0)
+    if (projects.length > 0) {
       return (
         <StageProjectList
           projects={projectList}
@@ -55,17 +54,19 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
           onProjectSelected={handleProjectSelected}
         />
       );
+    }
 
-    return (
-      <StageEmpty
-        description="No agents exist on the Dialogflow ES Console to connect to. Create a new agent now"
-        footerSubmitText="Create New Agent"
-        onFooterClick={createNewAgent}
-      />
-    );
+    return null;
   }, [state, projects]);
 
-  return <StageContainer noPadding>{stateContent}</StageContainer>;
+  const hasNoAgents = !stateContent;
+  React.useEffect(() => {
+    if (hasNoAgents) {
+      createNewAgent();
+    }
+  }, [hasNoAgents]);
+
+  return stateContent ? <StageContainer noPadding>{stateContent}</StageContainer> : null;
 };
 
 export default WaitDFESProjectStage;

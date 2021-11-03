@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.533.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.533.0...@voiceflow/creator-app@1.533.1) (2021-11-03)
+
+
+### Reverts
+
+* Revert "fix: handle new dialogflow scopes (VF-2155) (#4435)" (#4441) ([5fcc824](https://github.com/voiceflow/creator-app/commit/5fcc824122ff2450d4cbc3df51881f00294c391f)), closes [#4435](https://github.com/voiceflow/creator-app/issues/4435) [#4441](https://github.com/voiceflow/creator-app/issues/4441)
+
+
+
+
+
 # [1.533.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.532.0...@voiceflow/creator-app@1.533.0) (2021-11-03)
 
 

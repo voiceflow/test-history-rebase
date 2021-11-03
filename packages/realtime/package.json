@@ -6,7 +6,7 @@
     "@logux/core": "^0.7.0",
     "@logux/server": "^0.10.6",
     "@voiceflow/alexa-types": "2.0.3",
-    "@voiceflow/api-sdk": "3.0.4",
+    "@voiceflow/api-sdk": "3.1.0",
     "@voiceflow/backend-utils": "4.1.0",
     "@voiceflow/base-types": "^2.1.2",
     "@voiceflow/common": "7.2.0",

@@ -28,7 +28,7 @@
     "@types/chai": "^4.2.21",
     "@types/faker": "^5.5.8",
     "@types/sinon": "^10.0.2",
-    "@voiceflow/api-sdk": "1.42.2",
+    "@voiceflow/api-sdk": "3.1.0",
     "chai": "^4.3.4",
     "cooky-cutter": "^1.5.4",
     "draft-js": "^0.11.2",
@@ -49,7 +49,7 @@
   "main": "build/common/index.js",
   "module": "build/module/index.js",
   "peerDependencies": {
-    "@voiceflow/api-sdk": "1.42.2",
+    "@voiceflow/api-sdk": "3.1.0",
     "draft-js": "^0.11.2",
     "polished": "^3.6.5",
     "slate": "0.63.0"

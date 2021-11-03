@@ -18,7 +18,7 @@
     "@seznam/compose-react-refs": "^1.0.6",
     "@types/recompose": "^0.30.9",
     "@voiceflow/alexa-types": "2.0.3",
-    "@voiceflow/api-sdk": "3.0.4",
+    "@voiceflow/api-sdk": "3.1.0",
     "@voiceflow/base-types": "2.1.2",
     "@voiceflow/chat-types": "2.0.3",
     "@voiceflow/common": "7.2.0",

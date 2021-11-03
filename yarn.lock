@@ -4530,7 +4530,7 @@
   dependencies:
     "@types/chai" "*"
 
-"@types/chai@*", "@types/chai@^4.2.11", "@types/chai@^4.2.15", "@types/chai@^4.2.16", "@types/chai@^4.2.21":
+"@types/chai@*", "@types/chai@^4.2.15", "@types/chai@^4.2.16", "@types/chai@^4.2.21":
   version "4.2.22"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.22.tgz#47020d7e4cf19194d43b5202f35f75bd2ad35ce7"
   integrity sha512-tFfcE+DSTzWAgifkjik9AySNqIyNoYwmR+uecPwwD/XRNfvOjmC/FjCxpiUGDkDVDphPfCUecSQVFw+lN3M3kQ==
@@ -5619,22 +5619,10 @@
     "@voiceflow/voice-types" "^2.0.3"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/api-sdk@1.42.2":
-  version "1.42.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.42.2.tgz#f7730fd8c8ef55234403165655073e129e1871bd"
-  integrity sha512-kJvnPzgkCLN0EHefCBsAH0z0RcULdaTWt8qlyEuZUG+MhbsclAVw5JfO/4fsAjnLqoLlJWXWDLWVWSLxtMxBPw==
-  dependencies:
-    "@types/chai" "^4.2.11"
-    "@types/jsonwebtoken" "^8.5.0"
-    "@voiceflow/common" "^6.9.3"
-    atob "^2.1.2"
-    axios "^0.21.1"
-    superstruct "^0.10.12"
-
-"@voiceflow/api-sdk@3.0.4":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.0.4.tgz#552b76d8870981c73b4e1af7cf66150d8a57a468"
-  integrity sha512-raWaSnBd9EoRF6dzG9BCe8dePZ5jlDoYFPz9oilArVpQl9dmm4lIwdhpq/MZTS3eCptos8PjRDPbUAPu+h4UbA==
+"@voiceflow/api-sdk@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.1.0.tgz#381f1e0f8b6861619aba8d3d371a72667994b07f"
+  integrity sha512-OC6W5x+WMxiaOvTJDQp1xmehCPATplL1qifpYZ7IQvxizHgZzCNYOJX88YDODmvnpNQOgwxqnFegemjF2RyXtw==
   dependencies:
     "@voiceflow/base-types" "^2.1.2"
     "@voiceflow/common" "6.9.3"
@@ -5711,7 +5699,7 @@
   dependencies:
     "@commitlint/config-conventional" "^12.1.4"
 
-"@voiceflow/common@6.9.3", "@voiceflow/common@^6.9.3":
+"@voiceflow/common@6.9.3":
   version "6.9.3"
   resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.9.3.tgz#68dfff5485901f2d62e5e55dd6cd6c65302e8bee"
   integrity sha512-i7/8bCGzbJy+j8NY9v3dR1BjLPNnShbJWR9FQisRbLsml3gwhNuVTO3wY0U+PucR133WGX9vZlIMN+u7ibcXQQ==
@@ -12310,9 +12298,9 @@ follow-redirects@^1.0.0:
   integrity sha512-yLR6WaE2lbF0x4K2qE2p9PEXKLDjUjnR/xmjS3wHAYxtlsI9MLLBJUZirAHKzUZDGLxje7w/cXR49WOUo4rbsA==
 
 follow-redirects@^1.14.0:
-  version "1.14.4"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.4.tgz#838fdf48a8bbdd79e52ee51fb1c94e3ed98b9379"
-  integrity sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==
+  version "1.14.5"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.5.tgz#f09a5848981d3c772b5392309778523f8d85c381"
+  integrity sha512-wtphSXy7d4/OR+MvIFbCVBDzZ5520qV8XfPklSN5QtxuMUJZ+b0Wnst1e1lCDocfzuCkHqj8k0FpZqO+UIaKNA==
 
 for-in@^1.0.1, for-in@^1.0.2:
   version "1.0.2"

@@ -36,11 +36,24 @@ export interface ProjectVersion {
   name?: string;
   manualSave?: boolean;
   created: string;
-  platform: Constants.PlatformType;
 }
+
+const FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS = 30;
+
+const DEFAULT_FETCH_LIMIT = 15;
+
+const versionListAdapter = (version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean }) => ({
+  creatorID: version.creatorID,
+  versionID: version._id,
+  manualSave: version.manualSave,
+  name: version.name,
+  created: ObjectID.isValid(version._id) ? new ObjectID(version._id).getTimestamp().toString() : '',
+});
 
 const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, activeVersionID, setConfirm, goToCanvas, platform }) => {
   const [loading, setLoading] = React.useState(true);
+
+  const [versionList, setVersionList] = React.useState<ProjectVersion[]>([]);
   const [versions, setVersions] = React.useState<ProjectVersion[]>([]);
   const { name } = getSettingsMetaProps(platform);
   const projectVersionsEnabled = useFeature(FeatureFlag.PROJECT_VERSIONS)?.isEnabled;
@@ -75,6 +88,31 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
     });
   };
 
+  const fetchBackupsV2 = React.useCallback(async () => {
+    const offset = versionList.length;
+
+    if (offset > FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS) {
+      toast.error('Upgrade workspace plan to access older versions.');
+      return;
+    }
+    let limit = DEFAULT_FETCH_LIMIT;
+    if (offset + limit > FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS) {
+      limit = FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS - offset;
+    }
+
+    try {
+      const moreVersions = await client.api.project.getVersionsV2(projectID!, { offset, limit });
+      setVersionList([
+        ...versionList,
+        ...moreVersions.map((version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean }) => versionListAdapter(version)),
+      ]);
+    } catch (err) {
+      toast.error('Error fetching versions');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const fetchBackups = React.useCallback(async () => {
     if (!projectID) {
       Sentry.error(Errors.noActiveProjectID());
@@ -88,6 +126,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
         (version) => (version.platformData as any).status?.stage !== 'LIVE'
       );
       setVersions(
+        // eslint-disable-next-line sonarjs/no-identical-functions
         dbVersions.map((version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean }) => ({
           creatorID: version.creatorID,
           versionID: version._id,
@@ -106,7 +145,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
 
   useSetup(() => {
     trackingEvents.trackActiveProjectVersionPage();
-    fetchBackups();
+    projectVersionsEnabled ? fetchBackupsV2() : fetchBackups();
   });
 
   return (
@@ -136,7 +175,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
           <FadeLeftContainer>
             {projectVersionsEnabled ? (
               // Project Versions V2
-              <VersionList versions={versions} swapVersions={swapVersions} />
+              <VersionList versions={versionList} swapVersions={swapVersions} />
             ) : (
               <>
                 {versions.length ? (
@@ -151,7 +190,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
                         <span>{dayjs(version.created).fromNow()}</span>
                         <span style={{ color: '#62778c' }}>
                           <Box display="inline-block" mr={6} mb={-1}>
-                            <SvgIcon size={12} icon={version.platform === Constants.PlatformType.GOOGLE ? 'google' : 'amazon'} />
+                            <SvgIcon size={12} icon={platform === Constants.PlatformType.GOOGLE ? 'google' : 'amazon'} />
                           </Box>
                           Automatic
                         </span>

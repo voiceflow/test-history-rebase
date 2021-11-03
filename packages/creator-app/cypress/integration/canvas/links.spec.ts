@@ -25,7 +25,7 @@ context('Canvas - Links', () => {
     canvasPage.el.link.should('have.length', 1);
   });
 
-  it('remove link', () => {
+  it.skip('remove link', () => {
     cy.awaitCanvasAnimation();
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 50]);
 

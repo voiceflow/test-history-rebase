@@ -36,11 +36,6 @@ Cypress.Commands.add('setVerified', () => {
 Cypress.Commands.add('setAuth', () => {
   const token = SESSION_CONTEXT.get(TOKEN_KEY);
 
-  cy.setCookie(
-    'persist%3Asession%3Atoken',
-    `{%22value%22:%22%5C%22${token}%5C%22%22%2C%22_persist%22:%22{%5C%22version%5C%22:-1%2C%5C%22rehydrated%5C%22:true}%22}`
-  );
-  cy.setCookie('reduxPersistIndex', '[%22persist:session:token%22]');
   cy.setCookie('auth_vf', token);
 
   cy.window().then((window) =>

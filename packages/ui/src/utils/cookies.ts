@@ -8,4 +8,4 @@ export const getAllCookies = () => cookies.getAll();
 
 export const removeCookie = (key: string, options?: CookieSetOptions) => cookies.remove(key, options);
 
-export const setCookie = (key: string, value: string, options?: CookieSetOptions) => cookies.set(key, value, options);
+export const setCookie = (key: string, value: string, options?: CookieSetOptions) => cookies.set(key, value, { sameSite: 'strict', ...options });

@@ -17,6 +17,7 @@ export interface ExportContextValue {
   job: AnyExportJob;
   start: () => Promise<void>;
   cancel: () => Promise<void>;
+  retry: () => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
 }
 
@@ -86,6 +87,11 @@ export const ExportProvider: React.FC = ({ children }) => {
     setJob(null);
   }, [projectID, platformClient]);
 
+  const retry = React.useCallback(async () => {
+    await cancel();
+    await start();
+  }, [start, cancel]);
+
   useDidUpdateEffect(() => {
     // stop pulling when job is finished or job was canceled
     if (job === null || job.status === JobStatus.FINISHED) {
@@ -113,7 +119,7 @@ export const ExportProvider: React.FC = ({ children }) => {
     stopPulling();
   });
 
-  const api = useContextApi({ job, cancel, start, updateCurrentStage });
+  const api = useContextApi({ job, cancel, start, retry, updateCurrentStage });
 
   return <ExportContext.Provider value={api}>{children}</ExportContext.Provider>;
 };

@@ -1,24 +1,27 @@
-import { useSmartReducerV2 } from '@voiceflow/ui';
+import { NetworkError, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { useAsyncMountUnmount, useTeardown } from '@/hooks';
+import * as Account from '@/ducks/account';
+import { useAsyncMountUnmount, useDispatch, useTeardown } from '@/hooks';
 import { UploadProject } from '@/models';
 
 import { LoaderStage, StageAlert, StageContainer, StageEmpty, StageProjectList } from '../components';
 import { Project } from '../constants';
 
 interface WaitDFESProjectStageProps {
-  cancel: () => void;
-  onClose?: () => void;
+  cancel: VoidFunction;
   setMultiProjects?: (value: boolean) => void;
-  createNewAgent: () => void;
+  createNewAgent: VoidFunction;
+  retry: (reset: () => Promise<void>) => Promise<void>;
   updateCurrentStage: (selected: UploadProject.Dialogflow | null) => void;
 }
 
-const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurrentStage, setMultiProjects, createNewAgent }) => {
+const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurrentStage, setMultiProjects, createNewAgent, retry }) => {
   const [projects, setProjects] = React.useState<UploadProject.Dialogflow[]>([]);
   const projectList = projects.map((project) => ({ id: project.googleProjectID, name: project.agentName }));
+
+  const loadGoogleAccount = useDispatch(Account.google.loadAccount);
 
   const [state, api] = useSmartReducerV2({ error: false, loading: true });
 
@@ -33,8 +36,16 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
 
       setProjects(projectIDs);
       setMultiProjects?.(projectIDs.length > 0);
-    } catch {
-      api.update({ error: true, loading: false });
+      api.update({ error: false, loading: false });
+    } catch (err) {
+      if (err instanceof NetworkError && err.statusCode === 403) {
+        retry(async () => {
+          await client.platform.google.session.unlinkAccount();
+          await loadGoogleAccount();
+        });
+      } else {
+        api.update({ error: true, loading: false });
+      }
     }
   });
 

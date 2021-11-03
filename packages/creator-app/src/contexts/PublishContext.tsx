@@ -17,6 +17,7 @@ import * as Sentry from '@/vendors/sentry';
 export interface PublishContextValue<T extends AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob> {
   job: Nullable<T>;
   cancel: () => Promise<void>;
+  retry: (reset?: () => Promise<void>) => Promise<void>;
   publish: (submit?: boolean) => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
 }
@@ -100,6 +101,15 @@ export const PublishProvider: React.FC = ({ children }) => {
     await platformClient?.publish.cancel(projectID);
   }, [projectID, platformClient]);
 
+  const retry = React.useCallback(
+    async (reset?: () => Promise<void>) => {
+      await cancel();
+      await reset?.();
+      await publish();
+    },
+    [publish, cancel]
+  );
+
   useSetup(getJob);
 
   useDidUpdateEffect(() => {
@@ -135,7 +145,7 @@ export const PublishProvider: React.FC = ({ children }) => {
     stopPulling();
   });
 
-  const api = useContextApi({ job, cancel, publish, updateCurrentStage });
+  const api = useContextApi({ job, cancel, publish, retry, updateCurrentStage });
 
   return <PublishContext.Provider value={api}>{children}</PublishContext.Provider>;
 };

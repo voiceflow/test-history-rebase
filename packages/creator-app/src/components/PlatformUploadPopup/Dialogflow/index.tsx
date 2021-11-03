@@ -2,13 +2,14 @@ import React from 'react';
 
 import { DialogflowStageType } from '@/constants/platforms';
 import { ExportContext, PublishContext } from '@/contexts';
+import { noop } from '@/utils/functional';
 
 import { ErrorStage, LoaderStage, ProgressStage } from '../components';
 import { PlatformContentProps } from '../constants';
 import SuccessStage from './SuccessStage';
 import WaitProjectStage from './WaitProjectState';
 
-export const Dialogflow: React.FC<PlatformContentProps> = ({ export: isExport, setMultiProjects, createNewAgent }) => {
+export const Dialogflow: React.FC<PlatformContentProps> = ({ export: isExport, setMultiProjects, createNewAgent = noop }) => {
   const exportContextValue = React.useContext(ExportContext)!;
   const publishContextValue = React.useContext(PublishContext)!;
 
@@ -29,7 +30,8 @@ export const Dialogflow: React.FC<PlatformContentProps> = ({ export: isExport, s
           updateCurrentStage={contextValue.updateCurrentStage}
           cancel={contextValue.cancel}
           setMultiProjects={setMultiProjects}
-          createNewAgent={createNewAgent!}
+          createNewAgent={createNewAgent}
+          retry={contextValue.retry}
         />
       );
     default:

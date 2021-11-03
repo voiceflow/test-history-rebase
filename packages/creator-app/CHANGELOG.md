@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.534.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.533.1...@voiceflow/creator-app@1.534.0) (2021-11-03)
+
+
+### Bug Fixes
+
+* force user to re-link google account for new scopes (VF-2155) ([#4442](https://github.com/voiceflow/creator-app/issues/4442)) ([8f3f471](https://github.com/voiceflow/creator-app/commit/8f3f47138dc1dd9e803a847459c810dd8bc49499))
+
+
+### Features
+
+* fetch project versions v2 (VF-000) ([#4415](https://github.com/voiceflow/creator-app/issues/4415)) ([00f7873](https://github.com/voiceflow/creator-app/commit/00f7873f4577c95e03f6697b2f6331405e126660))
+
+
+
+
+
 ## [1.533.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.533.0...@voiceflow/creator-app@1.533.1) (2021-11-03)
 
 

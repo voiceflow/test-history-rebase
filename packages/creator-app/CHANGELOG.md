@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.534.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.534.2...@voiceflow/creator-app@1.534.3) (2021-11-04)
+
+
+### Bug Fixes
+
+* await retry of publishing flow (VF-2155) ([#4551](https://github.com/voiceflow/creator-app/issues/4551)) ([381cd0c](https://github.com/voiceflow/creator-app/commit/381cd0c470b717fcd842779313b98fe67ed17cf5))
+
+
+
+
+
 ## [1.534.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.534.1...@voiceflow/creator-app@1.534.2) (2021-11-04)
 
 

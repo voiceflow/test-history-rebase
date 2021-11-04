@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.31.0...@voiceflow/ui@1.31.1) (2021-11-04)
+
+
+### Bug Fixes
+
+* await retry of publishing flow (VF-2155) ([#4551](https://github.com/voiceflow/creator-app/issues/4551)) ([381cd0c](https://github.com/voiceflow/creator-app/commit/381cd0c470b717fcd842779313b98fe67ed17cf5))
+
+
+
+
+
 # [1.31.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.30.0...@voiceflow/ui@1.31.0) (2021-11-03)
 
 

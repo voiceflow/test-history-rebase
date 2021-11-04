@@ -99,7 +99,7 @@ const CanvasHeader: React.FC = () => {
                 active={imModal.isOpened}
                 isSmall
                 onClick={trackingEventsWrapper(() => imModal.open(), 'trackCanvasControlInteractionModel')}
-                tooltip={{ title: 'Model', hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL] }}
+                tooltip={{ title: 'NLU Model', hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL] }}
               />
             </>
           )}

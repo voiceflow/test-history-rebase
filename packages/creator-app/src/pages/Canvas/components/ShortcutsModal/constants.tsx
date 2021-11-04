@@ -133,7 +133,7 @@ export const SHORTCUTS: ShortcutItem[] = [
     command: <ShortcutCommand>I</ShortcutCommand>,
   },
   {
-    title: 'Model',
+    title: 'NLU Model',
     command: <ShortcutCommand>M</ShortcutCommand>,
   },
   {

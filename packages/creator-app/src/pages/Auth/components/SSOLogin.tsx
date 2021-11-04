@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, FlexApart, NetworkError, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, FlexApart, isNetworkError, toast } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
@@ -29,8 +29,8 @@ const SSOLogin: React.FC<SSOLoginProps & ConnectedSSOLoginProps> = ({ domain, cl
       try {
         await ssoLogin({ domain, code, coupon: coupon || undefined });
       } catch (err) {
-        if (err instanceof NetworkError && err.statusCode === 409) {
-          goToAdoptSSO({ domain, clientID, email: err.body.email });
+        if (isNetworkError<{ email: string }>(err) && err.statusCode === 409) {
+          goToAdoptSSO({ domain, clientID, email: err.body!.email });
         } else {
           throw err;
         }

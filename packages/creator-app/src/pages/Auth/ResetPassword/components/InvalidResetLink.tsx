@@ -1,4 +1,4 @@
-import { Box, BoxFlexApart, Button, ButtonVariant, ClickableText, NetworkError, preventDefault, toast } from '@voiceflow/ui';
+import { Box, BoxFlexApart, Button, ButtonVariant, ClickableText, isNetworkError, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -22,7 +22,7 @@ const InvalidResetLink: React.FC<InvalidResetLinkProps & ConnectedInvalidResetLi
 
       setStage(ResetPasswordStage.DONE);
     } catch (err) {
-      if (err instanceof NetworkError && err.statusCode === 409) {
+      if (isNetworkError(err) && err.statusCode === 409) {
         toast.error('Too many password reset attempts - Wait 24 hours before the next attempt');
       } else {
         toast.error('Something went wrong, please wait and retry or contact support');

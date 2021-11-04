@@ -25,8 +25,16 @@ export enum StatusCode {
   SERVER_ERROR = 500,
 }
 
+const NETWORK_ERROR = Symbol('vf network error identifier');
+
 export class NetworkError<R> extends Error {
+  static symbol = NETWORK_ERROR;
+
+  [NETWORK_ERROR] = true;
+
   constructor(public statusCode: number, message: string, public body?: R) {
     super(message);
   }
 }
+
+export const isNetworkError = <R = unknown>(err: any): err is NetworkError<R> => err instanceof NetworkError || !!err[NETWORK_ERROR];

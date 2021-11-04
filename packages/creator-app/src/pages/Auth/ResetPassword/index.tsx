@@ -1,4 +1,4 @@
-import { ClickableText, NetworkError, Spinner, toast } from '@voiceflow/ui';
+import { ClickableText, isNetworkError, Spinner, toast } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -53,7 +53,7 @@ const ResetPassword: React.FC<RouteComponentProps<{ id: string }> & ConnectedRes
 
       setStage(ResetPasswordStage.IDLE);
     } catch (err) {
-      if (!(err instanceof NetworkError) || err.statusCode >= 500) {
+      if (!isNetworkError(err) || err.statusCode >= 500) {
         toast.error('Whoops, something went wrong with the server');
       }
       setStage(ResetPasswordStage.FAILED);

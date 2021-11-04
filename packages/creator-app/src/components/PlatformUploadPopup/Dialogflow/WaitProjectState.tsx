@@ -1,4 +1,4 @@
-import { NetworkError, useSmartReducerV2 } from '@voiceflow/ui';
+import { isNetworkError, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -38,8 +38,8 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
       setMultiProjects?.(projectIDs.length > 0);
       api.update({ error: false, loading: false });
     } catch (err) {
-      if (err instanceof NetworkError && err.statusCode === 403) {
-        retry(async () => {
+      if (isNetworkError(err) && err.statusCode === 403) {
+        await retry(async () => {
           await client.platform.google.session.unlinkAccount();
           await loadGoogleAccount();
         });

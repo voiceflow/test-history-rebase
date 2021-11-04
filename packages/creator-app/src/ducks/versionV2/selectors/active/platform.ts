@@ -62,27 +62,3 @@ export const slotTypesSelector = createSelector(
   (locales, platform, isFeatureEnabled) =>
     getSlotTypes({ locales: locales as string[], platform, natoEnabled: !!isFeatureEnabled(FeatureFlag.NATO_APCO) })
 );
-
-export const triggerPhraseSelector = createSelector([ProjectV2.active.projectSelector, identity], (activeProject, rootState) => {
-  if (!activeProject) return [];
-
-  switch (activeProject.platform) {
-    case Constants.PlatformType.DIALOGFLOW_ES_CHAT:
-    case Constants.PlatformType.DIALOGFLOW_ES_VOICE:
-      return dialogflow.triggerPhraseSelector(rootState);
-    default:
-      return [];
-  }
-});
-
-export const agentNameSelector = createSelector([ProjectV2.active.projectSelector, identity], (activeProject, rootState) => {
-  if (!activeProject) return null;
-
-  switch (activeProject.platform) {
-    case Constants.PlatformType.DIALOGFLOW_ES_CHAT:
-    case Constants.PlatformType.DIALOGFLOW_ES_VOICE:
-      return dialogflow.agentNameSelector(rootState);
-    default:
-      return null;
-  }
-});

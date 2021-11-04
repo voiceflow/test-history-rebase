@@ -18,9 +18,9 @@ const sectionStyling = {
 
 const DialogflowConsole: React.FC<DialogflowConsoleProps> = ({ platformMeta }) => {
   const { descriptors } = platformMeta;
-  const triggerPhrase = useSelector(VersionV2.active.triggerPhraseSelector);
+  const triggerPhrase = useSelector(VersionV2.active.dialogflow.triggerPhraseSelector);
   const [newTriggerPhrase, setNewTriggerPhrase] = React.useState(triggerPhrase[0] ?? 'Hello');
-  const saveTriggerPhrase = useDispatch(Version.saveTriggerPhrase);
+  const saveTriggerPhrase = useDispatch(Version.dialogflow.saveTriggerPhrase);
 
   const saveSettings = async () => {
     await Promise.all([saveTriggerPhrase([newTriggerPhrase])]);

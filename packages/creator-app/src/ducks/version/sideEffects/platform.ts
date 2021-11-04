@@ -134,32 +134,3 @@ export const updateInvocationName =
       default: // noop
     }
   };
-
-// TODO: atomic-actions
-export const saveTriggerPhrase =
-  (triggerPhrase?: string[]): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
-    const activeTriggerPhrase = VersionV2.active.triggerPhraseSelector(state);
-
-    Errors.assertVersionID(versionID);
-
-    if (activeTriggerPhrase === triggerPhrase) return;
-
-    await dispatch(dialogflow.patchPublishing({ triggerPhrase }));
-  };
-
-export const updateAgentName =
-  (agentName?: string): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
-    const activeAgentName = VersionV2.active.agentNameSelector(state);
-
-    Errors.assertVersionID(versionID);
-
-    if (activeAgentName === agentName) return;
-
-    await dispatch(dialogflow.patchPublishing({ agentName }));
-  };

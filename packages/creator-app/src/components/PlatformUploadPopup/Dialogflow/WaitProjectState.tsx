@@ -23,12 +23,12 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
   const projectList = projects.map((project) => ({ id: project.googleProjectID, name: project.agentName }));
 
   const loadGoogleAccount = useDispatch(Account.google.loadAccount);
-  const patchPublishing = useDispatch(Version.dialogflow.patchPublishing);
+  const updateAgentName = useDispatch(Version.dialogflow.updateAgentName);
 
   const [state, api] = useSmartReducerV2({ error: false, loading: true });
 
   const handleProjectSelected = async (selectedProject: Project) => {
-    await patchPublishing({ agentName: selectedProject.name });
+    await updateAgentName(selectedProject.name);
 
     updateCurrentStage({ googleProjectID: selectedProject.id, agentName: selectedProject.name });
   };

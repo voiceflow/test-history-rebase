@@ -246,7 +246,7 @@ const mapStateToProps = {
   versionID: Session.activeVersionIDSelector,
   project: ProjectV2.active.projectSelector,
   invocationName: VersionV2.active.invocationNameSelector,
-  agentName: VersionV2.active.agentNameSelector,
+  agentName: VersionV2.active.dialogflow.agentNameSelector,
   locales: VersionV2.active.localesSelector,
 };
 
@@ -255,7 +255,7 @@ const mapDispatchToProps = {
   updateProjectName: Project.updateActiveProjectName,
   updateLocales: Version.updateLocales,
   updateProjectImage: Project.updateProjectImage,
-  updateAgentName: Version.updateAgentName,
+  updateAgentName: Version.dialogflow.updateAgentName,
 };
 
 type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

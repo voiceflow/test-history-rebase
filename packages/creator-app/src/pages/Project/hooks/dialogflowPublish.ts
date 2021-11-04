@@ -19,7 +19,7 @@ export interface DialogflowPublishApi extends BasePublishApi<DialogflowPublishJo
 
 export const useDialogflowPublish = (): DialogflowPublishApi => {
   const google = useSelector(Account.googleAccountSelector);
-  const updateAgentName = useDispatch(Version.updateAgentName);
+  const updateAgentName = useDispatch(Version.dialogflow.updateAgentName);
 
   const loadGoogleAccount = useDispatch(Account.google.loadAccount);
 

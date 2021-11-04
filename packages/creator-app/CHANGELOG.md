@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.534.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.534.0...@voiceflow/creator-app@1.534.1) (2021-11-04)
+
+
+### Bug Fixes
+
+* update text color ([#4446](https://github.com/voiceflow/creator-app/issues/4446)) ([cc4f4a2](https://github.com/voiceflow/creator-app/commit/cc4f4a2215312920903f34fe6044339fad9e4400))
+* update tooltip text ([#4445](https://github.com/voiceflow/creator-app/issues/4445)) ([b887ab9](https://github.com/voiceflow/creator-app/commit/b887ab9ebf973f08d82ac47d05e5d951d3f2b1fc))
+
+
+
+
+
 # [1.534.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.533.1...@voiceflow/creator-app@1.534.0) (2021-11-03)
 
 

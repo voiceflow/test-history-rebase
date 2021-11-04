@@ -5608,10 +5608,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
-"@voiceflow/alexa-types@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-2.0.3.tgz#9b5de5f7f893abc76fe37145587fc9bfa5cb6a56"
-  integrity sha512-oQs62heFUgMqpz5FZHhlg2x/V+TeF1LKirWRBk5libh3GeZRs0gYZdKs6EsrORRLaV/eFqzy4U1RICh1yiYDIQ==
+"@voiceflow/alexa-types@2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-2.0.5.tgz#6da40bb1a1b85791584cb1635ee12510f649d570"
+  integrity sha512-XgLc6mxLwUKfcz1lKrXhkxFE9ojLiC4SWA6JgGZLlu0ZUlUrsVqs3JYXNTm93SaQjeBXtMgG3H6uwdxDgbwUfA==
   dependencies:
     "@voiceflow/base-types" "^2.1.2"
     "@voiceflow/common" "6.9.3"

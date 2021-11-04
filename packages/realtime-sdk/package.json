@@ -6,7 +6,7 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@voiceflow/alexa-types": "2.0.3",
+    "@voiceflow/alexa-types": "2.0.5",
     "@voiceflow/base-types": "2.1.2",
     "@voiceflow/chat-types": "2.0.3",
     "@voiceflow/common": "7.2.0",

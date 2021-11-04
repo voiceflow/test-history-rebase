@@ -6,5 +6,6 @@
       "matchPackagePatterns": ["*"],
       "enabled": true
     }
-  ]
+  ],
+  "prConcurrentLimit": 5
 }

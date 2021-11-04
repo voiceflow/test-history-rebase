@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.37.0...@voiceflow/realtime-sdk@1.37.1) (2021-11-04)
+
+
+### Bug Fixes
+
+* bump alexa types (VF-000) ([#4454](https://github.com/voiceflow/creator-app/issues/4454)) ([cadf013](https://github.com/voiceflow/creator-app/commit/cadf013cc9f49325c69b1310154a3002747a01dc))
+
+
+
+
+
 # [1.37.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.36.1...@voiceflow/realtime-sdk@1.37.0) (2021-11-03)
 
 

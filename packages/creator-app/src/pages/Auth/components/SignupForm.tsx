@@ -12,7 +12,7 @@ import { useDebouncedCallback, useEnableDisable } from '@/hooks';
 import { Query } from '@/models';
 import { ConnectedProps, MergeArguments } from '@/types';
 
-import { SSO_REQUIRED } from '../constants';
+import { MIN_PASSWORD_LENGTH, SSO_REQUIRED } from '../constants';
 import { getDomainSAML } from '../hooks';
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
@@ -27,8 +27,6 @@ export interface SignupFormProps {
   query: Query.Auth;
   promo?: boolean;
 }
-
-const SIGNUP_MIN_PASSWORD_LENGTH = 11;
 
 export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormProps> = ({ signup, promo, query, goToLogin }) => {
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
@@ -133,7 +131,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
               )}
             </InputContainer>
             <Box mb={22}>
-              <PasswordInput minLength={SIGNUP_MIN_PASSWORD_LENGTH} value={password} onChange={setPassword} />
+              <PasswordInput minLength={MIN_PASSWORD_LENGTH} value={password} onChange={setPassword} />
             </Box>
             {promo && (
               <InputContainer>

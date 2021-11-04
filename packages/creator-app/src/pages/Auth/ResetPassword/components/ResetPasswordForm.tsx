@@ -7,6 +7,7 @@ import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
 import { PasswordInput } from '../../components';
+import { MIN_PASSWORD_LENGTH } from '../../constants';
 import { ResetPasswordStage } from '../constants';
 
 export interface ResetPasswordFormProps {
@@ -39,7 +40,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswor
   return (
     <form onSubmit={preventDefault(resetPassword)} className="w-100">
       <Box mb={22}>
-        <PasswordInput value={password} onChange={setPassword} placeholder="New Password" />
+        <PasswordInput value={password} onChange={setPassword} placeholder="New Password" minLength={MIN_PASSWORD_LENGTH} />
       </Box>
       <Box mb={22}>
         <PasswordInput value={confirm} onChange={setConfirm} name="confirm" placeholder="Confirm Password" isInvalid={password !== confirm} />

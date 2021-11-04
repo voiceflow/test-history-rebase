@@ -3,6 +3,7 @@ import React from 'react';
 
 import client from '@/client';
 import * as Account from '@/ducks/account';
+import * as Version from '@/ducks/version';
 import { useAsyncMountUnmount, useDispatch, useTeardown } from '@/hooks';
 import { UploadProject } from '@/models';
 
@@ -22,11 +23,15 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
   const projectList = projects.map((project) => ({ id: project.googleProjectID, name: project.agentName }));
 
   const loadGoogleAccount = useDispatch(Account.google.loadAccount);
+  const patchPublishing = useDispatch(Version.dialogflow.patchPublishing);
 
   const [state, api] = useSmartReducerV2({ error: false, loading: true });
 
-  const handleProjectSelected = (selectedProject: Project) =>
+  const handleProjectSelected = async (selectedProject: Project) => {
+    await patchPublishing({ agentName: selectedProject.name });
+
     updateCurrentStage({ googleProjectID: selectedProject.id, agentName: selectedProject.name });
+  };
 
   useAsyncMountUnmount(async () => {
     try {

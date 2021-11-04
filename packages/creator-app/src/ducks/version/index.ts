@@ -5,11 +5,12 @@ import { getNormalizedByKey, patchNormalizedByKey } from '@/utils/normalized';
 import { AnyVersionAction, UpdatePublishing, UpdateSession, UpdateSettings, VersionAction } from './actions';
 import { INITIAL_STATE, STATE_KEY } from './constants';
 import * as alexa from './platform/alexa';
+import * as dialogflow from './platform/dialogflow';
 import * as general from './platform/general';
 import * as google from './platform/google';
 import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, VersionState } from './types';
 
-export { alexa, general, google };
+export { alexa, dialogflow, general, google };
 
 export * from './actions';
 export * from './constants';

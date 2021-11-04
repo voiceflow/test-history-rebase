@@ -17,7 +17,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({ title, enabled, toggleSection
   <>
     <HeaderContainer>
       <Checkbox checked={enabled} onChange={toggleSection} className={className}>
-        <Box color="black" fontWeight={500}>
+        <Box color="primary" fontWeight={500}>
           {title}
         </Box>
       </Checkbox>

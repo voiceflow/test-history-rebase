@@ -63,7 +63,12 @@ const InviteByLinkFooter: React.FC = () => {
     setInviteLink(`https://${host}/invite?invite_code=${encodeURIComponent(inviteCode)}`);
   }, [inviteCode]);
 
-  const handleCopyLink = () => {
+  const handleCopyLink = async () => {
+    if (!inviteCode) {
+      toast.error('Re-generating link, please try again in a few seconds.');
+      setInviteCode(await client.workspace.getInviteLink(activeWorkspaceID!, linkInvitePermission));
+      return;
+    }
     const numberOfUsedEditorSeats = usedEditorSeats;
     toast.success('Link copied to your clipboard, this link expires in 72 hours.');
 
@@ -74,7 +79,6 @@ const InviteByLinkFooter: React.FC = () => {
       });
     }
     copy(inviteLink);
-
     trackingEvents.trackProjectInviteCollaboratorsCopy({ projectID });
   };
 

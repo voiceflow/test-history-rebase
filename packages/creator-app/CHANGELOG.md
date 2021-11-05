@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.535.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.534.9...@voiceflow/creator-app@1.535.0) (2021-11-05)
+
+
+### Bug Fixes
+
+* refactor inactivity migrate workspace page (VF-000) ([#4414](https://github.com/voiceflow/creator-app/issues/4414)) ([c901037](https://github.com/voiceflow/creator-app/commit/c901037fce3850938461a72676e1aaa48f8bdc0f))
+
+
+### Features
+
+* mike feedback on versions (VF-000) ([#4556](https://github.com/voiceflow/creator-app/issues/4556)) ([ed1608c](https://github.com/voiceflow/creator-app/commit/ed1608c391c35b22963fd78d83344308f12aa023))
+
+
+
+
+
 ## [1.534.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.534.8...@voiceflow/creator-app@1.534.9) (2021-11-05)
 
 **Note:** Version bump only for package @voiceflow/creator-app

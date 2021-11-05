@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.534.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.534.5...@voiceflow/creator-app@1.534.6) (2021-11-05)
+
+
+### Bug Fixes
+
+* reset password length enforcement (VF-000) ([#4559](https://github.com/voiceflow/creator-app/issues/4559)) ([4e45f20](https://github.com/voiceflow/creator-app/commit/4e45f208a8e072690eb2ddba4ec5cded85bc72f4))
+
+
+
+
+
 ## [1.534.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.534.4...@voiceflow/creator-app@1.534.5) (2021-11-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

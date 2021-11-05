@@ -6,19 +6,24 @@ import { SettingsSection } from '@/components/Settings';
 import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
+import { Billing } from '@/models/Billing';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import CreditCardSection from './CreditCardSection';
 
-function BillingModal({ workspaceId }) {
+export interface BillingModalProps {
+  workspaceId: string;
+}
+
+const BillingModal: React.FC<BillingModalProps> = ({ workspaceId }) => {
   const [hasPaid, setHasPaid] = React.useState(false);
-  const [invoiceData, setInvoiceData] = React.useState({});
+  const [invoiceData, setInvoiceData] = React.useState<Billing>({ invoices: [], upcoming: { items: [], date: '', amount: 0 } });
   const [loading, setLoading] = React.useState(false);
 
   const loadInvoiceData = async () => {
     setLoading(true);
     const data = await workspaceClient.getInvoice(workspaceId);
-    if (!data.invoice && !data.upcoming) {
+    if (!data.invoices && !data.upcoming) {
       setHasPaid(false);
     } else {
       setHasPaid(true);
@@ -80,7 +85,7 @@ function BillingModal({ workspaceId }) {
       )}
     </>
   );
-}
+};
 
 const mapStateToProps = {
   workspaceId: Session.activeWorkspaceIDSelector,

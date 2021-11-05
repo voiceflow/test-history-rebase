@@ -5,7 +5,7 @@ export interface Billing {
 
 export namespace Billing {
   export interface Invoice {
-    items: unknown[];
+    items: string[];
     amount: number;
     date: string;
   }
@@ -15,6 +15,11 @@ export namespace Billing {
   };
 }
 
+export interface DBPaymentSource {
+  brand?: string;
+  last4?: string;
+}
+
 export interface DBBilling {
   invoices?: DBBilling.PastInvoice[];
   upcoming?: DBBilling.Invoice;
@@ -22,7 +27,7 @@ export interface DBBilling {
 
 export namespace DBBilling {
   export interface Invoice {
-    items: unknown[];
+    items: string[];
     amount: number;
     timestamp: number;
   }

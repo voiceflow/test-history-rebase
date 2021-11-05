@@ -6,9 +6,10 @@ import Section, { SectionVariant } from '@/components/Section';
 import { CardElement } from '@/components/Stripe';
 import { withStripe } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
+import { DBPaymentSource } from '@/models/Billing';
 import { ActionMapping } from '@/pages/Payment/Checkout/components/StepHeading';
 
-const parseError = (err) => {
+const parseError = (err: any) => {
   let error;
   if (err?.body?.errors) {
     error = Object.keys(err.body.errors)
@@ -18,18 +19,25 @@ const parseError = (err) => {
   return error;
 };
 
-function CreditCardSection({ setStripeCompleted, workspaceId, stripe, checkChargeable }) {
-  const [paymentSource, setPaymentSource] = React.useState(null);
+export interface CreditCardSectionProps {
+  setStripeCompleted?: (complete: boolean) => void;
+  workspaceId: string;
+  stripe: any;
+  checkChargeable: Function;
+}
+
+const CreditCardSection: React.FC<CreditCardSectionProps> = ({ setStripeCompleted, workspaceId, stripe, checkChargeable }) => {
+  const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource>();
   const [usingExistingSource, setUsingExistingSource] = React.useState(true);
   const [updatingSource, setUpdatingSource] = React.useState(false);
 
   useAsyncMountUnmount(async () => {
-    const { source } = await client.workspace.getPlan(workspaceId);
+    const source = await client.workspace.getPlan(workspaceId);
     setPaymentSource(source || null);
     setUsingExistingSource(!!source);
   });
 
-  const handleSuccessfulUpdate = (newSource) => {
+  const handleSuccessfulUpdate = (newSource: any) => {
     toast.success('Successfully Updated Credit Card!');
     setPaymentSource(newSource.card);
     setUsingExistingSource(true);
@@ -56,6 +64,7 @@ function CreditCardSection({ setStripeCompleted, workspaceId, stripe, checkCharg
     } finally {
       setUpdatingSource(false);
     }
+    return null;
   };
 
   const actions = [{ label: usingExistingSource ? 'Update card' : 'Cancel', action: () => setUsingExistingSource(!usingExistingSource) }];
@@ -75,6 +84,6 @@ function CreditCardSection({ setStripeCompleted, workspaceId, stripe, checkCharg
       </Box>
     </Section>
   );
-}
+};
 
-export default withStripe(CreditCardSection);
+export default withStripe(CreditCardSection) as React.FC<Omit<CreditCardSectionProps, 'stripe' | 'checkChargeable'>>;

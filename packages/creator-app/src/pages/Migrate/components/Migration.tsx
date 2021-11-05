@@ -14,7 +14,7 @@ import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 interface MigrationProps {
-  onError: (error: string) => void;
+  onError?: (error: string) => void;
   onSuccess: () => void;
 }
 

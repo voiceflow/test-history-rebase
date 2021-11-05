@@ -13,7 +13,11 @@ export const Stage = {
   SUCCESS: 3,
 };
 
-function MigrateStages({ syncSelectedVendor }) {
+export interface MigrateStagesProps {
+  syncSelectedVendor: () => Promise<void>;
+}
+
+const MigrateStages: React.FC<MigrateStagesProps> = ({ syncSelectedVendor }) => {
   const [stage, setStage] = React.useState(Stage.LOADING);
 
   useAsyncMountUnmount(async () => {
@@ -30,7 +34,7 @@ function MigrateStages({ syncSelectedVendor }) {
     default:
       return <Spinner />;
   }
-}
+};
 
 const mapDispatchToProps = {
   syncSelectedVendor: Account.amazon.syncSelectedVendor,

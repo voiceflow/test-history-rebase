@@ -3,7 +3,7 @@ import React from 'react';
 import MigrateContainer from './components/MigrateContainer';
 import MigrateStages from './components/MigrateStages';
 
-const MigratePage = () => (
+const MigratePage: React.FC = () => (
   <MigrateContainer>
     <h1>Skill Migration Tool</h1>
     <MigrateStages />

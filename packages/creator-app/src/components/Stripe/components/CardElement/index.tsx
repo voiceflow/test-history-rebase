@@ -36,8 +36,8 @@ const getIcon = (error: string, complete: boolean): Icon => {
 
 interface StripeCardElementProps {
   disabled?: boolean;
-  stripeOnChange: (meta: ReactStripeElements.ElementChangeResponse) => void;
-  onChangeComplete: (complete: boolean) => void;
+  stripeOnChange?: (meta: ReactStripeElements.ElementChangeResponse) => void;
+  onChangeComplete?: (complete: boolean) => void;
 }
 
 const StripeCardElement: React.FC<StripeCardElementProps> = ({ onChangeComplete, disabled = false, stripeOnChange }) => {

@@ -71,7 +71,7 @@ const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
             </Button>
           </Tooltip>
         </Box>
-        <Box display="inline-block" mr={16}>
+        <Box display="inline-block" mr={12}>
           <Button flat variant={ButtonVariant.SECONDARY} onClick={handlePreview}>
             Preview
           </Button>

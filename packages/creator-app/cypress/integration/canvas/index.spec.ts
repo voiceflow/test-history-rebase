@@ -24,7 +24,7 @@ context('Canvas', () => {
 
     canvasPage.el.canvas.sendHotkey('{meta}s');
 
-    sharedPage.el.toastify.should('contain', 'Voiceflow automatically saves your work');
+    sharedPage.el.toastify.should('contain', 'Voiceflow automatically saves your work for you');
   });
 
   it('drag canvas', () => {

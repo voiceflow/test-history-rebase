@@ -10,12 +10,13 @@ export const TableHeader = styled(BoxFlexCenter)`
   color: #62778c;
   font-size: 13px;
   padding: 18px 32px;
+  gap: 16px;
 `;
 
 export const TableContainer = styled(Box)<{ columns: number[] }>`
   ${({ columns }) => getColumnStyles(columns)}
   border-top: solid 1px #eaeff4;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
 
   ${TableHeader}, ${RowItem} {
     display: flex;
@@ -23,5 +24,9 @@ export const TableContainer = styled(Box)<{ columns: number[] }>`
     border-bottom: solid 1px #eaeff4;
 
     ${({ columns }) => columns && getColumnStyles(columns)}
+  }
+
+  ${RowItem}:last-child {
+    border-bottom: none;
   }
 `;

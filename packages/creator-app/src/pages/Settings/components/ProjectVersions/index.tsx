@@ -40,7 +40,7 @@ export interface ProjectVersion {
 
 const FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS = 30;
 
-const DEFAULT_FETCH_LIMIT = 15;
+const DEFAULT_FETCH_LIMIT = 10;
 
 const versionListAdapter = (version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean }) => ({
   creatorID: version.creatorID,
@@ -52,7 +52,7 @@ const versionListAdapter = (version: Models.Version<Models.VersionPlatformData> 
 
 const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, activeVersionID, setConfirm, goToCanvas, platform }) => {
   const [loading, setLoading] = React.useState(true);
-
+  const [noMoreVersions, setNoMoreVersions] = React.useState(false);
   const [versionList, setVersionList] = React.useState<ProjectVersion[]>([]);
   const [versions, setVersions] = React.useState<ProjectVersion[]>([]);
   const { name } = getSettingsMetaProps(platform);
@@ -72,6 +72,10 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
     }
 
     try {
+      if (projectVersionsEnabled) {
+        // Don't await snapshot (Creates another version)
+        client.version.getVersionSnapshot(activeVersionID!, '', false);
+      }
       await client.backup.restore(projectID, versionID);
       goToCanvas(versionID);
       toast.success('Successfully restored version');
@@ -84,11 +88,14 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
     setConfirm({
       warning: true,
       text: "This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon endpoint.",
-      confirm: () => swapVersions(versionID),
+      confirm: async () => {
+        await swapVersions(versionID);
+      },
     });
   };
 
   const fetchBackupsV2 = React.useCallback(async () => {
+    if (noMoreVersions) return;
     const offset = versionList.length;
 
     if (offset > FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS) {
@@ -101,17 +108,22 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
     }
 
     try {
-      const moreVersions = await client.api.project.getVersionsV2(projectID!, { offset, limit });
+      const moreVersions = (await client.api.project.getVersionsV2(projectID!, { offset, limit })) || [];
+      if (moreVersions.length < limit) {
+        setNoMoreVersions(true);
+      }
       setVersionList([
         ...versionList,
-        ...moreVersions.map((version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean }) => versionListAdapter(version)),
+        ...moreVersions
+          .filter(({ _id }) => _id !== activeVersionID)
+          .map((version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean }) => versionListAdapter(version)),
       ]);
     } catch (err) {
       toast.error('Error fetching versions');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [noMoreVersions, versionList]);
 
   const fetchBackups = React.useCallback(async () => {
     if (!projectID) {
@@ -175,7 +187,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
           <FadeLeftContainer>
             {projectVersionsEnabled ? (
               // Project Versions V2
-              <VersionList versions={versionList} swapVersions={swapVersions} />
+              <VersionList versions={versionList} swapVersions={swapVersions} fetchVersions={fetchBackupsV2} />
             ) : (
               <>
                 {versions.length ? (

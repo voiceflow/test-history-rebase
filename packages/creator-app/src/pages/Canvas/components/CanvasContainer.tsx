@@ -9,7 +9,7 @@ import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import { connect, styled } from '@/hocs';
 import { useActiveModal, useFeature, useHotKeys, useRegistration } from '@/hooks';
-import { Hotkey } from '@/keymap';
+import { getHotkeyLabel, Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { LastCreatedComponentContext, MarkupContext } from '@/pages/Project/contexts';
@@ -93,9 +93,14 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
     []
   );
 
-  const onSave = React.useCallback(() => {
-    if (projectVersionsEnabled) return;
-    toast.info('Voiceflow automatically saves your work', { toastId: 'canvas-container-save-hotkey-info' });
+  const onSave = React.useCallback((e) => {
+    if (e.shiftKey) return;
+
+    const projectVersionsV2Message = projectVersionsEnabled
+      ? `If you want to create a manual version use the shortcut Shift + ${getHotkeyLabel(Hotkey.SAVE_VERSION)}
+      )}`
+      : '';
+    toast.info(`Voiceflow automatically saves your work for you. ${projectVersionsV2Message}`, { toastId: 'canvas-container-save-hotkey-info' });
   }, []);
 
   const onDuplicate = React.useCallback(() => {

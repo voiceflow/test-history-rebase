@@ -6,17 +6,25 @@ import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as Session from '@/ducks/session';
 import { useModals, useSelector } from '@/hooks';
+import { withEnterPress } from '@/utils/dom';
 
 const ImportModal: React.FC = () => {
   const [saveName, setSaveName] = React.useState('');
   const [saving, setSaving] = React.useState(false);
   const { isOpened, close } = useModals(ModalType.MANUAL_SAVE_MODAL);
   const activeVersionID = useSelector(Session.activeVersionIDSelector)!;
+  const nameInputRef = React.useRef<HTMLInputElement>(null);
 
   const reset = () => {
     setSaving(false);
     setSaveName('');
   };
+
+  React.useEffect(() => {
+    if (isOpened) {
+      nameInputRef.current?.focus();
+    }
+  }, [isOpened]);
 
   const handleSave = async () => {
     if (!saveName.trim() || saving) return;
@@ -35,7 +43,13 @@ const ImportModal: React.FC = () => {
   return isOpened ? (
     <Modal id={ModalType.MANUAL_SAVE_MODAL} title="Save New Version">
       <ModalBody>
-        <Input value={saveName} onChange={(e) => setSaveName(e.target.value)} placeholder="Enter version name" />
+        <Input
+          onKeyPress={withEnterPress(handleSave)}
+          ref={nameInputRef}
+          value={saveName}
+          onChange={(e) => setSaveName(e.target.value)}
+          placeholder="Enter version name"
+        />
       </ModalBody>
       <ModalFooter>
         <Button disabled={!saveName || saving} onClick={handleSave}>

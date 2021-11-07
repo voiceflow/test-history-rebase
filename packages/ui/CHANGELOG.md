@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.31.4...@voiceflow/ui@1.32.0) (2021-11-07)
+
+
+### Features
+
+* vite prod build (VF-000) ([#4183](https://github.com/voiceflow/creator-app/issues/4183)) ([190898a](https://github.com/voiceflow/creator-app/commit/190898a66cb04ee9529b365069dd8f5258af82b0))
+
+
+
+
+
 ## [1.31.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.31.3...@voiceflow/ui@1.31.4) (2021-11-05)
 
 **Note:** Version bump only for package @voiceflow/ui

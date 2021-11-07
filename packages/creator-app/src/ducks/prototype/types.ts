@@ -2,8 +2,8 @@ import { Button, Models as BaseModels, Node, Request } from '@voiceflow/base-typ
 import { Constants } from '@voiceflow/general-types';
 import { PlanType } from '@voiceflow/internal';
 
-import { AnyLocale } from '@/ducks/version';
-import { PrototypeContext } from '@/models';
+import type { AnyLocale } from '@/ducks/version';
+import type { PrototypeContext } from '@/models';
 
 export type PrototypeSettings = Omit<BaseModels.VersionPrototype['settings'], 'layout'> & {
   plan: PlanType;

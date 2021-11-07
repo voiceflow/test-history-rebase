@@ -3,7 +3,7 @@ import React from 'react';
 
 import { PrototypeStatus } from '@/ducks/prototype';
 import { useDebouncedCallback } from '@/hooks/callback';
-import { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
+import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
 import { Interaction, Message, OnInteraction } from '@/pages/Prototype/types';
 
 import Dialog from '../PrototypeDialog';

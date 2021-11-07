@@ -6,7 +6,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import { connect, styled } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
-import { MessageProps } from '../components/Message';
+import type { MessageProps } from '../components/Message';
 
 const SubjectText = styled.div`
   color: ${colors(ThemeColor.SECONDARY)};

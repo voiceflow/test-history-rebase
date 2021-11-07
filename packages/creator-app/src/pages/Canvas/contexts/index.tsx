@@ -2,9 +2,9 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import { RegisterEngine } from '@/contexts';
-import { Markup } from '@/models';
+import type { Markup } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
-import { NodeManagerConfig } from '@/pages/Canvas/managers/types';
+import type { NodeManagerConfig } from '@/pages/Canvas/managers/types';
 
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';

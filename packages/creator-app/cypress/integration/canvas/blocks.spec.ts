@@ -68,6 +68,7 @@ context('Canvas - Blocks', () => {
     sharedPage.el.toastify.should('contain', '1 block(s) copied to clipboard');
 
     cy.document().trigger('mousemove', { clientX: 400, clientY: 600 });
+
     cy.clipboard().then((clipboardData) => cy.document().trigger('paste', { clipboardData: { getData: () => clipboardData } }));
 
     canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [400, 599]);

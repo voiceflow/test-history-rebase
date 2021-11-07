@@ -48,8 +48,8 @@ const createStore = (realtime: Client, history: History): { store: Store; persis
 
   const persistor = persistStore(store);
 
-  if (IS_DEVELOPMENT && module.hot) {
-    module.hot.accept('@/ducks', () => {
+  if (IS_DEVELOPMENT && import.meta.hot) {
+    import.meta.hot.accept('@/ducks', () => {
       store.replaceReducer(createReducer(history));
       rpcController.replaceHandlers(allRPCs);
     });

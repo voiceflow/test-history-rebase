@@ -8,8 +8,6 @@ import 'react-day-picker/lib/style.css';
 
 import { ToastContainer } from '@voiceflow/ui';
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { hot } from 'react-hot-loader/root';
 
 import ConfirmModalV2 from '@/components/ConfirmModal';
 import IntercomChat from '@/components/IntercomChat';
@@ -73,4 +71,4 @@ const App = () => {
   );
 };
 
-export default compose(hot, withGlobalProviders, withBatchLoadingGate(GlobalSocketSubscriptionsLoadingGate))(App) as React.FC<GlobalProvidersProps>;
+export default compose(withGlobalProviders, withBatchLoadingGate(GlobalSocketSubscriptionsLoadingGate))(App) as React.FC<GlobalProvidersProps>;

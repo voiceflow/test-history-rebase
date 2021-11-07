@@ -6,26 +6,14 @@ declare module '*.svg' {
   export default SVG;
 }
 
-declare module './svg-icons/*.svg' {
-  const svgURL: string;
-
-  export default svgURL;
-}
-
-declare module '@/assets/svgs/*.svg' {
-  const svgURL: string;
-
-  export default svgURL;
-}
-
 declare module '*.png' {
   const imageURL: string;
 
   export default imageURL;
 }
 
-declare module '*.csv' {
-  const csvURL: string;
+declare module '*?url' {
+  const url: string;
 
-  export default csvURL;
+  export default url;
 }

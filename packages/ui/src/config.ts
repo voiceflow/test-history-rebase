@@ -12,6 +12,7 @@ export const DEVICE_INFO = {
 export const NODE_ENV = process.env.NODE_ENV!;
 export const IS_PRODUCTION = NODE_ENV === 'production';
 export const IS_DEVELOPMENT = NODE_ENV === 'development';
+export const IS_E2E = process.env.E2E === 'true';
 export const IS_TEST = NODE_ENV === 'test';
 
 export const IS_MOBILE = DEVICE_INFO.platform === 'mobile';
@@ -28,4 +29,4 @@ export const IS_FIREFOX = DEVICE_INFO.browser === 'Firefox';
 export const IS_SAFARI = DEVICE_INFO.browser === 'Safari';
 
 // logrocket
-export const LOGROCKET_ENABLED = IS_PRODUCTION || process.env.LOGROCKET_ENABLED === 'true';
+export const LOGROCKET_ENABLED = !IS_E2E && (IS_PRODUCTION || process.env.LOGROCKET_ENABLED === 'true');

@@ -29,6 +29,8 @@ context('Canvas - Links', () => {
     cy.awaitCanvasAnimation();
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 50]);
 
+    canvasPage.el.canvas.click(0, 0, { force: true });
+
     canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click();
     canvasPage.el.newLink.should('have.length', 1);
     canvasPage.el.node.eq(1).trigger('mouseover');

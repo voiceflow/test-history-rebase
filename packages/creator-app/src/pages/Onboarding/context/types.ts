@@ -3,7 +3,7 @@ import { BillingPeriod, PlanType } from '@voiceflow/internal';
 
 import { Query } from '@/models';
 
-import { StepID } from '../constants';
+import type { StepID } from '../constants';
 import { CollaboratorType } from '../types';
 
 export enum OnboardingType {

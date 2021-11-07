@@ -7,6 +7,7 @@
     "babel"
   ],
   "ignores": [
+    "buffer",
     "@babel/core",
     "@svgr/webpack",
     "@logux/state",

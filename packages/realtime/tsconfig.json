@@ -5,27 +5,15 @@
   },
   "compilerOptions": {
     "target": "ES2017",
-    "module": "ESNext",
+    "module": "esnext",
     "baseUrl": "..",
-    "rootDirs": [
-      "src",
-      "../realtime-sdk/src"
-    ],
-    "typeRoots": [
-      "../../node_modules/@types",
-    ],
+    "rootDirs": ["src", "../realtime-sdk/src"],
+    "typeRoots": ["../../node_modules/@types"],
     "paths": {
-      "@voiceflow/realtime-sdk": [
-        "realtime-sdk/src"
-      ],
-      "@/*": [
-        "realtime/src/*"
-      ]
+      "@voiceflow/realtime-sdk": ["realtime-sdk/src"],
+      "@/*": ["realtime/src/*"]
     }
   },
   "compileOnSave": false,
-  "exclude": [
-    "node_modules/**",
-    "build/**"
-  ]
+  "exclude": ["node_modules/**", "build/**"]
 }

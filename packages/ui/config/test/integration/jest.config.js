@@ -7,7 +7,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/config/test/integration/setup.ts'],
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
-    '^.+\\.svg$': '<rootDir>/config/test/integration/assetPlaceholder.js',
+    '^.+\\.svg(?:\\?url)?$': '<rootDir>/config/test/integration/assetPlaceholder.js',
   },
   transform: {
     '^.+\\.[jt]sx?$': '<rootDir>/../../node_modules/ts-jest',
@@ -15,7 +15,7 @@ module.exports = {
   transformIgnorePatterns: ['/node_modules/'],
   coverageDirectory: 'jest_coverage',
   cacheDirectory: '.jest_cache',
-  coveragePathIgnorePatterns: ['/node_modules/', '/config/', '/^.+\\.svg$/', '/test/'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/config/', '/^.+\\.svg(?:\\?url)?$/', '/test/'],
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.test.json',

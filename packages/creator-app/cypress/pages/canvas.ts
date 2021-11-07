@@ -30,6 +30,9 @@ export default {
     get link() {
       return cy.get(`.${ClassName.CANVAS_LINK}`);
     },
+    get newLink() {
+      return cy.get(`#${Identifier.NEW_LINK}`);
+    },
     get linkSettings() {
       return cy.get(`.${ClassName.LINK_SETTINGS}`);
     },

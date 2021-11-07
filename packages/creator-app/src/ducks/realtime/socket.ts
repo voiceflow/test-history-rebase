@@ -1,4 +1,4 @@
-import * as Creator from '@/ducks/creator';
+import type * as Creator from '@/ducks/creator';
 import { createAction } from '@/ducks/utils';
 import { EntityMap, LinkData, NodeData, PartialModel, Port } from '@/models';
 import { Action, ActionPayload } from '@/store/types';

@@ -1,6 +1,6 @@
 import { toast } from '@voiceflow/ui';
 import fileSaver from 'file-saver';
-import { Parser } from 'json2csv';
+import JSON2CSVParser from 'json2csv/lib/JSON2CSVParser';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -24,7 +24,7 @@ export const exportCanvas =
 
     if (type === ExportFormat.DIALOGS) {
       const projectName = ProjectV2.active.nameSelector(state);
-      const json2csvParser = new Parser();
+      const json2csvParser = new JSON2CSVParser();
 
       try {
         const data = await client.api.version.exportResponses(versionID);

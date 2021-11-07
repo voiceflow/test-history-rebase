@@ -3,7 +3,7 @@ import React from 'react';
 
 import Divider from '@/components/Divider';
 import * as Prototype from '@/ducks/prototype';
-import { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
+import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
 import { Interaction, Message, MessageType, OnInteraction, UserMessage } from '@/pages/Prototype/types';
 
 import { Container, Ended, InlineInteractions, MessagesContainer, StickyInteractions } from './components';

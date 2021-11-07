@@ -14,6 +14,7 @@ export default extendConfig(
       '**/src/models/**/*',
       '**/src/store/types/**/*',
       '**/src/**/types.ts',
+      '**/src/setupVite.ts',
     ],
   }),
   (config) => ({

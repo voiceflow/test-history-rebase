@@ -3,7 +3,8 @@ import React from 'react';
 
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
-import { useEnableDisable, useModals } from '@/hooks';
+import { useModals } from '@/hooks/modals';
+import { useEnableDisable } from '@/hooks/toggle';
 
 export interface ConfirmProps {
   header?: string;

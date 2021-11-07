@@ -4,16 +4,12 @@ import './polyfills';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import ReactDOM from 'react-dom';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { setConfig } from 'react-hot-loader';
 
 import client from '@/client';
 import * as Sentry from '@/vendors/sentry';
 
 import App from './App';
 import createStore from './store';
-
-setConfig({ reloadHooks: false });
 
 Sentry.init();
 

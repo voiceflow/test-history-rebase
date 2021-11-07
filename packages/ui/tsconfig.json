@@ -6,21 +6,10 @@
     "downlevelIteration": true,
     "allowJs": true,
     "baseUrl": null,
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "typeRoots": [
-      "../../node_modules/@types",
-      "./typings"
-    ],
-    "types": [
-      "node"
-    ]
+    "lib": ["esnext", "dom"],
+    "typeRoots": ["../../node_modules/@types", "./typings"],
+    "types": ["node"]
   },
   "compileOnSave": false,
-  "exclude": [
-    "node_modules/**",
-    "build/**"
-  ]
+  "exclude": ["node_modules/**", "build/**"]
 }

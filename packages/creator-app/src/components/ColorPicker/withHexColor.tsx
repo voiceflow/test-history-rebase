@@ -2,7 +2,7 @@ import React from 'react';
 import { ColorChangeHandler, RGBColor } from 'react-color';
 import { ExportedColorProps } from 'react-color/lib/components/common/ColorWrap';
 
-import { ColorPickerProps } from '.';
+import type { ColorPickerProps } from './index';
 
 type ExportedProps = ColorPickerProps & {
   color: Required<RGBColor>;

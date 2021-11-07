@@ -59,7 +59,6 @@ Cypress.Commands.add(
 Cypress.Commands.add('addBlockToCanvasViaSpotlight', (blockName: string) => {
   buildTools.interceptSave();
   cy.sendHotkey('{shift} ');
-
   cy.get('#vf-spotlight input').type(`${blockName}{enter}`);
   buildTools.waitForSave();
 });

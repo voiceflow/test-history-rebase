@@ -9,7 +9,7 @@ module.exports = {
     '\\.css$': 'identity-obj-proxy',
     '^@logux/client$': 'identity-obj-proxy',
     '^@logux/redux$': 'identity-obj-proxy',
-    '^.+\\.(svg|csv|png)$': '<rootDir>/config/test/integration/assetPlaceholder.js',
+    '^.+\\.(svg|csv|png)(?:\\?url)?$': '<rootDir>/config/test/integration/assetPlaceholder.js',
     '^@/(.*)': '<rootDir>/src/$1',
   },
   transform: {
@@ -18,7 +18,7 @@ module.exports = {
   transformIgnorePatterns: ['/<rootDir>/../../node_modules/', '/node_modules/', '/build/', '/config/test/'],
   coverageDirectory: 'jest_coverage',
   cacheDirectory: '.jest_cache',
-  coveragePathIgnorePatterns: ['/node_modules/', '/config/', '/^.+\\.svg$/', '/test/'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/config/', '/^.+\\.svg(?:\\?url)?$/', '/test/'],
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.test.json',

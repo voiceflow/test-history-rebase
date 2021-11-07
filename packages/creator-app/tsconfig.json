@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "moduleResolution": "node",
-    "module": "commonjs",
+    "module": "esnext",
     "declaration": false,
     "sourceMap": true,
     "esModuleInterop": true,
@@ -10,6 +10,7 @@
     "experimentalDecorators": true,
     "allowJs": true,
     "isolatedModules": false,
+
     "jsx": "react",
     /* Strictness Checks */
     "alwaysStrict": true,
@@ -41,5 +42,5 @@
   },
   "compileOnSave": false,
   "include": ["src/**/*", "test/**/*", "config/**/*", "typings/**/*.d.ts"],
-  "exclude": ["node_modules/**"]
+  "exclude": ["node_modules/**", "config/webpack/**/*"]
 }

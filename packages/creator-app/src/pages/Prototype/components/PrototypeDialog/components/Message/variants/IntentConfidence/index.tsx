@@ -4,7 +4,7 @@ import React from 'react';
 import { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
 import { Message, MessageType, UserMessage } from '@/pages/Prototype/types';
 
-import { MessageProps } from '../../components/Message';
+import type { MessageProps } from '../../components/Message';
 import { ConfidenceScore, Container, IntentText } from './components';
 import NoIntent from './components/NoIntent';
 

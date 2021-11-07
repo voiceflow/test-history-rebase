@@ -1,3 +1,4 @@
+/* eslint-disable prefer-rest-params */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-process-env */
 
@@ -9,13 +10,22 @@ const chaiSubset = require('chai-subset');
 const sinonChai = require('sinon-chai');
 const ignoreStyles = require('ignore-styles');
 
+const Module = require('module');
+
+const originalRequire = Module.prototype.require;
+Module.prototype.require = function () {
+  if (arguments[0] && arguments[0].endsWith('?url')) return;
+
+  return originalRequire.apply(this, arguments);
+};
+
 global.Audio = class {
   play() {}
 
   pause() {}
 };
 
-ignoreStyles.default([...ignoreStyles.DEFAULT_EXTENSIONS, '.csv']);
+ignoreStyles.default([...ignoreStyles.DEFAULT_EXTENSIONS, '.csv', '.svg']);
 
 // chai plugins
 

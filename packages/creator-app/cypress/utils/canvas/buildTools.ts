@@ -17,6 +17,9 @@ const canvasUtils = {
   unStickCanvas: () => {
     cy.get(`#${Identifier.CANVAS}`).click({ waitForAnimations: true });
   },
+  toggleDesignMenu: () => {
+    cy.sendHotkey('/');
+  },
   clickCanvas: () => {
     cy.get(`#${Identifier.CANVAS}`).click({ waitForAnimations: true });
   },

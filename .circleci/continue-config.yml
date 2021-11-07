@@ -163,7 +163,7 @@ jobs:
                     export VF_APP_API_HOST=api-$CIRCLE_BRANCH.development.voiceflow.com
                     export VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.dev.maintenance/maintenance.json
                   fi
-                  yarn concurrently "yarn:build <<# parameters.strict >> --validate <</ parameters.strict >>" <<# parameters.strict >> "yarn:types" <</ parameters.strict >>
+                  yarn build
                 working_directory: ~/voiceflow/packages/creator-app
             - persist_to_workspace:
                 root: ~/voiceflow/packages/creator-app

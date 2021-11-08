@@ -2,6 +2,7 @@ import { useContextApi, withContext } from '@voiceflow/ui';
 import React from 'react';
 
 import { SLATE_EDITOR_CLASS_NAME } from '@/pages/Canvas/managers/MarkupText/constants';
+import { useEditingMode } from '@/pages/Project/hooks';
 
 import { EngineContext } from './EngineContext';
 
@@ -26,9 +27,11 @@ export const ClipboardProvider: React.FC = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
 
   const copy = React.useCallback((nodeID?: string | null, options?: CopyOptions) => engine.copyActive(nodeID, options), []);
+  const isEditingMode = useEditingMode();
 
   React.useEffect(() => {
     const handlePaste = (event: ClipboardEvent) => {
+      if (!isEditingMode) return;
       const target = event.target as Element;
 
       if (
@@ -47,7 +50,7 @@ export const ClipboardProvider: React.FC = ({ children }) => {
     document.addEventListener('paste', handlePaste);
 
     return () => document.removeEventListener('paste', handlePaste);
-  }, []);
+  }, [isEditingMode]);
 
   const api = useContextApi({ copy });
 

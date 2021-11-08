@@ -114,7 +114,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
     } else if (targets.length > 1) {
       engine.node.duplicateMany(targets);
     }
-  }, []);
+  }, [isEditingMode]);
 
   const onCreateComponent = React.useCallback(async () => {
     if (engine.activation.getTargets().length > 1) {
@@ -127,12 +127,12 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
   useRegistration(() => engine.register('container', api), [api]);
 
   useHotKeys(Hotkey.CUT, cutActive, { preventDefault: true }, [cutActive]);
-  useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true });
+  useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true, disable: !isEditingMode }, [isEditingMode]);
   useHotKeys(Hotkey.DELETE, deleteActive, { preventDefault: true }, [deleteActive]);
   useHotKeys(Hotkey.UNDO, undoHistory as VoidFunction, { preventDefault: true });
   useHotKeys(Hotkey.REDO, redoHistory as VoidFunction, { preventDefault: true });
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { action: 'keyup', preventDefault: true }, [showSpotlight]);
-  useHotKeys(Hotkey.DUPLICATE, onDuplicate, { preventDefault: true });
+  useHotKeys(Hotkey.DUPLICATE, onDuplicate, { preventDefault: true, disable: !isEditingMode }, [isEditingMode]);
   useHotKeys(Hotkey.CREATE_COMPONENT, onCreateComponent, { preventDefault: true });
   useHotKeys(Hotkey.SAVE, onSave, { preventDefault: true });
 

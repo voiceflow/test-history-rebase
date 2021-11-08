@@ -85,7 +85,8 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction>> = 
           return {
             label: intent && intentsMap[intent] ? prettifyIntentName(intentsMap[intent].name) : null,
             portID: isPath ? portID : null,
-            attachment: !isPath && !!goToIntent,
+            // TODO: uncomment when the go to specific intent step id will be implemented
+            // attachment: !isPath && !!goToIntent,
             linkedLabel: isPath ? null : prettifyIntentName(goToIntent?.name),
             onAttachmentClick: () => goToIntent && goToInteractionModelEntity(InteractionModelTabType.INTENTS, goToIntent.id),
           };

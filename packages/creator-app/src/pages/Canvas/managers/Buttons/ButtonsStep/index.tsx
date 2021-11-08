@@ -42,7 +42,8 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({ ports, nodeID, buttons
                 label={name || intentName}
                 portID={!isGoToIntent ? ports[index + 1] : null}
                 iconColor={NODE_CONFIG.iconColor}
-                attachment={isGoToIntent && !!intentEntity}
+                // TODO: uncomment when the go to specific intent step id will be implemented
+                // attachment={isGoToIntent && !!intentEntity}
                 placeholder="Add button text"
                 linkedLabel={intentName}
                 withNewLines

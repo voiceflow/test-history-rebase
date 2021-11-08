@@ -35,6 +35,7 @@ export interface ProjectVersion {
   creatorID: number;
   name?: string;
   manualSave?: boolean;
+  autoSaveFromRestore?: boolean;
   created: string;
 }
 
@@ -42,10 +43,11 @@ const FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS = 30;
 
 const DEFAULT_FETCH_LIMIT = 10;
 
-const versionListAdapter = (version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean }) => ({
+const versionListAdapter = (version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean; autoSaveFromRestore?: boolean }) => ({
   creatorID: version.creatorID,
   versionID: version._id,
   manualSave: version.manualSave,
+  autoSaveFromRestore: version.autoSaveFromRestore,
   name: version.name,
   created: ObjectID.isValid(version._id) ? new ObjectID(version._id).getTimestamp().toString() : '',
 });
@@ -74,7 +76,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
     try {
       if (projectVersionsEnabled) {
         // Don't await snapshot (Creates another version)
-        client.version.getVersionSnapshot(activeVersionID!, '', false);
+        client.version.getVersionSnapshot(activeVersionID!, '', { manualSave: false, autoSaveFromRestore: true });
       }
       await client.backup.restore(projectID, versionID);
       goToCanvas(versionID);

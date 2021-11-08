@@ -32,8 +32,12 @@ const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const memberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
   const member = React.useMemo(() => memberByID(creatorID), [creatorID]);
-  const { manualSave } = version;
-  const name = React.useMemo(() => (manualSave ? version.name : 'Automatic'), [manualSave]);
+  const { manualSave, autoSaveFromRestore } = version;
+  const name = React.useMemo(() => {
+    if (autoSaveFromRestore) return 'Automatic from Restore';
+    if (manualSave) return version.name;
+    return 'Automatic';
+  }, [manualSave, autoSaveFromRestore]);
 
   const NameWrapper = manualSave ? TippyTooltip : React.Fragment;
 
@@ -59,7 +63,7 @@ const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
   return (
     <RowItem>
       <ColumnItemContainer>{dayjs(version.created).fromNow()}</ColumnItemContainer>
-      <ColumnItemContainer style={{ color: manualSave ? 'black' : '#62778c' }}>
+      <ColumnItemContainer style={{ color: manualSave && !autoSaveFromRestore ? 'black' : '#62778c' }}>
         <NameWrapper title={name}>{name}</NameWrapper>
       </ColumnItemContainer>
       <ColumnItemContainer>{member?.name}</ColumnItemContainer>

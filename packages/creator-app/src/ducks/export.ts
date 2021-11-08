@@ -28,6 +28,12 @@ export const exportCanvas =
 
       try {
         const data = await client.api.version.exportResponses(versionID);
+
+        if (data.length === 0) {
+          toast.error('No responses to export');
+          return;
+        }
+
         const csvData = json2csvParser.parse(data);
         download(`${projectName?.replace(/ /g, '_')}.csv`, csvData, DataTypes.CSV);
       } catch (error) {

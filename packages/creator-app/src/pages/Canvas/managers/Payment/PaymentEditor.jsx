@@ -37,7 +37,7 @@ function PaymentEditor({ onChange, data }) {
         )}
       >
         <FadeLeftContainer>
-          <SelectedProduct productID={selectedProduct.id} onClick={goToEditProduct} />
+          <SelectedProduct product={selectedProduct} onClick={goToEditProduct} />
         </FadeLeftContainer>
       </Content>
     );

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.536.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.0...@voiceflow/creator-app@1.536.1) (2021-11-08)
+
+
+### Bug Fixes
+
+* hide attachments ([#4561](https://github.com/voiceflow/creator-app/issues/4561)) ([5b4ee04](https://github.com/voiceflow/creator-app/commit/5b4ee042b4ba76a2592423d10ec32728366804f1))
+
+
+
+
+
 # [1.536.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.535.0...@voiceflow/creator-app@1.536.0) (2021-11-07)
 
 

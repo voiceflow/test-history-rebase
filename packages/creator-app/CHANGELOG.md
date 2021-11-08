@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.536.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.1...@voiceflow/creator-app@1.536.2) (2021-11-08)
+
+
+### Bug Fixes
+
+* products editor (VF-000) ([#4572](https://github.com/voiceflow/creator-app/issues/4572)) ([4c74412](https://github.com/voiceflow/creator-app/commit/4c744121ad274f41f0df160600b133e73eb09a23))
+* small save name changee (VF-000) ([#4571](https://github.com/voiceflow/creator-app/issues/4571)) ([7a4632b](https://github.com/voiceflow/creator-app/commit/7a4632bad6a0f8fd0bae887953569a736ffb74df))
+
+
+
+
+
 ## [1.536.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.0...@voiceflow/creator-app@1.536.1) (2021-11-08)
 
 

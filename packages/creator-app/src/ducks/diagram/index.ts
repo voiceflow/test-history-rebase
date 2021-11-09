@@ -1,4 +1,4 @@
-import { Diagram } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import createCRUDReducer from '../utils/crud';
 import { STATE_KEY } from './constants';
@@ -8,6 +8,6 @@ export * from './constants';
 export * from './selectors';
 export * from './sideEffects';
 
-const diagramReducer = createCRUDReducer<Diagram>(STATE_KEY);
+const diagramReducer = createCRUDReducer<Realtime.Diagram>(STATE_KEY);
 
 export default diagramReducer;

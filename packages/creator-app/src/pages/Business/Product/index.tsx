@@ -1,4 +1,5 @@
 /* eslint-disable default-case */
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,14 +7,13 @@ import GuidedSteps from '@/components/GuidedSteps';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useCurried, useDispatch, useSelector } from '@/hooks';
-import * as Models from '@/models';
 
 import { BackButtonContainer, BackLink, DescriptionSection } from '../components';
 import { ProductContext } from '../contexts';
 import { ProductStep } from './constants';
 import { AvailabilityForm, DescriptionForm, DetailsForm, IconsForm, PhrasesForm, PricingModelForm } from './GuidedSteps';
 
-export const isProductValid = (step: ProductStep, product: Models.Product) => {
+export const isProductValid = (step: ProductStep, product: Realtime.Product) => {
   switch (step) {
     case ProductStep.DESCRIPTION:
       return !!(product.name && product.summary);

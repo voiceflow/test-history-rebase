@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Flex } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,12 +6,11 @@ import Members from '@/components/Members';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { useModals, usePermission } from '@/hooks';
-import { Workspace } from '@/models';
 
 import { ProjectSearchContainer, ProjectSearchInput } from './components';
 
 interface SecondaryNavProps {
-  workspace: Workspace | null;
+  workspace: Realtime.Workspace | null;
   handleFilterText: (text: string) => void;
 }
 

@@ -1,16 +1,16 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import OverflowMenu from '@/components/OverflowMenu';
-import { NodeData } from '@/models/NodeData';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 import { PlatformContext } from '@/pages/Project/contexts';
 
 import { HelpTooltip } from './components';
 
-const DirectiveEditor: React.FC<NodeEditorPropsType<NodeData.Directive>> = ({ data, onChange, expanded, onExpand }) => {
+const DirectiveEditor: React.FC<NodeEditorPropsType<Realtime.NodeData.Directive>> = ({ data, onChange, expanded, onExpand }) => {
   const [value, setValue] = React.useState(data.directive);
   const platform = React.useContext(PlatformContext)!;
 

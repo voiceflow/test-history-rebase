@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop, XYCoord } from 'react-dnd';
@@ -11,7 +12,6 @@ import { canvasNavigationSelector } from '@/ducks/ui';
 import * as Viewport from '@/ducks/viewport';
 import { connect } from '@/hocs';
 import { useSetup } from '@/hooks';
-import { NodeData } from '@/models';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
@@ -126,7 +126,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         await engine.node.add(BlockType.COMPONENT, new Coords([mouseX, mouseY]), {
           name: item.item.name,
           diagramID: item.item.id,
-        } as NodeData<any>);
+        } as Realtime.NodeData<any>);
       }
     },
     hover: _throttle(

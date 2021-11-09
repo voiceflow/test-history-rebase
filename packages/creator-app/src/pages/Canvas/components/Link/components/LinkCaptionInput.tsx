@@ -1,9 +1,9 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { useCreateConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import SlateEditable, { SlateEditorAPI, useSetupSlateEditor } from '@/components/SlateEditable';
 import { useSetup, useTeardown } from '@/hooks';
-import { LinkDataCaption } from '@/models';
 import { withEnterPress } from '@/utils/dom';
 
 import { InternalLinkInstance } from '../types';
@@ -14,7 +14,7 @@ interface LinkCaptionInputProps {
   color: string;
   value?: string;
   instance: InternalLinkInstance;
-  onChange: (caption: LinkDataCaption | null) => Promise<void>;
+  onChange: (caption: Realtime.LinkDataCaption | null) => Promise<void>;
   isLineActive: boolean;
   isHighlighted?: boolean;
   onToggleEditing: (value: unknown) => void;

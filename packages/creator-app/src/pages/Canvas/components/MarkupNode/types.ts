@@ -1,9 +1,9 @@
-import { Markup, Node, NodeData } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-export type ResizableMarkupNodeData = Markup.NodeData.Image;
+export type ResizableMarkupNodeData = Realtime.Markup.NodeData.Image;
 
-export interface ConnectedMarkupNodeProps<T extends Markup.AnyNodeData = Markup.AnyNodeData> {
-  node: Node;
-  data: NodeData<T>;
+export interface ConnectedMarkupNodeProps<T extends Realtime.Markup.AnyNodeData = Realtime.Markup.AnyNodeData> {
+  node: Realtime.Node;
+  data: Realtime.NodeData<T>;
   ref: React.Ref<any>;
 }

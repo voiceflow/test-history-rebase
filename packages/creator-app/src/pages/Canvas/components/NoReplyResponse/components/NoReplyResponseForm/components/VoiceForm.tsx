@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,6 @@ import SSMLWithVars from '@/components/SSMLWithVars';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
 import { RepromptType } from '@/constants';
-import { NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { isGooglePlatform } from '@/utils/typeGuards';
@@ -18,7 +18,7 @@ const AnySSMLWithVars = SSMLWithVars as any;
 const AnyVariablesInput = VariablesInput as any;
 
 const VoiceForm: React.FC = () => {
-  const [reprompt, updateReprompt] = useFocusedNodeReprompt<NodeData.VoicePrompt>();
+  const [reprompt, updateReprompt] = useFocusedNodeReprompt<Realtime.NodeData.VoicePrompt>();
   const platform = React.useContext(PlatformContext);
 
   const updateResponseType = React.useCallback((type: RepromptType) => updateReprompt({ type }), [updateReprompt]);

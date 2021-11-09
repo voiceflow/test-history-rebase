@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { BoxFlex, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import Section from '@/components/Section';
 import { useManager, useToggle } from '@/hooks';
-import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
@@ -15,13 +15,13 @@ const MAX_SETS = 20;
 
 const setFactory = () => NODE_CONFIG.factory(undefined).data.sets[0];
 
-const setClone = (initVal: any, targetVal: NodeData.SetExpressionV2) => ({
+const setClone = (initVal: any, targetVal: Realtime.NodeData.SetExpressionV2) => ({
   ...initVal,
   variable: targetVal.variable,
   expression: targetVal.expression,
 });
 
-const SetEditorV2: NodeEditor<NodeData.SetV2> = ({ data, onChange }) => {
+const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2> = ({ data, onChange }) => {
   const [isDragging, toggleDragging] = useToggle(false);
 
   const updateSets = React.useCallback(

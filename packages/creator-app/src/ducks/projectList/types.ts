@@ -1,4 +1,5 @@
-import { CRUDState } from '@/ducks/utils/crud';
-import { ProjectList } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-export type ProjectListState = CRUDState<ProjectList>;
+import { CRUDState } from '@/ducks/utils/crud';
+
+export type ProjectListState = CRUDState<Realtime.ProjectList>;

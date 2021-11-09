@@ -1,4 +1,5 @@
-import { Link, Node, NodeData, Port } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { Action, ActionPayload } from '@/store/types';
 
 import { createAction } from '../utils';
@@ -15,10 +16,10 @@ export type InitializeCreator = Action<
   {
     diagramID: string;
     rootNodeIDs: string[];
-    nodes: Node[];
-    links: Link[];
-    ports: Port[];
-    data: Record<string, NodeData<unknown>>;
+    nodes: Realtime.Node[];
+    links: Realtime.Link[];
+    ports: Realtime.Port[];
+    data: Record<string, Realtime.NodeData<unknown>>;
     markupNodeIDs: string[];
   }
 >;

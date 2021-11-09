@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -36,7 +36,7 @@ export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, nodeID
   </Step>
 );
 
-const ConnectedCodeStep: React.FC<ConnectedStepProps<NodeData.Code>> = ({ node, data, withPorts }) => {
+const ConnectedCodeStep: React.FC<ConnectedStepProps<Realtime.NodeData.Code>> = ({ node, data, withPorts }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
   return <CodeStep codeAdded={!!data.code} withPorts={withPorts} nodeID={node.id} successPortID={successPortID} failurePortID={failurePortID} />;

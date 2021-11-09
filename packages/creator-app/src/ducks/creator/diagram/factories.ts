@@ -1,16 +1,16 @@
 import { WithRequired } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Overwrite } from 'utility-types';
 
 import { BlockVariant } from '@/constants/canvas';
-import { BlockNodeData, Link, Node, NodeData, Port } from '@/models';
 
-export const linkFactory = (sourcePort: Port, targetPort: Port, linkID: string): Link => ({
+export const linkFactory = (sourcePort: Realtime.Port, targetPort: Realtime.Port, linkID: string): Realtime.Link => ({
   id: linkID,
   source: { nodeID: sourcePort.nodeID, portID: sourcePort.id },
   target: { nodeID: targetPort.nodeID, portID: targetPort.id },
 });
 
-export const portFactory = (nodeID: string, portID: string, port: Partial<Port>): Port => ({
+export const portFactory = (nodeID: string, portID: string, port: Partial<Realtime.Port>): Realtime.Port => ({
   label: null,
   platform: null,
   virtual: false,
@@ -19,7 +19,10 @@ export const portFactory = (nodeID: string, portID: string, port: Partial<Port>)
   nodeID,
 });
 
-export const nodeFactory = <T extends string | null>(nodeID: T, node: WithRequired<Partial<Node>, 'type'>): Overwrite<Node, { id: T }> => ({
+export const nodeFactory = <T extends string | null>(
+  nodeID: T,
+  node: WithRequired<Partial<Realtime.Node>, 'type'>
+): Overwrite<Realtime.Node, { id: T }> => ({
   x: 0,
   y: 0,
   parentNode: null,
@@ -32,14 +35,17 @@ export const nodeFactory = <T extends string | null>(nodeID: T, node: WithRequir
   id: nodeID,
 });
 
-export const nodeDataFactory = (nodeID: string, data: WithRequired<Partial<NodeData<unknown>>, 'type'>): NodeData<unknown> => ({
+export const nodeDataFactory = (nodeID: string, data: WithRequired<Partial<Realtime.NodeData<unknown>>, 'type'>): Realtime.NodeData<unknown> => ({
   name: 'Block',
   ...data,
   path: [],
   nodeID,
 });
 
-export const blockNodeDataFactory = (nodeID: string, data: WithRequired<Partial<BlockNodeData<unknown>>, 'type'>): BlockNodeData<unknown> => ({
+export const blockNodeDataFactory = (
+  nodeID: string,
+  data: WithRequired<Partial<Realtime.BlockNodeData<unknown>>, 'type'>
+): Realtime.BlockNodeData<unknown> => ({
   blockColor: BlockVariant.STANDARD,
   ...nodeDataFactory(nodeID, data),
 });

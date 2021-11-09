@@ -1,12 +1,13 @@
 import { Node as BaseNode, Request } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
-import { BlockTrace, ChoiceTrace, FlowTrace, GoToTrace, Link, Node, SpeakTrace, StreamTrace, Trace, V1Trace, VisualTrace } from '@/models';
+import { BlockTrace, ChoiceTrace, FlowTrace, GoToTrace, SpeakTrace, StreamTrace, Trace, V1Trace, VisualTrace } from '@/models';
 import { Engine } from '@/pages/Canvas/engine';
 import { loadImage } from '@/utils/dom';
 
@@ -32,7 +33,7 @@ export interface TraceControllerProps {
   enterFlow: (diagramID: string) => void;
   contextStep: number;
   waitVisuals: boolean;
-  getNodeByID: (targetBlockID: string) => Node;
+  getNodeByID: (targetBlockID: string) => Realtime.Node;
   updateStatus: (status: PMStatus) => void;
   fetchContext: (request: Request.BaseRequest | null) => Promise<Prototype.Context | null>;
   flowIDHistory: string[];
@@ -40,7 +41,7 @@ export interface TraceControllerProps {
   activeDiagramID: string;
   setInteractions: (interactions: Interaction[]) => void;
   updatePrototype: (payload: Partial<Prototype.PrototypeState>) => void;
-  getLinksByPortID: (portID: string) => Link[];
+  getLinksByPortID: (portID: string) => Realtime.Link[];
   activePathLinkIDs: string[];
   visualDataHistory: (null | BaseNode.Visual.StepData)[];
   activePathBlockIDs: string[];
@@ -316,7 +317,7 @@ class TraceController {
     this.props.setInteractions(interactions);
   }
 
-  private saveActivePathBlock(node: Node) {
+  private saveActivePathBlock(node: Realtime.Node) {
     const updatedActivePathBlockArray = Utils.array.unique([...this.props.activePathBlockIDs, node!.parentNode!]);
     const updatedContextHistory = getUpdatedContextHistory(
       this.props.contextStep,
@@ -374,7 +375,7 @@ class TraceController {
     }
   }
 
-  private async highlightBlock(node: Node) {
+  private async highlightBlock(node: Realtime.Node) {
     const hasParent = !!node.parentNode;
     const nodeType = node?.type;
 
@@ -534,7 +535,7 @@ class TraceController {
     return linkID ?? null;
   }
 
-  private saveActivePathLink(sourceNodeID: string, targetNode: Node) {
+  private saveActivePathLink(sourceNodeID: string, targetNode: Realtime.Node) {
     const activePathLinkID = this.findLinkBetween(sourceNodeID, targetNode.id);
 
     let flowOutLink: string[] = [];

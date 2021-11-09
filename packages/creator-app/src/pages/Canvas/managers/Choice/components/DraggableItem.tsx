@@ -1,5 +1,6 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, Link } from '@voiceflow/ui';
 import React from 'react';
 
@@ -13,7 +14,6 @@ import { FeatureFlag } from '@/config/features';
 import { DistinctPlatform } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useFeature, useSelector } from '@/hooks';
-import { Intent, NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { PushToPath } from '@/pages/Canvas/managers/types';
@@ -25,17 +25,17 @@ import HelpTooltip from './HelpTooltip';
 const LegacyMappingsComponent = LegacyMappings as React.FC<any>;
 const IntentSelectComponent = IntentSelect as React.FC<any>;
 
-export type DraggableItemProps = ItemComponentProps<Record<DistinctPlatform, NodeData.InteractionChoice>> &
+export type DraggableItemProps = ItemComponentProps<Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>> &
   DragPreviewComponentProps &
   (
-    | ItemComponentHandlers<Record<DistinctPlatform, NodeData.InteractionChoice>>
-    | MappedItemComponentHandlers<Record<DistinctPlatform, NodeData.InteractionChoice>>
+    | ItemComponentHandlers<Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>>
+    | MappedItemComponentHandlers<Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>>
   ) & {
-    choices: Record<DistinctPlatform, NodeData.InteractionChoice>[];
+    choices: Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>[];
     platform: Constants.PlatformType;
     isOnlyItem: boolean;
     pushToPath?: PushToPath;
-    openIntents: Intent[];
+    openIntents: Realtime.Intent[];
     latestCreatedKey: string | undefined;
   };
 
@@ -67,7 +67,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
   const platformItem = getDistinctPlatformValue(platform, item);
 
   const patchPlatformData = React.useCallback(
-    (patch: Partial<NodeData.InteractionChoice>) => onUpdate?.(setDistinctPlatformValue(platform, { ...platformItem, ...patch })),
+    (patch: Partial<Realtime.NodeData.InteractionChoice>) => onUpdate?.(setDistinctPlatformValue(platform, { ...platformItem, ...patch })),
     [onUpdate, platform, platformItem]
   );
 

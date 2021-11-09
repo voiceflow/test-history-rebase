@@ -1,9 +1,9 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Header from '@/components/Header';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
-import { Workspace } from '@/models';
 
 import LeftNavSection from './LeftNavSection';
 import RightNavSection from './RightNavSection';
@@ -12,7 +12,7 @@ import UpgradeButton from './UpgradeButton';
 
 interface DashboardHeaderProps {
   loadingProjects: boolean;
-  workspace: Workspace | null;
+  workspace: Realtime.Workspace | null;
   handleFilterText: (text: string) => void;
 }
 

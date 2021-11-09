@@ -1,15 +1,14 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, Menu, MenuItem, Text } from '@voiceflow/ui';
 import React from 'react';
-
-import { ExpressionV2 } from '@/models';
 
 import AddConditionButton from './AddConditionButton';
 
 export interface ConditionSelectProps {
   additional?: boolean;
   isLogicGroup?: boolean;
-  expression?: ExpressionV2;
+  expression?: Realtime.ExpressionV2;
   onChange: (value: Node.Utils.ConditionsLogicInterface) => void;
 }
 

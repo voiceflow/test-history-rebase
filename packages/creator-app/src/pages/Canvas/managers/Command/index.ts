@@ -1,7 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { SLOT_PATH_TYPE } from '@/components/IntentForm/components/Custom/components';
 import IntentSlotForm from '@/components/IntentSlotForm';
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 import { distinctPlatformsData } from '@/utils/platform';
 
 import { NodeManagerConfig } from '../types';
@@ -12,7 +13,7 @@ const EDITORS_BY_PATH = {
   [SLOT_PATH_TYPE]: IntentSlotForm,
 };
 
-const CommandManager: NodeManagerConfig<NodeData.Command> = {
+const CommandManager: NodeManagerConfig<Realtime.NodeData.Command> = {
   type: BlockType.COMMAND,
   label: BlockType.COMMAND,
   nameEditable: true,

@@ -1,8 +1,8 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -30,7 +30,7 @@ export const PromptStep: React.FC<PromptStepProps> = ({ nodeID, isPath, elsePath
   </Step>
 );
 
-const ConnectedPromptStep: React.FC<ConnectedStepProps<NodeData.Prompt>> = ({ node, data }) => (
+const ConnectedPromptStep: React.FC<ConnectedStepProps<Realtime.NodeData.Prompt>> = ({ node, data }) => (
   <PromptStep
     nodeID={node.id}
     isPath={!!data.noMatchReprompt.type && data.noMatchReprompt.type !== Node.Utils.NoMatchType.REPROMPT}

@@ -1,5 +1,6 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { CheckboxType } from '@/components/Checkbox';
@@ -8,7 +9,6 @@ import Section from '@/components/Section';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect, useLinkedState } from '@/hooks';
-import { Node, NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { PushToPath } from '@/pages/Canvas/managers/types';
@@ -29,8 +29,8 @@ const ELSE_OPTIONS: RadioOption<BaseNode.Utils.NoMatchType | null>[] = [
 ];
 
 interface NoMatchProps {
-  onChange: (noMatch: NodeData.BaseNoMatches) => void;
-  noMatch: NodeData.BaseNoMatches;
+  onChange: (noMatch: Realtime.NodeData.BaseNoMatches) => void;
+  noMatch: Realtime.NodeData.BaseNoMatches;
   pushToPath?: PushToPath;
 }
 
@@ -77,7 +77,7 @@ const mapStateToProps = {
   getLinkIDsByPortID: Creator.linkIDsByPortIDSelector,
 };
 
-const getElseLinkID = (focusedNode: Node, getLinkIDsByPortID: (portID: string) => string[]) => {
+const getElseLinkID = (focusedNode: Realtime.Node, getLinkIDsByPortID: (portID: string) => string[]) => {
   const [elsePortID] = Utils.array.head(focusedNode.ports.out);
   return getLinkIDsByPortID(elsePortID)[0];
 };

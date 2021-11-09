@@ -1,11 +1,11 @@
-import { NodeData } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import FlowEditor from './FlowEditor';
 import FlowStep from './FlowStep';
 
-const FlowManager: NodeManagerConfig<NodeData.Flow> = {
+const FlowManager: NodeManagerConfig<Realtime.NodeData.Flow> = {
   ...NODE_CONFIG,
 
   tip: 'Organize your project into manageable sections or perform computations',

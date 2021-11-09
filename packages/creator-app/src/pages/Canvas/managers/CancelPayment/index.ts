@@ -1,13 +1,12 @@
 import { Constants } from '@voiceflow/general-types';
-
-import { NodeData } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { NodeManagerConfig } from '../types';
 import CancelPaymentEditor from './CancelPaymentEditor';
 import CancelPaymentStep from './CancelPaymentStep';
 import { NODE_CONFIG } from './constants';
 
-const CancelPaymentManager: NodeManagerConfig<NodeData.CancelPayment> = {
+const CancelPaymentManager: NodeManagerConfig<Realtime.NodeData.CancelPayment> = {
   ...NODE_CONFIG,
 
   tip: "Refund a purchase or cancel an user's subscription",

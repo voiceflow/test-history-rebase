@@ -1,4 +1,5 @@
 import { Nullable, Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
@@ -10,11 +11,10 @@ import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
-import * as Models from '@/models';
 
 export interface TopicIntentItem {
   id: string;
-  intent: Nullable<Models.Intent>;
+  intent: Nullable<Realtime.Intent>;
   intentID: Nullable<string>;
 }
 export interface TopicItem {

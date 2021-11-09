@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, BoxFlex } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,15 +6,14 @@ import Label from '@/components/Label';
 import RemoveIcon from '@/components/ListManager/components/RemoveIcon';
 import VariablesInput from '@/components/VariablesInput';
 import { useExpressionValidation } from '@/hooks';
-import { ExpressionV2 } from '@/models';
 
 import ConditionExpressionTooltip from './ConditionExpressionTooltip';
 
 const VariablesInputComponent: any = VariablesInput;
 
 export interface ConditionExpressionProps {
-  expression: ExpressionV2;
-  onChange: (value: ExpressionV2) => void;
+  expression: Realtime.ExpressionV2;
+  onChange: (value: Realtime.ExpressionV2) => void;
   onDelete: () => void;
 }
 
@@ -26,7 +26,7 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, o
 
       if (isValidExpression(text)) {
         resetError();
-        onChange({ ...expression, value: text } as ExpressionV2);
+        onChange({ ...expression, value: text } as Realtime.ExpressionV2);
       }
     },
     [isValidExpression, expression.value, onChange]

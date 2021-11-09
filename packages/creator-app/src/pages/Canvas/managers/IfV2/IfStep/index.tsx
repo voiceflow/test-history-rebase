@@ -1,10 +1,10 @@
 import { Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { useSyncedLookup } from '@/hooks';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { expressionPreview } from '@/utils/expression';
@@ -48,7 +48,7 @@ export const IfStep: React.FC<IfStepProps> = ({ expressions, nodeID, elsePortID,
   </Step>
 );
 
-type ConnectedIfStepProps = ConnectedStepProps<NodeData.IfV2>;
+type ConnectedIfStepProps = ConnectedStepProps<Realtime.NodeData.IfV2>;
 
 const ConnectedIfStep: React.FC<ConnectedIfStepProps> = ({ node, data }) => {
   const engine = React.useContext(EngineContext)!;

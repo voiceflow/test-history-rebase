@@ -12,7 +12,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
-import { AnyProject } from '@/models';
 import { Thunk } from '@/store/types';
 
 import { crud } from './actions';
@@ -41,7 +40,7 @@ const loadProjectByID =
  * @deprecated these are now loaded automatically by the subscription to the workspace/:workspaceID realtime event channel
  */
 export const loadProjectsByWorkspaceID =
-  (workspaceID: string): Thunk<AnyProject[]> =>
+  (workspaceID: string): Thunk<Realtime.AnyProject[]> =>
   async (dispatch, getState) => {
     const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
     if (isAtomicActions) return [];
@@ -54,7 +53,7 @@ export const loadProjectsByWorkspaceID =
   };
 
 export const createProject =
-  ({ platform, name, image, listID }: Partial<CreateProjectParams>, templateTag?: string): Thunk<AnyProject> =>
+  ({ platform, name, image, listID }: Partial<CreateProjectParams>, templateTag?: string): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
     const workspaceID = Session.activeWorkspaceIDSelector(state);
@@ -102,7 +101,7 @@ export const createProject =
   };
 
 export const importProjectFromFile =
-  (workspaceID: string, data: string): Thunk<AnyProject> =>
+  (workspaceID: string, data: string): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 

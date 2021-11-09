@@ -1,5 +1,6 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { CheckboxType } from '@/components/Checkbox';
@@ -8,7 +9,6 @@ import Section from '@/components/Section';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect, useLinkedState } from '@/hooks';
-import { Node, NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import NoMatchPath from '@/pages/Canvas/components/NoMatchPath';
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -36,8 +36,8 @@ const ELSE_OPTIONS: RadioOption<BaseNode.Utils.NoMatchType>[] = [
 ];
 
 interface NoMatchProps {
-  onChange: (noMatches: NodeData.NoMatches) => void;
-  noMatches: NodeData.NoMatches;
+  onChange: (noMatches: Realtime.NodeData.NoMatches) => void;
+  noMatches: Realtime.NodeData.NoMatches;
   pushToPath?: PushToPath;
 }
 
@@ -86,7 +86,7 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
     if (isChatbotPlatform(platform)) {
       return (
         <ChatNoMatchList
-          {...(localNoMatches as NodeData.ChatNoMatches)}
+          {...(localNoMatches as Realtime.NodeData.ChatNoMatches)}
           onChangeRandomize={() => setLocalNoMatches({ ...localNoMatches, randomize: !localNoMatches.randomize })}
           onChangeReprompts={(reprompts) => setLocalNoMatches({ ...localNoMatches, reprompts })}
         >
@@ -97,7 +97,7 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
 
     return (
       <VoiceNoMatchList
-        {...(localNoMatches as NodeData.VoiceNoMatches)}
+        {...(localNoMatches as Realtime.NodeData.VoiceNoMatches)}
         platform={platform}
         onChangeReprompts={(reprompts) => setLocalNoMatches({ ...localNoMatches, reprompts })}
         onChangeRandomize={(randomize) => setLocalNoMatches({ ...localNoMatches, randomize })}
@@ -131,7 +131,7 @@ const mapStateToProps = {
   getLinkIDsByPortID: Creator.linkIDsByPortIDSelector,
 };
 
-const getElseLinkID = (focusedNode: Node, getLinkIDsByPortID: (portID: string) => string[]) => {
+const getElseLinkID = (focusedNode: Realtime.Node, getLinkIDsByPortID: (portID: string) => string[]) => {
   const [elsePortID] = Utils.array.head(focusedNode.ports.out);
   return getLinkIDsByPortID(elsePortID)[0];
 };

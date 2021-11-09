@@ -1,7 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { CRUDState } from '@/ducks/utils/crudV2';
-import { Diagram } from '@/models';
 
 interface DiagramLookup<T> {
   [diagramID: string]: T;
@@ -20,7 +19,7 @@ export interface DiagramAwarenessState {
   viewers: DiagramLookup<DiagramViewer[]>;
 }
 
-export interface DiagramState extends CRUDState<Diagram> {
+export interface DiagramState extends CRUDState<Realtime.Diagram> {
   awareness: DiagramAwarenessState;
   intentSteps: DiagramLookup<NodeLookup<string | null>>;
 }

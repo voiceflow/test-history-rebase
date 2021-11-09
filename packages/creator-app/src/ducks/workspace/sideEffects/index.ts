@@ -16,7 +16,6 @@ import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import { allWorkspaceIDsSelector } from '@/ducks/workspaceV2/selectors';
-import { AnyProject, Workspace } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 
 import { crud } from '../actions';
@@ -47,7 +46,7 @@ export const loadWorkspaces =
   };
 
 export const createWorkspace =
-  (data: { name: string; image?: string }): Thunk<Workspace> =>
+  (data: { name: string; image?: string }): Thunk<Realtime.Workspace> =>
   async (dispatch, getState) => {
     const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
@@ -154,7 +153,7 @@ export const duplicateProject =
   };
 
 export const importProject =
-  (projectID: string, targetWorkspaceID: string): Thunk<AnyProject> =>
+  (projectID: string, targetWorkspaceID: string): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);

@@ -1,5 +1,6 @@
 import { Version } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText } from '@voiceflow/ui';
 import React from 'react';
 
@@ -22,8 +23,8 @@ const SSMLComponent: any = SSML;
 interface AssistantConversationLogicProps {
   platform: Constants.PlatformType;
   platformMeta: PlatformSettingsMetaProps;
-  defaultVoice: VersionDuck.AnyVoice;
-  platformDefaultVoice: VersionDuck.AnyVoice;
+  defaultVoice: Realtime.AnyVoice;
+  platformDefaultVoice: Realtime.AnyVoice;
 }
 
 const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic & AssistantConversationLogicProps> = ({

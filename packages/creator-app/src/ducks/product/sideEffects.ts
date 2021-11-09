@@ -11,7 +11,6 @@ import * as ProductV2 from '@/ducks/productV2';
 import * as Session from '@/ducks/session';
 import { Meta } from '@/ducks/utils/crud';
 import { getActiveVersionContext } from '@/ducks/version/utils';
-import { Product } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 
 import { crud } from './actions';
@@ -20,7 +19,7 @@ import { crud } from './actions';
  * @deprecated changes to this resource are synchronized by the realtime service
  */
 export const replaceProducts =
-  <M extends Meta>(products: Product[], meta?: M): SyncThunk =>
+  <M extends Meta>(products: Realtime.Product[], meta?: M): SyncThunk =>
   (dispatch, getState) => {
     const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
     if (isAtomicActions) return;
@@ -29,7 +28,7 @@ export const replaceProducts =
   };
 
 export const addProduct =
-  (product: Product): Thunk =>
+  (product: Realtime.Product): Thunk =>
   async (dispatch, getState) => {
     const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
     if (!isAtomicActions) return;
@@ -43,7 +42,7 @@ export const addProduct =
  * create a clone of a product and return its ID
  */
 export const cloneProduct =
-  (product: Product): Thunk<string> =>
+  (product: Realtime.Product): Thunk<string> =>
   async (dispatch, getState) =>
     dispatch(
       Feature.applyAtomicSideEffect(
@@ -87,7 +86,7 @@ export const duplicateProduct =
   };
 
 export const patchProduct =
-  (productID: string, data: Partial<Product>): Thunk =>
+  (productID: string, data: Partial<Realtime.Product>): Thunk =>
   (dispatch, getState) =>
     dispatch(
       Feature.applyAtomicSideEffect(
@@ -130,7 +129,7 @@ export const deleteProduct =
  * @deprecated changes to products are now synced by the realtime service
  */
 export const uploadNewProduct =
-  (product: Product): Thunk =>
+  (product: Realtime.Product): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);

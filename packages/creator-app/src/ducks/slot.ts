@@ -2,14 +2,13 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Feature from '@/ducks/feature';
 import { getActiveVersionContext } from '@/ducks/version/utils';
-import { Slot } from '@/models';
 import { Thunk } from '@/store/types';
 
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
 
 export const STATE_KEY = 'slot';
 
-const slotReducer = createCRUDReducer<Slot>(STATE_KEY);
+const slotReducer = createCRUDReducer<Realtime.Slot>(STATE_KEY);
 
 export default slotReducer;
 
@@ -48,7 +47,7 @@ export const crud = createCRUDActionCreators(STATE_KEY);
 // side effects
 
 export const createSlot =
-  (slotID: string, slot: Slot): Thunk =>
+  (slotID: string, slot: Realtime.Slot): Thunk =>
   (dispatch) =>
     dispatch(
       Feature.applyAtomicSideEffect(
@@ -63,7 +62,7 @@ export const createSlot =
     );
 
 export const addManySlots =
-  (slots: Slot[]): Thunk =>
+  (slots: Realtime.Slot[]): Thunk =>
   async (dispatch) => {
     if (!slots.length) return;
 
@@ -81,7 +80,7 @@ export const addManySlots =
   };
 
 export const patchSlot =
-  (slotID: string, data: Partial<Slot>): Thunk =>
+  (slotID: string, data: Partial<Realtime.Slot>): Thunk =>
   (dispatch) =>
     dispatch(
       Feature.applyAtomicSideEffect(

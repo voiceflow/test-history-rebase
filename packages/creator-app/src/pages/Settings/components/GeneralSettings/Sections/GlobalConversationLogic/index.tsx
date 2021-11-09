@@ -1,5 +1,5 @@
 import { Constants } from '@voiceflow/general-types';
-import { AnyVoice } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
@@ -62,7 +62,7 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
           fullWidth={false}
           searchable
           placeholder={defaultVoice}
-          getOptionValue={(option) => (option?.value ?? null) as AnyVoice | null}
+          getOptionValue={(option) => (option?.value ?? null) as Realtime.AnyVoice | null}
           getOptionLabel={(value) => prettifyVoice(value ?? '')}
           renderOptionLabel={(option) => option.label || option.value}
           multiLevelDropdown

@@ -1,11 +1,11 @@
-import { NodeData } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { NodeManagerConfig } from '../types';
 import CodeEditor from './CodeEditor';
 import CodeStep from './CodeStep';
 import { NODE_CONFIG } from './constants';
 
-const CodeManager: NodeManagerConfig<NodeData.Code> = {
+const CodeManager: NodeManagerConfig<Realtime.NodeData.Code> = {
   ...NODE_CONFIG,
 
   tip: 'Modify Variables directly with Code',

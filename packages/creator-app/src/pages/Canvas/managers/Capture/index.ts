@@ -1,4 +1,5 @@
-import { NodeData } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { NO_REPLY_RESPONSE_PATH_TYPE, NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
 
 import { NodeManagerConfig } from '../types';
@@ -10,7 +11,7 @@ const EDITORS_BY_PATH = {
   [NO_REPLY_RESPONSE_PATH_TYPE]: NoReplyResponseForm,
 };
 
-const CaptureManager: NodeManagerConfig<NodeData.Capture> = {
+const CaptureManager: NodeManagerConfig<Realtime.NodeData.Capture> = {
   ...NODE_CONFIG,
 
   tip: 'Capture what the user says into a variable',

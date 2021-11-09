@@ -1,11 +1,10 @@
-import { Adapters } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { allLinksSelector, creatorDiagramIDSelector, creatorDiagramSelector } from '@/ducks/creator/diagram/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 import * as Viewport from '@/ducks/viewport';
-import { CreatorDiagram } from '@/models';
 
 import { STATE_KEY } from './constants';
 
@@ -68,7 +67,7 @@ export const fullActiveDiagramSelector = createSelector(
     const viewport = getViewport(diagramID);
     const variables = getLocalVariables(diagramID);
 
-    const diagram = Adapters.creatorAdapter.toDB(
+    const diagram = Realtime.Adapters.creatorAdapter.toDB(
       {
         diagramID,
         viewport,
@@ -76,7 +75,7 @@ export const fullActiveDiagramSelector = createSelector(
         links,
         data,
         markupNodeIDs,
-      } as CreatorDiagram,
+      } as Realtime.CreatorDiagram,
       { nodes, ports, platform, context: {} }
     );
 

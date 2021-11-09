@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import uniqBy from 'lodash/uniqBy';
 import { createSelector } from 'reselect';
 
@@ -10,7 +11,6 @@ import { applyIntentNameFormatting } from '@/ducks/intent/utils';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { createCRUDSelectors, idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { Intent } from '@/models';
 import { GENERAL_BUILT_INS_MAP, getBuiltInIntents } from '@/utils/intent';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
@@ -47,7 +47,7 @@ export const allCustomIntentsSelector = createSelector([allIntentsSelector, Proj
 );
 
 export const customIntentMapSelector = createSelector([allCustomIntentsSelector], (intents) =>
-  intents.reduce<Record<string, Intent>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
+  intents.reduce<Record<string, Realtime.Intent>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
 );
 
 // This appends the built-in intent consts to the redux intents
@@ -65,7 +65,7 @@ export const allPlatformIntentsSelector = createSelector(
 );
 
 export const platformIntentMapSelector = createSelector([allPlatformIntentsSelector], (intents) =>
-  intents.reduce<Record<string, Intent>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
+  intents.reduce<Record<string, Realtime.Intent>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
 );
 
 export const getPlatformIntentByIDSelector = createSelector(

@@ -1,11 +1,11 @@
 import { Nullable, Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast, useCache, useContextApi, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import { BlockType, MarkupBlockType } from '@/constants';
 import { useEventualEngine, usePermission, useTrackingEvents, useUpload } from '@/hooks';
-import { Markup, NodeData } from '@/models';
 import { useAnyModeOpen } from '@/pages/Project/hooks/modes';
 import { ClassName, Identifier } from '@/styles/constants';
 import { upload, windowRefocused } from '@/utils/dom';
@@ -85,9 +85,13 @@ export const MarkupProvider: React.FC = ({ children }) => {
         const offsetX = 0 - x / zoom + (rect.width / zoom - imageSize.width) / 2;
         const offsetY = 0 - y / zoom + (rect.height / zoom - imageSize.height) / 2;
 
-        const nodeData: Markup.NodeData.Image = { url: imageURL, width: imageSize.width, height: imageSize.height, rotate: 0 };
+        const nodeData: Realtime.Markup.NodeData.Image = { url: imageURL, width: imageSize.width, height: imageSize.height, rotate: 0 };
 
-        engine.node.add(BlockType.MARKUP_IMAGE, engine.canvas!.toCoords([offsetX, offsetY]), nodeData as NodeData<Markup.NodeData.Image>);
+        engine.node.add(
+          BlockType.MARKUP_IMAGE,
+          engine.canvas!.toCoords([offsetX, offsetY]),
+          nodeData as Realtime.NodeData<Realtime.Markup.NodeData.Image>
+        );
       } catch {
         toast.error('There was an error');
       }

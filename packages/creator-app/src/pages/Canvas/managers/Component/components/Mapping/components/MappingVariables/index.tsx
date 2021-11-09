@@ -1,18 +1,18 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { MapManaged, useDispatch, useSelector } from '@/hooks';
-import { NodeData } from '@/models';
 
 import { ButtonContainer, Container, DeleteButton, MappingContainer, RegularSelect, VariableDropdown, VariableMappingContainer } from './components';
 
 interface MappingVariablesProps {
-  items?: NodeData.VariableMapping[];
+  items?: Realtime.NodeData.VariableMapping[];
   reverse?: boolean;
-  onChange: (items: NodeData.VariableMapping[]) => void;
+  onChange: (items: Realtime.NodeData.VariableMapping[]) => void;
   diagramID: string | null;
-  mapManaged: MapManaged<NodeData.VariableMapping>;
+  mapManaged: MapManaged<Realtime.NodeData.VariableMapping>;
 }
 
 const MappingVariables: React.FC<MappingVariablesProps> = ({ items, reverse, diagramID, mapManaged }) => {

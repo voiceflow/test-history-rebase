@@ -2,7 +2,7 @@ import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { FetchOptions } from '@voiceflow/ui';
 
-import { DBMember, DBWorkspace, Price } from '@/models';
+import { Price } from '@/models';
 import { APIKey } from '@/models/APIKey';
 import { DBBilling, DBPaymentSource } from '@/models/Billing';
 
@@ -13,15 +13,16 @@ export const LEGACY_WORKSPACE_PATH = 'team';
 export const WORKSPACES_PATH = 'workspaces';
 
 const workspaceClient = {
-  find: (opt?: FetchOptions) => api.get<DBWorkspace[]>(WORKSPACES_PATH, opt).then(Realtime.Adapters.workspaceAdapter.mapFromDB),
+  find: (opt?: FetchOptions) => api.get<Realtime.DBWorkspace[]>(WORKSPACES_PATH, opt).then(Realtime.Adapters.workspaceAdapter.mapFromDB),
 
-  fetchWorkspace: (workspaceID: string) => api.get<DBWorkspace>(`${WORKSPACES_PATH}/${workspaceID}`).then(Realtime.Adapters.workspaceAdapter.fromDB),
+  fetchWorkspace: (workspaceID: string) =>
+    api.get<Realtime.DBWorkspace>(`${WORKSPACES_PATH}/${workspaceID}`).then(Realtime.Adapters.workspaceAdapter.fromDB),
 
   createWorkspace: (data: { name: string; image?: string }) =>
-    api.post<DBWorkspace>(WORKSPACES_PATH, data).then(Realtime.Adapters.workspaceAdapter.fromDB),
+    api.post<Realtime.DBWorkspace>(WORKSPACES_PATH, data).then(Realtime.Adapters.workspaceAdapter.fromDB),
 
   findMembers: (workspaceID: string) =>
-    api.get<DBMember[]>(`${WORKSPACES_PATH}/${workspaceID}/members`).then(Realtime.Adapters.memberAdapter.mapFromDB),
+    api.get<Realtime.DBMember[]>(`${WORKSPACES_PATH}/${workspaceID}/members`).then(Realtime.Adapters.memberAdapter.mapFromDB),
 
   deleteWorkspace: (workspaceID: string) => api.delete(`${WORKSPACES_PATH}/${workspaceID}`),
 
@@ -75,7 +76,7 @@ const workspaceClient = {
   updateInvite: (workspaceID: string, email: string, role: UserRole) => api.patch(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
 
   sendInvite: (workspaceID: string, email: string, role?: UserRole) =>
-    api.post<DBMember | void>(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
+    api.post<Realtime.DBMember | void>(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
 
   getInviteLink: (workspaceID: string, role: UserRole) => api.post<string>(`${WORKSPACES_PATH}/${workspaceID}/inviteLink`, { role }),
 

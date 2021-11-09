@@ -1,12 +1,12 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<NodeData.Visual> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Visual> = {
   type: BlockType.DISPLAY,
 
   icon: 'blocks',

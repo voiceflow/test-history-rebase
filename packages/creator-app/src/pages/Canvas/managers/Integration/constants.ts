@@ -1,9 +1,9 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon, SVG } from '@voiceflow/ui';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
@@ -27,7 +27,7 @@ const ICON_COLOR_MAP: Record<Node.Utils.IntegrationType, string> = {
 
 const EMPTY_KEY_VALUE_ITEM = { key: '', val: '' };
 
-export const DEFAULT_DATA: Record<Node.Utils.IntegrationType, NodeData.Integration> = {
+export const DEFAULT_DATA: Record<Node.Utils.IntegrationType, Realtime.NodeData.Integration> = {
   [Node.Utils.IntegrationType.ZAPIER]: {
     user: {},
     value: '',
@@ -60,7 +60,7 @@ export const DEFAULT_DATA: Record<Node.Utils.IntegrationType, NodeData.Integrati
     selectedIntegration: Node.Utils.IntegrationType.GOOGLE_SHEETS,
   },
 };
-export const NODE_CONFIG: NodeConfig<NodeData.Integration> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration> = {
   type: BlockType.INTEGRATION,
 
   // for older version
@@ -82,6 +82,6 @@ export const NODE_CONFIG: NodeConfig<NodeData.Integration> = {
       name: data?.selectedIntegration ? NAME_MAP[data.selectedIntegration] : 'Integrations',
       ...data,
       ...(data && DEFAULT_DATA[data.selectedIntegration!]),
-    } as Creator.DataDescriptor<NodeData.Integration>,
+    } as Creator.DataDescriptor<Realtime.NodeData.Integration>,
   }),
 };

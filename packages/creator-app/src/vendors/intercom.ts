@@ -1,13 +1,18 @@
 import { NullableRecord } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { IntercomProps, useIntercom } from 'react-use-intercom';
 
 import { LOGROCKET_PROJECT } from '@/config';
-import { Account, Workspace } from '@/models';
+import { Account } from '@/models';
 import { generateID } from '@/utils/env';
 
 // eslint-disable-next-line import/prefer-default-export
-export function createProps(user: NullableRecord<Account>, workspace: Workspace = {} as Workspace, intercomUserHMAC: string | null): IntercomProps {
+export function createProps(
+  user: NullableRecord<Account>,
+  workspace: Realtime.Workspace = {} as Realtime.Workspace,
+  intercomUserHMAC: string | null
+): IntercomProps {
   if (!user.creator_id) return {};
 
   const intercomID = generateID(String(user.creator_id));

@@ -1,14 +1,13 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { SlotInput } from '@/models';
-
-export const generateSlotInput = (value = '', synonyms = ''): SlotInput => ({
+export const generateSlotInput = (value = '', synonyms = ''): Realtime.SlotInput => ({
   id: Utils.id.cuid.slug(),
   value,
   synonyms,
 });
 
-export const mergeSlotInputs = (inputs1: SlotInput[], inputs2: SlotInput[]): SlotInput[] => {
+export const mergeSlotInputs = (inputs1: Realtime.SlotInput[], inputs2: Realtime.SlotInput[]): Realtime.SlotInput[] => {
   const mergeMap = new Map<string, { id: string; value: string; synonyms: string[] }>();
 
   [...inputs1, ...inputs2].forEach((input) => {

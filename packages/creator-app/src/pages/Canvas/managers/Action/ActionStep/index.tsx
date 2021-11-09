@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useSyncedLookup } from '@/hooks';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 
 export interface ActionStepProps {
@@ -27,7 +27,7 @@ export const ActionStep: React.FC<ActionStepProps> = ({ nodeID, name, paths, wit
   </Step>
 );
 
-const ConnectedActionStep: React.FC<ConnectedStepProps<NodeData.Trace>> = ({ node, data, withPorts }) => {
+const ConnectedActionStep: React.FC<ConnectedStepProps<Realtime.NodeData.Trace>> = ({ node, data, withPorts }) => {
   const pathsByPortID = useSyncedLookup(node.ports.out, data.paths);
 
   const paths = React.useMemo(

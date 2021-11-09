@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Session from '@/ducks/session';
-import { Node } from '@/models';
 import { SyncThunk, ThunkDispatch } from '@/store/types';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype } from '../actions';
@@ -14,7 +14,7 @@ import { Context, PrototypeStatus } from '../types';
 const INVALID_STARTING_BLOCK_TYPES = [BlockType.INTENT];
 
 const getValidStartingNode = (
-  getNodeByID: (id: string) => Node,
+  getNodeByID: (id: string) => Realtime.Node,
   getLinkedNodeIDsByNodeID: (id: string) => string[],
   getLinkIDsByNodeID: (id: string) => string[],
   dispatch: ThunkDispatch,

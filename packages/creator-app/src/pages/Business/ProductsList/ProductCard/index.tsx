@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, IconButton, IconButtonVariant, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
@@ -6,7 +7,6 @@ import * as Product from '@/ducks/product';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useSelector } from '@/hooks';
-import * as Models from '@/models';
 import { PRODUCT_TYPES } from '@/pages/Business/Product/GuidedSteps/PricingModel';
 import LocaleMap from '@/services/LocaleMap';
 import { isProductComplete } from '@/utils/product';
@@ -14,7 +14,7 @@ import { isProductComplete } from '@/utils/product';
 import { Container, Description, Details, Icon, Status, StatusText, SubTitle, Title, TooltipInfo } from './components';
 
 export interface ProductCardProps {
-  product: Models.Product;
+  product: Realtime.Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {

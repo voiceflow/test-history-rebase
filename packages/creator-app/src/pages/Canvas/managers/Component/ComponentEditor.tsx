@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Section from '@/components/Section';
@@ -5,7 +6,6 @@ import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
-import { NodeData } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -13,7 +13,7 @@ import { FadeLeftContainer } from '@/styles/animations';
 import { Component, Footer, Mapping } from './components';
 import { variableMappingFactory } from './components/Mapping/components/MappingSection';
 
-const ComponentEditor: NodeEditor<NodeData.Component> = ({ data, onChange }) => {
+const ComponentEditor: NodeEditor<Realtime.NodeData.Component> = ({ data, onChange }) => {
   const diagram = useSelector((state) => DiagramV2.diagramByIDSelector(state, { id: data.diagramID }));
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);

@@ -1,11 +1,12 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 
 import { NodeManagerConfig } from '../types';
 import ActionEditor from './ActionEditor';
 import ActionStep from './ActionStep';
 
-const TraceManager: NodeManagerConfig<NodeData.Trace> = {
+const TraceManager: NodeManagerConfig<Realtime.NodeData.Trace> = {
   type: BlockType.TRACE,
   editor: ActionEditor,
   icon: 'action',

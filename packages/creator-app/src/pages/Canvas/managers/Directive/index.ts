@@ -1,11 +1,11 @@
-import { NodeData } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import DirectiveEditor from './DirectiveEditor';
 import DirectiveStep from './DirectiveStep';
 
-const DirectiveManager: NodeManagerConfig<NodeData.Directive> = {
+const DirectiveManager: NodeManagerConfig<Realtime.NodeData.Directive> = {
   ...NODE_CONFIG,
 
   tip: 'send directive to alexa',

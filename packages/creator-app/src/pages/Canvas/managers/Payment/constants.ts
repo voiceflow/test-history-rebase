@@ -1,5 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
@@ -24,7 +25,7 @@ export const DONTS = [
 export const WARNING =
   'Be careful not to reference the price, subscription term, or free trial length in any of the skill content. Amazon handles the voice interaction model and all the mechanics of the purchase, as well as obtaining the product description and price.';
 
-export const NODE_CONFIG: NodeConfig<NodeData.Payment> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Payment> = {
   type: BlockType.PAYMENT,
 
   icon: 'purchase',

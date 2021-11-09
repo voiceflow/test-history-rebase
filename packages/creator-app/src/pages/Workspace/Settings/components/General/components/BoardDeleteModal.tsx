@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant, Input, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,11 +6,10 @@ import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import { useDidUpdateEffect, useDispatch, useModals, useTrackingEvents } from '@/hooks';
-import * as Models from '@/models';
 import { withTargetValue } from '@/utils/dom';
 
 export interface BoardDeleteModalProps {
-  workspace: Models.Workspace;
+  workspace: Realtime.Workspace;
 }
 
 export const BoardDeleteModal: React.FC<BoardDeleteModalProps> = ({ workspace }) => {

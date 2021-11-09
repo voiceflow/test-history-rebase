@@ -1,5 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { AnyCRUDAction, createCRUDActionCreators } from '@/ducks/utils/crud';
-import { ProjectList } from '@/models';
 import { Action } from '@/store/types';
 
 import { createAction } from '../utils';
@@ -20,7 +21,7 @@ export type TransplantProject = Action<
 
 export type AddProjectToList = Action<ProjectListAction.ADD_PROJECT_TO_LIST, { listID: string; projectID: string; addToStart?: boolean }>;
 
-export type AnyProjectListAction = AnyCRUDAction<ProjectList> | RemoveProjectFromList | TransplantProject | AddProjectToList;
+export type AnyProjectListAction = AnyCRUDAction<Realtime.ProjectList> | RemoveProjectFromList | TransplantProject | AddProjectToList;
 
 /**
  * @deprecated

@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon, SvgIcon } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -6,7 +7,6 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { BlockType, DragItem } from '@/constants';
 import { useEnableDisable, useEventualEngine, useSetup } from '@/hooks';
-import { NodeData } from '@/models';
 import { ClassName } from '@/styles/constants';
 
 import { StepDragItem } from '../types';
@@ -18,7 +18,7 @@ export interface ItemProps {
   type: BlockType;
   icon: Icon | React.FC;
   label: string;
-  factoryData?: Partial<NodeData<unknown>>;
+  factoryData?: Partial<Realtime.NodeData<unknown>>;
   iconColor?: string;
   isDraggingPreview?: boolean;
 }

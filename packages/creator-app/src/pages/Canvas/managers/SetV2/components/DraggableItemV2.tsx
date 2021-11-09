@@ -1,4 +1,5 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, BoxFlex, Input, Text, useDidUpdateEffect } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
@@ -9,7 +10,6 @@ import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
 import { useExpressionValidation } from '@/hooks';
-import { NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import PrefixedVariableSelect from '@/pages/Canvas/components/PrefixedVariableSelect';
@@ -27,8 +27,8 @@ const INPUT_TYPE_OPTIONS = [
   },
 ];
 
-export type SetItemProps = ItemComponentProps<NodeData.SetExpressionV2> &
-  MappedItemComponentHandlers<NodeData.SetExpressionV2> &
+export type SetItemProps = ItemComponentProps<Realtime.NodeData.SetExpressionV2> &
+  MappedItemComponentHandlers<Realtime.NodeData.SetExpressionV2> &
   DragPreviewComponentProps & {
     latestCreatedKey: string | undefined;
     isOnlyItem: boolean;
@@ -105,7 +105,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
               {item.type === Node.Utils.ExpressionTypeV2.VALUE ? (
                 <Input
                   value={String(item.expression)}
-                  onChange={({ target }) => onUpdate({ expression: target.value as NodeData.NewExpressionType })}
+                  onChange={({ target }) => onUpdate({ expression: target.value as Realtime.NodeData.NewExpressionType })}
                   placeholder="Enter value"
                 />
               ) : (

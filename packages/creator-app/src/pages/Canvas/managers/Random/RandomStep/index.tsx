@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -28,6 +28,8 @@ export const RandomStep: React.FC<RandomStepProps> = ({ nodeID, ports }) => (
   </Step>
 );
 
-const ConnectedRandomStep: React.FC<ConnectedStepProps<NodeData.Random>> = ({ node }) => <RandomStep nodeID={node.id} ports={node.ports.out} />;
+const ConnectedRandomStep: React.FC<ConnectedStepProps<Realtime.NodeData.Random>> = ({ node }) => (
+  <RandomStep nodeID={node.id} ports={node.ports.out} />
+);
 
 export default ConnectedRandomStep;

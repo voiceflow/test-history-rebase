@@ -1,11 +1,11 @@
 import { Nullable } from '@voiceflow/common';
 import { Constants } from '@voiceflow/google-dfes-types';
-import { DialogflowVersion } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { versionSelector as activeVersionSelector } from './base';
 
-export const versionSelector = createSelector([activeVersionSelector], (version) => version as Nullable<DialogflowVersion>);
+export const versionSelector = createSelector([activeVersionSelector], (version) => version as Nullable<Realtime.DialogflowVersion>);
 
 export const settingsSelector = createSelector([versionSelector], (version) => version?.settings ?? null);
 

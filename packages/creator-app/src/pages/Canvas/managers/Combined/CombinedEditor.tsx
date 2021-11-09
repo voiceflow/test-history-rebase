@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,12 +6,11 @@ import Section from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import * as Creator from '@/ducks/creator';
 import { useSelector } from '@/hooks';
-import { NodeData } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
-const CombinedEditor: NodeEditor<NodeData.Combined> = ({ data: { nodeID } }) => {
+const CombinedEditor: NodeEditor<Realtime.NodeData.Combined> = ({ data: { nodeID } }) => {
   const engine = React.useContext(EngineContext)!;
   const getManager = React.useContext(ManagerContext)!;
 

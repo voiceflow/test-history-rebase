@@ -1,16 +1,7 @@
 import { Node } from '@voiceflow/base-types';
 import { SLOT_REGEXP, Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import isEmpty from 'lodash/isEmpty';
-
-import {
-  AdvancedExpressionV2,
-  EqualsExpressionV2,
-  ExpressionData,
-  ExpressionV2,
-  LogicGroupData,
-  ValueExpressionV2,
-  VariableExpressionV2,
-} from '@/models';
 
 import { LogicUnitDataType } from './types';
 
@@ -54,15 +45,15 @@ export const isConditionInvalid = (expression: LogicUnitDataType) => {
 // Default values
 
 export const getAddionalLogicData = (
-  expression: ExpressionData | LogicGroupData,
-  newCondition: ExpressionV2 | LogicGroupData
-): ExpressionData | LogicGroupData => ({
+  expression: Realtime.ExpressionData | Realtime.LogicGroupData,
+  newCondition: Realtime.ExpressionV2 | Realtime.LogicGroupData
+): Realtime.ExpressionData | Realtime.LogicGroupData => ({
   ...expression,
   type: expression.type || Node.Utils.ExpressionTypeV2.AND,
   value: [...expression.value, { ...newCondition }],
 });
 
-export const getDefaultValue = (logicInterface: Node.Utils.ConditionsLogicInterface): ExpressionV2 | LogicGroupData => {
+export const getDefaultValue = (logicInterface: Node.Utils.ConditionsLogicInterface): Realtime.ExpressionV2 | Realtime.LogicGroupData => {
   switch (logicInterface) {
     case Node.Utils.ConditionsLogicInterface.EXPRESSION:
       return {
@@ -70,7 +61,7 @@ export const getDefaultValue = (logicInterface: Node.Utils.ConditionsLogicInterf
         logicInterface,
         type: Node.Utils.ExpressionTypeV2.ADVANCE,
         value: '',
-      } as AdvancedExpressionV2;
+      } as Realtime.AdvancedExpressionV2;
     case Node.Utils.ConditionsLogicInterface.VARIABLE:
       return {
         id: Utils.id.cuid.slug(),
@@ -80,13 +71,13 @@ export const getDefaultValue = (logicInterface: Node.Utils.ConditionsLogicInterf
           {
             type: Node.Utils.ExpressionTypeV2.VARIABLE,
             value: '',
-          } as VariableExpressionV2,
+          } as Realtime.VariableExpressionV2,
           {
             type: Node.Utils.ExpressionTypeV2.VALUE,
             value: '',
-          } as ValueExpressionV2,
+          } as Realtime.ValueExpressionV2,
         ],
-      } as EqualsExpressionV2;
+      } as Realtime.EqualsExpressionV2;
     case Node.Utils.ConditionsLogicInterface.VALUE:
       return {
         id: Utils.id.cuid.slug(),
@@ -96,19 +87,19 @@ export const getDefaultValue = (logicInterface: Node.Utils.ConditionsLogicInterf
           {
             type: Node.Utils.ExpressionTypeV2.VALUE,
             value: '',
-          } as ValueExpressionV2,
+          } as Realtime.ValueExpressionV2,
           {
             type: Node.Utils.ExpressionTypeV2.VALUE,
             value: '',
-          } as ValueExpressionV2,
+          } as Realtime.ValueExpressionV2,
         ],
-      } as EqualsExpressionV2;
+      } as Realtime.EqualsExpressionV2;
     default:
       return {
         id: Utils.id.cuid.slug(),
         logicInterface,
         type: null,
         value: [],
-      } as LogicGroupData;
+      } as Realtime.LogicGroupData;
   }
 };

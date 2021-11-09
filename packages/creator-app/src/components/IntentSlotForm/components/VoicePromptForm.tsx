@@ -1,11 +1,11 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Types } from '@voiceflow/voice-types';
 import React from 'react';
 
 import SSMLWithSlots from '@/components/SSMLWithSlots';
-import { Slot } from '@/models';
 
 interface VoicePromptFormProps {
-  slots: Slot[];
+  slots: Realtime.Slot[];
   prompt: Types.IntentPrompt<string>[];
   onChange: (prompt: Types.IntentPrompt<string>[]) => void;
   placeholder: string;

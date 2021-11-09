@@ -1,6 +1,5 @@
 import { AnyFunction, Callback } from '@voiceflow/common';
-
-import { DBMember } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client, { SocketStatus } from './client';
 import { ServerEvent, SocketEvent } from './constants';
@@ -8,7 +7,7 @@ import { ServerEvent, SocketEvent } from './constants';
 const globalSocketClient = {
   watchForceRefresh: (handler: Callback) => client.watchOnce(ServerEvent.FORCE_REFRESH, handler),
 
-  watchWorkspaceMembers: (handler: (payload: { workspaceID: string; members: DBMember[] }) => void) =>
+  watchWorkspaceMembers: (handler: (payload: { workspaceID: string; members: Realtime.DBMember[] }) => void) =>
     client.watch(ServerEvent.WORKSPACE_MEMBERS_UPDATE, handler),
 
   watchForMembershipRevoked: (handler: (payload: { workspaceId: string; workspaceName: string }) => void) =>

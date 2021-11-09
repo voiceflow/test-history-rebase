@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import { CRUDState } from '@/ducks/utils/crudV2';
-import { Slot } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-export interface SlotState extends CRUDState<Slot> {}
+import { CRUDState } from '@/ducks/utils/crudV2';
+
+export interface SlotState extends CRUDState<Realtime.Slot> {}

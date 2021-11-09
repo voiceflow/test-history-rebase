@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { colorGetReadableAlfa, colorReadableAlfaToOpacity, preventDefault, useDidUpdateEffect, useToggle } from '@voiceflow/ui';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
 import ColorSelect from '@/components/ColorSelect';
 import SliderInputGroup from '@/components/SliderInputGroup';
-import { Markup } from '@/models';
 import { withEnterPress } from '@/utils/dom';
 
 import { DEFAULT_COLOR, TextProperty } from '../constants';
@@ -20,11 +20,11 @@ const TextColor: React.FC = () => {
 
   const [inputOpacity, setInputOpacity] = React.useState(() => colorGetReadableAlfa(color));
 
-  const setColor = (nextColor: Markup.Color) => {
+  const setColor = (nextColor: Realtime.Markup.Color) => {
     EditorAPI.setTextProperty(editor, TextProperty.COLOR, nextColor);
   };
 
-  const onChangeColor = (nextColor: Markup.Color) => {
+  const onChangeColor = (nextColor: Realtime.Markup.Color) => {
     setInputOpacity(`${nextColor.a * 100}`);
     setColor(nextColor);
   };

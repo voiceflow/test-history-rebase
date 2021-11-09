@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Input } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,11 +6,10 @@ import ConditionsBuilder from '@/components/ConditionsBuilder';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import { useSetup } from '@/hooks';
-import { ExpressionData } from '@/models';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 
-export type ConditionsSectionProps = ItemComponentProps<ExpressionData> &
-  MappedItemComponentHandlers<ExpressionData> &
+export type ConditionsSectionProps = ItemComponentProps<Realtime.ExpressionData> &
+  MappedItemComponentHandlers<Realtime.ExpressionData> &
   DragPreviewComponentProps & {
     latestCreatedKey: string | undefined;
     isOnlyItem: boolean;
@@ -20,16 +20,16 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
   ref
 ) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
-  const [title, setTitle] = React.useState<string>((item as ExpressionData).name ?? '');
+  const [title, setTitle] = React.useState<string>((item as Realtime.ExpressionData).name ?? '');
 
   const isNew = itemKey === latestCreatedKey;
 
   const onBlur = React.useCallback(() => {
-    onUpdate({ ...item, name: title } as ExpressionData);
+    onUpdate({ ...item, name: title } as Realtime.ExpressionData);
   }, [onUpdate, title]);
 
   useSetup(() => {
-    if (!(item as ExpressionData).name) inputRef.current?.focus?.();
+    if (!(item as Realtime.ExpressionData).name) inputRef.current?.focus?.();
   });
 
   return (
@@ -37,7 +37,7 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
       ref={ref}
       namespace={['ConditionsSection', item.id]}
       initialOpen={isNew || isOnlyItem}
-      header={(item as ExpressionData).name || 'Condition'}
+      header={(item as Realtime.ExpressionData).name || 'Condition'}
       prefix={<Badge>{index + 1}</Badge>}
       headerRef={connectedDragRef}
       collapseVariant={(!isDragging && !isDraggingPreview && SectionToggleVariant.ARROW) || null}
@@ -60,7 +60,7 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
             />
           </Section>
           <Section isDividerNested customContentStyling={{ paddingTop: '0px', paddingBottom: '0px' }}>
-            <ConditionsBuilder expression={item as ExpressionData} onChange={onUpdate} />
+            <ConditionsBuilder expression={item as Realtime.ExpressionData} onChange={onUpdate} />
           </Section>
         </>
       )}

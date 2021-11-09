@@ -1,8 +1,8 @@
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Creator from '@/ducks/creator';
-import * as Realtime from '@/ducks/realtime';
-import { Link, LinkData } from '@/models';
+import * as RealtimeDuck from '@/ducks/realtime';
 import { Pair } from '@/types';
 
 import { EngineConsumer, extractPoints } from './utils';
@@ -28,11 +28,11 @@ class LinkManager extends EngineConsumer {
       this.dispatch(Creator.removeLink(linkID));
     },
 
-    updateData: (linkID: string, data: Partial<LinkData>) => {
+    updateData: (linkID: string, data: Partial<Realtime.LinkData>) => {
       this.dispatch(Creator.updateLinkData(linkID, data));
     },
 
-    updateDataMany: (payload: { linkID: string; data: Partial<LinkData> }[]) => {
+    updateDataMany: (payload: { linkID: string; data: Partial<Realtime.LinkData> }[]) => {
       this.dispatch(Creator.updateLinkDataMany(payload));
     },
   };
@@ -72,7 +72,7 @@ class LinkManager extends EngineConsumer {
     const linkID = sourcePortID;
 
     this.log.debug(this.log.pending('adding link'), this.log.slug(linkID));
-    await this.engine.realtime.sendUpdate(Realtime.addLink(sourcePortID, targetPortID, linkID));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.addLink(sourcePortID, targetPortID, linkID));
     this.internal.add(sourcePortID, targetPortID, linkID);
     this.engine.saveHistory();
 
@@ -81,25 +81,25 @@ class LinkManager extends EngineConsumer {
 
   async remove(linkID: string) {
     this.log.debug(this.log.pending('removed link'), this.log.slug(linkID));
-    await this.engine.realtime.sendUpdate(Realtime.removeLink(linkID));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.removeLink(linkID));
     this.internal.remove(linkID);
     this.engine.saveHistory();
 
     this.log.info(this.log.success('removed link'), this.log.slug(linkID));
   }
 
-  async updateLinkData(linkID: string, data: Partial<LinkData>) {
+  async updateLinkData(linkID: string, data: Partial<Realtime.LinkData>) {
     this.log.debug(this.log.pending('updated data'), this.log.slug(linkID));
     this.internal.updateData(linkID, data);
-    await this.engine.realtime.sendUpdate(Realtime.updateLinkData(linkID, data));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.updateLinkData(linkID, data));
     this.engine.saveHistory();
 
     this.log.info(this.log.success('updated data'), this.log.slug(linkID));
   }
 
-  async updateLinkDataMany(payload: { linkID: string; data: Partial<LinkData> }[]) {
+  async updateLinkDataMany(payload: { linkID: string; data: Partial<Realtime.LinkData> }[]) {
     this.internal.updateDataMany(payload);
-    await this.engine.realtime.sendUpdate(Realtime.updateLinkDataMany(payload));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.updateLinkDataMany(payload));
   }
 
   async savePointsMany(linkIDs: string[]) {
@@ -133,7 +133,7 @@ class LinkManager extends EngineConsumer {
     }
   }
 
-  redrawPorts({ source: { portID: sourcePortID }, target: { portID: targetPortID } }: Link) {
+  redrawPorts({ source: { portID: sourcePortID }, target: { portID: targetPortID } }: Realtime.Link) {
     this.engine.port.redraw(sourcePortID);
     this.engine.port.redraw(targetPortID);
   }

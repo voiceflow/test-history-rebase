@@ -1,11 +1,11 @@
 import { Constants, Version } from '@voiceflow/alexa-types';
 import { Nullable } from '@voiceflow/common';
-import { AlexaVersion } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { versionSelector as activeVersionSelector } from './base';
 
-export const versionSelector = createSelector([activeVersionSelector], (version) => version as Nullable<AlexaVersion>);
+export const versionSelector = createSelector([activeVersionSelector], (version) => version as Nullable<Realtime.AlexaVersion>);
 
 export const settingsSelector = createSelector([versionSelector], (version) => version?.settings ?? null);
 

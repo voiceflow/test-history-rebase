@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useSetup } from '@/hooks';
-import { Port } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 
 import type { Engine } from '..';
@@ -15,7 +15,7 @@ export type PortInstance = EntityInstance & {
   getRect: () => DOMRect | null;
 };
 
-class PortEntity extends ResourceEntity<Port, PortInstance> {
+class PortEntity extends ResourceEntity<Realtime.Port, PortInstance> {
   get isHighlighted() {
     return this.engine.highlight.isPortTarget(this.portID);
   }

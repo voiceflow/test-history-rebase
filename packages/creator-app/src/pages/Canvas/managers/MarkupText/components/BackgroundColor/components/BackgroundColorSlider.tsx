@@ -1,15 +1,15 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { colorGetReadableAlfa, colorReadableAlfaToOpacity, preventDefault, useDidUpdateEffect, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
 import ColorSelect from '@/components/ColorSelect';
 import OpacitySliderHandle from '@/components/SlateEditable/components/OpacitySliderHandle';
 import SliderInputGroup from '@/components/SliderInputGroup';
-import { Markup } from '@/models';
 import { withEnterPress } from '@/utils/dom';
 
 export interface BackgroundColorSliderProps {
-  color: Markup.Color;
-  onChangeColor: (color: Markup.Color) => void;
+  color: Realtime.Markup.Color;
+  onChangeColor: (color: Realtime.Markup.Color) => void;
 }
 
 const BackgroundColorSlider: React.FC<BackgroundColorSliderProps> = ({ color, onChangeColor }) => {
@@ -17,7 +17,7 @@ const BackgroundColorSlider: React.FC<BackgroundColorSliderProps> = ({ color, on
 
   const [inputOpacity, setInputOpacity] = React.useState(() => colorGetReadableAlfa(color));
 
-  const handleChangeColor = (nextColor: Markup.Color) => {
+  const handleChangeColor = (nextColor: Realtime.Markup.Color) => {
     setInputOpacity(`${nextColor.a * 100}`);
     onChangeColor(nextColor);
   };

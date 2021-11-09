@@ -1,14 +1,14 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
 import { getLabel, getPlaceholder } from './utils';
 
 export interface IntegrationStepProps {
-  data: NodeData.Integration;
+  data: Realtime.NodeData.Integration;
   withPorts: boolean;
   nodeID: string;
   successPortID: string;
@@ -37,7 +37,7 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPort
   </Step>
 );
 
-const ConnectedIntegrationStep: React.FC<ConnectedStepProps<NodeData.Integration>> = ({ node, data, withPorts }) => {
+const ConnectedIntegrationStep: React.FC<ConnectedStepProps<Realtime.NodeData.Integration>> = ({ node, data, withPorts }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
   return <IntegrationStep data={data} nodeID={node.id} successPortID={successPortID} failurePortID={failurePortID} withPorts={withPorts} />;

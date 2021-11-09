@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { Markup, NodeData } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { ConnectedProps } from '@/types';
 
@@ -14,7 +14,7 @@ import { useTransformOverlayAPI } from './hooks';
 
 export interface OverlayControlsRenderProps {
   nodeType: BlockType | null;
-  data: NodeData<Markup.AnyNodeData> | null;
+  data: Realtime.NodeData<Realtime.Markup.AnyNodeData> | null;
   onRotateStart: () => void;
   onResizeStart: (handle: HandlePosition) => () => void;
 }
@@ -25,7 +25,7 @@ export interface OverlayControlsProps {
 
 const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsProps> = ({ node, children }) => {
   const engine = React.useContext(EngineContext)!;
-  const data = node ? engine.getDataByNodeID<Markup.AnyNodeData>(node.nodeID) : null;
+  const data = node ? engine.getDataByNodeID<Realtime.Markup.AnyNodeData>(node.nodeID) : null;
   const nodeType = node?.type || null;
 
   const api = useTransformOverlayAPI(nodeType);

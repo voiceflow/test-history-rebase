@@ -1,20 +1,20 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { Add } from '@/components/InteractiveIcon';
 import Section, { SectionVariant } from '@/components/Section';
 import { useManager } from '@/hooks';
-import { NodeData } from '@/models';
 
 import MappingVariables from './MappingVariables';
 
-export const variableMappingFactory = (): NodeData.VariableMapping => ({ from: null, to: null });
+export const variableMappingFactory = (): Realtime.NodeData.VariableMapping => ({ from: null, to: null });
 
 interface MappingSectionProps {
-  data: NodeData<NodeData.Component>;
-  items?: NodeData.VariableMapping[];
+  data: Realtime.NodeData<Realtime.NodeData.Component>;
+  items?: Realtime.NodeData.VariableMapping[];
   header: string;
   tooltip: string;
-  onChange: (items: NodeData.VariableMapping[]) => void;
+  onChange: (items: Realtime.NodeData.VariableMapping[]) => void;
   reverse?: boolean;
   isDividerNested?: boolean;
 }

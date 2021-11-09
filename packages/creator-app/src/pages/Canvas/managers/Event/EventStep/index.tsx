@@ -1,6 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -19,7 +19,7 @@ export const EventStep: React.FC<IntentStepProps> = ({ nodeID, portID, label }) 
   </Step>
 );
 
-const ConnectedEventStep: React.FC<ConnectedStepProps<NodeData.Event>> = ({ node, data }) => (
+const ConnectedEventStep: React.FC<ConnectedStepProps<Realtime.NodeData.Event>> = ({ node, data }) => (
   <EventStep nodeID={node.id} portID={node.ports.out[0]} label={data.requestName} />
 );
 

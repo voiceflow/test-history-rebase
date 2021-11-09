@@ -1,10 +1,10 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { swallowEvent, useCache } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
 import { useRAF, useToggle } from '@/hooks';
-import { LinkDataCaption } from '@/models';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 
 import { STRAIGHT_PATH_OFFSET } from '../constants';
@@ -260,7 +260,7 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
     engine.link.redraw(linkEntity.linkID);
   }, []);
 
-  const onChangeCaption = React.useCallback(async (caption: LinkDataCaption | null) => {
+  const onChangeCaption = React.useCallback(async (caption: Realtime.LinkDataCaption | null) => {
     await engine.link.updateLinkData(linkEntity.linkID, { caption });
 
     engine.link.redraw(linkEntity.linkID);

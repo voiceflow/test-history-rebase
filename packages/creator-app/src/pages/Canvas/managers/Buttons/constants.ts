@@ -1,8 +1,8 @@
 import { Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 import { getPlatformNoMatchesFactory } from '@/utils/noMatches';
 
 import { NodeConfig } from '../types';
@@ -19,7 +19,7 @@ export const BUTTON_OPTIONS = [
   { id: ButtonAction.GO_TO_INTENT, label: 'Go to Intent' },
 ];
 
-export const NODE_CONFIG: NodeConfig<NodeData.Buttons> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons> = {
   type: BlockType.BUTTONS,
 
   icon: 'action',

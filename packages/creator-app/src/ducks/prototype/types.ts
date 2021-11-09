@@ -1,15 +1,15 @@
 import { Button, Models as BaseModels, Node, Request } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { PlanType } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-import type { AnyLocale } from '@/ducks/version';
 import type { PrototypeContext } from '@/models';
 
 export type PrototypeSettings = Omit<BaseModels.VersionPrototype['settings'], 'layout'> & {
   plan: PlanType;
   platform: Constants.PlatformType;
   layout: PrototypeLayout;
-  locales: AnyLocale[];
+  locales: Realtime.AnyLocale[];
   projectName: string;
   hasPassword: boolean;
   buttons: Button.ButtonsLayout;

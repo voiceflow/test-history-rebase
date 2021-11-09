@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
-import { Slot } from '@/models';
 import { ConnectedProps } from '@/types';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
@@ -33,7 +33,7 @@ interface SSMLWithSlotsProps {
 
   // SSMLWithVars-specific props, from component attributes
   voice: string; // the choice of who voices the ssmlText
-  slots: Slot[]; // data for slot variables in the SSML text content
+  slots: Realtime.Slot[]; // data for slot variables in the SSML text content
 }
 
 export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnectedProps> = ({

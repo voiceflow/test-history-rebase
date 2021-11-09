@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { rgbaToHex } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
-import { Markup } from '@/models';
 import { CANVAS_COMMENTING_ENABLED_CLASSNAME, CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 
 export interface ContainerProps {
@@ -9,7 +9,7 @@ export interface ContainerProps {
   rotate: number;
   scale: number;
   maxWidth: number | null;
-  backgroundColor: Markup.Color | null;
+  backgroundColor: Realtime.Markup.Color | null;
 }
 
 const Container = styled.div<ContainerProps>`

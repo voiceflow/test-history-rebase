@@ -1,8 +1,9 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Creator from '@/ducks/creator';
-import * as Realtime from '@/ducks/realtime';
-import { PartialModel, Port } from '@/models';
+import * as RealtimeDuck from '@/ducks/realtime';
+import { PartialModel } from '@/models';
 
 import { EngineConsumer } from './utils';
 
@@ -10,7 +11,7 @@ class PortManager extends EngineConsumer {
   log = this.engine.log.child('port');
 
   internal = {
-    add: (nodeID: string, port: PartialModel<Port>) => {
+    add: (nodeID: string, port: PartialModel<Realtime.Port>) => {
       this.dispatch(Creator.addPort(nodeID, port));
     },
 
@@ -37,12 +38,12 @@ class PortManager extends EngineConsumer {
     return this.api(portID)?.instance?.getRect();
   }
 
-  async add(nodeID: string, port: Partial<Port>) {
+  async add(nodeID: string, port: Partial<Realtime.Port>) {
     const portID = Utils.id.objectID();
     const augmentedPort = { ...port, id: portID };
 
     this.log.debug(this.log.pending('adding port'), this.log.slug(portID));
-    await this.engine.realtime.sendUpdate(Realtime.addPort(nodeID, augmentedPort));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.addPort(nodeID, augmentedPort));
     this.internal.add(nodeID, augmentedPort);
     this.engine.saveHistory();
 
@@ -51,7 +52,7 @@ class PortManager extends EngineConsumer {
 
   async reorder(nodeID: string, from: number, to: number) {
     this.log.debug(this.log.pending('reordering ports'), this.log.slug(nodeID), this.log.diff(from, to));
-    await this.engine.realtime.sendUpdate(Realtime.reorderPorts(nodeID, from, to));
+    await this.engine.realtime.sendUpdate(RealtimeDuck.reorderPorts(nodeID, from, to));
 
     this.internal.reorder(nodeID, from, to);
     this.engine.saveHistory();
@@ -61,7 +62,7 @@ class PortManager extends EngineConsumer {
 
   async remove(portID: string) {
     this.log.debug(this.log.pending('removing port'), this.log.slug(portID));
-    await this.internal.remove(portID, () => this.engine.realtime.sendUpdate(Realtime.removePort(portID)));
+    await this.internal.remove(portID, () => this.engine.realtime.sendUpdate(RealtimeDuck.removePort(portID)));
     this.engine.saveHistory();
 
     this.log.info(this.log.success('removed port'), this.log.slug(portID));

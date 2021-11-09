@@ -1,15 +1,15 @@
 import { Writeable } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { GENERAL_PLATFORMS } from '@/constants';
-import { NodeData } from '@/models';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import VisualEditor from './VisualEditor';
 import VisualStep from './VisualStep';
 
-const VisualManager: NodeManagerConfig<NodeData.Visual> = {
+const VisualManager: NodeManagerConfig<Realtime.NodeData.Visual> = {
   ...NODE_CONFIG,
 
   label: 'Visuals',

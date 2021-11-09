@@ -1,6 +1,7 @@
-import { CRUDState } from '@/ducks/utils/crud';
-import { Workspace } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-export type WorkspaceState = CRUDState<Workspace> & {
+import { CRUDState } from '@/ducks/utils/crud';
+
+export type WorkspaceState = CRUDState<Realtime.Workspace> & {
   activeWorkspaceID: string | null;
 };

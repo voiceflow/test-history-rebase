@@ -1,13 +1,13 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { SearchableListItemContainer } from '@/components/SearchableList';
 import { SlotTag } from '@/components/VariableTag';
-import { Slot } from '@/models';
 
 import ItemCount from '../../ItemCount';
 
-export type DraggableItemProps = ItemComponentProps<Slot> &
+export type DraggableItemProps = ItemComponentProps<Realtime.Slot> &
   DragPreviewComponentProps & {
     selectedID?: string;
     onSelectSlot?: (id: string) => void;

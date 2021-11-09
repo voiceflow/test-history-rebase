@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { FlexAround } from '@voiceflow/ui';
 import React from 'react';
 
 import { ControlledEditorProvider, FontStyles, HyperlinkButton, TextColor } from '@/components/SlateEditable';
 import { withRequiredEngine } from '@/contexts';
 import { useTrackingEvents } from '@/hooks';
-import { Markup } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
 import MarkupSection from '@/pages/Canvas/components/MarkupSection';
 import type { Engine } from '@/pages/Canvas/engine';
@@ -12,7 +12,7 @@ import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
 import { BackgroundColor, IconButton, IconButtonSeparator, TextAligns, TextStyles } from './components';
 
-export const MarkupTextEditor: React.FC<NodeEditorPropsType<Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, engine }) => {
+export const MarkupTextEditor: React.FC<NodeEditorPropsType<Realtime.Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, engine }) => {
   const [key, editor] = engine.markup.useTextEditor(nodeID);
   const [trackingEvents] = useTrackingEvents();
 
@@ -51,4 +51,4 @@ export const MarkupTextEditor: React.FC<NodeEditorPropsType<Markup.NodeData.Text
   );
 };
 
-export default withRequiredEngine(MarkupTextEditor) as React.FC<NodeEditorPropsType<Markup.NodeData.Text>>;
+export default withRequiredEngine(MarkupTextEditor) as React.FC<NodeEditorPropsType<Realtime.Markup.NodeData.Text>>;

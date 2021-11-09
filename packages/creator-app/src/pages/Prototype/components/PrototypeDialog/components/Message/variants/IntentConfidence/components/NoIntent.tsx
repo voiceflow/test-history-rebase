@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText, Flex, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -8,7 +9,6 @@ import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
-import { IntentInput } from '@/models';
 
 import { Container, StatusIcon, TextContainer } from './index';
 
@@ -19,7 +19,7 @@ interface NoIntentProps {
   focused: boolean;
 }
 
-const determineNewUtterances = (previousInputArray: IntentInput[], newInputArray: IntentInput[]) => {
+const determineNewUtterances = (previousInputArray: Realtime.IntentInput[], newInputArray: Realtime.IntentInput[]) => {
   const previousUtteranceArray = previousInputArray.map(({ text }) => text);
   const newUtteranceArray = newInputArray.map(({ text }) => text);
   const netNewUtterances: string[] = [];
@@ -39,7 +39,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   const { annotations } = useSelector(Transcript.currentTranscriptSelector) ?? {};
   const { utteranceAddedTo: utteranceAddedToIntentID, utteranceAddedCount } = annotations?.[turnID] ?? {};
   const { open: openIMM, isOpened: isOpenedIMM } = useModals(ModalType.INTERACTION_MODEL);
-  const [initialUtterances, setInitialUtterances] = React.useState<IntentInput[] | null>(null);
+  const [initialUtterances, setInitialUtterances] = React.useState<Realtime.IntentInput[] | null>(null);
   const [targetIntentID, setTargetIntentID] = React.useState<string | null>(null);
   const selectIntentByID = useSelector(IntentV2.getIntentByIDSelector);
   const activeTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
@@ -82,7 +82,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     setTargetIntentID(id);
   };
 
-  const handleIMMClose = async (intentID: string, initialUtterancesArray: IntentInput[]) => {
+  const handleIMMClose = async (intentID: string, initialUtterancesArray: Realtime.IntentInput[]) => {
     if (!activeTranscriptID) return;
 
     const targetIntent = selectIntentByID(intentID);

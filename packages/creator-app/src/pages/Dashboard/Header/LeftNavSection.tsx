@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, FlexApart, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,13 +9,12 @@ import { Permission } from '@/config/permissions';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
-import { Workspace } from '@/models';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
 import { ClassName } from '@/styles/constants';
 
 interface LeftNavSectionProps {
   loadingProjects: boolean;
-  activeWorkspace: Workspace | null;
+  activeWorkspace: Realtime.Workspace | null;
 }
 
 const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace, loadingProjects }) => {

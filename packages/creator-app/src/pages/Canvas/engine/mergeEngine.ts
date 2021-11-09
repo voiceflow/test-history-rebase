@@ -1,8 +1,8 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import _constant from 'lodash/constant';
 
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 import { CANVAS_MERGING_CLASSNAME } from '@/pages/Canvas/constants';
 import { MergeLayerAPI } from '@/pages/Canvas/types';
 
@@ -15,7 +15,7 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
 
   candidates: NodeCandidate[] = [];
 
-  virtualSource: { type: BlockType; factoryData: Partial<NodeData<unknown>> } | null = null;
+  virtualSource: { type: BlockType; factoryData: Partial<Realtime.NodeData<unknown>> } | null = null;
 
   targetStep: { index: number; reset: () => void } | null = null;
 
@@ -120,7 +120,7 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
     this.log.debug(this.log.success('unmerged node'), this.log.slug(sourceNodeID));
   }
 
-  setVirtualSource(type: BlockType, factoryData: Partial<NodeData<unknown>> = {}) {
+  setVirtualSource(type: BlockType, factoryData: Partial<Realtime.NodeData<unknown>> = {}) {
     this.virtualSource = { type, factoryData };
   }
 

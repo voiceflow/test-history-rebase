@@ -1,21 +1,20 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, BoxFlex } from '@voiceflow/ui';
 import React from 'react';
-
-import { ExpressionData, ExpressionV2, LogicGroupData } from '@/models';
 
 import { ConditionLabel, ConditionSelect, LogicInterfaceHandler } from './components';
 import { getAddionalLogicData, getDefaultValue } from './utils';
 
 export interface ConditionsBuilderProps {
-  onChange: (value: ExpressionData) => void;
-  expression?: ExpressionData;
+  onChange: (value: Realtime.ExpressionData) => void;
+  expression?: Realtime.ExpressionData;
 }
 
 const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, expression }) => {
   const addNewCondition = (logicInterface: Node.Utils.ConditionsLogicInterface) => {
     const values = getDefaultValue(logicInterface);
-    onChange({ ...expression, value: [{ ...values }] } as ExpressionData);
+    onChange({ ...expression, value: [{ ...values }] } as Realtime.ExpressionData);
   };
 
   const addAdditionalCondition = (logicInterface: Node.Utils.ConditionsLogicInterface) => {
@@ -24,18 +23,18 @@ const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, express
   };
 
   const updateBaseType = (type: Node.Utils.ExpressionTypeV2.AND | Node.Utils.ExpressionTypeV2.OR) => {
-    onChange({ ...expression, type } as ExpressionData);
+    onChange({ ...expression, type } as Realtime.ExpressionData);
   };
 
-  const onUpdateData = (index: number) => (data: ExpressionV2 | LogicGroupData) => {
+  const onUpdateData = (index: number) => (data: Realtime.ExpressionV2 | Realtime.LogicGroupData) => {
     onChange({
       ...expression,
       value: expression!.value.map((item: any, idx: number) => (idx === index ? { ...item, ...data } : item)),
-    } as ExpressionData);
+    } as Realtime.ExpressionData);
   };
 
   const onDeleteCondition = (index: number) => () => {
-    onChange({ ...expression, value: expression!.value.filter((_, idx: number) => idx !== index) } as ExpressionData);
+    onChange({ ...expression, value: expression!.value.filter((_, idx: number) => idx !== index) } as Realtime.ExpressionData);
   };
 
   return (
@@ -52,7 +51,7 @@ const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, express
 
       {expression && (
         <>
-          {expression.value?.map((item: ExpressionV2 | LogicGroupData, index: number) => {
+          {expression.value?.map((item: Realtime.ExpressionV2 | Realtime.LogicGroupData, index: number) => {
             const isLastItem = index === expression.value.length - 1;
             const isFirstItem = index === 0;
 

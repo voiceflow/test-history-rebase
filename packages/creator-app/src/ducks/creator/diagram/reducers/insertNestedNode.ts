@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Node } from '@/models';
 import { Reducer } from '@/store/types';
 
 import { InsertNestedNode } from '../actions';
@@ -15,7 +15,7 @@ import {
   removeBlockFromState,
 } from '../utils';
 
-export const reorderNestedNode = (state: DiagramState, targetNode: Node, index: number, recipientNode: Node) => {
+export const reorderNestedNode = (state: DiagramState, targetNode: Realtime.Node, index: number, recipientNode: Realtime.Node) => {
   const currentIndex = recipientNode.combinedNodes.indexOf(targetNode.id);
   const isReorderingHighToLow = currentIndex < index;
   const nextIndex = isReorderingHighToLow ? index - 1 : index;
@@ -34,7 +34,7 @@ export const reorderNestedNode = (state: DiagramState, targetNode: Node, index: 
   )(state);
 };
 
-export const insertIntoParentNode = (state: DiagramState, targetNode: Node, index: number, recipientNode: Node) => {
+export const insertIntoParentNode = (state: DiagramState, targetNode: Realtime.Node, index: number, recipientNode: Realtime.Node) => {
   const isLast = recipientNode.combinedNodes.length === index;
   const oldLinks = isLast ? getNestedOutgoingLinkIDs(state, recipientNode) : getOutgoingLinkIDs(state, targetNode);
 
@@ -46,7 +46,7 @@ export const insertIntoParentNode = (state: DiagramState, targetNode: Node, inde
   )(state);
 };
 
-export const transplantNestedNode = (state: DiagramState, targetNode: Node, index: number, recipientNodeID: string) => {
+export const transplantNestedNode = (state: DiagramState, targetNode: Realtime.Node, index: number, recipientNodeID: string) => {
   const recipientNode = Utils.normalized.getNormalizedByKey(state.nodes, recipientNodeID);
 
   if (recipientNodeID === targetNode.parentNode) {

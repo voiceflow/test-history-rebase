@@ -1,8 +1,8 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
 import { getPlatformNoMatchesFactory } from '@/utils/noMatches';
 import { distinctPlatformsData } from '@/utils/platform';
@@ -11,7 +11,7 @@ import { isChatbotPlatform } from '@/utils/typeGuards';
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<NodeData.Interaction> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction> = {
   type: BlockType.CHOICE,
 
   icon: 'choice',

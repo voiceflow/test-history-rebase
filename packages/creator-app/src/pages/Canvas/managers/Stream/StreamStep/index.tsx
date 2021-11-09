@@ -1,8 +1,8 @@
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { usePortFilter } from '@/pages/Canvas/hooks';
 import { transformVariablesToReadable } from '@/utils/slot';
@@ -45,7 +45,7 @@ export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customP
   );
 };
 
-const ConnectedStreamStep: React.FC<ConnectedStepProps<NodeData.Stream>> = ({ node, data, platform }) => {
+const ConnectedStreamStep: React.FC<ConnectedStepProps<Realtime.NodeData.Stream>> = ({ node, data, platform }) => {
   const portFilter = usePortFilter();
 
   return (

@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ButtonVariant, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,7 +10,6 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { compose, connect } from '@/hocs';
-import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
@@ -21,7 +21,7 @@ import { HelpMessage, HelpTooltip } from './components';
 const FlowComponent = Flow as React.FC<any>;
 const LegacyMappingsComponent = LegacyMappings as React.FC<any>;
 
-const CommandEditor: NodeEditor<NodeData.Command, ConnectedCommandEditorProps> = ({
+const CommandEditor: NodeEditor<Realtime.NodeData.Command, ConnectedCommandEditorProps> = ({
   data,
   platformData,
   patchPlatformData,
@@ -93,14 +93,15 @@ const mergeProps = (
   ...[{ platform, getIntentByID, diagramByID }, { goToDiagram }, { data, onChange }]: MergeArguments<
     typeof mapStateToProps,
     typeof mapDispatchToProps,
-    NodeEditorPropsType<NodeData.Command>
+    NodeEditorPropsType<Realtime.NodeData.Command>
   >
 ) => {
   const platformData = getDistinctPlatformValue(platform, data);
 
   return {
     platformData,
-    patchPlatformData: (patch: Partial<NodeData.Command.PlatformData>) => onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),
+    patchPlatformData: (patch: Partial<Realtime.NodeData.Command.PlatformData>) =>
+      onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),
     intent: platformData.intent && getIntentByID(platformData.intent),
     diagram: platformData.diagramID && diagramByID(platformData.diagramID),
     goToDiagram: () => goToDiagram(platformData.diagramID!),
@@ -110,4 +111,4 @@ const mergeProps = (
 
 type ConnectedCommandEditorProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 
-export default compose(connect(mapStateToProps, mapDispatchToProps, mergeProps))(CommandEditor) as NodeEditor<NodeData.Command>;
+export default compose(connect(mapStateToProps, mapDispatchToProps, mergeProps))(CommandEditor) as NodeEditor<Realtime.NodeData.Command>;

@@ -10,7 +10,6 @@ import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectListSelectorsV2 from '@/ducks/projectListV2/selectors';
 import { createCRUDState, CRUDState } from '@/ducks/utils/crud';
-import * as Models from '@/models';
 import { State } from '@/store/types';
 
 import suite from './_suite';
@@ -23,8 +22,8 @@ const LIST = {
   id: LIST_ID,
   name: LIST_NAME,
   projects: [PROJECT_ID, ...PROJECT_IDS],
-} as Models.ProjectList;
-const MOCK_STATE: CRUDState<Models.ProjectList> = {
+} as Realtime.ProjectList;
+const MOCK_STATE: CRUDState<Realtime.ProjectList> = {
   byKey: {
     [LIST_ID]: LIST,
   },

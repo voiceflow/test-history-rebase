@@ -3,6 +3,7 @@ import { Utils } from '@voiceflow/common';
 import { Constants as GeneralConstants, Version as GeneralVersion } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants, Version as DialogflowVersion } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants, Version as GoogleVersion } from '@voiceflow/google-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -19,24 +20,23 @@ import * as alexa from '../platform/alexa';
 import * as dialogflow from '../platform/dialogflow';
 import * as general from '../platform/general';
 import * as google from '../platform/google';
-import { AnyLocale, AnyVersion, AnyVersionSettings, AnyVoice } from '../types';
 
 /**
  * @deprecated syncing resource updates is now handled by the realtime service
  */
 export const patchActiveVersion =
-  (version: Partial<Pick<AnyVersion, 'session' | 'settings' | 'publishing'>>, meta?: object): SyncThunk =>
+  (version: Partial<Pick<Realtime.AnyVersion, 'session' | 'settings' | 'publishing'>>, meta?: object): SyncThunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
 
     Errors.assertVersionID(versionID);
 
-    dispatch(crud.patch(versionID, version as Partial<AnyVersion>, meta));
+    dispatch(crud.patch(versionID, version as Partial<Realtime.AnyVersion>, meta));
   };
 
 export const patchSettings =
-  (settings: Partial<AnyVersionSettings>): Thunk =>
+  (settings: Partial<Realtime.AnyVersionSettings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
@@ -53,7 +53,7 @@ export const patchSettings =
   };
 
 export const updateLocales =
-  <L extends AnyLocale>(locales?: L[]): Thunk =>
+  <L extends Realtime.AnyLocale>(locales?: L[]): Thunk =>
   async (dispatch, getState) => {
     if (!locales?.length) return;
 
@@ -101,7 +101,7 @@ export const updateLocales =
     }
   };
 
-export const updateDefaultVoice = (defaultVoice: AnyVoice) => patchSettings({ defaultVoice: defaultVoice as any });
+export const updateDefaultVoice = (defaultVoice: Realtime.AnyVoice) => patchSettings({ defaultVoice: defaultVoice as any });
 
 export const updateInvocationName =
   (invocationName: string): Thunk =>

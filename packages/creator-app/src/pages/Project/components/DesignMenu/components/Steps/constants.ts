@@ -1,10 +1,10 @@
 import { Node } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import _isFunction from 'lodash/isFunction';
 
 import { BlockCategory, BlockType, DialogType, RootOrMarkupBlockType } from '@/constants';
-import { NodeData } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { createPlatformSelector } from '@/utils/platform';
 
@@ -14,12 +14,12 @@ export interface MenuStep {
   label: string;
   iconColor?: string;
   publicOnly?: boolean;
-  factoryData?: NodeData<any>;
+  factoryData?: Realtime.NodeData<any>;
 }
 
 const createMenuStep = (
   type: Exclude<BlockType, RootOrMarkupBlockType>,
-  { publicOnly, factoryData }: { publicOnly?: boolean; factoryData?: NodeData<any> } = {}
+  { publicOnly, factoryData }: { publicOnly?: boolean; factoryData?: Realtime.NodeData<any> } = {}
 ): MenuStep => {
   const manager = getManager(type);
 

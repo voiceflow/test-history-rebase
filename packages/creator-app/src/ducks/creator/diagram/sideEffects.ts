@@ -1,5 +1,6 @@
 import { Models, Node } from '@voiceflow/base-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import { batch } from 'react-redux';
 import * as ReduxUndo from 'redux-undo';
@@ -15,7 +16,6 @@ import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Viewport from '@/ducks/viewport';
-import { NodeData } from '@/models';
 import mutableStore from '@/store/mutable';
 import { Dispatchable, SyncThunk, Thunk } from '@/store/types';
 import { getDistinctPlatformValue } from '@/utils/platform';
@@ -68,7 +68,7 @@ export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) 
       return false;
     }
 
-    const nodeData = data[id] as NodeData<NodeData.Intent>;
+    const nodeData = data[id] as Realtime.NodeData<Realtime.NodeData.Intent>;
     const { intent, availability } = getDistinctPlatformValue(platform, nodeData);
 
     return !!intent && (!availability || availability === Node.Intent.IntentAvailability.GLOBAL);

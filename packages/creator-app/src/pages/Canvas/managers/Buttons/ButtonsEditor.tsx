@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
@@ -6,7 +7,6 @@ import * as Documentation from '@/config/documentation';
 import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useSelector } from '@/hooks';
-import { NodeData } from '@/models';
 import ListEditorContent from '@/pages/Canvas/components/ListEditorContent';
 import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -16,7 +16,7 @@ import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { ButtonsListItem } from './components';
 import { factory, NODE_CONFIG } from './constants';
 
-const ButtonsEditor: NodeEditor<NodeData.Buttons> = ({ data, nodeID, onChange, pushToPath }) => {
+const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons> = ({ data, nodeID, onChange, pushToPath }) => {
   const engine = React.useContext(EngineContext);
 
   const focusedNode = useSelector(Creator.focusedNodeSelector)!;

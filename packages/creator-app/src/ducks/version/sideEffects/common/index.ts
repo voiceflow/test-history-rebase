@@ -22,7 +22,6 @@ import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Thread from '@/ducks/thread';
 import * as VersionV2 from '@/ducks/versionV2';
-import * as Models from '@/models';
 import { Thunk } from '@/store/types';
 import { storeLogger } from '@/store/utils';
 import { isChoiceNode, isFlowNode, isIntentNode, isProductLinkedNode } from '@/utils/node';
@@ -129,7 +128,7 @@ export const activateVersionV2 =
     const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
     if (!isAtomicActions) return;
 
-    const dbVersion = await client.api.version.get<Models.AnyDBVersion>(versionID);
+    const dbVersion = await client.api.version.get<Realtime.AnyDBVersion>(versionID);
 
     // not a dependency for project to load
     dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
@@ -163,12 +162,12 @@ export const importProjectContext =
     sourcePlatform,
     targetPlatform,
   }: {
-    nodes: { data: Models.NodeData<unknown>; node: Models.Node }[];
-    products: Models.Product[];
-    diagrams: Models.Diagram[];
+    nodes: { data: Realtime.NodeData<unknown>; node: Realtime.Node }[];
+    products: Realtime.Product[];
+    diagrams: Realtime.Diagram[];
     sourcePlatform: Constants.PlatformType;
     targetPlatform: Constants.PlatformType;
-  }): Thunk<{ data: Models.NodeData<unknown>; node: Models.Node }[]> =>
+  }): Thunk<{ data: Realtime.NodeData<unknown>; node: Realtime.Node }[]> =>
   async (dispatch) => {
     let mappedNodes = nodes;
 
@@ -245,7 +244,7 @@ export const saveIntentsAndSlots = (): Thunk => async (_dispatch, getState) => {
 };
 
 export const patchSession =
-  (session: Partial<Models.Version.Session>): Thunk =>
+  (session: Partial<Realtime.Version.Session>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -273,7 +272,7 @@ export const patchSession =
   };
 
 export const updateResumePrompt =
-  (resumePrompt: Partial<Models.Version.Session['resumePrompt']>): Thunk =>
+  (resumePrompt: Partial<Realtime.Version.Session['resumePrompt']>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const activeSession = VersionV2.active.sessionSelector(state);

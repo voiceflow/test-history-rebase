@@ -1,5 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import createCRUDReducer from '@/ducks/utils/crud';
-import { Workspace } from '@/models';
 
 import { STATE_KEY } from './constants';
 
@@ -12,6 +13,6 @@ export * from './types';
 
 // reducers
 
-const workspaceReducer = createCRUDReducer<Workspace>(STATE_KEY);
+const workspaceReducer = createCRUDReducer<Realtime.Workspace>(STATE_KEY);
 
 export default workspaceReducer;

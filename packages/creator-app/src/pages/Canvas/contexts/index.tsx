@@ -1,8 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { BlockType } from '@/constants';
 import { RegisterEngine } from '@/contexts';
-import type { Markup } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 import type { NodeManagerConfig } from '@/pages/Canvas/managers/types';
 
@@ -22,7 +22,7 @@ export * from './PresentationModeContext';
 export * from './ReduxContexts';
 export * from './SpotlightContext';
 
-export type ManagerGetter = <T extends object | Markup.AnyNodeData>(type: BlockType) => NodeManagerConfig<T>;
+export type ManagerGetter = <T extends object | Realtime.Markup.AnyNodeData>(type: BlockType) => NodeManagerConfig<T>;
 export const ManagerContext = React.createContext<ManagerGetter | null>(null);
 export const { Provider: ManagerProvider, Consumer: ManagerConsumer } = ManagerContext;
 

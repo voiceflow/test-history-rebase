@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { SVG } from '@voiceflow/ui';
 
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 import { NO_REPLY_RESPONSE_PATH_TYPE, NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
 
 import { NodeManagerConfig } from '../types';
@@ -12,7 +12,7 @@ const EDITORS_BY_PATH = {
   [NO_REPLY_RESPONSE_PATH_TYPE]: NoReplyResponseForm,
 };
 
-const ChoiceOldManager: NodeManagerConfig<NodeData.ChoiceOld> = {
+const ChoiceOldManager: NodeManagerConfig<Realtime.NodeData.ChoiceOld> = {
   type: BlockType.CHOICE_OLD,
   icon: SVG.projectDiagram as any,
   buttons: true,

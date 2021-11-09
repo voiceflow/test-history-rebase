@@ -1,4 +1,4 @@
-import { NodeData } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { NodeManagerConfig } from '../types';
 import ChoiceEditor from './ChoiceEditor';
@@ -6,7 +6,7 @@ import ChoiceStep from './ChoiceStep';
 import { NODE_CONFIG } from './constants';
 import { EDITORS_BY_PATH } from './subeditors';
 
-const ChoiceManager: NodeManagerConfig<NodeData.Interaction> = {
+const ChoiceManager: NodeManagerConfig<Realtime.NodeData.Interaction> = {
   ...NODE_CONFIG,
 
   tip: 'Select choices and capture slot values from user input',

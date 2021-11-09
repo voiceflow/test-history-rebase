@@ -1,6 +1,5 @@
 import { Constants } from '@voiceflow/general-types';
-
-import { NodeData } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { NodeManagerConfig } from '../types';
 import ButtonsEditor from './ButtonsEditor';
@@ -8,7 +7,7 @@ import ButtonsStep from './ButtonsStep';
 import { NODE_CONFIG } from './constants';
 import { EDITORS_BY_PATH } from './subeditors';
 
-const ButtonsManager: NodeManagerConfig<NodeData.Buttons> = {
+const ButtonsManager: NodeManagerConfig<Realtime.NodeData.Buttons> = {
   ...NODE_CONFIG,
 
   label: 'Buttons',

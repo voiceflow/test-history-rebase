@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -26,7 +26,7 @@ export const CustomPayloadStep: React.FC<CustomPayloadStepProps> = ({ nodeID, po
   </Step>
 );
 
-const ConnectedActionStep: React.FC<ConnectedStepProps<NodeData.CustomPayload>> = ({ node }) => (
+const ConnectedActionStep: React.FC<ConnectedStepProps<Realtime.NodeData.CustomPayload>> = ({ node }) => (
   <CustomPayloadStep nodeID={node.id} portID={node.ports.out[0]} />
 );
 

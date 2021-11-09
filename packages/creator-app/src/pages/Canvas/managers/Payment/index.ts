@@ -1,13 +1,12 @@
 import { Constants } from '@voiceflow/general-types';
-
-import { NodeData } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import PaymentEditor from './PaymentEditor';
 import PaymentStep from './PaymentStep';
 
-const PaymentManager: NodeManagerConfig<NodeData.Payment> = {
+const PaymentManager: NodeManagerConfig<Realtime.NodeData.Payment> = {
   ...NODE_CONFIG,
 
   tip: 'Request payment from user',

@@ -1,8 +1,7 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { BoxFlexAlignStart } from '@voiceflow/ui';
 import React from 'react';
-
-import { ExpressionV2 } from '@/models';
 
 import { BaseLogicType, LogicUnitDataType } from '../types';
 import ConditionDataSelect from './ConditionDataSelect';
@@ -15,7 +14,7 @@ export interface LogicUnitProps {
   baseLogicType: BaseLogicType;
 
   onDelete: () => void;
-  onDataChange: (value: ExpressionV2) => void;
+  onDataChange: (value: Realtime.ExpressionV2) => void;
   updateBaseType: (value: Node.Utils.ExpressionTypeV2.AND | Node.Utils.ExpressionTypeV2.OR) => void;
 }
 

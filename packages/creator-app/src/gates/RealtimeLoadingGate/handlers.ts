@@ -1,4 +1,5 @@
 import { Eventual } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
@@ -9,12 +10,11 @@ import * as Feature from '@/ducks/feature';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
-import * as Realtime from '@/ducks/realtime';
+import * as RealtimeDuck from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import * as Models from '@/models';
 import { ActionPayload, AnyAction, Dispatch, GetState, Thunk } from '@/store/types';
 
 const updateActiveProjectName =
@@ -35,16 +35,16 @@ const updateActiveProjectName =
  * @deprecated none of these handlers are required with the new realtime system
  */
 export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetState) => ({
-  [Realtime.ResourceType.SLOTS]: (data: Models.Slot[], meta: object) => dispatch(Slot.crud.replace(data, meta)),
-  [Realtime.ResourceType.INTENTS]: (data: Models.Intent[], meta: object) => dispatch(Intent.replaceIntents(data, meta)),
-  [Realtime.ResourceType.PRODUCTS]: (data: Models.Product[], meta: object) => dispatch(Product.replaceProducts(data, meta)),
-  [Realtime.ResourceType.SETTINGS]: (data: { name: string } & Pick<Version.AnyVersion, 'settings' | 'publishing' | 'session'>, meta: object) => {
+  [RealtimeDuck.ResourceType.SLOTS]: (data: Realtime.Slot[], meta: object) => dispatch(Slot.crud.replace(data, meta)),
+  [RealtimeDuck.ResourceType.INTENTS]: (data: Realtime.Intent[], meta: object) => dispatch(Intent.replaceIntents(data, meta)),
+  [RealtimeDuck.ResourceType.PRODUCTS]: (data: Realtime.Product[], meta: object) => dispatch(Product.replaceProducts(data, meta)),
+  [RealtimeDuck.ResourceType.SETTINGS]: (data: { name: string } & Pick<Realtime.AnyVersion, 'settings' | 'publishing' | 'session'>, meta: object) => {
     batch(() => {
       dispatch(Version.patchActiveVersion({ settings: data.settings, publishing: data.publishing, session: data.session }, meta));
       dispatch(updateActiveProjectName(data.name, meta));
     });
   },
-  [Realtime.ResourceType.FLOWS]: async (data: Models.Diagram[]) => {
+  [RealtimeDuck.ResourceType.FLOWS]: async (data: Realtime.Diagram[]) => {
     const state = getState();
     const getDiagramByID = DiagramV2.getDiagramByIDSelector(state);
 
@@ -57,10 +57,10 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
       await dispatch(Diagram.loadDiagrams(versionID, rootDiagramID));
     }
   },
-  [Realtime.ResourceType.VARIABLES]: (data: string[], meta: object) => {
+  [RealtimeDuck.ResourceType.VARIABLES]: (data: string[], meta: object) => {
     dispatch(Version.replaceGlobalVariables(data, meta));
   },
-  [Realtime.ResourceType.DIAGRAM]: (data: Models.Diagram | null, meta: object) => {
+  [RealtimeDuck.ResourceType.DIAGRAM]: (data: Realtime.Diagram | null, meta: object) => {
     if (data) {
       dispatch(Diagram.crud.patch(data.id, { ...data }, meta));
     }
@@ -81,15 +81,15 @@ export const createHandlers = (dispatch: Dispatch, getState: GetState) => {
     };
 
   return {
-    [Realtime.SocketAction.LOCK_RESOURCE]: wrapHandler<ActionPayload<Realtime.LockResource>>(
-      ({ targets: [resourceID] }, tabID) => dispatch(Realtime.addResourceLock(resourceID, tabID)),
+    [RealtimeDuck.SocketAction.LOCK_RESOURCE]: wrapHandler<ActionPayload<RealtimeDuck.LockResource>>(
+      ({ targets: [resourceID] }, tabID) => dispatch(RealtimeDuck.addResourceLock(resourceID, tabID)),
       FeatureFlag.ATOMIC_ACTIONS_PHASE_2
     ),
-    [Realtime.SocketAction.UNLOCK_RESOURCE]: wrapHandler<ActionPayload<Realtime.UnlockResource>>(
-      ({ targets: [resourceID] }) => dispatch(Realtime.removeResourceLock(resourceID)),
+    [RealtimeDuck.SocketAction.UNLOCK_RESOURCE]: wrapHandler<ActionPayload<RealtimeDuck.UnlockResource>>(
+      ({ targets: [resourceID] }) => dispatch(RealtimeDuck.removeResourceLock(resourceID)),
       FeatureFlag.ATOMIC_ACTIONS_PHASE_2
     ),
-    [Realtime.SocketAction.UPDATE_RESOURCE]: wrapHandler<ActionPayload<Realtime.UpdateResource>>(
+    [RealtimeDuck.SocketAction.UPDATE_RESOURCE]: wrapHandler<ActionPayload<RealtimeDuck.UpdateResource>>(
       ({ resourceID, data }) => resourceUpdateHandlers[resourceID](data as any, { receivedAction: true }),
       FeatureFlag.ATOMIC_ACTIONS
     ),

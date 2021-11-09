@@ -2,6 +2,7 @@
 
 import { Text } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Editor } from 'slate';
@@ -9,7 +10,6 @@ import { Editor } from 'slate';
 import { SlateEditorAPI, SlatePluginType, useSetupSlateEditor } from '@/components/SlateEditable';
 import { BlockType, MarkupBlockType } from '@/constants';
 import { useForceUpdate, useSetup, useTeardown } from '@/hooks';
-import { Markup, NodeData } from '@/models';
 import { DEFAULT_BACKGROUND_COLOR } from '@/pages/Canvas/managers/MarkupText/constants';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
@@ -44,7 +44,7 @@ class MarkupEngine extends EngineConsumer {
   }
 
   async addTextNode(): Promise<void> {
-    const nodeData: Markup.NodeData.Text = {
+    const nodeData: Realtime.Markup.NodeData.Text = {
       scale: 1,
       rotate: 0,
       content: [...SlateEditorAPI.createTextState('', { elementProperties: { [Text.ElementProperty.TEXT_ALIGN]: 'center' } })],
@@ -55,7 +55,7 @@ class MarkupEngine extends EngineConsumer {
     const nodeID = await this.engine.node.add(
       BlockType.MARKUP_TEXT,
       this.engine.getMouseCoords().sub([12 * (this.engine.canvas?.getZoom() ?? 1), 26 * (this.engine.canvas?.getZoom() ?? 1)]),
-      nodeData as NodeData<Markup.NodeData.Text>,
+      nodeData as Realtime.NodeData<Realtime.Markup.NodeData.Text>,
       Utils.id.objectID(),
       false
     );

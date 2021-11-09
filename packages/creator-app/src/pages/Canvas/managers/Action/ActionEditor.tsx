@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -6,7 +7,6 @@ import Section, { SectionToggleVariant } from '@/components/Section';
 import TextArea from '@/components/TextArea';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { useManager } from '@/hooks';
-import { NodeData } from '@/models/NodeData';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -14,7 +14,7 @@ import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
 import { HelpTooltip, Path } from './components';
 
-const ActionEditor: React.FC<NodeEditorPropsType<NodeData.Trace>> = ({ data, onChange }) => {
+const ActionEditor: React.FC<NodeEditorPropsType<Realtime.NodeData.Trace>> = ({ data, onChange }) => {
   const [name, setName] = React.useState(data.name);
   const [value, setValue] = React.useState(data.body);
 

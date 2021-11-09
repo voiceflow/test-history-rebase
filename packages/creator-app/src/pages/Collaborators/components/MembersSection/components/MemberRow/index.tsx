@@ -1,4 +1,5 @@
 import { UserRole } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Flex, Menu } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,7 +8,6 @@ import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useFeature, useSelector } from '@/hooks';
-import { DBMember } from '@/models';
 import { ClassName } from '@/styles/constants';
 
 import {
@@ -38,7 +38,7 @@ const getRoleVerb = (role: UserRole) => {
 };
 
 interface MemberRowProps {
-  member: DBMember;
+  member: Realtime.DBMember;
   inline?: boolean;
   pending: boolean;
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;

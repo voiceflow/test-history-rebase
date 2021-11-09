@@ -1,14 +1,14 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
 import { MAX_SPEAK_ITEMS_COUNT } from '@/constants';
-import { NodeData } from '@/models';
 import TextList from '@/pages/Canvas/components/TextList';
 
 import { ChatNoMatchItem } from './NoMatchItem';
 
-interface ChatNoMatchListProps extends NodeData.ChatNoMatches {
-  onChangeReprompts: (reprompts: NodeData.ChatNoMatches['reprompts']) => void;
+interface ChatNoMatchListProps extends Realtime.NodeData.ChatNoMatches {
+  onChangeReprompts: (reprompts: Realtime.NodeData.ChatNoMatches['reprompts']) => void;
   onChangeRandomize: () => void;
 }
 

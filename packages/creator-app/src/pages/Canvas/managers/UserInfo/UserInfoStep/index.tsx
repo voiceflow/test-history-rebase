@@ -1,8 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { PERMISSION_LABELS } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -44,7 +44,7 @@ export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, wit
   </Step>
 );
 
-const ConnectedUserInfoStep: React.FC<ConnectedStepProps<NodeData.UserInfo>> = ({ node, data, withPorts }) => {
+const ConnectedUserInfoStep: React.FC<ConnectedStepProps<Realtime.NodeData.UserInfo>> = ({ node, data, withPorts }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
   return (

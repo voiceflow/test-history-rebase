@@ -2,13 +2,14 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
 import { NullableRecord, Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Logger } from '@voiceflow/ui';
 
 import { CanvasAPI } from '@/components/Canvas';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { FeatureFlagMap } from '@/ducks/feature';
-import { EntityMap, Link, Node, NodeData, NodeWithData, Port } from '@/models';
+import { EntityMap, NodeWithData } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptor } from '@/pages/Canvas/managers/types';
 import { Dispatcher, DispatchResult, Selector } from '@/store/types';
@@ -88,7 +89,7 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
 
 export function nodeFactory(
   type: BlockType,
-  factoryData?: Partial<NodeData<unknown>>,
+  factoryData?: Partial<Realtime.NodeData<unknown>>,
   options?: { defaultVoice: string; canvasNodeVisibility: BaseNode.Utils.CanvasNodeVisibility; features?: FeatureFlagMap }
 ): { node: Omit<Creator.NodeDescriptor, 'id'>; data: Creator.DataDescriptor } {
   const config = getManager(type);
@@ -112,7 +113,7 @@ export function nodeFactory(
 
 export const cloneLink =
   ({ getPortID, getNodeID }: CloneUtils) =>
-  (link: Link): Link => ({
+  (link: Realtime.Link): Realtime.Link => ({
     ...link,
     id: Utils.id.objectID(),
     source: {
@@ -131,7 +132,7 @@ export const cloneNodeWithData =
   ({ getNodeID, getPortID }: CloneUtils) =>
   ({ node, data }: NodeWithData): NodeWithData => {
     const originNode = node;
-    const originNodeData: NodeData<unknown> = data;
+    const originNodeData: Realtime.NodeData<unknown> = data;
 
     const newID = getNodeID(originNode.id);
 
@@ -156,7 +157,7 @@ export const cloneNodeWithData =
 
 export const clonePort =
   ({ getNodeID, getPortID }: CloneUtils) =>
-  (port: Port): Port => {
+  (port: Realtime.Port): Realtime.Port => {
     const newID = getPortID(port.id);
     const nodeID = getNodeID(port.nodeID);
 
@@ -198,8 +199,8 @@ export const cloneEntityMap = (
   { nodesWithData, ports, links }: EntityMap,
   options?: CloneContextOptions
 ): {
-  ports: Port[];
-  links: Link[];
+  ports: Realtime.Port[];
+  links: Realtime.Link[];
   nodesWithData: NodeWithData[];
 } => {
   const context = createCloneContext(options);
@@ -263,7 +264,7 @@ export const getCandidates = (nodeIDs: string[], engine: Engine): NodeCandidate[
         (Utils.number.isInRange(top, rect.top, rect.bottom) || Utils.number.isInRange(bottom, rect.top, rect.bottom)),
     }));
 
-export const getNodesData = (nodeData: Record<string, NodeData<unknown>>, selectedNodes: Node[]) => {
+export const getNodesData = (nodeData: Record<string, Realtime.NodeData<unknown>>, selectedNodes: Realtime.Node[]) => {
   const nodeIDs = selectedNodes
     .map((node) => [node.id, ...node.combinedNodes] || [])
     .flat()
@@ -272,7 +273,11 @@ export const getNodesData = (nodeData: Record<string, NodeData<unknown>>, select
   return nodeIDs.map((nodeID) => nodeData[nodeID]);
 };
 
-export const getCopiedNodeDataIDs = (nodeData: Record<string, NodeData<unknown>>, copiedNodes: Node[], platform: Constants.PlatformType) => {
+export const getCopiedNodeDataIDs = (
+  nodeData: Record<string, Realtime.NodeData<unknown>>,
+  copiedNodes: Realtime.Node[],
+  platform: Constants.PlatformType
+) => {
   const copiedNodesData = getNodesData(nodeData, copiedNodes);
   const intents: string[] = [];
 

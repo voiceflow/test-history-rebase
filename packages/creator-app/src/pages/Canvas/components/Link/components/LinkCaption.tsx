@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { LinkDataCaption } from '@/models';
 import { LinkEntityContext } from '@/pages/Canvas/contexts';
 
 import { InternalLinkInstance } from '../types';
@@ -12,7 +12,7 @@ interface LinkCaptionProps {
   color: string;
   linkID: string;
   instance: InternalLinkInstance;
-  onChange: (caption: LinkDataCaption | null) => Promise<void>;
+  onChange: (caption: Realtime.LinkDataCaption | null) => Promise<void>;
   disabled?: boolean;
   isEditing: boolean;
   isLineActive: boolean;

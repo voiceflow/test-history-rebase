@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
@@ -29,7 +29,7 @@ export const CardStep: React.FC<CardStepProps> = ({ title, image, nodeID, portID
   </Step>
 );
 
-const ConnectedCardStep: React.FC<ConnectedStepProps<NodeData.Card>> = ({ node, data }) => {
+const ConnectedCardStep: React.FC<ConnectedStepProps<Realtime.NodeData.Card>> = ({ node, data }) => {
   const image = isVariable(data.largeImage) ? null : data.largeImage;
 
   return <CardStep nodeID={node.id} portID={node.ports.out[0]} image={image} title={data.title} />;

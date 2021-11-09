@@ -1,13 +1,13 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { IntentName, SearchableListItemContainer } from '@/components/SearchableList';
-import { Intent } from '@/models';
 import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import ItemCount from '../../ItemCount';
 
-export type DraggableItemProps = ItemComponentProps<Intent> &
+export type DraggableItemProps = ItemComponentProps<Realtime.Intent> &
   DragPreviewComponentProps & {
     selectedID?: string;
     withoutHover?: boolean;

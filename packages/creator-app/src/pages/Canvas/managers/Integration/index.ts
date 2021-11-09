@@ -1,11 +1,11 @@
-import { NodeData } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import IntegrationEditor from './IntegrationEditor';
 import IntegrationStep from './IntegrationStep';
 
-const IntegrationManager: NodeManagerConfig<NodeData.Integration> = {
+const IntegrationManager: NodeManagerConfig<Realtime.NodeData.Integration> = {
   ...NODE_CONFIG,
 
   tip: 'Integrate external services into your skill',

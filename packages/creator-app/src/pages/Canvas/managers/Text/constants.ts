@@ -1,13 +1,13 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<NodeData.Text> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Text> = {
   type: BlockType.TEXT,
 
   icon: 'textStep',

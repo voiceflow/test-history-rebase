@@ -1,18 +1,18 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { generate } from '@voiceflow/ui';
 
 import * as Feature from '@/ducks/feature';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { createCRUDState, CRUDState } from '@/ducks/utils/crud';
-import * as Models from '@/models';
 
 import suite from './_suite';
 
 const INTENT_ID = generate.id();
 const SLOT_NAME = generate.string();
-const INTENT = { id: INTENT_ID, name: SLOT_NAME } as Models.Intent;
-const MOCK_STATE: CRUDState<Models.Intent> = {
+const INTENT = { id: INTENT_ID, name: SLOT_NAME } as Realtime.Intent;
+const MOCK_STATE: CRUDState<Realtime.Intent> = {
   byKey: {
     [INTENT_ID]: INTENT,
   },

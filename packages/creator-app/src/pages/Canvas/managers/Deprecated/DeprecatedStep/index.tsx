@@ -1,6 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -24,7 +24,7 @@ const DeprecatedStep: React.FC<DeprecatedStepProps> = ({ nodeID, ports }) => (
   </Step>
 );
 
-const ConnectedDeprecatedStep: React.FC<ConnectedStepProps<NodeData.Deprecated>> = ({ node }) => (
+const ConnectedDeprecatedStep: React.FC<ConnectedStepProps<Realtime.NodeData.Deprecated>> = ({ node }) => (
   <DeprecatedStep nodeID={node.id} ports={node.ports.out} />
 );
 

@@ -1,8 +1,7 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, BoxFlex, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
-
-import { ExpressionV2, LogicGroupData } from '@/models';
 
 import { BaseLogicType, LogicUnitDataType } from '../../types';
 import { getAddionalLogicData, getDefaultValue } from '../../utils';
@@ -14,11 +13,11 @@ import LogicGroupContainer from './components/LogicGroupContainer';
 
 export interface ConditionLogicGroupProps {
   firstItem?: boolean;
-  expression: LogicGroupData;
+  expression: Realtime.LogicGroupData;
   baseLogicType: BaseLogicType;
 
   onDelete: () => void;
-  onChange: (value: LogicGroupData) => void;
+  onChange: (value: Realtime.LogicGroupData) => void;
   updateBaseType: (value: Node.Utils.ExpressionTypeV2.AND | Node.Utils.ExpressionTypeV2.OR) => void;
 }
 
@@ -30,14 +29,16 @@ const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, o
 
   const addAdditionalCondition = (logicInterface: Node.Utils.ConditionsLogicInterface) => {
     const values: any = getDefaultValue(logicInterface);
-    onChange(getAddionalLogicData({ ...expression, type: Node.Utils.ExpressionTypeV2.OR }! as LogicGroupData, values) as LogicGroupData);
+    onChange(
+      getAddionalLogicData({ ...expression, type: Node.Utils.ExpressionTypeV2.OR }! as Realtime.LogicGroupData, values) as Realtime.LogicGroupData
+    );
   };
 
   const updateLogicGroupBaseType = (type: Node.Utils.ExpressionTypeV2.AND | Node.Utils.ExpressionTypeV2.OR) => {
     onChange({ ...expression, type });
   };
 
-  const onUpdateData = (index: number) => (data: ExpressionV2) => {
+  const onUpdateData = (index: number) => (data: Realtime.ExpressionV2) => {
     onChange({ ...expression, value: expression.value.map((item: any, idx: number) => (idx === index ? { ...item, ...data } : item)) });
   };
 
@@ -69,7 +70,7 @@ const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, o
           </BoxFlex>
         )}
 
-        {expression?.value?.map((item: ExpressionV2, index: number) => (
+        {expression?.value?.map((item: Realtime.ExpressionV2, index: number) => (
           <LogicUnit
             isLogicGroup
             key={index}

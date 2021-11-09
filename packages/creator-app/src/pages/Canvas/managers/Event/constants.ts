@@ -1,10 +1,11 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<NodeData.Event> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Event> = {
   type: BlockType.EVENT,
 
   icon: 'event',

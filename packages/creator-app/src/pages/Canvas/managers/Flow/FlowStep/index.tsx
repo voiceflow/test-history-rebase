@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { DiagramMapContext } from '@/pages/Canvas/contexts';
 import perf, { PerfAction } from '@/performance';
@@ -36,7 +36,7 @@ export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, portID, onCli
 
 const MemoizedFlowStep = React.memo(FlowStep);
 
-const ConnectedFlowStep: React.FC<ConnectedStepProps<NodeData.Flow>> = ({ node, data }) => {
+const ConnectedFlowStep: React.FC<ConnectedStepProps<Realtime.NodeData.Flow>> = ({ node, data }) => {
   const dispatch = useDispatch();
   const diagramMap = React.useContext(DiagramMapContext)!;
 

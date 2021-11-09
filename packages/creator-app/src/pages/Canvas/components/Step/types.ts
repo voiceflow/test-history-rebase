@@ -1,13 +1,13 @@
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { Node, NodeData } from '@/models';
 
 export interface ConnectedStepProps<T = {}> {
-  node: Node;
-  data: NodeData<T>;
+  node: Realtime.Node;
+  data: Realtime.NodeData<T>;
   platform: Constants.PlatformType;
   withPorts: boolean;
 }

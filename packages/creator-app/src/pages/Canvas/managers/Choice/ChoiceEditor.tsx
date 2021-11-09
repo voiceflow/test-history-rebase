@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -6,7 +7,6 @@ import OverflowMenu from '@/components/OverflowMenu';
 import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useManager, useSelector, useToggle } from '@/hooks';
-import { NodeData } from '@/models';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
@@ -20,7 +20,7 @@ import { NODE_CONFIG } from './constants';
 
 const choiceFactory = () => NODE_CONFIG.factory().data.choices[0];
 
-const ChoiceEditor: NodeEditor<NodeData.Interaction> = ({ data, onChange, pushToPath }) => {
+const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction> = ({ data, onChange, pushToPath }) => {
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
 

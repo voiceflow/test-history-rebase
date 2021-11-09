@@ -1,7 +1,8 @@
 import { Normalized, Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockVariant } from '@/constants/canvas';
-import { Link, Node, NodeData, PartialModel, Port } from '@/models';
+import { PartialModel } from '@/models';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import { nodeFactory, portFactory } from './factories';
@@ -38,11 +39,11 @@ export const getJoiningLinkIDs = (state: DiagramState) => (lhsNodeID: string, rh
     : union;
 };
 
-export const getOutgoingLinkIDs = (state: DiagramState, node: Node) => node.ports.out.flatMap((portID) => getLinkIDsByPortID(state)(portID));
+export const getOutgoingLinkIDs = (state: DiagramState, node: Realtime.Node) => node.ports.out.flatMap((portID) => getLinkIDsByPortID(state)(portID));
 
-export const getIncomingLinkIDs = (state: DiagramState, node: Node) => node.ports.in.flatMap((portID) => getLinkIDsByPortID(state)(portID));
+export const getIncomingLinkIDs = (state: DiagramState, node: Realtime.Node) => node.ports.in.flatMap((portID) => getLinkIDsByPortID(state)(portID));
 
-export const getNestedOutgoingLinkIDs = (state: DiagramState, node: Node) => {
+export const getNestedOutgoingLinkIDs = (state: DiagramState, node: Realtime.Node) => {
   const { combinedNodes } = node;
   const lastNodeID = combinedNodes[combinedNodes.length - 1];
   const lastNode = Utils.normalized.getNormalizedByKey(state.nodes, lastNodeID);
@@ -67,7 +68,7 @@ export const removeReferenceByKey =
         }
       : lookup;
 
-export const removePortFromNode = (node: Node, portID: string) => ({
+export const removePortFromNode = (node: Realtime.Node, portID: string) => ({
   ports: {
     ...node.ports,
     in: Utils.array.withoutValue(node.ports.in, portID),
@@ -86,13 +87,13 @@ export const reorderNodePorts = (nodeID: string, from: number, to: number) => (s
   };
 };
 
-export const removePortFromNodes = (port: Port) => (nodes: Normalized<Node>) => {
+export const removePortFromNodes = (port: Realtime.Port) => (nodes: Normalized<Realtime.Node>) => {
   const node = Utils.normalized.getNormalizedByKey(nodes, port.nodeID);
 
   return Utils.normalized.patchNormalizedByKey(nodes, node.id, removePortFromNode(node, port.id));
 };
 
-export const addLinkToState = (link: Link) => (state: DiagramState) => {
+export const addLinkToState = (link: Realtime.Link) => (state: DiagramState) => {
   const sourceNodeID = link.source.nodeID;
   const targetNodeID = link.target.nodeID;
 
@@ -111,7 +112,7 @@ export const addLinkToState = (link: Link) => (state: DiagramState) => {
   };
 };
 
-export const addAllLinksToState = (links: Link[]) => Utils.functional.compose(...links.map(addLinkToState));
+export const addAllLinksToState = (links: Realtime.Link[]) => Utils.functional.compose(...links.map(addLinkToState));
 
 export const removeLinkFromState = (linkID: string) => (state: DiagramState) => {
   const link = Utils.normalized.getNormalizedByKey(state.links, linkID);
@@ -164,7 +165,7 @@ export const removePortFromBlockInState = (portID: string) =>
 
 export const removeAllPortsFromBlocksInState = (portIDs: string[]) => Utils.functional.compose(...portIDs.map(removePortFromBlockInState));
 
-export const updateRootNodesInState = (nodeID: string, nodePatch: Partial<Node>) => (state: DiagramState) =>
+export const updateRootNodesInState = (nodeID: string, nodePatch: Partial<Realtime.Node>) => (state: DiagramState) =>
   !isMarkupBlockType(nodePatch.type ?? Utils.normalized.getNormalizedByKey(state.nodes, nodeID).type) && 'parentNode' in nodePatch
     ? {
         ...state,
@@ -172,7 +173,7 @@ export const updateRootNodesInState = (nodeID: string, nodePatch: Partial<Node>)
       }
     : state;
 
-export const addNodeToMarkupNodes = (nodeID: string, node: Node) => (state: DiagramState) =>
+export const addNodeToMarkupNodes = (nodeID: string, node: Realtime.Node) => (state: DiagramState) =>
   isMarkupBlockType(node.type)
     ? {
         ...state,
@@ -180,19 +181,19 @@ export const addNodeToMarkupNodes = (nodeID: string, node: Node) => (state: Diag
       }
     : state;
 
-export const updateNodeInState = (node: Node) =>
+export const updateNodeInState = (node: Realtime.Node) =>
   Utils.functional.compose(updateRootNodesInState(node.id, node), (state: DiagramState) => ({
     ...state,
     nodes: Utils.normalized.updateNormalizedByKey(state.nodes, node.id, node),
   }));
 
-export const patchNodeInState = (nodeID: string, nodePatch: Partial<Node>) =>
+export const patchNodeInState = (nodeID: string, nodePatch: Partial<Realtime.Node>) =>
   Utils.functional.compose(updateRootNodesInState(nodeID, nodePatch), (state: DiagramState) => ({
     ...state,
     nodes: Utils.normalized.patchNormalizedByKey(state.nodes, nodeID, nodePatch),
   }));
 
-export const addNode = (node: Node, data: NodeData<unknown>) => (state: DiagramState) => ({
+export const addNode = (node: Realtime.Node, data: Realtime.NodeData<unknown>) => (state: DiagramState) => ({
   ...state,
   nodes: Utils.normalized.addNormalizedByKey(state.nodes, node.id, node),
   data: {
@@ -201,13 +202,13 @@ export const addNode = (node: Node, data: NodeData<unknown>) => (state: DiagramS
   },
 });
 
-export const addNodeToState = (node: Node, data: NodeData<unknown>) =>
+export const addNodeToState = (node: Realtime.Node, data: Realtime.NodeData<unknown>) =>
   Utils.functional.compose(updateRootNodesInState(node.id, node), addNodeToMarkupNodes(node.id, node), addNode(node, data));
 
-export const addAllNodesToState = (nodesWithData: { node: Node; data: NodeData<unknown> }[]) =>
+export const addAllNodesToState = (nodesWithData: { node: Realtime.Node; data: Realtime.NodeData<unknown> }[]) =>
   Utils.functional.compose(...nodesWithData.map(({ node, data }) => addNodeToState(node, data)));
 
-export const removeNodeFromState = (node: Node) => (state: DiagramState) => {
+export const removeNodeFromState = (node: Realtime.Node) => (state: DiagramState) => {
   const { [node.id]: data, ...dataWithoutNode } = state.data;
 
   return {
@@ -219,27 +220,27 @@ export const removeNodeFromState = (node: Node) => (state: DiagramState) => {
   };
 };
 
-export const removeBlockFromState = (node: Node) => (state: DiagramState) =>
+export const removeBlockFromState = (node: Realtime.Node) => (state: DiagramState) =>
   Utils.functional.compose(
     removeAllLinksFromState(getLinkIDsByNodeID(state)(node.id)),
     removeAllPortsFromState([...node.ports.in, ...node.ports.out]),
     removeNodeFromState(node)
   )(state);
 
-export const removeAllBlocksFromState = (nodes: Node[]) => Utils.functional.compose(...nodes.map(removeBlockFromState));
+export const removeAllBlocksFromState = (nodes: Realtime.Node[]) => Utils.functional.compose(...nodes.map(removeBlockFromState));
 
-export const addPortToState = (port: Port) => (state: DiagramState) => ({
+export const addPortToState = (port: Realtime.Port) => (state: DiagramState) => ({
   ...state,
   ports: Utils.normalized.addNormalizedByKey(state.ports, port.id, port),
 });
 
-export const addAllPortsToState = (ports: Port[]) => Utils.functional.compose(...ports.map(addPortToState));
+export const addAllPortsToState = (ports: Realtime.Port[]) => Utils.functional.compose(...ports.map(addPortToState));
 
-export const addBlockToState = (node: Node, ports: Port[], data: NodeData<unknown>) =>
+export const addBlockToState = (node: Realtime.Node, ports: Realtime.Port[], data: Realtime.NodeData<unknown>) =>
   Utils.functional.compose(addNodeToState(node, data), addAllPortsToState(ports));
 
 export const addPortToBlockInState =
-  (port: Port) =>
+  (port: Realtime.Port) =>
   (state: DiagramState): DiagramState => {
     const node = Utils.normalized.getNormalizedByKey(state.nodes, port.nodeID);
 
@@ -250,20 +251,20 @@ export const addPortToBlockInState =
   };
 
 export const patchPortInState =
-  (portID: string, portPatch: Partial<Port>) =>
+  (portID: string, portPatch: Partial<Realtime.Port>) =>
   (state: DiagramState): DiagramState => ({
     ...state,
     ports: Utils.normalized.patchNormalizedByKey(state.ports, portID, portPatch),
   });
 
 export const patchLinkInState =
-  (linkID: string, linkPatch: Partial<Link>) =>
+  (linkID: string, linkPatch: Partial<Realtime.Link>) =>
   (state: DiagramState): DiagramState => ({
     ...state,
     links: Utils.normalized.patchNormalizedByKey(state.links, linkID, linkPatch),
   });
 
-export const updateLinkPort = (link: Link, relationship: 'source' | 'target', nodeID: string, portID: string): Link => ({
+export const updateLinkPort = (link: Realtime.Link, relationship: 'source' | 'target', nodeID: string, portID: string): Realtime.Link => ({
   ...link,
   [relationship]: {
     nodeID,
@@ -271,7 +272,7 @@ export const updateLinkPort = (link: Link, relationship: 'source' | 'target', no
   },
 });
 
-export const buildLinksByPortID = (links: Link[]): DiagramState['linksByPortID'] =>
+export const buildLinksByPortID = (links: Realtime.Link[]): DiagramState['linksByPortID'] =>
   links.reduce<DiagramState['linksByPortID']>((acc, link) => {
     const sourcePortID = link.source.portID;
     const targetPortID = link.target.portID;
@@ -281,7 +282,7 @@ export const buildLinksByPortID = (links: Link[]): DiagramState['linksByPortID']
     return acc;
   }, {});
 
-export const buildLinkedNodesByNodeID = (links: Link[]): DiagramState['linkedNodesByNodeID'] =>
+export const buildLinkedNodesByNodeID = (links: Realtime.Link[]): DiagramState['linkedNodesByNodeID'] =>
   links.reduce<DiagramState['linkedNodesByNodeID']>((acc, link) => {
     const sourceNodeID = link.source.nodeID;
     const targetNodeID = link.target.nodeID;
@@ -291,7 +292,7 @@ export const buildLinkedNodesByNodeID = (links: Link[]): DiagramState['linkedNod
     return acc;
   }, {});
 
-export const buildLinksByNodeID = (links: Link[]): DiagramState['linksByNodeID'] =>
+export const buildLinksByNodeID = (links: Realtime.Link[]): DiagramState['linksByNodeID'] =>
   links.reduce<DiagramState['linksByNodeID']>((acc, link) => {
     const sourceNodeID = link.source.nodeID;
     const targetNodeID = link.target.nodeID;
@@ -301,9 +302,9 @@ export const buildLinksByNodeID = (links: Link[]): DiagramState['linksByNodeID']
     return acc;
   }, {});
 
-export const buildPortForNode = (nodeID: string) => (port: PartialModel<Port>) => portFactory(nodeID, port.id, port);
+export const buildPortForNode = (nodeID: string) => (port: PartialModel<Realtime.Port>) => portFactory(nodeID, port.id, port);
 
-export const buildNewNode = (node: NodeDescriptor, data: DataDescriptor): [Node, Port[], NodeData<unknown>] => {
+export const buildNewNode = (node: NodeDescriptor, data: DataDescriptor): [Realtime.Node, Realtime.Port[], Realtime.NodeData<unknown>] => {
   const inPorts = node.ports.in.map(buildPortForNode(node.id));
   const outPorts = node.ports.out.map(buildPortForNode(node.id));
 

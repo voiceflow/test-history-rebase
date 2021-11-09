@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { createAction, createKeyedSelector } from '@/ducks/utils';
-import { NodeData } from '@/models';
 import { Action, Reducer, RootReducer } from '@/store/types';
 
 import { AnyCreatorAction, CreatorAction } from './actions';
@@ -86,7 +86,7 @@ export const focusedNodeSelector = createSelector([Diagram.nodeByIDSelector, roo
 export const hasFocusedNode = createSelector([rootSelector], (focus) => focus.isActive);
 
 export const focusedNodeDataSelector = createSelector([Diagram.dataByNodeIDSelector, rootSelector], (getDataByNodeID, focus) =>
-  focus.target ? (getDataByNodeID(focus.target) as NodeData<unknown>) : null
+  focus.target ? (getDataByNodeID(focus.target) as Realtime.NodeData<unknown>) : null
 );
 
 // action creators

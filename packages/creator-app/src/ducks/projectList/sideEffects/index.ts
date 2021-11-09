@@ -10,7 +10,6 @@ import * as Project from '@/ducks/project';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as Session from '@/ducks/session';
 import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
-import { ProjectList } from '@/models';
 import { Thunk } from '@/store/types';
 import * as Sentry from '@/vendors/sentry';
 
@@ -92,7 +91,7 @@ export const saveProjectListsForWorkspace =
   };
 
 export const createProjectList =
-  (workspaceID?: string, name?: string): Thunk<ProjectList> =>
+  (workspaceID?: string, name?: string): Thunk<Realtime.ProjectList> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -100,7 +99,7 @@ export const createProjectList =
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     const id = Utils.id.cuid();
-    const list: ProjectList = {
+    const list: Realtime.ProjectList = {
       id,
       name: name ?? 'New List',
       projects: [],
@@ -138,7 +137,7 @@ export const renameProjectList =
  * @deprecated list management behaviour has been moved to the realtime service
  */
 export const saveProjectToList =
-  (workspaceID: string, lists: ProjectList[], projectID: string): Thunk =>
+  (workspaceID: string, lists: Realtime.ProjectList[], projectID: string): Thunk =>
   async (_dispatch, getState) => {
     try {
       const state = getState();

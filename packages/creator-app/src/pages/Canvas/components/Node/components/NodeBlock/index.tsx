@@ -1,4 +1,5 @@
 import composeRefs from '@seznam/compose-react-refs';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import _throttle from 'lodash/throttle';
 import moize from 'moize';
 import React from 'react';
@@ -8,7 +9,6 @@ import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { compose } from '@/hocs';
 import { useEnableDisable, useHover } from '@/hooks';
-import { NodeData } from '@/models';
 import Block, { HEADER_HEIGHT } from '@/pages/Canvas/components/Block';
 import PlayButton from '@/pages/Canvas/components/PlayButton';
 import { NODE_DISABLED_CLASSNAME, NODE_HOVERED_CLASSNAME } from '@/pages/Canvas/constants';
@@ -27,7 +27,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   const blockRef = React.useRef<BlockAPI>(null);
 
   const { name, variant, combinedNodes, lockOwner, isMergeTarget } = nodeEntity.useState((e) => {
-    const { node, data } = e.resolve<NodeData.Combined>();
+    const { node, data } = e.resolve<Realtime.NodeData.Combined>();
     return {
       name: data.name,
       variant: data.blockColor || BlockVariant.STANDARD,

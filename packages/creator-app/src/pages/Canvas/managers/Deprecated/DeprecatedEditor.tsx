@@ -1,12 +1,12 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Alert, AlertVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
-import { NodeData } from '@/models';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
-const DeprecatedEditor: NodeEditor<NodeData.Deprecated> = ({ data: { deprecatedType, ...originalData } }) => (
+const DeprecatedEditor: NodeEditor<Realtime.NodeData.Deprecated> = ({ data: { deprecatedType, ...originalData } }) => (
   <Section>
     <Alert variant={AlertVariant.WARNING}>
       This "{deprecatedType}" block is now deprecated and is no longer available. This project will still work, but we recommend you to update this

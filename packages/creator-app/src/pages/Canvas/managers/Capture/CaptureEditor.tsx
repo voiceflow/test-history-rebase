@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Input } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,7 +10,6 @@ import SlotSelect, { SlotOption } from '@/components/SlotSelect';
 import VariableSelect from '@/components/VariableSelect';
 import * as Documentation from '@/config/documentation';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
-import { NodeData } from '@/models';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
@@ -19,7 +19,7 @@ import HelpTooltip from './components/HelpTooltip';
 
 const SEARCH_QUERY_SLOT = 'AMAZON.SearchQuery';
 
-const CaptureEditor: React.FC<NodeEditorPropsType<NodeData.Capture>> = ({ data, onChange, pushToPath }) => {
+const CaptureEditor: React.FC<NodeEditorPropsType<Realtime.NodeData.Capture>> = ({ data, onChange, pushToPath }) => {
   const updateSlot = React.useCallback((slot: string) => onChange({ slot }), [onChange]);
   const onSelectVariable = React.useCallback((variable: string) => onChange({ variable }), [onChange]);
 

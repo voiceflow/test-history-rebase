@@ -14,7 +14,6 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
 import { useDispatch, useFeature, useSyncDispatch } from '@/hooks';
-import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
@@ -33,7 +32,13 @@ const DEFAULT_INTENT = {
 
 const LegacyMappingsComponent = LegacyMappings as React.FC<any>;
 
-const IntentEditor: NodeEditor<NodeData.Intent, ConnectedIntentEditorProps> = ({ intent, data, platformData, patchPlatformData, pushToPath }) => {
+const IntentEditor: NodeEditor<Realtime.NodeData.Intent, ConnectedIntentEditorProps> = ({
+  intent,
+  data,
+  platformData,
+  patchPlatformData,
+  pushToPath,
+}) => {
   const engine = React.useContext(EngineContext)!;
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const validateTopicAvailability = useDispatch(Creator.validateTopicAvailability);
@@ -83,17 +88,22 @@ const mapStateToProps = {
 };
 
 const mergeProps = (
-  ...[{ platform, intent: getIntentByID }, _, { data, onChange }]: MergeArguments<typeof mapStateToProps, {}, NodeEditorPropsType<NodeData.Intent>>
+  ...[{ platform, intent: getIntentByID }, _, { data, onChange }]: MergeArguments<
+    typeof mapStateToProps,
+    {},
+    NodeEditorPropsType<Realtime.NodeData.Intent>
+  >
 ) => {
   const platformData = getDistinctPlatformValue(platform, data);
 
   return {
     intent: platformData.intent ? getIntentByID(platformData.intent) : DEFAULT_INTENT,
     platformData,
-    patchPlatformData: (patch: Partial<NodeData.Intent.PlatformData>) => onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),
+    patchPlatformData: (patch: Partial<Realtime.NodeData.Intent.PlatformData>) =>
+      onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),
   };
 };
 
 type ConnectedIntentEditorProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
 
-export default connect(mapStateToProps, null, mergeProps)(IntentEditor as React.FC) as NodeEditor<NodeData.Intent>;
+export default connect(mapStateToProps, null, mergeProps)(IntentEditor as React.FC) as NodeEditor<Realtime.NodeData.Intent>;

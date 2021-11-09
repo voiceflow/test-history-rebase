@@ -1,46 +1,30 @@
 import { WithRequired } from '@voiceflow/common';
-import { Link, Node, NodeData, Port } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 export * from './Account';
-export * from './AccountLinking';
 export * from './Billing';
 export * from './Comment';
-export * from './CreatorDiagram';
-export * from './Diagram';
 export * from './Display';
-export * from './Expression';
-export * from './Intent';
 export * from './Job';
-export * from './Link';
-export * from './Markup';
-export * from './Node';
-export * from './NodeData';
-export * from './Port';
-export * from './Product';
 export * from './Project';
-export * from './ProjectList';
 export * from './Prototype';
 export * from './Query';
 export * from './ReportTag';
 export * from './SAMLProvider';
-export * from './Slot';
-export * from './Speak';
 export * from './Template';
 export * from './Thread';
 export * from './Transcript';
 export * from './UploadProject';
-export * from './Version';
-export * from './Workspace';
 
 export type PartialModel<T extends { id: string }> = WithRequired<Partial<T>, 'id'>;
 
 export interface NodeWithData {
-  node: Node;
-  data: NodeData<unknown>;
+  node: Realtime.Node;
+  data: Realtime.NodeData<unknown>;
 }
 
 export interface EntityMap {
   nodesWithData: NodeWithData[];
-  ports: Port[];
-  links: Link[];
+  ports: Realtime.Port[];
+  links: Realtime.Link[];
 }

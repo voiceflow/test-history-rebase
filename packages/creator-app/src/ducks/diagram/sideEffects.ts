@@ -17,7 +17,6 @@ import { waitAsync } from '@/ducks/utils';
 import { saveComponents, saveTopics } from '@/ducks/version/sideEffects/common/topicsComponents';
 import { getActiveVersionContext } from '@/ducks/version/utils';
 import * as VersionV2 from '@/ducks/versionV2';
-import * as Models from '@/models';
 import mutableStore from '@/store/mutable';
 import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
@@ -34,12 +33,12 @@ import { diagramByIDSelector, fullActiveDiagramSelector } from './selectors';
  * @deprecated resource sync is handled by subscription to the project/:projectID channel
  */
 export const loadDiagrams =
-  (versionID: string, rootDiagramID: string): Thunk<Models.Diagram[]> =>
+  (versionID: string, rootDiagramID: string): Thunk<Realtime.Diagram[]> =>
   async (dispatch, getState) => {
     const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
     if (isAtomicActions) return [];
 
-    const dbDiagrams = await client.api.version.getDiagrams<Models.DBDiagram>(versionID, [
+    const dbDiagrams = await client.api.version.getDiagrams<Realtime.DBDiagram>(versionID, [
       '_id',
       'type',
       'name',
@@ -231,10 +230,10 @@ export const convertToComponent =
     ports,
     data,
   }: {
-    nodes: Models.Node[];
-    links: Models.Link[];
-    ports: Models.Port[];
-    data: Record<string, Models.NodeData<unknown>>;
+    nodes: Realtime.Node[];
+    links: Realtime.Link[];
+    ports: Realtime.Port[];
+    data: Record<string, Realtime.NodeData<unknown>>;
   }): Thunk<{ name: string; diagramID: string }> =>
   async (dispatch, getState) => {
     const startCoords: Point = [360, 120];
@@ -270,7 +269,7 @@ export const convertToComponent =
         links: adjustedLinks,
         viewport: { zoom: 1, x: 0, y: 0 },
         diagramID: '',
-      } as Models.CreatorDiagram,
+      } as Realtime.CreatorDiagram,
       { nodes: Utils.normalized.normalize(adjustedNodes), ports: Utils.normalized.normalize(adjustedPorts), platform, context: {} }
     );
 

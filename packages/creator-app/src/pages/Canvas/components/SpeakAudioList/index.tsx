@@ -1,26 +1,26 @@
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType } from '@/constants';
 import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
-import { SpeakData } from '@/models';
 import { ControlOptions } from '@/pages/Canvas/components/Editor';
 import ListEditorContent, { ListItemComponent } from '@/pages/Canvas/components/ListEditorContent';
 import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '@/pages/Canvas/managers/Speak/constants';
 import { ConnectedProps } from '@/types';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
-export const speakFactory = ({ defaultVoice }: { defaultVoice: string }): SpeakData => ({
+export const speakFactory = ({ defaultVoice }: { defaultVoice: string }): Realtime.SpeakData => ({
   id: Utils.id.cuid.slug(),
   type: DialogType.VOICE,
   voice: defaultVoice,
   content: '',
 });
 
-export const audioFactory = (): SpeakData => ({
+export const audioFactory = (): Realtime.SpeakData => ({
   id: Utils.id.cuid.slug(),
   url: '',
   desc: '',
@@ -29,13 +29,16 @@ export const audioFactory = (): SpeakData => ({
 
 const speakAudioFactory =
   ({ defaultVoice }: { defaultVoice: string }) =>
-  (type: DialogType): SpeakData =>
+  (type: DialogType): Realtime.SpeakData =>
     type === DialogType.VOICE ? speakFactory({ defaultVoice }) : audioFactory();
 
-export type ItemComponent = ListItemComponent<SpeakData, { platform: Constants.PlatformType; isRandomized?: boolean; isDeprecated?: boolean }>;
+export type ItemComponent = ListItemComponent<
+  Realtime.SpeakData,
+  { platform: Constants.PlatformType; isRandomized?: boolean; isDeprecated?: boolean }
+>;
 
 export interface SpeakAudioListProps {
-  items: SpeakData[];
+  items: Realtime.SpeakData[];
   platform: Constants.PlatformType;
   maxItems: number;
   itemName?: string;
@@ -43,7 +46,7 @@ export interface SpeakAudioListProps {
   renderMenu?: () => React.ReactNode;
   isDeprecated?: boolean;
   itemComponent: ItemComponent;
-  onChangeItems?: (items: SpeakData[]) => void;
+  onChangeItems?: (items: Realtime.SpeakData[]) => void;
   getControlOptions?: (options: { addVoice: () => void; addAudio: () => void; isMaxMatches: boolean }) => ControlOptions[];
   onChangeRandomize?: (newRandomize: boolean) => void;
 }
@@ -64,7 +67,7 @@ const SpeakAudioList = ({
   onChangeRandomize,
 }: React.PropsWithChildren<SpeakAudioListProps> & ConnectedSpeakAndAudioListProps) => {
   const toggleRandomized = React.useCallback(() => onChangeRandomize?.(!randomize), [randomize, onChangeRandomize]);
-  const updateItems = React.useCallback((newItems: SpeakData[]) => onChangeItems?.(newItems), [onChangeItems]);
+  const updateItems = React.useCallback((newItems: Realtime.SpeakData[]) => onChangeItems?.(newItems), [onChangeItems]);
 
   const factory = React.useMemo(
     () => speakAudioFactory({ defaultVoice: defaultVoice || getPlatformDefaultVoice(platform) }),

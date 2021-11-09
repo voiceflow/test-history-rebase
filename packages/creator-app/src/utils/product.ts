@@ -1,11 +1,11 @@
 import { Constants, Project } from '@voiceflow/alexa-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import dayjs from 'dayjs';
 
-import { DBProduct, Product, ProductMarketPlace } from '@/models';
 import { MarketPlaceAvailability } from '@/services/LocaleMap';
 
 export type MergedLocale = Pick<
-  Product,
+  Realtime.Product,
   'summary' | 'description' | 'smallIconUri' | 'largeIconUri' | 'phrases' | 'keywords' | 'cardDescription' | 'purchasePrompt' | 'privacyPolicyUrl'
 > & {
   purchasePromptVoice: string | null;
@@ -13,16 +13,16 @@ export type MergedLocale = Pick<
 
 // app to db
 
-export const getDistributionCountries = (marketPlaces: Record<string, ProductMarketPlace>) =>
+export const getDistributionCountries = (marketPlaces: Record<string, Realtime.ProductMarketPlace>) =>
   Object.keys(marketPlaces)
     .map((place) => marketPlaces[place].countries)
     .reduce((a, b) => a.concat(b), []);
 
-export const formatMarketPlaces = (marketPlaces: Record<string, ProductMarketPlace>) => {
+export const formatMarketPlaces = (marketPlaces: Record<string, Realtime.ProductMarketPlace>) => {
   // find any valid release date
   const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place?.releaseDate)?.releaseDate || dayjs().format('YYYY-MM-DD');
 
-  return Object.keys(marketPlaces).reduce<Record<string, DBProduct.Pricing>>((acc, place) => {
+  return Object.keys(marketPlaces).reduce<Record<string, Realtime.DBProduct.Pricing>>((acc, place) => {
     acc[Project.encodeMarketPlaceKey(place as Project.MarketPlace)] = {
       releaseDate: marketPlaces[place].releaseDate || generalReleaseDate,
       defaultPriceListing: {
@@ -38,9 +38,9 @@ export const formatMarketPlaces = (marketPlaces: Record<string, ProductMarketPla
 // db to app
 
 export const parseMarketPlaces = (
-  allPlaces: Partial<Record<string, DBProduct.Pricing>>,
+  allPlaces: Partial<Record<string, Realtime.DBProduct.Pricing>>,
   distributionCountries: string[]
-): Record<string, ProductMarketPlace> =>
+): Record<string, Realtime.ProductMarketPlace> =>
   Object.keys(allPlaces).reduce((acc, encodedKey) => {
     const placeKey = Project.decodeMarketPlaceKey(encodedKey);
     const place = allPlaces[encodedKey];
@@ -59,8 +59,8 @@ export const parseMarketPlaces = (
   }, {});
 
 export const parseLocales = (
-  locales: Partial<Record<Constants.Locale, DBProduct.LocalePublishingInformation>>,
-  privacyAndCompliance: DBProduct.PrivacyAndCompliance
+  locales: Partial<Record<Constants.Locale, Realtime.DBProduct.LocalePublishingInformation>>,
+  privacyAndCompliance: Realtime.DBProduct.PrivacyAndCompliance
 ) =>
   (Object.keys(locales) as Constants.Locale[]).reduce<MergedLocale>((acc, locale) => {
     const localeData = locales[locale];
@@ -83,7 +83,7 @@ export const parseLocales = (
 
 // product status check
 
-export const getMissingDataInfo = (product: Product) => {
+export const getMissingDataInfo = (product: Realtime.Product) => {
   const missingInfo = [];
 
   !product.summary && missingInfo.push('Short description is required');
@@ -114,7 +114,7 @@ export const getMissingDataInfo = (product: Product) => {
   return missingInfo;
 };
 
-export const isProductComplete = (product: Product) => {
+export const isProductComplete = (product: Realtime.Product) => {
   const missingInfo = getMissingDataInfo(product);
   const isComplete = !!(
     product.name &&

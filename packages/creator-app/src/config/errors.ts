@@ -1,6 +1,5 @@
 import { Nullish, Struct } from '@voiceflow/common';
-
-import { AnyProject, AnyVersion, Product, ProjectList } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 class StateInvariantError<T extends Struct = {}> extends Error {
   constructor(message: string, public data?: T) {
@@ -56,21 +55,27 @@ export const assertDiagramID: (id: Nullish<string>) => asserts id is string = (i
   assert(id, noActiveDiagramID());
 };
 
-export const assertProduct: (productID: string, product: Nullish<Product>) => asserts product is Product = (productID, product) => {
+export const assertProduct: (productID: string, product: Nullish<Realtime.Product>) => asserts product is Realtime.Product = (productID, product) => {
   assert(product, noProductByID(productID));
 };
 
-export const assertProjectList: (projectListID: string, product: Nullish<ProjectList>) => asserts product is ProjectList = (
+export const assertProjectList: (projectListID: string, product: Nullish<Realtime.ProjectList>) => asserts product is Realtime.ProjectList = (
   projectListID,
   projectList
 ) => {
   assert(projectList, noProjectListByID(projectListID));
 };
 
-export const assertProject: (projectID: string, project: Nullish<AnyProject>) => asserts project is AnyProject = (projectID, project) => {
+export const assertProject: (projectID: string, project: Nullish<Realtime.AnyProject>) => asserts project is Realtime.AnyProject = (
+  projectID,
+  project
+) => {
   assert(project, noProjectByID(projectID));
 };
 
-export const assertVersion: (versionID: string, version: Nullish<AnyVersion>) => asserts version is AnyVersion = (versionID, version) => {
+export const assertVersion: (versionID: string, version: Nullish<Realtime.AnyVersion>) => asserts version is Realtime.AnyVersion = (
+  versionID,
+  version
+) => {
   assert(version, noVersionByID(versionID));
 };

@@ -1,6 +1,6 @@
 import { Node } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
-import { NodeData } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import DayPickerInput from '@/components/DayPickerInput';
@@ -28,8 +28,8 @@ const TIMEZONE_OPTIONS = [USER_TIMEZONE, ...Utils.timezones.TIMEZONES];
 const VariablesInputComponent: any = VariablesInput;
 
 export interface ReminderFormProps {
-  data: NodeData.Reminder & { voice?: string };
-  onChange: (data: Partial<NodeData.Reminder>) => void;
+  data: Realtime.NodeData.Reminder & { voice?: string };
+  onChange: (data: Partial<Realtime.NodeData.Reminder>) => void;
   withDate?: boolean;
 }
 
@@ -37,7 +37,7 @@ const ReminderForm: React.FC<ReminderFormProps> = ({ data, withDate, onChange })
   const { text, voice, recurrence, recurrenceBool, reminderType, date, hours, minutes, seconds, timezone } = data;
 
   const updateTime =
-    <T extends keyof NodeData.Reminder>(key: T) =>
+    <T extends keyof Realtime.NodeData.Reminder>(key: T) =>
     ({ text }: { text: string }) =>
       onChange({ [key]: text });
 

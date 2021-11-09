@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Divider from '@/components/Divider';
@@ -6,7 +7,6 @@ import TextArea from '@/components/TextArea';
 import { NamespaceProvider } from '@/contexts';
 import * as Product from '@/ducks/product';
 import { useDispatch } from '@/hooks';
-import * as Models from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import ProductTile from '@/pages/Canvas/components/ProductTile';
@@ -15,7 +15,7 @@ import { UpsellRequirementItem, UpsellSection, UpsellSectionTitle } from './comp
 import * as Requirements from './constants';
 
 export interface SelectedProductProps {
-  product: Models.Product;
+  product: Realtime.Product;
   onClick: VoidFunction;
 }
 

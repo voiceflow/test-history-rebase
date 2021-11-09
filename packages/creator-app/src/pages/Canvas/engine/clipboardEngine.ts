@@ -1,5 +1,6 @@
 import { Crypto } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import { get, set } from 'idb-keyval';
 
@@ -16,7 +17,7 @@ import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import * as Models from '@/models';
+import { NodeWithData } from '@/models';
 import * as Clipboard from '@/utils/clipboard';
 import { synchronous as synchronousCrypto } from '@/utils/crypto';
 import { Coords } from '@/utils/geometry';
@@ -25,14 +26,14 @@ import { EngineConsumer, getCopiedNodeDataIDs } from './utils';
 
 interface ClipboardContext {
   versionID: string;
-  nodes: Models.Node[];
-  data: Record<string, Models.NodeData<unknown>>;
-  ports: Models.Port[];
-  links: Models.Link[];
-  slots: Models.Slot[];
-  intents: Models.Intent[];
-  products: Models.Product[];
-  diagrams: Models.Diagram[];
+  nodes: Realtime.Node[];
+  data: Record<string, Realtime.NodeData<unknown>>;
+  ports: Realtime.Port[];
+  links: Realtime.Link[];
+  slots: Realtime.Slot[];
+  intents: Realtime.Intent[];
+  products: Realtime.Product[];
+  diagrams: Realtime.Diagram[];
   platform: Constants.PlatformType;
 }
 
@@ -89,7 +90,7 @@ class ClipboardEngine extends EngineConsumer {
       nodes,
       data,
       platform: sourcePlatform,
-    }: ClipboardContext): Promise<Array<{ data: Models.NodeData<unknown>; node: Models.Node }>> => {
+    }: ClipboardContext): Promise<Array<{ data: Realtime.NodeData<unknown>; node: Realtime.Node }>> => {
       const state = this.engine.store.getState();
       const targetPlatform = ProjectV2.active.platformSelector(state);
       const isPlatformConversion = sourcePlatform !== targetPlatform;
@@ -139,10 +140,10 @@ class ClipboardEngine extends EngineConsumer {
     const allNodes = Creator.allNodesByIDsSelector(state)(nodeIDs).filter((node) => node.type !== BlockType.START && node.type !== BlockType.COMMAND);
     const soloNodes = allNodes.filter((node) => !node.parentNode);
     const nestedNodes = soloNodes.flatMap(({ combinedNodes }) => (combinedNodes.length ? Creator.allNodesByIDsSelector(state)(combinedNodes) : []));
-    const orphanedNodes: Models.Node[] = [];
+    const orphanedNodes: Realtime.Node[] = [];
 
-    const extraLinks: Models.Link[] = [];
-    const extraPorts: Models.Port[] = [];
+    const extraLinks: Realtime.Link[] = [];
+    const extraPorts: Realtime.Port[] = [];
 
     allNodes
       .filter((node) => node.parentNode && !nodeIDs.includes(node.parentNode))
@@ -171,7 +172,7 @@ class ClipboardEngine extends EngineConsumer {
 
     const ports = Creator.allPortsByIDsSelector(state)(copiedNodes.flatMap((node) => [...node.ports.in, ...node.ports.out])).filter(Boolean);
 
-    const links = copiedNodes.reduce<Models.Link[]>((acc, node) => {
+    const links = copiedNodes.reduce<Realtime.Link[]>((acc, node) => {
       const nodeLinks = Creator.linksByNodeIDSelector(state)(node.id).filter(
         (link) => !acc.includes(link) && copiedNodeIDs.includes(link.source.nodeID) && copiedNodeIDs.includes(link.target.nodeID)
       );
@@ -207,9 +208,9 @@ class ClipboardEngine extends EngineConsumer {
     copyData: ClipboardContext,
     coords: Coords
   ): Promise<{
-    nodesWithData: Models.NodeWithData[];
-    ports: Models.Port[];
-    links: Models.Link[];
+    nodesWithData: NodeWithData[];
+    ports: Realtime.Port[];
+    links: Realtime.Link[];
   }> {
     const state = this.engine.store.getState();
     const versionID = Session.activeVersionIDSelector(state);

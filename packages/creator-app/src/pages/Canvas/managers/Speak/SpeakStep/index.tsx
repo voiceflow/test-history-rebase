@@ -1,11 +1,11 @@
 import { Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { DialogType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { prettifyBucketURL } from '@/utils/audio';
 import { getPlatformValue } from '@/utils/platform';
@@ -76,7 +76,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
   );
 };
 
-const ConnectedSpeakStep: React.FC<ConnectedStepProps<NodeData.Speak>> = ({ node, data, platform }) => {
+const ConnectedSpeakStep: React.FC<ConnectedStepProps<Realtime.NodeData.Speak>> = ({ node, data, platform }) => {
   const items = data.dialogs.map((item) => ({
     id: item.id,
     type: item.type,

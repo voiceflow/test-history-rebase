@@ -1,11 +1,12 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { BlockType } from '@/constants';
 import { PortType } from '@/constants/canvas';
-import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<NodeData.Stream> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Stream> = {
   type: BlockType.STREAM,
 
   icon: 'audioPlayer',

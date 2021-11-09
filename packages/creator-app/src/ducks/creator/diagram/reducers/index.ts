@@ -5,7 +5,6 @@ import undoable, { includeAction } from 'redux-undo';
 import { isType } from 'typescript-fsa';
 
 import { DiagramState } from '@/constants';
-import { NodeData } from '@/models';
 import { Reducer, RootReducer } from '@/store/types';
 import reduxBatchUndo from '@/utils/reduxBatchUndo';
 
@@ -76,7 +75,7 @@ export const updateNodeDataReducer: Reducer<DiagramStateType, UpdateNodeData> = 
       ...state,
       data: {
         ...state.data,
-        [nodeID]: patch ? { ...state.data[nodeID], ...data } : (data as NodeData<unknown>),
+        [nodeID]: patch ? { ...state.data[nodeID], ...data } : (data as Realtime.NodeData<unknown>),
       },
     };
   }

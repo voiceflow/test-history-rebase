@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import * as ConnectedReactRouter from 'connected-react-router';
 import React from 'react';
 import { createSelector } from 'reselect';
@@ -38,7 +39,7 @@ const threadEntitySelector = createSelector([Creator.nodeByIDSelector, Thread.th
   };
 });
 
-class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Models.Node | null }, ThreadInstance> {
+class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Realtime.Node | null }, ThreadInstance> {
   diagramID: string;
 
   threadOrder: number;

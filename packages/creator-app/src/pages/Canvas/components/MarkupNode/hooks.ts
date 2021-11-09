@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import { Markup } from '@/models';
 import { useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
 import { InternalNodeInstance } from '@/pages/Canvas/components/Node/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
@@ -69,7 +69,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
    * markup overlay at the end of a transformation like resizing.
    */
   const getTransform = React.useCallback(() => {
-    const { data } = nodeEntity.resolve<Markup.AnyNodeData>();
+    const { data } = nodeEntity.resolve<Realtime.Markup.AnyNodeData>();
     const zoom = engine.canvas!.getZoom();
     const position = engine.node.api(nodeEntity.nodeID)!.instance!.getPosition();
     const [left, top] = engine.canvas!.reverseMapPoint(engine.canvas!.reverseTransformPoint(position, true));
@@ -170,7 +170,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
             rotate: angle % (2 * Math.PI),
           });
         } else if (isText(data)) {
-          await engine.node.updateData<Markup.NodeData.Text>(nodeEntity.nodeID, {
+          await engine.node.updateData<Realtime.Markup.NodeData.Text>(nodeEntity.nodeID, {
             scale: scaleX,
             rotate: angle % (2 * Math.PI),
             ...(maxWidth !== null && { overrideWidth: maxWidth }),
@@ -189,9 +189,9 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
         const transformEl = transformRef.current!;
         rotation.current = angle;
 
-        const { data } = nodeEntity.resolve<Markup.AnyNodeData>();
-        const curScale = (data as Markup.NodeData.Text).scale;
-        const maxWidth = (data as Markup.NodeData.Text).overrideWidth;
+        const { data } = nodeEntity.resolve<Realtime.Markup.AnyNodeData>();
+        const curScale = (data as Realtime.Markup.NodeData.Text).scale;
+        const maxWidth = (data as Realtime.Markup.NodeData.Text).overrideWidth;
 
         const isTextNode = data.type === BlockType.MARKUP_TEXT;
 
@@ -248,7 +248,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
        * the Node.
        */
       scale: ([scaleX, scaleY], [shiftX, shiftY], rotate, [rotationOffsetX, rotationOffsetY]) => {
-        const { data } = nodeEntity.resolve<Markup.AnyNodeData>();
+        const { data } = nodeEntity.resolve<Realtime.Markup.AnyNodeData>();
         const transformEl = transformRef.current!;
         const zoom = engine.canvas!.getZoom();
         const isTextNode = data.type === BlockType.MARKUP_TEXT;
@@ -258,9 +258,9 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
          * and we need to always apply an appropriate `scale(...)` transformation to ensure resizing is properly
          * applied on Markup Text.
          */
-        const nextScaleX = scaleX * (isTextNode ? (data as Markup.NodeData.Text).scale : 1);
-        const nextScaleY = scaleY * (isTextNode ? (data as Markup.NodeData.Text).scale : 1);
-        const maxWidth = isTextNode ? (data as Markup.NodeData.Text).overrideWidth : null;
+        const nextScaleX = scaleX * (isTextNode ? (data as Realtime.Markup.NodeData.Text).scale : 1);
+        const nextScaleY = scaleY * (isTextNode ? (data as Realtime.Markup.NodeData.Text).scale : 1);
+        const maxWidth = isTextNode ? (data as Realtime.Markup.NodeData.Text).overrideWidth : null;
 
         scale.current = [nextScaleX, nextScaleY];
         textWidth.current = maxWidth;
@@ -301,7 +301,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
        */
       scaleText: (maxWidth: number, [shiftX, shiftY]: Pair<number>) => {
         const transformEl = transformRef.current!;
-        const { data } = nodeEntity.resolve<Markup.NodeData.Text>();
+        const { data } = nodeEntity.resolve<Realtime.Markup.NodeData.Text>();
         const zoom = engine.canvas!.getZoom();
 
         const currWidth = textWidth.current ?? data.overrideWidth;

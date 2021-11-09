@@ -1,5 +1,6 @@
 import { Button } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box } from '@voiceflow/ui';
 import numberToWords from 'number-to-words/src';
 import React from 'react';
@@ -11,7 +12,6 @@ import VariablesInput from '@/components/VariablesInput';
 import * as IntentV2 from '@/ducks/intentV2';
 import { compose, connect } from '@/hocs';
 import { useSetup } from '@/hooks';
-import { Intent } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { PlatformContext } from '@/pages/Project/contexts';
@@ -27,7 +27,7 @@ export type ItemProps = ItemComponentProps<Button.IntentButton> &
   MappedItemComponentHandlers<Button.IntentButton> &
   DragPreviewComponentProps & {
     isOnlyItem: boolean;
-    dividedIntents: (Intent | { id: string; name: string; menuItemProps: { divider: boolean } })[];
+    dividedIntents: (Realtime.Intent | { id: string; name: string; menuItemProps: { divider: boolean } })[];
     latestCreatedKey?: string;
     formControlProps?: { contentBottomUnits?: number };
   };

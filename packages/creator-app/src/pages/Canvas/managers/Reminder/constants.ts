@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { withProps } from 'recompose';
 
 import { BlockType, ReminderType } from '@/constants';
-import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 import ReminderForm, { ReminderFormProps } from './components/ReminderForm';
@@ -19,7 +19,7 @@ export const REMINDER_ROUTES = [
   },
 ];
 
-export const NODE_CONFIG: NodeConfig<NodeData.Reminder> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Reminder> = {
   type: BlockType.REMINDER,
 
   icon: 'reminder',

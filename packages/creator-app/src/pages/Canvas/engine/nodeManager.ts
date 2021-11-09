@@ -13,7 +13,7 @@ import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as RealtimeDuck from '@/ducks/realtime';
 import * as VersionV2 from '@/ducks/versionV2';
-import { EntityMap, Node, NodeData } from '@/models';
+import { EntityMap } from '@/models';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 import { getNodesGroupCenter, isCommandNode } from '@/utils/node';
@@ -62,7 +62,7 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedThreads(node.parentNode!);
     },
 
-    updateData: (nodeID: string, data: Partial<NodeData<unknown>>) => {
+    updateData: (nodeID: string, data: Partial<Realtime.NodeData<unknown>>) => {
       this.dispatch(Creator.updateNodeData(nodeID, data));
     },
 
@@ -179,7 +179,7 @@ class NodeManager extends EngineConsumer {
 
   // crud methods
 
-  async registerIntentSteps<T extends { node: { id: string; type: BlockType }; data: NodeData<any> }>(addedNodes: T[]): Promise<void> {
+  async registerIntentSteps<T extends { node: { id: string; type: BlockType }; data: Realtime.NodeData<any> }>(addedNodes: T[]): Promise<void> {
     const platform = this.select(ProjectV2.active.platformSelector);
     const addedIntentSteps = addedNodes.reduce<Realtime.diagram.RegisterIntentStepsPayload['intentSteps']>((acc, { node, data }) => {
       if (node.type === BlockType.INTENT) {
@@ -197,7 +197,7 @@ class NodeManager extends EngineConsumer {
   async add(
     type: BlockType,
     coords: Coords,
-    factoryData?: Partial<NodeData<unknown>>,
+    factoryData?: Partial<Realtime.NodeData<unknown>>,
     nodeID: string = Utils.id.objectID(),
     autoFocus = true
   ): Promise<string> {
@@ -283,7 +283,7 @@ class NodeManager extends EngineConsumer {
     await this.registerIntentSteps(nodesWithData);
   }
 
-  async updateData<T extends unknown = unknown>(nodeID: string, data: Partial<NodeData<T>>, save = true): Promise<void> {
+  async updateData<T extends unknown = unknown>(nodeID: string, data: Partial<Realtime.NodeData<T>>, save = true): Promise<void> {
     this.log.debug(this.log.pending('updating node data'), this.log.slug(nodeID), data);
 
     await this.engine.realtime.sendUpdate(RealtimeDuck.updateNodeData(nodeID, data));
@@ -323,10 +323,10 @@ class NodeManager extends EngineConsumer {
     return false;
   }
 
-  isRemovingDefaultCommand(nodes: Node[]): boolean {
+  isRemovingDefaultCommand(nodes: Realtime.Node[]): boolean {
     const commandNodes = nodes.filter((node) => isCommandNode(node));
     const commandNodesIDs = commandNodes.map(({ id }) => id);
-    const commandNodeData = commandNodesIDs.map<NodeData<NodeData.Command>>(this.engine.getDataByNodeID);
+    const commandNodeData = commandNodesIDs.map<Realtime.NodeData<Realtime.NodeData.Command>>(this.engine.getDataByNodeID);
     // if the deleted node is not a help intent or a stop intent
     const deletingStopIntent = commandNodeData.some((data) => data?.alexa?.intent === 'AMAZON.StopIntent');
     const deletingHelpIntent = commandNodeData.some((data) => data?.alexa?.intent === 'AMAZON.HelpIntent');
@@ -335,7 +335,7 @@ class NodeManager extends EngineConsumer {
       const homeBlockCombinedNodesIDs = this.engine.getNodeByID(commandNodes[0].parentNode!).combinedNodes;
       const remainedCommandsData = homeBlockCombinedNodesIDs
         .filter((el) => !commandNodesIDs.includes(el))
-        .map<NodeData<NodeData.Command>>(this.engine.getDataByNodeID);
+        .map<Realtime.NodeData<Realtime.NodeData.Command>>(this.engine.getDataByNodeID);
 
       // logic: user deleting stop intent and there are no more stop intent left
       const missingStopIntent = remainedCommandsData.every((data) => data?.alexa?.intent !== 'AMAZON.StopIntent') && deletingStopIntent;
@@ -466,7 +466,7 @@ class NodeManager extends EngineConsumer {
     index: number;
     nodeID: string;
     type: BlockType;
-    factoryData: Partial<NodeData<unknown>>;
+    factoryData: Partial<Realtime.NodeData<unknown>>;
     position: Point;
   }): Promise<void> {
     const childID = Utils.id.objectID();

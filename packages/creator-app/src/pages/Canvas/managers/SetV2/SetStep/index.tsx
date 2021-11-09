@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -28,7 +28,7 @@ export const SetStep: React.FC<SetStepProps> = ({ title, nodeID, portID }) => (
   </Step>
 );
 
-type ConnectedSetStepProps = ConnectedStepProps<NodeData.SetV2>;
+type ConnectedSetStepProps = ConnectedStepProps<Realtime.NodeData.SetV2>;
 
 const ConnectedSetStep: React.FC<ConnectedSetStepProps> = ({ data, node }) => (
   <SetStep title={data.title} nodeID={node.id} portID={node.ports.out[0]} />

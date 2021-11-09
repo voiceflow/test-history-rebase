@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import createCRUDReducer from '@/ducks/utils/crud';
 import { Reducer, RootReducer } from '@/store/types';
@@ -9,7 +10,7 @@ import * as alexa from './platform/alexa';
 import * as dialogflow from './platform/dialogflow';
 import * as general from './platform/general';
 import * as google from './platform/google';
-import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, VersionState } from './types';
+import { VersionState } from './types';
 
 export { alexa, dialogflow, general, google };
 
@@ -20,9 +21,9 @@ export * from './selectors';
 export * from './sideEffects';
 export * from './types';
 
-export const versionCRUDReducer = createCRUDReducer<AnyVersion>(STATE_KEY);
+export const versionCRUDReducer = createCRUDReducer<Realtime.AnyVersion>(STATE_KEY);
 
-export const updateSettingsReducer: Reducer<VersionState, UpdateSettings<AnyVersionSettings>> = (state, { payload: { id, settings } }) => {
+export const updateSettingsReducer: Reducer<VersionState, UpdateSettings<Realtime.AnyVersionSettings>> = (state, { payload: { id, settings } }) => {
   const version = Utils.normalized.getNormalizedByKey(state, id);
 
   return Utils.normalized.patchNormalizedByKey(state, id, {
@@ -33,7 +34,10 @@ export const updateSettingsReducer: Reducer<VersionState, UpdateSettings<AnyVers
   });
 };
 
-export const updatePublishingReducer: Reducer<VersionState, UpdatePublishing<AnyVersionPublishing>> = (state, { payload: { id, publishing } }) => {
+export const updatePublishingReducer: Reducer<VersionState, UpdatePublishing<Realtime.AnyVersionPublishing>> = (
+  state,
+  { payload: { id, publishing } }
+) => {
   const version = Utils.normalized.getNormalizedByKey(state, id);
 
   return Utils.normalized.patchNormalizedByKey(state, id, {
@@ -51,7 +55,7 @@ export const updateSessionReducer: Reducer<VersionState, UpdateSession> = (state
     session: {
       ...version.session,
       ...session,
-    } as AnyVersion['session'],
+    } as Realtime.AnyVersion['session'],
   });
 };
 

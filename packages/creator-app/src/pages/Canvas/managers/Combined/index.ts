@@ -1,10 +1,11 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 
 import { BasicNodeManagerConfig } from '../types';
 import CombinedEditor from './CombinedEditor';
 
-const CombinedManager: BasicNodeManagerConfig<NodeData.Combined> = {
+const CombinedManager: BasicNodeManagerConfig<Realtime.NodeData.Combined> = {
   type: BlockType.COMBINED,
 
   nameEditable: true,

@@ -3,20 +3,9 @@ import { Normalized, Nullable, Nullish, SLOT_REGEXP, Utils } from '@voiceflow/co
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
-import {
-  ChatIntent,
-  ChatIntentSlot,
-  ChatIntentSlotDialog,
-  Intent,
-  IntentSlot,
-  IntentSlotDialog,
-  PlatformIntent,
-  Slot,
-  VoiceIntent,
-  VoiceIntentSlot,
-} from '@/models';
 import { isChatbotPlatform, isGeneralPlatform } from '@/utils/typeGuards';
 
 import { createPlatformSelector } from './platform';
@@ -31,7 +20,7 @@ const INTENT_LABELS: Partial<Record<string, string>> = {
   [GeneralConstants.IntentName.NONE]: 'Fallback',
 };
 
-export const isCustomizableBuiltInIntent = (intent?: Nullish<Intent>): boolean => !!intent && builtInIntentMap.has(intent.id);
+export const isCustomizableBuiltInIntent = (intent?: Nullish<Realtime.Intent>): boolean => !!intent && builtInIntentMap.has(intent.id);
 
 export const formatIntentName = (name = ''): string =>
   name
@@ -47,12 +36,12 @@ export const prettifyIntentName = (name = ''): string =>
     .replace(/([a-z])([A-Z]+)(?=[A-Z])/g, '$1 $2') // camelCaseSHORT => camel Case SHORT
     .trim();
 
-export const prettifyIntentNames = <T extends Intent>(intents: T[]): T[] =>
+export const prettifyIntentNames = <T extends Realtime.Intent>(intents: T[]): T[] =>
   intents.map((intent) => ({ ...intent, name: prettifyIntentName(intent.name) }));
 
 export const getIntentNameLabel = (name = ''): string => INTENT_LABELS[name] ?? name;
 
-export const filterIntents = <T extends Intent>(intents: T[], activeIntent: T): T[] =>
+export const filterIntents = <T extends Realtime.Intent>(intents: T[], activeIntent: T): T[] =>
   intents.filter((intent) => {
     const isActiveIntent = intent.id === activeIntent?.id;
 
@@ -69,7 +58,7 @@ export const filterIntents = <T extends Intent>(intents: T[], activeIntent: T): 
 
 export const intentFactory =
   <T extends Constants.PlatformType>(platform: T) =>
-  (intent: { name: string; slots?: string[] }): PlatformIntent<T> => {
+  (intent: { name: string; slots?: string[] }): Realtime.PlatformIntent<T> => {
     const truncatedName = intent.name.split('.')[1];
 
     return {
@@ -81,7 +70,7 @@ export const intentFactory =
     };
   };
 
-export const generalIntentFactory = (generalIntent: GeneralConstants.DefaultIntent): VoiceIntent => {
+export const generalIntentFactory = (generalIntent: GeneralConstants.DefaultIntent): Realtime.VoiceIntent => {
   const intent = intentFactory(Constants.PlatformType.GENERAL)(generalIntent);
 
   return {
@@ -90,7 +79,7 @@ export const generalIntentFactory = (generalIntent: GeneralConstants.DefaultInte
   };
 };
 
-export const validateIntentName = (intentName: string, intents: Intent[], slots: Slot[]): Nullable<string> => {
+export const validateIntentName = (intentName: string, intents: Realtime.Intent[], slots: Realtime.Slot[]): Nullable<string> => {
   const lowerCasedIntentName = intentName.toLowerCase();
 
   if (intents.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {
@@ -112,7 +101,7 @@ export const DIALOGFLOW_CHAT_BUILT_INS = DialogflowConstants.BUILT_IN_INTENTS.ma
 
 export const DIALOGFLOW_VOICE_BUILT_INS = DialogflowConstants.BUILT_IN_INTENTS.map(intentFactory(Constants.PlatformType.DIALOGFLOW_ES_VOICE));
 
-export const GENERAL_BUILT_INS_MAP = Object.keys(GeneralConstants.DEFAULT_INTENTS_MAP).reduce<Record<string, Intent[]>>(
+export const GENERAL_BUILT_INS_MAP = Object.keys(GeneralConstants.DEFAULT_INTENTS_MAP).reduce<Record<string, Realtime.Intent[]>>(
   (acc, key) => Object.assign(acc, { [key]: GeneralConstants.DEFAULT_INTENTS_MAP[key].map(generalIntentFactory) }),
   {}
 );
@@ -132,7 +121,7 @@ export const isBuiltInIntent = (intentID: string): boolean =>
 
 const NUMERIC_UTTERANCE_REGEXP = /\d/;
 
-export function validateUtterance(utterance: string, intentID: string, intents: Intent[]): string {
+export function validateUtterance(utterance: string, intentID: string, intents: Realtime.Intent[]): string {
   const utteranceWithoutSlots = utterance.replace(SLOT_REGEXP, '');
 
   let err = '';
@@ -169,28 +158,30 @@ export const applyPlatformIntentNameFormatting = (name: string, platform: Consta
   return formatIntentName(name);
 };
 
-export const removeSlotRefFromInput = (text: string, slotDetails: Slot): string =>
+export const removeSlotRefFromInput = (text: string, slotDetails: Realtime.Slot): string =>
   text.replace(SLOT_REGEXP, (match, inner) => (inner.match(slotDetails.name) ? slotDetails.name : match));
 
 export const removeBuiltInPrefix = (name: string): string => (name.includes('.') ? name.split('.')[1] : name);
 
 export const inferIntentType: {
-  <T extends Intent['slots']>(intent: Omit<Intent, 'slots'> & { slots: T }): T extends Normalized<ChatIntentSlot> ? ChatIntent : VoiceIntent;
-  <T extends Intent['slots']>(intent: Omit<Partial<Intent>, 'slots'> & { slots: T }): T extends Normalized<ChatIntentSlot>
-    ? Partial<ChatIntent>
-    : Partial<VoiceIntent>;
+  <T extends Realtime.Intent['slots']>(intent: Omit<Realtime.Intent, 'slots'> & { slots: T }): T extends Normalized<Realtime.ChatIntentSlot>
+    ? Realtime.ChatIntent
+    : Realtime.VoiceIntent;
+  <T extends Realtime.Intent['slots']>(intent: Omit<Partial<Realtime.Intent>, 'slots'> & { slots: T }): T extends Normalized<Realtime.ChatIntentSlot>
+    ? Partial<Realtime.ChatIntent>
+    : Partial<Realtime.VoiceIntent>;
 } = (intent: any): any => intent;
 
-export const inferIntentSlotsType = <T extends IntentSlot>(slots: {
+export const inferIntentSlotsType = <T extends Realtime.IntentSlot>(slots: {
   byKey: Record<string, T>;
   allKeys: string[];
-}): T extends Record<string, ChatIntentSlot> ? Normalized<ChatIntentSlot> : Normalized<VoiceIntentSlot> => slots as any;
+}): T extends Record<string, Realtime.ChatIntentSlot> ? Normalized<Realtime.ChatIntentSlot> : Normalized<Realtime.VoiceIntentSlot> => slots as any;
 
 export const inferIntentSlotType: {
-  <T extends IntentSlotDialog>(slot: Omit<IntentSlotDialog, 'dialog'> & { dialog: T }): T extends ChatIntentSlotDialog
-    ? ChatIntentSlot
-    : VoiceIntentSlot;
-  <T extends IntentSlotDialog>(slot: Omit<Partial<IntentSlotDialog>, 'dialog'> & { dialog: T }): T extends ChatIntentSlotDialog
-    ? Partial<ChatIntentSlot>
-    : Partial<VoiceIntentSlot>;
+  <T extends Realtime.IntentSlotDialog>(slot: Omit<Realtime.IntentSlotDialog, 'dialog'> & { dialog: T }): T extends Realtime.ChatIntentSlotDialog
+    ? Realtime.ChatIntentSlot
+    : Realtime.VoiceIntentSlot;
+  <T extends Realtime.IntentSlotDialog>(
+    slot: Omit<Partial<Realtime.IntentSlotDialog>, 'dialog'> & { dialog: T }
+  ): T extends Realtime.ChatIntentSlotDialog ? Partial<Realtime.ChatIntentSlot> : Partial<Realtime.VoiceIntentSlot>;
 } = (slot: any): any => slot;

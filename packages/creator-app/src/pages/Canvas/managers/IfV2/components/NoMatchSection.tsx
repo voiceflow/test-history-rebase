@@ -1,14 +1,14 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Section from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
-import { NodeData } from '@/models';
 import { getNoMatchSectionLabel } from '@/pages/Canvas/managers/utils';
 
 import { IFV2ManagerEditors } from '../subeditors';
 
 export interface NoMatchSectionProps {
-  noMatch: NodeData.BaseNoMatches;
+  noMatch: Realtime.NodeData.BaseNoMatches;
   pushToPath?: (path: { type: string; label: string }) => void;
 }
 

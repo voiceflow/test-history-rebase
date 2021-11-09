@@ -1,9 +1,9 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { serializeSlateToJSX } from '@/utils/slate';
 
@@ -50,7 +50,7 @@ export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, portID, previ
   );
 };
 
-const ConnectedTextStep: React.FC<ConnectedStepProps<NodeData.Text>> = ({ node, data }) => {
+const ConnectedTextStep: React.FC<ConnectedStepProps<Realtime.NodeData.Text>> = ({ node, data }) => {
   const items = React.useMemo(
     () => data.texts.map(({ id, content }) => ({ id, content: SlateEditorAPI.isNewState(content) ? '' : serializeSlateToJSX(content) })),
     [data.texts]

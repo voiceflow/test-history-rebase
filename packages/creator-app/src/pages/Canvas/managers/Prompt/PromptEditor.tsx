@@ -1,8 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
-import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
 import { useButtonsOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
@@ -10,7 +10,7 @@ import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { HelpTooltip } from './components';
 
-const PromptEditor: NodeEditor<NodeData.Prompt> = ({ data, onChange, pushToPath }) => {
+const PromptEditor: NodeEditor<Realtime.NodeData.Prompt> = ({ data, onChange, pushToPath }) => {
   const [buttonsOption, buttonsSection] = useButtonsOptionSection({ data, onChange, pushToPath });
   const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
 

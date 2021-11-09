@@ -1,10 +1,10 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { BlockType } from '@/constants';
 import { createKeyedSelector } from '@/ducks/utils';
 import * as VersionV2 from '@/ducks/versionV2';
-import { NodeData } from '@/models';
 
 import { creatorStateSelector } from '../selectors';
 import { DIAGRAM_STATE_KEY } from './constants';
@@ -77,7 +77,7 @@ export const dataByNodeIDSelector = createSelector(
   [normalizedDataSelector],
   (data) =>
     <T>(nodeID: string) =>
-      data[nodeID] as NodeData<T>
+      data[nodeID] as Realtime.NodeData<T>
 );
 
 export const allNodeDataSelector = createSelector([normalizedNodesSelector, normalizedDataSelector], (nodes, data) =>

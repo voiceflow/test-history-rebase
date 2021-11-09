@@ -1,8 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Section, { SectionToggleVariant } from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
-import { Markup } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
 import { DEFAULT_BACKGROUND_COLOR } from '../../constants';
@@ -14,10 +14,10 @@ export interface BackgroundColorProps {
 
 const BackgroundColor: React.FC<BackgroundColorProps> = ({ nodeID }) => {
   const engine = React.useContext(EngineContext)!;
-  const { backgroundColor } = engine.getDataByNodeID<Markup.NodeData.Text>(nodeID);
+  const { backgroundColor } = engine.getDataByNodeID<Realtime.Markup.NodeData.Text>(nodeID);
 
-  const updateBackgroundColor = (newColor: Markup.Color | null) => {
-    engine.node.updateData<Markup.NodeData.Text>(nodeID, { backgroundColor: newColor });
+  const updateBackgroundColor = (newColor: Realtime.Markup.Color | null) => {
+    engine.node.updateData<Realtime.Markup.NodeData.Text>(nodeID, { backgroundColor: newColor });
   };
 
   const handleToggleChange = (collapsed: boolean) => {

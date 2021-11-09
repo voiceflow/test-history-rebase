@@ -1,7 +1,7 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { NodeData } from '@/models';
 import { VariableLabel } from '@/pages/Canvas/components/Step';
 
 const getCustomApiAction = (action: string | undefined) => {
@@ -19,7 +19,7 @@ const getCustomApiAction = (action: string | undefined) => {
   }
 };
 
-export const getLabel = (data: NodeData.Integration): React.ReactNode => {
+export const getLabel = (data: Realtime.NodeData.Integration): React.ReactNode => {
   switch (data.selectedIntegration) {
     case Node.Utils.IntegrationType.ZAPIER:
       return data.user?.user_data ? (
@@ -50,7 +50,7 @@ export const getLabel = (data: NodeData.Integration): React.ReactNode => {
   }
 };
 
-export const getPlaceholder = (data: NodeData.Integration): string => {
+export const getPlaceholder = (data: Realtime.NodeData.Integration): string => {
   switch (data.selectedIntegration) {
     case Node.Utils.IntegrationType.ZAPIER:
       return 'Trigger a Zap';

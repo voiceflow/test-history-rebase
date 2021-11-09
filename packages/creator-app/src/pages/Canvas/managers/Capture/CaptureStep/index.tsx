@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -35,7 +35,7 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariab
   </Step>
 );
 
-const ConnectedCaptureStep: React.FC<ConnectedStepProps<NodeData.Capture>> = ({ data, node }) => {
+const ConnectedCaptureStep: React.FC<ConnectedStepProps<Realtime.NodeData.Capture>> = ({ data, node }) => {
   const fromVariable = data.slot;
   const toVariable = data.variable;
 

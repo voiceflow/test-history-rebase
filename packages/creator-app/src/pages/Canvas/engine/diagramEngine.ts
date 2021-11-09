@@ -1,7 +1,8 @@
 import { Nullable, Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
-import { EntityMap, Node, NodeWithData } from '@/models';
+import { EntityMap, NodeWithData } from '@/models';
 import { Coords } from '@/utils/geometry';
 
 import { CloneContextOptions, cloneEntityMap, DUPLICATE_OFFSET, EngineConsumer, mergeEntityMaps } from './utils';
@@ -72,7 +73,7 @@ class DiagramEngine extends EngineConsumer {
     return clonedEntityMap;
   }
 
-  async duplicateCommand(node: Node): Promise<EntityMap> {
+  async duplicateCommand(node: Realtime.Node): Promise<EntityMap> {
     const parentNode = this.engine.getNodeByID(node.parentNode!);
     const entities = this.getEntities(node.id, true);
 
@@ -89,7 +90,7 @@ class DiagramEngine extends EngineConsumer {
     return clonedEntities;
   }
 
-  duplicateParentNode(node: Node): Promise<EntityMap> {
+  duplicateParentNode(node: Realtime.Node): Promise<EntityMap> {
     const parentNode = this.engine.getNodeByID(node.parentNode!);
     const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [node.id] };
 
@@ -105,7 +106,7 @@ class DiagramEngine extends EngineConsumer {
     return this.cloneEntities(mergedEntities, coords);
   }
 
-  duplicateChildNode(node: Node): Promise<EntityMap> {
+  duplicateChildNode(node: Realtime.Node): Promise<EntityMap> {
     const entities = this.getEntities(node.id, true);
     const childEntities = this.getChildEntities(node.id);
     const mergedEntities = mergeEntityMaps(entities, childEntities);

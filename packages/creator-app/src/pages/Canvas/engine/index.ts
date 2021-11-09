@@ -1,4 +1,5 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { logger } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
 import moize from 'moize';
@@ -16,13 +17,12 @@ import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Realtime from '@/ducks/realtime';
+import * as RealtimeDuck from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
 import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { useMouseMove } from '@/hooks';
-import { NodeData } from '@/models';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { State, Store } from '@/store/types';
@@ -179,15 +179,15 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   getNodeByID = (nodeID: string) => this.select(Creator.nodeByIDSelector)(nodeID);
 
-  getDataByNodeID = <T>(nodeID: string): NodeData<T> => this.select(Creator.dataByNodeIDSelector)(nodeID);
+  getDataByNodeID = <T>(nodeID: string): Realtime.NodeData<T> => this.select(Creator.dataByNodeIDSelector)(nodeID);
 
-  isNodeMovementLocked = (nodeID: string) => this.select(Realtime.isNodeMovementLockedSelector)(nodeID);
+  isNodeMovementLocked = (nodeID: string) => this.select(RealtimeDuck.isNodeMovementLockedSelector)(nodeID);
 
   isNodeFocused = () => this.select(Creator.hasFocusedNode);
 
-  getLockOwner = (nodeID: string) => this.select(Realtime.editLockOwnerSelector)(nodeID);
+  getLockOwner = (nodeID: string) => this.select(RealtimeDuck.editLockOwnerSelector)(nodeID);
 
-  getDeleteLockedNodes = () => this.select(Realtime.deletionLockedNodesSelector);
+  getDeleteLockedNodes = () => this.select(RealtimeDuck.deletionLockedNodesSelector);
 
   getLinkByID = (linkID: string) => this.select(Creator.linkByIDSelector)(linkID);
 
@@ -499,7 +499,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
     await this.node.removeMany(targets, { disableConfirmPrompt: true });
 
-    await this.node.add(BlockType.COMPONENT, coords, { name, diagramID } as NodeData<any>);
+    await this.node.add(BlockType.COMPONENT, coords, { name, diagramID } as Realtime.NodeData<any>);
 
     return diagramID;
   }

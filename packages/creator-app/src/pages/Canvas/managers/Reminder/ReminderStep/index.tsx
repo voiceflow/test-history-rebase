@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 import { transformVariablesToReadable } from '@/utils/slot';
 
@@ -37,7 +37,7 @@ export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, no
   </Step>
 );
 
-const ConnectedReminderStep: React.FC<ConnectedStepProps<NodeData.Reminder>> = ({ node, data, withPorts }) => {
+const ConnectedReminderStep: React.FC<ConnectedStepProps<Realtime.NodeData.Reminder>> = ({ node, data, withPorts }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
   return (

@@ -1,4 +1,4 @@
-import { Adapters } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
 
@@ -11,7 +11,6 @@ import { ProjectLoadingGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { compose, connect, withBatchLoadingGate } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useSelector } from '@/hooks';
-import { Link, LinkData, Node, Port } from '@/models';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
@@ -59,7 +58,7 @@ const ExportCanvas: React.FC<ConnectedExportProps> = ({ platform, diagramID, ini
   );
 };
 
-const findCanvasExportOffsets = (nodes: Node[], ports: Port[]): { maxPoint: Point; offsets: Point } => {
+const findCanvasExportOffsets = (nodes: Realtime.Node[], ports: Realtime.Port[]): { maxPoint: Point; offsets: Point } => {
   const rootNodes = nodes.filter(({ type }) => isRootOrMarkupBlockType(type));
 
   const xValues = rootNodes.map((node) => node.x);
@@ -81,14 +80,14 @@ const findCanvasExportOffsets = (nodes: Node[], ports: Port[]): { maxPoint: Poin
   };
 };
 
-const applyOffsetsToNodes = (nodes: Node[], [offsetX, offsetY]: Point) =>
+const applyOffsetsToNodes = (nodes: Realtime.Node[], [offsetX, offsetY]: Point) =>
   nodes.map((node) => ({
     ...node,
     x: node.x + offsetX + (isMarkupBlockType(node.type) ? BLOCK_WIDTH / 2 : 0),
     y: node.y + offsetY,
   }));
 
-const applyOffsetsToLinkData = (data: LinkData | undefined, [offsetX, offsetY]: Point): LinkData | undefined =>
+const applyOffsetsToLinkData = (data: Realtime.LinkData | undefined, [offsetX, offsetY]: Point): Realtime.LinkData | undefined =>
   !data
     ? undefined
     : {
@@ -101,13 +100,13 @@ const applyOffsetsToLinkData = (data: LinkData | undefined, [offsetX, offsetY]: 
             })),
       };
 
-const applyOffsetsToPorts = (ports: Port[], offsets: Point) =>
+const applyOffsetsToPorts = (ports: Realtime.Port[], offsets: Point) =>
   ports.map((port) => ({
     ...port,
     linkData: applyOffsetsToLinkData(port.linkData, offsets),
   }));
 
-const applyOffsetsToLinks = (links: Link[], offsets: Point) =>
+const applyOffsetsToLinks = (links: Realtime.Link[], offsets: Point) =>
   links.map((link) => ({
     ...link,
     data: applyOffsetsToLinkData(link.data, offsets),
@@ -119,7 +118,7 @@ const initialize =
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
 
-    const { viewport, ...creator } = Adapters.creatorAdapter.fromDB(await client.api.diagram.get(diagramID), { platform, context: {} });
+    const { viewport, ...creator } = Realtime.Adapters.creatorAdapter.fromDB(await client.api.diagram.get(diagramID), { platform, context: {} });
 
     const nodesWithCoordinates = creator.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y));
     const portsWithPoints = creator.ports.filter((port) => !!port.nodeID && !!port.linkData?.points?.length);

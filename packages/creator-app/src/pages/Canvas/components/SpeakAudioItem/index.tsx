@@ -1,4 +1,5 @@
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +9,6 @@ import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
 import { DialogType } from '@/constants';
 import { compose } from '@/hocs';
-import { SpeakData, SSMLData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
@@ -18,7 +18,7 @@ import { prettifyBucketURL } from '@/utils/audio';
 const VariablesInputComponent: React.FC<any> = VariablesInput;
 
 export type SpeakAudioItemProps = ListItemComponentProps<
-  SpeakData,
+  Realtime.SpeakData,
   {
     header: React.ReactNode;
     platform: Constants.PlatformType;
@@ -27,7 +27,7 @@ export type SpeakAudioItemProps = ListItemComponentProps<
   }
 >;
 
-const isVoice = (item: SpeakData): item is SSMLData => item.type === DialogType.VOICE;
+const isVoice = (item: Realtime.SpeakData): item is Realtime.SSMLData => item.type === DialogType.VOICE;
 
 const AnySSML = SSMLWithVars as any;
 

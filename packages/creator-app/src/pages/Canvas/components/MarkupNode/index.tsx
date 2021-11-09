@@ -1,8 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import cn from 'classnames';
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import { Markup } from '@/models';
 import NodeDragTarget from '@/pages/Canvas/components/Node/components/NodeDragTarget';
 import { useNodeDrag } from '@/pages/Canvas/components/Node/hooks';
 import { CANVAS_MARKUP_CREATING_CLASSNAME, ContextMenuTarget } from '@/pages/Canvas/constants';
@@ -25,7 +25,7 @@ const MarkupNode = () => {
   const isEditingMode = useEditingMode();
 
   const { node, data } = nodeEntity.useState((e) => {
-    const resolved = e.resolve<Markup.AnyNodeData>();
+    const resolved = e.resolve<Realtime.Markup.AnyNodeData>();
 
     return {
       node: resolved.node,
@@ -78,9 +78,9 @@ const MarkupNode = () => {
             onDoubleClick={doubleClickHandler}
             isText={nodeEntity.nodeType === BlockType.MARKUP_TEXT}
             rotate={(data as ResizableMarkupNodeData).rotate || 0}
-            scale={(data as Markup.NodeData.Text).scale ?? 1}
-            maxWidth={(data as Markup.NodeData.Text).overrideWidth ?? null}
-            backgroundColor={(data as Markup.NodeData.Text).backgroundColor ?? null}
+            scale={(data as Realtime.Markup.NodeData.Text).scale ?? 1}
+            maxWidth={(data as Realtime.Markup.NodeData.Text).overrideWidth ?? null}
+            backgroundColor={(data as Realtime.Markup.NodeData.Text).backgroundColor ?? null}
             ref={instance.transformRef}
           >
             <NodeComponent ref={instance.blockRef} node={node} data={data as any} />

@@ -1,6 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { SLOT_PATH_TYPE } from '@/components/IntentForm/components/Custom/components';
 import IntentSlotForm from '@/components/IntentSlotForm';
-import { NodeData } from '@/models';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -11,7 +12,7 @@ const EDITORS_BY_PATH = {
   [SLOT_PATH_TYPE]: IntentSlotForm,
 };
 
-const IntentManager: NodeManagerConfig<NodeData.Intent> = {
+const IntentManager: NodeManagerConfig<Realtime.NodeData.Intent> = {
   ...NODE_CONFIG,
 
   tip: 'All your project to handle an intent from anywhere inside your project',

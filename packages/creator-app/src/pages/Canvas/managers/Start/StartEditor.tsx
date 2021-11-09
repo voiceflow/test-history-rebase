@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import { useFeature, useSelector } from '@/hooks';
-import { NodeData } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { HelpMessage, HelpTooltip } from '@/pages/Canvas/managers/Command/components';
@@ -15,7 +15,7 @@ import { isPlatformWithInvocationName } from '@/utils/typeGuards';
 import { InvocationNameSection, StartLabelSection } from './components';
 import { COMMANDS_PATH_TYPE } from './constants';
 
-const StartEditor: NodeEditor<NodeData.Start> = ({ data, onChange, pushToPath }) => {
+const StartEditor: NodeEditor<Realtime.NodeData.Start> = ({ data, onChange, pushToPath }) => {
   const platform = React.useContext(PlatformContext)!;
   const isRootDiagram = useSelector(Creator.isRootDiagramActiveSelector);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);

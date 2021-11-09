@@ -1,5 +1,6 @@
 import './DashBoard.css';
 
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Alert, AlertVariant, BoxFlex, BoxFlexCenter, FullSpinner, IconButton, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -35,7 +36,6 @@ import {
   useSetup,
   useWorkspaceTracking,
 } from '@/hooks';
-import * as Models from '@/models';
 import perf, { PerfAction } from '@/performance';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 import * as Query from '@/utils/query';
@@ -46,8 +46,8 @@ import List, { List as SimpleList } from './components/List';
 import { DashboardGate } from './gates';
 import DashboardHeader from './Header';
 
-const getBoardFilteredProjects = (projectsIDs: string[], getProjectByID: (projectID: string) => Models.AnyProject | null, filter: string) => {
-  const filtered: Models.AnyProject[] = [];
+const getBoardFilteredProjects = (projectsIDs: string[], getProjectByID: (projectID: string) => Realtime.AnyProject | null, filter: string) => {
+  const filtered: Realtime.AnyProject[] = [];
 
   projectsIDs.forEach((id) => {
     const project = getProjectByID(id);

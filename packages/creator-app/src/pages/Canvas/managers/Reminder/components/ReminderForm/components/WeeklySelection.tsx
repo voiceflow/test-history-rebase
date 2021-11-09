@@ -1,8 +1,7 @@
 import { Node } from '@voiceflow/alexa-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Flex } from '@voiceflow/ui';
 import React from 'react';
-
-import { NodeData } from '@/models';
 
 import DayButton from './DayButton';
 
@@ -17,8 +16,8 @@ const WEEKS = [
 ];
 
 interface WeeklySelectionProps {
-  onChange: (data: Partial<NodeData.Reminder>) => void;
-  recurrence: NodeData.ReminderRecurrence;
+  onChange: (data: Partial<Realtime.NodeData.Reminder>) => void;
+  recurrence: Realtime.NodeData.ReminderRecurrence;
 }
 
 const WeeklySelection: React.FC<WeeklySelectionProps> = ({ recurrence, onChange }) => (

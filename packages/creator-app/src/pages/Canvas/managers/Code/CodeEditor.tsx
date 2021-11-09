@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Link } from '@voiceflow/ui';
 import React from 'react';
 import type AceEditorType from 'react-ace';
@@ -9,14 +10,13 @@ import OverflowMenu from '@/components/OverflowMenu';
 import * as Documentation from '@/config/documentation';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import { HelpTooltip } from './components';
 
-const CodeEditor: NodeEditor<NodeData.Code> = ({ data, onChange, onExpand, expanded }) => {
+const CodeEditor: NodeEditor<Realtime.NodeData.Code> = ({ data, onChange, onExpand, expanded }) => {
   const editorRef = React.useRef<AceEditorType | null>(null);
   const [editorState, onUpdateEditorState] = React.useState(data.code);
   const onUpdateCode = React.useCallback(() => onChange({ code: editorState }), [editorState, onChange]);

@@ -1,5 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
-import { NodeData } from '@/models';
 
 const keyValToDB = ({ index, key, val }: { index?: number; key: string; val: string }) => ({
   index,
@@ -8,7 +9,7 @@ const keyValToDB = ({ index, key, val }: { index?: number; key: string; val: str
 });
 
 // eslint-disable-next-line import/prefer-default-export
-export const encodeCustomAPIData = (data: NodeData.CustomApi) => {
+export const encodeCustomAPIData = (data: Realtime.NodeData.CustomApi) => {
   const { selectedAction, bodyInputType, body, url, headers, mapping, parameters, content } = data;
   return {
     bodyInputType,

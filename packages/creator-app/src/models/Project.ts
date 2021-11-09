@@ -1,5 +1,3 @@
-export type { AnyProject, DBProject, Project } from '@voiceflow/realtime-sdk';
-
 export interface Price {
   price: number;
   errors: {

@@ -1,6 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { DiagramState } from '@/constants';
 import { createAction } from '@/ducks/utils';
-import { EntityMap, LinkData, NodeData, PartialModel, Port } from '@/models';
+import { EntityMap, PartialModel } from '@/models';
 import { Action } from '@/store/types';
 import { Point } from '@/types';
 
@@ -37,14 +39,14 @@ export enum DiagramAction {
 
 export type UpdateNodeData = Action<
   DiagramAction.UPDATE_NODE_DATA,
-  { nodeID: string; data: Partial<NodeData<unknown>>; patch: true } | { nodeID: string; data: NodeData<unknown>; patch: false }
+  { nodeID: string; data: Partial<Realtime.NodeData<unknown>>; patch: true } | { nodeID: string; data: Realtime.NodeData<unknown>; patch: false }
 >;
 
 export type UpdateNodeLocation = Action<DiagramAction.UPDATE_NODE_LOCATION, { nodeID: string; x: number; y: number }>;
 
-export type UpdateLinkData = Action<DiagramAction.UPDATE_LINK_DATA, { linkID: string; data: Partial<LinkData> }>;
+export type UpdateLinkData = Action<DiagramAction.UPDATE_LINK_DATA, { linkID: string; data: Partial<Realtime.LinkData> }>;
 
-export type UpdateLinkDataMany = Action<DiagramAction.UPDATE_LINK_DATA_MANY, { linkID: string; data: Partial<LinkData> }[]>;
+export type UpdateLinkDataMany = Action<DiagramAction.UPDATE_LINK_DATA_MANY, { linkID: string; data: Partial<Realtime.LinkData> }[]>;
 
 export type UnmergeNode = Action<DiagramAction.UNMERGE_NODE, { nodeID: string; position: Point; parentNode: ParentNodeDescriptor }>;
 
@@ -68,7 +70,7 @@ export type AddWrappedNode = Action<DiagramAction.ADD_WRAPPED_NODE, { node: Node
 
 export type RemoveManyNodes = Action<DiagramAction.REMOVE_MANY_NODES, string[]>;
 
-export type AddPort = Action<DiagramAction.ADD_PORT, { nodeID: string; port: PartialModel<Port> }>;
+export type AddPort = Action<DiagramAction.ADD_PORT, { nodeID: string; port: PartialModel<Realtime.Port> }>;
 
 export type RemovePort = Action<DiagramAction.REMOVE_PORT, string>;
 
@@ -120,17 +122,17 @@ export type AnyDiagramAction =
 // action creators
 
 export const updateNodeData: {
-  (nodeID: string, data: NodeData<unknown>, patch: false): UpdateNodeData;
-  (nodeID: string, data: Partial<NodeData<unknown>>, patch?: true): UpdateNodeData;
+  (nodeID: string, data: Realtime.NodeData<unknown>, patch: false): UpdateNodeData;
+  (nodeID: string, data: Partial<Realtime.NodeData<unknown>>, patch?: true): UpdateNodeData;
 } = (nodeID: string, data: any, patch = true): UpdateNodeData => createAction(DiagramAction.UPDATE_NODE_DATA, { nodeID, data, patch });
 
 export const updateNodeLocation = (nodeID: string, [x, y]: Point): UpdateNodeLocation =>
   createAction(DiagramAction.UPDATE_NODE_LOCATION, { nodeID, x, y });
 
-export const updateLinkData = (linkID: string, data: Partial<LinkData>): UpdateLinkData =>
+export const updateLinkData = (linkID: string, data: Partial<Realtime.LinkData>): UpdateLinkData =>
   createAction(DiagramAction.UPDATE_LINK_DATA, { linkID, data });
 
-export const updateLinkDataMany = (payload: { linkID: string; data: Partial<LinkData> }[]): UpdateLinkDataMany =>
+export const updateLinkDataMany = (payload: { linkID: string; data: Partial<Realtime.LinkData> }[]): UpdateLinkDataMany =>
   createAction(DiagramAction.UPDATE_LINK_DATA_MANY, payload);
 
 export const unmergeNode = (nodeID: string, position: Point, parentNode: ParentNodeDescriptor): UnmergeNode =>
@@ -157,7 +159,7 @@ export const addWrappedNode = (node: NodeDescriptor, data: DataDescriptor, paren
 
 export const removeNodes = (nodeIDs: string[]): RemoveManyNodes => createAction(DiagramAction.REMOVE_MANY_NODES, nodeIDs);
 
-export const addPort = (nodeID: string, port: PartialModel<Port>): AddPort => createAction(DiagramAction.ADD_PORT, { nodeID, port });
+export const addPort = (nodeID: string, port: PartialModel<Realtime.Port>): AddPort => createAction(DiagramAction.ADD_PORT, { nodeID, port });
 
 export const removePort = (portID: string): RemovePort => createAction(DiagramAction.REMOVE_PORT, portID);
 

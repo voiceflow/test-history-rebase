@@ -1,7 +1,7 @@
 import { UserRole } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { DBMember } from '@/models';
 import { Identifier } from '@/styles/constants';
 
 import Container from './components/Container';
@@ -10,7 +10,7 @@ import MemberRow from './components/MemberRow';
 
 interface MemberSectionProps {
   inline?: boolean;
-  members: DBMember[];
+  members: Realtime.DBMember[];
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
 }
 

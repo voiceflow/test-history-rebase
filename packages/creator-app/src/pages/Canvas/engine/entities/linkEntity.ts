@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useSetup, useTeardown } from '@/hooks';
-import * as Models from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { Pair, PathPoints } from '@/types';
 
@@ -25,7 +25,7 @@ export interface PortLinkInstance {
   updatePosition: (points: PathPoints | null) => void;
 }
 
-class LinkEntity extends ResourceEntity<Models.Link, LinkInstance> {
+class LinkEntity extends ResourceEntity<Realtime.Link, LinkInstance> {
   get isHighlighted() {
     return this.engine.highlight.isLinkTarget(this.linkID);
   }

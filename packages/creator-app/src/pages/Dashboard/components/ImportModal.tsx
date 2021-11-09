@@ -1,5 +1,6 @@
 import './ImportModal.css';
 
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, ButtonVariant, StatusCode, toast } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
@@ -12,12 +13,11 @@ import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { extractMemberById } from '@/ducks/workspaceV2/utils';
 import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
-import { Workspace as WorkspaceModel } from '@/models';
 import * as Sentry from '@/vendors/sentry';
 
 import { ImportSelect } from './ModalComponents';
 
-const allowedToClone = (workspace: WorkspaceModel, creatorID: number | null): boolean => {
+const allowedToClone = (workspace: Realtime.Workspace, creatorID: number | null): boolean => {
   if (!creatorID) {
     return false;
   }

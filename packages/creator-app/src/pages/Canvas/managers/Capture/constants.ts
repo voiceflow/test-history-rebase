@@ -1,12 +1,13 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
 import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<NodeData.Capture> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Capture> = {
   type: BlockType.CAPTURE,
 
   icon: 'microphone',

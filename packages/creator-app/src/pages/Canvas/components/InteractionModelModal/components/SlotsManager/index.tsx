@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
@@ -15,7 +16,6 @@ import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { connect } from '@/hocs';
 import { useEnableDisable, useModals } from '@/hooks';
-import { Slot } from '@/models';
 import { ConnectedProps } from '@/types';
 
 import EmptyContainer from '../EmptyContainer';
@@ -43,10 +43,10 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
 
   const scrollbarsRef = React.useRef<Scrollbars>(null);
 
-  const getItemKey = React.useCallback((item: Slot) => item.id, []);
-  const getItemLabel = React.useCallback((item: Slot) => item.name, []);
+  const getItemKey = React.useCallback((item: Realtime.Slot) => item.id, []);
+  const getItemLabel = React.useCallback((item: Realtime.Slot) => item.name, []);
   const onDelete = React.useCallback(
-    (index: string | number, { item }: { item: Slot }) => {
+    (index: string | number, { item }: { item: Realtime.Slot }) => {
       const activeIntents = intentsUsingSlot(item.id);
 
       if (activeIntents.length > 0) {
@@ -73,7 +73,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
     [onDelete, slots]
   );
   const onFilter = React.useCallback(
-    (_, items: Slot[]) => {
+    (_, items: Realtime.Slot[]) => {
       if (!items.some(({ id }) => id === selectedID)) {
         setSelectedID(items[0]?.id);
       }
@@ -84,7 +84,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
   const addNewSlot = React.useCallback(() => {
     toggleSlotEdit({
       isCreate: true,
-      onSave: ({ type, name, color, inputs = [] }: Slot) => {
+      onSave: ({ type, name, color, inputs = [] }: Realtime.Slot) => {
         const id = Utils.id.cuid.slug();
 
         createSlot(id, { id, type, name, color, inputs });
@@ -119,7 +119,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
               addMessage="New Entity"
               onChange={onFilter}
               getLabel={getItemLabel}
-              renderItem={(item: Slot, index) => renderItem({ item, index, itemKey: item.id, key: item.id })}
+              renderItem={(item: Realtime.Slot, index) => renderItem({ item, index, itemKey: item.id, key: item.id })}
               placeholder="Search Entities"
             />
           )}

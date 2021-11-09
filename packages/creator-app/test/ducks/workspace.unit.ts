@@ -1,9 +1,9 @@
 /* eslint-disable max-nested-callbacks */
 import { UserRole } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import * as Models from '@/models';
 
 import suite from './_suite';
 
@@ -17,19 +17,19 @@ const WORKSPACE = {
   plan: 'pro',
   members: MEMBERS,
   seatLimits: SEAT_LIMITS,
-} as Models.Workspace;
+} as Realtime.Workspace;
 const OTHER_WORKSPACE = {
   id: 'def',
   name: 'Team',
   seats: 4,
   plan: 'pro',
   members: [{ name: 'Joey', creator_id: 786, role: UserRole.VIEWER }],
-} as Models.Workspace;
+} as Realtime.Workspace;
 const SIMPLE_WORKSPACE = {
   id: 'mno',
   name: 'demo',
   members: [] as any,
-} as Models.Workspace;
+} as Realtime.Workspace;
 
 const MOCK_STATE = {
   byKey: {

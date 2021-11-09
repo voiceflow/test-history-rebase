@@ -1,12 +1,12 @@
 import { Node } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSyncedLookup } from '@/hooks';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
@@ -64,7 +64,7 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID,
   </Step>
 );
 
-const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction>> = ({ node, data, platform }) => {
+const ConnectedChoiceStep: React.FC<ConnectedStepProps<Realtime.NodeData.Interaction>> = ({ node, data, platform }) => {
   const intentsMap = React.useContext(CustomIntentMapContext)!;
   const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 

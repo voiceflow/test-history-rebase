@@ -1,12 +1,12 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<NodeData.IfV2> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2> = {
   type: BlockType.IFV2,
 
   icon: 'if',

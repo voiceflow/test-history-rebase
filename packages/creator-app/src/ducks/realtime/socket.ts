@@ -1,6 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import type * as Creator from '@/ducks/creator';
 import { createAction } from '@/ducks/utils';
-import { EntityMap, LinkData, NodeData, PartialModel, Port } from '@/models';
+import { EntityMap, PartialModel } from '@/models';
 import { Action, ActionPayload } from '@/store/types';
 import { Either, Pair, Point } from '@/types';
 
@@ -165,7 +167,7 @@ export const unmergeNode = (nodeID: string, position: Point, parentNode: Creator
 
 export const removeManyNodes = (nodeIDs: string[]): RemoveManyNodes => createAction(SocketAction.REMOVE_MANY_NODES, nodeIDs);
 
-export const updateNodeData = (nodeID: string, data: Partial<NodeData<unknown>>): UpdateNodeData =>
+export const updateNodeData = (nodeID: string, data: Partial<Realtime.NodeData<unknown>>): UpdateNodeData =>
   createAction(SocketAction.UPDATE_NODE_DATA, { nodeID, data });
 
 export const moveNode = (nodeID: string, movement: Pair<number>, origin: Point): MoveNode =>
@@ -176,7 +178,7 @@ export const moveManyNodes = (nodeIDs: string[], movement: Pair<number>, origins
 
 // ports
 
-export const addPort = (nodeID: string, port: PartialModel<Port>): AddPort => createAction(SocketAction.ADD_PORT, { nodeID, port });
+export const addPort = (nodeID: string, port: PartialModel<Realtime.Port>): AddPort => createAction(SocketAction.ADD_PORT, { nodeID, port });
 
 export const removePort = (portID: string): RemovePort => createAction(SocketAction.REMOVE_PORT, portID);
 
@@ -190,10 +192,10 @@ export const moveLink = (linkData: Either<{ reset: true }, { points: Pair<Point>
 export const addLink = (sourcePortID: string, targetPortID: string, linkID: string): AddLink =>
   createAction(SocketAction.ADD_LINK, { sourcePortID, targetPortID, linkID });
 
-export const updateLinkData = (linkID: string, data: Partial<LinkData>): UpdateLinkData =>
+export const updateLinkData = (linkID: string, data: Partial<Realtime.LinkData>): UpdateLinkData =>
   createAction(SocketAction.UPDATE_LINK_DATA, { data, linkID });
 
-export const updateLinkDataMany = (payload: { linkID: string; data: Partial<LinkData> }[]): UpdateLinkDataMany =>
+export const updateLinkDataMany = (payload: { linkID: string; data: Partial<Realtime.LinkData> }[]): UpdateLinkDataMany =>
   createAction(SocketAction.UPDATE_LINK_DATA_MANY, payload);
 
 export const removeLink = (linkID: string): RemoveLink => createAction(SocketAction.REMOVE_LINK, linkID);

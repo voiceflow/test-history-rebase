@@ -1,6 +1,7 @@
 import { Button } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { createSelector } from 'reselect';
 
@@ -11,7 +12,6 @@ import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
 import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
-import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import { useButtonLayoutOption } from '@/pages/Canvas/managers/hooks';
@@ -86,7 +86,7 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
 
 const focusedNodeWithButtonsSelector = createSelector(
   Creator.focusedNodeDataSelector,
-  (data) => data as NodeData<{ buttons?: Button.AnyButton[]; choices?: Record<DistinctPlatform, NodeData.InteractionChoice>[] }>
+  (data) => data as Realtime.NodeData<{ buttons?: Button.AnyButton[]; choices?: Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>[] }>
 );
 
 const mapStateToProps = {

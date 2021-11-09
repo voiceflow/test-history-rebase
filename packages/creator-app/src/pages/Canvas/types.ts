@@ -1,7 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { MovementCalculator } from '@/components/Canvas/types';
-import { Comment, LockOwner, NodeData } from '@/models';
+import { Comment, LockOwner } from '@/models';
 import { Either, Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
@@ -15,7 +16,7 @@ export interface MarkupTransform {
   origin: Coords;
 }
 
-export type NodeDataUpdater<T> = (value: Partial<NodeData<T>>, save?: boolean) => Promise<void>;
+export type NodeDataUpdater<T> = (value: Partial<Realtime.NodeData<T>>, save?: boolean) => Promise<void>;
 
 export interface CanvasContainerAPI {
   addClass: (className: string) => void;

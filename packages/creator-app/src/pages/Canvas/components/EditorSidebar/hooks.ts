@@ -1,8 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import { NodeData } from '@/models';
 import { EngineContext, ManagerContext, ManagerGetter } from '@/pages/Canvas/contexts';
 import type { Engine } from '@/pages/Canvas/engine/';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
@@ -62,7 +62,7 @@ export const useEditorPath = () => {
   const engine = React.useContext(EngineContext)!;
 
   const node = engine.select(Creator.focusedNodeSelector);
-  let parent: NodeData<unknown> | null = null;
+  let parent: Realtime.NodeData<unknown> | null = null;
 
   if (node?.parentNode) {
     parent = engine.select(Creator.dataByNodeIDSelector)(node.parentNode);

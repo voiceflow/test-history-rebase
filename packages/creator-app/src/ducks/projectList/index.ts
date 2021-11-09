@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import createCRUDReducer from '@/ducks/utils/crud';
-import { ProjectList } from '@/models';
 import { Reducer, RootReducer } from '@/store/types';
 
 import { AddProjectToList, AnyProjectListAction, ProjectListAction, RemoveProjectFromList, TransplantProject } from './actions';
@@ -59,7 +59,7 @@ export const addProjectToListReducer: Reducer<ProjectListState, AddProjectToList
   return Utils.normalized.patchNormalizedByKey(state, listID, { projects: addToStart ? [projectID, ...projects] : [...projects, projectID] });
 };
 
-export const projectListCRUDReducer = createCRUDReducer<ProjectList>(STATE_KEY);
+export const projectListCRUDReducer = createCRUDReducer<Realtime.ProjectList>(STATE_KEY);
 
 const projectListReducer: RootReducer<ProjectListState, AnyProjectListAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {

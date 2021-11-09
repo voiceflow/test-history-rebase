@@ -1,4 +1,3 @@
-import { Node } from '@/models';
 import { NewLinkAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
 
@@ -41,7 +40,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
   }
 
   containsSourcePort(nodeID: string) {
-    const node: Node = this.engine.getNodeByID(nodeID);
+    const node = this.engine.getNodeByID(nodeID);
 
     return this.isSourceNode(nodeID) || node?.combinedNodes.some((childNodeID) => this.isSourceNode(childNodeID));
   }

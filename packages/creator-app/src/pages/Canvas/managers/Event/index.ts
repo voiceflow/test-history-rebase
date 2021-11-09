@@ -1,11 +1,11 @@
-import { NodeData } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import EventEditor from './EventEditor';
 import EventStep from './EventStep';
 
-const EventManager: NodeManagerConfig<NodeData.Event> = {
+const EventManager: NodeManagerConfig<Realtime.NodeData.Event> = {
   ...NODE_CONFIG,
 
   tip: 'Recieve special types of events from alexa',

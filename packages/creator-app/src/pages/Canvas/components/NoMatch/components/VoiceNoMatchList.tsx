@@ -1,25 +1,24 @@
 import { Constants } from '@voiceflow/general-types';
-import { Adapters } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { MAX_ALEXA_REPROMPTS, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
-import { NodeData, SpeakData } from '@/models';
 import SpeakAudioList from '@/pages/Canvas/components/SpeakAudioList';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 import { VoiceNoMatchItem } from './NoMatchItem';
 
-interface VoiceNoMatchListProps extends NodeData.VoiceNoMatches {
+interface VoiceNoMatchListProps extends Realtime.NodeData.VoiceNoMatches {
   platform: Constants.PlatformType;
-  onChangeReprompts: (reprompts: NodeData.VoiceNoMatches['reprompts']) => void;
-  onChangeRandomize: (randomize: NodeData.VoiceNoMatches['randomize']) => void;
+  onChangeReprompts: (reprompts: Realtime.NodeData.VoiceNoMatches['reprompts']) => void;
+  onChangeRandomize: (randomize: Realtime.NodeData.VoiceNoMatches['randomize']) => void;
 }
 
 const VoiceNoMatchList: React.FC<VoiceNoMatchListProps> = ({ reprompts, platform, randomize, children, onChangeReprompts, onChangeRandomize }) => {
-  const items = React.useMemo(() => Adapters.voiceRepromptToSpeakDataAdapter.mapFromDB(reprompts), []);
+  const items = React.useMemo(() => Realtime.Adapters.voiceRepromptToSpeakDataAdapter.mapFromDB(reprompts), []);
 
   const onChangeItems = React.useCallback(
-    (items: SpeakData[]) => onChangeReprompts(Adapters.voiceRepromptToSpeakDataAdapter.mapToDB(items)),
+    (items: Realtime.SpeakData[]) => onChangeReprompts(Realtime.Adapters.voiceRepromptToSpeakDataAdapter.mapToDB(items)),
     [onChangeReprompts]
   );
 

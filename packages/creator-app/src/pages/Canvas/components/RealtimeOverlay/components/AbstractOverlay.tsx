@@ -1,9 +1,9 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import * as Realtime from '@/ducks/realtime';
+import * as RealtimeDuck from '@/ducks/realtime';
 import { compose, connect } from '@/hocs';
-import { DBMember } from '@/models';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { InjectedEngineProps, withEngine } from '@/pages/Canvas/contexts';
 import { RealtimeCursorOverlayAPI, RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
@@ -13,7 +13,7 @@ export interface RealtimeOverlayState {
   items: string[];
 }
 
-export type RealtimeViewer = DBMember & { color: string };
+export type RealtimeViewer = Realtime.DBMember & { color: string };
 
 abstract class AbstractOverlay<
   T extends RealtimeCursorOverlayAPI | RealtimeLinkOverlayAPI
@@ -83,7 +83,7 @@ abstract class AbstractOverlay<
 export default AbstractOverlay;
 
 const mapStateToProps = {
-  viewersLookup: Realtime.diagramViewersLookupSelector,
+  viewersLookup: RealtimeDuck.diagramViewersLookupSelector,
 };
 
 export const connectOverlay = compose(connect(mapStateToProps), withEngine) as HOC<ConnectedRealtimeOverlayProps, {}>;

@@ -1,8 +1,8 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 
 import { BlockType, DialogType } from '@/constants';
-import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
@@ -24,7 +24,7 @@ const ICON_COLOR_MAP: Record<DialogType, string> = {
 export const AUDIO_MOCK_DATA = { dialogs: [{ id: '', type: DialogType.AUDIO as const, url: '' }], randomize: true };
 export const VOICE_MOCK_DATA = { dialogs: [{ id: '', type: DialogType.VOICE as const, voice: '', content: '' }], randomize: true };
 
-export const NODE_CONFIG: NodeConfig<NodeData.Speak> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Speak> = {
   type: BlockType.SPEAK,
 
   getIcon: (data) => ICON_MAP[data?.dialogs[0]?.type ?? DialogType.VOICE],

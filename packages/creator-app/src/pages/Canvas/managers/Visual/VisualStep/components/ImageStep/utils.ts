@@ -1,10 +1,10 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { DEVICE_LABEL_MAP } from '@/constants';
-import { NodeData } from '@/models';
 
 // eslint-disable-next-line import/prefer-default-export
-export const getLabel = (data: NodeData.Visual): string => {
+export const getLabel = (data: Realtime.NodeData.Visual): string => {
   if (data.visualType === Node.Visual.VisualType.APL) {
     return data.title ?? 'APL Mockup';
   }

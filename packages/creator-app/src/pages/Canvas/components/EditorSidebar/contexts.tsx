@@ -1,14 +1,14 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { useLinkedState } from '@/hooks';
-import type { NodeData } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 
 export interface SidebarHeaderAction {
   value: string;
   label: string;
-  onClick: (options: { data: NodeData<unknown>; engine: Engine }) => void;
+  onClick: (options: { data: Realtime.NodeData<unknown>; engine: Engine }) => void;
 }
 
 export interface SidebarContextState {

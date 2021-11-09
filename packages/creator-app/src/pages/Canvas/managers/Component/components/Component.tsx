@@ -1,4 +1,5 @@
 import { Nullable } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,11 +7,10 @@ import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
-import { NodeData } from '@/models';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 
 interface ComponentProps {
-  onChange: NodeDataUpdater<NodeData.Component>;
+  onChange: NodeDataUpdater<Realtime.NodeData.Component>;
   diagramID: Nullable<string>;
 }
 

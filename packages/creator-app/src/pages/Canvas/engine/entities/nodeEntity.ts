@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { createSelector } from 'reselect';
 import shallowEqual from 'shallowequal';
@@ -6,7 +7,6 @@ import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useTeardown } from '@/hooks';
-import { Node, NodeData } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { MarkupTransform } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
@@ -90,10 +90,10 @@ export type NodeInstance = EntityInstance & {
 
 const nodeEntitySelector = createSelector([Creator.nodeByIDSelector, Creator.dataByNodeIDSelector], (getNode, getData) => <T>(nodeID: string) => ({
   node: getNode(nodeID),
-  data: getData(nodeID) as NodeData<T>,
+  data: getData(nodeID) as Realtime.NodeData<T>,
 }));
 
-class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> }, NodeInstance> {
+class NodeEntity extends ResourceEntity<{ node: Realtime.Node; data: Realtime.NodeData<unknown> }, NodeInstance> {
   get isHighlighted() {
     return this.engine.highlight.isNodeTarget(this.nodeID);
   }
@@ -153,7 +153,7 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
     this.log.debug(this.log.init('constructed node'), this.log.slug(nodeID));
   }
 
-  resolve<T = unknown>(): { node: Node; data: NodeData<T> } {
+  resolve<T = unknown>(): { node: Realtime.Node; data: Realtime.NodeData<T> } {
     return this.engine.select(nodeEntitySelector)(this.nodeID);
   }
 

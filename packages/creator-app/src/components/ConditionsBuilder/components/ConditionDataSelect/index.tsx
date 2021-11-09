@@ -1,4 +1,5 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Portal, stopPropagation, useCachedValue, usePopper } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
@@ -6,7 +7,6 @@ import { useDismissable } from 'react-dismissable-layers';
 
 import { Container } from '@/components/Tooltip/components';
 import { useEnableDisable } from '@/hooks';
-import { ExpressionTupleV2 } from '@/models';
 import { FadeDownDelayedContainer, SlideContainer } from '@/styles/animations';
 
 import { ExpressionDataLogicType, LogicUnitDataType } from '../../types';
@@ -44,7 +44,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
     (key: number) => (values: { value: string }) => {
       onChange({
         ...expression,
-        value: expression.value.map((data: any, index: number) => (index === key ? { ...data, ...values } : data)) as ExpressionTupleV2,
+        value: expression.value.map((data: any, index: number) => (index === key ? { ...data, ...values } : data)) as Realtime.ExpressionTupleV2,
       });
     },
     [onChange]

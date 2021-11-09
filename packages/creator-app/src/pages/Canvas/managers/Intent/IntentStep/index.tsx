@@ -1,7 +1,7 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
@@ -32,7 +32,7 @@ export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, portID, label, i
   </Step>
 );
 
-const ConnectedIntentStep: React.FC<ConnectedStepProps<NodeData.Intent>> = ({ node, data, platform }) => {
+const ConnectedIntentStep: React.FC<ConnectedStepProps<Realtime.NodeData.Intent>> = ({ node, data, platform }) => {
   const intentMap = React.useContext(CustomIntentMapContext)!;
 
   const { intent, availability } = getDistinctPlatformValue(platform, data);

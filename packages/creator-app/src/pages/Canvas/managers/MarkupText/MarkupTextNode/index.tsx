@@ -1,4 +1,5 @@
 import composeRefs from '@seznam/compose-react-refs';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { Descendant, Node, Transforms } from 'slate';
@@ -7,7 +8,6 @@ import SlateEditable, { SlateEditorAPI } from '@/components/SlateEditable';
 import { isNodeEditLockedSelector } from '@/ducks/realtime';
 import { compose, connect } from '@/hocs';
 import { useDebouncedCallback } from '@/hooks';
-import { Markup } from '@/models';
 import { useBlockAPI } from '@/pages/Canvas/components/Block/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
@@ -17,7 +17,7 @@ import { SLATE_EDITOR_CLASS_NAME } from '../constants';
 import { Border, BorderPosition, Container } from './components';
 import { addDraggableAttr, findAllDraggableParents, removeDraggableAttr } from './utils';
 
-type MarkupProps = ConnectedMarkupNodeProps<Markup.NodeData.Text> & {
+type MarkupProps = ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Text> & {
   isNodeLocked: (nodeID: string) => boolean;
 };
 
@@ -235,4 +235,4 @@ const mapStateToProps = {
 export default compose(
   connect(mapStateToProps, null, null, { forwardRef: true }),
   React.forwardRef
-)(MarkupTextNode) as React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMarkupNodeProps<Markup.NodeData.Text>>;
+)(MarkupTextNode) as React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Text>>;

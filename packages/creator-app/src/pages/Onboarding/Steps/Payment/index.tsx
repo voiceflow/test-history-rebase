@@ -13,7 +13,6 @@ import { PERIOD_NAME } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDebouncedCallback, useSelector, useToggle } from '@/hooks';
-import { DBMember } from '@/models';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
@@ -129,7 +128,7 @@ const Payment: React.FC = () => {
     const targetWorkspace = getWorkspaceByID(selectedWorkspaceId);
     let numberOfEditors = 0;
 
-    targetWorkspace?.members.forEach((member: DBMember) => {
+    targetWorkspace?.members.forEach((member) => {
       if (member.role === UserRole.ADMIN || member.role === UserRole.EDITOR) {
         numberOfEditors++;
       }

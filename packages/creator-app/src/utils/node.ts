@@ -1,6 +1,6 @@
-import { Utils } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Link, NodeWithData } from '@/models';
+import { NodeWithData } from '@/models';
 import { Point } from '@/types';
 
 import { isMarkupOrCombinedBlockType } from './typeGuards';
@@ -17,11 +17,11 @@ export const {
   isLinkedPaymentNode,
   isCancelPaymentNode,
   isProductLinkedNode,
-} = Utils.node;
+} = Realtime.Utils.node;
 
 export const getNodesGroupCenter = (
   nodes: NodeWithData[],
-  links: Link[]
+  links: Realtime.Link[]
 ): { center: Point; minX: number; maxX: number; minY: number; maxY: number } => {
   const combinedAndMarkupNodes = nodes.filter(({ node }) => isMarkupOrCombinedBlockType(node.type));
 

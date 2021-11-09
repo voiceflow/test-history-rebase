@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Link, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { XYCoord } from 'react-dnd';
@@ -9,7 +10,6 @@ import VirtualList from '@/components/VirtualList';
 import * as Documentation from '@/config/documentation';
 import { BlockType, DragItem } from '@/constants';
 import { useDidUpdateEffect, useEventualEngine } from '@/hooks';
-import { NodeData } from '@/models';
 import { getTargetValue } from '@/utils/dom';
 
 import Header, { HEADER_MIN_HEIGHT } from '../Header';
@@ -74,7 +74,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
       engine.merge.setVirtualSource(BlockType.COMPONENT, {
         name: item.name,
         diagramID: item.id,
-      } as NodeData<any>);
+      } as Realtime.NodeData<any>);
     },
     [getEngine]
   );

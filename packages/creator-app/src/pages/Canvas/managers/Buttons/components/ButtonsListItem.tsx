@@ -1,5 +1,6 @@
 import { Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, BoxFlex, Input, Link, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -15,7 +16,6 @@ import { NamespaceProvider } from '@/contexts';
 import * as IntentV2 from '@/ducks/intentV2';
 import { compose } from '@/hocs';
 import { useFeature, useLinkedState, useSelector } from '@/hooks';
-import { Intent } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
@@ -31,7 +31,7 @@ export type ButtonsListItemProps = ListItemComponentProps<
   Node.Buttons.Button,
   {
     pushToPath: (path: { type: string; label: string }) => void;
-    openIntents: Intent[];
+    openIntents: Realtime.Intent[];
   }
 >;
 

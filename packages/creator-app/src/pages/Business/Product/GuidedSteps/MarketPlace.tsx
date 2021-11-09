@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
 import { Project } from '@voiceflow/alexa-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useSelector } from '@/hooks';
-import { ProductMarketPlace } from '@/models';
 import { CountriesName, MarketPlaceAvailability } from '@/services/LocaleMap';
 
 import { ProductContext } from '../../contexts';
@@ -74,7 +74,7 @@ const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
   const setMarketPlace = (place: Project.MarketPlace) => {
     if (selectedPlaces.includes(place)) {
       patchProduct({
-        marketPlaces: selectedPlaces.reduce<Partial<Record<Project.MarketPlace, ProductMarketPlace>>>((acc, key) => {
+        marketPlaces: selectedPlaces.reduce<Partial<Record<Project.MarketPlace, Realtime.ProductMarketPlace>>>((acc, key) => {
           if (key !== place) {
             acc[key] = product.marketPlaces[key];
           }

@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { MapManaged, useManager, useToggle } from '@/hooks';
-import { ExpressionData, NodeData } from '@/models';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -14,7 +14,7 @@ import { ConnectedProps } from '@/types';
 import { ConditionsSection, HelpTooltip, NoMatchSection } from './components';
 import { NODE_CONFIG } from './constants';
 
-const setClone = (initVal: any, targetVal: ExpressionData) => ({
+const setClone = (initVal: any, targetVal: Realtime.ExpressionData) => ({
   ...initVal,
   name: targetVal.name,
   value: targetVal.value,
@@ -22,7 +22,7 @@ const setClone = (initVal: any, targetVal: ExpressionData) => ({
 
 const expressionFactory = () => NODE_CONFIG.factory(undefined).data.expressions[0];
 
-const IfEditor: NodeEditor<NodeData.IfV2 & ConnectedCommentingUpdatesProps> = ({ data, pushToPath, onChange, focusedNode }) => {
+const IfEditor: NodeEditor<Realtime.NodeData.IfV2 & ConnectedCommentingUpdatesProps> = ({ data, pushToPath, onChange, focusedNode }) => {
   const [isDragging, toggleDragging] = useToggle(false);
   const engine = React.useContext(EngineContext)!;
   const updateExpressions = React.useCallback((expressions, save) => onChange({ expressions }, save), [onChange]);
@@ -104,7 +104,7 @@ const IfEditor: NodeEditor<NodeData.IfV2 & ConnectedCommentingUpdatesProps> = ({
         onEndDrag={toggleDragging}
         footer={<NoMatchSection noMatch={data.noMatch} pushToPath={pushToPath} />}
         itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
-        mapManaged={mapManaged as MapManaged<ExpressionData>}
+        mapManaged={mapManaged as MapManaged<Realtime.ExpressionData>}
         onStartDrag={toggleDragging}
         itemComponent={ConditionsSection}
         deleteComponent={DeleteComponent}

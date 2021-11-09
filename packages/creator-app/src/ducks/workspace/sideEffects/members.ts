@@ -12,7 +12,6 @@ import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import { waitAsync } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { Member } from '@/models';
 import { Thunk } from '@/store/types';
 
 import { crud } from '../actions';
@@ -203,10 +202,10 @@ export const deleteMemberOfActiveWorkspace =
     }
   };
 
-const isVerifiedMember = (member: Member): member is Member & { creator_id: number } => !!member.creator_id;
+const isVerifiedMember = (member: Realtime.Member): member is Realtime.Member & { creator_id: number } => !!member.creator_id;
 
 export const updateActiveWorkspaceMemberRole =
-  (member: Member, role: UserRole): Thunk =>
+  (member: Realtime.Member, role: UserRole): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
 

@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { NodeData } from '@/models';
 import NoMatch from '@/pages/Canvas/components/NoMatch';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
-const NoMatchForm: React.FC<NodeEditorPropsType<NodeData.Prompt>> = ({ data, onChange, pushToPath }) => (
+const NoMatchForm: React.FC<NodeEditorPropsType<Realtime.NodeData.Prompt>> = ({ data, onChange, pushToPath }) => (
   <NoMatch noMatches={data.noMatchReprompt} onChange={(noMatches) => onChange({ noMatchReprompt: noMatches })} pushToPath={pushToPath} />
 );
 

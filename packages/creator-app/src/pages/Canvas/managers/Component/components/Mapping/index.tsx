@@ -1,14 +1,13 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
-
-import { NodeData } from '@/models';
 
 import MappingSection from './components/MappingSection';
 
 interface MappingProps {
   isFlow?: boolean;
-  data: NodeData<NodeData.Component>;
-  updateInputs: (inputs: NodeData.VariableMapping[]) => void;
-  updateOutputs: (outputs: NodeData.VariableMapping[]) => void;
+  data: Realtime.NodeData<Realtime.NodeData.Component>;
+  updateInputs: (inputs: Realtime.NodeData.VariableMapping[]) => void;
+  updateOutputs: (outputs: Realtime.NodeData.VariableMapping[]) => void;
 }
 
 const Mapping: React.FC<MappingProps> = ({ isFlow, data, updateInputs, updateOutputs }) => (

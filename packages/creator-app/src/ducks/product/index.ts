@@ -1,5 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import createCRUDReducer from '@/ducks/utils/crud';
-import { Product } from '@/models';
 
 import { STATE_KEY } from './constants';
 
@@ -8,6 +9,6 @@ export * from './constants';
 export * from './selectors';
 export * from './sideEffects';
 
-const productReducer = createCRUDReducer<Product>(STATE_KEY);
+const productReducer = createCRUDReducer<Realtime.Product>(STATE_KEY);
 
 export default productReducer;

@@ -8,7 +8,6 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { getActiveVersionContext } from '@/ducks/version/utils';
-import { Intent, IntentInput, IntentSlot, IntentSlotDialog } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { inferIntentSlotsType, inferIntentSlotType, inferIntentType, removeSlotRefFromInput } from '@/utils/intent';
 import { createNextName } from '@/utils/string';
@@ -19,7 +18,7 @@ import { getPlatformNewSlotsCreator, getUniqSlots, intentProcessor } from './uti
 const NEW_INTENT_NAME = 'intent';
 
 export const addManyIntents =
-  (values: Intent[]): Thunk =>
+  (values: Realtime.Intent[]): Thunk =>
   async (dispatch, getState) => {
     if (!values.length) return;
 
@@ -44,7 +43,7 @@ export const addManyIntents =
  * @deprecated replace operations will only be pushed from the server moving forward
  */
 export const replaceIntents =
-  (values: Intent[], meta?: any): SyncThunk =>
+  (values: Realtime.Intent[], meta?: any): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
@@ -56,7 +55,7 @@ export const replaceIntents =
   };
 
 export const patchIntent =
-  (id: string, data: Partial<Intent>): SyncThunk =>
+  (id: string, data: Partial<Realtime.Intent>): SyncThunk =>
   (dispatch, getState) => {
     if (!data.inputs) {
       dispatch(
@@ -109,7 +108,7 @@ export const patchIntent =
   };
 
 export const patchIntentSlot =
-  (id: string, slotID: string, data: Partial<IntentSlot>): SyncThunk =>
+  (id: string, slotID: string, data: Partial<Realtime.IntentSlot>): SyncThunk =>
   (dispatch, getState) => {
     const intent = IntentV2.intentByIDSelector(getState(), { id });
     if (!intent) return;
@@ -126,7 +125,7 @@ export const removeIntentSlot =
 
     const { slots, inputs } = intent;
 
-    const sanitizedInputs: IntentInput[] = inputs.map((input: IntentInput) => {
+    const sanitizedInputs: Realtime.IntentInput[] = inputs.map((input: Realtime.IntentInput) => {
       if (input?.slots && input.slots.length > 0) {
         const slotDetails = SlotV2.slotByIDSelector(state, { id: slotID });
 
@@ -145,7 +144,7 @@ export const removeIntentSlot =
   };
 
 export const updateIntentSlotDialog =
-  (id: string, slotID: string, dialog: IntentSlotDialog): SyncThunk =>
+  (id: string, slotID: string, dialog: Realtime.IntentSlotDialog): SyncThunk =>
   (dispatch, getState) => {
     const intent = IntentV2.intentByIDSelector(getState(), { id });
     if (!intent) return;
@@ -165,7 +164,7 @@ export const reorderIntentSlots =
   };
 
 export const createIntent =
-  (intent?: Partial<Intent>): SyncThunk<string> =>
+  (intent?: Partial<Realtime.Intent>): SyncThunk<string> =>
   (dispatch, getState) => {
     const id = intent?.id || Utils.id.cuid.slug();
     const state = getState();

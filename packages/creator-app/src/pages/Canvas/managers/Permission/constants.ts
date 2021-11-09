@@ -1,5 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
@@ -22,7 +23,7 @@ export const PERMISSION_LABELS = PERMISSIONS.reduce<Record<string, string>>((acc
   return acc;
 }, {});
 
-export const NODE_CONFIG: NodeConfig<NodeData.Permission> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Permission> = {
   type: BlockType.PERMISSION,
 
   icon: 'openLock',

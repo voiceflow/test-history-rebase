@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import { CRUDState } from '@/ducks/utils/crudV2';
-import { AnyProject } from '@/models';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-export interface ProjectState extends CRUDState<AnyProject> {}
+import { CRUDState } from '@/ducks/utils/crudV2';
+
+export interface ProjectState extends CRUDState<Realtime.AnyProject> {}

@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 import { createSelector } from 'reselect';
@@ -11,7 +12,6 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
-import { Intent } from '@/models';
 import { ConnectedProps } from '@/types';
 import { formatIntentName, isCustomizableBuiltInIntent } from '@/utils/intent';
 import { isGeneralPlatform } from '@/utils/typeGuards';
@@ -40,8 +40,8 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   const isGeneral = isGeneralPlatform(platform);
   const scrollbarsRef = React.useRef<Scrollbars>(null);
 
-  const getItemKey = React.useCallback((item: Intent) => item.id, []);
-  const getItemLabel = React.useCallback((item: Intent) => item.name, []);
+  const getItemKey = React.useCallback((item: Realtime.Intent) => item.id, []);
+  const getItemLabel = React.useCallback((item: Realtime.Intent) => item.name, []);
 
   const updateSelected = React.useCallback(
     (id: string) => {
@@ -52,7 +52,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   );
 
   const onDelete = React.useCallback(
-    (index: string | number, { item }: { item: Intent }) => {
+    (index: string | number, { item }: { item: Realtime.Intent }) => {
       deleteIntent(item.id);
 
       if (selectedID === item.id) {
@@ -72,7 +72,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   );
 
   const onChange = React.useCallback(
-    (_, items: Intent[]) => {
+    (_, items: Realtime.Intent[]) => {
       if (!items.some(({ id }) => id === selectedID)) {
         updateSelected(items[0]?.id);
       }
@@ -108,7 +108,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
               onAdd={addNewIntent}
               onChange={onChange}
               getLabel={getItemLabel}
-              addMessage="New Intent"
+              addMessage="New Realtime.Intent"
               renderItem={(item, index) => renderItem({ key: item.id, itemKey: item.id, item, index })}
               formatValue={isGeneral ? undefined : formatIntentName}
               placeholder="Search Intents"

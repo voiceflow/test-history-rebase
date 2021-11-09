@@ -1,11 +1,11 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
-import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
@@ -64,7 +64,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({ ports, nodeID, buttons
   );
 };
 
-const ConnectedButtonsStep: React.FC<ConnectedStepProps<NodeData.Buttons>> = ({ node, data }) => (
+const ConnectedButtonsStep: React.FC<ConnectedStepProps<Realtime.NodeData.Buttons>> = ({ node, data }) => (
   <ButtonsStep
     ports={node.ports.out}
     nodeID={node.id}

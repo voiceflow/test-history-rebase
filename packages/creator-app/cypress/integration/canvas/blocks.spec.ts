@@ -26,7 +26,7 @@ context('Canvas - Blocks', () => {
   });
 
   it('add block to canvas using spotlight', () => {
-    cy.awaitCanvasAnimation();
+    cy.awaitCanvasAnimation(300);
 
     cy.addBlockToCanvasViaSpotlight('Audio');
 

@@ -3,12 +3,12 @@
 import canvasPage from '../../pages/canvas';
 import buildTools from '../../utils/canvas/buildTools';
 
-Cypress.Commands.add('awaitCanvasAnimation', () => {
+Cypress.Commands.add('awaitCanvasAnimation', (wait = 150) => {
   canvasPage.el.canvas.children().then(($el) => cy.wrap($el, { timeout: 1000 }).invoke('css', 'transition').should('eq', 'all 0s ease 0s'));
 
   // extra wait time to be sure the animation is finished
   // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(150);
+  cy.wait(wait);
 });
 
 Cypress.Commands.add(

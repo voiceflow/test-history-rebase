@@ -134,7 +134,7 @@ declare namespace Cypress {
     /**
      * wait for canvas animation to complete
      */
-    awaitCanvasAnimation(): Chainable;
+    awaitCanvasAnimation(wait?: number): Chainable;
 
     /**
      * drag a node by the specified amounts

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.536.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.9...@voiceflow/creator-app@1.536.10) (2021-11-09)
+
+
+### Bug Fixes
+
+* potential fix for e2e issue (VF-000) ([#4577](https://github.com/voiceflow/creator-app/issues/4577)) ([bb5102a](https://github.com/voiceflow/creator-app/commit/bb5102ae4d18408894fc40c5522508ee435c8455))
+
+
+
+
+
 ## [1.536.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.8...@voiceflow/creator-app@1.536.9) (2021-11-09)
 
 

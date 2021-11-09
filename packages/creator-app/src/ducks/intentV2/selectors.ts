@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Constants as GeneralConstants } from '@voiceflow/general-types';
 import uniqBy from 'lodash/uniqBy';
 import { createSelector } from 'reselect';
@@ -10,9 +11,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { createCRUDSelectors, idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { Intent } from '@/models';
-import { unique } from '@/utils/array';
 import { GENERAL_BUILT_INS_MAP, getBuiltInIntents } from '@/utils/intent';
-import { hasProperty } from '@/utils/objects';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 import { STATE_KEY } from './constants';
@@ -71,7 +70,7 @@ export const platformIntentMapSelector = createSelector([allPlatformIntentsSelec
 
 export const getPlatformIntentByIDSelector = createSelector(
   [platformIntentMapSelector],
-  (intentMap) => (id: string) => hasProperty(intentMap, id) ? intentMap[id] : null
+  (intentMap) => (id: string) => Utils.object.hasProperty(intentMap, id) ? intentMap[id] : null
 );
 
 // slots
@@ -97,7 +96,7 @@ export const intentsUsingSlotSelector = createSelector(
 export const getSlotsByIntentIDSelector = createSelector([getIntentByIDSelector], (getIntentByID) => (id: string): string[] => {
   const intent = getIntentByID(id);
 
-  return !intent ? [] : unique(intent.inputs.flatMap(({ slots }) => slots ?? '')).filter((s) => !!s);
+  return !intent ? [] : Utils.array.unique(intent.inputs.flatMap(({ slots }) => slots ?? '')).filter((s) => !!s);
 });
 
 export const allSlotsIDsByIntentIDsSelector = createSelector([getSlotsByIntentIDSelector, idsParamSelector], (getSlotIDsByIntentID, intentIDs) =>
@@ -111,7 +110,7 @@ export const allSlotsIDsByIntentIDsSelector = createSelector([getSlotsByIntentID
 );
 
 export const openIntentsSelector = createSelector([allPlatformIntentsSelector, DiagramV2.intentStepsSelector], (intents, intentSteps) => {
-  const uniqIntentIDs = unique(Object.values(intentSteps).flatMap((stepIntentMap) => Object.values(stepIntentMap)));
+  const uniqIntentIDs = Utils.array.unique(Object.values(intentSteps).flatMap((stepIntentMap) => Object.values(stepIntentMap)));
   const openIntentIDsMap = uniqIntentIDs.reduce<Record<string, boolean>>((acc, intentID) => Object.assign(acc, { [intentID ?? '']: true }), {});
 
   return intents.filter((intent) => openIntentIDsMap[intent.id]);

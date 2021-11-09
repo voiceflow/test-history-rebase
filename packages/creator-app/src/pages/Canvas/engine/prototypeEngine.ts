@@ -1,6 +1,6 @@
+import { Utils } from '@voiceflow/common';
+
 import * as Prototype from '@/ducks/prototype';
-import { diff } from '@/utils/array';
-import { noop } from '@/utils/functional';
 
 import { EngineConsumer } from './utils';
 
@@ -11,7 +11,7 @@ class PrototypeEngine extends EngineConsumer {
 
   highlightedLinkIDs: string[] = [];
 
-  teardownSubscription = noop;
+  teardownSubscription = Utils.functional.noop;
 
   /**
    * check to see if the node is highlighted
@@ -48,8 +48,8 @@ class PrototypeEngine extends EngineConsumer {
     const highlightedNodeIDs = this.select(Prototype.activePathBlockIDsSelector);
     const highlightedLinkIDs = this.select(Prototype.activePathLinkIDsSelector);
 
-    const nodeDiff = diff(this.highlightedNodeIDs, highlightedNodeIDs);
-    const linkDiff = diff(this.highlightedLinkIDs, highlightedLinkIDs);
+    const nodeDiff = Utils.array.diff(this.highlightedNodeIDs, highlightedNodeIDs);
+    const linkDiff = Utils.array.diff(this.highlightedLinkIDs, highlightedLinkIDs);
 
     this.highlightedNodeIDs = highlightedNodeIDs;
     this.highlightedLinkIDs = highlightedLinkIDs;
@@ -64,7 +64,7 @@ class PrototypeEngine extends EngineConsumer {
 
     this.log.debug(this.log.pending('resetting prototype'));
     this.teardownSubscription();
-    this.teardownSubscription = noop;
+    this.teardownSubscription = Utils.functional.noop;
     this.highlightedNodeIDs = [];
     this.highlightedLinkIDs = [];
 

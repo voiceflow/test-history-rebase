@@ -1,4 +1,4 @@
-import { append, withoutValue } from '@/utils/array';
+import { Utils } from '@voiceflow/common';
 
 class TimeoutController {
   private timeouts: NodeJS.Timeout[] = [];
@@ -6,12 +6,12 @@ class TimeoutController {
   public async set(timeout: number) {
     return new Promise<void>((resolve) => {
       const timeoutID = setTimeout(() => {
-        this.timeouts = withoutValue(this.timeouts, timeoutID);
+        this.timeouts = Utils.array.withoutValue(this.timeouts, timeoutID);
 
         resolve();
       }, timeout);
 
-      this.timeouts = append(this.timeouts, timeoutID);
+      this.timeouts = Utils.array.append(this.timeouts, timeoutID);
     });
   }
 

@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
@@ -7,7 +7,7 @@ import { getPlatformNoMatchesFactory } from '@/utils/noMatches';
 
 import { NodeConfig } from '../types';
 
-export const factory = (): Node.Buttons.Button => ({ id: cuid.slug(), name: '', actions: [Node.Buttons.ButtonAction.PATH] });
+export const factory = (): Node.Buttons.Button => ({ id: Utils.id.cuid.slug(), name: '', actions: [Node.Buttons.ButtonAction.PATH] });
 
 export enum ButtonAction {
   FOLLOW_PATH = 'FOLLOW_PATH',

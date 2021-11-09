@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
-import cuid from 'cuid';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
@@ -11,18 +11,17 @@ import { ControlOptions } from '@/pages/Canvas/components/Editor';
 import ListEditorContent, { ListItemComponent } from '@/pages/Canvas/components/ListEditorContent';
 import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '@/pages/Canvas/managers/Speak/constants';
 import { ConnectedProps } from '@/types';
-import { chainVoidAsync } from '@/utils/functional';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
 export const speakFactory = ({ defaultVoice }: { defaultVoice: string }): SpeakData => ({
-  id: cuid.slug(),
+  id: Utils.id.cuid.slug(),
   type: DialogType.VOICE,
   voice: defaultVoice,
   content: '',
 });
 
 export const audioFactory = (): SpeakData => ({
-  id: cuid.slug(),
+  id: Utils.id.cuid.slug(),
   url: '',
   desc: '',
   type: DialogType.AUDIO,
@@ -100,22 +99,22 @@ const SpeakAudioList = ({
       getControlOptions={({ onAdd, isMaxMatches, scrollToBottom }) =>
         getControlOptions
           ? getControlOptions({
-              addVoice: chainVoidAsync(() => onAdd(DialogType.VOICE), scrollToBottom),
-              addAudio: chainVoidAsync(() => onAdd(DialogType.AUDIO), scrollToBottom),
+              addVoice: Utils.functional.chainVoidAsync(() => onAdd(DialogType.VOICE), scrollToBottom),
+              addAudio: Utils.functional.chainVoidAsync(() => onAdd(DialogType.AUDIO), scrollToBottom),
               isMaxMatches,
             })
           : [
               {
                 label: 'System',
                 icon: NODE_CONFIG.getIcon!(VOICE_MOCK_DATA),
-                onClick: chainVoidAsync(() => onAdd(DialogType.VOICE), scrollToBottom),
+                onClick: Utils.functional.chainVoidAsync(() => onAdd(DialogType.VOICE), scrollToBottom),
                 disabled: isMaxMatches,
                 iconProps: { color: NODE_CONFIG.getIconColor!(VOICE_MOCK_DATA) },
               },
               {
                 label: 'Audio',
                 icon: NODE_CONFIG.getIcon!(AUDIO_MOCK_DATA),
-                onClick: chainVoidAsync(() => onAdd(DialogType.AUDIO), scrollToBottom),
+                onClick: Utils.functional.chainVoidAsync(() => onAdd(DialogType.AUDIO), scrollToBottom),
                 disabled: isMaxMatches,
                 iconProps: { color: NODE_CONFIG.getIconColor!(AUDIO_MOCK_DATA) },
               },

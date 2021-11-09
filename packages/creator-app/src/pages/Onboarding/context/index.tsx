@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { BillingPeriod, PlanType, PromoType, UserRole } from '@voiceflow/internal';
 import { ButtonVariant, toast } from '@voiceflow/ui';
@@ -21,7 +22,6 @@ import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs';
 import { useDispatch, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
-import { asyncForEach } from '@/utils/array';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
@@ -35,7 +35,7 @@ import {
   OnboardingType,
   SpecificFlowType,
 } from './types';
-import * as Utils from './utils';
+import * as OnboardingUtils from './utils';
 
 export const OnboardingContext = React.createContext<OnboardingContextProps>({
   actions: {
@@ -119,7 +119,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const [trackingEvents] = useTrackingEvents();
   const [isFinalizing, setIsFinalizing] = React.useState(false);
   const hasFixedPeriod = !!query.ob_period;
-  const { plan, period, couponCode, flow, seats } = Utils.extractQueryParams(query);
+  const { plan, period, couponCode, flow, seats } = OnboardingUtils.extractQueryParams(query);
   const isFirstSession = firstLogin;
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
 
@@ -148,15 +148,15 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     [workspaces, account.creator_id]
   );
 
-  const specificFlowType = Utils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
+  const specificFlowType = OnboardingUtils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
-  const numberOfSteps = Utils.getNumberOfSteps({
+  const numberOfSteps = OnboardingUtils.getNumberOfSteps({
     specificFlowType,
     hasPresetSeats: !!seats,
     hasWorkspaces,
     isAdminOfEnterprisePlan,
   });
-  const firstStep = Utils.getFirstStep({
+  const firstStep = OnboardingUtils.getFirstStep({
     flow,
     isLoginFlow,
     isFirstSession,
@@ -234,7 +234,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   };
 
   const getNumberOfEditors = () => {
-    const numberOfEditors = Utils.getNumberOfEditorSeats(addCollaboratorMeta.collaborators);
+    const numberOfEditors = OnboardingUtils.getNumberOfEditorSeats(addCollaboratorMeta.collaborators);
 
     return Math.max(paymentMeta.seats, numberOfEditors);
   };
@@ -332,7 +332,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     }
     const teamMembers: CollaboratorType[] = addCollaboratorMeta.collaborators.slice(1, addCollaboratorMeta.length);
 
-    await asyncForEach(teamMembers, async (member: CollaboratorType) => {
+    await Utils.array.asyncForEach(teamMembers, async (member: CollaboratorType) => {
       const { email, permission } = member;
       try {
         await sendInvite(email, permission, false);

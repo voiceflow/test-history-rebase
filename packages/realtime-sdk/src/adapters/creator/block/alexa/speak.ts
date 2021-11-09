@@ -1,5 +1,5 @@
 import { Constants, Node } from '@voiceflow/alexa-types';
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { DialogType } from '../../../../constants';
 import { NodeData } from '../../../../models';
@@ -11,8 +11,8 @@ const speakAdapter = createBlockAdapter<Node.Speak.StepData, NodeData.Speak>(
     canvasVisibility,
     dialogs: dialogs.map(({ voice, content }) =>
       voice === Constants.Voice.AUDIO
-        ? { id: cuid.slug(), url: content, type: DialogType.AUDIO }
-        : { id: cuid.slug(), type: DialogType.VOICE, voice, content }
+        ? { id: Utils.id.cuid.slug(), url: content, type: DialogType.AUDIO }
+        : { id: Utils.id.cuid.slug(), type: DialogType.VOICE, voice, content }
     ),
   }),
   ({ randomize, dialogs, canvasVisibility }) => ({

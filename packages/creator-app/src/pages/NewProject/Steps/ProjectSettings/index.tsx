@@ -1,4 +1,5 @@
 import { Utils as AlexaUtils } from '@voiceflow/alexa-types';
+import { Utils } from '@voiceflow/common';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Utils as GoogleUtils } from '@voiceflow/google-types';
 import { FlexCenter, Input, Select, SvgIcon } from '@voiceflow/ui';
@@ -16,7 +17,6 @@ import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS } fro
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { Identifier } from '@/styles/constants';
-import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
 import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform } from '@/utils/typeGuards';
 
@@ -139,7 +139,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 autoWidth
                 withCaret
                 onSelect={(val: string) =>
-                  setAlexaLocales(alexaLocales.includes(val) ? without(alexaLocales, alexaLocales.indexOf(val)) : [...alexaLocales, val])
+                  setAlexaLocales(alexaLocales.includes(val) ? Utils.array.without(alexaLocales, alexaLocales.indexOf(val)) : [...alexaLocales, val])
                 }
                 placeholder={`Select ${getPlatformMeta(Constants.PlatformType.ALEXA).localesText}`}
                 buttonLabel="Unselect All"

@@ -1,15 +1,14 @@
+import { Utils } from '@voiceflow/common';
 import cn from 'classnames';
 import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import transform from 'lodash/transform';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import { IS_DEVELOPMENT } from '@/config';
 import { autoFocusCreator, getTransform } from '@/utils/forms';
-import { getIn, setIn } from '@/utils/objects';
 
 import { PropsBridgeUpdater } from '../PropsBridge';
 
@@ -46,11 +45,11 @@ export default class Form extends Component {
   }
 
   static getIn(...opts) {
-    return getIn(...opts);
+    return Utils.object.getIn(...opts);
   }
 
   static setIn(...opts) {
-    return setIn(...opts);
+    return Utils.object.setIn(...opts);
   }
 
   static isEmpty(object) {
@@ -72,16 +71,16 @@ export default class Form extends Component {
     try {
       await scheme.validateAt(field, values);
 
-      res.errors = setIn(res.errors, field, null);
+      res.errors = Utils.object.setIn(res.errors, field, null);
     } catch ({ path, inner, message }) {
       res.isValid = !(path || inner);
 
       if (!inner || inner.length === 0) {
-        res.errors = setIn(res.errors, path, message);
+        res.errors = Utils.object.setIn(res.errors, path, message);
       } else {
         inner.forEach((err) => {
-          if (!getIn(res.errors, err.path)) {
-            res.errors = setIn(res.errors, err.path, err.message);
+          if (!Utils.object.getIn(res.errors, err.path)) {
+            res.errors = Utils.object.setIn(res.errors, err.path, err.message);
           }
         });
       }
@@ -140,7 +139,7 @@ export default class Form extends Component {
     const { onChange } = this.props;
 
     this.setState(
-      ({ values }) => ({ values: setIn(values, field, value) }),
+      ({ values }) => ({ values: Utils.object.setIn(values, field, value) }),
       () => {
         if (this._callBlurAfterChange) {
           this.onBlur(field);
@@ -159,16 +158,16 @@ export default class Form extends Component {
     const { scheme, onBlur, transforms, initialValues, resetToInitialFields } = this.props;
 
     const transform = getTransform(transforms, field);
-    let _value = getIn(values, field);
+    let _value = Utils.object.getIn(values, field);
 
     if (typeof transform === 'function') {
       _value = transform(_value, { values, errors });
-      values = setIn(values, field, _value);
+      values = Utils.object.setIn(values, field, _value);
     }
 
     if (resetToInitialFields && !_value && resetToInitialFields.includes(field)) {
-      _value = getIn(initialValues, field);
-      values = setIn(values, field, _value);
+      _value = Utils.object.getIn(initialValues, field);
+      values = Utils.object.setIn(values, field, _value);
     }
 
     if (scheme) {
@@ -193,10 +192,10 @@ export default class Form extends Component {
 
   onAdd = (field, val = '') => {
     this.setState(({ values }) => {
-      const value = getIn(values, field);
+      const value = Utils.object.getIn(values, field);
 
       return {
-        values: setIn(values, field, [...(value.length === 0 ? [val, cloneDeep(val)] : [val]), ...value]),
+        values: Utils.object.setIn(values, field, [...(value.length === 0 ? [val, cloneDeep(val)] : [val]), ...value]),
       };
     });
   };
@@ -206,15 +205,15 @@ export default class Form extends Component {
 
     this.setState(
       ({ values, errors }) => ({
-        values: setIn(
+        values: Utils.object.setIn(
           values,
           field,
-          (getIn(values, field) || []).filter((_, j) => i !== j)
+          (Utils.object.getIn(values, field) || []).filter((_, j) => i !== j)
         ),
-        errors: setIn(
+        errors: Utils.object.setIn(
           errors,
           field,
-          (getIn(errors, field) || []).filter((_, j) => i !== j)
+          (Utils.object.getIn(errors, field) || []).filter((_, j) => i !== j)
         ),
       }),
       onBlur ? () => onBlur('field', this.state) : undefined

@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Box, Label } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -8,7 +9,6 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useLinkedState } from '@/hooks';
 import { getTargetValue } from '@/utils/dom';
-import { arrayStringReplace } from '@/utils/string';
 
 import { useValidator } from '../hooks';
 
@@ -25,7 +25,7 @@ const SkillInvocationForm: React.FC = () => {
     () =>
       invocationNameValidator((nextInvocationName) => {
         const nextInvocations = prevInvocationName
-          ? arrayStringReplace(prevInvocationName, nextInvocationName, invocations)
+          ? Utils.string.arrayStringReplace(prevInvocationName, nextInvocationName, invocations)
           : [`open ${nextInvocationName}`, `start ${nextInvocationName}`, `launch ${nextInvocationName}`];
 
         patchPublishing({

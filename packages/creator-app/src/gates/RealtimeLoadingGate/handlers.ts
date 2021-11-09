@@ -1,3 +1,4 @@
+import { Eventual } from '@voiceflow/common';
 import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
@@ -15,7 +16,6 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Models from '@/models';
 import { ActionPayload, AnyAction, Dispatch, GetState, Thunk } from '@/store/types';
-import { Eventual } from '@/types';
 
 const updateActiveProjectName =
   (name: string, meta?: object): Thunk =>

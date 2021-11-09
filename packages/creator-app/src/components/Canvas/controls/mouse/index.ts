@@ -1,5 +1,6 @@
+import { Utils } from '@voiceflow/common';
+
 import { ControlScheme } from '@/components/Canvas/constants';
-import { noop } from '@/utils/functional';
 
 import { GenerateControlInterface } from '../types';
 import Controls from './controls';
@@ -16,8 +17,8 @@ const MouseInterface: GenerateControlInterface = (handle) => {
     mousedown: controls.mousedown,
     dragstart: controls.dragstart,
     wheel: controls.wheel,
-    gesturestart: noop,
-    gesturechange: noop,
+    gesturestart: Utils.functional.noop,
+    gesturechange: Utils.functional.noop,
     keyup: controls.keyup,
     keydown: controls.keydown,
   };

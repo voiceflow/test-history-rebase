@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import compositeReducer from 'composite-reducer';
-import cuid from 'cuid';
 
 import { localPersistor, persistReducer, rehydrateReducer, sessionPersistor } from '@/ducks/utils/persist';
 import { Reducer, RootReducer } from '@/store/types';
@@ -106,8 +106,8 @@ const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INI
 
 export default compositeReducer(sessionReducer, {
   token: authTokenReducer,
-  tabID: rehydrateReducer(tabIDPersistor, cuid()),
-  browserID: rehydrateReducer(browserIDPersistor, cuid()),
+  tabID: rehydrateReducer(tabIDPersistor, Utils.id.cuid()),
+  browserID: rehydrateReducer(browserIDPersistor, Utils.id.cuid()),
   intercomUserHMAC: persistReducer(intercomUserHMACPersistor, setIntercomUserHMACReducer),
   activeWorkspaceID: persistReducer(activeWorkspaceIDPersistor, setActiveWorkspaceIDReducer),
 });

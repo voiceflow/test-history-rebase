@@ -1,5 +1,6 @@
+import { Utils } from '@voiceflow/common';
+
 import { Reducer, RootReducer } from '@/store/types';
-import { filterEntries } from '@/utils/objects';
 
 import {
   AddNodeLocks,
@@ -49,7 +50,7 @@ export const initializeRealtimeReducer: RealtimeReducer<InitializeRealtime> = (s
 export const updateDiagramViewersReducer: RealtimeReducer<UpdateDiagramViewers> = (state, { payload: users }) => {
   const tabIDs = Object.values(users).flatMap(Object.keys);
   const filterByTabID = <K extends string>(locks: Partial<Record<K, string>>): Partial<typeof locks> =>
-    filterEntries(locks, (_: string, value: string) => tabIDs.includes(value));
+    Utils.object.filterEntries(locks, (_: string, value: string) => tabIDs.includes(value));
 
   return {
     ...state,

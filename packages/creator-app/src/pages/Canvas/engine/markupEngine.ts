@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { Text } from '@voiceflow/base-types';
+import { Nullable, Utils } from '@voiceflow/common';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Editor } from 'slate';
@@ -10,8 +11,6 @@ import { BlockType, MarkupBlockType } from '@/constants';
 import { useForceUpdate, useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
 import { DEFAULT_BACKGROUND_COLOR } from '@/pages/Canvas/managers/MarkupText/constants';
-import { Nullable } from '@/types';
-import { objectID } from '@/utils';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import { EngineConsumer } from './utils';
@@ -57,7 +56,7 @@ class MarkupEngine extends EngineConsumer {
       BlockType.MARKUP_TEXT,
       this.engine.getMouseCoords().sub([12 * (this.engine.canvas?.getZoom() ?? 1), 26 * (this.engine.canvas?.getZoom() ?? 1)]),
       nodeData as NodeData<Markup.NodeData.Text>,
-      objectID(),
+      Utils.id.objectID(),
       false
     );
 

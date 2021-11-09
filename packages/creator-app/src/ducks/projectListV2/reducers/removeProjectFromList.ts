@@ -1,15 +1,13 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-
-import { withoutValue } from '@/utils/array';
-import { safeGetNormalizedByKey } from '@/utils/normalized';
 
 import { createReducer } from './utils';
 
 const removeProjectFromListReducer = createReducer(Realtime.projectList.removeProjectFromList, (state, { projectID, listID }) => {
-  const projectList = safeGetNormalizedByKey(state, listID);
+  const projectList = Utils.normalized.safeGetNormalizedByKey(state, listID);
 
   if (projectList) {
-    projectList.projects = withoutValue(projectList.projects, projectID);
+    projectList.projects = Utils.array.withoutValue(projectList.projects, projectID);
   }
 });
 

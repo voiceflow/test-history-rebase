@@ -1,12 +1,12 @@
 import { Node } from '@voiceflow/alexa-types';
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { NodeData } from '../../../../models';
 import { createAdapter } from '../../../utils';
 import { createBlockAdapter } from '../utils';
 
 const useInfoPermissionAdapter = createAdapter<Node.UserInfo.UserInfo, NodeData.UserInfoPermission>(
-  ({ type, mapTo, product }) => ({ id: cuid.slug(), mapTo, product, selected: type }),
+  ({ type, mapTo, product }) => ({ id: Utils.id.cuid.slug(), mapTo, product, selected: type }),
   ({ selected, mapTo, product }) => ({ type: selected, mapTo, product })
 );
 

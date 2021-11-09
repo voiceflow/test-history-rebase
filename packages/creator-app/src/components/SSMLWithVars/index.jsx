@@ -6,8 +6,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs';
-import { compose } from '@/utils/functional';
+import { compose, connect } from '@/hocs';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
 const SSMLWithVars = (

@@ -1,10 +1,9 @@
 import composeRef from '@seznam/compose-react-refs';
-import { Nullable } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import { swallowEvent, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import { useRAF, useResizeObserver } from '@/hooks';
-import { replace } from '@/utils/array';
 
 import { Container, PanelPropsInjected } from './components';
 
@@ -63,10 +62,10 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
 
         if (prevCurrentCollapsed) {
           prevCurrentCollapsed = false;
-          setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index, prevCurrentCollapsed));
+          setCollapsedChildren((prevCollapsedChildren) => Utils.array.replace(prevCollapsedChildren, index, prevCurrentCollapsed));
         } else if (prevNextCollapsed) {
           prevNextCollapsed = false;
-          setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
+          setCollapsedChildren((prevCollapsedChildren) => Utils.array.replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
         }
       } else if (!canResizeCurrent && !prevCurrentCollapsed) {
         if (currentNode && nextNode) {
@@ -83,7 +82,7 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
         }
 
         prevCurrentCollapsed = true;
-        setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index, prevCurrentCollapsed));
+        setCollapsedChildren((prevCollapsedChildren) => Utils.array.replace(prevCollapsedChildren, index, prevCurrentCollapsed));
       } else if (!canResizeNext && !prevNextCollapsed) {
         if (currentNode && nextNode) {
           const minDiffPX = initialNextHeightPX - nextChildren.props.minHeight;
@@ -99,7 +98,7 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
         }
 
         prevNextCollapsed = true;
-        setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
+        setCollapsedChildren((prevCollapsedChildren) => Utils.array.replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
       }
 
       updateStylesScheduler(() => {

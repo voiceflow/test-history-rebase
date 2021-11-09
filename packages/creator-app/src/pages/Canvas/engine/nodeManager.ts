@@ -1,4 +1,5 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _partition from 'lodash/partition';
 import { batch } from 'react-redux';
@@ -14,7 +15,6 @@ import * as RealtimeDuck from '@/ducks/realtime';
 import * as VersionV2 from '@/ducks/versionV2';
 import { EntityMap, Node, NodeData } from '@/models';
 import { Pair, Point } from '@/types';
-import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
 import { getNodesGroupCenter, isCommandNode } from '@/utils/node';
 import { getDistinctPlatformValue, getPlatformDefaultVoice } from '@/utils/platform';
@@ -198,14 +198,14 @@ class NodeManager extends EngineConsumer {
     type: BlockType,
     coords: Coords,
     factoryData?: Partial<NodeData<unknown>>,
-    nodeID: string = objectID(),
+    nodeID: string = Utils.id.objectID(),
     autoFocus = true
   ): Promise<string> {
     const [x, y] = this.engine.canvas!.fromCoords(coords);
 
     const { node, data } = nodeFactory(type, factoryData, this.internal.getNodeFactoryOptions());
     const augmentedNode = { ...node, x, y, id: nodeID };
-    const parentNode = { id: objectID(), ports: { in: [{ id: objectID() }], out: [] } };
+    const parentNode = { id: Utils.id.objectID(), ports: { in: [{ id: Utils.id.objectID() }], out: [] } };
 
     this.log.debug(this.log.pending('adding node'), this.log.slug(nodeID));
 
@@ -434,8 +434,8 @@ class NodeManager extends EngineConsumer {
   // nested node management methods
 
   async addNested(parentNodeID: string, type: BlockType): Promise<string> {
-    const nodeID = objectID();
-    const mergedNodeID = objectID();
+    const nodeID = Utils.id.objectID();
+    const mergedNodeID = Utils.id.objectID();
     const { node, data } = nodeFactory(type, undefined, this.internal.getNodeFactoryOptions());
     const augmentedNode = { ...node, id: nodeID };
 
@@ -469,8 +469,8 @@ class NodeManager extends EngineConsumer {
     factoryData: Partial<NodeData<unknown>>;
     position: Point;
   }): Promise<void> {
-    const childID = objectID();
-    const combinedPortID = objectID();
+    const childID = Utils.id.objectID();
+    const combinedPortID = Utils.id.objectID();
     const { node, data } = nodeFactory(type, factoryData, this.internal.getNodeFactoryOptions());
     const [x, y] = position;
     const augmentedNode = { ...node, x, y, id: childID };
@@ -510,8 +510,8 @@ class NodeManager extends EngineConsumer {
   }
 
   async unmerge(nodeID: string, position: Point): Promise<void> {
-    const parentNodeID = objectID();
-    const parentPortID = objectID();
+    const parentNodeID = Utils.id.objectID();
+    const parentPortID = Utils.id.objectID();
     const parentNode = {
       id: parentNodeID,
       ports: { in: [{ id: parentPortID }], out: [] },

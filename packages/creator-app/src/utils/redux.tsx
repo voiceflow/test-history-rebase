@@ -1,8 +1,8 @@
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import type { State } from '@/ducks';
-import { Nullable } from '@/types';
 
 // eslint-disable-next-line import/prefer-default-export
 export const createSelectorContext = <T extends (state: State) => any>(selector: T) => {

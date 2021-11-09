@@ -1,6 +1,5 @@
-import { Crypto } from '@voiceflow/common';
+import { Crypto, Utils } from '@voiceflow/common';
 import AES from 'crypto-js/aes';
-import cuid from 'cuid';
 
 import { COPY_PASTE_KEY } from '@/config';
 
@@ -9,8 +8,8 @@ class Synchronous extends Crypto.Synchronous {
    * generate key to encrypt data and spilt it to 2 encrypted keys
    */
   generateEncryptedKeys(): [firstPartOfEncryptedKey: string, secondPartOfEncryptedKey: string, keyToEncryptData: string] {
-    const key1 = cuid();
-    const key2 = cuid();
+    const key1 = Utils.id.cuid();
+    const key2 = Utils.id.cuid();
 
     // array used to increase the complexity of debugging, uglify doesn't change object keys
     return [

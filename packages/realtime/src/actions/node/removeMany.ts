@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
@@ -14,7 +15,7 @@ class RemoveManyNodes extends AbstractResendDiagramActionControl<Realtime.node.R
     const { intentStepIDs = [] } = await this.services.diagram.get(creatorID, payload.diagramID);
 
     await this.services.diagram.patch(creatorID, payload.diagramID, {
-      intentStepIDs: Realtime.Utils.array.withoutValues(intentStepIDs, payload.nodeIDs),
+      intentStepIDs: Utils.array.withoutValues(intentStepIDs, payload.nodeIDs),
     });
   };
 }

@@ -1,5 +1,5 @@
 import { Request } from '@voiceflow/base-types';
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 import _isString from 'lodash/isString';
 
 import AudioController from './Audio';
@@ -28,7 +28,7 @@ class PrototypeTool {
     this.createController();
 
     this.message?.trackStartTime();
-    this.message?.session({ id: cuid(), message: 'New session started' });
+    this.message?.session({ id: Utils.id.cuid(), message: 'New session started' });
     this.trace?.next();
   }
 

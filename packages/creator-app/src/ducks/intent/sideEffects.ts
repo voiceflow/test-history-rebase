@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import cuid from 'cuid';
 import _pick from 'lodash/pick';
 
 import { FeatureFlag } from '@/config/features';
@@ -11,7 +11,6 @@ import { getActiveVersionContext } from '@/ducks/version/utils';
 import { Intent, IntentInput, IntentSlot, IntentSlotDialog } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { inferIntentSlotsType, inferIntentSlotType, inferIntentType, removeSlotRefFromInput } from '@/utils/intent';
-import { getNormalizedByKey, patchNormalizedByKey, removeNormalizedByKey } from '@/utils/normalized';
 import { createNextName } from '@/utils/string';
 
 import { crud } from './actions';
@@ -115,7 +114,7 @@ export const patchIntentSlot =
     const intent = IntentV2.intentByIDSelector(getState(), { id });
     if (!intent) return;
 
-    dispatch(patchIntent(id, inferIntentType({ slots: patchNormalizedByKey(intent.slots, slotID, data) })));
+    dispatch(patchIntent(id, inferIntentType({ slots: Utils.normalized.patchNormalizedByKey(intent.slots, slotID, data) })));
   };
 
 export const removeIntentSlot =
@@ -142,7 +141,7 @@ export const removeIntentSlot =
       return input;
     });
 
-    dispatch(patchIntent(id, inferIntentType({ slots: removeNormalizedByKey(slots, slotID), inputs: sanitizedInputs })));
+    dispatch(patchIntent(id, inferIntentType({ slots: Utils.normalized.removeNormalizedByKey(slots, slotID), inputs: sanitizedInputs })));
   };
 
 export const updateIntentSlotDialog =
@@ -151,7 +150,7 @@ export const updateIntentSlotDialog =
     const intent = IntentV2.intentByIDSelector(getState(), { id });
     if (!intent) return;
 
-    const slot = getNormalizedByKey(intent.slots, slotID);
+    const slot = Utils.normalized.getNormalizedByKey(intent.slots, slotID);
 
     dispatch(patchIntentSlot(id, slotID, inferIntentSlotType({ dialog: { ...slot.dialog, ...dialog } })));
   };
@@ -168,7 +167,7 @@ export const reorderIntentSlots =
 export const createIntent =
   (intent?: Partial<Intent>): SyncThunk<string> =>
   (dispatch, getState) => {
-    const id = intent?.id || cuid.slug();
+    const id = intent?.id || Utils.id.cuid.slug();
     const state = getState();
     const platform = intent?.platform || ProjectV2.active.platformSelector(state);
 

@@ -5,20 +5,6 @@ import { Overwrite } from 'utility-types';
 
 import { AnyThunk, Dispatchable, ThunkResult } from '@/store/types';
 
-export type {
-  AnyFunction,
-  Callback,
-  Eventual,
-  Function,
-  NonNullishRecord,
-  Normalized,
-  NormalizedValue,
-  Nullable,
-  NullableRecord,
-  Nullish,
-  Struct,
-  Writeable,
-} from '@voiceflow/common';
 export { PathPoint, PathPoints, Point, Viewport } from '@voiceflow/realtime-sdk';
 export { AnyAction, Color, Either, MappedStateProps, SelectorLookup } from '@voiceflow/ui';
 

@@ -1,8 +1,7 @@
-import { Nullable } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 
 import { BlockType } from '@/constants';
 import { EntityMap, Node, NodeWithData } from '@/models';
-import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
 
 import { CloneContextOptions, cloneEntityMap, DUPLICATE_OFFSET, EngineConsumer, mergeEntityMaps } from './utils';
@@ -22,10 +21,10 @@ class DiagramEngine extends EngineConsumer {
   getParentEntities(nodeID: string, rename = true, nodeOverrides = {}): EntityMap {
     const node = this.engine.getNodeByID(nodeID);
     const data = this.engine.getDataByNodeID(nodeID);
-    const newNodeID = objectID();
+    const newNodeID = Utils.id.objectID();
 
-    const inPorts = node.ports.in.map((portID) => ({ ...this.engine.getPortByID(portID), id: objectID(), nodeID: newNodeID }));
-    const outPorts = node.ports.out.map((portID) => ({ ...this.engine.getPortByID(portID), id: objectID(), nodeID: newNodeID }));
+    const inPorts = node.ports.in.map((portID) => ({ ...this.engine.getPortByID(portID), id: Utils.id.objectID(), nodeID: newNodeID }));
+    const outPorts = node.ports.out.map((portID) => ({ ...this.engine.getPortByID(portID), id: Utils.id.objectID(), nodeID: newNodeID }));
 
     return {
       nodesWithData: [

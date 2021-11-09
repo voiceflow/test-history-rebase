@@ -1,9 +1,9 @@
 import composeRefs from '@seznam/compose-react-refs';
+import { Nullable } from '@voiceflow/common';
 import React, { Fragment } from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 import { Manager, Popper, PopperProps, Reference } from 'react-popper';
 
-import { Nullable } from '../../types';
 import Menu, { MenuOption, MenuProps } from '../Menu';
 import Portal from '../Portal';
 import { PopoverContainer } from './components';

@@ -1,11 +1,12 @@
-import { AnyFunction, logger } from '@voiceflow/ui';
+import { AnyFunction, Function } from '@voiceflow/common';
+import { logger } from '@voiceflow/ui';
 import * as ReactRedux from 'react-redux';
 import { getDisplayName } from 'recompose';
 import { createStructuredSelector } from 'reselect';
 
 import { IS_PRODUCTION } from '@/config';
 import { Dispatch } from '@/store/types';
-import { ActionCreatorLookup, ConnectedProps, Function, MappedDispatchProps, MappedStateProps, MergeArguments, SelectorLookup } from '@/types';
+import { ActionCreatorLookup, ConnectedProps, MappedDispatchProps, MappedStateProps, MergeArguments, SelectorLookup } from '@/types';
 
 type MergePropsType<T extends AnyFunction> = T extends (...args: MergeArguments<any, any, infer R>) => any ? R : {};
 

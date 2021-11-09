@@ -1,13 +1,13 @@
+import { Nullable, Utils } from '@voiceflow/common';
 import { getNestedMenuFormattedLabel, OverflowText, SvgIcon, useEnableDisable, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
 import * as Router from '@/ducks/router';
+import { compose } from '@/hocs';
 import { useDispatch, useHover } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
-import { Nullable } from '@/types';
 import { getTargetValue, withEnterPress } from '@/utils/dom';
-import { chain, compose } from '@/utils/functional';
 
 import ItemNameInput from '../../ItemNameInput';
 import SearchLabel from '../../SearchLabel';
@@ -92,7 +92,7 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
           onMouseDown={enableClickedState}
           disableHover={disableHover}
           onDoubleClick={onEdit}
-          onContextMenu={chain(onContextMenu, clearClickedState)}
+          onContextMenu={Utils.functional.chain(onContextMenu, clearClickedState)}
           isDraggingPreview={isDraggingPreview}
           isContextMenuOpen={isOpen}
           isDraggingXEnabled={isDraggingXEnabled}

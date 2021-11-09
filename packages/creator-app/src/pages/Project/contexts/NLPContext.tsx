@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { toast, useContextApi, useDidUpdateEffect, useSetup, useTeardown, withContext } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -7,7 +8,6 @@ import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
 import * as Session from '@/ducks/session';
 import { NLPTrainJob } from '@/models';
-import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 export interface NLPContextValue {

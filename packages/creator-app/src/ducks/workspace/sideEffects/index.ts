@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
@@ -17,7 +18,6 @@ import { waitAsync } from '@/ducks/utils';
 import { allWorkspaceIDsSelector } from '@/ducks/workspaceV2/selectors';
 import { AnyProject, Workspace } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
-import { withoutValue } from '@/utils/array';
 
 import { crud } from '../actions';
 import { extractErrorFromResponseData } from '../utils';
@@ -74,7 +74,7 @@ const navigateToNextWorkspace =
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
 
-    const workspaceIDs = withoutValue(allWorkspaceIDsSelector(state), workspaceID);
+    const workspaceIDs = Utils.array.withoutValue(allWorkspaceIDsSelector(state), workspaceID);
 
     // default to the first existing workspace
     const newWorkspaceID = workspaceIDs.length > 0 ? workspaceIDs[0] : null;

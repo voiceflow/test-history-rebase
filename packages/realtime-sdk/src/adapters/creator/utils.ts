@@ -1,10 +1,10 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';
 
 import { BlockType } from '../../constants';
 import { LinkData, Port } from '../../models';
-import { objectID } from '../../utils/id';
 import { IN_PORT_KEY, MIGRATION_BLOCKS } from './constants';
 
 export const getInPortID = (nodeID: string): string => `${nodeID}${IN_PORT_KEY}`;
@@ -23,7 +23,7 @@ export const generateInPort = (nodeID: string, { platform = null, virtual = fals
 
 export const generateOutPort = (nodeID: string, port: BaseModels.BasePort<LinkData>, settings?: Partial<Port>): Port => ({
   ...generateInPort(nodeID, settings),
-  id: (_isString(port.id) && port.id) || objectID(),
+  id: (_isString(port.id) && port.id) || Utils.id.objectID(),
   linkData: port.data,
 });
 

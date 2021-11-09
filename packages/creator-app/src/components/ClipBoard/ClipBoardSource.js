@@ -1,9 +1,7 @@
+import { Utils } from '@voiceflow/common';
 import Clipboard from 'clipboard';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React from 'react';
-
-import { noop } from '@/utils/functional';
 
 class ClipboardButton extends React.Component {
   static propTypes = {
@@ -28,7 +26,7 @@ class ClipboardButton extends React.Component {
   };
 
   static defaultProps = {
-    onClick: noop,
+    onClick: Utils.functional.noop,
   };
 
   /* Returns a object with all props that fulfill a certain naming pattern

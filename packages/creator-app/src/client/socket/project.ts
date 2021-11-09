@@ -1,7 +1,8 @@
+import { AnyFunction, Callback, Function } from '@voiceflow/common';
+
 import { LockAction, LockType } from '@/ducks/realtime/constants';
 import { LockPayload } from '@/ducks/realtime/socket';
 import { AnyAction } from '@/store/types';
-import { AnyFunction, Callback, Function } from '@/types';
 
 import client from './client';
 import { ClientEvent, ServerEvent } from './constants';

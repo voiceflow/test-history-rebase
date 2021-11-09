@@ -1,4 +1,4 @@
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -8,7 +8,7 @@ import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { DraggableItem, HelpTooltip } from './components';
 
 const permissionFactory = () => ({
-  id: cuid.slug(),
+  id: Utils.id.cuid.slug(),
   selected: null,
 });
 

@@ -1,4 +1,5 @@
 import composeRef from '@seznam/compose-react-refs';
+import { Normalized, Nullish } from '@voiceflow/common';
 import { Box, Input, stopPropagation, toast, useContextApi, useCreateConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -21,8 +22,6 @@ import SlateEditable, {
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Version from '@/ducks/version';
 import { useDispatch, useLinkedState, useSelector } from '@/hooks';
-import { Nullish } from '@/types';
-import { Normalized } from '@/utils/normalized';
 
 import { Toolbar } from './components';
 

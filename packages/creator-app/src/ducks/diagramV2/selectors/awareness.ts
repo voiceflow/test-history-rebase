@@ -1,9 +1,9 @@
+import { Utils } from '@voiceflow/common';
 import _uniqBy from 'lodash/uniqBy';
 import { createSelector } from 'reselect';
 
 import { creatorIDParamSelector } from '@/ducks/utils';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
-import { hasProperty } from '@/utils/objects';
 
 import { INITIAL_DIAGRAM_VIEWERS } from '../constants';
 import { rootDiagramSelector } from './base';
@@ -13,7 +13,7 @@ export const awarenessStateSelector = createSelector([rootDiagramSelector], (sta
 export const awarenessViewersSelector = createSelector([awarenessStateSelector], (awareness) => awareness.viewers);
 
 export const diagramViewersByIDSelector = createSelector([awarenessViewersSelector, idParamSelector], (awarenessViewers, diagramID) =>
-  diagramID && hasProperty(awarenessViewers, diagramID) ? awarenessViewers[diagramID] : INITIAL_DIAGRAM_VIEWERS
+  diagramID && Utils.object.hasProperty(awarenessViewers, diagramID) ? awarenessViewers[diagramID] : INITIAL_DIAGRAM_VIEWERS
 );
 
 export const diagramsViewersByIDsSelector = createSelector([awarenessViewersSelector, idsParamSelector], (awarenessViewers, diagramIDs) =>

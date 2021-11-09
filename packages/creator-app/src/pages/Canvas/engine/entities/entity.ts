@@ -1,11 +1,10 @@
 /* eslint-disable max-classes-per-file */
+import { Utils } from '@voiceflow/common';
 import { logger } from '@voiceflow/ui';
 import React from 'react';
 import shallowEqual from 'shallowequal';
 
 import { useTeardown } from '@/hooks';
-import { objectID } from '@/utils';
-import { append, withoutValue } from '@/utils/array';
 
 import type { Engine } from '..';
 import { EntityType } from '../constants';
@@ -20,7 +19,7 @@ export interface EntityInstance {
 export const isDirectlyEqual = <T>(lhs: T, rhs: T) => lhs === rhs;
 
 export abstract class Entity<T extends EntityInstance = EntityInstance> {
-  instanceID = objectID();
+  instanceID = Utils.id.objectID();
 
   classNames: string[] = [];
 
@@ -31,12 +30,12 @@ export abstract class Entity<T extends EntityInstance = EntityInstance> {
   constructor(protected type: EntityType, protected engine: Engine, protected log: typeof logger) {}
 
   #addClass = (className: string) => {
-    this.classNames = append(this.classNames, className);
+    this.classNames = Utils.array.append(this.classNames, className);
     this.instance?.addClass(className);
   };
 
   #removeClass = (className: string) => {
-    this.classNames = withoutValue(this.classNames, className);
+    this.classNames = Utils.array.withoutValue(this.classNames, className);
     this.instance?.removeClass(className);
   };
 

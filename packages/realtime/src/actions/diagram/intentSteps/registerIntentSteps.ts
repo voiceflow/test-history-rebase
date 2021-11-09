@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
@@ -16,7 +17,7 @@ class RegisterIntentSteps extends AbstractDiagramResourceControl<Realtime.diagra
     const { intentStepIDs = [] } = await this.services.diagram.get(creatorID, payload.diagramID);
 
     await this.services.diagram.patch(creatorID, payload.diagramID, {
-      intentStepIDs: Realtime.Utils.array.unique([...intentStepIDs, ...newIntentStepIDs]),
+      intentStepIDs: Utils.array.unique([...intentStepIDs, ...newIntentStepIDs]),
     });
   };
 }

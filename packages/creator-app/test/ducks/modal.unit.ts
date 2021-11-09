@@ -1,10 +1,11 @@
+import { Utils } from '@voiceflow/common';
+
 import * as Modal from '@/ducks/modal';
-import { noop } from '@/utils/functional';
 
 import suite from './_suite';
 
 const MOCK_STATE: Modal.ModalState = {
-  confirmModal: { text: 'something', confirm: noop },
+  confirmModal: { text: 'something', confirm: Utils.functional.noop },
   errorModal: { message: 'something' },
   modal: { value: 'something' },
 };

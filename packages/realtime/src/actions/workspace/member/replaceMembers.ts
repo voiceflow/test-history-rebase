@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { noAccess } from '@/actions/utils';
@@ -9,7 +10,7 @@ class ReplaceWorkspaceMembers extends AbstractWorkspaceChannelControl<Realtime.w
 
   protected access = noAccess(this);
 
-  protected process = Realtime.Utils.functional.noop;
+  protected process = Utils.functional.noop;
 }
 
 export default ReplaceWorkspaceMembers;

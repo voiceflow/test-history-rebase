@@ -1,10 +1,10 @@
 import { Project as AlexaProject } from '@voiceflow/alexa-types';
 import { Models as BaseModels } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
 import { createSelector } from 'reselect';
 
 import { userIDSelector } from '@/ducks/account/selectors';
 import { Project } from '@/models';
-import { Nullable } from '@/types';
 
 import { projectSelector as baseProjectSelector } from './base';
 

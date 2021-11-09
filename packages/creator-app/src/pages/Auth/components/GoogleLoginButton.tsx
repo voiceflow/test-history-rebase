@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { ButtonVariant } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -5,7 +6,6 @@ import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse } from 'react-google
 
 import { googleLogo } from '@/assets';
 import { GOOGLE_CLIENT_ID } from '@/config';
-import { noop } from '@/utils/functional';
 
 import SocialButton from './SocialButton';
 
@@ -29,7 +29,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ light, disabled, 
       </SocialButton>
     )}
     onSuccess={onLogin as GoogleLoginProps['onSuccess']}
-    onFailure={noop}
+    onFailure={Utils.functional.noop}
   />
 );
 

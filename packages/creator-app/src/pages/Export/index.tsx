@@ -8,7 +8,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { ProjectLoadingGate, WorkspaceFeatureLoadingGate } from '@/gates';
-import { connect, withBatchLoadingGate } from '@/hocs';
+import { compose, connect, withBatchLoadingGate } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useSelector } from '@/hooks';
 import { Link, LinkData, Node, Port } from '@/models';
@@ -22,7 +22,6 @@ import { MarkupProvider, PlatformProvider } from '@/pages/Project/contexts';
 import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { ConnectedProps, Point } from '@/types';
-import { compose } from '@/utils/functional';
 import { isMarkupBlockType, isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark, MockRealtimeGate } from './components';

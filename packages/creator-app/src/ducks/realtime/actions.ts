@@ -1,4 +1,4 @@
-import { WithOptional } from '@voiceflow/realtime-sdk';
+import { WithOptional } from '@voiceflow/common';
 
 import { createAction } from '@/ducks/utils';
 import { Action } from '@/store/types';

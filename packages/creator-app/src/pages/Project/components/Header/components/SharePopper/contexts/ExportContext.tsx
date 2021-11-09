@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,7 +6,6 @@ import { ExportFormat as CanvasExportFormat, NLPProvider } from '@/constants';
 import * as Export from '@/ducks/export';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
-import { Nullable } from '@/types';
 
 import { ExportType, ModelExportConfig } from '../constants';
 

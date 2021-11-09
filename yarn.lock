@@ -6024,6 +6024,19 @@
     lodash "^4.17.21"
     number-to-words "^1.2.4"
 
+"@voiceflow/common@7.6.1":
+  version "7.6.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.6.1.tgz#9eef2dae059814209edfb58ee612b285add78978"
+  integrity sha512-k+E+aTP9LBqnPw50LROJ09H+qRgo8jg1fcPBRgqKN5sf1RoOkpELuRplO4Cila37bUU8N2SWr96FcaZMRBWfrw==
+  dependencies:
+    "@types/crypto-js" "^4.0.2"
+    bson-objectid "^2.0.1"
+    crypto-js "^4.1.1"
+    cuid "^2.1.8"
+    dayjs "^1.10.7"
+    lodash "^4.17.21"
+    number-to-words "^1.2.4"
+
 "@voiceflow/common@^6.8.1":
   version "6.9.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.9.0.tgz#c4739797397828636f5a3283a080a66a2f770816"
@@ -8376,7 +8389,7 @@ bser@2.1.1:
   dependencies:
     node-int64 "^0.4.0"
 
-bson-objectid@1.3.1, bson-objectid@^1.3.1:
+bson-objectid@1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/bson-objectid/-/bson-objectid-1.3.1.tgz#11e4ce4c3419161fd388113781bb62c1dfbce34b"
   integrity sha512-eQBNQXsisEAXlwiSy8zRNZdW2xDBJaEVkTPbodYR9hGxxtE548Qq7ilYOd8WAQ86xF7NRUdiWSQ1pa/TkKiE2A==
@@ -10229,7 +10242,7 @@ csstype@^3.0.2, csstype@^3.0.8:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.9.tgz#6410af31b26bd0520933d02cbc64fce9ce3fbf0b"
   integrity sha512-rpw6JPxK6Rfg1zLOYCSwle2GFOOsnjmDYDaBwEcwoOg4qlsIVCN789VkBZDJAGi4T07gI4YSutR43t9Zz4Lzuw==
 
-cuid@2.1.8, cuid@^2.1.8:
+cuid@^2.1.8:
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/cuid/-/cuid-2.1.8.tgz#cbb88f954171e0d5747606c0139fb65c5101eac0"
   integrity sha512-xiEMER6E7TlTPnDxrM4eRiC6TRgjNX9xzEZ5U/Se2YJKr7Mq4pJn/2XEHjl3STcSh96GmkHPcBXLES8M29wyyg==

@@ -1,14 +1,13 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import * as Realtime from '@/ducks/realtime';
-import { connect } from '@/hocs';
+import { compose, connect } from '@/hocs';
 import { DBMember } from '@/models';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { InjectedEngineProps, withEngine } from '@/pages/Canvas/contexts';
 import { RealtimeCursorOverlayAPI, RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
 import { ConnectedProps, HOC } from '@/types';
-import { append, withoutValue } from '@/utils/array';
-import { compose } from '@/utils/functional';
 
 export interface RealtimeOverlayState {
   items: string[];
@@ -42,7 +41,7 @@ abstract class AbstractOverlay<
       window.requestAnimationFrame(() => animate(itemEl));
     } else if (!this.unmounted) {
       this.itemRefs[tabID] = React.createRef();
-      this.setState({ items: append(this.state.items, tabID) });
+      this.setState({ items: Utils.array.append(this.state.items, tabID) });
     }
   }
 
@@ -58,7 +57,7 @@ abstract class AbstractOverlay<
 
   removeItem(tabID: string) {
     if (!this.unmounted) {
-      this.setState({ items: withoutValue(this.state.items, tabID) });
+      this.setState({ items: Utils.array.withoutValue(this.state.items, tabID) });
     }
   }
 

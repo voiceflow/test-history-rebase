@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Alert, AlertVariant, Select, toast } from '@voiceflow/ui';
 import _shuffle from 'lodash/shuffle';
@@ -19,7 +20,6 @@ import {
   prettifyIntentNames,
   validateIntentName,
 } from '@/utils/intent';
-import { removeTrailingUnderscores } from '@/utils/string';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import { Option } from './components';
@@ -122,8 +122,8 @@ function IntentSelect({
 
   const onCreate = React.useCallback(
     (name) => {
-      const preparedName = removeTrailingUnderscores(prettifyIntentName(name));
-      const intent = filteredIntents.find(({ name }) => removeTrailingUnderscores(name) === preparedName);
+      const preparedName = Utils.string.removeTrailingUnderscores(prettifyIntentName(name));
+      const intent = filteredIntents.find(({ name }) => Utils.string.removeTrailingUnderscores(name) === preparedName);
 
       if (intent) {
         return onSelectIntent(intent.id);

@@ -1,4 +1,4 @@
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import { BlockType } from '@/constants';
@@ -22,7 +22,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Text> = {
     },
     data: {
       name: 'Text',
-      texts: [{ id: cuid.slug(), content: SlateEditorAPI.getEmptyState() }],
+      texts: [{ id: Utils.id.cuid.slug(), content: SlateEditorAPI.getEmptyState() }],
       canvasVisibility: options?.canvasNodeVisibility,
     },
   }),

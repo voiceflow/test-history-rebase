@@ -1,15 +1,13 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-
-import { append } from '@/utils/array';
-import { safeGetNormalizedByKey } from '@/utils/normalized';
 
 import { createReducer } from './utils';
 
 const addLocalVariableReducer = createReducer(Realtime.diagram.addLocalVariable, (state, { diagramID, variable }) => {
-  const diagram = safeGetNormalizedByKey(state, diagramID);
+  const diagram = Utils.normalized.safeGetNormalizedByKey(state, diagramID);
 
   if (diagram) {
-    diagram.variables = append(diagram.variables, variable);
+    diagram.variables = Utils.array.append(diagram.variables, variable);
   }
 });
 

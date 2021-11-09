@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Redux from 'redux';
 import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
@@ -11,7 +12,6 @@ import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { unique } from '@/utils/array';
 
 import { AnyAction, Dispatch, Dispatchable, Middleware, MiddlewareAPI, Selector, Store } from '../types';
 import { wrapDispatch } from '../utils';
@@ -25,7 +25,7 @@ const isIgnored = (action: AnyAction, ignore: ActionIgnore) =>
   ignore.some((item) => (typeof item === 'function' ? item(action) : item === action.type));
 
 const getDiffKeys = (lhs: Record<string, any>, rhs: Record<string, any>) =>
-  unique([...Object.keys(lhs), ...Object.keys(rhs)]).filter((key) => lhs[key] !== rhs[key]);
+  Utils.array.unique([...Object.keys(lhs), ...Object.keys(rhs)]).filter((key) => lhs[key] !== rhs[key]);
 
 /**
  * @deprecated

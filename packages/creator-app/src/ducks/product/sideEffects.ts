@@ -1,6 +1,6 @@
 import { Constants } from '@voiceflow/alexa-types';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import cuid from 'cuid';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -62,7 +62,7 @@ export const cloneProduct =
           return alexaProduct.id;
         },
         async (context) => {
-          const clonedProductID = cuid.slug();
+          const clonedProductID = Utils.id.cuid.slug();
           const clonedProduct = { ...product, id: clonedProductID };
 
           await dispatch.sync(Realtime.product.crud.add({ ...context, key: clonedProductID, value: clonedProduct }));

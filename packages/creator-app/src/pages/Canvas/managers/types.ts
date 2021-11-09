@@ -1,6 +1,6 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
+import { WithRequired } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
-import { WithRequired } from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
 import { Overwrite } from 'utility-types';

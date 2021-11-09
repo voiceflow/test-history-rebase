@@ -1,4 +1,5 @@
 import { Button } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 import { createSelector } from 'reselect';
@@ -16,7 +17,6 @@ import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import { useButtonLayoutOption } from '@/pages/Canvas/managers/hooks';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { ConnectedProps } from '@/types';
-import { compose } from '@/utils/functional';
 import { getDistinctPlatformValue, getPlatformValue } from '@/utils/platform';
 
 import HelpTooltip from './HelpTooltip';
@@ -57,7 +57,7 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
           options={[
             {
               label: `Add ${getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'Chip' }, 'Button')}`,
-              onClick: compose(() => scrollToBottom('smooth'), onAdd),
+              onClick: Utils.functional.compose(() => scrollToBottom('smooth'), onAdd),
             },
           ]}
           tutorial={{ content: <HelpTooltip /> }}

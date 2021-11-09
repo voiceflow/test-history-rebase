@@ -1,6 +1,6 @@
+import { Utils } from '@voiceflow/common';
 import { Alert } from '@voiceflow/ui';
 import axios from 'axios';
-import cuid from 'cuid';
 import dayjs from 'dayjs';
 import _noop from 'lodash/noop';
 import React from 'react';
@@ -29,7 +29,7 @@ const getMaintenance = async () => {
 
   const {
     data: { startTimeUtc, endTimeUtc },
-  } = await axios.get(`${MAINTENANCE_STATUS_SOURCE}?q=${cuid()}`, { withCredentials: false });
+  } = await axios.get(`${MAINTENANCE_STATUS_SOURCE}?q=${Utils.id.cuid()}`, { withCredentials: false });
 
   return { startTimeUtc, endTimeUtc };
 };

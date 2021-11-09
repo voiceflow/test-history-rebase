@@ -1,9 +1,8 @@
-import { WithRequired } from '@voiceflow/realtime-sdk';
+import { Normalized, WithRequired } from '@voiceflow/common';
 import { Overwrite } from 'utility-types';
 
 import { DiagramState as DState } from '@/constants';
 import { Link, Node, NodeData, PartialModel, Port } from '@/models';
-import { Normalized } from '@/utils/normalized';
 
 export interface DiagramState {
   diagramID: string | null;

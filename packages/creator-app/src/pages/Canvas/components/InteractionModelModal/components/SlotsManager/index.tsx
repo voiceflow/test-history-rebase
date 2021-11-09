@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import { toast } from '@voiceflow/ui';
-import cuid from 'cuid';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 import { createSelector } from 'reselect';
@@ -85,7 +85,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
     toggleSlotEdit({
       isCreate: true,
       onSave: ({ type, name, color, inputs = [] }: Slot) => {
-        const id = cuid.slug();
+        const id = Utils.id.cuid.slug();
 
         createSlot(id, { id, type, name, color, inputs });
         closeSlotEdit();

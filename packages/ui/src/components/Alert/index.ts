@@ -1,6 +1,7 @@
+import { StringifyEnum } from '@voiceflow/common';
+
 import { css, styled } from '../../styles';
 import { COLOR_BLUE } from '../../styles/constants';
-import { StringifyEnum } from '../../types';
 import Box from '../Box';
 
 export enum AlertVariant {

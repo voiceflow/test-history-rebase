@@ -1,10 +1,10 @@
+import { Nullish } from '@voiceflow/common';
 import { PlanType, UserRole } from '@voiceflow/internal';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
-import { Nullish } from '@/types';
 
 export interface IdentityContextValue {
   activePlan: Nullish<PlanType>;

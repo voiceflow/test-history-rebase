@@ -1,6 +1,6 @@
 import { Node, Request } from '@voiceflow/base-types';
 import { APLType } from '@voiceflow/base-types/build/node/visual';
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { DebugTrace, PathTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
 import {
@@ -76,7 +76,7 @@ export const createVisualMessage = (trace: VisualTrace, common: CommonProperties
 const isGuidedNavRequest = (request: Request.BaseRequest): request is Request.BaseRequest<string> =>
   !!request.type.toLowerCase().match(/^port\d+$/) && typeof request.payload === 'string';
 
-export const createUserMessage = (request: Request.BaseRequest, common: CommonProperties, id = cuid()): UserMessage => {
+export const createUserMessage = (request: Request.BaseRequest, common: CommonProperties, id = Utils.id.cuid()): UserMessage => {
   let input = request.type;
 
   if (Request.isIntentRequest(request)) {

@@ -1,4 +1,5 @@
 import { Constants as AlexaConstants, Utils as AlexaUtils } from '@voiceflow/alexa-types';
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants, Utils as GoogleUtils } from '@voiceflow/google-types';
@@ -21,7 +22,6 @@ import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS, getD
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
-import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
 import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName } from '@/utils/typeGuards';
 
@@ -198,7 +198,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
               <UnTypedDropdownMultiselect
                 options={LOCALE_MAP}
                 onSelect={(val: AlexaConstants.Locale) =>
-                  setAlexaLocales(alexaLocales.includes(val) ? without(alexaLocales, alexaLocales.indexOf(val)) : [...alexaLocales, val])
+                  setAlexaLocales(alexaLocales.includes(val) ? Utils.array.without(alexaLocales, alexaLocales.indexOf(val)) : [...alexaLocales, val])
                 }
                 autoWidth
                 withCaret

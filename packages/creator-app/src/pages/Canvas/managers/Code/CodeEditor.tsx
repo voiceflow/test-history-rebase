@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Box, Link } from '@voiceflow/ui';
 import React from 'react';
 import type AceEditorType from 'react-ace';
@@ -11,7 +12,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { append, withoutValue } from '@/utils/array';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import { HelpTooltip } from './components';
@@ -45,11 +45,11 @@ const CodeEditor: NodeEditor<NodeData.Code> = ({ data, onChange, onExpand, expan
   // add & remove completer from ace editor
   React.useEffect(() => {
     if (editorRef.current) {
-      editorRef.current.editor.completers = append(editorRef.current.editor.completers, completer);
+      editorRef.current.editor.completers = Utils.array.append(editorRef.current.editor.completers, completer);
 
       return () => {
         if (editorRef.current) {
-          editorRef.current.editor.completers = withoutValue(editorRef.current.editor.completers, completer);
+          editorRef.current.editor.completers = Utils.array.withoutValue(editorRef.current.editor.completers, completer);
         }
       };
     }

@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { toast, useContextApi, useDidUpdateEffect, useTeardown, withContext } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -8,7 +9,6 @@ import { JobStatus } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { AlexaExportJob, DialogflowExportJob, GeneralJob, GoogleExportJob } from '@/models';
-import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 type AnyExportJob = Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | DialogflowExportJob.AnyJob | GeneralJob.AnyJob>;

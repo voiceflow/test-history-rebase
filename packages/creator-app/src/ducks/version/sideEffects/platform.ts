@@ -1,4 +1,5 @@
 import { Version as AlexaVersion } from '@voiceflow/alexa-types';
+import { Utils } from '@voiceflow/common';
 import { Constants as GeneralConstants, Version as GeneralVersion } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants, Version as DialogflowVersion } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants, Version as GoogleVersion } from '@voiceflow/google-types';
@@ -11,7 +12,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
 import { SyncThunk, Thunk } from '@/store/types';
-import { arrayStringReplace } from '@/utils/string';
 import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 import { crud } from '../actions';
@@ -117,7 +117,7 @@ export const updateInvocationName =
     if (activeInvocationName === invocationName) return;
 
     // update all the invocation examples when invocation name changes
-    const invocations = arrayStringReplace(activeInvocationName, invocationName, activeInvocations);
+    const invocations = Utils.string.arrayStringReplace(activeInvocationName, invocationName, activeInvocations);
 
     switch (platform) {
       case GeneralConstants.PlatformType.ALEXA:

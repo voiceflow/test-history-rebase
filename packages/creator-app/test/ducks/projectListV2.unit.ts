@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { generate } from '@voiceflow/ui';
 
@@ -148,7 +149,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
         const projectLists = generate.array(3, () => ({ id: generate.id() }));
 
         const result = ProjectList.allProjectListsSelector(
-          createState(MOCK_STATE, { [ProjectListV1.STATE_KEY]: Realtime.Utils.normalized.normalize(projectLists) })
+          createState(MOCK_STATE, { [ProjectListV1.STATE_KEY]: Utils.normalized.normalize(projectLists) })
         );
 
         expect(result).to.eql(projectLists);
@@ -164,7 +165,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
     describe('projectListByIDSelector()', () => {
       it('select project list from the legacy store', () => {
         const projectList = { id: LIST_ID };
-        const projectListState = Realtime.Utils.normalized.normalize([projectList]);
+        const projectListState = Utils.normalized.normalize([projectList]);
 
         const result = ProjectList.projectListByIDSelector(createState(MOCK_STATE, { [ProjectListV1.STATE_KEY]: projectListState }), { id: LIST_ID });
 
@@ -191,7 +192,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
           name: Realtime.DEFAULT_PROJECT_LIST_NAME,
           projects: [],
         };
-        const mockState = Realtime.Utils.normalized.addNormalizedByKey(MOCK_STATE, 'foo', defaultProjectList);
+        const mockState = Utils.normalized.addNormalizedByKey(MOCK_STATE, 'foo', defaultProjectList);
 
         const result = ProjectList.defaultProjectListSelector(createState(mockState, v2FeatureState));
 

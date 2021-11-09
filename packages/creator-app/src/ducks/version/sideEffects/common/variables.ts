@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
@@ -8,7 +9,6 @@ import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { globalVariablesSelector as activeGlobalVariablesSelector } from '@/ducks/versionV2/selectors/active';
 import { Thunk } from '@/store/types';
-import { withoutValue } from '@/utils/array';
 
 import { crud } from '../../actions';
 import { getActiveVersionContext } from '../../utils';
@@ -76,7 +76,7 @@ export const removeGlobalVariable =
 
           Errors.assertVersionID(versionID);
 
-          dispatch(crud.patch(versionID, { variables: withoutValue(variables, variable) }));
+          dispatch(crud.patch(versionID, { variables: Utils.array.withoutValue(variables, variable) }));
         },
         async (context) => {
           await dispatch.sync(Realtime.version.removeGlobalVariable({ ...context, variable }));

@@ -1,7 +1,7 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
-import cuid from 'cuid';
 import { datatype } from 'faker';
 import Sinon from 'sinon';
 
@@ -23,7 +23,7 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
       const elseData = noMatchesNodeDataFactory();
       const reprompt = voicePromptNodeDataFactory();
       const id = datatype.uuid();
-      Sinon.stub(cuid, 'slug').returns(id);
+      Sinon.stub(Utils.id.cuid, 'slug').returns(id);
       Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(elseData);
       Sinon.stub(voiceRepromptAdapter, 'fromDB').returns(reprompt);
       const data = interactionStepDataFactory();
@@ -67,7 +67,7 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
       const elseData = noMatchesNodeDataFactory();
       const reprompt = voicePromptNodeDataFactory();
       const id = datatype.uuid();
-      Sinon.stub(cuid, 'slug').returns(id);
+      Sinon.stub(Utils.id.cuid, 'slug').returns(id);
       Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(elseData);
       Sinon.stub(voiceRepromptAdapter, 'fromDB').returns(reprompt);
       const data = interactionStepDataFactory({ choices: [], reprompt: undefined });

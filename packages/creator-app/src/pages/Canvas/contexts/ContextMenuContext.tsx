@@ -1,9 +1,9 @@
+import { Nullable } from '@voiceflow/common';
 import { useContextApi, useSmartReducerV2, withContext, withStaticContext } from '@voiceflow/ui';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
-import { Nullable } from '@/types';
 
 import { EngineContext } from './EngineContext';
 

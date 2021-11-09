@@ -1,3 +1,5 @@
+import { Nullable } from '@voiceflow/common';
+
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Modal from '@/ducks/modal';
@@ -6,7 +8,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { Account } from '@/models';
 import { Thunk } from '@/store/types';
-import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 import { updateAccount } from '../actions';

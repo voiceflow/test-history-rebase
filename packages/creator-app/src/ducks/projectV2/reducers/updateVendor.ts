@@ -1,12 +1,11 @@
 import { Project } from '@voiceflow/alexa-types';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-
-import { safeGetNormalizedByKey } from '@/utils/normalized';
 
 import { createReducer } from './utils';
 
 const updateVendorReducer = createReducer(Realtime.project.alexa.updateVendor, (state, { projectID, creatorID, vendorID, skillID }) => {
-  const project = safeGetNormalizedByKey(state, projectID);
+  const project = Utils.normalized.safeGetNormalizedByKey(state, projectID);
   const member = project?.members.find((member) => member.creatorID === creatorID);
 
   if (member) {

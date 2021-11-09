@@ -1,8 +1,7 @@
+import { Nullable } from '@voiceflow/common';
 import { Constants } from '@voiceflow/google-dfes-types';
 import { DialogflowVersion } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
-
-import { Nullable } from '@/types';
 
 import { versionSelector as activeVersionSelector } from './base';
 

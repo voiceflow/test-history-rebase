@@ -1,5 +1,6 @@
+import { NonNullishRecord } from '@voiceflow/common';
+
 import { Board, Creator, Error } from '@/models';
-import { NonNullishRecord } from '@/types';
 
 export enum ThemeType {
   LIGHT = 'LIGHT',

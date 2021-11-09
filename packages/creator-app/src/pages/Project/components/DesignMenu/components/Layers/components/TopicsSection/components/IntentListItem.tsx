@@ -1,10 +1,10 @@
+import { Nullable } from '@voiceflow/common';
 import { getNestedMenuFormattedLabel } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine } from '@/hooks';
-import { Nullable } from '@/types';
 
 import SearchLabel from '../../SearchLabel';
 import { TopicIntentItem } from '../hooks';

@@ -1,12 +1,11 @@
+import { Normalized, Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import _isPlainObject from 'lodash/isPlainObject';
 
 import { ChatIntentSlot, Intent, IntentInput, VoiceIntentSlot } from '@/models';
 import { getIntentNameLabel, isCustomizableBuiltInIntent, removeBuiltInPrefix } from '@/utils/intent';
-import { Normalized } from '@/utils/normalized';
 import { createAdvancedPlatformSelector } from '@/utils/platform';
-import { capitalizeFirstLetter } from '@/utils/string';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 export const getUniqSlots = (inputs: IntentInput[]): string[] => [...new Set(inputs.flatMap(({ slots }) => slots || []))];
@@ -50,7 +49,7 @@ export const applySingleIntentNameFormatting = (platform: Constants.PlatformType
     name = removeBuiltInPrefix(name);
 
     if (isAnyGeneralPlatform(platform)) {
-      name = capitalizeFirstLetter(name?.toLowerCase());
+      name = Utils.string.capitalizeFirstLetter(name?.toLowerCase());
     } else if (platform === Constants.PlatformType.ALEXA) {
       name = name.replace(/(\w)Intent/g, '$1');
     }

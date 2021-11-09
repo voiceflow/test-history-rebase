@@ -1,4 +1,5 @@
-import { Node, Nullable } from '@voiceflow/base-types';
+import { Node } from '@voiceflow/base-types';
+import { Nullable, Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
@@ -8,7 +9,6 @@ import { useDispatch, useSyncedLookup } from '@/hooks';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
-import { head } from '@/utils/array';
 import { prettifyIntentName } from '@/utils/intent';
 import { getDistinctPlatformValue } from '@/utils/platform';
 
@@ -68,7 +68,7 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction>> = 
   const intentsMap = React.useContext(CustomIntentMapContext)!;
   const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
-  const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
+  const [elsePortID, nodeOutPorts] = React.useMemo(() => Utils.array.head(node.ports.out), [node.ports.out]);
   const choicesByPortID = useSyncedLookup(nodeOutPorts, data.choices);
   const isPath = !!data.else.type && data.else.type !== Node.Utils.NoMatchType.REPROMPT;
 

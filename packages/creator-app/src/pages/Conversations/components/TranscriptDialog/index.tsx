@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { useCache } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -10,7 +11,6 @@ import { currentTranscriptIDSelector } from '@/ducks/transcript';
 import { useLocalStorageState } from '@/hooks/storage';
 import PrototypeChatDisplay from '@/pages/Prototype/components/PrototypeChatDisplay';
 import { Message, MessageType } from '@/pages/Prototype/types';
-import { noop } from '@/utils/functional';
 
 import { Container, DialogHeader, DialogLoader } from './components';
 import { generateTurnMap, transformDialogTimestamp, TurnMap } from './util';
@@ -106,7 +106,7 @@ const TranscriptDialog: React.FC = () => {
           hideSessionMessages={false}
           showPadding
           onInteraction={alert}
-          stepBack={() => noop()}
+          stepBack={Utils.functional.noop}
           autoScroll={false}
           messageFilter={messageFilter}
         />

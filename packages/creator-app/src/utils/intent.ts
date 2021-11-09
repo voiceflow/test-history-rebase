@@ -1,5 +1,5 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
-import { SLOT_REGEXP } from '@voiceflow/common';
+import { Normalized, Nullable, Nullish, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
@@ -17,9 +17,6 @@ import {
   VoiceIntent,
   VoiceIntentSlot,
 } from '@/models';
-import { Nullable, Nullish } from '@/types';
-import { Normalized } from '@/utils/normalized';
-import { capitalizeFirstLetter } from '@/utils/string';
 import { isChatbotPlatform, isGeneralPlatform } from '@/utils/typeGuards';
 
 import { createPlatformSelector } from './platform';
@@ -89,7 +86,7 @@ export const generalIntentFactory = (generalIntent: GeneralConstants.DefaultInte
 
   return {
     ...intent,
-    name: capitalizeFirstLetter(generalIntent.samples[0] ?? intent.name),
+    name: Utils.string.capitalizeFirstLetter(generalIntent.samples[0] ?? intent.name),
   };
 };
 

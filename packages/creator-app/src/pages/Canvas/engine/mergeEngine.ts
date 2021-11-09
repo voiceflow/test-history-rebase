@@ -1,10 +1,10 @@
+import { Utils } from '@voiceflow/common';
 import _constant from 'lodash/constant';
 
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
 import { CANVAS_MERGING_CLASSNAME } from '@/pages/Canvas/constants';
 import { MergeLayerAPI } from '@/pages/Canvas/types';
-import { withoutValue } from '@/utils/array';
 
 import { createBoundaryTest, EngineConsumer, getCandidates, NodeCandidate } from './utils';
 
@@ -74,7 +74,7 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
 
     this.engine.addClass(CANVAS_MERGING_CLASSNAME);
     this.sourceNodeID = sourceNodeID;
-    this.candidates = getCandidates(withoutValue(this.engine.getRootNodeIDs(), sourceNodeID).reverse(), this.engine);
+    this.candidates = getCandidates(Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID).reverse(), this.engine);
 
     this.log.debug('discovered merge candidates', this.log.value(this.candidates.length));
     this.log.debug(this.log.init('merge system initialized for node'), this.log.slug(sourceNodeID));

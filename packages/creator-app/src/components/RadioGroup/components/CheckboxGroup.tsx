@@ -1,7 +1,7 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { CheckboxType } from '@/components/Checkbox';
-import { withoutValue } from '@/utils/array';
 
 import { RadioGroupProps, RadioOption } from './RadioGroup';
 import Container from './RadioGroupContainer';
@@ -31,7 +31,7 @@ const CheckboxGroup = <T extends any>({ options, checked, onChange, className, c
           type={CheckboxType.CHECKBOX}
           label={label}
           column={column}
-          onChange={() => onChange(isChecked ? withoutValue(checked, id) : [...checked, id])}
+          onChange={() => onChange(isChecked ? Utils.array.withoutValue(checked, id) : [...checked, id])}
           isChecked={isChecked}
           {...props}
         />

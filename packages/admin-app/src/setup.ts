@@ -1,8 +1,8 @@
 import '@/utils/time';
 
+import { Utils } from '@voiceflow/common';
 import { clearPersistedLogs, GLOBAL_FETCH_HEADERS, IS_SAFARI, Vendors } from '@voiceflow/ui';
 import axios from 'axios';
-import cuid from 'cuid';
 
 import client from '@/client';
 import { API_ENDPOINT, LOGROCKET_PROJECT, VERSION } from '@/config';
@@ -24,7 +24,7 @@ const setupAdmin = () => {
   clearPersistedLogs();
 
   if (!sessionStorage.getItem(TAB_ID_KEY)) {
-    sessionStorage.setItem(TAB_ID_KEY, cuid());
+    sessionStorage.setItem(TAB_ID_KEY, Utils.id.cuid());
   }
 
   const tabID = sessionStorage.getItem(TAB_ID_KEY)!;

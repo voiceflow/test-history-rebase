@@ -1,4 +1,5 @@
 import { Node } from '@voiceflow/alexa-types';
+import { Utils } from '@voiceflow/common';
 import { NodeData } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -8,7 +9,6 @@ import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
 import { FormControl } from '@/pages/Canvas/components/Editor';
-import { TIMEZONES } from '@/utils/timezones';
 
 import {
   RecurrenceContainer,
@@ -23,7 +23,7 @@ import {
 import { RECURRENCE_OPTIONS } from './constants';
 
 const USER_TIMEZONE = 'User Timezone';
-const TIMEZONE_OPTIONS = [USER_TIMEZONE, ...TIMEZONES];
+const TIMEZONE_OPTIONS = [USER_TIMEZONE, ...Utils.timezones.TIMEZONES];
 
 const VariablesInputComponent: any = VariablesInput;
 

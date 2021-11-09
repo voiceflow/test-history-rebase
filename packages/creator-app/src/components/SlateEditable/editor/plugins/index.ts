@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import { Editor, Range } from 'slate';
 
-import { compose } from '@/utils/functional';
+import { compose } from '@/hocs';
 
 import type { EditorAPIType } from '../editorAPI';
 import { InternalPluginType, PluginType } from './constants';

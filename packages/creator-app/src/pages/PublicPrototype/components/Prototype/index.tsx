@@ -4,7 +4,7 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Transcripts from '@/ducks/transcript';
-import { connect } from '@/hocs';
+import { compose, connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useASR, useCanASR, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
@@ -13,7 +13,6 @@ import { usePrototype, useResetPrototype, useStartPrototype } from '@/pages/Prot
 import { OnInteraction, PMStatus } from '@/pages/Prototype/types';
 import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
 import { ConnectedProps } from '@/types';
-import { compose } from '@/utils/functional';
 
 import Footer from '../Footer';
 import Layout from '../Layout';

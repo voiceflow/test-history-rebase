@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { FeatureFlag } from '@/config/features';
 import { DiagramLoadingGate } from '@/gates';
-import { withLoadingGate } from '@/hocs';
+import { compose, withLoadingGate } from '@/hocs';
 import { useFeature, useRegistration } from '@/hooks';
 import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
@@ -12,7 +12,6 @@ import InteractionModelModal from '@/pages/Canvas/components/InteractionModelMod
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
 import { SelectionSetTargetsContext } from '@/pages/Project/contexts';
-import { compose } from '@/utils/functional';
 import * as Query from '@/utils/query';
 
 import Container from './components/CanvasContainer';

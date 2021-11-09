@@ -1,6 +1,6 @@
 import { Node as BaseNode, Request } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
-import cuid from 'cuid';
 
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
@@ -8,10 +8,7 @@ import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import { BlockTrace, ChoiceTrace, FlowTrace, GoToTrace, Link, Node, SpeakTrace, StreamTrace, Trace, V1Trace, VisualTrace } from '@/models';
 import { Engine } from '@/pages/Canvas/engine';
-import { tail, unique } from '@/utils/array';
 import { loadImage } from '@/utils/dom';
-import { noop } from '@/utils/functional';
-import { delay } from '@/utils/promise';
 
 import { Interaction, PMStatus } from '../types';
 import AudioController from './Audio';
@@ -210,7 +207,7 @@ class TraceController {
 
     this.context = {
       ...targetContext,
-      trace: targetContext.trace?.map((trace: Trace) => ({ ...trace, id: cuid() })) ?? [],
+      trace: targetContext.trace?.map((trace: Trace) => ({ ...trace, id: Utils.id.cuid() })) ?? [],
     } as Prototype.Context;
   };
 
@@ -320,7 +317,7 @@ class TraceController {
   }
 
   private saveActivePathBlock(node: Node) {
-    const updatedActivePathBlockArray = unique([...this.props.activePathBlockIDs, node!.parentNode!]);
+    const updatedActivePathBlockArray = Utils.array.unique([...this.props.activePathBlockIDs, node!.parentNode!]);
     const updatedContextHistory = getUpdatedContextHistory(
       this.props.contextStep,
       this.props.contextHistory,
@@ -381,7 +378,7 @@ class TraceController {
     const hasParent = !!node.parentNode;
     const nodeType = node?.type;
 
-    const [, sourceNodeID] = tail(this.props.engine?.select(Prototype.activePathBlockIDsSelector) || []);
+    const [, sourceNodeID] = Utils.array.tail(this.props.engine?.select(Prototype.activePathBlockIDsSelector) || []);
 
     if (hasParent) {
       this.saveActivePathBlock(node);
@@ -424,7 +421,7 @@ class TraceController {
     }
 
     if (this.props.isMuted) {
-      await delay(MUTED_MESSAGE_DELAY);
+      await Utils.promise.delay(MUTED_MESSAGE_DELAY);
     } else {
       try {
         await this.audio.play(src, {
@@ -455,14 +452,14 @@ class TraceController {
     }
 
     if (this.props.isMuted) {
-      await delay(MUTED_MESSAGE_DELAY);
+      await Utils.promise.delay(MUTED_MESSAGE_DELAY);
     } else {
       await this.audio
         .play(src, {
           muted: this.props.isMuted,
           onError: () => this.setError(),
         })
-        .catch(noop);
+        .catch(Utils.functional.noop);
     }
   }
 
@@ -496,7 +493,7 @@ class TraceController {
     // Highlight the start block when entering a flow
     const startNode = Array.from(this.props.engine!.nodes).find((data) => data[1].type === BlockType.START);
     // TODO: refactor block highlighting system, topics do not have startNodes
-    let updatedActivePathBlockArray = unique([...this.props.activePathBlockIDs, ...(startNode ? [startNode[0]] : [])]);
+    let updatedActivePathBlockArray = Utils.array.unique([...this.props.activePathBlockIDs, ...(startNode ? [startNode[0]] : [])]);
 
     const beginningBlock = this.props.activePathBlockIDs[0];
     const beginningFlowID = this.props.flowIDHistory[0];
@@ -524,7 +521,7 @@ class TraceController {
 
   private findLinkBetween(sourceID: string, targetID: string): string | null {
     const source = this.props.engine?.getNodeByID(sourceID);
-    const [, sourceLastChild] = tail(source?.combinedNodes ?? []);
+    const [, sourceLastChild] = Utils.array.tail(source?.combinedNodes ?? []);
     const sourceIDs = [sourceID, ...(sourceLastChild ? [sourceLastChild] : [])];
 
     const target = this.props.engine?.getNodeByID(targetID);
@@ -552,7 +549,7 @@ class TraceController {
 
     let activePathLinkArray = this.props.activePathLinkIDs;
     if (activePathLinkID) {
-      activePathLinkArray = unique([...this.props.activePathLinkIDs, ...flowOutLink, activePathLinkID]);
+      activePathLinkArray = Utils.array.unique([...this.props.activePathLinkIDs, ...flowOutLink, activePathLinkID]);
     }
     const updatedContextHistory = getUpdatedContextHistory(
       this.props.contextStep,

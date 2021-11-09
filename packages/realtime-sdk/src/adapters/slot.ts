@@ -1,5 +1,5 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { CUSTOM_SLOT_TYPE, LEGACY_CUSTOM_SLOT_TYPE } from '../constants';
 import { Slot, SlotInput } from '../models';
@@ -10,7 +10,7 @@ export const slotInputAdapter = createAdapter<string, SlotInput>(
     const synonyms = input.split(',');
 
     return {
-      id: cuid.slug(),
+      id: Utils.id.cuid.slug(),
       value: synonyms[0],
       synonyms: synonyms.slice(1).join(','),
     };

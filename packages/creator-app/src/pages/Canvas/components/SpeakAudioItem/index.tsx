@@ -7,13 +7,13 @@ import SSMLWithVars from '@/components/SSMLWithVars';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
 import { DialogType } from '@/constants';
+import { compose } from '@/hocs';
 import { SpeakData, SSMLData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
 import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '@/pages/Canvas/managers/Speak/constants';
 import { prettifyBucketURL } from '@/utils/audio';
-import { compose } from '@/utils/functional';
 
 const VariablesInputComponent: React.FC<any> = VariablesInput;
 

@@ -1,7 +1,6 @@
 /* eslint-disable callback-return */
+import { Nullable } from '@voiceflow/common';
 import { Element, Node, Text } from 'slate';
-
-import { Nullable } from '@/types';
 
 import { ElementType } from '../../constants';
 import { ProcessorNext } from './types';

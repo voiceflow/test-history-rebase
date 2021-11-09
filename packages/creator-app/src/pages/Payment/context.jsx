@@ -1,6 +1,6 @@
+import { Utils } from '@voiceflow/common';
 import { BillingPeriod, UserRole } from '@voiceflow/internal';
 import { ButtonVariant, toast, withContext, withProvider } from '@voiceflow/ui';
-import cuid from 'cuid';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
@@ -70,7 +70,7 @@ const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
     PRICE_UPDATE_DEBOUNCE_TIMEOUT,
     async ({ plan, seats, period, coupon }) => {
       try {
-        const hash = cuid.slug();
+        const hash = Utils.id.cuid.slug();
         checkHash.current = hash;
         startFetchingPrice();
 

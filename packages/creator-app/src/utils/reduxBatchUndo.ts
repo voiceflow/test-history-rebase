@@ -1,10 +1,10 @@
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 import { groupByActionTypes, GroupByFunction } from 'redux-undo';
 
 class ReduxBatchUndo {
   private group: string | null = null;
 
-  start = (group = cuid()) => {
+  start = (group = Utils.id.cuid()) => {
     this.group = group;
   };
 

@@ -1,6 +1,6 @@
 import { SendBackActions } from '@logux/server';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import cuid from 'cuid';
 
 import { AbstractChannelControl, ChannelContext } from './utils';
 
@@ -35,7 +35,7 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
 
         normalizedLists.splice(normalizedLists.indexOf(defaultList), 1, { ...defaultList, projects });
       } else {
-        normalizedLists.push({ name: Realtime.DEFAULT_PROJECT_LIST_NAME, board_id: cuid(), projects: unusedProjectsIDs });
+        normalizedLists.push({ name: Realtime.DEFAULT_PROJECT_LIST_NAME, board_id: Utils.id.cuid(), projects: unusedProjectsIDs });
       }
     }
 

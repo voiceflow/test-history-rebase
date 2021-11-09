@@ -1,5 +1,6 @@
+import { AnyFunction, Callback } from '@voiceflow/common';
+
 import { DBMember } from '@/models';
-import { AnyFunction, Callback } from '@/types';
 
 import client, { SocketStatus } from './client';
 import { ServerEvent, SocketEvent } from './constants';

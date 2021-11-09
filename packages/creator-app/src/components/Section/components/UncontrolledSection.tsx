@@ -1,10 +1,10 @@
+import { Utils } from '@voiceflow/common';
 import { Collapse, Icon, SvgIcon, swallowEvent } from '@voiceflow/ui';
 import _isFunction from 'lodash/isFunction';
 import React from 'react';
 import { CSSProperties } from 'styled-components';
 
 import InfoIcon, { InfoIconProps } from '@/components/InfoIcon';
-import { noop } from '@/utils/functional';
 
 import { SectionToggleVariant, SectionVariant } from '../constants';
 import CollapseTrigger from './CollapseTrigger';
@@ -158,7 +158,12 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
               {!!count && Number.isInteger(count) && <NumberContainer>{count}</NumberContainer>}
               {suffix && <FixNode fixNode={suffix} color="#becedc" />}
               {collapseVariant && (
-                <CollapseTrigger disabled={disabled} onToggle={clickHandler ? noop : toggle} isCollapsed={isCollapsed} variant={collapseVariant} />
+                <CollapseTrigger
+                  disabled={disabled}
+                  onToggle={clickHandler ? Utils.functional.noop : toggle}
+                  isCollapsed={isCollapsed}
+                  variant={collapseVariant}
+                />
               )}
             </StatusContent>
           )}

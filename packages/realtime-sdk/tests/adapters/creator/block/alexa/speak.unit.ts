@@ -1,6 +1,6 @@
 import { Constants } from '@voiceflow/alexa-types';
+import { Utils } from '@voiceflow/common';
 import { expect } from 'chai';
-import cuid from 'cuid';
 import { datatype } from 'faker';
 import Sinon from 'sinon';
 
@@ -31,7 +31,7 @@ describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
       const audioDialog = promptFactory({ voice: Constants.Voice.AUDIO });
       const voiceDialog = promptFactory({ voice: Constants.Voice.AMY });
       const id = datatype.uuid();
-      Sinon.stub(cuid, 'slug').returns(id);
+      Sinon.stub(Utils.id.cuid, 'slug').returns(id);
       const data = speakStepDataFactory({ dialogs: [audioDialog, voiceDialog] });
 
       const result = speakAdapter.fromDB(data);

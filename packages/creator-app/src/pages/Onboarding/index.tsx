@@ -6,9 +6,8 @@ import InnerContainer from '@/components/CreationSteps/components/Containers/Inn
 import OuterContainer from '@/components/CreationSteps/components/Containers/OuterContainer';
 import * as Account from '@/ducks/account';
 import { WorkspacesLoadingGate } from '@/gates';
-import { connect, withBatchLoadingGate } from '@/hocs';
+import { compose, connect, withBatchLoadingGate } from '@/hocs';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { compose } from '@/utils/functional';
 import * as Query from '@/utils/query';
 
 import { CurrentStep, Header } from './components';

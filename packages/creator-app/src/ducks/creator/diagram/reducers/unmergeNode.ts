@@ -1,8 +1,7 @@
+import { Utils } from '@voiceflow/common';
+
 import { BlockType } from '@/constants';
 import { Reducer } from '@/store/types';
-import { without } from '@/utils/array';
-import { compose } from '@/utils/functional';
-import { getNormalizedByKey } from '@/utils/normalized';
 
 import { UnmergeNode } from '../actions';
 import { nodeFactory } from '../factories';
@@ -19,15 +18,15 @@ const unmergeNodeReducer: Reducer<DiagramState, UnmergeNode> = (
     },
   }
 ) => {
-  const node = getNormalizedByKey(state.nodes, nodeID);
-  const surrogateNode = getNormalizedByKey(state.nodes, node.parentNode!);
+  const node = Utils.normalized.getNormalizedByKey(state.nodes, nodeID);
+  const surrogateNode = Utils.normalized.getNormalizedByKey(state.nodes, node.parentNode!);
 
   if (surrogateNode?.type !== BlockType.COMBINED) {
     return state;
   }
 
   const index = surrogateNode.combinedNodes.indexOf(node.id);
-  const remainingNodeIDs = without(surrogateNode.combinedNodes, index);
+  const remainingNodeIDs = Utils.array.without(surrogateNode.combinedNodes, index);
 
   if (remainingNodeIDs.length === 0) {
     return patchNodeInState(surrogateNode.id, {
@@ -50,7 +49,7 @@ const unmergeNodeReducer: Reducer<DiagramState, UnmergeNode> = (
     { name: 'Block' }
   );
 
-  return compose(
+  return Utils.functional.compose(
     addBlockToState(newParentNode, newRootPorts, newParentNodeData),
     patchNodeInState(surrogateNode.id, {
       combinedNodes: remainingNodeIDs,

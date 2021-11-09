@@ -1,17 +1,15 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-
-import { withoutValues } from '@/utils/array';
-import { safeGetNormalizedByKey } from '@/utils/normalized';
 
 import { createReducer } from './utils';
 
 const removeIntentStepsReducer = createReducer(Realtime.node.removeMany, (state, { diagramID, nodeIDs }) => {
   if (!nodeIDs.length) return;
 
-  const diagram = safeGetNormalizedByKey(state, diagramID);
+  const diagram = Utils.normalized.safeGetNormalizedByKey(state, diagramID);
 
   if (diagram) {
-    diagram.intentStepIDs = withoutValues(diagram.intentStepIDs, nodeIDs);
+    diagram.intentStepIDs = Utils.array.withoutValues(diagram.intentStepIDs, nodeIDs);
   }
 
   // clear any steps from the lookup

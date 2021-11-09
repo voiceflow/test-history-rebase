@@ -1,7 +1,8 @@
+import { Utils } from '@voiceflow/common';
+
 import { BlockCategory, BlockType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { delay, rejectIn } from '@/utils/promise';
 
 import { MOCK_DATA, PerfAction, RunnerEvent } from '../constants';
 import dndSimulator from './dndSimulator';
@@ -26,7 +27,10 @@ const createCommands = (runner: Runner) => {
 
   const commands = {
     waitAction: async <T extends PerfAction>(action: T, timeout = 10000): Promise<T> =>
-      Promise.race([rejectIn(timeout), promisifyListener<RunnerEvent.PERF_ACTION, T>(RunnerEvent.PERF_ACTION, (payload) => payload === action)]),
+      Promise.race([
+        Utils.promise.rejectIn(timeout),
+        promisifyListener<RunnerEvent.PERF_ACTION, T>(RunnerEvent.PERF_ACTION, (payload) => payload === action),
+      ]),
 
     goToCanvas: async (versionID: string, timeout = 5000) => {
       window.store.dispatch(Router.goToCanvas(versionID));
@@ -58,7 +62,7 @@ const createCommands = (runner: Runner) => {
 
         await window.vf_engine?.focus.reset();
 
-        await delay(100);
+        await Utils.promise.delay(100);
       },
 
       openDesignMenuStepsSection: (category: BlockCategory) => {

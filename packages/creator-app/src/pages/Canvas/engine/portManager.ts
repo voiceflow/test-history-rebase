@@ -1,8 +1,8 @@
+import { Utils } from '@voiceflow/common';
+
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 import { PartialModel, Port } from '@/models';
-import { objectID } from '@/utils';
-import { noop } from '@/utils/functional';
 
 import { EngineConsumer } from './utils';
 
@@ -14,7 +14,7 @@ class PortManager extends EngineConsumer {
       this.dispatch(Creator.addPort(nodeID, port));
     },
 
-    remove: async (portID: string, syncRemove: () => Promise<void> | void = noop) => {
+    remove: async (portID: string, syncRemove: () => Promise<void> | void = Utils.functional.noop) => {
       const port = this.engine.getPortByID(portID);
 
       await Promise.all(this.engine.getLinkIDsByPortID(portID).map((linkID) => this.engine.link.remove(linkID)));
@@ -38,7 +38,7 @@ class PortManager extends EngineConsumer {
   }
 
   async add(nodeID: string, port: Partial<Port>) {
-    const portID = objectID();
+    const portID = Utils.id.objectID();
     const augmentedPort = { ...port, id: portID };
 
     this.log.debug(this.log.pending('adding port'), this.log.slug(portID));

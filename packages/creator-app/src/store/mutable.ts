@@ -1,4 +1,4 @@
-import { Nullable } from '@/types';
+import { Nullable } from '@voiceflow/common';
 
 interface MutableStore {
   lastRealtimeTimestamp: Nullable<number>;

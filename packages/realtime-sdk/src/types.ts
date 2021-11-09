@@ -1,7 +1,5 @@
 import { ActionCreator } from 'typescript-fsa';
 
-export type { Normalized, NormalizedValue, Nullable, Nullish, WithOptional, WithRequired } from '@voiceflow/common';
-
 export interface Viewer {
   creatorID: number;
   name: string;

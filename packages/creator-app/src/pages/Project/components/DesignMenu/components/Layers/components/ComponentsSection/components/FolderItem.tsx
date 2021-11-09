@@ -1,7 +1,7 @@
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
-import { Nullable } from '@/types';
 
 import { ComponentItem } from '../hooks';
 import ComponentItemName from './ComponentItemName';

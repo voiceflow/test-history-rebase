@@ -1,4 +1,5 @@
 import { useClient } from '@logux/client/react';
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
@@ -7,7 +8,6 @@ import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { withFeatureGate } from '@/hocs';
 import { useBeforeUnload, useSelector, useSetup, useStore, useTeardown } from '@/hooks';
-import { noop } from '@/utils/functional';
 
 import ConnectionWarning from './RealtimeLoadingGate/components/RealtimeConnectionWarning';
 
@@ -23,7 +23,7 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
 
   const [isSynchronized, setSynchronized] = React.useState(false);
   const [isConnected, setConnected] = React.useState(false);
-  const unsubscribeRef = React.useRef(noop);
+  const unsubscribeRef = React.useRef(Utils.functional.noop);
 
   useSetup(() => {
     if (client.connected) return;

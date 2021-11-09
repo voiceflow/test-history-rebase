@@ -1,13 +1,13 @@
+import { Nullable } from '@voiceflow/common';
 import { getNestedMenuFormattedLabel, OverflowText, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
 import * as Router from '@/ducks/router';
+import { compose } from '@/hocs';
 import { useDispatch, useHover } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
-import { Nullable } from '@/types';
 import { getTargetValue, withEnterPress } from '@/utils/dom';
-import { compose } from '@/utils/functional';
 
 import ItemNameContainer from '../../ItemNameContainer';
 import ItemNameInput from '../../ItemNameInput';

@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { generate } from '@voiceflow/ui';
 
@@ -39,7 +40,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
       it('select all slots from the legacy store', () => {
         const slots = generate.array(3, () => ({ id: generate.id() }));
 
-        const result = Slot.allSlotsSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: Realtime.Utils.normalized.normalize(slots) }));
+        const result = Slot.allSlotsSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: Utils.normalized.normalize(slots) }));
 
         expect(result).to.eql(slots);
       });
@@ -55,7 +56,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
       it('select all slot IDs from the legacy store', () => {
         const slots = generate.array(3, () => ({ id: generate.id() }));
 
-        const result = Slot.allSlotIDsSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: Realtime.Utils.normalized.normalize(slots) }));
+        const result = Slot.allSlotIDsSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: Utils.normalized.normalize(slots) }));
 
         expect(result).to.eql(slots.map((slot) => slot.id));
       });
@@ -69,7 +70,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
 
     describe('slotMapSelector()', () => {
       it('select slot map from the legacy store', () => {
-        const slotState = Realtime.Utils.normalized.normalize(generate.array(3, () => ({ id: generate.id() })));
+        const slotState = Utils.normalized.normalize(generate.array(3, () => ({ id: generate.id() })));
 
         const result = Slot.slotMapSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: slotState }));
 
@@ -86,7 +87,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
     describe('slotByIDSelector()', () => {
       it('select slot from the legacy store', () => {
         const slot = { id: SLOT_ID };
-        const slotState = Realtime.Utils.normalized.normalize([slot]);
+        const slotState = Utils.normalized.normalize([slot]);
 
         const result = Slot.slotByIDSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: slotState }), { id: SLOT_ID });
 
@@ -109,7 +110,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
     describe('getSlotByIDSelector()', () => {
       it('select slot from the legacy store', () => {
         const slot = { id: SLOT_ID };
-        const slotState = Realtime.Utils.normalized.normalize([slot]);
+        const slotState = Utils.normalized.normalize([slot]);
 
         const result = Slot.getSlotByIDSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: slotState }))(SLOT_ID);
 
@@ -134,7 +135,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
         const slot = { id: DIAGRAM_ID };
         const otherSlotID = 'foo';
         const otherSlot = { id: 'foo' };
-        const slotState = Realtime.Utils.normalized.normalize([otherSlot, slot]);
+        const slotState = Utils.normalized.normalize([otherSlot, slot]);
 
         const result = Slot.slotsByIDsSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: slotState }), {
           ids: [DIAGRAM_ID, otherSlotID],

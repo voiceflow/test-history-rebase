@@ -4,8 +4,7 @@ import React from 'react';
 import TextEditor, { PluginType } from '@/components/TextEditor';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Version from '@/ducks/version';
-import { connect } from '@/hocs';
-import { compose } from '@/utils/functional';
+import { compose, connect } from '@/hocs';
 
 import { Container } from './components';
 

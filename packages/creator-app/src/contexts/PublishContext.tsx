@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { useContextApi, useDidUpdateEffect, useSetup, useTeardown, withContext } from '@voiceflow/ui';
 import React from 'react';
@@ -11,7 +12,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useDispatch, useFeature } from '@/hooks';
 import { AlexaPublishJob, DialogflowPublishJob, GooglePublishJob } from '@/models';
-import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 export interface PublishContextValue<T extends AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob> {

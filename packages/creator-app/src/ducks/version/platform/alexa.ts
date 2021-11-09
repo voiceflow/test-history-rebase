@@ -1,4 +1,5 @@
 import { Version } from '@voiceflow/alexa-types';
+import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
@@ -7,7 +8,6 @@ import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
-import { Nullable } from '@/types';
 
 import { UpdatePublishing, updatePublishingByVersionID, UpdateSettings, updateSettingsByVersionID } from '../actions';
 import { getActiveVersionContext } from '../utils';

@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
@@ -15,7 +16,7 @@ class MoveProjectList extends AbstractWorkspaceChannelControl<MoveProjectListPay
     const fromIndex = projectLists.findIndex((list) => list.board_id === payload.from);
     const toIndex = projectLists.findIndex((list) => list.board_id === payload.to);
 
-    await this.services.projectList.replaceAll(creatorID, payload.workspaceID, Realtime.Utils.array.reorder(projectLists, fromIndex, toIndex));
+    await this.services.projectList.replaceAll(creatorID, payload.workspaceID, Utils.array.reorder(projectLists, fromIndex, toIndex));
   };
 }
 

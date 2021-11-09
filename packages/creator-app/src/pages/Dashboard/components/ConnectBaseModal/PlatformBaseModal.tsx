@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Alert, AlertVariant, Box, Button, ButtonVariant, Link, LoadCircle } from '@voiceflow/ui';
 import React from 'react';
@@ -13,7 +14,6 @@ import { useFeature, useModals } from '@/hooks';
 import { Account } from '@/models';
 import * as Models from '@/models';
 import { ActionContainer, BodyContainer, BoldText, ButtonContainer, ContentContainer } from '@/pages/Dashboard/components/ModalComponents';
-import { Nullable } from '@/types';
 import { getPlatformValue } from '@/utils/platform';
 
 export interface PlatformBaseModalProps {

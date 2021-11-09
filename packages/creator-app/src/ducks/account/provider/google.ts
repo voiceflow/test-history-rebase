@@ -1,8 +1,9 @@
+import { Nullable } from '@voiceflow/common';
+
 import client from '@/client';
 import * as Modal from '@/ducks/modal';
 import { Account } from '@/models';
 import { Thunk } from '@/store/types';
-import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 import { updateAccount } from '../actions';

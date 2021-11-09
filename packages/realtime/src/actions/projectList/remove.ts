@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
@@ -18,7 +19,7 @@ class RemoveProjectList extends AbstractWorkspaceChannelControl<RemoveProjectLis
 
     await Promise.all([
       this.server.processAs(creatorID, Realtime.project.crud.removeMany({ keys: targetProjectList.projects, workspaceID: payload.workspaceID })),
-      this.services.projectList.replaceAll(creatorID, payload.workspaceID, Realtime.Utils.array.withoutValue(projectLists, targetProjectList)),
+      this.services.projectList.replaceAll(creatorID, payload.workspaceID, Utils.array.withoutValue(projectLists, targetProjectList)),
     ]);
   };
 }

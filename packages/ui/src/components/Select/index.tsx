@@ -1,10 +1,10 @@
+import { Nullable, Nullish } from '@voiceflow/common';
 import noop from 'lodash/noop';
 import React from 'react';
 import AutosizeInput from 'react-input-autosize';
 import { Manager, PopperProps, Reference } from 'react-popper';
 
 import { useCache, useDidUpdateEffect } from '../../hooks';
-import { Nullable, Nullish } from '../../types';
 import Flex from '../Flex';
 import { AdvancedMenu, defaultMenuLabelRenderer } from '../NestedMenu';
 import Portal from '../Portal';

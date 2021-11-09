@@ -1,4 +1,5 @@
 import { Node } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
@@ -9,7 +10,6 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 import { prettifyBucketURL } from '@/utils/audio';
 import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
-import { stripHTMLTags } from '@/utils/string';
 
 import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '../constants';
 
@@ -47,7 +47,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
                 },
                 'Add Assistant reply'
               )}
-              label={content ? stripHTMLTags(transformVariablesToReadable(content)) : null}
+              label={content ? Utils.string.stripHTMLTags(transformVariablesToReadable(content)) : null}
               icon={NODE_CONFIG.getIcon!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA)}
               portID={index === itemsToRender.length - 1 ? portID : null}
               iconColor={NODE_CONFIG.getIconColor!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA)}

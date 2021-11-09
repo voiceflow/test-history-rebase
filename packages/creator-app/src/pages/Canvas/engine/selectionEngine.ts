@@ -1,5 +1,6 @@
+import { Utils } from '@voiceflow/common';
+
 import { SelectionSetTargetsContextValue } from '@/pages/Project/contexts';
-import { hasIdenticalMembers } from '@/utils/array';
 
 import { ActivationMode } from './constants';
 import { EngineConsumer } from './utils';
@@ -68,7 +69,7 @@ class SelectionEngine extends EngineConsumer<{ selectionSetTargetsContext: Selec
   replace(targets: string[] = [], force = false): void {
     const currentTargets = this.getTargets();
 
-    if ((!force && this.engine.isCanvasBusy) || this.engine.comment.isActive || hasIdenticalMembers(targets, currentTargets)) return;
+    if ((!force && this.engine.isCanvasBusy) || this.engine.comment.isActive || Utils.array.hasIdenticalMembers(targets, currentTargets)) return;
 
     this.log.debug(this.log.pending('replacing selection'), targets);
     this.engine.focus.reset();

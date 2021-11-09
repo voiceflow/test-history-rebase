@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,7 +6,6 @@ import DraggableList from '@/components/DraggableList';
 import { DragItem } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import { useDispatch } from '@/hooks';
-import { Nullable } from '@/types';
 
 import { TopicIntentItem } from '../hooks';
 import IntentContainer from './IntentContainer';

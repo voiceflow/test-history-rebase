@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import cuid from 'cuid';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractActionControl, ActionAccessor, Resender } from '@/actions/utils';
@@ -57,7 +57,7 @@ export abstract class AbstractProjectResourceControl<
 
     // create a new default list
     if (!listID) {
-      listID = cuid();
+      listID = Utils.id.cuid();
       await this.server.processAs(
         creatorID,
         Realtime.projectList.crud.add({

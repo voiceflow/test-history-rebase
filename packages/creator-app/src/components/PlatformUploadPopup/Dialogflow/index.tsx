@@ -1,15 +1,15 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { DialogflowStageType } from '@/constants/platforms';
 import { ExportContext, PublishContext } from '@/contexts';
-import { noop } from '@/utils/functional';
 
 import { ErrorStage, LoaderStage, ProgressStage } from '../components';
 import { PlatformContentProps } from '../constants';
 import SuccessStage from './SuccessStage';
 import WaitProjectStage from './WaitProjectState';
 
-export const Dialogflow: React.FC<PlatformContentProps> = ({ export: isExport, setMultiProjects, createNewAgent = noop }) => {
+export const Dialogflow: React.FC<PlatformContentProps> = ({ export: isExport, setMultiProjects, createNewAgent = Utils.functional.noop }) => {
   const exportContextValue = React.useContext(ExportContext)!;
   const publishContextValue = React.useContext(PublishContext)!;
 

@@ -1,6 +1,6 @@
 import { Node } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Box, SvgIcon } from '@voiceflow/ui';
-import cuid from 'cuid';
 import React from 'react';
 
 import Canvas from '@/components/Canvas';
@@ -29,8 +29,8 @@ const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedProt
   const dimension = useDeviceDimension({ data, device });
   const { zoom: initialZoom, offset: initialOffset, dimensions, canvasWidth } = useInitialCanvas({ platform, dimension });
 
-  const canvasKey = React.useMemo(() => cuid(), [dimension.width, dimension.height]);
-  const contentKey = React.useMemo(() => cuid(), [device, data]);
+  const canvasKey = React.useMemo(() => Utils.id.cuid(), [dimension.width, dimension.height]);
+  const contentKey = React.useMemo(() => Utils.id.cuid(), [device, data]);
 
   const [zoom, setZoom] = useLinkedState(initialZoom, canvasKey);
   const [offset, setOffset] = useLinkedState(initialOffset, canvasKey);

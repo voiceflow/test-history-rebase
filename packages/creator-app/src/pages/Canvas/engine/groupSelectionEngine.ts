@@ -1,6 +1,7 @@
+import { Utils } from '@voiceflow/common';
+
 import { SelectionMarqueeAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
-import { diff } from '@/utils/array';
 import { buildVirtualDOMRect } from '@/utils/dom';
 import { isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
@@ -45,7 +46,7 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
 
     const targets = this.engine.selection.getTargets();
     const nextTargets = this.candidates.filter(({ isWithin }) => isWithin(rect)).map(({ nodeID }) => nodeID);
-    const updateTargets = diff(targets, nextTargets);
+    const updateTargets = Utils.array.diff(targets, nextTargets);
 
     this.engine.selection.replace(nextTargets, true);
 

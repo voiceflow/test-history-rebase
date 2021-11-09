@@ -1,9 +1,9 @@
+import { Utils } from '@voiceflow/common';
 import EventEmitter from 'eventemitter3';
 import _groupBy from 'lodash/groupBy';
 import _sumBy from 'lodash/sumBy';
 
 import { isDebug } from '@/config';
-import { asyncForEach } from '@/utils/array';
 
 import { PerfAction, PerfScenario, RunnerEvent } from '../constants';
 import createCommands from './commands';
@@ -210,7 +210,7 @@ export class Runner extends EventEmitter<EventTypes> {
       return;
     }
 
-    await asyncForEach(scenarios, async (type) => {
+    await Utils.array.asyncForEach(scenarios, async (type) => {
       const scenario = this.scenarioMap[type];
 
       if (!scenario) {
@@ -224,7 +224,7 @@ export class Runner extends EventEmitter<EventTypes> {
       try {
         await scenario.beforeAll?.();
 
-        await asyncForEach(scenario.iterationData, async (data) => {
+        await Utils.array.asyncForEach(scenario.iterationData, async (data) => {
           stage = 'beforeEachIterationData';
           await scenario.beforeEachIterationData?.(data);
 

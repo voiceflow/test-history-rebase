@@ -1,10 +1,10 @@
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { createSelector } from 'reselect';
 
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { identity } from '@/utils/functional';
 import { getSlotTypes } from '@/utils/slot';
 
 import * as alexa from './alexa';
@@ -12,7 +12,7 @@ import * as dialogflow from './dialogflow';
 import * as general from './general';
 import * as google from './google';
 
-export const localesSelector = createSelector([ProjectV2.active.projectSelector, identity], (activeProject, rootState) => {
+export const localesSelector = createSelector([ProjectV2.active.projectSelector, Utils.functional.identity], (activeProject, rootState) => {
   if (!activeProject) return [];
 
   switch (activeProject.platform) {
@@ -29,7 +29,7 @@ export const localesSelector = createSelector([ProjectV2.active.projectSelector,
   }
 });
 
-export const invocationNameSelector = createSelector([ProjectV2.active.projectSelector, identity], (activeProject, rootState) => {
+export const invocationNameSelector = createSelector([ProjectV2.active.projectSelector, Utils.functional.identity], (activeProject, rootState) => {
   if (!activeProject) return null;
 
   switch (activeProject.platform) {
@@ -43,7 +43,7 @@ export const invocationNameSelector = createSelector([ProjectV2.active.projectSe
   }
 });
 
-export const invocationsSelector = createSelector([ProjectV2.active.projectSelector, identity], (activeProject, rootState) => {
+export const invocationsSelector = createSelector([ProjectV2.active.projectSelector, Utils.functional.identity], (activeProject, rootState) => {
   if (!activeProject) return [];
 
   switch (activeProject.platform) {

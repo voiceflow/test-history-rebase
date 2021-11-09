@@ -1,10 +1,10 @@
+import { Utils } from '@voiceflow/common';
 import { useDidUpdateEffect, useEnableDisable } from '@voiceflow/ui';
 import React from 'react';
 import { AutosizeInputProps } from 'react-input-autosize';
 import { Assign } from 'utility-types';
 
 import { withTargetValue } from '@/utils/dom';
-import { chainVoid } from '@/utils/functional';
 
 import { UnstyledInput, UnstyledText } from './components';
 
@@ -58,14 +58,20 @@ const EditableText = React.forwardRef<EditableTextAPI, EditableTextProps>(({ id,
     <UnstyledInput
       id={id}
       value={value}
-      onBlur={chainVoid(stopEditing, onBlur)}
+      onBlur={Utils.functional.chainVoid(stopEditing, onBlur)}
       inputRef={onInputRef}
       onChange={withTargetValue(onChange)}
       className={className}
       {...props}
     />
   ) : (
-    <UnstyledText id={id} ref={titleRef} onFocus={props.readOnly ? undefined : chainVoid(startEditing, onFocus)} tabIndex={-1} className={className}>
+    <UnstyledText
+      id={id}
+      ref={titleRef}
+      onFocus={props.readOnly ? undefined : Utils.functional.chainVoid(startEditing, onFocus)}
+      tabIndex={-1}
+      className={className}
+    >
       {value}
     </UnstyledText>
   );

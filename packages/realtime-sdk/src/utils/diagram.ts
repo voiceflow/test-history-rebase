@@ -1,7 +1,7 @@
 import { AnyRecord, Models as BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 
 import { BlockType, BlockVariant } from '../constants';
-import { objectID } from './id';
 
 export interface DiagramFactoryOptions {
   name: string;
@@ -25,7 +25,7 @@ export const getUniqueCopyName = (originalName: string, existingNames: string[])
 };
 
 export const startNodeFactory = (coords: [number, number] = [360, 120]): BaseModels.BaseDiagramNode<AnyRecord> => ({
-  nodeID: objectID(),
+  nodeID: Utils.id.objectID(),
   type: BlockType.START,
   coords,
   data: {
@@ -69,7 +69,7 @@ export const componentDiagramFactory = (name: string, startNodeCoords?: [number,
   });
 
 export const topicDiagramFactory = (name: string) => {
-  const intentNodeID = objectID();
+  const intentNodeID = Utils.id.objectID();
 
   return diagramFactory({
     name,
@@ -78,7 +78,7 @@ export const topicDiagramFactory = (name: string) => {
     nodes: [
       {
         type: 'block',
-        nodeID: objectID(),
+        nodeID: Utils.id.objectID(),
         coords: [360, 120],
         data: {
           name,

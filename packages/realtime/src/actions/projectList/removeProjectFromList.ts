@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
@@ -12,7 +13,7 @@ class RemoveProjectFromList extends AbstractProjectListResourceControl<Realtime.
     await Promise.all([
       this.server.processAs(ctx.data.creatorID, Realtime.project.crud.remove({ key: payload.projectID, workspaceID: payload.workspaceID })),
       this.applyPatch(ctx, payload.workspaceID, payload.listID, (list) => ({
-        projects: Realtime.Utils.array.withoutValue(list.projects, payload.projectID),
+        projects: Utils.array.withoutValue(list.projects, payload.projectID),
       })),
     ]);
   };

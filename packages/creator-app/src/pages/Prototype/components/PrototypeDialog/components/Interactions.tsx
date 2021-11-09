@@ -1,4 +1,5 @@
 import { Request } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { BoxFlex, hexToRGBA, preventDefault, toRGBAString } from '@voiceflow/ui';
 import React from 'react';
 import SimpleBar from 'simplebar-react';
@@ -8,7 +9,6 @@ import perf, { PerfAction } from '@/performance';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 import { Color } from '@/types';
-import { chainVoid } from '@/utils/functional';
 import { getValidHref } from '@/utils/string';
 
 import { Interaction, OnInteraction } from '../../../types';
@@ -87,7 +87,7 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
         return (
           <ButtonElement
             key={name}
-            onClick={chainVoid(handleRequestActions(request), () => onInteraction({ name, request: request || name }))}
+            onClick={Utils.functional.chainVoid(handleRequestActions(request), () => onInteraction({ name, request: request || name }))}
             className={ClassName.PROTOTYPE_BUTTON}
             rgbaColor={hexToRGBA(color ?? '#5D9DF5')}
             onMouseDown={preventDefault()}

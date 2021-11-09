@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Link, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,7 +10,6 @@ import DraggableList, {
 } from '@/components/DraggableList';
 import { MapManagedAPI, useManager, useToggle } from '@/hooks';
 import { Content, ContentRenderOptions, ControlOptions, Controls, EditorControlsProps } from '@/pages/Canvas/components/Editor';
-import { chain } from '@/utils/functional';
 
 export type ListItemExtraProps<E = {}> = DragPreviewComponentProps &
   E & {
@@ -79,7 +79,7 @@ const ListEditorContent = <T, F extends any[] = [], E = {}>({
         type={type}
         footer={footer}
         onDelete={mapManagedApi.onRemove}
-        onReorder={chain(mapManagedApi.onReorder, onReorder)}
+        onReorder={Utils.functional.chain(mapManagedApi.onReorder, onReorder)}
         onEndDrag={toggleDragging}
         itemProps={
           {

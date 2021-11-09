@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -8,7 +9,6 @@ import { buildPath, getMarkerAttrs, getPathPoints, getVirtualPoints } from '@/pa
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
-import { noop } from '@/utils/functional';
 
 type NewLinkInstance<T extends SVGElement> = NewLinkAPI & {
   ref: React.RefObject<T>;
@@ -24,7 +24,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const dispatch = useDispatch();
   const points = React.useRef<Pair<Point> | null>(null);
   const isPinned = React.useRef(false);
-  const removeEventListeners = React.useRef(noop);
+  const removeEventListeners = React.useRef(Utils.functional.noop);
   const engine = React.useContext(EngineContext)!;
   const [isVisible, setVisible] = React.useState(false);
 

@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { ExpressionData, ExpressionV2, LogicGroupData } from '../models';
 import { transformVariableToString } from '../utils/slot';
@@ -54,14 +54,14 @@ export const convertVariableFormat = createAdapter<Node.Utils.ExpressionV2 | Nod
 export const expressionValueAdapter = createAdapter<Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData, ExpressionV2 | LogicGroupData>(
   (condition) => {
     if (condition.logicInterface === Node.Utils.ConditionsLogicInterface.VARIABLE) {
-      return { ...convertVariableFormat.fromDB(condition), id: cuid() } as ExpressionV2;
+      return { ...convertVariableFormat.fromDB(condition), id: Utils.id.cuid() } as ExpressionV2;
     }
     if (condition.logicInterface === Node.Utils.ConditionsLogicInterface.LOGIC_GROUP) {
       return {
         ...condition,
         value: (condition.value as Array<Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData>).map((data) => ({
           ...convertVariableFormat.fromDB(data),
-          id: cuid(),
+          id: Utils.id.cuid(),
         })),
       } as LogicGroupData;
     }
@@ -85,7 +85,7 @@ export const expressionValueAdapter = createAdapter<Node.Utils.ExpressionV2 | No
 const expressionAdapterV2 = createAdapter<Node.Utils.ExpressionData, ExpressionData>(
   (expression) =>
     ({
-      id: cuid(),
+      id: Utils.id.cuid(),
       ...expression,
       value: expressionValueAdapter.mapFromDB(expression.value),
     } as ExpressionData),

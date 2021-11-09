@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { LoadCircle, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -5,7 +6,6 @@ import { useDropzone } from 'react-dropzone';
 import { RemoveButton } from '@/components/Upload/ImageUpload/FullImage/components';
 import { IMAGE_FILE_FORMATS } from '@/constants';
 import { withUpload } from '@/hocs';
-import { noop } from '@/utils/functional';
 
 import { ErrorText, IconUploadContainer, IconUploadInput, ImageContainer } from './components';
 
@@ -49,7 +49,7 @@ const Icon = React.forwardRef(
     const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
       accept: acceptedFileTypes,
       onDropAccepted,
-      onDropRejected: noop,
+      onDropRejected: Utils.functional.noop,
       disabled: isLoading,
     });
     const iconSize = SIZE_VARIANT[size];

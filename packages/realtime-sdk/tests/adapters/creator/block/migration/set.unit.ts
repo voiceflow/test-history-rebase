@@ -1,6 +1,6 @@
 import { Node } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { expect } from 'chai';
-import cuid from 'cuid';
 import { datatype } from 'faker';
 import Sinon from 'sinon';
 
@@ -16,7 +16,7 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
       const id = datatype.uuid();
-      Sinon.stub(cuid, 'slug').returns(id);
+      Sinon.stub(Utils.id.cuid, 'slug').returns(id);
       const expression = expressionFactory({ type: Node.Utils.ExpressionType.VALUE });
       const set = setFactory({ expression });
       const data = setStepDataFactory({ sets: [set] });
@@ -35,7 +35,7 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
 
     it('returns correct expression and type', () => {
       const id = datatype.uuid();
-      Sinon.stub(cuid, 'slug').returns(id);
+      Sinon.stub(Utils.id.cuid, 'slug').returns(id);
       const expression = expressionFactory({ type: Node.Utils.ExpressionType.VARIABLE, value: 'name' });
       const set = setFactory({ expression });
       const data = setStepDataFactory({ sets: [set] });

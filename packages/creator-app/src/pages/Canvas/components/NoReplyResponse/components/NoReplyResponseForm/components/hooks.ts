@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/ui';
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { createSelector } from 'reselect';
 

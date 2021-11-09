@@ -1,4 +1,4 @@
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
@@ -23,7 +23,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.UserInfo> = {
       name: 'User Info',
       permissions: [
         {
-          id: cuid.slug(),
+          id: Utils.id.cuid.slug(),
           selected: null,
           mapTo: null,
           product: null,

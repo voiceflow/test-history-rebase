@@ -1,7 +1,6 @@
+import { Nullable } from '@voiceflow/common';
 import { SvgIcon, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
-
-import { Nullable } from '@/types';
 
 import { Button, ButtonProps, Container, ExpandIconContainer } from './components';
 

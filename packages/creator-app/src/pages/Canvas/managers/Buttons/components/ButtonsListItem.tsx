@@ -1,4 +1,5 @@
 import { Node } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Badge, Box, BoxFlex, Input, Link, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,14 +13,13 @@ import * as Documentation from '@/config/documentation';
 import { FeatureFlag } from '@/config/features';
 import { NamespaceProvider } from '@/contexts';
 import * as IntentV2 from '@/ducks/intentV2';
+import { compose } from '@/hocs';
 import { useFeature, useLinkedState, useSelector } from '@/hooks';
 import { Intent } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
-import { unique, withoutValue } from '@/utils/array';
 import { getTargetValue } from '@/utils/dom';
-import { compose } from '@/utils/functional';
 import { getValidHref, isAnyLink } from '@/utils/string';
 
 import { BUTTON_OPTIONS, ButtonAction } from '../constants';
@@ -73,16 +73,18 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
     let nextActions = item.actions;
 
     if (action === ButtonAction.GO_TO_INTENT) {
-      nextActions = withoutValue(nextActions, Node.Buttons.ButtonAction.PATH);
+      nextActions = Utils.array.withoutValue(nextActions, Node.Buttons.ButtonAction.PATH);
     } else {
       nextActions = [...nextActions, Node.Buttons.ButtonAction.PATH];
     }
 
-    onUpdate({ intent: null, actions: unique([...nextActions, Node.Buttons.ButtonAction.INTENT]) });
+    onUpdate({ intent: null, actions: Utils.array.unique([...nextActions, Node.Buttons.ButtonAction.INTENT]) });
   };
 
   const onToggleURL = () => {
-    const nextActions = urlChecked ? withoutValue(item.actions, Node.Buttons.ButtonAction.URL) : [...item.actions, Node.Buttons.ButtonAction.URL];
+    const nextActions = urlChecked
+      ? Utils.array.withoutValue(item.actions, Node.Buttons.ButtonAction.URL)
+      : [...item.actions, Node.Buttons.ButtonAction.URL];
 
     onUpdate({ actions: nextActions });
   };

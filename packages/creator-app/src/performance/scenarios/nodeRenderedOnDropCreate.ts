@@ -1,5 +1,6 @@
+import { Utils } from '@voiceflow/common';
+
 import { BlockCategory, BlockType } from '@/constants';
-import { delay } from '@/utils/promise';
 
 import { MOCK_DATA, PerfScenario } from '../constants';
 import { runner } from '../utils';
@@ -26,7 +27,7 @@ runner.register<typeof MOCK_DATA.VERSIONS[number]>(
       await commands.canvas.openDesignMenuStepsSection(BlockCategory.RESPONSE);
 
       // wait animation to be finished
-      await delay(300);
+      await Utils.promise.delay(300);
 
       await commands.canvas.createStepViaDesignMenu(BlockCategory.RESPONSE, BlockType.SPEAK);
     });

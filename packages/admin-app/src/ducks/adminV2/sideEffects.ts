@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { toast } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 
@@ -5,7 +6,6 @@ import { Admin } from '@/client';
 import { Creator, Workspace } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { getUserInfoType } from '@/store/utils';
-import { Nullable } from '@/types';
 
 import * as Actions from './actions';
 

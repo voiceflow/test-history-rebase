@@ -1,7 +1,6 @@
+import { Utils } from '@voiceflow/common';
 import _upperFirst from 'lodash/upperFirst';
 import React, { useReducer, useRef } from 'react';
-
-import { getTopLevelDiff } from '@/utils/objects';
 
 export const TYPE = {
   set: 'set',
@@ -30,7 +29,6 @@ const createSmartReducer =
     }
   };
 
-// eslint-disable-next-line import/prefer-default-export
 export const useSmartReducer = (defaultState, customReducer = (s) => s, customApiBuilder = () => ({})) => {
   const apiRef = useRef();
   const [state, dispatch] = useReducer(createSmartReducer(customReducer), defaultState);
@@ -63,7 +61,7 @@ export const useSyncedSmartReducer = (props) => {
   const [state, actions] = useSmartReducer(props);
 
   React.useEffect(() => {
-    const diff = getTopLevelDiff(props, cache.current);
+    const diff = Utils.object.getTopLevelDiff(props, cache.current);
 
     if (Object.keys(diff).length) {
       actions.update(diff);

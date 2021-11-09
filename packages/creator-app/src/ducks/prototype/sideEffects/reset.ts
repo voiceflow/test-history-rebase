@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { batch } from 'react-redux';
 
 import { BuiltInVariable } from '@/constants';
@@ -7,7 +8,6 @@ import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { Store } from '@/models';
 import { SyncThunk } from '@/store/types';
-import { cuid } from '@/utils/string';
 import * as Sentry from '@/vendors/sentry';
 
 import { updatePrototype, updatePrototypeContext, updatePrototypeStatus } from '../actions';
@@ -54,7 +54,7 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
     dispatch(updatePrototypeContext({ variables }));
     dispatch(
       updatePrototype({
-        ID: cuid(),
+        ID: Utils.id.cuid(),
         contextStep: 0,
         contextHistory: [],
         flowIDHistory: [],

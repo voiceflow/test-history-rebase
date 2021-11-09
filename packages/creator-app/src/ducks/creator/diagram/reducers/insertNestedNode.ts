@@ -1,8 +1,7 @@
+import { Utils } from '@voiceflow/common';
+
 import { Node } from '@/models';
 import { Reducer } from '@/store/types';
-import { insert, insertAll, reorder, withoutValue } from '@/utils/array';
-import { compose } from '@/utils/functional';
-import { getNormalizedByKey } from '@/utils/normalized';
 
 import { InsertNestedNode } from '../actions';
 import { DiagramState } from '../types';
@@ -24,10 +23,10 @@ export const reorderNestedNode = (state: DiagramState, targetNode: Node, index: 
   const isLast = nextIndex === recipientNode.combinedNodes.length - 1;
   const oldLinks = isLast ? getNestedOutgoingLinkIDs(state, recipientNode) : getOutgoingLinkIDs(state, targetNode);
 
-  return compose(
+  return Utils.functional.compose(
     removeAllLinksFromState(oldLinks),
     patchNodeInState(recipientNode.id, {
-      combinedNodes: reorder(recipientNode.combinedNodes, currentIndex, nextIndex),
+      combinedNodes: Utils.array.reorder(recipientNode.combinedNodes, currentIndex, nextIndex),
     }),
     patchNodeInState(targetNode.id, {
       parentNode: recipientNode.id,
@@ -39,16 +38,16 @@ export const insertIntoParentNode = (state: DiagramState, targetNode: Node, inde
   const isLast = recipientNode.combinedNodes.length === index;
   const oldLinks = isLast ? getNestedOutgoingLinkIDs(state, recipientNode) : getOutgoingLinkIDs(state, targetNode);
 
-  return compose(
+  return Utils.functional.compose(
     removeAllLinksFromState(oldLinks),
     patchNodeInState(recipientNode.id, {
-      combinedNodes: insert(recipientNode.combinedNodes, index, targetNode.id),
+      combinedNodes: Utils.array.insert(recipientNode.combinedNodes, index, targetNode.id),
     })
   )(state);
 };
 
 export const transplantNestedNode = (state: DiagramState, targetNode: Node, index: number, recipientNodeID: string) => {
-  const recipientNode = getNormalizedByKey(state.nodes, recipientNodeID);
+  const recipientNode = Utils.normalized.getNormalizedByKey(state.nodes, recipientNodeID);
 
   if (recipientNodeID === targetNode.parentNode) {
     return recipientNode.combinedNodes.includes(targetNode.id)
@@ -56,17 +55,17 @@ export const transplantNestedNode = (state: DiagramState, targetNode: Node, inde
       : insertIntoParentNode(state, targetNode, index, recipientNode);
   }
 
-  const surrogateNode = getNormalizedByKey(state.nodes, targetNode.parentNode!);
+  const surrogateNode = Utils.normalized.getNormalizedByKey(state.nodes, targetNode.parentNode!);
 
-  const surrogateCombinedIDs = withoutValue(surrogateNode.combinedNodes, targetNode.id);
-  const recipientCombinedIDs = insert(recipientNode.combinedNodes, index, targetNode.id);
+  const surrogateCombinedIDs = Utils.array.withoutValue(surrogateNode.combinedNodes, targetNode.id);
+  const recipientCombinedIDs = Utils.array.insert(recipientNode.combinedNodes, index, targetNode.id);
   const isLast = index === recipientCombinedIDs.length - 1;
 
   const oldLinks = isLast
     ? [...getJoiningLinkIDs(state)(targetNode.id, recipientNodeID), ...getNestedOutgoingLinkIDs(state, recipientNode)]
     : getOutgoingLinkIDs(state, targetNode);
 
-  return compose(
+  return Utils.functional.compose(
     removeAllLinksFromState(oldLinks),
     surrogateCombinedIDs.length
       ? patchNodeInState(surrogateNode.id, {
@@ -83,14 +82,14 @@ export const transplantNestedNode = (state: DiagramState, targetNode: Node, inde
 };
 
 const insertNestedNodeReducer: Reducer<DiagramState, InsertNestedNode> = (state, { payload: { parentNodeID, nodeID, index } }) => {
-  const parentNode = getNormalizedByKey(state.nodes, parentNodeID);
-  const targetNode = getNormalizedByKey(state.nodes, nodeID);
+  const parentNode = Utils.normalized.getNormalizedByKey(state.nodes, parentNodeID);
+  const targetNode = Utils.normalized.getNormalizedByKey(state.nodes, nodeID);
 
   if (targetNode.parentNode) {
     return transplantNestedNode(state, targetNode, index, parentNodeID);
   }
 
-  const nextCombinedIDs = insertAll(parentNode.combinedNodes, index, targetNode.combinedNodes);
+  const nextCombinedIDs = Utils.array.insertAll(parentNode.combinedNodes, index, targetNode.combinedNodes);
   const isFirst = index === 0;
   const isLast = index === parentNode.combinedNodes.length;
 
@@ -105,7 +104,7 @@ const insertNestedNodeReducer: Reducer<DiagramState, InsertNestedNode> = (state,
     oldLinks.push(...getNestedOutgoingLinkIDs(state, targetNode));
   }
 
-  return compose(
+  return Utils.functional.compose(
     removeBlockFromState(targetNode),
     removeAllLinksFromState(oldLinks),
     patchNodeInState(parentNode.id, {

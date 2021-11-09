@@ -1,8 +1,7 @@
+import { Nullable, Utils } from '@voiceflow/common';
 import AlexaAPLRenderer, * as APL from 'apl-viewhost-web';
-import cuid from 'cuid';
 import React from 'react';
 
-import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 import aplInitializer from './initializer';
@@ -23,7 +22,7 @@ const APLRenderer: React.FC<APLRendererProps> = ({
   onCommandFail,
   ...props
 }) => {
-  const elementID = React.useMemo(() => cuid(), []);
+  const elementID = React.useMemo(() => Utils.id.cuid(), []);
 
   React.useEffect(() => {
     let renderer: Nullable<AlexaAPLRenderer> = null;

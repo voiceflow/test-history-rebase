@@ -1,4 +1,4 @@
-import { Eventual } from '@voiceflow/common';
+import { Eventual, Normalized, Utils } from '@voiceflow/common';
 import { SinonSpy, SinonStub } from 'sinon';
 import { ActionCreator, AnyAction as AnyFSAction } from 'typescript-fsa';
 import { DeepPartial } from 'utility-types';
@@ -8,8 +8,6 @@ import type { State } from '@/ducks';
 import { createAction } from '@/ducks/utils';
 import { createCRUDState } from '@/ducks/utils/crud';
 import { AnyAction, AnyThunk, Dispatch, Dispatchable, RootReducer, Selector, SyncThunk } from '@/store/types';
-import { noop } from '@/utils/functional';
-import { getNormalizedByKey, Normalized } from '@/utils/normalized';
 
 import { MOCK_STATE } from './_fixtures';
 
@@ -45,8 +43,8 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
         return this;
       },
       toModifyByKey(key: string, diff: S extends Normalized<infer R> ? Partial<R> : never) {
-        const currValue = getNormalizedByKey<object>(rootState as any, key);
-        const nextValue = getNormalizedByKey(this.rawResult as any, key);
+        const currValue = Utils.normalized.getNormalizedByKey<object>(rootState as any, key);
+        const nextValue = Utils.normalized.getNormalizedByKey(this.rawResult as any, key);
         utils.expect(nextValue).to.eql({ ...currValue, ...diff });
 
         return this;
@@ -55,8 +53,8 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
     });
 
     const createDispatch = (
-      handler: (dispatchable: Dispatchable) => any = noop,
-      loguxHandler: (key: keyof Dispatch) => (action: AnyFSAction) => any = () => noop
+      handler: (dispatchable: Dispatchable) => any = Utils.functional.noop,
+      loguxHandler: (key: keyof Dispatch) => (action: AnyFSAction) => any = () => Utils.functional.noop
     ) =>
       Object.assign(utils.spy(handler), {
         local: utils.spy(loguxHandler('local')),

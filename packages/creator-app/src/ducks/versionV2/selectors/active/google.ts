@@ -1,7 +1,6 @@
+import { Nullable } from '@voiceflow/common';
 import { GoogleVersion } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
-
-import { Nullable } from '@/types';
 
 import { versionSelector as activeVersionSelector } from './base';
 

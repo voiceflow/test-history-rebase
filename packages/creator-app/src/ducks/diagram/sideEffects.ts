@@ -1,4 +1,5 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
@@ -21,10 +22,7 @@ import mutableStore from '@/store/mutable';
 import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { PathPoint, Point } from '@/types';
-import { append, insert, reorder, unique, withoutValue } from '@/utils/array';
 import { getNodesGroupCenter } from '@/utils/node';
-import { normalize } from '@/utils/normalized';
-import { getCurrentTimestamp } from '@/utils/time';
 import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
 import { crud } from './actions';
@@ -82,7 +80,7 @@ export const removeLocalVariable =
         async () => {
           const variables = DiagramV2.localVariablesByDiagramIDSelector(getState(), { id: diagramID });
 
-          dispatch(crud.patch(diagramID, { variables: withoutValue(variables, variable) }));
+          dispatch(crud.patch(diagramID, { variables: Utils.array.withoutValue(variables, variable) }));
         },
         async (context) => {
           await dispatch.sync(Realtime.diagram.removeLocalVariable({ ...context, variable, diagramID }));
@@ -103,7 +101,7 @@ export const addLocalVariable =
         async () => {
           const variables = DiagramV2.localVariablesByDiagramIDSelector(getState(), { id: diagramID });
 
-          dispatch(crud.patch(diagramID, { variables: append(variables, variable) }));
+          dispatch(crud.patch(diagramID, { variables: Utils.array.append(variables, variable) }));
         },
         async (context) => {
           await dispatch.sync(Realtime.diagram.addLocalVariable({ ...context, variable, diagramID }));
@@ -124,7 +122,7 @@ const createDiagram =
 
     const diagram = {
       ...primitiveDiagram,
-      modified: getCurrentTimestamp(),
+      modified: Utils.time.getCurrentTimestamp(),
       versionID,
       creatorID,
     };
@@ -162,7 +160,10 @@ export const createTopicDiagram =
           const newTopicItem = { type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: diagramID };
           const activeTopicIndex = activeDiagramID ? activeTopics.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
 
-          const topics = activeTopicIndex === -1 ? append(activeTopics, newTopicItem) : insert(activeTopics, activeTopicIndex + 1, newTopicItem);
+          const topics =
+            activeTopicIndex === -1
+              ? Utils.array.append(activeTopics, newTopicItem)
+              : Utils.array.insert(activeTopics, activeTopicIndex + 1, newTopicItem);
 
           await dispatch(saveTopics(topics));
 
@@ -206,7 +207,9 @@ const addDiagramIDIntoComponentsList =
     const activeComponentIndex = activeDiagramID ? activeComponents.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
 
     const components =
-      activeComponentIndex === -1 ? append(activeComponents, newTopicItem) : insert(activeComponents, activeComponentIndex + 1, newTopicItem);
+      activeComponentIndex === -1
+        ? Utils.array.append(activeComponents, newTopicItem)
+        : Utils.array.insert(activeComponents, activeComponentIndex + 1, newTopicItem);
 
     await dispatch(saveComponents(components));
   };
@@ -268,7 +271,7 @@ export const convertToComponent =
         viewport: { zoom: 1, x: 0, y: 0 },
         diagramID: '',
       } as Models.CreatorDiagram,
-      { nodes: normalize(adjustedNodes), ports: normalize(adjustedPorts), platform, context: {} }
+      { nodes: Utils.normalized.normalize(adjustedNodes), ports: Utils.normalized.normalize(adjustedPorts), platform, context: {} }
     );
 
     diagram.nodes = { ...diagram.nodes, ...convertedDiagram.nodes };
@@ -314,7 +317,7 @@ export const duplicateDiagram =
 
           const { _id, type = BaseModels.DiagramType.COMPONENT, ...diagram } = await client.api.diagram.get(diagramID);
 
-          const newFlowName = Realtime.Utils.diagram.getUniqueCopyName(diagram.name, unique(allDiagrams.map(({ name }) => name)));
+          const newFlowName = Realtime.Utils.diagram.getUniqueCopyName(diagram.name, Utils.array.unique(allDiagrams.map(({ name }) => name)));
 
           const newDiagramID = await dispatch(createDiagram({ ...diagram, intentStepIDs: diagram.intentStepIDs ?? [], type, name: newFlowName }));
 
@@ -487,7 +490,7 @@ export const reorderIntentStepIDs =
         async () => {
           const activeDiagram = DiagramV2.diagramByIDSelector(getState(), { id: diagramID });
 
-          await dispatch(updateIntentSteps(diagramID, reorder(activeDiagram?.intentStepIDs ?? [], from, to)));
+          await dispatch(updateIntentSteps(diagramID, Utils.array.reorder(activeDiagram?.intentStepIDs ?? [], from, to)));
         },
         async (context) => {
           await dispatch.sync(Realtime.diagram.reorderIntentSteps({ ...context, diagramID, from, to }));

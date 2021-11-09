@@ -1,9 +1,9 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { useRAF, useTeardown } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Pair, Point } from '@/types';
-import { noop } from '@/utils/functional';
 import { Coords, Vector } from '@/utils/geometry';
 import MouseMovement from '@/utils/mouseMovement';
 
@@ -60,7 +60,7 @@ export const useEntityDrag = (
 ) => {
   const engine = React.useContext(EngineContext)!;
 
-  const teardownMouseListeners = React.useRef(noop);
+  const teardownMouseListeners = React.useRef(Utils.functional.noop);
   const mouseMovement = React.useMemo(() => new MouseMovement(), []);
 
   const onDrag = React.useCallback(async (event: MouseEvent) => {

@@ -1,4 +1,4 @@
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 const CHARACTERS = Array.from({ length: 26 }).map((_, index) => String.fromCharCode(97 + index));
 
@@ -22,7 +22,7 @@ export const generate: Generate = {
 
   number: (min = 0, max = 100) => min + Math.floor(Math.random() * (max - min)),
 
-  id: (slug = true) => (slug ? cuid.slug() : cuid()),
+  id: (slug = true) => (slug ? Utils.id.cuid.slug() : Utils.id.cuid()),
 
   string: (length = 10) =>
     Array.from({ length })

@@ -1,3 +1,4 @@
+import { Callback } from '@voiceflow/common';
 import { Box, KeyName } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,6 @@ import MentionEditor from '@/components/MentionEditor';
 import { useLinkedState } from '@/hooks';
 import { Comment } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { Callback } from '@/types';
 
 import { COMMENT_CLASSNAME, COMMENT_EDITOR_CLASSNAME } from '../constants';
 import ThreadEditorHeader, { ThreadEditorHeaderProps } from './ThreadEditorHeader';

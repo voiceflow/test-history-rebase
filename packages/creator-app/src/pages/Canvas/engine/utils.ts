@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { Node as BaseNode } from '@voiceflow/base-types';
+import { NullableRecord, Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Logger } from '@voiceflow/ui';
 
@@ -11,11 +12,8 @@ import { EntityMap, Link, Node, NodeData, NodeWithData, Port } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptor } from '@/pages/Canvas/managers/types';
 import { Dispatcher, DispatchResult, Selector } from '@/store/types';
-import { NullableRecord, Pair, Point } from '@/types';
-import { objectID } from '@/utils';
-import { unique } from '@/utils/array';
+import { Pair, Point } from '@/types';
 import { isChoiceNode, isLinkedFlowNode, isLinkedIntentNode, isProductLinkedNode } from '@/utils/node';
-import { isInRange } from '@/utils/number';
 import { getDistinctPlatformValue } from '@/utils/platform';
 
 import type { Engine } from '.';
@@ -104,8 +102,8 @@ export function nodeFactory(
     node: {
       ...Creator.Factories.nodeFactory(null, { ...node, type }),
       ports: {
-        in: ((ports || {}).in || []).map((port) => ({ ...port, id: objectID() })),
-        out: ((ports || {}).out || []).map((port) => ({ ...port, id: objectID() })),
+        in: ((ports || {}).in || []).map((port) => ({ ...port, id: Utils.id.objectID() })),
+        out: ((ports || {}).out || []).map((port) => ({ ...port, id: Utils.id.objectID() })),
       },
     },
     data,
@@ -116,7 +114,7 @@ export const cloneLink =
   ({ getPortID, getNodeID }: CloneUtils) =>
   (link: Link): Link => ({
     ...link,
-    id: objectID(),
+    id: Utils.id.objectID(),
     source: {
       ...link.source,
       nodeID: getNodeID(link.source.nodeID),
@@ -175,7 +173,7 @@ const getOrCreateID = (lookup: Record<string, string>) => (id: string) => {
   }
 
   // eslint-disable-next-line no-return-assign
-  return (lookup[id] = objectID());
+  return (lookup[id] = Utils.id.objectID());
 };
 
 export interface CloneContextOptions {
@@ -236,7 +234,7 @@ export const extractPoints = (canvas: CanvasAPI, start: DOMRect | null | undefin
 export const createBoundaryTest =
   ({ left, right, top, bottom }: Pick<DOMRect, 'left' | 'right' | 'top' | 'bottom'>) =>
   ([x, y]: Point) =>
-    isInRange(x, left, right) && isInRange(y, top, bottom);
+    Utils.number.isInRange(x, left, right) && Utils.number.isInRange(y, top, bottom);
 
 export const getCandidates = (nodeIDs: string[], engine: Engine): NodeCandidate[] =>
   nodeIDs
@@ -261,8 +259,8 @@ export const getCandidates = (nodeIDs: string[], engine: Engine): NodeCandidate[
       nodeID,
       containsPoint: createBoundaryTest({ left, right, top, bottom }),
       isWithin: (rect) =>
-        (isInRange(left, rect.left, rect.right) || isInRange(right, rect.left, rect.right)) &&
-        (isInRange(top, rect.top, rect.bottom) || isInRange(bottom, rect.top, rect.bottom)),
+        (Utils.number.isInRange(left, rect.left, rect.right) || Utils.number.isInRange(right, rect.left, rect.right)) &&
+        (Utils.number.isInRange(top, rect.top, rect.bottom) || Utils.number.isInRange(bottom, rect.top, rect.bottom)),
     }));
 
 export const getNodesData = (nodeData: Record<string, NodeData<unknown>>, selectedNodes: Node[]) => {
@@ -294,9 +292,9 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, NodeData<unknown>>
     }
   });
 
-  const products = unique(copiedNodesData.filter(isProductLinkedNode).map((node) => node.productID));
+  const products = Utils.array.unique(copiedNodesData.filter(isProductLinkedNode).map((node) => node.productID));
 
-  const diagrams = unique(copiedNodesData.filter(isLinkedFlowNode).map((node) => node.diagramID));
+  const diagrams = Utils.array.unique(copiedNodesData.filter(isLinkedFlowNode).map((node) => node.diagramID));
 
-  return { intents: unique(intents), products, diagrams };
+  return { intents: Utils.array.unique(intents), products, diagrams };
 };

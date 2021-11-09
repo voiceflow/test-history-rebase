@@ -1,9 +1,9 @@
+import { NullableRecord } from '@voiceflow/common';
 import React from 'react';
 import { IntercomProps, useIntercom } from 'react-use-intercom';
 
 import { LOGROCKET_PROJECT } from '@/config';
 import { Account, Workspace } from '@/models';
-import { NullableRecord } from '@/types';
 import { generateID } from '@/utils/env';
 
 // eslint-disable-next-line import/prefer-default-export

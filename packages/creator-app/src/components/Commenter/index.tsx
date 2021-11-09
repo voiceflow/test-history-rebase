@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Box, BoxFlex } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,6 @@ import User from '@/components/User';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
-import { capitalizeAllWords } from '@/utils/string';
 
 import NameContainer from './NameContainer';
 
@@ -23,7 +23,7 @@ export const Commenter: React.FC<CommenterProps> = ({ time, creatorID }) => {
   return (
     <BoxFlex>
       <User user={userData} medium />
-      <NameContainer>{capitalizeAllWords(userData.name)}</NameContainer>
+      <NameContainer>{Utils.string.capitalizeAllWords(userData.name)}</NameContainer>
       {time && (
         <Box ml={6}>
           <Duration time={time} short={!!time} />

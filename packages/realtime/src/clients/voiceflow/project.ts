@@ -1,4 +1,5 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import { Nullish } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { PlatformType } from '@voiceflow/general-types/build/constants';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -9,7 +10,7 @@ import { ExtraOptions } from './types';
 interface ProjectClient {
   canRead: (creatorID: number, projectID: string) => Promise<boolean>;
   deleteV2: (projectID: string) => Promise<boolean>;
-  platform: (platform?: Realtime.Nullish<PlatformType>) => any;
+  platform: (platform?: Nullish<PlatformType>) => any;
 }
 
 export interface ProjectPlatformClient<P extends BaseModels.Project<any, any>> {

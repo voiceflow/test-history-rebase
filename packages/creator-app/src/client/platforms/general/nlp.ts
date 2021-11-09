@@ -1,7 +1,7 @@
+import { Nullable } from '@voiceflow/common';
 import axios from 'axios';
 
 import { NLPTrainJob } from '@/models';
-import { Nullable } from '@/types';
 
 const createNLPService = (serviceEndpoint: string) => ({
   publish: (projectID: string) =>

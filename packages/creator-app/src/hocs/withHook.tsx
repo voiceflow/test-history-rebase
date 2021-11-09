@@ -1,8 +1,6 @@
+import { AnyFunction, Utils } from '@voiceflow/common';
 import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
-
-import { AnyFunction } from '@/types';
-import { identity } from '@/utils/functional';
 
 export interface WithHookOptions<T, P extends object> {
   shouldRender?: (props: P) => boolean;
@@ -12,7 +10,7 @@ export interface WithHookOptions<T, P extends object> {
 export const withHook =
   <C extends AnyFunction, P extends object = ReturnType<C>>(
     useHook: C,
-    { getProps = identity, shouldRender }: WithHookOptions<ReturnType<C>, P> = {},
+    { getProps = Utils.functional.identity, shouldRender }: WithHookOptions<ReturnType<C>, P> = {},
     ...args: Parameters<typeof useHook>
   ) =>
   <T extends object>(Component: React.FC<T & P>) =>

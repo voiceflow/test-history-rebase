@@ -1,4 +1,5 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
 import { useCache } from '@voiceflow/ui';
 import moize from 'moize';
 import React from 'react';
@@ -7,7 +8,6 @@ import { BlockType } from '@/constants';
 import { useLinkedRef, useRAF } from '@/hooks';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
-import { Nullable } from '@/types';
 
 import { MIN_HEIGHT, PLACEHOLDER_WIDTH } from '../components/LinkCaptionText';
 import { STROKE_DEFAULT_COLOR } from '../constants';

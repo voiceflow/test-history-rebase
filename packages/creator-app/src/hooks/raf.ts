@@ -1,6 +1,5 @@
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
-
-import { Nullable } from '@/types';
 
 import { LifecyclePhase, useLifecycle } from './lifecycle';
 

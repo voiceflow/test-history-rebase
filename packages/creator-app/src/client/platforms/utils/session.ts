@@ -1,7 +1,6 @@
+import { Nullable } from '@voiceflow/common';
 import { fetchLogger, NetworkError } from '@voiceflow/ui';
 import axios from 'axios';
-
-import { Nullable } from '@/types';
 
 export const RESOURCE_ENDPOINT = 'session';
 

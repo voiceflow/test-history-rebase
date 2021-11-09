@@ -1,10 +1,10 @@
-/* eslint-disable react/display-name, import/prefer-default-export */
+/* eslint-disable import/prefer-default-export */
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 import { Elements, injectStripe, StripeProvider } from 'react-stripe-elements';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
 import { IS_TEST, STRIPE_KEY } from '@/config';
-import { delay } from '@/utils/promise';
 
 import { withExternalResources } from './withExternalResources';
 
@@ -48,7 +48,7 @@ export const withStripe = (Component) => {
                 // Try again in a second, if the Source is still `pending`:
                 pollCount += 1;
 
-                await delay(POLL_INTERVAL);
+                await Utils.promise.delay(POLL_INTERVAL);
 
                 return pollForSourceStatus();
               }

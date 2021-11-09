@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
@@ -12,7 +13,7 @@ class AddLocalVariable extends AbstractDiagramResourceControl<Realtime.diagram.L
     const { creatorID } = ctx.data;
     const { variables } = await this.services.diagram.get(creatorID, payload.diagramID);
 
-    await this.services.diagram.patch(creatorID, payload.diagramID, { variables: Realtime.Utils.array.append(variables, payload.variable) });
+    await this.services.diagram.patch(creatorID, payload.diagramID, { variables: Utils.array.append(variables, payload.variable) });
   };
 }
 

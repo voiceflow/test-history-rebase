@@ -1,4 +1,5 @@
 import { Constants } from '@voiceflow/alexa-types';
+import { Utils } from '@voiceflow/common';
 import { Box, BoxFlex, Label } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -8,7 +9,6 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { css, styled, transition } from '@/hocs';
 import { useDispatch } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
-import { toggleMembership } from '@/utils/array';
 
 const LocaleButton = styled.button<{ 'data-active': boolean }>`
   flex: 1 1 auto;
@@ -46,7 +46,7 @@ const LocalesForm: React.FC = () => {
 
   const toggleLocale = React.useCallback(
     (locale: Constants.Locale) => {
-      const nextLocales = toggleMembership(locales, locale);
+      const nextLocales = Utils.array.toggleMembership(locales, locale);
 
       if (nextLocales.length) {
         updateLocales(nextLocales);

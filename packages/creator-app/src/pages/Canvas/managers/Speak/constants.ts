@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import { Icon } from '@voiceflow/ui';
-import cuid from 'cuid';
 
 import { BlockType, DialogType } from '@/constants';
 import { NodeData } from '@/models';
@@ -44,13 +44,13 @@ export const NODE_CONFIG: NodeConfig<NodeData.Speak> = {
       dialogs: [
         data?.type === DialogType.AUDIO
           ? {
-              id: cuid.slug(),
+              id: Utils.id.cuid.slug(),
               url: data?.url ?? '',
               type: DialogType.AUDIO,
               desc: data?.desc ?? '',
             }
           : {
-              id: cuid.slug(),
+              id: Utils.id.cuid.slug(),
               type: DialogType.VOICE,
               voice: data?.voice ?? options?.defaultVoice ?? '',
               content: data?.content ?? '',

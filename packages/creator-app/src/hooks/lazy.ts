@@ -1,12 +1,11 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
-
-import { hasIdenticalMembers } from '@/utils/array';
 
 // eslint-disable-next-line import/prefer-default-export
 export const useLazy = <T extends any[] | never[]>(
   callback: () => void,
   dependencies: T = [] as T,
-  compareDependencies: (dependencies: T, prevDependencies: T) => boolean = hasIdenticalMembers
+  compareDependencies: (dependencies: T, prevDependencies: T) => boolean = Utils.array.hasIdenticalMembers
 ): ((dependencies: T) => void) => {
   const prevDependencies = React.useRef<T | null>(null);
 

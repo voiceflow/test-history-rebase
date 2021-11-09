@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { IS_MAC } from '@voiceflow/ui';
 import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
@@ -6,7 +7,6 @@ import { createSelector } from 'reselect';
 import { ControlScheme } from '@/components/Canvas/constants';
 import { BlockCategory } from '@/constants';
 import { Action, Reducer, RootReducer } from '@/store/types';
-import { withoutValue } from '@/utils/array';
 
 import { createAction, createRootSelector } from './utils';
 
@@ -87,7 +87,7 @@ export const toggleBlockMenuSectionReducer: Reducer<UIState, ToggleBlockMenuSect
     ...state,
     blockMenu: {
       ...state.blockMenu,
-      openSections: openSections.includes(section) ? withoutValue(openSections, section) : [...openSections, section],
+      openSections: openSections.includes(section) ? Utils.array.withoutValue(openSections, section) : [...openSections, section],
     },
   };
 };

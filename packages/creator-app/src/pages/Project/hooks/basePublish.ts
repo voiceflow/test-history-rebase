@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,7 +8,6 @@ import { PublishContext, PublishContextValue } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { useDidUpdateEffect, useModals, useSelector, useToggle, useTrackingEvents } from '@/hooks';
 import { AlexaPublishJob, DialogflowPublishJob, GooglePublishJob } from '@/models';
-import { Nullable } from '@/types';
 import { isNotify, isReady } from '@/utils/job';
 
 type PublishStageType = typeof GoogleStageType | typeof AlexaStageType | typeof DialogflowStageType;

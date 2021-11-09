@@ -1,4 +1,5 @@
 import { Button } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
@@ -7,7 +8,6 @@ import ButtonsSection, { buttonsFactory } from '@/pages/Canvas/components/Sugges
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 import { PlatformContext } from '@/pages/Project/contexts';
-import { Nullable } from '@/types';
 import { getPlatformValue } from '@/utils/platform';
 import { isAlexaPlatform } from '@/utils/typeGuards';
 

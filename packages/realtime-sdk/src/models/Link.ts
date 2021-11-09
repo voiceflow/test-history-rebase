@@ -1,6 +1,7 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
 
-import { Nullable, PathPoints } from '../types';
+import { PathPoints } from '../types';
 
 export interface LinkDataCaption {
   value: string;

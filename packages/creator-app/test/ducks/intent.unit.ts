@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { generate } from '@voiceflow/ui';
 
 import * as Feature from '@/ducks/feature';
@@ -5,7 +6,6 @@ import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { createCRUDState, CRUDState } from '@/ducks/utils/crud';
 import * as Models from '@/models';
-import { normalize } from '@/utils/normalized';
 
 import suite from './_suite';
 
@@ -31,7 +31,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent', ({ expect, describeCRUDReducer, desc
 
         expect(
           select(IntentV2.intentsUsingSlotSelector, {
-            [Intent.STATE_KEY]: normalize([...intentWithSlot, ...intentWithoutSlot]),
+            [Intent.STATE_KEY]: Utils.normalized.normalize([...intentWithSlot, ...intentWithoutSlot]),
             [IntentV2.STATE_KEY]: createCRUDState(),
             [Feature.STATE_KEY]: { features: {} },
           })(slotID)

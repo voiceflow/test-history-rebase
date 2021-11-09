@@ -1,5 +1,5 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
@@ -32,7 +32,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Interaction> = {
       buttons: isChatbotPlatform(platform) ? buttonsFactory() : null,
       choices: [
         distinctPlatformsData({
-          id: cuid.slug(),
+          id: Utils.id.cuid.slug(),
           goTo: null,
           intent: null,
           action: BaseNode.Interaction.ChoiceAction.PATH,

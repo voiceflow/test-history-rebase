@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
@@ -10,7 +11,7 @@ class AddProjectToList extends AbstractProjectListResourceControl<Realtime.proje
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.projectList.AddProjectToListPayload>) => {
     await this.applyPatch(ctx, payload.workspaceID, payload.listID, (list) => ({
-      projects: Realtime.Utils.array.append(list.projects, payload.projectID),
+      projects: Utils.array.append(list.projects, payload.projectID),
     }));
   };
 }

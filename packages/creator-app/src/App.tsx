@@ -18,7 +18,7 @@ import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
 import { SeoPage } from '@/constants/seo';
 import { GlobalSocketSubscriptionsLoadingGate } from '@/gates';
-import { withBatchLoadingGate } from '@/hocs';
+import { compose, withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import TagManagerModal from '@/pages/Conversations/components/TagManagerModal';
@@ -32,7 +32,6 @@ import {
   TestableLinkModal,
 } from '@/pages/Dashboard/RestrictionModals';
 import PaymentModal from '@/pages/Payment/PaymentModal';
-import { compose } from '@/utils/functional';
 
 import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';
 import Routes from './Routes';

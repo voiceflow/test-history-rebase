@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
@@ -13,7 +14,7 @@ class ReorderIntentSteps extends AbstractDiagramResourceControl<Realtime.diagram
     const { intentStepIDs = [] } = await this.services.diagram.get(creatorID, payload.diagramID);
 
     await this.services.diagram.patch(creatorID, payload.diagramID, {
-      intentStepIDs: Realtime.Utils.array.reorder(intentStepIDs, payload.from, payload.to),
+      intentStepIDs: Utils.array.reorder(intentStepIDs, payload.from, payload.to),
     });
   };
 }

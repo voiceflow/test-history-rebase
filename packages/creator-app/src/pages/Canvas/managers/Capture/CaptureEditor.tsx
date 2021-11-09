@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Input } from '@voiceflow/ui';
 import React from 'react';
 
@@ -13,7 +14,6 @@ import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor
 import { useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 import { getTargetValue, withEnterPress } from '@/utils/dom';
-import { chain } from '@/utils/functional';
 
 import HelpTooltip from './components/HelpTooltip';
 
@@ -64,7 +64,7 @@ const CaptureEditor: React.FC<NodeEditorPropsType<NodeData.Capture>> = ({ data, 
                   placeholder="Enter user reply"
                   value={value!}
                   onChange={getTargetValue(onChange)}
-                  onKeyPress={withEnterPress(chain(getTargetValue(onAdd), () => onChange('')))}
+                  onKeyPress={withEnterPress(Utils.functional.chain(getTargetValue(onAdd), () => onChange('')))}
                 />
               )}
               renderItem={(item, { onUpdate }) => (

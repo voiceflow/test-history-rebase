@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Box, Button, ButtonVariant, FlexCenter, Input } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,6 @@ import InputGroupAddon, { AddonType } from '@/components/InputGroupAddon';
 import InputGroupText from '@/components/InputGroupText';
 import { useLinkedState } from '@/hooks';
 import { ClassName } from '@/styles/constants';
-import { append, replace, without } from '@/utils/array';
 
 interface Multiple {
   max?: number;
@@ -24,12 +24,12 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
   const onChange =
     (index: number) =>
     ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
-      setLocalList((prevList) => replace(prevList, index, currentTarget.value));
+      setLocalList((prevList) => Utils.array.replace(prevList, index, currentTarget.value));
     };
 
   const onDelete = (index: number) => () => {
     if (localList.length > 1) {
-      const nextList = without(localList, index);
+      const nextList = Utils.array.without(localList, index);
 
       update(nextList);
       setLocalList(nextList);
@@ -37,7 +37,7 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
   };
 
   const onAdd = () => {
-    const nextList = append(localList, '');
+    const nextList = Utils.array.append(localList, '');
 
     update(nextList);
     setLocalList(nextList);

@@ -1,3 +1,4 @@
+import { Eventual } from '@voiceflow/common';
 import React from 'react';
 
 import { useCancellable, useConstant, useLinkedRef } from '@/hooks';
@@ -5,7 +6,7 @@ import { EngineContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useVectorDragTranslate } from '@/pages/Canvas/hooks';
 import { BlockAPI } from '@/pages/Canvas/types';
-import { Eventual, Pair } from '@/types';
+import { Pair } from '@/types';
 import MouseMovement from '@/utils/mouseMovement';
 
 import { InternalThreadInstance } from './types';

@@ -1,7 +1,7 @@
+import { Nullable, Utils } from '@voiceflow/common';
+
 import { JobBuiltinStageType, JobStatus } from '@/constants';
 import { Job } from '@/models';
-import { Nullable } from '@/types';
-import { delay } from '@/utils/promise';
 
 export interface AbortControl {
   aborted: boolean;
@@ -28,7 +28,7 @@ export const waitJobFinished = async <J extends Job>({
 
     if (job.status === JobStatus.FINISHED && job.stage.type === JobBuiltinStageType.SUCCESS) return;
 
-    await delay(2000);
+    await Utils.promise.delay(2000);
 
     await check(count + 1);
   };

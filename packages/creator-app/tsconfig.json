@@ -10,7 +10,6 @@
     "experimentalDecorators": true,
     "allowJs": true,
     "isolatedModules": false,
-
     "jsx": "react",
     /* Strictness Checks */
     "alwaysStrict": true,
@@ -29,18 +28,47 @@
     "listEmittedFiles": false,
     "listFiles": false,
     "pretty": true,
-    "lib": ["es2019", "dom", "es2020.string"],
+    "lib": [
+      "es2019",
+      "dom",
+      "es2020.string"
+    ],
     "outDir": "./build",
     "baseUrl": "..",
-    "rootDirs": ["src", "../ui/src", "../realtime-sdk/src"],
+    "rootDirs": [
+      "src",
+      "../ui/src",
+      "../realtime-sdk/src"
+    ],
     "paths": {
-      "@voiceflow/ui": ["ui/src"],
-      "@voiceflow/realtime-sdk": ["realtime-sdk/src"],
-      "@/*": ["creator-app/src/*"]
+      "@voiceflow/ui": [
+        "ui/src"
+      ],
+      "@voiceflow/realtime-sdk": [
+        "realtime-sdk/src"
+      ],
+      "@/*": [
+        "creator-app/src/*"
+      ]
     },
-    "types": ["gapi", "gapi.auth2", "resize-observer-browser", "webpack-env"]
+    "types": [
+      "gapi",
+      "gapi.auth2",
+      "resize-observer-browser",
+      "webpack-env",
+      "dayjs/plugin/relativeTime",
+      "dayjs/plugin/minMax"
+    ]
   },
   "compileOnSave": false,
-  "include": ["src/**/*", "test/**/*", "config/**/*", "typings/**/*.d.ts"],
-  "exclude": ["node_modules/**", "config/webpack/**/*"]
+  "include": [
+    "src/**/*",
+    "test/**/*",
+    "config/**/*",
+    "typings/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules/**",
+    "config/webpack/**/*"
+  ]
 }

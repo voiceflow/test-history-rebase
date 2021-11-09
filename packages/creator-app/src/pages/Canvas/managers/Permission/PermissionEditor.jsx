@@ -1,9 +1,9 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import Section from '@/components/Section';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { without } from '@/utils/array';
 
 import { HelpTooltip } from './components';
 import { PERMISSIONS } from './constants';
@@ -14,7 +14,9 @@ function PermissionEditor({ data, onChange }) {
   const togglePermission = React.useCallback(
     (permission) => {
       onChange({
-        permissions: permissions.includes(permission) ? without(permissions, permissions.indexOf(permission)) : [...permissions, permission],
+        permissions: permissions.includes(permission)
+          ? Utils.array.without(permissions, permissions.indexOf(permission))
+          : [...permissions, permission],
       });
     },
     [permissions, onChange]

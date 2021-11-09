@@ -1,20 +1,19 @@
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 import { Action, AsyncActionCreators } from 'typescript-fsa';
 
 import { Thunk } from '@/store/types';
-import { createControlledPromise } from '@/utils/promise';
 
 // eslint-disable-next-line import/prefer-default-export
 export const waitAsync =
   <T, R, E = {}>(actionCreators: AsyncActionCreators<T, R, E>, payload: T): Thunk<R> =>
   async (dispatch, _getState, { log }) => {
-    const promise = createControlledPromise<R>();
+    const promise = Utils.promise.createControlledPromise<R>();
 
     let unsubscribe: VoidFunction | null = null;
 
     try {
       const processedActions: Action<R | E>[] = [];
-      const actionID = cuid();
+      const actionID = Utils.id.cuid();
       const action = actionCreators.started(payload);
 
       const unsubscribeProcessed = log.type<Action<E>>(actionCreators.done.type, (action) => processedActions.push(action));

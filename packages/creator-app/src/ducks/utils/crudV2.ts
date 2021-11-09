@@ -1,12 +1,10 @@
 /* eslint-disable no-param-reassign */
 
+import { NormalizedValue, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector, ParametricSelector, Selector } from 'reselect';
 import { ReducerBuilder } from 'typescript-fsa-reducers';
 import { PickByValue } from 'utility-types';
-
-import { reorder as arrayReorder, unique } from '@/utils/array';
-import { defaultGetKey, denormalize, NormalizedValue, ObjectWithId, safeGetNormalizedByKey } from '@/utils/normalized';
 
 import type { State } from '..';
 import { CRUDState } from './crud';
@@ -30,7 +28,7 @@ type CRUDReducers<T extends Realtime.actionUtils.CRUDActionCreators<any, any, an
   [K in Exclude<keyof T, 'refresh'>]: [actionCreator: T[K], handler: ImmerHandler<CRUDState<any>, any>];
 };
 
-export const createCRUDReducers = <T, D extends ObjectWithId, P extends Partial<D> = Partial<D>>(
+export const createCRUDReducers = <T, D extends Utils.normalized.ObjectWithId, P extends Partial<D> = Partial<D>>(
   createReducer: CreateReducer<CRUDState<any>>,
   actionCreators: Realtime.actionUtils.CRUDActionCreators<T, D, P>
 ): Omit<CRUDReducers<Realtime.actionUtils.CRUDActionCreators<T, D, P>>, 'refresh'> => {
@@ -43,10 +41,10 @@ export const createCRUDReducers = <T, D extends ObjectWithId, P extends Partial<
   });
 
   const addMany = createReducer(actionCreators.addMany, (state, { values }) => {
-    state.allKeys = unique([...state.allKeys, ...values.map(defaultGetKey)]);
+    state.allKeys = Utils.array.unique([...state.allKeys, ...values.map(Utils.normalized.defaultGetKey)]);
 
     values.forEach((value) => {
-      state.byKey[defaultGetKey(value)] = value;
+      state.byKey[Utils.normalized.defaultGetKey(value)] = value;
     });
   });
 
@@ -61,7 +59,7 @@ export const createCRUDReducers = <T, D extends ObjectWithId, P extends Partial<
   });
 
   const patch = createReducer(actionCreators.patch, (state, { key, value }) => {
-    const currValue = safeGetNormalizedByKey(state, key);
+    const currValue = Utils.normalized.safeGetNormalizedByKey(state, key);
 
     if (currValue) {
       Object.assign(currValue, value);
@@ -95,7 +93,7 @@ export const createCRUDReducers = <T, D extends ObjectWithId, P extends Partial<
 
   const move = createReducer(actionCreators.move, (state, { from, to }) => {
     if (from !== to) {
-      state.allKeys = arrayReorder(
+      state.allKeys = Utils.array.reorder(
         state.allKeys,
         typeof from === 'number' ? from : state.allKeys.indexOf(from),
         typeof to === 'number' ? to : state.allKeys.indexOf(to)
@@ -153,11 +151,12 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
   const root = createRootSelector(modelType) as Selector<State, CRUDStateSubset[K]>;
   const count = createSelector([root], ({ allKeys }) => allKeys.length);
   const has = createSelector([count], (size) => size !== 0);
-  const all = createSelector([root], (xs) => denormalize(xs as CRUDState<T>));
+  const all = createSelector([root], (xs) => Utils.normalized.denormalize(xs as CRUDState<T>));
   const map = createSelector([root], ({ byKey }) => byKey as Record<string, T>);
   const allIDs = createSelector([root], ({ allKeys }) => allKeys);
 
-  const byIDGetter = (normalized: CRUDState<any>, id: string | null | undefined): T | null => (id ? safeGetNormalizedByKey<T>(normalized, id) : null);
+  const byIDGetter = (normalized: CRUDState<any>, id: string | null | undefined): T | null =>
+    id ? Utils.normalized.safeGetNormalizedByKey<T>(normalized, id) : null;
   const byIDsGetter = (normalized: CRUDState<any>, ids: string[]): T[] =>
     ids.reduce<any[]>((acc, id) => {
       const value = byIDGetter(normalized, id);

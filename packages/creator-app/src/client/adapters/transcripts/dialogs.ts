@@ -1,7 +1,7 @@
 /* eslint-disable xss/no-mixed-html */
 import { Node } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Adapters } from '@voiceflow/realtime-sdk';
-import cuid from 'cuid';
 
 import { AnyTranscriptMessage, FormatType, SpeakTrace } from '@/models';
 import {
@@ -47,7 +47,7 @@ const dialogAdapter = Adapters.createAdapter<AnyTranscriptMessage, Message | nul
     }
 
     if (transcriptMessage.format === FormatType.Trace) {
-      const trace = { ...transcriptMessage.payload, id: cuid() };
+      const trace = { ...transcriptMessage.payload, id: Utils.id.cuid() };
       switch (trace.type) {
         case Node.Utils.TraceType.SPEAK:
           return createSpeakMessage(transformSpeakTrace(trace), commonProperties);

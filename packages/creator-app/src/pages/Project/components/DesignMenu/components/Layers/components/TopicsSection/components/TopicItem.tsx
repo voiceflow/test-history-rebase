@@ -1,7 +1,7 @@
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
-import { Nullable } from '@/types';
 
 import { TopicItem as TopicItemModel } from '../hooks';
 import IntentList from './IntentList';

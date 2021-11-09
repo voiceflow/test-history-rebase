@@ -1,6 +1,6 @@
+import { StringifyEnum } from '@voiceflow/common';
 import React from 'react';
 
-import { StringifyEnum } from '../../types';
 import { DefaultInput, InlineInput } from './components';
 import { InlineInputProps } from './components/InlineInput';
 import { InputVariant } from './constants';

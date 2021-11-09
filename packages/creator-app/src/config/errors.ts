@@ -1,5 +1,6 @@
+import { Nullish, Struct } from '@voiceflow/common';
+
 import { AnyProject, AnyVersion, Product, ProjectList } from '@/models';
-import { Nullish, Struct } from '@/types';
 
 class StateInvariantError<T extends Struct = {}> extends Error {
   constructor(message: string, public data?: T) {

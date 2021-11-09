@@ -8,11 +8,10 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
+import { compose, connect } from '@/hocs';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { compose } from '@/utils/functional';
 import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 
 import { Flow, HelpTooltip as FlowTooltip } from '../Flow/components';

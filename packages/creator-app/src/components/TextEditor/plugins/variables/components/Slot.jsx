@@ -4,8 +4,7 @@ import React from 'react';
 import { slotStyles, variableStyle } from '@/components/VariableTag';
 import { InteractionModelTabType } from '@/constants';
 import * as Router from '@/ducks/router';
-import { connect, styled } from '@/hocs';
-import { compose } from '@/utils/functional';
+import { compose, connect, styled } from '@/hocs';
 
 const Text = styled.span`
   pointer-events: none;

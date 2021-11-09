@@ -1,5 +1,6 @@
+import { NullableRecord } from '@voiceflow/common';
+
 import { Account } from '@/models';
-import { NullableRecord } from '@/types';
 
 export type AccountState = NullableRecord<Account> & {
   loading: boolean;

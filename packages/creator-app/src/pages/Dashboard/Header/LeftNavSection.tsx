@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Dropdown, FlexApart, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -10,7 +11,6 @@ import { useDispatch, usePermission, useSelector } from '@/hooks';
 import { Workspace } from '@/models';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
 import { ClassName } from '@/styles/constants';
-import { noop } from '@/utils/functional';
 
 interface LeftNavSectionProps {
   loadingProjects: boolean;
@@ -65,7 +65,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace, loadin
             isLoading={loadingProjects}
             id="workspaceDropdown"
             className={`${ClassName.DROPDOWN}--active-workspace`}
-            onClick={loadingProjects ? noop : onToggle}
+            onClick={loadingProjects ? Utils.functional.noop : onToggle}
             ref={ref}
           >
             <div>{activeWorkspace?.name}</div>

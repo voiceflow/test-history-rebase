@@ -1,7 +1,7 @@
 import { Node } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { preventDefault, SvgIcon, useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import cn from 'classnames';
-import cuid from 'cuid';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
@@ -39,7 +39,7 @@ const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({
 
   const cache = useCache({ dimension, onStopListening, onStartListening });
 
-  const contentKey = React.useMemo(() => cuid(), [dimension.width, dimension.height]);
+  const contentKey = React.useMemo(() => Utils.id.cuid(), [dimension.width, dimension.height]);
 
   const onContainerRef = React.useCallback((node: HTMLDivElement | null) => {
     containerRef.current = node;

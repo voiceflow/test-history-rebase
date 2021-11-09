@@ -1,10 +1,10 @@
 import { useSubscription } from '@logux/redux';
+import { NullableRecord } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { useCallback } from 'react';
 import { AnyAction } from 'typescript-fsa';
 
 import { Dispatchable, DispatchResult } from '@/store/types';
-import { NullableRecord } from '@/types';
 
 import { useStore } from './redux';
 

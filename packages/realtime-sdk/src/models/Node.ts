@@ -1,5 +1,6 @@
+import { WithRequired } from '@voiceflow/common';
+
 import { BlockType } from '../constants';
-import { WithRequired } from '../types';
 import { DBPort } from './Port';
 
 export interface Node {

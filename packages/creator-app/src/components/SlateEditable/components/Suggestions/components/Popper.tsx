@@ -1,10 +1,10 @@
+import { Normalized, Nullable, Utils } from '@voiceflow/common';
 import {
   Box,
   ClickableText,
   getNestedMenuFormattedLabel,
   KeyName,
   MenuContainer,
-  Nullable,
   Portal,
   portalRootNode,
   preventDefault,
@@ -21,7 +21,6 @@ import { useDismissable } from 'react-dismissable-layers';
 import { useLinkedState } from '@/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { getTargetValue } from '@/utils/dom';
-import { getNormalizedByKey, Normalized } from '@/utils/normalized';
 
 import { useSlateEditor } from '../../../contexts';
 import { EditorAPI } from '../../../editor';
@@ -98,7 +97,7 @@ const Popper = <T extends PopperItem>({
 
     // eslint-disable-next-line no-restricted-syntax
     for (const id of suggestions.allKeys) {
-      const suggestion = getNormalizedByKey(suggestions, id);
+      const suggestion = Utils.normalized.getNormalizedByKey(suggestions, id);
 
       map[suggestion.name] = suggestion;
 

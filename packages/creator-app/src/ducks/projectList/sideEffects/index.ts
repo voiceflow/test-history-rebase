@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
@@ -11,8 +12,6 @@ import * as Session from '@/ducks/session';
 import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
 import { ProjectList } from '@/models';
 import { Thunk } from '@/store/types';
-import { replace, unique } from '@/utils/array';
-import { cuid } from '@/utils/string';
 import * as Sentry from '@/vendors/sentry';
 
 import { crud, removeProjectFromList, transplantProject } from '../actions';
@@ -39,7 +38,7 @@ export const loadProjectLists =
       // determine if there are any projects not on a board
       const usedProjects = new Set();
       let normalizedLists = lists.map((list) => {
-        const projects = unique(list.projects).filter((projectID) => projectIDs.includes(projectID) && !usedProjects.has(projectID));
+        const projects = Utils.array.unique(list.projects).filter((projectID) => projectIDs.includes(projectID) && !usedProjects.has(projectID));
 
         projects.forEach((projectID) => usedProjects.add(projectID));
 
@@ -57,11 +56,11 @@ export const loadProjectLists =
         const defaultList = normalizedLists.find((list) => list.name === Realtime.DEFAULT_PROJECT_LIST_NAME);
 
         if (defaultList) {
-          const projects = unique([...defaultList.projects, ...unusedProjectIDs]);
-          normalizedLists = replace(normalizedLists, normalizedLists.indexOf(defaultList), { ...defaultList, projects });
+          const projects = Utils.array.unique([...defaultList.projects, ...unusedProjectIDs]);
+          normalizedLists = Utils.array.replace(normalizedLists, normalizedLists.indexOf(defaultList), { ...defaultList, projects });
         } else {
           normalizedLists.push({
-            id: cuid(),
+            id: Utils.id.cuid(),
             name: Realtime.DEFAULT_PROJECT_LIST_NAME,
             projects: unusedProjectIDs,
           });
@@ -100,7 +99,7 @@ export const createProjectList =
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-    const id = cuid();
+    const id = Utils.id.cuid();
     const list: ProjectList = {
       id,
       name: name ?? 'New List',
@@ -148,7 +147,7 @@ export const saveProjectToList =
 
       const newList = { ...lists[0], projects: [projectID, ...lists[0].projects] };
 
-      await client.projectList.update(workspaceID, replace(lists, 0, newList));
+      await client.projectList.update(workspaceID, Utils.array.replace(lists, 0, newList));
     } catch (err) {
       Sentry.error(err);
       throw err;

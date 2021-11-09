@@ -1,3 +1,4 @@
+import { Nullable, Utils } from '@voiceflow/common';
 import { toast, useCache, useContextApi, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,11 +8,8 @@ import { useEventualEngine, usePermission, useTrackingEvents, useUpload } from '
 import { Markup, NodeData } from '@/models';
 import { useAnyModeOpen } from '@/pages/Project/hooks/modes';
 import { ClassName, Identifier } from '@/styles/constants';
-import { Nullable } from '@/types';
-import { asyncForEach } from '@/utils/array';
 import { upload, windowRefocused } from '@/utils/dom';
 import { imageSizeFromUrl } from '@/utils/file';
-import { delay } from '@/utils/promise';
 
 const FILE_LIMIT = 2 ** 20 * 4; // 2 ** 20 === 1 mb
 const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'];
@@ -76,7 +74,7 @@ export const MarkupProvider: React.FC = ({ children }) => {
 
     const engine = cache.current.getEngine()!;
 
-    await asyncForEach(allowedFiles, async (file) => {
+    await Utils.array.asyncForEach(allowedFiles, async (file) => {
       try {
         const imageURL = await onUploadImage(null, file);
         const imageSize = await imageSizeFromUrl(imageURL);
@@ -133,7 +131,7 @@ export const MarkupProvider: React.FC = ({ children }) => {
     upload(addImages, { multiple: true, accept: ALLOWED_IMAGE_TYPES.join(',') });
 
     await windowRefocused();
-    await delay(300);
+    await Utils.promise.delay(300);
 
     if (!cache.current.uploadingImages) {
       setCreatingType(null);

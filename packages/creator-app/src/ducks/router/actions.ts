@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import { Struct } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { CALL_HISTORY_METHOD, push, replace } from 'connected-react-router';
 import { generatePath } from 'react-router-dom';
 
 import { Path, PublishRoute } from '@/config/routes';
 import { Action } from '@/store/types';
-import { Struct } from '@/types';
 import * as Query from '@/utils/query';
 import { isDialogflowPlatform } from '@/utils/typeGuards';
 

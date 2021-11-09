@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { generate } from '@voiceflow/ui';
 import { DeepPartial } from 'utility-types';
@@ -11,8 +12,6 @@ import * as ProjectListSelectorsV2 from '@/ducks/projectListV2/selectors';
 import { createCRUDState, CRUDState } from '@/ducks/utils/crud';
 import * as Models from '@/models';
 import { State } from '@/store/types';
-import { normalize } from '@/utils/normalized';
-import * as StringUtils from '@/utils/string';
 
 import suite from './_suite';
 
@@ -114,7 +113,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
         expect(
           select(ProjectListV2.defaultProjectListSelector, {
             ...ROOT_STATE,
-            [ProjectList.STATE_KEY]: normalize([defaultList, ...otherLists]),
+            [ProjectList.STATE_KEY]: Utils.normalized.normalize([defaultList, ...otherLists]),
           })
         ).to.eq(defaultList);
       });
@@ -123,7 +122,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
         expect(
           select(ProjectListV2.defaultProjectListSelector, {
             ...ROOT_STATE,
-            [ProjectList.STATE_KEY]: normalize(otherLists),
+            [ProjectList.STATE_KEY]: Utils.normalized.normalize(otherLists),
           })
         ).to.be.null;
       });
@@ -168,7 +167,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
     describe('createProjectList()', () => {
       it('should create a new project list', async () => {
         const listID = generate.id();
-        stub(StringUtils, 'cuid').returns(listID);
+        stub(Utils.id, 'cuid').returns(listID);
 
         const { result, expectDispatch } = await applyEffect(ProjectList.createProjectList(), rootState);
 

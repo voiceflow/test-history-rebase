@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import _unionBy from 'lodash/unionBy';
 import { createSelector } from 'reselect';
 
@@ -5,9 +6,7 @@ import * as CreatorDiagramSelectors from '@/ducks/creator/diagram/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { unique } from '@/utils/array';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
-import { normalize } from '@/utils/normalized';
 
 import { getDiagramByIDSelector, getDiagramsByIDsSelector } from './base';
 
@@ -38,11 +37,11 @@ const allVariablesSelector = createSelector(
 );
 
 export const allSlotsAndVariablesSelector = createSelector([SlotV2.slotNamesSelector, allVariablesSelector], (slotNames, allVariables) =>
-  unique([...slotNames, ...allVariables])
+  Utils.array.unique([...slotNames, ...allVariables])
 );
 
 export const allSlotsAndVariablesNormalizedSelector = createSelector([SlotV2.allSlotsSelector, allVariablesSelector], (slots, allVariables) =>
-  normalize(
+  Utils.normalized.normalize(
     _unionBy<{ id: string; name: string; isSlot?: boolean }>(
       [
         ...slots.map((slot) => ({ id: slot.id, name: slot.name, isSlot: true })),

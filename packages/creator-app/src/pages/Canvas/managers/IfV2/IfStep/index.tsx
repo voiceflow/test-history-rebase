@@ -1,4 +1,5 @@
 import { Node } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,6 @@ import { useSyncedLookup } from '@/hooks';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { head } from '@/utils/array';
 import { expressionPreview } from '@/utils/expression';
 
 import { NODE_CONFIG } from '../constants';
@@ -53,7 +53,7 @@ type ConnectedIfStepProps = ConnectedStepProps<NodeData.IfV2>;
 const ConnectedIfStep: React.FC<ConnectedIfStepProps> = ({ node, data }) => {
   const engine = React.useContext(EngineContext)!;
 
-  const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
+  const [elsePortID, nodeOutPorts] = React.useMemo(() => Utils.array.head(node.ports.out), [node.ports.out]);
   const expressionsByPortID = useSyncedLookup(nodeOutPorts, data.expressions);
   const hasElseLink = engine.hasLinksByPortID(elsePortID); // also show the else port if a link exists
   const isPath = hasElseLink || (!!data.noMatch.type && data.noMatch.type === Node.Utils.NoMatchType.PATH);

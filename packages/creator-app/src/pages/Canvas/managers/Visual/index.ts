@@ -1,8 +1,8 @@
+import { Writeable } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 
 import { GENERAL_PLATFORMS } from '@/constants';
 import { NodeData } from '@/models';
-import { Writeable } from '@/types';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';

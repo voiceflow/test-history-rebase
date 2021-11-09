@@ -1,10 +1,9 @@
-import { WithOptional } from '@voiceflow/realtime-sdk';
+import { Callback, Function, WithOptional } from '@voiceflow/common';
 
 import { LockAction, LockType } from '@/ducks/realtime/constants';
 import { LockPayload } from '@/ducks/realtime/socket';
 import { RealtimeLocks } from '@/ducks/realtime/types';
 import { AnyAction } from '@/store/types';
-import { Callback, Function } from '@/types';
 
 import client, { SocketStatus } from './client';
 import { ClientEvent, ServerEvent } from './constants';

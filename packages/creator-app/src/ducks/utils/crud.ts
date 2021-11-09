@@ -1,27 +1,9 @@
+import { Normalized, NormalizedValue, Utils } from '@voiceflow/common';
 import { createSelector } from 'reselect';
 import { PickByValue } from 'utility-types';
 
 import type { State } from '@/ducks';
 import { Action, RootReducer, Selector } from '@/store/types';
-import { NormalizedValue } from '@/types';
-import { reorder } from '@/utils/array';
-import {
-  addAllNormalizedByKeys,
-  addNormalizedByKey,
-  addToStartNormalizedByKey,
-  createEmptyNormalized,
-  defaultGetKey,
-  denormalize,
-  GetKey,
-  getNormalizedByKey,
-  normalize,
-  Normalized,
-  ObjectWithId,
-  removeAllNormalizedByKeys,
-  removeNormalizedByKey,
-  reorderKeys,
-  updateNormalizedByKey,
-} from '@/utils/normalized';
 
 import { createAction, createRootSelector } from '.';
 
@@ -34,7 +16,7 @@ export interface Meta {
   receivedAction?: boolean;
 }
 
-export const createCRUDState: () => CRUDState<any> = createEmptyNormalized;
+export const createCRUDState: () => CRUDState<any> = Utils.normalized.createEmptyNormalized;
 
 // actions
 
@@ -84,53 +66,54 @@ export type AnyCRUDAction<T> =
 
 // reducers
 
-export const crudReorderReducer = <T, S extends CRUDState<T> = CRUDState<T>>({ byKey }: S, { payload }: CRUDReorder) => reorderKeys(payload, byKey);
+export const crudReorderReducer = <T, S extends CRUDState<T> = CRUDState<T>>({ byKey }: S, { payload }: CRUDReorder) =>
+  Utils.normalized.reorderKeys(payload, byKey);
 
 export const crudAddReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: { key, value } }: CRUDAdd<T>) =>
-  addNormalizedByKey(state, key, value);
+  Utils.normalized.addNormalizedByKey(state, key, value);
 
-export const crudAddManyReducer = <T, K extends GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(
+export const crudAddManyReducer = <T, K extends Utils.normalized.GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(
   state: S,
   { payload: values }: CRUDAddMany<T>,
   getKey: K
-) => addAllNormalizedByKeys(state, values, getKey);
+) => Utils.normalized.addAllNormalizedByKeys(state, values, getKey);
 
 export const crudPrependReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: { key, value } }: CRUDPrepend<T>) =>
-  addToStartNormalizedByKey(state, key, value);
+  Utils.normalized.addToStartNormalizedByKey(state, key, value);
 
 export const crudUpdateReducer = <T, S extends CRUDState<T> = CRUDState<T>>(
   state: S,
   { payload: { key, value, patch } }: CRUDPatch<T> | CRUDUpdate<T>
-) => updateNormalizedByKey(state, key, patch ? { ...getNormalizedByKey(state, key), ...value } : value);
+) => Utils.normalized.updateNormalizedByKey(state, key, patch ? { ...Utils.normalized.getNormalizedByKey(state, key), ...value } : value);
 
 export const crudRemoveReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: key }: CRUDRemove) =>
-  removeNormalizedByKey(state, key);
+  Utils.normalized.removeNormalizedByKey(state, key);
 
 export const crudRemoveManyReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: keys }: CRUDRemoveMany) =>
-  removeAllNormalizedByKeys(state, keys);
+  Utils.normalized.removeAllNormalizedByKeys(state, keys);
 
-export const crudReplaceReducer = <T, K extends GetKey<T> = (obj: T) => string>({ payload: values }: CRUDReplace<T>, getKey: K) =>
-  normalize(values, getKey);
+export const crudReplaceReducer = <T, K extends Utils.normalized.GetKey<T> = (obj: T) => string>({ payload: values }: CRUDReplace<T>, getKey: K) =>
+  Utils.normalized.normalize(values, getKey);
 
 export const crudMoveReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: { from, to } }: CRUDMove) => {
   if (from === to) return state;
 
-  const reordered = reorder(
+  const reordered = Utils.array.reorder(
     state.allKeys,
     typeof from === 'number' ? from : state.allKeys.indexOf(from),
     typeof to === 'number' ? to : state.allKeys.indexOf(to)
   );
 
-  return reorderKeys(reordered, state.byKey);
+  return Utils.normalized.reorderKeys(reordered, state.byKey);
 };
 
 const createCRUDReducer: {
-  <T extends ObjectWithId, G extends GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(
+  <T extends Utils.normalized.ObjectWithId, G extends Utils.normalized.GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(
     modelType: string,
     getKey?: G
   ): RootReducer<S, AnyCRUDAction<T>>;
   // must provide getKey if object does not extend ObjectWithId
-  <T, K extends GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(modelType: string, getKey: K): RootReducer<
+  <T, K extends Utils.normalized.GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(modelType: string, getKey: K): RootReducer<
     S,
     AnyCRUDAction<T>
   >;
@@ -138,7 +121,7 @@ const createCRUDReducer: {
   const initialState = createCRUDState();
 
   return (state = initialState, action: AnyCRUDAction<any>) => {
-    const keyGetter = getKey ?? defaultGetKey;
+    const keyGetter = getKey ?? Utils.normalized.defaultGetKey;
 
     if (!action.meta || action.meta.modelType !== modelType) {
       return state;
@@ -175,7 +158,7 @@ export default createCRUDReducer;
 
 export const createCRUDSelectors = <K extends keyof CRUDStateSubset, S extends CRUDStateSubset[K], T extends NormalizedValue<S>>(modelType: K) => {
   const root = createRootSelector<any>(modelType) as Selector<CRUDState<T> & S>;
-  const all = createSelector([root], denormalize as any) as Selector<T[]>;
+  const all = createSelector([root], Utils.normalized.denormalize as any) as Selector<T[]>;
   const count = createSelector([root], ({ allKeys }) => allKeys.length);
   const collect = createSelector(
     [root],
@@ -197,14 +180,14 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, S extends C
         findModels((normalized) =>
           ids.reduce<T[]>((acc, id) => {
             if (normalized.allKeys.includes(id)) {
-              acc.push(getNormalizedByKey(normalized as CRUDState<any>, id));
+              acc.push(Utils.normalized.getNormalizedByKey(normalized as CRUDState<any>, id));
             }
 
             return acc;
           }, [])
         )
     ),
-    byID: createSelector([root], (normalized: CRUDState<T>) => (id: string) => getNormalizedByKey(normalized, id)),
+    byID: createSelector([root], (normalized: CRUDState<T>) => (id: string) => Utils.normalized.getNormalizedByKey(normalized, id)),
     count,
     has: createSelector([count], (size) => size !== 0),
   };

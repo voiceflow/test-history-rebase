@@ -1,9 +1,9 @@
+import { Utils } from '@voiceflow/common';
 import { FlexCenter } from '@voiceflow/ui';
 import React, { useContext } from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
-import { toggleMembership } from '@/utils/array';
 
 import { StepID } from '../../constants';
 import { OnboardingContext } from '../../context';
@@ -89,7 +89,7 @@ const PersonalizeWorkspace: React.FC = () => {
         dropdownActive
         buttonClick={(_: unknown, { onToggle }: { onToggle: () => void }) => onToggle()}
         selectedItems={channels}
-        onSelect={(channel: string) => setChannels(toggleMembership(channels, channel))}
+        onSelect={(channel: string) => setChannels(Utils.array.toggleMembership(channels, channel))}
         placeholder="Choose all that apply"
         customOptionLabelStyling={customOptionLabelStyling}
       />

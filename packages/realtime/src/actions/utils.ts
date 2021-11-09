@@ -1,8 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import type { ServerMeta } from '@logux/server';
 import type { Resend } from '@logux/server/base-server';
-import { Eventual } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { Eventual, Utils } from '@voiceflow/common';
 import type { Action, ActionCreator, AsyncActionCreators } from 'typescript-fsa';
 
 import { BaseContextData, Context } from '@/types';
@@ -108,7 +107,7 @@ export const noAccess = (self: AbstractActionControl<any, any>): ActionAccessor<
 export abstract class AbstractNoopActionControl<P> extends AbstractActionControl<P, BaseContextData> {
   protected access = noAccess(this);
 
-  protected process = Realtime.Utils.functional.noop;
+  protected process = Utils.functional.noop;
 }
 
 export const unrestrictedAccess = (self: AbstractActionControl<any, any>): ActionAccessor<any, any> =>

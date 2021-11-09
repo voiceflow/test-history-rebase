@@ -1,5 +1,5 @@
 import { Server, ServerMeta } from '@logux/server';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { Utils } from '@voiceflow/common';
 import { AnyAction } from 'typescript-fsa';
 
 import { AbstractControl } from '@/control';
@@ -7,7 +7,7 @@ import { AbstractControl } from '@/control';
 const CHANNEL = 'realtime:actions';
 
 class SyncService extends AbstractControl {
-  private unsubscribe: () => void = Realtime.Utils.functional.noop;
+  private unsubscribe: () => void = Utils.functional.noop;
 
   public start(server: Server): void {
     // listen to messages on the "realtime:actions" channels and re-broadcast them to connected clients
@@ -35,7 +35,7 @@ class SyncService extends AbstractControl {
   public stop(): void {
     this.unsubscribe();
 
-    this.unsubscribe = Realtime.Utils.functional.noop;
+    this.unsubscribe = Utils.functional.noop;
   }
 }
 

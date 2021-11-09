@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import {
   Badge,
   ClickableText,
@@ -10,7 +11,6 @@ import {
   useEnableDisable,
   useSetup,
 } from '@voiceflow/ui';
-import cuid from 'cuid';
 import queryString from 'query-string';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -86,7 +86,7 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
             name,
             isCreate: true,
             onSave: async ({ type, name, color, inputs = [] }) => {
-              const id = cuid.slug();
+              const id = Utils.id.cuid.slug();
 
               resolve({ id, name, color });
 

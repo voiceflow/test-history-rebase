@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { ExpressionData as NodeDataExpressionData } from '../../../../models';
 import { ADVANCE_LOGIC_TYPES, expressionfyV2, getHighestDepth, hasAdvanceChildExpression } from '../../../../utils/expression';
@@ -81,7 +81,7 @@ export const sanitizeExpression = (
           const logic = getLogicInterface(value, true);
 
           return {
-            id: cuid(),
+            id: Utils.id.cuid(),
             logicInterface: logic,
             ...sanitizeExpression(value, logic),
           };
@@ -97,11 +97,11 @@ const expressionV1toV2Adapter = createAdapter<Node.Utils.Expression, NodeDataExp
     const logicInterface = getLogicInterface(expression);
 
     return {
-      id: cuid(),
+      id: Utils.id.cuid(),
       type: null,
       value: [
         {
-          id: cuid(),
+          id: Utils.id.cuid(),
           logicInterface,
           ...sanitizeExpression(expression, logicInterface),
         },

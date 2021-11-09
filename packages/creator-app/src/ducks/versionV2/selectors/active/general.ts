@@ -1,8 +1,8 @@
+import { Nullable } from '@voiceflow/common';
 import { GeneralVersion } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import * as ProjectV2 from '@/ducks/projectV2';
-import { Nullable } from '@/types';
 
 import { versionSelector as activeVersionSelector } from './base';
 

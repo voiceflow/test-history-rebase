@@ -1,8 +1,9 @@
 /* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
 
+import { Utils } from '@voiceflow/common';
+
 import suite from '@/../test/_suite';
 import AudioController, { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
-import { noop } from '@/utils/functional';
 
 suite('Prototype/PrototypeTool/Audio - TAudio', ({ spy, stub, expect }) => {
   describe('TAudio', () => {
@@ -151,7 +152,7 @@ suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
     it('should clear audio', () => {
       const controller = new AudioController();
 
-      controller.play('src').catch(noop);
+      controller.play('src').catch(Utils.functional.noop);
 
       controller.stop();
 

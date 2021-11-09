@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import { expect } from 'chai';
-import cuid from 'cuid';
 import { datatype } from 'faker';
 import Sinon from 'sinon';
 
@@ -15,7 +15,7 @@ describe('Adapters | Creator | Block | Alexa | userInfoAdapter', () => {
   describe('when transforming from db', () => {
     it('maps all infos to permissions', () => {
       const id = datatype.uuid();
-      Sinon.stub(cuid, 'slug').returns(id);
+      Sinon.stub(Utils.id.cuid, 'slug').returns(id);
       const data = userInfoStepDataFactory();
 
       const result = userInfoAdapter.fromDB(data);

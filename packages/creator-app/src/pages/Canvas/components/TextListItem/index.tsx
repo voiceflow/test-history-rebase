@@ -4,11 +4,11 @@ import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
 import SlateEditableWithVariables from '@/components/SlateEditableWithVariables';
+import { compose } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
 import { NODE_CONFIG } from '@/pages/Canvas/managers/Text/constants';
-import { compose } from '@/utils/functional';
 
 export type TextListItemProps = ListItemComponentProps<Node.Text.TextData, { header?: React.ReactNode }>;
 

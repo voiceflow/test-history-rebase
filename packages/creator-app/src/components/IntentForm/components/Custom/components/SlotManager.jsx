@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import DraggableList from '@/components/DraggableList';
@@ -6,7 +7,6 @@ import * as Intent from '@/ducks/intent';
 import * as SlotV2 from '@/ducks/slotV2';
 import { connect } from '@/hocs';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
-import { reorder } from '@/utils/array';
 
 import DraggableSlotItem from './DraggableSlotItem';
 import SlotsTooltip from './SlotsTooltip';
@@ -27,7 +27,7 @@ function SlotManager({ intent, slotsMap, reorderIntentSlots, pushToPath, isNeste
   );
 
   const onReorderSlot = React.useCallback(
-    (dragIndex, hoverIndex) => updateReorderableSlots(reorder(reorderableSlots, dragIndex, hoverIndex)),
+    (dragIndex, hoverIndex) => updateReorderableSlots(Utils.array.reorder(reorderableSlots, dragIndex, hoverIndex)),
     [reorderableSlots, updateReorderableSlots]
   );
 

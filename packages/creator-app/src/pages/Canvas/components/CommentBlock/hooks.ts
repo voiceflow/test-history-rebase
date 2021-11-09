@@ -1,8 +1,8 @@
+import { Utils } from '@voiceflow/common';
 import _constant from 'lodash/constant';
 import React from 'react';
 
 import { BlockAPI } from '@/pages/Canvas/types';
-import { noop } from '@/utils/functional';
 
 // eslint-disable-next-line import/prefer-default-export
 export const useCommentBlockAPI = <T extends HTMLElement = HTMLElement>() => {
@@ -12,9 +12,9 @@ export const useCommentBlockAPI = <T extends HTMLElement = HTMLElement>() => {
     () => ({
       ref,
       getRect: _constant(null),
-      rename: noop,
-      addEventListener: noop,
-      removeEventListener: noop,
+      rename: Utils.functional.noop,
+      addEventListener: Utils.functional.noop,
+      removeEventListener: Utils.functional.noop,
     }),
     []
   );

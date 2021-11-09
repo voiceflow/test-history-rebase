@@ -1,4 +1,4 @@
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { API_URL, POSTGRES_DB, POSTGRES_HOST, POSTGRES_USER, REDIS_HOST, TEST_EMAIL, TEST_PASSWORD, TEST_USER } from '../../config';
 import signupPage from '../../pages/signup';
@@ -52,7 +52,7 @@ Cypress.Commands.add('clearAuth', () => {
 });
 
 Cypress.Commands.add('createTestAccount', () => {
-  SESSION_CONTEXT.set(TAB_ID_KEY, cuid());
+  SESSION_CONTEXT.set(TAB_ID_KEY, Utils.id.cuid());
 
   cy.request('PUT', `${API_URL}/user`, {
     device: {

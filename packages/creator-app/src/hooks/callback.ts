@@ -1,11 +1,10 @@
+import { Utils } from '@voiceflow/common';
 // eslint-disable-next-line lodash/import-scope
 import type { DebounceSettings, ThrottleSettings } from 'lodash';
 import _debounce from 'lodash/debounce';
 import _throttle from 'lodash/throttle';
 import moize from 'moize';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-
-import { noop } from '@/utils/functional';
 
 import { useTeardown } from './lifecycle';
 
@@ -34,14 +33,14 @@ export const useCurried = <S extends any[], D extends any[], R extends any = voi
 };
 
 export const useCancellable = <T extends any[]>(effect: (...args: T) => () => void, dependencies: any[] = []): [(...args: T) => void, () => void] => {
-  const teardownHandler = useRef(noop);
+  const teardownHandler = useRef(Utils.functional.noop);
 
   const callback = useCallback((...args: T) => {
     const handler = effect(...args);
 
     teardownHandler.current = () => {
       handler();
-      teardownHandler.current = noop;
+      teardownHandler.current = Utils.functional.noop;
     };
   }, dependencies);
 

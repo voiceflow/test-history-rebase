@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { ClickableText, ErrorMessage, FlexApart, Input } from '@voiceflow/ui';
 import React from 'react';
 
@@ -14,7 +15,6 @@ import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { applyPlatformIntentNameFormatting, isCustomizableBuiltInIntent, validateIntentName } from '@/utils/intent';
-import { removeTrailingUnderscores } from '@/utils/string';
 
 export interface ManagerProps {
   id: string;
@@ -41,7 +41,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
     );
 
   const onBlur = () => {
-    const formattedName = removeTrailingUnderscores(name);
+    const formattedName = Utils.string.removeTrailingUnderscores(name);
     const error = validateName(formattedName);
 
     setName(formattedName);

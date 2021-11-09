@@ -1,6 +1,7 @@
+import { Utils } from '@voiceflow/common';
+
 import createCRUDReducer from '@/ducks/utils/crud';
 import { Reducer, RootReducer } from '@/store/types';
-import { getNormalizedByKey, patchNormalizedByKey } from '@/utils/normalized';
 
 import { AnyVersionAction, UpdatePublishing, UpdateSession, UpdateSettings, VersionAction } from './actions';
 import { INITIAL_STATE, STATE_KEY } from './constants';
@@ -22,9 +23,9 @@ export * from './types';
 export const versionCRUDReducer = createCRUDReducer<AnyVersion>(STATE_KEY);
 
 export const updateSettingsReducer: Reducer<VersionState, UpdateSettings<AnyVersionSettings>> = (state, { payload: { id, settings } }) => {
-  const version = getNormalizedByKey(state, id);
+  const version = Utils.normalized.getNormalizedByKey(state, id);
 
-  return patchNormalizedByKey(state, id, {
+  return Utils.normalized.patchNormalizedByKey(state, id, {
     settings: {
       ...version.settings,
       ...settings,
@@ -33,9 +34,9 @@ export const updateSettingsReducer: Reducer<VersionState, UpdateSettings<AnyVers
 };
 
 export const updatePublishingReducer: Reducer<VersionState, UpdatePublishing<AnyVersionPublishing>> = (state, { payload: { id, publishing } }) => {
-  const version = getNormalizedByKey(state, id);
+  const version = Utils.normalized.getNormalizedByKey(state, id);
 
-  return patchNormalizedByKey(state, id, {
+  return Utils.normalized.patchNormalizedByKey(state, id, {
     publishing: {
       ...version.publishing,
       ...publishing,
@@ -44,9 +45,9 @@ export const updatePublishingReducer: Reducer<VersionState, UpdatePublishing<Any
 };
 
 export const updateSessionReducer: Reducer<VersionState, UpdateSession> = (state, { payload: { id, session } }) => {
-  const version = getNormalizedByKey(state, id);
+  const version = Utils.normalized.getNormalizedByKey(state, id);
 
-  return patchNormalizedByKey(state, id, {
+  return Utils.normalized.patchNormalizedByKey(state, id, {
     session: {
       ...version.session,
       ...session,

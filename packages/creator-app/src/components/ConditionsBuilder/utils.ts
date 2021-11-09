@@ -1,6 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import { SLOT_REGEXP } from '@voiceflow/common';
-import cuid from 'cuid';
+import { SLOT_REGEXP, Utils } from '@voiceflow/common';
 import isEmpty from 'lodash/isEmpty';
 
 import {
@@ -67,14 +66,14 @@ export const getDefaultValue = (logicInterface: Node.Utils.ConditionsLogicInterf
   switch (logicInterface) {
     case Node.Utils.ConditionsLogicInterface.EXPRESSION:
       return {
-        id: cuid.slug(),
+        id: Utils.id.cuid.slug(),
         logicInterface,
         type: Node.Utils.ExpressionTypeV2.ADVANCE,
         value: '',
       } as AdvancedExpressionV2;
     case Node.Utils.ConditionsLogicInterface.VARIABLE:
       return {
-        id: cuid.slug(),
+        id: Utils.id.cuid.slug(),
         logicInterface,
         type: Node.Utils.ExpressionTypeV2.EQUALS,
         value: [
@@ -90,7 +89,7 @@ export const getDefaultValue = (logicInterface: Node.Utils.ConditionsLogicInterf
       } as EqualsExpressionV2;
     case Node.Utils.ConditionsLogicInterface.VALUE:
       return {
-        id: cuid.slug(),
+        id: Utils.id.cuid.slug(),
         logicInterface,
         type: Node.Utils.ExpressionTypeV2.EQUALS,
         value: [
@@ -106,7 +105,7 @@ export const getDefaultValue = (logicInterface: Node.Utils.ConditionsLogicInterf
       } as EqualsExpressionV2;
     default:
       return {
-        id: cuid.slug(),
+        id: Utils.id.cuid.slug(),
         logicInterface,
         type: null,
         value: [],

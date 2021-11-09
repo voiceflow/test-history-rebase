@@ -1,4 +1,4 @@
-import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
+import { READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
 import { LoadCircle, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -8,7 +8,6 @@ import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import { HTTPS_URL_REGEX, IMAGE_FILE_FORMATS } from '@/constants';
 import { withUpload } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
-import { noop } from '@/utils/functional';
 
 import { ErrorText } from '../IconUpload/components';
 import { Container, Image, ImageContainer, ImageUploadInput, RemoveButton } from './components';
@@ -55,7 +54,7 @@ function FullImage({
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     accept: IMAGE_FILE_FORMATS,
     onDropAccepted,
-    onDropRejected: noop(),
+    onDropRejected: Utils.functional.noop,
     disabled: isLoading,
   });
   const [loadError, setLoadError] = React.useState(null);

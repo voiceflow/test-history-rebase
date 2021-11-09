@@ -1,3 +1,4 @@
+import { Nullable, Utils } from '@voiceflow/common';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
@@ -10,8 +11,6 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import * as Models from '@/models';
-import { Nullable } from '@/types';
-import { reorder } from '@/utils/array';
 
 export interface TopicIntentItem {
   id: string;
@@ -56,7 +55,7 @@ export const useTopics = (): TopicsAPI => {
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [lastCreatedDiagramID, setLastCreatedDiagramID] = React.useState<Nullable<string>>(null);
 
-  const onReorderTopics = React.useCallback((from: number, to: number) => saveTopics(reorder(topics, from, to)), [topics]);
+  const onReorderTopics = React.useCallback((from: number, to: number) => saveTopics(Utils.array.reorder(topics, from, to)), [topics]);
 
   const onCreateTopic = React.useCallback(async () => {
     setSearchValue('');

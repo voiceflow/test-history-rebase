@@ -1,8 +1,7 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 import { ReactReduxContext } from 'react-redux';
 import { ThemeContext } from 'styled-components';
-
-import { noop } from '@/utils/functional';
 
 import theme from '../src/styles/theme';
 
@@ -16,9 +15,9 @@ export const StoreProvider: React.FC = ({ children }) => {
       value={{
         store: {
           getState: () => ({}),
-          subscribe: () => noop,
-          dispatch: noop,
-          replaceReducer: noop,
+          subscribe: () => Utils.functional.noop,
+          dispatch: Utils.functional.noop,
+          replaceReducer: Utils.functional.noop,
         } as any,
         storeState: {},
       }}

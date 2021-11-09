@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import { Flex, toast } from '@voiceflow/ui';
 import React from 'react';
@@ -9,7 +10,6 @@ import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useEnableDisable, useModals, usePermission, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
-import { isValidEmail } from '@/utils/emails';
 
 import Container from './components/Container';
 import SendInviteButton from './components/SendInviteButton';
@@ -50,7 +50,7 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
   }, [canManageAdminCollaborators]);
 
   const onSendInviteClick = async () => {
-    if (!isValidEmail(email)) {
+    if (!Utils.emails.isValidEmail(email)) {
       setInvalid();
     } else {
       setValid();

@@ -1,4 +1,5 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { CheckboxType } from '@/components/Checkbox';
@@ -12,7 +13,6 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { head } from '@/utils/array';
 
 import NoMatchPathEditor from '../NoMatchPathEditor';
 import RadioButtonText from '../RadioButtonText';
@@ -78,7 +78,7 @@ const mapStateToProps = {
 };
 
 const getElseLinkID = (focusedNode: Node, getLinkIDsByPortID: (portID: string) => string[]) => {
-  const [elsePortID] = head(focusedNode.ports.out);
+  const [elsePortID] = Utils.array.head(focusedNode.ports.out);
   return getLinkIDsByPortID(elsePortID)[0];
 };
 

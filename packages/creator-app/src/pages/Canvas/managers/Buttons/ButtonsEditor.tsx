@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
@@ -11,7 +12,6 @@ import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { useButtonLayoutOption, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { chainVoid } from '@/utils/functional';
 
 import { ButtonsListItem } from './components';
 import { factory, NODE_CONFIG } from './constants';
@@ -47,7 +47,7 @@ const ButtonsEditor: NodeEditor<NodeData.Buttons> = ({ data, nodeID, onChange, p
         {
           label: 'Add Button',
           icon: NODE_CONFIG.icon,
-          onClick: chainVoid(onAdd, () => engine?.port.add(nodeID, { label: String(data.buttons.length + 1) }), scrollToBottom),
+          onClick: Utils.functional.chainVoid(onAdd, () => engine?.port.add(nodeID, { label: String(data.buttons.length + 1) }), scrollToBottom),
           disabled: isMaxMatches,
           iconProps: { color: NODE_CONFIG.iconColor },
         },

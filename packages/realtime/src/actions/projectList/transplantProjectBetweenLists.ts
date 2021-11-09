@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
@@ -20,15 +21,15 @@ class TransplantProjectBetweenLists extends AbstractWorkspaceChannelControl<Real
         return {
           ...list,
           projects: isReorder
-            ? Realtime.Utils.array.reorder(list.projects, list.projects.indexOf(projectID), getTargetIndex(list))
-            : Realtime.Utils.array.withoutValue(list.projects, projectID),
+            ? Utils.array.reorder(list.projects, list.projects.indexOf(projectID), getTargetIndex(list))
+            : Utils.array.withoutValue(list.projects, projectID),
         };
       }
 
       if (list.board_id === payload.to.listID) {
         return {
           ...list,
-          projects: Realtime.Utils.array.insert(list.projects, getTargetIndex(list), projectID),
+          projects: Utils.array.insert(list.projects, getTargetIndex(list), projectID),
         };
       }
 

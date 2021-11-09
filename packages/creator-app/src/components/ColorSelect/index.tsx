@@ -1,8 +1,8 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import ColorPicker from '@/components/ColorPicker';
 import Popper from '@/components/Popper';
-import { chainVoid } from '@/utils/functional';
 
 import { ColorPreview } from './components';
 
@@ -30,7 +30,7 @@ const ColorSelect: React.FC<ColorSelectProps> = ({
         style={{
           color: `rgba(${colorPickerProps.color.r}, ${colorPickerProps.color.g}, ${colorPickerProps.color.b}, ${colorPickerProps.color.a})`,
         }}
-        onClick={disabled ? undefined : chainVoid(onToggle, () => !isOpened && onShow?.())}
+        onClick={disabled ? undefined : Utils.functional.chainVoid(onToggle, () => !isOpened && onShow?.())}
         disabled={disabled}
         onMouseDown={onPickerPreviewMouseDown}
       />

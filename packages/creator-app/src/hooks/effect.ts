@@ -1,8 +1,6 @@
+import { Callback, Eventual, Utils } from '@voiceflow/common';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
-
-import { Callback, Eventual } from '@/types';
-import { noop } from '@/utils/functional';
 
 import { useTeardown } from './lifecycle';
 
@@ -48,7 +46,7 @@ export const useOneTimeEffect = (effect: () => boolean, dependencies: any[] = []
 };
 
 export const useRegistration = (register: () => () => void, dependencies: any[] = []) => {
-  const teardownRef = useRef(noop);
+  const teardownRef = useRef(Utils.functional.noop);
 
   useEffect(() => {
     teardownRef.current = register();

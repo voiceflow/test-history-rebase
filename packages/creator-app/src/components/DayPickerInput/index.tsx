@@ -1,9 +1,9 @@
+import { Utils } from '@voiceflow/common';
 import dayjs from 'dayjs';
 import React from 'react';
 
 import Popper from '@/components/Popper';
 import VariablesInput from '@/components/VariablesInput';
-import { chain } from '@/utils/functional';
 
 import { DayPickerContainer, FORMAT, TimeRangePicker, WEEKDAYS } from './components';
 
@@ -41,7 +41,7 @@ const DayPickerInput: React.FC<DayPickerInputProps> = ({ date, onChange }) => {
       renderContent={({ onToggle }) => (
         <DayPickerContainer>
           <TimeRangePicker
-            onDayClick={chain(onDayClick, onToggle)}
+            onDayClick={Utils.functional.chain(onDayClick, onToggle)}
             initialMonth={selectedDay}
             selectedDays={selectedDay}
             disabledDays={{ before: currentDate }}

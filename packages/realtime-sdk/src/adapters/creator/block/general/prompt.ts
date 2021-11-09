@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import { Node } from '@voiceflow/general-types';
-import cuid from 'cuid';
 
 import { NodeData } from '../../../../models';
 import { chipsToIntentButtons, createBlockAdapter, defaultPortAdapter, PortsAdapter, voiceNoMatchAdapter, voiceRepromptAdapter } from '../utils';
@@ -23,7 +23,7 @@ export const promptPortsAdapter: PortsAdapter<NodeData.Prompt> = {
   ...defaultPortAdapter,
   fromDB: (ports, node) => {
     if (!ports.length) {
-      return defaultPortAdapter.fromDB([{ id: cuid(), data: {}, type: 'else', target: null }], node);
+      return defaultPortAdapter.fromDB([{ id: Utils.id.cuid(), data: {}, type: 'else', target: null }], node);
     }
 
     return defaultPortAdapter.fromDB(ports, node);

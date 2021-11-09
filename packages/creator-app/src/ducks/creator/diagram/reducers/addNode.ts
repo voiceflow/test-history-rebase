@@ -1,9 +1,9 @@
+import { Utils } from '@voiceflow/common';
+
 import { BlockType } from '@/constants';
 import { Reducer } from '@/store/types';
 import { PathPoint } from '@/types';
-import { compose } from '@/utils/functional';
 import { getNodesGroupCenter } from '@/utils/node';
-import { getNormalizedByKey } from '@/utils/normalized';
 import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
 import { AddManyNodes, AddNestedNode, AddNode, AddWrappedNode } from '../actions';
@@ -30,7 +30,7 @@ const addNodeReducer: Reducer<DiagramState, AddNode> = (state, { payload: { node
 export default addNodeReducer;
 
 export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state, { payload: { parentNodeID, node, data, mergedNodeID } }) => {
-  const parentNode = getNormalizedByKey(state.nodes, parentNodeID);
+  const parentNode = Utils.normalized.getNormalizedByKey(state.nodes, parentNodeID);
   const [newNode, newPorts, newNodeData] = buildNewNode({ ...node, parentNode: parentNodeID }, data);
 
   const isCombinedBlock = parentNode.combinedNodes.length;
@@ -38,13 +38,13 @@ export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state
   if (isCombinedBlock || parentNode.type === BlockType.START) {
     const additionalActions = [];
     if (isCombinedBlock) {
-      const terminalBlock = getNormalizedByKey(state.nodes, parentNode.combinedNodes[parentNode.combinedNodes.length - 1]);
+      const terminalBlock = Utils.normalized.getNormalizedByKey(state.nodes, parentNode.combinedNodes[parentNode.combinedNodes.length - 1]);
       const outLinkIDs = terminalBlock.ports.out.flatMap(getLinkIDsByPortID(state));
 
       additionalActions.push(removeAllLinksFromState(outLinkIDs));
     }
 
-    return compose(
+    return Utils.functional.compose(
       addBlockToState(newNode, newPorts, newNodeData),
       patchNodeInState(parentNodeID, {
         combinedNodes: [...parentNode.combinedNodes, node.id],
@@ -69,7 +69,7 @@ export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state
 
   newNode.parentNode = mergedNodeID;
 
-  return compose(
+  return Utils.functional.compose(
     addNodeToState(mergedNode, mergedData),
     removeAllLinksFromState(parentNodeOutLinkIDs),
     patchNodeInState(parentNode.id, { parentNode: mergedNodeID }),
@@ -97,7 +97,7 @@ export const addManyNodesReducer: Reducer<DiagramState, AddManyNodes> = (
     point: [positionX + (point.point[0] - centerX), positionY + (point.point[1] - centerY)],
   });
 
-  return compose(
+  return Utils.functional.compose(
     addAllPortsToState(
       ports.map((port) =>
         port.linkData?.points ? { ...port, linkData: { ...port.linkData, points: port.linkData.points.map(adjustPathPoint) } } : port
@@ -140,5 +140,5 @@ export const addWrappedNodeReducer: Reducer<DiagramState, AddWrappedNode> = (
     { name: `New Block ${state.rootNodeIDs.length}` }
   );
 
-  return compose(addBlockToState(rootNode, rootPorts, rootNodeData), addBlockToState(newNode, newPorts, newNodeData))(state);
+  return Utils.functional.compose(addBlockToState(rootNode, rootPorts, rootNodeData), addBlockToState(newNode, newPorts, newNodeData))(state);
 };

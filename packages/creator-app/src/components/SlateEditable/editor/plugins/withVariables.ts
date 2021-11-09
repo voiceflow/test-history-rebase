@@ -1,9 +1,6 @@
-import { READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
+import { Normalized, Nullable, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { slate } from '@voiceflow/internal';
 import { Descendant, Editor, Element, Range, Text, Transforms } from 'slate';
-
-import { Nullable } from '@/types';
-import { getNormalizedByKey, Normalized } from '@/utils/normalized';
 
 import { ElementType } from '../../constants';
 import type { EditorAPIType } from '../editorAPI';
@@ -93,12 +90,12 @@ export const withVariablesPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor
     const { variables, withSlots } = options;
 
     // do nothing if variable exists
-    if (getNormalizedByKey(variables, node.id)) {
+    if (Utils.normalized.getNormalizedByKey(variables, node.id)) {
       return;
     }
 
     // check if matched by name
-    if (!withSlots && variables.allKeys.some((id) => getNormalizedByKey(variables, id).name === node.name)) {
+    if (!withSlots && variables.allKeys.some((id) => Utils.normalized.getNormalizedByKey(variables, id).name === node.name)) {
       return;
     }
 

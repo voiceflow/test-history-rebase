@@ -1,9 +1,9 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import UncontrolledSection, { UncontrolledSectionProps } from '@/components/Section/components/UncontrolledSection';
-import { withNamespace } from '@/hocs';
+import { compose, withNamespace } from '@/hocs';
 import { useSectionState } from '@/pages/Canvas/hooks';
-import { compose, noop } from '@/utils/functional';
 
 type EditorSectionProps = Omit<UncontrolledSectionProps, 'isCollapsed' | 'toggle'> & {
   autoSave?: boolean;
@@ -20,7 +20,7 @@ const EditorSection: React.ForwardRefRenderFunction<HTMLDivElement, EditorSectio
   const [sectionState, setSectionState] = useSectionState<{ isOpen: boolean }>(null, { isOpen: initialState.current }, isCollapsible && autoSave);
   const toggleCollapsed = React.useCallback(() => setSectionState({ isOpen: !sectionState.isOpen }), [sectionState.isOpen, setSectionState]);
 
-  const collapseProps = isCollapsible && { isCollapsed: !sectionState.isOpen, toggle: props.disabled ? noop : toggleCollapsed };
+  const collapseProps = isCollapsible && { isCollapsed: !sectionState.isOpen, toggle: props.disabled ? Utils.functional.noop : toggleCollapsed };
 
   return <UncontrolledSection {...collapseProps} {...props} ref={ref} />;
 };

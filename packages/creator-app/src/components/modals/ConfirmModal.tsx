@@ -1,10 +1,10 @@
+import { Utils } from '@voiceflow/common';
 import { Box, Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalBody, ModalFooter, UncontrolledModal } from '@/components/Modal';
 import * as ModalDuck from '@/ducks/modal';
 import { useDispatch, useSelector } from '@/hooks';
-import { chainVoid } from '@/utils/functional';
 
 import { UncontrolledBackdrop } from './ModalBackdrop';
 
@@ -34,7 +34,7 @@ const ConfirmModal: React.FC = () => {
             </Box>
           )}
 
-          <Button variant={ButtonVariant.PRIMARY} onClick={chainVoid(closeModal, confirm.confirm)}>
+          <Button variant={ButtonVariant.PRIMARY} onClick={Utils.functional.chainVoid(closeModal, confirm.confirm)}>
             Confirm
           </Button>
         </ModalFooter>

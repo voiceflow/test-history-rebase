@@ -1,11 +1,10 @@
 /* eslint-disable no-param-reassign */
 
+import { Nullable } from '@voiceflow/common';
 import { Descendant, Editor as SlateEditor, EditorInterface, Element, Location, Node, Path, Range, Text, Transforms } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
 import { PickByValue } from 'utility-types';
-
-import { Nullable } from '@/types';
 
 import { PluginsEditorAPI, withPluginsEditorAPI } from './plugins';
 import type { Editor } from './types';

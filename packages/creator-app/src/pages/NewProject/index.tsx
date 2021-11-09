@@ -1,9 +1,10 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
+import { Nullable, Utils } from '@voiceflow/common';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
 import { Voice } from '@voiceflow/google-types/build/constants';
-import { FlexCenter, Nullable, useDidUpdateEffect } from '@voiceflow/ui';
+import { FlexCenter, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { Redirect, useRouteMatch } from 'react-router-dom';
 
@@ -15,7 +16,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { useActiveWorkspace, useDispatch, useSelector, useSetup } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
-import { noop } from '@/utils/functional';
 import { createPlatformSelector } from '@/utils/platform';
 import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
@@ -175,7 +175,7 @@ const NewProject: React.FC = () => {
           stepBack={stepBack}
           canCancel
           stepStack={stepStack}
-          onSkipClick={noop}
+          onSkipClick={Utils.functional.noop}
           numberOfSteps={PROJECT_CREATION_STEPS_NUMBER}
           hasBackButton={stepStack.length > 1}
           hasSkipButton={false}

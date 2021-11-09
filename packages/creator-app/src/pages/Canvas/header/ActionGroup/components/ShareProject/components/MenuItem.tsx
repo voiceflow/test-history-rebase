@@ -1,10 +1,10 @@
+import { Nullable } from '@voiceflow/common';
 import { PlanType } from '@voiceflow/internal';
 import { Button, ButtonVariant, Link, stopImmediatePropagation, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import PlanBubble from '@/components/PlanBubble';
 import { useEnableDisable } from '@/hooks';
-import { Nullable } from '@/types';
 import { copy } from '@/utils/clipboard';
 
 import ButtonContainer from './ButtonContainer';

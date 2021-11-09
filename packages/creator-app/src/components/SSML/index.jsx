@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
@@ -8,7 +9,6 @@ import { PluginType } from '@/components/TextEditor';
 import { FeatureFlag } from '@/config/features';
 import { useFeature } from '@/hooks';
 import { ClassName } from '@/styles/constants';
-import { capitalizeFirstLetter } from '@/utils/string';
 import { prettifyGoogleVoicesLong, prettifyVoice, voiceOptionsFilter } from '@/utils/voice';
 
 import { DefaultVoiceContainer, Editor, Speaker, VoiceItem, VoiceSelect } from './components';
@@ -49,7 +49,7 @@ const SSML = (
   const voiceOptions = React.useMemo(() => platformSSMLMeta.voiceOptions(locales, wavenetVoices.isEnabled), [locales, wavenetVoices.isEnabled]);
   const hasProjectLevelVoice = platform === Constants.PlatformType.GOOGLE;
 
-  const voiceSelectLabel = capitalizeFirstLetter(
+  const voiceSelectLabel = Utils.string.capitalizeFirstLetter(
     hasProjectLevelVoice ? prettifyGoogleVoicesLong(defaultVoice) : prettifyVoice(voice) || 'Select Voice'
   );
 

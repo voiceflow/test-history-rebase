@@ -1,9 +1,9 @@
 import { Version as BaseVersion } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
 
 import { Version } from '../../models';
-import { Nullable } from '../../types';
 import { getPlatformDefaultVoice } from '../../utils/platform';
 import { createAdapter } from '../utils';
 

@@ -1,9 +1,8 @@
+import { AnyFunction, Function } from '@voiceflow/common';
 import {
   ActionCreatorLookup,
-  AnyFunction,
   ConnectedProps,
   Dispatch,
-  Function,
   IS_PRODUCTION,
   logger,
   MappedDispatchProps,

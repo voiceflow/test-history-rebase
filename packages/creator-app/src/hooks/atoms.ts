@@ -1,7 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import React, { useMemo, useRef, useState } from 'react';
-
-import { append, withoutValue } from '@/utils/array';
-import { hasProperty } from '@/utils/objects';
 
 import { AtomContext, AtomContextValue } from '../contexts/AtomContext';
 
@@ -75,7 +73,7 @@ export const useAtomInitialValue = <T, S = T>(atom: Atom<T> | AtomFamily<T>, opt
   const atomStore = useAtomContext(atom);
 
   return useMemo<S>(() => {
-    if (hasProperty(options, 'initialValue')) {
+    if (Utils.object.hasProperty(options, 'initialValue')) {
       return options.initialValue!;
     }
 
@@ -115,10 +113,10 @@ export const useAtomSubscription = <T, S = T>(
       atomStore.atoms.set(atom.key, atomEntry);
     }
 
-    atomEntry.listeners = append(atomEntry.listeners, listener);
+    atomEntry.listeners = Utils.array.append(atomEntry.listeners, listener);
 
     return () => {
-      atomEntry!.listeners = withoutValue(atomEntry!.listeners, listener);
+      atomEntry!.listeners = Utils.array.withoutValue(atomEntry!.listeners, listener);
     };
   }, []);
 
@@ -134,7 +132,7 @@ export const useAtomState = <T, S = T>(
 
   useAtomSubscription(atom, setLocalState, {
     ...options,
-    ...(hasProperty(options, 'initialValue') && { initialValue: options.initialValue }),
+    ...(Utils.object.hasProperty(options, 'initialValue') && { initialValue: options.initialValue }),
   });
 
   return localState;

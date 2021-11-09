@@ -1,8 +1,8 @@
 import { Project } from '@voiceflow/alexa-types';
+import { Nullable } from '@voiceflow/common';
 import axios from 'axios';
 
 import { ALEXA_SERVICE_ENDPOINT } from '@/config';
-import { Nullable } from '@/types';
 
 import { createProjectService, PROJECT_RESOURCE_ENDPOINT } from '../utils';
 

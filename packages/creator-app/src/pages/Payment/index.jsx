@@ -2,8 +2,8 @@ import { Spinner } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
+import { compose } from '@/hocs';
 import { usePermission } from '@/hooks';
-import { compose } from '@/utils/functional';
 
 import Checkout from './Checkout';
 import PaymentContainer from './components/PaymentContainer';

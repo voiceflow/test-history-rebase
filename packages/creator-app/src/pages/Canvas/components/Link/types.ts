@@ -1,8 +1,9 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import { LinkInstance } from '@/pages/Canvas/engine/entities/linkEntity';
-import { Nullable, Point } from '@/types';
+import { Point } from '@/types';
 
 import { MarkerAttrs } from './utils';
 

@@ -1,4 +1,4 @@
-import cuid from 'cuid';
+import { Normalized, Utils } from '@voiceflow/common';
 // eslint-disable-next-line lodash/import-scope
 import type { DebouncedFunc } from 'lodash';
 import _debounce from 'lodash/debounce';
@@ -7,17 +7,6 @@ import moize from 'moize';
 import React from 'react';
 
 import { IS_TEST } from '@/config';
-import { hasIdenticalMembers, reorder } from '@/utils/array';
-import { identity } from '@/utils/functional';
-import {
-  addNormalizedByKey,
-  addToStartNormalizedByKey,
-  denormalize,
-  normalize,
-  Normalized,
-  removeNormalizedByKey,
-  updateNormalizedByKey,
-} from '@/utils/normalized';
 
 import { useForceUpdate } from './forceUpdate';
 import { useLazy } from './lazy';
@@ -65,7 +54,15 @@ export interface MapManagedAPI<T extends {}, F extends any[]> {
 export const useManager = <T extends {}, F extends any[]>(
   items: T[] = [],
   onChange: (items: T[], save?: boolean) => void,
-  { clone = identity, getKey, maxItems, factory = identity as any, autosave = true, debounced = true, handleRemove }: MapManagedOptions<T, F> = {}
+  {
+    clone = Utils.functional.identity,
+    getKey,
+    maxItems,
+    factory = Utils.functional.identity as any,
+    autosave = true,
+    debounced = true,
+    handleRemove,
+  }: MapManagedOptions<T, F> = {}
 ): MapManagedAPI<T, F> => {
   const keyLookup = React.useRef<Map<T | [T, number], string>>();
   const normalized = React.useRef<Normalized<T>>();
@@ -80,15 +77,15 @@ export const useManager = <T extends {}, F extends any[]>(
     []
   );
 
-  const generateKey = React.useCallback((value: T) => getKey?.(value) || cuid.slug(), [getKey]);
+  const generateKey = React.useCallback((value: T) => getKey?.(value) || Utils.id.cuid.slug(), [getKey]);
 
   const setDependencies = useLazy(
     () => {
       keyLookup.current = new Map(items.map((item, index) => [generateLookupKey(item, index), IS_TEST ? String(index) : generateKey(item)]));
-      normalized.current = normalize<T>(items, (item, index) => keyLookup.current!.get(generateLookupKey(item, index))!);
+      normalized.current = Utils.normalized.normalize<T>(items, (item, index) => keyLookup.current!.get(generateLookupKey(item, index))!);
     },
     [items],
-    ([nextItems], [prevItems]) => hasIdenticalMembers<T>(nextItems, prevItems)
+    ([nextItems], [prevItems]) => Utils.array.hasIdenticalMembers<T>(nextItems, prevItems)
   );
 
   cachedOnChange.current = (denormolized: T[], save?: boolean) => {
@@ -110,7 +107,7 @@ export const useManager = <T extends {}, F extends any[]>(
 
   const onSave = React.useCallback(
     (normalizedValue: Normalized<T>, { update, save = true }: { update?: boolean; save?: boolean } = {}) => {
-      const denormalized = denormalize(normalizedValue);
+      const denormalized = Utils.normalized.denormalize(normalizedValue);
 
       if (!update && 'cancel' in debouncedOnChange) {
         debouncedOnChange.cancel();
@@ -161,7 +158,7 @@ export const useManager = <T extends {}, F extends any[]>(
 
       const { key, value } = createKeyValue(...args);
 
-      const updated = addNormalizedByKey(normalized.current!, key, value);
+      const updated = Utils.normalized.addNormalizedByKey(normalized.current!, key, value);
       const index = updated.allKeys.length - 1;
 
       commitInsert(key, value, index, updated);
@@ -177,7 +174,7 @@ export const useManager = <T extends {}, F extends any[]>(
 
       const { key, value } = createKeyValue(...args);
 
-      const updated = addToStartNormalizedByKey(normalized.current!, key, value);
+      const updated = Utils.normalized.addToStartNormalizedByKey(normalized.current!, key, value);
       const index = 0;
 
       commitInsert(key, value, index, updated);
@@ -193,12 +190,12 @@ export const useManager = <T extends {}, F extends any[]>(
 
       const { key, value: dupVal } = duplicateKeyValue(item, ...args);
 
-      const withDupVal = addToStartNormalizedByKey(normalized.current!, key, dupVal);
+      const withDupVal = Utils.normalized.addToStartNormalizedByKey(normalized.current!, key, dupVal);
       const dupIndex = to + 1;
 
       const updated = {
         ...withDupVal,
-        allKeys: reorder(withDupVal.allKeys, 0, dupIndex),
+        allKeys: Utils.array.reorder(withDupVal.allKeys, 0, dupIndex),
       };
 
       commitInsert(key, dupVal, dupIndex, updated);
@@ -210,7 +207,7 @@ export const useManager = <T extends {}, F extends any[]>(
     (from: number, to: number) => {
       const updated = {
         ...normalized.current!,
-        allKeys: reorder(normalized.current!.allKeys, from, to),
+        allKeys: Utils.array.reorder(normalized.current!.allKeys, from, to),
       };
 
       onSave(updated, { update: true });
@@ -222,7 +219,7 @@ export const useManager = <T extends {}, F extends any[]>(
     (key: string, value: Partial<T>) => {
       const currValue = getItem(key);
 
-      const updated = updateNormalizedByKey(
+      const updated = Utils.normalized.updateNormalizedByKey(
         normalized.current!,
         key,
         currValue && !Array.isArray(currValue) && _isObject(currValue) ? { ...currValue, ...value } : value
@@ -243,7 +240,7 @@ export const useManager = <T extends {}, F extends any[]>(
       const currValue = getItem(key);
       const currIndex = getIndex(key);
 
-      const updated = removeNormalizedByKey(normalized.current!, key);
+      const updated = Utils.normalized.removeNormalizedByKey(normalized.current!, key);
 
       keyLookup.current!.delete(generateLookupKey(currValue, currIndex));
 

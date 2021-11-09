@@ -1,8 +1,8 @@
+import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import _toLower from 'lodash/toLower';
 
 import { CollaboratorType } from '@/pages/Onboarding/types';
-import { isValidEmail } from '@/utils/emails';
 
 export const withPlaceholderCollaborators = (collaborators: CollaboratorType[]) => {
   if (collaborators.length < 4) {
@@ -17,7 +17,7 @@ export const getError = (members: CollaboratorType[], member: CollaboratorType, 
     return '';
   }
 
-  if (!isValidEmail(member.email)) {
+  if (!Utils.emails.isValidEmail(member.email)) {
     return 'Email is not valid.';
   }
 

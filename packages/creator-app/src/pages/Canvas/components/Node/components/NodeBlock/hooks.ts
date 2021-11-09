@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { NO_IN_PORT_NODES } from '@voiceflow/realtime-sdk';
 import _throttle from 'lodash/throttle';
 import React from 'react';
@@ -5,8 +6,6 @@ import { useDrop } from 'react-dnd';
 
 import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
-import { objectID } from '@/utils';
-import { isInRange } from '@/utils/number';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 export const useMergeInfo = (index: number) => {
@@ -46,7 +45,7 @@ export const useMergeInfo = (index: number) => {
     const sourceIndex = parentNode.combinedNodes.indexOf(mergeSource.id);
 
     return {
-      mustNotBe: parentNodeID === mergeSource.parentNode && isInRange(index, sourceIndex, sourceIndex + 1),
+      mustNotBe: parentNodeID === mergeSource.parentNode && Utils.number.isInRange(index, sourceIndex, sourceIndex + 1),
       mustBeFirst: NO_IN_PORT_NODES.has(mergeSource.type),
       mustBeLast: getManager(mergeSource.type)?.mergeTerminator,
     };
@@ -88,7 +87,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
     ),
 
     drop: (_, monitor) => {
-      const newNodeID = objectID();
+      const newNodeID = Utils.id.objectID();
       const { type, factoryData } = engine.merge.virtualSource!;
 
       const { x: mouseX, y: mouseY } = monitor.getClientOffset()!;

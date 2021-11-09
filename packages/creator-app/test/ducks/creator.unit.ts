@@ -1,8 +1,8 @@
+import { Utils } from '@voiceflow/common';
 import { generate } from '@voiceflow/ui';
 
 import { DiagramState } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as Normalized from '@/utils/normalized';
 
 import suite from './_suite';
 
@@ -53,9 +53,9 @@ suite(Creator, MOCK_STATE)('Ducks - Creator', ({ expect, describeReducer, descri
                   linksByPortID: {},
                   sections: {},
                   data: {},
-                  links: Normalized.EMPTY,
-                  nodes: Normalized.EMPTY,
-                  ports: Normalized.EMPTY,
+                  links: Utils.normalized.EMPTY,
+                  nodes: Utils.normalized.EMPTY,
+                  ports: Utils.normalized.EMPTY,
                 },
               },
               focus: {
@@ -99,21 +99,8 @@ suite(Creator, MOCK_STATE)('Ducks - Creator', ({ expect, describeReducer, descri
           });
         });
 
-        it('should set focus with revision', () => {
-          const revision = generate.id();
-
-          expectAction(Creator.setFocus(nodeID, revision)).toModify({
-            focus: {
-              target: nodeID,
-              isActive: true,
-            },
-          });
-        });
-
         it('should not modify state if target already active', () => {
-          const revision = generate.id();
-
-          expectAction(Creator.setFocus(nodeID, revision))
+          expectAction(Creator.setFocus(nodeID))
             .withState({
               ...MOCK_STATE,
               focus: {

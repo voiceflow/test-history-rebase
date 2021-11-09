@@ -1,5 +1,5 @@
 import { Constants, Project } from '@voiceflow/alexa-types';
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { DBProduct, Product } from '../../models';
 import { createAdapter } from '../utils';
@@ -65,7 +65,7 @@ const productAdapter = createAdapter<DBProduct, Product>(
     type,
     version,
     productID: id as string,
-    referenceName: referenceName || `${name.split(' ').join('_')}_${cuid.slug()}`,
+    referenceName: referenceName || `${name.split(' ').join('_')}_${Utils.id.cuid.slug()}`,
     purchasableState: 'PURCHASABLE',
     testingInstructions: testingInstructions || '',
     privacyAndCompliance: {

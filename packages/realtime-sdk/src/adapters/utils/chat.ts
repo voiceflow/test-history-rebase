@@ -1,6 +1,6 @@
 import { Types as ChatTypes } from '@voiceflow/chat-types';
+import { Utils } from '@voiceflow/common';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
-import cuid from 'cuid';
 
 import { createAdapter } from './adapter';
 
@@ -12,18 +12,18 @@ export const chatRepromptAdapter = createAdapter<ChatTypes.Prompt, ChatTypes.Pro
     // migrate from old voice reprompt types
     if ('text' in reprompt) {
       if (!reprompt.text) {
-        return { id: cuid(), content: createSlateText() };
+        return { id: Utils.id.cuid(), content: createSlateText() };
       }
 
-      return { id: cuid(), content: createSlateText(reprompt.text) };
+      return { id: Utils.id.cuid(), content: createSlateText(reprompt.text) };
     }
 
     if (!reprompt.content) {
-      return { id: cuid(), content: createSlateText() };
+      return { id: Utils.id.cuid(), content: createSlateText() };
     }
 
     if (typeof reprompt.content === 'string') {
-      return { id: cuid(), content: createSlateText(reprompt.content) };
+      return { id: Utils.id.cuid(), content: createSlateText(reprompt.content) };
     }
 
     return reprompt as ChatTypes.Prompt;

@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import { Adapters } from '@voiceflow/realtime-sdk';
-import cuid from 'cuid';
 import { RawDraftContentBlock, RawDraftContentState, RawDraftEntityRange } from 'draft-js';
 import _isString from 'lodash/isString';
 
@@ -59,7 +59,7 @@ export const buildDraftJSContent = (content: VFContent, existingEntitiesMap?: En
 
   const blocks: RawDraftContentBlock[] = [
     {
-      key: cuid.slug(),
+      key: Utils.id.cuid.slug(),
       text,
       type: 'unstyled',
       depth: 0,

@@ -5,12 +5,11 @@ import { useLocation } from 'react-router-dom';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs';
+import { compose, connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useTeardown } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { compose } from '@/utils/functional';
 import * as Query from '@/utils/query';
 
 import { ChatDisplay, Container, Input, Start, UserSaysContainer } from './components';

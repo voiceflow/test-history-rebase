@@ -6,7 +6,6 @@ import { Overwrite } from 'utility-types';
 import { ActionCreatorLookup, MappedDispatchProps, MappedStateProps, MergeArguments, SelectorLookup } from './store';
 
 export * from './store';
-export type { AnyFunction, Callback, Eventual, Function, Nullable, Nullish, StringifyEnum } from '@voiceflow/common';
 
 export type Color = Required<RGBColor>;
 

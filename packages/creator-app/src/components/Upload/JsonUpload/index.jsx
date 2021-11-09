@@ -1,8 +1,8 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import { styled, withUpload } from '@/hocs';
-import { noop } from '@/utils/functional';
 
 const Drop = styled(DropUpload)`
   margin-bottom: 10px;
@@ -26,4 +26,4 @@ const JsonUpload = ({ file, customOnDropAccept, isLoading, onDropRejected, error
   />
 );
 
-export default withUpload(JsonUpload, { fileType: 'json', clientFunc: 'uploadJson', validate: noop });
+export default withUpload(JsonUpload, { fileType: 'json', clientFunc: 'uploadJson', validate: Utils.functional.noop });

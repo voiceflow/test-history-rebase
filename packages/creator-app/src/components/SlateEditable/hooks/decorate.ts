@@ -1,7 +1,6 @@
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { Editor, NodeEntry, Range, Text } from 'slate';
-
-import { Nullable } from '@/types';
 
 import { Prism, PrismLanguage } from '../editor';
 

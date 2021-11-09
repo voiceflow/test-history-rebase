@@ -1,12 +1,12 @@
 import { Constants } from '@voiceflow/alexa-types';
 import { Button, Models as BaseModels, Node as BaseNode } from '@voiceflow/base-types';
+import { Nullable, Utils } from '@voiceflow/common';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
-import cuid from 'cuid';
 import _pickBy from 'lodash/pickBy';
 
 import { RepromptType } from '../../../constants';
 import { Link, LinkData, Node, NodeData, Port } from '../../../models';
-import { Nullable, PathPoint, PathPoints } from '../../../types';
+import { PathPoint, PathPoints } from '../../../types';
 import { createAdapter, createSimpleAdapter } from '../../utils';
 import { generateOutPort } from '../utils';
 
@@ -22,7 +22,7 @@ export const voiceRepromptAdapter = createAdapter<VoiceTypes.Prompt<any>, NodeDa
     const type = reprompt.voice === Constants.Voice.AUDIO ? RepromptType.AUDIO : RepromptType.TEXT;
 
     return {
-      id: cuid.slug(),
+      id: Utils.id.cuid.slug(),
       type,
       desc: reprompt.desc,
       voice: type === RepromptType.TEXT ? reprompt.voice : null,
@@ -80,7 +80,7 @@ export const chipsToIntentButtons = (chips?: Nullable<Button.Chip[]>): Nullable<
 
 export const choiceAdapter = createAdapter<BaseNode.Interaction.Choice, NodeData.InteractionChoice>(
   ({ goTo = null, intent, action = BaseNode.Interaction.ChoiceAction.PATH, mappings = [] }) => ({
-    id: cuid.slug(),
+    id: Utils.id.cuid.slug(),
     goTo,
     intent,
     action,

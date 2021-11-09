@@ -1,7 +1,7 @@
+import { Nullable } from '@voiceflow/common';
 import axios from 'axios';
 
 import { Job } from '@/models';
-import { Nullable } from '@/types';
 
 export const RESOURCE_ENDPOINT = 'publish';
 

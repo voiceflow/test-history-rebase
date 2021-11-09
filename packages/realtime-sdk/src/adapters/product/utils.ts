@@ -1,8 +1,8 @@
 import { Constants, Project } from '@voiceflow/alexa-types';
+import { Utils } from '@voiceflow/common';
 import dayjs from 'dayjs';
 
 import { Product, ProductMarketPlace } from '../../models';
-import { getKeys } from '../../utils/object';
 import { MARKET_PLACE_AVAILABILITY } from './constants';
 
 export type MergedLocale = Pick<
@@ -23,7 +23,7 @@ export const formatMarketPlaces = (
   // find any valid release date
   const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place?.releaseDate)?.releaseDate || dayjs().format('YYYY-MM-DD');
 
-  return getKeys(marketPlaces).reduce<Partial<Record<Project.MarketPlace, Project.PublishingPrice>>>((acc, key) => {
+  return Utils.object.getKeys(marketPlaces).reduce<Partial<Record<Project.MarketPlace, Project.PublishingPrice>>>((acc, key) => {
     const place = marketPlaces[key];
 
     if (place) {
@@ -46,7 +46,7 @@ export const parseMarketPlaces = (
   allPlaces: Partial<Record<Project.MarketPlace, Project.PublishingPrice>>,
   distributionCountries: string[]
 ): Partial<Record<Project.MarketPlace, ProductMarketPlace>> =>
-  getKeys(allPlaces).reduce<Partial<Record<Project.MarketPlace, ProductMarketPlace>>>((acc, encodedKey) => {
+  Utils.object.getKeys(allPlaces).reduce<Partial<Record<Project.MarketPlace, ProductMarketPlace>>>((acc, encodedKey) => {
     const place = allPlaces[encodedKey];
 
     if (place) {
@@ -69,7 +69,7 @@ export const parseLocales = (
   locales: Partial<Record<Constants.Locale, Project.PublishingLocale>>,
   privacyAndCompliance: Project.AlexaProduct['privacyAndCompliance']
 ): MergedLocale =>
-  getKeys(locales).reduce<MergedLocale>(
+  Utils.object.getKeys(locales).reduce<MergedLocale>(
     (acc, locale) => {
       const localeData = locales[locale];
 

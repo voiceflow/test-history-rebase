@@ -1,8 +1,7 @@
-import { WithOptional } from '@voiceflow/realtime-sdk';
+import { Utils, WithOptional } from '@voiceflow/common';
 
 import { DiagramAction } from '@/ducks/creator/diagram/actions';
 import { AnyAction } from '@/store/types';
-import { filterEntries } from '@/utils/objects';
 
 import { LockType, ServerAction } from './constants';
 import { RealtimeLocks } from './types';
@@ -23,10 +22,10 @@ export const removeSelfFromLocks = ({ blocks, resources, users }: WithOptional<R
 
   return {
     blocks: Object.entries(blocks).reduce(
-      (acc, [key, value]) => Object.assign(acc, { [key]: filterEntries(value, filterByValue) }),
+      (acc, [key, value]) => Object.assign(acc, { [key]: Utils.object.filterEntries(value, filterByValue) }),
       {} as Record<LockType.MOVEMENT | LockType.EDIT, Record<string, string>>
     ),
-    resources: filterEntries(resources, filterByValue),
+    resources: Utils.object.filterEntries(resources, filterByValue),
     users,
   };
 };

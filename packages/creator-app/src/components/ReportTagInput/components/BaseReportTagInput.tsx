@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Box, FlexApart, FlexStart, Icon, KeyName, Select, SelectInputVariant, SelectMenuItemOptions, SvgIcon } from '@voiceflow/ui';
 import _findLastIndex from 'lodash/findLastIndex';
 import React from 'react';
@@ -7,7 +8,6 @@ import { isBuiltInTag } from '@/ducks/transcript/utils';
 import { useTrackingEvents } from '@/hooks';
 import { ReportTag, Sentiment, SentimentArray } from '@/models';
 import { ClassName } from '@/styles/constants';
-import { insert } from '@/utils/array';
 
 import { ReportTagInputContext } from '../context';
 import { TagWrapper } from './components';
@@ -86,7 +86,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         return sortedAllTags;
       }
 
-      return insert<TagSelectOption>(sortedAllTags, lastBuiltInIndex + 1, {
+      return Utils.array.insert<TagSelectOption>(sortedAllTags, lastBuiltInIndex + 1, {
         id: 'divider',
         label: 'divider',
         projectID: '',

@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string, mocha/no-identical-title */
 import { Node, Version as BaseVersion } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { FeatureFlag } from '@/config/features';
@@ -133,7 +134,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
     describe('versionByIDSelector()', () => {
       it('select version from the legacy store', () => {
         const version = { id: VERSION_ID };
-        const versionState = Realtime.Utils.normalized.normalize([version]);
+        const versionState = Utils.normalized.normalize([version]);
 
         const result = Version.versionByIDSelector(createState(MOCK_STATE, { [VersionV1.STATE_KEY]: versionState }), { id: VERSION_ID });
 
@@ -156,7 +157,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
     describe('getVersionByIDSelector()', () => {
       it('select version from the legacy store', () => {
         const version = { id: VERSION_ID };
-        const versionState = Realtime.Utils.normalized.normalize([version]);
+        const versionState = Utils.normalized.normalize([version]);
 
         const result = Version.getVersionByIDSelector(createState(MOCK_STATE, { [VersionV1.STATE_KEY]: versionState }))(VERSION_ID);
 
@@ -182,7 +183,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('add variable to version locally', async () => {
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [VersionV1.STATE_KEY]: Realtime.Utils.normalized.normalize([{ id: VERSION_ID, variables: ['foo', 'bar'] }]),
+          [VersionV1.STATE_KEY]: Utils.normalized.normalize([{ id: VERSION_ID, variables: ['foo', 'bar'] }]),
         };
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz');
@@ -216,7 +217,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('fail when adding variable to version locally if variable already exists', async () => {
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [VersionV1.STATE_KEY]: Realtime.Utils.normalized.normalize([{ id: VERSION_ID, variables: ['foo', 'bar'] }]),
+          [VersionV1.STATE_KEY]: Utils.normalized.normalize([{ id: VERSION_ID, variables: ['foo', 'bar'] }]),
         };
 
         await expect(applyEffect(createState(MOCK_STATE, rootState), 'foo')).to.be.rejectedWith('No duplicate variables: foo');
@@ -238,7 +239,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('remove variable from version locally', async () => {
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [VersionV1.STATE_KEY]: Realtime.Utils.normalized.normalize([{ id: VERSION_ID, variables: ['foo', 'bar'] }]),
+          [VersionV1.STATE_KEY]: Utils.normalized.normalize([{ id: VERSION_ID, variables: ['foo', 'bar'] }]),
         };
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'foo');
@@ -250,7 +251,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
         const variables = ['foo', 'bar'];
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [VersionV1.STATE_KEY]: Realtime.Utils.normalized.normalize([{ id: VERSION_ID, variables }]),
+          [VersionV1.STATE_KEY]: Utils.normalized.normalize([{ id: VERSION_ID, variables }]),
         };
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz');

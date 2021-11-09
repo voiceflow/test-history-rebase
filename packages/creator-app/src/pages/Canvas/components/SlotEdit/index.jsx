@@ -1,4 +1,5 @@
 import { Constants } from '@voiceflow/alexa-types';
+import { Utils } from '@voiceflow/common';
 import { Button, ClickableText, Flex, FlexApart, flexApartStyles, Input, Select, stopPropagation, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import _sample from 'lodash/sample';
 import React from 'react';
@@ -13,10 +14,8 @@ import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { styled } from '@/hocs';
 import { useModals, usePermission, useSelector, useTeardown } from '@/hooks';
-import { replace, without } from '@/utils/array';
 import { formatIntentName } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
-import { removeTrailingUnderscores } from '@/utils/string';
 
 import { ColorSelector, SlotTag } from './components';
 import CustomLine from './components/CustomLine';
@@ -55,21 +54,21 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   const { open: openSlotsBulkUploadModal } = useModals(ModalType.IMPORT_SLOTS);
   const [selectedColor, setSelectedColor] = React.useState(color);
   const [slotType, setSlotType] = React.useState(() => type || (slotTypes.length === 1 ? slotTypes[0].value : type));
-  const [slotName, setSlotName] = React.useState(() => removeTrailingUnderscores(formatIntentName(name)));
+  const [slotName, setSlotName] = React.useState(() => Utils.string.removeTrailingUnderscores(formatIntentName(name)));
   const [customLines, setCustomLines] = React.useState(() =>
     inputs?.length ? inputs : (slotType === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || inputs
   );
   const slotTypesMap = React.useMemo(() => slotTypes.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [slotTypes]);
   const nameRef = React.useRef(null);
   const onCustomLineChange = React.useCallback(
-    (index, data) => setCustomLines(replace(customLines, index, { ...customLines[index], ...data })),
+    (index, data) => setCustomLines(Utils.array.replace(customLines, index, { ...customLines[index], ...data })),
     [customLines]
   );
 
   const notEmptyValues = React.useMemo(() => customLines.some(({ value, synonyms }) => value.trim() || synonyms.trim()), [customLines]);
 
   const updateSlot = () => {
-    const formattedSlotName = removeTrailingUnderscores(slotName);
+    const formattedSlotName = Utils.string.removeTrailingUnderscores(slotName);
 
     const error = validateSlotName({
       slots: slots.filter((slot) => slot.id !== id),
@@ -108,7 +107,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
     if (slotType === CUSTOM_SLOT_TYPE && customLines.length <= 1) {
       return;
     }
-    setCustomLines(without(customLines, index));
+    setCustomLines(Utils.array.without(customLines, index));
   };
 
   const updateSlotType = (type) => {
@@ -136,7 +135,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   };
 
   const onBlurInInteraction = () => {
-    setSlotName(removeTrailingUnderscores(slotName));
+    setSlotName(Utils.string.removeTrailingUnderscores(slotName));
     updateSlot();
   };
 

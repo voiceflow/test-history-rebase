@@ -1,4 +1,4 @@
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
@@ -25,7 +25,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.IfV2> = {
       name: 'If',
       expressions: [
         {
-          id: cuid.slug(),
+          id: Utils.id.cuid.slug(),
           type: null,
           value: [],
         },

@@ -2,7 +2,7 @@ import { createEditor as createSlateEditor } from 'slate';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 
-import { compose } from '@/utils/functional';
+import { compose } from '@/hocs';
 
 import EditorAPI from './editorAPI';
 import { PluginType, withPlugins } from './plugins';

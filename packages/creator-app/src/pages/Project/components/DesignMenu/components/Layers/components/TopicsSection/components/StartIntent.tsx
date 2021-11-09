@@ -1,9 +1,9 @@
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
 import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine, useSelector } from '@/hooks';
-import { Nullable } from '@/types';
 
 import IntentContainer from './IntentContainer';
 

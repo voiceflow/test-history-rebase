@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import { BroadcastChannel } from 'broadcast-channel';
-import cuid from 'cuid';
 
 import * as Query from '@/utils/query';
 
@@ -17,7 +17,7 @@ class OKTA {
 
   public login({ clientID, domain, redirectURI }: OKTAOptions): Promise<{ code: string }> {
     return new Promise((resolve, reject) => {
-      const state = `state-${cuid()}`;
+      const state = `state-${Utils.id.cuid()}`;
 
       this.channel.onmessage = (data) => {
         this.channel.onmessage = null;

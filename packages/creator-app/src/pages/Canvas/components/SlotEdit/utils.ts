@@ -1,9 +1,9 @@
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 
 import { SlotInput } from '@/models';
 
 export const generateSlotInput = (value = '', synonyms = ''): SlotInput => ({
-  id: cuid.slug(),
+  id: Utils.id.cuid.slug(),
   value,
   synonyms,
 });

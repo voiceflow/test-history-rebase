@@ -1,5 +1,5 @@
 import { Node, Request } from '@voiceflow/base-types';
-import cuid from 'cuid';
+import { Utils } from '@voiceflow/common';
 import { batch } from 'react-redux';
 
 import client from '@/client';
@@ -33,7 +33,7 @@ const fetchContext =
     const currentVisualData = prototypeVisualDataSelector(reduxState);
     const versionID = Session.activeVersionIDSelector(reduxState);
     const activeDiagramID = Session.activeDiagramIDSelector(reduxState);
-    const prototypeID = prototypeIDSelector(reduxState) || cuid();
+    const prototypeID = prototypeIDSelector(reduxState) || Utils.id.cuid();
 
     // unique identifier for session analytics
     const sessionID = `${versionID}.${prototypeID}`;
@@ -62,7 +62,7 @@ const fetchContext =
 
       const newStateObj = {
         ...newState,
-        trace: trace?.map((t) => ({ ...t, id: cuid() })) ?? [],
+        trace: trace?.map((t) => ({ ...t, id: Utils.id.cuid() })) ?? [],
       };
 
       batch(() => {

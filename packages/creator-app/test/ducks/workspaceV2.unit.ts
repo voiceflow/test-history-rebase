@@ -1,4 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string, mocha/no-identical-title */
+import { Utils } from '@voiceflow/common';
 import { PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { generate } from '@voiceflow/ui';
@@ -195,9 +196,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('select all workspaces from the legacy store', () => {
         const workspaces = generate.array(3, () => ({ id: generate.id() }));
 
-        const result = Workspace.allWorkspacesSelector(
-          createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: Realtime.Utils.normalized.normalize(workspaces) })
-        );
+        const result = Workspace.allWorkspacesSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: Utils.normalized.normalize(workspaces) }));
 
         expect(result).to.eql(workspaces);
       });
@@ -214,7 +213,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
         const workspaces = generate.array(3, () => ({ id: generate.id() }));
 
         const result = Workspace.allWorkspaceIDsSelector(
-          createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: Realtime.Utils.normalized.normalize(workspaces) })
+          createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: Utils.normalized.normalize(workspaces) })
         );
 
         expect(result).to.eql(workspaces.map((workspace) => workspace.id));
@@ -256,7 +255,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
     describe('workspaceByIDSelector()', () => {
       it('select workspace from the legacy store', () => {
         const workspace = { id: WORKSPACE_ID };
-        const workspaceState = Realtime.Utils.normalized.normalize([workspace]);
+        const workspaceState = Utils.normalized.normalize([workspace]);
 
         const result = Workspace.workspaceByIDSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: workspaceState }), { id: WORKSPACE_ID });
 
@@ -279,7 +278,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
     describe('getWorkspaceByIDSelector()', () => {
       it('select workspace from the legacy store', () => {
         const workspace = { id: WORKSPACE_ID };
-        const workspaceState = Realtime.Utils.normalized.normalize([workspace]);
+        const workspaceState = Utils.normalized.normalize([workspace]);
 
         const result = Workspace.getWorkspaceByIDSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: workspaceState }))(WORKSPACE_ID);
 

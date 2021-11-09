@@ -1,8 +1,8 @@
+import { Nullable } from '@voiceflow/common';
 import { slate } from '@voiceflow/internal';
 import { Descendant, Editor, Element, Location, Node, Point, Range, Text, Transforms } from 'slate';
 
 import { ALL_URLS_REGEX } from '@/constants';
-import { Nullable } from '@/types';
 import { isAnyLink } from '@/utils/string';
 
 import { DEFAULT_COLOR, ElementType, TextProperty } from '../../constants';

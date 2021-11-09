@@ -1,12 +1,11 @@
 import { Constants as AlexaConstants, Version as AlexaVersion } from '@voiceflow/alexa-types';
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Version as ChatVersion } from '@voiceflow/chat-types';
+import { Nullable } from '@voiceflow/common';
 import { Constants as GeneralConstants, Version as GeneralVersion } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants, Version as DialogflowVersion } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants, Version as GoogleVersion } from '@voiceflow/google-types';
 import { Version as VoiceVersion } from '@voiceflow/voice-types';
-
-import { Nullable } from '../types';
 
 export type DBVersion<
   P extends BaseModels.VersionPlatformData,

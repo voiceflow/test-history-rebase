@@ -1,10 +1,10 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
+import { Utils } from '@voiceflow/common';
 import { Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
 
 import { getPlatformValue } from './platform';
-import { capitalizeFirstLetter } from './string';
 
 interface VoiceOption<V> {
   value: V;
@@ -32,7 +32,7 @@ export const prettifyGoogleVoicesShort = (voiceCode: string): string => {
   const voiceType = splitCode[2];
   const voiceTypeVariant = splitCode[3];
 
-  return `${capitalizeFirstLetter(voiceType)} ${voiceTypeVariant}`.trim();
+  return `${Utils.string.capitalizeFirstLetter(voiceType)} ${voiceTypeVariant}`.trim();
 };
 
 // ex inbound string en-GB-standard-B
@@ -41,7 +41,7 @@ export const prettifyGoogleVoicesLong = (voiceCode: string): string => {
   const splitCode = voiceCode.split('-');
 
   const localeCode = `${splitCode[0]}-${splitCode[1]}` as GoogleConstants.Locale;
-  const voiceType = `${capitalizeFirstLetter(splitCode[2])} ${splitCode[3]}`;
+  const voiceType = `${Utils.string.capitalizeFirstLetter(splitCode[2])} ${splitCode[3]}`;
 
   return `${GoogleConstants.LocaleCodeToCountryLanguage[localeCode] || localeCode || ''} ${voiceType}`.trim();
 };
@@ -124,8 +124,8 @@ export const getGeneralVoiceOptions = ({ useWavenet }: GetVoiceOptionsParams = {
       options: getAlexaVoiceOptions(),
     },
     {
-      value: capitalizeFirstLetter(GeneralConstants.PlatformType.GOOGLE),
-      label: capitalizeFirstLetter(GeneralConstants.PlatformType.GOOGLE),
+      value: Utils.string.capitalizeFirstLetter(GeneralConstants.PlatformType.GOOGLE),
+      label: Utils.string.capitalizeFirstLetter(GeneralConstants.PlatformType.GOOGLE),
       options: getGoogleVoiceOptions({ locales: allGoogleLocales, useWavenet }),
     },
     {

@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Redux from 'redux';
 import undoable, { includeAction } from 'redux-undo';
@@ -6,8 +7,6 @@ import { isType } from 'typescript-fsa';
 import { DiagramState } from '@/constants';
 import { NodeData } from '@/models';
 import { Reducer, RootReducer } from '@/store/types';
-import { compose } from '@/utils/functional';
-import { normalize } from '@/utils/normalized';
 import reduxBatchUndo from '@/utils/reduxBatchUndo';
 
 import { AnyCreatorAction, CreatorAction, InitializeCreator } from '../../actions';
@@ -60,9 +59,9 @@ export const initializeCreatorReducer: Reducer<DiagramStateType, InitializeCreat
   diagramID,
   rootNodeIDs,
   data,
-  ports: normalize(ports),
-  nodes: normalize(nodes),
-  links: normalize(links),
+  ports: Utils.normalized.normalize(ports),
+  nodes: Utils.normalized.normalize(nodes),
+  links: Utils.normalized.normalize(links),
   linksByPortID: buildLinksByPortID(links),
   linksByNodeID: buildLinksByNodeID(links),
   linkedNodesByNodeID: buildLinkedNodesByNodeID(links),
@@ -91,7 +90,7 @@ export const updateNodeLocationReducer: Reducer<DiagramStateType, UpdateNodeLoca
 export const updateLinkDataReducer: Reducer<DiagramStateType, UpdateLinkData> = (state, { payload: { linkID, data } }) => {
   const link = state.links.byKey[linkID];
 
-  return compose(
+  return Utils.functional.compose(
     patchLinkInState(linkID, { data: { ...link.data, ...data } }),
     patchPortInState(link.source.portID, { linkData: { ...link.data, ...data } })
   )(state);
@@ -101,7 +100,7 @@ export const updateLinkDataManyReducer: Reducer<DiagramStateType, UpdateLinkData
   payload.reduce((nextState, { linkID, data }) => {
     const link = nextState.links.byKey[linkID];
 
-    return compose(
+    return Utils.functional.compose(
       patchLinkInState(linkID, { data: { ...link.data, ...data } }),
       patchPortInState(link.source.portID, { linkData: { ...link.data, ...data } })
     )(nextState);
@@ -111,7 +110,7 @@ export const addPortReducer: Reducer<DiagramStateType, AddPort> = (state, { payl
   addPortToBlockInState(portFactory(nodeID, port.id, port))(state);
 
 export const removePortReducer: Reducer<DiagramStateType, RemovePort> = (state, { payload: portID }) =>
-  compose(removePortFromBlockInState(portID), removeAllLinksFromState(getLinkIDsByPortID(state)(portID)))(state);
+  Utils.functional.compose(removePortFromBlockInState(portID), removeAllLinksFromState(getLinkIDsByPortID(state)(portID)))(state);
 
 export const reorderPortsReducer: Reducer<DiagramStateType, ReorderPorts> = (state, { payload: { nodeID, from, to } }) =>
   reorderNodePorts(nodeID, from, to)(state);

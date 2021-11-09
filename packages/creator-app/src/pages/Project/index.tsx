@@ -23,14 +23,13 @@ import {
   WorkspacesLoadingGate,
   WorkspaceSubscriptionGate,
 } from '@/gates';
-import { connect, lazy, withBatchLoadingGate } from '@/hocs';
+import { compose, connect, lazy, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEventualEngine, useLayoutDidUpdate, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRouteIMM';
 import InactivityModal from '@/pages/Inactivity';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 import { ConnectedProps } from '@/types';
-import { compose } from '@/utils/functional';
 
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';

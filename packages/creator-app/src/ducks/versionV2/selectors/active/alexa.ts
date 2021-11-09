@@ -1,8 +1,7 @@
 import { Constants, Version } from '@voiceflow/alexa-types';
+import { Nullable } from '@voiceflow/common';
 import { AlexaVersion } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
-
-import { Nullable } from '@/types';
 
 import { versionSelector as activeVersionSelector } from './base';
 

@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { BoxFlex, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,7 +12,6 @@ import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext }
 import { MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { buildVirtualElement } from '@/utils/dom';
-import { noop } from '@/utils/functional';
 import { Coords } from '@/utils/geometry';
 
 import { CanvasAction, TARGET_OPTIONS } from './constants';
@@ -57,7 +57,7 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
   [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusHome(),
 
-  [CanvasAction.DIVIDER]: noop,
+  [CanvasAction.DIVIDER]: Utils.functional.noop,
 
   [CanvasAction.TOGGLE_UI]: (_, { toggleCanvasOnly }) => toggleCanvasOnly(),
 

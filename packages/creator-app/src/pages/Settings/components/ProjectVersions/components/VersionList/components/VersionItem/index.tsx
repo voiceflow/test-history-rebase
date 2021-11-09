@@ -1,5 +1,4 @@
 import { Constants } from '@voiceflow/general-types';
-import { createPlatformSelector } from '@voiceflow/realtime-sdk/build/module/utils/platform';
 import { Box, Button, ButtonVariant, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -11,6 +10,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useModals, useSelector } from '@/hooks';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
+import { createPlatformSelector } from '@/utils/platform';
 
 import { ActionsItemContainer, ColumnItemContainer, RowItem } from './components';
 

@@ -1,5 +1,6 @@
 import { Constants } from '@voiceflow/general-types';
-import { createPlatformSelector } from '@voiceflow/realtime-sdk/build/module/utils/platform';
+
+import { createPlatformSelector } from '@/utils/platform';
 
 export const PLATFORM_VERSION_HEADER_TEXT = createPlatformSelector(
   {

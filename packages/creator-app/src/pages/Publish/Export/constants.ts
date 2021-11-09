@@ -1,8 +1,8 @@
 import { Constants } from '@voiceflow/general-types';
-import { createPlatformSelector } from '@voiceflow/realtime-sdk/build/module/utils/platform';
 
 import UploadButton from '@/components/PlatformUploadButton';
 import * as Account from '@/ducks/account';
+import { createPlatformSelector } from '@/utils/platform';
 
 import { AlexaUploadButton, AlexaUploadLink } from './Alexa';
 import { GeneralUploadLink } from './General';

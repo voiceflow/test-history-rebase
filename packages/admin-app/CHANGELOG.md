@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.8.7...@voiceflow/admin-app@1.8.8) (2021-11-09)
+
+
+### Bug Fixes
+
+* **deps:** pin dependency socket.io-client to v2.4.0 ([#4457](https://github.com/voiceflow/creator-app/issues/4457)) ([d77035c](https://github.com/voiceflow/creator-app/commit/d77035c9e1db62504cf9ad3fdc053fc1d1184efb))
+
+
+
+
+
 ## [1.8.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.8.6...@voiceflow/admin-app@1.8.7) (2021-11-07)
 
 **Note:** Version bump only for package @voiceflow/admin-app

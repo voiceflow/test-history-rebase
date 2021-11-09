@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.536.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.4...@voiceflow/creator-app@1.536.5) (2021-11-09)
+
+
+### Bug Fixes
+
+* **deps:** pin dependency socket.io-client to v2.4.0 ([#4457](https://github.com/voiceflow/creator-app/issues/4457)) ([d77035c](https://github.com/voiceflow/creator-app/commit/d77035c9e1db62504cf9ad3fdc053fc1d1184efb))
+
+
+
+
+
 ## [1.536.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.3...@voiceflow/creator-app@1.536.4) (2021-11-08)
 
 

@@ -1,6 +1,11 @@
 import { css, styled } from '@/hocs';
 
-const PaymentContainer = styled.div`
+interface PaymentContainerProps {
+  notAllowed: boolean;
+  isLoading: boolean;
+}
+
+const PaymentContainer = styled.div<PaymentContainerProps>`
   width: 100%;
 
   ${({ notAllowed }) => notAllowed && 'cursor: not-allowed'};

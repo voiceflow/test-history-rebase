@@ -38,7 +38,7 @@ const workspaceClient = {
 
   getInvoice: (workspaceID: string) => api.get<DBBilling>(`${WORKSPACES_PATH}/${workspaceID}/invoice`).then(invoiceAdapter.fromDB),
 
-  getPlans: () => api.get(`${WORKSPACES_PATH}/plans`),
+  getPlans: () => api.get<DBPaymentSource[]>(`${WORKSPACES_PATH}/plans`),
 
   getPlan: (workspaceID: string) => api.get<DBPaymentSource>(`${WORKSPACES_PATH}/${workspaceID}/plan`),
 

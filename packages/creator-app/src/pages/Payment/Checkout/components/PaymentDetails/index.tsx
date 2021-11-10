@@ -4,12 +4,12 @@ import React from 'react';
 import Collapsable from '@/components/Collapsable';
 import { CardElement } from '@/components/Stripe';
 import StepSection from '@/pages/Payment/components/Section';
-import { withPayment } from '@/pages/Payment/context';
+import { PaymentContextProps, PaymentDiscount, withPayment } from '@/pages/Payment/context';
 import { Identifier } from '@/styles/constants';
 
 import StepHeading from '../StepHeading';
 
-const generateDiscountMessage = (discount) => {
+const generateDiscountMessage = (discount?: PaymentDiscount) => {
   if (!discount) return;
 
   const { message, type, value } = discount;
@@ -22,12 +22,16 @@ const generateDiscountMessage = (discount) => {
   return message;
 };
 
-function PaymentDetails({
+interface PaymentDetailsProps {
+  payment: PaymentContextProps;
+}
+
+const PaymentDetails: React.FC<PaymentDetailsProps> = ({
   payment: {
     state: { coupon, usingCoupon, errors, discount, usingExistingSource, source },
     actions: { setCoupon, toggleUsingCoupon, setStripeCompleted, toggleUsingExistingSource },
   },
-}) {
+}) => {
   const couponError = errors?.coupon?.message;
   const actions = [];
   if (source) actions.push({ label: usingExistingSource ? 'Update card' : 'Use existing card', action: toggleUsingExistingSource });
@@ -45,8 +49,8 @@ function PaymentDetails({
             placeholder="Coupon code"
             value={coupon}
             onChange={(e) => setCoupon(e.target.value)}
-            error={couponError}
-            complete={!couponError && discount?.message}
+            error={!!couponError}
+            complete={!couponError && !!discount?.message}
             message={couponError || generateDiscountMessage(discount)}
           />
         </Collapsable>
@@ -58,6 +62,6 @@ function PaymentDetails({
       </StepSection>
     </>
   );
-}
+};
 
 export default withPayment(PaymentDetails);

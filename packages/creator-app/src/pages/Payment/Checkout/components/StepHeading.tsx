@@ -8,7 +8,11 @@ const HeadingText = styled.div`
   color: #62778c;
 `;
 
-export const Container = styled(FlexApart)`
+interface ContainerProps {
+  noBottomPadding: boolean;
+}
+
+export const Container = styled(FlexApart)<ContainerProps>`
   font-weight: 600;
   padding: 12px 32px;
   ${({ noBottomPadding }) =>
@@ -29,7 +33,16 @@ const Divider = styled.span`
   color: #d4d9e6;
 `;
 
-export const ActionMapping = ({ actions = [] }) => (
+export interface Action {
+  action: React.MouseEventHandler<HTMLSpanElement>;
+  label: string | JSX.Element;
+}
+
+interface ActionMappingProps {
+  actions: Action[];
+}
+
+export const ActionMapping: React.FC<ActionMappingProps> = ({ actions }) => (
   <>
     {actions.map((action, index) => (
       <React.Fragment key={index}>
@@ -42,7 +55,14 @@ export const ActionMapping = ({ actions = [] }) => (
   </>
 );
 
-const StepHeading = ({ heading, actions = [], noBottomPadding, className }) => (
+interface StepHeadingProps {
+  heading: string;
+  className?: string;
+  actions: Action[];
+  noBottomPadding: boolean;
+}
+
+const StepHeading: React.FC<StepHeadingProps> = ({ heading, actions, noBottomPadding, className }) => (
   <Container className={className} noBottomPadding={noBottomPadding}>
     <HeadingText>{heading}</HeadingText>
     <div>

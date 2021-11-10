@@ -16,10 +16,9 @@ const SettingsButton: React.FC = () => {
   const leaveWorkspace = useDispatch(Workspace.leaveActiveWorkspace);
   const goToWorkspaceSettings = useDispatch(Router.goToCurrentWorkspaceSettings);
 
-  const { toggle: togglePayment } = useModals(ModalType.PAYMENT);
+  const { toggle: togglePayment, open: openUpgrade } = useModals(ModalType.PAYMENT);
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
   const [canConfigureWorkspace, { activeRole }] = usePermission(Permission.CONFIGURE_WORKSPACE);
-  const { open: openUpgrade } = useModals(ModalType.PAYMENT);
 
   const isEditor = activeRole === UserRole.EDITOR;
   const isLibrary = activeRole === UserRole.LIBRARY;

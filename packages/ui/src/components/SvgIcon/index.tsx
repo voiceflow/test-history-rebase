@@ -17,6 +17,7 @@ export type SvgIconProps = Partial<SvgIconContainerProps> & {
   icon: Icon | React.ComponentType;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
   className?: string;
+  style?: React.CSSProperties;
 };
 
 const SvgIcon: React.ForwardRefRenderFunction<HTMLSpanElement, SvgIconProps> = (

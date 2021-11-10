@@ -1,5 +1,5 @@
 import { PlanType } from '@voiceflow/internal';
-import { Button } from '@voiceflow/ui';
+import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import BubbleText from '@/components/BubbleText';
@@ -8,7 +8,7 @@ import { ModalFooter } from '@/components/Modal';
 import Tabs from '@/components/Tabs';
 import { PLAN_TYPE_META } from '@/constants';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
-import { withPayment } from '@/pages/Payment/context';
+import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import ChatWithUsLink from '../components/ChatWithUsLink';
@@ -30,52 +30,58 @@ import {
   TabsContainer,
 } from './components';
 
-const modulo = (a, b) => ((a % b) + b) % b;
+const modulo = (a: number, b: number) => ((a % b) + b) % b;
 
-function PlansDetails({
+interface PlansDetailsProps {
+  payment: PaymentContextProps;
+}
+
+const PlansDetails: React.FC<PlansDetailsProps> = ({
   payment: {
     state: { plan, plans },
     actions: { showCheckout, setPlan },
   },
-}) {
+}) => {
   const selectedPlanIndex = Math.max(
     plans.findIndex((option) => option.id === plan.id),
     0
   );
 
-  const setPlanIndex = (index) => {
+  const setPlanIndex = (index: number) => {
     setPlan(plans[modulo(index, plans.length)]);
   };
 
-  const selectPlan = (planId) => {
+  const selectPlan = (planId: PlanType) => {
     const selectedPlanObject = plans.filter((plan) => plan.id === planId)[0];
     setPlan(selectedPlanObject);
   };
 
-  const tabsOptions = React.useMemo(() =>
-    plans
-      .filter(({ id }) => id !== PlanType.ENTERPRISE || id !== PlanType.OLD_ENTERPRISE)
-      .map((option) => {
-        const price = option.pricing?.YR?.price;
-        const dollarPrice = price ? price / 100 : null;
-        return {
-          value: option.id,
-          label: (
-            <TabContainer>
-              {option.name}
-              {dollarPrice ? (
-                <TabPriceContainer>
-                  <DollarText>${dollarPrice}</DollarText>
-                  /mo
-                </TabPriceContainer>
-              ) : (
-                <TabPriceContainer>Custom </TabPriceContainer>
-              )}
-            </TabContainer>
-          ),
-          color: option.color,
-        };
-      })
+  const tabsOptions = React.useMemo(
+    () =>
+      plans
+        .filter(({ id }) => id !== PlanType.ENTERPRISE && id !== PlanType.OLD_ENTERPRISE)
+        .map((option) => {
+          const price = option.pricing?.YR?.price;
+          const dollarPrice = price ? price / 100 : null;
+          return {
+            value: option.id,
+            label: (
+              <TabContainer>
+                {option.name}
+                {dollarPrice ? (
+                  <TabPriceContainer>
+                    <DollarText>${dollarPrice}</DollarText>
+                    /mo
+                  </TabPriceContainer>
+                ) : (
+                  <TabPriceContainer>Custom </TabPriceContainer>
+                )}
+              </TabContainer>
+            ),
+            color: option.color,
+          };
+        }),
+    []
   );
   return (
     <div>
@@ -116,7 +122,7 @@ function PlansDetails({
       <ModalFooter justifyContent="space-between">
         <ChatWithUsLink />
         {plan.pricing ? (
-          <Button variant="primary" onClick={showCheckout}>
+          <Button variant={ButtonVariant.PRIMARY} onClick={showCheckout}>
             Upgrade to {plan.name}
           </Button>
         ) : (
@@ -125,6 +131,6 @@ function PlansDetails({
       </ModalFooter>
     </div>
   );
-}
+};
 
 export default withPayment(PlansDetails);

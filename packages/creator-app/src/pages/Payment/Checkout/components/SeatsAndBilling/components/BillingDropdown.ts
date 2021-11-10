@@ -2,7 +2,7 @@ import { SvgIconContainer } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
-const BillingDropdown = styled.div<{ disabled: boolean; error?: boolean; isOpen: boolean }>`
+const BillingDropdown = styled.div<{ disabled?: boolean; error?: boolean; isOpen: boolean }>`
   ${transition()};
   cursor: pointer;
   font-size: 15px;

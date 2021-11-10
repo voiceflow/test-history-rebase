@@ -1,8 +1,9 @@
 import { Utils } from '@voiceflow/common';
-import { BillingPeriod, UserRole } from '@voiceflow/internal';
+import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import { ButtonVariant, toast, withContext, withProvider } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
+import { ReactStripeElements } from 'react-stripe-elements';
 
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
@@ -20,9 +21,10 @@ import {
   useSelector,
   useSmartReducer,
 } from '@/hooks';
+import { DBPaymentSource } from '@/models/Billing';
 import * as Sentry from '@/vendors/sentry';
 
-export const PaymentContext = React.createContext(null);
+export const PaymentContext = React.createContext<PaymentContextProps | null>(null);
 export const { Consumer: PaymentContextConsumer } = PaymentContext;
 
 export const VIEWS = {
@@ -32,7 +34,74 @@ export const VIEWS = {
 
 const PRICE_UPDATE_DEBOUNCE_TIMEOUT = 300;
 
-const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
+export interface PaymentPlan {
+  pricing: Partial<Record<BillingPeriod, { price: number }>>;
+  id: PlanType;
+  images: string[];
+  name: string;
+  color?: string;
+  summary: string;
+  description: string;
+  highlights: string[];
+}
+
+export interface PaymentDiscount {
+  message: string;
+  type: string;
+  value: number;
+}
+
+export type PaymentErrors = Partial<Record<'seats' | 'coupon' | 'period', { message?: string }>>;
+
+export interface PaymentContextProps {
+  state: {
+    hasPricing: boolean;
+    loading: {
+      price: boolean;
+      checkout: boolean;
+      plan: boolean;
+    };
+
+    // from smart reducer
+    view: string;
+    coupon: string;
+    usingCoupon: boolean;
+    errors: PaymentErrors;
+    discount: PaymentDiscount;
+    usingExistingSource: boolean;
+    source: DBPaymentSource;
+    plan: PaymentPlan;
+    plans: PaymentPlan[];
+    focus: string;
+    price: number;
+    period: BillingPeriod;
+    seats: number;
+    stripeCompleted: boolean;
+  };
+  actions: {
+    showDetails: VoidFunction;
+    showCheckout: VoidFunction;
+
+    // from smart reducer
+    setPeriod: (period: BillingPeriod) => void;
+    setFocus: (focus: string) => void;
+    setSeats: (seats: string) => void;
+    setCoupon: (coupon: string | number) => void;
+    setPlan: (plan: PaymentPlan) => void;
+    toggleUsingCoupon: VoidFunction;
+    setStripeCompleted: (complete: boolean) => void;
+    toggleUsingExistingSource: VoidFunction;
+  };
+  checkout: () => Promise<void>;
+}
+
+interface PaymentContextProviderProps {
+  children: JSX.Element;
+  stripe: ReactStripeElements.StripeProps;
+  checkChargeable: (source: stripe.Source) => Promise<void>;
+}
+
+const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ children, stripe, checkChargeable }) => {
   const workspace = useActiveWorkspace();
   const referrerID = useSelector(Account.referrerIDSelector);
   const referralCode = useSelector(Account.referralCodeSelector);
@@ -43,7 +112,7 @@ const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
   const [fetchingPrice, startFetchingPrice, stopFetchingPrice] = useEnableDisable(false);
   const [loadingPlan, startloadingPlan, stoploadingPlan] = useEnableDisable(true);
 
-  const checkHash = React.useRef(null);
+  const checkHash = React.useRef<string | null>(null);
 
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
   const { close: closePaymentsModal } = useModals(ModalType.PAYMENT);
@@ -121,7 +190,7 @@ const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
         seats: state.seats,
         period: state.period,
         coupon: state.usingCoupon ? state.coupon : undefined,
-        source_id: source?.id,
+        source_id: source ? source.id : '',
       });
 
       loadActiveWorkspace();
@@ -169,7 +238,7 @@ const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
       const { plan, period, seats, source } = await client.workspace.getPlan(workspace.id);
 
       let numberOfSeats = seats;
-      let stripePromotion = '';
+      let stripePromotion: string | null = null;
       if (numberOfSeats === UNLIMITED_EDITORS_CONST) {
         const editorCount = workspace.members.filter(
           ({ role, creator_id }) => !!creator_id && (role === UserRole.EDITOR || role === UserRole.ADMIN)

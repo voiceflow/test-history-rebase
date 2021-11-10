@@ -91,6 +91,6 @@ export { IconVariant, default as SvgIcon, SvgIconContainer } from './SvgIcon';
 export type { TextProps } from './Text';
 export { BlockText, ClickableText, Description, Label, Link, OverflowText, overflowTextStyles, default as Text, Title } from './Text';
 export type { TippyTooltipProps } from './TippyTooltip';
-export { default as TippyTooltip } from './TippyTooltip';
+export { default as TippyTooltip, TooltipTheme } from './TippyTooltip';
 export { toast, ToastCallToAction, ToastContainer } from './Toast';
 export { default as Toggle } from './Toggle';

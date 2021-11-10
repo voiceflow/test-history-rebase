@@ -208,7 +208,7 @@ const Payment: React.FC = () => {
                 ]}
                 placement="bottom-start"
               >
-                {(ref: React.Ref<any>, onToggle: any, isOpen: boolean) => (
+                {(ref, onToggle, isOpen) => (
                   <BillingDropdown
                     disabled={hasFixedPeriod}
                     ref={ref}
@@ -244,7 +244,7 @@ const Payment: React.FC = () => {
               maxLength={16}
               placeholder="Coupon code"
               value={coupon}
-              onChange={(e: any) => {
+              onChange={(e) => {
                 setCoupon(e.target.value);
               }}
               error={!!couponError}

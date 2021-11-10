@@ -1,17 +1,26 @@
+import { StringifyEnum } from '@voiceflow/common';
 import React from 'react';
-import { Tooltip, TooltipProps } from 'react-tippy';
+import { Theme, Tooltip, TooltipProps } from 'react-tippy';
 
 import { IS_TEST } from '../../config';
 import { ClassName } from '../../styles/constants';
 import { HotkeyLabel } from './components';
 
-export interface TippyTooltipProps extends TooltipProps {
+export enum TooltipTheme {
+  WARNING = 'warning',
+  DARK = 'dark',
+  LIGHT = 'light',
+  TRANSPARENT = 'transparent',
+}
+
+export interface TippyTooltipProps extends Omit<TooltipProps, 'theme'> {
   hotkey?: string;
   tag?: string;
+  theme?: StringifyEnum<TooltipTheme>;
 }
 
 const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChildren<TippyTooltipProps>> = (
-  { html, title, disabled, children, hotkey, ...props },
+  { html, title, disabled, children, hotkey, theme, ...props },
   ref
 ) => {
   const withHotkey = !!hotkey;
@@ -33,6 +42,7 @@ const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChild
       }
       title={withHotkey ? undefined : title}
       disabled={disabled || IS_TEST}
+      theme={theme as Theme}
       {...props}
     >
       {children}

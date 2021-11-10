@@ -1,3 +1,5 @@
+import { PlanType } from '@voiceflow/internal';
+
 export interface Billing {
   invoices: Billing.PastInvoice[] | null;
   upcoming: Billing.Invoice | null;
@@ -18,6 +20,14 @@ export namespace Billing {
 export interface DBPaymentSource {
   brand?: string;
   last4?: string;
+  plan?: PlanType;
+  period?: string;
+  seats?: number;
+  source?: unknown;
+  id: PlanType;
+  pricing?: unknown;
+  legacy?: boolean;
+  hidden?: boolean;
 }
 
 export interface DBBilling {

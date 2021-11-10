@@ -1,8 +1,12 @@
-import { IconButton, SvgIconContainer } from '@voiceflow/ui';
+import { IconButton, IconButtonBaseContainerProps, SvgIconContainer } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalBody } from '@/components/Modal';
 import { styled, transition } from '@/hocs';
+
+export interface ButtonProps extends IconButtonBaseContainerProps {
+  large: true;
+}
 
 const CarouselButton = styled(IconButton)`
   ${transition()}
@@ -21,7 +25,7 @@ const Container = styled(ModalBody)`
   position: initial;
 `;
 
-const LeftButton = styled(CarouselButton)`
+const LeftButton = styled(CarouselButton)<ButtonProps>`
   left: -60px;
   ${SvgIconContainer} {
     position: relative;
@@ -29,7 +33,7 @@ const LeftButton = styled(CarouselButton)`
   }
 `;
 
-const RightButton = styled(CarouselButton)`
+const RightButton = styled(CarouselButton)<ButtonProps>`
   right: -60px;
 
   ${SvgIconContainer} {
@@ -38,7 +42,14 @@ const RightButton = styled(CarouselButton)`
   }
 `;
 
-const CarouselButtons = ({ onLeftClick, onRightClick, disableLeft, disableRight }) => (
+interface CarouselButtonsProps {
+  onLeftClick: React.MouseEventHandler<HTMLButtonElement>;
+  onRightClick: React.MouseEventHandler<HTMLButtonElement>;
+  disableLeft: boolean;
+  disableRight: boolean;
+}
+
+const CarouselButtons: React.FC<CarouselButtonsProps> = ({ onLeftClick, onRightClick, disableLeft, disableRight }) => (
   <Container>
     <LeftButton large icon="arrowLeft" size={13} onClick={onLeftClick} disabled={disableLeft} />
     <RightButton large icon="arrowRight" size={13} onClick={onRightClick} disabled={disableRight} />

@@ -1,16 +1,20 @@
 import { BillingPeriod } from '@voiceflow/internal';
-import { Button, SvgIcon } from '@voiceflow/ui';
+import { Button, ButtonVariant, SvgIcon } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
 import { useTrackingEvents } from '@/hooks';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
-import { withPayment } from '@/pages/Payment/context';
+import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { Identifier } from '@/styles/constants';
 
 import { CostText, LoadingButton } from './components';
 
-function CheckoutButton({ payment: { state, checkout } }) {
+interface CheckoutButtonProps {
+  payment: PaymentContextProps;
+}
+
+const CheckoutButton: React.FC<CheckoutButtonProps> = ({ payment: { state, checkout } }) => {
   const { plan, seats, coupon, price, period, hasPricing, errors, stripeCompleted, loading, usingExistingSource } = state;
 
   const [trackingEvents] = useTrackingEvents();
@@ -32,7 +36,7 @@ function CheckoutButton({ payment: { state, checkout } }) {
 
   if (loading.checkout) {
     return (
-      <LoadingButton variant="primary" square>
+      <LoadingButton variant={ButtonVariant.PRIMARY} square>
         <SvgIcon icon="publishSpin" size={24} spin />
       </LoadingButton>
     );
@@ -41,7 +45,12 @@ function CheckoutButton({ payment: { state, checkout } }) {
   const paymentReady = stripeCompleted || usingExistingSource;
 
   return (
-    <Button id={Identifier.PAYMENT_UPGRADE_BUTTON} variant="primary" onClick={onUpgradeClick} disabled={!_isEmpty(errors) || !paymentReady}>
+    <Button
+      id={Identifier.PAYMENT_UPGRADE_BUTTON}
+      variant={ButtonVariant.PRIMARY}
+      onClick={onUpgradeClick}
+      disabled={!_isEmpty(errors) || !paymentReady}
+    >
       Upgrade{' '}
       {paymentReady && (
         <CostText>
@@ -51,6 +60,6 @@ function CheckoutButton({ payment: { state, checkout } }) {
       )}
     </Button>
   );
-}
+};
 
 export default withPayment(CheckoutButton);

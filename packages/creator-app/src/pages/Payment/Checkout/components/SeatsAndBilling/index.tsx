@@ -1,12 +1,11 @@
 import { BillingPeriod } from '@voiceflow/internal';
-import { Dropdown, Flex, FlexApart, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, Flex, FlexApart, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import { PERIOD_NAME } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
-import { withPayment } from '@/pages/Payment/context';
+import { PaymentContextProps, PaymentErrors, withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 
@@ -16,16 +15,20 @@ import PriceBox from './components/PriceBox';
 import SeatsBillingText from './components/SeatsBillingText';
 import SeatsInput from './components/SeatsInput';
 
-function SeatsAndBilling({
+interface SeatsAndBillingProps {
+  payment: PaymentContextProps;
+}
+
+const SeatsAndBilling: React.FC<SeatsAndBillingProps> = ({
   payment: {
     state: { plan, price, period, seats, errors, hasPricing, loading },
     actions: { setPeriod, setSeats },
   },
-}) {
-  const formErrors = hasPricing ? errors : {};
+}) => {
+  const formErrors: PaymentErrors = hasPricing ? errors : {};
   let discountMessage;
 
-  if (plan.pricing) {
+  if (plan?.pricing) {
     if (period === BillingPeriod.MONTHLY) {
       discountMessage = 'You could be saving 20% with annual billing';
     } else if (period === BillingPeriod.ANNUALLY) {
@@ -64,18 +67,18 @@ function SeatsAndBilling({
                 placement="bottom-start"
               >
                 {(ref, onToggle, isOpen) => (
-                  <Tooltip disabled={!periodError} title={periodError} position="top-start" theme="warning" distance={5}>
+                  <TippyTooltip disabled={!periodError} title={periodError} position="top-start" theme="warning" distance={5}>
                     <BillingDropdown
                       id={Identifier.PAYMENT_MODAL_BILLING_CYCLE_DROPDOWN}
                       ref={ref}
                       onClick={onToggle}
-                      error={periodError}
+                      error={!!periodError}
                       isOpen={isOpen}
                     >
                       Billed {PERIOD_NAME[period]}
-                      <SvgIcon icon="caretDown" color={isOpen ? '5D9DF5' : null} size={7} />
+                      <SvgIcon icon="caretDown" color={isOpen ? '5D9DF5' : ''} size={7} />
                     </BillingDropdown>
-                  </Tooltip>
+                  </TippyTooltip>
                 )}
               </Dropdown>
             </SeatsBillingText>
@@ -84,7 +87,7 @@ function SeatsAndBilling({
             <PriceBox>
               <>
                 <div>$</div>
-                {!plan.pricing || !_isNumber(price) || loading.price ? (
+                {!plan?.pricing || !_isNumber(price) || loading.price ? (
                   <div>&nbsp;--&nbsp;</div>
                 ) : (
                   <div id={Identifier.PAYMENT_MODAL_UNIT_COST_CONTAINER}>{price}</div>
@@ -100,6 +103,6 @@ function SeatsAndBilling({
       </DiscountMessageContainer>
     </>
   );
-}
+};
 
 export default withPayment(SeatsAndBilling);

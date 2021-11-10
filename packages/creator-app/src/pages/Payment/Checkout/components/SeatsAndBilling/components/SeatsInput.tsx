@@ -1,14 +1,17 @@
-import { Input } from '@voiceflow/ui';
+import { Input, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import { styled, transition } from '@/hocs';
-import { withPayment } from '@/pages/Payment/context';
+import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { Identifier } from '@/styles/constants';
 
 export const BILLING_SEATS_ELEMENT = 'seats';
 
-const SeatsInputBox = styled(Input)`
+interface SeatsInputBoxProps {
+  hasError: boolean;
+}
+
+const SeatsInputBox = styled(Input)<SeatsInputBoxProps>`
   ${transition()}
   display: inline-block;
   font-size: 18px;
@@ -23,37 +26,37 @@ const ErrorTooltipContainer = styled.div`
   width: 150px;
 `;
 
-const SeatsInput = ({
-  payment: {
-    state: { focus },
-  },
-  errorMessage,
-  hasError,
-  onChange,
-  value,
-}) => {
+interface SeatsInputProps {
+  payment?: PaymentContextProps;
+  errorMessage?: string;
+  hasError: boolean;
+  onChange: (value: string) => void;
+  value: number;
+}
+
+const SeatsInput: React.FC<SeatsInputProps> = ({ payment, errorMessage, hasError, onChange, value }) => {
   const initialValue = React.useMemo(() => value ?? 0, []);
-  const inputRef = React.useRef(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const errorTooltip = errorMessage ? <ErrorTooltipContainer>{errorMessage}</ErrorTooltipContainer> : <span />;
   const [hasFocus, setHasFocus] = React.useState(false);
   const [fetchingResponse, setFetchingResponse] = React.useState(false);
-  const updateSeats = (e) => {
-    onChange(parseInt(Math.min(Math.max(e.target.value, initialValue), 99), 10).toString());
+  const updateSeats = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(parseInt(Math.min(Math.max(parseInt(e.target.value, 10), initialValue), 99).toString(), 10).toString());
   };
 
   React.useEffect(() => {
-    if (focus === BILLING_SEATS_ELEMENT) {
+    if (payment?.state.focus === BILLING_SEATS_ELEMENT) {
       inputRef?.current?.focus();
     }
-  }, [focus]);
+  }, [payment?.state.focus]);
 
   React.useEffect(() => {
     setFetchingResponse(false);
   }, [errorMessage]);
 
   return (
-    <Tooltip
-      open={hasError && hasFocus && !fetchingResponse && parseInt(value, 10) !== 0 && !!errorMessage}
+    <TippyTooltip
+      open={hasError && hasFocus && !fetchingResponse && value !== 0 && !!errorMessage}
       position="top-start"
       theme="warning"
       html={errorTooltip}
@@ -73,8 +76,8 @@ const SeatsInput = ({
           updateSeats(e);
         }}
       />
-    </Tooltip>
+    </TippyTooltip>
   );
 };
 
-export default withPayment(SeatsInput);
+export default withPayment(SeatsInput) as React.FC<SeatsInputProps>;

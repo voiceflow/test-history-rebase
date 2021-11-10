@@ -4,7 +4,7 @@ import { ModalFooter } from '@/components/Modal';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
 import ChatWithUsLink from '@/pages/Payment/components/ChatWithUsLink';
-import { withPayment } from '@/pages/Payment/context';
+import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import Container from './components/Container';
@@ -14,11 +14,15 @@ import SeatsAndBilling from './components/SeatsAndBilling';
 import SelectPlan from './components/SelectPlan';
 import CheckoutButton from './components/SelectPlan/CheckoutButton';
 
-function UpdatePlan({
+interface UpdatePlanProps {
+  payment: PaymentContextProps;
+}
+
+const UpdatePlan: React.FC<UpdatePlanProps> = ({
   payment: {
     state: { hasPricing, loading },
   },
-}) {
+}) => {
   const [isAllowed] = usePermission(Permission.UPGRADE_WORKSPACE);
 
   return (
@@ -38,6 +42,6 @@ function UpdatePlan({
       </ModalFooter>
     </>
   );
-}
+};
 
 export default withPayment(UpdatePlan);

@@ -14,6 +14,7 @@ export interface SpinnerProps {
   message?: string;
   name?: string;
   isMd?: boolean;
+  isEmpty?: boolean;
   color?: string;
   className?: string;
   borderLess?: boolean;

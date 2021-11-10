@@ -7,10 +7,14 @@ import { ClassName } from '@/styles/constants';
 
 import Payment from '.';
 
-const PaymentModal = () => {
+interface PaymentType {
+  focus: string;
+}
+
+const PaymentModal: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
 
-  const { isOpened, data } = useModals(ModalType.PAYMENT);
+  const { isOpened, data } = useModals<PaymentType>(ModalType.PAYMENT);
 
   React.useEffect(() => {
     if (!isOpened) return;

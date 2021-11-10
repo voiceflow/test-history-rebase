@@ -20,7 +20,7 @@ export const getSlotTypes = <L extends string>({
   natoEnabled: boolean;
 }): { label: string; value: string }[] => {
   let builtInSlots: BuiltinSlot<string, string | L>[];
-
+  let language: string | undefined;
   switch (platform) {
     case Constants.PlatformType.GOOGLE:
       builtInSlots = [...GoogleConstants.BUILT_IN_SLOTS];
@@ -38,7 +38,12 @@ export const getSlotTypes = <L extends string>({
         .sort((lSlot, rSlot) => lSlot.label.localeCompare(rSlot.label));
       break;
     default:
-      builtInSlots = generalSlotTypesByLanguage(locales[0]?.substring(0, 2));
+      language = locales[0]?.substring(0, 2);
+      // es-MX has different built in entities than es-ES, so needs a seperate case. See VF-159
+      if (locales[0] === Constants.Locale.ES_MX) {
+        language = Constants.Locale.ES_MX;
+      }
+      builtInSlots = generalSlotTypesByLanguage(language);
       if (!natoEnabled) {
         builtInSlots = builtInSlots.filter((slot) => slot.type !== GeneralConstants.SlotType.NATOAPCO);
       }

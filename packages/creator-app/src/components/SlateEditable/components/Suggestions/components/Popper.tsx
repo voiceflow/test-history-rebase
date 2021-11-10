@@ -20,7 +20,7 @@ import { useDismissable } from 'react-dismissable-layers';
 
 import { useLinkedState } from '@/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
-import { getTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 
 import { useSlateEditor } from '../../../contexts';
 import { EditorAPI } from '../../../editor';
@@ -215,7 +215,7 @@ const Popper = <T extends PopperItem>({
                   ref={inputRef}
                   value={localSearch}
                   onBlur={onInputBlur}
-                  onChange={getTargetValue(onInputChanged)}
+                  onChange={withTargetValue(onInputChanged)}
                   placeholder={inputPlaceholder}
                 />
 

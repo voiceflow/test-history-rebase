@@ -10,7 +10,7 @@ import VirtualList from '@/components/VirtualList';
 import * as Documentation from '@/config/documentation';
 import { BlockType, DragItem } from '@/constants';
 import { useDidUpdateEffect, useEventualEngine } from '@/hooks';
-import { getTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 
 import Header, { HEADER_MIN_HEIGHT } from '../Header';
 import SearchInput, { SEARCH_INPUT_HEIGHT } from '../SearchInput';
@@ -134,7 +134,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
                 )
               }
             >
-              {withSearch ? <SearchInput value={searchValue} onChange={getTargetValue(setSearchValue)} placeholder="Search" /> : null}
+              {withSearch ? <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" /> : null}
             </Header>
           }
           listRef={listRef}

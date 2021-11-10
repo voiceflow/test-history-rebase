@@ -9,7 +9,7 @@ import RadioGroup from '@/components/RadioGroup';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useBoundValue, useDispatch } from '@/hooks';
-import { getTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 
 import { useValidator } from '../hooks';
 
@@ -77,7 +77,7 @@ const PrivacyComplianceForm: React.FC = () => {
           placeholder="Any Particular Testing Instructions for Amazon Approval Process"
           style={{ minHeight: '94px', maxHeight: '94px' }}
           value={instructions}
-          onChange={getTargetValue(setInstructions)}
+          onChange={withTargetValue(setInstructions)}
           onBlur={saveInstructions}
           touched={!!instructionsError}
           error={instructionsError}

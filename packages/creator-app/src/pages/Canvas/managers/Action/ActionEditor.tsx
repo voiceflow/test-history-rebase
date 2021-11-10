@@ -3,6 +3,7 @@ import { Box, Input } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import Divider from '@/components/Divider';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import TextArea from '@/components/TextArea';
 import { focusedNodeSelector } from '@/ducks/creator';
@@ -84,7 +85,7 @@ const ActionEditor: React.FC<NodeEditorPropsType<Realtime.NodeData.Trace>> = ({ 
           </Box>
         </div>
       </EditorSection>
-      <Section isDividerNested borderBottom>
+      <Section isDividerNested>
         {mapManaged((item: any, { index, key, onUpdate, onRemove }: any) => (
           <Path
             key={key}
@@ -96,6 +97,7 @@ const ActionEditor: React.FC<NodeEditorPropsType<Realtime.NodeData.Trace>> = ({ 
           />
         ))}
       </Section>
+      <Divider offset={0} />
     </Content>
   );
 };

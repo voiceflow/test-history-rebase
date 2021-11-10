@@ -26,7 +26,7 @@ export const useInputValue = (
   externalValue: string,
   updateValue: (value: string) => void,
   dependencies: any[] = []
-): [value: string, setValue: React.ChangeEventHandler, saveValue: VoidFunction] => {
+): [value: string, setValue: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>, saveValue: VoidFunction] => {
   const [value, setValue, saveValue] = useBufferedValue(externalValue, updateValue, dependencies);
 
   const handleChange = useCallback(withTargetValue(setValue), [setValue]);

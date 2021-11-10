@@ -8,7 +8,7 @@ import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import FullImage from '@/components/Upload/ImageUpload/FullImage';
 import * as Documentation from '@/config/documentation';
-import { DEVICE_LABEL_MAP } from '@/constants';
+import { DEVICE_LABEL_MAP, NUMBERS_ONLY_REGEXP } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
@@ -64,7 +64,7 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData> = ({ data, onChange }) 
   const onChangeDimensions =
     (dimension: 'width' | 'height') =>
     ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
-      if (!currentTarget.value || currentTarget.value.match(/^\d+$/)) {
+      if (!currentTarget.value || currentTarget.value.match(NUMBERS_ONLY_REGEXP)) {
         setDimensions((prevDimensions) => ({ ...prevDimensions!, [dimension]: currentTarget.value }));
       }
     };

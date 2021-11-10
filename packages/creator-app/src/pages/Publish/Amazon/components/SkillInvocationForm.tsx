@@ -8,7 +8,7 @@ import Multiple from '@/components/Forms/Multiple';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useLinkedState } from '@/hooks';
-import { getTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 
 import { useValidator } from '../hooks';
 
@@ -45,7 +45,7 @@ const SkillInvocationForm: React.FC = () => {
           name="invocationName"
           placeholder="Enter an invocation name"
           value={invocationName}
-          onChange={getTargetValue(setInvocationName)}
+          onChange={withTargetValue(setInvocationName)}
           onBlur={saveInvocationName}
           touched={!!invocationNameError}
           error={invocationNameError}

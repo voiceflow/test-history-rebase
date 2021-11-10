@@ -7,7 +7,7 @@ import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
 import { DragItem } from '@/constants';
 import { useDidUpdateEffect } from '@/hooks';
-import { getTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 
 import { useOpenedIDsToggle } from '../../hooks';
 import Header, { HEADER_MIN_HEIGHT } from '../Header';
@@ -119,7 +119,7 @@ const TopicsSection: React.FC = () => {
           size={topics.length}
           header={
             <Header label="Topics" rightAction={<SvgIcon icon="addTopic" variant={IconVariant.STANDARD} clickable onClick={onCreateTopic} />}>
-              {withSearch ? <SearchInput value={searchValue} onChange={getTargetValue(setSearchValue)} placeholder="Search" /> : null}
+              {withSearch ? <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" /> : null}
             </Header>
           }
           listRef={listRef}

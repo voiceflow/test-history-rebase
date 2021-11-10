@@ -8,7 +8,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useBoundValue, useDispatch } from '@/hooks';
-import { getTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 
 import { DEFAULT_TERM_ENDPOINT, generateTerms } from '../utils';
 
@@ -52,7 +52,7 @@ const PrivacyTermsForm: React.FC = () => {
           type="text"
           placeholder="Privacy Policy"
           value={privacyPolicy}
-          onChange={getTargetValue(setPrivacyPolicy)}
+          onChange={withTargetValue(setPrivacyPolicy)}
           onBlur={savePrivacyPolicy}
         />
       </Box>
@@ -66,7 +66,7 @@ const PrivacyTermsForm: React.FC = () => {
             name="termsAndConditions"
             placeholder="Terms and Conditions"
             value={termsAndConditions}
-            onChange={getTargetValue(setTermsAndConditions)}
+            onChange={withTargetValue(setTermsAndConditions)}
             onBlur={saveTermsAndConditions}
           />
         </Box>

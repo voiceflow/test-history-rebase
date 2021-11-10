@@ -13,9 +13,9 @@ import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
-import { getTargetValue, withEnterPress } from '@/utils/dom';
+import { withEnterPress, withTargetValue } from '@/utils/dom';
 
-import HelpTooltip from './components/HelpTooltip';
+import { HelpTooltip } from './components';
 
 const SEARCH_QUERY_SLOT = 'AMAZON.SearchQuery';
 
@@ -63,12 +63,12 @@ const CaptureEditor: React.FC<NodeEditorPropsType<Realtime.NodeData.Capture>> = 
                 <Input
                   placeholder="Enter user reply"
                   value={value!}
-                  onChange={getTargetValue(onChange)}
-                  onKeyPress={withEnterPress(Utils.functional.chain(getTargetValue(onAdd), () => onChange('')))}
+                  onChange={withTargetValue(onChange)}
+                  onKeyPress={withEnterPress(Utils.functional.chain(withTargetValue(onAdd), () => onChange('')))}
                 />
               )}
               renderItem={(item, { onUpdate }) => (
-                <Input value={item} onChange={getTargetValue(onUpdate)} placeholder="Enter Entity Content Example" />
+                <Input value={item} onChange={withTargetValue(onUpdate)} placeholder="Enter Entity Content Example" />
               )}
             />
           </FormControl>

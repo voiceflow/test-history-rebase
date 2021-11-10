@@ -15,7 +15,7 @@ import { useButtonsOptionSection, useNoReplyOptionSection } from '@/pages/Canvas
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { PlatformContext } from '@/pages/Project/contexts';
 
-import DraggableItem from './components/DraggableItem';
+import { DraggableItem } from './components';
 import { NODE_CONFIG } from './constants';
 
 const choiceFactory = () => NODE_CONFIG.factory().data.choices[0];

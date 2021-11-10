@@ -10,7 +10,7 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useBoundValue, useDispatch } from '@/hooks';
 import { AMAZON_CATEGORIES } from '@/services/Categories';
-import { getTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 
 import { useValidator } from '../hooks';
 
@@ -53,7 +53,7 @@ const SkillDescriptionForm: React.FC = () => {
           name="summary"
           placeholder="One Sentence Skill Summary"
           value={summary}
-          onChange={getTargetValue(setSummary)}
+          onChange={withTargetValue(setSummary)}
           onBlur={saveSummary}
           touched={!!summaryError}
           error={summaryError}
@@ -69,7 +69,7 @@ const SkillDescriptionForm: React.FC = () => {
           placeholder="Skill Description"
           style={{ minHeight: '94px', maxHeight: '94px' }}
           value={description}
-          onChange={getTargetValue(setDescription)}
+          onChange={withTargetValue(setDescription)}
           onBlur={saveDescription}
           touched={!!descriptionError}
           error={descriptionError}
@@ -88,7 +88,7 @@ const SkillDescriptionForm: React.FC = () => {
             placeholder="What's new?"
             style={{ minHeight: '94px', maxHeight: '94px' }}
             value={updatesDescription}
-            onChange={getTargetValue(setUpdatesDescription)}
+            onChange={withTargetValue(setUpdatesDescription)}
             onBlur={saveUpdatesDescription}
           />
         </Box>
@@ -116,7 +116,7 @@ const SkillDescriptionForm: React.FC = () => {
           name="keywords"
           placeholder="e.g. Game, Quiz, Space..."
           value={keywords}
-          onChange={getTargetValue(setKeywords)}
+          onChange={withTargetValue(setKeywords)}
           onBlur={saveKeywords}
         />
       </Box>

@@ -2,7 +2,7 @@ import { Input } from '@voiceflow/ui';
 import React from 'react';
 
 import { ControlProps } from '@/types';
-import { getTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 
 export type EmailInputProps = ControlProps<string> & {
   placeholder?: string;
@@ -10,7 +10,16 @@ export type EmailInputProps = ControlProps<string> & {
 };
 
 const EmailInput: React.FC<EmailInputProps> = ({ value, onChange, placeholder = 'Email', error }) => (
-  <Input type="email" name="email" onChange={getTargetValue(onChange)} placeholder={placeholder} required minLength={6} value={value} error={error} />
+  <Input
+    type="email"
+    name="email"
+    onChange={withTargetValue(onChange)}
+    placeholder={placeholder}
+    required
+    minLength={6}
+    value={value}
+    error={error}
+  />
 );
 
 export default EmailInput;

@@ -150,6 +150,11 @@ export const withInputBlur =
     cb?.(event);
   };
 
+export const withTargetValue =
+  (cb: (value: string) => void) =>
+  (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>): void =>
+    cb(event.currentTarget.value);
+
 export const copyJSONPath = (copy_event: { name: string; namespace: string[] }) => {
   const total_path = copy_event.namespace.slice();
 
@@ -181,9 +186,6 @@ export const moveCursorToEnd = (el: HTMLInputElement) => {
     range.select();
   }
 };
-
-export const withTargetValue = (task: (value: string) => void) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-  task(e.target.value);
 
 export enum DataTypes {
   TEXT = 'text/plain;charset=utf-8',
@@ -288,10 +290,6 @@ export const unhighlightAllText = () => {
     document.selection.empty();
   }
 };
-
-export const getTargetValue =
-  (callback: (value: string) => void) => (event: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) =>
-    callback(event.currentTarget.value);
 
 export const loadImage = (src: string) =>
   new Promise((resolve, reject) => {

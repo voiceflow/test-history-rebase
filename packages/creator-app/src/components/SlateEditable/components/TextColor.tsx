@@ -5,6 +5,7 @@ import { unstable_batchedUpdates } from 'react-dom';
 
 import ColorSelect from '@/components/ColorSelect';
 import SliderInputGroup from '@/components/SliderInputGroup';
+import { NUMBERS_ONLY_REGEXP } from '@/constants';
 import { withEnterPress } from '@/utils/dom';
 
 import { DEFAULT_COLOR, TextProperty } from '../constants';
@@ -40,7 +41,7 @@ const TextColor: React.FC = () => {
     if (value === '') {
       setInputOpacity(value);
       setColor({ ...color, a: 0 });
-    } else if (value.match(/^\d+$/)) {
+    } else if (value.match(NUMBERS_ONLY_REGEXP)) {
       const opacity = colorReadableAlfaToOpacity(value);
       setInputOpacity(`${opacity * 100}`);
       setColor({ ...color, a: opacity });

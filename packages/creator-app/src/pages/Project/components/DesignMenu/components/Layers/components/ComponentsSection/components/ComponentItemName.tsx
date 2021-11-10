@@ -7,7 +7,7 @@ import * as Router from '@/ducks/router';
 import { compose } from '@/hocs';
 import { useDispatch, useHover } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
-import { getTargetValue, withEnterPress } from '@/utils/dom';
+import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import ItemNameInput from '../../ItemNameInput';
 import SearchLabel from '../../SearchLabel';
@@ -104,7 +104,7 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
                   ref={inputRef}
                   value={localName}
                   onBlur={onSaveName}
-                  onChange={getTargetValue(setLocalName)}
+                  onChange={withTargetValue(setLocalName)}
                   readOnly={!catEdit}
                   // eslint-disable-next-line jsx-a11y/no-autofocus
                   autoFocus

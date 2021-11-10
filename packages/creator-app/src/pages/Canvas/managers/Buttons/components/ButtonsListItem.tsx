@@ -19,7 +19,7 @@ import { useFeature, useLinkedState, useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
-import { getTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 import { getValidHref, isAnyLink } from '@/utils/string';
 
 import { BUTTON_OPTIONS, ButtonAction } from '../constants';
@@ -110,7 +110,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
             <Input
               value={name}
               onBlur={() => onUpdate({ name })}
-              onChange={getTargetValue(setName)}
+              onChange={withTargetValue(setName)}
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus={isNew}
               placeholder="Enter button text"
@@ -134,7 +134,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
               <Input
                 value={url}
                 onBlur={() => (!url || isAnyLink(url) ? onUpdate({ url }) : toast.error('URL is not valid, please enter valid link'))}
-                onChange={getTargetValue(setUrl)}
+                onChange={withTargetValue(setUrl)}
                 placeholder="Enter URL"
                 rightAction={
                   url ? (

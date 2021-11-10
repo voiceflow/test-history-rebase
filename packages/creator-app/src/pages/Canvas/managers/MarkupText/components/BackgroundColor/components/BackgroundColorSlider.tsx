@@ -5,6 +5,7 @@ import React from 'react';
 import ColorSelect from '@/components/ColorSelect';
 import OpacitySliderHandle from '@/components/SlateEditable/components/OpacitySliderHandle';
 import SliderInputGroup from '@/components/SliderInputGroup';
+import { NUMBERS_ONLY_REGEXP } from '@/constants';
 import { withEnterPress } from '@/utils/dom';
 
 export interface BackgroundColorSliderProps {
@@ -33,7 +34,7 @@ const BackgroundColorSlider: React.FC<BackgroundColorSliderProps> = ({ color, on
     if (value === '') {
       setInputOpacity(value);
       onChangeColor({ ...color, a: 0 });
-    } else if (value.match(/^\d+$/)) {
+    } else if (value.match(NUMBERS_ONLY_REGEXP)) {
       const opacity = colorReadableAlfaToOpacity(value);
       setInputOpacity(`${opacity * 100}`);
       onChangeColor({ ...color, a: opacity });

@@ -4,7 +4,7 @@ import React from 'react';
 import Section from '@/components/Section';
 import { useLinkedState } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
-import { getTargetValue, withEnterPress } from '@/utils/dom';
+import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 interface NoMatchPathEditorProps {
   name: string;
@@ -22,7 +22,7 @@ const NoMatchPathEditor: React.FC<NoMatchPathEditorProps> = ({ name, onChange })
         <Input
           value={localName}
           onBlur={onSave}
-          onChange={getTargetValue(setLocalName)}
+          onChange={withTargetValue(setLocalName)}
           onKeyPress={withEnterPress(onSave)}
           placeholder="Add path label"
         />

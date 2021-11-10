@@ -3,7 +3,7 @@ import cn from 'classnames';
 import React from 'react';
 
 import { ControlProps } from '@/types';
-import { getTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 
 export type PasswordInputProps = ControlProps<string> & {
   showPassword?: boolean;
@@ -26,7 +26,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
     className={cn({ invalid: isInvalid })}
     type={showPassword ? 'text' : 'password'}
     name={name}
-    onChange={getTargetValue(onChange)}
+    onChange={withTargetValue(onChange)}
     placeholder={placeholder}
     required
     minLength={minLength}

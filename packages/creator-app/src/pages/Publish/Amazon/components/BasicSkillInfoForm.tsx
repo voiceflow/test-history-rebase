@@ -10,7 +10,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useBoundValue, useDispatch } from '@/hooks';
-import { getTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 
 import { useValidator } from '../hooks';
 
@@ -41,7 +41,7 @@ const BasicSkillInfoForm: React.FC = () => {
           type="text"
           placeholder="Storyflow - Interactive Story Adventures"
           value={projectName}
-          onChange={getTargetValue(setProjectName)}
+          onChange={withTargetValue(setProjectName)}
           onBlur={saveProjectName}
           touched={!!projectNameError}
           error={projectNameError}

@@ -65,7 +65,6 @@ const mapDispatchToProps = {
   getReferralData: Referrals.getReferralData,
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type ConnectedReferralsProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
 export default compose(connect(null, mapDispatchToProps), withReferralProvider)(Referral);

@@ -64,18 +64,18 @@ export const activateVersion =
     if (isAtomicActions) return;
 
     const dbVersion = await client.api.version.get<Realtime.AnyDBVersion>(versionID);
-    const { projectID } = dbVersion;
+    const { projectID, rootDiagramID } = dbVersion;
 
-    const diagrams = await dispatch(Diagram.loadDiagrams(versionID, dbVersion.rootDiagramID));
+    const diagrams = await dispatch(Diagram.loadDiagrams(versionID, rootDiagramID));
 
     if (isTopicsAndComponents && !dbVersion.topics?.length) {
-      dbVersion.topics = [{ type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: dbVersion.rootDiagramID }];
+      dbVersion.topics = [{ type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: rootDiagramID }];
     }
 
     if (isTopicsAndComponents && !dbVersion.components?.length) {
       dbVersion.folders = { ...dbVersion.folders };
       dbVersion.components = diagrams
-        .filter((diagram) => diagram.id !== dbVersion.rootDiagramID && (!diagram.type || diagram.type === BaseModels.DiagramType.COMPONENT))
+        .filter((diagram) => diagram.id !== rootDiagramID && (!diagram.type || diagram.type === BaseModels.DiagramType.COMPONENT))
         .map((diagram) => ({ type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: diagram.id }));
     }
 

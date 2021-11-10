@@ -141,6 +141,7 @@ export const Path = {
   NEW_PROJECT: toPath(RootRoute.WORKSPACE, WorkspaceRoute.TEMPLATE, ':listID'),
   PROJECT_VERSION: toPath(RootRoute.PROJECT, ':versionID'),
   PROJECT_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID?'),
+
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE, ':diagramID?'),
   PROJECT_TOOLS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS),
   PROJECT_MIGRATE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.MIGRATE),

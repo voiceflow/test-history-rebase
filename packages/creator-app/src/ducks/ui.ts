@@ -21,6 +21,7 @@ export interface UIState {
   local: Record<string, any>;
   canvasNavigation: ControlScheme;
   canvasOnly: boolean;
+  previewing: boolean;
 }
 
 export const STATE_KEY = 'ui';
@@ -35,6 +36,7 @@ export const INITIAL_STATE = {
   local: {},
   canvasNavigation: IS_MAC ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
   canvasOnly: false,
+  previewing: false,
 };
 
 const PERSIST_CONFIG = {
@@ -51,6 +53,7 @@ export enum UIAction {
   SHOW_CREATOR_MENU = 'UI:CREATOR_MENU:SHOW',
   HIDE_CREATOR_MENU = 'UI:CREATOR_MENU:HIDE',
   TOGGLE_CANVAS_ONLY = 'UI:TOGGLE_CANVAS_ONLY',
+  SET_VIEWING_VERSION = 'UI:SET_VIEWING_VERSION',
 }
 
 // action types
@@ -69,6 +72,8 @@ export type SetCanvasNavigation = Action<UIAction.SET_CANVAS_NAVIGATION, Control
 
 export type ToggleCanvasOnly = Action<UIAction.TOGGLE_CANVAS_ONLY>;
 
+export type SetPreviewingVersion = Action<UIAction.SET_VIEWING_VERSION, boolean>;
+
 type AnyUIAction =
   | ToggleBlockMenuSection
   | SetActiveCreatorMenu
@@ -76,8 +81,8 @@ type AnyUIAction =
   | SetCanvasNavigation
   | HideCreatorMenu
   | ShowCreatorMenu
-  | ToggleCanvasOnly;
-
+  | ToggleCanvasOnly
+  | SetPreviewingVersion;
 // reducers
 
 export const toggleBlockMenuSectionReducer: Reducer<UIState, ToggleBlockMenuSection> = (state, { payload: section }) => {
@@ -131,6 +136,11 @@ export const toggleCanvasOnlyReducer: Reducer<UIState> = (state) => ({
   canvasOnly: !state.canvasOnly,
 });
 
+export const setPreviewingVersionReducer: Reducer<UIState, SetPreviewingVersion> = (state, { payload: previewing }) => ({
+  ...state,
+  previewing,
+});
+
 const uiReducer: RootReducer<UIState, AnyUIAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UIAction.TOGGLE_BLOCK_MENU_SECTION:
@@ -147,6 +157,8 @@ const uiReducer: RootReducer<UIState, AnyUIAction> = (state = INITIAL_STATE, act
       return showCreatorMenuReducer(state);
     case UIAction.TOGGLE_CANVAS_ONLY:
       return toggleCanvasOnlyReducer(state);
+    case UIAction.SET_VIEWING_VERSION:
+      return setPreviewingVersionReducer(state, action);
     default:
       return state;
   }
@@ -168,6 +180,8 @@ export const canvasNavigationSelector = createSelector(rootSelector, ({ canvasNa
 
 export const isCanvasOnlyShowingSelector = createSelector(rootSelector, ({ canvasOnly }) => canvasOnly);
 
+export const isPreviewingVersion = createSelector(rootSelector, ({ previewing }) => previewing);
+
 //  action creators
 
 export const toggleBlockMenuSection = (section: BlockCategory): ToggleBlockMenuSection => createAction(UIAction.TOGGLE_BLOCK_MENU_SECTION, section);
@@ -184,3 +198,5 @@ export const setCanvasNavigation = (canvasNavigation: ControlScheme): SetCanvasN
   createAction(UIAction.SET_CANVAS_NAVIGATION, canvasNavigation);
 
 export const toggleCanvasOnly = (): ToggleCanvasOnly => createAction(UIAction.TOGGLE_CANVAS_ONLY);
+
+export const setPreviewingVersion = (previewing: boolean): SetPreviewingVersion => createAction(UIAction.SET_VIEWING_VERSION, previewing);

@@ -2,13 +2,16 @@ import { Constants } from '@voiceflow/general-types';
 import { Box, Button, ButtonVariant, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
+import { generatePath } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 
 import { ConfirmProps } from '@/components/ConfirmModal';
+import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useModals, useSelector } from '@/hooks';
+import { QUERY_PARAMS } from '@/pages/Project/constants';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
 import { createPlatformSelector } from '@/utils/platform';
 
@@ -57,7 +60,7 @@ const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
   };
 
   const handlePreview = () => {
-    alert('Loading Preview!');
+    window.open(`${generatePath(Path.PROJECT_CANVAS, { versionID: version.versionID })}?${QUERY_PARAMS.PREVIEWING}=true`);
   };
 
   return (

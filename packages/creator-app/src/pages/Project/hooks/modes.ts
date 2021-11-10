@@ -1,8 +1,10 @@
-import { useRouteMatch } from 'react-router-dom';
+import queryString from 'query-string';
+import { useLocation, useRouteMatch } from 'react-router-dom';
 
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { usePermission } from '@/hooks';
+import { QUERY_PARAMS } from '@/pages/Project/constants';
 
 export const useCommentingMode = () => !!useRouteMatch(Path.CANVAS_COMMENTING);
 
@@ -11,6 +13,12 @@ export const usePrototypingMode = () => !!useRouteMatch([Path.PROJECT_DEMO, Path
 export const useCanvasMode = () => !!useRouteMatch(Path.PROJECT_CANVAS);
 
 export const useDashboardMode = () => !!useRouteMatch(Path.WORKSPACE_DASHBOARD);
+
+export const useProjectPreviewMode = () => {
+  const location = useLocation();
+  const search = queryString.parse(location.search);
+  return !!search[QUERY_PARAMS.PREVIEWING];
+};
 
 export const useAnyModeOpen = () => {
   const isCommentingMode = useCommentingMode();

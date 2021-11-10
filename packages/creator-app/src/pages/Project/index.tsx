@@ -24,10 +24,11 @@ import {
   WorkspaceSubscriptionGate,
 } from '@/gates';
 import { compose, connect, lazy, withBatchLoadingGate } from '@/hocs';
-import { useCanvasTracking, useEventualEngine, useLayoutDidUpdate, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
+import { useCanvasTracking, useDispatch, useEventualEngine, useLayoutDidUpdate, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRouteIMM';
 import InactivityModal from '@/pages/Inactivity';
+import { useProjectPreviewMode } from '@/pages/Project/hooks';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 import { ConnectedProps } from '@/types';
 
@@ -60,8 +61,15 @@ const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({
   const getEngine = useEventualEngine();
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const isDiagramRoute = useRouteMatch(DIAGRAM_ROUTES);
+  const setPreviewing = useDispatch(UI.setPreviewingVersion);
 
   const inactivityModal = useModals(ModalType.INACTIVITY);
+
+  const isPreviewRoute = useProjectPreviewMode();
+
+  React.useEffect(() => {
+    setPreviewing(!!isPreviewRoute);
+  }, [isPreviewRoute]);
 
   const idleTimer = React.useRef<IdleTimer | null>(null);
 

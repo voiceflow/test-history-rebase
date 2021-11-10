@@ -13,7 +13,7 @@
     "@voiceflow/general-types": "3.0.3",
     "@voiceflow/google-dfes-types": "2.1.2",
     "@voiceflow/google-types": "2.0.3",
-    "@voiceflow/internal": "2.1.0",
+    "@voiceflow/internal": "2.2.0",
     "@voiceflow/logger": "1.6.0",
     "@voiceflow/realtime-sdk": "^1.37.6",
     "axios": "0.21.2",

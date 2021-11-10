@@ -5986,13 +5986,6 @@
     rate-limiter-flexible "^2.2.2"
     sinon "^10.0.0"
 
-"@voiceflow/base-types@1.12.3":
-  version "1.12.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.12.3.tgz#2d294a37c55e2fe914a70102ef14c8d254f69629"
-  integrity sha512-pWW3tF2SxmJuZ4My4adGj6lLb1zE8R+bs2MJJI8Uc9xKltQPrXHa63byf2hVTlMFQf6idcxRnAxvrBRuQNXLwQ==
-  dependencies:
-    slate "^0.63.0"
-
 "@voiceflow/base-types@2.1.2", "@voiceflow/base-types@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.1.2.tgz#b0f4f5969fec880e0ae6648502b09d6cb19c02e4"
@@ -6149,12 +6142,12 @@
     "@voiceflow/voice-types" "^2.0.3"
     googleapis "^60.0.1"
 
-"@voiceflow/internal@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/internal/-/internal-2.1.0.tgz#4d0eeca3dfd1ab149e2fe8838d7db3a33917ec9a"
-  integrity sha512-wbEI9yt2ywHJPVQfL8WMVbYcqHJ5vXBK1AnaX5rjQZM6Z5AKBrLFiRq34jRtTt97G3QjJG5wKqbP2FRp7g8SMw==
+"@voiceflow/internal@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/internal/-/internal-2.2.0.tgz#7224711dffcc9c74f6ed1c1938e32152dd5e7049"
+  integrity sha512-UYsWKEV3TUlfH1LrFeZGUWecMcsH59bf171Nu5THSOy1bFtbaU9FyAyFcg/yXRpgAcc/lWTa5N4f1tObb3HxqQ==
   dependencies:
-    "@voiceflow/base-types" "1.12.3"
+    "@voiceflow/base-types" "2.1.2"
     csstype "^3.0.8"
     slate "^0.65.3"
 

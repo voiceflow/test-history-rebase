@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.536.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.14...@voiceflow/creator-app@1.536.15) (2021-11-10)
+
+
+### Bug Fixes
+
+* workspace plan export (VF-2210) ([#4593](https://github.com/voiceflow/creator-app/issues/4593)) ([fcd2eb1](https://github.com/voiceflow/creator-app/commit/fcd2eb1de104232075f2911ad8f3ee0ac949fee3))
+
+
+
+
+
 ## [1.536.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.13...@voiceflow/creator-app@1.536.14) (2021-11-10)
 
 **Note:** Version bump only for package @voiceflow/creator-app

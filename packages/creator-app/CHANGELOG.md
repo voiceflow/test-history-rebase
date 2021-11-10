@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.536.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.12...@voiceflow/creator-app@1.536.13) (2021-11-10)
+
+
+### Bug Fixes
+
+* **deps:** update sentry-javascript monorepo to v6.14.1 ([#4564](https://github.com/voiceflow/creator-app/issues/4564)) ([baa127b](https://github.com/voiceflow/creator-app/commit/baa127b907c9d61c504966a5ad1bf07e21259fe2))
+
+
+
+
+
 ## [1.536.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.11...@voiceflow/creator-app@1.536.12) (2021-11-10)
 
 **Note:** Version bump only for package @voiceflow/creator-app

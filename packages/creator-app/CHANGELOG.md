@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.536.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.10...@voiceflow/creator-app@1.536.11) (2021-11-10)
+
+
+### Bug Fixes
+
+* refactor payment page to typescript (VF-2127) ([#4434](https://github.com/voiceflow/creator-app/issues/4434)) ([8a2bd86](https://github.com/voiceflow/creator-app/commit/8a2bd86fe930c0994e220e37cc644b374125ddb7))
+
+
+
+
+
 ## [1.536.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.536.9...@voiceflow/creator-app@1.536.10) (2021-11-09)
 
 

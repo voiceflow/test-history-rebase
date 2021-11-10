@@ -1,7 +1,7 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
 import { DBDiagram, Diagram } from '../models';
-import { AdapterNotImplementedError, createAdapter } from './utils';
 
 const diagramAdapter = createAdapter<DBDiagram, Diagram, [{ rootDiagramID: string }]>(
   ({ _id, name, type, children, variables, intentStepIDs = [] }, { rootDiagramID }) => ({

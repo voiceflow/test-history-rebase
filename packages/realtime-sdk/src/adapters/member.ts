@@ -1,5 +1,6 @@
+import createAdapter from 'bidirectional-adapter';
+
 import { DBMember } from '../models';
-import { createAdapter } from './utils';
 
 const memberAdapter = createAdapter<DBMember, DBMember>(
   // eslint-disable-next-line camelcase

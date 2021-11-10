@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
+import createAdapter from 'bidirectional-adapter';
+
 import { DBProjectList, ProjectList } from '../models';
-import { createAdapter } from './utils';
 
 const projectListAdapter = createAdapter<DBProjectList, ProjectList>(
   ({ board_id, name, projects }) => ({

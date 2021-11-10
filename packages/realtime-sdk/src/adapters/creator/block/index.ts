@@ -1,12 +1,12 @@
 import { Models as BaseModels, Node } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
+import { BidirectionalAdapter } from 'bidirectional-adapter';
 import moize from 'moize';
 
 import { BlockType } from '../../../constants';
 import { NodeData } from '../../../models';
 import { createPlatformSelector } from '../../../utils/platform';
 import { AdapterContext } from '../../types';
-import { BidirectionalAdapter } from '../../utils';
 import { alexaBlockAdapter, alexaPortsAdapter } from './alexa';
 import blockDataAdapter from './block';
 import { chatBlockAdapter } from './chat';

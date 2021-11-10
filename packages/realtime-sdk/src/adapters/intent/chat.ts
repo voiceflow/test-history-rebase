@@ -1,10 +1,11 @@
 import { Types } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
+import createAdapter from 'bidirectional-adapter';
 import { Optional, Required } from 'utility-types';
 
 import { ChatIntent, ChatIntentSlot, ChatIntentSlotDialog } from '../../models';
-import { chatRepromptAdapter, createAdapter } from '../utils';
+import { chatRepromptAdapter } from '../utils';
 import { baseIntentAdapter, baseIntentSlotDialogSanitizer, baseIntentSlotSanitizer } from './base';
 
 export const chatIntentSlotDialogSanitizer = ({

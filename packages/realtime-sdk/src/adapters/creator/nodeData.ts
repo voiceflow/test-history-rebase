@@ -1,10 +1,10 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
+import { createSimpleAdapter } from 'bidirectional-adapter';
 
 import { BlockType } from '../../constants';
 import { NodeData } from '../../models';
 import { AdapterContext } from '../types';
-import { createSimpleAdapter } from '../utils';
 import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP, getBlockAdapter } from './block';
 import { needsMigration } from './utils';
 

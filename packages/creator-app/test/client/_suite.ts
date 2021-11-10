@@ -1,5 +1,5 @@
-import { Adapters } from '@voiceflow/realtime-sdk';
 import { generate } from '@voiceflow/ui';
+import { AnyBidirectionalAdapter } from 'bidirectional-adapter';
 import { SinonStub } from 'sinon';
 
 import { createSuite } from '@/../test/_suite';
@@ -8,7 +8,7 @@ import fetch, * as Fetch from '@/client/fetch';
 export default createSuite((utils) => ({
   ...utils,
 
-  stubAdapter: <T extends Adapters.AnyBidirectionalAdapter>(adapter: T, method: keyof T, factory: () => any = generate.object): [any, SinonStub] => {
+  stubAdapter: <T extends AnyBidirectionalAdapter>(adapter: T, method: keyof T, factory: () => any = generate.object): [any, SinonStub] => {
     const transformed: any = factory();
     const adapterStub = utils.stub(adapter, method).returns(transformed);
 

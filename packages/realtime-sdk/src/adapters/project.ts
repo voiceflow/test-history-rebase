@@ -1,8 +1,8 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
+import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
 import { AnyProject, DBProject } from '../models';
-import { AdapterNotImplementedError, createAdapter } from './utils';
 
 const projectAdapter = createAdapter<DBProject, AnyProject>(
   ({

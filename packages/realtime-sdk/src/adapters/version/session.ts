@@ -2,10 +2,10 @@ import { Version as BaseVersion } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
+import createAdapter from 'bidirectional-adapter';
 
 import { Version } from '../../models';
 import { getPlatformDefaultVoice } from '../../utils/platform';
-import { createAdapter } from '../utils';
 
 const createSessionAdapter = <V extends string>({ platform }: { platform: Constants.PlatformType }) =>
   createAdapter<

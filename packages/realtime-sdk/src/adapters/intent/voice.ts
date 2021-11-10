@@ -1,10 +1,10 @@
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Types } from '@voiceflow/voice-types';
+import createAdapter from 'bidirectional-adapter';
 import { Optional, Required } from 'utility-types';
 
 import { VoiceIntent, VoiceIntentSlot, VoiceIntentSlotDialog } from '../../models';
-import { createAdapter } from '../utils';
 import { baseIntentAdapter, baseIntentSlotDialogSanitizer, baseIntentSlotSanitizer } from './base';
 
 export const voiceIntentPromptSanitizer = ({ text, slots, voice }: Optional<Types.IntentPrompt<string>> = {}): Types.IntentPrompt<string> => ({

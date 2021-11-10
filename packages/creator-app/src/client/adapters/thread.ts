@@ -1,10 +1,10 @@
-import { Adapters } from '@voiceflow/realtime-sdk';
+import createAdapter from 'bidirectional-adapter';
 
 import { DBThread, Thread } from '@/models';
 
 import commentAdapter from './comment';
 
-const threadAdapter = Adapters.createAdapter<DBThread, Thread>(
+const threadAdapter = createAdapter<DBThread, Thread>(
   ({ thread_id, project_id, diagram_id, node_id, creator_id, comments, ...thread }: DBThread) => ({
     ...thread,
     id: thread_id,

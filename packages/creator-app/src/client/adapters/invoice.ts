@@ -1,4 +1,4 @@
-import { Adapters } from '@voiceflow/realtime-sdk';
+import { AdapterNotImplementedError, createSimpleAdapter } from 'bidirectional-adapter';
 import dayjs from 'dayjs';
 
 import { Billing, DBBilling } from '@/models';
@@ -7,7 +7,7 @@ const timestampToDate = (timestamp: number) => dayjs.unix(timestamp).format('MMM
 
 const convertAmountToDollars = (amount: number) => amount / 100;
 
-const invoiceAdapter = Adapters.createSimpleAdapter<DBBilling, Billing>(
+const invoiceAdapter = createSimpleAdapter<DBBilling, Billing>(
   ({ invoices, upcoming }) => ({
     invoices:
       invoices?.map(({ status, amount, timestamp, items }) => ({
@@ -25,7 +25,7 @@ const invoiceAdapter = Adapters.createSimpleAdapter<DBBilling, Billing>(
       : null,
   }),
   () => {
-    throw new Adapters.AdapterNotImplementedError();
+    throw new AdapterNotImplementedError();
   }
 );
 

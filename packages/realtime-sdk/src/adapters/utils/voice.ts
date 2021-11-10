@@ -1,6 +1,7 @@
+import createAdapter from 'bidirectional-adapter';
+
 import { DialogType, RepromptType } from '../../constants';
 import { NodeData, SpeakData } from '../../models';
-import { createAdapter } from './adapter';
 
 // eslint-disable-next-line import/prefer-default-export
 export const voiceRepromptToSpeakDataAdapter = createAdapter<NodeData.VoicePrompt, SpeakData>(

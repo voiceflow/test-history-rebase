@@ -1,10 +1,10 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
+import createAdapter from 'bidirectional-adapter';
 
 import { BlockType } from '../../constants';
 import { Link, Node, NodeData, Port } from '../../models';
 import { AdapterContext } from '../types';
-import { createAdapter } from '../utils';
 import { defaultPortAdapter, getPortsAdapter, noInPortTypes } from './block';
 import { IN_PORT_KEY } from './constants';
 import nodeDataAdapter from './nodeData';

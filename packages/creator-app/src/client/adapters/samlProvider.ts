@@ -1,9 +1,8 @@
-/* eslint-disable camelcase */
-import { Adapters } from '@voiceflow/realtime-sdk';
+import createAdapter from 'bidirectional-adapter';
 
 import { SAMLProvider } from '@/models';
 
-const samlProviderAdapter = Adapters.createAdapter<SAMLProvider, SAMLProvider>(
+const samlProviderAdapter = createAdapter<SAMLProvider, SAMLProvider>(
   ({ _id, issuer, entryPoint, certificate, organizationID }) => ({
     _id,
     issuer: issuer || '',

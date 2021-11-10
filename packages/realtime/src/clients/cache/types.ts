@@ -1,15 +1,15 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { AnyBidirectionalMultiAdapter, BidirectionalMultiAdapter } from 'bidirectional-adapter';
 import { Redis } from 'ioredis';
 
 export type Hash = Record<string, string>;
 
 export type BaseKeyExtractor = (keyOptions: any) => string;
 
-export type AnyAdapter = Realtime.Adapters.AnyBidirectionalMultiAdapter;
+export type AnyAdapter = AnyBidirectionalMultiAdapter;
 
-export type BaseAdapter = Realtime.Adapters.BidirectionalMultiAdapter<string, any, [], []>;
+export type BaseAdapter = BidirectionalMultiAdapter<string, any, [], []>;
 
-export type BaseHashAdapter = Realtime.Adapters.BidirectionalMultiAdapter<Hash, any, [], []>;
+export type BaseHashAdapter = BidirectionalMultiAdapter<Hash, any, [], []>;
 
 export type Options<K extends BaseKeyExtractor, A extends AnyAdapter | undefined = undefined> = { keyCreator: K } & (A extends AnyAdapter
   ? { adapter: A }

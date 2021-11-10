@@ -1,8 +1,9 @@
 /* eslint-disable camelcase */
+import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
+
 import { DBMember, DBWorkspace, Workspace, WorkspaceActivationState } from '../models';
 import { sortWorkspaces } from '../utils/workspace';
 import memberAdapter from './member';
-import { AdapterNotImplementedError, createAdapter } from './utils';
 
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
 export const WARNING_STATES = ['past_due'];

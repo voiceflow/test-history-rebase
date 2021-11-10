@@ -1,8 +1,7 @@
 import { Types as ChatTypes } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
-
-import { createAdapter } from './adapter';
+import createAdapter from 'bidirectional-adapter';
 
 const createSlateText = (text = '') => [{ children: [{ text }] }];
 

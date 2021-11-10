@@ -1,8 +1,8 @@
 import { Constants, Project } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
+import createAdapter from 'bidirectional-adapter';
 
 import { DBProduct, Product } from '../../models';
-import { createAdapter } from '../utils';
 import { formatMarketPlaces, getDistributionCountries, parseLocales, parseMarketPlaces } from './utils';
 
 const productAdapter = createAdapter<DBProduct, Product>(

@@ -1,8 +1,9 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
 import { Types as ChatTypes } from '@voiceflow/chat-types';
+import createAdapter from 'bidirectional-adapter';
 
 import { NodeData } from '../../../../models';
-import { chatRepromptAdapter, createAdapter } from '../../../utils';
+import { chatRepromptAdapter } from '../../../utils';
 
 // eslint-disable-next-line import/prefer-default-export
 export const chatNoMatchAdapter = createAdapter<BaseNode.Utils.StepNoMatch<ChatTypes.Prompt>, NodeData.ChatNoMatches>(

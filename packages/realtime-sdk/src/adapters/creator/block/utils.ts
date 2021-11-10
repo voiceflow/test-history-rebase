@@ -2,12 +2,12 @@ import { Constants } from '@voiceflow/alexa-types';
 import { Button, Models as BaseModels, Node as BaseNode } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
+import createAdapter, { createSimpleAdapter } from 'bidirectional-adapter';
 import _pickBy from 'lodash/pickBy';
 
 import { RepromptType } from '../../../constants';
 import { Link, LinkData, Node, NodeData, Port } from '../../../models';
 import { PathPoint, PathPoints } from '../../../types';
-import { createAdapter, createSimpleAdapter } from '../../utils';
 import { generateOutPort } from '../utils';
 
 export const createBlockAdapter = createSimpleAdapter;

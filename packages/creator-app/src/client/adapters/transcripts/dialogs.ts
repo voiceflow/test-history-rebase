@@ -1,7 +1,7 @@
 /* eslint-disable xss/no-mixed-html */
 import { Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Adapters } from '@voiceflow/realtime-sdk';
+import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
 import { AnyTranscriptMessage, FormatType, SpeakTrace } from '@/models';
 import {
@@ -34,7 +34,7 @@ const transformSpeakTrace = (trace: SpeakTrace): SpeakTrace => {
   return trace;
 };
 
-const dialogAdapter = Adapters.createAdapter<AnyTranscriptMessage, Message | null>(
+const dialogAdapter = createAdapter<AnyTranscriptMessage, Message | null>(
   (transcriptMessage) => {
     const commonProperties = {
       turnID: transcriptMessage.turn_id,
@@ -69,7 +69,7 @@ const dialogAdapter = Adapters.createAdapter<AnyTranscriptMessage, Message | nul
     return null;
   },
   () => {
-    throw new Adapters.AdapterNotImplementedError();
+    throw new AdapterNotImplementedError();
   }
 );
 

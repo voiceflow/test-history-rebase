@@ -1,9 +1,9 @@
 import { Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
 import { ExpressionData as NodeDataExpressionData } from '../../../../models';
 import { ADVANCE_LOGIC_TYPES, expressionfyV2, getHighestDepth, hasAdvanceChildExpression } from '../../../../utils/expression';
-import { AdapterNotImplementedError, createAdapter } from '../../../utils';
 
 const LogicGroupConditionType: string[] = [Node.Utils.ExpressionTypeV2.AND, Node.Utils.ExpressionTypeV2.OR];
 

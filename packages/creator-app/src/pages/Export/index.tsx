@@ -7,7 +7,7 @@ import * as Creator from '@/ducks/creator';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { ProjectLoadingGate, WorkspaceFeatureLoadingGate } from '@/gates';
+import { ProjectLoadingGate, WorkspaceFeatureLoadingGate, WorkspacesLoadingGate } from '@/gates';
 import { compose, connect, withBatchLoadingGate } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useSelector } from '@/hooks';
@@ -156,5 +156,5 @@ type ConnectedExportProps = ConnectedProps<typeof mapStateToProps, typeof mapDis
 export default compose(
   removeIntercom,
   connect(mapStateToProps, mapDispatchToProps),
-  withBatchLoadingGate(ProjectLoadingGate, WorkspaceFeatureLoadingGate, MockRealtimeGate)
+  withBatchLoadingGate(ProjectLoadingGate, WorkspacesLoadingGate, WorkspaceFeatureLoadingGate, MockRealtimeGate)
 )(ExportCanvas);

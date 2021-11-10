@@ -122,11 +122,11 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [true, << pipeline.parameters.build-creator-app >>]
-              - equal: [true, << pipeline.parameters.build-ui >>]
-              - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-              - equal: [true, << pipeline.parameters.build-frontend >>]
-              - equal: [true, << pipeline.parameters.build-all >>]
+              - << pipeline.parameters.build-creator-app >>
+              - << pipeline.parameters.build-ui >>
+              - << pipeline.parameters.build-realtime-sdk >>
+              - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.build-all >>
           steps:
             - checkout
             - when:
@@ -187,10 +187,10 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [true, << pipeline.parameters.build-realtime >>]
-              - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-              - equal: [true, << pipeline.parameters.build-backend >>]
-              - equal: [true, << pipeline.parameters.build-all >>]
+              - << pipeline.parameters.build-realtime >>
+              - << pipeline.parameters.build-realtime-sdk >>
+              - << pipeline.parameters.build-backend >>
+              - << pipeline.parameters.build-all >>
           steps:
             - checkout
             - when:
@@ -236,11 +236,11 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [true, << pipeline.parameters.build-admin-app >>]
-              - equal: [true, << pipeline.parameters.build-ui >>]
-              - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-              - equal: [true, << pipeline.parameters.build-frontend >>]
-              - equal: [true, << pipeline.parameters.build-all >>]
+              - << pipeline.parameters.build-admin-app >>
+              - << pipeline.parameters.build-ui >>
+              - << pipeline.parameters.build-realtime-sdk >>
+              - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.build-all >>
           steps:
             - checkout
             - when:
@@ -342,11 +342,11 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [true, << pipeline.parameters.build-creator-app >>]
-              - equal: [true, << pipeline.parameters.build-ui >>]
-              - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-              - equal: [true, << pipeline.parameters.build-frontend >>]
-              - equal: [true, << pipeline.parameters.build-all >>]
+              - << pipeline.parameters.build-creator-app >>
+              - << pipeline.parameters.build-ui >>
+              - << pipeline.parameters.build-realtime-sdk >>
+              - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.build-all >>
           steps:
             - checkout
             - vfcommon/stop_if_no_changes:
@@ -374,11 +374,11 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [true, << pipeline.parameters.build-admin-app >>]
-              - equal: [true, << pipeline.parameters.build-ui >>]
-              - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-              - equal: [true, << pipeline.parameters.build-frontend >>]
-              - equal: [true, << pipeline.parameters.build-all >>]
+              - << pipeline.parameters.build-admin-app >>
+              - << pipeline.parameters.build-ui >>
+              - << pipeline.parameters.build-realtime-sdk >>
+              - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.build-all >>
           steps:
             - checkout
             - vfcommon/stop_if_no_changes:
@@ -401,10 +401,10 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [true, << pipeline.parameters.build-realtime >>]
-              - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-              - equal: [true, << pipeline.parameters.build-backend >>]
-              - equal: [true, << pipeline.parameters.build-all >>]
+              - << pipeline.parameters.build-realtime >>
+              - << pipeline.parameters.build-realtime-sdk >>
+              - << pipeline.parameters.build-backend >>
+              - << pipeline.parameters.build-all >>
           steps:
             - checkout
             - vfcommon/stop_if_no_changes:
@@ -438,11 +438,11 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [true, << pipeline.parameters.build-creator-app >>]
-              - equal: [true, << pipeline.parameters.build-ui >>]
-              - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-              - equal: [true, << pipeline.parameters.build-frontend >>]
-              - equal: [true, << pipeline.parameters.build-all >>]
+              - << pipeline.parameters.build-creator-app >>
+              - << pipeline.parameters.build-ui >>
+              - << pipeline.parameters.build-realtime-sdk >>
+              - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.build-all >>
           steps:
             - when:
                 condition:
@@ -466,11 +466,11 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [true, << pipeline.parameters.build-creator-app >>]
-              - equal: [true, << pipeline.parameters.build-ui >>]
-              - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-              - equal: [true, << pipeline.parameters.build-frontend >>]
-              - equal: [true, << pipeline.parameters.build-all >>]
+              - << pipeline.parameters.build-creator-app >>
+              - << pipeline.parameters.build-ui >>
+              - << pipeline.parameters.build-realtime-sdk >>
+              - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.build-all >>
           steps:
             - checkout
             - when:
@@ -495,11 +495,11 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [true, << pipeline.parameters.build-admin-app >>]
-              - equal: [true, << pipeline.parameters.build-ui >>]
-              - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-              - equal: [true, << pipeline.parameters.build-frontend >>]
-              - equal: [true, << pipeline.parameters.build-all >>]
+              - << pipeline.parameters.build-admin-app >>
+              - << pipeline.parameters.build-ui >>
+              - << pipeline.parameters.build-realtime-sdk >>
+              - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.build-all >>
           steps:
             - checkout
             - when:
@@ -528,10 +528,10 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [true, << pipeline.parameters.build-realtime >>]
-              - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-              - equal: [true, << pipeline.parameters.build-backend >>]
-              - equal: [true, << pipeline.parameters.build-all >>]
+              - << pipeline.parameters.build-realtime >>
+              - << pipeline.parameters.build-realtime-sdk >>
+              - << pipeline.parameters.build-backend >>
+              - << pipeline.parameters.build-all >>
           steps:
             - checkout
             - when:
@@ -553,11 +553,11 @@ workflows:
   update-creator-app-track:
     when:
       or:
-        - equal: [true, << pipeline.parameters.build-creator-app >>]
-        - equal: [true, << pipeline.parameters.build-ui >>]
-        - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-        - equal: [true, << pipeline.parameters.build-frontend >>]
-        - equal: [true, << pipeline.parameters.build-all >>]
+        - << pipeline.parameters.build-creator-app >>
+        - << pipeline.parameters.build-ui >>
+        - << pipeline.parameters.build-realtime-sdk >>
+        - << pipeline.parameters.build-frontend >>
+        - << pipeline.parameters.build-all >>
     jobs:
       - check-track-exists:
           name: check-track-creator-app-exists
@@ -601,11 +601,11 @@ workflows:
   update-admin-app-track:
     when:
       or:
-        - equal: [true, << pipeline.parameters.build-admin-app >>]
-        - equal: [true, << pipeline.parameters.build-ui >>]
-        - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-        - equal: [true, << pipeline.parameters.build-frontend >>]
-        - equal: [true, << pipeline.parameters.build-all >>]
+        - << pipeline.parameters.build-admin-app >>
+        - << pipeline.parameters.build-ui >>
+        - << pipeline.parameters.build-realtime-sdk >>
+        - << pipeline.parameters.build-frontend >>
+        - << pipeline.parameters.build-all >>
     jobs:
       - check-track-exists:
           name: check-track-admin-app-exists
@@ -643,10 +643,10 @@ workflows:
   update-realtime-track:
     when:
       or:
-        - equal: [true, << pipeline.parameters.build-realtime >>]
-        - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-        - equal: [true, << pipeline.parameters.build-backend >>]
-        - equal: [true, << pipeline.parameters.build-all >>]
+        - << pipeline.parameters.build-realtime >>
+        - << pipeline.parameters.build-realtime-sdk >>
+        - << pipeline.parameters.build-backend >>
+        - << pipeline.parameters.build-all >>
     jobs:
       - check-track-exists:
           name: check-track-realtime-exists
@@ -752,11 +752,11 @@ workflows:
   deploy-app:
     when:
       or:
-        - equal: [true, << pipeline.parameters.build-creator-app >>]
-        - equal: [true, << pipeline.parameters.build-ui >>]
-        - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-        - equal: [true, << pipeline.parameters.build-frontend >>]
-        - equal: [true, << pipeline.parameters.build-all >>]
+        - << pipeline.parameters.build-creator-app >>
+        - << pipeline.parameters.build-ui >>
+        - << pipeline.parameters.build-realtime-sdk >>
+        - << pipeline.parameters.build-frontend >>
+        - << pipeline.parameters.build-all >>
     jobs:
       - build-app:
           <<: *prod_creator_deploy_filters
@@ -787,11 +787,11 @@ workflows:
   deploy-admin:
     when:
       or:
-        - equal: [true, << pipeline.parameters.build-admin-app >>]
-        - equal: [true, << pipeline.parameters.build-ui >>]
-        - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-        - equal: [true, << pipeline.parameters.build-frontend >>]
-        - equal: [true, << pipeline.parameters.build-all >>]
+        - << pipeline.parameters.build-admin-app >>
+        - << pipeline.parameters.build-ui >>
+        - << pipeline.parameters.build-realtime-sdk >>
+        - << pipeline.parameters.build-frontend >>
+        - << pipeline.parameters.build-all >>
     jobs:
       - build-admin:
           <<: *prod_admin_deploy_filters
@@ -814,10 +814,10 @@ workflows:
   deploy-realtime:
     when:
       or:
-        - equal: [true, << pipeline.parameters.build-realtime >>]
-        - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
-        - equal: [true, << pipeline.parameters.build-backend >>]
-        - equal: [true, << pipeline.parameters.build-all >>]
+        - << pipeline.parameters.build-realtime >>
+        - << pipeline.parameters.build-realtime-sdk >>
+        - << pipeline.parameters.build-backend >>
+        - << pipeline.parameters.build-all >>
     jobs:
       - build-realtime:
           <<: *prod_realtime_deploy_filters

@@ -79,6 +79,8 @@
     "lint:report": "yarn lint:js --format json -o sonar/report.json && yarn lint:css --formatter json --output-file sonar/report_css.json",
     "local": "vfcli mesh connect admin-ui",
     "local:e2e": "yarn kill:e2e && E2E=true yarn start",
+    "mesh:post": "exit 0",
+    "mesh:pre": "exit 0",
     "start": "vf-dev-server --action serve",
     "start:e2e": "scripts/start_e2e.sh",
     "start:hidden": "yarn start --no-open",

@@ -108,6 +108,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
             manualSaveModal.open();
           }}
         >
+          <br />
           Manually Save Version
         </ToastCallToAction>
       </>

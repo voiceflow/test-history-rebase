@@ -197,7 +197,7 @@ export const useProjectOptions = ({
       ...(canManageProjects && targetVersionID ? [{ label: 'Version history', onClick: onVersionHistory }] : []),
       ...(sharePopper
         ? [
-            { label: 'Export as ...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) },
+            { label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) },
             { label: 'Divider', divider: true },
           ]
         : [{ label: 'Divider', divider: true }]),

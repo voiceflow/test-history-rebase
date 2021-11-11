@@ -2,9 +2,8 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import captureAdapter from '@/adapters/creator/block/alexa/capture';
-import { voiceRepromptAdapter } from '@/adapters/creator/block/utils';
-import { captureNodeDataFactory, captureStepDataFactory } from '@/tests/factories/alexa/capture';
-import { voicePromptNodeDataFactory, voiceTypePromptFactory } from '@/tests/factories/voice';
+import { voicePromptAdapter } from '@/adapters/creator/block/utils';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | captureAdapter', () => {
   afterEach(() => {
@@ -14,9 +13,11 @@ describe('Adapters | Creator | Block | Alexa | captureAdapter', () => {
 
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
-      const reprompt = voicePromptNodeDataFactory();
-      sinon.stub(voiceRepromptAdapter, 'fromDB').returns(reprompt);
-      const data = captureStepDataFactory();
+      const reprompt = Creator.Block.Shared.VoiceNodeDataPrompt();
+
+      sinon.stub(voicePromptAdapter, 'fromDB').returns(reprompt);
+
+      const data = Creator.Block.Alexa.CaptureStepData();
 
       const result = captureAdapter.fromDB(data);
 
@@ -29,13 +30,14 @@ describe('Adapters | Creator | Block | Alexa | captureAdapter', () => {
       });
     });
 
-    it('returns correct data for empty values', () => {
-      const voiceRepromptAdapterSpy = sinon.stub(voiceRepromptAdapter, 'fromDB');
-      const data = captureStepDataFactory({ reprompt: null });
+    it('returns correct data for empty reprompt', () => {
+      const voiceNoReplyAdapterSpy = sinon.stub(voicePromptAdapter, 'fromDB');
+
+      const data = Creator.Block.Alexa.CaptureStepData({ reprompt: null });
 
       const result = captureAdapter.fromDB(data);
 
-      expect(voiceRepromptAdapterSpy.called).eql(false);
+      expect(voiceNoReplyAdapterSpy.called).eql(false);
       expect(result).eql({
         slot: data.slot,
         variable: data.variable,
@@ -48,9 +50,11 @@ describe('Adapters | Creator | Block | Alexa | captureAdapter', () => {
 
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
-      const reprompt = voiceTypePromptFactory();
-      sinon.stub(voiceRepromptAdapter, 'toDB').returns(reprompt);
-      const data = captureNodeDataFactory();
+      const reprompt = Creator.Block.Shared.VoicePrompt();
+
+      sinon.stub(voicePromptAdapter, 'toDB').returns(reprompt);
+
+      const data = Creator.Block.Alexa.CaptureNodeData();
 
       const result = captureAdapter.toDB(data);
 
@@ -65,19 +69,20 @@ describe('Adapters | Creator | Block | Alexa | captureAdapter', () => {
     });
 
     it('returns correct data for empty values', () => {
-      const voiceRepromptAdapterSpy = sinon.stub(voiceRepromptAdapter, 'toDB');
-      const data = captureNodeDataFactory({ reprompt: null });
+      const voiceNoReplySpy = sinon.stub(voicePromptAdapter, 'toDB');
+
+      const data = Creator.Block.Alexa.CaptureNodeData({ reprompt: null });
 
       const result = captureAdapter.toDB(data);
 
-      expect(voiceRepromptAdapterSpy.called).eql(false);
+      expect(voiceNoReplySpy.called).eql(false);
       expect(result).eql({
         slot: data.slot,
         variable: data.variable,
         reprompt: null,
-        slotInputs: data.examples,
         chips: null,
         buttons: null,
+        slotInputs: data.examples,
       });
     });
   });

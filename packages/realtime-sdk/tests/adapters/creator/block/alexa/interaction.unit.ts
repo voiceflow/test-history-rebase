@@ -1,4 +1,3 @@
-import { Node as BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
@@ -6,11 +5,8 @@ import { datatype } from 'faker';
 import Sinon from 'sinon';
 
 import interactionAdapter from '@/adapters/creator/block/alexa/interaction';
-import { voiceNoMatchAdapter, voiceRepromptAdapter } from '@/adapters/creator/block/utils';
-import { interactionNodeDataFactory, interactionStepDataFactory } from '@/tests/factories/alexa/interaction';
-import { stepNoMatchPromptFactory } from '@/tests/factories/noMatch';
-import { promptFactory } from '@/tests/factories/reprompt';
-import { noMatchesNodeDataFactory, voicePromptNodeDataFactory } from '@/tests/factories/voice';
+import { voiceNoMatchAdapter, voicePromptAdapter } from '@/adapters/creator/block/utils';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
   afterEach(() => {
@@ -20,57 +16,49 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
 
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
-      const elseData = noMatchesNodeDataFactory();
-      const reprompt = voicePromptNodeDataFactory();
-      const id = datatype.uuid();
+      const elseData = Creator.Block.Shared.VoiceNodeDataNoMatch();
+      const reprompt = Creator.Block.Shared.VoiceNodeDataPrompt();
+      const id = 'id';
+
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
       Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(elseData);
-      Sinon.stub(voiceRepromptAdapter, 'fromDB').returns(reprompt);
-      const data = interactionStepDataFactory();
+      Sinon.stub(voicePromptAdapter, 'fromDB').returns(reprompt);
+
+      const data = Creator.Block.Alexa.InteractionStepData();
 
       const result = interactionAdapter.fromDB(data);
 
-      expect(result).eql({
-        name: data.name,
-        else: elseData,
-        choices: [
-          {
-            [Constants.PlatformType.GENERAL]: {
-              id,
-              goTo: null,
-              intent: '',
-              action: BaseNode.Interaction.ChoiceAction.PATH,
-              mappings: [],
-            },
-            [Constants.PlatformType.GOOGLE]: {
-              id,
-              goTo: null,
-              intent: '',
-              action: BaseNode.Interaction.ChoiceAction.PATH,
-              mappings: [],
-            },
-            [Constants.PlatformType.ALEXA]: {
-              id,
-              goTo: null,
-              intent: data.choices[0].intent,
-              action: BaseNode.Interaction.ChoiceAction.PATH,
-              mappings: data.choices[0].mappings,
-            },
-          },
-        ],
-        reprompt,
-        buttons: null,
-      });
+      expect(result).eql(
+        Creator.Block.Alexa.InteractionNodeData({
+          name: data.name,
+          else: elseData,
+          choices: [
+            Creator.Block.Base.ChoiceDistinctPlatformsData({
+              [Constants.PlatformType.ALEXA]: {
+                id,
+                goTo: data.choices[0].goTo!,
+                intent: data.choices[0].intent,
+                action: data.choices[0].action!,
+                mappings: data.choices[0].mappings!,
+              },
+            }),
+          ],
+          buttons: null,
+          reprompt,
+        })
+      );
     });
 
     it('returns correct data for empty values', () => {
-      const elseData = noMatchesNodeDataFactory();
-      const reprompt = voicePromptNodeDataFactory();
+      const elseData = Creator.Block.Shared.VoiceNodeDataNoMatch();
+      const reprompt = Creator.Block.Shared.VoiceNodeDataPrompt();
       const id = datatype.uuid();
+
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
       Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(elseData);
-      Sinon.stub(voiceRepromptAdapter, 'fromDB').returns(reprompt);
-      const data = interactionStepDataFactory({ choices: [], reprompt: undefined });
+      Sinon.stub(voicePromptAdapter, 'fromDB').returns(reprompt);
+
+      const data = Creator.Block.Alexa.InteractionStepData({ choices: [], reprompt: null });
 
       const result = interactionAdapter.fromDB(data);
 
@@ -78,7 +66,7 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
         name: data.name,
         else: elseData,
         choices: [],
-        reprompt: undefined,
+        reprompt: null,
         buttons: null,
       });
     });
@@ -86,11 +74,13 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
 
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
-      const elseData = stepNoMatchPromptFactory();
-      const reprompt = promptFactory();
+      const reprompt = Creator.Block.Shared.VoicePrompt();
+      const elseData = Creator.Block.Shared.VoiceStepNoMatch();
+
       Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(elseData);
-      Sinon.stub(voiceRepromptAdapter, 'toDB').returns(reprompt);
-      const data = interactionNodeDataFactory();
+      Sinon.stub(voicePromptAdapter, 'toDB').returns(reprompt);
+
+      const data = Creator.Block.Alexa.InteractionNodeData();
 
       const result = interactionAdapter.toDB(data);
 
@@ -99,32 +89,34 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
         else: elseData,
         choices: [
           {
-            goTo: undefined,
-            action: undefined,
+            goTo: data.choices[0].alexa.goTo,
+            action: data.choices[0].alexa.action,
             intent: data.choices[0].alexa.intent,
             mappings: data.choices[0].alexa.mappings,
           },
         ],
-        reprompt,
         chips: null,
         buttons: null,
+        reprompt,
       });
     });
 
     it('returns correct data for empty values', () => {
-      const elseData = stepNoMatchPromptFactory();
+      const elseData = Creator.Block.Shared.VoiceStepNoMatch();
+
       Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(elseData);
-      const data = interactionNodeDataFactory({ choices: [], reprompt: undefined });
+
+      const data = Creator.Block.Alexa.InteractionNodeData({ choices: [], reprompt: null });
 
       const result = interactionAdapter.toDB(data);
 
       expect(result).eql({
         name: data.name,
         else: elseData,
-        choices: [],
-        reprompt: undefined,
         chips: null,
         buttons: null,
+        choices: [],
+        reprompt: null,
       });
     });
   });

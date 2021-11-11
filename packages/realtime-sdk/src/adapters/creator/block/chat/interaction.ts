@@ -2,29 +2,24 @@ import { Node, Types } from '@voiceflow/chat-types';
 import { Constants } from '@voiceflow/general-types';
 
 import { NodeData } from '../../../../models';
-import { distinctPlatformsData } from '../../../../utils/platform';
-import { chatRepromptAdapter } from '../../../utils';
-import { chipsToIntentButtons, choiceAdapter, createBlockAdapter } from '../utils';
-import { chatNoMatchAdapter } from './utils';
+import { baseInteractionAdapter } from '../base';
+import { chatNoMatchAdapter, chatPromptAdapter, chipsToIntentButtons, createBlockAdapter } from '../utils';
 
 const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeData.Interaction>(
-  ({ name, else: elseData, choices, reprompt, chips, buttons }) => ({
-    name,
+  ({ else: elseData, reprompt, chips, buttons, ...baseData }) => ({
+    ...baseInteractionAdapter.fromDB(baseData, { platform: Constants.PlatformType.GENERAL }),
+
     else: chatNoMatchAdapter.fromDB(elseData),
-    choices: choices.map((choice) => ({
-      ...distinctPlatformsData(choiceAdapter.fromDB({ intent: '', mappings: [] })),
-      [Constants.PlatformType.GENERAL]: choiceAdapter.fromDB(choice),
-    })),
-    reprompt: reprompt && chatRepromptAdapter.fromDB(reprompt),
     buttons: buttons ?? chipsToIntentButtons(chips),
+    reprompt: reprompt && chatPromptAdapter.fromDB(reprompt),
   }),
-  ({ name, else: elseData, choices, reprompt, buttons }) => ({
-    name,
-    else: chatNoMatchAdapter.toDB(elseData as NodeData.ChatNoMatches),
+  ({ else: elseData, reprompt, buttons, ...baseData }) => ({
+    ...baseInteractionAdapter.toDB(baseData, { platform: Constants.PlatformType.GENERAL }),
+
+    else: chatNoMatchAdapter.toDB(elseData as NodeData.ChatNoMatch),
     chips: null,
     buttons,
-    choices: choices.map(({ [Constants.PlatformType.GENERAL]: data }) => choiceAdapter.toDB(data)),
-    reprompt: reprompt && chatRepromptAdapter.toDB(reprompt as Types.Prompt),
+    reprompt: reprompt && chatPromptAdapter.toDB(reprompt as Types.Prompt),
   })
 );
 

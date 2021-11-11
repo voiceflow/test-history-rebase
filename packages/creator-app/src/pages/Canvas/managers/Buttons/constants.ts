@@ -3,7 +3,7 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
-import { getPlatformNoMatchesFactory } from '@/utils/noMatches';
+import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
 
@@ -36,7 +36,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons> = {
     },
     data: {
       name: 'Buttons',
-      else: getPlatformNoMatchesFactory(platform)({ defaultVoice }),
+      else: getPlatformNoMatchFactory(platform)({ defaultVoice }),
       buttons: [factory()],
       reprompt: null,
     },

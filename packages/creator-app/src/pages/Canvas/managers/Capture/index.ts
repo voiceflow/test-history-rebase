@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { NO_REPLY_RESPONSE_PATH_TYPE, NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
+import { NO_REPLY_PATH_TYPE, NoReplyEditor } from '@/pages/Canvas/components/NoReply';
 
 import { NodeManagerConfig } from '../types';
 import CaptureEditor from './CaptureEditor';
@@ -8,7 +8,7 @@ import CaptureStep from './CaptureStep';
 import { NODE_CONFIG } from './constants';
 
 const EDITORS_BY_PATH = {
-  [NO_REPLY_RESPONSE_PATH_TYPE]: NoReplyResponseForm,
+  [NO_REPLY_PATH_TYPE]: NoReplyEditor,
 };
 
 const CaptureManager: NodeManagerConfig<Realtime.NodeData.Capture> = {

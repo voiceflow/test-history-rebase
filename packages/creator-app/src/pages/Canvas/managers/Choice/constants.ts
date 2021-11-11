@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
-import { getPlatformNoMatchesFactory } from '@/utils/noMatches';
+import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 import { distinctPlatformsData } from '@/utils/platform';
 import { isChatbotPlatform } from '@/utils/typeGuards';
 
@@ -28,7 +28,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction> = {
     },
     data: {
       name: 'Choice',
-      else: getPlatformNoMatchesFactory(platform)({ defaultVoice }),
+      else: getPlatformNoMatchFactory(platform)({ defaultVoice }),
+      reprompt: null,
       buttons: isChatbotPlatform(platform) ? buttonsFactory() : null,
       choices: [
         distinctPlatformsData({
@@ -39,7 +40,6 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction> = {
           mappings: [],
         }),
       ],
-      reprompt: null,
     },
   }),
 };

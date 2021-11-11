@@ -4,7 +4,7 @@ import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { EditorAPI } from '@/components/SlateEditable/editor';
-import { RepromptType } from '@/constants';
+import { VoicePromptType } from '@/constants';
 
 import { createPlatformSelector } from './platform';
 
@@ -15,12 +15,12 @@ export interface PromptFactoryOptions {
 export const chatPromptFactory = (): ChatTypes.Prompt => ({ id: Utils.id.cuid(), content: EditorAPI.getEmptyState() });
 export const voicePromptFactory = ({ defaultVoice }: PromptFactoryOptions = {}): Realtime.NodeData.VoicePrompt => ({
   id: Utils.id.cuid.slug(),
-  type: RepromptType.TEXT,
+  type: VoicePromptType.TEXT,
   voice: defaultVoice ?? '',
   content: '',
 });
 
-export const getPlatformPromptFactory = createPlatformSelector<(options?: PromptFactoryOptions) => Realtime.NodeData.Reprompt>(
+export const getPlatformPromptFactory = createPlatformSelector<(options?: PromptFactoryOptions) => ChatTypes.Prompt | Realtime.NodeData.VoicePrompt>(
   {
     [Constants.PlatformType.CHATBOT]: chatPromptFactory,
   },

@@ -46,6 +46,15 @@ export const DISTINCT_PLATFORMS = [Constants.PlatformType.ALEXA, Constants.Platf
 
 export const PLATFORMS_WITH_INVOCATION_NAME = [Constants.PlatformType.ALEXA, Constants.PlatformType.GOOGLE] as const;
 
+export const VOICE_PLATFORMS = [
+  Constants.PlatformType.IVR,
+  Constants.PlatformType.ALEXA,
+  Constants.PlatformType.GOOGLE,
+  Constants.PlatformType.GENERAL,
+  Constants.PlatformType.MOBILE_APP,
+  Constants.PlatformType.DIALOGFLOW_ES_VOICE,
+] as const;
+
 export type DistinctPlatform = Constants.PlatformType.ALEXA | Constants.PlatformType.GOOGLE | Constants.PlatformType.GENERAL;
 
 export enum DialogType {
@@ -53,15 +62,9 @@ export enum DialogType {
   VOICE = 'voice',
 }
 
-export enum RepromptType {
+export enum VoicePromptType {
   TEXT = 'text',
   AUDIO = 'audio',
-}
-
-export enum PortType {
-  NEXT = 'next',
-  PAUSE = 'pause',
-  PREVIOUS = 'previous',
 }
 
 export enum BlockVariant {

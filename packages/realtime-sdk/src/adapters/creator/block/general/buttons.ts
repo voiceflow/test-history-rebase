@@ -1,19 +1,12 @@
 import { Node } from '@voiceflow/general-types';
 
 import { NodeData } from '../../../../models';
-import { createBlockAdapter, voiceNoMatchAdapter, voiceRepromptAdapter } from '../utils';
+import { createBlockAdapter } from '../utils';
+import { voiceButtonsAdapter } from '../voice';
 
 const buttonsAdapter = createBlockAdapter<Node.Buttons.StepData, NodeData.Buttons>(
-  ({ else: noMatch, reprompt, ...data }) => ({
-    ...data,
-    else: voiceNoMatchAdapter.fromDB(noMatch),
-    reprompt: reprompt && voiceRepromptAdapter.fromDB(reprompt),
-  }),
-  ({ else: noMatch, reprompt, ...data }) => ({
-    ...data,
-    else: voiceNoMatchAdapter.toDB(noMatch as NodeData.VoiceNoMatches),
-    reprompt: reprompt && voiceRepromptAdapter.toDB(reprompt as NodeData.VoicePrompt),
-  })
+  (data) => voiceButtonsAdapter.fromDB(data),
+  (data) => voiceButtonsAdapter.toDB(data)
 );
 
 export default buttonsAdapter;

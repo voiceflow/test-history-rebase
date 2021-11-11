@@ -2,12 +2,12 @@ import { Node as BaseNode } from '@voiceflow/base-types';
 import { expect } from 'chai';
 
 import displayAdapter from '@/adapters/creator/block/alexa/display';
-import { displayNodeDataFactory, displayStepDataFactory } from '@/tests/factories/alexa/display';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | displayAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data', () => {
-      const data = displayStepDataFactory();
+      const data = Creator.Block.Alexa.DisplayStepData();
 
       const result = displayAdapter.fromDB(data);
 
@@ -26,7 +26,7 @@ describe('Adapters | Creator | Block | Alexa | displayAdapter', () => {
 
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
-      const data = displayNodeDataFactory();
+      const data = Creator.Block.Alexa.DisplayNodeData();
 
       const result = displayAdapter.toDB(data);
 
@@ -42,7 +42,7 @@ describe('Adapters | Creator | Block | Alexa | displayAdapter', () => {
     });
 
     it('returns correct data for empty values', () => {
-      const data = displayNodeDataFactory({
+      const data = Creator.Block.Alexa.DisplayNodeData({
         title: undefined,
         imageURL: undefined,
         document: undefined,

@@ -6,8 +6,7 @@ import Sinon from 'sinon';
 
 import speakAdapter from '@/adapters/creator/block/alexa/speak';
 import { DialogType } from '@/constants';
-import { audioDataFactory, speakNodeDataFactory, speakStepDataFactory, ssmlDataFactory } from '@/tests/factories/alexa/speak';
-import { promptFactory } from '@/tests/factories/reprompt';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
   afterEach(() => {
@@ -17,7 +16,7 @@ describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
 
   describe('when transforming from db', () => {
     it('includes given data', () => {
-      const data = speakStepDataFactory();
+      const data = Creator.Block.Alexa.SpeakStepData();
 
       const result = speakAdapter.fromDB(data);
 
@@ -28,11 +27,13 @@ describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
     });
 
     it('returns audio and voice dialogs', () => {
-      const audioDialog = promptFactory({ voice: Constants.Voice.AUDIO });
-      const voiceDialog = promptFactory({ voice: Constants.Voice.AMY });
+      const audioDialog = Creator.Block.Shared.VoicePrompt({ voice: Constants.Voice.AUDIO });
+      const voiceDialog = Creator.Block.Shared.VoicePrompt({ voice: Constants.Voice.AMY });
       const id = datatype.uuid();
+
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
-      const data = speakStepDataFactory({ dialogs: [audioDialog, voiceDialog] });
+
+      const data = Creator.Block.Alexa.SpeakStepData({ dialogs: [audioDialog, voiceDialog] });
 
       const result = speakAdapter.fromDB(data);
 
@@ -45,7 +46,7 @@ describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
 
   describe('when transforming to db', () => {
     it('includes given data', () => {
-      const data = speakNodeDataFactory();
+      const data = Creator.Block.Alexa.SpeakNodeData();
 
       const result = speakAdapter.toDB(data);
 
@@ -56,9 +57,9 @@ describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
     });
 
     it('returns audio and voice dialogs', () => {
-      const audioDialog = audioDataFactory();
-      const voiceDialog = ssmlDataFactory({ voice: undefined, content: undefined });
-      const data = speakNodeDataFactory({ dialogs: [audioDialog, voiceDialog] });
+      const audioDialog = Creator.Block.Voice.SpeakAudioData();
+      const voiceDialog = Creator.Block.Voice.SpeakSSMLData({ voice: undefined, content: undefined });
+      const data = Creator.Block.Alexa.SpeakNodeData({ dialogs: [audioDialog, voiceDialog] });
 
       const result = speakAdapter.toDB(data);
 

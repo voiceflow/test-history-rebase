@@ -1,14 +1,9 @@
-import { Button } from '@voiceflow/base-types';
 import { expect } from 'chai';
 import Sinon from 'sinon';
 
 import promptAdapter from '@/adapters/creator/block/chat/prompt';
-import { chatNoMatchAdapter } from '@/adapters/creator/block/chat/utils';
-import { chatRepromptAdapter } from '@/adapters/utils';
-import { chipFactory, promptChatTypeFactory } from '@/tests/factories/chat/capture';
-import { chatNoMatchesFactory } from '@/tests/factories/chat/noMatches';
-import { promptNodeDataFactory, promptStepDataFactory } from '@/tests/factories/chat/prompt';
-import { intentButtonFactory } from '@/tests/factories/intent';
+import { chatNoMatchAdapter, chatPromptAdapter } from '@/adapters/creator/block/utils';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
   afterEach(() => {
@@ -18,61 +13,77 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
 
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
-      const noMatches = chatNoMatchesFactory();
-      const reprompt = promptChatTypeFactory();
-      const intentButton = intentButtonFactory();
-      Sinon.stub(chatRepromptAdapter, 'fromDB').returns(reprompt);
+      const reprompt = Creator.Block.Shared.ChatPrompt();
+      const noMatches = Creator.Block.Shared.ChatNodeDataNoMatch();
+
+      Sinon.stub(chatPromptAdapter, 'fromDB').returns(reprompt);
       Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(noMatches);
-      const data = promptStepDataFactory({ buttons: [intentButton] });
+
+      const data = Creator.Block.Chat.PromptStepData();
 
       const result = promptAdapter.fromDB(data);
 
       expect(result).eql({
-        buttons: [intentButton],
+        buttons: data.buttons,
         reprompt,
         noMatchReprompt: noMatches,
       });
     });
 
     it('returns correct data for empty values', () => {
-      const chip = chipFactory();
-      const data = promptStepDataFactory({ buttons: undefined, chips: [chip], reprompt: undefined });
+      const noMatches = Creator.Block.Shared.ChatNodeDataNoMatch();
+
+      Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(noMatches);
+
+      const data = Creator.Block.Chat.PromptStepData({ reprompt: null });
 
       const result = promptAdapter.fromDB(data);
 
-      expect(result.buttons).eql([{ name: chip.label, type: Button.ButtonType.INTENT, payload: { intentID: null } }]);
-      expect(result.reprompt).eql(undefined);
+      expect(result).eql({
+        buttons: data.buttons,
+        reprompt: null,
+        noMatchReprompt: noMatches,
+      });
     });
   });
 
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
-      const noMatches = chatNoMatchesFactory();
-      const reprompt = promptChatTypeFactory();
-      const intentButton = intentButtonFactory();
-      Sinon.stub(chatRepromptAdapter, 'toDB').returns(reprompt);
+      const reprompt = Creator.Block.Shared.ChatPrompt();
+      const noMatches = Creator.Block.Shared.ChatStepNoMatch();
+
+      Sinon.stub(chatPromptAdapter, 'toDB').returns(reprompt);
       Sinon.stub(chatNoMatchAdapter, 'toDB').returns(noMatches);
-      const data = promptNodeDataFactory({ buttons: [intentButton] });
+
+      const data = Creator.Block.Chat.PromptNodeData();
 
       const result = promptAdapter.toDB(data);
 
       expect(result).eql({
-        buttons: [intentButton],
-        reprompt,
-        noMatches,
         ports: [],
         chips: null,
+        buttons: data.buttons,
+        reprompt,
+        noMatches,
       });
     });
 
     it('returns correct data for empty values', () => {
-      const noMatches = chatNoMatchesFactory();
+      const noMatches = Creator.Block.Shared.ChatStepNoMatch();
+
       Sinon.stub(chatNoMatchAdapter, 'toDB').returns(noMatches);
-      const data = promptNodeDataFactory({ reprompt: undefined });
+
+      const data = Creator.Block.Chat.PromptNodeData({ reprompt: null });
 
       const result = promptAdapter.toDB(data);
 
-      expect(result.reprompt).eql(undefined);
+      expect(result).eql({
+        ports: [],
+        chips: null,
+        buttons: data.buttons,
+        reprompt: null,
+        noMatches,
+      });
     });
   });
 });

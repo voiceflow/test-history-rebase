@@ -15,7 +15,7 @@ export {
   DISTINCT_PLATFORMS,
   GENERAL_PLATFORMS,
   LEGACY_CUSTOM_SLOT_TYPE,
-  RepromptType,
+  VoicePromptType,
 } from '@voiceflow/realtime-sdk';
 
 export const USER_INFO_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';

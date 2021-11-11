@@ -5,7 +5,7 @@ import { Types as ChatTypes } from '@voiceflow/chat-types';
 import { Nullable } from '@voiceflow/common';
 import { Node as GeneralNode } from '@voiceflow/general-types';
 
-import { BlockType, BlockVariant, DistinctPlatform, RepromptType } from '../constants';
+import { BlockType, BlockVariant, DistinctPlatform, VoicePromptType } from '../constants';
 import { Expression, ExpressionData } from './Expression';
 import { SpeakData } from './Speak';
 
@@ -22,6 +22,35 @@ export type BlockNodeData<T> = NodeData<T> & {
 };
 
 export namespace NodeData {
+  // TODO: replace it with VoiceNode.Utils.StepNoReply<any> type
+  export interface VoicePrompt {
+    id: string;
+    type: VoicePromptType;
+    desc?: string | null;
+    audio?: string | null;
+    voice?: string | null;
+    content: string;
+  }
+
+  export interface BaseNoMatch {
+    type: BaseNode.Utils.NoMatchType | null;
+    pathName: string;
+    randomize: boolean;
+  }
+
+  export interface VoiceNoMatch extends BaseNoMatch {
+    reprompts: VoicePrompt[];
+  }
+
+  export interface ChatNoMatch extends BaseNoMatch {
+    reprompts: ChatTypes.Prompt[];
+  }
+
+  export type NoMatch = VoiceNoMatch | ChatNoMatch;
+
+  // TODO: refactor node data types to be platform specific instead of unions
+  export type Reprompt = VoicePrompt | ChatTypes.Prompt;
+
   export interface Start {
     name: string;
     label: string;
@@ -50,23 +79,6 @@ export namespace NodeData {
     permissions: string[];
   }
 
-  export interface BaseNoMatches {
-    type: BaseNode.Utils.NoMatchType | null;
-    pathName: string;
-  }
-
-  export interface VoiceNoMatches extends BaseNoMatches {
-    randomize: boolean;
-    reprompts: VoicePrompt[];
-  }
-
-  export interface ChatNoMatches extends BaseNoMatches {
-    randomize: boolean;
-    reprompts: ChatTypes.Prompt[];
-  }
-
-  export type NoMatches = VoiceNoMatches | ChatNoMatches;
-
   export interface InteractionChoice {
     id: string;
     goTo: Nullable<{ intentID: Nullable<string> }>;
@@ -77,10 +89,10 @@ export namespace NodeData {
 
   export interface Interaction {
     name: string;
-    else: NoMatches;
+    else: NoMatch;
     choices: Record<DistinctPlatform, InteractionChoice>[];
-    reprompt: Reprompt | null;
     buttons: Button.AnyButton[] | null;
+    reprompt: Reprompt | null;
   }
 
   export interface ChoiceOld {
@@ -89,9 +101,9 @@ export namespace NodeData {
   }
 
   export interface Prompt {
-    noMatchReprompt: NoMatches;
-    reprompt: Reprompt | null;
     buttons: Button.AnyButton[] | null;
+    reprompt: Reprompt | null;
+    noMatchReprompt: NoMatch;
   }
 
   export type Command = Record<DistinctPlatform, Command.PlatformData> & { name: string };
@@ -104,29 +116,17 @@ export namespace NodeData {
     }
   }
 
-  export interface VoicePrompt {
-    id: string;
-    type: RepromptType;
-    desc?: string | null;
-    audio?: string | null;
-    voice?: string | null;
-    content: string;
-  }
-
-  // TODO: refactor node data types to be platform specific instead of unions
-  export type Reprompt = VoicePrompt | ChatTypes.Prompt;
-
   export interface Capture {
     slot: string | null;
+    buttons: Button.AnyButton[] | null;
+    reprompt: Reprompt | null;
     variable: string | null;
     examples: string[];
-    reprompt: Reprompt | null;
-    buttons: Button.AnyButton[] | null;
   }
 
   export interface Speak {
-    randomize: boolean;
     dialogs: SpeakData[];
+    randomize: boolean;
     canvasVisibility?: BaseNode.Utils.CanvasNodeVisibility;
   }
 
@@ -217,7 +217,7 @@ export namespace NodeData {
 
   export interface IfV2 {
     expressions: ExpressionData[];
-    noMatch: BaseNoMatches;
+    noMatch: BaseNode.IfV2.IfNoMatch;
   }
 
   export interface Directive {
@@ -321,7 +321,7 @@ export namespace NodeData {
   export interface Exit {}
 
   export interface Buttons extends Omit<GeneralNode.Buttons.StepData, 'else' | 'reprompt'> {
-    else: NoMatches;
+    else: NoMatch;
     reprompt: Reprompt | null;
   }
 

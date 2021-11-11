@@ -2,13 +2,13 @@ import { Node } from '@voiceflow/alexa-types';
 import { expect } from 'chai';
 
 import reminderAdapter from '@/adapters/creator/block/alexa/reminder';
-import { reminderFactory, reminderNodeDataFactory, reminderStepDataFactory } from '@/tests/factories/alexa/reminder';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | reminderAdapter', () => {
   describe('when transforming from db', () => {
     it('includes reminder data', () => {
-      const reminder = reminderFactory({ type: Node.Reminder.ReminderType.SCHEDULED_RELATIVE });
-      const data = reminderStepDataFactory({ reminder });
+      const reminder = Creator.Block.Alexa.Reminder({ type: Node.Reminder.ReminderType.SCHEDULED_RELATIVE });
+      const data = Creator.Block.Alexa.ReminderStepData({ reminder });
 
       const result = reminderAdapter.fromDB(data);
 
@@ -26,8 +26,8 @@ describe('Adapters | Creator | Block | Alexa | reminderAdapter', () => {
 
     describe('and reminder type is scheduled relative', () => {
       it('returns time type', () => {
-        const reminder = reminderFactory({ type: Node.Reminder.ReminderType.SCHEDULED_RELATIVE });
-        const data = reminderStepDataFactory({ reminder });
+        const reminder = Creator.Block.Alexa.Reminder({ type: Node.Reminder.ReminderType.SCHEDULED_RELATIVE });
+        const data = Creator.Block.Alexa.ReminderStepData({ reminder });
 
         const result = reminderAdapter.fromDB(data);
 
@@ -37,8 +37,8 @@ describe('Adapters | Creator | Block | Alexa | reminderAdapter', () => {
 
     describe('and reminder type is scheduled absolute', () => {
       it('returns scheduled type', () => {
-        const reminder = reminderFactory({ type: Node.Reminder.ReminderType.SCHEDULED_ABSOLUTE });
-        const data = reminderStepDataFactory({ reminder });
+        const reminder = Creator.Block.Alexa.Reminder({ type: Node.Reminder.ReminderType.SCHEDULED_ABSOLUTE });
+        const data = Creator.Block.Alexa.ReminderStepData({ reminder });
 
         const result = reminderAdapter.fromDB(data);
 
@@ -48,8 +48,8 @@ describe('Adapters | Creator | Block | Alexa | reminderAdapter', () => {
 
     describe('and data is not a string', () => {
       it('returns given date', () => {
-        const reminder = reminderFactory({ date: 123 as any });
-        const data = reminderStepDataFactory({ reminder });
+        const reminder = Creator.Block.Alexa.Reminder({ date: 123 as any });
+        const data = Creator.Block.Alexa.ReminderStepData({ reminder });
 
         const result = reminderAdapter.fromDB(data);
 
@@ -59,8 +59,8 @@ describe('Adapters | Creator | Block | Alexa | reminderAdapter', () => {
 
     describe('and date is a string', () => {
       it('returns transformed date', () => {
-        const reminder = reminderFactory({ date: 'date' });
-        const data = reminderStepDataFactory({ reminder });
+        const reminder = Creator.Block.Alexa.Reminder({ date: 'date' });
+        const data = Creator.Block.Alexa.ReminderStepData({ reminder });
 
         const result = reminderAdapter.fromDB(data);
 
@@ -70,8 +70,8 @@ describe('Adapters | Creator | Block | Alexa | reminderAdapter', () => {
 
     describe('and timezone is not defined', () => {
       it('returns default timezone string', () => {
-        const reminder = reminderFactory({ timezone: undefined });
-        const data = reminderStepDataFactory({ reminder });
+        const reminder = Creator.Block.Alexa.Reminder({ timezone: undefined });
+        const data = Creator.Block.Alexa.ReminderStepData({ reminder });
 
         const result = reminderAdapter.fromDB(data);
 
@@ -82,7 +82,7 @@ describe('Adapters | Creator | Block | Alexa | reminderAdapter', () => {
 
   describe('when transforming to db', () => {
     it('works as well', () => {
-      const data = reminderNodeDataFactory();
+      const data = Creator.Block.Alexa.ReminderNodeData();
 
       reminderAdapter.toDB(data);
 

@@ -2,25 +2,18 @@ import { Node } from '@voiceflow/alexa-types';
 import { Constants } from '@voiceflow/general-types';
 
 import { NodeData } from '../../../../models';
-import { distinctPlatformsData } from '../../../../utils/platform';
-import { choiceAdapter, createBlockAdapter, voiceNoMatchAdapter, voiceRepromptAdapter } from '../utils';
+import { createBlockAdapter } from '../utils';
+import { voiceInteractionAdapter } from '../voice';
 
 const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeData.Interaction>(
-  ({ name, else: elseData, choices, reprompt }) => ({
-    name,
-    else: voiceNoMatchAdapter.fromDB(elseData),
-    choices: choices.map((choice) => ({
-      ...distinctPlatformsData(choiceAdapter.fromDB({ intent: '', mappings: [] })),
-      [Constants.PlatformType.ALEXA]: choiceAdapter.fromDB(choice),
-    })),
-    reprompt: reprompt && voiceRepromptAdapter.fromDB(reprompt),
+  (voiceData) => ({
+    ...voiceInteractionAdapter.fromDB(voiceData, { platform: Constants.PlatformType.ALEXA }),
+
     buttons: null, // no buttons on alexa
   }),
-  ({ name, else: elseData, choices, reprompt }) => ({
-    name,
-    else: voiceNoMatchAdapter.toDB(elseData as NodeData.VoiceNoMatches),
-    choices: choices.map(({ [Constants.PlatformType.ALEXA]: data }) => choiceAdapter.toDB(data)),
-    reprompt: reprompt && voiceRepromptAdapter.toDB(reprompt as NodeData.VoicePrompt),
+  (voiceData) => ({
+    ...voiceInteractionAdapter.toDB(voiceData, { platform: Constants.PlatformType.ALEXA }),
+
     chips: null,
     buttons: null,
   })

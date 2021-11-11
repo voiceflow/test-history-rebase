@@ -4,7 +4,7 @@ import { datatype } from 'faker';
 import Sinon from 'sinon';
 
 import userInfoAdapter from '@/adapters/creator/block/alexa/userInfo';
-import { userInfoNodeData, userInfoStepDataFactory } from '@/tests/factories/alexa/userInfo';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | userInfoAdapter', () => {
   afterEach(() => {
@@ -16,7 +16,7 @@ describe('Adapters | Creator | Block | Alexa | userInfoAdapter', () => {
     it('maps all infos to permissions', () => {
       const id = datatype.uuid();
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
-      const data = userInfoStepDataFactory();
+      const data = Creator.Block.Alexa.UserInfoStepData();
 
       const result = userInfoAdapter.fromDB(data);
 
@@ -27,7 +27,7 @@ describe('Adapters | Creator | Block | Alexa | userInfoAdapter', () => {
 
   describe('when transforming to db', () => {
     it('maps infos to permissions', () => {
-      const data = userInfoNodeData();
+      const data = Creator.Block.Alexa.UserInfoNodeData();
 
       const result = userInfoAdapter.toDB(data);
 

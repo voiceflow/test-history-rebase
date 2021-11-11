@@ -30,6 +30,7 @@ export const inputDisabledStyle = css`
 
 export interface StyledInputProps {
   error?: boolean;
+  cursor?: string;
   borderColor?: string;
 }
 

@@ -5,7 +5,7 @@ import createAdapter from 'bidirectional-adapter';
 import { Optional, Required } from 'utility-types';
 
 import { ChatIntent, ChatIntentSlot, ChatIntentSlotDialog } from '../../models';
-import { chatRepromptAdapter } from '../utils';
+import { chatPromptAdapter } from '../creator/block/utils';
 import { baseIntentAdapter, baseIntentSlotDialogSanitizer, baseIntentSlotSanitizer } from './base';
 
 export const chatIntentSlotDialogSanitizer = ({
@@ -14,8 +14,8 @@ export const chatIntentSlotDialogSanitizer = ({
   ...baseDialog
 }: Optional<ChatIntentSlotDialog> = {}): ChatIntentSlotDialog => ({
   ...baseIntentSlotDialogSanitizer(baseDialog),
-  prompt: chatRepromptAdapter.mapFromDB(prompt),
-  confirm: chatRepromptAdapter.mapFromDB(confirm),
+  prompt: chatPromptAdapter.mapFromDB(prompt),
+  confirm: chatPromptAdapter.mapFromDB(confirm),
 });
 
 export const chatIntentSlotSanitizer = ({ dialog, ...baseIntentSlot }: Required<Optional<ChatIntentSlot>, 'id'>): ChatIntentSlot => ({

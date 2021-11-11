@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 
 import customPayloadAdapter from '@/adapters/creator/block/dialogflow/customPayload';
-import { payloadNodeDataFactory, payloadStepFactory } from '@/tests/factories/dialogflow/customPayload';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Dialogflow | customPayloadAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data', () => {
-      const stepData = payloadStepFactory();
+      const stepData = Creator.Block.Dialogflow.CustomPayloadStep();
 
       const result = customPayloadAdapter.fromDB(stepData);
 
@@ -16,7 +16,7 @@ describe('Adapters | Creator | Block | Dialogflow | customPayloadAdapter', () =>
 
   describe('when transforming to db', () => {
     it('returns correct data', () => {
-      const nodeData = payloadNodeDataFactory();
+      const nodeData = Creator.Block.Dialogflow.CustomPayloadNodeData();
 
       const result = customPayloadAdapter.toDB(nodeData);
 

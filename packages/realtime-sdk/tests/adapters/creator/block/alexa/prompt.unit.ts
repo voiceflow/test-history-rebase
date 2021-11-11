@@ -2,11 +2,8 @@ import { expect } from 'chai';
 import Sinon from 'sinon';
 
 import promptAdapter from '@/adapters/creator/block/alexa/prompt';
-import { voiceNoMatchAdapter, voiceRepromptAdapter } from '@/adapters/creator/block/utils';
-import { promptNodeDataFactory, promptStepDataFactory } from '@/tests/factories/alexa/prompt';
-import { stepNoMatchPromptFactory } from '@/tests/factories/noMatch';
-import { promptFactory } from '@/tests/factories/reprompt';
-import { noMatchesNodeDataFactory, voicePromptNodeDataFactory } from '@/tests/factories/voice';
+import { voiceNoMatchAdapter, voicePromptAdapter } from '@/adapters/creator/block/utils';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
   afterEach(() => {
@@ -16,68 +13,76 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
 
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
-      const noMatches = noMatchesNodeDataFactory();
-      const reprompt = voicePromptNodeDataFactory();
-      Sinon.stub(voiceRepromptAdapter, 'fromDB').returns(reprompt);
+      const reprompt = Creator.Block.Shared.VoiceNodeDataPrompt();
+      const noMatches = Creator.Block.Shared.VoiceNodeDataNoMatch();
+
+      Sinon.stub(voicePromptAdapter, 'fromDB').returns(reprompt);
       Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(noMatches);
-      const data = promptStepDataFactory();
+
+      const data = Creator.Block.Alexa.PromptStepData();
 
       const result = promptAdapter.fromDB(data);
 
       expect(result).eql({
         reprompt,
-        noMatchReprompt: noMatches,
         buttons: null,
+        noMatchReprompt: noMatches,
       });
     });
 
     it('returns correct data for empty values', () => {
-      const noMatches = noMatchesNodeDataFactory();
+      const noMatches = Creator.Block.Shared.VoiceNodeDataNoMatch();
+
       Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(noMatches);
-      const data = promptStepDataFactory({ reprompt: undefined });
+
+      const data = Creator.Block.Alexa.PromptStepData({ reprompt: null });
 
       const result = promptAdapter.fromDB(data);
 
       expect(result).eql({
-        reprompt: undefined,
-        noMatchReprompt: noMatches,
         buttons: null,
+        reprompt: null,
+        noMatchReprompt: noMatches,
       });
     });
   });
 
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
-      const noMatches = stepNoMatchPromptFactory();
-      const reprompt = promptFactory();
-      Sinon.stub(voiceRepromptAdapter, 'toDB').returns(reprompt);
+      const reprompt = Creator.Block.Shared.VoicePrompt();
+      const noMatches = Creator.Block.Shared.VoiceStepNoMatch();
+
+      Sinon.stub(voicePromptAdapter, 'toDB').returns(reprompt);
       Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(noMatches);
-      const data = promptNodeDataFactory();
+
+      const data = Creator.Block.Alexa.PromptNodeData();
 
       const result = promptAdapter.toDB(data);
 
       expect(result).eql({
         ports: [],
-        reprompt,
-        noMatches,
         chips: null,
         buttons: null,
+        reprompt,
+        noMatches,
       });
     });
 
     it('returns correct data for empty values', () => {
-      const noMatches = stepNoMatchPromptFactory();
+      const noMatches = Creator.Block.Shared.VoiceStepNoMatch();
+
       Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(noMatches);
-      const data = promptNodeDataFactory({ reprompt: undefined });
+
+      const data = Creator.Block.Alexa.PromptNodeData({ reprompt: null });
 
       const result = promptAdapter.toDB(data);
 
       expect(result).eql({
         ports: [],
-        reprompt: undefined,
-        noMatches,
         chips: null,
         buttons: null,
+        reprompt: null,
+        noMatches,
       });
     });
   });

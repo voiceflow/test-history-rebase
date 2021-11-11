@@ -1,21 +1,18 @@
 import { Node } from '@voiceflow/alexa-types';
 
 import { NodeData } from '../../../../models';
-import { createBlockAdapter, voiceRepromptAdapter } from '../utils';
+import { createBlockAdapter } from '../utils';
+import { voiceCaptureAdapter } from '../voice';
 
 const captureAdapter = createBlockAdapter<Node.Capture.StepData, NodeData.Capture>(
-  ({ slot, variable, reprompt, slotInputs }) => ({
-    slot,
-    variable,
-    examples: slotInputs,
-    reprompt: reprompt && voiceRepromptAdapter.fromDB(reprompt),
+  (voiceData) => ({
+    ...voiceCaptureAdapter.fromDB(voiceData),
+
     buttons: null, // no buttons on alexa
   }),
-  ({ slot, variable, reprompt, examples }) => ({
-    slot,
-    variable,
-    reprompt: reprompt && voiceRepromptAdapter.toDB(reprompt as NodeData.VoicePrompt),
-    slotInputs: examples,
+  (voiceData) => ({
+    ...voiceCaptureAdapter.toDB(voiceData),
+
     chips: null,
     buttons: null,
   })

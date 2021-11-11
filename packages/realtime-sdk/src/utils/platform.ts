@@ -37,7 +37,7 @@ export const setDistinctPlatformValue = <T>(platform: Constants.PlatformType, va
   [isDistinctPlatform(platform) ? platform : Constants.PlatformType.GENERAL]: value,
 });
 
-export const distinctPlatformsData = <T>(data: T) =>
+export const distinctPlatformsData = <T>(data: T): Record<DistinctPlatform, T> =>
   DISTINCT_PLATFORMS.reduce((acc, platform) => Object.assign(acc, { [platform]: data }), {} as Record<DistinctPlatform, T>);
 
 export const getPlatformDefaultVoice = createPlatformSelector<AnyVoice>(
@@ -59,3 +59,13 @@ export const getPlatformAppName = createPlatformSelector({
   [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow Voice',
   [Constants.PlatformType.MOBILE_APP]: 'Mobile App Project',
 });
+
+export const getPlatformProviderName = createPlatformSelector(
+  {
+    [Constants.PlatformType.ALEXA]: 'Alexa',
+    [Constants.PlatformType.GOOGLE]: 'Google',
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow',
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow',
+  },
+  'Custom'
+);

@@ -1,22 +1,24 @@
 import { Node, Types } from '@voiceflow/chat-types';
 
 import { NodeData } from '../../../../models';
-import { chatRepromptAdapter } from '../../../utils';
-import { chipsToIntentButtons, createBlockAdapter } from '../utils';
-import { chatNoMatchAdapter } from './utils';
+import { basePromptAdapter } from '../base';
+import { chatNoMatchAdapter, chatPromptAdapter, chipsToIntentButtons, createBlockAdapter } from '../utils';
 
 const promptAdapter = createBlockAdapter<Node.Prompt.StepData, NodeData.Prompt>(
-  ({ reprompt, noMatches, chips, buttons }) => ({
+  ({ reprompt, noMatches, chips, buttons, ...baseData }) => ({
+    ...basePromptAdapter.fromDB(baseData),
+
     buttons: buttons ?? chipsToIntentButtons(chips),
-    reprompt: reprompt && chatRepromptAdapter.fromDB(reprompt),
+    reprompt: reprompt && chatPromptAdapter.fromDB(reprompt),
     noMatchReprompt: chatNoMatchAdapter.fromDB(noMatches),
   }),
-  ({ reprompt, noMatchReprompt, buttons }) => ({
-    ports: [],
+  ({ reprompt, noMatchReprompt, buttons, ...baseData }) => ({
+    ...basePromptAdapter.toDB(baseData),
+
     chips: null,
     buttons,
-    reprompt: reprompt && chatRepromptAdapter.toDB(reprompt as Types.Prompt),
-    noMatches: chatNoMatchAdapter.toDB(noMatchReprompt as NodeData.ChatNoMatches),
+    reprompt: reprompt && chatPromptAdapter.toDB(reprompt as Types.Prompt),
+    noMatches: chatNoMatchAdapter.toDB(noMatchReprompt as NodeData.ChatNoMatch),
   })
 );
 

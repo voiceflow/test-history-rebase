@@ -1,3 +1,4 @@
+import { Node as BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -31,7 +32,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2> = {
         },
       ],
       noMatch: {
-        type: null,
+        type: BaseNode.IfV2.IfNoMatchType.NONE,
         pathName: 'No Match',
       },
     },

@@ -1,8 +1,10 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { createAction, createKeyedSelector } from '@/ducks/utils';
 import { Action, Reducer, RootReducer } from '@/store/types';
+import { getPortByType } from '@/utils/port';
 
 import { AnyCreatorAction, CreatorAction } from './actions';
 import * as Diagram from './diagram';
@@ -87,6 +89,17 @@ export const hasFocusedNode = createSelector([rootSelector], (focus) => focus.is
 
 export const focusedNodeDataSelector = createSelector([Diagram.dataByNodeIDSelector, rootSelector], (getDataByNodeID, focus) =>
   focus.target ? (getDataByNodeID(focus.target) as Realtime.NodeData<unknown>) : null
+);
+
+export const focusedNoMatchLinkIDSelector = createSelector(
+  [focusedNodeSelector, Diagram.allPortsByIDsSelector, Diagram.linkIDsByPortIDSelector],
+  (focusedNode, getPortsByIDs, getLinkIDsByPortID) => {
+    const ports = getPortsByIDs(focusedNode?.ports.out ?? []);
+
+    const noMatchPort = getPortByType(ports, Models.PortType.NO_MATCH) ?? ports[0];
+
+    return noMatchPort ? getLinkIDsByPortID(noMatchPort.id)[0] : null;
+  }
 );
 
 // action creators

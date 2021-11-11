@@ -1,13 +1,27 @@
-import { Node } from '@voiceflow/base-types';
+export const getNoMatchNoReplySectionLabel = <E extends { REPROMPT: string; PATH: string }>(Enum: E, types: string[]): string => {
+  const names = [];
 
-// eslint-disable-next-line import/prefer-default-export
-export const getNoMatchSectionLabel = (type: Node.Utils.NoMatchType | null) => {
+  if (types.includes(Enum.REPROMPT)) {
+    names.push('Reprompt');
+  }
+
+  if (types.includes(Enum.PATH)) {
+    names.push('Path');
+  }
+
+  return names.join(' + ');
+};
+
+export const getNoMatchNoReplySectionLabelByType = <E extends { REPROMPT: string; PATH: string; BOTH: string }>(
+  Enum: E,
+  type: null | string
+): string => {
   switch (type) {
-    case Node.Utils.NoMatchType.REPROMPT:
-      return 'Reprompt';
-    case Node.Utils.NoMatchType.PATH:
+    case Enum.PATH:
       return 'Path';
-    case Node.Utils.NoMatchType.BOTH:
+    case Enum.REPROMPT:
+      return 'Reprompt';
+    case Enum.BOTH:
       return 'Reprompt + Path';
     default:
       return '';

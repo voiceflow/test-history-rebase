@@ -1,4 +1,4 @@
-export { BlockVariant, PortType } from '@voiceflow/realtime-sdk';
+export { BlockVariant } from '@voiceflow/realtime-sdk';
 
 export enum BlockState {
   REGULAR = 'regular',

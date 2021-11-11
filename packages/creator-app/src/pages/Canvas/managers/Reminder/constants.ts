@@ -1,3 +1,4 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { withProps } from 'recompose';
 
@@ -29,7 +30,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Reminder> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}, { label: 'fail' }],
+        out: [{}, { label: Models.PortType.FAIL }],
       },
     },
     data: {

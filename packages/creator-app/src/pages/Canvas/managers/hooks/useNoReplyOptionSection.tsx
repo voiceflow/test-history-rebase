@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as VersionV2 from '@/ducks/versionV2';
 import { useSelector } from '@/hooks';
-import NoReplyResponse from '@/pages/Canvas/components/NoReplyResponse';
+import { NoReplySection } from '@/pages/Canvas/components/NoReply';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 import { PlatformContext } from '@/pages/Project/contexts';
@@ -33,7 +33,7 @@ const useNoReplyOptionSection = ({ data, onChange, pushToPath }: NodeInterface<{
       label: hasNoReply ? 'Remove No Reply Response' : 'Add  No Reply Response',
       onClick: toggleNoReply,
     },
-    hasNoReply && <NoReplyResponse pushToPath={pushToPath} />,
+    hasNoReply && <NoReplySection pushToPath={pushToPath} />,
   ];
 };
 

@@ -12,6 +12,7 @@ import {
   PLATFORMS_WITH_INVOCATION_NAME,
   ROOT_AND_MARKUP_NODES,
   ROOT_NODES,
+  VOICE_PLATFORMS,
 } from '../constants';
 
 const createBlockTypeGuard =
@@ -45,6 +46,9 @@ export const isDialogflowPlatform = (type: string | Constants.PlatformType): typ
 
 export const isPlatformWithInvocationName = (type: string | Constants.PlatformType): type is typeof PLATFORMS_WITH_INVOCATION_NAME[number] =>
   PLATFORMS_WITH_INVOCATION_NAME.includes(type as typeof PLATFORMS_WITH_INVOCATION_NAME[number]);
+
+export const isVoicePlatform = (type: string | Constants.PlatformType): type is typeof VOICE_PLATFORMS[number] =>
+  VOICE_PLATFORMS.includes(type as typeof VOICE_PLATFORMS[number]);
 
 export const isDistinctPlatform = (type: string | Constants.PlatformType): type is typeof DISTINCT_PLATFORMS[number] =>
   DISTINCT_PLATFORMS.includes(type as typeof DISTINCT_PLATFORMS[number]);

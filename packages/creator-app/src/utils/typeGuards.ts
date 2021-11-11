@@ -14,6 +14,7 @@ export const {
   isDialogflowVoicePlatform,
   isIVRPlatform,
   isGeneralPlatform,
+  isVoicePlatform,
   isChatbotPlatform,
   isMobileAppPlatform,
   isDistinctPlatform,

@@ -56,7 +56,7 @@ const ConnectedIfStep: React.FC<ConnectedIfStepProps> = ({ node, data }) => {
   const [elsePortID, nodeOutPorts] = React.useMemo(() => Utils.array.head(node.ports.out), [node.ports.out]);
   const expressionsByPortID = useSyncedLookup(nodeOutPorts, data.expressions);
   const hasElseLink = engine.hasLinksByPortID(elsePortID); // also show the else port if a link exists
-  const isPath = hasElseLink || (!!data.noMatch.type && data.noMatch.type === Node.Utils.NoMatchType.PATH);
+  const isPath = hasElseLink || data.noMatch.type === Node.IfV2.IfNoMatchType.PATH;
 
   const expressions = nodeOutPorts
     .filter((portID) => expressionsByPortID[portID])
@@ -70,7 +70,7 @@ const ConnectedIfStep: React.FC<ConnectedIfStepProps> = ({ node, data }) => {
       };
     });
 
-  return <IfStep expressions={expressions} nodeID={node.id} elsePortID={elsePortID} elsePathName={data.noMatch.pathName} isPath={isPath} />;
+  return <IfStep expressions={expressions} nodeID={node.id} elsePortID={elsePortID} elsePathName={data.noMatch.pathName ?? ''} isPath={isPath} />;
 };
 
 export default ConnectedIfStep;

@@ -1,15 +1,13 @@
-import { NO_MATCH_PATH_TYPE } from '@/pages/Canvas/components/NoMatch';
-import { NO_MATCH_PATH_PATH_TYPE } from '@/pages/Canvas/components/NoMatchPath';
-import { NO_REPLY_RESPONSE_PATH_TYPE, NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
+import { NO_MATCH_PATH_PATH_TYPE, NO_MATCH_PATH_TYPE } from '@/pages/Canvas/components/NoMatch';
+import { NO_REPLY_PATH_TYPE, NoReplyEditor } from '@/pages/Canvas/components/NoReply';
 import { ButtonsEditor, SUGGESTION_BUTTONS_PATH_TYPE } from '@/pages/Canvas/components/SuggestionButtons';
 
-import { NoMatchForm } from './components';
-import NoMatchPathNameForm from './components/NoMatchPathNameForm';
+import { NoMatchForm, NoMatchPathNameForm } from './components';
 
 export const EDITORS_BY_PATH = {
   [NO_MATCH_PATH_TYPE]: NoMatchForm,
+  [NO_REPLY_PATH_TYPE]: NoReplyEditor,
   [NO_MATCH_PATH_PATH_TYPE]: NoMatchPathNameForm,
-  [NO_REPLY_RESPONSE_PATH_TYPE]: NoReplyResponseForm,
   [SUGGESTION_BUTTONS_PATH_TYPE]: ButtonsEditor,
 };
 

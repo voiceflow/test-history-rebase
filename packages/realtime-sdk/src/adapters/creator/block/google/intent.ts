@@ -2,15 +2,12 @@ import { Node } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 
 import { NodeData } from '../../../../models';
-import { distinctPlatformsData } from '../../../../utils/platform';
+import { baseIntentAdapter } from '../base';
 import { createBlockAdapter } from '../utils';
 
 const intentAdapter = createBlockAdapter<Node.Intent.StepData, NodeData.Intent>(
-  ({ intent, mappings, availability }) => ({
-    ...distinctPlatformsData({ intent: null, mappings: [], availability: Node.Intent.IntentAvailability.GLOBAL }),
-    [Constants.PlatformType.GOOGLE]: { intent, mappings: mappings ?? [], availability: availability ?? Node.Intent.IntentAvailability.GLOBAL },
-  }),
-  ({ [Constants.PlatformType.GOOGLE]: { intent, mappings, availability } }) => ({ intent, mappings, availability })
+  (data) => baseIntentAdapter.fromDB(data, { platform: Constants.PlatformType.GOOGLE }),
+  (data) => baseIntentAdapter.toDB(data, { platform: Constants.PlatformType.GOOGLE })
 );
 
 export default intentAdapter;

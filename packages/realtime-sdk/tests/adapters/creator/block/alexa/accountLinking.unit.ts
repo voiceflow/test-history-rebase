@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 
 import accountLinkingAdapter from '@/adapters/creator/block/alexa/accountLinking';
-import { accountLinkingNodeDataFactory, accountLinkingStepDataFactory } from '@/tests/factories/alexa/accountLinking';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | accountLinkingAdapter', () => {
   describe('when transforming from db', () => {
     it('returns an empty object', () => {
-      const data = accountLinkingStepDataFactory();
+      const data = Creator.Block.Alexa.AccountLinkingStepData();
 
       const result = accountLinkingAdapter.fromDB(data);
 
@@ -16,7 +16,7 @@ describe('Adapters | Creator | Block | Alexa | accountLinkingAdapter', () => {
 
   describe('when transforming to db', () => {
     it('returns an empty object', () => {
-      const data = accountLinkingNodeDataFactory();
+      const data = Creator.Block.Alexa.AccountLinkingNodeData();
 
       const result = accountLinkingAdapter.toDB(data);
 

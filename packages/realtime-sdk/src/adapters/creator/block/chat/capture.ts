@@ -1,24 +1,22 @@
 import { Node, Types } from '@voiceflow/chat-types';
 
 import { NodeData } from '../../../../models';
-import { chatRepromptAdapter } from '../../../utils';
-import { chipsToIntentButtons, createBlockAdapter } from '../utils';
+import { baseCaptureAdapter } from '../base';
+import { chatPromptAdapter, chipsToIntentButtons, createBlockAdapter } from '../utils';
 
 const captureAdapter = createBlockAdapter<Node.Capture.StepData, NodeData.Capture>(
-  ({ slot, variable, reprompt, slotInputs, chips, buttons }) => ({
-    slot,
+  ({ chips, reprompt, buttons, ...baseData }) => ({
+    ...baseCaptureAdapter.fromDB(baseData),
+
     buttons: buttons ?? chipsToIntentButtons(chips),
-    variable,
-    reprompt: reprompt && chatRepromptAdapter.fromDB(reprompt),
-    examples: slotInputs,
+    reprompt: reprompt && chatPromptAdapter.fromDB(reprompt),
   }),
-  ({ slot, variable, reprompt, examples, buttons }) => ({
-    slot,
+  ({ reprompt, buttons, ...baseData }) => ({
+    ...baseCaptureAdapter.toDB(baseData),
+
     chips: null,
     buttons,
-    variable,
-    reprompt: reprompt && chatRepromptAdapter.toDB(reprompt as Types.Prompt),
-    slotInputs: examples,
+    reprompt: reprompt && chatPromptAdapter.toDB(reprompt as Types.Prompt),
   })
 );
 

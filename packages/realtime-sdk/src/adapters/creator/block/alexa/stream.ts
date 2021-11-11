@@ -1,7 +1,7 @@
 import { Node } from '@voiceflow/alexa-types';
+import { Models } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 
-import { PortType } from '../../../../constants';
 import { NodeData } from '../../../../models';
 import { generateOutPort } from '../../utils';
 import { createBlockAdapter, getPortByLabel, PortsAdapter } from '../utils';
@@ -30,25 +30,25 @@ const streamAdapter = createBlockAdapter<Node.Stream.StepData, NodeData.Stream>(
 // for the alexa version
 export const streamPortsAdapter: PortsAdapter = {
   toDB: (ports) => {
-    const nextPort = getPortByLabel(ports, PortType.NEXT);
-    const previousPort = getPortByLabel(ports, PortType.PREVIOUS);
-    const pausePort = getPortByLabel(ports, PortType.PAUSE);
+    const nextPort = getPortByLabel(ports, Models.PortType.NEXT);
+    const previousPort = getPortByLabel(ports, Models.PortType.PREVIOUS);
+    const pausePort = getPortByLabel(ports, Models.PortType.PAUSE);
 
     return [
       {
-        type: PortType.NEXT,
+        type: Models.PortType.NEXT,
         target: nextPort?.target || null,
         id: nextPort!.port.id,
         data: nextPort!.link?.data,
       },
       {
-        type: PortType.PREVIOUS,
+        type: Models.PortType.PREVIOUS,
         target: previousPort?.target || null,
         id: previousPort!.port.id,
         data: previousPort!.link?.data,
       },
       {
-        type: PortType.PAUSE,
+        type: Models.PortType.PAUSE,
         target: pausePort?.target || null,
         id: pausePort!.port.id,
         data: pausePort!.link?.data,
@@ -57,15 +57,15 @@ export const streamPortsAdapter: PortsAdapter = {
   },
   fromDB: (ports, { nodeID }) => [
     {
-      port: generateOutPort(nodeID, ports[0], { label: PortType.NEXT, platform: Constants.PlatformType.ALEXA }),
+      port: generateOutPort(nodeID, ports[0], { label: Models.PortType.NEXT, platform: Constants.PlatformType.ALEXA }),
       target: ports[0].target,
     },
     {
-      port: generateOutPort(nodeID, ports[1], { label: PortType.PREVIOUS, platform: Constants.PlatformType.ALEXA }),
+      port: generateOutPort(nodeID, ports[1], { label: Models.PortType.PREVIOUS, platform: Constants.PlatformType.ALEXA }),
       target: ports[1].target,
     },
     {
-      port: generateOutPort(nodeID, ports[2], { label: PortType.PAUSE, platform: Constants.PlatformType.ALEXA }),
+      port: generateOutPort(nodeID, ports[2], { label: Models.PortType.PAUSE, platform: Constants.PlatformType.ALEXA }),
       target: ports[2].target,
     },
   ],

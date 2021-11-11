@@ -1,13 +1,13 @@
-import { PermissionType } from '@voiceflow/alexa-types/build/node';
+import { Node } from '@voiceflow/alexa-types';
 import { expect } from 'chai';
 
 import permissionAdapter from '@/adapters/creator/block/alexa/permission';
-import { permissionNodeDataFactory, permissionStepDataFactory } from '@/tests/factories/alexa/permission';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | permissionAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data', () => {
-      const data = permissionStepDataFactory();
+      const data = Creator.Block.Alexa.PermissionStepData();
 
       const result = permissionAdapter.fromDB(data);
 
@@ -17,7 +17,7 @@ describe('Adapters | Creator | Block | Alexa | permissionAdapter', () => {
 
   describe('when transforming to db', () => {
     it('returns correct data', () => {
-      const data = permissionNodeDataFactory();
+      const data = Creator.Block.Alexa.PermissionNodeData();
 
       const result = permissionAdapter.toDB(data);
 
@@ -25,14 +25,14 @@ describe('Adapters | Creator | Block | Alexa | permissionAdapter', () => {
     });
 
     it('filters empty permissions', () => {
-      const data = permissionNodeDataFactory({
-        permissions: ['   ', '', PermissionType.PAYMENTS_AUTO_PAY_CONSENT] as PermissionType[],
+      const data = Creator.Block.Alexa.PermissionNodeData({
+        permissions: ['   ', '', Node.PermissionType.PAYMENTS_AUTO_PAY_CONSENT] as Node.PermissionType[],
       });
 
       const result = permissionAdapter.toDB(data);
 
       expect(result).eql({
-        permissions: [PermissionType.PAYMENTS_AUTO_PAY_CONSENT],
+        permissions: [Node.PermissionType.PAYMENTS_AUTO_PAY_CONSENT],
       });
     });
   });

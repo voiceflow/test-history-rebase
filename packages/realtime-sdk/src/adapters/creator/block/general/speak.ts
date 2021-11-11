@@ -1,29 +1,12 @@
-import { Utils } from '@voiceflow/common';
 import { Constants, Node } from '@voiceflow/general-types';
 
-import { DialogType } from '../../../../constants';
 import { NodeData } from '../../../../models';
 import { createBlockAdapter } from '../utils';
+import { voiceSpeakAdapter } from '../voice';
 
 const speakAdapter = createBlockAdapter<Node.Speak.StepData, NodeData.Speak>(
-  ({ randomize, dialogs, canvasVisibility }) => ({
-    randomize,
-    canvasVisibility,
-    dialogs: dialogs.map(({ voice, content }) =>
-      voice === Constants.Voice.AUDIO
-        ? { id: Utils.id.cuid.slug(), url: content, type: DialogType.AUDIO }
-        : { id: Utils.id.cuid.slug(), type: DialogType.VOICE, voice, content }
-    ),
-  }),
-  ({ randomize, dialogs, canvasVisibility }) => ({
-    randomize,
-    canvasVisibility,
-    dialogs: dialogs.map((data) =>
-      data.type === DialogType.AUDIO
-        ? { voice: Constants.Voice.AUDIO, content: data.url ?? '' }
-        : { voice: (data.voice as Constants.Voice) ?? Constants.Voice.DEFAULT, content: data.content ?? '' }
-    ),
-  })
+  (data) => voiceSpeakAdapter.fromDB(data, { audioVoice: Constants.Voice.AUDIO }),
+  (data) => voiceSpeakAdapter.toDB(data, { audioVoice: Constants.Voice.AUDIO, defaultVoice: Constants.Voice.DEFAULT })
 );
 
 export default speakAdapter;

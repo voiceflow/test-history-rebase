@@ -1,5 +1,6 @@
 export { default as creatorAdapter } from './creator';
 export { default as alexaDisplayAdapter } from './creator/block/alexa/display';
+export { voicePromptToSpeakDataAdapter } from './creator/block/utils';
 export { default as diagramAdapter } from './diagram';
 export { default as getPlatformIntentAdapter } from './intent';
 export * as Intent from './intent';
@@ -8,7 +9,6 @@ export { default as productAdapter } from './product';
 export { default as projectAdapter } from './project';
 export { default as projectListAdapter } from './projectList';
 export { default as slotAdapter } from './slot';
-export { voiceRepromptToSpeakDataAdapter } from './utils';
 export { default as versionAdapter } from './version';
 export { default as createSessionAdapter } from './version/session';
 export { default as workspaceAdapter, workspaceWithMembersAdapter } from './workspace';

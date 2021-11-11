@@ -1,0 +1,25 @@
+import { Node } from '@voiceflow/alexa-types';
+import { define } from 'cooky-cutter';
+import { datatype, image, internet, lorem } from 'faker';
+
+import { NodeData } from '@/models';
+
+export const StreamStepData = define<Node.Stream.StepData>({
+  loop: () => datatype.boolean(),
+  audio: () => internet.url(),
+  title: () => lorem.words(),
+  iconImage: () => image.animals(),
+  description: () => lorem.words(),
+  customPause: () => datatype.boolean(),
+  backgroundImage: () => image.animals(),
+});
+
+export const StreamNodeData = define<NodeData.Stream>({
+  loop: () => datatype.boolean(),
+  audio: () => internet.url(),
+  title: () => lorem.words(),
+  iconImage: () => image.animals(),
+  description: () => lorem.words(),
+  customPause: () => datatype.boolean(),
+  backgroundImage: () => image.animals(),
+});

@@ -29,7 +29,7 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
   const updateButtons = React.useCallback((buttons: Button.AnyButton[]) => updateData({ buttons }), [updateData]);
   const buttonLayoutOption = useButtonLayoutOption();
 
-  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(focusedNode.buttons, updateButtons, {
+  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(focusedNode?.buttons ?? [], updateButtons, {
     factory: () => ({
       name: '',
       type: Button.ButtonType.INTENT,
@@ -38,8 +38,9 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
   });
 
   const usedIntentIDs = React.useMemo(
-    () => (focusedNode.choices?.map((platformChoice) => getDistinctPlatformValue(platform, platformChoice).intent).filter(Boolean) as string[]) ?? [],
-    [platform, focusedNode.choices]
+    () =>
+      (focusedNode?.choices?.map((platformChoice) => getDistinctPlatformValue(platform, platformChoice).intent).filter(Boolean) as string[]) ?? [],
+    [platform, focusedNode?.choices]
   );
   const dividedIntents = React.useMemo(() => {
     const usedIntents = intents.filter((intent) => usedIntentIDs.includes(intent.id));

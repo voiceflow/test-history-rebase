@@ -1,7 +1,7 @@
+import { Models } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { Node } from '@voiceflow/google-types';
 
-import { PortType } from '../../../../constants';
 import { NodeData } from '../../../../models';
 import { generateOutPort } from '../../utils';
 import { createBlockAdapter, getPortByLabel, PortsAdapter } from '../utils';
@@ -30,15 +30,15 @@ const streamAdapter = createBlockAdapter<Node.Stream.StepData, NodeData.Stream>(
 export const streamPortsAdapter: PortsAdapter = {
   toDB: (ports) => [
     {
-      type: PortType.NEXT,
-      target: getPortByLabel(ports, PortType.NEXT)?.target || ports[0].target || null,
+      type: Models.PortType.NEXT,
+      target: getPortByLabel(ports, Models.PortType.NEXT)?.target || ports[0].target || null,
       id: ports[0].port.id,
       data: ports[0]?.link?.data,
     },
   ],
   fromDB: (ports, { nodeID }) => [
     {
-      port: generateOutPort(nodeID, ports[0], { label: PortType.NEXT, platform: Constants.PlatformType.GOOGLE }),
+      port: generateOutPort(nodeID, ports[0], { label: Models.PortType.NEXT, platform: Constants.PlatformType.GOOGLE }),
       target: ports[0].target,
     },
   ],

@@ -1,25 +1,18 @@
 import { Constants, Node } from '@voiceflow/general-types';
 
 import { NodeData } from '../../../../models';
-import { distinctPlatformsData } from '../../../../utils/platform';
-import { chipsToIntentButtons, choiceAdapter, createBlockAdapter, voiceNoMatchAdapter, voiceRepromptAdapter } from '../utils';
+import { chipsToIntentButtons, createBlockAdapter } from '../utils';
+import { voiceInteractionAdapter } from '../voice';
 
 const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeData.Interaction>(
-  ({ name, else: elseData, choices, reprompt, chips, buttons }) => ({
-    name,
-    else: voiceNoMatchAdapter.fromDB(elseData),
-    choices: choices.map((choice) => ({
-      ...distinctPlatformsData(choiceAdapter.fromDB({ intent: '', mappings: [] })),
-      [Constants.PlatformType.GENERAL]: choiceAdapter.fromDB(choice),
-    })),
-    reprompt: reprompt && voiceRepromptAdapter.fromDB(reprompt),
+  ({ chips, buttons, ...voiceData }) => ({
+    ...voiceInteractionAdapter.fromDB(voiceData, { platform: Constants.PlatformType.GENERAL }),
+
     buttons: buttons ?? chipsToIntentButtons(chips),
   }),
-  ({ name, else: elseData, choices, reprompt, buttons }) => ({
-    name,
-    else: voiceNoMatchAdapter.toDB(elseData as NodeData.VoiceNoMatches),
-    choices: choices.map(({ [Constants.PlatformType.GENERAL]: data }) => choiceAdapter.toDB(data)),
-    reprompt: reprompt && voiceRepromptAdapter.toDB(reprompt as NodeData.VoicePrompt),
+  ({ buttons, ...voiceData }) => ({
+    ...voiceInteractionAdapter.toDB(voiceData, { platform: Constants.PlatformType.GENERAL }),
+
     chips: null,
     buttons,
   })

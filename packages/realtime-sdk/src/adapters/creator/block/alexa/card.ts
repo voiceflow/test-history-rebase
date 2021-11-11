@@ -9,14 +9,14 @@ const cardAdapter = createBlockAdapter<Node.Card.StepData, NodeData.Card>(
     cardType: _capitalize(type) as Node.Card.CardType,
     title,
     content,
-    hasSmallImage: !!image?.smallImageUrl,
     largeImage: image?.largeImageUrl || null,
     smallImage: image?.smallImageUrl || null,
+    hasSmallImage: !!image?.smallImageUrl,
   }),
   ({ cardType: type = Node.Card.CardType.SIMPLE, title = '', content: text = '', largeImage, smallImage }) => ({
     type,
-    title,
     text,
+    title,
     image: {
       smallImageUrl: smallImage || undefined,
       largeImageUrl: largeImage || undefined,

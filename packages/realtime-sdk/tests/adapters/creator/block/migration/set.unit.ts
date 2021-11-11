@@ -5,7 +5,7 @@ import { datatype } from 'faker';
 import Sinon from 'sinon';
 
 import setAdapter from '@/adapters/creator/block/migration/set';
-import { expressionFactory, setFactory, setStepDataFactory, setV2Factory, setV2NodeDataFactory } from '@/tests/factories/set';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Migration | setAdapter', () => {
   afterEach(() => {
@@ -17,9 +17,9 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
     it('returns correct data for default values', () => {
       const id = datatype.uuid();
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
-      const expression = expressionFactory({ type: Node.Utils.ExpressionType.VALUE });
-      const set = setFactory({ expression });
-      const data = setStepDataFactory({ sets: [set] });
+      const expression = Creator.Block.Base.Expression({ type: Node.Utils.ExpressionType.VALUE });
+      const set = Creator.Block.Base.Set({ expression });
+      const data = Creator.Block.Base.SetStepData({ sets: [set] });
 
       const result = setAdapter.fromDB(data);
 
@@ -36,9 +36,9 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
     it('returns correct expression and type', () => {
       const id = datatype.uuid();
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
-      const expression = expressionFactory({ type: Node.Utils.ExpressionType.VARIABLE, value: 'name' });
-      const set = setFactory({ expression });
-      const data = setStepDataFactory({ sets: [set] });
+      const expression = Creator.Block.Base.Expression({ type: Node.Utils.ExpressionType.VARIABLE, value: 'name' });
+      const set = Creator.Block.Base.Set({ expression });
+      const data = Creator.Block.Base.SetStepData({ sets: [set] });
 
       const result = setAdapter.fromDB(data);
 
@@ -55,7 +55,7 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
 
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
-      const data = setV2NodeDataFactory();
+      const data = Creator.Block.Base.SetV2NodeData();
 
       const result = setAdapter.toDB(data);
 
@@ -68,8 +68,8 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
     });
 
     it('returns correct data for empty values', () => {
-      const set = setV2Factory({ expression: undefined, variable: undefined });
-      const data = setV2NodeDataFactory({ sets: [set] });
+      const set = Creator.Block.Base.SetV2({ expression: undefined, variable: undefined });
+      const data = Creator.Block.Base.SetV2NodeData({ sets: [set] });
 
       const result = setAdapter.toDB(data);
 

@@ -1,25 +1,24 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import Section from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
-import { getNoMatchSectionLabel } from '@/pages/Canvas/managers/utils';
 
 import { IFV2ManagerEditors } from '../subeditors';
 
 export interface NoMatchSectionProps {
-  noMatch: Realtime.NodeData.BaseNoMatches;
+  noMatch: Node.IfV2.IfNoMatch;
   pushToPath?: (path: { type: string; label: string }) => void;
 }
 
-const TYPE: IFV2ManagerEditors = 'noMatchPath';
+export const NO_MATCH_TYPE: IFV2ManagerEditors = 'noMatchPath';
 
 const NoMatchSection: React.FC<NoMatchSectionProps> = ({ noMatch, pushToPath }) => {
-  const onOpenNoMatchSection = React.useCallback(() => pushToPath && pushToPath({ type: TYPE, label: 'No Match' }), [pushToPath]);
+  const onOpenNoMatchSection = React.useCallback(() => pushToPath && pushToPath({ type: NO_MATCH_TYPE, label: 'No Match' }), [pushToPath]);
 
   return (
     <Section
-      infix={getNoMatchSectionLabel(noMatch.type)}
+      infix={noMatch.type === Node.IfV2.IfNoMatchType.PATH ? 'Path' : ''}
       header="No Match"
       isLink
       onClick={onOpenNoMatchSection}

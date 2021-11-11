@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import createAdapter from 'bidirectional-adapter';
+import { createAdapter } from 'bidirectional-adapter';
 
 import { Hash } from '../../clients/cache/types';
 

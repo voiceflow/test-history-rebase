@@ -1,22 +1,22 @@
 import { Constants } from '@voiceflow/alexa-types';
 import { expect } from 'chai';
 
-import { voiceRepromptAdapter } from '@/adapters/creator/block/utils';
-import { RepromptType } from '@/constants';
-import { voicePromptNodeDataFactory, voiceTypePromptFactory } from '@/tests/factories/voice';
+import { voicePromptAdapter } from '@/adapters/creator/block/utils';
+import { VoicePromptType } from '@/constants';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Utils', () => {
   describe('voice reprompt adapter', () => {
     describe('when transforming from db', () => {
       describe('and type is audio', () => {
         it('returns correct step data', () => {
-          const reprompt = voiceTypePromptFactory({ voice: Constants.Voice.AUDIO });
+          const reprompt = Creator.Block.Shared.VoicePrompt({ voice: Constants.Voice.AUDIO });
 
-          const result = voiceRepromptAdapter.fromDB(reprompt);
+          const result = voicePromptAdapter.fromDB(reprompt);
 
           expect(result.id).to.be.a('string');
           expect(result).to.include({
-            type: RepromptType.AUDIO,
+            type: VoicePromptType.AUDIO,
             desc: reprompt.desc,
             voice: null,
             audio: reprompt.content,
@@ -27,13 +27,13 @@ describe('Adapters | Creator | Block | Utils', () => {
 
       describe('and type is text', () => {
         it('returns correct step data', () => {
-          const data = voiceTypePromptFactory({ voice: Constants.Voice.ADITI });
+          const data = Creator.Block.Shared.VoicePrompt({ voice: Constants.Voice.ADITI });
 
-          const result = voiceRepromptAdapter.fromDB(data);
+          const result = voicePromptAdapter.fromDB(data);
 
           expect(result.id).to.be.a('string');
           expect(result).include({
-            type: RepromptType.TEXT,
+            type: VoicePromptType.TEXT,
             desc: data.desc,
             voice: data.voice,
             audio: null,
@@ -46,9 +46,9 @@ describe('Adapters | Creator | Block | Utils', () => {
     describe('when transforming to db', () => {
       describe('and reprompt type is audio', () => {
         it('returns correct node data', () => {
-          const reprompt = voicePromptNodeDataFactory({ desc: null, type: RepromptType.AUDIO });
+          const reprompt = Creator.Block.Shared.VoiceNodeDataPrompt({ desc: null, type: VoicePromptType.AUDIO });
 
-          const result = voiceRepromptAdapter.toDB(reprompt);
+          const result = voicePromptAdapter.toDB(reprompt);
 
           expect(result).eql({
             desc: undefined,
@@ -60,9 +60,9 @@ describe('Adapters | Creator | Block | Utils', () => {
 
       describe('and reprompt type is not audio', () => {
         it('returns correct node data', () => {
-          const reprompt = voicePromptNodeDataFactory({ type: RepromptType.TEXT, voice: null });
+          const reprompt = Creator.Block.Shared.VoiceNodeDataPrompt({ type: VoicePromptType.TEXT, voice: null });
 
-          const result = voiceRepromptAdapter.toDB(reprompt);
+          const result = voicePromptAdapter.toDB(reprompt);
 
           expect(result).eql({
             desc: reprompt.desc,

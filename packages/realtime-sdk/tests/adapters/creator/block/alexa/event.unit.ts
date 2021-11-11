@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 
 import eventAdapter from '@/adapters/creator/block/alexa/event';
-import { eventNodeDataFactory, eventStepDataFactory } from '@/tests/factories/alexa/event';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | eventAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data', () => {
-      const data = eventStepDataFactory();
+      const data = Creator.Block.Alexa.EventStepData();
 
       const result = eventAdapter.fromDB(data);
 
@@ -16,7 +16,7 @@ describe('Adapters | Creator | Block | Alexa | eventAdapter', () => {
 
   describe('when transforming to db', () => {
     it('returns correct data', () => {
-      const data = eventNodeDataFactory();
+      const data = Creator.Block.Alexa.EventNodeData();
 
       const result = eventAdapter.toDB(data);
 

@@ -8,10 +8,11 @@ import { NodeData } from '../../../models';
 import { createPlatformSelector } from '../../../utils/platform';
 import { AdapterContext } from '../../types';
 import { alexaBlockAdapter, alexaPortsAdapter } from './alexa';
+import { baseBlockAdapter, basePortAdapter } from './base';
 import blockDataAdapter from './block';
 import { chatBlockAdapter } from './chat';
 import { dialogflowAdapter } from './dialogflow';
-import { generalBlockAdapter, generalPortsAdapter } from './general';
+import { generalBlockAdapter } from './general';
 import { googleBlockAdapter, googlePortsAdapter } from './google';
 import invalidPlatformAdapter from './invalidPlatform';
 import markupImageAdapter from './markupImage';
@@ -58,7 +59,7 @@ const getPlatformAdapter = createPlatformSelector<Partial<Record<BlockType, unkn
     [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflowAdapter,
     [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowAdapter,
   },
-  generalBlockAdapter
+  { ...baseBlockAdapter, ...generalBlockAdapter }
 );
 
 const commonBlockAdapter = {
@@ -75,12 +76,12 @@ const commonBlockAdapter = {
   [BlockType.MARKUP_IMAGE]: markupImageAdapter,
 };
 
-const getPlatformPortsAdapter = createPlatformSelector<typeof alexaPortsAdapter | typeof googlePortsAdapter | typeof generalPortsAdapter>(
+const getPlatformPortsAdapter = createPlatformSelector<typeof alexaPortsAdapter | typeof googlePortsAdapter | typeof basePortAdapter>(
   {
     [Constants.PlatformType.ALEXA]: alexaPortsAdapter,
     [Constants.PlatformType.GOOGLE]: googlePortsAdapter,
   },
-  generalPortsAdapter
+  basePortAdapter
 );
 
 export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
@@ -98,6 +99,7 @@ export const getBlockAdapter = moize((platform: Constants.PlatformType, migrate?
 
   return {
     ...commonBlockAdapter,
+    ...baseBlockAdapter,
     ...generalBlockAdapter,
     ...getPlatformAdapter(platform),
   } as unknown as PlatformBlockAdapter;
@@ -109,7 +111,7 @@ export const getPortsAdapter = moize(
   (platform: Constants.PlatformType): PlatformPortsAdapter =>
     ({
       ...commonPortsAdapter,
-      ...generalPortsAdapter,
+      ...basePortAdapter,
       ...getPlatformPortsAdapter(platform),
     } as PlatformPortsAdapter)
 );

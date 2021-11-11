@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
-import { getPlatformNoMatchesFactory } from '@/utils/noMatches';
+import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import { NodeConfig } from '../types';
@@ -25,9 +25,9 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt> = {
     },
     data: {
       name: 'Prompt',
-      buttons: isChatbotPlatform(platform) ? buttonsFactory() : null,
       reprompt: null,
-      noMatchReprompt: getPlatformNoMatchesFactory(platform)({ defaultVoice }),
+      buttons: isChatbotPlatform(platform) ? buttonsFactory() : null,
+      noMatchReprompt: getPlatformNoMatchFactory(platform)({ defaultVoice }),
     },
   }),
 };

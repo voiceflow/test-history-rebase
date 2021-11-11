@@ -1,4 +1,4 @@
-import createAdapter, { BidirectionalMultiAdapter } from 'bidirectional-adapter';
+import { BidirectionalMultiAdapter, createAdapter } from 'bidirectional-adapter';
 
 export const booleanAdapter = createAdapter<string, boolean>(
   (value) => Boolean(Number(value)),

@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 
 import streamAdapter from '@/adapters/creator/block/alexa/stream';
-import { streamNodeDataFactory, streamStepDataFactory } from '@/tests/factories/alexa/stream';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | streamAdapter', () => {
   describe('when transforming from db', () => {
     it('returns given data', () => {
-      const data = streamStepDataFactory();
+      const data = Creator.Block.Alexa.StreamStepData();
 
       const result = streamAdapter.fromDB(data);
 
@@ -14,7 +14,7 @@ describe('Adapters | Creator | Block | Alexa | streamAdapter', () => {
     });
 
     it('sets default for falsy values', () => {
-      const data = streamStepDataFactory({ title: undefined, iconImage: undefined, description: undefined, backgroundImage: undefined });
+      const data = Creator.Block.Alexa.StreamStepData({ title: undefined, iconImage: undefined, description: undefined, backgroundImage: undefined });
 
       const result = streamAdapter.fromDB(data);
 
@@ -29,7 +29,7 @@ describe('Adapters | Creator | Block | Alexa | streamAdapter', () => {
 
   describe('when transforming to db', () => {
     it('returns given data', () => {
-      const data = streamNodeDataFactory();
+      const data = Creator.Block.Alexa.StreamNodeData();
 
       const result = streamAdapter.toDB(data);
 
@@ -37,7 +37,7 @@ describe('Adapters | Creator | Block | Alexa | streamAdapter', () => {
     });
 
     it('sets default for falsy values', () => {
-      const data = streamNodeDataFactory({ title: undefined, iconImage: undefined, description: undefined, backgroundImage: undefined });
+      const data = Creator.Block.Alexa.StreamNodeData({ title: undefined, iconImage: undefined, description: undefined, backgroundImage: undefined });
 
       const result = streamAdapter.toDB(data);
 

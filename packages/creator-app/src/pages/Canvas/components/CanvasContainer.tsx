@@ -1,14 +1,14 @@
-import { IS_SAFARI, toast } from '@voiceflow/ui';
+import { IS_SAFARI, toast, ToastCallToAction } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
 import { FeatureFlag } from '@/config/features';
-import { BlockType } from '@/constants';
+import { BlockType, ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import { connect, styled } from '@/hocs';
-import { useActiveModal, useFeature, useHotKeys, useRegistration } from '@/hooks';
+import { useActiveModal, useFeature, useHotKeys, useModals, useRegistration } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
@@ -65,6 +65,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
   const spotlight = React.useContext(SpotlightContext)!;
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
   const projectVersionsEnabled = useFeature(FeatureFlag.PROJECT_VERSIONS)?.isEnabled;
+  const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
 
   const isEditingMode = useEditingMode();
   const isCommentingMode = useCommentingMode();
@@ -96,10 +97,24 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
   const onSave = React.useCallback((e) => {
     if (e.shiftKey) return;
 
-    const projectVersionsV2Message = projectVersionsEnabled
-      ? `If you want to create a manual version use the shortcut Shift + ${getHotkeyLabel(Hotkey.SAVE_VERSION)}`
-      : '';
-    toast.info(`Voiceflow automatically saves your work for you. ${projectVersionsV2Message}`, { toastId: 'canvas-container-save-hotkey-info' });
+    const projectVersionsV2Message = projectVersionsEnabled ? (
+      <>
+        Voiceflow automatically saves your work.
+        <br />
+        If you want to create a manual version use the shortcut <b>Shift +{getHotkeyLabel(Hotkey.SAVE_VERSION)}</b>
+        <br />
+        <ToastCallToAction
+          onClick={() => {
+            manualSaveModal.open();
+          }}
+        >
+          Manually Save Version
+        </ToastCallToAction>
+      </>
+    ) : (
+      'Voiceflow automatically saves your work.'
+    );
+    toast.info(projectVersionsV2Message, { toastId: 'canvas-container-save-hotkey-info' });
   }, []);
 
   const onDuplicate = React.useCallback(() => {

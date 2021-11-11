@@ -28,6 +28,8 @@ import {
 export const goToCanvas = (versionID: string, diagramID?: string) =>
   goTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
 
+export const goToVersions = (versionID: string) => goTo(`${generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID })}`);
+
 export const redirectToCanvas = (versionID: string, diagramID?: string) =>
   redirectTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
 

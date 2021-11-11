@@ -59,6 +59,7 @@ export function Item(props) {
     projectID: id,
     projectName: name,
     onRename,
+    versionID,
   });
 
   React.useEffect(() => {

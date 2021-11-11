@@ -26,7 +26,7 @@ const VersionList: React.FC<VersionListProps> = ({ versions, swapVersions, fetch
   return (
     <>
       {versions.length ? (
-        <TableContainer columns={[3, 5, 4, 4]} minHeight={320}>
+        <TableContainer columns={[3, 5, 4, 4]}>
           <TableHeader>
             <span>Date</span>
             <span>Name</span>

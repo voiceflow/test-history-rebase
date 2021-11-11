@@ -19,6 +19,8 @@ export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boole
   const goToCurrentSettings = useDispatch(Router.goToCurrentSettings);
   const [trackingEvents] = useTrackingEvents();
   const projectID = useSelector(Session.activeProjectIDSelector)!;
+  const versionID = useSelector(Session.activeVersionIDSelector)!;
+  const goToVersions = useDispatch(Router.goToVersions);
 
   const sharePopper = React.useContext(SharePopperContext);
   const shortcutModal = useModals(ModalType.SHORTCUTS);
@@ -30,10 +32,15 @@ export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boole
     trackingEvents.trackCanvasSeeShortcutsModalOpened({ projectID });
   }, [shortcutModal, projectID]);
 
+  const onVersionHistory = React.useCallback(() => {
+    goToVersions(versionID);
+  }, [versionID]);
+
   return React.useMemo<MenuOption<undefined>[]>(
     () => [
       { key: 'dashboard', label: 'Back to dashboard', onClick: goToDashboard },
       { key: 'divider-1', label: 'divider', divider: true },
+      ...(canEditProject ? [{ label: 'Version history', onClick: onVersionHistory }] : []),
       ...(sharePopper ? [{ key: 'export', label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) }] : []),
       ...(canEditProject ? [{ key: 'settings', label: 'Project settings', onClick: goToCurrentSettings }] : []),
       ...(canAddCollaborators && sharePopper
@@ -49,6 +56,6 @@ export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boole
       ...(shortcuts ? [{ key: 'shortcuts', label: 'See shortcuts', onClick: onOpenShortcutsModal }] : []),
       { key: 'desktop-app', label: 'Get desktop app', onClick: () => window.open(DESKTOP_APP_LINK, '_blank') },
     ],
-    [sharePopper, uiToggle, shortcuts, canEditProject, shortcutModal.toggle, canAddCollaborators]
+    [sharePopper, uiToggle, shortcuts, canEditProject, shortcutModal.toggle, canAddCollaborators, onVersionHistory]
   );
 };

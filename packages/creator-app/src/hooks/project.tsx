@@ -11,9 +11,12 @@ import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { useModals } from '@/hooks/modals';
 import { usePermission } from '@/hooks/permission';
+import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
+import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
 import { copy } from '@/utils/clipboard';
 import * as Sentry from '@/vendors/sentry';
 
@@ -89,12 +92,14 @@ export const useProjectOptions = ({
   projectID,
   projectName,
   onDuplicated,
+  versionID,
 }: {
   boardID?: string;
   onRename?: () => void;
   projectID?: string | null;
   projectName?: string | null;
   onDuplicated?: () => void;
+  versionID?: string;
 }): MenuOption<undefined>[] => {
   const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
@@ -103,9 +108,14 @@ export const useProjectOptions = ({
   const workspace = useActiveWorkspace();
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
+  const sharePopper = React.useContext(SharePopperContext);
+  const currentVersionID = useSelector(Session.activeVersionIDSelector);
 
   const duplicateProject = useDispatch(Workspace.duplicateProject);
+  const goToVersions = useDispatch(Router.goToVersions);
   const updateProjectPrivacy = useDispatch(Project.updateProjectPrivacy);
+
+  const targetVersionID = versionID || currentVersionID;
 
   const { open: onOpenCloneModal } = useModals(ModalType.IMPORT_PROJECT);
   const { toggle: onToggleLoadingModal } = useModals(ModalType.LOADING);
@@ -178,8 +188,19 @@ export const useProjectOptions = ({
     onOpenCloneModal({ cloning: true, projectID });
   }, [onOpenCloneModal, projectID]);
 
+  const onVersionHistory = React.useCallback(() => {
+    goToVersions(targetVersionID!);
+  }, [targetVersionID]);
+
   return React.useMemo<MenuOption<undefined>[]>(
     () => [
+      ...(canManageProjects && targetVersionID ? [{ label: 'Version history', onClick: onVersionHistory }] : []),
+      ...(sharePopper
+        ? [
+            { label: 'Export as ...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) },
+            { label: 'Divider', divider: true },
+          ]
+        : [{ label: 'Divider', divider: true }]),
       ...(canManageProjects && onRename ? [{ label: 'Rename project', onClick: onRename }] : []),
       ...(canManageProjects
         ? [
@@ -195,6 +216,6 @@ export const useProjectOptions = ({
           ]
         : []),
     ],
-    [onRename, onDuplicate, onClone, canCloneProject, canManageProjects, onCloneProject, onDelete]
+    [onRename, onDuplicate, onClone, canCloneProject, canManageProjects, onCloneProject, onDelete, onVersionHistory]
   );
 };

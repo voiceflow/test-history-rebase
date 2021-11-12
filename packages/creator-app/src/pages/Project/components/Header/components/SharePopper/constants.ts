@@ -31,7 +31,7 @@ export const CANVAS_OPTIONS_TEMPLATE_WORKSPACE = [ExportFormat.VF];
 
 export const EXPORT_TYPE_OPTIONS = [
   { id: ExportType.CANVAS, label: 'Project Content' },
-  { id: ExportType.MODEL, label: 'NPL/NLU' },
+  { id: ExportType.MODEL, label: 'NLP/NLU' },
 ];
 
 export const getNplModelProvider = createPlatformSelector(

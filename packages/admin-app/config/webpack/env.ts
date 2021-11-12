@@ -9,6 +9,7 @@ const extractedEnv = extractEnvironment();
 export default {
   NODE_ENV,
   APP_ENV: env || APP_ENV || 'local',
+  E2E: 'false',
 
   // logging
   LOG_LEVEL: logLevel || '',

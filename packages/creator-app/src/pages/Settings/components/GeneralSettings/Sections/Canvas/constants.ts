@@ -1,6 +1,6 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
 
-import { ControlScheme } from '@/components/Canvas/constants';
+import { ControlScheme, ZoomType } from '@/components/Canvas/constants';
 
 export const NAVIGATION_DESCRIPTIONS = {
   [ControlScheme.TRACKPAD]: 'Pan the canvas by sliding two fingers on the trackpad. Zoom by pinching in and out.',
@@ -10,6 +10,11 @@ export const NAVIGATION_DESCRIPTIONS = {
 export const NAVIGATION_OPTIONS = [
   { id: ControlScheme.TRACKPAD, label: 'Trackpad' },
   { id: ControlScheme.MOUSE, label: 'Mouse' },
+];
+
+export const ZOOM_OPTIONS = [
+  { id: ZoomType.REGULAR, label: 'Regular' },
+  { id: ZoomType.INVERSE, label: 'Inverse' },
 ];
 
 export const LINK_TYPE_OPTIONS = [

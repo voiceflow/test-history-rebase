@@ -21,6 +21,7 @@ import * as RealtimeDuck from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
+import * as UI from '@/ducks/ui';
 import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { useMouseMove } from '@/hooks';
 import { CanvasAction } from '@/pages/Canvas/constants';
@@ -178,6 +179,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   select = <T, A extends any[]>(selector: (state: State, ...args: A) => T, ...args: A): T => selector(this.store.getState(), ...args);
 
   getNodeByID = (nodeID: string) => this.select(Creator.nodeByIDSelector)(nodeID);
+
+  getZoomType = () => this.select(UI.zoomTypeSelector);
 
   getDataByNodeID = <T>(nodeID: string): Realtime.NodeData<T> => this.select(Creator.dataByNodeIDSelector)(nodeID);
 

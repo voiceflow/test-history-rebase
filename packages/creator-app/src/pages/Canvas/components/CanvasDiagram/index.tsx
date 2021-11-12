@@ -73,6 +73,8 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
     engine.clearActivation();
   }, []);
 
+  const getZoomType = React.useCallback(() => engine.getZoomType(), []);
+
   const onClickCanvas = React.useCallback(
     async (event: React.MouseEvent) => {
       if (event.defaultPrevented) {
@@ -177,6 +179,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         innerRef={connectBlockDrop}
         addClass={addClass}
         removeClass={removeClass}
+        getZoomType={getZoomType}
       >
         <LinkLayer />
         <NodeLayer />

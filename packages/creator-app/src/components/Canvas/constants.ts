@@ -21,6 +21,11 @@ export enum ControlScheme {
   TRACKPAD = 'TRACKPAD',
 }
 
+export enum ZoomType {
+  REGULAR = 'REGULAR',
+  INVERSE = 'INVERSE',
+}
+
 export enum ControlType {
   START_INTERACTION = 'START_INTERACTION',
   END_INTERACTION = 'END_INTERACTION',

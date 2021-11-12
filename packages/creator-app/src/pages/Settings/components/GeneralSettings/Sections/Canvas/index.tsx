@@ -13,9 +13,17 @@ import { connect } from '@/hocs';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 import { ConnectedProps } from '@/types';
 
-import { LINK_TYPE_OPTIONS, NAVIGATION_DESCRIPTIONS, NAVIGATION_OPTIONS } from './constants';
+import { LINK_TYPE_OPTIONS, NAVIGATION_DESCRIPTIONS, NAVIGATION_OPTIONS, ZOOM_OPTIONS } from './constants';
 
-const Canvas: React.FC<ConnectedBasicProps> = ({ activeProjectID, activeLinkType, canvasNavigation, setCanvasNavigation, updateProjectLinkType }) => {
+const Canvas: React.FC<ConnectedBasicProps> = ({
+  activeProjectID,
+  activeLinkType,
+  zoomType,
+  setZoomType,
+  canvasNavigation,
+  setCanvasNavigation,
+  updateProjectLinkType,
+}) => {
   const setLinkType = React.useCallback(
     (linkType: BaseModels.ProjectLinkType) => updateProjectLinkType(activeProjectID!, linkType),
     [activeProjectID]
@@ -34,6 +42,10 @@ const Canvas: React.FC<ConnectedBasicProps> = ({ activeProjectID, activeLinkType
         customContentStyling={{ paddingBottom: '24px' }}
       >
         <RadioGroup options={NAVIGATION_OPTIONS} checked={canvasNavigation} onChange={setCanvasNavigation} />
+      </Section>
+
+      <Section isDividerNested header="Zoom Type" variant={SectionVariant.QUATERNARY} customContentStyling={{ paddingBottom: '24px' }}>
+        <RadioGroup options={ZOOM_OPTIONS} checked={zoomType} onChange={setZoomType} />
       </Section>
 
       <Section
@@ -56,6 +68,7 @@ const Canvas: React.FC<ConnectedBasicProps> = ({ activeProjectID, activeLinkType
 
 const mapStateToProps = {
   canvasNavigation: UI.canvasNavigationSelector,
+  zoomType: UI.zoomTypeSelector,
   activeProjectID: Session.activeProjectIDSelector,
   activeLinkType: ProjectV2.active.linkTypeSelector,
 };
@@ -63,6 +76,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   setCanvasNavigation: UI.setCanvasNavigation,
   updateProjectLinkType: Project.updateProjectLinkType,
+  setZoomType: UI.setZoomType,
 };
 
 type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

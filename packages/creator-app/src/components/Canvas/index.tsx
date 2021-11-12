@@ -20,6 +20,7 @@ import {
   ControlType,
   SCROLL_TIMEOUT,
   ZOOM_FACTOR,
+  ZoomType,
 } from './constants';
 import { CanvasProvider } from './contexts';
 import generateControls, { ControlHandlers } from './controls';
@@ -49,6 +50,7 @@ export interface CanvasProps {
   onSelectDragStart?: (event: React.DragEvent) => void;
   onRegister?: (api: CanvasAPI | null) => void;
   onDragStart?: (event: React.DragEvent) => void;
+  getZoomType: () => ZoomType;
 }
 
 class Canvas extends React.PureComponent<
@@ -56,6 +58,7 @@ class Canvas extends React.PureComponent<
 > {
   static defaultProps: CanvasProps = {
     scrollTimeout: SCROLL_TIMEOUT,
+    getZoomType: () => ZoomType.REGULAR,
   };
 
   rootRef = React.createRef<HTMLDivElement>();
@@ -123,11 +126,19 @@ class Canvas extends React.PureComponent<
       return [x, y];
     },
 
-    zoomIn: (delta: number, options?: ZoomOptions) => this.offsetZoom(delta, options),
-    zoomOut: (delta: number, options?: ZoomOptions) => this.offsetZoom(-delta, options),
+    zoomIn: (delta: number, options?: ZoomOptions) => {
+      const inversed = this.props.getZoomType() === ZoomType.INVERSE;
+      inversed ? this.offsetZoom(-delta, options) : this.offsetZoom(delta, options);
+    },
+    zoomOut: (delta: number, options?: ZoomOptions) => {
+      const inversed = this.props.getZoomType() === ZoomType.INVERSE;
+      inversed ? this.offsetZoom(delta, options) : this.offsetZoom(-delta, options);
+    },
     reorient: () => this.resetPosition(),
 
-    setZoom: (zoom: number, options?: ZoomOptions) => this.setZoom(zoom, options),
+    setZoom: (zoom: number, options?: ZoomOptions) => {
+      this.setZoom(zoom, options);
+    },
 
     setPosition: (position: Point, options?: StyleOptions) => {
       this.position = position;
@@ -200,11 +211,14 @@ class Canvas extends React.PureComponent<
   };
 
   onZoom = (control: ZoomAction) => {
+    const isInversed = this.props.getZoomType() === ZoomType.INVERSE;
     // scale or delta type zoom
     if (control.scale) {
-      this.setZoom(this.zoom * control.scale, { origin: mouseEventOffset(control.event, this.rootRef.current!) });
+      const scale = isInversed ? 2 - control.scale : control.scale;
+      this.setZoom(this.zoom * scale, { origin: mouseEventOffset(control.event, this.rootRef.current!) });
     } else if (control.delta) {
-      this.setZoom(this.zoom + control.delta, { origin: mouseEventOffset(control.event, this.rootRef.current!) });
+      const delta = isInversed ? control.delta : -control.delta;
+      this.setZoom(this.zoom + delta, { origin: mouseEventOffset(control.event, this.rootRef.current!) });
     }
   };
 
@@ -270,7 +284,9 @@ class Canvas extends React.PureComponent<
     y: this.position[1],
   });
 
-  offsetZoom = (delta: number, options?: ZoomOptions) => this.setZoom(this.zoom + delta, options);
+  offsetZoom = (delta: number, options?: ZoomOptions) => {
+    this.setZoom(this.zoom + delta, options);
+  };
 
   setZoom = (
     newZoom: number,

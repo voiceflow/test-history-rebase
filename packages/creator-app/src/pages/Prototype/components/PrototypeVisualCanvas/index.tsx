@@ -25,6 +25,7 @@ const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedProt
   isShown,
   platform,
   controlScheme,
+  zoomType,
 }) => {
   const dimension = useDeviceDimension({ data, device });
   const { zoom: initialZoom, offset: initialOffset, dimensions, canvasWidth } = useInitialCanvas({ platform, dimension });
@@ -53,6 +54,7 @@ const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedProt
         }}
         scrollTimeout={100}
         controlScheme={controlScheme}
+        getZoomType={() => zoomType}
       >
         {data?.visualType === Node.Visual.VisualType.IMAGE && <Image key={contentKey} {...visualRenderProps} data={data} />}
         {data?.visualType === Node.Visual.VisualType.APL && <APL key={contentKey} {...visualRenderProps} data={data} />}
@@ -72,6 +74,7 @@ const mapStateToProps = {
   device: Prototype.prototypeVisualDeviceSelector,
   platform: ProjectV2.active.platformSelector,
   controlScheme: UI.canvasNavigationSelector,
+  zoomType: UI.zoomTypeSelector,
 };
 
 type ConnectedPrototypeVisualCanvasProps = ConnectedProps<typeof mapStateToProps, {}>;

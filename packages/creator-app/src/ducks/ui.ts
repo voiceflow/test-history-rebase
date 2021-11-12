@@ -4,7 +4,7 @@ import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 import { createSelector } from 'reselect';
 
-import { ControlScheme } from '@/components/Canvas/constants';
+import { ControlScheme, ZoomType } from '@/components/Canvas/constants';
 import { BlockCategory } from '@/constants';
 import { Action, Reducer, RootReducer } from '@/store/types';
 
@@ -22,6 +22,7 @@ export interface UIState {
   canvasNavigation: ControlScheme;
   canvasOnly: boolean;
   previewing: boolean;
+  zoomType: ZoomType;
 }
 
 export const STATE_KEY = 'ui';
@@ -37,6 +38,7 @@ export const INITIAL_STATE = {
   canvasNavigation: IS_MAC ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
   canvasOnly: false,
   previewing: false,
+  zoomType: ZoomType.REGULAR,
 };
 
 const PERSIST_CONFIG = {
@@ -50,6 +52,7 @@ export enum UIAction {
   SET_ACTIVE_CREATOR_MENU = 'UI:CREATOR_MENU:SET_ACTIVE_MENU',
   TOGGLE_CREATOR_MENU_HIDDEN = 'UI:CREATOR_MENU:TOGGLE_HIDDEN',
   SET_CANVAS_NAVIGATION = 'UI:SET_CANVAS_NAVIGATION',
+  SET_ZOOM_TYPE = 'UI:SET_ZOOM_TYPE',
   SHOW_CREATOR_MENU = 'UI:CREATOR_MENU:SHOW',
   HIDE_CREATOR_MENU = 'UI:CREATOR_MENU:HIDE',
   TOGGLE_CANVAS_ONLY = 'UI:TOGGLE_CANVAS_ONLY',
@@ -70,6 +73,8 @@ export type HideCreatorMenu = Action<UIAction.HIDE_CREATOR_MENU>;
 
 export type SetCanvasNavigation = Action<UIAction.SET_CANVAS_NAVIGATION, ControlScheme>;
 
+export type SetZoomType = Action<UIAction.SET_ZOOM_TYPE, ZoomType>;
+
 export type ToggleCanvasOnly = Action<UIAction.TOGGLE_CANVAS_ONLY>;
 
 export type SetPreviewingVersion = Action<UIAction.SET_VIEWING_VERSION, boolean>;
@@ -82,7 +87,8 @@ type AnyUIAction =
   | HideCreatorMenu
   | ShowCreatorMenu
   | ToggleCanvasOnly
-  | SetPreviewingVersion;
+  | SetPreviewingVersion
+  | SetZoomType;
 // reducers
 
 export const toggleBlockMenuSectionReducer: Reducer<UIState, ToggleBlockMenuSection> = (state, { payload: section }) => {
@@ -131,6 +137,11 @@ export const setNavigationReducer: Reducer<UIState, SetCanvasNavigation> = (stat
   canvasNavigation,
 });
 
+export const setZoomTypeReducer: Reducer<UIState, SetZoomType> = (state, { payload: zoomType }) => ({
+  ...state,
+  zoomType,
+});
+
 export const toggleCanvasOnlyReducer: Reducer<UIState> = (state) => ({
   ...state,
   canvasOnly: !state.canvasOnly,
@@ -159,6 +170,8 @@ const uiReducer: RootReducer<UIState, AnyUIAction> = (state = INITIAL_STATE, act
       return toggleCanvasOnlyReducer(state);
     case UIAction.SET_VIEWING_VERSION:
       return setPreviewingVersionReducer(state, action);
+    case UIAction.SET_ZOOM_TYPE:
+      return setZoomTypeReducer(state, action);
     default:
       return state;
   }
@@ -178,6 +191,8 @@ export const isCreatorMenuHiddenSelector = createSelector(rootSelector, ({ creat
 
 export const canvasNavigationSelector = createSelector(rootSelector, ({ canvasNavigation }) => canvasNavigation);
 
+export const zoomTypeSelector = createSelector(rootSelector, ({ zoomType }) => zoomType);
+
 export const isCanvasOnlyShowingSelector = createSelector(rootSelector, ({ canvasOnly }) => canvasOnly);
 
 export const isPreviewingVersion = createSelector(rootSelector, ({ previewing }) => previewing);
@@ -196,6 +211,8 @@ export const hideCreatorMenu = (): HideCreatorMenu => createAction(UIAction.HIDE
 
 export const setCanvasNavigation = (canvasNavigation: ControlScheme): SetCanvasNavigation =>
   createAction(UIAction.SET_CANVAS_NAVIGATION, canvasNavigation);
+
+export const setZoomType = (zoomType: ZoomType): SetZoomType => createAction(UIAction.SET_ZOOM_TYPE, zoomType);
 
 export const toggleCanvasOnly = (): ToggleCanvasOnly => createAction(UIAction.TOGGLE_CANVAS_ONLY);
 

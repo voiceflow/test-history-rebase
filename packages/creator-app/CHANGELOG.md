@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.538.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.538.1...@voiceflow/creator-app@1.538.2) (2021-11-12)
+
+
+### Bug Fixes
+
+* fixes nlp typo (VF-000) ([#4602](https://github.com/voiceflow/creator-app/issues/4602)) ([591a64c](https://github.com/voiceflow/creator-app/commit/591a64c2d35fc7ad9dd9f032849e7e5484187a7b))
+
+
+
+
+
 ## [1.538.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.538.0...@voiceflow/creator-app@1.538.1) (2021-11-11)
 
 

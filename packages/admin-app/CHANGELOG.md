@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.9.2...@voiceflow/admin-app@1.9.3) (2021-11-12)
+
+
+### Bug Fixes
+
+* define missing env var ([#4606](https://github.com/voiceflow/creator-app/issues/4606)) ([43f0fe1](https://github.com/voiceflow/creator-app/commit/43f0fe19d1a1fd2e3aa952ca3d681e34f64a2c9d))
+
+
+
+
+
 ## [1.9.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.9.1...@voiceflow/admin-app@1.9.2) (2021-11-11)
 
 **Note:** Version bump only for package @voiceflow/admin-app

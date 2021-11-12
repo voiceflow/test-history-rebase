@@ -77,9 +77,11 @@ context('Payment and Collaborators', () => {
       collaboratorHelper.assertInvite(testInviteEmail2, memberRoleDropdownCanViewString);
     });
 
-    it('copy share link', () => {
+    it.only('copy share link', () => {
+      cy.intercept('POST', '/workspaces/*/inviteLink').as('inviteLink');
       collaboratorHelper.setup();
       collaboratorHelper.openCollabModal();
+      cy.wait('@inviteLink');
       collaboratorHelper.clickSaveShareLink();
       collaboratorHelper.assertSuccessToast();
     });

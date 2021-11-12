@@ -21,7 +21,7 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ cancel, updateCurre
 
   const [state, api] = useSmartReducerV2({ error: false, loading: true });
 
-  const handleCreateNewAgent = () => {
+  const handleCreateNewProject = () => {
     window.open(GOOGLE_CONSOLE_URL, '_blank');
     cancel();
   };
@@ -51,8 +51,8 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ cancel, updateCurre
         <StageProjectList
           projects={projectList}
           title="Select Project"
-          footerSubmitText="Create New Agent"
-          onFooterSubmit={handleCreateNewAgent}
+          footerSubmitText="Create New Project"
+          onFooterSubmit={handleCreateNewProject}
           onProjectSelected={({ id }) => updateCurrentStage(id)}
         />
       );
@@ -60,8 +60,8 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ cancel, updateCurre
     return (
       <StageEmpty
         description="No projects exist on the Actions Console to connect to. Create a new project now"
-        footerSubmitText="Create New Agent"
-        onFooterClick={handleCreateNewAgent}
+        footerSubmitText="Create New Project"
+        onFooterClick={handleCreateNewProject}
       />
     );
   }, [state, projects]);

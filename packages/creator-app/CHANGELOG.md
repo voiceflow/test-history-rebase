@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.539.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.538.2...@voiceflow/creator-app@1.539.0) (2021-11-12)
+
+
+### Bug Fixes
+
+* fixes google upload typo (VF-000) ([#4607](https://github.com/voiceflow/creator-app/issues/4607)) ([8baae75](https://github.com/voiceflow/creator-app/commit/8baae753cd42815e18ab3be3aac6c84eae2424e5))
+
+
+### Features
+
+* invert zoom (VF-1556) ([#4603](https://github.com/voiceflow/creator-app/issues/4603)) ([678dccf](https://github.com/voiceflow/creator-app/commit/678dccf5e4dcd81baac4565514dbd241bd1c603f))
+
+
+
+
+
 ## [1.538.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.538.1...@voiceflow/creator-app@1.538.2) (2021-11-12)
 
 

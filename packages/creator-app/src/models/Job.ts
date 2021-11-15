@@ -73,9 +73,13 @@ export namespace AlexaPublishJob {
 
   export type WaitVendorsStage = JobStage<AlexaStageType.WAIT_VENDORS>;
 
+  export type SelectVendorsStage = JobStage<AlexaStageType.SELECT_VENDORS>;
+
   export type WaitInvocationNameStage = JobStage<AlexaStageType.WAIT_INVOCATION_NAME, { error: string }>;
 
-  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | WaitInvocationNameStage>;
+  export type AnyJob = Job<
+    IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | WaitInvocationNameStage | SelectVendorsStage
+  >;
 }
 
 export namespace AlexaExportJob {

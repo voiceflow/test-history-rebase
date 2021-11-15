@@ -11,17 +11,9 @@ interface AlexaUploadButtonProps {
   onPublish: () => void;
   alexaPublishJob: AlexaPublishJob.AnyJob | null;
   popupOpened: boolean;
-  showSelectVendor: boolean;
 }
 
-const AlexaUploadButton: React.FC<AlexaUploadButtonProps> = ({
-  needsLogin,
-  successfullyPublished,
-  onPublish,
-  alexaPublishJob,
-  popupOpened,
-  showSelectVendor,
-}) => {
+const AlexaUploadButton: React.FC<AlexaUploadButtonProps> = ({ needsLogin, successfullyPublished, onPublish, alexaPublishJob }) => {
   if (needsLogin) {
     return <Button onClick={onPublish} variant={ButtonVariant.CONNECT} />;
   }
@@ -30,11 +22,9 @@ const AlexaUploadButton: React.FC<AlexaUploadButtonProps> = ({
     return <Button variant={ButtonVariant.SUCCESS} />;
   }
 
-  if (popupOpened && showSelectVendor) {
-    return <Button variant={ButtonVariant.CONNECT} />;
-  }
-
   switch (alexaPublishJob?.stage.type) {
+    case AlexaStageType.SELECT_VENDORS:
+      return <Button variant={ButtonVariant.CONNECT} />;
     case AlexaStageType.WAIT_ACCOUNT:
       return <Button onClick={onPublish} variant={ButtonVariant.CONNECT} />;
     case AlexaStageType.IDLE:

@@ -15,8 +15,6 @@ export interface Project {
 export interface PlatformContentProps {
   export?: boolean;
   loader?: boolean;
-  showSelectVendor?: boolean;
-  setVendorSelected?: (vendorSelected: boolean) => void;
   setMultiProjects?: (value: boolean) => void;
   createNewAgent?: () => void;
 }

@@ -44,7 +44,7 @@ export const unlinkAccount = (): Thunk => async (dispatch) => {
   }
 };
 
-export const activateVendor =
+export const selectVendor =
   (vendorID: string): Thunk =>
   async (dispatch, getState) => {
     const projectID = Session.activeProjectIDSelector(getState());
@@ -56,6 +56,16 @@ export const activateVendor =
     dispatch(Project.alexa.updateActiveVendor(vendorID, skillID));
   };
 
+export const resetSelectedVendor = (): Thunk => async (dispatch, getState) => {
+  const projectID = Session.activeProjectIDSelector(getState());
+
+  Errors.assertProjectID(projectID);
+
+  const { skillID } = await client.platform.alexa.project.updateSelectedVendor(projectID, null);
+
+  dispatch(Project.alexa.updateActiveVendor(null, skillID));
+};
+
 export const syncSelectedVendor = (): Thunk => async (dispatch, getState) => {
   await dispatch(loadAccount());
 
@@ -64,6 +74,6 @@ export const syncSelectedVendor = (): Thunk => async (dispatch, getState) => {
   const activeVendorID = ProjectV2.active.alexa.ownVendorIDSelector(state);
 
   if (activeVendorID && vendors.length && !vendors.find((vendor) => vendor?.id === activeVendorID)) {
-    await dispatch(activateVendor(vendors[0]?.id));
+    await dispatch(selectVendor(vendors[0]?.id));
   }
 };

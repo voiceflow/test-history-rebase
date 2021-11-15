@@ -27,7 +27,7 @@ const AlexaUploadGroupButton: React.FC<ConnectedButtonProps & AlexaUploadGroupBu
   onClick,
   isActive,
   label,
-  activateVendor,
+  selectVendor,
 }) => {
   // show dropdown list for vendors
   const showVendors = vendors.length > 1 && !isActive;
@@ -52,7 +52,7 @@ const AlexaUploadGroupButton: React.FC<ConnectedButtonProps & AlexaUploadGroupBu
               <PartialMenuItem divider />
 
               {vendors.map(({ id, name }) => (
-                <PartialMenuItem key={id} onClick={() => activateVendor(id)}>
+                <PartialMenuItem key={id} onClick={() => selectVendor(id)}>
                   <Checkbox checked={vendorID === id} readOnly /> {name}
                 </PartialMenuItem>
               ))}
@@ -77,7 +77,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  activateVendor: Account.amazon.activateVendor,
+  selectVendor: Account.amazon.selectVendor,
 };
 
 type ConnectedButtonProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

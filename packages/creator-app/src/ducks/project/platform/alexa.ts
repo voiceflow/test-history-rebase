@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
@@ -14,7 +15,7 @@ import { crud } from '../actions';
 
 // eslint-disable-next-line import/prefer-default-export
 export const updateActiveVendor =
-  (vendorID: string, skillID: string | null): SyncThunk =>
+  (vendorID: Nullable<string>, skillID: string | null): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
     const activeProject = alexaProjectSelector(state);

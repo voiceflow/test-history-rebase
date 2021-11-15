@@ -14,23 +14,24 @@ import { useDispatch, useFeature } from '@/hooks';
 import { AlexaPublishJob, DialogflowPublishJob, GooglePublishJob } from '@/models';
 import * as Sentry from '@/vendors/sentry';
 
-export interface PublishContextValue<T extends AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob> {
+export type AnyJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob;
+export interface PublishContextValue<T extends AnyJob> {
   job: Nullable<T>;
+  setJob: (job: Nullable<AnyJob>) => void;
   cancel: () => Promise<void>;
   retry: (reset?: () => Promise<void>) => Promise<void>;
   publish: (submit?: boolean) => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
 }
 
-export const PublishContext =
-  React.createContext<Nullable<PublishContextValue<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob>>>(null);
+export const PublishContext = React.createContext<Nullable<PublishContextValue<AnyJob>>>(null);
 export const { Consumer: PublishConsumer } = PublishContext;
 
 const PULL_TIMEOUT = 3000; // 3s
 
 export const PublishProvider: React.FC = ({ children }) => {
   const pullTimeout = React.useRef<NodeJS.Timeout>();
-  const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob>>(null);
+  const [job, setJob] = React.useState<Nullable<AnyJob>>(null);
 
   const isGoogleCreate = useFeature(FeatureFlag.GOOGLE_CREATE)?.isEnabled;
   const isDialogflow = useFeature(FeatureFlag.DIALOGFLOW)?.isEnabled;
@@ -145,7 +146,7 @@ export const PublishProvider: React.FC = ({ children }) => {
     stopPulling();
   });
 
-  const api = useContextApi({ job, cancel, publish, retry, updateCurrentStage });
+  const api = useContextApi({ job, cancel, publish, retry, updateCurrentStage, setJob });
 
   return <PublishContext.Provider value={api}>{children}</PublishContext.Provider>;
 };

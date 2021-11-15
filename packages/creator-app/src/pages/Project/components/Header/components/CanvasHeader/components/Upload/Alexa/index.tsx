@@ -14,15 +14,14 @@ import AlexaUploadButton from './components/AlexaUploadButton';
 const JOB_STARTED_STAGES = [AlexaStageType.IDLE, AlexaStageType.PROGRESS, AlexaStageType.SUCCESS];
 
 const AlexaPublish: React.FC = () => {
-  const { job, noPopup, onCancel, onPublish, needsLogin, popupOpened, vendorSelected, showSelectVendor, setVendorSelected, successfullyPublished } =
-    useAlexaPublish();
+  const { job, noPopup, onCancel, onPublish, needsLogin, popupOpened, successfullyPublished } = useAlexaPublish();
 
-  const hotkeyDisabled = successfullyPublished || (popupOpened && showSelectVendor) || (!!job && JOB_STARTED_STAGES.includes(job?.stage.type));
+  const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.includes(job?.stage.type));
 
   useHotKeys(Hotkey.UPLOAD_PROJECT, onPublish, { disable: hotkeyDisabled, preventDefault: true }, [onPublish]);
 
-  const isUploadPopupOpen = popupOpened && (!vendorSelected || !noPopup);
-  const shouldRenderPopupContent = showSelectVendor || !noPopup;
+  const isUploadPopupOpen = popupOpened && !noPopup;
+  const shouldRenderPopupContent = !noPopup;
 
   return (
     <>
@@ -31,15 +30,14 @@ const AlexaPublish: React.FC = () => {
         alexaPublishJob={job}
         onPublish={onPublish}
         popupOpened={popupOpened}
-        showSelectVendor={showSelectVendor}
         successfullyPublished={successfullyPublished}
       />
 
       <Portal>
         <AlexaProgressState alexaJob={job} />
 
-        <Popup multiSelect={showSelectVendor} open={isUploadPopupOpen} onClose={onCancel} jobStage={job?.stage.type}>
-          {shouldRenderPopupContent && <Alexa showSelectVendor={showSelectVendor} setVendorSelected={setVendorSelected} />}
+        <Popup open={isUploadPopupOpen} onClose={onCancel} jobStage={job?.stage.type}>
+          {shouldRenderPopupContent && <Alexa />}
         </Popup>
       </Portal>
     </>

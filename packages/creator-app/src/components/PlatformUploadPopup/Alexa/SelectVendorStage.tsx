@@ -8,26 +8,20 @@ import { isReady } from '@/utils/job';
 
 import { ProjectItem, StageContainer } from '../components';
 
-interface SelectVendorStageProps {
-  setVendorSelected: (vendorSelected: boolean) => void;
-}
-
-const SelectVendorStage: React.FC<SelectVendorStageProps> = ({ setVendorSelected }) => {
+const SelectVendorStage: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
   const { job, publish } = React.useContext(PublishContext)!;
   const vendors = useSelector(Account.amazonVendorsSelector);
-  const activateVendor = useDispatch(Account.amazon.activateVendor);
+  const selectVendor = useDispatch(Account.amazon.selectVendor);
 
   const onVendorSelect = async (vendorID: string) => {
-    activateVendor(vendorID);
+    await selectVendor(vendorID);
 
     // start the job
     trackingEvents.trackActiveProjectPublishAttempt();
     if (isReady(job)) {
       await publish();
     }
-
-    setVendorSelected(true);
   };
 
   return (

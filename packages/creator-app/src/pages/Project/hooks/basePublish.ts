@@ -4,14 +4,12 @@ import React from 'react';
 
 import { DiagramState, ModalType } from '@/constants';
 import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
-import { PublishContext, PublishContextValue } from '@/contexts';
+import { AnyJob, PublishContext, PublishContextValue } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { useDidUpdateEffect, useModals, useSelector, useToggle, useTrackingEvents } from '@/hooks';
-import { AlexaPublishJob, DialogflowPublishJob, GooglePublishJob } from '@/models';
 import { isNotify, isReady } from '@/utils/job';
 
 type PublishStageType = typeof GoogleStageType | typeof AlexaStageType | typeof DialogflowStageType;
-type PublishJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob;
 
 export interface OnStateChangedOptions<T extends GoogleStageType | AlexaStageType | DialogflowStageType> {
   cancel: () => Promise<void>;
@@ -19,32 +17,32 @@ export interface OnStateChangedOptions<T extends GoogleStageType | AlexaStageTyp
   popupOpened: boolean;
 }
 
-interface PublishOptions<T extends PublishStageType, J extends PublishJob> {
+interface PublishOptions<T extends PublishStageType, J extends AnyJob> {
   StageType: T;
   needsLogin: boolean;
-  canBePublished?: boolean;
   onStateChanged: (options: OnStateChangedOptions<J['stage']['type']>) => void;
 }
 
-export interface BasePublishApi<J extends PublishJob> {
+export interface BasePublishApi<J extends AnyJob> {
   job: Nullable<J>;
+  setJob: (job: Nullable<J>) => void;
   noPopup: boolean;
   onCancel: () => Promise<void>;
   onPublish: VoidFunction;
   needsLogin: boolean;
   popupOpened: boolean;
+  togglePopupOpened: (open: boolean) => void;
   successfullyPublished: boolean;
 }
 
-export const useBasePublish = <T extends PublishStageType, J extends PublishJob>({
+export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
   StageType,
   needsLogin,
-  canBePublished = true,
   onStateChanged,
 }: PublishOptions<T, J>): BasePublishApi<J> => {
   const NO_POPUP_STAGES = [StageType.WAIT_INVOCATION_NAME, StageType.IDLE, StageType.PROGRESS, StageType.WAIT_ACCOUNT];
 
-  const { job, cancel, publish, updateCurrentStage } = React.useContext(PublishContext)! as PublishContextValue<J>;
+  const { job, setJob, cancel, publish, updateCurrentStage } = React.useContext(PublishContext)! as PublishContextValue<J>;
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -56,9 +54,6 @@ export const useBasePublish = <T extends PublishStageType, J extends PublishJob>
   const [invalidInvName, setInvalidInvName] = React.useState(false);
   const [waitingForCancel, setWaitingForCancel] = React.useState(false);
   const [successfullyPublished, setSuccessfullyPublished] = React.useState(false);
-
-  const popupOpenedRef = React.useRef(popupOpened);
-  popupOpenedRef.current = popupOpened;
 
   const stageType = job?.stage.type;
 
@@ -79,10 +74,8 @@ export const useBasePublish = <T extends PublishStageType, J extends PublishJob>
     } else if (stageType === StageType.WAIT_ACCOUNT) {
       if (loginModalOpened) {
         closeLoginModal();
-        openLoginModal({ stage: stageType, onCancel, updateCurrentStage });
-      } else if (popupOpenedRef.current) {
-        openLoginModal({ stage: stageType, onCancel, updateCurrentStage });
       }
+      openLoginModal({ stage: stageType, onCancel, updateCurrentStage });
     } else {
       closeLoginModal();
     }
@@ -98,19 +91,15 @@ export const useBasePublish = <T extends PublishStageType, J extends PublishJob>
   }, [cancel]);
 
   const onPublish = React.useCallback(() => {
-    popupOpenedRef.current = true;
-
     togglePopupOpened(true);
     toggleLoginModal();
 
-    if (canBePublished) {
-      trackingEvents.trackActiveProjectPublishAttempt();
+    trackingEvents.trackActiveProjectPublishAttempt();
 
-      if (jobIsReady) {
-        publish();
-      }
+    if (jobIsReady) {
+      publish();
     }
-  }, [publish, jobIsReady, canBePublished, toggleLoginModal]);
+  }, [publish, jobIsReady, toggleLoginModal]);
 
   useDidUpdateEffect(() => {
     if (diagramState === DiagramState.SAVING) {
@@ -153,11 +142,13 @@ export const useBasePublish = <T extends PublishStageType, J extends PublishJob>
 
   return {
     job,
+    setJob,
     noPopup,
     onCancel,
     onPublish,
     needsLogin,
     popupOpened,
+    togglePopupOpened,
     successfullyPublished,
   };
 };

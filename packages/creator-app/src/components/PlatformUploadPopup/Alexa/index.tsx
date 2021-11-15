@@ -10,15 +10,11 @@ import SuccessStage from './SuccessStage';
 import WaitInvocationName from './WaitInvocationName';
 import WaitVendorsStage from './WaitVendorsStage';
 
-export const Alexa: React.FC<PlatformContentProps> = ({ export: isExport, loader, showSelectVendor, setVendorSelected }) => {
+export const Alexa: React.FC<PlatformContentProps> = ({ export: isExport, loader }) => {
   const exportContextValue = React.useContext(ExportContext)!;
   const publishContextValue = React.useContext(PublishContext)!;
 
   const contextValue = isExport ? exportContextValue : publishContextValue;
-
-  if (showSelectVendor && setVendorSelected) {
-    return <SelectVendorStage setVendorSelected={setVendorSelected} />;
-  }
 
   switch (contextValue.job?.stage.type) {
     case AlexaStageType.IDLE:
@@ -36,6 +32,8 @@ export const Alexa: React.FC<PlatformContentProps> = ({ export: isExport, loader
       return <SuccessStage stage={contextValue.job.stage} cancel={contextValue.cancel} />;
     case AlexaStageType.WAIT_VENDORS:
       return <WaitVendorsStage cancel={contextValue.cancel} />;
+    case AlexaStageType.SELECT_VENDORS:
+      return <SelectVendorStage />;
     case AlexaStageType.WAIT_INVOCATION_NAME:
       return <WaitInvocationName stage={contextValue.job.stage} updateCurrentStage={contextValue.updateCurrentStage} />;
     default:

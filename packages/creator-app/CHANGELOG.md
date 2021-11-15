@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.539.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.539.2...@voiceflow/creator-app@1.539.3) (2021-11-15)
+
+
+### Bug Fixes
+
+* disabled CMD C when IMM is open ([#4612](https://github.com/voiceflow/creator-app/issues/4612)) ([87c3b52](https://github.com/voiceflow/creator-app/commit/87c3b5292f6d71ee73f96d989b9952ed4eb8ea26))
+
+
+
+
+
 ## [1.539.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.539.1...@voiceflow/creator-app@1.539.2) (2021-11-15)
 
 

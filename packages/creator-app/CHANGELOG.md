@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.539.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.539.1...@voiceflow/creator-app@1.539.2) (2021-11-15)
+
+
+### Bug Fixes
+
+* alexa upload flow (VF-2229) ([#4610](https://github.com/voiceflow/creator-app/issues/4610)) ([1248336](https://github.com/voiceflow/creator-app/commit/12483361bafd5ad495bf835f36f32252e994e755))
+* transcript notes height (VF-1487) ([#3982](https://github.com/voiceflow/creator-app/issues/3982)) ([884ce19](https://github.com/voiceflow/creator-app/commit/884ce19126aa1dea915d57c99ccca9ae2d3339ea))
+
+
+
+
+
 ## [1.539.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.539.0...@voiceflow/creator-app@1.539.1) (2021-11-12)
 
 **Note:** Version bump only for package @voiceflow/creator-app

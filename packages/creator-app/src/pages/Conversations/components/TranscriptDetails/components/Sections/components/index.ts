@@ -4,14 +4,12 @@ import { css, styled } from '@/hocs';
 
 export const Container = styled(Flex)<{
   curved?: boolean;
-  flex?: number;
   rightExtend?: boolean;
   topExtend?: boolean;
   withBackground?: boolean;
   withBorder?: boolean;
 }>`
   flex-direction: column;
-  flex: 0;
   width: 100%;
   ${({ withBorder }) =>
     withBorder &&
@@ -29,13 +27,7 @@ export const Container = styled(Flex)<{
       padding-right: 0px;
     `}
 
-  ${({ flex }) =>
-    flex &&
-    css`
-      flex: ${flex};
-    `}
-
-${({ withBackground, theme }) =>
+  ${({ withBackground, theme }) =>
     withBackground &&
     css`
       background-color: ${theme.backgrounds.lightGray};

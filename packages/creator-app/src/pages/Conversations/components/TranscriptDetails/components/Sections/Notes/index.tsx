@@ -54,7 +54,7 @@ const Notes: React.FC = () => {
   };
 
   return (
-    <Container style={{ flex: 4 }} curved>
+    <Container curved style={{ flex: 1 }}>
       <SectionTitle>
         NOTES
         <EmojiPicker
@@ -64,6 +64,7 @@ const Notes: React.FC = () => {
           options={[EMOJI_OPTION.HAPPY, EMOJI_OPTION.NEUTRAL, EMOJI_OPTION.SAD]}
         />
       </SectionTitle>
+
       <TranscriptNotes />
     </Container>
   );

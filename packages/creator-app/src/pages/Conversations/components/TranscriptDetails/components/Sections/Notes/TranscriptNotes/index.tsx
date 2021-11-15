@@ -4,14 +4,13 @@ import { useSelector } from 'react-redux';
 import { currentTranscriptSelector } from '@/ducks/transcript';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useTrackingEvents } from '@/hooks';
-import EditableComment from '@/pages/Canvas/components/ThreadEditor/components/EditableComment';
+import EditableComment, { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor/components/EditableComment';
 
 import { Container } from './components';
 
-export const HEIGHT = 180;
-
 const TranscriptNotes: React.FC = () => {
   const { notes } = useSelector(currentTranscriptSelector) ?? {};
+  const editableRef = React.useRef<EditableCommentRef>(null);
   const currentTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
   const [trackingEvents] = useTrackingEvents();
 
@@ -27,9 +26,9 @@ const TranscriptNotes: React.FC = () => {
   };
 
   return (
-    <Container height={HEIGHT}>
+    <Container onClick={() => editableRef.current?.focus()}>
       <EditableComment
-        height={HEIGHT}
+        ref={editableRef}
         autoFocusInput={false}
         placeholder="Leave notes or @mention"
         isEditing

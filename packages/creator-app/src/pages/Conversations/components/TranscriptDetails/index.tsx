@@ -9,7 +9,7 @@ const TranscriptDetails: React.FC = () => {
   const currentTranscript = useSelector(currentTranscriptSelector);
 
   return (
-    <Container style={{ overflow: 'auto' }}>
+    <Container>
       {currentTranscript && (
         <>
           <Context />

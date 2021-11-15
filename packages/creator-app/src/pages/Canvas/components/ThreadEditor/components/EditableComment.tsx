@@ -14,6 +14,10 @@ import { PartialComment } from './types';
 
 const EMPTY_COMMENT: PartialComment = { text: '', mentions: [] };
 
+export interface EditableCommentRef {
+  focus: VoidFunction;
+}
+
 export interface EditableCommentProps {
   onSave?: (value: PartialComment) => void;
   onChange?: (text: string, mentions: number[]) => void;
@@ -25,22 +29,23 @@ export interface EditableCommentProps {
   hasHeader?: boolean;
   autoFocusInput?: boolean;
   placeholder: string;
-  height?: number;
 }
 
-const EditableComment: React.FC<EditableCommentProps> = ({
-  initialValues = EMPTY_COMMENT,
-  isEditing,
-  headerProps,
-  onSave,
-  onClose,
-  onBlur: saveDraftValues,
-  hasHeader = true,
-  autoFocusInput = true,
-  placeholder,
-  onChange,
-  height,
-}) => {
+const EditableComment: React.ForwardRefRenderFunction<EditableCommentRef, EditableCommentProps> = (
+  {
+    initialValues = EMPTY_COMMENT,
+    isEditing,
+    headerProps,
+    onSave,
+    onClose,
+    onBlur: saveDraftValues,
+    hasHeader = true,
+    autoFocusInput = true,
+    placeholder,
+    onChange,
+  },
+  ref
+) => {
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
 
   const [comment, setComment] = useLinkedState<PartialComment>(initialValues);
@@ -76,6 +81,8 @@ const EditableComment: React.FC<EditableCommentProps> = ({
 
   const disableModes = () => engine.disableAllModes();
 
+  React.useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
+
   return (
     <Box className={COMMENT_EDITOR_CLASSNAME} onBlur={onBlur}>
       {hasHeader && (
@@ -84,7 +91,6 @@ const EditableComment: React.FC<EditableCommentProps> = ({
       <Box className={COMMENT_CLASSNAME} mt={12}>
         {isEditing ? (
           <MentionEditor
-            height={height}
             onChange={handleOnChange}
             placeholder={placeholder}
             value={comment.text}
@@ -109,4 +115,4 @@ const EditableComment: React.FC<EditableCommentProps> = ({
   );
 };
 
-export default EditableComment;
+export default React.forwardRef<EditableCommentRef, EditableCommentProps>(EditableComment);

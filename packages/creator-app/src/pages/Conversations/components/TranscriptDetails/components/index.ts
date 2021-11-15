@@ -1,5 +1,3 @@
-import { Flex } from '@voiceflow/ui';
-
 import { styled } from '@/hocs';
 
 export { default as Actions } from './Sections/Actions';
@@ -7,7 +5,9 @@ export { default as Context } from './Sections/Context';
 export { default as Notes } from './Sections/Notes';
 export { default as Tags } from './Sections/Tags';
 
-export const Container = styled(Flex)`
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 2;
   max-width: 340px;
   border-left: 1px solid;
@@ -15,4 +15,6 @@ export const Container = styled(Flex)`
   height: 100%;
   background: white;
   flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
 `;

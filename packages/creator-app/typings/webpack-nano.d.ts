@@ -52,6 +52,7 @@ declare module 'webpack-nano/argv' {
     ff_googleCreate: boolean;
     ff_topicsAndComponents: boolean;
     ff_project_versions: boolean;
+    ff_account_page_redesign: boolean;
   }>;
 
   export = argv;

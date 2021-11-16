@@ -11,6 +11,7 @@ import {
   debugRealtime,
   debugSocket,
   env,
+  ff_account_page_redesign,
   ff_asrBypass,
   ff_atomicActions,
   ff_dialogflow,
@@ -75,6 +76,7 @@ export default {
   FF_GOOGLE_CREATE: ff_googleCreate && 'true',
   FF_TOPICS_AND_COMPONENTS: ff_topicsAndComponents && 'true',
   FF_PROJECT_VERSIONS: ff_project_versions && 'true',
+  FF_ACCOUNT_PAGE_REDESIGN: ff_account_page_redesign && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

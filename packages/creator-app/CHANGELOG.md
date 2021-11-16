@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.539.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.539.4...@voiceflow/creator-app@1.539.5) (2021-11-16)
+
+
+### Bug Fixes
+
+* centre align multiline text ([#4613](https://github.com/voiceflow/creator-app/issues/4613)) ([fe2eb9f](https://github.com/voiceflow/creator-app/commit/fe2eb9fec8aef92792acce781e6bd0f5c0ab940f))
+
+
+
+
+
 ## [1.539.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.539.3...@voiceflow/creator-app@1.539.4) (2021-11-16)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -703,7 +703,8 @@ workflows:
           filters:
             branches:
               ignore: master
-      - vfcommon/dummy_job
+      - vfcommon/dummy_job:
+          contest: dev-test
       - vfcommon/test_e2e:
           context: dev-test
           github_username: GITHUB_USERNAME

@@ -78,10 +78,8 @@ context('Payment and Collaborators', () => {
     });
 
     it('copy share link', () => {
-      cy.intercept('POST', '/workspaces/*/inviteLink').as('inviteLink');
       collaboratorHelper.setup();
       collaboratorHelper.openCollabModal();
-      cy.wait('@inviteLink');
       collaboratorHelper.clickSaveShareLink();
       collaboratorHelper.assertSuccessToast();
     });

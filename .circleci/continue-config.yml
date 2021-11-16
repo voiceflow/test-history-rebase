@@ -704,7 +704,7 @@ workflows:
             branches:
               ignore: master
       - vfcommon/dummy_job:
-          contest: dev-test
+          context: dev-test
       - vfcommon/test_e2e:
           context: dev-test
           github_username: GITHUB_USERNAME

@@ -30,6 +30,7 @@ const LinkCaptionText = styled.div<LinkCaptionTextProps>`
   cursor: pointer !important;
   pointer-events: ${({ isLineActive }) => (isLineActive ? 'all' : 'none')};
   margin: 0;
+  text-align: center;
 
   ${({ color, isHighlighted }) =>
     isHighlighted &&
@@ -44,6 +45,7 @@ const LinkCaptionText = styled.div<LinkCaptionTextProps>`
   & [data-slate-node='element'] {
     width: fit-content;
     min-width: ${({ isEmpty }) => (isEmpty ? PLACEHOLDER_WIDTH : 1)}px;
+    margin: 0 auto;
 
     & [data-slate-node='text'] {
       white-space: pre;

@@ -109,13 +109,8 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB]: ['.', `${SpecialKey.SHIFT}+.`],
   [Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN]: SpecialKey.ESC,
   [Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE]: 'f',
-  [Hotkey.OPEN_MANUAL_SAVE_MODAL]: `${SpecialKey.SHIFT}+${SpecialKey.META}+s`,
-  [Hotkey.SAVE]: [
-    `${SpecialKey.META}+s`,
-    `${SpecialKey.CTRL}+s`,
-    `${SpecialKey.SHIFT}+${SpecialKey.CTRL}+s`,
-    `${SpecialKey.SHIFT}+${SpecialKey.META}+s`,
-  ],
+  [Hotkey.OPEN_MANUAL_SAVE_MODAL]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+s`, `${SpecialKey.SHIFT}+${SpecialKey.META}+s`],
+  [Hotkey.SAVE]: [`${SpecialKey.META}+s`, `${SpecialKey.CTRL}+s`],
   [Hotkey.CLOSE_UPLOAD_MODAL]: SpecialKey.ESC,
 };
 

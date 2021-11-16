@@ -8,7 +8,7 @@ import * as Session from '@/ducks/session';
 import { useModals, useSelector } from '@/hooks';
 import { withEnterPress } from '@/utils/dom';
 
-const ImportModal: React.FC = () => {
+const ManualSaveModal: React.FC = () => {
   const [saveName, setSaveName] = React.useState('');
   const [saving, setSaving] = React.useState(false);
   const { isOpened, close } = useModals(ModalType.MANUAL_SAVE_MODAL);
@@ -60,4 +60,4 @@ const ImportModal: React.FC = () => {
   ) : null;
 };
 
-export default ImportModal;
+export default ManualSaveModal;

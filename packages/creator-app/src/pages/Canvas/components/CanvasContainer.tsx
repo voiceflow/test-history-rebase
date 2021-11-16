@@ -97,12 +97,11 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
 
   const onSave = React.useCallback((e) => {
     if (e.shiftKey) return;
-
     const projectVersionsV2Message = projectVersionsEnabled ? (
       <>
         Voiceflow automatically saves your work.
         <br />
-        If you want to create a manual version use the shortcut <b>Shift +{getHotkeyLabel(Hotkey.SAVE_VERSION)}</b>
+        If you want to create a manual version use the shortcut <b>Shift + {getHotkeyLabel(Hotkey.SAVE_VERSION)}</b>
         <br />
         <ToastCallToAction
           onClick={() => {

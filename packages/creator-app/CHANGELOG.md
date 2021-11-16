@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.539.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.539.5...@voiceflow/creator-app@1.539.6) (2021-11-16)
+
+
+### Bug Fixes
+
+* fix toast notification (VF-000) ([#4620](https://github.com/voiceflow/creator-app/issues/4620)) ([7c1639b](https://github.com/voiceflow/creator-app/commit/7c1639b6e78390378a9b1ac443c5e4ca042a964a))
+* hotkey for windows (VF-000) ([#4616](https://github.com/voiceflow/creator-app/issues/4616)) ([0167da7](https://github.com/voiceflow/creator-app/commit/0167da7bc3f05707ad6a6c44c1b20ce78f51c858))
+
+
+
+
+
 ## [1.539.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.539.4...@voiceflow/creator-app@1.539.5) (2021-11-16)
 
 

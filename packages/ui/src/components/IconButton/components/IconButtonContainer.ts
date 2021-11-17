@@ -1,6 +1,6 @@
-import { colors, css, styled, ThemeColor, transition } from '../../../styles';
-import { ButtonContainer } from '../../Button';
-import { IconButtonVariant } from '../types';
+import { ButtonContainer } from '@ui/components/Button';
+import { IconButtonVariant } from '@ui/components/IconButton/types';
+import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
 export interface BaseContainerProps extends Pick<React.ComponentProps<'button'>, 'id' | 'className' | 'disabled' | 'onClick' | 'onMouseDown'> {
   variant?: IconButtonVariant;

@@ -1,7 +1,7 @@
+import { ButtonVariant } from '@ui/components/Button/constants';
+import { css, styled } from '@ui/styles';
 import React from 'react';
 
-import { css, styled } from '../../../styles';
-import { ButtonVariant } from '../constants';
 import BaseButton, { BaseButtonProps } from './BaseButton';
 
 export const BUTTON_HEIGHT = 42;

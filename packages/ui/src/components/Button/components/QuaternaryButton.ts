@@ -1,5 +1,6 @@
-import { colors, css, styled, ThemeColor, transition } from '../../../styles';
-import { ButtonVariant } from '../constants';
+import { ButtonVariant } from '@ui/components/Button/constants';
+import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
+
 import ButtonContainer, { ButtonContainerProps } from './ButtonContainer';
 
 export interface QuaternaryButtonProps extends ButtonContainerProps {

@@ -1,5 +1,5 @@
-import { colors, css, styled, ThemeColor } from '../../../styles';
-import { inputFocusStyle, InputWrapper } from '../../Input';
+import { inputFocusStyle, InputWrapper } from '@ui/components/Input';
+import { colors, css, styled, ThemeColor } from '@ui/styles';
 
 export interface SelectWrapperProps {
   minWidth?: boolean;

@@ -1,4 +1,5 @@
-import { css, styled } from '../../../styles';
+import { css, styled } from '@ui/styles';
+
 import Text from './Text';
 
 export const overflowTextStyles = css`

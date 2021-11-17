@@ -1,6 +1,11 @@
-import { backgrounds, colors, css, styled, ThemeColor } from '../../../../styles';
+import { backgrounds, colors, css, styled, ThemeColor } from '@ui/styles';
 
-const MenuHeaderWrapper = styled.div`
+interface MenuHeaderWrapperProps {
+  isDisabled?: boolean;
+  isFocused?: boolean;
+}
+
+const MenuHeaderWrapper = styled.div<MenuHeaderWrapperProps>`
   display: flex;
   align-items: center;
   padding: 0 24px;

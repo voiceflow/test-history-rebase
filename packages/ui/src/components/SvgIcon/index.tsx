@@ -1,14 +1,14 @@
+import { IS_TEST } from '@ui/config';
+import { ClassName } from '@ui/styles/constants';
+import * as ICONS from '@ui/svgs';
 import cn from 'classnames';
 import React from 'react';
 
-import { IS_TEST } from '../../config';
-import { ClassName } from '../../styles/constants';
-import * as ICONS from '../../svgs';
 import { SvgIconContainer } from './components';
 import { SvgIconContainerProps } from './components/SvgIconContainer';
 
-export { IconVariant } from '../../constants';
 export * from './components';
+export { IconVariant } from '@ui/constants';
 
 export type Icon = keyof typeof ICONS;
 

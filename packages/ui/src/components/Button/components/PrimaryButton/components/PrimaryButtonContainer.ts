@@ -1,5 +1,6 @@
-import { colors, css, styled, ThemeColor, transition } from '../../../../../styles';
-import ButtonContainer, { ButtonContainerProps } from '../../ButtonContainer';
+import ButtonContainer, { ButtonContainerProps } from '@ui/components/Button/components/ButtonContainer';
+import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
+
 import Icon from './PrimaryButtonIcon';
 
 export interface PrimaryButtonContainerProps extends ButtonContainerProps {

@@ -1,7 +1,7 @@
+import { ButtonVariant } from '@ui/components/Button/constants';
+import SvgIcon, { SvgIconProps } from '@ui/components/SvgIcon';
 import React from 'react';
 
-import SvgIcon, { SvgIconProps } from '../../../SvgIcon';
-import { ButtonVariant } from '../../constants';
 import { SecondaryButtonContainer, SecondaryButtonIcon } from './components';
 import { SecondaryButtonContainerProps } from './components/SecondaryButtonContainer';
 

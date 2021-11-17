@@ -1,13 +1,13 @@
 import composeRefs from '@seznam/compose-react-refs';
+import { FlexLabel } from '@ui/components/Flex';
+import { useTheme } from '@ui/hooks';
+import { FadeDownDelayedContainer } from '@ui/styles/animations';
+import { ClassName } from '@ui/styles/constants';
+import { Either } from '@ui/types';
+import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@ui/utils';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-import { useTheme } from '../../hooks';
-import { FadeDownDelayedContainer } from '../../styles/animations';
-import { ClassName } from '../../styles/constants';
-import { Either } from '../../types';
-import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '../../utils';
-import { FlexLabel } from '../Flex';
 import { ButtonContainer, Container, getItemsContainer, Item, itemStyles, MAX_VISIBLE_ITEMS, MenuItemNote } from './components';
 
 export { Container as MenuContainer, Item as MenuItem, itemStyles as menuItemStyles };

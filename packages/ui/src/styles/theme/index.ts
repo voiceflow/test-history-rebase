@@ -1,4 +1,5 @@
-import { ANIMATION_SPEED, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE } from '../constants';
+import { ANIMATION_SPEED, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE } from '@ui/styles/constants';
+
 import ICON_THEME from './icon';
 
 export enum ThemeColor {

@@ -1,6 +1,6 @@
+import { styled } from '@ui/styles';
 import React from 'react';
 
-import { styled } from '../../styles';
 import { getFormattedLabel } from './getFormattedLabel';
 
 const LabelWrapper = styled.span`

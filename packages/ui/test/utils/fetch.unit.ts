@@ -1,8 +1,8 @@
+import * as Fetch from '@ui/utils/fetch';
+import createRawFetch from '@ui/utils/fetch/raw';
+import { generate } from '@ui/utils/generate';
 import { SinonStub } from 'sinon';
 
-import * as Fetch from '../../src/utils/fetch';
-import createRawFetch from '../../src/utils/fetch/raw';
-import { generate } from '../../src/utils/generate';
 import suite from '../_suite';
 
 interface MockResult {

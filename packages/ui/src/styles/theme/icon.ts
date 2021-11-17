@@ -1,5 +1,5 @@
-import { IconVariant } from '../../constants';
-import { COLOR_BLUE, COLOR_WHITE } from '../constants';
+import { IconVariant } from '@ui/constants';
+import { COLOR_BLUE, COLOR_WHITE } from '@ui/styles/constants';
 
 const PRIMARY_COLOR = '#6E849A';
 const SECONDARY_COLOR = '#787878';

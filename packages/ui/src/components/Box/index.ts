@@ -1,3 +1,4 @@
+import { css, styled } from '@ui/styles';
 import * as CSS from 'csstype';
 import {
   border,
@@ -21,7 +22,6 @@ import {
   TypographyProps,
 } from 'styled-system';
 
-import { css, styled } from '../../styles';
 import { flexApartStyles, flexAroundStyles, flexCenterStyles, flexEndStyles, flexStartStyles, flexStyles } from '../Flex';
 
 export type BoxProps = ColorProps &

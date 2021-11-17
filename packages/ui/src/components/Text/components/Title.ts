@@ -1,7 +1,6 @@
+import { styled } from '@ui/styles';
 import React from 'react';
 import { layout, space, typography } from 'styled-system';
-
-import { styled } from '../../../styles';
 
 const Title = styled.div`
   color: ${({ theme }) => theme.colors.primary};

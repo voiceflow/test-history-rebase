@@ -1,8 +1,7 @@
+import { flexStyles } from '@ui/components/Flex';
+import { backgrounds, colors, css, styled, ThemeColor } from '@ui/styles';
+import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
-
-import { backgrounds, colors, css, styled, ThemeColor } from '../../../styles';
-import { ClassName } from '../../../styles/constants';
-import { flexStyles } from '../../Flex';
 
 export interface MenuItemProps {
   height?: number | string;

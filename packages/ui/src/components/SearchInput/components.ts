@@ -1,5 +1,5 @@
-import { styled, units } from '../../styles';
-import SvgIcon from '../SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
+import { styled, units } from '@ui/styles';
 
 // eslint-disable-next-line import/prefer-default-export
 export const SearchInputIcon = styled(SvgIcon)`

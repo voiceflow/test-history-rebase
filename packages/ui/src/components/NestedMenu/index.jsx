@@ -1,7 +1,7 @@
+import BaseMenu from '@ui/components/Menu';
+import { setRef } from '@ui/utils';
 import React from 'react';
 
-import { setRef } from '../../utils';
-import BaseMenu from '../Menu';
 import defaultMenuLabelRenderer from './defaultMenuLabelRenderer';
 import AdvancedMenu, { DEFAULT_PATH } from './Menu';
 import MenuHeader from './MenuHeader';

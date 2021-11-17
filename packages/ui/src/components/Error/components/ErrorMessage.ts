@@ -1,4 +1,4 @@
-import { styled, units } from '../../../styles';
+import { styled, units } from '@ui/styles';
 
 const ErrorMessage = styled.p`
   padding-top: ${units(2)}px;

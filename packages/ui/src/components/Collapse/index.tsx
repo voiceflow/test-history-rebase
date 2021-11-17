@@ -1,7 +1,6 @@
+import { css, styled, transition } from '@ui/styles';
 import React from 'react';
 import { Transition, TransitionStatus } from 'react-transition-group';
-
-import { css, styled, transition } from '../../styles';
 
 enum TransitionStatuses {
   ENTERING = 'entering',

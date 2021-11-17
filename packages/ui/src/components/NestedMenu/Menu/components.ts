@@ -1,4 +1,4 @@
-import { styled, transition } from '../../../styles';
+import { styled, transition } from '@ui/styles';
 
 export const MenuPopoverContainer = styled.div<{ autoWidth?: boolean; isRoot?: boolean }>`
   z-index: ${({ theme }) => theme.zIndex.popper};

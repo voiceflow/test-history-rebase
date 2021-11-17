@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import Button from '@ui/components/Button';
+import { generate } from '@ui/utils';
 import React from 'react';
 
-import Button from '../../src/components/Button';
-import { generate } from '../../src/utils';
 import { ThemeProvider } from '../_utils';
 
 it('reacts to click', () => {

@@ -1,9 +1,8 @@
+import { loader2Icon } from '@ui/assets';
+import { colors, css, styled, ThemeColor } from '@ui/styles';
+import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
 import React from 'react';
-
-import { loader2Icon } from '../../assets';
-import { colors, css, styled, ThemeColor } from '../../styles';
-import { ClassName } from '../../styles/constants';
 
 interface LoaderProps {
   isMd?: boolean;

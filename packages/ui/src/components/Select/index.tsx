@@ -1,16 +1,17 @@
+import Flex from '@ui/components/Flex';
+import Portal from '@ui/components/Portal';
+import SearchInput, { SearchInputIcon } from '@ui/components/SearchInput';
+import { Icon, SvgIconProps } from '@ui/components/SvgIcon';
+import { toast } from '@ui/components/Toast';
+import { useCache, useDidUpdateEffect } from '@ui/hooks';
 import { Nullable, Nullish } from '@voiceflow/common';
 import noop from 'lodash/noop';
 import React from 'react';
 import AutosizeInput from 'react-input-autosize';
 import { Manager, PopperProps, Reference } from 'react-popper';
 
-import { useCache, useDidUpdateEffect } from '../../hooks';
-import Flex from '../Flex';
+// for some reason absolute paths are not transformed for this import
 import { AdvancedMenu, defaultMenuLabelRenderer } from '../NestedMenu';
-import Portal from '../Portal';
-import SearchInput, { SearchInputIcon } from '../SearchInput';
-import { Icon, SvgIconProps } from '../SvgIcon';
-import { toast } from '../Toast';
 import { InlineInputValue, InputBadge, PrefixContainer, SelectWrapper, TagsContainer, TagsInput } from './components';
 import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
 

@@ -1,4 +1,4 @@
-import { styled } from '../../styles';
+import { styled } from '@ui/styles';
 
 // eslint-disable-next-line import/prefer-default-export
 export const HotkeyLabel = styled.span`

@@ -1,4 +1,4 @@
-import { backgrounds, colors, css, styled, ThemeColor, units } from '../../styles';
+import { backgrounds, colors, css, styled, ThemeColor, units } from '@ui/styles';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type BadgeProps = {

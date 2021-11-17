@@ -1,4 +1,4 @@
-import { css, keyframes } from '..';
+import { css, keyframes } from '@ui/styles';
 
 const SpinKeyframes = keyframes`
   to {

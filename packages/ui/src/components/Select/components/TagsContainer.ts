@@ -1,4 +1,4 @@
-import { css, styled } from '../../../styles';
+import { css, styled } from '@ui/styles';
 
 const TagsContainer = styled.div<{ isActive?: boolean; hasTags: boolean }>`
   border-radius: 5px;

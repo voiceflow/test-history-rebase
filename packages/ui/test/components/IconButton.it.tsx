@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import IconButton from '@ui/components/IconButton';
 import React from 'react';
 
-import IconButton from '../../src/components/IconButton';
 import { ThemeProvider } from '../_utils';
 
 it('reacts to click', () => {

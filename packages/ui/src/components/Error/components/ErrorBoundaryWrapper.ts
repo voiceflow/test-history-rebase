@@ -1,4 +1,5 @@
-import { colors, styled, ThemeColor } from '../../../styles';
+import { colors, styled, ThemeColor } from '@ui/styles';
+
 import { centerContent } from '../styles';
 
 const ErrorBoundaryWrapper = styled.div`

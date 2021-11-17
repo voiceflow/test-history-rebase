@@ -1,9 +1,8 @@
+import { IconVariant } from '@ui/constants';
+import { css, styled, transition } from '@ui/styles';
+import { Spin } from '@ui/styles/animations/Spin';
 import _isNumber from 'lodash/isNumber';
 import { space, SpaceProps } from 'styled-system';
-
-import { IconVariant } from '../../../constants';
-import { css, styled, transition } from '../../../styles';
-import { Spin } from '../../../styles/animations/Spin';
 
 export type SvgIconContainerProps = {
   size: number | string;

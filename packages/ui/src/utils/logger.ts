@@ -1,8 +1,8 @@
 /* eslint-disable max-classes-per-file */
+import { IS_PRODUCTION } from '@ui/config';
 import loglevel from 'loglevel';
 import moize from 'moize';
 
-import { IS_PRODUCTION } from '../config';
 import { getAllCookies, removeCookie } from './cookies';
 
 export const LOG_LEVEL = (IS_PRODUCTION ? 'error' : process.env.LOG_LEVEL || 'info') as loglevel.LogLevelDesc;

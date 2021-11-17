@@ -1,4 +1,4 @@
-import { styled } from '../../../styles';
+import { styled } from '@ui/styles';
 
 const MenuItemNote = styled.span`
   flex: 1;

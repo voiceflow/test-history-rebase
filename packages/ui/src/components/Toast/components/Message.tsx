@@ -1,8 +1,7 @@
+import SvgIcon, { Icon } from '@ui/components/SvgIcon';
+import { colors, styled, ThemeColor } from '@ui/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
-
-import { colors, styled, ThemeColor } from '../../../styles';
-import SvgIcon, { Icon } from '../../SvgIcon';
 
 const MessageWrapper = styled.div`
   display: flex;

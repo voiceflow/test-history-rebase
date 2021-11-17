@@ -1,4 +1,4 @@
-import { styled } from '../../../styles';
+import { styled } from '@ui/styles';
 
 const ChildInput = styled.div`
   flex: 1;

@@ -1,7 +1,6 @@
+import { createTheme } from '@ui/styles';
 import React from 'react';
 import { ThemeContext } from 'styled-components';
-
-import { createTheme } from '../src/styles';
 
 const theme = createTheme({});
 

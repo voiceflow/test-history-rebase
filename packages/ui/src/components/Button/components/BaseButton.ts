@@ -1,5 +1,5 @@
-import { css, styled } from '../../../styles';
-import { flexCenterStyles } from '../../Flex';
+import { flexCenterStyles } from '@ui/components/Flex';
+import { css, styled } from '@ui/styles';
 
 export interface BaseButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;

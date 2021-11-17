@@ -1,11 +1,11 @@
+import { NestedInputIconPosition } from '@ui/components/Input/constants';
+import { inputStyle, StyledInputProps } from '@ui/components/Input/styles';
+import SvgIcon, { Icon, SvgIconProps } from '@ui/components/SvgIcon';
+import { useCombinedRefs } from '@ui/hooks';
+import { styled } from '@ui/styles';
+import { Either } from '@ui/types';
 import React from 'react';
 
-import { useCombinedRefs } from '../../../hooks';
-import { styled } from '../../../styles';
-import { Either } from '../../../types';
-import SvgIcon, { Icon, SvgIconProps } from '../../SvgIcon';
-import { NestedInputIconPosition } from '../constants';
-import { inputStyle, StyledInputProps } from '../styles';
 import ChildInput from './ChildInput';
 import InlineInput from './InlineInput';
 import InputWrapper, { InputWrapperProps } from './InputWrapper';
@@ -71,10 +71,10 @@ export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
   }
 );
 
-export type InputProps = {
+export interface InputProps {
   nested?: boolean;
   children?: NestedInputProps['children'];
-};
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps & Either<NestedInputProps, React.ComponentProps<'input'> & StyledInputProps>>(
   ({ nested, ...props }, ref) => {

@@ -1,8 +1,8 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
+import Input, { InputProps } from '@ui/components/Input';
+import { generate } from '@ui/utils';
 import React from 'react';
 
-import Input, { InputProps } from '../../src/components/Input';
-import { generate } from '../../src/utils';
 import { ThemeProvider } from '../_utils';
 
 const InputImpl = (props: InputProps) => {

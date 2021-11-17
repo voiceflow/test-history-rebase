@@ -1,9 +1,9 @@
+import Box from '@ui/components/Box';
+import Input from '@ui/components/Input';
+import SvgIcon from '@ui/components/SvgIcon';
+import { stopImmediatePropagation } from '@ui/utils';
 import React from 'react';
 
-import { stopImmediatePropagation } from '../../../utils';
-import Box from '../../Box';
-import Input from '../../Input';
-import SvgIcon from '../../SvgIcon';
 import { MenuHeaderWrapper, MenuHr, MenuInput, SearchContainer } from './components';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity

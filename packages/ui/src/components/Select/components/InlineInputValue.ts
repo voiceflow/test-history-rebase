@@ -1,5 +1,5 @@
-import { styled } from '../../../styles';
-import { inputStyle } from '../../Input';
+import { inputStyle } from '@ui/components/Input';
+import { styled } from '@ui/styles';
 
 const InlineInputValue = styled.div`
   ${inputStyle}

@@ -1,4 +1,5 @@
-import { colors, styled, ThemeColor } from '../../../styles';
+import { colors, styled, ThemeColor } from '@ui/styles';
+
 import Text from './Text';
 
 export const Label = styled(Text).attrs({ as: 'label' })`

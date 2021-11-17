@@ -1,5 +1,5 @@
-import { styled } from '../../../styles';
-import Badge from '../../Badge';
+import Badge from '@ui/components/Badge';
+import { styled } from '@ui/styles';
 
 const InputBadge = styled(Badge)`
   position: absolute;

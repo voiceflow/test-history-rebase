@@ -1,6 +1,5 @@
+import { css, styled } from '@ui/styles';
 import AutosizeInput from 'react-input-autosize';
-
-import { css, styled } from '../../../styles';
 
 const TagsInput = styled(AutosizeInput)<{ hastags: boolean }>`
   border: none;

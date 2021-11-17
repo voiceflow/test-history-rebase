@@ -1,5 +1,5 @@
-import { colors, css, styled, ThemeColor } from '../../styles';
-import Input from '../Input';
+import Input from '@ui/components/Input';
+import { colors, css, styled, ThemeColor } from '@ui/styles';
 
 export * from './components';
 

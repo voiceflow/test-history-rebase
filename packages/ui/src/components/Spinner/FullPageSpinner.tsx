@@ -1,13 +1,13 @@
+import { styled } from '@ui/styles';
 import React from 'react';
 
-import { styled } from '../../styles';
 import Spinner, { SpinnerProps } from './Spinner';
 
-type DiagramProps = {
+interface DiagramProps {
   isAbs?: boolean;
   zIndex?: number;
   backgroundColor?: string;
-};
+}
 
 const Diagram = styled.div<DiagramProps>`
   position: ${({ isAbs }) => (isAbs ? 'absolute' : 'fixed')};

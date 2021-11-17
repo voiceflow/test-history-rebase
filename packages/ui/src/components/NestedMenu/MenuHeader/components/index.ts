@@ -1,10 +1,13 @@
+import { css, styled } from '@ui/styles';
 import AutosizeInput from 'react-input-autosize';
-
-import { css, styled } from '../../../../styles';
 
 export { default as MenuHeaderWrapper } from './MenuHeaderWrapper';
 
-export const MenuInput = styled(AutosizeInput)`
+interface MenuInputProps {
+  inDropdownSearch?: boolean;
+}
+
+export const MenuInput = styled(AutosizeInput)<MenuInputProps>`
   padding: 10px 0;
   line-height: 20px;
 

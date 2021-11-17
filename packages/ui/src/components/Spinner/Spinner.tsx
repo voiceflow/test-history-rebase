@@ -1,8 +1,7 @@
+import Loader from '@ui/components/Loader';
+import { colors, styled, ThemeColor } from '@ui/styles';
 import cn from 'classnames';
 import React from 'react';
-
-import { colors, styled, ThemeColor } from '../../styles';
-import Loader from '../Loader';
 
 const Text = styled.div`
   color: ${colors(ThemeColor.PRIMARY)};

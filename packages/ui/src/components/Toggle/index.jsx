@@ -1,8 +1,7 @@
+import { styled } from '@ui/styles';
+import { stopPropagation } from '@ui/utils/dom';
 import React from 'react';
 import ReactToggle from 'react-toggle';
-
-import { styled } from '../../styles';
-import { stopPropagation } from '../../utils/dom';
 
 const SmallToggleContainer = styled.div`
   position: relative;

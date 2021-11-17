@@ -1,5 +1,5 @@
-import { backgrounds, colors, css, styled, ThemeColor } from '../../../styles';
-import { MenuItem } from '../../Menu';
+import { MenuItem } from '@ui/components/Menu';
+import { backgrounds, colors, css, styled, ThemeColor } from '@ui/styles';
 
 export interface SelectItemProps {
   isGroup?: boolean;

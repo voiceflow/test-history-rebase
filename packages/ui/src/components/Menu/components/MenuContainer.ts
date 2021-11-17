@@ -1,6 +1,6 @@
-import { colors, css, styled, ThemeColor } from '../../../styles';
-import { SlideDown } from '../../../styles/animations';
-import { cardStyles } from '../../Card';
+import { cardStyles } from '@ui/components/Card';
+import { colors, css, styled, ThemeColor } from '@ui/styles';
+import { SlideDown } from '@ui/styles/animations';
 
 export const MAX_VISIBLE_ITEMS = 7.5;
 const VERTICAL_PADDING = 8;

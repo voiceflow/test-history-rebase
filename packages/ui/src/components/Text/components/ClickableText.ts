@@ -1,6 +1,7 @@
-import { css, styled, transition } from '../../../styles';
-import { changeColorShade } from '../../../utils/colors';
-import { TextProps } from '../types';
+import { TextProps } from '@ui/components/Text/types';
+import { css, styled, transition } from '@ui/styles';
+import { changeColorShade } from '@ui/utils/colors';
+
 import Text from './Text';
 
 export const ClickableText = styled(Text)<TextProps & { isActive?: boolean; disabled?: boolean }>`

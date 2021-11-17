@@ -1,8 +1,7 @@
+import { TextProps } from '@ui/components/Text/types';
+import { css, styled } from '@ui/styles';
+import { changeColorShade } from '@ui/utils/colors';
 import { layout, space } from 'styled-system';
-
-import { css, styled } from '../../../styles';
-import { changeColorShade } from '../../../utils/colors';
-import { TextProps } from '../types';
 
 type LinkProps = {
   disabled?: boolean;

@@ -1,8 +1,7 @@
+import { LOGROCKET_ENABLED } from '@ui/config';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import { DeepPartial } from 'utility-types';
-
-import { LOGROCKET_ENABLED } from '../config';
 
 export const REDACTED = '[redacted]';
 

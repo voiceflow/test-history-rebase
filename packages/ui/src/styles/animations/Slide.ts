@@ -1,5 +1,5 @@
-import { css, keyframes, styled } from '..';
-import { ANIMATION_SPEED } from '../constants';
+import { css, keyframes, styled } from '@ui/styles';
+import { ANIMATION_SPEED } from '@ui/styles/constants';
 
 const SlideKeyframes = keyframes`
   from {

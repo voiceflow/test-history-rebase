@@ -1,6 +1,6 @@
-import { css, styled } from '../../../styles';
-import Badge from '../../Badge';
-import { inputDisabledStyle, inputStyle, StyledInputProps } from '../styles';
+import Badge from '@ui/components/Badge';
+import { inputDisabledStyle, inputStyle, StyledInputProps } from '@ui/components/Input/styles';
+import { css, styled } from '@ui/styles';
 
 export type InputWrapperProps = StyledInputProps & {
   disabled?: boolean;

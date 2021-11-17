@@ -1,14 +1,13 @@
 /* eslint-disable no-shadow */
+import Menu from '@ui/components/Menu';
+import Portal from '@ui/components/Portal';
+import { useDidUpdateEffect } from '@ui/hooks';
+import { setRef, stopImmediatePropagation, swallowEvent } from '@ui/utils';
 import _constant from 'lodash/constant';
 import React from 'react';
 import { Popper } from 'react-popper';
 
-import { useDidUpdateEffect } from '../../../hooks';
-import { setRef, stopImmediatePropagation, swallowEvent } from '../../../utils';
-import Menu from '../../Menu';
-import Portal from '../../Portal';
 import MenuHeader from '../MenuHeader';
-// eslint-disable-next-line import/no-cycle
 import MenuOptions from '../MenuOptions';
 import { FooterActionContainer, MenuPopoverContainer } from './components';
 

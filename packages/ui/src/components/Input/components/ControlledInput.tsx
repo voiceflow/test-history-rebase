@@ -1,8 +1,8 @@
+import { colors, styled, ThemeColor } from '@ui/styles';
+import { FadeLeftContainer } from '@ui/styles/animations';
+import { COLOR_GREEN, COLOR_RED } from '@ui/styles/constants';
 import React from 'react';
 
-import { colors, styled, ThemeColor } from '../../../styles';
-import { FadeLeftContainer } from '../../../styles/animations';
-import { COLOR_GREEN, COLOR_RED } from '../../../styles/constants';
 import { NestedInput, NestedInputProps } from './DefaultInput';
 
 const getColor = (error?: boolean, complete?: boolean) => {

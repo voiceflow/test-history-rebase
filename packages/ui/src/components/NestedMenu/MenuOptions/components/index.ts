@@ -1,5 +1,5 @@
-import { styled } from '../../../../styles';
-import SvgIcon from '../../../SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
+import { styled } from '@ui/styles';
 
 export { default as SelectItem } from './SelectItem';
 

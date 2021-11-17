@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import Badge from '@ui/components/Badge';
+import THEME from '@ui/styles/theme';
+import { generate } from '@ui/utils';
 import React from 'react';
 
-import Badge from '../../src/components/Badge';
-import THEME from '../../src/styles/theme';
-import { generate } from '../../src/utils';
 import { ThemeProvider } from '../_utils';
 
 it('does not appear clickable', () => {

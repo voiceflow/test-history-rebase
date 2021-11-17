@@ -1,8 +1,8 @@
 import { act, fireEvent, render } from '@testing-library/react';
+import SearchInput, { SearchInputProps } from '@ui/components/SearchInput';
+import { generate } from '@ui/utils';
 import React from 'react';
 
-import SearchInput, { SearchInputProps } from '../../src/components/SearchInput';
-import { generate } from '../../src/utils';
 import { ThemeProvider } from '../_utils';
 
 const SearchInputImpl = (props: SearchInputProps) => {

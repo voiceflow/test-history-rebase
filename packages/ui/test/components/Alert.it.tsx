@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import Alert from '@ui/components/Alert';
+import { generate } from '@ui/utils';
 import React from 'react';
 
-import Alert from '../../src/components/Alert';
-import { generate } from '../../src/utils';
 import { ThemeProvider } from '../_utils';
 
 it('renders default variant', () => {

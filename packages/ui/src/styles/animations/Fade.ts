@@ -1,7 +1,6 @@
+import { css, keyframes, styled } from '@ui/styles';
+import { ANIMATION_SPEED } from '@ui/styles/constants';
 import { space, SpaceProps } from 'styled-system';
-
-import { css, keyframes, styled } from '..';
-import { ANIMATION_SPEED } from '../constants';
 
 const fadeKeyframes = (distance = 0, height = 0) => keyframes`
   from {

@@ -1,7 +1,7 @@
+import { error404Graphic } from '@ui/assets';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { error404Graphic } from '../../../assets';
 import Page404Wrapper from './Page404Wrapper';
 
 const Page404: React.FC = () => (

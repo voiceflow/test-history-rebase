@@ -1,7 +1,14 @@
-import { backgrounds, colors, css, styled, ThemeColor } from '../../../../styles';
-import { MenuItem } from '../../../Menu';
+import { MenuItem } from '@ui/components/Menu';
+import { backgrounds, colors, css, styled, ThemeColor } from '@ui/styles';
 
-const SelectItem = styled(MenuItem)`
+interface SelectItemProps {
+  isFocused?: boolean;
+  isGroup?: boolean;
+  isNested?: boolean;
+  withSubLevel?: boolean;
+}
+
+const SelectItem = styled(MenuItem)<SelectItemProps>`
   position: relative;
 
   ${({ isFocused }) =>

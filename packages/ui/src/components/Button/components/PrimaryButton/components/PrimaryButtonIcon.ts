@@ -1,5 +1,5 @@
-import { styled } from '../../../../../styles';
-import { FlexCenter } from '../../../../Flex';
+import { FlexCenter } from '@ui/components/Flex';
+import { styled } from '@ui/styles';
 
 const PrimaryButtonIcon = styled(FlexCenter)`
   width: 30px;

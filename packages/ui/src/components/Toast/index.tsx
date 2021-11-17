@@ -1,13 +1,13 @@
+import Box from '@ui/components/Box';
+import Portal from '@ui/components/Portal';
+import SvgIcon, { Icon, IconVariant } from '@ui/components/SvgIcon';
+import { ClickableText } from '@ui/components/Text';
+import { createGlobalStyle } from '@ui/styles';
+import { COLOR_BLUE, COLOR_RED } from '@ui/styles/constants';
 import React from 'react';
 import * as Toastify from 'react-toastify';
 import { Overwrite } from 'utility-types';
 
-import { createGlobalStyle } from '../../styles';
-import { COLOR_BLUE, COLOR_RED } from '../../styles/constants';
-import Box from '../Box';
-import Portal from '../Portal';
-import SvgIcon, { Icon, IconVariant } from '../SvgIcon';
-import { ClickableText } from '../Text';
 import Message from './components/Message';
 
 type ToastMethodName = 'info' | 'error' | 'success' | 'warn';

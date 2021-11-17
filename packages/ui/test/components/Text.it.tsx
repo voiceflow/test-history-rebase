@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
+import { BlockText, ClickableText, Description, Label, Link, Text, Title } from '@ui/components/Text';
+import THEME from '@ui/styles/theme';
+import { generate } from '@ui/utils';
 import React from 'react';
 
-import { BlockText, ClickableText, Description, Label, Link, Text, Title } from '../../src/components/Text';
-import THEME from '../../src/styles/theme';
-import { generate } from '../../src/utils';
 import { ThemeProvider } from '../_utils';
 
 it('renders Text content', () => {

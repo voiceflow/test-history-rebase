@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
-import { PROFILE_COLORS } from '../styles/colors';
-import { Color } from '../types';
+import { PROFILE_COLORS } from '@ui/styles/colors';
+import { Color } from '@ui/types';
 
 export const colorGetReadableAlfa = (color: Color): string => `${(color?.a ?? 1) * 100}`;
 

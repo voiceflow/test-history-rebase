@@ -5037,6 +5037,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/ioredis@4.27.8":
+  version "4.27.8"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.27.8.tgz#c2e113e4f0b6834062f155eaac27fa78d38e0790"
+  integrity sha512-THsyghYuFI6h/UzwEaeSeagRxiDG1P/NIiL5uTjN7bcbQHwDP6nMWJfEmY0iuu3pOzl1j0FgRpAYz7WWX2eW0Q==
+  dependencies:
+    "@types/node" "*"
+
 "@types/is-hotkey@^0.1.1":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@types/is-hotkey/-/is-hotkey-0.1.2.tgz#94f00793b5a297a7f7e69c1ef49613da2243a987"

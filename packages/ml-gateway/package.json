@@ -31,7 +31,7 @@
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:report": "yarn lint --format json -o sonar/report.json",
-    "local": "vfcli mesh connect realtime",
+    "local": "vfcli mesh connect ml-gateway",
     "mesh:post": "exit 0",
     "mesh:pre": "exit 0",
     "start": "PORT=8015 CREATOR_API_ENDPOINT=https:// NODE_ENV=production node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",

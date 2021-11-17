@@ -10,6 +10,9 @@ parameters:
   container-image-url-realtime:
     type: string
     default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/realtime'
+  container-image-url-ml-gateway:
+    type: string
+    default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/ml-gateway'
   k8s-asset-admin-ui:
     type: string
     default: 'deployment/admin-ui'
@@ -19,6 +22,9 @@ parameters:
   k8s-asset-realtime:
     type: string
     default: 'deployment/realtime'
+  k8s-asset-ml-gateway:
+    type: string
+    default: 'deployment/ml-gateway'
   k8s-namespace:
     type: string
     default: 'voiceflow-v1' # This is usually voiceflow-v1
@@ -34,6 +40,9 @@ parameters:
   track-component-realtime:
     type: string
     default: 'realtime'
+  track-component-ml-gateway:
+    type: string
+    default: 'ml-gateway'
   build-creator-app:
     type: boolean
     default: false
@@ -86,6 +95,13 @@ defaults:
         ignore: /.*/
       tags:
         only: /^@voiceflow/realtime@[0-9]*(\.[0-9]*)*$/
+
+  prod_ml_deploy_filters: &prod_ml_deploy_filters
+    filters:
+      branches:
+        ignore: /.*/
+      tags:
+        only: /^@voiceflow/ml-gateway@[0-9]*(\.[0-9]*)*$/
 
   ignore_staging_filters: &ignore_staging_filters
     branches:
@@ -214,6 +230,7 @@ jobs:
                 paths:
                   - packages/socket-utils/build
                   - packages/realtime-sdk/build
+                  - packages/socket-utils/build
                   - packages/realtime/build
                   - packages/realtime/Dockerfile
                   - packages/realtime/yarn.lock
@@ -466,6 +483,32 @@ jobs:
                 tagged: true
                 success_slack_notify: false
 
+  build-deploy-ml-gateway-image:
+    executor: vfcommon/build-executor
+    steps:
+      - when:
+          condition:
+            or:
+              - << pipeline.parameters.build-ml-gateway >>
+              - << pipeline.parameters.build-backend >>
+              - << pipeline.parameters.build-all >>
+          steps:
+            - checkout
+            - vfcommon/stop_if_no_changes:
+                package: ml-gateway
+            - attach_workspace:
+                at: /tmp/vf-build
+            - vfcommon/build_push_image:
+                image_repo: << pipeline.parameters.container-image-url-ml-gateway >>
+                dockerfile: Dockerfile
+                build_context: packages/ml-gateway
+                checkout: false
+            - vfcommon/post_image_push_actions:
+                namespace: << pipeline.parameters.k8s-namespace >>
+                target: << pipeline.parameters.k8s-asset-ml-gateway >>
+                tagged: true
+                success_slack_notify: false
+
   check-track-exists:
     parameters:
       component:
@@ -581,6 +624,41 @@ jobs:
                 component: << pipeline.parameters.track-component-realtime >>
                 dockerfile: Dockerfile
                 build_context: packages/realtime
+                local_registry: << parameters.local_registry >>
+                checkout: false
+
+  update-track-ml-gateway:
+    parameters:
+      force_execute:
+        description: force to update the build, if there is a change or not. This is for tracks
+        type: boolean
+        default: false
+      local_registry:
+        description: use a local repository proxy to publish a development version of all library packages
+        type: boolean
+        default: false
+    executor: vfcommon/build-executor
+    steps:
+      - when:
+          condition:
+            or:
+              - << pipeline.parameters.build-ml-gateway >>
+              - << pipeline.parameters.build-backend >>
+              - << pipeline.parameters.build-all >>
+          steps:
+            - checkout
+            - when:
+                condition:
+                  equal: [false, << parameters.force_execute >>]
+                steps:
+                  - vfcommon/stop_if_no_changes:
+                      package: ml-gateway
+
+            - vfcommon/update_track:
+                image_repo: << pipeline.parameters.container-image-url-ml-gateway >>
+                component: << pipeline.parameters.track-component-ml-gateway >>
+                dockerfile: Dockerfile
+                build_context: packages/ml-gateway
                 local_registry: << parameters.local_registry >>
                 checkout: false
 
@@ -706,6 +784,47 @@ workflows:
           requires:
             - check-track-realtime-exists
             - build-realtime-track
+          filters:
+            tags:
+              ignore: /.*/
+            branches:
+              ignore: master
+
+  update-ml-gateway-track:
+    when:
+      or:
+        - << pipeline.parameters.build-ml-gateway >>
+        - << pipeline.parameters.build-backend >>
+        - << pipeline.parameters.build-all >>
+    jobs:
+      - check-track-exists:
+          name: check-track-ml-gateway-exists
+          component: << pipeline.parameters.track-component-ml-gateway >>
+          force_execute: true
+          context: dev-test
+          filters:
+            tags:
+              ignore: /.*/
+            branches:
+              ignore: master
+      - build-ml-gateway:
+          context: dev-test
+          force_execute: true
+          name: build-ml-gateway-track
+          filters:
+            tags:
+              ignore: /.*/
+            branches:
+              ignore: master
+          requires:
+            - check-track-ml-gateway-exists
+      - update-track-ml-gateway:
+          context: dev-test
+          force_execute: true
+          local_registry: true
+          requires:
+            - check-track-ml-gateway-exists
+            - build-ml-gateway-track
           filters:
             tags:
               ignore: /.*/
@@ -880,3 +999,28 @@ workflows:
           context: dev-test
           requires:
             - update-track-realtime-release
+
+  deploy-ml-gateway:
+    when:
+      or:
+        - << pipeline.parameters.build-ml-gateway >>
+        - << pipeline.parameters.build-backend >>
+        - << pipeline.parameters.build-all >>
+    jobs:
+      - build-ml-gateway:
+          <<: *prod_ml_deploy_filters
+          context: dev-test
+          force_execute: true
+          name: build-ml-gateway-release
+      - update-track-ml-gateway:
+          <<: *prod_ml_deploy_filters
+          context: dev-test
+          force_execute: true
+          name: update-track-ml-gateway-release
+          requires:
+            - build-ml-gateway-release
+      - build-deploy-ml-gateway-image:
+          <<: *prod_ml_deploy_filters
+          context: dev-test
+          requires:
+            - update-track-ml-gateway-release

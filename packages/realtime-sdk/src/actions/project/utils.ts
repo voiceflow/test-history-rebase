@@ -1,5 +1,6 @@
+import { Utils } from '@voiceflow/common';
+
 import { PROJECT_KEY } from '../../constants';
-import { typeFactory } from '../utils';
 
 // eslint-disable-next-line import/prefer-default-export
-export const projectType = typeFactory(PROJECT_KEY);
+export const projectType = Utils.protocol.typeFactory(PROJECT_KEY);

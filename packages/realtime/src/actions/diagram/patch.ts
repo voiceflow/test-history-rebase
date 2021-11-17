@@ -1,8 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
 import _ from 'lodash';
 import { Action } from 'typescript-fsa';
-
-import { Context } from '@/types';
 
 import { AbstractDiagramResourceControl } from './utils';
 

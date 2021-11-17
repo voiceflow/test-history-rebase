@@ -1,12 +1,11 @@
 import type { LoguxControlOptions } from '../control';
 import AuthMiddleware from './auth';
 
-export interface MiddlewareMap {
-  auth: AuthMiddleware;
-}
-
-const buildMiddlewares = (options: LoguxControlOptions): MiddlewareMap => ({
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const buildMiddlewares = (options: LoguxControlOptions) => ({
   auth: new AuthMiddleware(options),
 });
 
 export default buildMiddlewares;
+
+export type MiddlewareMap = ReturnType<typeof buildMiddlewares>;

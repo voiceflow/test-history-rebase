@@ -1,6 +1,6 @@
+import { css, styled } from '@ui/styles';
 import { StringifyEnum } from '@voiceflow/common';
 
-import { css, styled } from '../../styles';
 import { COLOR_BLUE } from '../../styles/constants';
 import Box from '../Box';
 

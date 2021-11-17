@@ -1,18 +1,25 @@
 import './polyfills';
 
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { SocketServer } from '@voiceflow/socket-utils';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 import config from './config';
 import logger from './logger';
-import Server from './server';
 import ServiceManager from './serviceManager';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 (async () => {
-  const server = new Server({ cwd: rootDir, config, logger });
-  const serviceManager = new ServiceManager({ server, config });
+  const server = new SocketServer({
+    port: config.PORT,
+    env: config.NODE_ENV,
+    cwd: rootDir,
+    logger,
+    loggerIgnoredActions: [Realtime.diagram.awareness.moveCursor.type],
+  });
+  const serviceManager = new ServiceManager({ server, config, log: logger });
 
   // Graceful shutdown from SIGTERM
   process.on('SIGTERM', async () => {

@@ -5,7 +5,6 @@ import { NodeData } from '@/models';
 
 import * as Base from '../base';
 
-// eslint-disable-next-line import/prefer-default-export
 export const CommandNodeData = extend<ReturnType<typeof Base.CommandNodeData>, NodeData.Command>(Base.CommandNodeData, {
   [Constants.PlatformType.ALEXA]: () => Base.CommandPlatformData(),
 });

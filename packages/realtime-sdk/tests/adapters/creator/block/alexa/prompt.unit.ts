@@ -1,9 +1,8 @@
+import promptAdapter from '@realtime-sdk/adapters/creator/block/alexa/prompt';
+import { voiceNoMatchAdapter, voicePromptAdapter } from '@realtime-sdk/adapters/creator/block/utils';
+import { Creator } from '@test/factories';
 import { expect } from 'chai';
 import Sinon from 'sinon';
-
-import promptAdapter from '@/adapters/creator/block/alexa/prompt';
-import { voiceNoMatchAdapter, voicePromptAdapter } from '@/adapters/creator/block/utils';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
   afterEach(() => {

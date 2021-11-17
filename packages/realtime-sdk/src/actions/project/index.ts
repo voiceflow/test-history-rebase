@@ -1,9 +1,10 @@
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Optional } from 'utility-types';
 
 import { AnyProject, DBProject } from '../../models';
 import { BaseProjectPayload, BaseWorkspacePayload } from '../../types';
-import { createAction, createCRUDActions } from '../utils';
+import { createCRUDActions } from '../utils';
 import { projectType } from './utils';
 
 export * as awareness from './awareness';
@@ -26,10 +27,10 @@ export interface CreateProjectPayload extends BaseWorkspacePayload {
   listID?: string;
 }
 
-export const importFromFile = createAction.async<ImportProjectFromFilePayload, AnyProject>(projectType('IMPORT_FROM_FILE'));
+export const importFromFile = Utils.protocol.createAction.async<ImportProjectFromFilePayload, AnyProject>(projectType('IMPORT_FROM_FILE'));
 
-export const duplicate = createAction.async<DuplicateProjectPayload, AnyProject>(projectType('DUPLICATE'));
+export const duplicate = Utils.protocol.createAction.async<DuplicateProjectPayload, AnyProject>(projectType('DUPLICATE'));
 
-export const create = createAction.async<CreateProjectPayload, AnyProject>(projectType('CREATE'));
+export const create = Utils.protocol.createAction.async<CreateProjectPayload, AnyProject>(projectType('CREATE'));
 
 export const crud = createCRUDActions<BaseWorkspacePayload, AnyProject>(projectType);

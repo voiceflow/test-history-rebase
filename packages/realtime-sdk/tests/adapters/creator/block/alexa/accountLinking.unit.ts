@@ -1,7 +1,6 @@
+import accountLinkingAdapter from '@realtime-sdk/adapters/creator/block/alexa/accountLinking';
+import { Creator } from '@test/factories';
 import { expect } from 'chai';
-
-import accountLinkingAdapter from '@/adapters/creator/block/alexa/accountLinking';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | accountLinkingAdapter', () => {
   describe('when transforming from db', () => {

@@ -5,7 +5,6 @@ import PatchProductControl from './patch';
 import RemoveProductControl from './remove';
 import UpdateProductLocalesControl from './updateLocales';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const buildProductActionControls = (options: LoguxControlOptions) => ({
   addProductControl: new AddProductControl(options),
   patchProductControl: new PatchProductControl(options),
@@ -15,5 +14,3 @@ const buildProductActionControls = (options: LoguxControlOptions) => ({
 });
 
 export default buildProductActionControls;
-
-export type ProductActionControlMap = ReturnType<typeof buildProductActionControls>;

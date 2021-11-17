@@ -1,9 +1,9 @@
+import { Creator } from '@test/factories';
 import { expect } from 'chai';
 import Sinon from 'sinon';
 
 import promptAdapter from '@/adapters/creator/block/chat/prompt';
 import { chatNoMatchAdapter, chatPromptAdapter } from '@/adapters/creator/block/utils';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
   afterEach(() => {

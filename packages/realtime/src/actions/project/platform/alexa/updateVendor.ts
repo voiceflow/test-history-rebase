@@ -1,9 +1,9 @@
 import type { ServerMeta } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl, accessWorkspaces, WorkspaceContextData } from '@/actions/workspace/utils';
-import { Context } from '@/types';
 
 class UpdateVendor extends AbstractWorkspaceChannelControl<Realtime.project.alexa.UpdateVendorPayload> {
   protected actionCreator = Realtime.project.alexa.updateVendor;

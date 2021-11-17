@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { ActionAccessor, BaseContextData, Context, Resender } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
-import { AbstractActionControl, ActionAccessor, Resender } from '@/actions/utils';
-import { BaseContextData, Context } from '@/types';
+import { AbstractActionControl } from '@/actions/utils';
 
 type WorkspacePayload = Realtime.BaseWorkspacePayload | Realtime.workspace.ClientWorkspaceCRUDPayload;
 

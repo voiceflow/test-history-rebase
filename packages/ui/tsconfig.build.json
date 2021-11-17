@@ -1,16 +1,18 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./build/common",
-    "declaration": true
+    "module": "commonjs",
+    "declaration": true,
+    "rootDir": "src",
+    "outDir": "build/common",
+    "plugins": [
+      {
+        "transform": "@zerollup/ts-transform-paths"
+      }
+    ]
   },
-  "exclude": [
-    "node_modules/**",
-    "config/**",
-    "build/**",
-    "jest_coverage/**",
-    "nyc_coverage_unit/**",
-    "test/**",
-    "*.config.*"
+  "include": [
+    "src/**/*",
+    "typings/**/*"
   ]
 }

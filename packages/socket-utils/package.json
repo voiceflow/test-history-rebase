@@ -1,0 +1,48 @@
+{
+  "name": "@voiceflow/socket-utils",
+  "version": "1.0.0",
+  "author": "Voiceflow",
+  "bugs": {
+    "url": "https://github.com/voiceflow/creator-app/issues"
+  },
+  "dependencies": {
+    "@logux/actions": "0.2.1",
+    "@logux/server": "0.10.6",
+    "@voiceflow/common": "7.7.0",
+    "@voiceflow/logger": "1.6.0",
+    "cbor": "8.0.2",
+    "ioredis": "4.28.0",
+    "typescript-fsa": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/ioredis": "4.27.7"
+  },
+  "files": [
+    "build"
+  ],
+  "homepage": "https://github.com/voiceflow/creator-app#readme",
+  "license": "UNLICENSED",
+  "exports": {
+    ".": "./build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voiceflow/creator-app.git"
+  },
+  "scripts": {
+    "build": "yarn clean && ttsc --project tsconfig.build.json",
+    "clean": "rimraf build",
+    "dev": "yarn clean && yarn:build --watch",
+    "lint": "eslint \"**/*.{js,ts}\"",
+    "lint:dockerfiles": "exit 0",
+    "lint:fix": "yarn lint --fix",
+    "lint:quiet": "yarn lint --quiet",
+    "lint:report": "yarn lint --format json -o sonar/report.json",
+    "test": "nyc ts-mocha --project tsconfig.test.json --paths --config ./config/test/mocharc.yml",
+    "test:dependencies": "depcheck",
+    "test:integration": "yarn test",
+    "test:unit": "yarn test"
+  },
+  "type": "module",
+  "types": "build/index.d.ts"
+}

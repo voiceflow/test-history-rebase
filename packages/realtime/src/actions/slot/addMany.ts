@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
-import { Context } from '@/types';
 
 type AddManySlotsPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDValuesPayload<Realtime.Slot>;
 

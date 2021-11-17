@@ -1,3 +1,4 @@
+import { Creator } from '@test/factories';
 import { Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { expect } from 'chai';
@@ -5,7 +6,6 @@ import { datatype } from 'faker';
 import Sinon from 'sinon';
 
 import setAdapter from '@/adapters/creator/block/migration/set';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Migration | setAdapter', () => {
   afterEach(() => {

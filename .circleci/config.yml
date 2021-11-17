@@ -30,15 +30,13 @@ workflows:
             packages/creator-app/.* build-creator-app true
             packages/admin-app/.* build-admin-app true
             packages/realtime/.* build-realtime true
-            packages/realtime-sdk/.* build-realtime-sdk true
-            packages/realtime-sdk/.* build-backend true
+            packages/realtime-sdk/.* build-realtime true
             packages/realtime-sdk/.* build-frontend true
-            packages/realtime-sdk/.* build-all true
-            packages/ui/.* build-ui true
+            packages/ml-gateway/.* build-ml-gateway true
+            packages/ml-sdk/.* build-ml-gateway true
+            packages/ml-sdk/.* build-creator-app true
             packages/ui/.* build-frontend true
+            packages/socket-utils/.* build-backend true
+            packages/.* build-any true
             package.json build-all true
-            package.json build-frontend true
-            package.json build-backend true
             yarn.lock build-all true
-            yarn.lock build-frontend true
-            yarn.lock build-backend true

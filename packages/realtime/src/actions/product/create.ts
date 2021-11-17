@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { terminateResend } from '@voiceflow/socket-utils';
 
-import { terminateResend } from '@/actions/utils';
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
 class CreateProduct extends AbstractVersionResourceControl<Realtime.product.CreateProductPayload> {

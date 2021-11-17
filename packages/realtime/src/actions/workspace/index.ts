@@ -17,7 +17,6 @@ import RemoveWorkspaceControl from './remove';
 import UpdateWorkspaceImageControl from './updateImage';
 import UpdateWorkspaceNameControl from './updateName';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
   addWorkspaceControl: new AddWorkspaceControl(options),
   createWorkspaceControl: new CreateWorkspaceControl(options),
@@ -39,5 +38,3 @@ const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
 });
 
 export default buildWorkspaceActionControls;
-
-export type WorkspaceActionControlMap = ReturnType<typeof buildWorkspaceActionControls>;

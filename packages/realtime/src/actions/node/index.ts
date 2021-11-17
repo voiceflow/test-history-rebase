@@ -6,7 +6,6 @@ import RemoveManyNodesControl from './removeMany';
 import RemovePortControl from './removePort';
 import UpdateNodeDataControl from './updateData';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const buildNodeActionControls = (options: LoguxControlOptions) => ({
   removeManyNodesControl: new RemoveManyNodesControl(options),
   updateNodeDataControl: new UpdateNodeDataControl(options),
@@ -21,5 +20,3 @@ const buildNodeActionControls = (options: LoguxControlOptions) => ({
 });
 
 export default buildNodeActionControls;
-
-export type NodeActionControlMap = ReturnType<typeof buildNodeActionControls>;

@@ -1,7 +1,7 @@
+import { Creator } from '@test/factories';
 import { expect } from 'chai';
 
 import streamAdapter from '@/adapters/creator/block/alexa/stream';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | streamAdapter', () => {
   describe('when transforming from db', () => {

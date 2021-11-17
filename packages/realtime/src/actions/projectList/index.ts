@@ -8,7 +8,6 @@ import RemoveProjectListControl from './remove';
 import RemoveProjectFromListControl from './removeProjectFromList';
 import TransplantProjectBetweenListsControl from './transplantProjectBetweenLists';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const buildProjectListActionControls = (options: LoguxControlOptions) => ({
   addProjectListControl: new AddProjectListControl(options),
   addProjectToListControl: new AddProjectToListControl(options),
@@ -20,5 +19,3 @@ const buildProjectListActionControls = (options: LoguxControlOptions) => ({
 });
 
 export default buildProjectListActionControls;
-
-export type ProjectListActionControlMap = ReturnType<typeof buildProjectListActionControls>;

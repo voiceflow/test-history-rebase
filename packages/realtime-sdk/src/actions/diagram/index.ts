@@ -1,15 +1,17 @@
+import { Utils } from '@voiceflow/common';
+
 import { COMPONENT_KEY, TOPIC_KEY, VARIABLES_KEY } from '../../constants';
 import { Diagram } from '../../models';
 import { BaseDiagramPayload, BaseVersionPayload, Point } from '../../types';
-import { createAction, createCRUDActions, typeFactory } from '../utils';
+import { createCRUDActions } from '../utils';
 import { diagramType } from './utils';
 
 export * as awareness from './awareness';
 
-const diagramTopicType = typeFactory(diagramType(TOPIC_KEY));
-const diagramComponentType = typeFactory(diagramType(COMPONENT_KEY));
-const diagramVariablesType = typeFactory(diagramType(VARIABLES_KEY));
-const diagramIntentStepsType = typeFactory(diagramType('intent_steps'));
+const diagramTopicType = Utils.protocol.typeFactory(diagramType(TOPIC_KEY));
+const diagramComponentType = Utils.protocol.typeFactory(diagramType(COMPONENT_KEY));
+const diagramVariablesType = Utils.protocol.typeFactory(diagramType(VARIABLES_KEY));
+const diagramIntentStepsType = Utils.protocol.typeFactory(diagramType('intent_steps'));
 
 // variables
 
@@ -17,8 +19,8 @@ export interface LocalVariablePayload extends BaseDiagramPayload {
   variable: string;
 }
 
-export const addLocalVariable = createAction<LocalVariablePayload>(diagramVariablesType('ADD'));
-export const removeLocalVariable = createAction<LocalVariablePayload>(diagramVariablesType('REMOVE'));
+export const addLocalVariable = Utils.protocol.createAction<LocalVariablePayload>(diagramVariablesType('ADD'));
+export const removeLocalVariable = Utils.protocol.createAction<LocalVariablePayload>(diagramVariablesType('REMOVE'));
 
 // intent steps
 
@@ -40,10 +42,10 @@ export interface ReorderIntentStepsPayload extends BaseDiagramPayload {
   to: number;
 }
 
-export const loadIntentSteps = createAction<LoadIntentStepsPayload>(diagramIntentStepsType('LOAD'));
-export const updateIntentSteps = createAction<UpdateIntentStepsPayload>(diagramIntentStepsType('UPDATE'));
-export const registerIntentSteps = createAction<RegisterIntentStepsPayload>(diagramIntentStepsType('REGISTER'));
-export const reorderIntentSteps = createAction<ReorderIntentStepsPayload>(diagramIntentStepsType('REORDER'));
+export const loadIntentSteps = Utils.protocol.createAction<LoadIntentStepsPayload>(diagramIntentStepsType('LOAD'));
+export const updateIntentSteps = Utils.protocol.createAction<UpdateIntentStepsPayload>(diagramIntentStepsType('UPDATE'));
+export const registerIntentSteps = Utils.protocol.createAction<RegisterIntentStepsPayload>(diagramIntentStepsType('REGISTER'));
+export const reorderIntentSteps = Utils.protocol.createAction<ReorderIntentStepsPayload>(diagramIntentStepsType('REORDER'));
 
 // nodes
 
@@ -55,10 +57,10 @@ export interface DragMoveBlocksPayload extends BaseDiagramPayload {
   blocks: { [blockID: string]: Point };
 }
 
-export const addBlocks = createAction<AddRemoveBlocksPayload>(diagramType('ADD_BLOCKS'));
-export const removeBlocks = createAction<AddRemoveBlocksPayload>(diagramType('REMOVE_BLOCKS'));
-export const moveBlocks = createAction<DragMoveBlocksPayload>(diagramType('MOVE_BLOCKS'));
-export const dragBlocks = createAction<DragMoveBlocksPayload>(diagramType('DRAG_BLOCKS'));
+export const addBlocks = Utils.protocol.createAction<AddRemoveBlocksPayload>(diagramType('ADD_BLOCKS'));
+export const removeBlocks = Utils.protocol.createAction<AddRemoveBlocksPayload>(diagramType('REMOVE_BLOCKS'));
+export const moveBlocks = Utils.protocol.createAction<DragMoveBlocksPayload>(diagramType('MOVE_BLOCKS'));
+export const dragBlocks = Utils.protocol.createAction<DragMoveBlocksPayload>(diagramType('DRAG_BLOCKS'));
 
 // crud
 
@@ -66,8 +68,8 @@ export interface CreateDiagramPayload extends BaseVersionPayload {
   name: string;
 }
 
-export const createTopic = createAction.async<CreateDiagramPayload, Diagram>(diagramTopicType('CREATE'));
-export const createComponent = createAction.async<CreateDiagramPayload, Diagram>(diagramComponentType('CREATE'));
-export const duplicate = createAction.async<BaseDiagramPayload, Diagram>(diagramType('DUPICATE'));
+export const createTopic = Utils.protocol.createAction.async<CreateDiagramPayload, Diagram>(diagramTopicType('CREATE'));
+export const createComponent = Utils.protocol.createAction.async<CreateDiagramPayload, Diagram>(diagramComponentType('CREATE'));
+export const duplicate = Utils.protocol.createAction.async<BaseDiagramPayload, Diagram>(diagramType('DUPICATE'));
 
 export const crud = createCRUDActions<BaseVersionPayload, Diagram>(diagramType);

@@ -1,12 +1,11 @@
+import speakAdapter from '@realtime-sdk/adapters/creator/block/alexa/speak';
+import { DialogType } from '@realtime-sdk/constants';
+import { Creator } from '@test/factories';
 import { Constants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { expect } from 'chai';
 import { datatype } from 'faker';
 import Sinon from 'sinon';
-
-import speakAdapter from '@/adapters/creator/block/alexa/speak';
-import { DialogType } from '@/constants';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
   afterEach(() => {

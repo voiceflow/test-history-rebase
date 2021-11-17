@@ -4,8 +4,19 @@
     "baseUrl": ".",
     "rootDir": "src",
     "paths": {
-      "@/*": ["src/*"]
+      "@ui": [
+        "../../node_modules/@voiceflow/ui"
+      ],
+      "@realtime-sdk": [
+        "../../node_modules/@voiceflow/realtime-sdk"
+      ],
+      "@/*": [
+        "src/*"
+      ]
     }
   },
-  "exclude": ["node_modules/**", "src/**/*.story.*", "test/**", "config/**", "**/__tests__/**"]
+  "include": [
+    "src/**/*",
+    "typings/**/*"
+  ]
 }

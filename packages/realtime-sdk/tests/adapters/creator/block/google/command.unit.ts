@@ -1,8 +1,8 @@
+import { Creator } from '@test/factories';
 import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
 
 import commandAdapter from '@/adapters/creator/block/google/command';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Google | Command', () => {
   describe('when transforming from db', () => {

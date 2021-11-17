@@ -1,9 +1,11 @@
+import { Utils } from '@voiceflow/common';
+
 import { INTENT_KEY } from '../constants';
 import { Intent } from '../models';
 import { BaseVersionPayload } from '../types';
-import { createCRUDActions, typeFactory } from './utils';
+import { createCRUDActions } from './utils';
 
-const intentType = typeFactory(INTENT_KEY);
+const intentType = Utils.protocol.typeFactory(INTENT_KEY);
 
 // Other
 

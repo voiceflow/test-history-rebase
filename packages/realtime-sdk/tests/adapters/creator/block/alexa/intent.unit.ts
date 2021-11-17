@@ -1,9 +1,8 @@
+import intentAdapter from '@realtime-sdk/adapters/creator/block/alexa/intent';
+import { Creator } from '@test/factories';
 import { Node } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
-
-import intentAdapter from '@/adapters/creator/block/alexa/intent';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | intentAdapter', () => {
   describe('when transforming from db', () => {

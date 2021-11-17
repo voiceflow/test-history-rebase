@@ -1,9 +1,11 @@
+import { Utils } from '@voiceflow/common';
+
 import { SLOT_KEY } from '../constants';
 import { Slot } from '../models';
 import { BaseVersionPayload } from '../types';
-import { createCRUDActions, typeFactory } from './utils';
+import { createCRUDActions } from './utils';
 
-const slotType = typeFactory(SLOT_KEY);
+const slotType = Utils.protocol.typeFactory(SLOT_KEY);
 
 // Other
 

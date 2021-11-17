@@ -1,9 +1,9 @@
+import { getRandomEnumElement } from '@test/utils';
 import { Node } from '@voiceflow/alexa-types';
 import { define } from 'cooky-cutter';
 import { datatype, lorem } from 'faker';
 
 import { NodeData } from '@/models';
-import { getRandomEnumElement } from '@/tests/utils';
 
 export const UserInfo = define<Node.UserInfo.UserInfo>({
   type: () => getRandomEnumElement(Node.PermissionType),

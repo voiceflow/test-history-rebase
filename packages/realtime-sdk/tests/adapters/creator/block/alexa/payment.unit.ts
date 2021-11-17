@@ -1,7 +1,7 @@
+import { Creator } from '@test/factories';
 import { expect } from 'chai';
 
 import paymentAdapter from '@/adapters/creator/block/alexa/payment';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | paymentAdapter', () => {
   describe('when transforming from db', () => {

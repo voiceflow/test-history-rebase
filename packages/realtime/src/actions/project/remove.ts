@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '@/actions/workspace/utils';
-import { Context } from '@/types';
 
 type RemoveProjectPayload = Realtime.BaseWorkspacePayload & Realtime.actionUtils.CRUDKeyPayload;
 

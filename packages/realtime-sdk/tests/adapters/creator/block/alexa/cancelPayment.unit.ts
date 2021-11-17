@@ -1,7 +1,6 @@
+import cancelPaymentAdapter from '@realtime-sdk/adapters/creator/block/alexa/cancelPayment';
+import { Creator } from '@test/factories';
 import { expect } from 'chai';
-
-import cancelPaymentAdapter from '@/adapters/creator/block/alexa/cancelPayment';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | cancelPaymentAdapter', () => {
   describe('when transforming from db', () => {

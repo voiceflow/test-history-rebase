@@ -1,10 +1,9 @@
 /* eslint-disable max-classes-per-file */
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { BaseContextData, Context, Resend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
-import { BaseContextData, Context } from '@/types';
-
-import { AbstractActionControl, Resend } from '../utils';
+import { AbstractActionControl } from '../utils';
 
 export abstract class AbstractNodeActionControl<
   P extends Realtime.BaseDiagramPayload,

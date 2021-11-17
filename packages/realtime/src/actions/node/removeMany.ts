@@ -1,9 +1,9 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { AbstractResendDiagramActionControl } from '@/actions/diagram/utils';
-import { Context } from '@/types';
 
 class RemoveManyNodes extends AbstractResendDiagramActionControl<Realtime.node.RemoveManyNodesPayload> {
   actionCreator = Realtime.node.removeMany;

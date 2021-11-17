@@ -1,13 +1,20 @@
 {
-  "specials": ["bin", "istanbul", "ttypescript"],
+  "specials": [
+    "bin",
+    "istanbul",
+    "ttypescript"
+  ],
   "ignores": [
     "@babel/plugin-transform-modules-commonjs",
     "@babel/preset-typescript",
+    "@voiceflow/socket-utils",
     "mocha",
     "mocha-suite",
+    "mock-require",
     "sinon",
     "sinon-chai",
     "chai",
-    "chai-as-promised"
+    "chai-as-promised",
+    "deep-equal-in-any-order"
   ]
 }

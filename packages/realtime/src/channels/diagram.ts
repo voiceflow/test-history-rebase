@@ -1,7 +1,8 @@
 import { parseId } from '@logux/core';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { ChannelContext } from '@voiceflow/socket-utils';
 
-import { AbstractChannelControl, ChannelContext } from './utils';
+import { AbstractChannelControl } from './utils';
 
 class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramChannelParams> {
   private static getViewerEntityKey(diagramID: string, nodeID: string): string {

@@ -1,6 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { terminateResend, unrestrictedAccess } from '@voiceflow/socket-utils';
 
-import { AbstractActionControl, terminateResend, unrestrictedAccess } from '@/actions/utils';
+import { AbstractActionControl } from '@/actions/utils';
 
 class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.member.AcceptInvitePayload> {
   protected actionCreator = Realtime.workspace.member.acceptInvite.started;

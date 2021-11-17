@@ -1,0 +1,27 @@
+{
+  "extends": "@voiceflow/tsconfig",
+  "ts-node": {
+    "compiler": "ttypescript"
+  },
+  "compilerOptions": {
+    "module": "esnext",
+    "skipLibCheck": true,
+    "baseUrl": "..",
+    "paths": {
+      "@voiceflow/ml-sdk": [
+        "ml-sdk/src"
+      ],
+      "@voiceflow/socket-utils": [
+        "socket-utils/src"
+      ],
+      "@/*": [
+        "ml-gateway/src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules/**/*",
+    "build/**/*",
+    "test/**/*.d.ts"
+  ]
+}

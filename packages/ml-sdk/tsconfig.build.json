@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "build/common",
+    "paths": {
+      "@ml-sdk/*": [
+        "src/*"
+      ]
+    },
+    "plugins": [
+      {
+        "transform": "@zerollup/ts-transform-paths"
+      }
+    ]
+  },
+  "include": [
+    "src/**/*",
+    "typings/**/*"
+  ]
+}

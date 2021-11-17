@@ -1,7 +1,8 @@
 import { SendBackActions } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { ChannelContext } from '@voiceflow/socket-utils';
 
-import { AbstractChannelControl, ChannelContext } from './utils';
+import { AbstractChannelControl } from './utils';
 
 class CreatorChannel extends AbstractChannelControl<Realtime.Channels.CreatorChannelParams> {
   protected channel = Realtime.Channels.creator;

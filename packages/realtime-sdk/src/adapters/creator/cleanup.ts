@@ -1,6 +1,6 @@
+import { BlockType } from '@realtime-sdk/constants';
 import { Models as BaseModels } from '@voiceflow/base-types';
 
-import { BlockType } from '../../constants';
 import { isBlock, isStep } from './utils';
 
 type NodesMap = Record<BaseModels.NodeID, BaseModels.BaseDiagramNode>;

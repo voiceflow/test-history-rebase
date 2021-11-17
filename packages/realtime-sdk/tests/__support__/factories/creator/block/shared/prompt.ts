@@ -1,3 +1,4 @@
+import { getRandomEnumElement } from '@test/utils';
 import { Types as ChatTypes } from '@voiceflow/chat-types';
 import { Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
@@ -6,7 +7,6 @@ import { datatype, lorem } from 'faker';
 
 import { VoicePromptType } from '@/constants';
 import { NodeData } from '@/models';
-import { getRandomEnumElement } from '@/tests/utils';
 
 export const VoicePrompt = define<VoiceTypes.Prompt<any>>({
   desc: () => lorem.words(),

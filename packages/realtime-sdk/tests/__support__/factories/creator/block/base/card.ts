@@ -1,10 +1,9 @@
+import { NodeData } from '@realtime-sdk/models';
+import { getRandomEnumElement } from '@test/utils';
 import { Node } from '@voiceflow/base-types';
 import { CardType } from '@voiceflow/base-types/build/node/card';
 import { define } from 'cooky-cutter';
 import { datatype, internet, lorem } from 'faker';
-
-import { NodeData } from '@/models';
-import { getRandomEnumElement } from '@/tests/utils';
 
 export const CardStepData = define<Node.Card.StepData>({
   text: () => lorem.text(),

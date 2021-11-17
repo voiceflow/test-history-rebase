@@ -5,15 +5,8 @@ import ProjectChannel from './project';
 import VersionChannel from './version';
 import WorkspaceChannel from './workspace';
 
-export interface ChannelMap {
-  creator: CreatorChannel;
-  diagram: DiagramChannel;
-  project: ProjectChannel;
-  version: VersionChannel;
-  workspace: WorkspaceChannel;
-}
-
-const buildChannels = (options: LoguxControlOptions): ChannelMap => ({
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const buildChannels = (options: LoguxControlOptions) => ({
   creator: new CreatorChannel(options),
   diagram: new DiagramChannel(options),
   project: new ProjectChannel(options),
@@ -22,3 +15,5 @@ const buildChannels = (options: LoguxControlOptions): ChannelMap => ({
 });
 
 export default buildChannels;
+
+export type ChannelMap = ReturnType<typeof buildChannels>;

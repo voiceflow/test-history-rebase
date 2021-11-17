@@ -8,6 +8,7 @@ module.exports = {
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
     '^.+\\.svg(?:\\?url)?$': '<rootDir>/config/test/integration/assetPlaceholder.js',
+    '^@ui/(.*)': '<rootDir>/src/$1',
   },
   transform: {
     '^.+\\.[jt]sx?$': '<rootDir>/../../node_modules/ts-jest',

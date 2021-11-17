@@ -1,8 +1,9 @@
 import { parseId } from '@logux/core';
 import { SendBackActions } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { ChannelContext } from '@voiceflow/socket-utils';
 
-import { AbstractChannelControl, ChannelContext } from './utils';
+import { AbstractChannelControl } from './utils';
 
 class ProjectChannel extends AbstractChannelControl<Realtime.Channels.ProjectChannelParams> {
   protected channel = Realtime.Channels.project;

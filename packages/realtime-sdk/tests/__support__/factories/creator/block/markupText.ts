@@ -3,7 +3,6 @@ import { datatype } from 'faker';
 
 import { Markup } from '@/models';
 
-// eslint-disable-next-line import/prefer-default-export
 export const MarkupTextNodeData = define<Markup.NodeData.Text>({
   scale: () => datatype.number(),
   rotate: () => datatype.number(),

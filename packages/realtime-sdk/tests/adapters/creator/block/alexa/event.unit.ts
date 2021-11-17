@@ -1,7 +1,6 @@
+import eventAdapter from '@realtime-sdk/adapters/creator/block/alexa/event';
+import { Creator } from '@test/factories';
 import { expect } from 'chai';
-
-import eventAdapter from '@/adapters/creator/block/alexa/event';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | eventAdapter', () => {
   describe('when transforming from db', () => {

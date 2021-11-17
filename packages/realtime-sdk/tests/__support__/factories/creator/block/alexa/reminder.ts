@@ -1,9 +1,9 @@
+import { getRandomEnumElement } from '@test/utils';
 import { Node } from '@voiceflow/alexa-types';
 import { define } from 'cooky-cutter';
 import { datatype, date, lorem } from 'faker';
 
 import { NodeData } from '@/models';
-import { getRandomEnumElement } from '@/tests/utils';
 
 export const ReminderTime = define<NonNullable<Node.Reminder.Reminder['time']>>({
   h: datatype.number().toString(),

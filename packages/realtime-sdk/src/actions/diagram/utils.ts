@@ -1,5 +1,6 @@
+import { Utils } from '@voiceflow/common';
+
 import { DIAGRAM_KEY } from '../../constants';
-import { typeFactory } from '../utils';
 
 // eslint-disable-next-line import/prefer-default-export
-export const diagramType = typeFactory(DIAGRAM_KEY);
+export const diagramType = Utils.protocol.typeFactory(DIAGRAM_KEY);

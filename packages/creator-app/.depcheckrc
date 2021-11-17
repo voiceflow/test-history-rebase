@@ -30,6 +30,7 @@
     "estree",
     "mocha",
     "mocha-suite",
+    "mock-require",
     "sinon",
     "sinon-chai",
     "chai",

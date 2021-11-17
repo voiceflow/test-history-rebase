@@ -1,3 +1,4 @@
+import { getRandomEnumElement } from '@test/utils';
 import { Node as BaseNode } from '@voiceflow/base-types';
 import { Node as ChatNode } from '@voiceflow/chat-types';
 import { Node as VoiceNode } from '@voiceflow/voice-types';
@@ -5,7 +6,6 @@ import { define, extend } from 'cooky-cutter';
 import { datatype, lorem } from 'faker';
 
 import { NodeData } from '@/models';
-import { getRandomEnumElement } from '@/tests/utils';
 
 import { ChatPrompt, VoiceNodeDataPrompt, VoicePrompt } from './prompt';
 

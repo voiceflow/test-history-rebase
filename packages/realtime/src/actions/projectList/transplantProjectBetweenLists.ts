@@ -1,9 +1,9 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '@/actions/workspace/utils';
-import { Context } from '@/types';
 
 class TransplantProjectBetweenLists extends AbstractWorkspaceChannelControl<Realtime.projectList.TransplantProjectBetweenListsPayload> {
   protected actionCreator = Realtime.projectList.transplantProjectBetweenLists;

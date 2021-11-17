@@ -1,8 +1,9 @@
 import { SendBackActions } from '@logux/server';
 import { Models as BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { ChannelContext } from '@voiceflow/socket-utils';
 
-import { AbstractChannelControl, ChannelContext } from './utils';
+import { AbstractChannelControl } from './utils';
 
 class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionChannelParams> {
   protected channel = Realtime.Channels.version;

@@ -1,0 +1,16 @@
+{
+  "extends": "@voiceflow/tsconfig",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@socket-utils/*": [
+        "src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules/**/*",
+    "build/**/*"
+  ]
+}

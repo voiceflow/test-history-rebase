@@ -1,7 +1,6 @@
+import { Utils } from '@voiceflow/common';
 import { ActionCreator, AnyAction } from 'typescript-fsa';
 import { ValuesType } from 'utility-types';
-
-import { createAction } from './base';
 
 export interface CRUDKeyPayload {
   key: string;
@@ -46,17 +45,17 @@ export type ClientCRUDActionCreators<T, D, P extends Partial<D> = Partial<D>> = 
 export type ClientCRUDPayload<T, D, P extends Partial<D> = Partial<D>> = ReturnType<ValuesType<ClientCRUDActionCreators<T, D, P>>>['payload'];
 
 export const createCRUDActions = <T, D, P extends Partial<D> = Partial<D>>(createType: (name: string) => string): CRUDActionCreators<T, D, P> => ({
-  add: createAction<T & CRUDValuePayload<D>>(createType('CRUD:ADD')),
-  addMany: createAction<T & CRUDValuesPayload<D>>(createType('CRUD:ADD_MANY')),
-  prepend: createAction<T & CRUDValuePayload<D>>(createType('CRUD:PREPEND')),
-  update: createAction<T & CRUDValuePayload<D>>(createType('CRUD:UPDATE')),
-  patch: createAction<T & CRUDValuePayload<P>>(createType('CRUD:PATCH')),
-  remove: createAction<T & CRUDKeyPayload>(createType('CRUD:REMOVE')),
-  removeMany: createAction<T & CRUDKeysPayload>(createType('CRUD:REMOVE_MANY')),
-  refresh: createAction<T>(createType('CRUD:REFRESH')),
-  replace: createAction<T & CRUDValuesPayload<D>>(createType('CRUD:REPLACE')),
-  reorder: createAction<T & CRUDKeysPayload>(createType('CRUD:REORDER')),
-  move: createAction<T & CRUDMovePayload>(createType('CRUD:MOVE')),
+  add: Utils.protocol.createAction<T & CRUDValuePayload<D>>(createType('CRUD:ADD')),
+  addMany: Utils.protocol.createAction<T & CRUDValuesPayload<D>>(createType('CRUD:ADD_MANY')),
+  prepend: Utils.protocol.createAction<T & CRUDValuePayload<D>>(createType('CRUD:PREPEND')),
+  update: Utils.protocol.createAction<T & CRUDValuePayload<D>>(createType('CRUD:UPDATE')),
+  patch: Utils.protocol.createAction<T & CRUDValuePayload<P>>(createType('CRUD:PATCH')),
+  remove: Utils.protocol.createAction<T & CRUDKeyPayload>(createType('CRUD:REMOVE')),
+  removeMany: Utils.protocol.createAction<T & CRUDKeysPayload>(createType('CRUD:REMOVE_MANY')),
+  refresh: Utils.protocol.createAction<T>(createType('CRUD:REFRESH')),
+  replace: Utils.protocol.createAction<T & CRUDValuesPayload<D>>(createType('CRUD:REPLACE')),
+  reorder: Utils.protocol.createAction<T & CRUDKeysPayload>(createType('CRUD:REORDER')),
+  move: Utils.protocol.createAction<T & CRUDMovePayload>(createType('CRUD:MOVE')),
 });
 
 /**

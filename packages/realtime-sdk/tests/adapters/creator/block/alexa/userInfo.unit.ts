@@ -1,10 +1,10 @@
+import { Creator } from '@test/factories';
 import { Utils } from '@voiceflow/common';
 import { expect } from 'chai';
 import { datatype } from 'faker';
 import Sinon from 'sinon';
 
 import userInfoAdapter from '@/adapters/creator/block/alexa/userInfo';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | userInfoAdapter', () => {
   afterEach(() => {

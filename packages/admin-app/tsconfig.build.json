@@ -1,20 +1,21 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./build",
+    "module": "esnext",
     "baseUrl": ".",
     "rootDir": "src",
+    "outDir": "build",
     "paths": {
+      "@ui": [
+        "../../node_modules/@voiceflow/ui"
+      ],
       "@/*": [
         "src/*"
       ]
     }
   },
-  "exclude": [
-    "node_modules/**",
-    "config/**",
-    "build/**",
-    "test/**",
-    "**/*.it.tsx"
+  "include": [
+    "src/**/*",
+    "typings/**/*"
   ]
 }

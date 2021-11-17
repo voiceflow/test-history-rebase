@@ -1,14 +1,16 @@
+import { Utils } from '@voiceflow/common';
+
 import { PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY, VARIABLES_KEY, VERSION_KEY } from '../constants';
 import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, Version } from '../models';
 import { BaseProjectPayload, BaseVersionPayload } from '../types';
-import { createAction, createCRUDActions, typeFactory } from './utils';
+import { createCRUDActions } from './utils';
 
-const versionType = typeFactory(VERSION_KEY);
-const versionRPCType = typeFactory(versionType(RPC_KEY));
-const versionVariablesType = typeFactory(versionType(VARIABLES_KEY));
-const versionSettingsType = typeFactory(versionType(SETTINGS_KEY));
-const versionSessionType = typeFactory(versionSettingsType(SESSION_KEY));
-const versionPublishingType = typeFactory(versionType(PUBLISHING_KEY));
+const versionType = Utils.protocol.typeFactory(VERSION_KEY);
+const versionRPCType = Utils.protocol.typeFactory(versionType(RPC_KEY));
+const versionVariablesType = Utils.protocol.typeFactory(versionType(VARIABLES_KEY));
+const versionSettingsType = Utils.protocol.typeFactory(versionType(SETTINGS_KEY));
+const versionSessionType = Utils.protocol.typeFactory(versionSettingsType(SESSION_KEY));
+const versionPublishingType = Utils.protocol.typeFactory(versionType(PUBLISHING_KEY));
 
 // RPC
 
@@ -19,7 +21,7 @@ export interface ActivateVersionPayload {
   diagramID: string | null;
 }
 
-export const activateVersion = createAction<ActivateVersionPayload>(versionRPCType('ACTIVATE'));
+export const activateVersion = Utils.protocol.createAction<ActivateVersionPayload>(versionRPCType('ACTIVATE'));
 
 // Variables
 
@@ -27,9 +29,9 @@ export interface GlobalVariablePayload extends BaseVersionPayload {
   variable: string;
 }
 
-export const addGlobalVariable = createAction<GlobalVariablePayload>(versionVariablesType('ADD'));
+export const addGlobalVariable = Utils.protocol.createAction<GlobalVariablePayload>(versionVariablesType('ADD'));
 
-export const removeGlobalVariable = createAction<GlobalVariablePayload>(versionVariablesType('REMOVE'));
+export const removeGlobalVariable = Utils.protocol.createAction<GlobalVariablePayload>(versionVariablesType('REMOVE'));
 
 // Other
 
@@ -45,10 +47,10 @@ export interface PatchPublishingPayload extends BaseVersionPayload {
   publishing: Partial<AnyVersionPublishing>;
 }
 
-export const patchSettings = createAction<PatchSettingsPayload>(versionSettingsType('PATCH'));
+export const patchSettings = Utils.protocol.createAction<PatchSettingsPayload>(versionSettingsType('PATCH'));
 
-export const patchSession = createAction<PatchSessionPayload>(versionSessionType('PATCH'));
+export const patchSession = Utils.protocol.createAction<PatchSessionPayload>(versionSessionType('PATCH'));
 
-export const patchPublishing = createAction<PatchPublishingPayload>(versionPublishingType('PATCH'));
+export const patchPublishing = Utils.protocol.createAction<PatchPublishingPayload>(versionPublishingType('PATCH'));
 
 export const crud = createCRUDActions<BaseProjectPayload, AnyVersion>(versionType);

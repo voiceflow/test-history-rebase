@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "declaration": true,
+    "rootDir": "src",
+    "outDir": "build",
+    "plugins": [
+      {
+        "transform": "@zerollup/ts-transform-paths"
+      }
+    ]
+  },
+  "include": [
+    "src/**/*",
+    "typings/**/*"
+  ]
+}

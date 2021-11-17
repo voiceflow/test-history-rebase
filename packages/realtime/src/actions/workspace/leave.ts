@@ -1,8 +1,7 @@
 import { ServerMeta } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
-
-import { Context } from '@/types';
 
 import { AbstractWorkspaceChannelControl, accessWorkspaces, WorkspaceContextData } from './utils';
 

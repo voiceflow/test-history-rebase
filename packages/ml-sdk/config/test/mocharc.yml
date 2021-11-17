@@ -1,0 +1,9 @@
+require:
+  - source-map-support/register
+
+spec:
+  - "test/**/*.{unit,it}.ts"
+
+timeout: 4000
+exit: true
+recursive: true

@@ -1,7 +1,7 @@
+import { Creator } from '@test/factories';
 import { expect } from 'chai';
 
 import customPayloadAdapter from '@/adapters/creator/block/dialogflow/customPayload';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Dialogflow | customPayloadAdapter', () => {
   describe('when transforming from db', () => {

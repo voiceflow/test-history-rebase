@@ -17,6 +17,21 @@ module.exports = {
         ts: 'never',
       },
     ],
-    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/tests/**/*.ts'] }],
   },
+  overrides: [
+    {
+      files: ['*.unit.*', 'tests/**/*', 'config/**/*', '*.config.js', '.*rc.js'],
+      extends: ['@voiceflow/eslint-config/utility'],
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
+      },
+    },
+    {
+      files: ['*.unit.*'],
+      extends: ['@voiceflow/eslint-config/mocha'],
+      rules: {
+        'no-unused-expressions': 'off',
+      },
+    },
+  ],
 };

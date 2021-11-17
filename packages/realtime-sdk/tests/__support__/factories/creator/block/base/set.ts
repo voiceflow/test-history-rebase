@@ -1,10 +1,10 @@
+import { getRandomEnumElement } from '@test/utils';
 import { Node } from '@voiceflow/base-types';
 import { ExpressionType, ExpressionTypeV2 } from '@voiceflow/base-types/build/node/utils';
 import { define } from 'cooky-cutter';
 import { datatype, lorem } from 'faker';
 
 import { NodeData } from '@/models';
-import { getRandomEnumElement } from '@/tests/utils';
 
 export const Expression = define<Node.Utils.Expression>({
   type: (): ExpressionType.VARIABLE => ExpressionType.VARIABLE,

@@ -1,28 +1,17 @@
 import { LoguxControlOptions } from '@/control';
 
-import buildDiagramActionControls, { DiagramActionControlMap } from './diagram';
-import buildIntentActionControls, { IntentActionControlMap } from './intent';
-import buildLinkActionControls, { LinkActionControlMap } from './link';
-import buildNodeActionControls, { NodeActionControlMap } from './node';
-import buildProductActionControls, { ProductActionControlMap } from './product';
-import buildProjectActionControls, { ProjectActionControlMap } from './project';
-import buildProjectListActionControls, { ProjectListActionControlMap } from './projectList';
-import buildSlotActionControls, { SlotActionControlMap } from './slot';
-import buildVersionActionControls, { VersionActionControlMap } from './version';
-import buildWorkspaceActionControls, { WorkspaceActionControlMap } from './workspace';
+import buildDiagramActionControls from './diagram';
+import buildIntentActionControls from './intent';
+import buildLinkActionControls from './link';
+import buildNodeActionControls from './node';
+import buildProductActionControls from './product';
+import buildProjectActionControls from './project';
+import buildProjectListActionControls from './projectList';
+import buildSlotActionControls from './slot';
+import buildVersionActionControls from './version';
+import buildWorkspaceActionControls from './workspace';
 
-export type ActionMap = DiagramActionControlMap &
-  IntentActionControlMap &
-  LinkActionControlMap &
-  NodeActionControlMap &
-  ProductActionControlMap &
-  ProjectActionControlMap &
-  ProjectListActionControlMap &
-  SlotActionControlMap &
-  VersionActionControlMap &
-  WorkspaceActionControlMap;
-
-const buildActions = (options: LoguxControlOptions): ActionMap => ({
+const buildActions = (options: LoguxControlOptions) => ({
   ...buildDiagramActionControls(options),
   ...buildIntentActionControls(options),
   ...buildLinkActionControls(options),
@@ -36,3 +25,5 @@ const buildActions = (options: LoguxControlOptions): ActionMap => ({
 });
 
 export default buildActions;
+
+export type ActionMap = ReturnType<typeof buildActions>;

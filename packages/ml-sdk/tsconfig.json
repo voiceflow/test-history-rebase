@@ -1,0 +1,16 @@
+{
+  "extends": "@voiceflow/tsconfig",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "baseUrl": "..",
+    "paths": {
+      "@ml-sdk/*": [
+        "ml-sdk/src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules/**/*",
+    "build/**/*"
+  ]
+}

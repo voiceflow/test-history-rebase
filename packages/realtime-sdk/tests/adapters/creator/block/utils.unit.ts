@@ -1,9 +1,8 @@
+import { voicePromptAdapter } from '@realtime-sdk/adapters/creator/block/utils';
+import { VoicePromptType } from '@realtime-sdk/constants';
+import { Creator } from '@test/factories';
 import { Constants } from '@voiceflow/alexa-types';
 import { expect } from 'chai';
-
-import { voicePromptAdapter } from '@/adapters/creator/block/utils';
-import { VoicePromptType } from '@/constants';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Utils', () => {
   describe('voice reprompt adapter', () => {

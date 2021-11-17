@@ -1,9 +1,10 @@
+import { Utils } from '@voiceflow/common';
+
 import { AWARENESS_KEY } from '../../constants';
 import { BaseProjectPayload, Viewer } from '../../types';
-import { createAction, typeFactory } from '../utils';
 import { projectType } from './utils';
 
-const awarenessType = typeFactory(projectType(AWARENESS_KEY));
+const awarenessType = Utils.protocol.typeFactory(projectType(AWARENESS_KEY));
 
 export interface LoadViewersPayload extends BaseProjectPayload {
   viewers: { [diagramID: string]: Viewer[] };
@@ -14,5 +15,5 @@ export interface UpdateViewersPayload extends BaseProjectPayload {
   diagramID: string;
 }
 
-export const loadViewers = createAction<LoadViewersPayload>(awarenessType('LOAD_VIEWERS'));
-export const updateViewers = createAction<UpdateViewersPayload>(awarenessType('UPDATE_VIEWERS'));
+export const loadViewers = Utils.protocol.createAction<LoadViewersPayload>(awarenessType('LOAD_VIEWERS'));
+export const updateViewers = Utils.protocol.createAction<UpdateViewersPayload>(awarenessType('UPDATE_VIEWERS'));

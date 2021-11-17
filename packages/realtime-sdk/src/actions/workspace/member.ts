@@ -1,13 +1,13 @@
+import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 
 import { INVITE_KEY, MEMBER_KEY } from '../../constants';
 import { DBMember } from '../../models';
 import { BaseCreatorPayload, BaseWorkspacePayload } from '../../types';
-import { createAction, typeFactory } from '../utils';
 import { workspaceType } from './utils';
 
-const memberType = typeFactory(workspaceType(MEMBER_KEY));
-const inviteType = typeFactory(memberType(INVITE_KEY));
+const memberType = Utils.protocol.typeFactory(workspaceType(MEMBER_KEY));
+const inviteType = Utils.protocol.typeFactory(memberType(INVITE_KEY));
 
 export interface BaseMemberPayload extends BaseWorkspacePayload {
   creatorID: number;
@@ -29,15 +29,15 @@ export interface EjectPayload extends BaseMemberPayload {
   workspaceName: string;
 }
 
-export const add = createAction<AddMemberPayload>(memberType('ADD'));
+export const add = Utils.protocol.createAction<AddMemberPayload>(memberType('ADD'));
 
-export const patch = createAction<PatchMemberPayload>(memberType('PATCH'));
+export const patch = Utils.protocol.createAction<PatchMemberPayload>(memberType('PATCH'));
 
-export const replace = createAction<ReplaceMembersPayload>(memberType('REPLACE'));
+export const replace = Utils.protocol.createAction<ReplaceMembersPayload>(memberType('REPLACE'));
 
-export const eject = createAction<EjectPayload>(memberType('EJECT'));
+export const eject = Utils.protocol.createAction<EjectPayload>(memberType('EJECT'));
 
-export const remove = createAction<BaseMemberPayload>(memberType('REMOVE'));
+export const remove = Utils.protocol.createAction<BaseMemberPayload>(memberType('REMOVE'));
 
 // invite
 
@@ -57,10 +57,10 @@ export interface UpdateInvitePayload extends BaseInvitePayload {
   role: UserRole;
 }
 
-export const acceptInvite = createAction.async<AcceptInvitePayload, string>(inviteType('ACCEPT'));
+export const acceptInvite = Utils.protocol.createAction.async<AcceptInvitePayload, string>(inviteType('ACCEPT'));
 
-export const sendInvite = createAction.async<SendInvitePayload, DBMember | null>(inviteType('SEND'));
+export const sendInvite = Utils.protocol.createAction.async<SendInvitePayload, DBMember | null>(inviteType('SEND'));
 
-export const updateInvite = createAction<UpdateInvitePayload>(inviteType('UPDATE'));
+export const updateInvite = Utils.protocol.createAction<UpdateInvitePayload>(inviteType('UPDATE'));
 
-export const cancelInvite = createAction<BaseInvitePayload>(inviteType('CANCEL'));
+export const cancelInvite = Utils.protocol.createAction<BaseInvitePayload>(inviteType('CANCEL'));

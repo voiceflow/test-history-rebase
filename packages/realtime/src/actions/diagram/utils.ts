@@ -1,11 +1,11 @@
 // eslint-disable-next-line max-classes-per-file
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { BaseContextData, Context, Resend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
-import { AbstractActionControl, Resend } from '@/actions/utils';
+import { AbstractActionControl } from '@/actions/utils';
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
 import { WorkspaceContextData } from '@/actions/workspace/utils';
-import { BaseContextData, Context } from '@/types';
 
 export abstract class AbstractDiagramActionControl<
   P extends Realtime.BaseDiagramPayload,

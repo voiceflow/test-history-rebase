@@ -1,9 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { ActionAccessor, BaseContextData, Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { resendProjectChannel } from '@/actions/project/utils';
-import { AbstractActionControl, ActionAccessor } from '@/actions/utils';
-import { BaseContextData, Context } from '@/types';
+import { AbstractActionControl } from '@/actions/utils';
 
 export const accessVersion = <P extends Realtime.BaseVersionPayload, D extends BaseContextData = BaseContextData>(
   self: AbstractActionControl<P, D>

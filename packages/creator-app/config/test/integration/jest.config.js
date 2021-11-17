@@ -11,6 +11,9 @@ module.exports = {
     '^@logux/redux$': 'identity-obj-proxy',
     '^.+\\.(svg|csv|png)(?:\\?url)?$': '<rootDir>/config/test/integration/assetPlaceholder.js',
     '^@/(.*)': '<rootDir>/src/$1',
+    '^@ui$': '<rootDir>/../../node_modules/@voiceflow/ui',
+    '^@realtime-sdk$': '<rootDir>/../../node_modules/@voiceflow/realtime-sdk',
+    '^@ml-sdk$': '<rootDir>/../../node_modules/@voiceflow/ml-sdk',
   },
   transform: {
     '^.+\\.[jt]sx?$': '<rootDir>/../../node_modules/ts-jest',

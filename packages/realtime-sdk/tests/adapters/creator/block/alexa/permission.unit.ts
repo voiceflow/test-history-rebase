@@ -1,8 +1,8 @@
+import { Creator } from '@test/factories';
 import { Node } from '@voiceflow/alexa-types';
 import { expect } from 'chai';
 
 import permissionAdapter from '@/adapters/creator/block/alexa/permission';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | permissionAdapter', () => {
   describe('when transforming from db', () => {

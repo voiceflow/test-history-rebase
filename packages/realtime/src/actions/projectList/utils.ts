@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { ActionAccessor, Context, sanitizePatch } from '@voiceflow/socket-utils';
 
-import { AbstractActionControl, ActionAccessor, sanitizePatch } from '@/actions/utils';
+import { AbstractActionControl } from '@/actions/utils';
 import { accessWorkspaces, resendWorkspaceChannels, WorkspaceContextData } from '@/actions/workspace/utils';
-import { Context } from '@/types';
 
 // eslint-disable-next-line import/prefer-default-export
 export abstract class AbstractProjectListResourceControl<

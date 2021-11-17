@@ -1,23 +1,16 @@
 {
   "extends": "@voiceflow/tsconfig",
   "compilerOptions": {
-    "lib": [
-      "es2017",
-      "es2019.array"
-    ],
-    "typeRoots": [
-      "node_modules/@types",
-      "./typings"
-    ],
-    "types": [
-      "mocha",
-      "chai",
-      "node",
-    ],
+    "skipLibCheck": true,
+    "baseUrl": "..",
+    "paths": {
+      "@realtime-sdk/*": [
+        "realtime-sdk/src/*"
+      ]
+    }
   },
-  "compileOnSave": false,
   "exclude": [
-    "node_modules/**",
-    "build/**"
-  ],
+    "node_modules/**/*",
+    "build/**/*"
+  ]
 }

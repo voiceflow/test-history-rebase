@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { AbstractNoopActionControl } from '@/actions/utils';
-import { Context } from '@/types';
 
 class EjectWorkspaceMember extends AbstractNoopActionControl<Realtime.workspace.member.EjectPayload> {
   protected actionCreator = Realtime.workspace.member.eject;

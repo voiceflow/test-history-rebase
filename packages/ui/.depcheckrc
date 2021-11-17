@@ -5,6 +5,7 @@
     "ttypescript"
   ],
   "ignores": [
+    "@ui/*",
     "@types/*",
     "ts-jest",
     "tslib",

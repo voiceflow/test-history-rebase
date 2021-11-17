@@ -1,4 +1,4 @@
-import { Input } from '@voiceflow/ui';
+import { Input } from '@ui';
 
 import { searchIcon } from '@/assets';
 import { styled } from '@/styles';

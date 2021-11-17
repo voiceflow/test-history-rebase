@@ -1,10 +1,10 @@
+import { Creator } from '@test/factories';
 import { Button } from '@voiceflow/base-types';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
 import captureAdapter from '@/adapters/creator/block/chat/capture';
 import { chatPromptAdapter } from '@/adapters/creator/block/utils';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Chat | captureAdapter', () => {
   afterEach(() => {

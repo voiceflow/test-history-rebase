@@ -1,3 +1,4 @@
+import { Creator } from '@test/factories';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
@@ -6,7 +7,6 @@ import Sinon from 'sinon';
 
 import interactionAdapter from '@/adapters/creator/block/alexa/interaction';
 import { voiceNoMatchAdapter, voicePromptAdapter } from '@/adapters/creator/block/utils';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
   afterEach(() => {

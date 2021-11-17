@@ -1,9 +1,8 @@
+import { getRandomEnumElement } from '@test/utils';
 import { Node } from '@voiceflow/alexa-types';
 import { Node as BaseNode } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';
 import { internet, lorem } from 'faker';
-
-import { getRandomEnumElement } from '@/tests/utils';
 
 export const DisplayStepData = define<Node.Display.StepData>({
   type: () => getRandomEnumElement(BaseNode.Visual.APLType),

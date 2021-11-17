@@ -1,4 +1,4 @@
-/* eslint-disable no-process-env, import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies */
 
 import globalsPolyfill from '@esbuild-plugins/node-globals-polyfill';
 import replace from '@rollup/plugin-replace';
@@ -61,12 +61,20 @@ const config = defineConfig(async ({ command }) => {
         '@': path.resolve(__dirname, '/src'),
         stream: 'stream-browserify',
 
-        ...(command === 'serve'
+        ...(isServe
           ? {
               '@voiceflow/ui': path.resolve(__dirname, '../ui/src'),
+              '@ui': path.resolve(__dirname, '../ui/src'),
               '@voiceflow/realtime-sdk': path.resolve(__dirname, '../realtime-sdk/src'),
+              '@realtime-sdk': path.resolve(__dirname, '../realtime-sdk/src'),
+              '@voiceflow/ml-sdk': path.resolve(__dirname, '../ml-sdk/src'),
+              '@ml-sdk': path.resolve(__dirname, '../ml-sdk/src'),
             }
-          : {}),
+          : {
+              '@ui': '@voiceflow/ui',
+              '@realtime-sdk': '@voiceflow/realtime-sdk',
+              '@ml-sdk': '@voiceflow/ml-sdk',
+            }),
       },
     },
 

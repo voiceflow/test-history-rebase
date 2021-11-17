@@ -1,11 +1,11 @@
 /* eslint-disable max-classes-per-file */
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { ActionAccessor, Context, Resender } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
-import { AbstractActionControl, ActionAccessor, Resender } from '@/actions/utils';
+import { AbstractActionControl } from '@/actions/utils';
 import { accessWorkspaces, resendWorkspaceChannels, WorkspaceContextData } from '@/actions/workspace/utils';
-import { Context } from '@/types';
 
 export const accessProject = <P extends Realtime.BaseProjectPayload, D extends WorkspaceContextData>(
   self: AbstractActionControl<P, D>

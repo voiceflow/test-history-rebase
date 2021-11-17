@@ -1,9 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context, sanitizePatch } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { sanitizePatch } from '@/actions/utils';
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
-import { Context } from '@/types';
 
 type PatchIntentPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.Intent>>;
 

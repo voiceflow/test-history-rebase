@@ -1,8 +1,9 @@
 import { SendBackActions } from '@logux/server';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { ChannelContext } from '@voiceflow/socket-utils';
 
-import { AbstractChannelControl, ChannelContext } from './utils';
+import { AbstractChannelControl } from './utils';
 
 class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.WorkspaceChannelParams> {
   protected channel = Realtime.Channels.workspace;

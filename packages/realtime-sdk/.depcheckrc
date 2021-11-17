@@ -1,4 +1,13 @@
 {
-  "specials": ["bin", "istanbul", "ttypescript"],
-  "ignores": []
+  "specials": [
+    "bin",
+    "istanbul",
+    "ttypescript"
+  ],
+  "ignores": [
+    "@realtime-sdk/*",
+    "@test/*",
+    "chai",
+    "sinon"
+  ]
 }

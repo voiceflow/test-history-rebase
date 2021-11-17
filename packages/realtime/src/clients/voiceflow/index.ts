@@ -1,6 +1,8 @@
 /* eslint-disable new-cap */
 import * as Voiceflow from '@voiceflow/api-sdk';
 
+import logger from '@/logger';
+
 import ExtraDiagramClient, { DiagramClient } from './diagram';
 import ExtraFeatureClient, { FeatureClient } from './feature';
 import ExtraProductClient, { ProductClient } from './product';
@@ -44,7 +46,7 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
     const dialogflow = axios.create({ baseURL: config.DIALOGFLOW_SERVICE_ENDPOINT, headers: { authorization: token } });
     const general = axios.create({ baseURL: config.GENERAL_SERVICE_ENDPOINT, headers: { authorization: token } });
 
-    const extraOptions: ExtraOptions = { config, api, alexa, google, dialogflow, general };
+    const extraOptions: ExtraOptions = { config, api, alexa, google, dialogflow, general, log: logger };
 
     const extraClient: ExtraClient = {
       workspace: ExtraWorkspaceClient(extraOptions),

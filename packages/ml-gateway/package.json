@@ -1,0 +1,46 @@
+{
+  "name": "@voiceflow/ml-gateway",
+  "version": "1.0.0",
+  "dependencies": {
+    "@logux/server": "0.10.6",
+    "@voiceflow/backend-utils": "4.1.0",
+    "@voiceflow/logger": "1.6.0",
+    "@voiceflow/ml-sdk": "1.0.0",
+    "@voiceflow/socket-utils": "1.0.0",
+    "axios": "0.21.2",
+    "core-js": "3.18.0",
+    "dotenv": "9.0.2",
+    "express-validator": "6.13.0",
+    "regenerator-runtime": "0.13.9"
+  },
+  "devDependencies": {
+    "@types/ioredis": "4.27.7"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "build": "yarn clean && ttsc --project tsconfig.build.json",
+    "clean": "rimraf build",
+    "dev": "yarn build --watch",
+    "e2e": "yarn kill:e2e && NODE_ENV=e2e NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon src/index.ts",
+    "e2e:node-dev": "yarn kill:e2e && NODE_ENV=e2e node-dev -r esm  src/index.ts",
+    "gen-certs:e2e": "scripts/generate_e2e_certs.sh",
+    "kill:e2e": "kill -9 $(lsof -t -i tcp:8015) || true",
+    "lint": "eslint \"**/*.{js,ts}\"",
+    "lint:dockerfiles": "hadolint --ignore DL3018 ./Dockerfile",
+    "lint:fix": "yarn lint --fix",
+    "lint:quiet": "yarn lint --quiet",
+    "lint:report": "yarn lint --format json -o sonar/report.json",
+    "local": "vfcli mesh connect realtime",
+    "mesh:post": "exit 0",
+    "mesh:pre": "exit 0",
+    "start": "PORT=8015 CREATOR_API_ENDPOINT=https:// NODE_ENV=production node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",
+    "start:e2e": "NODE_ENV=e2e node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",
+    "start:meshed": "NODE_ENV=local IS_MESHED=true NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon src/index.ts",
+    "test": "yarn test:unit",
+    "test:dependencies": "depcheck",
+    "test:integration": "exit 0",
+    "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml"
+  },
+  "type": "module"
+}

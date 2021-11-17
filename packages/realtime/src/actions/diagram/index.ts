@@ -14,7 +14,6 @@ import RemoveDiagramControl from './remove';
 import RemoveBlockControl from './removeBlocks';
 import { AddLocalVariableControl, RemoveLocalVariableControl } from './variable';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   addDiagramControl: new AddDiagramControl(options),
   createComponentControl: new CreateComponentControl(options),
@@ -43,5 +42,3 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
 });
 
 export default buildDiagramActionControls;
-
-export type DiagramActionControlMap = ReturnType<typeof buildDiagramActionControls>;

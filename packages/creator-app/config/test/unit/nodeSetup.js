@@ -14,5 +14,6 @@ require('./setup');
 mockRequire('redux-persist', { persistReducer: (_, reducer) => reducer });
 mockRequire('redux-persist/lib/storage', {});
 mockRequire('redux-persist/lib/storage/session', {});
+
 mockRequire('@logux/client', {});
 mockRequire('@logux/redux', {});

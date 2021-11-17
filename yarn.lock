@@ -5165,6 +5165,13 @@
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.48.tgz#3523b126a0b049482e1c3c11877460f76622ffab"
   integrity sha512-nlK/iyETgafGli8Zh9zJVCTicvU3iajSkRwOh3Hhiva598CMqNJ4NcVCGMTGKpGpTYj/9R8RLzS9NAykSSCqGw==
 
+"@types/mock-require@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/mock-require/-/mock-require-2.0.0.tgz#57a4f0db0b4b6274f610a2d2c20beb3c842181e1"
+  integrity sha512-nOgjoE5bBiDeiA+z41i95makyHUSMWQMOPocP+J67Pqx/68HAXaeWN1NFtrAYYV6LrISIZZ8vKHm/a50k0f6Sg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/mousetrap@1.6.8":
   version "1.6.8"
   resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.8.tgz#448929e6dc21126392830465fdb9d4a2cfc16a88"
@@ -5511,7 +5518,7 @@
     "@types/chai" "*"
     "@types/sinon" "*"
 
-"@types/sinon@*", "@types/sinon@10.0.2", "@types/sinon@^10.0.0":
+"@types/sinon@*", "@types/sinon@^10.0.0":
   version "10.0.2"
   resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-10.0.2.tgz#f360d2f189c0fd433d14aeb97b9d705d7e4cc0e4"
   integrity sha512-BHn8Bpkapj8Wdfxvh2jWIUoaYB/9/XhsL0oOvBfRagJtKlSl9NWPcFOz2lRukI9szwGxFtYZCTejJSqsGDbdmw==
@@ -6035,10 +6042,10 @@
     lodash "^4.17.21"
     number-to-words "^1.2.4"
 
-"@voiceflow/common@7.6.1":
-  version "7.6.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.6.1.tgz#9eef2dae059814209edfb58ee612b285add78978"
-  integrity sha512-k+E+aTP9LBqnPw50LROJ09H+qRgo8jg1fcPBRgqKN5sf1RoOkpELuRplO4Cila37bUU8N2SWr96FcaZMRBWfrw==
+"@voiceflow/common@7.7.0":
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.7.0.tgz#1262e6a66554625199cdc68ab5caea34000ecf54"
+  integrity sha512-ZIpcMFZMpxrEWv9m694xr5J5pcLdScMOl/5mS9Gegd5tX2jSIx5SnCuS48kemeQxXJuruv+TT5WtshHPqMG8hg==
   dependencies:
     "@types/crypto-js" "^4.0.2"
     bson-objectid "^2.0.1"
@@ -6047,6 +6054,7 @@
     dayjs "^1.10.7"
     lodash "^4.17.21"
     number-to-words "^1.2.4"
+    typescript-fsa "3.0.0"
 
 "@voiceflow/common@^6.8.1":
   version "6.9.0"
@@ -6215,10 +6223,12 @@
     stylelint-no-unsupported-browser-features "^4.1.4"
     stylelint-order "^4.1.0"
 
-"@voiceflow/tsconfig@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/tsconfig/-/tsconfig-1.0.0.tgz#09406c649729c8a9d5b7fa1d76427d8a9adbc961"
-  integrity sha512-+gOf2u/5xc5SHqrD+o1nBPfodAo34jQWmVR6K/h94/XZp8uoHQ7yzUnMqRpiJMrdX+Ku7WCI0xd9h1jYSHS0LA==
+"@voiceflow/tsconfig@1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@voiceflow/tsconfig/-/tsconfig-1.2.4.tgz#49d074b6cd778ed9eb74a95f9b8efc7a19139798"
+  integrity sha512-wdicjmcqEUkSG7CBbRxUeWhMro6yAAnCr82M96/Mq8pZa7upSzE8CuTLt7YqfBKf+zDGM1yhvJh92cFfPXcOsw==
+  dependencies:
+    "@zerollup/ts-transform-paths" "1.7.18"
 
 "@voiceflow/verror@^1.1.0":
   version "1.1.0"
@@ -8706,7 +8716,12 @@ camelcase@^5.0.0, camelcase@^5.3.1:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-5.3.1.tgz#e3c9b31569e106811df242f715725a1f4c494320"
   integrity sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
 
-camelcase@^6.0.0, camelcase@^6.2.0:
+camelcase@^6.0.0:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.2.1.tgz#250fd350cfd555d0d2160b1d51510eaf8326e86e"
+  integrity sha512-tVI4q5jjFV5CavAU8DXfza/TJcZutVKo/5Foskmsqcm0MsL91moHvwiGNnqaa2o6PF/7yT5ikDRcVcl8Rj6LCA==
+
+camelcase@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.2.0.tgz#924af881c9d525ac9d87f40d964e5cea982a1809"
   integrity sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
@@ -10543,10 +10558,10 @@ deep-eql@^3.0.1:
   dependencies:
     type-detect "^4.0.0"
 
-deep-equal-in-any-order@1.1.13:
-  version "1.1.13"
-  resolved "https://registry.yarnpkg.com/deep-equal-in-any-order/-/deep-equal-in-any-order-1.1.13.tgz#7688ae8c5243c5078100f07104df9104838ec4da"
-  integrity sha512-A0raQ2H80qbMadIkD6Mkpm58lMY9xigkTCQggKHpPFsWbPPpuOwM5qAH8LWT2RjHIghPrZw8uKq6dryuc8styQ==
+deep-equal-in-any-order@1.1.15:
+  version "1.1.15"
+  resolved "https://registry.yarnpkg.com/deep-equal-in-any-order/-/deep-equal-in-any-order-1.1.15.tgz#aa84501ff574fb92c79612ef83deeae6de89231c"
+  integrity sha512-/W36YW15Z+AymTkswOoCOX++gWLd0XBy1lFlxmML/m/PW0/0GuNkE65UTA2qiuPrKJTxXssKKrvtIZkOh+yEHA==
   dependencies:
     lodash.mapvalues "^4.6.0"
     sort-any "^2.0.0"
@@ -19329,11 +19344,6 @@ path-to-regexp@0.1.7:
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-0.1.7.tgz#df604178005f522f15eb4490e7247a1bfaa67f8c"
   integrity sha1-32BBeABfUi8V60SQ5yR6G/qmf4w=
 
-path-to-regexp@6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-6.2.0.tgz#f7b3803336104c346889adece614669230645f38"
-  integrity sha512-f66KywYG6+43afgE/8j/GoiNyygk/bnoCbps++3ErRKsIYkGGupyv07R2Ok5m9i67Iqc+T2g1eAUGUPzWhYTyg==
-
 path-to-regexp@^1.7.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-1.8.0.tgz#887b3ba9d84393e87a0a0b9f4cb756198b53548a"
@@ -24484,10 +24494,10 @@ ts-mocha@8.0.0:
   optionalDependencies:
     tsconfig-paths "^3.5.0"
 
-ts-node@10.3.0:
-  version "10.3.0"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.3.0.tgz#a797f2ed3ff50c9a5d814ce400437cb0c1c048b4"
-  integrity sha512-RYIy3i8IgpFH45AX4fQHExrT8BxDeKTdC83QFJkNzkvt8uFB6QJ8XMyhynYiKMLxt9a7yuXaDBZNOYS3XjDcYw==
+ts-node@10.4.0:
+  version "10.4.0"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.4.0.tgz#680f88945885f4e6cf450e7f0d6223dd404895f7"
+  integrity sha512-g0FlPvvCXSIO1JDF6S232P5jPYqBkRL9qly81ZgAOSU7rwI0stphCgd2kLiCrU9DjQCrJMWEqcNSjQL02s6d8A==
   dependencies:
     "@cspotcode/source-map-support" "0.7.0"
     "@tsconfig/node10" "^1.0.7"

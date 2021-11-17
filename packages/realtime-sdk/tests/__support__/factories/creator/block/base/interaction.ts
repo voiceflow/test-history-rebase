@@ -1,10 +1,10 @@
+import { getRandomEnumElement } from '@test/utils';
 import { Node } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';
 import { lorem } from 'faker';
 
 import { DistinctPlatform } from '@/constants';
 import { NodeData } from '@/models';
-import { getRandomEnumElement } from '@/tests/utils';
 import { distinctPlatformsData } from '@/utils/platform';
 
 export const ChoiceGoTo = define<Node.Interaction.ChoiceGoTo>({

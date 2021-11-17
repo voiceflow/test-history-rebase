@@ -10,7 +10,6 @@ import AlexaUpdateVendorControl from './platform/alexa/updateVendor';
 import RemoveProjectControl from './remove';
 import RemoveManyProjectsControl from './removeMany';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const buildProjectActionControls = (options: LoguxControlOptions) => ({
   addProjectControl: new AddProjectControl(options),
   alexaUpdateVendorControl: new AlexaUpdateVendorControl(options),
@@ -26,5 +25,3 @@ const buildProjectActionControls = (options: LoguxControlOptions) => ({
 });
 
 export default buildProjectActionControls;
-
-export type ProjectActionControlMap = ReturnType<typeof buildProjectActionControls>;

@@ -1,5 +1,3 @@
-import { Context as LoguxContext } from '@logux/server';
-
 export interface Config {
   NODE_ENV: string;
   PORT: number;
@@ -27,9 +25,3 @@ export interface Config {
   LOG_LEVEL: string | null;
   MIDDLEWARE_VERBOSITY: string | null;
 }
-
-export interface BaseContextData {
-  creatorID: number;
-}
-
-export type Context<D extends BaseContextData = BaseContextData> = LoguxContext<D>;

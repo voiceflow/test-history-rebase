@@ -1,38 +1,29 @@
 {
-  "extends": "@voiceflow/tsconfig",
+  "extends": "@voiceflow/tsconfig/web.json",
   "compilerOptions": {
-    "jsx": "react",
+    "module": "commonjs",
     "allowJs": true,
     "baseUrl": "..",
-    "rootDirs": [
-      "src",
-      "../ui/src"
-    ],
     "paths": {
+      "@ui": [
+        "ui/src"
+      ],
       "@voiceflow/ui": [
         "ui/src"
+      ],
+      "@realtime-sdk": [
+        "realtime-sdk/src"
+      ],
+      "@voiceflow/realtime-sdk": [
+        "realtime-sdk/src"
       ],
       "@/*": [
         "admin-app/src/*"
       ]
-    },
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "types": [
-      "node"
-    ]
+    }
   },
-  "compileOnSave": false,
-  "include": [
-    "src/**/*",
-    "test/**/*",
-    "config/**/*",
-    "typings/**/*.d.ts",
-  ],
   "exclude": [
-    "node_modules/**",
-    "build/**"
+    "node_modules/**/*",
+    "build/**/*"
   ]
 }

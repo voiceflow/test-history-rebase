@@ -1,9 +1,8 @@
+import captureAdapter from '@realtime-sdk/adapters/creator/block/alexa/capture';
+import { voicePromptAdapter } from '@realtime-sdk/adapters/creator/block/utils';
+import { Creator } from '@test/factories';
 import { expect } from 'chai';
 import sinon from 'sinon';
-
-import captureAdapter from '@/adapters/creator/block/alexa/capture';
-import { voicePromptAdapter } from '@/adapters/creator/block/utils';
-import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Alexa | captureAdapter', () => {
   afterEach(() => {

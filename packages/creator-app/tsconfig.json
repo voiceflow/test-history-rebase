@@ -1,51 +1,42 @@
 {
+  "extends": "@voiceflow/tsconfig/web.json",
   "compilerOptions": {
-    "target": "es2017",
-    "moduleResolution": "node",
-    "module": "esnext",
-    "declaration": false,
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
     "allowJs": true,
     "isolatedModules": false,
-    "jsx": "react",
-    /* Strictness Checks */
-    "alwaysStrict": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "noFallthroughCasesInSwitch": true,
-    "strictPropertyInitialization": true,
-    /* Debugging Options */
-    "traceResolution": false,
-    "listEmittedFiles": false,
-    "listFiles": false,
-    "pretty": true,
     "lib": [
       "es2019",
       "dom",
       "es2020.string"
     ],
-    "outDir": "./build",
     "baseUrl": "..",
-    "rootDirs": [
-      "src",
-      "../ui/src",
-      "../realtime-sdk/src"
-    ],
+    "outDir": "build",
     "paths": {
+      "@ui/*": [
+        "ui/src/*"
+      ],
+      "@ui": [
+        "ui/src"
+      ],
       "@voiceflow/ui": [
         "ui/src"
       ],
+      "@realtime-sdk/*": [
+        "realtime-sdk/src/*"
+      ],
+      "@realtime-sdk": [
+        "realtime-sdk/src"
+      ],
       "@voiceflow/realtime-sdk": [
         "realtime-sdk/src"
+      ],
+      "@ml-sdk/*": [
+        "ml-sdk/src/*"
+      ],
+      "@ml-sdk": [
+        "ml-sdk/src"
+      ],
+      "@voiceflow/ml-sdk": [
+        "ml-sdk/src"
       ],
       "@/*": [
         "creator-app/src/*"
@@ -60,15 +51,9 @@
       "dayjs/plugin/minMax"
     ]
   },
-  "compileOnSave": false,
-  "include": [
-    "src/**/*",
-    "test/**/*",
-    "config/**/*",
-    "typings/**/*.d.ts"
-  ],
   "exclude": [
-    "node_modules/**",
+    "node_modules/**/*",
+    "build/**/*",
     "config/webpack/**/*"
   ]
 }

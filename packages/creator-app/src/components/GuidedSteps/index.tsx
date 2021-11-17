@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */
 
-import { Button, ButtonVariant, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import { Button, ButtonVariant, Collapse, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import SingleStep from './SingleStep';
 import GuidedStepsWrapper from './styles';
 
 export { GuidedStepsWrapper };
@@ -203,7 +202,7 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
                 {block.title}
               </div>
 
-              <SingleStep active={step === idx}>
+              <Collapse isOpen={step === idx}>
                 <div className={cn('gs__steps-list__content')}>
                   <div className="gs__panel">
                     <div className="gs__panel-body">{block.content}</div>
@@ -227,7 +226,7 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
 
                   <div className="gs__details">{block.description}</div>
                 </div>
-              </SingleStep>
+              </Collapse>
             </li>
           ))}
       </ul>

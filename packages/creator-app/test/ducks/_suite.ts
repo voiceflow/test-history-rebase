@@ -1,5 +1,5 @@
 import { Eventual, Normalized, Utils } from '@voiceflow/common';
-import { SinonSpy, SinonStub } from 'sinon';
+import { SinonSpy, SinonStub, stub } from 'sinon';
 import { ActionCreator, AnyAction as AnyFSAction } from 'typescript-fsa';
 import { DeepPartial } from 'utility-types';
 
@@ -210,7 +210,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
         );
         const thunk = sideEffect(...args);
 
-        const result = await thunk(dispatch, getState, {} as any);
+        const result = await thunk(dispatch, getState, { log: { type: stub() } } as any);
 
         return { dispatch, dispatched, result };
       },

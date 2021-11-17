@@ -28,7 +28,7 @@ const DetailsForm: React.FC<DetailsFormProps> = ({ onSave }) => {
   );
   const [testingInstructions, setTestingInstructions, saveTestingInstructions] = useInputValue(
     product.testingInstructions ?? '',
-    setProductProperty('privacyPolicyUrl')
+    setProductProperty('testingInstructions')
   );
 
   return (

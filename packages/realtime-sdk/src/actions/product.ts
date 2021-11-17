@@ -13,6 +13,12 @@ export interface UpdateLocalesPayload extends BaseVersionPayload {
   locales: Constants.Locale[];
 }
 
+export interface CreateProductPayload extends BaseVersionPayload {
+  product: Product;
+}
+
 export const updateLocales = createAction<UpdateLocalesPayload>(productType('UPDATE_LOCALES'));
+
+export const create = createAction.async<CreateProductPayload, Product>(productType('CREATE_PRODUCT'));
 
 export const crud = createCRUDActions<BaseVersionPayload, Product>(productType);

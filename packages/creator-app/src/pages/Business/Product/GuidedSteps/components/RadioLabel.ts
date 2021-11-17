@@ -14,6 +14,7 @@ const RadioButtonLabel = styled.label<RadioButtonLabelProps>`
   & > input {
     display: flex;
     width: auto;
+    min-height: auto;
     margin-right: ${units()}px;
   }
 

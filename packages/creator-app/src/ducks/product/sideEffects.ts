@@ -9,6 +9,7 @@ import { NEW_PRODUCT_ID } from '@/constants';
 import * as Feature from '@/ducks/feature';
 import * as ProductV2 from '@/ducks/productV2';
 import * as Session from '@/ducks/session';
+import { waitAsync } from '@/ducks/utils';
 import { Meta } from '@/ducks/utils/crud';
 import { getActiveVersionContext } from '@/ducks/version/utils';
 import { SyncThunk, Thunk } from '@/store/types';
@@ -27,7 +28,7 @@ export const replaceProducts =
     dispatch(crud.replace(products, meta));
   };
 
-export const addProduct =
+export const createProduct =
   (product: Realtime.Product): Thunk =>
   async (dispatch, getState) => {
     const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
@@ -35,7 +36,7 @@ export const addProduct =
 
     const context = dispatch(getActiveVersionContext());
 
-    await dispatch.sync(Realtime.product.crud.add({ ...context, key: product.id, value: product }));
+    await dispatch(waitAsync(Realtime.product.create, { ...context, product }));
   };
 
 /**

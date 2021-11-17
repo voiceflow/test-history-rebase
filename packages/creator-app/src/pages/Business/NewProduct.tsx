@@ -19,7 +19,7 @@ const NewProduct: React.FC = () => {
   const productRef = useCachedValue(product);
 
   const uploadNewProduct = useDispatch(Product.uploadNewProduct);
-  const addProduct = useDispatch(Product.addProduct);
+  const createProduct = useDispatch(Product.createProduct);
   const patchProduct = React.useCallback((data: Partial<Realtime.Product>) => setProduct({ ...productRef.current, ...data }), []);
 
   useTeardown(() => {
@@ -27,7 +27,7 @@ const NewProduct: React.FC = () => {
     if (!productState || !productState.name || !productState.summary) return;
 
     if (atomicActions.isEnabled) {
-      addProduct(productState);
+      createProduct(productState);
     } else {
       uploadNewProduct(productState);
     }

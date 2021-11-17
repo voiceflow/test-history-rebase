@@ -72,12 +72,12 @@ const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
                 >
                   <RadioButtonLabel isDisabled={value === Constants.ProductType.CONSUMABLE && !!parentalControl}>
                     <Input
-                      checked={product.type === value}
                       type="radio"
                       name="type"
                       value={value}
-                      onChange={onTypeChange(value)}
+                      checked={product.type === value}
                       disabled={value === Constants.ProductType.CONSUMABLE && parentalControl}
+                      onChange={onTypeChange(value)}
                     />
                     <span>{label}</span>
                   </RadioButtonLabel>
@@ -141,7 +141,7 @@ const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
 
         <SubSection>
           <Label>Tax Category</Label>
-          <Dropdown onSelect={setProductProperty('taxCategory')} options={TAX_CATEGORIES} autoWidth>
+          <Dropdown onSelect={setProductProperty('taxCategory')} options={TAX_CATEGORIES} autoWidth selfDismiss>
             {(ref, onToggle) => (
               <DropdownWrapper size="50%" ref={ref} onClick={onToggle}>
                 <span>{TAX_CATEGORIES.find(({ value }) => value === product.taxCategory)?.label || <span>Select Category</span>}</span>

@@ -166,25 +166,6 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, stub, describeEffect
     });
   });
 
-  describeEffectV2(ProductV1.addProduct, 'addProduct()', ({ applyEffect }) => {
-    it('add product in realtime', async () => {
-      const rootState = createState(MOCK_STATE, {
-        ...v2FeatureState,
-        [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-      });
-
-      const { dispatched } = await applyEffect(rootState, PRODUCT);
-
-      expect(dispatched).to.eql([{ sync: Realtime.product.crud.add({ ...ACTION_CONTEXT, key: PRODUCT_ID, value: PRODUCT }) }]);
-    });
-
-    it('do nothing if atomic actions disabled', async () => {
-      const { dispatched } = await applyEffect(createState(MOCK_STATE), PRODUCT);
-
-      expect(dispatched).to.be.empty;
-    });
-  });
-
   describeEffectV2(ProductV1.patchProduct, 'patchProduct()', ({ applyEffect }) => {
     it('patch product locally', async () => {
       const name = 'foo';

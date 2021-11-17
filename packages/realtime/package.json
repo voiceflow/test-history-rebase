@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.22.1",
+  "version": "1.22.2",
   "dependencies": {
     "@logux/actions": "0.2.1",
     "@logux/core": "0.7.2",
@@ -15,7 +15,7 @@
     "@voiceflow/google-types": "2.1.1",
     "@voiceflow/internal": "2.2.0",
     "@voiceflow/logger": "1.6.0",
-    "@voiceflow/realtime-sdk": "^1.39.0",
+    "@voiceflow/realtime-sdk": "^1.39.1",
     "axios": "0.21.2",
     "bidirectional-adapter": "^1.0.0",
     "cbor": "8.0.2",

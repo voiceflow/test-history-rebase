@@ -59,7 +59,8 @@ export const activateVersion =
   async (dispatch, getState) => {
     const state = getState();
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+    const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+    const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
 
     if (isAtomicActions) return;
 
@@ -68,11 +69,11 @@ export const activateVersion =
 
     const diagrams = await dispatch(Diagram.loadDiagrams(versionID, rootDiagramID));
 
-    if (isTopicsAndComponents && !dbVersion.topics?.length) {
+    if (isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion && !dbVersion.topics?.length) {
       dbVersion.topics = [{ type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: rootDiagramID }];
     }
 
-    if (isTopicsAndComponents && !dbVersion.components?.length) {
+    if (isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion && !dbVersion.components?.length) {
       dbVersion.folders = { ...dbVersion.folders };
       dbVersion.components = diagrams
         .filter((diagram) => diagram.id !== rootDiagramID && (!diagram.type || diagram.type === BaseModels.DiagramType.COMPONENT))

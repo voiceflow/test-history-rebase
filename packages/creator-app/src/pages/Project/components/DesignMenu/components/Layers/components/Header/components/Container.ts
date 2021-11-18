@@ -1,6 +1,6 @@
 import { css, styled, transition } from '@/hocs';
 
-export const MIN_HEIGHT = 42;
+export const MIN_HEIGHT = 41;
 
 const Container = styled.div<{ isSticky?: boolean; collapsed?: boolean }>`
   ${transition('border-color')}

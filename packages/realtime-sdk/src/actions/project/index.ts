@@ -12,19 +12,20 @@ export * from './platform';
 
 export interface ImportProjectFromFilePayload extends BaseWorkspacePayload {
   data: string;
+  vfVersion: number;
 }
 
 export interface DuplicateProjectPayload extends BaseProjectPayload {
+  data: Optional<Pick<DBProject, 'teamID' | 'name' | '_version'>, 'name'>;
   listID?: string;
-  data: Optional<Pick<DBProject, 'teamID' | 'name'>, 'name'>;
 }
 
 export interface CreateProjectPayload extends BaseWorkspacePayload {
-  templateID: string;
-  platform: Constants.PlatformType;
+  data: Partial<Pick<DBProject, 'teamID' | 'name' | 'image' | '_version'>>;
   channel: string;
-  data: Partial<Pick<DBProject, 'teamID' | 'name' | 'image'>>;
   listID?: string;
+  platform: Constants.PlatformType;
+  templateID: string;
 }
 
 export const importFromFile = Utils.protocol.createAction.async<ImportProjectFromFilePayload, AnyProject>(projectType('IMPORT_FROM_FILE'));

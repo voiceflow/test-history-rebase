@@ -1,9 +1,12 @@
 import { generatePath } from 'react-router-dom';
 
+import { RootPageProgressBar } from '@/components/PageProgressBar';
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
-import { InteractionModelTabType } from '@/constants';
+import { InteractionModelTabType, PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
@@ -36,6 +39,8 @@ export const redirectToCanvas = (versionID: string, diagramID?: string) =>
 export const goToCanvasSwitchRealtime =
   (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk =>
   async (dispatch) => {
+    RootPageProgressBar.start(PageProgressBar.CANVAS_LOADING);
+
     await dispatch(Realtime.switchRealtimeDiagram(versionID, diagramID, isNewDiagram));
 
     dispatch(goToCanvas(versionID, diagramID));
@@ -151,11 +156,23 @@ export const goToDiagramCommenting =
   };
 
 export const goToCurrentPrototype =
-  (nodeID?: string): SyncThunk =>
-  (dispatch, getState) => {
-    const versionID = Session.activeVersionIDSelector(getState());
+  (nodeID?: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const topics = VersionV2.active.topicsSelector(state);
+    const versionID = Session.activeVersionIDSelector(state);
+    const diagramID = Session.activeDiagramIDSelector(state);
+    const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
+    const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+    const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
 
     Errors.assertVersionID(versionID);
+
+    const isTopic = topics.find((item) => item.sourceID === diagramID);
+
+    if (!nodeID && isTopic && rootDiagramID !== diagramID && isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion) {
+      await dispatch(redirectToRootDiagram());
+    }
 
     dispatch(goToPrototype(versionID, nodeID));
   };

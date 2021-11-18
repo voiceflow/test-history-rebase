@@ -45,8 +45,10 @@ export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) 
   const state = getState();
 
   // remove after FF removal
-  const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
-  if (!isTopicsAndComponents) {
+  const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
+
+  if (!isTopicsAndComponentsEnabled || !isTopicsAndComponentsVersion) {
     return;
   }
 
@@ -85,8 +87,9 @@ export const initializeCreatorForDiagram =
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
     const diagramType = DiagramSelectorsV2.active.typeSelector(state);
-    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+    const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
 
     const { diagram: dbDiagram, timestamp } = await client.api.diagram.getRTC(diagramID);
 
@@ -100,14 +103,22 @@ export const initializeCreatorForDiagram =
 
     batch(() => {
       dispatch(ReduxUndo.ActionCreators.clearHistory());
+
       if (!isAtomicActions) {
         dispatch(DiagramActions.crud.patch(diagramID, { variables }));
       }
+
       dispatch(Viewport.rehydrateViewport(diagramID, { x, y, zoom }));
       dispatch(initializeCreator(creator));
       dispatch(saveHistory());
 
-      if (isTopicsAndComponents && diagramType === Models.DiagramType.TOPIC && !dbDiagram.intentStepIDs?.length) {
+      if (
+        !isAtomicActions &&
+        isTopicsAndComponentsEnabled &&
+        isTopicsAndComponentsVersion &&
+        diagramType === Models.DiagramType.TOPIC &&
+        !dbDiagram.intentStepIDs?.length
+      ) {
         dispatch(DiagramActions.crud.patch(diagramID, { intentStepIDs: getIntentStepIDs() }));
       }
     });

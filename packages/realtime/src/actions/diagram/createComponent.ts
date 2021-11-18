@@ -10,7 +10,13 @@ class CreateComponent extends AbstractDiagramResourceControl<Realtime.diagram.Cr
     const { creatorID } = ctx.data;
 
     const [diagram, version] = await Promise.all([
-      this.createDiagram(ctx, payload, Realtime.Utils.diagram.componentDiagramFactory(payload.name)),
+      this.createDiagram(ctx, payload, {
+        ...Realtime.Utils.diagram.componentDiagramFactory(
+          payload.diagram.name,
+          payload.diagram.offsetX && payload.diagram.offsetY ? [payload.diagram.offsetX, payload.diagram.offsetY] : undefined
+        ),
+        ...payload.diagram,
+      }),
       this.services.version.get(creatorID, payload.versionID),
     ]);
 

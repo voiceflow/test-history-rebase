@@ -3,9 +3,10 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
+import { RootPageProgressBar } from '@/components/PageProgressBar';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
-import { RESERVED_JS_WORDS } from '@/constants';
+import { PageProgressBar, RESERVED_JS_WORDS } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -169,7 +170,11 @@ export const createTopicDiagram =
           return diagramID;
         },
         async (context) => {
-          const diagram = await dispatch(waitAsync(Realtime.diagram.createTopic, { ...context, name }));
+          RootPageProgressBar.start(PageProgressBar.TOPIC_CREATING);
+
+          const diagram = await dispatch(waitAsync(Realtime.diagram.createTopic, { ...context, diagram: { name } }));
+
+          RootPageProgressBar.stop(PageProgressBar.TOPIC_CREATING);
 
           return diagram.id;
         }
@@ -188,7 +193,7 @@ export const createComponentDiagram =
           return dispatch(createDiagram(diagram));
         },
         async (context) => {
-          const diagram = await dispatch(waitAsync(Realtime.diagram.createComponent, { ...context, name }));
+          const diagram = await dispatch(waitAsync(Realtime.diagram.createComponent, { ...context, diagram: { name } }));
 
           return diagram.id;
         }
@@ -216,9 +221,13 @@ const addDiagramIDIntoComponentsList =
 export const createEmptyComponent =
   (name: string): Thunk<string> =>
   async (dispatch) => {
+    RootPageProgressBar.start(PageProgressBar.COMPONENT_CREATING);
+
     const diagramID = await dispatch(createComponentDiagram(name));
 
     await dispatch(addDiagramIDIntoComponentsList(diagramID));
+
+    RootPageProgressBar.stop(PageProgressBar.COMPONENT_CREATING);
 
     return diagramID;
   };
@@ -286,11 +295,10 @@ export const convertToComponent =
 
           return diagramID;
         },
-        // eslint-disable-next-line sonarjs/no-identical-functions
         async (context) => {
-          const diagram = await dispatch(waitAsync(Realtime.diagram.createComponent, { ...context, name }));
+          const newDiagram = await dispatch(waitAsync(Realtime.diagram.createComponent, { ...context, diagram }));
 
-          return diagram.id;
+          return newDiagram.id;
         }
       )
     );
@@ -309,7 +317,8 @@ export const duplicateDiagram =
           const versionID = Session.activeVersionIDSelector(state);
           const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
           const allDiagrams = DiagramV2.allDiagramsSelector(state);
-          const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+          const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+          const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
 
           Errors.assertVersionID(versionID);
           Errors.assertDiagramID(rootDiagramID);
@@ -320,7 +329,7 @@ export const duplicateDiagram =
 
           const newDiagramID = await dispatch(createDiagram({ ...diagram, intentStepIDs: diagram.intentStepIDs ?? [], type, name: newFlowName }));
 
-          if (isTopicsAndComponents) {
+          if (isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion) {
             await dispatch(addDiagramIDIntoComponentsList(newDiagramID));
           }
 
@@ -349,7 +358,8 @@ export const deleteDiagram =
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
     const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
-    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+    const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+    const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
 
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(rootDiagramID);
@@ -365,7 +375,7 @@ export const deleteDiagram =
       Feature.applyAtomicSideEffect(
         getActiveVersionContext,
         async () => {
-          if (isTopicsAndComponents) {
+          if (isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion) {
             const { type } = diagramByIDSelector(state)(diagramID) ?? {};
             const { topics = [], components = [] } = VersionV2.active.versionSelector(state) ?? {};
 
@@ -408,6 +418,32 @@ export const renameDiagram =
     );
   };
 
+export const convertToTopic =
+  (diagramID: string): Thunk =>
+  (dispatch, getState) =>
+    dispatch(
+      Feature.applyAtomicSideEffect(
+        getActiveVersionContext,
+        async () => {
+          throw new Error('Not implemented');
+        },
+        async (context) => {
+          RootPageProgressBar.start(PageProgressBar.TOPIC_CREATING);
+
+          const state = getState();
+          const activeDiagramID = Session.activeDiagramIDSelector(state);
+
+          if (diagramID === activeDiagramID) {
+            await dispatch(Router.goToRootDiagram());
+          }
+
+          await dispatch.sync(Realtime.diagram.convertToTopic({ ...context, diagramID }));
+
+          RootPageProgressBar.stop(PageProgressBar.TOPIC_CREATING);
+        }
+      )
+    );
+
 // active diagram
 
 /**
@@ -416,15 +452,17 @@ export const renameDiagram =
 export const saveActiveDiagram = (): Thunk => async (_, getState) => {
   const state = getState();
   const fullDiagram = fullActiveDiagramSelector(state);
-  const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
+  const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
+
   if (isAtomicActions) return;
 
   if (!fullDiagram) throw Errors.noActiveDiagramID();
 
   const { _id, ...activeDiagram } = fullDiagram;
 
-  if (!isTopicsAndComponents) {
+  if (!isTopicsAndComponentsEnabled || !isTopicsAndComponentsVersion) {
     delete activeDiagram.type;
   }
 

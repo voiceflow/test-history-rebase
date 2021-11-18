@@ -11,8 +11,10 @@ class TransplantProjectBetweenLists extends AbstractWorkspaceChannelControl<Real
   protected process = async (ctx: Context, { payload }: Action<Realtime.projectList.TransplantProjectBetweenListsPayload>) => {
     const { creatorID } = ctx.data;
     const { projectID } = payload.from;
-    const lists = await this.services.projectList.getAll(creatorID, payload.workspaceID);
     const isReorder = payload.from.listID === payload.to.listID;
+
+    const lists = await this.services.projectList.getAll(creatorID, payload.workspaceID);
+
     const getTargetIndex = (list: Realtime.DBProjectList) =>
       typeof payload.to.target === 'number' ? payload.to.target : list.projects.indexOf(payload.to.target);
 

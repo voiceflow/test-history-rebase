@@ -63,6 +63,9 @@ export const createProject =
 
     const platformType = platform ?? Constants.PlatformType.GENERAL;
     const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
+    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+
+    const vfVersion = isTopicsAndComponents ? Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION : Realtime.CURRENT_PROJECT_VERSION;
 
     if (!templateProjectID) {
       toast.error(`no project templates exist for platform ${platformType}`);
@@ -75,18 +78,19 @@ export const createProject =
       if (isAtomicActions) {
         return dispatch(
           waitAsync(Realtime.project.create, {
-            workspaceID,
-            templateID: templateProjectID,
-            platform: platformType,
+            data: { name, image, _version: vfVersion },
             channel,
-            data: { name, image },
+            listID,
+            platform: platformType,
+            templateID: templateProjectID,
+            workspaceID,
           })
         );
       }
 
       const newProject = await client
         .platform(platformType)
-        .project.copy(templateProjectID, { name, image, teamID: workspaceID }, { channel })
+        .project.copy(templateProjectID, { name, image, teamID: workspaceID, _version: vfVersion }, { channel })
         .then(Realtime.Adapters.projectAdapter.fromDB);
 
       if (listID) {
@@ -103,13 +107,24 @@ export const createProject =
 export const importProjectFromFile =
   (workspaceID: string, data: string): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
-    const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+    const state = getState();
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+
+    const vfVersion = isTopicsAndComponents ? Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION : Realtime.CURRENT_PROJECT_VERSION;
 
     if (isAtomicActions) {
-      return dispatch(waitAsync(Realtime.project.importFromFile, { workspaceID, data }));
+      return dispatch(waitAsync(Realtime.project.importFromFile, { data, vfVersion, workspaceID }));
     }
 
-    return client.api.version.import(workspaceID, JSON.parse(data)).then(Realtime.Adapters.projectAdapter.fromDB);
+    const importJSON = JSON.parse(data);
+
+    if (importJSON.project && typeof importJSON.project === 'object') {
+      // eslint-disable-next-line no-underscore-dangle
+      importJSON.project._version = vfVersion;
+    }
+
+    return client.api.version.import(workspaceID, importJSON).then(Realtime.Adapters.projectAdapter.fromDB);
   };
 
 export const deleteProject =

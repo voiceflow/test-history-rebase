@@ -1,5 +1,5 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
-import { Nullable, Utils } from '@voiceflow/common';
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -37,14 +37,9 @@ export const useComponents = (): ComponentsAPI => {
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
 
-  const saveComponents = useDispatch(Version.saveComponents);
+  const reorderComponents = useDispatch(Version.reorderComponents);
 
   const [searchValue, setSearchValue] = React.useState<string>('');
-
-  const onReorderComponents = React.useCallback(
-    (from: number, to: number) => saveComponents(Utils.array.reorder(components, from, to)),
-    [components]
-  );
 
   const onClearLastCreatedDiagramID = React.useCallback(() => {
     lastCreatedComponent.setComponentID(null);
@@ -99,7 +94,7 @@ export const useComponents = (): ComponentsAPI => {
     activeDiagramID,
     componentsItems,
     searchMatchValue: lowerCasedSearchValue,
-    onReorderComponents,
+    onReorderComponents: reorderComponents,
     lastCreatedDiagramID: lastCreatedComponent.componentID,
     searchComponentsItems,
     searchOpenedComponents,

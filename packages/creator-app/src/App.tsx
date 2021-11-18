@@ -12,6 +12,7 @@ import React from 'react';
 import ConfirmModalV2 from '@/components/ConfirmModal';
 import IntercomChat from '@/components/IntercomChat';
 import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, SuccessModal } from '@/components/modals';
+import { RootPageProgressBar } from '@/components/PageProgressBar';
 import LoginModal from '@/components/PlatformUploadPopup/components/LoginModal';
 import CreateNewAgentModal from '@/components/PlatformUploadPopup/Dialogflow/CreateNewAgentModal';
 import RefreshModal from '@/components/RefreshModal';
@@ -66,6 +67,8 @@ const App = () => {
       <RefreshModal />
       <LoginModal />
       <CreateNewAgentModal />
+
+      <RootPageProgressBar />
     </>
   );
 };

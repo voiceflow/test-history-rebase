@@ -5,7 +5,8 @@ import ReactSelect from 'react-select';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
-import { useFeature, useTrackingEvents } from '@/hooks';
+import * as ProjectV2 from '@/ducks/projectV2';
+import { useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { getSections, MenuStep } from '@/pages/Project/components/DesignMenu/components/Steps/constants';
 import { PlatformContext } from '@/pages/Project/contexts';
@@ -25,6 +26,7 @@ const Spotlight = () => {
   const [trackingEvents] = useTrackingEvents();
   const gadgets = useFeature(FeatureFlag.GADGETS);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const isVisible = !!spotlight?.isVisible;
 
@@ -40,12 +42,12 @@ const Spotlight = () => {
         .flatMap((section) => section.steps)
         .filter((step) => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
-          if (!topicsAndComponents.isEnabled && step.type === BlockType.COMPONENT) return false;
-          if (topicsAndComponents.isEnabled && step.type === BlockType.FLOW) return false;
+          if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
+          if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
           return true;
         }),
-    []
+    [gadgets.isEnabled, topicsAndComponents.isEnabled, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]
   );
 
   useDidUpdateEffect(() => {

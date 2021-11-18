@@ -8,9 +8,10 @@ import { useSelector, useStore } from 'react-redux';
 
 import { CanvasAPI } from '@/components/Canvas';
 import { MovementCalculator } from '@/components/Canvas/types';
+import { RootPageProgressBar } from '@/components/PageProgressBar';
 import { isDebug } from '@/config';
 import { FeatureFlag } from '@/config/features';
-import { BlockType } from '@/constants';
+import { BlockType, PageProgressBar } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
@@ -232,7 +233,13 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   }
 
   registerNode(nodeID: string, api: NodeEntity) {
-    const { id, x, y, type } = this.getNodeByID(nodeID);
+    const node = this.getNodeByID(nodeID);
+
+    if (!node) {
+      return;
+    }
+
+    const { id, x, y, type } = node;
 
     this.nodes.set(id, { x, y, api, type });
   }
@@ -486,6 +493,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   }
 
   async createComponent(): Promise<string> {
+    RootPageProgressBar.start(PageProgressBar.COMPONENT_CREATING);
+
     const targets = this.activation.getTargets();
 
     const clipboardData = this.clipboard.getClipboardContext(targets);
@@ -503,6 +512,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     await this.node.removeMany(targets, { disableConfirmPrompt: true });
 
     await this.node.add(BlockType.COMPONENT, coords, { name, diagramID } as Realtime.NodeData<any>);
+
+    RootPageProgressBar.stop(PageProgressBar.COMPONENT_CREATING);
 
     return diagramID;
   }

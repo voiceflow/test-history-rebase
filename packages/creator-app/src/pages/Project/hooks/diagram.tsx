@@ -8,6 +8,7 @@ import { Permission } from '@/config/permissions';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Modal from '@/ducks/modal';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
@@ -98,6 +99,7 @@ interface DiagramOptionsOptions {
 }
 
 export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOptionsOptions): MenuOption<undefined>[] => {
+  const convertToTopic = useDispatch(Diagram.convertToTopic);
   const duplicateDiagram = useDispatch(Diagram.duplicateDiagram);
   const deleteDiagram = useDispatch(Diagram.deleteDiagram);
   const setErrorModal = useDispatch(Modal.setError);
@@ -105,6 +107,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const onDuplicate = React.useCallback(() => {
     if (!diagramID) {
@@ -116,6 +119,16 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
     duplicateDiagram(diagramID, { openDiagram: true });
   }, [diagramID]);
 
+  const onConvertToTopic = React.useCallback(() => {
+    if (!diagramID) {
+      Sentry.error(Errors.noActiveDiagramID());
+      toast.genericError();
+      return;
+    }
+
+    convertToTopic(diagramID);
+  }, [diagramID]);
+
   const onDelete = React.useCallback(() => {
     if (!diagramID) {
       Sentry.error(Errors.noActiveDiagramID());
@@ -125,7 +138,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
 
     let label = 'flow';
 
-    if (topicsAndComponents.isEnabled) {
+    if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) {
       label = getDiagramByID(diagramID)?.type === BaseModels.DiagramType.TOPIC ? 'topic' : 'component';
     }
 
@@ -145,21 +158,24 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
         );
       },
     });
-  }, [diagramID, topicsAndComponents.isEnabled]);
+  }, [diagramID, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]);
 
-  return React.useMemo<MenuOption<undefined>[]>(
-    () =>
-      !canEditCanvas
-        ? []
-        : [
-            ...(onEdit ? [{ label: 'Edit', onClick: onEdit }] : []),
-            { label: 'Rename', onClick: onRename },
-            ...(!topicsAndComponents.isEnabled || !diagramID || getDiagramByID(diagramID)?.type !== BaseModels.DiagramType.TOPIC
-              ? [{ label: 'Duplicate', onClick: onDuplicate }]
-              : []),
-            { label: 'Divider', divider: true },
-            { label: 'Delete', onClick: onDelete },
-          ],
-    [onEdit, onRename, onDuplicate, onDelete, canEditCanvas, topicsAndComponents.isEnabled]
-  );
+  return React.useMemo<MenuOption<undefined>[]>(() => {
+    if (!canEditCanvas) {
+      return [];
+    }
+
+    const isTopic = diagramID ? getDiagramByID(diagramID)?.type === BaseModels.DiagramType.TOPIC : false;
+
+    return [
+      ...(onEdit ? [{ label: 'Edit', onClick: onEdit }] : []),
+      { label: 'Rename', onClick: onRename },
+      ...(!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) || !isTopic ? [{ label: 'Duplicate', onClick: onDuplicate }] : []),
+      ...(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && !isTopic
+        ? [{ label: 'Convert to Topic', onClick: onConvertToTopic }]
+        : []),
+      { label: 'Divider', divider: true },
+      { label: 'Delete', onClick: onDelete },
+    ];
+  }, [onEdit, onRename, onDuplicate, onDelete, canEditCanvas, onConvertToTopic, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]);
 };

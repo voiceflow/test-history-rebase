@@ -14,6 +14,7 @@ import * as Documentation from '@/config/documentation';
 import { FeatureFlag } from '@/config/features';
 import { NamespaceProvider } from '@/contexts';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { compose } from '@/hocs';
 import { useFeature, useLinkedState, useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -56,6 +57,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
   const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
 
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const [url, setUrl] = useLinkedState(item.url ?? '');
   const [name, setName] = useLinkedState(item.name);
@@ -152,7 +154,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
           <Section isNested dividers={false}>
             <IntentSelectComponent
               intent={intent}
-              intents={isGoToIntent && topicsAndComponents.isEnabled ? openIntents : undefined}
+              intents={isGoToIntent && topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? openIntents : undefined}
               onChange={({ intent }: { intent: string }) => onUpdate({ intent })}
               clearable={!isGoToIntent}
               creatable={!isGoToIntent}

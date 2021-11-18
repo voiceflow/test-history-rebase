@@ -37,6 +37,7 @@ const ProjectAndDiagramActions: React.FC = () => {
 
   const getEngine = useEventualEngine();
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const isPrototypingMode = usePrototypingMode();
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
@@ -107,7 +108,7 @@ const ProjectAndDiagramActions: React.FC = () => {
     <Container>
       {!canEditCanvas && <ViewOnly>View only</ViewOnly>}
 
-      {topicsAndComponents.isEnabled && selectedTargets.length > 1 ? (
+      {topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && selectedTargets.length > 1 ? (
         <BoxFlex gap={5}>
           <HeaderIconButton
             icon="component"

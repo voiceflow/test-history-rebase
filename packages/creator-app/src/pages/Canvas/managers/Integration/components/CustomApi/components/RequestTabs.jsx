@@ -1,8 +1,7 @@
 import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
-import Tabs from '@/components/Tabs';
-import { TabContent, TabPane } from '@/components/Tabs/components';
+import Tabs, { TabPane, TabsContent } from '@/components/Tabs';
 
 import RequestBody from './RequestBody';
 import RequestHeaders from './RequestHeaders';
@@ -50,21 +49,21 @@ function RequestTabs({ headers, body, content, bodyInputType, parameters, select
         <Tabs options={tabsOptions} onChange={setActiveTab} selected={activeTab} />
       </TabsContainer>
 
-      <TabContent activeTab={activeTab}>
-        <TabPane tabId={IntegrationTab.HEADERS}>
+      <TabsContent selected={activeTab}>
+        <TabPane tabID={IntegrationTab.HEADERS}>
           <RequestHeaders headers={headers} onChange={onChange} factory={keyPairFactory} />
         </TabPane>
 
-        <TabPane tabId={IntegrationTab.BODY}>
+        <TabPane tabID={IntegrationTab.BODY}>
           {selectedAction !== Node.Api.APIActionType.GET && (
             <RequestBody onChange={onChange} body={body} content={content} bodyInputType={bodyInputType} factory={keyPairFactory} />
           )}
         </TabPane>
 
-        <TabPane tabId={IntegrationTab.PARAMS}>
+        <TabPane tabID={IntegrationTab.PARAMS}>
           <RequestParams onChange={onChange} parameters={parameters} factory={keyPairFactory} />
         </TabPane>
-      </TabContent>
+      </TabsContent>
     </>
   );
 }

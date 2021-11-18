@@ -4,6 +4,7 @@ import React from 'react';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature, useSelector } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -19,8 +20,10 @@ const StartEditor: NodeEditor<Realtime.NodeData.Start> = ({ data, onChange, push
   const platform = React.useContext(PlatformContext)!;
   const isRootDiagram = useSelector(Creator.isRootDiagramActiveSelector);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
-  const componentDefaultLabel = topicsAndComponents.isEnabled ? 'Component starts here' : 'Conversation continues here';
+  const componentDefaultLabel =
+    topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? 'Component starts here' : 'Conversation continues here';
 
   return (
     <Content>

@@ -1,4 +1,4 @@
-import { PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY, VARIABLES_KEY, VERSION_KEY } from '@realtime-sdk/constants';
+import { COMPONENTS_KEY, PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY, TOPICS_KEY, VARIABLES_KEY, VERSION_KEY } from '@realtime-sdk/constants';
 import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, Version } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
@@ -11,6 +11,8 @@ const versionVariablesType = Utils.protocol.typeFactory(versionType(VARIABLES_KE
 const versionSettingsType = Utils.protocol.typeFactory(versionType(SETTINGS_KEY));
 const versionSessionType = Utils.protocol.typeFactory(versionSettingsType(SESSION_KEY));
 const versionPublishingType = Utils.protocol.typeFactory(versionType(PUBLISHING_KEY));
+const topicsType = Utils.protocol.typeFactory(versionType(TOPICS_KEY));
+const componentsType = Utils.protocol.typeFactory(versionType(COMPONENTS_KEY));
 
 // RPC
 
@@ -47,10 +49,24 @@ export interface PatchPublishingPayload extends BaseVersionPayload {
   publishing: Partial<AnyVersionPublishing>;
 }
 
+export interface ReorderTopicsPayload extends BaseVersionPayload {
+  to: number;
+  from: number;
+}
+
+export interface ReorderComponentsPayload extends BaseVersionPayload {
+  to: number;
+  from: number;
+}
+
 export const patchSettings = Utils.protocol.createAction<PatchSettingsPayload>(versionSettingsType('PATCH'));
 
 export const patchSession = Utils.protocol.createAction<PatchSessionPayload>(versionSessionType('PATCH'));
 
 export const patchPublishing = Utils.protocol.createAction<PatchPublishingPayload>(versionPublishingType('PATCH'));
+
+export const reorderTopics = Utils.protocol.createAction<ReorderTopicsPayload>(topicsType('REORDER'));
+
+export const reorderComponents = Utils.protocol.createAction<ReorderComponentsPayload>(componentsType('REORDER'));
 
 export const crud = createCRUDActions<BaseProjectPayload, AnyVersion>(versionType);

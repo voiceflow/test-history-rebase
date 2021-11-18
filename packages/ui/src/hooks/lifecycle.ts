@@ -1,4 +1,7 @@
+import { Utils } from '@voiceflow/common';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+
+import { useCreateConst } from './cache';
 
 export enum LifecyclePhase {
   MOUNTING = 'mounting',
@@ -63,18 +66,24 @@ export const useTeardown = (callback: () => void, dependencies: any[] = []) => {
   );
 };
 
-export const useOnScreen = (ref: React.RefObject<any>) => {
+export const useOnScreen = <T extends Element>(ref: React.RefObject<T>): boolean => {
   const [isIntersecting, setIntersecting] = useState(false);
 
-  const observer = new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting));
+  const observer = useCreateConst(() => new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting)));
 
   useEffect(() => {
-    observer.observe(ref?.current);
-    // Remove the observer as soon as the component is unmounted
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+    const element = ref.current;
+
+    if (!element) {
+      return Utils.functional.noop;
+    }
+
+    observer.observe(element);
+
+    return () => observer.unobserve(element);
+  }, [ref.current]);
+
+  useTeardown(() => observer.disconnect());
 
   return isIntersecting;
 };

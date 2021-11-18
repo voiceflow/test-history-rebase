@@ -546,3 +546,9 @@ export const RESERVED_JS_WORDS = [
   'with',
   'yield',
 ];
+
+export enum PageProgressBar {
+  CANVAS_LOADING = 'CANVAS_LOADING',
+  TOPIC_CREATING = 'TOPIC_CREATING',
+  COMPONENT_CREATING = 'COMPONENT_CREATING',
+}

@@ -39,7 +39,7 @@ const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtim
   const diagramMap = React.useContext(DiagramMapContext)!;
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 
-  const goToDiagram = React.useCallback(() => {
+  const onClickComponent = React.useCallback(() => {
     perf.action(PerfAction.COMPONENT_NODE__LINK_CLICK);
 
     if (data.diagramID) goToDiagramHistoryPush(data.diagramID);
@@ -47,7 +47,9 @@ const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtim
 
   const label = data.diagramID ? diagramMap[data.diagramID]?.name : null;
 
-  return <ComponentStep label={label} nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} onClickComponent={goToDiagram} />;
+  return (
+    <ComponentStep label={label} nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} onClickComponent={onClickComponent} />
+  );
 };
 
 export default ConnectedComponentStep;

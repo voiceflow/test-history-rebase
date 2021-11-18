@@ -7,6 +7,7 @@ import addLocalVariable from './addLocalVariable';
 import { loadViewersReducer, updateDiagramViewers } from './awareness';
 import crudReducers from './crud';
 import loadIntentSteps from './loadIntentSteps';
+import reloadIntentSteps from './reloadIntentSteps';
 import removeDiagram from './remove';
 import removeIntentSteps from './removeIntentSteps';
 import removeLocalVariable from './removeLocalVariable';
@@ -26,6 +27,7 @@ const realtimeDiagramReducer = createRootCRUDReducer<DiagramState>(INITIAL_STATE
   .immerCase(...updateIntentSteps)
   .immerCase(...loadViewersReducer)
   .immerCase(...updateDiagramViewers)
+  .immerCase(...reloadIntentSteps)
   .build();
 
 export default realtimeDiagramReducer;

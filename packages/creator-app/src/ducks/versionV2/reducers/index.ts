@@ -10,6 +10,8 @@ import patchSession from './patchSession';
 import patchSettings from './patchSettings';
 import removeDiagram from './removeDiagram';
 import removeGlobalVariable from './removeGlobalVariable';
+import reorderComponents from './reorderComponents';
+import reorderTopics from './reorderTopics';
 
 const versionReducer = createRootCRUDReducer<VersionState>(INITIAL_STATE, crudReducers)
   .immerCase(...addDiagram)
@@ -19,6 +21,8 @@ const versionReducer = createRootCRUDReducer<VersionState>(INITIAL_STATE, crudRe
   .immerCase(...patchPublishing)
   .immerCase(...patchSession)
   .immerCase(...patchSettings)
+  .immerCase(...reorderTopics)
+  .immerCase(...reorderComponents)
   .build();
 
 export default versionReducer;

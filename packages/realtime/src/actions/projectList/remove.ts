@@ -13,6 +13,7 @@ class RemoveProjectList extends AbstractWorkspaceChannelControl<RemoveProjectLis
   protected process = async (ctx: Context, { payload }: Action<RemoveProjectListPayload>) => {
     const { creatorID } = ctx.data;
     const projectLists = await this.services.projectList.getAll(creatorID, payload.workspaceID);
+
     const targetProjectList = projectLists.find((list) => list.board_id === payload.key);
 
     if (!targetProjectList) return;

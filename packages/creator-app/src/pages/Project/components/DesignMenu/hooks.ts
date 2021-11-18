@@ -4,22 +4,24 @@ import { ConnectDropTarget, useDrop } from 'react-dnd';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { DragItem, ModalType } from '@/constants';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
-import { Feature, useFeature, useHasPermissions, useHotKeys, useModals, usePermission, useSelector } from '@/hooks';
+import { useFeature, useHasPermissions, useHotKeys, useModals, usePermission, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import { Tab, TabItem, TABS, TOPICS_TABS } from './constants';
 
-export const useTabs = (): { tabs: TabItem[]; selectedTab: Tab; topicsAndComponents: Feature } => {
+export const useTabs = (): { tabs: TabItem[]; selectedTab: Tab } => {
   const activeTab = useSelector(UI.activeCreatorMenuSelector);
   const hasPermissions = useHasPermissions();
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const tabs = React.useMemo(() => {
-    const featureTabs = topicsAndComponents.isEnabled ? TOPICS_TABS : TABS;
+    const featureTabs = topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? TOPICS_TABS : TABS;
 
     return featureTabs.filter(({ permissions }) => hasPermissions(permissions));
-  }, [hasPermissions, topicsAndComponents.isEnabled]);
+  }, [hasPermissions, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]);
 
   const selectedTab = React.useMemo(() => {
     if (tabs.find(({ value }) => value === activeTab)) {
@@ -29,7 +31,7 @@ export const useTabs = (): { tabs: TabItem[]; selectedTab: Tab; topicsAndCompone
     return tabs[0].value;
   }, [activeTab, tabs]);
 
-  return { tabs, selectedTab, topicsAndComponents };
+  return { tabs, selectedTab };
 };
 
 /* This hook doesn't do anything functional,
@@ -60,6 +62,7 @@ export const useMenuHotKeys = ({ openByHover, setActiveTab, isOpenByHover, toggl
   const imModal = useModals(ModalType.INTERACTION_MODEL);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   // TODO: remove this after topics and components are fully implemented
   useHotKeys(
@@ -68,7 +71,7 @@ export const useMenuHotKeys = ({ openByHover, setActiveTab, isOpenByHover, toggl
       setActiveTab(Tab.FLOWS);
       openByHover();
     },
-    { preventDefault: true, disable: !!topicsAndComponents.isEnabled }
+    { preventDefault: true, disable: !!topicsAndComponents.isEnabled && isTopicsAndComponentsVersion }
   );
 
   // TODO: remove this after topics and components are fully implemented
@@ -78,7 +81,7 @@ export const useMenuHotKeys = ({ openByHover, setActiveTab, isOpenByHover, toggl
       setActiveTab(Tab.STEPS);
       openByHover();
     },
-    { preventDefault: true, disable: !!topicsAndComponents.isEnabled || !canEditCanvas }
+    { preventDefault: true, disable: (!!topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) || !canEditCanvas }
   );
 
   useHotKeys(
@@ -87,7 +90,7 @@ export const useMenuHotKeys = ({ openByHover, setActiveTab, isOpenByHover, toggl
       setActiveTab(Tab.LAYERS);
       openByHover();
     },
-    { preventDefault: true, disable: !topicsAndComponents.isEnabled }
+    { preventDefault: true, disable: !(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) }
   );
 
   useHotKeys(
@@ -96,7 +99,7 @@ export const useMenuHotKeys = ({ openByHover, setActiveTab, isOpenByHover, toggl
       setActiveTab(Tab.STEPS);
       openByHover();
     },
-    { preventDefault: true, disable: !topicsAndComponents.isEnabled || !canEditCanvas }
+    { preventDefault: true, disable: !(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) || !canEditCanvas }
   );
 
   useHotKeys(

@@ -10,7 +10,14 @@ import { ExtraOptions } from './types';
 interface ProjectClient {
   canRead: (creatorID: number, projectID: string) => Promise<boolean>;
   deleteV2: (projectID: string) => Promise<boolean>;
-  platform: (platform?: Nullish<PlatformType>) => any;
+  platform: <P extends BaseModels.Project<any, any>>(
+    platform?: Nullish<PlatformType>
+  ) => ProjectPlatformClient<P> & {
+    alexa: ProjectPlatformClient<Realtime.AlexaProject>;
+    google: ProjectPlatformClient<Realtime.GoogleProject>;
+    general: ProjectPlatformClient<Realtime.DialogflowProject>;
+    dialogflow: ProjectPlatformClient<Realtime.GeneralProject>;
+  };
 }
 
 export interface ProjectPlatformClient<P extends BaseModels.Project<any, any>> {
@@ -53,7 +60,7 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions): Proj
       google: googleClient,
       dialogflow: dialogflowClient,
       general: generalClient,
-    }),
+    }) as any,
   };
 };
 

@@ -103,7 +103,7 @@ export type SelectProps<O, V> = {
   searchable?: boolean;
   rightAction?: React.ReactNode;
   placeholder?: string;
-  renderEmpty?: (options: { search: string }) => React.ReactNode;
+  renderEmpty?: Nullable<(options: { search: string; close: VoidFunction }) => React.ReactNode>;
   onMouseDown?: React.MouseEventHandler;
   renderAsSpan?: boolean;
 

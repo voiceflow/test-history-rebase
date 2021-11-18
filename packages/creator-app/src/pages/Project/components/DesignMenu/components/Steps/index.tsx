@@ -8,7 +8,7 @@ import { BlockCategory, BlockType, DragItem } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useDragPreview, useFeature } from '@/hooks';
+import { useDragPreview, useFeature, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
@@ -20,6 +20,7 @@ import { StepDragItem } from './types';
 const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expandedSections }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const sections = React.useMemo(() => {
     const platformSections = getSections(platform);
@@ -28,14 +29,14 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
       ...platformSection,
       steps: platformSection.steps.filter((step) => {
         if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
-        if (!topicsAndComponents.isEnabled && step.type === BlockType.COMPONENT) return false;
-        if (topicsAndComponents.isEnabled && step.type === BlockType.FLOW) return false;
+        if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
+        if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
         if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
 
         return true;
       }),
     }));
-  }, [platform]);
+  }, [platform, isTopicsAndComponentsVersion]);
 
   const expandedSectionsMap = React.useMemo(
     () => expandedSections.reduce<Partial<Record<BlockCategory, boolean>>>((obj, type) => Object.assign(obj, { [type]: true }), {}),
@@ -49,7 +50,7 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
   return (
     <ScrollbarsContainer>
       <CustomScrollbars>
-        <Container id={Identifier.STEP_MENU} fadeLeft={!!topicsAndComponents.isEnabled}>
+        <Container id={Identifier.STEP_MENU} fadeLeft={!!topicsAndComponents.isEnabled && isTopicsAndComponentsVersion}>
           {sections.map(({ type, label, steps }) =>
             steps.length ? (
               <UncontrolledCollapse

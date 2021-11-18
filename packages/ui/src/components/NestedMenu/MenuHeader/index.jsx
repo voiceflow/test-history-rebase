@@ -59,14 +59,12 @@ function MenuHeader({
           ref={focusedOptionIndex === 0 ? focusedOptionRef : null}
           isFocused={focusedOptionIndex === 0}
           onMouseEnter={onFocus}
-          onClick={() => {
-            if (value) {
-              onCreate(value);
-            }
-          }}
+          onClick={() => value && onCreate(value)}
         >
           {!isDropdown && <Box style={{ marginRight: '4px', color: '#6e849a' }}>{createLabel}</Box>}
+
           {inputVal && <>"</>}
+
           <MenuInput
             onClick={(e) => {
               if (!inDropdownSearch) {
@@ -80,6 +78,7 @@ function MenuHeader({
             onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
             placeholder={createInputPlaceholder}
           />
+
           {inputVal && <>"</>}
         </MenuHeaderWrapper>
       )}

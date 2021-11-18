@@ -1,4 +1,4 @@
-import { Flex } from '@voiceflow/ui';
+import { BoxFlex } from '@voiceflow/ui';
 import React from 'react';
 
 import Members from '@/components/Members';
@@ -28,13 +28,13 @@ const CanvasViewers: React.FC<CanvasViewersProps> = ({ flat, withAdd = true }) =
   if (!canViewCollaborators) return null;
 
   return (
-    <Flex>
+    <BoxFlex minWidth={53}>
       <Members
         flat={flat}
-        members={atomicActions.isEnabled ? viewersV2 : viewers}
         onAdd={withAdd && canAddCollaborators ? () => toggleCollaborators() : undefined}
+        members={atomicActions.isEnabled ? viewersV2 : viewers}
       />
-    </Flex>
+    </BoxFlex>
   );
 };
 

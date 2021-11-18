@@ -1,4 +1,4 @@
-import { Nullable, Utils } from '@voiceflow/common';
+import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -41,21 +41,18 @@ interface TopicsAPI {
 
 export const useTopics = (): TopicsAPI => {
   const intentSteps = useSelector(DiagramV2.intentStepsSelector);
-  const topics = useSelector(VersionV2.active.topicsSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
   const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
   const topicDiagrams = useSelector(DiagramV2.active.topicDiagramsSelector);
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
   const { target: focusedNodeID, isActive: isFocusedNodeActive } = useSelector(Creator.creatorFocusSelector);
 
-  const saveTopics = useDispatch(Version.saveTopics);
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
+  const reorderTopics = useDispatch(Version.reorderTopics);
   const createTopicDiagram = useDispatch(DiagramDuck.createTopicDiagram);
 
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [lastCreatedDiagramID, setLastCreatedDiagramID] = React.useState<Nullable<string>>(null);
-
-  const onReorderTopics = React.useCallback((from: number, to: number) => saveTopics(Utils.array.reorder(topics, from, to)), [topics]);
 
   const onCreateTopic = React.useCallback(async () => {
     setSearchValue('');
@@ -121,7 +118,7 @@ export const useTopics = (): TopicsAPI => {
     focusedNodeID: isFocusedNodeActive ? focusedNodeID : null,
     setSearchValue,
     activeDiagramID,
-    onReorderTopics,
+    onReorderTopics: reorderTopics,
     searchMatchValue: lowerCasedSearchValue,
     searchTopicsItems,
     searchOpenedTopics,

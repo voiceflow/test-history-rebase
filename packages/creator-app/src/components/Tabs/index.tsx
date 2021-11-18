@@ -1,10 +1,12 @@
-import { TippyTooltip, TippyTooltipProps, useDidUpdateEffect } from '@voiceflow/ui';
+import { TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
-import { useKeygen, useOnScreen } from '@/hooks';
+import { useKeygen, useOnScreen, useRAF } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { ActiveLine, Tab as TabItem, Wrapper } from './components';
+
+export { TabPane, TabsContent } from './components';
 
 export interface Tab<V extends string = string> {
   id?: string;
@@ -25,30 +27,28 @@ export interface TabsProps<V extends string = string> {
 }
 
 const Tabs = <V extends string = string>({ as = 'button', options, selected, onChange, innerRef }: TabsProps<V>): React.ReactElement<any, any> => {
-  const genKey = useKeygen();
   const tabsRef = React.useRef<Record<string, HTMLElement | null>>({});
   const activeLineRef = React.useRef<HTMLDivElement>(null);
-  const [activeLineColor, setActiveLineColor] = React.useState<string | undefined>();
+
+  const genKey = useKeygen();
+  const [scheduler] = useRAF();
+
+  const selectedOption = React.useMemo(() => options.find(({ value }) => value === selected), [options, selected]);
 
   const onRef = (value: string) => (node: HTMLElement | null) => {
     tabsRef.current[value] = node;
   };
+
   const ref = React.useRef<HTMLDivElement>(null);
   const isVisible = useOnScreen(ref);
 
-  useDidUpdateEffect(() => {
-    const selectedOption = options.find(({ value }) => value === selected);
+  React.useLayoutEffect(() => {
     const selectedNode = selectedOption ? tabsRef.current[selectedOption.value] : null;
-    let animationFrame: number;
-
-    if (selectedOption?.color) {
-      setActiveLineColor(selectedOption.color);
-    }
 
     if (selectedNode && selectedNode.parentNode) {
-      animationFrame = requestAnimationFrame(() => {
-        const parentNode = selectedNode.parentNode as HTMLElement; // eslint-disable-line xss/no-mixed-html
+      const parentNode = selectedNode.parentNode as HTMLElement; // eslint-disable-line xss/no-mixed-html
 
+      scheduler(() => {
         const { left: wrapperNodeLeft } = parentNode.getBoundingClientRect?.();
         const { left: selectedNodeLeft } = selectedNode.getBoundingClientRect();
 
@@ -58,13 +58,7 @@ const Tabs = <V extends string = string>({ as = 'button', options, selected, onC
         }
       });
     }
-
-    return () => {
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-      }
-    };
-  }, [options, selected, isVisible]);
+  }, [options, selectedOption, isVisible]);
 
   return (
     <Wrapper ref={ref} className={ClassName.TABS}>
@@ -85,7 +79,13 @@ const Tabs = <V extends string = string>({ as = 'button', options, selected, onC
         );
 
         return tooltip ? (
-          <TippyTooltip {...tooltip} tag="div" key={genKey(value)} ref={(instance) => onRef(value)(instance?.tooltipDOM ?? null)}>
+          <TippyTooltip
+            {...tooltip}
+            tag="div"
+            key={genKey(value)}
+            ref={(instance) => onRef(value)(instance?.tooltipDOM ?? null)}
+            style={{ display: 'block', height: '100%', ...tooltip.style }}
+          >
             {tab}
           </TippyTooltip>
         ) : (
@@ -93,7 +93,7 @@ const Tabs = <V extends string = string>({ as = 'button', options, selected, onC
         );
       })}
 
-      <ActiveLine color={activeLineColor} ref={activeLineRef} />
+      <ActiveLine color={selectedOption?.color} ref={activeLineRef} />
     </Wrapper>
   );
 };

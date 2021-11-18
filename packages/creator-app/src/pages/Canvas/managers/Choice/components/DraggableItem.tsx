@@ -13,6 +13,7 @@ import * as Documentation from '@/config/documentation';
 import { FeatureFlag } from '@/config/features';
 import { DistinctPlatform } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature, useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -63,6 +64,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
   const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
 
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const platformItem = getDistinctPlatformValue(platform, item);
 
@@ -107,13 +109,22 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
           <Section
             isNested
             dividers={false}
-            customContentStyling={{ paddingTop: 0, paddingBottom: topicsAndComponents.isEnabled ? '16px' : undefined }}
+            customContentStyling={{
+              paddingTop: 0,
+              paddingBottom: topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? '16px' : undefined,
+            }}
           >
-            <IntentSelectComponent intent={intent} clearable={!intent} onChange={patchPlatformData} intents={availableIntents} />
+            <IntentSelectComponent
+              intent={intent}
+              intents={availableIntents}
+              onChange={patchPlatformData}
+              clearable={!intent}
+              renderEmpty={!availableIntents.length ? () => <div /> : null}
+            />
           </Section>
 
           <IntentForm isNested intent={intent} onChange={patchPlatformData} pushToPath={pushToPath}>
-            {topicsAndComponents.isEnabled && (
+            {topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && (
               <>
                 <FormControl label="Intent Action" tooltip={<HelpTooltip />}>
                   <RadioGroup checked={platformItem.action} options={INTENT_ACTION_OPTIONS} onChange={(action) => patchPlatformData({ action })} />

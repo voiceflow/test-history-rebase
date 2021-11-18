@@ -81,24 +81,39 @@ class ProjectService extends AbstractControl {
   public async create(creatorID: number, templateID: string, channel: string, data: Realtime.NewProject): Promise<Realtime.DBProject> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    return client.project.platform(data.platform as Constants.PlatformType).duplicate(templateID, data, { channel });
+    return client.project.platform<Realtime.DBProject>(data.platform as Constants.PlatformType).duplicate(templateID, data, { channel });
   }
 
-  public async importFromFile(creatorID: number, workspaceID: string, data: string): Promise<Realtime.DBProject> {
+  public async importFromFile(
+    creatorID: number,
+    workspaceID: string,
+    { data, vfVersion }: { data: string; vfVersion: number }
+  ): Promise<Realtime.DBProject> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    return client.version.import(workspaceID, JSON.parse(data));
+    const importJSON = JSON.parse(data) as {
+      project: BaseModels.Project<any, any>;
+      version: BaseModels.Version<any>;
+      diagrams: Record<string, BaseModels.Diagram<any>>;
+    };
+
+    if (importJSON.project && typeof importJSON.project === 'object') {
+      // eslint-disable-next-line no-underscore-dangle
+      importJSON.project._version = vfVersion;
+    }
+
+    return client.version.import(workspaceID, importJSON);
   }
 
   public async duplicate(
     creatorID: number,
     projectID: string,
-    data: Optional<Pick<Realtime.DBProject, 'teamID' | 'name'>, 'name'>
+    data: Optional<Pick<Realtime.DBProject, 'teamID' | 'name' | '_version'>, 'name'>
   ): Promise<Realtime.AnyDBProject> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
     const platform = await this.getPlatform(creatorID, projectID);
 
-    return client.project.platform(platform).duplicate(projectID, data);
+    return client.project.platform<Realtime.AnyDBProject>(platform).duplicate(projectID, data);
   }
 
   public async patch(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {

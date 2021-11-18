@@ -12,7 +12,7 @@ import { Content } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { FadeLeftContainer } from '@/styles/animations';
 
-import { Component, Footer, Mapping } from './components';
+import { ComponentSelect, Footer, Mapping } from './components';
 import { variableMappingFactory } from './components/Mapping/components/MappingSection';
 
 const ComponentEditor: NodeEditor<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ data, onChange }) => {
@@ -32,6 +32,12 @@ const ComponentEditor: NodeEditor<Realtime.NodeData.Component, Realtime.NodeData
     onChange({ inputs: [], outputs: [] });
   }, [onChange]);
 
+  const onEdit = React.useCallback(() => {
+    if (diagram) {
+      goToDiagram(diagram.id);
+    }
+  }, [diagram]);
+
   React.useEffect(() => {
     if (diagram?.id) {
       loadComponentVariables(diagram.id);
@@ -45,7 +51,7 @@ const ComponentEditor: NodeEditor<Realtime.NodeData.Component, Realtime.NodeData
       fillHeight={false}
       footer={() => (
         <Footer
-          onEdit={() => diagram && goToDiagram(diagram.id)}
+          onEdit={onEdit}
           editable={!!diagram}
           blockType={data.type}
           addVariableMapping={addVariableMapping}
@@ -55,7 +61,7 @@ const ComponentEditor: NodeEditor<Realtime.NodeData.Component, Realtime.NodeData
       )}
     >
       <Section>
-        <Component onChange={onChange} diagramID={diagram?.id ?? null} />
+        <ComponentSelect onChange={onChange} diagramID={diagram?.id ?? null} />
 
         <BlockText mt={12} fontSize={theme.fontSizes.s} color={theme.colors.secondary}>
           Changes to this components will update globally. <Link href={Documentation.COMPONENT_STEP}>Learn more</Link>

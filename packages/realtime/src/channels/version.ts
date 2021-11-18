@@ -28,7 +28,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       this.services.diagram
         .getAll(creatorID, ctx.params.versionID)
         .then((dbDiagrams) => Realtime.Adapters.diagramAdapter.mapFromDB(dbDiagrams, { rootDiagramID: version.rootDiagramID })),
-      this.services.version.getIntentSteps(creatorID, ctx.params.versionID, version.rootDiagramID),
+      this.services.version.getIntentSteps(creatorID, ctx.params.versionID),
     ]);
 
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbVersion.platformData.slots);

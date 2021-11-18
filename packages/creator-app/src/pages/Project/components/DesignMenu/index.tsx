@@ -1,6 +1,7 @@
 import { useDidUpdateEffect, useEnableDisable } from '@voiceflow/ui';
 import React from 'react';
 
+import { TabPane, TabsContent } from '@/components/Tabs';
 import { Permission } from '@/config/permissions';
 import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
@@ -86,13 +87,24 @@ const DesignMenu: React.FC = () => {
       <Content isOpen={isOpen} activeTab={selectedTab} ref={designMenuRef}>
         <Header tabs={tabs} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={setActiveTab} />
 
-        {selectedTab === Tab.STEPS && canEditCanvas && <Steps />}
-        {selectedTab === Tab.LAYERS && <Layers />}
+        <TabsContent selected={selectedTab}>
+          {canEditCanvas && (
+            <TabPane tabID={Tab.STEPS}>
+              <Steps />
+            </TabPane>
+          )}
 
-        {/**
-         * TODO: remove when topics and components are merged
-         */}
-        {selectedTab === Tab.FLOWS && <Flows />}
+          <TabPane tabID={Tab.LAYERS}>
+            <Layers />
+          </TabPane>
+
+          {/**
+           * TODO: remove when topics and components are merged
+           */}
+          <TabPane tabID={Tab.FLOWS}>
+            <Flows />
+          </TabPane>
+        </TabsContent>
       </Content>
     </Container>
   );

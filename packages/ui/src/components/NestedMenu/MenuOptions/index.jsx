@@ -6,6 +6,7 @@ import { Manager, Reference } from 'react-popper';
 
 import { SelectItem, SubLevelIcon } from './components';
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 function MenuOptions({
   onHide,
   options,
@@ -36,7 +37,9 @@ function MenuOptions({
   let groupedIndex = 0;
 
   if (!options.length && renderEmpty) {
-    return <SelectItem disabled>{renderEmpty({ search: searchLabel, close: onHide })}</SelectItem>;
+    const empty = renderEmpty({ search: searchLabel, close: onHide });
+
+    return empty ? <SelectItem disabled>{empty}</SelectItem> : null;
   }
 
   // eslint-disable-next-line no-shadow

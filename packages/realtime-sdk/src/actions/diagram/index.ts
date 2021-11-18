@@ -3,7 +3,9 @@ import { COMPONENT_KEY, TOPIC_KEY, VARIABLES_KEY } from '@realtime-sdk/constants
 import { Diagram } from '@realtime-sdk/models';
 import { BaseDiagramPayload, BaseVersionPayload, Point } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
+import { Required } from 'utility-types';
 
+import { diagram } from '../../utils';
 import { diagramType } from './utils';
 
 export * as awareness from './awareness';
@@ -28,6 +30,11 @@ export interface LoadIntentStepsPayload extends BaseVersionPayload {
   intentSteps: { [diagramID: string]: { [nodeID: string]: string | null } };
 }
 
+export interface ReloadIntentStepsPayload extends BaseVersionPayload {
+  diagramID: string;
+  intentSteps: { [nodeID: string]: string | null };
+}
+
 export interface UpdateIntentStepsPayload extends BaseDiagramPayload {
   stepID: string;
   intentID: string | null;
@@ -46,6 +53,7 @@ export const loadIntentSteps = Utils.protocol.createAction<LoadIntentStepsPayloa
 export const updateIntentSteps = Utils.protocol.createAction<UpdateIntentStepsPayload>(diagramIntentStepsType('UPDATE'));
 export const registerIntentSteps = Utils.protocol.createAction<RegisterIntentStepsPayload>(diagramIntentStepsType('REGISTER'));
 export const reorderIntentSteps = Utils.protocol.createAction<ReorderIntentStepsPayload>(diagramIntentStepsType('REORDER'));
+export const reloadIntentSteps = Utils.protocol.createAction<ReloadIntentStepsPayload>(diagramIntentStepsType('RELOAD'));
 
 // nodes
 
@@ -65,11 +73,12 @@ export const dragBlocks = Utils.protocol.createAction<DragMoveBlocksPayload>(dia
 // crud
 
 export interface CreateDiagramPayload extends BaseVersionPayload {
-  name: string;
+  diagram: Required<Partial<diagram.PrimitiveDiagram>, 'name'>;
 }
 
 export const createTopic = Utils.protocol.createAction.async<CreateDiagramPayload, Diagram>(diagramTopicType('CREATE'));
 export const createComponent = Utils.protocol.createAction.async<CreateDiagramPayload, Diagram>(diagramComponentType('CREATE'));
 export const duplicate = Utils.protocol.createAction.async<BaseDiagramPayload, Diagram>(diagramType('DUPICATE'));
+export const convertToTopic = Utils.protocol.createAction<BaseDiagramPayload>(diagramType('CONVERT_TO_TOPIC'));
 
 export const crud = createCRUDActions<BaseVersionPayload, Diagram>(diagramType);

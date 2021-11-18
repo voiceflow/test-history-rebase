@@ -122,6 +122,9 @@ export const duplicateProject =
     const sourceWorkspaceID = Session.activeWorkspaceIDSelector(state);
     const project = projectByIDSelector(state, { id: projectID });
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+
+    const vfVersion = isTopicsAndComponents ? Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION : Realtime.CURRENT_PROJECT_VERSION;
 
     Errors.assertProject(projectID, project);
 
@@ -130,10 +133,10 @@ export const duplicateProject =
 
       await dispatch.sync(
         Realtime.project.duplicate.started({
-          workspaceID: sourceWorkspaceID,
-          projectID,
+          data: { teamID: targetWorkspaceID, name: `${project.name} (COPY)`, _version: vfVersion },
           listID,
-          data: { teamID: targetWorkspaceID, name: `${project.name} (COPY)` },
+          projectID,
+          workspaceID: sourceWorkspaceID,
         })
       );
 
@@ -142,7 +145,7 @@ export const duplicateProject =
 
     const copiedProject = await client
       .platform(project.platform)
-      .project.copy(project.id, { teamID: targetWorkspaceID, name: `${project.name} (COPY)` })
+      .project.copy(project.id, { teamID: targetWorkspaceID, name: `${project.name} (COPY)`, _version: vfVersion })
       .then(Realtime.Adapters.projectAdapter.fromDB);
 
     dispatch(Project.crud.add(copiedProject.id, copiedProject));
@@ -157,22 +160,25 @@ export const importProject =
   async (dispatch, getState) => {
     const state = getState();
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+
+    const vfVersion = isTopicsAndComponents ? Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION : Realtime.CURRENT_PROJECT_VERSION;
 
     const project = await client.api.project.get(projectID).then(Realtime.Adapters.projectAdapter.fromDB);
 
     if (isAtomicActions) {
       return dispatch(
         waitAsync(Realtime.project.duplicate, {
-          workspaceID: project.workspaceID,
+          data: { teamID: targetWorkspaceID, _version: vfVersion },
           projectID,
-          data: { teamID: targetWorkspaceID },
+          workspaceID: project.workspaceID,
         })
       );
     }
 
     const copiedProject = await client
       .platform(project.platform as Constants.PlatformType)
-      .project.copy(projectID, { teamID: targetWorkspaceID })
+      .project.copy(projectID, { teamID: targetWorkspaceID, _version: vfVersion })
       .then(Realtime.Adapters.projectAdapter.fromDB);
 
     if (project.workspaceID === targetWorkspaceID) {

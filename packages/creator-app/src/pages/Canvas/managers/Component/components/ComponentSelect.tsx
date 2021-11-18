@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Select } from '@voiceflow/ui';
+import { Box, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
@@ -9,17 +9,16 @@ import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 
-interface ComponentProps {
+interface ComponentSelectProps {
   onChange: NodeDataUpdater<Realtime.NodeData.Component>;
   diagramID: Nullable<string>;
 }
 
-const Component: React.FC<ComponentProps> = ({ onChange, diagramID }) => {
+const ComponentSelect: React.FC<ComponentSelectProps> = ({ onChange, diagramID }) => {
   const componentDiagrams = useSelector(DiagramV2.active.componentDiagramsSelector);
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
   const createEmptyComponent = useDispatch(Diagram.createEmptyComponent);
-  const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
   const optionsMap = React.useMemo<Record<string, typeof componentDiagrams[number]>>(
     () => componentDiagrams.reduce((acc, diagram) => Object.assign(acc, { [diagram.id]: diagram }), {}),
@@ -37,14 +36,12 @@ const Component: React.FC<ComponentProps> = ({ onChange, diagramID }) => {
 
   const onCreate = React.useCallback(
     async (name: string) => {
-      await saveActiveDiagram();
-
       const newDiagramID = await createEmptyComponent(name);
 
       setSelectedDiagram(newDiagramID);
       goToDiagram(newDiagramID);
     },
-    [setSelectedDiagram, goToDiagram, createEmptyComponent, saveActiveDiagram]
+    [setSelectedDiagram, goToDiagram, createEmptyComponent]
   );
 
   const validateCreate = React.useCallback(
@@ -71,6 +68,7 @@ const Component: React.FC<ComponentProps> = ({ onChange, diagramID }) => {
       clearable={!!diagramID}
       creatable
       searchable
+      renderEmpty={componentDiagrams.length ? null : ({ search }) => (!search ? <Box flex={1}>Create a new Component</Box> : null)}
       placeholder="Name new component or select existing"
       validateCreate={validateCreate}
       getOptionValue={(option) => option?.id}
@@ -80,4 +78,4 @@ const Component: React.FC<ComponentProps> = ({ onChange, diagramID }) => {
   );
 };
 
-export default Component;
+export default ComponentSelect;

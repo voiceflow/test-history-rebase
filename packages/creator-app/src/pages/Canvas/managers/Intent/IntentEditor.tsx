@@ -11,6 +11,7 @@ import { FeatureFlag } from '@/config/features';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useFeature, useSelector, useSyncDispatch } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
@@ -29,6 +30,7 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.Inten
   const getPlatformIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
 
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
   const validateTopicAvailability = useDispatch(Creator.validateTopicAvailability);
 
   const platformData = getDistinctPlatformValue(platform, data);
@@ -46,7 +48,7 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.Inten
   const onChangeIntent = async ({ intent }: { intent: Nullable<string> }) => {
     await patchPlatformData({ intent });
 
-    if (topicsAndComponents.isEnabled) {
+    if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) {
       updateIntentSteps({ ...engine.context, stepID: data.nodeID, intentID: intent });
     }
 
@@ -73,7 +75,9 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.Inten
         <IntentForm intent={intent} pushToPath={pushToPath} />
       </NamespaceProvider>
 
-      {topicsAndComponents.isEnabled ? <AvailabilityManager isEnabled={isGlobalIntent} onChange={onChangeAvailability} /> : null}
+      {topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? (
+        <AvailabilityManager isEnabled={isGlobalIntent} onChange={onChangeAvailability} />
+      ) : null}
 
       <LegacyMappingsComponent intent={intent} mappings={platformData.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
     </Content>

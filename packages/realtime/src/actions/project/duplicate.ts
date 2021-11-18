@@ -30,7 +30,7 @@ class DuplicateProject extends AbstractProjectResourceControl<Realtime.project.D
     const [listID, project] = await Promise.all([
       this.getTargetListID(ctx, targetWorkspaceID, payload.listID),
       this.services.project
-        .duplicate(creatorID, payload.projectID, _.pick(payload.data, 'name', 'teamID'))
+        .duplicate(creatorID, payload.projectID, _.pick(payload.data, 'name', 'teamID', '_version'))
         .then(Realtime.Adapters.projectAdapter.fromDB),
     ]);
 

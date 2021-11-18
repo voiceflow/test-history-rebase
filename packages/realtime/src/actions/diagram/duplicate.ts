@@ -15,7 +15,20 @@ class DuplicateDiagram extends AbstractDiagramResourceControl<Realtime.BaseDiagr
 
     const uniqueName = Realtime.Utils.diagram.getUniqueCopyName(diagram.name, diagramNames);
 
-    return this.createDiagram(ctx, payload, { ...diagram, type, intentStepIDs, name: uniqueName });
+    const [newDiagram, version] = await Promise.all([
+      this.createDiagram(ctx, payload, { ...diagram, type, intentStepIDs, name: uniqueName }),
+      this.services.version.get(creatorID, payload.versionID),
+    ] as const);
+
+    await this.services.version.patch(
+      creatorID,
+      payload.versionID,
+      type === Models.DiagramType.TOPIC
+        ? { topics: [...(version.topics ?? []), { sourceID: newDiagram.id, type: Models.VersionFolderItemType.DIAGRAM }] }
+        : { components: [...(version.components ?? []), { sourceID: newDiagram.id, type: Models.VersionFolderItemType.DIAGRAM }] }
+    );
+
+    return newDiagram;
   });
 }
 

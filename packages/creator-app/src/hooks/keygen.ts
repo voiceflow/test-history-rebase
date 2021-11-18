@@ -1,13 +1,13 @@
+import { useCreateConst } from '@voiceflow/ui';
 import _isString from 'lodash/isString';
-import React from 'react';
 
 import { generateLocalKey } from '@/utils/key';
 
-const generateKey = (keygen: (value: any) => string, value: any) => (_isString(value) ? value : keygen(value));
+const generateKey = (keygen: (value: any) => string, value: any): string => (_isString(value) ? value : keygen(value));
 
 // eslint-disable-next-line import/prefer-default-export
-export function useKeygen() {
-  const keygen = React.useRef(generateLocalKey());
+export function useKeygen(): (value: any) => string {
+  const keygen = useCreateConst(generateLocalKey);
 
-  return (value: any) => generateKey(keygen.current, value);
+  return (value: any) => generateKey(keygen, value);
 }

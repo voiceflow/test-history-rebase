@@ -25,7 +25,9 @@ export const MEMBER_KEY = 'member';
 export const INVITE_KEY = 'invite';
 export const VARIABLES_KEY = 'variables';
 export const TOPIC_KEY = 'topic';
+export const TOPICS_KEY = 'topics';
 export const COMPONENT_KEY = 'component';
+export const COMPONENTS_KEY = 'components';
 export const RPC_KEY = 'rpc';
 
 export const DEFAULT_PROJECT_LIST_NAME = 'Default List';
@@ -74,3 +76,7 @@ export enum BlockVariant {
   GREEN = 'green',
   PURPLE = 'purple',
 }
+
+export const CURRENT_PROJECT_VERSION = 1.0;
+
+export const TOPICS_AND_COMPONENTS_PROJECT_VERSION = 1.2;

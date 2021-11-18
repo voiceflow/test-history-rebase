@@ -1,4 +1,5 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -94,7 +95,7 @@ class VersionService extends AbstractControl {
     await client.version.updatePlatformData(versionID, platformData);
   }
 
-  public async getIntentSteps(creatorID: number, versionID: string, rootDiagramID: string): Promise<Record<string, Record<string, string | null>>> {
+  public async getIntentSteps(creatorID: number, versionID: string): Promise<Record<string, Record<string, string | null>>> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     const { diagrams: dbDiagrams } = await client.version.export(versionID);
@@ -103,10 +104,6 @@ class VersionService extends AbstractControl {
 
     Object.keys(dbDiagrams).forEach((diagramID) => {
       const dbDiagram = dbDiagrams[diagramID];
-      const isRootDiagram = rootDiagramID === diagramID;
-      const type = dbDiagram.type ?? (isRootDiagram ? BaseModels.DiagramType.TOPIC : BaseModels.DiagramType.COMPONENT);
-
-      if (type !== BaseModels.DiagramType.TOPIC) return;
 
       const diagramIntentSteps: Record<string, string | null> = {};
       intentSteps[diagramID] = diagramIntentSteps;
@@ -119,6 +116,30 @@ class VersionService extends AbstractControl {
     });
 
     return intentSteps;
+  }
+
+  public async reorderTopics(creatorID: number, versionID: string, from: number, to: number): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    const { topics } = await client.version.get<{ topics?: BaseModels.VersionFolderItem[] }>(versionID, ['topics']);
+
+    if (!topics?.length) {
+      throw new Error('Topics are empty');
+    }
+
+    await client.version.update(versionID, { topics: Utils.array.reorder(topics, from, to) });
+  }
+
+  public async reorderComponents(creatorID: number, versionID: string, from: number, to: number): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    const { components } = await client.version.get<{ components?: BaseModels.VersionFolderItem[] }>(versionID, ['components']);
+
+    if (!components?.length) {
+      throw new Error('Components are empty');
+    }
+
+    await client.version.update(versionID, { components: Utils.array.reorder(components, from, to) });
   }
 }
 

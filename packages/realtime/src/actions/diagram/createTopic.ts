@@ -10,7 +10,10 @@ class CreateTopic extends AbstractDiagramResourceControl<Realtime.diagram.Create
     const { creatorID } = ctx.data;
 
     const [diagram, version] = await Promise.all([
-      this.createDiagram(ctx, payload, Realtime.Utils.diagram.topicDiagramFactory(payload.name)),
+      this.createDiagram(ctx, payload, {
+        ...Realtime.Utils.diagram.topicDiagramFactory(payload.diagram.name),
+        ...payload.diagram,
+      }),
       this.services.version.get(creatorID, payload.versionID),
     ]);
 

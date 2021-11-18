@@ -17,7 +17,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ tabs, locked, selectedTab, toggleLock, selectActiveTab }) => (
   <Container>
-    <Tabs selected={selectedTab} options={tabs} onChange={selectActiveTab} />
+    <Tabs options={tabs} selected={selectedTab} onChange={selectActiveTab} />
 
     <LockIconContainer id={Identifier.STEP_MENU_LOCK_BUTTON}>
       <TippyTooltip title={locked ? 'Unlock Sidebar' : 'Lock Sidebar'} position="top" distance={8} hotkey="?">

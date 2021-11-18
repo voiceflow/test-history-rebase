@@ -1,9 +1,10 @@
-import Menu from '@ui/components/Menu';
 import { ClassName } from '@ui/styles/constants';
 import { stopImmediatePropagation } from '@ui/utils';
 import React from 'react';
 import { Manager, Reference } from 'react-popper';
 
+// eslint-disable-next-line import/no-cycle
+import Menu from '../Menu';
 import { SelectItem, SubLevelIcon } from './components';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity

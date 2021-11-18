@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.23.4...@voiceflow/realtime@1.23.5) (2021-11-18)
+
+
+### Bug Fixes
+
+* **deps:** pin dependency bidirectional-adapter to 1.0.0 (vf-000) ([#4624](https://github.com/voiceflow/creator-app/issues/4624)) ([ff61956](https://github.com/voiceflow/creator-app/commit/ff61956f33a09945befe126fec1f1e0ebd7bce22))
+
+
+
+
+
 ## [1.23.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.23.3...@voiceflow/realtime@1.23.4) (2021-11-18)
 
 **Note:** Version bump only for package @voiceflow/realtime

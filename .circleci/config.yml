@@ -2,7 +2,7 @@ version: 2.1
 
 # This exposes the parameters to be overridden in the generated pipeline
 parameters:
-  build-frontend:
+  force-build-frontend:
     type: boolean
     default: false
 

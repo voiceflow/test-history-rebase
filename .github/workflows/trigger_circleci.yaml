@@ -10,4 +10,4 @@ jobs:
       - uses: voiceflow/trigger-circleci@latest
         with:
           circleci-token: ${{ secrets.CIRCLECI_TOKEN }}
-          parameters: '{ "build-frontend": true }'
+          parameters: '{ "force-build-frontend": true }'

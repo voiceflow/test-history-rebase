@@ -64,6 +64,9 @@ parameters:
   build-frontend:
     type: boolean
     default: false
+  force-build-frontend:
+    type: boolean
+    default: false
   build-backend:
     type: boolean
     default: false
@@ -139,6 +142,7 @@ jobs:
             or:
               - << pipeline.parameters.build-creator-app >>
               - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.force-build-frontend >>
               - << pipeline.parameters.build-all >>
           steps:
             - checkout
@@ -301,6 +305,7 @@ jobs:
             or:
               - << pipeline.parameters.build-admin-app >>
               - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.force-build-frontend >>
               - << pipeline.parameters.build-all >>
           steps:
             - checkout
@@ -410,6 +415,7 @@ jobs:
             or:
               - << pipeline.parameters.build-creator-app >>
               - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.force-build-frontend >>
               - << pipeline.parameters.build-all >>
           steps:
             - checkout
@@ -440,6 +446,7 @@ jobs:
             or:
               - << pipeline.parameters.build-admin-app >>
               - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.force-build-frontend >>
               - << pipeline.parameters.build-all >>
           steps:
             - checkout
@@ -526,6 +533,7 @@ jobs:
             or:
               - << pipeline.parameters.build-creator-app >>
               - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.force-build-frontend >>
               - << pipeline.parameters.build-all >>
           steps:
             - when:
@@ -551,6 +559,7 @@ jobs:
             or:
               - << pipeline.parameters.build-creator-app >>
               - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.force-build-frontend >>
               - << pipeline.parameters.build-all >>
           steps:
             - checkout
@@ -578,6 +587,7 @@ jobs:
             or:
               - << pipeline.parameters.build-admin-app >>
               - << pipeline.parameters.build-frontend >>
+              - << pipeline.parameters.force-build-frontend >>
               - << pipeline.parameters.build-all >>
           steps:
             - checkout
@@ -668,6 +678,7 @@ workflows:
       or:
         - << pipeline.parameters.build-creator-app >>
         - << pipeline.parameters.build-frontend >>
+        - << pipeline.parameters.force-build-frontend >>
         - << pipeline.parameters.build-all >>
     jobs:
       - check-track-exists:
@@ -714,6 +725,7 @@ workflows:
       or:
         - << pipeline.parameters.build-admin-app >>
         - << pipeline.parameters.build-frontend >>
+        - << pipeline.parameters.force-build-frontend >>
         - << pipeline.parameters.build-all >>
     jobs:
       - check-track-exists:
@@ -922,6 +934,7 @@ workflows:
       or:
         - << pipeline.parameters.build-creator-app >>
         - << pipeline.parameters.build-frontend >>
+        - << pipeline.parameters.force-build-frontend >>
         - << pipeline.parameters.build-all >>
     jobs:
       - build-app:
@@ -955,6 +968,7 @@ workflows:
       or:
         - << pipeline.parameters.build-admin-app >>
         - << pipeline.parameters.build-frontend >>
+        - << pipeline.parameters.force-build-frontend >>
         - << pipeline.parameters.build-all >>
     jobs:
       - build-admin:

@@ -1,19 +1,27 @@
+import { Node } from '@voiceflow/base-types';
+
 import { BlockType } from '../../../../constants';
-import { buttonsPortsAdapter } from './buttons';
-import codeAdapter from './code';
-import componentAdapter from './component';
-import directiveAdapter from './directive';
-import exitAdapter from './exit';
-import flowAdapter from './flow';
-import ifAdapter, { ifPortsAdapter } from './if';
-import integrationAdapter from './integration';
-import { interactionPortsAdapter } from './interaction';
-import { promptPortsAdapter } from './prompt';
-import randomAdapter from './random';
-import setAdapter from './set';
-import textAdapter from './text';
-import traceAdapter, { tracePortsAdapter } from './trace';
-import visualAdapter from './visual';
+import { emptyOutPortsAdapter } from '../utils';
+import { buttonsOutPortsAdapter } from './buttons';
+import { captureOutPortsAdapter } from './capture';
+import cardAdapter, { cardOutPortsAdapter } from './card';
+import codeAdapter, { codeOutPortsAdapter } from './code';
+import { commandOutPortsAdapter } from './command';
+import componentAdapter, { componentOutPortsAdapter } from './component';
+import directiveAdapter, { directiveOutPortsAdapter } from './directive';
+import exitAdapter, { exitOutPortsAdapter } from './exit';
+import flowAdapter, { flowOutPortsAdapter } from './flow';
+import ifAdapter, { ifOutPortsAdapter } from './if';
+import integrationAdapter, { integrationOutPortsAdapter } from './integration';
+import { intentOutPortsAdapter } from './intent';
+import { interactionOutPortsAdapter } from './interaction';
+import { promptOutPortsAdapter } from './prompt';
+import randomAdapter, { randomOutPortsAdapter } from './random';
+import setAdapter, { setOutPortsAdapter } from './set';
+import { speakOutPortsAdapter } from './speak';
+import textAdapter, { textOutPortsAdapter } from './text';
+import traceAdapter, { traceOutPortsAdapter } from './trace';
+import visualAdapter, { visualOutPortsAdapter } from './visual';
 
 // adapters unique per platform
 export { default as baseButtonsAdapter } from './buttons';
@@ -29,23 +37,46 @@ export const baseBlockAdapter = {
   // user defined
   [BlockType.IFV2]: ifAdapter,
   [BlockType.TEXT]: textAdapter,
-  [BlockType.SETV2]: setAdapter,
   [BlockType.EXIT]: exitAdapter,
   [BlockType.CODE]: codeAdapter,
+  [BlockType.CARD]: cardAdapter,
   [BlockType.FLOW]: flowAdapter,
-  [BlockType.COMPONENT]: componentAdapter,
+  [BlockType.SETV2]: setAdapter,
   [BlockType.TRACE]: traceAdapter,
   [BlockType.VISUAL]: visualAdapter,
   [BlockType.RANDOM]: randomAdapter,
   [BlockType.DIRECTIVE]: directiveAdapter,
+  [BlockType.COMPONENT]: componentAdapter,
   [BlockType.INTEGRATION]: integrationAdapter,
 };
 
 // adapters shared across all platforms
-export const basePortAdapter = {
-  [BlockType.IF]: ifPortsAdapter,
-  [BlockType.TRACE]: tracePortsAdapter,
-  [BlockType.PROMPT]: promptPortsAdapter,
-  [BlockType.CHOICE]: interactionPortsAdapter,
-  [BlockType.BUTTONS]: buttonsPortsAdapter,
+export const baseOutPortAdapter = {
+  [BlockType.IF]: ifOutPortsAdapter,
+  [BlockType.SET]: setOutPortsAdapter,
+  [BlockType.EXIT]: exitOutPortsAdapter,
+  [BlockType.CARD]: cardOutPortsAdapter,
+  [BlockType.IFV2]: ifOutPortsAdapter,
+  [BlockType.CODE]: codeOutPortsAdapter,
+  [BlockType.FLOW]: flowOutPortsAdapter,
+  [BlockType.TEXT]: textOutPortsAdapter,
+  [BlockType.TRACE]: traceOutPortsAdapter,
+  [BlockType.SETV2]: setOutPortsAdapter,
+  [BlockType.SPEAK]: speakOutPortsAdapter,
+  [BlockType.VISUAL]: visualOutPortsAdapter,
+  [BlockType.INTENT]: intentOutPortsAdapter,
+  [BlockType.PROMPT]: promptOutPortsAdapter,
+  [BlockType.CHOICE]: interactionOutPortsAdapter,
+  [BlockType.RANDOM]: randomOutPortsAdapter,
+  [BlockType.COMMAND]: commandOutPortsAdapter,
+  [BlockType.BUTTONS]: buttonsOutPortsAdapter,
+  [BlockType.CAPTURE]: captureOutPortsAdapter,
+  [BlockType.COMBINED]: emptyOutPortsAdapter,
+  [BlockType.COMPONENT]: componentOutPortsAdapter,
+  [BlockType.DIRECTIVE]: directiveOutPortsAdapter,
+  [BlockType.INTEGRATION]: integrationOutPortsAdapter,
+
+  [Node.NodeType.API]: integrationOutPortsAdapter,
+  [Node.NodeType.ZAPIER]: integrationOutPortsAdapter,
+  [Node.NodeType.GOOGLE_SHEETS]: integrationOutPortsAdapter,
 };

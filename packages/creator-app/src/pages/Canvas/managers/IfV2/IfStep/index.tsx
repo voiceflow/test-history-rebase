@@ -1,12 +1,10 @@
-import { Node } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { Models, Node } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { useSyncedLookup } from '@/hooks';
-import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
-import { EngineContext } from '@/pages/Canvas/contexts';
+import Step, { ConnectedStep, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { expressionPreview } from '@/utils/expression';
 
 import { NODE_CONFIG } from '../constants';
@@ -19,58 +17,68 @@ interface Expression {
 
 export interface IfStepProps {
   nodeID: string;
-  elsePortID: string;
-  elsePathName: string;
-  isPath: boolean;
   expressions: Expression[];
+  noMatchPortID: string;
+  noMatchPathName: string;
+  withNoMatchPort: boolean;
 }
 
-export const IfStep: React.FC<IfStepProps> = ({ expressions, nodeID, elsePortID, elsePathName, isPath }) => (
+export const IfStep: React.FC<IfStepProps> = ({ nodeID, expressions, noMatchPortID, noMatchPathName, withNoMatchPort }) => (
   <Step nodeID={nodeID}>
     <Section>
       {expressions.length ? (
         expressions.map(({ label, name, portID }, index) => (
           <Item
-            multilineLabel
             key={portID}
-            label={name || label}
             icon={index === 0 ? NODE_CONFIG.icon : null}
-            placeholder="Name conditional path"
-            iconColor={NODE_CONFIG.iconColor}
+            label={name || label}
             portID={portID}
+            iconColor={NODE_CONFIG.iconColor}
+            placeholder="Name conditional path"
+            multilineLabel
           />
         ))
       ) : (
         <Item icon="if" iconColor="#f86683" placeholder="Add a Condition" />
       )}
     </Section>
-    {isPath && <ElseItem portID={elsePortID} label={elsePathName} />}
+
+    {withNoMatchPort && <ElseItem portID={noMatchPortID} label={noMatchPathName} />}
   </Step>
 );
 
-type ConnectedIfStepProps = ConnectedStepProps<Realtime.NodeData.IfV2>;
+const ConnectedIfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ node, data, engine }) => {
+  const noMatchPortID = node.ports.out.builtIn[Models.PortType.NO_MATCH];
 
-const ConnectedIfStep: React.FC<ConnectedIfStepProps> = ({ node, data }) => {
-  const engine = React.useContext(EngineContext)!;
+  const expressionsByPortID = useSyncedLookup(node.ports.out.dynamic, data.expressions);
+  const hasNoMatchLink = engine.hasLinksByPortID(noMatchPortID); // also show the else port if a link exists
+  const withNoMatchPort = hasNoMatchLink || data.noMatch.type === Node.IfV2.IfNoMatchType.PATH;
 
-  const [elsePortID, nodeOutPorts] = React.useMemo(() => Utils.array.head(node.ports.out), [node.ports.out]);
-  const expressionsByPortID = useSyncedLookup(nodeOutPorts, data.expressions);
-  const hasElseLink = engine.hasLinksByPortID(elsePortID); // also show the else port if a link exists
-  const isPath = hasElseLink || data.noMatch.type === Node.IfV2.IfNoMatchType.PATH;
+  const expressions = React.useMemo(
+    () =>
+      node.ports.out.dynamic
+        .filter((portID) => expressionsByPortID[portID])
+        .map((portID) => {
+          const expression = expressionsByPortID[portID];
 
-  const expressions = nodeOutPorts
-    .filter((portID) => expressionsByPortID[portID])
-    .map((portID) => {
-      const expression = expressionsByPortID[portID];
+          return {
+            name: expression.name,
+            label: expression.value.length > 0 ? <Text>{expressionPreview(expression)}</Text> : null,
+            portID,
+          };
+        }),
+    [node.ports.out.dynamic, expressionsByPortID]
+  );
 
-      return {
-        name: expression.name,
-        label: expression.value.length > 0 ? <Text>{expressionPreview(expression)}</Text> : null,
-        portID,
-      };
-    });
-
-  return <IfStep expressions={expressions} nodeID={node.id} elsePortID={elsePortID} elsePathName={data.noMatch.pathName ?? ''} isPath={isPath} />;
+  return (
+    <IfStep
+      nodeID={node.id}
+      expressions={expressions}
+      noMatchPortID={noMatchPortID}
+      noMatchPathName={data.noMatch.pathName ?? ''}
+      withNoMatchPort={withNoMatchPort}
+    />
+  );
 };
 
 export default ConnectedIfStep;

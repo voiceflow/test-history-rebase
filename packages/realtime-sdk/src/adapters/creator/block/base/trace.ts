@@ -1,7 +1,7 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/base-types';
+import { AnyRecord, Node } from '@voiceflow/base-types';
 
-import { createBlockAdapter, defaultPortAdapter, PortsAdapter } from '../utils';
+import { createBlockAdapter, createOutPortsAdapter, dynamicOnlyOutPortsAdapter } from '../utils';
 
 const traceAdapter = createBlockAdapter<Node._v1.StepData<{ name: string; body: string }> & Record<string, unknown>, NodeData.Trace>(
   ({ payload, defaultPath, ports }) => ({
@@ -21,25 +21,20 @@ const traceAdapter = createBlockAdapter<Node._v1.StepData<{ name: string; body: 
   })
 );
 
-export const tracePortsAdapter: PortsAdapter<NodeData.Trace> = {
-  toDB: (ports, _, data) => {
-    const dbPorts = defaultPortAdapter.toDB(ports, _, data);
-
-    // assign path data to port data
-    return dbPorts.map((port, index) => {
-      const label = data.paths[index]?.label;
-      const event = label ? { type: label } : undefined;
+export const traceOutPortsAdapter = createOutPortsAdapter<AnyRecord, NodeData.Trace>(
+  (ports, options) => dynamicOnlyOutPortsAdapter.fromDB(ports, options),
+  (ports, options) =>
+    dynamicOnlyOutPortsAdapter.toDB(ports, options).map((port, index) => {
+      const label = options.data.paths[index]?.label;
 
       return {
         ...port,
         data: {
           ...port.data,
-          event,
+          event: label ? { type: label } : undefined,
         },
       };
-    });
-  },
-  fromDB: defaultPortAdapter.fromDB,
-};
+    })
+);
 
 export default traceAdapter;

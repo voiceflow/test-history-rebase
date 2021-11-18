@@ -6,7 +6,7 @@ import ChoiceStep from './ChoiceStep';
 import { NODE_CONFIG } from './constants';
 import { EDITORS_BY_PATH } from './subeditors';
 
-const ChoiceManager: NodeManagerConfig<Realtime.NodeData.Interaction> = {
+const ChoiceManager: NodeManagerConfig<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Select choices and capture slot values from user input',

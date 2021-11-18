@@ -23,8 +23,8 @@ export interface NodeStepProps {
 
 const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => {
   const engine = React.useContext(EngineContext)!;
-  const nodeEntity = React.useContext(NodeEntityContext)!;
   const platform = React.useContext(PlatformContext)!;
+  const nodeEntity = React.useContext(NodeEntityContext)!;
   const getManager = React.useContext(ManagerContext)!;
   const instance = useNodeInstance();
   const stepAPI = useStepAPI(instance.ref, isLast, isDraggable);
@@ -79,11 +79,11 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
           <>
             <Step.Placeholder variant={variant} isLast={isLast} />
             <Portal portalNode={engine.merge.components.mergeLayer!.ref.current!}>
-              <StepComponent node={node} data={data} platform={platform} withPorts={stepAPI.withPorts} />
+              <StepComponent node={node} data={data} engine={engine} platform={platform} withPorts={stepAPI.withPorts} />
             </Portal>
           </>
         ) : (
-          <StepComponent node={node} data={data} platform={platform} withPorts={stepAPI.withPorts} />
+          <StepComponent node={node} data={data} engine={engine} platform={platform} withPorts={stepAPI.withPorts} />
         )}
       </StepAPIProvider>
     </>

@@ -6,7 +6,7 @@ import IfEditor from './IfEditorV2';
 import IfStep from './IfStep';
 import { EDITORS_BY_PATH } from './subeditors';
 
-const IfManagerV2: NodeManagerConfig<Realtime.NodeData.IfV2> = {
+const IfManagerV2: NodeManagerConfig<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Set conditions that activate paths only when true',

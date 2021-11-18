@@ -5,7 +5,7 @@ import { NODE_CONFIG } from './constants';
 import FlowEditor from './FlowEditor';
 import FlowStep from './FlowStep';
 
-const FlowManager: NodeManagerConfig<Realtime.NodeData.Flow> = {
+const FlowManager: NodeManagerConfig<Realtime.NodeData.Flow, Realtime.NodeData.FlowBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Organize your project into manageable sections or perform computations',

@@ -5,7 +5,7 @@ import { NODE_CONFIG } from './constants';
 import SpeakEditor from './SpeakEditor';
 import SpeakStep from './SpeakStep';
 
-const SpeakManager: NodeManagerConfig<Realtime.NodeData.Speak> = {
+const SpeakManager: NodeManagerConfig<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Tell Alexa what to say, or play audio clips',

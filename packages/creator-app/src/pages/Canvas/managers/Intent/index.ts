@@ -12,7 +12,7 @@ const EDITORS_BY_PATH = {
   [SLOT_PATH_TYPE]: IntentSlotForm,
 };
 
-const IntentManager: NodeManagerConfig<Realtime.NodeData.Intent> = {
+const IntentManager: NodeManagerConfig<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'All your project to handle an intent from anywhere inside your project',

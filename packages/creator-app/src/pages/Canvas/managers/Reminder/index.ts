@@ -5,7 +5,7 @@ import { NODE_CONFIG } from './constants';
 import ReminderEditor from './ReminderEditor';
 import ReminderStep from './ReminderStep';
 
-const ReminderManager: NodeManagerConfig<Realtime.NodeData.Reminder> = {
+const ReminderManager: NodeManagerConfig<Realtime.NodeData.Reminder, Realtime.NodeData.ReminderBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Send a remind to the user in a set amount of time',

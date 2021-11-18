@@ -16,6 +16,7 @@ import {
   addBlockToState,
   addNodeToState,
   buildNewNode,
+  getAllOutPortIDs,
   getLinkIDsByPortID,
   patchNodeInState,
   removeAllLinksFromState,
@@ -39,7 +40,7 @@ export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state
     const additionalActions = [];
     if (isCombinedBlock) {
       const terminalBlock = Utils.normalized.getNormalizedByKey(state.nodes, parentNode.combinedNodes[parentNode.combinedNodes.length - 1]);
-      const outLinkIDs = terminalBlock.ports.out.flatMap(getLinkIDsByPortID(state));
+      const outLinkIDs = getAllOutPortIDs(terminalBlock).flatMap(getLinkIDsByPortID(state));
 
       additionalActions.push(removeAllLinksFromState(outLinkIDs));
     }
@@ -54,8 +55,7 @@ export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state
   }
 
   // constructing a new combined block
-  const parentNodeOutPortIDs = parentNode.ports.out;
-  const parentNodeOutLinkIDs = parentNodeOutPortIDs.flatMap(getLinkIDsByPortID(state));
+  const parentNodeOutLinkIDs = getAllOutPortIDs(parentNode).flatMap(getLinkIDsByPortID(state));
 
   const mergedNode = nodeFactory(mergedNodeID, {
     type: BlockType.COMBINED,

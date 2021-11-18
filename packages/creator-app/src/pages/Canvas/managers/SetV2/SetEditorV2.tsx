@@ -15,13 +15,13 @@ const MAX_SETS = 20;
 
 const setFactory = () => NODE_CONFIG.factory(undefined).data.sets[0];
 
-const setClone = (initVal: any, targetVal: Realtime.NodeData.SetExpressionV2) => ({
+const setClone = (initVal: Realtime.NodeData.SetExpressionV2, targetVal: Realtime.NodeData.SetExpressionV2) => ({
   ...initVal,
   variable: targetVal.variable,
   expression: targetVal.expression,
 });
 
-const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2> = ({ data, onChange }) => {
+const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = ({ data, onChange }) => {
   const [isDragging, toggleDragging] = useToggle(false);
 
   const updateSets = React.useCallback(

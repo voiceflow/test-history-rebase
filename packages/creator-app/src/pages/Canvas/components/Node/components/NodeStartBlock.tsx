@@ -1,3 +1,4 @@
+import { Models } from '@voiceflow/base-types';
 import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -26,12 +27,13 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const platform = React.useContext(PlatformContext)!;
-  const { outPortID, combinedNodes, lockOwner, nodeLabel } = nodeEntity.useState((e) => {
+
+  const { nextPortID, combinedNodes, lockOwner, nodeLabel } = nodeEntity.useState((e) => {
     const { node, data } = e.resolve();
     return {
-      outPortID: node.ports.out[0],
       lockOwner: e.lockOwner,
       nodeLabel: (data as any).label,
+      nextPortID: node.ports.out.builtIn[Models.PortType.NEXT]!,
       combinedNodes: node.combinedNodes,
     };
   });
@@ -54,7 +56,7 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
     return (
       <HomeStartBlock
         nodeID={nodeEntity.nodeID}
-        portID={outPortID}
+        portID={nextPortID}
         platform={platform}
         invocationName={invocationName ?? ''}
         commands={commands}
@@ -69,7 +71,7 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
   return (
     <FlowStartBlock
       nodeID={nodeEntity.nodeID}
-      portID={outPortID}
+      portID={nextPortID}
       name={diagram?.name}
       commands={commands}
       actions={actions}

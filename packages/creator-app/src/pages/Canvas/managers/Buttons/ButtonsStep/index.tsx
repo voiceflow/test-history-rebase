@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -6,21 +6,22 @@ import { InteractionModelTabType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
-import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
 
 import { NODE_CONFIG } from '../constants';
 
 export interface ButtonsStepProps {
-  ports: string[];
   nodeID: string;
   buttons: Node.Buttons.Button[];
-  withElsePath: boolean;
-  elsePathName: string;
+  noMatchPortID: string;
+  dynamicPortIDs: string[];
+  withNoMatchPath: boolean;
+  noMatchPathName: string;
 }
 
-export const ButtonsStep: React.FC<ButtonsStepProps> = ({ ports, nodeID, buttons, elsePathName, withElsePath }) => {
+export const ButtonsStep: React.FC<ButtonsStepProps> = ({ nodeID, buttons, noMatchPortID, dynamicPortIDs, noMatchPathName, withNoMatchPath }) => {
   const intentsMap = React.useContext(CustomIntentMapContext)!;
   const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
@@ -40,7 +41,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({ ports, nodeID, buttons
                 key={id}
                 icon={index === 0 ? NODE_CONFIG.icon : null}
                 label={name || intentName}
-                portID={!isGoToIntent ? ports[index + 1] : null}
+                portID={!isGoToIntent ? dynamicPortIDs[index] : null}
                 iconColor={NODE_CONFIG.iconColor}
                 // TODO: uncomment when the go to specific intent step id will be implemented
                 // attachment={isGoToIntent && !!intentEntity}
@@ -59,18 +60,19 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({ ports, nodeID, buttons
         )}
       </Section>
 
-      {withElsePath && <ElseItem label={elsePathName} portID={ports[0]} />}
+      {withNoMatchPath && <ElseItem label={noMatchPathName} portID={noMatchPortID} />}
     </Step>
   );
 };
 
-const ConnectedButtonsStep: React.FC<ConnectedStepProps<Realtime.NodeData.Buttons>> = ({ node, data }) => (
+const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = ({ node, data }) => (
   <ButtonsStep
-    ports={node.ports.out}
     nodeID={node.id}
     buttons={data.buttons}
-    withElsePath={!!data.else.type && data.else.type !== Node.Utils.NoMatchType.REPROMPT}
-    elsePathName={data.else.pathName}
+    noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
+    dynamicPortIDs={node.ports.out.dynamic}
+    withNoMatchPath={!!data.else.type && data.else.type !== Node.Utils.NoMatchType.REPROMPT}
+    noMatchPathName={data.else.pathName}
   />
 );
 

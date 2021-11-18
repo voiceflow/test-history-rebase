@@ -9,18 +9,16 @@ import AceEditor from '@/components/AceEditor';
 import OverflowMenu from '@/components/OverflowMenu';
 import * as Documentation from '@/config/documentation';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as ProjectV2 from '@/ducks/projectV2';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import { HelpTooltip } from './components';
 
-const CodeEditor: NodeEditor<Realtime.NodeData.Code> = ({ data, onChange, onExpand, expanded }) => {
+const CodeEditor: NodeEditor<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = ({ data, onChange, onExpand, expanded, platform }) => {
   const editorRef = React.useRef<AceEditorType | null>(null);
   const [editorState, onUpdateEditorState] = React.useState(data.code);
   const onUpdateCode = React.useCallback(() => onChange({ code: editorState }), [editorState, onChange]);
-  const platform = useSelector(ProjectV2.active.platformSelector);
   const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
 
   const completer = React.useMemo<AceEditorType['editor']['completers'][number]>(

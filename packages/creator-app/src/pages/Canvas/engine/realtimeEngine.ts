@@ -139,20 +139,32 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
     [Realtime.SocketAction.MOVE_LINK]: (linkData: ActionPayload<Realtime.MoveLink>, tabID) =>
       this.components[OverlayType.LINK]?.moveLink(tabID, linkData),
 
-    [Realtime.SocketAction.ADD_PORT]: ({ nodeID, port }: ActionPayload<Realtime.AddPort>, tabID) => {
-      Sentry.breadcrumb('realtime', 'Remote user added port', { tabID });
+    [Realtime.SocketAction.ADD_OUT_DYNAMIC_PORT]: ({ nodeID, port }: ActionPayload<Realtime.AddOutDynamicPort>, tabID) => {
+      Sentry.breadcrumb('realtime', 'Remote user added dynamic port', { tabID });
 
-      return this.engine.port.internal.add(nodeID, port);
+      return this.engine.port.internal.addOutDynamic(nodeID, port);
     },
-    [Realtime.SocketAction.REMOVE_PORT]: (portID: ActionPayload<Realtime.RemovePort>, tabID) => {
-      Sentry.breadcrumb('realtime', 'Remote user removed added port', { tabID });
+    [Realtime.SocketAction.ADD_OUT_BUILT_IN_PORT]: ({ nodeID, port, portType }: ActionPayload<Realtime.AddOutBuiltInPort>, tabID) => {
+      Sentry.breadcrumb('realtime', 'Remote user added builtIn port', { tabID });
 
-      return this.engine.port.internal.remove(portID);
+      return this.engine.port.internal.addOutBuiltIn(nodeID, portType, port);
     },
-    [Realtime.SocketAction.REORDER_PORTS]: ({ nodeID, from, to }: ActionPayload<Realtime.ReorderPorts>, tabID) => {
-      Sentry.breadcrumb('realtime', 'Remote user reordered ports', { tabID });
 
-      return this.engine.port.internal.reorder(nodeID, from, to);
+    [Realtime.SocketAction.REMOVE_OUT_DYNAMIC_PORT]: (portID: ActionPayload<Realtime.RemoveOutDynamicPort>, tabID) => {
+      Sentry.breadcrumb('realtime', 'Remote user removed dynamic port', { tabID });
+
+      return this.engine.port.internal.removeOutDynamic(portID);
+    },
+    [Realtime.SocketAction.REMOVE_OUT_BUILT_IN_PORT]: ({ portID, portType }: ActionPayload<Realtime.RemoveOutBuiltInPort>, tabID) => {
+      Sentry.breadcrumb('realtime', 'Remote user removed builtIn port', { tabID });
+
+      return this.engine.port.internal.removeOutBuiltIn(portType, portID);
+    },
+
+    [Realtime.SocketAction.REORDER_OUT_DYNAMIC_PORTS]: ({ nodeID, from, to }: ActionPayload<Realtime.ReorderOutDynamicPorts>, tabID) => {
+      Sentry.breadcrumb('realtime', 'Remote user reordered out dynamic ports', { tabID });
+
+      return this.engine.port.internal.reorderOutDynamic(nodeID, from, to);
     },
 
     [Realtime.SocketAction.MOVE_MOUSE]: (location: ActionPayload<Realtime.MoveMouse>, tabID) =>

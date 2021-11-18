@@ -1,43 +1,46 @@
+import { Models } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
-import { usePortFilter } from '@/pages/Canvas/hooks';
+import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import { NODE_CONFIG } from '../constants';
 
 export interface StreamStepProps {
   audio: string;
-  platform: Constants.PlatformType;
-  customPause: boolean;
   nodeID: string;
-  portIDs: string[];
+  platform: Constants.PlatformType;
+  nextPortID: string;
+  customPause: boolean;
+  pausePortID?: string;
+  previousPortID?: string;
 }
 
-export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customPause, nodeID, portIDs }) => {
-  const isGoogle = platform === Constants.PlatformType.GOOGLE;
-  const [nextPortID, previousPortID, pausePortID] = portIDs;
+export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customPause, nodeID, nextPortID, pausePortID, previousPortID }) => {
+  const isGoogle = Realtime.Utils.typeGuards.isGooglePlatform(platform);
 
   return (
     <Step nodeID={nodeID}>
       <Section>
         <Item
           icon={NODE_CONFIG.icon}
-          iconColor={NODE_CONFIG.iconColor}
           label={audio}
+          portID={isGoogle ? nextPortID : undefined}
+          iconColor={NODE_CONFIG.iconColor}
           placeholder="Add an Audio file, URL or variable"
           labelVariant={StepLabelVariant.SECONDARY}
-          portID={isGoogle ? nextPortID : undefined}
         />
       </Section>
 
       {!isGoogle && (
         <Section>
           <Item icon="choice" iconColor="#3a5999" label="Next" portID={nextPortID} />
+
           <Item label="Previous" portID={previousPortID} />
+
           {customPause && <Item label="Pause" portID={pausePortID} />}
         </Section>
       )}
@@ -45,18 +48,16 @@ export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customP
   );
 };
 
-const ConnectedStreamStep: React.FC<ConnectedStepProps<Realtime.NodeData.Stream>> = ({ node, data, platform }) => {
-  const portFilter = usePortFilter();
-
-  return (
-    <StreamStep
-      audio={data.audio && transformVariablesToReadable(data.audio)}
-      customPause={data.customPause}
-      nodeID={node.id}
-      portIDs={node.ports.out.filter(portFilter)}
-      platform={platform}
-    />
-  );
-};
+const ConnectedStreamStep: ConnectedStep<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ node, data, platform }) => (
+  <StreamStep
+    audio={data.audio && transformVariablesToReadable(data.audio)}
+    nodeID={node.id}
+    platform={platform}
+    nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+    pausePortID={node.ports.out.builtIn[Models.PortType.PAUSE]}
+    customPause={data.customPause}
+    previousPortID={node.ports.out.builtIn[Models.PortType.PREVIOUS]}
+  />
+);
 
 export default ConnectedStreamStep;

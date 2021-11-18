@@ -13,6 +13,7 @@ export * from './constants';
 export * from './selectors';
 export * from './sideEffects';
 export * from './types';
+export * as diagramUtils from './utils';
 
 export default diagramReducer;
 

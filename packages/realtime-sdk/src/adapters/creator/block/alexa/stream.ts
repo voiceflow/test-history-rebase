@@ -1,10 +1,18 @@
 import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/alexa-types';
 import { Models } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 
-import { generateOutPort } from '../../utils';
-import { createBlockAdapter, getPortByLabel, PortsAdapter } from '../utils';
+import {
+  createBlockAdapter,
+  createOutPortsAdapter,
+  findDBNextPort,
+  findDBPortByType,
+  migrateDBPortType,
+  outPortDataFromDB,
+  outPortDataToDB,
+} from '../utils';
 
 const streamAdapter = createBlockAdapter<Node.Stream.StepData, NodeData.Stream>(
   ({ loop, audio, title, iconImage, customPause, description, backgroundImage }) => ({
@@ -27,48 +35,37 @@ const streamAdapter = createBlockAdapter<Node.Stream.StepData, NodeData.Stream>(
   })
 );
 
-// for the alexa version
-export const streamPortsAdapter: PortsAdapter = {
-  toDB: (ports) => {
-    const nextPort = getPortByLabel(ports, Models.PortType.NEXT);
-    const previousPort = getPortByLabel(ports, Models.PortType.PREVIOUS);
-    const pausePort = getPortByLabel(ports, Models.PortType.PAUSE);
+export const streamOutPortsAdapter = createOutPortsAdapter<NodeData.StreamBuiltInPorts, NodeData.Stream>(
+  (dbPorts, options) => {
+    const dbNextPort = findDBNextPort(dbPorts);
+    const dbPreviousPort = findDBPortByType(dbPorts, Models.PortType.PREVIOUS) ?? migrateDBPortType(dbPorts[1], Models.PortType.PREVIOUS);
+    const dbPausePort =
+      findDBPortByType(dbPorts, Models.PortType.PAUSE) ?? (dbPorts[2] ? migrateDBPortType(dbPorts[2], Models.PortType.PAUSE) : null);
 
-    return [
-      {
-        type: Models.PortType.NEXT,
-        target: nextPort?.target || null,
-        id: nextPort!.port.id,
-        data: nextPort!.link?.data,
+    const nextPortData = outPortDataFromDB(dbNextPort, options);
+    const previousPortData = outPortDataFromDB(dbPreviousPort, options);
+    const pausePortData = dbPausePort && outPortDataFromDB(dbPausePort, options);
+
+    return {
+      ports: Utils.array.filterOutNullish([
+        { ...nextPortData, platform: Constants.PlatformType.ALEXA },
+        { ...previousPortData, platform: Constants.PlatformType.ALEXA },
+        pausePortData && { ...pausePortData, platform: Constants.PlatformType.ALEXA },
+      ]),
+      dynamic: [],
+      builtIn: {
+        [Models.PortType.NEXT]: nextPortData.port.id,
+        [Models.PortType.PAUSE]: pausePortData?.port.id ?? undefined,
+        [Models.PortType.PREVIOUS]: previousPortData.port.id,
       },
-      {
-        type: Models.PortType.PREVIOUS,
-        target: previousPort?.target || null,
-        id: previousPort!.port.id,
-        data: previousPort!.link?.data,
-      },
-      {
-        type: Models.PortType.PAUSE,
-        target: pausePort?.target || null,
-        id: pausePort!.port.id,
-        data: pausePort!.link?.data,
-      },
-    ];
+    };
   },
-  fromDB: (ports, { nodeID }) => [
-    {
-      port: generateOutPort(nodeID, ports[0], { label: Models.PortType.NEXT, platform: Constants.PlatformType.ALEXA }),
-      target: ports[0].target,
-    },
-    {
-      port: generateOutPort(nodeID, ports[1], { label: Models.PortType.PREVIOUS, platform: Constants.PlatformType.ALEXA }),
-      target: ports[1].target,
-    },
-    {
-      port: generateOutPort(nodeID, ports[2], { label: Models.PortType.PAUSE, platform: Constants.PlatformType.ALEXA }),
-      target: ports[2].target,
-    },
-  ],
-};
+  ({ builtIn: { [Models.PortType.NEXT]: nextPortData, [Models.PortType.PREVIOUS]: previousPortData, [Models.PortType.PAUSE]: pausePortData } }) =>
+    Utils.array.filterOutNullish([
+      outPortDataToDB(nextPortData),
+      previousPortData && outPortDataToDB(previousPortData),
+      pausePortData && outPortDataToDB(pausePortData),
+    ])
+);
 
 export default streamAdapter;

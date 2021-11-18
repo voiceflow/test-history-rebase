@@ -1,16 +1,17 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
 import { getLabel, getPlaceholder } from './utils';
 
 export interface IntegrationStepProps {
   data: Realtime.NodeData.Integration;
-  withPorts: boolean;
   nodeID: string;
+  withPorts: boolean;
   successPortID: string;
   failurePortID: string;
 }
@@ -26,6 +27,7 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPort
         labelVariant={StepLabelVariant.SECONDARY}
       />
     </Section>
+
     <Section>
       {withPorts && (
         <>
@@ -37,10 +39,18 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPort
   </Step>
 );
 
-const ConnectedIntegrationStep: React.FC<ConnectedStepProps<Realtime.NodeData.Integration>> = ({ node, data, withPorts }) => {
-  const [successPortID, failurePortID] = node.ports.out;
-
-  return <IntegrationStep data={data} nodeID={node.id} successPortID={successPortID} failurePortID={failurePortID} withPorts={withPorts} />;
-};
+const ConnectedIntegrationStep: ConnectedStep<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = ({
+  node,
+  data,
+  withPorts,
+}) => (
+  <IntegrationStep
+    data={data}
+    nodeID={node.id}
+    withPorts={withPorts}
+    successPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+    failurePortID={node.ports.out.builtIn[Models.PortType.FAIL]}
+  />
+);
 
 export default ConnectedIntegrationStep;

@@ -1,3 +1,4 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { DiagramState } from '@/constants';
@@ -19,9 +20,11 @@ export enum DiagramAction {
   ADD_MARKUP_NODE = 'CREATOR:NODE:ADD_MARKUP',
   ADD_WRAPPED_NODE = 'CREATOR:NODE:ADD_WRAPPED',
   REMOVE_MANY_NODES = 'CREATOR:NODE:REMOVE_MANY',
-  ADD_PORT = 'CREATOR:PORT:ADD',
-  REMOVE_PORT = 'CREATOR:PORT:REMOVE',
-  REORDER_PORTS = 'CREATOR:PORT:REORDER',
+  ADD_OUT_DYNAMIC_PORT = 'CREATOR:PORT:ADD_OUT_DYNAMIC',
+  ADD_OUT_BUILT_IN_PORT = 'CREATOR:PORT:ADD_OUT_BUILT_IN',
+  REMOVE_OUT_DYNAMIC_PORT = 'CREATOR:PORT:REMOVE_OUT_DYNAMIC',
+  REMOVE_OUT_BUILT_IN_PORT = 'CREATOR:PORT:REMOVE_OUT_BUILT_IN',
+  REORDER_OUT_DYNAMIC_PORTS = 'CREATOR:PORT:REORDER_OUT_DYNAMIC',
   ADD_LINK = 'CREATOR:LINK:ADD',
   REMOVE_LINK = 'CREATOR:LINK:REMOVE',
   UNDO_HISTORY = 'CREATOR:HISTORY:UNDO',
@@ -70,11 +73,18 @@ export type AddWrappedNode = Action<DiagramAction.ADD_WRAPPED_NODE, { node: Node
 
 export type RemoveManyNodes = Action<DiagramAction.REMOVE_MANY_NODES, string[]>;
 
-export type AddPort = Action<DiagramAction.ADD_PORT, { nodeID: string; port: PartialModel<Realtime.Port> }>;
+export type AddOutDynamicPort = Action<DiagramAction.ADD_OUT_DYNAMIC_PORT, { nodeID: string; port: PartialModel<Realtime.Port> }>;
 
-export type RemovePort = Action<DiagramAction.REMOVE_PORT, string>;
+export type AddOutBuiltInPort = Action<
+  DiagramAction.ADD_OUT_BUILT_IN_PORT,
+  { nodeID: string; port: PartialModel<Realtime.Port>; portType: Models.PortType }
+>;
 
-export type ReorderPorts = Action<DiagramAction.REORDER_PORTS, { nodeID: string; from: number; to: number }>;
+export type RemoveOutDynamicPort = Action<DiagramAction.REMOVE_OUT_DYNAMIC_PORT, string>;
+
+export type RemoveOutBuiltInPort = Action<DiagramAction.REMOVE_OUT_BUILT_IN_PORT, { portID: string; portType: Models.PortType }>;
+
+export type ReorderOutDynamicPorts = Action<DiagramAction.REORDER_OUT_DYNAMIC_PORTS, { nodeID: string; from: number; to: number }>;
 
 export type AddLink = Action<DiagramAction.ADD_LINK, { sourcePortID: string; targetPortID: string; linkID: string }>;
 
@@ -106,9 +116,11 @@ export type AnyDiagramAction =
   | AddNestedNode
   | AddWrappedNode
   | RemoveManyNodes
-  | AddPort
-  | RemovePort
-  | ReorderPorts
+  | AddOutDynamicPort
+  | AddOutBuiltInPort
+  | RemoveOutDynamicPort
+  | RemoveOutBuiltInPort
+  | ReorderOutDynamicPorts
   | AddLink
   | RemoveLink
   | UndoHistory
@@ -159,12 +171,19 @@ export const addWrappedNode = (node: NodeDescriptor, data: DataDescriptor, paren
 
 export const removeNodes = (nodeIDs: string[]): RemoveManyNodes => createAction(DiagramAction.REMOVE_MANY_NODES, nodeIDs);
 
-export const addPort = (nodeID: string, port: PartialModel<Realtime.Port>): AddPort => createAction(DiagramAction.ADD_PORT, { nodeID, port });
+export const addOutDynamicPort = (nodeID: string, port: PartialModel<Realtime.Port>): AddOutDynamicPort =>
+  createAction(DiagramAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port });
 
-export const removePort = (portID: string): RemovePort => createAction(DiagramAction.REMOVE_PORT, portID);
+export const addOutBuiltInPort = (nodeID: string, portType: Models.PortType, port: PartialModel<Realtime.Port>): AddOutBuiltInPort =>
+  createAction(DiagramAction.ADD_OUT_BUILT_IN_PORT, { nodeID, port, portType });
 
-export const reorderPort = (nodeID: string, from: number, to: number): ReorderPorts =>
-  createAction(DiagramAction.REORDER_PORTS, { nodeID, from, to });
+export const removeOutBuiltInPort = (portType: Models.PortType, portID: string): RemoveOutBuiltInPort =>
+  createAction(DiagramAction.REMOVE_OUT_BUILT_IN_PORT, { portType, portID });
+
+export const removeOutDynamicPort = (portID: string): RemoveOutDynamicPort => createAction(DiagramAction.REMOVE_OUT_DYNAMIC_PORT, portID);
+
+export const reorderOutDynamicPort = (nodeID: string, from: number, to: number): ReorderOutDynamicPorts =>
+  createAction(DiagramAction.REORDER_OUT_DYNAMIC_PORTS, { nodeID, from, to });
 
 export const addLink = (sourcePortID: string, targetPortID: string, linkID: string): AddLink =>
   createAction(DiagramAction.ADD_LINK, { sourcePortID, targetPortID, linkID });

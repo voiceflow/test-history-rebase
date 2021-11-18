@@ -4,13 +4,17 @@ import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
+import type { Engine } from '@/pages/Canvas/engine';
 
-export interface ConnectedStepProps<T = {}> {
-  node: Realtime.Node;
+export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
+  node: Realtime.Node<O>;
   data: Realtime.NodeData<T>;
+  engine: Engine;
   platform: Constants.PlatformType;
   withPorts: boolean;
 }
+
+export type ConnectedStep<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<ConnectedStepProps<T, O>>;
 
 export interface ItemProps {
   icon?: Icon | null;

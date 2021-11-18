@@ -11,7 +11,7 @@ import * as Creator from '@/ducks/creator';
 import { FeatureFlagMap } from '@/ducks/feature';
 import { EntityMap, NodeWithData } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
-import { NodeDescriptor } from '@/pages/Canvas/managers/types';
+import { NodeDescriptorOptionalPorts } from '@/pages/Canvas/managers/types';
 import { Dispatcher, DispatchResult, Selector } from '@/store/types';
 import { Pair, Point } from '@/types';
 import { isChoiceNode, isLinkedFlowNode, isLinkedIntentNode, isProductLinkedNode } from '@/utils/node';
@@ -97,14 +97,19 @@ export function nodeFactory(
   const {
     node: { ports, ...node },
     data,
-  } = config?.factory?.(factoryData, options) ?? { node: {} as NodeDescriptor, data: {} as any };
+  } = config?.factory?.(factoryData, options) ?? { node: {} as NodeDescriptorOptionalPorts, data: {} as any };
 
   return {
     node: {
       ...Creator.Factories.nodeFactory(null, { ...node, type }),
       ports: {
-        in: ((ports || {}).in || []).map((port) => ({ ...port, id: Utils.id.objectID() })),
-        out: ((ports || {}).out || []).map((port) => ({ ...port, id: Utils.id.objectID() })),
+        in: ports?.in?.map((port) => ({ ...port, id: Utils.id.objectID() })) ?? [],
+        out: {
+          dynamic: ports?.out?.dynamic?.map((port) => ({ ...port, id: Utils.id.objectID() })) ?? [],
+          builtIn: Object.entries(ports?.out?.builtIn ?? {})
+            .filter(([, port]) => !!port)
+            .reduce((acc, [type, port]) => Object.assign(acc, { [type]: { ...port, id: Utils.id.objectID() } }), {}),
+        },
       },
     },
     data,
@@ -145,7 +150,12 @@ export const cloneNodeWithData =
         ports: {
           ...originNode.ports,
           in: originNode.ports.in.map(getPortID),
-          out: originNode.ports.out.map(getPortID),
+          out: {
+            dynamic: originNode.ports.out.dynamic.map(getPortID),
+            builtIn: Object.entries(originNode.ports.out.builtIn)
+              .filter(([, portID]) => !!portID)
+              .reduce((acc, [type, portID]) => Object.assign(acc, { [type]: getPortID(portID) }), {}),
+          },
         },
       },
       data: {

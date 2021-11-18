@@ -1,6 +1,7 @@
 import { Node } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, defaultMenuLabelRenderer, Flex, Input, Link, Select, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -21,7 +22,7 @@ const AnyFullImage = FullImage as any;
 
 const DEFAULT_DIMENSIONS = { width: 500, height: 500 };
 
-const ImageEditor: NodeEditor<Node.Visual.ImageStepData> = ({ data, onChange }) => {
+const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ data, onChange }) => {
   const [dimensions, setDimensions] = React.useState<null | { width: string; height: string }>(() =>
     data.dimensions ? { width: String(data.dimensions.width), height: String(data.dimensions.height) } : null
   );

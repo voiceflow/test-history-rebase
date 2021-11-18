@@ -6,7 +6,7 @@ import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { APLEditor, ImageEditor } from './components';
 
-const VisualEditor: NodeEditor<Realtime.NodeData.Visual> = ({ data, ...props }) => (
+const VisualEditor: NodeEditor<Realtime.NodeData.Visual, Realtime.NodeData.VisualBuiltInPorts> = ({ data, ...props }) => (
   <>
     {data.visualType === Node.Visual.VisualType.APL && <APLEditor data={data} {...props} />}
     {data.visualType === Node.Visual.VisualType.IMAGE && <ImageEditor data={data} {...props} />}

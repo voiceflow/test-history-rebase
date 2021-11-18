@@ -6,7 +6,7 @@ import { BlockType } from '@/constants';
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Stream> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = {
   type: BlockType.STREAM,
 
   icon: 'audioPlayer',
@@ -18,11 +18,14 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Stream> = {
     node: {
       ports: {
         in: [{}],
-        out: [
-          { label: Models.PortType.NEXT, target: null },
-          { label: Models.PortType.PREVIOUS, target: null },
-          { label: Models.PortType.PAUSE, target: null },
-        ],
+        out: {
+          dynamic: [],
+          builtIn: {
+            [Models.PortType.NEXT]: { label: Models.PortType.NEXT },
+            [Models.PortType.PAUSE]: { label: Models.PortType.PAUSE },
+            [Models.PortType.PREVIOUS]: { label: Models.PortType.PREVIOUS },
+          },
+        },
       },
     },
     data: {

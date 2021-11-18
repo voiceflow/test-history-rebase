@@ -6,7 +6,7 @@ import { Types as ChatTypes } from '@voiceflow/chat-types';
 import { Nullable } from '@voiceflow/common';
 import { Node as GeneralNode } from '@voiceflow/general-types';
 
-import { Expression, ExpressionData } from './Expression';
+import { ExpressionData } from './Expression';
 import { SpeakData } from './Speak';
 
 export type NodeData<T> = T & {
@@ -66,6 +66,11 @@ export namespace NodeData {
     code: string;
   }
 
+  export interface CodeBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+    [BaseModels.PortType.FAIL]: string;
+  }
+
   export type Deprecated = {
     deprecatedType: string;
   } & Record<string, unknown>;
@@ -77,6 +82,10 @@ export namespace NodeData {
 
   export interface Permission {
     permissions: string[];
+  }
+
+  export interface PermissionBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
   }
 
   export interface InteractionChoice {
@@ -95,6 +104,11 @@ export namespace NodeData {
     reprompt: Reprompt | null;
   }
 
+  export interface InteractionBuiltInPorts {
+    [BaseModels.PortType.NO_MATCH]: string;
+    [BaseModels.PortType.NO_REPLY]?: string;
+  }
+
   export interface ChoiceOld {
     choices: { synonyms: string[] }[];
     reprompt: Reprompt | null;
@@ -104,6 +118,11 @@ export namespace NodeData {
     buttons: Button.AnyButton[] | null;
     reprompt: Reprompt | null;
     noMatchReprompt: NoMatch;
+  }
+
+  export interface PromptBuiltInPorts {
+    [BaseModels.PortType.NO_MATCH]: string;
+    [BaseModels.PortType.NO_REPLY]?: string;
   }
 
   export type Command = Record<DistinctPlatform, Command.PlatformData> & { name: string };
@@ -124,10 +143,19 @@ export namespace NodeData {
     examples: string[];
   }
 
+  export interface CaptureBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+    [BaseModels.PortType.NO_REPLY]?: string;
+  }
+
   export interface Speak {
     dialogs: SpeakData[];
     randomize: boolean;
     canvasVisibility?: BaseNode.Utils.CanvasNodeVisibility;
+  }
+
+  export interface SpeakBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
   }
 
   export interface Card {
@@ -137,6 +165,10 @@ export namespace NodeData {
     hasSmallImage: boolean;
     largeImage: string | null;
     smallImage: string | null;
+  }
+
+  export interface CardBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
   }
 
   export interface VariableMapping {
@@ -150,10 +182,18 @@ export namespace NodeData {
     outputs?: VariableMapping[];
   }
 
+  export interface FlowBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+  }
+
   export interface Component {
     diagramID: string | null;
     inputs?: VariableMapping[];
     outputs?: VariableMapping[];
+  }
+
+  export interface ComponentBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
   }
 
   export interface ReminderRecurrence {
@@ -174,6 +214,11 @@ export namespace NodeData {
     recurrenceBool: boolean;
   }
 
+  export interface ReminderBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+    [BaseModels.PortType.FAIL]: string;
+  }
+
   export interface UserInfoPermission {
     id: string;
     mapTo: string | null;
@@ -185,16 +230,9 @@ export namespace NodeData {
     permissions: UserInfoPermission[];
   }
 
-  export interface SetExpression {
-    expression: Expression;
-    id: string;
-    variable?: string | null;
-    type?: BaseNode.Utils.ExpressionTypeV2;
-  }
-
-  export interface Set {
-    title?: string;
-    sets: SetExpression[];
+  export interface UserInfoBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+    [BaseModels.PortType.FAIL]: string;
   }
 
   export type NewExpressionType = string | number | null;
@@ -211,8 +249,8 @@ export namespace NodeData {
     sets: SetExpressionV2[];
   }
 
-  export interface If {
-    expressions: Expression[];
+  export interface SetV2BuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
   }
 
   export interface IfV2 {
@@ -220,12 +258,24 @@ export namespace NodeData {
     noMatch: BaseNode.IfV2.IfNoMatch;
   }
 
+  export interface IfV2BuiltInPorts {
+    [BaseModels.PortType.NO_MATCH]: string;
+  }
+
   export interface Directive {
     directive: any;
   }
 
+  export interface DirectiveBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+  }
+
   export interface CustomPayload {
     customPayload: any;
+  }
+
+  export interface CustomPayloadBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
   }
 
   export interface Trace {
@@ -244,10 +294,23 @@ export namespace NodeData {
     backgroundImage: string | null;
   }
 
+  export interface StreamBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+    [BaseModels.PortType.PAUSE]?: string;
+    [BaseModels.PortType.PREVIOUS]?: string;
+  }
+
   export interface AccountLinking {}
+
+  export interface AccountLinkingBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+  }
 
   export type Intent = Record<DistinctPlatform, Intent.PlatformData>;
 
+  export interface IntentBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+  }
   export namespace Intent {
     export interface PlatformData {
       intent: string | null;
@@ -264,12 +327,26 @@ export namespace NodeData {
     }[];
   }
 
+  export interface EventBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+  }
+
   export interface Payment {
     productID: string | null;
   }
 
+  export interface PaymentBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+    [BaseModels.PortType.FAIL]: string;
+  }
+
   export interface CancelPayment {
     productID: string | null;
+  }
+
+  export interface CancelPaymentBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+    [BaseModels.PortType.FAIL]: string;
   }
 
   export interface IntegrationDefaultProps {
@@ -312,6 +389,11 @@ export namespace NodeData {
 
   export type Integration = CustomApi | GoogleSheets | Zapier;
 
+  export interface IntegrationBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+    [BaseModels.PortType.FAIL]: string;
+  }
+
   export interface TypedIntegration {
     [BaseNode.Utils.IntegrationType.ZAPIER]: Zapier;
     [BaseNode.Utils.IntegrationType.CUSTOM_API]: CustomApi;
@@ -325,10 +407,23 @@ export namespace NodeData {
     reprompt: Reprompt | null;
   }
 
+  export interface ButtonsBuiltInPorts {
+    [BaseModels.PortType.NO_MATCH]: string;
+    [BaseModels.PortType.NO_REPLY]?: string;
+  }
+
   export interface Text extends BaseNode.Text.StepData {}
+
+  export interface TextBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+  }
 
   // union
   export type Visual = BaseNode.Visual.StepData;
+
+  export interface VisualBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+  }
 }
 
 export namespace DBNodeData {

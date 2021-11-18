@@ -1,6 +1,7 @@
 import { Node } from '@voiceflow/alexa-types';
 import { Node as BaseNode } from '@voiceflow/base-types';
 
+import { visualOutPortsAdapter } from '../base/visual';
 import { createBlockAdapter } from '../utils';
 
 const displayAdapter = createBlockAdapter<Node.Display.StepData, BaseNode.Visual.APLStepData>(
@@ -24,5 +25,7 @@ const displayAdapter = createBlockAdapter<Node.Display.StepData, BaseNode.Visual
     jsonFileName,
   })
 );
+
+export const displayOutPortAdapter = visualOutPortsAdapter;
 
 export default displayAdapter;

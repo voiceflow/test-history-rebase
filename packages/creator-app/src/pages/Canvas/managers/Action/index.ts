@@ -20,7 +20,10 @@ const TraceManager: NodeManagerConfig<Realtime.NodeData.Trace> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}],
+        out: {
+          builtIn: {},
+          dynamic: [{}],
+        },
       },
     },
     data: {

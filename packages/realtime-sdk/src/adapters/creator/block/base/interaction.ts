@@ -3,7 +3,7 @@ import { Node } from '@voiceflow/base-types';
 import { DistinctPlatform } from '../../../../constants';
 import { NodeData } from '../../../../models';
 import { distinctPlatformsData } from '../../../../utils/platform';
-import { choiceAdapter, createBlockAdapter, defaultPortAdapter, migratePortsWithNoMatch, PortsAdapter } from '../utils';
+import { choiceAdapter, createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter } from '../utils';
 
 const interactionAdapter = createBlockAdapter<
   Omit<Node.Interaction.StepData, 'else' | 'reprompt'>,
@@ -24,9 +24,9 @@ const interactionAdapter = createBlockAdapter<
   })
 );
 
-export const interactionPortsAdapter: PortsAdapter<NodeData.Interaction> = {
-  ...defaultPortAdapter,
-  fromDB: (ports, node) => defaultPortAdapter.fromDB(migratePortsWithNoMatch(ports), node),
-};
+export const interactionOutPortsAdapter = createOutPortsAdapter<NodeData.InteractionBuiltInPorts, NodeData.Interaction>(
+  (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(dbPorts, options),
+  (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapter.toDB(dbPorts, options)
+);
 
 export default interactionAdapter;

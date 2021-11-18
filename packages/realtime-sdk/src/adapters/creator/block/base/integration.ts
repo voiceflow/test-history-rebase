@@ -1,7 +1,7 @@
 import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/base-types';
 
-import { createBlockAdapter } from '../utils';
+import { createBlockAdapter, createOutPortsAdapter, nextAndFailOnlyOutPortsAdapter } from '../utils';
 import apiAdapter from './api';
 import googleSheetsAdapter from './googleSheets';
 import zapierAdapter from './zapier';
@@ -31,6 +31,11 @@ const integrationAdapter = createBlockAdapter<Node.Api.StepData | Node.Zapier.St
         throw new Error('Integration adapter is not implemented yet!');
     }
   }
+);
+
+export const integrationOutPortsAdapter = createOutPortsAdapter<NodeData.IntegrationBuiltInPorts, NodeData.Integration>(
+  (dbPorts, options) => nextAndFailOnlyOutPortsAdapter.fromDB(dbPorts, options),
+  (dbPorts, options) => nextAndFailOnlyOutPortsAdapter.toDB(dbPorts, options)
 );
 
 export default integrationAdapter;

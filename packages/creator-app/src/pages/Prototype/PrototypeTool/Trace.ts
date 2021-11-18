@@ -1,4 +1,4 @@
-import { Node as BaseNode, Request } from '@voiceflow/base-types';
+import { Models, Node as BaseNode, Request } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -538,19 +538,23 @@ class TraceController {
   private saveActivePathLink(sourceNodeID: string, targetNode: Realtime.Node) {
     const activePathLinkID = this.findLinkBetween(sourceNodeID, targetNode.id);
 
-    let flowOutLink: string[] = [];
+    let outLinkIDs: string[] = [];
+
     // We need to prematurely highlight the out link of a node block (if it exists)
     // because the regular active path logic doesn't account for that case
-    if (targetNode.type === BlockType.FLOW) {
-      const outPort: string = targetNode.ports.out[0];
-      const linksByPortID = this.props.getLinksByPortID(outPort);
-      const flowOutLinkID = linksByPortID?.[0]?.id;
-      flowOutLink = flowOutLinkID ? [flowOutLinkID] : [];
+    if (targetNode.type === BlockType.FLOW || targetNode.type === BlockType.COMPONENT) {
+      const builtIn = (targetNode.ports.out.builtIn ?? {}) as Realtime.NodeData.FlowBuiltInPorts | Realtime.NodeData.ComponentBuiltInPorts;
+
+      const outPort = builtIn[Models.PortType.NEXT];
+      const linksByPortID = outPort ? this.props.getLinksByPortID(outPort) : [];
+      const outLinkID = linksByPortID?.[0]?.id;
+
+      outLinkIDs = outLinkID ? [outLinkID] : [];
     }
 
     let activePathLinkArray = this.props.activePathLinkIDs;
     if (activePathLinkID) {
-      activePathLinkArray = Utils.array.unique([...this.props.activePathLinkIDs, ...flowOutLink, activePathLinkID]);
+      activePathLinkArray = Utils.array.unique([...this.props.activePathLinkIDs, ...outLinkIDs, activePathLinkID]);
     }
     const updatedContextHistory = getUpdatedContextHistory(
       this.props.contextStep,

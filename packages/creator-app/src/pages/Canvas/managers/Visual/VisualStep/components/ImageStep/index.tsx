@@ -1,9 +1,10 @@
-import { Node } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { isVariable } from '@/utils/slot';
 
 import { NODE_CONFIG } from '../../../constants';
@@ -13,17 +14,17 @@ export interface ImageStepProps {
   image: string | null;
   label: string | null;
   nodeID: string;
-  portID?: string;
+  nextPortID?: string;
   aspectRatio: number | null;
 }
 
-export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, portID, image, aspectRatio }) => (
+export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, image, nextPortID, aspectRatio }) => (
   <Step nodeID={nodeID} image={image} imageAspectRatio={aspectRatio} imagePosition="top center">
     <Section>
       <Item
         icon={NODE_CONFIG.icon}
         label={label}
-        portID={portID}
+        portID={nextPortID}
         iconColor={NODE_CONFIG.iconColor}
         placeholder="Add a visual"
         labelVariant={StepLabelVariant.SECONDARY}
@@ -32,7 +33,7 @@ export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, portID, ima
   </Step>
 );
 
-const ConnectedImageStep: React.FC<ConnectedStepProps<Node.Visual.ImageStepData>> = ({ node, data }) => {
+const ConnectedImageStep: ConnectedStep<Node.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ node, data }) => {
   const label = getLabel(data);
   const size = data.device ? Constants.DEVICE_SIZE_MAP[data.device] : data.dimensions;
   const image = isVariable(data.image) ? null : data.image;
@@ -41,10 +42,10 @@ const ConnectedImageStep: React.FC<ConnectedStepProps<Node.Visual.ImageStepData>
 
   return (
     <ImageStep
-      nodeID={node.id}
-      portID={node.ports.out[0]}
       label={label}
       image={data.canvasVisibility === Node.Visual.CanvasVisibility.HIDDEN ? null : image}
+      nodeID={node.id}
+      nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
       aspectRatio={aspectRatio}
     />
   );

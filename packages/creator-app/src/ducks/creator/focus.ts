@@ -4,7 +4,6 @@ import { createSelector } from 'reselect';
 
 import { createAction, createKeyedSelector } from '@/ducks/utils';
 import { Action, Reducer, RootReducer } from '@/store/types';
-import { getPortByType } from '@/utils/port';
 
 import { AnyCreatorAction, CreatorAction } from './actions';
 import * as Diagram from './diagram';
@@ -87,18 +86,17 @@ export const focusedNodeSelector = createSelector([Diagram.nodeByIDSelector, roo
 
 export const hasFocusedNode = createSelector([rootSelector], (focus) => focus.isActive);
 
-export const focusedNodeDataSelector = createSelector([Diagram.dataByNodeIDSelector, rootSelector], (getDataByNodeID, focus) =>
-  focus.target ? (getDataByNodeID(focus.target) as Realtime.NodeData<unknown>) : null
+export const focusedNodeDataSelector = createSelector(
+  [Diagram.dataByNodeIDSelector, rootSelector],
+  (getDataByNodeID, focus): Realtime.NodeData<unknown> | null => (focus.target ? (getDataByNodeID(focus.target) as Realtime.NodeData<unknown>) : null)
 );
 
 export const focusedNoMatchLinkIDSelector = createSelector(
-  [focusedNodeSelector, Diagram.allPortsByIDsSelector, Diagram.linkIDsByPortIDSelector],
-  (focusedNode, getPortsByIDs, getLinkIDsByPortID) => {
-    const ports = getPortsByIDs(focusedNode?.ports.out ?? []);
+  [focusedNodeSelector, Diagram.linkIDsByPortIDSelector],
+  (focusedNode, getLinkIDsByPortID) => {
+    const noMatchPortID = focusedNode?.ports.out.builtIn[Models.PortType.NO_MATCH];
 
-    const noMatchPort = getPortByType(ports, Models.PortType.NO_MATCH) ?? ports[0];
-
-    return noMatchPort ? getLinkIDsByPortID(noMatchPort.id)[0] : null;
+    return noMatchPortID ? getLinkIDsByPortID(noMatchPortID)[0] : null;
   }
 );
 

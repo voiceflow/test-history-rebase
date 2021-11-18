@@ -1,11 +1,12 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import { StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
-import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import { useDispatch } from '@/hooks';
+import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { DiagramMapContext } from '@/pages/Canvas/contexts';
 import perf, { PerfAction } from '@/performance';
 
@@ -14,41 +15,40 @@ import { NODE_CONFIG } from '../constants';
 export interface FlowStepProps {
   label: string | null;
   nodeID: string;
-  portID: string;
+  nextPortID: string;
   onClickFlow?: () => void;
 }
 
-export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, portID, onClickFlow }) => (
+export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, nextPortID, onClickFlow }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
-        label={label}
-        portID={portID}
-        onClick={label ? stopPropagation(onClickFlow) : undefined}
-        labelVariant={StepLabelVariant.SECONDARY}
         icon={NODE_CONFIG.icon}
+        label={label}
+        portID={nextPortID}
+        onClick={label ? stopPropagation(onClickFlow) : undefined}
         iconColor={NODE_CONFIG.iconColor}
+        labelVariant={StepLabelVariant.SECONDARY}
         placeholder="Connect a flow to this step"
       />
     </Section>
   </Step>
 );
 
-const MemoizedFlowStep = React.memo(FlowStep);
-
-const ConnectedFlowStep: React.FC<ConnectedStepProps<Realtime.NodeData.Flow>> = ({ node, data }) => {
-  const dispatch = useDispatch();
+const ConnectedFlowStep: ConnectedStep<Realtime.NodeData.Flow, Realtime.NodeData.FlowBuiltInPorts> = ({ node, data }) => {
   const diagramMap = React.useContext(DiagramMapContext)!;
+
+  const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 
   const goToDiagram = React.useCallback(() => {
     perf.action(PerfAction.FLOW_NODE__LINK_CLICK);
 
-    if (data.diagramID) dispatch(Router.goToDiagramHistoryPush(data.diagramID));
-  }, [data.diagramID, dispatch]);
+    if (data.diagramID) goToDiagramHistoryPush(data.diagramID);
+  }, [data.diagramID, goToDiagramHistoryPush]);
 
   const label = data.diagramID ? diagramMap[data.diagramID]?.name : null;
 
-  return <MemoizedFlowStep label={label} nodeID={node.id} portID={node.ports.out[0]} onClickFlow={goToDiagram} />;
+  return <FlowStep label={label} nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} onClickFlow={goToDiagram} />;
 };
 
 export default ConnectedFlowStep;

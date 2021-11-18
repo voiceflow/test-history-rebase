@@ -15,9 +15,8 @@ import { FadeLeftContainer } from '@/styles/animations';
 import { Component, Footer, Mapping } from './components';
 import { variableMappingFactory } from './components/Mapping/components/MappingSection';
 
-const ComponentEditor: NodeEditor<Realtime.NodeData.Component> = ({ data, onChange }) => {
+const ComponentEditor: NodeEditor<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ data, onChange }) => {
   const theme = useTheme();
-
   const diagram = useSelector((state) => DiagramV2.diagramByIDSelector(state, { id: data.diagramID }));
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);

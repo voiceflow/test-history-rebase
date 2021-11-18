@@ -3,8 +3,7 @@ import { Models } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { Node } from '@voiceflow/google-types';
 
-import { generateOutPort } from '../../utils';
-import { createBlockAdapter, getPortByLabel, PortsAdapter } from '../utils';
+import { createBlockAdapter, createOutPortsAdapter, findDBNextPort, outPortDataFromDB, outPortDataToDB } from '../utils';
 
 const streamAdapter = createBlockAdapter<Node.Stream.StepData, NodeData.Stream>(
   ({ loop, audio, title, iconImage, description, backgroundImage }) => ({
@@ -26,22 +25,19 @@ const streamAdapter = createBlockAdapter<Node.Stream.StepData, NodeData.Stream>(
   })
 );
 
-// for the alexa version
-export const streamPortsAdapter: PortsAdapter = {
-  toDB: (ports) => [
-    {
-      type: Models.PortType.NEXT,
-      target: getPortByLabel(ports, Models.PortType.NEXT)?.target || ports[0].target || null,
-      id: ports[0].port.id,
-      data: ports[0]?.link?.data,
-    },
-  ],
-  fromDB: (ports, { nodeID }) => [
-    {
-      port: generateOutPort(nodeID, ports[0], { label: Models.PortType.NEXT, platform: Constants.PlatformType.GOOGLE }),
-      target: ports[0].target,
-    },
-  ],
-};
+export const streamOutPortsAdapter = createOutPortsAdapter<NodeData.StreamBuiltInPorts, NodeData.Stream>(
+  (dbPorts, options) => {
+    const dbNextPort = findDBNextPort(dbPorts);
+
+    const nextPortData = outPortDataFromDB(dbNextPort, options);
+
+    return {
+      ports: [{ ...nextPortData, platform: Constants.PlatformType.GOOGLE }],
+      dynamic: [],
+      builtIn: { [Models.PortType.NEXT]: nextPortData.port.id },
+    };
+  },
+  ({ builtIn: { [Models.PortType.NEXT]: nextPortData } }) => [outPortDataToDB(nextPortData)]
+);
 
 export default streamAdapter;

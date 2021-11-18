@@ -1,20 +1,20 @@
-import { Node } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
 
 export interface PromptStepProps {
   nodeID: string;
   isPath: boolean;
-  elsePortID: string;
-  elsePathName: string;
+  noMatchPortID: string;
+  noMatchPathName: string;
 }
 
-export const PromptStep: React.FC<PromptStepProps> = ({ nodeID, isPath, elsePathName, elsePortID }) => (
+export const PromptStep: React.FC<PromptStepProps> = ({ nodeID, isPath, noMatchPathName, noMatchPortID }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
@@ -26,16 +26,16 @@ export const PromptStep: React.FC<PromptStepProps> = ({ nodeID, isPath, elsePath
       />
     </Section>
 
-    {isPath && <ElseItem label={elsePathName} portID={elsePortID} />}
+    {isPath && <ElseItem label={noMatchPathName} portID={noMatchPortID} />}
   </Step>
 );
 
-const ConnectedPromptStep: React.FC<ConnectedStepProps<Realtime.NodeData.Prompt>> = ({ node, data }) => (
+const ConnectedPromptStep: ConnectedStep<Realtime.NodeData.Prompt, Realtime.NodeData.PromptBuiltInPorts> = ({ node, data }) => (
   <PromptStep
     nodeID={node.id}
     isPath={!!data.noMatchReprompt.type && data.noMatchReprompt.type !== Node.Utils.NoMatchType.REPROMPT}
-    elsePortID={node.ports.out[0]}
-    elsePathName={data.noMatchReprompt.pathName}
+    noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
+    noMatchPathName={data.noMatchReprompt.pathName}
   />
 );
 

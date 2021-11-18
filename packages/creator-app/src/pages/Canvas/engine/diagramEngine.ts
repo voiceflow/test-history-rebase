@@ -1,7 +1,9 @@
+import { Models } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
+import * as Creator from '@/ducks/creator';
 import { EntityMap, NodeWithData } from '@/models';
 import { Coords } from '@/utils/geometry';
 
@@ -13,9 +15,9 @@ class DiagramEngine extends EngineConsumer {
     const data = this.engine.getDataByNodeID(nodeID);
 
     return {
-      nodesWithData: [{ node: { ...node, ...nodeOverrides }, data: rename ? { ...data, name: `${data.name} copy` } : data }],
-      ports: [...node.ports.in, ...node.ports.out].map(this.engine.getPortByID),
+      ports: [...node.ports.in, ...Creator.diagramUtils.getAllOutPortIDs(node)].map(this.engine.getPortByID),
       links: [],
+      nodesWithData: [{ node: { ...node, ...nodeOverrides }, data: rename ? { ...data, name: `${data.name} copy` } : data }],
     };
   }
 
@@ -25,7 +27,22 @@ class DiagramEngine extends EngineConsumer {
     const newNodeID = Utils.id.objectID();
 
     const inPorts = node.ports.in.map((portID) => ({ ...this.engine.getPortByID(portID), id: Utils.id.objectID(), nodeID: newNodeID }));
-    const outPorts = node.ports.out.map((portID) => ({ ...this.engine.getPortByID(portID), id: Utils.id.objectID(), nodeID: newNodeID }));
+    const outDynamicPorts = node.ports.out.dynamic.map((portID) => ({
+      ...this.engine.getPortByID(portID),
+      id: Utils.id.objectID(),
+      nodeID: newNodeID,
+    }));
+
+    const outBuiltInPortsEntities = Object.entries(node.ports.out.builtIn)
+      .filter(([, portID]) => !!portID)
+      .map<[Models.PortType, Realtime.Port]>(([type, portID]) => [
+        type as Models.PortType,
+        {
+          ...this.engine.getPortByID(portID),
+          id: Utils.id.objectID(),
+          nodeID: newNodeID,
+        },
+      ]);
 
     return {
       nodesWithData: [
@@ -36,7 +53,10 @@ class DiagramEngine extends EngineConsumer {
             id: newNodeID,
             ports: {
               in: inPorts.map(({ id }) => id),
-              out: outPorts.map(({ id }) => id),
+              out: {
+                dynamic: outDynamicPorts.map(({ id }) => id),
+                builtIn: outBuiltInPortsEntities.reduce((acc, [type, port]) => Object.assign(acc, { [type]: port.id }), {}),
+              },
             },
           },
           data: {
@@ -46,7 +66,7 @@ class DiagramEngine extends EngineConsumer {
           },
         },
       ],
-      ports: [...inPorts, ...outPorts],
+      ports: [...inPorts, ...outDynamicPorts, ...outBuiltInPortsEntities.map(([, port]) => port)],
       links: [],
     };
   }

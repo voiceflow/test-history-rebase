@@ -2,19 +2,15 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
-import { focusedNodeSelector } from '@/ducks/creator';
-import { connect } from '@/hocs';
 import { MapManaged, useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
-import { EngineContext } from '@/pages/Canvas/contexts';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { ConnectedProps } from '@/types';
 
 import { ConditionsSection, HelpTooltip, NoMatchSection } from './components';
 import { NODE_CONFIG } from './constants';
 
-const setClone = (initVal: any, targetVal: Realtime.ExpressionData) => ({
+const setClone = (initVal: Realtime.ExpressionData, targetVal: Realtime.ExpressionData) => ({
   ...initVal,
   name: targetVal.name,
   value: targetVal.value,
@@ -22,46 +18,49 @@ const setClone = (initVal: any, targetVal: Realtime.ExpressionData) => ({
 
 const expressionFactory = () => NODE_CONFIG.factory(undefined).data.expressions[0];
 
-const IfEditor: NodeEditor<Realtime.NodeData.IfV2 & ConnectedCommentingUpdatesProps> = ({ data, pushToPath, onChange, focusedNode }) => {
+const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ data, node, engine, pushToPath, onChange }) => {
   const [isDragging, toggleDragging] = useToggle(false);
-  const engine = React.useContext(EngineContext)!;
+
   const updateExpressions = React.useCallback((expressions, save) => onChange({ expressions }, save), [onChange]);
   const onRemoveExpression = React.useCallback(
-    (_, index) => engine.port.remove(focusedNode!.ports!.out![index + 1] as string),
-    [engine.port, focusedNode!.ports!.out]
+    (_, index) => engine.port.removeOutDynamic(node.ports.out.dynamic[index]),
+    [engine, node.ports.out.dynamic]
   );
 
   const { items, onAdd, onRemove, onDuplicate, mapManaged, onReorder, latestCreatedKey } = useManager(data.expressions, updateExpressions, {
+    clone: setClone,
     factory: () => expressionFactory(),
     autosave: false,
     handleRemove: onRemoveExpression,
-    clone: setClone,
-  } as any);
+  });
 
   const reorderExpressions = React.useCallback(
     (from: number, to: number) => {
       onReorder(from, to);
 
-      engine.port.reorder(focusedNode!.id!, from + 1, to + 1);
+      engine.port.reorderOutDynamic(node.id, from, to);
     },
-    [onReorder, engine.port, focusedNode!.id!]
+    [onReorder, engine, node.id]
   );
 
   const addExpression = React.useCallback(
     async (scrollToBottom: (behavior?: ScrollBehavior) => void) => {
       onAdd();
-      await engine.port.add(focusedNode!.id!, { label: (items.length + 1).toString() });
+
+      await engine.port.addOutDynamic(node.id);
+
       scrollToBottom();
     },
-    [engine.port, items.length, onAdd]
+    [engine, onAdd, node.id]
   );
 
   const onDuplicationExp = React.useCallback(
-    (_, item) => {
+    async (_, item) => {
       onDuplicate(item.index, item);
-      engine.port.add(focusedNode!.id as string, { label: (items.length + 1).toString() });
+
+      await engine.port.addOutDynamic(node.id);
     },
-    [onDuplicate, focusedNode!.id]
+    [onDuplicate, node.id]
   );
 
   return (
@@ -117,10 +116,4 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2 & ConnectedCommentingUpdatesPr
   );
 };
 
-const mapStateToProps = {
-  focusedNode: focusedNodeSelector,
-};
-
-type ConnectedCommentingUpdatesProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(IfEditor);
+export default IfEditor;

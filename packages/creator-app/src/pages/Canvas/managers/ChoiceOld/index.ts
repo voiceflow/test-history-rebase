@@ -1,3 +1,4 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SVG } from '@voiceflow/ui';
 
@@ -30,7 +31,10 @@ const ChoiceOldManager: NodeManagerConfig<Realtime.NodeData.ChoiceOld> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}, {}],
+        out: {
+          dynamic: [{}],
+          builtIn: { [Models.PortType.NO_MATCH]: { label: Models.PortType.NO_MATCH } },
+        },
       },
     },
     data: {

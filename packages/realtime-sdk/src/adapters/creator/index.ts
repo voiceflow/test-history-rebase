@@ -150,7 +150,12 @@ const creatorAdapter = createSimpleAdapter<
             {
               node,
               data: data[node.id],
-              ports: node.ports.out.map((portID) => ports.byKey[portID]),
+              ports: [
+                ...node.ports.out.dynamic.map((portID) => ports.byKey[portID]),
+                ...Object.values(node.ports.out.builtIn)
+                  .filter(Boolean)
+                  .map((portID) => ports.byKey[portID]),
+              ],
             },
             { portToTargets, stepMap, platform, portLinksMap: sourcePortLinksMap, context }
           ),

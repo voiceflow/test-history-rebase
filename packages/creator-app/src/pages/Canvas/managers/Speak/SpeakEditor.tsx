@@ -4,18 +4,14 @@ import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
-import * as Creator from '@/ducks/creator';
-import * as ProjectV2 from '@/ducks/projectV2';
-import { connect } from '@/hocs';
 import SpeakItemList from '@/pages/Canvas/components/SpeakAudioList';
 import { useCanvasVisibilityOption } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { ConnectedProps } from '@/types';
 
 import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from './constants';
 import StyledSpeakAudioItem from './StyledSpeakAudioItem';
 
-const SpeakEditor: NodeEditor<Realtime.NodeData.Speak, SpeakEditorConnectedProps> = ({ data, platform, onChange }) => {
+const SpeakEditor: NodeEditor<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = ({ data, platform, onChange }) => {
   const {
     dialogs,
     randomize,
@@ -58,11 +54,4 @@ const SpeakEditor: NodeEditor<Realtime.NodeData.Speak, SpeakEditorConnectedProps
   );
 };
 
-const mapStateToProps = {
-  platform: ProjectV2.active.platformSelector,
-  focusedNode: Creator.focusedNodeSelector,
-};
-
-type SpeakEditorConnectedProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(SpeakEditor) as NodeEditor<Realtime.NodeData.Speak>;
+export default SpeakEditor;

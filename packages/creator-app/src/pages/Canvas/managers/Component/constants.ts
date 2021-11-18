@@ -1,3 +1,4 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -5,7 +6,7 @@ import { BlockType } from '@/constants';
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Component> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = {
   type: BlockType.COMPONENT,
   icon: 'component',
   iconColor: '#5c6bc0',
@@ -14,7 +15,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Component> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}],
+        out: {
+          dynamic: [],
+          builtIn: { [Models.PortType.NEXT]: { label: Models.PortType.NEXT } },
+        },
       },
     },
     data: {

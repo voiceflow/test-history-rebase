@@ -1,3 +1,4 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -23,7 +24,7 @@ export const PERMISSION_LABELS = PERMISSIONS.reduce<Record<string, string>>((acc
   return acc;
 }, {});
 
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Permission> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Permission, Realtime.NodeData.PermissionBuiltInPorts> = {
   type: BlockType.PERMISSION,
 
   icon: 'openLock',
@@ -33,7 +34,12 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Permission> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}],
+        out: {
+          dynamic: [],
+          builtIn: {
+            [Models.PortType.NEXT]: { label: Models.PortType.NEXT },
+          },
+        },
       },
     },
     data: {

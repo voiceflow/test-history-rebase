@@ -5,7 +5,7 @@ import { NODE_CONFIG } from './constants';
 import DirectiveEditor from './DirectiveEditor';
 import DirectiveStep from './DirectiveStep';
 
-const DirectiveManager: NodeManagerConfig<Realtime.NodeData.Directive> = {
+const DirectiveManager: NodeManagerConfig<Realtime.NodeData.Directive, Realtime.NodeData.DirectiveBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'send directive to alexa',

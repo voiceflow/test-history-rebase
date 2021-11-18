@@ -1,11 +1,16 @@
 import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/google-dfes-types';
 
-import { createBlockAdapter } from '../utils';
+import { createBlockAdapter, createOutPortsAdapter, nextOnlyOutPortsAdapter } from '../utils';
 
 const customPayload = createBlockAdapter<Node.Payload.StepData, NodeData.CustomPayload>(
   ({ data: customPayload }) => ({ customPayload }),
   ({ customPayload }) => ({ data: customPayload })
+);
+
+export const customPayloadOutPortsAdapter = createOutPortsAdapter<NodeData.CustomPayloadBuiltInPorts, NodeData.CustomPayload>(
+  (dbPorts, options) => nextOnlyOutPortsAdapter.fromDB(dbPorts, options),
+  (dbPorts, options) => nextOnlyOutPortsAdapter.toDB(dbPorts, options)
 );
 
 export default customPayload;

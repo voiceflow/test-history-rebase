@@ -1,23 +1,24 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
 
 export interface DirectiveStepProps {
   nodeID: string;
-  portID: string;
+  nextPortID: string;
 }
 
-export const DirectiveStep: React.FC<DirectiveStepProps> = ({ nodeID, portID }) => (
+export const DirectiveStep: React.FC<DirectiveStepProps> = ({ nodeID, nextPortID }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
         icon={NODE_CONFIG.icon}
         label="Directive"
-        portID={portID}
+        portID={nextPortID}
         iconColor={NODE_CONFIG.iconColor}
         placeholder="Send Alexa Directive"
         labelVariant={StepLabelVariant.SECONDARY}
@@ -26,8 +27,8 @@ export const DirectiveStep: React.FC<DirectiveStepProps> = ({ nodeID, portID }) 
   </Step>
 );
 
-const ConnectedActionStep: React.FC<ConnectedStepProps<Realtime.NodeData.Directive>> = ({ node }) => (
-  <DirectiveStep nodeID={node.id} portID={node.ports.out[0]} />
+const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Directive, Realtime.NodeData.DirectiveBuiltInPorts> = ({ node }) => (
+  <DirectiveStep nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} />
 );
 
 export default ConnectedActionStep;

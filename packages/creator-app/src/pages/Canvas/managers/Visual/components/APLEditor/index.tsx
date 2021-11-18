@@ -1,23 +1,24 @@
 import { Node } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import { ModalType } from '@/constants';
 import * as APL from '@/ducks/apl';
-import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useDispatch, useModals } from '@/hooks';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
-import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
-import { ConnectedProps } from '@/types';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { Footer, JSONEditor, SplashEditor } from './components';
 import { APL_OPTIONS } from './constants';
 
-const APLEditor: React.FC<NodeEditorPropsType<Node.Visual.APLStepData> & ConnectedAPLEditorProps> = ({ data, onChange, resolveAPL }) => {
-  const { aplType, imageURL, title, document: documentData, aplCommands, jsonFileName, datasource } = data;
+const APLEditor: NodeEditor<Node.Visual.APLStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ data, onChange }) => {
+  const resolveAPL = useDispatch(APL.resolveAPL);
 
   const previewModal = useModals(ModalType.APL_PREVIEW);
+
+  const { aplType, imageURL, title, document: documentData, aplCommands, jsonFileName, datasource } = data;
 
   const canCreatePreview =
     (aplType === Node.Visual.APLType.SPLASH && !!(title || imageURL)) || (aplType === Node.Visual.APLType.JSON && !!jsonFileName);
@@ -62,10 +63,4 @@ const APLEditor: React.FC<NodeEditorPropsType<Node.Visual.APLStepData> & Connect
   );
 };
 
-const mapDispatchToProps = {
-  resolveAPL: APL.resolveAPL,
-};
-
-type ConnectedAPLEditorProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(APLEditor) as React.FC<NodeEditorPropsType<Node.Visual.APLStepData>>;
+export default APLEditor;

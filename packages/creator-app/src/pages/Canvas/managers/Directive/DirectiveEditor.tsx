@@ -5,14 +5,18 @@ import React from 'react';
 import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import OverflowMenu from '@/components/OverflowMenu';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
-import { PlatformContext } from '@/pages/Project/contexts';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { HelpTooltip } from './components';
 
-const DirectiveEditor: React.FC<NodeEditorPropsType<Realtime.NodeData.Directive>> = ({ data, onChange, expanded, onExpand }) => {
+const DirectiveEditor: NodeEditor<Realtime.NodeData.Directive, Realtime.NodeData.DirectiveBuiltInPorts> = ({
+  data,
+  onChange,
+  expanded,
+  onExpand,
+  platform,
+}) => {
   const [value, setValue] = React.useState(data.directive);
-  const platform = React.useContext(PlatformContext)!;
 
   return (
     <Content

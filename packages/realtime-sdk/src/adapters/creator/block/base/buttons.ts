@@ -1,9 +1,9 @@
 import { Node } from '@voiceflow/base-types';
 
 import { NodeData } from '../../../../models';
-import { createBlockAdapter, defaultPortAdapter, migratePortsWithNoMatch, PortsAdapter } from '../utils';
+import { createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter } from '../utils';
 
-const buttonsAdapter = createBlockAdapter<Omit<Node.Buttons.StepData, 'else' | 'reprompt'>, Omit<Node.Buttons.StepData, 'else' | 'reprompt'>>(
+const buttonsAdapter = createBlockAdapter<Omit<Node.Buttons.StepData, 'else' | 'reprompt'>, Omit<NodeData.Buttons, 'else' | 'reprompt'>>(
   ({ buttons, buttonsLayout }) => ({
     buttons,
     buttonsLayout,
@@ -15,9 +15,9 @@ const buttonsAdapter = createBlockAdapter<Omit<Node.Buttons.StepData, 'else' | '
   })
 );
 
-export const buttonsPortsAdapter: PortsAdapter<NodeData.Buttons> = {
-  ...defaultPortAdapter,
-  fromDB: (ports, node) => defaultPortAdapter.fromDB(migratePortsWithNoMatch(ports), node),
-};
+export const buttonsOutPortsAdapter = createOutPortsAdapter<NodeData.ButtonsBuiltInPorts, NodeData.Buttons>(
+  (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(dbPorts, options),
+  (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapter.toDB(dbPorts, options)
+);
 
 export default buttonsAdapter;

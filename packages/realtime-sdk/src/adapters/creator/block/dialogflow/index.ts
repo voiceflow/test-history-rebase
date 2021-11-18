@@ -1,8 +1,11 @@
 import { BlockType } from '@realtime-sdk/constants';
 
-import customPayloadAdapters from './customPayload';
+import customPayloadAdapters, { customPayloadOutPortsAdapter } from './customPayload';
 
-// eslint-disable-next-line import/prefer-default-export
 export const dialogflowAdapter = {
   [BlockType.CUSTOM_PAYLOAD]: customPayloadAdapters,
+};
+
+export const dialogflowOutPortAdapter = {
+  [BlockType.CUSTOM_PAYLOAD]: customPayloadOutPortsAdapter,
 };

@@ -1,11 +1,12 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 
-import { NodeConfig } from '../types';
+import { NodeConfigWithoutInPorts } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Event> = {
+export const NODE_CONFIG: NodeConfigWithoutInPorts<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = {
   type: BlockType.EVENT,
 
   icon: 'event',
@@ -16,7 +17,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Event> = {
   factory: () => ({
     node: {
       ports: {
-        out: [{}],
+        out: {
+          dynamic: [],
+          builtIn: { [Models.PortType.NEXT]: { label: Models.PortType.NEXT } },
+        },
       },
     },
     data: {

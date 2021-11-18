@@ -3,7 +3,7 @@ import { Node } from '@voiceflow/base-types';
 import { DistinctPlatform } from '../../../../constants';
 import { NodeData } from '../../../../models';
 import { distinctPlatformsData } from '../../../../utils/platform';
-import { createBlockAdapter } from '../utils';
+import { createBlockAdapter, emptyOutPortsAdapter } from '../utils';
 
 const commandAdapter = createBlockAdapter<
   Node.Command.StepData,
@@ -29,5 +29,7 @@ const commandAdapter = createBlockAdapter<
     };
   }
 );
+
+export const commandOutPortsAdapter = emptyOutPortsAdapter;
 
 export default commandAdapter;

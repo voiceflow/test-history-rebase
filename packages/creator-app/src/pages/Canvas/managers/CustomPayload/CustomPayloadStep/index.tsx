@@ -1,23 +1,24 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
 
 export interface CustomPayloadStepProps {
   nodeID: string;
-  portID: string;
+  nextPortID: string;
 }
 
-export const CustomPayloadStep: React.FC<CustomPayloadStepProps> = ({ nodeID, portID }) => (
+export const CustomPayloadStep: React.FC<CustomPayloadStepProps> = ({ nodeID, nextPortID }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
         icon={NODE_CONFIG.icon}
         label="Add custom response"
-        portID={portID}
+        portID={nextPortID}
         iconColor={NODE_CONFIG.iconColor}
         placeholder="Add custom response"
         labelVariant={StepLabelVariant.SECONDARY}
@@ -26,8 +27,8 @@ export const CustomPayloadStep: React.FC<CustomPayloadStepProps> = ({ nodeID, po
   </Step>
 );
 
-const ConnectedActionStep: React.FC<ConnectedStepProps<Realtime.NodeData.CustomPayload>> = ({ node }) => (
-  <CustomPayloadStep nodeID={node.id} portID={node.ports.out[0]} />
+const ConnectedActionStep: ConnectedStep<Realtime.NodeData.CustomPayload, Realtime.NodeData.CustomPayloadBuiltInPorts> = ({ node }) => (
+  <CustomPayloadStep nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} />
 );
 
 export default ConnectedActionStep;

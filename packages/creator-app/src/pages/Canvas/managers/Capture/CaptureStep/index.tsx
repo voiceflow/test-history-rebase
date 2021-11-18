@@ -1,19 +1,20 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
 
 export interface CaptureStepProps {
   nodeID: string;
-  portID: string;
+  nextPortID: string;
   toVariable: string | null;
   fromVariable: string | null;
 }
 
-export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariable, nodeID, portID }) => (
+export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariable, nodeID, nextPortID }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
@@ -26,7 +27,7 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariab
           )
         }
         icon={NODE_CONFIG.icon}
-        portID={portID}
+        portID={nextPortID}
         iconColor={NODE_CONFIG.iconColor}
         placeholder="Capture a user response"
         labelVariant={StepLabelVariant.SECONDARY}
@@ -35,11 +36,8 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariab
   </Step>
 );
 
-const ConnectedCaptureStep: React.FC<ConnectedStepProps<Realtime.NodeData.Capture>> = ({ data, node }) => {
-  const fromVariable = data.slot;
-  const toVariable = data.variable;
-
-  return <CaptureStep fromVariable={fromVariable} toVariable={toVariable} portID={node.ports.out[0]} {...data} />;
-};
+const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.Capture, Realtime.NodeData.CaptureBuiltInPorts> = ({ data, node }) => (
+  <CaptureStep nodeID={data.nodeID} fromVariable={data.slot} toVariable={data.variable} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} />
+);
 
 export default ConnectedCaptureStep;

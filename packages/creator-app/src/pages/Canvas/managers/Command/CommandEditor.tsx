@@ -21,7 +21,7 @@ import { HelpMessage, HelpTooltip } from './components';
 const FlowComponent = Flow as React.FC<any>;
 const LegacyMappingsComponent = LegacyMappings as React.FC<any>;
 
-const CommandEditor: NodeEditor<Realtime.NodeData.Command, ConnectedCommandEditorProps> = ({
+const CommandEditor: NodeEditor<Realtime.NodeData.Command, {}, ConnectedCommandEditorProps> = ({
   data,
   platformData,
   patchPlatformData,

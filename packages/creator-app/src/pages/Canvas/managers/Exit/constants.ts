@@ -1,9 +1,9 @@
 import { BlockType } from '@/constants';
 
-import { NodeConfig } from '../types';
+import { NodeConfigWithoutOutPorts } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<{}> = {
+export const NODE_CONFIG: NodeConfigWithoutOutPorts<{}> = {
   type: BlockType.EXIT,
 
   icon: 'exit',

@@ -1,3 +1,4 @@
+import type { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import type * as Creator from '@/ducks/creator';
@@ -24,9 +25,11 @@ export enum SocketAction {
   MOVE_NODE = 'REALTIME:SOCKET:NODE:MOVE',
   MOVE_MANY_NODES = 'REALTIME:SOCKET:NODE:MOVE_MANY',
 
-  ADD_PORT = 'REALTIME:SOCKET:PORT:ADD',
-  REMOVE_PORT = 'REALTIME:SOCKET:PORT:REMOVE',
-  REORDER_PORTS = 'REALTIME:SOCKET:PORT:REORDER',
+  ADD_OUT_DYNAMIC_PORT = 'REALTIME:SOCKET:PORT:ADD_OUT_DYNAMIC',
+  ADD_OUT_BUILT_IN_PORT = 'REALTIME:SOCKET:PORT:ADD_OUT_BUILT_IN',
+  REMOVE_OUT_DYNAMIC_PORT = 'REALTIME:SOCKET:PORT:REMOVE_OUT_DYNAMIC',
+  REMOVE_OUT_BUILT_IN_PORT = 'REALTIME:SOCKET:PORT:REMOVE_OUT_BUILT_IN',
+  REORDER_OUT_DYNAMIC_PORTS = 'REALTIME:SOCKET:PORT:REORDER_OUT_DYNAMIC',
 
   MOVE_LINK = 'REALTIME:SOCKET:LINK:MOVE',
   ADD_LINK = 'REALTIME:SOCKET:LINK:ADD',
@@ -81,11 +84,15 @@ export type MoveNode = Action<SocketAction.MOVE_NODE, { nodeID: string; movement
 
 export type MoveManyNodes = Action<SocketAction.MOVE_MANY_NODES, { nodeIDs: string[]; movement: Pair<number>; origins: Point[] }>;
 
-export type AddPort = Action<SocketAction.ADD_PORT, ActionPayload<Creator.AddPort>>;
+export type AddOutDynamicPort = Action<SocketAction.ADD_OUT_DYNAMIC_PORT, ActionPayload<Creator.AddOutDynamicPort>>;
 
-export type RemovePort = Action<SocketAction.REMOVE_PORT, ActionPayload<Creator.RemovePort>>;
+export type AddOutBuiltInPort = Action<SocketAction.ADD_OUT_BUILT_IN_PORT, ActionPayload<Creator.AddOutBuiltInPort>>;
 
-export type ReorderPorts = Action<SocketAction.REORDER_PORTS, ActionPayload<Creator.ReorderPorts>>;
+export type RemoveOutDynamicPort = Action<SocketAction.REMOVE_OUT_DYNAMIC_PORT, ActionPayload<Creator.RemoveOutDynamicPort>>;
+
+export type RemoveOutBuiltInPort = Action<SocketAction.REMOVE_OUT_BUILT_IN_PORT, ActionPayload<Creator.RemoveOutBuiltInPort>>;
+
+export type ReorderOutDynamicPorts = Action<SocketAction.REORDER_OUT_DYNAMIC_PORTS, ActionPayload<Creator.ReorderOutDynamicPorts>>;
 
 export type MoveLink = Action<SocketAction.MOVE_LINK, Either<{ reset: true }, { points: Pair<Point> }>>;
 
@@ -118,9 +125,11 @@ export type AnySocketAction =
   | UpdateNodeData
   | MoveNode
   | MoveManyNodes
-  | AddPort
-  | RemovePort
-  | ReorderPorts
+  | AddOutDynamicPort
+  | AddOutBuiltInPort
+  | RemoveOutDynamicPort
+  | RemoveOutBuiltInPort
+  | ReorderOutDynamicPorts
   | MoveLink
   | AddLink
   | UpdateLinkData
@@ -178,12 +187,19 @@ export const moveManyNodes = (nodeIDs: string[], movement: Pair<number>, origins
 
 // ports
 
-export const addPort = (nodeID: string, port: PartialModel<Realtime.Port>): AddPort => createAction(SocketAction.ADD_PORT, { nodeID, port });
+export const addOutDynamicPort = (nodeID: string, port: PartialModel<Realtime.Port>): AddOutDynamicPort =>
+  createAction(SocketAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port });
 
-export const removePort = (portID: string): RemovePort => createAction(SocketAction.REMOVE_PORT, portID);
+export const addOutBuiltInPort = (nodeID: string, portType: Models.PortType, port: PartialModel<Realtime.Port>): AddOutBuiltInPort =>
+  createAction(SocketAction.ADD_OUT_BUILT_IN_PORT, { nodeID, port, portType });
 
-export const reorderPorts = (nodeID: string, from: number, to: number): ReorderPorts =>
-  createAction(SocketAction.REORDER_PORTS, { nodeID, from, to });
+export const removeOutDynamicPort = (portID: string): RemoveOutDynamicPort => createAction(SocketAction.REMOVE_OUT_DYNAMIC_PORT, portID);
+
+export const removeOutBuiltInPort = (portType: Models.PortType, portID: string): RemoveOutBuiltInPort =>
+  createAction(SocketAction.REMOVE_OUT_BUILT_IN_PORT, { portType, portID });
+
+export const reorderOutDynamicPorts = (nodeID: string, from: number, to: number): ReorderOutDynamicPorts =>
+  createAction(SocketAction.REORDER_OUT_DYNAMIC_PORTS, { nodeID, from, to });
 
 // links
 

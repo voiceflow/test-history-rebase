@@ -7,19 +7,22 @@ import { Constants } from '@voiceflow/general-types';
 import { BidirectionalAdapter } from 'bidirectional-adapter';
 import moize from 'moize';
 
-import { alexaBlockAdapter, alexaPortsAdapter } from './alexa';
-import { baseBlockAdapter, basePortAdapter } from './base';
+import { alexaBlockAdapter, alexaOutPortAdapter } from './alexa';
+import { baseBlockAdapter, baseOutPortAdapter } from './base';
 import blockDataAdapter from './block';
 import { chatBlockAdapter } from './chat';
-import { dialogflowAdapter } from './dialogflow';
+import { dialogflowAdapter, dialogflowOutPortAdapter } from './dialogflow';
 import { generalBlockAdapter } from './general';
-import { googleBlockAdapter, googlePortsAdapter } from './google';
+import { googleBlockAdapter, googleOutPortAdapter } from './google';
 import invalidPlatformAdapter from './invalidPlatform';
 import markupImageAdapter from './markupImage';
 import markupTextAdapter from './markupText';
 import { migrationBlockAdapter } from './migration';
 import startDataAdapter from './start';
-import { PortsAdapter } from './utils';
+import { OutPortsAdapter } from './utils';
+
+export type { OutPortsAdapter } from './utils';
+export { defaultOutPortsAdapter, removePortDataFalsyValues } from './utils';
 
 const BLOCK_TYPE_MAPPING: [string, BlockType][] = [['block', BlockType.COMBINED]];
 
@@ -76,12 +79,16 @@ const commonBlockAdapter = {
   [BlockType.MARKUP_IMAGE]: markupImageAdapter,
 };
 
-const getPlatformPortsAdapter = createPlatformSelector<typeof alexaPortsAdapter | typeof googlePortsAdapter | typeof basePortAdapter>(
+const getPlatformOutPortsAdapter = createPlatformSelector<
+  typeof alexaOutPortAdapter | typeof googleOutPortAdapter | typeof baseOutPortAdapter | typeof dialogflowOutPortAdapter
+>(
   {
-    [Constants.PlatformType.ALEXA]: alexaPortsAdapter,
-    [Constants.PlatformType.GOOGLE]: googlePortsAdapter,
+    [Constants.PlatformType.ALEXA]: alexaOutPortAdapter,
+    [Constants.PlatformType.GOOGLE]: googleOutPortAdapter,
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflowOutPortAdapter,
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowOutPortAdapter,
   },
-  basePortAdapter
+  baseOutPortAdapter
 );
 
 export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
@@ -89,8 +96,6 @@ export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, Block
 type PlatformBlockAdapter = Partial<
   Record<BlockType, BidirectionalAdapter<unknown, NodeData<unknown>, [{ context: AdapterContext }], [{ context: AdapterContext }]>>
 >;
-
-const commonPortsAdapter = {};
 
 export const getBlockAdapter = moize((platform: Constants.PlatformType, migrate?: boolean): PlatformBlockAdapter => {
   if (migrate) {
@@ -105,15 +110,12 @@ export const getBlockAdapter = moize((platform: Constants.PlatformType, migrate?
   } as unknown as PlatformBlockAdapter;
 });
 
-type PlatformPortsAdapter = Partial<Record<BlockType, PortsAdapter>>;
+type PlatformOutPortAdapter = Partial<Record<BlockType, OutPortsAdapter>>;
 
-export const getPortsAdapter = moize(
-  (platform: Constants.PlatformType): PlatformPortsAdapter =>
+export const getOutPortsAdapter = moize(
+  (platform: Constants.PlatformType): PlatformOutPortAdapter =>
     ({
-      ...commonPortsAdapter,
-      ...basePortAdapter,
-      ...getPlatformPortsAdapter(platform),
-    } as PlatformPortsAdapter)
+      ...baseOutPortAdapter,
+      ...getPlatformOutPortsAdapter(platform),
+    } as PlatformOutPortAdapter)
 );
-
-export { defaultPortAdapter } from './utils';

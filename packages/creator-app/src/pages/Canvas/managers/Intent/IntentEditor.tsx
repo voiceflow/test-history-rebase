@@ -11,37 +11,34 @@ import { FeatureFlag } from '@/config/features';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as ProjectV2 from '@/ducks/projectV2';
-import { connect } from '@/hocs';
-import { useDispatch, useFeature, useSyncDispatch } from '@/hooks';
+import { useDispatch, useFeature, useSelector, useSyncDispatch } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { EngineContext } from '@/pages/Canvas/contexts';
-import { ConnectedProps, MergeArguments } from '@/types';
 import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 
-import { NodeEditor, NodeEditorPropsType } from '../types';
-
-const DEFAULT_INTENT = {
-  id: '',
-  inputs: [],
-  name: '',
-  platform: '',
-  slots: {},
-  availability: Node.Intent.IntentAvailability.GLOBAL,
-};
+import { NodeEditor } from '../types';
 
 const LegacyMappingsComponent = LegacyMappings as React.FC<any>;
 
-const IntentEditor: NodeEditor<Realtime.NodeData.Intent, ConnectedIntentEditorProps> = ({
-  intent,
+const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({
   data,
-  platformData,
-  patchPlatformData,
+  engine,
+  onChange,
+  platform,
   pushToPath,
 }) => {
-  const engine = React.useContext(EngineContext)!;
+  const getPlatformIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
+
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const validateTopicAvailability = useDispatch(Creator.validateTopicAvailability);
+
+  const platformData = getDistinctPlatformValue(platform, data);
+  const intent = platformData.intent ? getPlatformIntentByID(platformData.intent) : null;
+
+  const patchPlatformData = React.useCallback(
+    (patch: Partial<Realtime.NodeData.Intent.PlatformData>) => onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),
+    [onChange, platform, platformData]
+  );
+
   const updateIntentSteps = useSyncDispatch(Realtime.diagram.updateIntentSteps);
 
   const isGlobalIntent = platformData.availability === Node.Intent.IntentAvailability.GLOBAL;
@@ -71,6 +68,7 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, ConnectedIntentEditorPr
       <Section>
         <IntentSelect intent={intent} clearable onChange={onChangeIntent} />
       </Section>
+
       <NamespaceProvider value={['intent', intent?.id ?? '']}>
         <IntentForm intent={intent} pushToPath={pushToPath} />
       </NamespaceProvider>
@@ -82,28 +80,4 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, ConnectedIntentEditorPr
   );
 };
 
-const mapStateToProps = {
-  intent: IntentV2.getPlatformIntentByIDSelector,
-  platform: ProjectV2.active.platformSelector,
-};
-
-const mergeProps = (
-  ...[{ platform, intent: getIntentByID }, _, { data, onChange }]: MergeArguments<
-    typeof mapStateToProps,
-    {},
-    NodeEditorPropsType<Realtime.NodeData.Intent>
-  >
-) => {
-  const platformData = getDistinctPlatformValue(platform, data);
-
-  return {
-    intent: platformData.intent ? getIntentByID(platformData.intent) : DEFAULT_INTENT,
-    platformData,
-    patchPlatformData: (patch: Partial<Realtime.NodeData.Intent.PlatformData>) =>
-      onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),
-  };
-};
-
-type ConnectedIntentEditorProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
-
-export default connect(mapStateToProps, null, mergeProps)(IntentEditor as React.FC) as NodeEditor<Realtime.NodeData.Intent>;
+export default IntentEditor;

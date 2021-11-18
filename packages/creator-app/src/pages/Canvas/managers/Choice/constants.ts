@@ -1,4 +1,4 @@
-import { Node as BaseNode } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -11,7 +11,7 @@ import { isChatbotPlatform } from '@/utils/typeGuards';
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = {
   type: BlockType.CHOICE,
 
   icon: 'choice',
@@ -23,7 +23,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}, {}],
+        out: {
+          dynamic: [{}],
+          builtIn: { [Models.PortType.NO_MATCH]: { label: Models.PortType.NO_MATCH } },
+        },
       },
     },
     data: {
@@ -36,7 +39,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction> = {
           id: Utils.id.cuid.slug(),
           goTo: null,
           intent: null,
-          action: BaseNode.Interaction.ChoiceAction.PATH,
+          action: Node.Interaction.ChoiceAction.PATH,
           mappings: [],
         }),
       ],

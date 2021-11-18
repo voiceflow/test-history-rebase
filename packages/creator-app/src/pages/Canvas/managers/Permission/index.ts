@@ -6,7 +6,7 @@ import { NODE_CONFIG } from './constants';
 import PermissionEditor from './PermissionEditor';
 import PermissionStep from './PermissionStep';
 
-const PermissionManager: NodeManagerConfig<Realtime.NodeData.Permission> = {
+const PermissionManager: NodeManagerConfig<Realtime.NodeData.Permission, Realtime.NodeData.PermissionBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Ask users to enable permissions (User Info, Reminders, etc.)',

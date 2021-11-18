@@ -1,8 +1,7 @@
-import { Models, Node } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { Node } from '@voiceflow/base-types';
 
 import { NodeData } from '../../../../models';
-import { createBlockAdapter, defaultPortAdapter, migratePortsWithNoMatch, PortsAdapter } from '../utils';
+import { createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter } from '../utils';
 
 const promptAdapter = createBlockAdapter<
   Omit<Node.Prompt.StepData, 'reprompt' | 'noMatches'>,
@@ -12,15 +11,9 @@ const promptAdapter = createBlockAdapter<
   () => ({ ports: [] })
 );
 
-export const promptPortsAdapter: PortsAdapter<NodeData.Prompt> = {
-  ...defaultPortAdapter,
-  fromDB: (ports, node) => {
-    if (!ports.length) {
-      return defaultPortAdapter.fromDB([{ id: Utils.id.cuid(), data: {}, type: Models.PortType.NO_MATCH, target: null }], node);
-    }
-
-    return defaultPortAdapter.fromDB(migratePortsWithNoMatch(ports), node);
-  },
-};
+export const promptOutPortsAdapter = createOutPortsAdapter<NodeData.PromptBuiltInPorts, NodeData.Prompt>(
+  (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(dbPorts, options),
+  (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapter.toDB(dbPorts, options)
+);
 
 export default promptAdapter;

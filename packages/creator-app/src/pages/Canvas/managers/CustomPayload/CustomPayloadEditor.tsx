@@ -5,11 +5,16 @@ import React from 'react';
 import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import OverflowMenu from '@/components/OverflowMenu';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { HelpTooltip } from './components';
 
-const CustomPayloadEditor: React.FC<NodeEditorPropsType<Realtime.NodeData.CustomPayload>> = ({ data, onChange, expanded, onExpand }) => {
+const CustomPayloadEditor: NodeEditor<Realtime.NodeData.CustomPayload, Realtime.NodeData.CustomPayloadBuiltInPorts> = ({
+  data,
+  onChange,
+  expanded,
+  onExpand,
+}) => {
   const [value, setValue] = React.useState(data.customPayload);
 
   return (

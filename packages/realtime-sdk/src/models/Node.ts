@@ -1,16 +1,27 @@
 import { BlockType } from '@realtime-sdk/constants';
+import { Models } from '@voiceflow/base-types';
 import { WithRequired } from '@voiceflow/common';
 
 import { DBPort } from './Port';
 
-export interface Node {
+export type BuiltInPortRecord = { [key in Models.PortType]?: string };
+
+export interface NodePorts<O extends BuiltInPortRecord = BuiltInPortRecord> {
+  in: string[];
+  out: {
+    dynamic: string[];
+    builtIn: O;
+  };
+}
+
+export interface Node<O extends BuiltInPortRecord = BuiltInPortRecord> {
   id: string;
   type: BlockType;
   x: number;
   y: number;
+  ports: NodePorts<O>;
   parentNode: string | null;
   combinedNodes: string[];
-  ports: { in: string[]; out: string[] };
 }
 
 export interface DBNode {

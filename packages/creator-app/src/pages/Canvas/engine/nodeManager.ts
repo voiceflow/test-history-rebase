@@ -205,7 +205,7 @@ class NodeManager extends EngineConsumer {
 
     const { node, data } = nodeFactory(type, factoryData, this.internal.getNodeFactoryOptions());
     const augmentedNode = { ...node, x, y, id: nodeID };
-    const parentNode = { id: Utils.id.objectID(), ports: { in: [{ id: Utils.id.objectID() }], out: [] } };
+    const parentNode = { id: Utils.id.objectID(), ports: { in: [{ id: Utils.id.objectID() }], out: { dynamic: [], builtIn: {} } } };
 
     this.log.debug(this.log.pending('adding node'), this.log.slug(nodeID));
 
@@ -476,7 +476,7 @@ class NodeManager extends EngineConsumer {
     const augmentedNode = { ...node, x, y, id: childID };
     const parentNode = {
       id: nodeID,
-      ports: { in: [{ id: combinedPortID }], out: [] },
+      ports: { in: [{ id: combinedPortID }], out: { dynamic: [], builtIn: {} } },
     };
 
     this.log.debug(this.log.pending('adding nested node'), this.log.slug(childID));
@@ -514,7 +514,7 @@ class NodeManager extends EngineConsumer {
     const parentPortID = Utils.id.objectID();
     const parentNode = {
       id: parentNodeID,
-      ports: { in: [{ id: parentPortID }], out: [] },
+      ports: { in: [{ id: parentPortID }], out: { dynamic: [], builtIn: {} } },
     };
 
     this.log.debug(this.log.pending('unmerging node'), this.log.slug(nodeID));
@@ -693,7 +693,7 @@ class NodeManager extends EngineConsumer {
     if (!node) return;
 
     node.ports.in.forEach((portID) => this.engine.port.redrawLinks(portID));
-    node.ports.out.forEach((portID) => this.engine.port.redrawLinks(portID));
+    Creator.diagramUtils.getAllOutPortIDs(node).forEach((portID) => this.engine.port.redrawLinks(portID));
 
     if (node.combinedNodes.length) {
       this.redrawNestedLinks(nodeID);

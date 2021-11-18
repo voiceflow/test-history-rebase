@@ -4,7 +4,7 @@ import createAdapter from 'bidirectional-adapter';
 
 import { NodeData } from '../../../../models';
 import { sanitizeSetValue } from '../../../../utils/expression';
-import { createBlockAdapter } from '../utils';
+import { createBlockAdapter, createOutPortsAdapter, nextOnlyOutPortsAdapter } from '../utils';
 
 const setExpressionAdapter = createAdapter<Node.SetV2.Set, NodeData.SetExpressionV2>(
   ({ expression, variable, type }) => ({
@@ -29,6 +29,11 @@ const setAdapter = createBlockAdapter<Node.SetV2.StepData, NodeData.SetV2>(
     sets: setExpressionAdapter.mapToDB(sets),
     title,
   })
+);
+
+export const setOutPortsAdapter = createOutPortsAdapter<NodeData.SetV2BuiltInPorts, NodeData.SetV2>(
+  (dbPorts, options) => nextOnlyOutPortsAdapter.fromDB(dbPorts, options),
+  (dbPorts, options) => nextOnlyOutPortsAdapter.toDB(dbPorts, options)
 );
 
 export default setAdapter;

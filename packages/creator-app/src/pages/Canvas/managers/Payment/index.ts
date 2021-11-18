@@ -6,7 +6,7 @@ import { NODE_CONFIG } from './constants';
 import PaymentEditor from './PaymentEditor';
 import PaymentStep from './PaymentStep';
 
-const PaymentManager: NodeManagerConfig<Realtime.NodeData.Payment> = {
+const PaymentManager: NodeManagerConfig<Realtime.NodeData.Payment, Realtime.NodeData.PaymentBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Request payment from user',

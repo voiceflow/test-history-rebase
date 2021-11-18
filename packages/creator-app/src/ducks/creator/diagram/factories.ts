@@ -29,7 +29,10 @@ export const nodeFactory = <T extends string | null>(
   combinedNodes: [],
   ports: {
     in: [],
-    out: [],
+    out: {
+      dynamic: [],
+      builtIn: {},
+    },
   },
   ...node,
   id: nodeID,

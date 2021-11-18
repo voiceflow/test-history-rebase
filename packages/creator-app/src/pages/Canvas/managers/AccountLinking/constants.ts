@@ -1,10 +1,12 @@
 import { Version } from '@voiceflow/alexa-types';
+import { Models } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 
 import { NodeConfig } from '../types';
 
-export const NODE_CONFIG: NodeConfig<{}> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AccountLinking, Realtime.NodeData.AccountLinkingBuiltInPorts> = {
   type: BlockType.ACCOUNT_LINKING,
 
   icon: 'accountLinking',
@@ -14,7 +16,10 @@ export const NODE_CONFIG: NodeConfig<{}> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}],
+        out: {
+          dynamic: [],
+          builtIn: { [Models.PortType.NEXT]: { label: Models.PortType.NEXT } },
+        },
       },
     },
     data: {

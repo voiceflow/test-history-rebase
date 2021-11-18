@@ -8,8 +8,9 @@ import TextListItem from '@/pages/Canvas/components/TextListItem';
 import { useCanvasVisibilityOption } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
-const TextEditor: NodeEditor<Realtime.NodeData.Text> = ({ data, onChange }) => {
+const TextEditor: NodeEditor<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = ({ data, onChange }) => {
   const canvasVisibilityOption = useCanvasVisibilityOption(data.canvasVisibility, (canvasVisibility) => onChange({ canvasVisibility }));
+
   return (
     <TextList
       items={data.texts}

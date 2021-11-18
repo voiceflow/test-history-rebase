@@ -1,3 +1,4 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -8,7 +9,7 @@ import { isChatbotPlatform } from '@/utils/typeGuards';
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt, Realtime.NodeData.PromptBuiltInPorts> = {
   type: BlockType.PROMPT,
 
   icon: 'prompt',
@@ -20,7 +21,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}],
+        out: {
+          dynamic: [],
+          builtIn: { [Models.PortType.NO_MATCH]: { label: Models.PortType.NO_MATCH } },
+        },
       },
     },
     data: {

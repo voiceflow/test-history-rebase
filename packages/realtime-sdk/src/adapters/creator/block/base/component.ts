@@ -1,7 +1,7 @@
 import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/base-types';
 
-import { createBlockAdapter } from '../utils';
+import { createBlockAdapter, createOutPortsAdapter, nextOnlyOutPortsAdapter } from '../utils';
 
 const componentAdapter = createBlockAdapter<Node.Component.StepData, NodeData.Component>(
   ({ diagramID, variableMap }) => ({
@@ -19,6 +19,11 @@ const componentAdapter = createBlockAdapter<Node.Component.StepData, NodeData.Co
           }
         : null,
   })
+);
+
+export const componentOutPortsAdapter = createOutPortsAdapter<NodeData.ComponentBuiltInPorts, NodeData.Component>(
+  (dbPorts, options) => nextOnlyOutPortsAdapter.fromDB(dbPorts, options),
+  (dbPorts, options) => nextOnlyOutPortsAdapter.toDB(dbPorts, options)
 );
 
 export default componentAdapter;

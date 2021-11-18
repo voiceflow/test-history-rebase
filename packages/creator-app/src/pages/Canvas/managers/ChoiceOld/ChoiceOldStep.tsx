@@ -1,18 +1,17 @@
-import { Utils } from '@voiceflow/common';
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useSyncedLookup } from '@/hooks';
-import { ConnectedStepProps } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/components/Step';
 import { ChoiceStep } from '@/pages/Canvas/managers/Choice/ChoiceStep';
 
-const ConnectedChoiceOldStep: React.FC<ConnectedStepProps<Realtime.NodeData.ChoiceOld>> = ({ node, data }) => {
-  const [elsePortID, outPorts] = React.useMemo(() => Utils.array.head(node.ports.out), [node.ports.out]);
-  const choiceByPortID = useSyncedLookup(outPorts, data.choices);
+const ConnectedChoiceOldStep: ConnectedStep<Realtime.NodeData.ChoiceOld> = ({ node, data }) => {
+  const choiceByPortID = useSyncedLookup(node.ports.out.dynamic, data.choices);
 
   const choices = React.useMemo(
     () =>
-      outPorts
+      node.ports.out.dynamic
         .filter((portID) => choiceByPortID[portID])
         .map((portID, index) => {
           const { synonyms } = choiceByPortID[portID];
@@ -22,10 +21,18 @@ const ConnectedChoiceOldStep: React.FC<ConnectedStepProps<Realtime.NodeData.Choi
             portID,
           };
         }),
-    [outPorts, choiceByPortID]
+    [node.ports.out.dynamic, choiceByPortID]
   );
 
-  return <ChoiceStep nodeID={node.id} elsePortID={elsePortID} choices={choices} isPath elsePathName="No Match" />;
+  return (
+    <ChoiceStep
+      nodeID={node.id}
+      choices={choices}
+      noMatchPortID={node.ports.out.builtIn[Models.PortType.NEXT]!}
+      withNoMatchPath
+      noMatchPathName="No Match"
+    />
+  );
 };
 
 export default ConnectedChoiceOldStep;

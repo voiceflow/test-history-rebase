@@ -9,7 +9,7 @@ import { NODE_CONFIG } from './constants';
 import VisualEditor from './VisualEditor';
 import VisualStep from './VisualStep';
 
-const VisualManager: NodeManagerConfig<Realtime.NodeData.Visual> = {
+const VisualManager: NodeManagerConfig<Realtime.NodeData.Visual, Realtime.NodeData.VisualBuiltInPorts> = {
   ...NODE_CONFIG,
 
   label: 'Visuals',

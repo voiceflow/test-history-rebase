@@ -1,13 +1,13 @@
-import { Node } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 import { distinctPlatformsData } from '@/utils/platform';
 
-import { NodeConfig } from '../types';
+import { NodeConfigWithoutInPorts } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Intent> = {
+export const NODE_CONFIG: NodeConfigWithoutInPorts<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = {
   type: BlockType.INTENT,
 
   icon: 'user',
@@ -18,7 +18,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Intent> = {
   factory: () => ({
     node: {
       ports: {
-        out: [{}],
+        out: {
+          dynamic: [],
+          builtIn: { [Models.PortType.NEXT]: { label: Models.PortType.NEXT } },
+        },
       },
     },
     data: {

@@ -1,9 +1,10 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { PERMISSION_LABELS } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -44,18 +45,14 @@ export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, wit
   </Step>
 );
 
-const ConnectedUserInfoStep: React.FC<ConnectedStepProps<Realtime.NodeData.UserInfo>> = ({ node, data, withPorts }) => {
-  const [successPortID, failurePortID] = node.ports.out;
-
-  return (
-    <UserInfoStep
-      userPermissions={data.permissions.map((permission) => PERMISSION_LABELS[permission.selected!]).filter(Boolean)}
-      nodeID={node.id}
-      successPortID={successPortID}
-      failurePortID={failurePortID}
-      withPorts={withPorts}
-    />
-  );
-};
+const ConnectedUserInfoStep: ConnectedStep<Realtime.NodeData.UserInfo, Realtime.NodeData.UserInfoBuiltInPorts> = ({ node, data, withPorts }) => (
+  <UserInfoStep
+    nodeID={node.id}
+    withPorts={withPorts}
+    successPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+    failurePortID={node.ports.out.builtIn[Models.PortType.FAIL]}
+    userPermissions={data.permissions.map((permission) => PERMISSION_LABELS[permission.selected!]).filter(Boolean)}
+  />
+);
 
 export default ConnectedUserInfoStep;

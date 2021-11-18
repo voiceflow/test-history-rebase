@@ -1,3 +1,4 @@
+import { Models } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { ErrorMessageWithDivider } from '@voiceflow/ui';
@@ -8,23 +9,19 @@ import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
 import { HTTPS_URL_REGEX } from '@/constants';
-import * as Creator from '@/ducks/creator';
-import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
-import { EngineContext } from '@/pages/Canvas/contexts';
 import { PlatformContext } from '@/pages/Project/contexts';
 
 import { HelpMessage, HelpTooltip, VisualsForm } from './components';
 
 const isValidURL = (url) => url.match(HTTPS_URL_REGEX) || url.match(SLOT_REGEXP);
 
-function StreamEditor({ data, focusedNode, onChange }) {
+function StreamEditor({ data, node, engine, onChange }) {
   const platform = React.useContext(PlatformContext);
   const [invalidAudio, setValidAudio, setInvalidAudio] = useEnableDisable(false);
-  const engine = React.useContext(EngineContext);
 
-  const hadPause = data.customPause;
+  const hasPause = data.customPause;
   const isAlexa = platform === Constants.PlatformType.ALEXA;
   const toggleLoop = React.useCallback(() => onChange({ loop: !data.loop }), [data.loop, onChange]);
   const updateAudio = React.useCallback(
@@ -40,14 +37,18 @@ function StreamEditor({ data, focusedNode, onChange }) {
   );
 
   const togglePause = React.useCallback(async () => {
-    if (hadPause) {
-      await engine.port.remove(focusedNode.ports.out[focusedNode.ports.out.length - 1]);
+    const pausePortID = node.ports.out.builtIn[Models.PortType.PAUSE];
+
+    const hasPausePort = hasPause && !!pausePortID;
+
+    if (hasPausePort) {
+      await engine.port.removeOutBuiltIn(Models.PortType.PAUSE, pausePortID);
     } else {
-      await engine.port.add(focusedNode.id, { label: focusedNode.ports.out.length, platform: Constants.PlatformType.ALEXA });
+      await engine.port.addOutBuiltIn(node.id, Models.PortType.PAUSE, { platform: Constants.PlatformType.ALEXA });
     }
 
-    onChange({ customPause: !hadPause }, false);
-  }, [onChange, hadPause, engine.port, focusedNode.ports.out, focusedNode.id]);
+    onChange({ customPause: !hasPausePort });
+  }, [onChange, hasPause, engine, node.id, node.ports.out.builtIn]);
 
   return (
     <Content
@@ -56,7 +57,7 @@ function StreamEditor({ data, focusedNode, onChange }) {
           tutorial={{ content: <HelpTooltip />, blockType: data.type, helpTitle: 'Need Help?', helpMessage: <HelpMessage /> }}
           {...(isAlexa && {
             menu: (
-              <OverflowMenu options={[{ label: hadPause ? 'Remove Custom Pause' : 'Add Custom Pause', onClick: togglePause }]} placement="auto" />
+              <OverflowMenu options={[{ label: hasPause ? 'Remove Custom Pause' : 'Add Custom Pause', onClick: togglePause }]} placement="auto" />
             ),
           })}
         />
@@ -84,8 +85,4 @@ function StreamEditor({ data, focusedNode, onChange }) {
   );
 }
 
-const mapStateToProps = {
-  focusedNode: Creator.focusedNodeSelector,
-};
-
-export default connect(mapStateToProps)(StreamEditor);
+export default StreamEditor;

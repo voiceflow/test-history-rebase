@@ -1,18 +1,19 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG, PERMISSION_LABELS } from '../constants';
 
 export interface PermissionStepProps {
-  permissions: string[];
   nodeID: string;
-  portID: string;
+  nextPortID: string;
+  permissions: string[];
 }
 
-export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nodeID, portID }) => {
+export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nodeID, nextPortID }) => {
   const labelText = (
     <>
       <VariableLabel>Request:</VariableLabel>
@@ -26,7 +27,7 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nod
         <Item
           label={permissions.length ? labelText : null}
           icon={NODE_CONFIG.icon}
-          portID={portID}
+          portID={nextPortID}
           iconColor={NODE_CONFIG.iconColor}
           placeholder="Send a permissions card"
           labelVariant={StepLabelVariant.SECONDARY}
@@ -36,8 +37,12 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nod
   );
 };
 
-const ConnectedPermissionStep: React.FC<ConnectedStepProps<Realtime.NodeData.Permission>> = ({ node, data }) => (
-  <PermissionStep permissions={data.permissions.map((permissionID) => PERMISSION_LABELS[permissionID])} nodeID={node.id} portID={node.ports.out[0]} />
+const ConnectedPermissionStep: ConnectedStep<Realtime.NodeData.Permission, Realtime.NodeData.PermissionBuiltInPorts> = ({ node, data }) => (
+  <PermissionStep
+    nodeID={node.id}
+    permissions={data.permissions.map((permissionID) => PERMISSION_LABELS[permissionID])}
+    nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+  />
 );
 
 export default ConnectedPermissionStep;

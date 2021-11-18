@@ -60,7 +60,7 @@ export const DEFAULT_DATA: Record<Node.Utils.IntegrationType, Realtime.NodeData.
     selectedIntegration: Node.Utils.IntegrationType.GOOGLE_SHEETS,
   },
 };
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = {
   type: BlockType.INTEGRATION,
 
   // for older version
@@ -75,7 +75,13 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}, { label: Models.PortType.FAIL }],
+        out: {
+          dynamic: [],
+          builtIn: {
+            [Models.PortType.NEXT]: { label: Models.PortType.NEXT },
+            [Models.PortType.FAIL]: { label: Models.PortType.FAIL },
+          },
+        },
       },
     },
     data: {

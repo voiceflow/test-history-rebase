@@ -5,7 +5,7 @@ import { NODE_CONFIG } from './constants';
 import IntegrationEditor from './IntegrationEditor';
 import IntegrationStep from './IntegrationStep';
 
-const IntegrationManager: NodeManagerConfig<Realtime.NodeData.Integration> = {
+const IntegrationManager: NodeManagerConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Integrate external services into your skill',

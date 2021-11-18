@@ -1,16 +1,17 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import { useSelector } from '@/hooks';
 import { EngineContext, ManagerContext, ManagerGetter } from '@/pages/Canvas/contexts';
-import type { Engine } from '@/pages/Canvas/engine/';
+import type { Engine } from '@/pages/Canvas/engine';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 
 export interface PathEntry {
+  type?: string;
   label: string;
   focus?: () => void;
-  type?: string;
 }
 
 const generatePath =
@@ -56,17 +57,14 @@ const generatePath =
       : blockPath;
   };
 
-// eslint-disable-next-line import/prefer-default-export
 export const useEditorPath = () => {
-  const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
+  const getManager = React.useContext(ManagerContext)!;
 
-  const node = engine.select(Creator.focusedNodeSelector);
-  let parent: Realtime.NodeData<unknown> | null = null;
+  const node = useSelector(Creator.focusedNodeSelector);
+  const getNodeByID = useSelector(Creator.nodeByIDSelector);
 
-  if (node?.parentNode) {
-    parent = engine.select(Creator.dataByNodeIDSelector)(node.parentNode);
-  }
+  const parentNode = node?.parentNode ? getNodeByID(node.parentNode) : null;
 
   const updatePathRef = React.useRef<(entries: PathEntry[]) => void>(() => {});
   const skipOriginalPathRedirect = React.useRef(false);
@@ -81,10 +79,10 @@ export const useEditorPath = () => {
 
           updatePathRef.current(entries);
         },
-        parentType: parent?.type,
-        parentNodeID: parent?.nodeID,
+        parentType: parentNode?.type,
+        parentNodeID: parentNode?.id,
       })(getManager),
-    [node?.type, parent?.type, parent?.nodeID, engine, getManager]
+    [node?.type, parentNode?.type, parentNode?.id, engine, getManager]
   );
   const [path, updatePath] = React.useState(originalPath);
 
@@ -120,8 +118,5 @@ export const useUpdateData = (nodeID?: string | null): NodeDataUpdater<any> => {
   // now we pass in nodeID to ensure the editor sidebar is referencing / updating the correct node
   const engine = React.useContext(EngineContext)!;
 
-  return React.useCallback(
-    async (value, save = true) => (nodeID ? engine.node.updateData(nodeID, value, save) : Promise.resolve()),
-    [engine.node, nodeID]
-  );
+  return usePersistFunction(async (value, save = true) => (nodeID ? engine.node.updateData(nodeID, value, save) : Promise.resolve()));
 };

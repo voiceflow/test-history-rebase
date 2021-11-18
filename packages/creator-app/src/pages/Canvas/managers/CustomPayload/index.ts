@@ -6,7 +6,7 @@ import { NODE_CONFIG } from './constants';
 import CustomPayloadEditor from './CustomPayloadEditor';
 import CustomPayloadStep from './CustomPayloadStep';
 
-const CustomPayloadManager: NodeManagerConfig<Realtime.NodeData.CustomPayload> = {
+const CustomPayloadManager: NodeManagerConfig<Realtime.NodeData.CustomPayload, Realtime.NodeData.CustomPayloadBuiltInPorts> = {
   ...NODE_CONFIG,
 
   label: 'Custom Response',

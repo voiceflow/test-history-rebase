@@ -4,34 +4,41 @@ import React from 'react';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { HelpTooltip } from '@/components/IntentForm';
 import OverflowMenu from '@/components/OverflowMenu';
-import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useManager, useSelector, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
-import { EngineContext } from '@/pages/Canvas/contexts';
 import { useButtonsOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { PlatformContext } from '@/pages/Project/contexts';
 
 import { DraggableItem } from './components';
 import { NODE_CONFIG } from './constants';
 
 const choiceFactory = () => NODE_CONFIG.factory().data.choices[0];
 
-const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction> = ({ data, onChange, pushToPath }) => {
-  const engine = React.useContext(EngineContext)!;
-  const platform = React.useContext(PlatformContext)!;
-
+const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = ({
+  data,
+  node,
+  engine,
+  platform,
+  onChange,
+  pushToPath,
+}) => {
   const openIntents = useSelector(IntentV2.openIntentsSelector);
-  const focusedNode = useSelector(Creator.focusedNodeSelector)!;
 
   const [isDragging, toggleDragging] = useToggle(false);
   const { choices } = data;
 
-  const updateChoices = React.useCallback((choices, save) => onChange({ choices }, save), [onChange]);
-  const onRemoveChoice = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index + 1]), [engine.port, focusedNode.ports.out]);
+  const updateChoices = React.useCallback(
+    (choices: Record<Realtime.DistinctPlatform, Realtime.NodeData.InteractionChoice>[], save?: boolean) => onChange({ choices }, save),
+    [onChange]
+  );
+
+  const onRemoveChoice = React.useCallback(
+    (_: any, index: number) => engine.port.removeOutDynamic(node.ports.out.dynamic[index]),
+    [engine, node.ports.out.dynamic]
+  );
 
   const { onAdd, mapManaged, onRemove, onReorder, latestCreatedKey } = useManager(choices, updateChoices, {
     factory: choiceFactory,
@@ -40,21 +47,23 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction> = ({ data, onChang
   });
 
   const addChoice = React.useCallback(
-    async (scrollToBottom) => {
+    async (scrollToBottom: VoidFunction) => {
       onAdd();
-      await engine.port.add(focusedNode.id, { label: String(choices.length + 1) });
+
+      await engine.port.addOutDynamic(node.id);
+
       scrollToBottom();
     },
-    [onAdd, engine.port, focusedNode.id, choices.length]
+    [onAdd, engine, node.id]
   );
 
   const reorderChoice = React.useCallback(
-    (from, to) => {
+    (from: number, to: number) => {
       onReorder(from, to);
 
-      engine.port.reorder(focusedNode.id, from + 1, to + 1);
+      engine.port.reorderOutDynamic(node.id, from, to);
     },
-    [onReorder, engine.port, focusedNode.id]
+    [onReorder, engine, node]
   );
 
   const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });

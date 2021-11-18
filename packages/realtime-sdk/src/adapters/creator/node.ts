@@ -1,12 +1,12 @@
-import { BlockType } from '@realtime-sdk/constants';
-import { Link, Node, NodeData, Port } from '@realtime-sdk/models';
 import { Models as BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import createAdapter from 'bidirectional-adapter';
 
+import { BlockType } from '../../constants';
+import { Link, Node, NodeData, Port } from '../../models';
 import { AdapterContext } from '../types';
-import { defaultPortAdapter, getPortsAdapter, noInPortTypes } from './block';
-import { IN_PORT_KEY } from './constants';
+import { defaultOutPortsAdapter, getOutPortsAdapter, noInPortTypes, OutPortsAdapter, removePortDataFalsyValues } from './block';
 import nodeDataAdapter from './nodeData';
 import { generateInPort, getInPortID, isBlock, isStep } from './utils';
 
@@ -47,38 +47,44 @@ const nodeAdapter = createAdapter<
       combinedNodes: [],
       ports: {
         in: [],
-        out: [],
+        out: {
+          builtIn: {},
+          dynamic: [],
+        },
       },
     };
 
-    const registerPort = (port: Port, target?: BaseModels.NodeID | null) => {
+    const registerLinkTarget = (port: Port, target: BaseModels.NodeID) => {
+      links.push({
+        id: port.id,
+        source: {
+          nodeID: node.id,
+          portID: port.id,
+        },
+        target: {
+          nodeID: target,
+          portID: getInPortID(target),
+        },
+        data: port.linkData,
+      });
+    };
+
+    const registerInPort = (port: Port) => {
+      ports.push(port);
+      node.ports.in.push(port.id);
+    };
+
+    const registerOutPort = (port: Port, target?: BaseModels.NodeID | null) => {
       ports.push(port);
 
-      if (port.id.endsWith(IN_PORT_KEY)) {
-        node.ports.in.push(port.id);
-      } else if (port.id) {
-        node.ports.out.push(port.id);
-      }
-
       if (target) {
-        links.push({
-          id: port.id,
-          source: {
-            nodeID: node.id,
-            portID: port.id,
-          },
-          target: {
-            nodeID: target,
-            portID: getInPortID(target),
-          },
-          data: port.linkData,
-        });
+        registerLinkTarget(port, target);
       }
     };
 
     if (isBlock(dbNode)) {
       if (data.type === BlockType.COMBINED) {
-        registerPort(generateInPort(node.id));
+        registerInPort(generateInPort(node.id));
       }
 
       node.combinedNodes = dbNode.data.steps;
@@ -90,12 +96,17 @@ const nodeAdapter = createAdapter<
       const nextStep = hasNextStep ? siblingSteps[stepIndex + 1] : null;
 
       if (!noInPortTypes.has(node.type)) {
-        registerPort(generateInPort(node.id));
+        registerInPort(generateInPort(node.id));
       }
 
-      const adapter = getPortsAdapter(platform)?.[node.type] || defaultPortAdapter;
+      const outPortAdapter = getOutPortsAdapter(platform)?.[node.type] || (defaultOutPortsAdapter as OutPortsAdapter);
 
-      adapter.fromDB(dbNode.data.ports, dbNode).forEach(({ port, target }) => registerPort(port, nextStep === target ? null : target));
+      const { ports, dynamic, builtIn } = outPortAdapter.fromDB(dbNode.data.ports, { node: dbNode });
+
+      node.ports.out.dynamic = dynamic;
+      node.ports.out.builtIn = builtIn;
+
+      ports.forEach(({ port, target }) => registerOutPort(port, nextStep === target ? null : target));
     }
 
     return {
@@ -115,22 +126,43 @@ const nodeAdapter = createAdapter<
       data: dbData,
     };
 
-    if (node.ports.out.length > 0) {
-      const adapter = getPortsAdapter(platform)?.[type as BlockType] || defaultPortAdapter;
+    if ([BlockType.COMBINED, BlockType.START].includes(node.type)) {
+      diagramNode.data.steps = node.combinedNodes;
+    }
 
-      diagramNode.data.ports = adapter.toDB(
-        node.ports.out.map((portID) => ({
-          port: portMap[portID],
-          link: portLinksMap[portID],
-          target: portToTargets[portID] || stepMap[node.id] || null,
-        })),
-        node,
-        data
+    const builtInPortTypes = Utils.object.getKeys(node.ports.out.builtIn);
+    let dbPorts: BaseModels.BasePort[] = [];
+
+    if (builtInPortTypes.length || node.ports.out.dynamic.length) {
+      const outPortAdapter = getOutPortsAdapter(platform)?.[type as BlockType] || (defaultOutPortsAdapter as OutPortsAdapter);
+
+      dbPorts = outPortAdapter.toDB(
+        {
+          dynamic: node.ports.out.dynamic.map((portID) => ({
+            port: portMap[portID],
+            link: portLinksMap[portID],
+            target: portToTargets[portID] || stepMap[node.id] || null,
+          })),
+          builtIn: builtInPortTypes.reduce<Parameters<typeof outPortAdapter.toDB>[0]['builtIn']>((acc, type) => {
+            const portID = node.ports.out.builtIn[type];
+
+            if (portID) {
+              acc[type] = {
+                port: portMap[portID],
+                link: portLinksMap[portID],
+                target: portToTargets[portID] || stepMap[node.id] || null,
+              };
+            }
+
+            return acc;
+          }, {}),
+        },
+        { node, data }
       );
     }
 
-    if ([BlockType.COMBINED, BlockType.START].includes(node.type)) {
-      diagramNode.data.steps = node.combinedNodes;
+    if (dbPorts.length) {
+      diagramNode.data.ports = dbPorts.map(removePortDataFalsyValues);
     }
 
     return diagramNode;

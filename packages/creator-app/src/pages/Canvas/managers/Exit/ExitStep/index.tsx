@@ -2,7 +2,7 @@ import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { createPlatformSelector } from '@/utils/platform';
 
 import { NODE_CONFIG } from '../constants';
@@ -34,6 +34,6 @@ export const ExitStep: React.FC<ExitStepProps> = ({ nodeID, platform }) => (
   </Step>
 );
 
-const ConnectedExitStep: React.FC<ConnectedStepProps> = ({ node, platform }) => <ExitStep nodeID={node.id} platform={platform} />;
+const ConnectedExitStep: ConnectedStep = ({ node, platform }) => <ExitStep nodeID={node.id} platform={platform} />;
 
 export default ConnectedExitStep;

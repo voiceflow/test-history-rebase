@@ -6,7 +6,7 @@ import PromptEditor from './PromptEditor';
 import PromptStep from './PromptStep';
 import { EDITORS_BY_PATH } from './subeditors';
 
-const PromptManager: NodeManagerConfig<Realtime.NodeData.Prompt> = {
+const PromptManager: NodeManagerConfig<Realtime.NodeData.Prompt, Realtime.NodeData.PromptBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Prompts will stop & listen to the user to match an intent',

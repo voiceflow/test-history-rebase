@@ -1,16 +1,17 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import { NODE_CONFIG } from '../constants';
 
 export interface ReminderStepProps {
   label: string;
-  withPorts: boolean;
   nodeID: string;
+  withPorts: boolean;
   successPortID: string;
   failurePortID: string;
 }
@@ -37,18 +38,14 @@ export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, no
   </Step>
 );
 
-const ConnectedReminderStep: React.FC<ConnectedStepProps<Realtime.NodeData.Reminder>> = ({ node, data, withPorts }) => {
-  const [successPortID, failurePortID] = node.ports.out;
-
-  return (
-    <ReminderStep
-      label={transformVariablesToReadable(data.text)}
-      nodeID={node.id}
-      successPortID={successPortID}
-      failurePortID={failurePortID}
-      withPorts={withPorts}
-    />
-  );
-};
+const ConnectedReminderStep: ConnectedStep<Realtime.NodeData.Reminder, Realtime.NodeData.ReminderBuiltInPorts> = ({ node, data, withPorts }) => (
+  <ReminderStep
+    label={transformVariablesToReadable(data.text)}
+    nodeID={node.id}
+    withPorts={withPorts}
+    successPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+    failurePortID={node.ports.out.builtIn[Models.PortType.FAIL]}
+  />
+);
 
 export default ConnectedReminderStep;

@@ -1,10 +1,10 @@
-import { Node } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { serializeSlateToJSX } from '@/utils/slate';
 
 import { NODE_CONFIG } from '../constants';
@@ -16,12 +16,12 @@ interface TextStepItem {
 
 export interface TextStepProps {
   items: TextStepItem[];
-  portID: string;
   nodeID: string;
   preview: boolean;
+  nextPortID: string;
 }
 
-export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, portID, preview }) => {
+export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, preview, nextPortID }) => {
   const itemsToRender = preview && items.length ? [items[0]] : items;
 
   return (
@@ -31,9 +31,9 @@ export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, portID, previ
           itemsToRender.map(({ id, content }, index) => (
             <Item
               key={id}
-              label={content}
-              portID={index === itemsToRender.length - 1 ? portID : null}
               icon={NODE_CONFIG.icon}
+              label={content}
+              portID={index === itemsToRender.length - 1 ? nextPortID : null}
               iconColor={NODE_CONFIG.iconColor}
               placeholder="Add text reply"
               withNewLines
@@ -50,14 +50,19 @@ export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, portID, previ
   );
 };
 
-const ConnectedTextStep: React.FC<ConnectedStepProps<Realtime.NodeData.Text>> = ({ node, data }) => {
+const ConnectedTextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = ({ node, data }) => {
   const items = React.useMemo(
     () => data.texts.map(({ id, content }) => ({ id, content: SlateEditorAPI.isNewState(content) ? '' : serializeSlateToJSX(content) })),
     [data.texts]
   );
 
   return (
-    <TextStep items={items} preview={data.canvasVisibility === Node.Utils.CanvasNodeVisibility.PREVIEW} nodeID={node.id} portID={node.ports.out[0]} />
+    <TextStep
+      items={items}
+      nodeID={node.id}
+      preview={data.canvasVisibility === Node.Utils.CanvasNodeVisibility.PREVIEW}
+      nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+    />
   );
 };
 

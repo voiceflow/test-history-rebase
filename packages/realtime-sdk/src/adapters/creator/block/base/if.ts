@@ -1,8 +1,8 @@
 import expressionAdapter from '@realtime-sdk/adapters/expression';
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 
-import { createBlockAdapter, defaultPortAdapter, migratePortsWithNoMatch, PortsAdapter } from '../utils';
+import { createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter, outPortDataToDB, outPortsDataToDB } from '../utils';
 
 export const defaultNoMatch: Node.IfV2.IfNoMatch = {
   type: Node.IfV2.IfNoMatchType.PATH,
@@ -23,26 +23,22 @@ const ifAdapter = createBlockAdapter<Node.IfV2.StepData, NodeData.IfV2>(
   })
 );
 
-export const ifPortsAdapter: PortsAdapter<NodeData.IfV2> = {
-  toDB: (ports, _, data) => {
-    const dbPorts = defaultPortAdapter.toDB(ports, _, data);
-
-    // assign path data to port data
-    return dbPorts.map((port, index) => {
+export const ifOutPortsAdapter = createOutPortsAdapter<NodeData.IfV2BuiltInPorts, NodeData.IfV2>(
+  (ports, options) => noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(ports, options),
+  ({ builtIn: { [Models.PortType.NO_MATCH]: noMatchPortData }, dynamic }, { data }) => [
+    outPortDataToDB(noMatchPortData), // should be first for backward compatible
+    ...outPortsDataToDB(dynamic).map((dbPort, index) => {
       const expressionTitle = data.expressions[index]?.name;
 
-      const event = expressionTitle ? { type: expressionTitle } : undefined;
-
       return {
-        ...port,
+        ...dbPort,
         data: {
-          ...port.data,
-          event,
+          ...dbPort.data,
+          event: expressionTitle ? { type: expressionTitle } : undefined,
         },
       };
-    });
-  },
-  fromDB: (ports, node) => defaultPortAdapter.fromDB(migratePortsWithNoMatch(ports), node),
-};
+    }),
+  ]
+);
 
 export default ifAdapter;

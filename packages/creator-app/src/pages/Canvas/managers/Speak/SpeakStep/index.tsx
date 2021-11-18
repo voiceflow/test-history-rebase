@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -6,7 +6,7 @@ import React from 'react';
 
 import { DialogType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { prettifyBucketURL } from '@/utils/audio';
 import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
@@ -24,12 +24,12 @@ export interface SpeakStepItem {
 export interface SpeakStepProps {
   items: SpeakStepItem[];
   random?: boolean;
-  portID: string;
   nodeID: string;
   platform: Constants.PlatformType;
+  nextPortID: string;
 }
 
-export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, nodeID, portID }) => {
+export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, nodeID, nextPortID }) => {
   const itemsToRender = random && items.length ? [items[0]] : items;
 
   return (
@@ -49,7 +49,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
               )}
               label={content ? Utils.string.stripHTMLTags(transformVariablesToReadable(content)) : null}
               icon={NODE_CONFIG.getIcon!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA)}
-              portID={index === itemsToRender.length - 1 ? portID : null}
+              portID={index === itemsToRender.length - 1 ? nextPortID : null}
               iconColor={NODE_CONFIG.getIconColor!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA)}
               withNewLines
               labelVariant={isAudio ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
@@ -76,7 +76,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
   );
 };
 
-const ConnectedSpeakStep: React.FC<ConnectedStepProps<Realtime.NodeData.Speak>> = ({ node, data, platform }) => {
+const ConnectedSpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = ({ node, data, platform }) => {
   const items = data.dialogs.map((item) => ({
     id: item.id,
     type: item.type,
@@ -89,8 +89,8 @@ const ConnectedSpeakStep: React.FC<ConnectedStepProps<Realtime.NodeData.Speak>> 
       items={items}
       random={!data.canvasVisibility ? data.randomize : data.canvasVisibility === Node.Utils.CanvasNodeVisibility.PREVIEW}
       nodeID={node.id}
-      portID={node.ports.out[0]}
       platform={platform}
+      nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
     />
   );
 };

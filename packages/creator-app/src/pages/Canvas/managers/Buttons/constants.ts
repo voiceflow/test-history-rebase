@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -19,7 +19,7 @@ export const BUTTON_OPTIONS = [
   { id: ButtonAction.GO_TO_INTENT, label: 'Go to Intent' },
 ];
 
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = {
   type: BlockType.BUTTONS,
 
   icon: 'action',
@@ -31,7 +31,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}, {}],
+        out: {
+          dynamic: [{}],
+          builtIn: { [Models.PortType.NO_MATCH]: { label: Models.PortType.NO_MATCH } },
+        },
       },
     },
     data: {

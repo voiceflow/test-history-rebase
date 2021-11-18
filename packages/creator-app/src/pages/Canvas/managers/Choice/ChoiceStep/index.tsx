@@ -1,5 +1,5 @@
-import { Node } from '@voiceflow/base-types';
-import { Nullable, Utils } from '@voiceflow/common';
+import { Models, Node } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -7,7 +7,7 @@ import { InteractionModelTabType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSyncedLookup } from '@/hooks';
-import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
 import { getDistinctPlatformValue } from '@/utils/platform';
@@ -23,14 +23,14 @@ interface ChoiceItem {
 }
 
 export interface ChoiceStepProps {
-  isPath: boolean;
-  choices: ChoiceItem[];
   nodeID: string;
-  elsePortID: string;
-  elsePathName: string;
+  choices: ChoiceItem[];
+  noMatchPortID: string;
+  withNoMatchPath: boolean;
+  noMatchPathName: string;
 }
 
-export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID, elsePortID, elsePathName }) => (
+export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatchPortID, withNoMatchPath, noMatchPathName }) => (
   <Step nodeID={nodeID}>
     {!!choices.length && (
       <Section>
@@ -52,8 +52,8 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID,
       </Section>
     )}
 
-    {isPath ? (
-      <ElseItem label={elsePathName} portID={elsePortID} />
+    {withNoMatchPath ? (
+      <ElseItem label={noMatchPathName} portID={noMatchPortID} />
     ) : (
       choices.length === 0 && (
         <Section>
@@ -64,17 +64,18 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID,
   </Step>
 );
 
-const ConnectedChoiceStep: React.FC<ConnectedStepProps<Realtime.NodeData.Interaction>> = ({ node, data, platform }) => {
+const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = ({ node, data, platform }) => {
   const intentsMap = React.useContext(CustomIntentMapContext)!;
+
   const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
-  const [elsePortID, nodeOutPorts] = React.useMemo(() => Utils.array.head(node.ports.out), [node.ports.out]);
-  const choicesByPortID = useSyncedLookup(nodeOutPorts, data.choices);
-  const isPath = !!data.else.type && data.else.type !== Node.Utils.NoMatchType.REPROMPT;
+  const choicesByPortID = useSyncedLookup(node.ports.out.dynamic, data.choices);
+
+  const withNoMatchPath = !!data.else.type && data.else.type !== Node.Utils.NoMatchType.REPROMPT;
 
   const choices = React.useMemo(
     () =>
-      nodeOutPorts
+      node.ports.out.dynamic
         .filter((portID) => choicesByPortID[portID])
         .map<ChoiceItem>((portID) => {
           const { goTo, intent, action } = getDistinctPlatformValue(platform, choicesByPortID[portID]);
@@ -91,10 +92,18 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<Realtime.NodeData.Interac
             onAttachmentClick: () => goToIntent && goToInteractionModelEntity(InteractionModelTabType.INTENTS, goToIntent.id),
           };
         }),
-    [platform, choicesByPortID, nodeOutPorts, intentsMap]
+    [platform, choicesByPortID, intentsMap, node.ports.out.dynamic]
   );
 
-  return <ChoiceStep choices={choices} nodeID={node.id} elsePortID={elsePortID} isPath={isPath} elsePathName={data.else.pathName} />;
+  return (
+    <ChoiceStep
+      nodeID={node.id}
+      choices={choices}
+      noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
+      withNoMatchPath={withNoMatchPath}
+      noMatchPathName={data.else.pathName}
+    />
+  );
 };
 
 export default ConnectedChoiceStep;

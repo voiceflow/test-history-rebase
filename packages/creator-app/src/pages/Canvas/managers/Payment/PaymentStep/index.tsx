@@ -1,17 +1,18 @@
+import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
 import { ProductMapContext } from '@/pages/Canvas/contexts';
 
 import { NODE_CONFIG } from '../constants';
 
 export interface PaymentStepProps {
   label?: string;
+  nodeID: string;
   withPorts: boolean;
   upsellMessage?: string | null;
-  nodeID: string;
   successPortID: string;
   failurePortID: string;
 }
@@ -27,11 +28,13 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, 
         labelVariant={StepLabelVariant.SECONDARY}
       />
     </Section>
+
     {label && (
       <>
         <Section>
           <Item icon="alexa" iconColor="#616c60" label={upsellMessage} placeholder="Add Upsell Message" />
         </Section>
+
         <Section>
           {withPorts && (
             <>
@@ -55,11 +58,10 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, 
 
 const MemoizedPaymentStep = React.memo(PaymentStep);
 
-const ConnectedPaymentStep: React.FC<ConnectedStepProps<Realtime.NodeData.Payment>> = ({ node, data, withPorts }) => {
+const ConnectedPaymentStep: ConnectedStep<Realtime.NodeData.Payment, Realtime.NodeData.PaymentBuiltInPorts> = ({ node, data, withPorts }) => {
   const productMap = React.useContext(ProductMapContext)!;
-  const product = data?.productID ? productMap[data.productID] : null;
 
-  const [successPortID, failurePortID] = node.ports.out;
+  const product = data?.productID ? productMap[data.productID] : null;
 
   return (
     <MemoizedPaymentStep
@@ -67,8 +69,8 @@ const ConnectedPaymentStep: React.FC<ConnectedStepProps<Realtime.NodeData.Paymen
       nodeID={node.id}
       withPorts={withPorts}
       upsellMessage={product?.purchasePrompt}
-      successPortID={successPortID}
-      failurePortID={failurePortID}
+      successPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+      failurePortID={node.ports.out.builtIn[Models.PortType.FAIL]}
     />
   );
 };

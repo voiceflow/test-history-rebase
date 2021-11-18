@@ -10,7 +10,7 @@ import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { HelpTooltip } from './components';
 
-const PromptEditor: NodeEditor<Realtime.NodeData.Prompt> = ({ data, onChange, pushToPath }) => {
+const PromptEditor: NodeEditor<Realtime.NodeData.Prompt, Realtime.NodeData.PromptBuiltInPorts> = ({ data, onChange, pushToPath }) => {
   const [buttonsOption, buttonsSection] = useButtonsOptionSection({ data, onChange, pushToPath });
   const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
 

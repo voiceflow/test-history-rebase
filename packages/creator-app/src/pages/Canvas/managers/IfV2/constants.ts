@@ -1,4 +1,4 @@
-import { Node as BaseNode } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -7,7 +7,7 @@ import { BlockType } from '@/constants';
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = {
   type: BlockType.IFV2,
 
   icon: 'if',
@@ -19,7 +19,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}, {}],
+        out: {
+          dynamic: [{}],
+          builtIn: { [Models.PortType.NO_MATCH]: { label: Models.PortType.NO_MATCH } },
+        },
       },
     },
     data: {
@@ -32,7 +35,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2> = {
         },
       ],
       noMatch: {
-        type: BaseNode.IfV2.IfNoMatchType.NONE,
+        type: Node.IfV2.IfNoMatchType.NONE,
         pathName: 'No Match',
       },
     },

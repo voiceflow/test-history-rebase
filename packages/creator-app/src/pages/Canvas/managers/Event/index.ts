@@ -5,7 +5,7 @@ import { NODE_CONFIG } from './constants';
 import EventEditor from './EventEditor';
 import EventStep from './EventStep';
 
-const EventManager: NodeManagerConfig<Realtime.NodeData.Event> = {
+const EventManager: NodeManagerConfig<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Recieve special types of events from alexa',

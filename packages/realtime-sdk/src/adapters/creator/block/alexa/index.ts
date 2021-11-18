@@ -1,28 +1,26 @@
 import { BlockType } from '@realtime-sdk/constants';
 
-import accountLinkingAdapter from './accountLinking';
-import cancelPaymentAdapter from './cancelPayment';
+import accountLinkingAdapter, { accountLinkingOutPortAdapter } from './accountLinking';
+import cancelPaymentAdapter, { cancelPaymentOutPortAdapter } from './cancelPayment';
 import captureAdapter from './capture';
-import cardAdapter from './card';
 import commandAdapter from './command';
-import displayAdapter from './display';
-import eventAdapter from './event';
+import displayAdapter, { displayOutPortAdapter } from './display';
+import eventAdapter, { eventOutPortAdapter } from './event';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
-import paymentAdapter from './payment';
-import permissionAdapter from './permission';
+import paymentAdapter, { paymentOutPortAdapter } from './payment';
+import permissionAdapter, { permissionOutPortAdapter } from './permission';
 import promptAdapter from './prompt';
-import reminderAdapter from './reminder';
+import reminderAdapter, { reminderOutPortAdapter } from './reminder';
 import speakAdapter from './speak';
-import streamAdapter, { streamPortsAdapter } from './stream';
-import userInfoAdapter from './userInfo';
+import streamAdapter, { streamOutPortsAdapter } from './stream';
+import userInfoAdapter, { userInfoOutPortAdapter } from './userInfo';
 
 export const alexaBlockAdapter = {
   // internal
   [BlockType.COMMAND]: commandAdapter,
 
   // user defined
-  [BlockType.CARD]: cardAdapter,
   [BlockType.SPEAK]: speakAdapter,
   [BlockType.EVENT]: eventAdapter,
   [BlockType.STREAM]: streamAdapter,
@@ -39,6 +37,14 @@ export const alexaBlockAdapter = {
   [BlockType.ACCOUNT_LINKING]: accountLinkingAdapter,
 };
 
-export const alexaPortsAdapter = {
-  [BlockType.STREAM]: streamPortsAdapter,
+export const alexaOutPortAdapter = {
+  [BlockType.EVENT]: eventOutPortAdapter,
+  [BlockType.STREAM]: streamOutPortsAdapter,
+  [BlockType.DISPLAY]: displayOutPortAdapter,
+  [BlockType.PAYMENT]: paymentOutPortAdapter,
+  [BlockType.REMINDER]: reminderOutPortAdapter,
+  [BlockType.USER_INFO]: userInfoOutPortAdapter,
+  [BlockType.PERMISSION]: permissionOutPortAdapter,
+  [BlockType.CANCEL_PAYMENT]: cancelPaymentOutPortAdapter,
+  [BlockType.ACCOUNT_LINKING]: accountLinkingOutPortAdapter,
 };

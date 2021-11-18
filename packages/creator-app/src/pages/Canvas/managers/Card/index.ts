@@ -5,7 +5,7 @@ import CardEditor from './CardEditor';
 import CardStep from './CardStep';
 import { NODE_CONFIG } from './constants';
 
-const CardManager: NodeManagerConfig<Realtime.NodeData.Card> = {
+const CardManager: NodeManagerConfig<Realtime.NodeData.Card, Realtime.NodeData.CardBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Tell Alexa to show a card',

@@ -2,7 +2,8 @@ import { Creator } from '@test/factories';
 import { Node } from '@voiceflow/base-types';
 import { expect } from 'chai';
 
-import cardAdapter from '@/adapters/creator/block/alexa/card';
+import cardAdapter from '@/adapters/creator/block/base/card';
+import { Creator } from '@/tests/factories';
 
 describe('Adapters | Creator | Block | Base | cardAdapter', () => {
   describe('when transforming from db', () => {

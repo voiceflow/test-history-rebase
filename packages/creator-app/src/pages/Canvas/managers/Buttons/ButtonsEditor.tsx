@@ -4,22 +4,24 @@ import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
 import * as Documentation from '@/config/documentation';
-import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useSelector } from '@/hooks';
 import ListEditorContent from '@/pages/Canvas/components/ListEditorContent';
 import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
-import { EngineContext } from '@/pages/Canvas/contexts';
 import { useButtonLayoutOption, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { ButtonsListItem } from './components';
 import { factory, NODE_CONFIG } from './constants';
 
-const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons> = ({ data, nodeID, onChange, pushToPath }) => {
-  const engine = React.useContext(EngineContext);
-
-  const focusedNode = useSelector(Creator.focusedNodeSelector)!;
+const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = ({
+  data,
+  node,
+  engine,
+  nodeID,
+  onChange,
+  pushToPath,
+}) => {
   const openIntents = useSelector(IntentV2.openIntentsSelector);
 
   const buttonLayoutOption = useButtonLayoutOption();
@@ -36,8 +38,8 @@ const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons> = ({ data, nodeID, on
         </>
       }
       factory={factory}
-      onRemove={(_, index) => engine?.port.remove(focusedNode.ports.out[index + 1])}
-      onReorder={(from, to) => engine?.port.reorder(focusedNode.id, from + 1, to + 1)}
+      onRemove={(_, index) => engine.port.removeOutDynamic(node.ports.out.dynamic[index])}
+      onReorder={(from, to) => engine.port.reorderOutDynamic(node.id, from, to)}
       renderMenu={() => <OverflowMenu placement="top-end" options={[noReplyOption, buttonLayoutOption]} />}
       onChangeItems={(items) => onChange({ buttons: items })}
       itemComponent={ButtonsListItem}
@@ -47,7 +49,7 @@ const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons> = ({ data, nodeID, on
         {
           label: 'Add Button',
           icon: NODE_CONFIG.icon,
-          onClick: Utils.functional.chainVoid(onAdd, () => engine?.port.add(nodeID, { label: String(data.buttons.length + 1) }), scrollToBottom),
+          onClick: Utils.functional.chainVoid(onAdd, () => engine.port.addOutDynamic(nodeID), scrollToBottom),
           disabled: isMaxMatches,
           iconProps: { color: NODE_CONFIG.iconColor },
         },

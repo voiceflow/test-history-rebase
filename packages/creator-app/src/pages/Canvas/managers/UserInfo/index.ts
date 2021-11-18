@@ -6,7 +6,7 @@ import { NODE_CONFIG } from './constants';
 import UserInfoEditor from './UserInfoEditor';
 import UserInfoStep from './UserInfoStep';
 
-const UserInfoManager: NodeManagerConfig<Realtime.NodeData.UserInfo> = {
+const UserInfoManager: NodeManagerConfig<Realtime.NodeData.UserInfo, Realtime.NodeData.UserInfoBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Get User Information and check Permissions',

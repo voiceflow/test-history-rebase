@@ -1,33 +1,27 @@
 import React from 'react';
 
 import Section from '@/components/Section';
-import { focusedNodeSelector } from '@/ducks/creator';
-import { connect } from '@/hocs';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { EngineContext } from '@/pages/Canvas/contexts';
 
 import { Button, Checkbox, InfoTooltip } from './components';
 
-function RandomEditor({ data, onChange, focusedNode }) {
-  const [pathCount, setPathCount] = React.useState(data.paths);
-  const engine = React.useContext(EngineContext);
-
+function RandomEditor({ data, node, engine, onChange }) {
   const addPath = async () => {
-    const index = pathCount + 1;
+    const nextPath = node.ports.out.dynamic.length + 1;
 
-    setPathCount(index);
-    onChange({ paths: index }, false);
-    await engine.port.add(focusedNode.id, { label: pathCount });
+    onChange({ paths: nextPath }, false);
+
+    await engine.port.addOutDynamic(node.id, { label: nextPath });
   };
 
   const removePath = async () => {
-    const index = data.paths - 1;
+    const nextPath = node.ports.out.dynamic.length - 1;
 
-    setPathCount(index);
-    onChange({ paths: index }, false);
+    onChange({ paths: nextPath }, false);
 
-    const lastPortID = focusedNode.ports.out[focusedNode.ports.out.length - 1];
-    await engine.port.remove(lastPortID);
+    const lastPortID = node.ports.out.dynamic[node.ports.out.dynamic.length - 1];
+
+    await engine.port.removeOutDynamic(lastPortID);
   };
 
   const toggleDuplicates = React.useCallback(() => onChange({ noDuplicates: !data.noDuplicates }), [data.noDuplicates, onChange]);
@@ -38,11 +32,12 @@ function RandomEditor({ data, onChange, focusedNode }) {
         <Controls
           menu={
             <>
-              {pathCount > 1 && (
+              {node.ports.out.dynamic.length > 1 && (
                 <Button hasRight variant="secondary" onClick={removePath}>
                   Remove Path
                 </Button>
               )}
+
               <Button variant="secondary" onClick={addPath}>
                 Add Path
               </Button>
@@ -63,8 +58,4 @@ function RandomEditor({ data, onChange, focusedNode }) {
   );
 }
 
-const mapStateToProps = {
-  focusedNode: focusedNodeSelector,
-};
-
-export default connect(mapStateToProps)(RandomEditor);
+export default RandomEditor;

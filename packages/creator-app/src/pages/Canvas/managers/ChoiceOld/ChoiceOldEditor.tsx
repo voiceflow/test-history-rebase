@@ -1,12 +1,11 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
-import { focusedNodeSelector } from '@/ducks/creator';
-import { connect } from '@/hocs';
 import { useManager } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { EngineContext } from '@/pages/Canvas/contexts';
 import { useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import ChoiceItem from './components/ChoiceOldItem';
 
@@ -14,11 +13,16 @@ const choiceFactory = () => ({
   synonyms: [],
 });
 
-function ChoiceEditor({ data, onChange, focusedNode, pushToPath }) {
-  const engine = React.useContext(EngineContext);
+const ChoiceEditor: NodeEditor<Realtime.NodeData.ChoiceOld> = ({ data, node, engine, onChange, pushToPath }) => {
+  const updateChoices = React.useCallback(
+    (choices: Realtime.NodeData.ChoiceOld['choices'], save?: boolean) => onChange({ choices }, save),
+    [onChange]
+  );
 
-  const updateChoices = React.useCallback((choices, save) => onChange({ choices }, save), [onChange]);
-  const onRemoveChoice = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index + 1]), [focusedNode.ports.out]);
+  const onRemoveChoice = React.useCallback(
+    (_, index: number) => engine.port.removeOutDynamic(node.ports.out.dynamic[index]),
+    [node.ports.out.dynamic]
+  );
 
   const { onAdd, mapManaged } = useManager(data.choices, updateChoices, {
     autosave: false,
@@ -27,12 +31,14 @@ function ChoiceEditor({ data, onChange, focusedNode, pushToPath }) {
   });
 
   const addChoice = React.useCallback(
-    async (scrollToBottom) => {
-      await engine.port.add(focusedNode.id, { label: data.choices.length + 1 });
+    async (scrollToBottom: VoidFunction) => {
+      await engine.port.addOutDynamic(node.id);
+
       onAdd();
+
       scrollToBottom();
     },
-    [focusedNode.id, data.choices.length, onAdd]
+    [node.id, onAdd]
   );
 
   const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
@@ -58,10 +64,6 @@ function ChoiceEditor({ data, onChange, focusedNode, pushToPath }) {
       {noReplySection}
     </Content>
   );
-}
-
-const mapStateToProps = {
-  focusedNode: focusedNodeSelector,
 };
 
-export default connect(mapStateToProps)(ChoiceEditor);
+export default ChoiceEditor;

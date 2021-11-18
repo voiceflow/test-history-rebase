@@ -20,7 +20,7 @@ export const REMINDER_ROUTES = [
   },
 ];
 
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Reminder> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Reminder, Realtime.NodeData.ReminderBuiltInPorts> = {
   type: BlockType.REMINDER,
 
   icon: 'reminder',
@@ -30,7 +30,13 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Reminder> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}, { label: Models.PortType.FAIL }],
+        out: {
+          dynamic: [],
+          builtIn: {
+            [Models.PortType.NEXT]: { label: Models.PortType.NEXT },
+            [Models.PortType.FAIL]: { label: Models.PortType.FAIL },
+          },
+        },
       },
     },
     data: {

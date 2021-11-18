@@ -6,7 +6,7 @@ import { BlockType } from '@/constants';
 import { NodeConfig } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CancelPayment> = {
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CancelPayment, Realtime.NodeData.CancelPaymentBuiltInPorts> = {
   type: BlockType.CANCEL_PAYMENT,
 
   icon: 'trash',
@@ -16,7 +16,13 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CancelPayment> = {
     node: {
       ports: {
         in: [{}],
-        out: [{}, { label: Models.PortType.FAIL }],
+        out: {
+          dynamic: [],
+          builtIn: {
+            [Models.PortType.NEXT]: { label: Models.PortType.NEXT },
+            [Models.PortType.FAIL]: { label: Models.PortType.FAIL },
+          },
+        },
       },
     },
     data: {

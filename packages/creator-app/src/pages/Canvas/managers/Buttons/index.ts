@@ -7,7 +7,7 @@ import ButtonsStep from './ButtonsStep';
 import { NODE_CONFIG } from './constants';
 import { EDITORS_BY_PATH } from './subeditors';
 
-const ButtonsManager: NodeManagerConfig<Realtime.NodeData.Buttons> = {
+const ButtonsManager: NodeManagerConfig<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = {
   ...NODE_CONFIG,
 
   label: 'Buttons',

@@ -11,7 +11,7 @@ const EDITORS_BY_PATH = {
   [NO_REPLY_PATH_TYPE]: NoReplyEditor,
 };
 
-const CaptureManager: NodeManagerConfig<Realtime.NodeData.Capture> = {
+const CaptureManager: NodeManagerConfig<Realtime.NodeData.Capture, Realtime.NodeData.CaptureBuiltInPorts> = {
   ...NODE_CONFIG,
 
   tip: 'Capture what the user says into a variable',

@@ -4,7 +4,7 @@ import { UploadingSpinner } from '..';
 
 const Loading = () => (
   <>
-    <UploadingSpinner color="transparent" isMd isEmpty />
+    <UploadingSpinner color="transparent" isMd />
     <span>Uploading</span>
   </>
 );

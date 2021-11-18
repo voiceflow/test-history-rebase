@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { FlexCenter } from '@voiceflow/ui';
 import { css } from 'styled-components';
 
@@ -7,7 +8,7 @@ interface ImageContainerProps {
   size: number;
   image: string;
   isLoading: boolean;
-  error: any;
+  error: Nullable<string>;
   notAccepted: boolean;
   isSquare?: boolean;
   disabled?: boolean;

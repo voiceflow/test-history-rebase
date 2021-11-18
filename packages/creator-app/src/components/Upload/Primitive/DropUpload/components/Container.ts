@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { FlexCenter } from '@voiceflow/ui';
 import { css } from 'styled-components';
 
@@ -5,7 +6,16 @@ import { styled, transition } from '@/hocs';
 
 import { UploadMode } from '../constants';
 
-const Container = styled(FlexCenter)`
+interface ContainerProps {
+  mode: UploadMode;
+  height?: number;
+  isImage?: boolean;
+  active?: boolean;
+  error?: Nullable<string>;
+  isDragReject?: boolean;
+}
+
+const Container = styled(FlexCenter)<ContainerProps>`
   height: ${({ height, theme, isImage }) => height || (isImage ? theme.components.imageUpload.height : theme.components.audioPlayer.height)}px;
   border: 1px dashed #d4d9e6;
   border-radius: 5px;

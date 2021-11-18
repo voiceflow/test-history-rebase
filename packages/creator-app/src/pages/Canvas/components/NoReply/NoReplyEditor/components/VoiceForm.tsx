@@ -24,7 +24,7 @@ const VoiceForm: React.FC = () => {
   const updateResponseType = React.useCallback((type: VoicePromptType) => updateReprompt({ type }), [updateReprompt]);
   const updateContent = React.useCallback(({ text: content }: { text: string }) => updateReprompt({ content }), [updateReprompt]);
   const updateVoice = React.useCallback((voice: string) => updateReprompt({ voice }), [updateReprompt]);
-  const updateAudio = React.useCallback((audio: string) => updateReprompt({ audio }), [updateReprompt]);
+  const updateAudio = React.useCallback((audio: string | null) => updateReprompt({ audio }), [updateReprompt]);
   const updateDesc = React.useCallback(({ text: desc }: { text: string }) => updateReprompt({ desc }), [updateReprompt]);
 
   const isVoice = reprompt?.type === VoicePromptType.TEXT;

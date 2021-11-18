@@ -1,5 +1,8 @@
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
+
+import { InjectedWithUploadProps } from '@/hocs';
 
 import LinkUpload from '../LinkUpload';
 import Container from './components/Container';
@@ -10,7 +13,24 @@ import Neutral from './components/Neutral';
 import Success from './components/Success';
 import { UploadMode } from './constants';
 
-function DropUpload({
+interface DropUploadProps {
+  label?: string;
+  height?: number;
+  isImage?: boolean;
+  onUpdate?: (url: string | null) => void;
+  onValidateLink?: (text: string) => Nullable<string>;
+  canUseLink?: boolean;
+  linkPlaceholder?: string;
+  clearError?: VoidFunction;
+  success?: string;
+  successLabel?: string;
+  acceptedFileTypes?: string[];
+  className?: string;
+  withVariables?: boolean;
+  onSuccessClose?: VoidFunction;
+}
+
+const DropUpload: React.FC<DropUploadProps & Partial<InjectedWithUploadProps>> = ({
   label,
   height,
   isImage,
@@ -29,26 +49,26 @@ function DropUpload({
   acceptedFileTypes = [], // MIME FORMAT
   className,
   withVariables,
-}) {
-  const [uploadMode, setUploadMode] = React.useState(UploadMode.DROP);
+}) => {
+  const [uploadMode, setUploadMode] = React.useState<UploadMode>(UploadMode.DROP);
 
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     accept: acceptedFileTypes.toString(),
     onDropAccepted,
     onDropRejected,
-    disabled: error || success || isLoading || uploadMode === UploadMode.LINK,
+    disabled: !!error || !!success || !!isLoading || uploadMode === UploadMode.LINK,
   });
 
   let content = null;
-  if (error) {
+  if (error && clearError) {
     content = <Error error={error} onClearError={clearError} />;
   } else if (isDragReject) {
     content = <ErrorMessage>Invalid file type</ErrorMessage>;
   } else if (isLoading) {
     content = <Loading />;
-  } else if (success) {
+  } else if (success && onSuccessClose) {
     content = <Success onClose={onSuccessClose} successLabel={successLabel} />;
-  } else if (uploadMode === UploadMode.LINK && canUseLink) {
+  } else if (uploadMode === UploadMode.LINK && canUseLink && onUpdate) {
     content = (
       <LinkUpload
         onBack={() => setUploadMode(UploadMode.DROP)}
@@ -59,7 +79,7 @@ function DropUpload({
       />
     );
   } else {
-    content = <Neutral onCornerAction={() => setUploadMode(UploadMode.LINK)} cornerIcon={canUseLink ? 'link' : null} label={label} />;
+    content = <Neutral onCornerAction={() => setUploadMode(UploadMode.LINK)} cornerIcon={canUseLink ? 'link' : undefined} label={label} />;
   }
 
   return (
@@ -77,6 +97,6 @@ function DropUpload({
       {content}
     </Container>
   );
-}
+};
 
 export default DropUpload;

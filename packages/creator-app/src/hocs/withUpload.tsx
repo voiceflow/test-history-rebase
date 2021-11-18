@@ -10,20 +10,21 @@ type Config = UploadConfig & {
   errorMessage?: string;
 };
 
-type RequiredProps<F> = {
+export type RequiredWithUploadProps<F> = {
   update: (url: string | string[] | null) => void;
 } & (F extends 'uploadImage' ? { endpoint?: null | string | string[] } : F extends 'uploadAudio' ? { endpoint: string } : never);
 
-interface InjectedProps {
+export interface InjectedWithUploadProps {
   error: null | string;
   setError: (error: null | string) => void;
   isLoading: boolean;
   onDropRejected: () => void;
-  onDropAccepted: (files: Blob[]) => void;
+  onDropAccepted: ((files: Blob[]) => void) | ((files: File[]) => void);
+  endpoint?: null | string | string[];
 }
 
-export const withUpload = <C extends Config, P extends RequiredProps<C['clientFunc']>, R extends any = any>(
-  WrappedComponent: React.ComponentType<InjectedProps>,
+export const withUpload = <C extends Config, P extends RequiredWithUploadProps<C['clientFunc']>, R extends any = any>(
+  WrappedComponent: React.ComponentType<InjectedWithUploadProps>,
   config: Config
 ): React.ForwardRefExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<R>> =>
   React.forwardRef<R, P>(({ endpoint, update, ...props }: P, ref) => {

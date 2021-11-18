@@ -7,7 +7,7 @@ import ImageContainer from './ImageContainer';
 
 export { ErrorText, IconUploadInput, ImageContainer };
 
-export const IconUploadContainer = styled.div`
+export const IconUploadContainer = styled.div<{ isActive?: boolean }>`
   :not(:hover) {
     ${RemoveButton} {
       display: none;

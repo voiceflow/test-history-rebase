@@ -2,7 +2,7 @@ import { FlexCenter } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-const RemoveButton = styled(FlexCenter)`
+const RemoveButton = styled(FlexCenter)<{ top?: number; right?: number }>`
   cursor: pointer;
   position: absolute;
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import { HTTPS_URL_REGEX } from '@/constants';
-import { withUpload } from '@/hocs';
+import { InjectedWithUploadProps, withUpload } from '@/hocs';
 
 const MAX_SIZE = 10 * 1024 * 1024;
 
@@ -19,17 +19,17 @@ const LINK_ERROR = {
   INVALID_URL: 'The link is invalid, make sure to use https',
 };
 
-const validate = (acceptedFiles) => {
+const validate = (acceptedFiles: Blob[]) => {
   if (acceptedFiles.length !== 1) {
     return UPLOAD_ERROR.ONE_FILE_LIMIT;
   }
   if (acceptedFiles[0].size > MAX_SIZE) {
     return UPLOAD_ERROR.TOO_LARGE;
   }
-  return false;
+  return null;
 };
 
-const validateURL = (value) => {
+const validateURL = (value: string) => {
   if (!value.match(READABLE_VARIABLE_REGEXP) && !value.match(HTTPS_URL_REGEX)) {
     return LINK_ERROR.INVALID_URL;
   }
@@ -37,12 +37,26 @@ const validateURL = (value) => {
   return null;
 };
 
-const DropAudio = ({ isLoading, onDropAccepted, onDropRejected, error, setError, update, withVariables }) => (
+interface DropAudioProps {
+  withVariables?: boolean;
+  update: (url: string | null) => void;
+}
+
+const DropAudio: React.FC<DropAudioProps & InjectedWithUploadProps> = ({
+  isLoading,
+  onDropAccepted,
+  onDropRejected,
+  error,
+  setError,
+  update,
+  withVariables,
+}) => (
   <DropUpload
     withVariables={withVariables}
     linkPlaceholder={withVariables ? "Add link or Variable using '{'" : 'Add link'}
     onDropAccepted={onDropAccepted}
     clearError={() => setError(null)}
+    setError={setError}
     onDropRejected={onDropRejected}
     isLoading={isLoading}
     className={CONTEXT_MENU_IGNORED_CLASS_NAME}
@@ -53,4 +67,6 @@ const DropAudio = ({ isLoading, onDropAccepted, onDropRejected, error, setError,
   />
 );
 
-export default withUpload(DropAudio, { fileType: 'audio', clientFunc: 'uploadAudio', validate });
+export default withUpload(DropAudio as React.FC<InjectedWithUploadProps>, { fileType: 'audio', clientFunc: 'uploadAudio', validate }) as React.FC<
+  DropAudioProps & Partial<InjectedWithUploadProps>
+>;

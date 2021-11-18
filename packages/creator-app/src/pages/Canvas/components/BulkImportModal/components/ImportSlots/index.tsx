@@ -22,9 +22,6 @@ import { getSlotsWithSynonyms, validateSlots } from './utils';
 
 const DEBOUNCE_TIMEOUT = 300;
 
-// TODO: remove what convert DropUpload to TS
-const PartialDropUpload = DropUpload as React.ComponentType<Partial<React.ComponentProps<typeof DropUpload>>>;
-
 const ImportSlots: React.FC = () => {
   const [state, stateApi] = useSmartReducerV2({
     errors: null as null | Map<number, string>,
@@ -172,7 +169,7 @@ const ImportSlots: React.FC = () => {
                 placeholder="One entity per line (value,synonym 1,…)"
               />
             ) : (
-              <PartialDropUpload
+              <DropUpload
                 label="CSV"
                 isLoading={state.readingFile}
                 canUseLink={false}

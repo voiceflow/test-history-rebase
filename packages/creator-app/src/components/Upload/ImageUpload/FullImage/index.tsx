@@ -1,4 +1,4 @@
-import { READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
+import { Nullable, READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
 import { LoadCircle, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -6,11 +6,13 @@ import { Tooltip } from 'react-tippy';
 
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import { HTTPS_URL_REGEX, IMAGE_FILE_FORMATS } from '@/constants';
-import { withUpload } from '@/hocs';
+import { InjectedWithUploadProps, withUpload } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 
 import { ErrorText } from '../IconUpload/components';
 import { Container, Image, ImageContainer, ImageUploadInput, RemoveButton } from './components';
+
+const AnyTypeImageUploadInput = ImageUploadInput as any;
 
 const MAX_SIZE = 10 * 1024 * 1024;
 
@@ -20,14 +22,14 @@ const UPLOAD_ERROR = {
   INVALID_URL: 'The link is invalid, make sure to use https',
 };
 
-const validate = (acceptedFiles) => {
+const validate = (acceptedFiles: Blob[]) => {
   if (acceptedFiles.length !== 1) {
     return UPLOAD_ERROR.ONE_FILE_LIMIT;
   }
   if (acceptedFiles[0].size > MAX_SIZE) {
     return UPLOAD_ERROR.TOO_LARGE;
   }
-  return false;
+  return null;
 };
 
 export const validateLink = (link = '') => {
@@ -38,7 +40,16 @@ export const validateLink = (link = '') => {
   return null;
 };
 
-function FullImage({
+interface FullImageProps {
+  image: Nullable<string>;
+  update: (url: string | string[] | null) => void;
+  showRemove: boolean;
+  imageHeight?: number;
+  canUseLink?: boolean;
+  ratio?: number;
+}
+
+const FullImage: React.FC<FullImageProps & InjectedWithUploadProps> = ({
   image,
   update,
   setError,
@@ -50,17 +61,17 @@ function FullImage({
   imageHeight,
   canUseLink = true,
   ratio,
-}) {
+}) => {
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     accept: IMAGE_FILE_FORMATS,
     onDropAccepted,
     onDropRejected: Utils.functional.noop,
     disabled: isLoading,
   });
-  const [loadError, setLoadError] = React.useState(null);
+  const [loadError, setLoadError] = React.useState<Nullable<string>>(null);
   const [removeButton, showRemoveButton, hideRemoveButton] = useEnableDisable(false);
 
-  const imageUploadRef = React.useRef();
+  const imageUploadRef = React.useRef<HTMLInputElement>();
 
   const clickImageInput = () => {
     if (isLoading) {
@@ -81,11 +92,11 @@ function FullImage({
   } else if (error) {
     content = <ErrorText>Error</ErrorText>;
   } else if (isLoading) {
-    content = <LoadCircle color="transparent" isMd isEmpty />;
+    content = <LoadCircle color="transparent" isMd />;
   } else if (loadError) {
-    content = <Tooltip title={image}>{image}</Tooltip>;
+    content = <Tooltip title={image || undefined}>{image}</Tooltip>;
   } else if (image) {
-    content = <Image src={image} onError={(err) => setLoadError(err)} ratio={ratio} />;
+    content = <Image src={image} ratio={ratio} />;
   }
 
   return image ? (
@@ -97,8 +108,7 @@ function FullImage({
       height={imageHeight}
       autoHeight={!!ratio}
     >
-      <ImageUploadInput onChange={onDropAccepted} ref={imageUploadRef} type="file" accept={IMAGE_FILE_FORMATS} {...getInputProps()} />
-
+      <AnyTypeImageUploadInput onChange={onDropAccepted} ref={imageUploadRef} type="file" accept={IMAGE_FILE_FORMATS} {...getInputProps()} />
       <>
         {showRemove && removeButton && (
           <RemoveButton onClick={stopPropagation(() => update(''))}>
@@ -113,6 +123,7 @@ function FullImage({
     <DropUpload
       onUpdate={update}
       height={imageHeight}
+      setError={setError}
       label="image/GIF"
       isImage
       linkPlaceholder="Add link or Variable using '{'"
@@ -127,6 +138,6 @@ function FullImage({
       canUseLink={canUseLink}
     />
   );
-}
+};
 
-export default withUpload(FullImage, { fileType: 'image', clientFunc: 'uploadImage', validate });
+export default withUpload(FullImage as React.FC<InjectedWithUploadProps>, { fileType: 'image', clientFunc: 'uploadImage', validate });

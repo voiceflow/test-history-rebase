@@ -1,6 +1,6 @@
 import { css, styled } from '@/hocs';
 
-const calculateRatio = (ratio) =>
+const calculateRatio = (ratio?: number) =>
   ratio
     ? css`
         padding-bottom: ${ratio}%;
@@ -9,7 +9,7 @@ const calculateRatio = (ratio) =>
         height: 100%;
       `;
 
-const Image = styled.div`
+const Image = styled.div<{ src: string; ratio?: number }>`
   width: 100%;
   border-radius: 5px;
   background-size: cover;

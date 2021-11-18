@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { Badge, Input, KeyName, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 import validUrl from 'valid-url';
@@ -8,17 +9,27 @@ import { transformVariablesToReadable } from '@/utils/slot';
 
 import { BackArrow, ErrorMessage, LinkUploadInputContainer } from './components';
 
-const validURL = (text) => {
+const NoTypeVariablesInput = VariablesInput as any;
+
+const validURL: (text: string) => Nullable<string> = (text: string) => {
   if (!validUrl.isUri(text)) return 'Bad URL';
   return null;
 };
 
-function LinkUpload({ onUpdate, onBack, validate = validURL, placeholder, withVariables }) {
-  const [value, setValue] = React.useState('');
-  const [error, setError] = React.useState(null);
-  const variablesRef = React.useRef();
+interface LinkUploadProps {
+  onUpdate: (value: string) => void;
+  onBack: VoidFunction;
+  validate?: (text: string) => Nullable<string>;
+  placeholder: string;
+  withVariables?: boolean;
+}
 
-  const validateAndUpdate = (value) => {
+const LinkUpload: React.FC<LinkUploadProps> = ({ onUpdate, onBack, validate = validURL, placeholder, withVariables }) => {
+  const [value, setValue] = React.useState('');
+  const [error, setError] = React.useState<Nullable<string>>(null);
+  const variablesRef = React.useRef<any>();
+
+  const validateAndUpdate = (value: string) => {
     setError(null);
 
     const newError = validate(value);
@@ -46,19 +57,20 @@ function LinkUpload({ onUpdate, onBack, validate = validURL, placeholder, withVa
   return (
     <LinkUploadInputContainer>
       {withVariables ? (
-        <VariablesInput
+        <NoTypeVariablesInput
           {...inputProps}
           ref={variablesRef}
           creatable={false}
           rightAction={
-            <Badge onClick={() => validateAndUpdate(transformVariablesToReadable(variablesRef.current.getCurrentValue().text))}>Enter</Badge>
+            <Badge onClick={() => validateAndUpdate(transformVariablesToReadable(variablesRef.current?.getCurrentValue().text))}>Enter</Badge>
           }
-          onEnterPress={() => validateAndUpdate(transformVariablesToReadable(variablesRef.current.getCurrentValue().text))}
+          onEnterPress={() => validateAndUpdate(transformVariablesToReadable(variablesRef.current?.getCurrentValue().text))}
           onEditorStateChange={error ? () => setError(null) : null}
         />
       ) : (
         <Input
           {...inputProps}
+          error={!!error}
           onChange={(e) => setValue(e.target.value)}
           onKeyPress={withKeyPress(KeyName.ENTER, () => validateAndUpdate(value))}
           rightAction={<Badge onClick={() => validateAndUpdate(value)}>Enter</Badge>}
@@ -67,6 +79,6 @@ function LinkUpload({ onUpdate, onBack, validate = validURL, placeholder, withVa
       <ErrorMessage>{error}</ErrorMessage>
     </LinkUploadInputContainer>
   );
-}
+};
 
 export default LinkUpload;

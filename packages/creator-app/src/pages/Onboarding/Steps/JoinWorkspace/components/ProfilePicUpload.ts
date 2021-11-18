@@ -1,4 +1,4 @@
-import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload/index';
+import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { styled } from '@/hocs';
 
 const IconUpload: any = UploadJustIcon;

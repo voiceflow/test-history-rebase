@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone';
 
 import { RemoveButton } from '@/components/Upload/ImageUpload/FullImage/components';
 import { IMAGE_FILE_FORMATS } from '@/constants';
-import { withUpload } from '@/hocs';
+import { InjectedWithUploadProps, withUpload } from '@/hocs';
 
 import { ErrorText, IconUploadContainer, IconUploadInput, ImageContainer } from './components';
 
@@ -27,9 +27,21 @@ export const SIZE_VARIANT = {
 
 const MINIMUM_ICON_SIZE = 14;
 
-const hasError = (acceptedFiles) => !IMAGE_FILE_FORMATS.includes(acceptedFiles[0].type);
+const hasError = (acceptedFiles: Blob[]) => (!IMAGE_FILE_FORMATS.includes(acceptedFiles[0].type) ? 'Invalid File Type' : null);
 
-const Icon = React.forwardRef(
+interface IconProps {
+  image: string;
+  size?: number;
+  isLoading?: boolean;
+  canRemove?: boolean;
+  update: (text: string) => void;
+  acceptedFileTypes?: string[];
+  className?: string;
+  isSquare?: boolean;
+  disabled?: boolean;
+}
+
+const Icon = React.forwardRef<HTMLDivElement, React.PropsWithoutRef<IconProps & InjectedWithUploadProps>>(
   (
     {
       image,
@@ -54,7 +66,7 @@ const Icon = React.forwardRef(
     });
     const iconSize = SIZE_VARIANT[size];
     const placeholderIconSize = Math.max(SIZE_VARIANT[size] / 4.75, MINIMUM_ICON_SIZE);
-    const iconUploadInput = React.useRef();
+    const iconUploadInput = React.useRef<HTMLInputElement>();
 
     const clickIconInput = () => {
       if (disabled || isLoading) return;
@@ -67,14 +79,16 @@ const Icon = React.forwardRef(
     } else if (error) {
       content = <ErrorText>Error</ErrorText>;
     } else if (isLoading) {
-      content = <LoadCircle color="transparent" isMd isEmpty />;
+      content = <LoadCircle color="transparent" isMd />;
     } else if (!image) {
       content = <SvgIcon size={placeholderIconSize} color="#BECEDC" icon="image" />;
     }
 
     return (
-      <IconUploadContainer className={className} {...getRootProps()} isActive={isDragActive}>
-        {!disabled && <IconUploadInput onChange={onDropAccepted} ref={iconUploadInput} type="file" accept={acceptedFileTypes} {...getInputProps()} />}
+      <IconUploadContainer className={className} {...(getRootProps() as any)} isActive={isDragActive}>
+        {!disabled && (
+          <IconUploadInput onChange={onDropAccepted} ref={iconUploadInput} type="file" accept={acceptedFileTypes} {...(getInputProps() as any)} />
+        )}
         <ImageContainer
           ref={ref}
           isLoading={isLoading}
@@ -98,11 +112,20 @@ const Icon = React.forwardRef(
   }
 );
 
-// Have to have a separate export for a withUpload connected instance of Icon, because Icon is being used in its default form in ImageGroup component without withUpload
-const JustIcon = React.forwardRef(({ update, image, ...props }, ref) => (
-  <Icon image={image} update={update} acceptedFileTypes={IMAGE_FILE_FORMATS} {...props} ref={ref} />
-));
+interface JustIconProps {
+  update: (text: string) => void;
+  image: string;
+}
 
-export const UploadJustIcon = withUpload(JustIcon, { fileType: 'image', clientFunc: 'uploadImage', validate: hasError });
+// Have to have a separate export for a withUpload connected instance of Icon, because Icon is being used in its default form in ImageGroup component without withUpload
+const JustIcon = React.forwardRef<HTMLDivElement, React.PropsWithoutRef<JustIconProps & InjectedWithUploadProps>>(
+  ({ update, image, ...props }, ref) => <Icon image={image} update={update} acceptedFileTypes={IMAGE_FILE_FORMATS} {...props} ref={ref} />
+);
+
+export const UploadJustIcon = withUpload(JustIcon as unknown as React.FC<InjectedWithUploadProps>, {
+  fileType: 'image',
+  clientFunc: 'uploadImage',
+  validate: hasError,
+});
 
 export default Icon;

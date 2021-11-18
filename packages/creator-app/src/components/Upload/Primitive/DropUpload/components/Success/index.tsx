@@ -2,9 +2,9 @@ import React from 'react';
 
 import { CornerActionButton, StatusIcon } from '..';
 
-const Success = ({ successLabel, onClose }) => (
+const Success: React.FC<{ successLabel?: string; onClose: VoidFunction }> = ({ successLabel = 'Success', onClose }) => (
   <>
-    <CornerActionButton onClick={onClose} size={12} icon="close" />
+    {onClose && <CornerActionButton onClick={onClose} size={12} icon="close" />}
     <StatusIcon color="#279745" icon="checkmark" />
     <span>{successLabel}</span>
   </>

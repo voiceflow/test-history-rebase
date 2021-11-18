@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.41.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.40.2...@voiceflow/realtime-sdk@1.41.0) (2021-11-18)
+
+
+### Bug Fixes
+
+* linting (VF-000) ([e5b5796](https://github.com/voiceflow/creator-app/commit/e5b5796780aca46225f02d2cfb35eb97b2663112))
+
+
+### Features
+
+* new ports system (VF-2203) ([#4600](https://github.com/voiceflow/creator-app/issues/4600)) ([c7a2519](https://github.com/voiceflow/creator-app/commit/c7a2519e5bf0691c7260594b15f846cf6474ce97)), closes [#4623](https://github.com/voiceflow/creator-app/issues/4623)
+
+
+
+
+
 ## [1.40.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.40.1...@voiceflow/realtime-sdk@1.40.2) (2021-11-18)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

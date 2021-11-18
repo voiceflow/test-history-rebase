@@ -12,6 +12,8 @@ import { Container, Content, Flows, Header, Layers, Steps } from './components';
 import { Tab } from './constants';
 import { useDropLagFix, useMenuHotKeys, useTabs } from './hooks';
 
+export { Tab as DesignMenuTab } from './constants';
+
 const SIDEBAR_CALCULATION_BUFFER = 50;
 
 const DesignMenu: React.FC = () => {

@@ -78,22 +78,19 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData> = ({ data, onChange }) 
     });
   };
 
-  const renderVisualSizeSection = createPlatformSelector<() => React.ReactNode>(
+  const visualSizeSection = (
+    <Section dividers isDividerNested isDividerBottom>
+      <FormControl label="Size" contentBottomUnits={0}>
+        <RadioGroup isFlat options={FRAME_OPTIONS} checked={frameType} onChange={(e) => onChangeFrameType(e)} />
+      </FormControl>
+    </Section>
+  );
+
+  const renderVisualSizeSection = createPlatformSelector<React.ReactNode>(
     {
-      [Constants.PlatformType.GENERAL]: () => (
-        <Section dividers isDividerNested isDividerBottom>
-          <FormControl label="Size" contentBottomUnits={0}>
-            <RadioGroup
-              isFlat
-              options={FRAME_OPTIONS}
-              checked={frameType}
-              onChange={(e) => {
-                onChangeFrameType(e);
-              }}
-            />
-          </FormControl>
-        </Section>
-      ),
+      [Constants.PlatformType.IVR]: visualSizeSection,
+      [Constants.PlatformType.GENERAL]: visualSizeSection,
+      [Constants.PlatformType.CHATBOT]: visualSizeSection,
     },
     () => null
   );
@@ -111,7 +108,7 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData> = ({ data, onChange }) 
         </Controls>
       )}
     >
-      {renderVisualSizeSection(platform)()}
+      {renderVisualSizeSection(platform)}
 
       <Section dividers={!!data.image} isDividerNested isDividerBottom>
         {frameType === Node.Visual.FrameType.CUSTOM_SIZE ? (

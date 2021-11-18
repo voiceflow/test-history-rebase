@@ -1,4 +1,4 @@
-import { Badge } from '@voiceflow/ui';
+import { Badge, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionVariant } from '@/components/Section';
@@ -37,7 +37,7 @@ const CommandsManager: React.FC<CommandsManagerProps> = ({ nodeID }) => {
           />
         ))
       ) : (
-        <EditorSection header="No commands exist in this flow" variant={SectionVariant.SECONDARY} />
+        <EditorSection header={<Text fontWeight="normal">No commands exist in this flow</Text>} variant={SectionVariant.SECONDARY} />
       )}
     </Content>
   );

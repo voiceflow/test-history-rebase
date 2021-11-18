@@ -1,4 +1,5 @@
 import { Nullable } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
@@ -18,6 +19,7 @@ const StartIntent: React.FC<StartIntentProps> = ({ isActive, diagramID, focusedN
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
 
   const startNodeID = useSelector(Creator.startNodeIDSelector);
+  const getStartNodeData = useSelector(Creator.dataByNodeIDSelector);
   const isRootDiagramActive = useSelector(Creator.isRootDiagramActiveSelector);
 
   const onClickRootItem = () => {
@@ -34,9 +36,11 @@ const StartIntent: React.FC<StartIntentProps> = ({ isActive, diagramID, focusedN
     }
   };
 
+  const startNodeData = startNodeID ? getStartNodeData<Realtime.NodeData.Start>(startNodeID) : null;
+
   return (
     <IntentContainer isActive={isRootDiagramActive && startNodeID === focusedNodeID} onClick={onClickRootItem}>
-      Project starts here
+      {startNodeData?.label || 'Project starts here'}
     </IntentContainer>
   );
 };

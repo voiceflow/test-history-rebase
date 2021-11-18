@@ -4,8 +4,8 @@ import React from 'react';
 import MappingSection from './components/MappingSection';
 
 interface MappingProps {
-  isFlow?: boolean;
   data: Realtime.NodeData<Realtime.NodeData.Component>;
+  isFlow?: boolean;
   updateInputs: (inputs: Realtime.NodeData.VariableMapping[]) => void;
   updateOutputs: (outputs: Realtime.NodeData.VariableMapping[]) => void;
 }
@@ -21,10 +21,10 @@ const Mapping: React.FC<MappingProps> = ({ isFlow, data, updateInputs, updateOut
     />
 
     <MappingSection
-      reverse
       data={data}
       items={data.outputs}
       header="Output Mapping"
+      reverse
       tooltip={`Retrieve variables that are used in this ${isFlow ? 'flow' : 'component'}.`}
       onChange={updateOutputs}
       isDividerNested

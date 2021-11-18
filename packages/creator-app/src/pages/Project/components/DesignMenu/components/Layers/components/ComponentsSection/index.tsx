@@ -29,6 +29,7 @@ interface ComponentsSectionProps {
 
 const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSectionHeight }) => {
   const getEngine = useEventualEngine();
+
   const listRef = React.useRef<List>(null);
   const scrollBarsRef = React.useRef<Scrollbars>(null);
 

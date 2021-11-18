@@ -1,11 +1,13 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { BlockText, Link } from '@voiceflow/ui';
 import React from 'react';
 
 import Section from '@/components/Section';
+import * as Documentation from '@/config/documentation';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useSelector, useTheme } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -14,6 +16,8 @@ import { Component, Footer, Mapping } from './components';
 import { variableMappingFactory } from './components/Mapping/components/MappingSection';
 
 const ComponentEditor: NodeEditor<Realtime.NodeData.Component> = ({ data, onChange }) => {
+  const theme = useTheme();
+
   const diagram = useSelector((state) => DiagramV2.diagramByIDSelector(state, { id: data.diagramID }));
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
@@ -53,6 +57,10 @@ const ComponentEditor: NodeEditor<Realtime.NodeData.Component> = ({ data, onChan
     >
       <Section>
         <Component onChange={onChange} diagramID={diagram?.id ?? null} />
+
+        <BlockText mt={12} fontSize={theme.fontSizes.s} color={theme.colors.secondary}>
+          Changes to this components will update globally. <Link href={Documentation.COMPONENT_STEP}>Learn more</Link>
+        </BlockText>
       </Section>
 
       {hasVariableMapping && diagram ? (

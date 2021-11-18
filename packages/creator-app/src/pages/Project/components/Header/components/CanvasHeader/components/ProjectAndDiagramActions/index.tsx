@@ -9,8 +9,10 @@ import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
+import * as UI from '@/ducks/ui';
 import { useDispatch, useEventualEngine, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
+import { DesignMenuTab } from '@/pages/Project/components/DesignMenu';
 import { LastCreatedComponentContext, SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Project/contexts';
 import { usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
@@ -27,6 +29,7 @@ const ProjectAndDiagramActions: React.FC = () => {
   const lockResource = useDispatch(() => Realtime.sendRealtimeProjectUpdate(Realtime.lockResource(Realtime.ResourceType.SETTINGS)));
   const unlockResource = useDispatch(() => Realtime.sendRealtimeProjectUpdate(Realtime.unlockResource(Realtime.ResourceType.SETTINGS)));
   const updateProjectName = useDispatch(Project.updateActiveProjectName);
+  const setActiveDesignMenuTab = useDispatch(UI.setActiveCreatorMenu);
 
   const isLocked = useSelector((state) => Realtime.isResourceLockedSelector(state)(Realtime.ResourceType.SETTINGS));
   const projectID = useSelector(Session.activeProjectIDSelector);
@@ -80,6 +83,8 @@ const ProjectAndDiagramActions: React.FC = () => {
     if (!engine) {
       return;
     }
+
+    setActiveDesignMenuTab(DesignMenuTab.LAYERS);
 
     const diagramID = await engine.createComponent();
 

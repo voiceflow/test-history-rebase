@@ -7,12 +7,14 @@ import { FeatureFlag } from '@/config/features';
 import { BlockType, ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
+import * as UI from '@/ducks/ui';
 import { connect, styled } from '@/hocs';
-import { useActiveModal, useFeature, useHotKeys, useModals, useRegistration } from '@/hooks';
+import { useActiveModal, useDispatch, useFeature, useHotKeys, useModals, useRegistration } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
-import { LastCreatedComponentContext, MarkupContext } from '@/pages/Project/contexts';
+import { DesignMenuTab } from '@/pages/Project/components/DesignMenu';
+import { LastCreatedComponentContext, MarkupContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode, usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -63,6 +65,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
   const markup = React.useContext(MarkupContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
+  const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
   const projectVersionsEnabled = useFeature(FeatureFlag.PROJECT_VERSIONS)?.isEnabled;
   const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
@@ -71,6 +74,8 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
   const isEditingMode = useEditingMode();
   const isCommentingMode = useCommentingMode();
   const isPrototypingMode = usePrototypingMode();
+
+  const setActiveDesignMenuTab = useDispatch(UI.setActiveCreatorMenu);
 
   const activeModal = useActiveModal();
 
@@ -133,9 +138,13 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
 
   const onCreateComponent = React.useCallback(async () => {
     if (engine.activation.getTargets().length > 1) {
+      setActiveDesignMenuTab(DesignMenuTab.LAYERS);
+
       const diagramID = await engine.createComponent();
 
       lastCreatedComponent.setComponentID(diagramID);
+
+      setSelectedTargets([]);
     }
   }, []);
 

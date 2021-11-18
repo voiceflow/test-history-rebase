@@ -38,8 +38,9 @@ const Footer: React.FC<FooterProps> = ({ onEdit, editable, blockType, hasVariabl
         disabled: !editable,
       },
     ]}
-    tutorial={{ content: <HelpTooltip />, blockType }}
     anchor="How it Works?"
+    tutorial={{ content: <HelpTooltip />, blockType }}
+    tutorialTitle="Component Tutorial"
   />
 );
 

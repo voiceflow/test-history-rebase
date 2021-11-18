@@ -69,7 +69,7 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, ConnectedIntentEditorPr
   return (
     <Content footer={() => <Controls tutorial={{ content: <HelpTooltip />, blockType: data.type }} />}>
       <Section>
-        <IntentSelect intent={intent} onChange={onChangeIntent} />
+        <IntentSelect intent={intent} clearable onChange={onChangeIntent} />
       </Section>
       <NamespaceProvider value={['intent', intent?.id ?? '']}>
         <IntentForm intent={intent} pushToPath={pushToPath} />

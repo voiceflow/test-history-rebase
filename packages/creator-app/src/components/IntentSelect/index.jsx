@@ -157,7 +157,7 @@ function IntentSelect({
         options={filteredIntents}
         onCreate={onCreate}
         onSelect={onSelectIntent}
-        clearable={clearable && !!intent}
+        clearable={clearable && !!intentID}
         creatable={creatable}
         searchable
         renderEmpty={renderEmpty}

@@ -5,7 +5,7 @@ import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { MapManaged, useDispatch, useSelector } from '@/hooks';
 
-import { ButtonContainer, Container, DeleteButton, MappingContainer, RegularSelect, VariableDropdown, VariableMappingContainer } from './components';
+import { ButtonContainer, DeleteButton, MappingContainer, RegularSelect, VariableDropdown, VariableMappingContainer } from './components';
 
 interface MappingVariablesProps {
   items?: Realtime.NodeData.VariableMapping[];
@@ -16,13 +16,13 @@ interface MappingVariablesProps {
 }
 
 const MappingVariables: React.FC<MappingVariablesProps> = ({ items, reverse, diagramID, mapManaged }) => {
-  const activeVariables = useSelector(DiagramV2.active.localVariablesSelector);
+  const activeVariables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
   const componentVariables = useSelector((state) => DiagramV2.localVariablesByDiagramIDSelector(state, { id: diagramID }));
 
   const addLocalVariable = useDispatch(Diagram.addActiveDiagramVariable);
 
   return (
-    <Container>
+    <div>
       {mapManaged((mapping, { key, onUpdate, onRemove }) => {
         const updateFrom = (from?: string | null) => onUpdate({ from });
         const updateTo = (to?: string | null) => onUpdate({ to });
@@ -74,7 +74,7 @@ const MappingVariables: React.FC<MappingVariablesProps> = ({ items, reverse, dia
           </VariableMappingContainer>
         );
       })}
-    </Container>
+    </div>
   );
 };
 

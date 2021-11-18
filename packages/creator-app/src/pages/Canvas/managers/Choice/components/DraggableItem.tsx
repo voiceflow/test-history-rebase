@@ -109,7 +109,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
             dividers={false}
             customContentStyling={{ paddingTop: 0, paddingBottom: topicsAndComponents.isEnabled ? '16px' : undefined }}
           >
-            <IntentSelectComponent intent={intent} onChange={patchPlatformData} intents={availableIntents} />
+            <IntentSelectComponent intent={intent} clearable={!intent} onChange={patchPlatformData} intents={availableIntents} />
           </Section>
 
           <IntentForm isNested intent={intent} onChange={patchPlatformData} pushToPath={pushToPath}>
@@ -126,6 +126,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
                       intents={openIntents}
                       onChange={onChangeGoToIntent}
                       creatable={false}
+                      clearable={!goToIntent}
                       renderEmpty={({ close, search }: { search: string; close: VoidFunction }) => (
                         <Box flex={1} textAlign="center">
                           {!search ? 'No open intents exists in your project. ' : 'No open intents found. '}

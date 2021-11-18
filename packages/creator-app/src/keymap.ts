@@ -84,7 +84,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.ROOT_NODE]: 's',
   [Hotkey.SPOTLIGHT]: `${SpecialKey.SHIFT}+${SpecialKey.SPACE}`,
   [Hotkey.DUPLICATE]: [`${SpecialKey.CTRL}+d`, `${SpecialKey.META}+d`],
-  [Hotkey.CREATE_COMPONENT]: [`${SpecialKey.OPTION}+${SpecialKey.CTRL}+k`, `${SpecialKey.OPTION}+${SpecialKey.META}+k`],
+  [Hotkey.CREATE_COMPONENT]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+k`, `${SpecialKey.SHIFT}+${SpecialKey.META}+k`],
   [Hotkey.USER_SPEECH]: SpecialKey.SPACE,
   [Hotkey.DESIGN_PAGE]: '1',
   [Hotkey.CONVERSATION_PAGE]: '2',

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.541.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.541.4...@voiceflow/creator-app@1.541.5) (2021-11-18)
+
+
+### Bug Fixes
+
+* refactor dashboard page to typescript (VF-000) ([#4400](https://github.com/voiceflow/creator-app/issues/4400)) ([b18e03d](https://github.com/voiceflow/creator-app/commit/b18e03d0e1d964d896e1c1c0c049982c35d01601))
+
+
+
+
+
 ## [1.541.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.541.3...@voiceflow/creator-app@1.541.4) (2021-11-18)
 
 **Note:** Version bump only for package @voiceflow/creator-app

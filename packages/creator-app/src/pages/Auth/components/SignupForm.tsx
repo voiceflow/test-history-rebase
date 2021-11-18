@@ -11,6 +11,7 @@ import { connect } from '@/hocs';
 import { useDebouncedCallback, useEnableDisable } from '@/hooks';
 import { Query } from '@/models';
 import { ConnectedProps, MergeArguments } from '@/types';
+import * as GoogleAnalytics from '@/vendors/googleAnalytics';
 
 import { MIN_PASSWORD_LENGTH, SSO_REQUIRED } from '../constants';
 import { getDomainSAML } from '../hooks';
@@ -153,7 +154,18 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
               </div>
 
               <div>
-                <Button variant={ButtonVariant.PRIMARY} type="submit" disabled={isDisabled || isSignupDisabled}>
+                <Button
+                  variant={ButtonVariant.PRIMARY}
+                  type="submit"
+                  disabled={isDisabled || isSignupDisabled}
+                  onClick={() =>
+                    GoogleAnalytics.sendEvent(
+                      GoogleAnalytics.Category.AUTH_SIGNUP_PAGE,
+                      GoogleAnalytics.Action.CLICK,
+                      GoogleAnalytics.Label.SIGN_UP_BUTTON
+                    )
+                  }
+                >
                   {query.invite ? 'Join Team' : 'Create Account'}
                 </Button>
               </div>

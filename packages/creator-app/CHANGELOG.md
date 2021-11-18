@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.542.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.541.7...@voiceflow/creator-app@1.542.0) (2021-11-18)
+
+
+### Features
+
+* add GA tracking for user signup (VF-2209) ([#4618](https://github.com/voiceflow/creator-app/issues/4618)) ([a4366be](https://github.com/voiceflow/creator-app/commit/a4366be7f9fc85ff1062305b1a5094f4f9d21220))
+
+
+
+
+
 ## [1.541.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.541.6...@voiceflow/creator-app@1.541.7) (2021-11-18)
 
 

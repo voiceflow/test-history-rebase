@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.34.4...@voiceflow/ui@1.34.5) (2021-11-18)
+
+
+### Bug Fixes
+
+* nested dropdown menu fix (VF-000) ([#4633](https://github.com/voiceflow/creator-app/issues/4633)) ([def9b4f](https://github.com/voiceflow/creator-app/commit/def9b4f994daaa1ee1e58576950c4ed2d2c9b1b6))
+
+
+
+
+
 ## [1.34.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.34.3...@voiceflow/ui@1.34.4) (2021-11-18)
 
 

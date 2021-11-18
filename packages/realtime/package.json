@@ -17,7 +17,7 @@
     "@voiceflow/realtime-sdk": "^1.41.0",
     "@voiceflow/socket-utils": "^1.1.0",
     "axios": "0.21.2",
-    "bidirectional-adapter": "^1.0.0",
+    "bidirectional-adapter": "1.0.0",
     "core-js": "3.18.0",
     "dotenv": "9.0.2",
     "express-validator": "6.13.0",

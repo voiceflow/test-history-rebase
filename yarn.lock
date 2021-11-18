@@ -7949,7 +7949,7 @@ before-after-hook@^2.0.0, before-after-hook@^2.2.0:
   resolved "https://registry.yarnpkg.com/before-after-hook/-/before-after-hook-2.2.1.tgz#73540563558687586b52ed217dad6a802ab1549c"
   integrity sha512-/6FKxSTWoJdbsLDF8tdIjaRiFXiE6UHsEHE3OPI/cwPURCVi1ukP0gmLn7XWEiFk5TcwQjjY5PWsU+j+tgXgmw==
 
-bidirectional-adapter@^1.0.0:
+bidirectional-adapter@1.0.0, bidirectional-adapter@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/bidirectional-adapter/-/bidirectional-adapter-1.0.0.tgz#709f30a1bc1b077a45338b856770b42c66a8ac2b"
   integrity sha512-0tITSo7wtkOagVItADSy6hjv6QOGdqftRseyUIqExjzInhLE/Ed6GAAKY2Zf/emTBY2q7dwghS5Wb85pbCYOzw==

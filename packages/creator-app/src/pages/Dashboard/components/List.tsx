@@ -1,51 +1,82 @@
-import { Button, ButtonVariant, Dropdown, IconButton, KeyName } from '@voiceflow/ui';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Button, ButtonVariant, Dropdown, IconButton, IconButtonVariant, KeyName } from '@voiceflow/ui';
 import cn from 'classnames';
 import _constant from 'lodash/constant';
-import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 import Form from '@/components/LegacyForm';
 import { Permission } from '@/config/permissions';
 import { ScrollContextProvider } from '@/contexts';
-import withDraggable from '@/hocs/withDraggable';
-import { usePermission } from '@/hooks';
-import { useHorizontalScrollToNode, useScrollHelpers, useScrollStickySides } from '@/hooks/scroll';
+import { DragItem as BaseDragItem, DropOptions, InjectedDraggableComponentProps, withDraggable } from '@/hocs';
+import { useHorizontalScrollToNode, usePermission, useScrollHelpers, useScrollStickySides } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import { DashboardClassName } from '@/styles/constants';
 
 import DragZone from './DragZone';
 import Item from './Item';
 
+type DragItem = BaseDragItem<'onDrag', 'onMove'>;
+
+interface DropContainerProps {
+  className?: string;
+  connectDropTarget?: (element: JSX.Element) => JSX.Element;
+}
+
+const DropItem: React.FC<DropContainerProps> = ({ children, className, connectDropTarget }) => {
+  return connectDropTarget ? connectDropTarget(<div className={className}>{children}</div>) : null;
+};
+
 const DropContainer = withDraggable({
   name: 'dashboard-item',
   canDrag: _constant(false),
   onDropKey: 'onDrop',
   onMoveKey: 'onMove',
-})(({ children, className, connectDropTarget }) => connectDropTarget && connectDropTarget(<div className={className}>{children}</div>));
+})(DropItem);
 
-export function List(props) {
-  const {
-    id,
-    name,
-    isNew,
-    projects,
-    onRename,
-    onRemove,
-    isCreated,
-    isDragging,
-    clearNewBoard,
-    onMoveProject,
-    onDropProject,
-    connectDragSource,
-    isDraggingPreview,
-    connectDropTarget,
-    createProject,
-  } = props;
+export interface ListProps extends InjectedDraggableComponentProps {
+  id: string;
+  name?: string;
+  projects?: Realtime.AnyProject[];
+  isNew?: boolean;
+  createProject: (listID: string) => void;
+  onRename?: (listID: string, name: string) => void;
+  onRemove: (list: { id: string; name?: string; projects?: Realtime.AnyProject[] }) => void;
+  onMoveProject?: (drag: DragItem, hover: DragItem) => void;
+  onDropProject?: (dropOptions: DropOptions) => void;
+  clearNewBoard: VoidFunction;
+  isCreated?: boolean;
+  isDragging?: boolean;
+  projectID?: string;
+  isDraggingPreview?: boolean;
+}
 
+interface FormProps {
+  values: Realtime.ProjectList;
+  handleBlur: (key: keyof Realtime.ProjectList) => void;
+  handleChange: <K extends keyof Realtime.ProjectList>(key: K, value: Realtime.ProjectList[K]) => void;
+}
+
+export const List: React.FC<ListProps> = ({
+  id,
+  name,
+  isNew,
+  projects,
+  onRename,
+  onRemove,
+  isCreated,
+  isDragging,
+  clearNewBoard,
+  onMoveProject,
+  onDropProject,
+  connectDragSource,
+  isDraggingPreview,
+  connectDropTarget,
+  createProject,
+}) => {
   const isEmpty = !projects || !projects.length;
 
-  const listRef = useRef(null);
-  const inputRef = useRef(null);
+  const listRef = React.useRef<HTMLElement | null>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
@@ -54,15 +85,15 @@ export function List(props) {
 
   useHorizontalScrollToNode(listRef, isCreated, [id, isCreated]);
 
-  const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
+  const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
 
   const [isHeaderShadowShown, isFooterShadowShown] = useScrollStickySides(bodyRef, [projects]);
 
-  const [moving, setMoving] = useState(false);
+  const [moving, setMoving] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isNew) {
-      inputRef.current.focus();
+      inputRef.current?.focus();
       clearNewBoard();
     }
   }, []);
@@ -75,7 +106,7 @@ export function List(props) {
       })}
     >
       <Form
-        onRef={(node) => {
+        onRef={(node: HTMLElement) => {
           listRef.current = node;
         }}
         style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
@@ -87,7 +118,7 @@ export function List(props) {
         initialValues={{ name }}
         resetToInitialFields={['name']}
       >
-        {({ values, handleBlur, handleChange }) => {
+        {({ values, handleBlur, handleChange }: FormProps) => {
           const onInputNameBlur = () => {
             handleBlur('name');
             values.name && onRename && values.name !== name && onRename(id, values.name);
@@ -113,7 +144,6 @@ export function List(props) {
                     className={cn('borderless-input', DashboardClassName.LIST_HEADER_TITLE)}
                     value={values.name}
                     onBlur={onInputNameBlur}
-                    selected
                     disabled={!canManageLists}
                     onChange={({ target }) => handleChange('name', target.value)}
                     onKeyPress={({ key }) => key === KeyName.ENTER && onInputNameBlur()}
@@ -134,7 +164,7 @@ export function List(props) {
                       placement="bottom-end"
                     >
                       {(ref, onToggle, isOpen) => (
-                        <IconButton icon="ellipsis" variant="flat" active={isOpen} size={15} onClick={onToggle} ref={ref} large />
+                        <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
                       )}
                     </Dropdown>
                   </div>
@@ -145,13 +175,13 @@ export function List(props) {
                 <div ref={bodyRef} className={cn(DashboardClassName.LIST_BODY, { 'h-o-0': isDragging, still: !moving })}>
                   <div ref={innerRef} className={DashboardClassName.LIST_BODY_INNER}>
                     <ul className={DashboardClassName.PROJECT_LIST}>
-                      {projects.map((project, i) => {
+                      {projects.map((project, index) => {
                         if (!project) return null;
 
                         return (
                           <li key={project.id} className={DashboardClassName.PROJECT_LIST_ITEM}>
                             <Item
-                              index={i}
+                              index={index}
                               id={project.id}
                               versionID={project.versionID}
                               listId={id}
@@ -197,7 +227,7 @@ export function List(props) {
   );
 
   return canManageLists && connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(list)) : list;
-}
+};
 
 export default withDraggable({
   name: 'dashboard-list',
@@ -208,27 +238,4 @@ export default withDraggable({
   onDropKey: 'onDrop',
   allowXTransform: true,
   allowYTransform: false,
-})(List);
-
-List.propTypes = {
-  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  name: PropTypes.string,
-  projects: PropTypes.array,
-  createProject: PropTypes.func,
-  onRename: PropTypes.func,
-  onRemove: PropTypes.func,
-  isCreated: PropTypes.bool,
-  isDragging: PropTypes.bool,
-  projectIds: PropTypes.arrayOf(PropTypes.number),
-  onCancelCreate: PropTypes.func,
-  disableDragging: PropTypes.bool,
-  connectDragSource: PropTypes.func,
-  connectDropTarget: PropTypes.func,
-  isDraggingPreview: PropTypes.bool,
-};
-
-List.defaultProps = {
-  name: 'New List',
-  listType: 'projects',
-  projectIds: [],
-};
+})<ListProps>(List);

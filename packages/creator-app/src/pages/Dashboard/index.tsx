@@ -23,7 +23,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
-import { withBatchLoadingGate } from '@/hocs';
+import { DragItem as BaseDragItem, HoverItem as BaseHoverItem, withBatchLoadingGate } from '@/hocs';
 import {
   useActiveWorkspace,
   useAsyncEffect,
@@ -41,10 +41,13 @@ import { DashboardClassName, Identifier } from '@/styles/constants';
 import * as Query from '@/utils/query';
 import * as Userflow from '@/vendors/userflow';
 
-import { Item as ListItem } from './components/Item';
-import List, { List as SimpleList } from './components/List';
+import { Item as ListItem, ItemProps as ListItemProps } from './components/Item';
+import DraggableList, { List, ListProps } from './components/List';
 import { DashboardGate } from './gates';
 import DashboardHeader from './Header';
+
+type DragItem = BaseDragItem<'onDrag', 'onMove'>;
+type HoverItem = BaseHoverItem<'onDrag', 'onMove'>;
 
 const getBoardFilteredProjects = (projectsIDs: string[], getProjectByID: (projectID: string) => Realtime.AnyProject | null, filter: string) => {
   const filtered: Realtime.AnyProject[] = [];
@@ -59,6 +62,7 @@ const getBoardFilteredProjects = (projectsIDs: string[], getProjectByID: (projec
 
   return filtered;
 };
+
 export type DashboardProps = RouteComponentProps;
 
 export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
@@ -117,7 +121,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
     [projects, workspace]
   );
 
-  const onDeleteBoard = React.useCallback(({ name, id, projects }) => {
+  const onDeleteBoard = React.useCallback(({ name, id, projects }: { id: string; name?: string; projects?: Realtime.AnyProject[] }) => {
     setConfirm({
       text: (
         <p className="mb-0">
@@ -129,11 +133,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
     });
   }, []);
 
-  const onMove = React.useCallback((drag, hover) => {
-    moveProjectList(drag.id, hover.id);
+  const onMove = React.useCallback((drag: DragItem, hover: HoverItem) => {
+    moveProjectList(drag.id as string, hover.id as string);
   }, []);
 
-  const onMoveProject = React.useCallback((drag, hover) => transplantProjectBetweenLists(drag.id, drag.listId, hover.listId, hover.id), []);
+  const onMoveProject = React.useCallback(
+    (drag: DragItem, hover: HoverItem) => transplantProjectBetweenLists(drag.id as string, drag.listId!, hover.listId!, hover.id),
+    []
+  );
 
   useAsyncEffect(async () => {
     if (!activeWorkspaceID) return;
@@ -215,17 +222,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
                   <ScrollContextProvider value={scrollHelpers}>
                     <div ref={bodyRef} className={DashboardClassName.LISTS}>
                       <div ref={innerRef} className={DashboardClassName.LISTS_INNER}>
-                        {projectLists.map((list, idx) => {
+                        {projectLists.map((list, index) => {
                           const projects = getBoardFilteredProjects(list.projects, getProjectByID, filter);
-                          if (filter && !projects.length) {
-                            return null;
-                          }
+
+                          if (filter && !projects.length) return null;
+
                           return (
-                            <List
+                            <DraggableList
                               id={list.id}
                               key={list.id}
                               isNew={list.id === newListID}
-                              index={idx}
+                              index={index}
                               name={list.name}
                               onRename={renameList}
                               onRemove={onDeleteBoard}
@@ -240,13 +247,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
                         })}
 
                         <DragLayer withMemo>
-                          {(item: any) => {
+                          {(item: { dragType: string } & (ListProps | ListItemProps)) => {
                             if (item.dragType === 'dashboard-list') {
-                              return <SimpleList {...item} />;
+                              return <List {...(item as ListProps)} />;
                             }
 
                             if (item.dragType === 'dashboard-item') {
-                              return <ListItem {...item} />;
+                              return <ListItem {...(item as ListItemProps)} />;
                             }
 
                             return null;

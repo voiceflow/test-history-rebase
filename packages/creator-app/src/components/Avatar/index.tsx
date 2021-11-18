@@ -6,7 +6,7 @@ import { Container } from './components';
 
 export interface AvatarProps {
   className?: string;
-  url: string;
+  url?: string | null;
   name?: string;
   color?: keyof typeof COLORS;
   noHover?: boolean;

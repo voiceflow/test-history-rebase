@@ -1,4 +1,4 @@
-import { Flex, IconButton } from '@voiceflow/ui';
+import { Flex, IconButton, IconButtonBaseContainerProps } from '@voiceflow/ui';
 
 import { styled, transition, units } from '@/hocs';
 
@@ -7,17 +7,17 @@ export const UpgradeText = styled.div`
   font-weight: 600;
   display: inline-block;
   font-size: 13px;
-  ${transition(['color'])}
+  ${transition('color')}
 `;
 
-export const UpgradeIcon = styled(IconButton)`
+export const UpgradeIcon = styled(IconButton)<IconButtonBaseContainerProps>`
   background: #e9f5ee;
   border-color: #cae3d4;
   box-shadow: inset 0 0 0 2px #fff !important;
   margin-right: ${units(2)}px;
   pointer-events: none;
   user-select: none;
-  ${transition(['border'])}
+  ${transition('border')}
   color: #4c944f;
 `;
 

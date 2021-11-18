@@ -1,7 +1,7 @@
 import { css, styled } from '@/hocs';
 
 interface AvatarContainerProps {
-  avatarUrl: string;
+  avatarUrl?: string | null;
   noShadow?: boolean;
   noHover?: boolean;
   rgbColor?: { hex: string; rgbaFrom: string; rgbaTo: string } | null;

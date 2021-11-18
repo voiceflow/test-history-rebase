@@ -1,3 +1,4 @@
+import { IconButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -9,7 +10,7 @@ import { Identifier } from '@/styles/constants';
 
 import { Container, UpgradeIcon, UpgradeText } from './components';
 
-function UpgradeButton() {
+const UpgradeButton: React.FC = () => {
   const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
@@ -19,13 +20,13 @@ function UpgradeButton() {
       <>
         {!isOnPaidPlan ? (
           <Container id={Identifier.UPGRADE_BUTTON} onClick={openPaymentsModal}>
-            <UpgradeIcon variant="flat" large icon="upgrade" />
+            <UpgradeIcon variant={IconButtonVariant.FLAT} icon="upgrade" />
             <UpgradeText>UPGRADE WORKSPACE</UpgradeText>
           </Container>
         ) : null}
       </>
     </PermissionGate>
   );
-}
+};
 
 export default UpgradeButton;

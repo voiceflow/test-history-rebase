@@ -1,14 +1,14 @@
+import { Constants } from '@voiceflow/general-types';
 import { Dropdown, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
-import _map from 'lodash/map';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import Avatar from '@/components/Avatar';
+import { EditableTextAPI } from '@/components/EditableText';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
 import * as Project from '@/ducks/project';
-import withDraggable from '@/hocs/withDraggable';
+import { InjectedDraggableComponentProps, withDraggable } from '@/hocs';
 import { useDispatch, useLinkedState, usePermission, useProjectOptions } from '@/hooks';
 import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
@@ -28,11 +28,39 @@ import {
   ProjectTitleDetails,
 } from './styled';
 
-export function Item(props) {
-  const { id, name, listId, diagram, language, isLive, avatarUrl, isDragging, platform, versionID, connectDragSource, connectDropTarget } = props;
+export interface ItemProps extends InjectedDraggableComponentProps {
+  id: string;
+  name: string;
+  created: string;
+  diagram: string;
+  isOver?: boolean;
+  listId: string;
+  language: string[];
+  isLive?: boolean;
+  avatarUrl?: string | null;
+  isDragging?: boolean;
+  isDragLayer?: boolean;
+  versionID: string;
+  isDraggingPreview?: boolean;
+  platform: Constants.PlatformType;
+}
 
+export const Item: React.FC<ItemProps> = ({
+  id,
+  name,
+  listId,
+  diagram,
+  language,
+  isLive,
+  avatarUrl,
+  isDragging,
+  platform,
+  versionID,
+  connectDragSource,
+  connectDropTarget,
+}) => {
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
-  const titleRef = React.useRef(null);
+  const titleRef = React.useRef<EditableTextAPI | null>(null);
   const [titleOverflowing, setTitleOverflowing] = React.useState(false);
   const dateFromID = new Date(parseInt(id.substring(0, 8), 16));
   const color = PROJECT_COLORS[dateFromID.getTime() % PROJECT_COLORS.length] || PROJECT_COLORS[0];
@@ -113,7 +141,7 @@ export function Item(props) {
               <span>
                 {getPlatformAppName(platform)} {!!language.length && '-'}
               </span>
-              {_map(language, (l) => getHumanLanguageName(l)).join(', ')}
+              {language.map(getHumanLanguageName).join(', ')}
             </ProjectTitleCaption>
           </ProjectTitleDetails>
 
@@ -133,7 +161,7 @@ export function Item(props) {
   );
 
   return canManageProjects && connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(item)) : item;
-}
+};
 
 export default withDraggable({
   name: 'dashboard-item',
@@ -142,21 +170,4 @@ export default withDraggable({
   onDropKey: 'onDrop',
   onMoveKey: 'onMove',
   allowXTransform: true,
-})(React.memo(Item));
-
-Item.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  created: PropTypes.string.isRequired,
-  isOver: PropTypes.bool,
-  listId: PropTypes.string.isRequired,
-  language: PropTypes.array.isRequired,
-  isLive: PropTypes.bool,
-  avatarUrl: PropTypes.string,
-  isDragging: PropTypes.bool,
-  isDragLayer: PropTypes.bool,
-  versionID: PropTypes.string.isRequired,
-  connectDragSource: PropTypes.func,
-  connectDropTarget: PropTypes.func,
-  isDraggingPreview: PropTypes.bool,
-};
+})<ItemProps>(React.memo(Item));

@@ -5,6 +5,7 @@ export * from './platformAware';
 export * from './styled';
 export * from './withBatchLoadingGate';
 export * from './withDebug';
+export * from './withDraggable';
 export * from './withExternalResources';
 export * from './withFeature';
 export * from './withHook';

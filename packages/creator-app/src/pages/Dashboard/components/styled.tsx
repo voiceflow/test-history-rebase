@@ -76,9 +76,10 @@ export const ProjectListItemActions = styled.div<{ active?: boolean }>`
     `}
 `;
 
-export interface ProjectListItemProps extends LinkProps {
-  hidden: boolean;
+export interface ProjectListItemProps extends React.PropsWithChildren<LinkProps> {
+  hidden: boolean | undefined;
   hasOptions: boolean;
+  tabIndex?: number;
 }
 
 export const ProjectListItem = styled(({ hasOptions, ...props }: ProjectListItemProps) => <Link {...props} />)`

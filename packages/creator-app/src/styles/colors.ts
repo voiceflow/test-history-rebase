@@ -11,7 +11,7 @@ export const PROFILE_COLORS = [
   '697986|EEF0F1',
 ];
 
-export const PROJECT_COLORS = [
+export const PROJECT_COLORS: (keyof typeof COLORS)[] = [
   'cyan',
   'red',
   'blue',

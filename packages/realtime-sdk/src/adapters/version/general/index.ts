@@ -1,10 +1,10 @@
+import { Version } from '@realtime-sdk/models';
+import { getPlatformGlobalVariables } from '@realtime-sdk/utils/globalVariables';
 import { Constants, Version as GeneralVersion } from '@voiceflow/general-types';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
 
-import { Version } from '../../../models';
-import { getPlatformGlobalVariables } from '../../../utils/globalVariables';
 import baseVersionAdapter from '../base';
 
 const generalVersionAdapter = createAdapter<GeneralVersion.GeneralVersion, Version<GeneralVersion.GeneralVersionData>>(

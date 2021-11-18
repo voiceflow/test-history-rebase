@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
+import { DBProjectList, ProjectList } from '@realtime-sdk/models';
 import createAdapter from 'bidirectional-adapter';
-
-import { DBProjectList, ProjectList } from '../models';
 
 const projectListAdapter = createAdapter<DBProjectList, ProjectList>(
   ({ board_id, name, projects }) => ({

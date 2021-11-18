@@ -1,9 +1,9 @@
+import { BlockType } from '@realtime-sdk/constants';
+import { Link, Node, NodeData, Port } from '@realtime-sdk/models';
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import createAdapter from 'bidirectional-adapter';
 
-import { BlockType } from '../../constants';
-import { Link, Node, NodeData, Port } from '../../models';
 import { AdapterContext } from '../types';
 import { defaultPortAdapter, getPortsAdapter, noInPortTypes } from './block';
 import { IN_PORT_KEY } from './constants';

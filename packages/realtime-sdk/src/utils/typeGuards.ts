@@ -1,5 +1,3 @@
-import { Constants } from '@voiceflow/general-types';
-
 import {
   BlockType,
   DIAGRAM_REFERENCE_NODES,
@@ -13,7 +11,8 @@ import {
   ROOT_AND_MARKUP_NODES,
   ROOT_NODES,
   VOICE_PLATFORMS,
-} from '../constants';
+} from '@realtime-sdk/constants';
+import { Constants } from '@voiceflow/general-types';
 
 const createBlockTypeGuard =
   <R extends BlockType>(nodes: ReadonlyArray<R>) =>

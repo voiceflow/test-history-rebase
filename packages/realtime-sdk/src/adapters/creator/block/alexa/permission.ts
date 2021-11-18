@@ -1,6 +1,6 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/alexa-types';
 
-import { NodeData } from '../../../../models';
 import { createBlockAdapter } from '../utils';
 
 const permissionAdapter = createBlockAdapter<Node.Permission.StepData, NodeData.Permission>(

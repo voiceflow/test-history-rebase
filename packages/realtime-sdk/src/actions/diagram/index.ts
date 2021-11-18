@@ -1,9 +1,9 @@
+import { createCRUDActions } from '@realtime-sdk/actions/utils';
+import { COMPONENT_KEY, TOPIC_KEY, VARIABLES_KEY } from '@realtime-sdk/constants';
+import { Diagram } from '@realtime-sdk/models';
+import { BaseDiagramPayload, BaseVersionPayload, Point } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
-import { COMPONENT_KEY, TOPIC_KEY, VARIABLES_KEY } from '../../constants';
-import { Diagram } from '../../models';
-import { BaseDiagramPayload, BaseVersionPayload, Point } from '../../types';
-import { createCRUDActions } from '../utils';
 import { diagramType } from './utils';
 
 export * as awareness from './awareness';

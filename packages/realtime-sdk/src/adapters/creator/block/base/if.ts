@@ -1,7 +1,7 @@
+import expressionAdapter from '@realtime-sdk/adapters/expression';
+import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/base-types';
 
-import { NodeData } from '../../../../models';
-import expressionAdapter from '../../../expression';
 import { createBlockAdapter, defaultPortAdapter, migratePortsWithNoMatch, PortsAdapter } from '../utils';
 
 export const defaultNoMatch: Node.IfV2.IfNoMatch = {

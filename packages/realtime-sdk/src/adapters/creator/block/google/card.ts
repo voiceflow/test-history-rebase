@@ -1,7 +1,7 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/base-types';
 import _capitalize from 'lodash/capitalize';
 
-import { NodeData } from '../../../../models';
 import { createBlockAdapter } from '../utils';
 
 const cardAdapter = createBlockAdapter<Node.Card.StepData, NodeData.Card>(

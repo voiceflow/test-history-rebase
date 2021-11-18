@@ -1,7 +1,7 @@
+import { BaseProjectPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 
-import { BaseProjectPayload } from '../../../types';
 import { projectType } from '../utils';
 
 const alexaType = Utils.protocol.typeFactory(projectType(Constants.PlatformType.ALEXA));

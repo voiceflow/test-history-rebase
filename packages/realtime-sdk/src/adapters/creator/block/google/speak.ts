@@ -1,7 +1,7 @@
+import { DialogType } from '@realtime-sdk/constants';
+import { NodeData } from '@realtime-sdk/models';
 import { Constants, Node } from '@voiceflow/google-types';
 
-import { DialogType } from '../../../../constants';
-import { NodeData } from '../../../../models';
 import { createBlockAdapter } from '../utils';
 import { voiceSpeakAdapter, voiceSpeakDialogAdapter } from '../voice';
 

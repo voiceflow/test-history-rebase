@@ -1,10 +1,10 @@
+import { BlockType } from '@realtime-sdk/constants';
+import { LinkData, Port } from '@realtime-sdk/models';
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';
 
-import { BlockType } from '../../constants';
-import { LinkData, Port } from '../../models';
 import { IN_PORT_KEY, MIGRATION_BLOCKS } from './constants';
 
 export const getInPortID = (nodeID: string): string => `${nodeID}${IN_PORT_KEY}`;

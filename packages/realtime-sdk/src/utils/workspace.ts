@@ -1,4 +1,4 @@
-import { Workspace } from '../models';
+import { Workspace } from '@realtime-sdk/models';
 
 // eslint-disable-next-line import/prefer-default-export
 export const sortWorkspaces = (workspaces: Workspace[]) =>

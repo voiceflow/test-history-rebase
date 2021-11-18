@@ -1,8 +1,8 @@
+import { NodeData } from '@realtime-sdk/models';
+import { expressionfyV2, sanitizeSetValue } from '@realtime-sdk/utils/expression';
 import { Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
-import { NodeData } from '../../../../models';
-import { expressionfyV2, sanitizeSetValue } from '../../../../utils/expression';
 import { createBlockAdapter } from '../utils';
 
 const setAdapter = createBlockAdapter<Node.Set.StepData, NodeData.SetV2>(

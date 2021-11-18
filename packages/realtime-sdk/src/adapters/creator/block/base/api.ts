@@ -1,6 +1,6 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/base-types';
 
-import { NodeData } from '../../../../models';
 import { createBlockAdapter } from '../utils';
 
 const apiAdapter = createBlockAdapter<Node.Api.StepData, NodeData.CustomApi>(

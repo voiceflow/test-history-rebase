@@ -1,7 +1,7 @@
+import { AWARENESS_KEY } from '@realtime-sdk/constants';
+import { BaseProjectPayload, Viewer } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
-import { AWARENESS_KEY } from '../../constants';
-import { BaseProjectPayload, Viewer } from '../../types';
 import { projectType } from './utils';
 
 const awarenessType = Utils.protocol.typeFactory(projectType(AWARENESS_KEY));

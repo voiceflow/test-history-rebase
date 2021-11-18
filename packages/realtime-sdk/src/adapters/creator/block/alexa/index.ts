@@ -1,4 +1,5 @@
-import { BlockType } from '../../../../constants';
+import { BlockType } from '@realtime-sdk/constants';
+
 import accountLinkingAdapter from './accountLinking';
 import cancelPaymentAdapter from './cancelPayment';
 import captureAdapter from './capture';

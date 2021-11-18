@@ -1,7 +1,6 @@
+import { BlockType, BlockVariant } from '@realtime-sdk/constants';
 import { AnyRecord, Models as BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-
-import { BlockType, BlockVariant } from '../constants';
 
 export interface DiagramFactoryOptions {
   name: string;

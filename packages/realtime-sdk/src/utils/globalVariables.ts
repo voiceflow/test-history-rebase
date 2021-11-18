@@ -1,6 +1,6 @@
+import { BUILT_IN_VARIABLES, BuiltInVariable } from '@realtime-sdk/constants';
 import { Constants } from '@voiceflow/general-types';
 
-import { BUILT_IN_VARIABLES, BuiltInVariable } from '../constants';
 import { createPlatformSelector } from './platform';
 
 // eslint-disable-next-line import/prefer-default-export

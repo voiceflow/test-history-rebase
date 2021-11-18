@@ -1,7 +1,7 @@
+import { NodeData } from '@realtime-sdk/models';
+import { transformVariablesFromReadable, transformVariablesToReadable } from '@realtime-sdk/utils/slot';
 import { Node } from '@voiceflow/alexa-types';
 
-import { NodeData } from '../../../../models';
-import { transformVariablesFromReadable, transformVariablesToReadable } from '../../../../utils/slot';
 import { createBlockAdapter } from '../utils';
 
 const reminderDataAdapter = createBlockAdapter<Node.Reminder.StepData, NodeData.Reminder>(

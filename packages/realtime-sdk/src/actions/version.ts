@@ -1,8 +1,8 @@
+import { PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY, VARIABLES_KEY, VERSION_KEY } from '@realtime-sdk/constants';
+import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, Version } from '@realtime-sdk/models';
+import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
-import { PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY, VARIABLES_KEY, VERSION_KEY } from '../constants';
-import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, Version } from '../models';
-import { BaseProjectPayload, BaseVersionPayload } from '../types';
 import { createCRUDActions } from './utils';
 
 const versionType = Utils.protocol.typeFactory(VERSION_KEY);

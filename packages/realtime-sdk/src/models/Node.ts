@@ -1,6 +1,6 @@
+import { BlockType } from '@realtime-sdk/constants';
 import { WithRequired } from '@voiceflow/common';
 
-import { BlockType } from '../constants';
 import { DBPort } from './Port';
 
 export interface Node {

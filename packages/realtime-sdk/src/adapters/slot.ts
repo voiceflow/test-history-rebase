@@ -1,9 +1,8 @@
+import { CUSTOM_SLOT_TYPE, LEGACY_CUSTOM_SLOT_TYPE } from '@realtime-sdk/constants';
+import { Slot, SlotInput } from '@realtime-sdk/models';
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter from 'bidirectional-adapter';
-
-import { CUSTOM_SLOT_TYPE, LEGACY_CUSTOM_SLOT_TYPE } from '../constants';
-import { Slot, SlotInput } from '../models';
 
 export const slotInputAdapter = createAdapter<string, SlotInput>(
   (input) => {

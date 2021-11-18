@@ -1,9 +1,8 @@
+import { ExpressionData, ExpressionV2, LogicGroupData } from '@realtime-sdk/models';
+import { transformVariableToString } from '@realtime-sdk/utils/slot';
 import { Node } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter from 'bidirectional-adapter';
-
-import { ExpressionData, ExpressionV2, LogicGroupData } from '../models';
-import { transformVariableToString } from '../utils/slot';
 
 /**
  * App uses variable format, convert them back into plain string for backend or visa-versa

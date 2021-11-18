@@ -1,6 +1,5 @@
+import { DBMember } from '@realtime-sdk/models';
 import createAdapter from 'bidirectional-adapter';
-
-import { DBMember } from '../models';
 
 const memberAdapter = createAdapter<DBMember, DBMember>(
   // eslint-disable-next-line camelcase

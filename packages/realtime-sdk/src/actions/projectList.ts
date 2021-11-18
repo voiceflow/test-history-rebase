@@ -1,8 +1,8 @@
+import { PROJECT_LIST_KEY } from '@realtime-sdk/constants';
+import { ProjectList } from '@realtime-sdk/models';
+import { BaseProjectPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
-import { PROJECT_LIST_KEY } from '../constants';
-import { ProjectList } from '../models';
-import { BaseProjectPayload, BaseWorkspacePayload } from '../types';
 import { createCRUDActions } from './utils';
 
 const projectListType = Utils.protocol.typeFactory(PROJECT_LIST_KEY);

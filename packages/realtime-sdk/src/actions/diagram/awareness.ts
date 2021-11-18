@@ -1,7 +1,7 @@
+import { AWARENESS_KEY } from '@realtime-sdk/constants';
+import { BaseDiagramPayload, Point } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
-import { AWARENESS_KEY } from '../../constants';
-import { BaseDiagramPayload, Point } from '../../types';
 import { diagramType } from './utils';
 
 const diagramAwarenessType = Utils.protocol.typeFactory(diagramType(AWARENESS_KEY));

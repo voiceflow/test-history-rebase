@@ -1,4 +1,4 @@
-import { BlockType } from '../../constants';
+import { BlockType } from '@realtime-sdk/constants';
 
 export const IN_PORT_KEY = '-in';
 

@@ -1,7 +1,6 @@
+import { LINK_KEY } from '@realtime-sdk/constants';
+import { BaseLinkPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
-
-import { LINK_KEY } from '../constants';
-import { BaseLinkPayload } from '../types';
 
 const linkType = Utils.protocol.typeFactory(LINK_KEY);
 

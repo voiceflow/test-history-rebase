@@ -1,8 +1,8 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter from 'bidirectional-adapter';
 
-import { NodeData } from '../../../../models';
 import { createBlockAdapter } from '../utils';
 
 const useInfoPermissionAdapter = createAdapter<Node.UserInfo.UserInfo, NodeData.UserInfoPermission>(

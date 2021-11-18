@@ -1,7 +1,7 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/alexa-types';
 import { Constants } from '@voiceflow/general-types';
 
-import { NodeData } from '../../../../models';
 import { createBlockAdapter } from '../utils';
 import { voiceInteractionAdapter } from '../voice';
 

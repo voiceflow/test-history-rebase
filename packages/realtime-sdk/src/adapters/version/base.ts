@@ -1,7 +1,6 @@
+import { Version } from '@realtime-sdk/models';
 import { Version as BaseVersion } from '@voiceflow/base-types';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
-
-import { Version } from '../../models';
 
 type SharedFields = 'creatorID' | 'projectID' | 'rootDiagramID' | 'folders' | 'topics' | 'components';
 

@@ -1,9 +1,9 @@
+import { INVITE_KEY, MEMBER_KEY } from '@realtime-sdk/constants';
+import { DBMember } from '@realtime-sdk/models';
+import { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 
-import { INVITE_KEY, MEMBER_KEY } from '../../constants';
-import { DBMember } from '../../models';
-import { BaseCreatorPayload, BaseWorkspacePayload } from '../../types';
 import { workspaceType } from './utils';
 
 const memberType = Utils.protocol.typeFactory(workspaceType(MEMBER_KEY));

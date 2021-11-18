@@ -1,11 +1,11 @@
+import { BlockType } from '@realtime-sdk/constants';
+import { CreatorDiagram, Link, Node, NodeData, Port } from '@realtime-sdk/models';
+import { isDiagramReferencesBlockType, isMarkupBlockType } from '@realtime-sdk/utils/typeGuards';
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Normalized, Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 
-import { BlockType } from '../../constants';
-import { CreatorDiagram, Link, Node, NodeData, Port } from '../../models';
-import { isDiagramReferencesBlockType, isMarkupBlockType } from '../../utils/typeGuards';
 import { AdapterContext } from '../types';
 import { cleanupDBNodes } from './cleanup';
 import nodeAdapter from './node';

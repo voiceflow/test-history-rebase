@@ -1,9 +1,9 @@
+import { BlockType, DistinctPlatform } from '@realtime-sdk/constants';
+import { NodeData } from '@realtime-sdk/models';
 import { NonNullishRecord } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Overwrite } from 'utility-types';
 
-import { BlockType, DistinctPlatform } from '../constants';
-import { NodeData } from '../models';
 import { getDistinctPlatformValue } from './platform';
 
 const checkNodeType =

@@ -1,6 +1,6 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/base-types';
 
-import { NodeData } from '../../../../models';
 import { defaultNoMatch } from '../base/if';
 import { createBlockAdapter } from '../utils';
 import expressionV1toV2Adapter from './expression';

@@ -1,10 +1,10 @@
 /* eslint-disable max-depth, no-restricted-syntax */
+import { Markup } from '@realtime-sdk/models';
 import { Text as BaseText } from '@voiceflow/base-types';
 import { RawDraftContentState, RawDraftEntityRange, RawDraftInlineStyleRange } from 'draft-js';
 import { parseToRgb } from 'polished';
 import { Text } from 'slate';
 
-import { Markup } from '../../../models';
 import { createBlockAdapter } from './utils';
 
 enum DraftInlineStyle {

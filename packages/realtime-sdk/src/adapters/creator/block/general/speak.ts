@@ -1,6 +1,6 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Constants, Node } from '@voiceflow/general-types';
 
-import { NodeData } from '../../../../models';
 import { createBlockAdapter } from '../utils';
 import { voiceSpeakAdapter } from '../voice';
 

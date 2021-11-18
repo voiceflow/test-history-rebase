@@ -1,7 +1,7 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Constants } from '@voiceflow/general-types';
 import { Node } from '@voiceflow/google-types';
 
-import { NodeData } from '../../../../models';
 import { chipsToIntentButtons, createBlockAdapter } from '../utils';
 import { voiceInteractionAdapter } from '../voice';
 

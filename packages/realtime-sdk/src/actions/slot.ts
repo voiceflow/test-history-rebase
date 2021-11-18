@@ -1,8 +1,8 @@
+import { SLOT_KEY } from '@realtime-sdk/constants';
+import { Slot } from '@realtime-sdk/models';
+import { BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
-import { SLOT_KEY } from '../constants';
-import { Slot } from '../models';
-import { BaseVersionPayload } from '../types';
 import { createCRUDActions } from './utils';
 
 const slotType = Utils.protocol.typeFactory(SLOT_KEY);

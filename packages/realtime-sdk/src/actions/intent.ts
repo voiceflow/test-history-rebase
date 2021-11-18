@@ -1,9 +1,8 @@
+import { createCRUDActions } from '@realtime-sdk/actions/utils';
+import { INTENT_KEY } from '@realtime-sdk/constants';
+import { Intent } from '@realtime-sdk/models';
+import { BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
-
-import { INTENT_KEY } from '../constants';
-import { Intent } from '../models';
-import { BaseVersionPayload } from '../types';
-import { createCRUDActions } from './utils';
 
 const intentType = Utils.protocol.typeFactory(INTENT_KEY);
 

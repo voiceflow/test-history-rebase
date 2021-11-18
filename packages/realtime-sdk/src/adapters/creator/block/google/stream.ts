@@ -1,8 +1,8 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Models } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import { Node } from '@voiceflow/google-types';
 
-import { NodeData } from '../../../../models';
 import { generateOutPort } from '../../utils';
 import { createBlockAdapter, getPortByLabel, PortsAdapter } from '../utils';
 

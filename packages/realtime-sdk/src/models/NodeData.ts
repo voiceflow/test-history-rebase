@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
+import { BlockType, BlockVariant, DistinctPlatform, VoicePromptType } from '@realtime-sdk/constants';
 import { Node as AlexaNode } from '@voiceflow/alexa-types';
 import { Button, Models as BaseModels, Node as BaseNode } from '@voiceflow/base-types';
 import { Types as ChatTypes } from '@voiceflow/chat-types';
 import { Nullable } from '@voiceflow/common';
 import { Node as GeneralNode } from '@voiceflow/general-types';
 
-import { BlockType, BlockVariant, DistinctPlatform, VoicePromptType } from '../constants';
 import { Expression, ExpressionData } from './Expression';
 import { SpeakData } from './Speak';
 

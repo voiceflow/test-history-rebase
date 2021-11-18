@@ -1,9 +1,9 @@
+import { ClientCRUDPayload, createCRUDActions, getCRUDActionTargets } from '@realtime-sdk/actions/utils';
+import { Workspace } from '@realtime-sdk/models';
+import { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import { Action, AnyAction } from 'typescript-fsa';
 
-import { Workspace } from '../../models';
-import { BaseCreatorPayload, BaseWorkspacePayload } from '../../types';
-import { ClientCRUDPayload, createCRUDActions, getCRUDActionTargets } from '../utils';
 import { workspaceType } from './utils';
 
 export * as member from './member';

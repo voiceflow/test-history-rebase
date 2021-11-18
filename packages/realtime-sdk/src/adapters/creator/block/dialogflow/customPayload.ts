@@ -1,6 +1,6 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/google-dfes-types';
 
-import { NodeData } from '../../../../models';
 import { createBlockAdapter } from '../utils';
 
 const customPayload = createBlockAdapter<Node.Payload.StepData, NodeData.CustomPayload>(

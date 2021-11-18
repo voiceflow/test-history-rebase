@@ -1,7 +1,7 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Node, Types } from '@voiceflow/chat-types';
 import { Constants } from '@voiceflow/general-types';
 
-import { NodeData } from '../../../../models';
 import { baseInteractionAdapter } from '../base';
 import { chatNoMatchAdapter, chatPromptAdapter, chipsToIntentButtons, createBlockAdapter } from '../utils';
 

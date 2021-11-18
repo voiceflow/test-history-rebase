@@ -1,6 +1,6 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/google-types';
 
-import { NodeData } from '../../../../models';
 import { chipsToIntentButtons, createBlockAdapter } from '../utils';
 import { voiceCaptureAdapter } from '../voice';
 

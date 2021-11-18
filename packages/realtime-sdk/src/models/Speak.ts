@@ -1,6 +1,5 @@
+import { DialogType } from '@realtime-sdk/constants';
 import { Constants } from '@voiceflow/general-types';
-
-import { DialogType } from '../constants';
 
 export interface DBAudioData {
   audio: string;

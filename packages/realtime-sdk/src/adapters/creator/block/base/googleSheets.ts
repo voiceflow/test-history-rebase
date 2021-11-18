@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
+import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/base-types';
 
-import { NodeData } from '../../../../models';
 import { createBlockAdapter } from '../utils';
 
 const googleSheetsAdapter = createBlockAdapter<Node.GoogleSheets.StepData, NodeData.GoogleSheets>(

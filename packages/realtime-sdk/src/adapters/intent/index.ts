@@ -1,6 +1,6 @@
+import { createAdvancedPlatformSelector } from '@realtime-sdk/utils/platform';
 import { Constants } from '@voiceflow/general-types';
 
-import { createAdvancedPlatformSelector } from '../../utils/platform';
 import chatIntentAdapter from './chat';
 import voiceIntentAdapter from './voice';
 

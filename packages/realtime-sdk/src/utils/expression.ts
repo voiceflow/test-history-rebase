@@ -1,3 +1,4 @@
+import { ExpressionData, ExpressionV2, LogicGroupData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
 import isVarName from 'is-var-name';
@@ -5,7 +6,6 @@ import isNumber from 'lodash/isNumber';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import isString from 'lodash/isString';
 
-import { ExpressionData, ExpressionV2, LogicGroupData } from '../models';
 import { parser as mathJStoJSParser } from './mathjs';
 
 const SINGLE_BRACKET_REGEXP = /'/g;

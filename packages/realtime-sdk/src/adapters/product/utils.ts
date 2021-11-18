@@ -1,8 +1,8 @@
+import { Product, ProductMarketPlace } from '@realtime-sdk/models';
 import { Constants, Project } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import dayjs from 'dayjs';
 
-import { Product, ProductMarketPlace } from '../../models';
 import { MARKET_PLACE_AVAILABILITY } from './constants';
 
 export type MergedLocale = Pick<

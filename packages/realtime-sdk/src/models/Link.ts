@@ -1,7 +1,6 @@
+import { PathPoints } from '@realtime-sdk/types';
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
-
-import { PathPoints } from '../types';
 
 export interface LinkDataCaption {
   value: string;

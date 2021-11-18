@@ -1,6 +1,6 @@
+import { NodeData } from '@realtime-sdk/models';
 import { Node } from '@voiceflow/base-types';
 
-import { NodeData } from '../../../../models';
 import { createBlockAdapter, defaultPortAdapter, PortsAdapter } from '../utils';
 
 const traceAdapter = createBlockAdapter<Node._v1.StepData<{ name: string; body: string }> & Record<string, unknown>, NodeData.Trace>(

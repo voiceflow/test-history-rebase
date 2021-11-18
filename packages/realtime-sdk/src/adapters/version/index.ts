@@ -1,9 +1,9 @@
+import { AnyDBVersion, AnyVersion } from '@realtime-sdk/models';
 import { Version as AlexaVersion } from '@voiceflow/alexa-types';
 import { Constants, Version as GeneralVersion } from '@voiceflow/general-types';
 import { Version as GoogleVersion } from '@voiceflow/google-types';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
-import { AnyDBVersion, AnyVersion } from '../../models';
 import alexaVersionAdapter from './alexa';
 import generalVersionAdapter from './general';
 import googleVersionAdapter from './google';

@@ -1,10 +1,10 @@
+import { ChatIntent, ChatIntentSlot, ChatIntentSlotDialog } from '@realtime-sdk/models';
 import { Types } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import createAdapter from 'bidirectional-adapter';
 import { Optional, Required } from 'utility-types';
 
-import { ChatIntent, ChatIntentSlot, ChatIntentSlotDialog } from '../../models';
 import { chatPromptAdapter } from '../creator/block/utils';
 import { baseIntentAdapter, baseIntentSlotDialogSanitizer, baseIntentSlotSanitizer } from './base';
 

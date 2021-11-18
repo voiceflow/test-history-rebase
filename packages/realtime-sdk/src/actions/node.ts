@@ -1,7 +1,6 @@
+import { NODE_KEY } from '@realtime-sdk/constants';
+import { BaseBlockPayload, BaseDiagramPayload, BaseNodePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
-
-import { NODE_KEY } from '../constants';
-import { BaseBlockPayload, BaseDiagramPayload, BaseNodePayload } from '../types';
 
 const nodeType = Utils.protocol.typeFactory(NODE_KEY);
 

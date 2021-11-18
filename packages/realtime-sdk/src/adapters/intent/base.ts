@@ -1,9 +1,8 @@
+import { BaseIntent, IntentInput } from '@realtime-sdk/models';
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import createAdapter from 'bidirectional-adapter';
 import { Optional, Required } from 'utility-types';
-
-import { BaseIntent, IntentInput } from '../../models';
 
 export const intentInputSanitizer = ({ text, slots }: Partial<IntentInput> = {}): IntentInput => ({
   text: text || '',

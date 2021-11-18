@@ -1,11 +1,11 @@
+import { Version } from '@realtime-sdk/models';
+import { getPlatformGlobalVariables } from '@realtime-sdk/utils/globalVariables';
 import { Constants as AlexaConstants, Version as AlexaVersion } from '@voiceflow/alexa-types';
 import { Constants } from '@voiceflow/general-types';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
 
-import { Version } from '../../../models';
-import { getPlatformGlobalVariables } from '../../../utils/globalVariables';
 import baseVersionAdapter from '../base';
 import createSessionAdapter from '../session';
 

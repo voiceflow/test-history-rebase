@@ -1,10 +1,10 @@
+import { DISTINCT_PLATFORMS, DistinctPlatform } from '@realtime-sdk/constants';
+import { AnyVoice } from '@realtime-sdk/models';
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
 import { Nullish } from '@voiceflow/common';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
 
-import { DISTINCT_PLATFORMS, DistinctPlatform } from '../constants';
-import { AnyVoice } from '../models';
 import { isDistinctPlatform } from './typeGuards';
 
 export const createPlatformSelector: {

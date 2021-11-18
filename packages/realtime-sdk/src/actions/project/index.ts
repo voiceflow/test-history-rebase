@@ -1,10 +1,10 @@
+import { createCRUDActions } from '@realtime-sdk/actions/utils';
+import { AnyProject, DBProject } from '@realtime-sdk/models';
+import { BaseProjectPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Optional } from 'utility-types';
 
-import { AnyProject, DBProject } from '../../models';
-import { BaseProjectPayload, BaseWorkspacePayload } from '../../types';
-import { createCRUDActions } from '../utils';
 import { projectType } from './utils';
 
 export * as awareness from './awareness';

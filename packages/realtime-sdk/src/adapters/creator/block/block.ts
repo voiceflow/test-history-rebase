@@ -1,5 +1,6 @@
-import { BlockVariant } from '../../../constants';
-import { NodeData } from '../../../models';
+import { BlockVariant } from '@realtime-sdk/constants';
+import { NodeData } from '@realtime-sdk/models';
+
 import { createBlockAdapter } from './utils';
 
 export interface BlockData {

@@ -1,4 +1,5 @@
-import { NodeData } from '../../../models';
+import { NodeData } from '@realtime-sdk/models';
+
 import { createBlockAdapter } from './utils';
 
 export type InvalidPlatformNodeData = NodeData<unknown> & { invalidPlatformType: NodeData<unknown>['type'] };

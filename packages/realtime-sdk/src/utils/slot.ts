@@ -1,11 +1,10 @@
+import { CUSTOM_SLOT_TYPE } from '@realtime-sdk/constants';
+import { Intent, Slot } from '@realtime-sdk/models';
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
-
-import { CUSTOM_SLOT_TYPE } from '../constants';
-import { Intent, Slot } from '../models';
 
 export const generalSlotTypesByLanguage = (language: string = GeneralConstants.Language.EN) =>
   GeneralConstants.SlotTypes[language]?.map<BuiltinSlot<GeneralConstants.SlotType, never>>((slot) => ({ type: slot.name, label: slot.label })) || [];

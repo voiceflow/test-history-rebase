@@ -1,4 +1,5 @@
-import { BlockType } from '../../../../constants';
+import { BlockType } from '@realtime-sdk/constants';
+
 import customPayloadAdapters from './customPayload';
 
 // eslint-disable-next-line import/prefer-default-export

@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
+import { DBMember, DBWorkspace, Workspace, WorkspaceActivationState } from '@realtime-sdk/models';
+import { sortWorkspaces } from '@realtime-sdk/utils/workspace';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
-import { DBMember, DBWorkspace, Workspace, WorkspaceActivationState } from '../models';
-import { sortWorkspaces } from '../utils/workspace';
 import memberAdapter from './member';
 
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];

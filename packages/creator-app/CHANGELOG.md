@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.3...@voiceflow/creator-app@1.543.4) (2021-11-19)
+
+
+### Bug Fixes
+
+* do not break project lists when switching between AA workspaces (VF-2190) ([#4634](https://github.com/voiceflow/creator-app/issues/4634)) ([bb9331c](https://github.com/voiceflow/creator-app/commit/bb9331cbf1ac2421dd9062c3a59c3c3c817c300b))
+
+
+
+
+
 ## [1.543.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.2...@voiceflow/creator-app@1.543.3) (2021-11-18)
 
 **Note:** Version bump only for package @voiceflow/creator-app

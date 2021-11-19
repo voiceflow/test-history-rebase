@@ -24,6 +24,7 @@ export enum FeatureFlag {
   TOPICS_AND_COMPONENTS = 'topics_and_components',
 
   // atomic actions
+  REALTIME_CONNECTION = 'realtime_connection',
   ATOMIC_ACTIONS = 'atomic_actions',
   ATOMIC_ACTIONS_PHASE_2 = 'atomic_actions_phase_2',
 

@@ -49,6 +49,11 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
 
   protected load = async (ctx: ChannelContext<Realtime.Channels.WorkspaceChannelParams>): Promise<SendBackActions> => {
     const creatorID = Number(ctx.userId);
+    const isAtomicActions = await this.isAtomicActionsEnabled(creatorID, ctx.params.workspaceID);
+
+    // do not sync any data if not enabled for this workspace
+    if (!isAtomicActions) return [];
+
     const [dbProjects, dbProjectLists] = await Promise.all([
       this.services.project.getAll(creatorID, ctx.params.workspaceID),
       this.services.projectList.getAll(creatorID, ctx.params.workspaceID),

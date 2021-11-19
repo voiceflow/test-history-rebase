@@ -48,6 +48,18 @@ class WorkspaceService extends AbstractControl {
     return client.workspace.list();
   }
 
+  public async getAllWithMembers(creatorID: number): Promise<Realtime.Workspace[]> {
+    const workspaces = await this.getAll(creatorID);
+
+    return Promise.all(
+      workspaces.map(async (workspace) => {
+        const members = await this.services.workspace.member.getAll(creatorID, workspace.team_id);
+
+        return Realtime.Adapters.workspaceWithMembersAdapter.fromDB({ workspace, members });
+      })
+    );
+  }
+
   public async create(creatorID: number, { name, image }: { name: string; image?: string }): Promise<Realtime.DBWorkspace> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
@@ -72,7 +84,7 @@ class WorkspaceService extends AbstractControl {
     await client.workspace.delete(workspaceID);
   }
 
-  public async isFeatureEnabled(creatorID: number, workspaceID: string, feature: string): Promise<boolean> {
+  public async isFeatureEnabled(creatorID: number, workspaceID: string | undefined, feature: string): Promise<boolean> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.feature.isEnabled(feature, workspaceID);

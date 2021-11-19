@@ -21,4 +21,4 @@ const AccountSubscriptionGate: React.FC = ({ children }) => {
   );
 };
 
-export default withFeatureGate(FeatureFlag.ATOMIC_ACTIONS)(AccountSubscriptionGate);
+export default withFeatureGate(FeatureFlag.REALTIME_CONNECTION)(AccountSubscriptionGate);

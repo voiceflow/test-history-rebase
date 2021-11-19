@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { LOGROCKET_ENABLED, Vendors } from '@voiceflow/ui';
 import { routerMiddleware } from 'connected-react-router';
 import { History } from 'history';
@@ -7,6 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Account from '@/ducks/account';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import * as Feature from '@/ducks/feature';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as Session from '@/ducks/session';
@@ -21,6 +23,8 @@ import creatorMiddleware from './creator';
 import realtimeMiddleware from './realtime';
 import realtimeV2Middleware from './realtimeV2';
 import { createAutosaveMiddleware, mapMiddleware } from './utils';
+
+const IGNORED_ACTIONS = [CRUDAction.CRUD_REPLACE, Feature.FeatureAction.SET_FEATURES_LOADED, Feature.FeatureAction.SET_WORKSPACE_FEATURES_LOADED];
 
 // only run middleware if logged in
 const createLoggedInMiddleware =
@@ -47,16 +51,16 @@ const createMiddleware = (history: History, rpcMiddleware: Middleware, getStore:
           createAutosaveMiddleware(
             createStructuredSelector({ intent: IntentV2.allIntentsSelector, slot: SlotV2.allSlotsSelector }),
             Version.saveIntentsAndSlots,
-            { ignore: [CRUDAction.CRUD_REPLACE] }
+            { ignore: [...IGNORED_ACTIONS, Realtime.intent.crud.replace.type] }
           ),
           createAutosaveMiddleware(VersionV2.active.globalVariablesSelector, Version.saveGlobalVariables, {
-            ignore: [CRUDAction.CRUD_REPLACE, Session.SessionAction.SET_ACTIVE_VERSION_ID],
+            ignore: [...IGNORED_ACTIONS, Session.SessionAction.SET_ACTIVE_VERSION_ID, Realtime.version.crud.replace.type],
           }),
           createAutosaveMiddleware(DiagramV2.active.localVariablesSelector, Diagram.saveActiveDiagramVariables, {
-            ignore: [CRUDAction.CRUD_REPLACE, Session.SessionAction.SET_ACTIVE_DIAGRAM_ID],
+            ignore: [...IGNORED_ACTIONS, Session.SessionAction.SET_ACTIVE_DIAGRAM_ID, Realtime.diagram.crud.replace.type],
           }),
           createAutosaveMiddleware(ProjectListV2.allProjectListsSelector, Workspace.saveActiveWorkspaceProjectLists, {
-            ignore: [CRUDAction.CRUD_REPLACE, Session.SessionAction.SET_ACTIVE_WORKSPACE_ID],
+            ignore: [...IGNORED_ACTIONS, Session.SessionAction.SET_ACTIVE_WORKSPACE_ID, Realtime.projectList.crud.replace.type],
           }),
         ].map(createLoggedInMiddleware),
 

@@ -18,4 +18,4 @@ const WorkspaceSubscriptionGate: React.FC = ({ children }) => {
   );
 };
 
-export default withFeatureGate(FeatureFlag.ATOMIC_ACTIONS)(WorkspaceSubscriptionGate);
+export default React.memo(withFeatureGate(FeatureFlag.ATOMIC_ACTIONS)(WorkspaceSubscriptionGate));

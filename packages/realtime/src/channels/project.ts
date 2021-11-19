@@ -14,6 +14,12 @@ class ProjectChannel extends AbstractChannelControl<Realtime.Channels.ProjectCha
 
   protected load = async (ctx: ChannelContext<Realtime.Channels.ProjectChannelParams>): Promise<SendBackActions> => {
     const { workspaceID, projectID } = ctx.params;
+    const creatorID = Number(ctx.userId);
+    const isAtomicActions = await this.isAtomicActionsEnabled(creatorID, ctx.params.workspaceID);
+
+    // do not sync any data if not enabled for this project's workspace
+    if (!isAtomicActions) return [];
+
     const diagramIDs = await this.services.project.getConnectedDiagrams(projectID);
 
     const diagramsNodesIDs = await Promise.all(diagramIDs.map((diagramID) => this.services.diagram.getConnectedNodes(diagramID)));

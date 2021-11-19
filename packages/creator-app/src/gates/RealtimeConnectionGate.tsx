@@ -79,4 +79,4 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
   );
 };
 
-export default withFeatureGate(FeatureFlag.ATOMIC_ACTIONS)(RealtimeConnectionGate);
+export default withFeatureGate(FeatureFlag.REALTIME_CONNECTION)(RealtimeConnectionGate);

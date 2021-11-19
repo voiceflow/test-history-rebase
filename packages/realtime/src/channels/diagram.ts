@@ -25,11 +25,15 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
   protected finally = async (ctx: ChannelContext<Realtime.Channels.DiagramChannelParams>): Promise<void> => {
     // TODO: check if the subscription is succeeded
 
-    const user = await this.services.user.getUserByID(Number(ctx.userId));
+    const creatorID = Number(ctx.userId);
+    const isAtomicActions = await this.isAtomicActionsEnabled(creatorID, ctx.params.workspaceID);
 
-    if (!user) {
-      return;
-    }
+    // do not sync any data if not enabled for this diagram's workspace
+    if (!isAtomicActions) return;
+
+    const user = await this.services.user.getUserByID(creatorID);
+
+    if (!user) return;
 
     await Promise.all([
       this.services.diagram.connectNode(ctx.params.diagramID, ctx.nodeId),

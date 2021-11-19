@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.5...@voiceflow/creator-app@1.543.6) (2021-11-19)
+
+
+### Bug Fixes
+
+* block data sync (VF-000) ([#4642](https://github.com/voiceflow/creator-app/issues/4642)) ([bd26cca](https://github.com/voiceflow/creator-app/commit/bd26cca1b1a5019fe77da85b0766c8df77bb5db9))
+
+
+
+
+
 ## [1.543.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.4...@voiceflow/creator-app@1.543.5) (2021-11-19)
 
 **Note:** Version bump only for package @voiceflow/creator-app

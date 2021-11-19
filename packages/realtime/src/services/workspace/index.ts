@@ -53,7 +53,7 @@ class WorkspaceService extends AbstractControl {
 
     return Promise.all(
       workspaces.map(async (workspace) => {
-        const members = await this.services.workspace.member.getAll(creatorID, workspace.team_id);
+        const members = workspace.templates ? [] : await this.services.workspace.member.getAll(creatorID, workspace.team_id);
 
         return Realtime.Adapters.workspaceWithMembersAdapter.fromDB({ workspace, members });
       })

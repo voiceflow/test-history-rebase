@@ -4,7 +4,6 @@ import LoadingGate from '@/components/LoadingGate';
 import { FeatureFlag } from '@/config/features';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withoutFeatureGate } from '@/hocs';
 import { useDispatch, useSelector } from '@/hooks';
 
@@ -13,12 +12,17 @@ import { useDispatch, useSelector } from '@/hooks';
  */
 const WorkspaceMembersLoadingGate: React.FC = ({ children }) => {
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const members = useSelector(WorkspaceV2.active.membersSelector);
+  const [loaded, setLoaded] = React.useState(false);
 
   const loadMembers = useDispatch(Workspace.loadMembers, activeWorkspaceID!);
+  const stateLoadMembers = React.useCallback(async () => {
+    setLoaded(false);
+    await loadMembers();
+    setLoaded(true);
+  }, [loadMembers]);
 
   return (
-    <LoadingGate label="Members" isLoaded={!!members.length} load={loadMembers} zIndex={50} backgroundColor="#f9f9f9">
+    <LoadingGate label="Members" isLoaded={loaded} load={stateLoadMembers} zIndex={50} backgroundColor="#f9f9f9">
       {children}
     </LoadingGate>
   );

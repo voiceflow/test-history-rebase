@@ -21,6 +21,9 @@ export interface Config {
   REDIS_CLUSTER_HOST: string;
   REDIS_CLUSTER_PORT: number;
 
+  // Logux
+  LOGUX_ACTION_CHANNEL: string;
+
   // Logging
   LOG_LEVEL: string | null;
   MIDDLEWARE_VERBOSITY: string | null;

@@ -32,6 +32,9 @@ const CONFIG: Config = {
   REDIS_CLUSTER_HOST: getRequiredProcessEnv('REDIS_CLUSTER_HOST'),
   REDIS_CLUSTER_PORT: parseInt(getRequiredProcessEnv('REDIS_CLUSTER_PORT'), 10),
 
+  // Logux
+  LOGUX_ACTION_CHANNEL: getRequiredProcessEnv('LOGUX_ACTION_CHANNEL'),
+
   // Logging
   LOG_LEVEL: getOptionalProcessEnv('LOG_LEVEL'),
   MIDDLEWARE_VERBOSITY: getOptionalProcessEnv('MIDDLEWARE_VERBOSITY'),

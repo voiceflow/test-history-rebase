@@ -3,12 +3,14 @@ import { AbstractControl, ControlOptions } from '@socket-utils/control/utils';
 import { Utils } from '@voiceflow/common';
 import { AnyAction } from 'typescript-fsa';
 
-export const CHANNEL = 'realtime:actions';
+export interface SyncServiceConfig {
+  LOGUX_ACTION_CHANNEL: string;
+}
 
-export class SyncService extends AbstractControl<ControlOptions> {
+export class SyncService extends AbstractControl<ControlOptions<SyncServiceConfig>> {
   // needed to explicitly add this constructor for it to be reusable for some reason
   // without it other projects think it doesn't take any arguments
-  constructor(options: ControlOptions) {
+  constructor(options: ControlOptions<SyncServiceConfig>) {
     super(options);
   }
 
@@ -16,7 +18,7 @@ export class SyncService extends AbstractControl<ControlOptions> {
 
   public start(server: Server): void {
     // listen to messages on the "realtime:actions" channels and re-broadcast them to connected clients
-    const pubsubUnsubscribe = this.clients.pubsub.subscribe<[AnyAction, ServerMeta]>(CHANNEL, ([action, meta]) => {
+    const pubsubUnsubscribe = this.clients.pubsub.subscribe<[AnyAction, ServerMeta]>(this.config.LOGUX_ACTION_CHANNEL, ([action, meta]) => {
       // only broadcast actions that originated from clients not connected to this instance of the service
       if (meta.server === server.nodeId) return;
 
@@ -28,7 +30,7 @@ export class SyncService extends AbstractControl<ControlOptions> {
       // only publish actions that originated from clients connected to this instance of the service
       if (meta.server !== server.nodeId) return;
 
-      this.clients.pubsub.publish(CHANNEL, [action, meta]);
+      this.clients.pubsub.publish(this.config.LOGUX_ACTION_CHANNEL, [action, meta]);
     });
 
     this.unsubscribe = () => {

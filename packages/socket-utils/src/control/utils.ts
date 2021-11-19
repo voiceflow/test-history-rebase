@@ -10,8 +10,8 @@ export type LoguxControlMap = Record<string, LoguxControl>;
 
 // abstract controls
 
-export interface ControlOptions {
-  config: any;
+export interface ControlOptions<C = any> {
+  config: C;
   clients: BaseClientMap;
   services: BaseServiceMap;
 }

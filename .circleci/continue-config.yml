@@ -356,7 +356,7 @@ jobs:
           step_name: Build dependencies
           command: yarn build:deps
           package_to_force_execution: 'creator-app'
-          force_execution: << pipeline.parameters.build-all >>
+          force_execution: << pipeline.parameters.build-any >>
           run_on_root: true
       - restore_cache:
           name: Restoring jest Cache

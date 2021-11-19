@@ -1,9 +1,13 @@
-import { CHANNEL, SyncService } from '@socket-utils/service/sync';
+import { SyncService } from '@socket-utils/service/sync';
 import { Utils } from '@voiceflow/common';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
 const MOCK_ACTION = Utils.protocol.createAction('mock_sync_service_action');
+const MOCK_ACTION_CHANNEL = 'action_channel';
+const MOCK_OPTIONS = {
+  config: { LOGUX_ACTION_CHANNEL: MOCK_ACTION_CHANNEL },
+};
 
 describe('Service | Sync', () => {
   describe('start()', () => {
@@ -23,6 +27,7 @@ describe('Service | Sync', () => {
       const server = mockServer();
       const clients = mockClients();
       const options = {
+        ...MOCK_OPTIONS,
         clients,
       };
       const sync = new SyncService(options as any);
@@ -30,13 +35,14 @@ describe('Service | Sync', () => {
       sync.start(server as any);
 
       expect(server.on).to.be.calledWithExactly('processed', sinon.match.func);
-      expect(clients.pubsub.subscribe).to.be.calledWithExactly(CHANNEL, sinon.match.func);
+      expect(clients.pubsub.subscribe).to.be.calledWithExactly(MOCK_ACTION_CHANNEL, sinon.match.func);
     });
 
     it('publishes actions that originated from clients connected to own instance', () => {
       const server = mockServer();
       const clients = mockClients();
       const options = {
+        ...MOCK_OPTIONS,
         clients,
       };
       const meta = { server: server.nodeId };
@@ -47,13 +53,14 @@ describe('Service | Sync', () => {
       // invoke event log handler
       server.on.args[0][1](MOCK_ACTION, meta);
 
-      expect(clients.pubsub.publish).to.be.calledWithExactly(CHANNEL, [MOCK_ACTION, meta]);
+      expect(clients.pubsub.publish).to.be.calledWithExactly(MOCK_ACTION_CHANNEL, [MOCK_ACTION, meta]);
     });
 
     it('does not publish actions that originated from clients connected to other instances', () => {
       const server = mockServer();
       const clients = mockClients();
       const options = {
+        ...MOCK_OPTIONS,
         clients,
       };
       const sync = new SyncService(options as any);
@@ -70,6 +77,7 @@ describe('Service | Sync', () => {
       const server = mockServer();
       const clients = mockClients();
       const options = {
+        ...MOCK_OPTIONS,
         clients,
       };
       const meta = { server: 'other_node_id' };
@@ -87,6 +95,7 @@ describe('Service | Sync', () => {
       const server = mockServer();
       const clients = mockClients();
       const options = {
+        ...MOCK_OPTIONS,
         clients,
       };
       const sync = new SyncService(options as any);

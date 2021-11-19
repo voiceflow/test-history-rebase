@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.24.0...@voiceflow/realtime@1.24.1) (2021-11-19)
+
+
+### Bug Fixes
+
+* do not load members for templates workspace (VF-2315) ([#4643](https://github.com/voiceflow/creator-app/issues/4643)) ([4d96b97](https://github.com/voiceflow/creator-app/commit/4d96b97fcf41f1471992775c0b66d99c8acab52b))
+
+
+
+
+
 # [1.24.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.23.8...@voiceflow/realtime@1.24.0) (2021-11-19)
 
 

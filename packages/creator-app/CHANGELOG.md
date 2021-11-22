@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.8...@voiceflow/creator-app@1.543.9) (2021-11-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rc-slider to v9.7.4 (vf-000) ([#4656](https://github.com/voiceflow/creator-app/issues/4656)) ([f827df0](https://github.com/voiceflow/creator-app/commit/f827df0dd323fa5f027b83b7e2d8c0ad60c0931c))
+
+
+
+
+
 ## [1.543.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.7...@voiceflow/creator-app@1.543.8) (2021-11-22)
 
 

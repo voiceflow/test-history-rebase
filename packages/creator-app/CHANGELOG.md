@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.7...@voiceflow/creator-app@1.543.8) (2021-11-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency logrocket to v2.1.2 (vf-000) ([#4655](https://github.com/voiceflow/creator-app/issues/4655)) ([c7189e5](https://github.com/voiceflow/creator-app/commit/c7189e5374400c15a2fc7146526ffb62a425b2cf))
+
+
+
+
+
 ## [1.543.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.6...@voiceflow/creator-app@1.543.7) (2021-11-19)
 
 

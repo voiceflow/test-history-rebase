@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.10...@voiceflow/creator-app@1.543.11) (2021-11-23)
+
+
+### Bug Fixes
+
+* reload on chunk miss (VF-000) ([#4662](https://github.com/voiceflow/creator-app/issues/4662)) ([3e88785](https://github.com/voiceflow/creator-app/commit/3e887857c2cfa47ae2ddcb432916ea71eb227968))
+
+
+
+
+
 ## [1.543.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.9...@voiceflow/creator-app@1.543.10) (2021-11-23)
 
 

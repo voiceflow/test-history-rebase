@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.11...@voiceflow/creator-app@1.543.12) (2021-11-23)
+
+
+### Bug Fixes
+
+* onboarding conditional nextStep (VF-2260) ([#4664](https://github.com/voiceflow/creator-app/issues/4664)) ([12a5fd0](https://github.com/voiceflow/creator-app/commit/12a5fd0d6d6309de97c0d4e3d92be917e8c28726))
+
+
+
+
+
 ## [1.543.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.10...@voiceflow/creator-app@1.543.11) (2021-11-23)
 
 

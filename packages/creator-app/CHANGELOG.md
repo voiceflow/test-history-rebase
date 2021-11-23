@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.9...@voiceflow/creator-app@1.543.10) (2021-11-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependency bootstrap to v4.6.1 (vf-000) ([#4653](https://github.com/voiceflow/creator-app/issues/4653)) ([2c8b6c9](https://github.com/voiceflow/creator-app/commit/2c8b6c93f72f77c790dc31f5f969b1dfdd185f63))
+
+
+
+
+
 ## [1.543.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.8...@voiceflow/creator-app@1.543.9) (2021-11-22)
 
 

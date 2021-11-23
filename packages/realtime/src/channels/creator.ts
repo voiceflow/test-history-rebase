@@ -12,8 +12,7 @@ class CreatorChannel extends AbstractChannelControl<Realtime.Channels.CreatorCha
   };
 
   protected load = async (ctx: ChannelContext<Realtime.Channels.CreatorChannelParams>): Promise<SendBackActions> => {
-    const creatorID = Number(ctx.userId);
-    const workspaces = await this.services.workspace.getAllWithMembers(creatorID);
+    const workspaces = await this.services.workspace.getAll(Number(ctx.userId)).then(Realtime.Adapters.workspaceAdapter.mapFromDB);
 
     return Realtime.workspace.crud.replace({ values: workspaces });
   };

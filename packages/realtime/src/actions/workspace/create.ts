@@ -15,8 +15,7 @@ class CreateWorkspace extends AbstractActionControl<Realtime.workspace.CreateWor
     const workspace = await this.services.workspace.create(creatorID, action.payload.data);
     const workspaceID = workspace.team_id;
 
-    const members = await this.services.workspace.member.getAll(creatorID, workspaceID);
-    const workspaceWithMembers = Realtime.Adapters.workspaceWithMembersAdapter.fromDB({ workspace, members });
+    const workspaceWithMembers = await this.services.workspace.get(creatorID, workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB);
 
     // only need to send this back to the initiating client
     await ctx.sendBack(Realtime.workspace.crud.add({ key: workspaceID, value: workspaceWithMembers }));

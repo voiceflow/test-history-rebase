@@ -9,7 +9,7 @@ class RefreshWorkspaces extends AbstractActionControl<Realtime.BaseCreatorPayloa
   protected access = unrestrictedAccess(this);
 
   protected process = async (ctx: Context) => {
-    const workspaces = await this.services.workspace.getAllWithMembers(ctx.data.creatorID);
+    const workspaces = await this.services.workspace.getAll(ctx.data.creatorID).then(Realtime.Adapters.workspaceAdapter.mapFromDB);
 
     await ctx.sendBack(Realtime.workspace.crud.replace({ values: workspaces }));
   };

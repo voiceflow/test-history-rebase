@@ -48,18 +48,6 @@ class WorkspaceService extends AbstractControl {
     return client.workspace.list();
   }
 
-  public async getAllWithMembers(creatorID: number): Promise<Realtime.Workspace[]> {
-    const workspaces = await this.getAll(creatorID);
-
-    return Promise.all(
-      workspaces.map(async (workspace) => {
-        const members = workspace.templates ? [] : await this.services.workspace.member.getAll(creatorID, workspace.team_id);
-
-        return Realtime.Adapters.workspaceWithMembersAdapter.fromDB({ workspace, members });
-      })
-    );
-  }
-
   public async create(creatorID: number, { name, image }: { name: string; image?: string }): Promise<Realtime.DBWorkspace> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 

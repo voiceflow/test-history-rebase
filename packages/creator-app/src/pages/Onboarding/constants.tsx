@@ -2,7 +2,7 @@ import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
 import * as Tracking from '@/ducks/tracking';
-import { SpecificFlowType } from '@/pages/Onboarding/context/types';
+import { OnboardingContextState, SpecificFlowType } from '@/pages/Onboarding/context/types';
 
 export enum StepID {
   WELCOME = 'welcome',
@@ -18,7 +18,7 @@ export interface StepMetaPropsType {
   title: (val?: string) => string;
   canBack: boolean;
   canSkip: boolean;
-  skipTo: StepID | null;
+  skipTo: (state: Partial<OnboardingContextState>) => StepID | null;
   trackStep: (props: any, options: { skip: boolean }) => void;
   docsLink?: React.ReactNode;
 }
@@ -30,28 +30,28 @@ export const STEP_META: StepMetaProps = {
     title: () => 'Welcome',
     canBack: false,
     canSkip: false,
-    skipTo: null,
+    skipTo: () => null,
     trackStep: () => () => null,
   },
   [StepID.CREATE_WORKSPACE]: {
     title: () => 'Create Workspace',
     canBack: true,
     canSkip: false,
-    skipTo: null,
+    skipTo: () => null,
     trackStep: () => Tracking.trackOnboardingCreate(),
   },
   [StepID.PERSONALIZE_WORKSPACE]: {
     title: () => 'Create Profile',
     canBack: true,
     canSkip: false,
-    skipTo: null,
+    skipTo: () => null,
     trackStep: () => Tracking.trackOnboardingPersonalize(),
   },
   [StepID.ADD_COLLABORATORS]: {
     title: (workspaceName) => (!workspaceName ? 'Invite teammates' : `Invite teammates to ${workspaceName}`),
     canBack: true,
     canSkip: true,
-    skipTo: StepID.PAYMENT,
+    skipTo: ({ justCreatingWorkspace }) => (justCreatingWorkspace ? StepID.PAYMENT : StepID.SELECT_CHANNEL),
     trackStep: ({ addCollaboratorMeta }, { skip }) =>
       Tracking.trackOnboardingCollaborators({
         skip,
@@ -63,7 +63,7 @@ export const STEP_META: StepMetaProps = {
     title: (plan) => `Sign up for ${plan}`,
     canBack: true,
     canSkip: false,
-    skipTo: null,
+    skipTo: () => null,
     trackStep: ({ paymentMeta }, { skip }) =>
       Tracking.trackOnboardingPay({
         skip,
@@ -74,7 +74,7 @@ export const STEP_META: StepMetaProps = {
     title: () => 'Join Workspace',
     canBack: true,
     canSkip: true,
-    skipTo: null,
+    skipTo: () => null,
     trackStep: ({ joinWorkspaceMeta }, { skip }) =>
       Tracking.trackOnboardingJoin({
         skip,
@@ -85,7 +85,7 @@ export const STEP_META: StepMetaProps = {
     title: () => 'Project Type',
     canBack: true,
     canSkip: false,
-    skipTo: null,
+    skipTo: () => null,
     trackStep: ({ selectChannelMeta }, { skip }) =>
       Tracking.trackOnboardingSelectChannel({
         skip,

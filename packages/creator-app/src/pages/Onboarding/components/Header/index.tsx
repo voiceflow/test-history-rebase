@@ -41,7 +41,7 @@ const OnboardingHeader: React.FC = () => {
       canCancel={justCreatingWorkspace}
       onCancel={onCancel}
       hasSkipButton={hasSkipButton}
-      onSkipClick={() => stepForward(currentStepMeta?.skipTo, { skip: true })}
+      onSkipClick={() => stepForward(currentStepMeta?.skipTo(state), { skip: true })}
     >
       {STEP_META[currentStepID].docsLink}
     </CreationHeader>

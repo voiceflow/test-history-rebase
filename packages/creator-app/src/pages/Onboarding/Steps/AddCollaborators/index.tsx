@@ -6,7 +6,7 @@ import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { CollaboratorType, OnboardingStepProps } from '@/pages/Onboarding/types';
 
-import { StepID } from '../../constants';
+import { STEP_META, StepID } from '../../constants';
 import { AddTeamMember, Container, HeaderLabel, Text } from './components';
 import { getError, withPlaceholderCollaborators } from './utils';
 
@@ -15,6 +15,9 @@ const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
     state: { addCollaboratorMeta, sendingRequests, justCreatingWorkspace },
     actions: { setAddCollaboratorMeta, stepForward },
   } = React.useContext(OnboardingContext);
+  const currentStepMeta = STEP_META[StepID.ADD_COLLABORATORS];
+
+  const nextStepID = currentStepMeta.skipTo({ justCreatingWorkspace });
 
   const [collaborators, setCollaborators] = React.useState(() =>
     withPlaceholderCollaborators(addCollaboratorMeta.collaborators.length ? addCollaboratorMeta.collaborators : data.collaborators)
@@ -41,11 +44,7 @@ const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
   };
 
   const advanceToNextStep = () => {
-    if (!justCreatingWorkspace) {
-      stepForward(StepID.SELECT_CHANNEL);
-    } else {
-      stepForward(StepID.PAYMENT);
-    }
+    stepForward(nextStepID);
   };
 
   const onContinue = () => {

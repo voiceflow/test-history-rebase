@@ -1,4 +1,4 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 
 import client from '@/client/feature';
 
@@ -11,7 +11,7 @@ suite('Client - Feature', ({ expect, stubFetch }) => {
 
   describe('getStatuses()', () => {
     it('should get all feature statuses', async () => {
-      const features = generate.object();
+      const features = Utils.generate.object();
       const fetch = stubFetch('api').resolves(features);
 
       const result = await client.getStatuses();
@@ -21,7 +21,7 @@ suite('Client - Feature', ({ expect, stubFetch }) => {
     });
 
     it('should get all feature statuses with context', async () => {
-      const features = generate.object();
+      const features = Utils.generate.object();
       const fetch = stubFetch('api').resolves(features);
 
       const result = await client.getStatuses({ workspaceID: '123' });

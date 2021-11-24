@@ -1,11 +1,11 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 import axios from 'axios';
 
 import * as Integration from '@/ducks/integration';
 
 import suite from './_suite';
 
-const INTEGRATION_USER: any = generate.object();
+const INTEGRATION_USER: any = Utils.generate.object();
 const MOCK_STATE: Integration.IntegrationState = {
   integration_users: {
     abc: [INTEGRATION_USER],
@@ -39,7 +39,7 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
 
     describe('fetchIntegrationUsersSuccess()', () => {
       it('should succeed fetching users', () => {
-        const integrationUsers: any = generate.object();
+        const integrationUsers: any = Utils.generate.object();
 
         expectAction(Integration.fetchIntegrationUsersSuccess(integrationUsers)).toModify({
           loading: false,
@@ -70,7 +70,7 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
 
     describe('addIntegrationUserSuccess()', () => {
       it('should succeed adding user', () => {
-        const integrationUsers: any = generate.object();
+        const integrationUsers: any = Utils.generate.object();
 
         expectAction(Integration.addIntegrationUserSuccess(integrationUsers)).toModify({
           loading: false,
@@ -101,7 +101,7 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
 
     describe('deleteIntegrationUserSuccess()', () => {
       it('should succeed deleting user', () => {
-        const integrationUsers: any = generate.object();
+        const integrationUsers: any = Utils.generate.object();
 
         expectAction(Integration.deleteIntegrationUserSuccess(integrationUsers)).toModify({
           loading: false,
@@ -132,10 +132,10 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
   });
 
   describeSideEffects(({ applyEffect, catchEffect }) => {
-    const platform = generate.string();
-    const platformUsers = generate.array(3, () => ({ platform }));
-    const platform2 = generate.string();
-    const platformUsers2 = generate.array(2, () => ({ platform: platform2 }));
+    const platform = Utils.generate.string();
+    const platformUsers = Utils.generate.array(3, () => ({ platform }));
+    const platform2 = Utils.generate.string();
+    const platformUsers2 = Utils.generate.array(2, () => ({ platform: platform2 }));
     const users = [...platformUsers, ...platformUsers2];
 
     describe('fetchIntegrationUsers()', () => {
@@ -167,8 +167,8 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
     });
 
     describe('addIntegrationUser()', () => {
-      const integration = generate.string();
-      const userData: any = generate.object();
+      const integration = Utils.generate.string();
+      const userData: any = Utils.generate.object();
 
       it('should fetch users', async () => {
         const axiosPost = stub(axios, 'post').resolves({ data: users } as any);
@@ -186,7 +186,7 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
       });
 
       it('should catch error with response.data string', async () => {
-        const errorMessage = generate.string();
+        const errorMessage = Utils.generate.string();
         const mockError: any = { response: { data: errorMessage } };
         stub(axios, 'post').rejects(mockError);
 
@@ -211,7 +211,7 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
       });
 
       it('should catch string error', async () => {
-        const errorMessage = generate.string();
+        const errorMessage = Utils.generate.string();
         stub(axios, 'post').rejects(errorMessage);
 
         const { expectDispatch, error } = await catchEffect(Integration.addIntegrationUser(integration, userData));
@@ -223,8 +223,8 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
     });
 
     describe('deleteIntegrationUser()', () => {
-      const integration = generate.string();
-      const userData: any = generate.object();
+      const integration = Utils.generate.string();
+      const userData: any = Utils.generate.object();
 
       it('should fetch users', async () => {
         const axiosPost = stub(axios, 'post').resolves({ data: users } as any);

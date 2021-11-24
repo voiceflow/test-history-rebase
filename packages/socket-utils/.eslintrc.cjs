@@ -27,7 +27,7 @@ module.exports = {
       },
     },
     {
-      files: ['*.unit.*'],
+      files: ['*.unit.*', '*.it.*'],
       extends: ['@voiceflow/eslint-config/mocha'],
       rules: {
         'no-unused-expressions': 'off',

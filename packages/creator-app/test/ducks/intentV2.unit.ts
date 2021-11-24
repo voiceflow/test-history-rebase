@@ -1,7 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { generate } from '@voiceflow/ui';
 
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
@@ -53,7 +52,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
   describe('selectors', () => {
     describe('allIntentsSelector()', () => {
       it('select all intents from the legacy store', () => {
-        const intents = generate.array(3, () => ({ id: generate.id() }));
+        const intents = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
         const result = Intent.allIntentsSelector(createState(MOCK_STATE, { [IntentV1.STATE_KEY]: Utils.normalized.normalize(intents) }));
 
@@ -69,7 +68,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
 
     describe('allIntentIDsSelector()', () => {
       it('select all intent IDs from the legacy store', () => {
-        const intents = generate.array(3, () => ({ id: generate.id() }));
+        const intents = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
         const result = Intent.allIntentIDsSelector(createState(MOCK_STATE, { [IntentV1.STATE_KEY]: Utils.normalized.normalize(intents) }));
 

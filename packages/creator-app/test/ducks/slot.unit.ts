@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { generate } from '@voiceflow/ui';
 
 import * as Feature from '@/ducks/feature';
 import * as Slot from '@/ducks/slot';
@@ -8,8 +8,8 @@ import { createCRUDState, CRUDState } from '@/ducks/utils/crud';
 
 import suite from './_suite';
 
-const SLOT_ID = generate.id();
-const SLOT_NAME = generate.string();
+const SLOT_ID = Utils.generate.id();
+const SLOT_NAME = Utils.generate.string();
 const SLOT = { id: SLOT_ID, name: SLOT_NAME } as Realtime.Slot;
 const MOCK_STATE: CRUDState<Realtime.Slot> = {
   byKey: {

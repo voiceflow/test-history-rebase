@@ -1,6 +1,5 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { generate } from '@voiceflow/ui';
 import { DeepPartial } from 'utility-types';
 
 import client from '@/client';
@@ -14,10 +13,10 @@ import { State } from '@/store/types';
 
 import suite from './_suite';
 
-const LIST_ID = generate.id();
-const PROJECT_ID = generate.id();
-const PROJECT_IDS = generate.array();
-const LIST_NAME = generate.string();
+const LIST_ID = Utils.generate.id();
+const PROJECT_ID = Utils.generate.id();
+const PROJECT_IDS = Utils.generate.array();
+const LIST_NAME = Utils.generate.string();
 const LIST = {
   id: LIST_ID,
   name: LIST_NAME,
@@ -41,7 +40,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
     describe('crud', () => {
       describe('update()', () => {
         it('should rename the list', () => {
-          const name = generate.string();
+          const name = Utils.generate.string();
 
           expectAction(ProjectList.crud.patch(LIST_ID, { name })).toModifyByKey(LIST_ID, { name });
         });
@@ -56,7 +55,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
     describe('addProjectToListAction()', () => {
       it('should add project to end of list', () => {
-        const projectID = generate.id();
+        const projectID = Utils.generate.id();
 
         expectAction(ProjectList.addProjectToListAction(LIST_ID, projectID)).toModifyByKey(LIST_ID, {
           projects: [...LIST.projects, projectID],
@@ -64,7 +63,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
       });
 
       it('should add project to start of list', () => {
-        const projectID = generate.id();
+        const projectID = Utils.generate.id();
 
         expectAction(ProjectList.addProjectToListAction(LIST_ID, projectID, true)).toModifyByKey(LIST_ID, {
           projects: [projectID, ...LIST.projects],
@@ -87,10 +86,10 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
       });
 
       it('should move project between lists', () => {
-        const listID = generate.id();
-        const projectID = generate.id();
-        const projectIDs = generate.array();
-        const otherList = { id: listID, name: generate.string(), projects: [...projectIDs, projectID] };
+        const listID = Utils.generate.id();
+        const projectID = Utils.generate.id();
+        const projectIDs = Utils.generate.array();
+        const otherList = { id: listID, name: Utils.generate.string(), projects: [...projectIDs, projectID] };
 
         const state = applyAction(ProjectList.crud.add(listID, otherList));
 
@@ -104,10 +103,14 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
   describeSelectors(({ select }) => {
     describe('defaultProjectListSelector()', () => {
-      const otherLists = generate.array(3, () => ({ id: generate.id(), name: generate.string(), projects: generate.array() }));
+      const otherLists = Utils.generate.array(3, () => ({
+        id: Utils.generate.id(),
+        name: Utils.generate.string(),
+        projects: Utils.generate.array(),
+      }));
 
       it('should select the default project list', () => {
-        const defaultList = { id: generate.id(), name: Realtime.DEFAULT_PROJECT_LIST_NAME, projects: generate.array() };
+        const defaultList = { id: Utils.generate.id(), name: Realtime.DEFAULT_PROJECT_LIST_NAME, projects: Utils.generate.array() };
 
         expect(
           select(ProjectListV2.defaultProjectListSelector, {
@@ -136,7 +139,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
     describe('renameProjectList()', () => {
       it('should rename the list', async () => {
-        const name = generate.string();
+        const name = Utils.generate.string();
 
         await expectEffect(ProjectList.renameProjectList(LIST_ID, name), [ProjectList.crud.patch(LIST_ID, { name })], rootState);
       });
@@ -144,7 +147,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
     describe('addProjectToList()', () => {
       it('should add project to end of list', async () => {
-        const projectID = generate.id();
+        const projectID = Utils.generate.id();
 
         await expectEffect(ProjectList.addProjectToList(LIST_ID, projectID), [ProjectList.addProjectToListAction(LIST_ID, projectID)], rootState);
       });
@@ -152,8 +155,8 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
     describe('saveProjectListsForWorkspace()', () => {
       it('should save project lists to the DB', async () => {
-        const workspaceID = generate.id();
-        const lists: any[] = generate.array();
+        const workspaceID = Utils.generate.id();
+        const lists = Utils.generate.array<any>();
         const updateLists = stub(client.projectList, 'update');
         stub(ProjectListSelectorsV2, 'allProjectListsSelector').returns(lists);
 
@@ -165,7 +168,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
     describe('createProjectList()', () => {
       it('should create a new project list', async () => {
-        const listID = generate.id();
+        const listID = Utils.generate.id();
         stub(Utils.id, 'cuid').returns(listID);
 
         const { result, expectDispatch } = await applyEffect(ProjectList.createProjectList(), rootState);
@@ -177,9 +180,9 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
     describe('saveProjectToList()', () => {
       it('should add a project to project list in workspace', async () => {
-        const lists: any[] = generate.array();
-        const projectID = generate.id();
-        const workspaceID = generate.id();
+        const lists = Utils.generate.array<any>();
+        const projectID = Utils.generate.id();
+        const workspaceID = Utils.generate.id();
         const updateLists = stub(client.projectList, 'update');
 
         await applyEffect(ProjectList.saveProjectToList(workspaceID, [LIST, ...lists], projectID), rootState);

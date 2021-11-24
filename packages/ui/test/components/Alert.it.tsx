@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import Alert from '@ui/components/Alert';
-import { generate } from '@ui/utils';
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { ThemeProvider } from '../_utils';
 
 it('renders default variant', () => {
-  const text = generate.string();
+  const text = Utils.generate.string();
   render(<Alert>{text}</Alert>, { wrapper: ThemeProvider });
 
   const alert = screen.getByText(text);
@@ -17,7 +17,7 @@ it('renders default variant', () => {
 });
 
 it('renders danger variant', () => {
-  const text = generate.string();
+  const text = Utils.generate.string();
   render(<Alert variant="danger">{text}</Alert>, { wrapper: ThemeProvider });
 
   const alert = screen.getByText(text);
@@ -28,7 +28,7 @@ it('renders danger variant', () => {
 });
 
 it('renders warning variant', () => {
-  const text = generate.string();
+  const text = Utils.generate.string();
   render(<Alert variant="warning">{text}</Alert>, { wrapper: ThemeProvider });
 
   const alert = screen.getByText(text);

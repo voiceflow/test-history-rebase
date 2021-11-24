@@ -1,4 +1,5 @@
-import { DEVICE_INFO, generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
+import { DEVICE_INFO } from '@voiceflow/ui';
 
 import client, { SESSION_ENDPOINTS, SESSION_PATH } from '@/client/session';
 import { SessionType } from '@/constants';
@@ -22,8 +23,8 @@ suite('Client - Session', ({ expect, stubFetch }) => {
 
   describe('create()', () => {
     it('create sessions', async () => {
-      const user: any = generate.object();
-      const authResponse = generate.object();
+      const user: any = Utils.generate.object();
+      const authResponse = Utils.generate.object();
       const fetch = stubFetch('api', 'put').resolves(authResponse);
 
       await Promise.all(

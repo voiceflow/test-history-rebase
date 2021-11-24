@@ -8,7 +8,7 @@
     "@voiceflow/api-sdk": "3.2.2",
     "@voiceflow/backend-utils": "4.1.0",
     "@voiceflow/base-types": "^2.2.0",
-    "@voiceflow/common": "7.8.1",
+    "@voiceflow/common": "7.9.0",
     "@voiceflow/general-types": "3.1.1",
     "@voiceflow/google-dfes-types": "2.2.2",
     "@voiceflow/google-types": "2.2.2",

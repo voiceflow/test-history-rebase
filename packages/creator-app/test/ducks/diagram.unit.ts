@@ -2,7 +2,6 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { generate } from '@voiceflow/ui';
 
 import client from '@/client';
 import { FeatureFlag } from '@/config/features';
@@ -57,6 +56,7 @@ const MOCK_STATE: Diagram.DiagramState = {
       abc: [{ creatorID: 1000, creator_id: 1000, name: 'caleb', color: '#aaa' }],
     },
   },
+  intentSteps: {},
 };
 
 suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeReducerV2, describeEffectV2, createState, ...utils }) => {
@@ -134,7 +134,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
   describe('selectors', () => {
     describe('allDiagramsSelector()', () => {
       it('select all diagrams from the legacy store', () => {
-        const diagrams = generate.array(3, () => ({ id: generate.id() }));
+        const diagrams = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
         const result = Diagram.allDiagramsSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: Utils.normalized.normalize(diagrams) }));
 
@@ -150,7 +150,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
     describe('allDiagramIDsSelector()', () => {
       it('select all diagrams IDs from the legacy store', () => {
-        const diagramState = Utils.normalized.normalize(generate.array(3, () => ({ id: generate.id() })));
+        const diagramState = Utils.normalized.normalize(Utils.generate.array(3, () => ({ id: Utils.generate.id() })));
 
         const result = Diagram.allDiagramIDsSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: diagramState }));
 
@@ -166,7 +166,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
     describe('diagramMapSelector()', () => {
       it('select diagram map from the legacy store', () => {
-        const diagramState = Utils.normalized.normalize(generate.array(3, () => ({ id: generate.id() })));
+        const diagramState = Utils.normalized.normalize(Utils.generate.array(3, () => ({ id: Utils.generate.id() })));
 
         const result = Diagram.diagramMapSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: diagramState }));
 
@@ -345,8 +345,8 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
   describe('side effects', () => {
     describeEffectV2(DiagramV1.loadDiagrams, 'loadDiagrams()', ({ applyEffect }) => {
       it('loads all diagrams for a given version into the store', async () => {
-        const diagrams: any[] = generate.array(3, () => ({ id: generate.id() }));
-        const dbDiagrams: any[] = generate.array(3, () => ({ id: generate.id() }));
+        const diagrams = Utils.generate.array<any>(3, () => ({ id: Utils.generate.id() }));
+        const dbDiagrams = Utils.generate.array<any>(3, () => ({ id: Utils.generate.id() }));
         const getDiagrams = stub(client.api.version, 'getDiagrams').resolves(dbDiagrams);
         const mapDiagramFromDB = stub(Realtime.Adapters.diagramAdapter, 'mapFromDB').returns(diagrams);
 
@@ -368,7 +368,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
     describeEffectV2(DiagramV1.loadLocalVariables, 'loadLocalVariables()', ({ applyEffect }) => {
       it('loads all variables for a given diagram into the store', async () => {
-        const variables = generate.array(3, generate.string);
+        const variables = Utils.generate.array(3, Utils.generate.string);
 
         const getDiagram = stub(client.api.diagram, 'get').resolves({ variables } as any);
 

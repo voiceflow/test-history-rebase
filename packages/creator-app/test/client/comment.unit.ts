@@ -1,12 +1,12 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 
 import commentAdapter from '@/client/adapters/comment';
 import client, { COMMENTING_PATH } from '@/client/comment';
 
 import suite from './_suite';
 
-const PROJECT_ID = generate.id();
-const COMMENT_ID = generate.id();
+const PROJECT_ID = Utils.generate.id();
+const COMMENT_ID = Utils.generate.id();
 
 suite('Client - Comment', ({ expect, stubFetch, stubAdapter }) => {
   it('should have expected keys', () => {
@@ -25,8 +25,8 @@ suite('Client - Comment', ({ expect, stubFetch, stubAdapter }) => {
 
   describe('update()', () => {
     it('update comment', async () => {
-      const data: any = generate.object();
-      const [dbComment, toDB] = stubAdapter(commentAdapter, 'toDB', generate.object);
+      const data: any = Utils.generate.object();
+      const [dbComment, toDB] = stubAdapter(commentAdapter, 'toDB', Utils.generate.object);
       const fetch = stubFetch('api', 'put');
 
       await client.update(PROJECT_ID, COMMENT_ID, data);
@@ -38,11 +38,11 @@ suite('Client - Comment', ({ expect, stubFetch, stubAdapter }) => {
 
   describe('create()', () => {
     it('create comment', async () => {
-      const threadID = generate.string();
-      const data: any = generate.object();
-      const commentResponse = generate.object();
-      const [dbComment, toDB] = stubAdapter(commentAdapter, 'toDB', generate.object);
-      const [comment, fromDB] = stubAdapter(commentAdapter, 'fromDB', generate.object);
+      const threadID = Utils.generate.string();
+      const data: any = Utils.generate.object();
+      const commentResponse = Utils.generate.object();
+      const [dbComment, toDB] = stubAdapter(commentAdapter, 'toDB', Utils.generate.object);
+      const [comment, fromDB] = stubAdapter(commentAdapter, 'fromDB', Utils.generate.object);
       const fetch = stubFetch('api', 'post').resolves(commentResponse);
 
       const result = await client.create(PROJECT_ID, threadID, data);

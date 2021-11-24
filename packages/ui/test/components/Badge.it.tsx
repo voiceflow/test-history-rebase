@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import Badge from '@ui/components/Badge';
 import THEME from '@ui/styles/theme';
-import { generate } from '@ui/utils';
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { ThemeProvider } from '../_utils';
 
 it('does not appear clickable', () => {
-  const text = generate.string();
+  const text = Utils.generate.string();
   render(<Badge>{text}</Badge>, { wrapper: ThemeProvider });
 
   const badge = screen.getByText(text);
@@ -29,7 +29,7 @@ it('reacts to click', () => {
 
 it('changes color', () => {
   const color = '#ff69b4';
-  const text = generate.string();
+  const text = Utils.generate.string();
   render(<Badge color={color}>{text}</Badge>, { wrapper: ThemeProvider });
 
   const badge = screen.getByText(text);

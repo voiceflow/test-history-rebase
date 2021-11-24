@@ -2,7 +2,6 @@
 import { Utils } from '@voiceflow/common';
 import { PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { generate } from '@voiceflow/ui';
 
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
@@ -194,7 +193,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
 
     describe('allWorkspacesSelector()', () => {
       it('select all workspaces from the legacy store', () => {
-        const workspaces = generate.array(3, () => ({ id: generate.id() }));
+        const workspaces = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
         const result = Workspace.allWorkspacesSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: Utils.normalized.normalize(workspaces) }));
 
@@ -210,7 +209,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
 
     describe('allWorkspaceIDsSelector()', () => {
       it('select all workspace IDs from the legacy store', () => {
-        const workspaces = generate.array(3, () => ({ id: generate.id() }));
+        const workspaces = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
         const result = Workspace.allWorkspaceIDsSelector(
           createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: Utils.normalized.normalize(workspaces) })

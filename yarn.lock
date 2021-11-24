@@ -6058,7 +6058,21 @@
     lodash "^4.17.21"
     number-to-words "^1.2.4"
 
-"@voiceflow/common@7.8.1", "@voiceflow/common@^7.8.1":
+"@voiceflow/common@7.9.0":
+  version "7.9.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.9.0.tgz#1867fe0f934d182cd02de6c73118b3a79ae3c3fd"
+  integrity sha512-qk2XmIimPpnkh6EEVSjHshSu7z3BRZUUJ3qBD/2dDdoi7pFGOuF6AnQHsFXA8AjlwwGi7cmTXBudEPW2ziarwg==
+  dependencies:
+    "@types/crypto-js" "^4.0.2"
+    bson-objectid "^2.0.1"
+    crypto-js "^4.1.1"
+    cuid "^2.1.8"
+    dayjs "^1.10.7"
+    lodash "^4.17.21"
+    number-to-words "^1.2.4"
+    typescript-fsa "3.0.0"
+
+"@voiceflow/common@^7.8.1":
   version "7.8.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.8.1.tgz#815196b686cf6b33fc8e8e82929933319ae0edcf"
   integrity sha512-hmAuG5ce+wZDzVSe7LwPWrUcaTrWAPnXf/G7CEf+MmHjPYtfajryq3wLPRbsS7UEi+V36ML5uB0//mPb5ZImxA==

@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import { generate } from '@voiceflow/ui';
 
 import { DiagramState } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -19,7 +18,7 @@ const mockHistoryState = (present: any) => ({
 const MOCK_STATE = {
   diagram: mockHistoryState({}) as any,
   focus: {
-    target: generate.id(),
+    target: Utils.generate.id(),
     isActive: true,
   } as Creator.FocusState,
   diagramsHistory: [],
@@ -88,7 +87,7 @@ suite(Creator, MOCK_STATE)('Ducks - Creator', ({ expect, describeReducer, descri
       });
 
       describe('setFocus()', () => {
-        const nodeID = generate.id();
+        const nodeID = Utils.generate.id();
 
         it('should set focus', () => {
           expectAction(Creator.setFocus(nodeID)).toModify({

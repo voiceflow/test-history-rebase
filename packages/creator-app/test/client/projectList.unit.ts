@@ -1,11 +1,11 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 
 import projectListAdapter from '@/client/adapters/projectList';
 import client, { TEAM_PATH } from '@/client/projectList';
 
 import suite from './_suite';
 
-const WORKSPACE_ID = generate.id();
+const WORKSPACE_ID = Utils.generate.id();
 
 suite('Client - Project List', ({ expect, stubFetch, stubAdapter }) => {
   it('should have expected keys', () => {
@@ -14,8 +14,8 @@ suite('Client - Project List', ({ expect, stubFetch, stubAdapter }) => {
 
   describe('update()', () => {
     it('should update project lists', async () => {
-      const lists: any[] = generate.array();
-      const [dbLists, mapToDB] = stubAdapter(projectListAdapter, 'mapToDB', generate.array);
+      const lists = Utils.generate.array<any>();
+      const [dbLists, mapToDB] = stubAdapter(projectListAdapter, 'mapToDB', Utils.generate.array);
       const fetch = stubFetch('api', 'patch');
 
       await client.update(WORKSPACE_ID, lists);
@@ -27,9 +27,9 @@ suite('Client - Project List', ({ expect, stubFetch, stubAdapter }) => {
 
   describe('find()', () => {
     it('should find project lists', async () => {
-      const dbLists = generate.array();
+      const dbLists = Utils.generate.array();
       const fetch = stubFetch('api', 'get').resolves({ boards: dbLists });
-      const [lists, mapFromDB] = stubAdapter(projectListAdapter, 'mapFromDB', generate.array);
+      const [lists, mapFromDB] = stubAdapter(projectListAdapter, 'mapFromDB', Utils.generate.array);
 
       const result = await client.find(WORKSPACE_ID);
 

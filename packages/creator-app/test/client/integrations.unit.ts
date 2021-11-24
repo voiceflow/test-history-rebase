@@ -1,4 +1,4 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 
 import client from '@/client/integrations';
 
@@ -11,7 +11,7 @@ suite('Client - Integrations', ({ expect, stubFetch }) => {
 
   describe('getZapierToken()', () => {
     it('should get zapier integration token', async () => {
-      const tokenResponse: any = generate.object();
+      const tokenResponse: any = Utils.generate.object();
       const fetch = stubFetch('api').resolves(tokenResponse);
 
       const result = await client.getZapierToken();

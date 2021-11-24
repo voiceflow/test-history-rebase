@@ -1,4 +1,4 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 import axios from 'axios';
 
 import client from '@/client/canvasExport';
@@ -13,7 +13,7 @@ suite('Client - Canvas Export', ({ expect, stub }) => {
 
   describe('toPNG()', () => {
     it('should generate a PNG', async () => {
-      const data: any = generate.object();
+      const data: any = Utils.generate.object();
       const response = new Blob();
       const axiosPost = stub(axios, 'post').resolves({ data: response });
 
@@ -25,7 +25,7 @@ suite('Client - Canvas Export', ({ expect, stub }) => {
 
   describe('toPDF()', () => {
     it('should generate a PDF', async () => {
-      const data: any = generate.object();
+      const data: any = Utils.generate.object();
       const response = new Blob();
       const axiosPost = stub(axios, 'post').resolves({ data: response });
 

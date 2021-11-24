@@ -8,14 +8,15 @@
   "dependencies": {
     "@logux/actions": "0.2.1",
     "@logux/server": "0.10.7",
-    "@voiceflow/common": "7.8.1",
+    "@voiceflow/common": "7.9.0",
     "@voiceflow/logger": "1.6.0",
     "cbor": "8.0.2",
     "ioredis": "4.28.1",
     "typescript-fsa": "^3.0.0"
   },
   "devDependencies": {
-    "@types/ioredis": "4.28.1"
+    "@types/ioredis": "4.28.1",
+    "dotenv": "9.0.2"
   },
   "exports": {
     ".": "./build/index.js"
@@ -38,10 +39,10 @@
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:report": "yarn lint --format json -o sonar/report.json",
-    "test": "nyc ts-mocha --project tsconfig.test.json --paths --config ./config/test/mocharc.yml",
+    "test": "NODE_ENV=test nyc ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.yml",
     "test:dependencies": "depcheck",
-    "test:integration": "yarn test",
-    "test:unit": "yarn test"
+    "test:integration": "NODE_ENV=test nyc ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.integration.yml",
+    "test:unit": "NODE_ENV=test nyc ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.unit.yml"
   },
   "type": "module",
   "types": "build/index.d.ts"

@@ -1,45 +1,54 @@
+import Logger from '@voiceflow/logger';
 import cbor from 'cbor';
 import IORedis from 'ioredis';
 
 import { RedisConfig } from './redis';
 import { BaseClientOptions } from './types';
 
-export interface PubSub {
-  publish: (channel: string, message: any) => void;
-
-  subscribe: <T>(channel: string, handler: (message: T) => void) => () => void;
-}
-
-export interface PubSubClientOptions extends BaseClientOptions<RedisConfig> {
+export interface PubSubOptions extends BaseClientOptions<RedisConfig> {
   redis: IORedis.Redis;
 }
 
-export const PubSubClient = ({ config, redis: publisher, log }: PubSubClientOptions): PubSub => {
-  const subscriber = new IORedis(config.REDIS_CLUSTER_PORT, config.REDIS_CLUSTER_HOST);
+export class PubSub {
+  log: Logger;
 
-  return {
-    publish: (channel, message) => publisher.publishBuffer(channel, cbor.encode(message)),
+  publisher: IORedis.Redis;
 
-    subscribe: (channel, handler) => {
-      log.info(`subscribing to pubsub channel: '${channel}'`);
+  subscriber: IORedis.Redis;
 
-      const handleMessage = (channelBuffer: Buffer, messageBuffer: Buffer) => {
-        if (channelBuffer.toString('utf8') !== channel) return;
+  constructor({ config, redis: publisher, log }: PubSubOptions) {
+    this.log = log;
+    this.publisher = publisher;
+    this.subscriber = new IORedis(config.REDIS_CLUSTER_PORT, config.REDIS_CLUSTER_HOST);
+  }
 
-        try {
-          handler(cbor.decodeFirstSync(messageBuffer));
-        } catch {
-          log.error(`failed to decode pubsub message: '${messageBuffer.toString('utf8')}'`);
-        }
-      };
+  async publish(channel: string, message: any): Promise<void> {
+    const messageBuffer = await cbor.encodeAsync(message);
 
-      subscriber.subscribe(channel);
-      subscriber.on('messageBuffer', handleMessage);
+    this.publisher.publishBuffer(channel, messageBuffer);
+  }
 
-      return () => {
-        subscriber.off('messageBuffer', handleMessage);
-        subscriber.unsubscribe(channel);
-      };
-    },
-  };
-};
+  subscribe<T>(channel: string, handler: (message: T) => void): () => void {
+    this.log.info(`subscribing to pubsub channel: '${channel}'`);
+
+    const handleMessage = async (channelBuffer: Buffer, messageBuffer: Buffer) => {
+      if (channelBuffer.toString('utf8') !== channel) return;
+
+      try {
+        const message = await cbor.decodeFirst(messageBuffer);
+
+        handler(message);
+      } catch {
+        this.log.error(`failed to decode pubsub message: '${messageBuffer.toString('utf8')}'`);
+      }
+    };
+
+    this.subscriber.subscribe(channel);
+    this.subscriber.on('messageBuffer', handleMessage);
+
+    return () => {
+      this.subscriber.off('messageBuffer', handleMessage);
+      this.subscriber.unsubscribe(channel);
+    };
+  }
+}

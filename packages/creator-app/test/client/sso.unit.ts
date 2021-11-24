@@ -1,4 +1,4 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 
 import client, { SSO_PATH } from '@/client/sso';
 import { SessionType } from '@/constants';
@@ -12,8 +12,8 @@ suite('Client - SSO', ({ expect, stubFetch }) => {
 
   describe('login()', () => {
     it('login with SSO', async () => {
-      const payload: any = generate.object();
-      const authResponse = generate.object();
+      const payload: any = Utils.generate.object();
+      const authResponse = Utils.generate.object();
       const fetch = stubFetch('apiV2', 'post').resolves(authResponse);
 
       const result = await client.login(payload);
@@ -24,14 +24,14 @@ suite('Client - SSO', ({ expect, stubFetch }) => {
   });
 
   describe('convert()', () => {
-    const payload: any = generate.object();
+    const payload: any = Utils.generate.object();
 
     it('fail on signup session type used', async () => {
       expect(() => client.convert(SessionType.SIGN_UP, payload)).to.throw('unable to convert account for this session type');
     });
 
     it('convert account to use SSO', async () => {
-      const convertResponse = generate.object();
+      const convertResponse = Utils.generate.object();
       const fetch = stubFetch('apiV2', 'post').resolves(convertResponse);
 
       const result = await client.convert(SessionType.BASIC_AUTH, payload);

@@ -1,4 +1,4 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 
 import * as Fixtures from '@/../test/_fixtures';
 import client from '@/client';
@@ -10,15 +10,15 @@ import suite from './_suite';
 
 const CREATOR_ID = 123;
 const REFERRER_ID = 456;
-const REFERRAL_CODE = generate.id();
+const REFERRAL_CODE = Utils.generate.id();
 const EMAIL = 'user@example.com';
-const VENDORS = generate.array(2, generate.id);
+const VENDORS = Utils.generate.array(2, Utils.generate.id);
 const AMAZON_ACCOUNT = {
-  token: generate.id(),
+  token: Utils.generate.id(),
   vendors: VENDORS,
 };
 const GOOGLE_ACCOUNT = {
-  token: generate.id(),
+  token: Utils.generate.id(),
   profile: {
     email: EMAIL,
   },
@@ -101,7 +101,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       it('should be logging in', () => {
         expect(
           select(Account.isLoggingInSelector, {
-            [Session.STATE_KEY]: { token: { value: generate.id() } },
+            [Session.STATE_KEY]: { token: { value: Utils.generate.id() } },
             [Account.STATE_KEY]: { creator_id: null },
           })
         ).to.be.true;
@@ -114,7 +114,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
 
     describe('isLoggedInSelector()', () => {
       it('should be logged in', () => {
-        expect(select(Account.isLoggedInSelector, { [Session.STATE_KEY]: { token: { value: generate.id() } } })).to.be.true;
+        expect(select(Account.isLoggedInSelector, { [Session.STATE_KEY]: { token: { value: Utils.generate.id() } } })).to.be.true;
       });
 
       it('should not be logged in', () => {

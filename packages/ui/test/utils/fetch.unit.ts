@@ -1,6 +1,6 @@
 import * as Fetch from '@ui/utils/fetch';
 import createRawFetch from '@ui/utils/fetch/raw';
-import { generate } from '@ui/utils/generate';
+import { Utils } from '@voiceflow/common';
 import { SinonStub } from 'sinon';
 
 import suite from '../_suite';
@@ -81,7 +81,7 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
     });
 
     it('runs', async () => {
-      const mockResponse = { status: generate.number(), body: generate.string() };
+      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
       const fetchCall = stubFetch().yields(mockResponse);
 
       const response = await rawFetch(TEST_URL);
@@ -94,7 +94,10 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
     });
 
     it('cache - true', async () => {
-      const [mockResponse1, mockResponse2, mockResponse3] = generate.array(3, () => ({ status: generate.number(), body: generate.string() }));
+      const [mockResponse1, mockResponse2, mockResponse3] = Utils.generate.array(3, () => ({
+        status: Utils.generate.number(),
+        body: Utils.generate.string(),
+      }));
       const fetchCall = stubFetch().yields(mockResponse1, mockResponse2, mockResponse3);
       const cache = mockRequestCache({ has: 6, get: 4, set: 3 });
       const opts: Fetch.FetchOptions = { cache: true, expiry: false };
@@ -124,7 +127,10 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
     });
 
     it('cache - expiry', async () => {
-      const [mockResponse1, mockResponse2, mockResponse3] = generate.array(3, () => ({ status: generate.number(), body: generate.string() }));
+      const [mockResponse1, mockResponse2, mockResponse3] = Utils.generate.array(3, () => ({
+        status: Utils.generate.number(),
+        body: Utils.generate.string(),
+      }));
       const fetchCall = stubFetch().yields(mockResponse1, mockResponse2, mockResponse3);
       const cache = mockRequestCache({ has: 6, get: 4, set: 3 });
       const opts = { cache: true, expiry: 1000 };
@@ -158,7 +164,10 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
     });
 
     it('cache - false', async () => {
-      const [mockResponse1, mockResponse2, mockResponse3] = generate.array(3, () => ({ status: generate.number(), body: generate.string() }));
+      const [mockResponse1, mockResponse2, mockResponse3] = Utils.generate.array(3, () => ({
+        status: Utils.generate.number(),
+        body: Utils.generate.string(),
+      }));
       const fetchCall = stubFetch().yields(mockResponse1, mockResponse1, mockResponse1, mockResponse2, mockResponse2, mockResponse3);
       const cache = mockRequestCache({ has: 0, get: 0, set: 0 });
 
@@ -189,7 +198,7 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
 
   describe('CRUD requests', () => {
     it('GET request', async () => {
-      const mockResponse = { status: generate.number(), body: generate.string() };
+      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
       const fetchCall = stubFetch().yields(mockResponse);
 
       const response = await fetch.get(TEST_URL);
@@ -203,8 +212,8 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
     });
 
     it('POST request', async () => {
-      const mockBody = generate.object();
-      const mockResponse = { status: generate.number(), body: generate.string() };
+      const mockBody = Utils.generate.object();
+      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
       const fetchCall = stubFetch().yields(mockResponse);
 
       const response = await fetch.post(TEST_URL, mockBody);
@@ -219,8 +228,8 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
     });
 
     it('PUT request', async () => {
-      const mockBody = generate.object();
-      const mockResponse = { status: generate.number(), body: generate.string() };
+      const mockBody = Utils.generate.object();
+      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
       const fetchCall = stubFetch().yields(mockResponse);
 
       const response = await fetch.put(TEST_URL, mockBody);
@@ -235,8 +244,8 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
     });
 
     it('PATCH request', async () => {
-      const mockBody = generate.object();
-      const mockResponse = { status: generate.number(), body: generate.string() };
+      const mockBody = Utils.generate.object();
+      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
       const fetchCall = stubFetch().yields(mockResponse);
 
       const response = await fetch.patch(TEST_URL, mockBody);
@@ -251,8 +260,8 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
     });
 
     it('DELETE request', async () => {
-      const mockBody = generate.object();
-      const mockResponse = { status: generate.number(), body: generate.string() };
+      const mockBody = Utils.generate.object();
+      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
       const fetchCall = stubFetch().yields(mockResponse);
 
       const response = await fetch.delete(TEST_URL, mockBody);

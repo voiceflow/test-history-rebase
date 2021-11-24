@@ -1,0 +1,5 @@
+extends: config/test/mocharc.yml
+
+spec:
+  - config/test/setup.ts
+  - "test/**/*.it.ts"

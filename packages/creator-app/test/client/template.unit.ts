@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
-import { generate } from '@voiceflow/ui';
 
 import client from '@/client/template';
 
@@ -20,7 +20,7 @@ suite('Client - Template', ({ expect, stubFetch }) => {
     });
 
     it('get a platform template with a specific tag', async () => {
-      const tag = generate.string();
+      const tag = Utils.generate.string();
       const fetch = stubFetch('apiV2', 'get');
 
       await client.getPlatformTemplate(Constants.PlatformType.ALEXA, tag);

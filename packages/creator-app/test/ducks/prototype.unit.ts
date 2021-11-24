@@ -1,10 +1,10 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 
 import * as Prototype from '@/ducks/prototype';
 
 import suite from './_suite';
 
-const MOCK_PROJECT_ID = generate.id();
+const MOCK_PROJECT_ID = Utils.generate.id();
 const MOCK_STATE = {
   ID: null,
   mode: {
@@ -37,7 +37,7 @@ suite(Prototype, MOCK_STATE)('Ducks - Prototype', ({ expect, describeReducer, de
   describeReducer(({ expectAction }) => {
     describe('updatePrototypeMode()', () => {
       it('should replace the prototype mode for the specified project', () => {
-        const projectID = generate.id();
+        const projectID = Utils.generate.id();
         const mode = Prototype.PrototypeMode.VARIABLES;
 
         expectAction(Prototype.updatePrototypeMode(projectID, mode)).toModify({ mode: { ...MOCK_STATE.mode, [projectID]: mode } });
@@ -60,7 +60,9 @@ suite(Prototype, MOCK_STATE)('Ducks - Prototype', ({ expect, describeReducer, de
       });
 
       it('should select the default mode if not found', () => {
-        expect(select(Prototype.activePrototypeModeSelector, { session: { activeProjectID: generate.id() } })).to.eq(Prototype.PrototypeMode.CANVAS);
+        expect(select(Prototype.activePrototypeModeSelector, { session: { activeProjectID: Utils.generate.id() } })).to.eq(
+          Prototype.PrototypeMode.CANVAS
+        );
       });
     });
   });

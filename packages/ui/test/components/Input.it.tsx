@@ -1,19 +1,19 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import Input, { InputProps } from '@ui/components/Input';
-import { generate } from '@ui/utils';
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { ThemeProvider } from '../_utils';
 
 const InputImpl = (props: InputProps) => {
-  const [value, setValue] = React.useState(generate.string());
+  const [value, setValue] = React.useState(Utils.generate.string());
 
   return <Input onChange={({ target: { value } }) => setValue(value)} value={value} {...props} />;
 };
 
 it('accepts keyboard input', () => {
-  const nextValue = generate.string();
-  const placeholder = generate.string();
+  const nextValue = Utils.generate.string();
+  const placeholder = Utils.generate.string();
   render(<InputImpl placeholder={placeholder} />, { wrapper: ThemeProvider });
 
   const input = screen.getByPlaceholderText(placeholder);

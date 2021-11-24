@@ -2,7 +2,6 @@
 import * as Alexa from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { generate } from '@voiceflow/ui';
 
 import client from '@/client';
 import { FeatureFlag } from '@/config/features';
@@ -46,7 +45,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, stub, describeEffect
   describe('selectors', () => {
     describe('allProductsSelector()', () => {
       it('select all products from the legacy store', () => {
-        const products = generate.array(3, () => ({ id: generate.id() }));
+        const products = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
         const result = Product.allProductsSelector(createState(MOCK_STATE, { [ProductV1.STATE_KEY]: Utils.normalized.normalize(products) }));
 
@@ -62,7 +61,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, stub, describeEffect
 
     describe('productMapSelector()', () => {
       it('select product map from the legacy store', () => {
-        const productState = Utils.normalized.normalize(generate.array(3, () => ({ id: generate.id() })));
+        const productState = Utils.normalized.normalize(Utils.generate.array(3, () => ({ id: Utils.generate.id() })));
 
         const result = Product.productMapSelector(createState(MOCK_STATE, { [ProductV1.STATE_KEY]: productState }));
 
@@ -222,7 +221,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, stub, describeEffect
     it('create a new product', async () => {
       const newDBProduct = { name: 'DB formatted new product data' };
       const createdDBProduct = { name: 'DB formatted created product' };
-      const createdProduct = { id: generate.id(), name: 'created product' };
+      const createdProduct = { id: Utils.generate.id(), name: 'created product' };
       const rootState = createState(MOCK_STATE, {
         [Session.STATE_KEY]: { activeProjectID: PROJECT_ID },
       });

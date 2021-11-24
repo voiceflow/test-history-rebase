@@ -3,7 +3,6 @@ import { Models as BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { generate } from '@voiceflow/ui';
 
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
@@ -120,7 +119,7 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
 
     describe('allProjectsSelector()', () => {
       it('select all projects from the legacy store', () => {
-        const projects = generate.array(3, () => ({ id: generate.id() }));
+        const projects = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
         const result = Project.allProjectsSelector(createState(MOCK_STATE, { [ProjectV1.STATE_KEY]: Utils.normalized.normalize(projects) }));
 
@@ -182,7 +181,7 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
 
     describe('projectsCountSelector()', () => {
       it('select count of projects from the legacy store', () => {
-        const projects = generate.array(3, () => ({ id: generate.id() }));
+        const projects = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
         const result = Project.projectsCountSelector(createState(MOCK_STATE, { [ProjectV1.STATE_KEY]: Utils.normalized.normalize(projects) }));
 

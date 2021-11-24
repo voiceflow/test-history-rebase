@@ -1,4 +1,4 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 import axios from 'axios';
 
 import client from '@/client/prototype';
@@ -6,7 +6,7 @@ import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 
 import suite from './_suite';
 
-const VERSION_ID = generate.id();
+const VERSION_ID = Utils.generate.id();
 
 suite('Client - Prototype', ({ expect, stub }) => {
   it('have expected keys', () => {
@@ -15,7 +15,7 @@ suite('Client - Prototype', ({ expect, stub }) => {
 
   describe('interact()', () => {
     it('should interact with a prototype', async () => {
-      const data: any = generate.object();
+      const data: any = Utils.generate.object();
       const response = new Blob();
       const axiosPost = stub(axios, 'post').resolves({ data: response });
 
@@ -25,8 +25,8 @@ suite('Client - Prototype', ({ expect, stub }) => {
     });
 
     it('should interact with a prototype with a session ID', async () => {
-      const data: any = generate.object();
-      const sessionID = generate.id();
+      const data: any = Utils.generate.object();
+      const sessionID = Utils.generate.id();
       const response = new Blob();
       const axiosPost = stub(axios, 'post').resolves({ data: response });
 

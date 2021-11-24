@@ -1,4 +1,4 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 import axios from 'axios';
 
 import client from '@/client/file';
@@ -12,7 +12,7 @@ suite('Client - File', ({ expect, stub }) => {
 
   describe('uploadAudio()', () => {
     it('should generate a URL for uploaded audio data', async () => {
-      const url = generate.string();
+      const url = Utils.generate.string();
       const formData = new FormData();
       const axiosPost = stub(axios, 'post').resolves({ data: url });
 
@@ -24,7 +24,7 @@ suite('Client - File', ({ expect, stub }) => {
   });
 
   describe('uploadImage()', () => {
-    const url = generate.string();
+    const url = Utils.generate.string();
     const formData = new FormData();
 
     it('should generate a URL for uploaded image', async () => {

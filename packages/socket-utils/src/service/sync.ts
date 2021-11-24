@@ -26,11 +26,11 @@ export class SyncService extends AbstractControl<ControlOptions<SyncServiceConfi
     });
 
     // listen to actions from this server's event log and publish them to the "realtime:actions" channel
-    const actionsUnsubscribe = server.on('processed', (action, meta) => {
+    const actionsUnsubscribe = server.on('processed', async (action, meta) => {
       // only publish actions that originated from clients connected to this instance of the service
       if (meta.server !== server.nodeId) return;
 
-      this.clients.pubsub.publish(this.config.LOGUX_ACTION_CHANNEL, [action, meta]);
+      await this.clients.pubsub.publish(this.config.LOGUX_ACTION_CHANNEL, [action, meta]);
     });
 
     this.unsubscribe = () => {

@@ -1,6 +1,5 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { generate } from '@voiceflow/ui';
 
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
@@ -38,7 +37,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
 
     describe('allSlotsSelector()', () => {
       it('select all slots from the legacy store', () => {
-        const slots = generate.array(3, () => ({ id: generate.id() }));
+        const slots = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
         const result = Slot.allSlotsSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: Utils.normalized.normalize(slots) }));
 
@@ -54,7 +53,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
 
     describe('allSlotIDsSelector()', () => {
       it('select all slot IDs from the legacy store', () => {
-        const slots = generate.array(3, () => ({ id: generate.id() }));
+        const slots = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
         const result = Slot.allSlotIDsSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: Utils.normalized.normalize(slots) }));
 
@@ -70,7 +69,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
 
     describe('slotMapSelector()', () => {
       it('select slot map from the legacy store', () => {
-        const slotState = Utils.normalized.normalize(generate.array(3, () => ({ id: generate.id() })));
+        const slotState = Utils.normalized.normalize(Utils.generate.array(3, () => ({ id: Utils.generate.id() })));
 
         const result = Slot.slotMapSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: slotState }));
 

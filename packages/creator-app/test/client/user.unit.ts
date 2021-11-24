@@ -1,4 +1,4 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 
 import client, { USER_PATH } from '@/client/user';
 
@@ -20,7 +20,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
   describe('get()', () => {
     it('should get user details', async () => {
-      const user = generate.object();
+      const user = Utils.generate.object();
       const fetch = stubFetch('api', 'get').resolves(user);
 
       const result = await client.get();
@@ -32,7 +32,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
   describe('updateProfilePicture()', () => {
     it('should get user details', async () => {
-      const url = generate.string();
+      const url = Utils.generate.string();
       const fetch = stubFetch('api', 'post');
 
       await client.updateProfilePicture(url);
@@ -58,7 +58,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
   describe('resetEmail', () => {
     it('should reset email', async () => {
-      const email = generate.id();
+      const email = Utils.generate.id();
 
       const fetch = stubFetch('api', 'post');
 
@@ -70,7 +70,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
   describe('testResetPassword', () => {
     it('should test if password can be reset', async () => {
-      const resetCode = generate.id();
+      const resetCode = Utils.generate.id();
 
       const fetch = stubFetch('api', 'get');
 
@@ -82,8 +82,8 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
   describe('resetPassword', () => {
     it('should apply password reset', async () => {
-      const resetCode = generate.id();
-      const password = generate.string();
+      const resetCode = Utils.generate.id();
+      const password = Utils.generate.string();
 
       const fetch = stubFetch('api', 'post');
 
@@ -105,7 +105,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
   describe('confirmAccount', () => {
     it('Requesting account confirmation', async () => {
-      const token = generate.string();
+      const token = Utils.generate.string();
 
       const fetch = stubFetch('api', 'post');
 

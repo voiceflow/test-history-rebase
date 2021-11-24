@@ -1,6 +1,5 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { generate } from '@voiceflow/ui';
 
 import * as Feature from '@/ducks/feature';
 import * as Intent from '@/ducks/intent';
@@ -9,8 +8,8 @@ import { createCRUDState, CRUDState } from '@/ducks/utils/crud';
 
 import suite from './_suite';
 
-const INTENT_ID = generate.id();
-const SLOT_NAME = generate.string();
+const INTENT_ID = Utils.generate.id();
+const SLOT_NAME = Utils.generate.string();
 const INTENT = { id: INTENT_ID, name: SLOT_NAME } as Realtime.Intent;
 const MOCK_STATE: CRUDState<Realtime.Intent> = {
   byKey: {
@@ -25,9 +24,9 @@ suite(Intent, MOCK_STATE)('Ducks - Intent', ({ expect, describeCRUDReducer, desc
   describeSelectors(({ select }) => {
     describe('intentsUsingSlotSelector()', () => {
       it('should select intents using a slot by ID', () => {
-        const slotID = generate.id();
-        const intentWithSlot = generate.array(3, () => ({ id: generate.id(), slots: { allKeys: [slotID, ...generate.array()] } }));
-        const intentWithoutSlot = generate.array(3, () => ({ id: generate.id(), slots: { allKeys: generate.array() } }));
+        const slotID = Utils.generate.id();
+        const intentWithSlot = Utils.generate.array(3, () => ({ id: Utils.generate.id(), slots: { allKeys: [slotID, ...Utils.generate.array()] } }));
+        const intentWithoutSlot = Utils.generate.array(3, () => ({ id: Utils.generate.id(), slots: { allKeys: Utils.generate.array() } }));
 
         expect(
           select(IntentV2.intentsUsingSlotSelector, {

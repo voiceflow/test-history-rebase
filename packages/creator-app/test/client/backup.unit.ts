@@ -1,11 +1,11 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 
 import client from '@/client/backup';
 
 import suite from './_suite';
 
-const PROJECT_ID = generate.id();
-const VERSION_ID = generate.id();
+const PROJECT_ID = Utils.generate.id();
+const VERSION_ID = Utils.generate.id();
 
 suite('Client - Backup', ({ expect, stubFetch }) => {
   it('should have expected keys', () => {

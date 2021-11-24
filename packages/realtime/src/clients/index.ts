@@ -1,4 +1,4 @@
-import { BaseClientMap, PubSubClient, RedisClient } from '@voiceflow/socket-utils';
+import { BaseClientMap, PubSub, RedisClient } from '@voiceflow/socket-utils';
 import axios, { AxiosStatic } from 'axios';
 
 import Cache from './cache';
@@ -17,7 +17,7 @@ const buildClients = (options: BaseOptions): ClientMap => {
   };
 
   const redis = RedisClient(options);
-  const pubsub = PubSubClient({ ...options, redis });
+  const pubsub = new PubSub({ ...options, redis });
   const cache = new Cache({ redis });
   const voiceflowFactory = VoiceflowFactoryClient({ ...options, axios });
 

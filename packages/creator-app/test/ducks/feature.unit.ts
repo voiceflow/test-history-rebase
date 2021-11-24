@@ -1,10 +1,10 @@
-import { generate } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
 
 import * as Feature from '@/ducks/feature';
 
 import suite from './_suite';
 
-const FEATURE_ID: any = generate.id();
+const FEATURE_ID: any = Utils.generate.id();
 const TIMESTAMP = 1234500000;
 const FEATURE = { isEnabled: true, lastUpdated: TIMESTAMP };
 const MOCK_STATE: Feature.FeatureState = {
@@ -20,7 +20,7 @@ suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, mockDate, describeReduc
   describeReducer(({ expectAction }) => {
     describe('setFeaturesLoaded()', () => {
       it('should mark the features as loaded', () => {
-        const featureID: any = generate.id();
+        const featureID: any = Utils.generate.id();
         const timestamp = TIMESTAMP + 1000;
         mockDate(timestamp);
 
@@ -32,7 +32,7 @@ suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, mockDate, describeReduc
 
     describe('setWorkspaceFeaturesLoaded()', () => {
       it('should mark the workspace features as loaded', () => {
-        const featureID: any = generate.id();
+        const featureID: any = Utils.generate.id();
         const timestamp = TIMESTAMP + 1000;
         mockDate(timestamp);
 

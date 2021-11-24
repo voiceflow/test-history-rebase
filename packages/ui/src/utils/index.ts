@@ -2,7 +2,6 @@ export * from './colors';
 export * from './cookies';
 export * from './dom';
 export * from './fetch';
-export * from './generate';
 export * from './logger';
 export * from './query';
 export * from './refs';

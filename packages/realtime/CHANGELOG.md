@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.24.3...@voiceflow/realtime@1.24.4) (2021-11-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ioredis to v4.28.1 (vf-000) ([#4670](https://github.com/voiceflow/creator-app/issues/4670)) ([9f2cffa](https://github.com/voiceflow/creator-app/commit/9f2cffa1989d20a70df5fae1de14582564acbc54))
+
+
+
+
+
 ## [1.24.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.24.2...@voiceflow/realtime@1.24.3) (2021-11-24)
 
 

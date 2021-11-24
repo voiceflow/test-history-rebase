@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.2.1...@voiceflow/socket-utils@1.2.2) (2021-11-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ioredis to v4.28.1 (vf-000) ([#4670](https://github.com/voiceflow/creator-app/issues/4670)) ([9f2cffa](https://github.com/voiceflow/creator-app/commit/9f2cffa1989d20a70df5fae1de14582564acbc54))
+
+
+
+
+
 ## [1.2.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.2.0...@voiceflow/socket-utils@1.2.1) (2021-11-24)
 
 

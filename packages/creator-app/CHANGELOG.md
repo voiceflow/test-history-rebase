@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.16](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.15...@voiceflow/creator-app@1.543.16) (2021-11-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency react-dropzone to v10.2.2 (vf-000) ([#4671](https://github.com/voiceflow/creator-app/issues/4671)) ([6ac14c6](https://github.com/voiceflow/creator-app/commit/6ac14c61d84b9d4c960b26152ecbd4a0078d7af9))
+
+
+
+
+
 ## [1.543.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.14...@voiceflow/creator-app@1.543.15) (2021-11-24)
 
 **Note:** Version bump only for package @voiceflow/creator-app

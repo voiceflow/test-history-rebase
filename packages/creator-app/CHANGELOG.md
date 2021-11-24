@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.545.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.544.0...@voiceflow/creator-app@1.545.0) (2021-11-24)
+
+
+### Features
+
+* focus sibling step on deletion (VF-2252) ([#4666](https://github.com/voiceflow/creator-app/issues/4666)) ([8ffb5f1](https://github.com/voiceflow/creator-app/commit/8ffb5f1c2efde90c5514393ba1330571dd8ff358))
+
+
+
+
+
 # [1.544.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.20...@voiceflow/creator-app@1.544.0) (2021-11-24)
 
 

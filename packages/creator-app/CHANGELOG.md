@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.19](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.18...@voiceflow/creator-app@1.543.19) (2021-11-24)
+
+
+### Bug Fixes
+
+* fixes dialogs csv export (VF-2286) ([#4663](https://github.com/voiceflow/creator-app/issues/4663)) ([c804f8c](https://github.com/voiceflow/creator-app/commit/c804f8c7b8166cf9e9ade7456e9ead08547794d2))
+
+
+
+
+
 ## [1.543.18](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.17...@voiceflow/creator-app@1.543.18) (2021-11-24)
 
 

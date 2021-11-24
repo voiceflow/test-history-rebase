@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.24.2...@voiceflow/realtime@1.24.3) (2021-11-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @logux/server to v0.10.7 (vf-000) ([#4660](https://github.com/voiceflow/creator-app/issues/4660)) ([80c9606](https://github.com/voiceflow/creator-app/commit/80c9606129e3392c96124e65905d0745c35e7eca))
+
+
+
+
+
 ## [1.24.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.24.1...@voiceflow/realtime@1.24.2) (2021-11-23)
 
 **Note:** Version bump only for package @voiceflow/realtime

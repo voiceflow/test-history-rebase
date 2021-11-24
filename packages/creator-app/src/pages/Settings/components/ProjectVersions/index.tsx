@@ -18,7 +18,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useFeature, useModals, usePermission, useSetup, useTrackingEvents } from '@/hooks';
+import { useFeature, useHotKeys, useModals, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import { DEFAULT_MAX_WIDTH, getSettingsMetaProps } from '@/pages/Settings/constants';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -55,16 +55,41 @@ const versionListAdapter = (version: Models.Version<Models.VersionPlatformData> 
 const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, activeVersionID, setConfirm, goToCanvas, platform }) => {
   const [loading, setLoading] = React.useState(true);
   const [noMoreVersions, setNoMoreVersions] = React.useState(false);
-  const [versionList, setVersionList] = React.useState<ProjectVersion[]>([]);
+  const [versionListV2, setVersionListV2] = React.useState<ProjectVersion[]>([]);
   const [versions, setVersions] = React.useState<ProjectVersion[]>([]);
   const { name } = getSettingsMetaProps(platform);
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+
   const projectVersionsEnabled = useFeature(FeatureFlag.PROJECT_VERSIONS)?.isEnabled;
   const [hasFullVersionPermissions] = usePermission(Permission.FULL_PROJECT_VERSIONS);
   const [trackingEvents] = useTrackingEvents();
+  const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
 
   const upgradeModal = useModals(ModalType.PAYMENT);
-
   const onClickUpgrade = useCallback(() => upgradeModal.open(), [upgradeModal]);
+
+  const openManualSaveModal = () => {
+    manualSaveModal.open({
+      reFetchVersions: reFetchAllVersions,
+    });
+  };
+
+  const resetState = () => {
+    setNoMoreVersions(false);
+    setVersionListV2([]);
+    setVersions([]);
+    setLoading(true);
+  };
+
+  const fetchVersions = async () => {
+    await (projectVersionsEnabled ? fetchBackupsV2() : fetchBackups());
+  };
+
+  const reFetchAllVersions = async () => {
+    resetState();
+    await fetchVersions();
+    setLoading(false);
+  };
 
   const swapVersions = async (versionID: string) => {
     if (!projectID) {
@@ -98,7 +123,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
 
   const fetchBackupsV2 = React.useCallback(async () => {
     if (noMoreVersions) return;
-    const offset = versionList.length;
+    const offset = versionListV2.length;
 
     if (offset > FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS) {
       toast.error('Upgrade workspace plan to access older versions.');
@@ -114,8 +139,8 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
       if (moreVersions.length < limit) {
         setNoMoreVersions(true);
       }
-      setVersionList([
-        ...versionList,
+      setVersionListV2([
+        ...versionListV2,
         ...moreVersions
           .filter(({ _id }) => _id !== activeVersionID)
           .map((version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean }) => versionListAdapter(version)),
@@ -125,7 +150,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
     } finally {
       setLoading(false);
     }
-  }, [noMoreVersions, versionList]);
+  }, [noMoreVersions, versionListV2]);
 
   const fetchBackups = React.useCallback(async () => {
     if (!projectID) {
@@ -159,8 +184,10 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
 
   useSetup(() => {
     trackingEvents.trackActiveProjectVersionPage();
-    projectVersionsEnabled ? fetchBackupsV2() : fetchBackups();
+    fetchVersions();
   });
+
+  useHotKeys(Hotkey.OPEN_MANUAL_SAVE_MODAL, openManualSaveModal, { preventDefault: true, disable: !canEditCanvas }, [manualSaveModal.open]);
 
   return (
     <Box maxWidth={projectVersionsEnabled ? 900 : DEFAULT_MAX_WIDTH}>
@@ -189,7 +216,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
           <FadeLeftContainer>
             {projectVersionsEnabled ? (
               // Project Versions V2
-              <VersionList versions={versionList} swapVersions={swapVersions} fetchVersions={fetchBackupsV2} />
+              <VersionList versions={versionListV2} swapVersions={swapVersions} fetchVersions={fetchBackupsV2} />
             ) : (
               <>
                 {versions.length ? (

@@ -11,7 +11,7 @@ import { withEnterPress } from '@/utils/dom';
 const ManualSaveModal: React.FC = () => {
   const [saveName, setSaveName] = React.useState('');
   const [saving, setSaving] = React.useState(false);
-  const { isOpened, close } = useModals(ModalType.MANUAL_SAVE_MODAL);
+  const { isOpened, close, data } = useModals<{ reFetchVersions?: VoidFunction }>(ModalType.MANUAL_SAVE_MODAL);
   const activeVersionID = useSelector(Session.activeVersionIDSelector)!;
   const nameInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -32,6 +32,7 @@ const ManualSaveModal: React.FC = () => {
     try {
       await client.version.getVersionSnapshot(activeVersionID, saveName.trim());
       toast.success(`Saved new version '${saveName}'`);
+      data.reFetchVersions?.();
       reset();
       close();
     } catch (e) {

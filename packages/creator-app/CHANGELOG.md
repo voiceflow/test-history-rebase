@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.17](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.16...@voiceflow/creator-app@1.543.17) (2021-11-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency react-dnd-html5-backend to v14.0.2 (vf-000) ([#4661](https://github.com/voiceflow/creator-app/issues/4661)) ([5400acb](https://github.com/voiceflow/creator-app/commit/5400acb2fdad5eea5b16ea78195cf6418de24ac1))
+
+
+
+
+
 ## [1.543.16](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.15...@voiceflow/creator-app@1.543.16) (2021-11-24)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.10.11...@voiceflow/admin-app@1.10.12) (2021-11-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency reactstrap to v8.10.1 (vf-000) ([#4673](https://github.com/voiceflow/creator-app/issues/4673)) ([80575ae](https://github.com/voiceflow/creator-app/commit/80575ae095cd4e1624a19e91d418ea03366f5707))
+
+
+
+
+
 ## [1.10.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.10.10...@voiceflow/admin-app@1.10.11) (2021-11-24)
 
 **Note:** Version bump only for package @voiceflow/admin-app

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.20](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.19...@voiceflow/creator-app@1.543.20) (2021-11-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency redux-form to v8.3.8 (vf-000) ([#4674](https://github.com/voiceflow/creator-app/issues/4674)) ([ef2e1d7](https://github.com/voiceflow/creator-app/commit/ef2e1d76aa2752488c2462383db1fce1b7078ea7))
+
+
+
+
+
 ## [1.543.19](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.18...@voiceflow/creator-app@1.543.19) (2021-11-24)
 
 

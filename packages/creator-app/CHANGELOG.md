@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.545.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.545.0...@voiceflow/creator-app@1.545.1) (2021-11-24)
+
+
+### Bug Fixes
+
+* allow manual save hotkey on ver page (VF-2281) ([#4667](https://github.com/voiceflow/creator-app/issues/4667)) ([69b7dad](https://github.com/voiceflow/creator-app/commit/69b7dadf2dd46e40a2068d0b132e4b787fcb2617))
+
+
+
+
+
 # [1.545.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.544.0...@voiceflow/creator-app@1.545.0) (2021-11-24)
 
 

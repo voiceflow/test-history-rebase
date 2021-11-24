@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const handleJSONFileRead = <T extends Record<string, unknown>>(
   file: File,
   fileReader: FileReader,
@@ -13,4 +12,16 @@ export const handleJSONFileRead = <T extends Record<string, unknown>>(
   });
 
   return { data, fileName: file.name };
+};
+
+export const jsonToCSV = <T extends Record<string, string>[]>(data: T): string => {
+  if (!data.length) return '';
+  const keys = Object.keys(data[0]);
+  let csvData = `${keys.join(',')}\n`;
+  data.forEach((row) => {
+    const rowData = Object.values(row).map((strData) => `"${strData.replace(/"/g, '""')}"`);
+    csvData += rowData.join(',');
+    csvData += '\n';
+  });
+  return csvData;
 };

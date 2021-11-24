@@ -1,6 +1,5 @@
 import { toast } from '@voiceflow/ui';
 import fileSaver from 'file-saver';
-import JSON2CSVParser from 'json2csv/lib/JSON2CSVParser';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -11,6 +10,7 @@ import * as Tracking from '@/ducks/tracking';
 import { Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { DataTypes, download, downloadFromURL } from '@/utils/dom';
+import { jsonToCSV } from '@/utils/files';
 import * as Sentry from '@/vendors/sentry';
 
 export const exportCanvas =
@@ -24,7 +24,6 @@ export const exportCanvas =
 
     if (type === ExportFormat.DIALOGS) {
       const projectName = ProjectV2.active.nameSelector(state);
-      const json2csvParser = new JSON2CSVParser();
 
       try {
         const data = await client.api.version.exportResponses(versionID);
@@ -34,8 +33,7 @@ export const exportCanvas =
           return;
         }
 
-        const csvData = json2csvParser.parse(data);
-        download(`${projectName?.replace(/ /g, '_')}.csv`, csvData, DataTypes.CSV);
+        download(`${projectName?.replace(/ /g, '_')}.csv`, jsonToCSV<any>(data), DataTypes.CSV);
       } catch (error) {
         Sentry.error(error);
         toast.error('.csv export failed');

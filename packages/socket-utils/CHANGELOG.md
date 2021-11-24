@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.2.2...@voiceflow/socket-utils@1.3.0) (2021-11-24)
+
+
+### Features
+
+* decode and encode messages async (VF-2339) ([#4665](https://github.com/voiceflow/creator-app/issues/4665)) ([dac6d66](https://github.com/voiceflow/creator-app/commit/dac6d6627e8dccf7160e7f85bfd011a9b9a61d52))
+
+
+
+
+
 ## [1.2.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.2.1...@voiceflow/socket-utils@1.2.2) (2021-11-24)
 
 

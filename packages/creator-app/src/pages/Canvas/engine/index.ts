@@ -372,15 +372,37 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     this.transformation.reset();
   }
 
+  _getNextAvailableSibling(targetNodeID: string): string | null {
+    const { parentNode } = this.getNodeByID(targetNodeID);
+    const parentNodeData = parentNode ? this.getNodeByID(parentNode) : null;
+    if (!parentNodeData) {
+      return null;
+    }
+
+    const { combinedNodes } = parentNodeData;
+    const targetIndex = combinedNodes.findIndex((id) => id === targetNodeID);
+
+    // Try the next sibling first, if that doesnt exist, try the previous
+    return combinedNodes[targetIndex + 1] ?? combinedNodes[targetIndex - 1] ?? null;
+  }
+
   /**
    * remove any selected or focused nodes
    */
-  async removeActive({ disableConfirmPrompt }: { disableConfirmPrompt?: boolean } = {}): Promise<void> {
+  async removeActive(
+    { disableConfirmPrompt, focusNextChild }: { disableConfirmPrompt?: boolean; focusNextChild?: boolean } = { focusNextChild: true }
+  ): Promise<void> {
     if (this.activation.hasTargets) {
       // keep reference to targets before clearing
       const activeTargets = this.activation.getTargets();
+      const isSingleTarget = activeTargets.length === 1;
+      const siblingID = isSingleTarget && focusNextChild ? this._getNextAvailableSibling(activeTargets[0]) : null;
 
-      this.clearActivation();
+      if (siblingID && focusNextChild) {
+        this.focus.set(siblingID);
+      } else {
+        this.clearActivation();
+      }
       await this.node.removeMany(activeTargets, { disableConfirmPrompt });
     }
   }

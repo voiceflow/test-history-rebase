@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.543.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.13...@voiceflow/creator-app@1.543.14) (2021-11-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @logux/redux to v0.8.2 (vf-000) ([#4659](https://github.com/voiceflow/creator-app/issues/4659)) ([3ba5b71](https://github.com/voiceflow/creator-app/commit/3ba5b71dd4a32f311a97bab77bc808ed860ae16d))
+
+
+
+
+
 ## [1.543.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.543.12...@voiceflow/creator-app@1.543.13) (2021-11-24)
 
 

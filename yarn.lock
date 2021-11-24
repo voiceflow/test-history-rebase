@@ -3819,12 +3819,12 @@
   dependencies:
     nanoevents "^6.0.1"
 
-"@logux/redux@0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@logux/redux/-/redux-0.8.1.tgz#6aa6dc6e3962995d22f16035ca53df7104aa5035"
-  integrity sha512-dKwFqYmARzK8nkwshyYQuQyZg/biDm1zIsIFlsaEIzVu+Ddg+LR2nU06ekSwjhIH0OMruX0lFjBvWgqKPIVbHg==
+"@logux/redux@0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@logux/redux/-/redux-0.8.2.tgz#b4cae0bd43b0d48b69de80fc0e8163f2abf21556"
+  integrity sha512-2XiJSQypA6ZHA/c9d/TZUg10us0u1j2fE2xeWLqpihtt5E818uyEtNAKJE3U+aXfwqMO+W0rfTn70eNLW/FnYA==
   dependencies:
-    nanoevents "^6.0.0"
+    nanoevents "^6.0.2"
 
 "@logux/server@0.10.7":
   version "0.10.7"

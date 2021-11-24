@@ -62,10 +62,11 @@ const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
   const handlePreview = () => {
     window.open(`${generatePath(Path.PROJECT_CANVAS, { versionID: version.versionID })}?${QUERY_PARAMS.PREVIEWING}=true`);
   };
-
   return (
     <RowItem>
-      <ColumnItemContainer>{dayjs(version.created).fromNow()}</ColumnItemContainer>
+      <ColumnItemContainer>
+        <Tooltip title={dayjs(version.created).format('MMM Do, YYYY, h:mm A')}>{dayjs(version.created).fromNow()}</Tooltip>
+      </ColumnItemContainer>
       <ColumnItemContainer style={{ color: manualSave && !autoSaveFromRestore ? 'black' : '#62778c' }}>
         <NameWrapper title={name}>{name}</NameWrapper>
       </ColumnItemContainer>

@@ -1,3 +1,5 @@
+import { toast } from '@voiceflow/ui';
+
 import client from '@/client';
 import { Thunk } from '@/store/types';
 
@@ -8,6 +10,8 @@ export const saveProfilePicture =
   async (dispatch) => {
     await client.user.updateProfilePicture(url);
     dispatch(updateAccount({ image: url }));
+
+    toast.success('Profile picture successfully updated');
   };
 
 export const saveSocialProfilePicture =

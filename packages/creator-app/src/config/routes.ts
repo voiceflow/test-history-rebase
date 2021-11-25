@@ -94,6 +94,11 @@ export enum ProjectSettingsRoute {
   VERSION = 'version',
 }
 
+export enum AccountSettingsRoute {
+  PROFILE = 'profile',
+  INTEGRATIONS = 'integrations',
+}
+
 export const Path = {
   HOME: '/',
 
@@ -129,6 +134,9 @@ export const Path = {
   DASHBOARD: toPath(RootRoute.DASHBOARD),
 
   ACCOUNT: toPath(RootRoute.ACCOUNT),
+  ACCOUNT_PROFILE: toPath(RootRoute.ACCOUNT, AccountSettingsRoute.PROFILE),
+  ACCOUNT_INTEGRATIONS: toPath(RootRoute.ACCOUNT, AccountSettingsRoute.INTEGRATIONS),
+
   CONFIRM_ACCOUNT: toPath(RootRoute.ACCOUNT, 'confirm', ':token'),
 
   INVITE: toPath(RootRoute.INVITE),

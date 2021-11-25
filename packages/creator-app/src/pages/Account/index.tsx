@@ -7,12 +7,15 @@ import React, { Component } from 'react';
 import { UserMenu } from '@/components/Header/components';
 import Page from '@/components/Page';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
+import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
+import { connect, withFeatureSwitcher } from '@/hocs';
 import { ConnectedProps } from '@/types';
+
+import AccountPageV2 from './AccountPageV2';
 
 const UploadJustIconComponent = UploadJustIcon as React.FC<any>;
 
@@ -228,4 +231,6 @@ const mapDispatchToProps = {
 
 type ConnectedAccountPageProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountPage as any) as React.FC;
+const AccountPageV1 = connect(mapStateToProps, mapDispatchToProps)(AccountPage as any) as React.FC;
+
+export default withFeatureSwitcher(FeatureFlag.ACCOUNT_PAGE_REDESIGN, AccountPageV2)(AccountPageV1);

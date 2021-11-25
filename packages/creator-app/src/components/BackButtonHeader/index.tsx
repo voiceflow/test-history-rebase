@@ -33,7 +33,7 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps> = ({ render, header, sub
                 {navigateBackText && <NavigateBackTextContainer>{navigateBackText}</NavigateBackTextContainer>}
               </BackButtonComp>
             )}
-            {header}
+            <div style={{ fontSize: '18px' }}>{header}</div>
             <FlexEnd
               style={{
                 padding: 'none',

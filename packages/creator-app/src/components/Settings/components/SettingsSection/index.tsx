@@ -5,7 +5,7 @@ import { SectionVariants } from '@/components/Settings/constants';
 import SectionBox from '../SectionBox';
 import { SectionTitle, SettingsSectionContainer } from './components';
 
-const SettingsSection: React.FC<{ title: string; variant?: SectionVariants; noContentPadding?: boolean }> = ({
+const SettingsSection: React.FC<{ title?: string; variant?: SectionVariants; noContentPadding?: boolean }> = ({
   title,
   variant,
   noContentPadding = false,

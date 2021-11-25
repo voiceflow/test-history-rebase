@@ -249,6 +249,10 @@ export enum ModalType {
   TAG_MANAGER = 'tag-manager',
 
   DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agen',
+
+  PROFILE_NAME_MODAL = 'profile-name-modal',
+  CHANGE_PASSWORD_MODAL = 'change-password-modal',
+  CHANGE_EMAIL_MODAL = 'change-email-modal',
 }
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER]; // billing not included in seat roles

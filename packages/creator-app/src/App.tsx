@@ -21,6 +21,9 @@ import { SeoPage } from '@/constants/seo';
 import { GlobalSocketSubscriptionsLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
+import ChangeEmailModal from '@/pages/Account/components/ChangeEmailModal';
+import ChangePasswordModal from '@/pages/Account/components/ChangePasswordModal';
+import ProfileNameModal from '@/pages/Account/components/ProfileNameModal';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import TagManagerModal from '@/pages/Conversations/components/TagManagerModal';
 import ImportModal from '@/pages/Dashboard/components/ImportModal';
@@ -54,6 +57,9 @@ const App = () => {
       <IntercomChat />
       <CollaboratorsModal />
       <ImportModal />
+      <ProfileNameModal />
+      <ChangeEmailModal />
+      <ChangePasswordModal />
       <LoadingModal />
       <TagManagerModal />
 

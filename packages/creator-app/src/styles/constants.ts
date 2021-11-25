@@ -35,6 +35,7 @@ export enum Identifier {
   DESIGN_TAB = 'vf-design-tab',
   LAUNCH_TAB = 'vf-launch-tab',
   SETTINGS_PAGE = 'vf-settings-page',
+  ACCOUNT_PAGE = 'vf-account-page',
   TEST_TYPE_SELECTOR = 'vf-test-type-selector',
   SHARE_BUTTON = 'vf-share-button',
   SHARE_COPY_LINK_BUTTON = 'vf-share-link-button',

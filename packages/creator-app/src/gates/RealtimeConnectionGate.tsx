@@ -7,7 +7,7 @@ import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { withFeatureGate } from '@/hocs';
-import { useBeforeUnload, useSelector, useSetup, useStore, useTeardown } from '@/hooks';
+import { useBeforeUnload, useFeature, useSelector, useSetup, useStore, useTeardown } from '@/hooks';
 
 import ConnectionWarning from './RealtimeLoadingGate/components/RealtimeConnectionWarning';
 
@@ -20,6 +20,7 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
   const userID = useSelector(Account.userIDSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
   const authToken = useSelector(Session.authTokenSelector);
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
   const [isSynchronized, setSynchronized] = React.useState(false);
   const [isConnected, setConnected] = React.useState(false);
@@ -74,7 +75,8 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
 
   return (
     <LoadingGate label="Collaboration" isLoaded={isSynchronized}>
-      {isConnected ? children : <ConnectionWarning />}
+      {/* eslint-disable-next-line no-nested-ternary */}
+      {atomicActions.isEnabled ? isConnected ? children : <ConnectionWarning /> : children}
     </LoadingGate>
   );
 };

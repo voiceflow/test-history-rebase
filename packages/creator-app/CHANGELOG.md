@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.547.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.546.0...@voiceflow/creator-app@1.547.0) (2021-11-25)
+
+
+### Bug Fixes
+
+* silently fail connections to realtime service (VF-2352) ([#4685](https://github.com/voiceflow/creator-app/issues/4685)) ([ddaf5e0](https://github.com/voiceflow/creator-app/commit/ddaf5e0330feb8fb9dd2bbc83c553ce683eb8417))
+
+
+### Features
+
+* account page redesign ui/ux (VF-2265) ([#4657](https://github.com/voiceflow/creator-app/issues/4657)) ([a0b79be](https://github.com/voiceflow/creator-app/commit/a0b79befc80f9db322fcad67ba2662dcfe2722b8))
+
+
+
+
+
 # [1.546.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.545.1...@voiceflow/creator-app@1.546.0) (2021-11-25)
 
 

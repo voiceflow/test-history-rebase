@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.547.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.547.1...@voiceflow/creator-app@1.547.2) (2021-11-25)
+
+
+### Bug Fixes
+
+* on block click return to canvas mode (VF-2033) ([#4686](https://github.com/voiceflow/creator-app/issues/4686)) ([a9327e5](https://github.com/voiceflow/creator-app/commit/a9327e5a0a3dd9fa9b637dedff3be79ca6db235d))
+
+
+
+
+
 ## [1.547.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.547.0...@voiceflow/creator-app@1.547.1) (2021-11-25)
 
 **Note:** Version bump only for package @voiceflow/creator-app

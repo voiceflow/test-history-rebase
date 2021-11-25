@@ -13,6 +13,7 @@ export const useCanvasRendered = () => {
   const renderHandler = React.useCallback(() => setRendered(true), []);
 
   const initialRender = React.useRef(false);
+
   if (!initialRender.current && !isRendered) {
     engine.emitter.once(CanvasAction.RENDERED, renderHandler);
   }

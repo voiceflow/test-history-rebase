@@ -36,7 +36,6 @@ const PortLink: React.FC<PortLinkProps> = ({ linkID, isHighlighted }) => {
 
   useDidUpdateEffect(() => {
     const points = link?.data?.points || null;
-
     onReverseUpdate(points);
   }, [straight, link?.data?.points]);
 

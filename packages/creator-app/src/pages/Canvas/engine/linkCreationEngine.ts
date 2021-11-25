@@ -1,3 +1,6 @@
+import { RefObject } from 'react';
+
+import { buildPath, getMarkerAttrs, getPathPoints, getVirtualPoints } from '@/pages/Canvas/components/Link';
 import { NewLinkAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
 
@@ -8,6 +11,10 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
   log = this.engine.log.child('link-creation');
 
   sourcePortID: string | null = null;
+
+  linkEl: RefObject<SVGElement> | null = null;
+
+  markerEl: RefObject<SVGMarkerElement> | null = null;
 
   activeTargetPortID: string | null = null;
 
@@ -33,6 +40,31 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     const port = this.engine.getPortByID(this.sourcePortID!);
 
     return nodeID === port.nodeID;
+  }
+
+  setElements(linkEl: RefObject<SVGElement> | null, markerEl: RefObject<SVGMarkerElement> | null) {
+    this.linkEl = linkEl;
+    this.markerEl = markerEl;
+  }
+
+  redrawNewLink() {
+    if (!this.markerEl?.current || !this.linkEl?.current) {
+      return;
+    }
+    const isStraightLinks = this.engine.isStraightLinks();
+
+    const [endX, endY] = this.engine.getCanvasMousePosition();
+    const points = this.getLinkPoints();
+    const start = points![0];
+    const nextPoints: Pair<Point> = [start, [endX, endY]];
+    const virtualPoints = getVirtualPoints(nextPoints)!;
+    const pathPoints = getPathPoints(virtualPoints, { straight: isStraightLinks });
+    const markerAttrs = getMarkerAttrs(pathPoints, isStraightLinks!);
+    const path = buildPath(pathPoints, isStraightLinks!);
+
+    this.linkEl.current.setAttribute('d', path);
+    Object.keys(markerAttrs).forEach((attr) => this.markerEl!.current!.setAttribute(attr, markerAttrs[attr as keyof typeof markerAttrs]));
+    this.engine.portLinkInstances.get(this.engine.linkCreation.sourcePortID!)?.api.updatePosition(pathPoints);
   }
 
   canTargetNode(nodeID: string) {
@@ -144,7 +176,6 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
 
     this.engine.highlight.reset();
     this.engine.removeClass(CANVAS_CREATING_LINK_CLASSNAME);
-
     this.sourcePortID = null;
     this.activeTargetPortID = null;
     this.mouseOrigin = null;

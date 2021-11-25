@@ -360,7 +360,6 @@ class Canvas extends React.PureComponent<
 
   onMouseDown = (event: MouseEvent) => {
     const { onMouseDown } = this.props;
-
     onMouseDown?.(event);
     this.controls.mousedown(event);
   };
@@ -386,6 +385,12 @@ class Canvas extends React.PureComponent<
     this.controls.keydown(event);
   };
 
+  onResizeWindow = () => {
+    const rect = this.rootRef.current!.getBoundingClientRect();
+
+    this.rect = rect;
+  };
+
   componentDidMount() {
     this.props.onRegister?.(this.api);
 
@@ -404,6 +409,8 @@ class Canvas extends React.PureComponent<
       addListener('gesturechange');
     }
 
+    window.addEventListener('resize', this.onResizeWindow);
+
     this.rootRef.current?.addEventListener('keyup', this.onKeyUp);
     this.rootRef.current?.addEventListener('keydown', this.onKeyDown);
     this.rootRef.current?.addEventListener('mousedown', this.onMouseDown);
@@ -413,6 +420,8 @@ class Canvas extends React.PureComponent<
     this.props.onRegister?.(null);
 
     this.controlTeardownHandlers.forEach((teardownHandler) => teardownHandler());
+
+    window.removeEventListener('resize', this.onResizeWindow);
 
     this.rootRef.current?.removeEventListener('keyup', this.onKeyUp);
     this.rootRef.current?.removeEventListener('keydown', this.onKeyDown);

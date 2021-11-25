@@ -639,12 +639,12 @@ class NodeManager extends EngineConsumer {
     }
   }
 
-  async drag(nodeID: string, movement: Pair<number>): Promise<void> {
+  async drag(nodeID: string, movement: Pair<number>, { translateFirst }: { translateFirst?: boolean } = {}): Promise<void> {
     if (this.engine.selection.isOneOfManyTargets(nodeID)) {
       const targets = this.engine.selection.getTargets();
 
-      await this.engine.drag.setGroup(targets);
-      await this.translateMany(targets, movement);
+      await (translateFirst ? this.translateMany(targets, movement) : this.engine.drag.setGroup(targets));
+      await (translateFirst ? this.engine.drag.setGroup(targets) : this.translateMany(targets, movement));
     } else if (this.engine.transformation.isActive && !this.engine.focus.isTarget(nodeID)) {
       this.engine.focus.reset();
     } else {
@@ -652,8 +652,8 @@ class NodeManager extends EngineConsumer {
         this.engine.selection.reset();
       }
 
-      await this.engine.drag.setTarget(nodeID);
-      await this.translate(nodeID, movement);
+      await (translateFirst ? this.translate(nodeID, movement) : this.engine.drag.setTarget(nodeID));
+      await (translateFirst ? this.engine.drag.setTarget(nodeID) : this.translate(nodeID, movement));
       this.engine.transformation.components.transformOverlay?.translate(movement);
 
       this.engine.merge.updateCandidates();

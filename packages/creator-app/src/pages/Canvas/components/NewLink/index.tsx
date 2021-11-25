@@ -17,8 +17,8 @@ import { Identifier } from '@/styles/constants';
 import { Container } from './components';
 import { useNewLinkAPI } from './hooks';
 
-const NEW_LINK_ID = 'newLink';
-const HEAD_MARKER = buildHeadMarker(NEW_LINK_ID);
+export const NEW_LINK_ID = 'newLink';
+export const HEAD_MARKER = buildHeadMarker(NEW_LINK_ID);
 
 const NewLink: React.FC = () => {
   const engine = React.useContext(EngineContext)!;

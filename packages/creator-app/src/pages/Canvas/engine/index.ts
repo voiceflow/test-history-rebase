@@ -222,13 +222,13 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   isStraightLinks = () => this.select(ProjectV2.active.isStraightLinksSelector);
 
   // entity registration methods
-
   registerCanvas(canvas: CanvasAPI | null) {
     this.canvas = canvas;
 
     if (canvas) {
       this.emitter.emit(CanvasAction.RENDERED);
     }
+
     this.log.debug(this.log.init(canvas ? 'registered' : 'expired'), this.log.value('<Canvas>'));
   }
 

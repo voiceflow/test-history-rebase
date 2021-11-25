@@ -23,6 +23,7 @@ export interface UIState {
   canvasOnly: boolean;
   previewing: boolean;
   zoomType: ZoomType;
+  isAutoPanning: boolean;
 }
 
 export const STATE_KEY = 'ui';
@@ -39,6 +40,7 @@ export const INITIAL_STATE = {
   canvasOnly: false,
   previewing: false,
   zoomType: ZoomType.REGULAR,
+  isAutoPanning: false,
 };
 
 const PERSIST_CONFIG = {
@@ -57,6 +59,7 @@ export enum UIAction {
   HIDE_CREATOR_MENU = 'UI:CREATOR_MENU:HIDE',
   TOGGLE_CANVAS_ONLY = 'UI:TOGGLE_CANVAS_ONLY',
   SET_VIEWING_VERSION = 'UI:SET_VIEWING_VERSION',
+  SET_AUTO_PANNING = 'UI:SET_AUTO_PANNING',
 }
 
 // action types
@@ -79,6 +82,8 @@ export type ToggleCanvasOnly = Action<UIAction.TOGGLE_CANVAS_ONLY>;
 
 export type SetPreviewingVersion = Action<UIAction.SET_VIEWING_VERSION, boolean>;
 
+export type SetIsAutoPanning = Action<UIAction.SET_AUTO_PANNING, boolean>;
+
 type AnyUIAction =
   | ToggleBlockMenuSection
   | SetActiveCreatorMenu
@@ -88,7 +93,8 @@ type AnyUIAction =
   | ShowCreatorMenu
   | ToggleCanvasOnly
   | SetPreviewingVersion
-  | SetZoomType;
+  | SetZoomType
+  | SetIsAutoPanning;
 // reducers
 
 export const toggleBlockMenuSectionReducer: Reducer<UIState, ToggleBlockMenuSection> = (state, { payload: section }) => {
@@ -152,6 +158,11 @@ export const setPreviewingVersionReducer: Reducer<UIState, SetPreviewingVersion>
   previewing,
 });
 
+export const setIsAutoPanningReducer: Reducer<UIState, SetIsAutoPanning> = (state, { payload: isAutoPanning }) => ({
+  ...state,
+  isAutoPanning,
+});
+
 const uiReducer: RootReducer<UIState, AnyUIAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UIAction.TOGGLE_BLOCK_MENU_SECTION:
@@ -172,6 +183,8 @@ const uiReducer: RootReducer<UIState, AnyUIAction> = (state = INITIAL_STATE, act
       return setPreviewingVersionReducer(state, action);
     case UIAction.SET_ZOOM_TYPE:
       return setZoomTypeReducer(state, action);
+    case UIAction.SET_AUTO_PANNING:
+      return setIsAutoPanningReducer(state, action);
     default:
       return state;
   }
@@ -197,6 +210,8 @@ export const isCanvasOnlyShowingSelector = createSelector(rootSelector, ({ canva
 
 export const isPreviewingVersion = createSelector(rootSelector, ({ previewing }) => previewing);
 
+export const isAutoPanningSelector = createSelector(rootSelector, ({ isAutoPanning }) => isAutoPanning);
+
 //  action creators
 
 export const toggleBlockMenuSection = (section: BlockCategory): ToggleBlockMenuSection => createAction(UIAction.TOGGLE_BLOCK_MENU_SECTION, section);
@@ -217,3 +232,5 @@ export const setZoomType = (zoomType: ZoomType): SetZoomType => createAction(UIA
 export const toggleCanvasOnly = (): ToggleCanvasOnly => createAction(UIAction.TOGGLE_CANVAS_ONLY);
 
 export const setPreviewingVersion = (previewing: boolean): SetPreviewingVersion => createAction(UIAction.SET_VIEWING_VERSION, previewing);
+
+export const setIsAutopanning = (isAutoPanning: boolean): SetIsAutoPanning => createAction(UIAction.SET_AUTO_PANNING, isAutoPanning);

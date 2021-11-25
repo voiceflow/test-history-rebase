@@ -80,6 +80,10 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
     this.log.debug(this.log.init('merge system initialized for node'), this.log.slug(sourceNodeID));
   }
 
+  refreshCandidateDetection(sourceNodeID: string) {
+    this.candidates = getCandidates(Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID).reverse(), this.engine);
+  }
+
   updateTargetDetection() {
     this.isWithinTarget = this.createBoundaryTest(this.targetNodeID!);
   }

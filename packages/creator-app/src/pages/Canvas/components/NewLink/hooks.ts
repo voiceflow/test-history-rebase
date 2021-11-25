@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux';
 
 import { BlockType } from '@/constants';
 import * as Realtime from '@/ducks/realtime';
-import { useRAF } from '@/hooks';
+import * as UI from '@/ducks/ui';
+import { useDidUpdateEffect, useRAF, useSelector } from '@/hooks';
 import { buildPath, getMarkerAttrs, getPathPoints, getVirtualPoints } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
@@ -26,6 +27,8 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const isPinned = React.useRef(false);
   const removeEventListeners = React.useRef(Utils.functional.noop);
   const engine = React.useContext(EngineContext)!;
+  const autoPanRef = React.useRef(false);
+  const isAutoPanning = useSelector(UI.isAutoPanningSelector);
   const [isVisible, setVisible] = React.useState(false);
 
   const [mouseMoveStylesScheduler] = useRAF();
@@ -36,8 +39,21 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
     []
   );
 
+  React.useEffect(() => {
+    // eslint-disable-next-line xss/no-mixed-html
+    engine.linkCreation.setElements(ref, markerRef);
+
+    return () => {
+      engine.linkCreation.setElements(null, null);
+    };
+  }, []);
+
+  useDidUpdateEffect(() => {
+    autoPanRef.current = isAutoPanning;
+  }, [isAutoPanning]);
+
   const onMouseMove = React.useCallback(() => {
-    if (isPinned.current) return;
+    if (isPinned.current || autoPanRef.current) return;
 
     const [endX, endY] = engine.getCanvasMousePosition();
 
@@ -45,25 +61,12 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
     const nextPoints: Pair<Point> = [start, [endX, endY]];
     const virtualPoints = getVirtualPoints(nextPoints)!;
-    const straight = engine.isStraightLinks();
-    const pathPoints = getPathPoints(virtualPoints, { straight });
 
     points.current = nextPoints;
     moveLink({ points: virtualPoints });
 
-    const linkEl = ref.current!;
-    const markerEl = markerRef.current!;
-
     mouseMoveStylesScheduler(() => {
-      const marketAttrs = getMarkerAttrs(pathPoints, straight);
-
-      const path = buildPath(pathPoints, straight);
-
-      linkEl.setAttribute('d', path);
-
-      Object.keys(marketAttrs).forEach((attr) => markerEl.setAttribute(attr, marketAttrs[attr as keyof typeof marketAttrs]));
-
-      engine.portLinkInstances.get(engine.linkCreation.sourcePortID!)?.api.updatePosition(pathPoints);
+      engine.linkCreation.redrawNewLink();
     });
   }, [buildPath]);
 

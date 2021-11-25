@@ -1,6 +1,8 @@
 import { PathPoints } from '@/types';
 
-export const buildHeadMarker = (id: string): string => `url(#head-${id})`;
+export const buildHeadID = (id: string) => `#head-${id}`;
+
+export const buildHeadMarker = (id: string): string => `url(${buildHeadID(id)})`;
 
 export interface MarkerAttrs {
   orient: string;

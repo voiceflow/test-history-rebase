@@ -7,8 +7,9 @@ import { useDrop } from 'react-dnd';
 
 import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
+import * as Router from '@/ducks/router';
 import { compose } from '@/hocs';
-import { useEnableDisable, useHover } from '@/hooks';
+import { useDispatch, useEnableDisable, useHover } from '@/hooks';
 import Block, { HEADER_HEIGHT } from '@/pages/Canvas/components/Block';
 import PlayButton from '@/pages/Canvas/components/PlayButton';
 import { NODE_DISABLED_CLASSNAME, NODE_HOVERED_CLASSNAME } from '@/pages/Canvas/constants';
@@ -23,6 +24,7 @@ import { ReorderIndicator, SourceReorderIndicator, Styles, TerminalReorderIndica
 const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+  const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
   const blockRef = React.useRef<BlockAPI>(null);
 
@@ -151,6 +153,10 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   const captureDropRef = React.useCallback((api: BlockAPI | null) => api && connectBlockDrop(api.ref.current!), [connectBlockDrop]);
 
   const onClick = React.useCallback((event: React.MouseEvent) => {
+    if (engine.prototype.onPrototypePage()) {
+      goToCurrentCanvas();
+    }
+
     if (event.defaultPrevented || !engine.comment.isActive) {
       return;
     }

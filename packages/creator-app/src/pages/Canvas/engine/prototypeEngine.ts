@@ -1,5 +1,7 @@
 import { Utils } from '@voiceflow/common';
+import { matchPath } from 'react-router';
 
+import { Path } from '@/config/routes';
 import * as Prototype from '@/ducks/prototype';
 
 import { EngineConsumer } from './utils';
@@ -18,6 +20,14 @@ class PrototypeEngine extends EngineConsumer {
    */
   isNodeHighlightedLink(nodeID: string) {
     return this.highlightedNodeIDs.includes(nodeID);
+  }
+
+  onPrototypePage() {
+    const currentPath = this.engine.currentPathName();
+    const match = matchPath(currentPath, {
+      path: Path.PROJECT_PROTOTYPE,
+    });
+    return !!match;
   }
 
   /**

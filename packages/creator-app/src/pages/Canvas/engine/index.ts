@@ -221,6 +221,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   isStraightLinks = () => this.select(ProjectV2.active.isStraightLinksSelector);
 
+  currentPathName = () => this.select(Router.pathnameSelector);
+
   // entity registration methods
   registerCanvas(canvas: CanvasAPI | null) {
     this.canvas = canvas;

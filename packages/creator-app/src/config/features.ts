@@ -12,7 +12,6 @@ const ATOMIC_ACTIONS_ENABLED = process.env.FF_ATOMIC_ACTIONS === 'true';
 const GOOGLE_CREATE_ENABLED = process.env.FF_GOOGLE_CREATE === 'true';
 const DIALOGFLOW_ENABLED = process.env.FF_DIALOGFLOW === 'true';
 const TOPICS_AND_COMPONENTS_ENABLED = process.env.FF_TOPICS_AND_COMPONENTS === 'true';
-const PROJECT_VERSIONS_ENABLED = process.env.FF_PROJECT_VERSIONS === 'true';
 const ACCOUNT_PAGE_REDESIGN_ENABLED = process.env.FF_ACCOUNT_PAGE_REDESIGN === 'true';
 
 export enum FeatureFlag {
@@ -37,8 +36,6 @@ export enum FeatureFlag {
   DIALOGFLOW = 'dialogflow',
   GOOGLE_CREATE = 'google_create',
 
-  PROJECT_VERSIONS = 'project_versions',
-
   ACCOUNT_PAGE_REDESIGN = 'account_page_redesign',
 }
 
@@ -54,6 +51,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.DIALOGFLOW]: DIALOGFLOW_ENABLED,
   [FeatureFlag.GOOGLE_CREATE]: GOOGLE_CREATE_ENABLED,
   [FeatureFlag.TOPICS_AND_COMPONENTS]: TOPICS_AND_COMPONENTS_ENABLED,
-  [FeatureFlag.PROJECT_VERSIONS]: PROJECT_VERSIONS_ENABLED,
   [FeatureFlag.ACCOUNT_PAGE_REDESIGN]: ACCOUNT_PAGE_REDESIGN_ENABLED,
 };

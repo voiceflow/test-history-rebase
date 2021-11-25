@@ -6,7 +6,6 @@ import { Redirect, Route, RouteComponentProps, Switch, useRouteMatch } from 'rea
 
 import { RemoveIntercom } from '@/components/IntercomChat';
 import ProjectPage from '@/components/ProjectPage';
-import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import { ExportProvider, PublishProvider } from '@/contexts';
@@ -25,17 +24,7 @@ import {
   WorkspaceSubscriptionGate,
 } from '@/gates';
 import { compose, connect, lazy, withBatchLoadingGate } from '@/hocs';
-import {
-  useCanvasTracking,
-  useDispatch,
-  useEventualEngine,
-  useFeature,
-  useLayoutDidUpdate,
-  useModals,
-  useSelector,
-  useTeardown,
-  useTheme,
-} from '@/hooks';
+import { useCanvasTracking, useDispatch, useEventualEngine, useLayoutDidUpdate, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRouteIMM';
 import ManualSaveModal from '@/pages/Canvas/components/ManualSaveModal';
@@ -74,7 +63,6 @@ const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const isDiagramRoute = useRouteMatch(DIAGRAM_ROUTES);
   const setPreviewing = useDispatch(UI.setPreviewingVersion);
-  const projectVersionsEnabled = useFeature(FeatureFlag.PROJECT_VERSIONS)?.isEnabled;
 
   const inactivityModal = useModals(ModalType.INACTIVITY);
 
@@ -173,7 +161,7 @@ const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({
 
                       <Redirect to={Path.PROJECT_CANVAS} />
                     </Switch>
-                    {projectVersionsEnabled && <ManualSaveModal />}
+                    <ManualSaveModal />
                   </ProjectPage>
                 </LastCreatedComponentProvider>
               </SelectionProvider>

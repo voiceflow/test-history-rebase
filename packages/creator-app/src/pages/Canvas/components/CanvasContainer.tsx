@@ -3,13 +3,12 @@ import cn from 'classnames';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import { FeatureFlag } from '@/config/features';
 import { BlockType, ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';
 import { connect, styled } from '@/hocs';
-import { useActiveModal, useDispatch, useFeature, useHotKeys, useModals, useRegistration } from '@/hooks';
+import { useActiveModal, useDispatch, useHotKeys, useModals, useRegistration } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
@@ -67,7 +66,6 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
   const spotlight = React.useContext(SpotlightContext)!;
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
-  const projectVersionsEnabled = useFeature(FeatureFlag.PROJECT_VERSIONS)?.isEnabled;
   const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
   const imModal = useModals(ModalType.INTERACTION_MODEL);
 
@@ -102,7 +100,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
 
   const onSave = React.useCallback((e) => {
     if (e.shiftKey) return;
-    const projectVersionsV2Message = projectVersionsEnabled ? (
+    const projectVersionsV2Message = (
       <>
         Voiceflow automatically saves your work.
         <br />
@@ -117,8 +115,6 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
           Manually Save Version
         </ToastCallToAction>
       </>
-    ) : (
-      'Voiceflow automatically saves your work.'
     );
     toast.info(projectVersionsV2Message, { toastId: 'canvas-container-save-hotkey-info' });
   }, []);

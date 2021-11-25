@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.547.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.547.2...@voiceflow/creator-app@1.547.3) (2021-11-25)
+
+
+### Bug Fixes
+
+* move displayed cursors in reaction to canvas panning (VF-2311) ([#4635](https://github.com/voiceflow/creator-app/issues/4635)) ([69f3044](https://github.com/voiceflow/creator-app/commit/69f3044630d3b2bd44c7743814c3b36483c45d49))
+
+
+
+
+
 ## [1.547.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.547.1...@voiceflow/creator-app@1.547.2) (2021-11-25)
 
 

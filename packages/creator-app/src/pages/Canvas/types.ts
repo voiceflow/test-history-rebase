@@ -1,10 +1,11 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { MovementCalculator } from '@/components/Canvas/types';
 import { Comment, LockOwner } from '@/models';
 import { Either, Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
+
+import { RealtimeCursorEvents } from './components/RealtimeOverlay/contexts';
 
 export interface MarkupTransform {
   scale: number;
@@ -72,10 +73,8 @@ export interface MergeLayerAPI<T extends HTMLElement = HTMLElement> {
   clearTransparent: () => void;
 }
 
-export interface RealtimeCursorOverlayAPI {
+export interface RealtimeCursorOverlayAPI extends RealtimeCursorEvents {
   moveMouse: (tabID: string, location: Point) => void;
-  zoomViewport: (calculateMovement: MovementCalculator) => void;
-  panViewport: (movement: Pair<number>) => void;
   removeUser: (tabID: string) => void;
 }
 

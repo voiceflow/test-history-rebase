@@ -8,6 +8,7 @@ import { cursorCoords$, useObservableEffect } from '@/store/observables';
 import { composeRefs } from '@/utils/react';
 
 import { ANIMATION_DURATION, CURSOR_EXPIRY_TIMEOUT } from '../../../constants';
+import { RealtimeCursorContext } from '../../../contexts';
 import Cursor from '../../RealtimeOverlayCursor';
 import Nametag from '../../RealtimeOverlayNametag';
 
@@ -28,6 +29,7 @@ export interface RealtimeCursorProps {
 const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ source$, diagramID, creatorID, name, color: rawColor }, ref) => {
   const [stylesScheduler] = useRAF();
   const eventualEngine = React.useContext(EventualEngineContext)!;
+  const cursorContext = React.useContext(RealtimeCursorContext.Context)!;
 
   const state = React.useRef(CursorState.HIDDEN);
   const innerRef = React.useRef<HTMLDivElement>(null);
@@ -36,6 +38,7 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
   const fadeoutTimerRef = React.useRef<NodeJS.Timer | null>(null);
   const color = React.useMemo(() => (rawColor.includes('|') ? `#${rawColor.split('|')[0]}` : '#f8758f'), [rawColor]);
   const backgroundColor = React.useMemo(() => (rawColor.includes('|') ? `#${rawColor.split('|')[1]}` : '#fddae1'), [rawColor]);
+  const prevCoords = React.useRef<Realtime.Point | null>(null);
 
   const hideCursor = React.useCallback(() => {
     state.current = CursorState.HIDDEN;
@@ -66,6 +69,22 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
     }
   }, []);
 
+  const translateCursor = React.useCallback((translate: (point: Realtime.Point) => Realtime.Point) => {
+    const point = prevCoords.current;
+    if (!point) return;
+
+    const nextPoint: Realtime.Point = translate(point);
+    prevCoords.current = nextPoint;
+
+    stylesScheduler(() => {
+      const cursorEl = innerRef.current;
+      if (!cursorEl) return;
+
+      cursorEl.style.left = `${nextPoint[0]}px`;
+      cursorEl.style.top = `${nextPoint[1]}px`;
+    });
+  }, []);
+
   useObservableEffect(
     source$,
     (coords) => {
@@ -78,6 +97,7 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
 
       // using eventual engine to avoid having to re-bind this subscription when changing diagrams
       const point = eventualEngine.get()!.canvas!.reverseTransformPoint(coords, true);
+      prevCoords.current = point;
 
       stylesScheduler(() => {
         const cursorEl = innerRef.current;
@@ -98,6 +118,18 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
       setTimers();
     },
     [hideCursor, setTimers, clearTimers]
+  );
+
+  cursorContext.useSubscription('panViewport', ([moveX, moveY]) => translateCursor(([x, y]) => [x + moveX, y + moveY]), [translateCursor]);
+  cursorContext.useSubscription(
+    'zoomViewport',
+    (calculateMovement) =>
+      translateCursor((point) => {
+        const [moveX, moveY] = calculateMovement(point);
+
+        return [point[0] + moveX, point[1] + moveY];
+      }),
+    [translateCursor]
   );
 
   React.useEffect(() => {

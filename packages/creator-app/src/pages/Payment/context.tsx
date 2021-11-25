@@ -321,6 +321,8 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
   return <PaymentContext.Provider value={api}>{children}</PaymentContext.Provider>;
 };
 
-export const withPaymentProvider = withProvider(withStripe(PaymentContextProvider));
+export const withPaymentProvider = withProvider(withStripe(PaymentContextProvider) as any) as <P>(
+  component: React.ComponentType<P>
+) => React.ComponentType<P>;
 
 export const withPayment = withContext(PaymentContext, 'payment');

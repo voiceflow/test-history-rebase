@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.546.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.545.1...@voiceflow/creator-app@1.546.0) (2021-11-25)
+
+
+### Features
+
+* autopan on drag  (VF-2250) ([#4622](https://github.com/voiceflow/creator-app/issues/4622)) ([a7291be](https://github.com/voiceflow/creator-app/commit/a7291befe76ba93365ab3627ba891bc0f80a134f))
+* remove version v2 FF (VF-2223) ([#4684](https://github.com/voiceflow/creator-app/issues/4684)) ([c95feab](https://github.com/voiceflow/creator-app/commit/c95feabbb8916e80b7119667487e5c7254c3b3d7))
+
+
+
+
+
 ## [1.545.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.545.0...@voiceflow/creator-app@1.545.1) (2021-11-24)
 
 

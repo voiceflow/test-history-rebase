@@ -1,5 +1,6 @@
 import { toast } from '@voiceflow/ui';
 import fileSaver from 'file-saver';
+import _orderBy from 'lodash/orderBy';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -28,12 +29,25 @@ export const exportCanvas =
       try {
         const data = await client.api.version.exportResponses(versionID);
 
-        if (data.length === 0) {
+        if (!data.length) {
           toast.error('No responses to export');
+
           return;
         }
 
-        download(`${projectName?.replace(/ /g, '_')}.csv`, jsonToCSV<any>(data), DataTypes.CSV);
+        // FIXME: remove any when the NoReply/NoMatch PR is merged, cause types are blocked by this PR
+        const jsonToExport = _orderBy(data as any[], ['diagramID', 'blockID']).map(
+          ({ blockID, blockName, diagramID, blockColor, diagramName, blockContent }) => ({
+            'canvas id': diagramID,
+            'canvas name': diagramName,
+            'block id': blockID,
+            'block name': blockName,
+            'block content': blockContent,
+            'block color': blockColor || 'gray',
+          })
+        );
+
+        download(`${projectName?.replace(/ /g, '_')}.csv`, jsonToCSV(jsonToExport), DataTypes.CSV);
       } catch (error) {
         Sentry.error(error);
         toast.error('.csv export failed');

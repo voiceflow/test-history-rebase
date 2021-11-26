@@ -14,14 +14,17 @@ export const handleJSONFileRead = <T extends Record<string, unknown>>(
   return { data, fileName: file.name };
 };
 
-export const jsonToCSV = <T extends Record<string, string>[]>(data: T): string => {
+export const jsonToCSV = (data: object[]): string => {
   if (!data.length) return '';
+
   const keys = Object.keys(data[0]);
-  let csvData = `${keys.join(',')}\n`;
-  data.forEach((row) => {
-    const rowData = Object.values(row).map((strData) => `"${strData.replace(/"/g, '""')}"`);
-    csvData += rowData.join(',');
-    csvData += '\n';
-  });
-  return csvData;
+
+  return [
+    `${keys.join(',')}`,
+    ...data.map((row) =>
+      Object.values(row)
+        .map((value) => `"${String(value).replace(/"/g, '""')}"`)
+        .join(',')
+    ),
+  ].join('\n');
 };

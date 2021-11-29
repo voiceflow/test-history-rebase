@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.548.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.548.0...@voiceflow/creator-app@1.548.1) (2021-11-29)
+
+
+### Bug Fixes
+
+* use choice ID as a key (VF-2367) ([#4693](https://github.com/voiceflow/creator-app/issues/4693)) ([24c6f2d](https://github.com/voiceflow/creator-app/commit/24c6f2de8f5d18e04f67ca5fe61aa3e7c5f3e10a))
+
+
+
+
+
 # [1.548.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.547.3...@voiceflow/creator-app@1.548.0) (2021-11-26)
 
 

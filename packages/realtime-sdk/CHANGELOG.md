@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.42.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.42.0...@voiceflow/realtime-sdk@1.42.1) (2021-11-29)
+
+
+### Bug Fixes
+
+* handle expired auth (VF-2364) ([#4694](https://github.com/voiceflow/creator-app/issues/4694)) ([f10f4c4](https://github.com/voiceflow/creator-app/commit/f10f4c451977bdcd02fee7bf86b63769c9efc68c))
+
+
+
+
+
 # [1.42.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.41.2...@voiceflow/realtime-sdk@1.42.0) (2021-11-24)
 
 

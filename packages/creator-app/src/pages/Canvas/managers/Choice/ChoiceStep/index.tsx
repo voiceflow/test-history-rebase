@@ -15,6 +15,7 @@ import { getDistinctPlatformValue } from '@/utils/platform';
 import { NODE_CONFIG } from '../constants';
 
 interface ChoiceItem {
+  key: string;
   label: Nullable<string>;
   portID: Nullable<string>;
   attachment?: boolean;
@@ -34,9 +35,9 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch
   <Step nodeID={nodeID}>
     {!!choices.length && (
       <Section>
-        {choices.map(({ label, linkedLabel, portID, attachment, onAttachmentClick }, index) => (
+        {choices.map(({ key, label, linkedLabel, portID, attachment, onAttachmentClick }, index) => (
           <Item
-            key={portID}
+            key={key}
             icon={index === 0 ? NODE_CONFIG.icon : null}
             label={label}
             portID={portID}
@@ -78,12 +79,13 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
       node.ports.out.dynamic
         .filter((portID) => choicesByPortID[portID])
         .map<ChoiceItem>((portID) => {
-          const { goTo, intent, action } = getDistinctPlatformValue(platform, choicesByPortID[portID]);
+          const { id, goTo, intent, action } = getDistinctPlatformValue(platform, choicesByPortID[portID]);
 
           const isPath = action === Node.Interaction.ChoiceAction.PATH;
           const goToIntent = goTo?.intentID && intentsMap[goTo.intentID] ? intentsMap[goTo.intentID] ?? null : null;
 
           return {
+            key: id,
             label: intent && intentsMap[intent] ? prettifyIntentName(intentsMap[intent].name) : null,
             portID: isPath ? portID : null,
             // TODO: uncomment when the go to specific intent step id will be implemented

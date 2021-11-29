@@ -17,6 +17,7 @@ const ConnectedChoiceOldStep: ConnectedStep<Realtime.NodeData.ChoiceOld> = ({ no
           const { synonyms } = choiceByPortID[portID];
 
           return {
+            key: portID,
             label: synonyms[0] || `Path ${index + 1}`,
             portID,
           };

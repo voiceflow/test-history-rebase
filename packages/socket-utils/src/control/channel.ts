@@ -14,16 +14,32 @@ export abstract class AbstractChannelControl<T extends LoguxControlOptions, P ex
 
   protected load?: (ctx: ChannelContext<P, D>, action: LoguxSubscribeAction) => Eventual<SendBackActions>;
 
-  protected finally?: (ctx: ChannelContext<P, D>, action: LoguxSubscribeAction) => void;
+  protected finally?: (ctx: ChannelContext<P, D>, action: LoguxSubscribeAction) => Eventual<void>;
 
-  protected unsubscribe?: (ctx: ChannelContext<P, D>, action: LoguxUnsubscribeAction) => void;
+  protected unsubscribe?: (ctx: ChannelContext<P, D>, action: LoguxUnsubscribeAction) => Eventual<void>;
+
+  #finally = async (ctx: ChannelContext<P, D>, action: LoguxSubscribeAction) => {
+    try {
+      await this.finally?.(ctx, action);
+    } catch {
+      this.server.logger.error(`error encountered within finally handler of channel '${this.channel.buildMatcher()}'`);
+    }
+  };
+
+  #unsubscribe = async (ctx: ChannelContext<P, D>, action: LoguxUnsubscribeAction) => {
+    try {
+      await this.unsubscribe?.(ctx, action);
+    } catch {
+      this.server.logger.error(`error encountered within unsubscribe handler of channel '${this.channel.buildMatcher()}'`);
+    }
+  };
 
   setup(): void {
     this.server.channel<P, D>(this.channel.buildMatcher(), {
       load: this.load,
       access: this.access,
-      finally: this.finally,
-      unsubscribe: this.unsubscribe,
+      finally: this.#finally,
+      unsubscribe: this.#unsubscribe,
     });
   }
 }

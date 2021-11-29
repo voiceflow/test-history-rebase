@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.3.0...@voiceflow/socket-utils@1.3.1) (2021-11-29)
+
+
+### Bug Fixes
+
+* add error handling for async unsubscribe and finally channel methods (VF-2339) ([#4692](https://github.com/voiceflow/creator-app/issues/4692)) ([4f6df13](https://github.com/voiceflow/creator-app/commit/4f6df1331d9a4d7bc0263dc98287813f0bda522b))
+
+
+
+
+
 # [1.3.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.2.2...@voiceflow/socket-utils@1.3.0) (2021-11-24)
 
 

@@ -5,6 +5,7 @@ export * as node from './node';
 export * as product from './product';
 export * as project from './project';
 export * as projectList from './projectList';
+export * as protocol from './protocol';
 export * as slot from './slot';
 export * as actionUtils from './utils';
 export * as version from './version';

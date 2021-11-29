@@ -3,6 +3,10 @@ import type { BaseClientMap } from '@socket-utils/client';
 import type { SocketServer } from '@socket-utils/server';
 import type { BaseServiceMap } from '@socket-utils/service';
 import { Eventual } from '@voiceflow/common';
+import { AxiosError } from 'axios';
+
+export const isAxiosError = (err: any): err is AxiosError => !!err.isAxiosError;
+export const isUnauthorizedError = (err: any) => isAxiosError(err) && err.response?.status === 401;
 
 // control map
 

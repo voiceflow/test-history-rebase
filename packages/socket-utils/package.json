@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@types/ioredis": "4.28.1",
+    "axios": "0.21.4",
     "dotenv": "9.0.2"
   },
   "exports": {
@@ -26,6 +27,9 @@
   ],
   "homepage": "https://github.com/voiceflow/creator-app#readme",
   "license": "UNLICENSED",
+  "peerDependencies": {
+    "axios": "0.21.4"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voiceflow/creator-app.git"

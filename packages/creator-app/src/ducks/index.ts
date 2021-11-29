@@ -97,7 +97,7 @@ const createReducer = (history: History) => {
 
 export default createReducer;
 
-export const allRPCs = [...Workspace.rpcs, ...Version.rpcs];
+export const allRPCs = [...Workspace.rpcs, ...Version.rpcs, ...Session.rpcs];
 
 export type State = ReturnType<ReturnType<typeof getCombinedReducer>>;
 

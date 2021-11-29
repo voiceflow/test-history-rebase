@@ -4,7 +4,7 @@ import { SendBackActions } from '@logux/server';
 import { ChannelContext } from '@socket-utils/types';
 import { Eventual, Utils } from '@voiceflow/common';
 
-import { AbstractLoguxControl, LoguxControlOptions } from './utils';
+import { AbstractLoguxControl, isUnauthorizedError, LoguxControlOptions } from './utils';
 
 // eslint-disable-next-line import/prefer-default-export
 export abstract class AbstractChannelControl<T extends LoguxControlOptions, P extends object, D extends object = {}> extends AbstractLoguxControl<T> {
@@ -18,26 +18,67 @@ export abstract class AbstractChannelControl<T extends LoguxControlOptions, P ex
 
   protected unsubscribe?: (ctx: ChannelContext<P, D>, action: LoguxUnsubscribeAction) => Eventual<void>;
 
-  #finally = async (ctx: ChannelContext<P, D>, action: LoguxSubscribeAction) => {
+  protected handleExpiredAuth?: (ctx: ChannelContext<P, D>) => Eventual<void>;
+
+  private logError(stage: string) {
+    this.server.logger.error(`encountered error in '${stage}' handler of channel '${this.channel.buildMatcher()}'`);
+  }
+
+  #load: AbstractChannelControl<T, P, D>['load'] = async (ctx, action) => {
     try {
-      await this.finally?.(ctx, action);
-    } catch {
-      this.server.logger.error(`error encountered within finally handler of channel '${this.channel.buildMatcher()}'`);
+      return await this.load?.(ctx, action);
+    } catch (err) {
+      if (isUnauthorizedError(err)) {
+        await this.handleExpiredAuth?.(ctx);
+      }
+
+      throw err;
     }
   };
 
-  #unsubscribe = async (ctx: ChannelContext<P, D>, action: LoguxUnsubscribeAction) => {
+  #access: AbstractChannelControl<T, P, D>['access'] = async (ctx) => {
+    try {
+      return await this.access?.(ctx);
+    } catch (err) {
+      if (isUnauthorizedError(err)) {
+        await this.handleExpiredAuth?.(ctx);
+
+        return false;
+      }
+
+      throw err;
+    }
+  };
+
+  #finally: AbstractChannelControl<T, P, D>['finally'] = async (ctx, action) => {
+    try {
+      // eslint-disable-next-line promise/valid-params
+      await this.finally?.(ctx, action);
+    } catch (err) {
+      if (isUnauthorizedError(err)) {
+        await this.handleExpiredAuth?.(ctx);
+      } else {
+        this.logError('finally');
+      }
+    }
+  };
+
+  #unsubscribe: AbstractChannelControl<T, P, D>['unsubscribe'] = async (ctx, action) => {
     try {
       await this.unsubscribe?.(ctx, action);
-    } catch {
-      this.server.logger.error(`error encountered within unsubscribe handler of channel '${this.channel.buildMatcher()}'`);
+    } catch (err) {
+      if (isUnauthorizedError(err)) {
+        await this.handleExpiredAuth?.(ctx);
+      } else {
+        this.logError('unsubscribe');
+      }
     }
   };
 
   setup(): void {
     this.server.channel<P, D>(this.channel.buildMatcher(), {
-      load: this.load,
-      access: this.access,
+      load: this.#load,
+      access: this.#access,
       finally: this.#finally,
       unsubscribe: this.#unsubscribe,
     });

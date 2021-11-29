@@ -21,6 +21,7 @@ import { SessionState } from './types';
 
 export * from './actions';
 export * from './constants';
+export * from './rpcs';
 export * from './selectors';
 export * from './sideEffects';
 export * from './types';

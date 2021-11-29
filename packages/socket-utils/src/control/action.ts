@@ -4,7 +4,7 @@ import { ActionAccessor, BaseContextData, Context, Resender } from '@socket-util
 import { Eventual, Utils } from '@voiceflow/common';
 import type { Action, ActionCreator, AsyncActionCreators } from 'typescript-fsa';
 
-import { AbstractLoguxControl, LoguxControlOptions } from './utils';
+import { AbstractLoguxControl, isUnauthorizedError, LoguxControlOptions } from './utils';
 
 export abstract class AbstractActionControl<
   T extends LoguxControlOptions,
@@ -26,9 +26,9 @@ export abstract class AbstractActionControl<
 
   protected resend: Resender<P, D> | undefined = undefined;
 
-  protected finally: ((ctx: Context<D>, action: Action<P>, meta: ServerMeta) => void) | undefined = undefined;
+  protected finally: ((ctx: Context<D>, action: Action<P>, meta: ServerMeta) => Eventual<void>) | undefined = undefined;
 
-  protected dataFactory?: () => D;
+  protected handleExpiredAuth?: (ctx: Context<D>) => Eventual<void>;
 
   // eslint-disable-next-line class-methods-use-this
   protected reply<R, E = void>(
@@ -51,45 +51,90 @@ export abstract class AbstractActionControl<
   }
 
   // eslint-disable-next-line class-methods-use-this
-  protected beforeAccess(_ctx: Context<D>, _action: Action<P>, _meta: ServerMeta) {
+  protected beforeAccess(_ctx: Context<D>, _action: Action<P>, _meta: ServerMeta): void {
     // noop
   }
 
   // eslint-disable-next-line class-methods-use-this
-  protected beforeProcess(_ctx: Context<D>, _action: Action<P>, _meta: ServerMeta) {
+  protected beforeProcess(_ctx: Context<D>, _action: Action<P>, _meta: ServerMeta): void {
     // noop
+  }
+
+  private logError(stage: string) {
+    this.server.logger.error(`encountered error in '${stage}' handler of action '${this.actionCreator.type}'`);
   }
 
   /**
    * wraps the access hook to add an optional initializer for the context data
    */
-  #access: AbstractActionControl<T, P, D>['access'] = (ctx, action, meta) => {
-    AbstractActionControl.extractCreatorID(ctx, action);
-    this.beforeAccess(ctx, action, meta);
+  #access: AbstractActionControl<T, P, D>['access'] = async (ctx, action, meta) => {
+    try {
+      AbstractActionControl.extractCreatorID(ctx, action);
+      this.beforeAccess(ctx, action, meta);
 
-    if (this.dataFactory) {
-      ctx.data = this.dataFactory();
+      return await this.access(ctx, action, meta);
+    } catch (err) {
+      if (isUnauthorizedError(err)) {
+        await this.handleExpiredAuth?.(ctx);
+
+        return false;
+      }
+
+      throw err;
     }
+  };
 
-    return this.access(ctx, action, meta);
+  #resend: AbstractActionControl<T, P, D>['resend'] = async (ctx, action, meta) => {
+    try {
+      return (await this.resend?.(ctx, action, meta)) ?? {};
+    } catch (err) {
+      if (isUnauthorizedError(err)) {
+        await this.handleExpiredAuth?.(ctx);
+      } else {
+        this.logError('resend');
+      }
+
+      return {};
+    }
   };
 
   /**
    * wraps the process hook to extract the creatorID of the user
    */
-  #process: AbstractActionControl<T, P, D>['process'] = (ctx, action, meta) => {
-    AbstractActionControl.extractCreatorID(ctx, action);
-    this.beforeProcess(ctx, action, meta);
+  #process: AbstractActionControl<T, P, D>['process'] = async (ctx, action, meta) => {
+    try {
+      AbstractActionControl.extractCreatorID(ctx, action);
+      this.beforeProcess(ctx, action, meta);
 
-    return this.process(ctx, action, meta);
+      await this.process(ctx, action, meta);
+    } catch (err) {
+      if (isUnauthorizedError(err)) {
+        await this.handleExpiredAuth?.(ctx);
+      }
+
+      throw err;
+    }
+  };
+
+  #finally: AbstractActionControl<T, P, D>['finally'] = async (ctx: Context<D>, action: Action<P>, meta: ServerMeta): Promise<void> => {
+    try {
+      // eslint-disable-next-line promise/valid-params
+      await this.finally?.(ctx, action, meta);
+    } catch (err) {
+      if (isUnauthorizedError(err)) {
+        await this.handleExpiredAuth?.(ctx);
+      } else {
+        this.logError('finally');
+      }
+    }
   };
 
   setup(): void {
     this.server.type<Action<P>, D>(this.actionCreator.type, {
       access: this.#access,
-      resend: this.resend,
+      resend: this.#resend,
       process: this.#process,
-      finally: this.finally,
+      finally: this.#finally,
     });
   }
 }

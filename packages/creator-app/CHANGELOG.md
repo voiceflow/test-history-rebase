@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.549.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.549.0...@voiceflow/creator-app@1.549.1) (2021-11-30)
+
+
+### Bug Fixes
+
+* do not wait for realtime connection (VF-2363) ([#4690](https://github.com/voiceflow/creator-app/issues/4690)) ([5c90c5c](https://github.com/voiceflow/creator-app/commit/5c90c5c19968a45aa78ab53130c3e408221364be))
+
+
+
+
+
 # [1.549.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.548.3...@voiceflow/creator-app@1.549.0) (2021-11-30)
 
 

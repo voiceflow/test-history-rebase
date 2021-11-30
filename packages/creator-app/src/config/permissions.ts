@@ -139,15 +139,35 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.FULL_PROJECT_VERSIONS]: ALL_BUT_STARTER_PERMISSIONS,
 };
 
+export const TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS = [
+  Permission.EDIT_CANVAS,
+  Permission.EDIT_PROJECT,
+  Permission.VIEW_CONVERSATIONS,
+  Permission.COMMENTING,
+  Permission.HINT_FEATURES,
+  Permission.MANAGE_PROJECTS,
+  Permission.CLONE_PROJECT,
+  Permission.SHARE_PROJECT,
+  Permission.EDIT_PROJECT,
+  Permission.CODE_EXPORT,
+  Permission.MODEL_EXPORT,
+  Permission.MANAGE_PROJECTS,
+  Permission.ADD_COLLABORATORS,
+];
+
+export const hasOrganizationTrialPermission = (permission: Permission, trialExpired: boolean) =>
+  !trialExpired || !TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS.includes(permission);
+
 export const hasRolePermission = (permission: Permission, role: UserRole) =>
   !ROLE_PERMISSIONS[permission] || ROLE_PERMISSIONS[permission]!.includes(role);
 
 export const hasPlanPermission = (permission: Permission, plan: PlanType) =>
   !PLAN_PERMISSIONS[permission] || PLAN_PERMISSIONS[permission]!.includes(plan);
 
-export const hasPermission = (permission: Permission, role: UserRole, plan: PlanType) => {
+export const hasPermission = (permission: Permission, role: UserRole, plan: PlanType, orgTrialExpired?: boolean | null) => {
   const roleAllowed = hasRolePermission(permission, role);
   const planAllowed = hasPlanPermission(permission, plan);
+  const trialAllowed = orgTrialExpired ? hasOrganizationTrialPermission(permission, orgTrialExpired) : true;
 
-  return roleAllowed && planAllowed;
+  return roleAllowed && planAllowed && trialAllowed;
 };

@@ -56,6 +56,7 @@ export interface Workspace {
   betaFlag: number;
   templates: boolean;
   organizationID: string | null;
+  organizationTrialDaysLeft: number | null;
 }
 
 export interface DBWorkspace {
@@ -68,6 +69,7 @@ export interface DBWorkspace {
   seatLimits: SeatLimits;
   hasSource: boolean;
   organization_id: string | null;
+  organization_trial_days_left: number | null;
   image: string;
   projects: number;
   seats: number;

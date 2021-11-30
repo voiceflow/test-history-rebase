@@ -5,7 +5,12 @@ import { hasPermission, Permission } from '@/config/permissions';
 import { IdentityContext, IdentityContextValue } from '@/contexts/IdentityContext';
 
 const checkPermission = (identity: IdentityContextValue, permission?: Permission) =>
-  !permission || !!(identity.activeRole && identity.activePlan && hasPermission(permission, identity.activeRole, identity.activePlan));
+  !permission ||
+  !!(
+    identity.activeRole &&
+    identity.activePlan &&
+    hasPermission(permission, identity.activeRole, identity.activePlan, identity.organizationTrialExpired)
+  );
 
 export const usePermission = (permission?: Permission): [boolean, IdentityContextValue] => {
   const identity = React.useContext(IdentityContext)!;
@@ -13,6 +18,11 @@ export const usePermission = (permission?: Permission): [boolean, IdentityContex
   const isAllowed = checkPermission(identity, permission);
 
   return [isAllowed, identity];
+};
+
+export const usePermissions = (permissions: Permission[]): boolean => {
+  const identity = React.useContext(IdentityContext)!;
+  return permissions.every((permission) => checkPermission(identity, permission));
 };
 
 export const useHasPermissions = (): ((permissions?: Permission[]) => boolean) => {
@@ -34,4 +44,11 @@ export const useIsAdmin = () => {
   const [, { activeRole }] = usePermission();
 
   return activeRole === UserRole.ADMIN;
+};
+
+export const useIsCanvasDesignOnly = () => {
+  const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
+  const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
+
+  return !canEditProject && !canViewConversations;
 };

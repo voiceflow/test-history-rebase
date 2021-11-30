@@ -2,16 +2,18 @@ import React from 'react';
 
 import { Header, HeaderDivider } from '@/components/ProjectPage';
 import { Permission } from '@/config/permissions';
-import { usePermission } from '@/hooks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { usePermission, useSelector } from '@/hooks';
 import CanvasViewers from '@/pages/Project/components/CanvasViewers';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 import { SharePopperProvider } from '../../contexts';
-import { CanvasControls, LogoButton, ProjectAndDiagramActions, Run, Share, Upload } from './components';
+import { CanvasControls, LogoButton, ProjectAndDiagramActions, Run, Share, TrialExpired, Upload } from './components';
 
 const CanvasHeader: React.FC = () => {
   const platform = React.useContext(PlatformContext)!;
+  const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpired);
 
   const [canPublish] = usePermission(Permission.CANVAS_PUBLISH);
 
@@ -24,17 +26,19 @@ const CanvasHeader: React.FC = () => {
 
         <ProjectAndDiagramActions />
 
-        <CanvasViewers flat withAdd={false} />
-
-        <Share />
-
-        {canPublish && !isAnyGeneralPlatform(platform) && (
+        {organizationTrialExpired ? (
+          <TrialExpired />
+        ) : (
           <>
-            <Upload />
+            <CanvasViewers flat withAdd={false} />
+
+            <Share />
+
+            {canPublish && !isAnyGeneralPlatform(platform) && <Upload />}
+
+            <Run />
           </>
         )}
-
-        <Run />
       </Header>
     </SharePopperProvider>
   );

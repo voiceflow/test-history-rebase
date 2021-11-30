@@ -11,14 +11,14 @@ import { Identifier } from '@/styles/constants';
 import { Container, UpgradeIcon, UpgradeText } from './components';
 
 const UpgradeButton: React.FC = () => {
-  const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+  const isWorkspaceOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
 
   return (
     <PermissionGate permission={Permission.UPGRADE_WORKSPACE}>
       <>
-        {!isOnPaidPlan ? (
+        {!isWorkspaceOnPaidPlan ? (
           <Container id={Identifier.UPGRADE_BUTTON} onClick={openPaymentsModal}>
             <UpgradeIcon variant={IconButtonVariant.FLAT} icon="upgrade" />
             <UpgradeText>UPGRADE WORKSPACE</UpgradeText>

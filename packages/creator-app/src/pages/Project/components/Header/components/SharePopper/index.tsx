@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import Popper, { PopperContent, PopperProps } from '@/components/Popper';
 import { Permission } from '@/config/permissions';
 import * as Session from '@/ducks/session';
-import { usePermission, useSelector, useSessionStorageState } from '@/hooks';
+import { usePermission, usePermissions, useSelector, useSessionStorageState } from '@/hooks';
 import { MenuContent as ShareContent, SharePrototype as ShareFooter } from '@/pages/Canvas/header/ActionGroup/components/ShareProject/components';
 import InviteContent from '@/pages/Collaborators';
 import InviteFooter from '@/pages/Collaborators/components/InviteByLink';
@@ -25,6 +25,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
 
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const canExportProject = usePermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT, Permission.CODE_EXPORT]);
 
   const initialTab = (canAddCollaborators && ShareProjectTab.INVITE) || (canSharePrototype && ShareProjectTab.SHARE) || ShareProjectTab.EXPORT;
   const [persistedTab, setPersistedTab] = useSessionStorageState(`${PERSISTED_SESSION_SHARE_TAB}-${activeProjectID}`, initialTab);
@@ -76,9 +77,11 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
               </ExportNavItem>
             )}
 
-            <ExportNavItem onClick={() => setPersistedTab(ShareProjectTab.EXPORT)} to={ShareProjectTab.EXPORT}>
-              Export as…
-            </ExportNavItem>
+            {canExportProject && (
+              <ExportNavItem onClick={() => setPersistedTab(ShareProjectTab.EXPORT)} to={ShareProjectTab.EXPORT}>
+                Export as…
+              </ExportNavItem>
+            )}
           </ExportPopperNav>
         )}
         renderContent={() => (

@@ -6,7 +6,7 @@ import { DESKTOP_APP_LINK, ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, usePermission, usePermissions, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 
 import { ShareProjectTab } from './constants';
@@ -26,6 +26,7 @@ export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boole
   const shortcutModal = useModals(ModalType.SHORTCUTS);
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const canExportProject = usePermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT, Permission.CODE_EXPORT]);
 
   const onOpenShortcutsModal = React.useCallback(() => {
     shortcutModal.toggle();
@@ -39,9 +40,9 @@ export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boole
   return React.useMemo<MenuOption<undefined>[]>(
     () => [
       { key: 'dashboard', label: 'Back to dashboard', onClick: goToDashboard },
-      { key: 'divider-1', label: 'divider', divider: true },
+      ...(canEditProject || canExportProject || canAddCollaborators ? [{ key: 'divider-1', label: 'divider', divider: true }] : []),
       ...(canEditProject ? [{ label: 'Version history', onClick: onVersionHistory }] : []),
-      ...(sharePopper ? [{ key: 'export', label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) }] : []),
+      ...(canExportProject && sharePopper ? [{ key: 'export', label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) }] : []),
       ...(canEditProject ? [{ key: 'settings', label: 'Project settings', onClick: goToCurrentSettings }] : []),
       ...(canAddCollaborators && sharePopper
         ? [{ key: 'invite', label: 'Invite collaborators', onClick: () => sharePopper.open(ShareProjectTab.INVITE) }]

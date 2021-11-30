@@ -5,10 +5,10 @@ import Header from '@/components/Header';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
 
+import CenterNavSection from './CenterNavSection';
 import LeftNavSection from './LeftNavSection';
 import RightNavSection from './RightNavSection';
 import SecondaryNav from './SecondaryNav';
-import UpgradeButton from './UpgradeButton';
 
 interface DashboardHeaderProps {
   loadingProjects: boolean;
@@ -25,7 +25,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ loadingProjects, hand
       logoAssetPath={activeWorkspace?.image}
       leftRenderer={() => <LeftNavSection loadingProjects={loadingProjects} activeWorkspace={activeWorkspace} />}
       rightRenderer={() => <RightNavSection />}
-      centerRenderer={() => <UpgradeButton />}
+      centerRenderer={() => <CenterNavSection />}
       disableLogoClick={!canConfigureWorkspace}
       subHeaderRenderer={() => <SecondaryNav handleFilterText={handleFilterText} workspace={activeWorkspace} />}
     />

@@ -13,6 +13,7 @@ const GOOGLE_CREATE_ENABLED = process.env.FF_GOOGLE_CREATE === 'true';
 const DIALOGFLOW_ENABLED = process.env.FF_DIALOGFLOW === 'true';
 const TOPICS_AND_COMPONENTS_ENABLED = process.env.FF_TOPICS_AND_COMPONENTS === 'true';
 const ACCOUNT_PAGE_REDESIGN_ENABLED = process.env.FF_ACCOUNT_PAGE_REDESIGN === 'true';
+const ENTERPRISE_TRIAL_ENABLED = process.env.FF_ENTERPRISE_TRIAL_ENABLED === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -37,6 +38,8 @@ export enum FeatureFlag {
   GOOGLE_CREATE = 'google_create',
 
   ACCOUNT_PAGE_REDESIGN = 'account_page_redesign',
+
+  ENTERPRISE_TRIAL = 'enterprise_trial',
 }
 
 export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
@@ -52,4 +55,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.GOOGLE_CREATE]: GOOGLE_CREATE_ENABLED,
   [FeatureFlag.TOPICS_AND_COMPONENTS]: TOPICS_AND_COMPONENTS_ENABLED,
   [FeatureFlag.ACCOUNT_PAGE_REDESIGN]: ACCOUNT_PAGE_REDESIGN_ENABLED,
+  [FeatureFlag.ENTERPRISE_TRIAL]: ENTERPRISE_TRIAL_ENABLED,
 };

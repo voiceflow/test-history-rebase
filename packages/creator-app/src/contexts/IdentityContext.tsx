@@ -10,6 +10,7 @@ import { useSelector } from '@/hooks/redux';
 export interface IdentityContextValue {
   activePlan: Nullish<PlanType>;
   activeRole: Nullish<UserRole>;
+  organizationTrialExpired: Nullish<boolean>;
 }
 
 export const IdentityContext = React.createContext<IdentityContextValue | null>(null);
@@ -17,10 +18,11 @@ export const IdentityContext = React.createContext<IdentityContextValue | null>(
 export const IdentityProvider: React.FC = ({ children }) => {
   const activePlan = useSelector(WorkspaceV2.active.planSelector);
   const activeRole = useSelector(WorkspaceV2.active.userRoleSelector);
+  const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpired);
 
   const isPreviewing = useSelector(UI.isPreviewingVersion);
 
-  const api = useContextApi({ activePlan, activeRole: isPreviewing ? UserRole.PREVIEWER : activeRole });
+  const api = useContextApi({ activePlan, activeRole: isPreviewing ? UserRole.PREVIEWER : activeRole, organizationTrialExpired });
 
   return <IdentityContext.Provider value={api}>{children}</IdentityContext.Provider>;
 };

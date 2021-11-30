@@ -32,10 +32,10 @@ context('Team Dashboard', () => {
       cy.title().should('eq', 'my other project');
     });
 
-    it('delete project', () => {
+    it.skip('delete project', () => {
       dashboardPage.el.projectListItemTitle.should('have.text', 'my other project');
       dashboardPage.el.projectListItem.find('div').eq(1).realHover().find('.vf-svg-icon--ellipsis').should('be.visible').click();
-      menuComponent.el.item.eq(6).should('have.text', 'Delete project').click();
+      menuComponent.el.item.should('have.text', 'Delete project').click();
       modal(ModalType.CONFIRM).el.root.should('be.visible').find('button').click();
 
       // check if last project in the list is removed

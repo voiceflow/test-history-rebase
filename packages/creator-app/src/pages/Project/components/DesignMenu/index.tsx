@@ -5,7 +5,7 @@ import { TabPane, TabsContent } from '@/components/Tabs';
 import { Permission } from '@/config/permissions';
 import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
-import { useDispatch, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
+import { useDispatch, useIsCanvasDesignOnly, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
 import { useAnyModeOpen } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
 
@@ -19,6 +19,7 @@ const SIDEBAR_CALCULATION_BUFFER = 50;
 
 const DesignMenu: React.FC = () => {
   const designMenuRef = React.useRef<HTMLDivElement>(null);
+  const designOnly = useIsCanvasDesignOnly();
 
   const isHidden = useSelector(UI.isCreatorMenuHiddenSelector);
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
@@ -80,7 +81,7 @@ const DesignMenu: React.FC = () => {
       isOpen={isOpen}
       locked={!isHidden}
       tabIndex={-1}
-      canvasOnly={canvasOnly}
+      canvasOnly={canvasOnly || designOnly}
       onMouseEnter={canBeOpened ? openByHover : undefined}
       onMouseLeave={canBeOpened ? mouseLeaveHandler : undefined}
     >

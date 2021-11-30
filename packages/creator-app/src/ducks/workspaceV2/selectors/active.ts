@@ -2,9 +2,11 @@ import { PlanType, UserRole } from '@voiceflow/internal';
 import { getAlternativeColor } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
-import { hasPlanPermission, hasRolePermission, Permission } from '@/config/permissions';
+import { FeatureFlag } from '@/config/features';
+import { hasOrganizationTrialPermission, hasPlanPermission, hasRolePermission, Permission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES } from '@/constants';
 import * as Account from '@/ducks/account';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { creatorIDParamSelector } from '@/ducks/utils';
 
@@ -14,6 +16,14 @@ import { getWorkspaceByIDSelector } from './base';
 export const workspaceSelector = createSelector([getWorkspaceByIDSelector, Session.activeWorkspaceIDSelector], (getWorkspace, workspaceID) =>
   workspaceID ? getWorkspace(workspaceID) : null
 );
+
+export const organizationTrialExpired = createSelector([workspaceSelector, Feature.allActiveFeaturesSelector], (workspace, features) => {
+  return features[FeatureFlag.ENTERPRISE_TRIAL]?.isEnabled && workspace?.organizationTrialDaysLeft === 0;
+});
+
+export const organizationTrialDaysLeft = createSelector([workspaceSelector, Feature.allActiveFeaturesSelector], (workspace, features) => {
+  return features[FeatureFlag.ENTERPRISE_TRIAL]?.isEnabled ? workspace?.organizationTrialDaysLeft : null;
+});
 
 export const numberOfSeatsSelector = createSelector([workspaceSelector], (workspace) => workspace?.seats);
 
@@ -78,11 +88,12 @@ export const userRoleSelector = createSelector(
 );
 
 export const hasPermissionSelector = createSelector(
-  [userRoleSelector, planSelector, (_: unknown, permission: Permission) => permission],
-  (role, plan, permission) => {
+  [userRoleSelector, planSelector, (_: unknown, permission: Permission) => permission, organizationTrialExpired],
+  (role, plan, permission, organizationTrialExpired) => {
     const roleAllowed = !!role && hasRolePermission(permission, role);
     const planAllowed = !!plan && hasPlanPermission(permission, plan);
+    const trialAllowed = hasOrganizationTrialPermission(permission, organizationTrialExpired);
 
-    return roleAllowed && planAllowed;
+    return roleAllowed && planAllowed && trialAllowed;
   }
 );

@@ -14,7 +14,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { useModals } from '@/hooks/modals';
-import { usePermission } from '@/hooks/permission';
+import { usePermission, usePermissions } from '@/hooks/permission';
 import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
 import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
 import { copy } from '@/utils/clipboard';
@@ -104,6 +104,7 @@ export const useProjectOptions = ({
   const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
+  const canExportProject = usePermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT, Permission.CODE_EXPORT]);
 
   const workspace = useActiveWorkspace();
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
@@ -195,12 +196,12 @@ export const useProjectOptions = ({
   return React.useMemo<MenuOption<undefined>[]>(
     () => [
       ...(canManageProjects && targetVersionID ? [{ label: 'Version history', onClick: onVersionHistory }] : []),
-      ...(sharePopper
+      ...(canExportProject && sharePopper
         ? [
             { label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) },
             { label: 'Divider', divider: true },
           ]
-        : [{ label: 'Divider', divider: true }]),
+        : []),
       ...(canManageProjects && onRename ? [{ label: 'Rename project', onClick: onRename }] : []),
       ...(canManageProjects
         ? [

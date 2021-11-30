@@ -34,7 +34,7 @@ const ConditionSelect: React.FC<ConditionSelectProps> = ({ onChange, additional 
               </Text>
             </MenuItem>
           )}
-          {!(additional || isLogicGroup) && <MenuItem onClick={onSelect(Node.Utils.ConditionsLogicInterface.EXPRESSION)}>Expresssion</MenuItem>}
+          {!(additional || isLogicGroup) && <MenuItem onClick={onSelect(Node.Utils.ConditionsLogicInterface.EXPRESSION)}>Expression</MenuItem>}
         </Menu>
       )}
     >

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.549.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.549.6...@voiceflow/creator-app@1.549.7) (2021-11-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency connected-react-router to v6.9.2 (vf-000) ([#4703](https://github.com/voiceflow/creator-app/issues/4703)) ([0a456de](https://github.com/voiceflow/creator-app/commit/0a456deb9f190ae4414fcd2ba3641875d4eef140))
+
+
+
+
+
 ## [1.549.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.549.5...@voiceflow/creator-app@1.549.6) (2021-11-30)
 
 

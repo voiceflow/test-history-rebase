@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 
 import { ControlScheme, ZoomType } from '@/components/Canvas/constants';
 import { BlockCategory } from '@/constants';
+import * as Session from '@/ducks/session';
 import { Action, Reducer, RootReducer } from '@/store/types';
 
 import { createAction, createRootSelector } from './utils';
@@ -24,6 +25,7 @@ export interface UIState {
   previewing: boolean;
   zoomType: ZoomType;
   isAutoPanning: boolean;
+  isLoadingProjects: boolean;
 }
 
 export const STATE_KEY = 'ui';
@@ -41,6 +43,7 @@ export const INITIAL_STATE = {
   previewing: false,
   zoomType: ZoomType.REGULAR,
   isAutoPanning: false,
+  isLoadingProjects: false,
 };
 
 const PERSIST_CONFIG = {
@@ -60,6 +63,7 @@ export enum UIAction {
   TOGGLE_CANVAS_ONLY = 'UI:TOGGLE_CANVAS_ONLY',
   SET_VIEWING_VERSION = 'UI:SET_VIEWING_VERSION',
   SET_AUTO_PANNING = 'UI:SET_AUTO_PANNING',
+  SET_LOADING_PROJECTS = 'UI:SET_LOADING_PROJECTS',
 }
 
 // action types
@@ -84,6 +88,8 @@ export type SetPreviewingVersion = Action<UIAction.SET_VIEWING_VERSION, boolean>
 
 export type SetIsAutoPanning = Action<UIAction.SET_AUTO_PANNING, boolean>;
 
+export type SetLoadingProjects = Action<UIAction.SET_LOADING_PROJECTS, boolean>;
+
 type AnyUIAction =
   | ToggleBlockMenuSection
   | SetActiveCreatorMenu
@@ -94,7 +100,9 @@ type AnyUIAction =
   | ToggleCanvasOnly
   | SetPreviewingVersion
   | SetZoomType
-  | SetIsAutoPanning;
+  | SetIsAutoPanning
+  | SetLoadingProjects;
+
 // reducers
 
 export const toggleBlockMenuSectionReducer: Reducer<UIState, ToggleBlockMenuSection> = (state, { payload: section }) => {
@@ -163,7 +171,12 @@ export const setIsAutoPanningReducer: Reducer<UIState, SetIsAutoPanning> = (stat
   isAutoPanning,
 });
 
-const uiReducer: RootReducer<UIState, AnyUIAction> = (state = INITIAL_STATE, action) => {
+export const setLoadingProjectsReducer: Reducer<UIState, SetLoadingProjects> = (state, { payload: isLoadingProjects }) => ({
+  ...state,
+  isLoadingProjects,
+});
+
+const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UIAction.TOGGLE_BLOCK_MENU_SECTION:
       return toggleBlockMenuSectionReducer(state, action);
@@ -185,6 +198,10 @@ const uiReducer: RootReducer<UIState, AnyUIAction> = (state = INITIAL_STATE, act
       return setZoomTypeReducer(state, action);
     case UIAction.SET_AUTO_PANNING:
       return setIsAutoPanningReducer(state, action);
+    case UIAction.SET_LOADING_PROJECTS:
+      return setLoadingProjectsReducer(state, action);
+    case Session.SessionAction.SET_ACTIVE_WORKSPACE_ID:
+      return setLoadingProjectsReducer(state, createAction(UIAction.SET_LOADING_PROJECTS, false));
     default:
       return state;
   }
@@ -212,6 +229,8 @@ export const isPreviewingVersion = createSelector(rootSelector, ({ previewing })
 
 export const isAutoPanningSelector = createSelector(rootSelector, ({ isAutoPanning }) => isAutoPanning);
 
+export const isLoadingProjectsSelector = createSelector(rootSelector, ({ isLoadingProjects }) => isLoadingProjects);
+
 //  action creators
 
 export const toggleBlockMenuSection = (section: BlockCategory): ToggleBlockMenuSection => createAction(UIAction.TOGGLE_BLOCK_MENU_SECTION, section);
@@ -234,3 +253,5 @@ export const toggleCanvasOnly = (): ToggleCanvasOnly => createAction(UIAction.TO
 export const setPreviewingVersion = (previewing: boolean): SetPreviewingVersion => createAction(UIAction.SET_VIEWING_VERSION, previewing);
 
 export const setIsAutopanning = (isAutoPanning: boolean): SetIsAutoPanning => createAction(UIAction.SET_AUTO_PANNING, isAutoPanning);
+
+export const setLoadingProjects = (isLoadingProjects: boolean): SetLoadingProjects => createAction(UIAction.SET_LOADING_PROJECTS, isLoadingProjects);

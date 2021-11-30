@@ -2,6 +2,7 @@ export * from './compose';
 export * from './connect';
 export * from './lazy';
 export * from './platformAware';
+export * from './session';
 export * from './styled';
 export * from './withBatchLoadingGate';
 export * from './withDebug';

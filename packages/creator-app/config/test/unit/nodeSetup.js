@@ -15,5 +15,11 @@ mockRequire('redux-persist', { persistReducer: (_, reducer) => reducer });
 mockRequire('redux-persist/lib/storage', {});
 mockRequire('redux-persist/lib/storage/session', {});
 
-mockRequire('@logux/client', {});
+// logux
+
+class MockLoguxClient {}
+
+mockRequire('@logux/client', { Client: MockLoguxClient });
+mockRequire('@logux/client/react', {});
 mockRequire('@logux/redux', {});
+mockRequire('@logux/core', {});

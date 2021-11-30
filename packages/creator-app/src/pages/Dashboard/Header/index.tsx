@@ -11,19 +11,18 @@ import RightNavSection from './RightNavSection';
 import SecondaryNav from './SecondaryNav';
 
 interface DashboardHeaderProps {
-  loadingProjects: boolean;
   workspace: Realtime.Workspace | null;
   handleFilterText: (text: string) => void;
 }
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({ loadingProjects, handleFilterText, workspace: activeWorkspace }) => {
+const DashboardHeader: React.FC<DashboardHeaderProps> = ({ handleFilterText, workspace: activeWorkspace }) => {
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
   return (
     <Header
       withLogo
       logoAssetPath={activeWorkspace?.image}
-      leftRenderer={() => <LeftNavSection loadingProjects={loadingProjects} activeWorkspace={activeWorkspace} />}
+      leftRenderer={() => <LeftNavSection activeWorkspace={activeWorkspace} />}
       rightRenderer={() => <RightNavSection />}
       centerRenderer={() => <CenterNavSection />}
       disableLogoClick={!canConfigureWorkspace}

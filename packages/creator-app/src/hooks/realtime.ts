@@ -1,12 +1,16 @@
+import { useClient } from '@logux/client/react';
 import { useSubscription } from '@logux/redux';
 import { NullableRecord } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { useCallback } from 'react';
 import { AnyAction } from 'typescript-fsa';
 
+import { LoguxClient } from '@/client/utils';
 import { Dispatchable, DispatchResult } from '@/store/types';
 
 import { useStore } from './redux';
+
+export const useRealtimeClient = useClient as () => LoguxClient;
 
 export const useDispatch = <S extends any[], D extends any[], R extends Dispatchable>(
   createAction: (...args: [...S, ...D]) => R,

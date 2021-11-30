@@ -3,22 +3,26 @@ import React from 'react';
 import LoadingGate from '@/components/LoadingGate';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
-import { withFeatureGate } from '@/hocs';
+import * as Feature from '@/ducks/feature';
+import { withSessionGate } from '@/hocs';
 import { useCreatorSubscription, useSelector } from '@/hooks';
 
 const AccountSubscriptionGate: React.FC = ({ children }) => {
   const creatorID = useSelector(Account.userIDSelector);
-  const isLoggedIn = useSelector(Account.isLoggedInSelector);
 
-  const isSubscribed = useCreatorSubscription({ creatorID: creatorID ? String(creatorID) : null });
+  // using `useSelector` over `useFeature` to avoid re-rendering
+  // when switching between workspaces with AA enabled
+  const hasRealtimeConnection = useSelector((state) => Feature.isFeatureEnabledSelector(state)(FeatureFlag.REALTIME_CONNECTION));
+  const isAtomicActions = useSelector((state) => Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS));
+  const shouldConnect = hasRealtimeConnection && isAtomicActions;
 
-  if (!isLoggedIn) return <>{children}</>;
+  const isSubscribed = useCreatorSubscription({ creatorID: shouldConnect ? String(creatorID) : null });
 
   return (
-    <LoadingGate label="Account" zIndex={50} isLoaded={isSubscribed} backgroundColor="#f9f9f9">
+    <LoadingGate label="Account" zIndex={50} isLoaded={!shouldConnect || isSubscribed} backgroundColor="#f9f9f9">
       {children}
     </LoadingGate>
   );
 };
 
-export default withFeatureGate(FeatureFlag.REALTIME_CONNECTION)(AccountSubscriptionGate);
+export default withSessionGate(AccountSubscriptionGate);

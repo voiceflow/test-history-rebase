@@ -1,14 +1,14 @@
-import { Client } from '@logux/client';
-
 import { REALTIME_ENDPOINT } from '@/config';
 
-const realtimeClient = (): Client =>
-  new Client({
+import { LoguxClient } from './utils';
+
+const realtimeClient = (): LoguxClient =>
+  new LoguxClient({
     server: REALTIME_ENDPOINT || '',
     subprotocol: '1.0.0',
 
-    // anonymous user for use while logged out
-    userId: 'anonymous',
+    // no user specified initially
+    userId: 'false',
   });
 
 export default realtimeClient;

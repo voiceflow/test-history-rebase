@@ -18,7 +18,7 @@ module.exports = {
   transform: {
     '^.+\\.[jt]sx?$': '<rootDir>/../../node_modules/ts-jest',
   },
-  transformIgnorePatterns: ['/<rootDir>/../../node_modules/', '/node_modules/', '/build/', '/config/test/'],
+  transformIgnorePatterns: ['/<rootDir>/../../node_modules/', '/node_modules/', '/build/', '/config/test/', '/__mocks__/'],
   coverageDirectory: 'jest_coverage',
   cacheDirectory: '.jest_cache',
   coveragePathIgnorePatterns: ['/node_modules/', '/config/', '/^.+\\.svg(?:\\?url)?$/', '/test/'],

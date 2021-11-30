@@ -6,7 +6,7 @@ import { conversationGraphic } from '@/assets';
 import { LegacyPath, Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { CheckInvitationGate, WorkspacesLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
+import { CheckInvitationGate, WorkspacesLoadingGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
 import { useDispatch, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
@@ -58,4 +58,4 @@ const Workspace: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(CheckInvitationGate, WorkspacesLoadingGate, WorkspaceSubscriptionGate)(Workspace);
+export default withBatchLoadingGate(CheckInvitationGate, WorkspacesLoadingGate)(Workspace);

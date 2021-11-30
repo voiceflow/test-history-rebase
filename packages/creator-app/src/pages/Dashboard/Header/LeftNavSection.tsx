@@ -7,22 +7,23 @@ import PlanBubble from '@/components/PlanBubble';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { Permission } from '@/config/permissions';
 import * as Router from '@/ducks/router';
+import * as UI from '@/ducks/ui';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
 import { ClassName } from '@/styles/constants';
 
 interface LeftNavSectionProps {
-  loadingProjects: boolean;
   activeWorkspace: Realtime.Workspace | null;
 }
 
-const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace, loadingProjects }) => {
+const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const [canCreatePrivateCloudWorkspace] = usePermission(Permission.CREATE_PRIVATE_CLOUD_WORKSPACE);
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
   const isAdminOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOfAnyWorkspaceSelector);
+  const isLoadingProjects = useSelector(UI.isLoadingProjectsSelector);
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const goToNewWorkspace = useDispatch(Router.goToNewWorkspace);
@@ -62,10 +63,10 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace, loadin
       >
         {(ref, onToggle) => (
           <WorkspacesDropdown
-            isLoading={loadingProjects}
+            isLoading={isLoadingProjects}
             id="workspaceDropdown"
             className={`${ClassName.DROPDOWN}--active-workspace`}
-            onClick={loadingProjects ? Utils.functional.noop : onToggle}
+            onClick={isLoadingProjects ? Utils.functional.noop : onToggle}
             ref={ref}
           >
             <div>{activeWorkspace?.name}</div>

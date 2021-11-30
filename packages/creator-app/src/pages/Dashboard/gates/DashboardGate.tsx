@@ -8,8 +8,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useRouteWorkspaceID, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
-// eslint-disable-next-line import/prefer-default-export
-export const DashboardGate: React.FC = React.memo(({ children }) => {
+const DashboardGate: React.FC = ({ children }) => {
   const routeWorkspaceID = useRouteWorkspaceID();
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const workspaceIDs = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
@@ -35,4 +34,6 @@ export const DashboardGate: React.FC = React.memo(({ children }) => {
       {children}
     </LoadingGate>
   );
-});
+};
+
+export default React.memo(DashboardGate);

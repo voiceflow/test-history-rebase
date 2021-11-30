@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.549.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.549.7...@voiceflow/creator-app@1.549.8) (2021-11-30)
+
+
+### Bug Fixes
+
+* export project dropdown hidden (VF-000) ([aed744f](https://github.com/voiceflow/creator-app/commit/aed744fc6450e847acf8124fa97c0a2be16483c9))
+
+
+
+
+
 ## [1.549.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.549.6...@voiceflow/creator-app@1.549.7) (2021-11-30)
 
 

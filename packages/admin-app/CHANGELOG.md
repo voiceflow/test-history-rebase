@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.11.6...@voiceflow/admin-app@1.11.7) (2021-11-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency redux-thunk to v2.4.1 (vf-000) ([#4706](https://github.com/voiceflow/creator-app/issues/4706)) ([8ffbbf6](https://github.com/voiceflow/creator-app/commit/8ffbbf608d5ab4d50e19f6ded94e29e7bf48e11a))
+
+
+
+
+
 ## [1.11.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.11.5...@voiceflow/admin-app@1.11.6) (2021-11-30)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.549.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.548.3...@voiceflow/creator-app@1.549.0) (2021-11-30)
+
+
+### Features
+
+* adds enterprise trial status (VF-1986) ([#4629](https://github.com/voiceflow/creator-app/issues/4629)) ([8a72abc](https://github.com/voiceflow/creator-app/commit/8a72abc3ebce8d9689c33e1425db7722b12b6007))
+
+
+
+
+
 ## [1.548.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.548.2...@voiceflow/creator-app@1.548.3) (2021-11-29)
 
 **Note:** Version bump only for package @voiceflow/creator-app

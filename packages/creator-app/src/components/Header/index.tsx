@@ -41,29 +41,32 @@ const Header: React.FC<HeaderProps> = ({
   centerRenderer,
   subHeaderRenderer,
   logoAssetPath,
-}) => (
-  <HeaderContainer>
-    <PrimaryHeader className={ClassName.PRIMARY_NAV}>
-      {withLogo && <Logo src={logoAssetPath || logoDark} alt="logo" draggable="false" />}
-      {onBackClick && (
-        <BackButton>
-          <SvgIcon icon={SVG.arrowLeft} size={3} className="icon-back" onClick={onBackClick} />
-        </BackButton>
-      )}
-      <HeaderNavigation>
-        {leftRenderer && leftRenderer()}
-        {title}
-      </HeaderNavigation>
-      <CenterGroup className={ClassName.HEADER_ACTIONS_CENTER}>{centerRenderer && centerRenderer()}</CenterGroup>
-      <HeaderActions>
-        <JustifiedHeaderActions>
-          {rightRenderer && <TitleGroup className={ClassName.HEADER_ACTIONS_RIGHT}>{rightRenderer()}</TitleGroup>}
-          {withUserMenu && <UserMenu />}
-        </JustifiedHeaderActions>
-      </HeaderActions>
-    </PrimaryHeader>
-    {subHeaderRenderer && <SecondaryNavWrapper className={ClassName.SECONDARY_NAV}>{subHeaderRenderer()}</SecondaryNavWrapper>}
-  </HeaderContainer>
-);
+}) => {
+  const centerContent = centerRenderer?.();
+  return (
+    <HeaderContainer>
+      <PrimaryHeader className={ClassName.PRIMARY_NAV}>
+        {withLogo && <Logo src={logoAssetPath || logoDark} alt="logo" draggable="false" />}
+        {onBackClick && (
+          <BackButton>
+            <SvgIcon icon={SVG.arrowLeft} size={3} className="icon-back" onClick={onBackClick} />
+          </BackButton>
+        )}
+        <HeaderNavigation>
+          {leftRenderer && leftRenderer()}
+          {title}
+        </HeaderNavigation>
+        {centerContent && <CenterGroup className={ClassName.HEADER_ACTIONS_CENTER}>{centerContent}</CenterGroup>}
+        <HeaderActions>
+          <JustifiedHeaderActions>
+            {rightRenderer && <TitleGroup className={ClassName.HEADER_ACTIONS_RIGHT}>{rightRenderer()}</TitleGroup>}
+            {withUserMenu && <UserMenu />}
+          </JustifiedHeaderActions>
+        </HeaderActions>
+      </PrimaryHeader>
+      {subHeaderRenderer && <SecondaryNavWrapper className={ClassName.SECONDARY_NAV}>{subHeaderRenderer()}</SecondaryNavWrapper>}
+    </HeaderContainer>
+  );
+};
 
 export default Header;

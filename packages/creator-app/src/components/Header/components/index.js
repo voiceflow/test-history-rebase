@@ -82,6 +82,7 @@ export const Logo = styled.img`
   width: 42px;
   margin-right: 12px;
   border-radius: 50%;
+  flex-shrink: 0;
   object-fit: cover;
   cursor: ${({ disableLogoClick }) => (disableLogoClick ? 'initial' : 'pointer')};
 `;

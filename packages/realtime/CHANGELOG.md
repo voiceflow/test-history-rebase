@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.26.2...@voiceflow/realtime@1.26.3) (2021-12-01)
+
+
+### Reverts
+
+* Revert "feat: able to force realtime to crash (VF-2392) (#4707)" (#4715) ([3827ed4](https://github.com/voiceflow/creator-app/commit/3827ed45868c929d6b7441dbc30023b37976e5ca)), closes [#4707](https://github.com/voiceflow/creator-app/issues/4707) [#4715](https://github.com/voiceflow/creator-app/issues/4715)
+
+
+
+
+
 ## [1.26.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.26.1...@voiceflow/realtime@1.26.2) (2021-12-01)
 
 

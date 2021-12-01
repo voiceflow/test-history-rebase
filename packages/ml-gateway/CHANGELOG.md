@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.3.4...@voiceflow/ml-gateway@1.3.5) (2021-12-01)
+
+
+### Bug Fixes
+
+* exit immediately on unhandled exception (VF-2392) ([08161fb](https://github.com/voiceflow/creator-app/commit/08161fb206baed8ef3b5b57b13e6c52f8f8f6e13))
+
+
+
+
+
 ## [1.3.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.3.3...@voiceflow/ml-gateway@1.3.4) (2021-12-01)
 
 

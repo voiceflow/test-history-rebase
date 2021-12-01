@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.3.3...@voiceflow/ml-gateway@1.3.4) (2021-12-01)
+
+
+### Bug Fixes
+
+* force logux-based services to fail on unhandled exception (VF-2392) ([#4711](https://github.com/voiceflow/creator-app/issues/4711)) ([b1fef88](https://github.com/voiceflow/creator-app/commit/b1fef8857b2854b817fb9f808a96c6b99c3adf41))
+
+
+
+
+
 ## [1.3.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.3.2...@voiceflow/ml-gateway@1.3.3) (2021-12-01)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/ml-gateway",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "dependencies": {
     "@logux/server": "0.10.7",
     "@voiceflow/backend-utils": "4.1.0",

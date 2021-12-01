@@ -22,6 +22,13 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     return this.services.diagram.canRead(Number(ctx.userId), ctx.params.diagramID);
   };
 
+  finallyFinally = async (ctx: ChannelContext<Realtime.Channels.DiagramChannelParams>) => {
+    const creatorID = Number(ctx.userId);
+    const isForceRealtimeFail = await this.isForceRealtimeFailEnabled(creatorID, ctx.params.workspaceID);
+
+    if (isForceRealtimeFail) throw new Error('forced realtime failure');
+  };
+
   protected finally = async (ctx: ChannelContext<Realtime.Channels.DiagramChannelParams>): Promise<void> => {
     // TODO: check if the subscription is succeeded
 

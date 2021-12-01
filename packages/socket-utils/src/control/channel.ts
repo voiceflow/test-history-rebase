@@ -20,6 +20,8 @@ export abstract class AbstractChannelControl<T extends LoguxControlOptions, P ex
 
   protected handleExpiredAuth?: (ctx: ChannelContext<P, D>) => Eventual<void>;
 
+  protected finallyFinally?: (ctx: ChannelContext<P, D>) => Eventual<void>;
+
   private logError(stage: string) {
     this.server.logger.error(`encountered error in '${stage}' handler of channel '${this.channel.buildMatcher()}'`);
   }
@@ -61,6 +63,8 @@ export abstract class AbstractChannelControl<T extends LoguxControlOptions, P ex
         this.logError('finally');
       }
     }
+
+    this.finallyFinally?.(ctx);
   };
 
   #unsubscribe: AbstractChannelControl<T, P, D>['unsubscribe'] = async (ctx, action) => {

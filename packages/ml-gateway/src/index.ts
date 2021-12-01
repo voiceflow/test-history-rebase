@@ -19,24 +19,21 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
   });
   const serviceManager = new ServiceManager({ server, config, log: logger });
 
-  const exit = async () => {
-    await serviceManager.stop();
-    await server.stop();
-    // eslint-disable-next-line no-process-exit
-    process.exit(0);
-  };
-
   // Graceful shutdown from SIGTERM
   process.on('SIGTERM', async () => {
     logger.warn('SIGTERM received stopping server...');
 
-    await exit();
+    await serviceManager.stop();
+    await server.stop();
+    // eslint-disable-next-line no-process-exit
+    process.exit(0);
   });
 
-  process.on('unhandledRejection', async (r, p) => {
+  process.on('unhandledRejection', (r, p) => {
     logger.warn(`${r} Unhandled rejection at: ${p}`);
 
-    await exit();
+    // eslint-disable-next-line no-process-exit
+    process.exit(0);
   });
 
   try {

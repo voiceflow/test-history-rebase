@@ -11,7 +11,7 @@
     "@voiceflow/common": "7.9.0",
     "@voiceflow/logger": "1.6.0",
     "cbor": "8.0.2",
-    "ioredis": "4.28.1",
+    "ioredis": "4.28.2",
     "typescript-fsa": "^3.0.0"
   },
   "devDependencies": {

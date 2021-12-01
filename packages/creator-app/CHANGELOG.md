@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.549.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.549.10...@voiceflow/creator-app@1.549.11) (2021-12-01)
+
+
+### Bug Fixes
+
+* header logo and  title shrinking when there's still space in the topbar (VF-2304) ([#4710](https://github.com/voiceflow/creator-app/issues/4710)) ([4642c7a](https://github.com/voiceflow/creator-app/commit/4642c7a5b01bc72bffd69bba4fc2d054e01906a1))
+
+
+
+
+
 ## [1.549.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.549.9...@voiceflow/creator-app@1.549.10) (2021-12-01)
 
 

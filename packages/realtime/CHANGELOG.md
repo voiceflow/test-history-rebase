@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.25.3...@voiceflow/realtime@1.26.0) (2021-12-01)
+
+
+### Features
+
+* able to force realtime to crash (VF-2392) ([#4707](https://github.com/voiceflow/creator-app/issues/4707)) ([6276700](https://github.com/voiceflow/creator-app/commit/62767002c90201f74457a0bcaa07fc57677e3066))
+
+
+
+
+
 ## [1.25.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.25.2...@voiceflow/realtime@1.25.3) (2021-11-30)
 
 **Note:** Version bump only for package @voiceflow/realtime

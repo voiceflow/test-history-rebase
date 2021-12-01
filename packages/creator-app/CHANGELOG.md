@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.549.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.549.8...@voiceflow/creator-app@1.549.9) (2021-12-01)
+
+
+### Bug Fixes
+
+* integrity issue on calendly widget (VF-2379) ([#4712](https://github.com/voiceflow/creator-app/issues/4712)) ([78f5607](https://github.com/voiceflow/creator-app/commit/78f5607562e5265290fdac702485e783bb777b88))
+
+
+
+
+
 ## [1.549.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.549.7...@voiceflow/creator-app@1.549.8) (2021-11-30)
 
 

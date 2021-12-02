@@ -20,6 +20,7 @@ import StatusContainer from './StatusContainer';
 import StatusContent from './StatusContent';
 
 export type UncontrolledSectionProps = SectionContainerProps & {
+  id?: string;
   count?: number;
   prefix?: Icon | React.ReactNode;
   suffix?: Icon | React.ReactNode;
@@ -53,7 +54,9 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   contentPrefix?: React.FC | string;
   contentSuffix?: React.FC | string;
   emptyChildren?: boolean;
-  id?: string;
+  truncatedHeader?: boolean;
+  hiddenPrefix?: boolean;
+  hiddenStatusContent?: boolean;
 };
 
 const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, UncontrolledSectionProps> = (
@@ -92,6 +95,9 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
     emptyChildren,
     contentPrefix = React.Fragment,
     contentSuffix = React.Fragment,
+    truncatedHeader = true,
+    hiddenPrefix,
+    hiddenStatusContent,
     ...props
   },
   ref
@@ -129,8 +135,8 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
           nestedIntend={nestedIntend}
         >
           {(prefix || header || tooltip || dropdown) && (
-            <HeaderContent>
-              {prefix && <FixNode fixNode={prefix} color="#787878" />}
+            <HeaderContent truncated={truncatedHeader} overflowHidden={hiddenPrefix}>
+              {prefix && <FixNode overflowHidden={hiddenPrefix} fixNode={prefix} color="#787878" />}
               {header && (
                 <HeaderLabel
                   isCollapsed={!!isCollapsed}
@@ -152,7 +158,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
           )}
 
           {(status || infix || suffix || count || collapseVariant || isLink) && (
-            <StatusContent>
+            <StatusContent overflowHidden={hiddenStatusContent}>
               {infix && <FixNode fixNode={infix} color="#becedc" />}
               {(isLink || status) && <StatusContainer>{isLink ? <SvgIcon icon="arrowRight" size={10} /> : status}</StatusContainer>}
               {!!count && Number.isInteger(count) && <NumberContainer>{count}</NumberContainer>}
@@ -169,6 +175,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
           )}
         </Header>
       )}
+
       {(children || emptyChildren) && (
         <ContentContainer noHeader={!hasHeader} isCollapsed={isCollapsed} sectionToggleVariant={collapseVariant} style={customContentStyling}>
           <ContentPrefixComponent />

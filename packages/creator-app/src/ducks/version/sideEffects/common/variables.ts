@@ -41,7 +41,7 @@ export const addGlobalVariable =
     const variables = activeGlobalVariablesSelector(state);
 
     if (!variable.match(VALID_VARIABLE_NAME)) {
-      throw new Error('Variable contains invalid characters or is greater than 16 characters');
+      throw new Error('Variable contains invalid characters or is greater than 64 characters');
     } else if (variables.includes(variable)) {
       throw new Error(`No duplicate variables: ${variable}`);
     } else if (RESERVED_JS_WORDS.includes(variable)) {

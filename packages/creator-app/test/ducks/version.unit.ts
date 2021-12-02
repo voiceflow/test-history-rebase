@@ -207,10 +207,10 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
         };
 
         await expect(applyEffect(createState(MOCK_STATE, rootState), '@$%!')).to.be.rejectedWith(
-          'Variable contains invalid characters or is greater than 16 characters'
+          'Variable contains invalid characters or is greater than 64 characters'
         );
         await expect(applyEffect(createState(MOCK_STATE, rootState), 'xxxx-xxxx-xxxx-xxxx')).to.be.rejectedWith(
-          'Variable contains invalid characters or is greater than 16 characters'
+          'Variable contains invalid characters or is greater than 64 characters'
         );
       });
 

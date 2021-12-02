@@ -85,7 +85,7 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
         value={value}
         onChange={({ target }) => setValue(target.value)}
         {...props}
-        maxLength={16}
+        maxLength={64}
         rightAction={
           !!value.length && (
             <Badge slide onClick={onAdd}>

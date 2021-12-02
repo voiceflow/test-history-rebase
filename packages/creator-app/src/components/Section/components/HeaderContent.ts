@@ -1,10 +1,20 @@
 import { Flex } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const HeaderContent = styled(Flex)`
-  /* truncated text hack https://css-tricks.com/flexbox-truncated-text/ */
-  min-width: 0;
+const HeaderContent = styled(Flex)<{ truncated?: boolean; overflowHidden?: boolean }>`
+  ${({ truncated }) =>
+    truncated &&
+    css`
+      /* truncated text hack https://css-tricks.com/flexbox-truncated-text/ */
+      min-width: 0;
+    `}
+
+  ${({ overflowHidden }) =>
+    overflowHidden &&
+    css`
+      overflow-x: hidden;
+    `}
 `;
 
 export default HeaderContent;

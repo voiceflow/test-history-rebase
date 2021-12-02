@@ -1,41 +1,42 @@
 import { transformStringVariableToNumber } from '@voiceflow/common';
-import { Input, TippyTooltip } from '@voiceflow/ui';
+import { Input } from '@voiceflow/ui';
 import React from 'react';
 
+import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import Section, { SectionVariant } from '@/components/Section';
-import { VariableTag } from '@/components/VariableTag';
+import { VariableTagTooltipStyles } from '@/components/VariableTag';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import { Drawer } from '../PrototypeContainer';
-import { Variables } from './components';
+import { InputPrefix, Variables } from './components';
 
 const PrototypeVariableSettings: React.FC<ConnectedPrototypeVariableSettingsProps> = ({ variables, updateVariables }) => (
   <Drawer id={Identifier.PROTO_VARIABLES_MENU_CONTAINER}>
     <Section header="VARIABLES" borderBottom variant={SectionVariant.PROTOTYPE} />
 
     <Variables>
-      {Object.keys(variables).map((name) => {
-        const value = variables[name];
-        return (
-          <Input
-            key={name}
-            leftAction={
-              <VariableTag isPrototypeSettings style={{ maxWidth: '75%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                <TippyTooltip delay={500} distance={6} title={name} position="top">
-                  {name}
-                </TippyTooltip>
-              </VariableTag>
-            }
-            value={value}
-            onChange={({ target: { value } }) => updateVariables({ [name]: value })}
-            onBlur={() => updateVariables({ [name]: transformStringVariableToNumber(value) })}
-            placeholder="Enter value"
-          />
-        );
-      })}
+      {Object.keys(variables).map((name) => (
+        <Input
+          key={name}
+          leftAction={
+            <OverflowTippyTooltip delay={500} title={name} position="top-end" style={{ display: 'flex', maxWidth: '75%' }}>
+              {(ref, { isOverflow }) => (
+                <>
+                  <InputPrefix ref={ref}>{name}</InputPrefix>
+                  {isOverflow && <VariableTagTooltipStyles />}
+                </>
+              )}
+            </OverflowTippyTooltip>
+          }
+          value={variables[name]}
+          onBlur={() => updateVariables({ [name]: transformStringVariableToNumber(variables[name]) })}
+          onChange={({ target: { value } }) => updateVariables({ [name]: value })}
+          placeholder="Enter value"
+        />
+      ))}
     </Variables>
   </Drawer>
 );

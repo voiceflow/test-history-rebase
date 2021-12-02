@@ -5,6 +5,7 @@ import React from 'react';
 
 import Avatar from '@/components/Avatar';
 import { EditableTextAPI } from '@/components/EditableText';
+import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
 import * as Project from '@/ducks/project';
@@ -60,8 +61,8 @@ export const Item: React.FC<ItemProps> = ({
   connectDropTarget,
 }) => {
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
-  const titleRef = React.useRef<EditableTextAPI | null>(null);
-  const [titleOverflowing, setTitleOverflowing] = React.useState(false);
+  const titleEditableRef = React.useRef<EditableTextAPI | null>(null);
+
   const dateFromID = new Date(parseInt(id.substring(0, 8), 16));
   const color = PROJECT_COLORS[dateFromID.getTime() % PROJECT_COLORS.length] || PROJECT_COLORS[0];
 
@@ -69,11 +70,11 @@ export const Item: React.FC<ItemProps> = ({
   const [formValue, updateFormValue] = useLinkedState(name);
   const saveProjectName = useDispatch(Project.updateProjectNameByID, id);
   const onRename = () => {
-    titleRef.current?.startEditing();
+    titleEditableRef.current?.startEditing();
     setIsEditing(true);
   };
   const onBlur = () => {
-    titleRef.current?.stopEditing();
+    titleEditableRef.current?.stopEditing();
 
     updateFormValue(formatProjectName(formValue));
     saveProjectName(formatProjectName(formValue));
@@ -81,7 +82,6 @@ export const Item: React.FC<ItemProps> = ({
     setIsEditing(false);
   };
 
-  const TitleWrapper = titleOverflowing ? TippyTooltip : React.Fragment;
   const options = useProjectOptions({
     boardID: listId,
     projectID: id,
@@ -89,16 +89,6 @@ export const Item: React.FC<ItemProps> = ({
     onRename,
     versionID,
   });
-
-  React.useEffect(() => {
-    if (!titleRef.current?.titleRef.current) {
-      return;
-    }
-
-    const spanTitleRef = titleRef.current.titleRef.current;
-
-    setTitleOverflowing(spanTitleRef.scrollWidth > spanTitleRef.clientWidth);
-  }, [name]);
 
   const hasOptions = !!options.length;
 
@@ -125,18 +115,27 @@ export const Item: React.FC<ItemProps> = ({
 
         <ProjectNameWrapper>
           <ProjectTitleDetails>
-            <TitleWrapper {...(titleOverflowing ? { title: name } : {})}>
-              <ProjectTitle
-                ref={titleRef}
-                className={DashboardClassName.PROJECT_LIST_ITEM_TITLE}
-                readOnly={!isEditing}
-                value={formValue}
-                onBlur={onBlur}
-                onChange={updateFormValue}
-                onClick={stopPropagation()}
-                onKeyPress={withEnterPress(withInputBlur())}
-              />
-            </TitleWrapper>
+            <OverflowTippyTooltip title={name}>
+              {(ref) => (
+                <ProjectTitle
+                  ref={(editableText) => {
+                    titleEditableRef.current = editableText;
+
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    ref.current = editableText?.titleRef?.current;
+                  }}
+                  className={DashboardClassName.PROJECT_LIST_ITEM_TITLE}
+                  readOnly={!isEditing}
+                  value={formValue}
+                  onBlur={onBlur}
+                  onChange={updateFormValue}
+                  onClick={stopPropagation()}
+                  onKeyPress={withEnterPress(withInputBlur())}
+                />
+              )}
+            </OverflowTippyTooltip>
+
             <ProjectTitleCaption>
               <span>
                 {getPlatformAppName(platform)} {!!language.length && '-'}

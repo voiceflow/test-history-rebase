@@ -1,6 +1,12 @@
-import { styled, units } from '@/hocs';
+import { css, styled, units } from '@/hocs';
 
-const PrefixContainer = styled.div`
+const PrefixContainer = styled.div<{ overflowHidden?: boolean }>`
+  ${({ overflowHidden }) =>
+    overflowHidden &&
+    css`
+      overflow-x: hidden;
+    `}
+
   &:not(:last-child) {
     margin-right: ${units(2)}px;
   }

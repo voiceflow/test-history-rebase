@@ -33,7 +33,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
       isDraggingPreview={isDraggingPreview}
       isContextMenuOpen={isContextMenuOpen}
     >
-      <VariableTag>{`{${item.name}}`}</VariableTag>
+      <VariableTag inheritedCursor>{item.name}</VariableTag>
+
       {(isLocal || isBuiltIn) && <ItemCount>{isBuiltIn ? 'Built In' : 'Flow'}</ItemCount>}
     </SearchableListItemContainer>
   );

@@ -1,4 +1,4 @@
-import { Box, FlexApart, Input } from '@voiceflow/ui';
+import { BlockText, BoxFlex, FlexApart, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import RemoveDropdown from '@/components/RemoveDropdown';
@@ -19,13 +19,15 @@ const Manager: React.FC<ManagerProps> = ({ variable, isBuiltIn, description, rem
   <FadeLeftContainer mt={10}>
     <Section
       status={
-        <Box mr={isBuiltIn ? 0 : 44}>
-          <VariableTag>{`{${variable}}`}</VariableTag>
-        </Box>
+        <BoxFlex pr={isBuiltIn ? 0 : 44} maxWidth="100%">
+          <VariableTag>{variable}</VariableTag>
+        </BoxFlex>
       }
-      dividers={false}
+      header={<BlockText minWidth={110}>Variable Name</BlockText>}
       variant={SectionVariant.TERTIARY}
-      header="Variable Name"
+      dividers={false}
+      truncatedHeader={false}
+      hiddenStatusContent
     >
       <FlexApart>
         <Input value={variable} disabled />

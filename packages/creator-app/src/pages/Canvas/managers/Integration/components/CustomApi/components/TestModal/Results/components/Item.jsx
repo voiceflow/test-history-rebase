@@ -1,10 +1,7 @@
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import { VariableTag } from '@/components/VariableTag';
 import { styled } from '@/hocs';
-
-const MAX_VAR_LENGTH = 8;
 
 const Container = styled.td`
   cursor: default;
@@ -17,13 +14,9 @@ const Container = styled.td`
   }
 `;
 
-const structureVar = (variable) => (variable.length <= MAX_VAR_LENGTH ? `{${variable}}` : `{${variable.substring(0, 6)}...}`);
-
 const Item = ({ value, variable }) => (
   <Container>
-    <div>
-      <Tooltip html={value}>{variable ? <VariableTag>{structureVar(value)}</VariableTag> : <span>{value}</span>}</Tooltip>
-    </div>
+    <div>{variable ? <VariableTag>{value}</VariableTag> : <span>{value}</span>}</div>
   </Container>
 );
 

@@ -1,26 +1,31 @@
+import composeRef from '@seznam/compose-react-refs';
 import { swallowEvent } from '@voiceflow/ui';
 import React from 'react';
 
-import { slotStyles, variableStyle } from '@/components/VariableTag';
+import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
+import { slotStyles, variableStyle, VariableTagTooltipStyles } from '@/components/VariableTag';
 import { InteractionModelTabType } from '@/constants';
 import * as Router from '@/ducks/router';
 import { compose, connect, styled } from '@/hocs';
 
 const Text = styled.span`
   pointer-events: none;
+  display: inline-flex;
+  max-width: 100%;
 
   > span {
     pointer-events: all;
     ${({ isVariable }) => (isVariable ? variableStyle : slotStyles)}
 
     word-break: normal;
-    border: none;
     line-height: 18px;
-    box-shadow: ${({ isVariable }) => (isVariable ? 'inset 0 0 0 1px #dfe5ea' : 'none')};
     cursor: pointer;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
-    &:before,
-    &:after {
+    &:before :after {
       content: '';
       display: none;
     }
@@ -28,19 +33,31 @@ const Text = styled.span`
 `;
 
 const Slot = ({ children, mention, goInteractionModelEntity }, ref) => (
-  <Text
-    ref={ref}
-    color={mention.color}
-    onClick={swallowEvent(
-      () => goInteractionModelEntity(mention.isVariable ? InteractionModelTabType.VARIABLES : InteractionModelTabType.SLOTS, mention.id),
-      true
-    )}
-    onMouseUp={swallowEvent(null, true)}
-    onMouseDown={swallowEvent(null, true)}
-    isVariable={mention.isVariable}
+  <OverflowTippyTooltip
+    delay={300}
+    title={mention.name}
+    isChildrenOverflow={(node) => node.firstElementChild?.scrollWidth > node.firstElementChild?.clientWidth}
   >
-    {children}
-  </Text>
+    {(overflowRef, { isOverflow }) => (
+      <>
+        <Text
+          ref={composeRef(ref, overflowRef)}
+          color={mention.color}
+          onClick={swallowEvent(
+            () => goInteractionModelEntity(mention.isVariable ? InteractionModelTabType.VARIABLES : InteractionModelTabType.SLOTS, mention.id),
+            true
+          )}
+          onMouseUp={swallowEvent(null, true)}
+          onMouseDown={swallowEvent(null, true)}
+          isVariable={mention.isVariable}
+        >
+          {children}
+        </Text>
+
+        {isOverflow && <VariableTagTooltipStyles />}
+      </>
+    )}
+  </OverflowTippyTooltip>
 );
 
 const mapDispatchToProps = {

@@ -29,7 +29,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
     isContextMenuOpen={isContextMenuOpen}
   >
     <SlotTag color={item.color}>{item.name}</SlotTag>
-    <ItemCount>{item.type?.replace('AMAZON.', '') ?? ''}</ItemCount>
+
+    {item.type && <ItemCount style={{ marginLeft: '12px' }}>{item.type?.replace('AMAZON.', '') ?? ''}</ItemCount>}
   </SearchableListItemContainer>
 );
 

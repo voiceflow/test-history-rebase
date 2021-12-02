@@ -1,0 +1,26 @@
+import React from 'react';
+
+import OverflowTippyTooltip, { OverflowTippyTooltipProps } from '@/components/OverflowTippyTooltip';
+
+import { BaseVariableTagProps, VariableTagContent, VariableTagTooltipStyles, VariableTagWrapper } from './styles';
+
+export interface VariableTagProps extends BaseVariableTagProps {
+  tooltip?: Omit<OverflowTippyTooltipProps, 'children' | 'title'>;
+  children: string;
+}
+
+export const VariableTag = ({ tooltip, children, ...props }: VariableTagProps): React.ReactElement => (
+  <OverflowTippyTooltip {...tooltip} title={`{${children}}`} style={{ maxWidth: '100%', display: 'flex', ...tooltip?.style }}>
+    {(ref, { isOverflow }) => (
+      <>
+        <VariableTagWrapper {...props}>
+          <span>{'{'}</span>
+          <VariableTagContent ref={ref}>{children}</VariableTagContent>
+          <span>{'}'}</span>
+        </VariableTagWrapper>
+
+        {isOverflow && <VariableTagTooltipStyles />}
+      </>
+    )}
+  </OverflowTippyTooltip>
+);

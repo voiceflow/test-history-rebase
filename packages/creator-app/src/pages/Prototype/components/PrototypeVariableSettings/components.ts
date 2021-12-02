@@ -25,3 +25,13 @@ export const Variables = styled(Section).attrs({ dividers: false })`
     }
   }
 `;
+
+export const InputPrefix = styled.span`
+  display: inline-block;
+  font-size: 13px;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  color: #62778c;
+`;

@@ -6,9 +6,7 @@ const Slot = styled.span<{ color?: string; isVariable?: boolean }>`
   ${({ isVariable }) => (isVariable ? variableStyle : slotStyles)}
 
   word-break: normal;
-  border: none;
   line-height: 18px;
-  box-shadow: ${({ isVariable }) => (isVariable ? 'inset 0 0 0 1px #dfe5ea' : 'none')};
   cursor: pointer;
   vertical-align: bottom;
 `;

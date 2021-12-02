@@ -91,12 +91,14 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
     <NamespaceProvider value={['slot', slot.id]}>
       <Wrapper>
         <UncontrolledSection
-          isCollapsed={!required}
-          isDividerNested={standalone}
           prefix={<SlotTag color={slot.color}>{slot.name}</SlotTag>}
           header={<SlotRequiredMessage required={required} />}
           onClick={() => patchIntentSlot(intent.id, slot.id, { required: !required })}
+          isCollapsed={!required}
+          hiddenPrefix
+          isDividerNested={standalone}
           collapseVariant={SectionToggleVariant.TOGGLE}
+          truncatedHeader={false}
         >
           <Section header="Entity Prompt" tooltip={<SlotPromptTooltip />} isNested dividerIsNested>
             <FormControl>

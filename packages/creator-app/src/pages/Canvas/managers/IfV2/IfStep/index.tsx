@@ -1,6 +1,5 @@
 import { Models, Node } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { useSyncedLookup } from '@/hooks';
@@ -11,7 +10,7 @@ import { NODE_CONFIG } from '../constants';
 
 interface Expression {
   name?: string;
-  label: JSX.Element | null;
+  label: string | null;
   portID: string;
 }
 
@@ -63,7 +62,7 @@ const ConnectedIfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.I
 
           return {
             name: expression.name,
-            label: expression.value.length > 0 ? <Text>{expressionPreview(expression)}</Text> : null,
+            label: expression.value.length > 0 ? expressionPreview(expression) : null,
             portID,
           };
         }),

@@ -91,7 +91,7 @@ function LegacyMappings({ intent, setConfirm, onDelete, slotByID, mappings = [],
         <LegacyMappingRow key={index}>
           <SlotTag color={slot.color}>{slot.name}</SlotTag>
           <SvgIcon icon="next" />
-          <VariableTag>{`{${variable}}`}</VariableTag>
+          <VariableTag>{variable}</VariableTag>
         </LegacyMappingRow>
       ))}
     </LegacySection>

@@ -10,16 +10,15 @@ export enum HeaderVariant {
 }
 
 export interface HeaderLabelProps {
-  disabled?: boolean;
   variant?: HeaderVariant;
+  disabled?: boolean;
   hasToggle: boolean;
+  truncated?: boolean;
   isCollapsed: boolean;
   sectionVariant: SectionVariant;
 }
 
 const HeaderLabel = styled.div<HeaderLabelProps>`
-  ${overflowTextStyles}
-
   ${({ hasToggle, isCollapsed, sectionVariant }) =>
     hasToggle &&
     sectionVariant === SectionVariant.TERTIARY &&
@@ -31,8 +30,16 @@ const HeaderLabel = styled.div<HeaderLabelProps>`
           color: #132144 !important;
         `)}
 
-  /* truncated text hack https://css-tricks.com/flexbox-truncated-text/ */
-  min-width: 0;
+  ${({ truncated }) =>
+    truncated &&
+    css`
+      ${overflowTextStyles}
+
+      /* truncated text hack https://css-tricks.com/flexbox-truncated-text/ */
+      min-width: 0;
+    `}
+
+
   margin-right: ${units(2)}px;
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
   ${({ variant }) => {

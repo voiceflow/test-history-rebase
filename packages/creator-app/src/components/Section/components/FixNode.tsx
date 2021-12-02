@@ -5,12 +5,13 @@ import React from 'react';
 import PrefixContainer from './PrefixContainer';
 
 export interface FixNodeProps {
-  fixNode: Icon | React.ReactNode;
   color: string;
+  fixNode: Icon | React.ReactNode;
+  overflowHidden?: boolean;
 }
 
-const FixNode: React.FC<FixNodeProps> = ({ fixNode, color }) => (
-  <PrefixContainer>{_isString(fixNode) ? <SvgIcon color={color} icon={fixNode as Icon} /> : fixNode}</PrefixContainer>
+const FixNode: React.FC<FixNodeProps> = ({ fixNode, color, overflowHidden }) => (
+  <PrefixContainer overflowHidden={overflowHidden}>{_isString(fixNode) ? <SvgIcon color={color} icon={fixNode as Icon} /> : fixNode}</PrefixContainer>
 );
 
 export default FixNode;

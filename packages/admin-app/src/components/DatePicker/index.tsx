@@ -1,8 +1,7 @@
-import { Input, Portal, useEnableDisable } from '@voiceflow/ui';
+import { Input, Portal, useEnableDisable, usePopper } from '@voiceflow/ui';
 import dayjs, * as Dayjs from 'dayjs';
 import React from 'react';
 import DayPicker from 'react-day-picker';
-import { Manager, Popper, Reference } from 'react-popper';
 
 import DayPickerContainer from './Container';
 
@@ -20,6 +19,14 @@ export interface DayPickerInputProps {
 }
 
 const DayPickerInput = ({ date, onChange, addOffSet, addOffSetBy, substactOffSet, substactOffSetBy }: DayPickerInputProps) => {
+  const popper = usePopper({
+    placement: 'bottom-start',
+    modifiers: [
+      { name: 'offset', options: { offset: [0, 5] } },
+      { name: 'preventOverflow', options: { boundary: document.body } },
+    ],
+  });
+
   const dayPickerRef = React.useRef<HTMLElement | null>(null);
   const inputRef = React.useRef<{ blur: Function; getEditorState: Function } | null>(null);
 
@@ -96,43 +103,29 @@ const DayPickerInput = ({ date, onChange, addOffSet, addOffSetBy, substactOffSet
   }, [isShown]);
 
   return (
-    <Manager>
-      <Reference>
-        {({ ref }) => (
-          <div ref={ref} onClick={onShow}>
-            <InputComponent
-              ref={(editor: { blur: Function; getEditorState: Function }) => {
-                inputRef.current = editor;
-              }}
-              value={formattedDate}
-              onBlur={onInputChange}
-              onFocus={onShow}
-              onChange={onInputChange}
-              placeholder={FORMAT}
-              error={error}
-            />
-          </div>
-        )}
-      </Reference>
+    <>
+      <div ref={popper.setReferenceElement} onClick={onShow}>
+        <InputComponent
+          ref={(editor: { blur: Function; getEditorState: Function }) => {
+            inputRef.current = editor;
+          }}
+          value={formattedDate}
+          onBlur={onInputChange}
+          onFocus={onShow}
+          onChange={onInputChange}
+          placeholder={FORMAT}
+          error={error}
+        />
+      </div>
 
       {isShown && (
         <Portal>
-          <Popper
-            innerRef={(node) => {
-              dayPickerRef.current = node;
-            }}
-            placement="bottom-start"
-            modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }}
-          >
-            {({ ref, style, placement }) => (
-              <DayPickerContainer ref={ref} style={{ ...style, zIndex: 1100 }} data-placement={placement}>
-                <DayPicker initialMonth={selectedDay} selectedDays={selectedDay} disabledDays={{ before: currentDate }} onDayClick={onDayClick} />
-              </DayPickerContainer>
-            )}
-          </Popper>
+          <DayPickerContainer ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 1100 }} {...popper.attributes.popper}>
+            <DayPicker initialMonth={selectedDay} selectedDays={selectedDay} disabledDays={{ before: currentDate }} onDayClick={onDayClick} />
+          </DayPickerContainer>
         </Portal>
       )}
-    </Manager>
+    </>
   );
 };
 

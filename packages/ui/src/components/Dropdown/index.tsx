@@ -1,24 +1,22 @@
-import composeRefs from '@seznam/compose-react-refs';
-import { Nullable } from '@voiceflow/common';
 import Menu, { MenuOption, MenuProps } from '@ui/components/Menu';
 import Portal from '@ui/components/Portal';
+import { useCachedValue } from '@ui/hooks/cache';
+import { PopperPlacement, usePopper } from '@ui/hooks/popper';
+import { StrictModifier } from 'newpopper';
 import React, { Fragment } from 'react';
 import { useDismissable } from 'react-dismissable-layers';
-import { Manager, Popper, PopperProps, Reference } from 'react-popper';
 
 import { PopoverContainer } from './components';
 
-export { PopoverContainer } from './components';
-
 const DEFAULT_PORTAL_NODE = document.body;
 
-export type DropdownPlacement = PopperProps['placement'];
+export type DropdownPlacement = PopperPlacement;
 
 export interface DropdownProps<T> {
   menu?: React.ReactNode | ((onToggle: () => void) => void);
   portal?: HTMLElement | null;
   zIndex?: string | number;
-  offset?: NonNullable<PopperProps['modifiers']>['offset'];
+  offset?: StrictModifier<'offset'>['options'];
   onClose?: () => void;
   options?: MenuOption<T>[];
   onSelect?: MenuProps<T>['onSelect'];
@@ -30,7 +28,7 @@ export interface DropdownProps<T> {
   autoWidth?: boolean;
   selfDismiss?: boolean;
   disabledOverlay?: boolean;
-  preventOverflow?: NonNullable<PopperProps['modifiers']>['preventOverflow'];
+  preventOverflow?: StrictModifier<'preventOverflow'>['options'];
   maxVisibleItems?: number;
 }
 
@@ -50,81 +48,54 @@ const Dropdown = <T extends any = undefined>({
   autoWidth = false,
   selfDismiss = false,
   disabledOverlay = false,
-  preventOverflow = { enabled: false },
+  preventOverflow,
   maxVisibleItems,
 }: DropdownProps<T>): React.ReactElement => {
-  const containerRef = React.useRef<Nullable<HTMLDivElement>>(null);
+  const popper = usePopper({
+    placement,
+    modifiers: [
+      { name: 'hide', options: { enabled: false } },
+      { name: 'offset', options: offset },
+      { name: 'preventOverflow', options: preventOverflow },
+    ],
+  });
 
-  const [isOpen, onToggle] = useDismissable(false, { onClose, disableLayers: disabledOverlay, ref: selfDismiss ? containerRef : undefined });
-  const [childRef, setChildRef] = React.useState<Nullable<HTMLElement>>(null);
-
-  const onComputedStyle = React.useCallback(
-    (data) => {
-      if (childRef && placement === 'bottom-start') {
-        // eslint-disable-next-line no-param-reassign
-        data.styles.width = childRef.getBoundingClientRect().width;
-      }
-      return data;
-    },
-    [placement, childRef]
-  );
+  const dismissableRef = useCachedValue(popper.popperElement as Element);
+  const [isOpen, onToggle] = useDismissable(false, { onClose, disableLayers: disabledOverlay, ref: selfDismiss ? dismissableRef : undefined });
 
   const Wrapper = portal ? Portal : Fragment;
   const wrapperProps = portal ? { portalNode: portal } : {};
 
   return (
-    <Manager>
-      <Reference innerRef={(node) => setChildRef(node)}>{({ ref }) => children(ref, onToggle, isOpen)}</Reference>
+    <>
+      {children(popper.setReferenceElement, onToggle, isOpen)}
 
       {isOpen && (
         <Wrapper {...wrapperProps}>
-          <Popper
-            placement={placement}
-            modifiers={{
-              hide: { enabled: false },
-              offset,
-              autoSizing: { enabled: true, fn: onComputedStyle, order: 840 },
-              preventOverflow,
-            }}
+          <PopoverContainer
+            ref={popper.setPopperElement}
+            style={popper.styles.popper}
+            zIndex={zIndex}
+            noScroll={noScroll}
+            autoWidth={autoWidth}
+            {...popper.attributes.popper}
           >
-            {({ ref, style, placement }) => (
-              <PopoverContainer
-                ref={composeRefs(containerRef, ref)}
-                style={
-                  // eslint-disable-next-line no-nested-ternary
-                  portal
-                    ? style
-                    : childRef
-                    ? {
-                        position: 'absolute',
-                        left: `${childRef.offsetLeft}px`,
-                        top: `${childRef.offsetTop + childRef.offsetHeight}px`,
-                      }
-                    : undefined
-                }
-                zIndex={zIndex}
-                noScroll={noScroll}
-                autoWidth={autoWidth}
-                data-placement={placement}
-              >
-                {(typeof menu === 'function' ? menu(onToggle) : menu) ||
-                  (options && (
-                    <Menu<T>
-                      options={options}
-                      width={menuWidth}
-                      onSelect={onSelect}
-                      maxHeight={maxHeight}
-                      maxVisibleItems={maxVisibleItems}
-                      onToggle={onToggle}
-                      selfDismiss={selfDismiss}
-                    />
-                  ))}
-              </PopoverContainer>
-            )}
-          </Popper>
+            {(typeof menu === 'function' ? menu(onToggle) : menu) ||
+              (options && (
+                <Menu<T>
+                  options={options}
+                  width={menuWidth}
+                  onSelect={onSelect}
+                  maxHeight={maxHeight}
+                  maxVisibleItems={maxVisibleItems}
+                  onToggle={onToggle}
+                  selfDismiss={selfDismiss}
+                />
+              ))}
+          </PopoverContainer>
         </Wrapper>
       )}
-    </Manager>
+    </>
   );
 };
 

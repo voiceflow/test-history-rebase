@@ -11,7 +11,7 @@ interface LogoButtonProps {
 
 const LogoButton: React.FC<LogoButtonProps> = ({ options, expandable = true, noMargins = false }) => (
   <BoxFlex mr={noMargins ? 0 : 16} height="100%">
-    <Dropdown options={options} offset={{ offset: '16,6' }} menuWidth={240} maxVisibleItems={options.length}>
+    <Dropdown options={options} offset={{ offset: [16, 6] }} menuWidth={240} maxVisibleItems={options.length}>
       {(ref, onToggle, isOpened) => <StyledLogoButton ref={ref} onClick={onToggle} active={isOpened} expandable={expandable} />}
     </Dropdown>
   </BoxFlex>

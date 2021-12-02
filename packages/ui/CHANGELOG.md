@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.37.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.36.1...@voiceflow/ui@1.37.0) (2021-12-02)
+
+
+### Features
+
+* update react-popper to latest version (VF-520) ([#4342](https://github.com/voiceflow/creator-app/issues/4342)) ([601892b](https://github.com/voiceflow/creator-app/commit/601892bd037ecf510e825159d7028d38eb58225e))
+
+
+
+
+
 ## [1.36.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.36.0...@voiceflow/ui@1.36.1) (2021-12-02)
 
 **Note:** Version bump only for package @voiceflow/ui

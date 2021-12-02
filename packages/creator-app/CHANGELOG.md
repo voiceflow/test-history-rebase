@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.553.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.552.0...@voiceflow/creator-app@1.553.0) (2021-12-02)
+
+
+### Bug Fixes
+
+* link drag autopan bug (VF-2396) ([#4728](https://github.com/voiceflow/creator-app/issues/4728)) ([d64e4f1](https://github.com/voiceflow/creator-app/commit/d64e4f1cda9d7103576c023cdd3dfa149fc543c6))
+
+
+### Features
+
+* update react-popper to latest version (VF-520) ([#4342](https://github.com/voiceflow/creator-app/issues/4342)) ([601892b](https://github.com/voiceflow/creator-app/commit/601892bd037ecf510e825159d7028d38eb58225e))
+* variables in the button step labels (VF-2146) ([#4720](https://github.com/voiceflow/creator-app/issues/4720)) ([bd3b94b](https://github.com/voiceflow/creator-app/commit/bd3b94bff4d6e57806c91722adde3a9a3c7e1c22))
+
+
+
+
+
 # [1.552.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.551.0...@voiceflow/creator-app@1.552.0) (2021-12-02)
 
 

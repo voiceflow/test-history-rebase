@@ -9,6 +9,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
     expect(Object.keys(client)).to.have.members([
       'get',
       'updateProfilePicture',
+      'updatePassword',
       'getReferralCouponCode',
       'resetEmail',
       'testResetPassword',

@@ -9,6 +9,8 @@ const userClient = {
 
   updateProfilePicture: (url: string) => api.post(`${USER_PATH}/profilePictureURL`, { url }),
 
+  updatePassword: (currentPassword: string, nextPassword: string) => api.post(`${USER_PATH}/updatePassword`, { currentPassword, nextPassword }),
+
   getReferralCouponCode: (referrerID: number, referralCode: string) => api.get<string | null>(`${USER_PATH}/referral/${referrerID}/${referralCode}`),
 
   resetEmail: (email: string) => api.post(`${USER_PATH}/reset`, { email }),

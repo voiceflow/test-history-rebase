@@ -5,6 +5,7 @@ export interface Account {
   name: string;
   creator_id: number;
   image?: string;
+  password?: string;
   created: string;
   first_login?: boolean;
   referrer_id?: number;

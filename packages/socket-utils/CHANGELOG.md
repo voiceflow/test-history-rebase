@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.4.2...@voiceflow/socket-utils@1.5.0) (2021-12-02)
+
+
+### Features
+
+* noreply/nomatch improvements (VF-1996) ([#4443](https://github.com/voiceflow/creator-app/issues/4443)) ([f46d3c7](https://github.com/voiceflow/creator-app/commit/f46d3c749c709c7e4bfb32854cb770c9c106739b))
+
+
+
+
+
 ## [1.4.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.4.1...@voiceflow/socket-utils@1.4.2) (2021-12-01)
 
 

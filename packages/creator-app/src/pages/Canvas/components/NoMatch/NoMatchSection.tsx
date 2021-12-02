@@ -4,7 +4,7 @@ import React from 'react';
 
 import Section from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
-import { getNoMatchNoReplySectionLabelByType } from '@/pages/Canvas/managers/utils';
+import { getNoMatchNoReplySectionLabel } from '@/pages/Canvas/managers/utils';
 
 export interface NoMatchSectionProps {
   data: Realtime.NodeData.NoMatch;
@@ -18,7 +18,7 @@ const NoMatchSection: React.FC<NoMatchSectionProps> = ({ data, pushToPath }) => 
 
   return (
     <Section
-      infix={getNoMatchNoReplySectionLabelByType(BaseNode.Utils.NoMatchType, data.type)}
+      infix={getNoMatchNoReplySectionLabel(BaseNode.Utils.NoMatchType, data.types)}
       header="No Match"
       isLink
       onClick={onClick}

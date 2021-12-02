@@ -39,12 +39,8 @@ const ChoiceOldManager: NodeManagerConfig<Realtime.NodeData.ChoiceOld> = {
     },
     data: {
       name: 'Choice (old)',
-      choices: [
-        {
-          synonyms: [],
-        },
-      ],
-      reprompt: null,
+      noReply: null,
+      choices: [{ synonyms: [] }],
     },
   }),
 };

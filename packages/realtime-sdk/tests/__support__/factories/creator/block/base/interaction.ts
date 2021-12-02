@@ -18,7 +18,7 @@ export const ChoiceStepData = define<Node.Interaction.Choice>({
   mappings: () => [{ slot: lorem.word(), variable: lorem.word() }],
 });
 
-export const InteractionStepData = define<Omit<Node.Interaction.StepData, 'else' | 'reprompt'>>({
+export const InteractionStepData = define<Omit<Node.Interaction.StepData, 'else' | 'reprompt' | 'noReply'>>({
   name: () => lorem.word(),
   choices: () => [ChoiceStepData()],
 });
@@ -37,7 +37,7 @@ export const ChoiceDistinctPlatformsData = define<Record<DistinctPlatform, NodeD
   ),
 });
 
-export const InteractionNodeData = define<Omit<NodeData.Interaction, 'else' | 'reprompt' | 'buttons'>>({
+export const InteractionNodeData = define<Omit<NodeData.Interaction, 'else' | 'noReply' | 'buttons'>>({
   name: () => lorem.word(),
   choices: () => [ChoiceDistinctPlatformsData()],
 });

@@ -1,13 +1,15 @@
+import { Models, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as VersionV2 from '@/ducks/versionV2';
 import { useSelector } from '@/hooks';
 import { NoReplySection } from '@/pages/Canvas/components/NoReply';
+import { EngineContext } from '@/pages/Canvas/contexts';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 import { PlatformContext } from '@/pages/Project/contexts';
-import { getPlatformPromptFactory } from '@/utils/prompt';
+import { getPlatformNoReplyFactory } from '@/utils/noReply';
 
 import { OptionSection } from './types';
 
@@ -17,23 +19,34 @@ interface NodeInterface<T> {
   pushToPath?: PushToPath;
 }
 
-const useNoReplyOptionSection = ({ data, onChange, pushToPath }: NodeInterface<{ reprompt: Realtime.NodeData.Reprompt | null }>): OptionSection => {
+const useNoReplyOptionSection = ({
+  data,
+  onChange,
+  pushToPath,
+}: NodeInterface<{ nodeID: string; noReply?: Nullable<Realtime.NodeData.NoReply> }>): OptionSection => {
+  const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext);
+
   const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
 
-  const hasNoReply = !!data.reprompt;
+  const toggleNoReply = React.useCallback(async () => {
+    const node = engine.getNodeByID(data.nodeID);
 
-  const toggleNoReply = React.useCallback(
-    () => onChange({ reprompt: hasNoReply ? null : getPlatformPromptFactory(platform)({ defaultVoice }) }),
-    [hasNoReply, onChange, defaultVoice]
-  );
+    const noReplyPortID = node?.ports.out.builtIn[Models.PortType.NO_REPLY];
+
+    if (data.noReply && noReplyPortID) {
+      await engine.port.removeOutBuiltIn(Models.PortType.NO_REPLY, noReplyPortID);
+    }
+
+    onChange({ noReply: data.noReply ? null : getPlatformNoReplyFactory(platform)({ defaultVoice }) });
+  }, [platform, data.nodeID, data.noReply, onChange, defaultVoice]);
 
   return [
     {
-      label: hasNoReply ? 'Remove No Reply Response' : 'Add  No Reply Response',
+      label: data.noReply ? 'Remove No Reply Response' : 'Add  No Reply Response',
       onClick: toggleNoReply,
     },
-    hasNoReply && <NoReplySection pushToPath={pushToPath} />,
+    !!data.noReply && <NoReplySection data={data.noReply} pushToPath={pushToPath} />,
   ];
 };
 

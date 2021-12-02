@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -29,9 +29,10 @@ const ConnectedChoiceOldStep: ConnectedStep<Realtime.NodeData.ChoiceOld> = ({ no
     <ChoiceStep
       nodeID={node.id}
       choices={choices}
-      noMatchPortID={node.ports.out.builtIn[Models.PortType.NEXT]!}
-      withNoMatchPath
-      noMatchPathName="No Match"
+      noMatch={{ pathName: 'No Match', reprompts: [], types: [Node.Utils.NoMatchType.PATH], randomize: false }}
+      noReply={data.noReply}
+      noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
+      noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
     />
   );
 };

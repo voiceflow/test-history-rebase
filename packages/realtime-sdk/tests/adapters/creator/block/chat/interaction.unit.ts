@@ -6,7 +6,7 @@ import { datatype } from 'faker';
 import Sinon from 'sinon';
 
 import interactionAdapter from '@/adapters/creator/block/chat/interaction';
-import { chatNoMatchAdapter, chatPromptAdapter } from '@/adapters/creator/block/utils';
+import { chatNoMatchAdapter, chatNoReplyAdapter } from '@/adapters/creator/block/utils';
 
 describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
   afterEach(() => {
@@ -17,12 +17,12 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
       const elseData = Creator.Block.Shared.ChatNodeDataNoMatch();
-      const reprompt = Creator.Block.Shared.ChatPrompt();
+      const noReply = Creator.Block.Shared.ChatNodeDataNoReply();
       const id = 'id';
 
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
       Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(elseData);
-      Sinon.stub(chatPromptAdapter, 'fromDB').returns(reprompt);
+      Sinon.stub(chatNoReplyAdapter, 'fromDB').returns(noReply);
 
       const data = Creator.Block.Chat.InteractionStepData();
 
@@ -44,21 +44,19 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
             }),
           ],
           buttons: data.buttons,
-          reprompt,
+          noReply,
         })
       );
     });
 
     it('returns correct data for empty values', () => {
       const elseData = Creator.Block.Shared.ChatNodeDataNoMatch();
-      const reprompt = Creator.Block.Shared.ChatPrompt();
       const id = datatype.uuid();
 
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
       Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(elseData);
-      Sinon.stub(chatPromptAdapter, 'fromDB').returns(reprompt);
 
-      const data = Creator.Block.Chat.InteractionStepData({ choices: [], reprompt: null });
+      const data = Creator.Block.Chat.InteractionStepData({ choices: [], noReply: null, reprompt: null });
 
       const result = interactionAdapter.fromDB(data);
 
@@ -66,7 +64,7 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
         name: data.name,
         else: elseData,
         choices: [],
-        reprompt: null,
+        noReply: null,
         buttons: data.buttons,
       });
     });
@@ -74,11 +72,11 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
 
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
-      const reprompt = Creator.Block.Shared.ChatPrompt();
+      const noReply = Creator.Block.Shared.ChatStepNoReply();
       const elseData = Creator.Block.Shared.ChatStepNoMatch();
 
       Sinon.stub(chatNoMatchAdapter, 'toDB').returns(elseData);
-      Sinon.stub(chatPromptAdapter, 'toDB').returns(reprompt);
+      Sinon.stub(chatNoReplyAdapter, 'toDB').returns(noReply);
 
       const data = Creator.Block.Chat.InteractionNodeData();
 
@@ -97,7 +95,7 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
         ],
         chips: null,
         buttons: data.buttons,
-        reprompt,
+        noReply,
       });
     });
 
@@ -106,7 +104,7 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
 
       Sinon.stub(chatNoMatchAdapter, 'toDB').returns(elseData);
 
-      const data = Creator.Block.Chat.InteractionNodeData({ choices: [], reprompt: null });
+      const data = Creator.Block.Chat.InteractionNodeData({ choices: [], noReply: null });
 
       const result = interactionAdapter.toDB(data);
 
@@ -116,7 +114,7 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
         chips: null,
         buttons: data.buttons,
         choices: [],
-        reprompt: null,
+        noReply: null,
       });
     });
   });

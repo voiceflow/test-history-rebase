@@ -1,13 +1,13 @@
 import { Models, Node } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
-import { StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSyncedLookup } from '@/hooks';
-import Step, { ConnectedStep, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { Attachment, ConnectedStep, Item, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
 import { getDistinctPlatformValue } from '@/utils/platform';
@@ -26,42 +26,37 @@ interface ChoiceItem {
 export interface ChoiceStepProps {
   nodeID: string;
   choices: ChoiceItem[];
-  noMatchPortID: string;
-  withNoMatchPath: boolean;
-  noMatchPathName: string;
+  noMatch: Realtime.NodeData.NoMatch;
+  noReply?: Nullable<Realtime.NodeData.NoReply>;
+  noMatchPortID?: Nullable<string>;
+  noReplyPortID?: Nullable<string>;
 }
 
-export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatchPortID, withNoMatchPath, noMatchPathName }) => (
+export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch, noReply, noMatchPortID, noReplyPortID }) => (
   <Step nodeID={nodeID}>
-    {!!choices.length && (
-      <Section>
-        {choices.map(({ key, label, linkedLabel, portID, attachment, onAttachmentClick }, index) => (
+    <Section>
+      {choices.length ? (
+        choices.map(({ key, label, linkedLabel, portID, attachment, onAttachmentClick }, index) => (
           <Item
             key={key}
             icon={index === 0 ? NODE_CONFIG.icon : null}
             label={label}
             portID={portID}
             iconColor={NODE_CONFIG.iconColor}
-            attachment={attachment}
+            attachment={attachment ? <Attachment icon="clip" onClick={stopPropagation(onAttachmentClick)} /> : null}
             linkedLabel={linkedLabel}
             placeholder={attachment ? 'Create or select an intent' : `Path ${index + 1}`}
             multilineLabel
             labelLineClamp={5}
-            onAttachmentClick={onAttachmentClick}
           />
-        ))}
-      </Section>
-    )}
+        ))
+      ) : (
+        <Item placeholder="Add choices" icon={NODE_CONFIG.icon} iconColor={NODE_CONFIG.iconColor} />
+      )}
 
-    {withNoMatchPath ? (
-      <ElseItem label={noMatchPathName} portID={noMatchPortID} />
-    ) : (
-      choices.length === 0 && (
-        <Section>
-          <Item icon="else" iconColor="#6e849a" portID={null} label="Reprompt" labelVariant={StepLabelVariant.SECONDARY} />
-        </Section>
-      )
-    )}
+      <NoMatchItem portID={noMatchPortID} noMatch={noMatch} />
+      <NoReplyItem portID={noReplyPortID} noReply={noReply} />
+    </Section>
   </Step>
 );
 
@@ -71,8 +66,6 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
   const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
   const choicesByPortID = useSyncedLookup(node.ports.out.dynamic, data.choices);
-
-  const withNoMatchPath = !!data.else.type && data.else.type !== Node.Utils.NoMatchType.REPROMPT;
 
   const choices = React.useMemo(
     () =>
@@ -101,9 +94,10 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
     <ChoiceStep
       nodeID={node.id}
       choices={choices}
+      noMatch={data.else}
+      noReply={data.noReply}
       noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
-      withNoMatchPath={withNoMatchPath}
-      noMatchPathName={data.else.pathName}
+      noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
     />
   );
 };

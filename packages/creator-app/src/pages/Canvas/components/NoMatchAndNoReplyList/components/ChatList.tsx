@@ -12,17 +12,22 @@ export interface ChatListProps {
   reprompts?: Types.Prompt[];
   onChangeReprompts: (reprompts: Types.Prompt[]) => void;
   onChangeRandomize: () => void;
+  hideRandomizeMenu?: boolean;
 }
 
-const ChatList: React.FC<ChatListProps> = ({ children, randomize, reprompts = [], onChangeReprompts, onChangeRandomize }) => (
+const ChatList: React.FC<ChatListProps> = ({ children, randomize, reprompts = [], onChangeReprompts, onChangeRandomize, hideRandomizeMenu }) => (
   <TextList
     label="Text"
-    renderMenu={() => (
-      <OverflowMenu
-        placement="top-end"
-        options={[{ label: randomize ? `Unrandomize reprompts` : `Randomize reprompts`, onClick: onChangeRandomize }]}
-      />
-    )}
+    renderMenu={
+      hideRandomizeMenu
+        ? null
+        : () => (
+            <OverflowMenu
+              placement="top-end"
+              options={[{ label: randomize ? `Unrandomize reprompts` : `Randomize reprompts`, onClick: onChangeRandomize }]}
+            />
+          )
+    }
     items={reprompts}
     maxItems={MAX_SPEAK_ITEMS_COUNT}
     randomize={randomize}

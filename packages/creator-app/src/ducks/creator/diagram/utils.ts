@@ -332,7 +332,10 @@ export const addOutBuiltInPortToBlockInState =
           ...node.ports,
           out: {
             ...node.ports.out,
-            [portType]: port.id,
+            builtIn: {
+              ...node.ports.out.builtIn,
+              [portType]: port.id,
+            },
           },
         },
       }),

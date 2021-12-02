@@ -1,14 +1,25 @@
 import { ButtonContainer } from '@ui/components/Button';
 import { IconButtonVariant } from '@ui/components/IconButton/types';
 import { SvgIconContainer } from '@ui/components/SvgIcon';
-import { colors, styled, ThemeColor, transition } from '@ui/styles';
+import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
 import { BaseContainerProps } from './IconButtonContainer';
 
 export interface SquareContainerProps extends BaseContainerProps {
   variant: IconButtonVariant.SQUARE;
   outlined?: boolean;
+  isActive?: boolean;
 }
+
+const activeStyles = css<SquareContainerProps>`
+  background: rgba(238, 244, 246, 0.85);
+  border: solid 1px ${colors(ThemeColor.BORDERS)};
+
+  & ${SvgIconContainer} {
+    color: ${({ outlined }) => colors(outlined ? ThemeColor.PRIMARY : ThemeColor.SECONDARY)};
+    opacity: 1;
+  }
+`;
 
 const SquareContainer = styled(ButtonContainer)<SquareContainerProps>`
   ${transition('background', 'border')}
@@ -34,14 +45,10 @@ const SquareContainer = styled(ButtonContainer)<SquareContainerProps>`
   }
 
   &:active {
-    background: rgba(238, 244, 246, 0.85);
-    border: solid 1px ${colors(ThemeColor.BORDERS)};
-
-    & ${SvgIconContainer} {
-      color: ${({ outlined }) => colors(outlined ? ThemeColor.PRIMARY : ThemeColor.SECONDARY)};
-      opacity: 1;
-    }
+    ${activeStyles}
   }
+
+  ${({ isActive }) => isActive && activeStyles}
 `;
 
 export default SquareContainer;

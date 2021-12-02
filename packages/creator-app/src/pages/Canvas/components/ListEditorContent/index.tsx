@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import { Link, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -33,7 +33,7 @@ export interface ListEditorContentProps<T, F extends any[] = [], E = {}> {
   maxItems?: number;
   onRemove?: (value: T, index: number) => void;
   onReorder?: (dragIndex: number, hoverIndex: number) => void;
-  renderMenu?: (options: MapManagedAPI<T, F> & ContentRenderOptions) => React.ReactNode;
+  renderMenu?: Nullable<(options: MapManagedAPI<T, F> & ContentRenderOptions) => React.ReactNode>;
   itemComponent: ListItemComponent<T, E>;
   onChangeItems: (items: T[]) => void;
   howItWorksLink?: string;

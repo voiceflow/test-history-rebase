@@ -3,7 +3,6 @@ import { Nullable, Utils } from '@voiceflow/common';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
-import { Voice } from '@voiceflow/google-types/build/constants';
 import { FlexCenter, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { Redirect, useRouteMatch } from 'react-router-dom';
@@ -56,7 +55,7 @@ const updateAlexaMeta = async (versionID: string, locales: [AlexaConstants.Local
 };
 
 const updateGoogleMeta = async (versionID: string, googleLanguage: GoogleConstants.Language, invocationName?: string) => {
-  const defaultVoice = getDefaultGoogleVoice(googleLanguage) as Nullable<Voice>;
+  const defaultVoice = getDefaultGoogleVoice(googleLanguage) as Nullable<GoogleConstants.Voice>;
   await Promise.all([
     client.platform.google.version.updatePublishing(versionID, {
       locales: GoogleConstants.LanguageToLocale[googleLanguage],
@@ -81,7 +80,7 @@ const updateGeneralMeta = async (versionID: string, generalLocale: GeneralConsta
 
   await client.platform.general.version.updateSettings(versionID, {
     locales: [generalLocale],
-    defaultVoice: defaultVoice ? (defaultVoice as unknown as Nullable<Voice>) : undefined,
+    defaultVoice: defaultVoice ? (defaultVoice as unknown as Nullable<GoogleConstants.Voice>) : undefined,
   });
 };
 

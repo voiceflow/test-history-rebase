@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
@@ -43,7 +43,7 @@ export interface SpeakAudioListProps {
   maxItems: number;
   itemName?: string;
   randomize?: boolean;
-  renderMenu?: () => React.ReactNode;
+  renderMenu?: Nullable<() => React.ReactNode>;
   isDeprecated?: boolean;
   itemComponent: ItemComponent;
   onChangeItems?: (items: Realtime.SpeakData[]) => void;

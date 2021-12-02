@@ -4,18 +4,8 @@
     "esModuleInterop": true,
     "baseUrl": "../node_modules",
     "target": "es5",
-    "lib": [
-      "es6",
-      "dom"
-    ],
-    "types": [
-      "cypress",
-      "cypress-real-events",
-      "cypress-plugin-stripe-elements"
-    ]
+    "lib": ["es6", "dom"],
+    "types": ["cypress", "cypress-real-events", "cypress-plugin-stripe-elements"]
   },
-  "include": [
-    "**/*.ts",
-    "support/index.js"
-  ]
+  "include": ["**/*.ts", "../src/**.ts", "support/index.js", "plugins/index.js"]
 }

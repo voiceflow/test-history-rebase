@@ -166,6 +166,8 @@ export { default as microphone } from './solid/microphone.svg';
 
 // n
 export { default as next } from './next.svg';
+export { default as noMatch } from './no-match.svg';
+export { default as noReply } from './no-reply.svg';
 export { default as notifications } from './notifications.svg';
 
 // o

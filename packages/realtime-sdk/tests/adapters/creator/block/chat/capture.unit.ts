@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import captureAdapter from '@/adapters/creator/block/chat/capture';
-import { chatPromptAdapter } from '@/adapters/creator/block/utils';
+import { chatNoReplyAdapter } from '@/adapters/creator/block/utils';
 
 describe('Adapters | Creator | Block | Chat | captureAdapter', () => {
   afterEach(() => {
@@ -14,9 +14,9 @@ describe('Adapters | Creator | Block | Chat | captureAdapter', () => {
 
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
-      const reprompt = Creator.Block.Shared.ChatPrompt();
+      const noReply = Creator.Block.Shared.ChatNodeDataNoReply();
 
-      sinon.stub(chatPromptAdapter, 'fromDB').returns(reprompt);
+      sinon.stub(chatNoReplyAdapter, 'fromDB').returns(noReply);
 
       const data = Creator.Block.Chat.CaptureStepData();
 
@@ -24,9 +24,9 @@ describe('Adapters | Creator | Block | Chat | captureAdapter', () => {
 
       expect(result).eql({
         slot: data.slot,
+        noReply,
         buttons: data.buttons,
         variable: data.variable,
-        reprompt,
         examples: data.slotInputs,
       });
     });
@@ -34,23 +34,23 @@ describe('Adapters | Creator | Block | Chat | captureAdapter', () => {
     it('returns correct data for empty values', () => {
       const chip = Creator.Block.Shared.ButtonChip();
 
-      const chatNoReplyAdapterSpy = sinon.stub(chatPromptAdapter, 'fromDB');
+      const chatNoReplyAdapterSpy = sinon.stub(chatNoReplyAdapter, 'fromDB');
 
-      const data = Creator.Block.Chat.CaptureStepData({ reprompt: null, buttons: undefined, chips: [chip] });
+      const data = Creator.Block.Chat.CaptureStepData({ noReply: null, reprompt: null, buttons: undefined, chips: [chip] });
 
       const result = captureAdapter.fromDB(data);
 
       expect(chatNoReplyAdapterSpy.called).eql(false);
-      expect(result.reprompt).eql(null);
+      expect(result.noReply).eql(null);
       expect(result.buttons).eql([{ name: chip.label, type: Button.ButtonType.INTENT, payload: { intentID: null } }]);
     });
   });
 
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
-      const reprompt = Creator.Block.Shared.ChatPrompt();
+      const noReply = Creator.Block.Shared.ChatStepNoReply();
 
-      sinon.stub(chatPromptAdapter, 'toDB').returns(reprompt);
+      sinon.stub(chatNoReplyAdapter, 'toDB').returns(noReply);
 
       const data = Creator.Block.Chat.CaptureNodeData();
 
@@ -59,7 +59,7 @@ describe('Adapters | Creator | Block | Chat | captureAdapter', () => {
       expect(result).eql({
         slot: data.slot,
         chips: null,
-        reprompt,
+        noReply,
         buttons: data.buttons,
         variable: data.variable,
         slotInputs: data.examples,
@@ -67,13 +67,13 @@ describe('Adapters | Creator | Block | Chat | captureAdapter', () => {
     });
 
     it('returns correct data for empty values', () => {
-      const chatNoReplyAdapterSpy = sinon.stub(chatPromptAdapter, 'toDB');
-      const data = Creator.Block.Chat.CaptureNodeData({ reprompt: null });
+      const chatNoReplyAdapterSpy = sinon.stub(chatNoReplyAdapter, 'toDB');
+      const data = Creator.Block.Chat.CaptureNodeData({ noReply: null });
 
       const result = captureAdapter.toDB(data);
 
       expect(chatNoReplyAdapterSpy.called).eql(false);
-      expect(result.reprompt).to.eql(null);
+      expect(result.noReply).to.eql(null);
     });
   });
 });

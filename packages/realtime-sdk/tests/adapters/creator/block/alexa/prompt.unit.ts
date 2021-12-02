@@ -1,5 +1,5 @@
 import promptAdapter from '@realtime-sdk/adapters/creator/block/alexa/prompt';
-import { voiceNoMatchAdapter, voicePromptAdapter } from '@realtime-sdk/adapters/creator/block/utils';
+import { voiceNoMatchAdapter, voiceNoReplyAdapter } from '@realtime-sdk/adapters/creator/block/utils';
 import { Creator } from '@test/factories';
 import { expect } from 'chai';
 import Sinon from 'sinon';
@@ -12,10 +12,10 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
 
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
-      const reprompt = Creator.Block.Shared.VoiceNodeDataPrompt();
+      const noReply = Creator.Block.Shared.VoiceNodeDataNoReply();
       const noMatches = Creator.Block.Shared.VoiceNodeDataNoMatch();
 
-      Sinon.stub(voicePromptAdapter, 'fromDB').returns(reprompt);
+      Sinon.stub(voiceNoReplyAdapter, 'fromDB').returns(noReply);
       Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(noMatches);
 
       const data = Creator.Block.Alexa.PromptStepData();
@@ -23,7 +23,7 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
       const result = promptAdapter.fromDB(data);
 
       expect(result).eql({
-        reprompt,
+        noReply,
         buttons: null,
         noMatchReprompt: noMatches,
       });
@@ -34,13 +34,13 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
 
       Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(noMatches);
 
-      const data = Creator.Block.Alexa.PromptStepData({ reprompt: null });
+      const data = Creator.Block.Alexa.PromptStepData({ reprompt: null, noReply: null });
 
       const result = promptAdapter.fromDB(data);
 
       expect(result).eql({
         buttons: null,
-        reprompt: null,
+        noReply: null,
         noMatchReprompt: noMatches,
       });
     });
@@ -48,10 +48,10 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
 
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
-      const reprompt = Creator.Block.Shared.VoicePrompt();
+      const noReply = Creator.Block.Shared.VoiceStepNoReply();
       const noMatches = Creator.Block.Shared.VoiceStepNoMatch();
 
-      Sinon.stub(voicePromptAdapter, 'toDB').returns(reprompt);
+      Sinon.stub(voiceNoReplyAdapter, 'toDB').returns(noReply);
       Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(noMatches);
 
       const data = Creator.Block.Alexa.PromptNodeData();
@@ -62,7 +62,7 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
         ports: [],
         chips: null,
         buttons: null,
-        reprompt,
+        noReply,
         noMatches,
       });
     });
@@ -72,7 +72,7 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
 
       Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(noMatches);
 
-      const data = Creator.Block.Alexa.PromptNodeData({ reprompt: null });
+      const data = Creator.Block.Alexa.PromptNodeData({ noReply: null });
 
       const result = promptAdapter.toDB(data);
 
@@ -80,7 +80,7 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
         ports: [],
         chips: null,
         buttons: null,
-        reprompt: null,
+        noReply: null,
         noMatches,
       });
     });

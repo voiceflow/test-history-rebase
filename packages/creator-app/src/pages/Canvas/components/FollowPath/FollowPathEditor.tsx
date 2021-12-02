@@ -19,7 +19,7 @@ const FollowPathEditor: React.FC<FollowPathEditorProps> = ({ name, onChange }) =
 
   return (
     <>
-      <Section isDividerNested>
+      <Section>
         <FormControl label="Path Label" contentBottomUnits={0}>
           <Input
             value={localName}
@@ -30,7 +30,8 @@ const FollowPathEditor: React.FC<FollowPathEditorProps> = ({ name, onChange }) =
           />
         </FormControl>
       </Section>
-      <Divider offset={0} />
+
+      <Divider />
     </>
   );
 };

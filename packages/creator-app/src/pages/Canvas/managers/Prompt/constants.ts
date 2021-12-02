@@ -29,7 +29,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt, Realtime.NodeData
     },
     data: {
       name: 'Prompt',
-      reprompt: null,
+      noReply: null,
       buttons: isChatbotPlatform(platform) ? buttonsFactory() : null,
       noMatchReprompt: getPlatformNoMatchFactory(platform)({ defaultVoice }),
     },

@@ -2,19 +2,23 @@ import { Node } from '@voiceflow/voice-types';
 
 import { NodeData } from '../../../../models';
 import { basePromptAdapter } from '../base';
-import { createBlockAdapter, voiceNoMatchAdapter, voicePromptAdapter } from '../utils';
+import { createBlockAdapter, voiceMigrateRepromptToNoReply, voiceNoMatchAdapter, voiceNoReplyAdapter } from '../utils';
 
 const promptAdapter = createBlockAdapter<Node.Prompt.StepData<any>, Omit<NodeData.Prompt, 'buttons'>>(
-  ({ reprompt, noMatches, ...baseData }) => ({
-    ...basePromptAdapter.fromDB(baseData),
+  ({ reprompt, noReply, noMatches, ...baseData }) => {
+    const migratedNoReply = voiceMigrateRepromptToNoReply(noReply, reprompt);
 
-    reprompt: reprompt && voicePromptAdapter.fromDB(reprompt),
-    noMatchReprompt: voiceNoMatchAdapter.fromDB(noMatches),
-  }),
-  ({ reprompt, noMatchReprompt, ...baseData }) => ({
+    return {
+      ...basePromptAdapter.fromDB(baseData),
+
+      noReply: migratedNoReply && voiceNoReplyAdapter.fromDB(migratedNoReply),
+      noMatchReprompt: voiceNoMatchAdapter.fromDB(noMatches),
+    };
+  },
+  ({ noReply, noMatchReprompt, ...baseData }) => ({
     ...basePromptAdapter.toDB(baseData),
 
-    reprompt: reprompt && voicePromptAdapter.toDB(reprompt as NodeData.VoicePrompt),
+    noReply: noReply && voiceNoReplyAdapter.toDB(noReply as NodeData.VoiceNoReply),
     noMatches: voiceNoMatchAdapter.toDB(noMatchReprompt as NodeData.VoiceNoMatch),
   })
 );

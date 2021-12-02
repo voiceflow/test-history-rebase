@@ -28,7 +28,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Capture, Realtime.NodeDat
       name: 'Capture',
       slot: null,
       buttons: isChatbotPlatform(options?.platform) ? buttonsFactory() : null,
-      reprompt: null,
+      noReply: null,
       examples: [],
       variable: null,
     },

@@ -74,6 +74,7 @@ export const baseOutPortAdapter = {
   [BlockType.COMBINED]: emptyOutPortsAdapter,
   [BlockType.COMPONENT]: componentOutPortsAdapter,
   [BlockType.DIRECTIVE]: directiveOutPortsAdapter,
+  [BlockType.CHOICE_OLD]: interactionOutPortsAdapter,
   [BlockType.INTEGRATION]: integrationOutPortsAdapter,
 
   [Node.NodeType.API]: integrationOutPortsAdapter,

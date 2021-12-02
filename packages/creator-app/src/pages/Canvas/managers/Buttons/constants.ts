@@ -41,7 +41,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeDat
       name: 'Buttons',
       else: getPlatformNoMatchFactory(platform)({ defaultVoice }),
       buttons: [factory()],
-      reprompt: null,
+      noReply: null,
     },
   }),
 };

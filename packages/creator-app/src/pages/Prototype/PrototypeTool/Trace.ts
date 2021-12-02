@@ -7,7 +7,7 @@ import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
-import { BlockTrace, ChoiceTrace, FlowTrace, GoToTrace, SpeakTrace, StreamTrace, Trace, V1Trace, VisualTrace } from '@/models';
+import { BlockTrace, ChoiceTrace, FlowTrace, GoToTrace, NoReplyTrace, SpeakTrace, StreamTrace, Trace, V1Trace, VisualTrace } from '@/models';
 import { Engine } from '@/pages/Canvas/engine';
 import { loadImage } from '@/utils/dom';
 
@@ -104,6 +104,8 @@ class TraceController {
 
   private streamState: StreamState = { src: null, offset: 0, token: null };
 
+  private noReplyTimeout = 0;
+
   get isPublicPrototype(): boolean {
     return !!this.props.isPublic;
   }
@@ -135,6 +137,8 @@ class TraceController {
     }
 
     this.props.updateStatus(PMStatus.FETCHING_CONTEXT);
+
+    this.timeout.clearByID(this.noReplyTimeout);
 
     this.context = await this.props.fetchContext(request);
 
@@ -215,6 +219,8 @@ class TraceController {
   public stop(): void {
     this.trace = [];
     this.stopped = true;
+
+    this.timeout.clearByID(this.noReplyTimeout);
   }
 
   public async emptyTrace(): Promise<void> {
@@ -281,6 +287,10 @@ class TraceController {
       case BaseNode.Utils.TraceType.GOTO: {
         this.processGoToTrace(topTrace);
         return; // don't process the rest of the traces
+      }
+      case BaseNode.Utils.TraceType.NO_REPLY: {
+        this.processNoReplyTrace(topTrace);
+        break;
       }
       default:
         if (isV1Trace(topTrace) && !tailTrace.length) {
@@ -354,7 +364,7 @@ class TraceController {
       this.props.updateStatus(PMStatus.FORCED_DELAY);
     }
 
-    await this.timeout.set(MIN_FOCUSED_NODE_TIME);
+    await this.timeout.delay(MIN_FOCUSED_NODE_TIME);
   }
 
   private async processVisualTrace(trace: VisualTrace) {
@@ -371,7 +381,7 @@ class TraceController {
     this.props.updatePrototypeVisualsData(payload);
 
     if (this.props.waitVisuals) {
-      await this.timeout.set(WAIT_DISPLAY_TIME);
+      await this.timeout.delay(WAIT_DISPLAY_TIME);
     }
   }
 
@@ -478,6 +488,18 @@ class TraceController {
     await this.next(request);
   }
 
+  private processNoReplyTrace(trace: NoReplyTrace) {
+    if (!trace.payload.timeout) {
+      return;
+    }
+
+    // timeout is in seconds
+    this.noReplyTimeout = this.timeout.set(trace.payload.timeout * 1000, () => {
+      this.resetInteractions();
+      this.next(null);
+    });
+  }
+
   private async navigateToFlow(diagramID: string) {
     this.props.enterFlow(diagramID);
 
@@ -573,21 +595,21 @@ class TraceController {
   private async waitNode(nodeID: string) {
     while (nodeID && !this.props.getNodeByID(nodeID)) {
       // eslint-disable-next-line no-await-in-loop
-      await this.timeout.set(WAIT_ENTITY_TIME);
+      await this.timeout.delay(WAIT_ENTITY_TIME);
     }
   }
 
   private async waitDiagram(diagramID: string) {
     while (this.props.activeDiagramID !== diagramID) {
       // eslint-disable-next-line no-await-in-loop
-      await this.timeout.set(WAIT_ENTITY_TIME);
+      await this.timeout.delay(WAIT_ENTITY_TIME);
     }
   }
 
   private async waitEngineAndNodes() {
     while (!this.props.engine?.nodes.size) {
       // eslint-disable-next-line no-await-in-loop
-      await this.timeout.set(WAIT_ENTITY_TIME);
+      await this.timeout.delay(WAIT_ENTITY_TIME);
     }
   }
 }

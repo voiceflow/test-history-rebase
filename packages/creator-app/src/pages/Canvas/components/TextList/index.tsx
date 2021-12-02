@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
@@ -17,7 +17,7 @@ export type ItemComponent = ListItemComponent<Node.Text.TextData>;
 export interface TextListProps {
   items: Node.Text.TextData[];
   maxItems?: number;
-  renderMenu?: () => React.ReactNode;
+  renderMenu?: Nullable<() => React.ReactNode>;
   itemComponent: ItemComponent;
   onChangeItems: (items: Node.Text.TextData[]) => void;
   howItWorksLink?: string;

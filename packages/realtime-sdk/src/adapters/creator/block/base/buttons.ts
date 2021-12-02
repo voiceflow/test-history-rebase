@@ -3,7 +3,7 @@ import { Node } from '@voiceflow/base-types';
 import { NodeData } from '../../../../models';
 import { createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter } from '../utils';
 
-const buttonsAdapter = createBlockAdapter<Omit<Node.Buttons.StepData, 'else' | 'reprompt'>, Omit<NodeData.Buttons, 'else' | 'reprompt'>>(
+const buttonsAdapter = createBlockAdapter<Omit<Node.Buttons.StepData, 'else' | 'reprompt' | 'noReply'>, Omit<NodeData.Buttons, 'else' | 'noReply'>>(
   ({ buttons, buttonsLayout }) => ({
     buttons,
     buttonsLayout,

@@ -32,7 +32,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.Nod
     data: {
       name: 'Choice',
       else: getPlatformNoMatchFactory(platform)({ defaultVoice }),
-      reprompt: null,
+      noReply: null,
       buttons: isChatbotPlatform(platform) ? buttonsFactory() : null,
       choices: [
         distinctPlatformsData({

@@ -1,0 +1,58 @@
+import { Node as BaseNode, Nullable } from '@voiceflow/base-types';
+import { Node as ChatNode, Types as ChatTypes } from '@voiceflow/chat-types';
+import { Nullish } from '@voiceflow/common';
+import { Node as VoiceNode, Types as VoiceTypes } from '@voiceflow/voice-types';
+import createAdapter from 'bidirectional-adapter';
+
+import { NodeData } from '../../../../models';
+import { chatPromptAdapter, voicePromptAdapter } from './prompt';
+
+export const baseNoReplyAdapter = createAdapter<BaseNode.Utils.BaseStepNoReply, BaseNode.Utils.BaseStepNoReply>(
+  ({ types, timeout, pathName, randomize }) => ({ types, timeout, pathName, randomize }),
+  ({ types, timeout, pathName, randomize }) => ({ types, timeout, pathName, randomize })
+);
+
+export const chatNoReplyAdapter = createAdapter<ChatNode.Utils.StepNoReply, ChatNode.Utils.StepNoReply>(
+  ({ reprompts, ...baseNoReply }) => ({
+    ...baseNoReplyAdapter.fromDB(baseNoReply),
+    reprompts: reprompts ? chatPromptAdapter.mapFromDB(reprompts) : undefined,
+  }),
+  ({ reprompts, ...baseNoReply }) => ({
+    ...baseNoReplyAdapter.toDB(baseNoReply),
+    reprompts: reprompts ? chatPromptAdapter.mapToDB(reprompts) : undefined,
+  })
+);
+
+export const voiceNoReplyAdapter = createAdapter<VoiceNode.Utils.StepNoReply<any>, NodeData.VoiceNoReply>(
+  ({ reprompts, ...baseNoReply }) => ({
+    ...baseNoReplyAdapter.fromDB(baseNoReply),
+    reprompts: reprompts ? voicePromptAdapter.mapFromDB(reprompts) : undefined,
+  }),
+  ({ reprompts, ...baseNoReply }) => ({
+    ...baseNoReplyAdapter.toDB(baseNoReply),
+    reprompts: reprompts ? voicePromptAdapter.mapToDB(reprompts) : undefined,
+  })
+);
+
+const migrateRepromptToNoReply = <T extends ChatNode.Utils.StepNoReply | VoiceNode.Utils.StepNoReply<any>>(
+  noReply: Nullish<T>,
+  reprompt: Nullable<NonNullable<T['reprompts']>[number]> = null
+): Nullable<T> =>
+  noReply ??
+  (reprompt && noReply !== null // null means no reply was set to null by a user
+    ? ({
+        types: [BaseNode.Utils.NoReplyType.REPROMPT],
+        randomize: false,
+        reprompts: [reprompt],
+      } as T)
+    : null);
+
+export const chatMigrateRepromptToNoReply = (
+  noReply: Nullish<ChatNode.Utils.StepNoReply>,
+  reprompt: Nullable<ChatTypes.Prompt> = null
+): Nullable<ChatNode.Utils.StepNoReply> => migrateRepromptToNoReply(noReply, reprompt);
+
+export const voiceMigrateRepromptToNoReply = (
+  noReply: Nullish<VoiceNode.Utils.StepNoReply<any>>,
+  reprompt: Nullable<VoiceTypes.Prompt<any>> = null
+): Nullable<VoiceNode.Utils.StepNoReply<any>> => migrateRepromptToNoReply(noReply, reprompt);

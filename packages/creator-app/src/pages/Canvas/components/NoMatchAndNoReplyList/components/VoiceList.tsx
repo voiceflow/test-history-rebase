@@ -14,15 +14,33 @@ export interface VoiceListProps {
   reprompts?: Realtime.NodeData.VoicePrompt[];
   onChangeReprompts: (reprompts: Realtime.NodeData.VoicePrompt[]) => void;
   onChangeRandomize: () => void;
+  hideRandomizeMenu?: boolean;
 }
 
-const VoiceList: React.FC<VoiceListProps> = ({ reprompts, randomize, children, onChangeReprompts, onChangeRandomize }) => {
+const VoiceList: React.FC<VoiceListProps> = ({ reprompts, randomize, children, onChangeReprompts, onChangeRandomize, hideRandomizeMenu }) => {
   const platform = React.useContext(PlatformContext)!;
 
-  const items = React.useMemo(() => Adapters.voicePromptToSpeakDataAdapter.mapFromDB(reprompts ?? []), [reprompts]);
+  const repromptsCache = React.useRef<Realtime.NodeData.VoicePrompt[]>(reprompts ?? []);
+  const itemsCache = React.useRef<Realtime.SpeakData[]>([]);
+
+  // useManager will reset if the object changes - causes flickering
+  const items = React.useMemo(() => {
+    const speakItems = Adapters.voicePromptToSpeakDataAdapter.mapFromDB(reprompts ?? []);
+
+    if (repromptsCache.current === reprompts && speakItems.length === itemsCache.current.length) {
+      return itemsCache.current;
+    }
+
+    return speakItems;
+  }, [reprompts]);
 
   const onChangeItems = React.useCallback(
-    (items: Realtime.SpeakData[]) => onChangeReprompts(Adapters.voicePromptToSpeakDataAdapter.mapToDB(items)),
+    (items: Realtime.SpeakData[]) => {
+      itemsCache.current = items;
+      repromptsCache.current = Adapters.voicePromptToSpeakDataAdapter.mapToDB(items);
+
+      onChangeReprompts(repromptsCache.current);
+    },
     [onChangeReprompts]
   );
 
@@ -33,6 +51,7 @@ const VoiceList: React.FC<VoiceListProps> = ({ reprompts, randomize, children, o
       maxItems={isAnyGeneralPlatform(platform) ? MAX_SPEAK_ITEMS_COUNT : MAX_ALEXA_REPROMPTS}
       itemName="reprompts"
       randomize={randomize}
+      renderMenu={hideRandomizeMenu ? () => null : null}
       itemComponent={VoiceListItem}
       onChangeItems={onChangeItems}
       onChangeRandomize={onChangeRandomize}

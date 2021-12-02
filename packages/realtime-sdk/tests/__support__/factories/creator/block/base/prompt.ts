@@ -3,8 +3,8 @@ import { define } from 'cooky-cutter';
 
 import { NodeData } from '@/models';
 
-export const PromptStepData = define<Omit<Node.Prompt.StepData, 'reprompt' | 'noMatches'>>({});
+export const PromptStepData = define<Omit<Node.Prompt.StepData, 'reprompt' | 'noReply' | 'noMatches'>>({});
 
-export const PromptNodeData = define<Omit<NodeData.Prompt, 'buttons' | 'reprompt' | 'noMatchReprompt'>>({
+export const PromptNodeData = define<Omit<NodeData.Prompt, 'buttons' | 'noReply' | 'noMatchReprompt'>>({
   ports: () => [],
 });

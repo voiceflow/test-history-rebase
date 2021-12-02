@@ -1,26 +1,28 @@
-import { Text } from '@voiceflow/ui';
+import { Node as BaseNode } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Section from '@/components/Section';
-
-import InfoTooltip from './InfoTooltip';
+import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
+import { getNoMatchNoReplySectionLabel } from '@/pages/Canvas/managers/utils';
 
 export const NO_REPLY_PATH_TYPE = 'noReply';
 
 interface NoReplySectionProps {
+  data: Realtime.NodeData.NoReply;
   pushToPath?: (path: { type: string; label: string }) => void;
 }
 
-const NoReplySection: React.FC<NoReplySectionProps> = ({ pushToPath }) => {
-  const onOpenNoReplyResponse = React.useCallback(() => pushToPath?.({ type: NO_REPLY_PATH_TYPE, label: 'No Reply Response' }), [pushToPath]);
+const NoReplySection: React.FC<NoReplySectionProps> = ({ data, pushToPath }) => {
+  const onClick = React.useCallback(() => pushToPath?.({ type: NO_REPLY_PATH_TYPE, label: 'No Reply Response' }), [pushToPath]);
 
   return (
     <Section
+      infix={getNoMatchNoReplySectionLabel(BaseNode.Utils.NoReplyType, data.types)}
+      header="No Reply Response"
       isLink
-      status="Empty"
-      header={<Text fontWeight="normal">No Reply Response</Text>}
-      tooltip={<InfoTooltip />}
-      onClick={onOpenNoReplyResponse}
+      onClick={onClick}
+      headerVariant={HeaderVariant.LINK}
     />
   );
 };

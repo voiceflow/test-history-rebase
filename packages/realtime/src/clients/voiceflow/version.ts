@@ -1,7 +1,6 @@
 import * as Alexa from '@voiceflow/alexa-types';
 import { Nullish } from '@voiceflow/common';
 import * as General from '@voiceflow/general-types';
-import { PlatformType } from '@voiceflow/general-types/build/constants';
 import * as Dialogflow from '@voiceflow/google-dfes-types';
 import * as Google from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -11,7 +10,7 @@ import { ExtraOptions } from './types';
 
 interface VersionClient {
   canRead: (creatorID: number, versionID: string) => Promise<boolean>;
-  platform: (platform?: Nullish<PlatformType>) => any;
+  platform: (platform?: Nullish<General.Constants.PlatformType>) => any;
 }
 
 export interface VersionPlatformClient<S extends Realtime.AnyVersionSettings, P> {

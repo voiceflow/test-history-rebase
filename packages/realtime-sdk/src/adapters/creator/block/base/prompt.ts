@@ -4,8 +4,8 @@ import { NodeData } from '../../../../models';
 import { createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter } from '../utils';
 
 const promptAdapter = createBlockAdapter<
-  Omit<Node.Prompt.StepData, 'reprompt' | 'noMatches'>,
-  Omit<NodeData.Prompt, 'buttons' | 'reprompt' | 'noMatchReprompt'>
+  Omit<Node.Prompt.StepData, 'reprompt' | 'noMatches' | 'noReply'>,
+  Omit<NodeData.Prompt, 'buttons' | 'noReply' | 'noMatchReprompt'>
 >(
   () => ({}),
   () => ({ ports: [] })

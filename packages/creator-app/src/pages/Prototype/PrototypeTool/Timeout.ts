@@ -1,21 +1,33 @@
 import { Utils } from '@voiceflow/common';
 
 class TimeoutController {
-  private timeouts: NodeJS.Timeout[] = [];
+  private timeouts: number[] = [];
 
-  public async set(timeout: number) {
+  public set(timeout: number, callback: VoidFunction): number {
+    const timeoutID = setTimeout(() => {
+      this.timeouts = Utils.array.withoutValue(this.timeouts, timeoutID);
+
+      callback();
+    }, timeout) as any;
+
+    this.timeouts = Utils.array.append(this.timeouts, timeoutID);
+
+    return timeoutID as any;
+  }
+
+  public async delay(timeout: number): Promise<void> {
     return new Promise<void>((resolve) => {
-      const timeoutID = setTimeout(() => {
-        this.timeouts = Utils.array.withoutValue(this.timeouts, timeoutID);
-
-        resolve();
-      }, timeout);
-
-      this.timeouts = Utils.array.append(this.timeouts, timeoutID);
+      this.set(timeout, resolve);
     });
   }
 
-  public clearAll() {
+  public clearByID(timeoutID: number): void {
+    clearTimeout(timeoutID);
+
+    this.timeouts = Utils.array.withoutValue(this.timeouts, timeoutID);
+  }
+
+  public clearAll(): void {
     this.timeouts.forEach((timeoutID) => clearTimeout(timeoutID));
     this.timeouts = [];
   }

@@ -4,12 +4,12 @@ import suite from '@/../test/_suite';
 import TimeoutController from '@/pages/Prototype/PrototypeTool/Timeout';
 
 suite('Prototype/PrototypeTool/Timeout', ({ spy, expect }) => {
-  describe('set()', () => {
-    it('should set timeouts', () => {
+  describe('delay()', () => {
+    it('should delay timeouts', () => {
       const controller = new TimeoutController();
 
-      controller.set(0);
-      controller.set(900);
+      controller.delay(0);
+      controller.delay(900);
 
       expect(controller['timeouts'].length).to.be.eq(2);
     });
@@ -19,7 +19,7 @@ suite('Prototype/PrototypeTool/Timeout', ({ spy, expect }) => {
 
       let counter = 0;
 
-      const promise = controller.set(10).then(() => expect(counter).to.be.eq(1));
+      const promise = controller.delay(10).then(() => expect(counter).to.be.eq(1));
 
       expect(counter).to.be.eq(0);
 
@@ -30,11 +30,11 @@ suite('Prototype/PrototypeTool/Timeout', ({ spy, expect }) => {
   });
 
   describe('clearAll()', () => {
-    it('should set timeouts', () => {
+    it('should delay timeouts', () => {
       const controller = new TimeoutController();
 
-      controller.set(0);
-      controller.set(900);
+      controller.delay(0);
+      controller.delay(900);
 
       const clearTimeout = spy(global, 'clearTimeout');
 

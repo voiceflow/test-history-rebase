@@ -1,15 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { NO_REPLY_PATH_TYPE, NoReplyEditor } from '@/pages/Canvas/components/NoReply';
-
 import { NodeManagerConfig } from '../types';
 import CaptureEditor from './CaptureEditor';
 import CaptureStep from './CaptureStep';
 import { NODE_CONFIG } from './constants';
-
-const EDITORS_BY_PATH = {
-  [NO_REPLY_PATH_TYPE]: NoReplyEditor,
-};
+import { EDITORS_BY_PATH } from './subeditors';
 
 const CaptureManager: NodeManagerConfig<Realtime.NodeData.Capture, Realtime.NodeData.CaptureBuiltInPorts> = {
   ...NODE_CONFIG,
@@ -20,7 +15,7 @@ const CaptureManager: NodeManagerConfig<Realtime.NodeData.Capture, Realtime.Node
   reprompt: true,
 
   step: CaptureStep,
-  editor: CaptureEditor as React.FC,
+  editor: CaptureEditor,
   editorsByPath: EDITORS_BY_PATH,
 };
 

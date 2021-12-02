@@ -2,6 +2,8 @@ export { default as ElseItem } from './ElseStepItem';
 export { default as FailureItem } from './FailureStepItem';
 export { default as HoverContainer } from './HoverContainer';
 export { default as NoMatchItem } from './NoMatchStepItem';
+export { default as NoReplyItem } from './NoReplyStepItem';
+export { default as Attachment } from './StepAttachment';
 export { default as Container } from './StepContainer';
 export { default as IconContainer } from './StepIconContainer';
 export { default as Image } from './StepImage';

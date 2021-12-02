@@ -1,4 +1,4 @@
-import { stopPropagation, SvgIcon } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
@@ -8,7 +8,6 @@ import { ClassName } from '@/styles/constants';
 
 import { StepAPIContext } from '../contexts';
 import { ItemProps } from '../types';
-import Attachment from './StepAttachment';
 import IconContainer from './StepIconContainer';
 import Container from './StepItemContainer';
 import StepLabelText from './StepLabelText';
@@ -31,7 +30,6 @@ const Item: React.FC<ItemProps> = ({
   withNewLines,
   multilineLabel,
   labelLineClamp,
-  onAttachmentClick,
 }) => {
   const stepAPI = React.useContext(StepAPIContext);
 
@@ -58,13 +56,13 @@ const Item: React.FC<ItemProps> = ({
         )}
       </StepLabelTextContainer>
 
+      {attachment}
+
       {stepAPI?.withPorts && portID && (
         <PortEntityProvider id={portID}>
           <Port color={portColor} />
         </PortEntityProvider>
       )}
-
-      {attachment && <Attachment onClick={stopPropagation(onAttachmentClick)} />}
     </Container>
   );
 };

@@ -1,4 +1,4 @@
-import { VisualType } from '@voiceflow/base-types/build/node/visual';
+import { Node } from '@voiceflow/base-types';
 import { Link } from '@voiceflow/ui';
 import React from 'react';
 
@@ -41,7 +41,7 @@ const ImageContainer = styled.div<{ ratio: number; isFirstInSeries?: boolean }>`
 `;
 
 const Visual: React.FC<VisualProps> = ({ visual, isTranscript, ...props }) => {
-  const isImageType = visual.visualType === VisualType.IMAGE;
+  const isImageType = visual.visualType === Node.Visual.VisualType.IMAGE;
   const imageURL = isImageType ? visual.image : visual.imageURL;
   const { width = 0, height = 0 } = (isImageType && visual.dimensions) || {};
   const ratio = (height / width) * 100 || 60;

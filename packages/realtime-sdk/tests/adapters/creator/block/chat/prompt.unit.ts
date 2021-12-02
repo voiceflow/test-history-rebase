@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import Sinon from 'sinon';
 
 import promptAdapter from '@/adapters/creator/block/chat/prompt';
-import { chatNoMatchAdapter, chatPromptAdapter } from '@/adapters/creator/block/utils';
+import { chatNoMatchAdapter, chatNoReplyAdapter } from '@/adapters/creator/block/utils';
 
 describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
   afterEach(() => {
@@ -13,10 +13,10 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
 
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
-      const reprompt = Creator.Block.Shared.ChatPrompt();
+      const noReply = Creator.Block.Shared.ChatNodeDataNoReply();
       const noMatches = Creator.Block.Shared.ChatNodeDataNoMatch();
 
-      Sinon.stub(chatPromptAdapter, 'fromDB').returns(reprompt);
+      Sinon.stub(chatNoReplyAdapter, 'fromDB').returns(noReply);
       Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(noMatches);
 
       const data = Creator.Block.Chat.PromptStepData();
@@ -25,7 +25,7 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
 
       expect(result).eql({
         buttons: data.buttons,
-        reprompt,
+        noReply,
         noMatchReprompt: noMatches,
       });
     });
@@ -35,13 +35,13 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
 
       Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(noMatches);
 
-      const data = Creator.Block.Chat.PromptStepData({ reprompt: null });
+      const data = Creator.Block.Chat.PromptStepData({ noReply: null, reprompt: null });
 
       const result = promptAdapter.fromDB(data);
 
       expect(result).eql({
         buttons: data.buttons,
-        reprompt: null,
+        noReply: null,
         noMatchReprompt: noMatches,
       });
     });
@@ -49,10 +49,10 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
 
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
-      const reprompt = Creator.Block.Shared.ChatPrompt();
+      const noReply = Creator.Block.Shared.ChatNodeDataNoReply();
       const noMatches = Creator.Block.Shared.ChatStepNoMatch();
 
-      Sinon.stub(chatPromptAdapter, 'toDB').returns(reprompt);
+      Sinon.stub(chatNoReplyAdapter, 'toDB').returns(noReply);
       Sinon.stub(chatNoMatchAdapter, 'toDB').returns(noMatches);
 
       const data = Creator.Block.Chat.PromptNodeData();
@@ -63,7 +63,7 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
         ports: [],
         chips: null,
         buttons: data.buttons,
-        reprompt,
+        noReply,
         noMatches,
       });
     });
@@ -73,7 +73,7 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
 
       Sinon.stub(chatNoMatchAdapter, 'toDB').returns(noMatches);
 
-      const data = Creator.Block.Chat.PromptNodeData({ reprompt: null });
+      const data = Creator.Block.Chat.PromptNodeData({ noReply: null });
 
       const result = promptAdapter.toDB(data);
 
@@ -81,7 +81,7 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
         ports: [],
         chips: null,
         buttons: data.buttons,
-        reprompt: null,
+        noReply: null,
         noMatches,
       });
     });

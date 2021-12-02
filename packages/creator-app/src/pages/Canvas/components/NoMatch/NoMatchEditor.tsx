@@ -2,9 +2,8 @@ import { Node as BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { CheckboxType } from '@/components/Checkbox';
 import Divider from '@/components/Divider';
-import RadioGroup, { RadioOption } from '@/components/RadioGroup';
+import { CheckboxGroup, CheckboxOption } from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import * as Creator from '@/ducks/creator';
 import { useSelector } from '@/hooks';
@@ -16,16 +15,14 @@ import { PushToPath } from '@/pages/Canvas/managers/types';
 
 import NoMatchTooltip from './NoMatchTooltip';
 
-const ELSE_OPTIONS: RadioOption<BaseNode.Utils.NoMatchType>[] = [
+const ELSE_OPTIONS: CheckboxOption<BaseNode.Utils.NoMatchType>[] = [
   {
     id: BaseNode.Utils.NoMatchType.REPROMPT,
     label: 'Reprompts',
-    customCheckedCondition: (type) => type === BaseNode.Utils.NoMatchType.REPROMPT || type === BaseNode.Utils.NoMatchType.BOTH,
   },
   {
     id: BaseNode.Utils.NoMatchType.PATH,
     label: 'Path',
-    customCheckedCondition: (type) => type === BaseNode.Utils.NoMatchType.PATH || type === BaseNode.Utils.NoMatchType.BOTH,
   },
 ];
 
@@ -42,45 +39,27 @@ const NoMatchEditor: React.FC<NoMatchEditorProps> = ({ onChange, noMatch, pushTo
 
   const noMatchLinkID = useSelector(Creator.focusedNoMatchLinkIDSelector);
 
-  const onChangeType = (newType: BaseNode.Utils.NoMatchType) => {
-    let type: BaseNode.Utils.NoMatchType | null;
-    let removeLink = false;
-
-    if (noMatch.type === BaseNode.Utils.NoMatchType.BOTH) {
-      if (newType === BaseNode.Utils.NoMatchType.PATH) {
-        type = BaseNode.Utils.NoMatchType.REPROMPT;
-        removeLink = !!noMatchLinkID;
-      } else {
-        type = BaseNode.Utils.NoMatchType.PATH;
-      }
-    } else if (newType === noMatch.type) {
-      type = null;
-    } else if (!noMatch.type) {
-      type = newType;
-    } else {
-      type = BaseNode.Utils.NoMatchType.BOTH;
-    }
-
-    if (removeLink && noMatchLinkID) {
+  const onChangeType = (types: BaseNode.Utils.NoMatchType[]) => {
+    if (noMatchLinkID && noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH) && !types.includes(BaseNode.Utils.NoMatchType.PATH)) {
       // When we switch to reprompt, clean up any links to avoid null reference bugs.
       engine.link.remove(noMatchLinkID);
     }
 
-    onChange({ ...noMatch, type });
+    onChange({ ...noMatch, types });
   };
 
-  const withPath = noMatch.type === BaseNode.Utils.NoMatchType.PATH || noMatch.type === BaseNode.Utils.NoMatchType.BOTH;
-  const withReprompt = noMatch.type === BaseNode.Utils.NoMatchType.REPROMPT || noMatch.type === BaseNode.Utils.NoMatchType.BOTH;
+  const withPath = noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH);
+  const withReprompt = noMatch.types.includes(BaseNode.Utils.NoMatchType.REPROMPT);
 
   return (
     <>
-      <Section borderBottom={!!noMatch.type && noMatch.type !== BaseNode.Utils.NoMatchType.PATH}>
+      <Section dividers={!!noMatch.types.length && withReprompt} isDividerBottom>
         <FormControl label="No Match Type" contentBottomUnits={0} tooltip={<NoMatchTooltip />}>
-          <RadioGroup isFlat type={CheckboxType.CHECKBOX} options={ELSE_OPTIONS} checked={noMatch.type!} onChange={onChangeType} />
+          <CheckboxGroup isFlat options={ELSE_OPTIONS} checked={noMatch.types} onChange={onChangeType} />
         </FormControl>
       </Section>
 
-      {!noMatch.type ? (
+      {!noMatch.types.length ? (
         <>
           <Section customContentStyling={{ color: '#62778c' }}>The project will end if no intent is matched.</Section>
           <Divider offset={0} />

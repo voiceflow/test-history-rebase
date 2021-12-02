@@ -248,7 +248,7 @@ class ClipboardEngine extends EngineConsumer {
   }
 
   async paste(pastedText: string, coords: Coords): Promise<void> {
-    const copyBuffer = Clipboard.deserialize(pastedText);
+    const copyBuffer = Clipboard.deserialize<string>(pastedText);
 
     if (copyBuffer) {
       try {

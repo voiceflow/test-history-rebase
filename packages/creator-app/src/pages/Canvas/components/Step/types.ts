@@ -23,12 +23,12 @@ export interface ItemProps {
   onClick?: React.ReactEventHandler;
   iconColor?: string;
   portColor?: string;
-  attachment?: boolean;
+  attachment?: React.ReactNode;
   linkedLabel?: React.ReactNode | null;
   placeholder?: string;
   labelVariant?: StepLabelVariant;
   withNewLines?: boolean;
+  attachmentRef?: React.Ref<HTMLButtonElement>;
   multilineLabel?: boolean;
   labelLineClamp?: number;
-  onAttachmentClick?: React.MouseEventHandler<HTMLButtonElement>;
 }

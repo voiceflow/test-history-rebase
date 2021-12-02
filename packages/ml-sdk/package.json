@@ -6,7 +6,7 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@voiceflow/common": "7.9.0"
+    "@voiceflow/common": "7.10.0"
   },
   "files": [
     "build"

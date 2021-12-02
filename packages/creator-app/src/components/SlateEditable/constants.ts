@@ -1,4 +1,4 @@
-import { ElementProperty, ElementType, TextProperty } from '@voiceflow/base-types/build/text';
+import { ElementProperty, ElementType, TextProperty } from '@voiceflow/base-types/build/esm/text';
 
 import { Color } from './editor/types';
 

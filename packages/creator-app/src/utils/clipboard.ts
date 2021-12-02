@@ -1,12 +1,13 @@
+import { Nullable } from '@voiceflow/common';
 import { toast } from '@voiceflow/ui';
 
 import { VERSION } from '@/config';
 
 export const CLIPBOARD_TYPE = 'voiceflow.com:project.clipboard';
 
-export function copy(text) {
+export const copy = (text?: string | null): void => {
   const clipboardEl = document.createElement('textarea');
-  clipboardEl.value = text;
+  clipboardEl.value = text ?? '';
 
   if (window.Cypress) {
     window.cypress_clipboard = text;
@@ -17,16 +18,11 @@ export function copy(text) {
   document.execCommand('copy');
 
   clipboardEl.remove();
-}
+};
 
-export const serialize = (data) =>
-  JSON.stringify({
-    $type: CLIPBOARD_TYPE,
-    $version: VERSION,
-    data,
-  });
+export const serialize = (data: unknown): string => JSON.stringify({ $type: CLIPBOARD_TYPE, $version: VERSION, data });
 
-export function deserialize(text) {
+export const deserialize = <T>(text: string): Nullable<T> => {
   try {
     const buffer = JSON.parse(text);
 
@@ -38,9 +34,9 @@ export function deserialize(text) {
   }
 
   return null;
-}
+};
 
-export const onClickCopy = (text) => () => {
+export const onClickCopy = (text: string) => (): void => {
   copy(text);
   toast.success('Copied to clipboard');
 };

@@ -1,22 +1,26 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node, Types } from '@voiceflow/chat-types';
+import { Node } from '@voiceflow/chat-types';
 
 import { baseCaptureAdapter } from '../base';
-import { chatPromptAdapter, chipsToIntentButtons, createBlockAdapter } from '../utils';
+import { chatMigrateRepromptToNoReply, chatNoReplyAdapter, chipsToIntentButtons, createBlockAdapter } from '../utils';
 
 const captureAdapter = createBlockAdapter<Node.Capture.StepData, NodeData.Capture>(
-  ({ chips, reprompt, buttons, ...baseData }) => ({
-    ...baseCaptureAdapter.fromDB(baseData),
+  ({ chips, reprompt, noReply, buttons, ...baseData }) => {
+    const migratedNoReply = chatMigrateRepromptToNoReply(noReply, reprompt);
 
-    buttons: buttons ?? chipsToIntentButtons(chips),
-    reprompt: reprompt && chatPromptAdapter.fromDB(reprompt),
-  }),
-  ({ reprompt, buttons, ...baseData }) => ({
+    return {
+      ...baseCaptureAdapter.fromDB(baseData),
+
+      buttons: buttons ?? chipsToIntentButtons(chips),
+      noReply: migratedNoReply && chatNoReplyAdapter.fromDB(migratedNoReply),
+    };
+  },
+  ({ buttons, noReply, ...baseData }) => ({
     ...baseCaptureAdapter.toDB(baseData),
 
     chips: null,
     buttons,
-    reprompt: reprompt && chatPromptAdapter.toDB(reprompt as Types.Prompt),
+    noReply: noReply && chatNoReplyAdapter.toDB(noReply as Node.Utils.StepNoReply),
   })
 );
 

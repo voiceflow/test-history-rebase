@@ -2,9 +2,10 @@
 import { BlockType, BlockVariant, DistinctPlatform, VoicePromptType } from '@realtime-sdk/constants';
 import { Node as AlexaNode } from '@voiceflow/alexa-types';
 import { Button, Models as BaseModels, Node as BaseNode } from '@voiceflow/base-types';
-import { Types as ChatTypes } from '@voiceflow/chat-types';
+import { Node as ChatNode, Types as ChatTypes } from '@voiceflow/chat-types';
 import { Nullable } from '@voiceflow/common';
 import { Node as GeneralNode } from '@voiceflow/general-types';
+import { Node as VoiceNode } from '@voiceflow/voice-types';
 
 import { ExpressionData } from './Expression';
 import { SpeakData } from './Speak';
@@ -32,8 +33,15 @@ export namespace NodeData {
     content: string;
   }
 
+  export interface VoiceNoReply extends Omit<VoiceNode.Utils.StepNoReply<any>, 'reprompts'> {
+    reprompts?: VoicePrompt[];
+  }
+
+  // TODO: refactor node data types to be platform specific instead of unions
+  export type NoReply = VoiceNoReply | ChatNode.Utils.StepNoReply;
+
   export interface BaseNoMatch {
-    type: BaseNode.Utils.NoMatchType | null;
+    types: BaseNode.Utils.NoMatchType[];
     pathName: string;
     randomize: boolean;
   }
@@ -47,9 +55,6 @@ export namespace NodeData {
   }
 
   export type NoMatch = VoiceNoMatch | ChatNoMatch;
-
-  // TODO: refactor node data types to be platform specific instead of unions
-  export type Reprompt = VoicePrompt | ChatTypes.Prompt;
 
   export interface Start {
     name: string;
@@ -101,7 +106,7 @@ export namespace NodeData {
     else: NoMatch;
     choices: Record<DistinctPlatform, InteractionChoice>[];
     buttons: Button.AnyButton[] | null;
-    reprompt: Reprompt | null;
+    noReply: Nullable<NoReply>;
   }
 
   export interface InteractionBuiltInPorts {
@@ -111,12 +116,12 @@ export namespace NodeData {
 
   export interface ChoiceOld {
     choices: { synonyms: string[] }[];
-    reprompt: Reprompt | null;
+    noReply: Nullable<NoReply>;
   }
 
   export interface Prompt {
     buttons: Button.AnyButton[] | null;
-    reprompt: Reprompt | null;
+    noReply: Nullable<NoReply>;
     noMatchReprompt: NoMatch;
   }
 
@@ -138,7 +143,7 @@ export namespace NodeData {
   export interface Capture {
     slot: string | null;
     buttons: Button.AnyButton[] | null;
-    reprompt: Reprompt | null;
+    noReply: Nullable<NoReply>;
     variable: string | null;
     examples: string[];
   }
@@ -402,9 +407,9 @@ export namespace NodeData {
 
   export interface Exit {}
 
-  export interface Buttons extends Omit<GeneralNode.Buttons.StepData, 'else' | 'reprompt'> {
+  export interface Buttons extends Omit<GeneralNode.Buttons.StepData, 'else' | 'reprompt' | 'noReply'> {
     else: NoMatch;
-    reprompt: Reprompt | null;
+    noReply: Nullable<NoReply>;
   }
 
   export interface ButtonsBuiltInPorts {
@@ -423,21 +428,5 @@ export namespace NodeData {
 
   export interface VisualBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
-  }
-}
-
-export namespace DBNodeData {
-  export interface Reprompt {
-    type: string;
-    voice?: string;
-    content?: string;
-  }
-
-  export interface Prompt {
-    noMatchReprompt: {
-      randomize: boolean;
-      reprompts: SpeakData[];
-    };
-    reprompt: Reprompt | null;
   }
 }

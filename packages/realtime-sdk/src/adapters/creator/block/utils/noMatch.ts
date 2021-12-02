@@ -7,12 +7,16 @@ import { NodeData } from '../../../../models';
 import { chatPromptAdapter, voicePromptAdapter } from './prompt';
 
 export const baseNoMatchAdapter = createAdapter<BaseNode.Utils.BaseStepNoMatch, NodeData.BaseNoMatch>(
-  ({ type = BaseNode.Utils.NoMatchType.REPROMPT, pathName = 'No Match', randomize }) => ({
-    type,
+  ({ type = BaseNode.Utils.NoMatchType.REPROMPT, types, pathName = 'No Match', randomize }) => ({
+    types:
+      types ??
+      (type === BaseNode.Utils.NoMatchType.BOTH
+        ? [BaseNode.Utils.NoMatchType.PATH, BaseNode.Utils.NoMatchType.REPROMPT]
+        : [type ?? BaseNode.Utils.NoMatchType.REPROMPT]),
     pathName,
     randomize,
   }),
-  ({ type, randomize, pathName }) => ({ type, pathName, randomize })
+  ({ types, randomize, pathName }) => ({ types, pathName, randomize })
 );
 
 export const chatNoMatchAdapter = createAdapter<ChatNode.Utils.StepNoMatch, NodeData.ChatNoMatch>(

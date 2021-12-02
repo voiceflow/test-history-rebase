@@ -6,8 +6,8 @@ import { distinctPlatformsData } from '../../../../utils/platform';
 import { choiceAdapter, createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter } from '../utils';
 
 const interactionAdapter = createBlockAdapter<
-  Omit<Node.Interaction.StepData, 'else' | 'reprompt'>,
-  Omit<NodeData.Interaction, 'else' | 'reprompt' | 'buttons'>,
+  Omit<Node.Interaction.StepData, 'else' | 'reprompt' | 'noReply'>,
+  Omit<NodeData.Interaction, 'else' | 'noReply' | 'buttons'>,
   [{ platform: DistinctPlatform }],
   [{ platform: DistinctPlatform }]
 >(

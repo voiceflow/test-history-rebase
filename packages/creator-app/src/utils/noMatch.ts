@@ -9,7 +9,7 @@ import { chatPromptFactory, PromptFactoryOptions, voicePromptFactory } from './p
 interface NoMatchFactoryOptions extends PromptFactoryOptions {}
 
 const BASE_NO_MATCH: Realtime.NodeData.BaseNoMatch = {
-  type: Node.Utils.NoMatchType.REPROMPT,
+  types: [Node.Utils.NoMatchType.REPROMPT],
   pathName: 'No Match',
   randomize: false,
 };

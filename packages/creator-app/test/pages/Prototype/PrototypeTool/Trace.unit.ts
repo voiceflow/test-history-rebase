@@ -50,7 +50,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
     stub(audio, 'stop');
     stub(audio, 'playExternal');
 
-    stub(timeout, 'set').returns(Promise.resolve());
+    stub(timeout, 'delay').returns(Promise.resolve());
     stub(timeout, 'clearAll');
 
     const controller = new TraceController({
@@ -109,7 +109,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
     return (controller['props']['fetchContext'] as any as SinonStub).callsFake(() => data[fetchContextDataCallCount++]);
   },
 
-  expectSetTimeout: (controller: TraceController) => expect(controller['timeout']['set']),
+  expectSetTimeout: (controller: TraceController) => expect(controller['timeout']['delay']),
 
   expectAudioPlay: (controller: TraceController) => expect(controller['audio']['play']),
 

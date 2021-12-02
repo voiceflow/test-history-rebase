@@ -4,16 +4,25 @@ import { extend } from 'cooky-cutter';
 import { NodeData } from '@/models';
 
 import * as Base from '../base';
-import { BUTTON_STEP_DATA_FACTORY_CONFIG, ChatNodeDataNoMatch, ChatPrompt, ChatStepNoMatch, IntentButton } from '../shared';
+import {
+  BUTTON_STEP_DATA_FACTORY_CONFIG,
+  ChatNodeDataNoMatch,
+  ChatNodeDataNoReply,
+  ChatPrompt,
+  ChatStepNoMatch,
+  ChatStepNoReply,
+  IntentButton,
+} from '../shared';
 
 export const PromptStepData = extend<ReturnType<typeof Base.PromptStepData>, Node.Prompt.StepData>(Base.PromptStepData, {
   ...BUTTON_STEP_DATA_FACTORY_CONFIG,
+  noReply: () => ChatStepNoReply(),
   reprompt: () => ChatPrompt(),
   noMatches: () => ChatStepNoMatch(),
 });
 
 export const PromptNodeData = extend<ReturnType<typeof Base.PromptNodeData>, NodeData.Prompt>(Base.PromptNodeData, {
-  reprompt: () => ChatPrompt(),
+  noReply: () => ChatNodeDataNoReply(),
   buttons: () => [IntentButton()],
   noMatchReprompt: () => ChatNodeDataNoMatch(),
 });

@@ -1,12 +1,9 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { Models, Node, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { InteractionModelTabType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import * as Router from '@/ducks/router';
-import { useDispatch } from '@/hooks';
-import Step, { ConnectedStep, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, Item, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
 
@@ -15,15 +12,15 @@ import { NODE_CONFIG } from '../constants';
 export interface ButtonsStepProps {
   nodeID: string;
   buttons: Node.Buttons.Button[];
-  noMatchPortID: string;
+  noMatch: Realtime.NodeData.NoMatch;
+  noReply?: Nullable<Realtime.NodeData.NoReply>;
+  noMatchPortID?: Nullable<string>;
+  noReplyPortID?: Nullable<string>;
   dynamicPortIDs: string[];
-  withNoMatchPath: boolean;
-  noMatchPathName: string;
 }
 
-export const ButtonsStep: React.FC<ButtonsStepProps> = ({ nodeID, buttons, noMatchPortID, dynamicPortIDs, noMatchPathName, withNoMatchPath }) => {
+export const ButtonsStep: React.FC<ButtonsStepProps> = ({ nodeID, buttons, noMatch, noReply, noMatchPortID, noReplyPortID, dynamicPortIDs }) => {
   const intentsMap = React.useContext(CustomIntentMapContext)!;
-  const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
   return (
     <Step nodeID={nodeID}>
@@ -44,23 +41,23 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({ nodeID, buttons, noMat
                 portID={!isGoToIntent ? dynamicPortIDs[index] : null}
                 iconColor={NODE_CONFIG.iconColor}
                 // TODO: uncomment when the go to specific intent step id will be implemented
-                // attachment={isGoToIntent && !!intentEntity}
+                // attachment={isGoToIntent && !!intentEntity ? <Attachment icon="clip" onClick={stopPropagation(() => intentEntity && goToInteractionModelEntity(InteractionModelTabType.INTENTS, intentEntity.id))} /> : null}
                 placeholder="Add button text"
                 linkedLabel={intentName}
                 withNewLines
                 labelVariant={StepLabelVariant.PRIMARY}
                 multilineLabel
                 labelLineClamp={100}
-                onAttachmentClick={() => intentEntity && goToInteractionModelEntity(InteractionModelTabType.INTENTS, intentEntity.id)}
               />
             );
           })
         ) : (
           <Item placeholder="Add buttons" icon={NODE_CONFIG.icon} iconColor={NODE_CONFIG.iconColor} />
         )}
-      </Section>
 
-      {withNoMatchPath && <ElseItem label={noMatchPathName} portID={noMatchPortID} />}
+        <NoMatchItem portID={noMatchPortID} noMatch={noMatch} />
+        <NoReplyItem portID={noReplyPortID} noReply={noReply} />
+      </Section>
     </Step>
   );
 };
@@ -69,10 +66,11 @@ const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.No
   <ButtonsStep
     nodeID={node.id}
     buttons={data.buttons}
+    noMatch={data.else}
+    noReply={data.noReply}
     noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
+    noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
     dynamicPortIDs={node.ports.out.dynamic}
-    withNoMatchPath={!!data.else.type && data.else.type !== Node.Utils.NoMatchType.REPROMPT}
-    noMatchPathName={data.else.pathName}
   />
 );
 

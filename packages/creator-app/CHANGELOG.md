@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.552.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.551.0...@voiceflow/creator-app@1.552.0) (2021-12-02)
+
+
+### Features
+
+* 64 length vars (VF-1890) ([#4695](https://github.com/voiceflow/creator-app/issues/4695)) ([b0d0a75](https://github.com/voiceflow/creator-app/commit/b0d0a757d14798a716b76580104715eb284453b1))
+
+
+
+
+
 # [1.551.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.550.1...@voiceflow/creator-app@1.551.0) (2021-12-02)
 
 

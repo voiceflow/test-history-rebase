@@ -35,12 +35,13 @@ const AutoPanLayer: React.FC = () => {
     const updateMergeDetection = _throttle((nodeID: string) => engine.merge.refreshCandidateDetection(nodeID), 150);
 
     const syncBlocksAndCursor = () => {
+      const isDrawingLink = engine.linkCreation.isDrawing;
       const targets = engine.selection.getTargets();
       const soloTarget = engine.drag.target;
       const draggingNodeIDs = soloTarget ? [soloTarget] : targets;
       const draggableNode = draggingNodeIDs[0];
 
-      if (!draggableNode) {
+      if (!draggableNode || isDrawingLink) {
         return;
       }
 

@@ -6,6 +6,7 @@ import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
+import { transformVariablesToReadable } from '@/utils/slot';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -37,7 +38,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({ nodeID, buttons, noMat
               <Item
                 key={id}
                 icon={index === 0 ? NODE_CONFIG.icon : null}
-                label={name || intentName}
+                label={name ? transformVariablesToReadable(name) : intentName}
                 portID={!isGoToIntent ? dynamicPortIDs[index] : null}
                 iconColor={NODE_CONFIG.iconColor}
                 // TODO: uncomment when the go to specific intent step id will be implemented

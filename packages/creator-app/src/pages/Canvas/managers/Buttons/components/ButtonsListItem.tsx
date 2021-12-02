@@ -10,6 +10,7 @@ import IntentForm from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
+import VariablesInput from '@/components/VariablesInput';
 import * as Documentation from '@/config/documentation';
 import { FeatureFlag } from '@/config/features';
 import { NamespaceProvider } from '@/contexts';
@@ -27,6 +28,7 @@ import { BUTTON_OPTIONS, ButtonAction } from '../constants';
 import HelpTooltip from './HelpTooltip';
 
 const IntentSelectComponent = IntentSelect as React.FC<any>;
+const VariablesInputComponent = VariablesInput as React.FC<any>;
 
 export type ButtonsListItemProps = ListItemComponentProps<
   Node.Buttons.Button,
@@ -60,7 +62,6 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const [url, setUrl] = useLinkedState(item.url ?? '');
-  const [name, setName] = useLinkedState(item.name);
 
   const isNew = latestCreatedKey === itemKey;
   const urlChecked = item.actions.includes(Node.Buttons.ButtonAction.URL);
@@ -109,10 +110,10 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
       {isDragging || isDraggingPreview ? null : (
         <>
           <FormControl contentBottomUnits={2.5}>
-            <Input
-              value={name}
-              onBlur={() => onUpdate({ name })}
-              onChange={withTargetValue(setName)}
+            <VariablesInputComponent
+              value={item.name}
+              onBlur={({ text }: { text: string }) => onUpdate({ name: text.trim() })}
+              fullWidth
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus={isNew}
               placeholder="Enter button text"
@@ -156,7 +157,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
               intent={intent}
               intents={isGoToIntent && topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? openIntents : undefined}
               onChange={({ intent }: { intent: string }) => onUpdate({ intent })}
-              clearable={!isGoToIntent}
+              clearable={isGoToIntent}
               creatable={!isGoToIntent}
               placeholder={isGoToIntent ? 'Behave as user triggered intent' : 'Attach intent to path (optional)'}
               renderEmpty={

@@ -99,8 +99,8 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
               icon="user"
               intent={intent}
               intents={dividedIntents}
-              clearable={false}
               onChange={updateIntent}
+              clearable
               iconProps={{ color: '#5589eb' }}
               creatable={false}
               placeholder="Behave as user triggered intent"

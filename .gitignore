@@ -91,3 +91,6 @@ certs/*
 
 # Jest
 .jest_cache
+
+#Circleci
+output.file

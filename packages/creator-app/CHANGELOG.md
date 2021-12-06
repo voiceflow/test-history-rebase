@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.556.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.555.0...@voiceflow/creator-app@1.556.0) (2021-12-06)
+
+
+### Features
+
+* add data tracking for imm navigation (VF-2232) ([#4721](https://github.com/voiceflow/creator-app/issues/4721)) ([5190882](https://github.com/voiceflow/creator-app/commit/5190882ce3df8b19d43c98bc06d37d40584e479a))
+
+
+
+
+
 # [1.555.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.554.0...@voiceflow/creator-app@1.555.0) (2021-12-06)
 
 

@@ -80,6 +80,8 @@ export enum EventName {
   UPGRADE = 'Upgrade',
 
   IMM_NAVIGATION = 'IMM Navigation',
+  PROJECT_RESTORE = 'Project Restore',
+  VERSION_PREVIEW = 'Version Preview',
 }
 
 export enum OnboardingChoice {

@@ -7,6 +7,7 @@ import { EventName } from '../constants';
 import { VersionEventInfo } from '../types';
 import {
   createProjectEventPayload,
+  createProjectEventTracker,
   createVersionEventPayload,
   createVersionEventTracker,
   createWorkspaceEventPayload,
@@ -60,6 +61,14 @@ export const trackActiveProjectCodeExportPage = createVersionEventTracker((optio
 
 export const trackActiveProjectVersionPage = createVersionEventTracker((options) =>
   client.api.analytics.track(EventName.PROJECT_VERSION_PAGE, createVersionEventPayload(options))
+);
+
+export const trackProjectRestore = createProjectEventTracker<{ versionID: string }>((options) =>
+  client.api.analytics.track(EventName.PROJECT_RESTORE, createProjectEventPayload(options, { version_id: options.versionID }))
+);
+
+export const trackVersionPreview = createProjectEventTracker<{ versionID: string }>((options) =>
+  client.api.analytics.track(EventName.VERSION_PREVIEW, createProjectEventPayload(options, { version_id: options.versionID }))
 );
 
 export const trackProjectClone =

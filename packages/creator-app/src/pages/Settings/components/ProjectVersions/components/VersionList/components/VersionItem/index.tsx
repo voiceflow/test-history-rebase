@@ -10,7 +10,7 @@ import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useModals, useSelector } from '@/hooks';
+import { useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { QUERY_PARAMS } from '@/pages/Project/constants';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
 import { createPlatformSelector } from '@/utils/platform';
@@ -34,6 +34,7 @@ const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
   const { open: openConfirmModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const memberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+  const [trackingEvents] = useTrackingEvents();
   const member = React.useMemo(() => memberByID(creatorID), [creatorID]);
   const { manualSave, autoSaveFromRestore } = version;
   const name = React.useMemo(() => {
@@ -55,13 +56,18 @@ const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
           {RESTORE_VERSION_MESSAGE(platform)}
         </span>
       ),
-      confirm: () => swapVersions(versionID),
+      confirm: () => {
+        swapVersions(versionID);
+        trackingEvents.trackProjectRestore({ versionID });
+      },
     });
   };
 
   const handlePreview = () => {
     window.open(`${generatePath(Path.PROJECT_CANVAS, { versionID: version.versionID })}?${QUERY_PARAMS.PREVIEWING}=true`);
+    trackingEvents.trackVersionPreview({ versionID: version.versionID });
   };
+
   return (
     <RowItem>
       <ColumnItemContainer>

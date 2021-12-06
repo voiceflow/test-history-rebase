@@ -2,7 +2,6 @@ import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import { Paragraph } from '@/components/Tooltip';
-import { DOCS_LINK } from '@/constants';
 
 const EditorInfoPopup: React.FC = () => {
   return (
@@ -12,8 +11,8 @@ const EditorInfoPopup: React.FC = () => {
       to Dialogflow.
       <br />
       <br />
-      For more information, visit our
-      <Link href={`${DOCS_LINK}/#/platform/steps/channel-steps/alexa-steps?id=directive-step`}> documentation.</Link>
+      For more information, visit{' '}
+      <Link href="https://cloud.google.com/dialogflow/es/docs/fulfillment-webhook#webhook_response">the Dialogflow documentation.</Link>
     </Paragraph>
   );
 };

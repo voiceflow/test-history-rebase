@@ -78,6 +78,8 @@ export enum EventName {
   UPGRADE_MODAL = 'Upgrade Modal',
 
   UPGRADE = 'Upgrade',
+
+  IMM_NAVIGATION = 'IMM Navigation',
 }
 
 export enum OnboardingChoice {

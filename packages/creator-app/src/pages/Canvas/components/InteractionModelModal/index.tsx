@@ -8,7 +8,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useModals, useSelector, useSessionStorageState } from '@/hooks';
+import { useModals, useSelector, useSessionStorageState, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 import UncontrolledInteractionModel from './UncontrolledInteractionModel';
@@ -23,6 +23,7 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
 }) => {
   const location = useLocation();
   const activeProjectID = useSelector(activeProjectIDSelector)!;
+  const [trackingEvents] = useTrackingEvents();
   const [immPersistedState, setIMMPersistedState] = useSessionStorageState<{ tab: InteractionModelTabType; id: string | null }>(
     `${IMM_PERSISTED_STATE_KEY}-${activeProjectID}`,
     {
@@ -50,6 +51,7 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
   const onChangeTab = React.useCallback((nextTab: string) => {
     handleSetPersistState(nextTab as InteractionModelTabType, null);
     goInteractionModel(nextTab as InteractionModelTabType);
+    trackingEvents.trackIMMNavigation({ tabName: nextTab as InteractionModelTabType });
   }, []);
 
   const onSetSelectedID = React.useCallback(

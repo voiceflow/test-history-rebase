@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.558.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.557.0...@voiceflow/creator-app@1.558.0) (2021-12-06)
+
+
+### Features
+
+* add tracking for edit intent (VF-2239)  ([#4737](https://github.com/voiceflow/creator-app/issues/4737)) ([4d0b684](https://github.com/voiceflow/creator-app/commit/4d0b68493330dba60968b4367be9fcb153091215))
+
+
+
+
+
 # [1.557.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.556.0...@voiceflow/creator-app@1.557.0) (2021-12-06)
 
 

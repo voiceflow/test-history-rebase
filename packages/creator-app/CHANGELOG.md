@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.558.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.558.0...@voiceflow/creator-app@1.558.1) (2021-12-06)
+
+
+### Bug Fixes
+
+* aa node deletion (VF-2330) ([#4732](https://github.com/voiceflow/creator-app/issues/4732)) ([31c3433](https://github.com/voiceflow/creator-app/commit/31c3433b0b6a04166893a63209cc69f0c018208d))
+* fix DF custom payload docs link ([#4742](https://github.com/voiceflow/creator-app/issues/4742)) ([3943f5f](https://github.com/voiceflow/creator-app/commit/3943f5f09ba3bcb4bfa6b5cc39555e18ef5c7021))
+
+
+
+
+
 # [1.558.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.557.0...@voiceflow/creator-app@1.558.0) (2021-12-06)
 
 

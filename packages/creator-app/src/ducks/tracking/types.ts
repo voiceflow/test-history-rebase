@@ -5,13 +5,10 @@ export interface WorkspaceEventInfo {
   workspaceID: string;
 }
 
-export interface ProjectEventInfo {
-  skillID: string;
+export interface ProjectEventInfo extends WorkspaceEventInfo {
   projectID: string;
-  workspaceID: string;
 }
 
-export interface ConversationsEventInfo {
-  projectID: string;
-  workspaceID: string;
+export interface VersionEventInfo extends ProjectEventInfo {
+  skillID: string;
 }

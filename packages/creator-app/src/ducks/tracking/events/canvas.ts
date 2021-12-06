@@ -1,46 +1,44 @@
 import client from '@/client';
 
 import { CanvasMenuLockState, EventName } from '../constants';
-import { WorkspaceEventInfo } from '../types';
-import { createProjectEventPayload, createProjectEventTracker, createWorkspaceEventPayload, createWorkspaceEventTracker } from '../utils';
+import { createProjectEventPayload, createProjectEventTracker, createVersionEventPayload, createVersionEventTracker } from '../utils';
 
-export const trackCanvasSeeShortcutsModalOpened = createWorkspaceEventTracker(
-  ({ workspaceID, projectID }: WorkspaceEventInfo & { projectID: string }) =>
-    client.api.analytics.track(EventName.CANVAS_SHORTCUTS_MODAL_OPENED, createWorkspaceEventPayload({ workspaceID }, { project_id: projectID }))
+export const trackCanvasSeeShortcutsModalOpened = createProjectEventTracker((options) =>
+  client.api.analytics.track(EventName.CANVAS_SHORTCUTS_MODAL_OPENED, createProjectEventPayload(options))
 );
 
-export const trackCanvasMenuLock = createProjectEventTracker<{ state: CanvasMenuLockState }>((options) =>
-  client.api.analytics.track(EventName.CANVAS_MENU_LOCK, createProjectEventPayload(options, { state: options.state }))
+export const trackCanvasMenuLock = createVersionEventTracker<{ state: CanvasMenuLockState }>((options) =>
+  client.api.analytics.track(EventName.CANVAS_MENU_LOCK, createVersionEventPayload(options, { state: options.state }))
 );
 
-export const trackCanvasControlHelpMenuResource = createProjectEventTracker<{ resource: string }>((options) =>
-  client.api.analytics.track(EventName.CANVAS_CONTROL_HELP_MENU, createProjectEventPayload(options, { resource: options.resource }))
+export const trackCanvasControlHelpMenuResource = createVersionEventTracker<{ resource: string }>((options) =>
+  client.api.analytics.track(EventName.CANVAS_CONTROL_HELP_MENU, createVersionEventPayload(options, { resource: options.resource }))
 );
 
-export const trackCanvasControlInteractionModel = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CANVAS_CONTROL_INTERACTION_MODEL, createProjectEventPayload(options))
+export const trackCanvasControlInteractionModel = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.CANVAS_CONTROL_INTERACTION_MODEL, createVersionEventPayload(options))
 );
 
-export const trackCanvasSpotlightOpened = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CANVAS_SPOTLIGHT_OPENED, createProjectEventPayload(options))
+export const trackCanvasSpotlightOpened = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.CANVAS_SPOTLIGHT_OPENED, createVersionEventPayload(options))
 );
 
-export const trackMarkupText = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CANVAS_MARKUP_TEXT, createProjectEventPayload(options))
+export const trackMarkupText = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.CANVAS_MARKUP_TEXT, createVersionEventPayload(options))
 );
 
-export const trackMarkupImage = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CANVAS_MARKUP_IMAGE, createProjectEventPayload(options))
+export const trackMarkupImage = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.CANVAS_MARKUP_IMAGE, createVersionEventPayload(options))
 );
 
-export const trackCommentingOpen = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CANVAS_COMMENTING_OPENED, createProjectEventPayload(options))
+export const trackCommentingOpen = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.CANVAS_COMMENTING_OPENED, createVersionEventPayload(options))
 );
 
-export const trackNewThreadCreated = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.PROJECT_NEW_COMMENT_THREAD, createProjectEventPayload(options))
+export const trackNewThreadCreated = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.PROJECT_NEW_COMMENT_THREAD, createVersionEventPayload(options))
 );
 
-export const trackNewThreadReply = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.PROJECT_NEW_THREAD_REPLY, createProjectEventPayload(options))
+export const trackNewThreadReply = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.PROJECT_NEW_THREAD_REPLY, createVersionEventPayload(options))
 );

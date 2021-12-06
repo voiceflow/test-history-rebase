@@ -2,8 +2,9 @@ import client from '@/client';
 import { ExportFormat } from '@/constants';
 
 import { EventName } from '../constants';
-import { createProjectEventPayload, createProjectEventTracker } from '../utils';
+import { createVersionEventPayload, createVersionEventTracker } from '../utils';
 
-export const trackExportButtonClick = createProjectEventTracker<{ format: ExportFormat }>((options) =>
-  client.api.analytics.track(EventName.EXPORT_BUTTON_CLICK, createProjectEventPayload(options, { format: options.format }))
+// eslint-disable-next-line import/prefer-default-export
+export const trackExportButtonClick = createVersionEventTracker<{ format: ExportFormat }>((options) =>
+  client.api.analytics.track(EventName.EXPORT_BUTTON_CLICK, createVersionEventPayload(options, { format: options.format }))
 );

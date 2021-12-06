@@ -1,100 +1,101 @@
+import { AnyRecord } from '@voiceflow/base-types';
+
 import * as Session from '@/ducks/session';
 import { SyncThunk, Thunk } from '@/store/types';
 
-import { ConversationsEventInfo, ProjectEventInfo, WorkspaceEventInfo } from './types';
+import { ProjectEventInfo, VersionEventInfo, WorkspaceEventInfo } from './types';
+
+type EventTracker<T> = (...args: T extends AnyRecord ? [T] : []) => SyncThunk;
+
+interface EventPayload<P extends AnyRecord> {
+  hashed?: (keyof P)[];
+  teamhashed?: (keyof P)[];
+  properties?: P;
+}
+
+interface EventPayloadOptions<K> {
+  hashed?: K[];
+  teamhashed?: K[];
+}
+
+type WorkspaceEventPayload<P extends AnyRecord> = EventPayload<P & { workspace_id: WorkspaceEventInfo['workspaceID'] }>;
+
+type ProjectEventPayload<P extends AnyRecord> = WorkspaceEventPayload<P & { project_id: ProjectEventInfo['projectID'] }>;
+
+type VersionEventPayload<P extends AnyRecord> = ProjectEventPayload<P & { skill_id: VersionEventInfo['skillID'] }>;
 
 export const createWorkspaceEventTracker =
-  <T extends {} | undefined = undefined>(callback: (options: T & WorkspaceEventInfo, ...args: Parameters<Thunk>) => void) =>
-  (...args: T extends undefined ? [] : [T]): SyncThunk =>
+  <T>(callback: (options: T extends AnyRecord ? WorkspaceEventInfo & T : WorkspaceEventInfo, ...args: Parameters<Thunk>) => void): EventTracker<T> =>
+  (...args): SyncThunk =>
   (dispatch, getState, extra) => {
     const state = getState();
-    const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
 
-    if (!activeWorkspaceID) return;
+    if (!workspaceID) return;
 
-    const baseEventInfo: WorkspaceEventInfo = {
-      workspaceID: activeWorkspaceID,
-    };
+    const eventInfo = {
+      ...args[0],
+      workspaceID,
+    } as T extends AnyRecord ? WorkspaceEventInfo & T : WorkspaceEventInfo;
 
-    callback({ ...args[0], ...baseEventInfo } as T & WorkspaceEventInfo, dispatch, getState, extra);
+    callback(eventInfo, dispatch, getState, extra);
   };
 
 export const createWorkspaceEventPayload = <T extends WorkspaceEventInfo, D extends {}, K extends keyof D>(
   { workspaceID }: T,
   data: D = {} as D,
-  { hashed = [], teamhashed = [] }: { hashed?: K[]; teamhashed?: K[] } = {}
-) => ({
+  { hashed = [], teamhashed = [] }: EventPayloadOptions<K> = {}
+): WorkspaceEventPayload<D> => ({
   hashed,
-  teamhashed: ['workspace_id', ...teamhashed] as any as keyof D & keyof K,
+  teamhashed: ['workspace_id', ...teamhashed],
   properties: {
     ...data,
     workspace_id: workspaceID,
   },
 });
 
-export const createProjectEventTracker =
-  <T extends {} | undefined = undefined>(callback: (options: T & ProjectEventInfo, ...args: Parameters<Thunk>) => void) =>
-  (...args: T extends undefined ? [] : [T]): SyncThunk =>
-  (dispatch, getState, extra) => {
+export const createProjectEventTracker = <T>(
+  callback: (options: T extends AnyRecord ? ProjectEventInfo & T : ProjectEventInfo, ...args: Parameters<Thunk>) => void
+): EventTracker<T> =>
+  createWorkspaceEventTracker<T>((data, dispatch, getState, extra) => {
     const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
     const projectID = Session.activeProjectIDSelector(state);
-    const workspaceID = Session.activeWorkspaceIDSelector(state);
 
-    if (!projectID || !versionID || !workspaceID) return;
+    if (!projectID) return;
 
-    const baseEventInfo: ProjectEventInfo = {
-      skillID: versionID,
+    const eventInfo = {
+      ...data,
       projectID,
-      workspaceID,
-    };
+    } as T extends AnyRecord ? ProjectEventInfo & T : ProjectEventInfo;
 
-    callback({ ...args[0], ...baseEventInfo } as T & ProjectEventInfo, dispatch, getState, extra);
-  };
+    callback(eventInfo, dispatch, getState, extra);
+  });
 
 export const createProjectEventPayload = <T extends ProjectEventInfo, D extends {}, K extends keyof D>(
-  { skillID, projectID, workspaceID }: T,
+  { projectID, ...workspaceData }: T,
   data: D = {} as D,
-  { hashed = [], teamhashed = [] }: { hashed?: K[]; teamhashed?: K[] } = {}
-) => ({
-  hashed,
-  teamhashed: ['workspace_id', ...teamhashed] as any as keyof D & keyof K,
-  properties: {
-    ...data,
-    skill_id: skillID,
-    project_id: projectID,
-    workspace_id: workspaceID,
-  },
-});
+  options?: EventPayloadOptions<K>
+): ProjectEventPayload<D> => createWorkspaceEventPayload(workspaceData, { ...data, project_id: projectID }, options);
 
-export const createConversationsEventTracker =
-  <T extends {} | undefined = undefined>(callback: (options: T & ConversationsEventInfo, ...args: Parameters<Thunk>) => void) =>
-  (...args: T extends undefined ? [] : [T]): SyncThunk =>
-  (dispatch, getState, extra) => {
+export const createVersionEventTracker = <T>(
+  callback: (options: T extends AnyRecord ? VersionEventInfo & T : VersionEventInfo, ...args: Parameters<Thunk>) => void
+): EventTracker<T> =>
+  createProjectEventTracker<T>((data, dispatch, getState, extra) => {
     const state = getState();
-    const projectID = Session.activeProjectIDSelector(state);
-    const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const skillID = Session.activeVersionIDSelector(state);
 
-    if (!projectID || !workspaceID) return;
+    if (!skillID) return;
 
-    const baseEventInfo: ConversationsEventInfo = {
-      projectID,
-      workspaceID,
-    };
+    const eventInfo = {
+      ...data,
+      skillID,
+    } as T extends AnyRecord ? VersionEventInfo & T : VersionEventInfo;
 
-    callback({ ...args[0], ...baseEventInfo } as T & ConversationsEventInfo, dispatch, getState, extra);
-  };
+    callback(eventInfo, dispatch, getState, extra);
+  });
 
-export const createConversationsEventPayload = <T extends ConversationsEventInfo, D extends {}, K extends keyof D>(
-  { projectID, workspaceID }: T,
+export const createVersionEventPayload = <T extends VersionEventInfo, D extends {}, K extends keyof D>(
+  { skillID, ...projectData }: T,
   data: D = {} as D,
-  { hashed = [], teamhashed = [] }: { hashed?: K[]; teamhashed?: K[] } = {}
-) => ({
-  hashed,
-  teamhashed: ['workspace_id', ...teamhashed] as any as keyof D & keyof K,
-  properties: {
-    ...data,
-    project_id: projectID,
-    workspace_id: workspaceID,
-  },
-});
+  options?: EventPayloadOptions<K>
+): VersionEventPayload<D> => createProjectEventPayload(projectData, { ...data, skill_id: skillID }, options);

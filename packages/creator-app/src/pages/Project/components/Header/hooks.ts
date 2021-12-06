@@ -18,7 +18,6 @@ export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boole
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
   const goToCurrentSettings = useDispatch(Router.goToCurrentSettings);
   const [trackingEvents] = useTrackingEvents();
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const goToVersions = useDispatch(Router.goToVersions);
 
@@ -29,8 +28,8 @@ export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boole
 
   const onOpenShortcutsModal = React.useCallback(() => {
     shortcutModal.toggle();
-    trackingEvents.trackCanvasSeeShortcutsModalOpened({ projectID });
-  }, [shortcutModal, projectID]);
+    trackingEvents.trackCanvasSeeShortcutsModalOpened();
+  }, [shortcutModal]);
 
   const onVersionHistory = React.useCallback(() => {
     goToVersions(versionID);

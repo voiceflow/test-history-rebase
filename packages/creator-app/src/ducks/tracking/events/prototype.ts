@@ -7,44 +7,43 @@ import * as Recent from '@/ducks/recent';
 import { SyncThunk } from '@/store/types';
 
 import { EventName } from '../constants';
-import { ProjectEventInfo } from '../types';
-import { createProjectEventPayload, createProjectEventTracker } from '../utils';
+import { createVersionEventPayload, createVersionEventTracker } from '../utils';
 
-export const trackPrototypeManualNavForwardButton = createProjectEventTracker((options: ProjectEventInfo) =>
-  client.api.analytics.track(EventName.PROTOTYPE_MANUAL_NAVIGATION, createProjectEventPayload(options, { direction: 'forward' }))
+export const trackPrototypeManualNavForwardButton = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.PROTOTYPE_MANUAL_NAVIGATION, createVersionEventPayload(options, { direction: 'forward' }))
 );
 
-export const trackPrototypeManualNavBackwardButton = createProjectEventTracker((options: ProjectEventInfo) =>
-  client.api.analytics.track(EventName.PROTOTYPE_MANUAL_NAVIGATION, createProjectEventPayload(options, { direction: 'backward' }))
+export const trackPrototypeManualNavBackwardButton = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.PROTOTYPE_MANUAL_NAVIGATION, createVersionEventPayload(options, { direction: 'backward' }))
 );
 
-export const trackProjectTrainAssistant = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.PROJECT_TRAIN_ASSISTANT, createProjectEventPayload(options))
+export const trackProjectTrainAssistant = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.PROJECT_TRAIN_ASSISTANT, createVersionEventPayload(options))
 );
 
-export const trackActiveProjectPrototypeTestClick = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.PROJECT_PROTOTYPE_TEST_CLICK, createProjectEventPayload(options))
+export const trackActiveProjectPrototypeTestClick = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.PROJECT_PROTOTYPE_TEST_CLICK, createVersionEventPayload(options))
 );
 
-export const trackActiveProjectPrototypeTestStart = createProjectEventTracker<{
+export const trackActiveProjectPrototypeTestStart = createVersionEventTracker<{
+  mode: PrototypeMode;
   debug: boolean;
   display: Node.Visual.DeviceType | null;
-  mode: PrototypeMode;
 }>((options) =>
   client.api.analytics.track(
     EventName.PROJECT_PROTOTYPE_TEST_START,
-    createProjectEventPayload(options, { debug: options.debug, display: options.display, mode: options.mode })
+    createVersionEventPayload(options, { debug: options.debug, display: options.display, mode: options.mode })
   )
 );
 
-export const trackProjectBlockPrototypeTestStart = createProjectEventTracker((options, _dispatch, getState) => {
+export const trackProjectBlockPrototypeTestStart = createVersionEventTracker((options, _dispatch, getState) => {
   const state = getState();
 
   const debug = Recent.prototypeDebugSelector(state);
-  const display = Prototype.prototypeVisualDeviceSelector(state);
   const mode = Prototype.activePrototypeModeSelector(state);
+  const display = Prototype.prototypeVisualDeviceSelector(state);
 
-  client.api.analytics.track(EventName.PROJECT_BLOCK_TEST_START, createProjectEventPayload(options, { debug, display, mode }));
+  client.api.analytics.track(EventName.PROJECT_BLOCK_TEST_START, createVersionEventPayload(options, { debug, display, mode }));
 });
 
 export const trackPublicPrototypeView =

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.555.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.554.0...@voiceflow/creator-app@1.555.0) (2021-12-06)
+
+
+### Features
+
+* autolink component step (VF-2337) ([#4701](https://github.com/voiceflow/creator-app/issues/4701)) ([c291486](https://github.com/voiceflow/creator-app/commit/c29148642b16f979792e24a392b5a52b6b00835d))
+
+
+
+
+
 # [1.554.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.553.0...@voiceflow/creator-app@1.554.0) (2021-12-06)
 
 

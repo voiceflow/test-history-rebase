@@ -66,7 +66,7 @@ class NodeManager extends EngineConsumer {
       this.dispatch(Creator.updateNodeData(nodeID, data));
     },
 
-    removeMany: (nodeIDs: string[]) => {
+    removeMany: async (nodeIDs: string[]) => {
       const nodes = nodeIDs.map(this.engine.getNodeByID);
       const removedIDs: string[] = [];
       const parentIDs: string[] = [];
@@ -90,7 +90,7 @@ class NodeManager extends EngineConsumer {
       });
 
       if (this.engine.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS)) {
-        this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodeIDs: removedIDs }));
+        await this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodeIDs: removedIDs }));
       } else {
         this.dispatch(Creator.removeNodes(removedIDs));
       }
@@ -398,7 +398,7 @@ class NodeManager extends EngineConsumer {
       await this.engine.comment.handleNodesDelete(allNodeIDs);
 
       await this.engine.realtime.sendUpdate(RealtimeDuck.removeManyNodes([removeNodeID]));
-      this.internal.removeMany([removeNodeID]);
+      await this.internal.removeMany([removeNodeID]);
 
       this.engine.saveHistory();
 
@@ -419,7 +419,7 @@ class NodeManager extends EngineConsumer {
         await this.engine.comment.handleNodesDelete(allNodeIDs);
 
         await this.engine.realtime.sendUpdate(RealtimeDuck.removeManyNodes(removableNodeIDs));
-        this.internal.removeMany(removableNodeIDs);
+        await this.internal.removeMany(removableNodeIDs);
 
         this.engine.saveHistory();
 

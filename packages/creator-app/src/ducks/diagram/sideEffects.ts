@@ -1,5 +1,5 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { Models as BaseModels, Node as BaseNode } from '@voiceflow/base-types';
+import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
@@ -243,7 +243,12 @@ export const convertToComponent =
     links: Realtime.Link[];
     ports: Realtime.Port[];
     data: Record<string, Realtime.NodeData<unknown>>;
-  }): Thunk<{ name: string; diagramID: string }> =>
+  }): Thunk<{
+    name: string;
+    diagramID: string;
+    outgoingLinkTarget: Nullable<{ nodeID: string; portID: string }>;
+    incomingLinkSource: Nullable<{ nodeID: string; portID: string }>;
+  }> =>
   async (dispatch, getState) => {
     const startCoords: Point = [360, 120];
 
@@ -252,6 +257,11 @@ export const convertToComponent =
     const activeComponents = VersionV2.active.componentsSelector(state);
     const name = `Component ${activeComponents.length + 1}`;
     const diagram = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
+
+    const nodeIDMap = nodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
+    const allNodesLinks = nodes.flatMap((node) => Creator.linksByNodeIDSelector(state)(node.id));
+    const incomingLinks = allNodesLinks.filter(({ source, target }) => nodeIDMap[target.nodeID] && !nodeIDMap[source.nodeID]);
+    const outgoingLinks = allNodesLinks.filter(({ source, target }) => !nodeIDMap[target.nodeID] && nodeIDMap[source.nodeID]);
 
     const combinedAndMarkupNodes = nodes.filter(({ type }) => isMarkupOrCombinedBlockType(type)).map((node) => ({ data: data[node.id], node }));
     const { center, minX } = getNodesGroupCenter(combinedAndMarkupNodes, links);
@@ -285,6 +295,19 @@ export const convertToComponent =
     diagram.nodes = { ...diagram.nodes, ...convertedDiagram.nodes };
     diagram.children = [...diagram.children, ...convertedDiagram.children];
 
+    if (incomingLinks.length === 1) {
+      const incomingLink = incomingLinks[0];
+
+      const startNode = Object.values(diagram.nodes).find((node) => node.type === BaseNode.NodeType.START);
+      const connectedNode = Object.values(diagram.nodes).find((node) => node.nodeID === incomingLink.target.nodeID);
+      const startNodeNextPort: BaseModels.BasePort =
+        (startNode?.data.ports as BaseModels.BasePort[])?.find((port) => port.type === BaseModels.PortType.NEXT) ?? startNode?.data.ports?.[0];
+
+      if (startNode && connectedNode && startNodeNextPort) {
+        startNodeNextPort.target = connectedNode.nodeID;
+      }
+    }
+
     const diagramID = await dispatch(
       Feature.applyAtomicSideEffect(
         getActiveVersionContext,
@@ -303,7 +326,12 @@ export const convertToComponent =
       )
     );
 
-    return { name, diagramID };
+    return {
+      name,
+      diagramID,
+      incomingLinkSource: incomingLinks.length === 1 ? incomingLinks[0].source : null,
+      outgoingLinkTarget: outgoingLinks.length === 1 ? outgoingLinks[0].target : null,
+    };
   };
 
 export const duplicateDiagram =

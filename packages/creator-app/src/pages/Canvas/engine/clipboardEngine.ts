@@ -168,7 +168,7 @@ class ClipboardEngine extends EngineConsumer {
       });
 
     const copiedNodes = [...soloNodes, ...orphanedNodes, ...nestedNodes];
-    const copiedNodeIDs = copiedNodes.map(({ id }) => id);
+    const copiedNodeIDMap = copiedNodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
 
     const ports = Creator.allPortsByIDsSelector(state)(
       copiedNodes.flatMap((node) => [...node.ports.in, ...Creator.diagramUtils.getAllOutPortIDs(node)])
@@ -176,7 +176,7 @@ class ClipboardEngine extends EngineConsumer {
 
     const links = copiedNodes.reduce<Realtime.Link[]>((acc, node) => {
       const nodeLinks = Creator.linksByNodeIDSelector(state)(node.id).filter(
-        (link) => !acc.includes(link) && copiedNodeIDs.includes(link.source.nodeID) && copiedNodeIDs.includes(link.target.nodeID)
+        (link) => !acc.includes(link) && copiedNodeIDMap[link.source.nodeID] && copiedNodeIDMap[link.target.nodeID]
       );
 
       acc.push(...nodeLinks);

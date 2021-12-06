@@ -531,11 +531,18 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
     const coords = this.canvas!.toCoords(center);
 
-    const { name, diagramID } = await this.store.dispatch(Diagram.convertToComponent(clipboardData));
+    const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = await this.store.dispatch(Diagram.convertToComponent(clipboardData));
 
     await this.node.removeMany(targets, { disableConfirmPrompt: true });
 
-    await this.node.add(BlockType.COMPONENT, coords, { name, diagramID } as Realtime.NodeData<any>);
+    const componentNodeID = await this.node.add(BlockType.COMPONENT, coords, { name, diagramID } as Realtime.NodeData<any>);
+
+    const componentNode = this.getNodeByID(componentNodeID);
+
+    await Promise.all([
+      incomingLinkSource && this.link.add(incomingLinkSource.portID, componentNode.ports.in[0]),
+      outgoingLinkTarget && this.link.add(componentNode.ports.out.builtIn[BaseModels.PortType.NEXT]!, outgoingLinkTarget.portID),
+    ]);
 
     RootPageProgressBar.stop(PageProgressBar.COMPONENT_CREATING);
 

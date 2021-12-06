@@ -1,7 +1,7 @@
 import client from '@/client';
 import { InteractionModelTabType } from '@/constants';
 
-import { CanvasMenuLockState, EventName } from '../constants';
+import { CanvasMenuLockState, EventName, IntentEditType } from '../constants';
 import { createProjectEventPayload, createProjectEventTracker, createVersionEventPayload, createVersionEventTracker } from '../utils';
 
 export const trackCanvasSeeShortcutsModalOpened = createProjectEventTracker((options) =>
@@ -46,4 +46,8 @@ export const trackNewThreadReply = createVersionEventTracker((options) =>
 
 export const trackIMMNavigation = createProjectEventTracker<{ tabName: InteractionModelTabType }>((options) =>
   client.api.analytics.track(EventName.IMM_NAVIGATION, createProjectEventPayload(options, { tab_name: options.tabName }))
+);
+
+export const trackIntentEdit = createProjectEventTracker<{ creationType: IntentEditType }>((options) =>
+  client.api.analytics.track(EventName.INTENTS_EDIT, createProjectEventPayload(options, { creation_type: options.creationType }))
 );

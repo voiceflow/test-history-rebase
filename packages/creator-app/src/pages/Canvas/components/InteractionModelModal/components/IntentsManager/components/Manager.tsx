@@ -11,7 +11,9 @@ import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
+import { IntentEditType } from '@/ducks/tracking/constants';
 import { compose, connect } from '@/hocs';
+import { useTrackingEvents } from '@/hooks';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { applyPlatformIntentNameFormatting, isCustomizableBuiltInIntent, validateIntentName } from '@/utils/intent';
@@ -30,6 +32,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
   const resetPath = React.useCallback(() => setPath({ type: null }), []);
   const [nameError, setNameError] = React.useState<string | null>(null);
   const isBuiltIn = isCustomizableBuiltInIntent(selectedIntent);
+  const [trackingEvents] = useTrackingEvents();
 
   const slotEdit = path.type === 'slot';
 
@@ -52,6 +55,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 
     setNameError(null);
     patchIntent(intentID, { id: intentID, name: formattedName });
+    trackingEvents.trackIntentEdit({ creationType: IntentEditType.IMM });
   };
 
   const localNameUpdate = ({ value }: { value: string }) => {

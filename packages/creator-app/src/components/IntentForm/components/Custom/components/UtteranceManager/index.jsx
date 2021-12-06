@@ -25,8 +25,9 @@ import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
+import { IntentEditType } from '@/ducks/tracking/constants';
 import { connect } from '@/hocs';
-import { useModals, usePermission } from '@/hooks';
+import { useModals, usePermission, useTrackingEvents } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { isCustomizableBuiltInIntent, validateUtterance } from '@/utils/intent';
@@ -54,7 +55,16 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const isBuiltIn = isCustomizableBuiltInIntent(intent);
   const [showUtterances, setShowUtterances] = React.useState(!isBuiltIn || !!intent.inputs?.length || !!prefilledNewUtterance);
-  const onUpdateUtterances = React.useCallback((inputs) => patchIntent(intentID, { inputs }), [intentID, patchIntent]);
+  const [trackingEvents] = useTrackingEvents();
+
+  const onUpdateUtterances = React.useCallback(
+    (inputs) => {
+      patchIntent(intentID, { inputs });
+
+      trackingEvents.trackIntentEdit({ creationType: isInModal ? IntentEditType.IMM : IntentEditType.EDITOR });
+    },
+    [intentID, patchIntent, isInModal]
+  );
 
   React.useEffect(() => {
     if (prefilledNewUtterance) {
@@ -191,12 +201,7 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
                       iconProps={{ variant: 'blue' }}
                       rightAction={
                         !isEmpty && (
-                          <Badge
-                            slide
-                            onClick={() => {
-                              onAdd(utteranceRef.current?.getCurrentUtterance());
-                            }}
-                          >
+                          <Badge slide onClick={() => onAdd(utteranceRef.current?.getCurrentUtterance())}>
                             Enter
                           </Badge>
                         )

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.561.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.560.0...@voiceflow/creator-app@1.561.0) (2021-12-07)
+
+
+### Features
+
+* highlight end ports on test end (VF-2224) ([#4725](https://github.com/voiceflow/creator-app/issues/4725)) ([d0ce813](https://github.com/voiceflow/creator-app/commit/d0ce81384cfe58ba1f84d5d0ff91a5267c53af3e))
+
+
+
+
+
 # [1.560.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.559.0...@voiceflow/creator-app@1.560.0) (2021-12-07)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.559.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.558.1...@voiceflow/creator-app@1.559.0) (2021-12-07)
+
+
+### Features
+
+* track public prototype interaction (VF-2372) ([#4738](https://github.com/voiceflow/creator-app/issues/4738)) ([312e12b](https://github.com/voiceflow/creator-app/commit/312e12babc061ee537db8f4bce38b802ca83e072))
+
+
+
+
+
 ## [1.558.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.558.0...@voiceflow/creator-app@1.558.1) (2021-12-06)
 
 

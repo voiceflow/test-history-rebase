@@ -80,8 +80,10 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
     [selectedID]
   );
 
-  const addNewIntent = React.useCallback(() => {
-    updateSelected(createIntent());
+  const addNewIntent = React.useCallback(async () => {
+    const intentID = await createIntent();
+
+    updateSelected(intentID);
   }, []);
 
   return (
@@ -108,7 +110,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
               onAdd={addNewIntent}
               onChange={onChange}
               getLabel={getItemLabel}
-              addMessage="New Realtime.Intent"
+              addMessage="New Intent"
               renderItem={(item, index) => renderItem({ key: item.id, itemKey: item.id, item, index })}
               formatValue={isGeneral ? undefined : formatIntentName}
               placeholder="Search Intents"

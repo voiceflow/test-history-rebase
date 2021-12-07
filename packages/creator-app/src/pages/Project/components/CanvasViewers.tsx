@@ -20,7 +20,7 @@ const CanvasViewers: React.FC<CanvasViewersProps> = ({ flat, withAdd = true }) =
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const [canViewCollaborators] = usePermission(Permission.VIEW_COLLABORATORS);
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+  const atomicActionsAwareness = useFeature(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
   const viewers = useSelector(Realtime.activeDiagramViewersSelector);
   const diagramIDs = useSelector(DiagramV2.allDiagramIDsSelector);
   const viewersV2 = useSelector((state) => DiagramV2.diagramsViewersByIDsSelector(state, { ids: diagramIDs }));
@@ -32,7 +32,7 @@ const CanvasViewers: React.FC<CanvasViewersProps> = ({ flat, withAdd = true }) =
       <Members
         flat={flat}
         onAdd={withAdd && canAddCollaborators ? () => toggleCollaborators() : undefined}
-        members={atomicActions.isEnabled ? viewersV2 : viewers}
+        members={atomicActionsAwareness.isEnabled ? viewersV2 : viewers}
       />
     </BoxFlex>
   );

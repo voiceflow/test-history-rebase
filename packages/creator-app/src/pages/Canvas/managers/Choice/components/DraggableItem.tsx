@@ -67,7 +67,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const platformItem = getDistinctPlatformValue(platform, item);
-
   const patchPlatformData = React.useCallback(
     (patch: Partial<Realtime.NodeData.InteractionChoice>) => onUpdate?.(setDistinctPlatformValue(platform, { ...platformItem, ...patch })),
     [onUpdate, platform, platformItem]

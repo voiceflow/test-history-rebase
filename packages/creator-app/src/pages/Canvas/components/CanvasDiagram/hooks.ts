@@ -16,7 +16,7 @@ import { Pair, Point, Viewport } from '@/types';
 export const useCursorControls = () => {
   const mousePosition = React.useRef<Point | null>(null);
   const engine = React.useContext(EngineContext)!;
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+  const atomicActionsAwareness = useFeature(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
   const creatorID = useSelector(Account.userIDSelector)!;
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
   const awarenessMoveCursor = useSyncDispatch(Realtime.diagram.awareness.moveCursor);
@@ -25,7 +25,7 @@ export const useCursorControls = () => {
 
   const moveMouse = React.useCallback(
     throttle(10, (nextCoords: Point) => {
-      if (atomicActions.isEnabled) {
+      if (atomicActionsAwareness.isEnabled) {
         if (hasDiagramViewers && prevCoords.current !== nextCoords) {
           prevCoords.current = nextCoords;
           awarenessMoveCursor({ ...engine.context, creatorID, coords: nextCoords });

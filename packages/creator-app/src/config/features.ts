@@ -26,6 +26,7 @@ export enum FeatureFlag {
   // atomic actions
   REALTIME_CONNECTION = 'realtime_connection',
   ATOMIC_ACTIONS = 'atomic_actions',
+  ATOMIC_ACTIONS_AWARENESS = 'atomic_actions_awareness',
   ATOMIC_ACTIONS_PHASE_2 = 'atomic_actions_phase_2',
 
   // used by select private cloud instances to add a new role type

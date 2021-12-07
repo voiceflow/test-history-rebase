@@ -6,11 +6,11 @@ import { useFeature } from '@/hooks';
 import { CursorOverlay, CursorOverlayV2, LinksOverlay } from './components';
 
 const RealtimeOverlay = () => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+  const atomicActionsAwareness = useFeature(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
 
   return (
     <>
-      {atomicActions.isEnabled ? <CursorOverlayV2 /> : <CursorOverlay />}
+      {atomicActionsAwareness.isEnabled ? <CursorOverlayV2 /> : <CursorOverlay />}
       <LinksOverlay />
     </>
   );

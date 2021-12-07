@@ -106,27 +106,25 @@ function IntentSelect({
   );
 
   const onSelectIntent = React.useCallback(
-    (value) => {
-      const intentID = value;
+    async (nextIntentID) => {
+      const isDefaultBuiltIn = CUSTOMIZABLE_INTENT_PREFIXS.includes(nextIntentID?.split('.')[0]) || nextIntentID === Constants.IntentName.NONE;
 
-      const isDefaultBuiltIn = CUSTOMIZABLE_INTENT_PREFIXS.includes(value?.split('.')[0]) || value === Constants.IntentName.NONE;
-
-      if (isDefaultBuiltIn && !intentsMap[intentID]) {
-        createIntent({ id: intentID, name: value, builtIn: true });
+      if (isDefaultBuiltIn && !intentsMap[nextIntentID]) {
+        await createIntent({ id: nextIntentID, name: nextIntentID, builtIn: true });
       }
 
-      onChange({ intent: intentID });
+      onChange({ intent: nextIntentID });
     },
     [onChange]
   );
 
   const onCreate = React.useCallback(
-    (name) => {
+    async (name) => {
       const preparedName = Utils.string.removeTrailingUnderscores(prettifyIntentName(name));
-      const intent = filteredIntents.find(({ name }) => Utils.string.removeTrailingUnderscores(name) === preparedName);
+      const intentByName = filteredIntents.find(({ name }) => Utils.string.removeTrailingUnderscores(name) === preparedName);
 
-      if (intent) {
-        return onSelectIntent(intent.id);
+      if (intentByName) {
+        return onSelectIntent(intentByName.id);
       }
 
       const error = validateIntentName(preparedName, intents, slots);
@@ -134,7 +132,8 @@ function IntentSelect({
       if (error) {
         toast.error(error);
       } else {
-        onSelectIntent(createIntent({ name: preparedName }));
+        const nextIntentID = await createIntent({ name: preparedName });
+        await onSelectIntent(nextIntentID);
       }
     },
     [intentLookup, onSelectIntent]

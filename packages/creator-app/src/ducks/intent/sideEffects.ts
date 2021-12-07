@@ -164,8 +164,8 @@ export const reorderIntentSlots =
   };
 
 export const createIntent =
-  (intent?: Partial<Realtime.Intent>): SyncThunk<string> =>
-  (dispatch, getState) => {
+  (intent?: Partial<Realtime.Intent>): Thunk<string> =>
+  async (dispatch, getState) => {
     const id = intent?.id || Utils.id.cuid.slug();
     const state = getState();
     const platform = intent?.platform || ProjectV2.active.platformSelector(state);
@@ -181,7 +181,7 @@ export const createIntent =
     const inputs = intent?.inputs || [];
     const processedIntent = intentProcessor(platform, inferIntentType({ id, name, slots, inputs, platform }));
 
-    dispatch(
+    await dispatch(
       Feature.applyAtomicSideEffect(
         getActiveVersionContext,
         async () => {

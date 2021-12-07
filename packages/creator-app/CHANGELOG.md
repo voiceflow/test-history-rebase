@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.560.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.559.0...@voiceflow/creator-app@1.560.0) (2021-12-07)
+
+
+### Bug Fixes
+
+* aa and other sentry issues ([#4746](https://github.com/voiceflow/creator-app/issues/4746)) ([7b5a6f8](https://github.com/voiceflow/creator-app/commit/7b5a6f8b577ce466e9b0dbc168b04c61e71790c4))
+* await intent creation (VF-2417) ([#4745](https://github.com/voiceflow/creator-app/issues/4745)) ([8ae7f6c](https://github.com/voiceflow/creator-app/commit/8ae7f6c1cdc5e2945550c6a298435f50449eb256))
+* no data UI transcripts (VF-2395) ([#4736](https://github.com/voiceflow/creator-app/issues/4736)) ([397bff4](https://github.com/voiceflow/creator-app/commit/397bff41b9d805fd1e3025c4f2e8f91aa0136ced))
+
+
+### Features
+
+* autopan v2 (VF-000) ([#4691](https://github.com/voiceflow/creator-app/issues/4691)) ([1aa51ae](https://github.com/voiceflow/creator-app/commit/1aa51ae8a6f89d077a66d84197e392e77031cb90))
+* track entity edit ([#4740](https://github.com/voiceflow/creator-app/issues/4740)) ([3eff35b](https://github.com/voiceflow/creator-app/commit/3eff35b1d0a3056f2238862ca5f0b1d558e3573d))
+
+
+
+
+
 # [1.559.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.558.1...@voiceflow/creator-app@1.559.0) (2021-12-07)
 
 

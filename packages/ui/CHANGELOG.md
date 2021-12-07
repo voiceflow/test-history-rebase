@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.37.0...@voiceflow/ui@1.37.1) (2021-12-07)
+
+
+### Bug Fixes
+
+* aa and other sentry issues ([#4746](https://github.com/voiceflow/creator-app/issues/4746)) ([7b5a6f8](https://github.com/voiceflow/creator-app/commit/7b5a6f8b577ce466e9b0dbc168b04c61e71790c4))
+
+
+
+
+
 # [1.37.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.36.1...@voiceflow/ui@1.37.0) (2021-12-02)
 
 

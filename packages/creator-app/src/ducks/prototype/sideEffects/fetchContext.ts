@@ -8,6 +8,7 @@ import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
 import { Trace } from '@/models';
 import { Thunk } from '@/store/types';
+import { getPrototypeSessionID } from '@/utils/prototype';
 import * as Sentry from '@/vendors/sentry';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype, updatePrototypeContext } from '../actions';
@@ -36,7 +37,7 @@ const fetchContext =
     const prototypeID = prototypeIDSelector(reduxState) || Utils.id.cuid();
 
     // unique identifier for session analytics
-    const sessionID = `${versionID}.${prototypeID}`;
+    const sessionID = getPrototypeSessionID(versionID, prototypeID);
 
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(activeDiagramID);

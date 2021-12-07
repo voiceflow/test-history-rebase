@@ -22,15 +22,17 @@ import fakeAudio from './fakeAudio';
 
 interface PrototypeProps {
   settings: PrototypeDuck.PrototypeSettings;
+  onInteract?: VoidFunction;
 }
 
 const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   status,
   isMuted,
-  savePrototypeSession,
   settings,
   autoplay,
+  onInteract,
   updatePrototype,
+  savePrototypeSession,
 }) => {
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
@@ -67,7 +69,13 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     [settings.layout]
   );
 
-  const onTranscript = React.useCallback((text: string) => onInteraction({ request: text }), [onInteraction]);
+  const onTranscript = React.useCallback(
+    (text: string) => {
+      onInteract?.();
+      onInteraction({ request: text });
+    },
+    [onInteract, onInteraction]
+  );
 
   const {
     isListening,
@@ -96,6 +104,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   const isFinished = status === PrototypeDuck.PrototypeStatus.ENDED;
 
   const sendInteraction: OnInteraction = (interaction) => {
+    onInteract?.();
     onInteraction(interaction);
     setInput('');
   };
@@ -142,9 +151,9 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         <SplashScreen
           logoURL={isCustomizedPrototypeAllowed ? settings.brandImage : undefined}
           onStart={onStart}
-          colorScheme={brandColor}
           isMobile={isMobile}
           isVisuals={isVisuals}
+          colorScheme={brandColor}
           projectName={settings.projectName}
           hideVFBranding={isCustomizedPrototypeAllowed}
           withStartButton={isIdle}
@@ -165,13 +174,13 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
               disabled={isIdle}
               isListening={isListening}
               isSupported={isSpeechSpeechRecognitionSupported}
+              colorScheme={brandColor}
               finalTranscript={finalTranscript}
               onStopListening={onStopListening}
               onStartListening={onStartListening}
               interimTranscript={interimTranscript}
               onCheckMicrophonePermission={onCheckMicrophonePermission}
               isMicrophonePermissionGranted={isMicrophonePermissionGranted}
-              colorScheme={brandColor}
             />
           )}
         </Footer>
@@ -181,8 +190,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
       {({ isMobile, isFullScreen }) =>
         isVisuals ? (
           <Visuals
-            listeningASR={listeningASR}
             isMobile={isMobile}
+            listeningASR={listeningASR}
             isFullScreen={isFullScreen}
             onStopListening={isMobile ? onStopListeningASR : onStopListening}
             onStartListening={isMobile ? onStartListeningASR : onStartListening}
@@ -191,20 +200,21 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
           <ChatDialog
             locale={locale}
             input={input}
-            onStart={onStart}
             color={brandColor}
-            avatarURL={isCustomizedPrototypeAllowed ? settings.avatar : undefined}
             layout={settings.layout}
-            buttons={settings.buttons}
             onMute={onMute}
             isIdle={isIdle}
+            onPlay={onPlay}
+            onStart={onStart}
+            buttons={settings.buttons}
             isMuted={isMuted}
             onReset={resetState}
-            onPlay={onPlay}
             messages={messages}
             isMobile={isMobile}
+            avatarURL={isCustomizedPrototypeAllowed ? settings.avatar : undefined}
             isLoading={isLoading}
             testEnded={isFinished}
+            onStepBack={onStepBack}
             isListening={isListening}
             interactions={interactions}
             onInputChange={setInput}
@@ -217,7 +227,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
             onCheckMicrophonePermission={onCheckMicrophonePermission}
             isMicrophonePermissionGranted={isMicrophonePermissionGranted}
             isSpeechSpeechRecognitionSupported={isSpeechSpeechRecognitionSupported}
-            onStepBack={onStepBack}
           />
         )
       }

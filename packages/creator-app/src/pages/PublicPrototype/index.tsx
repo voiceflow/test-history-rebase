@@ -11,8 +11,9 @@ import { Permission } from '@/config/permissions';
 import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useGuestPermission, useSetup, useToggle, useTrackingEvents } from '@/hooks';
+import { useGuestPermission, useSelector, useSetup, useToggle, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
+import { getPrototypeSessionID } from '@/utils/prototype';
 
 import { Prototype } from './components';
 import PasswordScreen from './components/PasswordScreen';
@@ -23,6 +24,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
   updatePrototype,
   checkSharedProtoPassword,
 }) => {
+  const prototypeID = useSelector(PrototypeDuck.prototypeIDSelector);
   const [isLoaded, toggleLoaded] = useToggle(false);
   const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings>({
     plan: PlanType.STARTER,
@@ -72,11 +74,25 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
     [setAuthenticated, settings]
   );
 
+  const onInteract = React.useCallback(() => {
+    const { versionID } = match.params;
+
+    trackingEvents.trackPublicPrototypeInteract({
+      device: DEVICE_INFO.platform ?? 'unknown',
+      sessionID: getPrototypeSessionID(versionID, prototypeID),
+      versionID,
+    });
+  }, [match.params, prototypeID]);
+
   return isLoaded ? (
     <>
       <RemoveIntercom />
       <SeoHelmet page={SeoPage.PROTOTYPE} />
-      {isAuthenticated || !canUseSharedPassword ? <Prototype settings={settings} /> : <PasswordScreen settings={settings} checkLogin={checkLogin} />}
+      {isAuthenticated || !canUseSharedPassword ? (
+        <Prototype settings={settings} onInteract={onInteract} />
+      ) : (
+        <PasswordScreen settings={settings} checkLogin={checkLogin} />
+      )}
     </>
   ) : (
     <FullSpinner name="Prototype" />

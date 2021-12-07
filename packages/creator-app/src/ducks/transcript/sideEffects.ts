@@ -10,6 +10,7 @@ import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Browser, Device, OperatingSystem, Sentiment, SystemTag, Transcript } from '@/models';
 import { Thunk } from '@/store/types';
 import { downloadFromURL } from '@/utils/dom';
+import { getPrototypeSessionID } from '@/utils/prototype';
 
 export const fetchTranscripts =
   (queryParams?: string): Thunk<Transcript[]> =>
@@ -65,7 +66,7 @@ export const createTranscript = (): Thunk<string | undefined> => async (_dispatc
   const versionID = Session.activeVersionIDSelector(state);
   const prototypeID = Prototype.prototypeIDSelector(state);
   // unique identifier for session analytics
-  const sessionID = `${versionID}.${prototypeID}`;
+  const sessionID = getPrototypeSessionID(versionID, prototypeID);
 
   const activeProjectID = Session.activeProjectIDSelector(state);
   const deviceType = platform.type as Device;

@@ -58,3 +58,15 @@ export const trackPublicPrototypeView =
       },
     });
   };
+
+export const trackPublicPrototypeInteract =
+  ({ device, versionID, sessionID }: { device: string; sessionID: string; versionID: string }): SyncThunk =>
+  () => {
+    client.api.analytics.track(EventName.PUBLIC_PROTOTYPE_USED, {
+      properties: {
+        device,
+        skill_id: versionID,
+        session_id: sessionID,
+      },
+    });
+  };

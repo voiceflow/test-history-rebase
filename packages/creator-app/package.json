@@ -269,7 +269,7 @@
     "lint:quiet": "concurrently -c yellow,blue \"yarn:lint:js --rule 'prettier/prettier: off' --quiet\" \"yarn:lint:css --quiet\" --color",
     "lint:report": "yarn lint:js --format json -o sonar/report.json && yarn lint:css --formatter json --output-file sonar/report_css.json",
     "local": "yarn kill:process && vfcli mesh connect creator-app",
-    "local:e2e": "yarn kill:e2e && VF_APP_E2E=true vite",
+    "local:e2e": "yarn kill:e2e && VF_APP_E2E=true NODE_ENV=e2e vite",
     "mesh:post": "exit 0",
     "mesh:pre": "exit 0",
     "start": "NODE_ENV=development vite",

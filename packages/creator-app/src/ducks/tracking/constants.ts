@@ -84,6 +84,7 @@ export enum EventName {
   PROJECT_RESTORE = 'Project Restore',
   VERSION_PREVIEW = 'Version Preview',
   INTENTS_EDIT = 'Intents Edit',
+  ENTITIES_EDIT = 'Entities Edit',
 }
 
 export enum IntentEditType {

@@ -51,3 +51,7 @@ export const trackIMMNavigation = createProjectEventTracker<{ tabName: Interacti
 export const trackIntentEdit = createProjectEventTracker<{ creationType: IntentEditType }>((options) =>
   client.api.analytics.track(EventName.INTENTS_EDIT, createProjectEventPayload(options, { creation_type: options.creationType }))
 );
+
+export const trackEntityEdit = createProjectEventTracker((options) =>
+  client.api.analytics.track(EventName.ENTITIES_EDIT, createProjectEventPayload(options))
+);

@@ -13,7 +13,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { styled } from '@/hocs';
-import { useModals, usePermission, useSelector, useTeardown } from '@/hooks';
+import { useModals, usePermission, useSelector, useTeardown, useTrackingEvents } from '@/hooks';
 import { formatIntentName } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
 
@@ -64,6 +64,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
     (index, data) => setCustomLines(Utils.array.replace(customLines, index, { ...customLines[index], ...data })),
     [customLines]
   );
+  const [trackingEvents] = useTrackingEvents();
 
   const notEmptyValues = React.useMemo(() => customLines.some(({ value, synonyms }) => value.trim() || synonyms.trim()), [customLines]);
 
@@ -87,6 +88,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
         color: selectedColor,
         inputs: customLines,
       });
+      trackingEvents.trackEntityEdit();
     }
   };
 

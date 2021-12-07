@@ -8,6 +8,7 @@ import React from 'react';
 import { Popper } from 'react-popper';
 
 import MenuHeader from '../MenuHeader';
+// eslint-disable-next-line import/no-cycle
 import MenuOptions from '../MenuOptions';
 import { FooterActionContainer, MenuPopoverContainer } from './components';
 
@@ -261,7 +262,12 @@ function BaseNestedMenu({
         return;
       }
 
-      if (e.target !== inputWrapperRef && (!inputWrapperRef || !inputWrapperRef.contains(e.target)) && !menuRef.current.contains(e.target)) {
+      if (
+        e.target !== inputWrapperRef &&
+        (!inputWrapperRef || !inputWrapperRef.contains(e.target)) &&
+        menuRef.current &&
+        !menuRef.current.contains(e.target)
+      ) {
         e.stopPropagation();
         onHide();
       }

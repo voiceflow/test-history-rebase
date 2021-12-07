@@ -24,7 +24,7 @@ import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import { Option } from './components';
 
-const getOptionValue = (option) => option.id;
+const getOptionValue = (option) => option?.id;
 
 const labelRenderer = ({ option, searchLabel, getOptionLabel, getOptionValue, options, platform }) => (
   <Option

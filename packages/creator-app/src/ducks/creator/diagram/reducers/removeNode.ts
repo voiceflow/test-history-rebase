@@ -35,6 +35,10 @@ export function removeNestedNode(state: DiagramState, node: Realtime.Node) {
 export const removeSingleNode = (nodeID: string) => (state: DiagramState) => {
   const node = Utils.normalized.getNormalizedByKey(state.nodes, nodeID);
 
+  if (!node) {
+    return state;
+  }
+
   if (node.type === BlockType.COMBINED) {
     return removeCombinedNode(state, node);
   }

@@ -49,13 +49,21 @@ export const insertIntoParentNode = (state: DiagramState, targetNode: Realtime.N
 export const transplantNestedNode = (state: DiagramState, targetNode: Realtime.Node, index: number, recipientNodeID: string) => {
   const recipientNode = Utils.normalized.getNormalizedByKey(state.nodes, recipientNodeID);
 
+  if (!recipientNode || !targetNode.parentNode) {
+    return state;
+  }
+
   if (recipientNodeID === targetNode.parentNode) {
     return recipientNode.combinedNodes.includes(targetNode.id)
       ? reorderNestedNode(state, targetNode, index, recipientNode)
       : insertIntoParentNode(state, targetNode, index, recipientNode);
   }
 
-  const surrogateNode = Utils.normalized.getNormalizedByKey(state.nodes, targetNode.parentNode!);
+  const surrogateNode = Utils.normalized.getNormalizedByKey(state.nodes, targetNode.parentNode);
+
+  if (!surrogateNode) {
+    return state;
+  }
 
   const surrogateCombinedIDs = Utils.array.withoutValue(surrogateNode.combinedNodes, targetNode.id);
   const recipientCombinedIDs = Utils.array.insert(recipientNode.combinedNodes, index, targetNode.id);
@@ -84,6 +92,10 @@ export const transplantNestedNode = (state: DiagramState, targetNode: Realtime.N
 const insertNestedNodeReducer: Reducer<DiagramState, InsertNestedNode> = (state, { payload: { parentNodeID, nodeID, index } }) => {
   const parentNode = Utils.normalized.getNormalizedByKey(state.nodes, parentNodeID);
   const targetNode = Utils.normalized.getNormalizedByKey(state.nodes, nodeID);
+
+  if (!targetNode || !parentNode) {
+    return state;
+  }
 
   if (targetNode.parentNode) {
     return transplantNestedNode(state, targetNode, index, parentNodeID);

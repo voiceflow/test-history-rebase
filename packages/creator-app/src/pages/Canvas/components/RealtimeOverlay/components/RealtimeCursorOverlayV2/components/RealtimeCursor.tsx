@@ -1,3 +1,4 @@
+import composeRefs from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
@@ -5,7 +6,6 @@ import React from 'react';
 import { EventualEngineContext } from '@/contexts';
 import { useLocalDispatch, useRAF } from '@/hooks';
 import { cursorCoords$, useObservableEffect } from '@/store/observables';
-import { composeRefs } from '@/utils/react';
 
 import { ANIMATION_DURATION, CURSOR_EXPIRY_TIMEOUT } from '../../../constants';
 import { RealtimeCursorContext } from '../../../contexts';

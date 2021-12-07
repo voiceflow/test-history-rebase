@@ -19,7 +19,12 @@ const unmergeNodeReducer: Reducer<DiagramState, UnmergeNode> = (
   }
 ) => {
   const node = Utils.normalized.getNormalizedByKey(state.nodes, nodeID);
-  const surrogateNode = Utils.normalized.getNormalizedByKey(state.nodes, node.parentNode!);
+
+  if (!node?.parentNode) {
+    return state;
+  }
+
+  const surrogateNode = Utils.normalized.getNormalizedByKey(state.nodes, node.parentNode);
 
   if (surrogateNode?.type !== BlockType.COMBINED) {
     return state;

@@ -93,6 +93,10 @@ export const updateNodeLocationReducer: Reducer<DiagramStateType, UpdateNodeLoca
 export const updateLinkDataReducer: Reducer<DiagramStateType, UpdateLinkData> = (state, { payload: { linkID, data } }) => {
   const link = state.links.byKey[linkID];
 
+  if (!link) {
+    return state;
+  }
+
   return Utils.functional.compose(
     patchLinkInState(linkID, { data: { ...link.data, ...data } }),
     patchPortInState(link.source.portID, { linkData: { ...link.data, ...data } })
@@ -102,6 +106,10 @@ export const updateLinkDataReducer: Reducer<DiagramStateType, UpdateLinkData> = 
 export const updateLinkDataManyReducer: Reducer<DiagramStateType, UpdateLinkDataMany> = (state, { payload }) =>
   payload.reduce((nextState, { linkID, data }) => {
     const link = nextState.links.byKey[linkID];
+
+    if (!link) {
+      return state;
+    }
 
     return Utils.functional.compose(
       patchLinkInState(linkID, { data: { ...link.data, ...data } }),

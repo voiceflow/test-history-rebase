@@ -72,6 +72,10 @@ class NodeManager extends EngineConsumer {
       const parentIDs: string[] = [];
 
       nodes.forEach((node) => {
+        if (!node) {
+          return;
+        }
+
         this.engine.activation.deactivate(node.id);
 
         if (node.parentNode) {

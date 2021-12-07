@@ -32,6 +32,11 @@ export default addNodeReducer;
 
 export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state, { payload: { parentNodeID, node, data, mergedNodeID } }) => {
   const parentNode = Utils.normalized.getNormalizedByKey(state.nodes, parentNodeID);
+
+  if (!parentNode) {
+    return state;
+  }
+
   const [newNode, newPorts, newNodeData] = buildNewNode({ ...node, parentNode: parentNodeID }, data);
 
   const isCombinedBlock = parentNode.combinedNodes.length;
@@ -40,9 +45,12 @@ export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state
     const additionalActions = [];
     if (isCombinedBlock) {
       const terminalBlock = Utils.normalized.getNormalizedByKey(state.nodes, parentNode.combinedNodes[parentNode.combinedNodes.length - 1]);
-      const outLinkIDs = getAllOutPortIDs(terminalBlock).flatMap(getLinkIDsByPortID(state));
 
-      additionalActions.push(removeAllLinksFromState(outLinkIDs));
+      if (terminalBlock) {
+        const outLinkIDs = getAllOutPortIDs(terminalBlock).flatMap(getLinkIDsByPortID(state));
+
+        additionalActions.push(removeAllLinksFromState(outLinkIDs));
+      }
     }
 
     return Utils.functional.compose(

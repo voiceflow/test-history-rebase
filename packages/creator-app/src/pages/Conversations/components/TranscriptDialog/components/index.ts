@@ -3,6 +3,7 @@ import { Flex, LoadCircle } from '@voiceflow/ui';
 import { styled } from '@/hocs';
 
 export { default as DialogHeader } from './DialogHeader';
+export { default as NoData } from './NoData';
 
 export const Container = styled(Flex)`
   flex: 4;

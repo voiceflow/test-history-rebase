@@ -12,7 +12,7 @@ import { useLocalStorageState } from '@/hooks/storage';
 import PrototypeChatDisplay from '@/pages/Prototype/components/PrototypeChatDisplay';
 import { Message, MessageType } from '@/pages/Prototype/types';
 
-import { Container, DialogHeader, DialogLoader } from './components';
+import { Container, DialogHeader, DialogLoader, NoData } from './components';
 import { generateTurnMap, transformDialogTimestamp, TurnMap } from './util';
 
 export type { TurnMap };
@@ -24,6 +24,7 @@ const TranscriptDialog: React.FC = () => {
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [isScrolling, setIsScrolling] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
+  const [hasNoData, setHasNoData] = React.useState(false);
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
   const activeProjectID = useSelector(activeProjectIDSelector)!;
   const [showDebugs, setShowDebugs] = useLocalStorageState(DEBUG_LOCAL_STORAGE_BOOL_KEY, false);
@@ -40,10 +41,13 @@ const TranscriptDialog: React.FC = () => {
 
     const dialogs = await client.transcript.getTranscriptDialog(activeProjectID, targetTranscriptID);
 
-    if (cache.current.currentTranscriptID === targetTranscriptID && dialogs) {
+    if (cache.current.currentTranscriptID === targetTranscriptID && dialogs?.length) {
       setDialogTurnMap(generateTurnMap(dialogs));
       setMessages(transformDialogTimestamp(dialogs, dialogs[0].startTime));
       setLoading(false);
+      setHasNoData(false);
+    } else {
+      setHasNoData(true);
     }
   };
 
@@ -80,6 +84,14 @@ const TranscriptDialog: React.FC = () => {
       setIsScrolling(false);
     }
   };
+
+  if (hasNoData && !loading) {
+    return (
+      <Container>
+        <NoData />
+      </Container>
+    );
+  }
 
   return (
     <Container>

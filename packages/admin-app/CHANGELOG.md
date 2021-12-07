@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.13.2...@voiceflow/admin-app@1.13.3) (2021-12-07)
+
+
+### Bug Fixes
+
+* add segment event tracking to project exit (VF-2369) ([#4744](https://github.com/voiceflow/creator-app/issues/4744)) ([a181ac3](https://github.com/voiceflow/creator-app/commit/a181ac3cdcfddcd17cf2dbbea44c7e827b3601d1))
+
+
+
+
+
 ## [1.13.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.13.1...@voiceflow/admin-app@1.13.2) (2021-12-07)
 
 **Note:** Version bump only for package @voiceflow/admin-app

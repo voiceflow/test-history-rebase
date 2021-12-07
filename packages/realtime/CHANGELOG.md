@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.27.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.27.1...@voiceflow/realtime@1.27.2) (2021-12-07)
+
+
+### Bug Fixes
+
+* add segment event tracking to project exit (VF-2369) ([#4744](https://github.com/voiceflow/creator-app/issues/4744)) ([a181ac3](https://github.com/voiceflow/creator-app/commit/a181ac3cdcfddcd17cf2dbbea44c7e827b3601d1))
+
+
+
+
+
 ## [1.27.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.27.0...@voiceflow/realtime@1.27.1) (2021-12-02)
 
 **Note:** Version bump only for package @voiceflow/realtime

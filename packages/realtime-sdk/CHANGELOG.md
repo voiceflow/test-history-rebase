@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.45.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.45.0...@voiceflow/realtime-sdk@1.45.1) (2021-12-07)
+
+
+### Bug Fixes
+
+* add segment event tracking to project exit (VF-2369) ([#4744](https://github.com/voiceflow/creator-app/issues/4744)) ([a181ac3](https://github.com/voiceflow/creator-app/commit/a181ac3cdcfddcd17cf2dbbea44c7e827b3601d1))
+
+
+
+
+
 # [1.45.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.44.0...@voiceflow/realtime-sdk@1.45.0) (2021-12-02)
 
 

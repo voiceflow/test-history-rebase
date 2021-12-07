@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import * as Session from '@/ducks/session';
@@ -7,7 +7,6 @@ import * as TrackingEvents from '@/ducks/tracking/events';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 
 import { useOneTimeEffect } from './effect';
-import { useSetup, useTeardown } from './lifecycle';
 import { useActiveWorkspace } from './workspace';
 
 const wrapDispatch = <T extends Record<string, (...args: any[]) => any>>(
@@ -59,7 +58,7 @@ export const useSessionTracking = () => {
   }, [authToken, workspaceIDs]);
 };
 
-export const useWorkspaceTracking = () => {
+export const useWorkspaceTracking = (): void => {
   const [trackEvents] = useTrackingEvents();
   const workspace = useActiveWorkspace();
 
@@ -68,41 +67,4 @@ export const useWorkspaceTracking = () => {
       trackEvents.trackWorkspace(workspace);
     }
   }, [workspace]);
-};
-
-export const useCanvasTracking = () => {
-  const [trackEvents] = useTrackingEvents();
-  const store = useStore();
-  const versionID = React.useMemo(() => Session.activeVersionIDSelector(store.getState())!, []);
-  const projectID = React.useMemo(() => Session.activeProjectIDSelector(store.getState())!, []);
-  const workspaceID = React.useMemo(() => Session.activeWorkspaceIDSelector(store.getState())!, []);
-  const startTime = React.useMemo(() => Date.now(), []);
-
-  const trackCanvasTime = React.useCallback(
-    () =>
-      trackEvents.trackActiveProjectSessionDuration({
-        skillID: versionID,
-        duration: Date.now() - startTime,
-        projectID,
-        workspaceID,
-      }),
-    []
-  );
-
-  useWorkspaceTracking();
-
-  useSetup(() => {
-    trackEvents.trackActiveProjectSessionBegin({
-      skillID: versionID,
-      projectID,
-      workspaceID,
-    });
-
-    window.addEventListener('beforeunload', trackCanvasTime);
-  });
-
-  useTeardown(() => {
-    window.removeEventListener('beforeunload', trackCanvasTime);
-    trackCanvasTime();
-  });
 };

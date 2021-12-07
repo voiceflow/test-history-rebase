@@ -5959,23 +5959,12 @@
     "@voiceflow/voice-types" "^2.1.0"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/api-sdk@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.1.0.tgz#381f1e0f8b6861619aba8d3d371a72667994b07f"
-  integrity sha512-OC6W5x+WMxiaOvTJDQp1xmehCPATplL1qifpYZ7IQvxizHgZzCNYOJX88YDODmvnpNQOgwxqnFegemjF2RyXtw==
+"@voiceflow/api-sdk@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.3.6.tgz#ce077613e4aa3b71528f53cd45a04bd9904263ce"
+  integrity sha512-ktwCtWHDwYtXiyLKPMazT+NfjCWkhoDjpUHOzRn02Ln7rv7JynhR1JPF5TWTB9zlaPNU2tJgdWG+tralagyN6g==
   dependencies:
-    "@voiceflow/base-types" "^2.1.2"
-    "@voiceflow/common" "6.9.3"
-    axios "^0.21.1"
-    jwt-decode "^3.1.2"
-    superstruct "^0.10.12"
-
-"@voiceflow/api-sdk@3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.3.0.tgz#682a4aea51cabe9ba44c630a4eae056d3d45512d"
-  integrity sha512-uB0Ll6PgdTPHgDJgclwQHEv4NPGxW4T0qKliZwQqQo8yx8pjmhfUANzlNgk93XkxM5rM4RZFYaPg7B1R8xVYcg==
-  dependencies:
-    "@voiceflow/base-types" "^2.3.0"
+    "@voiceflow/base-types" "^2.4.2"
     "@voiceflow/common" "^7.10.0"
     axios "^0.21.1"
     jwt-decode "^3.1.2"
@@ -6036,10 +6025,10 @@
   dependencies:
     slate "^0.63.0"
 
-"@voiceflow/base-types@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.1.2.tgz#b0f4f5969fec880e0ae6648502b09d6cb19c02e4"
-  integrity sha512-0uZT+PSRKtUCZoLy1TKwx/MMBhsHo9vkLgz/Rp8snKtYwNbsmxfJmt0Qf3/p5Ssa8CgyVkwd8yIMAZWO1CNwRw==
+"@voiceflow/base-types@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.4.2.tgz#ff8f4c79e2df53368c39ae0607b0c63dd813c236"
+  integrity sha512-Bhz5yGSlZUu7Obnba1FNkgFcKajoSjOXDeQeDR2avmOT90PmTxa9bjBzB2cvn+orGeCCKVNNZAGVCxp5FGWdNA==
   dependencies:
     slate "^0.63.0"
 
@@ -6056,14 +6045,6 @@
   integrity sha512-5bBAyKsjT7R/mDBDpfvS9l04srf2DfAMJnhKlJFkuSyFM3qm/by7k5DQxLMrZySKOKxbxhykaTM1zm7/e8/yzg==
   dependencies:
     "@commitlint/config-conventional" "^12.1.4"
-
-"@voiceflow/common@6.9.3":
-  version "6.9.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.9.3.tgz#68dfff5485901f2d62e5e55dd6cd6c65302e8bee"
-  integrity sha512-i7/8bCGzbJy+j8NY9v3dR1BjLPNnShbJWR9FQisRbLsml3gwhNuVTO3wY0U+PucR133WGX9vZlIMN+u7ibcXQQ==
-  dependencies:
-    "@types/crypto-js" "^4.0.2"
-    crypto-js "^4.1.1"
 
 "@voiceflow/common@7.10.0", "@voiceflow/common@^7.10.0":
   version "7.10.0"
@@ -7262,14 +7243,14 @@ axe-core@^4.0.2:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.2.1.tgz#2e50bcf10ee5b819014f6e342e41e45096239e34"
   integrity sha512-evY7DN8qSIbsW2H/TWQ1bX3sXN1d4MNb5Vb4n7BzPuCwRHdkZ1H2eNLuSh73EoQqkGKUtju2G2HCcjCfhvZIAA==
 
-axios@0.21.2, axios@^0.21.1:
+axios@0.21.2:
   version "0.21.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.2.tgz#21297d5084b2aeeb422f5d38e7be4fbb82239017"
   integrity sha512-87otirqUw3e8CzHTMO+/9kh/FSgXt/eVDvipijwDtEuwbkySWZ9SBm6VEubmJ/kLKEoLQV/POhxXFb66bfekfg==
   dependencies:
     follow-redirects "^1.14.0"
 
-axios@0.21.4:
+axios@0.21.4, axios@^0.21.1:
   version "0.21.4"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==

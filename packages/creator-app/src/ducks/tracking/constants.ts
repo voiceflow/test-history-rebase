@@ -39,6 +39,7 @@ export enum EventName {
   PROJECT_API_PAGE = 'API Page',
   PROJECT_CODE_EXPORT_PAGE = 'Code Export Page',
   PROJECT_VERSION_PAGE = 'Version Page',
+  PROJECT_EXIT = 'Project Exit',
   SHARE_PROTOTYPE_LINK = 'Testable Link Button',
 
   PROTOTYPE_MANUAL_NAVIGATION = 'Manual Navigation',

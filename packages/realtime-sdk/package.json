@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@types/faker": "5.5.9",
-    "@voiceflow/api-sdk": "3.1.0",
+    "@voiceflow/api-sdk": "3.3.6",
     "cooky-cutter": "1.5.4",
     "draft-js": "0.11.7",
     "faker": "5.5.3",

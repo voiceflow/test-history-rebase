@@ -1,10 +1,12 @@
+import { Constants } from '@voiceflow/general-types';
+
 import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
 import { NLPProvider } from '@/constants';
 import { PrototypeSettings } from '@/ducks/prototype/types';
 
 import { EventName } from '../constants';
-import { VersionEventInfo } from '../types';
+import { ProjectEventInfo, VersionEventInfo } from '../types';
 import {
   createProjectEventPayload,
   createProjectEventTracker,
@@ -112,4 +114,28 @@ export const trackProjectDuplicate = createWorkspaceEventTracker<{ versionID?: s
 
 export const trackProjectInviteCollaboratorsCopy = createWorkspaceEventTracker<{ projectID: string }>((options) =>
   client.api.analytics.track(EventName.PROJECT_INVITATION_COPY, createWorkspaceEventPayload(options, { project_id: options.projectID }))
+);
+
+export const trackProjectExit = createProjectEventTracker(
+  ({
+    platform,
+    canvasSessionDuration,
+    prototypeSessionDuration,
+    transcriptsSessionDuration,
+    ...options
+  }: ProjectEventInfo & {
+    platform: Constants.PlatformType | null;
+    canvasSessionDuration: number;
+    prototypeSessionDuration: number;
+    transcriptsSessionDuration: number;
+  }) =>
+    client.api.analytics.track(
+      EventName.PROJECT_EXIT,
+      createProjectEventPayload(options, {
+        platform,
+        canvasSessionDuration,
+        prototypeSessionDuration,
+        transcriptsSessionDuration,
+      })
+    )
 );

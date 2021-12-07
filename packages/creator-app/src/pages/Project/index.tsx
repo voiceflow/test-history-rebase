@@ -24,12 +24,12 @@ import {
   WorkspaceSubscriptionGate,
 } from '@/gates';
 import { compose, connect, lazy, withBatchLoadingGate } from '@/hocs';
-import { useCanvasTracking, useDispatch, useEventualEngine, useLayoutDidUpdate, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
+import { useDispatch, useEventualEngine, useLayoutDidUpdate, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRouteIMM';
 import ManualSaveModal from '@/pages/Canvas/components/ManualSaveModal';
 import InactivityModal from '@/pages/Inactivity';
-import { useProjectPreviewMode } from '@/pages/Project/hooks';
+import { useProjectExitTracking, useProjectPreviewMode } from '@/pages/Project/hooks';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 import { ConnectedProps } from '@/types';
 
@@ -84,7 +84,7 @@ const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({
     idleTimer.current?.pause();
   }, []);
 
-  useCanvasTracking();
+  useProjectExitTracking({ platform });
 
   useTeardown(() => {
     batch(() => {

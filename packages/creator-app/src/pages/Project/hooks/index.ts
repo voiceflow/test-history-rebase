@@ -13,6 +13,7 @@ export * from './diagram';
 export * from './dialogflowPublish';
 export * from './googlePublish';
 export * from './modes';
+export * from './tracking';
 
 export const useIsPlatform = (platform: Constants.PlatformType) => {
   const activePlatform = useContext(PlatformContext);

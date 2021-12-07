@@ -71,6 +71,7 @@ export interface MergeLayerAPI<T extends HTMLElement = HTMLElement> {
   reset: () => void;
   setTransparent: () => void;
   clearTransparent: () => void;
+  handleMouseMove: (event: MouseEvent) => void;
 }
 
 export interface RealtimeCursorOverlayAPI extends RealtimeCursorEvents {

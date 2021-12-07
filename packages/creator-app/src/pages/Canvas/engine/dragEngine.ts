@@ -10,6 +10,8 @@ class DragEngine extends EngineConsumer {
 
   target: string | null = null;
 
+  isDraggingToCreate = false;
+
   group: Record<string, string> | null = null;
 
   get hasTarget() {
@@ -38,6 +40,10 @@ class DragEngine extends EngineConsumer {
 
   removeStyle() {
     this.engine.removeClass(CANVAS_DRAGGING_CLASSNAME);
+  }
+
+  setDraggingToCreate(val: boolean) {
+    this.isDraggingToCreate = val;
   }
 
   async setGroup(nodeIDs: string[]) {

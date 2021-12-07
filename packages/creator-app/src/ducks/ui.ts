@@ -102,7 +102,6 @@ type AnyUIAction =
   | SetZoomType
   | SetIsAutoPanning
   | SetLoadingProjects;
-
 // reducers
 
 export const toggleBlockMenuSectionReducer: Reducer<UIState, ToggleBlockMenuSection> = (state, { payload: section }) => {

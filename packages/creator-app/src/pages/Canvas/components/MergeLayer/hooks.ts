@@ -65,6 +65,7 @@ export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObj
       reset,
       setTransparent,
       clearTransparent,
+      handleMouseMove,
     }),
     [isVisible, isTransparent]
   );

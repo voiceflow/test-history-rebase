@@ -23,6 +23,7 @@ const DesignMenu: React.FC = () => {
 
   const isHidden = useSelector(UI.isCreatorMenuHiddenSelector);
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
+  const isAutoPanning = useSelector(UI.isAutoPanningSelector);
 
   const setActiveTab = useDispatch(UI.setActiveCreatorMenu);
   const toggleIsHidden = useDispatch(UI.toggleCreatorMenuHidden);
@@ -82,7 +83,7 @@ const DesignMenu: React.FC = () => {
       locked={!isHidden}
       tabIndex={-1}
       canvasOnly={canvasOnly || designOnly}
-      onMouseEnter={canBeOpened ? openByHover : undefined}
+      onMouseEnter={canBeOpened && !isAutoPanning ? openByHover : undefined}
       onMouseLeave={canBeOpened ? mouseLeaveHandler : undefined}
     >
       <Content isOpen={isOpen} activeTab={selectedTab} ref={designMenuRef}>

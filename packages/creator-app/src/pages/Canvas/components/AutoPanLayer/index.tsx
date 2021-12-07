@@ -1,16 +1,23 @@
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
+import * as Creator from '@/ducks/creator';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useRAF, useSelector } from '@/hooks';
+import { useDidUpdateEffect, useDispatch, useRAF, useSelector } from '@/hooks';
 import useEngine from '@/pages/Canvas/engine';
+import { useEditingMode } from '@/pages/Project/hooks';
 import THEME from '@/styles/theme';
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '@/styles/theme/projectPage';
+import { applyMinMaxCap } from '@/utils/math';
 
-const BASE_HOT_ZONE_SIZE = 150;
 const AUTO_PAN_PIXEL_HOP_SIZE = 15;
-const BASE_SCREEN_SIZE = 1500;
 const SPEED_MULTIPLIER_CAP = 1;
+
+const HOT_ZONE_MIN = 20;
+const HOT_ZONE_MAX = 48;
+
+const HORIZONTAL_HOT_ZONE_PERCENT = 0.025;
+const VERTICAL_HOT_ZONE_PERCENT = 0.045;
 
 const calculateSpeedMultiplier = (formula: number, hotZoneSize: number) => {
   const speedMultiplier = Math.abs(formula) / hotZoneSize;
@@ -19,13 +26,40 @@ const calculateSpeedMultiplier = (formula: number, hotZoneSize: number) => {
 
 const AutoPanLayer: React.FC = () => {
   const engine = useEngine();
+  const isCreatorMenuHidden = useSelector(UI.isCreatorMenuHiddenSelector);
+  const isEditingMode = useEditingMode();
+  const disableNewStepPanningRef = React.useRef(false);
+  const mouseMoveRef = React.useRef<MouseEvent | null>(null);
+  const [draggingNewStep, setDraggingNewStep] = React.useState(false);
 
-  const isHidden = useSelector(UI.isCreatorMenuHiddenSelector);
+  const hasFocusedNode = !!useSelector(Creator.creatorFocusSelector)?.isActive;
+  const blockEditorOpened = isEditingMode && hasFocusedNode;
+
+  const getNodeByID = useSelector(Creator.nodeByIDSelector);
   const setAutoPanning = useDispatch(UI.setIsAutopanning);
+
+  const leftOffsetRef = React.useRef<number>(0);
+  const rightOffsetRef = React.useRef<number>(0);
 
   const [scheduler, schedulerAPI] = useRAF();
 
-  const leftOffset = !isHidden ? SIDEBAR_WIDTH + THEME.components.leftSidebar.width : SIDEBAR_WIDTH;
+  useDidUpdateEffect(() => {
+    disableNewStepPanningRef.current = draggingNewStep;
+    if (!draggingNewStep) reset();
+  }, [draggingNewStep]);
+
+  React.useEffect(() => {
+    leftOffsetRef.current = !isCreatorMenuHidden ? SIDEBAR_WIDTH + THEME.components.leftSidebar.width : SIDEBAR_WIDTH;
+  }, [isCreatorMenuHidden]);
+
+  React.useEffect(() => {
+    rightOffsetRef.current = blockEditorOpened ? THEME.components.blockSidebar.width : 0;
+  }, [blockEditorOpened]);
+
+  const reset = () => {
+    setAutoPanning(false);
+    schedulerAPI.current.cancel();
+  };
 
   React.useEffect(() => {
     let movementX = 0;
@@ -45,9 +79,14 @@ const AutoPanLayer: React.FC = () => {
         return;
       }
 
+      const isDraggingChildStep = draggableNode && getNodeByID(draggableNode)?.parentNode;
+
       const zoom = engine.canvas!.getZoom();
       const onlySingleBlock = draggingNodeIDs.length === 1;
 
+      if (isDraggingChildStep) {
+        engine.merge?.components?.mergeLayer?.handleMouseMove(mouseMoveRef.current!);
+      }
       if (onlySingleBlock) {
         updateMergeDetection(draggableNode);
       }
@@ -77,83 +116,109 @@ const AutoPanLayer: React.FC = () => {
       const isDrawingLink = engine.linkCreation.isDrawing;
       const isDraggingBlock = engine.drag.hasTarget;
       const isDraggingGroup = engine.drag.hasGroup;
-
-      return isLeftClick && (isDrawingLink || isDraggingBlock || isDraggingGroup);
+      const isDraggingNewStep = engine.drag.isDraggingToCreate;
+      setDraggingNewStep(isDraggingNewStep);
+      return isDraggingNewStep || (isLeftClick && (isDrawingLink || isDraggingBlock || isDraggingGroup));
     };
 
     const onMouseUp = () => {
       isLeftClick = false;
-      setAutoPanning(false);
-      schedulerAPI.current.cancel();
+      reset();
     };
 
     const onMouseDown = (event: MouseEvent) => {
       isLeftClick = event.button === 0;
     };
 
+    // For dragging from step menu
+    const onDrag = (event: MouseEvent) => {
+      if (allowAutoPan()) {
+        onMouseMove(event);
+      }
+    };
+
     const onMouseMove = (event: MouseEvent) => {
-      if (!allowAutoPan()) return;
+      mouseMoveRef.current = event;
+      if (!allowAutoPan()) {
+        return;
+      }
+
+      const leftOffset = leftOffsetRef.current;
+      const rightOffset = rightOffsetRef.current;
 
       const { clientX, clientY } = event;
       const { top, right, left, bottom, height, width } = engine.canvas!.getCachedRect();
-      const canvasDiagonalSize = Math.hypot(height, width);
-      const screenSizeMultiplier = canvasDiagonalSize / BASE_SCREEN_SIZE;
 
-      const hotZoneSize = BASE_HOT_ZONE_SIZE * screenSizeMultiplier;
+      const verticalHotZoneSize = applyMinMaxCap(HOT_ZONE_MIN, HOT_ZONE_MAX, height * VERTICAL_HOT_ZONE_PERCENT);
+      const horizontalHotZoneSize = applyMinMaxCap(HOT_ZONE_MIN, HOT_ZONE_MAX, width * HORIZONTAL_HOT_ZONE_PERCENT);
 
       const xMid = width / 2 + leftOffset / 2;
       const yMid = height / 2 + HEADER_HEIGHT / 2;
       const distanceFromYCenter = yMid - clientY;
       const distanceFromXCenter = xMid - clientX;
 
-      const inTopZone = clientY < top + hotZoneSize;
-      const inLeftZone = clientX < left + hotZoneSize + leftOffset;
-      const inRightZone = clientX > right - hotZoneSize;
-      const inBottomZone = clientY > bottom - hotZoneSize;
+      const inTopZone = clientY < top + verticalHotZoneSize;
+      const inLeftZone = clientX < left + horizontalHotZoneSize + leftOffset;
+      const inRightZone = clientX > right - horizontalHotZoneSize - rightOffset;
+      const inBottomZone = clientY > bottom - verticalHotZoneSize;
 
-      // right zone
+      const notInAnyZone = !inTopZone && !inLeftZone && !inRightZone && !inBottomZone;
+
+      // Once the user drags a new step into the middle of the canvas, unlock the left hot zone
+      if (disableNewStepPanningRef.current && notInAnyZone) {
+        disableNewStepPanningRef.current = false;
+        return;
+      }
+
+      if (notInAnyZone || disableNewStepPanningRef.current) {
+        reset();
+        return;
+      }
+
       if (inRightZone) {
-        const speedMultiplier = calculateSpeedMultiplier(right - hotZoneSize - clientX, hotZoneSize);
+        const speedMultiplier = calculateSpeedMultiplier(right - horizontalHotZoneSize - rightOffset - clientX, horizontalHotZoneSize);
 
         movementY = (distanceFromYCenter / yMid) * AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
         movementX = -AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
 
         scheduler(setCanvasPosition);
       } else if (inLeftZone) {
-        const speedMultiplier = calculateSpeedMultiplier(left + hotZoneSize + leftOffset - clientX, hotZoneSize);
+        const speedMultiplier = calculateSpeedMultiplier(left + horizontalHotZoneSize + leftOffset - clientX, horizontalHotZoneSize);
 
         movementY = (distanceFromYCenter / yMid) * AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
         movementX = AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
 
         scheduler(setCanvasPosition);
       } else if (inTopZone) {
-        const speedMultiplier = calculateSpeedMultiplier(hotZoneSize + HEADER_HEIGHT - clientY, hotZoneSize);
+        const speedMultiplier = calculateSpeedMultiplier(verticalHotZoneSize + HEADER_HEIGHT - clientY, verticalHotZoneSize);
 
         movementX = (distanceFromXCenter / xMid) * AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
         movementY = AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
 
         scheduler(setCanvasPosition);
       } else if (inBottomZone) {
-        const speedMultiplier = calculateSpeedMultiplier(bottom - hotZoneSize - clientY, hotZoneSize);
+        const speedMultiplier = calculateSpeedMultiplier(bottom - verticalHotZoneSize - clientY, verticalHotZoneSize);
 
         movementX = (distanceFromXCenter / xMid) * AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
         movementY = -AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
 
         scheduler(setCanvasPosition);
-      } else {
-        setAutoPanning(false);
-        schedulerAPI.current.cancel();
       }
     };
 
     const canvasNode = engine.canvas?.getRef();
 
     document.addEventListener('mouseup', onMouseUp);
+
+    // Using the 'drag' event instead has this weird issue where dragging offscreen resets the mouse event
+    // position to 0, causing panning bugs, dragover seems to fix this
+    canvasNode?.addEventListener('dragover', onDrag);
     canvasNode?.addEventListener('mousedown', onMouseDown);
     canvasNode?.addEventListener('mousemove', onMouseMove);
 
     return () => {
       document.removeEventListener('mouseup', onMouseUp);
+      canvasNode?.addEventListener('dragover', onDrag);
       canvasNode?.removeEventListener('mousedown', onMouseDown);
       canvasNode?.removeEventListener('mousemove', onMouseMove);
     };

@@ -32,9 +32,11 @@ const Item: React.FC<ItemProps> = ({ icon, type, label, iconColor, factoryData, 
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     begin: () => {
       engine()?.merge.setVirtualSource(type, factoryData);
+      engine()?.drag.setDraggingToCreate(true);
     },
     end: () => {
       engine()?.merge.reset();
+      engine()?.drag.setDraggingToCreate(false);
     },
   });
 

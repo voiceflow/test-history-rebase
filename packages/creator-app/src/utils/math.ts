@@ -29,3 +29,7 @@ export const getRotation = (offsetX: number, offsetY: number) => {
   // eslint-disable-next-line no-restricted-globals
   return isNaN(angle) ? 0 : angle;
 };
+
+export const applyMinMaxCap = (min: number, max: number, valueToCap: number) => {
+  return Math.min(Math.max(valueToCap, min), max);
+};

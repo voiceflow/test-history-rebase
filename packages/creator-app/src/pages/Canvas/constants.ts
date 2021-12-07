@@ -30,6 +30,7 @@ export const LINK_HIGHLIGHTED_CLASSNAME = `${ClassName.CANVAS_LINK}--highlighted
 export const LINK_ACTIVE_CLASSNAME = `${ClassName.CANVAS_LINK}--active`;
 
 export const PORT_HIGHLIGHTED_CLASSNAME = `${ClassName.CANVAS_PORT}--highlighted`;
+export const PORT_PROTOTYPE_END_UNLINKED_CLASSNAME = `${ClassName.CANVAS_PORT}--prototype-end-unlinked-port`;
 
 export const EDITOR_HEADER_CLASSNAME = `${ClassName.CANVAS_EDITOR}__header`;
 export const EDITOR_BREADCRUMBS_CLASSNAME = `${ClassName.CANVAS_EDITOR}__breadcrumbs`;

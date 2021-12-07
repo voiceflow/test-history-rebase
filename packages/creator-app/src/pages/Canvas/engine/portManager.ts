@@ -106,6 +106,7 @@ class PortManager extends EngineConsumer {
   }
 
   redraw(portID: string): void {
+    if (!portID) return;
     this.engine.dispatcher.redrawPort(portID);
   }
 

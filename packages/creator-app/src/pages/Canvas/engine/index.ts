@@ -205,6 +205,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   getLinkIDsByPortID = (portID: string) => this.select(Creator.linkIDsByPortIDSelector)(portID);
 
+  getPortByPortID = (portID: string) => this.select(Creator.portByIDSelector)(portID);
+
   getLinkIDsByNodeID = (nodeID: string) => this.select(Creator.linkIDsByNodeIDSelector)(nodeID);
 
   getRootNodeIDs = () => this.select(Creator.rootNodeIDsSelector);

@@ -1,5 +1,5 @@
 import { css, styled } from '@/hocs';
-import { PORT_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
+import { PORT_HIGHLIGHTED_CLASSNAME, PORT_PROTOTYPE_END_UNLINKED_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { PORT_SIZE } from '../constants';
 
@@ -7,6 +7,7 @@ const PORT_LEFT_PADDING = 12;
 const PORT_HIGHLIGHT_COLOR = '#5d9df5';
 const PORT_COLOR = '#6e849a';
 const PORT_BACKGROUND_COLOR = '#62778c';
+const UNLINKED_END_PORT_COLOR = '#d94c4c';
 
 const getPortColor = ({ color = PORT_COLOR }) => color;
 const getBackgroundColor = ({ color = PORT_BACKGROUND_COLOR }) => color;
@@ -25,6 +26,11 @@ const PortConnectorContainer = styled.div<PortConnectorContainerProps>`
   box-sizing: content-box;
   box-shadow: 0 0 0 1px ${getPortColor};
   border-radius: 50%;
+
+  .${PORT_PROTOTYPE_END_UNLINKED_CLASSNAME} && {
+    background: ${UNLINKED_END_PORT_COLOR};
+    box-shadow: 0 0 0 1px ${UNLINKED_END_PORT_COLOR};
+  }
 
   ${({ color, isConnected }) =>
     isConnected

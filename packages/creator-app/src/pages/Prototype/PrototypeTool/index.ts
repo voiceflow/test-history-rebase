@@ -59,7 +59,7 @@ class PrototypeTool {
   public async interact({ name, request = null }: { name?: string; request?: Request.BaseRequest | string | null } = {}): Promise<void> {
     this.audio?.stop();
 
-    await this.trace?.emptyTrace();
+    await this.trace?.flushTrace();
 
     const isActionRequest = request && !_isString(request) && Request.isActionRequest(request);
 

@@ -704,6 +704,20 @@ class NodeManager extends EngineConsumer {
     }
   }
 
+  redrawPorts(nodeID: string) {
+    const node = this.engine.getNodeByID(nodeID);
+    if (!node) return;
+    const outPorts = node?.ports.out;
+    if (!outPorts) return;
+
+    Object.values(outPorts.builtIn).forEach((portID) => {
+      this.engine.port.redraw(portID);
+    });
+    outPorts.dynamic.forEach((portID: string) => {
+      this.engine.port.redraw(portID);
+    });
+  }
+
   redrawNestedLinks(parentNodeID: string): void {
     const node = this.engine.getNodeByID(parentNodeID);
 

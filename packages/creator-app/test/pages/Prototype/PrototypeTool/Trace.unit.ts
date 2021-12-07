@@ -40,6 +40,8 @@ const suite = createSuite(({ spy, stub, expect }) => ({
       select: stub(),
       selection: { replace: stub(), getTargets: stub(), reset: stub() },
       getNodeByID: stub().returns({ id: STEP_ID, parentNode: BLOCK_ID, combinedNodes: ['1'] }),
+      prototype: { setFinalNodeID: stub() },
+      finalPrototypeBlockID: stub().returns('123'),
     } as any as Engine;
 
     const audio = new AudioController();
@@ -526,7 +528,7 @@ suite(
       });
     });
 
-    describe('emptyTrace()', () => {
+    describe('flushTrace()', () => {
       it('should only log messages', async () => {
         const controller = createController();
 
@@ -549,7 +551,7 @@ suite(
           traceFactory(Node.Utils.TraceType.END, {}),
         ];
 
-        await controller.emptyTrace();
+        await controller.flushTrace();
 
         expectMessage(controller, 'speak', speakTrace);
         expectMessage(controller, 'stream', audioTrace);

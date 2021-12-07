@@ -7,6 +7,8 @@ import * as Prototype from '@/ducks/prototype';
 import { EngineConsumer } from './utils';
 
 class PrototypeEngine extends EngineConsumer {
+  finalNodeID: string | null = null;
+
   log = this.engine.log.child('prototype');
 
   highlightedNodeIDs: string[] = [];
@@ -68,6 +70,18 @@ class PrototypeEngine extends EngineConsumer {
     linkDiff.forEach((id) => this.engine.link.redrawLinked(id));
   }
 
+  setFinalNodeID(nodeID: string | null) {
+    const previousFinalNodeID = this.finalNodeID;
+    this.finalNodeID = nodeID;
+
+    if (previousFinalNodeID) {
+      this.engine.node.redrawPorts(previousFinalNodeID);
+    }
+    if (nodeID) {
+      this.engine.node.redrawPorts(nodeID);
+    }
+  }
+
   reset() {
     const nodeIDs = this.highlightedNodeIDs;
     const linkIDs = this.highlightedLinkIDs;
@@ -75,6 +89,7 @@ class PrototypeEngine extends EngineConsumer {
     this.log.debug(this.log.pending('resetting prototype'));
     this.teardownSubscription();
     this.teardownSubscription = Utils.functional.noop;
+    this.setFinalNodeID(null);
     this.highlightedNodeIDs = [];
     this.highlightedLinkIDs = [];
 

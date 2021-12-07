@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PORT_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
+import { PORT_HIGHLIGHTED_CLASSNAME, PORT_PROTOTYPE_END_UNLINKED_CLASSNAME } from '@/pages/Canvas/constants';
 import { PortEntityContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 
@@ -14,7 +14,8 @@ export interface PortProps {
 const Port: React.FC<PortProps> = ({ color }) => {
   const portEntity = React.useContext(PortEntityContext)!;
   const instance = usePortInstance<HTMLDivElement>();
-  const { isConnected, isHighlighted } = portEntity.useState((e) => ({
+  const { isConnected, isHighlighted, isFinalPrototypeUnlinkedPort } = portEntity.useState((e) => ({
+    isFinalPrototypeUnlinkedPort: e.isFinalPrototypeUnlinkedPort,
     isConnected: e.isConnected,
     isHighlighted: e.isHighlighted || e.isPrototypeHighlighted,
   }));
@@ -23,6 +24,7 @@ const Port: React.FC<PortProps> = ({ color }) => {
   portEntity.useInstance(instance);
 
   portEntity.useConditionalStyle(PORT_HIGHLIGHTED_CLASSNAME, isHighlighted);
+  portEntity.useConditionalStyle(PORT_PROTOTYPE_END_UNLINKED_CLASSNAME, isFinalPrototypeUnlinkedPort);
 
   return (
     <>

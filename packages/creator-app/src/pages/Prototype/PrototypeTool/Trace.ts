@@ -2,6 +2,7 @@ import { Models, Node as BaseNode, Request } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import _findLast from 'lodash/findLast';
 
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
@@ -62,7 +63,7 @@ interface StreamState {
   offset: number;
 }
 
-const findLastBlockTrace = (trace: Trace[]) => [...trace].reverse().find((traceFrame) => traceFrame.type === BaseNode.Utils.TraceType.BLOCK);
+const findLastBlockTrace = (trace: Trace[]) => _findLast(trace, ({ type }) => type === BaseNode.Utils.TraceType.BLOCK);
 
 const WAIT_ENTITY_TIME = 200;
 const MIN_FOCUSED_NODE_TIME = 500;
@@ -161,6 +162,7 @@ class TraceController {
     }
 
     this.audio.stop();
+    this.props.engine?.prototype.setFinalNodeID(null);
 
     if (IS_TEST) {
       await this.processTrace(this.context.trace);
@@ -205,6 +207,7 @@ class TraceController {
 
     // wait for the block to render (to account for switching between flows)
     await this.waitNode(targetBlockID);
+    this.props.engine?.prototype.setFinalNodeID(null);
     await this.processTrace([targetBlockTraceFrame, targetStepTrace]);
 
     this.props.updatePrototype({ context: targetContext as Prototype.Context });
@@ -223,7 +226,8 @@ class TraceController {
     this.timeout.clearByID(this.noReplyTimeout);
   }
 
-  public async emptyTrace(): Promise<void> {
+  // immediate display the remaining traces and not wait on any async effects
+  public async flushTrace(): Promise<void> {
     await this.processTrace(this.trace, { onlyMessage: true });
   }
 
@@ -534,6 +538,10 @@ class TraceController {
 
   private async processEndTrace() {
     this.props.engine?.selection.reset();
+    const lastNodeID = findLastBlockTrace(this.context?.trace ?? [])?.payload.blockID;
+    if (lastNodeID) {
+      this.props.engine?.prototype.setFinalNodeID(lastNodeID);
+    }
     this.props.updateStatus(PMStatus.ENDED);
   }
 

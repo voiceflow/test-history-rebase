@@ -22,6 +22,7 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
 import { withTargetValue } from '@/utils/dom';
+import { transformVariablesToReadable } from '@/utils/slot';
 import { getValidHref, isAnyLink } from '@/utils/string';
 
 import { BUTTON_OPTIONS, ButtonAction } from '../constants';
@@ -95,7 +96,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
   return (
     <EditorSection
       ref={ref}
-      header={item.name || `Button ${index + 1}`}
+      header={transformVariablesToReadable(item.name) || `Button ${index + 1}`}
       prefix={<Badge>{index + 1}</Badge>}
       headerRef={connectedDragRef}
       namespace={['buttonsListItem', item.id]}

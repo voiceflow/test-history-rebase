@@ -68,8 +68,8 @@ class NodeManager extends EngineConsumer {
 
     removeMany: async (nodeIDs: string[]) => {
       const nodes = nodeIDs.map(this.engine.getNodeByID);
-      const removedIDs: string[] = [];
-      const parentIDs: string[] = [];
+      const parentIDs = new Set<string>();
+      const removedIDs = new Set<string>();
 
       nodes.forEach((node) => {
         if (!node) {
@@ -78,25 +78,23 @@ class NodeManager extends EngineConsumer {
 
         this.engine.activation.deactivate(node.id);
 
-        if (node.parentNode) {
-          if (!parentIDs.includes(node.parentNode)) {
-            // save last location of parent node in case unmerging
-            this.saveLocation(node.parentNode);
-            parentIDs.push(node.parentNode);
-          }
-
-          if (!nodeIDs.includes(node.parentNode)) {
-            removedIDs.push(node.id);
-          }
-        } else {
-          removedIDs.push(node.id);
+        // save last location of parent node in case unmerging
+        if (node.parentNode && !parentIDs.has(node.parentNode)) {
+          parentIDs.add(node.parentNode);
+          this.saveLocation(node.parentNode);
         }
+
+        if (node.combinedNodes.length) {
+          node.combinedNodes.forEach((childNodeID) => removedIDs.add(childNodeID));
+        }
+
+        removedIDs.add(node.id);
       });
 
       if (this.engine.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS)) {
-        await this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodeIDs: removedIDs }));
+        await this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodeIDs: Array.from(removedIDs) }));
       } else {
-        this.dispatch(Creator.removeNodes(removedIDs));
+        this.dispatch(Creator.removeNodes(Array.from(removedIDs)));
       }
     },
 

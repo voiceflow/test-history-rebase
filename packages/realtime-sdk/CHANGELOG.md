@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.45.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.45.1...@voiceflow/realtime-sdk@1.45.2) (2021-12-08)
+
+
+### Bug Fixes
+
+* **dialogflow:** changes custom payload node type (VF-2341) ([#4731](https://github.com/voiceflow/creator-app/issues/4731)) ([cd20f01](https://github.com/voiceflow/creator-app/commit/cd20f016462859fd71dca58becda32f0a03700d3))
+
+
+
+
+
 ## [1.45.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.45.0...@voiceflow/realtime-sdk@1.45.1) (2021-12-07)
 
 

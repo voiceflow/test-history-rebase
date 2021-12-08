@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.561.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.561.2...@voiceflow/creator-app@1.561.3) (2021-12-08)
+
+
+### Bug Fixes
+
+* **dialogflow:** changes custom payload node type (VF-2341) ([#4731](https://github.com/voiceflow/creator-app/issues/4731)) ([cd20f01](https://github.com/voiceflow/creator-app/commit/cd20f016462859fd71dca58becda32f0a03700d3))
+
+
+
+
+
 ## [1.561.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.561.1...@voiceflow/creator-app@1.561.2) (2021-12-07)
 
 **Note:** Version bump only for package @voiceflow/creator-app

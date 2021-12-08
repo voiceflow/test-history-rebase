@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.46.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.45.2...@voiceflow/realtime-sdk@1.46.0) (2021-12-08)
+
+
+### Features
+
+* add new tracking fields to project created event (VF-2378) ([#4739](https://github.com/voiceflow/creator-app/issues/4739)) ([2e763c9](https://github.com/voiceflow/creator-app/commit/2e763c9158b8abe4a23c0665ade07c16068cf9e3))
+
+
+
+
+
 ## [1.45.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.45.1...@voiceflow/realtime-sdk@1.45.2) (2021-12-08)
 
 

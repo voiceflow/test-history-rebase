@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.562.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.561.4...@voiceflow/creator-app@1.562.0) (2021-12-08)
+
+
+### Bug Fixes
+
+* delete next character via 'delete' key (VF-2115) ([#4749](https://github.com/voiceflow/creator-app/issues/4749)) ([16a77ad](https://github.com/voiceflow/creator-app/commit/16a77adbc5a3220432783ada693505ee8cc2edc0))
+
+
+### Features
+
+* add new tracking fields to project created event (VF-2378) ([#4739](https://github.com/voiceflow/creator-app/issues/4739)) ([2e763c9](https://github.com/voiceflow/creator-app/commit/2e763c9158b8abe4a23c0665ade07c16068cf9e3))
+
+
+
+
+
 ## [1.561.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.561.3...@voiceflow/creator-app@1.561.4) (2021-12-08)
 
 

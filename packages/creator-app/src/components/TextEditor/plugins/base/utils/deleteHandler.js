@@ -10,7 +10,6 @@ export default (store) => (e) => {
 
   let editorState = store.getEditorState();
   let selection = editorState.getSelection();
-  let pushAction = PushAction.DELETE_CHARACTER;
 
   const anchorOffset = selection.getAnchorOffset();
   const focusOffset = selection.getFocusOffset();
@@ -40,21 +39,24 @@ export default (store) => (e) => {
         });
       }
 
-      pushAction = PushAction.REMOVE_RANGE;
+      const nextContent = Modifier.removeRange(editorState.getCurrentContent(), selection);
+
+      editorState = EditorState.push(editorState, nextContent, PushAction.REMOVE_RANGE);
     } else {
-      const startSelectionEntity = getEntityAtStartSelection(editorState, editorState.getSelection(), -1);
+      const isDelete = e.code === 'Delete';
+
+      const startSelectionEntity = getEntityAtStartSelection(editorState, editorState.getSelection(), isDelete ? 0 : -1);
 
       if (startSelectionEntity && startSelectionEntity.getMutability() === Mutability.IMMUTABLE) {
         selection = getEntitySelection(editorState, startSelectionEntity) || selection;
-        pushAction = PushAction.REMOVE_RANGE;
       } else {
-        selection = selection.merge({ focusOffset: selection.getFocusOffset(), anchorOffset: anchorOffset - 1 });
+        selection = selection.merge({ focusOffset: focusOffset + (isDelete ? 1 : 0), anchorOffset: anchorOffset + (isDelete ? 0 : -1) });
       }
+
+      const nextContent = Modifier.removeRange(editorState.getCurrentContent(), selection, isDelete ? 'backward' : 'forward');
+
+      editorState = EditorState.push(editorState, nextContent, PushAction.DELETE_CHARACTER);
     }
-
-    const nextContent = Modifier.removeRange(editorState.getCurrentContent(), selection);
-
-    editorState = EditorState.push(editorState, nextContent, pushAction);
 
     store.setEditorState(editorState);
   }

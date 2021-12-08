@@ -45,7 +45,7 @@ const CARD_STEP = createMenuStep(BlockType.CARD);
 
 const CHOICE_STEP = createMenuStep(BlockType.CHOICE);
 
-const CUSTOM_PAYLOAD_STEP = createMenuStep(BlockType.CUSTOM_PAYLOAD);
+const CUSTOM_PAYLOAD_STEP = createMenuStep(BlockType.PAYLOAD);
 
 const BUTTONS_STEP = createMenuStep(BlockType.BUTTONS);
 

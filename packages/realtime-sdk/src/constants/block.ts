@@ -41,7 +41,9 @@ export enum BlockType {
   REMINDER = 'reminder',
   DEPRECATED = 'deprecated',
   INVALID_PLATFORM = 'invalid_platform',
-  CUSTOM_PAYLOAD = 'custom_payload',
+
+  DEPRECATED_CUSTOM_PAYLOAD = 'custom_payload',
+  PAYLOAD = 'payload',
 
   // event
   DIRECTIVE = 'directive',

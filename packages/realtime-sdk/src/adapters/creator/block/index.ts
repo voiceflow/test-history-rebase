@@ -36,6 +36,7 @@ export const APP_BLOCK_TYPE_FROM_DB: Record<
   [Node.NodeType.GOOGLE_SHEETS]: BlockType.INTEGRATION,
   [Node.NodeType.IF]: BlockType.IFV2,
   [Node.NodeType.SET]: BlockType.SETV2,
+  [BlockType.DEPRECATED_CUSTOM_PAYLOAD]: BlockType.PAYLOAD,
 };
 
 export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: NodeData<any>, options: { context: AdapterContext }) => string)>> = {

@@ -14,7 +14,7 @@ import {
   UpdateDiagramViewers,
   UpdateRealtimeConnection,
 } from './actions';
-import { ResourceType } from './constants';
+import { LockType, ResourceType } from './constants';
 import { AnyNodeLock, RealtimeLocks, RealtimeState } from './types';
 
 export * from './actions';
@@ -56,9 +56,12 @@ export const updateDiagramViewersReducer: RealtimeReducer<UpdateDiagramViewers> 
     ...state,
     locks: {
       ...state.locks,
-      blocks: Object.entries(state.locks!.blocks).reduce((acc, [key, value]) => Object.assign(acc, { [key]: filterByTabID(value) }), {}),
-      resources: filterByTabID<ResourceType>(state.locks!.resources),
       users,
+      blocks: Object.entries(state.locks?.blocks ?? { [LockType.EDIT]: {}, [LockType.MOVEMENT]: {} }).reduce(
+        (acc, [key, value]) => Object.assign(acc, { [key]: filterByTabID(value) }),
+        {}
+      ),
+      resources: filterByTabID<ResourceType>(state.locks?.resources ?? {}),
     } as RealtimeLocks,
   };
 };
@@ -66,16 +69,20 @@ export const updateDiagramViewersReducer: RealtimeReducer<UpdateDiagramViewers> 
 export const addNodeLocksReducer: RealtimeReducer<AddNodeLocks> = (state, { payload: { targets, types, tabID } }) => ({
   ...state,
   locks: {
-    ...state.locks!,
+    ...state.locks,
+    users: state.locks?.users ?? {},
+    resources: state.locks?.resources ?? {},
     blocks: {
-      ...state.locks!.blocks,
+      [LockType.EDIT]: {},
+      [LockType.MOVEMENT]: {},
+      ...state.locks?.blocks,
       ...types
         .map((type) => type.toLowerCase() as AnyNodeLock)
         .reduce(
           (acc, type) =>
             Object.assign(acc, {
               [type]: {
-                ...state.locks!.blocks[type],
+                ...state.locks?.blocks[type],
                 ...targets.reduce((nodes, target) => Object.assign(nodes, { [target]: tabID }), {}),
               },
             }),
@@ -88,13 +95,17 @@ export const addNodeLocksReducer: RealtimeReducer<AddNodeLocks> = (state, { payl
 export const removeNodeLocksReducer: RealtimeReducer<RemoveNodeLocks> = (state, { payload: { types, targets } }) => ({
   ...state,
   locks: {
-    ...state.locks!,
+    ...state.locks,
+    users: state.locks?.users ?? {},
+    resources: state.locks?.resources ?? {},
     blocks: {
-      ...state.locks!.blocks,
+      [LockType.EDIT]: {},
+      [LockType.MOVEMENT]: {},
+      ...state.locks?.blocks,
       ...types.reduce(
         (acc, type) =>
           Object.assign(acc, {
-            [type]: Object.entries(state.locks!.blocks[type] ?? {})
+            [type]: Object.entries(state.locks?.blocks[type] ?? {})
               .filter(([nodeID]) => !targets.includes(nodeID))
               .reduce((nodes, [key, value]) => Object.assign(nodes, { [key]: value }), {}),
           }),
@@ -107,21 +118,25 @@ export const removeNodeLocksReducer: RealtimeReducer<RemoveNodeLocks> = (state, 
 export const addResourceLockReducer: RealtimeReducer<AddResourceLock> = (state, { payload: { resourceID, tabID } }) => ({
   ...state,
   locks: {
-    ...state.locks!,
+    ...state.locks,
+    users: state.locks?.users ?? {},
+    blocks: state.locks?.blocks ?? { [LockType.EDIT]: {}, [LockType.MOVEMENT]: {} },
     resources: {
-      ...state.locks!.resources,
+      ...state.locks?.resources,
       [resourceID]: tabID,
     },
   },
 });
 
 export const removeResourceLockReducer: RealtimeReducer<RemoveResourceLock> = (state, { payload: resourceID }) => {
-  const { [resourceID]: _, ...nextResourceLocks } = state.locks!.resources;
+  const { [resourceID]: _, ...nextResourceLocks } = state.locks?.resources ?? {};
 
   return {
     ...state,
     locks: {
-      ...state.locks!,
+      ...state.locks,
+      users: state.locks?.users ?? {},
+      blocks: state.locks?.blocks ?? { [LockType.EDIT]: {}, [LockType.MOVEMENT]: {} },
       resources: nextResourceLocks,
     },
   };

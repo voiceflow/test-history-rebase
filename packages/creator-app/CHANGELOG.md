@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.561.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.561.3...@voiceflow/creator-app@1.561.4) (2021-12-08)
+
+
+### Bug Fixes
+
+* check if inviting role should be paid (VF-2343) ([#4751](https://github.com/voiceflow/creator-app/issues/4751)) ([50a3b91](https://github.com/voiceflow/creator-app/commit/50a3b911b0537474114ca5cd14ae6a70f645574d))
+
+
+
+
+
 ## [1.561.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.561.2...@voiceflow/creator-app@1.561.3) (2021-12-08)
 
 

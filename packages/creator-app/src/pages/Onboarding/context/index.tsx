@@ -13,6 +13,7 @@ import client from '@/client';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
+import { getDefaultPlatformLanguageLabel } from '@/constants/platforms';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
@@ -22,6 +23,7 @@ import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs';
 import { useDispatch, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { createPlatformSelector } from '@/utils/platform';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
@@ -364,22 +366,31 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
     try {
       if (isLoginFlow) {
-        let templateTag = `onboarding:${state.selectChannelMeta.channel}`;
         const platform = state.selectChannelMeta.channel;
 
-        if (platform === Constants.PlatformType.GENERAL) {
-          templateTag = `onboarding:custom_assistant`;
-        } else if (platform === Constants.PlatformType.ALEXA) {
-          templateTag = 'onboarding:alexa_assistant';
-        } else if (platform === Constants.PlatformType.GOOGLE) {
-          templateTag = 'onboarding:google_assistant';
-        }
+        const getTemplateTag = createPlatformSelector(
+          {
+            [Constants.PlatformType.ALEXA]: 'onboarding:alexa_assistant',
+            [Constants.PlatformType.GOOGLE]: 'onboarding:google_assistant',
+            [Constants.PlatformType.GENERAL]: 'onboarding:custom_assistant',
+          },
+          `onboarding:${platform}`
+        );
 
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
-          const { versionID } = await createProject({ platform: state.selectChannelMeta.channel as Constants.PlatformType }, templateTag);
+          const { versionID } = await createProject(
+            {
+              platform,
+              language: getDefaultPlatformLanguageLabel(platform),
+              onboarding: true,
+            },
+            getTemplateTag(platform)
+          );
+
           goToCanvas(versionID!);
+
           await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
         }
       } else {

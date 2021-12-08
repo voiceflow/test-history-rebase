@@ -18,10 +18,16 @@ const createBlockTypeGuard =
   <R extends BlockType>(nodes: ReadonlyArray<R>) =>
   (type: BlockType): type is R =>
     nodes.includes(type as R);
+
 const createPlatformTypeGuard =
   <R extends Constants.PlatformType>(platform: R) =>
   (type?: string | Constants.PlatformType | null): type is R =>
     type === platform;
+
+const createPlatformUnionTypeGuard =
+  <R extends Constants.PlatformType>(platforms: R[] | ReadonlyArray<R>) =>
+  (type?: string | Constants.PlatformType | null): type is R =>
+    !!type && platforms.includes(type as R);
 
 export const isRootBlockType = createBlockTypeGuard(ROOT_NODES);
 export const isMarkupBlockType = createBlockTypeGuard(MARKUP_NODES);
@@ -40,20 +46,12 @@ export const isGeneralPlatform = createPlatformTypeGuard(Constants.PlatformType.
 export const isChatbotPlatform = createPlatformTypeGuard(Constants.PlatformType.CHATBOT);
 export const isMobileAppPlatform = createPlatformTypeGuard(Constants.PlatformType.MOBILE_APP);
 
-export const isDialogflowPlatform = (type: string | Constants.PlatformType): type is typeof DIALOGFLOW_PLATFORMS[number] =>
-  DIALOGFLOW_PLATFORMS.includes(type as typeof DIALOGFLOW_PLATFORMS[number]);
-
-export const isPlatformWithInvocationName = (type: string | Constants.PlatformType): type is typeof PLATFORMS_WITH_INVOCATION_NAME[number] =>
-  PLATFORMS_WITH_INVOCATION_NAME.includes(type as typeof PLATFORMS_WITH_INVOCATION_NAME[number]);
-
-export const isVoicePlatform = (type: string | Constants.PlatformType): type is typeof VOICE_PLATFORMS[number] =>
-  VOICE_PLATFORMS.includes(type as typeof VOICE_PLATFORMS[number]);
-
-export const isDistinctPlatform = (type: string | Constants.PlatformType): type is typeof DISTINCT_PLATFORMS[number] =>
-  DISTINCT_PLATFORMS.includes(type as typeof DISTINCT_PLATFORMS[number]);
-
-export const isAnyGeneralPlatform = (type: string | Constants.PlatformType): type is typeof GENERAL_PLATFORMS[number] =>
-  GENERAL_PLATFORMS.includes(type as typeof GENERAL_PLATFORMS[number]);
+export const isVoicePlatform = createPlatformUnionTypeGuard(VOICE_PLATFORMS);
+export const isDistinctPlatform = createPlatformUnionTypeGuard(DISTINCT_PLATFORMS);
+export const isDialogflowPlatform = createPlatformUnionTypeGuard(DIALOGFLOW_PLATFORMS);
+export const isAnyGeneralPlatform = createPlatformUnionTypeGuard(GENERAL_PLATFORMS);
+export const isPlatformWithInvocationName = createPlatformUnionTypeGuard(PLATFORMS_WITH_INVOCATION_NAME);
 
 type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T;
+
 export const truthy = <T>(value: T): value is Truthy<T> => Boolean(value);

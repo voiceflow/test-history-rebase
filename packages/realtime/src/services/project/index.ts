@@ -78,10 +78,15 @@ class ProjectService extends AbstractControl {
     return client.project.list(workspaceID);
   }
 
-  public async create(creatorID: number, templateID: string, channel: string, data: Realtime.NewProject): Promise<Realtime.DBProject> {
+  public async create(
+    creatorID: number,
+    templateID: string,
+    data: Realtime.NewProject,
+    params: { channel: string; language?: string; onboarding: boolean }
+  ): Promise<Realtime.DBProject> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    return client.project.platform<Realtime.DBProject>(data.platform as Constants.PlatformType).duplicate(templateID, data, { channel });
+    return client.project.platform<Realtime.DBProject>(data.platform as Constants.PlatformType).duplicate(templateID, data, params);
   }
 
   public async importFromFile(

@@ -25,6 +25,8 @@ export interface CreateProjectPayload extends BaseWorkspacePayload {
   channel: string;
   listID?: string;
   platform: Constants.PlatformType;
+  language?: string;
+  onboarding: boolean;
   templateID: string;
 }
 

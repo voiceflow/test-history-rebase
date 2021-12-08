@@ -17,10 +17,12 @@ import { Thunk } from '@/store/types';
 import { crud } from './actions';
 
 export interface CreateProjectParams {
-  platform: Constants.PlatformType;
   name: string;
   image: string;
   listID?: string;
+  platform: Constants.PlatformType;
+  language?: string;
+  onboarding?: boolean;
 }
 
 // side effects
@@ -53,7 +55,7 @@ export const loadProjectsByWorkspaceID =
   };
 
 export const createProject =
-  ({ platform, name, image, listID }: Partial<CreateProjectParams>, templateTag?: string): Thunk<Realtime.AnyProject> =>
+  ({ name, image, listID, platform, language, onboarding = false }: Partial<CreateProjectParams>, templateTag?: string): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
     const workspaceID = Session.activeWorkspaceIDSelector(state);
@@ -79,9 +81,11 @@ export const createProject =
         return dispatch(
           waitAsync(Realtime.project.create, {
             data: { name, image, _version: vfVersion },
-            channel,
             listID,
+            channel,
+            language,
             platform: platformType,
+            onboarding,
             templateID: templateProjectID,
             workspaceID,
           })
@@ -90,7 +94,7 @@ export const createProject =
 
       const newProject = await client
         .platform(platformType)
-        .project.copy(templateProjectID, { name, image, teamID: workspaceID, _version: vfVersion }, { channel })
+        .project.copy(templateProjectID, { name, image, teamID: workspaceID, _version: vfVersion }, { channel, language, onboarding })
         .then(Realtime.Adapters.projectAdapter.fromDB);
 
       if (listID) {

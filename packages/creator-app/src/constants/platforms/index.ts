@@ -1,4 +1,6 @@
-import { Constants } from '@voiceflow/general-types';
+import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
+import { Constants as GoogleConstants } from '@voiceflow/google-types';
 
 import {
   AlexaExportJob,
@@ -10,10 +12,14 @@ import {
   GooglePublishJob,
   JobStageData,
 } from '@/models';
+import { FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
+import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Publish/Google/utils';
+import LOCALE_MAP from '@/services/LocaleMap';
 import { createPlatformSelector } from '@/utils/platform';
 
 import { AlexaPublishJobErrorType, AlexaStageType } from './alexa';
 import { DialogflowPublishJobErrorType, DialogflowStageType } from './dialogflow';
+import { GENERAL_LOCALE_NAME_MAP } from './general';
 import { GooglePublishJobErrorType, GoogleStageType } from './google';
 
 const AnyPublishJobRenderingError = [GooglePublishJobErrorType.RENDERING, AlexaPublishJobErrorType.RENDERING, GooglePublishJobErrorType.RENDERING];
@@ -66,10 +72,20 @@ export * from './google';
 
 export const getPlatformName = createPlatformSelector(
   {
-    [Constants.PlatformType.ALEXA]: 'Alexa',
-    [Constants.PlatformType.GOOGLE]: 'Google',
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow',
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow',
+    [GeneralConstants.PlatformType.ALEXA]: 'Alexa',
+    [GeneralConstants.PlatformType.GOOGLE]: 'Google',
+    [GeneralConstants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow',
+    [GeneralConstants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow',
   },
   ''
+);
+
+export const getDefaultPlatformLanguageLabel = createPlatformSelector(
+  {
+    [GeneralConstants.PlatformType.ALEXA]: LOCALE_MAP[0].name,
+    [GeneralConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[GoogleConstants.Language.EN],
+    [GeneralConstants.PlatformType.DIALOGFLOW_ES_CHAT]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DialogflowConstants.Language.EN],
+    [GeneralConstants.PlatformType.DIALOGFLOW_ES_VOICE]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DialogflowConstants.Language.EN],
+  },
+  GENERAL_LOCALE_NAME_MAP[GeneralConstants.Locale.EN_US]
 );

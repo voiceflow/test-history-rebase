@@ -20,7 +20,7 @@ interface ProjectClient {
 }
 
 export interface ProjectPlatformClient<P extends BaseModels.Project<any, any>> {
-  duplicate: (projectID: string, data: Realtime.NewProject, params?: { channel: string }) => Promise<P>;
+  duplicate: (projectID: string, data: Realtime.NewProject, params?: { channel: string; onboarding: boolean }) => Promise<P>;
 }
 
 const PlatformClient = <P extends BaseModels.Project<any, any>>(axios: AxiosInstance): ProjectPlatformClient<P> => ({

@@ -10,10 +10,13 @@ import { Redirect, useRouteMatch } from 'react-router-dom';
 import client from '@/client';
 import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
 import { Path } from '@/config/routes';
+import { GENERAL_LOCALE_NAME_MAP, getDefaultPlatformLanguageLabel } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { useActiveWorkspace, useDispatch, useSelector, useSetup } from '@/hooks';
+import { FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
+import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { createPlatformSelector } from '@/utils/platform';
 import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
@@ -112,20 +115,45 @@ const NewProject: React.FC = () => {
 
   const finalizeCreation = async () => {
     setCreatingProject(true);
+
+    const getLanguage = () => {
+      const defaultLabel = getDefaultPlatformLanguageLabel(selectedChannel);
+
+      return createPlatformSelector(
+        {
+          [Constants.PlatformType.ALEXA]: LOCALE_MAP.find((locale) => locale.value === alexaLocales[0])?.name ?? defaultLabel,
+          [Constants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage] ?? defaultLabel,
+          [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage] ?? defaultLabel,
+          [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage] ?? defaultLabel,
+        },
+        GENERAL_LOCALE_NAME_MAP[generalLocale] ?? defaultLabel
+      )(selectedChannel);
+    };
+
     let newVersionID: string | null = null;
 
     try {
-      const project = await createProject({ platform: selectedChannel!, name: DEFAULT_PROJECT_NAME, listID }, getTemplateTag(selectedChannel!));
+      const project = await createProject(
+        {
+          name: DEFAULT_PROJECT_NAME,
+          listID,
+          platform: selectedChannel!,
+          language: getLanguage(),
+          onboarding: false,
+        },
+        getTemplateTag(selectedChannel!)
+      );
+
       newVersionID = project.versionID;
 
       // TODO: in the future make new project parameters much more platform specific
-      if (isAlexaPlatform(selectedChannel!)) {
+      if (isAlexaPlatform(selectedChannel)) {
         await updateAlexaMeta(newVersionID, alexaLocales, invocationName);
-      } else if (isGooglePlatform(selectedChannel!)) {
+      } else if (isGooglePlatform(selectedChannel)) {
         await updateGoogleMeta(newVersionID, googleLanguage, invocationName);
-      } else if (isDialogflowPlatform(selectedChannel!)) {
+      } else if (isDialogflowPlatform(selectedChannel)) {
         await updateDialogFlowMeta(newVersionID, dialogflowLanguage);
-      } else if (isAnyGeneralPlatform(selectedChannel!)) {
+      } else if (isAnyGeneralPlatform(selectedChannel)) {
         await updateGeneralMeta(newVersionID, generalLocale);
       }
     } finally {

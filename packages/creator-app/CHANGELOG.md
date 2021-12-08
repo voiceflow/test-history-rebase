@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.562.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.562.1...@voiceflow/creator-app@1.562.2) (2021-12-08)
+
+
+### Bug Fixes
+
+* button section name with vars (VF-2422) ([#4750](https://github.com/voiceflow/creator-app/issues/4750)) ([2a57f33](https://github.com/voiceflow/creator-app/commit/2a57f333e7934b4e3608a497ed44fbbcc0a16e94))
+
+
+
+
+
 ## [1.562.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.562.0...@voiceflow/creator-app@1.562.1) (2021-12-08)
 
 

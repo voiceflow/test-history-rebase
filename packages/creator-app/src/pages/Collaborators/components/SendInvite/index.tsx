@@ -59,7 +59,7 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
       const paidEditorSeats = numberOfSeats!;
       const numberOfUsedEditorSeats = usedEditorSeats;
 
-      if (numberOfUsedEditorSeats >= paidEditorSeats && EDITOR_SEAT_ROLES.includes(UserRole.EDITOR)) {
+      if (numberOfUsedEditorSeats >= paidEditorSeats && EDITOR_SEAT_ROLES.includes(role)) {
         return openPaymentsModal();
       }
 

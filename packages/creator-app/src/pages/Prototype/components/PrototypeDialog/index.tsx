@@ -165,9 +165,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
           }
         })}
 
-        {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && (
-          <Ended isTranscript={isTranscript} stepBack={stepBack} messages={messages} />
-        )}
+        {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && <Ended isTranscript={isTranscript} stepBack={stepBack} />}
 
         <Loading isLoading={isLoading} avatarURL={avatarURL} />
 

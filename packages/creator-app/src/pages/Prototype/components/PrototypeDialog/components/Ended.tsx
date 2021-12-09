@@ -1,47 +1,54 @@
+import { BlockType } from '@voiceflow/realtime-sdk';
 import { Box, ClickableText } from '@voiceflow/ui';
 import React from 'react';
 
 import Divider from '@/components/Divider';
+import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { Message, MessageType } from '@/pages/Prototype/types';
+import { useEventualEngine, useSelector } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 interface PrototypeEndedProps {
-  messages: Message[];
   stepBack: () => void;
   isTranscript?: boolean;
 }
 
-const PrototypeEnded: React.FC<ConnectedPrototypeEndedProps & PrototypeEndedProps> = ({ contextStep, messages, stepBack, isTranscript }) => {
-  const goBackDisabled = contextStep <= 1;
+const IntentTriggeringBlocks = [BlockType.CHOICE, BlockType.PROMPT, BlockType.CAPTURE];
 
-  const Action = (
+const PrototypeEnded: React.FC<ConnectedPrototypeEndedProps & PrototypeEndedProps> = ({ contextStep, stepBack, isTranscript }) => {
+  const goBackDisabled = contextStep <= 1;
+  const getNodeByID = useSelector(Creator.nodeByIDSelector);
+  const getEngine = useEventualEngine();
+
+  const tryAgainElement = !goBackDisabled && (
     <ClickableText disabled={goBackDisabled} onClick={stepBack}>
       Try Again
     </ClickableText>
   );
 
   const reason = React.useMemo(() => {
-    // see if the last interaction is a user or bot
-    const last = [...messages].reverse().find(({ type }) => [MessageType.SPEAK, MessageType.USER].includes(type));
-    if (!isTranscript) {
-      if (last?.type === MessageType.SPEAK) {
-        return <>Reached last connected step. {Action}</>;
-      }
-      if (last?.type === MessageType.USER) {
-        return <>No Intent matched or reprompt found. {Action}</>;
-      }
+    const engine = getEngine();
+    const finalNodeID = engine?.prototype.finalNodeID;
+    const finalNode = finalNodeID && getNodeByID(finalNodeID);
+    const noIntentOrRepromptHit = !!finalNode && IntentTriggeringBlocks.includes(finalNode.type);
+
+    if (finalNode && finalNode.type === BlockType.EXIT) {
+      return 'Reached last connected Step';
     }
 
-    return null;
-  }, [messages]);
+    if (noIntentOrRepromptHit) {
+      return 'No intent matched or reprompt found.';
+    }
+
+    return 'Path not connected.';
+  }, []);
 
   return (
     <>
       <Divider isLast={true}>{isTranscript ? 'Conversation Ended' : 'Session Ended'}</Divider>
       <Box textAlign="center" fontSize={13}>
-        {reason}
+        {reason} {tryAgainElement}
       </Box>
     </>
   );

@@ -707,7 +707,6 @@ class NodeManager extends EngineConsumer {
     if (!node) return;
     const outPorts = node?.ports.out;
     if (!outPorts) return;
-
     Object.values(outPorts.builtIn).forEach((portID) => {
       this.engine.port.redraw(portID);
     });

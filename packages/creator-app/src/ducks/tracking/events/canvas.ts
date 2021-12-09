@@ -1,15 +1,23 @@
 import client from '@/client';
 import { InteractionModelTabType } from '@/constants';
 
-import { CanvasMenuLockState, EventName, IntentEditType } from '../constants';
+import { CanvasMenuLockState, EntityCreationType, EventName, IntentEditType } from '../constants';
 import { createProjectEventPayload, createProjectEventTracker, createVersionEventPayload, createVersionEventTracker } from '../utils';
 
 export const trackCanvasSeeShortcutsModalOpened = createProjectEventTracker((options) =>
   client.api.analytics.track(EventName.CANVAS_SHORTCUTS_MODAL_OPENED, createProjectEventPayload(options))
 );
 
-export const trackCanvasMenuLock = createVersionEventTracker<{ state: CanvasMenuLockState }>((options) =>
-  client.api.analytics.track(EventName.CANVAS_MENU_LOCK, createVersionEventPayload(options, { state: options.state }))
+export const trackEntityCreated = createProjectEventTracker<{ creationType: EntityCreationType }>((options) =>
+  client.api.analytics.track(EventName.ENTITY_CREATED, createProjectEventPayload(options, { creation_type: options.creationType }))
+);
+
+export const trackVersionManuallyCreated = createVersionEventTracker((options) =>
+  client.api.analytics.track(EventName.VERSION_MANUALLY_CREATED, createVersionEventPayload(options))
+);
+
+export const trackCanvasMenuLock = createProjectEventTracker<{ state: CanvasMenuLockState }>((options) =>
+  client.api.analytics.track(EventName.CANVAS_MENU_LOCK, createProjectEventPayload(options, { state: options.state }))
 );
 
 export const trackCanvasControlHelpMenuResource = createVersionEventTracker<{ resource: string }>((options) =>

@@ -5,7 +5,7 @@ import client from '@/client';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as Session from '@/ducks/session';
-import { useModals, useSelector } from '@/hooks';
+import { useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { withEnterPress } from '@/utils/dom';
 
 const ManualSaveModal: React.FC = () => {
@@ -13,6 +13,7 @@ const ManualSaveModal: React.FC = () => {
   const [saving, setSaving] = React.useState(false);
   const { isOpened, close, data } = useModals<{ reFetchVersions?: VoidFunction }>(ModalType.MANUAL_SAVE_MODAL);
   const activeVersionID = useSelector(Session.activeVersionIDSelector)!;
+  const [trackingEvents] = useTrackingEvents();
   const nameInputRef = React.useRef<HTMLInputElement>(null);
 
   const reset = () => {
@@ -31,6 +32,7 @@ const ManualSaveModal: React.FC = () => {
     setSaving(true);
     try {
       await client.version.getVersionSnapshot(activeVersionID, saveName.trim());
+      trackingEvents.trackVersionManuallyCreated();
       toast.success(`Saved new version '${saveName}'`);
       data.reFetchVersions?.();
       reset();

@@ -14,8 +14,9 @@ import * as IntentDuck from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
+import { EntityCreationType } from '@/ducks/tracking/constants';
 import { connect } from '@/hocs';
-import { useEnableDisable, useModals } from '@/hooks';
+import { useEnableDisable, useModals, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 import EmptyContainer from '../EmptyContainer';
@@ -40,6 +41,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
 }) => {
   const { toggle: toggleSlotEdit, close: closeSlotEdit } = useModals(ModalType.SLOT_EDIT);
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
+  const [trackingEvents] = useTrackingEvents();
 
   const scrollbarsRef = React.useRef<Scrollbars>(null);
 
@@ -86,8 +88,10 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
       isCreate: true,
       onSave: ({ type, name, color, inputs = [] }: Realtime.Slot) => {
         const id = Utils.id.cuid.slug();
-
         createSlot(id, { id, type, name, color, inputs });
+
+        trackingEvents.trackEntityCreated({ creationType: EntityCreationType.IMM });
+
         closeSlotEdit();
         setSelectedID(id);
       },

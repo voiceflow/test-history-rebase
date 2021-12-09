@@ -86,11 +86,20 @@ export enum EventName {
   VERSION_PREVIEW = 'Version Preview',
   INTENTS_EDIT = 'Intents Edit',
   ENTITIES_EDIT = 'Entities Edit',
+
+  ENTITY_CREATED = 'Entity Created',
+  VERSION_MANUALLY_CREATED = 'Version Manually Created',
 }
 
 export enum IntentEditType {
   EDITOR = 'editor',
   IMM = 'imm',
+}
+
+export enum EntityCreationType {
+  EDITOR = 'editor',
+  IMM = 'imm',
+  PASTE = 'paste',
 }
 
 export enum OnboardingChoice {

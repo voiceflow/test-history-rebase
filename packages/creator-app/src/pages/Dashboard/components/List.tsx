@@ -1,16 +1,16 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, ButtonVariant, Dropdown, IconButton, IconButtonVariant, KeyName } from '@voiceflow/ui';
+import { Button, ButtonVariant, Dropdown, IconButton, IconButtonVariant } from '@voiceflow/ui';
 import cn from 'classnames';
 import _constant from 'lodash/constant';
 import React from 'react';
 
-import Form from '@/components/LegacyForm';
 import { Permission } from '@/config/permissions';
 import { ScrollContextProvider } from '@/contexts';
 import { DragItem as BaseDragItem, DropOptions, InjectedDraggableComponentProps, withDraggable } from '@/hocs';
-import { useHorizontalScrollToNode, usePermission, useScrollHelpers, useScrollStickySides } from '@/hooks';
+import { useHorizontalScrollToNode, useLinkedState, usePermission, useScrollHelpers, useScrollStickySides } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import { DashboardClassName } from '@/styles/constants';
+import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import DragZone from './DragZone';
 import Item from './Item';
@@ -35,7 +35,7 @@ const DropContainer = withDraggable({
 
 export interface ListProps extends InjectedDraggableComponentProps {
   id: string;
-  name?: string;
+  name: string;
   projects?: Realtime.AnyProject[];
   isNew?: boolean;
   createProject: (listID: string) => void;
@@ -48,12 +48,6 @@ export interface ListProps extends InjectedDraggableComponentProps {
   isDragging?: boolean;
   projectID?: string;
   isDraggingPreview?: boolean;
-}
-
-interface FormProps {
-  values: Realtime.ProjectList;
-  handleBlur: (key: keyof Realtime.ProjectList) => void;
-  handleChange: <K extends keyof Realtime.ProjectList>(key: K, value: Realtime.ProjectList[K]) => void;
 }
 
 export const List: React.FC<ListProps> = ({
@@ -75,12 +69,13 @@ export const List: React.FC<ListProps> = ({
 }) => {
   const isEmpty = !projects || !projects.length;
 
-  const listRef = React.useRef<HTMLElement | null>(null);
+  const listRef = React.useRef<HTMLDivElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
 
+  const [localName, setLocalName] = useLinkedState(name);
   const [isCreatingSkill] = useToggle(false);
 
   useHorizontalScrollToNode(listRef, isCreated, [id, isCreated]);
@@ -90,6 +85,8 @@ export const List: React.FC<ListProps> = ({
   const [isHeaderShadowShown, isFooterShadowShown] = useScrollStickySides(bodyRef, [projects]);
 
   const [moving, setMoving] = React.useState(false);
+
+  const saveName = React.useCallback(() => onRename?.(id, localName), [id, localName, onRename]);
 
   React.useEffect(() => {
     if (isNew) {
@@ -105,123 +102,110 @@ export const List: React.FC<ListProps> = ({
         '__is-draggable __is-dragging': isDraggingPreview,
       })}
     >
-      <Form
-        onRef={(node: HTMLElement) => {
-          listRef.current = node;
-        }}
+      <div
+        ref={listRef}
         style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
         className={cn({
           hidden: isDragging,
           '__type-create': isCreatingSkill,
           '__is-draggable __is-dragging': isDraggingPreview,
         })}
-        initialValues={{ name }}
-        resetToInitialFields={['name']}
       >
-        {({ values, handleBlur, handleChange }: FormProps) => {
-          const onInputNameBlur = () => {
-            handleBlur('name');
-            values.name && onRename && values.name !== name && onRename(id, values.name);
-          };
+        <ScrollContextProvider value={scrollHelpers}>
+          {isDragging && <div style={{ top: 0, left: 0, right: 0, bottom: 0 }} className={cn('h-pos-a', DashboardClassName.LIST_DROPZONE)} />}
 
-          return (
-            <ScrollContextProvider value={scrollHelpers}>
-              {isDragging && <div style={{ top: 0, left: 0, right: 0, bottom: 0 }} className={cn('h-pos-a', DashboardClassName.LIST_DROPZONE)} />}
+          <DropContainer
+            id={0}
+            index={0}
+            listId={id}
+            onMove={onMoveProject}
+            className={cn(DashboardClassName.LIST_HEADER, {
+              'h-o-0': isDragging,
+              __scrolling: isHeaderShadowShown,
+            })}
+          >
+            <div className={DashboardClassName.LIST_HEADER_MAIN}>
+              <input
+                ref={inputRef}
+                className={cn('borderless-input', DashboardClassName.LIST_HEADER_TITLE)}
+                value={localName}
+                onBlur={saveName}
+                disabled={!canManageLists}
+                onChange={withTargetValue(setLocalName)}
+                onKeyPress={withEnterPress(saveName)}
+                maxLength={32}
+                placeholder="Enter list name"
+              />
+            </div>
 
-              <DropContainer
-                id={0}
-                index={0}
-                listId={id}
-                onMove={onMoveProject}
-                className={cn(DashboardClassName.LIST_HEADER, {
-                  'h-o-0': isDragging,
-                  __scrolling: isHeaderShadowShown,
-                })}
-              >
-                <div className={DashboardClassName.LIST_HEADER_MAIN}>
-                  <input
-                    ref={inputRef}
-                    className={cn('borderless-input', DashboardClassName.LIST_HEADER_TITLE)}
-                    value={values.name}
-                    onBlur={onInputNameBlur}
-                    disabled={!canManageLists}
-                    onChange={({ target }) => handleChange('name', target.value)}
-                    onKeyPress={({ key }) => key === KeyName.ENTER && onInputNameBlur()}
-                    maxLength={32}
-                    placeholder="Enter list name"
-                  />
-                </div>
-
-                {canManageLists && (
-                  <div className={DashboardClassName.LIST_HEADER_ASIDE}>
-                    <Dropdown
-                      options={[
-                        {
-                          label: 'Remove List',
-                          onClick: () => onRemove({ id, name, projects }),
-                        },
-                      ]}
-                      placement="bottom-end"
-                    >
-                      {(ref, onToggle, isOpen) => (
-                        <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
-                      )}
-                    </Dropdown>
-                  </div>
-                )}
-              </DropContainer>
-
-              {!isEmpty && (
-                <div ref={bodyRef} className={cn(DashboardClassName.LIST_BODY, { 'h-o-0': isDragging, still: !moving })}>
-                  <div ref={innerRef} className={DashboardClassName.LIST_BODY_INNER}>
-                    <ul className={DashboardClassName.PROJECT_LIST}>
-                      {projects.map((project, index) => {
-                        if (!project) return null;
-
-                        return (
-                          <li key={project.id} className={DashboardClassName.PROJECT_LIST_ITEM}>
-                            <Item
-                              index={index}
-                              id={project.id}
-                              versionID={project.versionID}
-                              listId={id}
-                              created={project.created}
-                              isFB={false}
-                              avatarUrl={project.image}
-                              name={project.name}
-                              diagram={project.diagramID}
-                              platform={project.platform}
-                              onDrop={onDropProject}
-                              onMove={onMoveProject}
-                              onToggleDragging={setMoving}
-                              language={project.locales}
-                              isLive={project.isLive}
-                            />
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                </div>
-              )}
-              {canManageProjects && (
-                <div
-                  className={cn(DashboardClassName.LIST_FOOTER, {
-                    'h-o-0': isDragging,
-                    __scrolling: isFooterShadowShown,
-                  })}
+            {canManageLists && (
+              <div className={DashboardClassName.LIST_HEADER_ASIDE}>
+                <Dropdown
+                  options={[
+                    {
+                      label: 'Remove List',
+                      onClick: () => onRemove({ id, name, projects }),
+                    },
+                  ]}
+                  placement="bottom-end"
                 >
-                  <div className={DashboardClassName.LIST_FOOTER_CENTER}>
-                    <Button variant={ButtonVariant.TERTIARY} onClick={() => createProject(id)}>
-                      Create Project
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </ScrollContextProvider>
-          );
-        }}
-      </Form>
+                  {(ref, onToggle, isOpen) => (
+                    <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
+                  )}
+                </Dropdown>
+              </div>
+            )}
+          </DropContainer>
+
+          {!isEmpty && (
+            <div ref={bodyRef} className={cn(DashboardClassName.LIST_BODY, { 'h-o-0': isDragging, still: !moving })}>
+              <div ref={innerRef} className={DashboardClassName.LIST_BODY_INNER}>
+                <ul className={DashboardClassName.PROJECT_LIST}>
+                  {projects.map((project, index) => {
+                    if (!project) return null;
+
+                    return (
+                      <li key={project.id} className={DashboardClassName.PROJECT_LIST_ITEM}>
+                        <Item
+                          index={index}
+                          id={project.id}
+                          versionID={project.versionID}
+                          listId={id}
+                          created={project.created}
+                          isFB={false}
+                          avatarUrl={project.image}
+                          name={project.name}
+                          diagram={project.diagramID}
+                          platform={project.platform}
+                          onDrop={onDropProject}
+                          onMove={onMoveProject}
+                          onToggleDragging={setMoving}
+                          language={project.locales}
+                          isLive={project.isLive}
+                        />
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+          )}
+          {canManageProjects && (
+            <div
+              className={cn(DashboardClassName.LIST_FOOTER, {
+                'h-o-0': isDragging,
+                __scrolling: isFooterShadowShown,
+              })}
+            >
+              <div className={DashboardClassName.LIST_FOOTER_CENTER}>
+                <Button variant={ButtonVariant.TERTIARY} onClick={() => createProject(id)}>
+                  Create Project
+                </Button>
+              </div>
+            </div>
+          )}
+        </ScrollContextProvider>
+      </div>
       {isDragging && <DragZone className={DashboardClassName.LIST_DRAGZONE} />}
     </div>
   );

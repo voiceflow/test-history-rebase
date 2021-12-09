@@ -352,12 +352,9 @@ jobs:
       - checkout
       - vfcommon/install_node_modules
       - vfcommon/install_cpio
-      - vfcommon/exec_command_when_package_changed_monorepo:
-          step_name: Build dependencies
+      - run:
+          name: Build dependencies
           command: yarn build:deps
-          package_to_force_execution: 'creator-app'
-          force_execution: << pipeline.parameters.build-any >>
-          run_on_root: true
       - restore_cache:
           name: Restoring jest Cache
           keys:

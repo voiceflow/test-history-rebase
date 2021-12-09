@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.562.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.562.3...@voiceflow/creator-app@1.562.4) (2021-12-09)
+
+
+### Bug Fixes
+
+* pasting intent step clears selected intent (VF-2452) ([#4756](https://github.com/voiceflow/creator-app/issues/4756)) ([bce319a](https://github.com/voiceflow/creator-app/commit/bce319acff7a47502c5ec5bc5a2177ba59c92a60))
+
+
+
+
+
 ## [1.562.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.562.2...@voiceflow/creator-app@1.562.3) (2021-12-08)
 
 

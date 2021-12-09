@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.563.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.562.4...@voiceflow/creator-app@1.563.0) (2021-12-09)
+
+
+### Features
+
+* **tracking:** adds entity created and version manually created product data tracking (VF-2238) ([#4698](https://github.com/voiceflow/creator-app/issues/4698)) ([ed18ced](https://github.com/voiceflow/creator-app/commit/ed18ced6502200a8e90f2eae598979e4dc0af999))
+
+
+
+
+
 ## [1.562.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.562.3...@voiceflow/creator-app@1.562.4) (2021-12-09)
 
 

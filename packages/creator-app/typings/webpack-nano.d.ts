@@ -39,17 +39,18 @@ declare module 'webpack-nano/argv' {
     privateCloud: boolean;
 
     // feature flags
-    ff_gadgets: boolean;
     ff_trace: boolean;
-    ff_wavenetVoices: boolean;
+    ff_gadgets: boolean;
+    ff_natoApco: boolean;
+    ff_captureV2: boolean;
     ff_ownerRole: boolean;
     ff_asrBypass: boolean;
-    ff_natoApco: boolean;
+    ff_dialogflow: boolean;
     ff_motorolaSSO: boolean;
     ff_testReports: boolean;
-    ff_atomicActions: boolean;
-    ff_dialogflow: boolean;
     ff_googleCreate: boolean;
+    ff_atomicActions: boolean;
+    ff_wavenetVoices: boolean;
     ff_topicsAndComponents: boolean;
     ff_account_page_redesign: boolean;
   }>;

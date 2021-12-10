@@ -14,6 +14,7 @@ import {
   ff_account_page_redesign,
   ff_asrBypass,
   ff_atomicActions,
+  ff_captureV2,
   ff_dialogflow,
   ff_gadgets,
   ff_googleCreate,
@@ -65,14 +66,15 @@ export default {
 
   // feature flags
   FF_GADGETS: ff_gadgets && 'true',
-  FF_WAVENET_VOICES: ff_wavenetVoices && 'true',
+  FF_NATO_ACPO: ff_natoApco && 'true',
+  FF_CAPTURE_V2: ff_captureV2 && 'true',
   FF_OWNER_ROLE: ff_ownerRole && 'true',
   FF_ASR_BYPASS: ff_asrBypass && 'true',
-  FF_NATO_ACPO: ff_natoApco && 'true',
-  FF_MOTOROLA_SSO: ff_motorolaSSO && 'true',
-  FF_ATOMIC_ACTIONS: ff_atomicActions && 'true',
   FF_DIALOGFLOW: ff_dialogflow && 'true',
+  FF_MOTOROLA_SSO: ff_motorolaSSO && 'true',
   FF_GOOGLE_CREATE: ff_googleCreate && 'true',
+  FF_WAVENET_VOICES: ff_wavenetVoices && 'true',
+  FF_ATOMIC_ACTIONS: ff_atomicActions && 'true',
   FF_TOPICS_AND_COMPONENTS: ff_topicsAndComponents && 'true',
   FF_ACCOUNT_PAGE_REDESIGN: ff_account_page_redesign && 'true',
 

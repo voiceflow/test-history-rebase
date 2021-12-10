@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.566.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.565.0...@voiceflow/creator-app@1.566.0) (2021-12-10)
+
+
+### Features
+
+* start block right clock (VF-2458) ([#4779](https://github.com/voiceflow/creator-app/issues/4779)) ([8109e6e](https://github.com/voiceflow/creator-app/commit/8109e6e3c325260609e2f8a2b503a9e864b79abf))
+
+
+
+
+
 # [1.565.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.564.1...@voiceflow/creator-app@1.565.0) (2021-12-10)
 
 

@@ -6,13 +6,11 @@ import { Tooltip } from 'react-tippy';
 
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import { HTTPS_URL_REGEX, IMAGE_FILE_FORMATS } from '@/constants';
-import { InjectedWithUploadProps, withUpload } from '@/hocs';
+import { ImageInjectedWithUploadProps, withUpload } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 
 import { ErrorText } from '../IconUpload/components';
 import { Container, Image, ImageContainer, ImageUploadInput, RemoveButton } from './components';
-
-const AnyTypeImageUploadInput = ImageUploadInput as any;
 
 const MAX_SIZE = 10 * 1024 * 1024;
 
@@ -22,13 +20,15 @@ const UPLOAD_ERROR = {
   INVALID_URL: 'The link is invalid, make sure to use https',
 };
 
-const validate = (acceptedFiles: Blob[]) => {
+const validate = (acceptedFiles: File[]) => {
   if (acceptedFiles.length !== 1) {
     return UPLOAD_ERROR.ONE_FILE_LIMIT;
   }
+
   if (acceptedFiles[0].size > MAX_SIZE) {
     return UPLOAD_ERROR.TOO_LARGE;
   }
+
   return null;
 };
 
@@ -40,104 +40,99 @@ export const validateLink = (link = '') => {
   return null;
 };
 
-interface FullImageProps {
-  image: Nullable<string>;
-  update: (url: string | string[] | null) => void;
-  showRemove: boolean;
-  imageHeight?: number;
-  canUseLink?: boolean;
+interface FullImagePropsOwn {
+  image?: Nullable<string>;
   ratio?: number;
+  showRemove: boolean;
+  canUseLink?: boolean;
+  imageHeight?: number;
 }
 
-const FullImage: React.FC<FullImageProps & InjectedWithUploadProps> = ({
-  image,
-  update,
-  setError,
-  isLoading,
-  error,
-  onDropAccepted,
-  onDropRejected,
-  showRemove = true,
-  imageHeight,
-  canUseLink = true,
-  ratio,
-}) => {
-  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
-    accept: IMAGE_FILE_FORMATS,
-    onDropAccepted,
-    onDropRejected: Utils.functional.noop,
-    disabled: isLoading,
-  });
-  const [loadError, setLoadError] = React.useState<Nullable<string>>(null);
-  const [removeButton, showRemoveButton, hideRemoveButton] = useEnableDisable(false);
+interface FullImageProps extends ImageInjectedWithUploadProps, FullImagePropsOwn {}
 
-  const imageUploadRef = React.useRef<HTMLInputElement>();
+const FullImage = React.forwardRef<HTMLDivElement, FullImageProps>(
+  ({ error, image, ratio, update, setError, isLoading, canUseLink = true, showRemove = true, imageHeight, onDropAccepted, onDropRejected }, ref) => {
+    const [loadError, setLoadError] = React.useState<Nullable<string>>(null);
+    const [removeButton, showRemoveButton, hideRemoveButton] = useEnableDisable(false);
 
-  const clickImageInput = () => {
-    if (isLoading) {
-      return;
+    const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
+      accept: IMAGE_FILE_FORMATS,
+      disabled: isLoading,
+      onDropAccepted,
+      onDropRejected: Utils.functional.noop,
+    });
+
+    const imageUploadRef = React.useRef<HTMLInputElement>(null);
+
+    const clickImageInput = () => {
+      if (isLoading) {
+        return;
+      }
+
+      imageUploadRef.current?.click();
+    };
+
+    React.useEffect(() => {
+      setLoadError(null);
+    }, [image]);
+
+    let content = null;
+
+    if (isDragReject) {
+      content = <ErrorText>Invalid</ErrorText>;
+    } else if (error) {
+      content = <ErrorText>Error</ErrorText>;
+    } else if (isLoading) {
+      content = <LoadCircle color="transparent" isMd />;
+    } else if (loadError) {
+      content = <Tooltip title={image || undefined}>{image}</Tooltip>;
+    } else if (image) {
+      content = <Image src={image} ratio={ratio} />;
     }
 
-    imageUploadRef.current?.click();
-  };
+    return image ? (
+      <Container
+        ref={ref}
+        onMouseEnter={showRemoveButton}
+        onMouseLeave={hideRemoveButton}
+        {...(getRootProps() as any)}
+        height={imageHeight}
+        isActive={isDragActive}
+        autoHeight={!!ratio}
+      >
+        <ImageUploadInput ref={imageUploadRef} type="file" accept={IMAGE_FILE_FORMATS.join(',')} {...getInputProps()} />
 
-  React.useEffect(() => {
-    setLoadError(null);
-  }, [image]);
+        <>
+          {showRemove && removeButton && (
+            <RemoveButton onClick={stopPropagation(() => update(''))}>
+              <SvgIcon size={8} icon="close" color="#8da2b5" />
+            </RemoveButton>
+          )}
 
-  let content = null;
-
-  if (isDragReject) {
-    content = <ErrorText>Invalid</ErrorText>;
-  } else if (error) {
-    content = <ErrorText>Error</ErrorText>;
-  } else if (isLoading) {
-    content = <LoadCircle color="transparent" isMd />;
-  } else if (loadError) {
-    content = <Tooltip title={image || undefined}>{image}</Tooltip>;
-  } else if (image) {
-    content = <Image src={image} ratio={ratio} />;
+          <ImageContainer onClick={clickImageInput}>{content}</ImageContainer>
+        </>
+      </Container>
+    ) : (
+      <DropUpload
+        ref={ref}
+        error={error}
+        label="image/GIF"
+        isImage
+        height={imageHeight}
+        onUpdate={update}
+        setError={setError}
+        isLoading={isLoading}
+        clearError={() => setError(null)}
+        canUseLink={canUseLink}
+        withVariables
+        onValidateLink={validateLink}
+        onDropAccepted={onDropAccepted}
+        onDropRejected={onDropRejected}
+        linkPlaceholder="Add link or Variable using '{'"
+        acceptedFileTypes={IMAGE_FILE_FORMATS}
+      />
+    );
   }
+);
 
-  return image ? (
-    <Container
-      onMouseEnter={showRemoveButton}
-      onMouseLeave={hideRemoveButton}
-      {...getRootProps()}
-      isActive={isDragActive}
-      height={imageHeight}
-      autoHeight={!!ratio}
-    >
-      <AnyTypeImageUploadInput onChange={onDropAccepted} ref={imageUploadRef} type="file" accept={IMAGE_FILE_FORMATS} {...getInputProps()} />
-      <>
-        {showRemove && removeButton && (
-          <RemoveButton onClick={stopPropagation(() => update(''))}>
-            <SvgIcon size={8} icon="close" color="#8da2b5" />
-          </RemoveButton>
-        )}
-
-        <ImageContainer onClick={clickImageInput}>{content}</ImageContainer>
-      </>
-    </Container>
-  ) : (
-    <DropUpload
-      onUpdate={update}
-      height={imageHeight}
-      setError={setError}
-      label="image/GIF"
-      isImage
-      linkPlaceholder="Add link or Variable using '{'"
-      clearError={() => setError(null)}
-      onValidateLink={validateLink}
-      acceptedFileTypes={IMAGE_FILE_FORMATS}
-      onDropAccepted={onDropAccepted}
-      onDropRejected={onDropRejected}
-      isLoading={isLoading}
-      error={error}
-      withVariables
-      canUseLink={canUseLink}
-    />
-  );
-};
-
-export default withUpload(FullImage as React.FC<InjectedWithUploadProps>, { fileType: 'image', clientFunc: 'uploadImage', validate });
+export default withUpload(FullImage, { fileType: 'image', clientFunc: 'uploadImage', validate });

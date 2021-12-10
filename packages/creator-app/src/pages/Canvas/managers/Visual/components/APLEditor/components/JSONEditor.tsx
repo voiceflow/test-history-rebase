@@ -10,8 +10,6 @@ import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { DataTypes, download } from '@/utils/dom';
 import { handleJSONFileRead } from '@/utils/files';
 
-const AnyJsonUpload = JsonUpload as any;
-
 interface JSONEditorProps {
   onChange: (data: { datasource?: string; aplCommands?: string; jsonFileName?: string; document?: string }) => void;
   datasource?: string;
@@ -28,7 +26,7 @@ const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplC
     onChange({ document: '', datasource: '', jsonFileName: '' });
   };
 
-  const customOnDropAccept = async (acceptedFiles: File[]) => {
+  const onUpload = async (acceptedFiles: File[]) => {
     const fileReader = new FileReader();
 
     fileReader.onloadend = (event) => {
@@ -71,7 +69,8 @@ const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplC
         isDividerNested
         customContentStyling={{ paddingBottom: '20px' }}
       >
-        <AnyJsonUpload customOnDropAccept={customOnDropAccept} file={jsonFileName} onRemove={removeFile} />
+        <JsonUpload onUpload={onUpload} fileName={jsonFileName} onRemove={removeFile} />
+
         <Link href={APL_TOOL_LINK}>Authoring Tool</Link>
       </EditorSection>
 

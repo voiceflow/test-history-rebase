@@ -2,7 +2,7 @@ import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 
-import { InjectedWithUploadProps } from '@/hocs';
+import { BaseInjectedWithUploadProps } from '@/hocs';
 
 import LinkUpload from '../LinkUpload';
 import Container from './components/Container';
@@ -13,50 +13,53 @@ import Neutral from './components/Neutral';
 import Success from './components/Success';
 import { UploadMode } from './constants';
 
-interface DropUploadProps {
+interface DropUploadProps extends Partial<BaseInjectedWithUploadProps> {
   label?: string;
   height?: number;
   isImage?: boolean;
+  success?: boolean;
   onUpdate?: (url: string | null) => void;
-  onValidateLink?: (text: string) => Nullable<string>;
-  canUseLink?: boolean;
-  linkPlaceholder?: string;
-  clearError?: VoidFunction;
-  success?: string;
-  successLabel?: string;
-  acceptedFileTypes?: string[];
   className?: string;
+  canUseLink?: boolean;
+  clearError?: VoidFunction;
+  successLabel?: string;
   withVariables?: boolean;
   onSuccessClose?: VoidFunction;
+  onValidateLink?: (text: string) => Nullable<string>;
+  linkPlaceholder?: string;
+  acceptedFileTypes?: string[];
 }
 
-const DropUpload: React.FC<DropUploadProps & Partial<InjectedWithUploadProps>> = ({
-  label,
-  height,
-  isImage,
-  onDropAccepted,
-  onUpdate,
-  onValidateLink,
-  canUseLink = true,
-  linkPlaceholder = 'File link',
-  clearError,
-  onDropRejected,
-  isLoading,
-  error,
-  success,
-  successLabel,
-  onSuccessClose,
-  acceptedFileTypes = [], // MIME FORMAT
-  className,
-  withVariables,
-}) => {
+const DropUpload: React.ForwardRefRenderFunction<HTMLDivElement, DropUploadProps> = (
+  {
+    label,
+    error,
+    height,
+    success,
+    isImage,
+    onUpdate,
+    isLoading,
+    className,
+    canUseLink = true,
+    clearError,
+    successLabel,
+    withVariables,
+    onDropAccepted,
+    onValidateLink,
+    onDropRejected,
+    onSuccessClose,
+    linkPlaceholder = 'File link',
+    acceptedFileTypes = [], // MIME FORMAT
+  },
+  ref
+) => {
   const [uploadMode, setUploadMode] = React.useState<UploadMode>(UploadMode.DROP);
 
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     accept: acceptedFileTypes.toString(),
+    disabled: !!error || !!success || !!isLoading || uploadMode === UploadMode.LINK,
     onDropAccepted,
     onDropRejected,
-    disabled: !!error || !!success || !!isLoading || uploadMode === UploadMode.LINK,
   });
 
   let content = null;
@@ -84,14 +87,15 @@ const DropUpload: React.FC<DropUploadProps & Partial<InjectedWithUploadProps>> =
 
   return (
     <Container
-      height={height}
-      isDragReject={isDragReject}
+      ref={ref}
       error={error}
+      height={height}
       isImage={isImage}
       active={isDragActive}
-      {...getRootProps()}
-      className={className}
+      isDragReject={isDragReject}
+      {...(getRootProps() as any)}
       mode={uploadMode}
+      className={className}
     >
       <input {...getInputProps()} />
       {content}
@@ -99,4 +103,4 @@ const DropUpload: React.FC<DropUploadProps & Partial<InjectedWithUploadProps>> =
   );
 };
 
-export default DropUpload;
+export default React.forwardRef<HTMLDivElement, DropUploadProps>(DropUpload);

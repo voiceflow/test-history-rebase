@@ -4,7 +4,7 @@ import React from 'react';
 import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import { HTTPS_URL_REGEX } from '@/constants';
-import { InjectedWithUploadProps, withUpload } from '@/hocs';
+import { AudioInjectedWithUploadProps, withUpload } from '@/hocs';
 
 const MAX_SIZE = 10 * 1024 * 1024;
 
@@ -19,13 +19,15 @@ const LINK_ERROR = {
   INVALID_URL: 'The link is invalid, make sure to use https',
 };
 
-const validate = (acceptedFiles: Blob[]) => {
+const validate = (acceptedFiles: File[]) => {
   if (acceptedFiles.length !== 1) {
     return UPLOAD_ERROR.ONE_FILE_LIMIT;
   }
+
   if (acceptedFiles[0].size > MAX_SIZE) {
     return UPLOAD_ERROR.TOO_LARGE;
   }
+
   return null;
 };
 
@@ -37,36 +39,30 @@ const validateURL = (value: string) => {
   return null;
 };
 
-interface DropAudioProps {
+interface DropAudioOunProps {
   withVariables?: boolean;
-  update: (url: string | null) => void;
 }
 
-const DropAudio: React.FC<DropAudioProps & InjectedWithUploadProps> = ({
-  isLoading,
-  onDropAccepted,
-  onDropRejected,
-  error,
-  setError,
-  update,
-  withVariables,
-}) => (
-  <DropUpload
-    withVariables={withVariables}
-    linkPlaceholder={withVariables ? "Add link or Variable using '{'" : 'Add link'}
-    onDropAccepted={onDropAccepted}
-    clearError={() => setError(null)}
-    setError={setError}
-    onDropRejected={onDropRejected}
-    isLoading={isLoading}
-    className={CONTEXT_MENU_IGNORED_CLASS_NAME}
-    error={error}
-    label="audio file"
-    onUpdate={update}
-    onValidateLink={validateURL}
-  />
+interface DropAudioProps extends DropAudioOunProps, AudioInjectedWithUploadProps {}
+
+const DropAudio = React.forwardRef<HTMLDivElement, DropAudioProps>(
+  ({ error, update, setError, isLoading, withVariables, onDropAccepted, onDropRejected }, ref) => (
+    <DropUpload
+      ref={ref}
+      error={error}
+      label="audio file"
+      onUpdate={update}
+      setError={setError}
+      className={CONTEXT_MENU_IGNORED_CLASS_NAME}
+      isLoading={isLoading}
+      clearError={() => setError(null)}
+      withVariables={withVariables}
+      onValidateLink={validateURL}
+      onDropAccepted={onDropAccepted}
+      onDropRejected={onDropRejected}
+      linkPlaceholder={withVariables ? "Add link or Variable using '{'" : 'Add link'}
+    />
+  )
 );
 
-export default withUpload(DropAudio as React.FC<InjectedWithUploadProps>, { fileType: 'audio', clientFunc: 'uploadAudio', validate }) as React.FC<
-  DropAudioProps & Partial<InjectedWithUploadProps>
->;
+export default withUpload<HTMLDivElement, DropAudioOunProps>(DropAudio, { fileType: 'audio', clientFunc: 'uploadAudio', validate });

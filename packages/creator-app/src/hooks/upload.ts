@@ -15,7 +15,7 @@ export const useUpload = <C extends UploadConfig>(config: C) => {
   const [isLoading, loadingOn, loadingOff] = useEnableDisable();
 
   const onUpload = React.useCallback(
-    async (endpoint: Parameters<typeof client.file[C['clientFunc']]>[0], file: Blob) => {
+    async (endpoint: Parameters<typeof client.file[C['clientFunc']]>[0], file: File) => {
       const data = new FormData();
 
       data.append(fileType, file);

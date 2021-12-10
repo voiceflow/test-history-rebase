@@ -1,40 +1,79 @@
-/* eslint-disable import/prefer-default-export */
 import _constant from 'lodash/constant';
 import React from 'react';
 
 import { UploadConfig, useUpload } from '@/hooks/upload';
 import * as Sentry from '@/vendors/sentry';
 
-type Config = UploadConfig & {
-  validate?: (files: Blob[]) => string | null;
+interface Config extends UploadConfig {
+  validate?: (files: File[]) => string | null;
   errorMessage?: string;
-};
+}
 
-export type RequiredWithUploadProps<F> = {
-  update: (url: string | string[] | null) => void;
-} & (F extends 'uploadImage' ? { endpoint?: null | string | string[] } : F extends 'uploadAudio' ? { endpoint: string } : never);
+interface AudioConfig extends Config {
+  clientFunc: 'uploadAudio';
+}
 
-export interface InjectedWithUploadProps {
+interface ImageConfig extends Config {
+  clientFunc: 'uploadImage';
+}
+
+interface AudioWithUploadProps {
+  update: (url: string | null) => void;
+  endpoint: string;
+}
+
+interface ImageWithUploadProps {
+  update: (url: string | null) => void;
+  endpoint?: string;
+}
+
+interface ImagesWithUploadProps {
+  update: (url: string[] | null) => void;
+  endpoint: string[];
+}
+
+export interface BaseInjectedWithUploadProps {
   error: null | string;
   setError: (error: null | string) => void;
   isLoading: boolean;
   onDropRejected: () => void;
-  onDropAccepted: ((files: Blob[]) => void) | ((files: File[]) => void);
-  endpoint?: null | string | string[];
+  onDropAccepted: (files: File[]) => void;
 }
 
-export const withUpload = <C extends Config, P extends RequiredWithUploadProps<C['clientFunc']>, R extends any = any>(
-  WrappedComponent: React.ComponentType<InjectedWithUploadProps>,
+export interface AudioInjectedWithUploadProps extends BaseInjectedWithUploadProps, AudioWithUploadProps {}
+export interface ImageInjectedWithUploadProps extends BaseInjectedWithUploadProps {
+  update: (url: string | string[] | null) => void;
+  endpoint?: string | string[];
+}
+
+export type AnyWithUploadProps = AudioWithUploadProps | ImageWithUploadProps | ImagesWithUploadProps;
+
+export type AnyInjectedWithUploadProps = AudioInjectedWithUploadProps | ImageInjectedWithUploadProps;
+
+const isImagesProps = (props: AnyWithUploadProps): props is ImagesWithUploadProps => Array.isArray(props.endpoint);
+
+export function withUpload<R, P>(
+  WrappedComponent: React.ForwardRefExoticComponent<P & AudioInjectedWithUploadProps & React.RefAttributes<R>>,
+  config: AudioConfig
+): React.ForwardRefExoticComponent<React.PropsWithoutRef<P & AudioWithUploadProps> & React.RefAttributes<R>>;
+export function withUpload<R, P>(
+  WrappedComponent: React.ForwardRefExoticComponent<P & ImageInjectedWithUploadProps & React.RefAttributes<R>>,
+  config: ImageConfig
+): React.ForwardRefExoticComponent<React.PropsWithoutRef<P & (ImageWithUploadProps | ImagesWithUploadProps)> & React.RefAttributes<R>>;
+
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+export function withUpload<R, P>(
+  WrappedComponent: React.ForwardRefExoticComponent<P & React.RefAttributes<R> & (AudioInjectedWithUploadProps | ImageInjectedWithUploadProps)>,
   config: Config
-): React.ForwardRefExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<R>> =>
-  React.forwardRef<R, P>(({ endpoint, update, ...props }: P, ref) => {
+): React.ForwardRefExoticComponent<React.PropsWithoutRef<P & AnyWithUploadProps> & React.RefAttributes<R>> {
+  return React.forwardRef<R, P & AnyWithUploadProps>((props, ref) => {
     const { fileType, errorMessage, clientFunc, validate = _constant(null) } = config;
 
     const [error, setError] = React.useState<null | string>(null);
     const { onUpload, isLoading } = useUpload({ fileType, clientFunc });
 
     const onDropAccepted = React.useCallback(
-      async (acceptedFiles: Blob[]) => {
+      async (acceptedFiles: File[]) => {
         const err = validate(acceptedFiles);
 
         setError(err);
@@ -44,20 +83,22 @@ export const withUpload = <C extends Config, P extends RequiredWithUploadProps<C
         }
 
         try {
-          if (Array.isArray(endpoint)) {
-            const urls = await Promise.all(endpoint.map((item) => onUpload(item, acceptedFiles[0])));
-            update(urls);
+          if (isImagesProps(props)) {
+            const urls = await Promise.all(props.endpoint.map((item) => onUpload(item, acceptedFiles[0])));
+
+            props.update(urls);
           } else {
-            const url = await onUpload(endpoint, acceptedFiles[0]);
-            update(url);
+            const url = await onUpload(props.endpoint, acceptedFiles[0]);
+
+            props.update(url);
           }
         } catch (error) {
-          update(null);
+          props.update(null);
           Sentry.error(error);
           setError(errorMessage || 'There was an error');
         }
       },
-      [endpoint, validate, update, onUpload, errorMessage]
+      [validate, onUpload, errorMessage, props.update, props.endpoint]
     );
 
     const onDropRejected = React.useCallback(() => {
@@ -68,12 +109,12 @@ export const withUpload = <C extends Config, P extends RequiredWithUploadProps<C
       <WrappedComponent
         ref={ref}
         error={error}
-        update={update}
         setError={setError}
         isLoading={isLoading}
         onDropRejected={onDropRejected}
         onDropAccepted={onDropAccepted}
-        {...props}
+        {...(props as any)}
       />
     );
   });
+}

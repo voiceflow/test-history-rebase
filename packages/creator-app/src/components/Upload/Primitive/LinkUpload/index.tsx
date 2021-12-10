@@ -1,10 +1,10 @@
 import { Nullable } from '@voiceflow/common';
-import { Badge, Input, KeyName, stopPropagation } from '@voiceflow/ui';
+import { Badge, Input, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 import validUrl from 'valid-url';
 
 import VariablesInput from '@/components/VariablesInput';
-import { withKeyPress } from '@/utils/dom';
+import { withEnterPress, withTargetValue } from '@/utils/dom';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import { BackArrow, ErrorMessage, LinkUploadInputContainer } from './components';
@@ -71,8 +71,8 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUpdate, onBack, validate = va
         <Input
           {...inputProps}
           error={!!error}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyPress={withKeyPress(KeyName.ENTER, () => validateAndUpdate(value))}
+          onChange={withTargetValue(setValue)}
+          onKeyPress={withEnterPress(() => validateAndUpdate(value))}
           rightAction={<Badge onClick={() => validateAndUpdate(value)}>Enter</Badge>}
         />
       )}

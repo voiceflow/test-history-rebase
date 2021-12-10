@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.565.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.564.1...@voiceflow/creator-app@1.565.0) (2021-12-10)
+
+
+### Features
+
+* **analytics:** added variable created segment event tracking (VF-2240) ([#4758](https://github.com/voiceflow/creator-app/issues/4758)) ([5a673c3](https://github.com/voiceflow/creator-app/commit/5a673c341fae3d541855ab69ada52f582b587e2f))
+
+
+
+
+
 ## [1.564.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.564.0...@voiceflow/creator-app@1.564.1) (2021-12-10)
 
 **Note:** Version bump only for package @voiceflow/creator-app

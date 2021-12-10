@@ -22,7 +22,7 @@ export const SetStep: React.FC<SetStepProps> = ({ title, nodeID, nextPortID }) =
         portID={nextPortID}
         iconColor={NODE_CONFIG.iconColor}
         placeholder="Name Set step"
-        labelVariant={StepLabelVariant.SECONDARY}
+        labelVariant={StepLabelVariant.PRIMARY}
         multilineLabel
       />
     </Section>

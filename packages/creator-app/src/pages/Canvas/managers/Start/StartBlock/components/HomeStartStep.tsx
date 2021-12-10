@@ -6,7 +6,6 @@ import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
 import { getPlatformValue } from '@/utils/platform';
-import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 export interface HomeStartStepProps {
   label?: string;
@@ -20,7 +19,6 @@ const HomeStartStep: React.FC<HomeStartStepProps> = ({ label, platform, invocati
     <Section>
       <Item
         icon={getPlatformMeta(platform).icon}
-        iconColor={getPlatformMeta(platform).iconColor}
         label={getPlatformValue(
           platform,
           {
@@ -29,8 +27,9 @@ const HomeStartStep: React.FC<HomeStartStepProps> = ({ label, platform, invocati
           },
           <>{label || 'Project starts here'}</>
         )}
-        labelVariant={isAnyGeneralPlatform(platform) ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
         portID={portID}
+        iconColor={getPlatformMeta(platform).iconColor}
+        labelVariant={StepLabelVariant.PRIMARY}
       />
     </Section>
   </Step>

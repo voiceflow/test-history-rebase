@@ -23,7 +23,7 @@ const FlowStartStep: React.FC<FlowStartStepProps> = ({ label, portID }) => {
           label={label || (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? 'Component starts here' : 'Conversation continues here')}
           portID={portID}
           iconColor="#279745"
-          labelVariant={StepLabelVariant.SECONDARY}
+          labelVariant={StepLabelVariant.PRIMARY}
         />
       </Section>
     </Step>

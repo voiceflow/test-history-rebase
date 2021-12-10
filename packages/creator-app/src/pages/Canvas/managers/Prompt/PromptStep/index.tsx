@@ -19,11 +19,11 @@ export const PromptStep: React.FC<PromptStepProps> = ({ nodeID, noMatch, noReply
   <Step nodeID={nodeID}>
     <Section>
       <Item
+        icon={NODE_CONFIG.icon}
         label="Listening for an intent…"
         portID={null}
-        labelVariant={StepLabelVariant.SECONDARY}
-        icon={NODE_CONFIG.icon}
         iconColor={NODE_CONFIG.iconColor}
+        labelVariant={StepLabelVariant.PRIMARY}
       />
 
       <NoMatchItem portID={noMatchPortID} noMatch={noMatch} />

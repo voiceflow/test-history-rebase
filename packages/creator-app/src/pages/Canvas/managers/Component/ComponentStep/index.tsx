@@ -29,7 +29,7 @@ export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, nex
         onClick={label ? stopPropagation(onClickComponent) : undefined}
         iconColor={NODE_CONFIG.iconColor}
         placeholder="Select a component"
-        labelVariant={StepLabelVariant.SECONDARY}
+        labelVariant={StepLabelVariant.PRIMARY}
       />
     </Section>
   </Step>

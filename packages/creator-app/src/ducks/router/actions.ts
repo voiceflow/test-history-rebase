@@ -48,7 +48,7 @@ export const goToNewProject = (listID: string) => goTo(generatePath(Path.NEW_PRO
 
 export const goToNewIntroProject = () => goTo(Path.NEW_INTRO_PROJECT);
 
-export const goToOnboarding = () => goTo(`${Path.ONBOARDING}${window.location.search}`);
+export const goToOnboarding = (search?: string) => goTo(`${Path.ONBOARDING}${search || window.location.search}`);
 
 export const goToPrototype = (versionID: string, nodeID?: string) =>
   goTo(`${generatePath(Path.PROJECT_PROTOTYPE, { versionID })}${nodeID ? Query.stringify({ nodeID }) : ''}`);

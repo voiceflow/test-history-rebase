@@ -29,7 +29,7 @@ export interface SignupFormProps {
   promo?: boolean;
 }
 
-export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormProps> = ({ signup, promo, query, goToLogin }) => {
+export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormProps> = ({ search, signup, promo, query, goToLogin }) => {
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
   const [password, setPassword] = React.useState('');
   const [name, setName] = React.useState(query.name ? query.name : '');
@@ -63,6 +63,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
           password,
           coupon: coupon.toLowerCase(),
           referralCode: query.referral,
+          urlSearch: search,
         });
       }
     } catch (err) {

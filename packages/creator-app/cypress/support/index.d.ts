@@ -49,7 +49,7 @@ declare namespace Cypress {
     /**
      * verification confirmation through API of the email of the user created during the signup flow
      */
-    verifyEmail(): Chainable;
+    verifyEmail(queryParam?: string): Chainable;
 
     /**
      * verify the email of the user created during the signup flow

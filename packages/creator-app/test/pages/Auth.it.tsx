@@ -45,6 +45,7 @@ describe('Onboarding', () => {
       password: TEST_PASSWORD,
       coupon: '',
       referralCode: undefined,
+      urlSearch: '',
     });
   });
 });

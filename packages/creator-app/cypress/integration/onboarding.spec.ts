@@ -52,9 +52,10 @@ context('Onboarding', () => {
     beforeEach(() => cy.removeTestAccount());
 
     it('new user', () => {
-      cy.signup('?promo=student');
+      const queryParam = '?promo=student';
+      cy.signup(queryParam);
       onboarding.assert.verifyEmailTitle();
-      cy.verifyEmail();
+      cy.verifyEmail(queryParam);
 
       cy.shouldBeOn(onboarding);
       onboarding.el.getStartedButton.click();
@@ -87,9 +88,10 @@ context('Onboarding', () => {
     beforeEach(() => cy.removeTestAccount());
 
     it('new user creator signup flow', () => {
-      cy.signup('?ob_payment=true&ob_plan=creator&ob_period=MO');
+      const queryParam = '?ob_payment=true&ob_plan=creator&ob_period=MO';
+      cy.signup(queryParam);
       onboarding.assert.verifyEmailTitle();
-      cy.verifyEmail();
+      cy.verifyEmail(queryParam);
 
       cy.shouldBeOn(onboarding);
       onboarding.el.getStartedButton.click();

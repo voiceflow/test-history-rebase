@@ -1,13 +1,11 @@
 import { Box, ClickableText, toast } from '@voiceflow/ui';
 import React, { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { wordmark } from '@/assets';
 import client from '@/client';
 import * as Account from '@/ducks/account';
-import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
-import { useDispatch, useSelector, useSetup } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import Card from './components/Card';
@@ -16,10 +14,8 @@ import Title from './components/Title';
 
 const Verify: React.FC = () => {
   const email = useSelector(Account.userEmailSelector);
-  const history = useHistory();
 
   const logout = useDispatch(Session.logout);
-  const setRedirect = useDispatch(Recent.updateRecentRedirect);
 
   const handleResendEmail = useCallback(async () => {
     try {
@@ -29,12 +25,6 @@ const Verify: React.FC = () => {
       toast.error('too many attempts, please try again later');
     }
   }, []);
-
-  useSetup(() => {
-    const { pathname, search = '' } = history.location;
-
-    setRedirect(`${pathname}${search}` || null);
-  });
 
   return (
     <Container>

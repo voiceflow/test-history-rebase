@@ -17,14 +17,14 @@ Cypress.Commands.add('signup', (queryString = '') => {
   signupPage.submit();
 });
 
-Cypress.Commands.add('verifyEmail', () => {
+Cypress.Commands.add('verifyEmail', (queryParam = '') => {
   cy.exec(`${PSQL} -t -c "SELECT creator_id FROM creators WHERE email='${TEST_EMAIL}' LIMIT 1"`).then((result) => {
     const creatorID = result.stdout;
 
     cy.exec(`${REDIS} get ve_${creatorID}`).then((result) => {
       const token = result.stdout;
 
-      cy.visit(`/account/confirm/${token}${creatorID}`);
+      cy.visit(`/account/confirm/${token}${creatorID}${queryParam}`);
     });
   });
 });

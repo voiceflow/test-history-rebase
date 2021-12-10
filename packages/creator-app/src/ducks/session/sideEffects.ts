@@ -1,5 +1,6 @@
 import { Vendors } from '@voiceflow/ui';
 import { batch } from 'react-redux';
+import { matchPath } from 'react-router-dom';
 
 import client from '@/client';
 import { SSOConvertPayload, SSOLoginPayload } from '@/client/sso';
@@ -85,7 +86,9 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     const location = locationSelector(state);
     const search = Query.parse(location.search);
 
-    if (search.promo || search.ob_plan) {
+    const isVerifyingPath = matchPath(location.pathname, { path: '/account/confirm/:token' });
+
+    if ((search.promo || search.ob_plan) && !isVerifyingPath?.isExact) {
       dispatch(goToOnboarding());
     }
   } catch (err) {

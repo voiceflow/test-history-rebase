@@ -32,7 +32,7 @@ const Node: React.FC = () => {
     (event: React.MouseEvent) => {
       event.stopPropagation();
 
-      if (nodeEntity.nodeType !== BlockType.START && isEditingMode) {
+      if (isEditingMode) {
         contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
       }
     },

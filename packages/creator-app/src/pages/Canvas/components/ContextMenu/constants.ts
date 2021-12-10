@@ -107,7 +107,15 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   },
 ];
 
-const BLOCKS_WITH_RENAME = [BlockType.COMBINED, BlockType.COMMAND];
+const BLOCKS_WITH_RENAME = [BlockType.COMBINED, BlockType.COMMAND, BlockType.START];
+
+const isStart = (nodeID: string, engine: Engine) => {
+  const node = engine.getNodeByID(nodeID);
+
+  if (!node) return false;
+
+  return node.type === BlockType.START;
+};
 
 const isBlock = (nodeID: string, engine: Engine) => {
   const node = engine.getNodeByID(nodeID);
@@ -130,7 +138,7 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Block Color',
     value: CanvasAction.COLOR_BLOCK,
     options: BLOCK_COLORS,
-    shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID!, engine),
+    shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID!, engine) || isStart(nodeID!, engine),
   },
   {
     label: 'Rename',
@@ -148,27 +156,33 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.DIVIDER,
     menuItemProps: { divider: true },
     shouldRender: ({ target: nodeID }, { engine, showHintFeatures }) =>
-      (showHintFeatures && !isMarkup(nodeID!, engine)) || isBlock(nodeID!, engine) || BLOCKS_WITH_RENAME.includes(engine.getNodeByID(nodeID!)?.type),
+      (showHintFeatures && !isMarkup(nodeID!, engine)) ||
+      (isBlock(nodeID!, engine) && !isStart(nodeID!, engine)) ||
+      BLOCKS_WITH_RENAME.includes(engine.getNodeByID(nodeID!)?.type),
   },
   {
     label: 'Copy',
     value: CanvasAction.COPY_BLOCK,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.COPY],
+    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID!, engine),
   },
   {
     label: 'Duplicate',
     value: CanvasAction.DUPLICATE_BLOCK,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.DUPLICATE],
+    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID!, engine),
   },
   {
     label: 'Divider 2',
     value: CanvasAction.DIVIDER,
     menuItemProps: { divider: true },
+    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID!, engine),
   },
   {
     label: 'Delete',
     value: CanvasAction.DELETE_BLOCK,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.DELETE],
+    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID!, engine),
   },
 ];
 

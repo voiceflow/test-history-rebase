@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.567.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.566.1...@voiceflow/creator-app@1.567.0) (2021-12-10)
+
+
+### Features
+
+* update step colors (VF-2459) ([#4780](https://github.com/voiceflow/creator-app/issues/4780)) ([2d4be3e](https://github.com/voiceflow/creator-app/commit/2d4be3e4e15314cbdd44136368c7fb68c87e6763))
+
+
+
+
+
 ## [1.566.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.566.0...@voiceflow/creator-app@1.566.1) (2021-12-10)
 
 

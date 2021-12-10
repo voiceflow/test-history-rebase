@@ -89,6 +89,7 @@ export enum EventName {
 
   ENTITY_CREATED = 'Entity Created',
   VERSION_MANUALLY_CREATED = 'Version Manually Created',
+  VARIABLE_CREATED = 'Variable Created',
 }
 
 export enum IntentEditType {
@@ -96,7 +97,12 @@ export enum IntentEditType {
   IMM = 'imm',
 }
 
-export enum EntityCreationType {
+export enum VariableType {
+  FLOW = 'flow',
+  GLOBAL = 'global',
+}
+
+export enum CanvasCreationType {
   EDITOR = 'editor',
   IMM = 'imm',
   PASTE = 'paste',

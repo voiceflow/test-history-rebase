@@ -25,7 +25,7 @@ import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
-import { EntityCreationType, IntentEditType } from '@/ducks/tracking/constants';
+import { CanvasCreationType, IntentEditType } from '@/ducks/tracking/constants';
 import { connect } from '@/hocs';
 import { useModals, usePermission, useTrackingEvents } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -102,7 +102,7 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
 
               await createSlot(id, { id, type, name, color, inputs });
 
-              trackingEvents.trackEntityCreated({ creationType: EntityCreationType.EDITOR });
+              trackingEvents.trackEntityCreated({ creationType: CanvasCreationType.EDITOR });
 
               closeSlotEdit();
             },

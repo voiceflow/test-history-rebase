@@ -3,6 +3,7 @@ import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { MapManaged, useDispatch, useSelector } from '@/hooks';
 
 import { ButtonContainer, DeleteButton, MappingContainer, RegularSelect, VariableDropdown, VariableMappingContainer } from './components';
@@ -28,7 +29,7 @@ const MappingVariables: React.FC<MappingVariablesProps> = ({ items, reverse, dia
         const updateTo = (to?: string | null) => onUpdate({ to });
 
         const onCreateComponentVariable = (item: string) => {
-          addLocalVariable(item);
+          addLocalVariable(item, CanvasCreationType.EDITOR);
           updateTo(item);
         };
 

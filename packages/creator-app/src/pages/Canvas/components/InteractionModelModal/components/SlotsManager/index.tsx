@@ -14,7 +14,7 @@ import * as IntentDuck from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
-import { EntityCreationType } from '@/ducks/tracking/constants';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { connect } from '@/hocs';
 import { useEnableDisable, useModals, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
@@ -90,7 +90,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
         const id = Utils.id.cuid.slug();
         createSlot(id, { id, type, name, color, inputs });
 
-        trackingEvents.trackEntityCreated({ creationType: EntityCreationType.IMM });
+        trackingEvents.trackEntityCreated({ creationType: CanvasCreationType.IMM });
 
         closeSlotEdit();
         setSelectedID(id);

@@ -7,6 +7,8 @@ import { FeatureFlag } from '@/config/features';
 import { RESERVED_JS_WORDS, VALID_VARIABLE_NAME } from '@/constants';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
+import * as Tracking from '@/ducks/tracking';
+import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
 import { globalVariablesSelector as activeGlobalVariablesSelector } from '@/ducks/versionV2/selectors/active';
 import { Thunk } from '@/store/types';
 
@@ -30,12 +32,8 @@ export const saveGlobalVariables = (): Thunk => async (_dispatch, getState) => {
 };
 
 export const addGlobalVariable =
-  (variable?: string | null): Thunk =>
+  (variable: string, creationType: CanvasCreationType): Thunk =>
   async (dispatch, getState) => {
-    if (!variable) {
-      return;
-    }
-
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
     const variables = activeGlobalVariablesSelector(state);
@@ -61,6 +59,8 @@ export const addGlobalVariable =
         }
       )
     );
+
+    dispatch(Tracking.trackVariableCreated({ creationType, variableType: VariableType.GLOBAL }));
   };
 
 export const removeGlobalVariable =

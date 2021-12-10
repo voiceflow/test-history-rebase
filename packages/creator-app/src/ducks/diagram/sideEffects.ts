@@ -14,6 +14,8 @@ import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
+import * as Tracking from '@/ducks/tracking';
+import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
 import { waitAsync } from '@/ducks/utils';
 import { saveComponents, saveTopics } from '@/ducks/version/sideEffects/common/topicsComponents';
 import { getActiveVersionContext } from '@/ducks/version/utils';
@@ -89,13 +91,13 @@ export const removeLocalVariable =
     );
 
 export const addLocalVariable =
-  (diagramID: string, variable: string): Thunk =>
-  (dispatch, getState) => {
+  (diagramID: string, variable: string, creationType: CanvasCreationType): Thunk =>
+  async (dispatch, getState) => {
     if (RESERVED_JS_WORDS.includes(variable)) {
       throw new Error("Reserved word. You can prefix with '_' to fix this issue");
     }
 
-    return dispatch(
+    await dispatch(
       Feature.applyAtomicSideEffect(
         getActiveVersionContext,
         async () => {
@@ -108,6 +110,8 @@ export const addLocalVariable =
         }
       )
     );
+
+    dispatch(Tracking.trackVariableCreated({ variableType: VariableType.FLOW, diagramID, creationType }));
   };
 
 const createDiagram =
@@ -518,13 +522,13 @@ export const saveActiveDiagramVariables = (): Thunk => async (_dispatch, getStat
 };
 
 export const addActiveDiagramVariable =
-  (variable: string): Thunk =>
+  (variable: string, creationType: CanvasCreationType): Thunk =>
   (dispatch, getState) => {
     const activeDiagramID = Creator.creatorDiagramIDSelector(getState());
 
     Errors.assertDiagramID(activeDiagramID);
 
-    return dispatch(addLocalVariable(activeDiagramID, variable));
+    return dispatch(addLocalVariable(activeDiagramID, variable, creationType));
   };
 
 export const removeActiveDiagramVariable =

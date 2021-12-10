@@ -3,6 +3,7 @@ import React from 'react';
 
 import TextEditor, { PluginType } from '@/components/TextEditor';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import { compose, connect } from '@/hocs';
 
@@ -34,7 +35,7 @@ const VariablesInput = (
       if (!name) return null;
 
       try {
-        await addGlobalVariable(name);
+        await addGlobalVariable(name, CanvasCreationType.EDITOR);
 
         return { id: name, name, isVariable: true };
       } catch (err) {

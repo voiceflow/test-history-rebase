@@ -2,6 +2,7 @@ import { Select, SelectProps, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import { useDispatch, useSelector } from '@/hooks';
 
@@ -18,7 +19,7 @@ const VariableSelect: React.FC<VariableSelectProps> = ({ value, onChange, ...pro
     if (!item) return;
 
     try {
-      await addVariable(item);
+      await addVariable(item, CanvasCreationType.EDITOR);
       onChange(item);
     } catch (err) {
       toast.error(err.message);

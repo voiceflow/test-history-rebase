@@ -1,14 +1,14 @@
 import client from '@/client';
 import { InteractionModelTabType } from '@/constants';
 
-import { CanvasMenuLockState, EntityCreationType, EventName, IntentEditType } from '../constants';
+import { CanvasCreationType, CanvasMenuLockState, EventName, IntentEditType, VariableType } from '../constants';
 import { createProjectEventPayload, createProjectEventTracker, createVersionEventPayload, createVersionEventTracker } from '../utils';
 
 export const trackCanvasSeeShortcutsModalOpened = createProjectEventTracker((options) =>
   client.api.analytics.track(EventName.CANVAS_SHORTCUTS_MODAL_OPENED, createProjectEventPayload(options))
 );
 
-export const trackEntityCreated = createProjectEventTracker<{ creationType: EntityCreationType }>((options) =>
+export const trackEntityCreated = createProjectEventTracker<{ creationType: CanvasCreationType }>((options) =>
   client.api.analytics.track(EventName.ENTITY_CREATED, createProjectEventPayload(options, { creation_type: options.creationType }))
 );
 
@@ -62,4 +62,12 @@ export const trackIntentEdit = createProjectEventTracker<{ creationType: IntentE
 
 export const trackEntityEdit = createProjectEventTracker((options) =>
   client.api.analytics.track(EventName.ENTITIES_EDIT, createProjectEventPayload(options))
+);
+
+export const trackVariableCreated = createProjectEventTracker<{ diagramID?: string; variableType: VariableType; creationType: CanvasCreationType }>(
+  (options) =>
+    client.api.analytics.track(
+      EventName.VARIABLE_CREATED,
+      createProjectEventPayload(options, { diagram_id: options.diagramID, variable_type: options.variableType, creation_type: options.creationType })
+    )
 );

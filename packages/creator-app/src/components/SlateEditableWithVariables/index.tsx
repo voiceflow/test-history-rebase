@@ -20,6 +20,7 @@ import SlateEditable, {
   useSlateEditorForceNormalize,
 } from '@/components/SlateEditable';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import { useDispatch, useLinkedState, useSelector } from '@/hooks';
 
@@ -69,7 +70,7 @@ const SlateEditableWithVariables: React.ForwardRefRenderFunction<SlateEditableRe
 
   const onCreateVariable = React.useCallback(async (name: string) => {
     try {
-      await addGlobalVariable(name);
+      await addGlobalVariable(name, CanvasCreationType.EDITOR);
 
       return { id: name, name };
     } catch (err) {

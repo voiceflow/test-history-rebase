@@ -4,6 +4,7 @@ import React from 'react';
 import InfoIcon from '@/components/InfoIcon';
 import * as Diagram from '@/ducks/diagram';
 import * as Session from '@/ducks/session';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
@@ -53,9 +54,9 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
 
     try {
       if (isFlow) {
-        await addLocalVariable(value);
+        await addLocalVariable(value, CanvasCreationType.IMM);
       } else {
-        await addGlobalVariable(value);
+        await addGlobalVariable(value, CanvasCreationType.IMM);
       }
 
       setSelected(variableType, value);

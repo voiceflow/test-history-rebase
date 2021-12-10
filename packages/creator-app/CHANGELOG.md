@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.564.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.563.7...@voiceflow/creator-app@1.564.0) (2021-12-10)
+
+
+### Features
+
+* new redirect logic (VF-000) ([#4754](https://github.com/voiceflow/creator-app/issues/4754)) ([f16d476](https://github.com/voiceflow/creator-app/commit/f16d476008f795df63ea6fa219551a8f8da3452c))
+
+
+
+
+
 ## [1.563.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.563.6...@voiceflow/creator-app@1.563.7) (2021-12-09)
 
 **Note:** Version bump only for package @voiceflow/creator-app

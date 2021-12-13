@@ -45,7 +45,8 @@ const Spotlight = () => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
           if (captureV2.isEnabled) {
             if (step.type === BlockType.CAPTURE) return false;
-            if (step.type === BlockType.CAPTUREV2) return true;
+          } else if (step.type === BlockType.CAPTUREV2) {
+            return false;
           }
           if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
           if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;

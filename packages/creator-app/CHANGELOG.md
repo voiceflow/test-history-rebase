@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.567.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.567.0...@voiceflow/creator-app@1.567.1) (2021-12-13)
+
+
+### Bug Fixes
+
+* captureV2 initial setup (VF-2456) ([#4784](https://github.com/voiceflow/creator-app/issues/4784)) ([d58cc2b](https://github.com/voiceflow/creator-app/commit/d58cc2be02c6fe338c551e1d4b0bab6d906af6cb))
+* fix existing user upgrade flows (VF-2394) ([#4786](https://github.com/voiceflow/creator-app/issues/4786)) ([63cd52a](https://github.com/voiceflow/creator-app/commit/63cd52a147086224adc6effb7c7fd3e75ee14802))
+
+
+
+
+
 # [1.567.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.566.1...@voiceflow/creator-app@1.567.0) (2021-12-10)
 
 

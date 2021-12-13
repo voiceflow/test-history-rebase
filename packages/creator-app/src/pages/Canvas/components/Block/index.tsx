@@ -5,7 +5,10 @@ import React from 'react';
 
 import User from '@/components/User';
 import { BlockVariant } from '@/constants/canvas';
+import * as Router from '@/ducks/router';
+import { useDispatch } from '@/hooks';
 import { LockOwner } from '@/models';
+import { EngineContext } from '@/pages/Canvas/contexts';
 import { BlockAPI } from '@/pages/Canvas/types';
 import { ClassName } from '@/styles/constants';
 
@@ -59,6 +62,8 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
   ref
 ) => {
   const blockAPI = useBlockAPI();
+  const engine = React.useContext(EngineContext)!;
+  const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
   React.useImperativeHandle(ref, () => blockAPI, [blockAPI]);
 
@@ -70,7 +75,12 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onMouseDown={onMouseDown}
-      onClick={onClick}
+      onClick={(arg) => {
+        if (engine.prototype.onPrototypePage()) {
+          goToCurrentCanvas();
+        }
+        onClick?.(arg);
+      }}
       ref={blockAPI.ref}
     >
       {lockOwner && <User user={lockOwner} />}

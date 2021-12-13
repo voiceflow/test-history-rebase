@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.567.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.567.1...@voiceflow/creator-app@1.567.2) (2021-12-13)
+
+
+### Bug Fixes
+
+* allow command blocks to exit out of prototype (VF-000) ([#4777](https://github.com/voiceflow/creator-app/issues/4777)) ([033fe09](https://github.com/voiceflow/creator-app/commit/033fe09065aebe5f91cfcb55c5f6af5920907fe4))
+
+
+
+
+
 ## [1.567.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.567.0...@voiceflow/creator-app@1.567.1) (2021-12-13)
 
 

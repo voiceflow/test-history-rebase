@@ -14,11 +14,12 @@ export enum BlockType {
   SETV2 = 'setV2',
   IF = 'if',
   IFV2 = 'ifV2',
-  CAPTURE = 'capture',
   RANDOM = 'random',
   // advanced
   CHOICE = 'interaction',
   BUTTONS = 'buttons',
+  CAPTURE = 'capture',
+  CAPTUREV2 = 'captureV2',
   INTENT = 'intent',
   STREAM = 'stream',
   INTEGRATION = 'integration',

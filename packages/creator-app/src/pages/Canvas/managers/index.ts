@@ -5,6 +5,7 @@ import ActionManager from './Action';
 import ButtonsManager from './Buttons';
 import CancelPaymentManager from './CancelPayment';
 import CaptureManager from './Capture';
+import CaptureManagerV2 from './CaptureV2';
 import CardManager from './Card';
 import ChoiceManager from './Choice';
 import ChoiceOldManager from './ChoiceOld';
@@ -56,6 +57,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.IF]: IfManagerV2,
   [BlockType.IFV2]: IfManagerV2,
   [BlockType.CAPTURE]: CaptureManager,
+  [BlockType.CAPTUREV2]: CaptureManagerV2,
   [BlockType.RANDOM]: RandomManager,
   [BlockType.INTENT]: IntentManager,
   [BlockType.STREAM]: StreamManager,

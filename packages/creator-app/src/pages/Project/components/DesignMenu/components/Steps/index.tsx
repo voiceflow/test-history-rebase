@@ -19,6 +19,7 @@ import { StepDragItem } from './types';
 
 const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expandedSections }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
+  const captureV2 = useFeature(FeatureFlag.CAPTURE_V2);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
@@ -29,6 +30,10 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
       ...platformSection,
       steps: platformSection.steps.filter((step) => {
         if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
+        if (captureV2.isEnabled) {
+          if (step.type === BlockType.CAPTURE) return false;
+          if (step.type === BlockType.CAPTUREV2) return true;
+        }
         if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
         if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
         if (IS_PRIVATE_CLOUD && step.publicOnly) return false;

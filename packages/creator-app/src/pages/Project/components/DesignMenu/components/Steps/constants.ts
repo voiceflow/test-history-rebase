@@ -41,6 +41,8 @@ const CANCEL_PURCHASE_STEP = createMenuStep(BlockType.CANCEL_PAYMENT);
 
 const CAPTURE_STEP = createMenuStep(BlockType.CAPTURE);
 
+const CAPTURE_STEP_V2 = createMenuStep(BlockType.CAPTUREV2);
+
 const CARD_STEP = createMenuStep(BlockType.CARD);
 
 const CHOICE_STEP = createMenuStep(BlockType.CHOICE);
@@ -110,7 +112,7 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CHOICE_STEP, PROMPT_STEP, INTENT_STEP, EVENT_STEP],
+    steps: [CAPTURE_STEP_V2, CHOICE_STEP, PROMPT_STEP, INTENT_STEP, EVENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,
@@ -139,7 +141,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
+    steps: [CAPTURE_STEP_V2, CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,
@@ -168,7 +170,7 @@ export const CHATBOT_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [BUTTONS_STEP, PROMPT_STEP, INTENT_STEP],
+    steps: [CAPTURE_STEP_V2, BUTTONS_STEP, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,
@@ -192,7 +194,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
+    steps: [CAPTURE_STEP_V2, CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,
@@ -216,7 +218,7 @@ export const DIALOGFLOW_ES_CHAT_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [BUTTONS_STEP, PROMPT_STEP, INTENT_STEP],
+    steps: [CAPTURE_STEP_V2, BUTTONS_STEP, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,
@@ -240,7 +242,7 @@ export const DIALOGFLOW_ES_VOICE_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
+    steps: [CAPTURE_STEP_V2, CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,

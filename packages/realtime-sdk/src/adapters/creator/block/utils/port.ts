@@ -172,7 +172,11 @@ export const defaultOutPortsAdapter = createOutPortsAdapter<{ [Models.PortType.N
   ({ builtIn: { [Models.PortType.NEXT]: nextPortData }, dynamic }) => [outPortDataToDB(nextPortData), ...outPortsDataToDB(dynamic)]
 );
 
-export const nextAndNoReplyOnlyOutPortsAdapter = createOutPortsAdapter<{ [Models.PortType.NEXT]: string; [Models.PortType.NO_REPLY]?: string }>(
+export const nextNoMatchNoReplyOutPortsAdapter = createOutPortsAdapter<{
+  [Models.PortType.NEXT]: string;
+  [Models.PortType.NO_MATCH]?: string;
+  [Models.PortType.NO_REPLY]?: string;
+}>(
   (dbPorts, options) => {
     const dbNextPort = findDBNextPort(dbPorts);
     const dbNoReplyPort = findDBPortByType(dbPorts, Models.PortType.NO_REPLY);

@@ -77,6 +77,7 @@ const FOCUSABLE_NODES = [
   BlockType.SPEAK,
   BlockType.CHOICE_OLD,
   BlockType.CAPTURE,
+  BlockType.CAPTUREV2,
   BlockType.CHOICE,
   BlockType.INTENT,
   BlockType.STREAM,

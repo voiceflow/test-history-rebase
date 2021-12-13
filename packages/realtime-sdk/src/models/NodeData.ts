@@ -153,6 +153,18 @@ export namespace NodeData {
     [BaseModels.PortType.NO_REPLY]?: string;
   }
 
+  export interface CaptureV2 {
+    intent?: Intent;
+    noReply: Nullable<NoReply>;
+    noMatch: Nullable<NoMatch>;
+  }
+
+  export interface CaptureV2BuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+    [BaseModels.PortType.NO_MATCH]?: string;
+    [BaseModels.PortType.NO_REPLY]?: string;
+  }
+
   export interface Speak {
     dialogs: SpeakData[];
     randomize: boolean;

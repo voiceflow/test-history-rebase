@@ -1,7 +1,7 @@
 import { Node } from '@voiceflow/base-types';
 
 import { NodeData } from '../../../../models';
-import { createBlockAdapter, createOutPortsAdapter, nextAndNoReplyOnlyOutPortsAdapter } from '../utils';
+import { createBlockAdapter, createOutPortsAdapter, nextNoMatchNoReplyOutPortsAdapter } from '../utils';
 
 const captureAdapter = createBlockAdapter<Omit<Node.Capture.StepData, 'reprompt' | 'noReply'>, Omit<NodeData.Capture, 'buttons' | 'noReply'>>(
   ({ slot, variable, slotInputs }) => ({
@@ -18,8 +18,8 @@ const captureAdapter = createBlockAdapter<Omit<Node.Capture.StepData, 'reprompt'
 );
 
 export const captureOutPortsAdapter = createOutPortsAdapter<NodeData.CaptureBuiltInPorts, NodeData.Capture>(
-  (dbPorts, options) => nextAndNoReplyOnlyOutPortsAdapter.fromDB(dbPorts, options),
-  (dbPorts, options) => nextAndNoReplyOnlyOutPortsAdapter.toDB(dbPorts, options)
+  (dbPorts, options) => nextNoMatchNoReplyOutPortsAdapter.fromDB(dbPorts, options),
+  (dbPorts, options) => nextNoMatchNoReplyOutPortsAdapter.toDB(dbPorts, options)
 );
 
 export default captureAdapter;

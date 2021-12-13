@@ -31,6 +31,7 @@ export { default as bookmark } from './bookmark.svg';
 export { default as call } from './call.svg';
 export { default as cancelPayment } from './cancel-payment.svg';
 export { default as canvas } from './canvas.svg';
+export { default as capture } from './capture.svg';
 export { default as card } from './card.svg';
 export { default as caretDown } from './caret-down.svg';
 export { default as caretRight } from './caret-right.svg';

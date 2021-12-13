@@ -40,6 +40,9 @@ export enum EventName {
   PROJECT_CODE_EXPORT_PAGE = 'Code Export Page',
   PROJECT_VERSION_PAGE = 'Version Page',
   PROJECT_EXIT = 'Project Exit',
+  PROJECT_NEW_UTTERANCE_CREATED = 'New Utterance Created',
+  PROJECT_UTTERANCE_BULK_IMPORT = 'Utterance Bulk Import',
+
   SHARE_PROTOTYPE_LINK = 'Testable Link Button',
 
   PROTOTYPE_MANUAL_NAVIGATION = 'Manual Navigation',
@@ -106,6 +109,11 @@ export enum CanvasCreationType {
   EDITOR = 'editor',
   IMM = 'imm',
   PASTE = 'paste',
+}
+
+export enum UploadType {
+  BULK = 'bulk',
+  SINGLE = 'single',
 }
 
 export enum OnboardingChoice {

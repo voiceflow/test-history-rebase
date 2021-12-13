@@ -9,7 +9,6 @@ import TextEditor from './TextEditor';
 
 export { PluginType } from './plugins';
 
-// eslint-disable-next-line react/display-name
 const TextEditorInput = ({ icon, variant, iconProps, className, wrapperProps, leftAction, rightAction, error, disabled, ...props }, ref) => (
   <Input
     ref={ref}

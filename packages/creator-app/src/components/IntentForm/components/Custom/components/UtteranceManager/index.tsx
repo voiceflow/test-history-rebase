@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import {
   Badge,
   ClickableText,
@@ -26,8 +27,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { CanvasCreationType, IntentEditType } from '@/ducks/tracking/constants';
-import { connect } from '@/hocs';
-import { useModals, usePermission, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { isCustomizableBuiltInIntent, validateUtterance } from '@/utils/intent';
@@ -38,20 +38,37 @@ import { BuiltInIntentMessage } from './components';
 
 export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
-function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, customIntents, isNested, isInModal, children }) {
+interface UtteranceManagerProps {
+  intent: Realtime.Intent;
+  isNested: boolean;
+  isInModal: boolean;
+}
+
+const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, isInModal, children }) => {
   const { search } = useLocation();
   const queryParams = queryString.parse(search);
-  const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM];
+  const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM] as string | null;
   const history = useHistory();
   const [trackingEvents] = useTrackingEvents();
 
+  const slots = useSelector(SlotV2.allSlotsSelector);
+  const customIntents = useSelector(IntentV2.allCustomIntentsSelector);
+  const focus = useSelector(Creator.creatorFocusSelector);
+
+  const createSlot = useDispatch(Slot.createSlot);
+  const patchIntent = useDispatch(Intent.patchIntent);
+
   const intentID = intent.id;
-  const utteranceRef = React.useRef();
+  const utteranceRef = React.useRef<{
+    forceFocusToTheEnd: VoidFunction;
+    forceUpdate: VoidFunction;
+    getCurrentUtterance: () => Realtime.IntentInput | null;
+  }>();
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isEmpty, updateIsEmpty] = React.useState(true);
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
-  const { toggle: toggleSlotEdit, close: closeSlotEdit, isInStack: slotEditOpen } = useModals(ModalType.SLOT_EDIT);
+  const { toggle: toggleSlotEdit, close: closeSlotEdit } = useModals(ModalType.SLOT_EDIT);
   const { isOpened: interactionModelInstance } = useModals(ModalType.INTERACTION_MODEL);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const isBuiltIn = isCustomizableBuiltInIntent(intent);
@@ -95,7 +112,7 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
           {
             name,
             isCreate: true,
-            onSave: async ({ type, name, color, inputs = [] }) => {
+            onSave: async ({ type, name, color, inputs = [] }: Realtime.Slot) => {
               const id = Utils.id.cuid.slug();
 
               resolve({ id, name, color });
@@ -107,7 +124,7 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
               closeSlotEdit();
             },
           },
-          () => resolve()
+          () => resolve(undefined)
         );
       }),
     []
@@ -131,7 +148,13 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
     if (canBulkUpload) {
       openUtterancesBulkUploadModal({
         intentID,
-        onUpload: (utterances) => onUpdateUtterances([...intent.inputs, ...utterances]),
+        onUpload: (utterances: Realtime.IntentInput[]) => {
+          trackingEvents.trackUtteranceBulkImport({
+            intentID,
+            creationType: isInModal ? CanvasCreationType.IMM : CanvasCreationType.EDITOR,
+          });
+          onUpdateUtterances([...intent.inputs, ...utterances]);
+        },
       });
     } else {
       openImportBulkDeniedModal();
@@ -163,7 +186,6 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
       {children}
 
       <EditorSection
-        skipRerender={slotEditOpen}
         namespace="utterances"
         header="Utterances"
         initialOpen={intent.inputs.length === 0 || interactionModelInstance}
@@ -185,7 +207,13 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
               items={intent.inputs}
               addToStart
               initialValue={prefilledNewUtterance ? { text: prefilledNewUtterance, slots: [] } : null}
-              beforeAdd={() => utteranceRef.current?.forceUpdate()}
+              beforeAdd={() => {
+                trackingEvents.trackNewUtteranceCreated({
+                  intentID,
+                  creationType: isInModal ? CanvasCreationType.IMM : CanvasCreationType.EDITOR,
+                });
+                utteranceRef.current?.forceUpdate();
+              }}
               renderForm={({ value, onAdd, onChange, addError }) => {
                 const placeholder = intent.inputs.length ? 'Add synonyms, {} to add entities' : 'What might the user say to invoke this intent?';
                 return (
@@ -203,7 +231,7 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
                       iconProps={{ variant: 'blue' }}
                       rightAction={
                         !isEmpty && (
-                          <Badge slide onClick={() => onAdd(utteranceRef.current?.getCurrentUtterance())}>
+                          <Badge slide onClick={() => onAdd(utteranceRef.current?.getCurrentUtterance() ?? null)}>
                             Enter
                           </Badge>
                         )
@@ -224,7 +252,7 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
                   noSlots={isCustomizableBuiltInIntent(intent)}
                   space
                   slots={slots}
-                  value={item.text}
+                  value={item?.text}
                   onBlur={onUpdate}
                   onEnterPress={onUpdate}
                   onAddSlot={onAddSlot}
@@ -237,17 +265,6 @@ function UtteranceManager({ intent, focus, slots, createSlot, patchIntent, custo
       </EditorSection>
     </>
   );
-}
-
-const mapStateToProps = {
-  slots: SlotV2.allSlotsSelector,
-  customIntents: IntentV2.allCustomIntentsSelector,
-  focus: Creator.creatorFocusSelector,
 };
 
-const mapDispatchToProps = {
-  createSlot: Slot.createSlot,
-  patchIntent: Intent.patchIntent,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UtteranceManager);
+export default UtteranceManager;

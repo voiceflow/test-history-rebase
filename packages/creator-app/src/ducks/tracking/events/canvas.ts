@@ -71,3 +71,23 @@ export const trackVariableCreated = createProjectEventTracker<{ diagramID?: stri
       createProjectEventPayload(options, { diagram_id: options.diagramID, variable_type: options.variableType, creation_type: options.creationType })
     )
 );
+
+export const trackNewUtteranceCreated = createProjectEventTracker<{
+  intentID: string;
+  creationType: CanvasCreationType;
+}>(({ intentID, creationType, ...options }) =>
+  client.api.analytics.track(
+    EventName.PROJECT_NEW_UTTERANCE_CREATED,
+    createProjectEventPayload(options, { intent_id: intentID, creation_type: creationType })
+  )
+);
+
+export const trackUtteranceBulkImport = createProjectEventTracker<{
+  intentID: string;
+  creationType: CanvasCreationType;
+}>(({ intentID, creationType, ...options }) =>
+  client.api.analytics.track(
+    EventName.PROJECT_UTTERANCE_BULK_IMPORT,
+    createProjectEventPayload(options, { intent_id: intentID, creation_type: creationType })
+  )
+);

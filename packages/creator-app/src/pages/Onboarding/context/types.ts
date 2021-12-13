@@ -11,6 +11,7 @@ export enum OnboardingType {
   join = 'join_workpsace',
   student = 'student',
   creator = 'creator',
+  general_upgrade = 'general_upgrade',
 }
 
 export enum SpecificFlowType {
@@ -22,6 +23,7 @@ export enum SpecificFlowType {
   create_workspace = 'create_workspace',
   login_creator_new = 'login_creator_new',
   login_creator_existing = 'login_creator_existing',
+  existing_user_general_upgrade = 'existing_user_general_upgrade',
 }
 
 export interface OnboardingContextState {
@@ -62,6 +64,7 @@ export interface OnboardingContextState {
   hasFixedPeriod: boolean;
   usedSignupCoupon?: boolean;
   hasWorkspaces?: boolean;
+  upgradingAWorkspace: boolean;
 }
 
 export interface OnboardingContextActions {

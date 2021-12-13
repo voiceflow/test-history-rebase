@@ -39,6 +39,12 @@ import {
 } from './types';
 import * as OnboardingUtils from './utils';
 
+const UPGRADING_WORKSPACE_SPECIFIC_FLOWS = [
+  SpecificFlowType.existing_user_general_upgrade,
+  SpecificFlowType.login_creator_existing,
+  SpecificFlowType.login_student_existing,
+];
+
 export const OnboardingContext = React.createContext<OnboardingContextProps>({
   actions: {
     stepBack: _constant(null),
@@ -81,6 +87,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     justCreatingWorkspace: false,
     hasFixedPeriod: false,
     hasWorkspaces: false,
+    upgradingAWorkspace: false,
   },
 });
 
@@ -103,6 +110,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const firstLogin = useSelector(Account.isFirstLoginSelector);
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const hasTemplateWorkspace = useSelector(WorkspaceV2.hasTemplatesWorkspaceSelector);
+  const isLoggedIn = useSelector(Account.isLoggedInSelector);
 
   const createWorkspace = useDispatch(Workspace.createWorkspace);
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
@@ -121,7 +129,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const [trackingEvents] = useTrackingEvents();
   const [isFinalizing, setIsFinalizing] = React.useState(false);
   const hasFixedPeriod = !!query.ob_period;
-  const { plan, period, couponCode, flow, seats } = OnboardingUtils.extractQueryParams(query);
+  const { plan, period, couponCode, flow, seats } = OnboardingUtils.extractQueryParams(query, isLoggedIn);
   const isFirstSession = firstLogin;
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
 
@@ -151,6 +159,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   );
 
   const specificFlowType = OnboardingUtils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
+  const upgradingAWorkspace = UPGRADING_WORKSPACE_SPECIFIC_FLOWS.includes(specificFlowType);
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
   const numberOfSteps = OnboardingUtils.getNumberOfSteps({
     specificFlowType,
@@ -158,6 +167,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     hasWorkspaces,
     isAdminOfEnterprisePlan,
   });
+
   const firstStep = OnboardingUtils.getFirstStep({
     flow,
     isLoginFlow,
@@ -193,6 +203,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     hasFixedPeriod,
     usedSignupCoupon: false,
     hasWorkspaces,
+    upgradingAWorkspace,
   });
 
   const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests, usedSignupCoupon } = state;
@@ -495,11 +506,14 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const templateWorkspacesLength = hasTemplateWorkspace ? 1 : 0;
   const alreadyHasFreeWorkspace = workspaces.length - templateWorkspacesLength > 0;
 
-  return isLoginFlow && !sendingRequests && alreadyHasFreeWorkspace && search.promo !== PromoType.STUDENT ? (
-    <Redirect to={Path.DASHBOARD} />
-  ) : (
-    <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>
-  );
+  const redirectToDashboard =
+    isLoginFlow &&
+    !sendingRequests &&
+    alreadyHasFreeWorkspace &&
+    search.promo !== PromoType.STUDENT &&
+    search.promo !== PromoType.CREATOR &&
+    !search.ob_payment;
+  return redirectToDashboard ? <Redirect to={Path.DASHBOARD} /> : <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
 };
 
 export const OnboardingProvider = withStripe(UnconnectedOnboardingProvider) as React.FC<Omit<OnboardingProviderProps, 'stripe' | 'checkChargeable'>>;

@@ -37,9 +37,13 @@ export const getFirstStep = ({
     case OnboardingType.join:
       return StepID.JOIN_WORKSPACE;
     case OnboardingType.creator:
+    case OnboardingType.general_upgrade:
     case OnboardingType.student:
       // eslint-disable-next-line no-nested-ternary
       return isFirstSession ? StepID.WELCOME : hasPresetSeats ? StepID.PAYMENT : StepID.ADD_COLLABORATORS;
+    // eslint-disable-next-line no-duplicate-case
+    case OnboardingType.general_upgrade:
+      return hasPresetSeats ? StepID.PAYMENT : StepID.ADD_COLLABORATORS;
     default:
       return StepID.WELCOME;
   }
@@ -54,6 +58,9 @@ export const getSpecificFlowType = (query: Query, flow: OnboardingType, loginFlo
   }
   if (flow === OnboardingType.creator && !isFirstSession) {
     return SpecificFlowType.login_creator_existing;
+  }
+  if (flow === OnboardingType.general_upgrade && !isFirstSession) {
+    return SpecificFlowType.existing_user_general_upgrade;
   }
   if (loginFlow && isFirstSession && flow === OnboardingType.student) {
     return SpecificFlowType.login_student_new;
@@ -87,11 +94,11 @@ export const getNumberOfSteps = ({
       return 1;
     case SpecificFlowType.login_student_existing:
     case SpecificFlowType.login_creator_existing:
-      return hasPresetSeats ? 2 : 3;
+    case SpecificFlowType.existing_user_general_upgrade:
+      return hasPresetSeats ? 1 : 2;
     case SpecificFlowType.create_workspace:
       return !hasWorkspaces || isAdminOfEnterprisePlan || IS_PRIVATE_CLOUD ? 2 : 3;
     case SpecificFlowType.login_creator_new:
-      return 5;
     case SpecificFlowType.login_student_new:
     case SpecificFlowType.login_payment_new:
       return 6;
@@ -102,7 +109,7 @@ export const getNumberOfSteps = ({
   }
 };
 
-export const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite, promo, ob_seats }: Query) => {
+export const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite, promo, ob_seats, ob_payment }: Query, isLoggedIn: boolean) => {
   const configurations = {
     plan: PlanType.PRO,
     period: BillingPeriod.ANNUALLY,
@@ -125,6 +132,11 @@ export const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite, prom
     configurations.plan = PlanType.CREATOR;
     configurations.flow = OnboardingType.creator;
     configurations.period = BillingPeriod.MONTHLY;
+  }
+
+  // Wants to upgrade an existing workspace
+  if (isLoggedIn && ob_payment) {
+    configurations.flow = OnboardingType.general_upgrade;
   }
 
   if (ob_period && Object.values(BillingPeriod).includes(ob_period)) {

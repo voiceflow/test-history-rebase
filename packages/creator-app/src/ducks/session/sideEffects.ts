@@ -85,9 +85,7 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
 
     const location = locationSelector(state);
     const search = Query.parse(location.search);
-
     const isVerifyingPath = matchPath(location.pathname, { path: '/account/confirm/:token' });
-
     if ((search.promo || search.ob_plan) && !isVerifyingPath?.isExact) {
       dispatch(goToOnboarding());
     }

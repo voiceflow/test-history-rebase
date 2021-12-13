@@ -74,7 +74,6 @@ context('Onboarding', () => {
       regularFlow();
       cy.visit(`/onboarding?promo=student`);
       onboarding.completeInvites();
-      onboarding.completeSelectChannel();
       onboarding.enterCreditCard();
       onboarding.selectWorkspace();
       cy.get('button.vf-button').click();

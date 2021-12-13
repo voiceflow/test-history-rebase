@@ -12,12 +12,12 @@ import { getError, withPlaceholderCollaborators } from './utils';
 
 const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
   const {
-    state: { addCollaboratorMeta, sendingRequests, justCreatingWorkspace },
+    state: { addCollaboratorMeta, sendingRequests, justCreatingWorkspace, upgradingAWorkspace },
     actions: { setAddCollaboratorMeta, stepForward },
   } = React.useContext(OnboardingContext);
   const currentStepMeta = STEP_META[StepID.ADD_COLLABORATORS];
 
-  const nextStepID = currentStepMeta.skipTo({ justCreatingWorkspace });
+  const nextStepID = currentStepMeta.skipTo({ justCreatingWorkspace, upgradingAWorkspace });
 
   const [collaborators, setCollaborators] = React.useState(() =>
     withPlaceholderCollaborators(addCollaboratorMeta.collaborators.length ? addCollaboratorMeta.collaborators : data.collaborators)

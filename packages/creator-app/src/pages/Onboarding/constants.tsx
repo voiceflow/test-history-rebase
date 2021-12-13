@@ -51,7 +51,8 @@ export const STEP_META: StepMetaProps = {
     title: (workspaceName) => (!workspaceName ? 'Invite teammates' : `Invite teammates to ${workspaceName}`),
     canBack: true,
     canSkip: true,
-    skipTo: ({ justCreatingWorkspace }) => (justCreatingWorkspace ? StepID.PAYMENT : StepID.SELECT_CHANNEL),
+    skipTo: ({ justCreatingWorkspace, upgradingAWorkspace }) =>
+      justCreatingWorkspace || upgradingAWorkspace ? StepID.PAYMENT : StepID.SELECT_CHANNEL,
     trackStep: ({ addCollaboratorMeta }, { skip }) =>
       Tracking.trackOnboardingCollaborators({
         skip,
@@ -94,4 +95,8 @@ export const STEP_META: StepMetaProps = {
   },
 };
 
-export const SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES = [SpecificFlowType.login_student_existing, SpecificFlowType.login_creator_existing];
+export const SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES = [
+  SpecificFlowType.login_student_existing,
+  SpecificFlowType.login_creator_existing,
+  SpecificFlowType.existing_user_general_upgrade,
+];

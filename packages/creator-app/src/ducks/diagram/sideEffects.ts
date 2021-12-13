@@ -28,7 +28,8 @@ import { getNodesGroupCenter } from '@/utils/node';
 import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
 import { crud } from './actions';
-import { diagramByIDSelector, fullActiveDiagramSelector } from './selectors';
+import { fullActiveDiagramSelector } from './fullDiagram';
+import { diagramByIDSelector } from './selectors';
 
 // side effects
 

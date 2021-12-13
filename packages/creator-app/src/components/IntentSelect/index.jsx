@@ -10,7 +10,9 @@ import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { connect } from '@/hocs';
+import { useTrackingEvents } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import {
   applyPlatformIntentNameFormatting,
@@ -98,6 +100,7 @@ function IntentSelect({
     [filteredIntents]
   );
   const intentMissing = withMissingAlert && intent?.id && !intentLookup[intent?.id] && !isCustomizableBuiltInIntent(intent);
+  const [trackingEvents] = useTrackingEvents();
 
   const getOptionLabel = React.useCallback((value) => intentLookup[value], [intentLookup]);
   const isButtonDisabled = React.useCallback(
@@ -111,6 +114,7 @@ function IntentSelect({
 
       if (isDefaultBuiltIn && !intentsMap[nextIntentID]) {
         await createIntent({ id: nextIntentID, name: nextIntentID, builtIn: true });
+        trackingEvents.trackIntentCreated({ creationType: CanvasCreationType.EDITOR });
       }
 
       onChange({ intent: nextIntentID });
@@ -133,6 +137,7 @@ function IntentSelect({
         toast.error(error);
       } else {
         const nextIntentID = await createIntent({ name: preparedName });
+        trackingEvents.trackIntentCreated({ creationType: CanvasCreationType.EDITOR });
         await onSelectIntent(nextIntentID);
       }
     },

@@ -60,6 +60,10 @@ export const trackIntentEdit = createProjectEventTracker<{ creationType: IntentE
   client.api.analytics.track(EventName.INTENTS_EDIT, createProjectEventPayload(options, { creation_type: options.creationType }))
 );
 
+export const trackIntentCreated = createProjectEventTracker<{ creationType: CanvasCreationType }>((options) =>
+  client.api.analytics.track(EventName.INTENT_CREATED, createProjectEventPayload(options, { creation_type: options.creationType }))
+);
+
 export const trackEntityEdit = createProjectEventTracker((options) =>
   client.api.analytics.track(EventName.ENTITIES_EDIT, createProjectEventPayload(options))
 );

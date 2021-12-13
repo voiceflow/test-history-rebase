@@ -88,6 +88,7 @@ export enum EventName {
   PROJECT_RESTORE = 'Project Restore',
   VERSION_PREVIEW = 'Version Preview',
   INTENTS_EDIT = 'Intents Edit',
+  INTENT_CREATED = 'Intents Created',
   ENTITIES_EDIT = 'Entities Edit',
 
   ENTITY_CREATED = 'Entity Created',

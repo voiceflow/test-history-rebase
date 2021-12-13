@@ -10,8 +10,9 @@ import SearchableList from '@/components/SearchableList';
 import * as IntentDuck from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { connect } from '@/hocs';
-import { useEnableDisable } from '@/hooks';
+import { useEnableDisable, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { formatIntentName, isCustomizableBuiltInIntent } from '@/utils/intent';
 import { isGeneralPlatform } from '@/utils/typeGuards';
@@ -39,6 +40,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   const managerRef = React.useRef<{ resetPath: () => void }>(null);
   const isGeneral = isGeneralPlatform(platform);
   const scrollbarsRef = React.useRef<Scrollbars>(null);
+  const [trackingEvents] = useTrackingEvents();
 
   const getItemKey = React.useCallback((item: Realtime.Intent) => item.id, []);
   const getItemLabel = React.useCallback((item: Realtime.Intent) => item.name, []);
@@ -82,6 +84,8 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
 
   const addNewIntent = React.useCallback(async () => {
     const intentID = await createIntent();
+
+    trackingEvents.trackIntentCreated({ creationType: CanvasCreationType.IMM });
 
     updateSelected(intentID);
   }, []);

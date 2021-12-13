@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.568.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.567.3...@voiceflow/creator-app@1.568.0) (2021-12-13)
+
+
+### Features
+
+* update profile name feature (VF-2466) ([#4783](https://github.com/voiceflow/creator-app/issues/4783)) ([c788496](https://github.com/voiceflow/creator-app/commit/c788496359888bfa7231d080037ab574db53f6fa))
+* **analytics:** add segment tracking to new utterance creation (VF-2236) ([#4774](https://github.com/voiceflow/creator-app/issues/4774)) ([748c623](https://github.com/voiceflow/creator-app/commit/748c623d9d831c7c79f60345ba55f4d60408bda0))
+
+
+
+
+
 ## [1.567.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.567.2...@voiceflow/creator-app@1.567.3) (2021-12-13)
 
 

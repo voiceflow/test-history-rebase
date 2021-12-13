@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.567.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.567.2...@voiceflow/creator-app@1.567.3) (2021-12-13)
+
+
+### Bug Fixes
+
+* capture ff logic (VF-000) ([3128980](https://github.com/voiceflow/creator-app/commit/31289806025a7375eb3665369befe8c6f0a76855))
+
+
+
+
+
 ## [1.567.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.567.1...@voiceflow/creator-app@1.567.2) (2021-12-13)
 
 

@@ -10,6 +10,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
       'get',
       'updateProfilePicture',
       'updatePassword',
+      'updateProfileName',
       'getReferralCouponCode',
       'resetEmail',
       'testResetPassword',

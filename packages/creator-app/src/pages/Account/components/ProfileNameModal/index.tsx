@@ -1,24 +1,21 @@
 import { Button, Input, Link, toast } from '@voiceflow/ui';
+import _get from 'lodash/get';
 import React from 'react';
 
-// import client from '@/client';
+import client from '@/client';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
-import { useModals, useSelector } from '@/hooks';
+import { useDispatch, useModals, useSelector } from '@/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 const ProfileNameModal: React.FC = () => {
   const user = useSelector(Account.userSelector);
+  const updateAccount = useDispatch(Account.updateAccount);
   const [saveName, setSaveName] = React.useState(user.name ?? '');
   const [saving, setSaving] = React.useState(false);
   const { isOpened, close } = useModals(ModalType.PROFILE_NAME_MODAL);
   const nameInputRef = React.useRef<HTMLInputElement>(null);
-
-  const reset = () => {
-    setSaving(false);
-    setSaveName('');
-  };
 
   React.useEffect(() => {
     if (isOpened) {
@@ -30,12 +27,16 @@ const ProfileNameModal: React.FC = () => {
     if (!saveName.trim() || saving) return;
     setSaving(true);
     try {
+      await client.user.updateProfileName(saveName);
+      updateAccount({ name: saveName });
       toast.success('Name successfully updated');
-      reset();
+      setSaving(false);
       close();
     } catch (e) {
-      toast.error('Unable to save name, try again later');
+      const errText = _get(e, ['body', 'data']) || false;
+      const errToast = errText || 'Unable to update name';
       setSaving(false);
+      toast.error(errToast);
     }
   };
 

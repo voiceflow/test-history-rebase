@@ -34,7 +34,7 @@ const AccountProfile: React.FC = () => {
         header="Name"
       >
         <BoxFlex mr={120}>
-          <Input value={user.name ?? ''} />
+          <Input value={user.name ?? ''} disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
           <Box ml={16}>
             <UnTypedUploadJustIcon size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} endpoint="/image" />
           </Box>
@@ -52,7 +52,7 @@ const AccountProfile: React.FC = () => {
         header="Email"
       >
         <BoxFlex mr={120}>
-          <Input value={user.email ?? ''} />
+          <Input value={user.email ?? ''} disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
         </BoxFlex>
       </Section>
 

@@ -8,6 +8,7 @@ import { Node as GeneralNode } from '@voiceflow/general-types';
 import { Node as VoiceNode } from '@voiceflow/voice-types';
 
 import { ExpressionData } from './Expression';
+import { IntentSlot } from './Intent';
 import { SpeakData } from './Speak';
 
 export type NodeData<T> = T & {
@@ -154,7 +155,7 @@ export namespace NodeData {
   }
 
   export interface CaptureV2 {
-    intent?: Intent;
+    intent?: { slots: IntentSlot[] };
     noReply: Nullable<NoReply>;
     noMatch: Nullable<NoMatch>;
   }

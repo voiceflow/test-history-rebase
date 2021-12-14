@@ -29,6 +29,7 @@ export * from './redux';
 export * from './resize';
 export * from './routes';
 export * from './scroll';
+export * from './slot';
 export * from './speechRecognition';
 export * from './state';
 export * from './storage';

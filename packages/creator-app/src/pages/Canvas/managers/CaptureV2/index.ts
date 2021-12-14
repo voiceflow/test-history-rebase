@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { NodeManagerConfig } from '../types';
-import CaptureEditor from './CaptureEditor';
-import CaptureStep from './CaptureStep';
+import CaptureEditorV2 from './CaptureEditorV2';
+import CaptureStepV2 from './CaptureStepV2';
 import { NODE_CONFIG } from './constants';
 import { EDITORS_BY_PATH } from './subeditors';
 
@@ -15,8 +15,8 @@ const CaptureV2Manager: NodeManagerConfig<Realtime.NodeData.CaptureV2, Realtime.
 
   mergeTerminator: true,
 
-  step: CaptureStep,
-  editor: CaptureEditor,
+  step: CaptureStepV2,
+  editor: CaptureEditorV2,
   editorsByPath: EDITORS_BY_PATH,
 };
 

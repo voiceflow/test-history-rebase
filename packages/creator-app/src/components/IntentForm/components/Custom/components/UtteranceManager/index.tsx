@@ -1,4 +1,3 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import {
   Badge,
@@ -24,10 +23,9 @@ import { ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { CanvasCreationType, IntentEditType } from '@/ducks/tracking/constants';
-import { useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useAddSlot, useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { isCustomizableBuiltInIntent, validateUtterance } from '@/utils/intent';
@@ -55,7 +53,6 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   const customIntents = useSelector(IntentV2.allCustomIntentsSelector);
   const focus = useSelector(Creator.creatorFocusSelector);
 
-  const createSlot = useDispatch(Slot.createSlot);
   const patchIntent = useDispatch(Intent.patchIntent);
 
   const intentID = intent.id;
@@ -68,7 +65,6 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   const [isEmpty, updateIsEmpty] = React.useState(true);
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
-  const { toggle: toggleSlotEdit, close: closeSlotEdit } = useModals(ModalType.SLOT_EDIT);
   const { isOpened: interactionModelInstance } = useModals(ModalType.INTERACTION_MODEL);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const isBuiltIn = isCustomizableBuiltInIntent(intent);
@@ -105,30 +101,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
     }
   });
 
-  const onAddSlot = React.useCallback(
-    (name) =>
-      new Promise((resolve) => {
-        toggleSlotEdit(
-          {
-            name,
-            isCreate: true,
-            onSave: async ({ type, name, color, inputs = [] }: Realtime.Slot) => {
-              const id = Utils.id.cuid.slug();
-
-              resolve({ id, name, color });
-
-              await createSlot(id, { id, type, name, color, inputs });
-
-              trackingEvents.trackEntityCreated({ creationType: CanvasCreationType.EDITOR });
-
-              closeSlotEdit();
-            },
-          },
-          () => resolve(undefined)
-        );
-      }),
-    []
-  );
+  const { onAddSlot } = useAddSlot();
 
   const addValidation = React.useCallback(
     ({ text }) => {

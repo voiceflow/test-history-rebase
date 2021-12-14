@@ -18,7 +18,6 @@ const Prefix = styled(FlexCenter)`
   left: 16px;
 
   z-index: 1;
-  margin-bottom: 1px;
 `;
 
 export default Prefix;

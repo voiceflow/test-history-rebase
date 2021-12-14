@@ -1,0 +1,44 @@
+import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import React from 'react';
+
+import { ModalType } from '@/constants';
+import * as Slot from '@/ducks/slot';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
+import { useModals } from '@/hooks/modals';
+import { useDispatch } from '@/hooks/realtime';
+import { useTrackingEvents } from '@/hooks/tracking';
+
+// eslint-disable-next-line import/prefer-default-export
+export const useAddSlot = () => {
+  const { toggle: toggleSlotEdit, close: closeSlotEdit, isInStack: slotEditOpen } = useModals(ModalType.SLOT_EDIT);
+  const createSlot = useDispatch(Slot.createSlot);
+  const [trackingEvents] = useTrackingEvents();
+
+  const onAddSlot = React.useCallback(
+    (name: string) =>
+      new Promise<Realtime.Slot | null>((resolve) => {
+        toggleSlotEdit(
+          {
+            name,
+            isCreate: true,
+            onSave: async ({ type, name, color, inputs = [] }: Realtime.Slot) => {
+              const id = Utils.id.cuid.slug();
+
+              resolve({ id, name, color, type, inputs });
+
+              await createSlot(id, { id, type, name, color, inputs });
+
+              trackingEvents.trackEntityCreated({ creationType: CanvasCreationType.EDITOR });
+
+              closeSlotEdit();
+            },
+          },
+          () => resolve(null)
+        );
+      }),
+    []
+  );
+
+  return { onAddSlot, slotEditOpen };
+};

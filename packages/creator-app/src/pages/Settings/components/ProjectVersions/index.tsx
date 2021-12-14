@@ -32,8 +32,6 @@ export interface ProjectVersion {
   created: string;
 }
 
-const FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS = 30;
-
 const DEFAULT_FETCH_LIMIT = 10;
 
 const versionListAdapter = (version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean; autoSaveFromRestore?: boolean }) => ({
@@ -99,18 +97,9 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
   };
 
   const fetchBackupsV2 = React.useCallback(async () => {
+    const limit = DEFAULT_FETCH_LIMIT;
     if (noMoreVersions) return;
     const offset = versionList.length;
-
-    if (offset > FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS) {
-      toast.error('Upgrade workspace plan to access older versions.');
-      return;
-    }
-    let limit = DEFAULT_FETCH_LIMIT;
-    if (offset + limit > FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS) {
-      limit = FREE_PLAN_RETRIEVAL_LIMIT_IN_DAYS - offset;
-    }
-
     try {
       const moreVersions = (await client.api.project.getVersionsV2(projectID!, { offset, limit })) || [];
       if (moreVersions.length < limit) {

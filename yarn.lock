@@ -6828,10 +6828,10 @@ anymatch@^3.0.0, anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apl-viewhost-web@1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/apl-viewhost-web/-/apl-viewhost-web-1.7.0.tgz#e5d4fe40b32859e95df54421388faa9368fce6b2"
-  integrity sha512-DcCTPYeYLHvwz5SmasyRcqv8dYe4EeYh5DdHvfJZhZh8aFYxepVc+dgz7SNNK7Ib23k1VTVCYmfIEZ8wSH3gaA==
+apl-viewhost-web@1.8.2:
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/apl-viewhost-web/-/apl-viewhost-web-1.8.2.tgz#f31f2e1875cf4e15fe838e964ff6f55ed24917ed"
+  integrity sha512-Dqy8iD5lEiSNxqQm47ipFISUs2Fo1WxA8XRobyu1P8XiVGvchxvekbOp8+R8/0fhhGwvHSNNwcy64j4ZooVlPg==
 
 app-module-path@^2.2.0:
   version "2.2.0"

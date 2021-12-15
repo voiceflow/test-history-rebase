@@ -8,6 +8,7 @@ import type { Engine } from '@/pages/Canvas/engine';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 
 export interface PathEntry {
+  id?: string;
   type?: string;
   label: string;
   focus?: () => void;

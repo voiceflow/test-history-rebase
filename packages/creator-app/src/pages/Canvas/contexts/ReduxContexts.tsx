@@ -4,6 +4,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as SlotV2 from '@/ducks/slotV2';
 import * as UI from '@/ducks/ui';
 import * as VersionV2 from '@/ducks/versionV2';
 import { createSelectorContext } from '@/utils/redux';
@@ -44,6 +45,8 @@ export const {
   Consumer: CustomIntentMapConsumer,
 } = createSelectorContext(IntentV2.customIntentMapSelector);
 
+export const { Context: SlotMapContext, Provider: SlotMapProvider, Consumer: SlotMapConsumer } = createSelectorContext(SlotV2.slotMapSelector);
+
 export const {
   Context: DiagramMapContext,
   Provider: DiagramMapProvider,
@@ -57,10 +60,12 @@ export const ReduxContextsProviders: React.FC = ({ children }) => (
         <AccountLinkingProvider>
           <ProductMapProvider>
             <CustomIntentMapProvider>
-              <DiagramMapProvider>
-                {/* comment to have a children on a new line */}
-                {children}
-              </DiagramMapProvider>
+              <SlotMapProvider>
+                <DiagramMapProvider>
+                  {/* comment to have a children on a new line */}
+                  {children}
+                </DiagramMapProvider>
+              </SlotMapProvider>
             </CustomIntentMapProvider>
           </ProductMapProvider>
         </AccountLinkingProvider>

@@ -1,13 +1,16 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, BlockText, Select, Text, ThemeColor } from '@voiceflow/ui';
+import { Badge, BlockText, Box, Select, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import Section, { SectionToggleVariant } from '@/components/Section';
+import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useSelector } from '@/hooks';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
+import { PushToPath } from '@/pages/Canvas/managers/types';
 
+import { ENTITY_PROMPT_PATH_TYPE } from '../../../components/EntityPromptForm';
 import { UtteranceSection } from './components';
 
 export type ConditionsSectionProps = ItemComponentProps<Realtime.IntentSlot> &
@@ -16,6 +19,7 @@ export type ConditionsSectionProps = ItemComponentProps<Realtime.IntentSlot> &
     selectedSlotIDs: string[];
     latestCreatedKey: string | undefined;
     isOnlyItem: boolean;
+    pushToPath: PushToPath;
   };
 
 const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsSectionProps> = (
@@ -24,6 +28,7 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
     index,
     itemKey,
     onUpdate,
+    pushToPath,
     isOnlyItem,
     isDragging,
     onContextMenu,
@@ -80,6 +85,16 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
     [item]
   );
 
+  const goToEntityPrompt = React.useCallback(() => {
+    if (!selectedSlot?.id) return;
+    pushToPath({ id: selectedSlot.id, type: ENTITY_PROMPT_PATH_TYPE, label: 'Entity Prompt' });
+  }, [selectedSlot?.id, pushToPath]);
+
+  const hasPrompt = React.useMemo(
+    () => (item.dialog.prompt as any[]).filter((prompt) => prompt.text || prompt.content).length > 0,
+    [item.dialog.prompt]
+  );
+
   return (
     <EditorSection
       ref={ref}
@@ -113,15 +128,33 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
               footerAction
               footerActionLabel="Create New Entity"
               onClickFooterAction={addSlot}
+              renderEmpty={({ search }: { search: string; close: VoidFunction }) => {
+                const additional = usedSlots.length ? 'additional' : '';
+                return (
+                  <Box flex={1} textAlign="center">
+                    {!search ? `No ${additional} entities exist in your project.` : `No ${additional} entities found.`}
+                  </Box>
+                );
+              }}
             />
             {selectedSlot && (
               <BlockText color={ThemeColor.SECONDARY} mt={12} fontSize={13}>
-                Entity Value being saved to <Text color={ThemeColor.PRIMARY}>{`{${selectedSlot.name}}`}</Text> Variable
+                Entity Value being saved to <Text color={ThemeColor.PRIMARY}>{`{${selectedSlot.name}}`}</Text> variable
               </BlockText>
             )}
           </Section>
           {selectedSlot && (
-            <UtteranceSection slot={selectedSlot} usedSlots={usedSlots} utterances={item.dialog.utterances} updateUtterances={updateUtterances} />
+            <>
+              <UtteranceSection slot={selectedSlot} usedSlots={usedSlots} utterances={item.dialog.utterances} updateUtterances={updateUtterances} />
+              <Section
+                isDividerNested
+                infix={<>{hasPrompt ? 'Added' : 'Empty'}</>}
+                header="Entity Prompt"
+                isLink
+                onClick={goToEntityPrompt}
+                headerVariant={HeaderVariant.LINK}
+              />
+            </>
           )}
         </>
       )}

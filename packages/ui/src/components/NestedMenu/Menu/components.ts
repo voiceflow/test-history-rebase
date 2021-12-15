@@ -12,7 +12,7 @@ export const FooterActionContainer = styled.div`
   align-content: center;
   width: 100%;
   text-align: center;
-  background: white;
+  background: #fdfdfd;
   color: ${({ theme }) => theme.colors.blue};
   padding: 24px;
   border-top: solid 1px #eaeff4;

@@ -43,7 +43,7 @@ const useNoReplyOptionSection = ({
 
   return [
     {
-      label: data.noReply ? 'Remove No Reply Response' : 'Add  No Reply Response',
+      label: data.noReply ? 'Remove No Reply Response' : 'Add No Reply Response',
       onClick: toggleNoReply,
     },
     !!data.noReply && <NoReplySection data={data.noReply} pushToPath={pushToPath} />,

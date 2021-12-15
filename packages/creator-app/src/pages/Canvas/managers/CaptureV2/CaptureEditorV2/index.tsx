@@ -7,7 +7,7 @@ import OverflowMenu from '@/components/OverflowMenu';
 import { getPlatformNewSlotsCreator } from '@/ducks/intent/utils';
 import { MapManaged, useManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
+import { useNoMatchOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { CaptureSection, HelpTooltip } from './components';
@@ -22,6 +22,7 @@ const CaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.C
 }) => {
   const [isDragging, toggleDragging] = useToggle(false);
   const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
+  const [noMatchOption, noMatchSection] = useNoMatchOptionSection({ data, onChange, pushToPath });
 
   const slots = data.intent?.slots || [];
   const updateSlots = React.useCallback((slots: IntentSlot[]) => onChange({ intent: { slots } }), [onChange]);
@@ -38,7 +39,7 @@ const CaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.C
     <Content
       footer={({ scrollToBottom }) => (
         <Controls
-          menu={<OverflowMenu placement="top-end" options={[noReplyOption]} />}
+          menu={<OverflowMenu placement="top-end" options={[noMatchOption, noReplyOption]} />}
           options={[
             {
               icon: 'capture',
@@ -61,7 +62,7 @@ const CaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.C
         type="capture-v2-editor"
         onDelete={onRemove}
         onReorder={onReorder}
-        itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1, selectedSlotIDs }}
+        itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1, selectedSlotIDs, pushToPath }}
         mapManaged={mapManaged as MapManaged<IntentSlot>}
         itemComponent={CaptureSection}
         previewComponent={CaptureSection}
@@ -71,7 +72,12 @@ const CaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.C
         deleteComponent={DeleteComponent}
         withContextMenuDelete
         withContextMenuDuplicate
-        footer={<>{noReplySection}</>}
+        footer={
+          <>
+            {noMatchSection}
+            {noReplySection}
+          </>
+        }
       />
     </Content>
   );

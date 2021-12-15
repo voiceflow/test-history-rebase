@@ -112,7 +112,7 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CAPTURE_STEP_V2, CHOICE_STEP, PROMPT_STEP, INTENT_STEP, EVENT_STEP],
+    steps: [CHOICE_STEP, CAPTURE_STEP_V2, PROMPT_STEP, INTENT_STEP, EVENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,
@@ -141,7 +141,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CAPTURE_STEP_V2, CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
+    steps: [CHOICE_STEP, CAPTURE_STEP_V2, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,
@@ -170,7 +170,7 @@ export const CHATBOT_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CAPTURE_STEP_V2, BUTTONS_STEP, PROMPT_STEP, INTENT_STEP],
+    steps: [BUTTONS_STEP, CAPTURE_STEP_V2, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,
@@ -194,7 +194,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CAPTURE_STEP_V2, CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
+    steps: [CHOICE_STEP, CAPTURE_STEP_V2, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,
@@ -218,7 +218,7 @@ export const DIALOGFLOW_ES_CHAT_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CAPTURE_STEP_V2, BUTTONS_STEP, PROMPT_STEP, INTENT_STEP],
+    steps: [BUTTONS_STEP, CAPTURE_STEP_V2, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,
@@ -242,7 +242,7 @@ export const DIALOGFLOW_ES_VOICE_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CAPTURE_STEP_V2, CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
+    steps: [CHOICE_STEP, CAPTURE_STEP_V2, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,

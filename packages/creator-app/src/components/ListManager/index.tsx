@@ -53,6 +53,7 @@ function ListManager<I>({
     const { valid, error } = addValidation ? addValidation(value) : { valid: true, error: null };
 
     if (valid) {
+      setAddError(undefined);
       onChangeFormValue(null);
       beforeAdd?.(value);
       addToStart ? onAddToStart(value) : onAdd(value);

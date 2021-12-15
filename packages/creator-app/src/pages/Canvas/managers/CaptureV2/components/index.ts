@@ -1,3 +1,4 @@
+export { ENTITY_PROMPT_PATH_TYPE, default as EntityPromptForm } from './EntityPromptForm';
 export { default as NoMatchForm } from './NoMatchForm';
 export { default as NoMatchPathNameForm } from './NoMatchPathNameForm';
 export { default as NoReplyForm } from './NoReplyForm';

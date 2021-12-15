@@ -1,3 +1,4 @@
+import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, ErrorMessage } from '@voiceflow/ui';
 import React from 'react';
@@ -38,6 +39,9 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
       if (utterances.some((utterance) => utterance.text?.trim() === trimmedText)) {
         return { valid: false, error: 'The utterance is already defined.' };
       }
+      if (!trimmedText.match(SLOT_REGEXP)?.length) {
+        return { valid: false, error: `This capture utterance contains no entities. Use ‘{‘ to add the {${slot.name}} entity to the utterance` };
+      }
       return { valid: true };
     },
     [utterances]
@@ -48,7 +52,6 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
       namespace="capture_utterances"
       header="Utterances"
       count={utterances.length}
-      tooltip="yeet"
       headerToggle
       isDividerNested
       collapseVariant={SectionToggleVariant.ARROW}
@@ -65,6 +68,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
                   ref={utteranceRef}
                   icon="user"
                   space
+                  error={!!addError}
                   slots={usedSlots}
                   value={value?.text || ''}
                   onBlur={onChange}
@@ -81,7 +85,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
                   placeholder="What might the user say to the above question?"
                   onEnterPress={onAdd}
                 />
-                {!!addError && <ErrorMessage>{addError}</ErrorMessage>}
+                {!!addError && <ErrorMessage style={{ paddingTop: 12 }}>{addError}</ErrorMessage>}
               </>
             )}
             onUpdate={updateUtterances}

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.38.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.37.4...@voiceflow/ui@1.38.0) (2021-12-15)
+
+
+### Features
+
+* capture V2 part 3 (VF-2456) ([#4792](https://github.com/voiceflow/creator-app/issues/4792)) ([19322da](https://github.com/voiceflow/creator-app/commit/19322da4f7ba774ed406b7edbf1586d96e2fd43b))
+
+
+
+
+
 ## [1.37.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.37.3...@voiceflow/ui@1.37.4) (2021-12-15)
 
 **Note:** Version bump only for package @voiceflow/ui

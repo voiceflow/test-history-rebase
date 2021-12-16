@@ -1,9 +1,8 @@
 export const nodeJS = `const axios = require('axios');
 
-// View our quick start guide to get your API key and version ID:
+// View our quick start guide to get your API key:
 // https://www.voiceflow.com/api/dialog-manager#section/Quick-Start
 const apiKey = '{{vf.api_key}}';
-const versionID = '{{vf.version_id}}';
 
 const userID = 'user_123'; // Unique ID used to track conversation state
 const userInput = 'Hello world!'; // User's message to your Voiceflow project
@@ -20,7 +19,7 @@ async function startInteract() {
   const response = await axios({
     method: 'POST',
     baseURL: 'https://general-runtime.voiceflow.com',
-    url: \`/state/\${versionID}/user/\${userID}/interact\`,
+    url: \`/state/user/\${userID}/interact\`,
     headers: {
       Authorization: apiKey,
     },
@@ -35,15 +34,14 @@ startInteract().catch((error) => console.error(error));
 `;
 
 // eslint-disable-next-line no-secrets/no-secrets
-export const curl = String.raw`# View our quick start guide to get your API key and version ID:
+export const curl = String.raw`# View our quick start guide to get your API key:
 # https://www.voiceflow.com/api/dialog-manager#section/Quick-Start
 API_KEY='{{vf.api_key}}'
-VERSION_ID='{{vf.version_id}}'
 
 USER_ID='user_123'
 USER_INPUT='Hello world!'
 
-curl --request POST "https://general-runtime.voiceflow.com/state/$VERSION_ID/user/$USER_ID/interact" \
+curl --request POST "https://general-runtime.voiceflow.com/state/user/$USER_ID/interact" \
      --header "Authorization: $API_KEY" \
      --header 'Content-Type: application/json' \
      --data-raw "{
@@ -53,10 +51,9 @@ curl --request POST "https://general-runtime.voiceflow.com/state/$VERSION_ID/use
 
 export const python = `import requests
 
-# View our quick start guide to get your API key and version ID:
+# View our quick start guide to get your API key:
 # https://www.voiceflow.com/api/dialog-manager#section/Quick-Start
 api_key = "{{vf.api_key}}"
-version_id = "{{vf.version_id}}"
 
 user_id = "user_123"  # Unique ID used to track conversation state
 user_input = "Hello world!"  # User's message to your Voiceflow project
@@ -65,7 +62,7 @@ body = {"request": {"type": "text", "payload": "Hello world!"}}
 
 # Start a conversation
 response = requests.post(
-    f"https://general-runtime.voiceflow.com/state/{version_id}/user/{user_id}/interact",
+    f"https://general-runtime.voiceflow.com/state/user/{user_id}/interact",
     json=body,
     headers={"Authorization": api_key},
 )

@@ -14,6 +14,7 @@ suite('Client - Root', ({ expect }) => {
       'file',
       'integrations',
       'organization',
+      'project',
       'projectList',
       'prototype',
       'session',

@@ -7,6 +7,7 @@ export * from './Comment';
 export * from './Display';
 export * from './Job';
 export * from './Project';
+export * from './ProjectAPIKey';
 export * from './Prototype';
 export * from './Query';
 export * from './ReportTag';

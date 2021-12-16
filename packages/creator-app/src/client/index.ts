@@ -7,6 +7,7 @@ import file from './file';
 import integrations from './integrations';
 import organization from './organization';
 import platformClients, { getPlatformClient } from './platforms';
+import project from './project';
 import projectList from './projectList';
 import prototype from './prototype';
 import realtime from './realtime';
@@ -36,6 +37,7 @@ const client = {
   file,
   integrations,
   organization,
+  project,
   projectList,
   prototype,
   session,

@@ -15,7 +15,7 @@ import { useAsyncEffect, useDispatch, useIsAdmin, useModals, useSetup, useTracki
 import CreateAPIKeyModal from '@/pages/Workspace/Settings/components/Developer/modal';
 import * as Sentry from '@/vendors/sentry';
 
-import { ContentContainer, ContentSection, Section } from '../components';
+import { ContentContainer, ContentSection, Section } from '../../components';
 import { getSamples } from './utils';
 
 const AdminMessage = 'Only workspace admins can manage API Keys';

@@ -10,7 +10,7 @@ import { useAsyncEffect, useIsAdmin, useSetup, useTrackingEvents } from '@/hooks
 import CreateAPIKeyModal from '@/pages/Workspace/Settings/components/Developer/modal';
 import { copy } from '@/utils/clipboard';
 
-import { ContentContainer, ContentSection, Section } from '../components';
+import { ContentContainer, ContentSection, Section } from '../../components';
 import { getSamples } from './utils';
 
 const API: React.FC = () => {

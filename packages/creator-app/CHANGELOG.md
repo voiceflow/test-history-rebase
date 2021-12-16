@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.572.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.571.0...@voiceflow/creator-app@1.572.0) (2021-12-16)
+
+
+### Features
+
+* dialog manager project api key interface (VF-2383) ([#4748](https://github.com/voiceflow/creator-app/issues/4748)) ([4d1aa5c](https://github.com/voiceflow/creator-app/commit/4d1aa5c346c029a9c920aa4aa9ac72e0e1940e12))
+
+
+
+
+
 # [1.571.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.570.1...@voiceflow/creator-app@1.571.0) (2021-12-15)
 
 

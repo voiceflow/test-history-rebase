@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.13.11...@voiceflow/admin-app@1.13.12) (2022-01-03)
+
+
+### Bug Fixes
+
+* captureV2-adapters (VF-2456) ([#4794](https://github.com/voiceflow/creator-app/issues/4794)) ([b4c58d7](https://github.com/voiceflow/creator-app/commit/b4c58d74c5f474b07128cd5363479db30de9baa4))
+
+
+
+
+
 ## [1.13.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.13.10...@voiceflow/admin-app@1.13.11) (2021-12-15)
 
 **Note:** Version bump only for package @voiceflow/admin-app

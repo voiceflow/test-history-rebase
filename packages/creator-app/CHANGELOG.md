@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.572.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.572.1...@voiceflow/creator-app@1.572.2) (2022-01-03)
+
+
+### Bug Fixes
+
+* captureV2-adapters (VF-2456) ([#4794](https://github.com/voiceflow/creator-app/issues/4794)) ([b4c58d7](https://github.com/voiceflow/creator-app/commit/b4c58d74c5f474b07128cd5363479db30de9baa4))
+* export labels and payload (VF-2504) (VF-2503) ([#4800](https://github.com/voiceflow/creator-app/issues/4800)) ([5c1e246](https://github.com/voiceflow/creator-app/commit/5c1e246d3240eb09b871914c932781da0f267da0))
+
+
+
+
+
 ## [1.572.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.572.0...@voiceflow/creator-app@1.572.1) (2021-12-16)
 
 

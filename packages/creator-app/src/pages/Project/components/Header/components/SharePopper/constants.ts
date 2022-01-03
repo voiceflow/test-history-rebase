@@ -21,8 +21,8 @@ export const MODEL_EXPORT_OPTIONS = [
 export const CANVAS_EXPORT_OPTIONS_LABELS: Record<string, string> = {
   [ExportFormat.PNG]: 'Image (PNG)',
   [ExportFormat.PDF]: 'PDF',
-  [ExportFormat.DIALOGS]: 'Dialogs',
-  [ExportFormat.VF]: 'Local copy (.vf)',
+  [ExportFormat.DIALOGS]: 'Dialogs (CSV)',
+  [ExportFormat.VF]: 'Project file (JSON)',
 };
 
 export const CANVAS_EXPORT_OPTIONS = [ExportFormat.PDF, ExportFormat.PNG, ExportFormat.DIALOGS, ExportFormat.VF];

@@ -14,10 +14,10 @@ import { ExportContext } from '../contexts';
 export const EXPORT_OPTIONS = [
   { id: ExportFormat.PNG, label: 'Image (PNG)' },
   { id: ExportFormat.PDF, label: 'PDF' },
-  { id: ExportFormat.VF, label: 'Local copy (.vf)' },
+  { id: ExportFormat.VF, label: 'Project file (JSON)' },
 ];
 
-export const EXPORT_OPTIONS_TEMPLATE_WORKSPACE = [{ id: ExportFormat.VF, label: 'Local copy (.vf)' }];
+export const EXPORT_OPTIONS_TEMPLATE_WORKSPACE = [{ id: ExportFormat.VF, label: 'Project file (JSON)' }];
 
 const ExportContentCanva: React.FC = () => {
   const { canvasExportFormat, setCanvasExportFormat } = React.useContext(ExportContext)!;

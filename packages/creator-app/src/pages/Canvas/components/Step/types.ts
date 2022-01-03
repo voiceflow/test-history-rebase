@@ -23,6 +23,7 @@ export interface ItemProps {
   onClick?: React.ReactEventHandler;
   iconColor?: string;
   portColor?: string;
+  wordBreak?: boolean;
   attachment?: React.ReactNode;
   linkedLabel?: React.ReactNode | null;
   placeholder?: string;

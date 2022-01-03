@@ -52,6 +52,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
 
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
   const { open: openSlotsBulkUploadModal } = useModals(ModalType.IMPORT_SLOTS);
+  const [isSaving, setIsSaving] = React.useState(false);
   const [selectedColor, setSelectedColor] = React.useState(color);
   const [slotType, setSlotType] = React.useState(() => type || (slotTypes.length === 1 ? slotTypes[0].value : type));
   const [slotName, setSlotName] = React.useState(() => Utils.string.removeTrailingUnderscores(formatIntentName(name)));
@@ -68,7 +69,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
 
   const notEmptyValues = React.useMemo(() => customLines.some(({ value, synonyms }) => value.trim() || synonyms.trim()), [customLines]);
 
-  const updateSlot = () => {
+  const updateSlot = async () => {
     const formattedSlotName = Utils.string.removeTrailingUnderscores(slotName);
 
     const error = validateSlotName({
@@ -81,14 +82,19 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
 
     if (error) {
       toast.error(error);
-    } else {
-      onSave?.({
+      return;
+    }
+    setIsSaving(true);
+    try {
+      await onSave?.({
         type: slotType,
         name: formattedSlotName,
         color: selectedColor,
         inputs: customLines,
       });
+    } finally {
       trackingEvents.trackEntityEdit();
+      setIsSaving(false);
     }
   };
 
@@ -238,7 +244,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
 
       {!isInteraction && (
         <FlexModalFooter>
-          <Button variant="primary" onClick={updateSlot}>
+          <Button variant="primary" onClick={updateSlot} disabled={isSaving}>
             {isCreate ? 'Create' : 'Update'} Entity
           </Button>
 

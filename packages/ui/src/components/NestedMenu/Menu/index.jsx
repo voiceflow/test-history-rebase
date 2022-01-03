@@ -323,6 +323,7 @@ function BaseNestedMenu({
                       isDropdown={isDropdown}
                       searchable={searchable}
                       creatable={creatable}
+                      hasOptions={!!options.length}
                       searchLabel={searchLabel}
                       onFocus={() => !cachedRef.current.blockOptionHover && onFocusItem(0)}
                       createInputRef={createInputRef}

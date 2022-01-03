@@ -1,40 +1,45 @@
-import { Models, Nullable } from '@voiceflow/base-types';
+import { Models, Node, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { getPlatformNewSlotsCreator } from '@/ducks/intent/utils';
-import Step, { ConnectedStep, Item, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStep, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
 import { SlotMapContext } from '@/pages/Canvas/contexts';
 
-import { NODE_CONFIG } from '../constants';
+import CaptureItem from './components/CaptureItem';
 
 export interface CaptureStepProps {
   nodeID: string;
   slots: (Realtime.IntentSlot & { slot?: Realtime.Slot })[];
   noReply?: Nullable<Realtime.NodeData.NoReply>;
   noMatch?: Nullable<Realtime.NodeData.NoMatch>;
+  variable?: Nullable<string>;
   nextPortID: string;
+  captureType: Node.CaptureV2.CaptureType;
   noMatchPortID?: Nullable<string>;
   noReplyPortID?: Nullable<string>;
 }
 
-export const CaptureStep: React.FC<CaptureStepProps> = ({ slots, nodeID, nextPortID, noReply, noMatch, noMatchPortID, noReplyPortID }) => (
+export const CaptureStep: React.FC<CaptureStepProps> = ({
+  slots,
+  nodeID,
+  nextPortID,
+  noReply,
+  noMatch,
+  variable,
+  captureType,
+  noMatchPortID,
+  noReplyPortID,
+}) => (
   <Step nodeID={nodeID}>
     <Section>
-      {slots.map((slot, index) => {
-        const isLast = index === slots.length - 1;
-        const name = slot.slot?.name;
-        return (
-          <Item
-            key={index}
-            icon={index === 0 ? NODE_CONFIG.icon : null}
-            label={name && `Capture {${name}}`}
-            portID={isLast ? nextPortID : null}
-            placeholder="Select entity to capture"
-          />
-        );
-      })}
-
+      {captureType === Node.CaptureV2.CaptureType.QUERY ? (
+        <CaptureItem isLast isFirst label={`Capture user reply ${variable ? `to {${variable}}` : ''}`} nextPortID={nextPortID} />
+      ) : (
+        slots.map((slot, index) => (
+          <CaptureItem key={index} isFirst={index === 0} isLast={index === slots.length - 1} slot={slot} nextPortID={nextPortID} />
+        ))
+      )}
       {noMatch && <NoMatchItem portID={noMatchPortID} noMatch={noMatch} />}
       <NoReplyItem portID={noReplyPortID} noReply={noReply} />
     </Section>
@@ -51,7 +56,9 @@ const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.
       nodeID={data.nodeID}
       noReply={data.noReply}
       noMatch={data.noMatch}
+      variable={data.variable}
       nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+      captureType={data.captureType}
       noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
       noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
     />

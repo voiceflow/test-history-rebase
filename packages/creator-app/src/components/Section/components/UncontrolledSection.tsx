@@ -161,7 +161,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
             <StatusContent overflowHidden={hiddenStatusContent}>
               {infix && <FixNode fixNode={infix} color="#becedc" />}
               {(isLink || status) && <StatusContainer>{isLink ? <SvgIcon icon="arrowRight" size={10} /> : status}</StatusContainer>}
-              {!!count && Number.isInteger(count) && <NumberContainer>{count}</NumberContainer>}
+              {Number.isInteger(count) && <NumberContainer>{count}</NumberContainer>}
               {suffix && <FixNode fixNode={suffix} color="#becedc" />}
               {collapseVariant && (
                 <CollapseTrigger

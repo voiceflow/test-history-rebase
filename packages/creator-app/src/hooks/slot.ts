@@ -25,12 +25,10 @@ export const useAddSlot = () => {
             onSave: async ({ type, name, color, inputs = [] }: Realtime.Slot) => {
               const id = Utils.id.cuid.slug();
 
+              await createSlot(id, { id, type, name, color, inputs });
               resolve({ id, name, color, type, inputs });
 
-              await createSlot(id, { id, type, name, color, inputs });
-
               trackingEvents.trackEntityCreated({ creationType: CanvasCreationType.EDITOR });
-
               closeSlotEdit();
             },
           },

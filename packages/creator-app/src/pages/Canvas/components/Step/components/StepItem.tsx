@@ -23,6 +23,7 @@ const Item: React.FC<ItemProps> = ({
   onClick,
   iconColor,
   portColor,
+  wordBreak,
   attachment,
   placeholder,
   linkedLabel,
@@ -44,6 +45,7 @@ const Item: React.FC<ItemProps> = ({
           multiline={multilineLabel}
           lineClamp={labelLineClamp}
           withNewLines={withNewLines}
+          wordBreak={wordBreak}
         >
           {label || placeholder}
         </StepLabelText>

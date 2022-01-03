@@ -1,6 +1,6 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, ErrorMessage } from '@voiceflow/ui';
+import { Badge, BlockText, ErrorMessage, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
@@ -9,7 +9,6 @@ import { SectionToggleVariant } from '@/components/Section';
 import Utterance from '@/components/Utterance';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
-import { slotToString } from '@/utils/slot';
 
 interface UtteranceSectionProps {
   slot: Realtime.Slot;
@@ -21,14 +20,6 @@ interface UtteranceSectionProps {
 const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, utterances, updateUtterances }) => {
   const utteranceRef = React.useRef<any>();
   const [isResponseUtteranceEmpty, updateIsResponseUtteranceEmpty] = React.useState(true);
-
-  // always add a default utterance
-  React.useEffect(() => {
-    const strSlot = slotToString(slot);
-    if (!utterances.find(({ text }) => text?.trim() === strSlot)) {
-      updateUtterances([...utterances, { text: strSlot, slots: [slot.id] }]);
-    }
-  }, [utterances]);
 
   const addValidation = React.useCallback(
     ({ text }) => {
@@ -82,9 +73,15 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
                       </Badge>
                     )
                   }
-                  placeholder="What might the user say to the above question?"
+                  placeholder="Add utterances, { to add entities"
                   onEnterPress={onAdd}
                 />
+                {!utterances.length && !!addError && (
+                  <BlockText color={ThemeColor.SECONDARY} mt={12} fontSize={13}>
+                    Add utterances using the <Text color={ThemeColor.PRIMARY}>{`{${slot.name}}`}</Text> entity to improve your assistants capture
+                    accuracy.
+                  </BlockText>
+                )}
                 {!!addError && <ErrorMessage style={{ paddingTop: 12 }}>{addError}</ErrorMessage>}
               </>
             )}
@@ -93,7 +90,6 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
               <Utterance space slots={usedSlots} value={item.text} onBlur={onUpdate} onEnterPress={onUpdate} creatable={false} />
             )}
             addValidation={addValidation}
-            requiredItemIndex={utterances.length - 1}
           />
         </ListManagerWrapper>
       </FormControl>

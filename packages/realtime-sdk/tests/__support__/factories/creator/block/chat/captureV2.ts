@@ -1,0 +1,17 @@
+import { Node } from '@voiceflow/chat-types';
+import { define } from 'cooky-cutter';
+
+import { NodeData } from '@/models';
+
+import { ChatNodeDataNoMatch, ChatNodeDataNoReply, ChatStepNoMatch, ChatStepNoReply } from '../shared';
+
+export const CaptureV2StepData = define<Omit<Node.CaptureV2.StepData, 'capture'>>({
+  noReply: () => ChatStepNoReply(),
+  noMatch: () => ChatStepNoMatch(),
+});
+
+export const CaptureV2NodeData = define<Omit<NodeData.CaptureV2, 'captureType'>>({
+  variable: null,
+  noReply: () => ChatNodeDataNoReply(),
+  noMatch: () => ChatNodeDataNoMatch(),
+});

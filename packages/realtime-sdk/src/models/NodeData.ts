@@ -155,6 +155,8 @@ export namespace NodeData {
   }
 
   export interface CaptureV2 {
+    captureType: BaseNode.CaptureV2.CaptureType;
+    variable: Nullable<string>;
     intent?: { slots: IntentSlot[] };
     noReply: Nullable<NoReply>;
     noMatch: Nullable<NoMatch>;

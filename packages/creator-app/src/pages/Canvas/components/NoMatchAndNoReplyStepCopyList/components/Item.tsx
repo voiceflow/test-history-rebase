@@ -11,16 +11,17 @@ interface ItemProps {
   label: string;
   isLast?: boolean;
   onClick?: VoidFunction;
-  children?: string;
 }
 
-const Item = ({ label, isLast, children, onClick }: ItemProps): React.ReactElement => {
+const Item: React.FC<ItemProps> = ({ label, isLast, children, onClick }) => {
+  const canCopy = typeof children === 'string';
+
   return (
     <>
-      <ItemContainer onClick={children ? stopPropagation(Utils.functional.chain(onClick, onClickCopy(children))) : undefined}>
+      <ItemContainer onClick={canCopy ? stopPropagation(Utils.functional.chain(onClick, onClickCopy(children))) : undefined}>
         <BoxFlexApart>
           <Text fontWeight="bold">{label}</Text>
-          <ClickableText>Copy</ClickableText>
+          {canCopy && <ClickableText>Copy</ClickableText>}
         </BoxFlexApart>
         {!!children && <BlockText mt={6}>{children}</BlockText>}
       </ItemContainer>

@@ -1,7 +1,8 @@
-import { Models } from '@voiceflow/base-types';
+import { Models, Node } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
+import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
 
@@ -12,7 +13,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeD
   icon: 'capture',
   iconColor: '#58457a',
 
-  factory: (_) => ({
+  factory: (_, { platform, defaultVoice } = {}) => ({
     node: {
       ports: {
         in: [{}],
@@ -24,8 +25,11 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeD
     },
     data: {
       name: 'Capture',
+      captureType: Node.CaptureV2.CaptureType.INTENT,
+      variable: null,
+      intent: { slots: [{ id: '', dialog: { prompt: [], confirm: [], utterances: [], confirmEnabled: false }, required: true }] },
       noReply: null,
-      noMatch: null,
+      noMatch: getPlatformNoMatchFactory(platform)({ defaultVoice }),
     },
   }),
 };

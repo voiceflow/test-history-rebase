@@ -12,6 +12,7 @@ function MenuHeader({
   onCreate,
   searchable,
   creatable,
+  hasOptions,
   isDropdown,
   searchLabel,
   createInputRef,
@@ -83,7 +84,7 @@ function MenuHeader({
         </MenuHeaderWrapper>
       )}
 
-      {!inDropdownSearch && <MenuHr style={{ margin: '0px' }} />}
+      {!inDropdownSearch && hasOptions && <MenuHr style={{ margin: '0px' }} />}
     </>
   );
 }

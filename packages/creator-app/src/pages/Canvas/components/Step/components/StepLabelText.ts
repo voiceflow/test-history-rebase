@@ -7,6 +7,7 @@ import { LINE_HEIGHT } from '../constants';
 export interface StepLabelTextProps {
   multiline?: boolean;
   lineClamp?: number;
+  wordBreak?: boolean;
   withNewLines?: boolean;
 }
 
@@ -28,6 +29,12 @@ const StepLabelText = styled.div<StepLabelTextProps>`
     withNewLines &&
     css`
       white-space: pre-wrap;
+    `}
+
+  ${({ wordBreak }) =>
+    wordBreak &&
+    css`
+      word-break: break-all;
     `}
 
   ${({ onClick }) =>

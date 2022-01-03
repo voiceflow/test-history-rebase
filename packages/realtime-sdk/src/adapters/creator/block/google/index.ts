@@ -1,6 +1,7 @@
 import { BlockType } from '@realtime-sdk/constants';
 
 import captureAdapter from './capture';
+import captureV2Adapter from './captureV2';
 import commandAdapter from './command';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
@@ -19,6 +20,7 @@ export const googleBlockAdapter = {
   [BlockType.INTENT]: intentAdapter,
   [BlockType.CHOICE]: interactionAdapter,
   [BlockType.CAPTURE]: captureAdapter,
+  [BlockType.CAPTUREV2]: captureV2Adapter,
 };
 
 export const googleOutPortAdapter = {

@@ -180,22 +180,27 @@ export const nextNoMatchNoReplyOutPortsAdapter = createOutPortsAdapter<{
   (dbPorts, options) => {
     const dbNextPort = findDBNextPort(dbPorts);
     const dbNoReplyPort = findDBPortByType(dbPorts, Models.PortType.NO_REPLY);
+    const dbNoMatchPort = findDBPortByType(dbPorts, Models.PortType.NO_MATCH);
 
     const nextPortData = outPortDataFromDB(dbNextPort, options);
     const noReplyPortData = dbNoReplyPort && outPortDataFromDB(dbNoReplyPort, options);
+    const noMatchPortData = dbNoMatchPort && outPortDataFromDB(dbNoMatchPort, options);
 
     return {
-      ports: [nextPortData, ...Utils.array.filterOutNullish([noReplyPortData])],
+      ports: [nextPortData, ...Utils.array.filterOutNullish([noReplyPortData, noMatchPortData])],
       dynamic: [],
       builtIn: {
         [Models.PortType.NEXT]: nextPortData.port.id,
         [Models.PortType.NO_REPLY]: noReplyPortData?.port.id ?? undefined,
+        [Models.PortType.NO_MATCH]: noMatchPortData?.port.id ?? undefined,
       },
     };
   },
-  ({ builtIn: { [Models.PortType.NEXT]: nextPortData, [Models.PortType.NO_REPLY]: noReplyPortData } }) => [
+  ({
+    builtIn: { [Models.PortType.NEXT]: nextPortData, [Models.PortType.NO_MATCH]: noMatchPortData, [Models.PortType.NO_REPLY]: noReplyPortData },
+  }) => [
     outPortDataToDB(nextPortData), //  should be first for backward compatible
-    ...Utils.array.filterOutNullish([noReplyPortData && outPortDataToDB(noReplyPortData)]),
+    ...Utils.array.filterOutNullish([noReplyPortData, noMatchPortData]).map(outPortDataToDB),
   ]
 );
 

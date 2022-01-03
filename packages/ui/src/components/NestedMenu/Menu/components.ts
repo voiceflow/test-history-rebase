@@ -15,6 +15,7 @@ export const FooterActionContainer = styled.div`
   background: #fdfdfd;
   color: ${({ theme }) => theme.colors.blue};
   padding: 24px;
+  margin-bottom: -5px;
   border-top: solid 1px #eaeff4;
   position: absolute;
   border-radius: 0 0 5px 5px;

@@ -3,6 +3,7 @@ import { BlockType } from '@realtime-sdk/constants';
 import accountLinkingAdapter, { accountLinkingOutPortAdapter } from './accountLinking';
 import cancelPaymentAdapter, { cancelPaymentOutPortAdapter } from './cancelPayment';
 import captureAdapter from './capture';
+import captureV2Adapter from './captureV2';
 import commandAdapter from './command';
 import displayAdapter, { displayOutPortAdapter } from './display';
 import eventAdapter, { eventOutPortAdapter } from './event';
@@ -31,6 +32,7 @@ export const alexaBlockAdapter = {
   [BlockType.DISPLAY]: displayAdapter,
   [BlockType.PAYMENT]: paymentAdapter,
   [BlockType.REMINDER]: reminderAdapter,
+  [BlockType.CAPTUREV2]: captureV2Adapter,
   [BlockType.USER_INFO]: userInfoAdapter,
   [BlockType.PERMISSION]: permissionAdapter,
   [BlockType.CANCEL_PAYMENT]: cancelPaymentAdapter,

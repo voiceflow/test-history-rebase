@@ -4,6 +4,7 @@ import { BlockType } from '../../../../constants';
 import { emptyOutPortsAdapter } from '../utils';
 import { buttonsOutPortsAdapter } from './buttons';
 import { captureOutPortsAdapter } from './capture';
+import { captureV2OutPortsAdapter } from './captureV2';
 import cardAdapter, { cardOutPortsAdapter } from './card';
 import codeAdapter, { codeOutPortsAdapter } from './code';
 import { commandOutPortsAdapter } from './command';
@@ -72,6 +73,7 @@ export const baseOutPortAdapter = {
   [BlockType.BUTTONS]: buttonsOutPortsAdapter,
   [BlockType.CAPTURE]: captureOutPortsAdapter,
   [BlockType.COMBINED]: emptyOutPortsAdapter,
+  [BlockType.CAPTUREV2]: captureV2OutPortsAdapter,
   [BlockType.COMPONENT]: componentOutPortsAdapter,
   [BlockType.DIRECTIVE]: directiveOutPortsAdapter,
   [BlockType.CHOICE_OLD]: interactionOutPortsAdapter,

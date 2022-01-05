@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.576.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.575.0...@voiceflow/creator-app@1.576.0) (2022-01-05)
+
+
+### Bug Fixes
+
+* T&C viewer UX (VF-2527) ([#4811](https://github.com/voiceflow/creator-app/issues/4811)) ([3c8cdd6](https://github.com/voiceflow/creator-app/commit/3c8cdd61a472f33535db4ac1b88e20157355850c))
+
+
+### Features
+
+* implement tracking for project exported (VF-2377) ([#4806](https://github.com/voiceflow/creator-app/issues/4806)) ([edacd72](https://github.com/voiceflow/creator-app/commit/edacd727bef95a87322e555a93b0047e80571ed2))
+
+
+
+
+
 # [1.575.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.574.0...@voiceflow/creator-app@1.575.0) (2022-01-05)
 
 

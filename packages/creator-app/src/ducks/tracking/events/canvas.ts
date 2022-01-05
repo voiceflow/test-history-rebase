@@ -1,5 +1,5 @@
 import client from '@/client';
-import { InteractionModelTabType } from '@/constants';
+import { BlockType, InteractionModelTabType } from '@/constants';
 
 import { CanvasCreationType, CanvasMenuLockState, EventName, IntentEditType, VariableType } from '../constants';
 import { createProjectEventPayload, createProjectEventTracker, createVersionEventPayload, createVersionEventTracker } from '../utils';
@@ -93,5 +93,16 @@ export const trackUtteranceBulkImport = createProjectEventTracker<{
   client.api.analytics.track(
     EventName.PROJECT_UTTERANCE_BULK_IMPORT,
     createProjectEventPayload(options, { intent_id: intentID, creation_type: creationType })
+  )
+);
+
+export const trackNewStepCreated = createProjectEventTracker<{
+  stepType: BlockType;
+}>(({ stepType, ...options }) =>
+  client.api.analytics.track(
+    EventName.PROJECT_NEW_STEP_CREATED,
+    createProjectEventPayload(options, {
+      step_type: stepType,
+    })
   )
 );

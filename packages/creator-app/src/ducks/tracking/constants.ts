@@ -42,6 +42,7 @@ export enum EventName {
   PROJECT_EXIT = 'Project Exit',
   PROJECT_NEW_UTTERANCE_CREATED = 'New Utterance Created',
   PROJECT_UTTERANCE_BULK_IMPORT = 'Utterance Bulk Import',
+  PROJECT_NEW_STEP_CREATED = 'New Step Created',
 
   SHARE_PROTOTYPE_LINK = 'Testable Link Button',
 

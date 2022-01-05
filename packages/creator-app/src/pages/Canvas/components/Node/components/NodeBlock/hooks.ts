@@ -5,6 +5,7 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
+import { useTrackingEvents } from '@/hooks';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
@@ -66,6 +67,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
   const engine = React.useContext(EngineContext)!;
   const isHoveredLocal = React.useRef(false);
   const [isHovered, setHovered] = React.useState(false);
+  const [trackingEvents] = useTrackingEvents();
 
   const [, connectBlockDrop] = useDrop({
     accept: [DragItem.BLOCK_MENU, DragItem.COMPONENTS],
@@ -93,6 +95,10 @@ export const useDnDHoverReorderIndicator = (index: number) => {
       const { x: mouseX, y: mouseY } = monitor.getClientOffset()!;
 
       const position = engine.canvas!.transformPoint([mouseX, mouseY]);
+
+      trackingEvents.trackNewStepCreated({
+        stepType: type,
+      });
 
       engine.node.addNestedV2({
         type,

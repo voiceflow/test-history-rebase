@@ -10,7 +10,7 @@ import Modal, { ModalFooter } from '@/components/Modal';
 import { FeatureFlag } from '@/config/features';
 import { GOOGLE_OAUTH_SCOPES, GOOGLE_OAUTH_SCOPES_V2, ModalType } from '@/constants';
 import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
-import { useFeature, useModals } from '@/hooks';
+import { useFeature, useModals, useTrackingEvents } from '@/hooks';
 import { Account } from '@/models';
 import * as Models from '@/models';
 import { ActionContainer, BodyContainer, BoldText, ButtonContainer, ContentContainer } from '@/pages/Dashboard/components/ModalComponents';
@@ -51,6 +51,7 @@ export const PlatformBaseModal: React.FC<PlatformBaseModalProps> = ({
 
   const isGoogleCreate = useFeature(FeatureFlag.GOOGLE_CREATE)?.isEnabled;
   const isDialogFlow = useFeature(FeatureFlag.DIALOGFLOW)?.isEnabled;
+  const [trackingEvents] = useTrackingEvents();
 
   const onLoad = () => {
     api.update({ error: false, loading: true });
@@ -62,8 +63,10 @@ export const PlatformBaseModal: React.FC<PlatformBaseModalProps> = ({
 
   const onSuccess = (account: Nullable<Account> | Models.Account.Google) => {
     api.update({ error: false, loading: false });
-
     updateCurrentStage(account);
+    if (platform) {
+      trackingEvents.trackDeveloperAccountConnected(platform);
+    }
   };
 
   const onCancel = () => {

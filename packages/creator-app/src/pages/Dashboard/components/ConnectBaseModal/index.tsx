@@ -6,10 +6,8 @@ import Modal from '@/components/Modal';
 import { ModalType } from '@/constants';
 import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useModals, useSelector } from '@/hooks';
 import { BodyContainer } from '@/pages/Dashboard/components/ModalComponents';
-import { ConnectedProps } from '@/types';
 import { createPlatformSelector } from '@/utils/platform';
 
 import { PlatformBaseModal, PlatformBaseModalProps } from './PlatformBaseModal';
@@ -20,7 +18,8 @@ export interface ConnectBaseModalProps {
   helpLink?: string;
 }
 
-const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseModalProps> = ({ modalType, platform, helpLink, className }) => {
+const ConnectBaseModal: React.FC<ConnectBaseModalProps> = ({ modalType, helpLink, className }) => {
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const { data, isOpened } = useModals<{
     stage: AlexaStageType | GoogleStageType | DialogflowStageType;
     onCancel: VoidFunction;
@@ -126,10 +125,4 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
   return <PlatformBaseModal {...getPlatformBaseModalProps(platform)} />;
 };
 
-const mapStateToProps = {
-  platform: ProjectV2.active.platformSelector,
-};
-
-type ConnectedConnectBaseModalProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(ConnectBaseModal) as React.FC<ConnectBaseModalProps>;
+export default ConnectBaseModal;

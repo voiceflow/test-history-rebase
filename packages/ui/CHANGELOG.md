@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.39.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.38.1...@voiceflow/ui@1.39.0) (2022-01-05)
+
+
+### Features
+
+* dialog management api key page (VF-000) ([#4801](https://github.com/voiceflow/creator-app/issues/4801)) ([1ed7af6](https://github.com/voiceflow/creator-app/commit/1ed7af601487f65db4c8297b71d405ff7d378e31))
+
+
+
+
+
 ## [1.38.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.38.0...@voiceflow/ui@1.38.1) (2022-01-03)
 
 

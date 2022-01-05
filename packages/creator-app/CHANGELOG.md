@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.573.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.572.2...@voiceflow/creator-app@1.573.0) (2022-01-05)
+
+
+### Features
+
+* implement tracking to new developer account connected (VF-2373) ([#4803](https://github.com/voiceflow/creator-app/issues/4803)) ([8f76a18](https://github.com/voiceflow/creator-app/commit/8f76a1840ebfb30be9c0f81c309cafb9bd3103e9))
+* **analytics:** implement tracking for new step created (VF-2371) ([#4802](https://github.com/voiceflow/creator-app/issues/4802)) ([6655087](https://github.com/voiceflow/creator-app/commit/6655087a094208a12cbb7dd09679c76af3959716))
+* dialog management api key page (VF-000) ([#4801](https://github.com/voiceflow/creator-app/issues/4801)) ([1ed7af6](https://github.com/voiceflow/creator-app/commit/1ed7af601487f65db4c8297b71d405ff7d378e31))
+
+
+
+
+
 ## [1.572.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.572.1...@voiceflow/creator-app@1.572.2) (2022-01-03)
 
 

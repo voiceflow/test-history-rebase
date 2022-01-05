@@ -1,13 +1,10 @@
 import { Box, Button, Input, Link, stopImmediatePropagation, SvgIcon, toast } from '@voiceflow/ui';
 import React from 'react';
 
-// // import client from '@/client';
-// import InfoIcon from '@/components/InfoIcon';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import UpgradeContainer from '@/components/Upgrade/UpgradeContainer';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
-import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 const ChangeEmailModal: React.FC = () => {
   const [nextEmail, setNextEmail] = React.useState('');
@@ -47,24 +44,17 @@ const ChangeEmailModal: React.FC = () => {
     <Modal id={ModalType.CHANGE_EMAIL_MODAL} title="Change Email">
       <ModalBody>
         <div style={{ color: '#62778c', marginBottom: '12px', fontWeight: 600 }}>Email</div>
-        <Input
-          onKeyPress={withEnterPress(handleSave)}
-          ref={nameInputRef}
-          value={nextEmail}
-          onChange={withTargetValue(setNextEmail)}
-          placeholder="New Email"
-        />
+        <Input ref={nameInputRef} value={nextEmail} onChangeText={setNextEmail} placeholder="New Email" onEnterPress={handleSave} />
+
         <br />
         <div style={{ color: '#62778c', marginBottom: '12px', fontWeight: 600 }}>Password</div>
-        <Input
-          onKeyPress={withEnterPress(handleSave)}
-          value={password}
-          onChange={withTargetValue(setPassword)}
-          placeholder="Confirm Voiceflow password"
-        />
+
+        <Input value={password} onChangeText={setPassword} placeholder="Confirm Voiceflow password" onEnterPress={handleSave} />
+
         <br />
         <br />
         <br />
+
         <Box position="absolute" left={0} right={0} bottom={0}>
           <UpgradeContainer onClick={stopImmediatePropagation()} style={{ padding: '32px' }}>
             <SvgIcon icon="info" color="#3d82e2" mr={16} mb={16} />
@@ -72,10 +62,12 @@ const ChangeEmailModal: React.FC = () => {
           </UpgradeContainer>
         </Box>
       </ModalBody>
+
       <ModalFooter>
         <Link onClick={() => close()} style={{ marginRight: '33px', fontWeight: 600 }}>
           Cancel
         </Link>
+
         <Button disabled={!nextEmail || saving} onClick={handleSave}>
           {saving ? 'Saving...' : 'Submit'}
         </Button>

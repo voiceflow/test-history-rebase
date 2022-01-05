@@ -13,7 +13,6 @@ import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import { HelpTooltip } from './components';
 
@@ -61,15 +60,16 @@ const CaptureEditor: NodeEditor<Realtime.NodeData.Capture, Realtime.NodeData.Cap
               onUpdate={(examples) => onChange({ examples })}
               renderForm={({ value, onAdd, onChange }) => (
                 <Input
+                  value={value || ''}
                   placeholder="Enter user reply"
-                  value={value!}
-                  onChange={withTargetValue(onChange)}
-                  onKeyPress={withEnterPress(Utils.functional.chain(withTargetValue(onAdd), () => onChange('')))}
+                  onEnterPress={Utils.functional.chain(
+                    () => onAdd(value || ''),
+                    () => onChange('')
+                  )}
+                  onChangeText={onChange}
                 />
               )}
-              renderItem={(item, { onUpdate }) => (
-                <Input value={item} onChange={withTargetValue(onUpdate)} placeholder="Enter Entity Content Example" />
-              )}
+              renderItem={(item, { onUpdate }) => <Input value={item} onChangeText={onUpdate} placeholder="Enter Entity Content Example" />}
             />
           </FormControl>
         )}

@@ -16,7 +16,7 @@ import NoMatchAndNoReplyList from '@/pages/Canvas/components/NoMatchAndNoReplyLi
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { PlatformContext } from '@/pages/Project/contexts';
-import { withEnterPress, withInputBlur, withTargetValue } from '@/utils/dom';
+import { withInputBlur } from '@/utils/dom';
 import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
@@ -109,10 +109,10 @@ const NoReplyEditor: React.FC<NoReplyEditorProps> = ({ noReply, onChange, pushTo
                   value={timeout}
                   cursor={isAnyGeneralActivePlatform ? 'auto' : 'not-allowed'}
                   onBlur={() => onChange({ ...noReply, timeout: Number(timeout) })}
-                  onChange={withTargetValue(onChangeTimeout)}
                   disabled={!isAnyGeneralActivePlatform}
-                  onKeyPress={withEnterPress(withInputBlur())}
                   placeholder="10"
+                  onEnterPress={withInputBlur()}
+                  onChangeText={onChangeTimeout}
                 />
               </BoxFlex>
             </TippyTooltip>

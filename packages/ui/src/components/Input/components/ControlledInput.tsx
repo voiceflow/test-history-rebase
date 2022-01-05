@@ -5,40 +5,30 @@ import React from 'react';
 
 import { NestedInput, NestedInputProps } from './DefaultInput';
 
-const getColor = (error?: boolean, complete?: boolean) => {
-  if (error) {
-    return COLOR_RED;
-  }
-
-  if (complete) {
-    return COLOR_GREEN;
-  }
-
-  return undefined;
-};
-
-const getIcon = (error?: boolean, complete?: boolean) => {
-  if (error) {
-    return 'error';
-  }
-
-  if (complete) {
-    return 'check2';
-  }
-
-  return 'error';
-};
-
 const Message = styled(FadeLeftContainer)`
   color: ${colors(ThemeColor.TERTIARY)};
   font-size: 13px;
   text-transform: capitalize;
 `;
 
-export type ControlledInputProps = NestedInputProps & {
-  complete?: boolean;
-  message?: React.ReactNode;
+const getColor = (error?: boolean, complete?: boolean) => {
+  if (error) return COLOR_RED;
+  if (complete) return COLOR_GREEN;
+
+  return undefined;
 };
+
+const getIcon = (error?: boolean, complete?: boolean) => {
+  if (error) return 'error';
+  if (complete) return 'check2';
+
+  return 'error';
+};
+
+export interface ControlledInputProps extends NestedInputProps {
+  message?: React.ReactNode;
+  complete?: boolean;
+}
 
 const ControlledInput: React.FC<ControlledInputProps> = ({ error, complete, message, ...props }) => (
   <NestedInput

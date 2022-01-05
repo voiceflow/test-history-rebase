@@ -36,12 +36,9 @@ const RuntimeConfig: React.FC = () => {
 
         <Box my={16}>
           <label>General Runtime Endpoint</label>
-          <Input
-            value={runtimeEndpoint}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateRuntime(e.target.value)}
-            placeholder="General Runtime Service Endpoint"
-          />
+          <Input value={runtimeEndpoint} placeholder="General Runtime Service Endpoint" onChangeText={updateRuntime} />
         </Box>
+
         <Alert>
           Refresh Page to Apply Changes to <b>General Runtime Endpoint</b>
         </Alert>

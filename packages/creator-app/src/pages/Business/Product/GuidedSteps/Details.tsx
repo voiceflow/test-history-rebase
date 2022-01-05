@@ -62,10 +62,10 @@ const DetailsForm: React.FC<DetailsFormProps> = ({ onSave }) => {
           <label>Privacy Policy URL</label>
           <Input
             name="privacyPolicyUrl"
-            placeholder="Enter a URL to region specific privacy policy"
             value={privacyPolicyUrl}
-            onChange={setPrivacyPolicyUrl}
             onBlur={savePrivacyPolicyUrl}
+            onChange={setPrivacyPolicyUrl}
+            placeholder="Enter a URL to region specific privacy policy"
           />
         </SubSection>
 

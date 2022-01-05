@@ -5,7 +5,7 @@ import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants, Utils as GoogleUtils } from '@voiceflow/google-types';
 import { Box, BoxFlex, Input, Select, useDidUpdateEffect } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import Section, { SectionVariant } from '@/components/Section';
@@ -132,7 +132,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         header="Project Name"
       >
         <BoxFlex>
-          <Input value={newProjectName} onChange={(e: ChangeEvent<HTMLInputElement>) => setNewProjectName(e.target.value)} onBlur={saveSettings} />
+          <Input value={newProjectName} onChangeText={setNewProjectName} onBlur={saveSettings} />
           <Box ml={16}>
             <UnTypedUploadJustIcon size={UploadIconVariant.EXTRA_SMALL} update={setProjectImage} image={projectImage} endpoint="/image" />
           </Box>
@@ -152,13 +152,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
           header="Agent Name"
         >
           <BoxFlex>
-            <Input
-              value={newAgentName}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setNewAgentName(e.target.value)}
-              placeholder="Enter agent name"
-              onBlur={saveSettings}
-              error={!newAgentName}
-            />
+            <Input value={newAgentName} onChangeText={setNewAgentName} placeholder="Enter agent name" onBlur={saveSettings} error={!newAgentName} />
           </BoxFlex>
         </Section>
       )}
@@ -175,12 +169,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
           isDividerNested
           customContentStyling={sectionStyling}
         >
-          <Input
-            error={!!invocationError}
-            value={newInvocation}
-            onBlur={saveSettings}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setNewInvocation(e.target.value)}
-          />
+          <Input error={!!invocationError} value={newInvocation} onBlur={saveSettings} onChangeText={setNewInvocation} />
         </Section>
       )}
 

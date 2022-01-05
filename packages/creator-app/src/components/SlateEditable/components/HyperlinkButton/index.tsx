@@ -3,7 +3,6 @@ import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
 import Popper from '@/components/Popper';
-import { withEnterPress } from '@/utils/dom';
 
 import { Hotkey } from '../../constants';
 import { useSlateEditor } from '../../contexts';
@@ -69,10 +68,10 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
             value={localUrl}
             onBlur={withHandler(onClose)(onBlur)}
             onFocus={editor.applyFakeSelection}
-            onChange={({ target }) => setLocalUrl(target.value)}
             autoFocus // eslint-disable-line jsx-a11y/no-autofocus
-            onKeyPress={withEnterPress(preventDefault(({ currentTarget }) => currentTarget?.blur()))}
             placeholder="Enter URL"
+            onChangeText={(value) => setLocalUrl(value)}
+            onEnterPress={preventDefault(({ currentTarget }) => currentTarget?.blur())}
           />
         </Content>
       )}

@@ -180,10 +180,10 @@ function APITestModal({ data, closeTestModal, testModalOpened }) {
                 <div className="pb-2">
                   {Object.keys(variableValues).map((name) => (
                     <Input
+                      key={name}
                       leftAction={<PrefixText>{name.toUpperCase()}</PrefixText>}
                       placeholder="Enter value"
-                      key={name}
-                      onChange={(e) => setVarValue(name, e.target.value)}
+                      onChangeText={(value) => setVarValue(name, value)}
                     />
                   ))}
                 </div>

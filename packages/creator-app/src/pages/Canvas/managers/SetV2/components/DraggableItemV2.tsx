@@ -103,11 +103,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
             </FormControl>
             <Box mt={12}>
               {item.type === Node.Utils.ExpressionTypeV2.VALUE ? (
-                <Input
-                  value={String(item.expression)}
-                  onChange={({ target }) => onUpdate({ expression: target.value as Realtime.NodeData.NewExpressionType })}
-                  placeholder="Enter value"
-                />
+                <Input value={String(item.expression)} onChangeText={(value) => onUpdate({ expression: value })} placeholder="Enter value" />
               ) : (
                 <VariablesInputComponent
                   error={error}

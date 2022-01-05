@@ -7,8 +7,6 @@ import ColorWrap, { InjectedColorProps } from 'react-color/lib/components/common
 import Hue from 'react-color/lib/components/common/Hue';
 import Saturation from 'react-color/lib/components/common/Saturation';
 
-import { withEnterPress } from '@/utils/dom';
-
 import { AlphaContainer, Colors, Container, HueContainer, InputAction, InputContainer, PickerPointer, SaturationContainer } from './components';
 import withHexColor from './withHexColor';
 
@@ -98,9 +96,9 @@ const ColorPicker = ({
             value={localHex}
             onBlur={onBlur}
             onFocus={onInputFocus}
-            onChange={({ currentTarget: { value } }) => setLocalHex(removeHashFromHex(value).substr(0, 6))}
             leftAction={<InputAction>HEX</InputAction>}
-            onKeyPress={withEnterPress(onEnterPress)}
+            onEnterPress={onEnterPress}
+            onChangeText={(value) => setLocalHex(removeHashFromHex(value).substr(0, 6))}
           />
         </InputContainer>
       )}

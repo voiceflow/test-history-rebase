@@ -4,7 +4,6 @@ import React from 'react';
 import validUrl from 'valid-url';
 
 import VariablesInput from '@/components/VariablesInput';
-import { withEnterPress, withTargetValue } from '@/utils/dom';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import { BackArrow, ErrorMessage, LinkUploadInputContainer } from './components';
@@ -71,9 +70,9 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUpdate, onBack, validate = va
         <Input
           {...inputProps}
           error={!!error}
-          onChange={withTargetValue(setValue)}
-          onKeyPress={withEnterPress(() => validateAndUpdate(value))}
           rightAction={<Badge onClick={() => validateAndUpdate(value)}>Enter</Badge>}
+          onChangeText={setValue}
+          onEnterPress={() => validateAndUpdate(value)}
         />
       )}
       <ErrorMessage>{error}</ErrorMessage>

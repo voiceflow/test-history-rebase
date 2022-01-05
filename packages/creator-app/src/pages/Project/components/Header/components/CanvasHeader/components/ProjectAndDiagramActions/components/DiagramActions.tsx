@@ -2,7 +2,7 @@ import { Dropdown, Input, InputVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
-import { withEnterPress, withInputBlur, withTargetValue } from '@/utils/dom';
+import { withInputBlur } from '@/utils/dom';
 
 import DiagramDivider from './DiagramDivider';
 import DiagramName from './DiagramName';
@@ -35,9 +35,9 @@ const DiagramActions: React.FC<DiagramActionsProps> = ({ disabled, diagramID, di
           style={{ fontSize: '16px' }}
           variant={InputVariant.INLINE}
           onFocus={({ target }) => target.select()}
-          onChange={withTargetValue(setLocalName)}
           autoFocus // eslint-disable-line jsx-a11y/no-autofocus
-          onKeyPress={withEnterPress(withInputBlur())}
+          onChangeText={setLocalName}
+          onEnterPress={withInputBlur()}
         />
       ) : (
         <Dropdown options={options} placement="bottom">

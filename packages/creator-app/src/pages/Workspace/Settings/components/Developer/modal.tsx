@@ -70,7 +70,7 @@ const CreateAPIKeyModal: React.FC = () => {
           <>
             <ModalBody>
               <label>Name</label>
-              <Input placeholder="API Key Name" value={name} onChange={(e) => setName(e.target.value)} />
+              <Input placeholder="API Key Name" value={name} onChangeText={setName} />
             </ModalBody>
             <ModalFooter>
               <Button disabled={state === CreateAPIKeyState.CREATING} onClick={() => createAPIKey(name)}>

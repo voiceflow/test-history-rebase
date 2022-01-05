@@ -33,7 +33,7 @@ const PrototypeVariableSettings: React.FC<ConnectedPrototypeVariableSettingsProp
           }
           value={variables[name]}
           onBlur={() => updateVariables({ [name]: transformStringVariableToNumber(variables[name]) })}
-          onChange={({ target: { value } }) => updateVariables({ [name]: value })}
+          onChangeText={(value) => updateVariables({ [name]: value })}
           placeholder="Enter value"
         />
       ))}

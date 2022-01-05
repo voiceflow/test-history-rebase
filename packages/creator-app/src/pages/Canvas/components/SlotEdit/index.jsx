@@ -183,11 +183,11 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
       >
         <FlexApart>
           <Input
+            ref={nameRef}
             value={slotName}
             onBlur={isInteraction && onBlurInInteraction}
-            onChange={(e) => setSlotName(formatIntentName(e.target.value))}
             placeholder="Enter Entity Name"
-            ref={nameRef}
+            onChangeText={(value) => setSlotName(formatIntentName(value))}
           />
 
           {isInteraction && <RemoveDropdown onRemove={() => onRemove(id)} />}

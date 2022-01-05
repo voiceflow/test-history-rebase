@@ -1,11 +1,11 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import Input, { InputProps } from '@ui/components/Input';
+import Input, { DefaultVariantInputProps } from '@ui/components/Input';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { ThemeProvider } from '../_utils';
 
-const InputImpl = (props: InputProps) => {
+const InputImpl = (props: DefaultVariantInputProps) => {
   const [value, setValue] = React.useState(Utils.generate.string());
 
   return <Input onChange={({ target: { value } }) => setValue(value)} value={value} {...props} />;

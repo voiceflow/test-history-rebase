@@ -115,9 +115,9 @@ const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
     });
   };
 
-  const onPriceChange = (place: Project.MarketPlace, index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onPriceChange = (place: Project.MarketPlace, index: number) => (value: string) => {
     const { marketPlaces = {}, type } = product;
-    const price = Number(e.target.value);
+    const price = Number(value);
 
     if (
       price < MarketPlaceAvailability[index].min ||
@@ -133,7 +133,7 @@ const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
           ...marketPlaces,
           [place]: {
             ...marketPlaces[place],
-            price: e.target.value,
+            price: value,
           },
         },
       });
@@ -170,12 +170,13 @@ const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
                         <Input
                           type="number"
                           name="price"
+                          onChangeText={onPriceChange(place, index)}
                           placeholder={`e.g. ${min}`}
                           defaultValue={product.marketPlaces[place]?.price}
-                          onChange={onPriceChange(place, index)}
                         />
                         <Text>{icon}</Text>
                       </SubSection>
+
                       {invalidPrice && index === invalidIndex && (
                         <Text small noPadding error>
                           {min} min/

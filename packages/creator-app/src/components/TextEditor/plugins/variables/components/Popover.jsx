@@ -1,10 +1,9 @@
-import { Input, KeyName, Link, MenuContainer, Portal, preventDefault, stopPropagation } from '@voiceflow/ui';
+import { Input, Link, MenuContainer, Portal, preventDefault, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { TextEditorVariablesPopoverConsumer } from '@/contexts';
 import { css, styled } from '@/hocs';
 import { FadeDownDelayedContainer } from '@/styles/animations';
-import { withKeyPress } from '@/utils/dom';
 
 const PopoverContainer = styled.div`
   z-index: ${({ theme }) => theme.zIndex.popper};
@@ -66,9 +65,9 @@ export default React.forwardRef(
                         value={variableName}
                         variant="inline"
                         onChange={onChangeVariableName}
-                        onKeyPress={withKeyPress(KeyName.ENTER, onCreateMention)}
                         placeholder={placeholder}
                         onMouseDown={onFocusInput}
+                        onEnterPress={onCreateMention}
                       />
 
                       <Link

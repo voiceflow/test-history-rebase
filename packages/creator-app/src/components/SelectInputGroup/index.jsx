@@ -36,8 +36,8 @@ function SelectInputGroup({ inputValue, orientation = OrientationType.RIGHT, pla
         value={text}
         onBlur={() => onInputBlur?.(text)}
         variant="inline"
-        onChange={({ target }) => setText(target.value)}
         placeholder={placeholder}
+        onChangeText={(value) => setText(value)}
       />
     </InputWrapper>
   ) : (

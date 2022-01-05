@@ -1,4 +1,4 @@
-import { VALID_SAMPLE_UTTERANCE } from '@voiceflow/common';
+import { Utils, VALID_SAMPLE_UTTERANCE } from '@voiceflow/common';
 import { Input } from '@voiceflow/ui';
 import React from 'react';
 
@@ -32,18 +32,16 @@ const ChoiceInput = ({ choice, onChange }) => {
         onUpdate={updateSynonyms}
         renderForm={({ value, onAdd, onChange }) => (
           <Input
-            placeholder="Enter user reply"
             value={value}
-            onKeyPress={(event) => {
-              if (event.key === 'Enter') {
-                onAdd(event.target.value);
-                onChange('');
-              }
-            }}
-            onChange={(e) => onChange(e.target.value)}
+            placeholder="Enter user reply"
+            onEnterPress={Utils.functional.chain(
+              () => onAdd(value || ''),
+              () => onChange('')
+            )}
+            onChangeText={onChange}
           />
         )}
-        renderItem={(item, { onUpdate }) => <Input value={item} onChange={(e) => onUpdate(e.target.value)} placeholder="User reply synonyms" />}
+        renderItem={(item, { onUpdate }) => <Input value={item} onChangeText={onUpdate} placeholder="User reply synonyms" />}
       />
     </FormControl>
   );

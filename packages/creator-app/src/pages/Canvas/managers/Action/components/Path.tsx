@@ -33,13 +33,13 @@ const PathSection: React.FC<PathSectionProps> = ({ path, index, onUpdate, onRemo
         </Text>
       }
       value={path.label}
-      onChange={(e) => onUpdate({ label: e.target.value })}
       placeholder="Add path name"
       rightAction={
         <TippyTooltip title={path.isDefault ? 'Default Path' : 'Assign as default path'} position="top" distance={8}>
           <Checkbox checked={path.isDefault} onChange={swallowEvent(() => updateDefaultPath(index))} padding={false} />
         </TippyTooltip>
       }
+      onChangeText={(value) => onUpdate({ label: value })}
     />
     <Box ml={16}>
       <TippyTooltip title={onRemove ? 'Remove path' : 'Action step must have at least 1 path'} position="top" distance={8}>

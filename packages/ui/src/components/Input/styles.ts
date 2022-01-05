@@ -10,6 +10,7 @@ export const inputFocusStyle = css`
 
 export const inputDisabledStyle = css`
   color: ${colors(ThemeColor.QUARTERNARY)};
+
   ${IS_SAFARI &&
   css`
     -webkit-text-fill-color: ${colors(ThemeColor.QUARTERNARY)};

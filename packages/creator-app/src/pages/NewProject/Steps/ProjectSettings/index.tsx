@@ -114,7 +114,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             value={invocationName}
-            onChange={(e) => setInvocationName(e.target.value)}
+            onChangeText={setInvocationName}
           />
 
           {invocationError && invocationName ? (

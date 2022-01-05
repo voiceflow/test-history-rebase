@@ -1,5 +1,5 @@
 export const handleJSONFileRead = <T extends Record<string, unknown>>(
-  file: File,
+  file: File | Blob,
   fileReader: FileReader,
   requiredProps: string[] = []
 ): { data: T; fileName: string } => {
@@ -11,7 +11,7 @@ export const handleJSONFileRead = <T extends Record<string, unknown>>(
     }
   });
 
-  return { data, fileName: file.name };
+  return { data, fileName: file instanceof File ? file.name : 'Unknown' };
 };
 
 export const jsonToCSV = (data: object[]): string => {

@@ -12,7 +12,6 @@ import { useAsyncEffect, useToggle } from '@/hooks';
 import { SAMLProvider } from '@/models';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 import { onClickCopy } from '@/utils/clipboard';
-import { withTargetValue } from '@/utils/dom';
 
 const ENTITY_ID = 'https://voiceflow.com';
 const TITLE = 'SAML SSO';
@@ -95,11 +94,7 @@ const SSOPage: React.FC = () => {
       </Section>
       <Section variant={SectionVariant.QUATERNARY} header="Entity ID URL">
         <Box mb={24} maxWidth={480}>
-          <Input
-            placeholder="Enter entity ID URL"
-            value={samlProvider.issuer}
-            onChange={withTargetValue((issuer) => samlProviderAPI.update({ issuer }))}
-          />
+          <Input placeholder="Enter entity ID URL" value={samlProvider.issuer} onChangeText={(issuer) => samlProviderAPI.update({ issuer })} />
           <DescriptorContainer>The IdP Entity ID for the identity provider your organization uses.</DescriptorContainer>
         </Box>
       </Section>
@@ -108,7 +103,7 @@ const SSOPage: React.FC = () => {
           <Input
             placeholder="Enter SSO target URL"
             value={samlProvider.entryPoint}
-            onChange={withTargetValue((entryPoint) => samlProviderAPI.update({ entryPoint }))}
+            onChangeText={(entryPoint) => samlProviderAPI.update({ entryPoint })}
           />
           <DescriptorContainer>The URL users of your organization will be directed to on log in.</DescriptorContainer>
         </Box>

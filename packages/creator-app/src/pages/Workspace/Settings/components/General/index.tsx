@@ -38,7 +38,7 @@ const GeneralSettingsPage: React.FC = () => {
       <SettingsSection title="General">
         <Section variant={SectionVariant.QUATERNARY} header="Workspace Name">
           <BoxFlex mb={24}>
-            <Input name="name" value={name} onBlur={saveName} onChange={(e) => updateName(e.target.value)} placeholder="Board Name" />
+            <Input name="name" value={name} onBlur={saveName} onChangeText={updateName} placeholder="Board Name" />
             <Box ml={16}>
               <UploadJustIconComponent
                 size={UploadIconVariant.EXTRA_SMALL}

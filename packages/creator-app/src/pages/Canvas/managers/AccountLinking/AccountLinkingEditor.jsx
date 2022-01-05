@@ -111,16 +111,16 @@ function AccountLinkingEditor({ data, isOpen, setError, loadAccountLinking, patc
           <Section>
             <FormControl label="URL Authorization">
               <Input
-                placeholder="Enter URL"
                 value={state.authorizationUrl || ''}
-                onChange={(e) => handleInputUpdate('authorizationUrl', e.target.value)}
+                placeholder="Enter URL"
+                onChangeText={(value) => handleInputUpdate('authorizationUrl', value)}
               />
             </FormControl>
             <FormControl label="Access Token URL" contentBottomUnits={0}>
               <Input
                 value={state.accessTokenUrl || ''}
                 placeholder="Enter Token URL"
-                onChange={(e) => handleInputUpdate('accessTokenUrl', e.target.value)}
+                onChangeText={(value) => handleInputUpdate('accessTokenUrl', value)}
               />
             </FormControl>
           </Section>
@@ -130,13 +130,13 @@ function AccountLinkingEditor({ data, isOpen, setError, loadAccountLinking, patc
               <SubHeaderTabs options={TABS} selected={activeTab || 'client'} onChange={(value) => setActiveTab(value)} />
             </SubHeader>
 
-            <TabComponent data={state} onUpate={handleInputUpdate} handleAdd={handleAdd} handleRemove={handleRemove} handleChange={handleChange} />
+            <TabComponent data={state} onUpdate={handleInputUpdate} handleAdd={handleAdd} handleRemove={handleRemove} handleChange={handleChange} />
 
             <Section>
               <FormControl label="Access Token Expiration">
                 <Input
                   value={state.defaultTokenExpirationInSeconds}
-                  onChange={(e) => handleInputUpdate('defaultTokenExpirationInSeconds', +e.target.value)}
+                  onChangeText={(value) => handleInputUpdate('defaultTokenExpirationInSeconds', +value)}
                 />
               </FormControl>
               <FormControl label="Client Authentication Scheme" contentBottomUnits={0}>

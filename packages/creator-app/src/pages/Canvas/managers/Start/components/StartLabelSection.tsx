@@ -3,7 +3,6 @@ import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import { useLinkedState } from '@/hooks';
-import { withTargetValue } from '@/utils/dom';
 
 interface StartLabelSectionProps {
   label: string;
@@ -18,7 +17,7 @@ const StartLabelSection: React.FC<StartLabelSectionProps> = ({ label, onChangeLa
       <Input
         value={localLabel}
         onBlur={() => (localLabel ? onChangeLabel(localLabel) : setLocalLabel(label))}
-        onChange={withTargetValue(setLocalLabel)}
+        onChangeText={setLocalLabel}
         placeholder="Enter a Label"
       />
     </Section>

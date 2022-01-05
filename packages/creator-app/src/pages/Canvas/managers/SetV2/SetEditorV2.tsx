@@ -75,14 +75,7 @@ const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
       <>
         <BoxFlex fullWidth zIndex={2} position="fixed" top={0} borderBottom="1px solid #eaeff4">
           <Section fullWidth>
-            <Input
-              value={stepName}
-              onChange={(e) => setStepName(e.target.value)}
-              onBlur={(e) => {
-                onChange({ title: e.target.value });
-              }}
-              placeholder="Set Label"
-            />
+            <Input value={stepName} onBlur={() => onChange({ title: stepName })} onChangeText={setStepName} placeholder="Set Label" />
           </Section>
         </BoxFlex>
         <BoxFlex style={{ marginTop: '84px' }}>

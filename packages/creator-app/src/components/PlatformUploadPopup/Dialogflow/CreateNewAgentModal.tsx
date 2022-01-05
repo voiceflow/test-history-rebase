@@ -27,10 +27,6 @@ const CreateNewAgentModal: React.FC = () => {
     api.update({ agentName: '' });
   };
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    api.update({ agentName: event.target.value });
-  };
-
   const handleSubmit = async () => {
     api.loading.set(true);
 
@@ -45,7 +41,7 @@ const CreateNewAgentModal: React.FC = () => {
   return (
     <Modal id={ModalType.DIALOGFLOW_CREATE_NEW_AGENT} title="Create new agent">
       <ModalBody>
-        <Input autoFocus value={state.agentName} onChange={handleOnChange} placeholder="Enter agent name" />
+        <Input autoFocus value={state.agentName} onChangeText={(value) => api.update({ agentName: value })} placeholder="Enter agent name" />
       </ModalBody>
 
       <ModalFooter fullWidth>

@@ -5,7 +5,6 @@ import Divider from '@/components/Divider';
 import Section from '@/components/Section';
 import { useLinkedState } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
-import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 interface FollowPathEditorProps {
   name: string;
@@ -21,13 +20,7 @@ const FollowPathEditor: React.FC<FollowPathEditorProps> = ({ name, onChange }) =
     <>
       <Section>
         <FormControl label="Path Label" contentBottomUnits={0}>
-          <Input
-            value={localName}
-            onBlur={onSave}
-            onChange={withTargetValue(setLocalName)}
-            onKeyPress={withEnterPress(onSave)}
-            placeholder="Add path label"
-          />
+          <Input value={localName} onBlur={onSave} onChangeText={setLocalName} placeholder="Add path label" onEnterPress={onSave} />
         </FormControl>
       </Section>
 

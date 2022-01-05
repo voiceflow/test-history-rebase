@@ -1,9 +1,11 @@
-import { getScrollbarWidth, KeyName, preventDefault } from '@voiceflow/ui';
+import { getScrollbarWidth } from '@voiceflow/ui';
 import _isNumber from 'lodash/isNumber';
 import _isString from 'lodash/isString';
 
 import { IS_E2E_TEST } from '@/config';
 import { Pair, Point } from '@/types';
+
+export { swallowKeyPress, withEnterPress, withInputBlur, withKeyPress, withTargetValue } from '@voiceflow/ui';
 
 declare global {
   interface HTMLElement {
@@ -125,35 +127,6 @@ export const scrollTo = (node: HTMLElement | null, { top = 0, left = 0, ...opts 
     }
   }
 };
-
-export const withKeyPress =
-  <E extends KeyboardEvent | React.KeyboardEvent>(key: string, cb: (event: E) => void) =>
-  (event: E) => {
-    if (event.key === key) {
-      return cb(event);
-    }
-  };
-
-export const swallowKeyPress = (key: string) => withKeyPress(key, preventDefault());
-
-export const withEnterPress: {
-  <E extends React.KeyboardEvent<any>>(cb: (event: E) => void): (event: E) => void;
-  <E extends KeyboardEvent>(cb: (event: E) => void): (event: E) => void;
-} = <E extends KeyboardEvent | React.KeyboardEvent<any>>(cb: (event: E) => void) => withKeyPress(KeyName.ENTER, cb);
-
-export const withInputBlur =
-  <E extends KeyboardEvent | React.KeyboardEvent>(cb?: (event: E) => void) =>
-  (event: E): void => {
-    (event.target as HTMLInputElement)?.blur();
-
-    // eslint-disable-next-line callback-return
-    cb?.(event);
-  };
-
-export const withTargetValue =
-  (cb: (value: string) => void) =>
-  (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>): void =>
-    cb(event.currentTarget.value);
 
 export const copyJSONPath = (copy_event: { name: string; namespace: string[] }) => {
   const total_path = copy_event.namespace.slice();

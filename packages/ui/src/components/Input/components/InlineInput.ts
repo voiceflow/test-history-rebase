@@ -1,22 +1,23 @@
 import { css, styled } from '@ui/styles';
 
 export interface InlineInputProps {
+  inline?: boolean;
   fullWidth?: boolean;
   noOverflow?: boolean;
-  inline?: boolean;
 }
 
 const Input = styled.input<InlineInputProps>`
-  ${({ fullWidth }) =>
-    fullWidth &&
-    css`
-      width: 100%;
-    `}
   padding: 0;
   background-color: inherit;
   border: none;
   border-radius: 0;
   outline: none !important;
+
+  ${({ fullWidth }) =>
+    fullWidth &&
+    css`
+      width: 100%;
+    `}
 
   ${({ noOverflow }) =>
     noOverflow &&

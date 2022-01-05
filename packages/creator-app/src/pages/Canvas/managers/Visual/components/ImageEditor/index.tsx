@@ -62,13 +62,11 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.Visua
     }
   };
 
-  const onChangeDimensions =
-    (dimension: 'width' | 'height') =>
-    ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
-      if (!currentTarget.value || currentTarget.value.match(NUMBERS_ONLY_REGEXP)) {
-        setDimensions((prevDimensions) => ({ ...prevDimensions!, [dimension]: currentTarget.value }));
-      }
-    };
+  const onChangeDimensions = (dimension: 'width' | 'height') => (value: string) => {
+    if (!value || value.match(NUMBERS_ONLY_REGEXP)) {
+      setDimensions((prevDimensions) => ({ ...prevDimensions!, [dimension]: value }));
+    }
+  };
 
   const onBlurDimensions = () => {
     onChange({
@@ -119,7 +117,7 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.Visua
                 <Input
                   value={dimensions?.width}
                   onBlur={onBlurDimensions}
-                  onChange={onChangeDimensions('width')}
+                  onChangeText={onChangeDimensions('width')}
                   placeholder="500"
                   rightAction={
                     <Text fontSize={13} color="#62778c" fontWeight="bold">
@@ -132,7 +130,7 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.Visua
                 <Input
                   value={dimensions?.height}
                   onBlur={onBlurDimensions}
-                  onChange={onChangeDimensions('height')}
+                  onChangeText={onChangeDimensions('height')}
                   placeholder="500"
                   rightAction={
                     <Text fontSize={13} color="#62778c" fontWeight="bold">

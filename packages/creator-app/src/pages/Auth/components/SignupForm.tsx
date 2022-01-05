@@ -110,31 +110,36 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
             <HeaderBox>
               <h1>Create your account</h1>
             </HeaderBox>
+
             <InputContainer>
               <Input
-                className="form-bg"
                 type="text"
                 name="name"
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Full name"
-                required
-                minLength={3}
                 value={name}
+                required
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
+                className="form-bg"
+                minLength={3}
+                placeholder="Full name"
+                onChangeText={(value) => setName(value)}
               />
             </InputContainer>
+
             <InputContainer>
               <EmailInput value={email} onChange={updateEmail} placeholder="Email address" error={ssoRequired} />
+
               {ssoRequired && (
                 <Box mt={8} fontSize={13} color={ThemeColor.RED}>
                   {SSO_REQUIRED}
                 </Box>
               )}
             </InputContainer>
+
             <Box mb={22}>
               <PasswordInput minLength={MIN_PASSWORD_LENGTH} value={password} onChange={setPassword} />
             </Box>
+
             {promo && (
               <InputContainer>
                 <ControlledInput

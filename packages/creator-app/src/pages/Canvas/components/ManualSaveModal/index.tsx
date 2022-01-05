@@ -6,7 +6,6 @@ import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as Session from '@/ducks/session';
 import { useModals, useSelector, useTrackingEvents } from '@/hooks';
-import { withEnterPress } from '@/utils/dom';
 
 const ManualSaveModal: React.FC = () => {
   const [saveName, setSaveName] = React.useState('');
@@ -30,11 +29,14 @@ const ManualSaveModal: React.FC = () => {
   const handleSave = async () => {
     if (!saveName.trim() || saving) return;
     setSaving(true);
+
     try {
       await client.version.getVersionSnapshot(activeVersionID, saveName.trim());
+
       trackingEvents.trackVersionManuallyCreated();
       toast.success(`Saved new version '${saveName}'`);
       data.reFetchVersions?.();
+
       reset();
       close();
     } catch (e) {
@@ -46,14 +48,9 @@ const ManualSaveModal: React.FC = () => {
   return isOpened ? (
     <Modal id={ModalType.MANUAL_SAVE_MODAL} title="Save New Version">
       <ModalBody>
-        <Input
-          onKeyPress={withEnterPress(handleSave)}
-          ref={nameInputRef}
-          value={saveName}
-          onChange={(e) => setSaveName(e.target.value)}
-          placeholder="Enter version name"
-        />
+        <Input ref={nameInputRef} value={saveName} placeholder="Enter version name" onChangeText={setSaveName} onEnterPress={handleSave} />
       </ModalBody>
+
       <ModalFooter>
         <Button disabled={!saveName || saving} onClick={handleSave}>
           {saving ? 'Saving...' : 'Save'}

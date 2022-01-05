@@ -34,13 +34,14 @@ const TagLineItem: React.FC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete,
     );
   };
 
-  const onTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setTagVal(val);
+  const onTagChange = (value: string) => {
+    setTagVal(value);
 
-    if (allOtherTags.some((tag) => tag.label.toLowerCase() === val.toLowerCase())) {
+    const lowercaseValue = value.toLowerCase();
+
+    if (allOtherTags.some((tag) => tag.label.toLowerCase() === lowercaseValue)) {
       setTagError('Tag name already exists');
-    } else if (!val) {
+    } else if (!value) {
       setTagError('Tag name is required');
     } else {
       setTagError('');
@@ -56,11 +57,11 @@ const TagLineItem: React.FC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete,
   return (
     <Container>
       <Input
-        className={cn(`${ClassName.TAG_MODAL_INPUT_FIELD}-${tag.label}`)}
         error={!!tagError}
         value={tagVal}
-        onChange={onTagChange}
         onBlur={saveUpdate}
+        className={cn(`${ClassName.TAG_MODAL_INPUT_FIELD}-${tag.label}`)}
+        onChangeText={onTagChange}
       />
       {tagError && (
         <FadeLeftContainer>

@@ -6,10 +6,11 @@ import { Thunk } from '@/store/types';
 import { updateAccount } from './actions';
 
 export const saveProfilePicture =
-  (url: string): Thunk =>
+  (url: string | null): Thunk =>
   async (dispatch) => {
-    await client.user.updateProfilePicture(url);
-    dispatch(updateAccount({ image: url }));
+    await client.user.updateProfilePicture(url ?? '');
+
+    dispatch(updateAccount({ image: url ?? '' }));
 
     toast.success('Profile picture successfully updated');
   };

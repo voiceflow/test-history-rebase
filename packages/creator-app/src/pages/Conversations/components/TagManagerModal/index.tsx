@@ -1,4 +1,4 @@
-import { Badge, Box, Button, ButtonVariant, ErrorMessage, Input, KeyName } from '@voiceflow/ui';
+import { Badge, Box, Button, ButtonVariant, ErrorMessage, Input } from '@voiceflow/ui';
 import intersectionWith from 'lodash/intersectionWith';
 import isEqual from 'lodash/isEqual';
 import React from 'react';
@@ -10,7 +10,6 @@ import { allReportTagsSelector, createTag, deleteTag } from '@/ducks/reportTag';
 import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { ReportTag, Sentiment, SentimentArray, SystemTag, SystemTagArray } from '@/models';
 import { FadeLeftContainer } from '@/styles/animations';
-import { withKeyPress } from '@/utils/dom';
 
 import { Content, NewTagInputContainer, TagLineItem } from './components';
 
@@ -60,9 +59,10 @@ const TagManagerModal: React.FC<RouteComponentProps> = () => {
     setAddVal('');
   };
 
-  const onAddInputChange = ({ target: { value: val } }: React.ChangeEvent<HTMLInputElement>) => {
-    setAddVal(val);
-    const newTags = tagInputToArray(val);
+  const onAddInputChange = (value: string) => {
+    setAddVal(value);
+
+    const newTags = tagInputToArray(value);
     const alreadyExistingTags = intersectionWith(tagsLabelArray, newTags, isEqual);
 
     if (alreadyExistingTags.length) {
@@ -79,12 +79,12 @@ const TagManagerModal: React.FC<RouteComponentProps> = () => {
           <ModalBody style={{ padding: '0' }}>
             <NewTagInputContainer>
               <Input
-                onKeyPress={withKeyPress(KeyName.ENTER, onAdd)}
                 error={!!addError}
                 value={addVal}
-                onChange={onAddInputChange}
+                nested
+                onChangeText={onAddInputChange}
+                onEnterPress={onAdd}
                 placeholder="Add new tags separated by commas"
-                hasAction
                 rightAction={
                   addVal && (
                     <Badge slide onClick={onAdd}>

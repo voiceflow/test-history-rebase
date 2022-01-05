@@ -1,4 +1,4 @@
-import { Badge, Dropdown, Flex, FlexApart, Input, KeyName, SvgIcon, toast } from '@voiceflow/ui';
+import { Badge, Dropdown, Flex, FlexApart, Input, SvgIcon, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import InfoIcon from '@/components/InfoIcon';
@@ -8,7 +8,6 @@ import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
-import { withKeyPress } from '@/utils/dom';
 
 import { VariableType } from '../../constants';
 import { Container, Info, Label, Select } from './components';
@@ -82,10 +81,11 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
         </Dropdown>
       </FlexApart>
       <Input
-        placeholder={`Add ${VARIABLE_LABELS[variableType]} Variable`}
         value={value}
-        onChange={({ target }) => setValue(target.value)}
+        placeholder={`Add ${VARIABLE_LABELS[variableType]} Variable`}
+        onChangeText={setValue}
         {...props}
+        nested
         maxLength={64}
         rightAction={
           !!value.length && (
@@ -94,8 +94,7 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
             </Badge>
           )
         }
-        onKeyPress={withKeyPress(KeyName.ENTER, onAdd)}
-        nested
+        onEnterPress={onAdd}
       />
     </Container>
   );

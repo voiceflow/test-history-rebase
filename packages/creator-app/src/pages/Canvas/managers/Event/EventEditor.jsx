@@ -17,11 +17,7 @@ function EventEditor({ data, onChange }) {
     <Content>
       <Section>
         <FormControl label="Event Request Name" contentBottomUnits={0}>
-          <Input
-            value={data.requestName}
-            onChange={(e) => onChange({ requestName: e.target.value })}
-            placeholder="e.g. AudioPlayer.PlaybackStopped"
-          />
+          <Input value={data.requestName} onChangeText={(value) => onChange({ requestName: value })} placeholder="e.g. AudioPlayer.PlaybackStopped" />
         </FormControl>
       </Section>
       <LineItemsSection header="Request Mapping" onAdd={onAdd} dividers isDividerNested>

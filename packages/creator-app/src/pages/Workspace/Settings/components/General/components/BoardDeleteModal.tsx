@@ -6,7 +6,6 @@ import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import { useDidUpdateEffect, useDispatch, useModals, useTrackingEvents } from '@/hooks';
-import { withTargetValue } from '@/utils/dom';
 
 export interface BoardDeleteModalProps {
   workspace: Realtime.Workspace;
@@ -54,7 +53,7 @@ export const BoardDeleteModal: React.FC<BoardDeleteModalProps> = ({ workspace })
             <b>Warning</b>, deleting a workspace will permanently delete all of its projects and live voice applications.
             <br /> <br />
             <label>Workspace name</label>
-            <Input name="input" onChange={withTargetValue(setName)} value={name} placeholder="Workspace Name" />
+            <Input name="input" onChangeText={setName} value={name} placeholder="Workspace Name" />
           </div>
         )}
       </ModalBody>

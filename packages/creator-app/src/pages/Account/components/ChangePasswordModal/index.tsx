@@ -7,7 +7,6 @@ import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 import { MIN_PASSWORD_LENGTH } from '@/pages/Auth/constants';
-import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 const ChangePasswordModal: React.FC = () => {
   const [currentPassword, setCurrentPassword] = React.useState('');
@@ -32,7 +31,9 @@ const ChangePasswordModal: React.FC = () => {
 
   const handleSave = async () => {
     if (!currentPassword.trim() || saving) return;
+
     setSaving(true);
+
     if (nextPassword !== confirmPassword) {
       toast.error('New passwords do not match');
       setSaving(false);
@@ -42,14 +43,14 @@ const ChangePasswordModal: React.FC = () => {
     } else {
       try {
         await client.user.updatePassword(currentPassword, nextPassword);
+
         toast.success('Password successfully updated');
         reset();
         close();
       } catch (e) {
-        const errText = _get(e, ['body', 'data']) || false;
-        const errToast = errText || 'Unable to update password';
         setSaving(false);
-        toast.error(errToast);
+
+        toast.error(_get(e, ['body', 'data']) ?? 'Unable to update password');
       }
     }
   };
@@ -60,34 +61,34 @@ const ChangePasswordModal: React.FC = () => {
     <Modal id={ModalType.CHANGE_PASSWORD_MODAL} title="Change Password">
       <ModalBody>
         <Input
-          onKeyPress={withEnterPress(handleSave)}
           ref={nameInputRef}
+          type="password"
           value={currentPassword}
-          onChange={withTargetValue(setCurrentPassword)}
-          type="password"
           placeholder="Current password"
+          onChangeText={setCurrentPassword}
+          onEnterPress={handleSave}
         />
+
         <br />
+
+        <Input type="password" value={nextPassword} placeholder="New password" onEnterPress={handleSave} onChangeText={setNextPassword} />
+
+        <br />
+
         <Input
-          onKeyPress={withEnterPress(handleSave)}
-          value={nextPassword}
-          onChange={withTargetValue(setNextPassword)}
-          placeholder="New password"
           type="password"
-        />
-        <br />
-        <Input
-          onKeyPress={withEnterPress(handleSave)}
           value={confirmPassword}
-          onChange={withTargetValue(setConfirmPassword)}
+          onChangeText={setConfirmPassword}
+          onEnterPress={handleSave}
           placeholder="Confirm new password"
-          type="password"
         />
       </ModalBody>
+
       <ModalFooter>
         <Link onClick={() => close()} style={{ marginRight: '33px', fontWeight: 600 }}>
           Cancel
         </Link>
+
         <Button disabled={!nextPassword || saving} onClick={handleSave}>
           {saving ? 'Saving...' : 'Submit'}
         </Button>

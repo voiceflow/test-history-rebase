@@ -123,7 +123,7 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
         <h3>Skill ID</h3>
       </BoxFlex>
       <Box mb={32} width="100%">
-        <Input value={skillID} onChange={(e) => setSkillID(e.target.value)} placeholder="no existing Skill ID" />
+        <Input value={skillID} onChangeText={(value) => setSkillID(value)} placeholder="no existing Skill ID" />
       </Box>
       <h3>In Skill Products</h3>
       {Object.keys(products).map((productID) => (
@@ -133,7 +133,7 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
           </>
           <Input
             value={products[productID]}
-            onChange={(e) => setProducts({ ...products, [productID]: e.target.value })}
+            onChangeText={(value) => setProducts({ ...products, [productID]: value })}
             placeholder="no existing alexa product ID"
           />
         </Box>

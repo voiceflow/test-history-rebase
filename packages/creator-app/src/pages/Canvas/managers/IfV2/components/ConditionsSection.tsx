@@ -51,13 +51,7 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
       {isDragging || isDraggingPreview ? null : (
         <>
           <Section customContentStyling={{ paddingTop: '0px' }}>
-            <Input
-              ref={inputRef}
-              value={title}
-              onChange={({ currentTarget }) => setTitle(currentTarget.value)}
-              onBlur={onBlur}
-              placeholder="Condition Label"
-            />
+            <Input ref={inputRef} value={title} onBlur={onBlur} placeholder="Condition Label" onChangeText={setTitle} />
           </Section>
           <Section isDividerNested customContentStyling={{ paddingTop: '0px', paddingBottom: '0px' }}>
             <ConditionsBuilder expression={item as Realtime.ExpressionData} onChange={onUpdate} />

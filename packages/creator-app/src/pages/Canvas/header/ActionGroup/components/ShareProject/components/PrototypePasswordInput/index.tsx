@@ -18,16 +18,15 @@ interface PrototypePasswordInputProps {
 }
 
 const UnconnectedPrototypePasswordInput: React.FC<PrototypePasswordInputProps & ConnectedPrototypePasswordInputProps> = ({
+  isCollapsed,
   initialValue = '',
   updateSettings,
-  isCollapsed,
   onToggleCollapse,
 }) => {
   // Internal UI state for rendering only
   const [value, setValue] = useState(initialValue);
   const [isFocused, setIsFocus] = useState(false);
 
-  const onUserInput = useCallback(({ target }) => setValue(target.value), [setValue]);
   const onFocus = useCallback(() => setIsFocus(true), [setIsFocus]);
 
   // Passes back the final value of the input to higher-level component
@@ -81,15 +80,16 @@ const UnconnectedPrototypePasswordInput: React.FC<PrototypePasswordInputProps & 
     >
       <Input
         {...iconProps}
-        placeholder="Add password"
         value={value}
-        onChange={onUserInput}
-        onBlur={onBlur}
-        onCustomFocus={onFocus}
         nested
+        onBlur={onBlur}
         disabled={!canAccessPassword}
+        placeholder="Add password"
+        onChangeText={setValue}
         wrapperProps={inputWrapperProps}
+        onFocusOnClick={onFocus}
       />
+
       {!canAccessPassword && (
         <StyledBlockText fontSize={13} color={THEME.colors.secondary} paddingTop={16}>
           <span>Unlock password protected prototypes. </span>

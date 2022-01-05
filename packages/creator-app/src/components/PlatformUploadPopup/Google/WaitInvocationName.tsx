@@ -31,13 +31,6 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
     loading: false,
   });
 
-  const updateName = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    api.update({
-      name: target.value,
-      error: Utils.getInvocationNameError(target.value, locales),
-    });
-  };
-
   const submitNewName = async () => {
     if (state.error) {
       return;
@@ -82,7 +75,11 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
       </BoxFlex>
 
       <Box mb="m">
-        <Input value={state.name} placeholder="Invocation Name" onChange={updateName} />
+        <Input
+          value={state.name}
+          placeholder="Invocation Name"
+          onChangeText={(value) => api.update({ name: value, error: Utils.getInvocationNameError(value, locales) })}
+        />
       </Box>
 
       {state.error && (

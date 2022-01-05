@@ -1,4 +1,4 @@
-import { Input, KeyName } from '@voiceflow/ui';
+import { Input } from '@voiceflow/ui';
 import React from 'react';
 
 import Container from './Container';
@@ -12,27 +12,26 @@ export interface PasswordInputProps {
 }
 
 const PasswordInput: React.FC<PasswordInputProps> = ({ checkLogin, colorScheme }) => {
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [value, setValue] = React.useState('');
 
-  const onSubmit = React.useCallback(() => {
-    const userInput = inputRef.current?.value ?? '';
-    checkLogin(userInput);
-  }, [checkLogin, inputRef]);
-
-  const onKeyPress = React.useCallback(
-    (event) => {
-      if (event.key === KeyName.ENTER) onSubmit();
-    },
-    [onSubmit]
-  );
+  const onSubmit = () => checkLogin(value);
 
   return (
     <>
       <Title mb={16}>This link is password protected</Title>
       <Description>Enter the password below to view the prototype.</Description>
+
       <Container>
-        <Input ref={inputRef} type="password" className="prototype-password-input" placeholder="Enter password" onKeyDown={onKeyPress} />
+        <Input
+          type="password"
+          value={value}
+          className="prototype-password-input"
+          placeholder="Enter password"
+          onChangeText={setValue}
+          onEnterPress={onSubmit}
+        />
       </Container>
+
       <ViewPrototypeButton color={colorScheme} onClick={onSubmit}>
         View Prototype
       </ViewPrototypeButton>

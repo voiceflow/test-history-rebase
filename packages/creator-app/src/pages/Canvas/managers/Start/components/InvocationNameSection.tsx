@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from '@/hooks';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { getSettingsMetaProps } from '@/pages/Settings/constants';
-import { withTargetValue } from '@/utils/dom';
 import { getPlatformValue } from '@/utils/platform';
 
 const InvocationNameSection: React.FC = () => {
@@ -53,8 +52,8 @@ const InvocationNameSection: React.FC = () => {
         error={!!invocationError}
         value={newInvocation}
         onBlur={() => !invocationError && updateInvocationName(newInvocation)}
-        onChange={withTargetValue(setNewInvocation)}
         placeholder="Enter an invocation name"
+        onChangeText={setNewInvocation}
       />
     </Section>
   );

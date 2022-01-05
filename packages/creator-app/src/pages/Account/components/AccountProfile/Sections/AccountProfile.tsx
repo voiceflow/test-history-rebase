@@ -8,8 +8,6 @@ import * as Account from '@/ducks/account';
 import { useDispatch, useModals, useSelector } from '@/hooks';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 
-const UnTypedUploadJustIcon: any = UploadJustIcon;
-
 const sectionStyling = {
   paddingBottom: '24px',
 };
@@ -34,9 +32,10 @@ const AccountProfile: React.FC = () => {
         header="Name"
       >
         <BoxFlex mr={120}>
-          <Input value={user.name ?? ''} disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
+          <Input value={user.name ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
+
           <Box ml={16}>
-            <UnTypedUploadJustIcon size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} endpoint="/image" />
+            <UploadJustIcon image={user.image ?? ''} size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} endpoint="/image" />
           </Box>
         </BoxFlex>
       </Section>
@@ -52,7 +51,7 @@ const AccountProfile: React.FC = () => {
         header="Email"
       >
         <BoxFlex mr={120}>
-          <Input value={user.email ?? ''} disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
+          <Input value={user.email ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
         </BoxFlex>
       </Section>
 

@@ -1,3 +1,5 @@
+import { KeyName } from '@ui/constants';
+
 /**
  * Get the width of the browser scrollbar
  */
@@ -56,3 +58,34 @@ export const swallowEvent = withHandler<Event | React.SyntheticEvent, boolean>((
     (e as React.SyntheticEvent).nativeEvent?.stopImmediatePropagation();
   }
 });
+
+export const withTargetValue =
+  (cb: (value: string) => void) =>
+  (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>): void =>
+    cb(event.currentTarget.value);
+
+export const withKeyPress =
+  <E extends KeyboardEvent | React.KeyboardEvent>(key: string, cb: (event: E) => void) =>
+  (event: E): void => {
+    if (event.key !== key) {
+      return;
+    }
+
+    cb(event);
+  };
+
+export const swallowKeyPress = (key: string) => withKeyPress(key, preventDefault());
+
+export const withEnterPress: {
+  <E extends React.KeyboardEvent<any>>(cb: (event: E) => void): (event: E) => void;
+  <E extends KeyboardEvent>(cb: (event: E) => void): (event: E) => void;
+} = <E extends KeyboardEvent | React.KeyboardEvent<any>>(cb: (event: E) => void) => withKeyPress(KeyName.ENTER, cb);
+
+export const withInputBlur =
+  <E extends KeyboardEvent | React.KeyboardEvent>(cb?: (event: E) => void) =>
+  (event: E): void => {
+    (event.target as HTMLInputElement)?.blur();
+
+    // eslint-disable-next-line callback-return
+    cb?.(event);
+  };

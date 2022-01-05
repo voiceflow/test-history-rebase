@@ -58,7 +58,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
     trackingEvents.trackIntentEdit({ creationType: IntentEditType.IMM });
   };
 
-  const localNameUpdate = ({ value }: { value: string }) => {
+  const localNameUpdate = (value: string) => {
     setNameError(null);
     setName(applyPlatformIntentNameFormatting(value, platform));
   };
@@ -84,9 +84,9 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
             error={!!nameError}
             value={name}
             onBlur={onBlur}
-            onChange={({ currentTarget }) => localNameUpdate(currentTarget)}
             disabled={isCustomizableBuiltInIntent(selectedIntent)}
             placeholder="Intent Name"
+            onChangeText={localNameUpdate}
           />
           <RemoveDropdown deleteText={isBuiltIn ? 'Remove' : undefined} onRemove={() => removeIntent(intentID)} />
         </FlexApart>

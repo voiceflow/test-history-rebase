@@ -2,12 +2,13 @@ import Badge from '@ui/components/Badge';
 import { inputDisabledStyle, inputStyle, StyledInputProps } from '@ui/components/Input/styles';
 import { css, styled } from '@ui/styles';
 
-export type InputWrapperProps = StyledInputProps & {
-  disabled?: boolean;
-  disabledBorderColor?: string;
-  pointerEvents?: string;
+export interface InputWrapperProps extends StyledInputProps {
   cursor?: string;
-};
+  readOnly?: boolean;
+  disabled?: boolean;
+  pointerEvents?: string;
+  disabledBorderColor?: string;
+}
 
 const InputWrapper = styled.div<InputWrapperProps>`
   ${inputStyle}
@@ -15,8 +16,15 @@ const InputWrapper = styled.div<InputWrapperProps>`
   display: flex;
   align-items: center;
 
+  ${({ readOnly }) =>
+    readOnly &&
+    css`
+      cursor: default;
+    `}
+
   &[disabled] {
     ${inputDisabledStyle}
+
     input {
       ${inputDisabledStyle}
     }
@@ -30,6 +38,7 @@ const InputWrapper = styled.div<InputWrapperProps>`
 
   & > * {
     margin-right: 12px;
+
     :last-child {
       margin-right: 0;
     }

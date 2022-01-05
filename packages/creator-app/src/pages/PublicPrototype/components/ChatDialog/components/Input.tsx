@@ -1,8 +1,6 @@
 import { BoxFlex, Input, InputVariant, IS_IOS, swallowEvent } from '@voiceflow/ui';
 import React from 'react';
 
-import { withEnterPress } from '@/utils/dom';
-
 export interface UserInputProps {
   value: string;
   isIdle?: boolean;
@@ -48,13 +46,13 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
         variant={InputVariant.INLINE}
         onBlur={onBlur}
         onFocus={onFocus}
-        onChange={({ currentTarget }) => onChange(currentTarget.value)}
         disabled={isIdle || testEnded}
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={!isIdle || testEnded}
         noOverflow
-        onKeyPress={withEnterPress(swallowEvent(onEnterPress))}
         placeholder={testEnded ? 'This conversation has ended' : 'Type a message...'}
+        onEnterPress={swallowEvent(onEnterPress)}
+        onChangeText={onChange}
       />
     </BoxFlex>
   );

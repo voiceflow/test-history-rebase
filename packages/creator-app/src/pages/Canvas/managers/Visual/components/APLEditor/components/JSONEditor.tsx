@@ -12,10 +12,10 @@ import { handleJSONFileRead } from '@/utils/files';
 
 interface JSONEditorProps {
   onChange: (data: { datasource?: string; aplCommands?: string; jsonFileName?: string; document?: string }) => void;
+  document?: string;
   datasource?: string;
   aplCommands?: string;
   jsonFileName: string;
-  document?: string;
 }
 
 const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplCommands = '', jsonFileName, document: documentData = '' }) => {

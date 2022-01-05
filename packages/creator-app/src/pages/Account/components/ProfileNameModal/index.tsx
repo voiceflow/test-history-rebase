@@ -7,7 +7,6 @@ import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import { useDispatch, useModals, useSelector } from '@/hooks';
-import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 const ProfileNameModal: React.FC = () => {
   const user = useSelector(Account.userSelector);
@@ -44,18 +43,14 @@ const ProfileNameModal: React.FC = () => {
     <Modal id={ModalType.PROFILE_NAME_MODAL} title="Change Name">
       <ModalBody>
         <div style={{ color: '#62778c', marginBottom: '12px', fontWeight: 600 }}>Name</div>
-        <Input
-          onKeyPress={withEnterPress(handleSave)}
-          ref={nameInputRef}
-          value={saveName}
-          onChange={withTargetValue(setSaveName)}
-          placeholder="Enter name"
-        />
+        <Input ref={nameInputRef} value={saveName} placeholder="Enter name" onChangeText={setSaveName} onEnterPress={handleSave} />
       </ModalBody>
+
       <ModalFooter>
         <Link onClick={() => close()} style={{ marginRight: '33px', fontWeight: 600 }}>
           Cancel
         </Link>
+
         <Button disabled={!saveName || saving} onClick={handleSave}>
           {saving ? 'Saving...' : 'Save'}
         </Button>

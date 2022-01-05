@@ -21,12 +21,6 @@ interface Multiple {
 const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisabled, placeholder }) => {
   const [localList, setLocalList] = useLinkedState(list.length ? list : ['']);
 
-  const onChange =
-    (index: number) =>
-    ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
-      setLocalList((prevList) => Utils.array.replace(prevList, index, currentTarget.value));
-    };
-
   const onDelete = (index: number) => () => {
     if (localList.length > 1) {
       const nextList = Utils.array.without(localList, index);
@@ -64,15 +58,12 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
               type="text"
               name={String(index)}
               value={item}
+              style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
               onBlur={onBlur}
               disabled={isDisabled}
-              onChange={onChange(index)}
               className="form-control form-bg right outline"
               placeholder={placeholder}
-              style={{
-                borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 0,
-              }}
+              onChangeText={(value) => setLocalList((prevList) => Utils.array.replace(prevList, index, value))}
             />
 
             {localList.length > 1 && (

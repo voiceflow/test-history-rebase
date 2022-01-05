@@ -8,7 +8,6 @@ import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
-import { withEnterPress } from '@/utils/dom';
 
 const getHexColor = (color: RGBColor) => {
   const rgbaColor = { a: 1, ...color };
@@ -49,8 +48,7 @@ const ColorInput: React.FC<ColorInputProps & ConnectedColorInputProps> = ({ isAl
     <Input
       id={Identifier.BRANDING_COLOR_INPUT}
       value={hex}
-      onBlur={() => onSubmitHexColor()}
-      onChange={({ currentTarget: { value } }) => setHex(removeHashFromHex(value).substr(0, 6))}
+      onBlur={onSubmitHexColor}
       leftAction={<InputAction>HEX</InputAction>}
       rightAction={
         <ColorSelect
@@ -61,8 +59,9 @@ const ColorInput: React.FC<ColorInputProps & ConnectedColorInputProps> = ({ isAl
           onChange={(nextColor: RGBColor) => onSubmitColor(nextColor)}
         />
       }
-      onKeyPress={withEnterPress(() => onSubmitHexColor())}
       disabled={!isAllowed}
+      onEnterPress={onSubmitHexColor}
+      onChangeText={(value) => setHex(removeHashFromHex(value).substr(0, 6))}
       wrapperProps={{ disabledBorderColor, cursor: isAllowed ? 'auto' : 'not-allowed' }}
     />
   );

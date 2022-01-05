@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, Input, KeyName, SvgIcon } from '@voiceflow/ui';
+import { Button, ButtonVariant, Input, SvgIcon } from '@voiceflow/ui';
 import React, { useState } from 'react';
 
 import { DEFAULT_PRODUCT_PHRASE } from '@/constants';
@@ -41,14 +41,12 @@ const PhrasesForm: React.FC<PhrasesFormProps> = ({ advanceStep }) => {
         <PhraseSection key={index}>
           <Input
             name="phrase"
-            placeholder="Alexa, buy the cave quest expansion pack"
             value={editingPhrase.index === index ? editingPhrase.value : phrase}
-            onFocus={() => setEditingPhrase({ value: phrase, index })}
-            onChange={(e) => setEditingPhrase({ value: e.target.value, index })}
             onBlur={onBlur}
-            onKeyPress={(e) => {
-              if (e.key === KeyName.ENTER) e.preventDefault();
-            }}
+            onFocus={() => setEditingPhrase({ value: phrase, index })}
+            placeholder="Alexa, buy the cave quest expansion pack"
+            onChangeText={(value) => setEditingPhrase({ value, index })}
+            onEnterPress={(event) => event.preventDefault()}
           />
 
           <PhraseButton onClick={onRemove(index)} addPadding={index !== 0}>

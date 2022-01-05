@@ -68,11 +68,11 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
       <Section>
         <Input
           icon="action"
-          iconProps={{ color: '#3A5999' }}
           value={name}
-          onChange={(e) => setName(e.target.value)}
           onBlur={() => onChange({ name })}
+          iconProps={{ color: '#3A5999' }}
           placeholder="Name Custom Action step"
+          onChangeText={(value) => setName(value)}
         />
       </Section>
       <EditorSection namespace="action" header="Action Body (optional)" headerToggle collapseVariant={SectionToggleVariant.ARROW} isDividerNested>

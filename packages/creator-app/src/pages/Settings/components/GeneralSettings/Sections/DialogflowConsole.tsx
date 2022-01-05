@@ -1,5 +1,5 @@
 import { BoxFlex, Input } from '@voiceflow/ui';
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import * as Version from '@/ducks/version';
@@ -37,9 +37,9 @@ const DialogflowConsole: React.FC<DialogflowConsoleProps> = ({ platformMeta }) =
         <BoxFlex>
           <Input
             value={newTriggerPhrase}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setNewTriggerPhrase(e.target.value)}
-            placeholder="Enter a phrase to trigger the Dialogflow web demo integration"
             onBlur={saveSettings}
+            placeholder="Enter a phrase to trigger the Dialogflow web demo integration"
+            onChangeText={setNewTriggerPhrase}
           />
         </BoxFlex>
       </Section>

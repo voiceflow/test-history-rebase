@@ -4,14 +4,14 @@ import React from 'react';
 import Section from '@/components/Section';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
-const AccountLinkClient = ({ data, onUpate }) => (
+const AccountLinkClient = ({ data, onUpdate }) => (
   <Section>
     <FormControl label="Client ID">
       <Input
-        className="form-control-border form-control"
         value={data.clientId}
+        className="form-control-border form-control"
         placeholder="Client ID"
-        onChange={(e) => onUpate('clientId', e.target.value)}
+        onChangeText={(value) => onUpdate('clientId', value)}
       />
     </FormControl>
     <FormControl label="Client Secret" contentBottomUnits={0}>
@@ -19,7 +19,7 @@ const AccountLinkClient = ({ data, onUpate }) => (
         type="password"
         value={data.clientSecret}
         placeholder="Client Secret"
-        onChange={(e) => onUpate('clientSecret', e.target.value)}
+        onChangeText={(value) => onUpdate('clientSecret', value)}
         autoComplete="new-password"
       />
     </FormControl>

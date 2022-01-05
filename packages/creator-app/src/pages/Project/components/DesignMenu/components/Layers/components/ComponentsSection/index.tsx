@@ -8,8 +8,9 @@ import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
 import * as Documentation from '@/config/documentation';
+import { Permission } from '@/config/permissions';
 import { BlockType, DragItem } from '@/constants';
-import { useDidUpdateEffect, useEventualEngine } from '@/hooks';
+import { useDidUpdateEffect, useEventualEngine, usePermission } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
 
 import Header, { HEADER_MIN_HEIGHT } from '../Header';
@@ -32,6 +33,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
 
   const listRef = React.useRef<List>(null);
   const scrollBarsRef = React.useRef<Scrollbars>(null);
+  const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
 
   const {
     searchValue,
@@ -59,7 +61,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
     [components]
   );
 
-  const canDrag = usePersistFunction(() => !isSearch);
+  const canDrag = usePersistFunction(() => !isSearch && canReorder);
   const horizontalEnabled = usePersistFunction(
     (_: ComponentItem, initialOffset: XYCoord, currentOffset: XYCoord) => currentOffset.x - initialOffset.x >= HORIZONTAL_DRAG_OFFSET
   );

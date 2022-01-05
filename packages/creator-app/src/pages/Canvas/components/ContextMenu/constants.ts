@@ -133,6 +133,13 @@ const isMarkup = (nodeID: string, engine: Engine) => {
   return isMarkupBlockType(node.type);
 };
 
+const COMMENT_MENU_OPTION: ContextMenuOption<CanvasAction> = {
+  label: 'Add Comment',
+  value: CanvasAction.ADD_COMMENT,
+  hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING],
+  shouldRender: ({ target: nodeID }, { engine, showHintFeatures }) => showHintFeatures && !isMarkup(nodeID!, engine),
+};
+
 export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Block Color',
@@ -145,12 +152,7 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.RENAME_BLOCK,
     shouldRender: ({ target: nodeID }, { engine }) => BLOCKS_WITH_RENAME.includes(engine.getNodeByID(nodeID!)?.type),
   },
-  {
-    label: 'Add Comment',
-    value: CanvasAction.ADD_COMMENT,
-    hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING],
-    shouldRender: ({ target: nodeID }, { engine, showHintFeatures }) => showHintFeatures && !isMarkup(nodeID!, engine),
-  },
+  COMMENT_MENU_OPTION,
   {
     label: 'Divider 1',
     value: CanvasAction.DIVIDER,
@@ -186,6 +188,8 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   },
 ];
 
+export const VIEWER_BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [COMMENT_MENU_OPTION];
+
 export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Copy',
@@ -210,7 +214,7 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
 ];
 
 export const TARGET_OPTIONS = {
-  [ContextMenuTarget.NODE]: BLOCK_OPTIONS,
-  [ContextMenuTarget.CANVAS]: CANVAS_OPTIONS,
-  [ContextMenuTarget.SELECTION]: SELECTION_OPTIONS,
+  [ContextMenuTarget.NODE]: ({ viewerOnly }: { viewerOnly?: boolean } = {}) => (viewerOnly ? VIEWER_BLOCK_OPTIONS : BLOCK_OPTIONS),
+  [ContextMenuTarget.CANVAS]: () => CANVAS_OPTIONS,
+  [ContextMenuTarget.SELECTION]: () => SELECTION_OPTIONS,
 };

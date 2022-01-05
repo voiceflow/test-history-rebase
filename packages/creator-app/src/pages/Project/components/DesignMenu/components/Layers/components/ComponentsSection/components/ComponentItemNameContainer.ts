@@ -8,9 +8,19 @@ import ItemNameContainer from '../../ItemNameContainer';
 const ComponentItemNameContainer = styled(ItemNameContainer)<{
   isClicked?: boolean;
   isDraggingXEnabled?: boolean;
+  allowGrab?: boolean;
+  viewerOnly: boolean;
 }>`
   position: relative;
-  cursor: grab;
+
+  ${({ allowGrab }) =>
+    allowGrab
+      ? css`
+          cursor: grab;
+        `
+      : css`
+          cursor: pointer;
+        `}
   padding: 6px 12px 6px 16px;
 
   ${SvgIconContainer} {
@@ -54,6 +64,15 @@ const ComponentItemNameContainer = styled(ItemNameContainer)<{
 
       ${SvgIconContainer} {
         opacity: 0 !important;
+      }
+    `}
+
+  ${({ viewerOnly }) =>
+    viewerOnly &&
+    css`
+      &:hover {
+        box-shadow: none;
+        background: #eef4f6;
       }
     `}
 

@@ -59,6 +59,9 @@ export enum Permission {
 
   // private cloud
   CREATE_PRIVATE_CLOUD_WORKSPACE = 'private_cloud.workspace.CREATE',
+
+  // T&C
+  REORDER_TOPICS_AND_COMPONENTS = 'topics_components.REORDER',
 }
 
 const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.OWNER, UserRole.BILLING, UserRole.GUEST];
@@ -97,6 +100,8 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.HINT_FEATURES]: SIGNED_USER_ROLES,
 
   [Permission.CREATE_PRIVATE_CLOUD_WORKSPACE]: [UserRole.OWNER],
+
+  [Permission.REORDER_TOPICS_AND_COMPONENTS]: EDITOR_USER_ROLES,
 };
 
 const ALL_PERMISSIONS = Object.values(PlanType);

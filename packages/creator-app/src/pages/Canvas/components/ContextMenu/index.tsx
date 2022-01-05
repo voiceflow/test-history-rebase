@@ -98,6 +98,7 @@ const ContextMenu: React.FC = () => {
   const markup = React.useContext(MarkupContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
   const upgradeModal = useModals(ModalType.PAYMENT);
 
@@ -116,11 +117,11 @@ const ContextMenu: React.FC = () => {
   });
 
   const options = React.useMemo(() => {
-    if (!contextMenu.type || !TARGET_OPTIONS[contextMenu.type]?.length) {
+    if (!contextMenu.type || !TARGET_OPTIONS[contextMenu.type]?.().length) {
       return [];
     }
 
-    const targetOptions = TARGET_OPTIONS[contextMenu.type].filter(
+    const targetOptions = TARGET_OPTIONS[contextMenu.type]({ viewerOnly: !canEditCanvas }).filter(
       (option) => !option.shouldRender || option.shouldRender(contextMenu, cache.current)
     );
 

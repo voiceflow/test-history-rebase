@@ -6,7 +6,7 @@ import CommentBlock from '@/pages/Canvas/components/CommentBlock';
 import { useNodeDrag, useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
-import { useEditingMode, usePrototypingMode } from '@/pages/Project/hooks';
+import { useCanvasMode, useEditingMode, usePrototypingMode } from '@/pages/Project/hooks';
 import { READONLY_CLICK_EVENT_NAME } from '@/pages/Prototype/components/ReadOnlyBadge';
 import perf, { PerfAction } from '@/performance';
 import { ClassName } from '@/styles/constants';
@@ -21,6 +21,7 @@ const Node: React.FC = () => {
 
   const instance = useNodeInstance<HTMLDivElement>();
   const isEditingMode = useEditingMode();
+  const isCanvasMode = useCanvasMode();
   const isPrototypingMode = usePrototypingMode();
   const { onMouseDown, onClick, onDragStart } = useNodeDrag();
 
@@ -32,7 +33,7 @@ const Node: React.FC = () => {
     (event: React.MouseEvent) => {
       event.stopPropagation();
 
-      if (isEditingMode) {
+      if (isCanvasMode) {
         contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
       }
     },

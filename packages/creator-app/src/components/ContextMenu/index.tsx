@@ -16,7 +16,12 @@ interface ContextMenuProps<T> extends Omit<MenuProps<T>, 'options' | 'children'>
   placement?: PopperPlacement;
 }
 
-const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...props }: ContextMenuProps<T>): React.ReactElement<any, any> => {
+const ContextMenu = <T extends any>({
+  children,
+  placement = 'bottom-start',
+  options,
+  ...props
+}: ContextMenuProps<T>): React.ReactElement<any, any> => {
   const [virtualElement, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement> | null>(null);
   const popper = useVirtualElementPopper(virtualElement, { placement });
   const [isOpen, onToggle] = useDismissable(false);
@@ -43,10 +48,10 @@ const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...p
     <>
       {children({ isOpen, onContextMenu })}
 
-      {isOpen && (
+      {isOpen && !!options.length && (
         <Portal portalNode={document.body}>
           <div id={Identifier.CONTEXT_MENU} ref={popper.setPopperElement} style={{ ...popper.styles.popper }} {...popper.attributes.popper}>
-            <Menu onToggle={onToggle} {...props} />
+            <Menu onToggle={onToggle} options={options} {...props} />
           </div>
         </Portal>
       )}

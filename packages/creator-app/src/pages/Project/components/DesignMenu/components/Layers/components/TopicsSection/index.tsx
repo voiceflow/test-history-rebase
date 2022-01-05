@@ -5,8 +5,9 @@ import { List } from 'react-virtualized';
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
+import { Permission } from '@/config/permissions';
 import { DragItem } from '@/constants';
-import { useDidUpdateEffect } from '@/hooks';
+import { useDidUpdateEffect, usePermission } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
 
 import { useOpenedIDsToggle } from '../../hooks';
@@ -24,6 +25,9 @@ const TopicsSection: React.FC = () => {
   const listRef = React.useRef<List>(null);
   const scrollBarsRef = React.useRef<Scrollbars>(null);
   const { onDragEnd, onDragStart, openedIDs, onToggleOpenedID } = useOpenedIDsToggle('topics');
+  const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+
   const {
     topicsItems,
     searchValue,
@@ -64,7 +68,7 @@ const TopicsSection: React.FC = () => {
     [opened, topics, rootDiagramID]
   );
 
-  const canDrag = usePersistFunction(() => !isSearch);
+  const canDrag = usePersistFunction(() => !isSearch && canReorder);
   const getItemKey = useConst((item: TopicItem) => item.id);
 
   const withSearch = React.useMemo(() => {
@@ -118,7 +122,10 @@ const TopicsSection: React.FC = () => {
           ref={scrollBarsRef}
           size={topics.length}
           header={
-            <Header label="Topics" rightAction={<SvgIcon icon="addTopic" variant={IconVariant.STANDARD} clickable onClick={onCreateTopic} />}>
+            <Header
+              label="Topics"
+              rightAction={canEditCanvas && <SvgIcon icon="addTopic" variant={IconVariant.STANDARD} clickable onClick={onCreateTopic} />}
+            >
               {withSearch ? <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" /> : null}
             </Header>
           }

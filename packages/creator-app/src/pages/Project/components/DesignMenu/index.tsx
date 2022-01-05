@@ -87,7 +87,9 @@ const DesignMenu: React.FC = () => {
       onMouseLeave={canBeOpened ? mouseLeaveHandler : undefined}
     >
       <Content isOpen={isOpen} activeTab={selectedTab} ref={designMenuRef}>
-        <Header tabs={tabs} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={setActiveTab} />
+        {canEditCanvas && (
+          <Header tabs={tabs} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={setActiveTab} />
+        )}
 
         <TabsContent selected={selectedTab}>
           {canEditCanvas && (

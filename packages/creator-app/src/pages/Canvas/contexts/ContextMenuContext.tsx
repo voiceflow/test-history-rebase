@@ -36,7 +36,6 @@ export const ContextMenuProvider: React.FC = ({ children }) => {
   const onOpen = React.useCallback(
     (event: React.MouseEvent, type = ContextMenuTarget.CANVAS, target: Nullable<string> = null) => {
       event.preventDefault();
-
       if (dismissOverlay.hasHandlersGlobally()) {
         dismissOverlay.dismissAllGlobally();
       }

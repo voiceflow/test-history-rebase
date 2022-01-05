@@ -108,7 +108,7 @@ const ProjectAndDiagramActions: React.FC = () => {
     <Container>
       {!canEditCanvas && <ViewOnly>View only</ViewOnly>}
 
-      {topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && selectedTargets.length > 1 ? (
+      {canEditCanvas && topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && selectedTargets.length > 1 ? (
         <BoxFlex gap={5}>
           <HeaderIconButton
             icon="component"

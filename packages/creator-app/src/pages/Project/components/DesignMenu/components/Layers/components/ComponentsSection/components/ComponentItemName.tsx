@@ -3,9 +3,10 @@ import { getNestedMenuFormattedLabel, OverflowText, SvgIcon, useEnableDisable, u
 import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
+import { Permission } from '@/config/permissions';
 import * as Router from '@/ducks/router';
 import { compose } from '@/hocs';
-import { useDispatch, useHover } from '@/hooks';
+import { useDispatch, useHover, usePermission } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
@@ -49,7 +50,7 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
 ) => {
   const [isHovered, , hoverHandlers] = useHover();
   const [isClickedState, enableClickedState, clearClickedState] = useEnableDisable();
-
+  const [hasTCEditPermissions] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
 
   const { inputRef, catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } = useDiagramRename({
@@ -85,12 +86,15 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
           ref={ref}
           isFirst={isFirst}
           isActive={isActive}
-          isHovered={isHovered}
+          allowGrab={hasTCEditPermissions}
+          isHovered={!!isHovered}
           isClicked={isClickedState}
           onMouseUp={clearClickedState}
           isDragging={isDragging}
-          onMouseDown={enableClickedState}
+          onMouseDown={() => hasTCEditPermissions && enableClickedState()}
           disableHover={disableHover}
+          viewerOnly={!hasTCEditPermissions}
+          onClick={() => !hasTCEditPermissions && onEdit()}
           onDoubleClick={onEdit}
           onContextMenu={Utils.functional.chain(onContextMenu, clearClickedState)}
           isDraggingPreview={isDraggingPreview}
@@ -116,7 +120,7 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
                     {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}
                   </OverflowText>
 
-                  <SvgIcon icon="dotsGroup" size={14} color="#becedc" />
+                  {hasTCEditPermissions && <SvgIcon icon="dotsGroup" size={14} color="#becedc" />}
                 </>
               )}
             </>

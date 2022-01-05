@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.40.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.39.0...@voiceflow/ui@1.40.0) (2022-01-05)
+
+
+### Features
+
+* refactor input and upload components (VF-2342) ([#4759](https://github.com/voiceflow/creator-app/issues/4759)) ([f4c6278](https://github.com/voiceflow/creator-app/commit/f4c62783fa3fd99ab004cad3576ecb77a2f1e958))
+
+
+
+
+
 # [1.39.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.38.1...@voiceflow/ui@1.39.0) (2022-01-05)
 
 

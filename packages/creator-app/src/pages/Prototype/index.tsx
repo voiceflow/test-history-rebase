@@ -94,7 +94,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   }
 
   if (status === PrototypeDuck.PrototypeStatus.IDLE && !autoplay) {
-    return <Start debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={startPrototype} />;
+    return <Start config={config} debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={startPrototype} />;
   }
 
   return (

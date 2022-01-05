@@ -4,6 +4,7 @@ import React from 'react';
 import { testingGraphic } from '@/assets';
 import * as Documentation from '@/config/documentation';
 import * as Prototype from '@/ducks/prototype';
+import { PrototypeConfig } from '@/ducks/recent';
 import { connect } from '@/hocs';
 import { useSetup, useTrackingEvents } from '@/hooks';
 import PrototypeContainer from '@/pages/Prototype/components/PrototypeContainer';
@@ -16,6 +17,7 @@ import { Container } from './components';
 
 export interface PrototypeStartProps {
   debug: boolean;
+  config: PrototypeConfig;
   onStart: () => void;
   isPublic?: boolean;
   isModelTraining?: boolean;
@@ -28,6 +30,7 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
   mode,
   device,
   isModelTraining,
+  config,
 }) => {
   const [, trackEventsWrapper] = useTrackingEvents();
 
@@ -35,7 +38,7 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
     if (isPublic) {
       onStart();
     } else {
-      trackEventsWrapper(onStart, 'trackActiveProjectPrototypeTestStart', { debug, mode, display: device })();
+      trackEventsWrapper(onStart, 'trackActiveProjectPrototypeTestStart', { debug, mode, display: device, config })();
     }
   };
 

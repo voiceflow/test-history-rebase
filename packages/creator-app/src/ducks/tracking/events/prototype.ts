@@ -4,6 +4,7 @@ import client from '@/client';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeLayout, PrototypeMode } from '@/ducks/prototype/types';
 import * as Recent from '@/ducks/recent';
+import { PrototypeConfig } from '@/ducks/recent';
 import { SyncThunk } from '@/store/types';
 
 import { EventName } from '../constants';
@@ -28,11 +29,18 @@ export const trackActiveProjectPrototypeTestClick = createVersionEventTracker((o
 export const trackActiveProjectPrototypeTestStart = createVersionEventTracker<{
   mode: PrototypeMode;
   debug: boolean;
+  config: PrototypeConfig;
   display: Node.Visual.DeviceType | null;
 }>((options) =>
   client.api.analytics.track(
     EventName.PROJECT_PROTOTYPE_TEST_START,
-    createVersionEventPayload(options, { debug: options.debug, display: options.display, mode: options.mode })
+    createVersionEventPayload(options, {
+      debug: options.debug,
+      guidedNavigation: options.config?.isGuided,
+      confidenceScore: options.config?.intent,
+      display: options.display,
+      mode: options.mode,
+    })
   )
 );
 

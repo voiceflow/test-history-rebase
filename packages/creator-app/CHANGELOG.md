@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.574.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.573.1...@voiceflow/creator-app@1.574.0) (2022-01-05)
+
+
+### Features
+
+* **tracking:** adds props to prototype test start segment event (VF-2353) ([#4808](https://github.com/voiceflow/creator-app/issues/4808)) ([b469cdf](https://github.com/voiceflow/creator-app/commit/b469cdf7b3c3adb05d3dd88e5bada556e7c25754))
+
+
+
+
+
 ## [1.573.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.573.0...@voiceflow/creator-app@1.573.1) (2022-01-05)
 
 

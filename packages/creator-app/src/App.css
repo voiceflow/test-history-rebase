@@ -681,10 +681,6 @@ hr.full-width {
   box-shadow: none;
 }
 
-.ace_gutter-layer {
-  height: inherit !important;
-}
-
 .ace-tm .ace_marker-layer .ace_active-line {
   background-color: #eef4f6 !important;
 }

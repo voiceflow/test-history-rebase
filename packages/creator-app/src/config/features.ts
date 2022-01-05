@@ -19,7 +19,6 @@ const ACCOUNT_PAGE_REDESIGN_ENABLED = process.env.FF_ACCOUNT_PAGE_REDESIGN === '
 export enum FeatureFlag {
   GADGETS = 'gadgets',
   NATO_APCO = 'nato_apco',
-  DM_API_KEY = 'dm_api_key',
   CAPTURE_V2 = 'capture_v2',
   ASR_BYPASS = 'asr_bypass',
   MOTOROLA_SSO = 'motorola_sso',

@@ -1,24 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="12px" viewBox="0 0 16 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
-    <title>Group 9</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
-            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
-            <stop stop-color="currentColor" offset="100%"></stop>
-        </linearGradient>
-        <path d="M8.64247896,5.84913708 C8.26364706,6.02552124 8,6.41850943 8,6.875 C8,7.49632034 8.48841664,8 9.09090909,8 C9.53356661,8 9.91464607,7.72811397 10.0856853,7.33744357 C10.148179,7.54690402 10.1818182,7.76940083 10.1818182,8 C10.1818182,9.24264069 9.20498491,10.25 8,10.25 C6.79501509,10.25 5.81818182,9.24264069 5.81818182,8 C5.81818182,6.75735931 6.79501509,5.75 8,5.75 C8.22361132,5.75 8.43936579,5.78469036 8.64247896,5.84913708 Z M8,2 C12.3636364,2 16,5.75 16,8 C16,10.25 12.3636364,14 8,14 C3.63636364,14 1.61486985e-16,10.25 0,8 C0,5.75 3.63636364,2 8,2 Z M8,11.75 C10.0083082,11.75 11.6363636,10.0710678 11.6363636,8 C11.6363636,5.92893219 10.0083082,4.25 8,4.25 C5.99169182,4.25 4.36363636,5.92893219 4.36363636,8 C4.36363636,10.0710678 5.99169182,11.75 8,11.75 Z" id="path-2"></path>
-    </defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Icon/System/eye" transform="translate(0.000000, -2.000000)">
-            <g id="Group-9">
-                <rect id="Rectangle-5" x="0" y="0" width="16" height="16"></rect>
-                <g id="Combined-Shape">
-                    <use fill="#FFFFFF" xlink:href="#path-2"></use>
-                    <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<g transform="translate(0 0)" fill-rule="evenodd">
+		<path d="M8.642 5.849C8.264 6.026 8 6.419 8 6.875 8 7.496 8.488 8 9.091 8a1.09 1.09 0 0 0 .995-.663c.062.209.096.432.096.663 0 1.243-.977 2.25-2.182 2.25S5.818 9.243 5.818 8 6.795 5.75 8 5.75a2.12 2.12 0 0 1 .642.099zM8 2c4.364 0 8 3.75 8 6s-3.636 6-8 6-8-3.75-8-6 3.636-6 8-6zm0 9.75c2.008 0 3.636-1.679 3.636-3.75S10.008 4.25 8 4.25 4.364 5.929 4.364 8 5.992 11.75 8 11.75z" fill="currentColor"/>
+	</g>
 </svg>

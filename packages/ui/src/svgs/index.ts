@@ -89,6 +89,7 @@ export { default as expand } from './expand.svg';
 export { default as export } from './export.svg';
 export { default as exportModel } from './export-model.svg';
 export { default as eye } from './eye.svg';
+export { default as eyeHide } from './eye-hide.svg';
 export { default as emptyCheckbox } from './images/icons/empty.svg';
 
 // f

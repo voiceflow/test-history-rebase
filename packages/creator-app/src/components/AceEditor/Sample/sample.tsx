@@ -7,11 +7,10 @@ import 'brace/mode/json';
 
 import { Box, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
-import AceEditor from 'react-ace';
 
 import { copy } from '@/utils/clipboard';
 
-import { Header, Option } from './components';
+import { Header, Option, SampleAceEditor } from './components';
 import { Sample } from './types';
 
 const SampleEditor: React.FC<{ samples: Sample[]; wrap?: boolean }> = ({ samples = [], wrap = true }) => {
@@ -38,9 +37,7 @@ const SampleEditor: React.FC<{ samples: Sample[]; wrap?: boolean }> = ({ samples
           <SvgIcon icon="flows" onClick={handleCopySnippet} color="#becedc" clickable />
         </TippyTooltip>
       </Header>
-      <AceEditor
-        theme="cobalt"
-        readOnly
+      <SampleAceEditor
         value={sample}
         showGutter
         mode={language}

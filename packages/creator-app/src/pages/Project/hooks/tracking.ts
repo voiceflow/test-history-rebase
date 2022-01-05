@@ -72,8 +72,6 @@ export function useProjectExitTracking({ platform }: { platform: Constants.Platf
         prototypeSessionDuration: durations.prototype,
         transcriptsSessionDuration: durations.transcripts,
         platform,
-        projectID,
-        workspaceID,
       });
 
       trackingEvents.trackActiveProjectSessionDuration({

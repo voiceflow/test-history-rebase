@@ -2,11 +2,12 @@ import { Constants } from '@voiceflow/general-types';
 
 import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
-import { NLPProvider } from '@/constants';
+import { ExportFormat as CanvasExportFormat, NLPProvider } from '@/constants';
 import { PrototypeSettings } from '@/ducks/prototype/types';
+import { ExportType } from '@/pages/Project/components/Header/components/SharePopper/constants';
 
 import { EventName } from '../constants';
-import { ProjectEventInfo, VersionEventInfo } from '../types';
+import { VersionEventInfo } from '../types';
 import {
   createProjectEventPayload,
   createProjectEventTracker,
@@ -116,26 +117,36 @@ export const trackProjectInviteCollaboratorsCopy = createWorkspaceEventTracker<{
   client.api.analytics.track(EventName.PROJECT_INVITATION_COPY, createWorkspaceEventPayload(options, { project_id: options.projectID }))
 );
 
-export const trackProjectExit = createProjectEventTracker(
-  ({
-    platform,
-    canvasSessionDuration,
-    prototypeSessionDuration,
-    transcriptsSessionDuration,
-    ...options
-  }: ProjectEventInfo & {
-    platform: Constants.PlatformType | null;
-    canvasSessionDuration: number;
-    prototypeSessionDuration: number;
-    transcriptsSessionDuration: number;
-  }) =>
-    client.api.analytics.track(
-      EventName.PROJECT_EXIT,
-      createProjectEventPayload(options, {
-        platform,
-        canvasSessionDuration,
-        prototypeSessionDuration,
-        transcriptsSessionDuration,
-      })
-    )
+export const trackProjectExit = createProjectEventTracker<{
+  platform: Constants.PlatformType | null;
+  canvasSessionDuration: number;
+  prototypeSessionDuration: number;
+  transcriptsSessionDuration: number;
+}>(({ platform, canvasSessionDuration, prototypeSessionDuration, transcriptsSessionDuration, ...options }) =>
+  client.api.analytics.track(
+    EventName.PROJECT_EXIT,
+    createProjectEventPayload(options, {
+      platform,
+      canvasSessionDuration,
+      prototypeSessionDuration,
+      transcriptsSessionDuration,
+    })
+  )
+);
+
+export const trackProjectExported = createProjectEventTracker<{
+  platform: Constants.PlatformType;
+  template: boolean;
+  exportType: ExportType;
+  exportFormat: CanvasExportFormat;
+}>(({ platform, template, exportType, exportFormat, ...options }) =>
+  client.api.analytics.track(
+    EventName.PROJECT_EXPORTED,
+    createProjectEventPayload(options, {
+      platform,
+      template,
+      export_type: exportType === ExportType.CANVAS ? 'Project Content' : 'Interaction Model',
+      export_format: exportFormat,
+    })
+  )
 );

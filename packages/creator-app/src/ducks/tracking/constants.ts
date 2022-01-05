@@ -22,6 +22,8 @@ export enum EventName {
   PROJECT_PROTOTYPE_TEST_START = 'Prototype Test Start',
   PROJECT_PROTOTYPE_TEST_CLICK = 'Test Button',
   PROJECT_SHARE_DOWNLOAD_LINK = 'Project Download Button',
+  PROJECT_EXPORTED = 'Project Exported',
+
   CLONE_PROJECT = 'Clone Project',
   PROJECT_NEW_COMMENT_THREAD = 'New Comment Thread Created',
   PROJECT_NEW_THREAD_REPLY = 'New Thread Reply Created',

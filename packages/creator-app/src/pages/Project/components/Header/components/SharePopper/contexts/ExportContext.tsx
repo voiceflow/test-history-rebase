@@ -6,6 +6,7 @@ import { ExportFormat as CanvasExportFormat, NLPProvider } from '@/constants';
 import * as Export from '@/ducks/export';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { PlatformContext } from '@/pages/Project/contexts';
 
 import { ExportType, ModelExportConfig } from '../constants';
 
@@ -34,7 +35,7 @@ export const ExportProvider: React.FC = ({ children }) => {
   const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
 
   const [trackingEvents] = useTrackingEvents();
-
+  const platform = React.useContext(PlatformContext)!;
   const [exportType, setExportType] = React.useState<ExportType>(ExportType.CANVAS);
   const [isExporting, setExporting] = React.useState(false);
   const [canvasExportFormat, setCanvasExportFormat] = React.useState(isTemplateWorkspace ? CanvasExportFormat.VF : CanvasExportFormat.PNG);
@@ -53,6 +54,12 @@ export const ExportProvider: React.FC = ({ children }) => {
       await exportModel(modelExportProvider, modelExportIntents);
     }
 
+    trackingEvents.trackProjectExported({
+      platform,
+      exportType,
+      exportFormat: canvasExportFormat,
+      template: isTemplateWorkspace,
+    });
     setExporting(false);
   }, [exportType, modelExportProvider, modelExportIntents, canvasExportFormat]);
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.573.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.573.0...@voiceflow/creator-app@1.573.1) (2022-01-05)
+
+
+### Bug Fixes
+
+* increase no match and no reply popover width (VF-2539) ([#4809](https://github.com/voiceflow/creator-app/issues/4809)) ([266adf7](https://github.com/voiceflow/creator-app/commit/266adf7d52691386b7cddcf71642279d6dd80df9))
+
+
+
+
+
 # [1.573.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.572.2...@voiceflow/creator-app@1.573.0) (2022-01-05)
 
 

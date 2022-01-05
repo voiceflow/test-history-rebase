@@ -1,6 +1,5 @@
-import { Select } from '@voiceflow/ui';
-
-import { styled } from '@/hocs';
+import Select from '@ui/components/Select';
+import { styled } from '@ui/styles';
 
 const ImportSelect = styled(Select)`
   input {

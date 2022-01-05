@@ -13,7 +13,6 @@ import ConfirmModalV2 from '@/components/ConfirmModal';
 import IntercomChat from '@/components/IntercomChat';
 import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, SuccessModal } from '@/components/modals';
 import { RootPageProgressBar } from '@/components/PageProgressBar';
-import LoginModal from '@/components/PlatformUploadPopup/components/LoginModal';
 import CreateNewAgentModal from '@/components/PlatformUploadPopup/Dialogflow/CreateNewAgentModal';
 import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
@@ -21,6 +20,9 @@ import { SeoPage } from '@/constants/seo';
 import { GlobalSocketSubscriptionsLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
+import ConnectActivePlatformModal from '@/modals/ConnectActivePlatformModal';
+import ConnectAmazonModal from '@/modals/ConnectAmazonModal';
+import ConnectGoogleModal from '@/modals/ConnectGoogleModal';
 import ChangeEmailModal from '@/pages/Account/components/ChangeEmailModal';
 import ChangePasswordModal from '@/pages/Account/components/ChangePasswordModal';
 import ProfileNameModal from '@/pages/Account/components/ProfileNameModal';
@@ -71,7 +73,9 @@ const App = () => {
       <ImportBulkDeniedModal />
       <PaymentModal />
       <RefreshModal />
-      <LoginModal />
+      <ConnectActivePlatformModal />
+      <ConnectAmazonModal />
+      <ConnectGoogleModal />
       <CreateNewAgentModal />
 
       <RootPageProgressBar />

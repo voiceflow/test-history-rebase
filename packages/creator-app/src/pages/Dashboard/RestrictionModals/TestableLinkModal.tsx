@@ -1,8 +1,8 @@
+import { ModalBoldText } from '@ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
 import { ModalType } from '@/constants';
-import { BoldText } from '@/pages/Dashboard/components/ModalComponents';
 import BaseModal from '@/pages/Dashboard/components/RedirectToPaymentBaseModal';
 
 const TestableLinkModal: React.FC = () => (
@@ -12,7 +12,7 @@ const TestableLinkModal: React.FC = () => (
     icon={linkGraphic}
     bodyContent={
       <>
-        This is a <BoldText>Pro</BoldText> feature. Please upgrade your workspace to share testable links.
+        This is a <ModalBoldText>Pro</ModalBoldText> feature. Please upgrade your workspace to share testable links.
       </>
     }
   />

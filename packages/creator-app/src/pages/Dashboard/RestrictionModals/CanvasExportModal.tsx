@@ -1,8 +1,8 @@
+import { ModalBoldText } from '@ui';
 import React from 'react';
 
 import { integrationGraphic } from '@/assets';
 import { ModalType } from '@/constants';
-import { BoldText } from '@/pages/Dashboard/components/ModalComponents';
 import BaseModal from '@/pages/Dashboard/components/RedirectToPaymentBaseModal';
 
 const CanvasExportModal: React.FC = () => (
@@ -12,7 +12,7 @@ const CanvasExportModal: React.FC = () => (
     icon={integrationGraphic}
     bodyContent={
       <>
-        This is a <BoldText>Pro</BoldText> feature. Please upgrade your workspace to use the Export feature.
+        This is a <ModalBoldText>Pro</ModalBoldText> feature. Please upgrade your workspace to use the Export feature.
       </>
     }
   />

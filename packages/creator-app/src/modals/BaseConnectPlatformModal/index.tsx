@@ -1,6 +1,18 @@
+import {
+  Alert,
+  AlertVariant,
+  Box,
+  Button,
+  ButtonVariant,
+  LoadCircle,
+  ModalActionContainer,
+  ModalBodyContainer,
+  ModalBoldText,
+  ModalButtonContainer,
+  ModalContentContainer,
+} from '@ui';
 import { Nullable } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
-import { Alert, AlertVariant, Box, Button, ButtonVariant, Link, LoadCircle } from '@voiceflow/ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
@@ -9,61 +21,48 @@ import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import Modal, { ModalFooter } from '@/components/Modal';
 import { FeatureFlag } from '@/config/features';
 import { GOOGLE_OAUTH_SCOPES, GOOGLE_OAUTH_SCOPES_V2, ModalType } from '@/constants';
-import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
 import { useFeature, useModals, useTrackingEvents } from '@/hooks';
 import { Account } from '@/models';
 import * as Models from '@/models';
-import { ActionContainer, BodyContainer, BoldText, ButtonContainer, ContentContainer } from '@/pages/Dashboard/components/ModalComponents';
 import { getPlatformValue } from '@/utils/platform';
 
-export interface PlatformBaseModalProps {
+import { PlatformModalProps } from './types';
+
+export interface BaseConnectPlatformModalProps extends PlatformModalProps {
   modalType: ModalType;
-  className?: string;
-  helpLink?: string;
-  state: {
-    error: boolean;
-    loading: boolean;
-  };
+  isLoading: boolean;
+  hasError: boolean;
   platform?: Constants.PlatformType;
-  api: any;
-  title?: string;
-  platformName?: string;
-  projectName?: string;
+  onLoad: VoidFunction;
+  onComplete: VoidFunction;
+  onFail: VoidFunction;
+  connectAccount?: (data: unknown) => void;
 }
 
-export const PlatformBaseModal: React.FC<PlatformBaseModalProps> = ({
+const BaseConnectPlatformModal: React.FC<BaseConnectPlatformModalProps> = ({
   modalType,
-  className,
-  helpLink,
-  state,
-  api,
+  isLoading,
+  hasError,
   title,
   platform,
   platformName,
   projectName,
+  onLoad,
+  onComplete,
+  onFail,
+  connectAccount,
 }) => {
   const { close: closeConnectModal, data } = useModals<{
-    stage: GoogleStageType | DialogflowStageType | AlexaStageType;
     onCancel: VoidFunction;
-    updateCurrentStage: (data: unknown) => void;
   }>(modalType);
-  const { updateCurrentStage } = data;
 
   const isGoogleCreate = useFeature(FeatureFlag.GOOGLE_CREATE)?.isEnabled;
   const isDialogFlow = useFeature(FeatureFlag.DIALOGFLOW)?.isEnabled;
   const [trackingEvents] = useTrackingEvents();
 
-  const onLoad = () => {
-    api.update({ error: false, loading: true });
-  };
-
-  const onFail = () => {
-    api.update({ error: true, loading: false });
-  };
-
   const onSuccess = (account: Nullable<Account> | Models.Account.Google) => {
-    api.update({ error: false, loading: false });
-    updateCurrentStage(account);
+    onComplete();
+    connectAccount?.(account);
     if (platform) {
       trackingEvents.trackDeveloperAccountConnected(platform);
     }
@@ -75,48 +74,44 @@ export const PlatformBaseModal: React.FC<PlatformBaseModalProps> = ({
   };
 
   return (
-    <Modal id={modalType} maxWidth={392} className={className} title={title}>
+    <Modal id={modalType} maxWidth={392} title={title}>
       <Box width="100%">
-        <BodyContainer column>
-          {state.loading ? (
+        <ModalBodyContainer column>
+          {isLoading ? (
             <>
               <LoadCircle />
-              <ContentContainer>
-                Waiting for a verified connection to your <BoldText>{platformName} Developer</BoldText> account.
-              </ContentContainer>
+              <ModalContentContainer>
+                Waiting for a verified connection to your <ModalBoldText>{platformName} Developer</ModalBoldText> account.
+              </ModalContentContainer>
             </>
           ) : (
             <>
               <img src={linkGraphic} alt="plan restriction" height={80} />
 
-              <ContentContainer>
-                Please connect your <BoldText>{platformName} Developer</BoldText> account to upload your {projectName}.
-              </ContentContainer>
+              <ModalContentContainer>
+                Please connect your <ModalBoldText>{platformName} Developer</ModalBoldText> account to upload your {projectName}.
+              </ModalContentContainer>
             </>
           )}
-          {state.error && (
+          {hasError && (
             <Alert variant={AlertVariant.DANGER} mb={0} mt={8}>
               Login With {platformName} Failed
             </Alert>
           )}
-        </BodyContainer>
+        </ModalBodyContainer>
 
         <ModalFooter justifyContent="space-between">
-          <div>{helpLink && <Link href={helpLink}>See more</Link>}</div>
-
-          <ActionContainer>
+          <ModalActionContainer>
             <Button variant={ButtonVariant.TERTIARY} onClick={onCancel}>
               Cancel
             </Button>
 
             {platform && (
-              <ButtonContainer>
+              <ModalButtonContainer>
                 {getPlatformValue(
                   platform,
                   {
-                    [Constants.PlatformType.ALEXA]: (
-                      <AmazonLoginButton disabled={state.loading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
-                    ),
+                    [Constants.PlatformType.ALEXA]: <AmazonLoginButton disabled={isLoading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />,
                   },
                   <GoogleLoginButton
                     scopes={isGoogleCreate || isDialogFlow ? GOOGLE_OAUTH_SCOPES_V2 : GOOGLE_OAUTH_SCOPES}
@@ -125,11 +120,13 @@ export const PlatformBaseModal: React.FC<PlatformBaseModalProps> = ({
                     onSuccess={onSuccess}
                   />
                 )}
-              </ButtonContainer>
+              </ModalButtonContainer>
             )}
-          </ActionContainer>
+          </ModalActionContainer>
         </ModalFooter>
       </Box>
     </Modal>
   );
 };
+
+export default BaseConnectPlatformModal;

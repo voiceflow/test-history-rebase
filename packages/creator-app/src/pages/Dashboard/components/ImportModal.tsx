@@ -1,7 +1,7 @@
 import './ImportModal.css';
 
+import { Button, ButtonVariant, ModalImportSelect, StatusCode, toast } from '@ui';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, ButtonVariant, StatusCode, toast } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
@@ -14,8 +14,6 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { extractMemberById } from '@/ducks/workspaceV2/utils';
 import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
-
-import { ImportSelect } from './ModalComponents';
 
 const allowedToClone = (workspace: Realtime.Workspace, creatorID: number | null): boolean => {
   if (!creatorID) {
@@ -141,7 +139,7 @@ const ImportModal: React.FC = () => {
   return renderModal ? (
     <Modal id={ModalType.IMPORT_PROJECT} title={cloning ? 'Clone Project' : 'Copy Project'}>
       <ModalBody>
-        <ImportSelect
+        <ModalImportSelect
           prefix={cloning ? 'CLONE TO' : 'COPY TO'}
           value={targetWorkspace?.label}
           onSelect={(value: any) => chooseWorkspace(value)}

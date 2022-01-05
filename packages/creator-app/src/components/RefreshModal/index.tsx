@@ -1,4 +1,4 @@
-import { Box, Button, Link, logger } from '@voiceflow/ui';
+import { Box, Button, Link, logger, ModalBodyContainer, ModalContentContainer } from '@ui';
 import React from 'react';
 
 import { takeoffGraphic } from '@/assets';
@@ -6,7 +6,6 @@ import Modal, { ModalFooter } from '@/components/Modal';
 import { IS_DEVELOPMENT } from '@/config';
 import { ModalType } from '@/constants';
 import { useModals, useScheduled, useSetup } from '@/hooks';
-import { BodyContainer, ContentContainer } from '@/pages/Dashboard/components/ModalComponents';
 
 const log = logger.child('refreshModal');
 
@@ -51,11 +50,11 @@ const RefreshModal: React.FC = () => {
   return (
     <Modal id={ModalType.REFRESH} maxWidth={392} title="New Version">
       <Box width="100%">
-        <BodyContainer column>
+        <ModalBodyContainer column>
           <img src={takeoffGraphic} alt="new version" height={80} />
 
-          <ContentContainer>Voiceflow has published new changes. Please refresh to gain access to the newest version. </ContentContainer>
-        </BodyContainer>
+          <ModalContentContainer>Voiceflow has published new changes. Please refresh to gain access to the newest version. </ModalContentContainer>
+        </ModalBodyContainer>
 
         <ModalFooter justifyContent="space-between">
           <Link href={CHANGELOG_LINK}>See what’s new!</Link>

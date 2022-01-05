@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@ui/styles';
 
 const ContentContainer = styled.div`
   margin-top: 16px;

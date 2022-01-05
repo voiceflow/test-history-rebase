@@ -1,10 +1,10 @@
+import { ModalBoldText } from '@ui';
 import React from 'react';
 
 import { projectLimitGraphic } from '@/assets';
 import { ModalType } from '@/constants';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { useModals, useTrackingEvents } from '@/hooks';
-import { BoldText } from '@/pages/Dashboard/components/ModalComponents';
 
 import BaseModal from '../components/RedirectToPaymentBaseModal';
 
@@ -25,7 +25,8 @@ const FreeProjectLimitModal: React.FC = () => {
       icon={projectLimitGraphic}
       bodyContent={
         <>
-          {data.message || `You've reached your ${data.projects} free project limit`}. Upgrade to <BoldText>unlock unlimited projects.</BoldText>
+          {data.message || `You've reached your ${data.projects} free project limit`}. Upgrade to{' '}
+          <ModalBoldText>unlock unlimited projects.</ModalBoldText>
         </>
       }
     />

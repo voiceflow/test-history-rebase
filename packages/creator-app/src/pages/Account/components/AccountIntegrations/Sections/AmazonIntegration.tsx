@@ -1,9 +1,10 @@
 import { Button, ButtonVariant } from '@voiceflow/ui';
 import React, { useEffect, useState } from 'react';
 
+import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useModals, useSelector } from '@/hooks';
 
 const AmazonIntegrations: React.FC = () => {
   const [amazonStatus, setAmazonStatus] = useState(false);
@@ -11,6 +12,7 @@ const AmazonIntegrations: React.FC = () => {
   const loadAmazonAccount = useDispatch(Account.amazon.loadAccount);
   const unlinkAmazonAccount = useDispatch(Account.amazon.unlinkAccount);
   const setConfirm = useDispatch(Modal.setConfirm);
+  const connectAmazonModal = useModals(ModalType.CONNECT_AMAZON);
 
   useEffect(() => {
     // eslint-disable-next-line promise/catch-or-return
@@ -44,8 +46,8 @@ const AmazonIntegrations: React.FC = () => {
     }
     if (!user.amazon) {
       return (
-        <Button variant={ButtonVariant.PRIMARY} disabled>
-          Unlinked
+        <Button variant={ButtonVariant.PRIMARY} onClick={() => connectAmazonModal.open()}>
+          Connect
         </Button>
       );
     }

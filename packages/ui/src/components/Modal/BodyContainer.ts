@@ -1,6 +1,5 @@
-import { Flex } from '@voiceflow/ui';
-
-import { styled } from '@/hocs';
+import Flex from '@ui/components/Flex';
+import { styled } from '@ui/styles';
 
 const BodyContainer = styled(Flex as any)`
   padding: 24px 32px 48px 32px;

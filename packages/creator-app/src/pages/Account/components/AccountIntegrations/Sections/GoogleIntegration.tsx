@@ -1,9 +1,10 @@
 import { Button, ButtonVariant } from '@voiceflow/ui';
 import React, { useEffect, useState } from 'react';
 
+import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useModals, useSelector } from '@/hooks';
 
 const GoogleIntegration: React.FC = () => {
   const [googleStatus, setGoogleStatus] = useState(false);
@@ -11,6 +12,7 @@ const GoogleIntegration: React.FC = () => {
   const loadGoogleAccount = useDispatch(Account.google.loadAccount);
   const unlinkGoogleAccount = useDispatch(Account.google.unlinkAccount);
   const setConfirm = useDispatch(Modal.setConfirm);
+  const connectGoogleModal = useModals(ModalType.CONNECT_GOOGLE);
 
   useEffect(() => {
     // eslint-disable-next-line promise/catch-or-return
@@ -41,8 +43,8 @@ const GoogleIntegration: React.FC = () => {
     }
     if (!user.google) {
       return (
-        <Button variant={ButtonVariant.PRIMARY} disabled>
-          Unlinked
+        <Button variant={ButtonVariant.PRIMARY} onClick={() => connectGoogleModal.open()}>
+          Connect
         </Button>
       );
     }

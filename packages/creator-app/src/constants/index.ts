@@ -245,7 +245,10 @@ export enum ModalType {
   REFRESH = 'refresh',
   INACTIVITY = 'inactivity',
 
-  CONNECT = 'connect',
+  CONNECT_PLATFORM = 'connect-platform',
+  CONNECT_GOOGLE = 'connect-google',
+  CONNECT_AMAZON = 'connect-amazon',
+
   TAG_MANAGER = 'tag-manager',
 
   DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agen',

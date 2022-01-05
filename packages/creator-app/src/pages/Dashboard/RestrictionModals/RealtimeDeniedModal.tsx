@@ -1,10 +1,10 @@
+import { ModalBoldText } from '@ui';
 import React from 'react';
 
 import { teamGraphic } from '@/assets';
 import { ModalType } from '@/constants';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { useModals, useTrackingEvents } from '@/hooks';
-import { BoldText } from '@/pages/Dashboard/components/ModalComponents';
 import BaseModal from '@/pages/Dashboard/components/RedirectToPaymentBaseModal';
 
 const RealtimeDeniedModal: React.FC = () => {
@@ -24,8 +24,8 @@ const RealtimeDeniedModal: React.FC = () => {
       icon={teamGraphic}
       bodyContent={
         <>
-          A teammate is actively editing this project. Real-time collaboration is a <BoldText>Pro</BoldText> feature, please upgrade your plan to
-          continue.
+          A teammate is actively editing this project. Real-time collaboration is a <ModalBoldText>Pro</ModalBoldText> feature, please upgrade your
+          plan to continue.
         </>
       }
     />

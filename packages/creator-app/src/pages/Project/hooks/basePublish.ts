@@ -46,7 +46,7 @@ export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
 
   const [trackingEvents] = useTrackingEvents();
 
-  const { open: openLoginModal, close: closeLoginModal, isOpened: loginModalOpened } = useModals(ModalType.CONNECT);
+  const { open: openLoginModal, close: closeLoginModal, isOpened: loginModalOpened } = useModals(ModalType.CONNECT_PLATFORM);
 
   const diagramState = useSelector(Creator.diagramStateSelector);
 

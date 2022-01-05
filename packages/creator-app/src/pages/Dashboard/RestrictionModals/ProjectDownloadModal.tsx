@@ -1,8 +1,8 @@
+import { ModalBoldText } from '@ui';
 import React from 'react';
 
 import { projectDownloadGraphic } from '@/assets';
 import { ModalType } from '@/constants';
-import { BoldText } from '@/pages/Dashboard/components/ModalComponents';
 import BaseModal from '@/pages/Dashboard/components/RedirectToPaymentBaseModal';
 
 const ProjectDownloadModal: React.FC = () => (
@@ -12,7 +12,7 @@ const ProjectDownloadModal: React.FC = () => (
     icon={projectDownloadGraphic}
     bodyContent={
       <>
-        This is a <BoldText>Pro</BoldText> feature. Please upgrade your workspace to access downloadable link.
+        This is a <ModalBoldText>Pro</ModalBoldText> feature. Please upgrade your workspace to access downloadable link.
       </>
     }
   />

@@ -27,14 +27,14 @@ export interface CreditCardSectionProps {
 }
 
 const CreditCardSection: React.FC<CreditCardSectionProps> = ({ setStripeCompleted, workspaceId, stripe, checkChargeable }) => {
-  const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource>();
+  const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>();
   const [usingExistingSource, setUsingExistingSource] = React.useState(true);
   const [updatingSource, setUpdatingSource] = React.useState(false);
 
   useAsyncMountUnmount(async () => {
-    const source = await client.workspace.getPlan(workspaceId);
-    setPaymentSource(source || null);
-    setUsingExistingSource(!!source);
+    const plan = await client.workspace.getPlan(workspaceId);
+    setPaymentSource(plan.source ?? null);
+    setUsingExistingSource(!!plan.source);
   });
 
   const handleSuccessfulUpdate = (newSource: any) => {

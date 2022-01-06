@@ -17,17 +17,23 @@ export namespace Billing {
   };
 }
 
-export interface DBPaymentSource {
-  brand?: string;
-  last4?: string;
-  plan?: PlanType;
-  period?: string;
-  seats?: number;
-  source?: unknown;
-  id: PlanType;
+export interface DBPayment {
+  plan: PlanType;
+  seats: number;
+  period: string;
+  source: DBPaymentSource | null;
+  projects: number;
+  // NOTE(trs): Not returned by creator-api
+  id?: PlanType;
   pricing?: unknown;
   legacy?: boolean;
   hidden?: boolean;
+}
+
+export interface DBPaymentSource {
+  type: 'card';
+  brand: string;
+  last4: string;
 }
 
 export interface DBBilling {

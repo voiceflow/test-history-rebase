@@ -4,7 +4,7 @@ import { FetchOptions } from '@voiceflow/ui';
 
 import { Price } from '@/models';
 import { APIKey } from '@/models/APIKey';
-import { DBBilling, DBPaymentSource } from '@/models/Billing';
+import { DBBilling, DBPayment } from '@/models/Billing';
 
 import invoiceAdapter from './adapters/invoice';
 import { api, apiV2 } from './fetch';
@@ -38,9 +38,9 @@ const workspaceClient = {
 
   getInvoice: (workspaceID: string) => api.get<DBBilling>(`${WORKSPACES_PATH}/${workspaceID}/invoice`).then(invoiceAdapter.fromDB),
 
-  getPlans: () => api.get<DBPaymentSource[]>(`${WORKSPACES_PATH}/plans`),
+  getPlans: () => api.get<DBPayment[]>(`${WORKSPACES_PATH}/plans`),
 
-  getPlan: (workspaceID: string) => api.get<DBPaymentSource>(`${WORKSPACES_PATH}/${workspaceID}/plan`),
+  getPlan: (workspaceID: string) => api.get<DBPayment>(`${WORKSPACES_PATH}/${workspaceID}/plan`),
 
   updateSource: (workspaceID: string, sourceID: string) => api.patch(`${WORKSPACES_PATH}/${workspaceID}/source`, { source_id: sourceID }),
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.578.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.578.1...@voiceflow/creator-app@1.578.2) (2022-01-06)
+
+
+### Bug Fixes
+
+* auto focus step label input if empty (VF-2533) ([#4815](https://github.com/voiceflow/creator-app/issues/4815)) ([61314d4](https://github.com/voiceflow/creator-app/commit/61314d449396dbb05eae0d3e76e6dec1bf142898))
+
+
+
+
+
 ## [1.578.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.578.0...@voiceflow/creator-app@1.578.1) (2022-01-06)
 
 

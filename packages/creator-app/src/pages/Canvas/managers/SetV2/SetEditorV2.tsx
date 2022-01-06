@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlex, Input } from '@voiceflow/ui';
+import { BoxFlex, Input, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -23,6 +23,13 @@ const setClone = (initVal: Realtime.NodeData.SetExpressionV2, targetVal: Realtim
 
 const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = ({ data, onChange }) => {
   const [isDragging, toggleDragging] = useToggle(false);
+  const labelInputRef = React.useRef<HTMLInputElement>(null);
+
+  useSetup(() => {
+    if (!stepName) {
+      labelInputRef.current?.focus();
+    }
+  });
 
   const updateSets = React.useCallback(
     (sets) => {
@@ -75,7 +82,13 @@ const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
       <>
         <BoxFlex fullWidth zIndex={2} position="fixed" top={0} borderBottom="1px solid #eaeff4">
           <Section fullWidth>
-            <Input value={stepName} onBlur={() => onChange({ title: stepName })} onChangeText={setStepName} placeholder="Set Label" />
+            <Input
+              ref={labelInputRef}
+              value={stepName}
+              onBlur={() => onChange({ title: stepName })}
+              onChangeText={setStepName}
+              placeholder="Set Label"
+            />
           </Section>
         </BoxFlex>
         <BoxFlex style={{ marginTop: '84px' }}>

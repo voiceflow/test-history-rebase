@@ -4983,10 +4983,10 @@
   resolved "https://registry.yarnpkg.com/@types/gapi/-/gapi-0.0.41.tgz#c477ee4f0951c005869219fd10b456ae2bba437e"
   integrity sha512-tmHO66z/f91JZCDqinj/nNvQEszsz/hBT4+MvCSKT5sDzl5Ld/oXZ8WaecCBjRLw2uWKUInUHM9MhEXWkOiNjw==
 
-"@types/git-branch@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@types/git-branch/-/git-branch-2.0.1.tgz#9a38eb3024f30b567b92002f8b09e85d2acdbd2b"
-  integrity sha512-I7SzZ6rgn0yRLU4wPbZv6UeKJ3C5XAk1zTwyLOeZXqrW+z6/q6axQcDVPiUKCGv4M5WmOt4TrsnHuj7qOn4Nsg==
+"@types/git-branch@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/git-branch/-/git-branch-2.0.2.tgz#25cdd640970cce74926776bd5cac9b85e4b0bb64"
+  integrity sha512-TUamRjkahFmCLIZ2tfbnVIaO6h5MQnVzF6goVBl++QJ5609KRaAsV21uWleQPoS8MlJZqD05Nvxkoot66hsIbQ==
 
 "@types/glob@^7.1.1":
   version "7.1.3"

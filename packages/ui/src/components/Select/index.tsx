@@ -65,11 +65,9 @@ export type SelectProps<O, V> = {
   tags?: () => JSX.Element[];
   displayName?: string;
   inputVariant?: SelectInputVariant;
-  footerAction?: boolean;
+  footerAction?: (hideMenu: () => void) => JSX.Element;
   inDropdownSearch?: boolean;
   searchLabel?: string;
-  footerActionLabel?: string;
-  onClickFooterAction?: () => void;
   onSearch?: (val: string) => void;
   hasRadioButtons?: boolean;
   isSelectedFunc?: (id: string) => boolean;
@@ -175,10 +173,8 @@ const Select = <O, V = O>({
   onBlur,
   onKeyDown,
   footerAction,
-  footerActionLabel,
   onSearch,
   createLabel,
-  onClickFooterAction,
   onOpen,
   prefix,
   onClose,
@@ -621,11 +617,6 @@ SelectProps<O, V>) => {
           id={id}
           inDropdownSearch={inDropdownSearch}
           footerAction={footerAction}
-          footerActionLabel={footerActionLabel}
-          onClickFooterAction={() => {
-            onHideMenu();
-            onClickFooterAction?.();
-          }}
           createLabel={createLabel}
           onHide={onHideMenu}
           grouped={grouped}

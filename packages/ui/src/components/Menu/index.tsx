@@ -35,18 +35,18 @@ export type MenuProps<T extends any> = {
   width?: number;
   disabled?: boolean;
   maxHeight?: number | string;
+  onHide?: () => void;
   fullWidth?: boolean;
   onToggle?: () => void;
   selfDismiss?: boolean;
   searchable?: React.ReactNode;
   noTopPadding?: boolean;
-  footerAction?: boolean;
   scrollbarsRef?: React.Ref<Scrollbars>;
   maxVisibleItems?: number;
   noBottomPadding?: boolean;
   multiSelectProps?: { buttonClick: React.MouseEventHandler; buttonLabel: React.ReactNode };
   disableAnimation?: boolean;
-  footerActionComponent?: () => React.FC;
+  footerAction?: (onHide: () => void) => React.FC;
 } & Either<
   {
     options: MenuOption<T>[];
@@ -71,13 +71,13 @@ const Menu = <T extends any>(
     searchable,
     selfDismiss = false,
     footerAction,
+    onHide,
     noTopPadding,
     scrollbarsRef,
     maxVisibleItems = MAX_VISIBLE_ITEMS,
     noBottomPadding,
     disableAnimation = false,
     multiSelectProps,
-    footerActionComponent,
   }: MenuProps<T>,
   ref: React.Ref<MenuRefElement>
 ) => {
@@ -93,6 +93,10 @@ const Menu = <T extends any>(
         onToggle?.();
       }
     });
+
+  const onHideMenu = () => {
+    onHide?.();
+  };
 
   React.useEffect(() => {
     const wheelCallback = (event: WheelEvent) => event.stopImmediatePropagation();
@@ -116,7 +120,7 @@ const Menu = <T extends any>(
   return (
     <Container
       id={id}
-      footerAction={footerAction}
+      footerAction={!!footerAction}
       ref={composeRefs(ref, menuRef)}
       className={ClassName.MENU}
       fullWidth={fullWidth}
@@ -154,7 +158,7 @@ const Menu = <T extends any>(
           {multiSelectProps.buttonLabel}
         </ButtonContainer>
       )}
-      {footerAction && footerActionComponent?.()}
+      {footerAction?.(onHideMenu)}
     </Container>
   );
 };

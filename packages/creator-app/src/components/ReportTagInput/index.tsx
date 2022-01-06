@@ -1,3 +1,4 @@
+import { NestedMenuComponents } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -30,9 +31,16 @@ const ReportTagInput: React.ForwardRefRenderFunction<HTMLInputElement, ReportTag
         <ManageTagInput
           className={ClassName.BASE_REPORT_TAG_INPUT}
           selectedTags={selectedTags}
-          footerAction
-          footerActionLabel="Manage Tags"
-          onClickFooterAction={openTagManager}
+          footerAction={(hideMenu) => (
+            <NestedMenuComponents.FooterActionContainer
+              onClick={() => {
+                hideMenu();
+                openTagManager();
+              }}
+            >
+              Manage Tags
+            </NestedMenuComponents.FooterActionContainer>
+          )}
           {...props}
         />
       ) : (

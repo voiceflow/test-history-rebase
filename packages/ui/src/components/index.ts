@@ -79,7 +79,7 @@ export { LoadCircle, default as Loader } from './Loader';
 export type { MenuOption, MenuProps } from './Menu';
 export { default as Menu, MenuContainer, MenuItem, menuItemStyles } from './Menu';
 export { ModalActionContainer, ModalBodyContainer, ModalBoldText, ModalButtonContainer, ModalContentContainer, ModalImportSelect } from './Modal';
-export { defaultMenuLabelRenderer, getNestedMenuFormattedLabel, default as NestedMenu } from './NestedMenu';
+export { defaultMenuLabelRenderer, getNestedMenuFormattedLabel, default as NestedMenu, NestedMenuComponents } from './NestedMenu';
 export type { OptionsMenuOption } from './OptionsMenu';
 export { default as OptionsMenu } from './OptionsMenu';
 export { default as Portal, portalRootNode } from './Portal';

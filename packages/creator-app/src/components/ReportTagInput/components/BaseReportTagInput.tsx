@@ -15,9 +15,7 @@ import { TagWrapper } from './components';
 export interface BaseReportTagInputProps {
   selectedTags: (string | Icon)[];
   onChange: (value: string[]) => void;
-  footerAction?: boolean;
-  footerActionLabel?: string;
-  onClickFooterAction?: () => void;
+  footerAction?: (hideMenu: () => void) => JSX.Element;
   creatable?: boolean;
   hasRadioButtons?: boolean;
   isSelectedFunc?: (id: string) => boolean;
@@ -55,8 +53,6 @@ const filterOutSelected = (id: string, selectedTagIDs: string[]) => {
 
 const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
   footerAction,
-  footerActionLabel,
-  onClickFooterAction,
   selectedTags = [],
   creatable = true,
   hasRadioButtons,
@@ -145,8 +141,6 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         autoUpdatePlacement
         renderOptionLabel={hasRadioButtons && !!isSelectedFunc ? (option) => customMenuLabelRenderer(option, isSelectedFunc) : undefined}
         footerAction={footerAction}
-        footerActionLabel={footerActionLabel}
-        onClickFooterAction={onClickFooterAction}
         fullWidth
         selectedOptions={selectedValidTags}
         renderOptionsFilter={selectOnly ? undefined : ({ id }: { id: string }) => filterOutSelected(id, selectedValidTags)}

@@ -2,7 +2,7 @@
 import Menu from '@ui/components/Menu';
 import Portal from '@ui/components/Portal';
 import { useDidUpdateEffect } from '@ui/hooks';
-import { setRef, stopImmediatePropagation, swallowEvent } from '@ui/utils';
+import { setRef, swallowEvent } from '@ui/utils';
 import _constant from 'lodash/constant';
 import React from 'react';
 import { Popper } from 'react-popper';
@@ -10,7 +10,7 @@ import { Popper } from 'react-popper';
 import MenuHeader from '../MenuHeader';
 // eslint-disable-next-line import/no-cycle
 import MenuOptions from '../MenuOptions';
-import { FooterActionContainer, MenuPopoverContainer } from './components';
+import { MenuPopoverContainer } from './components';
 
 const KeyCodes = {
   TAB: 'Tab',
@@ -40,8 +40,6 @@ function BaseNestedMenu({
   onCreate,
   maxHeight,
   footerAction,
-  footerActionLabel,
-  onClickFooterAction,
   creatable,
   autoWidth,
   placement,
@@ -306,10 +304,8 @@ function BaseNestedMenu({
               <Menu
                 id={id}
                 footerAction={footerAction}
-                footerActionComponent={() => (
-                  <FooterActionContainer onClick={stopImmediatePropagation(onClickFooterAction)}>{footerActionLabel}</FooterActionContainer>
-                )}
                 ref={menuRef}
+                onHide={onHide}
                 maxHeight={maxHeight}
                 fullWidth
                 searchable={

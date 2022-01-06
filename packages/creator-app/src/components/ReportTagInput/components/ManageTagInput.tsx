@@ -7,9 +7,7 @@ import BaseTagInput from './BaseReportTagInput';
 
 interface ManageTagInputProps {
   selectedTags: string[];
-  footerAction: boolean;
-  footerActionLabel: string;
-  onClickFooterAction: () => void;
+  footerAction?: (hideMenu: () => void) => JSX.Element;
   className: string;
 }
 

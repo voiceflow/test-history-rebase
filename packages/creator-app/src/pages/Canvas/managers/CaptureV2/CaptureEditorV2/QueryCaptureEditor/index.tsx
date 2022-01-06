@@ -1,6 +1,6 @@
 import { Node } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, Box, Select, SvgIcon } from '@voiceflow/ui';
+import { Badge, Box, NestedMenuComponents, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
@@ -102,9 +102,20 @@ const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeD
             creatable
             onCreate={addSlot}
             onSearch={setSearch}
-            footerAction={!search}
-            onClickFooterAction={addSlot}
-            footerActionLabel="Create New Entity"
+            footerAction={
+              !search
+                ? (hideMenu) => (
+                    <NestedMenuComponents.FooterActionContainer
+                      onClick={() => {
+                        hideMenu();
+                        addSlot();
+                      }}
+                    >
+                      Create New Entity
+                    </NestedMenuComponents.FooterActionContainer>
+                  )
+                : undefined
+            }
           />
           <Box mt={16}>
             <VariableSelect

@@ -1,4 +1,4 @@
-import { FlexApart, FlexStart, Select, SelectInputVariant } from '@voiceflow/ui';
+import { FlexApart, FlexStart, NestedMenuComponents, Select, SelectInputVariant, stopImmediatePropagation } from '@voiceflow/ui';
 import startCase from 'lodash/startCase';
 import React from 'react';
 
@@ -66,9 +66,16 @@ const ModelIntentsSelect: React.FC = () => {
     <Select
       autoWidth
       renderOptionLabel={(option) => customMenuLabelRenderer(option, isOptionSelected)}
-      footerAction
-      footerActionLabel={selectedAllIntents ? 'Unselect all' : 'Select all'}
-      onClickFooterAction={handleSelectAll}
+      footerAction={(hideMenu) => (
+        <NestedMenuComponents.FooterActionContainer
+          onClick={stopImmediatePropagation(() => {
+            hideMenu();
+            handleSelectAll();
+          })}
+        >
+          {selectedAllIntents ? 'Unselect all' : 'Select all'}
+        </NestedMenuComponents.FooterActionContainer>
+      )}
       fullWidth
       selectedOptions={selectedIntents}
       options={intentsOptions}

@@ -4,11 +4,14 @@ import React from 'react';
 
 import defaultMenuLabelRenderer from './defaultMenuLabelRenderer';
 import AdvancedMenu, { DEFAULT_PATH } from './Menu';
+import { FooterActionContainer } from './Menu/components';
 import MenuHeader from './MenuHeader';
 import MenuOptions from './MenuOptions';
 
-export { getFormattedLabel as getNestedMenuFormattedLabel } from './getFormattedLabel';
+export const NestedMenuComponents = { FooterActionContainer };
 
+export { getFormattedLabel as getNestedMenuFormattedLabel } from './getFormattedLabel';
+export { FooterActionContainer } from './Menu/components';
 export { AdvancedMenu, defaultMenuLabelRenderer, MenuHeader, MenuOptions };
 
 const defaultGetter = (option) => option;

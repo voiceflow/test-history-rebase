@@ -1,6 +1,6 @@
 import { Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, BlockText, Select, Text, ThemeColor } from '@voiceflow/ui';
+import { Badge, BlockText, NestedMenuComponents, Select, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
@@ -161,9 +161,20 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
               onCreate={addSlot}
               placeholder="Name new entity or select existing entity"
               onSearch={setSearch}
-              footerAction={!search}
-              onClickFooterAction={addSlot}
-              footerActionLabel="Create New Entity"
+              footerAction={
+                !search
+                  ? (hideMenu) => (
+                      <NestedMenuComponents.FooterActionContainer
+                        onClick={() => {
+                          hideMenu();
+                          addSlot();
+                        }}
+                      >
+                        Create New Entity
+                      </NestedMenuComponents.FooterActionContainer>
+                    )
+                  : undefined
+              }
             />
             {selectedSlot && (
               <BlockText color={ThemeColor.SECONDARY} mt={12} fontSize={13}>

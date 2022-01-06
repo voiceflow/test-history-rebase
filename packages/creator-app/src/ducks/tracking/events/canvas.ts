@@ -80,7 +80,7 @@ export const trackNewUtteranceCreated = createProjectEventTracker<{
   intentID: string;
   creationType: CanvasCreationType;
 }>(({ intentID, creationType, ...options }) =>
-  client.api.analytics.track(
+  client.api.analytics.batchTrack(
     EventName.PROJECT_NEW_UTTERANCE_CREATED,
     createProjectEventPayload(options, { intent_id: intentID, creation_type: creationType })
   )
@@ -90,7 +90,7 @@ export const trackUtteranceBulkImport = createProjectEventTracker<{
   intentID: string;
   creationType: CanvasCreationType;
 }>(({ intentID, creationType, ...options }) =>
-  client.api.analytics.track(
+  client.api.analytics.batchTrack(
     EventName.PROJECT_UTTERANCE_BULK_IMPORT,
     createProjectEventPayload(options, { intent_id: intentID, creation_type: creationType })
   )
@@ -99,7 +99,7 @@ export const trackUtteranceBulkImport = createProjectEventTracker<{
 export const trackNewStepCreated = createProjectEventTracker<{
   stepType: BlockType;
 }>(({ stepType, ...options }) =>
-  client.api.analytics.track(
+  client.api.analytics.batchTrack(
     EventName.PROJECT_NEW_STEP_CREATED,
     createProjectEventPayload(options, {
       step_type: stepType,

@@ -89,8 +89,21 @@ class ClipboardEngine extends EngineConsumer {
         this.dispatch(TrackingEvents.trackEntityCreated({ creationType: CanvasCreationType.PASTE }));
       });
 
-      intents?.forEach(() => {
+      intents?.forEach(({ inputs, id }) => {
         this.dispatch(TrackingEvents.trackIntentCreated({ creationType: CanvasCreationType.PASTE }));
+
+        if (!inputs?.length) {
+          return;
+        }
+
+        inputs.forEach(() => {
+          this.dispatch(
+            TrackingEvents.trackNewUtteranceCreated({
+              intentID: id,
+              creationType: CanvasCreationType.PASTE,
+            })
+          );
+        });
       });
     },
 

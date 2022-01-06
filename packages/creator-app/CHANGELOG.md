@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.581.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.581.1...@voiceflow/creator-app@1.581.2) (2022-01-06)
+
+
+### Bug Fixes
+
+* correct payment source response (VF-000) ([#4821](https://github.com/voiceflow/creator-app/issues/4821)) ([73a8f66](https://github.com/voiceflow/creator-app/commit/73a8f66145bf19169010c71a7233388a153aea21))
+* do not edit topics concurrently (VF-2535) ([#4823](https://github.com/voiceflow/creator-app/issues/4823)) ([ffc9438](https://github.com/voiceflow/creator-app/commit/ffc943864556f0d23597e1ca942d76ccc8b7aeb9))
+
+
+
+
+
 ## [1.581.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.581.0...@voiceflow/creator-app@1.581.1) (2022-01-06)
 
 **Note:** Version bump only for package @voiceflow/creator-app

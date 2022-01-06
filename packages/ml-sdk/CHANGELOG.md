@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.3.0...@voiceflow/ml-sdk@1.3.1) (2022-01-06)
+
+
+### Bug Fixes
+
+* do not edit topics concurrently (VF-2535) ([#4823](https://github.com/voiceflow/creator-app/issues/4823)) ([ffc9438](https://github.com/voiceflow/creator-app/commit/ffc943864556f0d23597e1ca942d76ccc8b7aeb9))
+
+
+
+
+
 # [1.3.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.2.0...@voiceflow/ml-sdk@1.3.0) (2021-12-02)
 
 

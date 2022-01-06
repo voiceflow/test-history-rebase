@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.5.2...@voiceflow/socket-utils@1.5.3) (2022-01-06)
+
+
+### Bug Fixes
+
+* do not edit topics concurrently (VF-2535) ([#4823](https://github.com/voiceflow/creator-app/issues/4823)) ([ffc9438](https://github.com/voiceflow/creator-app/commit/ffc943864556f0d23597e1ca942d76ccc8b7aeb9))
+
+
+
+
+
 ## [1.5.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.5.1...@voiceflow/socket-utils@1.5.2) (2022-01-06)
 
 **Note:** Version bump only for package @voiceflow/socket-utils

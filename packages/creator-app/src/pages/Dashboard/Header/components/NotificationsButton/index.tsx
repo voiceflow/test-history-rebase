@@ -27,7 +27,7 @@ const NotificationsButton: React.FC<ConnectedNotificationsButton> = ({ notificat
       {/* notifications component */}
       <Dropdown
         menu={
-          <Menu maxHeight="300px">
+          <Menu maxHeight="500px">
             <UpdatesPopover notifications={notifications.length ? notifications : DEFAULT_MESSAGE} />
           </Menu>
         }

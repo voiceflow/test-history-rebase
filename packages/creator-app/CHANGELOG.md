@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.578.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.577.0...@voiceflow/creator-app@1.578.0) (2022-01-06)
+
+
+### Features
+
+* refactor select footer (VF-2472) ([#4804](https://github.com/voiceflow/creator-app/issues/4804)) ([e810467](https://github.com/voiceflow/creator-app/commit/e810467fd47f811f49b229c618c7cea787403e1f))
+
+
+
+
+
 # [1.577.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.576.0...@voiceflow/creator-app@1.577.0) (2022-01-06)
 
 

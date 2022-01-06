@@ -17,7 +17,7 @@ export interface BillingModalProps {
 
 const BillingModal: React.FC<BillingModalProps> = ({ workspaceId }) => {
   const [hasPaid, setHasPaid] = React.useState(false);
-  const [invoiceData, setInvoiceData] = React.useState<Billing>({ invoices: [], upcoming: { items: [], date: '', amount: 0 } });
+  const [invoiceData, setInvoiceData] = React.useState<Billing>({ invoices: null, upcoming: null });
   const [loading, setLoading] = React.useState(false);
 
   const loadInvoiceData = async () => {
@@ -45,40 +45,40 @@ const BillingModal: React.FC<BillingModalProps> = ({ workspaceId }) => {
           <Spinner isMd />
         ) : (
           <FadeLeftContainer>
-            {invoices?.length ? (
-              <TableContainer columns={[3, 8, 1]}>
-                <TableHeader>
-                  <span>Date</span>
-                  <span>Subscription</span>
-                  <span>Paid</span>
-                </TableHeader>
-                {invoices.map((invoice, index) => {
-                  const { date, amount, items } = invoice;
-                  return (
-                    <TableRow key={index}>
-                      <span>{date}</span>
-                      <span>
-                        {items.map((item, index) => (
-                          <div key={index}>{item}</div>
-                        ))}
-                      </span>
-                      <span>${amount}</span>
-                    </TableRow>
-                  );
-                })}
-              </TableContainer>
+            {hasPaid ? (
+              <>
+                <TableContainer columns={[3, 8, 1]}>
+                  <TableHeader>
+                    <span>Date</span>
+                    <span>Subscription</span>
+                    <span>Paid</span>
+                  </TableHeader>
+                  {invoices!.map((invoice, index) => {
+                    const { date, amount, items } = invoice;
+                    return (
+                      <TableRow key={index}>
+                        <span>{date}</span>
+                        <span>
+                          {items.map((item, index) => (
+                            <div key={index}>{item}</div>
+                          ))}
+                        </span>
+                        <span>${amount}</span>
+                      </TableRow>
+                    );
+                  })}
+                </TableContainer>
+                <Descriptor>
+                  Your <b>{upcoming!.items}</b> renews on {upcoming!.date}
+                </Descriptor>
+              </>
             ) : (
               <Descriptor>This workspace has no active subscription</Descriptor>
-            )}
-            {!!upcoming && (
-              <Descriptor>
-                Your <b>{upcoming.items}</b> renews on {upcoming.date}
-              </Descriptor>
             )}
           </FadeLeftContainer>
         )}
       </SettingsSection>
-      {hasPaid && (
+      {!loading && hasPaid && (
         <SettingsSection title="Payment">
           <CreditCardSection workspaceId={workspaceId} />
         </SettingsSection>

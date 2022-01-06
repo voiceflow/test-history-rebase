@@ -13,8 +13,6 @@ interface LoaderProps {
 
 const spinnerStyles = css<LoaderProps>`
   display: inline-flex;
-  width: 1em;
-  height: 1em;
   font-size: ${({ isMd }) => (isMd ? '2rem' : '4rem')};
   border-radius: 50%;
 `;
@@ -27,6 +25,8 @@ const LoadContainer = styled.div<LoaderProps>`
 
 export const LoadCircle = styled.span<LoaderProps>`
   ${spinnerStyles}
+  width: 1em;
+  height: 1em;
   line-height: 1;
   background-color: ${({ color }) => color || colors(ThemeColor.WHITE)};
   background-image: url(${loader2Icon});
@@ -38,7 +38,7 @@ export const LoadCircle = styled.span<LoaderProps>`
 
 const Loader: React.FC<LoaderProps> = ({ className, ...props }) => (
   <LoadContainer className={cn(ClassName.LOADER, className)} {...props}>
-    <LoadCircle color={props.color} />
+    <LoadCircle color={props.color} {...props} />
   </LoadContainer>
 );
 

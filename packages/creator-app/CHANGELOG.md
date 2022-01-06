@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.579.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.578.2...@voiceflow/creator-app@1.579.0) (2022-01-06)
+
+
+### Features
+
+* replace workspace join modal with toast (VF-2524) ([#4817](https://github.com/voiceflow/creator-app/issues/4817)) ([a2b6bf6](https://github.com/voiceflow/creator-app/commit/a2b6bf67ea742291c63e73d1d14bb5965db77c14))
+
+
+
+
+
 ## [1.578.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.578.1...@voiceflow/creator-app@1.578.2) (2022-01-06)
 
 

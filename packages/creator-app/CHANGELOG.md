@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.580.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.580.0...@voiceflow/creator-app@1.580.1) (2022-01-06)
+
+
+### Bug Fixes
+
+* add divider after edit in context menu (VF-2530) ([#4810](https://github.com/voiceflow/creator-app/issues/4810)) ([1762402](https://github.com/voiceflow/creator-app/commit/17624027a67cc2ec5dbf1d280ff6f550bfcdc7f9))
+
+
+
+
+
 # [1.580.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.579.0...@voiceflow/creator-app@1.580.0) (2022-01-06)
 
 

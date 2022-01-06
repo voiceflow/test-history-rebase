@@ -14,7 +14,7 @@
     "regenerator-runtime": "0.13.9"
   },
   "devDependencies": {
-    "@types/ioredis": "4.28.1"
+    "@types/ioredis": "4.28.7"
   },
   "license": "UNLICENSED",
   "private": true,

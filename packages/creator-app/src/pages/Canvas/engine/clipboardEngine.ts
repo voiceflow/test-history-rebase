@@ -15,6 +15,8 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
+import * as TrackingEvents from '@/ducks/tracking/events';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { NodeWithData } from '@/models';
@@ -82,6 +84,16 @@ class ClipboardEngine extends EngineConsumer {
       return JSON.parse(decryptedData) as ClipboardContext;
     },
 
+    trackClipboardEvents: ({ intents, slots }: Partial<ClipboardContext>): void => {
+      slots?.forEach(() => {
+        this.dispatch(TrackingEvents.trackEntityCreated({ creationType: CanvasCreationType.PASTE }));
+      });
+
+      intents?.forEach(() => {
+        this.dispatch(TrackingEvents.trackIntentCreated({ creationType: CanvasCreationType.PASTE }));
+      });
+    },
+
     importClipboardContext: async ({
       slots,
       intents,
@@ -103,16 +115,13 @@ class ClipboardEngine extends EngineConsumer {
 
       const nodesWithData = nodes.map((node) => ({ node, data: data[node.id] }));
 
-      await Promise.all([
-        this.dispatch(Slot.addManySlots(validSlots)),
-        this.dispatch(
-          Intent.addManyIntents(
-            intents
-              .filter((intent) => intent.slots.allKeys.every((key) => isValidSlot[key]))
-              .map((intent) => ({ ...intent, platform: targetPlatform }))
-          )
-        ),
-      ]);
+      const validIntents = intents
+        .filter((intent) => intent.slots.allKeys.every((key) => isValidSlot[key]))
+        .map((intent) => ({ ...intent, platform: targetPlatform }));
+
+      await Promise.all([this.dispatch(Slot.addManySlots(validSlots)), this.dispatch(Intent.addManyIntents(validIntents))]);
+
+      this.internal.trackClipboardEvents({ intents: validIntents, slots: validSlots });
 
       return this.dispatch(
         Version.importProjectContext({

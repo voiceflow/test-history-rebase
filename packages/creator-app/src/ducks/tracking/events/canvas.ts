@@ -9,7 +9,7 @@ export const trackCanvasSeeShortcutsModalOpened = createProjectEventTracker((opt
 );
 
 export const trackEntityCreated = createProjectEventTracker<{ creationType: CanvasCreationType }>((options) =>
-  client.api.analytics.track(EventName.ENTITY_CREATED, createProjectEventPayload(options, { creation_type: options.creationType }))
+  client.api.analytics.batchTrack(EventName.ENTITY_CREATED, createProjectEventPayload(options, { creation_type: options.creationType }))
 );
 
 export const trackVersionManuallyCreated = createVersionEventTracker((options) =>
@@ -61,7 +61,7 @@ export const trackIntentEdit = createProjectEventTracker<{ creationType: IntentE
 );
 
 export const trackIntentCreated = createProjectEventTracker<{ creationType: CanvasCreationType }>((options) =>
-  client.api.analytics.track(EventName.INTENT_CREATED, createProjectEventPayload(options, { creation_type: options.creationType }))
+  client.api.analytics.batchTrack(EventName.INTENT_CREATED, createProjectEventPayload(options, { creation_type: options.creationType }))
 );
 
 export const trackEntityEdit = createProjectEventTracker((options) =>

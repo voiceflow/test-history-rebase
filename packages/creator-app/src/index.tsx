@@ -14,6 +14,14 @@ import createStore from './store';
 Sentry.init();
 
 const history = createBrowserHistory();
+
+client.api.analytics.setBatching(true);
+
+window.addEventListener('beforeunload', () => {
+  client.api.analytics.setBatching(false);
+  client.api.analytics.flushBatched();
+});
+
 const logux = client.realtime();
 const { store, persistor } = createStore(logux, history);
 

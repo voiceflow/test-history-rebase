@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.577.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.576.0...@voiceflow/creator-app@1.577.0) (2022-01-06)
+
+
+### Features
+
+* account linking through account page (VF-2270) ([#4791](https://github.com/voiceflow/creator-app/issues/4791)) ([722208f](https://github.com/voiceflow/creator-app/commit/722208fb0cb7605fae96784fb0137b4be5ef8510))
+
+
+
+
+
 # [1.576.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.575.0...@voiceflow/creator-app@1.576.0) (2022-01-05)
 
 

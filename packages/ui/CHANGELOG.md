@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.42.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.42.0...@voiceflow/ui@1.42.1) (2022-01-06)
+
+
+### Bug Fixes
+
+* only show upcoming billing if has active sub (VF-2510) ([#4820](https://github.com/voiceflow/creator-app/issues/4820)) ([e601ce3](https://github.com/voiceflow/creator-app/commit/e601ce341b6b6d526f725bbe2fc3fc20b2f80b8b))
+
+
+
+
+
 # [1.42.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.41.0...@voiceflow/ui@1.42.0) (2022-01-06)
 
 

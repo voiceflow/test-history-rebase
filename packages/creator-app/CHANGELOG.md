@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.580.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.579.0...@voiceflow/creator-app@1.580.0) (2022-01-06)
+
+
+### Features
+
+* added tracking events when intents/entities are created via copy/paste (VF-2387) ([#4807](https://github.com/voiceflow/creator-app/issues/4807)) ([9ce9cc7](https://github.com/voiceflow/creator-app/commit/9ce9cc7ffd044c27f9b4539cceb0fb430d7d2405))
+
+
+
+
+
 # [1.579.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.578.2...@voiceflow/creator-app@1.579.0) (2022-01-06)
 
 

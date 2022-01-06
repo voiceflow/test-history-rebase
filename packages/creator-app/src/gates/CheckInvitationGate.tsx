@@ -1,7 +1,7 @@
+import { toast } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { takeoffGraphic } from '@/assets';
 import LoadingGate from '@/components/LoadingGate';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
@@ -14,7 +14,6 @@ import * as Query from '@/utils/query';
 
 const CheckInvitationGate: React.FC<RouteComponentProps & CheckInvitationGateProps> = ({
   acceptInvite,
-  setModal,
   trackInvitationAccepted,
   redirectToDashboard,
   location,
@@ -34,21 +33,9 @@ const CheckInvitationGate: React.FC<RouteComponentProps & CheckInvitationGatePro
 
     if (!newWorkspaceID) return;
 
-    setModal({
-      withHeader: true,
-      body: (
-        <div className="text-center py-1 mb-5 text-muted">
-          <img src={takeoffGraphic} height={140} alt="blast off" />
-          <br />
-          <br />
-          Successfully Accepted Invite
-          <br />
-          Welcome to Voiceflow
-        </div>
-      ),
-    });
+    toast.success('Successfully joined workspace!');
 
-    trackInvitationAccepted(newWorkspaceID, inviteSource);
+    trackInvitationAccepted(newWorkspaceID, inviteSource).catch(() => {});
 
     redirectToDashboard();
   }, [location]);

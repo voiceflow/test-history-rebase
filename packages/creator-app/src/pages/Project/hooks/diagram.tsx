@@ -168,7 +168,12 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
     const isTopic = diagramID ? getDiagramByID(diagramID)?.type === BaseModels.DiagramType.TOPIC : false;
 
     return [
-      ...(onEdit ? [{ label: 'Edit', onClick: onEdit }] : []),
+      ...(onEdit
+        ? [
+            { label: 'Edit', onClick: onEdit },
+            { label: 'Divider', divider: true },
+          ]
+        : []),
       { label: 'Rename', onClick: onRename },
       ...(!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) || !isTopic ? [{ label: 'Duplicate', onClick: onDuplicate }] : []),
       ...(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && !isTopic

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.581.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.580.3...@voiceflow/creator-app@1.581.0) (2022-01-06)
+
+
+### Features
+
+* **analytics:** track utterance creation via copy/past and enable batch tracking (VF-2457) ([#4813](https://github.com/voiceflow/creator-app/issues/4813)) ([d78ab7c](https://github.com/voiceflow/creator-app/commit/d78ab7c3d8df7b71c7acf10ab358a5386f4eee6b))
+
+
+
+
+
 ## [1.580.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.580.2...@voiceflow/creator-app@1.580.3) (2022-01-06)
 
 

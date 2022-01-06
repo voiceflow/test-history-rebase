@@ -9,7 +9,7 @@
     "@sentry/react": "6.14.1",
     "@sentry/tracing": "6.14.1",
     "@voiceflow/api-sdk": "3.4.2",
-    "@voiceflow/common": "7.10.0",
+    "@voiceflow/common": "7.13.2",
     "@voiceflow/general-types": "3.2.8",
     "@voiceflow/internal": "2.2.1",
     "@voiceflow/realtime-sdk": "^1.46.4",

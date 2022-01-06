@@ -8,7 +8,7 @@
   "dependencies": {
     "@logux/actions": "0.2.1",
     "@logux/server": "0.10.7",
-    "@voiceflow/common": "7.10.0",
+    "@voiceflow/common": "7.13.2",
     "@voiceflow/logger": "1.6.1",
     "cbor": "8.0.2",
     "ioredis": "4.28.2",

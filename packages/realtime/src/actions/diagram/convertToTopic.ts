@@ -1,19 +1,16 @@
 import { Models as BaseModels, Node as BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Context, terminateResend } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
-
-import { WorkspaceContextData } from '@/actions/workspace/utils';
+import { terminateResend } from '@voiceflow/socket-utils';
 
 import { AbstractDiagramResourceControl } from './utils';
 
-class convertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagramPayload> {
-  protected actionCreator = Realtime.diagram.convertToTopic;
+class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagramPayload> {
+  protected actionCreator = Realtime.diagram.convertToTopic.started;
 
   protected resend = terminateResend;
 
-  protected process = async (ctx: Context<WorkspaceContextData>, { payload }: Action<Realtime.BaseDiagramPayload>): Promise<void> => {
+  protected process = this.reply(Realtime.diagram.convertToTopic, async (ctx, { payload }) => {
     const { creatorID } = ctx.data;
 
     const diagram = await this.services.diagram.get(creatorID, payload.diagramID);
@@ -21,7 +18,7 @@ class convertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
     const { versionID: _versionID, creatorID: _creatorID, _id, ...primitiveDiagram } = diagram;
 
     if (primitiveDiagram.type === BaseModels.DiagramType.TOPIC) {
-      return;
+      this.reject('diagram is already a topic', Realtime.ErrorCode.CANNOT_CONVERT_TO_TOPIC);
     }
 
     const startNodeID = Object.values(primitiveDiagram.nodes).find((node) => node.type === BaseNode.NodeType.START)?.nodeID;
@@ -65,7 +62,7 @@ class convertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
           intentStepIDs: intentSteps.map((node) => node.nodeID),
         })
         .then((dbDiagram) => Realtime.Adapters.diagramAdapter.fromDB(dbDiagram, { rootDiagramID: '' })),
-    ] as const);
+    ]);
 
     const actionContext = {
       versionID: payload.versionID,
@@ -77,8 +74,6 @@ class convertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
       this.services.version.patch(creatorID, payload.versionID, {
         topics: [...(version.topics ?? []), { sourceID: newDiagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }],
       }),
-      this.server.processAs(creatorID, Realtime.diagram.crud.remove({ ...actionContext, key: payload.diagramID })),
-      this.server.processAs(creatorID, Realtime.diagram.reloadIntentSteps({ ...actionContext, diagramID: payload.diagramID, intentSteps: {} })),
       this.server.processAs(creatorID, Realtime.diagram.crud.add({ ...actionContext, key: newDiagram.id, value: newDiagram })),
       this.server.processAs(
         creatorID,
@@ -92,7 +87,15 @@ class convertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
         })
       ),
     ]);
-  };
+
+    // remove the component once the new diagram is introduced to avoid overwriting changes to version.topics
+    await Promise.all([
+      this.server.processAs(creatorID, Realtime.diagram.crud.remove({ ...actionContext, key: payload.diagramID })),
+      this.server.processAs(creatorID, Realtime.diagram.reloadIntentSteps({ ...actionContext, diagramID: payload.diagramID, intentSteps: {} })),
+    ]);
+
+    return newDiagram;
+  });
 }
 
-export default convertToTopic;
+export default ConvertToTopic;

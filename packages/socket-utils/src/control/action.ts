@@ -6,6 +6,12 @@ import type { Action, ActionCreator, AsyncActionCreators } from 'typescript-fsa'
 
 import { AbstractLoguxControl, isUnauthorizedError, LoguxControlOptions } from './utils';
 
+class AsyncRejectionError<C> extends Error {
+  constructor(message: string, public code?: C) {
+    super(message);
+  }
+}
+
 export abstract class AbstractActionControl<
   T extends LoguxControlOptions,
   P,
@@ -31,7 +37,12 @@ export abstract class AbstractActionControl<
   protected handleExpiredAuth?: (ctx: Context<D>) => Eventual<void>;
 
   // eslint-disable-next-line class-methods-use-this
-  protected reply<R, E = void>(
+  protected reject<C>(message: string, code?: C): never {
+    throw new AsyncRejectionError<C>(message, code);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  protected reply<R, E extends Utils.protocol.AsyncError<number>>(
     actionCreators: AsyncActionCreators<P, R, E>,
     process: (ctx: Context<D>, action: Action<P>, meta: ServerMeta) => Promise<R>
   ): (ctx: Context<D>, action: Action<P>, meta: ServerMeta) => Promise<void> {
@@ -41,11 +52,12 @@ export abstract class AbstractActionControl<
 
         await ctx.sendBack(actionCreators.done({ params: action.payload, result }, { actionID: action.meta?.actionID }));
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'unhandled error';
+        const errorPayload =
+          err instanceof AsyncRejectionError
+            ? ({ message: err.message, code: err.code } as E)
+            : ({ message: `unhandled error: ${err?.message}` } as E);
 
-        await ctx.sendBack(
-          actionCreators.failed({ params: action.payload, error: { message: errorMessage } as any }, { actionID: action.meta?.actionID })
-        );
+        await ctx.sendBack(actionCreators.failed({ params: action.payload, error: errorPayload }, { actionID: action.meta?.actionID }));
       }
     };
   }

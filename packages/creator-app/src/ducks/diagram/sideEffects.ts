@@ -16,7 +16,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
-import { waitAsync } from '@/ducks/utils';
+import { AsyncActionError, waitAsync } from '@/ducks/utils';
 import { saveComponents, saveTopics } from '@/ducks/version/sideEffects/common/topicsComponents';
 import { getActiveVersionContext } from '@/ducks/version/utils';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -24,6 +24,7 @@ import mutableStore from '@/store/mutable';
 import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { PathPoint, Point } from '@/types';
+import logger from '@/utils/logger';
 import { getNodesGroupCenter } from '@/utils/node';
 import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
@@ -470,7 +471,15 @@ export const convertToTopic =
             await dispatch(Router.goToRootDiagram());
           }
 
-          await dispatch.sync(Realtime.diagram.convertToTopic({ ...context, diagramID }));
+          try {
+            await dispatch(waitAsync(Realtime.diagram.convertToTopic, { ...context, diagramID }));
+          } catch (err) {
+            if (err instanceof AsyncActionError && err.code === Realtime.ErrorCode.CANNOT_CONVERT_TO_TOPIC) {
+              logger.warn(`unable to convert to topic: ${err.message}`);
+            } else {
+              throw err;
+            }
+          }
 
           RootPageProgressBar.stop(PageProgressBar.TOPIC_CREATING);
         }

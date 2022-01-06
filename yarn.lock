@@ -6009,10 +6009,10 @@
   dependencies:
     "@commitlint/config-conventional" "^12.1.4"
 
-"@voiceflow/common@7.10.0", "@voiceflow/common@^7.10.0":
-  version "7.10.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.10.0.tgz#d16af6c32c7c90ffb438d6b43e132912fc0e94fc"
-  integrity sha512-p528iuqY/hpcMvcQDow67jD8+0m25qScOV76pkyq/7DI61PlakEjPs+iGhTBb84GhfUtyoXNvZ4AH05/6Vtv8Q==
+"@voiceflow/common@7.13.2":
+  version "7.13.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.13.2.tgz#db5107d2c35357ee23cfccc43a506827f843fc02"
+  integrity sha512-u0drqKvNC+t/MyFz3hmfvy+HEdTOcXMf2UUpGjU9j7hc4tEga2IB5p/sTZs1JxlBI3sQqzxiva5jkPQUz7G3Rw==
   dependencies:
     "@types/crypto-js" "^4.0.2"
     bson-objectid "^2.0.1"
@@ -6035,6 +6035,20 @@
     dayjs "^1.10.7"
     lodash "^4.17.21"
     number-to-words "^1.2.4"
+
+"@voiceflow/common@^7.10.0":
+  version "7.10.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.10.0.tgz#d16af6c32c7c90ffb438d6b43e132912fc0e94fc"
+  integrity sha512-p528iuqY/hpcMvcQDow67jD8+0m25qScOV76pkyq/7DI61PlakEjPs+iGhTBb84GhfUtyoXNvZ4AH05/6Vtv8Q==
+  dependencies:
+    "@types/crypto-js" "^4.0.2"
+    bson-objectid "^2.0.1"
+    crypto-js "^4.1.1"
+    cuid "^2.1.8"
+    dayjs "^1.10.7"
+    lodash "^4.17.21"
+    number-to-words "^1.2.4"
+    typescript-fsa "3.0.0"
 
 "@voiceflow/common@^7.12.0":
   version "7.12.0"

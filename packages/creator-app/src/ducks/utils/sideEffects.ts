@@ -3,9 +3,22 @@ import { Action, AsyncActionCreators } from 'typescript-fsa';
 
 import { Thunk } from '@/store/types';
 
-// eslint-disable-next-line import/prefer-default-export
+type ErrorCode<T> = T extends Utils.protocol.AsyncError<infer R> ? R : never;
+
+export class AsyncActionError<T extends Utils.protocol.AsyncError<number>> extends Error {
+  code: ErrorCode<T> | null = null;
+
+  constructor(data: T) {
+    super(data.message);
+
+    if (data.code != null) {
+      this.code = data.code as ErrorCode<T>;
+    }
+  }
+}
+
 export const waitAsync =
-  <T, R, E = {}>(actionCreators: AsyncActionCreators<T, R, E>, payload: T): Thunk<R> =>
+  <T, R, E extends Utils.protocol.AsyncError<number>>(actionCreators: AsyncActionCreators<T, R, E>, payload: T): Thunk<R> =>
   async (dispatch, _getState, { log }) => {
     const promise = Utils.promise.createControlledPromise<R>();
 
@@ -30,7 +43,7 @@ export const waitAsync =
       const processedAction = processedActions.find((action) => action.meta?.actionID === actionID)!;
 
       if (actionCreators.failed.match(processedAction)) {
-        promise.reject(processedAction.payload.error);
+        promise.reject(new AsyncActionError<E>(processedAction.payload.error));
         return promise;
       }
 

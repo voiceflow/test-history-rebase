@@ -1,4 +1,11 @@
+import { Utils } from '@voiceflow/common';
 import { ActionCreator } from 'typescript-fsa';
+
+export enum ErrorCode {
+  CANNOT_CONVERT_TO_TOPIC,
+}
+
+export type RealtimeError = Utils.protocol.AsyncError<ErrorCode>;
 
 export interface Viewer {
   creatorID: number;

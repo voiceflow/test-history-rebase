@@ -13,7 +13,7 @@
     "@types/deep-equal-in-any-order": "1.0.1",
     "@types/mock-require": "2.0.1",
     "@types/sinon": "9.0.11",
-    "@types/sinon-chai": "3.2.5",
+    "@types/sinon-chai": "3.2.8",
     "@voiceflow/babel-preset": "1.1.1",
     "@voiceflow/commitlint-config": "1.1.1",
     "@voiceflow/eslint-config": "3.5.0",

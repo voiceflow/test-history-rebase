@@ -191,7 +191,7 @@
     "@types/resize-observer-browser": "0.1.5",
     "@types/shallowequal": "1.1.1",
     "@types/socket.io-client": "1.4.36",
-    "@types/styled-components": "5.1.17",
+    "@types/styled-components": "5.1.19",
     "@types/styled-system": "5.1.13",
     "@types/throttle-debounce": "2.1.0",
     "@types/valid-url": "1.0.3",

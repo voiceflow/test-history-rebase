@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.582.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.581.4...@voiceflow/creator-app@1.582.0) (2022-01-07)
+
+
+### Features
+
+* do not display noMatch/noReply tooltip when there is no content for reprompt (VF-2463) ([#4832](https://github.com/voiceflow/creator-app/issues/4832)) ([6fc12d1](https://github.com/voiceflow/creator-app/commit/6fc12d1b6efe8763ef5f2f1398cd7a52f206e476))
+
+
+
+
+
 ## [1.581.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.581.3...@voiceflow/creator-app@1.581.4) (2022-01-07)
 
 **Note:** Version bump only for package @voiceflow/creator-app

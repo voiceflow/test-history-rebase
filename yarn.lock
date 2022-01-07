@@ -5309,10 +5309,10 @@
     "@types/react" "*"
     "@types/reactcss" "*"
 
-"@types/react-custom-scrollbars@4.0.8":
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/@types/react-custom-scrollbars/-/react-custom-scrollbars-4.0.8.tgz#a848e0e0bb82f1c4386e7e2d7c6d7c8566c1d0c1"
-  integrity sha512-Xn+nEg3uK4kNkZ5QR97fDsGkFjICo81Ys5pZ0Ov5T9NR+nDKFoB2OUjKBtQcYKcXYsprNONQaWZ4/HSQZP8ivA==
+"@types/react-custom-scrollbars@4.0.10":
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/@types/react-custom-scrollbars/-/react-custom-scrollbars-4.0.10.tgz#f31289df0da95cdb0dfa2a6bdccda7bc909690e6"
+  integrity sha512-1T430E+usndUjymkXB8k/zGpWehggircq/QaQMuFLMJceccAcD9vcmbUXF1LjeVP/+P4wI/bad6BF1E+7IGlqA==
   dependencies:
     "@types/react" "*"
 

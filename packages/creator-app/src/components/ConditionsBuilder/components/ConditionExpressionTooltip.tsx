@@ -8,7 +8,7 @@ import InfoIcon from '@/components/InfoIcon';
 const ConditionExpressionTooltip: React.FC = () => (
   <InfoIcon>
     <>
-      <Text>{`This input accepts plain text numbers, variables using "{" and methamatical expressions.`}</Text>
+      <Text>{`This input accepts plain text numbers, variables using "{" and mathematical expressions.`}</Text>
       <Box mt={16} mb={16}>
         <Text fontWeight={600}>The following math operations are supported:</Text>
         <Box mt={8} color="#62778c">

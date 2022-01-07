@@ -8,6 +8,7 @@ import Popper from '@/components/Popper';
 import NoMatchAndNoReplyStepCopyList from '../../NoMatchAndNoReplyStepCopyList';
 import Attachment from './StepAttachment';
 import Item from './StepItem';
+import { hasValidReprompt } from './utils';
 
 export interface NoMatchStepItemProps {
   portID?: Nullable<string>;
@@ -28,7 +29,7 @@ const NoMatchStepItem: React.FC<NoMatchStepItemProps> = ({ noMatch, portID }) =>
           portID={isPath ? portID : null}
           portColor="#6e849a"
           attachment={
-            noMatch.types.includes(Node.Utils.NoMatchType.REPROMPT) ? (
+            noMatch.types.includes(Node.Utils.NoMatchType.REPROMPT) && hasValidReprompt(noMatch.reprompts) ? (
               <Attachment ref={ref} icon="noMatch" isActive={isOpened} onClick={stopPropagation(onToggle)} />
             ) : null
           }

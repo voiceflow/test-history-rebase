@@ -62,6 +62,7 @@ export const voicePromptToSpeakDataAdapter = createAdapter<NodeData.VoicePrompt,
       ? {
           id: reprompt.id,
           url: reprompt.audio ?? '',
+          desc: reprompt.desc ?? undefined,
           type: DialogType.AUDIO,
         }
       : {

@@ -4,7 +4,7 @@ import { AbstractServiceManager } from '@voiceflow/socket-utils';
 
 import buildActions, { ActionMap } from './actions';
 import buildChannels, { ChannelMap } from './channels';
-import buildClients, { ClientMap } from './clients';
+import buildClients, { ClientMap, stopClients } from './clients';
 import type { LoguxControlOptions } from './control';
 import buildMiddlewares, { MiddlewareMap } from './middlewares';
 import buildServices, { ServiceMap } from './services';
@@ -29,6 +29,10 @@ class ServiceManager extends AbstractServiceManager<LoguxControlOptions, Middlew
 
   buildChannels(context: LoguxControlOptions): ChannelMap {
     return buildChannels(context);
+  }
+
+  async stop(): Promise<void> {
+    await Promise.all([super.stop(), stopClients(this.clients)]);
   }
 }
 

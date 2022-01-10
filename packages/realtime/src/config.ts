@@ -11,6 +11,7 @@ const GOOGLE_SERVICE_ENDPOINT = getRequiredProcessEnv('GOOGLE_SERVICE_ENDPOINT')
 const CONFIG: Config = {
   NODE_ENV,
   PORT: parseInt(getRequiredProcessEnv('PORT'), 10),
+  PORT_METRICS: getOptionalProcessEnv('PORT_METRICS') === null ? null : parseInt(getRequiredProcessEnv('PORT_METRICS'), 10),
 
   // Deployment information
   CLOUD_ENV,

@@ -65,6 +65,7 @@ jspm_packages/
 # dotenv environment variables files
 .env*
 !.env.e2e
+!.env.test
 
 # Editor Configuration
 .atom

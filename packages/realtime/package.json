@@ -4,6 +4,7 @@
   "dependencies": {
     "@logux/core": "0.7.2",
     "@logux/server": "0.10.7",
+    "@opentelemetry/api-metrics": "0.26.0",
     "@voiceflow/alexa-types": "2.2.10",
     "@voiceflow/api-sdk": "3.4.2",
     "@voiceflow/backend-utils": "4.2.2",
@@ -14,6 +15,7 @@
     "@voiceflow/google-types": "2.3.10",
     "@voiceflow/internal": "2.2.1",
     "@voiceflow/logger": "1.6.1",
+    "@voiceflow/metrics": "1.1.2",
     "@voiceflow/realtime-sdk": "^1.47.0",
     "@voiceflow/socket-utils": "^1.5.3",
     "axios": "0.21.2",
@@ -30,7 +32,11 @@
     "utility-types": "3.10.0"
   },
   "devDependencies": {
-    "@types/ioredis": "4.28.7"
+    "@types/ioredis": "4.28.7",
+    "@types/node": "16.11.19"
+  },
+  "engines": {
+    "node": ">=16"
   },
   "license": "UNLICENSED",
   "private": true,

@@ -1,6 +1,7 @@
 export interface Config {
   NODE_ENV: string;
   PORT: number;
+  PORT_METRICS: number | null;
 
   // Deployment information
   CLOUD_ENV: string;

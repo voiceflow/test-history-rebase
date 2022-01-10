@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.28.8...@voiceflow/realtime@1.29.0) (2022-01-10)
+
+
+### Features
+
+* implement new metrics (VF-1458) ([#4833](https://github.com/voiceflow/creator-app/issues/4833)) ([9700405](https://github.com/voiceflow/creator-app/commit/9700405b4dff37687fc49a04277c81c49d833da3))
+
+
+
+
+
 ## [1.28.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.28.7...@voiceflow/realtime@1.28.8) (2022-01-07)
 
 **Note:** Version bump only for package @voiceflow/realtime

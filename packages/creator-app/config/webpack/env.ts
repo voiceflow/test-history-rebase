@@ -22,6 +22,7 @@ import {
   ff_natoApco,
   ff_ownerRole,
   ff_topicsAndComponents,
+  ff_variable_states,
   ff_wavenetVoices,
   ga,
   growsurf,
@@ -77,6 +78,7 @@ export default {
   FF_ATOMIC_ACTIONS: ff_atomicActions && 'true',
   FF_TOPICS_AND_COMPONENTS: ff_topicsAndComponents && 'true',
   FF_ACCOUNT_PAGE_REDESIGN: ff_account_page_redesign && 'true',
+  FF_VARIABLE_STATES: ff_variable_states && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

@@ -39,6 +39,7 @@ declare module 'webpack-nano/argv' {
     privateCloud: boolean;
 
     // feature flags
+    /* eslint-disable camelcase */
     ff_trace: boolean;
     ff_gadgets: boolean;
     ff_natoApco: boolean;
@@ -53,6 +54,8 @@ declare module 'webpack-nano/argv' {
     ff_wavenetVoices: boolean;
     ff_topicsAndComponents: boolean;
     ff_account_page_redesign: boolean;
+    ff_variable_states: boolean;
+    /* eslint-enable camelcase */
   }>;
 
   export = argv;

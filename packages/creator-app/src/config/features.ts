@@ -15,6 +15,7 @@ const ATOMIC_ACTIONS_ENABLED = process.env.FF_ATOMIC_ACTIONS === 'true';
 const ENTERPRISE_TRIAL_ENABLED = process.env.FF_ENTERPRISE_TRIAL_ENABLED === 'true';
 const TOPICS_AND_COMPONENTS_ENABLED = process.env.FF_TOPICS_AND_COMPONENTS === 'true';
 const ACCOUNT_PAGE_REDESIGN_ENABLED = process.env.FF_ACCOUNT_PAGE_REDESIGN === 'true';
+const VARIABLE_STATES_ENABLED = process.env.FF_VARIABLE_STATES === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -43,6 +44,8 @@ export enum FeatureFlag {
   ENTERPRISE_TRIAL = 'enterprise_trial',
 
   ACCOUNT_PAGE_REDESIGN = 'account_page_redesign',
+
+  VARIABLE_STATES = 'variable_states',
 }
 
 export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
@@ -60,4 +63,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.INTERCOM_INTEGRATION]: INTERCOM_ENABLED,
   [FeatureFlag.TOPICS_AND_COMPONENTS]: TOPICS_AND_COMPONENTS_ENABLED,
   [FeatureFlag.ACCOUNT_PAGE_REDESIGN]: ACCOUNT_PAGE_REDESIGN_ENABLED,
+  [FeatureFlag.VARIABLE_STATES]: VARIABLE_STATES_ENABLED,
 };

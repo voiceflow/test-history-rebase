@@ -53,7 +53,7 @@ const NoMatchPathName: React.FC<NodeEditorPropsType<Realtime.NodeData.IfV2>> = (
         </FormControl>
       </Section>
 
-      {localNoMatch.type === null ? (
+      {localNoMatch.type === BaseNode.IfV2.IfNoMatchType.NONE ? (
         <>
           <Section customContentStyling={{ color: '#62778c' }}>The project will end if no condition is matched.</Section>
           <Divider offset={0} />

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.584.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.583.0...@voiceflow/creator-app@1.584.0) (2022-01-11)
+
+
+### Features
+
+* move setting menu to topbar and create new empty sidebar (VF-2586) ([#4848](https://github.com/voiceflow/creator-app/issues/4848)) ([851bca9](https://github.com/voiceflow/creator-app/commit/851bca96242d05b28ce5ae9f0b69adfb2b55a254))
+
+
+
+
+
 # [1.583.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.582.8...@voiceflow/creator-app@1.583.0) (2022-01-11)
 
 

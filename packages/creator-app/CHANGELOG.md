@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.583.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.582.8...@voiceflow/creator-app@1.583.0) (2022-01-11)
+
+
+### Features
+
+* updated action section heading color for danger zone ([#4847](https://github.com/voiceflow/creator-app/issues/4847)) ([e54d09f](https://github.com/voiceflow/creator-app/commit/e54d09f5fae5a2e17bc998ea03771385b2b13a57))
+
+
+
+
+
 ## [1.582.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.582.7...@voiceflow/creator-app@1.582.8) (2022-01-11)
 
 

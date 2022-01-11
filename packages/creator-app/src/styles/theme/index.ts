@@ -66,6 +66,9 @@ const THEME = createTheme({
       itemHeight: 72,
       smallItemHeight: 48,
     },
+    testVariablesSidebar: {
+      width: 274,
+    },
     navLinkSidebar: {
       width: 250,
 

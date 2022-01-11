@@ -67,7 +67,7 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
       <Container className={cn(ClassName.SIDEBAR_ICON_MENU, open && `${ClassName.SIDEBAR_ICON_MENU}--opened`)}>
         {options.map(renderOption)}
 
-        {footerOptions?.length && (
+        {!!footerOptions?.length && (
           <>
             <Box flex={1} />
             {footerOptions.map(renderOption)}

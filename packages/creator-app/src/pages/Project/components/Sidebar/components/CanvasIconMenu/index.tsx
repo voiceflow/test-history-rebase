@@ -6,7 +6,7 @@ import { useIsCanvasDesignOnly } from '@/hooks';
 
 import { useCanvasMenuOptionsAndHotkeys, useHelpOptions } from './hooks';
 
-const CanvasMenu: React.FC = () => {
+const CanvasIconMenu: React.FC = () => {
   const helpOptions = useHelpOptions();
   const { options, activeValue, helpOpened, footerOptions, helpButtonRef } = useCanvasMenuOptionsAndHotkeys();
   const designOnly = useIsCanvasDesignOnly();
@@ -31,4 +31,4 @@ const CanvasMenu: React.FC = () => {
   );
 };
 
-export default CanvasMenu;
+export default CanvasIconMenu;

@@ -5,7 +5,7 @@ import { Path } from '@/config/routes';
 
 import { BackHeader, CanvasHeader, ConversationsHeader, IntegrationsHeader, PrototypeHeader, SettingsHeader } from './components';
 
-const Header: React.FC = () => (
+const ProjectHeader: React.FC = () => (
   <Switch>
     <Route path={[Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]} component={CanvasHeader} />
 
@@ -21,4 +21,4 @@ const Header: React.FC = () => (
   </Switch>
 );
 
-export default Header;
+export default ProjectHeader;

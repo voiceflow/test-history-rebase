@@ -2,21 +2,27 @@ import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import * as Recent from '@/ducks/recent';
-import { connect } from '@/hocs';
+import { useDispatch, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
 
 import { Drawer } from '../PrototypeContainer';
 import SettingsSection from './components/SettingsSection';
 
-const PrototypeSettings: React.FC<ConnectedPrototypeSettingsProps> = ({ config, updateSettings }) => {
+interface PrototypeSettingsProps {
+  showTitle?: boolean;
+}
+
+const PrototypeSettings: React.FC<PrototypeSettingsProps> = ({ showTitle }) => {
+  const config = useSelector(Recent.recentPrototypeSelector);
+  const updateSettings = useDispatch(Recent.updateRecentPrototype);
+
   const toggleDebug = () => updateSettings({ debug: !config.debug });
   const toggleIntentScore = () => updateSettings({ intent: !config.intent });
   const toggleGuidedNav = () => updateSettings({ isGuided: !config.isGuided });
 
   return (
     <Drawer id={Identifier.PROTO_SETTINGS_MENU_CONTAINER}>
-      <Section header="TEST SETTINGS" variant={SectionVariant.PROTOTYPE} />
+      {showTitle && <Section header="TEST SETTINGS" variant={SectionVariant.PROTOTYPE} />}
       <SettingsSection header="Debug Mode" toggle={toggleDebug} value={config.debug}>
         Show the paths, variables and flows you're using while you test
       </SettingsSection>
@@ -30,14 +36,4 @@ const PrototypeSettings: React.FC<ConnectedPrototypeSettingsProps> = ({ config, 
   );
 };
 
-const mapStateToProps = {
-  config: Recent.recentPrototypeSelector,
-};
-
-const mapDispatchToProps = {
-  updateSettings: Recent.updateRecentPrototype,
-};
-
-type ConnectedPrototypeSettingsProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(PrototypeSettings) as React.FC;
+export default PrototypeSettings;

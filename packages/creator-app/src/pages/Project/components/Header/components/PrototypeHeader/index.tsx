@@ -2,14 +2,16 @@ import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import { Header, HeaderBackButton, HeaderHotkeyToAction } from '@/components/ProjectPage';
+import { FeatureFlag } from '@/config/features';
 import * as Router from '@/ducks/router';
-import { useDispatch } from '@/hooks';
+import { useDispatch, useFeature } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
-import { Content, Share, Timer } from './components';
+import { Content, Settings, Share, Timer } from './components';
 
 const PrototypeHeader: React.FC = () => {
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
+  const { isEnabled: hasVariableStates } = useFeature(FeatureFlag.VARIABLE_STATES);
 
   return (
     <Header renderLogoButton={() => <HeaderBackButton onClick={() => goToCurrentCanvas()} />}>
@@ -18,7 +20,7 @@ const PrototypeHeader: React.FC = () => {
       <Content>
         <Timer />
       </Content>
-
+      {hasVariableStates && <Settings />}
       <Share />
 
       <Box width={16} />

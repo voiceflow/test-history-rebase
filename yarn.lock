@@ -17567,7 +17567,6 @@ minipass-fetch@^1.3.0, minipass-fetch@^1.3.2:
   resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-1.3.3.tgz#34c7cea038c817a8658461bf35174551dce17a0a"
   integrity sha512-akCrLDWfbdAWkMLBxJEeWTdNsjML+dt5YgOI4gJ53vuO0vrmYQkUPxa6j6V65s9CcePIr2SSWqjT2EcrNseryQ==
   dependencies:
-    encoding "^0.1.12"
     minipass "^3.1.0"
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
@@ -25183,10 +25182,10 @@ use@^3.1.0:
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
 
-userflow.js@1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/userflow.js/-/userflow.js-1.8.0.tgz#38aa0984734c4b93af2054e0914a125ce072ec7a"
-  integrity sha512-DXz8AaDFNYkv/RVUGU8BSyrY5wIc+TCs953j8qeXeis8c6WjA7QnzXb3Y8Lf3rpFKtAQ9haL8jteuF25MoYuMQ==
+userflow.js@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/userflow.js/-/userflow.js-2.2.0.tgz#9722581e85ca87416c0ce0de01e0ae7f87666f30"
+  integrity sha512-voimujGKB3xX+ORYt/ZEiqPE2qT9FUtO2zLduNZu3y5tCZLWrMNkJQY9oBt+qcp7a9ivJF66q62l/dTt7s7kew==
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"

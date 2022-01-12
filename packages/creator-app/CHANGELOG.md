@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.585.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.584.0...@voiceflow/creator-app@1.585.0) (2022-01-12)
+
+
+### Features
+
+* updated block header icon colour ([#4846](https://github.com/voiceflow/creator-app/issues/4846)) ([831519f](https://github.com/voiceflow/creator-app/commit/831519f775e6559b3de58f5318c7a2e54f748ebc))
+
+
+
+
+
 # [1.584.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.583.0...@voiceflow/creator-app@1.584.0) (2022-01-11)
 
 

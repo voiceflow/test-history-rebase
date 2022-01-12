@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.586.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.585.0...@voiceflow/creator-app@1.586.0) (2022-01-12)
+
+
+### Features
+
+* ellipsis overflowing topic names and add a tooltip ([#4851](https://github.com/voiceflow/creator-app/issues/4851)) ([dfa3575](https://github.com/voiceflow/creator-app/commit/dfa3575470007258394804422d998e776d889925))
+
+
+
+
+
 # [1.585.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.584.0...@voiceflow/creator-app@1.585.0) (2022-01-12)
 
 

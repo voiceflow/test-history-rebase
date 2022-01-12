@@ -1,8 +1,10 @@
+import composeRefs from '@seznam/compose-react-refs';
 import { Nullable } from '@voiceflow/common';
 import { getNestedMenuFormattedLabel } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
+import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine } from '@/hooks';
 
@@ -41,16 +43,20 @@ const IntentListItem: React.ForwardRefRenderFunction<HTMLDivElement, IntentListI
   };
 
   return (
-    <IntentContainer
-      ref={ref}
-      onClick={onClick}
-      isActive={focusedNodeID === stepID}
-      isDragging={isDragging}
-      isPlaceholder={!intent}
-      isDraggingPreview={isDraggingPreview}
-    >
-      {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(intent?.name, searchMatchValue)}</SearchLabel> : intent?.name ?? 'Empty intent step'}
-    </IntentContainer>
+    <OverflowTippyTooltip title={intent?.name}>
+      {(tooltipRef) => (
+        <IntentContainer
+          ref={composeRefs(ref, tooltipRef)}
+          onClick={onClick}
+          isActive={focusedNodeID === stepID}
+          isDragging={isDragging}
+          isPlaceholder={!intent}
+          isDraggingPreview={isDraggingPreview}
+        >
+          {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(intent?.name, searchMatchValue)}</SearchLabel> : intent?.name ?? 'Empty intent step'}
+        </IntentContainer>
+      )}
+    </OverflowTippyTooltip>
   );
 };
 

@@ -2,6 +2,7 @@ import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
+import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import * as Creator from '@/ducks/creator';
 import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine, useSelector } from '@/hooks';
@@ -38,10 +39,16 @@ const StartIntent: React.FC<StartIntentProps> = ({ isActive, diagramID, focusedN
 
   const startNodeData = startNodeID ? getStartNodeData<Realtime.NodeData.Start>(startNodeID) : null;
 
+  const startIntentLabel = startNodeData?.label || 'Project starts here';
+
   return (
-    <IntentContainer isActive={isRootDiagramActive && startNodeID === focusedNodeID} onClick={onClickRootItem}>
-      {startNodeData?.label || 'Project starts here'}
-    </IntentContainer>
+    <OverflowTippyTooltip title={startIntentLabel}>
+      {(ref) => (
+        <IntentContainer ref={ref} isActive={isRootDiagramActive && startNodeID === focusedNodeID} onClick={onClickRootItem}>
+          {startIntentLabel}
+        </IntentContainer>
+      )}
+    </OverflowTippyTooltip>
   );
 };
 

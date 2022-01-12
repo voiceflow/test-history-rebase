@@ -17,8 +17,8 @@ export const ITEM_INTENT_HEIGHT = 32;
 const ItemIntent = styled(OverflowText)<ItemContainerProps>`
   ${transition('color')};
 
-  display: flex;
-  align-items: center;
+  display: block;
+  line-height: ${ITEM_INTENT_HEIGHT}px;
   width: 100%;
   height: ${ITEM_INTENT_HEIGHT}px;
   font-size: 13px;

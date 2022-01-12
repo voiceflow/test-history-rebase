@@ -107,7 +107,7 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({
     <Container>
       {icon && (
         <LeftIconContainer>
-          <SvgIcon icon={icon} color="#6e849a" />
+          <SvgIcon icon={icon} color="rgba(110, 132, 154, 0.8)" />
         </LeftIconContainer>
       )}
 

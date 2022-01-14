@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.589.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.588.0...@voiceflow/creator-app@1.589.0) (2022-01-14)
+
+
+### Features
+
+* users with billing permission can configure billing in workspace settings (VF-2470) ([#4828](https://github.com/voiceflow/creator-app/issues/4828)) ([b31c8fc](https://github.com/voiceflow/creator-app/commit/b31c8fcfe3aae04732a2bee11a6da9c8918257a7))
+
+
+
+
+
 # [1.588.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.587.2...@voiceflow/creator-app@1.588.0) (2022-01-14)
 
 

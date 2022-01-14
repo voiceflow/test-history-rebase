@@ -6,7 +6,8 @@
     "lib": [
       "es2019",
       "dom",
-      "es2020.string"
+      "es2020.string",
+      "dom.iterable"
     ],
     "baseUrl": "..",
     "outDir": "build",

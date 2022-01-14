@@ -2,6 +2,8 @@
 import { genKey } from 'draft-js';
 import _toLower from 'lodash/toLower';
 
+import { SlateEditorAPI } from '@/components/SlateEditable';
+
 import { EntityType, Mutability } from '../../constants';
 import getOpenTagText from './getOpenTagText';
 
@@ -20,8 +22,10 @@ const createSupportedOpenTagsRegex = (tags) => new RegExp(`(<)(?!\\b(${tags.map(
 const createSupportedCloseTagsRegex = (tags) => new RegExp(`(</)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
 
 const removeFunkyCharactersAndUnsupportedTags = (value, { tags, newLinesAllowed }) => {
-  const formattedValue = value
+  if (!value) return '';
 
+  const text = typeof value === 'string' ? value : SlateEditorAPI.serialize(value);
+  const formattedValue = text
     .replace(REGEX_NBSP, SPACE)
     .replace(REGEX_CARRIAGE, '')
     .replace(REGEX_ZWS, '')

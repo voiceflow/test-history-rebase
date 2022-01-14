@@ -86,7 +86,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
     await clipboard.copy(null, { disableSuccessToast: true });
 
     if (canDelete) {
-      await engine.removeActive({ disableConfirmPrompt: true });
+      await engine.removeActive();
     }
   }, [canDelete]);
 

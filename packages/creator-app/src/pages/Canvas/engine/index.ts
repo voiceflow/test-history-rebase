@@ -393,9 +393,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   /**
    * remove any selected or focused nodes
    */
-  async removeActive(
-    { disableConfirmPrompt, focusNextChild }: { disableConfirmPrompt?: boolean; focusNextChild?: boolean } = { focusNextChild: true }
-  ): Promise<void> {
+  async removeActive({ focusNextChild }: { focusNextChild?: boolean } = { focusNextChild: true }): Promise<void> {
     if (this.activation.hasTargets) {
       // keep reference to targets before clearing
       const activeTargets = this.activation.getTargets();
@@ -407,7 +405,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
       } else {
         this.clearActivation();
       }
-      await this.node.removeMany(activeTargets, { disableConfirmPrompt });
+      await this.node.removeMany(activeTargets);
     }
   }
 
@@ -535,7 +533,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
     const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = await this.store.dispatch(Diagram.convertToComponent(clipboardData));
 
-    await this.node.removeMany(targets, { disableConfirmPrompt: true });
+    await this.node.removeMany(targets);
 
     const componentNodeID = await this.node.add(BlockType.COMPONENT, coords, { name, diagramID } as Realtime.NodeData<any>);
 

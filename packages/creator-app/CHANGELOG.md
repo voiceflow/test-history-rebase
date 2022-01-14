@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.587.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.586.4...@voiceflow/creator-app@1.587.0) (2022-01-14)
+
+
+### Features
+
+* implement variable state list and variable state input (VF-2591) ([#4859](https://github.com/voiceflow/creator-app/issues/4859)) ([44c549a](https://github.com/voiceflow/creator-app/commit/44c549a257af689e512bbd9814099034057e4d2c))
+
+
+
+
+
 ## [1.586.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.586.3...@voiceflow/creator-app@1.586.4) (2022-01-13)
 
 **Note:** Version bump only for package @voiceflow/creator-app

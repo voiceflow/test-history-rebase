@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.587.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.587.1...@voiceflow/creator-app@1.587.2) (2022-01-14)
+
+
+### Bug Fixes
+
+* clicking on NoReply was crashing the application (VF-2710) ([#4867](https://github.com/voiceflow/creator-app/issues/4867)) ([03495ad](https://github.com/voiceflow/creator-app/commit/03495adc0977c3964944aa9d4a238bf5e57c8421))
+
+
+
+
+
 ## [1.587.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.587.0...@voiceflow/creator-app@1.587.1) (2022-01-14)
 
 **Note:** Version bump only for package @voiceflow/creator-app

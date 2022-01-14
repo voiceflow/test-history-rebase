@@ -24,3 +24,32 @@ export const FooterActionContainer = styled.div`
     color: ${({ theme }) => theme.colors.darkBlue};
   }
 `;
+
+export const FooterActions = styled.div`
+  ${transition()};
+  width: 100%;
+  text-align: center;
+  background: #fdfdfd;
+  color: ${({ theme }) => theme.colors.blue};
+  margin-bottom: -5px;
+  border-top: solid 1px #eaeff4;
+  position: absolute;
+  border-radius: 0 0 5px 5px;
+  bottom: 5px;
+  display: flex;
+`;
+
+export const FooterAction = styled.div`
+  align-content: center;
+  padding: 22px 18px;
+  flex-grow: 1;
+  cursor: pointer;
+
+  &:not(:first-child) {
+    border-left: 1px solid #eaeff4;
+  }
+
+  :hover {
+    color: ${({ theme }) => theme.colors.darkBlue};
+  }
+`;

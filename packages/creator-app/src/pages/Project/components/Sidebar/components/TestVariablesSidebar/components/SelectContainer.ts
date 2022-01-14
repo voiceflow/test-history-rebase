@@ -1,0 +1,10 @@
+import { styled } from '@/hocs';
+
+const SelectContainer = styled.div`
+  padding: 20px 24px;
+  background-color: #fdfdfd;
+  border-bottom: 1px solid #dfe3ed;
+  width: 100%;
+`;
+
+export default SelectContainer;

@@ -5,6 +5,7 @@ export interface FlexProps {
   column?: boolean;
   inline?: boolean;
   fullWidth?: boolean;
+  fullHeight?: boolean;
 }
 
 export const flexStyles = css<FlexProps>`
@@ -27,6 +28,12 @@ export const flexStyles = css<FlexProps>`
     fullWidth &&
     css`
       width: 100%;
+    `}
+
+  ${({ fullHeight }) =>
+    fullHeight &&
+    css`
+      height: 100%;
     `}
 `;
 

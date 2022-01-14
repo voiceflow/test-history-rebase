@@ -324,7 +324,6 @@ SelectProps<O, V>) => {
           updateFocusedOptionIndex(activeOptionIndex === -1 ? 0 : activeOptionIndex + cache.current.firstOptionIndex);
         }
       }
-
       updateOptionsToRender(matchedOptions);
     },
     [grouped, updateOptionsToRender, updateFocusedOptionIndex]

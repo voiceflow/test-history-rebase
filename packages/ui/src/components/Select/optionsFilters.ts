@@ -2,9 +2,18 @@ import _shuffle from 'lodash/shuffle';
 
 import type { GetOptionLabel, GetOptionValue, GroupedOption, MultiLevelOption } from './index';
 
+interface OWithDividerProps {
+  menuItemProps?: { divider: boolean };
+}
+
+const isDivider = (option: OWithDividerProps) => !!option?.menuItemProps?.divider;
+
 const matchOption =
   <O, V>(label: undefined | string, getOptionLabel: GetOptionLabel<V>, getOptionValue: GetOptionValue<O, V>) =>
   (option?: O & { label?: string }) => {
+    if (isDivider(option as OWithDividerProps)) {
+      return true;
+    }
     const searchString = getOptionLabel(getOptionValue(option));
     return searchString?.toLowerCase()?.includes(label?.toLowerCase() ?? '');
   };
@@ -92,6 +101,14 @@ export const searchableOptionsFilter = <O, V>(
     },
     [[], []]
   );
+
+  if (isDivider(matchedOptions[0] as OWithDividerProps)) {
+    matchedOptions.shift();
+  }
+
+  if (isDivider(matchedOptions[matchedOptions.length - 1] as OWithDividerProps)) {
+    matchedOptions.pop();
+  }
 
   let filteredOptions = matchedOptions;
 

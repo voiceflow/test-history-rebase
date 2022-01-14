@@ -18,7 +18,8 @@ const SettingsButton: React.FC = () => {
 
   const { toggle: togglePayment, open: openUpgrade } = useModals(ModalType.PAYMENT);
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
-  const [canConfigureWorkspace, { activeRole }] = usePermission(Permission.CONFIGURE_WORKSPACE);
+  const [canViewSettingsWorkspace, { activeRole }] = usePermission(Permission.VIEW_SETTINGS_WORKSPACE);
+  const [canNotLeaveWorkspace] = usePermission(Permission.UNABLE_TO_LEAVE_WORKSPACE);
 
   const isEditor = activeRole === UserRole.EDITOR;
   const isLibrary = activeRole === UserRole.LIBRARY;
@@ -28,12 +29,23 @@ const SettingsButton: React.FC = () => {
     <TippyTooltip title="Settings" position="bottom">
       <Dropdown
         menu={
-          <Menu noBottomPadding noTopPadding={!canConfigureWorkspace && isLibrary}>
-            {canConfigureWorkspace ? (
+          <Menu noBottomPadding noTopPadding={!canViewSettingsWorkspace && isLibrary}>
+            {canViewSettingsWorkspace && (
               <>
                 <MenuItem onClick={toggleCollaborators}>Manage Collaborators</MenuItem>
                 <MenuItem onClick={goToWorkspaceSettings}>Workspace Settings</MenuItem>
                 <MenuItem divider style={{ marginBottom: 0 }} />
+              </>
+            )}
+            {!canNotLeaveWorkspace && (
+              <>
+                <MenuItem onClick={leaveWorkspace}>Leave Workspace</MenuItem>
+                <MenuItem divider style={{ marginBottom: 0 }} />
+              </>
+            )}
+
+            {canViewSettingsWorkspace ? (
+              <>
                 {plan ? (
                   <MenuItem disabled capitalize ending>
                     <Text color="#62778c">{PLAN_TYPE_META[plan].label} Plan &nbsp;-&nbsp; </Text>
@@ -48,8 +60,6 @@ const SettingsButton: React.FC = () => {
               </>
             ) : (
               <>
-                {!isLibrary && <MenuItem onClick={leaveWorkspace}>Leave Workspace</MenuItem>}
-
                 {(isEditor || isViewer) && (
                   <>
                     {!isLibrary && <MenuItem divider style={{ marginBottom: 0 }} />}

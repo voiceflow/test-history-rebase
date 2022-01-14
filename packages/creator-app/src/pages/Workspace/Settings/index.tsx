@@ -10,7 +10,7 @@ import { Path, WorkspaceSettingsRoute } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
-import { useActiveWorkspace, useDispatch, useIsAdmin, usePermission } from '@/hooks';
+import { useActiveWorkspace, useDispatch, usePermission } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 import Billing from './components/Billing';
@@ -21,33 +21,39 @@ import { SettingsGate } from './gates';
 
 const Settings: React.FC = () => {
   const workspace = useActiveWorkspace();
-  const isAdmin = useIsAdmin();
 
-  const [orgPermission] = usePermission(Permission.CONFIGURE_ORGANIZATION);
+  const [canConfigureOrganization] = usePermission(Permission.CONFIGURE_ORGANIZATION);
+  const [canViewSettingsWorkspace] = usePermission(Permission.VIEW_SETTINGS_WORKSPACE);
+  const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
+  const [canConfigureWorkspaceDeveloper] = usePermission(Permission.CONFIGURE_WORKSPACE_DEVELOPER);
   const goToDashboard = useDispatch(Router.goToDashboard);
 
-  const ssoPermission = orgPermission && workspace?.organizationID;
+  const canManageSSO = canConfigureOrganization && workspace?.organizationID;
 
   const tabs = React.useMemo(
     () => [
       { label: 'General', path: WorkspaceSettingsRoute.GENERAL },
-      {
-        label: (
-          <BoxFlex alignItems="center">
-            Billing&nbsp;&nbsp;
-            <PlanBubble plan={workspace?.plan} disabled />
-          </BoxFlex>
-        ),
-        path: 'billing',
-      },
-      ...(ssoPermission ? [{ label: 'SSO', path: WorkspaceSettingsRoute.SSO }] : []),
-      { label: 'Developer', path: WorkspaceSettingsRoute.DEVELOPER },
+      ...(canConfigureWorkspaceBilling
+        ? [
+            {
+              label: (
+                <BoxFlex alignItems="center">
+                  Billing&nbsp;&nbsp;
+                  <PlanBubble plan={workspace?.plan} disabled />
+                </BoxFlex>
+              ),
+              path: 'billing',
+            },
+          ]
+        : []),
+      ...(canManageSSO ? [{ label: 'SSO', path: WorkspaceSettingsRoute.SSO }] : []),
+      ...(canConfigureWorkspaceDeveloper ? [{ label: 'Developer', path: WorkspaceSettingsRoute.DEVELOPER }] : []),
     ],
     [workspace?.plan]
   );
 
-  // do not show for the no-admin users
-  if (!isAdmin) {
+  // do not show for users without the appropriate permission
+  if (!canViewSettingsWorkspace) {
     return <RedirectWithSearch to={Path.DASHBOARD} />;
   }
 
@@ -56,9 +62,9 @@ const Settings: React.FC = () => {
       <SettingsContainer tabs={tabs}>
         <Switch>
           <Route path={Path.WORKSPACE_GENERAL_SETTINGS} component={General} />
-          <Route path={Path.WORKSPACE_DEVELOPER_SETTINGS} component={Developer} />
-          <Route path={Path.WORKSPACE_BILLING_SETTINGS} component={Billing} />
-          {ssoPermission && <Route path={Path.WORKSPACE_SSO_SETTINGS} component={SSO} />}
+          {canConfigureWorkspaceBilling && <Route path={Path.WORKSPACE_BILLING_SETTINGS} component={Billing} />}
+          {canConfigureWorkspaceDeveloper && <Route path={Path.WORKSPACE_DEVELOPER_SETTINGS} component={Developer} />}
+          {canManageSSO && <Route path={Path.WORKSPACE_SSO_SETTINGS} component={SSO} />}
 
           <Redirect to={Path.WORKSPACE_GENERAL_SETTINGS} />
         </Switch>

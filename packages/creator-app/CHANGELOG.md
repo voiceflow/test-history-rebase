@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.588.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.587.2...@voiceflow/creator-app@1.588.0) (2022-01-14)
+
+
+### Features
+
+* remove block confirmation modal on block deletion (VF-2514) ([#4852](https://github.com/voiceflow/creator-app/issues/4852)) ([fe2c9b3](https://github.com/voiceflow/creator-app/commit/fe2c9b3f1baa19f4c3ad9703574b745d33ef8beb))
+
+
+
+
+
 ## [1.587.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.587.1...@voiceflow/creator-app@1.587.2) (2022-01-14)
 
 

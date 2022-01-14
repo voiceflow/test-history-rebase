@@ -6,8 +6,8 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@sentry/react": "6.14.1",
-    "@sentry/tracing": "6.14.1",
+    "@sentry/react": "6.16.1",
+    "@sentry/tracing": "6.16.1",
     "@voiceflow/api-sdk": "3.4.2",
     "@voiceflow/common": "7.13.2",
     "@voiceflow/general-types": "3.2.8",

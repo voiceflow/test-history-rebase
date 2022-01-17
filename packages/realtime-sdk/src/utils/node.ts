@@ -17,6 +17,18 @@ export const isLinkedFlowNode = (
   data: NodeData<unknown>
 ): data is Overwrite<NodeData<NodeData.Flow>, NonNullishRecord<Pick<NodeData.Flow, 'diagramID'>>> => isFlowNode(data) && !!data.diagramID;
 
+export const isComponentNode = checkNodeType<NodeData.Component>(BlockType.COMPONENT);
+
+export const isLinkedComponentNode = (
+  data: NodeData<unknown>
+): data is Overwrite<NodeData<NodeData.Component>, NonNullishRecord<Pick<NodeData.Component, 'diagramID'>>> =>
+  isComponentNode(data) && !!data.diagramID;
+
+export const isDiagramNode = (data: NodeData<unknown>): data is NodeData<{ diagramID?: string }> => isFlowNode(data) || isComponentNode(data);
+
+export const isLinkedDiagramNode = (data: NodeData<unknown>): data is NodeData<{ diagramID: string }> =>
+  isLinkedFlowNode(data) || isLinkedComponentNode(data);
+
 export const isCommandNode = checkNodeType<NodeData.Command>(BlockType.COMMAND);
 
 export const isLinkedCommandNode = (

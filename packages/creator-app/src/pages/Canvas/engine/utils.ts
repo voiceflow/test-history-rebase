@@ -14,7 +14,6 @@ import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptorOptionalPorts } from '@/pages/Canvas/managers/types';
 import { Dispatcher, DispatchResult, Selector } from '@/store/types';
 import { Pair, Point } from '@/types';
-import { isChoiceNode, isLinkedFlowNode, isLinkedIntentNode, isProductLinkedNode } from '@/utils/node';
 import { getDistinctPlatformValue } from '@/utils/platform';
 
 import type { Engine } from '.';
@@ -292,11 +291,11 @@ export const getCopiedNodeDataIDs = (
   const intents: string[] = [];
 
   copiedNodesData.forEach((data) => {
-    if (isLinkedIntentNode(data, platform)) {
+    if (Realtime.Utils.node.isLinkedIntentNode(data, platform)) {
       intents.push(getDistinctPlatformValue(platform, data).intent);
     }
 
-    if (isChoiceNode(data)) {
+    if (Realtime.Utils.node.isChoiceNode(data)) {
       data.choices.forEach((choice) => {
         const { intent } = getDistinctPlatformValue(platform, choice);
 
@@ -307,9 +306,9 @@ export const getCopiedNodeDataIDs = (
     }
   });
 
-  const products = Utils.array.unique(copiedNodesData.filter(isProductLinkedNode).map((node) => node.productID));
+  const products = Utils.array.unique(copiedNodesData.filter(Realtime.Utils.node.isProductLinkedNode).map((node) => node.productID));
 
-  const diagrams = Utils.array.unique(copiedNodesData.filter(isLinkedFlowNode).map((node) => node.diagramID));
+  const diagrams = Utils.array.unique(copiedNodesData.filter(Realtime.Utils.node.isLinkedDiagramNode).map((node) => node.diagramID));
 
   return { intents: Utils.array.unique(intents), products, diagrams };
 };

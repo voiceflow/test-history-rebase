@@ -24,7 +24,6 @@ import * as Thread from '@/ducks/thread';
 import * as VersionV2 from '@/ducks/versionV2';
 import { Thunk } from '@/store/types';
 import { storeLogger } from '@/store/utils';
-import { isChoiceNode, isFlowNode, isIntentNode, isProductLinkedNode } from '@/utils/node';
 import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 
 import { crud, updateSessionByVersionID } from '../../actions';
@@ -174,14 +173,14 @@ export const importProjectContext =
 
     if (sourcePlatform !== targetPlatform) {
       mappedNodes = mappedNodes.map((node) => {
-        if (isIntentNode(node.data)) {
+        if (Realtime.Utils.node.isIntentNode(node.data)) {
           return {
             ...node,
             data: { ...node.data, ...setDistinctPlatformValue(targetPlatform, getDistinctPlatformValue(sourcePlatform, node.data)) },
           };
         }
 
-        if (isChoiceNode(node.data)) {
+        if (Realtime.Utils.node.isChoiceNode(node.data)) {
           return {
             ...node,
             data: {
@@ -203,7 +202,9 @@ export const importProjectContext =
         const newProductID = await dispatch(Product.cloneProduct(product));
 
         mappedNodes = mappedNodes.map((node) =>
-          isProductLinkedNode(node.data) && node.data.productID === product.id ? { ...node, data: { ...node.data, productID: newProductID } } : node
+          Realtime.Utils.node.isProductLinkedNode(node.data) && node.data.productID === product.id
+            ? { ...node, data: { ...node.data, productID: newProductID } }
+            : node
         );
       })
     );
@@ -213,7 +214,9 @@ export const importProjectContext =
         const newDiagramID = await dispatch(Diagram.duplicateDiagram(diagram.id));
 
         mappedNodes = mappedNodes.map((node) =>
-          isFlowNode(node.data) && node.data.diagramID === diagram.id ? { ...node, data: { ...node.data, diagramID: newDiagramID } } : node
+          Realtime.Utils.node.isDiagramNode(node.data) && node.data.diagramID === diagram.id
+            ? { ...node, data: { ...node.data, diagramID: newDiagramID } }
+            : node
         );
       })
     );

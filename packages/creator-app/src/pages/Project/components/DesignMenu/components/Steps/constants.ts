@@ -237,7 +237,7 @@ export const DIALOGFLOW_ES_VOICE_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
@@ -252,7 +252,7 @@ export const DIALOGFLOW_ES_VOICE_SECTIONS = [
   {
     type: BlockCategory.INTEGRATION,
     label: 'Integration',
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+    steps: [CUSTOM_PAYLOAD_STEP, API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
   },
 ];
 

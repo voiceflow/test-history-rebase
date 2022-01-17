@@ -26,7 +26,6 @@ import {
   ff_variable_states,
   ff_wavenetVoices,
   ga,
-  growsurf,
   host,
   intercom,
   logFilter,
@@ -62,7 +61,6 @@ export default {
   INTERCOM_ENABLED: intercom && 'true',
   USERFLOW_ENABLED: userflow && 'true',
   SENTRY_ENABLED: sentry && 'true',
-  GROWSURF_ENABLED: growsurf && 'true',
 
   CLOUD_ENV: privateCloud || '',
 

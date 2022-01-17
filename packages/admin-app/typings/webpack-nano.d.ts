@@ -33,7 +33,6 @@ declare module 'webpack-nano/argv' {
     logrocket: boolean;
     userflow: boolean;
     sentry: boolean;
-    growsurf: boolean;
 
     // configuration
     privateCloud: boolean;

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.591.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.590.1...@voiceflow/creator-app@1.591.0) (2022-01-17)
+
+
+### Features
+
+* focus topic's intent on create (VF-2646) ([#4873](https://github.com/voiceflow/creator-app/issues/4873)) ([8122b25](https://github.com/voiceflow/creator-app/commit/8122b254555affeb72aaa3a3c226eacaca1a175e))
+
+
+
+
+
 ## [1.590.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.590.0...@voiceflow/creator-app@1.590.1) (2022-01-17)
 
 

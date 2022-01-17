@@ -55,7 +55,7 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
     }
   },
 
-  [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusHome(),
+  [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusStart(),
 
   [CanvasAction.DIVIDER]: Utils.functional.noop,
 

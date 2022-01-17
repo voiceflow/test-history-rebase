@@ -31,7 +31,7 @@ const StartIntent: React.FC<StartIntentProps> = ({ isActive, diagramID, focusedN
     }
 
     if (isActive) {
-      engine.focusHome({ open: true });
+      engine.focusStart({ open: true });
     } else {
       goToDiagram(diagramID, 'start');
     }

@@ -455,14 +455,6 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     }
   }
 
-  focusHome(options: { open?: boolean } = {}): void {
-    const nodeID = this.getHomeNodeID();
-
-    if (nodeID) {
-      this.focusNode(nodeID, options);
-    }
-  }
-
   focusNode(nodeID: string, { open }: { open?: boolean } = {}): void {
     this.node.center(nodeID, !this.comment.isActive);
     this.selection.replace([nodeID]);

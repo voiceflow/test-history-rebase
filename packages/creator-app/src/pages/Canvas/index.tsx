@@ -45,7 +45,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
         history.push({ search: '' });
 
         if (nodeID === 'start') {
-          engine.focusHome({ open: true });
+          engine.focusStart({ open: true });
         } else {
           engine.focusNode(nodeID, { open: true });
         }

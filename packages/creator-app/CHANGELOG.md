@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.591.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.591.0...@voiceflow/creator-app@1.591.1) (2022-01-17)
+
+
+### Bug Fixes
+
+* consider component block when interaction with clipboard (VF-2573) ([#4876](https://github.com/voiceflow/creator-app/issues/4876)) ([ed8a71d](https://github.com/voiceflow/creator-app/commit/ed8a71db99135fb66ae92831fd4d0d673db2568e))
+
+
+
+
+
 # [1.591.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.590.1...@voiceflow/creator-app@1.591.0) (2022-01-17)
 
 

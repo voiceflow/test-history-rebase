@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.47.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.47.0...@voiceflow/realtime-sdk@1.47.1) (2022-01-17)
+
+
+### Bug Fixes
+
+* consider component block when interaction with clipboard (VF-2573) ([#4876](https://github.com/voiceflow/creator-app/issues/4876)) ([ed8a71d](https://github.com/voiceflow/creator-app/commit/ed8a71db99135fb66ae92831fd4d0d673db2568e))
+
+
+
+
+
 # [1.47.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.46.5...@voiceflow/realtime-sdk@1.47.0) (2022-01-07)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.589.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.589.1...@voiceflow/creator-app@1.589.2) (2022-01-17)
+
+
+### Bug Fixes
+
+* moves custom response step to integrations in df voice projects (VF-2575) ([#4875](https://github.com/voiceflow/creator-app/issues/4875)) ([26f8bac](https://github.com/voiceflow/creator-app/commit/26f8bac2a2a3790bd65df8e7e46acd91dc204ca5))
+
+
+
+
+
 ## [1.589.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.589.0...@voiceflow/creator-app@1.589.1) (2022-01-17)
 
 

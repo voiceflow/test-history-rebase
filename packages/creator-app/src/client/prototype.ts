@@ -18,7 +18,9 @@ const prototypeClient = {
     body: { state: Omit<PrototypeContext, 'trace'>; request: Request.BaseRequest | null; config?: Request.RequestConfig },
     sessionID?: string
   ): Promise<Response> =>
-    axios.post<Response>(`${GENERAL_RUNTIME_ENDPOINT}/interact/${versionID}`, body, { headers: { sessionID } }).then(({ data }) => data),
+    axios
+      .post<Response>(`${GENERAL_RUNTIME_ENDPOINT}/interact/${versionID}`, body, { headers: sessionID ? { sessionID } : {} })
+      .then(({ data }) => data),
 };
 
 export default prototypeClient;

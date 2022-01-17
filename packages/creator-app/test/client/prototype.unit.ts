@@ -21,7 +21,7 @@ suite('Client - Prototype', ({ expect, stub }) => {
 
       await expect(client.interact(VERSION_ID, data)).to.eventually.eq(response);
 
-      expect(axiosPost).to.be.calledWithExactly(`${GENERAL_RUNTIME_ENDPOINT}/interact/${VERSION_ID}`, data, { headers: { sessionID: undefined } });
+      expect(axiosPost).to.be.calledWithExactly(`${GENERAL_RUNTIME_ENDPOINT}/interact/${VERSION_ID}`, data, { headers: {} });
     });
 
     it('should interact with a prototype with a session ID', async () => {

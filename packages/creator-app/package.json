@@ -30,7 +30,7 @@
     "@voiceflow/ui": "^1.43.0",
     "@voiceflow/voice-types": "2.1.8",
     "apl-viewhost-web": "1.8.2",
-    "axios": "0.21.4",
+    "axios": "0.24.0",
     "bidirectional-adapter": "1.0.0",
     "bootstrap": "4.6.1",
     "bowser": "2.11.0",

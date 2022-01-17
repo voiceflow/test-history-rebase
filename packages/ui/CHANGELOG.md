@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.43.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.43.0...@voiceflow/ui@1.43.1) (2022-01-17)
+
+
+### Bug Fixes
+
+* fix height for canvas context menu (VF-2467) ([#4839](https://github.com/voiceflow/creator-app/issues/4839)) ([0174e90](https://github.com/voiceflow/creator-app/commit/0174e90c99f8a5e9d089c45763df599ea39db81b))
+
+
+
+
+
 # [1.43.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.42.5...@voiceflow/ui@1.43.0) (2022-01-14)
 
 

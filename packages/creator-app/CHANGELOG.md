@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.589.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.589.0...@voiceflow/creator-app@1.589.1) (2022-01-17)
+
+
+### Bug Fixes
+
+* enter flow as viewer, engine null (VF-2529) ([#4826](https://github.com/voiceflow/creator-app/issues/4826)) ([2cf2c0d](https://github.com/voiceflow/creator-app/commit/2cf2c0d28e560aae6c0d044f7d780944ec9933e7))
+
+
+
+
+
 # [1.589.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.588.0...@voiceflow/creator-app@1.589.0) (2022-01-14)
 
 

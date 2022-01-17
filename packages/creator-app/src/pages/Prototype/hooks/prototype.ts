@@ -46,11 +46,11 @@ const usePrototype = ({
   const [messages, updateMessages] = React.useState<Message[]>([]);
   const [interactions, setInteractions] = React.useState<Interaction[]>([]);
   const [trackingEvents] = useTrackingEvents();
-  const engine = useEventualEngine()()!;
+  const getEngine = useEventualEngine();
 
   const cacheData: PrototypeToolProps = {
     debug,
-    engine,
+    getEngine,
     isMuted,
     isPublic,
     setError: (error) => dispatch(Modal.setError(error)),

@@ -1,5 +1,5 @@
 import { Models, Node as BaseNode, Request } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { Nullish, Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _findLast from 'lodash/findLast';
@@ -27,7 +27,7 @@ export enum StepDirection {
 
 export interface TraceControllerProps {
   debug: boolean;
-  engine?: null | Engine;
+  getEngine: () => Nullish<Engine>;
   isMuted: boolean;
   setError: (error: string) => void;
   isPublic?: boolean;
@@ -163,7 +163,7 @@ class TraceController {
     }
 
     this.audio.stop();
-    this.props.engine?.prototype.setFinalNodeID(null);
+    this.props.getEngine()?.prototype.setFinalNodeID(null);
 
     if (IS_TEST) {
       await this.processTrace(this.context.trace);
@@ -208,7 +208,7 @@ class TraceController {
 
     // wait for the block to render (to account for switching between flows)
     await this.waitNode(targetBlockID);
-    this.props.engine?.prototype.setFinalNodeID(null);
+    this.props.getEngine()?.prototype.setFinalNodeID(null);
     await this.processTrace([targetBlockTraceFrame, targetStepTrace]);
 
     this.props.updatePrototype({ context: targetContext as Prototype.Context });
@@ -350,10 +350,10 @@ class TraceController {
   }
 
   private async processBlockTrace(trace: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
-    const node = this.props.engine?.getNodeByID(trace.payload.blockID);
+    const node = this.props.getEngine()?.getNodeByID(trace.payload.blockID);
 
     if (node?.id) {
-      this.props.engine?.selection.replace([node.id]);
+      this.props.getEngine()?.selection.replace([node.id]);
     }
     if (node && !this.isPublicPrototype) {
       await this.highlightBlock(node);
@@ -394,7 +394,7 @@ class TraceController {
     const hasParent = !!node.parentNode;
     const nodeType = node?.type;
 
-    const [, sourceNodeID] = Utils.array.tail(this.props.engine?.select(Prototype.activePathBlockIDsSelector) || []);
+    const [, sourceNodeID] = Utils.array.tail(this.props.getEngine()?.select(Prototype.activePathBlockIDsSelector) || []);
 
     if (hasParent) {
       this.saveActivePathBlock(node);
@@ -519,7 +519,7 @@ class TraceController {
     await this.waitEngineAndNodes();
 
     // Highlight the start block when entering a flow
-    const startNode = Array.from(this.props.engine!.nodes).find((data) => data[1].type === BlockType.START);
+    const startNode = Array.from(this.props.getEngine()?.nodes ?? []).find((data) => data[1].type === BlockType.START);
     // TODO: refactor block highlighting system, topics do not have startNodes
     let updatedActivePathBlockArray = Utils.array.unique([...this.props.activePathBlockIDs, ...(startNode ? [startNode[0]] : [])]);
 
@@ -538,10 +538,10 @@ class TraceController {
   }
 
   private async processEndTrace() {
-    this.props.engine?.selection.reset();
+    this.props.getEngine()?.selection.reset();
     const lastNodeID = findLastBlockTrace(this.context?.trace ?? [])?.payload.blockID;
     if (lastNodeID) {
-      this.props.engine?.prototype.setFinalNodeID(lastNodeID);
+      this.props.getEngine()?.prototype.setFinalNodeID(lastNodeID);
     }
     this.props.updateStatus(PMStatus.ENDED);
   }
@@ -552,15 +552,15 @@ class TraceController {
   };
 
   private findLinkBetween(sourceID: string, targetID: string): string | null {
-    const source = this.props.engine?.getNodeByID(sourceID);
+    const source = this.props.getEngine()?.getNodeByID(sourceID);
     const [, sourceLastChild] = Utils.array.tail(source?.combinedNodes ?? []);
     const sourceIDs = [sourceID, ...(sourceLastChild ? [sourceLastChild] : [])];
 
-    const target = this.props.engine?.getNodeByID(targetID);
-    const [targetFirstChild] = target?.parentNode ? this.props.engine?.getNodeByID(target.parentNode).combinedNodes ?? [] : [];
+    const target = this.props.getEngine()?.getNodeByID(targetID);
+    const [targetFirstChild] = target?.parentNode ? this.props.getEngine()?.getNodeByID(target.parentNode).combinedNodes ?? [] : [];
     const targetIDs = [targetID, ...(targetID === targetFirstChild ? [target!.parentNode!] : [])];
 
-    const getJoiningLinks = this.props.engine?.select(Creator.joiningLinkIDsSelector);
+    const getJoiningLinks = this.props.getEngine()?.select(Creator.joiningLinkIDsSelector);
     const [linkID] = sourceIDs.flatMap((id) => targetIDs.flatMap((linkTargetID) => getJoiningLinks?.(id, linkTargetID, true) ?? []));
 
     return linkID ?? null;
@@ -598,7 +598,7 @@ class TraceController {
   }
 
   private focusNode(parentID: string) {
-    this.props.engine?.node.center(parentID);
+    this.props.getEngine()?.node.center(parentID);
   }
 
   private async waitNode(nodeID: string) {
@@ -616,7 +616,7 @@ class TraceController {
   }
 
   private async waitEngineAndNodes() {
-    while (!this.props.engine?.nodes.size) {
+    while (!this.props.getEngine()) {
       // eslint-disable-next-line no-await-in-loop
       await this.timeout.delay(WAIT_ENTITY_TIME);
     }

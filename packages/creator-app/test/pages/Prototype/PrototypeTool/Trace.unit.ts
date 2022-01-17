@@ -58,7 +58,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
     const controller = new TraceController({
       props: {
         debug,
-        engine,
+        getEngine: () => engine,
         setError: stub(),
         enterFlow: stub(),
         getNodeByID: stub(),
@@ -135,7 +135,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
 
   expectEnterFlow: (controller: TraceController) => expect(controller['props']['enterFlow']),
 
-  expectFocusNode: (controller: TraceController) => expect(controller['props']['engine']!['node']['center']),
+  expectFocusNode: (controller: TraceController) => expect(controller['props']['getEngine']()!['node']['center']),
 
   expectProcessTrace: (controller: TraceController) => expect(controller['processTrace']),
 

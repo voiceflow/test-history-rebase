@@ -21,6 +21,7 @@ import {
   ff_motorolaSSO,
   ff_natoApco,
   ff_ownerRole,
+  ff_realtime_connection,
   ff_topicsAndComponents,
   ff_variable_states,
   ff_wavenetVoices,
@@ -79,6 +80,7 @@ export default {
   FF_TOPICS_AND_COMPONENTS: ff_topicsAndComponents && 'true',
   FF_ACCOUNT_PAGE_REDESIGN: ff_account_page_redesign && 'true',
   FF_VARIABLE_STATES: ff_variable_states && 'true',
+  FF_REALTIME_CONNECTION: ff_realtime_connection && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

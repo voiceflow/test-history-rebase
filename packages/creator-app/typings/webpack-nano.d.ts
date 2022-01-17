@@ -55,6 +55,7 @@ declare module 'webpack-nano/argv' {
     ff_topicsAndComponents: boolean;
     ff_account_page_redesign: boolean;
     ff_variable_states: boolean;
+    ff_realtime_connection: boolean;
     /* eslint-enable camelcase */
   }>;
 

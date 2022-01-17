@@ -49,7 +49,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const resetPrototype = useResetPrototype();
   const nlp = React.useContext(NLPContext)!;
-  const engine = useEventualEngine();
+  const getEngine = useEventualEngine();
   const [atTop, setAtTop] = React.useState(true);
   const notStarted = (status as any) === PMStatus.IDLE;
 
@@ -102,7 +102,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
 
     // resetting focus asynchronously to fix line desync issue which is caused due to shifting canvas position to the subheader height
     requestAnimationFrame(() => {
-      engine()?.focus.reset();
+      getEngine()?.focus.reset();
     });
 
     return () => {

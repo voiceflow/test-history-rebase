@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 import Menu from '@ui/components/Menu';
+import { MAX_VISIBLE_ITEMS } from '@ui/components/Menu/components/MenuContainer';
 import Portal from '@ui/components/Portal';
 import { useDidUpdateEffect } from '@ui/hooks';
 import { setRef, swallowEvent } from '@ui/utils';
@@ -307,6 +308,7 @@ function BaseNestedMenu({
                 ref={menuRef}
                 onHide={onHide}
                 maxHeight={maxHeight}
+                maxVisibleItems={MAX_VISIBLE_ITEMS}
                 fullWidth
                 searchable={
                   (((creatable || (searchable && isDropdown)) && !directSearchMatch) || inDropdownSearch) && (

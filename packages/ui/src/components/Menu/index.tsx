@@ -8,7 +8,7 @@ import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@u
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-import { ButtonContainer, Container, getItemsContainer, Item, itemStyles, MAX_VISIBLE_ITEMS, MenuItemNote } from './components';
+import { ButtonContainer, Container, getMaxHeight, Item, itemStyles, MenuItemNote } from './components';
 
 export { Container as MenuContainer, Item as MenuItem, itemStyles as menuItemStyles };
 
@@ -74,7 +74,7 @@ const Menu = <T extends any>(
     onHide,
     noTopPadding,
     scrollbarsRef,
-    maxVisibleItems = MAX_VISIBLE_ITEMS,
+    maxVisibleItems,
     noBottomPadding,
     disableAnimation = false,
     multiSelectProps,
@@ -140,7 +140,7 @@ const Menu = <T extends any>(
           autoHide
           className="scrollbars"
           autoHeight
-          autoHeightMax={maxHeight ?? getItemsContainer(theme.components.menuItem.height, maxVisibleItems)}
+          autoHeightMax={getMaxHeight(maxHeight, maxVisibleItems, theme.components.menuItem.height)}
           hideTracksWhenNotNeeded
         >
           {children ||

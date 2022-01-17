@@ -187,7 +187,6 @@ const ContextMenu: React.FC = () => {
         getOptionKey={getOptionKey}
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}
-        maxVisibleItems={8}
         renderOptionLabel={(option: ContextMenuOption<CanvasAction> | ContextMenuOption<BlockVariant>) => (
           <BoxFlex width="100%" justifyContent="space-between">
             <Text>{option.label}</Text>

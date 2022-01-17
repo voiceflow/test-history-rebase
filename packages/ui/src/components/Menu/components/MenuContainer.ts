@@ -3,6 +3,7 @@ import { colors, css, styled, ThemeColor } from '@ui/styles';
 import { SlideDown } from '@ui/styles/animations';
 
 export const MAX_VISIBLE_ITEMS = 7.5;
+export const MAX_MENU_HEIGHT = '90vh';
 const VERTICAL_PADDING = 8;
 
 const nativeScrollbarsStyle = css`
@@ -12,6 +13,22 @@ const nativeScrollbarsStyle = css`
 `;
 
 export const getItemsContainer = (itemHeight: number, maxVisibleItems: number = MAX_VISIBLE_ITEMS): number => itemHeight * maxVisibleItems;
+
+export const getMaxHeight = (
+  maxHeight: string | number | undefined,
+  maxVisibleItems: number | undefined,
+  menuItemHeight: number,
+  countPadding?: boolean
+): string | number => {
+  if (maxHeight) return maxHeight;
+
+  if (maxVisibleItems) {
+    const itemsContainer = getItemsContainer(menuItemHeight, maxVisibleItems);
+    return countPadding ? `${itemsContainer + VERTICAL_PADDING * 2}px` : `${itemsContainer}px`;
+  }
+
+  return MAX_MENU_HEIGHT;
+};
 
 export interface MenuContainerProps {
   fullWidth?: boolean;
@@ -31,7 +48,7 @@ const MenuContainer = styled.ul<MenuContainerProps>`
   ${cardStyles};
 
   max-height: ${({ theme, withScrollbars, maxVisibleItems }) =>
-    withScrollbars ? 'auto' : `${getItemsContainer(theme.components.menuItem.height, maxVisibleItems) + VERTICAL_PADDING * 2}px`};
+    withScrollbars ? 'auto' : getMaxHeight(undefined, maxVisibleItems, theme.components.menuItem.height, true)};
   min-width: 100px;
   ${({ fullWidth }) => (fullWidth ? '' : 'max-width: 400px;')}
   ${({ width }) => (width ? `width: ${width}px;` : '')}

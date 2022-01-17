@@ -222,7 +222,7 @@ const Select = <O, V = O>({
   searchLabel: searchLabelProp = '',
   renderEmpty,
 }: // eslint-disable-next-line sonarjs/cognitive-complexity
-SelectProps<O, V>) => {
+SelectProps<O, V>): JSX.Element => {
   const optionLabel = searchLabelProp || getOptionLabel(value) || '';
   const cachedRef = React.useRef({ updatePopperPosition: noop });
 

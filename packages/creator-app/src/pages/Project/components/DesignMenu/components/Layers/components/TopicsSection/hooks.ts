@@ -57,10 +57,10 @@ export const useTopics = (): TopicsAPI => {
   const onCreateTopic = React.useCallback(async () => {
     setSearchValue('');
 
-    const newDiagramID = await createTopicDiagram(`Topic ${topicDiagrams.length + 1}`);
+    const newDiagram = await createTopicDiagram(`Topic ${topicDiagrams.length + 1}`);
 
-    setLastCreatedDiagramID(newDiagramID);
-    goToDiagram(newDiagramID);
+    setLastCreatedDiagramID(newDiagram.id);
+    goToDiagram(newDiagram.id, newDiagram.intentStepIDs[0]);
   }, [topicDiagrams]);
 
   const onClearLastCreatedDiagramID = React.useCallback(() => {

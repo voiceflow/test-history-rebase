@@ -117,7 +117,7 @@ export const addLocalVariable =
   };
 
 const createDiagram =
-  (primitiveDiagram: Realtime.Utils.diagram.PrimitiveDiagram): Thunk<string> =>
+  (primitiveDiagram: Realtime.Utils.diagram.PrimitiveDiagram): Thunk<Realtime.Diagram> =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -135,35 +135,35 @@ const createDiagram =
 
     const { _id: diagramID } = await client.api.diagram.create(diagram);
 
-    dispatch(
-      crud.add(diagramID, {
-        name: diagram.name,
-        type: diagram.type,
-        id: diagramID,
-        subDiagrams: [],
-        variables: [],
-        intentStepIDs: diagram.intentStepIDs,
-      })
-    );
+    const newDiagram = {
+      name: diagram.name,
+      type: diagram.type,
+      id: diagramID,
+      subDiagrams: [],
+      variables: [],
+      intentStepIDs: diagram.intentStepIDs,
+    };
 
-    return diagramID;
+    dispatch(crud.add(diagramID, newDiagram));
+
+    return newDiagram;
   };
 
 export const createTopicDiagram =
-  (name: string): Thunk<string> =>
+  (name: string): Thunk<Realtime.Diagram> =>
   (dispatch, getState) =>
     dispatch(
       Feature.applyAtomicSideEffect(
         getActiveVersionContext,
         async () => {
           const diagram = Realtime.Utils.diagram.topicDiagramFactory(name);
-          const diagramID = await dispatch(createDiagram(diagram));
+          const newDiagram = await dispatch(createDiagram(diagram));
 
           const state = getState();
           const activeTopics = VersionV2.active.topicsSelector(state);
           const activeDiagramID = Session.activeDiagramIDSelector(state);
 
-          const newTopicItem = { type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: diagramID };
+          const newTopicItem = { type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: newDiagram.id };
           const activeTopicIndex = activeDiagramID ? activeTopics.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
 
           const topics =
@@ -173,7 +173,7 @@ export const createTopicDiagram =
 
           await dispatch(saveTopics(topics));
 
-          return diagramID;
+          return newDiagram;
         },
         async (context) => {
           RootPageProgressBar.start(PageProgressBar.TOPIC_CREATING);
@@ -182,7 +182,7 @@ export const createTopicDiagram =
 
           RootPageProgressBar.stop(PageProgressBar.TOPIC_CREATING);
 
-          return diagram.id;
+          return diagram;
         }
       )
     );
@@ -193,10 +193,12 @@ export const createComponentDiagram =
     dispatch(
       Feature.applyAtomicSideEffect(
         getActiveVersionContext,
-        () => {
+        async () => {
           const diagram = Realtime.Utils.diagram.componentDiagramFactory(name);
 
-          return dispatch(createDiagram(diagram));
+          const { id: diagramID } = await dispatch(createDiagram(diagram));
+
+          return diagramID;
         },
         async (context) => {
           const diagram = await dispatch(waitAsync(Realtime.diagram.createComponent, { ...context, diagram: { name } }));
@@ -318,7 +320,7 @@ export const convertToComponent =
       Feature.applyAtomicSideEffect(
         getActiveVersionContext,
         async () => {
-          const diagramID = await dispatch(createDiagram(diagram));
+          const { id: diagramID } = await dispatch(createDiagram(diagram));
 
           await dispatch(addDiagramIDIntoComponentsList(diagramID));
 
@@ -361,7 +363,9 @@ export const duplicateDiagram =
 
           const newFlowName = Realtime.Utils.diagram.getUniqueCopyName(diagram.name, Utils.array.unique(allDiagrams.map(({ name }) => name)));
 
-          const newDiagramID = await dispatch(createDiagram({ ...diagram, intentStepIDs: diagram.intentStepIDs ?? [], type, name: newFlowName }));
+          const { id: newDiagramID } = await dispatch(
+            createDiagram({ ...diagram, intentStepIDs: diagram.intentStepIDs ?? [], type, name: newFlowName })
+          );
 
           if (isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion) {
             await dispatch(addDiagramIDIntoComponentsList(newDiagramID));

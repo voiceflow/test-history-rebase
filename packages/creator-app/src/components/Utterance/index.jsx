@@ -1,3 +1,4 @@
+import { setRef } from '@voiceflow/ui';
 import React from 'react';
 
 import TextEditor, { PluginType } from '@/components/TextEditor';
@@ -6,7 +7,7 @@ const pluginsTypes = [PluginType.VARIABLES];
 
 const Utterance = (
   { space, slots, creatable, noSlots, onAddSlot, characters, createInputPlaceholder = 'New Entity', onBlur, onEnterPress, ...props },
-  forwardedRef
+  ref
 ) => {
   const pluginProps = React.useMemo(
     () => ({
@@ -33,11 +34,10 @@ const Utterance = (
           return { text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] };
         };
       }
-      if (forwardedRef) {
-        forwardedRef.current = editor;
-      }
+
+      setRef(ref, editor);
     },
-    [forwardedRef]
+    [ref]
   );
 
   return (

@@ -1,7 +1,7 @@
+import composeRef from '@seznam/compose-react-refs';
 import { NestedInputIconPosition } from '@ui/components/Input/constants';
 import { inputStyle, StyledInputProps } from '@ui/components/Input/styles';
 import SvgIcon, { Icon, SvgIconProps } from '@ui/components/SvgIcon';
-import { useCombinedRefs } from '@ui/hooks';
 import { styled } from '@ui/styles';
 import { Either } from '@ui/types';
 import React from 'react';
@@ -53,7 +53,7 @@ export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
     ref
   ) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
-    const combinedRefs = useCombinedRefs(ref, inputRef);
+    const combinedRefs = composeRef(ref, inputRef);
 
     const onClick = () => {
       inputRef.current?.focus?.();

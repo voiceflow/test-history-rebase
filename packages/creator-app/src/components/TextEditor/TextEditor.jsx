@@ -1,3 +1,4 @@
+import { setRef } from '@voiceflow/ui';
 import { EditorState, RichUtils } from 'draft-js';
 import React from 'react';
 import lifecycle from 'recompose/lifecycle';
@@ -131,9 +132,7 @@ function TextEditor({
         };
       }
 
-      if (forwardedRef) {
-        forwardedRef.current = editor;
-      }
+      setRef(forwardedRef, editor);
     },
     [forceUpdate, forwardedRef, fromStateWithAdapter, store]
   );

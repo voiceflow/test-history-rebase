@@ -5,6 +5,7 @@ import { StepLabelVariant } from '@/constants/canvas';
 import Port from '@/pages/Canvas/components/Port';
 import { PortEntityProvider } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
+import { getIconColor } from '@/styles/theme/block';
 
 import { StepAPIContext } from '../contexts';
 import { ItemProps } from '../types';
@@ -16,12 +17,12 @@ import StepLinkedLabelContainer from './StepLinkedLabelContainer';
 import StepLinkedLabelIcon from './StepLinkedLabelIcon';
 import StepLinkedLabelText from './StepLinkedLabelText';
 
-const Item: React.FC<ItemProps> = ({
+const StepItem: React.FC<ItemProps> = ({
   icon,
+  iconColor,
   label,
   portID,
   onClick,
-  iconColor,
   portColor,
   wordBreak,
   attachment,
@@ -31,12 +32,13 @@ const Item: React.FC<ItemProps> = ({
   withNewLines,
   multilineLabel,
   labelLineClamp,
+  variant,
 }) => {
   const stepAPI = React.useContext(StepAPIContext);
 
   return (
     <Container className={ClassName.CANVAS_STEP_ITEM}>
-      <IconContainer>{icon && <SvgIcon icon={icon} size={18} color={iconColor} />}</IconContainer>
+      <IconContainer color={variant ? getIconColor(variant) : iconColor}>{icon && <SvgIcon icon={icon} size={18} />}</IconContainer>
 
       <StepLabelTextContainer variant={label ? labelVariant : StepLabelVariant.PLACEHOLDER}>
         <StepLabelText
@@ -68,4 +70,4 @@ const Item: React.FC<ItemProps> = ({
     </Container>
   );
 };
-export default Item;
+export default StepItem;

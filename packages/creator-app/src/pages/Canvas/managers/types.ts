@@ -72,8 +72,6 @@ interface BaseNodeConfig<T extends object | Realtime.Markup.AnyNodeData> {
 
   icon?: Icon;
   getIcon?: (data: T) => Icon;
-  iconColor?: string;
-  getIconColor?: (data: T) => string;
 
   mergeTerminator?: boolean;
   mergeInitializer?: boolean;

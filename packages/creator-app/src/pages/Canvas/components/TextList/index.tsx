@@ -60,7 +60,6 @@ const TextList = ({
               icon: NODE_CONFIG.icon,
               onClick: Utils.functional.chainVoid(onAdd, () => requestAnimationFrame(() => scrollToBottom())),
               disabled: isMaxMatches,
-              iconProps: { color: NODE_CONFIG.iconColor },
             },
           ]
     }

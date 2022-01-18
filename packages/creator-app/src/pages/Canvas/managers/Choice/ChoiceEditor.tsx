@@ -80,7 +80,6 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.
                 icon: NODE_CONFIG.icon,
                 label: 'Add Path',
                 onClick: () => addChoice(scrollToBottom),
-                iconProps: { color: NODE_CONFIG.iconColor },
               },
             ]}
             tutorial={{

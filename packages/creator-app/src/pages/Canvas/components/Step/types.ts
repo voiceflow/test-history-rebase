@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
-import { StepLabelVariant } from '@/constants/canvas';
+import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import type { Engine } from '@/pages/Canvas/engine';
 
 export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
@@ -11,6 +11,7 @@ export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord
   data: Realtime.NodeData<T>;
   engine: Engine;
   platform: Constants.PlatformType;
+  variant: BlockVariant;
   withPorts: boolean;
 }
 
@@ -32,4 +33,5 @@ export interface ItemProps {
   attachmentRef?: React.Ref<HTMLButtonElement>;
   multilineLabel?: boolean;
   labelLineClamp?: number;
+  variant?: BlockVariant;
 }

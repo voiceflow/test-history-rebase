@@ -4,6 +4,7 @@ import React from 'react';
 
 import Popper from '@/components/Popper';
 import { SlateEditorAPI } from '@/components/SlateEditable';
+import { BlockVariant } from '@/constants/canvas';
 import ListItem from '@/pages/Canvas/components/NoMatchAndNoReplyStepCopyList/components/Item';
 import ListContainer from '@/pages/Canvas/components/NoMatchAndNoReplyStepCopyList/components/ListContainer';
 import { Attachment, Item } from '@/pages/Canvas/components/Step';
@@ -16,9 +17,10 @@ export interface CaptureItemProps {
   isLast: boolean;
   isFirst: boolean;
   nextPortID: string;
+  variant: BlockVariant;
 }
 
-export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, isLast, nextPortID = null }) => {
+export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, isLast, nextPortID = null, variant }) => {
   const icon = isFirst ? NODE_CONFIG.icon : null;
   const portID = isLast ? nextPortID : null;
 
@@ -27,7 +29,7 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
   const content = React.useMemo<string | null>(() => (prompt?.content && SlateEditorAPI.serialize(prompt.content)) || prompt?.text || null, [prompt]);
 
   if (!slot?.id || !slot?.slot) {
-    return <Item icon={icon} portID={portID} wordBreak withNewLines placeholder="Select entity to capture" label={label} />;
+    return <Item icon={icon} portID={portID} variant={variant} wordBreak withNewLines placeholder="Select entity to capture" label={label} />;
   }
 
   return (
@@ -44,6 +46,7 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
       {({ ref, onToggle, isOpened }) => (
         <Item
           icon={icon}
+          variant={variant}
           label={name && `Capture {${name}}`}
           portID={portID}
           wordBreak

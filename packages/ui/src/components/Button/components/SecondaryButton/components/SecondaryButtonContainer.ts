@@ -10,6 +10,9 @@ export interface SecondaryButtonContainerProps extends ButtonContainerProps {
 
 const hoverStyles = css<SecondaryButtonContainerProps>`
   background-color: ${({ flat }) => (flat ? 'rgba(238, 244, 246, 1)' : '#e0ebee')};
+  & ${Icon} {
+    color: ${({ theme }) => theme.buttonIconColors.hover};
+  }
 `;
 
 const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonContainerProps>`

@@ -6,7 +6,7 @@ import { useSyncedLookup } from '@/hooks';
 import { ConnectedStep } from '@/pages/Canvas/components/Step';
 import { ChoiceStep } from '@/pages/Canvas/managers/Choice/ChoiceStep';
 
-const ConnectedChoiceOldStep: ConnectedStep<Realtime.NodeData.ChoiceOld> = ({ node, data }) => {
+const ConnectedChoiceOldStep: ConnectedStep<Realtime.NodeData.ChoiceOld> = ({ node, data, variant }) => {
   const choiceByPortID = useSyncedLookup(node.ports.out.dynamic, data.choices);
 
   const choices = React.useMemo(
@@ -33,6 +33,7 @@ const ConnectedChoiceOldStep: ConnectedStep<Realtime.NodeData.ChoiceOld> = ({ no
       noReply={data.noReply}
       noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
       noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
+      variant={variant}
     />
   );
 };

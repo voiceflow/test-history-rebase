@@ -2,7 +2,7 @@ import { Models, Node, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { StepLabelVariant } from '@/constants/canvas';
+import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
@@ -18,9 +18,19 @@ export interface ButtonsStepProps {
   noMatchPortID?: Nullable<string>;
   noReplyPortID?: Nullable<string>;
   dynamicPortIDs: string[];
+  variant: BlockVariant;
 }
 
-export const ButtonsStep: React.FC<ButtonsStepProps> = ({ nodeID, buttons, noMatch, noReply, noMatchPortID, noReplyPortID, dynamicPortIDs }) => {
+export const ButtonsStep: React.FC<ButtonsStepProps> = ({
+  nodeID,
+  buttons,
+  noMatch,
+  noReply,
+  noMatchPortID,
+  noReplyPortID,
+  dynamicPortIDs,
+  variant,
+}) => {
   const intentsMap = React.useContext(CustomIntentMapContext)!;
 
   return (
@@ -40,7 +50,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({ nodeID, buttons, noMat
                 icon={index === 0 ? NODE_CONFIG.icon : null}
                 label={name ? transformVariablesToReadable(name) : intentName}
                 portID={!isGoToIntent ? dynamicPortIDs[index] : null}
-                iconColor={NODE_CONFIG.iconColor}
+                variant={variant}
                 // TODO: uncomment when the go to specific intent step id will be implemented
                 // attachment={isGoToIntent && !!intentEntity ? <Attachment icon="clip" onClick={stopPropagation(() => intentEntity && goToInteractionModelEntity(InteractionModelTabType.INTENTS, intentEntity.id))} /> : null}
                 placeholder="Add button text"
@@ -53,7 +63,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({ nodeID, buttons, noMat
             );
           })
         ) : (
-          <Item placeholder="Add buttons" icon={NODE_CONFIG.icon} iconColor={NODE_CONFIG.iconColor} />
+          <Item placeholder="Add buttons" icon={NODE_CONFIG.icon} variant={variant} />
         )}
 
         <NoMatchItem portID={noMatchPortID} noMatch={noMatch} />
@@ -63,7 +73,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({ nodeID, buttons, noMat
   );
 };
 
-const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = ({ node, data }) => (
+const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = ({ node, data, variant }) => (
   <ButtonsStep
     nodeID={node.id}
     buttons={data.buttons}
@@ -72,6 +82,7 @@ const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.No
     noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
     noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
     dynamicPortIDs={node.ports.out.dynamic}
+    variant={variant}
   />
 );
 

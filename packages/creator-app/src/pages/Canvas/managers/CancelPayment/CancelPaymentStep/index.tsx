@@ -2,7 +2,7 @@ import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { StepLabelVariant } from '@/constants/canvas';
+import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 import { ProductMapContext } from '@/pages/Canvas/contexts';
 
@@ -14,15 +14,16 @@ export interface CancelPaymentStepProps {
   withPorts: boolean;
   successPortID: string;
   failurePortID: string;
+  variant: BlockVariant;
 }
 
-export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, nodeID, successPortID, failurePortID, withPorts }) => (
+export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, nodeID, successPortID, failurePortID, withPorts, variant }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
         label={label}
         icon={NODE_CONFIG.icon}
-        iconColor={NODE_CONFIG.iconColor}
+        variant={variant}
         placeholder="Select a product to cancel"
         labelVariant={StepLabelVariant.SECONDARY}
       />
@@ -45,6 +46,7 @@ const ConnectedCancelPaymentStep: ConnectedStep<Realtime.NodeData.CancelPayment,
   node,
   data,
   withPorts,
+  variant,
 }) => {
   const productMap = React.useContext(ProductMapContext)!;
 
@@ -57,6 +59,7 @@ const ConnectedCancelPaymentStep: ConnectedStep<Realtime.NodeData.CancelPayment,
       withPorts={withPorts}
       successPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
       failurePortID={node.ports.out.builtIn[Models.PortType.FAIL]}
+      variant={variant}
     />
   );
 };

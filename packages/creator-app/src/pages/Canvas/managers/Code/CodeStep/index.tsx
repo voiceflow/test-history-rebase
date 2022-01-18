@@ -2,7 +2,7 @@ import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { StepLabelVariant } from '@/constants/canvas';
+import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -13,15 +13,16 @@ export interface CodeStepProps {
   withPorts: boolean;
   successPortID: string;
   failurePortID: string;
+  variant: BlockVariant;
 }
 
-export const CodeStep: React.FC<CodeStepProps> = ({ withCode, withPorts, nodeID, successPortID, failurePortID }) => (
+export const CodeStep: React.FC<CodeStepProps> = ({ withCode, withPorts, nodeID, successPortID, failurePortID, variant }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
         icon={NODE_CONFIG.icon}
         label={withCode ? 'Custom code added' : null}
-        iconColor={NODE_CONFIG.iconColor}
+        variant={variant}
         placeholder="Enter custom code snippet"
         labelVariant={StepLabelVariant.SECONDARY}
       />
@@ -37,13 +38,14 @@ export const CodeStep: React.FC<CodeStepProps> = ({ withCode, withPorts, nodeID,
   </Step>
 );
 
-const ConnectedCodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = ({ node, data, withPorts }) => (
+const ConnectedCodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = ({ node, data, withPorts, variant }) => (
   <CodeStep
     nodeID={node.id}
     withCode={!!data.code}
     withPorts={withPorts}
     successPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
     failurePortID={node.ports.out.builtIn[Models.PortType.FAIL]}
+    variant={variant}
   />
 );
 

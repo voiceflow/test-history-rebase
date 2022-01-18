@@ -9,9 +9,7 @@ import { NodeConfig } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.UserInfo, Realtime.NodeData.UserInfoBuiltInPorts> = {
   type: BlockType.USER_INFO,
-
   icon: 'barGraph',
-  iconColor: '#3C6997',
 
   factory: () => ({
     node: {

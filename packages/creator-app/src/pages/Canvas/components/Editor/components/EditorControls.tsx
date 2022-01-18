@@ -51,16 +51,8 @@ const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutor
 
       <ControlsContainer>
         {menu}
-        {options.map(({ label, icon, onClick, variant = ButtonVariant.SECONDARY, disabled = false, iconProps }) => (
-          <Button
-            className={ClassName.EDITOR_FOOTER_BUTTON}
-            variant={variant}
-            icon={icon}
-            onClick={onClick}
-            key={label}
-            disabled={disabled}
-            iconProps={iconProps}
-          >
+        {options.map(({ label, icon, onClick, variant = ButtonVariant.SECONDARY, disabled = false }) => (
+          <Button className={ClassName.EDITOR_FOOTER_BUTTON} variant={variant} icon={icon} onClick={onClick} key={label} disabled={disabled}>
             {label}
           </Button>
         ))}

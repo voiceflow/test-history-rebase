@@ -7,17 +7,18 @@ import { FeatureFlag } from '@/config/features';
 import { BlockCategory, BlockType, DragItem } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
-import { connect } from '@/hocs';
-import { useDragPreview, useFeature, useSelector } from '@/hooks';
+import { useDispatch, useDragPreview, useFeature, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
 
 import ScrollbarsContainer from '../ScrollbarsContainer';
 import { Container, Item } from './components';
 import { getSections } from './constants';
 import { StepDragItem } from './types';
 
-const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expandedSections }) => {
+const Steps: React.FC = () => {
+  const platform = useSelector(ProjectV2.active.platformSelector);
+  const expandedSections = useSelector(UI.openBlockMenuSectionsSelector);
+  const toggleSection = useDispatch(UI.toggleBlockMenuSection);
   const gadgets = useFeature(FeatureFlag.GADGETS);
   const captureV2 = useFeature(FeatureFlag.CAPTURE_V2);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
@@ -79,15 +80,4 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
   );
 };
 
-const mapStateToProps = {
-  platform: ProjectV2.active.platformSelector,
-  expandedSections: UI.openBlockMenuSectionsSelector,
-};
-
-const mapDispatchToProps = {
-  toggleSection: UI.toggleBlockMenuSection,
-};
-
-type ConnectedStepsProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(Steps) as React.FC;
+export default Steps;

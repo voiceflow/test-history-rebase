@@ -26,9 +26,7 @@ export const PERMISSION_LABELS = PERMISSIONS.reduce<Record<string, string>>((acc
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Permission, Realtime.NodeData.PermissionBuiltInPorts> = {
   type: BlockType.PERMISSION,
-
   icon: 'openLock',
-  iconColor: '#6e849a',
 
   factory: () => ({
     node: {

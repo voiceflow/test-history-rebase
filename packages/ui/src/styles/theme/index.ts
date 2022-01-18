@@ -38,6 +38,10 @@ const THEME = {
     disabled: '#becedc',
     active: '#6e849a',
   },
+  buttonIconColors: {
+    default: 'rgb(98 118 140 / 85%)',
+    hover: 'rgb(98 118 140 / 100%)',
+  },
   colors: {
     [ThemeColor.WHITE]: COLOR_WHITE,
     [ThemeColor.PRIMARY]: '#132144',

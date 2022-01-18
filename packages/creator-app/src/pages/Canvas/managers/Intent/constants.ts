@@ -9,9 +9,7 @@ import { NodeConfigWithoutInPorts } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfigWithoutInPorts<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = {
   type: BlockType.INTENT,
-
   icon: 'user',
-  iconColor: '#5589eb',
 
   mergeInitializer: true,
 

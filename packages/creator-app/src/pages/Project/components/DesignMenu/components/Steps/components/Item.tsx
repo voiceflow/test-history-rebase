@@ -13,22 +13,22 @@ import { StepDragItem } from '../types';
 import ItemContainer from './ItemContainer';
 import ItemDotsIconContainer from './ItemDotsIconContainer';
 import ItemLabel from './ItemLabel';
+import StepIcon from './StepIcon';
 
 export interface ItemProps {
   type: BlockType;
   icon: Icon | React.FC;
   label: string;
   factoryData?: Partial<Realtime.NodeData<unknown>>;
-  iconColor?: string;
   isDraggingPreview?: boolean;
 }
 
-const Item: React.FC<ItemProps> = ({ icon, type, label, iconColor, factoryData, isDraggingPreview }) => {
+const Item: React.FC<ItemProps> = ({ icon, type, label, factoryData, isDraggingPreview }) => {
   const engine = useEventualEngine();
   const [isClickedState, enableClickedState, clearClickedState] = useEnableDisable();
 
   const [{ isDragging }, connectDrag, connectPreview] = useDrag<StepDragItem, unknown, { isDragging: boolean }>({
-    item: { type: DragItem.BLOCK_MENU, icon, label, iconColor, blockType: type, factoryData },
+    item: { type: DragItem.BLOCK_MENU, icon, label, blockType: type, factoryData },
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     begin: () => {
       engine()?.merge.setVirtualSource(type, factoryData);
@@ -69,7 +69,7 @@ const Item: React.FC<ItemProps> = ({ icon, type, label, iconColor, factoryData, 
     >
       {!isDragging && (
         <>
-          <SvgIcon icon={icon} size={16} color={iconColor} />
+          <StepIcon icon={icon} size={16} />
 
           <ItemLabel>{label}</ItemLabel>
 

@@ -9,7 +9,6 @@ import { NodeConfig } from '../types';
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Flow, Realtime.NodeData.FlowBuiltInPorts> = {
   type: BlockType.FLOW,
   icon: 'flow',
-  iconColor: '#3c6997',
 
   factory: () => ({
     node: {

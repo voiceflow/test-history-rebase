@@ -8,9 +8,7 @@ import { NodeConfig } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Directive, Realtime.NodeData.DirectiveBuiltInPorts> = {
   type: BlockType.DIRECTIVE,
-
   icon: 'directive',
-  iconColor: '#5589eb',
 
   factory: () => ({
     node: {

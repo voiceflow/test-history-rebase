@@ -8,9 +8,7 @@ import { NodeConfigWithoutInPorts } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfigWithoutInPorts<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = {
   type: BlockType.EVENT,
-
   icon: 'event',
-  iconColor: '#5589eb',
 
   mergeInitializer: true,
 

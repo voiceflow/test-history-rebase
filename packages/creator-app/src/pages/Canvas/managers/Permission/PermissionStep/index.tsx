@@ -2,7 +2,7 @@ import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { StepLabelVariant } from '@/constants/canvas';
+import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG, PERMISSION_LABELS } from '../constants';
@@ -11,9 +11,10 @@ export interface PermissionStepProps {
   nodeID: string;
   nextPortID: string;
   permissions: string[];
+  variant: BlockVariant;
 }
 
-export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nodeID, nextPortID }) => {
+export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nodeID, nextPortID, variant }) => {
   const labelText = (
     <>
       <VariableLabel>Request:</VariableLabel>
@@ -28,7 +29,7 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nod
           label={permissions.length ? labelText : null}
           icon={NODE_CONFIG.icon}
           portID={nextPortID}
-          iconColor={NODE_CONFIG.iconColor}
+          variant={variant}
           placeholder="Send a permissions card"
           labelVariant={StepLabelVariant.SECONDARY}
         />
@@ -37,11 +38,12 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nod
   );
 };
 
-const ConnectedPermissionStep: ConnectedStep<Realtime.NodeData.Permission, Realtime.NodeData.PermissionBuiltInPorts> = ({ node, data }) => (
+const ConnectedPermissionStep: ConnectedStep<Realtime.NodeData.Permission, Realtime.NodeData.PermissionBuiltInPorts> = ({ node, data, variant }) => (
   <PermissionStep
     nodeID={node.id}
     permissions={data.permissions.map((permissionID) => PERMISSION_LABELS[permissionID])}
     nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+    variant={variant}
   />
 );
 

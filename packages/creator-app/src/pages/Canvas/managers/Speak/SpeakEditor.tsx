@@ -38,7 +38,6 @@ const SpeakEditor: NodeEditor<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBu
                 label: 'Add Variant',
                 onClick: isAudio ? addAudio : addVoice,
                 disabled: isMaxMatches,
-                iconProps: { color: NODE_CONFIG.getIconColor!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA) },
               },
             ]
       }

@@ -9,9 +9,7 @@ import { NodeConfig } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = {
   type: BlockType.SETV2,
-
   icon: 'code',
-  iconColor: '#5590b5',
 
   factory: (_data) => ({
     node: {

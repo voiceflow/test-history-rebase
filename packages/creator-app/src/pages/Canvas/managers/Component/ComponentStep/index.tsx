@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { StepLabelVariant } from '@/constants/canvas';
+import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
@@ -17,9 +17,10 @@ export interface ComponentStepProps {
   nodeID: string;
   nextPortID: string;
   onClickComponent?: () => void;
+  variant: BlockVariant;
 }
 
-export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, nextPortID, onClickComponent }) => (
+export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, nextPortID, onClickComponent, variant }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
@@ -27,7 +28,7 @@ export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, nex
         label={label}
         portID={nextPortID}
         onClick={label ? stopPropagation(onClickComponent) : undefined}
-        iconColor={NODE_CONFIG.iconColor}
+        variant={variant}
         placeholder="Select a component"
         labelVariant={StepLabelVariant.PRIMARY}
       />
@@ -35,7 +36,7 @@ export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, nex
   </Step>
 );
 
-const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ node, data }) => {
+const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ node, data, variant }) => {
   const diagramMap = React.useContext(DiagramMapContext)!;
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 
@@ -48,7 +49,13 @@ const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtim
   const label = data.diagramID ? diagramMap[data.diagramID]?.name : null;
 
   return (
-    <ComponentStep label={label} nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} onClickComponent={onClickComponent} />
+    <ComponentStep
+      label={label}
+      nodeID={node.id}
+      nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+      onClickComponent={onClickComponent}
+      variant={variant}
+    />
   );
 };
 

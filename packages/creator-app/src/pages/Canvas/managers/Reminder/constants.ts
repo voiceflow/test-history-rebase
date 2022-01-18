@@ -22,9 +22,7 @@ export const REMINDER_ROUTES = [
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Reminder, Realtime.NodeData.ReminderBuiltInPorts> = {
   type: BlockType.REMINDER,
-
   icon: 'reminder',
-  iconColor: '#c998a4',
 
   factory: () => ({
     node: {

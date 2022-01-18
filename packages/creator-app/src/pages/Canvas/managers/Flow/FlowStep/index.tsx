@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { StepLabelVariant } from '@/constants/canvas';
+import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
@@ -17,9 +17,10 @@ export interface FlowStepProps {
   nodeID: string;
   nextPortID: string;
   onClickFlow?: () => void;
+  variant: BlockVariant;
 }
 
-export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, nextPortID, onClickFlow }) => (
+export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, nextPortID, onClickFlow, variant }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
@@ -27,7 +28,7 @@ export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, nextPortID, o
         label={label}
         portID={nextPortID}
         onClick={label ? stopPropagation(onClickFlow) : undefined}
-        iconColor={NODE_CONFIG.iconColor}
+        variant={variant}
         labelVariant={StepLabelVariant.SECONDARY}
         placeholder="Connect a flow to this step"
       />
@@ -35,7 +36,7 @@ export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, nextPortID, o
   </Step>
 );
 
-const ConnectedFlowStep: ConnectedStep<Realtime.NodeData.Flow, Realtime.NodeData.FlowBuiltInPorts> = ({ node, data }) => {
+const ConnectedFlowStep: ConnectedStep<Realtime.NodeData.Flow, Realtime.NodeData.FlowBuiltInPorts> = ({ node, data, variant }) => {
   const diagramMap = React.useContext(DiagramMapContext)!;
 
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
@@ -48,7 +49,9 @@ const ConnectedFlowStep: ConnectedStep<Realtime.NodeData.Flow, Realtime.NodeData
 
   const label = data.diagramID ? diagramMap[data.diagramID]?.name : null;
 
-  return <FlowStep label={label} nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} onClickFlow={goToDiagram} />;
+  return (
+    <FlowStep label={label} nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} onClickFlow={goToDiagram} variant={variant} />
+  );
 };
 
 export default ConnectedFlowStep;

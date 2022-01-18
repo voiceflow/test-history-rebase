@@ -9,6 +9,7 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
 import { NODE_CONFIG } from '@/pages/Canvas/managers/Text/constants';
+import THEME from '@/styles/theme';
 
 export type TextListItemProps = ListItemComponentProps<Node.Text.TextData, { header?: React.ReactNode }>;
 
@@ -36,7 +37,7 @@ const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemP
       ref={ref}
       namespace={['textListItem', item.id]}
       header={header || `Text Variant ${index + 1}`}
-      prefix={<SvgIcon icon={NODE_CONFIG.icon!} color={NODE_CONFIG.iconColor} />}
+      prefix={<SvgIcon icon={NODE_CONFIG.icon!} color={THEME.buttonIconColors.default} />}
       headerRef={connectedDragRef}
       isDragging={isDragging}
       suffix={isRandomized && 'randomLoop'}

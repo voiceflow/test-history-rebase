@@ -3,7 +3,7 @@ import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { StepLabelVariant } from '@/constants/canvas';
+import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { isVariable } from '@/utils/slot';
 
@@ -16,16 +16,17 @@ export interface ImageStepProps {
   nodeID: string;
   nextPortID?: string;
   aspectRatio: number | null;
+  variant: BlockVariant;
 }
 
-export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, image, nextPortID, aspectRatio }) => (
+export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, image, nextPortID, aspectRatio, variant }) => (
   <Step nodeID={nodeID} image={image} imageAspectRatio={aspectRatio} imagePosition="top center">
     <Section>
       <Item
         icon={NODE_CONFIG.icon}
         label={label}
         portID={nextPortID}
-        iconColor={NODE_CONFIG.iconColor}
+        variant={variant}
         placeholder="Add a visual"
         labelVariant={StepLabelVariant.SECONDARY}
       />
@@ -33,7 +34,7 @@ export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, image, next
   </Step>
 );
 
-const ConnectedImageStep: ConnectedStep<Node.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ node, data }) => {
+const ConnectedImageStep: ConnectedStep<Node.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ node, data, variant }) => {
   const label = getLabel(data);
   const size = data.device ? Constants.DEVICE_SIZE_MAP[data.device] : data.dimensions;
   const image = isVariable(data.image) ? null : data.image;
@@ -47,6 +48,7 @@ const ConnectedImageStep: ConnectedStep<Node.Visual.ImageStepData, Realtime.Node
       nodeID={node.id}
       nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
       aspectRatio={aspectRatio}
+      variant={variant}
     />
   );
 };

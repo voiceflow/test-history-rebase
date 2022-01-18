@@ -2,6 +2,7 @@ import { Models, Node } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
+import { BlockVariant } from '@/constants';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
@@ -14,16 +15,17 @@ export interface IntentStepProps {
   nodeID: string;
   isLocal?: boolean;
   nextPortID?: string;
+  variant: BlockVariant;
 }
 
-export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, nextPortID }) => (
+export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, nextPortID, variant }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
         icon={isLocal ? 'intentLocal' : NODE_CONFIG.icon}
         label={label}
         portID={nextPortID}
-        iconColor={NODE_CONFIG.iconColor}
+        variant={variant}
         placeholder="Create or select an intent"
         multilineLabel
         labelLineClamp={5}
@@ -32,7 +34,7 @@ export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, 
   </Step>
 );
 
-const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({ node, data, platform }) => {
+const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({ node, data, platform, variant }) => {
   const intentMap = React.useContext(CustomIntentMapContext)!;
 
   const { intent, availability } = getDistinctPlatformValue(platform, data);
@@ -43,6 +45,7 @@ const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.Node
       nodeID={node.id}
       isLocal={availability === Node.Intent.IntentAvailability.LOCAL}
       nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+      variant={variant}
     />
   );
 };

@@ -13,9 +13,7 @@ import { NodeConfig } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = {
   type: BlockType.CHOICE,
-
   icon: 'choice',
-  iconColor: '#3a5999',
 
   mergeTerminator: true,
 

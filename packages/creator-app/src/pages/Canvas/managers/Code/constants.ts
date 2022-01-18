@@ -8,9 +8,7 @@ import { NodeConfig } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = {
   type: BlockType.CODE,
-
   icon: 'power',
-  iconColor: '#cdad32',
 
   factory: () => ({
     node: {

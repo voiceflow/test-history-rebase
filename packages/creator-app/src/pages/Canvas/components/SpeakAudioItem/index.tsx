@@ -7,12 +7,13 @@ import { SectionToggleVariant } from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
-import { DialogType } from '@/constants';
+import { BlockVariant, DialogType } from '@/constants';
 import { compose } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
 import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '@/pages/Canvas/managers/Speak/constants';
+import { getIconColor } from '@/styles/theme/block';
 import { prettifyBucketURL } from '@/utils/audio';
 
 const VariablesInputComponent: React.FC<any> = VariablesInput;
@@ -24,6 +25,7 @@ export type SpeakAudioItemProps = ListItemComponentProps<
     platform: Constants.PlatformType;
     isRandomized?: boolean;
     formControlProps?: { contentBottomUnits?: number };
+    variant?: BlockVariant;
   }
 >;
 
@@ -47,6 +49,7 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
     isDraggingPreview,
     isContextMenuOpen,
     formControlProps,
+    variant,
   },
   ref
 ) => {
@@ -69,12 +72,7 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
       namespace={['speakAudioItem', item.id]}
       initialOpen={isNew || isOnlyItem}
       header={header || (isVoice(item) ? 'System Says' : prettifyBucketURL(item.url) || 'Audio')}
-      prefix={
-        <SvgIcon
-          icon={NODE_CONFIG.getIcon!(isVoice(item) ? VOICE_MOCK_DATA : AUDIO_MOCK_DATA)}
-          color={NODE_CONFIG.getIconColor!(isVoice(item) ? VOICE_MOCK_DATA : AUDIO_MOCK_DATA)}
-        />
-      }
+      prefix={<SvgIcon icon={NODE_CONFIG.getIcon!(isVoice(item) ? VOICE_MOCK_DATA : AUDIO_MOCK_DATA)} color={getIconColor(variant)} />}
       suffix={isRandomized && 'randomLoop'}
       isDragging={isDragging}
       headerRef={connectedDragRef}

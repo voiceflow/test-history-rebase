@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { InteractionModelTabType } from '@/constants';
+import { BlockVariant, InteractionModelTabType } from '@/constants';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSyncedLookup } from '@/hooks';
 import Step, { Attachment, ConnectedStep, Item, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
@@ -30,9 +30,10 @@ export interface ChoiceStepProps {
   noReply?: Nullable<Realtime.NodeData.NoReply>;
   noMatchPortID?: Nullable<string>;
   noReplyPortID?: Nullable<string>;
+  variant: BlockVariant;
 }
 
-export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch, noReply, noMatchPortID, noReplyPortID }) => (
+export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch, noReply, noMatchPortID, noReplyPortID, variant }) => (
   <Step nodeID={nodeID}>
     <Section>
       {choices.length ? (
@@ -42,7 +43,7 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch
             icon={index === 0 ? NODE_CONFIG.icon : null}
             label={label}
             portID={portID}
-            iconColor={NODE_CONFIG.iconColor}
+            variant={variant}
             attachment={attachment ? <Attachment icon="clip" onClick={stopPropagation(onAttachmentClick)} /> : null}
             linkedLabel={linkedLabel}
             placeholder={attachment ? 'Create or select an intent' : `Path ${index + 1}`}
@@ -51,7 +52,7 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch
           />
         ))
       ) : (
-        <Item placeholder="Add choices" icon={NODE_CONFIG.icon} iconColor={NODE_CONFIG.iconColor} />
+        <Item placeholder="Add choices" icon={NODE_CONFIG.icon} variant={variant} />
       )}
 
       <NoMatchItem portID={noMatchPortID} noMatch={noMatch} />
@@ -60,7 +61,12 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch
   </Step>
 );
 
-const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = ({ node, data, platform }) => {
+const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = ({
+  node,
+  data,
+  platform,
+  variant,
+}) => {
   const intentsMap = React.useContext(CustomIntentMapContext)!;
 
   const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
@@ -98,6 +104,7 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
       noReply={data.noReply}
       noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
       noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
+      variant={variant}
     />
   );
 };

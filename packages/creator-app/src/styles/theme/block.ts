@@ -11,6 +11,7 @@ const BLOCK_THEME = {
       borderColor: '#D4D9E0',
       activeBorderColor: '#C5CBD6',
       editTitleColor: 'rgba(98, 119, 140, 0.16)',
+      iconColor: '#62778c',
     },
     [BlockVariant.BLUE]: {
       backgroundImage: ' linear-gradient(to bottom, #D1ECF8, #c5e7f6)',
@@ -19,6 +20,7 @@ const BLOCK_THEME = {
       borderColor: '#BDD9EE',
       activeBorderColor: '#A2C1DC',
       editTitleColor: 'rgba(15, 126, 192, 0.16)',
+      iconColor: '#0f7ec0',
     },
     [BlockVariant.GREEN]: {
       backgroundImage: 'linear-gradient(to bottom, #EAF1EA, #e5eee5)',
@@ -27,6 +29,7 @@ const BLOCK_THEME = {
       borderColor: '#CBD8CC',
       activeBorderColor: '#BECDC3',
       editTitleColor: 'rgba(107, 122, 107, 0.16)',
+      iconColor: '#6b7a6b',
     },
     [BlockVariant.RED]: {
       backgroundImage: 'linear-gradient(to bottom, #FFE0E7, #ffd8e2)',
@@ -35,6 +38,7 @@ const BLOCK_THEME = {
       borderColor: '#E5D6DA',
       activeBorderColor: '#D8CBD1',
       editTitleColor: 'rgba(168, 72, 98, 0.16)',
+      iconColor: '#a84862',
     },
     [BlockVariant.PURPLE]: {
       backgroundImage: 'linear-gradient(to bottom, #EDE5F1, #e8deee)',
@@ -43,9 +47,12 @@ const BLOCK_THEME = {
       borderColor: '#DBD5DD',
       activeBorderColor: '#CDCAD5',
       editTitleColor: ' rgba(118, 94, 132, 0.15)',
+      iconColor: '#765e84',
     },
   },
   width: BLOCK_WIDTH,
 } as const;
+
+export const getIconColor = (variant: BlockVariant = BlockVariant.STANDARD): string => BLOCK_THEME.variants[variant].iconColor;
 
 export default BLOCK_THEME;

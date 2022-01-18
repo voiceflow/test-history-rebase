@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { StepLabelVariant } from '@/constants/canvas';
+import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -9,9 +9,10 @@ import { NODE_CONFIG } from '../constants';
 export interface RandomStepProps {
   nodeID: string;
   ports: string[];
+  variant: BlockVariant;
 }
 
-export const RandomStep: React.FC<RandomStepProps> = ({ nodeID, ports }) => (
+export const RandomStep: React.FC<RandomStepProps> = ({ nodeID, ports, variant }) => (
   <Step nodeID={nodeID}>
     <Section>
       {ports.map((portID, index) => (
@@ -20,7 +21,7 @@ export const RandomStep: React.FC<RandomStepProps> = ({ nodeID, ports }) => (
           icon={index === 0 ? NODE_CONFIG.icon : null}
           label={`Path ${index + 1}`}
           portID={portID}
-          iconColor={NODE_CONFIG.iconColor}
+          variant={variant}
           labelVariant={StepLabelVariant.SECONDARY}
         />
       ))}
@@ -28,6 +29,8 @@ export const RandomStep: React.FC<RandomStepProps> = ({ nodeID, ports }) => (
   </Step>
 );
 
-const ConnectedRandomStep: ConnectedStep<Realtime.NodeData.Random> = ({ node }) => <RandomStep nodeID={node.id} ports={node.ports.out.dynamic} />;
+const ConnectedRandomStep: ConnectedStep<Realtime.NodeData.Random> = ({ node, variant }) => (
+  <RandomStep nodeID={node.id} ports={node.ports.out.dynamic} variant={variant} />
+);
 
 export default ConnectedRandomStep;

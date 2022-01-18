@@ -9,9 +9,7 @@ import { NodeConfig } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = {
   type: BlockType.IFV2,
-
   icon: 'if',
-  iconColor: '#f86683',
 
   mergeTerminator: true,
 

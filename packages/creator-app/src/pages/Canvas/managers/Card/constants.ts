@@ -8,9 +8,7 @@ import { NodeConfig } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Card, Realtime.NodeData.CardBuiltInPorts> = {
   type: BlockType.CARD,
-
   icon: 'logs',
-  iconColor: '#616c60',
 
   factory: () => ({
     node: {

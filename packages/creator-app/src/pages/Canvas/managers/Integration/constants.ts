@@ -19,12 +19,6 @@ const ICON_MAP: Record<Node.Utils.IntegrationType, Icon> = {
   [Node.Utils.IntegrationType.GOOGLE_SHEETS]: 'googleSheets',
 };
 
-const ICON_COLOR_MAP: Record<Node.Utils.IntegrationType, string> = {
-  [Node.Utils.IntegrationType.ZAPIER]: '#e26d5a',
-  [Node.Utils.IntegrationType.CUSTOM_API]: '#74a4bf',
-  [Node.Utils.IntegrationType.GOOGLE_SHEETS]: '#279745',
-};
-
 const EMPTY_KEY_VALUE_ITEM = { key: '', val: '' };
 
 export const DEFAULT_DATA: Record<Node.Utils.IntegrationType, Realtime.NodeData.Integration> = {
@@ -65,11 +59,9 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration, Realtime.Nod
 
   // for older version
   icon: SVG.globeIcon as any,
-  iconColor: '#fa7891',
 
   // for block redesign
   getIcon: (data) => ICON_MAP[data.selectedIntegration!],
-  getIconColor: (data) => ICON_COLOR_MAP[data.selectedIntegration!],
 
   factory: (data) => ({
     node: {

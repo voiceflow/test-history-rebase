@@ -1,7 +1,7 @@
 import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
-import { StepLabelVariant } from '@/constants/canvas';
+import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { createPlatformSelector } from '@/utils/platform';
 
@@ -18,22 +18,23 @@ const getPlatformLabel = createPlatformSelector(
 export interface ExitStepProps {
   nodeID: string;
   platform: Constants.PlatformType;
+  variant: BlockVariant;
 }
 
-export const ExitStep: React.FC<ExitStepProps> = ({ nodeID, platform }) => (
+export const ExitStep: React.FC<ExitStepProps> = ({ nodeID, platform, variant }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
         icon={NODE_CONFIG.icon}
         label={`${getPlatformLabel(platform)} ends in current state`}
         portID={null}
-        iconColor={NODE_CONFIG.iconColor}
+        variant={variant}
         labelVariant={StepLabelVariant.SECONDARY}
       />
     </Section>
   </Step>
 );
 
-const ConnectedExitStep: ConnectedStep = ({ node, platform }) => <ExitStep nodeID={node.id} platform={platform} />;
+const ConnectedExitStep: ConnectedStep = ({ node, platform, variant }) => <ExitStep nodeID={node.id} platform={platform} variant={variant} />;
 
 export default ConnectedExitStep;

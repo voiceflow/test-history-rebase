@@ -9,6 +9,7 @@ import { useManager } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
+import THEME from '@/styles/theme';
 
 import { HelpTooltip, Path } from './components';
 
@@ -70,7 +71,7 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
           icon="action"
           value={name}
           onBlur={() => onChange({ name })}
-          iconProps={{ color: '#3A5999' }}
+          iconProps={{ color: THEME.buttonIconColors.default }}
           placeholder="Name Custom Action step"
           onChangeText={(value) => setName(value)}
         />

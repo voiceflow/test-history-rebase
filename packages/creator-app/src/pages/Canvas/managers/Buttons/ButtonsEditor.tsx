@@ -51,7 +51,6 @@ const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons, Realtime.NodeData.But
           icon: NODE_CONFIG.icon,
           onClick: Utils.functional.chainVoid(onAdd, () => engine.port.addOutDynamic(nodeID), scrollToBottom),
           disabled: isMaxMatches,
-          iconProps: { color: NODE_CONFIG.iconColor },
         },
       ]}
     />

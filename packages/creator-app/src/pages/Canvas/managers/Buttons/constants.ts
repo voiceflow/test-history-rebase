@@ -21,9 +21,7 @@ export const BUTTON_OPTIONS = [
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = {
   type: BlockType.BUTTONS,
-
   icon: 'action',
-  iconColor: '#3a5999',
 
   mergeTerminator: true,
 

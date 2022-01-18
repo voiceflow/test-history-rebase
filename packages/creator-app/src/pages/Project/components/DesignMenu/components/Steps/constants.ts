@@ -12,7 +12,6 @@ export interface MenuStep {
   type: BlockType;
   icon: Icon;
   label: string;
-  iconColor?: string;
   publicOnly?: boolean;
   factoryData?: Realtime.NodeData<any>;
 }
@@ -27,7 +26,6 @@ const createMenuStep = (
     type,
     icon: (_isFunction(manager.getIcon) && factoryData && manager.getIcon(factoryData)) || manager.icon!,
     label: (_isFunction(manager.getDataLabel) && factoryData && manager.getDataLabel(factoryData)) || manager.label,
-    iconColor: (_isFunction(manager.getIconColor) && factoryData && manager.getIconColor(factoryData)) || manager.iconColor,
     publicOnly,
     factoryData,
   };

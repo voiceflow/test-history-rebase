@@ -109,17 +109,15 @@ const SpeakAudioList = ({
           : [
               {
                 label: 'System',
-                icon: NODE_CONFIG.getIcon!(VOICE_MOCK_DATA),
+                icon: NODE_CONFIG.getIcon?.(VOICE_MOCK_DATA),
                 onClick: Utils.functional.chainVoidAsync(() => onAdd(DialogType.VOICE), scrollToBottom),
                 disabled: isMaxMatches,
-                iconProps: { color: NODE_CONFIG.getIconColor!(VOICE_MOCK_DATA) },
               },
               {
                 label: 'Audio',
-                icon: NODE_CONFIG.getIcon!(AUDIO_MOCK_DATA),
+                icon: NODE_CONFIG.getIcon?.(AUDIO_MOCK_DATA),
                 onClick: Utils.functional.chainVoidAsync(() => onAdd(DialogType.AUDIO), scrollToBottom),
                 disabled: isMaxMatches,
-                iconProps: { color: NODE_CONFIG.getIconColor!(AUDIO_MOCK_DATA) },
               },
             ]
       }

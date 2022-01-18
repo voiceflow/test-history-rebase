@@ -1,6 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
+import { BlockVariant } from '@/constants/canvas';
 import { useSyncedLookup } from '@/hooks';
 import Step, { ConnectedStep, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 
@@ -14,12 +15,13 @@ export interface ActionStepProps {
   paths: Path[];
   nodeID: string;
   withPorts: boolean;
+  variant: BlockVariant;
 }
 
-export const ActionStep: React.FC<ActionStepProps> = ({ nodeID, name, paths, withPorts }) => (
+export const ActionStep: React.FC<ActionStepProps> = ({ nodeID, name, paths, withPorts, variant }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item icon="action" iconColor="#3A5999" label={name} placeholder="Enter custom action name" multilineLabel />
+      <Item icon="action" variant={variant} label={name} placeholder="Enter custom action name" multilineLabel />
     </Section>
 
     {withPorts && (
@@ -34,7 +36,7 @@ export const ActionStep: React.FC<ActionStepProps> = ({ nodeID, name, paths, wit
   </Step>
 );
 
-const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ node, data, withPorts }) => {
+const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ node, data, withPorts, variant }) => {
   const pathsByPortID = useSyncedLookup(node.ports.out.dynamic, data.paths);
 
   const paths = React.useMemo(
@@ -42,7 +44,7 @@ const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ node, dat
     [pathsByPortID, node.ports.out.dynamic, data.paths]
   );
 
-  return <ActionStep nodeID={node.id} name={data.name} paths={paths} withPorts={withPorts} />;
+  return <ActionStep nodeID={node.id} name={data.name} paths={paths} withPorts={withPorts} variant={variant} />;
 };
 
 export default ConnectedActionStep;

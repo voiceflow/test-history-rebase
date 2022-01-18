@@ -9,9 +9,7 @@ import { NodeConfig } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = {
   type: BlockType.CAPTUREV2,
-
   icon: 'capture',
-  iconColor: '#58457a',
 
   factory: (_, { platform, defaultVoice } = {}) => ({
     node: {

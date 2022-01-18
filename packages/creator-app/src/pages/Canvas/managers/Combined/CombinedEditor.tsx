@@ -9,6 +9,7 @@ import { useSelector } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
+import THEME from '@/styles/theme';
 
 const CombinedEditor: NodeEditor<Realtime.NodeData.Combined> = ({ data: { nodeID } }) => {
   const engine = React.useContext(EngineContext)!;
@@ -26,14 +27,14 @@ const CombinedEditor: NodeEditor<Realtime.NodeData.Combined> = ({ data: { nodeID
   return (
     <Content>
       {nestedBlocks.map(({ nodeID, ...data }, index) => {
-        const { getIcon, getIconColor, icon, iconColor, label } = getManager(data.type);
+        const { getIcon, icon, label } = getManager(data.type);
 
         const svgIcon = getIcon?.(data) || icon;
 
         return (
           <Section
             key={nodeID}
-            prefix={svgIcon ? <SvgIcon icon={svgIcon} color={getIconColor?.(data) || iconColor} /> : null}
+            prefix={svgIcon ? <SvgIcon icon={svgIcon} color={THEME.buttonIconColors.default} /> : null}
             header={data.name || label}
             isLink
             onClick={() => engine.focus.set(nodeID)}

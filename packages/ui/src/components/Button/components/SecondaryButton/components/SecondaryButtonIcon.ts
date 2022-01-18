@@ -1,13 +1,15 @@
-import { css, styled } from '@ui/styles';
+import { css, styled, transition } from '@ui/styles';
 
 interface SecondaryButtonIconProps {
   withoutChildren?: boolean;
 }
 
 const SecondaryButtonIcon = styled.span<SecondaryButtonIconProps>`
+  ${transition('color')}
   width: 16px;
   height: 16px;
-  color: rgba(110, 132, 154, 0.85);
+
+  color: ${({ theme }) => theme.buttonIconColors.default};
 
   ${({ withoutChildren }) =>
     !withoutChildren &&

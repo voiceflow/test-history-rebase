@@ -28,9 +28,7 @@ export const WARNING =
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Payment, Realtime.NodeData.PaymentBuiltInPorts> = {
   type: BlockType.PAYMENT,
-
   icon: 'purchase',
-  iconColor: '#558B2F',
 
   factory: () => ({
     node: {

@@ -4,15 +4,14 @@ import { BlockType } from '@/constants';
 
 import { NodeManagerConfig } from '../types';
 import ActionEditor from './ActionEditor';
-import ActionStep from './ActionStep';
+import ConnectedActionStep from './ActionStep';
 
 const TraceManager: NodeManagerConfig<Realtime.NodeData.Trace> = {
   type: BlockType.TRACE,
   editor: ActionEditor,
   icon: 'action',
-  iconColor: '#3A5999',
 
-  step: ActionStep,
+  step: ConnectedActionStep,
   label: 'Custom Action',
   tip: 'mock an example action',
 

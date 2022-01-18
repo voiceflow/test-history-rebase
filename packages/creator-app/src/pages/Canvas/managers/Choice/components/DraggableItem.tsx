@@ -23,7 +23,6 @@ import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/plat
 import { INTENT_ACTION_OPTIONS } from './constants';
 import HelpTooltip from './HelpTooltip';
 
-const LegacyMappingsComponent = LegacyMappings as React.FC<any>;
 const IntentSelectComponent = IntentSelect as React.FC<any>;
 
 export type DraggableItemProps = ItemComponentProps<Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>> &
@@ -154,7 +153,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
             )}
           </IntentForm>
 
-          <LegacyMappingsComponent intent={intent} mappings={platformItem.mappings} onDelete={() => patchPlatformData({ mappings: [] })} isNested />
+          <LegacyMappings intent={intent} mappings={platformItem.mappings} onDelete={() => patchPlatformData({ mappings: [] })} isNested />
         </>
       )}
     </EditorSection>

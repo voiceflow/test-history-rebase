@@ -1,3 +1,5 @@
+import { Models } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText, Flex, SvgIcon, SvgIconContainer } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +8,8 @@ import { Paragraph } from '@/components/Tooltip';
 import { SlotTag, VariableTag } from '@/components/VariableTag';
 import * as Modal from '@/ducks/modal';
 import * as SlotV2 from '@/ducks/slotV2';
-import { connect, styled } from '@/hocs';
+import { styled } from '@/hocs';
+import { useDispatch, useSelector } from '@/hooks';
 
 // TODO: Deprecate this component once legacy mapping is completely deprecated
 
@@ -36,17 +39,29 @@ const LegacyMappingRow = styled(Flex)`
   }
 `;
 
-function LegacyMappings({ intent, setConfirm, onDelete, slotByID, mappings = [], isNested = false }) {
+interface LegacyMappingsProps {
+  intent: Realtime.Intent | null;
+  mappings?: Models.SlotMapping[];
+  isNested?: boolean;
+  onDelete: VoidFunction;
+}
+
+const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappings = [], isNested = false }) => {
+  const slotByID = useSelector(SlotV2.getSlotByIDSelector);
+  const setConfirm = useDispatch(Modal.setConfirm);
+
   const validMappings = React.useMemo(
     () =>
-      mappings.reduce((acc, { variable, slot: slotID }) => {
-        const slot = slotByID(slotID);
+      mappings.reduce<{ variable: string; slot: Realtime.Slot }[]>((acc, { variable, slot: slotID }) => {
+        const slot = slotID ? slotByID(slotID) : null;
+
         if (slot?.name && slot.name !== variable) {
-          acc.push({ variable, slot });
+          acc.push({ variable: variable ?? '', slot });
         }
+
         return acc;
       }, []),
-    [mappings]
+    [slotByID, mappings]
   );
 
   const confirmDelete = React.useCallback(
@@ -66,6 +81,7 @@ function LegacyMappings({ intent, setConfirm, onDelete, slotByID, mappings = [],
   return (
     <LegacySection
       header="Legacy Mappings"
+      suffix={<ClickableText onClick={confirmDelete}>delete</ClickableText>}
       tooltip={
         <>
           <Paragraph marginBottomUnits={2}>
@@ -85,7 +101,6 @@ function LegacyMappings({ intent, setConfirm, onDelete, slotByID, mappings = [],
       }
       isNested={isNested}
       isDividerNested
-      suffix={<ClickableText onClick={confirmDelete}>delete</ClickableText>}
     >
       {validMappings.map(({ variable, slot }, index) => (
         <LegacyMappingRow key={index}>
@@ -96,14 +111,6 @@ function LegacyMappings({ intent, setConfirm, onDelete, slotByID, mappings = [],
       ))}
     </LegacySection>
   );
-}
-
-const mapStateToProps = {
-  slotByID: SlotV2.getSlotByIDSelector,
 };
 
-const mapDispatchToProps = {
-  setConfirm: Modal.setConfirm,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(LegacyMappings);
+export default LegacyMappings;

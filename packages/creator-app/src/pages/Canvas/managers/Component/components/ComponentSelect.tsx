@@ -12,9 +12,10 @@ import { NodeDataUpdater } from '@/pages/Canvas/types';
 interface ComponentSelectProps {
   onChange: NodeDataUpdater<Realtime.NodeData.Component>;
   diagramID: Nullable<string>;
+  enterOnCreate?: boolean;
 }
 
-const ComponentSelect: React.FC<ComponentSelectProps> = ({ onChange, diagramID }) => {
+const ComponentSelect: React.FC<ComponentSelectProps> = ({ onChange, diagramID, enterOnCreate = true }) => {
   const componentDiagrams = useSelector(DiagramV2.active.componentDiagramsSelector);
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
@@ -39,9 +40,12 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ onChange, diagramID }
       const newDiagramID = await createEmptyComponent(name);
 
       setSelectedDiagram(newDiagramID);
-      goToDiagram(newDiagramID);
+
+      if (enterOnCreate) {
+        goToDiagram(newDiagramID);
+      }
     },
-    [setSelectedDiagram, goToDiagram, createEmptyComponent]
+    [setSelectedDiagram, goToDiagram, createEmptyComponent, enterOnCreate]
   );
 
   const validateCreate = React.useCallback(

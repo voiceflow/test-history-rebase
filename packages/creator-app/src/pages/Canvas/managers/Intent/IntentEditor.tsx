@@ -18,8 +18,6 @@ import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/plat
 
 import { NodeEditor } from '../types';
 
-const LegacyMappingsComponent = LegacyMappings as React.FC<any>;
-
 const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({
   data,
   engine,
@@ -79,7 +77,7 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.Inten
         <AvailabilityManager isEnabled={isGlobalIntent} onChange={onChangeAvailability} />
       ) : null}
 
-      <LegacyMappingsComponent intent={intent} mappings={platformData.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
+      <LegacyMappings intent={intent} mappings={platformData.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
     </Content>
   );
 };

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.592.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.592.0...@voiceflow/creator-app@1.592.1) (2022-01-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency immer to v9.0.12 (vf-000) ([#4881](https://github.com/voiceflow/creator-app/issues/4881)) ([4bd8be5](https://github.com/voiceflow/creator-app/commit/4bd8be5fb51fcebb636e78c9770f30dbac9079ff))
+
+
+
+
+
 # [1.592.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.591.5...@voiceflow/creator-app@1.592.0) (2022-01-18)
 
 

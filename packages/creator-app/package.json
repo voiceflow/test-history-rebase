@@ -156,7 +156,7 @@
     "@types/estree": "0.0.50",
     "@types/file-saver": "2.0.5",
     "@types/gapi": "0.0.41",
-    "@types/gapi.auth2": "0.0.55",
+    "@types/gapi.auth2": "0.0.56",
     "@types/git-branch": "2.0.2",
     "@types/jest": "27.0.3",
     "@types/jsonwebtoken": "8.5.8",

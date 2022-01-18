@@ -154,7 +154,7 @@
     "@types/draft-js": "0.11.8",
     "@types/esprima": "4.0.3",
     "@types/estree": "0.0.50",
-    "@types/file-saver": "2.0.4",
+    "@types/file-saver": "2.0.5",
     "@types/gapi": "0.0.41",
     "@types/gapi.auth2": "0.0.55",
     "@types/git-branch": "2.0.2",

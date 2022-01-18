@@ -19,7 +19,6 @@ export { ITEM_HEIGHT as TOPIC_ITEM_HEIGHT } from '../../ItemNameContainer';
 
 interface TopicItemNameProps {
   name: string;
-  isRoot: boolean;
   isFirst: boolean;
   isSearch: boolean;
   isOpened: boolean;
@@ -37,7 +36,6 @@ interface TopicItemNameProps {
 const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNameProps> = (
   {
     name,
-    isRoot,
     isFirst,
     isOpened,
     isSearch,
@@ -94,7 +92,7 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
           isHovered={isHovered}
           isDragging={isDragging}
           disableHover={disableHover}
-          onContextMenu={isRoot ? undefined : onContextMenu}
+          onContextMenu={onContextMenu}
           isDraggingPreview={isDraggingPreview}
           isContextMenuOpen={isOpen}
         >

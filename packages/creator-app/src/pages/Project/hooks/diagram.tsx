@@ -9,6 +9,7 @@ import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
@@ -104,10 +105,13 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
   const deleteDiagram = useDispatch(Diagram.deleteDiagram);
   const setErrorModal = useDispatch(Modal.setError);
   const setConfirmModal = useDispatch(Modal.setConfirm);
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+
+  const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
+
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
 
   const onDuplicate = React.useCallback(() => {
     if (!diagramID) {
@@ -174,13 +178,31 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
             { label: 'Divider', divider: true },
           ]
         : []),
+
       { label: 'Rename', onClick: onRename },
+
       ...(!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) || !isTopic ? [{ label: 'Duplicate', onClick: onDuplicate }] : []),
+
       ...(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && !isTopic
         ? [{ label: 'Convert to Topic', onClick: onConvertToTopic }]
         : []),
-      { label: 'Divider', divider: true },
-      { label: 'Delete', onClick: onDelete },
+
+      ...(rootDiagramID !== diagramID
+        ? [
+            { label: 'Divider', divider: true },
+            { label: 'Delete', onClick: onDelete },
+          ]
+        : []),
     ];
-  }, [onEdit, onRename, onDuplicate, onDelete, canEditCanvas, onConvertToTopic, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]);
+  }, [
+    onEdit,
+    onRename,
+    onDelete,
+    onDuplicate,
+    canEditCanvas,
+    rootDiagramID,
+    onConvertToTopic,
+    topicsAndComponents.isEnabled,
+    isTopicsAndComponentsVersion,
+  ]);
 };

@@ -50,7 +50,6 @@ const TopicItem: React.ForwardRefRenderFunction<HTMLElement, TopicItemProps> = (
       <TopicItemName
         ref={ref}
         name={name}
-        isRoot={isRoot}
         isFirst={index === 0}
         isOpened={isOpened}
         isActive={isActive}

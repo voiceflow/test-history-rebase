@@ -2,6 +2,7 @@ import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
+import { ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as DiagramDuck from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -74,7 +75,7 @@ export const useTopics = (): TopicsAPI => {
 
         return {
           id: diagram.id,
-          name: rootDiagramID === diagram.id ? 'Home' : diagram.name,
+          name: rootDiagramID === diagram.id && diagram.name === ROOT_DIAGRAM_NAME ? 'Home' : diagram.name,
           intentItems: diagram.intentStepIDs.map<TopicIntentItem>((stepID) => {
             const intentID = topicIntentStepMap[stepID] ?? null;
             const intent = intentID ? getIntentByID(intentID) ?? null : null;

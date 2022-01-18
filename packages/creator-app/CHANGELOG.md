@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.592.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.591.5...@voiceflow/creator-app@1.592.0) (2022-01-18)
+
+
+### Features
+
+* topics command editor (VF-2543) ([#4871](https://github.com/voiceflow/creator-app/issues/4871)) ([2dab829](https://github.com/voiceflow/creator-app/commit/2dab829bbabdab057d35e43dec6f8af29f8cd713))
+
+
+
+
+
 ## [1.591.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.591.4...@voiceflow/creator-app@1.591.5) (2022-01-18)
 
 **Note:** Version bump only for package @voiceflow/creator-app

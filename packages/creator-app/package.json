@@ -159,7 +159,7 @@
     "@types/gapi.auth2": "0.0.55",
     "@types/git-branch": "2.0.2",
     "@types/jest": "27.0.3",
-    "@types/jsonwebtoken": "8.5.6",
+    "@types/jsonwebtoken": "8.5.8",
     "@types/lodash": "4.14.177",
     "@types/loglevel": "1.6.3",
     "@types/markdown-to-jsx": "6.11.3",

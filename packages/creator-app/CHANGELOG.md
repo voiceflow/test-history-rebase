@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.593.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.592.4...@voiceflow/creator-app@1.593.0) (2022-01-18)
+
+
+### Features
+
+* allow root topic renaming  (VF-2645) ([#4872](https://github.com/voiceflow/creator-app/issues/4872)) ([6dc3425](https://github.com/voiceflow/creator-app/commit/6dc34259632960f09e47a539bed943736a0ae5fd))
+
+
+
+
+
 ## [1.592.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.592.3...@voiceflow/creator-app@1.592.4) (2022-01-18)
 
 **Note:** Version bump only for package @voiceflow/creator-app

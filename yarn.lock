@@ -6423,10 +6423,10 @@
     "@voiceflow/base-types" "^2.5.2"
     "@voiceflow/voice-types" "^2.1.8"
 
-"@voiceflow/git-branch-check@1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/git-branch-check/-/git-branch-check-1.2.2.tgz#4e88cdc31affefbc8ecc167b9108f9618692d2bd"
-  integrity sha512-6EkvY2kONs0FDw2nykeahK2Xw7OQgMI/VJyRgTOpY/zNW4pIiUwEtMqLUgdjQdAIJ4Hlygd7BXrape18GLOgrg==
+"@voiceflow/git-branch-check@1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@voiceflow/git-branch-check/-/git-branch-check-1.2.3.tgz#11a58a2db3f8cfdcc587ca8988620d57ed47a828"
+  integrity sha512-BMR72VtRlrkKKj77qm2ZuzZYUYnZ44NANMLZvk3nVzzwNgI5z6855BTXPmrDpwOzuC3YdvBlY4bdOVCw4tJTEQ==
   dependencies:
     current-git-branch "^1.1.0"
 

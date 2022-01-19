@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.597.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.597.2...@voiceflow/creator-app@1.597.3) (2022-01-19)
+
+
+### Bug Fixes
+
+* not able to change color for start block (VF-2717) ([#4928](https://github.com/voiceflow/creator-app/issues/4928)) ([2c4f60b](https://github.com/voiceflow/creator-app/commit/2c4f60bb488bb0288110b497e22623859b93a1da))
+
+
+
+
+
 ## [1.597.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.597.1...@voiceflow/creator-app@1.597.2) (2022-01-19)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.16](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.3.15...@voiceflow/ml-gateway@1.3.16) (2022-01-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency express-validator to v6.14.0 (vf-000) ([#4915](https://github.com/voiceflow/creator-app/issues/4915)) ([6401d5a](https://github.com/voiceflow/creator-app/commit/6401d5a6cac8a4a2b1dde8d25829db222fdb9378))
+
+
+
+
+
 ## [1.3.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.3.14...@voiceflow/ml-gateway@1.3.15) (2022-01-19)
 
 

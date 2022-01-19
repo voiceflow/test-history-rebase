@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.5.6...@voiceflow/socket-utils@1.5.7) (2022-01-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency cbor to v8.1.0 (vf-000) ([#4911](https://github.com/voiceflow/creator-app/issues/4911)) ([79d4fc3](https://github.com/voiceflow/creator-app/commit/79d4fc3421d59f24249b2039a558684cf8ba032f))
+
+
+
+
+
 ## [1.5.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.5.5...@voiceflow/socket-utils@1.5.6) (2022-01-19)
 
 

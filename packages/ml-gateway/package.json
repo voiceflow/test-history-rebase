@@ -8,7 +8,7 @@
     "@voiceflow/ml-sdk": "^1.4.0",
     "@voiceflow/socket-utils": "^1.6.0",
     "axios": "0.24.0",
-    "core-js": "3.18.0",
+    "core-js": "3.20.3",
     "dotenv": "9.0.2",
     "express-validator": "6.14.0",
     "regenerator-runtime": "0.13.9"

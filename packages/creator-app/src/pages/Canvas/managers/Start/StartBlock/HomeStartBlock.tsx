@@ -12,7 +12,7 @@ const HomeStartBlock: React.ForwardRefRenderFunction<BlockAPI, HomeStartBlockPro
   { name, label, portID, platform, invocationName, children, commands, variant, ...props },
   ref
 ) => (
-  <BlockWithCommands name={name || 'Start'} commands={commands || children} {...props} className={HOME_BLOCK_CLASSNAME} ref={ref}>
+  <BlockWithCommands name={name || 'Start'} commands={commands || children} {...props} className={HOME_BLOCK_CLASSNAME} ref={ref} variant={variant}>
     <HomeStartStep label={label} platform={platform} invocationName={invocationName} portID={portID} variant={variant} />
   </BlockWithCommands>
 );

@@ -1,3 +1,4 @@
+import { Constants } from '@voiceflow/general-types';
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,11 +6,15 @@ import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import { GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
+import { SourceType } from '@/ducks/tracking/constants';
 import { connect } from '@/hocs';
+import { useTrackingEvents } from '@/hooks';
 
 const GOOGLE_SHEETS = 'Google Sheets';
 
 function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError }) {
+  const [trackingEvents] = useTrackingEvents();
+
   const googleLogin = async (userProfile) => {
     try {
       const newUsers = await addUser({
@@ -18,6 +23,7 @@ function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError }) {
         skill_id,
       });
       onSuccess(newUsers);
+      trackingEvents.trackDeveloperAccountConnected(Constants.PlatformType.GOOGLE, SourceType.STEP);
     } catch (err) {
       onError(err);
     }

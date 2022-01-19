@@ -6,6 +6,7 @@ import { DiagramState, ModalType } from '@/constants';
 import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
 import { AnyJob, PublishContext, PublishContextValue } from '@/contexts';
 import * as Creator from '@/ducks/creator';
+import { SourceType } from '@/ducks/tracking/constants';
 import { useDidUpdateEffect, useModals, useSelector, useToggle, useTrackingEvents } from '@/hooks';
 import { isNotify, isReady } from '@/utils/job';
 
@@ -60,6 +61,8 @@ export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
   const noPopup = !!stageType && NO_POPUP_STAGES.includes(stageType);
   const jobIsReady = isReady(job);
 
+  const source = SourceType.PROJECT;
+
   const toggleLoginModal = React.useCallback(() => {
     if (!needsLogin) {
       if (loginModalOpened) {
@@ -70,12 +73,12 @@ export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
     }
 
     if (stageType === StageType.IDLE) {
-      openLoginModal({ stage: stageType, onCancel, updateCurrentStage });
+      openLoginModal({ stage: stageType, onCancel, updateCurrentStage, source });
     } else if (stageType === StageType.WAIT_ACCOUNT) {
       if (loginModalOpened) {
         closeLoginModal();
       }
-      openLoginModal({ stage: stageType, onCancel, updateCurrentStage });
+      openLoginModal({ stage: stageType, onCancel, updateCurrentStage, source });
     } else {
       closeLoginModal();
     }

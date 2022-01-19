@@ -152,3 +152,9 @@ export enum UpgradePrompt {
   REAL_TIME_COLLABORATION = 'Real Time Collaboration',
   PROJECT_LIMIT = 'Project Limit',
 }
+
+export enum SourceType {
+  ACCOUNT_PAGE = 'Account Page',
+  PROJECT = 'Project',
+  STEP = 'Step',
+}

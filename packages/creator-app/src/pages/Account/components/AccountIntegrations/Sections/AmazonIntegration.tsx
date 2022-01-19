@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
+import { SourceType } from '@/ducks/tracking/constants';
 import { useDispatch, useModals, useSelector } from '@/hooks';
 
 const AmazonIntegrations: React.FC = () => {
@@ -46,7 +47,7 @@ const AmazonIntegrations: React.FC = () => {
     }
     if (!user.amazon) {
       return (
-        <Button variant={ButtonVariant.PRIMARY} onClick={() => connectAmazonModal.open()}>
+        <Button variant={ButtonVariant.PRIMARY} onClick={() => connectAmazonModal.open({ source: SourceType.ACCOUNT_PAGE })}>
           Connect
         </Button>
       );

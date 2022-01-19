@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
+import { SourceType } from '@/ducks/tracking/constants';
 import { useDispatch, useModals, useSelector } from '@/hooks';
 
 const GoogleIntegration: React.FC = () => {
@@ -43,7 +44,7 @@ const GoogleIntegration: React.FC = () => {
     }
     if (!user.google) {
       return (
-        <Button variant={ButtonVariant.PRIMARY} onClick={() => connectGoogleModal.open()}>
+        <Button variant={ButtonVariant.PRIMARY} onClick={() => connectGoogleModal.open({ source: SourceType.ACCOUNT_PAGE })}>
           Connect
         </Button>
       );

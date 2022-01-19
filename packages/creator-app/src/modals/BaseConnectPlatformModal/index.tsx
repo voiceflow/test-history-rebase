@@ -21,6 +21,7 @@ import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import Modal, { ModalFooter } from '@/components/Modal';
 import { FeatureFlag } from '@/config/features';
 import { GOOGLE_OAUTH_SCOPES, GOOGLE_OAUTH_SCOPES_V2, ModalType } from '@/constants';
+import { SourceType } from '@/ducks/tracking/constants';
 import { useFeature, useModals, useTrackingEvents } from '@/hooks';
 import { Account } from '@/models';
 import * as Models from '@/models';
@@ -54,6 +55,7 @@ const BaseConnectPlatformModal: React.FC<BaseConnectPlatformModalProps> = ({
 }) => {
   const { close: closeConnectModal, data } = useModals<{
     onCancel: VoidFunction;
+    source: SourceType;
   }>(modalType);
 
   const isGoogleCreate = useFeature(FeatureFlag.GOOGLE_CREATE)?.isEnabled;
@@ -63,8 +65,8 @@ const BaseConnectPlatformModal: React.FC<BaseConnectPlatformModalProps> = ({
   const onSuccess = (account: Nullable<Account> | Models.Account.Google) => {
     onComplete();
     connectAccount?.(account);
-    if (platform) {
-      trackingEvents.trackDeveloperAccountConnected(platform);
+    if (platform && data.source) {
+      trackingEvents.trackDeveloperAccountConnected(platform, data.source);
     }
   };
 

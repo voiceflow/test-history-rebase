@@ -4,12 +4,13 @@ import _isString from 'lodash/isString';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeConfig } from '@/ducks/recent';
 import * as Session from '@/ducks/session';
-import { useEventualEngine, useTrackingEvents } from '@/hooks';
+import { useEventualEngine, useFeature, useTrackingEvents } from '@/hooks';
 import perf, { PerfAction } from '@/performance';
 import { Dispatch } from '@/store/types';
 
@@ -22,12 +23,14 @@ const usePrototype = ({
   isPublic,
   waitVisuals = true,
   prototypeStatus,
+  globalDelayInMilliseconds,
 }: {
   debug: boolean;
   config: PrototypeConfig;
   isPublic?: boolean;
   waitVisuals?: boolean;
   prototypeStatus: Prototype.PrototypeStatus;
+  globalDelayInMilliseconds?: number;
 }) => {
   const dispatch = useDispatch() as Dispatch;
 
@@ -47,6 +50,7 @@ const usePrototype = ({
   const [interactions, setInteractions] = React.useState<Interaction[]>([]);
   const [trackingEvents] = useTrackingEvents();
   const getEngine = useEventualEngine();
+  const messageDelays = useFeature(FeatureFlag.PROTOTYPE_MESSAGE_DELAYS);
 
   const cacheData: PrototypeToolProps = {
     debug,
@@ -70,6 +74,7 @@ const usePrototype = ({
     activePathLinkIDs,
     visualDataHistory,
     activePathBlockIDs,
+    globalMessageDelayMilliseconds: messageDelays.isEnabled ? globalDelayInMilliseconds : 0,
     updatePrototypeVisualsData: (data) => dispatch(Prototype.updatePrototypeVisualData(data)),
     updatePrototypeVisualsDataHistory: (dataHistory) => dispatch(Prototype.updatePrototypeVisualDataHistory(dataHistory)),
   };

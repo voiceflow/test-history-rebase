@@ -4,6 +4,8 @@ export { default as FontStyles } from './FontStyles';
 export { default as HyperlinkButton } from './HyperlinkButton';
 export { default as LinkElement } from './LinkElement';
 export { default as Placeholder } from './Placeholder';
+export { default as PopperContent } from './PopperContent';
+export { default as PopperTitle } from './PopperTitle';
 export { default as PrismVariable } from './PrismVariable';
 export { default as Suggestions } from './Suggestions';
 export { default as Text } from './Text';

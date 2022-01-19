@@ -1,10 +1,11 @@
 import { Button } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import { PrototypeStatus } from '@/ducks/prototype';
 import { useDebouncedCallback } from '@/hooks/callback';
 import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
-import { Interaction, Message, OnInteraction } from '@/pages/Prototype/types';
+import { Interaction, Message, OnInteraction, PMStatus } from '@/pages/Prototype/types';
 
 import Dialog from '../PrototypeDialog';
 import { InnerChatContainer, OutterChatContainer } from './components';
@@ -32,6 +33,7 @@ export interface PrototypeChatDisplayProps {
   dialogTurnMap?: TurnMap;
   onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
   messageFilter?: (messages: Message[]) => Message[];
+  pmStatus?: Nullable<PMStatus>;
 }
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
@@ -55,6 +57,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   isTranscript,
   dialogTurnMap,
   onScroll,
+  pmStatus = null,
   messageFilter,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -99,6 +102,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
     <OutterChatContainer focusedTurnID={focusedTurnID}>
       <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
         <Dialog
+          pmStatus={pmStatus}
           dialogTurnMap={dialogTurnMap}
           onScroll={onScroll}
           stepBack={stepBack}

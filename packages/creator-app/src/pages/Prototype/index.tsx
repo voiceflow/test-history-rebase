@@ -1,5 +1,6 @@
 import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 import * as PrototypeDuck from '@/ducks/prototype';
@@ -38,9 +39,12 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   showButtons,
   updatePrototype,
   isModelTraining,
+  prototypeColor,
+  prototypeAvatar,
 }) => {
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
+  const durationMilliseconds = useSelector(VersionV2.active.general.messageDelaySelector);
 
   const {
     status: prototypeMachineStatus,
@@ -55,17 +59,17 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     config,
     isPublic,
     prototypeStatus: status,
+    globalDelayInMilliseconds: durationMilliseconds,
   });
-  const location = useLocation();
 
+  const location = useLocation();
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
-  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
+  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING, PMStatus.FAKE_LOADING);
   const initialLoadFinished = React.useRef(false);
   const isBubbleMessageShown = React.useMemo(
     () => messages.some((message) => BotMessageTypes.includes(message.type) || message.type === MessageType.USER),
     [messages]
   );
-
   const { nodeID } = Query.parse(location?.search);
 
   React.useEffect(() => {
@@ -96,13 +100,15 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   if (status === PrototypeDuck.PrototypeStatus.IDLE && !autoplay) {
     return <Start config={config} debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={startPrototype} />;
   }
-
   return (
     <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
       <ChatDisplay
+        pmStatus={prototypeMachineStatus}
         atTop={atTop}
         setAtTop={setAtTop}
+        color={prototypeColor}
         isPublic={isPublic}
+        avatarURL={prototypeAvatar}
         buttons={buttons}
         // to show loader until first bubble message is up or "waiting for user interaction"
         isLoading={isLoading || (!isBubbleMessageShown && prototypeMachineStatus !== PMStatus.WAITING_USER_INTERACTION)}
@@ -121,7 +127,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
           locale={locale}
           setShowButtons={setShowButtons}
           showButtons={showButtons}
-          disabled={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.IDLE, PMStatus.DIALOG_PROCESSING)}
+          disabled={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.IDLE, PMStatus.DIALOG_PROCESSING, PMStatus.FAKE_LOADING)}
           onUserInput={(request) => onInteraction({ request })}
         />
       </UserSaysContainer>
@@ -136,6 +142,8 @@ const mapStateToProps = {
   autoplay: PrototypeDuck.prototypeAutoplaySelector,
   showButtons: PrototypeDuck.prototypeShowButtonsSelector,
   config: Recent.recentPrototypeSelector,
+  prototypeColor: PrototypeDuck.prototypeBrandColorSelector,
+  prototypeAvatar: PrototypeDuck.prototypeAvatarSelector,
 };
 
 const mapDispatchProps = {

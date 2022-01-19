@@ -1,15 +1,20 @@
 import { Button } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import Divider from '@/components/Divider';
 import * as Prototype from '@/ducks/prototype';
 import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
-import { Interaction, Message, MessageType, OnInteraction, UserMessage } from '@/pages/Prototype/types';
+import {
+  DelayedMessageFadeUpContainer,
+  MessageFadeDownContainer,
+} from '@/pages/Prototype/components/PrototypeDialog/components/Message/components/Message/components';
+import { Interaction, Message, MessageType, OnInteraction, PMStatus, UserMessage } from '@/pages/Prototype/types';
 
 import { Container, Ended, InlineInteractions, MessagesContainer, StickyInteractions } from './components';
 import { Audio, Debug, IntentConfidence, Loading, Speak, Text, User, Visual } from './components/Message';
 import useMessageFilters from './filters';
-import { checkIfFirstInSeries } from './utils';
+import { checkIfFirstInGroup, checkIfLastBotMessage, checkIfLastBubble, checkIfLastInGroup } from './utils';
 
 interface DialogPrototypeProps {
   onPlay?: (src: string) => void;
@@ -33,6 +38,7 @@ interface DialogPrototypeProps {
   focusedTurnID: string | null;
   dialogTurnMap?: TurnMap;
   messageFilter?: (messages: Message[]) => Message[];
+  pmStatus: Nullable<PMStatus>;
 }
 
 const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
@@ -57,11 +63,11 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   focusedTurnID,
   dialogTurnMap,
   messageFilter,
+  pmStatus,
 }) => {
   // filter out messages based on settings
   const messages = useMessageFilters(rawMessages, messageFilter);
   const interactionProps = { color, interactions, onInteraction };
-
   return (
     <Container onScroll={onScroll} isPublic={isPublic} showPadding={showPadding} isMobile={isMobile}>
       <MessagesContainer>
@@ -71,15 +77,32 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
           const previousMessage = messages[index - 1];
           const userSpeak = message.type === MessageType.USER;
 
-          const isFirstInSeries = checkIfFirstInSeries(previousMessage, message);
+          const isFirstInSeries = checkIfFirstInGroup(previousMessage, message);
+          const isLastInSeries = checkIfLastInGroup(index, messages);
+          const isLastBotMessage = checkIfLastBotMessage(message, messages);
+          const isLastBubble = checkIfLastBubble(message, messages);
           const isCurrent = message === messages[messages.length - 1];
           const isLast = index === messages.length - 1;
           const isIntentConfidence = message.type === MessageType.DEBUG && message.message.startsWith('matched intent');
 
+          const botMessageProps = {
+            isFirstInSeries,
+            isLastInSeries,
+            isLastBotMessage,
+            isLoading,
+            isLast,
+            isLastBubble,
+          };
+
+          const commonProps = {
+            key: message.id,
+            pmStatus,
+          };
+
           switch (message.type) {
             case MessageType.SESSION:
               return hideSessionMessages ? null : (
-                <Divider key={message.id} isLast={isLast && messages.length > 1}>
+                <Divider {...commonProps} isLast={isLast && messages.length > 1}>
                   {message.message}
                 </Divider>
               );
@@ -87,27 +110,24 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
               return (
                 <Audio
                   userSpeak={userSpeak}
-                  isFirstInSeries={isFirstInSeries}
-                  key={message.id}
+                  {...botMessageProps}
+                  {...commonProps}
                   {...message}
                   audioSrc={message.src ?? ''}
                   onPlay={() => onPlay?.(message.src ?? '')}
                   isCurrent={isCurrent}
-                  isLast={isLast}
                   avatarURL={avatarURL}
                   allowPause={isTranscript}
                   autoplay={!isTranscript}
                 />
               );
             case MessageType.TEXT:
-              return (
-                <Text userSpeak={userSpeak} isFirstInSeries={isFirstInSeries} key={message.id} {...message} isLast={isLast} avatarURL={avatarURL} />
-              );
+              return <Text userSpeak={userSpeak} {...botMessageProps} {...commonProps} {...message} avatarURL={avatarURL} isLoading={isLoading} />;
             case MessageType.SPEAK:
               return (
                 <Speak
-                  isFirstInSeries={isFirstInSeries}
-                  key={message.id}
+                  {...botMessageProps}
+                  {...commonProps}
                   userSpeak={userSpeak}
                   {...message}
                   onClick={() => onPlay?.(message.src ?? '')}
@@ -122,8 +142,8 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                   setFocusedTurnID={setFocusedTurnID}
                   focusedTurnID={focusedTurnID}
                   isTranscript={isTranscript}
-                  key={message.id}
                   lastUserMessage={messages[index - 1] as UserMessage}
+                  {...commonProps}
                   {...message}
                 />
               ) : (
@@ -136,8 +156,9 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                   focusedTurnID={focusedTurnID}
                   isFirstInSeries={isFirstInSeries}
                   userSpeak={userSpeak}
-                  key={message.id}
+                  {...commonProps}
                   color={color}
+                  animationContainer={MessageFadeDownContainer}
                   {...message}
                 />
               );
@@ -146,20 +167,19 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                 <Audio
                   userSpeak={userSpeak}
                   name=""
-                  isFirstInSeries={isFirstInSeries}
-                  key={message.id}
-                  audioSrc={message.audio}
+                  {...botMessageProps}
+                  {...commonProps}
                   {...message}
+                  audioSrc={message.audio}
                   onPlay={() => onPlay?.(message.audio)}
                   isCurrent={isCurrent}
-                  isLast={isLast}
                   avatarURL={avatarURL}
                   allowPause={isTranscript}
                   autoplay={!isTranscript}
                 />
               );
             case MessageType.VISUAL:
-              return <Visual isTranscript={isTranscript} isFirstInSeries={isFirstInSeries} key={message.id} visual={message} avatarURL={avatarURL} />;
+              return <Visual isTranscript={isTranscript} {...botMessageProps} {...commonProps} visual={message} avatarURL={avatarURL} />;
             default:
               return null;
           }
@@ -167,7 +187,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
 
         {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && <Ended isTranscript={isTranscript} stepBack={stepBack} />}
 
-        <Loading isLoading={isLoading} avatarURL={avatarURL} />
+        <Loading isLoading={isLoading} avatarURL={avatarURL} pmStatus={pmStatus} animationContainer={DelayedMessageFadeUpContainer} />
 
         {buttons === Button.ButtonsLayout.STACKED && <InlineInteractions {...interactionProps} />}
       </MessagesContainer>

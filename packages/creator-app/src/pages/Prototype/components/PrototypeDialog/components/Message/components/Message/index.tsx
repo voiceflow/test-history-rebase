@@ -1,14 +1,16 @@
+import { Nullable } from '@voiceflow/common';
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
+import { AnyStyledComponent } from 'styled-components';
 
 import Avatar from '@/components/Avatar';
-import { FadeDownContainer } from '@/styles/animations';
+import { PMStatus } from '@/pages/Prototype/types';
 import { ClassName } from '@/styles/constants';
 
 import Bubble from '../MessageBubble';
 import Container from '../MessageContainer';
-import { LogoCircle } from './components';
+import { LogoCircle, MessageFadeUpContainer } from './components';
 
 export interface MessageProps {
   onClick?: React.MouseEventHandler;
@@ -24,6 +26,14 @@ export interface MessageProps {
   avatarURL?: string;
   className?: string;
   focused?: boolean;
+  animationDelay?: number;
+  animationContainer?: AnyStyledComponent;
+  isLastInSeries?: boolean;
+  isLastBotMessage?: boolean;
+  isLastBubble?: boolean;
+  isLoading?: boolean;
+  forceIcon?: boolean;
+  pmStatus: Nullable<PMStatus>;
 }
 
 const Message: React.FC<MessageProps> = ({
@@ -33,20 +43,30 @@ const Message: React.FC<MessageProps> = ({
   withLogo = true,
   onClick,
   startTime,
-  withAnimation = false,
+  withAnimation = true,
   isLast,
   color,
   bubble = true,
   avatarURL,
   className,
   focused = false,
+  isLastInSeries = false,
+  animationContainer = MessageFadeUpContainer,
+  isLastBotMessage,
+  isLoading,
+  forceIcon,
+  pmStatus,
+  isLastBubble,
   ...props
 }) => {
-  const InnerContainer = React.useMemo(() => (!rightAlign && isFirstInSeries && !withAnimation ? React.Fragment : FadeDownContainer), []);
+  const InnerContainer = React.useMemo(() => (withAnimation ? animationContainer : React.Fragment), []);
+  const hideIcon = pmStatus === PMStatus.FAKE_LOADING && isLastBubble;
+  const showIconLogo = forceIcon || (withLogo && isLastInSeries && !hideIcon);
+
   return (
     <Container focused={focused} className={cn(ClassName.CHAT_DIALOG_MESSAGE, className)} rightAlign={rightAlign} {...props}>
       <InnerContainer>
-        {withLogo && isFirstInSeries && (
+        {showIconLogo && (
           <LogoCircle shadow={false} size={32} forAvatar={!!avatarURL}>
             {avatarURL ? (
               <Avatar className={ClassName.PROTOTYPE_MESSAGE_ICON} noHover noShadow url={avatarURL} />

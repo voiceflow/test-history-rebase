@@ -1,4 +1,5 @@
-import { Version } from '@voiceflow/general-types';
+import { Version as ChatVersion } from '@voiceflow/chat-types';
+import { Version as GeneralVersion } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
@@ -17,13 +18,14 @@ import { getActiveVersionContext } from '../utils';
  */
 export const updateSettings = (
   versionID: string,
-  settings: Partial<Version.GeneralVersionSettings>
-): UpdateSettings<Version.GeneralVersionSettings> => updateSettingsByVersionID<Version.GeneralVersionSettings>(versionID, settings);
+  settings: Partial<GeneralVersion.GeneralVersionSettings | ChatVersion.ChatVersionSettings>
+): UpdateSettings<GeneralVersion.GeneralVersionSettings | ChatVersion.ChatVersionSettings> =>
+  updateSettingsByVersionID<GeneralVersion.GeneralVersionSettings | ChatVersion.ChatVersionSettings>(versionID, settings);
 
 // side effects
 
 export const patchSettings =
-  (settings: Partial<Version.GeneralVersionSettings>): Thunk =>
+  (settings: Partial<GeneralVersion.GeneralVersionSettings | ChatVersion.ChatVersionSettings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -35,7 +37,7 @@ export const patchSettings =
         getActiveVersionContext,
         async () => {
           dispatch(updateSettings(versionID, settings));
-          await client.platform.general.version.updateSettings(versionID, settings);
+          await client.platform.general.version.updateSettings(versionID, settings as GeneralVersion.GeneralVersionSettings);
         },
         async (context) => {
           await dispatch.sync(Realtime.version.patchSettings({ ...context, settings }));

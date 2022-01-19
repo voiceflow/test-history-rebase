@@ -1,6 +1,6 @@
 import { styled } from '@/hocs';
 
-export const Title = styled.div`
+export const PopperTitle = styled.div`
   font-size: 13px;
   letter-spacing: 0.34px;
   color: #62778c;
@@ -8,4 +8,4 @@ export const Title = styled.div`
   margin-bottom: 13px;
 `;
 
-export default Title;
+export default PopperTitle;

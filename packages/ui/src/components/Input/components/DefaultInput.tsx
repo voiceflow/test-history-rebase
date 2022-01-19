@@ -1,8 +1,8 @@
 import composeRef from '@seznam/compose-react-refs';
 import { NestedInputIconPosition } from '@ui/components/Input/constants';
-import { inputStyle, StyledInputProps } from '@ui/components/Input/styles';
+import { hideNumberArrows, inputStyle, StyledInputProps } from '@ui/components/Input/styles';
 import SvgIcon, { Icon, SvgIconProps } from '@ui/components/SvgIcon';
-import { styled } from '@ui/styles';
+import { css, styled } from '@ui/styles';
 import { Either } from '@ui/types';
 import React from 'react';
 
@@ -14,6 +14,12 @@ export interface PlainInputProps extends StyledInputProps, Omit<React.ComponentP
 
 const PlainInput = styled.input<StyledInputProps>`
   ${inputStyle}
+
+  ${({ hideDefaultNumberControls }) =>
+    hideDefaultNumberControls &&
+    css`
+      ${hideNumberArrows}
+    `}
 `;
 
 PlainInput.displayName = 'Input';

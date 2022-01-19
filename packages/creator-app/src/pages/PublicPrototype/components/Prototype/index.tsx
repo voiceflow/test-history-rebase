@@ -23,6 +23,7 @@ import fakeAudio from './fakeAudio';
 interface PrototypeProps {
   settings: PrototypeDuck.PrototypeSettings;
   onInteract?: VoidFunction;
+  globalDelayInMilliseconds: number;
 }
 
 const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
@@ -33,6 +34,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   onInteract,
   updatePrototype,
   savePrototypeSession,
+  globalDelayInMilliseconds,
 }) => {
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
@@ -62,6 +64,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     isPublic: true,
     waitVisuals: isVisuals,
     prototypeStatus: status,
+    globalDelayInMilliseconds,
   });
 
   const isVoicePrototype = React.useMemo(
@@ -99,7 +102,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
 
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
 
-  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
+  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING, PMStatus.FAKE_LOADING);
   const isIdle = status === PrototypeDuck.PrototypeStatus.IDLE;
   const isFinished = status === PrototypeDuck.PrototypeStatus.ENDED;
 
@@ -198,6 +201,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
           />
         ) : (
           <ChatDialog
+            pmStatus={prototypeMachineStatus}
             locale={locale}
             input={input}
             color={brandColor}

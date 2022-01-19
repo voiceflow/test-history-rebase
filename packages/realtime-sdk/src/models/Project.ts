@@ -15,6 +15,7 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Member<any>> 
   created: string;
   privacy?: BaseModels.ProjectPrivacy;
   linkType: BaseModels.ProjectLinkType;
+  prototype?: BaseModels.ProjectPrototype;
   platform: Constants.PlatformType;
   _version?: number;
   diagramID: string;

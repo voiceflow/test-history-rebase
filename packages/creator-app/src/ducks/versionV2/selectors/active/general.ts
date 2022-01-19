@@ -1,3 +1,4 @@
+import { Version as ChatVersion } from '@voiceflow/chat-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
@@ -13,3 +14,8 @@ export const settingsSelector = createSelector([versionSelector], (version) => v
 export const localesSelector = createSelector([settingsSelector], (settings) => settings?.locales ?? []);
 
 export const invocationNameSelector = ProjectV2.active.nameSelector;
+
+export const messageDelaySelector = createSelector(
+  [settingsSelector],
+  (settings) => (settings as Omit<ChatVersion.ChatVersionSettings, 'session'>)?.messageDelay?.durationMilliseconds || 0
+);

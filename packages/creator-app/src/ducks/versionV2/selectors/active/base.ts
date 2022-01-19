@@ -1,3 +1,4 @@
+import { Version as GeneralVersion } from '@voiceflow/general-types';
 import { createSelector } from 'reselect';
 
 import * as Session from '@/ducks/session';
@@ -28,4 +29,7 @@ export const foldersSelector = createSelector([versionSelector], (version) => ve
 
 export const canvasNodeVisibilitySelector = createSelector([settingsSelector], (settings) => settings?.defaultCanvasNodeVisibility ?? null);
 
-export const defaultVoiceSelector = createSelector([settingsSelector], (settings) => settings?.defaultVoice ?? null);
+export const defaultVoiceSelector = createSelector(
+  [settingsSelector],
+  (settings) => (settings as GeneralVersion.GeneralVersionSettings)?.defaultVoice ?? null
+);

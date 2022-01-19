@@ -15,7 +15,7 @@ export type DBVersion<
 
 export type AnyDBVersion = AlexaVersion.AlexaVersion | GeneralVersion.GeneralVersion | GoogleVersion.GoogleVersion | ChatVersion.ChatVersion;
 
-export interface Version<P extends BaseModels.VersionPlatformData<VoiceVersion.VoiceVersionSettings<string>, any>>
+export interface Version<P extends BaseModels.VersionPlatformData<VoiceVersion.VoiceVersionSettings<string> | ChatVersion.ChatVersionSettings, any>>
   extends Pick<DBVersion<P>, 'creatorID' | 'variables' | 'projectID' | 'rootDiagramID'>,
     Required<Pick<DBVersion<P>, 'folders' | 'topics' | 'components'>> {
   id: string;
@@ -60,8 +60,9 @@ export type AlexaVersion = Version<AlexaVersion.AlexaVersionData>;
 export type GoogleVersion = Version<GoogleVersion.GoogleVersionData>;
 export type DialogflowVersion = Version<DialogflowVersion.GoogleDFESVersionData>;
 export type GeneralVersion = Version<GeneralVersion.GeneralVersionData>;
+export type ChatVersion = Version<ChatVersion.ChatVersionData>;
 
-export type AnyVersion = AlexaVersion | GoogleVersion | GeneralVersion | DialogflowVersion;
+export type AnyVersion = AlexaVersion | GoogleVersion | GeneralVersion | DialogflowVersion | ChatVersion;
 
 export type VersionIntent<T extends BaseModels.VersionPlatformData> = T['intents'][number];
 

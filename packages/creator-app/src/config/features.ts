@@ -17,6 +17,7 @@ const TOPICS_AND_COMPONENTS_ENABLED = process.env.FF_TOPICS_AND_COMPONENTS === '
 const ACCOUNT_PAGE_REDESIGN_ENABLED = process.env.FF_ACCOUNT_PAGE_REDESIGN === 'true';
 const VARIABLE_STATES_ENABLED = process.env.FF_VARIABLE_STATES === 'true';
 const REALTIME_CONNECTION_ENABLED = process.env.FF_REALTIME_CONNECTION === 'true';
+const PROTOTYPE_MESSAGE_DELAYS_ENABLED = process.env.FF_PROTOTYPE_MESSAGE_DELAYS === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -47,6 +48,7 @@ export enum FeatureFlag {
   ACCOUNT_PAGE_REDESIGN = 'account_page_redesign',
 
   VARIABLE_STATES = 'variable_states',
+  PROTOTYPE_MESSAGE_DELAYS = 'prototype_message_delays',
 }
 
 export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
@@ -66,4 +68,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.ACCOUNT_PAGE_REDESIGN]: ACCOUNT_PAGE_REDESIGN_ENABLED,
   [FeatureFlag.VARIABLE_STATES]: VARIABLE_STATES_ENABLED,
   [FeatureFlag.REALTIME_CONNECTION]: REALTIME_CONNECTION_ENABLED,
+  [FeatureFlag.PROTOTYPE_MESSAGE_DELAYS]: PROTOTYPE_MESSAGE_DELAYS_ENABLED,
 };

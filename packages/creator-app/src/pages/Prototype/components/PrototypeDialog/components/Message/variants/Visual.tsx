@@ -48,7 +48,7 @@ const Visual: React.FC<VisualProps> = ({ visual, isTranscript, ...props }) => {
 
   return (
     <VisualContainer onClick={(e) => isTranscript && e.preventDefault()}>
-      <Message bubble={false} {...props} withAnimation>
+      <Message bubble={false} {...props}>
         <Link href={imageURL!}>
           <ImageContainer ratio={ratio} isFirstInSeries={props.isFirstInSeries}>
             <Image image={imageURL!} position="top center" />

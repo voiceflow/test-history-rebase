@@ -59,6 +59,7 @@ const setupPublicPrototype =
       } else {
         dispatch(VersionActions.crud.add(versionID, version));
       }
+
       dispatch(updatePrototype({ muted: layout === PrototypeLayout.TEXT_DIALOG }));
       dispatch(Session.setActiveVersionID(versionID));
       dispatch(Session.setActiveDiagramID(rootDiagramID));
@@ -66,6 +67,7 @@ const setupPublicPrototype =
 
     return {
       ...prototype?.settings,
+      globalMessageDelayMilliseconds: prototype?.data?.messageDelay?.durationMilliseconds || 0,
       plan: planData.plan as PlanType,
       layout,
       buttons: prototype?.settings.buttons as Button.ButtonsLayout,

@@ -2,6 +2,14 @@ import { IS_SAFARI } from '@ui/config';
 import { colors, css, ThemeColor } from '@ui/styles';
 import { system } from 'styled-system';
 
+export const hideNumberArrows = css`
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  -moz-appearance: textfield; /* Firefox */
+`;
+
 export const inputFocusStyle = css`
   border: 1px solid ${colors(ThemeColor.BLUE)};
   outline: 0;
@@ -32,6 +40,7 @@ export interface StyledInputProps {
   error?: boolean;
   cursor?: string;
   borderColor?: string;
+  hideDefaultNumberControls?: boolean;
 }
 
 export const inputStyle = css<StyledInputProps>`

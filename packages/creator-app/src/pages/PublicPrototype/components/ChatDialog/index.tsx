@@ -1,4 +1,5 @@
 import { Button } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
 import { Box, BoxFlex, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,7 @@ import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
 import { useCanASR, useTheme } from '@/hooks';
 import { ChatDisplay } from '@/pages/Prototype/components';
 import { ASRSpeechbar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
-import { Interaction, Message, OnInteraction } from '@/pages/Prototype/types';
+import { Interaction, Message, OnInteraction, PMStatus } from '@/pages/Prototype/types';
 
 import { ActionButtons, DisplayContainer, InputContainer, InteractionContainer, SpeechBarContainer, UserInput } from './components';
 
@@ -42,6 +43,7 @@ export interface ChatDialogProps {
   hasInput?: boolean;
   autoScroll?: boolean;
   onStepBack: () => void;
+  pmStatus: Nullable<PMStatus>;
 }
 
 const ChatDialog: React.FC<ChatDialogProps> = ({
@@ -76,6 +78,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   hasInput = true,
   autoScroll = true,
   onStepBack,
+  pmStatus,
 }) => {
   const theme = useTheme();
   const [canUseASR] = useCanASR();
@@ -84,6 +87,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
     <Box height="100%" width="100%" position="relative">
       <DisplayContainer isMobile={isMobile}>
         <ChatDisplay
+          pmStatus={pmStatus}
           onPlay={onPlay}
           status={prototypeStatus}
           messages={messages}

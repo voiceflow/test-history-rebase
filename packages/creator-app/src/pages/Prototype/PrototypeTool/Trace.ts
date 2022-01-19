@@ -1,4 +1,5 @@
 import { Models, Node as BaseNode, Request } from '@voiceflow/base-types';
+import { TraceType } from '@voiceflow/base-types/build/common/trace';
 import { Nullish, Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -8,7 +9,19 @@ import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
-import { BlockTrace, ChoiceTrace, FlowTrace, GoToTrace, NoReplyTrace, SpeakTrace, StreamTrace, Trace, V1Trace, VisualTrace } from '@/models';
+import {
+  BlockTrace,
+  ChoiceTrace,
+  FlowTrace,
+  GoToTrace,
+  NoReplyTrace,
+  SpeakTrace,
+  StreamTrace,
+  TextTrace,
+  Trace,
+  V1Trace,
+  VisualTrace,
+} from '@/models';
 import { Engine } from '@/pages/Canvas/engine';
 import { loadImage } from '@/utils/dom';
 
@@ -19,6 +32,10 @@ import TimeoutController from './Timeout';
 import { getUpdatedContextHistory, isV1Trace } from './utils';
 
 const MUTED_MESSAGE_DELAY = 250;
+
+// Trace types that can have a faked delay
+const BOT_TRACE_TYPES = [TraceType.TEXT, TraceType.SPEAK];
+type BotTraceType = TextTrace | SpeakTrace;
 
 export enum StepDirection {
   FORWARD = 'forward',
@@ -48,6 +65,7 @@ export interface TraceControllerProps {
   activePathBlockIDs: string[];
   updatePrototypeVisualsData: (data: null | BaseNode.Visual.StepData) => void;
   updatePrototypeVisualsDataHistory: (dataHistory: (null | BaseNode.Visual.StepData)[]) => void;
+  globalMessageDelayMilliseconds?: number;
 }
 
 interface Options {
@@ -232,6 +250,23 @@ class TraceController {
     await this.processTrace(this.trace, { onlyMessage: true });
   }
 
+  private isVeryFirstBotMessage(trace: BotTraceType) {
+    if (this.props.contextStep !== 1) return false;
+    if (!BOT_TRACE_TYPES.includes(trace.type)) return false;
+
+    return this.context?.trace.find(({ type }) => BOT_TRACE_TYPES.includes(type))?.id === trace.id;
+  }
+
+  private async simulateLoadingDelay(trace: BotTraceType, delayMillisecondsOverride?: number) {
+    const isVeryFirstMessage = this.isVeryFirstBotMessage(trace);
+    const delayInMilliseconds = delayMillisecondsOverride ?? this.props.globalMessageDelayMilliseconds;
+    if (isVeryFirstMessage || !delayInMilliseconds) return;
+
+    this.props.updateStatus(PMStatus.FAKE_LOADING);
+    await this.timeout.delay(delayInMilliseconds);
+    this.props.updateStatus(PMStatus.NAVIGATING);
+  }
+
   private async processTrace(trace: Trace[], { onlyMessage = false }: { onlyMessage?: boolean } = {}): Promise<void> {
     if (this.stopped) {
       return;
@@ -243,10 +278,9 @@ class TraceController {
       this.props.updateStatus(PMStatus.WAITING_USER_INTERACTION);
       return;
     }
+    this.props.updateStatus(PMStatus.NAVIGATING);
 
     this.trace = tailTrace;
-
-    this.props.updateStatus(PMStatus.NAVIGATING);
 
     if (!this.isPublicPrototype) {
       await this.waitEngineAndNodes();
@@ -270,7 +304,7 @@ class TraceController {
         break;
       }
       case BaseNode.Utils.TraceType.TEXT: {
-        await this.message.text(topTrace);
+        await this.processTextTrace(topTrace);
         break;
       }
       case BaseNode.Utils.TraceType.FLOW: {
@@ -457,7 +491,13 @@ class TraceController {
     await this.next({ type: Request.RequestType.TEXT, payload: Constants.IntentName.NEXT });
   }
 
+  private async processTextTrace(trace: TextTrace) {
+    await this.simulateLoadingDelay(trace, trace.payload?.slate?.messageDelayMilliseconds);
+    await this.message.text(trace);
+  }
+
   private async processSpeakTrace(trace: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
+    await this.simulateLoadingDelay(trace);
     const {
       payload: { src },
     } = trace;

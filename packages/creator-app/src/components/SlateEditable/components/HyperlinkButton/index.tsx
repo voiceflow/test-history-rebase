@@ -9,7 +9,8 @@ import { useSlateEditor } from '../../contexts';
 import { EditorAPI } from '../../editor';
 import { useEditorHotkey } from '../../hooks';
 import IconButton from '../IconButton';
-import { Content, Title } from './components';
+import PopperContent from '../PopperContent';
+import PopperTitle from '../PopperTitle';
 
 interface ChildrenOptions {
   ref: React.Ref<any>;
@@ -62,8 +63,8 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
       modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }}
       portalNode={document.body}
       renderContent={({ onClose }) => (
-        <Content>
-          <Title>Hyperlink</Title>
+        <PopperContent>
+          <PopperTitle>Hyperlink</PopperTitle>
           <Input
             value={localUrl}
             onBlur={withHandler(onClose)(onBlur)}
@@ -73,7 +74,7 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
             onChangeText={(value) => setLocalUrl(value)}
             onEnterPress={preventDefault(({ currentTarget }) => currentTarget?.blur())}
           />
-        </Content>
+        </PopperContent>
       )}
     >
       {({ ref, isOpened }) =>

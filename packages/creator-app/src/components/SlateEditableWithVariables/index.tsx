@@ -37,6 +37,7 @@ export interface SlateEditableWithVariablesProps
   pluginsOptions?: Nullish<Omit<SlateEditableProps['pluginsOptions'], SlatePluginType.VARIABLES>>;
   variablesCreatable?: boolean;
   variablesWithSlots?: boolean;
+  extraToolbarButtons?: React.ReactNode;
 }
 
 const SlateEditableWithVariables: React.ForwardRefRenderFunction<SlateEditableRef, SlateEditableWithVariablesProps> = (
@@ -49,6 +50,7 @@ const SlateEditableWithVariables: React.ForwardRefRenderFunction<SlateEditableRe
     pluginsOptions,
     variablesCreatable = true,
     variablesWithSlots,
+    extraToolbarButtons,
     ...props
   },
   ref
@@ -112,10 +114,10 @@ const SlateEditableWithVariables: React.ForwardRefRenderFunction<SlateEditableRe
             <TextItalicButton />
             <TextUnderlineButton />
             <TextStrikeThroughButton />
-
             <Box width="1px" height="15px" backgroundColor="#dfe3ed" />
-
             <HyperlinkButton />
+
+            {extraToolbarButtons}
           </Toolbar>
         </SlateEditable>
       )}

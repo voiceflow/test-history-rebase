@@ -12,6 +12,7 @@ export enum SettingSections {
   CHANNEL_SPECIFIC_FEATURES = 'Channel Specific Features',
   DANGER_ZONE = 'Danger Zone',
   DIALOGFLOW_CONSOLE = 'Dialogflow Console',
+  TEST_TOOL = 'Chat Interface',
 }
 
 export const DEFAULT_MAX_WIDTH = 700;
@@ -46,6 +47,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
         SettingSections.BASIC,
         SettingSections.CANVAS,
         SettingSections.GLOBAL_CONVERSATION_LOGIC,
+        SettingSections.TEST_TOOL,
         SettingSections.CHANNEL_SPECIFIC_FEATURES,
         SettingSections.DANGER_ZONE,
       ],
@@ -67,7 +69,13 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
     },
     [Constants.PlatformType.GOOGLE]: {
       name: 'Google',
-      sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.GLOBAL_CONVERSATION_LOGIC, SettingSections.DANGER_ZONE],
+      sections: [
+        SettingSections.BASIC,
+        SettingSections.CANVAS,
+        SettingSections.GLOBAL_CONVERSATION_LOGIC,
+        SettingSections.TEST_TOOL,
+        SettingSections.DANGER_ZONE,
+      ],
       descriptors: {
         projectName: Google.ProjectName,
         invocationName: Google.InvocationName,
@@ -82,7 +90,13 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
     },
     [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: {
       name: 'Dialogflow Chat',
-      sections: [SettingSections.BASIC, SettingSections.DIALOGFLOW_CONSOLE, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+      sections: [
+        SettingSections.BASIC,
+        SettingSections.DIALOGFLOW_CONSOLE,
+        SettingSections.CANVAS,
+        SettingSections.TEST_TOOL,
+        SettingSections.DANGER_ZONE,
+      ],
       descriptors: {
         projectName: General.ProjectName,
         agentName: Dialogflow.AgentName,
@@ -94,7 +108,13 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
     },
     [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: {
       name: 'Dialogflow Voice',
-      sections: [SettingSections.BASIC, SettingSections.DIALOGFLOW_CONSOLE, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+      sections: [
+        SettingSections.BASIC,
+        SettingSections.DIALOGFLOW_CONSOLE,
+        SettingSections.CANVAS,
+        SettingSections.TEST_TOOL,
+        SettingSections.DANGER_ZONE,
+      ],
       descriptors: {
         projectName: General.ProjectName,
         agentName: Dialogflow.AgentName,
@@ -106,7 +126,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
     },
     [Constants.PlatformType.CHATBOT]: {
       name: 'Chatbot',
-      sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+      sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.TEST_TOOL, SettingSections.DANGER_ZONE],
       descriptors: {
         projectName: General.ProjectName,
       },
@@ -114,7 +134,13 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
   },
   {
     name: 'General',
-    sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.GLOBAL_CONVERSATION_LOGIC, SettingSections.DANGER_ZONE],
+    sections: [
+      SettingSections.BASIC,
+      SettingSections.CANVAS,
+      SettingSections.GLOBAL_CONVERSATION_LOGIC,
+      SettingSections.TEST_TOOL,
+      SettingSections.DANGER_ZONE,
+    ],
     descriptors: {
       projectName: General.ProjectName,
     },

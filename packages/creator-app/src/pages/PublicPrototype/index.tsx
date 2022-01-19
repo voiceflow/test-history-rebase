@@ -26,7 +26,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
 }) => {
   const prototypeID = useSelector(PrototypeDuck.prototypeIDSelector);
   const [isLoaded, toggleLoaded] = useToggle(false);
-  const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings>({
+  const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings & { globalMessageDelayMilliseconds?: number }>({
     plan: PlanType.STARTER,
     layout: PrototypeDuck.PrototypeLayout.TEXT_DIALOG,
     buttons: Button.ButtonsLayout.STACKED,
@@ -34,6 +34,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
     platform: Constants.PlatformType.GENERAL,
     hasPassword: false,
     projectName: '',
+    globalMessageDelayMilliseconds: 0,
   });
 
   const [isAuthenticated, setAuthenticated] = React.useState<boolean>(false);
@@ -89,7 +90,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
       <RemoveIntercom />
       <SeoHelmet page={SeoPage.PROTOTYPE} />
       {isAuthenticated || !canUseSharedPassword ? (
-        <Prototype settings={settings} onInteract={onInteract} />
+        <Prototype settings={settings} onInteract={onInteract} globalDelayInMilliseconds={settings.globalMessageDelayMilliseconds || 0} />
       ) : (
         <PasswordScreen settings={settings} checkLogin={checkLogin} />
       )}

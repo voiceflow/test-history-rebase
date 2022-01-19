@@ -17,6 +17,7 @@ const projectAdapter = createAdapter<DBProject, AnyProject>(
     reportTags = {},
     devVersion,
     liveVersion,
+    prototype,
     platformData,
   }) => ({
     id: _id,
@@ -34,6 +35,7 @@ const projectAdapter = createAdapter<DBProject, AnyProject>(
     diagramID: '',
     versionID: devVersion!,
     reportTags,
+    prototype,
     workspaceID: teamID,
     platformData,
   }),

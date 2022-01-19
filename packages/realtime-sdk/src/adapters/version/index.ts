@@ -1,10 +1,12 @@
 import { AnyDBVersion, AnyVersion } from '@realtime-sdk/models';
 import { Version as AlexaVersion } from '@voiceflow/alexa-types';
+import { Version as ChatVersion } from '@voiceflow/chat-types';
 import { Constants, Version as GeneralVersion } from '@voiceflow/general-types';
 import { Version as GoogleVersion } from '@voiceflow/google-types';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
 import alexaVersionAdapter from './alexa';
+import chatVersionAdapter from './chat';
 import generalVersionAdapter from './general';
 import googleVersionAdapter from './google';
 
@@ -15,6 +17,8 @@ const versionAdapter = createAdapter<AnyDBVersion, AnyVersion, [{ platform: Cons
         return alexaVersionAdapter.fromDB(version as AlexaVersion.AlexaVersion);
       case Constants.PlatformType.GOOGLE:
         return googleVersionAdapter.fromDB(version as GoogleVersion.GoogleVersion);
+      case Constants.PlatformType.CHATBOT:
+        return chatVersionAdapter.fromDB(version as ChatVersion.ChatVersion);
       case Constants.PlatformType.GENERAL:
       default:
         return generalVersionAdapter.fromDB(version as GeneralVersion.GeneralVersion);

@@ -5,8 +5,8 @@ import React from 'react';
 import SimpleBar from 'simplebar-react';
 
 import { styled, transition } from '@/hocs';
+import { MessageFadeUpContainer } from '@/pages/Prototype/components/PrototypeDialog/components/Message/components/Message/components';
 import perf, { PerfAction } from '@/performance';
-import { FadeLeftContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 import { Color } from '@/types';
 import { getValidHref } from '@/utils/string';
@@ -17,7 +17,7 @@ interface ButtonProps {
   rgbaColor: Color;
 }
 
-const Button = styled(FadeLeftContainer)<ButtonProps>`
+const Button = styled(MessageFadeUpContainer)<ButtonProps>`
   ${transition('color', 'background')};
   border-radius: 25px;
   box-shadow: 0 1px 1px 0 rgba(17, 49, 96, 0.06);

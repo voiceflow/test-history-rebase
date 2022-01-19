@@ -1,5 +1,47 @@
-import { BotMessageTypes, Message } from '@/pages/Prototype/types';
+import { BotMessageTypes, Message, MessageType } from '@/pages/Prototype/types';
 
-export const checkIfFirstInSeries = (previousMessage: Message, currentMessage: Message) => {
+export const checkIfFirstInGroup = (previousMessage: Message, currentMessage: Message) => {
   return BotMessageTypes.includes(previousMessage?.type) !== BotMessageTypes.includes(currentMessage?.type);
+};
+
+export const checkIfLastInGroup = (messageIndex: number, messages: Message[]) => {
+  let pointer = messageIndex + 1;
+  while (pointer < messages.length) {
+    const curr = messages[pointer];
+    if (BotMessageTypes.includes(curr?.type)) return false;
+    if (curr.type === MessageType.USER) return true;
+    pointer += 1;
+  }
+  return true;
+};
+
+export const checkIfLastBotMessage = (message: Message, messages: Message[]) => {
+  let pointer = messages.length - 1;
+  while (pointer >= 0) {
+    const curr = messages[pointer];
+    if (BotMessageTypes.includes(curr?.type)) {
+      if (message.id === curr.id) {
+        return true;
+      }
+      return false;
+    }
+    pointer -= 1;
+  }
+  return true;
+};
+
+export const checkIfLastBubble = (message: Message, messages: Message[]) => {
+  let pointer = messages.length - 1;
+  while (pointer >= 0) {
+    const curr = messages[pointer];
+    const messageType = curr.type;
+    if (BotMessageTypes.includes(messageType) || messageType === MessageType.USER) {
+      if (message.id === curr.id) {
+        return true;
+      }
+      return false;
+    }
+    pointer -= 1;
+  }
+  return true;
 };

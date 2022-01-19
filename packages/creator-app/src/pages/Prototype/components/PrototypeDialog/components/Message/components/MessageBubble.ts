@@ -16,7 +16,7 @@ const Container = styled.div<ContainerProps>`
   text-align: left;
   word-break: break-word;
   font-size: 15px;
-  border-radius: 15px;
+  border-radius: 12px;
   min-height: 45px;
 
   ::first-letter {
@@ -33,21 +33,10 @@ const Container = styled.div<ContainerProps>`
       ? css`
           background-color: ${({ theme }) => color ?? theme.colors.blue};
           color: white;
-          border-bottom-right-radius: 5px;
         `
       : css`
           background-color: #f4f4f4;
         `}
-
-${({ rightAlign = false, isFirstInSeries = false }) =>
-    !rightAlign &&
-    (isFirstInSeries
-      ? css`
-          border-bottom-left-radius: 5px;
-        `
-      : css`
-          border-top-left-radius: 5px;
-        `)}
 `;
 
 export default Container;

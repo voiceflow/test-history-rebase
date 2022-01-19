@@ -32,6 +32,7 @@ export {
 } from './Button';
 export { default as Card } from './Card';
 export { default as Collapse } from './Collapse';
+export { default as Disable } from './Disable';
 export type { DropdownPlacement } from './Dropdown';
 export { default as Dropdown } from './Dropdown';
 export { ErrorBoundaryWrapper, ErrorDescription, ErrorMessage, ErrorMessageWithDivider, Page404, Page404Wrapper, PageError } from './Error';
@@ -68,6 +69,7 @@ export type { StyledInputProps } from './Input';
 export {
   ChildInput,
   ControlledInput,
+  hideNumberArrows,
   default as Input,
   inputFocusStyle,
   inputStyle,

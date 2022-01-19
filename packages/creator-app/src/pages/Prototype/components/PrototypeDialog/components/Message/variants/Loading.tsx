@@ -1,14 +1,18 @@
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
+import { AnyStyledComponent } from 'styled-components';
 
 import { css, styled } from '@/hocs';
+import { PMStatus } from '@/pages/Prototype/types';
 import { ClassName } from '@/styles/constants';
 
 import { Message } from '../components';
 import Bubble from '../components/MessageBubble';
 
-const Component = styled(Message)<{ isLoading?: boolean }>`
+const Container = styled(Message)<{ isLoading?: boolean }>`
   ${Bubble} {
     width: 70px;
+    animation: 1.6s heartbeat infinite ease-out;
   }
 
   ${({ isLoading }) =>
@@ -17,64 +21,98 @@ const Component = styled(Message)<{ isLoading?: boolean }>`
       display: none;
     `}
 
-  .dot-flashing {
+  // https://codepen.io/nzbin/pen/GGrXbp
+  .dot-falling {
     position: relative;
-    width: 8px;
-    height: 8px;
+    left: -9984px;
+    top: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 5px;
-    background-color: #8f8e94;
-    color: #8f8e94;
-    animation: dotFlashing 0.8s infinite linear alternate;
+    animation: dotFalling 0.8s infinite alternate;
     animation-delay: 0.25s;
-    left: 14px;
-    top: 7px;
   }
 
-  .dot-flashing::before,
-  .dot-flashing::after {
+  .dot-falling::before,
+  .dot-falling::after {
     content: '';
     display: inline-block;
     position: absolute;
     top: 0;
   }
 
-  .dot-flashing::before {
-    left: -12px;
-    width: 8px;
-    height: 8px;
+  .dot-falling::before {
+    width: 7px;
+    height: 7px;
     border-radius: 5px;
-    background-color: #8f8e94;
-    color: #8f8e94;
-    animation: dotFlashing 0.8s infinite alternate;
+    animation: dotFallingBefore 0.8s infinite alternate;
     animation-delay: 0s;
   }
 
-  .dot-flashing::after {
-    left: 12px;
-    width: 8px;
-    height: 8px;
+  .dot-falling::after {
+    width: 7px;
+    height: 7px;
     border-radius: 5px;
-    background-color: #8f8e94;
-    color: #8f8e94;
-    animation: dotFlashing 0.8s infinite alternate;
+    animation: dotFallingAfter 0.8s infinite alternate;
     animation-delay: 0.5s;
   }
 
-  @keyframes dotFlashing {
+  @keyframes dotFalling {
     0% {
-      background-color: #8f8e94;
+      box-shadow: 9999px 0 0 0 #8f8e94;
     }
-    50%,
     100% {
-      background-color: #e5e4ec;
+      box-shadow: 9999px 0 0 0 #e5e4ec;
+    }
+  }
+
+  @keyframes dotFallingBefore {
+    0% {
+      box-shadow: 9988px 0 0 0 #8f8e94;
+    }
+    100% {
+      box-shadow: 9988px 0 0 0 #e5e4ec;
+    }
+  }
+
+  @keyframes dotFallingAfter {
+    0% {
+      box-shadow: 10010px 0 0 0 #8f8e94;
+    }
+    100% {
+      box-shadow: 10010px 0 0 0 #e5e4ec;
+    }
+  }
+
+  @keyframes heartbeat {
+    50% {
+      transform: scale(1.05);
     }
   }
 `;
 
-const Loading: React.FC<{ isLoading?: boolean; avatarURL?: string }> = ({ isLoading, avatarURL }) => (
-  <Component className={ClassName.CHAT_DIALOG_LOADING_MESSAGE} withLogo isFirstInSeries withAnimation isLoading={isLoading} avatarURL={avatarURL}>
-    <div className="dot-flashing"></div>
-  </Component>
+interface LoadingProps {
+  isLoading?: boolean;
+  avatarURL?: string;
+  animationContainer?: AnyStyledComponent;
+  pmStatus: Nullable<PMStatus>;
+}
+
+const Loading: React.FC<LoadingProps> = ({ isLoading, pmStatus, avatarURL, animationContainer }) => (
+  <Container
+    className={ClassName.CHAT_DIALOG_LOADING_MESSAGE}
+    withLogo
+    isFirstInSeries
+    withAnimation
+    isLoading={isLoading}
+    animationContainer={animationContainer}
+    avatarURL={avatarURL}
+    isLastInSeries
+    forceIcon
+    pmStatus={pmStatus}
+  >
+    <div className="dot-falling"></div>
+  </Container>
 );
 
 export default Loading;

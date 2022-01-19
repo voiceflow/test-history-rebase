@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.5.5...@voiceflow/socket-utils@1.5.6) (2022-01-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @logux/server to v0.10.8 (vf-000) ([#4767](https://github.com/voiceflow/creator-app/issues/4767)) ([d572372](https://github.com/voiceflow/creator-app/commit/d5723729f6e0c6fdefdbc35e02669a93db5c0047))
+
+
+
+
+
 ## [1.5.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.5.4...@voiceflow/socket-utils@1.5.5) (2022-01-18)
 
 

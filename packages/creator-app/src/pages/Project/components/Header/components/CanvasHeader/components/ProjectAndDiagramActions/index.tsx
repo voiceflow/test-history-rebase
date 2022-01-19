@@ -5,6 +5,7 @@ import { EditableTextAPI } from '@/components/EditableText';
 import { HeaderIconButton } from '@/components/ProjectPage';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
+import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
@@ -33,6 +34,7 @@ const ProjectAndDiagramActions: React.FC = () => {
 
   const isLocked = useSelector((state) => Realtime.isResourceLockedSelector(state)(Realtime.ResourceType.SETTINGS));
   const projectID = useSelector(Session.activeProjectIDSelector);
+  const startNodeID = useSelector(Creator.startNodeIDSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
 
   const getEngine = useEventualEngine();
@@ -108,7 +110,10 @@ const ProjectAndDiagramActions: React.FC = () => {
     <Container>
       {!canEditCanvas && <ViewOnly>View only</ViewOnly>}
 
-      {canEditCanvas && topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && selectedTargets.length > 1 ? (
+      {canEditCanvas &&
+      topicsAndComponents.isEnabled &&
+      isTopicsAndComponentsVersion &&
+      (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID)) ? (
         <BoxFlex gap={5}>
           <HeaderIconButton
             icon="component"

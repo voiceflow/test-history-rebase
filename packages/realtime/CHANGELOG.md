@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.29.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.29.7...@voiceflow/realtime@1.29.8) (2022-01-19)
+
+
+### Bug Fixes
+
+* project conversion (VF-2703) ([#4919](https://github.com/voiceflow/creator-app/issues/4919)) ([65099b9](https://github.com/voiceflow/creator-app/commit/65099b98c6801890a15cc7e9ec57cc095d429d69))
+
+
+
+
+
 ## [1.29.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.29.6...@voiceflow/realtime@1.29.7) (2022-01-19)
 
 

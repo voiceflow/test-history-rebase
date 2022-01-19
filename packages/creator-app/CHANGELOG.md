@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.595.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.594.5...@voiceflow/creator-app@1.595.0) (2022-01-19)
+
+
+### Features
+
+* topics&components tracking (VF-2557) ([#4887](https://github.com/voiceflow/creator-app/issues/4887)) ([230a91a](https://github.com/voiceflow/creator-app/commit/230a91a7b247bd0fbea7c1a4309e9fcb94a467e5))
+
+
+
+
+
 ## [1.594.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.594.4...@voiceflow/creator-app@1.594.5) (2022-01-19)
 
 **Note:** Version bump only for package @voiceflow/creator-app

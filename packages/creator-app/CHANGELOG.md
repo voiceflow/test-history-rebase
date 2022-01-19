@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.597.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.596.0...@voiceflow/creator-app@1.597.0) (2022-01-19)
+
+
+### Features
+
+* create component from a single block (VF-2542) ([#4920](https://github.com/voiceflow/creator-app/issues/4920)) ([1be122c](https://github.com/voiceflow/creator-app/commit/1be122cbad4d0793d4e3570eadc4b11cda1ec61d))
+
+
+
+
+
 # [1.596.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.595.0...@voiceflow/creator-app@1.596.0) (2022-01-19)
 
 

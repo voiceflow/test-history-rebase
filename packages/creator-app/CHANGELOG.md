@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.597.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.597.0...@voiceflow/creator-app@1.597.1) (2022-01-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency idb-keyval to v6.1.0 (vf-000) ([#4917](https://github.com/voiceflow/creator-app/issues/4917)) ([fd66d43](https://github.com/voiceflow/creator-app/commit/fd66d437247e3e9ff2ded3a5a1a0eb01b1b09df7))
+
+
+
+
+
 # [1.597.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.596.0...@voiceflow/creator-app@1.597.0) (2022-01-19)
 
 

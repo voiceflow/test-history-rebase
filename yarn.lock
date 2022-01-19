@@ -3872,10 +3872,10 @@
   dependencies:
     nanoevents "^6.0.2"
 
-"@logux/server@0.10.7":
-  version "0.10.7"
-  resolved "https://registry.yarnpkg.com/@logux/server/-/server-0.10.7.tgz#9f631bd97d9e73cc438b98093ff42bec7b45c500"
-  integrity sha512-vgDNcsdQJzS5Tf3Xlv1DccO6070P4CJ8fPoacVeTKgdV3fXWP1KyV5oiGp2gl9P3zxM1f1gpLUfZ4acNHxQtsA==
+"@logux/server@0.10.8":
+  version "0.10.8"
+  resolved "https://registry.yarnpkg.com/@logux/server/-/server-0.10.8.tgz#654f6cdca359f6b72628edf5f840abada17147bf"
+  integrity sha512-J5JH9S6/CNS1kLrYxbwS/yKpW4+mlZO1hkLNZmoSS+alQpeQq/qu0AqNNTL27u5L7+YJSIVpVxV+8xkfwvhuyg==
   dependencies:
     "@logux/actions" "^0.2.1"
     "@logux/core" "^0.7.2"
@@ -3893,7 +3893,7 @@
     semver "^7.3.5"
     strip-ansi "^7.0.1"
     url-pattern "^1.0.3"
-    ws "^8.2.3"
+    ws "^8.3.0"
     yyyy-mm-dd "^1.0.2"
 
 "@logux/state@0.2.0":
@@ -26199,10 +26199,10 @@ ws@^8.1.0:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.2.1.tgz#bdd92b3c56fdb47d2379b5ae534281922cc5bd12"
   integrity sha512-XkgWpJU3sHU7gX8f13NqTn6KQ85bd1WU7noBHTT8fSohx7OS1TPY8k+cyRPCzFkia7C4mM229yeHr1qK9sM4JQ==
 
-ws@^8.2.3:
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.3.0.tgz#7185e252c8973a60d57170175ff55fdbd116070d"
-  integrity sha512-Gs5EZtpqZzLvmIM59w4igITU57lrtYVFneaa434VROv4thzJyV6UjIL3D42lslWlI+D4KzLYnxSwtfuiO79sNw==
+ws@^8.3.0:
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.4.2.tgz#18e749868d8439f2268368829042894b6907aa0b"
+  integrity sha512-Kbk4Nxyq7/ZWqr/tarI9yIt/+iNNFOjBXEWgTb4ydaNHBNGgvf2QHbS9fdfsndfjFlFwEd4Al+mw83YkaD10ZA==
 
 ws@~7.4.2:
   version "7.4.6"

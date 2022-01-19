@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.3.1...@voiceflow/ml-sdk@1.4.0) (2022-01-19)
+
+
+### Features
+
+* simulate real prototype typing delay (VF-2495) ([#4831](https://github.com/voiceflow/creator-app/issues/4831)) ([d0e12e8](https://github.com/voiceflow/creator-app/commit/d0e12e8bac419ad935adfafa39657af60530d636))
+
+
+
+
+
 ## [1.3.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.3.0...@voiceflow/ml-sdk@1.3.1) (2022-01-06)
 
 

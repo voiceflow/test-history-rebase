@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.5.7...@voiceflow/socket-utils@1.6.0) (2022-01-19)
+
+
+### Features
+
+* simulate real prototype typing delay (VF-2495) ([#4831](https://github.com/voiceflow/creator-app/issues/4831)) ([d0e12e8](https://github.com/voiceflow/creator-app/commit/d0e12e8bac419ad935adfafa39657af60530d636))
+
+
+
+
+
 ## [1.5.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.5.6...@voiceflow/socket-utils@1.5.7) (2022-01-19)
 
 

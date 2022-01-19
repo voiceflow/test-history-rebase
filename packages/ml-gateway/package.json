@@ -10,7 +10,7 @@
     "axios": "0.24.0",
     "core-js": "3.18.0",
     "dotenv": "9.0.2",
-    "express-validator": "6.13.0",
+    "express-validator": "6.14.0",
     "regenerator-runtime": "0.13.9"
   },
   "devDependencies": {

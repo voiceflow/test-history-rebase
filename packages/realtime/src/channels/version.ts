@@ -43,18 +43,33 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
         : [];
 
     // perform initial conversion
-    if (isTopicsAndComponents && !version.topics.length) {
-      const topics = diagrams
-        .filter((diagram) => diagram.type === BaseModels.DiagramType.TOPIC)
-        .map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
+    // eslint-disable-next-line no-underscore-dangle
+    if (isTopicsAndComponents && project._version && project._version >= Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION) {
+      const topicsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.DiagramType.TOPIC);
+      const componentsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.DiagramType.COMPONENT);
 
-      const components = diagrams
-        .filter((diagram) => diagram.type === BaseModels.DiagramType.COMPONENT)
-        .map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
+      if (version.topics.length !== topicsDiagrams.length || version.components.length !== componentsDiagrams.length) {
+        const topics = topicsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
+        const components = componentsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
 
-      version.topics = topics;
-      version.components = components;
-      await this.services.version.patch(creatorID, versionID, { topics, components });
+        version.topics = topics;
+        version.components = components;
+
+        await this.services.version.patch(creatorID, versionID, { topics, components });
+      }
+
+      await Promise.all(
+        topicsDiagrams.map(async (diagram) => {
+          const intentStepIDs = Object.keys(intentSteps[diagram.id] ?? {});
+
+          if (diagram.intentStepIDs?.length === intentStepIDs.length) return;
+
+          // eslint-disable-next-line no-param-reassign
+          diagram.intentStepIDs = intentStepIDs;
+
+          await this.services.diagram.patch(creatorID, diagram.id, { intentStepIDs });
+        })
+      );
     }
 
     return [

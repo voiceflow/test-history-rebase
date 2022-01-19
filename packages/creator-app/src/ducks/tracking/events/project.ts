@@ -150,3 +150,23 @@ export const trackProjectExported = createProjectEventTracker<{
     })
   )
 );
+
+export const trackTopicCreated = createProjectEventTracker((options) =>
+  client.api.analytics.track(EventName.TOPIC_CREATED, createProjectEventPayload(options))
+);
+
+export const trackTopicDeleted = createProjectEventTracker((options) =>
+  client.api.analytics.track(EventName.TOPIC_DELETED, createProjectEventPayload(options))
+);
+
+export const trackTopicConversion = createProjectEventTracker<{ diagramID: string }>(({ diagramID, ...options }) =>
+  client.api.analytics.track(EventName.TOPIC_CONVERSION, createProjectEventPayload({ ...options, diagram_id: diagramID }))
+);
+
+export const trackComponentCreated = createProjectEventTracker((options) =>
+  client.api.analytics.track(EventName.COMPONENT_CREATED, createProjectEventPayload(options))
+);
+
+export const trackComponentDeleted = createProjectEventTracker((options) =>
+  client.api.analytics.track(EventName.COMPONENT_DELETED, createProjectEventPayload(options))
+);

@@ -99,6 +99,13 @@ export enum EventName {
   VARIABLE_CREATED = 'Variable Created',
 
   DEVELOPER_ACCOUNT_CONNECTED = 'Developer Account Connected',
+
+  TOPIC_CREATED = 'Topic Created',
+  TOPIC_DELETED = 'Topic Deleted',
+  TOPIC_CONVERSION = 'Topic Conversion',
+
+  COMPONENT_CREATED = 'Component Created',
+  COMPONENT_DELETED = 'Component Deleted',
 }
 
 export enum IntentEditType {

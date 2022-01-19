@@ -30,7 +30,6 @@ import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
 import { crud } from './actions';
 import { fullActiveDiagramSelector } from './fullDiagram';
-import { diagramByIDSelector } from './selectors';
 
 // side effects
 
@@ -173,12 +172,16 @@ export const createTopicDiagram =
 
           await dispatch(saveTopics(topics));
 
+          dispatch(Tracking.trackTopicCreated());
+
           return newDiagram;
         },
         async (context) => {
           RootPageProgressBar.start(PageProgressBar.TOPIC_CREATING);
 
           const diagram = await dispatch(waitAsync(Realtime.diagram.createTopic, { ...context, diagram: { name } }));
+
+          dispatch(Tracking.trackTopicCreated());
 
           RootPageProgressBar.stop(PageProgressBar.TOPIC_CREATING);
 
@@ -232,6 +235,8 @@ export const createEmptyComponent =
     RootPageProgressBar.start(PageProgressBar.COMPONENT_CREATING);
 
     const diagramID = await dispatch(createComponentDiagram(name));
+
+    dispatch(Tracking.trackComponentCreated());
 
     await dispatch(addDiagramIDIntoComponentsList(diagramID));
 
@@ -334,6 +339,8 @@ export const convertToComponent =
       )
     );
 
+    dispatch(Tracking.trackComponentCreated());
+
     return {
       name,
       diagramID,
@@ -409,19 +416,22 @@ export const deleteDiagram =
       await dispatch(Router.goToRootDiagram());
     }
 
+    const { type } = DiagramV2.diagramByIDSelector(state, { id: diagramID }) ?? {};
+    const isTopic = type === BaseModels.DiagramType.TOPIC;
+    const isComponent = type === BaseModels.DiagramType.COMPONENT;
+
     await dispatch(
       Feature.applyAtomicSideEffect(
         getActiveVersionContext,
         async () => {
           if (isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion) {
-            const { type } = diagramByIDSelector(state)(diagramID) ?? {};
             const { topics = [], components = [] } = VersionV2.active.versionSelector(state) ?? {};
 
-            if (type === BaseModels.DiagramType.TOPIC) {
+            if (isTopic) {
               const newTopics = topics.filter(({ sourceID }) => sourceID !== diagramID);
 
               await dispatch(saveTopics(newTopics));
-            } else if (type === BaseModels.DiagramType.COMPONENT) {
+            } else if (isComponent) {
               const newComponents = components.filter(({ sourceID }) => sourceID !== diagramID);
 
               await dispatch(saveComponents(newComponents));
@@ -436,6 +446,12 @@ export const deleteDiagram =
         }
       )
     );
+
+    if (isTopic) {
+      dispatch(Tracking.trackTopicDeleted());
+    } else if (isComponent) {
+      dispatch(Tracking.trackComponentDeleted());
+    }
   };
 
 export const renameDiagram =
@@ -477,6 +493,8 @@ export const convertToTopic =
 
           try {
             await dispatch(waitAsync(Realtime.diagram.convertToTopic, { ...context, diagramID }));
+
+            dispatch(Tracking.trackTopicConversion({ diagramID }));
           } catch (err) {
             if (err instanceof AsyncActionError && err.code === Realtime.ErrorCode.CANNOT_CONVERT_TO_TOPIC) {
               logger.warn(`unable to convert to topic: ${err.message}`);

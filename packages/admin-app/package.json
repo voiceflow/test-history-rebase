@@ -48,6 +48,7 @@
     "universal-cookie": "3.1.0"
   },
   "devDependencies": {
+    "@types/git-branch": "2.0.2",
     "git-branch": "2.0.1"
   },
   "files": [

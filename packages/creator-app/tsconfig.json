@@ -47,14 +47,12 @@
       "gapi",
       "gapi.auth2",
       "resize-observer-browser",
-      "webpack-env",
       "dayjs/plugin/relativeTime",
       "dayjs/plugin/minMax"
     ]
   },
   "exclude": [
     "node_modules/**/*",
-    "build/**/*",
-    "config/webpack/**/*"
+    "build/**/*"
   ]
 }

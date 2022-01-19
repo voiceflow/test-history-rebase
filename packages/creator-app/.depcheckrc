@@ -2,16 +2,13 @@
   "specials": [
     "bin",
     "istanbul",
-    "webpack",
     "jest",
     "babel"
   ],
   "ignores": [
     "buffer",
     "@babel/core",
-    "@svgr/webpack",
     "@logux/state",
-    "@voiceflow/webpack-config",
     "@types/*",
     "postcss*",
     "css-loader",
@@ -35,8 +32,7 @@
     "sinon-chai",
     "chai",
     "chai-as-promised",
-    "webpack",
     "react-hot-loader",
-    "webpack-nano"
+    "stream-browserify"
   ]
 }

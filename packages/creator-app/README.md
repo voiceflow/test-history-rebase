@@ -34,7 +34,7 @@ yarn gen-certs
 
 ### Build
 
-Run `webpack` to generate bundled, browser-ready code.
+Generate bundled, browser-ready code.
 
 ```sh
 yarn build
@@ -42,7 +42,7 @@ yarn build
 
 ### Start
 
-Run a local `webpack` development server that watches files and re-builds them on the fly.
+Run a local development server that watches files and re-builds them on the fly.
 
 ```sh
 yarn start

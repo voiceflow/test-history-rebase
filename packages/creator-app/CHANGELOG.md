@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.599.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.599.1...@voiceflow/creator-app@1.599.2) (2022-01-20)
+
+
+### Bug Fixes
+
+* allow viewers to click no-match/no-reply buttons (VF-2528) ([#4934](https://github.com/voiceflow/creator-app/issues/4934)) ([e2a5021](https://github.com/voiceflow/creator-app/commit/e2a502141e02b34d062c8b4b7a4bfe8d3e51faad))
+
+
+
+
+
 ## [1.599.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.599.0...@voiceflow/creator-app@1.599.1) (2022-01-20)
 
 

@@ -24,6 +24,8 @@ export const goToHome = () => goTo('');
 
 export const goToLogin = (search?: string) => goTo(`${Path.LOGIN}${search ?? ''}`);
 
+export const goToLogout = (search?: string) => goTo(`${Path.LOGOUT}${search ?? ''}`);
+
 export const goToSignup = (search?: string) => goTo(`${Path.SIGNUP}${search ?? ''}`);
 
 export const goToAdoptSSO = (state: { domain: string; clientID: string; email: string }) => goTo(Path.SSO_ADOPT, state);

@@ -6,7 +6,7 @@ import client from '@/client';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
-import { useDispatch, useModals, useSelector } from '@/hooks';
+import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 
 const ProfileNameModal: React.FC = () => {
   const user = useSelector(Account.userSelector);
@@ -14,6 +14,7 @@ const ProfileNameModal: React.FC = () => {
   const [saveName, setSaveName] = React.useState(user.name ?? '');
   const [saving, setSaving] = React.useState(false);
   const { isOpened, close } = useModals(ModalType.PROFILE_NAME_MODAL);
+  const [trackingEvents] = useTrackingEvents();
   const nameInputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -29,6 +30,7 @@ const ProfileNameModal: React.FC = () => {
       await client.user.updateProfileName(saveName);
       updateAccount({ name: saveName });
       toast.success('Name successfully updated');
+      trackingEvents.trackProfileNameChanged();
       setSaving(false);
       close();
     } catch (e) {

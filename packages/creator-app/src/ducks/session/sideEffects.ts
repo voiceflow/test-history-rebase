@@ -49,11 +49,9 @@ export const resetSession = (): Thunk => async (dispatch) => {
 export const logout = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const token = authTokenSelector(state);
-
   if (token) {
     await client.session.delete().catch(Sentry.error);
   }
-
   localStorage.clear();
   await dispatch(resetSession());
 };

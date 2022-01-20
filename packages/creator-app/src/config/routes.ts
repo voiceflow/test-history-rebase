@@ -5,6 +5,7 @@ export enum RootRoute {
   SSML = 'ssml',
   RESET = 'reset',
   LOGIN = 'login',
+  LOGOUT = 'logout',
   SIGNUP = 'signup',
   ONBOARDING = 'onboarding',
   CREATOR = 'creator',
@@ -138,6 +139,10 @@ export const Path = {
   ACCOUNT_INTEGRATIONS: toPath(RootRoute.ACCOUNT, AccountSettingsRoute.INTEGRATIONS),
 
   CONFIRM_ACCOUNT: toPath(RootRoute.ACCOUNT, 'confirm', ':token'),
+
+  CONFIRM_EMAIL_UPDATE: toPath(RootRoute.ACCOUNT, 'confirmEmail', ':token'),
+
+  LOGOUT: toPath(RootRoute.LOGOUT),
 
   INVITE: toPath(RootRoute.INVITE),
 

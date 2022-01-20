@@ -5,7 +5,7 @@ import React from 'react';
 import client from '@/client';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
-import { useModals } from '@/hooks';
+import { useModals, useTrackingEvents } from '@/hooks';
 import { MIN_PASSWORD_LENGTH } from '@/pages/Auth/constants';
 
 const ChangePasswordModal: React.FC = () => {
@@ -14,6 +14,7 @@ const ChangePasswordModal: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [saving, setSaving] = React.useState(false);
   const { isOpened, close } = useModals(ModalType.CHANGE_PASSWORD_MODAL);
+  const [trackingEvents] = useTrackingEvents();
   const nameInputRef = React.useRef<HTMLInputElement>(null);
 
   const reset = () => {
@@ -43,8 +44,8 @@ const ChangePasswordModal: React.FC = () => {
     } else {
       try {
         await client.user.updatePassword(currentPassword, nextPassword);
-
         toast.success('Password successfully updated');
+        trackingEvents.trackProfilePasswordChanged();
         reset();
         close();
       } catch (e) {

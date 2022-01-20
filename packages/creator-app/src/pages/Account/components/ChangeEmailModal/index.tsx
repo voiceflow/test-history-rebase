@@ -1,6 +1,8 @@
 import { Box, Button, Input, Link, stopImmediatePropagation, SvgIcon, toast } from '@voiceflow/ui';
+import _get from 'lodash/get';
 import React from 'react';
 
+import client from '@/client';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import UpgradeContainer from '@/components/Upgrade/UpgradeContainer';
 import { ModalType } from '@/constants';
@@ -29,12 +31,15 @@ const ChangeEmailModal: React.FC = () => {
     if (!password.trim() || saving) return;
     setSaving(true);
     try {
+      await client.user.updateEmail(password, nextEmail);
       toast.success('Validation email successfully sent');
       reset();
       close();
     } catch (e) {
-      toast.error('Unable to update email, try again later');
+      const errText = _get(e, ['body', 'data']) || false;
+      const errToast = errText || 'Unable to update email, try again later';
       setSaving(false);
+      toast.error(errToast);
     }
   };
 
@@ -48,9 +53,7 @@ const ChangeEmailModal: React.FC = () => {
 
         <br />
         <div style={{ color: '#62778c', marginBottom: '12px', fontWeight: 600 }}>Password</div>
-
-        <Input value={password} onChangeText={setPassword} placeholder="Confirm Voiceflow password" onEnterPress={handleSave} />
-
+        <Input onEnterPress={handleSave} value={password} onChangeText={setPassword} placeholder="Confirm Voiceflow password" type="password" />
         <br />
         <br />
         <br />

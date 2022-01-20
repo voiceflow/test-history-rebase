@@ -11,12 +11,14 @@ suite('Client - User', ({ expect, stubFetch }) => {
       'updateProfilePicture',
       'updatePassword',
       'updateProfileName',
+      'updateEmail',
       'getReferralCouponCode',
       'resetEmail',
       'testResetPassword',
       'resetPassword',
       'resendConfirmationEmail',
       'confirmAccount',
+      'confirmEmailUpdate',
     ]);
   });
 

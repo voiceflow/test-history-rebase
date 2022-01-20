@@ -3,6 +3,7 @@ export * from './conversations';
 export * from './export';
 export * from './invitation';
 export * from './onboarding';
+export * from './profile';
 export * from './project';
 export * from './prototype';
 export * from './session';

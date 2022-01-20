@@ -106,6 +106,10 @@ export enum EventName {
 
   COMPONENT_CREATED = 'Component Created',
   COMPONENT_DELETED = 'Component Deleted',
+
+  PROFILE_NAME_CHANGED = 'Profile Name Changed',
+  PROFILE_EMAIL_CHANGED = 'Profile Email Changed',
+  PROFILE_PASSWORD_CHANGED = 'Profile Password Changed',
 }
 
 export enum IntentEditType {

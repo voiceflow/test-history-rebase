@@ -8,12 +8,15 @@ export type ChatListItemProps = Omit<TextListItemProps, 'header' | 'formControlP
 export type VoiceListItemProps = Omit<SpeakAudioItemProps, 'header' | 'formControlProps'>;
 
 const createPlatformListItem = <P extends ChatListItemProps | VoiceListItemProps>(
-  Component: React.NamedExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<HTMLElement>>
+  Component: React.NamedExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<HTMLElement>>,
+  headerPrefix: string
 ) =>
   React.forwardRef<HTMLElement, P>((props, ref) => (
-    <Component {...props} ref={ref} header={`Reprompt ${props.index + 1}`} formControlProps={{ contentBottomUnits: 2.5 }} />
+    <Component {...props} ref={ref} header={`${headerPrefix} ${props.index + 1}`} formControlProps={{ contentBottomUnits: 2.5 }} />
   ));
 
-export const ChatListItem = createPlatformListItem<ChatListItemProps>(TextListItem);
+export const NoMatchChatListItem = createPlatformListItem<ChatListItemProps>(TextListItem, 'No Match');
+export const NoMatchVoiceListItem = createPlatformListItem<VoiceListItemProps>(SpeakAudioItem, 'No Match');
 
-export const VoiceListItem = createPlatformListItem<VoiceListItemProps>(SpeakAudioItem);
+export const NoReplyChatListItem = createPlatformListItem<ChatListItemProps>(TextListItem, 'No Reply');
+export const NoReplyVoiceListItem = createPlatformListItem<VoiceListItemProps>(SpeakAudioItem, 'No Reply');

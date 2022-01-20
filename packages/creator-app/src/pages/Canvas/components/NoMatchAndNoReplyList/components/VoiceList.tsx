@@ -7,17 +7,26 @@ import SpeakAudioList from '@/pages/Canvas/components/SpeakAudioList';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
-import { VoiceListItem } from './ListItem';
+import { NoMatchVoiceListItem, NoReplyVoiceListItem } from './ListItem';
 
 export interface VoiceListProps {
   randomize: boolean;
   reprompts?: Realtime.NodeData.VoicePrompt[];
+  isNoReply?: boolean;
   onChangeReprompts: (reprompts: Realtime.NodeData.VoicePrompt[]) => void;
   onChangeRandomize: () => void;
   hideRandomizeMenu?: boolean;
 }
 
-const VoiceList: React.FC<VoiceListProps> = ({ reprompts, randomize, children, onChangeReprompts, onChangeRandomize, hideRandomizeMenu }) => {
+const VoiceList: React.FC<VoiceListProps> = ({
+  reprompts,
+  randomize,
+  children,
+  isNoReply,
+  onChangeReprompts,
+  onChangeRandomize,
+  hideRandomizeMenu,
+}) => {
   const platform = React.useContext(PlatformContext)!;
 
   const repromptsCache = React.useRef<Realtime.NodeData.VoicePrompt[]>(reprompts ?? []);
@@ -52,7 +61,7 @@ const VoiceList: React.FC<VoiceListProps> = ({ reprompts, randomize, children, o
       itemName="reprompts"
       randomize={randomize}
       renderMenu={hideRandomizeMenu ? () => null : null}
-      itemComponent={VoiceListItem}
+      itemComponent={isNoReply ? NoReplyVoiceListItem : NoMatchVoiceListItem}
       onChangeItems={onChangeItems}
       onChangeRandomize={onChangeRandomize}
     >

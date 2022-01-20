@@ -45,12 +45,10 @@ const TextList = ({
     factory={factory}
     maxItems={maxItems}
     renderMenu={renderMenu}
-    extraItemProps={{
-      isRandomized: randomize,
-    }}
     onChangeItems={onChangeItems}
     itemComponent={itemComponent}
     howItWorksLink={howItWorksLink}
+    extraItemProps={{ isRandomized: randomize }}
     getControlOptions={({ onAdd, isMaxMatches, scrollToBottom }) =>
       getControlOptions
         ? getControlOptions({ isMaxMatches, onAdd: Utils.functional.chainVoid(onAdd, () => requestAnimationFrame(() => scrollToBottom())) })

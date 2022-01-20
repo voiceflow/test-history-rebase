@@ -5,17 +5,26 @@ import OverflowMenu from '@/components/OverflowMenu';
 import { MAX_SPEAK_ITEMS_COUNT } from '@/constants';
 import TextList from '@/pages/Canvas/components/TextList';
 
-import { ChatListItem } from './ListItem';
+import { NoMatchChatListItem, NoReplyChatListItem } from './ListItem';
 
 export interface ChatListProps {
   randomize: boolean;
   reprompts?: Types.Prompt[];
+  isNoReply?: boolean;
   onChangeReprompts: (reprompts: Types.Prompt[]) => void;
   onChangeRandomize: () => void;
   hideRandomizeMenu?: boolean;
 }
 
-const ChatList: React.FC<ChatListProps> = ({ children, randomize, reprompts = [], onChangeReprompts, onChangeRandomize, hideRandomizeMenu }) => (
+const ChatList: React.FC<ChatListProps> = ({
+  children,
+  randomize,
+  reprompts = [],
+  isNoReply,
+  onChangeReprompts,
+  onChangeRandomize,
+  hideRandomizeMenu,
+}) => (
   <TextList
     label="Text"
     renderMenu={
@@ -31,7 +40,7 @@ const ChatList: React.FC<ChatListProps> = ({ children, randomize, reprompts = []
     items={reprompts}
     maxItems={MAX_SPEAK_ITEMS_COUNT}
     randomize={randomize}
-    itemComponent={ChatListItem}
+    itemComponent={isNoReply ? NoReplyChatListItem : NoMatchChatListItem}
     onChangeItems={onChangeReprompts}
   >
     {children}

@@ -134,6 +134,7 @@ const NoReplyEditor: React.FC<NoReplyEditorProps> = ({ noReply, onChange, pushTo
             <NoMatchAndNoReplyList
               randomize={withoutPathAndAlwaysRandom || noReply.randomize}
               reprompts={noReply.reprompts as any}
+              isNoReply
               onChangeReprompts={(reprompts: Realtime.NodeData.NoMatch['reprompts']) => onChange({ ...noReply, reprompts: reprompts as any })}
               onChangeRandomize={() => onChange({ ...noReply, randomize: !noReply.randomize })}
               hideRandomizeMenu={withoutPathAndAlwaysRandom}

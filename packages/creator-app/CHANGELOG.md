@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.599.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.598.2...@voiceflow/creator-app@1.599.0) (2022-01-20)
+
+
+### Features
+
+* implement ducks for variable states (VF-2593) ([#4916](https://github.com/voiceflow/creator-app/issues/4916)) ([0d0c483](https://github.com/voiceflow/creator-app/commit/0d0c4832d7049067d6d952a75813ba180c05c614))
+
+
+
+
+
 ## [1.598.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.598.1...@voiceflow/creator-app@1.598.2) (2022-01-20)
 
 

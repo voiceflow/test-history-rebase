@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.598.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.598.0...@voiceflow/creator-app@1.598.1) (2022-01-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency core-js to v3.20.3 (vf-000) ([#4913](https://github.com/voiceflow/creator-app/issues/4913)) ([430ebc1](https://github.com/voiceflow/creator-app/commit/430ebc15a9145459d0b0c2db6c7e816c17eb8880))
+
+
+
+
+
 # [1.598.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.597.3...@voiceflow/creator-app@1.598.0) (2022-01-19)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.18](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.3.17...@voiceflow/ml-gateway@1.3.18) (2022-01-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency core-js to v3.20.3 (vf-000) ([#4913](https://github.com/voiceflow/creator-app/issues/4913)) ([430ebc1](https://github.com/voiceflow/creator-app/commit/430ebc15a9145459d0b0c2db6c7e816c17eb8880))
+
+
+
+
+
 ## [1.3.17](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.3.16...@voiceflow/ml-gateway@1.3.17) (2022-01-19)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

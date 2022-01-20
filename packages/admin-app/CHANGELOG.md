@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.15.0...@voiceflow/admin-app@1.15.1) (2022-01-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency prop-types to v15.8.1 (vf-000) ([#4927](https://github.com/voiceflow/creator-app/issues/4927)) ([eaa90fe](https://github.com/voiceflow/creator-app/commit/eaa90febdacd3456ff92a14dc3b036fbafeb788c))
+
+
+
+
+
 # [1.15.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.14.10...@voiceflow/admin-app@1.15.0) (2022-01-19)
 
 

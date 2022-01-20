@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.598.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.598.1...@voiceflow/creator-app@1.598.2) (2022-01-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency loglevel to v1.8.0 (vf-000) ([#4923](https://github.com/voiceflow/creator-app/issues/4923)) ([112a504](https://github.com/voiceflow/creator-app/commit/112a50400636998eb68f7095121f314c9e680f2d))
+* **deps:** update dependency prop-types to v15.8.1 (vf-000) ([#4927](https://github.com/voiceflow/creator-app/issues/4927)) ([eaa90fe](https://github.com/voiceflow/creator-app/commit/eaa90febdacd3456ff92a14dc3b036fbafeb788c))
+
+
+
+
+
 ## [1.598.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.598.0...@voiceflow/creator-app@1.598.1) (2022-01-20)
 
 

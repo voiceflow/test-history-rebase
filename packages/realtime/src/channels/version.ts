@@ -3,6 +3,8 @@ import { Models as BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ChannelContext } from '@voiceflow/socket-utils';
 
+import logger from '@/logger';
+
 import { AbstractChannelControl } from './utils';
 
 class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionChannelParams> {
@@ -42,34 +44,40 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
         ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((project.platformData as Realtime.AlexaProjectData).products))
         : [];
 
-    // perform initial conversion
-    // eslint-disable-next-line no-underscore-dangle
-    if (isTopicsAndComponents && project._version && project._version >= Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION) {
-      const topicsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.DiagramType.TOPIC);
-      const componentsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.DiagramType.COMPONENT);
+    // TODO: replace try/catch with the version.canWrite and diagram.canWrite checks
+    // diagram.version patches can crash for non-editor users
+    try {
+      // perform initial conversion
+      // eslint-disable-next-line no-underscore-dangle
+      if (isTopicsAndComponents && project._version && project._version >= Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION) {
+        const topicsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.DiagramType.TOPIC);
+        const componentsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.DiagramType.COMPONENT);
 
-      if (version.topics.length !== topicsDiagrams.length || version.components.length !== componentsDiagrams.length) {
-        const topics = topicsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
-        const components = componentsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
+        if ((version.topics?.length ?? 0) !== topicsDiagrams.length || (version.components?.length ?? 0) !== componentsDiagrams.length) {
+          const topics = topicsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
+          const components = componentsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
 
-        version.topics = topics;
-        version.components = components;
+          version.topics = topics;
+          version.components = components;
 
-        await this.services.version.patch(creatorID, versionID, { topics, components });
+          await this.services.version.patch(creatorID, versionID, { topics, components });
+        }
+
+        await Promise.all(
+          topicsDiagrams.map(async (diagram) => {
+            const intentStepIDs = Object.keys(intentSteps[diagram.id] ?? {});
+
+            if ((diagram.intentStepIDs?.length ?? 0) === intentStepIDs.length) return;
+
+            // eslint-disable-next-line no-param-reassign
+            diagram.intentStepIDs = intentStepIDs;
+
+            await this.services.diagram.patch(creatorID, diagram.id, { intentStepIDs });
+          })
+        );
       }
-
-      await Promise.all(
-        topicsDiagrams.map(async (diagram) => {
-          const intentStepIDs = Object.keys(intentSteps[diagram.id] ?? {});
-
-          if (diagram.intentStepIDs?.length === intentStepIDs.length) return;
-
-          // eslint-disable-next-line no-param-reassign
-          diagram.intentStepIDs = intentStepIDs;
-
-          await this.services.diagram.patch(creatorID, diagram.id, { intentStepIDs });
-        })
-      );
+    } catch (error) {
+      logger.debug(error);
     }
 
     return [

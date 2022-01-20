@@ -21537,10 +21537,10 @@ react-dev-utils@^11.0.4:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
-react-dismissable-layers@0.1.1, react-dismissable-layers@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/react-dismissable-layers/-/react-dismissable-layers-0.1.1.tgz#db0c0e7ebd06613f61ba91aae9bcc206bdbf2f94"
-  integrity sha512-bTDKMD4eDMAnmxMIXgi8TGfP/NoMRn/ahhdcxC0DR6l+qnUyripBPEo+a3M/lL/F+Layaq0senmG3zCQVDjSLQ==
+react-dismissable-layers@0.2.0, react-dismissable-layers@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-dismissable-layers/-/react-dismissable-layers-0.2.0.tgz#60350f3d11cfa95e22abd325deb4102348f81912"
+  integrity sha512-cUesEmZPS2Og2oKhcbdz1iu/xYkhJbLOuh13uwPGxQYeGmBG1SgALyuhXgoBQ2A+PCwL5wqb9u0kKf5EqVm9/g==
 
 react-dnd-html5-backend@14.0.2:
   version "14.0.2"

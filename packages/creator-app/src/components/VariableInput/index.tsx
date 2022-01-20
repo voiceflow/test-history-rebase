@@ -2,10 +2,10 @@ import { Utils } from '@voiceflow/common';
 import { useEnableDisable } from '@voiceflow/ui';
 import React from 'react';
 
-import EditableText, { EditableTextAPI } from '@/components/EditableText';
+import { EditableTextAPI } from '@/components/EditableText';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 
-import { Container, Label } from './components';
+import { Container, EditableTextInput, Label } from './components';
 
 export interface VariableInputProps {
   name: string;
@@ -38,12 +38,13 @@ const VariableInput: React.FC<VariableInputProps> = ({ name, value, onChange }) 
       onMouseDown={(e) => isFocused && e.target !== editableTextRef.current?.inputRef.current && e.preventDefault()}
     >
       <Label>{name}</Label>
-      <EditableText
+      <EditableTextInput
         ref={editableTextRef}
         value={inputValue}
         name={name}
         onChange={setInputValue}
         onFocus={enableFocus}
+        placeholder="Enter a value"
         onBlur={Utils.functional.chainVoid(disableFocus, () => {
           onChange(inputValue);
         })}

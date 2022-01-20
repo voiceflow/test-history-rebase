@@ -1,8 +1,7 @@
 import { FlexApart, NestedMenuComponents, Select, SelectProps } from '@voiceflow/ui';
 import React from 'react';
 
-// import * as VersionV2 from '@/ducks/versionV2';
-// import { useSelector } from '@/hooks';
+import * as variableState from '@/ducks/variableState';
 
 export interface VariableStateOption {
   label: string;
@@ -15,12 +14,10 @@ type TestVariableStateSelectProps = Omit<Partial<SelectProps<VariableStateOption
 
 const testVariableStateOptionRenderer = (option: VariableStateOption) => <FlexApart fullWidth>{option.label}</FlexApart>;
 
-export const ALL_PROJECT_VARIABLES = 'all_project_variables';
-
 const baseOptions = [
   {
     label: 'All project variables',
-    value: ALL_PROJECT_VARIABLES,
+    value: variableState.ALL_PROJECT_VARIABLES_ID,
   },
   {
     label: 'Divider 1',
@@ -30,7 +27,6 @@ const baseOptions = [
 ];
 
 const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, onChange, className, ...props }) => {
-  // const variablesStates = useSelector(VersionV2.active.variablesStatesSelector);
   const selected = baseOptions.find((variableState) => variableState.value === value) || null;
 
   return (

@@ -1,10 +1,11 @@
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
+import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
-import { useDispatch, useSelector, useTheme } from '@/hooks';
+import { useDispatch, useFeature, useSelector, useTheme } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Project/hooks';
 import PrototypeDisplaySettings from '@/pages/Prototype/components/PrototypeDisplaySettings';
 import PrototypeSettings from '@/pages/Prototype/components/PrototypeSettings';
@@ -17,6 +18,7 @@ import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 const PrototypeOverlay: React.FC = () => {
   const theme = useTheme();
   const isPrototypingMode = usePrototypingMode();
+  const { isEnabled: hasVariableStates } = useFeature(FeatureFlag.VARIABLE_STATES);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const prototypeMode = useSelector(Prototype.activePrototypeModeSelector);
@@ -63,16 +65,18 @@ const PrototypeOverlay: React.FC = () => {
       <PrototypeSidebar open />
       <PrototypeVisualCanvas isShown={isPrototypeDisplay} />
 
-      <Drawer
-        open={isPrototypeSidebarOpened}
-        width={widthRef.current}
-        offset={theme.components.sidebarIconMenu.width}
-        direction={SlideOutDirection.RIGHT}
-      >
-        {isPrototypeVariables && <PrototypeVariableSettings />}
-        {isPrototypeDisplay && <PrototypeDisplaySettings />}
-        {isPrototypeSettings && <PrototypeSettings showTitle />}
-      </Drawer>
+      {!hasVariableStates && (
+        <Drawer
+          open={isPrototypeSidebarOpened}
+          width={widthRef.current}
+          offset={theme.components.sidebarIconMenu.width}
+          direction={SlideOutDirection.RIGHT}
+        >
+          {isPrototypeVariables && <PrototypeVariableSettings />}
+          {isPrototypeDisplay && <PrototypeDisplaySettings />}
+          {isPrototypeSettings && <PrototypeSettings showTitle />}
+        </Drawer>
+      )}
     </>
   );
 };

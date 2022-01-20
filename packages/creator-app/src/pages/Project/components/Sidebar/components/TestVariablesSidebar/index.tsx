@@ -1,31 +1,37 @@
+import { transformStringVariableToNumber } from '@voiceflow/common';
 import { Flex } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
 import TestVariableStateSelect from '@/components/TestVariableStateSelect';
 import VariableList from '@/components/VariableList';
-import { useTheme } from '@/hooks';
+import * as Prototype from '@/ducks/prototype';
+import * as variableState from '@/ducks/variableState';
+import { useDispatch, useSelector, useTheme } from '@/hooks';
 import { SlideOutDirection } from '@/styles/transitions';
 
 import { NoVariablesPlaceholder, SelectContainer } from './components';
 
 const TestVariablesSidebar: React.FC = () => {
   const theme = useTheme();
-  const [variableState, setVariableState] = React.useState<string | null>(null);
+  const variables = useSelector(variableState.selectedVariablesStateVariables);
+  const variableStateId = useSelector(variableState.selectedVariableStateId);
+  const updateSelectedVariableStateId = useDispatch(variableState.updateSelectedVariableStateId);
+  const updateVariables = useDispatch(Prototype.updateVariables);
+  // const [variableState, setVariableState] = React.useState<string | null>(null);
+
+  const onChangeVariable = ({ name, value }: { name: string; value: string }) => {
+    updateVariables({ [name]: transformStringVariableToNumber(value) });
+  };
 
   return (
     <Drawer as="section" open width={theme.components.testVariablesSidebar.width} zIndex={25} direction={SlideOutDirection.RIGHT}>
       <Flex column fullHeight>
         <SelectContainer>
-          <TestVariableStateSelect onChange={(value) => setVariableState(value)} value={variableState} />
+          <TestVariableStateSelect onChange={(value) => updateSelectedVariableStateId(value)} value={variableStateId} />
         </SelectContainer>
-        {variableState ? (
-          <VariableList
-            variables={[
-              { name: 'user_name', value: 'foo' },
-              { name: 'user_age', value: '50' },
-            ]}
-          />
+        {variableStateId ? (
+          <VariableList variables={variables} onChange={onChangeVariable} />
         ) : (
           <NoVariablesPlaceholder>No variable state selected</NoVariablesPlaceholder>
         )}

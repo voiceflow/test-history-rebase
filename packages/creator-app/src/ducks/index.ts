@@ -32,6 +32,7 @@ import thread, * as Thread from '@/ducks/thread';
 import tracking, * as Tracking from '@/ducks/tracking';
 import transcript, * as Transcript from '@/ducks/transcript';
 import ui, * as UI from '@/ducks/ui';
+import variableState, * as VariableState from '@/ducks/variableState';
 import version, * as Version from '@/ducks/version';
 import versionV2, * as VersionV2 from '@/ducks/versionV2';
 import viewport, * as Viewport from '@/ducks/viewport';
@@ -69,6 +70,7 @@ const getCombinedReducer = (history: History) =>
     [Viewport.STATE_KEY]: viewport,
     [Notifications.STATE_KEY]: notifications,
     [Tracking.STATE_KEY]: tracking,
+    [VariableState.STATE_KEY]: variableState,
     [Template.STATE_KEY]: template,
     [Feature.STATE_KEY]: feature,
     [Version.STATE_KEY]: version,

@@ -8,13 +8,10 @@ import { InteractionModelTabType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Session from '@/ducks/session';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs';
-import { useEnableDisable, useSetup } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { useDispatch, useEnableDisable, useSelector, useSetup } from '@/hooks';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import LeftColumn from '../LeftColumn';
@@ -33,17 +30,14 @@ export interface VariablesManagerProps {
 const createVariablesList = (type: VariableType, variables: string[]) =>
   variables.map((variable) => ({ id: addPrefix(type, variable), name: variable, type }));
 
-const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManagerProps> = ({
-  slots,
-  selectedID,
-  platform,
-  setSelectedID,
-  localVariables,
-  globalVariables,
-  removeGlobalVariable,
-  setSelectedTypeAndID,
-  removeVariableFromDiagram,
-}) => {
+const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSelectedID, setSelectedTypeAndID }) => {
+  const removeGlobalVariable = useDispatch(Version.removeGlobalVariable);
+  const removeVariableFromDiagram = useDispatch(Diagram.removeActiveDiagramVariable);
+  const slots = useSelector(SlotV2.allSlotsSelector);
+  const localVariables = useSelector(DiagramV2.active.localVariablesSelector);
+  const globalVariables = useSelector(VersionV2.active.globalVariablesSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
+
   const [mergedVariables, mergedVariablesMap] = React.useMemo(() => {
     const variables = {
       [VariableType.LOCAL]: localVariables,
@@ -177,19 +171,4 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
   );
 };
 
-const mapStateToProps = {
-  slots: SlotV2.allSlotsSelector,
-  diagramID: Session.activeDiagramIDSelector,
-  localVariables: DiagramV2.active.localVariablesSelector,
-  globalVariables: VersionV2.active.globalVariablesSelector,
-  platform: ProjectV2.active.platformSelector,
-};
-
-const mapDispatchToProps = {
-  removeGlobalVariable: Version.removeGlobalVariable,
-  removeVariableFromDiagram: Diagram.removeActiveDiagramVariable,
-};
-
-type ConnectedVariablesManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(VariablesManager) as React.FC<VariablesManagerProps>;
+export default VariablesManager;

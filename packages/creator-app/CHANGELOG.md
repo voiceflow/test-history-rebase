@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.600.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.600.0...@voiceflow/creator-app@1.600.1) (2022-01-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency react-dismissable-layers to v0.2.0 (vf-000) ([#4931](https://github.com/voiceflow/creator-app/issues/4931)) ([937adef](https://github.com/voiceflow/creator-app/commit/937adef6c4378fdac6f3116a9fd1d3c064503732))
+
+
+
+
+
 # [1.600.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.599.3...@voiceflow/creator-app@1.600.0) (2022-01-20)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.600.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.600.1...@voiceflow/creator-app@1.600.2) (2022-01-21)
+
+
+### Bug Fixes
+
+* visual block display (VF-000) ([#4943](https://github.com/voiceflow/creator-app/issues/4943)) ([4494720](https://github.com/voiceflow/creator-app/commit/4494720e48715c20994b876e2af914282d504d80))
+
+
+
+
+
 ## [1.600.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.600.0...@voiceflow/creator-app@1.600.1) (2022-01-20)
 
 

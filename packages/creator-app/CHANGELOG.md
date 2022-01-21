@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.605.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.605.1...@voiceflow/creator-app@1.605.2) (2022-01-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rxjs to v7.5.2 (vf-000) ([#4945](https://github.com/voiceflow/creator-app/issues/4945)) ([6aa1980](https://github.com/voiceflow/creator-app/commit/6aa19804042493b9d10d5dd4d0debd6d09ff2d52))
+
+
+
+
+
 ## [1.605.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.605.0...@voiceflow/creator-app@1.605.1) (2022-01-21)
 
 

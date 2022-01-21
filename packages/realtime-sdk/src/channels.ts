@@ -13,6 +13,9 @@ export type ProjectChannelParams = Utils.protocol.ChannelParams<typeof project>;
 
 export const version = project.extend(['versionID'], ({ versionID }) => `${VERSION_KEY}/${versionID}`);
 export type VersionChannelParams = Utils.protocol.ChannelParams<typeof version>;
+export interface VersionChannelExtras {
+  diagramID?: string;
+}
 
 export const diagram = project.extend(['diagramID'], ({ diagramID }) => `${DIAGRAM_KEY}/${diagramID}`);
 export type DiagramChannelParams = Utils.protocol.ChannelParams<typeof diagram>;

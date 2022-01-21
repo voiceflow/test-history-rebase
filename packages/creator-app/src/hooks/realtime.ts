@@ -57,8 +57,20 @@ export const useWorkspaceSubscription = ({ workspaceID }: NullableRecord<Realtim
 export const useProjectSubscription = ({ projectID, workspaceID }: NullableRecord<Realtime.Channels.ProjectChannelParams>): boolean =>
   !useSubscription(projectID && workspaceID ? [Realtime.Channels.project.build({ projectID, workspaceID })] : []);
 
-export const useVersionSubscription = ({ versionID, projectID, workspaceID }: NullableRecord<Realtime.Channels.VersionChannelParams>): boolean =>
-  !useSubscription(versionID && projectID && workspaceID ? [Realtime.Channels.version.build({ versionID, projectID, workspaceID })] : []);
+export const useVersionSubscription = (
+  { versionID, projectID, workspaceID }: NullableRecord<Realtime.Channels.VersionChannelParams>,
+  extras: Realtime.Channels.VersionChannelExtras
+): boolean =>
+  !useSubscription(
+    versionID && projectID && workspaceID
+      ? [
+          {
+            ...extras,
+            channel: Realtime.Channels.version.build({ versionID, projectID, workspaceID }),
+          },
+        ]
+      : []
+  );
 
 export const useDiagramSubscription = ({ diagramID, projectID, workspaceID }: NullableRecord<Realtime.Channels.DiagramChannelParams>): boolean =>
   !useSubscription(diagramID && projectID && workspaceID ? [Realtime.Channels.diagram.build({ diagramID, projectID, workspaceID })] : []);

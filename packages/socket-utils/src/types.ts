@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import type { LoguxSubscribeAction } from '@logux/actions';
 import type { ChannelContext as BaseChannelContext, Context as BaseContext, ServerMeta } from '@logux/server';
 import type { Resend } from '@logux/server/base-server';
 import { Eventual } from '@voiceflow/common';
@@ -39,3 +40,5 @@ export type Resender<P, D extends BaseContextData = BaseContextData> = (ctx: Con
 export type ChannelContext<P extends object, D extends object = {}> = BaseChannelContext<D, P, {}>;
 
 export type ChannelAccessor<P extends object, D extends object = {}> = (ctx: ChannelContext<P, D>) => Eventual<boolean>;
+
+export type ChannelSubscribeAction<E extends object> = LoguxSubscribeAction & E;

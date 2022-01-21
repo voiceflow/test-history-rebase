@@ -2,7 +2,7 @@ import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
 import * as Session from '@/ducks/session';
-import { useSelector, useVersionSubscription } from '@/hooks';
+import { useRouteDiagramID, useSelector, useVersionSubscription } from '@/hooks';
 
 import ProjectSubscriptionGate from './ProjectSubscriptionGate';
 
@@ -13,7 +13,8 @@ export interface VersionSubscriptionGateProps {
 }
 
 const VersionSubscriptionGate: React.FC<VersionSubscriptionGateProps> = ({ workspaceID, projectID, versionID, children }) => {
-  const isSubscribed = useVersionSubscription({ versionID, projectID, workspaceID });
+  const diagramID = useRouteDiagramID() ?? undefined;
+  const isSubscribed = useVersionSubscription({ versionID, projectID, workspaceID }, { diagramID });
   const activeVersionID = useSelector(Session.activeVersionIDSelector);
 
   return (

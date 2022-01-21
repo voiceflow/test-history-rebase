@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.600.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.600.3...@voiceflow/creator-app@1.600.4) (2022-01-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency prismjs to v1.26.0 (vf-000) ([#4925](https://github.com/voiceflow/creator-app/issues/4925)) ([aa994c3](https://github.com/voiceflow/creator-app/commit/aa994c3859a0ab6067cfebe6eae421e09c824ab3))
+
+
+
+
+
 ## [1.600.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.600.2...@voiceflow/creator-app@1.600.3) (2022-01-21)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.600.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.600.4...@voiceflow/creator-app@1.600.5) (2022-01-21)
+
+
+### Bug Fixes
+
+* load non-root diagram for canvas export (VF-2734) ([#4944](https://github.com/voiceflow/creator-app/issues/4944)) ([4372329](https://github.com/voiceflow/creator-app/commit/43723298cb3b95b00122d1a004f1daa53c9225c0))
+
+
+
+
+
 ## [1.600.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.600.3...@voiceflow/creator-app@1.600.4) (2022-01-21)
 
 

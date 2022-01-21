@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.48.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.48.0...@voiceflow/realtime-sdk@1.48.1) (2022-01-21)
+
+
+### Bug Fixes
+
+* load non-root diagram for canvas export (VF-2734) ([#4944](https://github.com/voiceflow/creator-app/issues/4944)) ([4372329](https://github.com/voiceflow/creator-app/commit/43723298cb3b95b00122d1a004f1daa53c9225c0))
+
+
+
+
+
 # [1.48.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.47.1...@voiceflow/realtime-sdk@1.48.0) (2022-01-19)
 
 

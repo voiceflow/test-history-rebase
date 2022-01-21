@@ -120,7 +120,7 @@
     "regenerator-runtime": "0.13.9",
     "reselect": "4.0.0",
     "resize-observer-polyfill": "1.5.1",
-    "rxjs": "7.3.0",
+    "rxjs": "7.5.2",
     "shallowequal": "1.1.0",
     "simplebar": "5.3.3",
     "simplebar-react": "2.3.3",

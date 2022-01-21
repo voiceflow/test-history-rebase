@@ -1,3 +1,4 @@
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -11,6 +12,7 @@ import { useConnectState } from './BaseConnectPlatformModal/hooks';
 import { getPlatformModalProps } from './BaseConnectPlatformModal/utils';
 
 const MODAL_TYPE = ModalType.CONNECT_PLATFORM;
+const PLATFORM_TYPE = Constants.PlatformType;
 
 const ConnectActivePlatformModal: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
@@ -22,15 +24,19 @@ const ConnectActivePlatformModal: React.FC = () => {
 
   const [state, api] = useConnectState(isOpened);
 
-  if (stage === AlexaStageType.IDLE) {
+  const isAlexa = platform === PLATFORM_TYPE.ALEXA;
+  const isGoogle = platform === PLATFORM_TYPE.GOOGLE;
+  const isDialogflow = platform === PLATFORM_TYPE.DIALOGFLOW_ES_CHAT || platform === PLATFORM_TYPE.DIALOGFLOW_ES_VOICE;
+
+  if (isAlexa && stage === AlexaStageType.IDLE) {
     return <AlexaIdleStage modalType={MODAL_TYPE} />;
   }
 
-  if (stage === GoogleStageType.IDLE) {
+  if (isGoogle && stage === GoogleStageType.IDLE) {
     return <GoogleIdleStage modalType={MODAL_TYPE} />;
   }
 
-  if (stage === DialogflowStageType.IDLE) {
+  if (isDialogflow && stage === DialogflowStageType.IDLE) {
     return <DialogflowIdleStage modalType={MODAL_TYPE} />;
   }
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.604.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.603.0...@voiceflow/creator-app@1.604.0) (2022-01-21)
+
+
+### Features
+
+* add color change to blocks selection (VF-2618) ([#4949](https://github.com/voiceflow/creator-app/issues/4949)) ([dd0e142](https://github.com/voiceflow/creator-app/commit/dd0e142c3caeebdcb197986e76dd2aea6cedac0e))
+
+
+
+
+
 # [1.603.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.602.1...@voiceflow/creator-app@1.603.0) (2022-01-21)
 
 

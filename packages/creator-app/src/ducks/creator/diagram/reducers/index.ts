@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { normalize } from 'normal-store';
 import * as Redux from 'redux';
 import undoable, { includeAction } from 'redux-undo';
 import { isType } from 'typescript-fsa';
@@ -62,9 +63,9 @@ export const initializeCreatorReducer: Reducer<DiagramStateType, InitializeCreat
   diagramID,
   rootNodeIDs,
   data,
-  ports: Utils.normalized.normalize(ports),
-  nodes: Utils.normalized.normalize(nodes),
-  links: Utils.normalized.normalize(links),
+  ports: normalize(ports),
+  nodes: normalize(nodes),
+  links: normalize(links),
   linksByPortID: buildLinksByPortID(links),
   linksByNodeID: buildLinksByNodeID(links),
   linkedNodesByNodeID: buildLinkedNodesByNodeID(links),

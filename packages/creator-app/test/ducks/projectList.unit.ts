@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { normalize } from 'normal-store';
 import { DeepPartial } from 'utility-types';
 
 import client from '@/client';
@@ -115,7 +116,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
         expect(
           select(ProjectListV2.defaultProjectListSelector, {
             ...ROOT_STATE,
-            [ProjectList.STATE_KEY]: Utils.normalized.normalize([defaultList, ...otherLists]),
+            [ProjectList.STATE_KEY]: normalize([defaultList, ...otherLists]),
           })
         ).to.eq(defaultList);
       });
@@ -124,7 +125,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
         expect(
           select(ProjectListV2.defaultProjectListSelector, {
             ...ROOT_STATE,
-            [ProjectList.STATE_KEY]: Utils.normalized.normalize(otherLists),
+            [ProjectList.STATE_KEY]: normalize(otherLists),
           })
         ).to.be.null;
       });

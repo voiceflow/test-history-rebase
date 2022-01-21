@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _pick from 'lodash/pick';
+import * as Normal from 'normal-store';
 
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
@@ -113,7 +114,7 @@ export const patchIntentSlot =
     const intent = IntentV2.intentByIDSelector(getState(), { id });
     if (!intent) return;
 
-    dispatch(patchIntent(id, inferIntentType({ slots: Utils.normalized.patchNormalizedByKey(intent.slots, slotID, data) })));
+    dispatch(patchIntent(id, inferIntentType({ slots: Normal.patchOne(intent.slots, slotID, data) })));
   };
 
 export const removeIntentSlot =
@@ -140,7 +141,7 @@ export const removeIntentSlot =
       return input;
     });
 
-    dispatch(patchIntent(id, inferIntentType({ slots: Utils.normalized.removeNormalizedByKey(slots, slotID), inputs: sanitizedInputs })));
+    dispatch(patchIntent(id, inferIntentType({ slots: Normal.removeOne(slots, slotID), inputs: sanitizedInputs })));
   };
 
 export const updateIntentSlotDialog =

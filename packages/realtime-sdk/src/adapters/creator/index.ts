@@ -2,9 +2,10 @@ import { BlockType } from '@realtime-sdk/constants';
 import { CreatorDiagram, Link, Node, NodeData, Port } from '@realtime-sdk/models';
 import { isDiagramReferencesBlockType, isMarkupBlockType } from '@realtime-sdk/utils/typeGuards';
 import { Models as BaseModels } from '@voiceflow/base-types';
-import { Normalized, Utils } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { createSimpleAdapter } from 'bidirectional-adapter';
+import { denormalize, Normalized } from 'normal-store';
 
 import { AdapterContext } from '../types';
 import { cleanupDBNodes } from './cleanup';
@@ -111,7 +112,7 @@ const creatorAdapter = createSimpleAdapter<
     };
   },
   ({ diagramID, viewport, links, data }, { nodes, ports, platform, context }) => {
-    const nodeList = Utils.normalized.denormalize(nodes);
+    const nodeList = denormalize(nodes);
 
     const portToTargets = links.reduce<Record<string, BaseModels.NodeID>>((acc, link) => {
       if (link.source.portID in ports.byKey && link.target.nodeID in nodes.byKey) {

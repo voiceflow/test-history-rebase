@@ -1,6 +1,7 @@
 import { Models as BaseModels, Node as BaseNode } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { normalize } from 'normal-store';
 
 import client from '@/client';
 import { RootPageProgressBar } from '@/components/PageProgressBar';
@@ -302,7 +303,7 @@ export const convertToComponent =
         viewport: { zoom: 1, x: 0, y: 0 },
         diagramID: '',
       } as Realtime.CreatorDiagram,
-      { nodes: Utils.normalized.normalize(adjustedNodes), ports: Utils.normalized.normalize(adjustedPorts), platform, context: {} }
+      { nodes: normalize(adjustedNodes), ports: normalize(adjustedPorts), platform, context: {} }
     );
 
     diagram.nodes = { ...diagram.nodes, ...convertedDiagram.nodes };

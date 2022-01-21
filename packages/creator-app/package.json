@@ -68,6 +68,7 @@
     "mousetrap": "1.6.5",
     "nanoevents": "6.0.2",
     "nanostores": "0.4.9",
+    "normal-store": "1.1.0",
     "number-to-words": "1.2.4",
     "object-hash": "2.2.0",
     "papaparse": "5.3.1",

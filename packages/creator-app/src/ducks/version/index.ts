@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 
 import createCRUDReducer from '@/ducks/utils/crud';
 import { Reducer, RootReducer } from '@/store/types';
@@ -40,7 +41,7 @@ export const updatePublishingReducer: Reducer<VersionState, UpdatePublishing<Rea
 ) => {
   const version = Utils.normalized.getNormalizedByKey(state, id);
 
-  return Utils.normalized.patchNormalizedByKey(state, id, {
+  return Normal.patchOne(state, id, {
     publishing: {
       ...version.publishing,
       ...publishing,
@@ -51,7 +52,7 @@ export const updatePublishingReducer: Reducer<VersionState, UpdatePublishing<Rea
 export const updateSessionReducer: Reducer<VersionState, UpdateSession> = (state, { payload: { id, session } }) => {
   const version = Utils.normalized.getNormalizedByKey(state, id);
 
-  return Utils.normalized.patchNormalizedByKey(state, id, {
+  return Normal.patchOne(state, id, {
     session: {
       ...version.session,
       ...session,

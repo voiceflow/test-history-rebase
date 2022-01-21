@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _sortBy from 'lodash/sortBy';
+import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
 import { BlockType } from '@/constants';
@@ -39,7 +40,7 @@ export const isRootNodeSelector = createSelector([rootNodeIDsSelector], (rootNod
 export const allNodeIDsSelector = createSelector([normalizedNodesSelector], (nodes) => nodes.allKeys);
 
 export const stepNodeIDsSelector = createSelector([normalizedNodesSelector], (nodes) =>
-  nodes.allKeys.filter((nodeID) => !!Utils.normalized.getNormalizedByKey(nodes, nodeID).parentNode)
+  nodes.allKeys.filter((nodeID) => !!Normal.getOne(nodes, nodeID)?.parentNode)
 );
 
 export const startNodeIDSelector = createSelector([normalizedNodesSelector], (nodes) => {
@@ -53,26 +54,20 @@ export const nodeByIDSelector = createSelector(
   (nodes) => (nodeID: string) => Utils.normalized.getNormalizedByKey(nodes, nodeID)
 );
 
-export const allNodesByIDsSelector = createSelector(
-  [normalizedNodesSelector],
-  (nodes) => (nodeIDs: string[]) => Utils.normalized.getAllNormalizedByKeys(nodes, nodeIDs)
-);
+export const allNodesByIDsSelector = createSelector([normalizedNodesSelector], (nodes) => (nodeIDs: string[]) => Normal.getMany(nodes, nodeIDs));
 
 export const combinedNodeIDsSelector = createSelector([nodeByIDSelector], (getNode) => (nodeID: string) => getNode(nodeID).combinedNodes);
 
 export const allLinkIDsSelector = createSelector([normalizedLinksSelector], (links) => links.allKeys);
 
-export const allLinksSelector = createSelector([normalizedLinksSelector], (links) => Utils.normalized.denormalize(links));
+export const allLinksSelector = createSelector([normalizedLinksSelector], Normal.denormalize);
 
 export const linkByIDSelector = createSelector(
   [normalizedLinksSelector],
   (links) => (linkID: string) => Utils.normalized.getNormalizedByKey(links, linkID)
 );
 
-export const allLinksByIDsSelector = createSelector(
-  [normalizedLinksSelector],
-  (links) => (linkIDs: string[]) => Utils.normalized.getAllNormalizedByKeys(links, linkIDs)
-);
+export const allLinksByIDsSelector = createSelector([normalizedLinksSelector], (links) => (linkIDs: string[]) => Normal.getMany(links, linkIDs));
 
 export const dataByNodeIDSelector = createSelector(
   [normalizedDataSelector],
@@ -90,10 +85,7 @@ export const portByIDSelector = createSelector(
   (ports) => (portID: string) => Utils.normalized.getNormalizedByKey(ports, portID)
 );
 
-export const allPortsByIDsSelector = createSelector(
-  [normalizePortsSelector],
-  (ports) => (portIDs: string[]) => Utils.normalized.getAllNormalizedByKeys(ports, portIDs)
-);
+export const allPortsByIDsSelector = createSelector([normalizePortsSelector], (ports) => (portIDs: string[]) => Normal.getMany(ports, portIDs));
 
 export const linkIDsByNodeIDSelector = createSelector([rootSelector], getLinkIDsByNodeID);
 
@@ -131,8 +123,7 @@ export const diagramStateSelector = createSelector([rootSelector], ({ diagramSta
 export const isHiddenSelector = createSelector([rootSelector], ({ hidden }) => hidden);
 
 export const intentStepsDataSelector = createSelector([normalizedNodesSelector, normalizedDataSelector], (nodes, data) =>
-  Utils.normalized
-    .denormalize(nodes)
+  Normal.denormalize(nodes)
     .filter((node) => node.type === BlockType.INTENT)
     .map((node) => data[node.id])
 );

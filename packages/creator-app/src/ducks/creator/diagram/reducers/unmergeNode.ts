@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Normal from 'normal-store';
 
 import { BlockType } from '@/constants';
 import { Reducer } from '@/store/types';
@@ -18,13 +19,13 @@ const unmergeNodeReducer: Reducer<DiagramState, UnmergeNode> = (
     },
   }
 ) => {
-  const node = Utils.normalized.getNormalizedByKey(state.nodes, nodeID);
+  const node = Normal.getOne(state.nodes, nodeID);
 
   if (!node?.parentNode) {
     return state;
   }
 
-  const surrogateNode = Utils.normalized.getNormalizedByKey(state.nodes, node.parentNode);
+  const surrogateNode = Normal.getOne(state.nodes, node.parentNode);
 
   if (surrogateNode?.type !== BlockType.COMBINED) {
     return state;

@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 
 import { BlockType } from '@/constants';
 import { Reducer } from '@/store/types';
@@ -9,7 +10,7 @@ import { DiagramState } from '../types';
 import { patchNodeInState, removeAllBlocksFromState, removeBlockFromState } from '../utils';
 
 export function removeCombinedNode(state: DiagramState, node: Realtime.Node) {
-  const combinedNodes = Utils.normalized.getAllNormalizedByKeys(state.nodes, node.combinedNodes);
+  const combinedNodes = Normal.getMany(state.nodes, node.combinedNodes);
 
   return removeAllBlocksFromState([...combinedNodes, node])(state);
 }
@@ -33,7 +34,7 @@ export function removeNestedNode(state: DiagramState, node: Realtime.Node) {
 }
 
 export const removeSingleNode = (nodeID: string) => (state: DiagramState) => {
-  const node = Utils.normalized.getNormalizedByKey(state.nodes, nodeID);
+  const node = Normal.getOne(state.nodes, nodeID);
 
   if (!node) {
     return state;

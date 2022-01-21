@@ -2,6 +2,7 @@
 import { Utils } from '@voiceflow/common';
 import { PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { normalize } from 'normal-store';
 
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
@@ -40,6 +41,7 @@ const WORKSPACE: Realtime.Workspace = {
   seats: 5,
   plan: PlanType.PRO,
   organizationID: null,
+  organizationTrialDaysLeft: 3,
   state: null,
   seatLimits: { viewer: 10, editor: 20 },
   boards: [],
@@ -66,6 +68,7 @@ const MOCK_STATE: Workspace.WorkspaceState = {
       creatorID: 1000,
       name: 'alphabet workspace',
       organizationID: null,
+      organizationTrialDaysLeft: 0,
       state: null,
       created: '',
       image: 'http://example.com/image.png',
@@ -195,7 +198,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('select all workspaces from the legacy store', () => {
         const workspaces = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
-        const result = Workspace.allWorkspacesSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: Utils.normalized.normalize(workspaces) }));
+        const result = Workspace.allWorkspacesSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: normalize(workspaces) }));
 
         expect(result).to.eql(workspaces);
       });
@@ -211,9 +214,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('select all workspace IDs from the legacy store', () => {
         const workspaces = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
-        const result = Workspace.allWorkspaceIDsSelector(
-          createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: Utils.normalized.normalize(workspaces) })
-        );
+        const result = Workspace.allWorkspaceIDsSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: normalize(workspaces) }));
 
         expect(result).to.eql(workspaces.map((workspace) => workspace.id));
       });
@@ -254,7 +255,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
     describe('workspaceByIDSelector()', () => {
       it('select workspace from the legacy store', () => {
         const workspace = { id: WORKSPACE_ID };
-        const workspaceState = Utils.normalized.normalize([workspace]);
+        const workspaceState = normalize([workspace]);
 
         const result = Workspace.workspaceByIDSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: workspaceState }), { id: WORKSPACE_ID });
 
@@ -277,7 +278,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
     describe('getWorkspaceByIDSelector()', () => {
       it('select workspace from the legacy store', () => {
         const workspace = { id: WORKSPACE_ID };
-        const workspaceState = Utils.normalized.normalize([workspace]);
+        const workspaceState = normalize([workspace]);
 
         const result = Workspace.getWorkspaceByIDSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: workspaceState }))(WORKSPACE_ID);
 

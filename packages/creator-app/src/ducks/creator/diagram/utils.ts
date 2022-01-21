@@ -1,6 +1,7 @@
 import { Models } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 
 import { BlockVariant } from '@/constants/canvas';
 import { PartialModel } from '@/models';
@@ -111,7 +112,7 @@ export const reorderOutDynamicPorts =
 
     return {
       ...state,
-      nodes: Utils.normalized.patchNormalizedByKey(state.nodes, node.id, {
+      nodes: Normal.patchOne(state.nodes, node.id, {
         ports: {
           ...node.ports,
           out: {
@@ -131,7 +132,7 @@ export const addLinkToState =
 
     return {
       ...state,
-      links: Utils.normalized.addNormalizedByKey(state.links, link.id, link),
+      links: Normal.appendOne(state.links, link.id, link),
       linksByPortID: Utils.functional.compose(
         addReferenceByKey(link.source.portID, link.id),
         addReferenceByKey(link.target.portID, link.id)
@@ -164,7 +165,7 @@ export const removeLinkFromState =
 
     return {
       ...state,
-      links: Utils.normalized.removeNormalizedByKey(state.links, linkID),
+      links: Normal.removeOne(state.links, linkID),
       linksByPortID: Utils.functional.compose(
         removeReferenceByKey(link.source.portID, link.id),
         removeReferenceByKey(link.target.portID, link.id)
@@ -187,7 +188,7 @@ export const removePortFromState =
   (portID: string) =>
   (state: DiagramState): DiagramState => ({
     ...state,
-    ports: Utils.normalized.removeNormalizedByKey(state.ports, portID),
+    ports: Normal.removeOne(state.ports, portID),
   });
 
 export const removeAllPortsFromState = (portIDs: string[]): DiagramStateComposeReducer =>
@@ -200,7 +201,7 @@ export const removeOutDynamicPortFromBlockInState = (portID: string): DiagramSta
 
     return {
       ...state,
-      nodes: Utils.normalized.patchNormalizedByKey(state.nodes, node.id, removeOutDynamicPortFromNode(node, portID)),
+      nodes: Normal.patchOne(state.nodes, node.id, removeOutDynamicPortFromNode(node, portID)),
     };
   });
 
@@ -211,7 +212,7 @@ export const removeOutBuiltInPortFromBlockInState = (portType: Models.PortType, 
 
     return {
       ...state,
-      nodes: Utils.normalized.patchNormalizedByKey(state.nodes, node.id, removeOutBuiltInPortFromNode(node, portType)),
+      nodes: Normal.patchOne(state.nodes, node.id, removeOutBuiltInPortFromNode(node, portType)),
     };
   });
 
@@ -238,20 +239,20 @@ export const addNodeToMarkupNodes =
 export const updateNodeInState = (node: Realtime.Node): DiagramStateComposeReducer =>
   Utils.functional.compose(updateRootNodesInState(node.id, node), (state: DiagramState) => ({
     ...state,
-    nodes: Utils.normalized.updateNormalizedByKey(state.nodes, node.id, node),
+    nodes: Normal.updateOne(state.nodes, node.id, node),
   }));
 
 export const patchNodeInState = (nodeID: string, nodePatch: Partial<Realtime.Node>): DiagramStateComposeReducer =>
   Utils.functional.compose(updateRootNodesInState(nodeID, nodePatch), (state: DiagramState) => ({
     ...state,
-    nodes: Utils.normalized.patchNormalizedByKey(state.nodes, nodeID, nodePatch),
+    nodes: Normal.patchOne(state.nodes, nodeID, nodePatch),
   }));
 
 export const addNode =
   (node: Realtime.Node, data: Realtime.NodeData<unknown>) =>
   (state: DiagramState): DiagramState => ({
     ...state,
-    nodes: Utils.normalized.addNormalizedByKey(state.nodes, node.id, node),
+    nodes: Normal.appendOne(state.nodes, node.id, node),
     data: {
       ...state.data,
       [node.id]: data,
@@ -271,7 +272,7 @@ export const removeNodeFromState =
 
     return {
       ...state,
-      nodes: Utils.normalized.removeNormalizedByKey(state.nodes, node.id),
+      nodes: Normal.removeOne(state.nodes, node.id),
       rootNodeIDs: Utils.array.withoutValue(state.rootNodeIDs, node.id),
       markupNodeIDs: Utils.array.withoutValue(state.markupNodeIDs, node.id),
       data: dataWithoutNode,
@@ -294,7 +295,7 @@ export const addPortToState =
   (port: Realtime.Port) =>
   (state: DiagramState): DiagramState => ({
     ...state,
-    ports: Utils.normalized.addNormalizedByKey(state.ports, port.id, port),
+    ports: Normal.appendOne(state.ports, port.id, port),
   });
 
 export const addAllPortsToState = (ports: Realtime.Port[]): DiagramStateComposeReducer => Utils.functional.compose(...ports.map(addPortToState));
@@ -347,14 +348,14 @@ export const patchPortInState =
   (portID: string, portPatch: Partial<Realtime.Port>) =>
   (state: DiagramState): DiagramState => ({
     ...state,
-    ports: Utils.normalized.patchNormalizedByKey(state.ports, portID, portPatch),
+    ports: Normal.patchOne(state.ports, portID, portPatch),
   });
 
 export const patchLinkInState =
   (linkID: string, linkPatch: Partial<Realtime.Link>) =>
   (state: DiagramState): DiagramState => ({
     ...state,
-    links: Utils.normalized.patchNormalizedByKey(state.links, linkID, linkPatch),
+    links: Normal.patchOne(state.links, linkID, linkPatch),
   });
 
 export const updateLinkPort = (link: Realtime.Link, relationship: 'source' | 'target', nodeID: string, portID: string): Realtime.Link => ({

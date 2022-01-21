@@ -1,6 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
-import { Normalized, Nullish } from '@voiceflow/common';
+import { Nullish } from '@voiceflow/common';
 import { Box, Input, stopPropagation, toast, useContextApi, useCreateConst, usePersistFunction } from '@voiceflow/ui';
+import { Normalized } from 'normal-store';
 import React from 'react';
 
 import SlateEditable, {

@@ -1,4 +1,4 @@
-import { Normalized, Nullable, Utils } from '@voiceflow/common';
+import { Nullable } from '@voiceflow/common';
 import {
   Box,
   ClickableText,
@@ -15,6 +15,7 @@ import {
   useVirtualElementPopper,
 } from '@voiceflow/ui';
 import _shuffle from 'lodash/shuffle';
+import { denormalize, Normalized } from 'normal-store';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
@@ -96,9 +97,7 @@ const Popper = <T extends PopperItem>({
     }
 
     // eslint-disable-next-line no-restricted-syntax
-    for (const id of suggestions.allKeys) {
-      const suggestion = Utils.normalized.getNormalizedByKey(suggestions, id);
-
+    for (const suggestion of denormalize(suggestions)) {
       map[suggestion.name] = suggestion;
 
       if (!withHeader) {

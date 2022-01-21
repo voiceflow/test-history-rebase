@@ -1,4 +1,5 @@
-import { Eventual, Normalized, Utils } from '@voiceflow/common';
+import { Eventual, Utils } from '@voiceflow/common';
+import { Normalized } from 'normal-store';
 import { SinonSpy, SinonStub, stub } from 'sinon';
 import { ActionCreator, AnyAction as AnyFSAction } from 'typescript-fsa';
 import { DeepPartial } from 'utility-types';

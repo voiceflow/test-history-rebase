@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 
 import { Reducer } from '@/store/types';
 
@@ -47,7 +48,7 @@ export const insertIntoParentNode = (state: DiagramState, targetNode: Realtime.N
 };
 
 export const transplantNestedNode = (state: DiagramState, targetNode: Realtime.Node, index: number, recipientNodeID: string) => {
-  const recipientNode = Utils.normalized.getNormalizedByKey(state.nodes, recipientNodeID);
+  const recipientNode = Normal.getOne(state.nodes, recipientNodeID);
 
   if (!recipientNode || !targetNode.parentNode) {
     return state;
@@ -59,7 +60,7 @@ export const transplantNestedNode = (state: DiagramState, targetNode: Realtime.N
       : insertIntoParentNode(state, targetNode, index, recipientNode);
   }
 
-  const surrogateNode = Utils.normalized.getNormalizedByKey(state.nodes, targetNode.parentNode);
+  const surrogateNode = Normal.getOne(state.nodes, targetNode.parentNode);
 
   if (!surrogateNode) {
     return state;
@@ -90,8 +91,8 @@ export const transplantNestedNode = (state: DiagramState, targetNode: Realtime.N
 };
 
 const insertNestedNodeReducer: Reducer<DiagramState, InsertNestedNode> = (state, { payload: { parentNodeID, nodeID, index } }) => {
-  const parentNode = Utils.normalized.getNormalizedByKey(state.nodes, parentNodeID);
-  const targetNode = Utils.normalized.getNormalizedByKey(state.nodes, nodeID);
+  const parentNode = Normal.getOne(state.nodes, parentNodeID);
+  const targetNode = Normal.getOne(state.nodes, nodeID);
 
   if (!targetNode || !parentNode) {
     return state;

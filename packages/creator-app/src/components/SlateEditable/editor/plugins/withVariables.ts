@@ -1,5 +1,6 @@
-import { Normalized, Nullable, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
+import { Nullable, READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
 import { slate } from '@voiceflow/internal';
+import * as Normal from 'normal-store';
 import { Descendant, Editor, Element, Range, Text, Transforms } from 'slate';
 
 import { ElementType } from '../../constants';
@@ -23,7 +24,7 @@ export interface VariableItem {
 export interface VariablesOptions {
   onAdded?: (variable: VariableItem) => void;
   onCreate?: (variable: string) => Nullable<VariableItem> | Promise<Nullable<VariableItem>>;
-  variables?: Normalized<VariableItem>;
+  variables?: Normal.Normalized<VariableItem>;
   creatable?: boolean;
   withSlots?: boolean;
   searchable?: boolean;
@@ -90,12 +91,12 @@ export const withVariablesPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor
     const { variables, withSlots } = options;
 
     // do nothing if variable exists
-    if (Utils.normalized.getNormalizedByKey(variables, node.id)) {
+    if (Normal.hasOne(variables, node.id)) {
       return;
     }
 
     // check if matched by name
-    if (!withSlots && variables.allKeys.some((id) => Utils.normalized.getNormalizedByKey(variables, id).name === node.name)) {
+    if (!withSlots && variables.allKeys.some((id) => Normal.getOne(variables, id)?.name === node.name)) {
       return;
     }
 

@@ -1,8 +1,9 @@
-import { Normalized, Utils } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _isPlainObject from 'lodash/isPlainObject';
+import { Normalized } from 'normal-store';
 
 import { getIntentNameLabel, isCustomizableBuiltInIntent, removeBuiltInPrefix } from '@/utils/intent';
 import { createAdvancedPlatformSelector } from '@/utils/platform';

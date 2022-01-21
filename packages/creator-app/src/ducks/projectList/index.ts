@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 
 import createCRUDReducer from '@/ducks/utils/crud';
 import { Reducer, RootReducer } from '@/store/types';
@@ -17,14 +18,14 @@ export * from './types';
 export const removeProjectFromListReducer: Reducer<ProjectListState, RemoveProjectFromList> = (state, { payload: { listID, projectID } }) => {
   const projectList = Utils.normalized.getNormalizedByKey(state, listID);
 
-  return Utils.normalized.patchNormalizedByKey(state, listID, { projects: Utils.array.withoutValue(projectList.projects, projectID) });
+  return Normal.patchOne(state, listID, { projects: Utils.array.withoutValue(projectList.projects, projectID) });
 };
 
 export const transplantProjectReducer: Reducer<ProjectListState, TransplantProject> = (state, { payload: { from, to } }) => {
   if (from.listID === to.listID) {
     const list = Utils.normalized.getNormalizedByKey(state, from.listID);
 
-    return Utils.normalized.patchNormalizedByKey(state, from.listID, {
+    return Normal.patchOne(state, from.listID, {
       projects: Utils.array.reorder(
         list.projects,
         list.projects.indexOf(from.projectID),
@@ -56,7 +57,7 @@ export const transplantProjectReducer: Reducer<ProjectListState, TransplantProje
 export const addProjectToListReducer: Reducer<ProjectListState, AddProjectToList> = (state, { payload: { listID, projectID, addToStart } }) => {
   const { projects } = Utils.normalized.getNormalizedByKey(state, listID);
 
-  return Utils.normalized.patchNormalizedByKey(state, listID, { projects: addToStart ? [projectID, ...projects] : [...projects, projectID] });
+  return Normal.patchOne(state, listID, { projects: addToStart ? [projectID, ...projects] : [...projects, projectID] });
 };
 
 export const projectListCRUDReducer = createCRUDReducer<Realtime.ProjectList>(STATE_KEY);

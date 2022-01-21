@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { normalize } from 'normal-store';
 
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
@@ -54,7 +55,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
       it('select all intents from the legacy store', () => {
         const intents = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
-        const result = Intent.allIntentsSelector(createState(MOCK_STATE, { [IntentV1.STATE_KEY]: Utils.normalized.normalize(intents) }));
+        const result = Intent.allIntentsSelector(createState(MOCK_STATE, { [IntentV1.STATE_KEY]: normalize(intents) }));
 
         expect(result).to.eql(intents);
       });
@@ -70,7 +71,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
       it('select all intent IDs from the legacy store', () => {
         const intents = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
-        const result = Intent.allIntentIDsSelector(createState(MOCK_STATE, { [IntentV1.STATE_KEY]: Utils.normalized.normalize(intents) }));
+        const result = Intent.allIntentIDsSelector(createState(MOCK_STATE, { [IntentV1.STATE_KEY]: normalize(intents) }));
 
         expect(result).to.eql(intents.map((intent) => intent.id));
       });
@@ -85,7 +86,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
     describe('intentByIDSelector()', () => {
       it('select intent from the legacy store', () => {
         const intent = { id: INTENT_ID };
-        const intentState = Utils.normalized.normalize([intent]);
+        const intentState = normalize([intent]);
 
         const result = Intent.intentByIDSelector(createState(MOCK_STATE, { [IntentV1.STATE_KEY]: intentState }), { id: INTENT_ID });
 
@@ -108,7 +109,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
     describe('getIntentByIDSelector()', () => {
       it('select intent from the legacy store', () => {
         const intent = { id: INTENT_ID };
-        const intentState = Utils.normalized.normalize([intent]);
+        const intentState = normalize([intent]);
 
         const result = Intent.getIntentByIDSelector(createState(MOCK_STATE, { [IntentV1.STATE_KEY]: intentState }))(INTENT_ID);
 
@@ -133,7 +134,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
         const intent = { id: DIAGRAM_ID };
         const otherIntentID = 'foo';
         const otherIntent = { id: 'foo' };
-        const intentState = Utils.normalized.normalize([otherIntent, intent]);
+        const intentState = normalize([otherIntent, intent]);
 
         const result = Intent.intentsByIDsSelector(createState(MOCK_STATE, { [IntentV1.STATE_KEY]: intentState }), {
           ids: [DIAGRAM_ID, otherIntentID],
@@ -220,7 +221,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
           IntentV1.crud.replace([
             {
               ...intent,
-              slots: Utils.normalized.normalize([createSlot('foo'), createSlot('bar'), createSlot('fizz'), createSlot('buzz')]),
+              slots: normalize([createSlot('foo'), createSlot('bar'), createSlot('fizz'), createSlot('buzz')]),
             },
           ]),
         ]);

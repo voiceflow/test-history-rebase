@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/common';
+import * as Normal from 'normal-store';
 import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 import { createSelector } from 'reselect';
@@ -34,11 +34,11 @@ type AnyViewportAction = CRUD.AnyCRUDAction<ViewportModel> | RehydrateViewport;
 // reducers
 
 export const rehydrateViewportReducer: Reducer<ViewportState, RehydrateViewport> = (state, { payload: { diagramID, viewport } }) => {
-  const currentViewport = Utils.normalized.getNormalizedByKey(state, diagramID);
+  const currentViewport = Normal.getOne(state, diagramID);
 
   if (currentViewport) return state;
 
-  return Utils.normalized.addNormalizedByKey(state, diagramID, { ...viewport, diagramID });
+  return Normal.appendOne(state, diagramID, { ...viewport, diagramID });
 };
 
 const viewportCRUDReducer = createCRUDReducer<ViewportModel>(STATE_KEY, ({ diagramID }) => diagramID);

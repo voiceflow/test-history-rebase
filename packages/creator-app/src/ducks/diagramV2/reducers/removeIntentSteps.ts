@@ -1,12 +1,13 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 
 import { createReducer } from './utils';
 
 const removeIntentStepsReducer = createReducer(Realtime.node.removeMany, (state, { diagramID, nodeIDs }) => {
   if (!nodeIDs.length) return;
 
-  const diagram = Utils.normalized.safeGetNormalizedByKey(state, diagramID);
+  const diagram = Normal.getOne(state, diagramID);
 
   if (diagram) {
     diagram.intentStepIDs = Utils.array.withoutValues(diagram.intentStepIDs, nodeIDs);

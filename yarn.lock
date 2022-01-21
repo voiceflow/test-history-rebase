@@ -18607,6 +18607,11 @@ nopt@~1.0.10:
   dependencies:
     abbrev "1"
 
+normal-store@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/normal-store/-/normal-store-1.1.0.tgz#1edcebc23aad6544e6a1b414b4ced504be1e939d"
+  integrity sha512-rmsniMwekTG49rXFdV8ne+IMMxf2rKHeqwjcSah55V+u5yfS9ga24IcxBUtBwOqPNa5THpFKN5hWEtBxiB5gRA==
+
 normalize-package-data@^2.0.0, normalize-package-data@^2.3.0, normalize-package-data@^2.3.2, normalize-package-data@^2.3.4, normalize-package-data@^2.4.0, normalize-package-data@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/normalize-package-data/-/normalize-package-data-2.5.0.tgz#e66db1838b200c1dfc233225d12cb36520e234a8"

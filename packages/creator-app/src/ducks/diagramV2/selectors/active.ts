@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import _unionBy from 'lodash/unionBy';
+import { normalize } from 'normal-store';
 import { createSelector } from 'reselect';
 
 import * as CreatorDiagramSelectors from '@/ducks/creator/diagram/selectors';
@@ -41,7 +42,7 @@ export const allSlotsAndVariablesSelector = createSelector([SlotV2.slotNamesSele
 );
 
 export const allSlotsAndVariablesNormalizedSelector = createSelector([SlotV2.allSlotsSelector, allVariablesSelector], (slots, allVariables) =>
-  Utils.normalized.normalize(
+  normalize(
     _unionBy<{ id: string; name: string; isSlot?: boolean }>(
       [
         ...slots.map((slot) => ({ id: slot.id, name: slot.name, isSlot: true })),

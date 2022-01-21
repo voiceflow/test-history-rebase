@@ -1,9 +1,10 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
-import { Normalized, Nullable, Nullish, SLOT_REGEXP, Utils } from '@voiceflow/common';
+import { Nullable, Nullish, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Normalized } from 'normal-store';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
 import { isChatbotPlatform, isGeneralPlatform } from '@/utils/typeGuards';

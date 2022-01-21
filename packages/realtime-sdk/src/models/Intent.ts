@@ -1,8 +1,8 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Types as ChatTypes } from '@voiceflow/chat-types';
-import { Normalized } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
+import { Normalized } from 'normal-store';
 
 import { AnyVersionPlatformData } from './Version';
 

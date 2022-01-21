@@ -1,6 +1,7 @@
 import { Models } from '@voiceflow/base-types';
-import { Normalized, WithRequired } from '@voiceflow/common';
+import { WithRequired } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Normalized } from 'normal-store';
 import { Overwrite } from 'utility-types';
 
 import { DiagramState as DState } from '@/constants';

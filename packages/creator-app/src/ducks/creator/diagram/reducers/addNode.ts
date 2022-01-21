@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Normal from 'normal-store';
 
 import { BlockType } from '@/constants';
 import { Reducer } from '@/store/types';
@@ -31,7 +32,7 @@ const addNodeReducer: Reducer<DiagramState, AddNode> = (state, { payload: { node
 export default addNodeReducer;
 
 export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state, { payload: { parentNodeID, node, data, mergedNodeID } }) => {
-  const parentNode = Utils.normalized.getNormalizedByKey(state.nodes, parentNodeID);
+  const parentNode = Normal.getOne(state.nodes, parentNodeID);
 
   if (!parentNode) {
     return state;
@@ -44,7 +45,7 @@ export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state
   if (isCombinedBlock || parentNode.type === BlockType.START) {
     const additionalActions = [];
     if (isCombinedBlock) {
-      const terminalBlock = Utils.normalized.getNormalizedByKey(state.nodes, parentNode.combinedNodes[parentNode.combinedNodes.length - 1]);
+      const terminalBlock = Normal.getOne(state.nodes, parentNode.combinedNodes[parentNode.combinedNodes.length - 1]);
 
       if (terminalBlock) {
         const outLinkIDs = getAllOutPortIDs(terminalBlock).flatMap(getLinkIDsByPortID(state));

@@ -2,6 +2,7 @@
 import * as Alexa from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { normalize } from 'normal-store';
 
 import client from '@/client';
 import { FeatureFlag } from '@/config/features';
@@ -47,7 +48,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, stub, describeEffect
       it('select all products from the legacy store', () => {
         const products = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
-        const result = Product.allProductsSelector(createState(MOCK_STATE, { [ProductV1.STATE_KEY]: Utils.normalized.normalize(products) }));
+        const result = Product.allProductsSelector(createState(MOCK_STATE, { [ProductV1.STATE_KEY]: normalize(products) }));
 
         expect(result).to.eql(products);
       });
@@ -61,7 +62,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, stub, describeEffect
 
     describe('productMapSelector()', () => {
       it('select product map from the legacy store', () => {
-        const productState = Utils.normalized.normalize(Utils.generate.array(3, () => ({ id: Utils.generate.id() })));
+        const productState = normalize(Utils.generate.array(3, () => ({ id: Utils.generate.id() })));
 
         const result = Product.productMapSelector(createState(MOCK_STATE, { [ProductV1.STATE_KEY]: productState }));
 
@@ -78,7 +79,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, stub, describeEffect
     describe('productByIDSelector()', () => {
       it('select product from the legacy store', () => {
         const product = { id: PRODUCT_ID };
-        const productState = Utils.normalized.normalize([product]);
+        const productState = normalize([product]);
 
         const result = Product.productByIDSelector(createState(MOCK_STATE, { [ProductV1.STATE_KEY]: productState }), { id: PRODUCT_ID });
 
@@ -101,7 +102,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, stub, describeEffect
     describe('getProductByIDSelector()', () => {
       it('select product from the legacy store', () => {
         const product = { id: PRODUCT_ID };
-        const productState = Utils.normalized.normalize([product]);
+        const productState = normalize([product]);
 
         const result = Product.getProductByIDSelector(createState(MOCK_STATE, { [ProductV1.STATE_KEY]: productState }))(PRODUCT_ID);
 
@@ -126,7 +127,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, stub, describeEffect
         const product = { id: DIAGRAM_ID };
         const otherProductID = 'foo';
         const otherProduct = { id: 'foo' };
-        const productState = Utils.normalized.normalize([otherProduct, product]);
+        const productState = normalize([otherProduct, product]);
 
         const result = Product.productsByIDsSelector(createState(MOCK_STATE, { [ProductV1.STATE_KEY]: productState }), {
           ids: [DIAGRAM_ID, otherProductID],
@@ -250,7 +251,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, stub, describeEffect
       const dbProduct = { name: 'DB formatted new product data' };
       const rootState = createState(MOCK_STATE, {
         [Session.STATE_KEY]: { activeProjectID: PROJECT_ID },
-        [ProductV1.STATE_KEY]: Utils.normalized.normalize([product]),
+        [ProductV1.STATE_KEY]: normalize([product]),
       });
       const updateProduct = stub(client.platform.alexa.project, 'updateProduct');
       const productToDB = stub(Realtime.Adapters.productAdapter, 'toDB').returns(dbProduct as any);

@@ -1,6 +1,6 @@
 import { Types } from '@voiceflow/chat-types';
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { normalize } from 'normal-store';
 import React from 'react';
 
 import SlateEditableWithVariables from '@/components/SlateEditableWithVariables';
@@ -15,7 +15,7 @@ interface ChatPromptFormProps {
 const ChatPromptForm: React.FC<ChatPromptFormProps> = ({ slots, prompt: [prompt], onChange, placeholder }) => {
   const content = prompt?.content ?? null;
 
-  const variables = React.useMemo(() => Utils.normalized.normalize(slots), [slots]);
+  const variables = React.useMemo(() => normalize(slots), [slots]);
 
   return (
     <SlateEditableWithVariables

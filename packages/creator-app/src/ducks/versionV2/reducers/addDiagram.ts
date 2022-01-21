@@ -1,11 +1,11 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 
 import { createReducer } from './utils';
 
 const addDiagramReducer = createReducer(Realtime.diagram.crud.add, (state, { versionID, key, value }) => {
-  const version = Utils.normalized.safeGetNormalizedByKey(state, versionID);
+  const version = Normal.getOne(state, versionID);
 
   if (!version) return;
 

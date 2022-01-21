@@ -2,6 +2,7 @@
 
 import { NormalizedValue, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 import { createSelector, ParametricSelector, Selector } from 'reselect';
 import { ReducerBuilder } from 'typescript-fsa-reducers';
 import { PickByValue } from 'utility-types';
@@ -28,7 +29,7 @@ type CRUDReducers<T extends Realtime.actionUtils.CRUDActionCreators<any, any, an
   [K in Exclude<keyof T, 'refresh'>]: [actionCreator: T[K], handler: ImmerHandler<CRUDState<any>, any>];
 };
 
-export const createCRUDReducers = <T, D extends Utils.normalized.ObjectWithId, P extends Partial<D> = Partial<D>>(
+export const createCRUDReducers = <T, D extends Normal.Identifiable, P extends Partial<D> = Partial<D>>(
   createReducer: CreateReducer<CRUDState<any>>,
   actionCreators: Realtime.actionUtils.CRUDActionCreators<T, D, P>
 ): Omit<CRUDReducers<Realtime.actionUtils.CRUDActionCreators<T, D, P>>, 'refresh'> => {
@@ -59,7 +60,7 @@ export const createCRUDReducers = <T, D extends Utils.normalized.ObjectWithId, P
   });
 
   const patch = createReducer(actionCreators.patch, (state, { key, value }) => {
-    const currValue = Utils.normalized.safeGetNormalizedByKey(state, key);
+    const currValue = Normal.getOne(state, key);
 
     if (currValue) {
       Object.assign(currValue, value);
@@ -151,12 +152,11 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
   const root = createRootSelector(modelType) as Selector<State, CRUDStateSubset[K]>;
   const count = createSelector([root], ({ allKeys }) => allKeys.length);
   const has = createSelector([count], (size) => size !== 0);
-  const all = createSelector([root], (xs) => Utils.normalized.denormalize(xs as CRUDState<T>));
+  const all = createSelector([root], (xs) => Normal.denormalize(xs as CRUDState<T>));
   const map = createSelector([root], ({ byKey }) => byKey as Record<string, T>);
   const allIDs = createSelector([root], ({ allKeys }) => allKeys);
 
-  const byIDGetter = (normalized: CRUDState<any>, id: string | null | undefined): T | null =>
-    id ? Utils.normalized.safeGetNormalizedByKey<T>(normalized, id) : null;
+  const byIDGetter = (normalized: CRUDState<any>, id: string | null | undefined): T | null => (id ? Normal.getOne<T>(normalized, id) : null);
   const byIDsGetter = (normalized: CRUDState<any>, ids: string[]): T[] =>
     ids.reduce<any[]>((acc, id) => {
       const value = byIDGetter(normalized, id);

@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { normalize } from 'normal-store';
 
 import * as Feature from '@/ducks/feature';
 import * as Intent from '@/ducks/intent';
@@ -30,7 +31,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent', ({ expect, describeCRUDReducer, desc
 
         expect(
           select(IntentV2.intentsUsingSlotSelector, {
-            [Intent.STATE_KEY]: Utils.normalized.normalize([...intentWithSlot, ...intentWithoutSlot]),
+            [Intent.STATE_KEY]: normalize([...intentWithSlot, ...intentWithoutSlot]),
             [IntentV2.STATE_KEY]: createCRUDState(),
             [Feature.STATE_KEY]: { features: {} },
           })(slotID)

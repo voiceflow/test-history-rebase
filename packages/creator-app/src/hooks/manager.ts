@@ -1,9 +1,10 @@
-import { Normalized, Utils } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 // eslint-disable-next-line lodash/import-scope
 import type { DebouncedFunc } from 'lodash';
 import _debounce from 'lodash/debounce';
 import _isObject from 'lodash/isObject';
 import moize from 'moize';
+import * as Normal from 'normal-store';
 import React from 'react';
 
 import { IS_TEST } from '@/config';
@@ -65,7 +66,7 @@ export const useManager = <T extends {}, F extends any[]>(
   }: MapManagedOptions<T, F> = {}
 ): MapManagedAPI<T, F> => {
   const keyLookup = React.useRef<Map<T | [T, number], string>>();
-  const normalized = React.useRef<Normalized<T>>();
+  const normalized = React.useRef<Normal.Normalized<T>>();
   const cachedOnChange = React.useRef<OnChange<T>>();
   const latestCreatedKey = React.useRef<string>();
 
@@ -82,7 +83,7 @@ export const useManager = <T extends {}, F extends any[]>(
   const setDependencies = useLazy(
     () => {
       keyLookup.current = new Map(items.map((item, index) => [generateLookupKey(item, index), IS_TEST ? String(index) : generateKey(item)]));
-      normalized.current = Utils.normalized.normalize<T>(items, (item, index) => keyLookup.current!.get(generateLookupKey(item, index))!);
+      normalized.current = Normal.normalize<T>(items, (item, index) => keyLookup.current!.get(generateLookupKey(item, index))!);
     },
     [items],
     ([nextItems], [prevItems]) => Utils.array.hasIdenticalMembers<T>(nextItems, prevItems)
@@ -106,8 +107,8 @@ export const useManager = <T extends {}, F extends any[]>(
   const getIndex = React.useCallback((key: string) => normalized.current!.allKeys.indexOf(key), []);
 
   const onSave = React.useCallback(
-    (normalizedValue: Normalized<T>, { update, save = true }: { update?: boolean; save?: boolean } = {}) => {
-      const denormalized = Utils.normalized.denormalize(normalizedValue);
+    (normalizedValue: Normal.Normalized<T>, { update, save = true }: { update?: boolean; save?: boolean } = {}) => {
+      const denormalized = Normal.denormalize(normalizedValue);
 
       if (!update && 'cancel' in debouncedOnChange) {
         debouncedOnChange.cancel();
@@ -158,7 +159,7 @@ export const useManager = <T extends {}, F extends any[]>(
 
       const { key, value } = createKeyValue(...args);
 
-      const updated = Utils.normalized.addNormalizedByKey(normalized.current!, key, value);
+      const updated = Normal.appendOne(normalized.current!, key, value);
       const index = updated.allKeys.length - 1;
 
       commitInsert(key, value, index, updated);
@@ -174,7 +175,7 @@ export const useManager = <T extends {}, F extends any[]>(
 
       const { key, value } = createKeyValue(...args);
 
-      const updated = Utils.normalized.addToStartNormalizedByKey(normalized.current!, key, value);
+      const updated = Normal.prependOne(normalized.current!, key, value);
       const index = 0;
 
       commitInsert(key, value, index, updated);
@@ -190,7 +191,7 @@ export const useManager = <T extends {}, F extends any[]>(
 
       const { key, value: dupVal } = duplicateKeyValue(item, ...args);
 
-      const withDupVal = Utils.normalized.addToStartNormalizedByKey(normalized.current!, key, dupVal);
+      const withDupVal = Normal.prependOne(normalized.current!, key, dupVal);
       const dupIndex = to + 1;
 
       const updated = {
@@ -240,7 +241,7 @@ export const useManager = <T extends {}, F extends any[]>(
       const currValue = getItem(key);
       const currIndex = getIndex(key);
 
-      const updated = Utils.normalized.removeNormalizedByKey(normalized.current!, key);
+      const updated = Normal.removeOne(normalized.current!, key);
 
       keyLookup.current!.delete(generateLookupKey(currValue, currIndex));
 

@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Normal from 'normal-store';
 
 import { DiagramState } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -52,9 +53,9 @@ suite(Creator, MOCK_STATE)('Ducks - Creator', ({ expect, describeReducer, descri
                   linksByPortID: {},
                   sections: {},
                   data: {},
-                  links: Utils.normalized.EMPTY,
-                  nodes: Utils.normalized.EMPTY,
-                  ports: Utils.normalized.EMPTY,
+                  links: Normal.createEmpty(),
+                  nodes: Normal.createEmpty(),
+                  ports: Normal.createEmpty(),
                 },
               },
               focus: {

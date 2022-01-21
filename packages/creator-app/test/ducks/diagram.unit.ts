@@ -2,6 +2,7 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { normalize } from 'normal-store';
 
 import client from '@/client';
 import { FeatureFlag } from '@/config/features';
@@ -136,7 +137,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('select all diagrams from the legacy store', () => {
         const diagrams = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
 
-        const result = Diagram.allDiagramsSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: Utils.normalized.normalize(diagrams) }));
+        const result = Diagram.allDiagramsSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: normalize(diagrams) }));
 
         expect(result).to.eql(diagrams);
       });
@@ -150,7 +151,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
     describe('allDiagramIDsSelector()', () => {
       it('select all diagrams IDs from the legacy store', () => {
-        const diagramState = Utils.normalized.normalize(Utils.generate.array(3, () => ({ id: Utils.generate.id() })));
+        const diagramState = normalize(Utils.generate.array(3, () => ({ id: Utils.generate.id() })));
 
         const result = Diagram.allDiagramIDsSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: diagramState }));
 
@@ -166,7 +167,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
     describe('diagramMapSelector()', () => {
       it('select diagram map from the legacy store', () => {
-        const diagramState = Utils.normalized.normalize(Utils.generate.array(3, () => ({ id: Utils.generate.id() })));
+        const diagramState = normalize(Utils.generate.array(3, () => ({ id: Utils.generate.id() })));
 
         const result = Diagram.diagramMapSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: diagramState }));
 
@@ -183,7 +184,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
     describe('diagramByIDSelector()', () => {
       it('select diagram from the legacy store', () => {
         const diagram = { id: DIAGRAM_ID };
-        const diagramState = Utils.normalized.normalize([diagram]);
+        const diagramState = normalize([diagram]);
 
         const result = Diagram.diagramByIDSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: diagramState }), { id: DIAGRAM_ID });
 
@@ -206,7 +207,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
     describe('getDiagramByIDSelector()', () => {
       it('select diagram from the legacy store', () => {
         const diagram = { id: DIAGRAM_ID };
-        const diagramState = Utils.normalized.normalize([diagram]);
+        const diagramState = normalize([diagram]);
 
         const result = Diagram.getDiagramByIDSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: diagramState }))(DIAGRAM_ID);
 
@@ -231,7 +232,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
         const diagram = { id: DIAGRAM_ID };
         const otherDiagramID = 'foo';
         const otherDiagram = { id: 'foo' };
-        const diagramState = Utils.normalized.normalize([otherDiagram, diagram]);
+        const diagramState = normalize([otherDiagram, diagram]);
 
         const result = Diagram.diagramsByIDsSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: diagramState }), {
           ids: [DIAGRAM_ID, otherDiagramID],
@@ -256,7 +257,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
     describe('localVariablesByDiagramIDSelector()', () => {
       it('select local variables from the legacy store', () => {
         const diagram = { id: DIAGRAM_ID, variables: ['cat', 'bat', 'rat'] };
-        const diagramState = Utils.normalized.normalize([diagram]);
+        const diagramState = normalize([diagram]);
 
         const result = Diagram.localVariablesByDiagramIDSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: diagramState }), {
           id: DIAGRAM_ID,
@@ -390,7 +391,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
         const timestamp = String(Date.now());
         const variables = ['foo', 'bar'];
         const rootState = {
-          [DiagramV1.STATE_KEY]: Utils.normalized.normalize([{ id: DIAGRAM_ID, variables }]),
+          [DiagramV1.STATE_KEY]: normalize([{ id: DIAGRAM_ID, variables }]),
           [Creator.STATE_KEY]: { diagram: { present: { diagramID: DIAGRAM_ID } } },
         };
         const updateDiagram = spy();
@@ -414,7 +415,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('remove variable from diagram locally', async () => {
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [DiagramV1.STATE_KEY]: Utils.normalized.normalize([{ id: DIAGRAM_ID, variables: ['foo', 'bar'] }]),
+          [DiagramV1.STATE_KEY]: normalize([{ id: DIAGRAM_ID, variables: ['foo', 'bar'] }]),
         };
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), DIAGRAM_ID, 'foo');
@@ -426,7 +427,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
         const variables = ['foo', 'bar'];
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [DiagramV1.STATE_KEY]: Utils.normalized.normalize([{ id: DIAGRAM_ID, variables }]),
+          [DiagramV1.STATE_KEY]: normalize([{ id: DIAGRAM_ID, variables }]),
         };
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), DIAGRAM_ID, 'fizz');
@@ -450,7 +451,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('add variable to diagram locally', async () => {
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [DiagramV1.STATE_KEY]: Utils.normalized.normalize([{ id: DIAGRAM_ID, variables: ['foo', 'bar'] }]),
+          [DiagramV1.STATE_KEY]: normalize([{ id: DIAGRAM_ID, variables: ['foo', 'bar'] }]),
         };
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), DIAGRAM_ID, 'fizz');
@@ -468,7 +469,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
         const variables = ['foo', 'bar'];
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [DiagramV1.STATE_KEY]: Utils.normalized.normalize([{ id: DIAGRAM_ID, variables }]),
+          [DiagramV1.STATE_KEY]: normalize([{ id: DIAGRAM_ID, variables }]),
         };
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), DIAGRAM_ID, 'foo');

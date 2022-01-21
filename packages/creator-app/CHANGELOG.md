@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.600.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.600.2...@voiceflow/creator-app@1.600.3) (2022-01-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency react-ace to v9.5.0 (vf-000) ([#4930](https://github.com/voiceflow/creator-app/issues/4930)) ([09e1bfc](https://github.com/voiceflow/creator-app/commit/09e1bfc54b5589ce8be778d22d64add6970ee0a2))
+
+
+
+
+
 ## [1.600.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.600.1...@voiceflow/creator-app@1.600.2) (2022-01-21)
 
 

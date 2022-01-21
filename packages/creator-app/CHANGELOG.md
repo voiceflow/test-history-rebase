@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.605.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.605.0...@voiceflow/creator-app@1.605.1) (2022-01-21)
+
+
+### Bug Fixes
+
+* show correct connect modal title when loading ([#4954](https://github.com/voiceflow/creator-app/issues/4954)) ([4d54134](https://github.com/voiceflow/creator-app/commit/4d54134d0d76171de572f6cd672d9fa3bec1674c))
+
+
+
+
+
 # [1.605.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.604.1...@voiceflow/creator-app@1.605.0) (2022-01-21)
 
 

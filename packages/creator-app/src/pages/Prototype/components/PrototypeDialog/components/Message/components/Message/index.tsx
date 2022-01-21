@@ -34,6 +34,7 @@ export interface MessageProps {
   isLoading?: boolean;
   forceIcon?: boolean;
   pmStatus: Nullable<PMStatus>;
+  onDoubleClick?: () => void;
 }
 
 const Message: React.FC<MessageProps> = ({

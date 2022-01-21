@@ -39,6 +39,7 @@ interface DialogPrototypeProps {
   dialogTurnMap?: TurnMap;
   messageFilter?: (messages: Message[]) => Message[];
   pmStatus: Nullable<PMStatus>;
+  onMessageDoubleClick?: (message: Message) => void;
 }
 
 const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
@@ -64,6 +65,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   dialogTurnMap,
   messageFilter,
   pmStatus,
+  onMessageDoubleClick,
 }) => {
   // filter out messages based on settings
   const messages = useMessageFilters(rawMessages, messageFilter);
@@ -92,6 +94,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
             isLoading,
             isLast,
             isLastBubble,
+            onDoubleClick: onMessageDoubleClick ? () => onMessageDoubleClick(message) : undefined,
           };
 
           const commonProps = {

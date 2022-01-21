@@ -15,7 +15,7 @@ import * as Query from '@/utils/query';
 
 import { ChatDisplay, Container, Input, Start, UserSaysContainer } from './components';
 import { usePrototype, useResetPrototype, useStartPrototype } from './hooks';
-import { BotMessageTypes, MessageType, PMStatus } from './types';
+import { BotMessageTypes, Message, MessageType, PMStatus } from './types';
 
 export interface PrototypeProps {
   debug: boolean;
@@ -48,12 +48,13 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
 
   const {
     status: prototypeMachineStatus,
+    onPlay,
     messages,
+    onStepBack,
     interactions,
     onInteraction,
-    onPlay,
-    onStepBack,
     onStepForward,
+    prototypeTool,
   } = usePrototype({
     debug,
     config,
@@ -72,16 +73,21 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   );
   const { nodeID } = Query.parse(location?.search);
 
+  const setShowButtons = (val: boolean) => {
+    updatePrototype({ showButtons: val });
+  };
+
+  const onMessageDoubleClick = (message: Message) => {
+    prototypeTool.navigateToStep(message.id);
+  };
+
   React.useEffect(() => {
+    initialLoadFinished.current = true;
+
     if ((nodeID || autoplay) && !!initialLoadFinished.current) {
       startPrototype(null, nodeID ?? null);
     }
-    initialLoadFinished.current = true;
   }, [initialLoadFinished.current]);
-
-  useTeardown(() => {
-    resetPrototype();
-  }, []);
 
   useDidUpdateEffect(() => {
     if (autoplay) {
@@ -89,9 +95,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     }
   }, [autoplay]);
 
-  const setShowButtons = (val: boolean) => {
-    updatePrototype({ showButtons: val });
-  };
+  useTeardown(() => resetPrototype(), []);
 
   if (!initialLoadFinished.current) {
     return null;
@@ -100,6 +104,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   if (status === PrototypeDuck.PrototypeStatus.IDLE && !autoplay) {
     return <Start config={config} debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={startPrototype} />;
   }
+
   return (
     <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
       <ChatDisplay
@@ -118,6 +123,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         status={status}
         onInteraction={onInteraction}
         stepBack={onStepBack}
+        onMessageDoubleClick={onMessageDoubleClick}
       />
 
       <UserSaysContainer>

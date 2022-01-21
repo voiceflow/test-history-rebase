@@ -40,7 +40,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   const resetPrototype = useResetPrototype();
   const [canUseASR] = useCanASR();
   const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
-
   const [input, setInput] = React.useState<string>('');
 
   const locale = settings.locales[0];

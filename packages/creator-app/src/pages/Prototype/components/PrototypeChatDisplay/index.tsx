@@ -34,6 +34,7 @@ export interface PrototypeChatDisplayProps {
   onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
   messageFilter?: (messages: Message[]) => Message[];
   pmStatus?: Nullable<PMStatus>;
+  onMessageDoubleClick?: (message: Message) => void;
 }
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
@@ -59,6 +60,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   onScroll,
   pmStatus = null,
   messageFilter,
+  onMessageDoubleClick,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
@@ -124,6 +126,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
           setFocusedTurnID={setFocusedTurnID}
           focusedTurnID={focusedTurnID}
           messageFilter={messageFilter}
+          onMessageDoubleClick={onMessageDoubleClick}
         />
       </InnerChatContainer>
     </OutterChatContainer>

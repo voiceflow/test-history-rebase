@@ -56,6 +56,10 @@ class PrototypeTool {
     this.trace?.historyStep(StepDirection.FORWARD);
   }
 
+  public navigateToStep(messageID: string) {
+    return this.trace?.navigateToStep(messageID);
+  }
+
   public async interact({ name, request = null }: { name?: string; request?: Request.BaseRequest | string | null } = {}): Promise<void> {
     this.audio?.stop();
 

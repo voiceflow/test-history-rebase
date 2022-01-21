@@ -9,6 +9,7 @@ import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
+import * as Router from '@/ducks/router';
 import {
   BlockTrace,
   ChoiceTrace,
@@ -248,6 +249,33 @@ class TraceController {
   // immediate display the remaining traces and not wait on any async effects
   public async flushTrace(): Promise<void> {
     await this.processTrace(this.trace, { onlyMessage: true });
+  }
+
+  public navigateToStep(messageID: string): void {
+    if (!this.context?.trace) return;
+
+    let blockID: string | null = null;
+    let diagramID: string | null = null;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const trace of this.context.trace) {
+      if (trace.id === messageID) break;
+
+      if (trace.type === TraceType.FLOW) {
+        diagramID = trace.payload.diagramID;
+      } else if (trace.type === TraceType.BLOCK) {
+        blockID = trace.payload.blockID;
+      }
+    }
+
+    if (!blockID) return;
+
+    if (!diagramID || diagramID === this.props.activeDiagramID) {
+      this.props.getEngine()?.store.dispatch(Router.goToCurrentCanvas());
+      this.props.getEngine()?.focusNode(blockID, { open: true });
+    } else {
+      this.props.getEngine()?.store.dispatch(Router.goToDiagram(diagramID, blockID));
+    }
   }
 
   private isVeryFirstBotMessage(trace: BotTraceType) {

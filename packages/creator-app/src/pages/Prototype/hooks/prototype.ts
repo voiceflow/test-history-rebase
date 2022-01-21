@@ -153,12 +153,13 @@ const usePrototype = ({
   return {
     audio: prototype.audio,
     status,
+    onPlay,
     messages,
+    onStepBack,
     interactions,
     onInteraction,
-    onPlay,
-    onStepBack,
     onStepForward,
+    prototypeTool: prototype,
   };
 };
 

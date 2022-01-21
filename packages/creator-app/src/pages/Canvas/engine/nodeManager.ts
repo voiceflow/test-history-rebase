@@ -710,6 +710,10 @@ class NodeManager extends EngineConsumer {
   updateBlockColor(nodeID: string, color: BlockVariant): Promise<void> {
     return this.updateData(nodeID, { blockColor: color });
   }
+
+  async updateManyBlocksColor(nodeIDs: string[], color: BlockVariant): Promise<void> {
+    await Promise.all(nodeIDs.map((nodeID) => this.updateData(nodeID, { blockColor: color })));
+  }
 }
 
 export default NodeManager;

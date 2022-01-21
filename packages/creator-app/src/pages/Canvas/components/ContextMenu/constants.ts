@@ -134,7 +134,7 @@ const isMarkup = (nodeID: string, engine: Engine) => {
 };
 
 const COMMENT_MENU_OPTION: ContextMenuOption<CanvasAction> = {
-  label: 'Add Comment',
+  label: 'Add comment',
   value: CanvasAction.ADD_COMMENT,
   hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING],
   shouldRender: ({ target: nodeID }, { engine, showHintFeatures }) => showHintFeatures && !isMarkup(nodeID!, engine),
@@ -142,7 +142,7 @@ const COMMENT_MENU_OPTION: ContextMenuOption<CanvasAction> = {
 
 export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
-    label: 'Block Color',
+    label: 'Block color',
     value: CanvasAction.COLOR_BLOCK,
     options: BLOCK_COLORS,
     shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID!, engine) || isStart(nodeID!, engine),
@@ -200,6 +200,16 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Duplicate',
     value: CanvasAction.DUPLICATE_BLOCK,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.DUPLICATE],
+  },
+  {
+    label: 'Divider 1',
+    value: CanvasAction.DIVIDER,
+    menuItemProps: { divider: true },
+  },
+  {
+    label: 'Block color',
+    value: CanvasAction.COLOR_BLOCK,
+    options: BLOCK_COLORS,
   },
   {
     label: 'Divider 2',

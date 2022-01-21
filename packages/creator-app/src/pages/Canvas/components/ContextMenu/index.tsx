@@ -49,10 +49,12 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   },
 
   [CanvasAction.COLOR_BLOCK]: ({ target: nodeID }, { engine, blockColor }) => {
-    if (blockColor) {
-      engine.node.updateBlockColor(nodeID!, blockColor);
-      engine.selection.reset();
+    if (!blockColor) {
+      return;
     }
+
+    nodeID ? engine.node.updateBlockColor(nodeID, blockColor) : engine.node.updateManyBlocksColor(engine.activation.getTargets(), blockColor);
+    engine.selection.reset();
   },
 
   [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusStart(),

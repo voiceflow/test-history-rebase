@@ -2,13 +2,13 @@ import { Node } from '@voiceflow/base-types';
 import { Link } from '@voiceflow/ui';
 import React from 'react';
 
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 import { Image } from '@/pages/Canvas/components/Step/components';
 import { VisualMessage } from '@/pages/Prototype/types';
-import { FadeDownContainer } from '@/styles/animations';
 
 import { Message } from '../components';
 import { MessageProps } from '../components/Message';
+import Container from '../components/MessageContainer';
 
 type VisualProps = MessageProps & {
   visual: VisualMessage;
@@ -16,8 +16,8 @@ type VisualProps = MessageProps & {
 };
 
 const VisualContainer = styled.div`
-  ${FadeDownContainer} {
-    width: 100%;
+  ${Container} {
+    display: block;
   }
 `;
 
@@ -28,15 +28,6 @@ const ImageContainer = styled.div<{ ratio: number; isFirstInSeries?: boolean }>`
   ${Image} {
     border-radius: 15px;
     padding-bottom: ${({ ratio }) => ratio}%;
-
-    ${({ isFirstInSeries = false }) =>
-      isFirstInSeries
-        ? css`
-            border-bottom-left-radius: 5px;
-          `
-        : css`
-            border-top-left-radius: 5px;
-          `}
   }
 `;
 

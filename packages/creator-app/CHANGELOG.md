@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.603.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.602.1...@voiceflow/creator-app@1.603.0) (2022-01-21)
+
+
+### Features
+
+* changed Dialogflow Voice to Dialogflow IVR (VF-2651) ([#4941](https://github.com/voiceflow/creator-app/issues/4941)) ([a0715f4](https://github.com/voiceflow/creator-app/commit/a0715f4214d35a1612d9fd33043bb85775b4d50a))
+
+
+
+
+
 ## [1.602.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.602.0...@voiceflow/creator-app@1.602.1) (2022-01-21)
 
 **Note:** Version bump only for package @voiceflow/creator-app

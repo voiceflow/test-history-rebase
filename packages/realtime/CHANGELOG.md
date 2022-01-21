@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.30.3...@voiceflow/realtime@1.31.0) (2022-01-21)
+
+
+### Features
+
+* creates realtime get and post actions for variable states (VF-2598) ([#4932](https://github.com/voiceflow/creator-app/issues/4932)) ([76a79d7](https://github.com/voiceflow/creator-app/commit/76a79d718527b44c92df81f5cc756fb6a2180945))
+
+
+
+
+
 ## [1.30.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.30.2...@voiceflow/realtime@1.30.3) (2022-01-21)
 
 

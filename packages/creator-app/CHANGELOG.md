@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.605.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.604.1...@voiceflow/creator-app@1.605.0) (2022-01-21)
+
+
+### Features
+
+* prototype message double click to navigate (VF-2563) ([#4937](https://github.com/voiceflow/creator-app/issues/4937)) ([1bf61f5](https://github.com/voiceflow/creator-app/commit/1bf61f5779072b6f04b93e8bb4471e29bfe4de5b))
+
+
+
+
+
 ## [1.604.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.604.0...@voiceflow/creator-app@1.604.1) (2022-01-21)
 
 

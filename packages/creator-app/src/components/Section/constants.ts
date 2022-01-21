@@ -10,6 +10,7 @@ export enum SectionVariant {
   TERTIARY = 'tertiary',
   QUATERNARY = 'quaternary',
   PROTOTYPE = 'prototype',
+  FORM = 'form',
   SUBSECTION = 'subsection',
   DEVICE = 'device',
   UPLOAD = 'upload',

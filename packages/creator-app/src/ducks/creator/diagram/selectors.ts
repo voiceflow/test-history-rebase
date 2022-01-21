@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import _sortBy from 'lodash/sortBy';
 import { createSelector } from 'reselect';
 
 import { BlockType } from '@/constants';
@@ -134,4 +135,11 @@ export const intentStepsDataSelector = createSelector([normalizedNodesSelector, 
     .denormalize(nodes)
     .filter((node) => node.type === BlockType.INTENT)
     .map((node) => data[node.id])
+);
+
+export const rootNodesSelector = createSelector([rootNodeIDsSelector, dataByNodeIDSelector], (rootNodeIDs, getDataByNodeID) =>
+  _sortBy(
+    rootNodeIDs.map((nodeId) => getDataByNodeID(nodeId)),
+    ({ name }) => name.toLowerCase()
+  )
 );

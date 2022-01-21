@@ -256,6 +256,8 @@ export enum ModalType {
   PROFILE_NAME_MODAL = 'profile-name-modal',
   CHANGE_PASSWORD_MODAL = 'change-password-modal',
   CHANGE_EMAIL_MODAL = 'change-email-modal',
+
+  VARIABLE_STATE_EDITOR_MODAL = 'variable-state-editor-modal',
 }
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER]; // billing not included in seat roles

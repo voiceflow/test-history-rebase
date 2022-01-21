@@ -16,6 +16,7 @@ import { RootPageProgressBar } from '@/components/PageProgressBar';
 import CreateNewAgentModal from '@/components/PlatformUploadPopup/Dialogflow/CreateNewAgentModal';
 import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
+import VariableStateCreationModal from '@/components/VariableStateCreationModal';
 import { SeoPage } from '@/constants/seo';
 import { GlobalSocketSubscriptionsLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
@@ -64,6 +65,7 @@ const App = () => {
       <ChangePasswordModal />
       <LoadingModal />
       <TagManagerModal />
+      <VariableStateCreationModal />
 
       <ProjectDownloadModal />
       <TestableLinkModal />

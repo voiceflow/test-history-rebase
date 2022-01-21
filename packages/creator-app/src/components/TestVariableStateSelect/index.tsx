@@ -1,8 +1,9 @@
 import { FlexApart, NestedMenuComponents, Select, SelectProps } from '@voiceflow/ui';
 import React from 'react';
 
+import { ModalType } from '@/constants';
 import * as variableState from '@/ducks/variableState';
-import { useSelector } from '@/hooks';
+import { useModals, useSelector } from '@/hooks';
 
 export interface VariableStateOption {
   label: string;
@@ -31,6 +32,7 @@ const baseOptions = [
 
 const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, onChange, className, ...props }) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
+  const { open: openVariableStateCreationModal } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
 
   const variableStatesOptions = React.useMemo(() => {
     const statesOptions = variableStates.map((variableState) => ({ label: variableState.name, value: variableState.id }));
@@ -38,6 +40,10 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
   }, [variableStates]);
 
   const selected = variableStatesOptions.find((variableState) => variableState.value === value) || null;
+
+  const onAddNew = () => {
+    openVariableStateCreationModal();
+  };
 
   return (
     <Select
@@ -60,6 +66,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
           <NestedMenuComponents.FooterAction
             onClick={() => {
               hideMenu();
+              onAddNew();
             }}
           >
             Add New

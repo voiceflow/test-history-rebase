@@ -50,15 +50,36 @@ export const prototypeStyles = css`
   }
 `;
 
+export const formStyles = css`
+  ${Header} {
+    padding-bottom: 12px;
+  }
+
+  ${HeaderLabel} {
+    font-weight: 600;
+    color: #62778c;
+  }
+
+  ${ContentContainer} {
+    padding-bottom: ${units(3)}px;
+  }
+`;
+
 export const uploadStyles = css`
   ${Header} {
     height: 52px !important;
   }
 `;
 
+const styles: Partial<Record<SectionVariant, any>> = {
+  [SectionVariant.PROTOTYPE]: prototypeStyles,
+  [SectionVariant.UPLOAD]: uploadStyles,
+  [SectionVariant.FORM]: formStyles,
+};
+
 export const dividersStyles = css<SectionContainerProps>`
   position: absolute;
-  left: ${({ isDividerNested, theme }) => (isDividerNested ? theme.unit * 4 : 0)}px;
+  left: ${({ isDividerNested, variant, theme }) => (isDividerNested || variant === SectionVariant.FORM ? theme.unit * 4 : 0)}px;
   right: 0;
   display: block;
   height: 1px;
@@ -141,6 +162,7 @@ const SectionContainer = styled.div<SectionContainerProps>`
             font-size: 15px;
           `;
         case SectionVariant.SECONDARY:
+        case SectionVariant.FORM:
           return css`
             font-weight: ${isCollapsed ? 'normal' : '600'};
             color: #62778c;
@@ -265,9 +287,7 @@ const SectionContainer = styled.div<SectionContainerProps>`
     `}
 
 
-  ${({ variant }) => variant === SectionVariant.PROTOTYPE && prototypeStyles}
-
-  ${({ variant }) => variant === SectionVariant.UPLOAD && uploadStyles}
+  ${({ variant }) => (variant ? styles[variant] : null)}
 `;
 
 export default SectionContainer;

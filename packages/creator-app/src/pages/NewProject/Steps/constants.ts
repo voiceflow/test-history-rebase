@@ -142,7 +142,7 @@ export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
     isNew: true,
   },
   [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: {
-    name: 'Dialogflow Voice',
+    name: 'Dialogflow IVR',
     icon: 'dialogflow',
     platform: Constants.PlatformType.DIALOGFLOW_ES_VOICE,
     features: [PlatformFeature.DESIGN, PlatformFeature.EXPORT, PlatformFeature.PUBLISH],

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.602.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.601.0...@voiceflow/creator-app@1.602.0) (2022-01-21)
+
+
+### Features
+
+* implement Variable State Editor Modal (VF-2403) ([#4939](https://github.com/voiceflow/creator-app/issues/4939)) ([d58900b](https://github.com/voiceflow/creator-app/commit/d58900b486f13bdf380a0c29179ceacc4fb623dd))
+
+
+
+
+
 # [1.601.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.600.5...@voiceflow/creator-app@1.601.0) (2022-01-21)
 
 

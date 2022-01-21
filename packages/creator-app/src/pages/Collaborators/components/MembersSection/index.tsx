@@ -19,8 +19,15 @@ const MemberSection: React.FC<MemberSectionProps> = ({ inline, members, resendIn
 
   return (
     <Wrapper id={Identifier.MEMBERS_CONTAINER}>
-      {members.map((member) => (
-        <MemberRow key={member.email} inline={inline} member={member} pending={!member.creator_id} resendInvite={resendInvite} />
+      {members.map((member, index) => (
+        <MemberRow
+          key={member.email}
+          inline={inline}
+          member={member}
+          pending={!member.creator_id}
+          isLast={index === members.length - 1}
+          resendInvite={resendInvite}
+        />
       ))}
     </Wrapper>
   );

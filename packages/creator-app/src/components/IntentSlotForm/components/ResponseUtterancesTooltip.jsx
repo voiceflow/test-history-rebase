@@ -5,7 +5,7 @@ import { Section, Title } from '@/components/Tooltip';
 export default function ResponseUtterancesTooltip() {
   return (
     <>
-      <Section marginBottomUnits={2}>Response utterances are the different way a user could respond to the entity prompt we defined above.</Section>
+      <Section marginBottomUnits={2}>Response utterances are the different way a user could respond to the entity reprompt we defined above.</Section>
 
       <Title>Example</Title>
 

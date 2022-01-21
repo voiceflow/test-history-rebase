@@ -1,6 +1,7 @@
 import { ClickableText, Icon, Input, NestedInputIconPosition } from '@voiceflow/ui';
 import React, { useCallback, useMemo, useState } from 'react';
 
+import Divider from '@/components/Divider';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 import { Permission } from '@/config/permissions';
 import { ModalType, RESPONSE_COLOR_CODES as COLOR_CODES } from '@/constants';
@@ -69,34 +70,38 @@ const UnconnectedPrototypePasswordInput: React.FC<PrototypePasswordInputProps & 
   );
 
   return (
-    <UncontrolledSection
-      isCollapsed={isCollapsed}
-      onClick={onToggleCollapse}
-      header="Password Protection"
-      isDividerNested
-      collapseVariant={SectionToggleVariant.ARROW}
-      variant={SectionVariant.PRIMARY}
-      customContentStyling={{ marginBottom: isCollapsed ? 0 : 24 }}
-    >
-      <Input
-        {...iconProps}
-        value={value}
-        nested
-        onBlur={onBlur}
-        disabled={!canAccessPassword}
-        placeholder="Add password"
-        onChangeText={setValue}
-        wrapperProps={inputWrapperProps}
-        onFocusOnClick={onFocus}
-      />
+    <>
+      <UncontrolledSection
+        isCollapsed={isCollapsed}
+        onClick={onToggleCollapse}
+        header="Password Protection"
+        isDividerNested
+        collapseVariant={SectionToggleVariant.ARROW}
+        variant={SectionVariant.PRIMARY}
+        customContentStyling={{ marginBottom: isCollapsed ? 0 : 24 }}
+      >
+        <Input
+          {...iconProps}
+          value={value}
+          nested
+          onBlur={onBlur}
+          disabled={!canAccessPassword}
+          placeholder="Add password"
+          onChangeText={setValue}
+          wrapperProps={inputWrapperProps}
+          onFocusOnClick={onFocus}
+        />
 
-      {!canAccessPassword && (
-        <StyledBlockText fontSize={13} color={THEME.colors.secondary} paddingTop={16}>
-          <span>Unlock password protected prototypes. </span>
-          <ClickableText onClick={onClickUpgrade}>Upgrade</ClickableText>
-        </StyledBlockText>
-      )}
-    </UncontrolledSection>
+        {!canAccessPassword && (
+          <StyledBlockText fontSize={13} color={THEME.colors.secondary} paddingTop={16}>
+            <span>Unlock password protected prototypes. </span>
+            <ClickableText onClick={onClickUpgrade}>Upgrade</ClickableText>
+          </StyledBlockText>
+        )}
+      </UncontrolledSection>
+
+      {isCollapsed && <Divider offset={0} style={{ width: 'calc(100% - 32px)', marginLeft: '32px' }} isSecondaryColor />}
+    </>
   );
 };
 

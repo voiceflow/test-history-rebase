@@ -24,7 +24,7 @@ const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcrip
             <List
               width={width}
               rowCount={transcriptList.length}
-              rowHeight={89}
+              rowHeight={90}
               autoHeight
               rowRenderer={({ key, index }) => {
                 const data = transcriptList[index];

@@ -1,5 +1,6 @@
 import { Models, Node, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockVariant } from '@/constants/canvas';
@@ -37,7 +38,25 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({
   <Step nodeID={nodeID}>
     <Section>
       {captureType === Node.CaptureV2.CaptureType.QUERY ? (
-        <CaptureItem isLast isFirst label={`Capture user reply ${variable ? `to {${variable}}` : ''}`} nextPortID={nextPortID} variant={variant} />
+        <CaptureItem
+          isLast
+          isFirst
+          label={
+            <>
+              Capture user reply{' '}
+              {variable ? (
+                <>
+                  to
+                  <Text>{`{${variable}}`}</Text>
+                </>
+              ) : (
+                ''
+              )}
+            </>
+          }
+          nextPortID={nextPortID}
+          variant={variant}
+        />
       ) : (
         slots.map((slot, index) => (
           <CaptureItem key={index} isFirst={index === 0} isLast={index === slots.length - 1} slot={slot} nextPortID={nextPortID} variant={variant} />

@@ -26,6 +26,7 @@ const ItemNameContainer = styled(Flex)<ItemNameContainerProps>`
   border-radius: 5px;
   border: solid 1px transparent;
   font-size: 13px;
+  line-height: 13px;
   background: #fff;
 
   ${({ isHovered, disableHover }) =>

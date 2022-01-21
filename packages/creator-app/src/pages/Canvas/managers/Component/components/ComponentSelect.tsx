@@ -72,7 +72,16 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ onChange, diagramID, 
       clearable={!!diagramID}
       creatable
       searchable
-      renderEmpty={componentDiagrams.length ? null : ({ search }) => (!search ? <Box flex={1}>Create a new Component</Box> : null)}
+      renderEmpty={
+        componentDiagrams.length
+          ? null
+          : ({ search }) =>
+              !search ? (
+                <Box textAlign="center" flex={1}>
+                  No components exist.
+                </Box>
+              ) : null
+      }
       placeholder="Name new component or select existing"
       validateCreate={validateCreate}
       getOptionValue={(option) => option?.id}

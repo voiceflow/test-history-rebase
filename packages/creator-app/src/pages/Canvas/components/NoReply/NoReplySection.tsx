@@ -14,12 +14,12 @@ interface NoReplySectionProps {
 }
 
 const NoReplySection: React.FC<NoReplySectionProps> = ({ data, pushToPath }) => {
-  const onClick = React.useCallback(() => pushToPath?.({ type: NO_REPLY_PATH_TYPE, label: 'No Reply Response' }), [pushToPath]);
+  const onClick = React.useCallback(() => pushToPath?.({ type: NO_REPLY_PATH_TYPE, label: 'No Reply' }), [pushToPath]);
 
   return (
     <Section
       infix={getNoMatchNoReplySectionLabel(BaseNode.Utils.NoReplyType, data.types)}
-      header="No Reply Response"
+      header="No Reply"
       isLink
       onClick={onClick}
       headerVariant={HeaderVariant.LINK}

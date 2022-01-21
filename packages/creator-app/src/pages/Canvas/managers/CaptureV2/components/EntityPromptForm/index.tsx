@@ -37,7 +37,7 @@ const EntityPromptForm: React.FC<NodeEditorPropsType<Realtime.NodeData.CaptureV2
   );
 
   return (
-    <Section header="Entity Prompt" tooltip={<SlotPromptTooltip />}>
+    <Section header="Entity Reprompt" tooltip={<SlotPromptTooltip />}>
       <FormControl>
         {isChatbot ? (
           <ChatPromptForm

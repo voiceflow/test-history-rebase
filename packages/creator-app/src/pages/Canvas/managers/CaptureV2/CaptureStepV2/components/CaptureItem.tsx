@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { stopPropagation } from '@voiceflow/ui';
+import { stopPropagation, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Popper from '@/components/Popper';
@@ -13,7 +13,7 @@ import { NODE_CONFIG } from '../../constants';
 
 export interface CaptureItemProps {
   slot?: Realtime.IntentSlot & { slot?: Realtime.Slot };
-  label?: string;
+  label?: React.ReactNode;
   isLast: boolean;
   isFirst: boolean;
   nextPortID: string;
@@ -37,7 +37,7 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
       placement="right"
       renderContent={({ onClose }) => (
         <ListContainer>
-          <ListItem label="Entity Prompt" onClick={onClose}>
+          <ListItem label="Entity Reprompt" onClick={onClose}>
             {content}
           </ListItem>
         </ListContainer>
@@ -47,7 +47,16 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
         <Item
           icon={icon}
           variant={variant}
-          label={name && `Capture {${name}}`}
+          label={
+            name ? (
+              <>
+                Capture
+                <Text style={{ wordBreak: 'keep-all' }}>{`{${name}}`}</Text>
+              </>
+            ) : (
+              ''
+            )
+          }
           portID={portID}
           wordBreak
           withNewLines

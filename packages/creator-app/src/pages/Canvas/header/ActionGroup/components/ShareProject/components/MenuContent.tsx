@@ -46,7 +46,7 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
     <ScrollContextProvider value={scrollHelpers}>
       <Container style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <MenuContentHeader isScrolling={!!isHeaderSticky}>
-          <Header marginBottom={12}>Share Assistant with Testers</Header>
+          <Header marginBottom={8}>Share Assistant with Testers</Header>
 
           <Description fontSize={inline ? 13 : 15} lineHeight="normal">
             <span>Share a testable version of your project in the browser on web or mobile. </span>
@@ -63,6 +63,7 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
 
               <PrototypeLayoutSelect />
             </Box>
+
             <UncontrolledSection
               id={Identifier.APPEARANCE_AND_BRANDING_DD}
               nestedIntend

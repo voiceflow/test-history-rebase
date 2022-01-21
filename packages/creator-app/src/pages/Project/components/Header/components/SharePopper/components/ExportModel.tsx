@@ -44,7 +44,7 @@ const ExportModel: React.FC = () => {
         <ChatWithUsLink>Contact Us.</ChatWithUsLink>
       </BlockText>
 
-      <Divider />
+      <Divider style={{ margin: '16px -32px', width: 'calc(100% + 64px)' }} />
 
       <BlockText color="#62778c" fontSize={13} mb={10} fontWeight="bold">
         Configuration

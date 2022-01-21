@@ -78,7 +78,23 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
   const selectedSlot = React.useMemo<Realtime.Slot | null>(() => (item.id && getSlotByID(item.id)) || null, [item.id, getSlotByID]);
 
   const getOptionLabel = React.useCallback(
-    (slotID?: string | null) => (slotID && getSlotByID(slotID)?.name) || (slotID === ENTIRE_USER_REPLY && 'Entire user reply') || null,
+    (slotID?: string | null) => {
+      if (!slotID) {
+        return null;
+      }
+
+      if (slotID === ENTIRE_USER_REPLY) {
+        return 'Entire user reply';
+      }
+
+      const slot = getSlotByID(slotID);
+
+      if (slot) {
+        return `{${slot.name}}`;
+      }
+
+      return null;
+    },
     [getSlotByID]
   );
   const getOptionValue = React.useCallback((option: Nullish<{ id: string }>) => option?.id, []);
@@ -115,7 +131,7 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
 
   const goToEntityPrompt = React.useCallback(() => {
     if (!selectedSlot?.id) return;
-    pushToPath({ id: selectedSlot.id, type: ENTITY_PROMPT_PATH_TYPE, label: 'Entity Prompt' });
+    pushToPath({ id: selectedSlot.id, type: ENTITY_PROMPT_PATH_TYPE, label: 'Entity Reprompt' });
   }, [selectedSlot?.id, pushToPath]);
 
   const goToSelectedSlot = React.useCallback(() => {
@@ -188,7 +204,7 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
               <Section
                 isDividerNested
                 infix={<>{hasPrompt ? 'Added' : 'Empty'}</>}
-                header="Entity Prompt"
+                header="Entity Reprompt"
                 isLink
                 tooltip={<EntityPromptTooltip />}
                 onClick={goToEntityPrompt}

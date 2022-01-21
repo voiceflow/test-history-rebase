@@ -51,7 +51,11 @@ const EditorHeader: React.FC<ConnectedHeaderProps & HeaderProps> = ({ path = [],
           options={headerActions.map(({ onClick, ...action }) => ({ ...action, onClick: () => onClick({ data: data!, engine }) }))}
           placement="bottom-end"
         >
-          {(ref, onOpen, isOpened) => <IconButton ref={ref} icon="ellipsis" variant={IconButtonVariant.FLAT} onClick={onOpen} active={isOpened} />}
+          {(ref, onOpen, isOpened) => (
+            <div>
+              <IconButton ref={ref} icon="ellipsis" variant={IconButtonVariant.FLAT} onClick={onOpen} active={isOpened} />
+            </div>
+          )}
         </Dropdown>
       )}
     </Container>

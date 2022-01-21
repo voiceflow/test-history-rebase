@@ -4,12 +4,17 @@ import User from '@/components/User';
 import { css, styled } from '@/hocs';
 import { FadeLeft } from '@/styles/animations';
 
-export const Container = styled(FlexApart)`
+export const Container = styled(FlexApart)<{ isLast?: boolean }>`
   ${FadeLeft}
 
-  border-bottom: 1px solid #eaeff4;
   padding: 16px 32px 16px 0px;
   font-size: 15px;
+
+  ${({ isLast }) =>
+    !isLast &&
+    css`
+      border-bottom: 1px solid #eaeff4;
+    `}
 `;
 
 export const UserIcon = styled(User)<{ pending?: boolean }>`

@@ -58,7 +58,23 @@ const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeD
   );
 
   const getOptionLabel = React.useCallback(
-    (slotID?: string | null) => (slotID && getSlotByID(slotID)?.name) || (slotID === ENTIRE_USER_REPLY && 'Entire user reply') || null,
+    (slotID?: string | null) => {
+      if (!slotID) {
+        return null;
+      }
+
+      if (slotID === ENTIRE_USER_REPLY) {
+        return 'Entire user reply';
+      }
+
+      const slot = getSlotByID(slotID);
+
+      if (slot) {
+        return `{${slot.name}}`;
+      }
+
+      return null;
+    },
     [getSlotByID]
   );
   const getOptionValue = React.useCallback((slot?: Realtime.Slot | null) => slot?.id, []);

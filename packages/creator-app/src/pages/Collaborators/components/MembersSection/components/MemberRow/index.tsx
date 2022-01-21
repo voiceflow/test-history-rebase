@@ -40,11 +40,12 @@ const getRoleVerb = (role: UserRole) => {
 interface MemberRowProps {
   member: Realtime.DBMember;
   inline?: boolean;
+  isLast?: boolean;
   pending: boolean;
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
 }
 
-const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendInvite }) => {
+const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendInvite, isLast }) => {
   const ownerRole = useFeature(FeatureFlag.OWNER_ROLE);
 
   // TODO: refactor this to use the permission system
@@ -73,7 +74,7 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendIn
   };
 
   return (
-    <Container className={ClassName.COLLABORATOR_LINE_ITEM} data-email={member.email}>
+    <Container className={ClassName.COLLABORATOR_LINE_ITEM} isLast={isLast} data-email={member.email}>
       <Flex>
         <UserIcon large pending={pending} user={member} />
 

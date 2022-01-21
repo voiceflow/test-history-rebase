@@ -100,7 +100,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
           collapseVariant={SectionToggleVariant.TOGGLE}
           truncatedHeader={false}
         >
-          <Section header="Entity Prompt" tooltip={<SlotPromptTooltip />} isNested dividerIsNested>
+          <Section header="Entity Reprompt" tooltip={<SlotPromptTooltip />} isNested dividerIsNested>
             <FormControl>
               {isChatbot ? (
                 <ChatPromptForm

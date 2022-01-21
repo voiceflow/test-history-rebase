@@ -18,7 +18,6 @@ const TestVariablesSidebar: React.FC = () => {
   const variableStateId = useSelector(variableState.selectedVariableStateId);
   const updateSelectedVariableStateId = useDispatch(variableState.updateSelectedVariableStateId);
   const updateVariables = useDispatch(Prototype.updateVariables);
-  // const [variableState, setVariableState] = React.useState<string | null>(null);
 
   const onChangeVariable = ({ name, value }: { name: string; value: string }) => {
     updateVariables({ [name]: transformStringVariableToNumber(value) });

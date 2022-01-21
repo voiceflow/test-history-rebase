@@ -9,6 +9,7 @@ import ProjectService from './project';
 import ProjectListService from './projectList';
 import SlotService from './slot';
 import UserService from './user';
+import VariableService from './variableState';
 import VersionService from './version';
 import ViewerService from './viewer';
 import VoiceflowService from './voiceflow';
@@ -26,6 +27,7 @@ export interface ServiceMap extends BaseServiceMap {
   voiceflow: VoiceflowService;
   workspace: WorkspaceService;
   projectList: ProjectListService;
+  variableState: VariableService;
 }
 
 interface Options {
@@ -50,6 +52,7 @@ const buildServices = ({ config, clients }: Options): ServiceMap => {
     workspace: new WorkspaceService(serviceOptions),
     projectList: new ProjectListService(serviceOptions),
     sync: new SyncService(serviceOptions),
+    variableState: new VariableService(serviceOptions),
   };
 
   Object.assign(services, serviceMap);

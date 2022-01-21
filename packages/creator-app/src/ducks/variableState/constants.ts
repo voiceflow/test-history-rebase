@@ -1,12 +1,9 @@
-import { createCRUDState } from '@/ducks/utils/crud';
+import { createCRUDState } from '@/ducks/utils/crudV2';
 
-import { VariableStatestState } from './types';
+import { VariableStateCRUDState } from './types';
 
 export const STATE_KEY = 'variableState';
 
 export const ALL_PROJECT_VARIABLES_ID = 'all_project_variables';
 
-export const INITIAL_STATE: VariableStatestState = {
-  ...createCRUDState(),
-  selectedID: null,
-};
+export const INITIAL_STATE: VariableStateCRUDState = createCRUDState();

@@ -12,6 +12,7 @@ export * from './Project';
 export * from './ProjectList';
 export * from './Slot';
 export * from './Speak';
+export * from './VariableState';
 export * from './Version';
 export * from './Viewport';
 export * from './Workspace';

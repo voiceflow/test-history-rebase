@@ -26,10 +26,11 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     // do not sync any data if not enabled for this version's workspace
     if (!isAtomicActions) return [];
 
-    const [project, dbVersion, isTopicsAndComponents] = await Promise.all([
+    const [project, dbVersion, isTopicsAndComponents, variableStates] = await Promise.all([
       this.services.project.get(creatorID, ctx.params.projectID).then(Realtime.Adapters.projectAdapter.fromDB),
       this.services.version.get(creatorID, ctx.params.versionID),
       this.services.workspace.isFeatureEnabled(creatorID, ctx.params.workspaceID, 'topics_and_components'),
+      this.services.variableState.getAll(creatorID, ctx.params.projectID).then(Realtime.Adapters.variableStateAdapter.mapFromDB),
     ]);
     const { platform } = project;
     const version = Realtime.Adapters.versionAdapter.fromDB(dbVersion as Realtime.AnyDBVersion, { platform });
@@ -89,6 +90,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.intent.crud.replace({ values: intents, workspaceID, projectID, versionID }),
       Realtime.product.crud.replace({ values: products, workspaceID, projectID, versionID }),
       Realtime.diagram.crud.replace({ values: diagrams, workspaceID, projectID, versionID }),
+      Realtime.variableState.crud.replace({ values: variableStates, workspaceID, projectID, versionID }),
       Realtime.diagram.loadIntentSteps({ intentSteps, workspaceID, projectID, versionID }),
       Realtime.version.crud.add({ value: version, key: versionID, workspaceID, projectID }),
       Realtime.project.crud.add({ value: project, key: projectID, workspaceID }),

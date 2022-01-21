@@ -8,6 +8,7 @@ import buildProductActionControls from './product';
 import buildProjectActionControls from './project';
 import buildProjectListActionControls from './projectList';
 import buildSlotActionControls from './slot';
+import buildVariableStateActionControls from './variableState';
 import buildVersionActionControls from './version';
 import buildWorkspaceActionControls from './workspace';
 
@@ -22,6 +23,7 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildSlotActionControls(options),
   ...buildVersionActionControls(options),
   ...buildWorkspaceActionControls(options),
+  ...buildVariableStateActionControls(options),
 });
 
 export default buildActions;

@@ -8,5 +8,6 @@ export * as projectList from './projectList';
 export * as protocol from './protocol';
 export * as slot from './slot';
 export * as actionUtils from './utils';
+export * as variableState from './variableState';
 export * as version from './version';
 export * as workspace from './workspace';

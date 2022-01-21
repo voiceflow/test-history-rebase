@@ -9,6 +9,7 @@ export { default as productAdapter } from './product';
 export { default as projectAdapter } from './project';
 export { default as projectListAdapter } from './projectList';
 export { default as slotAdapter } from './slot';
+export { default as variableStateAdapter } from './variableState';
 export { default as versionAdapter } from './version';
 export { default as createSessionAdapter } from './version/session';
 export { default as workspaceAdapter, workspaceWithMembersAdapter } from './workspace';

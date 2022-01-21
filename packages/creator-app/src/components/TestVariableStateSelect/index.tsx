@@ -2,6 +2,7 @@ import { FlexApart, NestedMenuComponents, Select, SelectProps } from '@voiceflow
 import React from 'react';
 
 import * as variableState from '@/ducks/variableState';
+import { useSelector } from '@/hooks';
 
 export interface VariableStateOption {
   label: string;
@@ -14,25 +15,34 @@ type TestVariableStateSelectProps = Omit<Partial<SelectProps<VariableStateOption
 
 const testVariableStateOptionRenderer = (option: VariableStateOption) => <FlexApart fullWidth>{option.label}</FlexApart>;
 
+const dividerOption = {
+  label: 'Divider 1',
+  value: 'divider',
+  menuItemProps: { divider: true },
+};
+
 const baseOptions = [
   {
     label: 'All project variables',
     value: variableState.ALL_PROJECT_VARIABLES_ID,
   },
-  {
-    label: 'Divider 1',
-    value: 'divider',
-    menuItemProps: { divider: true },
-  },
+  dividerOption,
 ];
 
 const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, onChange, className, ...props }) => {
-  const selected = baseOptions.find((variableState) => variableState.value === value) || null;
+  const variableStates = useSelector(variableState.allVariableStatesSelector);
+
+  const variableStatesOptions = React.useMemo(() => {
+    const statesOptions = variableStates.map((variableState) => ({ label: variableState.name, value: variableState.id }));
+    return [...baseOptions, ...statesOptions];
+  }, [variableStates]);
+
+  const selected = variableStatesOptions.find((variableState) => variableState.value === value) || null;
 
   return (
     <Select
       value={selected?.label || null}
-      options={baseOptions}
+      options={variableStatesOptions}
       onSelect={(newValue) => onChange(newValue === value ? '' : newValue)}
       searchable
       placeholder="Select a variable state"

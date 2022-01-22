@@ -35,6 +35,7 @@
     "url": "git+https://github.com/voiceflow/creator-app.git"
   },
   "scripts": {
+    "analyze:dependencies": "depcruise --validate -- src",
     "build": "yarn clean && ttsc --project tsconfig.build.json",
     "clean": "rimraf build",
     "dev": "yarn clean && yarn:build --watch",

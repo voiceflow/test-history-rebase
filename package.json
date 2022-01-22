@@ -16,6 +16,7 @@
     "@types/sinon-chai": "3.2.8",
     "@voiceflow/babel-preset": "1.1.1",
     "@voiceflow/commitlint-config": "1.1.1",
+    "@voiceflow/dependency-cruiser-config": "1.1.0",
     "@voiceflow/eslint-config": "3.5.0",
     "@voiceflow/git-branch-check": "1.2.3",
     "@voiceflow/prettier-config": "1.0.6",
@@ -31,6 +32,7 @@
     "cz-conventional-changelog": "2.1.0",
     "deep-equal-in-any-order": "1.1.15",
     "depcheck": "1.4.3",
+    "dependency-cruiser": "11.2.1",
     "eslint": "7.32.0",
     "eslint-import-resolver-lerna": "2.0.0",
     "eslint-import-resolver-webpack": "0.13.1",
@@ -62,6 +64,7 @@
   "prettier": "@voiceflow/prettier-config",
   "private": true,
   "scripts": {
+    "analyze:dependencies": "lerna run analyze:dependencies --concurrency=4 --parallel",
     "bootstrap": "lerna bootstrap --no-ci",
     "build": "lerna run build --concurrency=4 --stream",
     "build:deps": "yarn build --scope @voiceflow/ui --scope @voiceflow/socket-utils --scope @voiceflow/realtime-sdk --scope @voiceflow/ml-sdk",

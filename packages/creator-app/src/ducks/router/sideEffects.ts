@@ -1,6 +1,6 @@
 import { generatePath } from 'react-router-dom';
 
-import { RootPageProgressBar } from '@/components/PageProgressBar';
+import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
@@ -39,7 +39,7 @@ export const redirectToCanvas = (versionID: string, diagramID?: string) =>
 export const goToCanvasSwitchRealtime =
   (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk =>
   async (dispatch) => {
-    RootPageProgressBar.start(PageProgressBar.CANVAS_LOADING);
+    PageProgress.start(PageProgressBar.CANVAS_LOADING);
 
     await dispatch(Realtime.switchRealtimeDiagram(versionID, diagramID, isNewDiagram));
 

@@ -9,7 +9,7 @@ import { ModalType } from '@/constants';
 import { setConfirm } from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import { useModals } from '@/hooks';
-import { APIKey } from '@/models/APIKey';
+import { APIKey } from '@/models';
 import * as Sentry from '@/vendors/sentry';
 
 import CreateAPIKeyModal from './modal';

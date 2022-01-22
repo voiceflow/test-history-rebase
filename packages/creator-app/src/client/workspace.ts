@@ -2,8 +2,7 @@ import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { FetchOptions } from '@voiceflow/ui';
 
-import { Price } from '@/models';
-import { APIKey } from '@/models/APIKey';
+import { APIKey, Price } from '@/models';
 import { DBBilling, DBPayment } from '@/models/Billing';
 
 import invoiceAdapter from './adapters/invoice';

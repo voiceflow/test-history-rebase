@@ -19,6 +19,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
+    "analyze:dependencies": "depcruise --exclude src/models.ts --validate -- src",
     "build": "yarn clean && ttsc --project tsconfig.build.json",
     "clean": "rimraf build",
     "dev": "yarn build --watch",

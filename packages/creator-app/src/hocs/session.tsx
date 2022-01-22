@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Account from '@/ducks/account';
-import { useSelector } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
 
 import { createHOC, HOC } from './utils';
 

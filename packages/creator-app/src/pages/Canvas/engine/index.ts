@@ -8,7 +8,7 @@ import { useSelector, useStore } from 'react-redux';
 
 import { CanvasAPI } from '@/components/Canvas';
 import { MovementCalculator } from '@/components/Canvas/types';
-import { RootPageProgressBar } from '@/components/PageProgressBar';
+import { PageProgress } from '@/components/PageProgressBar';
 import { isDebug } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { BlockType, PageProgressBar } from '@/constants';
@@ -509,7 +509,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   }
 
   async createComponent(): Promise<string> {
-    RootPageProgressBar.start(PageProgressBar.COMPONENT_CREATING);
+    PageProgress.start(PageProgressBar.COMPONENT_CREATING);
 
     const targets = this.activation.getTargets();
 
@@ -536,7 +536,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
       outgoingLinkTarget && this.link.add(componentNode.ports.out.builtIn[BaseModels.PortType.NEXT]!, outgoingLinkTarget.portID),
     ]);
 
-    RootPageProgressBar.stop(PageProgressBar.COMPONENT_CREATING);
+    PageProgress.stop(PageProgressBar.COMPONENT_CREATING);
 
     return diagramID;
   }

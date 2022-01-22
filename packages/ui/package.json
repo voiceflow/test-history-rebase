@@ -66,6 +66,7 @@
     "url": "git+https://github.com/voiceflow/creator-app.git"
   },
   "scripts": {
+    "analyze:dependencies": "depcruise --exclude 'src/(svgs|components/NestedMenu/Menu)' --validate -- src",
     "build": "yarn clean && yarn build:svg && concurrently -c yellow,blue 'yarn:build:cjs' 'yarn:build:esm'",
     "build:cjs": "ttsc --project tsconfig.build.json && ./scripts/copy_assets.sh common",
     "build:esm": "ttsc --project tsconfig.module.json && ./scripts/copy_assets.sh module",

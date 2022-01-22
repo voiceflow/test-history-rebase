@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import client from '@/client';
-import { RootPageProgressBar } from '@/components/PageProgressBar';
+import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
 import { PageProgressBar, RESERVED_JS_WORDS } from '@/constants';
@@ -178,13 +178,13 @@ export const createTopicDiagram =
           return newDiagram;
         },
         async (context) => {
-          RootPageProgressBar.start(PageProgressBar.TOPIC_CREATING);
+          PageProgress.start(PageProgressBar.TOPIC_CREATING);
 
           const diagram = await dispatch(waitAsync(Realtime.diagram.createTopic, { ...context, diagram: { name } }));
 
           dispatch(Tracking.trackTopicCreated());
 
-          RootPageProgressBar.stop(PageProgressBar.TOPIC_CREATING);
+          PageProgress.stop(PageProgressBar.TOPIC_CREATING);
 
           return diagram;
         }
@@ -233,7 +233,7 @@ const addDiagramIDIntoComponentsList =
 export const createEmptyComponent =
   (name: string): Thunk<string> =>
   async (dispatch) => {
-    RootPageProgressBar.start(PageProgressBar.COMPONENT_CREATING);
+    PageProgress.start(PageProgressBar.COMPONENT_CREATING);
 
     const diagramID = await dispatch(createComponentDiagram(name));
 
@@ -241,7 +241,7 @@ export const createEmptyComponent =
 
     await dispatch(addDiagramIDIntoComponentsList(diagramID));
 
-    RootPageProgressBar.stop(PageProgressBar.COMPONENT_CREATING);
+    PageProgress.stop(PageProgressBar.COMPONENT_CREATING);
 
     return diagramID;
   };
@@ -483,7 +483,7 @@ export const convertToTopic =
           throw new Error('Not implemented');
         },
         async (context) => {
-          RootPageProgressBar.start(PageProgressBar.TOPIC_CREATING);
+          PageProgress.start(PageProgressBar.TOPIC_CREATING);
 
           const state = getState();
           const activeDiagramID = Session.activeDiagramIDSelector(state);
@@ -504,7 +504,7 @@ export const convertToTopic =
             }
           }
 
-          RootPageProgressBar.stop(PageProgressBar.TOPIC_CREATING);
+          PageProgress.stop(PageProgressBar.TOPIC_CREATING);
         }
       )
     );

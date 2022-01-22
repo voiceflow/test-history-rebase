@@ -1,22 +1,12 @@
-import { Utils } from '@voiceflow/common';
 import { useToggle } from '@voiceflow/ui';
 import React from 'react';
 
 import { useForceUpdate, useRAF, useTeardown } from '@/hooks';
 
 import PageProgressBar from './PageProgressBar';
+import { PageProgress } from './utils';
 
-interface RootPageProgressBarApi {
-  stop: (type: string) => void;
-  start: (type: string) => void;
-}
-
-type RootPageProgressBarType = React.FC & RootPageProgressBarApi;
-
-const globalAPI: RootPageProgressBarApi = {
-  stop: Utils.functional.noop,
-  start: Utils.functional.noop,
-};
+export { PageProgress };
 
 const FORCE_STOP_TIMEOUT = 10000;
 const MAX_LOADING_TIME_SECONDS = 5;
@@ -30,7 +20,7 @@ const RootPageProgressBar: React.FC = () => {
 
   const [scheduler] = useRAF();
 
-  RootPageProgressBarWithAPI.start = (type: string) => {
+  PageProgress.start = (type: string) => {
     activeTypeRef.current = type;
 
     clearTimeout(timeoutRef.current);
@@ -40,10 +30,10 @@ const RootPageProgressBar: React.FC = () => {
 
     scheduler(() => forceUpdate());
 
-    timeoutRef.current = setTimeout(() => globalAPI.stop(type), FORCE_STOP_TIMEOUT) as any;
+    timeoutRef.current = setTimeout(() => PageProgress.stop(type), FORCE_STOP_TIMEOUT) as any;
   };
 
-  RootPageProgressBarWithAPI.stop = (type: string) => {
+  PageProgress.stop = (type: string) => {
     if (activeTypeRef.current !== type) return;
 
     setProgress(100);
@@ -68,6 +58,4 @@ const RootPageProgressBar: React.FC = () => {
   return <PageProgressBar key={forceUpdateKey} easing="cubic-bezier(0.16, 1, 0.3, 1)" progress={progress} duration={MAX_LOADING_TIME_SECONDS} />;
 };
 
-const RootPageProgressBarWithAPI: RootPageProgressBarType = Object.assign(RootPageProgressBar, globalAPI);
-
-export default RootPageProgressBarWithAPI;
+export default RootPageProgressBar;

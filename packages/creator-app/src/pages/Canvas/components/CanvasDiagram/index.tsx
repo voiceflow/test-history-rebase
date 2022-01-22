@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 import Canvas from '@/components/Canvas';
 import Crosshair from '@/components/Crosshair';
-import { RootPageProgressBar } from '@/components/PageProgressBar';
+import { PageProgress } from '@/components/PageProgressBar';
 import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, PageProgressBar } from '@/constants';
 import { canvasNavigationSelector } from '@/ducks/ui';
 import * as Viewport from '@/ducks/viewport';
@@ -157,7 +157,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const navigation = useSelector(canvasNavigationSelector);
 
   useSetup(() => {
-    RootPageProgressBar.stop(PageProgressBar.CANVAS_LOADING);
+    PageProgress.stop(PageProgressBar.CANVAS_LOADING);
 
     perf.action(PerfAction.CANVAS_RENDERED);
   });

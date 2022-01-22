@@ -72,7 +72,7 @@ parameters:
     default: false
 
 orbs:
-  vfcommon: voiceflow/common@0.0.270
+  vfcommon: voiceflow/common@0.0.272
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -372,6 +372,9 @@ jobs:
           force_execution: << pipeline.parameters.build-all >>
           run_on_root: << pipeline.parameters.build-all >>
       - vfcommon/lint_report_monorepo:
+          force_execution: << pipeline.parameters.build-all >>
+          run_on_root: << pipeline.parameters.build-all >>
+      - vfcommon/analyze_dependencies_monorepo:
           force_execution: << pipeline.parameters.build-all >>
           run_on_root: << pipeline.parameters.build-all >>
       - vfcommon/lint_dockerfile_monorepo:

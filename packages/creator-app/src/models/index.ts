@@ -2,6 +2,7 @@ import { WithRequired } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 export * from './Account';
+export * from './APIKey';
 export * from './Billing';
 export * from './Comment';
 export * from './Display';

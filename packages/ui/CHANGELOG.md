@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.46.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.45.1...@voiceflow/ui@1.46.0) (2022-01-22)
+
+
+### Features
+
+* message delay touchups (VF-2730) ([#4963](https://github.com/voiceflow/creator-app/issues/4963)) ([aa4454d](https://github.com/voiceflow/creator-app/commit/aa4454d474050fded5ad8932f5070080a4bc713f))
+
+
+
+
+
 ## [1.45.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.45.0...@voiceflow/ui@1.45.1) (2022-01-20)
 
 

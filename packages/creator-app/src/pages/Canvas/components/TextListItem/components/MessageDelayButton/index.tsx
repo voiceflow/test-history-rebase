@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import { Input, preventDefault, useToggle, withHandler, withInputBlur } from '@voiceflow/ui';
+import { Input, preventDefault, TippyTooltip, useToggle, withHandler, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
 import Popper from '@/components/Popper';
@@ -40,14 +40,18 @@ const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ data, onUpdate 
             autoFocus // eslint-disable-line jsx-a11y/no-autofocus
             type="number"
             min={0}
-            placeholder="1000"
+            placeholder="1500"
             onChangeText={setMessageDelay}
             onEnterPress={preventDefault(withInputBlur())}
           />
         </PopperContent>
       )}
     >
-      {({ ref, isOpened }) => <IconButton ref={ref} icon="clock" active={isOpened} onClick={preventDefault(toggleOpen)} />}
+      {({ ref, isOpened }) => (
+        <TippyTooltip title="Message Delay" position="top">
+          <IconButton ref={ref} icon="delay" active={isOpened || !!messageDelay} onClick={preventDefault(toggleOpen)} />
+        </TippyTooltip>
+      )}
     </Popper>
   );
 };

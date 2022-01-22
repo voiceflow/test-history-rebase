@@ -61,6 +61,7 @@ export { default as customPayload } from './custom-payload.svg';
 export { default as customResponse } from './custom-response.svg';
 export { default as checked } from './images/icons/check.svg';
 // d
+export { default as delay } from './delay.svg';
 export { default as designer } from './designer.svg';
 export { default as developer } from './developer.svg';
 export { default as dialogflow } from './dialogflow.svg';

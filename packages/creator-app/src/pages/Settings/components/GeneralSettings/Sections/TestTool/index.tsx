@@ -14,6 +14,8 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useFeature, usePermission, useSelector } from '@/hooks';
 import ColorInput from '@/pages/Canvas/header/ActionGroup/components/ShareProject/components/AppearanceAndBranding/ColorInput';
 
+const MESSAGE_DELAY_SUPPORTED_PLATFORMS = [PlatformType.CHATBOT, PlatformType.DIALOGFLOW_ES_CHAT];
+
 const TestToolSettings: React.FC = () => {
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
   const patchSettings = useDispatch(Version.patchSettings);
@@ -26,7 +28,7 @@ const TestToolSettings: React.FC = () => {
   const messageDelays = useFeature(FeatureFlag.PROTOTYPE_MESSAGE_DELAYS);
   const platform = useSelector(ProjectV2.active.platformSelector);
 
-  const showMessageDelaySetting = messageDelays.isEnabled && platform === PlatformType.CHATBOT;
+  const showMessageDelaySetting = messageDelays.isEnabled && MESSAGE_DELAY_SUPPORTED_PLATFORMS.includes(platform);
   const onChangeDelay = async (val: string) => {
     const delay = parseInt(val, 10);
     setDelayDuration(delay);

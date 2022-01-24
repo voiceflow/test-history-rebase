@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.606.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.606.2...@voiceflow/creator-app@1.606.3) (2022-01-24)
+
+
+### Bug Fixes
+
+* watson export option (VF-2739) ([#4973](https://github.com/voiceflow/creator-app/issues/4973)) ([f4aa158](https://github.com/voiceflow/creator-app/commit/f4aa158f26c2c97e45b52d39048124bff3e4f749))
+
+
+
+
+
 ## [1.606.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.606.1...@voiceflow/creator-app@1.606.2) (2022-01-24)
 
 

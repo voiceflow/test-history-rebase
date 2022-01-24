@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.607.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.606.4...@voiceflow/creator-app@1.607.0) (2022-01-24)
+
+
+### Features
+
+* creates variable state manager modals (VF-2402) ([#4951](https://github.com/voiceflow/creator-app/issues/4951)) ([325f61b](https://github.com/voiceflow/creator-app/commit/325f61bd2fea3ac5045e981ea301457a5c891d6e))
+
+
+
+
+
 ## [1.606.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.606.3...@voiceflow/creator-app@1.606.4) (2022-01-24)
 
 

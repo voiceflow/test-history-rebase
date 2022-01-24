@@ -32,7 +32,7 @@
     "cz-conventional-changelog": "2.1.0",
     "deep-equal-in-any-order": "1.1.15",
     "depcheck": "1.4.3",
-    "dependency-cruiser": "11.2.1",
+    "dependency-cruiser": "11.3.0",
     "eslint": "7.32.0",
     "eslint-import-resolver-lerna": "2.0.0",
     "eslint-import-resolver-webpack": "0.13.1",

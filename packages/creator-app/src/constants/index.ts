@@ -75,12 +75,16 @@ export enum NLPProvider {
   LUIS = 'luis',
   ALEXA = 'alexa',
   DIALOGFLOW_ES = 'diagflow-es',
+  // EINSTEIN = 'einstein',
+  WATSON = 'watson',
   RASA = 'rasa',
 }
 
 export const NLPProviderLabels = {
   [NLPProvider.ALEXA]: 'Amazon Alexa',
   [NLPProvider.DIALOGFLOW_ES]: 'Dialogflow ES',
+  [NLPProvider.WATSON]: 'IBM Watson',
+  // [NLPProvider.EINSTEIN]: 'Salesforce Einstein',
   [NLPProvider.LUIS]: 'Microsoft LUIS',
   [NLPProvider.RASA]: 'Rasa',
 };

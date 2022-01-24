@@ -51,7 +51,11 @@ export const ExportProvider: React.FC = ({ children }) => {
     if (exportType === ExportType.CANVAS) {
       await exportCanvas(canvasExportFormat);
     } else if (modelExportProvider) {
-      await exportModel(modelExportProvider, modelExportIntents);
+      if (modelExportConfig === ModelExportConfig.INTENTS) {
+        await exportModel(modelExportProvider, modelExportIntents);
+      } else {
+        await exportModel(modelExportProvider);
+      }
     }
 
     trackingEvents.trackProjectExported({

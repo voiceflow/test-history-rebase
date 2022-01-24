@@ -26,6 +26,7 @@ export enum FeatureFlag {
   ASR_BYPASS = 'asr_bypass',
   MOTOROLA_SSO = 'motorola_sso',
   WAVENET_VOICES = 'wavenet_voices',
+  NEW_NLP_EXPORTS = 'new_nlp_exports',
   TOPICS_AND_COMPONENTS = 'topics_and_components',
 
   // atomic actions

@@ -5,9 +5,11 @@ import { useSelector } from 'react-redux';
 import ChatWithUsLink from '@/components/ChatLink';
 import Divider from '@/components/Divider';
 import RadioGroup from '@/components/RadioGroup';
-import { NLPProviderLabels } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { NLPProvider, NLPProviderLabels } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
+import { useFeature } from '@/hooks';
 
 import { getNplModelProvider, MODEL_EXPORT_OPTIONS, ModelExportConfig } from '../constants';
 import { ExportContext } from '../contexts';
@@ -19,7 +21,15 @@ const ExportModel: React.FC = () => {
   const intents = useSelector(IntentV2.allIntentsSelector);
   const noModelData = intents.length === 0;
 
-  const nplProviderOptions = React.useMemo(() => getNplModelProvider(platform), [platform]);
+  const newExportsIsEnabled = useFeature(FeatureFlag.NEW_NLP_EXPORTS)?.isEnabled;
+
+  const nplProviderOptions = React.useMemo(() => {
+    if (newExportsIsEnabled) {
+      return getNplModelProvider(platform);
+    }
+    // if no FF, filter out new NLPs
+    return getNplModelProvider(platform).filter((nlp) => ![NLPProvider.WATSON].includes(nlp));
+  }, [platform, newExportsIsEnabled]);
 
   React.useEffect(() => {
     if (nplProviderOptions.length === 1) {

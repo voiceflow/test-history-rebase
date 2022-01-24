@@ -120,6 +120,10 @@ export const exportModel =
         data = await client.platform.general.modelExport.exportBlob(versionID, 'luis', intents);
         downloadFromURL(`${projectName}-general-model.json`, data);
         URL.revokeObjectURL(data);
+      } else if (nlpProvider === NLPProvider.WATSON) {
+        data = await client.platform.general.modelExport.exportBlob(versionID, 'watson', intents);
+        downloadFromURL(`${projectName}-watson-model`, data);
+        URL.revokeObjectURL(data);
       } else {
         throw new Error(`no provider matched: ${nlpProvider}`);
       }

@@ -3,7 +3,8 @@ import React from 'react';
 
 import Header from '@/components/Header';
 import { Permission } from '@/config/permissions';
-import { usePermission } from '@/hooks';
+import * as Router from '@/ducks/router';
+import { useDispatch, usePermission } from '@/hooks';
 
 import CenterNavSection from './CenterNavSection';
 import LeftNavSection from './LeftNavSection';
@@ -17,6 +18,7 @@ interface DashboardHeaderProps {
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({ handleFilterText, workspace: activeWorkspace }) => {
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
+  const goToWorkspaceSettings = useDispatch(Router.goToCurrentWorkspaceSettings);
 
   return (
     <Header
@@ -26,6 +28,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ handleFilterText, wor
       rightRenderer={() => <RightNavSection />}
       centerRenderer={() => <CenterNavSection />}
       disableLogoClick={!canConfigureWorkspace}
+      onLogoClick={() => goToWorkspaceSettings()}
       subHeaderRenderer={() => <SecondaryNav handleFilterText={handleFilterText} workspace={activeWorkspace} />}
     />
   );

@@ -25,6 +25,7 @@ interface HeaderProps {
   disableLogoClick?: boolean;
   logoAssetPath?: string;
   onBackClick?: () => void;
+  onLogoClick?: () => void;
   leftRenderer?: () => React.ReactNode;
   rightRenderer?: () => React.ReactNode;
   centerRenderer?: () => React.ReactNode;
@@ -36,6 +37,7 @@ const Header: React.FC<HeaderProps> = ({
   withUserMenu = true,
   withLogo,
   onBackClick,
+  onLogoClick,
   leftRenderer,
   rightRenderer,
   centerRenderer,
@@ -46,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <HeaderContainer>
       <PrimaryHeader className={ClassName.PRIMARY_NAV}>
-        {withLogo && <Logo src={logoAssetPath || logoDark} alt="logo" draggable="false" />}
+        {withLogo && <Logo src={logoAssetPath || logoDark} alt="logo" draggable="false" onClick={onLogoClick} />}
         {onBackClick && (
           <BackButton>
             <SvgIcon icon={SVG.arrowLeft} size={3} className="icon-back" onClick={onBackClick} />

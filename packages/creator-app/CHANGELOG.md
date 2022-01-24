@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.606.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.606.1...@voiceflow/creator-app@1.606.2) (2022-01-24)
+
+
+### Bug Fixes
+
+* workspace logo is clickable and opens workspace settings (VF-2743) ([#4977](https://github.com/voiceflow/creator-app/issues/4977)) ([77f32d6](https://github.com/voiceflow/creator-app/commit/77f32d69fea92831f64ab08e78800107a846dccf))
+
+
+
+
+
 ## [1.606.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.606.0...@voiceflow/creator-app@1.606.1) (2022-01-22)
 
 **Note:** Version bump only for package @voiceflow/creator-app

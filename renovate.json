@@ -7,5 +7,5 @@
       "enabled": true
     }
   ],
-  "prConcurrentLimit": 5
+  "prConcurrentLimit": 3
 }

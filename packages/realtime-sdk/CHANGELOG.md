@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.49.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.49.2...@voiceflow/realtime-sdk@1.49.3) (2022-01-24)
+
+
+### Bug Fixes
+
+* add google df adapters (VF-000) ([#4974](https://github.com/voiceflow/creator-app/issues/4974)) ([48d624f](https://github.com/voiceflow/creator-app/commit/48d624f0cbbf0a61a956f1ceea7d7a4da3f4a74d))
+
+
+
+
+
 ## [1.49.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.49.1...@voiceflow/realtime-sdk@1.49.2) (2022-01-22)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

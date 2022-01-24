@@ -262,6 +262,7 @@ export enum ModalType {
   CHANGE_EMAIL_MODAL = 'change-email-modal',
 
   VARIABLE_STATE_EDITOR_MODAL = 'variable-state-editor-modal',
+  VARIABLE_STATES_MANAGER_MODAL = 'variable-states-manager-modal',
 }
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER]; // billing not included in seat roles

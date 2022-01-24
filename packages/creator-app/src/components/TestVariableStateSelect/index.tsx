@@ -33,6 +33,7 @@ const baseOptions = [
 const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, onChange, className, ...props }) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
   const { open: openVariableStateCreationModal } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
+  const { open: openVariableStateEditorModal } = useModals(ModalType.VARIABLE_STATES_MANAGER_MODAL);
 
   const variableStatesOptions = React.useMemo(() => {
     const statesOptions = variableStates.map((variableState) => ({ label: variableState.name, value: variableState.id }));
@@ -59,6 +60,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
           <NestedMenuComponents.FooterAction
             onClick={() => {
               hideMenu();
+              openVariableStateEditorModal();
             }}
           >
             Manage

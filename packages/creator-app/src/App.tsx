@@ -17,6 +17,7 @@ import CreateNewAgentModal from '@/components/PlatformUploadPopup/Dialogflow/Cre
 import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
 import VariableStateCreationModal from '@/components/VariableStateCreationModal';
+import { VariableStatesManagerModal } from '@/components/VariableStateModals';
 import { SeoPage } from '@/constants/seo';
 import { GlobalSocketSubscriptionsLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
@@ -66,6 +67,7 @@ const App = () => {
       <LoadingModal />
       <TagManagerModal />
       <VariableStateCreationModal />
+      <VariableStatesManagerModal />
 
       <ProjectDownloadModal />
       <TestableLinkModal />

@@ -1,55 +1,13 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import { Action, ActionCreator, AnyAction, isType } from 'typescript-fsa';
+import { isType } from 'typescript-fsa';
 
-import { DEBUG_REALTIME } from '@/config';
 import * as Account from '@/ducks/account/selectors';
 import * as Feature from '@/ducks/feature';
-import * as Session from '@/ducks/session';
 import { Middleware, MiddlewareAPI } from '@/store/types';
 
 import { hideCursorCoords, setCursorCoords } from '../observables';
 
-const createActionTypeMap = (actionsCreators: ActionCreator<any>[]): Record<string, true> =>
-  actionsCreators.reduce<Record<string, true>>((acc, action) => Object.assign(acc, { [action.type]: true }), {});
-
-const CreatorLevelActionsMap = createActionTypeMap([]);
-
-const WorkspaceLevelActionsMap = createActionTypeMap([
-  ...Object.values(Realtime.workspace.crud),
-  ...Object.values(Realtime.projectList.crud),
-  Realtime.projectList.transplantProjectBetweenLists,
-]);
-
-const ProjectLevelActionsMap = createActionTypeMap([
-  ...Object.values(Realtime.project.crud),
-  Realtime.project.awareness.loadViewers,
-  Realtime.project.awareness.updateViewers,
-]);
-
-const DiagramLevelActionsMap = createActionTypeMap([
-  Realtime.diagram.awareness.moveCursor,
-  Realtime.diagram.awareness.hideCursor,
-  Realtime.diagram.addBlocks,
-  Realtime.diagram.removeBlocks,
-  Realtime.diagram.moveBlocks,
-  Realtime.diagram.dragBlocks,
-]);
-
-const isCreatorLevelAction = (action: AnyAction): action is Action<Realtime.BaseCreatorPayload> => action.type in CreatorLevelActionsMap;
-
-const isWorkspaceLevelAction = (action: AnyAction): action is Action<Realtime.BaseWorkspacePayload> => action.type in WorkspaceLevelActionsMap;
-
-const isProjectLevelAction = (action: AnyAction): action is Action<Realtime.BaseProjectPayload> => action.type in ProjectLevelActionsMap;
-
-const isDiagramLevelAction = (action: AnyAction): action is Action<Realtime.BaseDiagramPayload> => action.type in DiagramLevelActionsMap;
-
 const isAtomicActionsEnabled = (api: MiddlewareAPI) => Feature.isFeatureEnabledSelector(api.getState());
-
-export const composeEnhancers = composeWithDevTools({
-  name: 'Voiceflow Creator - Realtime Store',
-  actionsBlacklist: DEBUG_REALTIME ? [] : ['logux/state', Realtime.diagram.awareness.moveCursor.type],
-});
 
 export const createIgnoreMiddleware =
   (shouldIgnore: (api: MiddlewareAPI, action: any) => boolean): Middleware =>
@@ -62,29 +20,6 @@ export const createIgnoreMiddleware =
 
     next(action);
   };
-
-const isActiveWorkspaceAction = (api: MiddlewareAPI, action: Action<Realtime.BaseWorkspacePayload>) =>
-  action.payload.workspaceID === Session.activeWorkspaceIDSelector(api.getState());
-
-const isActiveProjectAction = (api: MiddlewareAPI, action: Action<Realtime.BaseProjectPayload>) =>
-  isActiveWorkspaceAction(api, action) && action.payload.projectID === Session.activeProjectIDSelector(api.getState());
-
-const isActiveDiagramAction = (api: MiddlewareAPI, action: Action<Realtime.BaseDiagramPayload>) =>
-  isActiveProjectAction(api, action) && action.payload.diagramID === Session.activeDiagramIDSelector(api.getState());
-
-/**
- * ignore all unregistered actions and actions form different project/diagram/workspace
- */
-
-export const unregisteredActionsIgnoreMiddleware = createIgnoreMiddleware(
-  (api, action) =>
-    !(
-      isCreatorLevelAction(action) ||
-      (isWorkspaceLevelAction(action) && isActiveWorkspaceAction(api, action)) ||
-      (isProjectLevelAction(action) && isActiveProjectAction(api, action)) ||
-      (isDiagramLevelAction(action) && isActiveDiagramAction(api, action))
-    )
-);
 
 /**
  * ignore actions from own cursor movements
@@ -133,5 +68,5 @@ export const hideCursorMiddleware = createIgnoreMiddleware((api, action) => {
   return true;
 });
 
-// export default [unregisteredActionsIgnoreMiddleware, ownCursorIgnoreMiddleware, moveCursorMiddleware, hideCursorMiddleware];
+// export default [ownCursorIgnoreMiddleware, moveCursorMiddleware, hideCursorMiddleware];
 export default [moveCursorMiddleware, hideCursorMiddleware];

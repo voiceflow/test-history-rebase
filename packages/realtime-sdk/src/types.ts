@@ -50,6 +50,10 @@ export interface BaseLinkPayload extends BaseDiagramPayload {
   linkID: string;
 }
 
+export interface BasePortPayload extends BaseDiagramPayload {
+  portID: string;
+}
+
 export interface BaseNodePayload extends BaseDiagramPayload {
   nodeID: string;
 }

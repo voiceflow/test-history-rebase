@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { AbstractNodeActionControl } from './utils';
+import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 
-class AppendStep extends AbstractNodeActionControl<Realtime.node.AppendStepPayload> {
+class AppendStep extends AbstractDiagramActionControl<Realtime.node.AddNodePayload> {
   actionCreator = Realtime.node.appendStep;
 
   process = async (): Promise<void> => {

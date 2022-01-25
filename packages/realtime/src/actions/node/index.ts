@@ -1,5 +1,4 @@
 import { LoguxControlOptions } from '../../control';
-import AppendPortControl from './appendPort';
 import AppendStepControl from './appendStep';
 import InsertStepControl from './insertStep';
 import RemoveManyNodesControl from './removeMany';
@@ -15,7 +14,6 @@ const buildNodeActionControls = (options: LoguxControlOptions) => ({
   insertStepControl: new InsertStepControl(options),
 
   // ports
-  appendPortControl: new AppendPortControl(options),
   removePortControl: new RemovePortControl(options),
 });
 

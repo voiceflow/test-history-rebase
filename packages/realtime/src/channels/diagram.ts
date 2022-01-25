@@ -1,10 +1,17 @@
 import { parseId } from '@logux/core';
+import { SendBackActions } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ChannelContext } from '@voiceflow/socket-utils';
 
 import { AbstractChannelControl } from './utils';
 
-class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramChannelParams> {
+type DiagramChannelContext = ChannelContext<Realtime.Channels.DiagramChannelParams, DiagramChannelContextData>;
+
+export interface DiagramChannelContextData {
+  subscribed?: boolean;
+}
+
+class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramChannelParams, DiagramChannelContextData> {
   private static getViewerEntityKey(diagramID: string, nodeID: string): string {
     return `${Realtime.DIAGRAM_KEY}:${diagramID}:${nodeID}`;
   }
@@ -18,13 +25,11 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
 
   protected channel = Realtime.Channels.diagram;
 
-  protected access = async (ctx: ChannelContext<Realtime.Channels.DiagramChannelParams>): Promise<boolean> => {
+  protected access = async (ctx: DiagramChannelContext): Promise<boolean> => {
     return this.services.diagram.canRead(Number(ctx.userId), ctx.params.diagramID);
   };
 
-  protected finally = async (ctx: ChannelContext<Realtime.Channels.DiagramChannelParams>): Promise<void> => {
-    // TODO: check if the subscription is succeeded
-
+  protected load = async (ctx: DiagramChannelContext): Promise<SendBackActions> => {
     const creatorID = Number(ctx.userId);
     const isAtomicActions = await this.isAtomicActionsEnabled(creatorID, ctx.params.workspaceID);
 
@@ -58,7 +63,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     );
   };
 
-  unsubscribe = async (ctx: ChannelContext<Realtime.Channels.DiagramChannelParams>): Promise<void> => {
+  unsubscribe = async (ctx: DiagramChannelContext): Promise<void> => {
     await Promise.all([
       this.services.diagram.disconnectNode(ctx.params.diagramID, ctx.nodeId),
       this.services.viewer.removeViewer(ctx.userId, DiagramChannel.getViewerEntityKey(ctx.params.diagramID, ctx.nodeId)),

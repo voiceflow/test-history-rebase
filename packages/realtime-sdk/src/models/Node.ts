@@ -4,15 +4,17 @@ import { WithRequired } from '@voiceflow/common';
 
 import { DBPort } from './Port';
 
-export type BuiltInPortRecord = { [key in Models.PortType]?: string };
+export type BuiltInPortRecord<T = string> = { [key in Models.PortType]?: T };
 
-export interface NodePorts<O extends BuiltInPortRecord = BuiltInPortRecord> {
-  in: string[];
+export interface NodePortSchema<T, O extends BuiltInPortRecord<T> = BuiltInPortRecord<T>> {
+  in: T[];
   out: {
-    dynamic: string[];
+    dynamic: T[];
     builtIn: O;
   };
 }
+
+export type NodePorts<O extends BuiltInPortRecord = BuiltInPortRecord> = NodePortSchema<string, O>;
 
 export interface Node<O extends BuiltInPortRecord = BuiltInPortRecord> {
   id: string;

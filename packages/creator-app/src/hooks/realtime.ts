@@ -72,5 +72,12 @@ export const useVersionSubscription = (
       : []
   );
 
-export const useDiagramSubscription = ({ diagramID, projectID, workspaceID }: NullableRecord<Realtime.Channels.DiagramChannelParams>): boolean =>
-  !useSubscription(diagramID && projectID && workspaceID ? [Realtime.Channels.diagram.build({ diagramID, projectID, workspaceID })] : []);
+export const useDiagramSubscription = ({
+  diagramID,
+  versionID,
+  projectID,
+  workspaceID,
+}: NullableRecord<Realtime.Channels.DiagramChannelParams>): boolean =>
+  !useSubscription(
+    diagramID && versionID && projectID && workspaceID ? [Realtime.Channels.diagram.build({ diagramID, versionID, projectID, workspaceID })] : []
+  );

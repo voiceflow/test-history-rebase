@@ -1,9 +1,9 @@
-import { AnyProject, DBProject } from '@realtime-sdk/models';
+import { AnyProject } from '@realtime-sdk/models';
 import { Models as BaseModels } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
-const projectAdapter = createAdapter<DBProject, AnyProject>(
+const projectAdapter = createAdapter<BaseModels.Project<BaseModels.BasePlatformData, BaseModels.BasePlatformData>, AnyProject>(
   ({
     _id,
     name,

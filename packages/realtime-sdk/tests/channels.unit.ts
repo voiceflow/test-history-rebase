@@ -44,12 +44,14 @@ describe('Channels', () => {
 
   describe('diagram', () => {
     it('build a channel pattern based off its known arguments', () => {
-      expect(Channels.diagram.buildMatcher()).to.eq('workspace/:workspaceID/project/:projectID/diagram/:diagramID');
+      expect(Channels.diagram.buildMatcher()).to.eq('workspace/:workspaceID/project/:projectID/version/:versionID/diagram/:diagramID');
     });
 
     it('build a channel using provided arguments', () => {
-      // eslint-disable-next-line no-secrets/no-secrets
-      expect(Channels.diagram.build({ workspaceID: '123', projectID: '456', diagramID: '789' })).to.eq('workspace/123/project/456/diagram/789');
+      expect(Channels.diagram.build({ workspaceID: '123', projectID: '456', versionID: '789', diagramID: '000' })).to.eq(
+        // eslint-disable-next-line no-secrets/no-secrets
+        'workspace/123/project/456/version/789/diagram/000'
+      );
     });
   });
 });

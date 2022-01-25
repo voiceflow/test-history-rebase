@@ -23,6 +23,7 @@ export abstract class AbstractResendDiagramActionControl<
     channel: Realtime.Channels.diagram.build({
       diagramID: action.payload.diagramID,
       projectID: action.payload.projectID,
+      versionID: action.payload.versionID,
       workspaceID: action.payload.workspaceID,
     }),
   });

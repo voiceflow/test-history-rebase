@@ -8,7 +8,8 @@ const RealtimeDiagramSubscription: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
-  useDiagramSubscription({ diagramID, projectID, workspaceID });
+  // setting versionID: '' for now, this component will be removed in a future commit
+  useDiagramSubscription({ diagramID, projectID, workspaceID, versionID: '' });
 
   return null;
 };

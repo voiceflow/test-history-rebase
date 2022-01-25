@@ -1,3 +1,5 @@
+import { WithRequired } from '@voiceflow/common';
+
 export * from './CreatorDiagram';
 export * from './Diagram';
 export * from './Expression';
@@ -16,3 +18,5 @@ export * from './VariableState';
 export * from './Version';
 export * from './Viewport';
 export * from './Workspace';
+
+export type PartialModel<T extends { id: string }> = WithRequired<Partial<T>, 'id'>;

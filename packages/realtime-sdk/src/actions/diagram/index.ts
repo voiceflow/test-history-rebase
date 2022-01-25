@@ -54,18 +54,12 @@ export const registerIntentSteps = createAction<RegisterIntentStepsPayload>(diag
 export const reorderIntentSteps = createAction<ReorderIntentStepsPayload>(diagramIntentStepsType('REORDER'));
 export const reloadIntentSteps = createAction<ReloadIntentStepsPayload>(diagramIntentStepsType('RELOAD'));
 
-// nodes
-
-export interface AddRemoveBlocksPayload extends BaseDiagramPayload {
-  blocks: { [blockID: string]: unknown };
-}
+// blocks
 
 export interface DragMoveBlocksPayload extends BaseDiagramPayload {
   blocks: { [blockID: string]: Point };
 }
 
-export const addBlocks = createAction<AddRemoveBlocksPayload>(diagramType('ADD_BLOCKS'));
-export const removeBlocks = createAction<AddRemoveBlocksPayload>(diagramType('REMOVE_BLOCKS'));
 export const moveBlocks = createAction<DragMoveBlocksPayload>(diagramType('MOVE_BLOCKS'));
 export const dragBlocks = createAction<DragMoveBlocksPayload>(diagramType('DRAG_BLOCKS'));
 

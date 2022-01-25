@@ -2,7 +2,8 @@ import { useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { useAsyncMountUnmount, useTeardown } from '@/hooks';
+import { FeatureFlag } from '@/config/features';
+import { useAsyncMountUnmount, useFeature, useTeardown } from '@/hooks';
 
 import { LoaderStage, StageAlert, StageContainer, StageEmpty, StageProjectList } from '../components';
 
@@ -10,18 +11,23 @@ interface WaitProjectStageProps {
   cancel: () => void;
   onClose?: () => void;
   setMultiProjects?: (value: boolean) => void;
-  updateCurrentStage: (googleProjectID: string) => void;
+  updateCurrentStage: (googleProjectID: string | null) => void;
 }
 
 const GOOGLE_CONSOLE_URL = 'https://console.actions.google.com/';
 
 const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ cancel, updateCurrentStage, setMultiProjects }) => {
   const [projects, setProjects] = React.useState<{ id: string; name?: string }[]>([]);
+  const isGoogleCreate = useFeature(FeatureFlag.GOOGLE_CREATE)?.isEnabled;
   const projectList = React.useMemo(() => projects.map(({ id, name = '' }) => ({ id, name })), [projects]);
 
   const [state, api] = useSmartReducerV2({ error: false, loading: true });
 
   const handleCreateNewProject = () => {
+    if (isGoogleCreate) {
+      updateCurrentStage(null);
+      return;
+    }
     window.open(GOOGLE_CONSOLE_URL, '_blank');
     cancel();
   };

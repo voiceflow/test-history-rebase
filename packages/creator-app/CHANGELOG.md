@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.607.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.607.1...@voiceflow/creator-app@1.607.2) (2022-01-25)
+
+
+### Bug Fixes
+
+* test mode follow along and link/block highlighting (VF-2303) ([#4940](https://github.com/voiceflow/creator-app/issues/4940)) ([985833b](https://github.com/voiceflow/creator-app/commit/985833bd35973cab9a0c882c291b32eec339b9a8))
+
+
+
+
+
 ## [1.607.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.607.0...@voiceflow/creator-app@1.607.1) (2022-01-25)
 
 **Note:** Version bump only for package @voiceflow/creator-app

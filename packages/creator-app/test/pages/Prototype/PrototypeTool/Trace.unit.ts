@@ -207,7 +207,6 @@ suite(
         await controller.next();
 
         expectFocusNode(controller).to.be.calledOnceWith(BLOCK_ID);
-        expectSetTimeout(controller).not.to.be.called;
         expectProcessSingleTrace(controller, TraceMethods.BLOCK);
       });
 

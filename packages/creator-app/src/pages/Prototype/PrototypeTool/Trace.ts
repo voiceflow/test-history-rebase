@@ -94,6 +94,7 @@ const FOCUSABLE_NODES = [
   BlockType.COMBINED,
   BlockType.COMMAND,
   BlockType.SPEAK,
+  BlockType.TEXT,
   BlockType.CHOICE_OLD,
   BlockType.CAPTURE,
   BlockType.CAPTUREV2,
@@ -417,21 +418,10 @@ class TraceController {
     if (node?.id) {
       this.props.getEngine()?.selection.replace([node.id]);
     }
+
     if (node && !this.isPublicPrototype) {
-      await this.highlightBlock(node);
+      await this.highlightBlock(node, onlyMessage);
     }
-
-    if (onlyMessage || !this.props.debug) {
-      return;
-    }
-
-    const isLast = this.trace.length === 1;
-
-    if (!isLast) {
-      this.props.updateStatus(PMStatus.FORCED_DELAY);
-    }
-
-    await this.timeout.delay(MIN_FOCUSED_NODE_TIME);
   }
 
   private async processVisualTrace(trace: VisualTrace) {
@@ -452,20 +442,28 @@ class TraceController {
     }
   }
 
-  private async highlightBlock(node: Realtime.Node) {
+  private async highlightBlock(node: Realtime.Node, skipDelay = false) {
     const hasParent = !!node.parentNode;
     const nodeType = node?.type;
+    const highlightedBlocks = this.props.getEngine()?.select(Prototype.activePathBlockIDsSelector);
+    const parentBlockAlreadyHighlighted = !!highlightedBlocks?.includes(node?.parentNode || '');
+
+    if (parentBlockAlreadyHighlighted) {
+      return;
+    }
 
     const [, sourceNodeID] = Utils.array.tail(this.props.getEngine()?.select(Prototype.activePathBlockIDsSelector) || []);
 
     if (hasParent) {
-      this.saveActivePathBlock(node);
+      await this.saveActivePathBlock(node);
     }
 
     this.saveActivePathLink(sourceNodeID, node);
 
     if ((hasParent && FOCUSABLE_NODES.includes(nodeType)) || this.props.debug || !nodeType) {
       this.focusNode(node.parentNode!);
+      if (skipDelay) return;
+      await this.timeout.delay(MIN_FOCUSED_NODE_TIME);
     }
   }
 

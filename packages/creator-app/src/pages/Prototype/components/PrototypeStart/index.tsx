@@ -66,12 +66,12 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
               html={<div style={{ textAlign: 'left', width: '179px', height: '36px' }}>Once training is complete you'll be able to start a test</div>}
               position="bottom"
             >
-              <Button variant={ButtonVariant.TERTIARY} onClick={start} disabled>
+              <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={start} disabled>
                 Run Test
               </Button>
             </TippyTooltip>
           ) : (
-            <Button variant={ButtonVariant.TERTIARY} onClick={start} id={Identifier.PROTOTYPE_START}>
+            <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={start} id={Identifier.PROTOTYPE_START}>
               Run Test
             </Button>
           )}

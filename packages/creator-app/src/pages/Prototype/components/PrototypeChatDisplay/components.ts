@@ -18,7 +18,7 @@ export const OutterChatContainer = styled.div<{ focusedTurnID: string | null }>`
 `;
 
 export const InnerChatContainer = styled.div<{ atTop: boolean }>`
-  ${transition('color')}
+  ${transition('border-color')}
 
   overflow: auto;
   height: 100%;

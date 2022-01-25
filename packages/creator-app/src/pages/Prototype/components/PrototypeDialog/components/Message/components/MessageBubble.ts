@@ -31,7 +31,7 @@ const Container = styled.div<ContainerProps>`
   ${({ rightAlign = false, color }) =>
     rightAlign
       ? css`
-          background-color: ${({ theme }) => color ?? theme.colors.blue};
+          background-color: ${color ?? '#3d81e2'};
           color: white;
         `
       : css`

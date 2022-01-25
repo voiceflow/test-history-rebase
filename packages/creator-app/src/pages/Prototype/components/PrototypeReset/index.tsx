@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, toast, ToastCallToAction } from '@voiceflow/ui';
+import { BoxFlex, Button, ButtonVariant, ClickableText, Text, ThemeColor, toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
 import { goToTargetTranscript } from '@/ducks/router';
@@ -7,7 +7,7 @@ import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
-import { Container, Splitter } from './components';
+import { Container } from './components';
 
 export interface PrototypeResetProps {
   onClick: React.MouseEventHandler<HTMLSpanElement>;
@@ -37,23 +37,29 @@ const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProp
 
   return (
     <Container>
-      <Button variant={ButtonVariant.TERTIARY} id={Identifier.PROTOTYPE_RESET} onClick={onClick}>
-        Reset Test
-      </Button>
-      <>
-        <Splitter />
+      <div>
+        <Text color={ThemeColor.SECONDARY}>
+          Conversation has ended.{' '}
+          <ClickableText id={Identifier.PROTOTYPE_RESET} onClick={onClick}>
+            Reset Test
+          </ClickableText>{' '}
+        </Text>
+      </div>
+
+      <BoxFlex justifyContent="flex-end">
         <Button
           id={Identifier.SAVE_TRANSCRIPT_BUTTON}
-          variant={ButtonVariant.TERTIARY}
+          variant={ButtonVariant.PRIMARY}
+          squareRadius
           onClick={() => {
             onSave();
             setTranscriptSaved(false);
           }}
           disabled={!transcriptSaved}
         >
-          Save Test
+          Save
         </Button>
-      </>
+      </BoxFlex>
     </Container>
   );
 };

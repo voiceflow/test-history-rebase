@@ -22,7 +22,7 @@ const INTENT_CONF_LOCAL_STORAGE_BOOL_KEY = 'show_conversation_intent_conf';
 
 const TranscriptDialog: React.FC = () => {
   const [messages, setMessages] = React.useState<Message[]>([]);
-  const [isScrolling, setIsScrolling] = React.useState<boolean>(false);
+  const [atTop, setAtTop] = React.useState<boolean>(true);
   const [loading, setLoading] = React.useState(false);
   const [hasNoData, setHasNoData] = React.useState(false);
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
@@ -77,14 +77,6 @@ const TranscriptDialog: React.FC = () => {
     }
   }, [currentTranscriptID]);
 
-  const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-    if (e.currentTarget.scrollTop !== 0) {
-      setIsScrolling(true);
-    } else {
-      setIsScrolling(false);
-    }
-  };
-
   if (hasNoData && !loading) {
     return (
       <Container>
@@ -98,7 +90,7 @@ const TranscriptDialog: React.FC = () => {
       <DialogHeader
         showDebugs={showDebugs}
         showIntentConfidence={showIntentConfidence}
-        isScrolling={isScrolling}
+        isScrolling={!atTop}
         toggleDebugs={() => setShowDebugs(!showDebugs)}
         toggleIntentConf={() => setShowIntentConfidence(!showIntentConfidence)}
       />
@@ -106,7 +98,7 @@ const TranscriptDialog: React.FC = () => {
         <DialogLoader />
       ) : (
         <PrototypeChatDisplay
-          onScroll={onScroll}
+          setAtTop={setAtTop}
           avatarURL={avatar}
           color={color}
           dialogTurnMap={dialogTurnMap}

@@ -89,7 +89,7 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
             key={name}
             onClick={Utils.functional.chainVoid(handleRequestActions(request), () => onInteraction({ name, request: request || name }))}
             className={ClassName.PROTOTYPE_BUTTON}
-            rgbaColor={hexToRGBA(color ?? '#5D9DF5')}
+            rgbaColor={hexToRGBA(color ?? '#3D81E2')}
             onMouseDown={preventDefault()}
           >
             {name}

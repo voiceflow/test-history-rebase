@@ -60,7 +60,7 @@ export const prototypeButtonsSelector = createSelector([prototypeSelector], ({ s
 
 export const prototypeLayoutSelector = createSelector([prototypeSelector], ({ settings }) => settings.layout || PrototypeLayout.TEXT_DIALOG);
 
-export const prototypeBrandColorSelector = createSelector([prototypeSelector], ({ settings }) => settings.brandColor || '#5D9DF5');
+export const prototypeBrandColorSelector = createSelector([prototypeSelector], ({ settings }) => settings.brandColor || '#3D81E2');
 
 export const prototypeBrandImageSelector = createSelector([prototypeSelector], ({ settings }) => settings.brandImage || '');
 

@@ -1,10 +1,12 @@
-import { FlexCenter } from '@voiceflow/ui';
-
 import { styled } from '@/hocs';
 
-export const Container = styled(FlexCenter)`
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 179px;
-  background: white;
+  padding: 24px 24px 20px 24px;
+  background: #fff;
   border-top: solid 1px #eaeff4;
 `;
 

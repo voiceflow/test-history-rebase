@@ -3,7 +3,7 @@ import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import { PrototypeStatus } from '@/ducks/prototype';
-import { useDebouncedCallback } from '@/hooks/callback';
+import { useRAF } from '@/hooks';
 import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
 import { Interaction, Message, OnInteraction, PMStatus } from '@/pages/Prototype/types';
 
@@ -31,7 +31,6 @@ export interface PrototypeChatDisplayProps {
   autoScroll?: boolean;
   isTranscript?: boolean;
   dialogTurnMap?: TurnMap;
-  onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
   messageFilter?: (messages: Message[]) => Message[];
   pmStatus?: Nullable<PMStatus>;
   onMessageDoubleClick?: (message: Message) => void;
@@ -57,30 +56,34 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   stepBack,
   isTranscript,
   dialogTurnMap,
-  onScroll,
   pmStatus = null,
   messageFilter,
   onMessageDoubleClick,
 }) => {
-  const scrollRef = React.useRef<HTMLDivElement>(null);
-  const chatScrollRef = React.useRef<HTMLDivElement>(null);
+  const bottomScrollRef = React.useRef<HTMLDivElement>(null);
   const [focusedTurnID, setFocusedTurnID] = React.useState<string | null>(null);
+  const [scheduler] = useRAF();
+
   const hasEnded = status === PrototypeStatus.ENDED;
 
-  const onScrollHandler = useDebouncedCallback(
-    30,
-    () => {
-      if (chatScrollRef?.current?.scrollTop === 0) {
-        return setAtTop?.(true);
-      }
-      return setAtTop?.(false);
+  const onScrollHandler = React.useCallback(
+    (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
+      const { currentTarget } = event;
+
+      scheduler(() => {
+        if (currentTarget.scrollTop === 0) {
+          return setAtTop?.(true);
+        }
+
+        return setAtTop?.(false);
+      });
     },
-    []
+    [setAtTop]
   );
 
   const scrollToBottom = () => {
     if (autoScroll) {
-      scrollRef.current?.scrollIntoView();
+      bottomScrollRef.current?.scrollIntoView();
     }
   };
 
@@ -102,11 +105,11 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
 
   return (
     <OutterChatContainer focusedTurnID={focusedTurnID}>
-      <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
+      <InnerChatContainer atTop={atTop}>
         <Dialog
           pmStatus={pmStatus}
           dialogTurnMap={dialogTurnMap}
-          onScroll={onScroll}
+          onScroll={onScrollHandler}
           stepBack={stepBack}
           status={status}
           onPlay={onPlay}
@@ -116,7 +119,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
           buttons={buttons}
           isLoading={isLoading}
           showPadding={showPadding}
-          bottomScrollRef={scrollRef}
+          bottomScrollRef={bottomScrollRef}
           hideSessionMessages={hideSessionMessages}
           interactions={interactions}
           color={color}

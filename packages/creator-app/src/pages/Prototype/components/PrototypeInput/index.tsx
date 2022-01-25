@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, preventDefault } from '@voiceflow/ui';
+import { Box, BoxFlex, Button, ButtonVariant, preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
@@ -87,19 +87,16 @@ const PrototypeInput = <L extends string>({
                 placeholder="Start typing..."
                 inputRef={inputRef}
               />
-              <Box position="absolute" bottom={20} right={24}>
+
+              <BoxFlex position="absolute" bottom={20} right={24}>
                 <Box display="inline-block" fontSize={13} color="#8da2b5" mr={16}>
-                  Press enter to
+                  Enter to send
                 </Box>
-                <Button
-                  id={Identifier.PROTOTYPE_RESPONSE_SEND}
-                  style={{ display: 'inline-block' }}
-                  variant={ButtonVariant.SECONDARY}
-                  onClick={sendTextHandler}
-                >
-                  Send
+
+                <Button id={Identifier.PROTOTYPE_RESPONSE_SEND} variant={ButtonVariant.PRIMARY} onClick={sendTextHandler} squareRadius>
+                  <SvgIcon icon="send" />
                 </Button>
-              </Box>
+              </BoxFlex>
             </Box>
           ) : (
             <SpeechBar locale={locale} onTranscript={onUserInput} />

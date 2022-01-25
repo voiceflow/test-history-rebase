@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.609.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.608.0...@voiceflow/creator-app@1.609.0) (2022-01-25)
+
+
+### Features
+
+* add creator action definitions (VF-2077) ([#4982](https://github.com/voiceflow/creator-app/issues/4982)) ([bbdf8c3](https://github.com/voiceflow/creator-app/commit/bbdf8c3f2ec053b1f71bd534b335e6f09f7a0ba6))
+
+
+
+
+
 # [1.608.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.607.2...@voiceflow/creator-app@1.608.0) (2022-01-25)
 
 

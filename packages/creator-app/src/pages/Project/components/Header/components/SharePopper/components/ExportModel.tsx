@@ -1,4 +1,5 @@
 import { BlockText, Box, Select } from '@voiceflow/ui';
+import _sortBy from 'lodash/sortBy';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -24,11 +25,12 @@ const ExportModel: React.FC = () => {
   const newExportsIsEnabled = useFeature(FeatureFlag.NEW_NLP_EXPORTS)?.isEnabled;
 
   const nplProviderOptions = React.useMemo(() => {
-    if (newExportsIsEnabled) {
-      return getNplModelProvider(platform);
-    }
+    // order alphabetically by label
+    const providers = _sortBy(getNplModelProvider(platform), (provider) => NLPProviderLabels[provider]);
+    if (newExportsIsEnabled) return providers;
+
     // if no FF, filter out new NLPs
-    return getNplModelProvider(platform).filter((nlp) => ![NLPProvider.WATSON].includes(nlp));
+    return providers.filter((nlp) => ![NLPProvider.WATSON, NLPProvider.LEX_V1, NLPProvider.EINSTEIN].includes(nlp));
   }, [platform, newExportsIsEnabled]);
 
   React.useEffect(() => {

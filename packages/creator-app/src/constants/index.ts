@@ -73,20 +73,22 @@ export enum SessionType {
 
 export enum NLPProvider {
   LUIS = 'luis',
-  ALEXA = 'alexa',
-  DIALOGFLOW_ES = 'diagflow-es',
-  // EINSTEIN = 'einstein',
-  WATSON = 'watson',
   RASA = 'rasa',
+  ALEXA = 'alexa',
+  LEX_V1 = 'lex-v1',
+  WATSON = 'watson',
+  EINSTEIN = 'einstein',
+  DIALOGFLOW_ES = 'diagflow-es',
 }
 
 export const NLPProviderLabels = {
-  [NLPProvider.ALEXA]: 'Amazon Alexa',
-  [NLPProvider.DIALOGFLOW_ES]: 'Dialogflow ES',
-  [NLPProvider.WATSON]: 'IBM Watson',
-  // [NLPProvider.EINSTEIN]: 'Salesforce Einstein',
-  [NLPProvider.LUIS]: 'Microsoft LUIS',
   [NLPProvider.RASA]: 'Rasa',
+  [NLPProvider.LUIS]: 'Microsoft LUIS',
+  [NLPProvider.ALEXA]: 'Amazon Alexa',
+  [NLPProvider.WATSON]: 'IBM Watson',
+  [NLPProvider.LEX_V1]: 'Amazon Lex V1',
+  [NLPProvider.EINSTEIN]: 'Salesforce Einstein',
+  [NLPProvider.DIALOGFLOW_ES]: 'Dialogflow ES',
 };
 
 export const PERMISSIONS = [

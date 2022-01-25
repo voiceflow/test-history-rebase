@@ -124,6 +124,14 @@ export const exportModel =
         data = await client.platform.general.modelExport.exportBlob(versionID, 'watson', intents);
         downloadFromURL(`${projectName}-watson-model`, data);
         URL.revokeObjectURL(data);
+      } else if (nlpProvider === NLPProvider.EINSTEIN) {
+        data = await client.platform.general.modelExport.exportBlob(versionID, 'einstein', intents);
+        downloadFromURL(`${projectName}-einstein-model`, data);
+        URL.revokeObjectURL(data);
+      } else if (nlpProvider === NLPProvider.LEX_V1) {
+        data = await client.platform.general.modelExport.exportBlob(versionID, 'lexV1', intents);
+        downloadFromURL(`${projectName}-lex-model`, data);
+        URL.revokeObjectURL(data);
       } else {
         throw new Error(`no provider matched: ${nlpProvider}`);
       }

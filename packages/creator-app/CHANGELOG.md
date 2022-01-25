@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.609.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.609.0...@voiceflow/creator-app@1.609.1) (2022-01-25)
+
+
+### Bug Fixes
+
+* lex export option (VF-2614) ([#4981](https://github.com/voiceflow/creator-app/issues/4981)) ([8161389](https://github.com/voiceflow/creator-app/commit/816138922f173b92756b93252e086228de4df077))
+
+
+
+
+
 # [1.609.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.608.0...@voiceflow/creator-app@1.609.0) (2022-01-25)
 
 

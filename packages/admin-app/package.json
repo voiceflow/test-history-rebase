@@ -8,9 +8,9 @@
   "dependencies": {
     "@sentry/react": "6.16.1",
     "@sentry/tracing": "6.16.1",
-    "@voiceflow/api-sdk": "3.5.5",
+    "@voiceflow/api-sdk": "3.5.11",
     "@voiceflow/common": "7.13.4",
-    "@voiceflow/general-types": "3.2.19",
+    "@voiceflow/general-types": "3.2.20",
     "@voiceflow/internal": "2.2.1",
     "@voiceflow/realtime-sdk": "^1.51.0",
     "@voiceflow/ui": "^1.46.1",

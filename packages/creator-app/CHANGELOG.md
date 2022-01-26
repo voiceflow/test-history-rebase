@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.610.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.609.3...@voiceflow/creator-app@1.610.0) (2022-01-26)
+
+
+### Features
+
+*  adds delete and patch variable state integration (VF-2603) ([#4989](https://github.com/voiceflow/creator-app/issues/4989)) ([0431d85](https://github.com/voiceflow/creator-app/commit/0431d85d3ff4d1c281d7a005f5987e1b38d21ff1))
+
+
+
+
+
 ## [1.609.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.609.2...@voiceflow/creator-app@1.609.3) (2022-01-26)
 
 

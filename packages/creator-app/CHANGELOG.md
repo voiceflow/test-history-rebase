@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.609.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.609.2...@voiceflow/creator-app@1.609.3) (2022-01-26)
+
+
+### Bug Fixes
+
+* transciprt virtualized list rendering (VF-000) ([#4993](https://github.com/voiceflow/creator-app/issues/4993)) ([3946617](https://github.com/voiceflow/creator-app/commit/394661740c9183a8f9488d9441f6af4620bc5cf9))
+
+
+
+
+
 ## [1.609.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.609.1...@voiceflow/creator-app@1.609.2) (2022-01-26)
 
 

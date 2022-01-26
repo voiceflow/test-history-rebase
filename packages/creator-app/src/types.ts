@@ -38,3 +38,5 @@ export interface ControlProps<T> {
   value: T;
   onChange: (value: T) => void;
 }
+
+export type RequiredProps<T, K extends keyof T> = { [P in K]-?: T[P] };

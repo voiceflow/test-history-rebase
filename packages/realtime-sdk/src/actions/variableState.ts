@@ -1,6 +1,6 @@
 import { createAsyncAction, createCRUDActions, createType } from '@realtime-sdk/actions/utils';
 import { VARIABLE_STATE_KEY } from '@realtime-sdk/constants';
-import { VariableState } from '@realtime-sdk/models';
+import { VariableState, VariableStateData } from '@realtime-sdk/models';
 import { BaseVersionPayload } from '@realtime-sdk/types';
 
 const variableStateType = createType(VARIABLE_STATE_KEY);
@@ -8,7 +8,7 @@ const variableStateType = createType(VARIABLE_STATE_KEY);
 // Other
 
 export interface CreateVariableStatePayload extends BaseVersionPayload {
-  variableState: VariableState;
+  variableState: VariableStateData;
 }
 
 export interface PatchVariableStatesPayload extends BaseVersionPayload {

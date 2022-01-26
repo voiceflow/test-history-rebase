@@ -1,95 +1,29 @@
-import { FlexApart, FlexStart, NestedMenuComponents, Select, SelectInputVariant, stopImmediatePropagation } from '@voiceflow/ui';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { GetOptionLabel, GetOptionValue } from '@voiceflow/ui';
 import startCase from 'lodash/startCase';
 import React from 'react';
 
-import Checkbox from '@/components/Checkbox';
+import TagSelect from '@/components/TagSelect';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useSelector } from '@/hooks';
 
 import { ExportContext } from '../contexts';
 
-interface IntentOption {
-  id: string;
-  label: string;
-}
-
-const getIntentName = (intentName: string) => startCase(intentName.toLowerCase());
-
-const customMenuLabelRenderer = (option: IntentOption, isSelectedFunc: (val: string) => boolean) => {
-  return (
-    <FlexApart style={{ width: '100%' }}>
-      <FlexStart>
-        <Checkbox readOnly checked={isSelectedFunc(option.id)} />
-        <div data-testid={option.id}>{option.label}</div>
-      </FlexStart>
-    </FlexApart>
-  );
-};
+const getIntentName: GetOptionLabel<Realtime.Intent> = (intent) => (intent ? startCase(intent.name.toLowerCase()) : null);
+const getIntentValue: GetOptionValue<Realtime.Intent, string> = (intent) => intent?.id || null;
 
 const ModelIntentsSelect: React.FC = () => {
   const { setModelExportIntents: setSelectedIntents, modelExportIntents: selectedIntents } = React.useContext(ExportContext)!;
   const intents = useSelector(IntentV2.allIntentsSelector);
 
-  const intentMap = React.useMemo(
-    () => intents.reduce((intents, intent) => ({ ...intents, [intent.id]: getIntentName(intent.name) }), {} as Record<string, string>),
-    [intents]
-  );
-
-  const intentsOptions = React.useMemo(() => intents.map((intent) => ({ id: intent.id, label: getIntentName(intent.name) })), [intents]);
-
-  const displayName = React.useMemo(() => selectedIntents.map((intentID: string) => intentMap[intentID]).join(', '), [selectedIntents]);
-
-  const selectedAllIntents = selectedIntents.length === intentsOptions.length;
-
-  const handleSelectIntent = (option: IntentOption) => {
-    if (selectedIntents.includes(option.id)) {
-      const newSelectedIntents = selectedIntents.filter((intentID) => intentID !== option.id);
-      setSelectedIntents(newSelectedIntents);
-    } else {
-      setSelectedIntents([...selectedIntents, option.id]);
-    }
-  };
-
-  const handleSelectAll = () => {
-    let allOptionsValues: string[] = [];
-
-    if (!selectedAllIntents) {
-      allOptionsValues = intentsOptions.map((option) => option.id);
-    }
-
-    setSelectedIntents(allOptionsValues);
-  };
-
-  const isOptionSelected = (intentID: string) => selectedIntents.includes(intentID);
-
   return (
-    <Select
-      autoWidth
-      renderOptionLabel={(option) => customMenuLabelRenderer(option, isOptionSelected)}
-      footerAction={(hideMenu) => (
-        <NestedMenuComponents.FooterActionContainer
-          onClick={stopImmediatePropagation(() => {
-            hideMenu();
-            handleSelectAll();
-          })}
-        >
-          {selectedAllIntents ? 'Unselect all' : 'Select all'}
-        </NestedMenuComponents.FooterActionContainer>
-      )}
-      fullWidth
-      selectedOptions={selectedIntents}
-      options={intentsOptions}
-      withSearchIcon
-      inDropdownSearch
-      searchable
-      alwaysShowCreate
-      autoDismiss={false}
+    <TagSelect
+      getOptionLabel={getIntentName}
+      getOptionValue={getIntentValue}
+      value={selectedIntents}
+      options={intents}
+      onChange={setSelectedIntents}
       createInputPlaceholder="intents"
-      getOptionLabel={(intentOption) => (intentOption ? intentMap[intentOption.id] : '')}
-      placeholder="Select all that apply"
-      displayName={displayName}
-      onSelect={handleSelectIntent}
-      inputVariant={SelectInputVariant.COUNTER}
     />
   );
 };

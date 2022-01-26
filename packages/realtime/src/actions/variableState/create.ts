@@ -12,7 +12,7 @@ class CreateVariableState extends AbstractVersionResourceControl<Realtime.variab
     const { creatorID } = data;
 
     const variableState = await this.services.variableState
-      .create(creatorID, Realtime.Adapters.variableStateAdapter.toDB({ ...payload.variableState }))
+      .create(creatorID, payload.variableState as Omit<Realtime.DBVariableState, '_id'>)
       .then(Realtime.Adapters.variableStateAdapter.fromDB);
 
     await this.server.processAs(

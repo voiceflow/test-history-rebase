@@ -4,9 +4,9 @@ import { ExtraOptions } from './types';
 
 export interface VariableStateClient {
   list: (projectID: string) => Promise<Realtime.DBVariableState[]>;
-  create: (data: Realtime.DBVariableState) => Promise<Realtime.DBVariableState>;
   patch: (variableStateID: string, data: Partial<Realtime.DBVariableState>) => Promise<Realtime.DBVariableState>;
   delete: (variableStateID: string) => Promise<void>;
+  create: (data: Realtime.VariableStateData) => Promise<Realtime.DBVariableState>;
 }
 
 const Client = ({ api }: ExtraOptions): VariableStateClient => ({

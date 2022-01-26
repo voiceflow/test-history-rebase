@@ -9,7 +9,7 @@ class VariableStateService extends AbstractControl {
     return client.variableState.list(projectID);
   }
 
-  public async create(creatorID: number, variableState: Realtime.DBVariableState): Promise<Realtime.DBVariableState> {
+  public async create(creatorID: number, variableState: Realtime.VariableStateData): Promise<Realtime.DBVariableState> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.variableState.create(variableState);

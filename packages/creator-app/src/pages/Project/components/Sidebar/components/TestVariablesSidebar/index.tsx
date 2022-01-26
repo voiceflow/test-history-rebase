@@ -8,9 +8,10 @@ import VariableList from '@/components/VariableList';
 import * as Prototype from '@/ducks/prototype';
 import * as variableState from '@/ducks/variableState';
 import { useDispatch, useSelector, useTheme } from '@/hooks';
+import { Variable } from '@/models';
 import { SlideOutDirection } from '@/styles/transitions';
 
-import { NoVariablesPlaceholder, SelectContainer } from './components';
+import { NoVariablesPlaceholder, SelectContainer, VariableListContainer } from './components';
 
 const TestVariablesSidebar: React.FC = () => {
   const theme = useTheme();
@@ -19,8 +20,8 @@ const TestVariablesSidebar: React.FC = () => {
   const updateSelectedVariableStateId = useDispatch(variableState.updateSelectedVariableStateId);
   const updateVariables = useDispatch(Prototype.updateVariables);
 
-  const onChangeVariable = ({ name, value }: { name: string; value: string }) => {
-    updateVariables({ [name]: transformStringVariableToNumber(value) });
+  const onChangeVariable = ({ name, value }: Variable) => {
+    updateVariables({ [name]: transformStringVariableToNumber(value as string | number | null) });
   };
 
   return (
@@ -30,7 +31,9 @@ const TestVariablesSidebar: React.FC = () => {
           <TestVariableStateSelect onChange={(value) => updateSelectedVariableStateId(value)} value={variableStateId} />
         </SelectContainer>
         {variableStateId ? (
-          <VariableList variables={variables} onChange={onChangeVariable} />
+          <VariableListContainer>
+            <VariableList variables={variables} onChange={onChangeVariable} />
+          </VariableListContainer>
         ) : (
           <NoVariablesPlaceholder>No variable state selected</NoVariablesPlaceholder>
         )}

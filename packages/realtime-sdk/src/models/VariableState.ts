@@ -6,4 +6,6 @@ export interface DBVariableState {
   variables: Record<string, string | number | boolean | null>;
 }
 
+export type VariableStateData = Omit<DBVariableState, '_id'>;
+
 export type VariableState = Omit<DBVariableState, '_id'> & { id: string };

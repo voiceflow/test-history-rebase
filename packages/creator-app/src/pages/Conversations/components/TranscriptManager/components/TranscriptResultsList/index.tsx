@@ -15,31 +15,32 @@ interface TranscriptResultsListProps {
 
 const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcriptList, onScroll }) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
-
   return (
     <Container onScroll={onScroll}>
-      <AutoSizer disableHeight={true}>
-        {({ width }) => {
+      <AutoSizer>
+        {({ width, height }) => {
           return (
             <List
+              height={height}
               width={width}
               rowCount={transcriptList.length}
               rowHeight={90}
-              autoHeight
-              rowRenderer={({ key, index }) => {
+              overscanRowCount={10}
+              rowRenderer={({ key, index, style }) => {
                 const data = transcriptList[index];
                 const isLastItem = transcriptList.length === index + 1;
                 return (
-                  <TranscriptResultsItem
-                    key={key}
-                    format={TranscriptExportFormat.CSV}
-                    data={data}
-                    active={currentTranscriptID?.toString() === data.id.toString()}
-                    isLastItem={isLastItem}
-                  />
+                  <div style={style}>
+                    <TranscriptResultsItem
+                      key={key}
+                      format={TranscriptExportFormat.CSV}
+                      data={data}
+                      active={currentTranscriptID?.toString() === data.id.toString()}
+                      isLastItem={isLastItem}
+                    />
+                  </div>
                 );
               }}
-              height={1000}
             />
           );
         }}

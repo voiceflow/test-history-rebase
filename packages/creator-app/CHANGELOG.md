@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.609.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.609.1...@voiceflow/creator-app@1.609.2) (2022-01-26)
+
+
+### Bug Fixes
+
+* google create (VF-2212) ([#4735](https://github.com/voiceflow/creator-app/issues/4735)) ([b303d27](https://github.com/voiceflow/creator-app/commit/b303d279e9218eed8c2bb579da0f8e316f965a92))
+
+
+
+
+
 ## [1.609.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.609.0...@voiceflow/creator-app@1.609.1) (2022-01-25)
 
 

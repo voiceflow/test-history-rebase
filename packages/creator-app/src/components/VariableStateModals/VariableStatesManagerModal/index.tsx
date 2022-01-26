@@ -1,42 +1,78 @@
-import { Box, Button, FlexCenter, Input, Link, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, FlexCenter, Input, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
+import Modal, { ModalBody } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as VariableState from '@/ducks/variableState';
-import { useModals, useSelector } from '@/hooks';
+import { useDispatch, useModals, useSelector } from '@/hooks';
 
 const VariableStatesManagerModal: React.FC = () => {
-  const { close: closeModal } = useModals(ModalType.VARIABLE_STATES_MANAGER_MODAL);
+  const { open: openEditorModal } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
+  const updateVariableState = useDispatch(VariableState.updateState);
+  const deleteVariableState = useDispatch(VariableState.deleteState);
+  const [variableStateNames, setVariableStateNames] = React.useState({} as Record<string, string>);
 
-  const handleSave = () => closeModal();
+  const handleVariableNameChange = async (variableStateID: string) => {
+    const name = variableStateNames[variableStateID];
+    if (!name) return;
+    await updateVariableState(variableStateID, { name });
+  };
+
+  const handleVariableStateDelete = async (variableStateID: string) => {
+    await deleteVariableState(variableStateID);
+  };
+
+  const handleEditState = (variableStateID: string) => {
+    openEditorModal({ variableStateID });
+  };
+
+  const handleInputTextChange = (variableStateID: string, newName: string) => {
+    setVariableStateNames({ ...variableStateNames, [variableStateID]: newName });
+  };
+
+  React.useEffect(
+    () => setVariableStateNames(variableStates.reduce((acc, variableState) => ({ ...acc, [variableState.id]: variableState.name }), {})),
+    [variableStates]
+  );
 
   return (
     <Modal id={ModalType.VARIABLE_STATES_MANAGER_MODAL} title="Manage States">
       <ModalBody>
-        {variableStates.map((variableState, idx) => (
-          <FlexCenter style={{ marginTop: idx > 0 ? '16px' : '0px' }} key={variableState.id}>
-            <Input value={variableState.name} onChangeText={() => {}} onEnterPress={() => {}} />
+        {Object.keys(variableStateNames).map((variableStateID, idx) => (
+          <FlexCenter style={{ marginTop: idx > 0 ? '16px' : '0px' }} key={variableStateID}>
+            <Input
+              value={variableStateNames[variableStateID]}
+              onChangeText={(newValue) => handleInputTextChange(variableStateID, newValue)}
+              onBlur={() => handleVariableNameChange(variableStateID)}
+            />
             <Box mr="16px" ml="24px">
-              <SvgIcon icon="editName" size={16} color="#6e849a" clickable style={{ opacity: 0.8 }} />
+              <TippyTooltip html={<div>Edit state</div>}>
+                <SvgIcon
+                  icon="editName"
+                  size={16}
+                  color="#6e849a"
+                  clickable
+                  style={{ opacity: 0.8 }}
+                  onClick={() => handleEditState(variableStateID)}
+                />
+              </TippyTooltip>
             </Box>
             <Box>
-              <TippyTooltip html={<div>test</div>}>
-                <SvgIcon icon="activeDelete" size={16} color="#6e849a" clickable style={{ opacity: 0.8 }} />
+              <TippyTooltip html={<div>Delete</div>}>
+                <SvgIcon
+                  icon="activeDelete"
+                  size={16}
+                  color="#6e849a"
+                  clickable
+                  style={{ opacity: 0.8 }}
+                  onClick={() => handleVariableStateDelete(variableStateID)}
+                />
               </TippyTooltip>
             </Box>
           </FlexCenter>
         ))}
       </ModalBody>
-
-      <ModalFooter>
-        <Link onClick={() => closeModal()} style={{ marginRight: '33px', fontWeight: 600 }}>
-          Cancel
-        </Link>
-
-        <Button onClick={handleSave}>Save</Button>
-      </ModalFooter>
     </Modal>
   );
 };

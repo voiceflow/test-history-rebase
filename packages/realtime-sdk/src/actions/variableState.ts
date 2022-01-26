@@ -11,6 +11,12 @@ export interface CreateVariableStatePayload extends BaseVersionPayload {
   variableState: VariableState;
 }
 
+export interface PatchVariableStatesPayload extends BaseVersionPayload {
+  variableStates: Partial<VariableState>[];
+}
+
 export const create = createAsyncAction<CreateVariableStatePayload, VariableState>(variableStateType('CREATE'));
+
+export const patch = createAsyncAction<PatchVariableStatesPayload, VariableState[]>(variableStateType('PATCH'));
 
 export const crud = createCRUDActions<BaseVersionPayload, VariableState>(variableStateType);

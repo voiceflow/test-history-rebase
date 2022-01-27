@@ -2,12 +2,15 @@
   "specials": [
     "bin",
     "istanbul",
+    "webpack",
     "jest",
     "babel"
   ],
   "ignores": [
     "@voiceflow/dependency-cruiser-config",
+    "@voiceflow/webpack-config",
     "ts-node",
-    "stream-browserify"
+    "webpack",
+    "webpack-nano"
   ]
 }

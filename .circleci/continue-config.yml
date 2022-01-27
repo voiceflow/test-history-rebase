@@ -127,6 +127,10 @@ jobs:
         description: Checks if the Docker image exists
         type: boolean
         default: false
+      strict:
+        description: Run typechecking and other build-time analyses
+        type: boolean
+        default: false
       force_execute:
         description: force to update the build, if there is a change or not. This is for tracks
         type: boolean
@@ -286,6 +290,10 @@ jobs:
 
   build-admin:
     parameters:
+      strict:
+        description: Run typechecking and other build-time analyses
+        type: boolean
+        default: false
       force_execute:
         description: force to update the build, if there is a change or not. This is for tracks
         type: boolean
@@ -329,7 +337,7 @@ jobs:
                     export VF_APP_API_HOST=api-$CIRCLE_BRANCH.development.voiceflow.com
                   fi
 
-                  yarn build
+                  yarn build <<# parameters.strict >> --validate --strict <</ parameters.strict >>
                 working_directory: ~/voiceflow/packages/admin-app
             - persist_to_workspace:
                 root: ~/voiceflow/packages/admin-app
@@ -866,6 +874,7 @@ workflows:
           context: dev-test
           name: build-app-test
           force_execute: << pipeline.parameters.build-frontend >>
+          strict: true
           post-steps:
             - jira/notify
           filters:
@@ -876,6 +885,7 @@ workflows:
           context: dev-test
           name: build-admin-test
           force_execute: << pipeline.parameters.build-frontend >>
+          strict: true
           post-steps:
             - jira/notify
           filters:

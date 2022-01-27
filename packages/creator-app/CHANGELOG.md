@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.612.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.611.0...@voiceflow/creator-app@1.612.0) (2022-01-27)
+
+
+### Features
+
+* implement event tracking for variable state creation (VF-2549) ([#4997](https://github.com/voiceflow/creator-app/issues/4997)) ([0272248](https://github.com/voiceflow/creator-app/commit/02722481c35245b982a1b82cb4a9f7488d87273e))
+* public prototype updates ([#4994](https://github.com/voiceflow/creator-app/issues/4994)) ([e830ad4](https://github.com/voiceflow/creator-app/commit/e830ad44d94f005d5460dd83be0dc005c6b143f3))
+
+
+
+
+
 # [1.611.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.610.0...@voiceflow/creator-app@1.611.0) (2022-01-27)
 
 

@@ -14,11 +14,13 @@ import { ConnectedProps } from '@/types';
 import { StyledBlockText } from './components';
 
 interface PrototypePasswordInputProps {
+  dividers?: boolean;
   isCollapsed: boolean;
   onToggleCollapse: () => void;
 }
 
 const UnconnectedPrototypePasswordInput: React.FC<PrototypePasswordInputProps & ConnectedPrototypePasswordInputProps> = ({
+  dividers = true,
   isCollapsed,
   initialValue = '',
   updateSettings,
@@ -75,6 +77,7 @@ const UnconnectedPrototypePasswordInput: React.FC<PrototypePasswordInputProps & 
         isCollapsed={isCollapsed}
         onClick={onToggleCollapse}
         header="Password Protection"
+        dividers={dividers}
         isDividerNested
         collapseVariant={SectionToggleVariant.ARROW}
         variant={SectionVariant.PRIMARY}

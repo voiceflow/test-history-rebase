@@ -77,7 +77,12 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
               <AppearanceAndBranding isAllowed={canCustomize} />
             </UncontrolledSection>
           </Box>
-          <PrototypePasswordInput isCollapsed={activeModal !== ActiveModal.PASSWORD} onToggleCollapse={onTogglePassword} />
+
+          <PrototypePasswordInput
+            dividers={activeModal !== ActiveModal.APPEARANCE}
+            isCollapsed={activeModal !== ActiveModal.PASSWORD}
+            onToggleCollapse={onTogglePassword}
+          />
         </div>
         {!canCustomize && (
           <Box position="absolute" left={0} right={0} bottom={0}>

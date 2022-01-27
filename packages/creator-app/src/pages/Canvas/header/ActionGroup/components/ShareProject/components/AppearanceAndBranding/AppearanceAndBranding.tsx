@@ -46,7 +46,7 @@ const AppearanceAndBranding: React.FC<AppearanceAndBrandingProps & ConnectedAppe
           updateSettings={(image) => updateSettings({ avatar: image })}
         />
       </UploadContainer>
-      <Divider style={{ marginTop: 0, marginBottom: '32px' }} />
+      <Divider offset={0} />
     </NegativeMarginContainer>
   </Box>
 );

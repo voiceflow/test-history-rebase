@@ -1,7 +1,7 @@
 {
   "extends": "@voiceflow/tsconfig/web.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "allowJs": true,
     "baseUrl": "..",
     "paths": {

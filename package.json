@@ -23,7 +23,6 @@
     "@voiceflow/semantic-release-config": "1.1.0",
     "@voiceflow/stylelint-config": "1.0.1",
     "@voiceflow/tsconfig": "1.2.5",
-    "@voiceflow/webpack-config": "1.10.0",
     "@zerollup/ts-transform-paths": "1.7.18",
     "chai": "4.3.4",
     "chai-as-promised": "7.1.1",
@@ -35,7 +34,6 @@
     "dependency-cruiser": "11.3.0",
     "eslint": "7.32.0",
     "eslint-import-resolver-lerna": "2.0.0",
-    "eslint-import-resolver-webpack": "0.13.1",
     "fixpack": "4.0.0",
     "husky": "7.0.4",
     "lerna": "4.0.0",
@@ -57,9 +55,7 @@
     "ts-node": "10.4.0",
     "tsconfig-paths": "3.12.0",
     "ttypescript": "1.5.12",
-    "typescript": "4.4.4",
-    "webpack": "5.62.1",
-    "webpack-nano": "1.1.1"
+    "typescript": "4.4.4"
   },
   "prettier": "@voiceflow/prettier-config",
   "private": true,

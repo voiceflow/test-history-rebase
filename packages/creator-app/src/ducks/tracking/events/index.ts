@@ -8,4 +8,5 @@ export * from './project';
 export * from './prototype';
 export * from './session';
 export * from './upgrade';
+export * from './variableStates';
 export * from './workspace';

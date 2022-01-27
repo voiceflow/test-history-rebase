@@ -8,8 +8,9 @@ import { SectionVariant } from '@/components/Section/constants';
 import VariableList from '@/components/VariableList';
 import VariablesSelect from '@/components/VariablesSelect';
 import { ModalType } from '@/constants';
+import * as Session from '@/ducks/session';
 import * as VariableStateDucks from '@/ducks/variableState';
-import { useDispatch, useModals } from '@/hooks';
+import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 
 import { InputHint } from './components';
 
@@ -32,15 +33,20 @@ const VariableStateEditorModal: React.FC = () => {
   const [values, setValues] = React.useState(defaultValues);
   const [saving, setSaving] = React.useState(false);
 
+  const diagramID = useSelector(Session.activeDiagramIDSelector);
+
   const createVariableState = useDispatch(VariableStateDucks.createVariableState);
+  const [trackingEvents] = useTrackingEvents();
 
   const handleSave = async () => {
     setSaving(true);
+
     await createVariableState({
       name: values.name,
       stepID: values.stepId,
       variables: values.variablesValues,
     });
+    trackingEvents.trackVariableStateCreated({ diagramID });
     setSaving(true);
     close();
   };

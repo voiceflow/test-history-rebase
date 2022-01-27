@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.611.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.610.0...@voiceflow/creator-app@1.611.0) (2022-01-27)
+
+
+### Bug Fixes
+
+* bump types (VF-000) ([#4991](https://github.com/voiceflow/creator-app/issues/4991)) ([80d6329](https://github.com/voiceflow/creator-app/commit/80d6329c173c7dfd9ce835ea45e50dd9ea549e4c))
+
+
+### Features
+
+* allow prototype sharing for viewers (VF-2649) ([#4995](https://github.com/voiceflow/creator-app/issues/4995)) ([f3127af](https://github.com/voiceflow/creator-app/commit/f3127af1404422454120f5890b435d2001521a4d))
+* implement api integration for variable creation (VF-2599) ([#4990](https://github.com/voiceflow/creator-app/issues/4990)) ([1790bec](https://github.com/voiceflow/creator-app/commit/1790bec42412f66275e8b10f0f9ce5cb0105b21d))
+
+
+
+
+
 # [1.610.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.609.3...@voiceflow/creator-app@1.610.0) (2022-01-26)
 
 

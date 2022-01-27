@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.47.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.46.1...@voiceflow/ui@1.47.0) (2022-01-27)
+
+
+### Bug Fixes
+
+* **ui:** fixes select types export (VF-000) ([#4996](https://github.com/voiceflow/creator-app/issues/4996)) ([1db61fa](https://github.com/voiceflow/creator-app/commit/1db61fa8f85be5778a820fab3c8b56fcf8ee2abf))
+
+
+### Features
+
+* implement api integration for variable creation (VF-2599) ([#4990](https://github.com/voiceflow/creator-app/issues/4990)) ([1790bec](https://github.com/voiceflow/creator-app/commit/1790bec42412f66275e8b10f0f9ce5cb0105b21d))
+
+
+
+
+
 ## [1.46.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.46.0...@voiceflow/ui@1.46.1) (2022-01-22)
 
 **Note:** Version bump only for package @voiceflow/ui

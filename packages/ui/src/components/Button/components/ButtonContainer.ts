@@ -12,6 +12,7 @@ export interface ButtonContainerProps extends BaseButtonProps, React.ButtonHTMLA
   variant?: ButtonVariant;
   isLoading?: boolean;
   fullWidth?: boolean;
+  squareRadius?: boolean;
 }
 
 export const buttonContainerStyles = css<ButtonContainerProps>`
@@ -36,6 +37,12 @@ export const buttonContainerStyles = css<ButtonContainerProps>`
     nowrap &&
     css`
       white-space: nowrap;
+    `}
+
+  ${({ squareRadius }) =>
+    squareRadius &&
+    css`
+      border-radius: 10px !important;
     `}
 `;
 

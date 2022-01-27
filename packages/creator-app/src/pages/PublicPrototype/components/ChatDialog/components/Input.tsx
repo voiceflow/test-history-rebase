@@ -1,11 +1,13 @@
-import { BoxFlex, Input, InputVariant, IS_IOS, swallowEvent } from '@voiceflow/ui';
+import { Input, InputVariant, IS_IOS, swallowEvent } from '@voiceflow/ui';
 import React from 'react';
+
+import InputContent from './InputContent';
 
 export interface UserInputProps {
   value: string;
   isIdle?: boolean;
-  isMobile?: boolean;
   onStart: () => void;
+  isMobile?: boolean;
   onChange: (value: string) => void;
   testEnded?: boolean;
   onEnterPress: () => void;
@@ -37,8 +39,7 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
   }, [testEnded]);
 
   return (
-    // mobile browsers will zoom and make css look bad if font-size is less than 16px
-    <BoxFlex flex={2} fontSize={isMobile ? 16 : 15} maxWidth="100%" onClick={() => isIdle && onStart()}>
+    <InputContent isMobile={isMobile} onClick={() => isIdle && onStart()}>
       <Input
         key={String(!isIdle)}
         value={value}
@@ -54,7 +55,7 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
         onEnterPress={swallowEvent(onEnterPress)}
         onChangeText={onChange}
       />
-    </BoxFlex>
+    </InputContent>
   );
 };
 

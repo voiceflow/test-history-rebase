@@ -1,6 +1,7 @@
-import { Box, Link, preventDefault, Text, TippyTooltip } from '@voiceflow/ui';
+import { Box, Link, preventDefault, Text } from '@voiceflow/ui';
 import React from 'react';
 
+import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import { Identifier } from '@/styles/constants';
 
 import StartButton from './StartButton';
@@ -15,6 +16,8 @@ export interface StartConversationProps {
   setVisualsWelcomeScreenPassed: (val: boolean) => void;
   onStart: () => void;
 }
+
+const NAME_MAX_LENGTH = 80;
 
 const StartConversation: React.FC<StartConversationProps> = ({
   projectName,
@@ -35,19 +38,13 @@ const StartConversation: React.FC<StartConversationProps> = ({
     <Box>
       <Box fontSize={24}>
         You've been invited to have a conversation with
-        {projectName.length > 120 ? (
-          <Text color={colorScheme} trim>
-            <TippyTooltip title={projectName}>
-              <Box width={120} noOverflow ml={5}>
-                {projectName}
-              </Box>
-            </TippyTooltip>
-          </Text>
-        ) : (
-          <Text color={colorScheme} ml={5}>
-            {projectName}
-          </Text>
-        )}
+        <OverflowTippyTooltip title={projectName} isChildrenOverflow={() => projectName.length >= NAME_MAX_LENGTH}>
+          {(ref, { isOverflow }) => (
+            <Text ref={ref} ml={5} color={colorScheme || '#3d82e2'} fontWeight={600}>
+              {isOverflow ? `${projectName.substring(0, NAME_MAX_LENGTH)}...` : projectName}
+            </Text>
+          )}
+        </OverflowTippyTooltip>
       </Box>
 
       <Box fontSize={15} mt={16} mb={32} color="#62778c">
@@ -55,7 +52,7 @@ const StartConversation: React.FC<StartConversationProps> = ({
           <>
             Want to create your own?
             {' ' /* Need this space for formatting */}
-            <Link color={colorScheme} href="https://www.voiceflow.com/">
+            <Link color={colorScheme || '#3d82e2'} href="https://www.voiceflow.com/">
               Get Started.
             </Link>
           </>
@@ -63,7 +60,7 @@ const StartConversation: React.FC<StartConversationProps> = ({
       </Box>
 
       {withStartButton && (
-        <StartButton id={Identifier.PROTOTYPE_START} color={colorScheme} onClick={onClick}>
+        <StartButton id={Identifier.PROTOTYPE_START} color={colorScheme || '#3d82e2'} onClick={onClick}>
           Start Conversation
         </StartButton>
       )}

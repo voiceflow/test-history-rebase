@@ -136,7 +136,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
               suffix={
                 <Flex>
                   {canSeeSoundToggle && (
-                    <Box display="inline-block" mr={15}>
+                    <Box display="inline-block" mr={4}>
                       <SoundToggle platform={platform} isMuted={isMuted} onClick={() => updatePrototype({ muted: !isMuted })} />
                     </Box>
                   )}

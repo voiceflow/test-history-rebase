@@ -3,8 +3,9 @@ import { styled } from '@/hocs';
 import { StyledButton } from '../../common';
 
 const StartButton = styled(StyledButton)`
-  min-width: 260px;
-  padding: 20px 48px;
+  width: 100%;
+  padding: 20px 32px;
+  font-size: 18px;
 `;
 
 export default StartButton;

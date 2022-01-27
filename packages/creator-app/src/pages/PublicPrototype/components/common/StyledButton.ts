@@ -13,10 +13,10 @@ const StyledButton = styled.button`
   border: none;
   border-radius: 8px;
 
-  background-color: ${({ color, theme }) => color || theme.colors.blue};
+  background-color: ${({ color }) => color || '#3d82e2'};
 
   &:hover {
-    background-color: ${({ color, theme }) => changeColorShade(color || theme.colors.blue, -20)};
+    background-color: ${({ color }) => changeColorShade(color || '#3d82e2', -20)};
   }
 
   ${layout}

@@ -1,30 +1,38 @@
 import { Constants } from '@voiceflow/general-types';
-import { IconVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { ButtonVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { canUseSoundToggle } from '@/utils/prototype';
 
-import ButtonWrapper from '../../pages/PublicPrototype/components/ChatDialog/components/ButtonWrapper';
+import ActionButton from '../../pages/PublicPrototype/components/ChatDialog/components/ActionButton';
 
 interface SoundToggleProps {
-  isMuted: boolean;
   size?: number;
+  isMuted: boolean;
   onClick: VoidFunction;
-  preventButtonDefault?: boolean;
-  clickable?: boolean;
   platform: Constants.PlatformType;
+  isMobile?: boolean;
+  preventButtonDefault?: boolean;
 }
 
-const SoundToggle: React.FC<SoundToggleProps> = ({ platform, isMuted, size = 16, onClick, preventButtonDefault = false, clickable = true }) => {
+const SoundToggle: React.FC<SoundToggleProps> = ({ platform, isMuted, size = 16, onClick, preventButtonDefault = false, isMobile }) => {
   const canSeeToggle = canUseSoundToggle(platform);
 
   if (!canSeeToggle) return null;
 
   return (
     <TippyTooltip title={isMuted ? 'Unmute Dialog Audio' : 'Mute Dialog Audio'}>
-      <ButtonWrapper onMouseDown={() => preventButtonDefault && preventDefault()} onClick={onClick}>
-        <SvgIcon icon={isMuted ? 'soundOff' : 'sound'} size={size} variant={IconVariant.STANDARD} clickable={clickable} />
-      </ButtonWrapper>
+      <ActionButton
+        square
+        isGray
+        onClick={onClick}
+        variant={ButtonVariant.TERTIARY}
+        isMobile={isMobile}
+        squareRadius
+        onMouseDown={() => preventButtonDefault && preventDefault()}
+      >
+        <SvgIcon icon={isMuted ? 'soundOff' : 'sound'} size={size} />
+      </ActionButton>
     </TippyTooltip>
   );
 };

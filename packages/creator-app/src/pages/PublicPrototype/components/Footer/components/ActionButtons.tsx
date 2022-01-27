@@ -29,7 +29,7 @@ const ActionButtons: React.FC<ActionButtons> = ({ onMute, onReset, isMuted, onFu
 
       {canSeeSoundToggle && (
         <ActionButtonContainer>
-          <SoundToggle platform={platform!} isMuted={isMuted} clickable onClick={onMute} />
+          <SoundToggle platform={platform!} isMuted={isMuted} onClick={onMute} />
         </ActionButtonContainer>
       )}
 

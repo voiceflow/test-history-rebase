@@ -1,11 +1,11 @@
-import { BoxFlexEnd, IconVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, BoxFlexEnd, ButtonVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import SoundToggle from '@/components/SoundToggle';
 import { prototypeSelector } from '@/ducks/prototype';
 import { useSelector, useTheme } from '@/hooks';
 
-import ButtonWrapper from './ButtonWrapper';
+import ActionButton from './ActionButton';
 
 export interface ActionButtonsProps {
   color?: string;
@@ -21,45 +21,69 @@ export interface ActionButtonsProps {
   isMobile?: boolean;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> =
-  /**
-   *
-   */
-  ({ color, noSend = false, onMute, onSend, isIdle = false, onReset, onStart, isMuted = true, disabled, testEnded = false, isMobile }) => {
-    const theme = useTheme();
-    const { platform } = useSelector(prototypeSelector);
+const ActionButtons: React.FC<ActionButtonsProps> = ({
+  color,
+  noSend = false,
+  onMute,
+  onSend,
+  isIdle = false,
+  onReset,
+  onStart,
+  isMuted = true,
+  disabled,
+  testEnded = false,
+  isMobile,
+}) => {
+  const theme = useTheme();
+  const { platform } = useSelector(prototypeSelector);
 
-    return (
-      <BoxFlexEnd flex={1}>
-        {!testEnded && (
-          <>
-            <TippyTooltip title="Reset Test" disabled={disabled}>
-              <ButtonWrapper disabled={disabled} onClick={disabled ? undefined : onReset}>
-                <SvgIcon icon="restart" variant={disabled ? IconVariant.TERTIARY : IconVariant.STANDARD} clickable={!disabled} />
-              </ButtonWrapper>
-            </TippyTooltip>
-            <SoundToggle platform={platform!} isMuted={isMuted} preventButtonDefault onClick={onMute} clickable={!disabled} />
-          </>
-        )}
+  return (
+    <BoxFlexEnd ml={16}>
+      {!testEnded && (
+        <>
+          <TippyTooltip title="Reset Test" disabled={disabled}>
+            <ActionButton
+              square
+              isGray
+              variant={ButtonVariant.TERTIARY}
+              onClick={disabled ? undefined : onReset}
+              disabled={disabled}
+              isMobile={isMobile}
+              squareRadius
+            >
+              <SvgIcon icon="restart" color="inherit" />
+            </ActionButton>
+          </TippyTooltip>
 
-        {!noSend && !testEnded && (
-          <ButtonWrapper
-            color={color || theme?.colors.blue}
-            onClick={() => (isIdle ? onStart() : onSend())}
+          <SoundToggle platform={platform!} isMuted={isMuted} preventButtonDefault onClick={onMute} />
+        </>
+      )}
+
+      {!noSend && !testEnded && (
+        <>
+          <Box width={12} />
+          <ActionButton
+            color={color || '#3d82e2'}
             isMobile={isMobile}
+            onClick={() => (isIdle ? onStart() : onSend())}
             onMouseDown={preventDefault()}
+            squareRadius
           >
             <SvgIcon icon="send" color={theme?.backgrounds.white} />
-          </ButtonWrapper>
-        )}
+          </ActionButton>
+        </>
+      )}
 
-        {testEnded && (
-          <ButtonWrapper color={color || theme?.colors.blue} onClick={onReset} isMobile={isMobile}>
+      {testEnded && (
+        <>
+          <Box width={12} />
+          <ActionButton color={color || '#3d82e2'} onClick={onReset} isMobile={isMobile} squareRadius>
             <SvgIcon icon="restart" color={theme?.backgrounds.white} />
-          </ButtonWrapper>
-        )}
-      </BoxFlexEnd>
-    );
-  };
+          </ActionButton>
+        </>
+      )}
+    </BoxFlexEnd>
+  );
+};
 
 export default ActionButtons;

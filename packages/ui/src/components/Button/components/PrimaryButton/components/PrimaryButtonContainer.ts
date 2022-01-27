@@ -5,7 +5,6 @@ import Icon from './PrimaryButtonIcon';
 
 export interface PrimaryButtonContainerProps extends ButtonContainerProps {
   canHover?: boolean;
-  squareRadius?: boolean;
 }
 
 const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerProps>`
@@ -39,12 +38,6 @@ const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerPro
   &:hover {
     background-color: #2f75d6;
   }
-
-  ${({ squareRadius }) =>
-    squareRadius &&
-    css`
-      border-radius: 10px !important;
-    `}
 `;
 
 export default PrimaryButtonContainer;

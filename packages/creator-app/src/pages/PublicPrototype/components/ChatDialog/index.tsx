@@ -138,7 +138,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
               <>
                 {testEnded ? (
                   <BoxFlex flex={1}>
-                    <Text fontSize={15} color={theme.colors.tertiary}>
+                    <Text fontSize={15} color={theme.colors.secondary}>
                       This conversation has ended
                     </Text>
                   </BoxFlex>

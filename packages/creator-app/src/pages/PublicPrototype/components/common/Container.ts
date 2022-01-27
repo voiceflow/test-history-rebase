@@ -13,7 +13,7 @@ const Container = styled(BoxFlexApart).attrs({ column: true })<ContainerProps>`
   padding: ${({ isMobile, isVisuals }) =>
     // eslint-disable-next-line no-nested-ternary
     isMobile ? '32px' : isVisuals ? 0 : '48px 48px 28px 48px'};
-  background-color: white;
+  background-color: ${({ isVisuals }) => (isVisuals ? 'white' : '#fdfdfd')};
 `;
 
 export default Container;

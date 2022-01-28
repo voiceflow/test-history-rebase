@@ -43,28 +43,6 @@ const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
   useHotKeys(Hotkey.USER_SPEECH, onDebouncedStopListening, { action: 'keyup', disable: isMobile || disabled });
   useHotKeys(Hotkey.USER_SPEECH, onDebouncedStartListening, { action: 'keydown', disable: isMobile || disabled });
 
-  // we can't prevent default behavior for react touchstart/touchend events
-  // https://github.com/facebook/react/issues/9809#issuecomment-414072263
-  // TODO: replace with react touchstart/touchend events after updating to React@17.*
-  React.useEffect(() => {
-    if (isMobile) {
-      const onPreventDefaultDebouncedStopListening = preventDefault(onDebouncedStopListening);
-      const onPreventDefaultDebouncedStartListening = preventDefault(onDebouncedStartListening);
-
-      containerRef.current?.addEventListener('touchend', onPreventDefaultDebouncedStopListening);
-      containerRef.current?.addEventListener('touchstart', onPreventDefaultDebouncedStartListening);
-
-      return () => {
-        containerRef.current?.removeEventListener('touchend', onPreventDefaultDebouncedStopListening);
-        containerRef.current?.removeEventListener('touchstart', onPreventDefaultDebouncedStartListening);
-      };
-    }
-
-    return () => {
-      // to fix react error
-    };
-  }, []);
-
   if (!isSupported) {
     return (
       <Container cursor="default">
@@ -108,7 +86,9 @@ const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
       ref={containerRef}
       disabled={disabled}
       onMouseUp={isMobile ? undefined : preventDefault(onDebouncedStopListening)}
+      onTouchEnd={isMobile ? preventDefault(onDebouncedStopListening) : undefined}
       onMouseDown={isMobile ? undefined : preventDefault(onDebouncedStartListening)}
+      onTouchStart={isMobile ? preventDefault(onDebouncedStartListening) : undefined}
     >
       <Text color="#8da2b5">{text}</Text>
     </Container>

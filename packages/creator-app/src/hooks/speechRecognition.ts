@@ -1,15 +1,14 @@
-import { toast, useCache } from '@voiceflow/ui';
+import { toast, useCache, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import SpeechRecognition, { useSpeechRecognition as useReactSpeechRecognition } from 'react-speech-recognition';
 import RecordRTC from 'recordrtc';
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
 
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
 import { BCP_LANGUAGE_CODE } from '@/constants';
 
 import { useMicrophonePermission } from './microphone';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useSpeechRecognition = ({
   locale,
   askOnSetup,
@@ -81,114 +80,127 @@ export const useSpeechRecognition = ({
 
 const TRANSCRIPTION_TIMEOUT = 3000;
 
-export const useASR = ({ onTranscript, locale }: { onTranscript: (test: string) => void; locale: string }) => {
-  const [recordAudio, setRecordAudio] = React.useState<RecordRTC | null>(null);
+export const useASR = ({ onTranscript, locale, enabled = true }: { onTranscript: (test: string) => void; locale: string; enabled?: boolean }) => {
   const [listeningASR, setListeningASR] = React.useState(false);
-  const [asrStream, setAsrStream] = React.useState<MediaStream | null>(null);
-  const [ASRSocket, setASRSocket] = React.useState<any>();
   const [processingTranscription, setProcessingTranscription] = React.useState(false);
 
+  const streamRef = React.useRef<MediaStream | null>(null);
+  const socketRef = React.useRef<typeof Socket | null>(null);
+  const recordRef = React.useRef<RecordRTC | null>(null);
+
+  const persistedTranscript = usePersistFunction(onTranscript);
+
   React.useEffect(() => {
-    let listeningStream: MediaStream;
     const socket = io(GENERAL_SERVICE_ENDPOINT, {
-      transports: ['websocket'],
       forceNew: true,
+      transports: ['websocket'],
       autoConnect: true,
     });
 
-    setASRSocket(socket);
-
-    navigator?.mediaDevices
-      .getUserMedia({ audio: true })
-      .then((stream) => {
-        setAsrStream(stream);
-        listeningStream = stream;
-      })
-      .catch((_err) => {
-        toast.error('Error enabling microphone');
-      });
-
-    return () => {
-      socket.disconnect();
-      listeningStream?.getTracks().forEach((track: MediaStreamTrack) => {
-        track.stop();
-      });
-    };
-  }, []);
-
-  React.useEffect(() => {
-    ASRSocket?.on('transcription', (transcriptData: { alternatives: { transcript: string }[]; isFinal: boolean }) => {
+    socket.on('transcription', (transcriptData: { alternatives: { transcript: string }[]; isFinal: boolean }) => {
       const bestTranscription = transcriptData.alternatives[0]?.transcript;
       const { isFinal } = transcriptData;
+
       if (isFinal) {
-        onTranscript(bestTranscription);
+        persistedTranscript(bestTranscription);
         setProcessingTranscription(false);
         onStop();
       }
     });
 
+    socketRef.current = socket;
+
     return () => {
-      ASRSocket?.removeListener('transcription');
+      socket.removeListener('transcription');
+      socket.disconnect();
     };
-  }, [ASRSocket, listeningASR, asrStream]);
+  }, []);
 
   React.useEffect(() => {
-    if (!listeningASR) {
-      recordAudio?.stopRecording();
-      recordAudio?.destroy();
+    if (!enabled) {
+      return undefined;
     }
-  }, [listeningASR, recordAudio]);
 
-  const handleStream = React.useCallback(() => {
-    const stream = asrStream;
+    let stream: MediaStream | null = null;
+
+    (async () => {
+      // to reuse single stream
+      if (streamRef.current) {
+        stream = streamRef.current;
+        return;
+      }
+
+      try {
+        stream = await window.navigator.mediaDevices.getUserMedia({ audio: true });
+
+        const recordAudio = new RecordRTC(stream, {
+          type: 'audio',
+          mimeType: 'audio/wav',
+          timeSlice: 100,
+          sampleRate: 44100,
+          recorderType: RecordRTC.StereoAudioRecorder,
+          desiredSampRate: 16000,
+          ondataavailable: (blob) => socketRef.current?.emit('audioBlob', blob),
+          numberOfAudioChannels: 1,
+        });
+
+        streamRef.current = stream;
+        recordRef.current = recordAudio;
+      } catch {
+        toast.error('Error enabling microphone');
+      }
+    })();
+
+    return () => {
+      stream?.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+    };
+  }, [enabled]);
+
+  React.useEffect(
+    () => () => {
+      streamRef.current?.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+      recordRef.current?.stopRecording();
+      recordRef.current?.destroy();
+    },
+    []
+  );
+
+  const onStart = React.useCallback(async () => {
+    if (!enabled || listeningASR || !streamRef.current) {
+      return;
+    }
 
     setListeningASR(true);
     setProcessingTranscription(true);
 
-    const newRecordAudio = new RecordRTC(stream as MediaStream, {
-      type: 'audio',
-      mimeType: 'audio/wav',
-      sampleRate: 44100,
-      desiredSampRate: 16000,
-      recorderType: RecordRTC.StereoAudioRecorder,
-      numberOfAudioChannels: 1,
-      timeSlice: 100,
-      ondataavailable: (blob: any) => {
-        ASRSocket?.emit('audioBlob', blob);
-      },
+    await socketRef.current?.emit('startTranscription', {
+      languageCode: Object.values(BCP_LANGUAGE_CODE).includes(locale as BCP_LANGUAGE_CODE) ? locale : BCP_LANGUAGE_CODE.EN_US,
     });
-    setRecordAudio(newRecordAudio);
-    newRecordAudio.startRecording();
-  }, [setListeningASR, ASRSocket, listeningASR, asrStream]);
 
-  const onListen = React.useCallback(async () => {
-    if (listeningASR) {
+    await recordRef.current?.startRecording();
+  }, [locale, enabled, listeningASR]);
+
+  const onStop = React.useCallback(async () => {
+    if (!listeningASR) {
       return;
     }
-    const options = {
-      languageCode: Object.values(BCP_LANGUAGE_CODE).includes(locale as BCP_LANGUAGE_CODE) ? locale : BCP_LANGUAGE_CODE.EN_US,
-    };
-    ASRSocket?.emit('startTranscription', options);
 
-    handleStream();
-  }, [setListeningASR, ASRSocket, listeningASR, handleStream]);
+    await socketRef.current?.emit('stopTranscription');
+    await recordRef.current?.stopRecording();
+    await recordRef.current?.reset();
 
-  const onStop = React.useCallback(() => {
-    ASRSocket?.emit('stopTranscription');
     setListeningASR(false);
 
     // If there is no transcription, or if transcription takes too long, reset.
-    setTimeout(() => {
-      if (processingTranscription) {
-        setProcessingTranscription(false);
-      }
-    }, TRANSCRIPTION_TIMEOUT);
-  }, [ASRSocket, setListeningASR, processingTranscription]);
+    if (processingTranscription) {
+      setTimeout(() => setProcessingTranscription(false), TRANSCRIPTION_TIMEOUT);
+    }
+  }, [listeningASR, processingTranscription]);
 
   return {
     listening: listeningASR,
     onStopListening: onStop,
-    onStartListening: onListen,
+    onStartListening: onStart,
     processingTranscription,
   };
 };

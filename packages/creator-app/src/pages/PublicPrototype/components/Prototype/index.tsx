@@ -97,6 +97,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     onStartListening: onStartListeningASR,
   } = useASR({
     locale,
+    enabled: isVoicePrototype,
     onTranscript,
   });
 

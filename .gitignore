@@ -82,9 +82,6 @@ package-lock.json
 
 scratch.js
 
-# webpack-bundle-analyzer report
-bundle-report.html
-
 #Sonar report
 sonar/
 nyc_coverage*

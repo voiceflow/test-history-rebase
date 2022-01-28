@@ -24,7 +24,7 @@ import PublicRoute from './PublicRoute';
 
 const SSML = lazy(() => import('@/pages/SSML'));
 const Legal = lazy(() => import('@/components/Legal'));
-const Project = lazy(() => import(/* webpackPrefetch: true */ '@/pages/Project'));
+const Project = lazy(() => import('@/pages/Project'));
 const Account = lazy(() => import('@/pages/Account'));
 const Runtime = lazy(() => import('@/pages/Runtime'));
 const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));

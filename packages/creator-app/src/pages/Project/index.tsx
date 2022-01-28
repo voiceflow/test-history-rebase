@@ -38,7 +38,7 @@ import Sidebar from './components/Sidebar';
 import { TIMEOUT_COUNT } from './constants';
 import { LastCreatedComponentProvider, MarkupProvider, NLPProvider, PlatformProvider, SelectionProvider } from './contexts';
 
-const Diagram = lazy(() => import(/* webpackPrefetch: true */ './components/Diagram'));
+const Diagram = lazy(() => import('./components/Diagram'));
 const Business = lazy(() => import('@/pages/Business'));
 const Migrate = lazy(() => import('@/pages/Migrate'));
 const Publish = lazy(() => import('@/pages/Publish'));

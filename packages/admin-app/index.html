@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" build-hash="<%- compilation.getStats().hash %>">
+<html lang="en">
 
 <head>
-  <base href="<%= base %>">
+  <base href="/">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="theme-color" content="#000000" />
@@ -27,15 +27,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
 
   <title>Voiceflow Admin</title>
-  <script src="https://apis.google.com/js/platform.js?onload=init" crossorigin="anonymous"></script>
-  <script>(function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', '<%= GOOGLE_TAG_MANAGER_ID %>');</script>
   <script src="static.js"></script>
 </head>
 
@@ -46,5 +37,7 @@
   <div id="root"></div>
   <div id="modal-root"></div>
 </body>
+
+<script type="module" src="/entry.ts"></script>
 
 </html>

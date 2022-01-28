@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.614.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.614.3...@voiceflow/creator-app@1.614.4) (2022-01-28)
+
+
+### Bug Fixes
+
+* vite admin app (VF-000) ([#5017](https://github.com/voiceflow/creator-app/issues/5017)) ([650ef9c](https://github.com/voiceflow/creator-app/commit/650ef9c35eb8286e9a3cd6229bc9870f9fa2f4ed))
+
+
+
+
+
 ## [1.614.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.614.2...@voiceflow/creator-app@1.614.3) (2022-01-28)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.614.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.614.2...@voiceflow/creator-app@1.614.3) (2022-01-28)
+
+
+### Bug Fixes
+
+* new projects will be at the top of the project list (VF-2516) ([#4987](https://github.com/voiceflow/creator-app/issues/4987)) ([0ac01ed](https://github.com/voiceflow/creator-app/commit/0ac01ed3b503001ca1e78ce520f963c4884230bc))
+* scrollbar popping in on re-test (VF-2731) ([#5002](https://github.com/voiceflow/creator-app/issues/5002)) ([6dab6a4](https://github.com/voiceflow/creator-app/commit/6dab6a421a0639751ec56cc9ad913864231d516b))
+
+
+
+
+
 ## [1.614.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.614.1...@voiceflow/creator-app@1.614.2) (2022-01-28)
 
 

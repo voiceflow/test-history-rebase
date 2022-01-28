@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.614.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.613.0...@voiceflow/creator-app@1.614.0) (2022-01-28)
+
+
+### Features
+
+* add realtime creator duck (VF-2077) ([#4983](https://github.com/voiceflow/creator-app/issues/4983)) ([ec090cf](https://github.com/voiceflow/creator-app/commit/ec090cf7e2f48efa71e3569eecffbfbb3c63f1bb))
+
+
+
+
+
 # [1.613.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.612.3...@voiceflow/creator-app@1.613.0) (2022-01-28)
 
 

@@ -7,8 +7,8 @@ import { createReducer } from './utils';
 const addProjectToListReducer = createReducer(Realtime.projectList.addProjectToList, (state, { projectID, listID }) => {
   const projectList = Normal.getOne(state, listID);
 
-  if (projectList) {
-    projectList.projects = Utils.array.append(projectList.projects, projectID);
+  if (projectList && !projectList.projects.some((id) => id === projectID)) {
+    projectList.projects = Utils.array.unique([projectID, ...projectList.projects]);
   }
 });
 

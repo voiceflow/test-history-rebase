@@ -41,7 +41,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
       it('add project to list', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, projectID: 'foo' });
 
-        expect(result.byKey[LIST_ID].projects).to.eql([PROJECT_ID, 'otherProjectID', 'foo']);
+        expect(result.byKey[LIST_ID].projects).to.eql(['foo', PROJECT_ID, 'otherProjectID']);
       });
 
       it('do nothing if project is already in list', () => {

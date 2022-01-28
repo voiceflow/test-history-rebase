@@ -10,7 +10,7 @@ class AddProjectToList extends AbstractProjectListResourceControl<Realtime.proje
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.projectList.AddProjectToListPayload>) => {
     await this.applyPatch(ctx, payload.workspaceID, payload.listID, (list) => ({
-      projects: Utils.array.append(list.projects, payload.projectID),
+      projects: Utils.array.unique([payload.projectID, ...list.projects]),
     }));
   };
 }

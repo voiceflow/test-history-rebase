@@ -1,4 +1,4 @@
-import { Button, Input, Link, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, Input, toast } from '@voiceflow/ui';
 import _get from 'lodash/get';
 import React from 'react';
 
@@ -86,9 +86,9 @@ const ChangePasswordModal: React.FC = () => {
       </ModalBody>
 
       <ModalFooter>
-        <Link onClick={() => close()} style={{ marginRight: '33px', fontWeight: 600 }}>
+        <Button variant={ButtonVariant.TERTIARY} onClick={() => close()} style={{ marginRight: '15px' }}>
           Cancel
-        </Link>
+        </Button>
 
         <Button disabled={!nextPassword || saving} onClick={handleSave}>
           {saving ? 'Saving...' : 'Submit'}

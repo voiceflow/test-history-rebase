@@ -1,4 +1,4 @@
-import { Box, Button, Input, Link, stopImmediatePropagation, SvgIcon, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Input, stopImmediatePropagation, SvgIcon, toast } from '@voiceflow/ui';
 import _get from 'lodash/get';
 import React from 'react';
 
@@ -67,9 +67,9 @@ const ChangeEmailModal: React.FC = () => {
       </ModalBody>
 
       <ModalFooter>
-        <Link onClick={() => close()} style={{ marginRight: '33px', fontWeight: 600 }}>
+        <Button variant={ButtonVariant.TERTIARY} onClick={() => close()} style={{ marginRight: '12px' }}>
           Cancel
-        </Link>
+        </Button>
 
         <Button disabled={!nextEmail || saving} onClick={handleSave}>
           {saving ? 'Saving...' : 'Submit'}

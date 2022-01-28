@@ -6,6 +6,12 @@ import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
 import { SourceType } from '@/ducks/tracking/constants';
 import { useDispatch, useModals, useSelector } from '@/hooks';
+import {
+  IntegrationHeader,
+  IntegrationInfo,
+  IntegrationInfoItem,
+  PropName,
+} from '@/pages/Account/components/AccountIntegrations/Sections/components';
 
 const GoogleIntegration: React.FC = () => {
   const [googleStatus, setGoogleStatus] = useState(false);
@@ -37,20 +43,20 @@ const GoogleIntegration: React.FC = () => {
   const googleButton = () => {
     if (!googleStatus) {
       return (
-        <Button variant={ButtonVariant.PRIMARY} disabled>
-          loading...
+        <Button variant={ButtonVariant.PRIMARY} squareRadius disabled>
+          Loading...
         </Button>
       );
     }
     if (!user.google) {
       return (
-        <Button variant={ButtonVariant.PRIMARY} onClick={() => connectGoogleModal.open({ source: SourceType.ACCOUNT_PAGE })}>
+        <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={() => connectGoogleModal.open({ source: SourceType.ACCOUNT_PAGE })}>
           Connect
         </Button>
       );
     }
     return (
-      <Button variant={ButtonVariant.PRIMARY} onClick={resetGoogle}>
+      <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={resetGoogle}>
         Reset
       </Button>
     );
@@ -58,26 +64,22 @@ const GoogleIntegration: React.FC = () => {
 
   return (
     <div className="card">
-      <div className="pl-4 pr-4 pt-2 pb-2 space-between mb-0">
+      <IntegrationHeader>
         <h5 className="mb-0 font-weight-bold">Google</h5>
         <div className="super-center">{googleButton()}</div>
-      </div>
+      </IntegrationHeader>
       {user.google && user.google.profile && (
-        <>
-          <hr />
-          <div className="pl-4 pb-4 pr-4 space-between">
-            <div className="col-0 font-weight-bold" style={{ color: '#8c94a6' }}>
-              <div className="mb-1 mr-2">Name</div>
-              <div className="mb-1 mr-2">Email</div>
-              <div className="mb-1 mr-2">User Id</div>
-            </div>
-            <div className="col-sm">
-              <div className="mb-1">{user.google.profile.name}</div>
-              <div className="mb-1">{user.google.profile.email}</div>
-              <div className="mb-1">{user.google.profile.id}</div>
-            </div>
-          </div>
-        </>
+        <IntegrationInfo>
+          <IntegrationInfoItem>
+            <PropName> Name: </PropName> {user.google.profile.name}
+          </IntegrationInfoItem>
+          <IntegrationInfoItem>
+            <PropName> Email: </PropName> {user.google.profile.email}
+          </IntegrationInfoItem>
+          <IntegrationInfoItem>
+            <PropName> User Id: </PropName> {user.google.profile.id}
+          </IntegrationInfoItem>
+        </IntegrationInfo>
       )}
     </div>
   );

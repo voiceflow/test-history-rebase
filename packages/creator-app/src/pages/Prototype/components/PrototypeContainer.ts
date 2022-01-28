@@ -12,7 +12,7 @@ export const Container = styled(Flex).attrs({ column: true })<ContainerProps>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: hidden;
   position: relative;
   & > * {
     width: 100%;

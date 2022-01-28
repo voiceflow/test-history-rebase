@@ -20,4 +20,4 @@ export const updateLocales = createAction<UpdateLocalesPayload>(productType('UPD
 
 export const create = createAsyncAction<CreateProductPayload, Product>(productType('CREATE_PRODUCT'));
 
-export const crud = createCRUDActions<BaseVersionPayload, Product>(productType);
+export const crud = createCRUDActions<Product, BaseVersionPayload>(productType);

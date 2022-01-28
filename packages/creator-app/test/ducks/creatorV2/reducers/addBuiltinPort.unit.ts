@@ -1,0 +1,64 @@
+import * as Realtime from '@realtime-sdk';
+import { Models } from '@voiceflow/base-types';
+import { Constants } from '@voiceflow/general-types';
+import { normalize } from 'normal-store';
+
+import * as CreatorV2 from '@/ducks/creatorV2';
+import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
+
+import suite from '../../_suite';
+import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
+
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinPort reducer', ({ expect, describeReducerV2 }) => {
+  describeReducerV2(Realtime.node.addBuiltinPort, ({ applyAction }) => {
+    it('ignore adding a built-in port for a different diagram', () => {
+      const result = applyAction(MOCK_STATE, {
+        ...ACTION_CONTEXT,
+        diagramID: 'foo',
+        nodeID: NODE_ID,
+        portID: PORT_ID,
+        type: Models.PortType.NO_MATCH,
+        platform: Constants.PlatformType.CHATBOT,
+      });
+
+      expect(result).to.eq(MOCK_STATE);
+    });
+
+    it('ignore adding a built-in port with duplicate ID', () => {
+      const result = applyAction(MOCK_STATE, {
+        ...ACTION_CONTEXT,
+        nodeID: NODE_ID,
+        portID: PORT_ID,
+        type: Models.PortType.NO_MATCH,
+        platform: Constants.PlatformType.CHATBOT,
+      });
+
+      expect(result).to.eq(MOCK_STATE);
+    });
+
+    it('add built-in port', () => {
+      const portID = 'builtInPort';
+      const type = Models.PortType.NO_MATCH;
+      const platform = Constants.PlatformType.CHATBOT;
+
+      const result = applyAction(
+        {
+          ...MOCK_STATE,
+          portsByNodeID: { [NODE_ID]: createEmptyNodePorts() },
+        },
+        {
+          ...ACTION_CONTEXT,
+          nodeID: NODE_ID,
+          portID,
+          type,
+          platform,
+        }
+      );
+
+      expect(result.ports).to.containSubset(normalize([{ id: portID, nodeID: NODE_ID, label: type, platform, virtual: false }]));
+      expect(result.portsByNodeID[NODE_ID]?.out.builtIn[type]).to.eq(portID);
+      expect(result.nodeIDByPortID).to.eql({ [portID]: NODE_ID });
+      expect(result.linkIDsByPortID).to.eql({ [portID]: [] });
+    });
+  });
+});

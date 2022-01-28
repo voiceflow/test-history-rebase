@@ -9,4 +9,4 @@ const intentType = Utils.protocol.typeFactory(INTENT_KEY);
 // Other
 
 // eslint-disable-next-line import/prefer-default-export
-export const crud = createCRUDActions<BaseVersionPayload, Intent>(intentType);
+export const crud = createCRUDActions<Intent, BaseVersionPayload>(intentType);

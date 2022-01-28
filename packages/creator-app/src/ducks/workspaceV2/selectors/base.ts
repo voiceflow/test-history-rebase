@@ -9,7 +9,7 @@ import * as WorkspaceV1Selectors from '@/ducks/workspace/selectors';
 
 import { STATE_KEY } from '../constants';
 
-export const workspaceIDParamSelector = createParameterSelector<{ workspaceID: string }>((params) => params.workspaceID);
+export const workspaceIDParamSelector = createParameterSelector((params: { workspaceID: string }) => params.workspaceID);
 
 const {
   all: _allWorkspacesSelector,

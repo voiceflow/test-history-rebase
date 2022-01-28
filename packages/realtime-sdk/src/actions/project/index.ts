@@ -35,4 +35,4 @@ export const duplicate = createAsyncAction<DuplicateProjectPayload, AnyProject>(
 
 export const create = createAsyncAction<CreateProjectPayload, AnyProject>(projectType('CREATE'));
 
-export const crud = createCRUDActions<BaseWorkspacePayload, AnyProject>(projectType);
+export const crud = createCRUDActions<AnyProject, BaseWorkspacePayload>(projectType);

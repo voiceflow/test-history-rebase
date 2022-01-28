@@ -4,7 +4,7 @@ import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers
 
 import { AnyAction, RootReducer } from '@/store/types';
 
-export type ImmerHandler<S, P> = (draft: Draft<S>, payload: P) => void;
+export type ImmerHandler<State, Payload> = (draft: Draft<State>, payload: Payload) => Draft<State> | void;
 
 declare module 'typescript-fsa-reducers' {
   interface ReducerBuilder<InS, OutS = InS, PassedS = InS | undefined> {
@@ -14,27 +14,20 @@ declare module 'typescript-fsa-reducers' {
 }
 
 export const createLookupReducer =
-  <S, A extends AnyAction>(reducer: RootReducer<S, A>) =>
-  (state: Record<string, S>, action: A, key?: string) => {
-    if (!key) {
-      return state;
-    }
+  <State, Action extends AnyAction>(reducer: RootReducer<State, Action>) =>
+  (state: Record<string, State>, action: Action, key?: string) => {
+    if (!key) return state;
 
-    const currState = state[key!];
+    const currState = state[key];
     const nextState = reducer(currState, action);
 
-    if (nextState === currState) {
-      return state;
-    }
+    if (nextState === currState) return state;
 
-    return {
-      ...state,
-      [key!]: nextState,
-    };
+    return { ...state, [key]: nextState };
   };
 
-export const createRootReducer = <T>(initialState: T): ReducerBuilder<T> => {
-  const reducer = reducerWithInitialState<T>(initialState);
+export const createRootReducer = <State>(initialState: State): ReducerBuilder<State> => {
+  const reducer = reducerWithInitialState<State>(initialState);
 
   reducer.immerCase = (actionCreator, handler) => reducer.case(actionCreator, (state, payload) => produce(state, (draft) => handler(draft, payload)));
 
@@ -44,12 +37,18 @@ export const createRootReducer = <T>(initialState: T): ReducerBuilder<T> => {
   return reducer;
 };
 
-export interface CreateReducer<S> {
-  <P>(actionCreator: ActionCreator<P>, handler: ImmerHandler<S, P>): [actionCreator: ActionCreator<P>, handler: ImmerHandler<S, P>];
-  <P>(actionCreators: ActionCreator<P>[], handler: ImmerHandler<S, P>): [actionCreators: ActionCreator<P>[], handler: ImmerHandler<S, P>];
+export interface CreateReducer<State, BasePayload = any> {
+  <Payload extends BasePayload>(actionCreator: ActionCreator<Payload>, handler: ImmerHandler<State, Payload>): [
+    actionCreator: ActionCreator<Payload>,
+    handler: ImmerHandler<State, Payload>
+  ];
+  <Payload extends BasePayload>(actionCreators: ActionCreator<Payload>[], handler: ImmerHandler<State, Payload>): [
+    actionCreators: ActionCreator<Payload>[],
+    handler: ImmerHandler<State, Payload>
+  ];
 }
 
 export const createReducerFactory =
-  <S>(): CreateReducer<S> =>
-  (actionCreator: ActionCreator<any> | ActionCreator<any>[], handler: ImmerHandler<S, any>) =>
+  <State>(): CreateReducer<State> =>
+  (actionCreator: ActionCreator<any> | ActionCreator<any>[], handler: ImmerHandler<State, any>) =>
     [actionCreator, handler] as any;

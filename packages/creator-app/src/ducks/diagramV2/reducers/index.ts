@@ -1,7 +1,6 @@
 import { createRootCRUDReducer } from '@/ducks/utils/crudV2';
 
 import { INITIAL_STATE } from '../constants';
-import { DiagramState } from '../types';
 import addIntentSteps from './addIntentSteps';
 import addLocalVariable from './addLocalVariable';
 import { loadViewersReducer, updateDiagramViewers } from './awareness';
@@ -16,7 +15,7 @@ import updateIntentSteps from './updateIntentSteps';
 
 export * from './awareness';
 
-const realtimeDiagramReducer = createRootCRUDReducer<DiagramState>(INITIAL_STATE, crudReducers)
+const realtimeDiagramReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
   .immerCase(...removeDiagram)
   .immerCase(...addLocalVariable)
   .immerCase(...removeLocalVariable)

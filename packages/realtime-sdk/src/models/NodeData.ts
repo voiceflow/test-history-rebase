@@ -19,6 +19,8 @@ export type NodeData<T> = T & {
   deprecatedType?: string;
 };
 
+export type NodeDataDescriptor<T> = Omit<NodeData<T>, 'nodeID'>;
+
 export type BlockNodeData<T> = NodeData<T> & {
   blockColor: BlockVariant;
 };

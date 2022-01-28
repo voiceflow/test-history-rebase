@@ -74,4 +74,4 @@ export const createComponent = createAsyncAction<CreateDiagramPayload, Diagram>(
 export const duplicate = createAsyncAction<BaseDiagramPayload, Diagram>(diagramType('DUPICATE'));
 export const convertToTopic = createAsyncAction<BaseDiagramPayload, Diagram>(diagramType('CONVERT_TO_TOPIC'));
 
-export const crud = createCRUDActions<BaseVersionPayload, Diagram>(diagramType);
+export const crud = createCRUDActions<Diagram, BaseVersionPayload>(diagramType);

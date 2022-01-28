@@ -19,4 +19,4 @@ export const create = createAsyncAction<CreateVariableStatePayload, VariableStat
 
 export const patch = createAsyncAction<PatchVariableStatesPayload, VariableState[]>(variableStateType('PATCH'));
 
-export const crud = createCRUDActions<BaseVersionPayload, VariableState>(variableStateType);
+export const crud = createCRUDActions<VariableState, BaseVersionPayload>(variableStateType);

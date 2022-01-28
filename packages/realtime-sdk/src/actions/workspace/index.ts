@@ -17,7 +17,7 @@ export const create = createAsyncAction<CreateWorkspacePayload, Workspace>(works
 
 // crud
 
-export type ClientWorkspaceCRUDPayload = ClientCRUDPayload<BaseCreatorPayload, Workspace>;
+export type ClientWorkspaceCRUDPayload = ClientCRUDPayload<Workspace, BaseCreatorPayload>;
 
 export interface LeaveWorkspacePayload extends BaseWorkspacePayload {
   creatorID: number;
@@ -37,7 +37,7 @@ export const updateName = createAction<UpdateWorkspaceNamePayload>(workspaceType
 
 export const updateImage = createAction<UpdateWorkspaceImagePayload>(workspaceType('UPDATE_IMAGE'));
 
-export const crud = createCRUDActions<BaseCreatorPayload, Workspace>(workspaceType);
+export const crud = createCRUDActions<Workspace, BaseCreatorPayload>(workspaceType);
 
 // utils
 

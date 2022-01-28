@@ -1,0 +1,146 @@
+import * as Realtime from '@realtime-sdk';
+import { Models } from '@voiceflow/base-types';
+import { normalize } from 'normal-store';
+
+import { BlockVariant } from '@/constants/canvas';
+import * as CreatorV2 from '@/ducks/creatorV2';
+import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
+
+import suite from '../../_suite';
+import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID } from '../_fixtures';
+
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect, describeReducerV2 }) => {
+  describeReducerV2(Realtime.node.addBlock, ({ applyAction }) => {
+    const blockID = 'blockNode';
+    const stepID = 'stepNode';
+    const blockOrigin: Realtime.Point = [100, 200];
+    const stepData = { type: Realtime.BlockType.BUTTONS, name: 'node name', path: [] };
+
+    it('ignore adding a block for a different diagram', () => {
+      const result = applyAction(MOCK_STATE, {
+        ...ACTION_CONTEXT,
+        diagramID: 'foo',
+        blockID,
+        stepID,
+        blockOrigin,
+        blockPorts: createEmptyNodePorts(),
+        stepPorts: createEmptyNodePorts(),
+        stepData,
+      });
+
+      expect(result).to.eq(MOCK_STATE);
+    });
+
+    it('ignore adding block with duplicate ID', () => {
+      const result = applyAction(
+        {
+          ...MOCK_STATE,
+          nodes: normalize([NODE_DATA], (node) => node.nodeID),
+        },
+        {
+          ...ACTION_CONTEXT,
+          blockID: NODE_ID,
+          stepID,
+          blockOrigin,
+          blockPorts: createEmptyNodePorts(),
+          stepPorts: createEmptyNodePorts(),
+          stepData,
+        }
+      );
+
+      expect(result).to.eql(MOCK_STATE);
+    });
+
+    it('ignore adding step with duplicate ID', () => {
+      const result = applyAction(
+        {
+          ...MOCK_STATE,
+          nodes: normalize([NODE_DATA], (node) => node.nodeID),
+        },
+        {
+          ...ACTION_CONTEXT,
+          blockID,
+          stepID: NODE_ID,
+          blockOrigin,
+          blockPorts: createEmptyNodePorts(),
+          stepPorts: createEmptyNodePorts(),
+          stepData,
+        }
+      );
+
+      expect(result).to.eql(MOCK_STATE);
+    });
+
+    it('add a block and step', () => {
+      const result = applyAction(MOCK_STATE, {
+        ...ACTION_CONTEXT,
+        blockID,
+        stepID,
+        blockOrigin,
+        blockPorts: createEmptyNodePorts(),
+        stepPorts: createEmptyNodePorts(),
+        stepData,
+      });
+
+      expect(result.nodes).to.containSubset(
+        normalize(
+          [
+            { type: Realtime.BlockType.COMBINED, blockColor: BlockVariant.STANDARD, nodeID: blockID, name: 'Block', path: [] },
+            { ...stepData, nodeID: stepID },
+          ],
+          (node) => node.nodeID
+        )
+      );
+      expect(result.blockIDs).to.eql([blockID]);
+      expect(result.originByNodeID).to.eql({ [blockID]: blockOrigin });
+      expect(result.stepIDsByBlockID).to.eql({ [blockID]: [stepID] });
+      expect(result.blockIDByStepID).to.eql({ [stepID]: blockID });
+      expect(result.portsByNodeID).to.eql({
+        [blockID]: createEmptyNodePorts(),
+        [stepID]: createEmptyNodePorts(),
+      });
+      expect(result.linkIDsByNodeID).to.eql({ [blockID]: [], [stepID]: [] });
+    });
+
+    it('register all ports of an added block and step', () => {
+      const inPortID = 'inPort';
+      const dynamicPortID = 'dynamicPort';
+      const builtInPortID = 'builtInPort';
+
+      const result = applyAction(MOCK_STATE, {
+        ...ACTION_CONTEXT,
+        blockID,
+        stepID,
+        blockOrigin,
+        stepData,
+        blockPorts: {
+          in: [{ id: inPortID }],
+          out: { dynamic: [], builtIn: {} },
+        },
+        stepPorts: {
+          in: [],
+          out: {
+            dynamic: [{ id: dynamicPortID }],
+            builtIn: {
+              [Models.PortType.NEXT]: { id: builtInPortID },
+            },
+          },
+        },
+      });
+
+      expect(result.ports).to.containSubset(normalize([{ id: builtInPortID }, { id: dynamicPortID }, { id: inPortID }]));
+      expect(result.portsByNodeID).to.eql({
+        [blockID]: { in: [inPortID], out: { dynamic: [], builtIn: {} } },
+        [stepID]: {
+          in: [],
+          out: {
+            dynamic: [dynamicPortID],
+            builtIn: { [Models.PortType.NEXT]: builtInPortID },
+          },
+        },
+      });
+      expect(result.nodeIDByPortID).to.eql({ [inPortID]: blockID, [dynamicPortID]: stepID, [builtInPortID]: stepID });
+      expect(result.linkIDsByPortID).to.eql({ [inPortID]: [], [dynamicPortID]: [], [builtInPortID]: [] });
+    });
+  });
+});

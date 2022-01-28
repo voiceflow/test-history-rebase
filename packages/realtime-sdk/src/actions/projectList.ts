@@ -28,4 +28,4 @@ export const removeProjectFromList = Utils.protocol.createAction<BaseProjectList
 
 export const transplantProjectBetweenLists = Utils.protocol.createAction<TransplantProjectBetweenListsPayload>(projectListType('TRANSPLANT_PROJECT'));
 
-export const crud = createCRUDActions<BaseWorkspacePayload, ProjectList>(projectListType);
+export const crud = createCRUDActions<ProjectList, BaseWorkspacePayload>(projectListType);

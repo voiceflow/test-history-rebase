@@ -71,7 +71,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('append new variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
 
-        expect(result).to.containSubset({ byKey: { [DIAGRAM_ID]: { variables: ['fizz', 'buzz', 'foo'] } } });
+        expect(result.byKey[DIAGRAM_ID].variables).to.eql(['fizz', 'buzz', 'foo']);
       });
 
       it('do nothing if variable already exists', () => {
@@ -85,7 +85,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('remove a known variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
 
-        expect(result).to.containSubset({ byKey: { [DIAGRAM_ID]: { variables: ['buzz'] } } });
+        expect(result.byKey[DIAGRAM_ID].variables).to.eql(['buzz']);
       });
 
       it('do nothing if variable does not exist', () => {

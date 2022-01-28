@@ -69,4 +69,4 @@ export const reorderTopics = Utils.protocol.createAction<ReorderTopicsPayload>(t
 
 export const reorderComponents = Utils.protocol.createAction<ReorderComponentsPayload>(componentsType('REORDER'));
 
-export const crud = createCRUDActions<BaseProjectPayload, AnyVersion>(versionType);
+export const crud = createCRUDActions<AnyVersion, BaseProjectPayload>(versionType);

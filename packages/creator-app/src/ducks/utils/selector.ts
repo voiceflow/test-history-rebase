@@ -18,18 +18,18 @@ export const createRootSelectorFactory =
 export const createRootSelector = createRootSelectorFactory<State>();
 
 export const createParameterSelector =
-  <T extends Record<string, any>>(selector: <K extends keyof T>(params: T) => T[K]) =>
-  (_: unknown, params: T): T[keyof T] =>
+  <T extends Record<string, any>, R>(selector: (params: T) => R) =>
+  (_: unknown, params: T): ReturnType<typeof selector> =>
     selector(params);
 
-export interface CreatorIDSelectorParameter {
-  creatorID: number;
-}
+export const creatorIDParamSelector = createParameterSelector((params: { creatorID: number }) => params.creatorID);
 
-export interface ProjectIDSelectorParameter {
-  projectID: string;
-}
+export const projectIDParamSelector = createParameterSelector((params: { projectID: string }) => params.projectID);
 
-export const creatorIDParamSelector = createParameterSelector<CreatorIDSelectorParameter>((params) => params.creatorID);
+export const nodeIDParamSelector = createParameterSelector((params: { nodeID: string }) => params.nodeID);
 
-export const projectIDParamSelector = createParameterSelector<ProjectIDSelectorParameter>((params) => params.projectID);
+export const createCurriedSelector =
+  <T, P>(selector: Selector<T, [P]>) =>
+  (state: State) =>
+  (param: P): T =>
+    selector(state, param);

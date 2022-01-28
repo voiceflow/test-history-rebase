@@ -1,5 +1,5 @@
 import { BLOCK_KEY, NODE_KEY, PORT_KEY, STEP_KEY } from '@realtime-sdk/constants';
-import { BuiltInPortRecord, Markup, NodeData, NodePortSchema, PartialModel, Port } from '@realtime-sdk/models';
+import { BuiltInPortRecord, Markup, NodeDataDescriptor, NodePortSchema, PartialModel, Port, PortsDescriptor } from '@realtime-sdk/models';
 import { BaseBlockPayload, BaseDiagramPayload, BaseNodePayload, Point } from '@realtime-sdk/types';
 import { Models } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
@@ -55,7 +55,7 @@ export const removePort = Utils.protocol.createAction<PortPayload>(nodePortType(
 // markup
 
 export interface AddMarkupPayload extends BaseNodePayload {
-  data: NodeData<Markup.AnyNodeData>;
+  data: NodeDataDescriptor<Markup.AnyNodeData>;
   origin: Point;
 }
 
@@ -63,19 +63,17 @@ export const addMarkup = Utils.protocol.createAction<AddMarkupPayload>(nodeMarku
 
 // blocks
 
-export type PortsDescriptor = NodePortSchema<PartialModel<Port>>;
-
 export interface AddBlockPayload<T = unknown, O extends PortRecord = PortRecord> extends BaseBlockPayload {
   blockPorts: PortsDescriptor;
   blockOrigin: Point;
   stepID: string;
-  stepData: NodeData<T>;
+  stepData: NodeDataDescriptor<T>;
   stepPorts: NodePortSchema<PartialModel<Port>, O>;
 }
 
 export interface AddNodePayload<T = unknown, O extends PortRecord = PortRecord> extends BaseBlockPayload {
   stepID: string;
-  data: NodeData<T>;
+  data: NodeDataDescriptor<T>;
   ports: NodePortSchema<PartialModel<Port>, O>;
 }
 

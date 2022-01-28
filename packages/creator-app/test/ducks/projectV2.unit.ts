@@ -87,9 +87,7 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
       it('update the active vendor', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: CREATOR_ID, vendorID: VENDOR_ID, skillID });
 
-        expect(result).to.containSubset({
-          byKey: { [PROJECT_ID]: { members: [{ platformData: { selectedVendor: VENDOR_ID, vendors: [{ skillID }] } }] } },
-        });
+        expect(result.byKey[PROJECT_ID].members).to.containSubset([{ platformData: { selectedVendor: VENDOR_ID, vendors: [{ skillID }] } }]);
       });
 
       it('append vendor if it does not exist', () => {

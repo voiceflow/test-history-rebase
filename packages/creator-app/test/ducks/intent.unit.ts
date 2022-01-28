@@ -26,8 +26,15 @@ suite(Intent, MOCK_STATE)('Ducks - Intent', ({ expect, describeCRUDReducer, desc
     describe('intentsUsingSlotSelector()', () => {
       it('should select intents using a slot by ID', () => {
         const slotID = Utils.generate.id();
-        const intentWithSlot = Utils.generate.array(3, () => ({ id: Utils.generate.id(), slots: { allKeys: [slotID, ...Utils.generate.array()] } }));
-        const intentWithoutSlot = Utils.generate.array(3, () => ({ id: Utils.generate.id(), slots: { allKeys: Utils.generate.array() } }));
+        const otherSlots = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
+        const intentWithSlot = Utils.generate.array(3, () => ({
+          id: Utils.generate.id(),
+          slots: normalize([{ id: slotID }, ...otherSlots]),
+        }));
+        const intentWithoutSlot = Utils.generate.array(3, () => ({
+          id: Utils.generate.id(),
+          slots: normalize(otherSlots),
+        }));
 
         expect(
           select(IntentV2.intentsUsingSlotSelector, {

@@ -56,7 +56,7 @@ export const nodeByIDSelector = createSelector(
 
 export const allNodesByIDsSelector = createSelector([normalizedNodesSelector], (nodes) => (nodeIDs: string[]) => Normal.getMany(nodes, nodeIDs));
 
-export const combinedNodeIDsSelector = createSelector([nodeByIDSelector], (getNode) => (nodeID: string) => getNode(nodeID).combinedNodes);
+export const combinedNodeIDsSelector = createSelector([nodeByIDSelector], (getNode) => (nodeID: string) => getNode(nodeID)?.combinedNodes ?? []);
 
 export const allLinkIDsSelector = createSelector([normalizedLinksSelector], (links) => links.allKeys);
 
@@ -78,6 +78,16 @@ export const dataByNodeIDSelector = createSelector(
 
 export const allNodeDataSelector = createSelector([normalizedNodesSelector, normalizedDataSelector], (nodes, data) =>
   nodes.allKeys.map((nodeID) => data[nodeID])
+);
+
+/**
+ * @deprecated
+ */
+export const dataByNodeIDsSelector = createSelector(
+  [dataByNodeIDSelector],
+  (getDataByNodeID) =>
+    (nodeIDs: string[]): Realtime.NodeData<unknown>[] =>
+      nodeIDs.map(getDataByNodeID).filter(Boolean)
 );
 
 export const portByIDSelector = createSelector(

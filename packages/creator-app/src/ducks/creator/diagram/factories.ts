@@ -45,10 +45,7 @@ export const nodeDataFactory = (nodeID: string, data: WithRequired<Partial<Realt
   nodeID,
 });
 
-export const blockNodeDataFactory = (
-  nodeID: string,
-  data: WithRequired<Partial<Realtime.BlockNodeData<unknown>>, 'type'>
-): Realtime.BlockNodeData<unknown> => ({
+export const blockNodeDataFactory = (nodeID: string, data: Partial<Realtime.BlockNodeData<unknown>> = {}): Realtime.BlockNodeData<unknown> => ({
   blockColor: BlockVariant.STANDARD,
-  ...nodeDataFactory(nodeID, data),
+  ...nodeDataFactory(nodeID, { type: Realtime.BlockType.COMBINED, ...data }),
 });

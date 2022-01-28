@@ -5,6 +5,7 @@ import { reducer as formReducer } from 'redux-form';
 
 import account, * as Account from '@/ducks/account';
 import creator, * as Creator from '@/ducks/creator';
+import creatorV2, * as CreatorV2 from '@/ducks/creatorV2';
 import diagram, * as Diagram from '@/ducks/diagram';
 import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
 import feature, * as Feature from '@/ducks/feature';
@@ -54,6 +55,7 @@ const getCombinedReducer = (history: History) =>
     [Prototype.STATE_KEY]: prototype,
     [Session.STATE_KEY]: session,
     [Creator.STATE_KEY]: creator,
+    [CreatorV2.STATE_KEY]: creatorV2,
     [Diagram.STATE_KEY]: diagram,
     [DiagramV2.STATE_KEY]: diagramV2,
     [Product.STATE_KEY]: product,

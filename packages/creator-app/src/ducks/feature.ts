@@ -103,23 +103,52 @@ export const isFeatureEnabledSelector = createSelector(
   (getFeature) => (featureID: FeatureFlag) => (!IS_PRODUCTION && LOCAL_FEATURE_OVERRIDES[featureID]) || (getFeature(featureID).isEnabled ?? null)
 );
 
-export const createAtomicActionsSelector: {
-  <T, P, R, V1, V2>(
-    selectors: [selectorV1: Selector<V1, [P]>, selectorV2: Selector<V2, [P]>, paramSelector: Selector<R, [P]>],
-    reducer: (valueV1: V1, valueV2: V2, param: R) => [T, T]
-  ): Selector<T, [P]>;
+export const featureSelectorFactory =
+  (
+    feature: FeatureFlag
+  ): {
+    <T, P1, P2, P3, R1, R2, R3, V1, V2>(
+      selectors: [
+        selectorV1: Selector<V1, [P1, P2, P3]>,
+        selectorV2: Selector<V2, [P1, P2, P3]>,
+        paramSelector1: Selector<R1, [P1, P2, P3]>,
+        paramSelector2: Selector<R2, [P1, P2, P3]>,
+        paramSelector3: Selector<R3, [P1, P2, P3]>
+      ],
+      reducer: (valueV1: V1, valueV2: V2, param1: R1, param2: R2, param3: R3) => [T, T]
+    ): Selector<T, [P1 & P2 & P3]>;
 
-  <T, P>(selectors: [selectorV1: Selector<T>, selectorV2: Selector<T>, paramSelector: Selector<P>]): Selector<T, [P]>;
+    <T, P1, P2, R1, R2, V1, V2>(
+      selectors: [
+        selectorV1: Selector<V1, [P1, P2]>,
+        selectorV2: Selector<V2, [P1, P2]>,
+        paramSelector1: Selector<R1, [P1, P2]>,
+        paramSelector2: Selector<R2, [P1, P2]>
+      ],
+      reducer: (valueV1: V1, valueV2: V2, param1: R1, param2: R2) => [T, T]
+    ): Selector<T, [P1 & P2]>;
 
-  <T, V1, V2>(selectors: [selectorV1: Selector<V1>, selectorV2: Selector<V2>], reducer: (valueV1: V1, valueV2: V2) => [T, T]): Selector<T>;
+    <T, P, R, V1, V2>(
+      selectors: [selectorV1: Selector<V1, [P]>, selectorV2: Selector<V2, [P]>, paramSelector: Selector<R, [P]>],
+      reducer: (valueV1: V1, valueV2: V2, param: R) => [T, T]
+    ): Selector<T, [P]>;
 
-  <T>(selectors: [selectorV1: Selector<T>, selectorV2: Selector<T>]): Selector<T>;
-} = (selectors: Selector<any, any[]>[], reducer?: (valueV1: any, valueV2: any, param?: any) => [any, any]) =>
-  createSelector([isFeatureEnabledSelector, ...selectors], (isFeatureEnabled, rawValueV1, rawValueV2, param) => {
-    const [valueV1, valueV2] = reducer ? reducer(rawValueV1, rawValueV2, param) : [rawValueV1, rawValueV2];
+    <T, P>(selectors: [selectorV1: Selector<T>, selectorV2: Selector<T>, paramSelector: Selector<P>]): Selector<T, [P]>;
 
-    return isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS) ? valueV2 : valueV1;
-  });
+    <T, V1, V2>(selectors: [selectorV1: Selector<V1>, selectorV2: Selector<V2>], reducer: (valueV1: V1, valueV2: V2) => [T, T]): Selector<T>;
+
+    <T>(selectors: [selectorV1: Selector<T>, selectorV2: Selector<T>]): Selector<T>;
+  } =>
+  (selectors: Selector<any, any[]>[], reducer?: (valueV1: any, valueV2: any, param1?: any, param2?: any, param3?: any) => [any, any]) =>
+    // eslint-disable-next-line max-params
+    createSelector([isFeatureEnabledSelector, ...selectors], (isFeatureEnabled, rawValueV1, rawValueV2, param1, param2, param3) => {
+      const [valueV1, valueV2] = reducer ? reducer(rawValueV1, rawValueV2, param1, param2, param3) : [rawValueV1, rawValueV2];
+
+      return isFeatureEnabled(feature) ? valueV2 : valueV1;
+    });
+
+export const createAtomicActionsSelector = featureSelectorFactory(FeatureFlag.ATOMIC_ACTIONS);
+export const createAtomicActionsPhase2Selector = featureSelectorFactory(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
 
 export const isLoadedSelector = createSelector([rootSelector], ({ isLoaded }) => isLoaded);
 

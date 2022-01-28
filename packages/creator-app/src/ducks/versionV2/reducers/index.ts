@@ -1,7 +1,6 @@
 import { createRootCRUDReducer } from '@/ducks/utils/crudV2';
 
 import { INITIAL_STATE } from '../constants';
-import { VersionState } from '../types';
 import addDiagram from './addDiagram';
 import addGlobalVariable from './addGlobalVariable';
 import crudReducers from './crud';
@@ -13,7 +12,7 @@ import removeGlobalVariable from './removeGlobalVariable';
 import reorderComponents from './reorderComponents';
 import reorderTopics from './reorderTopics';
 
-const versionReducer = createRootCRUDReducer<VersionState>(INITIAL_STATE, crudReducers)
+const versionReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
   .immerCase(...addDiagram)
   .immerCase(...removeDiagram)
   .immerCase(...addGlobalVariable)

@@ -2,6 +2,7 @@
 
 import { NormalizedValue, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 import { createSelector, ParametricSelector, Selector } from 'reselect';
 import { ReducerBuilder } from 'typescript-fsa-reducers';
@@ -25,16 +26,25 @@ export interface IDsSelectorParam {
 
 // reducers
 
-type CRUDReducers<T extends Realtime.actionUtils.CRUDActionCreators<any, any, any>> = {
-  [K in Exclude<keyof T, 'refresh'>]: [actionCreator: T[K], handler: ImmerHandler<CRUDState<any>, any>];
+type CRUDReducers<
+  Model extends Normal.Identifiable,
+  State extends CRUDState<Model>,
+  Actions extends Realtime.actionUtils.CRUDActionCreators<Model, any, any>
+> = {
+  [K in Exclude<keyof Actions, 'refresh'>]: [actionCreator: Actions[K], handler: ImmerHandler<State, any>];
 };
 
-export const createCRUDReducers = <T, D extends Normal.Identifiable, P extends Partial<D> = Partial<D>>(
-  createReducer: CreateReducer<CRUDState<any>>,
-  actionCreators: Realtime.actionUtils.CRUDActionCreators<T, D, P>
-): Omit<CRUDReducers<Realtime.actionUtils.CRUDActionCreators<T, D, P>>, 'refresh'> => {
+export const createCRUDReducers = <
+  Model extends Normal.Identifiable,
+  State extends CRUDState<Model>,
+  Context extends object = {},
+  Patch extends Partial<Model> = Partial<Model>
+>(
+  createReducer: CreateReducer<State>,
+  actionCreators: Realtime.actionUtils.CRUDActionCreators<Model, Context, Patch>
+): Omit<CRUDReducers<Model, State, Realtime.actionUtils.CRUDActionCreators<Model, Context, Patch>>, 'refresh'> => {
   const add = createReducer(actionCreators.add, (state, { key, value }) => {
-    state.byKey[key] = value;
+    state.byKey[key] = value as Draft<Model>;
 
     if (!state.allKeys.includes(key)) {
       state.allKeys.push(key);
@@ -45,18 +55,18 @@ export const createCRUDReducers = <T, D extends Normal.Identifiable, P extends P
     state.allKeys = Utils.array.unique([...state.allKeys, ...values.map(Utils.normalized.defaultGetKey)]);
 
     values.forEach((value) => {
-      state.byKey[Utils.normalized.defaultGetKey(value)] = value;
+      state.byKey[Utils.normalized.defaultGetKey(value)] = value as Draft<Model>;
     });
   });
 
   const prepend = createReducer(actionCreators.prepend, (state, { key, value }) => {
-    state.byKey[key] = value;
+    state.byKey[key] = value as Draft<Model>;
 
     state.allKeys.unshift(key);
   });
 
   const update = createReducer(actionCreators.update, (state, { key, value }) => {
-    state.byKey[key] = value;
+    state.byKey[key] = value as Draft<Model>;
   });
 
   const patch = createReducer(actionCreators.patch, (state, { key, value }) => {
@@ -116,10 +126,10 @@ export const createCRUDReducers = <T, D extends Normal.Identifiable, P extends P
   };
 };
 
-export const createRootCRUDReducer = <T extends CRUDState<any>>(
-  initialState: T,
-  crudReducers: Omit<CRUDReducers<Realtime.actionUtils.CRUDActionCreators<any, any, any>>, 'refresh'>
-): ReducerBuilder<T> => {
+export const createRootCRUDReducer = <Model extends Normal.Identifiable, State extends CRUDState<Model>>(
+  initialState: State,
+  crudReducers: Omit<CRUDReducers<Model, State, Realtime.actionUtils.CRUDActionCreators<Model, any, any>>, 'refresh'>
+): ReducerBuilder<State> => {
   const rootReducer = createRootReducer(initialState);
 
   Object.values(crudReducers).forEach((reducer) => rootReducer.immerCase(...reducer));
@@ -143,8 +153,8 @@ interface CRUDSelectors<K extends keyof CRUDStateSubset> {
   getByIDs: Selector<State, (ids: string[]) => NormalizedValue<CRUDStateSubset[K]>[]>;
 }
 
-export const idParamSelector = createParameterSelector<IDSelectorParam>((params) => params.id);
-export const idsParamSelector = createParameterSelector<IDsSelectorParam>((params) => params.ids);
+export const idParamSelector = createParameterSelector((params: IDSelectorParam) => params.id);
+export const idsParamSelector = createParameterSelector((params: IDsSelectorParam) => params.ids);
 
 export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends NormalizedValue<CRUDStateSubset[K]>>(
   modelType: K
@@ -156,7 +166,8 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
   const map = createSelector([root], ({ byKey }) => byKey as Record<string, T>);
   const allIDs = createSelector([root], ({ allKeys }) => allKeys);
 
-  const byIDGetter = (normalized: CRUDState<any>, id: string | null | undefined): T | null => (id ? Normal.getOne<T>(normalized, id) : null);
+  const byIDGetter = (normalized: CRUDState<any>, id: string | null | undefined): T | null =>
+    id ? Normal.getOne<CRUDState<T>>(normalized, id) : null;
   const byIDsGetter = (normalized: CRUDState<any>, ids: string[]): T[] =>
     ids.reduce<any[]>((acc, id) => {
       const value = byIDGetter(normalized, id);

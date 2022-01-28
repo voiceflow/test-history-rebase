@@ -63,7 +63,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('append new variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
 
-        expect(result).to.containSubset({ byKey: { [VERSION_ID]: { variables: ['fizz', 'buzz', 'foo'] } } });
+        expect(result.byKey[VERSION_ID].variables).to.eql(['fizz', 'buzz', 'foo']);
       });
 
       it('do nothing if variable already exists', () => {
@@ -77,7 +77,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('remove a known variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
 
-        expect(result).to.containSubset({ byKey: { [VERSION_ID]: { variables: ['buzz'] } } });
+        expect(result.byKey[VERSION_ID].variables).to.eql(['buzz']);
       });
 
       it('do nothing if variable does not exist', () => {
@@ -91,7 +91,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('partially update publishing data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, publishing: { abc: 'def' } as any });
 
-        expect(result).to.containSubset({ byKey: { [VERSION_ID]: { publishing: { foo: 'bar', abc: 'def' } } } });
+        expect(result.byKey[VERSION_ID].publishing).to.eql({ foo: 'bar', abc: 'def' });
       });
 
       it('do nothing if version does not exist', () => {
@@ -102,10 +102,10 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
     });
 
     describeReducerV2(Realtime.version.patchSettings, ({ applyAction }) => {
-      it('partially update publishing data', () => {
+      it('partially update settings data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, settings: { defaultVoice: 'foo' as any } });
 
-        expect(result).to.containSubset({ byKey: { [VERSION_ID]: { settings: { defaultVoice: 'foo' } } } });
+        expect(result.byKey[VERSION_ID].settings).to.containSubset({ defaultVoice: 'foo' });
       });
 
       it('do nothing if version does not exist', () => {
@@ -116,10 +116,10 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
     });
 
     describeReducerV2(Realtime.version.patchSession, ({ applyAction }) => {
-      it('partially update publishing data', () => {
+      it('partially update session data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, session: { restart: true } });
 
-        expect(result).to.containSubset({ byKey: { [VERSION_ID]: { session: { restart: true } } } });
+        expect(result.byKey[VERSION_ID].session).to.containSubset({ restart: true });
       });
 
       it('do nothing if version does not exist', () => {
@@ -149,29 +149,6 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
 
       it('select unknown version', () => {
         const result = Version.versionByIDSelector(createState(MOCK_STATE, v2FeatureState), { id: 'foo' });
-
-        expect(result).to.be.null;
-      });
-    });
-
-    describe('getVersionByIDSelector()', () => {
-      it('select version from the legacy store', () => {
-        const version = { id: VERSION_ID };
-        const versionState = normalize([version]);
-
-        const result = Version.getVersionByIDSelector(createState(MOCK_STATE, { [VersionV1.STATE_KEY]: versionState }))(VERSION_ID);
-
-        expect(result).to.eq(version);
-      });
-
-      it('select known version', () => {
-        const result = Version.getVersionByIDSelector(createState(MOCK_STATE, v2FeatureState))(VERSION_ID);
-
-        expect(result).to.eq(VERSION);
-      });
-
-      it('select unknown version', () => {
-        const result = Version.getVersionByIDSelector(createState(MOCK_STATE, v2FeatureState))('foo');
 
         expect(result).to.be.null;
       });

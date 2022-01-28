@@ -2,6 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { Constants as GeneralConstants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import uniqBy from 'lodash/uniqBy';
+import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -85,7 +86,7 @@ export const intentsUsingSlotSelector = createSelector(
   [allIntentsSelector],
   (intents) => (slotID: string) =>
     intents.reduce<typeof intents>((acc, intent) => {
-      if (intent.slots.allKeys.includes(slotID)) {
+      if (Normal.hasOne(intent.slots, slotID)) {
         acc.push(intent);
       }
 
@@ -95,18 +96,13 @@ export const intentsUsingSlotSelector = createSelector(
 
 export const getSlotsByIntentIDSelector = createSelector([getIntentByIDSelector], (getIntentByID) => (id: string): string[] => {
   const intent = getIntentByID(id);
+  if (!intent) return [];
 
-  return !intent ? [] : Utils.array.unique(intent.inputs.flatMap(({ slots }) => slots ?? '')).filter((s) => !!s);
+  return Utils.array.unique(intent.inputs.flatMap(({ slots }) => slots ?? '')).filter(Boolean);
 });
 
 export const allSlotsIDsByIntentIDsSelector = createSelector([getSlotsByIntentIDSelector, idsParamSelector], (getSlotIDsByIntentID, intentIDs) =>
-  Array.from(
-    intentIDs.reduce<Set<string>>((acc, intentID) => {
-      getSlotIDsByIntentID(intentID).forEach((slotID) => acc.add(slotID));
-
-      return acc;
-    }, new Set())
-  )
+  Utils.array.unique(intentIDs.flatMap(getSlotIDsByIntentID))
 );
 
 export const openIntentsSelector = createSelector([allPlatformIntentsSelector, DiagramV2.intentStepsSelector], (intents, intentSteps) => {

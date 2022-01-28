@@ -41,7 +41,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
       it('add project to list', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, projectID: 'foo' });
 
-        expect(result).to.containSubset({ byKey: { [LIST_ID]: { projects: [PROJECT_ID, 'otherProjectID', 'foo'] } } });
+        expect(result.byKey[LIST_ID].projects).to.eql([PROJECT_ID, 'otherProjectID', 'foo']);
       });
 
       it('do nothing if project is already in list', () => {
@@ -55,7 +55,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
       it('remove project from list', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, projectID: PROJECT_ID });
 
-        expect(result).to.containSubset({ byKey: { [LIST_ID]: { projects: ['otherProjectID'] } } });
+        expect(result.byKey[LIST_ID].projects).to.eql(['otherProjectID']);
       });
 
       it('do nothing if project is not in list', () => {

@@ -6,7 +6,7 @@ import * as Session from '@/ducks/session';
 import { getVersionByIDSelector } from '../base';
 
 export const versionSelector = createSelector([Session.activeVersionIDSelector, getVersionByIDSelector], (versionID, getVersion) =>
-  versionID ? getVersion(versionID) : null
+  versionID ? getVersion({ id: versionID }) : null
 );
 
 export const creatorIDSelector = createSelector([versionSelector], (version) => version?.creatorID ?? null);

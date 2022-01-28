@@ -29,7 +29,7 @@ export const trackActiveProjectPrototypeTestClick = createVersionEventTracker((o
 export const trackActiveProjectPrototypeTestStart = createVersionEventTracker<{
   mode: PrototypeMode;
   debug: boolean;
-  config: PrototypeConfig;
+  config: Omit<PrototypeConfig, 'platform'>;
   display: Node.Visual.DeviceType | null;
 }>((options) =>
   client.api.analytics.track(

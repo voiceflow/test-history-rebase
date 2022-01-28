@@ -17,7 +17,7 @@ import { Container } from './components';
 
 export interface PrototypeStartProps {
   debug: boolean;
-  config: PrototypeConfig;
+  config: Omit<PrototypeConfig, 'platform'>;
   onStart: () => void;
   isPublic?: boolean;
   isModelTraining?: boolean;

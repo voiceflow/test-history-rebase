@@ -3,6 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -35,6 +36,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   buttons,
   isPublic,
   autoplay,
+  platform,
   setAtTop,
   showButtons,
   updatePrototype,
@@ -57,7 +59,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     prototypeTool,
   } = usePrototype({
     debug,
-    config,
+    config: { ...config, platform },
     isPublic,
     prototypeStatus: status,
     globalDelayInMilliseconds: durationMilliseconds,
@@ -146,6 +148,7 @@ const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   locales: VersionV2.active.localesSelector,
   autoplay: PrototypeDuck.prototypeAutoplaySelector,
+  platform: ProjectV2.active.platformSelector,
   showButtons: PrototypeDuck.prototypeShowButtonsSelector,
   config: Recent.recentPrototypeSelector,
   prototypeColor: PrototypeDuck.prototypeBrandColorSelector,

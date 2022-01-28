@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.15.14...@voiceflow/admin-app@1.15.15) (2022-01-28)
+
+
+### Bug Fixes
+
+* revert last PR (VF-000) ([14084a5](https://github.com/voiceflow/creator-app/commit/14084a54ef26585845889ce377cdfbe8fa86a3d2))
+
+
+### Reverts
+
+* Revert "build: use vite to build admin app (vf-000) (#4966)" ([9472b34](https://github.com/voiceflow/creator-app/commit/9472b34bbcef486885de9f2d55fa91225f1b79c2)), closes [#4966](https://github.com/voiceflow/creator-app/issues/4966)
+
+
+
+
+
 ## [1.15.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.15.13...@voiceflow/admin-app@1.15.14) (2022-01-27)
 
 **Note:** Version bump only for package @voiceflow/admin-app

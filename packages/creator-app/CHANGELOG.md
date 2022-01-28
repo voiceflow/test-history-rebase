@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.613.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.612.3...@voiceflow/creator-app@1.613.0) (2022-01-28)
+
+
+### Features
+
+* allow intent special symbols for df projects (VF-2741) ([#5011](https://github.com/voiceflow/creator-app/issues/5011)) ([0d1e34d](https://github.com/voiceflow/creator-app/commit/0d1e34dffa95199253d469492e08cbf5fe54013b))
+
+
+
+
+
 ## [1.612.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.612.2...@voiceflow/creator-app@1.612.3) (2022-01-28)
 
 **Note:** Version bump only for package @voiceflow/creator-app

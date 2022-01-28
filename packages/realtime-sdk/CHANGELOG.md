@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.53.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.52.0...@voiceflow/realtime-sdk@1.53.0) (2022-01-28)
+
+
+### Features
+
+* allow intent special symbols for df projects (VF-2741) ([#5011](https://github.com/voiceflow/creator-app/issues/5011)) ([0d1e34d](https://github.com/voiceflow/creator-app/commit/0d1e34dffa95199253d469492e08cbf5fe54013b))
+
+
+
+
+
 # [1.52.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.51.0...@voiceflow/realtime-sdk@1.52.0) (2022-01-27)
 
 

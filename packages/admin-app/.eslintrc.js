@@ -17,6 +17,9 @@ module.exports = {
       typescript: {
         project: path.join(__dirname, 'tsconfig.json'),
       },
+      webpack: {
+        config: path.join(__dirname, 'config/webpack/lint'),
+      },
     },
   },
   overrides: [

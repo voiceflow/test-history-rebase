@@ -18,7 +18,9 @@
     "bootstrap": "4.6.1",
     "classnames": "2.3.1",
     "connected-react-router": "6.9.2",
+    "crypto-browserify": "3.12.0",
     "dayjs": "1.10.7",
+    "dotenv": "14.3.0",
     "history": "4.10.1",
     "lodash": "4.17.21",
     "markdown-to-jsx": "6.11.4",
@@ -43,11 +45,11 @@
     "socket.io-client": "2.4.0",
     "stream-browserify": "3.0.0",
     "styled-components": "5.3.3",
-    "universal-cookie": "4.0.4"
+    "universal-cookie": "3.1.0"
   },
   "devDependencies": {
-    "@voiceflow/vite-config": "1.2.1",
-    "vite": "2.5.8"
+    "@types/git-branch": "2.0.2",
+    "git-branch": "2.0.1"
   },
   "files": [
     "build"
@@ -62,13 +64,11 @@
   },
   "scripts": {
     "analyze:dependencies": "depcruise --validate -- src",
-    "build": "yarn build:types && NODE_ENV=production vite build",
-    "build:dev": "SOURCE_MAPS=true vite build",
-    "build:e2e": "VF_APP_BUILD_ENV=e2e VF_APP_E2E=true vite build",
-    "build:types": "tsc --project tsconfig.build.json --skipLibCheck",
-    "clean:build": "rm -rf build",
+    "build": "wp --prod",
+    "build:dev": "wp",
+    "build:e2e": "wp --instrument",
     "connect:cli": "vfcli mesh connect admin-ui -c \"/bin/bash\"",
-    "e2e": "yarn kill:e2e && concurrently -c yellow,blue \"VF_APP_E2E=true VF_APP_BUILD_ENV=e2e vite build --watch\" \"VF_APP_E2E=true vite preview --port 3002\"",
+    "e2e": "yarn local:e2e",
     "e2e:check-deps": "npx wait-on https://localhost:8003/health ",
     "e2e:check-deps-ci": "npx wait-on https://creator-api.test.e2e:8003/health",
     "gen-certs:e2e": "scripts/generate_e2e_certs.sh",
@@ -82,13 +82,13 @@
     "lint:quiet": "concurrently -c yellow,blue \"yarn:lint:js --rule 'prettier/prettier: off' --quiet\" \"yarn:lint:css --quiet\" --color",
     "lint:report": "yarn lint:js --format json -o sonar/report.json && yarn lint:css --formatter json --output-file sonar/report_css.json",
     "local": "yarn kill:process && vfcli mesh connect admin-ui",
-    "local:e2e": "yarn kill:e2e && VF_APP_E2E=true VF_APP_BUILD_ENV=e2e vite",
+    "local:e2e": "yarn kill:e2e && E2E=true VF_APP_E2E=true VF_APP_BUILD_ENV=e2e  yarn start",
     "mesh:post": "exit 0",
     "mesh:pre": "exit 0",
-    "start": "NODE_ENV=development vite",
+    "start": "vf-dev-server --action serve",
     "start:e2e": "scripts/start_e2e.sh",
     "start:hidden": "yarn start --no-open",
-    "start:meshed": "scripts/generate_certs.sh && yarn start",
+    "start:meshed": "yarn start:proxy && IS_MESHED=true yarn start --typecheck",
     "start:proxy": "scripts/generate_certs.sh && docker compose up -d proxy",
     "test": "exit 0",
     "test:dependencies": "depcheck",

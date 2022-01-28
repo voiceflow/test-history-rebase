@@ -46,6 +46,7 @@ export interface ChatIntent extends BaseIntent {
 
 export interface IntentPerPlatform {
   [Constants.PlatformType.CHATBOT]: ChatIntent;
+  [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: ChatIntent;
 }
 
 export type PlatformIntent<T extends Constants.PlatformType> = T extends keyof IntentPerPlatform ? IntentPerPlatform[T] : VoiceIntent;

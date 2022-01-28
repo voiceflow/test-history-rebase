@@ -7,7 +7,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Normalized } from 'normal-store';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
-import { isChatbotPlatform, isGeneralPlatform } from '@/utils/typeGuards';
+import { isChatbotPlatform, isDialogflowPlatform, isGeneralPlatform } from '@/utils/typeGuards';
 
 import { createPlatformSelector } from './platform';
 
@@ -65,10 +65,10 @@ export const intentFactory =
     return {
       id: intent.name,
       name: truncatedName ?? getIntentNameLabel(intent.name),
-      slots: { byKey: {}, allKeys: [] },
+      slots: { byKey: {}, allKeys: [] } as Realtime.PlatformIntent<T>['slots'],
       inputs: [{ text: '', slots: intent.slots ?? [] }],
       platform,
-    };
+    } as Realtime.PlatformIntent<T>;
   };
 
 export const generalIntentFactory = (generalIntent: GeneralConstants.DefaultIntent): Realtime.VoiceIntent => {
@@ -154,8 +154,10 @@ export function validateUtterance(utterance: string, intentID: string, intents: 
 }
 
 export const applyPlatformIntentNameFormatting = (name: string, platform: Constants.PlatformType) => {
-  const hasNoRules = isGeneralPlatform(platform) || isChatbotPlatform(platform);
+  const hasNoRules = isGeneralPlatform(platform) || isChatbotPlatform(platform) || isDialogflowPlatform(platform);
+
   if (hasNoRules) return name;
+
   return formatIntentName(name);
 };
 

@@ -12,20 +12,21 @@ import NameContainer from './NameContainer';
 
 interface CommenterProps {
   time?: string;
+  bold?: boolean;
   creatorID: number;
 }
 
-export const Commenter: React.FC<CommenterProps> = ({ time, creatorID }) => {
+export const Commenter: React.FC<CommenterProps> = ({ time, bold = true, creatorID }) => {
   const user = useSelector((state) => WorkspaceV2.active.memberByIDSelector(state, { creatorID }));
 
   const userData = user ?? Workspace.UNKNOWN_MEMBER_DATA;
 
   return (
     <BoxFlex>
-      <User user={userData} medium />
-      <NameContainer>{Utils.string.capitalizeAllWords(userData.name)}</NameContainer>
+      <User user={userData} />
+      <NameContainer fontWeight={bold ? 600 : 'normal'}>{Utils.string.capitalizeAllWords(userData.name)}</NameContainer>
       {time && (
-        <Box ml={6}>
+        <Box ml={8}>
           <Duration time={time} short={!!time} />
         </Box>
       )}

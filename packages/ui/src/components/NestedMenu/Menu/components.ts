@@ -7,7 +7,7 @@ export const MenuPopoverContainer = styled.div<{ autoWidth?: boolean; isRoot?: b
 `;
 
 export const FooterActionContainer = styled.div`
-  ${transition()};
+  ${transition('color')};
   cursor: pointer;
   align-content: center;
   width: 100%;
@@ -26,7 +26,6 @@ export const FooterActionContainer = styled.div`
 `;
 
 export const FooterActions = styled.div`
-  ${transition()};
   width: 100%;
   text-align: center;
   background: #fdfdfd;
@@ -40,6 +39,7 @@ export const FooterActions = styled.div`
 `;
 
 export const FooterAction = styled.div`
+  ${transition('color')};
   align-content: center;
   padding: 22px 18px;
   flex-grow: 1;

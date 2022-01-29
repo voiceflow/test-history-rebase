@@ -62,8 +62,7 @@ export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, 
           appendSpaceOnAdd
           data={mentionsData}
           style={mentionStyle}
-          // suggestion.id type is coming from the editor library, casting it as number as we know the type of id
-          renderSuggestion={(suggestion: SuggestionDataItem) => <Commenter creatorID={suggestion.id as number} />}
+          renderSuggestion={(suggestion: SuggestionDataItem) => <Commenter bold={false} creatorID={Number(suggestion.id)} />}
         />
       </MentionsInput>
     </MentionEditorContainer>

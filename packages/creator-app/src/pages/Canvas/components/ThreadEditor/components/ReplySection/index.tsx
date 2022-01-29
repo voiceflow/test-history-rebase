@@ -1,4 +1,4 @@
-import { preventDefault, SvgIcon, Text } from '@voiceflow/ui';
+import { preventDefault } from '@voiceflow/ui';
 import React from 'react';
 
 import { useEnableDisable, useTrackingEvents } from '@/hooks';
@@ -44,8 +44,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({ threadID }) => {
     />
   ) : (
     <ReplySectionContainer className={REPLY_CLASSNAME} onClick={onClick}>
-      <Text color="#8da2b5">Reply</Text>
-      <SvgIcon icon="commentReply" color="#becedc" />
+      Reply in Thread
     </ReplySectionContainer>
   );
 };

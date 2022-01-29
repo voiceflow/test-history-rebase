@@ -1,10 +1,9 @@
-import { Box, BoxFlex, Dropdown, FlexEnd, IconButton, IconButtonVariant, IS_MAC, Menu, MenuItem, preventDefault, TippyTooltip } from '@voiceflow/ui';
+import { BoxFlex, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, MenuItem, preventDefault, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { useEnableDisable } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
-const hotKey = IS_MAC ? '⌘↵' : 'Ctrl↵';
+import PostButton from './PostButton';
 
 export interface CommentActionsProps {
   onPost: () => void;
@@ -31,8 +30,6 @@ const CommentActions: React.FC<CommentActionsProps> = ({
   showResolve,
   isPosted,
 }) => {
-  const [hovered, enableHover, disableHover] = useEnableDisable(false);
-
   const engine = React.useContext(EngineContext)!;
 
   const isCommentOwner = creatorID === currentUser;
@@ -53,22 +50,24 @@ const CommentActions: React.FC<CommentActionsProps> = ({
           {(ref, onToggle, isOpen) => (
             <IconButton
               ref={ref}
-              size={16}
+              size={18}
               icon="ellipsis"
+              active={isOpen}
               variant={IconButtonVariant.SUBTLE}
               onClick={preventDefault(onToggle)}
-              iconProps={{ color: isOpen ? '#6e849a' : '#becedc' }}
-              hoverColor="#6e849a"
+              iconProps={{ color: '#becedc' }}
+              hoverColor={isOpen ? '#132144' : '#6e849a'}
             />
           )}
         </Dropdown>
       )}
+
       {threadID && isPosted && showResolve && (
         <TippyTooltip title="Mark Resolved" distance={1}>
           <BoxFlex ml={16}>
             <IconButton
-              size={16}
-              icon="check2"
+              size={18}
+              icon="checkmark"
               variant={IconButtonVariant.SUBTLE}
               onClick={() => engine.comment.resolveThread(threadID)}
               iconProps={{ color: '#becedc' }}
@@ -77,24 +76,8 @@ const CommentActions: React.FC<CommentActionsProps> = ({
           </BoxFlex>
         </TippyTooltip>
       )}
-      {!isPosted && (
-        <Box
-          ml={10}
-          onClick={isDisabled ? undefined : preventDefault(onPost)}
-          color="#62778c"
-          fontSize={13}
-          fontWeight={600}
-          backgroundColor="rgba(238, 244, 246, 0.85)"
-          p="3px 8px"
-          borderRadius="5px"
-          cursor={isDisabled ? 'not-allowed' : 'pointer'}
-          onMouseEnter={enableHover}
-          onMouseLeave={disableHover}
-        >
-          {/* eslint-disable-next-line no-nested-ternary */}
-          {hovered ? hotKey : commentID && isEditing ? 'Done' : 'Post'}
-        </Box>
-      )}
+
+      {!isPosted && <PostButton disabled={isDisabled} onClick={isDisabled ? undefined : preventDefault(onPost)} isDone={!!commentID && isEditing} />}
     </FlexEnd>
   );
 };

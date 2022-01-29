@@ -1,19 +1,12 @@
-import { flexApartStyles } from '@voiceflow/ui';
+import { NestedMenuComponents } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-const ReplySectionContainer = styled.div`
-  ${flexApartStyles}
+const ReplySectionContainer = styled(NestedMenuComponents.FooterActionContainer)`
+  position: relative;
 
-  background-color: #fdfdfd;
-  font-size: 15px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    color: #6e849a;
-  }
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 `;
 
 export default ReplySectionContainer;

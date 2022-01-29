@@ -29,7 +29,7 @@ export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, nextPortID, o
         portID={nextPortID}
         onClick={label ? stopPropagation(onClickFlow) : undefined}
         variant={variant}
-        labelVariant={StepLabelVariant.SECONDARY}
+        labelVariant={StepLabelVariant.PRIMARY}
         placeholder="Connect a flow to this step"
       />
     </Section>

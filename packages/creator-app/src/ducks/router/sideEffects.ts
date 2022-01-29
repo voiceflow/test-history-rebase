@@ -226,7 +226,16 @@ export const goToCurrentCanvasInteractionModelEntity =
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
-    dispatch(goTo(generatePath(Path.CANVAS_MODEL_ENTITY, { versionID, diagramID, modelType: entityType, modelEntityID: entityID })));
+    dispatch(
+      goTo(
+        generatePath(Path.CANVAS_MODEL_ENTITY, {
+          versionID,
+          diagramID,
+          modelType: entityType,
+          modelEntityID: encodeURIComponent(entityID),
+        })
+      )
+    );
   };
 
 export const goToCurrentWorkspaceSettings = (): SyncThunk => (dispatch, getState) => {

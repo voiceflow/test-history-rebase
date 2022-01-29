@@ -2,15 +2,15 @@ import { InteractionModelTabType } from '@/constants';
 
 export const TABS = [
   {
-    value: InteractionModelTabType.INTENTS as string,
+    value: InteractionModelTabType.INTENTS,
     label: 'Intents',
   },
   {
-    value: InteractionModelTabType.SLOTS as string,
+    value: InteractionModelTabType.SLOTS,
     label: 'Entities',
   },
   {
-    value: InteractionModelTabType.VARIABLES as string,
+    value: InteractionModelTabType.VARIABLES,
     label: 'Variables',
   },
 ];

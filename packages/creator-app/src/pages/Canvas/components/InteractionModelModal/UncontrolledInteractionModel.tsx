@@ -8,25 +8,24 @@ import { IntentsManager, Modal, ModalContent, SlotsManager, VariablesManager } f
 import { TABS } from '@/pages/Canvas/components/InteractionModelModal/constants';
 
 interface UncontrolledInteractionModelProps {
-  activeTab: any;
-  onChangeTab: any;
-  openExportModal: any;
-  setModalRef: any;
-  modalRef: any;
-  selectedID: any;
-  onSetSelectedID: any;
-  onSetSelectedTypeAndID: any;
-  newUtterance?: string;
+  modalRef: HTMLDivElement | null;
+  activeTab: InteractionModelTabType;
+  selectedID?: string;
+  setModalRef: (node: HTMLDivElement | null) => void;
+  onChangeTab: (nextSelected: InteractionModelTabType) => void;
+  openExportModal: VoidFunction;
+  onSetSelectedID: (id: string) => void;
+  onSetSelectedTypeAndID: (type: InteractionModelTabType, id: string) => void;
 }
 
 const UncontrolledInteractionModel: React.FC<UncontrolledInteractionModelProps> = ({
-  activeTab,
-  onChangeTab,
-  openExportModal,
-  setModalRef,
   modalRef,
-  onSetSelectedID,
+  activeTab,
   selectedID,
+  setModalRef,
+  onChangeTab,
+  onSetSelectedID,
+  openExportModal,
   onSetSelectedTypeAndID,
 }) => {
   return (

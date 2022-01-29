@@ -6,7 +6,7 @@ import { useDidUpdateEffect, useModals } from '@/hooks';
 import UncontrolledInteractionModel from './UncontrolledInteractionModel';
 
 const NonRouteImm: React.FC = () => {
-  const { data }: { data: { initialSelectedID?: string; newUtterance?: string } } = useModals(ModalType.INTERACTION_MODEL);
+  const { data }: { data: { initialSelectedID?: string } } = useModals(ModalType.INTERACTION_MODEL);
 
   const [activeTab, setActiveTab] = React.useState(InteractionModelTabType.INTENTS);
   const { toggle: toggleExportModel } = useModals(ModalType.EXPORT_MODEL);
@@ -26,15 +26,14 @@ const NonRouteImm: React.FC = () => {
 
   return (
     <UncontrolledInteractionModel
-      activeTab={activeTab}
-      onChangeTab={setActiveTab}
-      openExportModal={toggleExportModel}
-      setModalRef={setModalRef}
       modalRef={modalRef}
+      activeTab={activeTab}
       selectedID={selectedID}
+      onChangeTab={setActiveTab}
+      setModalRef={setModalRef}
+      openExportModal={toggleExportModel}
       onSetSelectedID={setSelectedID}
       onSetSelectedTypeAndID={onSetSelectedTypeAndID}
-      newUtterance={data.newUtterance}
     />
   );
 };

@@ -100,14 +100,14 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
 
   return (
     <UncontrolledInteractionModel
-      activeTab={activeTab}
-      onChangeTab={onChangeTab}
-      openExportModal={openExportModal}
-      setModalRef={setModalRef}
       modalRef={modalRef}
+      activeTab={activeTab}
+      selectedID={modelMatch?.params.modelEntityID ? decodeURIComponent(modelMatch.params.modelEntityID) : undefined}
+      onChangeTab={onChangeTab}
+      setModalRef={setModalRef}
+      openExportModal={openExportModal}
       onSetSelectedID={onSetSelectedID}
       onSetSelectedTypeAndID={onSetSelectedTypeAndID}
-      selectedID={modelMatch?.params.modelEntityID}
     />
   );
 };

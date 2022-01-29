@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.614.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.614.4...@voiceflow/creator-app@1.614.5) (2022-01-29)
+
+
+### Bug Fixes
+
+* fix flow step text color (VF-2719) ([#5013](https://github.com/voiceflow/creator-app/issues/5013)) ([c2fe361](https://github.com/voiceflow/creator-app/commit/c2fe361eac177cbf0aa387469c14bca7adc3e8bc))
+
+
+
+
+
 ## [1.614.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.614.3...@voiceflow/creator-app@1.614.4) (2022-01-28)
 
 

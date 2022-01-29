@@ -69,7 +69,7 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
 
   const openExportModal = async () => {
     toggleExportModel();
-    await compilePrototype({ aborted: false });
+    await compilePrototype();
   };
 
   // When IMM gets opened with a variable click (with a target item)

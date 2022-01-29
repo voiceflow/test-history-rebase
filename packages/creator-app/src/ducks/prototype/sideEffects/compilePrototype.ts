@@ -12,7 +12,7 @@ import resetPrototype from './reset';
 const MAX_CHECKS = 30;
 
 const compilePrototype =
-  (abortControl: AbortControl): Thunk =>
+  (abortControl: AbortControl = { aborted: false }): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);

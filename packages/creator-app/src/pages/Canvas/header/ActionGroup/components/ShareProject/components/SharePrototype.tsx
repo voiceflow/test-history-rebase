@@ -33,7 +33,7 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ inline, compile }) => {
 
   const onRenderPrototype = () => {
     if (compile) {
-      compilePrototype({ aborted: false });
+      compilePrototype();
     }
   };
 

@@ -6,6 +6,7 @@ import client from '@/client';
 import * as Errors from '@/config/errors';
 import { ExportFormat, NLPProvider } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { Thunk } from '@/store/types';
@@ -103,6 +104,8 @@ export const exportModel =
     try {
       let data: string;
       const projectName = ProjectV2.active.nameSelector(state)?.replace(/ /g, '_');
+
+      await dispatch(Prototype.compilePrototype());
 
       if (nlpProvider === NLPProvider.ALEXA) {
         data = await client.platform.alexa.modelExport.exportBlob(versionID, 'ask', intents);

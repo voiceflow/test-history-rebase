@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.614.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.614.5...@voiceflow/creator-app@1.614.6) (2022-01-29)
+
+
+### Bug Fixes
+
+* encode/decode interaction model id (VF-2103) ([#5014](https://github.com/voiceflow/creator-app/issues/5014)) ([785bd0e](https://github.com/voiceflow/creator-app/commit/785bd0eae0ad5dbc7d684d7d45473be1ce3270ca))
+* focus node (VF-2750) ([#5012](https://github.com/voiceflow/creator-app/issues/5012)) ([ac9ab98](https://github.com/voiceflow/creator-app/commit/ac9ab98543d3df34d5fb4298babbe0723a60f471))
+
+
+
+
+
 ## [1.614.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.614.4...@voiceflow/creator-app@1.614.5) (2022-01-29)
 
 

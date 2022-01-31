@@ -16,7 +16,6 @@ const ENTERPRISE_TRIAL_ENABLED = process.env.FF_ENTERPRISE_TRIAL_ENABLED === 'tr
 const TOPICS_AND_COMPONENTS_ENABLED = process.env.FF_TOPICS_AND_COMPONENTS === 'true';
 const ACCOUNT_PAGE_REDESIGN_ENABLED = process.env.FF_ACCOUNT_PAGE_REDESIGN === 'true';
 const VARIABLE_STATES_ENABLED = process.env.FF_VARIABLE_STATES === 'true';
-const REALTIME_CONNECTION_ENABLED = process.env.FF_REALTIME_CONNECTION === 'true';
 const PROTOTYPE_MESSAGE_DELAYS_ENABLED = process.env.FF_PROTOTYPE_MESSAGE_DELAYS === 'true';
 
 export enum FeatureFlag {
@@ -31,7 +30,6 @@ export enum FeatureFlag {
 
   // atomic actions
   ATOMIC_ACTIONS = 'atomic_actions',
-  REALTIME_CONNECTION = 'realtime_connection',
   ATOMIC_ACTIONS_PHASE_2 = 'atomic_actions_phase_2',
   ATOMIC_ACTIONS_AWARENESS = 'atomic_actions_awareness',
 
@@ -68,6 +66,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.TOPICS_AND_COMPONENTS]: TOPICS_AND_COMPONENTS_ENABLED,
   [FeatureFlag.ACCOUNT_PAGE_REDESIGN]: ACCOUNT_PAGE_REDESIGN_ENABLED,
   [FeatureFlag.VARIABLE_STATES]: VARIABLE_STATES_ENABLED,
-  [FeatureFlag.REALTIME_CONNECTION]: REALTIME_CONNECTION_ENABLED,
   [FeatureFlag.PROTOTYPE_MESSAGE_DELAYS]: PROTOTYPE_MESSAGE_DELAYS_ENABLED,
 };

@@ -22,7 +22,7 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
 
   // using `useSelector` over `useFeature` to avoid re-rendering
   // when switching between workspaces with AA enabled
-  const hasRealtimeConnection = useSelector((state) => Feature.isFeatureEnabledSelector(state)(FeatureFlag.REALTIME_CONNECTION));
+
   const isAtomicActions = useSelector((state) => Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS));
 
   const [isSynchronized, setSynchronized] = React.useState(false);
@@ -30,8 +30,6 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
 
   // register client handlers
   React.useEffect(() => {
-    if (!hasRealtimeConnection) return undefined;
-
     const removeConnectionObserver = client.on('state', () => setConnected(client.connected));
     const removeErrorHandler = client.node.catch((err) => {
       if (err.type === 'wrong-credentials') {
@@ -53,7 +51,7 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
   }, []);
 
   React.useEffect(() => {
-    if (!hasRealtimeConnection || !isLoggedIn) return undefined;
+    if (!isLoggedIn) return undefined;
 
     client.changeUser(String(userID), authToken!);
 
@@ -74,8 +72,6 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
       });
     };
   }, [isLoggedIn]);
-
-  if (!hasRealtimeConnection) return <>{children}</>;
 
   return (
     <LoadingGate label="Collaboration" isLoaded={!isAtomicActions || isSynchronized}>

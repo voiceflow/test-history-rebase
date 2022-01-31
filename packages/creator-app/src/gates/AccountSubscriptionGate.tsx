@@ -12,9 +12,8 @@ const AccountSubscriptionGate: React.FC = ({ children }) => {
 
   // using `useSelector` over `useFeature` to avoid re-rendering
   // when switching between workspaces with AA enabled
-  const hasRealtimeConnection = useSelector((state) => Feature.isFeatureEnabledSelector(state)(FeatureFlag.REALTIME_CONNECTION));
   const isAtomicActions = useSelector((state) => Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS));
-  const shouldConnect = hasRealtimeConnection && isAtomicActions;
+  const shouldConnect = isAtomicActions;
 
   const isSubscribed = useCreatorSubscription({ creatorID: shouldConnect ? String(creatorID) : null });
 

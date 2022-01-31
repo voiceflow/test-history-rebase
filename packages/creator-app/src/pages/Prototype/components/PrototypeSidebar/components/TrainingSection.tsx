@@ -1,10 +1,7 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
-import { ClickableText, Flex, logger, TippyTooltip, toast, useSmartReducerV2 } from '@voiceflow/ui';
+import { ClickableText, Flex, logger, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import client from '@/client';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
-import * as Errors from '@/config/errors';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
@@ -15,9 +12,8 @@ import { connect } from '@/hocs';
 import { useTrackingEvents } from '@/hooks';
 import { NLPContext } from '@/pages/Project/contexts';
 import { ConnectedProps } from '@/types';
-import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
-import * as Sentry from '@/vendors/sentry';
 
+import { TrainingState } from '../index';
 import TrainContainer from './TrainContainer';
 import Trained from './Trained';
 import TrainFadeDown from './TrainFadeDown';
@@ -28,15 +24,18 @@ export interface TrainingSectionProps {
   isOpen: boolean;
   onOpen: () => void;
   isTraining: boolean;
+  isTrained: boolean;
   toggleOpen: () => void;
+  trainingState: TrainingState;
 }
 
 const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionProps> = ({
   isOpen,
   status,
   onOpen,
+  trainingState,
   platform,
-  projectID,
+  isTrained,
   versionID,
   diagramID,
   isTraining,
@@ -46,15 +45,6 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
 }) => {
   const nlp = React.useContext(NLPContext)!;
   const [trackingEvents] = useTrackingEvents();
-  const [state, stateApi] = useSmartReducerV2({
-    diff: {
-      slots: { new: [], deleted: [], updated: [] },
-      intents: { new: [], deleted: [], updated: [] },
-    } as ModelDiff,
-    fetching: false,
-    trainedModel: null as BaseModels.PrototypeModel | null,
-    lastTrainedTime: 0,
-  });
 
   const onStartTraining = async () => {
     trackingEvents.trackProjectTrainAssistant();
@@ -83,48 +73,6 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
   const onCancelTraining = async () => {
     await nlp.cancel();
   };
-
-  const getDiff = async () => {
-    if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
-      toast.genericError();
-      return;
-    }
-
-    if (!versionID) {
-      Sentry.error(Errors.noActiveVersionID());
-      toast.genericError();
-      return;
-    }
-
-    try {
-      stateApi.update({ fetching: true });
-
-      await client.platform.general.nlp.getApp(projectID);
-
-      const [projectPrototype, versionPrototype] = await Promise.all([
-        client.api.project.getPrototype(projectID),
-        client.api.version.getPrototype(versionID),
-      ] as const);
-
-      stateApi.update({
-        diff: getModelsDiffs(projectPrototype?.trainedModel ?? { slots: [], intents: [] }, versionPrototype.model),
-        fetching: false,
-        trainedModel: projectPrototype?.trainedModel ?? null,
-        lastTrainedTime: projectPrototype?.lastTrainedTime ?? Date.now(),
-      });
-    } catch {
-      stateApi.update({ fetching: false });
-    }
-  };
-
-  React.useEffect(() => {
-    if (!isTraining) {
-      getDiff();
-    }
-  }, [isTraining]);
-
-  const isTrained = !isModelChanged(state.diff) && (!nlp.job || nlp.job.stage.type === NLPTrainStageType.SUCCESS);
 
   React.useEffect(() => {
     if (status === PrototypeStatus.IDLE && !isTrained) {
@@ -162,7 +110,7 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
             <TrainingSectionTitle
               variant={
                 // eslint-disable-next-line no-nested-ternary
-                !state.trainedModel
+                !trainingState.trainedModel
                   ? TrainingSectionTitleVariant.IDLE
                   : isTrained
                   ? TrainingSectionTitleVariant.TRAINED
@@ -188,14 +136,14 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
             <Training onCancelTraining={onCancelTraining} />
           </TrainFadeDown>
         ) : (
-          !state.fetching && (
+          !trainingState.fetching && (
             <TrainFadeDown key="trained">
               <Trained
-                diff={state.diff}
+                diff={trainingState.diff}
                 platform={platform}
                 isTrained={isTrained}
-                trainedModel={state.trainedModel}
-                lastTrainedTime={state.lastTrainedTime}
+                trainedModel={trainingState.trainedModel}
+                lastTrainedTime={trainingState.lastTrainedTime}
                 onStartTraining={onStartTraining}
               />
             </TrainFadeDown>

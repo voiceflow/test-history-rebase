@@ -1,15 +1,20 @@
-import { Box, Flex, FlexCenter, LoadCircle, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
+import { Models as BaseModels } from '@voiceflow/base-types';
+import { Box, Flex, FlexCenter, LoadCircle, SvgIcon, toast, useDidUpdateEffect, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
+import client from '@/client';
 import Drawer from '@/components/Drawer';
 import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import SoundToggle from '@/components/SoundToggle';
+import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
+import { NLPTrainStageType } from '@/constants/platforms';
 import * as Diagram from '@/ducks/diagram';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useEventualEngine, usePermission, useTheme } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
@@ -21,10 +26,18 @@ import { FadeLeftContainer } from '@/styles/animations';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
 import { canUseSoundToggle } from '@/utils/prototype';
+import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
 import { isChatbotPlatform } from '@/utils/typeGuards';
 import * as Sentry from '@/vendors/sentry';
 
 import { Container, EmbedContainer, TrainingSection } from './components';
+
+export interface TrainingState {
+  diff: ModelDiff;
+  trainedModel: BaseModels.PrototypeModel | null;
+  fetching: boolean;
+  lastTrainedTime: number;
+}
 
 export interface PrototypeSidebarProps {
   open: boolean;
@@ -35,6 +48,8 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   status,
   isMuted,
   platform,
+  projectID,
+  versionID,
   updatePrototype,
   compilePrototype,
   saveActiveDiagram,
@@ -45,13 +60,56 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
 
   const canSeeSoundToggle = canUseSoundToggle(platform);
 
-  const [trainingOpen, toggleTrainingOpen] = useToggle(true);
+  const [trainingOpen, toggleTrainingOpen] = useToggle(false);
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const resetPrototype = useResetPrototype();
   const nlp = React.useContext(NLPContext)!;
   const getEngine = useEventualEngine();
   const [atTop, setAtTop] = React.useState(true);
   const notStarted = (status as any) === PMStatus.IDLE;
+  const [trainingState, trainingStateApi] = useSmartReducerV2<TrainingState>({
+    diff: {
+      slots: { new: [], deleted: [], updated: [] },
+      intents: { new: [], deleted: [], updated: [] },
+    } as ModelDiff,
+    fetching: false,
+    trainedModel: null as BaseModels.PrototypeModel | null,
+    lastTrainedTime: 0,
+  });
+
+  const getDiff = async () => {
+    if (!projectID) {
+      Sentry.error(Errors.noActiveProjectID());
+      toast.genericError();
+      return;
+    }
+
+    if (!versionID) {
+      Sentry.error(Errors.noActiveVersionID());
+      toast.genericError();
+      return;
+    }
+
+    try {
+      trainingStateApi.update({ fetching: true });
+
+      await client.platform.general.nlp.getApp(projectID);
+
+      const [projectPrototype, versionPrototype] = await Promise.all([
+        client.api.project.getPrototype(projectID),
+        client.api.version.getPrototype(versionID),
+      ] as const);
+
+      trainingStateApi.update({
+        diff: getModelsDiffs(projectPrototype?.trainedModel ?? { slots: [], intents: [] }, versionPrototype.model),
+        fetching: false,
+        trainedModel: projectPrototype?.trainedModel ?? null,
+        lastTrainedTime: projectPrototype?.lastTrainedTime ?? Date.now(),
+      });
+    } catch {
+      trainingStateApi.update({ fetching: false });
+    }
+  };
 
   const closeTraining = () => {
     if (trainingOpen) {
@@ -70,6 +128,16 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
       closeTraining();
     }
   }, [status]);
+
+  const isModelTraining = nlp.publishing || !!nlp.job;
+
+  React.useEffect(() => {
+    if (!isModelTraining) {
+      getDiff();
+    }
+  }, [isModelTraining]);
+
+  const isTrained = !isModelChanged(trainingState.diff) && (!nlp.job || nlp.job.stage.type === NLPTrainStageType.SUCCESS);
 
   React.useEffect(() => {
     // Reset the custom styling of the header when reset
@@ -93,6 +161,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
 
         await saveActiveDiagram().catch(Sentry.error);
         await compilePrototype(renderAbortControl);
+        await getDiff();
 
         disableLoading();
       })();
@@ -112,7 +181,11 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
     };
   }, [open]);
 
-  const isModelTraining = nlp.publishing || !!nlp.job;
+  React.useEffect(() => {
+    if (!isTrained) {
+      openTraining();
+    }
+  }, [isTrained]);
 
   return (
     <>
@@ -126,7 +199,14 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
         ) : (
           <Container>
             {canRenderPrototype && (
-              <TrainingSection isOpen={trainingOpen} onOpen={openTraining} isTraining={isModelTraining} toggleOpen={toggleTrainingOpen} />
+              <TrainingSection
+                isOpen={trainingOpen}
+                onOpen={openTraining}
+                isTraining={isModelTraining}
+                toggleOpen={toggleTrainingOpen}
+                isTrained={isTrained}
+                trainingState={trainingState}
+              />
             )}
 
             <Section
@@ -169,6 +249,8 @@ const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   isMuted: PrototypeDuck.prototypeMutedSelector,
   platform: ProjectV2.active.platformSelector,
+  versionID: Session.activeVersionIDSelector,
+  projectID: Session.activeProjectIDSelector,
 };
 
 const mapDispatchToProps = {

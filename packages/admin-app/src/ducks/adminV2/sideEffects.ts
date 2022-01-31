@@ -186,31 +186,3 @@ export const updateWorkspaceMemberRole =
       toast.error('Failed to update the role.');
     }
   };
-
-export const getBetaUsers = (): Thunk => async (dispatch) => {
-  try {
-    const users = await Admin.getBetaUsers();
-    dispatch(Actions.setAllBetaUsers({ users }));
-  } catch (err) {
-    toast.error('There was an error finding the beta user list');
-  }
-};
-
-export const findBetaCreator =
-  (email: string): Thunk =>
-  async (dispatch) => {
-    if (!email) {
-      dispatch(Actions.findCreatorFailed({ error: { errorMessage: 'No creator info given' } }));
-    }
-
-    try {
-      const response = await Admin.getCreatorByEmail(email);
-      dispatch(
-        Actions.setBetaCreator({
-          betaCreator: response.creator,
-        })
-      );
-    } catch (err) {
-      toast.error('Error finding beta user');
-    }
-  };

@@ -8,10 +8,6 @@ const rootSelector = createRootSelector(STATE_KEY);
 
 export const themeSelector = createSelector([rootSelector], ({ theme }) => theme);
 
-export const darkSelector = createSelector([rootSelector], ({ dark }) => dark);
-
-export const betaCreatorSelector = createSelector([rootSelector], ({ betaCreator }) => betaCreator);
-
 export const creatorSelector = createSelector([rootSelector], ({ creator }) => creator);
 
 export const boardsSelector = createSelector([rootSelector], ({ boards }) => boards);

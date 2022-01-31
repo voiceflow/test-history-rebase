@@ -47,16 +47,6 @@ const adminReducer: RootReducer<AdminState, AnyAdminAction> = (state = INITIAL_S
         ...state,
         vendors: action.payload.vendors,
       };
-    case AdminAction.SET_BETA_CREATOR:
-      return {
-        ...state,
-        betaCreator: action.payload.betaCreator,
-      };
-    case AdminAction.CLEAR_BETA_CREATOR:
-      return {
-        ...state,
-        betaCreator: {},
-      };
     case AdminAction.UPDATE_WORKSPACE:
       return updateWorkspaceReducer(state, action);
     case AdminAction.TOGGLE_THEME:

@@ -15,12 +15,6 @@ const adminClient = {
   updateWorkspace: (workspaceID: number, data: any) => api.patch(`${ADMIN_API}/workspace/${workspaceID}`, data),
   updateMemberRole: ({ workspaceID, creatorID, role }: { workspaceID: number; creatorID: number; role: string }) =>
     api.patch(`${ADMIN_API}/workspace/${workspaceID}/members/${creatorID}`, { role }),
-  /*
-   * there is no endpoint to get beta users,
-   * this call was added by Frank and Eric more than a year ago.
-   * there is no reference to why this was added
-   */
-  getBetaUsers: (): Promise<Creator[]> => api.get(`${ADMIN_API}`),
   getUserTeams: (user: number): Promise<Team[]> => api.get(`teams/${user}`),
   setProductUpdate: (update: { type: UpdateType; details: unknown }) => api.post('product_updates', update),
 };

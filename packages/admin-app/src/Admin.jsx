@@ -5,16 +5,12 @@ import { connect } from '@/hocs';
 
 import Sidebar from './components/Sidebar';
 import * as Account from './ducks/accountV2';
-import BetaProgram from './pages/BetaProgram';
-import BetaUsersList from './pages/BetaProgram/BetaUsersList';
 import Copy from './pages/Copy';
 import Coupon from './pages/Coupon';
 import FinanceBoard from './pages/Finance';
 import Home from './pages/Home';
 import ProductUpdates from './pages/ProductUpdates';
 import Referral from './pages/Referral';
-import SkillLookup from './pages/SkillLookup';
-import Template from './pages/Templates';
 import Vendors from './pages/Vendors';
 import { AdminWrapper, PageWrapper } from './styles/components';
 
@@ -31,19 +27,14 @@ class Admin extends React.Component {
           <Sidebar />
           <PageWrapper>
             <Route exact path="/admin" component={Home} />
-            <Route path="/admin/template" component={Template} />
             <Route path="/admin/coupon" component={Coupon} />
             <Route path="/admin/updates" component={ProductUpdates} />
             <Route path="/admin/copy" component={Copy} />
             <Route path="/admin/charges/:creator_id" component={FinanceBoard} />
             <Route exact path="/admin/charges" component={FinanceBoard} />
-            <Route path="/admin/lookup/:project_id" component={SkillLookup} />
-            <Route exact path="/admin/lookup" component={SkillLookup} />
             <Route exact path="/admin/referral" component={Referral} />
             <Route path="/admin/vendors/:creator_id" component={Vendors} />
             <Route exact path="/admin/vendors" component={Vendors} />
-            <Route path="/admin/beta" component={BetaProgram} />
-            <Route path="/admin/betausers" component={BetaUsersList} />
             <Redirect exact path="/" to="/admin/" />
           </PageWrapper>
         </div>

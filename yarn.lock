@@ -18712,13 +18712,6 @@ react-stripe-elements@5.1.0:
   dependencies:
     prop-types "15.7.2"
 
-react-table-6@6.11.0:
-  version "6.11.0"
-  resolved "https://registry.yarnpkg.com/react-table-6/-/react-table-6-6.11.0.tgz#727de5d9f0357a35816a1bbc2e9c9868f8c5b2c4"
-  integrity sha512-zO24J+1Qg2AHxtSNMfHeGW1dxFcmLJQrAeLJyCAENdNdwJt+YolDDtJEBdZlukon7rZeAdB3d5gUH6eb9Dn5Ug==
-  dependencies:
-    classnames "^2.2.5"
-
 react-textarea-autosize@7.1.2:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/react-textarea-autosize/-/react-textarea-autosize-7.1.2.tgz#70fdb333ef86bcca72717e25e623e90c336e2cda"

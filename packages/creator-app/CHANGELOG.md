@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.617.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.616.0...@voiceflow/creator-app@1.617.0) (2022-01-31)
+
+
+### Features
+
+* implement ability to edit variable states (VF-2765) ([#5007](https://github.com/voiceflow/creator-app/issues/5007)) ([e0f01ce](https://github.com/voiceflow/creator-app/commit/e0f01ce7fc9211491fc92a9c3ab40c09531728ef))
+
+
+
+
+
 # [1.616.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.615.1...@voiceflow/creator-app@1.616.0) (2022-01-31)
 
 

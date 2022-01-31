@@ -71,5 +71,3 @@ export enum CanvasTransformation {
   SCALE = 'scale',
   ROTATE = 'rotate',
 }
-
-export const MAX_ITEMS_PER_EDITOR = 22;

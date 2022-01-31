@@ -8,12 +8,11 @@ import * as IntentV2 from '@/ducks/intentV2';
 import { useManager, useSelector, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
-import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { useButtonsOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { DraggableItem } from './components';
-import { NODE_CONFIG } from './constants';
+import { MAX_CHOICE_ITEMS, NODE_CONFIG } from './constants';
 
 const choiceFactory = () => NODE_CONFIG.factory().data.choices[0];
 
@@ -72,7 +71,7 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.
   return (
     <Content
       footer={({ scrollToBottom }) =>
-        choices.length < MAX_ITEMS_PER_EDITOR ? (
+        choices.length < MAX_CHOICE_ITEMS ? (
           <Controls
             menu={<OverflowMenu placement="top-end" options={[noReplyOption, buttonsOption]} />}
             options={[

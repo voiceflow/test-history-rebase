@@ -4,11 +4,10 @@ import React from 'react';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { MapManaged, useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
-import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { ConditionsSection, HelpTooltip, NoMatchSection } from './components';
-import { NODE_CONFIG } from './constants';
+import { MAX_IF_ITEMS, NODE_CONFIG } from './constants';
 
 const setClone = (initVal: Realtime.ExpressionData, targetVal: Realtime.ExpressionData) => ({
   ...initVal,
@@ -66,7 +65,7 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltIn
   return (
     <Content
       footer={({ scrollToBottom }) =>
-        items.length < MAX_ITEMS_PER_EDITOR ? (
+        items.length < MAX_IF_ITEMS ? (
           <Controls
             options={[
               {

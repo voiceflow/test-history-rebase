@@ -10,6 +10,8 @@ import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import { NodeConfig } from '../types';
 
+export const MAX_CHOICE_ITEMS = 55;
+
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = {
   type: BlockType.CHOICE,

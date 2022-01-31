@@ -25,6 +25,7 @@ const TagSelect = <O extends unknown>({
   options,
   placeholder = 'Select all that apply',
   value,
+  disabled,
 }: TagSelectProps<O, string>): JSX.Element => {
   const [selected, setSelected] = React.useState<string[]>([]);
 
@@ -84,6 +85,7 @@ const TagSelect = <O extends unknown>({
       onSelect={handleSelect}
       inputVariant={SelectInputVariant.COUNTER}
       createInputPlaceholder={createInputPlaceholder}
+      disabled={disabled}
     />
   );
 };

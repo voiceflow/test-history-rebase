@@ -1,7 +1,10 @@
-import { styled } from '@/hocs';
+import { inputDisabledStyle } from '@voiceflow/ui';
+
+import { css, styled } from '@/hocs';
 
 interface ContainerProps {
   isFocused: boolean;
+  disabled: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -12,6 +15,16 @@ const Container = styled.div<ContainerProps>`
   width: 100%;
   display: flex;
   flex-direction: column;
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      ${inputDisabledStyle}
+
+      input {
+        ${inputDisabledStyle}
+      }
+    `}
 `;
 
 export default Container;

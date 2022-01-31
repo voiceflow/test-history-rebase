@@ -71,6 +71,7 @@ export {
   ControlledInput,
   hideNumberArrows,
   default as Input,
+  inputDisabledStyle,
   inputFocusStyle,
   inputStyle,
   InputVariant,

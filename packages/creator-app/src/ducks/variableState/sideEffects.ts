@@ -8,12 +8,11 @@ import { getActiveVersionContext } from '@/ducks/version/utils';
 import { Thunk } from '@/store/types';
 
 export const createVariableState =
-  ({ stepID, ...variableState }: Omit<Realtime.VariableState, 'id' | 'projectID' | 'startFrom'> & { stepID: string | null }): Thunk =>
+  (variableState: Omit<Realtime.VariableStateData, 'projectID'>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
     const projectID = Session.activeProjectIDSelector(state);
-    const diagramID = Session.activeDiagramIDSelector(state)!;
 
     if (!isAtomicActions || !projectID) return;
 
@@ -25,7 +24,6 @@ export const createVariableState =
         variableState: {
           ...variableState,
           projectID,
-          startFrom: stepID ? { diagramID, stepID } : null,
         },
       })
     );

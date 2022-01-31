@@ -12,9 +12,10 @@ export interface VariableListProps {
   onChange?: (variable: Variable) => void;
   onChangeList?: (variable: Variable[]) => void;
   canDelete?: boolean;
+  disabled?: boolean;
 }
 
-const VariableList: React.FC<VariableListProps> = ({ variables, onChange, onChangeList, canDelete }) => {
+const VariableList: React.FC<VariableListProps> = ({ variables, onChange, onChangeList, canDelete, disabled }) => {
   const handleChange = (newVar: Variable, index: number) => {
     onChange?.(newVar);
     onChangeList?.(Utils.array.replace(variables, index, newVar));
@@ -28,7 +29,12 @@ const VariableList: React.FC<VariableListProps> = ({ variables, onChange, onChan
     <Container>
       {variables.map(({ name, value }, index) => (
         <li key={name}>
-          <VariableInput name={name} value={value?.toString() || ''} onChange={(text) => handleChange({ name, value: text }, index)} />
+          <VariableInput
+            name={name}
+            value={value?.toString() || ''}
+            onChange={(text) => handleChange({ name, value: text }, index)}
+            disabled={disabled}
+          />
           {canDelete && <SvgIcon icon="itemMinus" size={16} onClick={() => handleDelete(index)} />}
         </li>
       ))}

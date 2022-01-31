@@ -12,9 +12,10 @@ export interface VariableInputProps {
   value: string;
   onChange: (value: string) => void;
   onBlur?: VoidFunction;
+  disabled?: boolean;
 }
 
-const VariableInput: React.FC<VariableInputProps> = ({ name, value, onChange }) => {
+const VariableInput: React.FC<VariableInputProps> = ({ name, value, disabled, onChange }) => {
   const [inputValue, setInputValue] = React.useState(value);
   const editableTextRef = React.useRef<EditableTextAPI>(null);
   const [isFocused, enableFocus, disableFocus] = useEnableDisable();
@@ -34,6 +35,7 @@ const VariableInput: React.FC<VariableInputProps> = ({ name, value, onChange }) 
   return (
     <Container
       isFocused={isFocused}
+      disabled={!!disabled}
       onClick={onClick}
       onMouseDown={(e) => isFocused && e.target !== editableTextRef.current?.inputRef.current && e.preventDefault()}
     >
@@ -42,6 +44,7 @@ const VariableInput: React.FC<VariableInputProps> = ({ name, value, onChange }) 
         ref={editableTextRef}
         value={inputValue}
         name={name}
+        disabled={disabled}
         onChange={setInputValue}
         onFocus={enableFocus}
         placeholder="Enter a value"

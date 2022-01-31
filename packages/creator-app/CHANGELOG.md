@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.617.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.617.1...@voiceflow/creator-app@1.617.2) (2022-01-31)
+
+
+### Bug Fixes
+
+* increase choice limit (VF-2767) ([#5020](https://github.com/voiceflow/creator-app/issues/5020)) ([6042649](https://github.com/voiceflow/creator-app/commit/6042649aa6c590de4cd2806c9241699c07e339c9))
+
+
+
+
+
 ## [1.617.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.617.0...@voiceflow/creator-app@1.617.1) (2022-01-31)
 
 

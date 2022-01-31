@@ -50,8 +50,7 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
           label={
             name ? (
               <>
-                Capture
-                <Text style={{ wordBreak: 'keep-all' }}>{`{${name}}`}</Text>
+                Capture <Text style={{ wordBreak: 'keep-all' }}>{`{${name}}`}</Text>
               </>
             ) : (
               ''

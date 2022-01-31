@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.617.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.617.0...@voiceflow/creator-app@1.617.1) (2022-01-31)
+
+
+### Bug Fixes
+
+* removing realtime connection feature flag (VF-2751) ([#5025](https://github.com/voiceflow/creator-app/issues/5025)) ([a607ae8](https://github.com/voiceflow/creator-app/commit/a607ae860fbffdb61dcbd836aba5000281b2b578))
+* spacing (VF-2752) ([#5022](https://github.com/voiceflow/creator-app/issues/5022)) ([d83c0d9](https://github.com/voiceflow/creator-app/commit/d83c0d904d9fae81d0371ac5d485e96ee6ed74e8))
+
+
+
+
+
 # [1.617.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.616.0...@voiceflow/creator-app@1.617.0) (2022-01-31)
 
 

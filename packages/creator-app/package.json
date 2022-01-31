@@ -137,7 +137,7 @@
     "userflow.js": "2.2.0",
     "utility-types": "3.10.0",
     "valid-url": "1.0.9",
-    "vite-plugin-rewrite-all": "^0.1.2"
+    "vite-plugin-rewrite-all": "0.1.2"
   },
   "devDependencies": {
     "@babel/core": "7.15.8",

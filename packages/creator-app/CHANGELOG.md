@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.616.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.615.1...@voiceflow/creator-app@1.616.0) (2022-01-31)
+
+
+### Features
+
+* default training section to be minimized, unless untrained (VF-2465) ([#4921](https://github.com/voiceflow/creator-app/issues/4921)) ([d2d65b6](https://github.com/voiceflow/creator-app/commit/d2d65b6630a3b2554ea5a4c768880b2f31e01226))
+
+
+
+
+
 ## [1.615.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.615.0...@voiceflow/creator-app@1.615.1) (2022-01-29)
 
 

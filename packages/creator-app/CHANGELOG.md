@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.617.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.617.4...@voiceflow/creator-app@1.617.5) (2022-02-01)
+
+
+### Bug Fixes
+
+* link highlighting working correctly on hover and prototype (VF-2755) ([#5026](https://github.com/voiceflow/creator-app/issues/5026)) ([97c45f3](https://github.com/voiceflow/creator-app/commit/97c45f35b8a22ee38df3a8eeda705d99c9dc03e0))
+
+
+
+
+
 ## [1.617.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.617.3...@voiceflow/creator-app@1.617.4) (2022-01-31)
 
 **Note:** Version bump only for package @voiceflow/creator-app

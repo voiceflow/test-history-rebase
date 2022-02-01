@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.617.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.617.7...@voiceflow/creator-app@1.617.8) (2022-02-01)
+
+
+### Bug Fixes
+
+* public proto delay for chat proj (VF-000) ([#5021](https://github.com/voiceflow/creator-app/issues/5021)) ([fb5c999](https://github.com/voiceflow/creator-app/commit/fb5c99991d9326605a41177b9ec841dd79340fd8))
+
+
+
+
+
 ## [1.617.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.617.6...@voiceflow/creator-app@1.617.7) (2022-02-01)
 
 

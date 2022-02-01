@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.54.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.54.0...@voiceflow/realtime-sdk@1.54.1) (2022-02-01)
+
+
+### Bug Fixes
+
+* public proto delay for chat proj (VF-000) ([#5021](https://github.com/voiceflow/creator-app/issues/5021)) ([fb5c999](https://github.com/voiceflow/creator-app/commit/fb5c99991d9326605a41177b9ec841dd79340fd8))
+
+
+
+
+
 # [1.54.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.53.0...@voiceflow/realtime-sdk@1.54.0) (2022-01-28)
 
 

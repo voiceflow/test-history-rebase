@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.618.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.618.1...@voiceflow/creator-app@1.618.2) (2022-02-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency react-use-intercom to v1.5.0 (vf-000) ([#5032](https://github.com/voiceflow/creator-app/issues/5032)) ([c5683c1](https://github.com/voiceflow/creator-app/commit/c5683c18946aa9567667f8ab16fa2cfd3fc5e9ef))
+
+
+
+
+
 ## [1.618.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.618.0...@voiceflow/creator-app@1.618.1) (2022-02-01)
 
 

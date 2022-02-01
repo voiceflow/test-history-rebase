@@ -1,4 +1,5 @@
 import { Button } from '@voiceflow/base-types';
+import { Version } from '@voiceflow/chat-types';
 import { Constants } from '@voiceflow/general-types';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -64,10 +65,13 @@ const setupPublicPrototype =
       dispatch(Session.setActiveVersionID(versionID));
       dispatch(Session.setActiveDiagramID(rootDiagramID));
     });
+    const savedMessageDelay = Realtime.Utils.typeGuards.isChatPlatform(prototype.platform)
+      ? Version.defaultMessageDelay({ durationMilliseconds: prototype?.data?.messageDelay?.durationMilliseconds }).durationMilliseconds
+      : 0;
 
     return {
       ...prototype?.settings,
-      globalMessageDelayMilliseconds: prototype?.data?.messageDelay?.durationMilliseconds || 0,
+      globalMessageDelayMilliseconds: savedMessageDelay,
       plan: planData.plan as PlanType,
       layout,
       buttons: prototype?.settings.buttons as Button.ButtonsLayout,

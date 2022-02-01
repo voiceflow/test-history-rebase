@@ -1,5 +1,6 @@
 import {
   BlockType,
+  CHAT_PLATFORMS,
   DIAGRAM_REFERENCE_NODES,
   DIALOGFLOW_PLATFORMS,
   DISTINCT_PLATFORMS,
@@ -47,6 +48,7 @@ export const isChatbotPlatform = createPlatformTypeGuard(Constants.PlatformType.
 export const isMobileAppPlatform = createPlatformTypeGuard(Constants.PlatformType.MOBILE_APP);
 
 export const isVoicePlatform = createPlatformUnionTypeGuard(VOICE_PLATFORMS);
+export const isChatPlatform = createPlatformUnionTypeGuard(CHAT_PLATFORMS);
 export const isDistinctPlatform = createPlatformUnionTypeGuard(DISTINCT_PLATFORMS);
 export const isDialogflowPlatform = createPlatformUnionTypeGuard(DIALOGFLOW_PLATFORMS);
 export const isAnyGeneralPlatform = createPlatformUnionTypeGuard(GENERAL_PLATFORMS);

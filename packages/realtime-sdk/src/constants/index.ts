@@ -61,6 +61,8 @@ export const VOICE_PLATFORMS = [
   Constants.PlatformType.DIALOGFLOW_ES_VOICE,
 ] as const;
 
+export const CHAT_PLATFORMS = [Constants.PlatformType.CHATBOT, Constants.PlatformType.DIALOGFLOW_ES_CHAT] as const;
+
 export type DistinctPlatform = Constants.PlatformType.ALEXA | Constants.PlatformType.GOOGLE | Constants.PlatformType.GENERAL;
 
 export enum DialogType {

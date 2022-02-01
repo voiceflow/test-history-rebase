@@ -15,6 +15,7 @@ export const {
   isIVRPlatform,
   isGeneralPlatform,
   isVoicePlatform,
+  isChatPlatform,
   isChatbotPlatform,
   isMobileAppPlatform,
   isDistinctPlatform,

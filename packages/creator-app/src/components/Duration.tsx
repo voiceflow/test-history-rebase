@@ -17,9 +17,12 @@ const Duration: React.FC<DurationProps> = ({ time, short = false, color = '#8da2
 
   useInterval(() => setDuration(Utils.time.getTimeDuration(time)), DURATION_TIMEOUT);
 
+  const lessThanAMinute = duration.includes('second');
+  const durationText = short ? Utils.time.getAbbrevatedFormat(duration) : `${duration} ago`;
+
   return (
     <Text color={color} fontSize={13}>
-      {short ? Utils.time.getAbbrevatedFormat(duration) : `${duration} ago`}
+      {lessThanAMinute ? 'just now' : durationText}
     </Text>
   );
 };

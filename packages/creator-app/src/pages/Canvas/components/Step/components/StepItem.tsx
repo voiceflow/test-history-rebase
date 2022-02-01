@@ -23,7 +23,6 @@ const StepItem: React.FC<ItemProps> = ({
   label,
   portID,
   onClick,
-  portColor,
   wordBreak,
   attachment,
   placeholder,
@@ -64,7 +63,7 @@ const StepItem: React.FC<ItemProps> = ({
 
       {stepAPI?.withPorts && portID && (
         <PortEntityProvider id={portID}>
-          <Port color={portColor} />
+          <Port />
         </PortEntityProvider>
       )}
     </Container>

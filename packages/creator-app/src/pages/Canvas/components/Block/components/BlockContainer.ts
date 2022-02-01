@@ -1,6 +1,6 @@
 import { MemberIcon } from '@/components/User';
 import { BlockVariant } from '@/constants/canvas';
-import { css, styled, transition, withBlockVariantStyle } from '@/hocs';
+import { styled, transition, withBlockVariantStyle } from '@/hocs';
 import {
   CANVAS_ACTIVATION_CLASSNAME,
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
@@ -21,10 +21,6 @@ import {
 import { ClassName, Identifier } from '@/styles/constants';
 
 import { BLOCK_CONTAINER_PADDING } from '../constants';
-
-const disabledStyles = css`
-  opacity: 0.7;
-`;
 
 interface BlockContainerProps {
   variant: BlockVariant;
@@ -92,7 +88,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
   .${NODE_HIGHLIGHTED_CLASSNAME} &,
   .${NODE_THREAD_TARGET_CLASSNAME} &,
   .${CANVAS_CREATING_LINK_CLASSNAME} .${NODE_HOVERED_CLASSNAME}:not(.${NODE_DISABLED_CLASSNAME}) & {
-    border-color: #5d9df5;
+    border-color: #2c85ff;
 
     ::before {
       display: none;
@@ -100,16 +96,10 @@ const BlockContainer = styled.div<BlockContainerProps>`
   }
 
   .${CANVAS_CREATING_LINK_CLASSNAME} .${NODE_DISABLED_CLASSNAME} & {
-    ${disabledStyles}
-
     cursor: not-allowed;
   }
 
   .${CANVAS_ACTIVATION_CLASSNAME}:not(.${CANVAS_PROTOTYPE_RUNNING_CLASSNAME}) .${ClassName.CANVAS_NODE}:not(.${NODE_ACTIVE_CLASSNAME}) & {
-    & {
-      ${disabledStyles}
-    }
-
     :not(.${NODE_MERGE_TARGET_CLASSNAME}) &:hover {
       opacity: 1;
     }

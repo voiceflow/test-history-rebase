@@ -51,7 +51,6 @@ const StepContainer = styled(Flex)<StepContainerProps>`
   }
 
   .${CANVAS_CREATING_LINK_CLASSNAME} .${ClassName.CANVAS_STEP}.${NODE_DISABLED_CLASSNAME} &:hover {
-    opacity: 0.7;
     cursor: not-allowed;
     ${stepBoxShadowStyles}
   }

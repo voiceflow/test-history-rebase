@@ -2,7 +2,7 @@ import { PlaceholderText } from '@/components/SlateEditable/components/Placehold
 import { css, styled } from '@/hocs';
 import { LINK_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
 
-import { getHighlightedStrokeColor } from './LinkPath';
+import { HIGHLIGHT_COLOR } from '../constants';
 
 export interface LinkCaptionTextProps {
   color: string;
@@ -32,14 +32,14 @@ const LinkCaptionText = styled.div<LinkCaptionTextProps>`
   margin: 0;
   text-align: center;
 
-  ${({ color, isHighlighted }) =>
+  ${({ isHighlighted }) =>
     isHighlighted &&
     css`
-      color: ${getHighlightedStrokeColor({ strokeColor: color })};
+      color: ${HIGHLIGHT_COLOR};
     `}
 
   .${LINK_HIGHLIGHTED_CLASSNAME} && {
-    color: ${({ color, isHighlighted }) => getHighlightedStrokeColor({ strokeColor: color, isHighlighted })};
+    color: ${HIGHLIGHT_COLOR};
   }
 
   & [data-slate-node='element'] {

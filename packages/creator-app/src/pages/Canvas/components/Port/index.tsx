@@ -7,11 +7,7 @@ import { ClassName } from '@/styles/constants';
 import { Connector, Container, Lifecycle, Link } from './components';
 import { useHandlers, usePortInstance } from './hooks';
 
-export interface PortProps {
-  color?: string;
-}
-
-const Port: React.FC<PortProps> = ({ color }) => {
+const Port: React.FC = () => {
   const portEntity = React.useContext(PortEntityContext)!;
   const instance = usePortInstance<HTMLDivElement>();
   const { isConnected, isHighlighted, isFinalPrototypeUnlinkedPort } = portEntity.useState((e) => ({
@@ -25,13 +21,12 @@ const Port: React.FC<PortProps> = ({ color }) => {
 
   portEntity.useConditionalStyle(PORT_HIGHLIGHTED_CLASSNAME, isHighlighted);
   portEntity.useConditionalStyle(PORT_PROTOTYPE_END_UNLINKED_CLASSNAME, isFinalPrototypeUnlinkedPort);
-
   return (
     <>
       <Lifecycle />
 
       <Container ref={instance.ref} className={ClassName.CANVAS_PORT} onMouseUp={onMouseUp} onMouseDown={onMouseDown}>
-        <Connector color={color} isConnected={isConnected} />
+        <Connector isConnected={isConnected} />
       </Container>
 
       {(isHighlighted || isConnected) && <Link key={portEntity.linkID} linkID={portEntity.linkID} isHighlighted={isHighlighted} />}

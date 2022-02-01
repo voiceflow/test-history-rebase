@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.618.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.617.8...@voiceflow/creator-app@1.618.0) (2022-02-01)
+
+
+### Features
+
+* if duration <1m, set text to just now ([#5027](https://github.com/voiceflow/creator-app/issues/5027)) ([f0bcbd7](https://github.com/voiceflow/creator-app/commit/f0bcbd7ce5f8002b66b450b6dcc3e1e758fa6b27))
+
+
+
+
+
 ## [1.617.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.617.7...@voiceflow/creator-app@1.617.8) (2022-02-01)
 
 

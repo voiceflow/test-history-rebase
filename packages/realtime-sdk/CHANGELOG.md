@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.54.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.54.1...@voiceflow/realtime-sdk@1.54.2) (2022-02-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency normal-store to v1.3.0 (vf-000) ([#5031](https://github.com/voiceflow/creator-app/issues/5031)) ([cef19f8](https://github.com/voiceflow/creator-app/commit/cef19f84b59eb60345226e88b51ad2434db3c056))
+
+
+
+
+
 ## [1.54.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.54.0...@voiceflow/realtime-sdk@1.54.1) (2022-02-01)
 
 

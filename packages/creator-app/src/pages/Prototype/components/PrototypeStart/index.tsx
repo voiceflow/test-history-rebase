@@ -7,7 +7,7 @@ import * as Prototype from '@/ducks/prototype';
 import { PrototypeConfig } from '@/ducks/recent';
 import { connect } from '@/hocs';
 import { useSetup, useTrackingEvents } from '@/hooks';
-import PrototypeContainer from '@/pages/Prototype/components/PrototypeContainer';
+import { IdleContainer } from '@/pages/Prototype/components/PrototypeContainer';
 import perf, { PerfAction } from '@/performance';
 import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
@@ -47,7 +47,7 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
   });
 
   return (
-    <PrototypeContainer id={Identifier.PROTOTYPE} isPublic={isPublic}>
+    <IdleContainer id={Identifier.PROTOTYPE} isPublic={isPublic}>
       <FadeDownContainer style={{ height: '100%' }}>
         <Container>
           <img src={testingGraphic} alt="user" width="80" />
@@ -77,7 +77,7 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
           )}
         </Container>
       </FadeDownContainer>
-    </PrototypeContainer>
+    </IdleContainer>
   );
 };
 

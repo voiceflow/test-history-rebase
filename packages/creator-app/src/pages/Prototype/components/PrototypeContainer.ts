@@ -28,6 +28,12 @@ export const Container = styled(Flex).attrs({ column: true })<ContainerProps>`
     `}
 `;
 
+export const IdleContainer = styled(Container)`
+  @media (min-height: 730px) {
+    overflow: hidden;
+  }
+`;
+
 export const Drawer = styled(FadeRightContainer)`
   display: flex;
   flex-direction: column;

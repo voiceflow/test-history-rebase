@@ -202,7 +202,7 @@
     "jest": "27.4.7",
     "jsdom-global": "3.0.2",
     "levenary": "1.1.1",
-    "mock-local-storage": "1.1.19",
+    "mock-local-storage": "1.1.20",
     "node-noop": "1.0.0",
     "rewiremock": "3.14.3",
     "ts-jest": "27.1.3",

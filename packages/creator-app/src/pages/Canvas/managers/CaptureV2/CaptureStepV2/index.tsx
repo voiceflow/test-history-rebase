@@ -44,13 +44,10 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({
           label={
             <>
               Capture user reply{' '}
-              {variable ? (
+              {variable && (
                 <>
-                  to
-                  <Text>{`{${variable}}`}</Text>
+                  to <Text>{`{${variable}}`}</Text>
                 </>
-              ) : (
-                ''
               )}
             </>
           }

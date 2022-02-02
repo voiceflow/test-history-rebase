@@ -1,14 +1,16 @@
-import { Box, BoxFlex, Button, ButtonVariant, preventDefault, SvgIcon } from '@voiceflow/ui';
+import { Box, BoxFlex, Button, ButtonVariant, KeyName, preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
+import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
+import { useDispatch } from '@/hooks';
 import Reset from '@/pages/Prototype/components/PrototypeReset';
 import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
-import { withEnterPress } from '@/utils/dom';
+import { withEnterPress, withKeyPress } from '@/utils/dom';
 
 import SpeechBar from '../PrototypeSpeechBar';
 import { InputArea, InputContainer } from './components';
@@ -38,6 +40,7 @@ const PrototypeInput = <L extends string>({
   const resetPrototype = useResetPrototype();
   const [value, setValue] = React.useState('');
   const goBackDisabled = contextStep <= 1;
+  const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
   const sendTextHandler = preventDefault(() => {
     if (!disabled) {
@@ -84,10 +87,10 @@ const PrototypeInput = <L extends string>({
                 minRows={3}
                 onChange={(e: any) => setValue(e.target.value)}
                 onKeyPress={withEnterPress(sendTextHandler)}
+                onKeyDown={withKeyPress(KeyName.ESCAPE, goToCurrentCanvas)}
                 placeholder="Start typing..."
                 inputRef={inputRef}
               />
-
               <BoxFlex position="absolute" bottom={20} right={24}>
                 <Box display="inline-block" fontSize={13} color="#8da2b5" mr={16}>
                   Enter to send

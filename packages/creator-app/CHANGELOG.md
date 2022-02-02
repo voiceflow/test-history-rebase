@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.619.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.618.5...@voiceflow/creator-app@1.619.0) (2022-02-02)
+
+
+### Features
+
+* exit prototype with escape when input is focused ([#5042](https://github.com/voiceflow/creator-app/issues/5042)) ([0bb18d3](https://github.com/voiceflow/creator-app/commit/0bb18d3322feb98c7c270beda510b853e15f4a68))
+
+
+
+
+
 ## [1.618.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.618.4...@voiceflow/creator-app@1.618.5) (2022-02-02)
 
 

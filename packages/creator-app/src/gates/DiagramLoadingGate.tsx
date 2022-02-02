@@ -3,32 +3,19 @@ import React from 'react';
 import LoadingGate from '@/components/LoadingGate';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
-import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
 import RealtimeDiagramSubscription from './RealtimeDiagramSubscription';
 
-const DiagramLoadingGate: React.FC<ConnectedDiagramLoadingGateProps> = ({
-  children,
-  activeDiagramID,
-  loadDiagram,
-  prototypeMode,
-  creatorDiagramID,
-}) => (
-  <LoadingGate
-    label="Diagrams"
-    isLoaded={!!creatorDiagramID && creatorDiagramID === activeDiagramID}
-    load={loadDiagram}
-    withoutSpinner={prototypeMode === Prototype.PrototypeMode.DISPLAY}
-  >
+const DiagramLoadingGate: React.FC<ConnectedDiagramLoadingGateProps> = ({ children, loadDiagram, prototypeMode, creatorDiagramID }) => (
+  <LoadingGate label="Diagrams" isLoaded={!!creatorDiagramID} load={loadDiagram} withoutSpinner={prototypeMode === Prototype.PrototypeMode.DISPLAY}>
     <RealtimeDiagramSubscription />
     {children}
   </LoadingGate>
 );
 
 const mapStateToProps = {
-  activeDiagramID: Session.activeDiagramIDSelector,
   creatorDiagramID: Creator.creatorDiagramIDSelector,
   prototypeMode: Prototype.activePrototypeModeSelector,
 };

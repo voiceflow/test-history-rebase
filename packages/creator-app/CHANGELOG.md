@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.620.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.619.0...@voiceflow/creator-app@1.620.0) (2022-02-02)
+
+
+### Features
+
+* remove double loader when switching diagrams ([#5043](https://github.com/voiceflow/creator-app/issues/5043)) ([4a87240](https://github.com/voiceflow/creator-app/commit/4a8724021adf6290dd22d0f92a3568b74f50754f))
+
+
+
+
+
 # [1.619.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.618.5...@voiceflow/creator-app@1.619.0) (2022-02-02)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.618.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.618.2...@voiceflow/creator-app@1.618.3) (2022-02-02)
+
+
+### Bug Fixes
+
+* capture label spacing (VF-000) ([#5036](https://github.com/voiceflow/creator-app/issues/5036)) ([bd0d0ec](https://github.com/voiceflow/creator-app/commit/bd0d0ece2de705b922a69764b2af3ad09211fc03))
+
+
+
+
+
 ## [1.618.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.618.1...@voiceflow/creator-app@1.618.2) (2022-02-01)
 
 

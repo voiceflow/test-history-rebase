@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.618.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.618.3...@voiceflow/creator-app@1.618.4) (2022-02-02)
+
+
+### Reverts
+
+* Revert "fix: scrollbar popping in on re-test (VF-2731) (#5002)" (#5039) ([2f971e8](https://github.com/voiceflow/creator-app/commit/2f971e86dfa569d32d3ed1986570398bc4e1b34b)), closes [#5002](https://github.com/voiceflow/creator-app/issues/5002) [#5039](https://github.com/voiceflow/creator-app/issues/5039)
+
+
+
+
+
 ## [1.618.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.618.2...@voiceflow/creator-app@1.618.3) (2022-02-02)
 
 

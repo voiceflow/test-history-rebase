@@ -13,6 +13,13 @@
       "pattern": "./packages/*/"
     }
   ],
+  "eslint.options": {
+    "rules": {
+      "no-use-before-define": "off",
+      "prettier/prettier": "off",
+      "simple-import-sort/imports": "off"
+    }
+  },
   "eslint.format.enable": true,
   "eslint.lintTask.enable": true,
   "eslint.packageManager": "yarn",
@@ -34,6 +41,6 @@
   },
   "files.exclude": {
     "**/node_modules": true,
-    "**/build": true,
+    "**/build": true
   }
 }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.620.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.620.6...@voiceflow/creator-app@1.620.7) (2022-02-04)
+
+
+### Bug Fixes
+
+* use <a> for UploadedContainer button instead of onClick handler (VF-2824) ([#5045](https://github.com/voiceflow/creator-app/issues/5045)) ([d62d666](https://github.com/voiceflow/creator-app/commit/d62d666c4122fe3418b43c7d3e7ff9be62902646))
+
+
+
+
+
 ## [1.620.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.620.5...@voiceflow/creator-app@1.620.6) (2022-02-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

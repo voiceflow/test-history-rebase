@@ -59,8 +59,10 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
       position.current = [nextX, nextY];
 
       panStylesScheduler(() => {
-        el.style.left = `${position.current![0]}px`;
-        el.style.top = `${position.current![1]}px`;
+        if (!position.current) return;
+
+        el.style.left = `${position.current[0]}px`;
+        el.style.top = `${position.current[1]}px`;
       });
     },
     [nodeType]
@@ -134,9 +136,9 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
       resize: resizeOverlay,
 
       clearTransformations: () => {
-        const [width, height] = size.current!;
-        const [originX, originY] = position.current!;
-        const rotate = rotation.current!;
+        const [width, height] = size.current ?? [0, 0];
+        const [originX, originY] = position.current ?? [0, 0];
+        const rotate = rotation.current ?? 0;
 
         snapshot.current = {
           origin: new Coords([originX, originY]),
@@ -169,8 +171,6 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
       },
 
       reset: () => {
-        const el = ref.current!;
-
         snapshot.current = null;
         position.current = null;
         size.current = null;
@@ -178,7 +178,11 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
         zoom.current = 0;
         isRotating.current = false;
 
+        const el = ref.current;
+
         resetStylesScheduler(() => {
+          if (!el) return;
+
           el.style.display = 'none';
           el.style.transform = '';
         });

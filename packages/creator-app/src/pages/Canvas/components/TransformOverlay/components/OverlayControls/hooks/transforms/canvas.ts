@@ -28,10 +28,12 @@ const useCanvasInteractions = (onPan: (movement: Pair<number>) => void, { ref, p
     zoom.current = nextZoom;
 
     stylesScheduler(() => {
-      el.style.left = `${position.current![0]}px`;
-      el.style.top = `${position.current![1]}px`;
-      el.style.width = `${size.current![0] * zoom.current}px`;
-      el.style.height = `${size.current![1] * zoom.current}px`;
+      if (!position.current || !size.current) return;
+
+      el.style.left = `${position.current[0]}px`;
+      el.style.top = `${position.current[1]}px`;
+      el.style.width = `${size.current[0] * zoom.current}px`;
+      el.style.height = `${size.current[1] * zoom.current}px`;
     });
   });
 };

@@ -152,14 +152,17 @@ export const MarkupProvider: React.FC = ({ children }) => {
     if (creatingType === BlockType.MARKUP_TEXT) {
       const handler = (event: MouseEvent) => {
         // eslint-disable-next-line xss/no-mixed-html
-        const target = event.target as HTMLElement;
+        const target = event.target as HTMLElement | SVGElement;
+
+        // not using .className cause in the SVGElement it can be SVGAnimatedString
+        const className = target.getAttribute('class') ?? '';
 
         // do not finish creating if clicked to the canvas or markup node
         if (
           target.id === Identifier.CANVAS ||
-          target.className.includes(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`) ||
+          className.includes(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`) ||
           target.closest(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`) ||
-          target.className.includes(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_IMAGE}`) ||
+          className.includes(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_IMAGE}`) ||
           target.closest(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_IMAGE}`)
         ) {
           return;

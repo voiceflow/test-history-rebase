@@ -11,12 +11,16 @@ export const useDragTranslate = <T extends HTMLElement>(ref: React.RefObject<T |
   const [stylesScheduler] = useRAF();
 
   return React.useCallback(([movementX, movementY]: Pair<number>) => {
-    const [posX, posY] = position.current!;
+    if (!position.current) return;
+
+    const [posX, posY] = position.current;
 
     position.current = [posX + movementX, posY + movementY];
 
     stylesScheduler(() => {
-      ref.current!.style.transform = `translate(${position.current[0]}px, ${position.current[1]}px)`;
+      if (!position.current || !ref.current) return;
+
+      ref.current.style.transform = `translate(${position.current[0]}px, ${position.current[1]}px)`;
     });
   }, []);
 };
@@ -31,7 +35,9 @@ export const useVectorDragTranslate = <T extends HTMLElement>(
     coords.current = nextCoords;
 
     stylesScheduler(() => {
-      ref.current!.style.transform = `translate(${coords.current.point[0]}px, ${coords.current.point[1]}px)`;
+      if (!ref.current) return;
+
+      ref.current.style.transform = `translate(${coords.current.point[0]}px, ${coords.current.point[1]}px)`;
     });
   }, []);
 

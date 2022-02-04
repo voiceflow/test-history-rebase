@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.620.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.620.1...@voiceflow/creator-app@1.620.2) (2022-02-04)
+
+
+### Bug Fixes
+
+* prototype highlighting additional edgecases (VF-2770) ([#5048](https://github.com/voiceflow/creator-app/issues/5048)) ([039508f](https://github.com/voiceflow/creator-app/commit/039508f044776b8242b41a8320073bcb84d89005))
+
+
+
+
+
 ## [1.620.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.620.0...@voiceflow/creator-app@1.620.1) (2022-02-04)
 
 

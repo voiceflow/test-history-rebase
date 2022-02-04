@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.620.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.620.0...@voiceflow/creator-app@1.620.1) (2022-02-04)
+
+
+### Bug Fixes
+
+* some sentry issues (CORE-5644) ([#5046](https://github.com/voiceflow/creator-app/issues/5046)) ([e2dcd8a](https://github.com/voiceflow/creator-app/commit/e2dcd8ac1ad9afdd398fcc4f6bf37970df5fc71c))
+
+
+
+
+
 # [1.620.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.619.0...@voiceflow/creator-app@1.620.0) (2022-02-02)
 
 

@@ -21,10 +21,7 @@ const googleDFVoiceVersionAdapter = createAdapter<GoogleDFVersion.GoogleDFESVers
 
     status: null,
     session: null,
-    settings: _omit(GoogleDFVersion.defaultGoogleDFESVersionSettings(settings), ['session', 'messageDelay']) as Omit<
-      GoogleDFVersion.GoogleDFESVersionSettings,
-      'session'
-    >,
+    settings: _omit(GoogleDFVersion.defaultGoogleDFESVersionSettings(settings), ['session', 'messageDelay']),
     variables: variables.filter((variable) => !getPlatformGlobalVariables(Constants.PlatformType.GENERAL).includes(variable)),
     publishing,
   }),

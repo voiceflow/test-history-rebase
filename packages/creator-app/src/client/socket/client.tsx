@@ -9,7 +9,7 @@ import { clientLogger } from '../utils';
 import { AnySocketEvent, CALL_MAP, SocketEvent } from './constants';
 
 const SOCKET_INIT_TIMEOUT = 3000;
-const SOCKET_CONNECTION_TIMEOUT = 5000;
+const SOCKET_CONNECTION_TIMEOUT = 30000;
 const SOCKET_REPLY_TIMEOUT = 5000;
 
 const log = clientLogger.child('socket');
@@ -185,8 +185,11 @@ class SocketClient {
     await this.call(SocketEvent.LOGOUT);
   };
 
-  #onDisconnect = () => {
+  #onDisconnect = (reason: unknown) => {
     this.status = SocketStatus.DISCONNECTED;
+
+    Sentry.breadcrumb('socket', 'Received disconnect event', { reason });
+    log.warn(`Received disconnect event`, { reason });
   };
 
   #onReconnect = () => {
@@ -211,7 +214,7 @@ class SocketClient {
     this.on(event, (data) => {
       Sentry.breadcrumb('socket', `Received '${event}' error`, data as any);
 
-      return log.error('socket failure from event', log.value(event), data);
+      log.error('socket failure from event', log.value(event), data);
     });
 }
 

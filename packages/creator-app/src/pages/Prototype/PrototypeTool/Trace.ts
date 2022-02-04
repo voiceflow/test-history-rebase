@@ -57,7 +57,7 @@ export interface TraceControllerProps {
   fetchContext: (request: Request.BaseRequest | null) => Promise<Prototype.Context | null>;
   flowIDHistory: string[];
   contextHistory: Partial<Prototype.Context>[];
-  activeDiagramID: string;
+  activeDiagramID: string | null;
   setInteractions: (interactions: Interaction[]) => void;
   updatePrototype: (payload: Partial<Prototype.PrototypeState>) => void;
   getLinksByPortID: (portID: string) => Realtime.Link[];
@@ -415,6 +415,10 @@ class TraceController {
   private async processBlockTrace(trace: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
     const node = this.props.getEngine()?.getNodeByID(trace.payload.blockID);
 
+    if (!this.isPublicPrototype) {
+      await this.waitNode(trace.payload.blockID);
+    }
+
     if (node?.id) {
       this.props.getEngine()?.selection.replace([node.id]);
     }
@@ -583,7 +587,6 @@ class TraceController {
 
     await this.waitDiagram(diagramID);
     await this.waitEngineAndNodes();
-
     // Highlight the start block when entering a flow
     const startNode = Array.from(this.props.getEngine()?.nodes ?? []).find((data) => data[1].type === BlockType.START);
     // TODO: refactor block highlighting system, topics do not have startNodes
@@ -667,25 +670,23 @@ class TraceController {
     this.props.getEngine()?.node.center(parentID);
   }
 
-  private async waitNode(nodeID: string) {
-    while (nodeID && !this.props.getNodeByID(nodeID)) {
+  private async waitFor(condition: () => boolean) {
+    while (condition()) {
       // eslint-disable-next-line no-await-in-loop
       await this.timeout.delay(WAIT_ENTITY_TIME);
     }
+  }
+
+  private async waitNode(nodeID: string) {
+    await this.waitFor(() => !!nodeID && !this.props.getNodeByID(nodeID));
   }
 
   private async waitDiagram(diagramID: string) {
-    while (this.props.activeDiagramID !== diagramID) {
-      // eslint-disable-next-line no-await-in-loop
-      await this.timeout.delay(WAIT_ENTITY_TIME);
-    }
+    await this.waitFor(() => this.props.activeDiagramID !== diagramID);
   }
 
   private async waitEngineAndNodes() {
-    while (!this.props.getEngine()) {
-      // eslint-disable-next-line no-await-in-loop
-      await this.timeout.delay(WAIT_ENTITY_TIME);
-    }
+    await this.waitFor(() => !this.props.getEngine());
   }
 }
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.620.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.620.4...@voiceflow/creator-app@1.620.5) (2022-02-04)
+
+
+### Bug Fixes
+
+* remove feature flags (VF-000) ([#5054](https://github.com/voiceflow/creator-app/issues/5054)) ([4f3ff0d](https://github.com/voiceflow/creator-app/commit/4f3ff0d02524bbd9410f2ffb13389dddc51fdf66))
+
+
+
+
+
 ## [1.620.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.620.3...@voiceflow/creator-app@1.620.4) (2022-02-04)
 
 

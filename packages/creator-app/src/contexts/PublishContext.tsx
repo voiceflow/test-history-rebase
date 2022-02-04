@@ -5,12 +5,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
-import { FeatureFlag } from '@/config/features';
 import { JobStatus } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useDispatch, useFeature } from '@/hooks';
+import { useDispatch } from '@/hooks';
 import { AlexaPublishJob, DialogflowPublishJob, GooglePublishJob } from '@/models';
 import * as Sentry from '@/vendors/sentry';
 
@@ -33,16 +32,13 @@ export const PublishProvider: React.FC = ({ children }) => {
   const pullTimeout = React.useRef<NodeJS.Timeout>();
   const [job, setJob] = React.useState<Nullable<AnyJob>>(null);
 
-  const isGoogleCreate = useFeature(FeatureFlag.GOOGLE_CREATE)?.isEnabled;
-  const isDialogflow = useFeature(FeatureFlag.DIALOGFLOW)?.isEnabled;
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
   const platformClient = React.useMemo(() => {
-    const isGooglePlatform = platform === Constants.PlatformType.GOOGLE && isGoogleCreate;
-    const isDialogflowPlatform =
-      (platform === Constants.PlatformType.DIALOGFLOW_ES_CHAT || platform === Constants.PlatformType.DIALOGFLOW_ES_VOICE) && isDialogflow;
+    const isGooglePlatform = platform === Constants.PlatformType.GOOGLE;
+    const isDialogflowPlatform = platform === Constants.PlatformType.DIALOGFLOW_ES_CHAT || platform === Constants.PlatformType.DIALOGFLOW_ES_VOICE;
 
     if (isGooglePlatform) {
       return { ...client.platform.google, publish: client.platform.google.publishV2 };

@@ -19,10 +19,9 @@ import { linkGraphic } from '@/assets';
 import AmazonLoginButton from '@/components/Forms/AmazonLogin';
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import Modal, { ModalFooter } from '@/components/Modal';
-import { FeatureFlag } from '@/config/features';
-import { GOOGLE_OAUTH_SCOPES, GOOGLE_OAUTH_SCOPES_V2, ModalType } from '@/constants';
+import { GOOGLE_OAUTH_SCOPES, ModalType } from '@/constants';
 import { SourceType } from '@/ducks/tracking/constants';
-import { useFeature, useModals, useTrackingEvents } from '@/hooks';
+import { useModals, useTrackingEvents } from '@/hooks';
 import { Account } from '@/models';
 import * as Models from '@/models';
 import { getPlatformValue } from '@/utils/platform';
@@ -58,8 +57,6 @@ const BaseConnectPlatformModal: React.FC<BaseConnectPlatformModalProps> = ({
     source: SourceType;
   }>(modalType);
 
-  const isGoogleCreate = useFeature(FeatureFlag.GOOGLE_CREATE)?.isEnabled;
-  const isDialogFlow = useFeature(FeatureFlag.DIALOGFLOW)?.isEnabled;
   const [trackingEvents] = useTrackingEvents();
 
   const onSuccess = (account: Nullable<Account> | Models.Account.Google) => {
@@ -115,12 +112,7 @@ const BaseConnectPlatformModal: React.FC<BaseConnectPlatformModalProps> = ({
                   {
                     [Constants.PlatformType.ALEXA]: <AmazonLoginButton disabled={isLoading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />,
                   },
-                  <GoogleLoginButton
-                    scopes={isGoogleCreate || isDialogFlow ? GOOGLE_OAUTH_SCOPES_V2 : GOOGLE_OAUTH_SCOPES}
-                    onLoad={onLoad}
-                    onFail={onFail}
-                    onSuccess={onSuccess}
-                  />
+                  <GoogleLoginButton scopes={GOOGLE_OAUTH_SCOPES} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
                 )}
               </ModalButtonContainer>
             )}

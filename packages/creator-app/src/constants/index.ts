@@ -25,8 +25,7 @@ export const CLOUD_RESOURCE_SCOPE = 'https://www.googleapis.com/auth/cloudplatfo
 export const FIREBASE_SCOPE = 'https://www.googleapis.com/auth/firebase';
 export const SERVICE_MANAGEMENT_SCOPE = 'https://www.googleapis.com/auth/service.management';
 export const DIALOGFLOW_SCOPE = 'https://www.googleapis.com/auth/dialogflow';
-export const GOOGLE_OAUTH_SCOPES = [CLOUD_RESOURCE_SCOPE_READONLY, USER_INFO_SCOPE, ACTION_BUILDER_SCOPE];
-export const GOOGLE_OAUTH_SCOPES_V2 = [
+export const GOOGLE_OAUTH_SCOPES = [
   CLOUD_RESOURCE_SCOPE,
   USER_INFO_SCOPE,
   ACTION_BUILDER_SCOPE,

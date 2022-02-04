@@ -5,11 +5,9 @@ import { INTERCOM_ENABLED } from '.';
 const GADGETS_ENABLED = process.env.FF_GADGETS === 'true';
 const NATO_APCO_ENABLED = process.env.FF_NATO_ACPO === 'true';
 const CAPTURE_V2_ENABLED = process.env.FF_CAPTURE_V2 === 'true';
-const DIALOGFLOW_ENABLED = process.env.FF_DIALOGFLOW === 'true';
 const OWNER_ROLE_ENABLED = process.env.FF_OWNER_ROLE === 'true';
 const ASR_BYPASS_ENABLED = process.env.FF_ASR_BYPASS === 'true';
 const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
-const GOOGLE_CREATE_ENABLED = process.env.FF_GOOGLE_CREATE === 'true';
 const WAVENET_VOICES_ENABLED = process.env.FF_WAVENET_VOICES === 'true';
 const ATOMIC_ACTIONS_ENABLED = process.env.FF_ATOMIC_ACTIONS === 'true';
 const ENTERPRISE_TRIAL_ENABLED = process.env.FF_ENTERPRISE_TRIAL_ENABLED === 'true';
@@ -25,7 +23,6 @@ export enum FeatureFlag {
   ASR_BYPASS = 'asr_bypass',
   MOTOROLA_SSO = 'motorola_sso',
   WAVENET_VOICES = 'wavenet_voices',
-  NEW_NLP_EXPORTS = 'new_nlp_exports',
   TOPICS_AND_COMPONENTS = 'topics_and_components',
 
   // atomic actions
@@ -38,9 +35,6 @@ export enum FeatureFlag {
 
   // permanent circuit breakers for vendor integrations
   INTERCOM_INTEGRATION = 'intercom_integration',
-
-  DIALOGFLOW = 'dialogflow',
-  GOOGLE_CREATE = 'google_create',
 
   ENTERPRISE_TRIAL = 'enterprise_trial',
 
@@ -56,9 +50,7 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.CAPTURE_V2]: CAPTURE_V2_ENABLED,
   [FeatureFlag.OWNER_ROLE]: OWNER_ROLE_ENABLED,
   [FeatureFlag.ASR_BYPASS]: ASR_BYPASS_ENABLED,
-  [FeatureFlag.DIALOGFLOW]: DIALOGFLOW_ENABLED,
   [FeatureFlag.MOTOROLA_SSO]: MOTOROLA_SSO_ENABLED,
-  [FeatureFlag.GOOGLE_CREATE]: GOOGLE_CREATE_ENABLED,
   [FeatureFlag.WAVENET_VOICES]: WAVENET_VOICES_ENABLED,
   [FeatureFlag.ATOMIC_ACTIONS]: ATOMIC_ACTIONS_ENABLED,
   [FeatureFlag.ENTERPRISE_TRIAL]: ENTERPRISE_TRIAL_ENABLED,

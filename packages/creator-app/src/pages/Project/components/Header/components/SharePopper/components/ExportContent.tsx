@@ -2,21 +2,15 @@ import { BlockText, Box, Title } from '@voiceflow/ui';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
-import { FeatureFlag } from '@/config/features';
-import { useFeature } from '@/hooks';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import { EXPORT_TYPE_OPTIONS, ExportType } from '../constants';
 import { ExportContext } from '../contexts';
 import ExportCanva from './ExportCanva';
-import ExportContentCanva from './ExportContentCanva';
 import ExportModel from './ExportModel';
 
 const ExportContent: React.FC = () => {
-  const { isEnabled: isDialogflowEnabled } = useFeature(FeatureFlag.DIALOGFLOW);
   const { exportType, setExportType } = React.useContext(ExportContext)!;
-
-  if (!isDialogflowEnabled) return <ExportContentCanva />;
 
   return (
     <FadeLeftContainer style={{ height: '100%' }} paddingTop={24} paddingX={32}>

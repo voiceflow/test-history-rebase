@@ -6,11 +6,9 @@ import { useSelector } from 'react-redux';
 import ChatWithUsLink from '@/components/ChatLink';
 import Divider from '@/components/Divider';
 import RadioGroup from '@/components/RadioGroup';
-import { FeatureFlag } from '@/config/features';
-import { NLPProvider, NLPProviderLabels } from '@/constants';
+import { NLPProviderLabels } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useFeature } from '@/hooks';
 
 import { getNplModelProvider, MODEL_EXPORT_OPTIONS, ModelExportConfig } from '../constants';
 import { ExportContext } from '../contexts';
@@ -22,16 +20,10 @@ const ExportModel: React.FC = () => {
   const intents = useSelector(IntentV2.allIntentsSelector);
   const noModelData = intents.length === 0;
 
-  const newExportsIsEnabled = useFeature(FeatureFlag.NEW_NLP_EXPORTS)?.isEnabled;
-
   const nplProviderOptions = React.useMemo(() => {
     // order alphabetically by label
-    const providers = _sortBy(getNplModelProvider(platform), (provider) => NLPProviderLabels[provider]);
-    if (newExportsIsEnabled) return providers;
-
-    // if no FF, filter out new NLPs
-    return providers.filter((nlp) => ![NLPProvider.WATSON, NLPProvider.LEX_V1, NLPProvider.EINSTEIN].includes(nlp));
-  }, [platform, newExportsIsEnabled]);
+    return _sortBy(getNplModelProvider(platform), (provider) => NLPProviderLabels[provider]);
+  }, [platform]);
 
   React.useEffect(() => {
     if (nplProviderOptions.length === 1) {

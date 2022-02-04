@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.620.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.620.3...@voiceflow/creator-app@1.620.4) (2022-02-04)
+
+
+### Bug Fixes
+
+* extend websocket connection timeout (VF-2857) ([#5053](https://github.com/voiceflow/creator-app/issues/5053)) ([1d6bf02](https://github.com/voiceflow/creator-app/commit/1d6bf025683af7ec5e6f9125af7cfbd406a7df7c))
+
+
+
+
+
 ## [1.620.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.620.2...@voiceflow/creator-app@1.620.3) (2022-02-04)
 
 

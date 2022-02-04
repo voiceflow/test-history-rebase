@@ -3,7 +3,7 @@ import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 import { createSelector } from 'reselect';
 
-import * as Session from '@/ducks/session';
+import * as Creator from '@/ducks/creatorV2';
 import { createAction } from '@/ducks/utils';
 import createCRUDReducer, * as CRUD from '@/ducks/utils/crud';
 import { Action, Reducer, RootReducer } from '@/store/types';
@@ -60,12 +60,13 @@ export default persistReducer(PERSIST_CONFIG, viewportReducer);
 const { byID: byIDSelector } = CRUD.createCRUDSelectors(STATE_KEY);
 
 export const viewportByIDSelector = createSelector([byIDSelector], (getViewport) => (viewportID: string) => {
-  const { diagramID, ...viewport } = getViewport(viewportID);
+  const viewportData = getViewport(viewportID);
+  const { diagramID, ...viewport } = viewportData;
 
   return viewport;
 });
 
-export const activeDiagramViewportSelector = createSelector([Session.activeDiagramIDSelector, viewportByIDSelector], (diagramID, getViewportByID) =>
+export const activeDiagramViewportSelector = createSelector([Creator.activeDiagramIDSelector, viewportByIDSelector], (diagramID, getViewportByID) =>
   diagramID ? getViewportByID(diagramID) : null
 );
 

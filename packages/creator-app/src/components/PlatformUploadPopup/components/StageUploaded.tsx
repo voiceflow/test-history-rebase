@@ -19,8 +19,6 @@ interface UploadedProps {
 }
 
 const UploadedStage: React.FC<UploadedProps> = ({ redirectUrl, learnMoreUrl, buttonText, description }) => {
-  const redirectToAgent = () => window.open(redirectUrl);
-
   return (
     <UploadedContainer>
       <FlexCenter fullWidth>
@@ -29,7 +27,9 @@ const UploadedStage: React.FC<UploadedProps> = ({ redirectUrl, learnMoreUrl, but
         </Text>
       </FlexCenter>
       <FlexCenter fullWidth>
-        <Button onClick={redirectToAgent}>{buttonText}</Button>
+        <Link href={redirectUrl} target="_blank" rel="noopener noreferrer">
+          <Button>{buttonText}</Button>
+        </Link>
       </FlexCenter>
     </UploadedContainer>
   );

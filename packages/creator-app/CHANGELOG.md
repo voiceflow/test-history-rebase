@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.620.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.620.2...@voiceflow/creator-app@1.620.3) (2022-02-04)
+
+
+### Bug Fixes
+
+* undefined viewport (VF-000) ([#5051](https://github.com/voiceflow/creator-app/issues/5051)) ([90fc60d](https://github.com/voiceflow/creator-app/commit/90fc60dfd69e2e769cbd6cf4fb514a4f52e9d6ee))
+
+
+
+
+
 ## [1.620.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.620.1...@voiceflow/creator-app@1.620.2) (2022-02-04)
 
 

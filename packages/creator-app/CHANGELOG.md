@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.621.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.621.2...@voiceflow/creator-app@1.621.3) (2022-02-07)
+
+
+### Bug Fixes
+
+* ios chat issue (VF-2650) ([#5010](https://github.com/voiceflow/creator-app/issues/5010)) ([4be5b86](https://github.com/voiceflow/creator-app/commit/4be5b861993fb16864b160f37613e65f9a894141))
+
+
+
+
+
 ## [1.621.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.621.1...@voiceflow/creator-app@1.621.2) (2022-02-07)
 
 

@@ -37,12 +37,7 @@ export const PublishProvider: React.FC = ({ children }) => {
   const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
   const platformClient = React.useMemo(() => {
-    const isGooglePlatform = platform === Constants.PlatformType.GOOGLE;
     const isDialogflowPlatform = platform === Constants.PlatformType.DIALOGFLOW_ES_CHAT || platform === Constants.PlatformType.DIALOGFLOW_ES_VOICE;
-
-    if (isGooglePlatform) {
-      return { ...client.platform.google, publish: client.platform.google.publishV2 };
-    }
 
     if (isDialogflowPlatform) {
       return { ...client.platform.google, publish: client.platform.dialogflow.publish };

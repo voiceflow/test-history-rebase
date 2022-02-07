@@ -104,10 +104,14 @@ const AutoPanLayer: React.FC = () => {
     };
 
     const setCanvasPosition = (): void => {
+      if (!isAutoPanning.current) {
+        reset();
+        return;
+      }
+
       syncBlocksAndCursor();
       syncLinkAndCursor();
 
-      isAutoPanning.current = true;
       const [posX, posY] = engine.canvas!.getPosition();
       engine.canvas!.setPosition([posX + movementX, posY + movementY]);
 
@@ -177,34 +181,40 @@ const AutoPanLayer: React.FC = () => {
         return;
       }
 
+      const startPanning = () => {
+        isAutoPanning.current = true;
+
+        scheduler(setCanvasPosition);
+      };
+
       if (inRightZone) {
         const speedMultiplier = calculateSpeedMultiplier(right - horizontalHotZoneSize - rightOffset - clientX, horizontalHotZoneSize);
 
         movementY = (distanceFromYCenter / yMid) * AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
         movementX = -AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
 
-        scheduler(setCanvasPosition);
+        startPanning();
       } else if (inLeftZone) {
         const speedMultiplier = calculateSpeedMultiplier(left + horizontalHotZoneSize + leftOffset - clientX, horizontalHotZoneSize);
 
         movementY = (distanceFromYCenter / yMid) * AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
         movementX = AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
 
-        scheduler(setCanvasPosition);
+        startPanning();
       } else if (inTopZone) {
         const speedMultiplier = calculateSpeedMultiplier(verticalHotZoneSize + HEADER_HEIGHT - clientY, verticalHotZoneSize);
 
         movementX = (distanceFromXCenter / xMid) * AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
         movementY = AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
 
-        scheduler(setCanvasPosition);
+        startPanning();
       } else if (inBottomZone) {
         const speedMultiplier = calculateSpeedMultiplier(bottom - verticalHotZoneSize - clientY, verticalHotZoneSize);
 
         movementX = (distanceFromXCenter / xMid) * AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
         movementY = -AUTO_PAN_PIXEL_HOP_SIZE * speedMultiplier;
 
-        scheduler(setCanvasPosition);
+        startPanning();
       }
     };
 

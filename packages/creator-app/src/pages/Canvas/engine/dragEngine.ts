@@ -85,6 +85,8 @@ class DragEngine extends EngineConsumer {
   }
 
   async reset() {
+    this.isDraggingToCreate = false;
+
     if (this.hasTarget) {
       const target = this.target!;
       this.target = null;

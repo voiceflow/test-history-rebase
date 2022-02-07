@@ -53,7 +53,7 @@ const DesignMenu: React.FC = () => {
   };
 
   const mouseEnterHandler = () => {
-    if (!isAutoPanning.current) return;
+    if (isAutoPanning.current) return;
 
     openByHover();
   };

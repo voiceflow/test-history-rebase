@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.621.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.621.1...@voiceflow/creator-app@1.621.2) (2022-02-07)
+
+
+### Bug Fixes
+
+* stop auto-panning on step dropped (VF-2878) ([#5059](https://github.com/voiceflow/creator-app/issues/5059)) ([d6bcccb](https://github.com/voiceflow/creator-app/commit/d6bcccb9041f9e4f95c34761199ca9df661d85e0))
+
+
+
+
+
 ## [1.621.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.621.0...@voiceflow/creator-app@1.621.1) (2022-02-07)
 
 

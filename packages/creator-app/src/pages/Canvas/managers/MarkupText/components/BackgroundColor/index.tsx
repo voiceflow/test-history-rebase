@@ -10,11 +10,11 @@ import BackgroundColorSlider from './components/BackgroundColorSlider';
 
 export interface BackgroundColorProps {
   nodeID: string;
+  data: Realtime.NodeData<Realtime.Markup.NodeData.Text>;
 }
 
-const BackgroundColor: React.FC<BackgroundColorProps> = ({ nodeID }) => {
+const BackgroundColor: React.FC<BackgroundColorProps> = ({ nodeID, data }) => {
   const engine = React.useContext(EngineContext)!;
-  const { backgroundColor } = engine.getDataByNodeID<Realtime.Markup.NodeData.Text>(nodeID);
 
   const updateBackgroundColor = (newColor: Realtime.Markup.Color | null) => {
     engine.node.updateData<Realtime.Markup.NodeData.Text>(nodeID, { backgroundColor: newColor });
@@ -23,7 +23,7 @@ const BackgroundColor: React.FC<BackgroundColorProps> = ({ nodeID }) => {
   const handleToggleChange = (collapsed: boolean) => {
     if (collapsed) {
       updateBackgroundColor(null);
-    } else if (!backgroundColor) {
+    } else if (!data.backgroundColor) {
       updateBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     }
   };
@@ -32,11 +32,11 @@ const BackgroundColor: React.FC<BackgroundColorProps> = ({ nodeID }) => {
     <Section
       header="Background"
       headerVariant={HeaderVariant.ADD}
-      initialOpen={backgroundColor != null}
+      initialOpen={data.backgroundColor != null}
       collapseVariant={SectionToggleVariant.ADD}
       onToggleChange={handleToggleChange}
     >
-      <BackgroundColorSlider color={backgroundColor ?? DEFAULT_BACKGROUND_COLOR} onChangeColor={updateBackgroundColor} />
+      <BackgroundColorSlider color={data.backgroundColor ?? DEFAULT_BACKGROUND_COLOR} onChangeColor={updateBackgroundColor} />
     </Section>
   );
 };

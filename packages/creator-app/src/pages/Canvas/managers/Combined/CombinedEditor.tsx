@@ -4,7 +4,7 @@ import React from 'react';
 
 import Section from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
@@ -15,18 +15,11 @@ const CombinedEditor: NodeEditor<Realtime.NodeData.Combined> = ({ data: { nodeID
   const engine = React.useContext(EngineContext)!;
   const getManager = React.useContext(ManagerContext)!;
 
-  const getNodeByID = useSelector(Creator.nodeByIDSelector);
-  const getDataByNodeID = useSelector(Creator.dataByNodeIDSelector);
-
-  const nestedBlocks = React.useMemo(() => {
-    const { combinedNodes } = getNodeByID(nodeID) ?? { combinedNodes: [] };
-
-    return combinedNodes.map((nodeID) => getDataByNodeID(nodeID));
-  }, [nodeID, getNodeByID, getDataByNodeID]);
+  const stepData = useSelector(CreatorV2.stepDataByBlockIDSelector, { id: nodeID });
 
   return (
     <Content>
-      {nestedBlocks.map(({ nodeID, ...data }, index) => {
+      {stepData.map(({ nodeID, ...data }, index) => {
         const { getIcon, icon, label } = getManager(data.type);
 
         const svgIcon = getIcon?.(data) || icon;

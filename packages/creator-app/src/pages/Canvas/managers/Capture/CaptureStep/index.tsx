@@ -41,14 +41,14 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariab
   </Step>
 );
 
-const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.Capture, Realtime.NodeData.CaptureBuiltInPorts> = ({ data, node, variant }) => (
+const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.Capture, Realtime.NodeData.CaptureBuiltInPorts> = ({ ports, data, variant }) => (
   <CaptureStep
     nodeID={data.nodeID}
     noReply={data.noReply}
     toVariable={data.variable}
-    nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+    nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
     fromVariable={data.slot}
-    noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
+    noReplyPortID={ports.out.builtIn[Models.PortType.NO_REPLY]}
     variant={variant}
   />
 );

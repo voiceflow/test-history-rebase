@@ -81,7 +81,7 @@ const Payment: React.FC = () => {
   };
 
   const isWorkspaceAdmin = (workspaceID: string) => {
-    const targetWorkspaceMembers = getWorkspaceByID(workspaceID)?.members;
+    const targetWorkspaceMembers = getWorkspaceByID({ id: workspaceID })?.members;
 
     return targetWorkspaceMembers?.some((member) => member.creator_id === creatorID && member.role === UserRole.ADMIN);
   };
@@ -125,7 +125,7 @@ const Payment: React.FC = () => {
   }, [coupon, paymentPeriod, selectedPlan, seatCount, setCouponError, setPriceError]);
 
   React.useEffect(() => {
-    const targetWorkspace = getWorkspaceByID(selectedWorkspaceId);
+    const targetWorkspace = getWorkspaceByID({ id: selectedWorkspaceId });
     let numberOfEditors = 0;
 
     targetWorkspace?.members.forEach((member) => {
@@ -156,7 +156,7 @@ const Payment: React.FC = () => {
         ),
       }
     : {
-        text: selectedWorkspaceId ? `Workspace: ${getWorkspaceByID(selectedWorkspaceId)?.name}` : 'Select a Workspace',
+        text: selectedWorkspaceId ? `Workspace: ${getWorkspaceByID({ id: selectedWorkspaceId })?.name}` : 'Select a Workspace',
         menu: (
           <Menu>
             {workspaces.map((workspace) => (

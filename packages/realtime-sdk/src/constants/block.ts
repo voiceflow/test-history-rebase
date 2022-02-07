@@ -54,8 +54,10 @@ export enum BlockType {
   MARKUP_IMAGE = 'markup_image',
 }
 
-export type RootBlockType = BlockType.COMBINED | BlockType.START | BlockType.COMMENT;
-export const ROOT_NODES: ReadonlyArray<RootBlockType> = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
+export type DeprecatedBlockType = BlockType.COMMENT | BlockType.CHOICE_OLD;
+
+export type RootBlockType = BlockType.COMBINED | BlockType.START;
+export const ROOT_NODES: ReadonlyArray<RootBlockType> = [BlockType.COMBINED, BlockType.START];
 export const isRootBlockType = (type: BlockType): type is RootBlockType => ROOT_NODES.includes(type as RootBlockType);
 
 export type InternalBlockType = BlockType.DEPRECATED | BlockType.COMMAND | RootBlockType;

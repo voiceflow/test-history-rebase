@@ -2,7 +2,6 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import { useSetup } from '@/hooks';
-import CommentBlock from '@/pages/Canvas/components/CommentBlock';
 import { useNodeDrag, useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
@@ -73,9 +72,7 @@ const Node: React.FC = () => {
 
   let nodeEl: JSX.Element | null = null;
 
-  if (nodeEntity.nodeType === BlockType.COMMENT) {
-    nodeEl = <CommentBlock ref={instance.blockRef} />;
-  } else if (nodeEntity.nodeType === BlockType.COMBINED) {
+  if (nodeEntity.nodeType === BlockType.COMBINED) {
     nodeEl = <NodeBlock ref={instance.blockRef} />;
   } else if (nodeEntity.nodeType === BlockType.START) {
     nodeEl = <NodeStartBlock ref={instance.blockRef} />;

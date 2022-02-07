@@ -3,7 +3,7 @@ import * as ConnectedReactRouter from 'connected-react-router';
 import React from 'react';
 import { createSelector } from 'reselect';
 
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import * as Thread from '@/ducks/thread';
 import { useSetup } from '@/hooks';
@@ -28,16 +28,19 @@ export type ThreadInstance = EntityInstance & {
   forceRedraw: (nextCoords: Coords) => void;
 };
 
-const threadEntitySelector = createSelector([Creator.nodeByIDSelector, Thread.threadByIDSelector], (getNode, getThread) => (threadID: string) => {
-  const thread = getThread(threadID);
-  const node = thread.nodeID ? getNode(thread.nodeID) : null;
+const threadEntitySelector = createSelector(
+  [CreatorV2.getNodeByIDSelector, Thread.threadByIDSelector],
+  (getNode, getThread) => (threadID: string) => {
+    const thread = getThread(threadID);
+    const node = getNode({ id: thread?.nodeID });
 
-  return {
-    thread,
-    node,
-    parentNode: node?.parentNode ? getNode(node.parentNode) : null,
-  };
-});
+    return {
+      thread,
+      node,
+      parentNode: getNode({ id: node?.parentNode }),
+    };
+  }
+);
 
 class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Realtime.Node | null }, ThreadInstance> {
   diagramID: string;

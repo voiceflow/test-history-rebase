@@ -118,7 +118,7 @@ const mapStateToProps = {
 
 const mergeProps = (...[{ intent: getIntentByID }, , { item }]: MergeArguments<typeof mapStateToProps, {}, ItemProps>) => {
   return {
-    intent: item.payload.intentID ? getIntentByID(item.payload.intentID) : null,
+    intent: getIntentByID({ id: item.payload.intentID }),
   };
 };
 

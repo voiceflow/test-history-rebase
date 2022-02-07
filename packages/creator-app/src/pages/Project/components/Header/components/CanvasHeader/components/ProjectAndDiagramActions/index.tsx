@@ -5,7 +5,7 @@ import { EditableTextAPI } from '@/components/EditableText';
 import { HeaderIconButton } from '@/components/ProjectPage';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
@@ -34,7 +34,7 @@ const ProjectAndDiagramActions: React.FC = () => {
 
   const isLocked = useSelector((state) => Realtime.isResourceLockedSelector(state)(Realtime.ResourceType.SETTINGS));
   const projectID = useSelector(Session.activeProjectIDSelector);
-  const startNodeID = useSelector(Creator.startNodeIDSelector);
+  const startNodeID = useSelector(CreatorV2.startNodeIDSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
 
   const getEngine = useEventualEngine();

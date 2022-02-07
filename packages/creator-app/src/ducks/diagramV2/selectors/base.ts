@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 
 import * as DiagramSelectorsV1 from '@/ducks/diagram/selectors';
 import * as Feature from '@/ducks/feature';
+import { createCurriedSelector } from '@/ducks/utils';
 import { createCRUDSelectors, idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 
 import { STATE_KEY } from '../constants';
@@ -11,10 +12,9 @@ const {
   all: _allDiagramsSelector,
   allIDs: _allDiagramIDsSelector,
   map: _diagramMapSelector,
+  hasByIDs: _hasDiagramsByIDsSelector,
   byID: _diagramByIDSelector,
-  getByID: _getDiagramByIDSelector,
   byIDs: _diagramsByIDsSelector,
-  getByIDs: _getDiagramsByIDsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
 export { rootDiagramSelector };
@@ -30,14 +30,19 @@ export const diagramByIDSelector = Feature.createAtomicActionsSelector(
   (getDiagramV1, diagramV2, diagramID) => [diagramID ? getDiagramV1(diagramID) : null, diagramV2]
 );
 
-export const getDiagramByIDSelector = Feature.createAtomicActionsSelector([DiagramSelectorsV1.diagramByIDSelector, _getDiagramByIDSelector]);
+export const getDiagramByIDSelector = createCurriedSelector(diagramByIDSelector);
+
+export const hasDiagramsByIDsSelector = Feature.createAtomicActionsPhase2Selector(
+  [DiagramSelectorsV1.diagramByIDSelector, _hasDiagramsByIDsSelector, idsParamSelector],
+  (getDiagramV1, hasDiagramsV2, diagramIDs) => [diagramIDs.every((diagramID) => !!getDiagramV1(diagramID)), hasDiagramsV2]
+);
 
 export const diagramsByIDsSelector = Feature.createAtomicActionsSelector(
   [DiagramSelectorsV1.diagramsByIDsSelector, _diagramsByIDsSelector, idsParamSelector],
   (getDiagramsV1, diagramsV2, diagramIDs) => [getDiagramsV1(diagramIDs), diagramsV2]
 );
 
-export const getDiagramsByIDsSelector = Feature.createAtomicActionsSelector([DiagramSelectorsV1.diagramsByIDsSelector, _getDiagramsByIDsSelector]);
+export const getDiagramsByIDsSelector = createCurriedSelector(diagramsByIDsSelector);
 
 export const localVariablesByDiagramIDSelector = createSelector([diagramByIDSelector], (diagram) => diagram?.variables || []);
 

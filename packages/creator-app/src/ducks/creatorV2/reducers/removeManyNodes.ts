@@ -2,7 +2,7 @@ import * as Realtime from '@realtime-sdk';
 import { Utils } from '@voiceflow/common';
 import * as Normal from 'normal-store';
 
-import { flattenNodePorts, removeStepReferences } from '../utils';
+import { flattenAllPorts, removeStepReferences } from '../utils';
 import { removePort } from './removePort';
 import { createActiveDiagramReducer } from './utils';
 
@@ -11,9 +11,9 @@ const removeManyNodesReducer = createActiveDiagramReducer(Realtime.node.removeMa
   const portsToRemove: string[] = [];
 
   const registerPorts = (nodeID: string) => {
-    const portIDs = flattenNodePorts(state.portsByNodeID[nodeID]);
+    const portIDs = flattenAllPorts(state.portsByNodeID[nodeID]);
 
-    portIDs.forEach((portID) => portsToRemove.push(portID));
+    portsToRemove.push(...portIDs);
   };
 
   nodeIDs.forEach((nodeID) => {

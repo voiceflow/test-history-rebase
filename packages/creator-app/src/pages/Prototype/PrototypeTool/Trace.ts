@@ -7,7 +7,7 @@ import _findLast from 'lodash/findLast';
 
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import {
@@ -52,7 +52,6 @@ export interface TraceControllerProps {
   enterFlow: (diagramID: string) => void;
   contextStep: number;
   waitVisuals: boolean;
-  getNodeByID: (targetBlockID: string) => Realtime.Node;
   updateStatus: (status: PMStatus) => void;
   fetchContext: (request: Request.BaseRequest | null) => Promise<Prototype.Context | null>;
   flowIDHistory: string[];
@@ -95,7 +94,6 @@ const FOCUSABLE_NODES = [
   BlockType.COMMAND,
   BlockType.SPEAK,
   BlockType.TEXT,
-  BlockType.CHOICE_OLD,
   BlockType.CAPTURE,
   BlockType.CAPTUREV2,
   BlockType.CHOICE,
@@ -626,11 +624,12 @@ class TraceController {
     const sourceIDs = [sourceID, ...(sourceLastChild ? [sourceLastChild] : [])];
 
     const target = this.props.getEngine()?.getNodeByID(targetID);
-    const [targetFirstChild] = target?.parentNode ? this.props.getEngine()?.getNodeByID(target.parentNode).combinedNodes ?? [] : [];
+    const [targetFirstChild] = this.props.getEngine()?.getNodeByID(target?.parentNode)?.combinedNodes ?? [];
     const targetIDs = [targetID, ...(targetID === targetFirstChild ? [target!.parentNode!] : [])];
 
-    const getJoiningLinks = this.props.getEngine()?.select(Creator.joiningLinkIDsSelector);
-    const [linkID] = sourceIDs.flatMap((id) => targetIDs.flatMap((linkTargetID) => getJoiningLinks?.(id, linkTargetID, true) ?? []));
+    const getJoiningLinks = (sourceNodeID: string, targetNodeID: string) =>
+      this.props.getEngine()?.select(CreatorV2.joiningLinkIDsSelector, { sourceNodeID, targetNodeID, directional: true }) ?? [];
+    const [linkID] = sourceIDs.flatMap((id) => targetIDs.flatMap((linkTargetID) => getJoiningLinks(id, linkTargetID) ?? []));
 
     return linkID ?? null;
   }
@@ -678,7 +677,7 @@ class TraceController {
   }
 
   private async waitNode(nodeID: string) {
-    await this.waitFor(() => !!nodeID && !this.props.getNodeByID(nodeID));
+    await this.waitFor(() => !!nodeID && !this.props.getEngine()?.getNodeByID(nodeID));
   }
 
   private async waitDiagram(diagramID: string) {

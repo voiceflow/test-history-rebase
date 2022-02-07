@@ -143,7 +143,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
     let label = 'flow';
 
     if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) {
-      label = getDiagramByID(diagramID)?.type === BaseModels.DiagramType.TOPIC ? 'topic' : 'component';
+      label = getDiagramByID({ id: diagramID })?.type === BaseModels.DiagramType.TOPIC ? 'topic' : 'component';
     }
 
     setConfirmModal({
@@ -169,7 +169,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
       return [];
     }
 
-    const isTopic = diagramID ? getDiagramByID(diagramID)?.type === BaseModels.DiagramType.TOPIC : false;
+    const isTopic = getDiagramByID({ id: diagramID })?.type === BaseModels.DiagramType.TOPIC;
 
     return [
       ...(onEdit

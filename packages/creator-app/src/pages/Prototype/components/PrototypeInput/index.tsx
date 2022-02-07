@@ -1,7 +1,7 @@
 import { Box, BoxFlex, Button, ButtonVariant, KeyName, preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
@@ -115,7 +115,7 @@ const mapStateToProps = {
   inputMode: Prototype.prototypeInputModeSelector,
   showButtons: Prototype.prototypeShowButtonsSelector,
   status: Prototype.prototypeStatusSelector,
-  diagramID: Creator.creatorDiagramIDSelector,
+  diagramID: CreatorV2.activeDiagramIDSelector,
 };
 
 const mapDispatchToProps = {

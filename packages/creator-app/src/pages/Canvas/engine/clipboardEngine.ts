@@ -7,6 +7,8 @@ import { get, set } from 'idb-keyval';
 import * as Errors from '@/config/errors';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
+import { flattenAllPorts } from '@/ducks/creatorV2/utils';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -159,9 +161,13 @@ class ClipboardEngine extends EngineConsumer {
 
     Errors.assertVersionID(versionID);
 
-    const allNodes = Creator.allNodesByIDsSelector(state)(nodeIDs).filter((node) => node.type !== BlockType.START && node.type !== BlockType.COMMAND);
+    const allNodes = CreatorV2.nodesByIDsSelector(state, { ids: nodeIDs }).filter(
+      (node) => node.type !== BlockType.START && node.type !== BlockType.COMMAND
+    );
     const soloNodes = allNodes.filter((node) => !node.parentNode);
-    const nestedNodes = soloNodes.flatMap(({ combinedNodes }) => (combinedNodes.length ? Creator.allNodesByIDsSelector(state)(combinedNodes) : []));
+    const nestedNodes = soloNodes.flatMap(({ combinedNodes }) =>
+      combinedNodes.length ? CreatorV2.nodesByIDsSelector(state, { ids: combinedNodes }) : []
+    );
     const orphanedNodes: Realtime.Node[] = [];
 
     const extraLinks: Realtime.Link[] = [];
@@ -170,7 +176,7 @@ class ClipboardEngine extends EngineConsumer {
     allNodes
       .filter((node) => node.parentNode && !nodeIDs.includes(node.parentNode))
       .forEach(({ id, parentNode: parentNodeID, ...nestedNode }) => {
-        const parentNode = this.engine.getNodeByID(parentNodeID!);
+        const parentNode = this.engine.getNodeByID(parentNodeID)!;
 
         const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [id] };
 
@@ -192,12 +198,12 @@ class ClipboardEngine extends EngineConsumer {
     const copiedNodes = [...soloNodes, ...orphanedNodes, ...nestedNodes];
     const copiedNodeIDMap = copiedNodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
 
-    const ports = Creator.allPortsByIDsSelector(state)(
-      copiedNodes.flatMap((node) => [...node.ports.in, ...Creator.diagramUtils.getAllOutPortIDs(node)])
-    ).filter(Boolean);
+    const ports = CreatorV2.allPortsByIDsSelector(state, {
+      ids: copiedNodes.flatMap((node) => flattenAllPorts(node.ports)),
+    }).filter(Boolean);
 
     const links = copiedNodes.reduce<Realtime.Link[]>((acc, node) => {
-      const nodeLinks = Creator.linksByNodeIDSelector(state)(node.id).filter(
+      const nodeLinks = CreatorV2.linksByNodeIDSelector(state, { id: node.id }).filter(
         (link) => !acc.includes(link) && copiedNodeIDMap[link.source.nodeID] && copiedNodeIDMap[link.target.nodeID]
       );
 

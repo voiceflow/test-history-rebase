@@ -28,8 +28,8 @@ export const DirectiveStep: React.FC<DirectiveStepProps> = ({ nodeID, nextPortID
   </Step>
 );
 
-const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Directive, Realtime.NodeData.DirectiveBuiltInPorts> = ({ node, variant }) => (
-  <DirectiveStep nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />
+const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Directive, Realtime.NodeData.DirectiveBuiltInPorts> = ({ ports, data, variant }) => (
+  <DirectiveStep nodeID={data.nodeID} nextPortID={ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />
 );
 
 export default ConnectedActionStep;

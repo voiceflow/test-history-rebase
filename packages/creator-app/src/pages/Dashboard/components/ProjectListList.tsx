@@ -134,7 +134,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
               <div ref={bodyRef} className={DashboardClassName.LISTS}>
                 <div ref={innerRef} className={DashboardClassName.LISTS_INNER}>
                   {projectLists.map((list, index) => {
-                    const projects = getBoardFilteredProjects(list.projects, getProjectByID, filter);
+                    const projects = getBoardFilteredProjects(list.projects, (id) => getProjectByID({ id }), filter);
 
                     if (filter && !projects.length) return null;
 

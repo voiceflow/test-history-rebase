@@ -8,7 +8,7 @@ import * as Session from '@/ducks/session';
 import { getProjectByIDSelector } from '../base';
 
 export const projectSelector = createSelector([Session.activeProjectIDSelector, getProjectByIDSelector], (projectID, getProjectByID) =>
-  projectID ? getProjectByID(projectID) : null
+  getProjectByID({ id: projectID })
 );
 
 export const platformSelector = createSelector([projectSelector], (project) => project?.platform || Constants.PlatformType.GENERAL);

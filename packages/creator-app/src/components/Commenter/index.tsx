@@ -17,7 +17,7 @@ interface CommenterProps {
 }
 
 export const Commenter: React.FC<CommenterProps> = ({ time, bold = true, creatorID }) => {
-  const user = useSelector((state) => WorkspaceV2.active.memberByIDSelector(state, { creatorID }));
+  const user = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
 
   const userData = user ?? Workspace.UNKNOWN_MEMBER_DATA;
 

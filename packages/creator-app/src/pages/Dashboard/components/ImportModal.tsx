@@ -84,7 +84,7 @@ const ImportModal: React.FC = () => {
   const cloneProject = async (workspaceID?: string) => {
     if (!projectID || !workspaceID) return;
 
-    const workspace = getWorkspaceByID(workspaceID);
+    const workspace = getWorkspaceByID({ id: workspaceID });
 
     if (!workspace) return;
 

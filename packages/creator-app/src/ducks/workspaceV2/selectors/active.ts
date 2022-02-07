@@ -8,13 +8,13 @@ import { EDITOR_SEAT_ROLES } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
-import { creatorIDParamSelector } from '@/ducks/utils';
+import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
 
 import { TEMPLATES_ADMIN_ID, TEMPLATES_EDITORS_ID } from '../constants';
 import { getWorkspaceByIDSelector } from './base';
 
 export const workspaceSelector = createSelector([getWorkspaceByIDSelector, Session.activeWorkspaceIDSelector], (getWorkspace, workspaceID) =>
-  workspaceID ? getWorkspace(workspaceID) : null
+  getWorkspace({ id: workspaceID })
 );
 
 export const organizationTrialExpired = createSelector([workspaceSelector, Feature.allActiveFeaturesSelector], (workspace, features) => {
@@ -54,20 +54,17 @@ export const memberByIDSelector = createSelector(
   (members, creatorID) => members.find((member) => member.creator_id === creatorID) || null
 );
 
-export const getMemberByIDSelector = createSelector(
-  [membersSelector],
-  (members) => (creatorID: number) => members.find((member) => member.creator_id === creatorID) || null
-);
+export const getMemberByIDSelector = createCurriedSelector(memberByIDSelector);
 
 export const getDistinctWorkspaceMemberByCreatorIDSelector = createSelector(
   [getMemberByIDSelector],
   (getWorkspaceMember) => (creatorID: number, tabID: string) => {
-    const workspaceMember = getWorkspaceMember(creatorID);
+    const workspaceMember = getWorkspaceMember({ creatorID });
     return workspaceMember ? { ...workspaceMember, color: getAlternativeColor(tabID) } : null;
   }
 );
 
-export const hasMemberByIDSelector = createSelector([getMemberByIDSelector], (getMember) => (creatorID: number) => !!getMember(creatorID));
+export const hasMemberByIDSelector = createSelector([getMemberByIDSelector], (getMember) => (creatorID: number) => !!getMember({ creatorID }));
 
 export const userRoleSelector = createSelector(
   [getMemberByIDSelector, workspaceSelector, Account.userIDSelector],
@@ -83,7 +80,7 @@ export const userRoleSelector = createSelector(
       return UserRole.LIBRARY;
     }
 
-    return getMember(creatorID)?.role;
+    return getMember({ creatorID })?.role;
   }
 );
 

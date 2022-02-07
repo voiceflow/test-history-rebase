@@ -21,7 +21,7 @@ type MarkupProps = ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Text> & {
   isNodeLocked: (nodeID: string) => boolean;
 };
 
-const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({ node, data, isNodeLocked }, ref) => {
+const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({ data, isNodeLocked }, ref) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
 
@@ -36,14 +36,14 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
 
   const cache = useCache({ value, skipEditableFocus: false, doubleClicked: false }, { value });
 
-  const updateContentDebounced = useDebouncedCallback(300, () => engine.node.updateData(node.id, { content: cache.current.value }), []);
+  const updateContentDebounced = useDebouncedCallback(300, () => engine.node.updateData(nodeEntity.nodeID, { content: cache.current.value }), []);
 
   const { isFocused, isActivated } = nodeEntity.useState((e) => ({
     isFocused: e.isFocused,
     isActivated: e.isActive,
   }));
 
-  const editor = engine.markup.useSetupTextEditor(node.id);
+  const editor = engine.markup.useSetupTextEditor(nodeEntity.nodeID);
   const blockAPI = useBlockAPI();
 
   const removeDraggableParents = React.useCallback(() => {
@@ -91,7 +91,7 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
 
   const onBlur = React.useCallback(async () => {
     if (!SlateEditorAPI.serialize(cache.current.value)) {
-      engine.node.remove(node.id);
+      engine.node.remove(nodeEntity.nodeID);
 
       addDraggableAttr(draggableParentsCache.current);
       draggableParentsCache.current = [];
@@ -104,10 +104,10 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
     if (!isInitialWidthApplied && isNew) {
       setIsInitialWidthApplied(true);
 
-      await engine.node.updateData(node.id, { content: cache.current.value });
       await engine.node.api(nodeEntity.nodeID)?.instance?.applyTransformations?.();
+      await engine.node.updateData(nodeEntity.nodeID, { content: cache.current.value });
     } else {
-      engine.node.updateData(node.id, { content: cache.current.value });
+      engine.node.updateData(nodeEntity.nodeID, { content: cache.current.value });
     }
 
     addDraggableAttr(draggableParentsCache.current);

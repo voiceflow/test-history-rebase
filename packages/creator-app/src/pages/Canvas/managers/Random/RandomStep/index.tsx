@@ -29,8 +29,8 @@ export const RandomStep: React.FC<RandomStepProps> = ({ nodeID, ports, variant }
   </Step>
 );
 
-const ConnectedRandomStep: ConnectedStep<Realtime.NodeData.Random> = ({ node, variant }) => (
-  <RandomStep nodeID={node.id} ports={node.ports.out.dynamic} variant={variant} />
+const ConnectedRandomStep: ConnectedStep<Realtime.NodeData.Random> = ({ ports, data, variant }) => (
+  <RandomStep nodeID={data.nodeID} ports={ports.out.dynamic} variant={variant} />
 );
 
 export default ConnectedRandomStep;

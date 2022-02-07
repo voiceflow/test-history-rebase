@@ -36,15 +36,15 @@ export const ActionStep: React.FC<ActionStepProps> = ({ nodeID, name, paths, wit
   </Step>
 );
 
-const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ node, data, withPorts, variant }) => {
-  const pathsByPortID = useSyncedLookup(node.ports.out.dynamic, data.paths);
+const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ ports, data, withPorts, variant }) => {
+  const pathsByPortID = useSyncedLookup(ports.out.dynamic, data.paths);
 
   const paths = React.useMemo(
-    () => node.ports.out.dynamic.filter((portID) => pathsByPortID[portID]).map<Path>((portID) => ({ ...pathsByPortID[portID], portID })),
-    [pathsByPortID, node.ports.out.dynamic, data.paths]
+    () => ports.out.dynamic.filter((portID) => pathsByPortID[portID]).map<Path>((portID) => ({ ...pathsByPortID[portID], portID })),
+    [pathsByPortID, ports.out.dynamic, data.paths]
   );
 
-  return <ActionStep nodeID={node.id} name={data.name} paths={paths} withPorts={withPorts} variant={variant} />;
+  return <ActionStep nodeID={data.nodeID} name={data.name} paths={paths} withPorts={withPorts} variant={variant} />;
 };
 
 export default ConnectedActionStep;

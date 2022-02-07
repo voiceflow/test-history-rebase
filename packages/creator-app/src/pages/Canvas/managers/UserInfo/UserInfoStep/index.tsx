@@ -47,16 +47,16 @@ export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, wit
 );
 
 const ConnectedUserInfoStep: ConnectedStep<Realtime.NodeData.UserInfo, Realtime.NodeData.UserInfoBuiltInPorts> = ({
-  node,
+  ports,
   data,
   withPorts,
   variant,
 }) => (
   <UserInfoStep
-    nodeID={node.id}
+    nodeID={data.nodeID}
     withPorts={withPorts}
-    successPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
-    failurePortID={node.ports.out.builtIn[Models.PortType.FAIL]}
+    successPortID={ports.out.builtIn[Models.PortType.NEXT]}
+    failurePortID={ports.out.builtIn[Models.PortType.FAIL]}
     userPermissions={data.permissions.map((permission) => PERMISSION_LABELS[permission.selected!]).filter(Boolean)}
     variant={variant}
   />

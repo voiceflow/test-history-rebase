@@ -19,7 +19,7 @@ const EditProduct: React.FC<RouteComponentProps<{ productID: string }>> = ({ mat
   const { productID } = match.params;
 
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-  const product = useSelector((state) => ProductV2.productByIDSelector(state, { id: productID }));
+  const product = useSelector(ProductV2.productByIDSelector, { id: productID });
   const productRef = useCachedValue(product);
 
   const uploadProduct = useDispatch(Product.uploadProduct, productID);

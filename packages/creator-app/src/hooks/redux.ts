@@ -1,11 +1,14 @@
 import { useCallback } from 'react';
 import * as ReactRedux from 'react-redux';
 
-import { Dispatchable, Selector, Store } from '@/store/types';
+import type { Dispatchable, Selector, State, Store } from '@/store/types';
 
 import { useLinkedState } from './linked';
 
-export { useSelector } from 'react-redux';
+export const useAdvancedSelector = ReactRedux.useSelector;
+
+export const useSelector = <T, A extends any[]>(selector: Selector<T, A>, ...args: A): T =>
+  useAdvancedSelector<State, T>((state) => selector(state, ...args));
 
 export const useStore = ReactRedux.useStore as () => Store;
 

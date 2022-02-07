@@ -24,17 +24,16 @@ const MarkupNode = () => {
   const instance = useMarkupInstance<HTMLDivElement>();
   const isEditingMode = useEditingMode();
 
-  const { node, data } = nodeEntity.useState((e) => {
+  const { data } = nodeEntity.useState((e) => {
     const resolved = e.resolve<Realtime.Markup.AnyNodeData>();
 
     return {
-      node: resolved.node,
       data: resolved.data,
     };
   });
 
   const doubleClickHandler = () => {
-    engine.setActive(node.id);
+    engine.setActive(nodeEntity.nodeID);
   };
 
   const { markupNode: NodeComponent } = getManager(nodeEntity.nodeType)!;
@@ -83,7 +82,7 @@ const MarkupNode = () => {
             backgroundColor={(data as Realtime.Markup.NodeData.Text).backgroundColor ?? null}
             ref={instance.transformRef}
           >
-            <NodeComponent ref={instance.blockRef} node={node} data={data as any} />
+            <NodeComponent ref={instance.blockRef} data={data as any} />
 
             <Border.Left />
             <Border.Right />

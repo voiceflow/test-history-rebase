@@ -48,16 +48,16 @@ export const IfStep: React.FC<IfStepProps> = ({ nodeID, expressions, noMatchPort
   </Step>
 );
 
-const ConnectedIfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ node, data, engine, variant }) => {
-  const noMatchPortID = node.ports.out.builtIn[Models.PortType.NO_MATCH];
+const ConnectedIfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ ports, data, engine, variant }) => {
+  const noMatchPortID = ports.out.builtIn[Models.PortType.NO_MATCH];
 
-  const expressionsByPortID = useSyncedLookup(node.ports.out.dynamic, data.expressions);
   const hasNoMatchLink = engine.hasLinksByPortID(noMatchPortID); // also show the else port if a link exists
+  const expressionsByPortID = useSyncedLookup(ports.out.dynamic, data.expressions);
   const withNoMatchPort = hasNoMatchLink || data.noMatch.type === Node.IfV2.IfNoMatchType.PATH;
 
   const expressions = React.useMemo(
     () =>
-      node.ports.out.dynamic
+      ports.out.dynamic
         .filter((portID) => expressionsByPortID[portID])
         .map((portID) => {
           const expression = expressionsByPortID[portID];
@@ -68,12 +68,12 @@ const ConnectedIfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.I
             portID,
           };
         }),
-    [node.ports.out.dynamic, expressionsByPortID]
+    [ports.out.dynamic, expressionsByPortID]
   );
 
   return (
     <IfStep
-      nodeID={node.id}
+      nodeID={data.nodeID}
       expressions={expressions}
       noMatchPortID={noMatchPortID}
       noMatchPathName={data.noMatch.pathName ?? ''}

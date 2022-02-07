@@ -1,18 +1,24 @@
+import * as Realtime from '@realtime-sdk';
 import React from 'react';
 
 import Section from '@/components/Section';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
+import { useDispatch, useSelector } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import { Mapping } from '../Component/components';
 import { variableMappingFactory } from '../Component/components/Mapping/components/MappingSection';
 import { Flow, Footer } from './components';
 
-function FlowEditor({ data, onChange, diagram, loadFlowVariables, goToDiagram }) {
+const FlowEditor: NodeEditor<Realtime.NodeData.Flow, Realtime.NodeData.FlowBuiltInPorts> = ({ data, onChange }) => {
+  const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: data.diagramID });
+  const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
+  const loadFlowVariables = useDispatch(Diagram.loadLocalVariables);
+
   const hasVariableMapping = !!data.inputs?.length || !!data.outputs?.length;
 
   React.useEffect(() => {
@@ -30,6 +36,12 @@ function FlowEditor({ data, onChange, diagram, loadFlowVariables, goToDiagram })
     onChange({ inputs: [emptyVariableMap], outputs: [emptyVariableMap] });
   }, [onChange]);
 
+  const goToDiagram = React.useCallback(() => {
+    if (data.diagramID) {
+      goToDiagramHistoryPush(data.diagramID);
+    }
+  }, [goToDiagramHistoryPush, data.diagramID]);
+
   return (
     <Content
       fillHeight={false}
@@ -45,7 +57,7 @@ function FlowEditor({ data, onChange, diagram, loadFlowVariables, goToDiagram })
       )}
     >
       <Section>
-        <Flow data={data} onChange={onChange} diagram={diagram} diagramID={data.diagramID} />
+        <Flow onChange={onChange} diagram={diagram} diagramID={data.diagramID} />
       </Section>
 
       {hasVariableMapping && diagram ? (
@@ -55,20 +67,6 @@ function FlowEditor({ data, onChange, diagram, loadFlowVariables, goToDiagram })
       ) : null}
     </Content>
   );
-}
-
-const mapStateToProps = {
-  diagramByID: DiagramV2.getDiagramByIDSelector,
 };
 
-const mapDispatchToProps = {
-  goToDiagram: Router.goToDiagramHistoryPush,
-  loadFlowVariables: Diagram.loadLocalVariables,
-};
-
-const mergeProps = ({ diagramByID }, { goToDiagram }, { data }) => ({
-  diagram: data.diagramID && diagramByID(data.diagramID),
-  goToDiagram: () => goToDiagram(data.diagramID),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(FlowEditor);
+export default FlowEditor;

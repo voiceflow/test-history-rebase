@@ -4,7 +4,7 @@ import React from 'react';
 import { SectionVariant } from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import { BlockType } from '@/constants';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -15,10 +15,7 @@ interface CommandsManagerProps {
 }
 
 const CommandsManager: React.FC<CommandsManagerProps> = ({ nodeID }) => {
-  const focusedNode = useSelector(Creator.focusedNodeSelector);
-  const getNodeDataByID = useSelector(Creator.dataByNodeIDSelector);
-
-  const commands = React.useMemo(() => focusedNode?.combinedNodes.map(getNodeDataByID) ?? [], [focusedNode, getNodeDataByID]);
+  const commands = useSelector(CreatorV2.stepDataByBlockIDSelector, { id: nodeID });
 
   const engine = React.useContext(EngineContext);
 

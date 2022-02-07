@@ -9,7 +9,7 @@ import { useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
 const PermissionInfo = ({ permission, onChange }) => {
-  const product = useSelector((state) => ProductV2.productByIDSelector(state, { id: permission.product }));
+  const product = useSelector(ProductV2.productByIDSelector, { id: permission.product });
   const isProductPermission = permission.selected === Node.PermissionType.UNOFFICIAL_PRODUCT;
   const isMappable = permission.selected && PERMISSIONS_WITH_VARIABLE_MAPS.includes(permission.selected);
 

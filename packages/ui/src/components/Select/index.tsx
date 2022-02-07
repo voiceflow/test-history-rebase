@@ -143,7 +143,7 @@ export type SelectProps<O, V> = {
   multiLevelDropdown?: boolean;
   showNotMatchedOptions?: boolean;
   createInputPlaceholder?: string;
-  validateCreate?: (val: string) => boolean;
+  validateCreate?: (val: string) => void;
 } & (
   | {
       creatable: true;

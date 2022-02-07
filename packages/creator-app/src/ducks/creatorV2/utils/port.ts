@@ -62,13 +62,20 @@ export const addBuiltinPort = (
     }
   );
 
-export const flattenNodePorts = <T>(ports: Nullish<Realtime.NodePortSchema<T>>): T[] => {
+export const flattenInPorts = <T>(ports: Nullish<Realtime.NodePortSchema<T>>): T[] => {
+  if (!ports) return [];
+
+  return ports.in;
+};
+
+export const flattenOutPorts = <T>(ports: Nullish<Realtime.NodePortSchema<T>>): T[] => {
   if (!ports) return [];
 
   const {
-    in: inPorts,
     out: { builtIn, dynamic: dynamicPorts },
   } = ports;
 
-  return [...inPorts, ...Object.values(builtIn), ...dynamicPorts];
+  return [...Object.values(builtIn).filter(Boolean), ...dynamicPorts];
 };
+
+export const flattenAllPorts = <T>(ports: Nullish<Realtime.NodePortSchema<T>>): T[] => [...flattenInPorts(ports), ...flattenOutPorts(ports)];

@@ -1,7 +1,7 @@
 import { createMatchSelector } from 'connected-react-router';
 
 import { Path } from '@/config/routes';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
@@ -131,7 +131,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   generateCandidates() {
     if (!this.isActive) return;
 
-    this.candidates = getCandidates([...this.engine.getRootNodeIDs(), ...this.select(Creator.stepNodeIDsSelector)].reverse(), this.engine);
+    this.candidates = getCandidates([...this.engine.getRootNodeIDs(), ...this.select(CreatorV2.stepIDsSelector)].reverse(), this.engine);
     this.log.debug('discovered thread target candidates', this.log.value(this.candidates.length));
   }
 

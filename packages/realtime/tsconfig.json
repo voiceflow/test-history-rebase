@@ -11,8 +11,14 @@
       "@voiceflow/realtime-sdk": [
         "realtime-sdk/src"
       ],
+      "@realtime-sdk/*": [
+        "realtime-sdk/src/*"
+      ],
       "@voiceflow/socket-utils": [
         "socket-utils/src"
+      ],
+      "@socket-utils/*": [
+        "socket-utils/src/*"
       ],
       "@/*": [
         "realtime/src/*"

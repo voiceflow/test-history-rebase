@@ -17,7 +17,7 @@ import { variableMappingFactory } from './components/Mapping/components/MappingS
 
 const ComponentEditor: NodeEditor<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ data, onChange }) => {
   const theme = useTheme();
-  const diagram = useSelector((state) => DiagramV2.diagramByIDSelector(state, { id: data.diagramID }));
+  const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: data.diagramID });
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
   const loadComponentVariables = useDispatch(Diagram.loadLocalVariables);

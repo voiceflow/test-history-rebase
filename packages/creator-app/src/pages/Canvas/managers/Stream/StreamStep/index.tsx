@@ -49,15 +49,15 @@ export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customP
   );
 };
 
-const ConnectedStreamStep: ConnectedStep<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ node, data, platform, variant }) => (
+const ConnectedStreamStep: ConnectedStep<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ ports, data, platform, variant }) => (
   <StreamStep
     audio={data.audio && transformVariablesToReadable(data.audio)}
-    nodeID={node.id}
+    nodeID={data.nodeID}
     platform={platform}
-    nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
-    pausePortID={node.ports.out.builtIn[Models.PortType.PAUSE]}
+    nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
+    pausePortID={ports.out.builtIn[Models.PortType.PAUSE]}
     customPause={data.customPause}
-    previousPortID={node.ports.out.builtIn[Models.PortType.PREVIOUS]}
+    previousPortID={ports.out.builtIn[Models.PortType.PREVIOUS]}
     variant={variant}
   />
 );

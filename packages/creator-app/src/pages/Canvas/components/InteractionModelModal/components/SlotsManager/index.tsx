@@ -36,7 +36,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
   deleteSlot,
   selectedID = slots[0]?.id,
   setSelectedID,
-  intentsUsingSlot,
+  getIntentsUsingSlot,
   removeIntentSlot,
 }) => {
   const { toggle: toggleSlotEdit, close: closeSlotEdit } = useModals(ModalType.SLOT_EDIT);
@@ -49,7 +49,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
   const getItemLabel = React.useCallback((item: Realtime.Slot) => item.name, []);
   const onDelete = React.useCallback(
     (index: string | number, { item }: { item: Realtime.Slot }) => {
-      const activeIntents = intentsUsingSlot(item.id);
+      const activeIntents = getIntentsUsingSlot({ id: item.id });
 
       if (activeIntents.length > 0) {
         activeIntents.forEach((intent) => removeIntentSlot(intent.id, item.id));
@@ -149,7 +149,7 @@ const sortedSlotsSelector = createSelector(SlotV2.allSlotsSelector, (slots) => _
 const mapStateToProps = {
   slots: sortedSlotsSelector,
   slotsIDs: SlotV2.allSlotIDsSelector,
-  intentsUsingSlot: IntentV2.intentsUsingSlotSelector,
+  getIntentsUsingSlot: IntentV2.getIntentsUsingSlotSelector,
 };
 
 const mapDispatchToProps = {

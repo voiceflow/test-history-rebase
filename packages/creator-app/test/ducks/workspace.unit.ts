@@ -75,17 +75,22 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, rewire, descr
         });
       });
 
-      describe('getMemberByIDSelector()', () => {
+      describe('memberByIDSelector()', () => {
         it('should select a member from the active workspace by creator ID', () => {
-          expect(select(WorkspaceV2.active.getMemberByIDSelector, ROOT_STATE)(456)).to.eq(MEMBER);
+          expect(select((state) => WorkspaceV2.active.memberByIDSelector(state, { creatorID: 456 }), ROOT_STATE)).to.eq(MEMBER);
         });
 
         it('should return null if no member matches for active workspace', () => {
-          expect(select(WorkspaceV2.active.getMemberByIDSelector, ROOT_STATE)(999)).to.be.null;
+          expect(select((state) => WorkspaceV2.active.memberByIDSelector(state, { creatorID: 999 }), ROOT_STATE)).to.be.null;
         });
 
         it('should return null members list', () => {
-          expect(select(WorkspaceV2.active.getMemberByIDSelector, { ...ROOT_STATE, session: { activeWorkspaceID: 'def' } })(999)).to.be.null;
+          expect(
+            select((state) => WorkspaceV2.active.memberByIDSelector(state, { creatorID: 999 }), {
+              ...ROOT_STATE,
+              session: { activeWorkspaceID: 'def' },
+            })
+          ).to.be.null;
         });
       });
 

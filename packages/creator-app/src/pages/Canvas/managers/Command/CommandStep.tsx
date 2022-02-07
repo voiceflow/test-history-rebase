@@ -25,11 +25,10 @@ export const CommandStep: React.FC<CommandStepProps> = ({ nodeID, name, variant,
 );
 
 const ConnectedCommandStep: React.FC<ConnectedStepProps<Realtime.NodeData.Command> & ConnectedCommandStepProps> = ({
-  node,
   data,
   goToDiagram,
   variant,
-}) => <CommandStep nodeID={node.id} onCommandClick={goToDiagram} name={data.name} variant={variant} />;
+}) => <CommandStep nodeID={data.nodeID} onCommandClick={goToDiagram} name={data.name} variant={variant} />;
 
 const mapDispatchToProps = {
   goToDiagram: Router.goToDiagramHistoryPush,

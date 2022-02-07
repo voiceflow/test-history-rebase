@@ -59,7 +59,7 @@ const NoReplyEditor: React.FC<NoReplyEditorProps> = ({ noReply, onChange, pushTo
     const prevTypesIncludesPath = noReply.types.includes(BaseNode.Utils.NoReplyType.PATH);
     const newTypesIncludesPath = types.includes(BaseNode.Utils.NoReplyType.PATH);
     const focusedNodeID = engine.focus.getTarget();
-    const node = focusedNodeID ? engine.getNodeByID(focusedNodeID) : null;
+    const node = engine.getNodeByID(focusedNodeID);
 
     const noReplyPortID = node?.ports.out.builtIn[Models.PortType.NO_REPLY];
 

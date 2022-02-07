@@ -2,6 +2,8 @@ import { Flex } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
+export { default as MetaInfoSection } from './MetaInfoSection';
+
 export const Container = styled(Flex)`
   flex: 5;
   flex-direction: column;

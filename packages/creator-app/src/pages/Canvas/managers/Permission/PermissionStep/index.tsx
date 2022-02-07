@@ -38,11 +38,11 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nod
   );
 };
 
-const ConnectedPermissionStep: ConnectedStep<Realtime.NodeData.Permission, Realtime.NodeData.PermissionBuiltInPorts> = ({ node, data, variant }) => (
+const ConnectedPermissionStep: ConnectedStep<Realtime.NodeData.Permission, Realtime.NodeData.PermissionBuiltInPorts> = ({ ports, data, variant }) => (
   <PermissionStep
-    nodeID={node.id}
+    nodeID={data.nodeID}
     permissions={data.permissions.map((permissionID) => PERMISSION_LABELS[permissionID])}
-    nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+    nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
     variant={variant}
   />
 );

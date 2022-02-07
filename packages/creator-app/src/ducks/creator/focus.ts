@@ -2,11 +2,11 @@ import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
+import * as CreatorV2 from '@/ducks/creatorV2';
 import { createAction, createKeyedSelector } from '@/ducks/utils';
 import { Action, Reducer, RootReducer } from '@/store/types';
 
 import { AnyCreatorAction, CreatorAction } from './actions';
-import * as Diagram from './diagram';
 import { creatorStateSelector } from './selectors';
 
 export interface FocusState {
@@ -80,25 +80,22 @@ const rootSelector = createKeyedSelector(creatorStateSelector, FOCUS_STATE_KEY);
 
 export { rootSelector as creatorFocusSelector };
 
-export const focusedNodeSelector = createSelector([Diagram.nodeByIDSelector, rootSelector], (getNodeByID, focus) =>
-  focus.target ? getNodeByID(focus.target) : null
+export const focusedNodeSelector = createSelector([CreatorV2.getNodeByIDSelector, rootSelector], (getNodeByID, focus) =>
+  getNodeByID({ id: focus.target })
 );
 
 export const hasFocusedNode = createSelector([rootSelector], (focus) => focus.isActive);
 
 export const focusedNodeDataSelector = createSelector(
-  [Diagram.dataByNodeIDSelector, rootSelector],
-  (getDataByNodeID, focus): Realtime.NodeData<unknown> | null => (focus.target ? (getDataByNodeID(focus.target) as Realtime.NodeData<unknown>) : null)
+  [CreatorV2.getNodeDataByIDSelector, rootSelector],
+  (getDataByNodeID, focus): Realtime.NodeData<unknown> | null => getDataByNodeID({ id: focus.target })
 );
 
-export const focusedNoMatchLinkIDSelector = createSelector(
-  [focusedNodeSelector, Diagram.linkIDsByPortIDSelector],
-  (focusedNode, getLinkIDsByPortID) => {
-    const noMatchPortID = focusedNode?.ports.out.builtIn[Models.PortType.NO_MATCH];
+export const focusedNoMatchLinkIDSelector = createSelector([focusedNodeSelector, CreatorV2.getLinkIDsByPortIDSelector], (focusedNode, getLinkIDs) => {
+  const noMatchPortID = focusedNode?.ports.out.builtIn[Models.PortType.NO_MATCH];
 
-    return noMatchPortID ? getLinkIDsByPortID(noMatchPortID)[0] : null;
-  }
-);
+  return noMatchPortID ? getLinkIDs({ id: noMatchPortID })[0] ?? null : null;
+});
 
 // action creators
 

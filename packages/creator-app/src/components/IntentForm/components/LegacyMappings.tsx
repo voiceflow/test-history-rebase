@@ -47,13 +47,13 @@ interface LegacyMappingsProps {
 }
 
 const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappings = [], isNested = false }) => {
-  const slotByID = useSelector(SlotV2.getSlotByIDSelector);
+  const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
   const setConfirm = useDispatch(Modal.setConfirm);
 
   const validMappings = React.useMemo(
     () =>
       mappings.reduce<{ variable: string; slot: Realtime.Slot }[]>((acc, { variable, slot: slotID }) => {
-        const slot = slotID ? slotByID(slotID) : null;
+        const slot = getSlotByID({ id: slotID });
 
         if (slot?.name && slot.name !== variable) {
           acc.push({ variable: variable ?? '', slot });
@@ -61,7 +61,7 @@ const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappi
 
         return acc;
       }, []),
-    [slotByID, mappings]
+    [getSlotByID, mappings]
   );
 
   const confirmDelete = React.useCallback(

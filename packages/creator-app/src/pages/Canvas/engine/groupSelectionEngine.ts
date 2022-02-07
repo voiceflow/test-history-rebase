@@ -25,7 +25,7 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
     this.engine.addClass(CANVAS_SELECTING_GROUP_CLASSNAME);
     this.mouseOrigin = origin;
     this.candidates = getCandidates(
-      [...this.engine.nodes.keys()].filter((nodeID) => isRootOrMarkupBlockType(this.engine.getNodeByID(nodeID).type)),
+      [...this.engine.nodes.keys()].filter((nodeID) => this.engine.isNodeOfType(nodeID, isRootOrMarkupBlockType)),
       this.engine
     );
 

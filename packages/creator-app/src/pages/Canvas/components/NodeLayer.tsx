@@ -1,25 +1,22 @@
 import React from 'react';
 
-import { rootNodeIDsSelector } from '@/ducks/creator';
-import { connect } from '@/hocs';
+import * as CreatorV2 from '@/ducks/creatorV2';
+import { useSelector } from '@/hooks';
 import Node from '@/pages/Canvas/components/Node';
 import { NodeEntityProvider } from '@/pages/Canvas/contexts';
-import { ConnectedProps } from '@/types';
 
-const NodeLayer: React.FC<ConnectedNodeLayerProps> = ({ rootNodeIDs }) => (
-  <>
-    {rootNodeIDs.map((nodeID) => (
-      <NodeEntityProvider id={nodeID} key={nodeID}>
-        <Node />
-      </NodeEntityProvider>
-    ))}
-  </>
-);
+const NodeLayer: React.FC = () => {
+  const blockIDs = useSelector(CreatorV2.blockIDsSelector);
 
-const mapStateToProps = {
-  rootNodeIDs: rootNodeIDsSelector,
+  return (
+    <>
+      {blockIDs.map((blockID) => (
+        <NodeEntityProvider id={blockID} key={blockID}>
+          <Node />
+        </NodeEntityProvider>
+      ))}
+    </>
+  );
 };
 
-type ConnectedNodeLayerProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(NodeLayer);
+export default React.memo(NodeLayer);

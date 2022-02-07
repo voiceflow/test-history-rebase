@@ -14,7 +14,7 @@ export interface ManagerProps {
 const SlotEditComponent = SlotEdit as React.FC<any>;
 
 const Manager: React.FC<ManagerProps> = ({ id, removeSlot }) => {
-  const slot = useSelector((state) => SlotV2.slotByIDSelector(state, { id }));
+  const slot = useSelector(SlotV2.slotByIDSelector, { id });
   const patchSlot = useDispatch(SlotDuck.patchSlot, id);
 
   return !slot ? null : (

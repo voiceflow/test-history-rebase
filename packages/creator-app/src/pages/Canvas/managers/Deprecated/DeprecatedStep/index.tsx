@@ -27,8 +27,8 @@ const DeprecatedStep: React.FC<DeprecatedStepProps> = ({ nodeID, ports, variant 
   </Step>
 );
 
-const ConnectedDeprecatedStep: React.FC<ConnectedStepProps<Realtime.NodeData.Deprecated>> = ({ node, variant }) => (
-  <DeprecatedStep nodeID={node.id} ports={[node.ports.out.builtIn[Models.PortType.NEXT]!, ...node.ports.out.dynamic]} variant={variant} />
+const ConnectedDeprecatedStep: React.FC<ConnectedStepProps<Realtime.NodeData.Deprecated>> = ({ ports, data, variant }) => (
+  <DeprecatedStep nodeID={data.nodeID} ports={[ports.out.builtIn[Models.PortType.NEXT]!, ...ports.out.dynamic]} variant={variant} />
 );
 
 export default ConnectedDeprecatedStep;

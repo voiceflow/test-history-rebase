@@ -46,7 +46,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   const slots = useSelector(SlotV2.allSlotsSelector);
   const intents = useSelector(IntentV2.allIntentsSelector);
   const slotTypes = useSelector(VersionV2.active.slotTypesSelector) ?? [];
-  const intentsUsingSlot = useSelector(IntentV2.intentsUsingSlotSelector);
+  const getIntentsUsingSlot = useSelector(IntentV2.getIntentsUsingSlotSelector);
 
   const isDeleteable = !isCreate && !!onDelete;
 
@@ -99,7 +99,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   };
 
   const deleteSlot = () => {
-    const activeIntents = intentsUsingSlot(id);
+    const activeIntents = getIntentsUsingSlot({ id });
     if (activeIntents.length > 0) {
       toast.error(`${slotName} is being used by intents: ${activeIntents.map(({ name }) => name).join(', ')}`);
     } else {

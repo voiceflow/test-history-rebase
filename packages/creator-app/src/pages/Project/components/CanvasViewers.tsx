@@ -23,7 +23,7 @@ const CanvasViewers: React.FC<CanvasViewersProps> = ({ flat, withAdd = true }) =
   const atomicActionsAwareness = useFeature(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
   const viewers = useSelector(Realtime.activeDiagramViewersSelector);
   const diagramIDs = useSelector(DiagramV2.allDiagramIDsSelector);
-  const viewersV2 = useSelector((state) => DiagramV2.diagramsViewersByIDsSelector(state, { ids: diagramIDs }));
+  const viewersV2 = useSelector(DiagramV2.diagramsViewersByIDsSelector, { ids: diagramIDs });
 
   if (!canViewCollaborators) return null;
 

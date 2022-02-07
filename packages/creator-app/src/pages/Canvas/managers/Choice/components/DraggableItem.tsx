@@ -59,13 +59,14 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
   },
   ref
 ) => {
+  const platformItem = getDistinctPlatformValue(platform, item);
   const intents = useSelector(IntentV2.allPlatformIntentsSelector);
-  const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
+  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: platformItem.intent });
+  const goToIntent = useSelector(IntentV2.platformIntentByIDSelector, { id: platformItem.goTo?.intentID });
 
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
-  const platformItem = getDistinctPlatformValue(platform, item);
   const patchPlatformData = React.useCallback(
     (patch: Partial<Realtime.NodeData.InteractionChoice>) => onUpdate?.(setDistinctPlatformValue(platform, { ...platformItem, ...patch })),
     [onUpdate, platform, platformItem]
@@ -75,9 +76,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
     ({ intent: intentID }: { intent: string | null }) => patchPlatformData({ goTo: { ...platformItem.goTo, intentID } }),
     [patchPlatformData, platformItem]
   );
-
-  const intent = platformItem.intent ? getIntentByID(platformItem.intent) : null;
-  const goToIntent = platformItem.goTo?.intentID ? getIntentByID(platformItem.goTo.intentID) : null;
 
   // filter out intents already used in interaction block
   const availableIntents = React.useMemo(

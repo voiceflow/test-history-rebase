@@ -2,6 +2,7 @@ import { Utils } from '@voiceflow/common';
 import * as Normal from 'normal-store';
 
 import { BlockType } from '@/constants';
+import { flattenOutPorts } from '@/ducks/creatorV2/utils';
 import { Reducer } from '@/store/types';
 import { PathPoint } from '@/types';
 import { getNodesGroupCenter } from '@/utils/node';
@@ -17,7 +18,6 @@ import {
   addBlockToState,
   addNodeToState,
   buildNewNode,
-  getAllOutPortIDs,
   getLinkIDsByPortID,
   patchNodeInState,
   removeAllLinksFromState,
@@ -48,7 +48,7 @@ export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state
       const terminalBlock = Normal.getOne(state.nodes, parentNode.combinedNodes[parentNode.combinedNodes.length - 1]);
 
       if (terminalBlock) {
-        const outLinkIDs = getAllOutPortIDs(terminalBlock).flatMap(getLinkIDsByPortID(state));
+        const outLinkIDs = flattenOutPorts(terminalBlock.ports).flatMap(getLinkIDsByPortID(state));
 
         additionalActions.push(removeAllLinksFromState(outLinkIDs));
       }
@@ -64,7 +64,7 @@ export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state
   }
 
   // constructing a new combined block
-  const parentNodeOutLinkIDs = getAllOutPortIDs(parentNode).flatMap(getLinkIDsByPortID(state));
+  const parentNodeOutLinkIDs = flattenOutPorts(parentNode.ports).flatMap(getLinkIDsByPortID(state));
 
   const mergedNode = nodeFactory(mergedNodeID, {
     type: BlockType.COMBINED,
@@ -72,9 +72,7 @@ export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state
     y: parentNode.y,
     combinedNodes: [parentNode.id, node.id],
   });
-  const mergedData = blockNodeDataFactory(mergedNodeID, {
-    type: BlockType.COMBINED,
-  });
+  const mergedData = blockNodeDataFactory(mergedNodeID);
 
   newNode.parentNode = mergedNodeID;
 

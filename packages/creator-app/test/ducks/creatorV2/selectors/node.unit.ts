@@ -209,9 +209,9 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
       });
     });
 
-    describe('allNodesByIDsSelector()', () => {
+    describe('nodesByIDsSelector()', () => {
       it('select a composed block node by ID', () => {
-        const result = select((state) => CreatorV2.allNodesByIDsSelector(state, { ids: [BLOCK_NODE.nodeID, STEP_NODE.nodeID] }), V2_FEATURE_STATE);
+        const result = select((state) => CreatorV2.nodesByIDsSelector(state, { ids: [BLOCK_NODE.nodeID, STEP_NODE.nodeID] }), V2_FEATURE_STATE);
 
         expect(result).to.eql([
           {

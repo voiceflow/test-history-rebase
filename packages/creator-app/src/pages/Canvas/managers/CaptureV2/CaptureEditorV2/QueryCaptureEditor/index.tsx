@@ -42,13 +42,10 @@ const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeD
 
   const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
 
-  const onSelectSlot = React.useCallback(
-    (slotID?: string | null) => {
-      if (!slotID) return;
-      entityCapture(slotID);
-    },
-    [getSlotByID]
-  );
+  const onSelectSlot = React.useCallback((slotID?: string | null) => {
+    if (!slotID) return;
+    entityCapture(slotID);
+  }, []);
   const addSlot = React.useCallback(
     async (value = '') => {
       const slot = await onAddSlot(value);
@@ -67,7 +64,7 @@ const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeD
         return 'Entire user reply';
       }
 
-      const slot = getSlotByID(slotID);
+      const slot = getSlotByID({ id: slotID });
 
       if (slot) {
         return `{${slot.name}}`;

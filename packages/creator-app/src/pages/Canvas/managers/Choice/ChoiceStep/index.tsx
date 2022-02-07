@@ -62,7 +62,7 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch
 );
 
 const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = ({
-  node,
+  ports,
   data,
   platform,
   variant,
@@ -71,11 +71,11 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
 
   const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
-  const choicesByPortID = useSyncedLookup(node.ports.out.dynamic, data.choices);
+  const choicesByPortID = useSyncedLookup(ports.out.dynamic, data.choices);
 
   const choices = React.useMemo(
     () =>
-      node.ports.out.dynamic
+      ports.out.dynamic
         .filter((portID) => choicesByPortID[portID])
         .map<ChoiceItem>((portID) => {
           const { id, goTo, intent, action } = getDistinctPlatformValue(platform, choicesByPortID[portID]);
@@ -93,17 +93,17 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
             onAttachmentClick: () => goToIntent && goToInteractionModelEntity(InteractionModelTabType.INTENTS, goToIntent.id),
           };
         }),
-    [platform, choicesByPortID, intentsMap, node.ports.out.dynamic]
+    [platform, choicesByPortID, intentsMap, ports.out.dynamic]
   );
 
   return (
     <ChoiceStep
-      nodeID={node.id}
+      nodeID={data.nodeID}
       choices={choices}
       noMatch={data.else}
       noReply={data.noReply}
-      noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
-      noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
+      noMatchPortID={ports.out.builtIn[Models.PortType.NO_MATCH]}
+      noReplyPortID={ports.out.builtIn[Models.PortType.NO_REPLY]}
       variant={variant}
     />
   );

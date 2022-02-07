@@ -64,8 +64,8 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
     return (...args: Parameters<T>): DispatchResult<ReturnType<T>> => this.engine.store.dispatch(dispatcher(...args));
   }
 
-  select<T>(selector: Selector<T>) {
-    return this.engine.select(selector);
+  select<T, A extends any[]>(selector: Selector<T, A>, ...args: A) {
+    return this.engine.select(selector, ...args);
   }
 
   /**
@@ -86,11 +86,15 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
   }
 }
 
-export function nodeFactory(
+export function nodeDescriptorFactory(
   type: BlockType,
   factoryData?: Partial<Realtime.NodeData<unknown>>,
   options?: { defaultVoice: string; canvasNodeVisibility: BaseNode.Utils.CanvasNodeVisibility; features?: FeatureFlagMap }
 ): { node: Omit<Creator.NodeDescriptor, 'id'>; data: Creator.DataDescriptor } {
+  if (type === BlockType.COMMENT || type === BlockType.CHOICE_OLD) {
+    throw new Error('attempted to create a deprecated node');
+  }
+
   const config = getManager(type);
 
   const {

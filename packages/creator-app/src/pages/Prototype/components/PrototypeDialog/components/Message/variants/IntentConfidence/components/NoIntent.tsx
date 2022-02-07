@@ -41,7 +41,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   const { open: openIMM, isOpened: isOpenedIMM } = useModals(ModalType.INTERACTION_MODEL);
   const [initialUtterances, setInitialUtterances] = React.useState<Realtime.IntentInput[] | null>(null);
   const [targetIntentID, setTargetIntentID] = React.useState<string | null>(null);
-  const selectIntentByID = useSelector(IntentV2.getIntentByIDSelector);
+  const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
   const activeTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
   const dispatchAddUtteranceToIntent = useDispatch(Transcript.setUtteranceAddedTo);
   const [isDropdownOpened, setIsDropdownOpened] = React.useState(false);
@@ -50,7 +50,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     setChildDropdownIsOpened(isDropdownOpened);
   }, [isDropdownOpened]);
 
-  const addedIntent = utteranceAddedToIntentID ? selectIntentByID(utteranceAddedToIntentID) : null;
+  const addedIntent = utteranceAddedToIntentID ? getIntentByID({ id: utteranceAddedToIntentID }) : null;
 
   const resetStates = () => {
     setInitialUtterances(null);
@@ -60,7 +60,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   const handleOpenIMM = (intentID: string) => {
     const params = new URLSearchParams();
 
-    const targetIntent = selectIntentByID(intentID);
+    const targetIntent = getIntentByID({ id: intentID });
     setInitialUtterances(targetIntent?.inputs ?? []);
 
     params.append(PREFILLED_UTTERANCE_PARAM, utterance);
@@ -85,7 +85,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   const handleIMMClose = async (intentID: string, initialUtterancesArray: Realtime.IntentInput[]) => {
     if (!activeTranscriptID) return;
 
-    const targetIntent = selectIntentByID(intentID);
+    const targetIntent = getIntentByID({ id: intentID });
     if (!targetIntent) return;
 
     const updatedUtterances = targetIntent.inputs;

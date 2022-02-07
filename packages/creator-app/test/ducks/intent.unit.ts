@@ -37,11 +37,11 @@ suite(Intent, MOCK_STATE)('Ducks - Intent', ({ expect, describeCRUDReducer, desc
         }));
 
         expect(
-          select(IntentV2.intentsUsingSlotSelector, {
+          select((state) => IntentV2.intentsUsingSlotSelector(state, { id: slotID }), {
             [Intent.STATE_KEY]: normalize([...intentWithSlot, ...intentWithoutSlot]),
             [IntentV2.STATE_KEY]: createCRUDState(),
             [Feature.STATE_KEY]: { features: {} },
-          })(slotID)
+          })
         ).to.eql(intentWithSlot);
       });
     });

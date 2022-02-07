@@ -9,7 +9,7 @@ import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
 import { PageProgressBar, RESERVED_JS_WORDS } from '@/constants';
 import * as Account from '@/ducks/account';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -273,7 +273,7 @@ export const convertToComponent =
     const diagram = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
 
     const nodeIDMap = nodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
-    const allNodesLinks = nodes.flatMap((node) => Creator.linksByNodeIDSelector(state)(node.id));
+    const allNodesLinks = nodes.flatMap((node) => CreatorV2.linksByNodeIDSelector(state, { id: node.id }));
     const incomingLinks = allNodesLinks.filter(({ source, target }) => nodeIDMap[target.nodeID] && !nodeIDMap[source.nodeID]);
     const outgoingLinks = allNodesLinks.filter(({ source, target }) => !nodeIDMap[target.nodeID] && nodeIDMap[source.nodeID]);
 
@@ -543,7 +543,7 @@ export const saveActiveDiagram = (): Thunk => async (_, getState) => {
  */
 export const saveActiveDiagramVariables = (): Thunk => async (_dispatch, getState) => {
   const state = getState();
-  const diagramID = Creator.creatorDiagramIDSelector(state);
+  const diagramID = CreatorV2.activeDiagramIDSelector(state);
   const variables = DiagramV2.localVariablesByDiagramIDSelector(state, { id: diagramID });
   const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
   if (isAtomicActions) return;
@@ -557,7 +557,7 @@ export const saveActiveDiagramVariables = (): Thunk => async (_dispatch, getStat
 export const addActiveDiagramVariable =
   (variable: string, creationType: CanvasCreationType): Thunk =>
   (dispatch, getState) => {
-    const activeDiagramID = Creator.creatorDiagramIDSelector(getState());
+    const activeDiagramID = CreatorV2.activeDiagramIDSelector(getState());
 
     Errors.assertDiagramID(activeDiagramID);
 
@@ -567,7 +567,7 @@ export const addActiveDiagramVariable =
 export const removeActiveDiagramVariable =
   (variable: string): Thunk =>
   (dispatch, getState) => {
-    const activeDiagramID = Creator.creatorDiagramIDSelector(getState());
+    const activeDiagramID = CreatorV2.activeDiagramIDSelector(getState());
 
     Errors.assertDiagramID(activeDiagramID);
 

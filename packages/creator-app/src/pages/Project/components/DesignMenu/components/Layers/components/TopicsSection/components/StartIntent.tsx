@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine, useSelector } from '@/hooks';
 
@@ -19,9 +19,9 @@ const StartIntent: React.FC<StartIntentProps> = ({ isActive, diagramID, focusedN
   const getEngine = useEventualEngine();
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
 
-  const startNodeID = useSelector(Creator.startNodeIDSelector);
-  const getStartNodeData = useSelector(Creator.dataByNodeIDSelector);
-  const isRootDiagramActive = useSelector(Creator.isRootDiagramActiveSelector);
+  const startNodeID = useSelector(CreatorV2.startNodeIDSelector);
+  const startNodeData = useSelector(CreatorV2.nodeDataByIDSelector, { id: startNodeID }) as Realtime.NodeData<Realtime.NodeData.Start> | null;
+  const isRootDiagramActive = useSelector(CreatorV2.isRootDiagramActiveSelector);
 
   const onClickRootItem = () => {
     const engine = getEngine();
@@ -36,8 +36,6 @@ const StartIntent: React.FC<StartIntentProps> = ({ isActive, diagramID, focusedN
       goToDiagram(diagramID, 'start');
     }
   };
-
-  const startNodeData = startNodeID ? getStartNodeData<Realtime.NodeData.Start>(startNodeID) : null;
 
   const startIntentLabel = startNodeData?.label || 'Project starts here';
 

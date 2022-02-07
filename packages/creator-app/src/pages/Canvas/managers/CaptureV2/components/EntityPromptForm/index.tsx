@@ -14,13 +14,12 @@ export const ENTITY_PROMPT_PATH_TYPE = 'entityPrompt';
 
 const EntityPromptForm: React.FC<NodeEditorPropsType<Realtime.NodeData.CaptureV2>> = ({ data, onChange, activePath, platform }) => {
   const isChatbot = isChatbotPlatform(platform);
-  const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
 
   const slots = data.intent?.slots || [];
-  const slotID = activePath.id;
-
   const slotIDs = React.useMemo(() => slots.map(({ id }) => id), [slots]);
-  const usedSlots = React.useMemo(() => slotIDs.map((id) => getSlotByID(id)).filter((slot): slot is Realtime.Slot => !!slot), [slotIDs.join('')]);
+  const usedSlots = useSelector(SlotV2.slotsByIDsSelector, { ids: slotIDs });
+
+  const slotID = activePath.id;
 
   const slot = slots.find(({ id }) => id === slotID);
 

@@ -33,7 +33,7 @@ export const useMergeInfo = (index: number) => {
     };
   }
 
-  const mergeSource = engine.getNodeByID(engine.merge.sourceNodeID!);
+  const mergeSource = engine.getNodeByID(engine.merge.sourceNodeID);
 
   if (!mergeSource || isMarkupBlockType(mergeSource.type)) {
     return {
@@ -41,8 +41,8 @@ export const useMergeInfo = (index: number) => {
     };
   }
 
-  if (mergeSource.parentNode) {
-    const parentNode = engine.getNodeByID(mergeSource.parentNode);
+  const parentNode = engine.getNodeByID(mergeSource.parentNode);
+  if (mergeSource.parentNode && parentNode) {
     const sourceIndex = parentNode.combinedNodes.indexOf(mergeSource.id);
 
     return {
@@ -58,8 +58,8 @@ export const useMergeInfo = (index: number) => {
   const lastChildNode = engine.getNodeByID(lastChildNodeID);
 
   return {
-    mustBeFirst: NO_IN_PORT_NODES.has(firstChildNode?.type),
-    mustBeLast: getManager(lastChildNode?.type)?.mergeTerminator,
+    mustBeFirst: !!firstChildNode?.type && NO_IN_PORT_NODES.has(firstChildNode.type),
+    mustBeLast: !!lastChildNode?.type && getManager(lastChildNode.type)?.mergeTerminator,
   };
 };
 

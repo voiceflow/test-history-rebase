@@ -6,7 +6,7 @@ import { useSelector } from '@/hooks';
 
 const ProductSelect = ({ value, onChange }) => {
   const products = useSelector(ProductV2.allProductsSelector);
-  const selected = useSelector((state) => ProductV2.productByIDSelector(state, { id: value }));
+  const selected = useSelector(ProductV2.productByIDSelector, { id: value });
 
   return (
     <Select

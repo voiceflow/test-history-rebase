@@ -99,29 +99,6 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, stub, describeEffect
       });
     });
 
-    describe('getProductByIDSelector()', () => {
-      it('select product from the legacy store', () => {
-        const product = { id: PRODUCT_ID };
-        const productState = normalize([product]);
-
-        const result = Product.getProductByIDSelector(createState(MOCK_STATE, { [ProductV1.STATE_KEY]: productState }))(PRODUCT_ID);
-
-        expect(result).to.eq(product);
-      });
-
-      it('select known product', () => {
-        const result = Product.getProductByIDSelector(createState(MOCK_STATE, v2FeatureState))(PRODUCT_ID);
-
-        expect(result).to.eq(PRODUCT);
-      });
-
-      it('select unknown product', () => {
-        const result = Product.getProductByIDSelector(createState(MOCK_STATE, v2FeatureState))('foo');
-
-        expect(result).to.be.null;
-      });
-    });
-
     describe('productsByIDsSelector()', () => {
       it('select products from the legacy store', () => {
         const product = { id: DIAGRAM_ID };

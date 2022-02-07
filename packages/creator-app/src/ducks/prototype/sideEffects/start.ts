@@ -3,7 +3,7 @@ import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
 import { BlockType } from '@/constants';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
 import { SyncThunk, ThunkDispatch } from '@/store/types';
 
@@ -14,7 +14,7 @@ import { Context, PrototypeStatus } from '../types';
 const INVALID_STARTING_BLOCK_TYPES = [BlockType.INTENT];
 
 const getValidStartingNode = (
-  getNodeByID: (id: string) => Realtime.Node,
+  getNodeByID: (id: string) => Realtime.Node | null,
   getLinkedNodeIDsByNodeID: (id: string) => string[],
   getLinkIDsByNodeID: (id: string) => string[],
   dispatch: ThunkDispatch,
@@ -23,6 +23,7 @@ const getValidStartingNode = (
   if (!nodeID) return null;
 
   const targetNode = getNodeByID(nodeID);
+  if (!targetNode) return null;
 
   // this logic is to handle the edgecase where users try to start on a intent block,
   // which doesn't work based on the data return from the intent block handler
@@ -37,7 +38,7 @@ const getValidStartingNode = (
   // there should only be one, since the invalid starting blocks cannot have in-ports
   const linkedNodeID = getLinkedNodeIDsByNodeID(nodeID)[0];
   const linkedNode = getNodeByID(linkedNodeID);
-  const targetNodeID = linkedNode.combinedNodes[0] ?? linkedNode.id;
+  const targetNodeID = linkedNode?.combinedNodes[0] ?? linkedNode?.id;
 
   const invalidBlockOutLinkID = getLinkIDsByNodeID(nodeID)[0];
   dispatch(updatePrototype({ activePathLinkIDs: [invalidBlockOutLinkID!] }));
@@ -53,11 +54,11 @@ const startPrototype =
     const projectID = Session.activeProjectIDSelector(state);
     const variables = prototypeVariablesSelector(state);
     const activeDiagramID = Session.activeDiagramIDSelector(state);
-    const linkIDsByNodeID = Creator.linkIDsByNodeIDSelector(state);
-    const getLinkedNodeIDsByNodeID = Creator.linkedNodeIDsByNodeIDSelector(state);
-    const nodeSelector = Creator.nodeByIDSelector(state);
-    const targetNodeID = getValidStartingNode(nodeSelector, getLinkedNodeIDsByNodeID, linkIDsByNodeID, dispatch, nodeID) || undefined;
-    const startNodeID = Creator.startNodeIDSelector(state);
+    const getLinkIDsByNodeID = (nodeID: string) => CreatorV2.linkIDsByNodeIDSelector(state, { id: nodeID });
+    const getLinkedNodeIDsByNodeID = (nodeID: string) => CreatorV2.linkedNodeIDsByNodeIDSelector(state, { id: nodeID });
+    const getNodeByID = (nodeID: string) => CreatorV2.nodeByIDSelector(state, { id: nodeID });
+    const targetNodeID = getValidStartingNode(getNodeByID, getLinkedNodeIDsByNodeID, getLinkIDsByNodeID, dispatch, nodeID) || undefined;
+    const startNodeID = CreatorV2.startNodeIDSelector(state);
 
     Errors.assertDiagramID(activeDiagramID);
 
@@ -81,7 +82,7 @@ const startPrototype =
     let prototypeStartNodeID = startNodeID;
 
     if (nodeID) {
-      const parentNodeID = nodeSelector(nodeID).parentNode;
+      const parentNodeID = getNodeByID(nodeID)?.parentNode;
       prototypeStartNodeID = parentNodeID || nodeID;
     }
 

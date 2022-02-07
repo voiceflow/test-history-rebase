@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
 import { BlockVariant } from '@/constants/canvas';
-import { PartialModel } from '@/models';
+import { flattenAllPorts, flattenOutPorts } from '@/ducks/creatorV2/utils';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import { nodeFactory, portFactory } from './factories';
@@ -45,13 +45,8 @@ export const getJoiningLinkIDs =
       : union;
   };
 
-export const getAllOutPortIDs = (node: Realtime.Node): string[] => [
-  ...node.ports.out.dynamic,
-  ...Object.values(node.ports.out.builtIn).filter(Boolean),
-];
-
 export const getOutgoingLinkIDs = (state: DiagramState, node: Realtime.Node): string[] =>
-  getAllOutPortIDs(node).flatMap((portID) => getLinkIDsByPortID(state)(portID));
+  flattenOutPorts(node.ports).flatMap((portID) => getLinkIDsByPortID(state)(portID));
 
 export const getIncomingLinkIDs = (state: DiagramState, node: Realtime.Node): string[] =>
   node.ports.in.flatMap((portID) => getLinkIDsByPortID(state)(portID));
@@ -153,7 +148,7 @@ export const addAllLinksToState = (links: Realtime.Link[]): DiagramStateComposeR
 export const removeLinkFromState =
   (linkID: string) =>
   (state: DiagramState): DiagramState => {
-    const link = Utils.normalized.getNormalizedByKey(state.links, linkID);
+    const link = Normal.getOne(state.links, linkID);
 
     // the link is already removed
     if (!link) {
@@ -284,7 +279,7 @@ export const removeBlockFromState =
   (state: DiagramState): DiagramState =>
     Utils.functional.compose(
       removeAllLinksFromState(getLinkIDsByNodeID(state)(node.id)),
-      removeAllPortsFromState([...node.ports.in, ...getAllOutPortIDs(node)]),
+      removeAllPortsFromState(flattenAllPorts(node.ports)),
       removeNodeFromState(node)
     )(state);
 
@@ -398,7 +393,7 @@ export const buildLinksByNodeID = (links: Realtime.Link[]): DiagramState['linksB
 
 export const buildPortForNode =
   (nodeID: string) =>
-  (port: PartialModel<Realtime.Port>): Realtime.Port =>
+  (port: Realtime.PartialModel<Realtime.Port>): Realtime.Port =>
     portFactory(nodeID, port.id, port);
 
 export const buildNewNode = (node: NodeDescriptor, data: DataDescriptor): [Realtime.Node, Realtime.Port[], Realtime.NodeData<unknown>] => {

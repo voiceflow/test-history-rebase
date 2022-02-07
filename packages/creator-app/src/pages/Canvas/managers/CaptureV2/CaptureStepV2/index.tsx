@@ -66,8 +66,8 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({
 );
 
 const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = ({
+  ports,
   data,
-  node,
   platform,
   variant,
 }) => {
@@ -81,10 +81,10 @@ const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.
       noReply={data.noReply}
       noMatch={data.noMatch}
       variable={data.variable}
-      nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
       captureType={data.captureType}
-      noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
-      noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
+      noReplyPortID={ports.out.builtIn[Models.PortType.NO_REPLY]}
+      noMatchPortID={ports.out.builtIn[Models.PortType.NO_MATCH]}
       variant={variant}
     />
   );

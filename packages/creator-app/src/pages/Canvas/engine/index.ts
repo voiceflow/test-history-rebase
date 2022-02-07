@@ -1,4 +1,5 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import { Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { logger } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
@@ -14,6 +15,7 @@ import { FeatureFlag } from '@/config/features';
 import { BlockType, PageProgressBar } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
@@ -23,6 +25,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
+import * as Viewport from '@/ducks/viewport';
 import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { useMouseMove } from '@/hooks';
 import { CanvasAction } from '@/pages/Canvas/constants';
@@ -179,11 +182,12 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   select = <T, A extends any[]>(selector: (state: State, ...args: A) => T, ...args: A): T => selector(this.store.getState(), ...args);
 
-  getNodeByID = (nodeID: string) => this.select(Creator.nodeByIDSelector)(nodeID);
+  /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+  getNodeByID = (nodeID: Nullish<string>) => this.select(CreatorV2.nodeByIDSelector, { id: nodeID });
 
   getZoomType = () => this.select(UI.zoomTypeSelector);
 
-  getDataByNodeID = <T>(nodeID: string): Realtime.NodeData<T> => this.select(Creator.dataByNodeIDSelector)(nodeID);
+  getDataByNodeID = <T>(nodeID: string) => this.select(CreatorV2.nodeDataByIDSelector, { id: nodeID }) as Realtime.NodeData<T> | null;
 
   isNodeMovementLocked = (nodeID: string) => this.select(RealtimeDuck.isNodeMovementLockedSelector)(nodeID);
 
@@ -193,29 +197,29 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   getDeleteLockedNodes = () => this.select(RealtimeDuck.deletionLockedNodesSelector);
 
-  getLinkByID = (linkID: string) => this.select(Creator.linkByIDSelector)(linkID);
+  getLinkByID = (linkID: string) => this.select(CreatorV2.linkByIDSelector, { id: linkID });
 
-  getPortByID = (portID: string) => this.select(Creator.portByIDSelector)(portID);
+  getPortByID = (portID: string) => this.select(CreatorV2.portByIDSelector, { id: portID });
 
-  hasLinksByPortID = (portID: string) => this.select(Creator.hasLinksByPortIDSelector)(portID);
+  hasLinksByPortID = (portID: string) => this.select(CreatorV2.hasLinksByPortIDSelector, { id: portID });
 
-  hasLinksByNodeID = (nodeID: string) => this.select(Creator.hasLinksByNodeIDSelector)(nodeID);
+  hasLinksByNodeID = (nodeID: string) => this.select(CreatorV2.hasLinksByNodeIDSelector, { id: nodeID });
 
   getThreadIDsByNodeID = (nodeID: string) => this.select(Thread.threadIDsByNodeIDSelector)(nodeID);
 
-  getLinkIDsByPortID = (portID: string) => this.select(Creator.linkIDsByPortIDSelector)(portID);
+  getLinkIDsByPortID = (portID: string) => this.select(CreatorV2.linkIDsByPortIDSelector, { id: portID });
 
-  getPortByPortID = (portID: string) => this.select(Creator.portByIDSelector)(portID);
+  getPortByPortID = (portID: string) => this.select(CreatorV2.portByIDSelector, { id: portID });
 
-  getLinkIDsByNodeID = (nodeID: string) => this.select(Creator.linkIDsByNodeIDSelector)(nodeID);
+  getLinkIDsByNodeID = (nodeID: string) => this.select(CreatorV2.linkIDsByNodeIDSelector, { id: nodeID });
 
-  getRootNodeIDs = () => this.select(Creator.rootNodeIDsSelector);
+  getRootNodeIDs = () => this.select(CreatorV2.blockIDsSelector);
 
-  isRootNode = (nodeID: string) => this.select(Creator.isRootNodeSelector)(nodeID);
+  isRootNode = (nodeID: string) => this.select(CreatorV2.isBlockSelector, { id: nodeID });
 
   getDiagramByID = (diagramID: string) => this.select(DiagramV2.diagramByIDSelector, { id: diagramID });
 
-  isRootDiagram = () => this.select(Creator.isRootDiagramActiveSelector);
+  isRootDiagram = () => this.select(CreatorV2.isRootDiagramActiveSelector);
 
   getDiagramID = () => this.select(Session.activeDiagramIDSelector);
 
@@ -224,6 +228,19 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   isStraightLinks = () => this.select(ProjectV2.active.isStraightLinksSelector);
 
   currentPathName = () => this.select(Router.pathnameSelector);
+  /* eslint-enable @typescript-eslint/explicit-module-boundary-types */
+
+  isNodeOfType = (nodeID: Nullish<string>, types: BlockType | BlockType[] | ((type: BlockType) => boolean)): boolean => {
+    const nodeType = this.select(CreatorV2.nodeTypeByIDSelector, { id: nodeID });
+
+    if (!nodeType) return false;
+
+    if (typeof types === 'function') return types(nodeType);
+
+    if (Array.isArray(types)) return types.includes(nodeType);
+
+    return nodeType === types;
+  };
 
   // entity registration methods
   registerCanvas(canvas: CanvasAPI | null) {
@@ -317,11 +334,11 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   /**
    * render all missing links for the port with the given ID
    */
-  addSupportedLinks(portID: string) {
+  addSupportedLinks(portID: string): void {
     const links = this.getLinkIDsByPortID(portID)
       .filter((linkID) => !this.supportedLinks.includes(linkID))
       .map(this.getLinkByID)
-      .filter((link) => this.ports.has(link.source.portID) && this.ports.has(link.target.portID));
+      .filter((link): link is Realtime.Link => !!link && this.ports.has(link.source.portID) && this.ports.has(link.target.portID));
 
     if (links.length) {
       this.supportedLinks.push(...links.map((link) => link.id));
@@ -331,9 +348,9 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   /**
    * update the store entry for the viewport
    */
-  updateViewport(x: number, y: number, zoom: number) {
+  updateViewport(diagramID: string, x: number, y: number, zoom: number): void {
     this.emitter.emit(CanvasAction.IDLE);
-    this.store.dispatch(Creator.updateViewport({ x, y, zoom }));
+    this.store.dispatch(Viewport.updateViewportForDiagram(diagramID, { x, y, zoom }));
     this.comment.generateCandidates();
   }
 
@@ -376,12 +393,11 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     this.transformation.reset();
   }
 
-  _getNextAvailableSibling(targetNodeID: string): string | null {
-    const { parentNode } = this.getNodeByID(targetNodeID);
-    const parentNodeData = parentNode ? this.getNodeByID(parentNode) : null;
-    if (!parentNodeData) {
-      return null;
-    }
+  private getNextAvailableSibling(targetNodeID: string): string | null {
+    const node = this.getNodeByID(targetNodeID);
+
+    const parentNodeData = this.getNodeByID(node?.parentNode);
+    if (!parentNodeData) return null;
 
     const { combinedNodes } = parentNodeData;
     const targetIndex = combinedNodes.findIndex((id) => id === targetNodeID);
@@ -398,7 +414,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
       // keep reference to targets before clearing
       const activeTargets = this.activation.getTargets();
       const isSingleTarget = activeTargets.length === 1;
-      const siblingID = isSingleTarget && focusNextChild ? this._getNextAvailableSibling(activeTargets[0]) : null;
+      const siblingID = isSingleTarget && focusNextChild ? this.getNextAvailableSibling(activeTargets[0]) : null;
 
       if (siblingID && focusNextChild) {
         this.focus.set(siblingID);
@@ -437,7 +453,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   focusStart(options: { open?: boolean } = {}): void {
     const diagram = this.select(DiagramV2.active.diagramSelector);
-    const isRootDiagramActive = this.select(Creator.isRootDiagramActiveSelector);
+    const isRootDiagramActive = this.select(CreatorV2.isRootDiagramActiveSelector);
 
     // topics do not have start node, focus first intent step
     if (!isRootDiagramActive && diagram?.type === BaseModels.DiagramType.TOPIC) {
@@ -527,10 +543,12 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
     const componentNode = this.getNodeByID(componentNodeID);
 
-    await Promise.all([
-      incomingLinkSource && this.link.add(incomingLinkSource.portID, componentNode.ports.in[0]),
-      outgoingLinkTarget && this.link.add(componentNode.ports.out.builtIn[BaseModels.PortType.NEXT]!, outgoingLinkTarget.portID),
-    ]);
+    if (componentNode) {
+      await Promise.all([
+        incomingLinkSource && this.link.add(incomingLinkSource.portID, componentNode.ports.in[0]),
+        outgoingLinkTarget && this.link.add(componentNode.ports.out.builtIn[BaseModels.PortType.NEXT]!, outgoingLinkTarget.portID),
+      ]);
+    }
 
     PageProgress.stop(PageProgressBar.COMPONENT_CREATING);
 
@@ -558,9 +576,9 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
 const createEngine = moize.simple((...args: ConstructorParameters<typeof Engine>) => new Engine(...args));
 
-function useEngine() {
+const useEngine = () => {
   const store = useStore();
-  const diagramID = useSelector(Creator.creatorDiagramIDSelector);
+  const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const mousePosition = React.useContext(MousePositionContext);
   const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
   const engine = React.useMemo(() => createEngine(store as any, mousePosition!, realtimeSubscription), []);
@@ -576,6 +594,6 @@ function useEngine() {
   );
 
   return engine;
-}
+};
 
 export default useEngine;

@@ -36,7 +36,7 @@ export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, nextPortID, o
   </Step>
 );
 
-const ConnectedFlowStep: ConnectedStep<Realtime.NodeData.Flow, Realtime.NodeData.FlowBuiltInPorts> = ({ node, data, variant }) => {
+const ConnectedFlowStep: ConnectedStep<Realtime.NodeData.Flow, Realtime.NodeData.FlowBuiltInPorts> = ({ ports, data, variant }) => {
   const diagramMap = React.useContext(DiagramMapContext)!;
 
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
@@ -50,7 +50,7 @@ const ConnectedFlowStep: ConnectedStep<Realtime.NodeData.Flow, Realtime.NodeData
   const label = data.diagramID ? diagramMap[data.diagramID]?.name : null;
 
   return (
-    <FlowStep label={label} nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} onClickFlow={goToDiagram} variant={variant} />
+    <FlowStep label={label} nodeID={data.nodeID} nextPortID={ports.out.builtIn[Models.PortType.NEXT]} onClickFlow={goToDiagram} variant={variant} />
   );
 };
 

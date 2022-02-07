@@ -27,13 +27,13 @@ export const PromptStep: React.FC<PromptStepProps> = ({ nodeID, noMatch, noReply
   </Step>
 );
 
-const ConnectedPromptStep: ConnectedStep<Realtime.NodeData.Prompt, Realtime.NodeData.PromptBuiltInPorts> = ({ node, data, variant }) => (
+const ConnectedPromptStep: ConnectedStep<Realtime.NodeData.Prompt, Realtime.NodeData.PromptBuiltInPorts> = ({ ports, data, variant }) => (
   <PromptStep
-    nodeID={node.id}
+    nodeID={data.nodeID}
     noMatch={data.noMatchReprompt}
     noReply={data.noReply}
-    noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
-    noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
+    noMatchPortID={ports.out.builtIn[Models.PortType.NO_MATCH]}
+    noReplyPortID={ports.out.builtIn[Models.PortType.NO_REPLY]}
     variant={variant}
   />
 );

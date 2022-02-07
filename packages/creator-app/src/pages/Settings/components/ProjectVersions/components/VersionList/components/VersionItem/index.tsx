@@ -33,9 +33,8 @@ interface Index {
 const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
   const { open: openConfirmModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const memberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+  const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
   const [trackingEvents] = useTrackingEvents();
-  const member = React.useMemo(() => memberByID(creatorID), [creatorID]);
   const { manualSave, autoSaveFromRestore } = version;
   const name = React.useMemo(() => {
     if (autoSaveFromRestore) return 'Automatic from Restore';

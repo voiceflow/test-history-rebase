@@ -46,9 +46,9 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
   },
   [RealtimeDuck.ResourceType.FLOWS]: async (data: Realtime.Diagram[]) => {
     const state = getState();
-    const getDiagramByID = DiagramV2.getDiagramByIDSelector(state);
+    const hasAllDiagrams = DiagramV2.hasDiagramsByIDsSelector(state, { ids: data.map(({ id }) => id) });
 
-    if (data.some(({ id }) => !getDiagramByID(id))) {
+    if (!hasAllDiagrams) {
       const versionID = Session.activeVersionIDSelector(state);
       const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
 

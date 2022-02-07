@@ -204,29 +204,6 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       });
     });
 
-    describe('getDiagramByIDSelector()', () => {
-      it('select diagram from the legacy store', () => {
-        const diagram = { id: DIAGRAM_ID };
-        const diagramState = normalize([diagram]);
-
-        const result = Diagram.getDiagramByIDSelector(createState(MOCK_STATE, { [DiagramV1.STATE_KEY]: diagramState }))(DIAGRAM_ID);
-
-        expect(result).to.eq(diagram);
-      });
-
-      it('select known diagram', () => {
-        const result = Diagram.getDiagramByIDSelector(createState(MOCK_STATE, v2FeatureState))(DIAGRAM_ID);
-
-        expect(result).to.eq(DIAGRAM);
-      });
-
-      it('select unknown diagram', () => {
-        const result = Diagram.getDiagramByIDSelector(createState(MOCK_STATE, v2FeatureState))('foo');
-
-        expect(result).to.be.null;
-      });
-    });
-
     describe('diagramsByIDsSelector()', () => {
       it('select diagrams from the legacy store', () => {
         const diagram = { id: DIAGRAM_ID };

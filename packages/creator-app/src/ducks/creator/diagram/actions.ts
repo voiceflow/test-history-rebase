@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { DiagramState } from '@/constants';
 import { createAction } from '@/ducks/utils';
-import { EntityMap, PartialModel } from '@/models';
+import { EntityMap } from '@/models';
 import { Action } from '@/store/types';
 import { Point } from '@/types';
 
@@ -73,11 +73,11 @@ export type AddWrappedNode = Action<DiagramAction.ADD_WRAPPED_NODE, { node: Node
 
 export type RemoveManyNodes = Action<DiagramAction.REMOVE_MANY_NODES, string[]>;
 
-export type AddOutDynamicPort = Action<DiagramAction.ADD_OUT_DYNAMIC_PORT, { nodeID: string; port: PartialModel<Realtime.Port> }>;
+export type AddOutDynamicPort = Action<DiagramAction.ADD_OUT_DYNAMIC_PORT, { nodeID: string; port: Realtime.PartialModel<Realtime.Port> }>;
 
 export type AddOutBuiltInPort = Action<
   DiagramAction.ADD_OUT_BUILT_IN_PORT,
-  { nodeID: string; port: PartialModel<Realtime.Port>; portType: Models.PortType }
+  { nodeID: string; port: Realtime.PartialModel<Realtime.Port>; portType: Models.PortType }
 >;
 
 export type RemoveOutDynamicPort = Action<DiagramAction.REMOVE_OUT_DYNAMIC_PORT, string>;
@@ -171,10 +171,10 @@ export const addWrappedNode = (node: NodeDescriptor, data: DataDescriptor, paren
 
 export const removeNodes = (nodeIDs: string[]): RemoveManyNodes => createAction(DiagramAction.REMOVE_MANY_NODES, nodeIDs);
 
-export const addOutDynamicPort = (nodeID: string, port: PartialModel<Realtime.Port>): AddOutDynamicPort =>
+export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): AddOutDynamicPort =>
   createAction(DiagramAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port });
 
-export const addOutBuiltInPort = (nodeID: string, portType: Models.PortType, port: PartialModel<Realtime.Port>): AddOutBuiltInPort =>
+export const addOutBuiltInPort = (nodeID: string, portType: Models.PortType, port: Realtime.PartialModel<Realtime.Port>): AddOutBuiltInPort =>
   createAction(DiagramAction.ADD_OUT_BUILT_IN_PORT, { nodeID, port, portType });
 
 export const removeOutBuiltInPort = (portType: Models.PortType, portID: string): RemoveOutBuiltInPort =>

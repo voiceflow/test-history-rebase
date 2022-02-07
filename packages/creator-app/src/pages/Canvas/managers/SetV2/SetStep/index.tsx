@@ -30,8 +30,8 @@ export const SetStep: React.FC<SetStepProps> = ({ title, nodeID, nextPortID, var
   </Step>
 );
 
-const ConnectedSetStep: ConnectedStep<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = ({ data, node, variant }) => (
-  <SetStep title={data.title} nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />
+const ConnectedSetStep: ConnectedStep<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = ({ ports, data, variant }) => (
+  <SetStep title={data.title} nodeID={data.nodeID} nextPortID={ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />
 );
 
 export default ConnectedSetStep;

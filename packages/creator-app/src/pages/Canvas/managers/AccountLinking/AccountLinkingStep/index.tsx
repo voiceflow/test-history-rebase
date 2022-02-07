@@ -32,7 +32,8 @@ export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfig
 );
 
 const ConnectedAccountLinkingStep: ConnectedStep<Realtime.NodeData.AccountLinking, Realtime.NodeData.AccountLinkingBuiltInPorts> = ({
-  node,
+  ports,
+  data,
   variant,
 }) => {
   const accountLinkingData = React.useContext(AccountLinkingContext)!;
@@ -41,8 +42,8 @@ const ConnectedAccountLinkingStep: ConnectedStep<Realtime.NodeData.AccountLinkin
 
   return (
     <AccountLinkingStep
-      nodeID={node.id}
-      nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+      nodeID={data.nodeID}
+      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
       isConfigured={!!accountLinkingData && notEmpty}
       variant={variant}
     />

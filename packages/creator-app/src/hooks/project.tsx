@@ -53,7 +53,7 @@ export const useDeleteProject = ({
     }
 
     try {
-      trackingEvents.trackProjectDelete({ versionID: getProjectByID(projectID)?.versionID, projectID });
+      trackingEvents.trackProjectDelete({ versionID: getProjectByID({ id: projectID })?.versionID, projectID });
 
       if (boardID) {
         await onDeleteProjectFromList(boardID, projectID);
@@ -147,7 +147,7 @@ export const useProjectOptions = ({
 
     onToggleLoadingModal(true);
 
-    trackingEvents.trackProjectDuplicate({ versionID: getProjectByID(projectID)?.versionID, projectID });
+    trackingEvents.trackProjectDuplicate({ versionID: getProjectByID({ id: projectID })?.versionID, projectID });
 
     await duplicateProject(projectID, workspace.id, boardID);
 

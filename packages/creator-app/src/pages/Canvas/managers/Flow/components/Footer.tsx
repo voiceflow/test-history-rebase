@@ -1,3 +1,5 @@
+import * as Realtime from '@realtime-sdk';
+import { ButtonVariant } from '@ui';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
@@ -5,7 +7,16 @@ import { Controls } from '@/pages/Canvas/components/Editor';
 
 import HelpTooltip from './HelpTooltip';
 
-const Footer = ({ diagram, hasVariableMapping, emptyMapping, startMapping, goToDiagram, blockType }) => (
+interface FooterProps {
+  diagram: Realtime.Diagram | null;
+  blockType: Realtime.BlockType;
+  hasVariableMapping: boolean;
+  emptyMapping: VoidFunction;
+  startMapping: VoidFunction;
+  goToDiagram: VoidFunction;
+}
+
+const Footer: React.FC<FooterProps> = ({ diagram, blockType, hasVariableMapping, emptyMapping, startMapping, goToDiagram }) => (
   <Controls
     menu={
       diagram ? (
@@ -23,17 +34,17 @@ const Footer = ({ diagram, hasVariableMapping, emptyMapping, startMapping, goToD
       {
         label: 'Enter Flow',
         onClick: goToDiagram,
-        variant: 'primary',
+        variant: ButtonVariant.PRIMARY,
         disabled: !diagram,
       },
     ]}
+    tutorialTitle="Flow Block Tutorial"
     tutorial={{
       content: <HelpTooltip />,
       blockType,
-      tutorialTitle: 'Flow Block Tutorial',
     }}
     anchor="What are flows?"
-  ></Controls>
+  />
 );
 
 export default Footer;

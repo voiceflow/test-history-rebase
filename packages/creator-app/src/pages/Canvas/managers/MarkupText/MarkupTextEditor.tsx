@@ -12,7 +12,7 @@ import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
 import { BackgroundColor, IconButton, IconButtonSeparator, TextAligns, TextStyles } from './components';
 
-export const MarkupTextEditor: React.FC<NodeEditorPropsType<Realtime.Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, engine }) => {
+export const MarkupTextEditor: React.FC<NodeEditorPropsType<Realtime.Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, data, engine }) => {
   const [key, editor] = engine.markup.useTextEditor(nodeID);
   const [trackingEvents] = useTrackingEvents();
 
@@ -45,7 +45,7 @@ export const MarkupTextEditor: React.FC<NodeEditorPropsType<Realtime.Markup.Node
           <TextColor />
         </MarkupSection>
 
-        <BackgroundColor nodeID={nodeID} />
+        <BackgroundColor nodeID={nodeID} data={data} />
       </Content>
     </ControlledEditorProvider>
   );

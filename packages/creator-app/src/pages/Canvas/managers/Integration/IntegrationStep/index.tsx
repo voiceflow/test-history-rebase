@@ -41,17 +41,17 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPort
 );
 
 const ConnectedIntegrationStep: ConnectedStep<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = ({
-  node,
+  ports,
   data,
   withPorts,
   variant,
 }) => (
   <IntegrationStep
     data={data}
-    nodeID={node.id}
+    nodeID={data.nodeID}
     withPorts={withPorts}
-    successPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
-    failurePortID={node.ports.out.builtIn[Models.PortType.FAIL]}
+    successPortID={ports.out.builtIn[Models.PortType.NEXT]}
+    failurePortID={ports.out.builtIn[Models.PortType.FAIL]}
     variant={variant}
   />
 );

@@ -54,7 +54,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, 
 const MemoizedPaymentStep = React.memo(PaymentStep);
 
 const ConnectedPaymentStep: ConnectedStep<Realtime.NodeData.Payment, Realtime.NodeData.PaymentBuiltInPorts> = ({
-  node,
+  ports,
   data,
   withPorts,
   variant,
@@ -66,11 +66,11 @@ const ConnectedPaymentStep: ConnectedStep<Realtime.NodeData.Payment, Realtime.No
   return (
     <MemoizedPaymentStep
       label={product?.name}
-      nodeID={node.id}
+      nodeID={data.nodeID}
       withPorts={withPorts}
       upsellMessage={product?.purchasePrompt}
-      successPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
-      failurePortID={node.ports.out.builtIn[Models.PortType.FAIL]}
+      successPortID={ports.out.builtIn[Models.PortType.NEXT]}
+      failurePortID={ports.out.builtIn[Models.PortType.FAIL]}
       variant={variant}
     />
   );

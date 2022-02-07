@@ -25,14 +25,12 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.Inten
   platform,
   pushToPath,
 }) => {
-  const getPlatformIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
+  const platformData = getDistinctPlatformValue(platform, data);
+  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: platformData.intent });
 
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
   const validateTopicAvailability = useDispatch(Creator.validateTopicAvailability);
-
-  const platformData = getDistinctPlatformValue(platform, data);
-  const intent = platformData.intent ? getPlatformIntentByID(platformData.intent) : null;
 
   const patchPlatformData = React.useCallback(
     (patch: Partial<Realtime.NodeData.Intent.PlatformData>) => onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),

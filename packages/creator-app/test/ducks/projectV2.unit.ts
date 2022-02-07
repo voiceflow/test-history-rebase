@@ -155,29 +155,6 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
       });
     });
 
-    describe('getProjectByIDSelector()', () => {
-      it('select project from the legacy store', () => {
-        const project = { id: PROJECT_ID };
-        const projectState = normalize([project]);
-
-        const result = Project.getProjectByIDSelector(createState(MOCK_STATE, { [ProjectV1.STATE_KEY]: projectState }))(PROJECT_ID);
-
-        expect(result).to.eq(project);
-      });
-
-      it('select known project', () => {
-        const result = Project.getProjectByIDSelector(createState(MOCK_STATE, v2FeatureState))(PROJECT_ID);
-
-        expect(result).to.eq(PROJECT);
-      });
-
-      it('select unknown project', () => {
-        const result = Project.getProjectByIDSelector(createState(MOCK_STATE, v2FeatureState))('foo');
-
-        expect(result).to.be.null;
-      });
-    });
-
     describe('projectsCountSelector()', () => {
       it('select count of projects from the legacy store', () => {
         const projects = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));

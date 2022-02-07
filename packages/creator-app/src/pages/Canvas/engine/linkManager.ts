@@ -43,6 +43,8 @@ class LinkManager extends EngineConsumer {
 
   isSupported(linkID: string) {
     const link = this.engine.getLinkByID(linkID);
+    if (!link) return false;
+
     const isPortReady = (relationship: 'source' | 'target') => !!this.engine.port.api(link[relationship].portID)?.isReady();
 
     return isPortReady('source') && isPortReady('target');
@@ -50,19 +52,25 @@ class LinkManager extends EngineConsumer {
 
   isActive(linkID: string) {
     const link = this.engine.getLinkByID(linkID);
+    if (!link) return false;
 
     return this.engine.node.isBranchActive(link.source.nodeID) || this.engine.node.isBranchActive(link.target.nodeID);
   }
 
   isVisible(linkID: string, platform: Constants.PlatformType) {
     const link = this.engine.getLinkByID(linkID);
+    if (!link) return false;
+
     const sourcePort = this.engine.getPortByID(link.source.portID);
+    if (!sourcePort) return false;
 
     return !sourcePort.platform || sourcePort.platform === platform;
   }
 
   getSourceTargetPoints(linkID: string) {
     const link = this.engine.getLinkByID(linkID);
+    if (!link) return null;
+
     const getPortRect = (relationship: 'source' | 'target') => this.engine.port.getRect(link[relationship].portID);
 
     return extractPoints(this.engine.canvas!, getPortRect('source'), getPortRect('target'));

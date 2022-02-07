@@ -1,3 +1,5 @@
+import { Nullish } from '@voiceflow/common';
+
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { Hotkey, HOTKEY_LABEL_MAP, PLATFORM_META_KEY_LABEL } from '@/keymap';
@@ -109,35 +111,17 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
 
 const BLOCKS_WITH_RENAME = [BlockType.COMBINED, BlockType.COMMAND, BlockType.START];
 
-const isStart = (nodeID: string, engine: Engine) => {
-  const node = engine.getNodeByID(nodeID);
+const isStart = (nodeID: Nullish<string>, engine: Engine) => engine.isNodeOfType(nodeID, BlockType.START);
 
-  if (!node) return false;
+const isBlock = (nodeID: Nullish<string>, engine: Engine) => engine.isNodeOfType(nodeID, BlockType.COMBINED);
 
-  return node.type === BlockType.START;
-};
-
-const isBlock = (nodeID: string, engine: Engine) => {
-  const node = engine.getNodeByID(nodeID);
-
-  if (!node) return false;
-
-  return node.type === BlockType.COMBINED;
-};
-
-const isMarkup = (nodeID: string, engine: Engine) => {
-  const node = engine.getNodeByID(nodeID);
-
-  if (!node) return false;
-
-  return isMarkupBlockType(node.type);
-};
+const isMarkup = (nodeID: Nullish<string>, engine: Engine) => engine.isNodeOfType(nodeID, isMarkupBlockType);
 
 const COMMENT_MENU_OPTION: ContextMenuOption<CanvasAction> = {
   label: 'Add comment',
   value: CanvasAction.ADD_COMMENT,
   hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING],
-  shouldRender: ({ target: nodeID }, { engine, showHintFeatures }) => showHintFeatures && !isMarkup(nodeID!, engine),
+  shouldRender: ({ target: nodeID }, { engine, showHintFeatures }) => showHintFeatures && !isMarkup(nodeID, engine),
 };
 
 export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
@@ -145,12 +129,12 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Block color',
     value: CanvasAction.COLOR_BLOCK,
     options: BLOCK_COLORS,
-    shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID!, engine) || isStart(nodeID!, engine),
+    shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID, engine) || isStart(nodeID, engine),
   },
   {
     label: 'Rename',
     value: CanvasAction.RENAME_BLOCK,
-    shouldRender: ({ target: nodeID }, { engine }) => BLOCKS_WITH_RENAME.includes(engine.getNodeByID(nodeID!)?.type),
+    shouldRender: ({ target: nodeID }, { engine }) => engine.isNodeOfType(nodeID, BLOCKS_WITH_RENAME),
   },
   COMMENT_MENU_OPTION,
   {
@@ -158,33 +142,31 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.DIVIDER,
     menuItemProps: { divider: true },
     shouldRender: ({ target: nodeID }, { engine, showHintFeatures }) =>
-      (showHintFeatures && !isMarkup(nodeID!, engine)) ||
-      (isBlock(nodeID!, engine) && !isStart(nodeID!, engine)) ||
-      BLOCKS_WITH_RENAME.includes(engine.getNodeByID(nodeID!)?.type),
+      (showHintFeatures && !isMarkup(nodeID, engine)) || isBlock(nodeID, engine) || engine.isNodeOfType(nodeID, BLOCKS_WITH_RENAME),
   },
   {
     label: 'Copy',
     value: CanvasAction.COPY_BLOCK,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.COPY],
-    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID!, engine),
+    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID, engine),
   },
   {
     label: 'Duplicate',
     value: CanvasAction.DUPLICATE_BLOCK,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.DUPLICATE],
-    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID!, engine),
+    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID, engine),
   },
   {
     label: 'Divider 2',
     value: CanvasAction.DIVIDER,
     menuItemProps: { divider: true },
-    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID!, engine),
+    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID, engine),
   },
   {
     label: 'Delete',
     value: CanvasAction.DELETE_BLOCK,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.DELETE],
-    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID!, engine),
+    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID, engine),
   },
 ];
 

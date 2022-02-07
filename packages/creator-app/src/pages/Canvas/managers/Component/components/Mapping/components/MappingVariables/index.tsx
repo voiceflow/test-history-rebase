@@ -18,7 +18,7 @@ interface MappingVariablesProps {
 
 const MappingVariables: React.FC<MappingVariablesProps> = ({ items, reverse, diagramID, mapManaged }) => {
   const activeVariables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
-  const componentVariables = useSelector((state) => DiagramV2.localVariablesByDiagramIDSelector(state, { id: diagramID }));
+  const componentVariables = useSelector(DiagramV2.localVariablesByDiagramIDSelector, { id: diagramID });
 
   const addLocalVariable = useDispatch(Diagram.addActiveDiagramVariable);
 

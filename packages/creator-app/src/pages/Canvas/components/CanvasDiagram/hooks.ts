@@ -20,7 +20,7 @@ export const useCursorControls = () => {
   const creatorID = useSelector(Account.userIDSelector)!;
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
   const awarenessMoveCursor = useSyncDispatch(Realtime.diagram.awareness.moveCursor);
-  const hasDiagramViewers = useSelector((state) => DiagramV2.hasExternalDiagramViewersByIDSelector(state, { id: diagramID }));
+  const hasDiagramViewers = useSelector(DiagramV2.hasExternalDiagramViewersByIDSelector, { id: diagramID });
   const prevCoords = React.useRef<Point | null>(null);
 
   const moveMouse = React.useCallback(
@@ -64,7 +64,7 @@ export const useCursorControls = () => {
 
   const zoomViewport = React.useCallback((calculateMovement: MovementCalculator) => engine.zoomViewport(calculateMovement), []);
 
-  const updateViewport = React.useCallback(({ x, y, zoom }: Viewport) => engine.updateViewport(x, y, zoom), []);
+  const updateViewport = React.useCallback(({ x, y, zoom }: Viewport) => engine.updateViewport(diagramID, x, y, zoom), [diagramID]);
 
   React.useEffect(() => {
     if (engine.canvas) {

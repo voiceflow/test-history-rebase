@@ -30,11 +30,11 @@ export const APLStep: React.FC<APLStepProps> = ({ label, nodeID, image, nextPort
   </Step>
 );
 
-const ConnectedAPLStep: ConnectedStep<Node.Visual.APLStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ node, data, variant }) => {
+const ConnectedAPLStep: ConnectedStep<Node.Visual.APLStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ ports, data, variant }) => {
   const label = data.aplType === Node.Visual.APLType.SPLASH ? transformVariablesToReadable(data.title) : data.jsonFileName;
   const image = isVariable(data.imageURL) ? null : data.imageURL;
 
-  return <APLStep nodeID={node.id} label={label} image={image} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />;
+  return <APLStep nodeID={data.nodeID} label={label} image={image} nextPortID={ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />;
 };
 
 export default ConnectedAPLStep;

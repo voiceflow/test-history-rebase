@@ -73,15 +73,15 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({
   );
 };
 
-const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = ({ node, data, variant }) => (
+const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = ({ ports, data, variant }) => (
   <ButtonsStep
-    nodeID={node.id}
+    nodeID={data.nodeID}
     buttons={data.buttons}
     noMatch={data.else}
     noReply={data.noReply}
-    noMatchPortID={node.ports.out.builtIn[Models.PortType.NO_MATCH]}
-    noReplyPortID={node.ports.out.builtIn[Models.PortType.NO_REPLY]}
-    dynamicPortIDs={node.ports.out.dynamic}
+    noMatchPortID={ports.out.builtIn[Models.PortType.NO_MATCH]}
+    noReplyPortID={ports.out.builtIn[Models.PortType.NO_REPLY]}
+    dynamicPortIDs={ports.out.dynamic}
     variant={variant}
   />
 );

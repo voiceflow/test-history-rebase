@@ -78,7 +78,7 @@ export const useTopics = (): TopicsAPI => {
           name: rootDiagramID === diagram.id && diagram.name === ROOT_DIAGRAM_NAME ? 'Home' : diagram.name,
           intentItems: diagram.intentStepIDs.map<TopicIntentItem>((stepID) => {
             const intentID = topicIntentStepMap[stepID] ?? null;
-            const intent = intentID ? getIntentByID(intentID) ?? null : null;
+            const intent = getIntentByID({ id: intentID });
 
             return { id: stepID, intent, intentID };
           }),

@@ -36,7 +36,7 @@ export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, nex
   </Step>
 );
 
-const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ node, data, variant }) => {
+const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ ports, data, variant }) => {
   const diagramMap = React.useContext(DiagramMapContext)!;
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 
@@ -51,8 +51,8 @@ const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtim
   return (
     <ComponentStep
       label={label}
-      nodeID={node.id}
-      nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+      nodeID={data.nodeID}
+      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
       onClickComponent={onClickComponent}
       variant={variant}
     />

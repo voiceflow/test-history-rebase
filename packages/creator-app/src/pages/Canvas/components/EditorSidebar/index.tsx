@@ -22,7 +22,7 @@ import EditorModal from './components/EditorModal';
 import { SidebarHeaderAction, SidebarProvider } from './contexts';
 import { useEditorPath, useUpdateData } from './hooks';
 
-const UNEDITABLE_BLOCKS = [BlockType.COMMENT, BlockType.MARKUP_IMAGE];
+const UNEDITABLE_BLOCKS = [BlockType.MARKUP_IMAGE];
 const EMPTY_HEADER_ACTIONS: SidebarHeaderAction[] = [];
 
 const EditSidebar = () => {

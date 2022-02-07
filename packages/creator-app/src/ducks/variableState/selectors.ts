@@ -2,6 +2,7 @@ import _sortBy from 'lodash/sortBy';
 import { createSelector } from 'reselect';
 
 import * as Prototype from '@/ducks/prototype';
+import { createCurriedSelector } from '@/ducks/utils';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 import { Variable, VariableValue } from '@/models';
 
@@ -11,9 +12,10 @@ export const {
   root: rootVariableStatesSelector,
   map: mapVariableStatesSelector,
   all: allVariableStatesSelector,
-  getByID: variableStatesByIDsSelector,
-  has: hasVariableStatesSelector,
+  byID: variableStateByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
+
+export const getVariableStateByIDSelector = createCurriedSelector(variableStateByIDSelector);
 
 export const selectedVariableStateId = createSelector([rootVariableStatesSelector], (variableStates) => variableStates?.selectedID);
 
@@ -28,13 +30,14 @@ export const createVariableList = (variables?: Record<string, VariableValue>): V
 export const selectAllProjectVariables = createSelector([Prototype.prototypeVariablesSelector], (prototypeVariables) =>
   createVariableList(prototypeVariables)
 );
+
 export const selectedVariablesStateVariables = createSelector(
-  [selectedVariableStateId, variableStatesByIDsSelector, selectAllProjectVariables],
+  [selectedVariableStateId, createCurriedSelector(variableStateByIDSelector), selectAllProjectVariables],
   (variableStateId, variableStatesById, allProjectVariables) => {
     if (variableStateId === ALL_PROJECT_VARIABLES_ID) {
       return allProjectVariables;
     }
 
-    return variableStateId ? createVariableList(variableStatesById(variableStateId)?.variables) : [];
+    return createVariableList(variableStatesById({ id: variableStateId })?.variables) ?? [];
   }
 );

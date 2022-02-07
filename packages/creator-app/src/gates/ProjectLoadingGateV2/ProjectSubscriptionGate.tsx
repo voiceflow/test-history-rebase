@@ -1,8 +1,6 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
-import { FeatureFlag } from '@/config/features';
-import { withFeatureGate } from '@/hocs';
 import { useProjectSubscription } from '@/hooks';
 
 import { useProjectChannelReconnect } from '../ProjectLoadingGate/hooks';
@@ -24,4 +22,4 @@ const ProjectSubscriptionGate: React.FC<ProjectSubscriptionGateProps> = ({ works
   );
 };
 
-export default withFeatureGate(FeatureFlag.ATOMIC_ACTIONS)(ProjectSubscriptionGate);
+export default ProjectSubscriptionGate;

@@ -8,11 +8,9 @@ import CaptureManager from './Capture';
 import CaptureManagerV2 from './CaptureV2';
 import CardManager from './Card';
 import ChoiceManager from './Choice';
-import ChoiceOldManager from './ChoiceOld';
 import CodeManager from './Code';
 import CombinedManager from './Combined';
 import CommandManager from './Command';
-import CommentManager from './Comment';
 import ComponentManager from './Component';
 import CustomPayloadManager from './CustomPayload';
 import DeprecatedManager from './Deprecated';
@@ -46,9 +44,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.TEXT]: TextManager,
   [BlockType.CHOICE]: ChoiceManager,
   [BlockType.BUTTONS]: ButtonsManager,
-  [BlockType.CHOICE_OLD]: ChoiceOldManager,
   [BlockType.COMBINED]: CombinedManager,
-  [BlockType.COMMENT]: CommentManager,
   [BlockType.COMMAND]: CommandManager,
   [BlockType.PAYLOAD]: CustomPayloadManager,
   [BlockType.DEPRECATED_CUSTOM_PAYLOAD]: CustomPayloadManager,

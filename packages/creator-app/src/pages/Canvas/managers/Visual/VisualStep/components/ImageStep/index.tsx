@@ -34,7 +34,7 @@ export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, image, next
   </Step>
 );
 
-const ConnectedImageStep: ConnectedStep<Node.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ node, data, variant }) => {
+const ConnectedImageStep: ConnectedStep<Node.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ ports, data, variant }) => {
   const label = getLabel(data);
   const size = data.device ? Constants.DEVICE_SIZE_MAP[data.device] : data.dimensions;
   const image = isVariable(data.image) ? null : data.image;
@@ -45,8 +45,8 @@ const ConnectedImageStep: ConnectedStep<Node.Visual.ImageStepData, Realtime.Node
     <ImageStep
       label={label}
       image={data.canvasVisibility === Node.Visual.CanvasVisibility.HIDDEN ? null : image}
-      nodeID={node.id}
-      nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+      nodeID={data.nodeID}
+      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
       aspectRatio={aspectRatio}
       variant={variant}
     />

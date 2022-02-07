@@ -38,6 +38,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
 
   isSourceNode(nodeID: string) {
     const port = this.engine.getPortByID(this.sourcePortID!);
+    if (!port) return false;
 
     return nodeID === port.nodeID;
   }

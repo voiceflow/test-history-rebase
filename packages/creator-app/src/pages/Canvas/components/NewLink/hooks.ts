@@ -118,8 +118,8 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         const straight = engine.isStraightLinks();
         const targetPort = engine.linkCreation.activeTargetPortID ? engine.getPortByID(engine.linkCreation.activeTargetPortID) : null;
         const sourcePort = engine.linkCreation.sourcePortID ? engine.getPortByID(engine.linkCreation.sourcePortID) : null;
-        const targetNode = targetPort ? engine.getNodeByID(targetPort.nodeID) : null;
-        const sourceNode = sourcePort ? engine.getNodeByID(sourcePort.nodeID) : null;
+        const targetNode = engine.getNodeByID(targetPort?.nodeID);
+        const sourceNode = engine.getNodeByID(sourcePort?.nodeID);
         const targetIsBlock = targetNode?.type === BlockType.COMBINED;
 
         points.current = nextPoints;

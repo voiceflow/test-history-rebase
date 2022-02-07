@@ -12,8 +12,6 @@ export const {
   map: mapTranscriptsSelector,
   all: allTranscriptsSelector,
   byID: transcriptByIDSelector,
-  findByIDs: transcriptsByIDsSelector,
-  has: hasTranscriptsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
 export const currentTranscriptIDSelector = createSelector([mapTranscriptsSelector, pathnameSelector], (_transcripts, pathname) => {

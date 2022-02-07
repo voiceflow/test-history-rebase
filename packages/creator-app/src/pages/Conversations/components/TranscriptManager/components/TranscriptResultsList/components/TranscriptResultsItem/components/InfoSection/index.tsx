@@ -1,13 +1,9 @@
-import { Box } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import { mapReportTagsSelector } from '@/ducks/reportTag';
-import { useSelector } from '@/hooks';
-import { ALL_BUILTIN_TAGS_ARRAY, Sentiment, SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
 
-import { Container, MetaContainer, Name } from './components';
+import { Container, MetaContainer, MetaInfoSection, Name } from './components';
 
 interface InfoSection {
   active: boolean;
@@ -18,43 +14,14 @@ interface InfoSection {
 }
 
 const InfoSection: React.FC<InfoSection> = ({ active, name, date, isRead, tags }) => {
-  const tagsMap = useSelector(mapReportTagsSelector);
   const formattedDate = `${dayjs(date).format('h:mm a, MMM Do')}`;
-  const MetaInfoSection = () => {
-    const customTags = tags.filter((tag) => !ALL_BUILTIN_TAGS_ARRAY.includes(tag as SystemTag | Sentiment));
-    if (!isRead) {
-      return (
-        <>
-          <Box display="inline" mr={6} ml={6}>
-            •
-          </Box>
-          <span>Unread</span>
-        </>
-      );
-    }
-    if (isRead && customTags.length > 0) {
-      return (
-        <>
-          <Box display="inline" mr={6} ml={6}>
-            •
-          </Box>
-          <span>
-            {tags.map((tag) => {
-              return tagsMap[tag]?.label;
-            })}
-          </span>
-        </>
-      );
-    }
-    return <></>;
-  };
 
   return (
     <Container className={ClassName.TRANSCRIPT_ITEM_META}>
       <Name>{name || 'Test User'}</Name>
       <MetaContainer className={ClassName.TRANSCRIPT_DATE} isActive={active}>
         {formattedDate}
-        <MetaInfoSection />
+        <MetaInfoSection tags={tags} isRead={isRead} />
       </MetaContainer>
     </Container>
   );

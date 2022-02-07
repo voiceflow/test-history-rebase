@@ -1,34 +1,31 @@
 import React from 'react';
 
-import * as Creator from '@/ducks/creator';
-import { connect } from '@/hocs';
+import * as CreatorV2 from '@/ducks/creatorV2';
+import { useSelector } from '@/hooks';
 import Link, { HeadMarker } from '@/pages/Canvas/components/Link';
 import NewLink from '@/pages/Canvas/components/NewLink';
 import { LinkEntityProvider } from '@/pages/Canvas/contexts';
-import { ConnectedProps } from '@/types';
 
 import LinkLayerSvg from './components/LinkLayerSvg';
 
-const LinkLayer: React.FC<ConnectedLinkLayerProps> = ({ linkIDs }) => (
-  <LinkLayerSvg shapeRendering="geometricPrecision">
-    <defs>
-      <HeadMarker />
-    </defs>
+const LinkLayer: React.FC = () => {
+  const linkIDs = useSelector(CreatorV2.allLinkIDsSelector);
 
-    {linkIDs.map((linkID) => (
-      <LinkEntityProvider id={linkID} key={linkID}>
-        <Link />
-      </LinkEntityProvider>
-    ))}
+  return (
+    <LinkLayerSvg shapeRendering="geometricPrecision">
+      <defs>
+        <HeadMarker />
+      </defs>
 
-    <NewLink />
-  </LinkLayerSvg>
-);
+      {linkIDs.map((linkID) => (
+        <LinkEntityProvider id={linkID} key={linkID}>
+          <Link />
+        </LinkEntityProvider>
+      ))}
 
-const mapStateToProps = {
-  linkIDs: Creator.allLinkIDsSelector,
+      <NewLink />
+    </LinkLayerSvg>
+  );
 };
 
-type ConnectedLinkLayerProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(LinkLayer);
+export default React.memo(LinkLayer);

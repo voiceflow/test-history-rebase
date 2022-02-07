@@ -53,7 +53,7 @@ export const useComponents = (): ComponentsAPI => {
 
       return {
         id: sourceID,
-        name: isFolder ? folders[sourceID]?.name ?? '' : getDiagramByID(sourceID)?.name ?? '',
+        name: isFolder ? folders[sourceID]?.name ?? '' : getDiagramByID({ id: sourceID })?.name ?? '',
         isFolder,
         children: isFolder ? folders[sourceID]?.items.map(createComponentItem) ?? [] : [],
       };

@@ -2038,6 +2038,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.16.7":
+  version "7.16.7"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.7.tgz#03ff99f64106588c9c403c6ecb8c3bafbbdff1fa"
+  integrity sha512-9E9FJowqAsytyOY6LG+1KuueckRL+aQW+mKvXRXnuFGyRAyepJPmEo9vgMfXUA6O9u3IeEdv9MAkppFcaQwogQ==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.10.4", "@babel/template@^7.12.13", "@babel/template@^7.14.5", "@babel/template@^7.15.4", "@babel/template@^7.3.3", "@babel/template@^7.4.4":
   version "7.15.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.15.4.tgz#51898d35dcf3faa670c4ee6afcfd517ee139f194"
@@ -3855,6 +3862,13 @@
   version "0.9.3"
   resolved "https://registry.yarnpkg.com/@react-rxjs/utils/-/utils-0.9.3.tgz#1762b7146aa6c32677fe1863cf7213d1f7622d22"
   integrity sha512-arwh1iW+5ciE/fdWwrXXYXF1anyGqBU1WkxvKGZkfxO2sNk+45t9glzHLDWkOUSrMaQeonuTw3vSg7qK/xhJCg==
+
+"@redux-devtools/extension@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@redux-devtools/extension/-/extension-3.1.0.tgz#926f80ab16ec11956042f349c1d11b054def5674"
+  integrity sha512-XbbK8YVIf7g8KoNdN64Hgv99T0pQXnZD3L/URISt86kM2+SdNeor49JMfVq34/+I+ff8yySOcUL/Dx604gzV4w==
+  dependencies:
+    "@babel/runtime" "^7.16.7"
 
 "@rollup/plugin-replace@3.0.1":
   version "3.0.1"
@@ -19093,11 +19107,6 @@ redis-parser@^3.0.0:
   integrity sha1-tm2CjNyv5rS4pCin3vTGvKwxyLQ=
   dependencies:
     redis-errors "^1.0.0"
-
-redux-devtools-extension@2.13.9:
-  version "2.13.9"
-  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.9.tgz#6b764e8028b507adcb75a1cae790f71e6be08ae7"
-  integrity sha512-cNJ8Q/EtjhQaZ71c8I9+BPySIBVEKssbPpskBfsXqb8HJ002A3KRVHfeRzwRo6mGPqsm7XuHTqNSNeS1Khig0A==
 
 redux-form@8.3.8:
   version "8.3.8"

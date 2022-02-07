@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import { useLinkedRef } from '@/hooks';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
@@ -51,6 +51,8 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
       getThreadAnchorCoords: () => engine.canvas!.toCoords(position.current!),
       getCenterPoint: () => {
         const node = engine.getNodeByID(nodeEntity.nodeID);
+        if (!node) return null;
+
         return [node.x, node.y];
       },
       rename: () => blockRef.current?.rename(),
@@ -72,7 +74,8 @@ export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean
 
       event.preventDefault();
 
-      const node = engine.select(Creator.nodeByIDSelector)(nodeEntity.nodeID);
+      const node = engine.select(CreatorV2.nodeByIDSelector, { id: nodeEntity.nodeID });
+      if (!node) return;
 
       if (!event.shiftKey && node.type === BlockType.COMBINED && node.combinedNodes.length) {
         engine.setActive(node.combinedNodes[0]);

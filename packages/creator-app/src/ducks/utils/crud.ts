@@ -193,7 +193,7 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, S extends C
     ),
     byID: createSelector([root], (normalized: CRUDState<T>) => (id: string) => Utils.normalized.getNormalizedByKey(normalized, id)),
     count,
-    has: createSelector([count], (size) => size !== 0),
+    isEmpty: createSelector([count], (size) => size === 0),
   };
 };
 

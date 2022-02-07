@@ -8,7 +8,6 @@ const {
   all: _allProductsSelector,
   map: _productMapSelector,
   byID: _productByIDSelector,
-  getByID: _getProductByIDSelector,
   byIDs: _productsByIDsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
@@ -20,8 +19,6 @@ export const productByIDSelector = Feature.createAtomicActionsSelector(
   [ProductSelectorsV1.productByIDSelector, _productByIDSelector, idParamSelector],
   (getProductsV1, productsV2, productID) => [productID ? getProductsV1(productID) : null, productsV2]
 );
-
-export const getProductByIDSelector = Feature.createAtomicActionsSelector([ProductSelectorsV1.productByIDSelector, _getProductByIDSelector]);
 
 export const productsByIDsSelector = Feature.createAtomicActionsSelector(
   [ProductSelectorsV1.productsByIDsSelector, _productsByIDsSelector, idsParamSelector],

@@ -20,15 +20,11 @@ import HelpTooltip from './HelpTooltip';
 
 const CommandEditorV2: NodeEditor<Realtime.NodeData.Command, {}> = ({ data, onChange, pushToPath }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const diagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
-  const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
+  const platformData = getDistinctPlatformValue(platform, data);
+  const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: platformData.diagramID });
+  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: platformData.intent });
 
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
-
-  const platformData = getDistinctPlatformValue(platform, data);
-
-  const intent = platformData.intent ? getIntentByID(platformData.intent) : null;
-  const diagram = platformData.diagramID ? diagramByID(platformData.diagramID) : null;
 
   const goToDiagram = () => platformData.diagramID && goToDiagramHistoryPush(platformData.diagramID);
   const patchPlatformData = (patch: Partial<Realtime.NodeData.Command.PlatformData>) =>

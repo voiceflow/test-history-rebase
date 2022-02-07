@@ -4,7 +4,8 @@ import { createSelector } from 'reselect';
 import shallowEqual from 'shallowequal';
 
 import { BlockType } from '@/constants';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
+import { idParamSelector } from '@/ducks/utils/crudV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useTeardown } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
@@ -88,12 +89,18 @@ export type NodeInstance = EntityInstance & {
   blur?: () => void;
 };
 
-const nodeEntitySelector = createSelector([Creator.nodeByIDSelector, Creator.dataByNodeIDSelector], (getNode, getData) => <T>(nodeID: string) => ({
-  node: getNode(nodeID),
-  data: getData(nodeID) as Realtime.NodeData<T>,
+interface NodeEntityResource<T> {
+  node: Realtime.Node;
+  data: Realtime.NodeData<T>;
+}
+
+// TODO: need to refactor this to expect nullish data to make the canvas components more resilient
+const nodeEntitySelector = createSelector([CreatorV2.nodeByIDSelector, CreatorV2.nodeDataByIDSelector, idParamSelector], (node, data) => ({
+  node: node!,
+  data: data!,
 }));
 
-class NodeEntity extends ResourceEntity<{ node: Realtime.Node; data: Realtime.NodeData<unknown> }, NodeInstance> {
+class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstance> {
   get isHighlighted() {
     return this.engine.highlight.isNodeTarget(this.nodeID);
   }
@@ -153,8 +160,8 @@ class NodeEntity extends ResourceEntity<{ node: Realtime.Node; data: Realtime.No
     this.log.debug(this.log.init('constructed node'), this.log.slug(nodeID));
   }
 
-  resolve<T = unknown>(): { node: Realtime.Node; data: Realtime.NodeData<T> } {
-    return this.engine.select(nodeEntitySelector)(this.nodeID);
+  resolve<T = unknown>(): NodeEntityResource<T> {
+    return this.engine.select(nodeEntitySelector, { id: this.nodeID }) as NodeEntityResource<T>;
   }
 
   shouldUpdate() {

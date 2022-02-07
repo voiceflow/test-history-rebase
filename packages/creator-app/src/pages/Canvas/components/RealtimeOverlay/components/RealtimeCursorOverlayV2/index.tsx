@@ -19,7 +19,7 @@ const RealtimeCursorOverlay: React.FC = () => {
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const userID = useSelector(Account.userIDSelector);
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
-  const viewers = useSelector((state) => DiagramV2.diagramViewersByIDSelector(state, { id: diagramID }));
+  const viewers = useSelector(DiagramV2.diagramViewersByIDSelector, { id: diagramID });
 
   React.useEffect(
     () =>

@@ -38,13 +38,13 @@ export const CodeStep: React.FC<CodeStepProps> = ({ withCode, withPorts, nodeID,
   </Step>
 );
 
-const ConnectedCodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = ({ node, data, withPorts, variant }) => (
+const ConnectedCodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = ({ ports, data, withPorts, variant }) => (
   <CodeStep
-    nodeID={node.id}
+    nodeID={data.nodeID}
     withCode={!!data.code}
     withPorts={withPorts}
-    successPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
-    failurePortID={node.ports.out.builtIn[Models.PortType.FAIL]}
+    successPortID={ports.out.builtIn[Models.PortType.NEXT]}
+    failurePortID={ports.out.builtIn[Models.PortType.FAIL]}
     variant={variant}
   />
 );

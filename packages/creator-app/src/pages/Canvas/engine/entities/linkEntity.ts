@@ -57,7 +57,7 @@ class LinkEntity extends ResourceEntity<Realtime.Link, LinkInstance> {
   }
 
   resolve() {
-    return this.engine.getLinkByID(this.linkID);
+    return this.engine.getLinkByID(this.linkID)!;
   }
 
   useInstance(instance: LinkInstance) {

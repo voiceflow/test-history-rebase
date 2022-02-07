@@ -106,29 +106,6 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
       });
     });
 
-    describe('getIntentByIDSelector()', () => {
-      it('select intent from the legacy store', () => {
-        const intent = { id: INTENT_ID };
-        const intentState = normalize([intent]);
-
-        const result = Intent.getIntentByIDSelector(createState(MOCK_STATE, { [IntentV1.STATE_KEY]: intentState }))(INTENT_ID);
-
-        expect(result).to.eq(intent);
-      });
-
-      it('select known intent', () => {
-        const result = Intent.getIntentByIDSelector(createState(MOCK_STATE, v2FeatureState))(INTENT_ID);
-
-        expect(result).to.eq(INTENT);
-      });
-
-      it('select unknown intent', () => {
-        const result = Intent.getIntentByIDSelector(createState(MOCK_STATE, v2FeatureState))('foo');
-
-        expect(result).to.be.null;
-      });
-    });
-
     describe('intentsByIDsSelector()', () => {
       it('select intents from the legacy store', () => {
         const intent = { id: DIAGRAM_ID };

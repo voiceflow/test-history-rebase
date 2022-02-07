@@ -35,6 +35,6 @@ export const ExitStep: React.FC<ExitStepProps> = ({ nodeID, platform, variant })
   </Step>
 );
 
-const ConnectedExitStep: ConnectedStep = ({ node, platform, variant }) => <ExitStep nodeID={node.id} platform={platform} variant={variant} />;
+const ConnectedExitStep: ConnectedStep = ({ data, platform, variant }) => <ExitStep nodeID={data.nodeID} platform={platform} variant={variant} />;
 
 export default ConnectedExitStep;

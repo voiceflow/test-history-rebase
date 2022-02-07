@@ -34,7 +34,7 @@ export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, 
   </Step>
 );
 
-const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({ node, data, platform, variant }) => {
+const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({ ports, data, platform, variant }) => {
   const intentMap = React.useContext(CustomIntentMapContext)!;
 
   const { intent, availability } = getDistinctPlatformValue(platform, data);
@@ -42,9 +42,9 @@ const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.Node
   return (
     <IntentStep
       label={intentMap[intent!] ? prettifyIntentName(intentMap[intent!].name) : null}
-      nodeID={node.id}
+      nodeID={data.nodeID}
       isLocal={availability === Node.Intent.IntentAvailability.LOCAL}
-      nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
       variant={variant}
     />
   );

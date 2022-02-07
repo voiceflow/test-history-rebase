@@ -63,6 +63,8 @@ export const linksByPortIDSelector = Feature.createAtomicActionsPhase2Selector(
   (getLinksV1, linksV2, portID) => [portID ? getLinksV1(portID) : [], linksV2]
 );
 
+export const getLinksByPortIDSelector = createCurriedSelector(linksByPortIDSelector);
+
 interface JoiningLinkIDsSelectorParam {
   sourceNodeID: string;
   targetNodeID: string;

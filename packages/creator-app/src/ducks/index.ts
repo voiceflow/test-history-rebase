@@ -28,7 +28,6 @@ import * as Router from '@/ducks/router';
 import session, * as Session from '@/ducks/session';
 import slot, * as Slot from '@/ducks/slot';
 import slotV2, * as SlotV2 from '@/ducks/slotV2';
-import template, * as Template from '@/ducks/template';
 import thread, * as Thread from '@/ducks/thread';
 import tracking, * as Tracking from '@/ducks/tracking';
 import transcript, * as Transcript from '@/ducks/transcript';
@@ -73,7 +72,6 @@ const getCombinedReducer = (history: History) =>
     [Notifications.STATE_KEY]: notifications,
     [Tracking.STATE_KEY]: tracking,
     [VariableState.STATE_KEY]: variableState,
-    [Template.STATE_KEY]: template,
     [Feature.STATE_KEY]: feature,
     [Version.STATE_KEY]: version,
     [VersionV2.STATE_KEY]: versionV2,

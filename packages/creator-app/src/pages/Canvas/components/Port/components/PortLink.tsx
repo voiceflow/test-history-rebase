@@ -1,4 +1,5 @@
 import { Models as BaseModels } from '@voiceflow/base-types';
+import { Nullish } from '@voiceflow/common';
 import { useDidUpdateEffect, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,7 +12,7 @@ import LinkPath from './PortLinkPath';
 import LinkSvg from './PortLinkSvg';
 
 export interface PortLinkProps {
-  linkID?: string;
+  linkID?: Nullish<string>;
   isHighlighted: boolean;
 }
 

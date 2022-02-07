@@ -3,7 +3,7 @@ import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
-import * as Creator from '@/ducks/creator';
+import { flattenAllPorts } from '@/ducks/creatorV2/utils';
 import { EntityMap, NodeWithData } from '@/models';
 import { Coords } from '@/utils/geometry';
 
@@ -11,24 +11,24 @@ import { CloneContextOptions, cloneEntityMap, DUPLICATE_OFFSET, EngineConsumer, 
 
 class DiagramEngine extends EngineConsumer {
   getEntities(nodeID: string, rename = true, nodeOverrides = {}): EntityMap {
-    const node = this.engine.getNodeByID(nodeID);
-    const data = this.engine.getDataByNodeID(nodeID);
+    const node = this.engine.getNodeByID(nodeID)!;
+    const data = this.engine.getDataByNodeID(nodeID)!;
 
     return {
-      ports: [...node.ports.in, ...Creator.diagramUtils.getAllOutPortIDs(node)].map(this.engine.getPortByID),
+      ports: flattenAllPorts(node?.ports).map((portID) => this.engine.getPortByID(portID)!),
       links: [],
       nodesWithData: [{ node: { ...node, ...nodeOverrides }, data: rename ? { ...data, name: `${data.name} copy` } : data }],
     };
   }
 
   getParentEntities(nodeID: string, rename = true, nodeOverrides = {}): EntityMap {
-    const node = this.engine.getNodeByID(nodeID);
-    const data = this.engine.getDataByNodeID(nodeID);
+    const node = this.engine.getNodeByID(nodeID)!;
+    const data = this.engine.getDataByNodeID(nodeID)!;
     const newNodeID = Utils.id.objectID();
 
-    const inPorts = node.ports.in.map((portID) => ({ ...this.engine.getPortByID(portID), id: Utils.id.objectID(), nodeID: newNodeID }));
+    const inPorts = node.ports.in.map((portID) => ({ ...this.engine.getPortByID(portID)!, id: Utils.id.objectID(), nodeID: newNodeID }));
     const outDynamicPorts = node.ports.out.dynamic.map((portID) => ({
-      ...this.engine.getPortByID(portID),
+      ...this.engine.getPortByID(portID)!,
       id: Utils.id.objectID(),
       nodeID: newNodeID,
     }));
@@ -38,7 +38,7 @@ class DiagramEngine extends EngineConsumer {
       .map<[Models.PortType, Realtime.Port]>(([type, portID]) => [
         type as Models.PortType,
         {
-          ...this.engine.getPortByID(portID),
+          ...this.engine.getPortByID(portID)!,
           id: Utils.id.objectID(),
           nodeID: newNodeID,
         },
@@ -72,7 +72,7 @@ class DiagramEngine extends EngineConsumer {
   }
 
   getChildEntities(nodeID: string): EntityMap {
-    const node = this.engine.getNodeByID(nodeID);
+    const node = this.engine.getNodeByID(nodeID)!;
 
     if (node.type !== BlockType.COMBINED) {
       return {
@@ -94,7 +94,7 @@ class DiagramEngine extends EngineConsumer {
   }
 
   async duplicateCommand(node: Realtime.Node): Promise<EntityMap> {
-    const parentNode = this.engine.getNodeByID(node.parentNode!);
+    const parentNode = this.engine.getNodeByID(node.parentNode)!;
     const entities = this.getEntities(node.id, true);
 
     const coords = this.engine.canvas!.toCoords([node.x, node.y]);
@@ -111,7 +111,7 @@ class DiagramEngine extends EngineConsumer {
   }
 
   duplicateParentNode(node: Realtime.Node): Promise<EntityMap> {
-    const parentNode = this.engine.getNodeByID(node.parentNode!);
+    const parentNode = this.engine.getNodeByID(node.parentNode)!;
     const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [node.id] };
 
     const entities = this.getParentEntities(node.parentNode!, true, nodeOverrides);
@@ -137,7 +137,7 @@ class DiagramEngine extends EngineConsumer {
   }
 
   async duplicateNode(nodeID: string): Promise<Nullable<NodeWithData>> {
-    const rootNode = this.engine.getNodeByID(nodeID);
+    const rootNode = this.engine.getNodeByID(nodeID)!;
 
     if (rootNode.type === BlockType.START) {
       return null;

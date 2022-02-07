@@ -28,7 +28,7 @@ const DEBOUNCE_TIMEOUT = 300;
 // TODO: remove what convert DropUpload to TS
 const PartialDropUpload = DropUpload as React.ComponentType<Partial<React.ComponentProps<typeof DropUpload>>>;
 
-const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, intentByID, intents }) => {
+const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, getIntentByID, intents }) => {
   const [state, stateApi] = useSmartReducerV2({
     errors: null as null | Map<number, string>,
     slotsCount: 0,
@@ -47,7 +47,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
     ModalType.IMPORT_UTTERANCES
   );
 
-  const builtIn = isCustomizableBuiltInIntent(intentByID(data.intentID));
+  const builtIn = isCustomizableBuiltInIntent(getIntentByID({ id: data.intentID }));
 
   const findSlotsAndUtterances = useDebouncedCallback(
     DEBOUNCE_TIMEOUT,
@@ -245,7 +245,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
 const mapStateToProps = {
   slots: SlotV2.allSlotsSelector,
   intents: IntentV2.allIntentsSelector,
-  intentByID: IntentV2.getIntentByIDSelector,
+  getIntentByID: IntentV2.getIntentByIDSelector,
 };
 
 type ConnectedImportUtterancesProps = ConnectedProps<typeof mapStateToProps>;

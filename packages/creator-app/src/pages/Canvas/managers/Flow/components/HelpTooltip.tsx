@@ -4,7 +4,7 @@ import React from 'react';
 import { Paragraph, Title } from '@/components/Tooltip';
 import * as Documentation from '@/config/documentation';
 
-const HelpTooltip = () => (
+const HelpTooltip: React.FC = () => (
   <>
     <Paragraph>
       The flow block allows you to organize your project into re-usable components that can be referenced and re-used anywhere. If you’re have a

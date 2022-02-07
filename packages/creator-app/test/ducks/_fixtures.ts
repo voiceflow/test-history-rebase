@@ -1,5 +1,6 @@
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
@@ -22,12 +23,12 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
-import * as Template from '@/ducks/template';
 import * as Thread from '@/ducks/thread';
 import * as Tracking from '@/ducks/tracking';
 import * as Transcript from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
 import { createCRUDState } from '@/ducks/utils/crud';
+import * as VariableState from '@/ducks/variableState';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Viewport from '@/ducks/viewport';
@@ -44,6 +45,8 @@ export const MOCK_STATE: State = {
     [Creator.DIAGRAM_STATE_KEY]: { past: [], future: [], present: Creator.INITIAL_DIAGRAM_STATE },
     [Creator.DIAGRAMS_HISTORY_STATE_KEY]: Creator.INITIAL_DIAGRAMS_HISTORY_STATE,
   },
+  [CreatorV2.STATE_KEY]: CreatorV2.INITIAL_STATE,
+  [Diagram.STATE_KEY]: createCRUDState(),
   [Diagram.STATE_KEY]: createCRUDState(),
   [DiagramV2.STATE_KEY]: DiagramV2.INITIAL_STATE,
   [Feature.STATE_KEY]: Feature.INITIAL_STATE,
@@ -75,7 +78,6 @@ export const MOCK_STATE: State = {
   },
   [Slot.STATE_KEY]: createCRUDState(),
   [SlotV2.STATE_KEY]: createCRUDState(),
-  [Template.STATE_KEY]: createCRUDState(),
   [Thread.STATE_KEY]: Thread.INITIAL_STATE,
   [Tracking.STATE_KEY]: {},
   [Transcript.STATE_KEY]: Transcript.INITIAL_STATE,
@@ -85,4 +87,5 @@ export const MOCK_STATE: State = {
   [Viewport.STATE_KEY]: Viewport.INITIAL_STATE as ReturnType<typeof Viewport.default>,
   [Workspace.STATE_KEY]: createCRUDState(),
   [WorkspaceV2.STATE_KEY]: createCRUDState(),
+  [VariableState.STATE_KEY]: { ...VariableState.INITIAL_STATE, selectedID: null },
 };

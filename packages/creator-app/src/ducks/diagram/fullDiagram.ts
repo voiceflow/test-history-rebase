@@ -1,7 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
-import { allLinksSelector, creatorDiagramIDSelector, creatorDiagramSelector } from '@/ducks/creator/diagram/selectors';
+import { creatorDiagramSelector } from '@/ducks/creator/diagram/selectors';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Viewport from '@/ducks/viewport';
@@ -12,10 +13,10 @@ import * as Viewport from '@/ducks/viewport';
 // eslint-disable-next-line import/prefer-default-export
 export const fullActiveDiagramSelector = createSelector(
   [
-    creatorDiagramIDSelector,
+    CreatorV2.activeDiagramIDSelector,
     Viewport.viewportByIDSelector,
     creatorDiagramSelector,
-    allLinksSelector,
+    CreatorV2.allLinksSelector,
     ProjectV2.active.projectSelector,
     DiagramV2.getDiagramByIDSelector,
   ],
@@ -24,7 +25,7 @@ export const fullActiveDiagramSelector = createSelector(
     if (!diagramID || !project) return null;
 
     // always use the `creatorDiagramID` as canonical, it is possible for DiagramV2.active to be desynced
-    const diagram = getDiagram(diagramID);
+    const diagram = getDiagram({ id: diagramID });
     const type = diagram?.type ?? undefined;
     if (!diagram) return null;
 

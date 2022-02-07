@@ -1,4 +1,3 @@
-import { WithRequired } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 export * from './Account';
@@ -18,8 +17,6 @@ export * from './Thread';
 export * from './Transcript';
 export * from './UploadProject';
 export * from './VariableState';
-
-export type PartialModel<T extends { id: string }> = WithRequired<Partial<T>, 'id'>;
 
 export interface NodeWithData {
   node: Realtime.Node;

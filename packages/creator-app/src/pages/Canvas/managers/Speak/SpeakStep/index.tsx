@@ -77,7 +77,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
   );
 };
 
-const ConnectedSpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = ({ node, data, platform, variant }) => {
+const ConnectedSpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = ({ ports, data, platform, variant }) => {
   const items = data.dialogs.map((item) => ({
     id: item.id,
     type: item.type,
@@ -89,10 +89,10 @@ const ConnectedSpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeDa
     <SpeakStep
       items={items}
       random={!data.canvasVisibility ? data.randomize : data.canvasVisibility === Node.Utils.CanvasNodeVisibility.PREVIEW}
-      nodeID={node.id}
+      nodeID={data.nodeID}
       platform={platform}
+      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
       variant={variant}
-      nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
     />
   );
 };

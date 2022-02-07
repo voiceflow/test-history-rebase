@@ -5,6 +5,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { userIDSelector } from '@/ducks/account/selectors';
+import { createCurriedSelector } from '@/ducks/utils';
+import { idParamSelector } from '@/ducks/utils/crudV2';
 
 import { projectSelector as baseProjectSelector } from './base';
 
@@ -23,12 +25,12 @@ const ownMemberSelector = createSelector(
 
 export const ownVendorIDSelector = createSelector([ownMemberSelector], (member) => member?.platformData.selectedVendor ?? null);
 
-export const getVendorByIDSelector = createSelector(
-  [ownMemberSelector],
-  (member) => (vendorID: string) => member?.platformData.vendors.find((vendor) => vendor.vendorID === vendorID) ?? null
+export const vendorByIDSelector = createSelector(
+  [ownMemberSelector, idParamSelector],
+  (member, vendorID) => member?.platformData.vendors.find((vendor) => vendor.vendorID === vendorID) ?? null
 );
 
 export const ownSkillIDSelector = createSelector(
-  [ownVendorIDSelector, getVendorByIDSelector],
-  (vendorID, getVendor) => (vendorID ? getVendor(vendorID)?.skillID : null) ?? null
+  [ownVendorIDSelector, createCurriedSelector(vendorByIDSelector)],
+  (vendorID, getVendor) => getVendor({ id: vendorID })?.skillID ?? null
 );

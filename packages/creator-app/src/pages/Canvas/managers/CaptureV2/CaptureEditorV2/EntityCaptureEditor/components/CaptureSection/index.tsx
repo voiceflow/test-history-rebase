@@ -51,6 +51,7 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
 ) => {
   const isNew = itemKey === latestCreatedKey;
   const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
+  const selectedSlot = useSelector(SlotV2.slotByIDSelector, { id: item.id });
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const canAddUtterances = !(isGooglePlatform(platform) || isDialogflowPlatform(platform));
@@ -75,8 +76,6 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
     return [{ id: ENTIRE_USER_REPLY }, { menuItemProps: { divider: true } } as any, ...filteredSlots.map((slot) => ({ id: slot.id }))];
   }, [filteredSlots]);
 
-  const selectedSlot = React.useMemo<Realtime.Slot | null>(() => (item.id && getSlotByID(item.id)) || null, [item.id, getSlotByID]);
-
   const getOptionLabel = React.useCallback(
     (slotID?: string | null) => {
       if (!slotID) {
@@ -87,7 +86,7 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
         return 'Entire user reply';
       }
 
-      const slot = getSlotByID(slotID);
+      const slot = getSlotByID({ id: slotID });
 
       if (slot) {
         return `{${slot.name}}`;

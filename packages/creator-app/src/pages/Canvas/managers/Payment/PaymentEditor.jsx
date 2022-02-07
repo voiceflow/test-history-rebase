@@ -16,7 +16,7 @@ import SelectedProduct from './SelectedProduct';
 
 function PaymentEditor({ onChange, data }) {
   const versionID = useSelector(Session.activeVersionIDSelector);
-  const selectedProduct = useSelector((state) => ProductV2.productByIDSelector(state, { id: data.productID }));
+  const selectedProduct = useSelector(ProductV2.productByIDSelector, { id: data.productID });
   const products = useSelector(ProductV2.allProductsSelector);
   const updateProduct = useCurried(onChange);
   const goToEditProduct = useDispatch(Router.goToEditProduct, versionID, data.productID);

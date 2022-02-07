@@ -2,6 +2,7 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 import { EngineContext, ManagerContext, ManagerGetter } from '@/pages/Canvas/contexts';
 import type { Engine } from '@/pages/Canvas/engine';
@@ -62,9 +63,8 @@ export const useEditorPath = () => {
   const getManager = React.useContext(ManagerContext)!;
 
   const node = useSelector(Creator.focusedNodeSelector);
-  const getNodeByID = useSelector(Creator.nodeByIDSelector);
-
-  const parentNode = node?.parentNode ? getNodeByID(node.parentNode) : null;
+  const blockID = node?.parentNode ?? null;
+  const blockType = useSelector(CreatorV2.nodeTypeByIDSelector, { id: blockID });
 
   const updatePathRef = React.useRef<(entries: PathEntry[]) => void>(() => {});
   const skipOriginalPathRedirect = React.useRef(false);
@@ -79,10 +79,10 @@ export const useEditorPath = () => {
 
           updatePathRef.current(entries);
         },
-        parentType: parentNode?.type,
-        parentNodeID: parentNode?.id,
+        parentType: blockType,
+        parentNodeID: blockID,
       })(getManager),
-    [node?.type, parentNode?.type, parentNode?.id, engine, getManager]
+    [node?.type, blockType, blockID, engine, getManager]
   );
   const [path, updatePath] = React.useState(originalPath);
 

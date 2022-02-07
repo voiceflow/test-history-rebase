@@ -3,6 +3,7 @@ import React from 'react';
 
 import { AutoPanningContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as UI from '@/ducks/ui';
 import { useDidUpdateEffect, useRAF, useSelector } from '@/hooks';
 import useEngine from '@/pages/Canvas/engine';
@@ -36,7 +37,7 @@ const AutoPanLayer: React.FC = () => {
   const hasFocusedNode = !!useSelector(Creator.creatorFocusSelector)?.isActive;
   const blockEditorOpened = isEditingMode && hasFocusedNode;
 
-  const getNodeByID = useSelector(Creator.nodeByIDSelector);
+  const getNodeByID = useSelector(CreatorV2.getNodeByIDSelector);
   const { isAutoPanning } = React.useContext(AutoPanningContext);
 
   const leftOffsetRef = React.useRef<number>(0);
@@ -80,7 +81,7 @@ const AutoPanLayer: React.FC = () => {
         return;
       }
 
-      const isDraggingChildStep = draggableNode && getNodeByID(draggableNode)?.parentNode;
+      const isDraggingChildStep = getNodeByID({ id: draggableNode })?.parentNode;
 
       const zoom = engine.canvas!.getZoom();
       const onlySingleBlock = draggingNodeIDs.length === 1;

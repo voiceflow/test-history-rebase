@@ -7,7 +7,7 @@ import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import type { Engine } from '@/pages/Canvas/engine';
 
 export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
-  node: Realtime.Node<O>;
+  ports: Realtime.NodePorts<O>;
   data: Realtime.NodeData<T>;
   engine: Engine;
   platform: Constants.PlatformType;

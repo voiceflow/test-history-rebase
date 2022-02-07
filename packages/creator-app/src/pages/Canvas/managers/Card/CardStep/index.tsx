@@ -31,10 +31,10 @@ export const CardStep: React.FC<CardStepProps> = ({ title, image, nodeID, nextPo
   </Step>
 );
 
-const ConnectedCardStep: ConnectedStep<Realtime.NodeData.Card, Realtime.NodeData.CardBuiltInPorts> = ({ node, data, variant }) => {
+const ConnectedCardStep: ConnectedStep<Realtime.NodeData.Card, Realtime.NodeData.CardBuiltInPorts> = ({ ports, data, variant }) => {
   const image = isVariable(data.largeImage) ? null : data.largeImage;
 
-  return <CardStep image={image} title={data.title} nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />;
+  return <CardStep image={image} title={data.title} nodeID={data.nodeID} nextPortID={ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />;
 };
 
 export default ConnectedCardStep;

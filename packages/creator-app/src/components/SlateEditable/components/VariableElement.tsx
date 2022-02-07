@@ -19,13 +19,12 @@ interface VariableElementProps extends Omit<RenderElementProps, 'element'> {
 }
 
 const VariableElement: React.FC<VariableElementProps> = ({ attributes, element, children }) => {
-  const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
+  const { id, name, isSlot } = element;
+  const slot = useSelector(SlotV2.slotByIDSelector, { id: isSlot ? id : null });
   const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
   const { withSlots } = usePluginOptions(PluginType.VARIABLES) ?? {};
 
-  const { id, name, isSlot } = element;
-  const slot = isSlot ? getSlotByID(id) : null;
   const varName = `{${isSlot ? slot?.name ?? name : name}}`;
 
   return (

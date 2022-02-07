@@ -52,7 +52,7 @@ const useLinkInstance = () => {
     const straight = engine.isStraightLinks();
     const targetNode = engine.getNodeByID(targetNodeID);
     const sourceNode = engine.getNodeByID(sourceNodeID);
-    const targetNodeIsBlock = targetNode.type === BlockType.COMBINED;
+    const targetNodeIsBlock = targetNode?.type === BlockType.COMBINED;
 
     return {
       straight: linkData?.type ? linkData.type === BaseModels.ProjectLinkType.STRAIGHT : straight,
@@ -78,7 +78,7 @@ const useLinkInstance = () => {
   );
 
   const getSourceBlockEndY = React.useCallback(() => {
-    const nodeAPI = engine.node.api(sourceNode.parentNode || sourceNodeID);
+    const nodeAPI = engine.node.api(sourceNode?.parentNode || sourceNodeID);
 
     if (cache.current.mergeTarget === nodeAPI?.isMergeTarget) {
       return cache.current.sourceBlockEndY;
@@ -96,7 +96,7 @@ const useLinkInstance = () => {
     }
 
     return cache.current.sourceBlockEndY;
-  }, [sourceNode.parentNode, sourceNodeID]);
+  }, [sourceNode?.parentNode, sourceNodeID]);
 
   const sourceTargetPointsCache = useLinkedRef(React.useMemo(() => getVirtualPoints(sourceTargetPoints), [sourceTargetPoints]));
 

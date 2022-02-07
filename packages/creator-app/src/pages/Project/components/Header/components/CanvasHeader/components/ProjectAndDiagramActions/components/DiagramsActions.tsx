@@ -20,17 +20,17 @@ const DiagramsActions: React.FC = () => {
   const goToDiagramHistoryClear = useDispatch(Router.goToDiagramHistoryClear);
 
   const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
-  const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
   const previousDiagramID = useSelector(Creator.previousDiagramIDSelector);
+  const activeDiagram = useSelector(DiagramV2.diagramByIDSelector, { id: activeDiagramID });
+  const previousDiagram = useSelector(DiagramV2.diagramByIDSelector, { id: previousDiagramID });
 
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
-  const activeDiagram = activeDiagramID ? getDiagramByID(activeDiagramID) : null;
   const isOnlyRootDiagramActive = rootDiagramID === activeDiagramID;
   const rootDiagramIsPreviousDiagram = rootDiagramID === previousDiagramID;
-  const dontRenderName = !rootDiagramIsPreviousDiagram && !getDiagramByID(previousDiagramID!);
+  const dontRenderName = !rootDiagramIsPreviousDiagram && !previousDiagram;
 
   return (
     <BoxFlexCenter ml={4} overflow="hidden">
@@ -49,12 +49,12 @@ const DiagramsActions: React.FC = () => {
             <>
               <DiagramDivider />
               <DiagramName onClick={() => goToDiagramHistoryPop(previousDiagramID)}>
-                {rootDiagramIsPreviousDiagram ? 'Home' : getDiagramByID(previousDiagramID)?.name}
+                {rootDiagramIsPreviousDiagram ? 'Home' : previousDiagram?.name}
               </DiagramName>
             </>
           )}
 
-          <DiagramActions diagramID={activeDiagramID} diagramName={rootDiagramID === activeDiagramID ? 'Home' : activeDiagram?.name} />
+          <DiagramActions diagramID={activeDiagramID} diagramName={activeDiagram?.name} />
         </>
       )}
     </BoxFlexCenter>

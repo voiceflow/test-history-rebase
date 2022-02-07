@@ -30,13 +30,13 @@ const CommandEditorOld: NodeEditor<Realtime.NodeData.Command, {}, ConnectedComma
   intent,
   onChange,
   pushToPath,
-  diagramByID,
+  getDiagramByID,
 }) => {
   const selectedFlowID = platformData.diagramID;
 
   useDidUpdateEffect(() => {
     if (selectedFlowID) {
-      const selectedFlow = diagramByID(selectedFlowID);
+      const selectedFlow = getDiagramByID({ id: selectedFlowID });
       if (selectedFlow?.name) {
         onChange({ name: selectedFlow.name });
       }
@@ -83,7 +83,7 @@ const CommandEditorOld: NodeEditor<Realtime.NodeData.Command, {}, ConnectedComma
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
   diagrams: DiagramV2.allDiagramsSelector,
-  diagramByID: DiagramV2.getDiagramByIDSelector,
+  getDiagramByID: DiagramV2.getDiagramByIDSelector,
   getIntentByID: IntentV2.getPlatformIntentByIDSelector,
 };
 
@@ -92,7 +92,7 @@ const mapDispatchToProps = {
 };
 
 const mergeProps = (
-  ...[{ platform, getIntentByID, diagramByID }, { goToDiagram }, { data, onChange }]: MergeArguments<
+  ...[{ platform, getIntentByID, getDiagramByID }, { goToDiagram }, { data, onChange }]: MergeArguments<
     typeof mapStateToProps,
     typeof mapDispatchToProps,
     NodeEditorPropsType<Realtime.NodeData.Command>
@@ -104,10 +104,10 @@ const mergeProps = (
     platformData,
     patchPlatformData: (patch: Partial<Realtime.NodeData.Command.PlatformData>) =>
       onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),
-    intent: platformData.intent ? getIntentByID(platformData.intent) : null,
-    diagram: platformData.diagramID && diagramByID(platformData.diagramID),
+    intent: getIntentByID({ id: platformData.intent }),
+    diagram: getDiagramByID({ id: platformData.diagramID }),
     goToDiagram: () => goToDiagram(platformData.diagramID!),
-    diagramByID,
+    getDiagramByID,
   };
 };
 

@@ -56,7 +56,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
   },
   ref
 ) => {
-  const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
+  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: item.intent });
 
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
@@ -70,7 +70,6 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
   const isGoToIntent = isIntentChecked && !isPathChecked;
 
   const checkedOption = isGoToIntent ? ButtonAction.GO_TO_INTENT : ButtonAction.FOLLOW_PATH;
-  const intent = item.intent ? getIntentByID(item.intent) : null;
 
   const onUpdateButtonAction = (action: ButtonAction) => {
     let nextActions = item.actions;

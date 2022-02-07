@@ -9,7 +9,7 @@ import client from '@/client';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
 import { BlockType, DiagramState } from '@/constants';
-import * as CreatorDiagramSelectors from '@/ducks/creator/diagram/selectors';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramActions from '@/ducks/diagram/actions';
 import * as DiagramSelectorsV2 from '@/ducks/diagramV2/selectors';
 import * as Feature from '@/ducks/feature';
@@ -23,7 +23,6 @@ import { getDistinctPlatformValue } from '@/utils/platform';
 import { initializeCreator } from '../actions';
 import { log } from '../constants';
 import { saveHistory, setDiagramState } from './actions';
-import { creatorDiagramSelector } from './selectors';
 
 export const performSave =
   (save: Dispatchable): Thunk =>
@@ -53,7 +52,7 @@ export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) 
   }
 
   const diagramType = DiagramSelectorsV2.active.typeSelector(state);
-  const isRootDiagramActive = CreatorDiagramSelectors.isRootDiagramActiveSelector(state);
+  const isRootDiagramActive = CreatorV2.isRootDiagramActiveSelector(state);
 
   if (isRootDiagramActive || diagramType !== Models.DiagramType.TOPIC) {
     return;
@@ -61,16 +60,11 @@ export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) 
 
   const platform = ProjectV2.active.platformSelector(state);
 
-  const { nodes, data } = creatorDiagramSelector(state);
+  const allNodeData = CreatorV2.allNodeDataSelector(state);
 
-  const isTopicAvailable = nodes.allKeys.some((id) => {
-    const node = nodes.byKey[id];
+  const isTopicAvailable = allNodeData.some((nodeData) => {
+    if (!Realtime.Utils.node.isIntentNode(nodeData)) return false;
 
-    if (node?.type !== BlockType.INTENT || !data[id]) {
-      return false;
-    }
-
-    const nodeData = data[id] as Realtime.NodeData<Realtime.NodeData.Intent>;
     const { intent, availability } = getDistinctPlatformValue(platform, nodeData);
 
     return !!intent && (!availability || availability === Node.Intent.IntentAvailability.GLOBAL);
@@ -81,7 +75,7 @@ export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) 
   }
 };
 
-export const initializeCreatorForDiagram =
+const initializeCreatorForDiagram =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
@@ -126,6 +120,9 @@ export const initializeCreatorForDiagram =
 
 // active diagram
 
+/**
+ * @deprecated
+ */
 export const initializeCreatorForActiveDiagram = (): Thunk => async (dispatch, getState) => {
   const diagramID = Session.activeDiagramIDSelector(getState());
 

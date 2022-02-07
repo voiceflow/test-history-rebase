@@ -11,8 +11,14 @@
       "@voiceflow/ml-sdk": [
         "ml-sdk/src"
       ],
+      "@ml-sdk/*": [
+        "ml-sdk/src/*"
+      ],
       "@voiceflow/socket-utils": [
         "socket-utils/src"
+      ],
+      "@socket-utils/*": [
+        "socket-utils/src/*"
       ],
       "@/*": [
         "ml-gateway/src/*"

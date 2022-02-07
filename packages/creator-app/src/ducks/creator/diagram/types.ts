@@ -1,11 +1,9 @@
-import { Models } from '@voiceflow/base-types';
 import { WithRequired } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Normalized } from 'normal-store';
 import { Overwrite } from 'utility-types';
 
 import { DiagramState as DState } from '@/constants';
-import { PartialModel } from '@/models';
 
 export interface DiagramState {
   diagramID: string | null;
@@ -23,18 +21,7 @@ export interface DiagramState {
   hidden: boolean;
 }
 
-export type NodeDescriptor = Overwrite<
-  Realtime.Node,
-  {
-    ports: {
-      in: PartialModel<Realtime.Port>[];
-      out: {
-        dynamic: PartialModel<Realtime.Port>[];
-        builtIn: { [key in Models.PortType]?: PartialModel<Realtime.Port> };
-      };
-    };
-  }
->;
+export type NodeDescriptor = Overwrite<Realtime.Node, { ports: Realtime.PortsDescriptor }>;
 
 export type ParentNodeDescriptor = WithRequired<Partial<NodeDescriptor>, 'id' | 'ports'>;
 

@@ -27,7 +27,7 @@ interface ItemProps {
 const Item: React.FC<ItemProps & ConnectedItemProps> = ({ id, name, isActive, viewers, goToDiagram, rootDiagramID }) => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
-  const viewersV2 = useSelector((state) => DiagramV2.diagramViewersByIDSelector(state, { id }));
+  const viewersV2 = useSelector(DiagramV2.diagramViewersByIDSelector, { id });
 
   const { catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } = useDiagramRename({
     diagramID: id,

@@ -26,6 +26,8 @@ class PortEntity extends ResourceEntity<Realtime.Port, PortInstance> {
 
   get isFinalPrototypePort() {
     const port = this.engine.getPortByPortID(this.portID);
+    if (!port) return false;
+
     return this.engine.prototype.finalNodeID === port.nodeID;
   }
 
@@ -71,7 +73,7 @@ class PortEntity extends ResourceEntity<Realtime.Port, PortInstance> {
   }
 
   resolve() {
-    return this.engine.getPortByID(this.portID);
+    return this.engine.getPortByID(this.portID)!;
   }
 
   resolveLink() {

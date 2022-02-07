@@ -5,7 +5,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FeatureFlag } from '@/config/features';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeConfig } from '@/ducks/recent';
@@ -37,13 +37,12 @@ const usePrototype = ({
   const isMuted = useSelector(Prototype.prototypeMutedSelector);
   const activePathLinkIDs = useSelector(Prototype.activePathLinkIDsSelector);
   const activePathBlockIDs = useSelector(Prototype.activePathBlockIDsSelector);
-  const getLinksByPortID = useSelector(Creator.linksByPortIDSelector);
+  const getLinksByPortID = useSelector(CreatorV2.getLinksByPortIDSelector);
   const contextHistory = useSelector(Prototype.prototypeContextHistorySelector);
   const visualDataHistory = useSelector(Prototype.prototypeVisualDataHistorySelector);
   const webhook = useSelector(Prototype.prototypeWebhookDataSelector);
-  const activeDiagramID = useSelector(Creator.creatorDiagramSelector)!.diagramID;
+  const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const flowIDHistory = useSelector(Prototype.prototypeFlowIDHistorySelector);
-  const getNodeByID = useSelector(Creator.nodeByIDSelector);
   const contextStep = useSelector(Prototype.prototypeContextStepSelector);
   const [status, setStatus] = React.useState<PMStatus | null>(null);
   const [messages, updateMessages] = React.useState<Message[]>([]);
@@ -61,7 +60,6 @@ const usePrototype = ({
     enterFlow: (diagramID) => dispatch(Session.setActiveDiagramID(diagramID)),
     waitVisuals,
     contextStep,
-    getNodeByID,
     updateStatus: setStatus,
     fetchContext: (request) => dispatch(Prototype.fetchContext(request, config)),
     addToMessages: (message) => updateMessages([...messages, message]),
@@ -70,7 +68,7 @@ const usePrototype = ({
     activeDiagramID,
     updatePrototype: (payload) => dispatch(Prototype.updatePrototype(payload)),
     setInteractions,
-    getLinksByPortID,
+    getLinksByPortID: (portID) => getLinksByPortID({ id: portID }),
     activePathLinkIDs,
     visualDataHistory,
     activePathBlockIDs,

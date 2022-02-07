@@ -43,7 +43,7 @@ export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, nod
 );
 
 const ConnectedCancelPaymentStep: ConnectedStep<Realtime.NodeData.CancelPayment, Realtime.NodeData.CancelPaymentBuiltInPorts> = ({
-  node,
+  ports,
   data,
   withPorts,
   variant,
@@ -55,10 +55,10 @@ const ConnectedCancelPaymentStep: ConnectedStep<Realtime.NodeData.CancelPayment,
   return (
     <CancelPaymentStep
       label={product?.name}
-      nodeID={node.id}
+      nodeID={data.nodeID}
       withPorts={withPorts}
-      successPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
-      failurePortID={node.ports.out.builtIn[Models.PortType.FAIL]}
+      successPortID={ports.out.builtIn[Models.PortType.NEXT] ?? null}
+      failurePortID={ports.out.builtIn[Models.PortType.FAIL] ?? null}
       variant={variant}
     />
   );

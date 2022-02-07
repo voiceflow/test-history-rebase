@@ -10,6 +10,7 @@ import * as Feature from '@/ducks/feature';
 import * as IntentSelectorsV1 from '@/ducks/intent/selectors';
 import { applyIntentNameFormatting } from '@/ducks/intent/utils';
 import * as ProjectV2 from '@/ducks/projectV2';
+import { createCurriedSelector } from '@/ducks/utils';
 import { createCRUDSelectors, idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { GENERAL_BUILT_INS_MAP, getBuiltInIntents } from '@/utils/intent';
@@ -21,7 +22,6 @@ const {
   all: _allIntentsSelector,
   allIDs: _allIntentIDsSelector,
   byID: _intentByIDSelector,
-  getByID: _getIntentByIDSelector,
   byIDs: _intentsByIDsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
@@ -34,7 +34,7 @@ export const intentByIDSelector = Feature.createAtomicActionsSelector(
   (getIntentV1, intentV2, intentID) => [intentID ? getIntentV1(intentID) : null, intentV2]
 );
 
-export const getIntentByIDSelector = Feature.createAtomicActionsSelector([IntentSelectorsV1.intentByIDSelector, _getIntentByIDSelector]);
+export const getIntentByIDSelector = createCurriedSelector(intentByIDSelector);
 
 export const intentsByIDsSelector = Feature.createAtomicActionsSelector(
   [IntentSelectorsV1.intentsByIDsSelector, _intentsByIDsSelector, idsParamSelector],
@@ -69,40 +69,46 @@ export const platformIntentMapSelector = createSelector([allPlatformIntentsSelec
   intents.reduce<Record<string, Realtime.Intent>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
 );
 
-export const getPlatformIntentByIDSelector = createSelector(
-  [platformIntentMapSelector],
-  (intentMap) => (id: string) => Utils.object.hasProperty(intentMap, id) ? intentMap[id] : null
+export const platformIntentByIDSelector = createSelector([platformIntentMapSelector, idParamSelector], (intentMap, id) =>
+  id && Utils.object.hasProperty(intentMap, id) ? intentMap[id] : null
 );
+
+export const getPlatformIntentByIDSelector = createCurriedSelector(platformIntentByIDSelector);
 
 // slots
 
-export const intentSlotByIntentIDSlotIDSelector = createSelector([getIntentByIDSelector], (getIntentByID) => (intentID: string, slotID: string) => {
-  const intent = getIntentByID(intentID);
+export const getIntentSlotByIntentIDSlotIDSelector = createSelector(
+  [getIntentByIDSelector],
+  (getIntentByID) => (intentID: string, slotID: string) => {
+    const intent = getIntentByID({ id: intentID });
 
-  return intent?.slots.byKey[slotID] ?? null;
-});
-
-export const intentsUsingSlotSelector = createSelector(
-  [allIntentsSelector],
-  (intents) => (slotID: string) =>
-    intents.reduce<typeof intents>((acc, intent) => {
-      if (Normal.hasOne(intent.slots, slotID)) {
-        acc.push(intent);
-      }
-
-      return acc;
-    }, [])
+    return intent?.slots.byKey[slotID] ?? null;
+  }
 );
 
-export const getSlotsByIntentIDSelector = createSelector([getIntentByIDSelector], (getIntentByID) => (id: string): string[] => {
-  const intent = getIntentByID(id);
-  if (!intent) return [];
+export const intentsUsingSlotSelector = createSelector([allIntentsSelector, idParamSelector], (intents, slotID) =>
+  slotID
+    ? intents.reduce<typeof intents>((acc, intent) => {
+        if (Normal.hasOne(intent.slots, slotID)) {
+          acc.push(intent);
+        }
 
-  return Utils.array.unique(intent.inputs.flatMap(({ slots }) => slots ?? '')).filter(Boolean);
+        return acc;
+      }, [])
+    : []
+);
+
+export const getIntentsUsingSlotSelector = createCurriedSelector(intentsUsingSlotSelector);
+
+export const slotsByIntentIDSelector = createSelector([intentByIDSelector], (intent): string[] => {
+  const { inputs = [] } = intent ?? {};
+
+  return Utils.array.unique(inputs.flatMap(({ slots }) => slots ?? '')).filter(Boolean);
 });
 
-export const allSlotsIDsByIntentIDsSelector = createSelector([getSlotsByIntentIDSelector, idsParamSelector], (getSlotIDsByIntentID, intentIDs) =>
-  Utils.array.unique(intentIDs.flatMap(getSlotIDsByIntentID))
+export const allSlotsIDsByIntentIDsSelector = createSelector(
+  [createCurriedSelector(slotsByIntentIDSelector), idsParamSelector],
+  (getSlotIDsByIntentID, intentIDs) => Utils.array.unique(intentIDs.flatMap((intentID) => getSlotIDsByIntentID({ id: intentID })))
 );
 
 export const openIntentsSelector = createSelector([allPlatformIntentsSelector, DiagramV2.intentStepsSelector], (intents, intentSteps) => {

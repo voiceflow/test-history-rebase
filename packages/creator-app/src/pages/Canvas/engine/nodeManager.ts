@@ -1,3 +1,4 @@
+import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
 import { Node as BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -8,6 +9,8 @@ import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
+import { flattenAllPorts } from '@/ducks/creatorV2/utils';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -21,16 +24,14 @@ import { getDistinctPlatformValue, getPlatformDefaultVoice } from '@/utils/platf
 import reduxBatchUndo from '@/utils/reduxBatchUndo';
 import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
-import { DUPLICATE_OFFSET, EngineConsumer, nodeFactory } from './utils';
+import { DUPLICATE_OFFSET, EngineConsumer, nodeDescriptorFactory } from './utils';
 
 class NodeManager extends EngineConsumer {
   log = this.engine.log.child('node');
 
   internal = {
     add: (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor) => {
-      if (node.type === BlockType.COMMENT) {
-        this.dispatch(Creator.addNode(node, data));
-      } else if (isMarkupBlockType(node.type)) {
+      if (isMarkupBlockType(node.type)) {
         this.dispatch(Creator.addNode(node, data));
       } else {
         this.dispatch(Creator.addWrappedNode(node, data, parentNode));
@@ -53,6 +54,7 @@ class NodeManager extends EngineConsumer {
 
     unmerge: (nodeID: string, position: Point, parentNode: Creator.ParentNodeDescriptor) => {
       const node = this.engine.getNodeByID(nodeID);
+      if (!node) return;
 
       this.saveLocation(node.parentNode!);
 
@@ -172,7 +174,7 @@ class NodeManager extends EngineConsumer {
   isSubtreeActive(nodeID: string) {
     const node = this.engine.getNodeByID(nodeID);
 
-    return this.isActive(nodeID) || node.combinedNodes.some((childNodeID) => this.isActive(childNodeID));
+    return this.isActive(nodeID) || !!node?.combinedNodes.some((childNodeID) => this.isActive(childNodeID));
   }
 
   getRect(nodeID: string) {
@@ -205,7 +207,7 @@ class NodeManager extends EngineConsumer {
   ): Promise<string> {
     const [x, y] = this.engine.canvas!.fromCoords(coords);
 
-    const { node, data } = nodeFactory(type, factoryData, this.internal.getNodeFactoryOptions());
+    const { node, data } = nodeDescriptorFactory(type, factoryData, this.internal.getNodeFactoryOptions());
     const augmentedNode = { ...node, x, y, id: nodeID };
     const parentNode = { id: Utils.id.objectID(), ports: { in: [{ id: Utils.id.objectID() }], out: { dynamic: [], builtIn: {} } } };
 
@@ -301,7 +303,7 @@ class NodeManager extends EngineConsumer {
 
   isRemovingLocked(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>): boolean {
     const lockedNodes = this.engine.getDeleteLockedNodes();
-    const combinedNodes = nodeIDs.map(this.engine.getNodeByID).filter((node) => node.type === BlockType.COMBINED);
+    const combinedNodes = nodeIDs.map(this.engine.getNodeByID).filter((node): node is Realtime.Node => node?.type === BlockType.COMBINED);
 
     const unRemovableCombinedNodeIDs = combinedNodes
       .filter((node) => node.combinedNodes.some((nestedNodeID) => lockedNodes[nestedNodeID]))
@@ -326,23 +328,23 @@ class NodeManager extends EngineConsumer {
   }
 
   isRemovingDefaultCommand(nodes: Realtime.Node[]): boolean {
-    const commandNodes = nodes.filter((node) => isCommandNode(node));
+    const commandNodes = nodes.filter(isCommandNode);
     const commandNodesIDs = commandNodes.map(({ id }) => id);
-    const commandNodeData = commandNodesIDs.map<Realtime.NodeData<Realtime.NodeData.Command>>(this.engine.getDataByNodeID);
+    const commandNodeData = commandNodesIDs.map((nodeID) => this.engine.getDataByNodeID<Realtime.NodeData.Command>(nodeID));
     // if the deleted node is not a help intent or a stop intent
-    const deletingStopIntent = commandNodeData.some((data) => data?.alexa?.intent === 'AMAZON.StopIntent');
-    const deletingHelpIntent = commandNodeData.some((data) => data?.alexa?.intent === 'AMAZON.HelpIntent');
+    const deletingStopIntent = commandNodeData.some((data) => data?.alexa?.intent === AlexaConstants.AmazonIntent.STOP);
+    const deletingHelpIntent = commandNodeData.some((data) => data?.alexa?.intent === AlexaConstants.AmazonIntent.HELP);
 
     if ((deletingStopIntent || deletingHelpIntent) && this.engine.isRootDiagram()) {
-      const homeBlockCombinedNodesIDs = this.engine.getNodeByID(commandNodes[0].parentNode!).combinedNodes;
+      const homeBlockCombinedNodesIDs = this.engine.getNodeByID(commandNodes[0].parentNode)?.combinedNodes ?? [];
       const remainedCommandsData = homeBlockCombinedNodesIDs
         .filter((el) => !commandNodesIDs.includes(el))
-        .map<Realtime.NodeData<Realtime.NodeData.Command>>(this.engine.getDataByNodeID);
+        .map((nodeID) => this.engine.getDataByNodeID<Realtime.NodeData.Command>(nodeID));
 
       // logic: user deleting stop intent and there are no more stop intent left
-      const missingStopIntent = remainedCommandsData.every((data) => data?.alexa?.intent !== 'AMAZON.StopIntent') && deletingStopIntent;
-      const missingHelpIntent = remainedCommandsData.every((data) => data?.alexa?.intent !== 'AMAZON.HelpIntent') && deletingHelpIntent;
-      const requiredCommand = (missingStopIntent && 'AMAZON.StopIntent') || (missingHelpIntent && 'AMAZON.HelpIntent');
+      const missingStopIntent = remainedCommandsData.every((data) => data?.alexa?.intent !== AlexaConstants.AmazonIntent.STOP) && deletingStopIntent;
+      const missingHelpIntent = remainedCommandsData.every((data) => data?.alexa?.intent !== AlexaConstants.AmazonIntent.HELP) && deletingHelpIntent;
+      const requiredCommand = (missingStopIntent && AlexaConstants.AmazonIntent.STOP) || (missingHelpIntent && AlexaConstants.AmazonIntent.HELP);
 
       if (requiredCommand) {
         this.dispatch(
@@ -361,7 +363,7 @@ class NodeManager extends EngineConsumer {
   }
 
   async validateRemove(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>): Promise<void> {
-    const removableNodes = nodeIDs.map(this.engine.getNodeByID).filter((node) => node.type !== BlockType.START);
+    const removableNodes = nodeIDs.map(this.engine.getNodeByID).filter((node): node is Realtime.Node => !!node && node.type !== BlockType.START);
     const removableNodeIDs = removableNodes.map(({ id }) => id);
 
     if (this.isRemovingDefaultCommand(removableNodes) || this.isRemovingLocked(removableNodeIDs, remove)) return;
@@ -373,7 +375,7 @@ class NodeManager extends EngineConsumer {
     this.log.debug(this.log.pending('removing node'), this.log.slug(nodeID));
 
     return this.validateRemove([nodeID], async ([removeNodeID]) => {
-      const allNodeIDs = [removeNodeID, ...this.select(Creator.combinedNodeIDsSelector)(removeNodeID)];
+      const allNodeIDs = [removeNodeID, ...this.select(CreatorV2.stepIDsByBlockIDSelector, { id: removeNodeID })];
 
       await this.engine.comment.handleNodesDelete(allNodeIDs);
 
@@ -392,7 +394,10 @@ class NodeManager extends EngineConsumer {
     this.log.debug(this.log.pending('removing multiple nodes'), nodeIDs);
 
     return this.validateRemove(nodeIDs, async (removableNodeIDs) => {
-      const allNodeIDs = [...removableNodeIDs, ...removableNodeIDs.flatMap(this.select(Creator.combinedNodeIDsSelector))];
+      const allNodeIDs = [
+        ...removableNodeIDs,
+        ...removableNodeIDs.flatMap((nodeID) => this.select(CreatorV2.stepIDsByBlockIDSelector, { id: nodeID })),
+      ];
 
       await this.engine.comment.handleNodesDelete(allNodeIDs);
 
@@ -412,7 +417,7 @@ class NodeManager extends EngineConsumer {
   async addNested(parentNodeID: string, type: BlockType): Promise<string> {
     const nodeID = Utils.id.objectID();
     const mergedNodeID = Utils.id.objectID();
-    const { node, data } = nodeFactory(type, undefined, this.internal.getNodeFactoryOptions());
+    const { node, data } = nodeDescriptorFactory(type, undefined, this.internal.getNodeFactoryOptions());
     const augmentedNode = { ...node, id: nodeID };
 
     this.log.debug(this.log.pending('adding nested node'), this.log.slug(nodeID));
@@ -447,7 +452,7 @@ class NodeManager extends EngineConsumer {
   }): Promise<void> {
     const childID = Utils.id.objectID();
     const combinedPortID = Utils.id.objectID();
-    const { node, data } = nodeFactory(type, factoryData, this.internal.getNodeFactoryOptions());
+    const { node, data } = nodeDescriptorFactory(type, factoryData, this.internal.getNodeFactoryOptions());
     const [x, y] = position;
     const augmentedNode = { ...node, x, y, id: childID };
     const parentNode = {
@@ -574,11 +579,9 @@ class NodeManager extends EngineConsumer {
   }
 
   translateLinks(nodeID: string, movement: Pair<number>, { reposition }: { reposition: boolean }): void {
-    const node = this.engine.getNodeByID(nodeID);
-
-    this.engine.getLinkIDsByNodeID(node.id).forEach((linkID) => {
+    this.engine.getLinkIDsByNodeID(nodeID).forEach((linkID) => {
       if (this.engine.links.has(linkID)) {
-        const link = this.engine.getLinkByID(linkID);
+        const link = this.engine.getLinkByID(linkID)!;
         const isSource = link.source.nodeID === nodeID;
         const linkedNode = this.engine.getNodeByID(isSource ? link.target.nodeID : link.source.nodeID);
 
@@ -594,7 +597,7 @@ class NodeManager extends EngineConsumer {
   saveLinks(nodeID: string): void {
     const node = this.engine.getNodeByID(nodeID);
     const nodeLinkIDs = this.engine.getLinkIDsByNodeID(nodeID);
-    const combinedNodes = node.combinedNodes.flatMap((childNodeID) => this.engine.getLinkIDsByNodeID(childNodeID));
+    const combinedNodes = node?.combinedNodes.flatMap((childNodeID) => this.engine.getLinkIDsByNodeID(childNodeID)) ?? [];
     const linkIDs = [...nodeLinkIDs, ...combinedNodes].filter((linkID) => this.engine.links.has(linkID));
 
     this.engine.link.savePointsMany(linkIDs);
@@ -645,10 +648,9 @@ class NodeManager extends EngineConsumer {
   }
 
   center(nodeID: string, animate = true): void {
-    const node = this.engine.getNodeByID(nodeID);
     const center = this.api(nodeID)?.instance?.getCenterPoint();
 
-    if (!center || isMarkupBlockType(node.type)) return;
+    if (!center || this.engine.isNodeOfType(nodeID, isMarkupBlockType)) return;
 
     this.engine.center(center, animate);
 
@@ -668,8 +670,7 @@ class NodeManager extends EngineConsumer {
 
     if (!node) return;
 
-    node.ports.in.forEach((portID) => this.engine.port.redrawLinks(portID));
-    Creator.diagramUtils.getAllOutPortIDs(node).forEach((portID) => this.engine.port.redrawLinks(portID));
+    flattenAllPorts(node.ports).forEach((portID) => this.engine.port.redrawLinks(portID));
 
     if (node.combinedNodes.length) {
       this.redrawNestedLinks(nodeID);

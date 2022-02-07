@@ -79,11 +79,11 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
           <>
             <Step.Placeholder variant={variant} isLast={isLast} />
             <Portal portalNode={engine.merge.components.mergeLayer!.ref.current!}>
-              <StepComponent node={node} data={data} engine={engine} platform={platform} withPorts={stepAPI.withPorts} variant={variant} />
+              <StepComponent ports={node.ports} data={data} engine={engine} platform={platform} withPorts={stepAPI.withPorts} variant={variant} />
             </Portal>
           </>
         ) : (
-          <StepComponent node={node} data={data} engine={engine} platform={platform} withPorts={stepAPI.withPorts} variant={variant} />
+          <StepComponent ports={node.ports} data={data} engine={engine} platform={platform} withPorts={stepAPI.withPorts} variant={variant} />
         )}
       </StepAPIProvider>
     </>

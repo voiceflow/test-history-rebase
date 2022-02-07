@@ -1,3 +1,4 @@
+import { Constants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Input } from '@voiceflow/ui';
@@ -16,13 +17,11 @@ import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { HelpTooltip } from './components';
 
-const SEARCH_QUERY_SLOT = 'AMAZON.SearchQuery';
-
 const CaptureEditor: NodeEditor<Realtime.NodeData.Capture, Realtime.NodeData.CaptureBuiltInPorts> = ({ data, onChange, pushToPath }) => {
   const updateSlot = React.useCallback((slot: string) => onChange({ slot }), [onChange]);
   const onSelectVariable = React.useCallback((variable: string) => onChange({ variable }), [onChange]);
 
-  const optionsFilter = React.useCallback((slotType: SlotOption) => slotType?.value !== SEARCH_QUERY_SLOT, []);
+  const optionsFilter = React.useCallback((slotType: SlotOption) => slotType?.value !== Constants.SlotType.SEARCHQUERY, []);
 
   const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
 

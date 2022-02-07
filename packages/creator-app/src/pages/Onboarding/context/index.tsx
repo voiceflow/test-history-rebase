@@ -302,9 +302,9 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
     let workspace;
 
-    const selectedWorkspaceID = paymentMeta.selectedWorkspaceId;
+    const selectedWorkspaceID = paymentMeta.selectedWorkspaceId as string | null;
     if (selectedWorkspaceID) {
-      workspace = getWorkspaceByID(selectedWorkspaceID);
+      workspace = getWorkspaceByID({ id: selectedWorkspaceID });
     }
     if (!workspace) {
       try {

@@ -127,9 +127,9 @@ const mapDispatchToProps = {
 };
 
 const mergeProps = (
-  ...[{ intent: intentByIDSelector, platform }, , { id }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, ManagerProps>
+  ...[{ intent: getIntentByID, platform }, , { id }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, ManagerProps>
 ) => {
-  const intent = intentByIDSelector(id);
+  const intent = getIntentByID({ id });
 
   return {
     intent: intent ? applySingleIntentNameFormatting(platform, intent) : null,

@@ -107,29 +107,6 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
       });
     });
 
-    describe('getSlotByIDSelector()', () => {
-      it('select slot from the legacy store', () => {
-        const slot = { id: SLOT_ID };
-        const slotState = normalize([slot]);
-
-        const result = Slot.getSlotByIDSelector(createState(MOCK_STATE, { [SlotV1.STATE_KEY]: slotState }))(SLOT_ID);
-
-        expect(result).to.eq(slot);
-      });
-
-      it('select known slot', () => {
-        const result = Slot.getSlotByIDSelector(createState(MOCK_STATE, v2FeatureState))(SLOT_ID);
-
-        expect(result).to.eq(SLOT);
-      });
-
-      it('select unknown slot', () => {
-        const result = Slot.getSlotByIDSelector(createState(MOCK_STATE, v2FeatureState))('foo');
-
-        expect(result).to.be.null;
-      });
-    });
-
     describe('slotsByIDsSelector()', () => {
       it('select slots from the legacy store', () => {
         const slot = { id: DIAGRAM_ID };

@@ -40,6 +40,8 @@ const suite = createSuite(({ spy, stub, expect }) => ({
       select: stub(),
       selection: { replace: stub(), getTargets: stub(), reset: stub() },
       getNodeByID: stub().returns({ id: STEP_ID, parentNode: BLOCK_ID, combinedNodes: ['1'] }),
+      getStepIDsByBlockID: stub().returns(['1']),
+      getBlockIDByStepID: stub().returns(BLOCK_ID),
       prototype: { setFinalNodeID: stub() },
       finalPrototypeBlockID: stub().returns('123'),
     } as any as Engine;
@@ -61,7 +63,6 @@ const suite = createSuite(({ spy, stub, expect }) => ({
         getEngine: () => engine,
         setError: stub(),
         enterFlow: stub(),
-        getNodeByID: stub(),
         fetchContext: stub().returns(context),
         updateStatus: stub(),
         setInteractions: stub(),

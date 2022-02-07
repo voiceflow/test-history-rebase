@@ -131,7 +131,7 @@ export const nodeByIDSelector = createSelector(
 
 export const getNodeByIDSelector = createCurriedSelector(nodeByIDSelector);
 
-export const allNodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamSelector], (getNodeByID, nodeIDs) =>
+export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamSelector], (getNodeByID, nodeIDs) =>
   nodeIDs.reduce<Realtime.Node[]>((acc, nodeID) => {
     const node = getNodeByID({ id: nodeID });
 

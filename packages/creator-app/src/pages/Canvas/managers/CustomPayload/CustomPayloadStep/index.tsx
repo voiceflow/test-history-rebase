@@ -28,8 +28,10 @@ export const CustomPayloadStep: React.FC<CustomPayloadStepProps> = ({ nodeID, ne
   </Step>
 );
 
-const ConnectedActionStep: ConnectedStep<Realtime.NodeData.CustomPayload, Realtime.NodeData.CustomPayloadBuiltInPorts> = ({ node, variant }) => (
-  <CustomPayloadStep nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />
-);
+const ConnectedActionStep: ConnectedStep<Realtime.NodeData.CustomPayload, Realtime.NodeData.CustomPayloadBuiltInPorts> = ({
+  ports,
+  data,
+  variant,
+}) => <CustomPayloadStep nodeID={data.nodeID} nextPortID={ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />;
 
 export default ConnectedActionStep;

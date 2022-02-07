@@ -1,7 +1,7 @@
 import { getAlternativeColor } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
-import { creatorDiagramIDSelector } from '@/ducks/creator/diagram/selectors';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
 import { createRootSelector } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -81,7 +81,7 @@ export const creatorMappingSelector = createSelector(
  * get the team member who has the node locked
  */
 export const lockOwnerSelector = createSelector(
-  [creatorDiagramIDSelector, creatorMappingSelector, WorkspaceV2.active.getDistinctWorkspaceMemberByCreatorIDSelector],
+  [CreatorV2.activeDiagramIDSelector, creatorMappingSelector, WorkspaceV2.active.getDistinctWorkspaceMemberByCreatorIDSelector],
   (diagramID, getCreatorMapping, getWorkspaceMember) => (lockType: AnyNodeLock, nodeID: string) => {
     if (!diagramID) return null;
 
@@ -131,7 +131,7 @@ export const diagramViewersLookupSelector = createSelector(
 
     return Object.values(locks.users).reduce<Record<string, ReturnType<typeof getWorkspaceMember> & { color: string }>>((acc, usersInDiagram) => {
       Object.entries(usersInDiagram).forEach(([tabID, creatorID]) => {
-        const member = getWorkspaceMember(Number(creatorID));
+        const member = getWorkspaceMember({ creatorID: Number(creatorID) });
         if (member) {
           acc[tabID] = { ...member, color: getAlternativeColor(tabID) };
         }
@@ -175,7 +175,7 @@ export const diagramViewersSelector = createSelector(
 
     return Object.entries(locks.users[diagramID] || {}).map(([tabID, creatorID]) => ({
       tabID,
-      ...getWorkspaceMember(Number(creatorID))!,
+      ...getWorkspaceMember({ creatorID: Number(creatorID) })!,
       color: getAlternativeColor(tabID),
     }));
   }

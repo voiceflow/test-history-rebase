@@ -1,29 +1,24 @@
 import React from 'react';
 
-import { markupNodeIDsSelector } from '@/ducks/creator';
-import { connect } from '@/hocs';
+import * as CreatorV2 from '@/ducks/creatorV2';
+import { useSelector } from '@/hooks';
 import MarkupNode from '@/pages/Canvas/components/MarkupNode';
 import { NodeEntityProvider } from '@/pages/Canvas/contexts';
-import { ConnectedProps } from '@/types';
 
 import { Container } from './components';
 
-const MarkupLayer: React.FC<ConnectedMarkupLayerProps> = ({ markupNodeIDs }) => (
-  <>
+const MarkupLayer: React.FC = () => {
+  const markupIDs = useSelector(CreatorV2.markupIDsSelector);
+
+  return (
     <Container>
-      {markupNodeIDs.map((nodeID) => (
-        <NodeEntityProvider id={nodeID} key={nodeID}>
+      {markupIDs.map((markupID) => (
+        <NodeEntityProvider id={markupID} key={markupID}>
           <MarkupNode />
         </NodeEntityProvider>
       ))}
     </Container>
-  </>
-);
-
-const mapStateToProps = {
-  markupNodeIDs: markupNodeIDsSelector,
+  );
 };
 
-export type ConnectedMarkupLayerProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(MarkupLayer);
+export default React.memo(MarkupLayer);

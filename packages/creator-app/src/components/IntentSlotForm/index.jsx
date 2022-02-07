@@ -211,7 +211,7 @@ const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
   slotsMap: SlotV2.slotMapSelector,
   getIntentByID: IntentV2.getIntentByIDSelector,
-  getIntentSlotByIntentIDSlotID: IntentV2.intentSlotByIntentIDSlotIDSelector,
+  getIntentSlotByIntentIDSlotID: IntentV2.getIntentSlotByIntentIDSlotIDSelector,
 };
 
 const mapDispatchToProps = {
@@ -221,7 +221,7 @@ const mapDispatchToProps = {
 
 const mergeProps = ({ slotsMap, getIntentByID, getIntentSlotByIntentIDSlotID }, _, { activePath }) => ({
   slot: slotsMap[activePath.id],
-  intent: getIntentByID(activePath.intentID),
+  intent: getIntentByID({ id: activePath.intentID }),
   intentSlot: getIntentSlotByIntentIDSlotID(activePath.intentID, activePath.id),
 });
 

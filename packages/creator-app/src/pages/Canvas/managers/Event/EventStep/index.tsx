@@ -22,8 +22,8 @@ export const EventStep: React.FC<IntentStepProps> = ({ nodeID, nextPortID, label
   </Step>
 );
 
-const ConnectedEventStep: ConnectedStep<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = ({ node, data, variant }) => (
-  <EventStep nodeID={node.id} nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]} label={data.requestName} variant={variant} />
+const ConnectedEventStep: ConnectedStep<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = ({ ports, data, variant }) => (
+  <EventStep nodeID={data.nodeID} nextPortID={ports.out.builtIn[Models.PortType.NEXT]} label={data.requestName} variant={variant} />
 );
 
 export default ConnectedEventStep;

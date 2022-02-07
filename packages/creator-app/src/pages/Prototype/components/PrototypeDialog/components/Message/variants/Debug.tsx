@@ -39,7 +39,7 @@ export const Debug: React.FC<DebugProps & ConnectedDebugProps> = ({ message, get
     if (message.includes('entering flow')) {
       const flowID = message.split(' ')[2].replace(/`/g, '');
 
-      const name = getDiagram(flowID)?.name || flowID;
+      const name = getDiagram({ id: flowID })?.name || flowID;
 
       formattedMessage = `entering flow \`${name}\``;
     }

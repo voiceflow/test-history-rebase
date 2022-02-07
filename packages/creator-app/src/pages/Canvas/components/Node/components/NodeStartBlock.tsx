@@ -4,7 +4,7 @@ import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockVariant } from '@/constants/canvas';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -92,7 +92,7 @@ const mapStateToProps = {
   diagram: DiagramV2.active.diagramSelector,
   projectName: ProjectV2.active.nameSelector,
   invocationName: VersionV2.active.invocationNameSelector,
-  isRootDiagram: Creator.isRootDiagramActiveSelector,
+  isRootDiagram: CreatorV2.isRootDiagramActiveSelector,
 };
 
 const mergeProps = (...[{ invocationName, projectName }]: MergeArguments<typeof mapStateToProps>) => ({

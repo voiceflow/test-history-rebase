@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import type * as Creator from '@/ducks/creator';
 import { createAction } from '@/ducks/utils';
-import { EntityMap, PartialModel } from '@/models';
+import { EntityMap } from '@/models';
 import { Action, ActionPayload } from '@/store/types';
 import { Either, Pair, Point } from '@/types';
 
@@ -187,10 +187,10 @@ export const moveManyNodes = (nodeIDs: string[], movement: Pair<number>, origins
 
 // ports
 
-export const addOutDynamicPort = (nodeID: string, port: PartialModel<Realtime.Port>): AddOutDynamicPort =>
+export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): AddOutDynamicPort =>
   createAction(SocketAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port });
 
-export const addOutBuiltInPort = (nodeID: string, portType: Models.PortType, port: PartialModel<Realtime.Port>): AddOutBuiltInPort =>
+export const addOutBuiltInPort = (nodeID: string, portType: Models.PortType, port: Realtime.PartialModel<Realtime.Port>): AddOutBuiltInPort =>
   createAction(SocketAction.ADD_OUT_BUILT_IN_PORT, { nodeID, port, portType });
 
 export const removeOutDynamicPort = (portID: string): RemoveOutDynamicPort => createAction(SocketAction.REMOVE_OUT_DYNAMIC_PORT, portID);

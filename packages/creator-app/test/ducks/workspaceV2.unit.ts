@@ -275,29 +275,6 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       });
     });
 
-    describe('getWorkspaceByIDSelector()', () => {
-      it('select workspace from the legacy store', () => {
-        const workspace = { id: WORKSPACE_ID };
-        const workspaceState = normalize([workspace]);
-
-        const result = Workspace.getWorkspaceByIDSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: workspaceState }))(WORKSPACE_ID);
-
-        expect(result).to.eq(workspace);
-      });
-
-      it('select known workspace', () => {
-        const result = Workspace.getWorkspaceByIDSelector(createState(MOCK_STATE, v2FeatureState))(WORKSPACE_ID);
-
-        expect(result).to.eq(WORKSPACE);
-      });
-
-      it('select unknown workspace', () => {
-        const result = Workspace.getWorkspaceByIDSelector(createState(MOCK_STATE, v2FeatureState))('foo');
-
-        expect(result).to.be.null;
-      });
-    });
-
     describe('isAdminOfAnyWorkspaceSelector()', () => {
       it('true if member with admin role matches active user', () => {
         const rootState = { ...v2FeatureState, [Account.STATE_KEY]: { creator_id: CREATOR_ID } };

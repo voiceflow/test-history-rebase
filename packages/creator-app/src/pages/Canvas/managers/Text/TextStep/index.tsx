@@ -51,7 +51,7 @@ export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, preview, next
   );
 };
 
-const ConnectedTextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = ({ node, data, variant }) => {
+const ConnectedTextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = ({ ports, data, variant }) => {
   const items = React.useMemo(
     () => data.texts.map(({ id, content }) => ({ id, content: SlateEditorAPI.isNewState(content) ? '' : serializeSlateToJSX(content) })),
     [data.texts]
@@ -60,9 +60,9 @@ const ConnectedTextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData
   return (
     <TextStep
       items={items}
-      nodeID={node.id}
+      nodeID={data.nodeID}
       preview={data.canvasVisibility === Node.Utils.CanvasNodeVisibility.PREVIEW}
-      nextPortID={node.ports.out.builtIn[Models.PortType.NEXT]}
+      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
       variant={variant}
     />
   );

@@ -4,12 +4,12 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import _isFunction from 'lodash/isFunction';
 
-import { BlockCategory, BlockType, DialogType, RootOrMarkupBlockType } from '@/constants';
+import { BlockCategory } from '@/constants';
 import { getManager } from '@/pages/Canvas/managers';
 import { createPlatformSelector } from '@/utils/platform';
 
 export interface MenuStep {
-  type: BlockType;
+  type: Realtime.BlockType;
   icon: Icon;
   label: string;
   publicOnly?: boolean;
@@ -17,7 +17,7 @@ export interface MenuStep {
 }
 
 const createMenuStep = (
-  type: Exclude<BlockType, RootOrMarkupBlockType>,
+  type: Exclude<Realtime.BlockType, Realtime.RootOrMarkupBlockType | Realtime.DeprecatedBlockType>,
   { publicOnly, factoryData }: { publicOnly?: boolean; factoryData?: Realtime.NodeData<any> } = {}
 ): MenuStep => {
   const manager = getManager(type);
@@ -33,72 +33,72 @@ const createMenuStep = (
 
 // STEPS
 
-const ACCOUNT_LINKING_STEP = createMenuStep(BlockType.ACCOUNT_LINKING);
+const ACCOUNT_LINKING_STEP = createMenuStep(Realtime.BlockType.ACCOUNT_LINKING);
 
-const CANCEL_PURCHASE_STEP = createMenuStep(BlockType.CANCEL_PAYMENT);
+const CANCEL_PURCHASE_STEP = createMenuStep(Realtime.BlockType.CANCEL_PAYMENT);
 
-const CAPTURE_STEP = createMenuStep(BlockType.CAPTURE);
+const CAPTURE_STEP = createMenuStep(Realtime.BlockType.CAPTURE);
 
-const CAPTURE_STEP_V2 = createMenuStep(BlockType.CAPTUREV2);
+const CAPTURE_STEP_V2 = createMenuStep(Realtime.BlockType.CAPTUREV2);
 
-const CARD_STEP = createMenuStep(BlockType.CARD);
+const CARD_STEP = createMenuStep(Realtime.BlockType.CARD);
 
-const CHOICE_STEP = createMenuStep(BlockType.CHOICE);
+const CHOICE_STEP = createMenuStep(Realtime.BlockType.CHOICE);
 
-const CUSTOM_PAYLOAD_STEP = createMenuStep(BlockType.PAYLOAD);
+const CUSTOM_PAYLOAD_STEP = createMenuStep(Realtime.BlockType.PAYLOAD);
 
-const BUTTONS_STEP = createMenuStep(BlockType.BUTTONS);
+const BUTTONS_STEP = createMenuStep(Realtime.BlockType.BUTTONS);
 
-const CODE_STEP = createMenuStep(BlockType.CODE);
+const CODE_STEP = createMenuStep(Realtime.BlockType.CODE);
 
-const DIRECTIVE_STEP = createMenuStep(BlockType.DIRECTIVE);
+const DIRECTIVE_STEP = createMenuStep(Realtime.BlockType.DIRECTIVE);
 
-const DISPLAY_STEP = createMenuStep(BlockType.DISPLAY);
+const DISPLAY_STEP = createMenuStep(Realtime.BlockType.DISPLAY);
 
-const EVENT_STEP = createMenuStep(BlockType.EVENT);
+const EVENT_STEP = createMenuStep(Realtime.BlockType.EVENT);
 
-const CONDITION_STEP_V2 = createMenuStep(BlockType.IFV2);
+const CONDITION_STEP_V2 = createMenuStep(Realtime.BlockType.IFV2);
 
-const EXIT_STEP = createMenuStep(BlockType.EXIT);
+const EXIT_STEP = createMenuStep(Realtime.BlockType.EXIT);
 
-const FLOW_STEP = createMenuStep(BlockType.FLOW);
+const FLOW_STEP = createMenuStep(Realtime.BlockType.FLOW);
 
-const COMPONENT_STEP = createMenuStep(BlockType.COMPONENT);
+const COMPONENT_STEP = createMenuStep(Realtime.BlockType.COMPONENT);
 
-const API_STEP = createMenuStep(BlockType.INTEGRATION, { factoryData: { selectedIntegration: Node.Utils.IntegrationType.CUSTOM_API } });
+const API_STEP = createMenuStep(Realtime.BlockType.INTEGRATION, { factoryData: { selectedIntegration: Node.Utils.IntegrationType.CUSTOM_API } });
 
-const GOOGLE_SHEETS_STEP = createMenuStep(BlockType.INTEGRATION, {
+const GOOGLE_SHEETS_STEP = createMenuStep(Realtime.BlockType.INTEGRATION, {
   publicOnly: true,
   factoryData: { selectedIntegration: Node.Utils.IntegrationType.GOOGLE_SHEETS },
 });
 
-const INTENT_STEP = createMenuStep(BlockType.INTENT);
+const INTENT_STEP = createMenuStep(Realtime.BlockType.INTENT);
 
-const PURCHASE_STEP = createMenuStep(BlockType.PAYMENT);
+const PURCHASE_STEP = createMenuStep(Realtime.BlockType.PAYMENT);
 
-const PERMISSIONS_STEP = createMenuStep(BlockType.PERMISSION);
+const PERMISSIONS_STEP = createMenuStep(Realtime.BlockType.PERMISSION);
 
-const PROMPT_STEP = createMenuStep(BlockType.PROMPT);
+const PROMPT_STEP = createMenuStep(Realtime.BlockType.PROMPT);
 
-const RANDOM_STEP = createMenuStep(BlockType.RANDOM);
+const RANDOM_STEP = createMenuStep(Realtime.BlockType.RANDOM);
 
-const REMINDER_STEP = createMenuStep(BlockType.REMINDER);
+const REMINDER_STEP = createMenuStep(Realtime.BlockType.REMINDER);
 
-const SET_STEP_V2 = createMenuStep(BlockType.SETV2);
+const SET_STEP_V2 = createMenuStep(Realtime.BlockType.SETV2);
 
-const SPEAK_STEP = createMenuStep(BlockType.SPEAK, { factoryData: { dialogs: [{ type: DialogType.VOICE }] } });
+const SPEAK_STEP = createMenuStep(Realtime.BlockType.SPEAK, { factoryData: { dialogs: [{ type: Realtime.DialogType.VOICE }] } });
 
-const AUDIO_STEP = createMenuStep(BlockType.SPEAK, { factoryData: { dialogs: [{ type: DialogType.AUDIO }] } });
+const AUDIO_STEP = createMenuStep(Realtime.BlockType.SPEAK, { factoryData: { dialogs: [{ type: Realtime.DialogType.AUDIO }] } });
 
-const TEXT_STEP = createMenuStep(BlockType.TEXT);
+const TEXT_STEP = createMenuStep(Realtime.BlockType.TEXT);
 
-const STREAM_STEP = createMenuStep(BlockType.STREAM);
+const STREAM_STEP = createMenuStep(Realtime.BlockType.STREAM);
 
-const USER_INFO_STEP = createMenuStep(BlockType.USER_INFO);
+const USER_INFO_STEP = createMenuStep(Realtime.BlockType.USER_INFO);
 
-const VISUAL_STEP = createMenuStep(BlockType.VISUAL);
+const VISUAL_STEP = createMenuStep(Realtime.BlockType.VISUAL);
 
-const TRACE_STEP = createMenuStep(BlockType.TRACE);
+const TRACE_STEP = createMenuStep(Realtime.BlockType.TRACE);
 
 // alexa menu sections
 export const ALEXA_SECTIONS = [

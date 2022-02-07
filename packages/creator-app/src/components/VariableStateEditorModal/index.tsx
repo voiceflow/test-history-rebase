@@ -34,14 +34,14 @@ const VariableStateEditorModal: React.FC = () => {
   const { isOpened, close, data } = useModals<{ variableStateID?: string }>(ModalType.VARIABLE_STATE_EDITOR_MODAL);
   const createVariableState = useDispatch(VariableStateDucks.createVariableState);
   const updateVariableState = useDispatch(VariableStateDucks.updateState);
-  const getVariableStateById = useSelector(VariableStateDucks.variableStatesByIDsSelector);
+  const getVariableStateByID = useSelector(VariableStateDucks.getVariableStateByIDSelector);
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
   const [trackingEvents] = useTrackingEvents();
 
   const getInitialValues = (): VariableStateEditorValues => {
     if (!data.variableStateID) return defaultValues;
 
-    const variableState = getVariableStateById(data.variableStateID);
+    const variableState = getVariableStateByID({ id: data.variableStateID });
 
     if (!variableState) return defaultValues;
 

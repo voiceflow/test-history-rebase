@@ -3,9 +3,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { BlockType } from '@/constants';
+import { AutoPanningContext } from '@/contexts';
 import * as Realtime from '@/ducks/realtime';
-import * as UI from '@/ducks/ui';
-import { useDidUpdateEffect, useRAF, useSelector } from '@/hooks';
+import { useRAF } from '@/hooks';
 import { buildPath, getMarkerAttrs, getPathPoints, getVirtualPoints } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
@@ -27,8 +27,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const isPinned = React.useRef(false);
   const removeEventListeners = React.useRef(Utils.functional.noop);
   const engine = React.useContext(EngineContext)!;
-  const autoPanRef = React.useRef(false);
-  const isAutoPanning = useSelector(UI.isAutoPanningSelector);
+  const { isAutoPanning } = React.useContext(AutoPanningContext);
   const [isVisible, setVisible] = React.useState(false);
 
   const [mouseMoveStylesScheduler] = useRAF();
@@ -48,12 +47,8 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
     };
   }, []);
 
-  useDidUpdateEffect(() => {
-    autoPanRef.current = isAutoPanning;
-  }, [isAutoPanning]);
-
   const onMouseMove = React.useCallback(() => {
-    if (isPinned.current || autoPanRef.current) return;
+    if (isPinned.current || isAutoPanning.current) return;
 
     const [endX, endY] = engine.getCanvasMousePosition();
 

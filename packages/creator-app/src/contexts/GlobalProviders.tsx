@@ -19,6 +19,7 @@ import {
 } from '@/gates';
 import THEME from '@/styles/theme';
 
+import { AutoPanningProvider } from './AutoPanningContext';
 import { DragProvider } from './DragContext';
 import { EventualEngineProvider } from './EventualEngineContext';
 import { FeatureFlagsProvider } from './FeatureFlagsContext';
@@ -45,15 +46,17 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                   <MousePositionProvider>
                     <DismissableLayersGlobalProvider>
                       <DragProvider>
-                        <ModalsContextProvider>
-                          <SocketLoadingGate>
-                            <AccountLoadingGate>
-                              <RealtimeConnectionGate>
-                                <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
-                              </RealtimeConnectionGate>
-                            </AccountLoadingGate>
-                          </SocketLoadingGate>
-                        </ModalsContextProvider>
+                        <AutoPanningProvider>
+                          <ModalsContextProvider>
+                            <SocketLoadingGate>
+                              <AccountLoadingGate>
+                                <RealtimeConnectionGate>
+                                  <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
+                                </RealtimeConnectionGate>
+                              </AccountLoadingGate>
+                            </SocketLoadingGate>
+                          </ModalsContextProvider>
+                        </AutoPanningProvider>
                       </DragProvider>
                     </DismissableLayersGlobalProvider>
                   </MousePositionProvider>

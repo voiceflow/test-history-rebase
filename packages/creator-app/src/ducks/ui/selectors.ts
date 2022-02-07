@@ -1,0 +1,22 @@
+import { createSelector } from 'reselect';
+
+import { createRootSelector } from '../utils';
+import { STATE_KEY } from './constants';
+
+const rootSelector = createRootSelector(STATE_KEY);
+
+export const openBlockMenuSectionsSelector = createSelector(rootSelector, ({ blockMenu: { openSections } }) => openSections);
+
+export const activeCreatorMenuSelector = createSelector(rootSelector, ({ creatorMenu: { activeMenu } }) => activeMenu);
+
+export const isCreatorMenuHiddenSelector = createSelector(rootSelector, ({ creatorMenu: { isHidden } }) => isHidden);
+
+export const canvasNavigationSelector = createSelector(rootSelector, ({ canvasNavigation }) => canvasNavigation);
+
+export const zoomTypeSelector = createSelector(rootSelector, ({ zoomType }) => zoomType);
+
+export const isCanvasOnlyShowingSelector = createSelector(rootSelector, ({ canvasOnly }) => canvasOnly);
+
+export const isPreviewingVersion = createSelector(rootSelector, ({ previewing }) => previewing);
+
+export const isLoadingProjectsSelector = createSelector(rootSelector, ({ isLoadingProjects }) => isLoadingProjects);

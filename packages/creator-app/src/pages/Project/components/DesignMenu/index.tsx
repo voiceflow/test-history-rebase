@@ -3,6 +3,7 @@ import React from 'react';
 
 import { TabPane, TabsContent } from '@/components/Tabs';
 import { Permission } from '@/config/permissions';
+import { AutoPanningContext } from '@/contexts';
 import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useIsCanvasDesignOnly, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
@@ -23,7 +24,7 @@ const DesignMenu: React.FC = () => {
 
   const isHidden = useSelector(UI.isCreatorMenuHiddenSelector);
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
-  const isAutoPanning = useSelector(UI.isAutoPanningSelector);
+  const { isAutoPanning } = React.useContext(AutoPanningContext);
 
   const setActiveTab = useDispatch(UI.setActiveCreatorMenu);
   const toggleIsHidden = useDispatch(UI.toggleCreatorMenuHidden);
@@ -49,6 +50,12 @@ const DesignMenu: React.FC = () => {
     ) {
       closeByLoseHover();
     }
+  };
+
+  const mouseEnterHandler = () => {
+    if (!isAutoPanning.current) return;
+
+    openByHover();
   };
 
   useMenuHotKeys({
@@ -83,7 +90,7 @@ const DesignMenu: React.FC = () => {
       locked={!isHidden}
       tabIndex={-1}
       canvasOnly={canvasOnly || designOnly}
-      onMouseEnter={canBeOpened && !isAutoPanning ? openByHover : undefined}
+      onMouseEnter={canBeOpened ? mouseEnterHandler : undefined}
       onMouseLeave={canBeOpened ? mouseLeaveHandler : undefined}
     >
       <Content isOpen={isOpen} activeTab={selectedTab} ref={designMenuRef}>

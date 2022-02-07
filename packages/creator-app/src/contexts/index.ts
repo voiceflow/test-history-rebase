@@ -1,4 +1,5 @@
 export * from './AtomContext';
+export * from './AutoPanningContext';
 export * from './DispatcherContext';
 export * from './DragContext';
 export * from './EventualEngineContext';

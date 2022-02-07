@@ -1,9 +1,10 @@
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
+import { AutoPanningContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as UI from '@/ducks/ui';
-import { useDidUpdateEffect, useDispatch, useRAF, useSelector } from '@/hooks';
+import { useDidUpdateEffect, useRAF, useSelector } from '@/hooks';
 import useEngine from '@/pages/Canvas/engine';
 import { useEditingMode } from '@/pages/Project/hooks';
 import THEME from '@/styles/theme';
@@ -36,7 +37,7 @@ const AutoPanLayer: React.FC = () => {
   const blockEditorOpened = isEditingMode && hasFocusedNode;
 
   const getNodeByID = useSelector(Creator.nodeByIDSelector);
-  const setAutoPanning = useDispatch(UI.setIsAutopanning);
+  const { isAutoPanning } = React.useContext(AutoPanningContext);
 
   const leftOffsetRef = React.useRef<number>(0);
   const rightOffsetRef = React.useRef<number>(0);
@@ -57,7 +58,7 @@ const AutoPanLayer: React.FC = () => {
   }, [blockEditorOpened]);
 
   const reset = () => {
-    setAutoPanning(false);
+    isAutoPanning.current = false;
     schedulerAPI.current.cancel();
   };
 
@@ -105,7 +106,7 @@ const AutoPanLayer: React.FC = () => {
       syncBlocksAndCursor();
       syncLinkAndCursor();
 
-      setAutoPanning(true);
+      isAutoPanning.current = true;
       const [posX, posY] = engine.canvas!.getPosition();
       engine.canvas!.setPosition([posX + movementX, posY + movementY]);
 

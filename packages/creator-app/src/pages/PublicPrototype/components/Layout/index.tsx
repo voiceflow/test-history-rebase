@@ -1,9 +1,8 @@
-import { Box, BoxFlexCenter, IS_MOBILE, SvgIcon, Text } from '@voiceflow/ui';
-import _throttle from 'lodash/throttle';
+import { Box, BoxFlexCenter, IS_IOS, IS_MOBILE, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import * as PrototypeDuck from '@/ducks/prototype';
-import { useHotKeys, useSetup, useToggle } from '@/hooks';
+import { useHotKeys, useRAF, useToggle } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import { Container, ContentContainer, FooterContainer, VisualsBorder } from './components';
@@ -39,8 +38,10 @@ const Layout: React.FC<LayoutProps> = ({
   layout,
   colorScheme,
 }) => {
-  const [isMobileSize, toggleIsMobileSize] = useToggle(window.innerWidth <= MAX_MOBILE_WIDTH);
+  const [resizeScheduler] = useRAF();
+  const [scrollScheduler] = useRAF();
   const [isFullScreen, toggleFullScreen] = useToggle(false);
+  const [isMobileSize, toggleIsMobileSize] = useToggle(window.innerWidth <= MAX_MOBILE_WIDTH);
 
   const isMobile = isMobileSize || IS_MOBILE;
   const isDesktopVisualsScreen = isVisuals && !isMobile && splashScreenPassed;
@@ -48,17 +49,40 @@ const Layout: React.FC<LayoutProps> = ({
   useHotKeys(Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN, () => toggleFullScreen(false), { disable: !isDesktopVisualsScreen });
   useHotKeys(Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE, () => toggleFullScreen(), { disable: !isDesktopVisualsScreen });
 
-  useSetup(() => {
-    const onResize = _throttle(() => toggleIsMobileSize(window.innerWidth <= MAX_MOBILE_WIDTH), 100);
+  React.useEffect(() => {
+    const root = window.document.getElementById('root')!;
 
-    window.addEventListener('resize', () => {
-      onResize();
-    });
+    const onResize = () => {
+      resizeScheduler(() => toggleIsMobileSize(window.innerWidth <= MAX_MOBILE_WIDTH));
+    };
+
+    const onScrollIOS = () => {
+      scrollScheduler(() => {
+        if (root.getBoundingClientRect().top < 0) {
+          root.style.top = `initial`;
+          root.style.height = `${window.innerHeight}px`;
+        } else {
+          root.style.top = '';
+          root.style.height = '';
+        }
+      });
+    };
 
     onResize();
 
-    return () => window.removeEventListener('resize', onResize);
-  });
+    window.addEventListener('resize', onResize);
+
+    // on ios scroll event will be fired, even if the root element is not scrollable, when keyboard is opened
+    // so the viewport doesn't change height, but the element position is changed
+    if (IS_IOS) {
+      window.addEventListener('scroll', onScrollIOS);
+    }
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('scroll', onScrollIOS);
+    };
+  }, []);
 
   const rendererOptions: RendererOptions = {
     isMobile,

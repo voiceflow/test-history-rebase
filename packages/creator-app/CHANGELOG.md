@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.621.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.621.3...@voiceflow/creator-app@1.621.4) (2022-02-08)
+
+
+### Bug Fixes
+
+* add new event mappings in event step (VF-2775) ([#5060](https://github.com/voiceflow/creator-app/issues/5060)) ([9ad2714](https://github.com/voiceflow/creator-app/commit/9ad27147c6852c9a020c081b24573c81124e96a6))
+
+
+
+
+
 ## [1.621.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.621.2...@voiceflow/creator-app@1.621.3) (2022-02-07)
 
 

@@ -13,7 +13,7 @@
     "@logux/state": "0.2.0",
     "@react-rxjs/core": "0.8.4",
     "@react-rxjs/utils": "0.9.3",
-    "@redux-devtools/extension": "^3.1.0",
+    "@redux-devtools/extension": "3.1.0",
     "@sentry/react": "6.16.1",
     "@sentry/tracing": "6.16.1",
     "@seznam/compose-react-refs": "1.0.6",

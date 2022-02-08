@@ -1,4 +1,4 @@
-import { Box, useSetup } from '@voiceflow/ui';
+import { Box, useSessionStorageState, useSetup } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -14,7 +14,6 @@ import * as Session from '@/ducks/session';
 import * as Transcripts from '@/ducks/transcript';
 import { fetchTranscripts } from '@/ducks/transcript';
 import { useDispatch, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
-import { useSessionStorageState } from '@/hooks/storage';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
 import { Identifier } from '@/styles/constants';
 

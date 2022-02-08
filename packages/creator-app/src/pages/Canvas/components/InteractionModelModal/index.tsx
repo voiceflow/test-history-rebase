@@ -1,4 +1,4 @@
-import { useCachedValue, useDidUpdateEffect } from '@voiceflow/ui';
+import { useCachedValue, useDidUpdateEffect, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { matchPath, RouteComponentProps, useLocation } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useModals, useSelector, useSessionStorageState, useTrackingEvents } from '@/hooks';
+import { useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 import UncontrolledInteractionModel from './UncontrolledInteractionModel';

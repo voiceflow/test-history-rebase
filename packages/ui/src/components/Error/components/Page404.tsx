@@ -1,10 +1,9 @@
 import { error404Graphic } from '@ui/assets';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import Page404Wrapper from './Page404Wrapper';
 
-const Page404: React.FC = () => (
+const Page404: React.FC = ({ children }) => (
   <Page404Wrapper>
     <div>
       <img src={error404Graphic} height={128} alt="404 Not Found" />
@@ -14,9 +13,7 @@ const Page404: React.FC = () => (
 
     <p>Sorry, the page you were looking for doesn't exist.</p>
 
-    <Link to="/" className="btn btn-primary mt-3">
-      Go to Dashboard
-    </Link>
+    {children}
   </Page404Wrapper>
 );
 

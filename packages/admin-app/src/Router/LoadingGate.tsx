@@ -1,7 +1,14 @@
 import { FullSpinner } from '@voiceflow/ui';
 import React from 'react';
 
-function LoadingGate({ label, isLoaded, load, unload, children }) {
+interface LoadingGateProps {
+  load: VoidFunction;
+  label?: string;
+  unload?: VoidFunction;
+  isLoaded?: boolean;
+}
+
+const LoadingGate: React.FC<LoadingGateProps> = ({ load, label, unload, isLoaded, children }) => {
   React.useEffect(() => {
     if (!isLoaded) {
       load();
@@ -14,7 +21,7 @@ function LoadingGate({ label, isLoaded, load, unload, children }) {
     return <FullSpinner name={label || 'data'} />;
   }
 
-  return children();
-}
+  return <>{children}</>;
+};
 
 export default LoadingGate;

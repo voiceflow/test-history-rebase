@@ -32,7 +32,6 @@ export * from './scroll';
 export * from './slot';
 export * from './speechRecognition';
 export * from './state';
-export * from './storage';
 export * from './syncedLookup';
 export * from './theme';
 export * from './toggle';

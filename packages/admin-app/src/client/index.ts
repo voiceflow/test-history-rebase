@@ -16,7 +16,7 @@ const generateClient = (serviceEndpoint: string) => ({
   },
 });
 
-export const getPlatformClient = Utils.platform.createPlatformSelector<any>(
+export const getPlatformClient = Utils.platform.createPlatformSelector<ReturnType<typeof generateClient>>(
   {
     [Constants.PlatformType.ALEXA]: generateClient(ALEXA_SERVICE_ENDPOINT),
     [Constants.PlatformType.GOOGLE]: generateClient(GOOGLE_SERVICE_ENDPOINT),

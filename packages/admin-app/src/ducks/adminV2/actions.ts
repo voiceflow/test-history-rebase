@@ -8,7 +8,6 @@ export enum AdminAction {
   SET_CHARGES = 'CHARGES:SET',
   SET_VENDORS = 'VENDORS:SET',
   UPDATE_WORKSPACE = 'WORKSPACE:UPDATE',
-  TOGGLE_THEME = 'THEME:TOGGLE',
 }
 
 // action types
@@ -23,9 +22,7 @@ export type SetVendors = Action<AdminAction.SET_VENDORS, { vendors: any[] }>;
 
 export type UpdateWorkspace = Action<AdminAction.UPDATE_WORKSPACE, { workspaceID: number; data: Partial<Workspace> }>;
 
-export type ToggleTheme = Action<AdminAction.TOGGLE_THEME, { theme: any }>;
-
-export type AnyAdminAction = SetCreator | FindCreatorFailed | SetCharges | SetVendors | UpdateWorkspace | ToggleTheme;
+export type AnyAdminAction = SetCreator | FindCreatorFailed | SetCharges | SetVendors | UpdateWorkspace;
 
 // action creators
 
@@ -39,5 +36,3 @@ export const setCharges = (payload: ActionPayload<SetCharges>): SetCharges => cr
 export const setVendors = (payload: ActionPayload<SetVendors>): SetVendors => createAction(AdminAction.SET_VENDORS, payload);
 
 export const updateWorkspace = (payload: ActionPayload<UpdateWorkspace>): UpdateWorkspace => createAction(AdminAction.UPDATE_WORKSPACE, payload);
-
-export const toggleTheme = (payload: ActionPayload<ToggleTheme>): ToggleTheme => createAction(AdminAction.TOGGLE_THEME, payload);

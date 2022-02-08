@@ -1,14 +1,27 @@
+import { useContextApi, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import * as StyledComponents from 'styled-components';
 
-import * as Admin from '@/ducks/adminV2';
+import { ThemeType } from '@/constants';
 import { getTheme } from '@/styles/theme';
 
-const ThemeProvider: React.FC = ({ children }) => {
-  const theme = useSelector(Admin.themeSelector);
+export const ThemeContext = React.createContext<{ theme: ThemeType; setTheme: (value: ThemeType) => void }>({
+  theme: ThemeType.LIGHT,
+  setTheme: () => {},
+});
 
-  return <StyledComponents.ThemeProvider theme={getTheme(theme)}>{children}</StyledComponents.ThemeProvider>;
+export const { Consumer: ThemeConsumer } = ThemeContext;
+
+const ThemeProvider: React.FC = ({ children }) => {
+  const [theme, setTheme] = useLocalStorageState('admin-theme', ThemeType.LIGHT);
+
+  const api = useContextApi({ theme, setTheme });
+
+  return (
+    <ThemeContext.Provider value={api}>
+      <StyledComponents.ThemeProvider theme={getTheme(theme)}>{children}</StyledComponents.ThemeProvider>
+    </ThemeContext.Provider>
+  );
 };
 
 export default ThemeProvider;

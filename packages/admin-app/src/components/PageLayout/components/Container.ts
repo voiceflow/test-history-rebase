@@ -1,6 +1,6 @@
 import { styled } from '@/styles';
 
-export const AdminWrapper = styled.div`
+const Container = styled.div`
   * {
     box-sizing: border-box;
     transition: background-color 0.2s ease;
@@ -37,18 +37,4 @@ export const AdminWrapper = styled.div`
   }
 `;
 
-export const AdminTitle = styled.div`
-  font-size: 32px;
-  line-height: 1;
-`;
-
-export const PageWrapper = styled.div`
-  flex-basis: 0;
-  flex-grow: 999;
-  min-width: calc(50% - 1rem);
-  height: 100vh;
-
-  overflow-y: scroll;
-
-  padding: 2rem;
-`;
+export default Container;

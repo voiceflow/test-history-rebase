@@ -1,81 +1,86 @@
-import { Button, ButtonVariant, ClickableText, FlexApart, Input } from '@voiceflow/ui';
+import { Button, ButtonVariant, FlexApart, Input, Link } from '@voiceflow/ui';
 import _get from 'lodash/get';
-import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { Form, FormGroup } from 'reactstrap';
 
 import { errorIcon, wordmark } from '@/assets';
 import * as AccountV2 from '@/ducks/accountV2';
-import { connect } from '@/hocs';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
-const LoginForm = ({ login, location }) => {
-  const query = queryString.parse(location.search);
-  const [loginError, setLoginError] = useState(null);
-  const [email, setEmail] = useState(query.email ? query.email : '');
-  const [password, setPassword] = useState('');
-  let timeout;
+const LoginForm: React.FC = () => {
+  const dispatch = useDispatch();
+  const [params] = useSearchParams();
 
-  const loginSubmit = (e) => {
-    e.preventDefault();
-    login({
-      email,
-      password,
-    }).catch((err) => {
-      const errText = _get(err, ['body', 'data']) || err;
+  const [email, setEmail] = useState(params.get('email') ?? '');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  const onSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    try {
+      await dispatch(AccountV2.login({ email, password }));
+    } catch (error) {
+      const errText = _get(error, ['body', 'data']) || error;
 
       setLoginError(errText);
-    });
-    return false;
+    }
   };
 
   useEffect(() => {
-    timeout = setTimeout(() => {
-      setLoginError(false);
-    }, 5000);
+    if (!loginError) {
+      return undefined;
+    }
+
+    const timeout = setTimeout(() => setLoginError(''), 5000);
 
     return () => clearTimeout(timeout);
-  });
+  }, [loginError]);
 
   return (
     <AuthenticationContainer>
       <AuthBox>
-        <Form onSubmit={loginSubmit}>
+        <Form onSubmit={onSubmit}>
           <div className="logo">
             <img className="auth-logo" src={wordmark} alt="logo" />
             <div className="admin-icon">Internal</div>
           </div>
+
           <div className="auth-form-wrapper">
             <FormGroup>
               <Input
                 className="form-bg"
                 type="email"
                 name="email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={({ currentTarget }) => setEmail(currentTarget.value)}
                 placeholder="Email"
                 required
-                minLength="6"
+                minLength={6}
                 value={email}
               />
             </FormGroup>
+
             <FormGroup className="passwordInput">
               <Input
                 className="form-bg"
                 type="password"
                 name="password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={({ currentTarget }) => setPassword(currentTarget.value)}
                 placeholder="Password"
                 required
-                minLength="8"
+                minLength={8}
                 value={password}
               />
             </FormGroup>
+
             <FlexApart>
               <div className="auth__link">
-                <ClickableText href="https://creator.voiceflow.com">Back to voiceflow</ClickableText>
+                <Link href="https://creator.voiceflow.com">Back to voiceflow</Link>
               </div>
 
               <div>
@@ -86,7 +91,9 @@ const LoginForm = ({ login, location }) => {
             </FlexApart>
           </div>
         </Form>
+
         <SocialLogin entryText="Or sign in with" light />
+
         {loginError && (
           <div className="errorContainer row">
             <div className="col-1">
@@ -100,8 +107,4 @@ const LoginForm = ({ login, location }) => {
   );
 };
 
-const mapDispatchToProps = {
-  login: AccountV2.login,
-};
-
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default LoginForm;

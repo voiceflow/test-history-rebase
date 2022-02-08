@@ -1,6 +1,6 @@
 import { css, styled } from '@/styles';
 
-const AuthenticationContainer = styled.div`
+const AuthenticationContainer = styled.div<{ dark?: boolean }>`
   display: flex;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;

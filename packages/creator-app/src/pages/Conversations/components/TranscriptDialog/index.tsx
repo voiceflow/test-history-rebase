@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { useCache } from '@voiceflow/ui';
+import { useCache, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -8,7 +8,6 @@ import * as Prototype from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype/types';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { currentTranscriptIDSelector } from '@/ducks/transcript';
-import { useLocalStorageState } from '@/hooks/storage';
 import PrototypeChatDisplay from '@/pages/Prototype/components/PrototypeChatDisplay';
 import { Message, MessageType } from '@/pages/Prototype/types';
 

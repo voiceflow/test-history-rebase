@@ -4,7 +4,7 @@ export const INITIAL_STATE: AccountState = {
   loading: false,
   email: null,
   name: null,
-  creator_id: null,
+  id: null,
   internalAdmin: false,
   image: null,
   vendors: [],

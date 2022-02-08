@@ -1,6 +1,6 @@
 import { createTheme } from '@voiceflow/ui';
 
-import { ThemeType } from '@/ducks/adminV2';
+import { ThemeType } from '@/constants';
 
 export const mainTheme = createTheme({
   palette: {

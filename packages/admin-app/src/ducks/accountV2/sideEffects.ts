@@ -1,10 +1,9 @@
-import { push } from 'connected-react-router';
 import queryString from 'query-string';
+import { push } from 'redux-first-history';
 
 import { Account } from '@/client';
 import { SessionType } from '@/constants';
 import { Thunk } from '@/store/types';
-import { cookies } from '@/store/utils';
 import * as Cookies from '@/utils/cookies';
 
 import * as Actions from './actions';
@@ -43,6 +42,7 @@ export const logout = (): Thunk => async (dispatch) => {
   localStorage.clear();
 
   dispatch(Actions.resetAccount());
+  dispatch(push('/login') as any);
 };
 
 export const getVendors = (): Thunk => async (dispatch) => {
@@ -72,7 +72,8 @@ const createSession =
       dispatch(Actions.updateAccount(user));
 
       const { location } = state.router;
-      const search = queryString.parse(location.search);
+      const search = queryString.parse(location?.search ?? '');
+
       // Ensure the user has admin credentials
       if (!user.internalAdmin) {
         // eslint-disable-next-line prefer-promise-reject-errors
@@ -83,7 +84,7 @@ const createSession =
         dispatch(
           push({
             pathname: '/admin',
-            search: location.search,
+            search: location?.search,
             state: { from: location },
           }) as any
         );
@@ -101,4 +102,4 @@ export const login = createSession(SessionType.BASIC_AUTH);
 export const googleLogin = createSession(SessionType.GOOGLE);
 
 // Non Action functions
-export const getAuth = () => cookies.get(Cookies.AUTH_COOKIE);
+export const getAuth = (): string | undefined | null => Cookies.getAuthCookie();

@@ -1,19 +1,20 @@
-import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
+import { Provider } from 'react-redux';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 
-import StoreProvider, { history } from '@/store';
+import { history, store } from '@/store';
 
 import LifecycleProvider from './LifecycleProvider';
 import ThemeProvider from './ThemeProvider';
 
 const GlobalProviders: React.FC = ({ children }) => (
-  <StoreProvider>
-    <ConnectedRouter history={history}>
+  <Provider store={store}>
+    <HistoryRouter history={history}>
       <LifecycleProvider>
         <ThemeProvider>{children}</ThemeProvider>
       </LifecycleProvider>
-    </ConnectedRouter>
-  </StoreProvider>
+    </HistoryRouter>
+  </Provider>
 );
 
 export default GlobalProviders;

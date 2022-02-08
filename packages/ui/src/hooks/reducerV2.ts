@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import { Nullable, Utils } from '@voiceflow/common';
+// eslint-disable-next-line you-dont-need-lodash-underscore/is-function
+import _isFunction from 'lodash/isFunction';
 import _transform from 'lodash/transform';
 import React, { useReducer, useRef } from 'react';
 
@@ -10,102 +13,108 @@ enum ActionType {
   KEY_UPDATE = 'key-update',
 }
 
-interface SetAction<S extends {}> {
+type SetCallback<S> = (state: S) => S;
+type UpdateCallback<S> = (state: S) => Partial<S>;
+
+interface SetAction<S extends object> {
   type: ActionType.SET;
-  payload: S;
+  payload: S | SetCallback<S>;
 }
-interface UpdateAction<S extends {}> {
+interface UpdateAction<S extends object> {
   type: ActionType.UPDATE;
-  payload: Partial<S>;
+  payload: Partial<S> | UpdateCallback<S>;
 }
-interface KeySetAction<S extends {}, K extends keyof S> {
+interface KeySetAction<S extends object, K extends keyof S> {
   type: ActionType.KEY_SET;
   key: K;
-  payload: S[K];
+  payload: S[K] | SetCallback<S[K]>;
 }
-interface KeyToggleAction<S extends {}, K extends keyof S> {
+interface KeyToggleAction<S extends object, K extends keyof S> {
   type: ActionType.KEY_TOGGLE;
   key: K;
   payload?: never;
 }
-interface KeyUpdateAction<S extends {}, K extends keyof S> {
+interface KeyUpdateAction<S extends object, K extends keyof S> {
   type: ActionType.KEY_UPDATE;
   key: K;
-  payload: Partial<S[K]>;
+  payload: Partial<S[K]> | UpdateCallback<S[K]>;
 }
 
-type Action<S extends {}, K extends keyof S> = SetAction<S> | UpdateAction<S> | KeySetAction<S, K> | KeyToggleAction<S, K> | KeyUpdateAction<S, K>;
+type Action<S extends object, K extends keyof S> =
+  | SetAction<S>
+  | UpdateAction<S>
+  | KeySetAction<S, K>
+  | KeyToggleAction<S, K>
+  | KeyUpdateAction<S, K>;
 
-type CustomReducer<S extends {}> = (state: S, action: Action<S, keyof S>) => S;
-
-const getTopLevelDiff = (object: Record<string, any>, base: Record<string, any>) => {
-  const changes = (object: Record<string, any>, base: Record<string, any>) =>
-    _transform<Record<string, any>, Record<string, any>>(object, (result, value, key) => {
-      if (value !== base[key]) {
-        // eslint-disable-next-line no-param-reassign
-        result[key] = value;
-      }
-    });
-  return changes(object, base);
-};
+type CustomReducer<S extends object> = (state: S, action: Action<S, keyof S>) => S;
 
 const createSmartReducer =
-  <S extends {}, K extends keyof S>(customReducer: CustomReducer<S>) =>
+  <S extends object, K extends keyof S>(customReducer: CustomReducer<S>) =>
   (state: S, action: Action<S, K>) => {
     switch (action.type) {
       case ActionType.SET:
-        return action.payload;
+        return _isFunction(action.payload) ? action.payload(state) : action.payload;
       case ActionType.UPDATE:
-        return { ...state, ...action.payload };
+        return { ...state, ...(_isFunction(action.payload) ? action.payload(state) : action.payload) };
       case ActionType.KEY_SET:
-        return { ...state, [action.key]: action.payload };
+        return {
+          ...state,
+          [action.key]: _isFunction(action.payload) ? action.payload(state[action.key]) : action.payload,
+        };
       case ActionType.KEY_TOGGLE:
         return { ...state, [action.key]: !state[action.key] };
       case ActionType.KEY_UPDATE:
-        return { ...state, [action.key]: { ...state[action.key], ...action.payload } };
+        return {
+          ...state,
+          [action.key]: {
+            ...state[action.key],
+            ...(_isFunction(action.payload) ? action.payload(state[action.key]) : action.payload),
+          },
+        };
       default:
         return customReducer(state, action);
     }
   };
 
-interface KeyApi<P> {
-  set: (payload: P) => void;
+interface KeyApi<S> {
+  set: (payload: S | SetCallback<S>) => void;
   clear: () => void;
   toggle: () => void;
-  update: (payload: Partial<P>) => void;
+  update: (payload: Partial<S> | UpdateCallback<S>) => void;
 }
 
-type API<S extends {}> = {
-  set: (payload: S) => void;
+type API<S extends object> = {
+  set: (payload: S | SetCallback<S>) => void;
   reset: () => void;
-  update: (payload: Partial<S>) => void;
+  update: (payload: Partial<S> | UpdateCallback<S>) => void;
 } & { [K in keyof S]: KeyApi<S[K]> };
 
-export const useSmartReducerV2 = <S extends {}, R extends {} = {}>(
+export const useSmartReducerV2 = <S extends object>(
   defaultState: S,
   customReducer: CustomReducer<S> = (s) => s,
-  customApiBuilder: (defaultState: S, api: { [K in keyof S]: KeyApi<S[K]> }) => R = () => ({} as any)
+  customApiBuilder: <R extends object>(defaultState: S, api: { [K in keyof S]: KeyApi<S[K]> }) => R = () => ({} as any)
 ) => {
-  const apiRef = useRef(null as null | (API<S> & R));
+  const apiRef = useRef(null as Nullable<API<S> & ReturnType<typeof customApiBuilder>>);
   const [state, dispatch] = useReducer(createSmartReducer(customReducer), defaultState);
 
   if (!apiRef.current) {
-    const keyAPI = (Object.keys(defaultState) as (keyof S)[]).reduce<{ [K in keyof S]: KeyApi<S[K]> }>(
+    const keyAPI = Utils.object.getKeys(defaultState).reduce<{ [K in keyof S]: KeyApi<S[K]> }>(
       (api, key) =>
         Object.assign(api, {
           [key]: {
-            set: (payload: S[typeof key]) => dispatch({ type: ActionType.KEY_SET, key, payload }),
+            set: (payload: S[typeof key] | SetCallback<S[typeof key]>) => dispatch({ type: ActionType.KEY_SET, key, payload }),
             clear: () => dispatch({ type: ActionType.KEY_SET, key, payload: defaultState[key] }),
             toggle: () => dispatch({ type: ActionType.KEY_TOGGLE, key }),
-            update: (payload: Partial<S[typeof key]>) => dispatch({ type: ActionType.KEY_UPDATE, key, payload }),
+            update: (payload: Partial<S[typeof key]> | UpdateCallback<S[typeof key]>) => dispatch({ type: ActionType.KEY_UPDATE, key, payload }),
           },
         }),
       {} as { [K in keyof S]: KeyApi<S[K]> }
     );
 
     apiRef.current = {
-      set: (payload: S) => dispatch({ type: ActionType.SET, payload }),
-      update: (payload: Partial<S>) => dispatch({ type: ActionType.UPDATE, payload }),
+      set: (payload: S | SetCallback<S>) => dispatch({ type: ActionType.SET, payload }),
+      update: (payload: Partial<S> | UpdateCallback<S>) => dispatch({ type: ActionType.UPDATE, payload }),
       reset: () => dispatch({ type: ActionType.SET, payload: defaultState }),
       ...keyAPI,
       ...customApiBuilder(defaultState, apiRef.current!),
@@ -115,7 +124,19 @@ export const useSmartReducerV2 = <S extends {}, R extends {} = {}>(
   return [state, apiRef.current!] as const;
 };
 
-export const useSyncedSmartReducerV2 = <S extends {}>(props: S) => {
+const getTopLevelDiff = <S extends object>(object: S, base: S): Partial<S> => {
+  const changes = (object: S, base: S) =>
+    _transform<S, S>(object, (result, value, key) => {
+      if (value !== base[key]) {
+        // eslint-disable-next-line no-param-reassign
+        result[key] = value;
+      }
+    });
+
+  return changes(object, base);
+};
+
+export const useSyncedSmartReducerV2 = <S extends object>(props: S) => {
   const cache = React.useRef(props);
   const [state, actions] = useSmartReducerV2(props);
 

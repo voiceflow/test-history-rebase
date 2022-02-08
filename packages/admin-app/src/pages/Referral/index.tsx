@@ -3,9 +3,9 @@ import React from 'react';
 import { Col, Form } from 'reactstrap';
 import { ThemeContext } from 'styled-components';
 
+import { PageTitle } from '@/components/PageLayout';
 import * as Referrals from '@/ducks/referral';
 import { connect } from '@/hocs';
-import { AdminTitle } from '@/styles/components';
 
 import { Code, Coupon, Creator, Expiry, RedemptionLimit, Status, Table } from './components';
 import { DEFAULT_STATE, ReferralContext, withReferralProvider } from './context';
@@ -27,7 +27,7 @@ const Referral: React.FC<ConnectedReferralsProps> = ({ setReferral, getReferralD
   return (
     <>
       <Box borderBottom="1px solid" borderColor={theme.palette.grey.faint} p={theme.unit * 2}>
-        <AdminTitle>Referral</AdminTitle>
+        <PageTitle>Referral</PageTitle>
       </Box>
       <Box pt={theme.unit * 2} pb={theme.unit * 2}>
         <Form onSubmit={onSubmit}>

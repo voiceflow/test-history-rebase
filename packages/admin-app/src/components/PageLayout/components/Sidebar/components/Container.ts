@@ -1,7 +1,6 @@
 import { styled } from '@/styles';
 
-// eslint-disable-next-line import/prefer-default-export
-export const SidebarWrapper = styled.div`
+const Container = styled.div`
   flex-basis: 12rem;
   flex-grow: 1;
   position: relative;
@@ -115,3 +114,5 @@ export const SidebarWrapper = styled.div`
     }
   }
 `;
+
+export default Container;

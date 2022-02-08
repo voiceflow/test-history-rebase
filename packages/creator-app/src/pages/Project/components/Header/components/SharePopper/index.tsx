@@ -1,10 +1,11 @@
+import { useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Popper, { PopperContent, PopperProps } from '@/components/Popper';
 import { Permission } from '@/config/permissions';
 import * as Session from '@/ducks/session';
-import { usePermission, useSelector, useSessionStorageState } from '@/hooks';
+import { usePermission, useSelector } from '@/hooks';
 import { MenuContent as ShareContent, SharePrototype as ShareFooter } from '@/pages/Canvas/header/ActionGroup/components/ShareProject/components';
 import InviteContent from '@/pages/Collaborators';
 import InviteFooter from '@/pages/Collaborators/components/InviteByLink';

@@ -30,7 +30,7 @@ const SSOPage: React.FC = () => {
   const [loading, toggleLoading] = useToggle(false);
   const [editCertificate, toggleEditCertificate] = useToggle(true);
 
-  const [samlProvider, samlProviderAPI] = useSmartReducerV2<SAMLProvider, {}>(DEFAULT_STATE);
+  const [samlProvider, samlProviderAPI] = useSmartReducerV2<SAMLProvider>(DEFAULT_STATE);
 
   const onSave = async () => {
     if (!samlProvider._id) {

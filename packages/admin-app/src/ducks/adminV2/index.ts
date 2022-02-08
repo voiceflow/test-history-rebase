@@ -49,11 +49,6 @@ const adminReducer: RootReducer<AdminState, AnyAdminAction> = (state = INITIAL_S
       };
     case AdminAction.UPDATE_WORKSPACE:
       return updateWorkspaceReducer(state, action);
-    case AdminAction.TOGGLE_THEME:
-      return {
-        ...state,
-        theme: action.payload.theme,
-      };
     default:
       return state;
   }

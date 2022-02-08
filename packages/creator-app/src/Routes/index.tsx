@@ -1,6 +1,6 @@
 import { FullSpinner, Page404 } from '@voiceflow/ui';
 import React, { Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Link, Redirect, Route, Switch } from 'react-router-dom';
 
 import { LegacyPath, Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
@@ -116,7 +116,15 @@ const Routes: React.FC = () => {
           }
         />
 
-        <Route component={Page404} />
+        <Route
+          render={() => (
+            <Page404>
+              <Link to="/" className="btn btn-primary mt-3">
+                Go to Dashboard
+              </Link>
+            </Page404>
+          )}
+        />
       </Switch>
     </Suspense>
   );

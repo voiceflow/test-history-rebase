@@ -9,3 +9,9 @@ export enum SessionType {
   GOOGLE = 'google',
   BASIC_AUTH = 'session',
 }
+
+export enum ThemeType {
+  DARK = 'DARK',
+  LIGHT = 'LIGHT',
+  UNICORN = 'UNICORN',
+}

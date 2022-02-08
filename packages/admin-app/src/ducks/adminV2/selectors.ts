@@ -6,8 +6,6 @@ import { STATE_KEY } from './constants';
 
 const rootSelector = createRootSelector(STATE_KEY);
 
-export const themeSelector = createSelector([rootSelector], ({ theme }) => theme);
-
 export const creatorSelector = createSelector([rootSelector], ({ creator }) => creator);
 
 export const boardsSelector = createSelector([rootSelector], ({ boards }) => boards);

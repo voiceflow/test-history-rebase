@@ -13,14 +13,14 @@ import ReactDOM from 'react-dom';
 import * as Sentry from '@/vendors/sentry';
 
 import GlobalProviders from './contexts/GlobalProviders';
-import AllRoutes from './Routes/allRoutes';
+import Router from './Router';
 
 Sentry.init();
 
 // Render ReactDOM
 ReactDOM.render(
   <GlobalProviders>
-    <AllRoutes />
+    <Router />
     <ToastContainer />
   </GlobalProviders>,
   document.getElementById('root')

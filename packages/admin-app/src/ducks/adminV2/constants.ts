@@ -1,4 +1,4 @@
-import { AdminState, ThemeType } from './types';
+import { AdminState } from './types';
 
 export const INITIAL_STATE: AdminState = {
   // The current creator being searched
@@ -10,7 +10,6 @@ export const INITIAL_STATE: AdminState = {
     errorMessage: '',
     errorReturned: null,
   },
-  theme: ThemeType.LIGHT,
 };
 
 export const STATE_KEY = 'adminV2';

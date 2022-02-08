@@ -1,7 +1,8 @@
+import { useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Session from '@/ducks/session';
-import { useLocalStorageState, useRAF, useSelector } from '@/hooks';
+import { useRAF, useSelector } from '@/hooks';
 
 export interface OpenedIDsToggleApi {
   openedIDs: Record<string, boolean>;

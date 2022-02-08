@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.623.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.623.1...@voiceflow/creator-app@1.623.2) (2022-02-08)
+
+
+### Bug Fixes
+
+* **deps:** pin dependency @redux-devtools/extension to v3.1.0 (vf-000) ([#5064](https://github.com/voiceflow/creator-app/issues/5064)) ([a78cf5d](https://github.com/voiceflow/creator-app/commit/a78cf5d154a75efcdae9e77dd786c3ce4d1fc055))
+
+
+
+
+
 ## [1.623.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.623.0...@voiceflow/creator-app@1.623.1) (2022-02-08)
 
 

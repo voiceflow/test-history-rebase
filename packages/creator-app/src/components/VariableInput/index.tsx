@@ -38,6 +38,7 @@ const VariableInput: React.FC<VariableInputProps> = ({ name, value, disabled, on
       disabled={!!disabled}
       onClick={onClick}
       onMouseDown={(e) => isFocused && e.target !== editableTextRef.current?.inputRef.current && e.preventDefault()}
+      style={{ cursor: 'text' }}
     >
       <Label>{name}</Label>
       <EditableTextInput

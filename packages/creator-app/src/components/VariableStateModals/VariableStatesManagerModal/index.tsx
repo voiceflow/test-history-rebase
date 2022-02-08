@@ -8,6 +8,7 @@ import { useDispatch, useModals, useSelector } from '@/hooks';
 
 const VariableStatesManagerModal: React.FC = () => {
   const { open: openEditorModal } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
+  const { close } = useModals(ModalType.VARIABLE_STATES_MANAGER_MODAL);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
   const updateVariableState = useDispatch(VariableState.updateState);
   const deleteVariableState = useDispatch(VariableState.deleteState);
@@ -31,6 +32,12 @@ const VariableStatesManagerModal: React.FC = () => {
     setVariableStateNames({ ...variableStateNames, [variableStateID]: newName });
   };
 
+  React.useEffect(() => {
+    if (variableStates.length === 0) {
+      close();
+    }
+  }, [variableStates]);
+
   React.useEffect(
     () => setVariableStateNames(variableStates.reduce((acc, variableState) => ({ ...acc, [variableState.id]: variableState.name }), {})),
     [variableStates]
@@ -43,19 +50,12 @@ const VariableStatesManagerModal: React.FC = () => {
           <FlexCenter style={{ marginTop: idx > 0 ? '16px' : '0px' }} key={variableStateID}>
             <Input
               value={variableStateNames[variableStateID]}
-              onChangeText={(newValue) => handleInputTextChange(variableStateID, newValue)}
+              onChangeText={(newValue: string) => handleInputTextChange(variableStateID, newValue)}
               onBlur={() => handleVariableNameChange(variableStateID)}
             />
             <Box mr="16px" ml="24px">
               <TippyTooltip html={<div>Edit state</div>}>
-                <SvgIcon
-                  icon="editName"
-                  size={16}
-                  color="#6e849a"
-                  clickable
-                  style={{ opacity: 0.8 }}
-                  onClick={() => handleEditState(variableStateID)}
-                />
+                <SvgIcon icon="editName" size={16} color="#6e849a" clickable enableOpacity onClick={() => handleEditState(variableStateID)} />
               </TippyTooltip>
             </Box>
             <Box>
@@ -65,7 +65,7 @@ const VariableStatesManagerModal: React.FC = () => {
                   size={16}
                   color="#6e849a"
                   clickable
-                  style={{ opacity: 0.8 }}
+                  enableOpacity
                   onClick={() => handleVariableStateDelete(variableStateID)}
                 />
               </TippyTooltip>

@@ -13,7 +13,7 @@ import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
-import { Container } from './components';
+import { Container, SelectedVariableStateText } from './components';
 
 export interface PrototypeStartProps {
   debug: boolean;
@@ -71,10 +71,12 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
               </Button>
             </TippyTooltip>
           ) : (
-            <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={start} id={Identifier.PROTOTYPE_START}>
+            <Button variant={ButtonVariant.PRIMARY} onClick={start} squareRadius id={Identifier.PROTOTYPE_START}>
               Run Test
             </Button>
           )}
+
+          <SelectedVariableStateText />
         </Container>
       </FadeDownContainer>
     </IdleContainer>

@@ -11,7 +11,8 @@ class PatchVariableState extends AbstractVersionResourceControl<PatchVariableSta
   protected actionCreator = Realtime.variableState.crud.patch;
 
   protected process = async (ctx: Context, { payload }: Action<PatchVariableStatePayload>) => {
-    await this.services.variableState.patch(ctx.data.creatorID, payload.key, _.pick(payload.value, 'name', 'startFrom', 'variables'));
+    const updatedVariableState = _.pick(payload.value, 'name', 'startFrom', 'variables');
+    await this.services.variableState.patch(ctx.data.creatorID, payload.key, updatedVariableState);
   };
 }
 

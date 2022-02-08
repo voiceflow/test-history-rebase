@@ -1,3 +1,5 @@
+// eslint-disable-next-line lodash/import-scope
+import _ from 'lodash';
 import _sortBy from 'lodash/sortBy';
 import { createSelector } from 'reselect';
 
@@ -17,7 +19,14 @@ export const {
 
 export const getVariableStateByIDSelector = createCurriedSelector(variableStateByIDSelector);
 
-export const selectedVariableStateId = createSelector([rootVariableStatesSelector], (variableStates) => variableStates?.selectedID);
+export const selectedVariableStateId = createSelector([rootVariableStatesSelector], (variableStates) => variableStates?.selectedState?.id);
+
+export const selectedVariableState = createSelector([rootVariableStatesSelector], (variableStates) => variableStates?.selectedState);
+
+export const getSelectedVariableStateName = createSelector(
+  [selectedVariableState, getVariableStateByIDSelector],
+  (variableState, getById) => variableState?.id && getById({ id: variableState.id })?.name
+);
 
 export const createVariableList = (variables?: Record<string, VariableValue>): Variable[] =>
   variables
@@ -27,17 +36,48 @@ export const createVariableList = (variables?: Record<string, VariableValue>): V
       )
     : [];
 
-export const selectAllProjectVariables = createSelector([Prototype.prototypeVariablesSelector], (prototypeVariables) =>
-  createVariableList(prototypeVariables)
+export const selectAllProjectVariables = createSelector([Prototype.prototypeVariablesSelector], (prototypeVariables) => {
+  return createVariableList(prototypeVariables);
+});
+
+export const selectedVariables = createSelector(
+  [selectedVariableState, Prototype.prototypeVariablesSelector],
+  (selectedVariableState, prototypeVariables) => {
+    if (!selectedVariableState || selectedVariableState?.id === ALL_PROJECT_VARIABLES_ID) {
+      return prototypeVariables;
+    }
+
+    return selectedVariableState.variables;
+  }
 );
 
 export const selectedVariablesStateVariables = createSelector(
-  [selectedVariableStateId, createCurriedSelector(variableStateByIDSelector), selectAllProjectVariables],
-  (variableStateId, variableStatesById, allProjectVariables) => {
-    if (variableStateId === ALL_PROJECT_VARIABLES_ID) {
+  [selectedVariableState, selectAllProjectVariables],
+  (selectedVariableState, allProjectVariables) => {
+    if (!selectedVariableState?.id) return [];
+
+    if (selectedVariableState.id === ALL_PROJECT_VARIABLES_ID) {
       return allProjectVariables;
     }
 
-    return createVariableList(variableStatesById({ id: variableStateId })?.variables) ?? [];
+    return createVariableList(selectedVariableState.variables);
+  }
+);
+
+export const selectedVariableStateSavedState = createSelector(
+  [selectedVariableStateId, getVariableStateByIDSelector],
+  (selectedVariableStateID, getSavedStateByID) => selectedVariableStateID && getSavedStateByID({ id: selectedVariableStateID })
+);
+
+export const IsVariableStateUnsync = createSelector(
+  [selectedVariableState, getVariableStateByIDSelector],
+  (selectedVariableState, getVariableStateById) => {
+    if (!selectedVariableState?.id || selectedVariableState.id === ALL_PROJECT_VARIABLES_ID) return false;
+
+    const savedState = getVariableStateById({ id: selectedVariableState.id });
+
+    if (!selectedVariableState.variables || !savedState?.variables) return false;
+
+    return !_.isEqual(savedState.variables, selectedVariableState.variables);
   }
 );

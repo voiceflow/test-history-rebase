@@ -23,7 +23,7 @@ export const itemStyles = css<MenuItemProps>`
   overflow: hidden;
   user-select: none;
   cursor: pointer;
-  margin: ${({ divider }) => (divider ? '6px 0' : 'none')};
+  margin: ${({ divider }) => (divider ? '8px 0' : 'none')};
   border-bottom: ${({ divider }) => (divider ? '1px solid #EAEFF4' : 'none')};
 
   ${({ disabled }) =>

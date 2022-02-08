@@ -1,4 +1,4 @@
-import { Button, Input, Link, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Input, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import BlockSelect from '@/components/BlockSelect';
@@ -33,6 +33,7 @@ const defaultValues: VariableStateEditorValues = {
 const VariableStateEditorModal: React.FC = () => {
   const { isOpened, close, data } = useModals<{ variableStateID?: string }>(ModalType.VARIABLE_STATE_EDITOR_MODAL);
   const createVariableState = useDispatch(VariableStateDucks.createVariableState);
+  const updateSelectedVariableState = useDispatch(VariableStateDucks.updateSelectedVariableState);
   const updateVariableState = useDispatch(VariableStateDucks.updateState);
   const getVariableStateByID = useSelector(VariableStateDucks.getVariableStateByIDSelector);
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
@@ -56,11 +57,29 @@ const VariableStateEditorModal: React.FC = () => {
 
   const [saving, setSaving] = React.useState(false);
   const [values, setValues] = React.useState<VariableStateEditorValues>(getInitialValues);
+  const variablesList = values.variables.map((variable) => ({
+    value: values?.variablesValues[variable],
+    name: variable,
+  }));
 
-  React.useEffect(() => {
-    setSaving(false);
-    setValues(getInitialValues);
-  }, [isOpened]);
+  const validateFields = () => {
+    if (!values.name) {
+      toast.error('Name is required');
+      return false;
+    }
+
+    if (!values.variables.length) {
+      toast.error('At least one variable is required');
+      return false;
+    }
+
+    if (!Object.values(values.variablesValues).length) {
+      toast.error('One or more included variables are not set');
+      return false;
+    }
+
+    return true;
+  };
 
   const handleSave = async () => {
     const diagramID = values.diagramID || activeDiagramID;
@@ -72,26 +91,30 @@ const VariableStateEditorModal: React.FC = () => {
           }
         : null;
 
-    if (Object.values(values.variablesValues).some((value) => !value)) {
-      toast.error('One or more included variables are not set');
-      return;
-    }
+    const isValid = validateFields();
+
+    if (!isValid) return;
 
     setSaving(true);
 
-    if (!data.variableStateID) {
-      await createVariableState({ name: values.name, variables: values.variablesValues, startFrom });
-      trackingEvents.trackVariableStateCreated({ diagramID });
-    } else {
-      await updateVariableState(data.variableStateID, {
-        name: values.name,
-        variables: values.variablesValues,
-        startFrom,
-      });
+    try {
+      if (!data.variableStateID) {
+        const createdVariableState = await createVariableState({ name: values.name, variables: values.variablesValues, startFrom });
+        if (createdVariableState) updateSelectedVariableState({ id: createdVariableState.id, variables: values.variablesValues });
+        trackingEvents.trackVariableStateCreated({ diagramID });
+      } else {
+        await updateVariableState(data.variableStateID, {
+          name: values.name,
+          variables: values.variablesValues,
+          startFrom,
+        });
+      }
+      close();
+    } catch (e) {
+      toast.error('Failed to create variable state');
+    } finally {
+      setSaving(false);
     }
-
-    setSaving(false);
-    close();
   };
 
   const onChangeValue =
@@ -99,12 +122,12 @@ const VariableStateEditorModal: React.FC = () => {
     <T extends unknown>(value: T) =>
       setValues((state) => ({ ...state, [name]: value }));
 
-  if (!isOpened) return null;
+  React.useEffect(() => {
+    setSaving(false);
+    setValues(getInitialValues);
+  }, [isOpened]);
 
-  const variablesList = values.variables.map((variable) => ({
-    value: values?.variablesValues[variable],
-    name: variable,
-  }));
+  if (!isOpened) return null;
 
   return (
     <Modal id={ModalType.VARIABLE_STATE_EDITOR_MODAL} title="New Variable State">
@@ -116,6 +139,8 @@ const VariableStateEditorModal: React.FC = () => {
             placeholder="E.g., New User, Return User, Added Credit Card"
             onEnterPress={handleSave}
             disabled={saving}
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
           />
         </Section>
         <Section header="Starting Block" variant={SectionVariant.FORM}>
@@ -129,30 +154,37 @@ const VariableStateEditorModal: React.FC = () => {
             placeholder="E.g., New User, Return User, Added Credit Card"
             disabled={saving}
           />
-          <InputHint>Selected variables will be shown below to set values</InputHint>
+          {!values.variables.length && <InputHint>Selected variables will be shown below to set values</InputHint>}
         </Section>
-        <Section variant={SectionVariant.FORM} customContentStyling={{ paddingBottom: 0 }}>
-          <VariableList
-            disabled={saving}
-            canDelete
-            onChangeList={(list) => {
-              setValues((state) => ({
-                ...state,
-                variables: list.map(({ name }) => name),
-                variablesValues: list.reduce((acc, next) => ({ ...acc, [next.name]: next.value }), {}),
-              }));
-            }}
-            variables={variablesList}
-          />
-        </Section>
+        {values.variables.length > 0 && (
+          <Section
+            variant={SectionVariant.FORM}
+            customContentStyling={{ maxHeight: '240px', minHeight: '40px', overflow: 'scroll', overflowX: 'hidden', padding: '24px 32px' }}
+          >
+            <VariableList
+              disabled={saving}
+              canDelete
+              onChangeList={(list) => {
+                setValues((state) => ({
+                  ...state,
+                  variables: list.map(({ name }) => name),
+                  variablesValues: list.reduce((acc, next) => ({ ...acc, [next.name]: next.value }), {}),
+                }));
+              }}
+              variables={variablesList}
+            />
+          </Section>
+        )}
       </ModalBody>
 
       <ModalFooter>
-        <Link onClick={() => close()} style={{ marginRight: '33px', fontWeight: 600 }}>
-          Cancel
-        </Link>
+        <Box mr="12px">
+          <Button variant={ButtonVariant.TERTIARY} onClick={close} disabled={saving}>
+            Cancel
+          </Button>
+        </Box>
 
-        <Button disabled={saving} onClick={handleSave}>
+        <Button variant={ButtonVariant.PRIMARY} disabled={saving} onClick={handleSave}>
           {saving ? 'Saving...' : 'Save'}
         </Button>
       </ModalFooter>

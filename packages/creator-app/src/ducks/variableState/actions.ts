@@ -1,8 +1,10 @@
 import { createAction } from '@/ducks/utils';
 import { createCRUDActionCreators } from '@/ducks/utils/crud';
+import { VariableValue } from '@/models';
 import { Action } from '@/store/types';
 
 import { STATE_KEY } from './constants';
+import { SelectedVariableState } from './types';
 
 const {
   add: addVariableState,
@@ -15,11 +17,19 @@ const {
 
 export { addVariableState, addVariableStates, patchVariableState, removeVariableState, replaceVariableStates, updateVariableState };
 
-export type UpdateSelectedVariableState = Action<VariableStateAction.UPDATE_SELECTED_ID, string | null>;
-
 export enum VariableStateAction {
-  UPDATE_SELECTED_ID = 'UPDATE_SELECTED_ID',
+  UPDATE_SELECTED_STATE = 'UPDATE_SELECTED_STATE',
+  UPDATE_VARIABLES = 'UPDATE_VARIABLES',
 }
 
-export const updateSelectedVariableStateId = (variableStateId: string): UpdateSelectedVariableState =>
-  createAction(VariableStateAction.UPDATE_SELECTED_ID, variableStateId);
+export type UpdateSelectedVariableState = Action<VariableStateAction.UPDATE_SELECTED_STATE, SelectedVariableState | null>;
+
+export type UpdateVariables = Action<VariableStateAction.UPDATE_VARIABLES, Record<string, VariableValue>>;
+
+export type SelectedStateActions = UpdateSelectedVariableState | UpdateVariables;
+
+export const updateSelectedVariableState = (selectedVariableState: SelectedVariableState | null): UpdateSelectedVariableState =>
+  createAction(VariableStateAction.UPDATE_SELECTED_STATE, selectedVariableState);
+
+export const updateVariables = (variables: Record<string, VariableValue>): UpdateVariables =>
+  createAction(VariableStateAction.UPDATE_VARIABLES, variables);

@@ -51,8 +51,8 @@ const startPrototype =
   (dispatch, getState) => {
     const state = getState();
 
-    const projectID = Session.activeProjectIDSelector(state);
     const variables = prototypeVariablesSelector(state);
+    const projectID = Session.activeProjectIDSelector(state);
     const activeDiagramID = Session.activeDiagramIDSelector(state);
     const getLinkIDsByNodeID = (nodeID: string) => CreatorV2.linkIDsByNodeIDSelector(state, { id: nodeID });
     const getLinkedNodeIDsByNodeID = (nodeID: string) => CreatorV2.linkedNodeIDsByNodeIDSelector(state, { id: nodeID });

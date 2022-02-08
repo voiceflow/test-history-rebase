@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.53.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.52.1...@voiceflow/ui@1.53.0) (2022-02-08)
+
+
+### Features
+
+* tc updates (VF-2872) ([#5061](https://github.com/voiceflow/creator-app/issues/5061)) ([bc1ecd5](https://github.com/voiceflow/creator-app/commit/bc1ecd55c71dd0779ab10a954f71b531790dfd5c))
+* **creator-app:** override variable state values (VF-2401) ([#5038](https://github.com/voiceflow/creator-app/issues/5038)) ([8c44592](https://github.com/voiceflow/creator-app/commit/8c4459289bb3f8ac404b09979187bb4f38d79463))
+
+
+
+
+
 ## [1.52.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.52.0...@voiceflow/ui@1.52.1) (2022-02-08)
 
 **Note:** Version bump only for package @voiceflow/ui

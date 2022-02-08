@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.36.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.35.1...@voiceflow/realtime@1.36.0) (2022-02-08)
+
+
+### Features
+
+* **creator-app:** override variable state values (VF-2401) ([#5038](https://github.com/voiceflow/creator-app/issues/5038)) ([8c44592](https://github.com/voiceflow/creator-app/commit/8c4459289bb3f8ac404b09979187bb4f38d79463))
+
+
+
+
+
 ## [1.35.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.35.0...@voiceflow/realtime@1.35.1) (2022-02-08)
 
 **Note:** Version bump only for package @voiceflow/realtime

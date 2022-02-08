@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.622.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.621.4...@voiceflow/creator-app@1.622.0) (2022-02-08)
+
+
+### Features
+
+* update react router in the admin tool (VF-000) ([#4788](https://github.com/voiceflow/creator-app/issues/4788)) ([ac15c38](https://github.com/voiceflow/creator-app/commit/ac15c387bb60fe86520af418ec1843c1c8f9b07c))
+
+
+
+
+
 ## [1.621.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.621.3...@voiceflow/creator-app@1.621.4) (2022-02-08)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.622.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.622.0...@voiceflow/creator-app@1.622.1) (2022-02-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency clipboard to v2.0.10 (vf-000) ([#5041](https://github.com/voiceflow/creator-app/issues/5041)) ([dc1c975](https://github.com/voiceflow/creator-app/commit/dc1c975c9672457e9661c2ddc893455022be1a2b))
+
+
+
+
+
 # [1.622.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.621.4...@voiceflow/creator-app@1.622.0) (2022-02-08)
 
 

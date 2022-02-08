@@ -8,7 +8,7 @@ import { NodeConfig } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = {
   type: BlockType.COMPONENT,
-  icon: 'component',
+  icon: 'folder',
 
   factory: ({ diagramID = null } = {}) => ({
     node: {
@@ -21,7 +21,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Component, Realtime.NodeD
       },
     },
     data: {
-      name: 'Component',
+      name: 'Flow',
       inputs: [],
       outputs: [],
       diagramID,

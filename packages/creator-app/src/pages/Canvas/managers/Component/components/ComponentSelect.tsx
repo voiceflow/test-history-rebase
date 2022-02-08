@@ -54,7 +54,7 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ onChange, diagramID, 
 
       componentDiagrams.forEach((component) => {
         if (component.name.toLowerCase() === lowerCasedName) {
-          throw new Error('Component name already in use, choose a different name.');
+          throw new Error('Flow name already in use, choose a different name.');
         }
       });
 
@@ -78,15 +78,15 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ onChange, diagramID, 
           : ({ search }) =>
               !search ? (
                 <Box textAlign="center" flex={1}>
-                  No components exist.
+                  No flows exist.
                 </Box>
               ) : null
       }
-      placeholder="Name new component or select existing"
+      placeholder="Name new flow or select existing"
       validateCreate={validateCreate}
       getOptionValue={(option) => option?.id}
       getOptionLabel={(optionValue) => optionValue && optionsMap[optionValue]?.name}
-      createInputPlaceholder="New Component Name"
+      createInputPlaceholder="New Flow Name"
     />
   );
 };

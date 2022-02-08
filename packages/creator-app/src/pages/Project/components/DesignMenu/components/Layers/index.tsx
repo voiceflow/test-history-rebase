@@ -7,6 +7,8 @@ import { useSelector } from '@/hooks';
 
 import { ComponentsSection, Container, TopicsSection } from './components';
 
+const DEFAULT_HEADER_HEIGHT = 42;
+
 const Layers: React.FC = () => {
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
 
@@ -15,11 +17,11 @@ const Layers: React.FC = () => {
   return (
     <Container>
       <Resizable onResized={setHeights}>
-        <ResizablePanel height={heights[0]} minHeight={138}>
+        <ResizablePanel height={heights[0]} minHeight={DEFAULT_HEADER_HEIGHT}>
           {() => <TopicsSection />}
         </ResizablePanel>
 
-        <ResizablePanel height={heights[1]} minHeight={42}>
+        <ResizablePanel height={heights[1]} minHeight={DEFAULT_HEADER_HEIGHT}>
           {({ setHeight, collapsed }) => <ComponentsSection collapsed={collapsed} setSectionHeight={setHeight} />}
         </ResizablePanel>
       </Resizable>

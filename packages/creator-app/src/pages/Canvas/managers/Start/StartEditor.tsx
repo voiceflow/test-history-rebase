@@ -22,8 +22,7 @@ const StartEditor: NodeEditor<Realtime.NodeData.Start> = ({ data, onChange, push
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
-  const componentDefaultLabel =
-    topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? 'Component starts here' : 'Conversation continues here';
+  const componentDefaultLabel = topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? 'Flow starts here' : 'Conversation continues here';
 
   return (
     <Content>

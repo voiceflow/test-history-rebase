@@ -101,6 +101,7 @@ export { default as fireTV } from './fire-tv.svg';
 export { default as flag } from './flag.svg';
 export { default as flow } from './flow.svg';
 export { default as flows } from './flows.svg';
+export { default as folder } from './folder.svg';
 export { default as folderLight } from './folder-light.svg';
 export { default as forward } from './forward.svg';
 export { default as frame } from './frame.svg';

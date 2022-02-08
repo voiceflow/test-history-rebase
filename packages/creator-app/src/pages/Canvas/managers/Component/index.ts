@@ -9,7 +9,7 @@ const ComponentManager: NodeManagerConfig<Realtime.NodeData.Component, Realtime.
   ...NODE_CONFIG,
 
   tip: 'Organize your project into manageable sections or perform computations',
-  label: 'Component',
+  label: 'Flow',
 
   step: ComponentStep,
   editor: ComponentEditor,

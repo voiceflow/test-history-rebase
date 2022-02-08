@@ -21,7 +21,7 @@ const FlowStartStep: React.FC<FlowStartStepProps> = ({ label, portID, variant })
       <Section>
         <Item
           icon="inFlow"
-          label={label || (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? 'Component starts here' : 'Conversation continues here')}
+          label={label || (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? 'Flow starts here' : 'Conversation continues here')}
           portID={portID}
           variant={variant}
           labelVariant={StepLabelVariant.PRIMARY}

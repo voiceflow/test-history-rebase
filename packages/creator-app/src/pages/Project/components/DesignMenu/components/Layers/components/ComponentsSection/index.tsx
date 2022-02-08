@@ -127,7 +127,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
           size={components.length}
           header={
             <Header
-              label="Components"
+              label="Flows"
               collapsed={collapsed}
               rightAction={
                 collapsed && (
@@ -150,7 +150,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
           }}
           renderPlaceholder={({ width }) => (
             <Placeholder width={width}>
-              To create a component, select a collection of blocks and choose <b>‘Create component’</b> icon in the toolbar.{' '}
+              To create a flow, select a collection of blocks and choose <b>‘Create flow’</b> icon in the toolbar.{' '}
               <Link href={Documentation.COMPONENTS_LAYER}>Learn more</Link>
             </Placeholder>
           )}

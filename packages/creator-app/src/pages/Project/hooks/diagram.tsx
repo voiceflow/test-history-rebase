@@ -143,7 +143,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
     let label = 'flow';
 
     if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) {
-      label = getDiagramByID({ id: diagramID })?.type === BaseModels.DiagramType.TOPIC ? 'topic' : 'component';
+      label = getDiagramByID({ id: diagramID })?.type === BaseModels.DiagramType.TOPIC ? 'topic' : 'flow';
     }
 
     setConfirmModal({

@@ -269,7 +269,7 @@ export const convertToComponent =
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
     const activeComponents = VersionV2.active.componentsSelector(state);
-    const name = `Component ${activeComponents.length + 1}`;
+    const name = `Flow ${activeComponents.length + 1}`;
     const diagram = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
 
     const nodeIDMap = nodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});

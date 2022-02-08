@@ -116,9 +116,9 @@ const ProjectAndDiagramActions: React.FC = () => {
       (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID)) ? (
         <BoxFlex gap={5}>
           <HeaderIconButton
-            icon="component"
+            icon="folder"
             isSmall
-            tooltip={{ title: 'Create component', hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT] }}
+            tooltip={{ title: 'Create flow', hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT] }}
             onClick={onCreateComponent}
           />
 

@@ -1,3 +1,5 @@
+import { Node } from '@voiceflow/alexa-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Input } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,12 +9,12 @@ import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import PrefixedVariableSelect from '@/pages/Canvas/components/PrefixedVariableSelect';
 import LineItemsSection from '@/pages/Canvas/managers/Integration/components/CustomApi/components/LineItemsSection';
 import MetaDataLineItem from '@/pages/Canvas/managers/Integration/components/MetaDataLineItem';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 
-const EventMappingFactory = () => ({ variable: '', path: '' });
+const EventMappingFactory = (): Node.Event.Mapping => ({ var: '', path: '' });
 
-function EventEditor({ data, onChange }) {
-  const { items, onAdd, mapManaged } = useManager(data.mappings, (mappings) => onChange({ mappings }), { EventMappingFactory });
-
+const EventEditor: NodeEditor<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = ({ data, onChange }) => {
+  const { items, onAdd, mapManaged } = useManager(data.mappings, (mappings) => onChange({ mappings }), { factory: EventMappingFactory });
   return (
     <Content>
       <Section>
@@ -20,14 +22,13 @@ function EventEditor({ data, onChange }) {
           <Input value={data.requestName} onChangeText={(value) => onChange({ requestName: value })} placeholder="e.g. AudioPlayer.PlaybackStopped" />
         </FormControl>
       </Section>
-      <LineItemsSection header="Request Mapping" onAdd={onAdd} dividers isDividerNested>
+      <LineItemsSection header="Request Mapping" onAdd={onAdd} dividers>
         {mapManaged((map, { key, onUpdate, onRemove }) => (
           <MetaDataLineItem
-            prefix="PATH"
             onlyItem={items.length === 1}
             keyPlaceholder="Enter object path"
             onRemove={onRemove}
-            onUpdate={(path) => onUpdate({ path })}
+            onUpdate={(path: string) => onUpdate({ path })}
             value={map.path}
             key={key}
           >
@@ -37,6 +38,6 @@ function EventEditor({ data, onChange }) {
       </LineItemsSection>
     </Content>
   );
-}
+};
 
 export default EventEditor;

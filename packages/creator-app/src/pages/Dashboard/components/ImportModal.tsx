@@ -1,7 +1,7 @@
 import './ImportModal.css';
 
-import { Button, ButtonVariant, ModalImportSelect, StatusCode, toast } from '@ui';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Button, ButtonVariant, ModalImportSelect, StatusCode, toast } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';

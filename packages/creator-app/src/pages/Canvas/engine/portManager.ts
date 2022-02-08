@@ -1,6 +1,6 @@
-import * as Realtime from '@realtime-sdk';
 import { Models } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Creator from '@/ducks/creator';
 import * as RealtimeDuck from '@/ducks/realtime';

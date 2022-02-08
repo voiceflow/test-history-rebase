@@ -6,20 +6,11 @@
     "importHelpers": true,
     "baseUrl": ".",
     "paths": {
-      "@ui": [
-        "../../node_modules/@voiceflow/ui"
-      ],
       "@voiceflow/ui": [
         "../../node_modules/@voiceflow/ui"
       ],
-      "@realtime-sdk": [
-        "../../node_modules/@voiceflow/realtime-sdk"
-      ],
       "@voiceflow/realtime-sdk": [
         "../../node_modules/@voiceflow/realtime-sdk"
-      ],
-      "@ml-sdk": [
-        "../../node_modules/@voiceflow/ml-sdk"
       ],
       "@voiceflow/ml-sdk": [
         "../../node_modules/@voiceflow/ml-sdk"

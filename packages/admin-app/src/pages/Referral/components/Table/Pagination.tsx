@@ -2,11 +2,11 @@ import { BoxFlexCenter } from '@voiceflow/ui';
 import React from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
-export type PaginationSectionProps = {
+export interface PaginationSectionProps {
   pageCount: number;
   currentPage: number;
   handleClick: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, page: number) => void;
-};
+}
 
 const PaginationSection: React.FC<PaginationSectionProps> = ({ pageCount, currentPage, handleClick }) => (
   <BoxFlexCenter mr={60}>

@@ -2,13 +2,13 @@ import { Box, BoxFlex, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 import { Col, FormGroup, Label } from 'reactstrap';
 
-export type FormSectionProps = {
+export interface FormSectionProps {
   labelFor: string;
   label: string;
   mandatory?: boolean;
   optional?: boolean;
   tooltip?: string;
-};
+}
 
 const FormSection: React.FC<FormSectionProps> = ({ label, labelFor, mandatory = false, optional = false, tooltip, children }) => (
   <FormGroup row>

@@ -1,4 +1,4 @@
-import { useContextApi } from '@ui';
+import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 export interface AutoPanningContextValue {

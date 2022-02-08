@@ -1,3 +1,5 @@
+import { Nullable } from '@voiceflow/common';
+import { Constants } from '@voiceflow/general-types';
 import {
   Alert,
   AlertVariant,
@@ -10,9 +12,7 @@ import {
   ModalBoldText,
   ModalButtonContainer,
   ModalContentContainer,
-} from '@ui';
-import { Nullable } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+} from '@voiceflow/ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';

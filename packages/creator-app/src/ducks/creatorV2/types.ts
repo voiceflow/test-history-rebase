@@ -1,5 +1,5 @@
-import * as Realtime from '@realtime-sdk';
 import { Normalized } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { Point } from '@/types';
 

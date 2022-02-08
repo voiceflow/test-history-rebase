@@ -1,4 +1,4 @@
-import * as Realtime from '@realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { addDynamicPort } from '../utils';
 import { createActiveDiagramReducer } from './utils';

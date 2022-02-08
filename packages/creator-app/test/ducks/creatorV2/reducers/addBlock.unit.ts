@@ -1,5 +1,5 @@
-import * as Realtime from '@realtime-sdk';
 import { Models } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import { BlockVariant } from '@/constants/canvas';

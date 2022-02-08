@@ -3,12 +3,12 @@ import React from 'react';
 
 import Button from './Button';
 
-export type DropdownProps = {
+export interface DropdownProps {
   options: { label: string; onClick: () => void }[];
   value?: string;
   noBorder?: boolean;
   placeholder?: string;
-};
+}
 
 const Dropdown: React.FC<DropdownProps> = ({ options, value, placeholder, noBorder = false }) => (
   <BaseDropdown options={options} placement="bottom-start">

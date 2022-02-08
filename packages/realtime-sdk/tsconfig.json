@@ -4,6 +4,13 @@
     "skipLibCheck": true,
     "baseUrl": "..",
     "paths": {
+      "@voiceflow/socket-utils": [
+        "socket-utils/src"
+      ],
+      // only used to fix intra-monorepo resolution
+      "@socket-utils/*": [
+        "socket-utils/src/*"
+      ],
       "@realtime-sdk/*": [
         "realtime-sdk/src/*"
       ]

@@ -1,5 +1,5 @@
-import * as Realtime from '@realtime-sdk';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
 import { createActiveDiagramReducer } from './utils';

@@ -4,12 +4,6 @@
     "baseUrl": ".",
     "rootDir": "src",
     "paths": {
-      "@ui": [
-        "../../node_modules/@voiceflow/ui"
-      ],
-      "@realtime-sdk": [
-        "../../node_modules/@voiceflow/realtime-sdk"
-      ],
       "@/*": [
         "src/*"
       ]

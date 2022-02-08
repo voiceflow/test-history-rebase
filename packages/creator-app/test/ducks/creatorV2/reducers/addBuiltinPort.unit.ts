@@ -1,6 +1,6 @@
-import * as Realtime from '@realtime-sdk';
 import { Models } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';

@@ -6,9 +6,6 @@
     "rootDir": "src",
     "outDir": "build",
     "paths": {
-      "@ui": [
-        "../../node_modules/@voiceflow/ui"
-      ],
       "@/*": [
         "src/*"
       ]

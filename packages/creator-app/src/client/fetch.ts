@@ -1,4 +1,4 @@
-import { createFetch } from '@ui';
+import { createFetch } from '@voiceflow/ui';
 
 import { ALEXA_SERVICE_ENDPOINT, API_ENDPOINT, API_V2_ENDPOINT, GENERAL_SERVICE_ENDPOINT, GOOGLE_SERVICE_ENDPOINT } from '@/config';
 

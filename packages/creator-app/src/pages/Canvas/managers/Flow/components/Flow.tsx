@@ -1,5 +1,5 @@
-import * as Realtime from '@realtime-sdk';
-import { Alert, AlertVariant, Select } from '@ui';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Alert, AlertVariant, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import { DIAGRAM_ID_SEPARATOR, ROOT_DIAGRAM_NAME } from '@/constants';

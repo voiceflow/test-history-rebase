@@ -6,10 +6,10 @@ import { Option } from '@/constants';
 import * as Referrals from '@/ducks/referral';
 import { connect } from '@/hocs';
 
-export type StatusProps = {
+export interface StatusProps {
   status: boolean;
   referralCode?: string;
-};
+}
 
 const Status: React.FC<StatusProps & ConnectStatusProps> = ({ status, referralCode = '', updateReferral }) => {
   const setActive = () => updateReferral({ status: true, code: referralCode });

@@ -1,7 +1,7 @@
-import * as Realtime from '@realtime-sdk';
 import { Models } from '@voiceflow/base-types';
 import { Nullish } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 

@@ -5,14 +5,16 @@
     "allowJs": true,
     "baseUrl": "..",
     "paths": {
-      "@ui": [
-        "ui/src"
+      // only used to fix intra-monorepo resolution
+      "@ui/*": [
+        "ui/src/*"
       ],
       "@voiceflow/ui": [
         "ui/src"
       ],
-      "@realtime-sdk": [
-        "realtime-sdk/src"
+      // only used to fix intra-monorepo resolution
+      "@realtime-sdk/*": [
+        "realtime-sdk/src/*"
       ],
       "@voiceflow/realtime-sdk": [
         "realtime-sdk/src"

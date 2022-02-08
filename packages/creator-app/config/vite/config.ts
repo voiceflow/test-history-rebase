@@ -16,17 +16,10 @@ export default defineConfig({
     ...(isServe
       ? {
           '@voiceflow/ui': path.resolve(rootDir, '../ui/src'),
-          '@ui': path.resolve(rootDir, '../ui/src'),
           '@voiceflow/realtime-sdk': path.resolve(rootDir, '../realtime-sdk/src'),
-          '@realtime-sdk': path.resolve(rootDir, '../realtime-sdk/src'),
           '@voiceflow/ml-sdk': path.resolve(rootDir, '../ml-sdk/src'),
-          '@ml-sdk': path.resolve(rootDir, '../ml-sdk/src'),
         }
-      : {
-          '@ui': '@voiceflow/ui',
-          '@realtime-sdk': '@voiceflow/realtime-sdk',
-          '@ml-sdk': '@voiceflow/ml-sdk',
-        }),
+      : {}),
   }),
   serve: {
     port: 3002,

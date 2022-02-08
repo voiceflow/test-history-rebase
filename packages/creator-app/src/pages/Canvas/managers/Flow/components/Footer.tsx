@@ -1,5 +1,5 @@
-import * as Realtime from '@realtime-sdk';
-import { ButtonVariant } from '@ui';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';

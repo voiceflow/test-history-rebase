@@ -1,4 +1,4 @@
-import { Box, LoadCircle, ModalBodyContainer } from '@ui';
+import { Box, LoadCircle, ModalBodyContainer } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal from '@/components/Modal';

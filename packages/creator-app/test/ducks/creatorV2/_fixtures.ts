@@ -1,5 +1,5 @@
-import * as Realtime from '@realtime-sdk';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import { FeatureFlag } from '@/config/features';

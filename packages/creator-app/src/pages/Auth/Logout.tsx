@@ -1,4 +1,4 @@
-import { FullSpinner, useSetup } from '@ui';
+import { FullSpinner, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Session from '@/ducks/session';

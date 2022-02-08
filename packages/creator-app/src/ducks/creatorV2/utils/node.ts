@@ -1,6 +1,6 @@
-import * as Realtime from '@realtime-sdk';
 import { Models } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 

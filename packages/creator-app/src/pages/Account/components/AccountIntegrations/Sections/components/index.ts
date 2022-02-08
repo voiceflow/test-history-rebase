@@ -1,4 +1,4 @@
-import { FlexApart } from '@ui';
+import { FlexApart } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 

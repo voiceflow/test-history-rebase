@@ -1,4 +1,4 @@
-import { ModalBoldText } from '@ui';
+import { ModalBoldText } from '@voiceflow/ui';
 import React from 'react';
 
 import { bulkImportGraphic } from '@/assets';

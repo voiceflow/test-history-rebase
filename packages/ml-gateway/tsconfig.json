@@ -11,12 +11,14 @@
       "@voiceflow/ml-sdk": [
         "ml-sdk/src"
       ],
+      // only used to fix intra-monorepo resolution
       "@ml-sdk/*": [
         "ml-sdk/src/*"
       ],
       "@voiceflow/socket-utils": [
         "socket-utils/src"
       ],
+      // only used to fix intra-monorepo resolution
       "@socket-utils/*": [
         "socket-utils/src/*"
       ],

@@ -1,4 +1,4 @@
-import * as Realtime from '@realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 

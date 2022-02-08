@@ -1,4 +1,4 @@
-import { useContextApi, useSmartReducerV2 } from '@ui';
+import { useContextApi, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 // eslint-disable-next-line import/prefer-default-export

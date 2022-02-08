@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Link, ModalBodyContainer, ModalButtonContainer, ModalContentContainer } from '@ui';
+import { Box, Button, Flex, Link, ModalBodyContainer, ModalButtonContainer, ModalContentContainer } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';

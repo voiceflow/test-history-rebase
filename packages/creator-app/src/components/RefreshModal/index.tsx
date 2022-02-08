@@ -1,4 +1,4 @@
-import { Box, Button, Link, logger, ModalBodyContainer, ModalContentContainer } from '@ui';
+import { Box, Button, Link, logger, ModalBodyContainer, ModalContentContainer } from '@voiceflow/ui';
 import React from 'react';
 
 import { takeoffGraphic } from '@/assets';

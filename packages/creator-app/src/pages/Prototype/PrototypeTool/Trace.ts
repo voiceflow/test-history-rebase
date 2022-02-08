@@ -655,6 +655,7 @@ class TraceController {
     if (activePathLinkID) {
       activePathLinkArray = Utils.array.unique([...this.props.activePathLinkIDs, ...outLinkIDs, activePathLinkID]);
     }
+
     const updatedContextHistory = getUpdatedContextHistory(
       this.props.contextStep,
       this.props.contextHistory,

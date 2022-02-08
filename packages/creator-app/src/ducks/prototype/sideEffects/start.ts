@@ -41,7 +41,9 @@ const getValidStartingNode = (
   const targetNodeID = linkedNode?.combinedNodes[0] ?? linkedNode?.id;
 
   const invalidBlockOutLinkID = getLinkIDsByNodeID(nodeID)[0];
-  dispatch(updatePrototype({ activePathLinkIDs: [invalidBlockOutLinkID!] }));
+  if (invalidBlockOutLinkID) {
+    dispatch(updatePrototype({ activePathLinkIDs: [invalidBlockOutLinkID] }));
+  }
 
   return targetNodeID;
 };

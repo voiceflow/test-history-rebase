@@ -41,9 +41,9 @@ class Dispatcher extends EngineConsumer {
     this.emitter.emit(eventKey, isForced);
   }
 
-  redrawEntity(type: EntityType, id: string) {
+  redrawEntity(type: EntityType, id?: string) {
+    if (!id) return;
     this.log.debug(`redraw ${type}`, this.log.slug(id));
-
     this.redraw(`${type}:${id}`, true);
   }
 

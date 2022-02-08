@@ -15,7 +15,9 @@ export default defineConfig({
     ...(isServe
       ? {
           '@voiceflow/ui': path.resolve(rootDir, '../ui/src'),
+          '@ui': path.resolve(rootDir, '../ui/src'),
           '@voiceflow/realtime-sdk': path.resolve(rootDir, '../realtime-sdk/src'),
+          '@realtime-sdk': path.resolve(rootDir, '../realtime-sdk/src'),
         }
       : {}),
   }),

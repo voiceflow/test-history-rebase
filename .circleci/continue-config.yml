@@ -348,6 +348,7 @@ workflows:
           image_repo: << pipeline.parameters.container-image-url-admin-ui >>
           component: << pipeline.parameters.track-component-admin-ui >>
           build_context: packages/admin-app
+          package: admin-app
           requires:
             - test-master
             - build-admin-test

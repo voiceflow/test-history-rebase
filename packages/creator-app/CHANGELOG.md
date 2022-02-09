@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.624.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.623.2...@voiceflow/creator-app@1.624.0) (2022-02-09)
+
+
+### Features
+
+* refactor editors to TS (VF-000) ([#5050](https://github.com/voiceflow/creator-app/issues/5050)) ([9a14993](https://github.com/voiceflow/creator-app/commit/9a14993a914385c2b844d0998445bbfbec833562))
+
+
+
+
+
 ## [1.623.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.623.1...@voiceflow/creator-app@1.623.2) (2022-02-08)
 
 

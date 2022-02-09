@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.624.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.624.3...@voiceflow/creator-app@1.624.4) (2022-02-09)
+
+
+### Bug Fixes
+
+* upgrade subscription tracking event (VF-2888) ([#5077](https://github.com/voiceflow/creator-app/issues/5077)) ([3f6a201](https://github.com/voiceflow/creator-app/commit/3f6a2017d10521eb34b02829920d7215ce1a397e))
+
+
+
+
+
 ## [1.624.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.624.2...@voiceflow/creator-app@1.624.3) (2022-02-09)
 
 **Note:** Version bump only for package @voiceflow/creator-app

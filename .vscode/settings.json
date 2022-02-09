@@ -13,13 +13,11 @@
       "pattern": "./packages/*/"
     }
   ],
-  "eslint.options": {
-    "rules": {
-      "no-use-before-define": "off",
-      "prettier/prettier": "off",
-      "simple-import-sort/imports": "off"
-    }
-  },
+  "eslint.rules.customizations": [
+    { "rule": "no-use-before-define", "severity": "off" },
+    { "rule": "prettier/prettier", "severity": "off" },
+    { "rule": "simple-import-sort/imports", "severity": "off" }
+  ],
   "eslint.format.enable": true,
   "eslint.lintTask.enable": true,
   "eslint.packageManager": "yarn",

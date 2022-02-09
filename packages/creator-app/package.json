@@ -150,7 +150,7 @@
     "@types/crypto-js": "4.1.0",
     "@types/draft-js": "0.11.9",
     "@types/esprima": "4.0.3",
-    "@types/estree": "0.0.50",
+    "@types/estree": "0.0.51",
     "@types/file-saver": "2.0.5",
     "@types/gapi": "0.0.41",
     "@types/gapi.auth2": "0.0.56",

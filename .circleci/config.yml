@@ -28,26 +28,14 @@ workflows:
           config-path: .circleci/continue-config.yml
           mapping: |
             packages/creator-app/.* build-creator-app true
-            packages/creator-app/.* build-frontend true
             packages/admin-app/.* build-admin-app true
-            packages/admin-app/.* build-frontend true
             packages/realtime/.* build-realtime true
-            packages/realtime/.* build-backend true
-            packages/realtime-sdk/.* build-creator-app true
-            packages/realtime-sdk/.* build-admin-app true
             packages/realtime-sdk/.* build-realtime true
             packages/realtime-sdk/.* build-frontend true
-            packages/realtime-sdk/.* build-backend true
             packages/ml-gateway/.* build-ml-gateway true
-            packages/ml-gateway/.* build-backend true
             packages/ml-sdk/.* build-ml-gateway true
             packages/ml-sdk/.* build-creator-app true
-            packages/ml-sdk/.* build-frontend true
-            packages/ui/.* build-creator-app true
-            packages/ui/.* build-admin-app true
             packages/ui/.* build-frontend true
-            packages/socket-utils/.* build-realtime true
-            packages/socket-utils/.* ml-gateway true
             packages/socket-utils/.* build-backend true
             packages/.* build-any true
             package.json build-all true

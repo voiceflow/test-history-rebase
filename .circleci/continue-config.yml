@@ -190,7 +190,7 @@ workflows:
           context: dev-test
           avoid_post_install_scripts: false
           name: build-ui-test
-          force_execute: << pipeline.parameters.build-frontend >>
+          force_execute: true
           package: ui
           container_folder_to_copy: packages/ui/build
           post-steps:
@@ -201,7 +201,7 @@ workflows:
           context: dev-test
           avoid_post_install_scripts: false
           name: build-socket-utils-test
-          force_execute: << pipeline.parameters.build-backend >>
+          force_execute: true
           package: socket-utils
           container_folder_to_copy: packages/socket-utils/build
           post-steps:
@@ -212,7 +212,7 @@ workflows:
           context: dev-test
           avoid_post_install_scripts: false
           name: build-ml-sdk-test
-          force_execute: << pipeline.parameters.build-backend >>
+          force_execute: true
           package: ml-sdk
           container_folder_to_copy: packages/ml-sdk/build
           post-steps:
@@ -224,7 +224,7 @@ workflows:
           context: dev-test
           avoid_post_install_scripts: false
           name: build-realtime-sdk-test
-          force_execute: << pipeline.parameters.build-backend >>
+          force_execute: true
           package: realtime-sdk
           container_folder_to_copy: packages/realtime-sdk/build
           post-steps:

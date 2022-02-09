@@ -15,7 +15,7 @@ interface TrackUpgradeOptions {
 
 export const trackUpgrade = createWorkspaceEventTracker<TrackUpgradeOptions>((options) =>
   client.api.analytics.track(
-    EventName.EXPORT_BUTTON_CLICK,
+    EventName.SUBSCRIPTION_CREATED,
     createWorkspaceEventPayload(options, {
       plan: options.plan,
       seats: options.seats,

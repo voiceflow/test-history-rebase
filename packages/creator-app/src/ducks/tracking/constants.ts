@@ -112,6 +112,8 @@ export enum EventName {
   PROFILE_PASSWORD_CHANGED = 'Profile Password Changed',
 
   VARIABLE_STATE_CREATED = 'Variable State Created',
+
+  SUBSCRIPTION_CREATED = 'Subscription Created',
 }
 
 export enum IntentEditType {

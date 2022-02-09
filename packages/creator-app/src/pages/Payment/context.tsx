@@ -20,6 +20,7 @@ import {
   useModals,
   useSelector,
   useSmartReducer,
+  useTrackingEvents,
 } from '@/hooks';
 import { DBPaymentSource } from '@/models/Billing';
 import * as Sentry from '@/vendors/sentry';
@@ -134,6 +135,8 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
     stripeCompleted: false,
   });
 
+  const [trackingEvents] = useTrackingEvents();
+
   // methods
   const updatePrice = useDebouncedCallback(
     PRICE_UPDATE_DEBOUNCE_TIMEOUT,
@@ -201,6 +204,13 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
         : 'Your workspace has been successfully updated. Thank you.';
 
       openSuccessModal({ title: 'Payment Successful', message, icon: receiptGraphic, variant: ButtonVariant.TERTIARY });
+
+      trackingEvents.trackUpgrade({
+        plan: state.plan.id,
+        seats: Number(state.seats),
+        period: state.period,
+        coupon: state.coupon,
+      });
     } catch (err) {
       stopCheckingOut();
       let error;

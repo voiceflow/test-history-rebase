@@ -226,7 +226,7 @@
   },
   "scripts": {
     "analyze:dependencies": "depcruise --exclude src/setupVite.ts --validate -- src",
-    "build": "yarn build:types && NODE_ENV=production vite build && yarn build:copy-prototype",
+    "build": "./scripts/build.sh",
     "build:copy-prototype": "cp build/index.html build/prototype.html",
     "build:dev": "SOURCE_MAPS=true vite build && yarn build:copy-prototype",
     "build:e2e": "VF_APP_BUILD_ENV=e2e VF_APP_E2E=true vite build && yarn build:copy-prototype",

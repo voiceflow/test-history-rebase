@@ -61,7 +61,7 @@
   },
   "scripts": {
     "analyze:dependencies": "depcruise --validate -- src",
-    "build": "yarn build:types && NODE_ENV=production vite build",
+    "build": "./scripts/build.sh",
     "build:dev": "SOURCE_MAPS=true vite build",
     "build:e2e": "VF_APP_BUILD_ENV=e2e VF_APP_E2E=true vite build",
     "build:types": "tsc --project tsconfig.build.json --skipLibCheck",

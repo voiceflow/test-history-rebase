@@ -5,25 +5,25 @@ parameters:
   force-build-frontend:
     type: boolean
     default: false
+  ssh-fingerprint:
+    type: string
+    default: '93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a'
 
 # this allows you to use CircleCI's dynamic configuration feature
 setup: true
 
 orbs:
+  vfcommon: voiceflow/common@0.0.277
   path-filtering: circleci/path-filtering@0.1.1
 
-# Reusable YAML chunks
-defaults:
-  tag_filters: &tag_filters
-    tags:
-      only: /^@voiceflow/.*@[0-9]*(\.[0-9]*)*$/
-
 workflows:
+
   generate-config:
+    when:
+      not:
+        equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - path-filtering/filter:
-          filters:
-            <<: *tag_filters
           base-revision: master
           config-path: .circleci/continue-config.yml
           mapping: |
@@ -39,4 +39,24 @@ workflows:
             packages/socket-utils/.* build-backend true
             packages/.* build-any true
             package.json build-all true
+            package.json build-backend true
+            package.json build-frontend true
             yarn.lock build-all true
+            yarn.lock build-backend true
+            yarn.lock build-frontend true
+
+  # Cron Production update
+  update-production-branch:
+    when:
+      and:
+        - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        - equal: [ "update-production-branch", << pipeline.schedule.name >> ]
+    jobs:
+      - vfcommon/sync_branches:
+          checkout: true
+          ssh_key: << pipeline.parameters.ssh-fingerprint >>
+          name: sync-branches-scheduled
+          context: dev-test
+          filters:
+            branches:
+              only: master

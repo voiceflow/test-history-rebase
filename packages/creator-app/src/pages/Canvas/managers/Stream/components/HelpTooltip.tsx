@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Paragraph, Title } from '@/components/Tooltip';
 
-const HelpTooltip = () => (
+const HelpTooltip: React.FC = () => (
   <>
     <Paragraph marginBottomUnits={2}>
       The stream step allows you to stream audio files longer than 240 seconds at a higher quality than than adding an audio file to a speak block.

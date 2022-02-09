@@ -41,9 +41,15 @@ export interface BaseInjectedWithUploadProps {
 }
 
 export interface AudioInjectedWithUploadProps extends BaseInjectedWithUploadProps, AudioWithUploadProps {}
+
 export interface ImageInjectedWithUploadProps extends BaseInjectedWithUploadProps {
-  update: (url: string | string[] | null) => void;
-  endpoint?: string | string[];
+  update: (url: string | null) => void;
+  endpoint?: string;
+}
+
+export interface ImagesInjectedWithUploadProps extends BaseInjectedWithUploadProps {
+  update: (url: string[] | null) => void;
+  endpoint: string[];
 }
 
 export type AnyWithUploadProps = AudioWithUploadProps | ImageWithUploadProps | ImagesWithUploadProps;
@@ -59,7 +65,11 @@ export function withUpload<R, P>(
 export function withUpload<R, P>(
   WrappedComponent: React.ForwardRefExoticComponent<P & ImageInjectedWithUploadProps & React.RefAttributes<R>>,
   config: ImageConfig
-): React.ForwardRefExoticComponent<React.PropsWithoutRef<P & (ImageWithUploadProps | ImagesWithUploadProps)> & React.RefAttributes<R>>;
+): React.ForwardRefExoticComponent<React.PropsWithoutRef<P & ImageWithUploadProps> & React.RefAttributes<R>>;
+export function withUpload<R, P>(
+  WrappedComponent: React.ForwardRefExoticComponent<P & ImagesInjectedWithUploadProps & React.RefAttributes<R>>,
+  config: ImageConfig
+): React.ForwardRefExoticComponent<React.PropsWithoutRef<P & ImagesWithUploadProps> & React.RefAttributes<R>>;
 
 // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function withUpload<R, P>(

@@ -1,0 +1,49 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+import React from 'react';
+
+import FullImage from '@/components/Upload/ImageUpload/FullImage';
+import VariablesInput from '@/components/VariablesInput';
+import { FormControl } from '@/pages/Canvas/components/Editor';
+import { FadeLeftContainer } from '@/styles/animations';
+
+const VariablesInputAny = VariablesInput as any;
+
+interface CardFormProps {
+  data: Realtime.NodeData<Realtime.NodeData.Card>;
+  onChange: (data: Partial<Realtime.NodeData.Card>) => void;
+  withImage?: boolean;
+}
+
+const CardForm: React.FC<CardFormProps> = ({ data, onChange, withImage }) => {
+  const updateSmallImage = React.useCallback((smallImage: string | null) => onChange({ smallImage, hasSmallImage: true }), [onChange]);
+  const updateLargeImage = React.useCallback((largeImage: string | null) => onChange({ largeImage }), [onChange]);
+  const updateTitle = React.useCallback(({ text }: { text: string }) => onChange({ title: text }), [onChange]);
+  const updateContent = React.useCallback(({ text }: { text: string }) => onChange({ content: text }), [onChange]);
+
+  return (
+    <>
+      <FormControl label="Title">
+        <VariablesInputAny value={data.title} onBlur={updateTitle} placeholder="Welcome to My Project!" />
+      </FormControl>
+
+      <FormControl label="Card Text" contentBottomUnits={!withImage ? 0 : undefined}>
+        <VariablesInputAny value={data.content} onBlur={updateContent} multiline placeholder="Thanks for signing up, let's begin!" newLineOnEnter />
+      </FormControl>
+
+      {withImage && (
+        <FadeLeftContainer>
+          <FormControl label="Background Image" contentBottomUnits={!data.hasSmallImage ? 0 : undefined}>
+            <FullImage image={data.largeImage} update={updateLargeImage} />
+          </FormControl>
+          {data.hasSmallImage && (
+            <FormControl label="Small Screen Image" contentBottomUnits={0}>
+              <FullImage image={data.smallImage} update={updateSmallImage} />
+            </FormControl>
+          )}
+        </FadeLeftContainer>
+      )}
+    </>
+  );
+};
+
+export default CardForm;

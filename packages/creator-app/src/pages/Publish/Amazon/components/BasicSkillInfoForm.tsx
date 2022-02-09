@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import TextInput from '@/components/Form/TextInput';
-import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
+import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
@@ -13,8 +13,6 @@ import { useBoundValue, useDispatch } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
 
 import { useValidator } from '../hooks';
-
-const UploadJustIconComponent = UploadJustIcon as React.FC<any>;
 
 const largeIconSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.largeIcon);
 const smallIconSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.smallIcon);
@@ -27,10 +25,10 @@ const BasicSkillInfoForm: React.FC = () => {
   );
 
   const largeIcon = useSelector(largeIconSelector);
-  const saveLargeIcon = useDispatch((largeIcon: string) => Version.alexa.patchPublishing({ largeIcon }));
+  const saveLargeIcon = useDispatch((largeIcon: string | null) => Version.alexa.patchPublishing({ largeIcon: largeIcon ?? '' }));
 
   const smallIcon = useSelector(smallIconSelector);
-  const saveSmallIcon = useDispatch((smallIcon: string) => Version.alexa.patchPublishing({ smallIcon }));
+  const saveSmallIcon = useDispatch((smallIcon: string | null) => Version.alexa.patchPublishing({ smallIcon: smallIcon ?? '' }));
 
   return (
     <>
@@ -52,13 +50,19 @@ const BasicSkillInfoForm: React.FC = () => {
         <Box width="50%">
           <Label textAlign="center">Large Icon</Label>
           <BoxFlexCenter>
-            <UploadJustIconComponent name="largeIcon" size="xlarge" canRemove endpoint="/image/large_icon" image={largeIcon} update={saveLargeIcon} />
+            <UploadJustIcon
+              size={UploadIconVariant.EXTRA_LARGE}
+              canRemove
+              endpoint="/image/large_icon"
+              image={largeIcon ?? ''}
+              update={saveLargeIcon}
+            />
           </BoxFlexCenter>
         </Box>
         <Box width="50%">
           <Label textAlign="center">Small Icon</Label>
           <BoxFlexCenter>
-            <UploadJustIconComponent name="smallIcon" size="large" canRemove endpoint="/image/small_icon" image={smallIcon} update={saveSmallIcon} />
+            <UploadJustIcon size={UploadIconVariant.LARGE} canRemove endpoint="/image/small_icon" image={smallIcon ?? ''} update={saveSmallIcon} />
           </BoxFlexCenter>
         </Box>
       </BoxFlex>

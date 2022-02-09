@@ -28,7 +28,6 @@ import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePl
 import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
 
 const UnTypedDropdownMultiselect: any = DropdownMultiselect;
-const UnTypedUploadJustIcon: any = UploadJustIcon;
 
 interface BasicProps {
   title: SettingSections;
@@ -60,7 +59,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 
   const [newInvocation, setNewInvocation] = React.useState(invocationName ?? '');
   const [newProjectName, setNewProjectName] = React.useState(project?.name ?? '');
-  const [projectImage, setProjectImage] = React.useState(project?.image ?? '');
+  const [projectImage, setProjectImage] = React.useState(project?.image ?? null);
   const [newAgentName, setNewAgentName] = React.useState(agentName || '');
 
   const [alexaLocales, setAlexaLocales] = React.useState<AlexaConstants.Locale[]>((locales || []) as AlexaConstants.Locale[]);
@@ -134,7 +133,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         <BoxFlex>
           <Input value={newProjectName} onChangeText={setNewProjectName} onBlur={saveSettings} />
           <Box ml={16}>
-            <UnTypedUploadJustIcon size={UploadIconVariant.EXTRA_SMALL} update={setProjectImage} image={projectImage} endpoint="/image" />
+            <UploadJustIcon size={UploadIconVariant.EXTRA_SMALL} update={setProjectImage} image={projectImage ?? ''} endpoint="/image" />
           </Box>
         </BoxFlex>
       </Section>

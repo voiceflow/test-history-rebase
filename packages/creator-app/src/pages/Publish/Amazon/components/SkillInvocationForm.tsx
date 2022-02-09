@@ -60,7 +60,7 @@ const SkillInvocationForm: React.FC = () => {
           list={invocations}
           prepend="Alexa,"
           placeholder={`open/start/launch ${invocationName}`}
-          update={(invocations: string[]) => patchPublishing({ invocations })}
+          update={(invocations) => patchPublishing({ invocations })}
         />
       </Box>
     </>

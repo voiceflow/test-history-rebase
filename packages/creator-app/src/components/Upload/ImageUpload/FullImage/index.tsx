@@ -43,7 +43,7 @@ export const validateLink = (link = '') => {
 interface FullImagePropsOwn {
   image?: Nullable<string>;
   ratio?: number;
-  showRemove: boolean;
+  showRemove?: boolean;
   canUseLink?: boolean;
   imageHeight?: number;
 }
@@ -135,4 +135,4 @@ const FullImage = React.forwardRef<HTMLDivElement, FullImageProps>(
   }
 );
 
-export default withUpload(FullImage, { fileType: 'image', clientFunc: 'uploadImage', validate });
+export default withUpload<HTMLDivElement, FullImagePropsOwn>(FullImage, { fileType: 'image', clientFunc: 'uploadImage', validate });

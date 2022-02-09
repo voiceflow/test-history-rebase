@@ -1,6 +1,7 @@
 import { Models } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ErrorMessageWithDivider } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,21 +12,26 @@ import VariablesInput from '@/components/VariablesInput';
 import { HTTPS_URL_REGEX } from '@/constants';
 import { useEnableDisable } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { PlatformContext } from '@/pages/Project/contexts';
 
 import { HelpMessage, HelpTooltip, VisualsForm } from './components';
 
-const isValidURL = (url) => url.match(HTTPS_URL_REGEX) || url.match(SLOT_REGEXP);
+const VariablesInputAny = VariablesInput as any;
 
-function StreamEditor({ data, node, engine, onChange }) {
+const isValidURL = (url: string): boolean => !!(url.match(HTTPS_URL_REGEX) || url.match(SLOT_REGEXP));
+
+const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ data, node, engine, onChange }) => {
   const platform = React.useContext(PlatformContext);
+
   const [invalidAudio, setValidAudio, setInvalidAudio] = useEnableDisable(false);
 
   const hasPause = data.customPause;
   const isAlexa = platform === Constants.PlatformType.ALEXA;
   const toggleLoop = React.useCallback(() => onChange({ loop: !data.loop }), [data.loop, onChange]);
+
   const updateAudio = React.useCallback(
-    ({ text }) => {
+    ({ text }: { text: string }) => {
       if (isValidURL(text)) {
         onChange({ audio: text });
         setInvalidAudio();
@@ -66,16 +72,19 @@ function StreamEditor({ data, node, engine, onChange }) {
       <Section>
         <FormControl>
           <label htmlFor="audio-url">Audio Url or Variable</label>
-          <VariablesInput
+
+          <VariablesInputAny
             placeholder="AAC, MP4, MP3, HLS, PLS, M3U are supported"
             value={data.audio}
             onBlur={updateAudio}
             error={invalidAudio}
             id="audio-url"
           />
+
           {invalidAudio && <ErrorMessageWithDivider>This is an invalid URL</ErrorMessageWithDivider>}
         </FormControl>
-        <Checkbox type="checkbox" checked={!!data.loop} onChange={toggleLoop}>
+
+        <Checkbox checked={!!data.loop} onChange={toggleLoop}>
           <span>Loop audio</span>
         </Checkbox>
       </Section>
@@ -83,6 +92,6 @@ function StreamEditor({ data, node, engine, onChange }) {
       <VisualsForm data={data} onChange={onChange} />
     </Content>
   );
-}
+};
 
 export default StreamEditor;

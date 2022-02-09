@@ -280,9 +280,10 @@ export const updateActiveWorkspaceName =
   };
 
 export const updateActiveWorkspaceImage =
-  (url: string): Thunk =>
+  (url: string | null): Thunk =>
   async (dispatch, getState) => {
     try {
+      const image = url ?? '';
       const state = getState();
       const workspaceID = Session.activeWorkspaceIDSelector(state);
       const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
@@ -290,11 +291,11 @@ export const updateActiveWorkspaceImage =
       Errors.assertWorkspaceID(workspaceID);
 
       if (isAtomicActions) {
-        await dispatch.sync(Realtime.workspace.updateImage({ workspaceID, image: url }));
+        await dispatch.sync(Realtime.workspace.updateImage({ workspaceID, image }));
       } else {
-        await client.workspace.updateImage(workspaceID, url);
+        await client.workspace.updateImage(workspaceID, image);
 
-        dispatch(crud.patch(workspaceID, { image: url }));
+        dispatch(crud.patch(workspaceID, { image }));
       }
     } catch (err) {
       dispatch(Modal.setError('Error updating workspace image'));

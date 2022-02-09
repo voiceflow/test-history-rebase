@@ -13,7 +13,7 @@ import Neutral from './components/Neutral';
 import Success from './components/Success';
 import { UploadMode } from './constants';
 
-interface DropUploadProps extends Partial<BaseInjectedWithUploadProps> {
+export interface DropUploadProps extends Partial<BaseInjectedWithUploadProps> {
   label?: string;
   height?: number;
   isImage?: boolean;

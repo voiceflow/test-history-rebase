@@ -6,9 +6,9 @@ import { styled, transition } from '@/hocs';
 
 interface ImageContainerProps {
   size: number;
-  image: string;
-  isLoading: boolean;
+  image?: Nullable<string>;
   error: Nullable<string>;
+  isLoading: boolean;
   notAccepted: boolean;
   isSquare?: boolean;
   disabled?: boolean;

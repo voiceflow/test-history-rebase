@@ -57,7 +57,7 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
   const isNew = latestCreatedKey === itemKey;
 
   const updateContent = React.useCallback(({ text }) => onUpdate({ content: text }), [onUpdate]);
-  const updateAudio = React.useCallback((url) => onUpdate({ url }), [onUpdate]);
+  const updateAudio = React.useCallback((url: string | null) => onUpdate({ url: url ?? '' }), [onUpdate]);
   const updateDesc = React.useCallback(({ text: desc }) => onUpdate({ desc }), [onUpdate]);
   const updateVoice = React.useCallback(
     (value) => {

@@ -1,7 +1,7 @@
 import { Flex } from '@voiceflow/ui';
 import React from 'react';
 
-import DropUpload from '@/components/Upload/Primitive/DropUpload';
+import DropUpload, { DropUploadProps } from '@/components/Upload/Primitive/DropUpload';
 import { IMAGE_FILE_FORMATS } from '@/constants';
 import { ImageInjectedWithUploadProps, styled, withUpload } from '@/hocs';
 
@@ -13,8 +13,8 @@ const Icon = styled(IconUpload)`
 
 const hasError = (acceptedFiles: File[]) => (!IMAGE_FILE_FORMATS.includes(acceptedFiles[0].type) ? 'File type Not Supported' : null);
 
-interface ImageGroupOwnProps {
-  image: string;
+interface ImageGroupOwnProps extends Pick<DropUploadProps, 'withVariables' | 'onValidateLink'> {
+  image?: string | null;
 }
 
 interface ImageGroupProps extends ImageGroupOwnProps, ImageInjectedWithUploadProps {}

@@ -18,8 +18,6 @@ import { createPlatformSelector } from '@/utils/platform';
 
 import { CANVAS_VISIBILITY_OPTIONS, DEVICE_OPTIONS, FRAME_OPTIONS } from './constants';
 
-const AnyFullImage = FullImage as any;
-
 const DEFAULT_DIMENSIONS = { width: 500, height: 500 };
 
 const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ data, onChange }) => {
@@ -185,14 +183,14 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.Visua
           }
           contentBottomUnits={0}
         >
-          <AnyFullImage
-            update={(url?: string) => {
+          <FullImage
+            image={data.image}
+            ratio={ratio}
+            canUseLink={false}
+            update={(url) => {
               onChange({ image: url ?? null });
               setAutoFit(frameType, url);
             }}
-            image={data.image}
-            canUseLink={false}
-            ratio={ratio}
           />
         </FormControl>
       </Section>

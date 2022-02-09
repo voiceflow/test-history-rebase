@@ -1,23 +1,21 @@
 import { ClickableText, FlexCenter, KeyName, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
+import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 
 import ContinueButton from '../../components/ContinueButton';
 import { StepID } from '../../constants';
 import { OnboardingContext } from '../../context';
 import { Container, LabelContainer, NameInput } from './components';
 
-const IconUpload: React.FC<any> = UploadJustIcon;
-
 const CreateWorkspace: React.FC = () => {
   const { state, actions } = React.useContext(OnboardingContext);
   const { createWorkspaceMeta } = state;
   const { stepForward, setCreateWorkspaceMeta } = actions;
-  const [workspaceName, setWorkspaceName] = React.useState<string>(createWorkspaceMeta.workspaceName || '');
-  const [workspaceImage, setWorkspaceImage] = React.useState<string>(createWorkspaceMeta.workspaceImage || '');
+  const [workspaceName, setWorkspaceName] = React.useState(createWorkspaceMeta.workspaceName || '');
+  const [workspaceImage, setWorkspaceImage] = React.useState<string | null>(createWorkspaceMeta.workspaceImage);
   const canContinue = !!workspaceName.trim() && workspaceName.length <= 32;
-  const iconUploadRef = React.createRef<HTMLElement>();
+  const iconUploadRef = React.useRef<HTMLDivElement>(null);
 
   const onBlur = () => {
     if (workspaceName.length > 32) {
@@ -26,10 +24,7 @@ const CreateWorkspace: React.FC = () => {
   };
 
   const onContinue = () => {
-    setCreateWorkspaceMeta({
-      workspaceName,
-      workspaceImage,
-    });
+    setCreateWorkspaceMeta({ workspaceName, workspaceImage: workspaceImage ?? '' });
     stepForward(StepID.ADD_COLLABORATORS);
   };
 
@@ -46,7 +41,7 @@ const CreateWorkspace: React.FC = () => {
           value={workspaceName}
           onBlur={onBlur}
           onKeyPress={handleInputEnterPress}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => setWorkspaceName(e.currentTarget.value)}
+          onChange={(event) => setWorkspaceName(event.currentTarget.value)}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           placeholder="Give your workspace a name"
@@ -54,7 +49,7 @@ const CreateWorkspace: React.FC = () => {
       </FlexCenter>
 
       <FlexCenter>
-        <IconUpload image={workspaceImage} update={setWorkspaceImage} size="large" ref={iconUploadRef} />
+        <UploadJustIcon image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.LARGE} ref={iconUploadRef} />
       </FlexCenter>
 
       <LabelContainer>

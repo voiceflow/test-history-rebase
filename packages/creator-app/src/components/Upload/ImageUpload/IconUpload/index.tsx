@@ -31,7 +31,7 @@ const hasError = (acceptedFiles: File[]) => (!IMAGE_FILE_FORMATS.includes(accept
 
 interface IconOunProps {
   size?: UploadIconVariant;
-  image: string;
+  image?: string | null;
   isSquare?: boolean;
   disabled?: boolean;
   canRemove?: boolean;

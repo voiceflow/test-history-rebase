@@ -1,11 +1,9 @@
 import React from 'react';
 
-import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
+import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 
 import Header from '../Header';
 import Container from './Container';
-
-const IconUpload: React.FC<any> = UploadJustIcon;
 
 interface UploadContentProps {
   id?: string;
@@ -20,11 +18,9 @@ interface UploadContentProps {
 const UploadContent: React.FC<UploadContentProps> = ({ id, title, isAllowed, initialState, isSquare, hasBorderRight, updateSettings }) => {
   const [image, setImage] = React.useState<string>(initialState);
 
-  const updateImage = async (image: string | string[] | null) => {
-    if (typeof image === 'string') {
-      await updateSettings(image);
-      setImage(image);
-    }
+  const updateImage = async (image: string | null) => {
+    await updateSettings(image ?? '');
+    setImage(image ?? '');
   };
 
   return (
@@ -32,7 +28,7 @@ const UploadContent: React.FC<UploadContentProps> = ({ id, title, isAllowed, ini
       <Header marginBottom={16} secondary={true} disabled={!isAllowed}>
         {title}
       </Header>
-      <IconUpload image={image} update={updateImage} size="small" isSquare={isSquare} disabled={!isAllowed} />
+      <UploadJustIcon image={image} update={updateImage} size={UploadIconVariant.SMALL} isSquare={isSquare} disabled={!isAllowed} />
     </Container>
   );
 };

@@ -13,7 +13,7 @@ const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, saveProfil
   const { actions } = React.useContext(OnboardingContext);
 
   const [userRole, setUserRole] = React.useState('');
-  const [userImage, setUserImage] = React.useState('');
+  const [userImage, setUserImage] = React.useState<string | null>('');
   const [name, setName] = React.useState(user.name || '');
   const canContinue = !!userRole && !!name;
 
@@ -21,6 +21,7 @@ const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, saveProfil
     if (userImage) {
       saveProfilePicture(userImage);
     }
+
     actions.setJoinWorkspaceMeta({ role: userRole });
     actions.finishJoiningWorkspace();
   };
@@ -30,14 +31,8 @@ const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, saveProfil
       <FieldsContainer>
         <Label>Full Name</Label>
         <FlexCenter>
-          <NameInput placeholder="Your name" value={name} onChange={(e: any) => setName(e.target.value)} />
-          <ProfilePicUpload
-            image={userImage}
-            update={(url: string) => {
-              setUserImage(url);
-            }}
-            size="xsmall"
-          />
+          <NameInput placeholder="Your name" value={name} onChange={(event) => setName(event.target.value)} />
+          <ProfilePicUpload image={userImage} update={setUserImage} />
         </FlexCenter>
         <Label>Choose your role</Label>
         <RoleSelect userRole={userRole} setUserRole={setUserRole} />

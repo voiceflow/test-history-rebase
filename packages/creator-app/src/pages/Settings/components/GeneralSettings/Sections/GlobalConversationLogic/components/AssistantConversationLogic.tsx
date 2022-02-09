@@ -136,7 +136,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
           </FormControl>
 
           {resumePromptType === Constants.Voice.AUDIO ? (
-            <AudioUpload audio={resumePrompt.content} update={(src: string | null) => onChangeResumePromptContent({ text: src })} />
+            <AudioUpload audio={resumePrompt.content} update={(src) => onChangeResumePromptContent({ text: src })} />
           ) : (
             <>
               <SSMLComponent
@@ -175,7 +175,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
 
             {followUpType === Constants.Voice.AUDIO ? (
               <FormControl>
-                <AudioUpload audio={resumePrompt.followContent} update={(src: string | null) => onChangeFollowUpContent({ text: src })} />
+                <AudioUpload audio={resumePrompt.followContent} update={(src) => onChangeFollowUpContent({ text: src })} />
               </FormControl>
             ) : (
               <FormControl contentBottomUnits={3}>

@@ -35,7 +35,7 @@ const AccountProfile: React.FC = () => {
           <Input value={user.name ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
 
           <Box ml={16}>
-            <UploadJustIcon image={user.image ?? ''} size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} endpoint="/image" />
+            <UploadJustIcon image={user.image} size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} endpoint="/image" />
           </Box>
         </BoxFlex>
       </Section>

@@ -11,8 +11,6 @@ import { useActiveWorkspace, useDispatch, useModals, usePermission } from '@/hoo
 
 import BoardDeleteModal from './components/BoardDeleteModal';
 
-const UploadJustIconComponent: React.FC<any> = UploadJustIcon;
-
 const GeneralSettingsPage: React.FC = () => {
   const workspace = useActiveWorkspace()!;
   const updateActiveWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
@@ -43,7 +41,7 @@ const GeneralSettingsPage: React.FC = () => {
           <BoxFlex mb={24}>
             <Input name="name" value={name} onBlur={saveName} onChangeText={updateName} placeholder="Board Name" readOnly={!canConfigureWorkspace} />
             <Box ml={16}>
-              <UploadJustIconComponent
+              <UploadJustIcon
                 disabled={!canConfigureWorkspace}
                 size={UploadIconVariant.EXTRA_SMALL}
                 update={updateActiveWorkspaceImage}

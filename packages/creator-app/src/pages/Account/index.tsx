@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 
 import { UserMenu } from '@/components/Header/components';
 import Page from '@/components/Page';
-import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
+import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
@@ -16,8 +16,6 @@ import { connect, withFeatureSwitcher } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
 import AccountPageV2 from './AccountPageV2';
-
-const UploadJustIconComponent = UploadJustIcon as React.FC<any>;
 
 interface AccountPageState {
   amazonStatus: boolean;
@@ -127,7 +125,7 @@ class AccountPage extends Component<ConnectedAccountPageProps, AccountPageState>
           <div className="container my-5 pt-4">
             <label className="dark mb-3">Profile</label>
             <div className="mb-5 card d-flex flex-row p-4">
-              <UploadJustIconComponent image={user.image} update={this.props.saveProfilePicture} size="xlarge" className="mr-3" />
+              <UploadJustIcon image={user.image} update={this.props.saveProfilePicture} size={UploadIconVariant.EXTRA_LARGE} className="mr-3" />
               <div className="helper-text super-center border-left pl-4">
                 <div className="col-0">
                   Name:

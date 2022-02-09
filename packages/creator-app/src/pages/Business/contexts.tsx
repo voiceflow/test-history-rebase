@@ -8,6 +8,7 @@ export interface ProductContextValue {
   product: Realtime.Product;
   patchProduct: (data: Partial<Realtime.Product>) => void;
   setProductProperty: <K extends keyof Realtime.Product>(key: K) => (value: NonNullable<Realtime.Product[K]>) => void;
+  setProductPropertyNullable: <K extends keyof Realtime.Product>(key: K) => (value: Realtime.Product[K]) => void;
 }
 
 export const ProductContext = React.createContext<ProductContextValue | null>(null);
@@ -21,7 +22,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = React.memo(({ pro
     [patchProduct]
   );
 
-  const api = useContextApi({ product, patchProduct, setProductProperty } as ProductContextValue);
+  const api = useContextApi({ product, patchProduct, setProductProperty, setProductPropertyNullable: setProductProperty } as ProductContextValue);
 
   return <ProductContext.Provider value={api}>{children}</ProductContext.Provider>;
 });

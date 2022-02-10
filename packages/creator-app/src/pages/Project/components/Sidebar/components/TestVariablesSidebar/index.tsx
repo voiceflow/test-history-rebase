@@ -14,12 +14,12 @@ import { NoVariablesPlaceholder, SelectContainer, VariableListContainer } from '
 
 const TestVariablesSidebar: React.FC = () => {
   const theme = useTheme();
-  const variables = useSelector(variableState.selectedVariablesStateVariables);
-  const selectedVariableStateId = useSelector(variableState.selectedVariableStateId);
+  const variables = useSelector(variableState.selectedVariablesStateVariablesSelector);
+  const selectedVariableStateId = useSelector(variableState.selectedVariableStateIdSelector);
   const updateSelectedVariableStateById = useDispatch(variableState.updateSelectedVariableStateById);
   const updateSelectedVariableStateVariables = useDispatch(variableState.updateSelectedVariableStateVariables);
   const updateStateValues = useDispatch(variableState.updateStateValues);
-  const selectedSavedState = useSelector(variableState.selectedVariableStateSavedState);
+  const selectedSavedState = useSelector(variableState.selectedVariableStateSavedStateSelector);
   const [loading, setLoading] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(true);
 
@@ -45,9 +45,12 @@ const TestVariablesSidebar: React.FC = () => {
   };
 
   React.useEffect(() => {
-    if (selectedSavedState) {
-      updateSelectedVariableStateVariables(selectedSavedState.variables);
+    if (!selectedSavedState) {
+      updateSelectedVariableStateById(null);
+      return;
     }
+
+    updateSelectedVariableStateVariables(selectedSavedState.variables);
   }, [selectedSavedState]);
 
   return (

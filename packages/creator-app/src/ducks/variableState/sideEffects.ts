@@ -13,8 +13,8 @@ import { updateSelectedVariableState, updateVariables } from './actions';
 import { ALL_PROJECT_VARIABLES_ID } from './constants';
 import {
   getVariableStateByIDSelector,
-  selectedVariableState as getSelectedVariableState,
-  selectedVariableStateId as getSelectedVariableStateId,
+  selectedVariableStateIdSelector as getSelectedVariableStateId,
+  selectedVariableStateSelector as getSelectedVariableState,
 } from './selectors';
 
 export const createVariableState =

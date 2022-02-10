@@ -38,7 +38,7 @@ const Trained: React.FC<TrainedProps> = ({ diff, platform, isTrained, trainedMod
           Your assistant needs training
         </Text>
 
-        <Text fontSize={13} color="#62778c" fontWeight={500} mt={16} mb={16} lineHeight={1.54}>
+        <Text fontSize={13} color="#62778c" mt={16} mb={16} lineHeight={1.54}>
           Train your assistant for the highest fidelity testing experience. <Link href={Documentation.ASSISTANT_TRAINING}>Learn more.</Link>
         </Text>
       </>

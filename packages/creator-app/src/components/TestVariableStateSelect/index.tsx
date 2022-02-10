@@ -33,7 +33,7 @@ const baseOptions = [
 
 const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, loading, onChange, onUpdateStateValues, className, ...props }) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
-  const isSelectedStateUnsync = useSelector(variableState.IsVariableStateUnsync);
+  const isSelectedStateUnsync = useSelector(variableState.IsVariableStateUnsyncSelector);
   const { open: openVariableStateEditorModal } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
   const { open: openVariableStateManagerModal } = useModals(ModalType.VARIABLE_STATES_MANAGER_MODAL);
 

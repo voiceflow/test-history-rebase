@@ -5,6 +5,7 @@ import * as Errors from '@/config/errors';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
+import * as VariableState from '@/ducks/variableState';
 import { SyncThunk, ThunkDispatch } from '@/store/types';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype } from '../actions';
@@ -49,11 +50,14 @@ const getValidStartingNode = (
 };
 
 const startPrototype =
-  (diagramID?: string | null, nodeID?: string | null): SyncThunk =>
+  (diagramID?: string | null, selectedNodeID?: string | null): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
 
-    const variables = prototypeVariablesSelector(state);
+    const variableStateVariables = VariableState.selectedVariablesSelector(state);
+    const startFromNodeID = VariableState.selectedStartFromNodeIDSelector(state);
+    const nodeID = selectedNodeID || startFromNodeID;
+    const variables = variableStateVariables || prototypeVariablesSelector(state);
     const projectID = Session.activeProjectIDSelector(state);
     const activeDiagramID = Session.activeDiagramIDSelector(state);
     const getLinkIDsByNodeID = (nodeID: string) => CreatorV2.linkIDsByNodeIDSelector(state, { id: nodeID });

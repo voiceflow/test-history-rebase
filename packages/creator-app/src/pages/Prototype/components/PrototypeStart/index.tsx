@@ -3,17 +3,18 @@ import React from 'react';
 
 import { testingGraphic } from '@/assets';
 import * as Documentation from '@/config/documentation';
+import { FeatureFlag } from '@/config/features';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeConfig } from '@/ducks/recent';
 import { connect } from '@/hocs';
-import { useSetup, useTrackingEvents } from '@/hooks';
+import { useFeature, useSetup, useTrackingEvents } from '@/hooks';
 import { IdleContainer } from '@/pages/Prototype/components/PrototypeContainer';
 import perf, { PerfAction } from '@/performance';
 import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
-import { Container, SelectedVariableStateText } from './components';
+import { Container, SelectedVariableStateText, SelectVariableStateButton } from './components';
 
 export interface PrototypeStartProps {
   debug: boolean;
@@ -33,6 +34,7 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
   config,
 }) => {
   const [, trackEventsWrapper] = useTrackingEvents();
+  const { isEnabled: isVariableStateEnabled } = useFeature(FeatureFlag.VARIABLE_STATES);
 
   const start = () => {
     if (isPublic) {
@@ -56,8 +58,8 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
             Run your project
           </Text>
 
-          <Text fontSize={13} color="#62778c" fontWeight={500} mt={16} mb={16} lineHeight={1.54}>
-            Run your project to interact with it using text, voice or buttons. <Link href={Documentation.PROTOTYPING}>See more.</Link>
+          <Text fontSize={13} color="#62778c" mt={8} mb={24} lineHeight={1.54}>
+            Start a test to interact with your project using text, voice or buttons. <Link href={Documentation.PROTOTYPING}>See more.</Link>
           </Text>
 
           {isModelTraining ? (
@@ -66,14 +68,24 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
               html={<div style={{ textAlign: 'left', width: '179px', height: '36px' }}>Once training is complete you'll be able to start a test</div>}
               position="bottom"
             >
-              <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={start} disabled>
-                Run Test
-              </Button>
+              {isVariableStateEnabled ? (
+                <SelectVariableStateButton onStart={start} />
+              ) : (
+                <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={start} disabled>
+                  Run Test
+                </Button>
+              )}
             </TippyTooltip>
           ) : (
-            <Button variant={ButtonVariant.PRIMARY} onClick={start} squareRadius id={Identifier.PROTOTYPE_START}>
-              Run Test
-            </Button>
+            <>
+              {isVariableStateEnabled ? (
+                <SelectVariableStateButton onStart={start} />
+              ) : (
+                <Button variant={ButtonVariant.PRIMARY} onClick={start} squareRadius id={Identifier.PROTOTYPE_START}>
+                  Run Test
+                </Button>
+              )}
+            </>
           )}
 
           <SelectedVariableStateText />

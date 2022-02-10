@@ -1,12 +1,12 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/alexa-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
 
 import { createBlockAdapter, createOutPortsAdapter, nextOnlyOutPortsAdapter } from '../utils';
 
-const permissionAdapter = createBlockAdapter<Node.Permission.StepData, NodeData.Permission>(
+const permissionAdapter = createBlockAdapter<AlexaNode.Permission.StepData, NodeData.Permission>(
   ({ permissions }) => ({ permissions }),
   ({ permissions }) => ({
-    permissions: (permissions?.map((permission) => permission.trim()).filter(Boolean) as Node.PermissionType[]) ?? [],
+    permissions: (permissions?.map((permission) => permission.trim()).filter(Boolean) as AlexaNode.PermissionType[]) ?? [],
   })
 );
 

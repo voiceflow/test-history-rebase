@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Flex } from '@voiceflow/ui';
 import React from 'react';
 
@@ -35,12 +35,12 @@ const ChoseIntegration = ({ onChange }) => (
       <Title>Choose an integration</Title>
 
       <Flex>
-        <Integration data={INTEGRATION_OPTIONS.CUSTOM_API} onClick={() => onChange(DEFAULT_DATA[Node.Utils.IntegrationType.CUSTOM_API])} />
+        <Integration data={INTEGRATION_OPTIONS.CUSTOM_API} onClick={() => onChange(DEFAULT_DATA[BaseNode.Utils.IntegrationType.CUSTOM_API])} />
       </Flex>
 
       <Flex>
-        <Integration data={INTEGRATION_OPTIONS.GOOGLE_SHEETS} onClick={() => onChange(DEFAULT_DATA[Node.Utils.IntegrationType.GOOGLE_SHEETS])} />
-        <Integration data={INTEGRATION_OPTIONS.ZAPIER} onClick={() => onChange(DEFAULT_DATA[Node.Utils.IntegrationType.ZAPIER])} />
+        <Integration data={INTEGRATION_OPTIONS.GOOGLE_SHEETS} onClick={() => onChange(DEFAULT_DATA[BaseNode.Utils.IntegrationType.GOOGLE_SHEETS])} />
+        <Integration data={INTEGRATION_OPTIONS.ZAPIER} onClick={() => onChange(DEFAULT_DATA[BaseNode.Utils.IntegrationType.ZAPIER])} />
       </Flex>
     </Section>
   </Content>

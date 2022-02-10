@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon, SVG } from '@voiceflow/ui';
 
@@ -7,39 +7,39 @@ import * as Creator from '@/ducks/creator';
 
 import { NodeConfig } from '../types';
 
-const NAME_MAP: Record<Node.Utils.IntegrationType, string> = {
-  [Node.Utils.IntegrationType.ZAPIER]: 'Zapier',
-  [Node.Utils.IntegrationType.CUSTOM_API]: 'API',
-  [Node.Utils.IntegrationType.GOOGLE_SHEETS]: 'Google Sheets',
+const NAME_MAP: Record<BaseNode.Utils.IntegrationType, string> = {
+  [BaseNode.Utils.IntegrationType.ZAPIER]: 'Zapier',
+  [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'API',
+  [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'Google Sheets',
 };
 
-const ICON_MAP: Record<Node.Utils.IntegrationType, Icon> = {
-  [Node.Utils.IntegrationType.ZAPIER]: 'zapier',
-  [Node.Utils.IntegrationType.CUSTOM_API]: 'variable',
-  [Node.Utils.IntegrationType.GOOGLE_SHEETS]: 'googleSheets',
+const ICON_MAP: Record<BaseNode.Utils.IntegrationType, Icon> = {
+  [BaseNode.Utils.IntegrationType.ZAPIER]: 'zapier',
+  [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'variable',
+  [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'googleSheets',
 };
 
 const EMPTY_KEY_VALUE_ITEM = { key: '', val: '' };
 
-export const DEFAULT_DATA: Record<Node.Utils.IntegrationType, Realtime.NodeData.Integration> = {
-  [Node.Utils.IntegrationType.ZAPIER]: {
+export const DEFAULT_DATA: Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration> = {
+  [BaseNode.Utils.IntegrationType.ZAPIER]: {
     user: {},
     value: '',
-    selectedAction: Node.Zapier.ZapierActionType.START_A_ZAP,
-    selectedIntegration: Node.Utils.IntegrationType.ZAPIER,
+    selectedAction: BaseNode.Zapier.ZapierActionType.START_A_ZAP,
+    selectedIntegration: BaseNode.Utils.IntegrationType.ZAPIER,
   },
-  [Node.Utils.IntegrationType.CUSTOM_API]: {
+  [BaseNode.Utils.IntegrationType.CUSTOM_API]: {
     url: '',
     body: [EMPTY_KEY_VALUE_ITEM],
     headers: [EMPTY_KEY_VALUE_ITEM],
     mapping: [{ path: '', var: null }],
     content: '',
     parameters: [EMPTY_KEY_VALUE_ITEM],
-    bodyInputType: Node.Api.APIBodyType.FORM_DATA,
-    selectedAction: Node.Api.APIActionType.GET,
-    selectedIntegration: Node.Utils.IntegrationType.CUSTOM_API,
+    bodyInputType: BaseNode.Api.APIBodyType.FORM_DATA,
+    selectedAction: BaseNode.Api.APIActionType.GET,
+    selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API,
   },
-  [Node.Utils.IntegrationType.GOOGLE_SHEETS]: {
+  [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: {
     user: {},
     sheet: null,
     mapping: [],
@@ -51,7 +51,7 @@ export const DEFAULT_DATA: Record<Node.Utils.IntegrationType, Realtime.NodeData.
     spreadsheet: null,
     header_column: null,
     selectedAction: '',
-    selectedIntegration: Node.Utils.IntegrationType.GOOGLE_SHEETS,
+    selectedIntegration: BaseNode.Utils.IntegrationType.GOOGLE_SHEETS,
   },
 };
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = {
@@ -70,8 +70,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration, Realtime.Nod
         out: {
           dynamic: [],
           builtIn: {
-            [Models.PortType.NEXT]: { label: Models.PortType.NEXT },
-            [Models.PortType.FAIL]: { label: Models.PortType.FAIL },
+            [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },
+            [BaseModels.PortType.FAIL]: { label: BaseModels.PortType.FAIL },
           },
         },
       },

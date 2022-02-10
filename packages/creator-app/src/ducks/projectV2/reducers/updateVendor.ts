@@ -1,4 +1,4 @@
-import { Project } from '@voiceflow/alexa-types';
+import { AlexaProject } from '@voiceflow/alexa-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
@@ -9,10 +9,11 @@ const updateVendorReducer = createReducer(Realtime.project.alexa.updateVendor, (
   const member = project?.members.find((member) => member.creatorID === creatorID);
 
   if (member) {
-    const alexaMemberData = member.platformData as Project.AlexaProjectMemberData;
+    const alexaMemberData = member.platformData as AlexaProject.MemberPlatformData;
     const vendor = alexaMemberData.vendors.find((vendor) => vendor.vendorID === vendorID);
 
     alexaMemberData.selectedVendor = vendorID;
+
     if (vendor) {
       vendor.skillID = skillID!;
     } else {

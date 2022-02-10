@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 
 import { AbstractControl } from '../control';
 
@@ -49,13 +49,13 @@ class DiagramService extends AbstractControl {
     return this.connectedNodesCache.size({ diagramID });
   }
 
-  public async get<T extends BaseModels.BaseDiagramNode>(creatorID: number, diagramID: string): Promise<BaseModels.Diagram<T>> {
+  public async get<T extends BaseModels.BaseDiagramNode>(creatorID: number, diagramID: string): Promise<BaseModels.Diagram.Model<T>> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.diagram.get(diagramID);
   }
 
-  public async getAll<T extends BaseModels.BaseDiagramNode>(creatorID: number, versionID: string): Promise<BaseModels.Diagram<T>[]> {
+  public async getAll<T extends BaseModels.BaseDiagramNode>(creatorID: number, versionID: string): Promise<BaseModels.Diagram.Model<T>[]> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.version.getDiagrams(versionID);
@@ -63,8 +63,8 @@ class DiagramService extends AbstractControl {
 
   public async create<T extends BaseModels.BaseDiagramNode>(
     creatorID: number,
-    data: Omit<BaseModels.Diagram<T>, '_id'>
-  ): Promise<BaseModels.Diagram<T>> {
+    data: Omit<BaseModels.Diagram.Model<T>, '_id'>
+  ): Promise<BaseModels.Diagram.Model<T>> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.diagram.create(data);
@@ -73,7 +73,7 @@ class DiagramService extends AbstractControl {
   public async patch<T extends BaseModels.BaseDiagramNode>(
     creatorID: number,
     diagramID: string,
-    { _id, ...data }: Partial<BaseModels.Diagram<T>>
+    { _id, ...data }: Partial<BaseModels.Diagram.Model<T>>
   ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 

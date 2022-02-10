@@ -1,5 +1,5 @@
 import { Creator } from '@test/factories';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { expect } from 'chai';
 import { datatype } from 'faker';
@@ -17,7 +17,7 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
     it('returns correct data for default values', () => {
       const id = datatype.uuid();
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
-      const expression = Creator.Block.Base.Expression({ type: Node.Utils.ExpressionType.VALUE });
+      const expression = Creator.Block.Base.Expression({ type: BaseNode.Utils.ExpressionType.VALUE });
       const set = Creator.Block.Base.Set({ expression });
       const data = Creator.Block.Base.SetStepData({ sets: [set] });
 
@@ -27,7 +27,7 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
         {
           id,
           variable: set.variable,
-          type: Node.Utils.ExpressionTypeV2.VALUE,
+          type: BaseNode.Utils.ExpressionTypeV2.VALUE,
           expression: expression.value,
         },
       ]);
@@ -36,7 +36,7 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
     it('returns correct expression and type', () => {
       const id = datatype.uuid();
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
-      const expression = Creator.Block.Base.Expression({ type: Node.Utils.ExpressionType.VARIABLE, value: 'name' });
+      const expression = Creator.Block.Base.Expression({ type: BaseNode.Utils.ExpressionType.VARIABLE, value: 'name' });
       const set = Creator.Block.Base.Set({ expression });
       const data = Creator.Block.Base.SetStepData({ sets: [set] });
 
@@ -46,7 +46,7 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
         {
           id,
           variable: set.variable,
-          type: Node.Utils.ExpressionTypeV2.ADVANCE,
+          type: BaseNode.Utils.ExpressionTypeV2.ADVANCE,
           expression: '{{[name].name}}',
         },
       ]);

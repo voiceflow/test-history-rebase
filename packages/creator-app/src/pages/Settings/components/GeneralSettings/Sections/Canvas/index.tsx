@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Link } from '@voiceflow/ui';
 import React from 'react';
 
@@ -25,7 +25,7 @@ const Canvas: React.FC<ConnectedBasicProps> = ({
   updateProjectLinkType,
 }) => {
   const setLinkType = React.useCallback(
-    (linkType: BaseModels.ProjectLinkType) => updateProjectLinkType(activeProjectID!, linkType),
+    (linkType: BaseModels.Project.LinkType) => updateProjectLinkType(activeProjectID!, linkType),
     [activeProjectID]
   );
 

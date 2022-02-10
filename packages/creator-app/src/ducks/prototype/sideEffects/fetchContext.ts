@@ -1,7 +1,6 @@
-import { Node, Request } from '@voiceflow/base-types';
-import { TraceType } from '@voiceflow/base-types/build/common/trace';
+import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { batch } from 'react-redux';
 
 import client from '@/client';
@@ -20,8 +19,8 @@ import { Context } from '../types';
 
 const getPlatformExcludedTraceTypes = createPlatformSelector(
   {
-    [Constants.PlatformType.CHATBOT]: [TraceType.SPEAK],
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: [TraceType.SPEAK],
+    [VoiceflowConstants.PlatformType.CHATBOT]: [BaseTrace.TraceType.SPEAK],
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: [BaseTrace.TraceType.SPEAK],
   },
   []
 );
@@ -29,7 +28,7 @@ const getPlatformExcludedTraceTypes = createPlatformSelector(
 const getTargetFlowID = (trace: Trace[]) => {
   for (let i = trace.length - 1; i >= 0; i--) {
     const currentTrace = trace[i];
-    if (currentTrace.type === Node.Utils.TraceType.FLOW && !!currentTrace.payload?.diagramID) {
+    if (currentTrace.type === BaseTrace.TraceType.FLOW && !!currentTrace.payload?.diagramID) {
       return currentTrace.payload.diagramID;
     }
   }
@@ -37,7 +36,7 @@ const getTargetFlowID = (trace: Trace[]) => {
 };
 
 const fetchContext =
-  (request: Request.BaseRequest | null, config: Recent.PrototypeConfig): Thunk<Context | null> =>
+  (request: BaseRequest.BaseRequest | null, config: Recent.PrototypeConfig): Thunk<Context | null> =>
   async (dispatch, getState) => {
     const reduxState = getState();
     const { trace: _oldTrace, ...state } = prototypeContextSelector(reduxState);
@@ -53,7 +52,7 @@ const fetchContext =
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(activeDiagramID);
 
-    const guidedConfig = { stopAll: true, stopTypes: [Node.NodeType.IF_V2] };
+    const guidedConfig = { stopAll: true, stopTypes: [BaseNode.NodeType.IF_V2] };
 
     try {
       const { state: _state, trace } = await client.prototype.interact(
@@ -67,7 +66,9 @@ const fetchContext =
       );
 
       const newState: Context = _state;
-      const lastVisual = [...trace].reverse().find(({ type }) => type === Node.Utils.TraceType.VISUAL) as Node.Visual.TraceFrame;
+
+      // TODO: add trace typeguards to libs
+      const lastVisual = [...trace].reverse().find(({ type }) => type === BaseTrace.TraceType.VISUAL) as BaseNode.Visual.TraceFrame;
 
       newState.previousContextDiagramID = activeDiagramID;
       newState.targetContextDiagramID = getTargetFlowID(trace) || activeDiagramID;

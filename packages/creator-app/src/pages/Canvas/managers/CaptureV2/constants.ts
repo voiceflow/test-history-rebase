@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -17,13 +17,16 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeD
         in: [{}],
         out: {
           dynamic: [],
-          builtIn: { [Models.PortType.NEXT]: { label: Models.PortType.NEXT }, [Models.PortType.NO_MATCH]: { label: Models.PortType.NO_MATCH } },
+          builtIn: {
+            [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },
+            [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH },
+          },
         },
       },
     },
     data: {
       name: 'Capture',
-      captureType: Node.CaptureV2.CaptureType.INTENT,
+      captureType: BaseNode.CaptureV2.CaptureType.INTENT,
       variable: null,
       intent: { slots: [{ id: '', dialog: { prompt: [], confirm: [], utterances: [], confirmEnabled: false }, required: true }] },
       noReply: null,

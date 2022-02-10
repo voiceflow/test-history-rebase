@@ -2,8 +2,8 @@ import { AdapterContext } from '@realtime-sdk/adapters/types';
 import { BlockType } from '@realtime-sdk/constants';
 import { NodeData } from '@realtime-sdk/models';
 import { createPlatformSelector } from '@realtime-sdk/utils/platform';
-import { Models as BaseModels, Node } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { BidirectionalAdapter } from 'bidirectional-adapter';
 import moize from 'moize';
 
@@ -31,11 +31,11 @@ export const APP_BLOCK_TYPE_FROM_DB: Record<
   BlockType | ((data: BaseModels.BaseDiagramNode['data'], options: { context: AdapterContext }) => BlockType)
 > = {
   ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [key]: value }), {}),
-  [Node.NodeType.API]: BlockType.INTEGRATION,
-  [Node.NodeType.ZAPIER]: BlockType.INTEGRATION,
-  [Node.NodeType.GOOGLE_SHEETS]: BlockType.INTEGRATION,
-  [Node.NodeType.IF]: BlockType.IFV2,
-  [Node.NodeType.SET]: BlockType.SETV2,
+  [BaseNode.NodeType.API]: BlockType.INTEGRATION,
+  [BaseNode.NodeType.ZAPIER]: BlockType.INTEGRATION,
+  [BaseNode.NodeType.GOOGLE_SHEETS]: BlockType.INTEGRATION,
+  [BaseNode.NodeType.IF]: BlockType.IFV2,
+  [BaseNode.NodeType.SET]: BlockType.SETV2,
   [BlockType.DEPRECATED_CUSTOM_PAYLOAD]: BlockType.PAYLOAD,
 };
 
@@ -43,25 +43,25 @@ export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: 
   ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [value]: key }), {}),
   [BlockType.INTEGRATION]: (data: NodeData<NodeData.Integration>) => {
     switch (data.selectedIntegration) {
-      case Node.Utils.IntegrationType.ZAPIER:
-        return Node.NodeType.ZAPIER;
-      case Node.Utils.IntegrationType.GOOGLE_SHEETS:
-        return Node.NodeType.GOOGLE_SHEETS;
+      case BaseNode.Utils.IntegrationType.ZAPIER:
+        return BaseNode.NodeType.ZAPIER;
+      case BaseNode.Utils.IntegrationType.GOOGLE_SHEETS:
+        return BaseNode.NodeType.GOOGLE_SHEETS;
       default:
-        return Node.NodeType.API;
+        return BaseNode.NodeType.API;
     }
   },
-  [Node.NodeType.IF]: BlockType.IFV2,
-  [Node.NodeType.SET]: BlockType.SETV2,
+  [BaseNode.NodeType.IF]: BlockType.IFV2,
+  [BaseNode.NodeType.SET]: BlockType.SETV2,
 };
 
 const getPlatformAdapter = createPlatformSelector<Partial<Record<BlockType, unknown>>>(
   {
-    [Constants.PlatformType.ALEXA]: alexaBlockAdapter,
-    [Constants.PlatformType.GOOGLE]: googleBlockAdapter,
-    [Constants.PlatformType.CHATBOT]: chatBlockAdapter,
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflowAdapter,
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowAdapter,
+    [VoiceflowConstants.PlatformType.ALEXA]: alexaBlockAdapter,
+    [VoiceflowConstants.PlatformType.GOOGLE]: googleBlockAdapter,
+    [VoiceflowConstants.PlatformType.CHATBOT]: chatBlockAdapter,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: { ...chatBlockAdapter, ...dialogflowAdapter },
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowAdapter,
   },
   { ...baseBlockAdapter, ...generalBlockAdapter }
 );
@@ -84,10 +84,10 @@ const getPlatformOutPortsAdapter = createPlatformSelector<
   typeof alexaOutPortAdapter | typeof googleOutPortAdapter | typeof baseOutPortAdapter | typeof dialogflowOutPortAdapter
 >(
   {
-    [Constants.PlatformType.ALEXA]: alexaOutPortAdapter,
-    [Constants.PlatformType.GOOGLE]: googleOutPortAdapter,
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflowOutPortAdapter,
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowOutPortAdapter,
+    [VoiceflowConstants.PlatformType.ALEXA]: alexaOutPortAdapter,
+    [VoiceflowConstants.PlatformType.GOOGLE]: googleOutPortAdapter,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflowOutPortAdapter,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowOutPortAdapter,
   },
   baseOutPortAdapter
 );
@@ -98,7 +98,7 @@ type PlatformBlockAdapter = Partial<
   Record<BlockType, BidirectionalAdapter<unknown, NodeData<unknown>, [{ context: AdapterContext }], [{ context: AdapterContext }]>>
 >;
 
-export const getBlockAdapter = moize((platform: Constants.PlatformType, migrate?: boolean): PlatformBlockAdapter => {
+export const getBlockAdapter = moize((platform: VoiceflowConstants.PlatformType, migrate?: boolean): PlatformBlockAdapter => {
   if (migrate) {
     return migrationBlockAdapter as unknown as PlatformBlockAdapter;
   }
@@ -114,7 +114,7 @@ export const getBlockAdapter = moize((platform: Constants.PlatformType, migrate?
 type PlatformOutPortAdapter = Partial<Record<BlockType, OutPortsAdapter>>;
 
 export const getOutPortsAdapter = moize(
-  (platform: Constants.PlatformType): PlatformOutPortAdapter =>
+  (platform: VoiceflowConstants.PlatformType): PlatformOutPortAdapter =>
     ({
       ...baseOutPortAdapter,
       ...getPlatformOutPortsAdapter(platform),

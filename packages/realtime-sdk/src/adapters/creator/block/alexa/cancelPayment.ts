@@ -1,9 +1,9 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/alexa-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
 
 import { createBlockAdapter, createOutPortsAdapter, nextAndFailOnlyOutPortsAdapter } from '../utils';
 
-const cancelPaymentDataAdapter = createBlockAdapter<Node.CancelPayment.StepData, NodeData.CancelPayment>(
+const cancelPaymentDataAdapter = createBlockAdapter<AlexaNode.CancelPayment.StepData, NodeData.CancelPayment>(
   ({ productID }) => ({ productID }),
   ({ productID }) => ({ productID: productID || '' })
 );

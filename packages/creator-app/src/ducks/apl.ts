@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { replaceVariables } from '@voiceflow/common';
 
 import client from '@/client';
@@ -14,7 +14,7 @@ export const resolveAPL =
     document,
     datasource,
     aplCommands,
-  }: Node.Visual.APLStepData): Thunk<{ apl: string; data: string; commands: string }> =>
+  }: BaseNode.Visual.APLStepData): Thunk<{ apl: string; data: string; commands: string }> =>
   async (_, getState) => {
     const state = getState();
     const variables = Prototype.prototypeVariablesSelector(state);
@@ -23,7 +23,7 @@ export const resolveAPL =
     let data = datasource || '';
     let apl = document || '';
 
-    if (aplType === Node.Visual.APLType.SPLASH) {
+    if (aplType === BaseNode.Visual.APLType.SPLASH) {
       ({ document: apl, datasource: data } = await client.platform.alexa.handlers.getDisplayWithDatasource(title || '', imageURL || ''));
     }
 

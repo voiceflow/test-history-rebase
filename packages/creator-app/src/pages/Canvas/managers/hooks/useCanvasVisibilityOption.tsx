@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { OptionsMenuOption } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,15 +8,15 @@ import { useDispatch, useSelector } from '@/hooks';
 import MenuCheckboxOption, { CheckboxType } from '@/pages/Canvas/managers/components/MenuCheckboxOption';
 
 const useCanvasVisibilityOption = (
-  visibility: Node.Utils.CanvasNodeVisibility = Node.Utils.CanvasNodeVisibility.PREVIEW,
-  onChange: (visibility: Node.Utils.CanvasNodeVisibility) => void
+  visibility: BaseNode.Utils.CanvasNodeVisibility = BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
+  onChange: (visibility: BaseNode.Utils.CanvasNodeVisibility) => void
 ): OptionsMenuOption => {
   const patchSettings = useDispatch(Version.patchSettings);
   const defaultCanvasNodeVisibility = useSelector(VersionV2.active.canvasNodeVisibilitySelector);
 
-  const defaultCanvasVisibility = defaultCanvasNodeVisibility || Node.Utils.CanvasNodeVisibility.PREVIEW;
+  const defaultCanvasVisibility = defaultCanvasNodeVisibility || BaseNode.Utils.CanvasNodeVisibility.PREVIEW;
 
-  const updateDefaultCanvasVisibility = React.useCallback((value: Node.Utils.CanvasNodeVisibility) => {
+  const updateDefaultCanvasVisibility = React.useCallback((value: BaseNode.Utils.CanvasNodeVisibility) => {
     patchSettings({ defaultCanvasNodeVisibility: value });
   }, []);
 
@@ -26,8 +26,8 @@ const useCanvasVisibilityOption = (
       {
         label: (
           <MenuCheckboxOption
-            checked={visibility === Node.Utils.CanvasNodeVisibility.PREVIEW}
-            onChange={() => onChange(Node.Utils.CanvasNodeVisibility.PREVIEW)}
+            checked={visibility === BaseNode.Utils.CanvasNodeVisibility.PREVIEW}
+            onChange={() => onChange(BaseNode.Utils.CanvasNodeVisibility.PREVIEW)}
           >
             Show preview
           </MenuCheckboxOption>
@@ -37,8 +37,8 @@ const useCanvasVisibilityOption = (
       {
         label: (
           <MenuCheckboxOption
-            checked={visibility === Node.Utils.CanvasNodeVisibility.ALL_VARIANTS}
-            onChange={() => onChange(Node.Utils.CanvasNodeVisibility.ALL_VARIANTS)}
+            checked={visibility === BaseNode.Utils.CanvasNodeVisibility.ALL_VARIANTS}
+            onChange={() => onChange(BaseNode.Utils.CanvasNodeVisibility.ALL_VARIANTS)}
           >
             Show all variants
           </MenuCheckboxOption>
@@ -53,9 +53,9 @@ const useCanvasVisibilityOption = (
             checked={defaultCanvasVisibility === visibility}
             onChange={() =>
               updateDefaultCanvasVisibility(
-                defaultCanvasVisibility === Node.Utils.CanvasNodeVisibility.PREVIEW
-                  ? Node.Utils.CanvasNodeVisibility.ALL_VARIANTS
-                  : Node.Utils.CanvasNodeVisibility.PREVIEW
+                defaultCanvasVisibility === BaseNode.Utils.CanvasNodeVisibility.PREVIEW
+                  ? BaseNode.Utils.CanvasNodeVisibility.ALL_VARIANTS
+                  : BaseNode.Utils.CanvasNodeVisibility.PREVIEW
               )
             }
           >

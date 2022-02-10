@@ -1,7 +1,7 @@
 import { Crypto } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { get, set } from 'idb-keyval';
 
 import * as Errors from '@/config/errors';
@@ -38,7 +38,7 @@ interface ClipboardContext {
   intents: Realtime.Intent[];
   products: Realtime.Product[];
   diagrams: Realtime.Diagram[];
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
 }
 
 const ClipboardVersion = {
@@ -141,7 +141,7 @@ class ClipboardEngine extends EngineConsumer {
       return this.dispatch(
         Version.importProjectContext({
           nodes: nodesWithData,
-          products: targetPlatform !== Constants.PlatformType.ALEXA ? [] : products,
+          products: targetPlatform !== VoiceflowConstants.PlatformType.ALEXA ? [] : products,
           diagrams,
           sourcePlatform,
           targetPlatform,

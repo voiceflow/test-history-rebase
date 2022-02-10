@@ -1,9 +1,9 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter, createOutPortsAdapter, nextOnlyOutPortsAdapter } from '../utils';
 
-const flowAdapter = createBlockAdapter<Node.Flow.StepData, NodeData.Flow>(
+const flowAdapter = createBlockAdapter<BaseNode.Flow.StepData, NodeData.Flow>(
   ({ diagramID, variableMap }) => ({
     diagramID,
     inputs: variableMap?.inputs?.map(([from, to]) => ({ from, to })),

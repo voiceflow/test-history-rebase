@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -57,8 +57,8 @@ const ConnectedCancelPaymentStep: ConnectedStep<Realtime.NodeData.CancelPayment,
       label={product?.name}
       nodeID={data.nodeID}
       withPorts={withPorts}
-      successPortID={ports.out.builtIn[Models.PortType.NEXT] ?? null}
-      failurePortID={ports.out.builtIn[Models.PortType.FAIL] ?? null}
+      successPortID={ports.out.builtIn[BaseModels.PortType.NEXT] ?? null}
+      failurePortID={ports.out.builtIn[BaseModels.PortType.FAIL] ?? null}
       variant={variant}
     />
   );

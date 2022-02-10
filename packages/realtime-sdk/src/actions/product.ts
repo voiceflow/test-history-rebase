@@ -2,14 +2,14 @@ import { createAction, createAsyncAction, createCRUDActions, createType } from '
 import { PRODUCT_KEY } from '@realtime-sdk/constants';
 import { Product } from '@realtime-sdk/models';
 import { BaseVersionPayload } from '@realtime-sdk/types';
-import { Constants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 
 const productType = createType(PRODUCT_KEY);
 
 // Other
 
 export interface UpdateLocalesPayload extends BaseVersionPayload {
-  locales: Constants.Locale[];
+  locales: AlexaConstants.Locale[];
 }
 
 export interface CreateProductPayload extends BaseVersionPayload {

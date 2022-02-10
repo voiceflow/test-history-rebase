@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { platformAware } from '@/hocs';
@@ -9,7 +9,8 @@ type NoMatchAndNoReplyListProps = ChatListProps | VoiceListProps;
 
 const NoMatchAndNoReplyList = platformAware<NoMatchAndNoReplyListProps>(
   {
-    [Constants.PlatformType.CHATBOT]: ChatList as React.FC<NoMatchAndNoReplyListProps>,
+    [VoiceflowConstants.PlatformType.CHATBOT]: ChatList as React.FC<NoMatchAndNoReplyListProps>,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: ChatList as React.FC<NoMatchAndNoReplyListProps>,
   },
   VoiceList as React.FC<NoMatchAndNoReplyListProps>
 );

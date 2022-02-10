@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { Constants } from '@voiceflow/google-dfes-types';
+import { DFESConstants } from '@voiceflow/google-dfes-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
@@ -11,7 +11,7 @@ export const settingsSelector = createSelector([versionSelector], (version) => v
 
 export const publishingSelector = createSelector([versionSelector], (version) => version?.publishing ?? null);
 
-export const localesSelector = createSelector([publishingSelector], (publishing): Constants.Locale[] => publishing?.locales ?? []);
+export const localesSelector = createSelector([publishingSelector], (publishing): DFESConstants.Locale[] => publishing?.locales ?? []);
 
 export const triggerPhraseSelector = createSelector([publishingSelector], (publishing) => publishing?.triggerPhrase ?? []);
 

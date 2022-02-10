@@ -1,4 +1,4 @@
-import { Types } from '@voiceflow/chat-types';
+import { ChatModels } from '@voiceflow/chat-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 import React from 'react';
@@ -7,8 +7,8 @@ import SlateEditableWithVariables from '@/components/SlateEditableWithVariables'
 
 interface ChatPromptFormProps {
   slots: Realtime.Slot[];
-  prompt: Types.Prompt[];
-  onChange: (prompt: Types.Prompt[]) => void;
+  prompt: ChatModels.Prompt[];
+  onChange: (prompt: ChatModels.Prompt[]) => void;
   placeholder: string;
 }
 

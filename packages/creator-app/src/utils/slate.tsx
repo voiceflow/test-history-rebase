@@ -1,4 +1,4 @@
-import { Text as BaseText } from '@voiceflow/base-types';
+import { BaseText } from '@voiceflow/base-types';
 import { slate } from '@voiceflow/internal';
 import { swallowEvent } from '@voiceflow/ui';
 import React from 'react';

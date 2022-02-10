@@ -1,5 +1,5 @@
-import { Node as AlexaNode } from '@voiceflow/alexa-types';
-import { Node as BaseNode } from '@voiceflow/base-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 
 import { Pair } from '@/types';

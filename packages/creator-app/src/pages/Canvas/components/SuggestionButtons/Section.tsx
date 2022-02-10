@@ -1,6 +1,6 @@
-import { Button } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { Text } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Section from '@/components/Section';
@@ -9,7 +9,7 @@ import { getPlatformValue } from '@/utils/platform';
 
 import InfoTooltip from './InfoTooltip';
 
-export const buttonsFactory = (): Button.IntentButton[] => [{ name: '', type: Button.ButtonType.INTENT, payload: { intentID: null } }];
+export const buttonsFactory = (): BaseButton.IntentButton[] => [{ name: '', type: BaseButton.ButtonType.INTENT, payload: { intentID: null } }];
 
 export const SUGGESTION_BUTTONS_PATH_TYPE = 'buttons';
 
@@ -23,14 +23,14 @@ const ButtonsSection: React.FC<ButtonsSectionProps> = ({ pushToPath }) => {
     () =>
       pushToPath?.({
         type: SUGGESTION_BUTTONS_PATH_TYPE,
-        label: getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'chips' }, 'buttons'),
+        label: getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' }, 'buttons'),
       }),
     [pushToPath]
   );
 
   return (
     <Section
-      header={<Text fontWeight="normal">{getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}</Text>}
+      header={<Text fontWeight="normal">{getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}</Text>}
       status="Empty"
       isLink
       tooltip={<InfoTooltip />}

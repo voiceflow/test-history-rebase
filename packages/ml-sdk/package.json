@@ -6,7 +6,7 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@voiceflow/common": "7.13.4",
+    "@voiceflow/common": "7.19.1",
     "typescript-fsa": "3.0.0"
   },
   "files": [
@@ -35,6 +35,7 @@
     "test": "nyc ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.yml",
     "test:dependencies": "depcheck",
     "test:integration": "yarn test",
-    "test:unit": "yarn test"
+    "test:unit": "yarn test",
+    "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   }
 }

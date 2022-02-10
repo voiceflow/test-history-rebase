@@ -1,4 +1,4 @@
-import { Project as AlexaProject } from '@voiceflow/alexa-types';
+import { AlexaProject } from '@voiceflow/alexa-types';
 
 import { AbstractControl } from '../../control';
 
@@ -8,7 +8,7 @@ class ProjectMemberService extends AbstractControl {
    */
   public async updateVendor(creatorID: number, projectID: string, vendorID: string, skillID: string | null): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const member = await client.project.member.get<AlexaProject.AlexaProjectMemberData>(projectID);
+    const member = await client.project.member.get<AlexaProject.MemberPlatformData>(projectID);
 
     const hasVendor = member.platformData.vendors.some((vendor) => vendor.vendorID === vendorID);
 

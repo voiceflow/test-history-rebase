@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 import client from '@/client';
 import * as Prototype from '@/ducks/prototype';
@@ -30,7 +30,7 @@ export const trackActiveProjectPrototypeTestStart = createVersionEventTracker<{
   mode: PrototypeMode;
   debug: boolean;
   config: Omit<PrototypeConfig, 'platform'>;
-  display: Node.Visual.DeviceType | null;
+  display: BaseNode.Visual.DeviceType | null;
 }>((options) =>
   client.api.analytics.track(
     EventName.PROJECT_PROTOTYPE_TEST_START,

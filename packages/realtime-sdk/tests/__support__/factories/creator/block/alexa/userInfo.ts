@@ -1,12 +1,12 @@
 import { getRandomEnumElement } from '@test/utils';
-import { Node } from '@voiceflow/alexa-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
 import { define } from 'cooky-cutter';
 import { datatype, lorem } from 'faker';
 
 import { NodeData } from '@/models';
 
-export const UserInfo = define<Node.UserInfo.UserInfo>({
-  type: () => getRandomEnumElement(Node.PermissionType),
+export const UserInfo = define<AlexaNode.UserInfo.UserInfo>({
+  type: () => getRandomEnumElement(AlexaNode.PermissionType),
   mapTo: () => datatype.uuid(),
   product: () => lorem.word(),
 });
@@ -15,10 +15,10 @@ export const UserPermission = define<NodeData.UserInfoPermission>({
   id: () => datatype.uuid(),
   mapTo: () => datatype.uuid(),
   product: () => lorem.word(),
-  selected: () => getRandomEnumElement(Node.PermissionType),
+  selected: () => getRandomEnumElement(AlexaNode.PermissionType),
 });
 
-export const UserInfoStepData = define<Node.UserInfo.StepData>({
+export const UserInfoStepData = define<AlexaNode.UserInfo.StepData>({
   infos: () => [UserInfo()],
 });
 

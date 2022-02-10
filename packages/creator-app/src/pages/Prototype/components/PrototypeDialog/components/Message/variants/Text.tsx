@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import React from 'react';
 
 import { serializeSlateToJSX } from '@/utils/slate';
@@ -7,7 +7,7 @@ import { Message } from '../components';
 import { MessageProps } from '../components/Message';
 
 type TextProps = Omit<MessageProps, 'iconProps'> & {
-  slate: Node.Text.TextData;
+  slate: BaseNode.Text.TextData;
 };
 
 const Text: React.FC<TextProps> = ({ slate, ...props }) => {

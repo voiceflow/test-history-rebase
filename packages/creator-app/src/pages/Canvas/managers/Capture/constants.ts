@@ -1,9 +1,8 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
-import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import { NodeConfig } from '../types';
 
@@ -18,14 +17,14 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Capture, Realtime.NodeDat
         in: [{}],
         out: {
           dynamic: [],
-          builtIn: { [Models.PortType.NEXT]: { label: Models.PortType.NEXT } },
+          builtIn: { [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT } },
         },
       },
     },
     data: {
       name: 'Capture',
       slot: null,
-      buttons: isChatbotPlatform(options?.platform) ? buttonsFactory() : null,
+      buttons: Realtime.Utils.typeGuards.isChatPlatform(options?.platform) ? buttonsFactory() : null,
       noReply: null,
       examples: [],
       variable: null,

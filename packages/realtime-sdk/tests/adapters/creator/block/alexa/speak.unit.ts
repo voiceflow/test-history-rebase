@@ -1,7 +1,7 @@
 import speakAdapter from '@realtime-sdk/adapters/creator/block/alexa/speak';
 import { DialogType } from '@realtime-sdk/constants';
 import { Creator } from '@test/factories';
-import { Constants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { expect } from 'chai';
 import { datatype } from 'faker';
@@ -26,8 +26,8 @@ describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
     });
 
     it('returns audio and voice dialogs', () => {
-      const audioDialog = Creator.Block.Shared.VoicePrompt({ voice: Constants.Voice.AUDIO });
-      const voiceDialog = Creator.Block.Shared.VoicePrompt({ voice: Constants.Voice.AMY });
+      const audioDialog = Creator.Block.Shared.VoicePrompt({ voice: AlexaConstants.Voice.AUDIO });
+      const voiceDialog = Creator.Block.Shared.VoicePrompt({ voice: AlexaConstants.Voice.AMY });
       const id = datatype.uuid();
 
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
@@ -63,8 +63,8 @@ describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
       const result = speakAdapter.toDB(data);
 
       expect(result.dialogs).eql([
-        { voice: Constants.Voice.AUDIO, content: audioDialog.url },
-        { voice: Constants.Voice.ALEXA, content: '' },
+        { voice: AlexaConstants.Voice.AUDIO, content: audioDialog.url },
+        { voice: AlexaConstants.Voice.ALEXA, content: '' },
       ]);
     });
   });

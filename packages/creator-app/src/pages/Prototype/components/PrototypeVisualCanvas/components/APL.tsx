@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -15,12 +15,12 @@ import { VisualRenderProps } from './types';
 
 const MemoizedBaseRenderer = React.memo(BaseRenderer);
 
-type APLProps = VisualRenderProps<Node.Visual.APLStepData>;
+type APLProps = VisualRenderProps<BaseNode.Visual.APLStepData>;
 
 const APL: React.FC<APLProps & ConnectedAPLProps> = ({ zoom, data, device, platform, resolveAPL, dimensions }) => {
   const [aplContext, setAPLContext] = React.useState<{ apl: string; data: string; commands: string } | null>(null);
 
-  const isRound = device === Node.Visual.DeviceType.ECHO_SPOT;
+  const isRound = device === BaseNode.Visual.DeviceType.ECHO_SPOT;
   const renderAPL = !!aplContext;
   const deviceInfo = React.useMemo(() => getDeviceList(platform).find(({ type }) => type === device), [platform, device]);
   const viewport = React.useMemo(

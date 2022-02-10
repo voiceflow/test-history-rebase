@@ -1,10 +1,11 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/general-types';
+import { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
 import { chipsToIntentButtons, createBlockAdapter } from '../utils';
 import { voicePromptAdapter } from '../voice';
 
-const promptAdapter = createBlockAdapter<Node.Prompt.StepData, NodeData.Prompt>(
+// TODO: refactor to use StepData (chat/voice union)
+const promptAdapter = createBlockAdapter<VoiceflowNode.Prompt.VoiceStepData, NodeData.Prompt>(
   ({ chips, buttons, ...voiceData }) => ({
     ...voicePromptAdapter.fromDB(voiceData),
 

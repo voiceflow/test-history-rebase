@@ -1,6 +1,6 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import createAdapter from 'bidirectional-adapter';
 
 import { BlockType } from '../../constants';
@@ -17,15 +17,15 @@ const nodeAdapter = createAdapter<
     {
       parentNode: BaseModels.BaseBlock | null;
       links: Link[];
-      platform: Constants.PlatformType;
+      platform: VoiceflowConstants.PlatformType;
       context: AdapterContext;
     }
   ],
   [
     {
-      portToTargets: Record<string, BaseModels.NodeID>;
-      stepMap: Record<BaseModels.NodeID, BaseModels.NodeID>;
-      platform: Constants.PlatformType;
+      portToTargets: Record<string, string>;
+      stepMap: Record<string, string>;
+      platform: VoiceflowConstants.PlatformType;
       portLinksMap: Record<string, Link>;
       context: AdapterContext;
     }
@@ -54,7 +54,7 @@ const nodeAdapter = createAdapter<
       },
     };
 
-    const registerLinkTarget = (port: Port, target: BaseModels.NodeID) => {
+    const registerLinkTarget = (port: Port, target: string) => {
       links.push({
         id: port.id,
         source: {
@@ -74,7 +74,7 @@ const nodeAdapter = createAdapter<
       node.ports.in.push(port.id);
     };
 
-    const registerOutPort = (port: Port, target?: BaseModels.NodeID | null) => {
+    const registerOutPort = (port: Port, target?: string | null) => {
       ports.push(port);
 
       if (target) {

@@ -1,4 +1,4 @@
-import { Version } from '@voiceflow/google-dfes-types';
+import { DFESVersion } from '@voiceflow/google-dfes-types';
 
 import { googleService } from '@/client/fetch';
 import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
@@ -15,7 +15,7 @@ const dialogflowServiceClient = {
   modelExport: createModelExportService(googleService),
   project: projectService,
   publish: createPublishService<DialogflowPublishJob.AnyJob, GoogleStageType>(DIALOGFLOW_ENDPOINT),
-  version: createVersionService<Version.GoogleDFESVersion>(DIALOGFLOW_ENDPOINT),
+  version: createVersionService<DFESVersion.Version>(DIALOGFLOW_ENDPOINT),
   prototype: createPrototypeService<GeneralJob.AnyJob>(DIALOGFLOW_ENDPOINT),
 };
 

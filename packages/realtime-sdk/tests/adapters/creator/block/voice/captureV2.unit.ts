@@ -1,6 +1,6 @@
 import { Creator } from '@test/factories';
-import { Node as BaseNode } from '@voiceflow/base-types';
-import { Node } from '@voiceflow/voice-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { VoiceNode } from '@voiceflow/voice-types';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -39,7 +39,7 @@ describe('Adapters | Creator | Block | Voice | captureV2Adapter', () => {
       sinon.stub(voiceNoReplyAdapter, 'fromDB').returns(noReply);
       sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(noMatch);
 
-      const intentCapture: Node.CaptureV2.IntentCapture<any> = {
+      const intentCapture: VoiceNode.CaptureV2.IntentCapture<any> = {
         type: BaseNode.CaptureV2.CaptureType.INTENT as BaseNode.CaptureV2.CaptureType.INTENT,
         intent: DEFAULT_INTENT,
       };

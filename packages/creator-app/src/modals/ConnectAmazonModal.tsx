@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -9,7 +9,7 @@ import { useConnectState } from './BaseConnectPlatformModal/hooks';
 import { getPlatformModalProps } from './BaseConnectPlatformModal/utils';
 
 const MODAL_TYPE = ModalType.CONNECT_AMAZON;
-const PLATFORM_TYPE = Constants.PlatformType.ALEXA;
+const PLATFORM_TYPE = VoiceflowConstants.PlatformType.ALEXA;
 
 const ConnectAmazonModal: React.FC = () => {
   const { isOpened, close } = useModals(MODAL_TYPE);

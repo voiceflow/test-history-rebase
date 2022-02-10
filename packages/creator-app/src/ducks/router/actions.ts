@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Struct } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { CALL_HISTORY_METHOD, push, replace } from 'connected-react-router';
 import { generatePath } from 'react-router-dom';
 
@@ -57,7 +57,7 @@ export const goToPrototype = (versionID: string, nodeID?: string) =>
 
 export const goToSettings = (versionID: string) => goTo(generatePath(Path.PROJECT_SETTINGS, { versionID }));
 
-export const goToPublish = (versionID: string, platform: Constants.PlatformType) => {
+export const goToPublish = (versionID: string, platform: VoiceflowConstants.PlatformType) => {
   let platformPath: string = platform;
 
   if (isDialogflowPlatform(platform)) {

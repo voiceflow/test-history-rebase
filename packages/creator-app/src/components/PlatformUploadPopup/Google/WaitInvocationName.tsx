@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { Constants, Utils } from '@voiceflow/google-types';
+import { GoogleConstants, GoogleUtils } from '@voiceflow/google-types';
 import { BlockText, Box, BoxFlex, Button, ButtonVariant, IconVariant, Input, SvgIcon, TippyTooltip, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 import { Assign } from 'utility-types';
@@ -78,7 +78,7 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
         <Input
           value={state.name}
           placeholder="Invocation Name"
-          onChangeText={(value) => api.update({ name: value, error: Utils.getInvocationNameError(value, locales) })}
+          onChangeText={(value) => api.update({ name: value, error: GoogleUtils.getInvocationNameError(value, locales) })}
         />
       </Box>
 
@@ -106,6 +106,9 @@ const mapDispatchToProps = {
   updateInvocationName: Version.updateInvocationName,
 };
 
-type WaitInvocationNameConnectedProps = Assign<ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>, { locales: Constants.Locale[] }>;
+type WaitInvocationNameConnectedProps = Assign<
+  ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>,
+  { locales: GoogleConstants.Locale[] }
+>;
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitInvocationName) as React.FC<WaitInvocationNameProps>;

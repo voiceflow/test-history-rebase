@@ -1,4 +1,4 @@
-import { Constants, Project } from '@voiceflow/alexa-types';
+import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
 import { Box, Button, ButtonVariant, Dropdown, Input, Label, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
@@ -31,14 +31,14 @@ export const TAX_CATEGORIES = [
 ];
 
 export const PRODUCT_TYPES = [
-  { value: Constants.ProductType.ENTITLEMENT, label: 'One-Time Purchase' },
-  { value: Constants.ProductType.CONSUMABLE, label: 'Consumable' },
-  { value: Constants.ProductType.SUBSCRIPTION, label: 'Subscription' },
+  { value: AlexaConstants.ProductType.ENTITLEMENT, label: 'One-Time Purchase' },
+  { value: AlexaConstants.ProductType.CONSUMABLE, label: 'Consumable' },
+  { value: AlexaConstants.ProductType.SUBSCRIPTION, label: 'Subscription' },
 ];
 
 export const SUBSCRIPTION_OPTIONS = [
-  { value: Project.SubscriptionPaymentFrequency.MONTHLY, label: 'Monthly' },
-  { value: Project.SubscriptionPaymentFrequency.YEARLY, label: 'Yearly' },
+  { value: AlexaProject.SubscriptionPaymentFrequency.MONTHLY, label: 'Monthly' },
+  { value: AlexaProject.SubscriptionPaymentFrequency.YEARLY, label: 'Yearly' },
 ];
 
 export interface PricingFormProps {
@@ -49,7 +49,7 @@ const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
   const parentalControl = useSelector(VersionV2.active.alexa.parentalControlSelector);
   const { product, patchProduct, setProductProperty } = React.useContext(ProductContext)!;
 
-  const onTypeChange = (value: Constants.ProductType) => () => {
+  const onTypeChange = (value: AlexaConstants.ProductType) => () => {
     patchProduct({ type: value });
   };
 
@@ -62,21 +62,21 @@ const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
             {PRODUCT_TYPES.map(({ value, label }, index) => (
               <div key={index}>
                 <Tooltip
-                  disabled={!(value === Constants.ProductType.CONSUMABLE && parentalControl)}
+                  disabled={!(value === AlexaConstants.ProductType.CONSUMABLE && parentalControl)}
                   position="top"
                   title={
-                    value === Constants.ProductType.CONSUMABLE && parentalControl
+                    value === AlexaConstants.ProductType.CONSUMABLE && parentalControl
                       ? 'Consumables are not available for kid skills at this time.'
                       : undefined
                   }
                 >
-                  <RadioButtonLabel isDisabled={value === Constants.ProductType.CONSUMABLE && !!parentalControl}>
+                  <RadioButtonLabel isDisabled={value === AlexaConstants.ProductType.CONSUMABLE && !!parentalControl}>
                     <Input
                       type="radio"
                       name="type"
                       value={value}
                       checked={product.type === value}
-                      disabled={value === Constants.ProductType.CONSUMABLE && parentalControl}
+                      disabled={value === AlexaConstants.ProductType.CONSUMABLE && parentalControl}
                       onChange={onTypeChange(value)}
                     />
                     <span>{label}</span>
@@ -87,7 +87,7 @@ const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
           </RadioButtonGroup>
         </SubSection>
 
-        {(product.type === Constants.ProductType.SUBSCRIPTION || product.type === Constants.ProductType.CONSUMABLE) && (
+        {(product.type === AlexaConstants.ProductType.SUBSCRIPTION || product.type === AlexaConstants.ProductType.CONSUMABLE) && (
           <SubSection>
             <Label>Bill Customer</Label>
             {product.type === 'CONSUMABLE' && (
@@ -105,10 +105,10 @@ const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
               </SubSection>
             )}
 
-            {product.type === Constants.ProductType.SUBSCRIPTION && (
+            {product.type === AlexaConstants.ProductType.SUBSCRIPTION && (
               <SubSection flex>
                 <SubscriptionDropdown>
-                  <Dropdown<Project.SubscriptionPaymentFrequency>
+                  <Dropdown<AlexaProject.SubscriptionPaymentFrequency>
                     onSelect={setProductProperty('subscriptionFrequency')}
                     options={SUBSCRIPTION_OPTIONS}
                     autoWidth

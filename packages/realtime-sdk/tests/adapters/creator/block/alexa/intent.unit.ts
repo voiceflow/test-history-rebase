@@ -1,7 +1,7 @@
 import intentAdapter from '@realtime-sdk/adapters/creator/block/alexa/intent';
 import { Creator } from '@test/factories';
-import { Node } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { expect } from 'chai';
 
 describe('Adapters | Creator | Block | Alexa | intentAdapter', () => {
@@ -13,10 +13,10 @@ describe('Adapters | Creator | Block | Alexa | intentAdapter', () => {
 
       expect(result).eql(
         Creator.Block.Alexa.IntentNodeData({
-          [Constants.PlatformType.ALEXA]: {
+          [VoiceflowConstants.PlatformType.ALEXA]: {
             intent: data.intent,
             mappings: data.mappings!,
-            availability: Node.Intent.IntentAvailability.GLOBAL,
+            availability: BaseNode.Intent.IntentAvailability.GLOBAL,
           },
         })
       );
@@ -29,10 +29,10 @@ describe('Adapters | Creator | Block | Alexa | intentAdapter', () => {
 
       expect(result).eql(
         Creator.Block.Alexa.IntentNodeData({
-          [Constants.PlatformType.ALEXA]: {
+          [VoiceflowConstants.PlatformType.ALEXA]: {
             intent: data.intent,
             mappings: [],
-            availability: Node.Intent.IntentAvailability.GLOBAL,
+            availability: BaseNode.Intent.IntentAvailability.GLOBAL,
           },
         })
       );

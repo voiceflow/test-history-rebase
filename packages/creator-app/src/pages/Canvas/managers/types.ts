@@ -1,8 +1,8 @@
-import { Node as BaseNode } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { WithRequired } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { Optional, Overwrite } from 'utility-types';
 
@@ -52,7 +52,7 @@ export interface NodeEditorPropsType<T, P extends Realtime.BuiltInPortRecord = R
   onExpand: () => void;
   onChange: NodeDataUpdater<T>;
   goToPath: GoToPath;
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   activePath: PathEntry;
   pushToPath: PushToPath;
   popFromPath: VoidFunction;
@@ -62,7 +62,7 @@ export type NodeEditor<T, P extends Realtime.BuiltInPortRecord = Realtime.BuiltI
 
 interface NodeFactoryOptions {
   features?: FeatureFlagMap;
-  platform?: Constants.PlatformType;
+  platform?: VoiceflowConstants.PlatformType;
   defaultVoice?: string;
   canvasNodeVisibility?: BaseNode.Utils.CanvasNodeVisibility;
 }
@@ -109,7 +109,7 @@ export type NodeManagerConfig<
 
   buttons?: boolean;
   reprompt?: boolean;
-  platforms?: Constants.PlatformType[];
+  platforms?: VoiceflowConstants.PlatformType[];
   nameEditable?: boolean;
 
   step: ConnectedStep<T, P>;

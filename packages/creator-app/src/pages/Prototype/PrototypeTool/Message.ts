@@ -1,4 +1,4 @@
-import { Request } from '@voiceflow/base-types';
+import { BaseRequest } from '@voiceflow/base-types';
 import dayjs from 'dayjs';
 
 import { DebugTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
@@ -58,7 +58,7 @@ class MessageController {
   }
 
   public user({ id, input }: { id?: string; input: string }): void {
-    this.add(createUserMessage({ type: Request.RequestType.TEXT, payload: input }, this.messageProperties(), id));
+    this.add(createUserMessage({ type: BaseRequest.RequestType.TEXT, payload: input }, this.messageProperties(), id));
   }
 
   private add(message: Message): void {

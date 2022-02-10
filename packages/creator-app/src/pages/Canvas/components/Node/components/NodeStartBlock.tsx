@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
@@ -36,7 +36,7 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
       nodeName: data.name,
       lockOwner: e.lockOwner,
       nodeLabel: data.label,
-      nextPortID: node.ports.out.builtIn[Models.PortType.NEXT]!,
+      nextPortID: node.ports.out.builtIn[BaseModels.PortType.NEXT]!,
       combinedNodes: node.combinedNodes,
     };
   });

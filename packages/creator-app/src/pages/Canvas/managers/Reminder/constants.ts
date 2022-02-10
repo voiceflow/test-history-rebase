@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { withProps } from 'recompose';
 
@@ -31,8 +31,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Reminder, Realtime.NodeDa
         out: {
           dynamic: [],
           builtIn: {
-            [Models.PortType.NEXT]: { label: Models.PortType.NEXT },
-            [Models.PortType.FAIL]: { label: Models.PortType.FAIL },
+            [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },
+            [BaseModels.PortType.FAIL]: { label: BaseModels.PortType.FAIL },
           },
         },
       },

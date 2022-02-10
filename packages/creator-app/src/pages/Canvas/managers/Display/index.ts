@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { NodeManagerConfig } from '../types';
 import VisualEditor from '../Visual/VisualEditor';
@@ -11,7 +11,7 @@ const DisplayManager: NodeManagerConfig<Realtime.NodeData.Visual, Realtime.NodeD
 
   tip: 'Show a Multimodal Display on the screen using APL',
   label: 'Display',
-  platforms: [Constants.PlatformType.ALEXA],
+  platforms: [VoiceflowConstants.PlatformType.ALEXA],
 
   step: VisualStep,
   editor: VisualEditor,

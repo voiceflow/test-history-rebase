@@ -1,25 +1,25 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 export const ExpressionDisplayLabel: Record<string, string> = {
-  [Node.Utils.ExpressionTypeV2.EQUALS]: 'Is',
-  [Node.Utils.ExpressionTypeV2.NOT_EQUAL]: 'Is not',
-  [Node.Utils.ExpressionTypeV2.GREATER]: 'Is greater than',
-  [Node.Utils.ExpressionTypeV2.GREATER_OR_EQUAL]: 'Is greater than or equal',
-  [Node.Utils.ExpressionTypeV2.LESS]: 'Is less than',
-  [Node.Utils.ExpressionTypeV2.LESS_OR_EQUAL]: 'Is less than or equal',
-  [Node.Utils.ExpressionTypeV2.CONTAINS]: 'Contains',
-  [Node.Utils.ExpressionTypeV2.NOT_CONTAIN]: 'Does not contain',
-  [Node.Utils.ExpressionTypeV2.STARTS_WITH]: 'Starts with',
-  [Node.Utils.ExpressionTypeV2.ENDS_WITH]: 'Ends with',
-  [Node.Utils.ExpressionTypeV2.HAS_VALUE]: 'Has any value',
-  [Node.Utils.ExpressionTypeV2.IS_EMPTY]: 'Is empty',
+  [BaseNode.Utils.ExpressionTypeV2.EQUALS]: 'Is',
+  [BaseNode.Utils.ExpressionTypeV2.NOT_EQUAL]: 'Is not',
+  [BaseNode.Utils.ExpressionTypeV2.GREATER]: 'Is greater than',
+  [BaseNode.Utils.ExpressionTypeV2.GREATER_OR_EQUAL]: 'Is greater than or equal',
+  [BaseNode.Utils.ExpressionTypeV2.LESS]: 'Is less than',
+  [BaseNode.Utils.ExpressionTypeV2.LESS_OR_EQUAL]: 'Is less than or equal',
+  [BaseNode.Utils.ExpressionTypeV2.CONTAINS]: 'Contains',
+  [BaseNode.Utils.ExpressionTypeV2.NOT_CONTAIN]: 'Does not contain',
+  [BaseNode.Utils.ExpressionTypeV2.STARTS_WITH]: 'Starts with',
+  [BaseNode.Utils.ExpressionTypeV2.ENDS_WITH]: 'Ends with',
+  [BaseNode.Utils.ExpressionTypeV2.HAS_VALUE]: 'Has any value',
+  [BaseNode.Utils.ExpressionTypeV2.IS_EMPTY]: 'Is empty',
 };
 
-export const ExpressionWithNoSecondValue = [Node.Utils.ExpressionTypeV2.IS_EMPTY, Node.Utils.ExpressionTypeV2.HAS_VALUE];
+export const ExpressionWithNoSecondValue = [BaseNode.Utils.ExpressionTypeV2.IS_EMPTY, BaseNode.Utils.ExpressionTypeV2.HAS_VALUE];
 
-export const ExcludeValuesLogicType = [Node.Utils.ExpressionTypeV2.HAS_VALUE, Node.Utils.ExpressionTypeV2.IS_EMPTY];
+export const ExcludeValuesLogicType = [BaseNode.Utils.ExpressionTypeV2.HAS_VALUE, BaseNode.Utils.ExpressionTypeV2.IS_EMPTY];
 
-export const DataConfigurableInterface = [Node.Utils.ConditionsLogicInterface.VARIABLE, Node.Utils.ConditionsLogicInterface.VALUE];
+export const DataConfigurableInterface = [BaseNode.Utils.ConditionsLogicInterface.VARIABLE, BaseNode.Utils.ConditionsLogicInterface.VALUE];
 
 export const SupportedOperations = [
   {

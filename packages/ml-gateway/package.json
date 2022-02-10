@@ -3,7 +3,7 @@
   "version": "1.4.2",
   "dependencies": {
     "@logux/server": "0.10.8",
-    "@voiceflow/backend-utils": "4.2.2",
+    "@voiceflow/backend-utils": "4.3.0",
     "@voiceflow/logger": "1.6.1",
     "@voiceflow/ml-sdk": "^1.4.2",
     "@voiceflow/socket-utils": "^1.6.5",
@@ -41,7 +41,8 @@
     "test": "yarn test:unit",
     "test:dependencies": "depcheck",
     "test:integration": "exit 0",
-    "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml"
+    "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",
+    "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   },
   "type": "module"
 }

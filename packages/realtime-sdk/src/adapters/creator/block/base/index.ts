@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 import { BlockType } from '../../../../constants';
 import { emptyOutPortsAdapter } from '../utils';
@@ -79,7 +79,7 @@ export const baseOutPortAdapter = {
   [BlockType.CHOICE_OLD]: interactionOutPortsAdapter,
   [BlockType.INTEGRATION]: integrationOutPortsAdapter,
 
-  [Node.NodeType.API]: integrationOutPortsAdapter,
-  [Node.NodeType.ZAPIER]: integrationOutPortsAdapter,
-  [Node.NodeType.GOOGLE_SHEETS]: integrationOutPortsAdapter,
+  [BaseNode.NodeType.API]: integrationOutPortsAdapter,
+  [BaseNode.NodeType.ZAPIER]: integrationOutPortsAdapter,
+  [BaseNode.NodeType.GOOGLE_SHEETS]: integrationOutPortsAdapter,
 };

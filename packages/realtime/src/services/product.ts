@@ -1,20 +1,20 @@
-import { Project } from '@voiceflow/alexa-types';
+import { AlexaProject } from '@voiceflow/alexa-types';
 
 import { AbstractControl } from '../control';
 
 class ProductService extends AbstractControl {
-  public async getAll(creatorID: number, projectID: string): Promise<Project.AlexaProduct[]> {
+  public async getAll(creatorID: number, projectID: string): Promise<AlexaProject.Product[]> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    const project = await client.project.get<Project.AlexaProjectData, Project.AlexaProjectMemberData>(projectID);
+    const project = await client.project.get<AlexaProject.PlatformData, AlexaProject.MemberPlatformData>(projectID);
 
     return Object.values(project.platformData.products);
   }
 
-  public async get(creatorID: number, projectID: string, productID: string): Promise<Project.AlexaProduct> {
+  public async get(creatorID: number, projectID: string, productID: string): Promise<AlexaProject.Product> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    const project = await client.project.get<Project.AlexaProjectData, Project.AlexaProjectMemberData>(projectID);
+    const project = await client.project.get<AlexaProject.PlatformData, AlexaProject.MemberPlatformData>(projectID);
     const product = project.platformData.products[productID];
 
     if (!product) throw new Error(`no product found by ID: ${productID}`);
@@ -22,13 +22,13 @@ class ProductService extends AbstractControl {
     return product;
   }
 
-  public async create(creatorID: number, projectID: string, product: Project.AlexaProduct): Promise<Project.AlexaProduct> {
+  public async create(creatorID: number, projectID: string, product: AlexaProject.Product): Promise<AlexaProject.Product> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.product.create(projectID, product);
   }
 
-  public async update(creatorID: number, projectID: string, productID: string, product: Project.AlexaProduct): Promise<void> {
+  public async update(creatorID: number, projectID: string, productID: string, product: AlexaProject.Product): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.product.update(projectID, productID, { ...product, productID });

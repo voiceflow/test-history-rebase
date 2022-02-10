@@ -1,13 +1,17 @@
 import { VoiceIntent, VoiceIntentSlot, VoiceIntentSlotDialog } from '@realtime-sdk/models';
-import { Constants } from '@voiceflow/general-types';
-import { Types } from '@voiceflow/voice-types';
+import { VoiceModels } from '@voiceflow/voice-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import createAdapter from 'bidirectional-adapter';
 import { denormalize, normalize } from 'normal-store';
 import { Optional, Required } from 'utility-types';
 
 import { baseIntentAdapter, baseIntentSlotDialogSanitizer, baseIntentSlotSanitizer } from './base';
 
-export const voiceIntentPromptSanitizer = ({ text, slots, voice }: Optional<Types.IntentPrompt<string>> = {}): Types.IntentPrompt<string> => ({
+export const voiceIntentPromptSanitizer = ({
+  text,
+  slots,
+  voice,
+}: Optional<VoiceModels.IntentPrompt<string>> = {}): VoiceModels.IntentPrompt<string> => ({
   text: text || '',
   slots: slots || [],
   voice,
@@ -28,7 +32,7 @@ export const voiceIntentSlotSanitizer = ({ dialog, ...baseIntentSlot }: Required
   dialog: voiceIntentSlotDialogSanitizer(dialog),
 });
 
-const voiceIntentAdapter = createAdapter<Types.Intent<string>, VoiceIntent, [{ platform: Constants.PlatformType }]>(
+const voiceIntentAdapter = createAdapter<VoiceModels.Intent<string>, VoiceIntent, [{ platform: VoiceflowConstants.PlatformType }]>(
   ({ slots = [], ...baseIntent }, options) => ({
     ...baseIntentAdapter.fromDB(baseIntent, options),
     slots: normalize(slots.map(voiceIntentSlotSanitizer)),

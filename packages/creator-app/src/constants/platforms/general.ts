@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export enum GeneralStageType {
   IDLE = 'IDLE',
@@ -35,28 +35,28 @@ export enum NLPTrainJobSuccessType {
 }
 
 export const GENERAL_LOCALE_NAME_MAP = {
-  [Constants.Locale.EN_US]: 'English (en-US)',
-  [Constants.Locale.AR_AR]: 'Arabic (ar-AR)',
-  [Constants.Locale.ZH_CN]: 'Chinese (zh-CN)',
-  [Constants.Locale.NL_NL]: 'Dutch (nl-NL)',
-  [Constants.Locale.FR_FR]: 'French (fr-FR)',
-  [Constants.Locale.FR_CA]: 'French (fr-CA)',
-  [Constants.Locale.DE_DE]: 'German (de-DE)',
-  [Constants.Locale.GU_IN]: 'Gujarati (gu-IN)',
-  [Constants.Locale.HI_IN]: 'Hindi (hi-IN)',
-  [Constants.Locale.IT_IT]: 'Italian (it-IT)',
-  [Constants.Locale.JA_JP]: 'Japanese (ja-JP)',
-  [Constants.Locale.KO_KR]: 'Korean (ko-KR)',
-  [Constants.Locale.MR_IN]: 'Marathi (mr-IN)',
-  [Constants.Locale.PT_BR]: 'Portuguese (pt-BR)',
-  [Constants.Locale.ES_ES]: 'Spanish (es-ES)',
-  [Constants.Locale.ES_MX]: 'Spanish (es-MX)',
-  [Constants.Locale.TA_IN]: 'Tamil (ta-IN)',
-  [Constants.Locale.TE_IN]: 'Telugu (te-IN)',
-  [Constants.Locale.TR_TR]: 'Turkish (tr-TR)',
+  [VoiceflowConstants.Locale.EN_US]: 'English (en-US)',
+  [VoiceflowConstants.Locale.AR_AR]: 'Arabic (ar-AR)',
+  [VoiceflowConstants.Locale.ZH_CN]: 'Chinese (zh-CN)',
+  [VoiceflowConstants.Locale.NL_NL]: 'Dutch (nl-NL)',
+  [VoiceflowConstants.Locale.FR_FR]: 'French (fr-FR)',
+  [VoiceflowConstants.Locale.FR_CA]: 'French (fr-CA)',
+  [VoiceflowConstants.Locale.DE_DE]: 'German (de-DE)',
+  [VoiceflowConstants.Locale.GU_IN]: 'Gujarati (gu-IN)',
+  [VoiceflowConstants.Locale.HI_IN]: 'Hindi (hi-IN)',
+  [VoiceflowConstants.Locale.IT_IT]: 'Italian (it-IT)',
+  [VoiceflowConstants.Locale.JA_JP]: 'Japanese (ja-JP)',
+  [VoiceflowConstants.Locale.KO_KR]: 'Korean (ko-KR)',
+  [VoiceflowConstants.Locale.MR_IN]: 'Marathi (mr-IN)',
+  [VoiceflowConstants.Locale.PT_BR]: 'Portuguese (pt-BR)',
+  [VoiceflowConstants.Locale.ES_ES]: 'Spanish (es-ES)',
+  [VoiceflowConstants.Locale.ES_MX]: 'Spanish (es-MX)',
+  [VoiceflowConstants.Locale.TA_IN]: 'Tamil (ta-IN)',
+  [VoiceflowConstants.Locale.TE_IN]: 'Telugu (te-IN)',
+  [VoiceflowConstants.Locale.TR_TR]: 'Turkish (tr-TR)',
 };
 
-export const GENERAL_LOCALES_OPTIONS = Object.keys(GENERAL_LOCALE_NAME_MAP).reduce<{ value: Constants.Locale; name: string }[]>(
-  (acc, key) => [...acc, { value: key as Constants.Locale, name: GENERAL_LOCALE_NAME_MAP[key as Constants.Locale] }],
+export const GENERAL_LOCALES_OPTIONS = Object.keys(GENERAL_LOCALE_NAME_MAP).reduce<{ value: VoiceflowConstants.Locale; name: string }[]>(
+  (acc, key) => [...acc, { value: key as VoiceflowConstants.Locale, name: GENERAL_LOCALE_NAME_MAP[key as VoiceflowConstants.Locale] }],
   []
 );

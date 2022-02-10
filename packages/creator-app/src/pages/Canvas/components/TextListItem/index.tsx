@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -16,7 +16,7 @@ import THEME from '@/styles/theme';
 
 import MessageDelayButton from './components/MessageDelayButton';
 
-export type TextListItemProps = ListItemComponentProps<Node.Text.TextData, { header?: React.ReactNode }>;
+export type TextListItemProps = ListItemComponentProps<BaseNode.Text.TextData, { header?: React.ReactNode }>;
 
 const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemProps> = (
   {
@@ -66,7 +66,7 @@ const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemP
               messageDelays.isEnabled ? (
                 <>
                   <Divider isVertical height="15px" style={{ margin: 0 }} />
-                  <MessageDelayButton data={item} onUpdate={(value: Partial<Node.Text.TextData>) => onUpdate(value)} />
+                  <MessageDelayButton data={item} onUpdate={(value: Partial<BaseNode.Text.TextData>) => onUpdate(value)} />
                 </>
               ) : undefined
             }

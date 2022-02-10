@@ -1,5 +1,5 @@
 import { createAdvancedPlatformSelector } from '@realtime-sdk/utils/platform';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import chatIntentAdapter from './chat';
 import voiceIntentAdapter from './voice';
@@ -10,7 +10,7 @@ export * from './voice';
 
 const getPlatformIntentAdapter = createAdvancedPlatformSelector(
   {
-    [Constants.PlatformType.CHATBOT]: chatIntentAdapter,
+    [VoiceflowConstants.PlatformType.CHATBOT]: chatIntentAdapter,
   },
   voiceIntentAdapter
 );

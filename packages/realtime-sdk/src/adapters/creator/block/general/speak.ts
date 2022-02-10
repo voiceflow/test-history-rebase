@@ -1,12 +1,12 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Constants, Node } from '@voiceflow/general-types';
+import { VoiceflowConstants, VoiceflowNode } from '@voiceflow/voiceflow-types';
 
 import { createBlockAdapter } from '../utils';
 import { voiceSpeakAdapter } from '../voice';
 
-const speakAdapter = createBlockAdapter<Node.Speak.StepData, NodeData.Speak>(
-  (data) => voiceSpeakAdapter.fromDB(data, { audioVoice: Constants.Voice.AUDIO }),
-  (data) => voiceSpeakAdapter.toDB(data, { audioVoice: Constants.Voice.AUDIO, defaultVoice: Constants.Voice.DEFAULT })
+const speakAdapter = createBlockAdapter<VoiceflowNode.Speak.StepData, NodeData.Speak>(
+  (data) => voiceSpeakAdapter.fromDB(data, { audioVoice: VoiceflowConstants.Voice.AUDIO }),
+  (data) => voiceSpeakAdapter.toDB(data, { audioVoice: VoiceflowConstants.Voice.AUDIO, defaultVoice: VoiceflowConstants.Voice.DEFAULT })
 );
 
 export default speakAdapter;

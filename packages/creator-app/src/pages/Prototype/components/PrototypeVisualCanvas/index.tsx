@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
@@ -56,8 +56,8 @@ const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedProt
         controlScheme={controlScheme}
         getZoomType={() => zoomType}
       >
-        {data?.visualType === Node.Visual.VisualType.IMAGE && <Image key={contentKey} {...visualRenderProps} data={data} />}
-        {data?.visualType === Node.Visual.VisualType.APL && <APL key={contentKey} {...visualRenderProps} data={data} />}
+        {data?.visualType === BaseNode.Visual.VisualType.IMAGE && <Image key={contentKey} {...visualRenderProps} data={data} />}
+        {data?.visualType === BaseNode.Visual.VisualType.APL && <APL key={contentKey} {...visualRenderProps} data={data} />}
       </Canvas>
 
       {!data?.visualType && (

@@ -1,5 +1,5 @@
 import { Creator } from '@test/factories';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { expect } from 'chai';
 
 import cardAdapter from '@/adapters/creator/block/base/card';
@@ -8,7 +8,7 @@ describe('Adapters | Creator | Block | Base | cardAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
       const data = Creator.Block.Base.CardStepData({
-        type: Node.Card.CardType.SIMPLE,
+        type: BaseNode.Card.CardType.SIMPLE,
         image: { smallImageUrl: 'smallImageURL', largeImageUrl: 'largeImageURL' },
       });
 
@@ -26,7 +26,7 @@ describe('Adapters | Creator | Block | Base | cardAdapter', () => {
 
     it('returns correct data for empty values', () => {
       const data = Creator.Block.Base.CardStepData({
-        type: Node.Card.CardType.STANDARD,
+        type: BaseNode.Card.CardType.STANDARD,
         image: { smallImageUrl: undefined, largeImageUrl: undefined },
       });
 
@@ -73,7 +73,7 @@ describe('Adapters | Creator | Block | Base | cardAdapter', () => {
       const result = cardAdapter.toDB(data);
 
       expect(result).eql({
-        type: Node.Card.CardType.SIMPLE,
+        type: BaseNode.Card.CardType.SIMPLE,
         title: '',
         text: '',
         image: {

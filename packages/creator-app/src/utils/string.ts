@@ -1,10 +1,10 @@
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { URL_ONLY_REGEX, VALID_LINKS_REGEXS } from '@/constants';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
-export const createNextName = (prefix: string, items: string[], platform: Constants.PlatformType): string => {
+export const createNextName = (prefix: string, items: string[], platform: VoiceflowConstants.PlatformType): string => {
   let counter = 1;
 
   const isGeneral = isGeneralPlatform(platform);

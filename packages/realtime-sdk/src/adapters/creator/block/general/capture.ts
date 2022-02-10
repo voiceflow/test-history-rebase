@@ -1,10 +1,11 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/general-types';
+import { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
 import { chipsToIntentButtons, createBlockAdapter } from '../utils';
 import { voiceCaptureAdapter } from '../voice';
 
-const captureAdapter = createBlockAdapter<Node.Capture.StepData, NodeData.Capture>(
+// TODO: refactor to use StepData (chat/voice union)
+const captureAdapter = createBlockAdapter<VoiceflowNode.Capture.VoiceStepData, NodeData.Capture>(
   ({ chips, buttons, ...voiceData }) => ({
     ...voiceCaptureAdapter.fromDB(voiceData),
 

@@ -1,6 +1,6 @@
-import { Constants as GeneralConstants } from '@voiceflow/general-types';
-import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
-import { Constants as GoogleConstants } from '@voiceflow/google-types';
+import { DFESConstants } from '@voiceflow/google-dfes-types';
+import { GoogleConstants } from '@voiceflow/google-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import {
   AlexaExportJob,
@@ -72,20 +72,20 @@ export * from './google';
 
 export const getPlatformName = createPlatformSelector(
   {
-    [GeneralConstants.PlatformType.ALEXA]: 'Alexa',
-    [GeneralConstants.PlatformType.GOOGLE]: 'Google',
-    [GeneralConstants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow',
-    [GeneralConstants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow',
+    [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
+    [VoiceflowConstants.PlatformType.GOOGLE]: 'Google',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow',
   },
   ''
 );
 
 export const getDefaultPlatformLanguageLabel = createPlatformSelector(
   {
-    [GeneralConstants.PlatformType.ALEXA]: LOCALE_MAP[0].name,
-    [GeneralConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[GoogleConstants.Language.EN],
-    [GeneralConstants.PlatformType.DIALOGFLOW_ES_CHAT]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DialogflowConstants.Language.EN],
-    [GeneralConstants.PlatformType.DIALOGFLOW_ES_VOICE]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DialogflowConstants.Language.EN],
+    [VoiceflowConstants.PlatformType.ALEXA]: LOCALE_MAP[0].name,
+    [VoiceflowConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[GoogleConstants.Language.EN],
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DFESConstants.Language.EN],
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DFESConstants.Language.EN],
   },
-  GENERAL_LOCALE_NAME_MAP[GeneralConstants.Locale.EN_US]
+  GENERAL_LOCALE_NAME_MAP[VoiceflowConstants.Locale.EN_US]
 );

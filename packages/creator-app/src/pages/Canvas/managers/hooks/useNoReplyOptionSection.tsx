@@ -1,4 +1,4 @@
-import { Models, Nullable } from '@voiceflow/base-types';
+import { BaseModels, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -32,10 +32,10 @@ const useNoReplyOptionSection = ({
   const toggleNoReply = React.useCallback(async () => {
     const node = engine.getNodeByID(data.nodeID);
 
-    const noReplyPortID = node?.ports.out.builtIn[Models.PortType.NO_REPLY];
+    const noReplyPortID = node?.ports.out.builtIn[BaseModels.PortType.NO_REPLY];
 
     if (data.noReply && noReplyPortID) {
-      await engine.port.removeOutBuiltIn(Models.PortType.NO_REPLY, noReplyPortID);
+      await engine.port.removeOutBuiltIn(BaseModels.PortType.NO_REPLY, noReplyPortID);
     }
 
     onChange({ noReply: data.noReply ? null : getPlatformNoReplyFactory(platform)({ defaultVoice }) });

@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, Menu, MenuItem, Text } from '@voiceflow/ui';
 import React from 'react';
@@ -9,32 +9,32 @@ export interface ConditionSelectProps {
   additional?: boolean;
   isLogicGroup?: boolean;
   expression?: Realtime.ExpressionV2;
-  onChange: (value: Node.Utils.ConditionsLogicInterface) => void;
+  onChange: (value: BaseNode.Utils.ConditionsLogicInterface) => void;
 }
 
 const ConditionSelect: React.FC<ConditionSelectProps> = ({ onChange, additional = false, isLogicGroup = false }) => {
-  const onSelect = (logicInterface: Node.Utils.ConditionsLogicInterface) => () => onChange(logicInterface);
+  const onSelect = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => () => onChange(logicInterface);
 
   return (
     <Dropdown
       menu={() => (
         <Menu>
-          <MenuItem onClick={onSelect(Node.Utils.ConditionsLogicInterface.VARIABLE)}>Variable</MenuItem>
-          <MenuItem onClick={onSelect(Node.Utils.ConditionsLogicInterface.VALUE)}>
+          <MenuItem onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.VARIABLE)}>Variable</MenuItem>
+          <MenuItem onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.VALUE)}>
             <Text mr={6}>Value</Text>
             <Text fontSize={14} color="#62778c">
               (plain text)
             </Text>
           </MenuItem>
           {!isLogicGroup && (
-            <MenuItem onClick={onSelect(Node.Utils.ConditionsLogicInterface.LOGIC_GROUP)}>
+            <MenuItem onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP)}>
               <Text mr={6}>Logic group</Text>
               <Text fontSize={14} color="#62778c">
                 (and, or)
               </Text>
             </MenuItem>
           )}
-          {!(additional || isLogicGroup) && <MenuItem onClick={onSelect(Node.Utils.ConditionsLogicInterface.EXPRESSION)}>Expression</MenuItem>}
+          {!(additional || isLogicGroup) && <MenuItem onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.EXPRESSION)}>Expression</MenuItem>}
         </Menu>
       )}
     >

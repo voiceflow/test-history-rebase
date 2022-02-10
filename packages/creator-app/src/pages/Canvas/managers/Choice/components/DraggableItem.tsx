@@ -1,7 +1,7 @@
-import { Node as BaseNode } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, Link } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentHandlers, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
@@ -32,7 +32,7 @@ export type DraggableItemProps = ItemComponentProps<Record<DistinctPlatform, Rea
     | MappedItemComponentHandlers<Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>>
   ) & {
     choices: Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>[];
-    platform: Constants.PlatformType;
+    platform: VoiceflowConstants.PlatformType;
     isOnlyItem: boolean;
     pushToPath?: PushToPath;
     openIntents: Realtime.Intent[];

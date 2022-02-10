@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { platformAware } from '@/hocs';
@@ -9,10 +9,10 @@ import Google from './Google';
 
 const UploadGroup = platformAware(
   {
-    [Constants.PlatformType.ALEXA]: () => <Alexa />,
-    [Constants.PlatformType.GOOGLE]: () => <Google />,
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: () => <Dialogflow />,
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: () => <Dialogflow />,
+    [VoiceflowConstants.PlatformType.ALEXA]: () => <Alexa />,
+    [VoiceflowConstants.PlatformType.GOOGLE]: () => <Google />,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: () => <Dialogflow />,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: () => <Dialogflow />,
   },
   () => null
 );

@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -12,7 +12,7 @@ import { useConnectState } from './BaseConnectPlatformModal/hooks';
 import { getPlatformModalProps } from './BaseConnectPlatformModal/utils';
 
 const MODAL_TYPE = ModalType.CONNECT_PLATFORM;
-const PLATFORM_TYPE = Constants.PlatformType;
+const PLATFORM_TYPE = VoiceflowConstants.PlatformType;
 
 const ConnectActivePlatformModal: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);

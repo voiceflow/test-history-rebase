@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -23,7 +23,7 @@ export const EventStep: React.FC<IntentStepProps> = ({ nodeID, nextPortID, label
 );
 
 const ConnectedEventStep: ConnectedStep<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = ({ ports, data, variant }) => (
-  <EventStep nodeID={data.nodeID} nextPortID={ports.out.builtIn[Models.PortType.NEXT]} label={data.requestName} variant={variant} />
+  <EventStep nodeID={data.nodeID} nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]} label={data.requestName} variant={variant} />
 );
 
 export default ConnectedEventStep;

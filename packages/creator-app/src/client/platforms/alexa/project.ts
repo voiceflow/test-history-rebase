@@ -1,4 +1,4 @@
-import { Project } from '@voiceflow/alexa-types';
+import { AlexaProject } from '@voiceflow/alexa-types';
 import { Nullable } from '@voiceflow/common';
 import axios from 'axios';
 
@@ -7,7 +7,7 @@ import { ALEXA_SERVICE_ENDPOINT } from '@/config';
 import { createProjectService, PROJECT_RESOURCE_ENDPOINT } from '../utils';
 
 const projectAlexaService = {
-  ...createProjectService<Project.AlexaProject>(ALEXA_SERVICE_ENDPOINT),
+  ...createProjectService<AlexaProject.Project>(ALEXA_SERVICE_ENDPOINT),
 
   updateSelectedVendor: (projectID: string, vendorID: Nullable<string>) =>
     axios
@@ -24,15 +24,15 @@ const projectAlexaService = {
 
   copyProduct: (projectID: string, productID: string) =>
     axios
-      .post<Project.AlexaProduct>(`${ALEXA_SERVICE_ENDPOINT}/${PROJECT_RESOURCE_ENDPOINT}/${projectID}/products/${productID}/copy`)
+      .post<AlexaProject.Product>(`${ALEXA_SERVICE_ENDPOINT}/${PROJECT_RESOURCE_ENDPOINT}/${projectID}/products/${productID}/copy`)
       .then((res) => res.data),
 
-  createProduct: (projectID: string, product: Project.AlexaProduct) =>
-    axios.post<Project.AlexaProduct>(`${ALEXA_SERVICE_ENDPOINT}/${PROJECT_RESOURCE_ENDPOINT}/${projectID}/products`, product).then((res) => res.data),
+  createProduct: (projectID: string, product: AlexaProject.Product) =>
+    axios.post<AlexaProject.Product>(`${ALEXA_SERVICE_ENDPOINT}/${PROJECT_RESOURCE_ENDPOINT}/${projectID}/products`, product).then((res) => res.data),
 
-  updateProduct: (projectID: string, productID: string, product: Project.AlexaProduct) =>
+  updateProduct: (projectID: string, productID: string, product: AlexaProject.Product) =>
     axios
-      .put<Project.AlexaProduct>(`${ALEXA_SERVICE_ENDPOINT}/${PROJECT_RESOURCE_ENDPOINT}/${projectID}/products/${productID}`, product)
+      .put<AlexaProject.Product>(`${ALEXA_SERVICE_ENDPOINT}/${PROJECT_RESOURCE_ENDPOINT}/${projectID}/products/${productID}`, product)
       .then((res) => res.data),
 
   deleteProduct: (projectID: string, productID: string) =>

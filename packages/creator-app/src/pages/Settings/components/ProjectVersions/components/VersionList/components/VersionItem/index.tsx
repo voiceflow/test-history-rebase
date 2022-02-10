@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import { Box, Button, ButtonVariant, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import dayjs from 'dayjs';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -19,7 +19,7 @@ import { ActionsItemContainer, ColumnItemContainer, RowItem } from './components
 
 const RESTORE_VERSION_MESSAGE = createPlatformSelector(
   {
-    [Constants.PlatformType.GOOGLE]: 'This action will not change your Google Actions endpoint.',
+    [VoiceflowConstants.PlatformType.GOOGLE]: 'This action will not change your Google Actions endpoint.',
   },
   ''
 );

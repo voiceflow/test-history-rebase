@@ -1,5 +1,5 @@
 import { PathPoints } from '@realtime-sdk/types';
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 
 export interface LinkDataCaption {
@@ -9,7 +9,7 @@ export interface LinkDataCaption {
 }
 
 export interface LinkData {
-  type?: Nullable<BaseModels.ProjectLinkType>;
+  type?: Nullable<BaseModels.Project.LinkType>;
   color?: Nullable<string>;
   points?: Nullable<PathPoints>;
   caption?: Nullable<LinkDataCaption>;

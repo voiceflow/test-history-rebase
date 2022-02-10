@@ -1,11 +1,11 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';
 import { datatype, lorem } from 'faker';
 
 import { NodeData } from '@/models';
 import { distinctPlatformsData } from '@/utils/platform';
 
-export const CommandStepData = define<Node.Command.StepData>({
+export const CommandStepData = define<BaseNode.Command.StepData>({
   name: () => lorem.word(),
   ports: () => [{ type: lorem.word(), target: datatype.uuid(), id: datatype.uuid() }],
   intent: () => lorem.word(),

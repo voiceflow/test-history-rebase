@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
@@ -9,10 +9,10 @@ const addDiagramReducer = createReducer(Realtime.diagram.crud.add, (state, { ver
 
   if (!version) return;
 
-  if (value.type === BaseModels.DiagramType.TOPIC) {
-    version.topics.push({ sourceID: key, type: BaseModels.VersionFolderItemType.DIAGRAM });
-  } else if (value.type === BaseModels.DiagramType.COMPONENT) {
-    version.components.push({ sourceID: key, type: BaseModels.VersionFolderItemType.DIAGRAM });
+  if (value.type === BaseModels.Diagram.DiagramType.TOPIC) {
+    version.topics.push({ sourceID: key, type: BaseModels.Version.FolderItemType.DIAGRAM });
+  } else if (value.type === BaseModels.Diagram.DiagramType.COMPONENT) {
+    version.components.push({ sourceID: key, type: BaseModels.Version.FolderItemType.DIAGRAM });
   }
 });
 

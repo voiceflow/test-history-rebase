@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
@@ -9,15 +9,15 @@ import { NODE_CONFIG } from '../constants';
 
 const getPlatformLabel = createPlatformSelector(
   {
-    [Constants.PlatformType.ALEXA]: 'Skill',
-    [Constants.PlatformType.GOOGLE]: 'Google Action',
+    [VoiceflowConstants.PlatformType.ALEXA]: 'Skill',
+    [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Action',
   },
   'Project'
 );
 
 export interface ExitStepProps {
   nodeID: string;
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   variant: BlockVariant;
 }
 

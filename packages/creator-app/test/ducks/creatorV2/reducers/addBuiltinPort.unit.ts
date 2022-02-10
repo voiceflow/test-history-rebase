@@ -1,5 +1,5 @@
-import { Models } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseModels } from '@voiceflow/base-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
@@ -17,8 +17,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinPort reducer', ({ e
         diagramID: 'foo',
         nodeID: NODE_ID,
         portID: PORT_ID,
-        type: Models.PortType.NO_MATCH,
-        platform: Constants.PlatformType.CHATBOT,
+        type: BaseModels.PortType.NO_MATCH,
+        platform: VoiceflowConstants.PlatformType.CHATBOT,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -29,8 +29,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinPort reducer', ({ e
         ...ACTION_CONTEXT,
         nodeID: NODE_ID,
         portID: PORT_ID,
-        type: Models.PortType.NO_MATCH,
-        platform: Constants.PlatformType.CHATBOT,
+        type: BaseModels.PortType.NO_MATCH,
+        platform: VoiceflowConstants.PlatformType.CHATBOT,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -38,8 +38,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinPort reducer', ({ e
 
     it('add built-in port', () => {
       const portID = 'builtInPort';
-      const type = Models.PortType.NO_MATCH;
-      const platform = Constants.PlatformType.CHATBOT;
+      const type = BaseModels.PortType.NO_MATCH;
+      const platform = VoiceflowConstants.PlatformType.CHATBOT;
 
       const result = applyAction(
         {

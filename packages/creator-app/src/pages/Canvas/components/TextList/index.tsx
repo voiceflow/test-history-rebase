@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 import React from 'react';
 
@@ -7,19 +7,19 @@ import { ControlOptions } from '@/pages/Canvas/components/Editor';
 import ListEditorContent, { ListItemComponent } from '@/pages/Canvas/components/ListEditorContent';
 import { NODE_CONFIG } from '@/pages/Canvas/managers/Text/constants';
 
-const factory = (): Node.Text.TextData => ({
+const factory = (): BaseNode.Text.TextData => ({
   id: Utils.id.cuid.slug(),
   content: SlateEditorAPI.getEmptyState(),
 });
 
-export type ItemComponent = ListItemComponent<Node.Text.TextData>;
+export type ItemComponent = ListItemComponent<BaseNode.Text.TextData>;
 
 export interface TextListProps {
-  items: Node.Text.TextData[];
+  items: BaseNode.Text.TextData[];
   maxItems?: number;
   renderMenu?: Nullable<() => React.ReactNode>;
   itemComponent: ItemComponent;
-  onChangeItems: (items: Node.Text.TextData[]) => void;
+  onChangeItems: (items: BaseNode.Text.TextData[]) => void;
   howItWorksLink?: string;
   label?: string;
   randomize?: boolean;

@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
@@ -52,7 +52,7 @@ export const PORT: Realtime.Port = {
   id: PORT_ID,
   nodeID: NODE_ID,
   label: 'first port',
-  platform: Constants.PlatformType.ALEXA,
+  platform: VoiceflowConstants.PlatformType.ALEXA,
   virtual: false,
 };
 

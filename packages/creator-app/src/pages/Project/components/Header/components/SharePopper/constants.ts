@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { ExportFormat, NLPProvider } from '@/constants';
 import { createPlatformSelector } from '@/utils/platform';
@@ -36,10 +36,10 @@ export const EXPORT_TYPE_OPTIONS = [
 
 export const getNplModelProvider = createPlatformSelector(
   {
-    [Constants.PlatformType.ALEXA]: [NLPProvider.ALEXA],
-    [Constants.PlatformType.GOOGLE]: [NLPProvider.DIALOGFLOW_ES],
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: [NLPProvider.DIALOGFLOW_ES],
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: [NLPProvider.DIALOGFLOW_ES],
+    [VoiceflowConstants.PlatformType.ALEXA]: [NLPProvider.ALEXA],
+    [VoiceflowConstants.PlatformType.GOOGLE]: [NLPProvider.DIALOGFLOW_ES],
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: [NLPProvider.DIALOGFLOW_ES],
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: [NLPProvider.DIALOGFLOW_ES],
   },
   Object.values(NLPProvider)
 );

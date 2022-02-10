@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -10,7 +10,7 @@ const CustomPayloadManager: NodeManagerConfig<Realtime.NodeData.CustomPayload, R
   ...NODE_CONFIG,
 
   label: 'Custom Response',
-  platforms: [Constants.PlatformType.DIALOGFLOW_ES_CHAT, Constants.PlatformType.DIALOGFLOW_ES_VOICE],
+  platforms: [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT, VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE],
 
   step: CustomPayloadStep,
   editor: CustomPayloadEditor,

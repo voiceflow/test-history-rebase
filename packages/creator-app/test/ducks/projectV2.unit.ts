@@ -1,8 +1,8 @@
-import * as Alexa from '@voiceflow/alexa-types';
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { AlexaProject } from '@voiceflow/alexa-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import { FeatureFlag } from '@/config/features';
@@ -21,13 +21,13 @@ const SKILL_ID = 'skillID';
 const CREATOR_ID = 999;
 const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID };
 
-const VENDOR: Alexa.Project.Vendor = {
+const VENDOR: AlexaProject.Vendor = {
   vendorID: VENDOR_ID,
   skillID: SKILL_ID,
   products: {},
 };
 
-const PROJECT_MEMBER: BaseModels.Member<Alexa.Project.AlexaProjectMemberData> = {
+const PROJECT_MEMBER: BaseModels.Project.Member<AlexaProject.MemberPlatformData> = {
   creatorID: CREATOR_ID,
   platformData: {
     selectedVendor: VENDOR_ID,
@@ -45,8 +45,8 @@ const PROJECT: Realtime.AnyProject = {
   module: '',
   created: '',
   isLive: true,
-  platform: Constants.PlatformType.ALEXA,
-  linkType: BaseModels.ProjectLinkType.STRAIGHT,
+  platform: VoiceflowConstants.PlatformType.ALEXA,
+  linkType: BaseModels.Project.LinkType.STRAIGHT,
   locales: ['en-us', 'eu-sp'],
   members: [PROJECT_MEMBER],
   platformData: {},
@@ -65,8 +65,8 @@ const MOCK_STATE: Project.ProjectState = {
       module: '',
       created: '',
       isLive: false,
-      platform: Constants.PlatformType.GENERAL,
-      linkType: BaseModels.ProjectLinkType.CURVED,
+      platform: VoiceflowConstants.PlatformType.GENERAL,
+      linkType: BaseModels.Project.LinkType.CURVED,
       locales: [],
       members: [],
       platformData: {},

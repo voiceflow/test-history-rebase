@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -15,14 +15,14 @@ const SpeakEditor: NodeEditor<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBu
   const {
     dialogs,
     randomize,
-    canvasVisibility = randomize ? Node.Utils.CanvasNodeVisibility.PREVIEW : Node.Utils.CanvasNodeVisibility.ALL_VARIANTS,
+    canvasVisibility = randomize ? BaseNode.Utils.CanvasNodeVisibility.PREVIEW : BaseNode.Utils.CanvasNodeVisibility.ALL_VARIANTS,
   } = data;
   const isDeprecated = !data.canvasVisibility;
 
   const isAudio = React.useMemo(() => dialogs[0]?.type === DialogType.AUDIO, []);
 
   const updateDialogs = React.useCallback((dialogs: Realtime.SpeakData[]) => onChange({ dialogs }), [onChange]);
-  const updateCanvasVisibility = React.useCallback((value: Node.Utils.CanvasNodeVisibility) => onChange({ canvasVisibility: value }), [onChange]);
+  const updateCanvasVisibility = React.useCallback((value: BaseNode.Utils.CanvasNodeVisibility) => onChange({ canvasVisibility: value }), [onChange]);
 
   const canvasVisibilityOption = useCanvasVisibilityOption(canvasVisibility, updateCanvasVisibility);
 

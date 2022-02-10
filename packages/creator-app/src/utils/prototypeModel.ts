@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { MD5 } from 'object-hash';
 
 export interface HashedRecordDiff {

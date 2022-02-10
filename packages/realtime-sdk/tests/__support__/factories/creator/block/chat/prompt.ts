@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/chat-types';
+import { ChatNode } from '@voiceflow/chat-types';
 import { extend } from 'cooky-cutter';
 
 import { NodeData } from '@/models';
@@ -14,7 +14,7 @@ import {
   IntentButton,
 } from '../shared';
 
-export const PromptStepData = extend<ReturnType<typeof Base.PromptStepData>, Node.Prompt.StepData>(Base.PromptStepData, {
+export const PromptStepData = extend<ReturnType<typeof Base.PromptStepData>, ChatNode.Prompt.StepData>(Base.PromptStepData, {
   ...BUTTON_STEP_DATA_FACTORY_CONFIG,
   noReply: () => ChatStepNoReply(),
   reprompt: () => ChatPrompt(),

@@ -1,14 +1,14 @@
 import { Version } from '@realtime-sdk/models';
 import { getPlatformDefaultVoice } from '@realtime-sdk/utils/platform';
-import { Version as BaseVersion } from '@voiceflow/base-types';
+import { BaseVersion } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
-import { Types as VoiceTypes } from '@voiceflow/voice-types';
+import { VoiceModels } from '@voiceflow/voice-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import createAdapter from 'bidirectional-adapter';
 
-const createSessionAdapter = <V extends string>({ platform }: { platform: Constants.PlatformType }) =>
+const createSessionAdapter = <V extends string>({ platform }: { platform: VoiceflowConstants.PlatformType }) =>
   createAdapter<
-    BaseVersion.RestartSession | BaseVersion.ResumeSession<VoiceTypes.Prompt<V>>,
+    BaseVersion.RestartSession | BaseVersion.ResumeSession<VoiceModels.Prompt<V>>,
     Nullable<Version.Session>,
     [{ defaultVoice: Nullable<V> }],
     [{ defaultVoice: Nullable<V> }]

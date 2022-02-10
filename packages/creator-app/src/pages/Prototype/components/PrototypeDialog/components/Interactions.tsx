@@ -1,4 +1,4 @@
-import { Request } from '@voiceflow/base-types';
+import { BaseRequest } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { BoxFlex, hexToRGBA, preventDefault, toRGBAString } from '@voiceflow/ui';
 import React from 'react';
@@ -72,7 +72,7 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
   const handleRequestActions = (request: Interaction['request']) => () => {
     if (request.payload && typeof request.payload === 'object') {
       request.payload.actions?.forEach((action) => {
-        if (Request.Action.isOpenURLAction(action)) {
+        if (BaseRequest.Action.isOpenURLAction(action)) {
           window.open(getValidHref(action.payload.url), '_blank');
         }
       });

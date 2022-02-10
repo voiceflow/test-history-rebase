@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
@@ -13,7 +13,7 @@ const NODE_PORTS: Realtime.NodePorts = {
   out: {
     dynamic: ['dynamicPort'],
     builtIn: {
-      [Models.PortType.NEXT]: 'builtInPort',
+      [BaseModels.PortType.NEXT]: 'builtInPort',
     },
   },
 };

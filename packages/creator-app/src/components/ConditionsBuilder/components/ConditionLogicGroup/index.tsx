@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, BoxFlex, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
@@ -18,23 +18,23 @@ export interface ConditionLogicGroupProps {
 
   onDelete: () => void;
   onChange: (value: Realtime.LogicGroupData) => void;
-  updateBaseType: (value: Node.Utils.ExpressionTypeV2.AND | Node.Utils.ExpressionTypeV2.OR) => void;
+  updateBaseType: (value: BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR) => void;
 }
 
 const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, onChange, onDelete, firstItem, baseLogicType, updateBaseType }) => {
-  const addNewCondition = (logicInterface: Node.Utils.ConditionsLogicInterface) => {
+  const addNewCondition = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => {
     const values: any = getDefaultValue(logicInterface);
     onChange({ ...expression, value: [{ ...values }] });
   };
 
-  const addAdditionalCondition = (logicInterface: Node.Utils.ConditionsLogicInterface) => {
+  const addAdditionalCondition = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => {
     const values: any = getDefaultValue(logicInterface);
     onChange(
-      getAddionalLogicData({ ...expression, type: Node.Utils.ExpressionTypeV2.OR }! as Realtime.LogicGroupData, values) as Realtime.LogicGroupData
+      getAddionalLogicData({ ...expression, type: BaseNode.Utils.ExpressionTypeV2.OR }! as Realtime.LogicGroupData, values) as Realtime.LogicGroupData
     );
   };
 
-  const updateLogicGroupBaseType = (type: Node.Utils.ExpressionTypeV2.AND | Node.Utils.ExpressionTypeV2.OR) => {
+  const updateLogicGroupBaseType = (type: BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR) => {
     onChange({ ...expression, type });
   };
 

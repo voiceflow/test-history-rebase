@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, NestedMenuComponents, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
@@ -28,7 +28,7 @@ const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeD
   const [search, setSearch] = React.useState('');
   const entityCapture = (slotID = '') => {
     onChange({
-      captureType: Node.CaptureV2.CaptureType.INTENT,
+      captureType: BaseNode.CaptureV2.CaptureType.INTENT,
       intent: { slots: [getPlatformNewSlotsCreator(platform)(slotID)] },
       noMatch: getPlatformNoMatchFactory(platform)(),
     });

@@ -62,7 +62,7 @@
   "prettier": "@voiceflow/prettier-config",
   "private": true,
   "scripts": {
-    "analyze:dependencies": "lerna run analyze:dependencies --concurrency=4 --parallel",
+    "analyze:dependencies": "lerna run analyze:dependencies --parallel",
     "bootstrap": "lerna bootstrap --no-ci",
     "build": "lerna run build --stream",
     "build:admin-app": "yarn --cwd packages/admin-app build",
@@ -123,7 +123,8 @@
     "test:dependencies": "lerna run test:dependencies --parallel",
     "test:integration": "lerna run test:integration --parallel",
     "test:run": "lerna run test:run --parallel",
-    "test:unit": "lerna run test:unit --parallel "
+    "test:unit": "lerna run test:unit --parallel",
+    "types": "lerna run types --stream"
   },
   "workspaces": [
     "packages/*"

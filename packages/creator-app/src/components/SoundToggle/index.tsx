@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import { ButtonVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { canUseSoundToggle } from '@/utils/prototype';
@@ -10,7 +10,7 @@ interface SoundToggleProps {
   size?: number;
   isMuted: boolean;
   onClick: VoidFunction;
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   isMobile?: boolean;
   preventButtonDefault?: boolean;
 }

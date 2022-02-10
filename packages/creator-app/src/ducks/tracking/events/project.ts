@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
@@ -118,7 +118,7 @@ export const trackProjectInviteCollaboratorsCopy = createWorkspaceEventTracker<{
 );
 
 export const trackProjectExit = createProjectEventTracker<{
-  platform: Constants.PlatformType | null;
+  platform: VoiceflowConstants.PlatformType | null;
   canvasSessionDuration: number;
   prototypeSessionDuration: number;
   transcriptsSessionDuration: number;
@@ -135,7 +135,7 @@ export const trackProjectExit = createProjectEventTracker<{
 );
 
 export const trackProjectExported = createProjectEventTracker<{
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   template: boolean;
   exportType: ExportType;
   exportFormat: CanvasExportFormat;

@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -16,15 +16,15 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Visual, Realtime.NodeData
         in: [{}],
         out: {
           dynamic: [],
-          builtIn: { [Models.PortType.NEXT]: { label: Models.PortType.NEXT } },
+          builtIn: { [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT } },
         },
       },
     },
     data: {
       name: 'Display',
       title: '',
-      aplType: Node.Visual.APLType.SPLASH,
-      visualType: Node.Visual.VisualType.APL,
+      aplType: BaseNode.Visual.APLType.SPLASH,
+      visualType: BaseNode.Visual.VisualType.APL,
       imageURL: '',
       document: '',
       datasource: '',

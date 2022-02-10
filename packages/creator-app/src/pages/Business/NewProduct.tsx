@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { useCachedValue } from '@voiceflow/ui';
 import React from 'react';
@@ -13,7 +13,7 @@ import { ProductProvider } from './contexts';
 import ProductForm from './Product';
 
 const NewProduct: React.FC = () => {
-  const locales = useSelector(VersionV2.active.localesSelector) as Constants.Locale[];
+  const locales = useSelector(VersionV2.active.localesSelector) as AlexaConstants.Locale[];
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
   const [product, setProduct] = React.useState(() => createNewProduct(locales));
   const productRef = useCachedValue(product);

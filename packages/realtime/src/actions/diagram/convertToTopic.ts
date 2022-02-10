@@ -1,4 +1,4 @@
-import { Models as BaseModels, Node as BaseNode } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { terminateResend } from '@voiceflow/socket-utils';
@@ -17,7 +17,7 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
 
     const { versionID: _versionID, creatorID: _creatorID, _id, ...primitiveDiagram } = diagram;
 
-    if (primitiveDiagram.type === BaseModels.DiagramType.TOPIC) {
+    if (primitiveDiagram.type === BaseModels.Diagram.DiagramType.TOPIC) {
       this.reject('diagram is already a topic', Realtime.ErrorCode.CANNOT_CONVERT_TO_TOPIC);
     }
 
@@ -56,7 +56,7 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
       this.services.diagram
         .create(creatorID, {
           ...primitiveDiagram,
-          type: BaseModels.DiagramType.TOPIC,
+          type: BaseModels.Diagram.DiagramType.TOPIC,
           creatorID,
           versionID: payload.versionID,
           intentStepIDs: intentSteps.map((node) => node.nodeID),
@@ -72,7 +72,7 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
 
     await Promise.all([
       this.services.version.patch(creatorID, payload.versionID, {
-        topics: [...(version.topics ?? []), { sourceID: newDiagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }],
+        topics: [...(version.topics ?? []), { sourceID: newDiagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }],
       }),
       this.server.processAs(creatorID, Realtime.diagram.crud.add({ ...actionContext, key: newDiagram.id, value: newDiagram })),
       this.server.processAs(

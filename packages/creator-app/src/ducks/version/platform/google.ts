@@ -1,4 +1,4 @@
-import { Version } from '@voiceflow/google-types';
+import { GoogleVersion } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
@@ -15,21 +15,21 @@ import { getActiveVersionContext } from '../utils';
 /**
  * @deprecated moved to the realtime service
  */
-export const updateSettings = (versionID: string, settings: Partial<Version.GoogleVersionSettings>): UpdateSettings<Version.GoogleVersionSettings> =>
-  updateSettingsByVersionID<Version.GoogleVersionSettings>(versionID, settings);
+export const updateSettings = (versionID: string, settings: Partial<GoogleVersion.VoiceSettings>): UpdateSettings<GoogleVersion.VoiceSettings> =>
+  updateSettingsByVersionID<GoogleVersion.VoiceSettings>(versionID, settings);
 
 /**
  * @deprecated moved to the realtime service
  */
 export const updatePublishing = (
   versionID: string,
-  publishing: Partial<Version.GoogleVersionPublishing>
-): UpdatePublishing<Version.GoogleVersionPublishing> => updatePublishingByVersionID<Version.GoogleVersionPublishing>(versionID, publishing);
+  publishing: Partial<GoogleVersion.VoicePublishing>
+): UpdatePublishing<GoogleVersion.VoicePublishing> => updatePublishingByVersionID<GoogleVersion.VoicePublishing>(versionID, publishing);
 
 // side effects
 
 export const patchSettings =
-  (settings: Partial<Version.GoogleVersionSettings>): Thunk =>
+  (settings: Partial<GoogleVersion.VoiceSettings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -51,7 +51,7 @@ export const patchSettings =
   };
 
 export const patchPublishing =
-  (publishing: Partial<Version.GoogleVersionPublishing>): Thunk =>
+  (publishing: Partial<GoogleVersion.VoicePublishing>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);

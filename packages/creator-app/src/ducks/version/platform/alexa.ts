@@ -1,4 +1,4 @@
-import { Version } from '@voiceflow/alexa-types';
+import { AlexaVersion } from '@voiceflow/alexa-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -17,21 +17,19 @@ import { getActiveVersionContext } from '../utils';
 /**
  * @deprecated moved to the realtime service
  */
-export const updateSettings = (versionID: string, settings: Partial<Version.AlexaVersionSettings>): UpdateSettings<Version.AlexaVersionSettings> =>
-  updateSettingsByVersionID<Version.AlexaVersionSettings>(versionID, settings);
+export const updateSettings = (versionID: string, settings: Partial<AlexaVersion.Settings>): UpdateSettings<AlexaVersion.Settings> =>
+  updateSettingsByVersionID<AlexaVersion.Settings>(versionID, settings);
 
 /**
  * @deprecated moved to the realtime service
  */
-export const updatePublishing = (
-  versionID: string,
-  publishing: Partial<Version.AlexaVersionPublishing>
-): UpdatePublishing<Version.AlexaVersionPublishing> => updatePublishingByVersionID<Version.AlexaVersionPublishing>(versionID, publishing);
+export const updatePublishing = (versionID: string, publishing: Partial<AlexaVersion.Publishing>): UpdatePublishing<AlexaVersion.Publishing> =>
+  updatePublishingByVersionID<AlexaVersion.Publishing>(versionID, publishing);
 
 // side effects
 
 export const patchSettings =
-  (settings: Partial<Version.AlexaVersionSettings>): Thunk =>
+  (settings: Partial<AlexaVersion.Settings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -53,7 +51,7 @@ export const patchSettings =
   };
 
 export const patchPublishing =
-  (publishing: Partial<Version.AlexaVersionPublishing>): Thunk =>
+  (publishing: Partial<AlexaVersion.Publishing>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -74,7 +72,7 @@ export const patchPublishing =
     );
   };
 
-export const loadAccountLinking = (): Thunk<Nullable<Version.AccountLinking>> => async (dispatch, getState) => {
+export const loadAccountLinking = (): Thunk<Nullable<AlexaVersion.AccountLinking>> => async (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
   const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
@@ -85,7 +83,7 @@ export const loadAccountLinking = (): Thunk<Nullable<Version.AccountLinking>> =>
     platformData: {
       settings: { accountLinking },
     },
-  } = await client.api.version.get<{ platformData: Version.AlexaVersionData }>(versionID, ['platformData']);
+  } = await client.api.version.get<{ platformData: AlexaVersion.PlatformData }>(versionID, ['platformData']);
 
   if (!isAtomicActions) {
     dispatch(updateSettings(versionID, { accountLinking }));

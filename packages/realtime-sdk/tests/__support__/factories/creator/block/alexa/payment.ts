@@ -1,10 +1,10 @@
-import { Node } from '@voiceflow/alexa-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
 import { define } from 'cooky-cutter';
 import { datatype } from 'faker';
 
 import { NodeData } from '@/models';
 
-export const PaymentStepData = define<Node.Payment.StepData>({
+export const PaymentStepData = define<AlexaNode.Payment.StepData>({
   productID: () => datatype.uuid(),
 });
 

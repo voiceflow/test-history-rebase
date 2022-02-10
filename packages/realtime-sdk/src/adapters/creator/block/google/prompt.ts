@@ -1,10 +1,10 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/google-types';
+import { GoogleNode } from '@voiceflow/google-types';
 
 import { chipsToIntentButtons, createBlockAdapter } from '../utils';
 import { voicePromptAdapter } from '../voice';
 
-const promptAdapter = createBlockAdapter<Node.Prompt.StepData, NodeData.Prompt>(
+const promptAdapter = createBlockAdapter<GoogleNode.Prompt.VoiceStepData, NodeData.Prompt>(
   ({ chips, buttons, ...voiceData }) => ({
     ...voicePromptAdapter.fromDB(voiceData),
 

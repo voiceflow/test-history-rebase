@@ -1,6 +1,6 @@
 import { ExpressionData, ExpressionV2, LogicGroupData } from '@realtime-sdk/models';
 import { transformVariableToString } from '@realtime-sdk/utils/slot';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter from 'bidirectional-adapter';
 
@@ -8,57 +8,57 @@ import createAdapter from 'bidirectional-adapter';
  * App uses variable format, convert them back into plain string for backend or visa-versa
  * only second value of ExpressionTypeV2.VARIABLE and both values of type ExpressionTypeV2.VALUE are using VariableInput Field
  */
-export const convertVariableFormat = createAdapter<Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData, ExpressionV2 | LogicGroupData>(
+export const convertVariableFormat = createAdapter<BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData, ExpressionV2 | LogicGroupData>(
   (data) => {
-    if (data.logicInterface === Node.Utils.ConditionsLogicInterface.VALUE) {
+    if (data.logicInterface === BaseNode.Utils.ConditionsLogicInterface.VALUE) {
       return {
         ...data,
-        value: (data.value as Array<Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData>).map((info) =>
-          info.type === Node.Utils.ExpressionTypeV2.VARIABLE ? { ...info, value: `{{[${info.value}].${info.value}}}` } : info
+        value: (data.value as Array<BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData>).map((info) =>
+          info.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE ? { ...info, value: `{{[${info.value}].${info.value}}}` } : info
         ),
       } as ExpressionV2;
     }
-    if (data.logicInterface === Node.Utils.ConditionsLogicInterface.VARIABLE) {
+    if (data.logicInterface === BaseNode.Utils.ConditionsLogicInterface.VARIABLE) {
       return {
         ...data,
-        value: (data.value as Array<Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData>).map((info, index) =>
-          index === 1 && info.type === Node.Utils.ExpressionTypeV2.VARIABLE ? { ...info, value: `{{[${info.value}].${info.value}}}` } : info
+        value: (data.value as Array<BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData>).map((info, index) =>
+          index === 1 && info.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE ? { ...info, value: `{{[${info.value}].${info.value}}}` } : info
         ),
       } as ExpressionV2;
     }
     return data as ExpressionV2 | LogicGroupData;
   },
   ({ id: _, ...data }) => {
-    if (data.logicInterface === Node.Utils.ConditionsLogicInterface.VALUE) {
+    if (data.logicInterface === BaseNode.Utils.ConditionsLogicInterface.VALUE) {
       return {
         ...data,
-        value: (data.value as Array<Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData>).map((info) =>
-          info.type === Node.Utils.ExpressionTypeV2.VARIABLE ? { ...info, value: transformVariableToString(info.value) } : info
+        value: (data.value as Array<BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData>).map((info) =>
+          info.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE ? { ...info, value: transformVariableToString(info.value) } : info
         ),
-      } as Node.Utils.ExpressionV2;
+      } as BaseNode.Utils.ExpressionV2;
     }
-    if (data.logicInterface === Node.Utils.ConditionsLogicInterface.VARIABLE) {
+    if (data.logicInterface === BaseNode.Utils.ConditionsLogicInterface.VARIABLE) {
       return {
         ...data,
-        value: (data.value as Array<Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData>).map((info, index) =>
-          index === 1 && info.type === Node.Utils.ExpressionTypeV2.VARIABLE ? { ...info, value: transformVariableToString(info.value) } : info
+        value: (data.value as Array<BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData>).map((info, index) =>
+          index === 1 && info.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE ? { ...info, value: transformVariableToString(info.value) } : info
         ),
-      } as Node.Utils.ExpressionV2;
+      } as BaseNode.Utils.ExpressionV2;
     }
-    return data as Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData;
+    return data as BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData;
   }
 );
 
 // add ids and change FE friendly format for variables
-export const expressionValueAdapter = createAdapter<Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData, ExpressionV2 | LogicGroupData>(
+export const expressionValueAdapter = createAdapter<BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData, ExpressionV2 | LogicGroupData>(
   (condition) => {
-    if (condition.logicInterface === Node.Utils.ConditionsLogicInterface.VARIABLE) {
+    if (condition.logicInterface === BaseNode.Utils.ConditionsLogicInterface.VARIABLE) {
       return { ...convertVariableFormat.fromDB(condition), id: Utils.id.cuid() } as ExpressionV2;
     }
-    if (condition.logicInterface === Node.Utils.ConditionsLogicInterface.LOGIC_GROUP) {
+    if (condition.logicInterface === BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP) {
       return {
         ...condition,
-        value: (condition.value as Array<Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData>).map((data) => ({
+        value: (condition.value as Array<BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData>).map((data) => ({
           ...convertVariableFormat.fromDB(data),
           id: Utils.id.cuid(),
         })),
@@ -67,21 +67,21 @@ export const expressionValueAdapter = createAdapter<Node.Utils.ExpressionV2 | No
     return condition as ExpressionV2;
   },
   (condition) => {
-    if (condition.logicInterface === Node.Utils.ConditionsLogicInterface.VARIABLE) {
-      return convertVariableFormat.toDB(condition) as Node.Utils.ExpressionV2;
+    if (condition.logicInterface === BaseNode.Utils.ConditionsLogicInterface.VARIABLE) {
+      return convertVariableFormat.toDB(condition) as BaseNode.Utils.ExpressionV2;
     }
-    if (condition.logicInterface === Node.Utils.ConditionsLogicInterface.LOGIC_GROUP) {
+    if (condition.logicInterface === BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP) {
       return {
         ...condition,
         value: (condition.value as Array<ExpressionV2 | LogicGroupData>).map((data) => convertVariableFormat.toDB(data)),
-      } as Node.Utils.LogicGroupData;
+      } as BaseNode.Utils.LogicGroupData;
     }
-    return condition as Node.Utils.ExpressionV2;
+    return condition as BaseNode.Utils.ExpressionV2;
   }
 );
 
 // adapter
-const expressionAdapterV2 = createAdapter<Node.Utils.ExpressionData, ExpressionData>(
+const expressionAdapterV2 = createAdapter<BaseNode.Utils.ExpressionData, ExpressionData>(
   (expression) =>
     ({
       id: Utils.id.cuid(),
@@ -93,7 +93,7 @@ const expressionAdapterV2 = createAdapter<Node.Utils.ExpressionData, ExpressionD
       type: expression.type,
       name: expression.name,
       value: expressionValueAdapter.mapToDB(expression.value),
-    } as Node.Utils.ExpressionData)
+    } as BaseNode.Utils.ExpressionData)
 );
 
 export default expressionAdapterV2;

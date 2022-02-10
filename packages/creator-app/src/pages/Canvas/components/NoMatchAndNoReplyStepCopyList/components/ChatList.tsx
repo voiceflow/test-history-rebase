@@ -1,4 +1,4 @@
-import { Types } from '@voiceflow/chat-types';
+import { ChatModels } from '@voiceflow/chat-types';
 import React from 'react';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
@@ -9,7 +9,7 @@ import ListContainer from './ListContainer';
 export interface ChatListProps {
   prefix: string;
   onClick?: VoidFunction;
-  reprompts: Types.Prompt[];
+  reprompts: ChatModels.Prompt[];
 }
 
 const ChatList: React.FC<ChatListProps> = ({ prefix, onClick, reprompts }) => (

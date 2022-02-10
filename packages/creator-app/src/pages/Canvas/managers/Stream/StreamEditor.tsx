@@ -1,8 +1,8 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ErrorMessageWithDivider } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
@@ -27,7 +27,7 @@ const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.Strea
   const [invalidAudio, setValidAudio, setInvalidAudio] = useEnableDisable(false);
 
   const hasPause = data.customPause;
-  const isAlexa = platform === Constants.PlatformType.ALEXA;
+  const isAlexa = platform === VoiceflowConstants.PlatformType.ALEXA;
   const toggleLoop = React.useCallback(() => onChange({ loop: !data.loop }), [data.loop, onChange]);
 
   const updateAudio = React.useCallback(
@@ -43,14 +43,14 @@ const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.Strea
   );
 
   const togglePause = React.useCallback(async () => {
-    const pausePortID = node.ports.out.builtIn[Models.PortType.PAUSE];
+    const pausePortID = node.ports.out.builtIn[BaseModels.PortType.PAUSE];
 
     const hasPausePort = hasPause && !!pausePortID;
 
     if (hasPausePort) {
-      await engine.port.removeOutBuiltIn(Models.PortType.PAUSE, pausePortID);
+      await engine.port.removeOutBuiltIn(BaseModels.PortType.PAUSE, pausePortID);
     } else {
-      await engine.port.addOutBuiltIn(node.id, Models.PortType.PAUSE, { platform: Constants.PlatformType.ALEXA });
+      await engine.port.addOutBuiltIn(node.id, BaseModels.PortType.PAUSE, { platform: VoiceflowConstants.PlatformType.ALEXA });
     }
 
     onChange({ customPause: !hasPausePort });

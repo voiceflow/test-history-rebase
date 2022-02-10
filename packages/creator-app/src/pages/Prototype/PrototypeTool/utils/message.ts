@@ -1,4 +1,4 @@
-import { Node, Request } from '@voiceflow/base-types';
+import { BaseNode, BaseRequest } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
 import { DebugTrace, PathTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
@@ -30,7 +30,7 @@ export const createSpeakMessage = (
   { id, payload: { type, message, voice, src } }: SpeakTrace,
   common: CommonProperties
 ): SpeakMessage | AudioMessage => {
-  if (type === Node.Speak.TraceSpeakType.AUDIO) {
+  if (type === BaseNode.Speak.TraceSpeakType.AUDIO) {
     return { id, type: MessageType.AUDIO, name: message, src, ...common };
   }
   return { id, type: MessageType.SPEAK, message, voice, src, ...common };
@@ -60,7 +60,7 @@ export const createTextMessage = (trace: TextTrace, common: CommonProperties): T
 export const createVisualMessage = (trace: VisualTrace, common: CommonProperties): VisualMessage | null => {
   const { payload } = trace;
   // The only time we dont render the visual message is if the visual type is of JSON
-  if (payload.visualType === Node.Visual.VisualType.APL && payload.aplType === Node.Visual.APLType.JSON) {
+  if (payload.visualType === BaseNode.Visual.VisualType.APL && payload.aplType === BaseNode.Visual.APLType.JSON) {
     return null;
   }
 
@@ -72,15 +72,15 @@ export const createVisualMessage = (trace: VisualTrace, common: CommonProperties
   };
 };
 
-const isGuidedNavRequest = (request: Request.BaseRequest): request is Request.BaseRequest<string> =>
+const isGuidedNavRequest = (request: BaseRequest.BaseRequest): request is BaseRequest.BaseRequest<string> =>
   !!request.type.toLowerCase().match(/^port\d+$/) && typeof request.payload === 'string';
 
-export const createUserMessage = (request: Request.BaseRequest, common: CommonProperties, id = Utils.id.cuid()): UserMessage => {
+export const createUserMessage = (request: BaseRequest.BaseRequest, common: CommonProperties, id = Utils.id.cuid()): UserMessage => {
   let input = request.type;
 
-  if (Request.isIntentRequest(request)) {
+  if (BaseRequest.isIntentRequest(request)) {
     input = request.payload.label || request.payload.query || request.payload.intent.name;
-  } else if (Request.isTextRequest(request) || isGuidedNavRequest(request)) {
+  } else if (BaseRequest.isTextRequest(request) || isGuidedNavRequest(request)) {
     input = request.payload;
   } else if (typeof request.payload === 'object' && !!request.payload && typeof (request.payload as any).label === 'string') {
     input = (request.payload as any).label;

@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -177,7 +177,7 @@ export const importProject =
     }
 
     const copiedProject = await client
-      .platform(project.platform as Constants.PlatformType)
+      .platform(project.platform as VoiceflowConstants.PlatformType)
       .project.copy(projectID, { teamID: targetWorkspaceID, _version: vfVersion })
       .then(Realtime.Adapters.projectAdapter.fromDB);
 

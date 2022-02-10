@@ -1,9 +1,9 @@
 import { NodeData } from '@realtime-sdk/models';
-import { AnyRecord, Node } from '@voiceflow/base-types';
+import { AnyRecord, BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter, createOutPortsAdapter, dynamicOnlyOutPortsAdapter } from '../utils';
 
-const traceAdapter = createBlockAdapter<Node._v1.StepData<{ name: string; body: string }> & Record<string, unknown>, NodeData.Trace>(
+const traceAdapter = createBlockAdapter<BaseNode._v1.StepData<{ name: string; body: string }> & Record<string, unknown>, NodeData.Trace>(
   ({ payload, defaultPath, ports }) => ({
     name: payload?.name || '',
     body: payload?.body || '',

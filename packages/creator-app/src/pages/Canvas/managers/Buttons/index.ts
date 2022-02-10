@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { NodeManagerConfig } from '../types';
 import ButtonsEditor from './ButtonsEditor';
@@ -11,7 +11,7 @@ const ButtonsManager: NodeManagerConfig<Realtime.NodeData.Buttons, Realtime.Node
   ...NODE_CONFIG,
 
   label: 'Buttons',
-  platforms: [Constants.PlatformType.CHATBOT, Constants.PlatformType.DIALOGFLOW_ES_CHAT],
+  platforms: [VoiceflowConstants.PlatformType.CHATBOT, VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT],
 
   step: ButtonsStep,
   editor: ButtonsEditor,

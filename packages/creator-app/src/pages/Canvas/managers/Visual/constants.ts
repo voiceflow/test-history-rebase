@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -16,7 +16,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Visual, Realtime.NodeData
         in: [{}],
         out: {
           dynamic: [],
-          builtIn: { [Models.PortType.NEXT]: { label: Models.PortType.NEXT } },
+          builtIn: { [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT } },
         },
       },
     },
@@ -25,8 +25,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Visual, Realtime.NodeData
       image: null,
       device: null,
       dimensions: null,
-      visualType: Node.Visual.VisualType.IMAGE,
-      canvasVisibility: Node.Visual.CanvasVisibility.FULL,
+      visualType: BaseNode.Visual.VisualType.IMAGE,
+      canvasVisibility: BaseNode.Visual.CanvasVisibility.FULL,
     },
   }),
 };

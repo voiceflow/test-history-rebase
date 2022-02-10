@@ -1,7 +1,7 @@
-import { Node } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isFunction from 'lodash/isFunction';
 
 import { BlockCategory } from '@/constants';
@@ -65,11 +65,11 @@ const FLOW_STEP = createMenuStep(Realtime.BlockType.FLOW);
 
 const COMPONENT_STEP = createMenuStep(Realtime.BlockType.COMPONENT);
 
-const API_STEP = createMenuStep(Realtime.BlockType.INTEGRATION, { factoryData: { selectedIntegration: Node.Utils.IntegrationType.CUSTOM_API } });
+const API_STEP = createMenuStep(Realtime.BlockType.INTEGRATION, { factoryData: { selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API } });
 
 const GOOGLE_SHEETS_STEP = createMenuStep(Realtime.BlockType.INTEGRATION, {
   publicOnly: true,
-  factoryData: { selectedIntegration: Node.Utils.IntegrationType.GOOGLE_SHEETS },
+  factoryData: { selectedIntegration: BaseNode.Utils.IntegrationType.GOOGLE_SHEETS },
 });
 
 const INTENT_STEP = createMenuStep(Realtime.BlockType.INTENT);
@@ -256,11 +256,11 @@ export const DIALOGFLOW_ES_VOICE_SECTIONS = [
 
 export const getSections = createPlatformSelector(
   {
-    [Constants.PlatformType.ALEXA]: ALEXA_SECTIONS,
-    [Constants.PlatformType.GOOGLE]: GOOGLE_SECTIONS,
-    [Constants.PlatformType.CHATBOT]: CHATBOT_SECTIONS,
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: DIALOGFLOW_ES_CHAT_SECTIONS,
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: DIALOGFLOW_ES_VOICE_SECTIONS,
+    [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_SECTIONS,
+    [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_SECTIONS,
+    [VoiceflowConstants.PlatformType.CHATBOT]: CHATBOT_SECTIONS,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: DIALOGFLOW_ES_CHAT_SECTIONS,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: DIALOGFLOW_ES_VOICE_SECTIONS,
   },
   GENERAL_SECTIONS
 );

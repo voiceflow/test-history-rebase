@@ -1,10 +1,10 @@
 import { BaseProjectPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { projectType } from '../utils';
 
-const alexaType = Utils.protocol.typeFactory(projectType(Constants.PlatformType.ALEXA));
+const alexaType = Utils.protocol.typeFactory(projectType(VoiceflowConstants.PlatformType.ALEXA));
 
 export interface UpdateVendorPayload extends BaseProjectPayload {
   creatorID: number;

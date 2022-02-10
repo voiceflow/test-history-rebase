@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -55,8 +55,8 @@ const ConnectedUserInfoStep: ConnectedStep<Realtime.NodeData.UserInfo, Realtime.
   <UserInfoStep
     nodeID={data.nodeID}
     withPorts={withPorts}
-    successPortID={ports.out.builtIn[Models.PortType.NEXT]}
-    failurePortID={ports.out.builtIn[Models.PortType.FAIL]}
+    successPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
+    failurePortID={ports.out.builtIn[BaseModels.PortType.FAIL]}
     userPermissions={data.permissions.map((permission) => PERMISSION_LABELS[permission.selected!]).filter(Boolean)}
     variant={variant}
   />

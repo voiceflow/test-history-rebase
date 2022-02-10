@@ -1,7 +1,7 @@
-import { Button } from '@voiceflow/base-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { createSelector } from 'reselect';
 
@@ -26,13 +26,13 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
   const platform = React.useContext(PlatformContext)!;
   const [isDragging, toggleDragging] = useToggle(false);
   const updateData = useUpdateData(focus.target || undefined);
-  const updateButtons = React.useCallback((buttons: Button.AnyButton[]) => updateData({ buttons }), [updateData]);
+  const updateButtons = React.useCallback((buttons: BaseButton.AnyButton[]) => updateData({ buttons }), [updateData]);
   const buttonLayoutOption = useButtonLayoutOption();
 
   const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(focusedNode?.buttons ?? [], updateButtons, {
     factory: () => ({
       name: '',
-      type: Button.ButtonType.INTENT,
+      type: BaseButton.ButtonType.INTENT,
       payload: { intentID: null },
     }),
   });
@@ -57,12 +57,12 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
           menu={<OverflowMenu placement="top-end" options={[buttonLayoutOption]} />}
           options={[
             {
-              label: `Add ${getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'Chip' }, 'Button')}`,
+              label: `Add ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'BaseButton')}`,
               onClick: Utils.functional.compose(() => scrollToBottom('smooth'), onAdd),
             },
           ]}
           tutorial={{ content: <HelpTooltip /> }}
-          tutorialTitle={getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}
+          tutorialTitle={getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}
         />
       )}
       hideFooter={isDragging}
@@ -87,7 +87,7 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
 
 const focusedNodeWithButtonsSelector = createSelector(
   Creator.focusedNodeDataSelector,
-  (data) => data as Realtime.NodeData<{ buttons?: Button.AnyButton[]; choices?: Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>[] }>
+  (data) => data as Realtime.NodeData<{ buttons?: BaseButton.AnyButton[]; choices?: Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>[] }>
 );
 
 const mapStateToProps = {

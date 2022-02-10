@@ -1,9 +1,9 @@
 import { NodeData } from '@realtime-sdk/models';
-import { AnyRecord, Node } from '@voiceflow/base-types';
+import { AnyRecord, BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter, createOutPortsAdapter, dynamicOnlyOutPortsAdapter } from '../utils';
 
-const randomAdapter = createBlockAdapter<Node.Random.StepData, NodeData.Random>(
+const randomAdapter = createBlockAdapter<BaseNode.Random.StepData, NodeData.Random>(
   ({ paths, noDuplicates }) => ({ paths, noDuplicates }),
   ({ paths, noDuplicates }) => ({ paths, noDuplicates })
 );

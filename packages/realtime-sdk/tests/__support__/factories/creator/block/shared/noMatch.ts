@@ -1,7 +1,7 @@
 import { getRandomEnumElement } from '@test/utils';
-import { Node as BaseNode } from '@voiceflow/base-types';
-import { Node as ChatNode } from '@voiceflow/chat-types';
-import { Node as VoiceNode } from '@voiceflow/voice-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { ChatNode } from '@voiceflow/chat-types';
+import { VoiceNode } from '@voiceflow/voice-types';
 import { define, extend } from 'cooky-cutter';
 import { datatype, lorem } from 'faker';
 
@@ -24,7 +24,7 @@ export const VoiceStepNoMatch = extend<ReturnType<typeof BaseStepNoMatch>, Voice
 });
 
 export const BaseNodeDataNomatch = define<NodeData.BaseNoMatch>({
-  type: () => getRandomEnumElement(BaseNode.Utils.NoMatchType),
+  types: () => [getRandomEnumElement(BaseNode.Utils.NoMatchType)],
   pathName: () => lorem.words(),
   randomize: () => datatype.boolean(),
 });

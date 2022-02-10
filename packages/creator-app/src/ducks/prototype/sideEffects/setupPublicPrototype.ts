@@ -1,8 +1,8 @@
-import { Button } from '@voiceflow/base-types';
-import { Version } from '@voiceflow/chat-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseButton } from '@voiceflow/base-types';
+import { ChatVersion } from '@voiceflow/chat-types';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 import { batch } from 'react-redux';
 
@@ -66,7 +66,7 @@ const setupPublicPrototype =
       dispatch(Session.setActiveDiagramID(rootDiagramID));
     });
     const savedMessageDelay = Realtime.Utils.typeGuards.isChatPlatform(prototype.platform)
-      ? Version.defaultMessageDelay({ durationMilliseconds: prototype?.data?.messageDelay?.durationMilliseconds }).durationMilliseconds
+      ? ChatVersion.defaultMessageDelay({ durationMilliseconds: prototype?.data?.messageDelay?.durationMilliseconds }).durationMilliseconds
       : 0;
 
     return {
@@ -74,9 +74,9 @@ const setupPublicPrototype =
       globalMessageDelayMilliseconds: savedMessageDelay,
       plan: planData.plan as PlanType,
       layout,
-      buttons: prototype?.settings.buttons as Button.ButtonsLayout,
+      buttons: prototype?.settings.buttons as BaseButton.ButtonsLayout,
       locales: prototype.data.locales as Realtime.AnyLocale[],
-      platform: prototype.platform as Constants.PlatformType,
+      platform: prototype.platform as VoiceflowConstants.PlatformType,
       hasPassword: prototype?.settings.hasPassword ?? false,
       projectName: prototype.data.name,
     };

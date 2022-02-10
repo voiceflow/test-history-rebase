@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -35,8 +35,8 @@ class DiagramEngine extends EngineConsumer {
 
     const outBuiltInPortsEntities = Object.entries(node.ports.out.builtIn)
       .filter(([, portID]) => !!portID)
-      .map<[Models.PortType, Realtime.Port]>(([type, portID]) => [
-        type as Models.PortType,
+      .map<[BaseModels.PortType, Realtime.Port]>(([type, portID]) => [
+        type as BaseModels.PortType,
         {
           ...this.engine.getPortByID(portID)!,
           id: Utils.id.objectID(),

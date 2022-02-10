@@ -1,4 +1,4 @@
-import { Request } from '@voiceflow/base-types';
+import { BaseRequest } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import _isString from 'lodash/isString';
 
@@ -60,18 +60,18 @@ class PrototypeTool {
     return this.trace?.navigateToStep(messageID);
   }
 
-  public async interact({ name, request = null }: { name?: string; request?: Request.BaseRequest | string | null } = {}): Promise<void> {
+  public async interact({ name, request = null }: { name?: string; request?: BaseRequest.BaseRequest | string | null } = {}): Promise<void> {
     this.audio?.stop();
 
     await this.trace?.flushTrace();
 
-    const isActionRequest = request && !_isString(request) && Request.isActionRequest(request);
+    const isActionRequest = request && !_isString(request) && BaseRequest.isActionRequest(request);
 
     if (!isActionRequest) {
       this.trace?.resetInteractions();
     }
 
-    const formattedRequest = _isString(request) ? { type: Request.RequestType.TEXT, payload: request } : request;
+    const formattedRequest = _isString(request) ? { type: BaseRequest.RequestType.TEXT, payload: request } : request;
 
     if (isActionRequest) {
       this.props.fetchContext(formattedRequest);
@@ -81,9 +81,9 @@ class PrototypeTool {
 
     let input = name || `[Action] ${formattedRequest?.type}`;
 
-    if (formattedRequest && Request.isTextRequest(formattedRequest) && _isString(formattedRequest.payload)) {
+    if (formattedRequest && BaseRequest.isTextRequest(formattedRequest) && _isString(formattedRequest.payload)) {
       input = formattedRequest.payload;
-    } else if (formattedRequest && Request.isIntentRequest(formattedRequest)) {
+    } else if (formattedRequest && BaseRequest.isIntentRequest(formattedRequest)) {
       input = formattedRequest.payload.query;
     }
 

@@ -1,13 +1,13 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { baseIntentAdapter } from '../base';
 import { createBlockAdapter } from '../utils';
 
-const intentAdapter = createBlockAdapter<Node.Intent.StepData, NodeData.Intent>(
-  (data) => baseIntentAdapter.fromDB(data, { platform: Constants.PlatformType.ALEXA }),
-  (data) => baseIntentAdapter.toDB(data, { platform: Constants.PlatformType.ALEXA })
+const intentAdapter = createBlockAdapter<BaseNode.Intent.StepData, NodeData.Intent>(
+  (data) => baseIntentAdapter.fromDB(data, { platform: VoiceflowConstants.PlatformType.ALEXA }),
+  (data) => baseIntentAdapter.toDB(data, { platform: VoiceflowConstants.PlatformType.ALEXA })
 );
 
 export default intentAdapter;

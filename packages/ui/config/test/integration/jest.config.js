@@ -9,6 +9,7 @@ module.exports = {
     '\\.css$': 'identity-obj-proxy',
     '^.+\\.svg(?:\\?url)?$': '<rootDir>/config/test/integration/assetPlaceholder.js',
     '^@ui/(.*)': '<rootDir>/src/$1',
+    '^murmurhash-wasm$': 'identity-obj-proxy',
   },
   transform: {
     '^.+\\.[jt]sx?$': '<rootDir>/../../node_modules/ts-jest',

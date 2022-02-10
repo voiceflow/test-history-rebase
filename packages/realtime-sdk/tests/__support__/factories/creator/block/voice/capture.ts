@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/voice-types';
+import { VoiceNode } from '@voiceflow/voice-types';
 import { extend } from 'cooky-cutter';
 
 import { NodeData } from '@/models';
@@ -6,7 +6,7 @@ import { NodeData } from '@/models';
 import * as Base from '../base';
 import { VoiceNodeDataNoReply, VoicePrompt, VoiceStepNoReply } from '../shared';
 
-export const CaptureStepData = extend<ReturnType<typeof Base.CaptureStepData>, Node.Capture.StepData<any>>(Base.CaptureStepData, {
+export const CaptureStepData = extend<ReturnType<typeof Base.CaptureStepData>, VoiceNode.Capture.StepData<any>>(Base.CaptureStepData, {
   noReply: () => VoiceStepNoReply(),
   reprompt: () => VoicePrompt(),
 });

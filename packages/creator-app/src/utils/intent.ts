@@ -1,24 +1,23 @@
-import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Nullable, Nullish, SLOT_REGEXP, Utils } from '@voiceflow/common';
-import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
-import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
-import { Constants as GoogleConstants } from '@voiceflow/google-types';
+import { DFESConstants } from '@voiceflow/google-dfes-types';
+import { GoogleConstants } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Normalized } from 'normal-store';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
-import { isChatbotPlatform, isDialogflowPlatform, isGeneralPlatform } from '@/utils/typeGuards';
 
 import { createPlatformSelector } from './platform';
 
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
 const amazonBuiltInIntentsArray = Object.values(AlexaConstants.AmazonIntent) as string[];
-const generalBuiltInIntentsArray = Object.values(GeneralConstants.IntentName) as string[];
+const generalBuiltInIntentsArray = Object.values(VoiceflowConstants.IntentName) as string[];
 const builtInIntentMap = new Map([...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray].map((id) => [id, true]));
 
 const INTENT_LABELS: Partial<Record<string, string>> = {
-  [GeneralConstants.IntentName.NONE]: 'Fallback',
+  [VoiceflowConstants.IntentName.NONE]: 'Fallback',
 };
 
 export const isCustomizableBuiltInIntent = (intent?: Nullish<Realtime.Intent>): boolean => !!intent && builtInIntentMap.has(intent.id);
@@ -58,7 +57,7 @@ export const filterIntents = <T extends Realtime.Intent>(intents: T[], activeInt
   });
 
 export const intentFactory =
-  <T extends Constants.PlatformType>(platform: T) =>
+  <T extends VoiceflowConstants.PlatformType>(platform: T) =>
   (intent: { name: string; slots?: string[] }): Realtime.PlatformIntent<T> => {
     const truncatedName = intent.name.split('.')[1];
 
@@ -71,8 +70,8 @@ export const intentFactory =
     } as Realtime.PlatformIntent<T>;
   };
 
-export const generalIntentFactory = (generalIntent: GeneralConstants.DefaultIntent): Realtime.VoiceIntent => {
-  const intent = intentFactory(Constants.PlatformType.GENERAL)(generalIntent);
+export const generalIntentFactory = (generalIntent: VoiceflowConstants.DefaultIntent): Realtime.VoiceIntent => {
+  const intent = intentFactory(VoiceflowConstants.PlatformType.GENERAL)(generalIntent);
 
   return {
     ...intent,
@@ -94,27 +93,27 @@ export const validateIntentName = (intentName: string, intents: Realtime.Intent[
   return null;
 };
 
-export const ALEXA_BUILT_INS = AlexaConstants.BUILT_IN_INTENTS.map(intentFactory(Constants.PlatformType.ALEXA));
+export const ALEXA_BUILT_INS = AlexaConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.ALEXA));
 
-export const GOOGLE_BUILT_INS = GoogleConstants.BUILT_IN_INTENTS.map(intentFactory(Constants.PlatformType.GOOGLE));
+export const GOOGLE_BUILT_INS = GoogleConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.GOOGLE));
 
-export const DIALOGFLOW_CHAT_BUILT_INS = DialogflowConstants.BUILT_IN_INTENTS.map(intentFactory(Constants.PlatformType.DIALOGFLOW_ES_CHAT));
+export const DIALOGFLOW_CHAT_BUILT_INS = DFESConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT));
 
-export const DIALOGFLOW_VOICE_BUILT_INS = DialogflowConstants.BUILT_IN_INTENTS.map(intentFactory(Constants.PlatformType.DIALOGFLOW_ES_VOICE));
+export const DIALOGFLOW_VOICE_BUILT_INS = DFESConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE));
 
-export const GENERAL_BUILT_INS_MAP = Object.keys(GeneralConstants.DEFAULT_INTENTS_MAP).reduce<Record<string, Realtime.Intent[]>>(
-  (acc, key) => Object.assign(acc, { [key]: GeneralConstants.DEFAULT_INTENTS_MAP[key].map(generalIntentFactory) }),
+export const GENERAL_BUILT_INS_MAP = Object.keys(VoiceflowConstants.DEFAULT_INTENTS_MAP).reduce<Record<string, Realtime.Intent[]>>(
+  (acc, key) => Object.assign(acc, { [key]: VoiceflowConstants.DEFAULT_INTENTS_MAP[key].map(generalIntentFactory) }),
   {}
 );
 
 export const getBuiltInIntents = createPlatformSelector(
   {
-    [Constants.PlatformType.ALEXA]: ALEXA_BUILT_INS,
-    [Constants.PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: DIALOGFLOW_CHAT_BUILT_INS,
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: DIALOGFLOW_VOICE_BUILT_INS,
+    [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_BUILT_INS,
+    [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: DIALOGFLOW_CHAT_BUILT_INS,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: DIALOGFLOW_VOICE_BUILT_INS,
   },
-  GENERAL_BUILT_INS_MAP[GeneralConstants.Locale.EN_US]
+  GENERAL_BUILT_INS_MAP[VoiceflowConstants.Locale.EN_US]
 );
 
 export const isBuiltInIntent = (intentID: string): boolean =>
@@ -153,8 +152,8 @@ export function validateUtterance(utterance: string, intentID: string, intents: 
   return err;
 }
 
-export const applyPlatformIntentNameFormatting = (name: string, platform: Constants.PlatformType) => {
-  const hasNoRules = isGeneralPlatform(platform) || isChatbotPlatform(platform) || isDialogflowPlatform(platform);
+export const applyPlatformIntentNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType) => {
+  const hasNoRules = Realtime.Utils.typeGuards.isAnyGeneralPlatform(platform) || Realtime.Utils.typeGuards.isDialogflowPlatform(platform);
 
   if (hasNoRules) return name;
 

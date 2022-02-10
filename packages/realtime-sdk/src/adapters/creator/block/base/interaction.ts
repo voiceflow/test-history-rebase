@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 import { DistinctPlatform } from '../../../../constants';
 import { NodeData } from '../../../../models';
@@ -6,7 +6,7 @@ import { distinctPlatformsData } from '../../../../utils/platform';
 import { choiceAdapter, createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter } from '../utils';
 
 const interactionAdapter = createBlockAdapter<
-  Omit<Node.Interaction.StepData, 'else' | 'reprompt' | 'noReply'>,
+  Omit<BaseNode.Interaction.StepData, 'else' | 'reprompt' | 'noReply'>,
   Omit<NodeData.Interaction, 'else' | 'noReply' | 'buttons'>,
   [{ platform: DistinctPlatform }],
   [{ platform: DistinctPlatform }]

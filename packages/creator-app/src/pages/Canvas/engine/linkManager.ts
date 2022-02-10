@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Creator from '@/ducks/creator';
 import * as RealtimeDuck from '@/ducks/realtime';
@@ -57,7 +57,7 @@ class LinkManager extends EngineConsumer {
     return this.engine.node.isBranchActive(link.source.nodeID) || this.engine.node.isBranchActive(link.target.nodeID);
   }
 
-  isVisible(linkID: string, platform: Constants.PlatformType) {
+  isVisible(linkID: string, platform: VoiceflowConstants.PlatformType) {
     const link = this.engine.getLinkByID(linkID);
     if (!link) return false;
 

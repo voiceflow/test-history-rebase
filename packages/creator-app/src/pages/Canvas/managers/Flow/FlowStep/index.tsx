@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
@@ -50,7 +50,13 @@ const ConnectedFlowStep: ConnectedStep<Realtime.NodeData.Flow, Realtime.NodeData
   const label = data.diagramID ? diagramMap[data.diagramID]?.name : null;
 
   return (
-    <FlowStep label={label} nodeID={data.nodeID} nextPortID={ports.out.builtIn[Models.PortType.NEXT]} onClickFlow={goToDiagram} variant={variant} />
+    <FlowStep
+      label={label}
+      nodeID={data.nodeID}
+      nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
+      onClickFlow={goToDiagram}
+      variant={variant}
+    />
   );
 };
 

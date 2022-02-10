@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
@@ -86,7 +86,7 @@ export const removeOutDynamicPortFromNode = (node: Realtime.Node, portID: string
   },
 });
 
-export const removeOutBuiltInPortFromNode = (node: Realtime.Node, portType: Models.PortType): { ports: Realtime.NodePorts } => {
+export const removeOutBuiltInPortFromNode = (node: Realtime.Node, portType: BaseModels.PortType): { ports: Realtime.NodePorts } => {
   const { [portType]: _, ...builtIn } = node.ports.out.builtIn;
 
   return {
@@ -200,7 +200,7 @@ export const removeOutDynamicPortFromBlockInState = (portID: string): DiagramSta
     };
   });
 
-export const removeOutBuiltInPortFromBlockInState = (portType: Models.PortType, portID: string): DiagramStateComposeReducer =>
+export const removeOutBuiltInPortFromBlockInState = (portType: BaseModels.PortType, portID: string): DiagramStateComposeReducer =>
   Utils.functional.compose(removePortFromState(portID), (state: DiagramState) => {
     const port = Utils.normalized.getNormalizedByKey(state.ports, portID);
     const node = Utils.normalized.getNormalizedByKey(state.nodes, port.nodeID);
@@ -318,7 +318,7 @@ export const addOutDynamicPortToBlockInState =
   };
 
 export const addOutBuiltInPortToBlockInState =
-  (portType: Models.PortType, port: Realtime.Port) =>
+  (portType: BaseModels.PortType, port: Realtime.Port) =>
   (state: DiagramState): DiagramState => {
     const node = Utils.normalized.getNormalizedByKey(state.nodes, port.nodeID);
 

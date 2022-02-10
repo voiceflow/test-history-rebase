@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractDiagramResourceControl } from './utils';
@@ -18,7 +18,7 @@ class CreateTopic extends AbstractDiagramResourceControl<Realtime.diagram.Create
     ]);
 
     await this.services.version.patch(creatorID, payload.versionID, {
-      topics: [...(version.topics ?? []), { sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }],
+      topics: [...(version.topics ?? []), { sourceID: diagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }],
     });
 
     return diagram;

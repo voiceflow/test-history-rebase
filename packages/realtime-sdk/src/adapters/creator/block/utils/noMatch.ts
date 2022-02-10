@@ -1,6 +1,6 @@
-import { Node as BaseNode } from '@voiceflow/base-types';
-import { Node as ChatNode } from '@voiceflow/chat-types';
-import { Node as VoiceNode } from '@voiceflow/voice-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { ChatNode } from '@voiceflow/chat-types';
+import { VoiceNode } from '@voiceflow/voice-types';
 import createAdapter from 'bidirectional-adapter';
 
 import { NodeData } from '../../../../models';

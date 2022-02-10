@@ -1,4 +1,4 @@
-import { Constants, Project } from '@voiceflow/alexa-types';
+import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import dayjs from 'dayjs';
 
@@ -23,7 +23,7 @@ export const formatMarketPlaces = (marketPlaces: Record<string, Realtime.Product
   const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place?.releaseDate)?.releaseDate || dayjs().format('YYYY-MM-DD');
 
   return Object.keys(marketPlaces).reduce<Record<string, Realtime.DBProduct.Pricing>>((acc, place) => {
-    acc[Project.encodeMarketPlaceKey(place as Project.MarketPlace)] = {
+    acc[AlexaProject.encodeMarketPlaceKey(place as AlexaProject.MarketPlace)] = {
       releaseDate: marketPlaces[place].releaseDate || generalReleaseDate,
       defaultPriceListing: {
         price: +marketPlaces[place].price || 0,
@@ -42,7 +42,7 @@ export const parseMarketPlaces = (
   distributionCountries: string[]
 ): Record<string, Realtime.ProductMarketPlace> =>
   Object.keys(allPlaces).reduce((acc, encodedKey) => {
-    const placeKey = Project.decodeMarketPlaceKey(encodedKey);
+    const placeKey = AlexaProject.decodeMarketPlaceKey(encodedKey);
     const place = allPlaces[encodedKey];
 
     return !place
@@ -59,10 +59,10 @@ export const parseMarketPlaces = (
   }, {});
 
 export const parseLocales = (
-  locales: Partial<Record<Constants.Locale, Realtime.DBProduct.LocalePublishingInformation>>,
+  locales: Partial<Record<AlexaConstants.Locale, Realtime.DBProduct.LocalePublishingInformation>>,
   privacyAndCompliance: Realtime.DBProduct.PrivacyAndCompliance
 ) =>
-  (Object.keys(locales) as Constants.Locale[]).reduce<MergedLocale>((acc, locale) => {
+  (Object.keys(locales) as AlexaConstants.Locale[]).reduce<MergedLocale>((acc, locale) => {
     const localeData = locales[locale];
 
     return !localeData
@@ -98,7 +98,7 @@ export const getMissingDataInfo = (product: Realtime.Product) => {
   !product.privacyPolicyUrl && missingInfo.push('Privacy policy URL is missing');
   !product.testingInstructions && missingInfo.push('Testing Information is missing');
 
-  const marketPlacesKeys = Object.keys(product.marketPlaces) as Project.MarketPlace[];
+  const marketPlacesKeys = Object.keys(product.marketPlaces) as AlexaProject.MarketPlace[];
 
   // marketplace
   marketPlacesKeys.length === 0 && missingInfo.push('Atleast one marketplace is required');
@@ -122,8 +122,8 @@ export const isProductComplete = (product: Realtime.Product) => {
     product.testingInstructions &&
     product.taxCategory &&
     Object.keys(product.marketPlaces).length > 0 &&
-    (Object.keys(product.marketPlaces) as Project.MarketPlace[]).filter((place) => product.marketPlaces[place]!.countries.length === 0).length ===
-      0 &&
+    (Object.keys(product.marketPlaces) as AlexaProject.MarketPlace[]).filter((place) => product.marketPlaces[place]!.countries.length === 0)
+      .length === 0 &&
     product.summary &&
     product.smallIconUri &&
     product.largeIconUri &&
@@ -136,7 +136,7 @@ export const isProductComplete = (product: Realtime.Product) => {
     product.privacyPolicyUrl
   );
 
-  if (product.type === Constants.ProductType.SUBSCRIPTION) {
+  if (product.type === AlexaConstants.ProductType.SUBSCRIPTION) {
     return { isComplete: isComplete && product.subscriptionFrequency && product.trialPeriodDays, missingInfo };
   }
 

@@ -1,7 +1,7 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { DialogType } from '@/constants';
@@ -25,7 +25,7 @@ export interface SpeakStepProps {
   items: SpeakStepItem[];
   random?: boolean;
   nodeID: string;
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   variant: BlockVariant;
   nextPortID: string;
 }
@@ -43,8 +43,8 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
               placeholder={getPlatformValue(
                 platform,
                 {
-                  [Constants.PlatformType.ALEXA]: isAudio ? 'Upload audio file' : 'Add Alexa reply',
-                  [Constants.PlatformType.GOOGLE]: 'Add Google reply',
+                  [VoiceflowConstants.PlatformType.ALEXA]: isAudio ? 'Upload audio file' : 'Add Alexa reply',
+                  [VoiceflowConstants.PlatformType.GOOGLE]: 'Add Google reply',
                 },
                 'Add Assistant reply'
               )}
@@ -63,8 +63,8 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
             placeholder={getPlatformValue(
               platform,
               {
-                [Constants.PlatformType.ALEXA]: 'Add Alexa reply',
-                [Constants.PlatformType.GOOGLE]: 'Add Google reply',
+                [VoiceflowConstants.PlatformType.ALEXA]: 'Add Alexa reply',
+                [VoiceflowConstants.PlatformType.GOOGLE]: 'Add Google reply',
               },
               'Add Assistant reply'
             )}
@@ -88,10 +88,10 @@ const ConnectedSpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeDa
   return (
     <SpeakStep
       items={items}
-      random={!data.canvasVisibility ? data.randomize : data.canvasVisibility === Node.Utils.CanvasNodeVisibility.PREVIEW}
+      random={!data.canvasVisibility ? data.randomize : data.canvasVisibility === BaseNode.Utils.CanvasNodeVisibility.PREVIEW}
       nodeID={data.nodeID}
       platform={platform}
-      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
+      nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       variant={variant}
     />
   );

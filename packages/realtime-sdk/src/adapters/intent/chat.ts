@@ -1,6 +1,6 @@
 import { ChatIntent, ChatIntentSlot, ChatIntentSlotDialog } from '@realtime-sdk/models';
-import { Types } from '@voiceflow/chat-types';
-import { Constants } from '@voiceflow/general-types';
+import { ChatModels } from '@voiceflow/chat-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import createAdapter from 'bidirectional-adapter';
 import { denormalize, normalize } from 'normal-store';
 import { Optional, Required } from 'utility-types';
@@ -23,7 +23,7 @@ export const chatIntentSlotSanitizer = ({ dialog, ...baseIntentSlot }: Required<
   dialog: chatIntentSlotDialogSanitizer(dialog),
 });
 
-const chatIntentAdapter = createAdapter<Types.Intent, ChatIntent, [{ platform: Constants.PlatformType }]>(
+const chatIntentAdapter = createAdapter<ChatModels.Intent, ChatIntent, [{ platform: VoiceflowConstants.PlatformType }]>(
   ({ slots = [], ...baseIntent }, options) => ({
     ...baseIntentAdapter.fromDB(baseIntent, options),
     slots: normalize(slots.map(chatIntentSlotSanitizer)),

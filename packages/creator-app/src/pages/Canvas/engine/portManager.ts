@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -16,7 +16,7 @@ class PortManager extends EngineConsumer {
       this.dispatch(Creator.addOutDynamicPort(nodeID, port));
     },
 
-    addOutBuiltIn: (nodeID: string, portType: Models.PortType, port: Realtime.PartialModel<Realtime.Port>): void => {
+    addOutBuiltIn: (nodeID: string, portType: BaseModels.PortType, port: Realtime.PartialModel<Realtime.Port>): void => {
       this.dispatch(Creator.addOutBuiltInPort(nodeID, portType, port));
     },
 
@@ -31,7 +31,7 @@ class PortManager extends EngineConsumer {
       this.engine.node.redrawLinks(port.nodeID);
     },
 
-    removeOutBuiltIn: async (portType: Models.PortType, portID: string, syncRemove?: () => Promise<void> | void): Promise<void> => {
+    removeOutBuiltIn: async (portType: BaseModels.PortType, portID: string, syncRemove?: () => Promise<void> | void): Promise<void> => {
       const port = this.engine.getPortByID(portID);
       if (!port) return;
 
@@ -68,7 +68,7 @@ class PortManager extends EngineConsumer {
     this.log.info(this.log.success('added out dynamic port'), this.log.slug(portID));
   }
 
-  async addOutBuiltIn(nodeID: string, portType: Models.PortType, port?: Partial<Realtime.Port>): Promise<void> {
+  async addOutBuiltIn(nodeID: string, portType: BaseModels.PortType, port?: Partial<Realtime.Port>): Promise<void> {
     const portID = Utils.id.objectID();
     const augmentedPort = { ...port, id: portID, label: portType };
 
@@ -98,7 +98,7 @@ class PortManager extends EngineConsumer {
     this.log.info(this.log.success('removed out dynamic port'), this.log.slug(portID));
   }
 
-  async removeOutBuiltIn(portType: Models.PortType, portID: string): Promise<void> {
+  async removeOutBuiltIn(portType: BaseModels.PortType, portID: string): Promise<void> {
     this.log.debug(this.log.pending('removing out builtin port'), this.log.slug(portID));
     await this.internal.removeOutBuiltIn(portType, portID, () =>
       this.engine.realtime.sendUpdate(RealtimeDuck.removeOutBuiltInPort(portType, portID))

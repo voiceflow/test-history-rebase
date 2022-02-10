@@ -1,5 +1,5 @@
 import { BlockType, BlockVariant } from '@realtime-sdk/constants';
-import { AnyRecord, Models as BaseModels } from '@voiceflow/base-types';
+import { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
 export interface DiagramFactoryOptions {
@@ -8,7 +8,7 @@ export interface DiagramFactoryOptions {
 }
 
 export type PrimitiveDiagram<T extends BaseModels.BaseDiagramNode = BaseModels.BaseDiagramNode> = Required<
-  Omit<BaseModels.Diagram<T>, '_id' | 'creatorID' | 'versionID'>
+  Omit<BaseModels.Diagram.Model<T>, '_id' | 'creatorID' | 'versionID'>
 >;
 
 export const getUniqueCopyName = (originalName: string, existingNames: string[]) => {
@@ -45,7 +45,7 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   nodes,
   intentStepIDs = [],
 }: DiagramFactoryOptions & {
-  type: BaseModels.DiagramType;
+  type: BaseModels.Diagram.DiagramType;
   nodes: BaseModels.BaseDiagramNode[];
 }): PrimitiveDiagram<T> => ({
   name,
@@ -63,7 +63,7 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
 export const componentDiagramFactory = (name: string, startNodeCoords?: [number, number]) =>
   diagramFactory({
     name,
-    type: BaseModels.DiagramType.COMPONENT,
+    type: BaseModels.Diagram.DiagramType.COMPONENT,
     nodes: [startNodeFactory(startNodeCoords)],
   });
 
@@ -72,7 +72,7 @@ export const topicDiagramFactory = (name: string) => {
 
   return diagramFactory({
     name,
-    type: BaseModels.DiagramType.TOPIC,
+    type: BaseModels.Diagram.DiagramType.TOPIC,
     intentStepIDs: [intentNodeID],
     nodes: [
       {

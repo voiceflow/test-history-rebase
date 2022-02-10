@@ -8,12 +8,11 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
-import { isChatbotPlatform } from '@/utils/typeGuards';
 
 export const ENTITY_PROMPT_PATH_TYPE = 'entityPrompt';
 
 const EntityPromptForm: React.FC<NodeEditorPropsType<Realtime.NodeData.CaptureV2>> = ({ data, onChange, activePath, platform }) => {
-  const isChatbot = isChatbotPlatform(platform);
+  const isChat = Realtime.Utils.typeGuards.isChatPlatform(platform);
 
   const slots = data.intent?.slots || [];
   const slotIDs = React.useMemo(() => slots.map(({ id }) => id), [slots]);
@@ -38,7 +37,7 @@ const EntityPromptForm: React.FC<NodeEditorPropsType<Realtime.NodeData.CaptureV2
   return (
     <Section header="Entity Reprompt" tooltip={<SlotPromptTooltip />}>
       <FormControl>
-        {isChatbot ? (
+        {isChat ? (
           <ChatPromptForm
             slots={usedSlots}
             prompt={slot?.dialog.prompt as any}

@@ -1,9 +1,9 @@
-import { Version as AlexaVersion } from '@voiceflow/alexa-types';
+import { AlexaVersion } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
-import { Constants as GeneralConstants, Version as GeneralVersion } from '@voiceflow/general-types';
-import { Constants as DialogflowConstants, Version as DialogflowVersion } from '@voiceflow/google-dfes-types';
-import { Constants as GoogleConstants, Version as GoogleVersion } from '@voiceflow/google-types';
+import { DFESConstants, DFESVersion } from '@voiceflow/google-dfes-types';
+import { GoogleConstants, GoogleVersion } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants, VoiceflowVersion } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -42,13 +42,13 @@ export const patchSettings =
     const platform = ProjectV2.active.platformSelector(state);
 
     if (isAlexaPlatform(platform)) {
-      await dispatch(alexa.patchSettings(settings as AlexaVersion.AlexaVersionSettings));
+      await dispatch(alexa.patchSettings(settings as AlexaVersion.Settings));
     } else if (isGooglePlatform(platform)) {
-      await dispatch(google.patchSettings(settings as GoogleVersion.GoogleVersionSettings));
+      await dispatch(google.patchSettings(settings as GoogleVersion.VoiceSettings));
     } else if (isDialogflowPlatform(platform)) {
-      await dispatch(dialogflow.patchSettings(settings as DialogflowVersion.GoogleDFESVersionSettings));
+      await dispatch(dialogflow.patchSettings(settings as DFESVersion.Settings));
     } else if (isAnyGeneralPlatform(platform)) {
-      await dispatch(general.patchSettings(settings as GeneralVersion.GeneralVersionSettings));
+      await dispatch(general.patchSettings(settings as VoiceflowVersion.Settings));
     }
   };
 
@@ -64,19 +64,19 @@ export const updateLocales =
 
     if (isAtomicActions) {
       switch (platform) {
-        case GeneralConstants.PlatformType.ALEXA:
-          dispatch(alexa.patchPublishing({ locales: locales as unknown as AlexaVersion.AlexaVersionPublishing['locales'] }));
+        case VoiceflowConstants.PlatformType.ALEXA:
+          dispatch(alexa.patchPublishing({ locales: locales as unknown as AlexaVersion.Publishing['locales'] }));
           return;
-        case GeneralConstants.PlatformType.GOOGLE:
+        case VoiceflowConstants.PlatformType.GOOGLE:
           dispatch(google.patchPublishing({ locales: locales as GoogleConstants.Locale[] }));
           return;
-        case GeneralConstants.PlatformType.DIALOGFLOW_ES_CHAT:
-        case GeneralConstants.PlatformType.DIALOGFLOW_ES_VOICE:
-          dispatch(dialogflow.patchPublishing({ locales: locales as DialogflowConstants.Locale[] }));
+        case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT:
+        case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE:
+          dispatch(dialogflow.patchPublishing({ locales: locales as DFESConstants.Locale[] }));
           return;
-        case GeneralConstants.PlatformType.GENERAL:
+        case VoiceflowConstants.PlatformType.GENERAL:
         default:
-          await dispatch(general.patchSettings({ locales: locales as GeneralConstants.Locale[] }));
+          await dispatch(general.patchSettings({ locales: locales as VoiceflowConstants.Locale[] }));
       }
     } else {
       Errors.assertVersionID(versionID);
@@ -84,19 +84,19 @@ export const updateLocales =
       await client.platform(platform).version.updatePublishing(versionID, { locales: locales as any });
 
       switch (platform) {
-        case GeneralConstants.PlatformType.ALEXA:
-          dispatch(alexa.updatePublishing(versionID, { locales: locales as unknown as AlexaVersion.AlexaVersionPublishing['locales'] }));
+        case VoiceflowConstants.PlatformType.ALEXA:
+          dispatch(alexa.updatePublishing(versionID, { locales: locales as unknown as AlexaVersion.Publishing['locales'] }));
           return;
-        case GeneralConstants.PlatformType.GOOGLE:
+        case VoiceflowConstants.PlatformType.GOOGLE:
           dispatch(google.updatePublishing(versionID, { locales: locales as GoogleConstants.Locale[] }));
           return;
-        case GeneralConstants.PlatformType.DIALOGFLOW_ES_CHAT:
-        case GeneralConstants.PlatformType.DIALOGFLOW_ES_VOICE:
-          dispatch(dialogflow.updatePublishing(versionID, { locales: locales as DialogflowConstants.Locale[] }));
+        case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT:
+        case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE:
+          dispatch(dialogflow.updatePublishing(versionID, { locales: locales as DFESConstants.Locale[] }));
           return;
-        case GeneralConstants.PlatformType.GENERAL:
+        case VoiceflowConstants.PlatformType.GENERAL:
         default:
-          dispatch(general.updateSettings(versionID, { locales: locales as GeneralConstants.Locale[] }));
+          dispatch(general.updateSettings(versionID, { locales: locales as VoiceflowConstants.Locale[] }));
       }
     }
   };
@@ -120,14 +120,14 @@ export const updateInvocationName =
     const invocations = Utils.string.arrayStringReplace(activeInvocationName, invocationName, activeInvocations);
 
     switch (platform) {
-      case GeneralConstants.PlatformType.ALEXA:
+      case VoiceflowConstants.PlatformType.ALEXA:
         await dispatch(alexa.patchPublishing({ invocationName, invocations }));
         return;
-      case GeneralConstants.PlatformType.GOOGLE:
+      case VoiceflowConstants.PlatformType.GOOGLE:
         await dispatch(google.patchPublishing({ pronunciation: invocationName, sampleInvocations: invocations }));
         return;
-      case GeneralConstants.PlatformType.DIALOGFLOW_ES_CHAT:
-      case GeneralConstants.PlatformType.DIALOGFLOW_ES_VOICE:
+      case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT:
+      case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE:
         await dispatch(dialogflow.patchPublishing({ pronunciation: invocationName, sampleInvocations: invocations }));
         // eslint-disable-next-line no-useless-return
         return;

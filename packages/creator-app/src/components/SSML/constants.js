@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 
 import { createPlatformSelector } from '@/utils/platform';
@@ -768,9 +768,9 @@ const GENERAL_SSML_META = {
 
 export const getPlatformSSML = createPlatformSelector(
   {
-    [Constants.PlatformType.ALEXA]: ALEXA_SSML_META,
-    [Constants.PlatformType.GOOGLE]: GOOGLE_SSML_META,
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: GOOGLE_DIALOGFLOW_SSML_META,
+    [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_SSML_META,
+    [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_SSML_META,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: GOOGLE_DIALOGFLOW_SSML_META,
   },
   GENERAL_SSML_META
 );

@@ -13,7 +13,7 @@ import {
   ROOT_NODES,
   VOICE_PLATFORMS,
 } from '@realtime-sdk/constants';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 const createBlockTypeGuard =
   <R extends BlockType>(nodes: ReadonlyArray<R>) =>
@@ -21,13 +21,13 @@ const createBlockTypeGuard =
     nodes.includes(type as R);
 
 const createPlatformTypeGuard =
-  <R extends Constants.PlatformType>(platform: R) =>
-  (type?: string | Constants.PlatformType | null): type is R =>
+  <R extends VoiceflowConstants.PlatformType>(platform: R) =>
+  (type?: string | VoiceflowConstants.PlatformType | null): type is R =>
     type === platform;
 
 const createPlatformUnionTypeGuard =
-  <R extends Constants.PlatformType>(platforms: R[] | ReadonlyArray<R>) =>
-  (type?: string | Constants.PlatformType | null): type is R =>
+  <R extends VoiceflowConstants.PlatformType>(platforms: R[] | ReadonlyArray<R>) =>
+  (type?: string | VoiceflowConstants.PlatformType | null): type is R =>
     !!type && platforms.includes(type as R);
 
 export const isRootBlockType = createBlockTypeGuard(ROOT_NODES);
@@ -37,15 +37,15 @@ export const isRootOrMarkupBlockType = createBlockTypeGuard(ROOT_AND_MARKUP_NODE
 export const isMarkupOrCombinedBlockType = createBlockTypeGuard(MARKUP_AND_COMBINED_NODES);
 export const isDiagramReferencesBlockType = createBlockTypeGuard(DIAGRAM_REFERENCE_NODES);
 
-export const isAlexaPlatform = createPlatformTypeGuard(Constants.PlatformType.ALEXA);
-export const isGooglePlatform = createPlatformTypeGuard(Constants.PlatformType.GOOGLE);
-export const isDialogflowChatPlatform = createPlatformTypeGuard(Constants.PlatformType.DIALOGFLOW_ES_CHAT);
-export const isDialogflowVoicePlatform = createPlatformTypeGuard(Constants.PlatformType.DIALOGFLOW_ES_VOICE);
+export const isAlexaPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.ALEXA);
+export const isGooglePlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.GOOGLE);
+export const isDialogflowChatPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT);
+export const isDialogflowVoicePlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE);
 
-export const isIVRPlatform = createPlatformTypeGuard(Constants.PlatformType.IVR);
-export const isGeneralPlatform = createPlatformTypeGuard(Constants.PlatformType.GENERAL);
-export const isChatbotPlatform = createPlatformTypeGuard(Constants.PlatformType.CHATBOT);
-export const isMobileAppPlatform = createPlatformTypeGuard(Constants.PlatformType.MOBILE_APP);
+export const isIVRPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.IVR);
+export const isGeneralPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.GENERAL);
+export const isChatbotPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.CHATBOT);
+export const isMobileAppPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.MOBILE_APP);
 
 export const isVoicePlatform = createPlatformUnionTypeGuard(VOICE_PLATFORMS);
 export const isChatPlatform = createPlatformUnionTypeGuard(CHAT_PLATFORMS);

@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
@@ -104,7 +104,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
             out: {
               dynamic: [{ id: dynamicPortID }],
               builtIn: {
-                [Models.PortType.NEXT]: { id: builtInPortID },
+                [BaseModels.PortType.NEXT]: { id: builtInPortID },
               },
             },
           },
@@ -119,7 +119,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
           in: [inPortID],
           out: {
             dynamic: [dynamicPortID],
-            builtIn: { [Models.PortType.NEXT]: builtInPortID },
+            builtIn: { [BaseModels.PortType.NEXT]: builtInPortID },
           },
         },
       });

@@ -1,6 +1,6 @@
-import { Models } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
@@ -12,7 +12,7 @@ import { NODE_CONFIG } from '../constants';
 export interface StreamStepProps {
   audio: string;
   nodeID: string;
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   nextPortID: string;
   customPause: boolean;
   pausePortID?: string;
@@ -54,10 +54,10 @@ const ConnectedStreamStep: ConnectedStep<Realtime.NodeData.Stream, Realtime.Node
     audio={data.audio && transformVariablesToReadable(data.audio)}
     nodeID={data.nodeID}
     platform={platform}
-    nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
-    pausePortID={ports.out.builtIn[Models.PortType.PAUSE]}
+    nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
+    pausePortID={ports.out.builtIn[BaseModels.PortType.PAUSE]}
     customPause={data.customPause}
-    previousPortID={ports.out.builtIn[Models.PortType.PREVIOUS]}
+    previousPortID={ports.out.builtIn[BaseModels.PortType.PREVIOUS]}
     variant={variant}
   />
 );

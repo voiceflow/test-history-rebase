@@ -1,18 +1,18 @@
-import { Button, Models as BaseModels, Node, Request } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseButton, BaseModels, Node, Request } from '@voiceflow/base-types';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import type { PrototypeContext } from '@/models';
 
-export type PrototypeSettings = Omit<BaseModels.VersionPrototype['settings'], 'layout'> & {
+export type PrototypeSettings = Omit<BaseModels.Version.PrototypeSettings, 'layout'> & {
   plan: PlanType;
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   layout: PrototypeLayout;
   locales: Realtime.AnyLocale[];
   projectName: string;
   hasPassword: boolean;
-  buttons: Button.ButtonsLayout;
+  buttons: BaseButton.ButtonsLayout;
 };
 
 // context types
@@ -71,7 +71,7 @@ export interface PrototypeState {
   activePathBlockIDs: string[];
   activePathLinkIDs: string[];
   inputMode: InputMode;
-  platform?: Constants.PlatformType;
+  platform?: VoiceflowConstants.PlatformType;
   startTime: number;
   contextStep: number;
   contextHistory: Partial<Context>[];

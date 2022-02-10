@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -32,6 +32,6 @@ const ConnectedActionStep: ConnectedStep<Realtime.NodeData.CustomPayload, Realti
   ports,
   data,
   variant,
-}) => <CustomPayloadStep nodeID={data.nodeID} nextPortID={ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />;
+}) => <CustomPayloadStep nodeID={data.nodeID} nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]} variant={variant} />;
 
 export default ConnectedActionStep;

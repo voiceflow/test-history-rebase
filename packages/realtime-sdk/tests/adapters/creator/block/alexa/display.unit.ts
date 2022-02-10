@@ -1,6 +1,6 @@
 import displayAdapter from '@realtime-sdk/adapters/creator/block/alexa/display';
 import { Creator } from '@test/factories';
-import { Node as BaseNode } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { expect } from 'chai';
 
 describe('Adapters | Creator | Block | Alexa | displayAdapter', () => {

@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import React from 'react';
 
 import Section from '@/components/Section';
@@ -6,19 +6,19 @@ import SelectInputGroup from '@/components/SelectInputGroup';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
 const OPTIONS = [
-  Node.Api.APIActionType.GET,
-  Node.Api.APIActionType.POST,
-  Node.Api.APIActionType.PUT,
-  Node.Api.APIActionType.DELETE,
-  Node.Api.APIActionType.PATCH,
+  BaseNode.Api.APIActionType.GET,
+  BaseNode.Api.APIActionType.POST,
+  BaseNode.Api.APIActionType.PUT,
+  BaseNode.Api.APIActionType.DELETE,
+  BaseNode.Api.APIActionType.PATCH,
 ];
 
 const OPTIONS_MAP = {
-  [Node.Api.APIActionType.GET]: 'GET',
-  [Node.Api.APIActionType.POST]: 'POST',
-  [Node.Api.APIActionType.PUT]: 'PUT',
-  [Node.Api.APIActionType.DELETE]: 'DELETE',
-  [Node.Api.APIActionType.PATCH]: 'PATCH',
+  [BaseNode.Api.APIActionType.GET]: 'GET',
+  [BaseNode.Api.APIActionType.POST]: 'POST',
+  [BaseNode.Api.APIActionType.PUT]: 'PUT',
+  [BaseNode.Api.APIActionType.DELETE]: 'DELETE',
+  [BaseNode.Api.APIActionType.PATCH]: 'PATCH',
 };
 
 function RequestTypeStep({ url, selectedAction, onChange }) {
@@ -38,7 +38,7 @@ function RequestTypeStep({ url, selectedAction, onChange }) {
 
   React.useEffect(() => {
     if (!selectedAction) {
-      onChangeAction(Node.Api.APIActionType.GET);
+      onChangeAction(BaseNode.Api.APIActionType.GET);
     }
   }, [onChangeAction, selectedAction]);
 
@@ -46,7 +46,7 @@ function RequestTypeStep({ url, selectedAction, onChange }) {
     <Section>
       <FormControl label="Request URL" contentBottomUnits={0}>
         <SelectInputGroup
-          value={selectedAction || Node.Api.APIActionType.GET}
+          value={selectedAction || BaseNode.Api.APIActionType.GET}
           options={OPTIONS}
           onSelect={onChangeAction}
           inputValue={url}

@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -43,8 +43,8 @@ const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.Node
     <IntentStep
       label={intentMap[intent!] ? prettifyIntentName(intentMap[intent!].name) : null}
       nodeID={data.nodeID}
-      isLocal={availability === Node.Intent.IntentAvailability.LOCAL}
-      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
+      isLocal={availability === BaseNode.Intent.IntentAvailability.LOCAL}
+      nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       variant={variant}
     />
   );

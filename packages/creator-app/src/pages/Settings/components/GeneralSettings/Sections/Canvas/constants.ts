@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 
 import { ControlScheme, ZoomType } from '@/components/Canvas/constants';
 
@@ -18,6 +18,6 @@ export const ZOOM_OPTIONS = [
 ];
 
 export const LINK_TYPE_OPTIONS = [
-  { id: BaseModels.ProjectLinkType.STRAIGHT, label: 'Straight' },
-  { id: BaseModels.ProjectLinkType.CURVED, label: 'Curved' },
+  { id: BaseModels.Project.LinkType.STRAIGHT, label: 'Straight' },
+  { id: BaseModels.Project.LinkType.CURVED, label: 'Curved' },
 ];

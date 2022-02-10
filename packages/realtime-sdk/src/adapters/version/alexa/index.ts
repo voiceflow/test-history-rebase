@@ -1,7 +1,7 @@
 import { Version } from '@realtime-sdk/models';
 import { getPlatformGlobalVariables } from '@realtime-sdk/utils/globalVariables';
-import { Constants as AlexaConstants, Version as AlexaVersion } from '@voiceflow/alexa-types';
-import { Constants } from '@voiceflow/general-types';
+import { AlexaConstants, AlexaVersion } from '@voiceflow/alexa-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
@@ -9,9 +9,9 @@ import _omit from 'lodash/omit';
 import baseVersionAdapter from '../base';
 import createSessionAdapter from '../session';
 
-const sessionAdapter = createSessionAdapter<AlexaConstants.Voice>({ platform: Constants.PlatformType.ALEXA });
+const sessionAdapter = createSessionAdapter<AlexaConstants.Voice>({ platform: VoiceflowConstants.PlatformType.ALEXA });
 
-const alexaVersionAdapter = createAdapter<AlexaVersion.AlexaVersion, Version<AlexaVersion.AlexaVersionData>>(
+const alexaVersionAdapter = createAdapter<AlexaVersion.Version, Version<AlexaVersion.PlatformData>>(
   ({
     variables,
     platformData: {
@@ -25,9 +25,9 @@ const alexaVersionAdapter = createAdapter<AlexaVersion.AlexaVersion, Version<Ale
 
     status,
     session: sessionAdapter.fromDB(session, { defaultVoice: settings.defaultVoice }),
-    settings: _omit(AlexaVersion.defaultAlexaVersionSettings(settings), 'session'),
-    variables: variables.filter((variable) => !getPlatformGlobalVariables(Constants.PlatformType.ALEXA).includes(variable)),
-    publishing: AlexaVersion.defaultAlexaVersionPublishing(publishing),
+    settings: _omit(AlexaVersion.defaultSettings(settings), 'session'),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.ALEXA).includes(variable)),
+    publishing: AlexaVersion.defaultPublishing(publishing),
   }),
   () => {
     throw new AdapterNotImplementedError();

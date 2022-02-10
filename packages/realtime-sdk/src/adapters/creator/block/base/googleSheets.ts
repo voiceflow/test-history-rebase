@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter } from '../utils';
 
-const googleSheetsAdapter = createBlockAdapter<Node.GoogleSheets.StepData, NodeData.GoogleSheets>(
+const googleSheetsAdapter = createBlockAdapter<BaseNode.GoogleSheets.StepData, NodeData.GoogleSheets>(
   ({ user, sheet, endRow, mapping, startRow, rowNumber, rowValues, matchValue, spreadsheet, headerColumn, selectedAction }) => ({
     user,
     sheet,
@@ -17,7 +17,7 @@ const googleSheetsAdapter = createBlockAdapter<Node.GoogleSheets.StepData, NodeD
     match_value: matchValue,
     header_column: headerColumn,
     selectedAction: selectedAction ?? undefined,
-    selectedIntegration: Node.Utils.IntegrationType.GOOGLE_SHEETS,
+    selectedIntegration: BaseNode.Utils.IntegrationType.GOOGLE_SHEETS,
   }),
   ({
     user,
@@ -42,8 +42,8 @@ const googleSheetsAdapter = createBlockAdapter<Node.GoogleSheets.StepData, NodeD
     matchValue: match_value,
     spreadsheet,
     headerColumn: header_column,
-    selectedAction: selectedAction as null | Node.GoogleSheets.GoogleSheetsActionType,
-    selectedIntegration: Node.Utils.IntegrationType.GOOGLE_SHEETS,
+    selectedAction: selectedAction as null | BaseNode.GoogleSheets.GoogleSheetsActionType,
+    selectedIntegration: BaseNode.Utils.IntegrationType.GOOGLE_SHEETS,
   })
 );
 

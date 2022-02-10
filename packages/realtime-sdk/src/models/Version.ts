@@ -1,21 +1,25 @@
-import { Constants as AlexaConstants, Version as AlexaVersion } from '@voiceflow/alexa-types';
-import { Models as BaseModels } from '@voiceflow/base-types';
-import { Version as ChatVersion } from '@voiceflow/chat-types';
+import { AlexaConstants, AlexaVersion } from '@voiceflow/alexa-types';
+import { BaseModels } from '@voiceflow/base-types';
+import { ChatVersion } from '@voiceflow/chat-types';
 import { Nullable } from '@voiceflow/common';
-import { Constants as GeneralConstants, Version as GeneralVersion } from '@voiceflow/general-types';
-import { Constants as DialogflowConstants, Version as DialogflowVersion } from '@voiceflow/google-dfes-types';
-import { Constants as GoogleConstants, Version as GoogleVersion } from '@voiceflow/google-types';
-import { Version as VoiceVersion } from '@voiceflow/voice-types';
+import { DFESConstants, DFESVersion } from '@voiceflow/google-dfes-types';
+import { GoogleConstants, GoogleVersion } from '@voiceflow/google-types';
+import { VoiceVersion } from '@voiceflow/voice-types';
+import { VoiceflowConstants, VoiceflowVersion } from '@voiceflow/voiceflow-types';
 
 export type DBVersion<
-  P extends BaseModels.VersionPlatformData,
+  P extends BaseModels.Version.PlatformData,
   C extends BaseModels.BaseCommand = BaseModels.BaseCommand,
   L extends string = string
-> = BaseModels.Version<P, C, L>;
+> = BaseModels.Version.Model<P, C, L>;
 
-export type AnyDBVersion = AlexaVersion.AlexaVersion | GeneralVersion.GeneralVersion | GoogleVersion.GoogleVersion | ChatVersion.ChatVersion;
+export type AnyDBVersion = AlexaVersion.Version | VoiceflowVersion.Version | GoogleVersion.VoiceVersion | DFESVersion.Version;
 
-export interface Version<P extends BaseModels.VersionPlatformData<VoiceVersion.VoiceVersionSettings<string> | ChatVersion.ChatVersionSettings, any>>
+interface BasePlatformData extends BaseModels.Version.PlatformData<VoiceVersion.Settings<string> | ChatVersion.Settings, any> {
+  status?: any;
+}
+
+export interface Version<P extends BasePlatformData>
   extends Pick<DBVersion<P>, 'creatorID' | 'variables' | 'projectID' | 'rootDiagramID'>,
     Required<Pick<DBVersion<P>, 'folders' | 'topics' | 'components'>> {
   id: string;
@@ -37,33 +41,42 @@ export namespace Version {
   }
 }
 
-export type AnyVersionSettings =
-  | AlexaVersion.AlexaVersionSettings
-  | GoogleVersion.GoogleVersionSettings
-  | GeneralVersion.GeneralVersionSettings
-  | DialogflowVersion.GoogleDFESVersionSettings
-  | ChatVersion.ChatVersionSettings;
-export type AnyVersionPublishing =
-  | AlexaVersion.AlexaVersionPublishing
-  | GoogleVersion.GoogleVersionPublishing
-  | DialogflowVersion.GoogleDFESVersionPublishing;
+export type AnyVoiceVersionSettings =
+  | AlexaVersion.Settings
+  | DFESVersion.VoiceSettings
+  | GoogleVersion.VoiceSettings
+  | VoiceflowVersion.VoiceSettings;
+
+export type AnyChatVersionSettings = DFESVersion.ChatSettings | VoiceflowVersion.ChatSettings;
+
+export type AnyVersionSettings = AnyVoiceVersionSettings | AnyChatVersionSettings;
+
+export type AnyVoiceVersionPublishing = AlexaVersion.Publishing | DFESVersion.VoicePublishing | GoogleVersion.VoicePublishing;
+
+export type AnyChatVersionPublishing = DFESVersion.ChatPublishing;
+
+export type AnyVersionPublishing = AnyVoiceVersionPublishing | AnyChatVersionPublishing;
+
 export type AnyVoiceVersionPlatformData =
-  | AlexaVersion.AlexaVersionData
-  | GoogleVersion.GoogleVersionData
-  | GeneralVersion.GeneralVersionData
-  | DialogflowVersion.GoogleDFESVersionData;
-export type AnyVersionPlatformData = AnyVoiceVersionPlatformData | ChatVersion.ChatVersionData;
-export type AnyLocale = AlexaConstants.Locale | GoogleConstants.Locale | GeneralConstants.Locale | DialogflowConstants.Locale;
-export type AnyVoice = AlexaConstants.Voice | GoogleConstants.Voice | GeneralConstants.Voice;
+  | AlexaVersion.PlatformData
+  | DFESVersion.VoicePlatformData
+  | GoogleVersion.VoicePlatformData
+  | VoiceflowVersion.VoicePlatformData;
 
-export type AlexaVersion = Version<AlexaVersion.AlexaVersionData>;
-export type GoogleVersion = Version<GoogleVersion.GoogleVersionData>;
-export type DialogflowVersion = Version<DialogflowVersion.GoogleDFESVersionData>;
-export type GeneralVersion = Version<GeneralVersion.GeneralVersionData>;
-export type ChatVersion = Version<ChatVersion.ChatVersionData>;
+export type AnyChatVersionPlatformData = AlexaVersion.PlatformData | DFESVersion.ChatPlatformData | VoiceflowVersion.ChatPlatformData;
 
-export type AnyVersion = AlexaVersion | GoogleVersion | GeneralVersion | DialogflowVersion | ChatVersion;
+export type AnyVersionPlatformData = AnyVoiceVersionPlatformData | AnyChatVersionPlatformData;
 
-export type VersionIntent<T extends BaseModels.VersionPlatformData> = T['intents'][number];
+export type AnyLocale = AlexaConstants.Locale | GoogleConstants.Locale | VoiceflowConstants.Locale | DFESConstants.Locale;
+export type AnyVoice = AlexaConstants.Voice | GoogleConstants.Voice | VoiceflowConstants.Voice;
 
-export type VersionSlot<T extends BaseModels.VersionPlatformData> = T['slots'][number];
+export type AlexaVersion = Version<AlexaVersion.PlatformData>;
+export type GoogleVersion = Version<GoogleVersion.VoicePlatformData>;
+export type VoiceflowVersion = Version<VoiceflowVersion.PlatformData>;
+export type DialogflowVersion = Version<DFESVersion.PlatformData>;
+
+export type AnyVersion = AlexaVersion | GoogleVersion | VoiceflowVersion | DialogflowVersion;
+
+export type VersionIntent<T extends BaseModels.Version.PlatformData> = T['intents'][number];
+
+export type VersionSlot<T extends BaseModels.Version.PlatformData> = T['slots'][number];

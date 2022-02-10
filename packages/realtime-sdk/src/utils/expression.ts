@@ -1,5 +1,5 @@
 import { ExpressionData, ExpressionV2, LogicGroupData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
 import isVarName from 'is-var-name';
 import isNumber from 'lodash/isNumber';
@@ -12,38 +12,38 @@ const SINGLE_BRACKET_REGEXP = /'/g;
 const SINGLE_QUOTES = /^'.*'$/m;
 
 const EXPRESSION_OPERATION_SYMBOL_MAP: Record<string, string> = {
-  [Node.Utils.ExpressionType.OR]: '||',
-  [Node.Utils.ExpressionType.AND]: '&&',
-  [Node.Utils.ExpressionType.PLUS]: '+',
-  [Node.Utils.ExpressionType.MINUS]: '-',
-  [Node.Utils.ExpressionType.TIMES]: '*',
-  [Node.Utils.ExpressionType.DIVIDE]: '/',
+  [BaseNode.Utils.ExpressionType.OR]: '||',
+  [BaseNode.Utils.ExpressionType.AND]: '&&',
+  [BaseNode.Utils.ExpressionType.PLUS]: '+',
+  [BaseNode.Utils.ExpressionType.MINUS]: '-',
+  [BaseNode.Utils.ExpressionType.TIMES]: '*',
+  [BaseNode.Utils.ExpressionType.DIVIDE]: '/',
 
-  [Node.Utils.ExpressionType.EQUALS]: '==',
-  [Node.Utils.ExpressionType.LESS]: '<',
-  [Node.Utils.ExpressionType.GREATER]: '>',
+  [BaseNode.Utils.ExpressionType.EQUALS]: '==',
+  [BaseNode.Utils.ExpressionType.LESS]: '<',
+  [BaseNode.Utils.ExpressionType.GREATER]: '>',
 
-  [Node.Utils.ExpressionTypeV2.NOT_EQUAL]: '!==',
-  [Node.Utils.ExpressionTypeV2.GREATER_OR_EQUAL]: '>=',
-  [Node.Utils.ExpressionTypeV2.LESS_OR_EQUAL]: '<=',
-  [Node.Utils.ExpressionTypeV2.CONTAINS]: Node.Utils.ExpressionTypeV2.CONTAINS,
-  [Node.Utils.ExpressionTypeV2.NOT_CONTAIN]: 'notContain',
-  [Node.Utils.ExpressionTypeV2.STARTS_WITH]: '^',
-  [Node.Utils.ExpressionTypeV2.ENDS_WITH]: '$',
-  [Node.Utils.ExpressionTypeV2.HAS_VALUE]: '!',
-  [Node.Utils.ExpressionTypeV2.IS_EMPTY]: 'isEmpty',
+  [BaseNode.Utils.ExpressionTypeV2.NOT_EQUAL]: '!==',
+  [BaseNode.Utils.ExpressionTypeV2.GREATER_OR_EQUAL]: '>=',
+  [BaseNode.Utils.ExpressionTypeV2.LESS_OR_EQUAL]: '<=',
+  [BaseNode.Utils.ExpressionTypeV2.CONTAINS]: BaseNode.Utils.ExpressionTypeV2.CONTAINS,
+  [BaseNode.Utils.ExpressionTypeV2.NOT_CONTAIN]: 'notContain',
+  [BaseNode.Utils.ExpressionTypeV2.STARTS_WITH]: '^',
+  [BaseNode.Utils.ExpressionTypeV2.ENDS_WITH]: '$',
+  [BaseNode.Utils.ExpressionTypeV2.HAS_VALUE]: '!',
+  [BaseNode.Utils.ExpressionTypeV2.IS_EMPTY]: 'isEmpty',
 };
 
 export const ADVANCE_LOGIC_TYPES = [
-  Node.Utils.ExpressionType.ADVANCE,
-  Node.Utils.ExpressionType.NOT,
-  Node.Utils.ExpressionType.MINUS,
-  Node.Utils.ExpressionType.DIVIDE,
-  Node.Utils.ExpressionType.PLUS,
-  Node.Utils.ExpressionType.TIMES,
+  BaseNode.Utils.ExpressionType.ADVANCE,
+  BaseNode.Utils.ExpressionType.NOT,
+  BaseNode.Utils.ExpressionType.MINUS,
+  BaseNode.Utils.ExpressionType.DIVIDE,
+  BaseNode.Utils.ExpressionType.PLUS,
+  BaseNode.Utils.ExpressionType.TIMES,
 ];
 
-const expressionfyV2Value = (expression: Node.Utils.ValueExpression): string | number => {
+const expressionfyV2Value = (expression: BaseNode.Utils.ValueExpression): string | number => {
   if (isNumber(expression.value)) {
     return expression.value;
   }
@@ -54,16 +54,16 @@ const expressionfyV2Value = (expression: Node.Utils.ValueExpression): string | n
   return Number.isNaN(strNumberValue) ? `'${strValue.replace(SINGLE_BRACKET_REGEXP, "\\'")}'` : strNumberValue;
 };
 
-export const expressionfyV2 = (expression: Node.Utils.Expression): string | number => {
-  if (expression.type === Node.Utils.ExpressionType.VALUE) {
+export const expressionfyV2 = (expression: BaseNode.Utils.Expression): string | number => {
+  if (expression.type === BaseNode.Utils.ExpressionType.VALUE) {
     return expressionfyV2Value(expression);
   }
 
-  if (expression.type === Node.Utils.ExpressionType.VARIABLE) {
+  if (expression.type === BaseNode.Utils.ExpressionType.VARIABLE) {
     return isVarName(expression.value) ? `{{[${expression.value}].${expression.value}}}` : 0;
   }
 
-  if (expression.type === Node.Utils.ExpressionType.ADVANCE) {
+  if (expression.type === BaseNode.Utils.ExpressionType.ADVANCE) {
     if (Array.isArray(expression.value)) {
       return mathJStoJSParser(
         expression.value.reduce((acc, curr) => `${acc}${acc ? EXPRESSION_OPERATION_SYMBOL_MAP[expression.type] : ''}${expressionfyV2(curr)}`, '')
@@ -73,7 +73,7 @@ export const expressionfyV2 = (expression: Node.Utils.Expression): string | numb
     return mathJStoJSParser(expression.value);
   }
 
-  if (expression.type === Node.Utils.ExpressionType.NOT) {
+  if (expression.type === BaseNode.Utils.ExpressionType.NOT) {
     return `!${expressionfyV2(expression.value)}`;
   }
 
@@ -83,8 +83,8 @@ export const expressionfyV2 = (expression: Node.Utils.Expression): string | numb
 /**
  *  gets the list of deepest expressions
  */
-export const flatten = (exps: Node.Utils.Expression[]): Node.Utils.GenericExpression<Node.Utils.ExpressionType, string>[] =>
-  exps.reduce<Node.Utils.GenericExpression<Node.Utils.ExpressionType, string>[]>((acc, cur) => {
+export const flatten = (exps: BaseNode.Utils.Expression[]): BaseNode.Utils.GenericExpression<BaseNode.Utils.ExpressionType, string>[] =>
+  exps.reduce<BaseNode.Utils.GenericExpression<BaseNode.Utils.ExpressionType, string>[]>((acc, cur) => {
     const { value } = cur;
 
     if (Array.isArray(value)) {
@@ -98,14 +98,14 @@ export const flatten = (exps: Node.Utils.Expression[]): Node.Utils.GenericExpres
     return [...acc, ...flatten([value])];
   }, []);
 
-export const getHighestDepth = (expression: Node.Utils.Expression): number =>
+export const getHighestDepth = (expression: BaseNode.Utils.Expression): number =>
   flatten([expression]).reduce((acc, { depth }) => Math.max(acc, depth), 0);
 
-export const isDeepestExpressionAdvance = (expression: Node.Utils.Expression): boolean =>
+export const isDeepestExpressionAdvance = (expression: BaseNode.Utils.Expression): boolean =>
   flatten([expression]).some(({ type }) => ADVANCE_LOGIC_TYPES.includes(type));
 
-export const hasAdvanceChildExpression = (expression: Node.Utils.Expression): boolean => {
-  if (expression.type === Node.Utils.ExpressionType.ADVANCE || expression.type === Node.Utils.ExpressionType.NOT) {
+export const hasAdvanceChildExpression = (expression: BaseNode.Utils.Expression): boolean => {
+  if (expression.type === BaseNode.Utils.ExpressionType.ADVANCE || expression.type === BaseNode.Utils.ExpressionType.NOT) {
     return true;
   }
 
@@ -124,24 +124,24 @@ export const hasAdvanceChildExpression = (expression: Node.Utils.Expression): bo
  */
 
 const EXPRESSIONV2_OPERATION_SYMBOL_MAP: Record<string, string> = {
-  [Node.Utils.ExpressionTypeV2.OR]: '||',
-  [Node.Utils.ExpressionTypeV2.AND]: '&&',
-  [Node.Utils.ExpressionTypeV2.EQUALS]: '==',
-  [Node.Utils.ExpressionTypeV2.LESS]: '<',
-  [Node.Utils.ExpressionTypeV2.GREATER]: '>',
-  [Node.Utils.ExpressionTypeV2.NOT_EQUAL]: '!=',
-  [Node.Utils.ExpressionTypeV2.GREATER_OR_EQUAL]: '>=',
-  [Node.Utils.ExpressionTypeV2.LESS_OR_EQUAL]: '<=',
-  [Node.Utils.ExpressionTypeV2.CONTAINS]: 'contains',
-  [Node.Utils.ExpressionTypeV2.NOT_CONTAIN]: 'does not contain',
-  [Node.Utils.ExpressionTypeV2.STARTS_WITH]: 'starts with',
-  [Node.Utils.ExpressionTypeV2.ENDS_WITH]: 'ends with',
-  [Node.Utils.ExpressionTypeV2.HAS_VALUE]: 'has value',
-  [Node.Utils.ExpressionTypeV2.IS_EMPTY]: 'is empty',
+  [BaseNode.Utils.ExpressionTypeV2.OR]: '||',
+  [BaseNode.Utils.ExpressionTypeV2.AND]: '&&',
+  [BaseNode.Utils.ExpressionTypeV2.EQUALS]: '==',
+  [BaseNode.Utils.ExpressionTypeV2.LESS]: '<',
+  [BaseNode.Utils.ExpressionTypeV2.GREATER]: '>',
+  [BaseNode.Utils.ExpressionTypeV2.NOT_EQUAL]: '!=',
+  [BaseNode.Utils.ExpressionTypeV2.GREATER_OR_EQUAL]: '>=',
+  [BaseNode.Utils.ExpressionTypeV2.LESS_OR_EQUAL]: '<=',
+  [BaseNode.Utils.ExpressionTypeV2.CONTAINS]: 'contains',
+  [BaseNode.Utils.ExpressionTypeV2.NOT_CONTAIN]: 'does not contain',
+  [BaseNode.Utils.ExpressionTypeV2.STARTS_WITH]: 'starts with',
+  [BaseNode.Utils.ExpressionTypeV2.ENDS_WITH]: 'ends with',
+  [BaseNode.Utils.ExpressionTypeV2.HAS_VALUE]: 'has value',
+  [BaseNode.Utils.ExpressionTypeV2.IS_EMPTY]: 'is empty',
 };
 
 export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
-  if (expression.type === Node.Utils.ExpressionTypeV2.VALUE) {
+  if (expression.type === BaseNode.Utils.ExpressionTypeV2.VALUE) {
     if (!expression.value) {
       return '';
     }
@@ -156,11 +156,11 @@ export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
     return Number.isNaN(strNumberValue) ? `'${strValue.replace(SINGLE_BRACKET_REGEXP, "\\'")}'` : strValue;
   }
 
-  if (expression.type === Node.Utils.ExpressionTypeV2.VARIABLE) {
+  if (expression.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE) {
     return `{${expression.value.replace(SLOT_REGEXP, '$1')}}`;
   }
 
-  if (expression.type === Node.Utils.ExpressionTypeV2.ADVANCE) {
+  if (expression.type === BaseNode.Utils.ExpressionTypeV2.ADVANCE) {
     if (!expression.value || expression.value === '0') {
       return '';
     }
@@ -173,15 +173,15 @@ export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
 
 export const expressionfyLogicInterface = (exp: ExpressionV2 | LogicGroupData): string => {
   switch (exp.logicInterface) {
-    case Node.Utils.ConditionsLogicInterface.VALUE:
-    case Node.Utils.ConditionsLogicInterface.VARIABLE:
+    case BaseNode.Utils.ConditionsLogicInterface.VALUE:
+    case BaseNode.Utils.ConditionsLogicInterface.VARIABLE:
       return (exp.value as Array<ExpressionV2>).reduce((acc: string, curr: ExpressionV2) => {
         // eslint-disable-next-line no-param-reassign, sonarjs/no-nested-template-literals
         acc = `${acc}${acc ? ` ${EXPRESSIONV2_OPERATION_SYMBOL_MAP[exp.type!]} ` : ''}${expressionfyLogicUnit(curr)}`;
 
         return acc;
       }, '');
-    case Node.Utils.ConditionsLogicInterface.LOGIC_GROUP:
+    case BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP:
       return expressionPreview(exp as LogicGroupData);
     default:
       return expressionfyLogicUnit(exp as ExpressionV2);
@@ -201,8 +201,8 @@ export const expressionPreview = (expression: ExpressionData | LogicGroupData): 
   return expression.value.length > 0 ? expressionfyLogicInterface(expression?.value[0]) : '';
 };
 
-export const sanitizeSetValue = (exp: string, type: Node.Utils.ExpressionTypeV2) => {
-  if (exp.match(SINGLE_QUOTES) && type === Node.Utils.ExpressionTypeV2.VALUE) {
+export const sanitizeSetValue = (exp: string, type: BaseNode.Utils.ExpressionTypeV2) => {
+  if (exp.match(SINGLE_QUOTES) && type === BaseNode.Utils.ExpressionTypeV2.VALUE) {
     return exp.substring(1, exp.length - 1);
   }
   return exp;

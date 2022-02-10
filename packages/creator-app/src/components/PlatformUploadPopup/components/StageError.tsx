@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import { Box } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isString from 'lodash/isString';
 import React from 'react';
 
@@ -17,7 +17,7 @@ import { useSelector } from '@/hooks';
 import StageContainer from './StageContainer';
 import StageHeader from './StageHeader';
 
-const getTitle = ({ errorType, message }: AnyErrorStageData, platform: Constants.PlatformType) => {
+const getTitle = ({ errorType, message }: AnyErrorStageData, platform: VoiceflowConstants.PlatformType) => {
   if (IsPublishJobRenderingError(errorType)) {
     return 'Rendering Error';
   }

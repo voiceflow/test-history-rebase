@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
@@ -52,7 +52,7 @@ const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtim
     <ComponentStep
       label={label}
       nodeID={data.nodeID}
-      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
+      nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       onClickComponent={onClickComponent}
       variant={variant}
     />

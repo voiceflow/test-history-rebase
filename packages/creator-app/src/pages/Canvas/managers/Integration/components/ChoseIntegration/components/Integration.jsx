@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import React from 'react';
 
 import { zapierWordmark } from '@/assets';
@@ -18,7 +18,7 @@ const Integration = ({ data, onClick }) => (
 
     <ImageContainer>
       <Icon icon={data.icon} size={70} />
-      {data.type === Node.Utils.IntegrationType.ZAPIER && <ZapierImg src={zapierWordmark} alt="Zapier" height="50" />}
+      {data.type === BaseNode.Utils.IntegrationType.ZAPIER && <ZapierImg src={zapierWordmark} alt="Zapier" height="50" />}
     </ImageContainer>
 
     <Name>{data.text}</Name>

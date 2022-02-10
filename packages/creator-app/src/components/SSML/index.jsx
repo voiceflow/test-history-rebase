@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import cn from 'classnames';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
@@ -47,7 +47,7 @@ const SSML = (
   const SSMLPlaceholder = placeholder ?? platformSSMLMeta.fallbackPlaceholder(voice);
   const { canChangeVoice } = platformSSMLMeta;
   const voiceOptions = React.useMemo(() => platformSSMLMeta.voiceOptions(locales, wavenetVoices.isEnabled), [locales, wavenetVoices.isEnabled]);
-  const hasProjectLevelVoice = platform === Constants.PlatformType.GOOGLE;
+  const hasProjectLevelVoice = platform === VoiceflowConstants.PlatformType.GOOGLE;
 
   const voiceSelectLabel = Utils.string.capitalizeFirstLetter(
     hasProjectLevelVoice ? prettifyGoogleVoicesLong(defaultVoice) : prettifyVoice(voice) || 'Select Voice'

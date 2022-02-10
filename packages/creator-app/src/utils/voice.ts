@@ -1,8 +1,8 @@
-import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
-import { Constants as GeneralConstants } from '@voiceflow/general-types';
-import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
-import { Constants as GoogleConstants } from '@voiceflow/google-types';
+import { DFESConstants } from '@voiceflow/google-dfes-types';
+import { GoogleConstants } from '@voiceflow/google-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { getPlatformValue } from './platform';
 
@@ -85,30 +85,30 @@ export const getGoogleVoiceOptions = ({ locales, useWavenet }: GetVoiceOptionsPa
 };
 
 export const getGoogleDialogflowVoiceOptions = (): VoiceOptionGroup<string>[] => {
-  const allDialogflowLocales = Object.values(DialogflowConstants.Locale);
+  const allDialogflowLocales = Object.values(DFESConstants.Locale);
 
   const localeMeta = allDialogflowLocales.map((locale) => ({
     locale,
-    languageCode: DialogflowConstants.LocaleToVoiceLanguageCode[locale] ?? DialogflowConstants.VoiceLanguageCode.EN_US,
+    languageCode: DFESConstants.LocaleToVoiceLanguageCode[locale] ?? DFESConstants.VoiceLanguageCode.EN_US,
   }));
 
-  const getLangOptions = (languageCode: DialogflowConstants.VoiceLanguageCode) =>
-    DialogflowConstants.VoiceLanguageCodeToVoice[languageCode].flatMap(({ voiceName }) =>
+  const getLangOptions = (languageCode: DFESConstants.VoiceLanguageCode) =>
+    DFESConstants.VoiceLanguageCodeToVoice[languageCode].flatMap(({ voiceName }) =>
       voiceName
         .filter((voiceName) => voiceName.includes(GoogleConstants.VoiceType.STANDARD))
         .map((voiceName) => ({ value: voiceName, label: prettifyGoogleVoicesShort(voiceName) }))
     );
 
   return localeMeta
-    .filter(({ locale }) => DialogflowConstants.LocaleCodeToCountryLanguage[locale])
+    .filter(({ locale }) => DFESConstants.LocaleCodeToCountryLanguage[locale])
     .map(({ locale, languageCode }) => ({
-      label: DialogflowConstants.LocaleCodeToCountryLanguage[locale]!,
+      label: DFESConstants.LocaleCodeToCountryLanguage[locale]!,
       options: getLangOptions(languageCode),
     }));
 };
 
 export const getAzureVoiceOptions = (): VoiceOptionGroup<string>[] =>
-  Object.values(GeneralConstants.AZURE_LOCALE_VOICE_META).map(({ language, voices }) => ({
+  Object.values(VoiceflowConstants.AZURE_LOCALE_VOICE_META).map(({ language, voices }) => ({
     value: language,
     label: language,
     options: voices.map(({ voiceID }) => ({ value: voiceID, label: prettifyAzureVoiceID(voiceID) })),
@@ -124,8 +124,8 @@ export const getGeneralVoiceOptions = ({ useWavenet }: GetVoiceOptionsParams = {
       options: getAlexaVoiceOptions(),
     },
     {
-      value: Utils.string.capitalizeFirstLetter(GeneralConstants.PlatformType.GOOGLE),
-      label: Utils.string.capitalizeFirstLetter(GeneralConstants.PlatformType.GOOGLE),
+      value: Utils.string.capitalizeFirstLetter(VoiceflowConstants.PlatformType.GOOGLE),
+      label: Utils.string.capitalizeFirstLetter(VoiceflowConstants.PlatformType.GOOGLE),
       options: getGoogleVoiceOptions({ locales: allGoogleLocales, useWavenet }),
     },
     {
@@ -136,13 +136,13 @@ export const getGeneralVoiceOptions = ({ useWavenet }: GetVoiceOptionsParams = {
   ];
 };
 
-export const getPlatformVoiceOptions = (platform: GeneralConstants.PlatformType, params: GetVoiceOptionsParams): VoiceOptionGroup<string>[] =>
+export const getPlatformVoiceOptions = (platform: VoiceflowConstants.PlatformType, params: GetVoiceOptionsParams): VoiceOptionGroup<string>[] =>
   getPlatformValue(
     platform,
     {
-      [GeneralConstants.PlatformType.ALEXA]: getAlexaVoiceOptions,
-      [GeneralConstants.PlatformType.GOOGLE]: getGoogleVoiceOptions,
-      [GeneralConstants.PlatformType.DIALOGFLOW_ES_VOICE]: getGoogleDialogflowVoiceOptions,
+      [VoiceflowConstants.PlatformType.ALEXA]: getAlexaVoiceOptions,
+      [VoiceflowConstants.PlatformType.GOOGLE]: getGoogleVoiceOptions,
+      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: getGoogleDialogflowVoiceOptions,
     },
     getGeneralVoiceOptions
   )(params);

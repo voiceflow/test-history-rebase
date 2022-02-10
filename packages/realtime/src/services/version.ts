@@ -1,7 +1,7 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { AbstractControl } from '../control';
 
@@ -30,13 +30,13 @@ class VersionService extends AbstractControl {
     return canRead;
   }
 
-  public async get<P extends BaseModels.VersionPlatformData>(creatorID: number, versionID: string): Promise<BaseModels.Version<P>> {
+  public async get<P extends BaseModels.Version.PlatformData>(creatorID: number, versionID: string): Promise<BaseModels.Version.Model<P>> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.version.get(versionID);
   }
 
-  public async getPlatform(creatorID: number, versionID: string): Promise<Constants.PlatformType> {
+  public async getPlatform(creatorID: number, versionID: string): Promise<VoiceflowConstants.PlatformType> {
     const version = await this.get(creatorID, versionID);
 
     return this.services.project.getPlatform(creatorID, version.projectID);
@@ -85,7 +85,7 @@ class VersionService extends AbstractControl {
     await client.version.platform(platform).patchPublishing(versionID, publishing);
   }
 
-  public async patchPlatformData<T extends BaseModels.VersionPlatformData>(
+  public async patchPlatformData<T extends BaseModels.Version.PlatformData>(
     creatorID: number,
     versionID: string,
     platformData: Partial<T>
@@ -121,7 +121,7 @@ class VersionService extends AbstractControl {
   public async reorderTopics(creatorID: number, versionID: string, from: number, to: number): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    const { topics } = await client.version.get<{ topics?: BaseModels.VersionFolderItem[] }>(versionID, ['topics']);
+    const { topics } = await client.version.get<{ topics?: BaseModels.Version.FolderItem[] }>(versionID, ['topics']);
 
     if (!topics?.length) {
       throw new Error('Topics are empty');
@@ -133,7 +133,7 @@ class VersionService extends AbstractControl {
   public async reorderComponents(creatorID: number, versionID: string, from: number, to: number): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    const { components } = await client.version.get<{ components?: BaseModels.VersionFolderItem[] }>(versionID, ['components']);
+    const { components } = await client.version.get<{ components?: BaseModels.Version.FolderItem[] }>(versionID, ['components']);
 
     if (!components?.length) {
       throw new Error('Components are empty');

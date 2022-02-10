@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -18,9 +18,9 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Stream, Realtime.NodeData
         out: {
           dynamic: [],
           builtIn: {
-            [Models.PortType.NEXT]: { label: Models.PortType.NEXT },
-            [Models.PortType.PAUSE]: { label: Models.PortType.PAUSE },
-            [Models.PortType.PREVIOUS]: { label: Models.PortType.PREVIOUS },
+            [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },
+            [BaseModels.PortType.PAUSE]: { label: BaseModels.PortType.PAUSE },
+            [BaseModels.PortType.PREVIOUS]: { label: BaseModels.PortType.PREVIOUS },
           },
         },
       },

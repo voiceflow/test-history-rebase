@@ -1,5 +1,5 @@
-import { PlatformType } from '@voiceflow/general-types/build/common/constants';
 import { Box, BoxFlex, Flex, Input } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
@@ -14,7 +14,7 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useFeature, usePermission, useSelector } from '@/hooks';
 import ColorInput from '@/pages/Canvas/header/ActionGroup/components/ShareProject/components/AppearanceAndBranding/ColorInput';
 
-const MESSAGE_DELAY_SUPPORTED_PLATFORMS = [PlatformType.CHATBOT, PlatformType.DIALOGFLOW_ES_CHAT];
+const MESSAGE_DELAY_SUPPORTED_PLATFORMS = [VoiceflowConstants.PlatformType.CHATBOT, VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT];
 
 const TestToolSettings: React.FC = () => {
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);

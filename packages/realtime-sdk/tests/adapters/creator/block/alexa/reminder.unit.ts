@@ -1,12 +1,12 @@
 import reminderAdapter from '@realtime-sdk/adapters/creator/block/alexa/reminder';
 import { Creator } from '@test/factories';
-import { Node } from '@voiceflow/alexa-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
 import { expect } from 'chai';
 
 describe('Adapters | Creator | Block | Alexa | reminderAdapter', () => {
   describe('when transforming from db', () => {
     it('includes reminder data', () => {
-      const reminder = Creator.Block.Alexa.Reminder({ type: Node.Reminder.ReminderType.SCHEDULED_RELATIVE });
+      const reminder = Creator.Block.Alexa.Reminder({ type: AlexaNode.Reminder.ReminderType.SCHEDULED_RELATIVE });
       const data = Creator.Block.Alexa.ReminderStepData({ reminder });
 
       const result = reminderAdapter.fromDB(data);
@@ -25,23 +25,23 @@ describe('Adapters | Creator | Block | Alexa | reminderAdapter', () => {
 
     describe('and reminder type is scheduled relative', () => {
       it('returns time type', () => {
-        const reminder = Creator.Block.Alexa.Reminder({ type: Node.Reminder.ReminderType.SCHEDULED_RELATIVE });
+        const reminder = Creator.Block.Alexa.Reminder({ type: AlexaNode.Reminder.ReminderType.SCHEDULED_RELATIVE });
         const data = Creator.Block.Alexa.ReminderStepData({ reminder });
 
         const result = reminderAdapter.fromDB(data);
 
-        expect(result.reminderType).eql(Node.Reminder.ReminderClientType.TIME);
+        expect(result.reminderType).eql(AlexaNode.Reminder.ReminderClientType.TIME);
       });
     });
 
     describe('and reminder type is scheduled absolute', () => {
       it('returns scheduled type', () => {
-        const reminder = Creator.Block.Alexa.Reminder({ type: Node.Reminder.ReminderType.SCHEDULED_ABSOLUTE });
+        const reminder = Creator.Block.Alexa.Reminder({ type: AlexaNode.Reminder.ReminderType.SCHEDULED_ABSOLUTE });
         const data = Creator.Block.Alexa.ReminderStepData({ reminder });
 
         const result = reminderAdapter.fromDB(data);
 
-        expect(result.reminderType).eql(Node.Reminder.ReminderClientType.SCHEDULED);
+        expect(result.reminderType).eql(AlexaNode.Reminder.ReminderClientType.SCHEDULED);
       });
     });
 

@@ -1,10 +1,11 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/general-types';
+import { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
 import { createBlockAdapter } from '../utils';
 import { voiceButtonsAdapter } from '../voice';
 
-const buttonsAdapter = createBlockAdapter<Node.Buttons.StepData, NodeData.Buttons>(
+// TODO: refactor to use StepData (chat/voice union)
+const buttonsAdapter = createBlockAdapter<VoiceflowNode.Buttons.VoiceStepData, NodeData.Buttons>(
   (data) => voiceButtonsAdapter.fromDB(data),
   (data) => voiceButtonsAdapter.toDB(data)
 );

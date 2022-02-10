@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { useContextApi, useDidUpdateEffect, useSetup, useTeardown, withContext } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -37,7 +37,7 @@ export const PublishProvider: React.FC = ({ children }) => {
   const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
   const platformClient = React.useMemo(() => {
-    const isDialogflowPlatform = platform === Constants.PlatformType.DIALOGFLOW_ES_CHAT || platform === Constants.PlatformType.DIALOGFLOW_ES_VOICE;
+    const isDialogflowPlatform = Realtime.Utils.typeGuards.isDialogflowPlatform(platform);
 
     if (isDialogflowPlatform) {
       return { ...client.platform.google, publish: client.platform.dialogflow.publish };

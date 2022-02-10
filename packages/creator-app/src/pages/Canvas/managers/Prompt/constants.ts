@@ -1,10 +1,9 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
-import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import { NodeConfig } from '../types';
 
@@ -21,14 +20,14 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt, Realtime.NodeData
         in: [{}],
         out: {
           dynamic: [],
-          builtIn: { [Models.PortType.NO_MATCH]: { label: Models.PortType.NO_MATCH } },
+          builtIn: { [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH } },
         },
       },
     },
     data: {
       name: 'Prompt',
       noReply: null,
-      buttons: isChatbotPlatform(platform) ? buttonsFactory() : null,
+      buttons: Realtime.Utils.typeGuards.isChatPlatform(platform) ? buttonsFactory() : null,
       noMatchReprompt: getPlatformNoMatchFactory(platform)({ defaultVoice }),
     },
   }),

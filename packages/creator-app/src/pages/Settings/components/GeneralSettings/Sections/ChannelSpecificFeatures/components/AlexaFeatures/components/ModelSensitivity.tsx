@@ -1,4 +1,4 @@
-import { Version as AlexaVersion } from '@voiceflow/alexa-types';
+import { AlexaVersion } from '@voiceflow/alexa-types';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 

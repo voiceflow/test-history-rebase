@@ -1,19 +1,22 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter, createOutPortsAdapter, nextAndFailOnlyOutPortsAdapter } from '../utils';
 import apiAdapter from './api';
 import googleSheetsAdapter from './googleSheets';
 import zapierAdapter from './zapier';
 
-const integrationAdapter = createBlockAdapter<Node.Api.StepData | Node.Zapier.StepData | Node.GoogleSheets.StepData, NodeData.Integration>(
+const integrationAdapter = createBlockAdapter<
+  BaseNode.Api.StepData | BaseNode.Zapier.StepData | BaseNode.GoogleSheets.StepData,
+  NodeData.Integration
+>(
   (data, ...args) => {
     switch (data.selectedIntegration) {
-      case Node.Utils.IntegrationType.CUSTOM_API:
+      case BaseNode.Utils.IntegrationType.CUSTOM_API:
         return apiAdapter.fromDB(data, ...args);
-      case Node.Utils.IntegrationType.ZAPIER:
+      case BaseNode.Utils.IntegrationType.ZAPIER:
         return zapierAdapter.fromDB(data, ...args);
-      case Node.Utils.IntegrationType.GOOGLE_SHEETS:
+      case BaseNode.Utils.IntegrationType.GOOGLE_SHEETS:
         return googleSheetsAdapter.fromDB(data, ...args);
       default:
         throw new Error('Integration adapter is not implemented yet!');
@@ -21,11 +24,11 @@ const integrationAdapter = createBlockAdapter<Node.Api.StepData | Node.Zapier.St
   },
   (data, ...args) => {
     switch (data.selectedIntegration) {
-      case Node.Utils.IntegrationType.CUSTOM_API:
+      case BaseNode.Utils.IntegrationType.CUSTOM_API:
         return apiAdapter.toDB(data, ...args);
-      case Node.Utils.IntegrationType.ZAPIER:
+      case BaseNode.Utils.IntegrationType.ZAPIER:
         return zapierAdapter.toDB(data, ...args);
-      case Node.Utils.IntegrationType.GOOGLE_SHEETS:
+      case BaseNode.Utils.IntegrationType.GOOGLE_SHEETS:
         return googleSheetsAdapter.toDB(data, ...args);
       default:
         throw new Error('Integration adapter is not implemented yet!');

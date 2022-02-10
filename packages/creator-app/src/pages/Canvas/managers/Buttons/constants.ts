@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -7,7 +7,7 @@ import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
 
-export const factory = (): Node.Buttons.Button => ({ id: Utils.id.cuid.slug(), name: '', actions: [Node.Buttons.ButtonAction.PATH] });
+export const factory = (): BaseNode.Buttons.Button => ({ id: Utils.id.cuid.slug(), name: '', actions: [BaseNode.Buttons.ButtonAction.PATH] });
 
 export enum ButtonAction {
   FOLLOW_PATH = 'FOLLOW_PATH',
@@ -31,7 +31,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeDat
         in: [{}],
         out: {
           dynamic: [{}],
-          builtIn: { [Models.PortType.NO_MATCH]: { label: Models.PortType.NO_MATCH } },
+          builtIn: { [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH } },
         },
       },
     },

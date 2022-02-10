@@ -1,17 +1,18 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Constants, Node } from '@voiceflow/general-types';
+import { VoiceflowConstants, VoiceflowNode } from '@voiceflow/voiceflow-types';
 
 import { chipsToIntentButtons, createBlockAdapter } from '../utils';
 import { voiceInteractionAdapter } from '../voice';
 
-const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeData.Interaction>(
+// TODO: refactor to use StepData (chat/voice union)
+const interactionAdapter = createBlockAdapter<VoiceflowNode.Interaction.VoiceStepData, NodeData.Interaction>(
   ({ chips, buttons, ...voiceData }) => ({
-    ...voiceInteractionAdapter.fromDB(voiceData, { platform: Constants.PlatformType.GENERAL }),
+    ...voiceInteractionAdapter.fromDB(voiceData, { platform: VoiceflowConstants.PlatformType.GENERAL }),
 
     buttons: buttons ?? chipsToIntentButtons(chips),
   }),
   ({ buttons, ...voiceData }) => ({
-    ...voiceInteractionAdapter.toDB(voiceData, { platform: Constants.PlatformType.GENERAL }),
+    ...voiceInteractionAdapter.toDB(voiceData, { platform: VoiceflowConstants.PlatformType.GENERAL }),
 
     chips: null,
     buttons,

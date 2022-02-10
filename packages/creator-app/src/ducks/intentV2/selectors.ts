@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { Constants as GeneralConstants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import uniqBy from 'lodash/uniqBy';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
@@ -56,7 +56,7 @@ export const allPlatformIntentsSelector = createSelector(
   [allCustomIntentsSelector, ProjectV2.active.platformSelector, VersionV2.active.localesSelector],
   (prettifiedIntents, platform, locales) => {
     if (isAnyGeneralPlatform(platform)) {
-      const lang = (locales[0] ?? GeneralConstants.Locale.EN_US).split('-')[0];
+      const lang = (locales[0] ?? VoiceflowConstants.Locale.EN_US).split('-')[0];
 
       return uniqBy([...prettifiedIntents, ...(GENERAL_BUILT_INS_MAP[lang] || GENERAL_BUILT_INS_MAP.en)], (intent) => intent.id);
     }

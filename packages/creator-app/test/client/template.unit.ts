@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client/template';
 
@@ -14,18 +14,18 @@ suite('Client - Template', ({ expect, stubFetch }) => {
     it('get a platform template', async () => {
       const fetch = stubFetch('apiV2', 'get');
 
-      await client.getPlatformTemplate(Constants.PlatformType.GOOGLE);
+      await client.getPlatformTemplate(VoiceflowConstants.PlatformType.GOOGLE);
 
-      expect(fetch).to.be.calledWithExactly(`templates/${Constants.PlatformType.GOOGLE}`, { query: { tag: 'default' } });
+      expect(fetch).to.be.calledWithExactly(`templates/${VoiceflowConstants.PlatformType.GOOGLE}`, { query: { tag: 'default' } });
     });
 
     it('get a platform template with a specific tag', async () => {
       const tag = Utils.generate.string();
       const fetch = stubFetch('apiV2', 'get');
 
-      await client.getPlatformTemplate(Constants.PlatformType.ALEXA, tag);
+      await client.getPlatformTemplate(VoiceflowConstants.PlatformType.ALEXA, tag);
 
-      expect(fetch).to.be.calledWithExactly(`templates/${Constants.PlatformType.ALEXA}`, { query: { tag } });
+      expect(fetch).to.be.calledWithExactly(`templates/${VoiceflowConstants.PlatformType.ALEXA}`, { query: { tag } });
     });
   });
 });

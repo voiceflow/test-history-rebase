@@ -1,5 +1,5 @@
 import { Creator } from '@test/factories';
-import { Node } from '@voiceflow/alexa-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
 import { expect } from 'chai';
 
 import permissionAdapter from '@/adapters/creator/block/alexa/permission';
@@ -26,13 +26,13 @@ describe('Adapters | Creator | Block | Alexa | permissionAdapter', () => {
 
     it('filters empty permissions', () => {
       const data = Creator.Block.Alexa.PermissionNodeData({
-        permissions: ['   ', '', Node.PermissionType.PAYMENTS_AUTO_PAY_CONSENT] as Node.PermissionType[],
+        permissions: ['   ', '', AlexaNode.PermissionType.PAYMENTS_AUTO_PAY_CONSENT] as AlexaNode.PermissionType[],
       });
 
       const result = permissionAdapter.toDB(data);
 
       expect(result).eql({
-        permissions: [Node.PermissionType.PAYMENTS_AUTO_PAY_CONSENT],
+        permissions: [AlexaNode.PermissionType.PAYMENTS_AUTO_PAY_CONSENT],
       });
     });
   });

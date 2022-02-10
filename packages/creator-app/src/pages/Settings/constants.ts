@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { createPlatformSelector } from '@/utils/platform';
@@ -41,7 +41,7 @@ export interface PlatformSettingsMetaProps {
 
 export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaProps>(
   {
-    [Constants.PlatformType.ALEXA]: {
+    [VoiceflowConstants.PlatformType.ALEXA]: {
       name: 'Alexa',
       sections: [
         SettingSections.BASIC,
@@ -67,7 +67,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       },
       localeText: 'Locales',
     },
-    [Constants.PlatformType.GOOGLE]: {
+    [VoiceflowConstants.PlatformType.GOOGLE]: {
       name: 'Google',
       sections: [
         SettingSections.BASIC,
@@ -88,7 +88,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       },
       localeText: 'Language',
     },
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: {
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: {
       name: 'Dialogflow Chat',
       sections: [
         SettingSections.BASIC,
@@ -106,7 +106,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       },
       localeText: 'Language',
     },
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: {
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: {
       name: 'Dialogflow Voice',
       sections: [
         SettingSections.BASIC,
@@ -124,7 +124,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       },
       localeText: 'Language',
     },
-    [Constants.PlatformType.CHATBOT]: {
+    [VoiceflowConstants.PlatformType.CHATBOT]: {
       name: 'Chatbot',
       sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.TEST_TOOL, SettingSections.DANGER_ZONE],
       descriptors: {

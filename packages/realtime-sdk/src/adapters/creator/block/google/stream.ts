@@ -1,11 +1,11 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Models } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
-import { Node } from '@voiceflow/google-types';
+import { BaseModels } from '@voiceflow/base-types';
+import { GoogleNode } from '@voiceflow/google-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { createBlockAdapter, createOutPortsAdapter, findDBNextPort, outPortDataFromDB, outPortDataToDB } from '../utils';
 
-const streamAdapter = createBlockAdapter<Node.Stream.StepData, NodeData.Stream>(
+const streamAdapter = createBlockAdapter<GoogleNode.Stream.StepData, NodeData.Stream>(
   ({ loop, audio, title, iconImage, description, backgroundImage }) => ({
     loop,
     audio,
@@ -32,12 +32,12 @@ export const streamOutPortsAdapter = createOutPortsAdapter<NodeData.StreamBuiltI
     const nextPortData = outPortDataFromDB(dbNextPort, options);
 
     return {
-      ports: [{ ...nextPortData, platform: Constants.PlatformType.GOOGLE }],
+      ports: [{ ...nextPortData, platform: VoiceflowConstants.PlatformType.GOOGLE }],
       dynamic: [],
-      builtIn: { [Models.PortType.NEXT]: nextPortData.port.id },
+      builtIn: { [BaseModels.PortType.NEXT]: nextPortData.port.id },
     };
   },
-  ({ builtIn: { [Models.PortType.NEXT]: nextPortData } }) => [outPortDataToDB(nextPortData)]
+  ({ builtIn: { [BaseModels.PortType.NEXT]: nextPortData } }) => [outPortDataToDB(nextPortData)]
 );
 
 export default streamAdapter;

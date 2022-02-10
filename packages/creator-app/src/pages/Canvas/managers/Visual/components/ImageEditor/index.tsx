@@ -1,8 +1,8 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, defaultMenuLabelRenderer, Flex, Input, Link, Select, Text } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
@@ -20,18 +20,18 @@ import { CANVAS_VISIBILITY_OPTIONS, DEVICE_OPTIONS, FRAME_OPTIONS } from './cons
 
 const DEFAULT_DIMENSIONS = { width: 500, height: 500 };
 
-const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ data, onChange }) => {
+const ImageEditor: NodeEditor<BaseNode.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ data, onChange }) => {
   const [dimensions, setDimensions] = React.useState<null | { width: string; height: string }>(() =>
     data.dimensions ? { width: String(data.dimensions.width), height: String(data.dimensions.height) } : null
   );
   const cache = React.useRef({ preDimensions: data.dimensions, prevDevice: data.device });
-  const [frameType, setFrameType] = React.useState(Node.Visual.FrameType.AUTO);
+  const [frameType, setFrameType] = React.useState(BaseNode.Visual.FrameType.AUTO);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
 
-  const setAutoFit = (frame: Node.Visual.FrameType, url: Nullable<string> | string | undefined) => {
+  const setAutoFit = (frame: BaseNode.Visual.FrameType, url: Nullable<string> | string | undefined) => {
     const currentImage = new Image();
-    if (frame === Node.Visual.FrameType.AUTO) {
+    if (frame === BaseNode.Visual.FrameType.AUTO) {
       currentImage.src = String(url);
       currentImage.onload = (e: any) => {
         const { height } = e.path[0];
@@ -42,17 +42,17 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.Visua
     }
   };
 
-  const onChangeFrameType = (newFrameType: Node.Visual.FrameType) => {
-    if (newFrameType === Node.Visual.FrameType.CUSTOM_SIZE) {
+  const onChangeFrameType = (newFrameType: BaseNode.Visual.FrameType) => {
+    if (newFrameType === BaseNode.Visual.FrameType.CUSTOM_SIZE) {
       cache.current.prevDevice = data.device;
       const newDimensions = cache.current.preDimensions ?? DEFAULT_DIMENSIONS;
       setDimensions({ width: `${newDimensions.width}`, height: `${newDimensions.height}` });
-      onChange({ device: null, dimensions: newDimensions, frameType: Node.Visual.FrameType.CUSTOM_SIZE });
+      onChange({ device: null, dimensions: newDimensions, frameType: BaseNode.Visual.FrameType.CUSTOM_SIZE });
 
       setFrameType(newFrameType);
-    } else if (newFrameType === Node.Visual.FrameType.DEVICE) {
+    } else if (newFrameType === BaseNode.Visual.FrameType.DEVICE) {
       setDimensions(null);
-      onChange({ device: cache.current.prevDevice, dimensions: null, frameType: Node.Visual.FrameType.DEVICE });
+      onChange({ device: cache.current.prevDevice, dimensions: null, frameType: BaseNode.Visual.FrameType.DEVICE });
       setFrameType(newFrameType);
     } else {
       setFrameType(newFrameType);
@@ -85,17 +85,17 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.Visua
 
   const renderVisualSizeSection = createPlatformSelector<React.ReactNode>(
     {
-      [Constants.PlatformType.IVR]: visualSizeSection,
-      [Constants.PlatformType.GENERAL]: visualSizeSection,
-      [Constants.PlatformType.CHATBOT]: visualSizeSection,
+      [VoiceflowConstants.PlatformType.IVR]: visualSizeSection,
+      [VoiceflowConstants.PlatformType.GENERAL]: visualSizeSection,
+      [VoiceflowConstants.PlatformType.CHATBOT]: visualSizeSection,
     },
     () => null
   );
 
   const ratio = (Number(dimensions?.height) / Number(dimensions?.width)) * 100 || 0;
 
-  const getImageDimensions = (frameType: Node.Visual.FrameType) => {
-    return frameType === Node.Visual.FrameType.CUSTOM_SIZE ? `${dimensions?.width} x ${dimensions?.height}` : 'Display at full size';
+  const getImageDimensions = (frameType: BaseNode.Visual.FrameType) => {
+    return frameType === BaseNode.Visual.FrameType.CUSTOM_SIZE ? `${dimensions?.width} x ${dimensions?.height}` : 'Display at full size';
   };
   return (
     <Content
@@ -108,7 +108,7 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.Visua
       {renderVisualSizeSection(platform)}
 
       <Section dividers={!!data.image} isDividerNested isDividerBottom>
-        {frameType === Node.Visual.FrameType.CUSTOM_SIZE ? (
+        {frameType === BaseNode.Visual.FrameType.CUSTOM_SIZE ? (
           <FormControl label="Dimensions">
             <Flex>
               <Box width="104px" mr={12}>
@@ -140,7 +140,7 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.Visua
             </Flex>
           </FormControl>
         ) : (
-          frameType === Node.Visual.FrameType.DEVICE && (
+          frameType === BaseNode.Visual.FrameType.DEVICE && (
             <FormControl label="Device Type">
               <Select
                 value={data.device}
@@ -154,7 +154,7 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.Visua
                     {defaultMenuLabelRenderer(value, ...args)}
 
                     <Text fontSize={13} color="#62778c">
-                      {Constants.DEVICE_SIZE_MAP[value].width} x {Constants.DEVICE_SIZE_MAP[value].height}
+                      {VoiceflowConstants.DEVICE_SIZE_MAP[value].width} x {VoiceflowConstants.DEVICE_SIZE_MAP[value].height}
                     </Text>
                   </Box>
                 )}
@@ -172,7 +172,7 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData, Realtime.NodeData.Visua
                 <Text fontSize={13} color="#62778c" fontWeight="normal">
                   {data.device ? (
                     <>
-                      {Constants.DEVICE_SIZE_MAP[data.device].width} x {Constants.DEVICE_SIZE_MAP[data.device].height}
+                      {VoiceflowConstants.DEVICE_SIZE_MAP[data.device].width} x {VoiceflowConstants.DEVICE_SIZE_MAP[data.device].height}
                     </>
                   ) : (
                     <>{getImageDimensions(frameType)}</>

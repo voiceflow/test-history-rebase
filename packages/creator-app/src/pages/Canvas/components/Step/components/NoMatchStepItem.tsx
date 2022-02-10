@@ -1,4 +1,4 @@
-import { Node, Nullable } from '@voiceflow/base-types';
+import { BaseNode, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
@@ -16,7 +16,7 @@ export interface NoMatchStepItemProps {
 }
 
 const NoMatchStepItem: React.FC<NoMatchStepItemProps> = ({ noMatch, portID }) => {
-  const isPath = noMatch.types.includes(Node.Utils.NoMatchType.PATH);
+  const isPath = noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH);
 
   return noMatch.types.length ? (
     <Popper
@@ -29,7 +29,7 @@ const NoMatchStepItem: React.FC<NoMatchStepItemProps> = ({ noMatch, portID }) =>
           portID={isPath ? portID : null}
           portColor="#6e849a"
           attachment={
-            noMatch.types.includes(Node.Utils.NoMatchType.REPROMPT) && hasValidReprompt(noMatch.reprompts) ? (
+            noMatch.types.includes(BaseNode.Utils.NoMatchType.REPROMPT) && hasValidReprompt(noMatch.reprompts) ? (
               <Attachment ref={ref} icon="noMatch" isActive={isOpened} onClick={stopPropagation(onToggle)} />
             ) : null
           }

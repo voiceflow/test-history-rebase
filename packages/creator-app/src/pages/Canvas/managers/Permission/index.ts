@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -11,7 +11,7 @@ const PermissionManager: NodeManagerConfig<Realtime.NodeData.Permission, Realtim
 
   tip: 'Ask users to enable permissions (User Info, Reminders, etc.)',
   label: 'Permissions',
-  platforms: [Constants.PlatformType.ALEXA],
+  platforms: [VoiceflowConstants.PlatformType.ALEXA],
 
   step: PermissionStep,
   editor: PermissionEditor,

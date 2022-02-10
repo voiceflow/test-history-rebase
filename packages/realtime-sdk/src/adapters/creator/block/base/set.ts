@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter from 'bidirectional-adapter';
 
@@ -6,7 +6,7 @@ import { NodeData } from '../../../../models';
 import { sanitizeSetValue } from '../../../../utils/expression';
 import { createBlockAdapter, createOutPortsAdapter, nextOnlyOutPortsAdapter } from '../utils';
 
-const setExpressionAdapter = createAdapter<Node.SetV2.Set, NodeData.SetExpressionV2>(
+const setExpressionAdapter = createAdapter<BaseNode.SetV2.Set, NodeData.SetExpressionV2>(
   ({ expression, variable, type }) => ({
     id: Utils.id.cuid.slug(),
     type,
@@ -14,13 +14,13 @@ const setExpressionAdapter = createAdapter<Node.SetV2.Set, NodeData.SetExpressio
     expression: sanitizeSetValue(expression, type),
   }),
   ({ expression, variable, type }) => ({
-    type: type as Node.Utils.ExpressionTypeV2.VALUE | Node.Utils.ExpressionTypeV2.ADVANCE,
+    type: type as BaseNode.Utils.ExpressionTypeV2.VALUE | BaseNode.Utils.ExpressionTypeV2.ADVANCE,
     variable: variable ?? null,
     expression: sanitizeSetValue(String(expression), type) ?? '',
   })
 );
 
-const setAdapter = createBlockAdapter<Node.SetV2.StepData, NodeData.SetV2>(
+const setAdapter = createBlockAdapter<BaseNode.SetV2.StepData, NodeData.SetV2>(
   ({ sets, title }) => ({
     sets: setExpressionAdapter.mapFromDB(sets),
     title,

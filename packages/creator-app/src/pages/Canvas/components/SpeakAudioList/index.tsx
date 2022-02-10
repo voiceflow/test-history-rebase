@@ -1,6 +1,6 @@
 import { Nullable, Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
@@ -34,12 +34,12 @@ const speakAudioFactory =
 
 export type ItemComponent = ListItemComponent<
   Realtime.SpeakData,
-  { platform: Constants.PlatformType; isRandomized?: boolean; isDeprecated?: boolean }
+  { platform: VoiceflowConstants.PlatformType; isRandomized?: boolean; isDeprecated?: boolean }
 >;
 
 export interface SpeakAudioListProps {
   items: Realtime.SpeakData[];
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   maxItems: number;
   itemName?: string;
   randomize?: boolean;

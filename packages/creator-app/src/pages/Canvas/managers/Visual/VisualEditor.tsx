@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -8,8 +8,8 @@ import { APLEditor, ImageEditor } from './components';
 
 const VisualEditor: NodeEditor<Realtime.NodeData.Visual, Realtime.NodeData.VisualBuiltInPorts> = ({ data, ...props }) => (
   <>
-    {data.visualType === Node.Visual.VisualType.APL && <APLEditor data={data} {...props} />}
-    {data.visualType === Node.Visual.VisualType.IMAGE && <ImageEditor data={data} {...props} />}
+    {data.visualType === BaseNode.Visual.VisualType.APL && <APLEditor data={data} {...props} />}
+    {data.visualType === BaseNode.Visual.VisualType.IMAGE && <ImageEditor data={data} {...props} />}
   </>
 );
 

@@ -1,7 +1,7 @@
-import { Button } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseButton } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import numberToWords from 'number-to-words/src';
 import React from 'react';
 
@@ -23,8 +23,8 @@ import { isGooglePlatform } from '@/utils/typeGuards';
 const AnyIntentSelect: React.FC<any> = IntentSelect;
 const VariablesInputComponent: React.FC<any> = VariablesInput;
 
-export type ItemProps = ItemComponentProps<Button.IntentButton> &
-  MappedItemComponentHandlers<Button.IntentButton> &
+export type ItemProps = ItemComponentProps<BaseButton.IntentButton> &
+  MappedItemComponentHandlers<BaseButton.IntentButton> &
   DragPreviewComponentProps & {
     isOnlyItem: boolean;
     dividedIntents: (Realtime.Intent | { id: string; name: string; menuItemProps: { divider: boolean } })[];
@@ -70,7 +70,7 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
       ref={ref}
       header={
         transformVariablesToReadable(item.name) ||
-        `${getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'Chip' }, 'Button')} ${numberToWords.toWords(index + 1)}`
+        `${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'BaseButton')} ${numberToWords.toWords(index + 1)}`
       }
       prefix={<Badge>{index + 1}</Badge>}
       headerRef={connectedDragRef}
@@ -90,7 +90,7 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
               ref={variablesInputRef}
               value={item.name}
               onBlur={updateName}
-              placeholder={`Enter ${getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'chip' }, 'button')} name`}
+              placeholder={`Enter ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'chip' }, 'button')} name`}
             />
           </Box>
 

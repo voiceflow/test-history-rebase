@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
@@ -80,7 +80,7 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
         .map<ChoiceItem>((portID) => {
           const { id, goTo, intent, action } = getDistinctPlatformValue(platform, choicesByPortID[portID]);
 
-          const isPath = action === Node.Interaction.ChoiceAction.PATH;
+          const isPath = action === BaseNode.Interaction.ChoiceAction.PATH;
           const goToIntent = goTo?.intentID && intentsMap[goTo.intentID] ? intentsMap[goTo.intentID] ?? null : null;
 
           return {
@@ -102,8 +102,8 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
       choices={choices}
       noMatch={data.else}
       noReply={data.noReply}
-      noMatchPortID={ports.out.builtIn[Models.PortType.NO_MATCH]}
-      noReplyPortID={ports.out.builtIn[Models.PortType.NO_REPLY]}
+      noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
+      noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
       variant={variant}
     />
   );

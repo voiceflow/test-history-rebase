@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string, mocha/no-identical-title */
-import { Node, Version as BaseVersion } from '@voiceflow/base-types';
+import { BaseNode, BaseVersion } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
@@ -41,7 +41,7 @@ const VERSION: Realtime.AnyVersion = {
     defaultVoice: null,
     error: null,
     repeat: BaseVersion.RepeatType.DIALOG,
-    defaultCanvasNodeVisibility: Node.Utils.CanvasNodeVisibility.PREVIEW,
+    defaultCanvasNodeVisibility: BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
   },
   publishing: {
     foo: 'bar',

@@ -1,16 +1,16 @@
-import * as Alexa from '@voiceflow/alexa-types';
+import { AlexaVersion } from '@voiceflow/alexa-types';
 import { Nullish } from '@voiceflow/common';
-import * as General from '@voiceflow/general-types';
-import * as Dialogflow from '@voiceflow/google-dfes-types';
-import * as Google from '@voiceflow/google-types';
+import { DFESVersion } from '@voiceflow/google-dfes-types';
+import { GoogleVersion } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants, VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { AxiosInstance } from 'axios';
 
 import { ExtraOptions } from './types';
 
 interface VersionClient {
   canRead: (creatorID: number, versionID: string) => Promise<boolean>;
-  platform: (platform?: Nullish<General.Constants.PlatformType>) => any;
+  platform: (platform?: Nullish<VoiceflowConstants.PlatformType>) => any;
 }
 
 export interface VersionPlatformClient<S extends Realtime.AnyVersionSettings, P> {
@@ -28,17 +28,17 @@ const PlatformClient = <S extends Realtime.AnyVersionSettings, P>(axios: AxiosIn
 });
 
 const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions): VersionClient => {
-  const alexaClient = PlatformClient<Alexa.Version.AlexaVersionSettings, Alexa.Version.AlexaVersionPublishing>(alexa);
-  const googleClient = PlatformClient<Google.Version.GoogleVersionSettings, Google.Version.GoogleVersionPublishing>(google);
-  const dialogflowClient = PlatformClient<Dialogflow.Version.GoogleDFESVersionSettings, Dialogflow.Version.GoogleDFESVersionPublishing>(dialogflow);
-  const generalClient = PlatformClient<General.Version.GeneralVersionSettings, never>(general);
+  const alexaClient = PlatformClient<AlexaVersion.Settings, AlexaVersion.Publishing>(alexa);
+  const googleClient = PlatformClient<GoogleVersion.VoiceSettings, GoogleVersion.VoicePublishing>(google);
+  const dialogflowClient = PlatformClient<DFESVersion.Settings, DFESVersion.Publishing>(dialogflow);
+  const generalClient = PlatformClient<VoiceflowVersion.Settings, never>(general);
 
   const getPlatform = Realtime.Utils.platform.createPlatformSelector(
     {
-      [General.Constants.PlatformType.ALEXA]: alexaClient as GenericVersionPlatformClient,
-      [General.Constants.PlatformType.GOOGLE]: googleClient as GenericVersionPlatformClient,
-      [General.Constants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflowClient as GenericVersionPlatformClient,
-      [General.Constants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowClient as GenericVersionPlatformClient,
+      [VoiceflowConstants.PlatformType.ALEXA]: alexaClient as GenericVersionPlatformClient,
+      [VoiceflowConstants.PlatformType.GOOGLE]: googleClient as GenericVersionPlatformClient,
+      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflowClient as GenericVersionPlatformClient,
+      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowClient as GenericVersionPlatformClient,
     },
     generalClient as GenericVersionPlatformClient
   );

@@ -1,10 +1,10 @@
-import { Node } from '@voiceflow/voice-types';
+import { VoiceNode } from '@voiceflow/voice-types';
 
 import { NodeData } from '../../../../models';
 import { baseCaptureAdapter } from '../base';
 import { createBlockAdapter, voiceMigrateRepromptToNoReply, voiceNoReplyAdapter } from '../utils';
 
-const captureAdapter = createBlockAdapter<Node.Capture.StepData<any>, Omit<NodeData.Capture, 'buttons'>>(
+const captureAdapter = createBlockAdapter<VoiceNode.Capture.StepData<any>, Omit<NodeData.Capture, 'buttons'>>(
   ({ reprompt, noReply, ...baseData }) => {
     const migratedNoReply = voiceMigrateRepromptToNoReply(noReply, reprompt);
 

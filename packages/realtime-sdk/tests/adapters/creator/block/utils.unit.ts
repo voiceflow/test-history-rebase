@@ -1,7 +1,7 @@
 import { voicePromptAdapter } from '@realtime-sdk/adapters/creator/block/utils';
 import { VoicePromptType } from '@realtime-sdk/constants';
 import { Creator } from '@test/factories';
-import { Constants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { expect } from 'chai';
 
 describe('Adapters | Creator | Block | Utils', () => {
@@ -9,7 +9,7 @@ describe('Adapters | Creator | Block | Utils', () => {
     describe('when transforming from db', () => {
       describe('and type is audio', () => {
         it('returns correct step data', () => {
-          const reprompt = Creator.Block.Shared.VoicePrompt({ voice: Constants.Voice.AUDIO });
+          const reprompt = Creator.Block.Shared.VoicePrompt({ voice: AlexaConstants.Voice.AUDIO });
 
           const result = voicePromptAdapter.fromDB(reprompt);
 
@@ -26,7 +26,7 @@ describe('Adapters | Creator | Block | Utils', () => {
 
       describe('and type is text', () => {
         it('returns correct step data', () => {
-          const data = Creator.Block.Shared.VoicePrompt({ voice: Constants.Voice.ADITI });
+          const data = Creator.Block.Shared.VoicePrompt({ voice: AlexaConstants.Voice.ADITI });
 
           const result = voicePromptAdapter.fromDB(data);
 
@@ -51,7 +51,7 @@ describe('Adapters | Creator | Block | Utils', () => {
 
           expect(result).eql({
             desc: undefined,
-            voice: Constants.Voice.AUDIO,
+            voice: AlexaConstants.Voice.AUDIO,
             content: reprompt.audio,
           });
         });
@@ -65,7 +65,7 @@ describe('Adapters | Creator | Block | Utils', () => {
 
           expect(result).eql({
             desc: reprompt.desc,
-            voice: Constants.Voice.ALEXA,
+            voice: AlexaConstants.Voice.ALEXA,
             content: reprompt.content,
           });
         });

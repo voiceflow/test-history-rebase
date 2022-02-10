@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { swallowEvent, useCache } from '@voiceflow/ui';
 import React from 'react';
@@ -254,7 +254,7 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
 
   const onRemove = React.useCallback(() => engine.link.remove(linkEntity.linkID), []);
 
-  const onChangeType = React.useCallback(async (type: BaseModels.ProjectLinkType) => {
+  const onChangeType = React.useCallback(async (type: BaseModels.Project.LinkType) => {
     await engine.link.updateLinkData(linkEntity.linkID, { type, points: null });
 
     engine.link.redraw(linkEntity.linkID);

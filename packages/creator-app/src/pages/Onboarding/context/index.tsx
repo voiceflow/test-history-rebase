@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import { BillingPeriod, PlanType, PromoType, UserRole } from '@voiceflow/internal';
 import { ButtonVariant, toast } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 import queryString from 'query-string';
 import React from 'react';
@@ -80,7 +80,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
       role: '',
     },
     selectChannelMeta: {
-      channel: Constants.PlatformType.ALEXA,
+      channel: VoiceflowConstants.PlatformType.ALEXA,
     },
     sendingRequests: false,
     workspaceId: '',
@@ -195,7 +195,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       role: '',
     },
     selectChannelMeta: {
-      channel: Constants.PlatformType.ALEXA,
+      channel: VoiceflowConstants.PlatformType.ALEXA,
     },
     sendingRequests: false,
     workspaceId: '',
@@ -381,9 +381,9 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
         const getTemplateTag = createPlatformSelector(
           {
-            [Constants.PlatformType.ALEXA]: 'onboarding:alexa_assistant',
-            [Constants.PlatformType.GOOGLE]: 'onboarding:google_assistant',
-            [Constants.PlatformType.GENERAL]: 'onboarding:custom_assistant',
+            [VoiceflowConstants.PlatformType.ALEXA]: 'onboarding:alexa_assistant',
+            [VoiceflowConstants.PlatformType.GOOGLE]: 'onboarding:google_assistant',
+            [VoiceflowConstants.PlatformType.GENERAL]: 'onboarding:custom_assistant',
           },
           `onboarding:${platform}`
         );

@@ -1,6 +1,6 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createSelector } from 'reselect';
 
 import * as Session from '@/ducks/session';
@@ -11,13 +11,13 @@ export const projectSelector = createSelector([Session.activeProjectIDSelector, 
   getProjectByID({ id: projectID })
 );
 
-export const platformSelector = createSelector([projectSelector], (project) => project?.platform || Constants.PlatformType.GENERAL);
+export const platformSelector = createSelector([projectSelector], (project) => project?.platform || VoiceflowConstants.PlatformType.GENERAL);
 
 export const nameSelector = createSelector([projectSelector], (project) => project?.name ?? null);
 
-export const linkTypeSelector = createSelector([projectSelector], (project) => project?.linkType || BaseModels.ProjectLinkType.STRAIGHT);
+export const linkTypeSelector = createSelector([projectSelector], (project) => project?.linkType || BaseModels.Project.LinkType.STRAIGHT);
 
-export const isStraightLinksSelector = createSelector([linkTypeSelector], (linkType) => linkType === BaseModels.ProjectLinkType.STRAIGHT);
+export const isStraightLinksSelector = createSelector([linkTypeSelector], (linkType) => linkType === BaseModels.Project.LinkType.STRAIGHT);
 
 export const isLiveSelector = createSelector([projectSelector], (project) => !!project?.isLive);
 

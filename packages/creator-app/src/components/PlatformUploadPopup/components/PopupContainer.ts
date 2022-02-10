@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { AnyStageType } from '@/constants/platforms';
 import { css, styled } from '@/hocs';
@@ -10,7 +10,7 @@ export interface PopupContainerProps {
   jobStage?: AnyStageType | null;
   multiSelect?: boolean;
   width?: number;
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
 }
 
 const PopupContainer = styled.div<PopupContainerProps>`

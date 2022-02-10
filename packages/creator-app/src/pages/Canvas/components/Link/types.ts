@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
@@ -18,7 +18,7 @@ export type InternalLinkInstance = LinkInstance & {
 
   getCenter: () => React.MutableRefObject<Point | null>;
   isStraight: () => boolean;
-  getLinkType: () => BaseModels.ProjectLinkType;
+  getLinkType: () => BaseModels.Project.LinkType;
   getLinkColor: () => string;
   getCaptionRect: () => React.MutableRefObject<{ x: number; y: number; width: number; height: number }>;
 

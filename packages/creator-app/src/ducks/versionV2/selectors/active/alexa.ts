@@ -1,4 +1,4 @@
-import { Constants, Version } from '@voiceflow/alexa-types';
+import { AlexaConstants, AlexaVersion } from '@voiceflow/alexa-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
@@ -19,7 +19,7 @@ export const accountLinkingSelector = createSelector([settingsSelector], (settin
 
 export const publishingSelector = createSelector([versionSelector], (version) => version?.publishing ?? null);
 
-export const localesSelector = createSelector([publishingSelector], (publishing): Constants.Locale[] => publishing?.locales ?? []);
+export const localesSelector = createSelector([publishingSelector], (publishing): AlexaConstants.Locale[] => publishing?.locales ?? []);
 
 export const invocationNameSelector = createSelector([publishingSelector], (publishing) => publishing?.invocationName ?? null);
 
@@ -27,7 +27,7 @@ export const invocationsSelector = createSelector([publishingSelector], (publish
 
 export const parentalControlSelector = createSelector(
   [publishingSelector, localesSelector],
-  (publishing, locales) => publishing?.forChildren && locales.includes(Constants.Locale.EN_US)
+  (publishing, locales) => publishing?.forChildren && locales.includes(AlexaConstants.Locale.EN_US)
 );
 
-export const isInReviewSelector = createSelector([versionSelector], (version) => version?.status?.stage === Version.AlexaStage.REVIEW);
+export const isInReviewSelector = createSelector([versionSelector], (version) => version?.status?.stage === AlexaVersion.Stage.REVIEW);

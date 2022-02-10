@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -15,7 +15,7 @@ export interface LogicInterfaceHandlerProps {
 
   onDelete: () => void;
   onChange: (value: Realtime.ExpressionV2 | Realtime.LogicGroupData) => void;
-  updateBaseType: (value: Node.Utils.ExpressionTypeV2.AND | Node.Utils.ExpressionTypeV2.OR) => void;
+  updateBaseType: (value: BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR) => void;
 }
 
 const LogicInterfaceHandler: React.FC<LogicInterfaceHandlerProps> = ({
@@ -38,7 +38,7 @@ const LogicInterfaceHandler: React.FC<LogicInterfaceHandlerProps> = ({
       />
     )}
 
-    {expression.logicInterface === Node.Utils.ConditionsLogicInterface.LOGIC_GROUP && (
+    {expression.logicInterface === BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP && (
       <ConditionLogicGroup
         firstItem={firstItem}
         baseLogicType={baseLogicType}
@@ -49,7 +49,7 @@ const LogicInterfaceHandler: React.FC<LogicInterfaceHandlerProps> = ({
       />
     )}
 
-    {expression.logicInterface === Node.Utils.ConditionsLogicInterface.EXPRESSION && (
+    {expression.logicInterface === BaseNode.Utils.ConditionsLogicInterface.EXPRESSION && (
       <ConditionExpression expression={expression as Realtime.ExpressionV2} onChange={onChange} onDelete={onDelete} />
     )}
   </>

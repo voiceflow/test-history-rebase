@@ -1,9 +1,9 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/google-dfes-types';
+import { DFESNode } from '@voiceflow/google-dfes-types';
 
 import { createBlockAdapter, createOutPortsAdapter, nextOnlyOutPortsAdapter } from '../utils';
 
-const customPayload = createBlockAdapter<Node.Payload.StepData, NodeData.CustomPayload>(
+const customPayload = createBlockAdapter<DFESNode.Payload.StepData, NodeData.CustomPayload>(
   ({ data: customPayload }) => ({ customPayload }),
   ({ customPayload }) => ({ data: customPayload })
 );

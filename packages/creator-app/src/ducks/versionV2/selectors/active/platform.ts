@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createSelector } from 'reselect';
 
 import { FeatureFlag } from '@/config/features';
@@ -16,14 +16,14 @@ export const localesSelector = createSelector([ProjectV2.active.projectSelector,
   if (!activeProject) return [];
 
   switch (activeProject.platform) {
-    case Constants.PlatformType.ALEXA:
+    case VoiceflowConstants.PlatformType.ALEXA:
       return alexa.localesSelector(rootState);
-    case Constants.PlatformType.GOOGLE:
+    case VoiceflowConstants.PlatformType.GOOGLE:
       return google.localesSelector(rootState);
-    case Constants.PlatformType.DIALOGFLOW_ES_CHAT:
-    case Constants.PlatformType.DIALOGFLOW_ES_VOICE:
+    case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT:
+    case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE:
       return dialogflow.localesSelector(rootState);
-    case Constants.PlatformType.GENERAL:
+    case VoiceflowConstants.PlatformType.GENERAL:
     default:
       return general.localesSelector(rootState);
   }
@@ -33,11 +33,11 @@ export const invocationNameSelector = createSelector([ProjectV2.active.projectSe
   if (!activeProject) return null;
 
   switch (activeProject.platform) {
-    case Constants.PlatformType.ALEXA:
+    case VoiceflowConstants.PlatformType.ALEXA:
       return alexa.invocationNameSelector(rootState);
-    case Constants.PlatformType.GOOGLE:
+    case VoiceflowConstants.PlatformType.GOOGLE:
       return google.invocationNameSelector(rootState);
-    case Constants.PlatformType.GENERAL:
+    case VoiceflowConstants.PlatformType.GENERAL:
     default:
       return general.invocationNameSelector(rootState);
   }
@@ -47,11 +47,11 @@ export const invocationsSelector = createSelector([ProjectV2.active.projectSelec
   if (!activeProject) return [];
 
   switch (activeProject.platform) {
-    case Constants.PlatformType.ALEXA:
+    case VoiceflowConstants.PlatformType.ALEXA:
       return alexa.invocationsSelector(rootState);
-    case Constants.PlatformType.GOOGLE:
+    case VoiceflowConstants.PlatformType.GOOGLE:
       return google.invocationsSelector(rootState);
-    case Constants.PlatformType.GENERAL:
+    case VoiceflowConstants.PlatformType.GENERAL:
     default:
       return [];
   }

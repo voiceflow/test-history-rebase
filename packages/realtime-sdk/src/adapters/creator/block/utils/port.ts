@@ -1,4 +1,4 @@
-import { Models, Nullable } from '@voiceflow/base-types';
+import { BaseModels, Nullable } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
 import { BuiltInPortRecord, Link, LinkData, Node, Port } from '../../../../models';
@@ -11,7 +11,7 @@ export interface PortData {
   target: string | null;
 }
 
-export type BuiltInPortDataRecord = { [key in Models.PortType]?: PortData };
+export type BuiltInPortDataRecord = { [key in BaseModels.PortType]?: PortData };
 
 interface PortsInfoFromDB<T extends BuiltInPortRecord = BuiltInPortRecord> {
   ports: PortData[];
@@ -29,12 +29,12 @@ interface OutPortsToDBOptions<D = unknown> {
 }
 
 interface OutPortsFromDBOptions {
-  node: Models.BaseDiagramNode;
+  node: BaseModels.BaseDiagramNode;
 }
 
 export interface OutPortsAdapter<T extends BuiltInPortRecord = BuiltInPortRecord, D = unknown> {
-  toDB: (portsInfo: PortsInfoToDB<{ [key in keyof T]: PortData }>, options: OutPortsToDBOptions<D>) => Models.BasePort<LinkData>[];
-  fromDB: (ports: Models.BasePort<LinkData>[], options: OutPortsFromDBOptions) => PortsInfoFromDB<T>;
+  toDB: (portsInfo: PortsInfoToDB<{ [key in keyof T]: PortData }>, options: OutPortsToDBOptions<D>) => BaseModels.BasePort<LinkData>[];
+  fromDB: (ports: BaseModels.BasePort<LinkData>[], options: OutPortsFromDBOptions) => PortsInfoFromDB<T>;
 }
 
 export const createOutPortsAdapter = <T extends BuiltInPortRecord = BuiltInPortRecord, D = unknown>(
@@ -45,29 +45,29 @@ export const createOutPortsAdapter = <T extends BuiltInPortRecord = BuiltInPortR
   fromDB,
 });
 
-export const dbBuiltInPortFactory = (type: Models.PortType, target: string | null = null): Models.BasePort<LinkData> => ({
+export const dbBuiltInPortFactory = (type: BaseModels.PortType, target: string | null = null): BaseModels.BasePort<LinkData> => ({
   id: Utils.id.objectID(),
   data: {},
   type,
   target,
 });
 
-export const outPortDataToDB = ({ port, link, target }: PortData): Models.BasePort<LinkData> => ({
+export const outPortDataToDB = ({ port, link, target }: PortData): BaseModels.BasePort<LinkData> => ({
   type: port.label || '',
   target,
   id: port.id,
   data: link?.data,
 });
 
-export const outPortDataFromDB = (port: Models.BasePort<LinkData>, { node }: OutPortsFromDBOptions): PortData => ({
+export const outPortDataFromDB = (port: BaseModels.BasePort<LinkData>, { node }: OutPortsFromDBOptions): PortData => ({
   port: generateOutPort(node.nodeID, port, { label: port.type }),
   target: port.target,
 });
 
-export const outPortsDataFromDB = (ports: Models.BasePort<LinkData>[], options: OutPortsFromDBOptions): PortData[] =>
+export const outPortsDataFromDB = (ports: BaseModels.BasePort<LinkData>[], options: OutPortsFromDBOptions): PortData[] =>
   ports.map((port) => outPortDataFromDB(port, options));
 
-export const outPortsDataToDB = (ports: PortData[]): Models.BasePort<LinkData>[] => ports.map(outPortDataToDB);
+export const outPortsDataToDB = (ports: PortData[]): BaseModels.BasePort<LinkData>[] => ports.map(outPortDataToDB);
 
 export const getPortByLabel = (ports: PortData[], label: string): PortData | null => ports.find(({ port }) => port.label === label) ?? null;
 
@@ -85,7 +85,7 @@ const removePointsFalsyValues = (points?: PathPoints | null): PathPoints | undef
       )
     : undefined;
 
-export const removePortDataFalsyValues = (port: Models.BasePort<LinkData>): Models.BasePort<LinkData> => ({
+export const removePortDataFalsyValues = (port: BaseModels.BasePort<LinkData>): BaseModels.BasePort<LinkData> => ({
   ...port,
   data: port.data
     ? {
@@ -98,10 +98,10 @@ export const removePortDataFalsyValues = (port: Models.BasePort<LinkData>): Mode
     : undefined,
 });
 
-export const findDBPortByType = (ports: Models.BasePort<LinkData>[], type: Models.PortType): Nullable<Models.BasePort<LinkData>> =>
+export const findDBPortByType = (ports: BaseModels.BasePort<LinkData>[], type: BaseModels.PortType): Nullable<BaseModels.BasePort<LinkData>> =>
   ports.find(({ type: portType }) => portType === type) ?? null;
 
-export const migrateDBPortType = (dbPort: Models.BasePort<LinkData> | null, newPortType: Models.PortType): Models.BasePort<LinkData> => {
+export const migrateDBPortType = (dbPort: BaseModels.BasePort<LinkData> | null, newPortType: BaseModels.PortType): BaseModels.BasePort<LinkData> => {
   if (!dbPort) {
     return dbBuiltInPortFactory(newPortType);
   }
@@ -113,21 +113,23 @@ export const migrateDBPortType = (dbPort: Models.BasePort<LinkData> | null, newP
   return dbPort;
 };
 
-export const findDBNoMatchPort = (ports: Models.BasePort<LinkData>[]): Models.BasePort<LinkData> =>
-  findDBPortByType(ports, Models.PortType.NO_MATCH) ?? migrateDBPortType(ports[0], Models.PortType.NO_MATCH); // no match should be first
+export const findDBNoMatchPort = (ports: BaseModels.BasePort<LinkData>[]): BaseModels.BasePort<LinkData> =>
+  findDBPortByType(ports, BaseModels.PortType.NO_MATCH) ?? migrateDBPortType(ports[0], BaseModels.PortType.NO_MATCH); // no match should be first
 
-export const findDBNextPort = (ports: Models.BasePort<LinkData>[]): Models.BasePort<LinkData> =>
-  findDBPortByType(ports, Models.PortType.NEXT) ?? migrateDBPortType(ports[0], Models.PortType.NEXT); // next should be first
+export const findDBNextPort = (ports: BaseModels.BasePort<LinkData>[]): BaseModels.BasePort<LinkData> =>
+  findDBPortByType(ports, BaseModels.PortType.NEXT) ?? migrateDBPortType(ports[0], BaseModels.PortType.NEXT); // next should be first
 
-export const withoutDBPort = (ports: Models.BasePort<LinkData>[], withoutPort: Nullable<Models.BasePort<LinkData>>): Models.BasePort<LinkData>[] =>
-  withoutPort === null ? ports : Utils.array.withoutValue(ports, withoutPort);
+export const withoutDBPort = (
+  ports: BaseModels.BasePort<LinkData>[],
+  withoutPort: Nullable<BaseModels.BasePort<LinkData>>
+): BaseModels.BasePort<LinkData>[] => (withoutPort === null ? ports : Utils.array.withoutValue(ports, withoutPort));
 
 export const withoutDBPorts = (
-  ports: Models.BasePort<LinkData>[],
-  withoutPorts: Nullable<Models.BasePort<LinkData>>[]
-): Models.BasePort<LinkData>[] => Utils.array.withoutValues(ports, withoutPorts.filter(Boolean) as Models.BasePort<LinkData>[]);
+  ports: BaseModels.BasePort<LinkData>[],
+  withoutPorts: Nullable<BaseModels.BasePort<LinkData>>[]
+): BaseModels.BasePort<LinkData>[] => Utils.array.withoutValues(ports, withoutPorts.filter(Boolean) as BaseModels.BasePort<LinkData>[]);
 
-export const nextOnlyOutPortsAdapter = createOutPortsAdapter<{ [Models.PortType.NEXT]: string }>(
+export const nextOnlyOutPortsAdapter = createOutPortsAdapter<{ [BaseModels.PortType.NEXT]: string }>(
   (dbPorts, options) => {
     const dbNextPort = findDBNextPort(dbPorts);
 
@@ -136,10 +138,10 @@ export const nextOnlyOutPortsAdapter = createOutPortsAdapter<{ [Models.PortType.
     return {
       ports: [nextPortData],
       dynamic: [],
-      builtIn: { [Models.PortType.NEXT]: nextPortData.port.id },
+      builtIn: { [BaseModels.PortType.NEXT]: nextPortData.port.id },
     };
   },
-  ({ builtIn: { [Models.PortType.NEXT]: nextPortData } }) => [outPortDataToDB(nextPortData)]
+  ({ builtIn: { [BaseModels.PortType.NEXT]: nextPortData } }) => [outPortDataToDB(nextPortData)]
 );
 
 export const dynamicOnlyOutPortsAdapter = createOutPortsAdapter(
@@ -155,7 +157,7 @@ export const dynamicOnlyOutPortsAdapter = createOutPortsAdapter(
   ({ dynamic }) => outPortsDataToDB(dynamic)
 );
 
-export const defaultOutPortsAdapter = createOutPortsAdapter<{ [Models.PortType.NEXT]: string }>(
+export const defaultOutPortsAdapter = createOutPortsAdapter<{ [BaseModels.PortType.NEXT]: string }>(
   (dbPorts, options) => {
     const dbNextPort = findDBNextPort(dbPorts);
     const dbDynamicPorts = withoutDBPort(dbPorts, dbNextPort);
@@ -166,21 +168,21 @@ export const defaultOutPortsAdapter = createOutPortsAdapter<{ [Models.PortType.N
     return {
       ports: [nextPortData, ...dynamicPortsData],
       dynamic: dynamicPortsData.map(({ port }) => port.id),
-      builtIn: { [Models.PortType.NEXT]: nextPortData.port.id },
+      builtIn: { [BaseModels.PortType.NEXT]: nextPortData.port.id },
     };
   },
-  ({ builtIn: { [Models.PortType.NEXT]: nextPortData }, dynamic }) => [outPortDataToDB(nextPortData), ...outPortsDataToDB(dynamic)]
+  ({ builtIn: { [BaseModels.PortType.NEXT]: nextPortData }, dynamic }) => [outPortDataToDB(nextPortData), ...outPortsDataToDB(dynamic)]
 );
 
 export const nextNoMatchNoReplyOutPortsAdapter = createOutPortsAdapter<{
-  [Models.PortType.NEXT]: string;
-  [Models.PortType.NO_MATCH]?: string;
-  [Models.PortType.NO_REPLY]?: string;
+  [BaseModels.PortType.NEXT]: string;
+  [BaseModels.PortType.NO_MATCH]?: string;
+  [BaseModels.PortType.NO_REPLY]?: string;
 }>(
   (dbPorts, options) => {
     const dbNextPort = findDBNextPort(dbPorts);
-    const dbNoReplyPort = findDBPortByType(dbPorts, Models.PortType.NO_REPLY);
-    const dbNoMatchPort = findDBPortByType(dbPorts, Models.PortType.NO_MATCH);
+    const dbNoReplyPort = findDBPortByType(dbPorts, BaseModels.PortType.NO_REPLY);
+    const dbNoMatchPort = findDBPortByType(dbPorts, BaseModels.PortType.NO_MATCH);
 
     const nextPortData = outPortDataFromDB(dbNextPort, options);
     const noReplyPortData = dbNoReplyPort && outPortDataFromDB(dbNoReplyPort, options);
@@ -190,25 +192,29 @@ export const nextNoMatchNoReplyOutPortsAdapter = createOutPortsAdapter<{
       ports: [nextPortData, ...Utils.array.filterOutNullish([noReplyPortData, noMatchPortData])],
       dynamic: [],
       builtIn: {
-        [Models.PortType.NEXT]: nextPortData.port.id,
-        [Models.PortType.NO_REPLY]: noReplyPortData?.port.id ?? undefined,
-        [Models.PortType.NO_MATCH]: noMatchPortData?.port.id ?? undefined,
+        [BaseModels.PortType.NEXT]: nextPortData.port.id,
+        [BaseModels.PortType.NO_REPLY]: noReplyPortData?.port.id ?? undefined,
+        [BaseModels.PortType.NO_MATCH]: noMatchPortData?.port.id ?? undefined,
       },
     };
   },
   ({
-    builtIn: { [Models.PortType.NEXT]: nextPortData, [Models.PortType.NO_MATCH]: noMatchPortData, [Models.PortType.NO_REPLY]: noReplyPortData },
+    builtIn: {
+      [BaseModels.PortType.NEXT]: nextPortData,
+      [BaseModels.PortType.NO_MATCH]: noMatchPortData,
+      [BaseModels.PortType.NO_REPLY]: noReplyPortData,
+    },
   }) => [
     outPortDataToDB(nextPortData), //  should be first for backward compatible
     ...Utils.array.filterOutNullish([noReplyPortData, noMatchPortData]).map(outPortDataToDB),
   ]
 );
 
-export const nextAndFailOnlyOutPortsAdapter = createOutPortsAdapter<{ [Models.PortType.NEXT]: string; [Models.PortType.FAIL]: string }>(
+export const nextAndFailOnlyOutPortsAdapter = createOutPortsAdapter<{ [BaseModels.PortType.NEXT]: string; [BaseModels.PortType.FAIL]: string }>(
   (dbPorts, options) => {
     const dbNextPort = findDBNextPort(dbPorts);
     const dbFailPort =
-      findDBPortByType(dbPorts, Models.PortType.FAIL) ?? migrateDBPortType(withoutDBPort(dbPorts, dbNextPort)[0], Models.PortType.FAIL);
+      findDBPortByType(dbPorts, BaseModels.PortType.FAIL) ?? migrateDBPortType(withoutDBPort(dbPorts, dbNextPort)[0], BaseModels.PortType.FAIL);
 
     const nextPortData = outPortDataFromDB(dbNextPort, options);
     const failPortData = outPortDataFromDB(dbFailPort, options);
@@ -217,24 +223,24 @@ export const nextAndFailOnlyOutPortsAdapter = createOutPortsAdapter<{ [Models.Po
       ports: [nextPortData, failPortData],
       dynamic: [],
       builtIn: {
-        [Models.PortType.FAIL]: failPortData.port.id,
-        [Models.PortType.NEXT]: nextPortData.port.id,
+        [BaseModels.PortType.FAIL]: failPortData.port.id,
+        [BaseModels.PortType.NEXT]: nextPortData.port.id,
       },
     };
   },
-  ({ builtIn: { [Models.PortType.NEXT]: nextPortData, [Models.PortType.FAIL]: failPortData } }) => [
+  ({ builtIn: { [BaseModels.PortType.NEXT]: nextPortData, [BaseModels.PortType.FAIL]: failPortData } }) => [
     outPortDataToDB(nextPortData),
     outPortDataToDB(failPortData),
   ]
 );
 
 export const noMatchNoReplyAndDynamicOutPortsAdapter = createOutPortsAdapter<{
-  [Models.PortType.NO_MATCH]: string;
-  [Models.PortType.NO_REPLY]?: string;
+  [BaseModels.PortType.NO_MATCH]: string;
+  [BaseModels.PortType.NO_REPLY]?: string;
 }>(
   (dbPorts, options) => {
     const dbNoMatchPort = findDBNoMatchPort(dbPorts);
-    const dbNoReplyPort = findDBPortByType(dbPorts, Models.PortType.NO_REPLY);
+    const dbNoReplyPort = findDBPortByType(dbPorts, BaseModels.PortType.NO_REPLY);
 
     const dynamicDBPorts = withoutDBPorts(dbPorts, [dbNoMatchPort, dbNoReplyPort]);
 
@@ -246,12 +252,12 @@ export const noMatchNoReplyAndDynamicOutPortsAdapter = createOutPortsAdapter<{
       ports: [noMatchPortData, ...Utils.array.filterOutNullish([noReplyPortData]), ...dynamicPortsData],
       dynamic: dynamicPortsData.map(({ port }) => port.id),
       builtIn: {
-        [Models.PortType.NO_MATCH]: noMatchPortData.port.id,
-        [Models.PortType.NO_REPLY]: noReplyPortData?.port.id ?? undefined,
+        [BaseModels.PortType.NO_MATCH]: noMatchPortData.port.id,
+        [BaseModels.PortType.NO_REPLY]: noReplyPortData?.port.id ?? undefined,
       },
     };
   },
-  ({ builtIn: { [Models.PortType.NO_MATCH]: noMatchPortData, [Models.PortType.NO_REPLY]: noReplyPortData }, dynamic }) => [
+  ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData, [BaseModels.PortType.NO_REPLY]: noReplyPortData }, dynamic }) => [
     outPortDataToDB(noMatchPortData), // should be first for backward compatible
     ...outPortsDataToDB(dynamic),
     ...Utils.array.filterOutNullish([noReplyPortData && outPortDataToDB(noReplyPortData)]),

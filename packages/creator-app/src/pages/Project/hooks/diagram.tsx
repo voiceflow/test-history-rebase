@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { MenuOption, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -143,7 +143,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
     let label = 'flow';
 
     if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) {
-      label = getDiagramByID({ id: diagramID })?.type === BaseModels.DiagramType.TOPIC ? 'topic' : 'flow';
+      label = getDiagramByID({ id: diagramID })?.type === BaseModels.Diagram.DiagramType.TOPIC ? 'topic' : 'flow';
     }
 
     setConfirmModal({
@@ -169,7 +169,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
       return [];
     }
 
-    const isTopic = getDiagramByID({ id: diagramID })?.type === BaseModels.DiagramType.TOPIC;
+    const isTopic = getDiagramByID({ id: diagramID })?.type === BaseModels.Diagram.DiagramType.TOPIC;
 
     return [
       ...(onEdit

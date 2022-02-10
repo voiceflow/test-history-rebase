@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { Text } from '@voiceflow/base-types';
+import { BaseText } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
@@ -47,7 +47,7 @@ class MarkupEngine extends EngineConsumer {
     const nodeData: Realtime.Markup.NodeData.Text = {
       scale: 1,
       rotate: 0,
-      content: [...SlateEditorAPI.createTextState('', { elementProperties: { [Text.ElementProperty.TEXT_ALIGN]: 'center' } })],
+      content: [...SlateEditorAPI.createTextState('', { elementProperties: { [BaseText.ElementProperty.TEXT_ALIGN]: 'center' } })],
       overrideWidth: 178,
       backgroundColor: DEFAULT_BACKGROUND_COLOR,
     };

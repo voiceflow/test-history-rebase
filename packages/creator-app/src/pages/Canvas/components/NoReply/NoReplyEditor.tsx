@@ -1,8 +1,8 @@
-import { Models, Node as BaseNode } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/realtime-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { BoxFlex, Input, Text, ThemeColor, TippyTooltip } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Divider from '@/components/Divider';
@@ -61,12 +61,12 @@ const NoReplyEditor: React.FC<NoReplyEditorProps> = ({ noReply, onChange, pushTo
     const focusedNodeID = engine.focus.getTarget();
     const node = engine.getNodeByID(focusedNodeID);
 
-    const noReplyPortID = node?.ports.out.builtIn[Models.PortType.NO_REPLY];
+    const noReplyPortID = node?.ports.out.builtIn[BaseModels.PortType.NO_REPLY];
 
     if (noReplyPortID && prevTypesIncludesPath && !newTypesIncludesPath) {
-      await engine.port.removeOutBuiltIn(Models.PortType.NO_REPLY, noReplyPortID);
+      await engine.port.removeOutBuiltIn(BaseModels.PortType.NO_REPLY, noReplyPortID);
     } else if (!noReplyPortID && !prevTypesIncludesPath && newTypesIncludesPath && focusedNodeID) {
-      await engine.port.addOutBuiltIn(focusedNodeID, Models.PortType.NO_REPLY);
+      await engine.port.addOutBuiltIn(focusedNodeID, BaseModels.PortType.NO_REPLY);
     }
 
     onChange({ ...noReply, types });
@@ -80,9 +80,9 @@ const NoReplyEditor: React.FC<NoReplyEditorProps> = ({ noReply, onChange, pushTo
   const withoutPathAndAlwaysRandom = Realtime.Utils.platform.getPlatformValue(
     platform,
     {
-      [Constants.PlatformType.ALEXA]: true,
-      [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: true,
-      [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: true,
+      [VoiceflowConstants.PlatformType.ALEXA]: true,
+      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: true,
+      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: true,
     },
     false
   );

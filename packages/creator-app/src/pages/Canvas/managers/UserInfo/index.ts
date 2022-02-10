@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -11,7 +11,7 @@ const UserInfoManager: NodeManagerConfig<Realtime.NodeData.UserInfo, Realtime.No
 
   tip: 'Get User Information and check Permissions',
   label: 'User Info',
-  platforms: [Constants.PlatformType.ALEXA],
+  platforms: [VoiceflowConstants.PlatformType.ALEXA],
 
   step: UserInfoStep,
   editor: UserInfoEditor,

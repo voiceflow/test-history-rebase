@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { BoxFlex, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -28,7 +28,7 @@ const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActiv
     ? transformVariableToString(expression?.value?.[1]?.value as string)
     : expression.value[1]?.value;
 
-  const placeholder = !leftValue && expression.value[0]?.type === Node.Utils.ExpressionTypeV2.VARIABLE ? 'Variable' : 'Value';
+  const placeholder = !leftValue && expression.value[0]?.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE ? 'Variable' : 'Value';
 
   return (
     <ConditionDisplayContainer isActive={isActive} isInvalid={error} isLogicGroup={isLogicGroup}>

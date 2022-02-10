@@ -1,17 +1,17 @@
 import { ExpressionData as NodeDataExpressionData } from '@realtime-sdk/models';
 import { ADVANCE_LOGIC_TYPES, expressionfyV2, getHighestDepth, hasAdvanceChildExpression } from '@realtime-sdk/utils/expression';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
-const LogicGroupConditionType: string[] = [Node.Utils.ExpressionTypeV2.AND, Node.Utils.ExpressionTypeV2.OR];
+const LogicGroupConditionType: string[] = [BaseNode.Utils.ExpressionTypeV2.AND, BaseNode.Utils.ExpressionTypeV2.OR];
 
 // identifies the logicInterface for older IF data
-export const getLogicInterface = (expression: Node.Utils.Expression, hasParent = false): Node.Utils.ConditionsLogicInterface => {
+export const getLogicInterface = (expression: BaseNode.Utils.Expression, hasParent = false): BaseNode.Utils.ConditionsLogicInterface => {
   const valueIsArray = Array.isArray(expression.value);
 
-  if (!valueIsArray && (expression.type === Node.Utils.ExpressionType.VALUE || ADVANCE_LOGIC_TYPES.includes(expression.type))) {
-    return Node.Utils.ConditionsLogicInterface.EXPRESSION;
+  if (!valueIsArray && (expression.type === BaseNode.Utils.ExpressionType.VALUE || ADVANCE_LOGIC_TYPES.includes(expression.type))) {
+    return BaseNode.Utils.ConditionsLogicInterface.EXPRESSION;
   }
 
   if (valueIsArray && !ADVANCE_LOGIC_TYPES.includes(expression.type)) {
@@ -27,56 +27,56 @@ export const getLogicInterface = (expression: Node.Utils.Expression, hasParent =
       !hasAdvanceChildExpression(expression) &&
       LogicGroupConditionType.includes(expression.type)
     ) {
-      return Node.Utils.ConditionsLogicInterface.LOGIC_GROUP;
+      return BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP;
     }
 
     if (getHighestDepth(expression) < 2 || hasParent) {
-      const isVariable = (expression.value as Node.Utils.ExpressionTuple)[0].type === Node.Utils.ExpressionType.VARIABLE;
+      const isVariable = (expression.value as BaseNode.Utils.ExpressionTuple)[0].type === BaseNode.Utils.ExpressionType.VARIABLE;
 
-      return isVariable ? Node.Utils.ConditionsLogicInterface.VARIABLE : Node.Utils.ConditionsLogicInterface.VALUE;
+      return isVariable ? BaseNode.Utils.ConditionsLogicInterface.VARIABLE : BaseNode.Utils.ConditionsLogicInterface.VALUE;
     }
   }
 
   // any expression with depth 3 or higher or does not match above criteria is an expression
-  return Node.Utils.ConditionsLogicInterface.EXPRESSION;
+  return BaseNode.Utils.ConditionsLogicInterface.EXPRESSION;
 };
 
 export const sanitizeExpression = (
-  expression: Node.Utils.Expression,
-  logicInterface: Node.Utils.ConditionsLogicInterface
-): Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData => {
+  expression: BaseNode.Utils.Expression,
+  logicInterface: BaseNode.Utils.ConditionsLogicInterface
+): BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData => {
   switch (logicInterface) {
-    case Node.Utils.ConditionsLogicInterface.VARIABLE:
+    case BaseNode.Utils.ConditionsLogicInterface.VARIABLE:
       if (Array.isArray(expression.value)) {
         return {
-          type: expression.type as unknown as Node.Utils.ExpressionTypeV2,
+          type: expression.type as unknown as BaseNode.Utils.ExpressionTypeV2,
           value: expression.value.map((data: any, index: number) => {
-            const isSecondValueVariable = index === 1 && data.type === Node.Utils.ExpressionType.VARIABLE;
+            const isSecondValueVariable = index === 1 && data.type === BaseNode.Utils.ExpressionType.VARIABLE;
 
             return {
               type: data.type,
               value: isSecondValueVariable ? `{{[${data.value}].${data.value}}}` : data.value,
             };
           }),
-        } as Node.Utils.ExpressionV2;
+        } as BaseNode.Utils.ExpressionV2;
       }
-      return { type: Node.Utils.ExpressionTypeV2.ADVANCE, value: expression.value } as Node.Utils.ExpressionV2;
-    case Node.Utils.ConditionsLogicInterface.VALUE:
+      return { type: BaseNode.Utils.ExpressionTypeV2.ADVANCE, value: expression.value } as BaseNode.Utils.ExpressionV2;
+    case BaseNode.Utils.ConditionsLogicInterface.VALUE:
       if (Array.isArray(expression.value)) {
         return {
-          type: expression.type as unknown as Node.Utils.ExpressionTypeV2,
+          type: expression.type as unknown as BaseNode.Utils.ExpressionTypeV2,
           value: expression.value.map((data: any) => {
-            const isVariable = data.type === Node.Utils.ExpressionType.VARIABLE;
+            const isVariable = data.type === BaseNode.Utils.ExpressionType.VARIABLE;
 
             return { type: data.type, value: isVariable ? `{{[${data.value}].${data.value}}}` : data.value };
           }),
-        } as Node.Utils.ExpressionV2;
+        } as BaseNode.Utils.ExpressionV2;
       }
-      return { type: Node.Utils.ExpressionTypeV2.ADVANCE, value: expression.value } as Node.Utils.ExpressionV2;
-    case Node.Utils.ConditionsLogicInterface.LOGIC_GROUP:
+      return { type: BaseNode.Utils.ExpressionTypeV2.ADVANCE, value: expression.value } as BaseNode.Utils.ExpressionV2;
+    case BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP:
       return {
-        type: expression.type as unknown as Node.Utils.ExpressionTypeV2,
-        value: (expression.value as Node.Utils.Expression[]).map((value: Node.Utils.Expression) => {
+        type: expression.type as unknown as BaseNode.Utils.ExpressionTypeV2,
+        value: (expression.value as BaseNode.Utils.Expression[]).map((value: BaseNode.Utils.Expression) => {
           const logic = getLogicInterface(value, true);
 
           return {
@@ -85,13 +85,13 @@ export const sanitizeExpression = (
             ...sanitizeExpression(value, logic),
           };
         }),
-      } as Node.Utils.LogicGroupData;
+      } as BaseNode.Utils.LogicGroupData;
     default:
-      return { type: Node.Utils.ExpressionTypeV2.ADVANCE, value: expressionfyV2(expression) } as Node.Utils.ExpressionV2;
+      return { type: BaseNode.Utils.ExpressionTypeV2.ADVANCE, value: expressionfyV2(expression) } as BaseNode.Utils.ExpressionV2;
   }
 };
 
-const expressionV1toV2Adapter = createAdapter<Node.Utils.Expression, NodeDataExpressionData>(
+const expressionV1toV2Adapter = createAdapter<BaseNode.Utils.Expression, NodeDataExpressionData>(
   (expression) => {
     const logicInterface = getLogicInterface(expression);
 

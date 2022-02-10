@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -13,7 +13,7 @@ import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { Footer, JSONEditor, SplashEditor } from './components';
 import { APL_OPTIONS } from './constants';
 
-const APLEditor: NodeEditor<Node.Visual.APLStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ data, onChange }) => {
+const APLEditor: NodeEditor<BaseNode.Visual.APLStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ data, onChange }) => {
   const resolveAPL = useDispatch(APL.resolveAPL);
 
   const previewModal = useModals(ModalType.APL_PREVIEW);
@@ -21,7 +21,7 @@ const APLEditor: NodeEditor<Node.Visual.APLStepData, Realtime.NodeData.VisualBui
   const { aplType, imageURL, title, document: documentData, aplCommands, jsonFileName, datasource } = data;
 
   const canCreatePreview =
-    (aplType === Node.Visual.APLType.SPLASH && !!(title || imageURL)) || (aplType === Node.Visual.APLType.JSON && !!jsonFileName);
+    (aplType === BaseNode.Visual.APLType.SPLASH && !!(title || imageURL)) || (aplType === BaseNode.Visual.APLType.JSON && !!jsonFileName);
 
   const openPreviewModal = async () => {
     const result = await resolveAPL(data);
@@ -29,7 +29,7 @@ const APLEditor: NodeEditor<Node.Visual.APLStepData, Realtime.NodeData.VisualBui
     previewModal.open({ apl: result.apl, commands: result.commands, displayData: result.data });
   };
 
-  const onChangeAPLType = (newAPLType: Node.Visual.APLType) => {
+  const onChangeAPLType = (newAPLType: BaseNode.Visual.APLType) => {
     onChange({
       aplType: newAPLType,
       title: '',
@@ -49,14 +49,14 @@ const APLEditor: NodeEditor<Node.Visual.APLStepData, Realtime.NodeData.VisualBui
             options={APL_OPTIONS}
             checked={aplType}
             onChange={onChangeAPLType}
-            disabled={!!jsonFileName && aplType === Node.Visual.APLType.JSON}
+            disabled={!!jsonFileName && aplType === BaseNode.Visual.APLType.JSON}
           />
         </FormControl>
       </Section>
 
-      {aplType === Node.Visual.APLType.SPLASH && <SplashEditor title={title || ''} onChange={onChange} imageURL={imageURL || ''} />}
+      {aplType === BaseNode.Visual.APLType.SPLASH && <SplashEditor title={title || ''} onChange={onChange} imageURL={imageURL || ''} />}
 
-      {aplType === Node.Visual.APLType.JSON && (
+      {aplType === BaseNode.Visual.APLType.JSON && (
         <JSONEditor datasource={datasource} aplCommands={aplCommands} jsonFileName={jsonFileName || ''} onChange={onChange} document={documentData} />
       )}
     </Content>

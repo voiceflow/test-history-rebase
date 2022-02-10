@@ -1,7 +1,7 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -20,7 +20,7 @@ export interface CreateProjectParams {
   name: string;
   image: string;
   listID?: string;
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   language?: string;
   onboarding?: boolean;
 }
@@ -63,7 +63,7 @@ export const createProject =
 
     Errors.assertWorkspaceID(workspaceID);
 
-    const platformType = platform ?? Constants.PlatformType.GENERAL;
+    const platformType = platform ?? VoiceflowConstants.PlatformType.GENERAL;
     const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
     const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
 
@@ -168,7 +168,7 @@ export const deleteManyProjects =
 // mutations
 
 export const updateProjectPrivacy =
-  (projectID: string, privacy: BaseModels.ProjectPrivacy): Thunk =>
+  (projectID: string, privacy: BaseModels.Project.Privacy): Thunk =>
   async (dispatch, getState) => {
     const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
 
@@ -212,7 +212,7 @@ export const updateProjectImage =
   };
 
 export const updateProjectLinkType =
-  (projectID: string, linkType: BaseModels.ProjectLinkType): Thunk =>
+  (projectID: string, linkType: BaseModels.Project.LinkType): Thunk =>
   (dispatch) =>
     dispatch(
       Feature.applyAtomicSideEffect(

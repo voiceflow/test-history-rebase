@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -11,17 +11,17 @@ import { CardForm, CardFormFooter } from './components';
 
 const CARD_TYPE_OPTIONS = [
   {
-    id: Node.Card.CardType.STANDARD,
+    id: BaseNode.Card.CardType.STANDARD,
     label: 'Standard',
   },
   {
-    id: Node.Card.CardType.SIMPLE,
+    id: BaseNode.Card.CardType.SIMPLE,
     label: 'Simple',
   },
 ];
 
 const CardEditor: NodeEditor<Realtime.NodeData.Card, Realtime.NodeData.CardBuiltInPorts> = ({ data, onChange }) => {
-  const isStandard = data.cardType !== Node.Card.CardType.SIMPLE;
+  const isStandard = data.cardType !== BaseNode.Card.CardType.SIMPLE;
 
   return (
     <Content footer={<CardFormFooter isStandard={isStandard} data={data} onChange={onChange} />}>

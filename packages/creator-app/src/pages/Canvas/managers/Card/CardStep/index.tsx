@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -34,7 +34,9 @@ export const CardStep: React.FC<CardStepProps> = ({ title, image, nodeID, nextPo
 const ConnectedCardStep: ConnectedStep<Realtime.NodeData.Card, Realtime.NodeData.CardBuiltInPorts> = ({ ports, data, variant }) => {
   const image = isVariable(data.largeImage) ? null : data.largeImage;
 
-  return <CardStep image={image} title={data.title} nodeID={data.nodeID} nextPortID={ports.out.builtIn[Models.PortType.NEXT]} variant={variant} />;
+  return (
+    <CardStep image={image} title={data.title} nodeID={data.nodeID} nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]} variant={variant} />
+  );
 };
 
 export default ConnectedCardStep;

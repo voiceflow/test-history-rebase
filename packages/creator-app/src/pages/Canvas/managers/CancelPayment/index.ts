@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { NodeManagerConfig } from '../types';
 import CancelPaymentEditor from './CancelPaymentEditor';
@@ -11,7 +11,7 @@ const CancelPaymentManager: NodeManagerConfig<Realtime.NodeData.CancelPayment, R
 
   tip: "Refund a purchase or cancel an user's subscription",
   label: 'Cancel Purchase',
-  platforms: [Constants.PlatformType.ALEXA],
+  platforms: [VoiceflowConstants.PlatformType.ALEXA],
 
   step: CancelPaymentStep,
   editor: CancelPaymentEditor,

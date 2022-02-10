@@ -1,4 +1,4 @@
-import { Node, Nullable } from '@voiceflow/base-types';
+import { BaseNode, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
@@ -16,7 +16,7 @@ export interface NoReplyStepItemProps {
 }
 
 const NoReplyStepItem: React.FC<NoReplyStepItemProps> = ({ noReply, portID }) => {
-  const isPath = noReply?.types.includes(Node.Utils.NoReplyType.PATH);
+  const isPath = noReply?.types.includes(BaseNode.Utils.NoReplyType.PATH);
 
   return noReply?.types.length ? (
     <Popper
@@ -29,7 +29,7 @@ const NoReplyStepItem: React.FC<NoReplyStepItemProps> = ({ noReply, portID }) =>
           portID={isPath ? portID : null}
           portColor="#6e849a"
           attachment={
-            noReply.types.includes(Node.Utils.NoReplyType.REPROMPT) && hasValidReprompt(noReply.reprompts) ? (
+            noReply.types.includes(BaseNode.Utils.NoReplyType.REPROMPT) && hasValidReprompt(noReply.reprompts) ? (
               <Attachment ref={ref} icon="noReply" isActive={isOpened} onClick={stopPropagation(onToggle)} />
             ) : null
           }

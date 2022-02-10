@@ -1,4 +1,4 @@
-import type { Models } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import type * as Creator from '@/ducks/creator';
@@ -190,12 +190,12 @@ export const moveManyNodes = (nodeIDs: string[], movement: Pair<number>, origins
 export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): AddOutDynamicPort =>
   createAction(SocketAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port });
 
-export const addOutBuiltInPort = (nodeID: string, portType: Models.PortType, port: Realtime.PartialModel<Realtime.Port>): AddOutBuiltInPort =>
+export const addOutBuiltInPort = (nodeID: string, portType: BaseModels.PortType, port: Realtime.PartialModel<Realtime.Port>): AddOutBuiltInPort =>
   createAction(SocketAction.ADD_OUT_BUILT_IN_PORT, { nodeID, port, portType });
 
 export const removeOutDynamicPort = (portID: string): RemoveOutDynamicPort => createAction(SocketAction.REMOVE_OUT_DYNAMIC_PORT, portID);
 
-export const removeOutBuiltInPort = (portType: Models.PortType, portID: string): RemoveOutBuiltInPort =>
+export const removeOutBuiltInPort = (portType: BaseModels.PortType, portID: string): RemoveOutBuiltInPort =>
   createAction(SocketAction.REMOVE_OUT_BUILT_IN_PORT, { portType, portID });
 
 export const reorderOutDynamicPorts = (nodeID: string, from: number, to: number): ReorderOutDynamicPorts =>

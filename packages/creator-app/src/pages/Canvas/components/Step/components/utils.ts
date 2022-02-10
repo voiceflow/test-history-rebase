@@ -1,4 +1,4 @@
-import { Types as ChatTypes } from '@voiceflow/chat-types';
+import { ChatModels } from '@voiceflow/chat-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
@@ -6,7 +6,7 @@ import { SlateEditorAPI } from '@/components/SlateEditable';
 type VoicePrompt = Realtime.NodeData.VoicePrompt;
 
 // eslint-disable-next-line import/prefer-default-export
-export const hasValidReprompt = (reprompts?: VoicePrompt[] | ChatTypes.Prompt[]): boolean => {
+export const hasValidReprompt = (reprompts?: VoicePrompt[] | ChatModels.Prompt[]): boolean => {
   if (!reprompts) return false;
 
   return reprompts.some((prompt): boolean => {

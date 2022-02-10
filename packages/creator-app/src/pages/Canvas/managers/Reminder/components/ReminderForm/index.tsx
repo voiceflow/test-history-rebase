@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/alexa-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
@@ -62,7 +62,7 @@ const ReminderForm: React.FC<ReminderFormProps> = ({ data, withDate, onChange })
         ...(!recurrenceBool && {
           recurrence: {
             ...recurrence,
-            freq: Node.Reminder.RecurrenceFreq.DAILY,
+            freq: AlexaNode.Reminder.RecurrenceFreq.DAILY,
           },
         }),
       }),
@@ -71,7 +71,7 @@ const ReminderForm: React.FC<ReminderFormProps> = ({ data, withDate, onChange })
 
   React.useEffect(() => {
     if (recurrenceBool && !recurrence?.freq) {
-      updateRecurrenceType(Node.Reminder.RecurrenceFreq.DAILY);
+      updateRecurrenceType(AlexaNode.Reminder.RecurrenceFreq.DAILY);
     }
   }, [recurrenceBool]);
 
@@ -134,7 +134,7 @@ const ReminderForm: React.FC<ReminderFormProps> = ({ data, withDate, onChange })
           {recurrence && (
             <RecurrenceContainer>
               <RadioGroup options={RECURRENCE_OPTIONS} checked={recurrence.freq} name="Recurrence" onChange={updateRecurrenceType} />
-              {recurrence.freq === Node.Reminder.RecurrenceFreq.WEEKLY && <WeeklySelection recurrence={recurrence} onChange={onChange} />}
+              {recurrence.freq === AlexaNode.Reminder.RecurrenceFreq.WEEKLY && <WeeklySelection recurrence={recurrence} onChange={onChange} />}
             </RecurrenceContainer>
           )}
         </UncontrolledSection>

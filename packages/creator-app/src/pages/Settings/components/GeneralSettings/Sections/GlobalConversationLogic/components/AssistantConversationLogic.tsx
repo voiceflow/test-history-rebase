@@ -1,7 +1,7 @@
-import { Version } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseVersion } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
@@ -21,7 +21,7 @@ import { REPEAT_OPTIONS, RESUME_PROMPT_MAX_LENGTH } from '../constants';
 const SSMLComponent: any = SSML;
 
 interface AssistantConversationLogicProps {
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   platformMeta: PlatformSettingsMetaProps;
   defaultVoice: Realtime.AnyVoice;
   platformDefaultVoice: Realtime.AnyVoice;
@@ -54,7 +54,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
 
   const [previousSessionDialogError, setPreviousSessionDialogError] = React.useState(false);
 
-  const repeat = settings?.repeat ?? Version.RepeatType.OFF;
+  const repeat = settings?.repeat ?? BaseVersion.RepeatType.OFF;
   const restart = session?.restart || false;
   const resumePrompt = session?.resumePrompt || defaultResumePrompt;
   const followUpType = session?.resumePrompt.followVoice || defaultVoice;
@@ -126,8 +126,8 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
           <FormControl>
             <RadioGroup
               options={[
-                { id: defaultVoice, label: 'Speak', customCheckedCondition: (val) => val !== Constants.Voice.AUDIO },
-                { id: Constants.Voice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === Constants.Voice.AUDIO },
+                { id: defaultVoice, label: 'Speak', customCheckedCondition: (val) => val !== VoiceflowConstants.Voice.AUDIO },
+                { id: VoiceflowConstants.Voice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === VoiceflowConstants.Voice.AUDIO },
               ]}
               name="multiple"
               checked={resumePromptType}
@@ -135,7 +135,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
             />
           </FormControl>
 
-          {resumePromptType === Constants.Voice.AUDIO ? (
+          {resumePromptType === VoiceflowConstants.Voice.AUDIO ? (
             <AudioUpload audio={resumePrompt.content} update={(src) => onChangeResumePromptContent({ text: src })} />
           ) : (
             <>
@@ -164,8 +164,8 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
             <FormControl>
               <RadioGroup
                 options={[
-                  { id: defaultVoice, label: 'Speak', customCheckedCondition: (val) => val !== Constants.Voice.AUDIO },
-                  { id: Constants.Voice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === Constants.Voice.AUDIO },
+                  { id: defaultVoice, label: 'Speak', customCheckedCondition: (val) => val !== VoiceflowConstants.Voice.AUDIO },
+                  { id: VoiceflowConstants.Voice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === VoiceflowConstants.Voice.AUDIO },
                 ]}
                 name="multiple"
                 checked={followUpType}
@@ -173,7 +173,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
               />
             </FormControl>
 
-            {followUpType === Constants.Voice.AUDIO ? (
+            {followUpType === VoiceflowConstants.Voice.AUDIO ? (
               <FormControl>
                 <AudioUpload audio={resumePrompt.followContent} update={(src) => onChangeFollowUpContent({ text: src })} />
               </FormControl>
@@ -200,18 +200,18 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
         collapseVariant={SectionToggleVariant.TOGGLE}
         header="Allow Users to Repeat"
         isDividerNested
-        onToggleChange={(collapsed) => patchSettings({ repeat: collapsed ? Version.RepeatType.OFF : Version.RepeatType.DIALOG })}
+        onToggleChange={(collapsed) => patchSettings({ repeat: collapsed ? BaseVersion.RepeatType.OFF : BaseVersion.RepeatType.DIALOG })}
         headerToggle
-        initialOpen={repeat !== Version.RepeatType.OFF}
+        initialOpen={repeat !== BaseVersion.RepeatType.OFF}
       >
         <FormControl contentBottomUnits={3}>
           <RadioGroup
             options={REPEAT_OPTIONS}
             name="multiple"
-            checked={repeat ?? Version.RepeatType.DIALOG}
+            checked={repeat ?? BaseVersion.RepeatType.DIALOG}
             onChange={(repeat) => patchSettings({ repeat })}
           />
-          {repeat === Version.RepeatType.DIALOG ? repeatDialog : repeatEverything}
+          {repeat === BaseVersion.RepeatType.DIALOG ? repeatDialog : repeatEverything}
         </FormControl>
       </Section>
     </>

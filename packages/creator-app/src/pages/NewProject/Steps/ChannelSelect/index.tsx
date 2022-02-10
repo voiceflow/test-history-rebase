@@ -1,12 +1,12 @@
-import { Constants } from '@voiceflow/general-types';
 import { BoxFlexCenter, SvgIcon, useSetup } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { PROJECT_SECTIONS } from '../constants';
 import { Container, Section } from './components';
 
 interface ChannelSelectProps {
-  onSelect: (platform: Constants.PlatformType | null) => void;
+  onSelect: (platform: VoiceflowConstants.PlatformType | null) => void;
   isLoading: boolean;
 }
 

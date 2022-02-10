@@ -1,4 +1,4 @@
-import { Version as GeneralVersion } from '@voiceflow/general-types';
+import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createSelector } from 'reselect';
 
 import * as Session from '@/ducks/session';
@@ -31,5 +31,5 @@ export const canvasNodeVisibilitySelector = createSelector([settingsSelector], (
 
 export const defaultVoiceSelector = createSelector(
   [settingsSelector],
-  (settings) => (settings as GeneralVersion.GeneralVersionSettings)?.defaultVoice ?? null
+  (settings) => (settings as VoiceflowVersion.VoiceSettings)?.defaultVoice ?? null
 );

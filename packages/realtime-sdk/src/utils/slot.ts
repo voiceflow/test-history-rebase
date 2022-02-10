@@ -1,13 +1,14 @@
 import { CUSTOM_SLOT_TYPE } from '@realtime-sdk/constants';
 import { Intent, Slot } from '@realtime-sdk/models';
-import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
-import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
-import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
-import { Constants as GoogleConstants } from '@voiceflow/google-types';
+import { DFESConstants } from '@voiceflow/google-dfes-types';
+import { GoogleConstants } from '@voiceflow/google-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-export const generalSlotTypesByLanguage = (language: string = GeneralConstants.Language.EN) =>
-  GeneralConstants.SlotTypes[language]?.map<BuiltinSlot<GeneralConstants.SlotType, never>>((slot) => ({ type: slot.name, label: slot.label })) || [];
+export const generalSlotTypesByLanguage = (language: string = VoiceflowConstants.Language.EN) =>
+  VoiceflowConstants.SlotTypes[language]?.map<BuiltinSlot<VoiceflowConstants.SlotType, never>>((slot) => ({ type: slot.name, label: slot.label })) ||
+  [];
 
 export const getSlotTypes = <L extends string>({
   locales,
@@ -15,22 +16,22 @@ export const getSlotTypes = <L extends string>({
   natoEnabled,
 }: {
   locales: L[];
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   natoEnabled: boolean;
 }): { label: string; value: string }[] => {
   let builtInSlots: BuiltinSlot<string, string | L>[];
   let language: string | undefined;
   switch (platform) {
-    case Constants.PlatformType.GOOGLE:
+    case VoiceflowConstants.PlatformType.GOOGLE:
       builtInSlots = [...GoogleConstants.BUILT_IN_SLOTS];
       break;
-    case Constants.PlatformType.DIALOGFLOW_ES_CHAT:
-      builtInSlots = [...DialogflowConstants.BUILT_IN_SLOTS];
+    case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT:
+      builtInSlots = [...DFESConstants.BUILT_IN_SLOTS];
       break;
-    case Constants.PlatformType.DIALOGFLOW_ES_VOICE:
-      builtInSlots = [...DialogflowConstants.BUILT_IN_SLOTS];
+    case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE:
+      builtInSlots = [...DFESConstants.BUILT_IN_SLOTS];
       break;
-    case Constants.PlatformType.ALEXA:
+    case VoiceflowConstants.PlatformType.ALEXA:
       builtInSlots = [...AlexaConstants.BUILT_IN_SLOTS];
       builtInSlots = builtInSlots
         .filter((slot) => !slot.locales || locales.every((locale) => slot.locales!.includes(locale)))
@@ -39,12 +40,12 @@ export const getSlotTypes = <L extends string>({
     default:
       language = locales[0]?.substring(0, 2);
       // es-MX has different built in entities than es-ES, so needs a seperate case. See VF-159
-      if (locales[0] === Constants.Locale.ES_MX) {
-        language = Constants.Locale.ES_MX;
+      if (locales[0] === VoiceflowConstants.Locale.ES_MX) {
+        language = VoiceflowConstants.Locale.ES_MX;
       }
       builtInSlots = generalSlotTypesByLanguage(language);
       if (!natoEnabled) {
-        builtInSlots = builtInSlots.filter((slot) => slot.type !== GeneralConstants.SlotType.NATOAPCO);
+        builtInSlots = builtInSlots.filter((slot) => slot.type !== VoiceflowConstants.SlotType.NATOAPCO);
       }
   }
 

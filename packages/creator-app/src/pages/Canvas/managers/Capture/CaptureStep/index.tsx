@@ -1,4 +1,4 @@
-import { Models, Nullable } from '@voiceflow/base-types';
+import { BaseModels, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -46,9 +46,9 @@ const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.Capture, Realtime.No
     nodeID={data.nodeID}
     noReply={data.noReply}
     toVariable={data.variable}
-    nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
+    nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
     fromVariable={data.slot}
-    noReplyPortID={ports.out.builtIn[Models.PortType.NO_REPLY]}
+    noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
     variant={variant}
   />
 );

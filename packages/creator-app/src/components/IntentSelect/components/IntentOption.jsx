@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import { FlexApart, SvgIcon } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _toLower from 'lodash/toLower';
 import React from 'react';
 
@@ -10,8 +10,8 @@ import { isGeneralPlatform } from '@/utils/typeGuards';
 
 const getPlatformIcon = createPlatformSelector(
   {
-    [Constants.PlatformType.ALEXA]: 'amazon',
-    [Constants.PlatformType.GOOGLE]: 'google',
+    [VoiceflowConstants.PlatformType.ALEXA]: 'amazon',
+    [VoiceflowConstants.PlatformType.GOOGLE]: 'google',
   },
   'inFlow'
 );

@@ -1,5 +1,5 @@
-import { Node } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { ZOOM_FACTOR } from '@/components/Canvas/constants';
@@ -16,11 +16,17 @@ interface Dimension {
   height: number;
 }
 
-export const useDeviceDimension = ({ data, device }: { data: Node.Visual.StepData | null; device: Node.Visual.DeviceType | null }): Dimension =>
+export const useDeviceDimension = ({
+  data,
+  device,
+}: {
+  data: BaseNode.Visual.StepData | null;
+  device: BaseNode.Visual.DeviceType | null;
+}): Dimension =>
   React.useMemo(() => {
-    if (data?.visualType === Node.Visual.VisualType.IMAGE) {
+    if (data?.visualType === BaseNode.Visual.VisualType.IMAGE) {
       return data.device
-        ? Constants.DEVICE_SIZE_MAP[data.device]
+        ? VoiceflowConstants.DEVICE_SIZE_MAP[data.device]
         : {
             width: data.dimensions?.width ?? DEFAULT_FRAME_DIMENSION,
             height: data.dimensions?.height ?? DEFAULT_FRAME_DIMENSION,
@@ -35,7 +41,7 @@ export const useDeviceDimension = ({ data, device }: { data: Node.Visual.StepDat
     };
   }, [device, data]);
 
-export const useInitialCanvas = ({ platform, dimension }: { platform: Constants.PlatformType; dimension: Dimension }) => {
+export const useInitialCanvas = ({ platform, dimension }: { platform: VoiceflowConstants.PlatformType; dimension: Dimension }) => {
   const theme = useTheme();
 
   return React.useMemo(() => {

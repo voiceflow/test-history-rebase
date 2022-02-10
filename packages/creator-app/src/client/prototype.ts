@@ -1,4 +1,4 @@
-import { Request } from '@voiceflow/base-types';
+import { BaseRequest } from '@voiceflow/base-types';
 import axios from 'axios';
 
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
@@ -15,7 +15,7 @@ interface Response {
 const prototypeClient = {
   interact: (
     versionID: string,
-    body: { state: Omit<PrototypeContext, 'trace'>; request: Request.BaseRequest | null; config?: Request.RequestConfig },
+    body: { state: Omit<PrototypeContext, 'trace'>; request: BaseRequest.BaseRequest | null; config?: BaseRequest.RequestConfig },
     sessionID?: string
   ): Promise<Response> =>
     axios

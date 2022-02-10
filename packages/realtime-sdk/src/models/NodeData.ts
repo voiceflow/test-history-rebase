@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import { BlockType, BlockVariant, DistinctPlatform, VoicePromptType } from '@realtime-sdk/constants';
-import { Node as AlexaNode } from '@voiceflow/alexa-types';
-import { Button, Models as BaseModels, Node as BaseNode } from '@voiceflow/base-types';
-import { Node as ChatNode, Types as ChatTypes } from '@voiceflow/chat-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
+import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
+import { ChatModels, ChatNode } from '@voiceflow/chat-types';
 import { Nullable } from '@voiceflow/common';
-import { Node as GeneralNode } from '@voiceflow/general-types';
-import { Node as VoiceNode } from '@voiceflow/voice-types';
+import { VoiceNode } from '@voiceflow/voice-types';
+import { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
 import { ExpressionData } from './Expression';
 import { IntentSlot } from './Intent';
@@ -54,7 +54,7 @@ export namespace NodeData {
   }
 
   export interface ChatNoMatch extends BaseNoMatch {
-    reprompts: ChatTypes.Prompt[];
+    reprompts: ChatModels.Prompt[];
   }
 
   export type NoMatch = VoiceNoMatch | ChatNoMatch;
@@ -108,7 +108,7 @@ export namespace NodeData {
     name: string;
     else: NoMatch;
     choices: Record<DistinctPlatform, InteractionChoice>[];
-    buttons: Button.AnyButton[] | null;
+    buttons: BaseButton.AnyButton[] | null;
     noReply: Nullable<NoReply>;
   }
 
@@ -123,7 +123,7 @@ export namespace NodeData {
   }
 
   export interface Prompt {
-    buttons: Button.AnyButton[] | null;
+    buttons: BaseButton.AnyButton[] | null;
     noReply: Nullable<NoReply>;
     noMatchReprompt: NoMatch;
   }
@@ -145,7 +145,7 @@ export namespace NodeData {
 
   export interface Capture {
     slot: string | null;
-    buttons: Button.AnyButton[] | null;
+    buttons: BaseButton.AnyButton[] | null;
     noReply: Nullable<NoReply>;
     variable: string | null;
     examples: string[];
@@ -424,7 +424,7 @@ export namespace NodeData {
 
   export interface Exit {}
 
-  export interface Buttons extends Omit<GeneralNode.Buttons.StepData, 'else' | 'reprompt' | 'noReply'> {
+  export interface Buttons extends Omit<VoiceflowNode.Buttons.StepData, 'else' | 'reprompt' | 'noReply'> {
     else: NoMatch;
     noReply: Nullable<NoReply>;
   }

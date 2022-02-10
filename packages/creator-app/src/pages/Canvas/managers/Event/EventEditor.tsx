@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/alexa-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Input } from '@voiceflow/ui';
 import React from 'react';
@@ -11,7 +11,7 @@ import LineItemsSection from '@/pages/Canvas/managers/Integration/components/Cus
 import MetaDataLineItem from '@/pages/Canvas/managers/Integration/components/MetaDataLineItem';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
-const EventMappingFactory = (): Node.Event.Mapping => ({ var: '', path: '' });
+const EventMappingFactory = (): AlexaNode.Event.Mapping => ({ var: '', path: '' });
 
 const EventEditor: NodeEditor<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = ({ data, onChange }) => {
   const { items, onAdd, mapManaged } = useManager(data.mappings, (mappings) => onChange({ mappings }), { factory: EventMappingFactory });

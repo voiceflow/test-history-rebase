@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import { Utils } from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import axios from 'axios';
 
 import { ALEXA_SERVICE_ENDPOINT, GENERAL_SERVICE_ENDPOINT, GOOGLE_SERVICE_ENDPOINT } from '../config';
@@ -18,10 +18,10 @@ const generateClient = (serviceEndpoint: string) => ({
 
 export const getPlatformClient = Utils.platform.createPlatformSelector<ReturnType<typeof generateClient>>(
   {
-    [Constants.PlatformType.ALEXA]: generateClient(ALEXA_SERVICE_ENDPOINT),
-    [Constants.PlatformType.GOOGLE]: generateClient(GOOGLE_SERVICE_ENDPOINT),
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: generateClient(GOOGLE_SERVICE_ENDPOINT),
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: generateClient(GOOGLE_SERVICE_ENDPOINT),
+    [VoiceflowConstants.PlatformType.ALEXA]: generateClient(ALEXA_SERVICE_ENDPOINT),
+    [VoiceflowConstants.PlatformType.GOOGLE]: generateClient(GOOGLE_SERVICE_ENDPOINT),
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: generateClient(GOOGLE_SERVICE_ENDPOINT),
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: generateClient(GOOGLE_SERVICE_ENDPOINT),
   },
   generateClient(GENERAL_SERVICE_ENDPOINT)
 );

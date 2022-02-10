@@ -1,6 +1,6 @@
-import { Models, Node } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
@@ -34,19 +34,19 @@ export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, image, next
   </Step>
 );
 
-const ConnectedImageStep: ConnectedStep<Node.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ ports, data, variant }) => {
+const ConnectedImageStep: ConnectedStep<BaseNode.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ ports, data, variant }) => {
   const label = getLabel(data);
-  const size = data.device ? Constants.DEVICE_SIZE_MAP[data.device] : data.dimensions;
+  const size = data.device ? VoiceflowConstants.DEVICE_SIZE_MAP[data.device] : data.dimensions;
   const image = isVariable(data.image) ? null : data.image;
 
-  const aspectRatio = size && data.canvasVisibility === Node.Visual.CanvasVisibility.FULL ? size.width / size.height : null;
+  const aspectRatio = size && data.canvasVisibility === BaseNode.Visual.CanvasVisibility.FULL ? size.width / size.height : null;
 
   return (
     <ImageStep
       label={label}
-      image={data.canvasVisibility === Node.Visual.CanvasVisibility.HIDDEN ? null : image}
+      image={data.canvasVisibility === BaseNode.Visual.CanvasVisibility.HIDDEN ? null : image}
       nodeID={data.nodeID}
-      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
+      nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       aspectRatio={aspectRatio}
       variant={variant}
     />

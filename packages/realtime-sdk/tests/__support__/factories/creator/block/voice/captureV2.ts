@@ -1,11 +1,11 @@
-import { Node } from '@voiceflow/voice-types';
+import { VoiceNode } from '@voiceflow/voice-types';
 import { define } from 'cooky-cutter';
 
 import { NodeData } from '@/models';
 
 import { VoiceNodeDataNoMatch, VoiceNodeDataNoReply, VoiceStepNoMatch, VoiceStepNoReply } from '../shared';
 
-export const CaptureV2StepData = define<Omit<Node.CaptureV2.StepData<any>, 'capture'>>({
+export const CaptureV2StepData = define<Omit<VoiceNode.CaptureV2.StepData<any>, 'capture'>>({
   noReply: () => VoiceStepNoReply(),
   noMatch: () => VoiceStepNoMatch(),
 });

@@ -1,11 +1,11 @@
 import { ChatIntentSlot, NodeData } from '@realtime-sdk/models';
-import { Node as BaseNode } from '@voiceflow/base-types';
-import { Node } from '@voiceflow/chat-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { ChatNode } from '@voiceflow/chat-types';
 
 import { chatIntentSlotSanitizer } from '../../../intent/chat';
 import { chatNoMatchAdapter, chatNoReplyAdapter, createBlockAdapter } from '../utils';
 
-const captureAdapter = createBlockAdapter<Node.CaptureV2.StepData, Omit<NodeData.CaptureV2, 'buttons'>>(
+const captureAdapter = createBlockAdapter<ChatNode.CaptureV2.StepData, Omit<NodeData.CaptureV2, 'buttons'>>(
   ({ noReply, noMatch, capture }) => ({
     captureType: capture.type,
     variable: capture.type === BaseNode.CaptureV2.CaptureType.QUERY ? capture.variable : null,
@@ -24,7 +24,7 @@ const captureAdapter = createBlockAdapter<Node.CaptureV2.StepData, Omit<NodeData
             type: captureType,
             variable,
           },
-    noReply: noReply && chatNoReplyAdapter.toDB(noReply as Node.Utils.StepNoReply),
+    noReply: noReply && chatNoReplyAdapter.toDB(noReply as ChatNode.Utils.StepNoReply),
     noMatch: noMatch && chatNoMatchAdapter.toDB(noMatch as NodeData.ChatNoMatch),
   })
 );

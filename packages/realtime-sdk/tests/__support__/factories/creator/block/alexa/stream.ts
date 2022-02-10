@@ -1,10 +1,10 @@
-import { Node } from '@voiceflow/alexa-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
 import { define } from 'cooky-cutter';
 import { datatype, image, internet, lorem } from 'faker';
 
 import { NodeData } from '@/models';
 
-export const StreamStepData = define<Node.Stream.StepData>({
+export const StreamStepData = define<AlexaNode.Stream.StepData>({
   loop: () => datatype.boolean(),
   audio: () => internet.url(),
   title: () => lorem.words(),

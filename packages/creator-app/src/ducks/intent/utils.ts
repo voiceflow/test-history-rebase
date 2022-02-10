@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isPlainObject from 'lodash/isPlainObject';
 import { Normalized } from 'normal-store';
 
@@ -16,12 +16,13 @@ const newVoiceSlotsCreator = (id: string): Realtime.VoiceIntentSlot => Adapters.
 
 export const getPlatformNewSlotsCreator = createAdvancedPlatformSelector(
   {
-    [Constants.PlatformType.CHATBOT]: newChatSlotsCreator,
+    [VoiceflowConstants.PlatformType.CHATBOT]: newChatSlotsCreator,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: newChatSlotsCreator,
   },
   newVoiceSlotsCreator
 );
 
-export const intentProcessor = (platform: Constants.PlatformType, { inputs = [], slots, ...intent }: Realtime.Intent): Realtime.Intent => {
+export const intentProcessor = (platform: VoiceflowConstants.PlatformType, { inputs = [], slots, ...intent }: Realtime.Intent): Realtime.Intent => {
   let nextSlots = slots;
 
   if (!_isPlainObject(slots)) {
@@ -41,7 +42,7 @@ export const intentProcessor = (platform: Constants.PlatformType, { inputs = [],
   } as Realtime.Intent;
 };
 
-export const applySingleIntentNameFormatting = (platform: Constants.PlatformType, intent: Realtime.Intent): Realtime.Intent => {
+export const applySingleIntentNameFormatting = (platform: VoiceflowConstants.PlatformType, intent: Realtime.Intent): Realtime.Intent => {
   let { name } = intent ?? { name: '' };
 
   name = getIntentNameLabel(name);
@@ -51,7 +52,7 @@ export const applySingleIntentNameFormatting = (platform: Constants.PlatformType
 
     if (isAnyGeneralPlatform(platform)) {
       name = Utils.string.capitalizeFirstLetter(name?.toLowerCase());
-    } else if (platform === Constants.PlatformType.ALEXA) {
+    } else if (platform === VoiceflowConstants.PlatformType.ALEXA) {
       name = name.replace(/(\w)Intent/g, '$1');
     }
   }
@@ -62,5 +63,5 @@ export const applySingleIntentNameFormatting = (platform: Constants.PlatformType
   };
 };
 
-export const applyIntentNameFormatting = (platform: Constants.PlatformType, intents: Realtime.Intent[]): Realtime.Intent[] =>
+export const applyIntentNameFormatting = (platform: VoiceflowConstants.PlatformType, intents: Realtime.Intent[]): Realtime.Intent[] =>
   intents.map((intent) => applySingleIntentNameFormatting(platform, intent));

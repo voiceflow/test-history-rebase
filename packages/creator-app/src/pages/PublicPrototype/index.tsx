@@ -1,7 +1,7 @@
-import { Button } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { PlanType } from '@voiceflow/internal';
 import { DEVICE_INFO, FullSpinner, toast } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -29,9 +29,9 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
   const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings & { globalMessageDelayMilliseconds?: number }>({
     plan: PlanType.STARTER,
     layout: PrototypeDuck.PrototypeLayout.TEXT_DIALOG,
-    buttons: Button.ButtonsLayout.STACKED,
+    buttons: BaseButton.ButtonsLayout.STACKED,
     locales: [],
-    platform: Constants.PlatformType.GENERAL,
+    platform: VoiceflowConstants.PlatformType.GENERAL,
     hasPassword: false,
     projectName: '',
     globalMessageDelayMilliseconds: 0,

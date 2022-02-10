@@ -1,5 +1,5 @@
 import { Creator } from '@test/factories';
-import { Button } from '@voiceflow/base-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -42,7 +42,7 @@ describe('Adapters | Creator | Block | Chat | captureAdapter', () => {
 
       expect(chatNoReplyAdapterSpy.called).eql(false);
       expect(result.noReply).eql(null);
-      expect(result.buttons).eql([{ name: chip.label, type: Button.ButtonType.INTENT, payload: { intentID: null } }]);
+      expect(result.buttons).eql([{ name: chip.label, type: BaseButton.ButtonType.INTENT, payload: { intentID: null } }]);
     });
   });
 

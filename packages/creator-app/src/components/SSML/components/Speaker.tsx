@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import { SvgIcon } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
@@ -12,7 +12,7 @@ import SpeakerWrapper from './SpeakerWrapper';
 
 interface SpeakerProps {
   voice: string;
-  platform?: Constants.PlatformType;
+  platform?: VoiceflowConstants.PlatformType;
   setError?: (error?: string) => void;
   getSSMLToPlay: () => string;
 }

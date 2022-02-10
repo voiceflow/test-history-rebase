@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -43,8 +43,8 @@ const ConnectedCodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData
     nodeID={data.nodeID}
     withCode={!!data.code}
     withPorts={withPorts}
-    successPortID={ports.out.builtIn[Models.PortType.NEXT]}
-    failurePortID={ports.out.builtIn[Models.PortType.FAIL]}
+    successPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
+    failurePortID={ports.out.builtIn[BaseModels.PortType.FAIL]}
     variant={variant}
   />
 );

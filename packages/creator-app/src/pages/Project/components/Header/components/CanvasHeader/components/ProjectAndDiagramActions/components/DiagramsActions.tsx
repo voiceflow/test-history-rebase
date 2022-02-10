@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { BoxFlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
@@ -38,7 +38,7 @@ const DiagramsActions: React.FC = () => {
         <DiagramActions diagramID={rootDiagramID} diagramName="Home" disabled />
       ) : (
         <>
-          {(!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) || activeDiagram?.type !== BaseModels.DiagramType.TOPIC) && (
+          {(!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) || activeDiagram?.type !== BaseModels.Diagram.DiagramType.TOPIC) && (
             <>
               <DiagramDivider />
               <DiagramName onClick={() => rootDiagramID && goToDiagramHistoryClear(rootDiagramID)}>Home</DiagramName>{' '}

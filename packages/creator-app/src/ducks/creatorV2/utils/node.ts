@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
@@ -24,7 +24,7 @@ export const addNodeWithPorts = (
     addBuiltinPort(state, {
       nodeID,
       portID: port.id,
-      type: type as Models.PortType,
+      type: type as BaseModels.PortType,
       platform: port.platform,
     })
   );

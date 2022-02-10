@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { Section as TooltipSection, Title } from '@/components/Tooltip';
@@ -10,11 +10,11 @@ const InfoTooltip: React.FC = () => {
 
   return (
     <>
-      <Title>{getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}</Title>
+      <Title>{getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}</Title>
 
       <TooltipSection marginBottomUnits={2}>
-        Add {getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} to the end of your messages in conversations to
-        allow users to quickly trigger intents.
+        Add {getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} to the end of your messages in
+        conversations to allow users to quickly trigger intents.
       </TooltipSection>
     </>
   );

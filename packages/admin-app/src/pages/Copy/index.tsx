@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import { Constants } from '@voiceflow/general-types';
 import { Button, ButtonVariant, KeyName, Label, toast } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -98,7 +98,7 @@ const Copy: React.FC = () => {
     }
 
     try {
-      await client.platform(skill.platform as Constants.PlatformType).project.copy(skill.value, { teamID: targetBoard.value });
+      await client.platform(skill.platform as VoiceflowConstants.PlatformType).project.copy(skill.value, { teamID: targetBoard.value });
 
       setSkill(null);
       setCreatorID('');

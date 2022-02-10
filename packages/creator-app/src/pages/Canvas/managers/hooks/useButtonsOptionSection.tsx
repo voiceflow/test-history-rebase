@@ -1,6 +1,6 @@
-import { Button } from '@voiceflow/base-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 // importing from Section to resolve circular dependency
@@ -19,12 +19,12 @@ interface NodeInterface<T> {
   pushToPath?: PushToPath;
 }
 
-const useButtonsOptionSection = ({ data, onChange, pushToPath }: NodeInterface<{ buttons: Nullable<Button.AnyButton[]> }>): OptionSection => {
+const useButtonsOptionSection = ({ data, onChange, pushToPath }: NodeInterface<{ buttons: Nullable<BaseButton.AnyButton[]> }>): OptionSection => {
   const hasButtons = !!data.buttons;
   const platform = React.useContext(PlatformContext)!;
   const toggleButtons = React.useCallback(() => onChange({ buttons: hasButtons ? null : buttonsFactory() }), [hasButtons, onChange]);
 
-  const buttonsName = getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons');
+  const buttonsName = getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons');
 
   return [
     isAlexaPlatform(platform)

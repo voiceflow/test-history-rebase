@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
@@ -54,7 +54,7 @@ export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) 
   const diagramType = DiagramSelectorsV2.active.typeSelector(state);
   const isRootDiagramActive = CreatorV2.isRootDiagramActiveSelector(state);
 
-  if (isRootDiagramActive || diagramType !== Models.DiagramType.TOPIC) {
+  if (isRootDiagramActive || diagramType !== BaseModels.Diagram.DiagramType.TOPIC) {
     return;
   }
 
@@ -67,7 +67,7 @@ export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) 
 
     const { intent, availability } = getDistinctPlatformValue(platform, nodeData);
 
-    return !!intent && (!availability || availability === Node.Intent.IntentAvailability.GLOBAL);
+    return !!intent && (!availability || availability === BaseNode.Intent.IntentAvailability.GLOBAL);
   });
 
   if (!isTopicAvailable) {
@@ -110,7 +110,7 @@ const initializeCreatorForDiagram =
         !isAtomicActions &&
         isTopicsAndComponentsEnabled &&
         isTopicsAndComponentsVersion &&
-        diagramType === Models.DiagramType.TOPIC &&
+        diagramType === BaseModels.Diagram.DiagramType.TOPIC &&
         !dbDiagram.intentStepIDs?.length
       ) {
         dispatch(DiagramActions.crud.patch(diagramID, { intentStepIDs: getIntentStepIDs() }));

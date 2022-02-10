@@ -1,6 +1,6 @@
 import { BaseIntent, IntentInput } from '@realtime-sdk/models';
-import { Models as BaseModels } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseModels } from '@voiceflow/base-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import createAdapter from 'bidirectional-adapter';
 import { Optional, Required } from 'utility-types';
 
@@ -31,7 +31,7 @@ export const baseIntentSlotSanitizer = ({
   required,
 });
 
-export const baseIntentAdapter = createAdapter<BaseModels.Intent, Omit<BaseIntent, 'slots'>, [{ platform: Constants.PlatformType }]>(
+export const baseIntentAdapter = createAdapter<BaseModels.Intent, Omit<BaseIntent, 'slots'>, [{ platform: VoiceflowConstants.PlatformType }]>(
   ({ key, name, inputs = [] }, { platform }) => ({
     id: key,
     name,

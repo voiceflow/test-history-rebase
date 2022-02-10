@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { matchPath } from 'react-router';
 import { useLocation } from 'react-router-dom';
@@ -19,7 +19,7 @@ const trackingPaths = [
   { area: TrackingArea.CANVAS, path: Path.PROJECT_CANVAS },
 ];
 
-export function useProjectExitTracking({ platform }: { platform: Constants.PlatformType }): void {
+export function useProjectExitTracking({ platform }: { platform: VoiceflowConstants.PlatformType }): void {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

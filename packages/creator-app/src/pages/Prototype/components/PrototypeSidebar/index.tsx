@@ -1,4 +1,5 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Flex, FlexCenter, LoadCircle, SvgIcon, toast, useDidUpdateEffect, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
@@ -27,7 +28,6 @@ import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
 import { canUseSoundToggle } from '@/utils/prototype';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
-import { isChatbotPlatform } from '@/utils/typeGuards';
 import * as Sentry from '@/vendors/sentry';
 
 import { Container, EmbedContainer, TrainingSection } from './components';
@@ -149,7 +149,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   React.useEffect(() => {
     if (!open) return undefined;
 
-    if (isChatbotPlatform(platform)) {
+    if (Realtime.Utils.typeGuards.isChatPlatform(platform)) {
       updatePrototype({ muted: true });
     }
 

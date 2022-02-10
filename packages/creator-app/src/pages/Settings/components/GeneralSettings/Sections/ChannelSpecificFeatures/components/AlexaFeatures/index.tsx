@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import React from 'react';
 
 import * as VersionV2 from '@/ducks/versionV2';
@@ -13,12 +13,12 @@ export interface AlexaFeaturesOwnProps {
 }
 
 const MODEL_SENSITIVITY_SUPPORTED_LOCALES: string[] = [
-  Constants.Locale.EN_US,
-  Constants.Locale.EN_AU,
-  Constants.Locale.EN_CA,
-  Constants.Locale.EN_IN,
-  Constants.Locale.EN_GB,
-  Constants.Locale.DE_DE,
+  AlexaConstants.Locale.EN_US,
+  AlexaConstants.Locale.EN_AU,
+  AlexaConstants.Locale.EN_CA,
+  AlexaConstants.Locale.EN_IN,
+  AlexaConstants.Locale.EN_GB,
+  AlexaConstants.Locale.DE_DE,
 ];
 
 const AlexaFeatures: React.FC<ConnectedAlexaFeaturesProps & AlexaFeaturesOwnProps> = ({ locales, platformMeta }) => {

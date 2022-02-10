@@ -1,4 +1,4 @@
-import { Models, Node, Nullable } from '@voiceflow/base-types';
+import { BaseModels, BaseNode, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -12,7 +12,7 @@ import { NODE_CONFIG } from '../constants';
 
 export interface ButtonsStepProps {
   nodeID: string;
-  buttons: Node.Buttons.Button[];
+  buttons: BaseNode.Buttons.Button[];
   noMatch: Realtime.NodeData.NoMatch;
   noReply?: Nullable<Realtime.NodeData.NoReply>;
   noMatchPortID?: Nullable<string>;
@@ -38,8 +38,8 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({
       <Section>
         {buttons.length ? (
           buttons.map(({ id, name, actions, intent }, index) => {
-            const isPathChecked = actions.includes(Node.Buttons.ButtonAction.PATH);
-            const isIntentChecked = actions.includes(Node.Buttons.ButtonAction.INTENT);
+            const isPathChecked = actions.includes(BaseNode.Buttons.ButtonAction.PATH);
+            const isIntentChecked = actions.includes(BaseNode.Buttons.ButtonAction.INTENT);
             const isGoToIntent = isIntentChecked && !isPathChecked;
             const intentEntity = intent && intentsMap[intent] ? intentsMap[intent] ?? null : null;
             const intentName = prettifyIntentName(intentEntity?.name);
@@ -79,8 +79,8 @@ const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.No
     buttons={data.buttons}
     noMatch={data.else}
     noReply={data.noReply}
-    noMatchPortID={ports.out.builtIn[Models.PortType.NO_MATCH]}
-    noReplyPortID={ports.out.builtIn[Models.PortType.NO_REPLY]}
+    noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
+    noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
     dynamicPortIDs={ports.out.dynamic}
     variant={variant}
   />

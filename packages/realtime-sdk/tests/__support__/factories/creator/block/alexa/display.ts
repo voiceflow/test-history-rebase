@@ -1,10 +1,10 @@
 import { getRandomEnumElement } from '@test/utils';
-import { Node } from '@voiceflow/alexa-types';
-import { Node as BaseNode } from '@voiceflow/base-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';
 import { internet, lorem } from 'faker';
 
-export const DisplayStepData = define<Node.Display.StepData>({
+export const DisplayStepData = define<AlexaNode.Display.StepData>({
   type: () => getRandomEnumElement(BaseNode.Visual.APLType),
   title: () => lorem.words(),
   document: () => internet.url(),

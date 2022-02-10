@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
@@ -39,7 +39,7 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.Inten
 
   const updateIntentSteps = useSyncDispatch(Realtime.diagram.updateIntentSteps);
 
-  const isGlobalIntent = platformData.availability === Node.Intent.IntentAvailability.GLOBAL;
+  const isGlobalIntent = platformData.availability === BaseNode.Intent.IntentAvailability.GLOBAL;
 
   const onChangeIntent = async ({ intent }: { intent: Nullable<string> }) => {
     await patchPlatformData({ intent });
@@ -52,11 +52,11 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.Inten
   };
 
   const onChangeAvailability = async () => {
-    const nextAvailability = isGlobalIntent ? Node.Intent.IntentAvailability.LOCAL : Node.Intent.IntentAvailability.GLOBAL;
+    const nextAvailability = isGlobalIntent ? BaseNode.Intent.IntentAvailability.LOCAL : BaseNode.Intent.IntentAvailability.GLOBAL;
 
     await patchPlatformData({ availability: nextAvailability });
 
-    if (nextAvailability !== Node.Intent.IntentAvailability.GLOBAL) {
+    if (nextAvailability !== BaseNode.Intent.IntentAvailability.GLOBAL) {
       validateTopicAvailability();
     }
   };

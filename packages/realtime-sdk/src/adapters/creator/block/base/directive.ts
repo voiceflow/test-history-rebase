@@ -1,9 +1,9 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter, createOutPortsAdapter, nextOnlyOutPortsAdapter } from '../utils';
 
-const directiveDataAdapter = createBlockAdapter<Node.Directive.StepData, NodeData.Directive>(
+const directiveDataAdapter = createBlockAdapter<BaseNode.Directive.StepData, NodeData.Directive>(
   ({ directive }) => ({ directive }),
   ({ directive }) => ({ directive })
 );

@@ -1,22 +1,22 @@
 import { DialogType } from '@realtime-sdk/constants';
 import { NodeData } from '@realtime-sdk/models';
-import { Constants, Node } from '@voiceflow/google-types';
+import { GoogleConstants, GoogleNode } from '@voiceflow/google-types';
 
 import { createBlockAdapter } from '../utils';
 import { voiceSpeakAdapter, voiceSpeakDialogAdapter } from '../voice';
 
-const speakAdapter = createBlockAdapter<Node.Speak.StepData, NodeData.Speak>(
+const speakAdapter = createBlockAdapter<GoogleNode.Speak.VoiceStepData, NodeData.Speak>(
   (data) => ({
-    ...voiceSpeakAdapter.fromDB(data, { audioVoice: Constants.Voice.AUDIO }),
+    ...voiceSpeakAdapter.fromDB(data, { audioVoice: GoogleConstants.Voice.AUDIO }),
     dialogs: data.dialogs.map((dialog) => ({
-      ...voiceSpeakDialogAdapter.fromDB(dialog, { audioVoice: Constants.Voice.AUDIO }),
+      ...voiceSpeakDialogAdapter.fromDB(dialog, { audioVoice: GoogleConstants.Voice.AUDIO }),
       desc: dialog.desc,
     })),
   }),
   (data) => ({
-    ...voiceSpeakAdapter.toDB(data, { audioVoice: Constants.Voice.AUDIO, defaultVoice: Constants.Voice.DEFAULT }),
+    ...voiceSpeakAdapter.toDB(data, { audioVoice: GoogleConstants.Voice.AUDIO, defaultVoice: GoogleConstants.Voice.DEFAULT }),
     dialogs: data.dialogs.map((dialog) => ({
-      ...voiceSpeakDialogAdapter.toDB(dialog, { audioVoice: Constants.Voice.AUDIO, defaultVoice: Constants.Voice.DEFAULT }),
+      ...voiceSpeakDialogAdapter.toDB(dialog, { audioVoice: GoogleConstants.Voice.AUDIO, defaultVoice: GoogleConstants.Voice.DEFAULT }),
       desc: dialog.type === DialogType.AUDIO ? dialog.desc : undefined,
     })),
   })

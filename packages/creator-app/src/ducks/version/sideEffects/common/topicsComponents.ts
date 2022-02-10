@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -17,7 +17,7 @@ import { getActiveVersionContext } from '../../utils';
  * @deprecated syncing topics will be done automatically by the new realtime system
  */
 export const saveTopics =
-  (topics: BaseModels.VersionFolderItem[]): Thunk =>
+  (topics: BaseModels.Version.FolderItem[]): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -35,7 +35,7 @@ export const saveTopics =
  * @deprecated syncing components will be done automatically by the new realtime system
  */
 export const saveComponents =
-  (components: BaseModels.VersionFolderItem[]): Thunk =>
+  (components: BaseModels.Version.FolderItem[]): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);

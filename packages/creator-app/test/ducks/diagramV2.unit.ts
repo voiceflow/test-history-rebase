@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Diagram from '@/ducks/diagramV2';
@@ -15,7 +15,7 @@ const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versi
 
 const DIAGRAM: Realtime.Diagram = {
   id: DIAGRAM_ID,
-  type: Models.DiagramType.TOPIC,
+  type: BaseModels.Diagram.DiagramType.TOPIC,
   name: 'diagram',
   variables: ['var_foo', 'var_bar'],
   intentStepIDs: [STEP_ID, 'otherIntentID'],
@@ -27,7 +27,7 @@ const MOCK_STATE: Diagram.DiagramState = {
     [DIAGRAM_ID]: DIAGRAM,
     abc: {
       id: 'abc',
-      type: Models.DiagramType.COMPONENT,
+      type: BaseModels.Diagram.DiagramType.COMPONENT,
       name: 'alphabet diagram',
       variables: [],
       intentStepIDs: [],

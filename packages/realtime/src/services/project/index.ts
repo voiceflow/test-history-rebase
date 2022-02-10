@@ -1,6 +1,6 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Optional } from 'utility-types';
 
 import { AbstractControl, ControlOptions } from '../../control';
@@ -57,16 +57,13 @@ class ProjectService extends AbstractControl {
     return this.connectedDiagramsCache.values({ projectID });
   }
 
-  public async get<P extends BaseModels.BasePlatformData, M extends BaseModels.BasePlatformData>(
-    creatorID: number,
-    projectID: string
-  ): Promise<BaseModels.Project<P, M>> {
+  public async get<P extends AnyRecord, M extends AnyRecord>(creatorID: number, projectID: string): Promise<BaseModels.Project.Model<P, M>> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.project.get(projectID);
   }
 
-  public async getPlatform(creatorID: number, projectID: string): Promise<Constants.PlatformType> {
+  public async getPlatform(creatorID: number, projectID: string): Promise<VoiceflowConstants.PlatformType> {
     const project = await this.get(creatorID, projectID).then(Realtime.Adapters.projectAdapter.fromDB);
 
     return project.platform;
@@ -86,7 +83,7 @@ class ProjectService extends AbstractControl {
   ): Promise<Realtime.DBProject> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    return client.project.platform<Realtime.DBProject>(data.platform as Constants.PlatformType).duplicate(templateID, data, params);
+    return client.project.platform<Realtime.DBProject>(data.platform as VoiceflowConstants.PlatformType).duplicate(templateID, data, params);
   }
 
   public async importFromFile(
@@ -97,9 +94,9 @@ class ProjectService extends AbstractControl {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     const importJSON = JSON.parse(data) as {
-      project: BaseModels.Project<any, any>;
-      version: BaseModels.Version<any>;
-      diagrams: Record<string, BaseModels.Diagram<any>>;
+      project: BaseModels.Project.Model<any, any>;
+      version: BaseModels.Version.Model<any>;
+      diagrams: Record<string, BaseModels.Diagram.Model<any>>;
     };
 
     if (importJSON.project && typeof importJSON.project === 'object') {

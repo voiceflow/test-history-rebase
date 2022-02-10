@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import _isEmpty from 'lodash/isEmpty';
 import React, { useCallback, useEffect } from 'react';
 
@@ -33,16 +33,16 @@ const Step = {
 const SelectGoogleSheetNextStep = (data) => {
   let nextStep = '';
   switch (data.selectedAction) {
-    case Node.GoogleSheets.GoogleSheetsActionType.RETRIEVE_DATA:
+    case BaseNode.GoogleSheets.GoogleSheetsActionType.RETRIEVE_DATA:
       nextStep = Step.RETRIEVE_SETTINGS;
       break;
-    case Node.GoogleSheets.GoogleSheetsActionType.CREATE_DATA:
+    case BaseNode.GoogleSheets.GoogleSheetsActionType.CREATE_DATA:
       nextStep = Step.CREATE_UPDATE_SETTINGS;
       break;
-    case Node.GoogleSheets.GoogleSheetsActionType.UPDATE_DATA:
+    case BaseNode.GoogleSheets.GoogleSheetsActionType.UPDATE_DATA:
       nextStep = Step.CREATE_UPDATE_SETTINGS;
       break;
-    case Node.GoogleSheets.GoogleSheetsActionType.DELETE_DATA:
+    case BaseNode.GoogleSheets.GoogleSheetsActionType.DELETE_DATA:
       nextStep = Step.DELETE_SETTINGS;
       break;
     default:
@@ -108,7 +108,7 @@ function GoogleSheetsEditor({ data, onChange, creatorID, versionID, setError, cu
               />
               {hasSelectedSheet && (
                 <>
-                  {data.selectedAction === Node.GoogleSheets.GoogleSheetsActionType.RETRIEVE_DATA && (
+                  {data.selectedAction === BaseNode.GoogleSheets.GoogleSheetsActionType.RETRIEVE_DATA && (
                     <>
                       <RetrieveSettings
                         headers_list={headers_list}
@@ -129,8 +129,8 @@ function GoogleSheetsEditor({ data, onChange, creatorID, versionID, setError, cu
                     </>
                   )}
 
-                  {(data.selectedAction === Node.GoogleSheets.GoogleSheetsActionType.CREATE_DATA ||
-                    data.selectedAction === Node.GoogleSheets.GoogleSheetsActionType.UPDATE_DATA) && (
+                  {(data.selectedAction === BaseNode.GoogleSheets.GoogleSheetsActionType.CREATE_DATA ||
+                    data.selectedAction === BaseNode.GoogleSheets.GoogleSheetsActionType.UPDATE_DATA) && (
                     <WithValues
                       headers_list={headers_list}
                       data={data}
@@ -140,7 +140,7 @@ function GoogleSheetsEditor({ data, onChange, creatorID, versionID, setError, cu
                       openNextStep={setStep(Step.TEST_SECTION)}
                     />
                   )}
-                  {data.selectedAction === Node.GoogleSheets.GoogleSheetsActionType.DELETE_DATA && (
+                  {data.selectedAction === BaseNode.GoogleSheets.GoogleSheetsActionType.DELETE_DATA && (
                     <DeleteSettings
                       data={data}
                       onChange={onChange}

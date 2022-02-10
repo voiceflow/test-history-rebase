@@ -1,20 +1,20 @@
-import { Button } from '@voiceflow/base-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';
 import { datatype, lorem, random } from 'faker';
 
-export const ButtonChip = define<Button.Chip>({
+export const ButtonChip = define<BaseButton.Chip>({
   label: () => lorem.word(),
 });
 
-export const IntentButton = define<Button.IntentButton>({
-  type: () => random.arrayElement(Object.values(Button.ButtonType)),
+export const IntentButton = define<BaseButton.IntentButton>({
+  type: () => random.arrayElement(Object.values(BaseButton.ButtonType)),
   name: () => lorem.word(),
   payload: () => ({ intentID: datatype.uuid() }),
 });
 
 export const BUTTON_STEP_DATA_FACTORY_CONFIG = {
-  chips: (): Button.Chip[] => [ButtonChip()],
-  buttons: (): Button.IntentButton[] => [IntentButton()],
+  chips: (): BaseButton.Chip[] => [ButtonChip()],
+  buttons: (): BaseButton.IntentButton[] => [IntentButton()],
 };
 
-export const ButtonStepData = define<Button.StepButton>(BUTTON_STEP_DATA_FACTORY_CONFIG);
+export const ButtonStepData = define<BaseButton.StepButton>(BUTTON_STEP_DATA_FACTORY_CONFIG);

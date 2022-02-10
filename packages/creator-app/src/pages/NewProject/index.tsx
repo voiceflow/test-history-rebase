@@ -1,9 +1,9 @@
-import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Nullable, Utils } from '@voiceflow/common';
-import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
-import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
-import { Constants as GoogleConstants } from '@voiceflow/google-types';
+import { DFESConstants } from '@voiceflow/google-dfes-types';
+import { GoogleConstants } from '@voiceflow/google-types';
 import { FlexCenter, useDidUpdateEffect } from '@voiceflow/ui';
+import { VoiceflowConstants as GeneralConstants, VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { Redirect, useRouteMatch } from 'react-router-dom';
 
@@ -23,16 +23,14 @@ import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePl
 
 import { DEFAULT_PROJECT_NAME, PROJECT_CREATION_STEPS_NUMBER, StepID, StepMeta } from './constants';
 
-const getTemplateTag = createPlatformSelector({
-  [Constants.PlatformType.ALEXA]: 'default',
-  [Constants.PlatformType.GOOGLE]: 'default',
-  [Constants.PlatformType.GENERAL]: 'default',
-  [Constants.PlatformType.CHATBOT]: `default:${Constants.PlatformType.CHATBOT}`,
-  [Constants.PlatformType.IVR]: `default:${Constants.PlatformType.IVR}`,
-  [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: 'default',
-  [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: 'default',
-  [Constants.PlatformType.MOBILE_APP]: `default:${Constants.PlatformType.MOBILE_APP}`,
-});
+const getTemplateTag = createPlatformSelector(
+  {
+    [VoiceflowConstants.PlatformType.IVR]: `default:${VoiceflowConstants.PlatformType.IVR}`,
+    [VoiceflowConstants.PlatformType.CHATBOT]: `default:${VoiceflowConstants.PlatformType.CHATBOT}`,
+    [VoiceflowConstants.PlatformType.MOBILE_APP]: `default:${VoiceflowConstants.PlatformType.MOBILE_APP}`,
+  },
+  'default'
+);
 
 const getDefaultAlexaVoice = (locale: AlexaConstants.Locale) => {
   return AlexaConstants.DEFAULT_LOCALE_VOICE_MAP[locale] || null;
@@ -70,9 +68,9 @@ const updateGoogleMeta = async (versionID: string, googleLanguage: GoogleConstan
   ]);
 };
 
-const updateDialogFlowMeta = async (versionID: string, dialogFlowLanguage: DialogflowConstants.Language) => {
+const updateDialogFlowMeta = async (versionID: string, dialogFlowLanguage: DFESConstants.Language) => {
   await client.platform.dialogflow.version.updatePublishing(versionID, {
-    locales: DialogflowConstants.LanguageToLocale[dialogFlowLanguage],
+    locales: DFESConstants.LanguageToLocale[dialogFlowLanguage],
   });
 };
 
@@ -101,10 +99,10 @@ const NewProject: React.FC = () => {
   const currentStep = stepStack[0];
 
   const [invocationName, setInvocationName] = React.useState<string>();
-  const [selectedChannel, setSelectedChannel] = React.useState<Constants.PlatformType | null>(null);
+  const [selectedChannel, setSelectedChannel] = React.useState<VoiceflowConstants.PlatformType | null>(null);
   const [alexaLocales, setAlexaLocales] = React.useState<[AlexaConstants.Locale, ...AlexaConstants.Locale[]]>([LOCALE_MAP[0].value]);
   const [googleLanguage, setGoogleLanguage] = React.useState<GoogleConstants.Language>(GoogleConstants.Language.EN);
-  const [dialogflowLanguage, setDialogflowLanguage] = React.useState<DialogflowConstants.Language>(DialogflowConstants.Language.EN);
+  const [dialogflowLanguage, setDialogflowLanguage] = React.useState<DFESConstants.Language>(DFESConstants.Language.EN);
   const [generalLocale, setGeneralLocale] = React.useState<GeneralConstants.Locale>(GeneralConstants.Locale.EN_US);
   const [creatingProject, setCreatingProject] = React.useState(false);
   const CurrentStep = StepMeta[currentStep].component;
@@ -121,10 +119,10 @@ const NewProject: React.FC = () => {
 
       return createPlatformSelector(
         {
-          [Constants.PlatformType.ALEXA]: LOCALE_MAP.find((locale) => locale.value === alexaLocales[0])?.name ?? defaultLabel,
-          [Constants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage] ?? defaultLabel,
-          [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage] ?? defaultLabel,
-          [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage] ?? defaultLabel,
+          [VoiceflowConstants.PlatformType.ALEXA]: LOCALE_MAP.find((locale) => locale.value === alexaLocales[0])?.name ?? defaultLabel,
+          [VoiceflowConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage] ?? defaultLabel,
+          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage] ?? defaultLabel,
+          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage] ?? defaultLabel,
         },
         GENERAL_LOCALE_NAME_MAP[generalLocale] ?? defaultLabel
       )(selectedChannel);

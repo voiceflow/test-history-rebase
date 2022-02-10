@@ -1,5 +1,5 @@
 /* eslint-disable mocha/no-identical-title */
-import * as Alexa from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
@@ -23,7 +23,7 @@ const PRODUCT_ID = 'productID';
 const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versionID: VERSION_ID };
 
 const PRODUCT: Realtime.Product = {
-  ...createNewProduct([Alexa.Constants.Locale.EN_AU, Alexa.Constants.Locale.DE_DE]),
+  ...createNewProduct([AlexaConstants.Locale.EN_AU, AlexaConstants.Locale.DE_DE]),
   id: PRODUCT_ID,
   name: 'product',
 };
@@ -32,7 +32,7 @@ const MOCK_STATE: Product.ProductState = {
   byKey: {
     [PRODUCT_ID]: PRODUCT,
     abc: {
-      ...createNewProduct([Alexa.Constants.Locale.EN_AU, Alexa.Constants.Locale.DE_DE]),
+      ...createNewProduct([AlexaConstants.Locale.EN_AU, AlexaConstants.Locale.DE_DE]),
       id: 'abc',
       name: 'alphabet product',
     },

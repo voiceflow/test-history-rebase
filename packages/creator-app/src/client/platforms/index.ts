@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { createPlatformSelector } from '@/utils/platform';
 
@@ -18,10 +18,10 @@ const platformClients = {
 
 export const getPlatformClient = createPlatformSelector<PlatformServices>(
   {
-    [Constants.PlatformType.ALEXA]: alexa,
-    [Constants.PlatformType.GOOGLE]: google,
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflow,
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflow,
+    [VoiceflowConstants.PlatformType.ALEXA]: alexa,
+    [VoiceflowConstants.PlatformType.GOOGLE]: google,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflow,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflow,
   },
   general
 );

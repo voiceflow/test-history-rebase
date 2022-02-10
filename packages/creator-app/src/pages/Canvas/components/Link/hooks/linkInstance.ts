@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { useCache } from '@voiceflow/ui';
 import moize from 'moize';
@@ -55,7 +55,7 @@ const useLinkInstance = () => {
     const targetNodeIsBlock = targetNode?.type === BlockType.COMBINED;
 
     return {
-      straight: linkData?.type ? linkData.type === BaseModels.ProjectLinkType.STRAIGHT : straight,
+      straight: linkData?.type ? linkData.type === BaseModels.Project.LinkType.STRAIGHT : straight,
       targetNode,
       sourceNode,
       targetNodeIsBlock,
@@ -177,7 +177,7 @@ const useLinkInstance = () => {
       updateCaptionPosition,
 
       getLinkType: () =>
-        cache.current.linkData?.type ?? (cache.current.straight ? BaseModels.ProjectLinkType.STRAIGHT : BaseModels.ProjectLinkType.CURVED),
+        cache.current.linkData?.type ?? (cache.current.straight ? BaseModels.Project.LinkType.STRAIGHT : BaseModels.Project.LinkType.CURVED),
       getLinkColor: () => cache.current.linkData?.color ?? STROKE_DEFAULT_COLOR,
 
       getCenter: () => center,

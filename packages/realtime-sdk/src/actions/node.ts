@@ -1,9 +1,9 @@
 import { BLOCK_KEY, NODE_KEY, PORT_KEY, STEP_KEY } from '@realtime-sdk/constants';
 import { BuiltInPortRecord, Markup, NodeDataDescriptor, NodePortSchema, PartialModel, Port, PortsDescriptor } from '@realtime-sdk/models';
 import { BaseBlockPayload, BaseDiagramPayload, BaseNodePayload, Point } from '@realtime-sdk/types';
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 const nodeType = Utils.protocol.typeFactory(NODE_KEY);
 const nodeMarkupType = Utils.protocol.typeFactory(nodeType('markup'));
@@ -43,8 +43,8 @@ export interface ReorderDynamicPortsPayload extends PortPayload {
 }
 
 export interface AddBuiltinPortPayload extends PortPayload {
-  type: Models.PortType;
-  platform: Nullish<Constants.PlatformType>;
+  type: BaseModels.PortType;
+  platform: Nullish<VoiceflowConstants.PlatformType>;
 }
 
 export const addDynamicPort = Utils.protocol.createAction<AddDynamicPortPayload>(nodePortType('ADD_DYNAMIC'));

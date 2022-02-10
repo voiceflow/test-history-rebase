@@ -1,18 +1,18 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/alexa-types';
-import { Constants } from '@voiceflow/general-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { createBlockAdapter } from '../utils';
 import { voiceInteractionAdapter } from '../voice';
 
-const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeData.Interaction>(
+const interactionAdapter = createBlockAdapter<AlexaNode.Interaction.StepData, NodeData.Interaction>(
   (voiceData) => ({
-    ...voiceInteractionAdapter.fromDB(voiceData, { platform: Constants.PlatformType.ALEXA }),
+    ...voiceInteractionAdapter.fromDB(voiceData, { platform: VoiceflowConstants.PlatformType.ALEXA }),
 
     buttons: null, // no buttons on alexa
   }),
   (voiceData) => ({
-    ...voiceInteractionAdapter.toDB(voiceData, { platform: Constants.PlatformType.ALEXA }),
+    ...voiceInteractionAdapter.toDB(voiceData, { platform: VoiceflowConstants.PlatformType.ALEXA }),
 
     chips: null,
     buttons: null,

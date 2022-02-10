@@ -1,6 +1,6 @@
 import { Writeable } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { GENERAL_PLATFORMS } from '@/constants';
 
@@ -13,7 +13,7 @@ const VisualManager: NodeManagerConfig<Realtime.NodeData.Visual, Realtime.NodeDa
   ...NODE_CONFIG,
 
   label: 'Visuals',
-  platforms: [...(GENERAL_PLATFORMS as Writeable<typeof GENERAL_PLATFORMS>), Constants.PlatformType.DIALOGFLOW_ES_CHAT],
+  platforms: [...(GENERAL_PLATFORMS as Writeable<typeof GENERAL_PLATFORMS>), VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT],
 
   step: VisualStep,
   editor: VisualEditor,

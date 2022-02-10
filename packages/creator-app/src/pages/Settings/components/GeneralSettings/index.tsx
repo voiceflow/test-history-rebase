@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import { Box } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -11,7 +11,10 @@ import { DEFAULT_MAX_WIDTH, getSettingsMetaProps, SettingSections } from '@/page
 
 import { Basic, Canvas, DangerZone, DialogflowConsole, GlobalConversationLogic, TestTool } from './Sections';
 
-const SectionComponents: Record<SettingSections, React.FC<{ platform: Constants.PlatformType; title: SettingSections; platformMeta: any }>> = {
+const SectionComponents: Record<
+  SettingSections,
+  React.FC<{ platform: VoiceflowConstants.PlatformType; title: SettingSections; platformMeta: any }>
+> = {
   [SettingSections.BASIC]: Basic,
   [SettingSections.CANVAS]: Canvas,
   [SettingSections.GLOBAL_CONVERSATION_LOGIC]: GlobalConversationLogic,

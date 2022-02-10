@@ -1,6 +1,6 @@
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Select } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
@@ -15,7 +15,7 @@ import { getPlatformVoiceOptions, prettifyVoice } from '@/utils/voice';
 import { AssistantConversationLogic } from './components';
 
 interface GlobalConversationLogicProps {
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   platformMeta: PlatformSettingsMetaProps;
 }
 
@@ -72,9 +72,9 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
       {getPlatformValue(
         platform,
         {
-          [Constants.PlatformType.ALEXA]: assistantLogic,
-          [Constants.PlatformType.GOOGLE]: assistantLogic,
-          [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: assistantLogic,
+          [VoiceflowConstants.PlatformType.ALEXA]: assistantLogic,
+          [VoiceflowConstants.PlatformType.GOOGLE]: assistantLogic,
+          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: assistantLogic,
         },
         <></>
       )}

@@ -1,11 +1,11 @@
 import { BlockType } from '@realtime-sdk/constants';
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { WithRequired } from '@voiceflow/common';
 
 import { DBPort, Port } from './Port';
 import { PartialModel } from './Utility';
 
-export type BuiltInPortRecord<T = string> = { [key in Models.PortType]?: T };
+export type BuiltInPortRecord<T = string> = { [key in BaseModels.PortType]?: T };
 
 export interface NodePortSchema<T, O extends BuiltInPortRecord<T> = BuiltInPortRecord<T>> {
   in: T[];

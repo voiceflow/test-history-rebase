@@ -1,13 +1,13 @@
-import { Node } from '@voiceflow/alexa-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
 
 // eslint-disable-next-line import/prefer-default-export
 export const RECURRENCE_OPTIONS = [
   {
-    id: Node.Reminder.RecurrenceFreq.DAILY,
+    id: AlexaNode.Reminder.RecurrenceFreq.DAILY,
     label: 'Daily',
   },
   {
-    id: Node.Reminder.RecurrenceFreq.WEEKLY,
+    id: AlexaNode.Reminder.RecurrenceFreq.WEEKLY,
     label: 'Weekly',
   },
 ];

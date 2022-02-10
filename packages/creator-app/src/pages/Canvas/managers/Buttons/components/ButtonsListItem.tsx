@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, BoxFlex, Input, Link, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
@@ -31,7 +31,7 @@ const IntentSelectComponent = IntentSelect as React.FC<any>;
 const VariablesInputComponent = VariablesInput as React.FC<any>;
 
 export type ButtonsListItemProps = ListItemComponentProps<
-  Node.Buttons.Button,
+  BaseNode.Buttons.Button,
   {
     pushToPath: (path: { type: string; label: string }) => void;
     openIntents: Realtime.Intent[];
@@ -64,9 +64,9 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
   const [url, setUrl] = useLinkedState(item.url ?? '');
 
   const isNew = latestCreatedKey === itemKey;
-  const urlChecked = item.actions.includes(Node.Buttons.ButtonAction.URL);
-  const isPathChecked = item.actions.includes(Node.Buttons.ButtonAction.PATH);
-  const isIntentChecked = item.actions.includes(Node.Buttons.ButtonAction.INTENT);
+  const urlChecked = item.actions.includes(BaseNode.Buttons.ButtonAction.URL);
+  const isPathChecked = item.actions.includes(BaseNode.Buttons.ButtonAction.PATH);
+  const isIntentChecked = item.actions.includes(BaseNode.Buttons.ButtonAction.INTENT);
   const isGoToIntent = isIntentChecked && !isPathChecked;
 
   const checkedOption = isGoToIntent ? ButtonAction.GO_TO_INTENT : ButtonAction.FOLLOW_PATH;
@@ -75,18 +75,18 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
     let nextActions = item.actions;
 
     if (action === ButtonAction.GO_TO_INTENT) {
-      nextActions = Utils.array.withoutValue(nextActions, Node.Buttons.ButtonAction.PATH);
+      nextActions = Utils.array.withoutValue(nextActions, BaseNode.Buttons.ButtonAction.PATH);
     } else {
-      nextActions = [...nextActions, Node.Buttons.ButtonAction.PATH];
+      nextActions = [...nextActions, BaseNode.Buttons.ButtonAction.PATH];
     }
 
-    onUpdate({ intent: null, actions: Utils.array.unique([...nextActions, Node.Buttons.ButtonAction.INTENT]) });
+    onUpdate({ intent: null, actions: Utils.array.unique([...nextActions, BaseNode.Buttons.ButtonAction.INTENT]) });
   };
 
   const onToggleURL = () => {
     const nextActions = urlChecked
-      ? Utils.array.withoutValue(item.actions, Node.Buttons.ButtonAction.URL)
-      : [...item.actions, Node.Buttons.ButtonAction.URL];
+      ? Utils.array.withoutValue(item.actions, BaseNode.Buttons.ButtonAction.URL)
+      : [...item.actions, BaseNode.Buttons.ButtonAction.URL];
 
     onUpdate({ actions: nextActions });
   };

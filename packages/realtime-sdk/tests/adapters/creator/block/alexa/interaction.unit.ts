@@ -1,6 +1,6 @@
 import { Creator } from '@test/factories';
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { expect } from 'chai';
 import { datatype } from 'faker';
 import Sinon from 'sinon';
@@ -35,7 +35,7 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
           else: elseData,
           choices: [
             Creator.Block.Base.ChoiceDistinctPlatformsData({
-              [Constants.PlatformType.ALEXA]: {
+              [VoiceflowConstants.PlatformType.ALEXA]: {
                 id,
                 goTo: data.choices[0].goTo!,
                 intent: data.choices[0].intent,

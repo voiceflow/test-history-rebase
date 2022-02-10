@@ -1,6 +1,6 @@
 import { Creator } from '@test/factories';
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { expect } from 'chai';
 import { datatype } from 'faker';
 import Sinon from 'sinon';
@@ -34,7 +34,7 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
           else: elseData,
           choices: [
             Creator.Block.Base.ChoiceDistinctPlatformsData({
-              [Constants.PlatformType.GENERAL]: {
+              [VoiceflowConstants.PlatformType.GENERAL]: {
                 id,
                 goTo: data.choices[0].goTo!,
                 intent: data.choices[0].intent,

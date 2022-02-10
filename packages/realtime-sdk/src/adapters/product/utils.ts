@@ -1,5 +1,5 @@
 import { Product, ProductMarketPlace } from '@realtime-sdk/models';
-import { Constants, Project } from '@voiceflow/alexa-types';
+import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import dayjs from 'dayjs';
 
@@ -12,22 +12,22 @@ export type MergedLocale = Pick<
 
 // app to db
 
-export const getDistributionCountries = (marketPlaces: Partial<Record<Project.MarketPlace, ProductMarketPlace>>): string[] =>
+export const getDistributionCountries = (marketPlaces: Partial<Record<AlexaProject.MarketPlace, ProductMarketPlace>>): string[] =>
   Object.values(marketPlaces)
     .map((place) => place.countries)
     .reduce((a, b) => a.concat(b), []);
 
 export const formatMarketPlaces = (
-  marketPlaces: Partial<Record<Project.MarketPlace, ProductMarketPlace>>
-): Partial<Record<Project.MarketPlace, Project.PublishingPrice>> => {
+  marketPlaces: Partial<Record<AlexaProject.MarketPlace, ProductMarketPlace>>
+): Partial<Record<AlexaProject.MarketPlace, AlexaProject.PublishingPrice>> => {
   // find any valid release date
   const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place?.releaseDate)?.releaseDate || dayjs().format('YYYY-MM-DD');
 
-  return Utils.object.getKeys(marketPlaces).reduce<Partial<Record<Project.MarketPlace, Project.PublishingPrice>>>((acc, key) => {
+  return Utils.object.getKeys(marketPlaces).reduce<Partial<Record<AlexaProject.MarketPlace, AlexaProject.PublishingPrice>>>((acc, key) => {
     const place = marketPlaces[key];
 
     if (place) {
-      acc[Project.encodeMarketPlaceKey(key) as Project.MarketPlace] = {
+      acc[AlexaProject.encodeMarketPlaceKey(key) as AlexaProject.MarketPlace] = {
         releaseDate: place.releaseDate || generalReleaseDate,
         defaultPriceListing: {
           price: +place.price || 0,
@@ -43,14 +43,14 @@ export const formatMarketPlaces = (
 // db to app
 
 export const parseMarketPlaces = (
-  allPlaces: Partial<Record<Project.MarketPlace, Project.PublishingPrice>>,
+  allPlaces: Partial<Record<AlexaProject.MarketPlace, AlexaProject.PublishingPrice>>,
   distributionCountries: string[]
-): Partial<Record<Project.MarketPlace, ProductMarketPlace>> =>
-  Utils.object.getKeys(allPlaces).reduce<Partial<Record<Project.MarketPlace, ProductMarketPlace>>>((acc, encodedKey) => {
+): Partial<Record<AlexaProject.MarketPlace, ProductMarketPlace>> =>
+  Utils.object.getKeys(allPlaces).reduce<Partial<Record<AlexaProject.MarketPlace, ProductMarketPlace>>>((acc, encodedKey) => {
     const place = allPlaces[encodedKey];
 
     if (place) {
-      const placeKey = Project.decodeMarketPlaceKey(encodedKey);
+      const placeKey = AlexaProject.decodeMarketPlaceKey(encodedKey);
 
       acc[placeKey] = {
         ...place.defaultPriceListing,
@@ -66,8 +66,8 @@ export const parseMarketPlaces = (
   }, {});
 
 export const parseLocales = (
-  locales: Partial<Record<Constants.Locale, Project.PublishingLocale>>,
-  privacyAndCompliance: Project.AlexaProduct['privacyAndCompliance']
+  locales: Partial<Record<AlexaConstants.Locale, AlexaProject.PublishingLocale>>,
+  privacyAndCompliance: AlexaProject.Product['privacyAndCompliance']
 ): MergedLocale =>
   Utils.object.getKeys(locales).reduce<MergedLocale>(
     (acc, locale) => {

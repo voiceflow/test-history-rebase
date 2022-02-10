@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import { Text, TippyTooltip } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { HeaderIconButtonProps } from '@/components/ProjectPage';
@@ -24,7 +24,10 @@ interface ConnectButtonProps {
   progress?: number;
 }
 
-const getButtonProps = (platform: Constants.PlatformType, { variant, progress }: ConnectButtonProps): HeaderIconButtonProps & { key?: string } => {
+const getButtonProps = (
+  platform: VoiceflowConstants.PlatformType,
+  { variant, progress }: ConnectButtonProps
+): HeaderIconButtonProps & { key?: string } => {
   const loadIconProps: HeaderIconButtonProps = { icon: 'loader', color: '#132144', withOpacity: true, size: 18 };
 
   switch (variant) {

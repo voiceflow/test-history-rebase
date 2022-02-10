@@ -1,10 +1,10 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractControl } from '@/control';
 
 class IntentService extends AbstractControl {
-  public async getAll<T extends BaseModels.VersionPlatformData>(creatorID: number, versionID: string): Promise<Realtime.VersionIntent<T>[]> {
+  public async getAll<T extends BaseModels.Version.PlatformData>(creatorID: number, versionID: string): Promise<Realtime.VersionIntent<T>[]> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     const {
@@ -14,7 +14,7 @@ class IntentService extends AbstractControl {
     return intents;
   }
 
-  public async replaceAll<T extends BaseModels.VersionPlatformData>(
+  public async replaceAll<T extends BaseModels.Version.PlatformData>(
     creatorID: number,
     versionID: string,
     intents: Realtime.VersionIntent<T>[]
@@ -22,7 +22,7 @@ class IntentService extends AbstractControl {
     await this.services.version.patchPlatformData(creatorID, versionID, { intents });
   }
 
-  public async createMany<T extends BaseModels.VersionPlatformData>(
+  public async createMany<T extends BaseModels.Version.PlatformData>(
     creatorID: number,
     versionID: string,
     intents: Realtime.VersionIntent<T>[]
@@ -32,7 +32,7 @@ class IntentService extends AbstractControl {
     await this.replaceAll<T>(creatorID, versionID, [...currentIntents, ...intents]);
   }
 
-  public async create<T extends BaseModels.VersionPlatformData>(
+  public async create<T extends BaseModels.Version.PlatformData>(
     creatorID: number,
     versionID: string,
     intent: Realtime.VersionIntent<T>
@@ -40,10 +40,10 @@ class IntentService extends AbstractControl {
     await this.createMany(creatorID, versionID, [intent]);
   }
 
-  public async delete<T extends BaseModels.VersionPlatformData>(creatorID: number, versionID: string, intentID: string): Promise<void> {
+  public async delete<T extends BaseModels.Version.PlatformData>(creatorID: number, versionID: string, intentID: string): Promise<void> {
     const currentIntents = await this.getAll<T>(creatorID, versionID);
 
-    await this.replaceAll<BaseModels.VersionPlatformData>(
+    await this.replaceAll<BaseModels.Version.PlatformData>(
       creatorID,
       versionID,
       currentIntents.filter((slot) => slot.key !== intentID)

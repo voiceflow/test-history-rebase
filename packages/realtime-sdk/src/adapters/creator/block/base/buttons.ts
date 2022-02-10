@@ -1,9 +1,12 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 import { NodeData } from '../../../../models';
 import { createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter } from '../utils';
 
-const buttonsAdapter = createBlockAdapter<Omit<Node.Buttons.StepData, 'else' | 'reprompt' | 'noReply'>, Omit<NodeData.Buttons, 'else' | 'noReply'>>(
+const buttonsAdapter = createBlockAdapter<
+  Omit<BaseNode.Buttons.StepData, 'else' | 'reprompt' | 'noReply'>,
+  Omit<NodeData.Buttons, 'else' | 'noReply'>
+>(
   ({ buttons, buttonsLayout }) => ({
     buttons,
     buttonsLayout,

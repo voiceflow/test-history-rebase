@@ -1,5 +1,5 @@
 import { DBProduct, Product } from '@realtime-sdk/models';
-import { Constants, Project } from '@voiceflow/alexa-types';
+import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter from 'bidirectional-adapter';
 
@@ -28,7 +28,7 @@ const productAdapter = createAdapter<DBProduct, Product>(
       type,
       skill: '', // TODO: remove after type will be updated
       version,
-      locales: Object.keys(publishingInformation.locales) as Constants.Locale[],
+      locales: Object.keys(publishingInformation.locales) as AlexaConstants.Locale[],
       marketPlaces: parseMarketPlaces(publishingInformation.pricing, publishingInformation.distributionCountries),
       taxCategory: publishingInformation.taxInformation.category || null,
       referenceName,
@@ -78,8 +78,8 @@ const productAdapter = createAdapter<DBProduct, Product>(
       pricing: formatMarketPlaces(marketPlaces),
       taxInformation: { category: taxCategory ?? '' },
       distributionCountries: getDistributionCountries(marketPlaces),
-      locales: locales.reduce<Partial<Record<Constants.Locale, Project.PublishingLocale>>>((acc, locale) => {
-        const publishLocal: Project.PublishingLocale = {
+      locales: locales.reduce<Partial<Record<AlexaConstants.Locale, AlexaProject.PublishingLocale>>>((acc, locale) => {
+        const publishLocal: AlexaProject.PublishingLocale = {
           name,
           summary,
           keywords,
@@ -97,7 +97,7 @@ const productAdapter = createAdapter<DBProduct, Product>(
       }, {}),
     },
     subscriptionInformation:
-      type === Constants.ProductType.SUBSCRIPTION && subscriptionFrequency
+      type === AlexaConstants.ProductType.SUBSCRIPTION && subscriptionFrequency
         ? {
             subscriptionTrialPeriodDays: trialPeriodDays ? +trialPeriodDays : 0,
             subscriptionPaymentFrequency: subscriptionFrequency,

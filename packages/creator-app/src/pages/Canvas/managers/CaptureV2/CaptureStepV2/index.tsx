@@ -1,4 +1,4 @@
-import { Models, Node, Nullable } from '@voiceflow/base-types';
+import { BaseModels, BaseNode, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
@@ -17,7 +17,7 @@ export interface CaptureStepProps {
   noMatch?: Nullable<Realtime.NodeData.NoMatch>;
   variable?: Nullable<string>;
   nextPortID: string;
-  captureType: Node.CaptureV2.CaptureType;
+  captureType: BaseNode.CaptureV2.CaptureType;
   noMatchPortID?: Nullable<string>;
   noReplyPortID?: Nullable<string>;
   variant: BlockVariant;
@@ -37,7 +37,7 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({
 }) => (
   <Step nodeID={nodeID}>
     <Section>
-      {captureType === Node.CaptureV2.CaptureType.QUERY ? (
+      {captureType === BaseNode.CaptureV2.CaptureType.QUERY ? (
         <CaptureItem
           isLast
           isFirst
@@ -81,10 +81,10 @@ const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.
       noReply={data.noReply}
       noMatch={data.noMatch}
       variable={data.variable}
-      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
+      nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       captureType={data.captureType}
-      noReplyPortID={ports.out.builtIn[Models.PortType.NO_REPLY]}
-      noMatchPortID={ports.out.builtIn[Models.PortType.NO_MATCH]}
+      noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
+      noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
       variant={variant}
     />
   );

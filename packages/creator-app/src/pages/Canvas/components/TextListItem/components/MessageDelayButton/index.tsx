@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Input, preventDefault, TippyTooltip, useToggle, withHandler, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,8 +7,8 @@ import { PopperContent, PopperTitle } from '@/components/SlateEditable';
 import IconButton from '@/components/SlateEditable/components/IconButton';
 
 interface MessageDelayButtonProps {
-  onUpdate: (data: Partial<Node.Text.TextData>) => void;
-  data: Node.Text.TextData;
+  onUpdate: (data: Partial<BaseNode.Text.TextData>) => void;
+  data: BaseNode.Text.TextData;
 }
 
 const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ data, onUpdate }) => {

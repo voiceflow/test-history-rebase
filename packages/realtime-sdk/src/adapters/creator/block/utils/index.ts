@@ -1,4 +1,4 @@
-import { Button, Node as BaseNode, Nullable } from '@voiceflow/base-types';
+import { BaseButton, BaseNode, Nullable } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter, { createSimpleAdapter } from 'bidirectional-adapter';
 
@@ -11,8 +11,8 @@ export * from './prompt';
 
 export const createBlockAdapter = createSimpleAdapter;
 
-export const chipsToIntentButtons = (chips?: Nullable<Button.Chip[]>): Nullable<Button.IntentButton[]> =>
-  chips?.map(({ label: name }) => ({ name, type: Button.ButtonType.INTENT, payload: { intentID: null } })) ?? null;
+export const chipsToIntentButtons = (chips?: Nullable<BaseButton.Chip[]>): Nullable<BaseButton.IntentButton[]> =>
+  chips?.map(({ label: name }) => ({ name, type: BaseButton.ButtonType.INTENT, payload: { intentID: null } })) ?? null;
 
 export const choiceAdapter = createAdapter<BaseNode.Interaction.Choice, NodeData.InteractionChoice>(
   ({ goTo = null, intent, action = BaseNode.Interaction.ChoiceAction.PATH, mappings = [] }) => ({

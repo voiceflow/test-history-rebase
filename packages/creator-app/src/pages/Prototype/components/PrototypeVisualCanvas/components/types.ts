@@ -1,12 +1,12 @@
-import { Node } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { Pair } from '@/types';
 
-export interface VisualRenderProps<T extends Node.Visual.StepData> {
+export interface VisualRenderProps<T extends BaseNode.Visual.StepData> {
   zoom: number;
   data: null | T;
-  device: null | Node.Visual.DeviceType;
-  platform: Constants.PlatformType;
+  device: null | BaseNode.Visual.DeviceType;
+  platform: VoiceflowConstants.PlatformType;
   dimensions: Pair<number>;
 }

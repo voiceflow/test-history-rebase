@@ -1,4 +1,4 @@
-import { Version } from '@voiceflow/google-dfes-types';
+import { DFESVersion } from '@voiceflow/google-dfes-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
@@ -16,23 +16,19 @@ import { getActiveVersionContext } from '../utils';
 /**
  * @deprecated moved to the realtime service
  */
-export const updateSettings = (
-  versionID: string,
-  settings: Partial<Version.GoogleDFESVersionSettings>
-): UpdateSettings<Version.GoogleDFESVersionSettings> => updateSettingsByVersionID<Version.GoogleDFESVersionSettings>(versionID, settings);
+export const updateSettings = (versionID: string, settings: Partial<DFESVersion.Settings>): UpdateSettings<DFESVersion.Settings> =>
+  updateSettingsByVersionID<DFESVersion.Settings>(versionID, settings);
 
 /**
  * @deprecated moved to the realtime service
  */
-export const updatePublishing = (
-  versionID: string,
-  publishing: Partial<Version.GoogleDFESVersionPublishing>
-): UpdatePublishing<Version.GoogleDFESVersionPublishing> => updatePublishingByVersionID<Version.GoogleDFESVersionPublishing>(versionID, publishing);
+export const updatePublishing = (versionID: string, publishing: Partial<DFESVersion.Publishing>): UpdatePublishing<DFESVersion.Publishing> =>
+  updatePublishingByVersionID<DFESVersion.Publishing>(versionID, publishing);
 
 // side effects
 
 export const patchSettings =
-  (settings: Partial<Version.GoogleDFESVersionSettings>): Thunk =>
+  (settings: Partial<DFESVersion.Settings>): Thunk =>
   async (dispatch, getState) =>
     dispatch(
       Feature.applyAtomicSideEffect(
@@ -52,7 +48,7 @@ export const patchSettings =
     );
 
 export const patchPublishing =
-  (publishing: Partial<Version.GoogleDFESVersionPublishing>): Thunk =>
+  (publishing: Partial<DFESVersion.Publishing>): Thunk =>
   async (dispatch, getState) =>
     dispatch(
       Feature.applyAtomicSideEffect(

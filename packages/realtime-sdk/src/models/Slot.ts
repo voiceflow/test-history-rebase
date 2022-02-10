@@ -1,4 +1,4 @@
-import { Version } from '@voiceflow/general-types';
+import { BaseModels } from '@voiceflow/base-types';
 
 export interface SlotInput {
   id: string;
@@ -14,4 +14,4 @@ export interface Slot {
   inputs: SlotInput[];
 }
 
-export type DBSlot = Version.GeneralVersionData['slots'][number];
+export type DBSlot = BaseModels.Slot;

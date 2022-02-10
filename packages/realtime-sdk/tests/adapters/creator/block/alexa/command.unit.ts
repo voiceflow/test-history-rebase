@@ -1,6 +1,6 @@
 import commandAdapter from '@realtime-sdk/adapters/creator/block/alexa/command';
 import { Creator } from '@test/factories';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { expect } from 'chai';
 
 describe('Adapters | Creator | Block | Alexa | Command', () => {
@@ -13,7 +13,7 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
       expect(result).to.eql(
         Creator.Block.Base.CommandNodeData({
           name: stepData.name,
-          [Constants.PlatformType.ALEXA]: {
+          [VoiceflowConstants.PlatformType.ALEXA]: {
             intent: stepData.intent,
             mappings: [],
             diagramID: null,
@@ -30,7 +30,7 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
       expect(result).to.eql(
         Creator.Block.Base.CommandNodeData({
           name: stepData.name,
-          [Constants.PlatformType.ALEXA]: {
+          [VoiceflowConstants.PlatformType.ALEXA]: {
             intent: stepData.intent,
             mappings: stepData.mappings!,
             diagramID: stepData.diagramID,
@@ -43,7 +43,7 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
   describe('when transforming to db', () => {
     it('returns correct default values', () => {
       const nodeData = Creator.Block.Alexa.CommandNodeData({
-        [Constants.PlatformType.ALEXA]: { diagramID: null, intent: null, mappings: [{ slot: null, variable: null }] },
+        [VoiceflowConstants.PlatformType.ALEXA]: { diagramID: null, intent: null, mappings: [{ slot: null, variable: null }] },
       });
 
       const result = commandAdapter.toDB({ ...nodeData });
@@ -67,9 +67,9 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
         name: nodeData.name,
         next: null,
         ports: [],
-        intent: nodeData[Constants.PlatformType.ALEXA].intent,
-        mappings: nodeData[Constants.PlatformType.ALEXA].mappings,
-        diagramID: nodeData[Constants.PlatformType.ALEXA].diagramID,
+        intent: nodeData[VoiceflowConstants.PlatformType.ALEXA].intent,
+        mappings: nodeData[VoiceflowConstants.PlatformType.ALEXA].mappings,
+        diagramID: nodeData[VoiceflowConstants.PlatformType.ALEXA].diagramID,
       });
     });
   });

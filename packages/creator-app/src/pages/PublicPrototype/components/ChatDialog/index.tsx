@@ -1,4 +1,4 @@
-import { Button } from '@voiceflow/base-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { Box, BoxFlex, Text } from '@voiceflow/ui';
 import React from 'react';
@@ -24,7 +24,7 @@ export interface ChatDialogProps {
   onReset: () => void;
   messages: Message[];
   isMobile?: boolean;
-  buttons?: Button.ButtonsLayout;
+  buttons?: BaseButton.ButtonsLayout;
   isLoading?: boolean;
   testEnded?: boolean;
   isListening?: boolean;

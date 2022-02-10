@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
@@ -41,7 +41,9 @@ export const IntentConfidence: React.FC<IntentConfidenceProps> = ({
   const confidenceMessage = ` ${message.split('confidence interval')[1].split('_')[1]}`;
 
   const noMatch =
-    isReprompt || lastUserMessage.intentName === Constants.IntentName.NONE || (intentConfidence && intentConfidence < INTENT_CONFIDENCE_THRESHOLD);
+    isReprompt ||
+    lastUserMessage.intentName === VoiceflowConstants.IntentName.NONE ||
+    (intentConfidence && intentConfidence < INTENT_CONFIDENCE_THRESHOLD);
 
   if (noMatch && isTranscript) {
     return (

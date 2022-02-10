@@ -1,10 +1,10 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/alexa-types';
+import { AlexaNode } from '@voiceflow/alexa-types';
 
 import { createBlockAdapter } from '../utils';
 import { voiceCaptureAdapter } from '../voice';
 
-const captureAdapter = createBlockAdapter<Node.Capture.StepData, NodeData.Capture>(
+const captureAdapter = createBlockAdapter<AlexaNode.Capture.StepData, NodeData.Capture>(
   (voiceData) => ({
     ...voiceCaptureAdapter.fromDB(voiceData),
 

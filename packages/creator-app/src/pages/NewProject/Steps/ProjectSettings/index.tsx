@@ -1,8 +1,8 @@
-import { Utils as AlexaUtils } from '@voiceflow/alexa-types';
+import { AlexaUtils } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
-import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
-import { Utils as GoogleUtils } from '@voiceflow/google-types';
+import { GoogleUtils } from '@voiceflow/google-types';
 import { FlexCenter, Input, Select, SvgIcon } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 import React from 'react';
 
@@ -26,14 +26,14 @@ const UnTypedDropdownMultiselect: any = DropdownMultiselect;
 
 interface PlatformSettingsProps {
   alexaLocales: string[];
-  generalLocale: GeneralConstants.Locale;
+  generalLocale: VoiceflowConstants.Locale;
   invocationName: string;
   googleLanguage: string;
   creatingProject: boolean;
   setAlexaLocales: (locales: string[]) => void;
   setGeneralLocale: (locale: string) => void;
   finalizeCreation: () => void;
-  selectedChannel: Constants.PlatformType;
+  selectedChannel: VoiceflowConstants.PlatformType;
   setInvocationName: (name: string) => void;
   setGoogleLanguage: (val: string) => void;
   dialogflowLanguage: string;
@@ -68,8 +68,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
     getPlatformValue<(name?: string, locales?: any[]) => string | null>(
       selectedChannel,
       {
-        [Constants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
-        [Constants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
+        [VoiceflowConstants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
+        [VoiceflowConstants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
       },
       _constant(null)
     )(invocationName, alexaLocales);
@@ -84,8 +84,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
       options={GENERAL_LOCALES_OPTIONS}
       onSelect={setGeneralLocale}
       placeholder="Locale"
-      getOptionValue={(option) => option?.value || GeneralConstants.Locale.EN_US}
-      getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as GeneralConstants.Locale] ?? ''}
+      getOptionValue={(option) => option?.value || VoiceflowConstants.Locale.EN_US}
+      getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as VoiceflowConstants.Locale] ?? ''}
       renderOptionLabel={(option) => option.name}
     />
   );
@@ -133,7 +133,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
         {getPlatformValue<() => React.ReactNode>(
           selectedChannel,
           {
-            [Constants.PlatformType.ALEXA]: () => (
+            [VoiceflowConstants.PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect
                 options={LOCALE_MAP}
                 autoWidth
@@ -141,7 +141,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 onSelect={(val: string) =>
                   setAlexaLocales(alexaLocales.includes(val) ? Utils.array.without(alexaLocales, alexaLocales.indexOf(val)) : [...alexaLocales, val])
                 }
-                placeholder={`Select ${getPlatformMeta(Constants.PlatformType.ALEXA).localesText}`}
+                placeholder={`Select ${getPlatformMeta(VoiceflowConstants.PlatformType.ALEXA).localesText}`}
                 buttonLabel="Unselect All"
                 buttonClick={() => setAlexaLocales([])}
                 selectedItems={alexaLocales}
@@ -149,7 +149,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 dropdownActive
               />
             ),
-            [Constants.PlatformType.GOOGLE]: () => (
+            [VoiceflowConstants.PlatformType.GOOGLE]: () => (
               <Select
                 value={FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage]}
                 options={FORMATTED_LOCALES}
@@ -159,8 +159,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 renderOptionLabel={(option) => option.name}
               />
             ),
-            [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: DialogflowSelect,
-            [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: DialogflowSelect,
+            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: DialogflowSelect,
+            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: DialogflowSelect,
           },
           GeneralLocalesSelect
         )()}

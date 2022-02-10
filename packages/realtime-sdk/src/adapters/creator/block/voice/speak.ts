@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Node, Types } from '@voiceflow/voice-types';
+import { VoiceModels, VoiceNode } from '@voiceflow/voice-types';
 import createAdapter from 'bidirectional-adapter';
 
 import { DialogType } from '../../../../constants';
@@ -9,7 +9,7 @@ import { baseSpeakAdapter } from '../base';
 import { createBlockAdapter } from '../utils';
 
 export const voiceSpeakDialogAdapter = createAdapter<
-  Types.Prompt<any>,
+  VoiceModels.Prompt<any>,
   SpeakData,
   [{ audioVoice: string }],
   [{ audioVoice: string; defaultVoice: string }]
@@ -25,7 +25,7 @@ export const voiceSpeakDialogAdapter = createAdapter<
 );
 
 const speakAdapter = createBlockAdapter<
-  Node.Speak.StepData<any>,
+  VoiceNode.Speak.StepData<any>,
   NodeData.Speak,
   [{ audioVoice: string }],
   [{ audioVoice: string; defaultVoice: string }]

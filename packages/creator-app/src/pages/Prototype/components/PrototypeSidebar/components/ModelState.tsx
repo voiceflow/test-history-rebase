@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { BlockText, Box, Flex } from '@voiceflow/ui';
 import React from 'react';
 

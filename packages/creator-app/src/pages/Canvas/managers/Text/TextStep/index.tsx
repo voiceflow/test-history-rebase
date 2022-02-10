@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -61,8 +61,8 @@ const ConnectedTextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData
     <TextStep
       items={items}
       nodeID={data.nodeID}
-      preview={data.canvasVisibility === Node.Utils.CanvasNodeVisibility.PREVIEW}
-      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
+      preview={data.canvasVisibility === BaseNode.Utils.CanvasNodeVisibility.PREVIEW}
+      nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       variant={variant}
     />
   );

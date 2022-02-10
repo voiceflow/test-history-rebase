@@ -1,6 +1,6 @@
-import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
-import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Button, FlexCenter, FlexEnd } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Header from '@/components/Header';
@@ -95,7 +95,7 @@ function SSMLPage() {
             withDefaultVoice={false}
             withVariablesPlugin={false}
             onEditorStateChange={onEditorStateChange}
-            platform={GeneralConstants.PlatformType.ALEXA}
+            platform={VoiceflowConstants.PlatformType.ALEXA}
           />
 
           {state.text && (

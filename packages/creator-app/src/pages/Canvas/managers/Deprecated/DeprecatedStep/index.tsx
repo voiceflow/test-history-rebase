@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -28,7 +28,7 @@ const DeprecatedStep: React.FC<DeprecatedStepProps> = ({ nodeID, ports, variant 
 );
 
 const ConnectedDeprecatedStep: React.FC<ConnectedStepProps<Realtime.NodeData.Deprecated>> = ({ ports, data, variant }) => (
-  <DeprecatedStep nodeID={data.nodeID} ports={[ports.out.builtIn[Models.PortType.NEXT]!, ...ports.out.dynamic]} variant={variant} />
+  <DeprecatedStep nodeID={data.nodeID} ports={[ports.out.builtIn[BaseModels.PortType.NEXT]!, ...ports.out.dynamic]} variant={variant} />
 );
 
 export default ConnectedDeprecatedStep;

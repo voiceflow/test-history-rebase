@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -6,7 +6,6 @@ import { BlockType } from '@/constants';
 import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 import { distinctPlatformsData } from '@/utils/platform';
-import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import { NodeConfig } from '../types';
 
@@ -25,7 +24,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.Nod
         in: [{}],
         out: {
           dynamic: [{}],
-          builtIn: { [Models.PortType.NO_MATCH]: { label: Models.PortType.NO_MATCH } },
+          builtIn: { [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH } },
         },
       },
     },
@@ -33,13 +32,13 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.Nod
       name: 'Choice',
       else: getPlatformNoMatchFactory(platform)({ defaultVoice }),
       noReply: null,
-      buttons: isChatbotPlatform(platform) ? buttonsFactory() : null,
+      buttons: Realtime.Utils.typeGuards.isChatPlatform(platform) ? buttonsFactory() : null,
       choices: [
         distinctPlatformsData({
           id: Utils.id.cuid.slug(),
           goTo: null,
           intent: null,
-          action: Node.Interaction.ChoiceAction.PATH,
+          action: BaseNode.Interaction.ChoiceAction.PATH,
           mappings: [],
         }),
       ],

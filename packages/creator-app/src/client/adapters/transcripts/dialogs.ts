@@ -1,5 +1,5 @@
 /* eslint-disable xss/no-mixed-html */
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
@@ -20,12 +20,12 @@ const transformSpeakTrace = (trace: SpeakTrace): SpeakTrace => {
     payload: { type, message },
   } = trace;
 
-  if (type === Node.Speak.TraceSpeakType.MESSAGE && message.startsWith('<audio src=')) {
+  if (type === BaseNode.Speak.TraceSpeakType.MESSAGE && message.startsWith('<audio src=')) {
     return {
       ...trace,
       payload: {
         ...trace.payload,
-        type: Node.Speak.TraceSpeakType.AUDIO,
+        type: BaseNode.Speak.TraceSpeakType.AUDIO,
         src: message.replace('<audio src="', '').replace('"/>', ''),
       },
     };
@@ -49,17 +49,17 @@ const dialogAdapter = createAdapter<AnyTranscriptMessage, Message | null>(
     if (transcriptMessage.format === FormatType.Trace) {
       const trace = { ...transcriptMessage.payload, id: Utils.id.cuid() };
       switch (trace.type) {
-        case Node.Utils.TraceType.SPEAK:
+        case BaseNode.Utils.TraceType.SPEAK:
           return createSpeakMessage(transformSpeakTrace(trace), commonProperties);
-        case Node.Utils.TraceType.TEXT:
+        case BaseNode.Utils.TraceType.TEXT:
           return createTextMessage(trace, commonProperties);
-        case Node.Utils.TraceType.STREAM:
+        case BaseNode.Utils.TraceType.STREAM:
           return createStreamMessage(trace, commonProperties);
-        case Node.Utils.TraceType.DEBUG:
+        case BaseNode.Utils.TraceType.DEBUG:
           return createDebugMessage(trace, commonProperties);
-        case Node.Utils.TraceType.VISUAL:
+        case BaseNode.Utils.TraceType.VISUAL:
           return createVisualMessage(trace, commonProperties);
-        case Node.Utils.TraceType.PATH:
+        case BaseNode.Utils.TraceType.PATH:
           return createPathMessage(trace, commonProperties);
         default:
           return null;

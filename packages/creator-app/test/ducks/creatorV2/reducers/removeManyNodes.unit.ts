@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
@@ -122,7 +122,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
             },
             [stepNode.nodeID]: {
               in: [],
-              out: { dynamic: [], builtIn: { [Models.PortType.NEXT]: barPort.id } },
+              out: { dynamic: [], builtIn: { [BaseModels.PortType.NEXT]: barPort.id } },
             },
           },
           nodeIDByPortID: { [fooPort.id]: blockNode.nodeID, [barPort.id]: stepNode.nodeID },

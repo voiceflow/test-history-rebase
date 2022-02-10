@@ -1,4 +1,5 @@
-import { Constants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, ErrorMessage } from '@voiceflow/ui';
 import React from 'react';
 import { withProps } from 'recompose';
@@ -17,7 +18,7 @@ import { connect } from '@/hocs';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { slotToString } from '@/utils/slot';
-import { isAlexaPlatform, isAnyGeneralPlatform, isChatbotPlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 import {
   ChatPromptForm,
@@ -30,7 +31,7 @@ import {
 
 function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalone = false, patchIntentSlot, updateIntentSlotDialog }) {
   const isAlexa = isAlexaPlatform(platform);
-  const isChatbot = isChatbotPlatform(platform);
+  const isChat = Realtime.Utils.typeGuards.isChatPlatform(platform);
   const isGeneral = isAnyGeneralPlatform(platform);
   const utteranceRef = React.useRef();
   const {
@@ -47,7 +48,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
   }, [intent.slots.allKeys, slotsMap]);
 
   const utterancesWithDefault = React.useMemo(() => {
-    const defaultSlotText = slot.type === Constants.SlotType.SEARCHQUERY ? `search ${strSlot}` : strSlot;
+    const defaultSlotText = slot.type === AlexaConstants.SlotType.SEARCHQUERY ? `search ${strSlot}` : strSlot;
     const utterancesWithoutDefault = utterances.filter(({ text }) => text?.trim() !== defaultSlotText);
 
     return [...utterancesWithoutDefault, { text: defaultSlotText, slots: [slot.id] }];
@@ -102,7 +103,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
         >
           <Section header="Entity Reprompt" tooltip={<SlotPromptTooltip />} isNested dividerIsNested>
             <FormControl>
-              {isChatbot ? (
+              {isChat ? (
                 <ChatPromptForm
                   slots={variablesSlots}
                   prompt={prompt}

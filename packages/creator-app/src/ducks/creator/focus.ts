@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
@@ -92,7 +92,7 @@ export const focusedNodeDataSelector = createSelector(
 );
 
 export const focusedNoMatchLinkIDSelector = createSelector([focusedNodeSelector, CreatorV2.getLinkIDsByPortIDSelector], (focusedNode, getLinkIDs) => {
-  const noMatchPortID = focusedNode?.ports.out.builtIn[Models.PortType.NO_MATCH];
+  const noMatchPortID = focusedNode?.ports.out.builtIn[BaseModels.PortType.NO_MATCH];
 
   return noMatchPortID ? getLinkIDs({ id: noMatchPortID })[0] ?? null : null;
 });

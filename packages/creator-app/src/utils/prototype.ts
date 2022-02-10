@@ -1,9 +1,8 @@
-import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { isChatbotPlatform } from '@/utils/typeGuards';
-
-export const canUseSoundToggle = (platform: Constants.PlatformType) => {
-  const isChatbot = !!isChatbotPlatform(platform);
+export const canUseSoundToggle = (platform: VoiceflowConstants.PlatformType) => {
+  const isChatbot = !!Realtime.Utils.typeGuards.isChatPlatform(platform);
 
   return !isChatbot;
 };

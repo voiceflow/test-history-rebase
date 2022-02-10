@@ -1,7 +1,7 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
-import { Types as ChatTypes } from '@voiceflow/chat-types';
-import { Constants } from '@voiceflow/general-types';
-import { Types as VoiceTypes } from '@voiceflow/voice-types';
+import { BaseModels } from '@voiceflow/base-types';
+import { ChatModels } from '@voiceflow/chat-types';
+import { VoiceModels } from '@voiceflow/voice-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Normalized } from 'normal-store';
 
 import { AnyVersionPlatformData } from './Version';
@@ -11,13 +11,13 @@ export type BaseIntentSlot = BaseModels.IntentSlot;
 export type BaseIntentSlotDialog = BaseModels.IntentSlotDialog;
 
 export interface VoiceIntentSlotDialog<V = string> extends BaseIntentSlotDialog {
-  prompt: VoiceTypes.IntentPrompt<V>[];
-  confirm: VoiceTypes.IntentPrompt<V>[];
+  prompt: VoiceModels.IntentPrompt<V>[];
+  confirm: VoiceModels.IntentPrompt<V>[];
 }
 
 export interface ChatIntentSlotDialog extends BaseIntentSlotDialog {
-  prompt: ChatTypes.Prompt[];
-  confirm: ChatTypes.Prompt[];
+  prompt: ChatModels.Prompt[];
+  confirm: ChatModels.Prompt[];
 }
 
 export interface VoiceIntentSlot<V = string> extends BaseIntentSlot {
@@ -33,7 +33,7 @@ export interface BaseIntent {
   name: string;
   slots: Normalized<BaseIntentSlot>;
   inputs: IntentInput[];
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
 }
 
 export interface VoiceIntent<V = string> extends BaseIntent {
@@ -45,11 +45,11 @@ export interface ChatIntent extends BaseIntent {
 }
 
 export interface IntentPerPlatform {
-  [Constants.PlatformType.CHATBOT]: ChatIntent;
-  [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: ChatIntent;
+  [VoiceflowConstants.PlatformType.CHATBOT]: ChatIntent;
+  [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: ChatIntent;
 }
 
-export type PlatformIntent<T extends Constants.PlatformType> = T extends keyof IntentPerPlatform ? IntentPerPlatform[T] : VoiceIntent;
+export type PlatformIntent<T extends VoiceflowConstants.PlatformType> = T extends keyof IntentPerPlatform ? IntentPerPlatform[T] : VoiceIntent;
 
 export type Intent = ChatIntent | VoiceIntent;
 
@@ -59,4 +59,4 @@ export type IntentSlotDialog = VoiceIntentSlotDialog | ChatIntentSlotDialog;
 
 export type DBIntent = AnyVersionPlatformData['intents'][number];
 
-export type AnyDBIntent = VoiceTypes.Intent<string> | ChatTypes.Intent;
+export type AnyDBIntent = VoiceModels.Intent<string> | ChatModels.Intent;

@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export * from './block';
 export * from './variable';
@@ -40,30 +40,40 @@ export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
 
 export const GENERAL_PLATFORMS = [
-  Constants.PlatformType.GENERAL,
-  Constants.PlatformType.IVR,
-  Constants.PlatformType.MOBILE_APP,
-  Constants.PlatformType.CHATBOT,
+  VoiceflowConstants.PlatformType.GENERAL,
+  VoiceflowConstants.PlatformType.IVR,
+  VoiceflowConstants.PlatformType.MOBILE_APP,
+  VoiceflowConstants.PlatformType.CHATBOT,
 ] as const;
 
-export const DIALOGFLOW_PLATFORMS = [Constants.PlatformType.DIALOGFLOW_ES_CHAT, Constants.PlatformType.DIALOGFLOW_ES_VOICE] as const;
+export const DIALOGFLOW_PLATFORMS = [
+  VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT,
+  VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE,
+] as const;
 
-export const DISTINCT_PLATFORMS = [Constants.PlatformType.ALEXA, Constants.PlatformType.GOOGLE, Constants.PlatformType.GENERAL] as const;
+export const DISTINCT_PLATFORMS = [
+  VoiceflowConstants.PlatformType.ALEXA,
+  VoiceflowConstants.PlatformType.GOOGLE,
+  VoiceflowConstants.PlatformType.GENERAL,
+] as const;
 
-export const PLATFORMS_WITH_INVOCATION_NAME = [Constants.PlatformType.ALEXA, Constants.PlatformType.GOOGLE] as const;
+export const PLATFORMS_WITH_INVOCATION_NAME = [VoiceflowConstants.PlatformType.ALEXA, VoiceflowConstants.PlatformType.GOOGLE] as const;
 
 export const VOICE_PLATFORMS = [
-  Constants.PlatformType.IVR,
-  Constants.PlatformType.ALEXA,
-  Constants.PlatformType.GOOGLE,
-  Constants.PlatformType.GENERAL,
-  Constants.PlatformType.MOBILE_APP,
-  Constants.PlatformType.DIALOGFLOW_ES_VOICE,
+  VoiceflowConstants.PlatformType.IVR,
+  VoiceflowConstants.PlatformType.ALEXA,
+  VoiceflowConstants.PlatformType.GOOGLE,
+  VoiceflowConstants.PlatformType.GENERAL,
+  VoiceflowConstants.PlatformType.MOBILE_APP,
+  VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE,
 ] as const;
 
-export const CHAT_PLATFORMS = [Constants.PlatformType.CHATBOT, Constants.PlatformType.DIALOGFLOW_ES_CHAT] as const;
+export const CHAT_PLATFORMS = [VoiceflowConstants.PlatformType.CHATBOT, VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT] as const;
 
-export type DistinctPlatform = Constants.PlatformType.ALEXA | Constants.PlatformType.GOOGLE | Constants.PlatformType.GENERAL;
+export type DistinctPlatform =
+  | VoiceflowConstants.PlatformType.ALEXA
+  | VoiceflowConstants.PlatformType.GOOGLE
+  | VoiceflowConstants.PlatformType.GENERAL;
 
 export enum DialogType {
   AUDIO = 'audio',

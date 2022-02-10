@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -17,7 +17,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.SetV2, Realtime.NodeData.
         in: [{}],
         out: {
           dynamic: [],
-          builtIn: { [Models.PortType.NEXT]: { label: Models.PortType.NEXT } },
+          builtIn: { [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT } },
         },
       },
     },
@@ -28,7 +28,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.SetV2, Realtime.NodeData.
         {
           id: Utils.id.cuid.slug(),
           variable: null,
-          type: Node.Utils.ExpressionTypeV2.VALUE,
+          type: BaseNode.Utils.ExpressionTypeV2.VALUE,
           expression: '',
         },
       ],

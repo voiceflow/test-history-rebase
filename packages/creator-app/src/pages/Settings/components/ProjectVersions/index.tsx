@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Box, BoxFlexCenter, ClickableText, LoadCircle, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
 import React, { useCallback } from 'react';
@@ -34,7 +34,9 @@ export interface ProjectVersion {
 
 const DEFAULT_FETCH_LIMIT = 10;
 
-const versionListAdapter = (version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean; autoSaveFromRestore?: boolean }) => ({
+const versionListAdapter = (
+  version: BaseModels.Version.Model<BaseModels.Version.PlatformData> & { manualSave?: boolean; autoSaveFromRestore?: boolean }
+) => ({
   creatorID: version.creatorID,
   versionID: version._id,
   manualSave: version.manualSave,
@@ -109,7 +111,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
         ...versionList,
         ...moreVersions
           .filter(({ _id }) => _id !== activeVersionID)
-          .map((version: Models.Version<Models.VersionPlatformData> & { manualSave?: boolean }) => versionListAdapter(version)),
+          .map((version: BaseModels.Version.Model<BaseModels.Version.PlatformData> & { manualSave?: boolean }) => versionListAdapter(version)),
       ]);
     } catch (err) {
       toast.error('Error fetching versions');

@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { DiagramState } from '@/constants';
@@ -77,12 +77,12 @@ export type AddOutDynamicPort = Action<DiagramAction.ADD_OUT_DYNAMIC_PORT, { nod
 
 export type AddOutBuiltInPort = Action<
   DiagramAction.ADD_OUT_BUILT_IN_PORT,
-  { nodeID: string; port: Realtime.PartialModel<Realtime.Port>; portType: Models.PortType }
+  { nodeID: string; port: Realtime.PartialModel<Realtime.Port>; portType: BaseModels.PortType }
 >;
 
 export type RemoveOutDynamicPort = Action<DiagramAction.REMOVE_OUT_DYNAMIC_PORT, string>;
 
-export type RemoveOutBuiltInPort = Action<DiagramAction.REMOVE_OUT_BUILT_IN_PORT, { portID: string; portType: Models.PortType }>;
+export type RemoveOutBuiltInPort = Action<DiagramAction.REMOVE_OUT_BUILT_IN_PORT, { portID: string; portType: BaseModels.PortType }>;
 
 export type ReorderOutDynamicPorts = Action<DiagramAction.REORDER_OUT_DYNAMIC_PORTS, { nodeID: string; from: number; to: number }>;
 
@@ -174,10 +174,10 @@ export const removeNodes = (nodeIDs: string[]): RemoveManyNodes => createAction(
 export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): AddOutDynamicPort =>
   createAction(DiagramAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port });
 
-export const addOutBuiltInPort = (nodeID: string, portType: Models.PortType, port: Realtime.PartialModel<Realtime.Port>): AddOutBuiltInPort =>
+export const addOutBuiltInPort = (nodeID: string, portType: BaseModels.PortType, port: Realtime.PartialModel<Realtime.Port>): AddOutBuiltInPort =>
   createAction(DiagramAction.ADD_OUT_BUILT_IN_PORT, { nodeID, port, portType });
 
-export const removeOutBuiltInPort = (portType: Models.PortType, portID: string): RemoveOutBuiltInPort =>
+export const removeOutBuiltInPort = (portType: BaseModels.PortType, portID: string): RemoveOutBuiltInPort =>
   createAction(DiagramAction.REMOVE_OUT_BUILT_IN_PORT, { portType, portID });
 
 export const removeOutDynamicPort = (portID: string): RemoveOutDynamicPort => createAction(DiagramAction.REMOVE_OUT_DYNAMIC_PORT, portID);

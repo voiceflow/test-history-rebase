@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -21,7 +21,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2, Realtime.NodeData.I
         in: [{}],
         out: {
           dynamic: [{}],
-          builtIn: { [Models.PortType.NO_MATCH]: { label: Models.PortType.NO_MATCH } },
+          builtIn: { [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH } },
         },
       },
     },
@@ -35,7 +35,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2, Realtime.NodeData.I
         },
       ],
       noMatch: {
-        type: Node.IfV2.IfNoMatchType.NONE,
+        type: BaseNode.IfV2.IfNoMatchType.NONE,
         pathName: 'No Match',
       },
     },

@@ -1,4 +1,4 @@
-import { Button } from '@voiceflow/base-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
@@ -18,7 +18,7 @@ export interface PrototypeChatDisplayProps {
   setAtTop?: (val: boolean) => void;
   onPlay?: (src: string) => void;
   debug?: boolean;
-  buttons?: Button.ButtonsLayout;
+  buttons?: BaseButton.ButtonsLayout;
   interactions: Interaction[];
   status: PrototypeStatus;
   hideSessionMessages?: boolean;

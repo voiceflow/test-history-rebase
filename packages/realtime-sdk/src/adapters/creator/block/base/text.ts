@@ -1,9 +1,9 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter, createOutPortsAdapter, nextOnlyOutPortsAdapter } from '../utils';
 
-const textAdapter = createBlockAdapter<Node.Text.StepData, NodeData.Text>(
+const textAdapter = createBlockAdapter<BaseNode.Text.StepData, NodeData.Text>(
   (data) => data,
   (data) => data
 );

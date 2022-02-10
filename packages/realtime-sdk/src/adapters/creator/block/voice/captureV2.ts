@@ -1,11 +1,11 @@
 import { NodeData, VoiceIntentSlot } from '@realtime-sdk/models';
-import { Node as BaseNode } from '@voiceflow/base-types';
-import { Node } from '@voiceflow/voice-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { VoiceNode } from '@voiceflow/voice-types';
 
 import { voiceIntentSlotSanitizer } from '../../../intent/voice';
 import { createBlockAdapter, voiceNoMatchAdapter, voiceNoReplyAdapter } from '../utils';
 
-const captureAdapter = createBlockAdapter<Node.CaptureV2.StepData<any>, NodeData.CaptureV2>(
+const captureAdapter = createBlockAdapter<VoiceNode.CaptureV2.StepData<any>, NodeData.CaptureV2>(
   ({ noReply, noMatch, capture }) => ({
     captureType: capture.type,
     variable: capture.type === BaseNode.CaptureV2.CaptureType.QUERY ? capture.variable : null,

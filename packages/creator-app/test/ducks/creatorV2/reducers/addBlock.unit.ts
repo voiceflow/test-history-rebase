@@ -1,5 +1,5 @@
-import { Models } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { BaseModels } from '@voiceflow/base-types';
 import { normalize } from 'normal-store';
 
 import { BlockVariant } from '@/constants/canvas';
@@ -122,7 +122,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
           out: {
             dynamic: [{ id: dynamicPortID }],
             builtIn: {
-              [Models.PortType.NEXT]: { id: builtInPortID },
+              [BaseModels.PortType.NEXT]: { id: builtInPortID },
             },
           },
         },
@@ -135,7 +135,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
           in: [],
           out: {
             dynamic: [dynamicPortID],
-            builtIn: { [Models.PortType.NEXT]: builtInPortID },
+            builtIn: { [BaseModels.PortType.NEXT]: builtInPortID },
           },
         },
       });

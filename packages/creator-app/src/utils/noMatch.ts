@@ -1,6 +1,6 @@
-import { Node } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { createPlatformSelector } from './platform';
 import { chatPromptFactory, PromptFactoryOptions, voicePromptFactory } from './prompt';
@@ -9,7 +9,7 @@ import { chatPromptFactory, PromptFactoryOptions, voicePromptFactory } from './p
 interface NoMatchFactoryOptions extends PromptFactoryOptions {}
 
 const BASE_NO_MATCH: Realtime.NodeData.BaseNoMatch = {
-  types: [Node.Utils.NoMatchType.REPROMPT],
+  types: [BaseNode.Utils.NoMatchType.REPROMPT],
   pathName: 'No Match',
   randomize: false,
 };
@@ -22,7 +22,8 @@ export const voiceNoMatchFactory = (options: NoMatchFactoryOptions = {}): Realti
 
 export const getPlatformNoMatchFactory = createPlatformSelector<(options?: PromptFactoryOptions) => Realtime.NodeData.NoMatch>(
   {
-    [Constants.PlatformType.CHATBOT]: chatNoMatchFactory,
+    [VoiceflowConstants.PlatformType.CHATBOT]: chatNoMatchFactory,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: chatNoMatchFactory,
   },
   voiceNoMatchFactory
 );

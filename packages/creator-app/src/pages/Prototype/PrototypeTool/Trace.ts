@@ -1,8 +1,7 @@
-import { Models, Node as BaseNode, Request } from '@voiceflow/base-types';
-import { TraceType } from '@voiceflow/base-types/build/common/trace';
+import { BaseModels, BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _findLast from 'lodash/findLast';
 
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
@@ -35,7 +34,7 @@ import { getUpdatedContextHistory, isV1Trace } from './utils';
 const MUTED_MESSAGE_DELAY = 250;
 
 // Trace types that can have a faked delay
-const BOT_TRACE_TYPES = [TraceType.TEXT, TraceType.SPEAK];
+const BOT_TRACE_TYPES = [BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK];
 type BotTraceType = TextTrace | SpeakTrace;
 
 export enum StepDirection {
@@ -53,7 +52,7 @@ export interface TraceControllerProps {
   contextStep: number;
   waitVisuals: boolean;
   updateStatus: (status: PMStatus) => void;
-  fetchContext: (request: Request.BaseRequest | null) => Promise<Prototype.Context | null>;
+  fetchContext: (request: BaseRequest.BaseRequest | null) => Promise<Prototype.Context | null>;
   flowIDHistory: string[];
   contextHistory: Partial<Prototype.Context>[];
   activeDiagramID: string | null;
@@ -81,7 +80,7 @@ interface StreamState {
   offset: number;
 }
 
-const findLastBlockTrace = (trace: Trace[]) => _findLast(trace, ({ type }) => type === BaseNode.Utils.TraceType.BLOCK);
+const findLastBlockTrace = (trace: Trace[]) => _findLast(trace, ({ type }) => type === BaseTrace.TraceType.BLOCK);
 
 const WAIT_ENTITY_TIME = 200;
 const MIN_FOCUSED_NODE_TIME = 500;
@@ -141,7 +140,7 @@ class TraceController {
     this.message = message;
   }
 
-  public next = async (request: Request.BaseRequest | null = null): Promise<void> => {
+  public next = async (request: BaseRequest.BaseRequest | null = null): Promise<void> => {
     const currentContextStep = this.props.contextStep;
     const { contextHistory } = this.props;
     const { visualDataHistory } = this.props;
@@ -260,9 +259,9 @@ class TraceController {
     for (const trace of this.context.trace) {
       if (trace.id === messageID) break;
 
-      if (trace.type === TraceType.FLOW) {
+      if (trace.type === BaseTrace.TraceType.FLOW) {
         diagramID = trace.payload.diagramID;
-      } else if (trace.type === TraceType.BLOCK) {
+      } else if (trace.type === BaseTrace.TraceType.BLOCK) {
         blockID = trace.payload.blockID;
       }
     }
@@ -314,47 +313,47 @@ class TraceController {
     }
 
     switch (topTrace.type) {
-      case BaseNode.Utils.TraceType.CHOICE: {
+      case BaseTrace.TraceType.CHOICE: {
         this.processChoiceTrace(topTrace);
         break;
       }
-      case BaseNode.Utils.TraceType.BLOCK: {
+      case BaseTrace.TraceType.BLOCK: {
         await this.processBlockTrace(topTrace, { isLast: !tailTrace.length, onlyMessage });
         break;
       }
-      case BaseNode.Utils.TraceType.STREAM: {
+      case BaseTrace.TraceType.STREAM: {
         await this.processStreamTrace(topTrace, { onlyMessage });
         break;
       }
-      case BaseNode.Utils.TraceType.SPEAK: {
+      case BaseTrace.TraceType.SPEAK: {
         await this.processSpeakTrace(topTrace, { onlyMessage });
         break;
       }
-      case BaseNode.Utils.TraceType.TEXT: {
+      case BaseTrace.TraceType.TEXT: {
         await this.processTextTrace(topTrace);
         break;
       }
-      case BaseNode.Utils.TraceType.FLOW: {
+      case BaseTrace.TraceType.FLOW: {
         await this.processFlowTrace(topTrace);
         break;
       }
-      case BaseNode.Utils.TraceType.END: {
+      case BaseTrace.TraceType.END: {
         await this.processEndTrace();
         break;
       }
-      case BaseNode.Utils.TraceType.VISUAL: {
+      case BaseTrace.TraceType.VISUAL: {
         await this.processVisualTrace(topTrace);
         break;
       }
-      case BaseNode.Utils.TraceType.DEBUG: {
+      case BaseTrace.TraceType.DEBUG: {
         await this.message.debug(topTrace);
         break;
       }
-      case BaseNode.Utils.TraceType.GOTO: {
+      case BaseTrace.TraceType.GOTO: {
         this.processGoToTrace(topTrace);
         return; // don't process the rest of the traces
       }
-      case BaseNode.Utils.TraceType.NO_REPLY: {
+      case BaseTrace.TraceType.NO_REPLY: {
         this.processNoReplyTrace(topTrace);
         break;
       }
@@ -478,9 +477,9 @@ class TraceController {
     const pausing = action === BaseNode.Stream.TraceStreamAction.PAUSE;
 
     this.props.setInteractions([
-      { name: 'next', request: { type: Request.RequestType.TEXT, payload: 'next' } },
-      { name: 'previous', request: { type: Request.RequestType.TEXT, payload: 'previous' } },
-      { name: pausing ? 'resume' : 'pause', request: { type: Request.RequestType.TEXT, payload: pausing ? 'resume' : 'pause' } },
+      { name: 'next', request: { type: BaseRequest.RequestType.TEXT, payload: 'next' } },
+      { name: 'previous', request: { type: BaseRequest.RequestType.TEXT, payload: 'previous' } },
+      { name: pausing ? 'resume' : 'pause', request: { type: BaseRequest.RequestType.TEXT, payload: pausing ? 'resume' : 'pause' } },
     ]);
 
     this.props.updateStatus(PMStatus.WAITING_USER_INTERACTION);
@@ -516,7 +515,7 @@ class TraceController {
       }
     }
 
-    await this.next({ type: Request.RequestType.TEXT, payload: Constants.IntentName.NEXT });
+    await this.next({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
   }
 
   private async processTextTrace(trace: TextTrace) {
@@ -644,7 +643,7 @@ class TraceController {
     if (targetNode.type === BlockType.FLOW || targetNode.type === BlockType.COMPONENT) {
       const builtIn = (targetNode.ports.out.builtIn ?? {}) as Realtime.NodeData.FlowBuiltInPorts | Realtime.NodeData.ComponentBuiltInPorts;
 
-      const outPort = builtIn[Models.PortType.NEXT];
+      const outPort = builtIn[BaseModels.PortType.NEXT];
       const linksByPortID = outPort ? this.props.getLinksByPortID(outPort) : [];
       const outLinkID = linksByPortID?.[0]?.id;
 

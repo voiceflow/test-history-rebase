@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import React from 'react';
 
 import Section from '@/components/Section';
@@ -7,7 +7,7 @@ import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import { IFV2ManagerEditors } from '../subeditors';
 
 export interface NoMatchSectionProps {
-  noMatch: Node.IfV2.IfNoMatch;
+  noMatch: BaseNode.IfV2.IfNoMatch;
   pushToPath?: (path: { type: string; label: string }) => void;
 }
 
@@ -18,7 +18,7 @@ const NoMatchSection: React.FC<NoMatchSectionProps> = ({ noMatch, pushToPath }) 
 
   return (
     <Section
-      infix={noMatch.type === Node.IfV2.IfNoMatchType.PATH ? 'Path' : ''}
+      infix={noMatch.type === BaseNode.IfV2.IfNoMatchType.PATH ? 'Path' : ''}
       header="No Match"
       isLink
       onClick={onOpenNoMatchSection}

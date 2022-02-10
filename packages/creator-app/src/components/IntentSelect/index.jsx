@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import { Alert, AlertVariant, Select, toast } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _shuffle from 'lodash/shuffle';
 import _toLower from 'lodash/toLower';
 import React from 'react';
@@ -110,7 +110,8 @@ function IntentSelect({
 
   const onSelectIntent = React.useCallback(
     async (nextIntentID) => {
-      const isDefaultBuiltIn = CUSTOMIZABLE_INTENT_PREFIXS.includes(nextIntentID?.split('.')[0]) || nextIntentID === Constants.IntentName.NONE;
+      const isDefaultBuiltIn =
+        CUSTOMIZABLE_INTENT_PREFIXS.includes(nextIntentID?.split('.')[0]) || nextIntentID === VoiceflowConstants.IntentName.NONE;
 
       if (isDefaultBuiltIn && !intentsMap[nextIntentID]) {
         await createIntent({ id: nextIntentID, name: nextIntentID, builtIn: true });

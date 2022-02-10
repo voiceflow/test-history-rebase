@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { Button, ClickableText, Flex, FlexApart, flexApartStyles, Input, Select, stopPropagation, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import _sample from 'lodash/sample';
@@ -24,14 +24,14 @@ import ValueSynonymsSection from './components/ValueSynonymsSection';
 import { generateSlotInput, mergeSlotInputs } from './utils';
 
 const UNSUPPORTED_CUSTOM_VALUE_SLOTS = [
-  Constants.SlotType.DATE,
-  Constants.SlotType.DURATION,
-  Constants.SlotType.NUMBER,
-  Constants.SlotType.ORDINAL,
-  Constants.SlotType.PHONENUMBER,
-  Constants.SlotType.SEARCHQUERY,
-  Constants.SlotType.TIME,
-  Constants.SlotType.FOUR_DIGIT_NUMBER,
+  AlexaConstants.SlotType.DATE,
+  AlexaConstants.SlotType.DURATION,
+  AlexaConstants.SlotType.NUMBER,
+  AlexaConstants.SlotType.ORDINAL,
+  AlexaConstants.SlotType.PHONENUMBER,
+  AlexaConstants.SlotType.SEARCHQUERY,
+  AlexaConstants.SlotType.TIME,
+  AlexaConstants.SlotType.FOUR_DIGIT_NUMBER,
 ];
 
 const isUnsupportedCustomSlotValues = (slotType) => UNSUPPORTED_CUSTOM_VALUE_SLOTS.includes(slotType);

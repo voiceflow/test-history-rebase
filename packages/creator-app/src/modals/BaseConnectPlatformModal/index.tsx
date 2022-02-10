@@ -1,5 +1,4 @@
 import { Nullable } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import {
   Alert,
   AlertVariant,
@@ -13,6 +12,7 @@ import {
   ModalButtonContainer,
   ModalContentContainer,
 } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
@@ -32,7 +32,7 @@ export interface BaseConnectPlatformModalProps extends PlatformModalProps {
   modalType: ModalType;
   isLoading: boolean;
   hasError: boolean;
-  platform?: Constants.PlatformType;
+  platform?: VoiceflowConstants.PlatformType;
   onLoad: VoidFunction;
   onComplete: VoidFunction;
   onFail: VoidFunction;
@@ -110,7 +110,9 @@ const BaseConnectPlatformModal: React.FC<BaseConnectPlatformModalProps> = ({
                 {getPlatformValue(
                   platform,
                   {
-                    [Constants.PlatformType.ALEXA]: <AmazonLoginButton disabled={isLoading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />,
+                    [VoiceflowConstants.PlatformType.ALEXA]: (
+                      <AmazonLoginButton disabled={isLoading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
+                    ),
                   },
                   <GoogleLoginButton scopes={GOOGLE_OAUTH_SCOPES} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
                 )}

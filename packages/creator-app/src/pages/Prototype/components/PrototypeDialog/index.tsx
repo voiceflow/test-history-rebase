@@ -1,4 +1,4 @@
-import { Button } from '@voiceflow/base-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
@@ -27,7 +27,7 @@ interface DialogPrototypeProps {
   isMobile?: boolean;
   showPadding?: boolean;
   color?: string;
-  buttons?: Button.ButtonsLayout;
+  buttons?: BaseButton.ButtonsLayout;
   avatarURL?: string;
   interactions: Interaction[];
   onInteraction: OnInteraction;
@@ -54,7 +54,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   interactions,
   isMobile,
   color,
-  buttons = Button.ButtonsLayout.STACKED,
+  buttons = BaseButton.ButtonsLayout.STACKED,
   avatarURL,
   onInteraction,
   stepBack,
@@ -192,10 +192,10 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
 
         <Loading isLoading={isLoading} avatarURL={avatarURL} pmStatus={pmStatus} animationContainer={DelayedMessageFadeUpContainer} />
 
-        {buttons === Button.ButtonsLayout.STACKED && <InlineInteractions {...interactionProps} />}
+        {buttons === BaseButton.ButtonsLayout.STACKED && <InlineInteractions {...interactionProps} />}
       </MessagesContainer>
 
-      {buttons === Button.ButtonsLayout.CAROUSEL && <StickyInteractions {...interactionProps} />}
+      {buttons === BaseButton.ButtonsLayout.CAROUSEL && <StickyInteractions {...interactionProps} />}
 
       <span ref={bottomScrollRef} />
     </Container>

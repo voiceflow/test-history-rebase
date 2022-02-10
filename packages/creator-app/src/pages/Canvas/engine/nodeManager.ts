@@ -1,5 +1,5 @@
-import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
-import { Node as BaseNode } from '@voiceflow/base-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _partition from 'lodash/partition';

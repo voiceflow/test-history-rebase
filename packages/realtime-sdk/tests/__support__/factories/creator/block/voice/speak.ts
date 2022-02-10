@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/voice-types';
+import { VoiceNode } from '@voiceflow/voice-types';
 import { define, extend } from 'cooky-cutter';
 import { datatype, internet, lorem } from 'faker';
 
@@ -22,7 +22,7 @@ export const SpeakAudioData = define<AudioData>({
   type: (): DialogType.AUDIO => DialogType.AUDIO,
 });
 
-export const SpeakStepData = extend<ReturnType<typeof Base.SpeakStepData>, Node.Speak.StepData<any>>(Base.SpeakStepData, {
+export const SpeakStepData = extend<ReturnType<typeof Base.SpeakStepData>, VoiceNode.Speak.StepData<any>>(Base.SpeakStepData, {
   dialogs: () => [VoicePrompt()],
 });
 

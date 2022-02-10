@@ -1,4 +1,4 @@
-import { Models, Nullable } from '@voiceflow/base-types';
+import { BaseModels, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -32,8 +32,8 @@ const ConnectedPromptStep: ConnectedStep<Realtime.NodeData.Prompt, Realtime.Node
     nodeID={data.nodeID}
     noMatch={data.noMatchReprompt}
     noReply={data.noReply}
-    noMatchPortID={ports.out.builtIn[Models.PortType.NO_MATCH]}
-    noReplyPortID={ports.out.builtIn[Models.PortType.NO_REPLY]}
+    noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
+    noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
     variant={variant}
   />
 );

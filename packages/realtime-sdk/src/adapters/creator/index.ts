@@ -1,9 +1,9 @@
 import { BlockType } from '@realtime-sdk/constants';
 import { CreatorDiagram, Link, Node, NodeData, Port } from '@realtime-sdk/models';
 import { isDiagramReferencesBlockType, isMarkupBlockType } from '@realtime-sdk/utils/typeGuards';
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 import { denormalize, Normalized } from 'normal-store';
 
@@ -13,14 +13,14 @@ import nodeAdapter from './node';
 import { isBlock } from './utils';
 
 // we will be doing a patch request.
-export type DBCreatorDiagram = Omit<BaseModels.Diagram, 'created' | 'creatorID' | 'variables' | 'versionID' | 'name'>;
+export type DBCreatorDiagram = Omit<BaseModels.Diagram.Model, 'created' | 'creatorID' | 'variables' | 'versionID' | 'name'>;
 
 const creatorAdapter = createSimpleAdapter<
   DBCreatorDiagram,
   CreatorDiagram,
   [
     {
-      platform: Constants.PlatformType;
+      platform: VoiceflowConstants.PlatformType;
       context: AdapterContext;
     }
   ],
@@ -28,7 +28,7 @@ const creatorAdapter = createSimpleAdapter<
     {
       nodes: Normalized<Node>;
       ports: Normalized<Port>;
-      platform: Constants.PlatformType;
+      platform: VoiceflowConstants.PlatformType;
       context: AdapterContext;
     }
   ]
@@ -114,7 +114,7 @@ const creatorAdapter = createSimpleAdapter<
   ({ diagramID, viewport, links, data }, { nodes, ports, platform, context }) => {
     const nodeList = denormalize(nodes);
 
-    const portToTargets = links.reduce<Record<string, BaseModels.NodeID>>((acc, link) => {
+    const portToTargets = links.reduce<Record<string, string>>((acc, link) => {
       if (link.source.portID in ports.byKey && link.target.nodeID in nodes.byKey) {
         acc[link.source.portID] = link.target.nodeID;
       }
@@ -129,7 +129,7 @@ const creatorAdapter = createSimpleAdapter<
       return acc;
     }, {});
 
-    const stepMap = nodeList.reduce<Record<BaseModels.NodeID, BaseModels.NodeID>>((acc, node) => {
+    const stepMap = nodeList.reduce<Record<string, string>>((acc, node) => {
       if (node.combinedNodes) {
         for (let i = 1; i < node.combinedNodes.length; i++) {
           acc[node.combinedNodes[i - 1]] = node.combinedNodes[i];

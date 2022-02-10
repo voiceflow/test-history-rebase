@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -169,7 +169,7 @@ export const uploadProduct =
   };
 
 export const updateAllProductLocales =
-  (locales: Constants.Locale[]): Thunk =>
+  (locales: AlexaConstants.Locale[]): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const allProducts = ProductV2.allProductsSelector(state);

@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -42,7 +42,7 @@ const ConnectedPermissionStep: ConnectedStep<Realtime.NodeData.Permission, Realt
   <PermissionStep
     nodeID={data.nodeID}
     permissions={data.permissions.map((permissionID) => PERMISSION_LABELS[permissionID])}
-    nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
+    nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
     variant={variant}
   />
 );

@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Portal, stopPropagation, SvgIcon, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,14 +6,14 @@ import Button from './SettingsButton';
 import Content from './SettingsContent';
 
 interface SettingsTypeProps {
-  type: BaseModels.ProjectLinkType;
+  type: BaseModels.Project.LinkType;
   isOpen: boolean;
   onToggle: () => void;
-  onChange: (type: BaseModels.ProjectLinkType) => void;
+  onChange: (type: BaseModels.Project.LinkType) => void;
 }
 
 const SettingsType: React.FC<SettingsTypeProps> = ({ type, isOpen, onToggle, onChange }) => {
-  const isStraightLink = type === BaseModels.ProjectLinkType.STRAIGHT;
+  const isStraightLink = type === BaseModels.Project.LinkType.STRAIGHT;
 
   const popper = usePopper({
     placement: 'bottom',
@@ -34,11 +34,11 @@ const SettingsType: React.FC<SettingsTypeProps> = ({ type, isOpen, onToggle, onC
         <Portal portalNode={document.body}>
           <div ref={popper.setPopperElement} style={popper.styles.popper} {...popper.attributes.popper}>
             <Content onClick={stopPropagation(null, true)}>
-              <Button onClick={() => onChange(BaseModels.ProjectLinkType.STRAIGHT)} isActive={isStraightLink} isSimple>
+              <Button onClick={() => onChange(BaseModels.Project.LinkType.STRAIGHT)} isActive={isStraightLink} isSimple>
                 <SvgIcon icon="lineStraight" />
               </Button>
 
-              <Button onClick={() => onChange(BaseModels.ProjectLinkType.CURVED)} isActive={!isStraightLink} isSimple>
+              <Button onClick={() => onChange(BaseModels.Project.LinkType.CURVED)} isActive={!isStraightLink} isSimple>
                 <SvgIcon icon="lineCurved" />
               </Button>
             </Content>

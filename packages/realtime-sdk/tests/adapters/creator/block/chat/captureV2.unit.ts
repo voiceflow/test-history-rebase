@@ -1,6 +1,6 @@
 import { Creator } from '@test/factories';
-import { Node as BaseNode } from '@voiceflow/base-types';
-import { Node } from '@voiceflow/chat-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { ChatNode } from '@voiceflow/chat-types';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -39,7 +39,7 @@ describe('Adapters | Creator | Block | Chat | captureV2Adapter', () => {
       sinon.stub(chatNoReplyAdapter, 'fromDB').returns(noReply);
       sinon.stub(chatNoMatchAdapter, 'fromDB').returns(noMatch);
 
-      const intentCapture: Node.CaptureV2.IntentCapture = {
+      const intentCapture: ChatNode.CaptureV2.IntentCapture = {
         type: BaseNode.CaptureV2.CaptureType.INTENT as BaseNode.CaptureV2.CaptureType.INTENT,
         intent: DEFAULT_INTENT,
       };

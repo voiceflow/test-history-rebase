@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
-import { Project } from '@voiceflow/alexa-types';
+import { AlexaProject } from '@voiceflow/alexa-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant, Input } from '@voiceflow/ui';
 import React from 'react';
@@ -35,7 +35,7 @@ const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
     invalidPrice: false,
     invalidIndex: null,
   });
-  const selectedPlaces = React.useMemo(() => Object.keys(product.marketPlaces) as Project.MarketPlace[], [product.marketPlaces]);
+  const selectedPlaces = React.useMemo(() => Object.keys(product.marketPlaces) as AlexaProject.MarketPlace[], [product.marketPlaces]);
   const buttonLabel = selectedPlaces.length === 0 ? 'Select All' : 'Unselect All';
 
   const selectAllMarketPlaceToggle = () => {
@@ -57,7 +57,7 @@ const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
     patchProduct({ marketPlaces: nextMarketPlaces });
   };
 
-  const selectAllCountriesToggle = (place: Project.MarketPlace, allCountries: string[]) => () => {
+  const selectAllCountriesToggle = (place: AlexaProject.MarketPlace, allCountries: string[]) => () => {
     const { marketPlaces = {} } = product;
 
     patchProduct({
@@ -71,10 +71,10 @@ const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
     });
   };
 
-  const setMarketPlace = (place: Project.MarketPlace) => {
+  const setMarketPlace = (place: AlexaProject.MarketPlace) => {
     if (selectedPlaces.includes(place)) {
       patchProduct({
-        marketPlaces: selectedPlaces.reduce<Partial<Record<Project.MarketPlace, Realtime.ProductMarketPlace>>>((acc, key) => {
+        marketPlaces: selectedPlaces.reduce<Partial<Record<AlexaProject.MarketPlace, Realtime.ProductMarketPlace>>>((acc, key) => {
           if (key !== place) {
             acc[key] = product.marketPlaces[key];
           }
@@ -96,7 +96,7 @@ const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
     }
   };
 
-  const setCountries = (place: Project.MarketPlace) => (country: string) => {
+  const setCountries = (place: AlexaProject.MarketPlace) => (country: string) => {
     const { marketPlaces = {} } = product;
     const marketPlace = marketPlaces[place];
 
@@ -115,7 +115,7 @@ const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
     });
   };
 
-  const onPriceChange = (place: Project.MarketPlace, index: number) => (value: string) => {
+  const onPriceChange = (place: AlexaProject.MarketPlace, index: number) => (value: string) => {
     const { marketPlaces = {}, type } = product;
     const price = Number(value);
 

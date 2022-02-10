@@ -1,4 +1,4 @@
-import { Constants, Project } from '@voiceflow/alexa-types';
+import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
 
 export interface ProductMarketPlace {
   price: number;
@@ -10,14 +10,14 @@ export interface ProductMarketPlace {
 export interface Product {
   id: string;
   skill: string;
-  type: Constants.ProductType;
+  type: AlexaConstants.ProductType;
   name: string;
   version: '1.0';
   referenceName: string;
   summary: string;
   description: string;
-  marketPlaces: Partial<Record<Project.MarketPlace, ProductMarketPlace>>;
-  locales: Constants.Locale[];
+  marketPlaces: Partial<Record<AlexaProject.MarketPlace, ProductMarketPlace>>;
+  locales: AlexaConstants.Locale[];
   phrases: string[];
   keywords: string[];
   purchasableState: string | null;
@@ -25,7 +25,7 @@ export interface Product {
   largeIconUri: string | null;
   testingInstructions: string | null;
   cardDescription: string | null;
-  subscriptionFrequency: Project.SubscriptionPaymentFrequency | null;
+  subscriptionFrequency: AlexaProject.SubscriptionPaymentFrequency | null;
   privacyPolicyUrl: string | null;
   trialPeriodDays: string | null;
   taxCategory: string | null;
@@ -35,11 +35,11 @@ export interface Product {
   consumableUnit?: string | null;
 }
 
-export type DBProduct = Project.AlexaProduct;
+export type DBProduct = AlexaProject.Product;
 
 export namespace DBProduct {
   export interface PrivacyAndCompliance {
-    locales: Partial<Record<Constants.Locale, LocalePrivacyAndCompliance>>;
+    locales: Partial<Record<AlexaConstants.Locale, LocalePrivacyAndCompliance>>;
   }
 
   export interface LocalePrivacyAndCompliance {
@@ -52,7 +52,7 @@ export namespace DBProduct {
     taxInformation: {
       category?: string | null;
     };
-    locales: Record<Constants.Locale, LocalePublishingInformation>;
+    locales: Record<AlexaConstants.Locale, LocalePublishingInformation>;
   }
 
   export interface LocalePublishingInformation {
@@ -79,7 +79,7 @@ export namespace DBProduct {
   }
 
   export interface SubscriptionInformation {
-    subscriptionPaymentFrequency?: Project.SubscriptionPaymentFrequency | null;
+    subscriptionPaymentFrequency?: AlexaProject.SubscriptionPaymentFrequency | null;
     subscriptionTrialPeriodDays?: string | null;
   }
 }

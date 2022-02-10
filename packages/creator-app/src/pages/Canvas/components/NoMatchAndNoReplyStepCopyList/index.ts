@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { platformAware } from '@/hocs';
@@ -9,7 +9,8 @@ type NoMatchAndNoReplyStepCopyListProps = ChatListProps | VoiceListProps;
 
 const NoMatchAndNoReplyStepCopyList = platformAware<NoMatchAndNoReplyStepCopyListProps>(
   {
-    [Constants.PlatformType.CHATBOT]: ChatList as React.FC<NoMatchAndNoReplyStepCopyListProps>,
+    [VoiceflowConstants.PlatformType.CHATBOT]: ChatList as React.FC<NoMatchAndNoReplyStepCopyListProps>,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: ChatList as React.FC<NoMatchAndNoReplyStepCopyListProps>,
   },
   VoiceList as React.FC<NoMatchAndNoReplyStepCopyListProps>
 );

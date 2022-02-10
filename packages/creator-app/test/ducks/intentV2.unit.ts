@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import { FeatureFlag } from '@/config/features';
@@ -22,7 +22,7 @@ const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versi
 const INTENT: Realtime.Intent = {
   id: INTENT_ID,
   name: 'intent',
-  platform: Constants.PlatformType.GENERAL,
+  platform: VoiceflowConstants.PlatformType.GENERAL,
   inputs: [],
   slots: {
     allKeys: [],
@@ -36,7 +36,7 @@ const MOCK_STATE: Intent.IntentState = {
     abc: {
       id: 'abc',
       name: 'alphabet intent',
-      platform: Constants.PlatformType.GOOGLE,
+      platform: VoiceflowConstants.PlatformType.GOOGLE,
       inputs: [],
       slots: {
         allKeys: [],
@@ -168,7 +168,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
 
       it('replace intents locally', async () => {
         const projectID = 'projectID';
-        const platform = Constants.PlatformType.GOOGLE;
+        const platform = VoiceflowConstants.PlatformType.GOOGLE;
         const rootState = createState(MOCK_STATE, {
           [Session.STATE_KEY]: { activeProjectID: projectID },
           [Project.STATE_KEY]: { byKey: { [projectID]: { platform } } },
@@ -181,7 +181,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
 
       it('process intent slots before replacing locally', async () => {
         const projectID = 'projectID';
-        const platform = Constants.PlatformType.GOOGLE;
+        const platform = VoiceflowConstants.PlatformType.GOOGLE;
         const rootState = createState(MOCK_STATE, {
           [Session.STATE_KEY]: { activeProjectID: projectID },
           [Project.STATE_KEY]: { byKey: { [projectID]: { platform } } },

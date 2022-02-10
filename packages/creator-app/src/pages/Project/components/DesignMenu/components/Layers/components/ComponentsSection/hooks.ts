@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
@@ -48,8 +48,8 @@ export const useComponents = (): ComponentsAPI => {
   const lowerCasedSearchValue = searchValue.trim().toLowerCase();
 
   const componentsItems = React.useMemo(() => {
-    const createComponentItem = ({ type, sourceID }: BaseModels.VersionFolderItem): ComponentItem => {
-      const isFolder = type === BaseModels.VersionFolderItemType.FOLDER;
+    const createComponentItem = ({ type, sourceID }: BaseModels.Version.FolderItem): ComponentItem => {
+      const isFolder = type === BaseModels.Version.FolderItemType.FOLDER;
 
       return {
         id: sourceID,

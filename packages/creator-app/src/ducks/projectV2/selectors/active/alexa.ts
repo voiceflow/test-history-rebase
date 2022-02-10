@@ -1,5 +1,5 @@
-import { Project as AlexaProject } from '@voiceflow/alexa-types';
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { AlexaProject } from '@voiceflow/alexa-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
@@ -13,7 +13,7 @@ import { projectSelector as baseProjectSelector } from './base';
 export const projectSelector = createSelector(
   [baseProjectSelector],
   (activeProject) =>
-    activeProject as Nullable<Realtime.Project<AlexaProject.AlexaProjectData, BaseModels.Member<AlexaProject.AlexaProjectMemberData>>>
+    activeProject as Nullable<Realtime.Project<AlexaProject.PlatformData, BaseModels.Project.Member<AlexaProject.MemberPlatformData>>>
 );
 
 const membersSelector = createSelector([projectSelector], (project) => project?.members ?? []);

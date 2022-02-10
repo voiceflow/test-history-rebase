@@ -1,13 +1,12 @@
 import { BlockType } from '@realtime-sdk/constants';
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 
 import { isBlock, isStep } from './utils';
 
-type NodesMap = Record<BaseModels.NodeID, BaseModels.BaseDiagramNode>;
-type ValidNodeIDsMap = Record<BaseModels.NodeID, boolean>;
+type NodesMap = Record<string, BaseModels.BaseDiagramNode>;
+type ValidNodeIDsMap = Record<string, boolean>;
 
-const cleanupBlockSteps = (nodesMap: NodesMap, stepsIDs: BaseModels.NodeID[]): BaseModels.NodeID[] =>
-  stepsIDs.filter((stepID) => !!(stepID in nodesMap));
+const cleanupBlockSteps = (nodesMap: NodesMap, stepsIDs: string[]): string[] => stepsIDs.filter((stepID) => !!(stepID in nodesMap));
 
 const cleanupStepPorts = (ports: BaseModels.BasePort[], validNodesMap: ValidNodeIDsMap): [BaseModels.BasePort, ...BaseModels.BasePort[]] =>
   ports.map((port) => ({ ...port, target: port.target && validNodesMap[port.target] ? port.target : null })) as [

@@ -1,20 +1,20 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter } from '../utils';
 
-const zapierAdapter = createBlockAdapter<Node.Zapier.StepData, NodeData.Zapier>(
+const zapierAdapter = createBlockAdapter<BaseNode.Zapier.StepData, NodeData.Zapier>(
   ({ value, user, selectedAction }) => ({
     user,
     value,
     selectedAction,
-    selectedIntegration: Node.Utils.IntegrationType.ZAPIER,
+    selectedIntegration: BaseNode.Utils.IntegrationType.ZAPIER,
   }),
-  ({ user, value = '', selectedAction = Node.Zapier.ZapierActionType.START_A_ZAP }) => ({
+  ({ user, value = '', selectedAction = BaseNode.Zapier.ZapierActionType.START_A_ZAP }) => ({
     user,
     value: value ?? '',
-    selectedAction: selectedAction as Node.Zapier.ZapierActionType,
-    selectedIntegration: Node.Utils.IntegrationType.ZAPIER,
+    selectedAction: selectedAction as BaseNode.Zapier.ZapierActionType,
+    selectedIntegration: BaseNode.Utils.IntegrationType.ZAPIER,
   })
 );
 

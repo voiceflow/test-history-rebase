@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
 import * as Session from '@/ducks/session';
@@ -20,7 +20,7 @@ export const trackSessionDuration = (duration: number) => () =>
   client.api.analytics.track(EventName.SESSION_DURATION, { properties: { duration: Math.floor(duration / 1000) } });
 
 export const trackDeveloperAccountConnected =
-  (platform: Constants.PlatformType, source: SourceType): SyncThunk =>
+  (platform: VoiceflowConstants.PlatformType, source: SourceType): SyncThunk =>
   (_dispatch, getState) => {
     const state = getState();
     const projectID = Session.activeProjectIDSelector(state);

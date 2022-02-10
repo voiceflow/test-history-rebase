@@ -1,7 +1,7 @@
-import { Node as BaseNode, Nullable } from '@voiceflow/base-types';
-import { Node as ChatNode, Types as ChatTypes } from '@voiceflow/chat-types';
+import { BaseNode, Nullable } from '@voiceflow/base-types';
+import { ChatModels, ChatNode } from '@voiceflow/chat-types';
 import { Nullish } from '@voiceflow/common';
-import { Node as VoiceNode, Types as VoiceTypes } from '@voiceflow/voice-types';
+import { VoiceModels, VoiceNode } from '@voiceflow/voice-types';
 import createAdapter from 'bidirectional-adapter';
 
 import { NodeData } from '../../../../models';
@@ -49,10 +49,10 @@ const migrateRepromptToNoReply = <T extends ChatNode.Utils.StepNoReply | VoiceNo
 
 export const chatMigrateRepromptToNoReply = (
   noReply: Nullish<ChatNode.Utils.StepNoReply>,
-  reprompt: Nullable<ChatTypes.Prompt> = null
+  reprompt: Nullable<ChatModels.Prompt> = null
 ): Nullable<ChatNode.Utils.StepNoReply> => migrateRepromptToNoReply(noReply, reprompt);
 
 export const voiceMigrateRepromptToNoReply = (
   noReply: Nullish<VoiceNode.Utils.StepNoReply<any>>,
-  reprompt: Nullable<VoiceTypes.Prompt<any>> = null
+  reprompt: Nullable<VoiceModels.Prompt<any>> = null
 ): Nullable<VoiceNode.Utils.StepNoReply<any>> => migrateRepromptToNoReply(noReply, reprompt);

@@ -1,9 +1,9 @@
 /* eslint-disable max-classes-per-file */
-import { Node as BaseNode } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { NullableRecord, Utils } from '@voiceflow/common';
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Logger } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { CanvasAPI } from '@/components/Canvas';
 import { BlockType } from '@/constants';
@@ -289,7 +289,7 @@ export const getNodesData = (nodeData: Record<string, Realtime.NodeData<unknown>
 export const getCopiedNodeDataIDs = (
   nodeData: Record<string, Realtime.NodeData<unknown>>,
   copiedNodes: Realtime.Node[],
-  platform: Constants.PlatformType
+  platform: VoiceflowConstants.PlatformType
 ) => {
   const copiedNodesData = getNodesData(nodeData, copiedNodes);
   const intents: string[] = [];

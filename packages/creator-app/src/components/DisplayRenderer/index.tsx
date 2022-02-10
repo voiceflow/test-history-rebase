@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Alert, AlertVariant } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
@@ -10,16 +10,16 @@ const CONTAINER_WIDTH = 452;
 const SMALL_HUB_SCALE = 0.8;
 
 const DEVICES = [
-  Constants.APLDeviceType.SMALL_ROUND_HUB,
-  Constants.APLDeviceType.SMALL_RECT_HUB,
-  Constants.APLDeviceType.MEDIUM_HUB,
-  Constants.APLDeviceType.LARGE_HUB,
-  Constants.APLDeviceType.LARGE_TV,
+  AlexaConstants.APLDeviceType.SMALL_ROUND_HUB,
+  AlexaConstants.APLDeviceType.SMALL_RECT_HUB,
+  AlexaConstants.APLDeviceType.MEDIUM_HUB,
+  AlexaConstants.APLDeviceType.LARGE_HUB,
+  AlexaConstants.APLDeviceType.LARGE_TV,
 ];
 
-const getDeviceInfo = (type: Constants.APLDeviceType) => {
+const getDeviceInfo = (type: AlexaConstants.APLDeviceType) => {
   // const device = new DeviceConfig(devices[type]);
-  const { height, width, density } = Constants.APL_DEVICE_CONFIG[type];
+  const { height, width, density } = AlexaConstants.APL_DEVICE_CONFIG[type];
   const scale = CONTAINER_WIDTH / width;
   const isSmallHub = type === 'smallHub';
 
@@ -43,7 +43,7 @@ interface DisplayRendererProps {
 }
 
 interface DisplayRendererState {
-  device: Constants.APLDeviceType;
+  device: AlexaConstants.APLDeviceType;
   viewport: APLRendererProps['viewport'];
   scale: number;
   error: Error | null;
@@ -57,13 +57,13 @@ class DisplayRenderer extends React.Component<DisplayRendererProps, DisplayRende
   };
 
   state: DisplayRendererState = {
-    ...getDeviceInfo(Constants.APLDeviceType.MEDIUM_HUB),
+    ...getDeviceInfo(AlexaConstants.APLDeviceType.MEDIUM_HUB),
     error: null,
   };
 
   setError = (error: Error) => this.setState({ error });
 
-  changeDevice = async (device: Constants.APLDeviceType) => this.setState(getDeviceInfo(device));
+  changeDevice = async (device: AlexaConstants.APLDeviceType) => this.setState(getDeviceInfo(device));
 
   componentDidCatch(error: Error) {
     // for some reason the APLRenderer always throws an error when unmounting
@@ -95,7 +95,7 @@ class DisplayRenderer extends React.Component<DisplayRendererProps, DisplayRende
         </Container>
         {this.props.withControls && (
           <div className="d-flex justify-content-center pt-2">
-            {DEVICES.map((type) => [type, Constants.APL_DEVICE_CONFIG[type]] as const).map(([type, device]) => (
+            {DEVICES.map((type) => [type, AlexaConstants.APL_DEVICE_CONFIG[type]] as const).map(([type, device]) => (
               <Tooltip title={device.name} position="bottom" animation="fade" arrow key={type}>
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */}
                 <div

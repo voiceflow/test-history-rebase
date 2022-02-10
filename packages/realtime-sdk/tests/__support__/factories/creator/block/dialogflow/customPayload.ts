@@ -1,10 +1,10 @@
-import { Node } from '@voiceflow/google-dfes-types';
+import { DFESNode } from '@voiceflow/google-dfes-types';
 import { define } from 'cooky-cutter';
 import { lorem } from 'faker';
 
 import { NodeData } from '@/models';
 
-export const CustomPayloadStep = define<Node.Payload.StepData>({
+export const CustomPayloadStep = define<DFESNode.Payload.StepData>({
   data: () => [],
 });
 

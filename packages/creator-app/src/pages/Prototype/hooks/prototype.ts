@@ -1,4 +1,4 @@
-import { Request } from '@voiceflow/base-types';
+import { BaseRequest } from '@voiceflow/base-types';
 import { toast } from '@voiceflow/ui';
 import _isString from 'lodash/isString';
 import React from 'react';
@@ -113,7 +113,7 @@ const usePrototype = ({
   }, [webhook]);
 
   const onInteraction = React.useCallback(
-    ({ name, request }: { name?: string; request: Request.BaseRequest | string }) => {
+    ({ name, request }: { name?: string; request: BaseRequest.BaseRequest | string }) => {
       perf.action(PerfAction.PROTOTYPE_INTERACTION);
 
       if (_isString(request)) {

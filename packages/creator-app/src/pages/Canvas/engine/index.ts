@@ -1,4 +1,4 @@
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { logger } from '@voiceflow/ui';
@@ -456,7 +456,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     const isRootDiagramActive = this.select(CreatorV2.isRootDiagramActiveSelector);
 
     // topics do not have start node, focus first intent step
-    if (!isRootDiagramActive && diagram?.type === BaseModels.DiagramType.TOPIC) {
+    if (!isRootDiagramActive && diagram?.type === BaseModels.Diagram.DiagramType.TOPIC) {
       const intentStepID = diagram.intentStepIDs[0];
 
       if (intentStepID) {

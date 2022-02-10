@@ -1,7 +1,7 @@
-import { Project as AlexaProject } from '@voiceflow/alexa-types';
-import { Models as BaseModels } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { AlexaProject } from '@voiceflow/alexa-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { batch } from 'react-redux';
 
 import client from '@/client';
@@ -69,14 +69,14 @@ export const activateVersion =
     const diagrams = await dispatch(Diagram.loadDiagrams(versionID, rootDiagramID));
 
     if (isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion && !dbVersion.topics?.length) {
-      dbVersion.topics = [{ type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: rootDiagramID }];
+      dbVersion.topics = [{ type: BaseModels.Version.FolderItemType.DIAGRAM, sourceID: rootDiagramID }];
     }
 
     if (isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion && !dbVersion.components?.length) {
       dbVersion.folders = { ...dbVersion.folders };
       dbVersion.components = diagrams
-        .filter((diagram) => diagram.id !== rootDiagramID && (!diagram.type || diagram.type === BaseModels.DiagramType.COMPONENT))
-        .map((diagram) => ({ type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: diagram.id }));
+        .filter((diagram) => diagram.id !== rootDiagramID && (!diagram.type || diagram.type === BaseModels.Diagram.DiagramType.COMPONENT))
+        .map((diagram) => ({ type: BaseModels.Version.FolderItemType.DIAGRAM, sourceID: diagram.id }));
     }
 
     // not a dependency for project to load
@@ -93,7 +93,7 @@ export const activateVersion =
 
     const products =
       'products' in projectPlatformData
-        ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((projectPlatformData as AlexaProject.AlexaProjectData).products))
+        ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((projectPlatformData as AlexaProject.PlatformData).products))
         : [];
 
     batch(() => {
@@ -165,8 +165,8 @@ export const importProjectContext =
     nodes: { data: Realtime.NodeData<unknown>; node: Realtime.Node }[];
     products: Realtime.Product[];
     diagrams: Realtime.Diagram[];
-    sourcePlatform: Constants.PlatformType;
-    targetPlatform: Constants.PlatformType;
+    sourcePlatform: VoiceflowConstants.PlatformType;
+    targetPlatform: VoiceflowConstants.PlatformType;
   }): Thunk<{ data: Realtime.NodeData<unknown>; node: Realtime.Node }[]> =>
   async (dispatch) => {
     let mappedNodes = nodes;

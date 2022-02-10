@@ -1,6 +1,6 @@
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SvgIcon } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
@@ -22,7 +22,7 @@ export type SpeakAudioItemProps = ListItemComponentProps<
   Realtime.SpeakData,
   {
     header: React.ReactNode;
-    platform: Constants.PlatformType;
+    platform: VoiceflowConstants.PlatformType;
     isRandomized?: boolean;
     formControlProps?: { contentBottomUnits?: number };
     variant?: BlockVariant;
@@ -53,7 +53,7 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
   },
   ref
 ) => {
-  const isGoogle = platform === Constants.PlatformType.GOOGLE;
+  const isGoogle = platform === VoiceflowConstants.PlatformType.GOOGLE;
   const isNew = latestCreatedKey === itemKey;
 
   const updateContent = React.useCallback(({ text }) => onUpdate({ content: text }), [onUpdate]);

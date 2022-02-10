@@ -1,6 +1,6 @@
 import { BlockType } from '@realtime-sdk/constants';
 import { LinkData, Port } from '@realtime-sdk/models';
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';

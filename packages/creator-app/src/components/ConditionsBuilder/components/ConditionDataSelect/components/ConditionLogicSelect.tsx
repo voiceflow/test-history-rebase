@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Box, BoxFlexAlignStart } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,52 +12,52 @@ import ConditionValueSelect from '../../ConditionValueSelect';
 
 export const ExpressionListOptions: RadioOption<ExpressionDataLogicType>[] = [
   {
-    id: Node.Utils.ExpressionTypeV2.EQUALS,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.EQUALS]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.EQUALS,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.EQUALS]}</Box>,
   },
   {
-    id: Node.Utils.ExpressionTypeV2.NOT_EQUAL,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.NOT_EQUAL]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.NOT_EQUAL,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.NOT_EQUAL]}</Box>,
   },
   {
-    id: Node.Utils.ExpressionTypeV2.GREATER,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.GREATER]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.GREATER,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.GREATER]}</Box>,
   },
   {
-    id: Node.Utils.ExpressionTypeV2.GREATER_OR_EQUAL,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.GREATER_OR_EQUAL]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.GREATER_OR_EQUAL,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.GREATER_OR_EQUAL]}</Box>,
   },
   {
-    id: Node.Utils.ExpressionTypeV2.LESS,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.LESS]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.LESS,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.LESS]}</Box>,
   },
   {
-    id: Node.Utils.ExpressionTypeV2.LESS_OR_EQUAL,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.LESS_OR_EQUAL]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.LESS_OR_EQUAL,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.LESS_OR_EQUAL]}</Box>,
   },
   {
-    id: Node.Utils.ExpressionTypeV2.CONTAINS,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.CONTAINS]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.CONTAINS,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.CONTAINS]}</Box>,
   },
   {
-    id: Node.Utils.ExpressionTypeV2.NOT_CONTAIN,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.NOT_CONTAIN]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.NOT_CONTAIN,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.NOT_CONTAIN]}</Box>,
   },
   {
-    id: Node.Utils.ExpressionTypeV2.STARTS_WITH,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.STARTS_WITH]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.STARTS_WITH,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.STARTS_WITH]}</Box>,
   },
   {
-    id: Node.Utils.ExpressionTypeV2.ENDS_WITH,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.ENDS_WITH]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.ENDS_WITH,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.ENDS_WITH]}</Box>,
   },
   {
-    id: Node.Utils.ExpressionTypeV2.HAS_VALUE,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.HAS_VALUE]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.HAS_VALUE,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.HAS_VALUE]}</Box>,
   },
   {
-    id: Node.Utils.ExpressionTypeV2.IS_EMPTY,
-    label: <Box>{ExpressionDisplayLabel[Node.Utils.ExpressionTypeV2.IS_EMPTY]}</Box>,
+    id: BaseNode.Utils.ExpressionTypeV2.IS_EMPTY,
+    label: <Box>{ExpressionDisplayLabel[BaseNode.Utils.ExpressionTypeV2.IS_EMPTY]}</Box>,
   },
 ];
 
@@ -65,7 +65,7 @@ export interface ConditionLogicSelectProps {
   logicValue: ExpressionDataLogicType;
   onLogicUpdate: (value: ExpressionDataLogicType) => void;
   conditionValue?: string;
-  onConditionValueUpdate: (data: { value: string; type: Node.Utils.ExpressionTypeV2.VARIABLE | Node.Utils.ExpressionTypeV2.VALUE }) => void;
+  onConditionValueUpdate: (data: { value: string; type: BaseNode.Utils.ExpressionTypeV2.VARIABLE | BaseNode.Utils.ExpressionTypeV2.VALUE }) => void;
   onClose: () => void;
 }
 
@@ -78,7 +78,7 @@ const ConditionLogicSelect: React.FC<ConditionLogicSelectProps> = ({
 }) => {
   React.useEffect(() => {
     if (ExpressionWithNoSecondValue.includes(logicValue)) {
-      onConditionValueUpdate({ value: '', type: Node.Utils.ExpressionTypeV2.VALUE });
+      onConditionValueUpdate({ value: '', type: BaseNode.Utils.ExpressionTypeV2.VALUE });
     }
   }, [logicValue]);
 

@@ -1,5 +1,5 @@
 import { SendBackActions } from '@logux/server';
-import { Models as BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ChannelContext, ChannelSubscribeAction } from '@voiceflow/socket-utils';
 
@@ -55,12 +55,12 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       // perform initial conversion
       // eslint-disable-next-line no-underscore-dangle
       if (isTopicsAndComponents && project._version && project._version >= Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION) {
-        const topicsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.DiagramType.TOPIC);
-        const componentsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.DiagramType.COMPONENT);
+        const topicsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.Diagram.DiagramType.TOPIC);
+        const componentsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.Diagram.DiagramType.COMPONENT);
 
         if ((version.topics?.length ?? 0) !== topicsDiagrams.length || (version.components?.length ?? 0) !== componentsDiagrams.length) {
-          const topics = topicsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
-          const components = componentsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.VersionFolderItemType.DIAGRAM }));
+          const topics = topicsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }));
+          const components = componentsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }));
 
           version.topics = topics;
           version.components = components;

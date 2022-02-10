@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import React from 'react';
 
 import { getLabel } from '@/pages/Canvas/managers/Visual/VisualStep/components/ImageStep/utils';
@@ -7,7 +7,7 @@ import { ClassName } from '@/styles/constants';
 import Frame from './Frame';
 import { VisualRenderProps } from './types';
 
-type ImageProps = VisualRenderProps<Node.Visual.ImageStepData>;
+type ImageProps = VisualRenderProps<BaseNode.Visual.ImageStepData>;
 
 const Image: React.FC<ImageProps> = ({ zoom, data, dimensions }) => (
   <Frame

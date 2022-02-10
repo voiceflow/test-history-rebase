@@ -1,4 +1,4 @@
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 /**
  * Some platforms don't allow slot values to be embedded within slot reprompts. Consequently, even if
@@ -12,4 +12,4 @@ import { Constants } from '@voiceflow/general-types';
  *
  * @param platform The platform of the current project
  */
-export const isSlotsInRepromptValid = (platform: Constants.PlatformType) => platform !== Constants.PlatformType.GOOGLE;
+export const isSlotsInRepromptValid = (platform: VoiceflowConstants.PlatformType) => platform !== VoiceflowConstants.PlatformType.GOOGLE;

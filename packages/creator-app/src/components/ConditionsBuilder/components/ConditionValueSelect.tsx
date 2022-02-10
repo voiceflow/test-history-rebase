@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Badge, Box, swallowEvent } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
@@ -13,7 +13,7 @@ const AnyVariablesInput: any = VariablesInput;
 
 export interface ConditionValueSelectProps {
   value?: string;
-  onChange: (data: { value: string; type: Node.Utils.ExpressionTypeV2.VARIABLE | Node.Utils.ExpressionTypeV2.VALUE }) => void;
+  onChange: (data: { value: string; type: BaseNode.Utils.ExpressionTypeV2.VARIABLE | BaseNode.Utils.ExpressionTypeV2.VALUE }) => void;
   onClose?: () => void;
 }
 
@@ -43,7 +43,7 @@ const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '',
 
       onChange({
         value,
-        type: isVariable(value) ? Node.Utils.ExpressionTypeV2.VARIABLE : Node.Utils.ExpressionTypeV2.VALUE,
+        type: isVariable(value) ? BaseNode.Utils.ExpressionTypeV2.VARIABLE : BaseNode.Utils.ExpressionTypeV2.VALUE,
       });
 
       resetError();

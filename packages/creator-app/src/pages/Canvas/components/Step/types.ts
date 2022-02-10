@@ -1,6 +1,6 @@
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
@@ -10,7 +10,7 @@ export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord
   ports: Realtime.NodePorts<O>;
   data: Realtime.NodeData<T>;
   engine: Engine;
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   variant: BlockVariant;
   withPorts: boolean;
 }

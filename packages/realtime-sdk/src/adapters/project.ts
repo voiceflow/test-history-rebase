@@ -1,9 +1,9 @@
 import { AnyProject } from '@realtime-sdk/models';
-import { Models as BaseModels } from '@voiceflow/base-types';
-import { Constants } from '@voiceflow/general-types';
+import { AnyRecord, BaseModels } from '@voiceflow/base-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
-const projectAdapter = createAdapter<BaseModels.Project<BaseModels.BasePlatformData, BaseModels.BasePlatformData>, AnyProject>(
+const projectAdapter = createAdapter<BaseModels.Project.Model<AnyRecord, AnyRecord>, AnyProject>(
   ({
     _id,
     name,
@@ -11,7 +11,7 @@ const projectAdapter = createAdapter<BaseModels.Project<BaseModels.BasePlatformD
     teamID,
     privacy,
     members,
-    linkType = BaseModels.ProjectLinkType.CURVED,
+    linkType = BaseModels.Project.LinkType.CURVED,
     platform,
     _version,
     reportTags = {},
@@ -30,7 +30,7 @@ const projectAdapter = createAdapter<BaseModels.Project<BaseModels.BasePlatformD
     members,
     privacy,
     linkType,
-    platform: platform as Constants.PlatformType,
+    platform: platform as VoiceflowConstants.PlatformType,
     _version,
     diagramID: '',
     versionID: devVersion!,

@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -10,7 +10,7 @@ const TextManager: NodeManagerConfig<Realtime.NodeData.Text, Realtime.NodeData.T
   ...NODE_CONFIG,
 
   label: 'Text',
-  platforms: [Constants.PlatformType.CHATBOT, Constants.PlatformType.DIALOGFLOW_ES_CHAT],
+  platforms: [VoiceflowConstants.PlatformType.CHATBOT, VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT],
 
   step: TextStep,
   editor: TextEditor,

@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -29,7 +29,7 @@ const EntityCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.Node
   const updateSlots = React.useCallback((slots: Realtime.IntentSlot[]) => onChange({ intent: { slots } }), [onChange]);
 
   const queryCapture = () => {
-    onChange({ captureType: Node.CaptureV2.CaptureType.QUERY, noMatch: null });
+    onChange({ captureType: BaseNode.CaptureV2.CaptureType.QUERY, noMatch: null });
   };
 
   const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(slots, updateSlots, {
@@ -49,7 +49,7 @@ const EntityCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.Node
             {
               icon: 'capture',
               label: 'Add Capture',
-              disabled: data.captureType !== Node.CaptureV2.CaptureType.INTENT,
+              disabled: data.captureType !== BaseNode.CaptureV2.CaptureType.INTENT,
               onClick: () => {
                 onAdd();
                 scrollToBottom();

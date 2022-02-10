@@ -1,6 +1,6 @@
 /* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
 
-import { Node, Trace } from '@voiceflow/base-types';
+import { BaseNode, BaseTrace } from '@voiceflow/base-types';
 
 import { createSuite } from '@/../test/_suite';
 import MessageController from '@/pages/Prototype/PrototypeTool/Message';
@@ -43,26 +43,26 @@ suite('Prototype/PrototypeTool/Message', ({ mock, expect, describeMessage }) => 
   const sessionTrace = { message: 'message' };
   describeMessage('session', MessageType.SESSION, sessionTrace, { message: 'message' });
 
-  const streamTrace: Trace.StreamTrace = {
-    type: Node.Utils.TraceType.STREAM,
-    payload: { src: 'audio', token: 'asdf', action: Node.Stream.TraceStreamAction.PLAY },
+  const streamTrace: BaseTrace.StreamTrace = {
+    type: BaseNode.Utils.TraceType.STREAM,
+    payload: { src: 'audio', token: 'asdf', action: BaseNode.Stream.TraceStreamAction.PLAY },
   };
   describeMessage('stream', MessageType.STREAM, streamTrace, { audio: 'audio' });
 
-  const speakTrace: Trace.SpeakTrace = {
-    type: Node.Utils.TraceType.SPEAK,
-    payload: { src: 'src', voice: 'voice', message: 'message', type: Node.Speak.TraceSpeakType.MESSAGE },
+  const speakTrace: BaseTrace.SpeakTrace = {
+    type: BaseNode.Utils.TraceType.SPEAK,
+    payload: { src: 'src', voice: 'voice', message: 'message', type: BaseNode.Speak.TraceSpeakType.MESSAGE },
   };
   describeMessage('speak', MessageType.SPEAK, speakTrace, { message: 'message', voice: 'voice', src: 'src' });
 
-  const audioTrace: Trace.SpeakTrace = {
-    type: Node.Utils.TraceType.SPEAK,
-    payload: { src: 'src', message: 'message', type: Node.Speak.TraceSpeakType.AUDIO },
+  const audioTrace: BaseTrace.SpeakTrace = {
+    type: BaseNode.Utils.TraceType.SPEAK,
+    payload: { src: 'src', message: 'message', type: BaseNode.Speak.TraceSpeakType.AUDIO },
   };
   describeMessage('speak', MessageType.AUDIO, audioTrace, { name: 'message', src: 'src' });
 
-  const debugTrace: Trace.DebugTrace = {
-    type: Node.Utils.TraceType.DEBUG,
+  const debugTrace: BaseTrace.DebugTrace = {
+    type: BaseNode.Utils.TraceType.DEBUG,
     payload: { message: 'message' },
   };
   describeMessage('debug', MessageType.DEBUG, debugTrace, { message: 'message' });

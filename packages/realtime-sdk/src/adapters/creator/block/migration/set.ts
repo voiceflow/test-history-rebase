@@ -1,17 +1,17 @@
 import { NodeData } from '@realtime-sdk/models';
 import { expressionfyV2, sanitizeSetValue } from '@realtime-sdk/utils/expression';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
 import { createBlockAdapter } from '../utils';
 
-const setAdapter = createBlockAdapter<Node.Set.StepData, NodeData.SetV2>(
+const setAdapter = createBlockAdapter<BaseNode.Set.StepData, NodeData.SetV2>(
   ({ sets }) => ({
     sets: sets.map(({ expression, variable }) => ({
       id: Utils.id.cuid.slug(),
       variable,
-      type: expression.type === Node.Utils.ExpressionType.VALUE ? Node.Utils.ExpressionTypeV2.VALUE : Node.Utils.ExpressionTypeV2.ADVANCE,
-      expression: sanitizeSetValue(String(expressionfyV2(expression)), expression.type as unknown as Node.Utils.ExpressionTypeV2) ?? '',
+      type: expression.type === BaseNode.Utils.ExpressionType.VALUE ? BaseNode.Utils.ExpressionTypeV2.VALUE : BaseNode.Utils.ExpressionTypeV2.ADVANCE,
+      expression: sanitizeSetValue(String(expressionfyV2(expression)), expression.type as unknown as BaseNode.Utils.ExpressionTypeV2) ?? '',
     })),
   }),
   ({ sets }) => ({

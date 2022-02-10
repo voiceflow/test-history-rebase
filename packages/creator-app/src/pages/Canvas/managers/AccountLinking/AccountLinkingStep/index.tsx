@@ -1,4 +1,4 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _isEqual from 'lodash/isEqual';
 import React from 'react';
@@ -43,7 +43,7 @@ const ConnectedAccountLinkingStep: ConnectedStep<Realtime.NodeData.AccountLinkin
   return (
     <AccountLinkingStep
       nodeID={data.nodeID}
-      nextPortID={ports.out.builtIn[Models.PortType.NEXT]}
+      nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       isConfigured={!!accountLinkingData && notEmpty}
       variant={variant}
     />

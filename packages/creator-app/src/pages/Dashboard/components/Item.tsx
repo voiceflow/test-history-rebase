@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/general-types';
 import { Dropdown, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 import React from 'react';
 
@@ -43,7 +43,7 @@ export interface ItemProps extends InjectedDraggableComponentProps {
   isDragLayer?: boolean;
   versionID: string;
   isDraggingPreview?: boolean;
-  platform: Constants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
 }
 
 export const Item: React.FC<ItemProps> = ({

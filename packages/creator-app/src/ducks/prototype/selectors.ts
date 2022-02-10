@@ -1,4 +1,4 @@
-import { Button } from '@voiceflow/base-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { createSelector } from 'reselect';
 
 import * as Session from '@/ducks/session';
@@ -56,7 +56,7 @@ export const prototypeWebhookDataSelector = createSelector([prototypeSelector], 
 
 export const prototypeSettingsSelector = createSelector([prototypeSelector], ({ settings }) => settings);
 
-export const prototypeButtonsSelector = createSelector([prototypeSelector], ({ settings }) => settings.buttons as Button.ButtonsLayout);
+export const prototypeButtonsSelector = createSelector([prototypeSelector], ({ settings }) => settings.buttons as BaseButton.ButtonsLayout);
 
 export const prototypeLayoutSelector = createSelector([prototypeSelector], ({ settings }) => settings.layout || PrototypeLayout.TEXT_DIALOG);
 

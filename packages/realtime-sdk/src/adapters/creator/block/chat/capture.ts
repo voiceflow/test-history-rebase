@@ -1,10 +1,10 @@
 import { NodeData } from '@realtime-sdk/models';
-import { Node } from '@voiceflow/chat-types';
+import { ChatNode } from '@voiceflow/chat-types';
 
 import { baseCaptureAdapter } from '../base';
 import { chatMigrateRepromptToNoReply, chatNoReplyAdapter, chipsToIntentButtons, createBlockAdapter } from '../utils';
 
-const captureAdapter = createBlockAdapter<Node.Capture.StepData, NodeData.Capture>(
+const captureAdapter = createBlockAdapter<ChatNode.Capture.StepData, NodeData.Capture>(
   ({ chips, reprompt, noReply, buttons, ...baseData }) => {
     const migratedNoReply = chatMigrateRepromptToNoReply(noReply, reprompt);
 
@@ -20,7 +20,7 @@ const captureAdapter = createBlockAdapter<Node.Capture.StepData, NodeData.Captur
 
     chips: null,
     buttons,
-    noReply: noReply && chatNoReplyAdapter.toDB(noReply as Node.Utils.StepNoReply),
+    noReply: noReply && chatNoReplyAdapter.toDB(noReply as ChatNode.Utils.StepNoReply),
   })
 );
 

@@ -3,9 +3,6 @@
   "compilerOptions": {
     "module": "commonjs",
     "importHelpers": true,
-    "types": [
-      "jest",
-      "webpack-env"
-    ]
+    "types": ["jest", "node", "webpack-env"]
   }
 }

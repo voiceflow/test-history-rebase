@@ -1,4 +1,4 @@
-import { Models, Node } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -49,11 +49,11 @@ export const IfStep: React.FC<IfStepProps> = ({ nodeID, expressions, noMatchPort
 );
 
 const ConnectedIfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ ports, data, engine, variant }) => {
-  const noMatchPortID = ports.out.builtIn[Models.PortType.NO_MATCH];
+  const noMatchPortID = ports.out.builtIn[BaseModels.PortType.NO_MATCH];
 
   const hasNoMatchLink = engine.hasLinksByPortID(noMatchPortID); // also show the else port if a link exists
   const expressionsByPortID = useSyncedLookup(ports.out.dynamic, data.expressions);
-  const withNoMatchPort = hasNoMatchLink || data.noMatch.type === Node.IfV2.IfNoMatchType.PATH;
+  const withNoMatchPort = hasNoMatchLink || data.noMatch.type === BaseNode.IfV2.IfNoMatchType.PATH;
 
   const expressions = React.useMemo(
     () =>

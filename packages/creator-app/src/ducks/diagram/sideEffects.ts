@@ -1,4 +1,4 @@
-import { Models as BaseModels, Node as BaseNode } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
@@ -163,7 +163,7 @@ export const createTopicDiagram =
           const activeTopics = VersionV2.active.topicsSelector(state);
           const activeDiagramID = Session.activeDiagramIDSelector(state);
 
-          const newTopicItem = { type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: newDiagram.id };
+          const newTopicItem = { type: BaseModels.Version.FolderItemType.DIAGRAM, sourceID: newDiagram.id };
           const activeTopicIndex = activeDiagramID ? activeTopics.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
 
           const topics =
@@ -219,7 +219,7 @@ const addDiagramIDIntoComponentsList =
     const activeDiagramID = Session.activeDiagramIDSelector(state);
     const activeComponents = VersionV2.active.componentsSelector(state);
 
-    const newTopicItem = { type: BaseModels.VersionFolderItemType.DIAGRAM, sourceID: diagramID };
+    const newTopicItem = { type: BaseModels.Version.FolderItemType.DIAGRAM, sourceID: diagramID };
     const activeComponentIndex = activeDiagramID ? activeComponents.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
 
     const components =
@@ -367,7 +367,7 @@ export const duplicateDiagram =
           Errors.assertVersionID(versionID);
           Errors.assertDiagramID(rootDiagramID);
 
-          const { _id, type = BaseModels.DiagramType.COMPONENT, ...diagram } = await client.api.diagram.get(diagramID);
+          const { _id, type = BaseModels.Diagram.DiagramType.COMPONENT, ...diagram } = await client.api.diagram.get(diagramID);
 
           const newFlowName = Realtime.Utils.diagram.getUniqueCopyName(diagram.name, Utils.array.unique(allDiagrams.map(({ name }) => name)));
 
@@ -418,8 +418,8 @@ export const deleteDiagram =
     }
 
     const { type } = DiagramV2.diagramByIDSelector(state, { id: diagramID }) ?? {};
-    const isTopic = type === BaseModels.DiagramType.TOPIC;
-    const isComponent = type === BaseModels.DiagramType.COMPONENT;
+    const isTopic = type === BaseModels.Diagram.DiagramType.TOPIC;
+    const isComponent = type === BaseModels.Diagram.DiagramType.COMPONENT;
 
     await dispatch(
       Feature.applyAtomicSideEffect(
@@ -531,7 +531,7 @@ export const saveActiveDiagram = (): Thunk => async (_, getState) => {
     delete activeDiagram.type;
   }
 
-  if (activeDiagram.type !== BaseModels.DiagramType.TOPIC) {
+  if (activeDiagram.type !== BaseModels.Diagram.DiagramType.TOPIC) {
     delete activeDiagram.intentStepIDs;
   }
 

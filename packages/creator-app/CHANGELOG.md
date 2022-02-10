@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.626.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.625.0...@voiceflow/creator-app@1.626.0) (2022-02-10)
+
+
+### Features
+
+* Start prototype tool with selected variable state node and variables (VF-2404) ([#5083](https://github.com/voiceflow/creator-app/issues/5083)) ([6790c05](https://github.com/voiceflow/creator-app/commit/6790c05d3a38f12a8d58f66b9a2dd1b53678d557))
+
+
+
+
+
 # [1.625.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.624.4...@voiceflow/creator-app@1.625.0) (2022-02-10)
 
 

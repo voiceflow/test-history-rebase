@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.626.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.626.0...@voiceflow/creator-app@1.626.1) (2022-02-10)
+
+
+### Bug Fixes
+
+* dropdown select (VF-2870) ([#5086](https://github.com/voiceflow/creator-app/issues/5086)) ([30d3924](https://github.com/voiceflow/creator-app/commit/30d39244f8203bbdd9909795bbf25270a9ff53a4))
+
+
+
+
+
 # [1.626.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.625.0...@voiceflow/creator-app@1.626.0) (2022-02-10)
 
 

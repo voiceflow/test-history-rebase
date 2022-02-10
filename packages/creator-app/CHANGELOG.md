@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.625.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.624.4...@voiceflow/creator-app@1.625.0) (2022-02-10)
+
+
+### Features
+
+* bump types (VF-000) ([#5067](https://github.com/voiceflow/creator-app/issues/5067)) ([f7df324](https://github.com/voiceflow/creator-app/commit/f7df324935cce14dbf7ae39f6187320f22e163be))
+
+
+
+
+
 ## [1.624.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.624.3...@voiceflow/creator-app@1.624.4) (2022-02-09)
 
 

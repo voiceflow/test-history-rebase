@@ -72,7 +72,7 @@ parameters:
     default: false
 
 orbs:
-  vfcommon: voiceflow/common@0.0.279
+  vfcommon: voiceflow/common@0.0.283
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -428,7 +428,8 @@ workflows:
           context: dev-test
           name: ml-gateway-release-post-actions
           namespace: << pipeline.parameters.k8s-namespace >>
-          target: << pipeline.parameters.k8s-asset-ml-gateway >>
+          component: << pipeline.parameters.track-component-ml-gateway >>
+          package: ml-gateway
           tagged: true
           success_slack_notify: false
           requires:
@@ -438,7 +439,8 @@ workflows:
           context: dev-test
           name: realtime-release-post-actions
           namespace: << pipeline.parameters.k8s-namespace >>
-          target: << pipeline.parameters.k8s-asset-realtime >>
+          component: << pipeline.parameters.track-component-realtime >>
+          package: realtime
           tagged: true
           success_slack_notify: false
           requires:
@@ -448,7 +450,8 @@ workflows:
           <<: *prod_deploy_filters
           context: dev-test
           namespace: << pipeline.parameters.k8s-namespace >>
-          target: << pipeline.parameters.k8s-asset-admin-ui >>
+          component: << pipeline.parameters.track-component-admin-ui >>
+          package: admin-app
           name: admin-app-release-post-actions
           tagged: true
           success_slack_notify: false
@@ -459,7 +462,8 @@ workflows:
           context: dev-test
           name: creator-app-release-post-actions
           namespace: << pipeline.parameters.k8s-namespace >>
-          target: << pipeline.parameters.k8s-asset-creator-app >>
+          component: << pipeline.parameters.track-component-creator-app >>
+          package: creator-app
           tagged: true
           post-steps:
             - jira/notify:

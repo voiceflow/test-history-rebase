@@ -1,5 +1,4 @@
 import Box from '@ui/components/Box';
-import Input from '@ui/components/Input';
 import SvgIcon from '@ui/components/SvgIcon';
 import { stopImmediatePropagation } from '@ui/utils';
 import React from 'react';
@@ -40,7 +39,7 @@ function MenuHeader({
             <Box mr={12}>
               <SvgIcon icon="search" size={16} color="#6E849A" />
             </Box>
-            <Input
+            <MenuInput
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               ref={inDropdownSearch ? createInputRef : null}

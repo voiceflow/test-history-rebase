@@ -6,6 +6,7 @@ export * from './components';
 export interface SearchInputProps {
   opened?: boolean;
   inline?: boolean;
+  ellipsis?: boolean;
   clearable?: boolean;
   searchable?: boolean;
   isDropdown?: boolean;
@@ -16,6 +17,12 @@ export interface SearchInputProps {
 const SearchInput = styled(Input)<SearchInputProps>`
   height: ${({ theme }) => theme.components.input.height}px;
   padding-right: 34px;
+
+  ${({ ellipsis }) =>
+    ellipsis &&
+    css`
+      text-overflow: ellipsis;
+    `}
 
   ${({ searchable, isDropdown }) =>
     (!searchable || isDropdown) &&

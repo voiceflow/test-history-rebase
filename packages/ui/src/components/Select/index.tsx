@@ -66,6 +66,7 @@ export type SelectProps<O, V> = {
   displayName?: string;
   inputVariant?: SelectInputVariant;
   footerAction?: (hideMenu: () => void) => JSX.Element;
+  isDropdown?: boolean;
   inDropdownSearch?: boolean;
   searchLabel?: string;
   onSearch?: (val: string) => void;
@@ -114,6 +115,7 @@ export type SelectProps<O, V> = {
   alwaysShowCreate?: boolean;
   autoUpdatePlacement?: boolean;
   autoDismiss?: boolean;
+  labelSearchable?: boolean;
   onKeyDown?: (e: React.KeyboardEvent) => void;
   triggerRenderer?: (options: {
     ref: React.RefObject<HTMLInputElement>;
@@ -168,6 +170,7 @@ const Select = <O, V = O>({
   inDropdownSearch = false,
   inputStopProp = true,
   label = '',
+  isDropdown = !!label,
   value,
   inline = false,
   onBlur,
@@ -210,6 +213,7 @@ const Select = <O, V = O>({
   getOptionLabel = defaultGetter as GetOptionLabel<V>,
   withSearchIcon,
   optionsMaxSize,
+  labelSearchable = !label && searchable,
   triggerRenderer,
   formatInputValue,
   isButtonDisabled,
@@ -236,8 +240,6 @@ SelectProps<O, V>): JSX.Element => {
   const [inputWrapperRef, setInputWrapperRef] = React.useState<Nullable<HTMLElement>>(null);
   const [focusedOptionIndex, updateFocusedOptionIndex] = React.useState(multiLevelDropdown ? null : 0);
 
-  const isDropdown = !!label;
-  const labelSearchable = !label && searchable;
   const isDropDownOpened = isDropdown && opened;
 
   const renderDropdown = opened && (!!options.length || searchLabel || !searchable || !!renderEmpty);
@@ -497,7 +499,7 @@ SelectProps<O, V>): JSX.Element => {
     autoFocus,
     leftAction: prefix ? <PrefixContainer>{prefix}</PrefixContainer> : null,
     searchable: labelSearchable,
-    isDropdown: !!label,
+    isDropdown,
     borderLess,
     placeholder,
     onMouseDown: searchable ? onMouseDown : undefined,
@@ -588,6 +590,7 @@ SelectProps<O, V>): JSX.Element => {
                         ref={inputRef}
                         value={selectedOptions.length > 0 ? displayName : ''}
                         type="search"
+                        ellipsis
                         autoComplete="off"
                         onChange={() => null}
                       />

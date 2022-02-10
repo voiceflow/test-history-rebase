@@ -75,7 +75,9 @@ const TagSelect = <O extends unknown>({
       selectedOptions={selected}
       options={options}
       withSearchIcon
+      isDropdown
       inDropdownSearch
+      labelSearchable={false}
       searchable
       alwaysShowCreate
       autoDismiss={false}

@@ -7,8 +7,10 @@ import { FadeLeft } from '@/styles/animations';
 export const Container = styled(FlexApart)<{ isLast?: boolean }>`
   ${FadeLeft}
 
-  padding: 16px 32px 16px 0px;
+  padding: 12px 32px 12px 0px;
   font-size: 15px;
+  overflow-x: hidden;
+  overflow-x: clip;
 
   ${({ isLast }) =>
     !isLast &&
@@ -62,6 +64,9 @@ export const MemberName = styled.div`
 export const MemberEmail = styled.div<{ pending?: boolean }>`
   font-size: ${({ pending }) => (pending ? 15 : 13)}px;
   color: ${({ pending }) => (pending ? '#8da2b5' : '#62778c')};
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  padding-right: 12px;
 `;
 
 export const DropdownItem = styled(MenuItem)``;

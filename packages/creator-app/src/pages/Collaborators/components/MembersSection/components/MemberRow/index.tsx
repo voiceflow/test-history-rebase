@@ -1,8 +1,9 @@
 import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Flex, Menu } from '@voiceflow/ui';
+import { Box, BoxFlex, Menu } from '@voiceflow/ui';
 import React from 'react';
 
+import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
@@ -73,17 +74,24 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendIn
     deleteMember(member.creator_id);
   };
 
+  // eslint-disable-next-line xss/no-mixed-html
   return (
     <Container className={ClassName.COLLABORATOR_LINE_ITEM} isLast={isLast} data-email={member.email}>
-      <Flex>
+      <BoxFlex flex={1} paddingY={4} overflowX="hidden">
         <UserIcon large pending={pending} user={member} />
 
-        <div>
+        <Box flex={1} overflowX="hidden">
           {!pending && <MemberName>{member.name}</MemberName>}
 
-          <MemberEmail pending={pending}>{member.email}</MemberEmail>
-        </div>
-      </Flex>
+          <OverflowTippyTooltip<HTMLDivElement> style={{ display: 'block' }} title={member.email}>
+            {(ref) => (
+              <MemberEmail ref={ref} pending={pending}>
+                {member.email}
+              </MemberEmail>
+            )}
+          </OverflowTippyTooltip>
+        </Box>
+      </BoxFlex>
 
       <PermissionDropdown
         placement={inline ? 'bottom-end' : 'bottom-start'}

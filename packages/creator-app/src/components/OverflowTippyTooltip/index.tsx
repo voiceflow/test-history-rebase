@@ -3,15 +3,19 @@ import React from 'react';
 
 import { useToggle } from '@/hooks';
 
-export interface OverflowTippyTooltipProps extends TippyTooltipProps {
-  children: (ref: React.RefObject<HTMLElement>, options: { isOverflow?: boolean }) => React.ReactNode;
-  isChildrenOverflow?: (node: HTMLElement) => boolean;
+export interface OverflowTippyTooltipProps<E extends HTMLElement = HTMLElement> extends TippyTooltipProps {
+  children: (ref: React.RefObject<E>, options: { isOverflow?: boolean }) => React.ReactNode;
+  isChildrenOverflow?: (node: E) => boolean;
 }
 
 const defaultIsChildrenOverflow = (node: HTMLElement) => node.scrollWidth > node.clientWidth;
 
-const OverflowTippyTooltip = ({ children, isChildrenOverflow, ...props }: OverflowTippyTooltipProps): React.ReactElement => {
-  const ref = React.useRef<HTMLElement>(null);
+const OverflowTippyTooltip = <E extends HTMLElement = HTMLElement>({
+  children,
+  isChildrenOverflow,
+  ...props
+}: OverflowTippyTooltipProps<E>): React.ReactElement => {
+  const ref = React.useRef<E>(null);
   const [isOverflow, toggleIsOverflow] = useToggle(false);
 
   const persistIsChildrenOverflow = usePersistFunction(isChildrenOverflow ?? defaultIsChildrenOverflow);

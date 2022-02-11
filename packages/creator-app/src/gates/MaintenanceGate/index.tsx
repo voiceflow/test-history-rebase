@@ -6,6 +6,7 @@ import _noop from 'lodash/noop';
 import React from 'react';
 import { connect } from 'react-redux';
 
+import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import * as Modal from '@/ducks/modal';
@@ -69,7 +70,7 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
 
       // additional failsafe - call an arbitrary api endpoint to ensure API isn't in maintenance
       try {
-        await axios.get('/maintenance');
+        await client.maintenance.check();
       } catch (err) {
         if (err?.response?.status === 503) {
           action();

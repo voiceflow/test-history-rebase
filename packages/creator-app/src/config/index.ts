@@ -42,7 +42,9 @@ export const IS_PERFORMANCE_TEST = IS_DEVELOPMENT || !!window.VF_OVERRIDE_IS_PER
 export const isDebug = () => IS_DEVELOPMENT || !!window.VF_DEBUG;
 
 export const APP_ENV = window.VF_OVERRIDE_APP_ENV || process.env.APP_ENV!;
-export const IS_PRODUCTION_ENV = APP_ENV === 'production';
+
+// shouldn't export this, only use it within this file for choosing the correct env vars to load
+const IS_PRODUCTION_ENV = APP_ENV === 'production';
 
 const PUBLIC_CLOUD = 'public';
 export const CLOUD_ENV = window.VF_OVERRIDE_CLOUD_ENV || process.env.CLOUD_ENV || PUBLIC_CLOUD;

@@ -7,7 +7,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { IntercomProvider } from 'react-use-intercom';
 import { ThemeProvider } from 'styled-components';
 
-import { INTERCOM_APP_ID, IS_PRODUCTION_ENV } from '@/config';
+import { INTERCOM_APP_ID } from '@/config';
 import {
   AccountLoadingGate,
   AccountSubscriptionGate,
@@ -75,7 +75,9 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
       <ConnectedRouter history={history}>
         <DndProvider backend={HTML5Backend}>
           <ThemeProvider theme={THEME}>
-            <CapabilitiesGate>{IS_PRODUCTION_ENV ? <MaintenanceGate>{app}</MaintenanceGate> : app}</CapabilitiesGate>
+            <CapabilitiesGate>
+              <MaintenanceGate>{app}</MaintenanceGate>
+            </CapabilitiesGate>
           </ThemeProvider>
         </DndProvider>
       </ConnectedRouter>

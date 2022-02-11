@@ -5,6 +5,7 @@ import comment from './comment';
 import feature from './feature';
 import file from './file';
 import integrations from './integrations';
+import maintenance from './maintenance';
 import organization from './organization';
 import platformClients, { getPlatformClient } from './platforms';
 import project from './project';
@@ -52,6 +53,7 @@ const client = {
   version,
   reportTags,
   realtime,
+  maintenance,
 };
 
 export default client;

@@ -29,6 +29,7 @@ suite('Client - Root', ({ expect }) => {
       'version',
       'reportTags',
       'realtime',
+      'maintenance',
     ]);
   });
 });

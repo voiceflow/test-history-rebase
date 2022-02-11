@@ -89,6 +89,11 @@ class Controls extends BaseControls {
     this.handle({ type: ControlType.MOUSE_UP, event });
     this.handle({ type: ControlType.END_INTERACTION });
 
+    // finished panning with middle click
+    if (event.button === 1) {
+      this.handle({ type: ControlType.END });
+    }
+
     document.removeEventListener('mousemove', this.mousemove);
   };
 

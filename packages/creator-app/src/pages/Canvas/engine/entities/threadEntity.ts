@@ -81,7 +81,6 @@ class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Realtim
       }
 
       const anchorCoords = node.instance.getThreadAnchorCoords()!;
-
       return anchorCoords.add(point).onPlane(this.engine.canvas!.getOuterPlane());
     }
 

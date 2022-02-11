@@ -1,11 +1,23 @@
 import { Flex } from '@voiceflow/ui';
 
 import { CANVAS_INTERACTING_CLASSNAME } from '@/components/Canvas/constants';
-import { css, styled, transition } from '@/hocs';
+import { css, keyframes, styled, transition } from '@/hocs';
+import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MERGING_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { INDICATOR_DIAMETER } from '../constants';
 
+const ScaleInKeyframes = keyframes`
+  from {
+    transform: translate(-50%, -50%) scale(0)
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
+`;
+
 const CommentIndicator = styled(Flex)<{ isFocused?: boolean }>`
+  animation: ${ScaleInKeyframes} 60ms ease-in-out;
   position: absolute;
   justify-content: center;
   width: ${INDICATOR_DIAMETER}px;
@@ -45,6 +57,11 @@ const CommentIndicator = styled(Flex)<{ isFocused?: boolean }>`
 
   .${CANVAS_INTERACTING_CLASSNAME} & {
     pointer-events: none;
+  }
+
+  .${CANVAS_DRAGGING_CLASSNAME} &,
+  .${CANVAS_MERGING_CLASSNAME} & {
+    display: none;
   }
 `;
 

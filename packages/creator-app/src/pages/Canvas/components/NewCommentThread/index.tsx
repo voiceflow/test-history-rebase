@@ -66,7 +66,7 @@ const NewCommentThread: React.FC = () => {
         <CommentIndicator draggable tabIndex={-1} {...handlers}>
           {threadCount + 1}
         </CommentIndicator>
-        <ThreadEditor />
+        <ThreadEditor isFocused />
       </DragTarget>
     </>
   );

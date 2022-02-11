@@ -8,15 +8,15 @@ import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@u
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-import { ButtonContainer, Container, getMaxHeight, Item, itemStyles, MenuItemNote } from './components';
+import { ButtonContainer, Container, getMaxHeight, Item, itemStyles, MenuItemNote, MenuItemProps } from './components';
 
 export { Container as MenuContainer, Item as MenuItem, itemStyles as menuItemStyles };
 
-interface BaseMenuOption {
+interface BaseMenuOption extends MenuItemProps {
   key?: string;
   note?: React.ReactNode;
   label: React.ReactNode;
-  divider?: boolean;
+  style?: React.CSSProperties;
   onClick?: (e: React.MouseEvent) => void;
 }
 
@@ -89,9 +89,8 @@ const Menu = <T extends any>(
     stopPropagation<React.MouseEvent>((event) => {
       onClick?.(event);
       onSelect?.(value!);
-      if (selfDismiss) {
-        onToggle?.();
-      }
+
+      if (selfDismiss) onToggle?.();
     });
 
   const onHideMenu = () => {
@@ -144,8 +143,8 @@ const Menu = <T extends any>(
           hideTracksWhenNotNeeded
         >
           {children ||
-            options?.map(({ key, value, note, label, divider, onClick }, index) => (
-              <Item key={key || `${index}-${label}`} divider={divider} onClick={onItemClick(value as T, onClick)}>
+            options?.map(({ key, value, note, label, onClick, ...props }, index) => (
+              <Item {...props} key={key || `${index}-${label}`} onClick={onItemClick(value as T, onClick)}>
                 <FlexLabel>{label || String(value)}</FlexLabel>
                 {!!note && <MenuItemNote>{note}</MenuItemNote>}
               </Item>

@@ -4,6 +4,7 @@ export { KeyName } from './constants';
 export * from './hocs';
 export * from './hooks';
 export { backgrounds, colors, createGlobalStyle, createTheme, iconColors, keyframes, ThemeColor, transition, units } from './styles';
+export * as Animations from './styles/animations';
 export * as SVG from './svgs';
 export * from './types';
 export * from './utils';

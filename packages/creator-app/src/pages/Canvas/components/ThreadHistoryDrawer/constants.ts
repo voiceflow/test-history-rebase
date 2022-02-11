@@ -4,8 +4,8 @@ export enum FilterType {
 }
 
 export const FILTER_LABELS = {
-  [FilterType.OPEN]: 'Open',
-  [FilterType.RESOLVED]: 'Resolved',
+  [FilterType.OPEN]: 'Opened threads',
+  [FilterType.RESOLVED]: 'Resolved threads',
 };
 
 export const HEADER_HEIGHT = 63;

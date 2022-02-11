@@ -79,10 +79,10 @@ export const itemStyles = css<MenuItemProps>`
     `}
 `;
 
-const MenuItem = styled.li.attrs<MenuItemProps>(({ className }) => ({
+const StyledMenuItem = styled.li.attrs<MenuItemProps>(({ className }) => ({
   className: cn(className, ClassName.MENU_ITEM),
 }))<MenuItemProps>`
   ${itemStyles}
 `;
 
-export default MenuItem;
+export default StyledMenuItem;

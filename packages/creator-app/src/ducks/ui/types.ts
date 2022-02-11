@@ -15,4 +15,5 @@ export interface UIState {
   previewing: boolean;
   zoomType: ZoomType;
   isLoadingProjects: boolean;
+  commentsVisible: boolean;
 }

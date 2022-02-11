@@ -88,6 +88,11 @@ export const toggleCanvasOnlyReducer: Reducer<UIState> = (state) => ({
   canvasOnly: !state.canvasOnly,
 });
 
+export const toggleCommentingVisibility: Reducer<UIState> = (state) => ({
+  ...state,
+  commentsVisible: !state.commentsVisible,
+});
+
 export const setPreviewingVersionReducer: Reducer<UIState, SetPreviewingVersion> = (state, { payload: previewing }) => ({
   ...state,
   previewing,
@@ -120,6 +125,8 @@ const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID
       return setZoomTypeReducer(state, action);
     case UIAction.SET_LOADING_PROJECTS:
       return setLoadingProjectsReducer(state, action);
+    case UIAction.TOGGLE_COMMENT_VISIBILITY:
+      return toggleCommentingVisibility(state);
     case Session.SessionAction.SET_ACTIVE_WORKSPACE_ID:
       return setLoadingProjectsReducer(state, createAction(UIAction.SET_LOADING_PROJECTS, false));
     default:

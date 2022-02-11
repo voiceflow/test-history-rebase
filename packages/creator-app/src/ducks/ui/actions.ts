@@ -15,6 +15,7 @@ export enum UIAction {
   TOGGLE_CANVAS_ONLY = 'UI:TOGGLE_CANVAS_ONLY',
   SET_VIEWING_VERSION = 'UI:SET_VIEWING_VERSION',
   SET_LOADING_PROJECTS = 'UI:SET_LOADING_PROJECTS',
+  TOGGLE_COMMENT_VISIBILITY = 'UI:TOGGLE_COMMENT_VISIBILITY',
 }
 
 // action types
@@ -39,6 +40,8 @@ export type SetPreviewingVersion = Action<UIAction.SET_VIEWING_VERSION, boolean>
 
 export type SetLoadingProjects = Action<UIAction.SET_LOADING_PROJECTS, boolean>;
 
+export type ToggleCommentVisibility = Action<UIAction.TOGGLE_COMMENT_VISIBILITY>;
+
 export type AnyUIAction =
   | ToggleBlockMenuSection
   | SetActiveCreatorMenu
@@ -49,7 +52,8 @@ export type AnyUIAction =
   | ToggleCanvasOnly
   | SetPreviewingVersion
   | SetZoomType
-  | SetLoadingProjects;
+  | SetLoadingProjects
+  | ToggleCommentVisibility;
 
 //  action creators
 
@@ -73,3 +77,5 @@ export const toggleCanvasOnly = (): ToggleCanvasOnly => createAction(UIAction.TO
 export const setPreviewingVersion = (previewing: boolean): SetPreviewingVersion => createAction(UIAction.SET_VIEWING_VERSION, previewing);
 
 export const setLoadingProjects = (isLoadingProjects: boolean): SetLoadingProjects => createAction(UIAction.SET_LOADING_PROJECTS, isLoadingProjects);
+
+export const toggleCommentVisibility = (): ToggleCommentVisibility => createAction(UIAction.TOGGLE_COMMENT_VISIBILITY);

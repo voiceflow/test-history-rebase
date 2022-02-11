@@ -1,5 +1,5 @@
 import { Callback } from '@voiceflow/common';
-import { Box, KeyName } from '@voiceflow/ui';
+import { Box, KeyName, useTeardown } from '@voiceflow/ui';
 import React from 'react';
 
 import CommentPreview from '@/components/CommentPreview';
@@ -50,6 +50,10 @@ const EditableComment: React.ForwardRefRenderFunction<EditableCommentRef, Editab
 
   const [comment, setComment] = useLinkedState<PartialComment>(initialValues);
   const engine = React.useContext(EngineContext)!;
+
+  useTeardown(() => {
+    saveDraftValues?.(comment);
+  }, [comment]);
 
   const onBlur = () => {
     if (comment.text) {

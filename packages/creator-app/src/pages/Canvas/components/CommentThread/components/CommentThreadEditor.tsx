@@ -5,11 +5,12 @@ import { ThreadEntityContext } from '@/pages/Canvas/contexts';
 
 const CommentThreadEditor: React.FC = () => {
   const threadEntity = React.useContext(ThreadEntityContext)!;
-  const { thread } = threadEntity.useState((e) => ({
+  const { thread, isFocused } = threadEntity.useState((e) => ({
     thread: e.resolve().thread,
+    isFocused: e.isFocused,
   }));
 
-  return <ThreadEditor thread={thread} />;
+  return <ThreadEditor isFocused={isFocused} thread={thread} />;
 };
 
 export default CommentThreadEditor;

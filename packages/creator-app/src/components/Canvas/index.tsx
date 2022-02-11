@@ -30,6 +30,8 @@ import { MovementCalculator, StyleOptions, TransformOptions, TransitionOptions, 
 
 export const ORIGIN: Point = [0, 0];
 
+const ZOOM_FINISH_DURATION = 300;
+
 export type CanvasAPI = Canvas['api'];
 
 export interface CanvasProps {
@@ -66,6 +68,8 @@ class Canvas extends React.PureComponent<
   renderLayerRef = React.createRef<HTMLDivElement>();
 
   zoom = this.props.viewport ? this.props.viewport.zoom : ZOOM_FACTOR;
+
+  zoomComplete = 0;
 
   position: Point = this.props.viewport ? [this.props.viewport.x, this.props.viewport.y] : ORIGIN;
 
@@ -310,6 +314,14 @@ class Canvas extends React.PureComponent<
     this.props.onZoom?.((position) =>
       calculateScrollTranslation(origin, prevZoom, nextZoom, position, this.rootRef.current!.getBoundingClientRect(), zoomDiffFactor)
     );
+
+    if (this.zoomComplete) {
+      clearTimeout(this.zoomComplete);
+    }
+
+    this.zoomComplete = window.setTimeout(() => {
+      this.onChange();
+    }, ZOOM_FINISH_DURATION);
   };
 
   resetPosition = () => {
@@ -320,7 +332,6 @@ class Canvas extends React.PureComponent<
 
   handleControl = (control: ControlAction) => {
     if (!control.type) return;
-
     switch (control.type) {
       case ControlType.PAN:
         this.props.dismissableLayer.dismissAllGlobally();

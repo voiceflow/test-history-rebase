@@ -21,6 +21,7 @@ export enum Hotkey {
   TOGGLE_DESIGN_MENU_LOCK = 'TOGGLE_DESIGN_MENU_LOCK',
   OPEN_DESIGN_MENU_STEPS_TAB = 'OPEN_DESIGN_MENU_STEPS_TAB',
   OPEN_DESIGN_MENU_LAYERS_TAB = 'OPEN_DESIGN_MENU_LAYERS_TAB',
+  HIDE_COMMENT_BUBBLES = 'HIDE_COMMENT_BUBBLES',
 
   OPEN_COMMENTING = 'OPEN_COMMENTING',
   CLOSE_CANVAS_MODE = 'CLOSE_CANVAS_MODE',
@@ -112,6 +113,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.OPEN_MANUAL_SAVE_MODAL]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+s`, `${SpecialKey.SHIFT}+${SpecialKey.META}+s`],
   [Hotkey.SAVE]: [`${SpecialKey.META}+s`, `${SpecialKey.CTRL}+s`],
   [Hotkey.CLOSE_UPLOAD_MODAL]: SpecialKey.ESC,
+  [Hotkey.HIDE_COMMENT_BUBBLES]: [`${SpecialKey.SHIFT}+c`],
 };
 
 const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {

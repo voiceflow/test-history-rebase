@@ -1,4 +1,4 @@
-import { SvgIcon } from '@voiceflow/ui';
+import { stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Assign } from 'utility-types';
 
@@ -37,7 +37,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
   return (
     <Container isFlat={isFlat} disabled={disabled} className={className}>
       <ButtonContainer padding={padding}>
-        <Button type={type} checked={checked} disabled={disabled} color={checkBoxColor} {...props} />
+        <Button type={type} checked={checked} disabled={disabled} color={checkBoxColor} {...props} onClick={stopPropagation(props.onClick)} />
         <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents />
       </ButtonContainer>
       {children}

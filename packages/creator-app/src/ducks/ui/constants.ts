@@ -20,4 +20,5 @@ export const INITIAL_STATE: UIState = {
   previewing: false,
   zoomType: ZoomType.REGULAR,
   isLoadingProjects: false,
+  commentsVisible: true,
 };

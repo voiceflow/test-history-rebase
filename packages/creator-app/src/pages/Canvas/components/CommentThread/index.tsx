@@ -1,9 +1,7 @@
 import React from 'react';
 
 import { EngineContext, FocusThreadContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
-import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 import { ClassName } from '@/styles/constants';
-import { Vector } from '@/utils/geometry';
 
 import { CANVAS_THREAD_OPEN_CLASSNAME } from '../../constants';
 import { CommentIndicator, DragTarget, ThreadEditor } from './components';
@@ -14,6 +12,7 @@ const CommentThread: React.FC = () => {
   const focusThread = React.useContext(FocusThreadContext)!;
   const threadEntity = React.useContext(ThreadEntityContext)!;
   const instance = useThreadInstance<HTMLDivElement>();
+
   const { isFocused } = threadEntity.useState((e) => ({
     isFocused: e.isFocused,
   }));
@@ -32,14 +31,6 @@ const CommentThread: React.FC = () => {
     },
     doubleClick: () => engine.comment.centerThread(threadEntity.threadID),
   });
-
-  useCanvasPan((movement) => instance.translate(new Vector(movement)));
-
-  useCanvasZoom((calculateMovement) => {
-    const [moveX, moveY] = calculateMovement(instance.getCoords().map(engine.canvas!.getOuterPlane()));
-
-    instance.translate(new Vector([moveX, moveY]));
-  }, []);
 
   React.useEffect(() => {
     if (!isFocused) return undefined;

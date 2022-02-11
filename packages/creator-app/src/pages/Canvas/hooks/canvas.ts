@@ -63,6 +63,28 @@ export const useCanvasZoom = (onZoom: (calulateMovement: MovementCalculator) => 
   }, dependencies);
 };
 
+export const useCanvasZoomLifecycle = (onZoomStart: () => void, onZoom: (calculateMovement: MovementCalculator) => void, onZoomEnd: () => void) => {
+  const zoomingRef = React.useRef(false);
+
+  useCanvasZoom(
+    (calculateMovement) => {
+      if (!zoomingRef.current) {
+        zoomingRef.current = true;
+        onZoomStart();
+      }
+      onZoom(calculateMovement);
+    },
+    [onZoomStart]
+  );
+
+  useCanvasIdle(() => {
+    if (zoomingRef.current) {
+      onZoomEnd();
+    }
+    zoomingRef.current = false;
+  }, [onZoomEnd]);
+};
+
 export const useCanvasMouse = (onMove: (point: Coords) => void, dependencies: any[] = []) => {
   const engine = React.useContext(EngineContext)!;
 

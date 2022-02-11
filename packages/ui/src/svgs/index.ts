@@ -95,6 +95,7 @@ export { default as emptyCheckbox } from './images/icons/empty.svg';
 
 // f
 export { default as filledCheck } from './filled-check.svg';
+export { default as filter } from './filter.svg';
 export { default as fireHD8 } from './fire-hd-8.svg';
 export { default as fireHD10 } from './fire-hd-10.svg';
 export { default as fireTV } from './fire-tv.svg';

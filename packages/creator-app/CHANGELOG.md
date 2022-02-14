@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.626.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.626.2...@voiceflow/creator-app@1.626.3) (2022-02-14)
+
+
+### Bug Fixes
+
+* email overflow (VF-2546) ([#5087](https://github.com/voiceflow/creator-app/issues/5087)) ([8310535](https://github.com/voiceflow/creator-app/commit/831053521019cb84a49ad5717a7759b0362f3463))
+* show comments on canvas by default POC (VF-2704) ([#5037](https://github.com/voiceflow/creator-app/issues/5037)) ([a4c8313](https://github.com/voiceflow/creator-app/commit/a4c8313b417cc613c1dabce08f179e3d6bc87106))
+
+
+
+
+
 ## [1.626.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.626.1...@voiceflow/creator-app@1.626.2) (2022-02-11)
 
 **Note:** Version bump only for package @voiceflow/creator-app

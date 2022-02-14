@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.54.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.54.1...@voiceflow/ui@1.54.2) (2022-02-14)
+
+
+### Bug Fixes
+
+* show comments on canvas by default POC (VF-2704) ([#5037](https://github.com/voiceflow/creator-app/issues/5037)) ([a4c8313](https://github.com/voiceflow/creator-app/commit/a4c8313b417cc613c1dabce08f179e3d6bc87106))
+
+
+
+
+
 ## [1.54.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.54.0...@voiceflow/ui@1.54.1) (2022-02-10)
 
 

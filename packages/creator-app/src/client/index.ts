@@ -21,6 +21,7 @@ import template from './template';
 import thread from './thread';
 import transcript from './transcript';
 import user from './user';
+import variableStates from './variableStates';
 import version from './version';
 import workspace from './workspace';
 
@@ -53,6 +54,7 @@ const client = {
   version,
   reportTags,
   realtime,
+  variableStates,
   maintenance,
 };
 

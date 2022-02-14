@@ -17,11 +17,13 @@ import Header from './Header';
 import MenuContentHeader from './MenuContentHeader';
 import PrototypeLayoutSelect from './PrototypeLayoutSelect';
 import PrototypePasswordInput from './PrototypePasswordInput';
+import VariableStateSelect from './VariableStateSelect';
 
 enum ActiveModal {
   NONE = 'none',
   APPEARANCE = 'appearance',
   PASSWORD = 'password',
+  VARIABLE_STATE = 'variableState',
 }
 
 const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
@@ -30,15 +32,9 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const [isHeaderSticky] = useScrollStickySides(bodyRef);
 
-  const [activeModal, setActiveModal] = React.useState(ActiveModal.NONE);
+  const [activeSection, setActiveSection] = React.useState(ActiveModal.NONE);
 
-  const onTogglePassword = React.useCallback(() => {
-    setActiveModal((prev) => (prev === ActiveModal.PASSWORD ? ActiveModal.NONE : ActiveModal.PASSWORD));
-  }, [setActiveModal]);
-
-  const onToggleAppearance = React.useCallback(() => {
-    setActiveModal((prev) => (prev === ActiveModal.APPEARANCE ? ActiveModal.NONE : ActiveModal.APPEARANCE));
-  }, [setActiveModal]);
+  const onToggleSection = (section: ActiveModal) => () => setActiveSection((prev) => (section !== prev ? section : ActiveModal.NONE));
 
   const Container = inline ? FadeLeftContainer : 'div';
 
@@ -70,18 +66,31 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
               header="Appearance and Branding"
               headerToggle
               collapseVariant={SectionToggleVariant.ARROW}
-              isCollapsed={activeModal !== ActiveModal.APPEARANCE}
-              toggle={onToggleAppearance}
+              isCollapsed={activeSection !== ActiveModal.APPEARANCE}
+              toggle={onToggleSection(ActiveModal.APPEARANCE)}
               customContentStyling={{ paddingLeft: 0 }}
             >
               <AppearanceAndBranding isAllowed={canCustomize} />
             </UncontrolledSection>
+            <UncontrolledSection
+              nestedIntend
+              header="Variable State"
+              headerToggle
+              collapseVariant={SectionToggleVariant.ARROW}
+              isCollapsed={activeSection !== ActiveModal.VARIABLE_STATE}
+              toggle={onToggleSection(ActiveModal.VARIABLE_STATE)}
+              customContentStyling={{ paddingLeft: 0 }}
+            >
+              <Box mb={16}>
+                <VariableStateSelect />
+              </Box>
+            </UncontrolledSection>
           </Box>
 
           <PrototypePasswordInput
-            dividers={activeModal !== ActiveModal.APPEARANCE}
-            isCollapsed={activeModal !== ActiveModal.PASSWORD}
-            onToggleCollapse={onTogglePassword}
+            dividers
+            isCollapsed={activeSection !== ActiveModal.PASSWORD}
+            onToggleCollapse={onToggleSection(ActiveModal.PASSWORD)}
           />
         </div>
         {!canCustomize && (

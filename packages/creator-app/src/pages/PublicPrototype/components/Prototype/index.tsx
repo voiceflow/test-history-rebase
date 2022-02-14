@@ -60,6 +60,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
       intent: false,
       isGuided: false,
       platform: settings.platform,
+      showVisuals: false,
     },
     isPublic: true,
     waitVisuals: isVisuals,

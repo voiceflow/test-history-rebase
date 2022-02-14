@@ -97,4 +97,4 @@ export { BlockText, ClickableText, Description, Label, Link, OverflowText, overf
 export type { TippyTooltipProps } from './TippyTooltip';
 export { default as TippyTooltip, TooltipTheme } from './TippyTooltip';
 export { toast, ToastCallToAction, ToastContainer } from './Toast';
-export { default as Toggle } from './Toggle';
+export { default as Toggle, ToggleSize } from './Toggle';

@@ -1,0 +1,29 @@
+import { Button, ButtonVariant, SecondaryButtonProps } from '@voiceflow/ui';
+
+import { css, styled, transition } from '@/hocs';
+
+const SettingsButton = styled(Button).attrs({ variant: ButtonVariant.SECONDARY, flat: true })<SecondaryButtonProps & { isActive: boolean }>`
+  margin-right: 12px;
+  width: 60px;
+
+  svg {
+    ${transition('opacity', 'color')}
+    color: #8194a8;
+    opacity: 0.85;
+  }
+
+  &:hover svg {
+    opacity: 1;
+  }
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      svg {
+        color: #132144;
+        opacity: 1;
+      }
+    `}
+`;
+
+export default SettingsButton;

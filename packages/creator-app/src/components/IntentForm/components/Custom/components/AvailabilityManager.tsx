@@ -1,4 +1,4 @@
-import { Toggle } from '@voiceflow/ui';
+import { Toggle, ToggleSize } from '@voiceflow/ui';
 import React from 'react';
 
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -11,7 +11,7 @@ const AvailabilityManager: React.FC<{ isEnabled: boolean; onChange: () => void }
       namespace="availability"
       prefix={<>Available from other topics?</>}
       tooltip={<AvailabilityTooltip />}
-      suffix={<Toggle small checked={isEnabled} onChange={onChange} />}
+      suffix={<Toggle size={ToggleSize.SMALL} checked={isEnabled} onChange={onChange} />}
     />
   );
 };

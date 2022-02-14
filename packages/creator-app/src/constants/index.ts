@@ -303,8 +303,7 @@ export const LINK_FACETIME_ONLY_REGEX = /^facetime(-(audio|group))?:([^\s?]+|([+
 export const LINK_SKYPE_ONLY_REGEX = /^skype:(\S+)\b$/;
 export const LINK_WEBCALL_ONLY_REGEX = /^webcal:(\S+)\b$/;
 
-export const VALID_LINKS_REGEXS = [
-  URL_ONLY_REGEX,
+export const STRICT_LINKS_REGEXS = [
   LINK_ABOUT_ONLY_REGEX,
   LINK_BITCOIN_ONLY_REGEX,
   LINK_CALLTO_ONLY_REGEX,
@@ -316,6 +315,8 @@ export const VALID_LINKS_REGEXS = [
   LINK_SKYPE_ONLY_REGEX,
   LINK_WEBCALL_ONLY_REGEX,
 ];
+
+export const VALID_LINKS_REGEXS = [URL_ONLY_REGEX, ...STRICT_LINKS_REGEXS];
 
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
 

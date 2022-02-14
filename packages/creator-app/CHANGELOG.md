@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.627.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.626.5...@voiceflow/creator-app@1.627.0) (2022-02-14)
+
+
+### Bug Fixes
+
+* popover layout issues (VF-2869) ([#5094](https://github.com/voiceflow/creator-app/issues/5094)) ([ed32ddc](https://github.com/voiceflow/creator-app/commit/ed32ddcc33a99adc74048efcc8b06d810d7d424d))
+
+
+### Features
+
+* add VariableStateSelect to share prototype (VF-2608) ([#5093](https://github.com/voiceflow/creator-app/issues/5093)) ([c6e8184](https://github.com/voiceflow/creator-app/commit/c6e8184787451de60bd98f32a0ce14f9e5b93658))
+
+
+
+
+
 ## [1.626.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.626.4...@voiceflow/creator-app@1.626.5) (2022-02-14)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.54.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.54.3...@voiceflow/ui@1.54.4) (2022-02-14)
+
+
+### Bug Fixes
+
+* popover layout issues (VF-2869) ([#5094](https://github.com/voiceflow/creator-app/issues/5094)) ([ed32ddc](https://github.com/voiceflow/creator-app/commit/ed32ddcc33a99adc74048efcc8b06d810d7d424d))
+
+
+
+
+
 ## [1.54.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.54.2...@voiceflow/ui@1.54.3) (2022-02-14)
 
 **Note:** Version bump only for package @voiceflow/ui

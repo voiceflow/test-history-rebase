@@ -230,7 +230,6 @@
     "build:copy-prototype": "cp build/index.html build/prototype.html",
     "build:dev": "SOURCE_MAPS=true vite build && yarn build:copy-prototype",
     "build:e2e": "VF_APP_BUILD_ENV=e2e VF_APP_E2E=true vite build && yarn build:copy-prototype",
-    "build:types": "tsc --project tsconfig.build.json --skipLibCheck",
     "clean:build": "rm -rf build",
     "connect:cli": "vfcli mesh connect creator-app -c \"/bin/bash\"",
     "cypress": "NODE_ENV=test cypress open",

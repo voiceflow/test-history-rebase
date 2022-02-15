@@ -7,6 +7,9 @@ parameters:
   container-image-url-admin-ui:
     type: string
     default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin'
+  container-image-url-showcase:
+    type: string
+    default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/showcase'
   container-image-url-realtime:
     type: string
     default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/realtime'
@@ -19,6 +22,9 @@ parameters:
   k8s-asset-creator-app:
     type: string
     default: 'deployment/creator-app'
+  k8s-asset-showcase:
+    type: string
+    default: 'deployment/showcase'
   k8s-asset-realtime:
     type: string
     default: 'deployment/realtime'
@@ -37,6 +43,9 @@ parameters:
   track-component-admin-ui:
     type: string
     default: 'admin-ui'
+  track-component-showcase:
+    type: string
+    default: 'showcase'
   track-component-realtime:
     type: string
     default: 'realtime'
@@ -47,6 +56,9 @@ parameters:
     type: boolean
     default: false
   build-admin-app:
+    type: boolean
+    default: false
+  build-showcase:
     type: boolean
     default: false
   build-realtime:
@@ -269,6 +281,20 @@ workflows:
           context: dev-test
           avoid_post_install_scripts: false
           attach_workspace: true
+          name: build-showcase-test
+          force_execute: << pipeline.parameters.build-frontend >>
+          package: showcase
+          container_folder_to_copy: packages/showcase/build
+          post-steps:
+            - jira/notify
+          requires:
+            - build-ui-test
+
+      - vfcommon/install_and_build:
+          <<: *slack-fail-post-step
+          context: dev-test
+          avoid_post_install_scripts: false
+          attach_workspace: true
           name: build-realtime-test
           force_execute: << pipeline.parameters.build-backend >>
           package: realtime
@@ -353,6 +379,19 @@ workflows:
             - test-master
             - build-admin-test
 
+      # - vfcommon/update_track:
+      #     <<: *ignore_break_glass_deploy_filters
+      #     context: dev-test
+      #     name: update-track-showcase
+      #     force_execute: << pipeline.parameters.build-frontend >>
+      #     image_repo: << pipeline.parameters.container-image-url-showcase >>
+      #     component: << pipeline.parameters.track-component-showcase >>
+      #     build_context: packages/showcase
+      #     package: showcase
+      #     requires:
+      #       - test-master
+      #       - build-showcase-test
+
       - vfcommon/update_track:
           <<: *ignore_break_glass_deploy_filters
           context: dev-test
@@ -398,6 +437,7 @@ workflows:
             - test-master
             - build-app-test
             - build-admin-test
+            - build-showcase-test
             - build-realtime-test
             - build-ml-gateway-test
           filters:
@@ -415,6 +455,7 @@ workflows:
             - test-master
             - build-app-test
             - build-admin-test
+            - build-showcase-test
             - build-realtime-test
             - build-ml-gateway-test
             - vfcommon/monorepo_release
@@ -472,4 +513,15 @@ workflows:
                 job_type: deployment
           requires:
             - update-track-creator-app
+      # - vfcommon/post_image_push_actions:
+      #     <<: *prod_deploy_filters
+      #     context: dev-test
+      #     namespace: << pipeline.parameters.k8s-namespace >>
+      #     component: << pipeline.parameters.track-component-showcase >>
+      #     package: showcase
+      #     name: showcase-release-post-actions
+      #     tagged: true
+      #     success_slack_notify: false
+      #     requires:
+      #       - update-track-showcase
 

@@ -1,0 +1,10 @@
+{
+  "specials": [
+    "bin",
+    "istanbul"
+  ],
+  "ignores": [
+    "@voiceflow/dependency-cruiser-config",
+    "ts-node"
+  ]
+}

@@ -17,6 +17,6 @@ fi
 
 NODE_ENV=production
 
-yarn build:types
+yarn types
 vite build
 yarn build:copy-prototype

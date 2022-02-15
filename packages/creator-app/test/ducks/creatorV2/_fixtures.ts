@@ -45,7 +45,6 @@ export const NODE_DATA: Realtime.NodeData<unknown> = {
   nodeID: NODE_ID,
   name: 'name',
   type: Realtime.BlockType.DEPRECATED,
-  path: [],
 };
 
 export const PORT: Realtime.Port = {

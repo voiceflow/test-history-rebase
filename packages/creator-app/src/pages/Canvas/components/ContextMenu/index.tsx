@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/common';
+import { Eventual, Utils } from '@voiceflow/common';
 import { BoxFlex, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
@@ -19,7 +19,7 @@ import { ContextMenuOption, OptionProps } from './types';
 
 const NestedContextMenu: React.FC<any> = NestedMenu;
 
-type OptionHandler = (contextMenu: ContextMenuValue, props: OptionProps) => void;
+type OptionHandler = (contextMenu: ContextMenuValue, props: OptionProps) => Eventual<void>;
 
 const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   [CanvasAction.PASTE]: ({ position }, { engine }) => {
@@ -37,14 +37,15 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
   [CanvasAction.RENAME_BLOCK]: ({ target: nodeID }, { engine }) => engine.node.rename(nodeID!),
 
-  [CanvasAction.DELETE_BLOCK]: ({ target: nodeID }, { engine }) => {
+  [CanvasAction.DELETE_BLOCK]: async ({ target: nodeID }, { engine }) => {
     if (nodeID) {
-      if (engine.node.isSubtreeActive(nodeID!)) {
+      if (engine.node.isSubtreeActive(nodeID)) {
         engine.clearActivation();
       }
-      engine.node.remove(nodeID!);
+
+      await engine.node.remove(nodeID);
     } else {
-      engine.removeActive();
+      await engine.removeActive();
     }
   },
 

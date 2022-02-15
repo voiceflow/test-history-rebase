@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractNoopDiagramActionControl } from '@/actions/diagram/utils';
 
-class DragManyNodes extends AbstractNoopDiagramActionControl<Realtime.node.TranslateNodesPayload> {
+class DragManyNodes extends AbstractNoopDiagramActionControl<Realtime.node.TranslatePayload> {
   actionCreator = Realtime.node.dragMany;
 }
 

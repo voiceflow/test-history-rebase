@@ -1,5 +1,4 @@
 import { Nullable, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast, useCache, useContextApi, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -85,13 +84,12 @@ export const MarkupProvider: React.FC = ({ children }) => {
         const offsetX = 0 - x / zoom + (rect.width / zoom - imageSize.width) / 2;
         const offsetY = 0 - y / zoom + (rect.height / zoom - imageSize.height) / 2;
 
-        const nodeData: Realtime.Markup.NodeData.Image = { url: imageURL, width: imageSize.width, height: imageSize.height, rotate: 0 };
-
-        engine.node.add(
-          BlockType.MARKUP_IMAGE,
-          engine.canvas!.toCoords([offsetX, offsetY]),
-          nodeData as Realtime.NodeData<Realtime.Markup.NodeData.Image>
-        );
+        await engine.node.add(BlockType.MARKUP_IMAGE, engine.canvas!.toCoords([offsetX, offsetY]), {
+          url: imageURL,
+          width: imageSize.width,
+          height: imageSize.height,
+          rotate: 0,
+        });
       } catch {
         toast.error('There was an error');
       }

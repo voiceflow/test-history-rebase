@@ -6,13 +6,13 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeLink reducer', ({ expect, describeReducerV2 }) => {
-  describeReducerV2(Realtime.link.remove, ({ applyAction }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyLinks reducer', ({ expect, describeReducerV2 }) => {
+  describeReducerV2(Realtime.link.removeMany, ({ applyAction }) => {
     it('ignore removing link for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         diagramID: 'foo',
-        linkID: LINK_ID,
+        linkIDs: [LINK_ID],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -31,7 +31,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeLink reducer', ({ expec
           linkIDsByNodeID: { [NODE_ID]: [fooLink.id, LINK_ID, barLink.id] },
           linkIDsByPortID: { [PORT_ID]: [fooLink.id, LINK_ID, barLink.id] },
         },
-        { ...ACTION_CONTEXT, linkID: LINK_ID }
+        { ...ACTION_CONTEXT, linkIDs: [LINK_ID] }
       );
 
       expect(result.links).to.eql(normalize([fooLink, barLink]));
@@ -39,6 +39,29 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeLink reducer', ({ expec
       expect(result.portIDsByLinkID).to.eql({ [barLink.id]: [PORT_ID] });
       expect(result.linkIDsByNodeID).to.eql({ [NODE_ID]: [fooLink.id, barLink.id] });
       expect(result.linkIDsByPortID).to.eql({ [PORT_ID]: [fooLink.id, barLink.id] });
+    });
+
+    it('removes multiple links', () => {
+      const fooLink = { ...LINK, id: 'fooLink' };
+      const barLink = { ...LINK, id: 'barLink' };
+
+      const result = applyAction(
+        {
+          ...MOCK_STATE,
+          links: normalize([LINK, fooLink, barLink]),
+          nodeIDsByLinkID: { [LINK_ID]: [NODE_ID], [fooLink.id]: [NODE_ID] },
+          portIDsByLinkID: { [LINK_ID]: [PORT_ID], [barLink.id]: [PORT_ID], [fooLink.id]: [PORT_ID] },
+          linkIDsByNodeID: { [NODE_ID]: [fooLink.id, LINK_ID, barLink.id] },
+          linkIDsByPortID: { [PORT_ID]: [fooLink.id, LINK_ID, barLink.id] },
+        },
+        { ...ACTION_CONTEXT, linkIDs: [LINK_ID, fooLink.id] }
+      );
+
+      expect(result.links).to.eql(normalize([barLink]));
+      expect(result.nodeIDsByLinkID).to.eql({});
+      expect(result.portIDsByLinkID).to.eql({ [barLink.id]: [PORT_ID] });
+      expect(result.linkIDsByNodeID).to.eql({ [NODE_ID]: [barLink.id] });
+      expect(result.linkIDsByPortID).to.eql({ [PORT_ID]: [barLink.id] });
     });
   });
 });

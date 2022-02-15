@@ -19,7 +19,7 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
 
   const updatePaths = React.useCallback((paths: Realtime.NodeData.Trace['paths']) => onChange({ paths }), [onChange]);
   const onRemovePath = React.useCallback(
-    (_, index: number) => engine.port.removeOutDynamic(node.ports.out.dynamic[index]),
+    (_, index: number) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
     [engine.port, node.ports.out.dynamic]
   );
 
@@ -41,7 +41,7 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
     async (scrollToBottom) => {
       onAdd();
 
-      await engine.port.addOutDynamic(node.id, {});
+      await engine.port.addDynamic(node.id, {});
 
       scrollToBottom();
     },

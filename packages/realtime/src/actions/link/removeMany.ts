@@ -2,12 +2,12 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 
-class AddBuiltinPort extends AbstractDiagramActionControl<Realtime.node.AddBuiltinPortPayload> {
-  actionCreator = Realtime.node.addBuiltinPort;
+class RemoveManyLinks extends AbstractDiagramActionControl<Realtime.link.RemoveManyPayload> {
+  actionCreator = Realtime.link.removeMany;
 
   process = async (): Promise<void> => {
     // TODO: add process
   };
 }
 
-export default AddBuiltinPort;
+export default RemoveManyLinks;

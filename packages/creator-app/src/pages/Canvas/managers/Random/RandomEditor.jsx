@@ -11,7 +11,7 @@ function RandomEditor({ data, node, engine, onChange }) {
 
     onChange({ paths: nextPath }, false);
 
-    await engine.port.addOutDynamic(node.id, { label: nextPath });
+    await engine.port.addDynamic(node.id, { label: nextPath });
   };
 
   const removePath = async () => {
@@ -21,7 +21,7 @@ function RandomEditor({ data, node, engine, onChange }) {
 
     const lastPortID = node.ports.out.dynamic[node.ports.out.dynamic.length - 1];
 
-    await engine.port.removeOutDynamic(lastPortID);
+    await engine.port.removeDynamic(lastPortID);
   };
 
   const toggleDuplicates = React.useCallback(() => onChange({ noDuplicates: !data.noDuplicates }), [data.noDuplicates, onChange]);

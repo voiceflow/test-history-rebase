@@ -1,5 +1,6 @@
 import { LINK_KEY } from '@realtime-sdk/constants';
-import { BaseLinkPayload } from '@realtime-sdk/types';
+import { LinkData } from '@realtime-sdk/models';
+import { BaseDiagramPayload, BaseLinkPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 const linkType = Utils.protocol.typeFactory(LINK_KEY);
@@ -7,8 +8,21 @@ const linkType = Utils.protocol.typeFactory(LINK_KEY);
 export interface AddPayload extends BaseLinkPayload {
   sourcePortID: string;
   targetPortID: string;
+}
+
+export interface RemoveManyPayload extends BaseDiagramPayload {
+  linkIDs: string[];
+}
+
+export interface LinkPatch {
   linkID: string;
+  data: Partial<LinkData>;
+}
+
+export interface PatchManyPayload extends BaseDiagramPayload {
+  patches: LinkPatch[];
 }
 
 export const add = Utils.protocol.createAction<AddPayload>(linkType('ADD'));
-export const remove = Utils.protocol.createAction<BaseLinkPayload>(linkType('REMOVE'));
+export const removeMany = Utils.protocol.createAction<RemoveManyPayload>(linkType('REMOVE_MANY'));
+export const patchMany = Utils.protocol.createAction<PatchManyPayload>(linkType('PATCH_MANY'));

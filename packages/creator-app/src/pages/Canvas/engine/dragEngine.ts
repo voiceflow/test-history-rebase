@@ -14,46 +14,50 @@ class DragEngine extends EngineConsumer {
 
   group: Record<string, string> | null = null;
 
-  get hasTarget() {
+  get hasTarget(): boolean {
     return this.target !== null;
   }
 
-  get hasGroup() {
+  get hasGroup(): boolean {
     return this.group !== null;
   }
 
-  isSoleTarget(nodeID: string) {
+  isSoleTarget(nodeID: string): boolean {
     return this.target === nodeID;
   }
 
-  isInGroup(nodeID: string) {
+  isInGroup(nodeID: string): boolean {
     return !!this.group?.[nodeID];
   }
 
-  isTarget(nodeID: string) {
+  isTarget(nodeID: string): boolean {
     return this.isSoleTarget(nodeID) || this.isInGroup(nodeID);
   }
 
-  addStyle() {
+  addStyle(): void {
     this.engine.addClass(CANVAS_DRAGGING_CLASSNAME);
   }
 
-  removeStyle() {
+  removeStyle(): void {
     this.engine.removeClass(CANVAS_DRAGGING_CLASSNAME);
   }
 
-  setDraggingToCreate(val: boolean) {
+  setDraggingToCreate(val: boolean): void {
     this.isDraggingToCreate = val;
   }
 
-  async setGroup(nodeIDs: string[]) {
+  async setGroup(nodeIDs: string[]): Promise<void> {
     if (this.group) return;
 
     this.group = nodeIDs.reduce<Record<string, string>>((acc, nodeID) => Object.assign(acc, { [nodeID]: nodeID }), {});
 
     this.log.debug(this.log.pending('setting drag group'), nodeIDs);
     nodeIDs.forEach((nodeID) => this.engine.node.redraw(nodeID));
-    await this.engine.realtime.sendUpdate(Realtime.lockNodes(nodeIDs, DRAG_LOCKS));
+
+    if (!this.isAtomicActionsPhase2) {
+      await this.engine.realtime.sendUpdate(Realtime.lockNodes(nodeIDs, DRAG_LOCKS));
+    }
+
     this.addStyle();
 
     const focusedNode = this.engine.focus.getTarget();
@@ -64,7 +68,7 @@ class DragEngine extends EngineConsumer {
     this.log.info(this.log.success('set drag group'), this.log.value(nodeIDs.length));
   }
 
-  async setTarget(nodeID: string) {
+  async setTarget(nodeID: string): Promise<void> {
     if (nodeID === this.target) return;
 
     this.log.debug(this.log.pending('setting drag target'), this.log.slug(nodeID));
@@ -75,7 +79,11 @@ class DragEngine extends EngineConsumer {
     this.target = nodeID;
 
     this.engine.node.redraw(nodeID);
-    await this.engine.realtime.sendUpdate(Realtime.lockNodes([nodeID], DRAG_LOCKS));
+
+    if (!this.isAtomicActionsPhase2) {
+      await this.engine.realtime.sendUpdate(Realtime.lockNodes([nodeID], DRAG_LOCKS));
+    }
+
     this.addStyle();
     if (this.engine.focus.getTarget() !== nodeID) {
       this.engine.focus.reset();
@@ -84,7 +92,7 @@ class DragEngine extends EngineConsumer {
     this.log.info(this.log.success('set drag target'), this.log.slug(nodeID));
   }
 
-  async reset() {
+  async reset(): Promise<void> {
     this.isDraggingToCreate = false;
 
     if (this.hasTarget) {
@@ -95,8 +103,12 @@ class DragEngine extends EngineConsumer {
       this.engine.merge.reset();
 
       this.engine.node.redraw(target);
-      await this.engine.node.translate(target, [0, 0], false);
-      await this.engine.realtime.sendUpdate(Realtime.unlockNodes([target], DRAG_LOCKS));
+      await this.engine.node.translate([target], [0, 0], false);
+
+      if (!this.isAtomicActionsPhase2) {
+        await this.engine.realtime.sendUpdate(Realtime.unlockNodes([target], DRAG_LOCKS));
+      }
+
       this.removeStyle();
 
       this.log.info(this.log.reset('reset drag target'), this.log.slug(target));
@@ -108,8 +120,12 @@ class DragEngine extends EngineConsumer {
 
       this.log.debug(this.log.pending('resetting drag group'), group);
       group.forEach((nodeID) => this.engine.node.redraw(nodeID));
-      await this.engine.node.translateMany(group, [0, 0], false);
-      await this.engine.realtime.sendUpdate(Realtime.unlockNodes(group, DRAG_LOCKS));
+      await this.engine.node.translate(group, [0, 0], false);
+
+      if (!this.isAtomicActionsPhase2) {
+        await this.engine.realtime.sendUpdate(Realtime.unlockNodes(group, DRAG_LOCKS));
+      }
+
       this.removeStyle();
 
       this.log.info(this.log.reset('reset drag group'), this.log.diff(group.length, 0));

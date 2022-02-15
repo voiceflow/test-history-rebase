@@ -35,7 +35,7 @@ const useNoReplyOptionSection = ({
     const noReplyPortID = node?.ports.out.builtIn[BaseModels.PortType.NO_REPLY];
 
     if (data.noReply && noReplyPortID) {
-      await engine.port.removeOutBuiltIn(BaseModels.PortType.NO_REPLY, noReplyPortID);
+      await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
     }
 
     onChange({ noReply: data.noReply ? null : getPlatformNoReplyFactory(platform)({ defaultVoice }) });

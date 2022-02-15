@@ -9,13 +9,13 @@ import { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
 import { ExpressionData } from './Expression';
 import { IntentSlot } from './Intent';
+import type { Markup } from './Markup';
 import { SpeakData } from './Speak';
 
 export type NodeData<T> = T & {
   nodeID: string;
   name: string;
   type: BlockType;
-  path: unknown[];
   deprecatedType?: string;
 };
 
@@ -115,11 +115,6 @@ export namespace NodeData {
   export interface InteractionBuiltInPorts {
     [BaseModels.PortType.NO_MATCH]: string;
     [BaseModels.PortType.NO_REPLY]?: string;
-  }
-
-  export interface ChoiceOld {
-    choices: { synonyms: string[] }[];
-    noReply: Nullable<NoReply>;
   }
 
   export interface Prompt {
@@ -446,4 +441,58 @@ export namespace NodeData {
   export interface VisualBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
   }
+}
+
+export interface NodeDataMap {
+  [BlockType.START]: NodeData.Start;
+  [BlockType.COMBINED]: NodeData.Combined;
+  [BlockType.COMMAND]: NodeData.Command;
+  [BlockType.COMMENT]: never;
+
+  [BlockType.TEXT]: NodeData.Text;
+  [BlockType.SPEAK]: NodeData.Speak;
+  [BlockType.CHOICE_OLD]: never;
+
+  [BlockType.SET]: unknown;
+  [BlockType.SETV2]: NodeData.SetV2;
+  [BlockType.IF]: unknown;
+  [BlockType.IFV2]: NodeData.IfV2;
+  [BlockType.RANDOM]: NodeData.Random;
+
+  [BlockType.CHOICE]: NodeData.Interaction;
+  [BlockType.BUTTONS]: NodeData.Buttons;
+  [BlockType.CAPTURE]: NodeData.Capture;
+  [BlockType.CAPTUREV2]: NodeData.CaptureV2;
+  [BlockType.INTENT]: NodeData.Intent;
+  [BlockType.STREAM]: NodeData.Stream;
+  [BlockType.INTEGRATION]: NodeData.Integration;
+  [BlockType.FLOW]: NodeData.Flow;
+  [BlockType.COMPONENT]: NodeData.Component;
+  [BlockType.CODE]: NodeData.Code;
+  [BlockType.EXIT]: NodeData.Exit;
+  [BlockType.PROMPT]: NodeData.Prompt;
+  [BlockType.TRACE]: NodeData.Trace;
+
+  [BlockType.CARD]: NodeData.Card;
+  [BlockType.VISUAL]: NodeData.Visual;
+  [BlockType.DISPLAY]: unknown;
+
+  [BlockType.PERMISSION]: NodeData.Permission;
+  [BlockType.ACCOUNT_LINKING]: NodeData.AccountLinking;
+  [BlockType.USER_INFO]: NodeData.UserInfo;
+  [BlockType.PAYMENT]: NodeData.Payment;
+  [BlockType.CANCEL_PAYMENT]: NodeData.CancelPayment;
+  [BlockType.REMINDER]: NodeData.Reminder;
+  [BlockType.DEPRECATED]: NodeData.Deprecated;
+  [BlockType.INVALID_PLATFORM]: unknown;
+
+  // TODO
+  [BlockType.DEPRECATED_CUSTOM_PAYLOAD]: unknown;
+  [BlockType.PAYLOAD]: unknown;
+
+  [BlockType.DIRECTIVE]: NodeData.Directive;
+  [BlockType.EVENT]: NodeData.Event;
+
+  [BlockType.MARKUP_TEXT]: Markup.NodeData.Text;
+  [BlockType.MARKUP_IMAGE]: Markup.NodeData.Image;
 }

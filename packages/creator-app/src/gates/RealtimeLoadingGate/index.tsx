@@ -12,7 +12,7 @@ import { ConnectionWarning, DiagramHeartbeat, DiagramLifecycle, DisabledWarning,
 import { RealtimeSubscriptionProvider } from './contexts';
 
 const RealtimeLoadingGate: React.FC<ConnectedRealtimeLoadingGateProps> = ({
-  locks,
+  isLoaded,
   isWebsocketsEnabled,
   isConnected,
   isErrorState,
@@ -32,7 +32,7 @@ const RealtimeLoadingGate: React.FC<ConnectedRealtimeLoadingGateProps> = ({
 
   return (
     <RealtimeSubscriptionProvider>
-      <LoadingGate label="Collaboration" isLoaded={!!locks} load={setupConnection} unload={terminateConnection}>
+      <LoadingGate label="Collaboration" isLoaded={isLoaded} load={setupConnection} unload={terminateConnection}>
         <DiagramLifecycle />
         {/* eslint-disable-next-line no-nested-ternary */}
         {isConnected ? (
@@ -53,7 +53,7 @@ const RealtimeLoadingGate: React.FC<ConnectedRealtimeLoadingGateProps> = ({
 };
 
 const mapStateToProps = {
-  locks: Realtime.realtimeLocksSelector,
+  isLoaded: Realtime.isRealtimeLoadedSelector,
   isConnected: Realtime.isRealtimeConnectedSelector,
   isErrorState: Realtime.isErrorStateSelector,
   isWebsocketsEnabled: Session.isWebsocketsEnabledSelector,

@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { DiagramState } from '@/constants';
 import { createAction } from '@/ducks/utils';
-import { EntityMap } from '@/models';
 import { Action } from '@/store/types';
 import { Point } from '@/types';
 
@@ -26,14 +25,13 @@ export enum DiagramAction {
   REMOVE_OUT_BUILT_IN_PORT = 'CREATOR:PORT:REMOVE_OUT_BUILT_IN',
   REORDER_OUT_DYNAMIC_PORTS = 'CREATOR:PORT:REORDER_OUT_DYNAMIC',
   ADD_LINK = 'CREATOR:LINK:ADD',
-  REMOVE_LINK = 'CREATOR:LINK:REMOVE',
+  REMOVE_MANY_LINKS = 'CREATOR:LINK:REMOVE_MANY',
   UNDO_HISTORY = 'CREATOR:HISTORY:UNDO',
   REDO_HISTORY = 'CREATOR:HISTORY:REDO',
   SAVE_HISTORY = 'CREATOR:HISTORY:SAVE',
   SET_SECTION_STATE = 'CREATOR:SECTION_STATE:SET',
   SET_DIAGRAM_STATE = 'CREATOR:DIAGRAM_STATE:SET',
   UPDATE_HIDDEN = 'CREATOR:HIDDEN:UPDATE',
-  UPDATE_LINK_DATA = 'CREATOR:NODE:UPDATE_LINK_DATA',
   UPDATE_LINK_DATA_MANY = 'CREATOR:NODE:UPDATE_LINK_DATA_MANY',
   RESET_LOADED = 'CREATOR:IS_LOADED:RESET',
 }
@@ -47,8 +45,6 @@ export type UpdateNodeData = Action<
 
 export type UpdateNodeLocation = Action<DiagramAction.UPDATE_NODE_LOCATION, { nodeID: string; x: number; y: number }>;
 
-export type UpdateLinkData = Action<DiagramAction.UPDATE_LINK_DATA, { linkID: string; data: Partial<Realtime.LinkData> }>;
-
 export type UpdateLinkDataMany = Action<DiagramAction.UPDATE_LINK_DATA_MANY, { linkID: string; data: Partial<Realtime.LinkData> }[]>;
 
 export type UnmergeNode = Action<DiagramAction.UNMERGE_NODE, { nodeID: string; position: Point; parentNode: ParentNodeDescriptor }>;
@@ -57,7 +53,7 @@ export type InsertNestedNode = Action<DiagramAction.INSERT_NESTED_NODE, { parent
 
 export type AddNode = Action<DiagramAction.ADD_NODE, { node: NodeDescriptor; data: DataDescriptor }>;
 
-export type AddManyNodes = Action<DiagramAction.ADD_MANY_NODES, { entities: EntityMap; position: Point }>;
+export type AddManyNodes = Action<DiagramAction.ADD_MANY_NODES, { entities: Realtime.EntityMap }>;
 
 export type AddNestedNode = Action<
   DiagramAction.ADD_NESTED_NODE,
@@ -65,7 +61,6 @@ export type AddNestedNode = Action<
     node: NodeDescriptor;
     data: DataDescriptor;
     parentNodeID: string;
-    mergedNodeID: string;
   }
 >;
 
@@ -88,7 +83,7 @@ export type ReorderOutDynamicPorts = Action<DiagramAction.REORDER_OUT_DYNAMIC_PO
 
 export type AddLink = Action<DiagramAction.ADD_LINK, { sourcePortID: string; targetPortID: string; linkID: string }>;
 
-export type RemoveLink = Action<DiagramAction.REMOVE_LINK, string>;
+export type RemoveManyLinks = Action<DiagramAction.REMOVE_MANY_LINKS, string[]>;
 
 export type UndoHistory = Action<DiagramAction.UNDO_HISTORY>;
 
@@ -107,7 +102,6 @@ export type ResetLoaded = Action<DiagramAction.RESET_LOADED>;
 export type AnyDiagramAction =
   | UpdateNodeData
   | UpdateNodeLocation
-  | UpdateLinkData
   | UpdateLinkDataMany
   | UnmergeNode
   | InsertNestedNode
@@ -122,7 +116,7 @@ export type AnyDiagramAction =
   | RemoveOutBuiltInPort
   | ReorderOutDynamicPorts
   | AddLink
-  | RemoveLink
+  | RemoveManyLinks
   | UndoHistory
   | RedoHistory
   | SaveHistory
@@ -141,54 +135,91 @@ export const updateNodeData: {
 export const updateNodeLocation = (nodeID: string, [x, y]: Point): UpdateNodeLocation =>
   createAction(DiagramAction.UPDATE_NODE_LOCATION, { nodeID, x, y });
 
-export const updateLinkData = (linkID: string, data: Partial<Realtime.LinkData>): UpdateLinkData =>
-  createAction(DiagramAction.UPDATE_LINK_DATA, { linkID, data });
-
+/**
+ * @deprecated
+ */
 export const updateLinkDataMany = (payload: { linkID: string; data: Partial<Realtime.LinkData> }[]): UpdateLinkDataMany =>
   createAction(DiagramAction.UPDATE_LINK_DATA_MANY, payload);
 
+/**
+ * @deprecated
+ */
 export const unmergeNode = (nodeID: string, position: Point, parentNode: ParentNodeDescriptor): UnmergeNode =>
   createAction(DiagramAction.UNMERGE_NODE, { nodeID, position, parentNode });
 
+/**
+ * @deprecated
+ */
 export const insertNestedNode = (parentNodeID: string, index: number, nodeID: string): InsertNestedNode =>
   createAction(DiagramAction.INSERT_NESTED_NODE, { parentNodeID, nodeID, index });
 
+/**
+ * @deprecated
+ */
 export const addNode = (node: NodeDescriptor, data: DataDescriptor): AddNode => createAction(DiagramAction.ADD_NODE, { node, data });
 
-export const addManyNodes = (entities: EntityMap, position: Point): AddManyNodes =>
-  createAction(DiagramAction.ADD_MANY_NODES, { entities, position });
+export const addManyNodes = (entities: Realtime.EntityMap): AddManyNodes => createAction(DiagramAction.ADD_MANY_NODES, { entities });
 
-export const addNestedNode = (parentNodeID: string, node: NodeDescriptor, data: DataDescriptor, mergedNodeID: string): AddNestedNode =>
+/**
+ * @deprecated
+ */
+export const addNestedNode = (parentNodeID: string, node: NodeDescriptor, data: DataDescriptor): AddNestedNode =>
   createAction(DiagramAction.ADD_NESTED_NODE, {
     parentNodeID,
     node,
     data,
-    mergedNodeID,
   });
 
+/**
+ * @deprecated
+ */
 export const addWrappedNode = (node: NodeDescriptor, data: DataDescriptor, parentNode: ParentNodeDescriptor): AddWrappedNode =>
   createAction(DiagramAction.ADD_WRAPPED_NODE, { node, data, parentNode });
 
+/**
+ * @deprecated
+ */
 export const removeNodes = (nodeIDs: string[]): RemoveManyNodes => createAction(DiagramAction.REMOVE_MANY_NODES, nodeIDs);
 
+/**
+ * @deprecated
+ */
 export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): AddOutDynamicPort =>
   createAction(DiagramAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port });
 
+/**
+ * @deprecated
+ */
 export const addOutBuiltInPort = (nodeID: string, portType: BaseModels.PortType, port: Realtime.PartialModel<Realtime.Port>): AddOutBuiltInPort =>
   createAction(DiagramAction.ADD_OUT_BUILT_IN_PORT, { nodeID, port, portType });
 
+/**
+ * @deprecated
+ */
 export const removeOutBuiltInPort = (portType: BaseModels.PortType, portID: string): RemoveOutBuiltInPort =>
   createAction(DiagramAction.REMOVE_OUT_BUILT_IN_PORT, { portType, portID });
 
+/**
+ * @deprecated
+ */
 export const removeOutDynamicPort = (portID: string): RemoveOutDynamicPort => createAction(DiagramAction.REMOVE_OUT_DYNAMIC_PORT, portID);
 
+/**
+ * @deprecated
+ */
 export const reorderOutDynamicPort = (nodeID: string, from: number, to: number): ReorderOutDynamicPorts =>
   createAction(DiagramAction.REORDER_OUT_DYNAMIC_PORTS, { nodeID, from, to });
 
+/**
+ * @deprecated
+ */
 export const addLink = (sourcePortID: string, targetPortID: string, linkID: string): AddLink =>
   createAction(DiagramAction.ADD_LINK, { sourcePortID, targetPortID, linkID });
 
-export const removeLink = (linkID: string): RemoveLink => createAction(DiagramAction.REMOVE_LINK, linkID);
+/**
+ * @deprecated
+ */
+export const removeManyLinks = (linkIDs: string[]): RemoveManyLinks => createAction(DiagramAction.REMOVE_MANY_LINKS, linkIDs);
 
 export const undoHistory = (): UndoHistory => createAction(DiagramAction.UNDO_HISTORY);
 

@@ -25,9 +25,6 @@ import { getUniqSlots, getUtterances, validateUtterances } from './utils';
 
 const DEBOUNCE_TIMEOUT = 300;
 
-// TODO: remove what convert DropUpload to TS
-const PartialDropUpload = DropUpload as React.ComponentType<Partial<React.ComponentProps<typeof DropUpload>>>;
-
 const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, getIntentByID, intents }) => {
   const [state, stateApi] = useSmartReducerV2({
     errors: null as null | Map<number, string>,
@@ -176,7 +173,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, get
                 }
               />
             ) : (
-              <PartialDropUpload
+              <DropUpload
                 label="CSV"
                 isLoading={state.readingFile}
                 canUseLink={false}

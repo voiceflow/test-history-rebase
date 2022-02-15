@@ -4,7 +4,7 @@ import * as Normal from 'normal-store';
 
 import { createActiveDiagramReducer } from './utils';
 
-const reorderDynamicPortsReducer = createActiveDiagramReducer(Realtime.node.reorderDynamicPorts, (state, { nodeID, portID, index }) => {
+const reorderDynamicPortsReducer = createActiveDiagramReducer(Realtime.port.reorderDynamic, (state, { nodeID, portID, index }) => {
   if (!Normal.hasOne(state.ports, portID)) return;
 
   const ports = state.portsByNodeID[nodeID];

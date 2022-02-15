@@ -4,7 +4,7 @@ import React from 'react';
 import User from '@/components/User';
 import { FeatureFlag } from '@/config/features';
 import * as Realtime from '@/ducks/realtime';
-import { useFeature } from '@/hooks';
+import { withFeatureSwitcher } from '@/hocs';
 import { LockOwner } from '@/models';
 import { useEditLock, useResourceLock } from '@/pages/Canvas/hooks';
 
@@ -46,7 +46,12 @@ export interface LockedBlockOverlayProps {
   children?: (forceUpdateKey: number | null) => React.ReactNode;
 }
 
-export const LockedBlockOverlay: React.FC<LockedBlockOverlayProps> = ({ nodeID, disabled = false, children }) => {
+export const PassthroughBlockOverlay: React.FC<LockedBlockOverlayProps> = ({ children }) => <>{children?.(-1)}</>;
+
+export const LockedBlockOverlay = withFeatureSwitcher<LockedBlockOverlayProps>(
+  FeatureFlag.ATOMIC_ACTIONS_PHASE_2,
+  PassthroughBlockOverlay
+)(({ nodeID, disabled = false, children }) => {
   const { lockOwner, prevOwner, acquireLock, forceUpdateKey } = useEditLock(nodeID, disabled);
 
   return (
@@ -55,7 +60,7 @@ export const LockedBlockOverlay: React.FC<LockedBlockOverlayProps> = ({ nodeID, 
       <LockedEditorOverlay lockOwner={lockOwner} prevOwner={prevOwner} acquireLock={acquireLock} />
     </>
   );
-};
+});
 
 export interface LockedResourceOverlayProps {
   type: Realtime.ResourceType;
@@ -63,13 +68,15 @@ export interface LockedResourceOverlayProps {
   children?: (props: { forceUpdateKey: number | null; lockOwner: LockOwner | null; prevOwner: LockOwner | null }) => React.ReactNode;
 }
 
-export const LockedResourceOverlay: React.FC<LockedResourceOverlayProps> = ({ type, disabled = false, children }) => {
-  const { lockOwner, prevOwner, acquireLock, forceUpdateKey } = useResourceLock(type, disabled);
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
+export const PassthroughResourceOverlay: React.FC<LockedResourceOverlayProps> = ({ children }) => {
+  return <>{children?.({ lockOwner: null, prevOwner: null, forceUpdateKey: -1 })}</>;
+};
 
-  if (atomicActions.isEnabled) {
-    return <>{children?.({ lockOwner: null, prevOwner: null, forceUpdateKey })}</>;
-  }
+export const LockedResourceOverlay = withFeatureSwitcher<LockedResourceOverlayProps>(
+  FeatureFlag.ATOMIC_ACTIONS_PHASE_2,
+  PassthroughResourceOverlay
+)(({ type, disabled = false, children }) => {
+  const { lockOwner, prevOwner, acquireLock, forceUpdateKey } = useResourceLock(type, disabled);
 
   return (
     <>
@@ -77,4 +84,4 @@ export const LockedResourceOverlay: React.FC<LockedResourceOverlayProps> = ({ ty
       <LockedEditorOverlay lockOwner={lockOwner} prevOwner={prevOwner} acquireLock={acquireLock} />
     </>
   );
-};
+});

@@ -1,11 +1,13 @@
 import { LoguxControlOptions } from '@/control';
 
 import AddLinkControl from './add';
-import RemoveLinkControl from './remove';
+import PatchManyLinksControl from './patchMany';
+import RemoveManyLinksControl from './removeMany';
 
 const buildLinkActionControls = (options: LoguxControlOptions) => ({
   addLinkControl: new AddLinkControl(options),
-  removeLinkControl: new RemoveLinkControl(options),
+  patchManyLinksControl: new PatchManyLinksControl(options),
+  removeManyLinksControl: new RemoveManyLinksControl(options),
 });
 
 export default buildLinkActionControls;

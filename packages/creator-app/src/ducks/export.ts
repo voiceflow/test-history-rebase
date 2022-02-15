@@ -36,8 +36,7 @@ export const exportCanvas =
           return;
         }
 
-        // FIXME: remove any when the NoReply/NoMatch PR is merged, cause types are blocked by this PR
-        const jsonToExport = _orderBy(data as any[], ['diagramID', 'blockID']).map(
+        const jsonToExport = _orderBy(data, ['diagramID', 'blockID']).map(
           ({ blockID, blockName, diagramID, blockColor, diagramName, blockContent }) => ({
             'canvas id': diagramID,
             'canvas name': diagramName,

@@ -41,7 +41,6 @@ export const nodeFactory = <T extends string | null>(
 export const nodeDataFactory = (nodeID: string, data: WithRequired<Partial<Realtime.NodeData<unknown>>, 'type'>): Realtime.NodeData<unknown> => ({
   name: 'Block',
   ...data,
-  path: [],
   nodeID,
 });
 

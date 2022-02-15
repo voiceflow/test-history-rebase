@@ -20,7 +20,7 @@ const CommandsManager: React.FC<CommandsManagerProps> = ({ nodeID }) => {
   const engine = React.useContext(EngineContext);
 
   return (
-    <Content footer={() => <Controls options={[{ label: 'Add Command', onClick: () => engine?.node.addNested(nodeID, BlockType.COMMAND) }]} />}>
+    <Content footer={() => <Controls options={[{ label: 'Add Command', onClick: () => engine?.node.appendStep(nodeID, BlockType.COMMAND) }]} />}>
       {commands.length ? (
         commands.map(({ name, nodeID }, index) => (
           <EditorSection

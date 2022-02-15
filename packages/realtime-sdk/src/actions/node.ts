@@ -1,56 +1,29 @@
-import { BLOCK_KEY, NODE_KEY, PORT_KEY, STEP_KEY } from '@realtime-sdk/constants';
+import { BLOCK_KEY, NODE_KEY, STEP_KEY } from '@realtime-sdk/constants';
 import { BuiltInPortRecord, Markup, NodeDataDescriptor, NodePortSchema, PartialModel, Port, PortsDescriptor } from '@realtime-sdk/models';
 import { BaseBlockPayload, BaseDiagramPayload, BaseNodePayload, Point } from '@realtime-sdk/types';
-import { BaseModels } from '@voiceflow/base-types';
-import { Nullish, Utils } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import { Utils } from '@voiceflow/common';
 
 const nodeType = Utils.protocol.typeFactory(NODE_KEY);
 const nodeMarkupType = Utils.protocol.typeFactory(nodeType('markup'));
 const nodeBlockType = Utils.protocol.typeFactory(nodeType(BLOCK_KEY));
 const nodeStepType = Utils.protocol.typeFactory(nodeType(STEP_KEY));
-const nodePortType = Utils.protocol.typeFactory(nodeType(PORT_KEY));
 
 export interface UpdateDataPayload extends BaseNodePayload {
   data: unknown;
 }
 
-export interface RemoveManyNodesPayload extends BaseDiagramPayload {
+export interface RemoveManyPayload extends BaseDiagramPayload {
   nodeIDs: string[];
 }
 
-export interface TranslateNodesPayload extends BaseDiagramPayload {
+export interface TranslatePayload extends BaseDiagramPayload {
   blocks: { [blockID: string]: Point };
 }
 
-export const dragMany = Utils.protocol.createAction<TranslateNodesPayload>(nodeBlockType('DRAG_MANY'));
-export const moveMany = Utils.protocol.createAction<TranslateNodesPayload>(nodeType('MOVE_MANY'));
+export const dragMany = Utils.protocol.createAction<TranslatePayload>(nodeType('DRAG_MANY'));
+export const moveMany = Utils.protocol.createAction<TranslatePayload>(nodeType('MOVE_MANY'));
 export const updateData = Utils.protocol.createAction<UpdateDataPayload>(nodeType('UPDATE_DATA'));
-export const removeMany = Utils.protocol.createAction<RemoveManyNodesPayload>(nodeType('REMOVE_MANY'));
-
-// ports
-
-export interface PortPayload extends BaseNodePayload {
-  portID: string;
-}
-
-export interface AddDynamicPortPayload extends PortPayload {
-  label: Nullish<string>;
-}
-
-export interface ReorderDynamicPortsPayload extends PortPayload {
-  index: number;
-}
-
-export interface AddBuiltinPortPayload extends PortPayload {
-  type: BaseModels.PortType;
-  platform: Nullish<VoiceflowConstants.PlatformType>;
-}
-
-export const addDynamicPort = Utils.protocol.createAction<AddDynamicPortPayload>(nodePortType('ADD_DYNAMIC'));
-export const addBuiltinPort = Utils.protocol.createAction<AddBuiltinPortPayload>(nodePortType('ADD_BUILTIN'));
-export const reorderDynamicPorts = Utils.protocol.createAction<ReorderDynamicPortsPayload>(nodePortType('REORDER_DYNAMIC'));
-export const removePort = Utils.protocol.createAction<PortPayload>(nodePortType('REMOVE'));
+export const removeMany = Utils.protocol.createAction<RemoveManyPayload>(nodeType('REMOVE_MANY'));
 
 // markup
 
@@ -71,19 +44,31 @@ export interface AddBlockPayload<T = unknown, O extends PortRecord = PortRecord>
   stepPorts: NodePortSchema<PartialModel<Port>, O>;
 }
 
-export interface AddNodePayload<T = unknown, O extends PortRecord = PortRecord> extends BaseBlockPayload {
-  stepID: string;
-  data: NodeDataDescriptor<T>;
-  ports: NodePortSchema<PartialModel<Port>, O>;
-}
-
 export const addBlock = Utils.protocol.createAction<AddBlockPayload>(nodeBlockType('ADD'));
 
 // steps
 
 type PortRecord = BuiltInPortRecord<PartialModel<Port>>;
 
-export interface InsertStepPayload<T = unknown, O extends PortRecord = PortRecord> extends AddNodePayload<T, O> {
+export interface AppendStepPayload<T = unknown, O extends PortRecord = PortRecord> extends BaseBlockPayload {
+  stepID: string;
+  data: NodeDataDescriptor<T>;
+  ports: NodePortSchema<PartialModel<Port>, O>;
+}
+
+export interface InsertStepPayload<T = unknown, O extends PortRecord = PortRecord> extends AppendStepPayload<T, O> {
+  index: number;
+}
+
+export interface ReorderStepsPayload extends BaseBlockPayload {
+  stepID: string;
+  index: number;
+}
+
+export interface TransplantStepsPayload extends BaseDiagramPayload {
+  sourceBlockID: string;
+  targetBlockID: string;
+  stepIDs: string[];
   index: number;
 }
 
@@ -93,6 +78,8 @@ export interface IsolateStepPayload extends BaseBlockPayload {
   stepID: string;
 }
 
-export const appendStep = Utils.protocol.createAction<AddNodePayload>(nodeStepType('APPEND'));
+export const appendStep = Utils.protocol.createAction<AppendStepPayload>(nodeStepType('APPEND'));
 export const insertStep = Utils.protocol.createAction<InsertStepPayload>(nodeStepType('INSERT'));
+export const reorderSteps = Utils.protocol.createAction<ReorderStepsPayload>(nodeStepType('REORDER'));
+export const transplantSteps = Utils.protocol.createAction<TransplantStepsPayload>(nodeStepType('TRANSPLANT'));
 export const isolateStep = Utils.protocol.createAction<IsolateStepPayload>(nodeStepType('ISOLATE'));

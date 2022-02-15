@@ -225,12 +225,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
     });
 
-    describe('realtimeLocksSelector()', () => {
-      it('should return realtime locks', () => {
-        expect(select(Realtime.realtimeLocksSelector)).to.eq(LOCKS);
-      });
-    });
-
     describe('isRealtimeConnectedSelector()', () => {
       it('should return whether realtime is connected', () => {
         expect(select(Realtime.isRealtimeConnectedSelector)).to.be.true;
@@ -240,16 +234,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     describe('isErrorStateSelector()', () => {
       it('should return whether realtime is in an error state', () => {
         expect(select(Realtime.isErrorStateSelector)).to.be.true;
-      });
-    });
-
-    describe('isNodeLockedSelector()', () => {
-      it('should return node is locked', () => {
-        expect(select(Realtime.isNodeLockedSelector)(Realtime.LockType.EDIT, 'jkl')).to.be.true;
-      });
-
-      it('should return node is not locked', () => {
-        expect(select(Realtime.isNodeLockedSelector)('delete' as any, 'def')).to.be.false;
       });
     });
 
@@ -268,18 +252,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     describe('deletionLockedNodesSelector()', () => {
       it('should return a lookup of all nodes which cannot be deleted', () => {
         expect(select(Realtime.deletionLockedNodesSelector)).to.eql({ def: 'ghi', jkl: 'mno' });
-      });
-    });
-
-    describe('lockOwnerTabIDSelector()', () => {
-      it('should return whether node is edit locked', () => {
-        expect(select(Realtime.lockOwnerTabIDSelector)(Realtime.LockType.EDIT, 'jkl')).to.eq('mno');
-      });
-    });
-
-    describe('resourceLockOwnerTabIDSelector()', () => {
-      it('should return whether node is edit locked', () => {
-        expect(select(Realtime.resourceLockOwnerTabIDSelector)(Realtime.ResourceType.SETTINGS)).to.eq('mno');
       });
     });
 

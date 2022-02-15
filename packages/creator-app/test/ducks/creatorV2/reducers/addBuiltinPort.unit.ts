@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -10,7 +10,7 @@ import suite from '../../_suite';
 import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinPort reducer', ({ expect, describeReducerV2 }) => {
-  describeReducerV2(Realtime.node.addBuiltinPort, ({ applyAction }) => {
+  describeReducerV2(Realtime.port.addBuiltin, ({ applyAction }) => {
     it('ignore adding a built-in port for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,

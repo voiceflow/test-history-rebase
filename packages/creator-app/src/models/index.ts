@@ -1,5 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-
 export * from './Account';
 export * from './APIKey';
 export * from './Billing';
@@ -17,14 +15,3 @@ export * from './Thread';
 export * from './Transcript';
 export * from './UploadProject';
 export * from './VariableState';
-
-export interface NodeWithData {
-  node: Realtime.Node;
-  data: Realtime.NodeData<unknown>;
-}
-
-export interface EntityMap {
-  nodesWithData: NodeWithData[];
-  ports: Realtime.Port[];
-  links: Realtime.Link[];
-}

@@ -79,12 +79,12 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
   }
 
   async start(sourcePortID: string, mouseOrigin: [number, number]) {
-    const linkIDs: string[] = this.engine.getLinkIDsByPortID(sourcePortID);
+    const linkIDs = this.engine.getLinkIDsByPortID(sourcePortID);
 
     this.log.debug(this.log.pending('starting to draw from port'), this.log.slug(sourcePortID));
 
     if (linkIDs.length) {
-      await Promise.all(linkIDs.map((linkID) => this.engine.link.remove(linkID)));
+      await this.engine.link.removeMany(linkIDs);
     }
 
     this.engine.addClass(CANVAS_CREATING_LINK_CLASSNAME);

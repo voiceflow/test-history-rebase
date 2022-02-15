@@ -202,7 +202,7 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
       document.addEventListener('mousemove', onBreakpointMove);
       document.addEventListener(
         'mouseup',
-        () => {
+        async () => {
           document.removeEventListener('mousemove', onBreakpointMove);
 
           cache.current.mouseDown = false;
@@ -222,7 +222,7 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
 
             points.current = nextPoints;
 
-            engine.link.updateLinkData(linkEntity.linkID, { points: nextPoints });
+            await engine.link.patch(linkEntity.linkID, { points: nextPoints });
           }
         },
         { once: true }
@@ -255,19 +255,19 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
   const onRemove = React.useCallback(() => engine.link.remove(linkEntity.linkID), []);
 
   const onChangeType = React.useCallback(async (type: BaseModels.Project.LinkType) => {
-    await engine.link.updateLinkData(linkEntity.linkID, { type, points: null });
+    await engine.link.patch(linkEntity.linkID, { type, points: null });
 
     engine.link.redraw(linkEntity.linkID);
   }, []);
 
   const onChangeCaption = React.useCallback(async (caption: Realtime.LinkDataCaption | null) => {
-    await engine.link.updateLinkData(linkEntity.linkID, { caption });
+    await engine.link.patch(linkEntity.linkID, { caption });
 
     engine.link.redraw(linkEntity.linkID);
   }, []);
 
   const onChangeColor = React.useCallback(async (color: string) => {
-    await engine.link.updateLinkData(linkEntity.linkID, { color });
+    await engine.link.patch(linkEntity.linkID, { color });
 
     engine.link.redraw(linkEntity.linkID);
   }, []);

@@ -189,13 +189,22 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   getDataByNodeID = <T>(nodeID: string) => this.select(CreatorV2.nodeDataByIDSelector, { id: nodeID }) as Realtime.NodeData<T> | null;
 
+  /**
+   * @deprecated
+   */
   isNodeMovementLocked = (nodeID: string) => this.select(RealtimeDuck.isNodeMovementLockedSelector)(nodeID);
 
-  isNodeFocused = () => this.select(Creator.hasFocusedNode);
+  /**
+   * @deprecated
+   */
+  isNodeEditLocked = (nodeID: string) => this.select(RealtimeDuck.isNodeEditLockedSelector)(nodeID);
 
+  /**
+   * @deprecated
+   */
   getLockOwner = (nodeID: string) => this.select(RealtimeDuck.editLockOwnerSelector)(nodeID);
 
-  getDeleteLockedNodes = () => this.select(RealtimeDuck.deletionLockedNodesSelector);
+  isNodeFocused = () => this.select(Creator.hasFocusedNode);
 
   getLinkByID = (linkID: string) => this.select(CreatorV2.linkByIDSelector, { id: linkID });
 
@@ -243,7 +252,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   };
 
   // entity registration methods
-  registerCanvas(canvas: CanvasAPI | null) {
+  registerCanvas(canvas: CanvasAPI | null): void {
     this.canvas = canvas;
 
     if (canvas) {
@@ -265,69 +274,69 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     this.nodes.set(id, { x, y, api, type });
   }
 
-  expireNode(nodeID: string, instanceID: string) {
+  expireNode(nodeID: string, instanceID: string): void {
     expireInstance(this.nodes, nodeID, instanceID);
   }
 
-  registerPort(portID: string, api: PortEntity) {
+  registerPort(portID: string, api: PortEntity): void {
     this.ports.set(portID, { api });
 
     this.addSupportedLinks(portID);
   }
 
-  expirePort(portID: string, instanceID: string) {
+  expirePort(portID: string, instanceID: string): void {
     expireInstance(this.ports, portID, instanceID);
   }
 
-  registerLink(linkID: string, api: LinkEntity) {
+  registerLink(linkID: string, api: LinkEntity): void {
     this.links.set(linkID, { api });
   }
 
-  expireLink(linkID: string, instanceID: string) {
+  expireLink(linkID: string, instanceID: string): void {
     expireInstance(this.links, linkID, instanceID);
   }
 
-  registerThread(threadID: string, api: ThreadEntity) {
+  registerThread(threadID: string, api: ThreadEntity): void {
     this.threads.set(threadID, { api });
   }
 
-  expireThread(threadID: string, instanceID: string) {
+  expireThread(threadID: string, instanceID: string): void {
     expireInstance(this.threads, threadID, instanceID);
   }
 
-  registerPortLinkInstance(linkID: string, api: PortLinkInstance) {
+  registerPortLinkInstance(linkID: string, api: PortLinkInstance): void {
     this.portLinkInstances.set(linkID, { api });
   }
 
-  expirePortLinkInstance(linkID: string) {
+  expirePortLinkInstance(linkID: string): void {
     this.portLinkInstances.delete(linkID);
   }
 
   // canvas orchestration methods
 
-  disableAllModes() {
+  disableAllModes(): Promise<void> {
     return this.store.dispatch(Router.goToCurrentCanvas());
   }
 
-  get isCanvasBusy() {
+  get isCanvasBusy(): boolean {
     return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget || this.drag.hasGroup;
   }
 
-  addClass(className: string) {
+  addClass(className: string): void {
     this.components.container?.addClass(className);
     this.log.debug(this.log.init('added class'), this.log.value(className));
   }
 
-  removeClass(className: string) {
+  removeClass(className: string): void {
     this.components.container?.removeClass(className);
     this.log.debug(this.log.reset('removed class'), this.log.value(className));
   }
 
-  showCanvas() {
+  showCanvas(): void {
     this.store.dispatch(Creator.showCanvas());
   }
 
-  hideCanvas() {
+  hideCanvas(): void {
     this.store.dispatch(Creator.hideCanvas());
   }
 
@@ -354,27 +363,27 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     this.comment.generateCandidates();
   }
 
-  panViewport(movement: Pair<number>) {
+  panViewport(movement: Pair<number>): void {
     this.emitter.emit(CanvasAction.PAN, movement);
     this.realtime.panViewport(movement);
   }
 
-  zoomViewport(calculateMovement: MovementCalculator) {
+  zoomViewport(calculateMovement: MovementCalculator): void {
     this.emitter.emit(CanvasAction.ZOOM, calculateMovement);
     this.realtime.zoomViewport(calculateMovement);
   }
 
-  saveActiveLocations() {
+  saveActiveLocations(): void {
     if (this.selection.hasTargets) {
       this.selection.getTargets().forEach((nodeID) => this.node.saveLocation(nodeID));
     }
 
     if (this.drag.hasTarget) {
-      this.node.saveLocation(this.drag.target!);
+      this.node.saveLocation(this.drag.target);
     }
   }
 
-  setActive(nodeID: string, isSelection?: boolean) {
+  setActive(nodeID: string, isSelection?: boolean): void {
     if (isSelection) {
       this.selection.toggle(nodeID);
     } else {
@@ -385,7 +394,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   /**
    * clear activation state of all nodes
    */
-  clearActivation() {
+  clearActivation(): void {
     this.saveActiveLocations();
 
     this.focus.reset();
@@ -492,7 +501,12 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     this.log.info(this.log.success(`centered on the ${nodeID} node`));
   }
 
+  /**
+   * @deprecated
+   */
   saveHistory(): void {
+    if (this.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS_PHASE_2)) return;
+
     this.store.dispatch(Creator.saveHistory());
     this.log.debug(this.log.success('history saved'));
   }
@@ -537,9 +551,12 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
     const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = await this.store.dispatch(Diagram.convertToComponent(clipboardData));
 
+    // TODO: would be good if we could have the removal of these targets
+    // and link creation as part of the component creation operation
+    // probably by creating its own explicit action on the realtime service
     await this.node.removeMany(targets);
 
-    const componentNodeID = await this.node.add(BlockType.COMPONENT, coords, { name, diagramID } as Realtime.NodeData<any>);
+    const componentNodeID = await this.node.add(BlockType.COMPONENT, coords, { name, diagramID });
 
     const componentNode = this.getNodeByID(componentNodeID);
 

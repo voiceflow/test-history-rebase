@@ -8,8 +8,8 @@ import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT, PORT_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removePort reducer', ({ expect, describeReducerV2 }) => {
-  describeReducerV2(Realtime.node.removePort, ({ applyAction }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', ({ expect, describeReducerV2 }) => {
+  describeReducerV2(Realtime.port.removeBuiltin, ({ applyAction }) => {
     const fooLink = { ...LINK, id: 'fooLink' };
     const barLink = { ...LINK, id: 'barLink' };
     const fooPort = { ...PORT, id: 'fooPort' };
@@ -48,32 +48,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removePort reducer', ({ expec
       });
       expect(result.nodeIDByPortID).to.eql({ [fooPort.id]: NODE_ID });
       expect(result.linkIDsByPortID).to.eql({ [fooPort.id]: ['fooLink'] });
-    });
-
-    it('remove a dynamic port', () => {
-      const result = applyAction(
-        {
-          ...MOCK_STATE,
-          portsByNodeID: {
-            [NODE_ID]: {
-              in: [fooPort.id],
-              out: {
-                dynamic: [barPort.id, PORT_ID],
-                builtIn: {},
-              },
-            },
-          },
-        },
-        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID }
-      );
-
-      expect(result.portsByNodeID[NODE_ID]).to.eql({
-        in: [fooPort.id],
-        out: {
-          dynamic: [barPort.id],
-          builtIn: {},
-        },
-      });
     });
 
     it('remove a built-in port', () => {

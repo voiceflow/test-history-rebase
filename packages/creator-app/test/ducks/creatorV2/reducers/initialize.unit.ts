@@ -26,7 +26,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ expec
     it('update the active diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        nodes: [],
+        nodesWithData: [],
         ports: [],
         links: [],
       });
@@ -39,7 +39,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ expec
 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        nodes: [[node, data]],
+        nodesWithData: [{ node, data }],
         ports: [],
         links: [],
       });
@@ -55,9 +55,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ expec
 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        nodes: [
-          [{ ...blockNode, combinedNodes: [stepNode.id] }, blockData],
-          [{ ...stepNode, parentNode: blockNode.id }, stepData],
+        nodesWithData: [
+          { node: { ...blockNode, combinedNodes: [stepNode.id] }, data: blockData },
+          { node: { ...stepNode, parentNode: blockNode.id }, data: stepData },
         ],
         ports: [],
         links: [],
@@ -77,7 +77,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ expec
 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        nodes: [],
+        nodesWithData: [],
         ports: [port],
         links: [],
       });
@@ -98,9 +98,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ expec
 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        nodes: [
-          [node1, data1],
-          [node2, data2],
+        nodesWithData: [
+          { node: node1, data: data1 },
+          { node: node2, data: data2 },
         ],
         ports: [port1, port2],
         links: [link],

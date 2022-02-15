@@ -266,7 +266,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
         textWidth.current = maxWidth;
         rotation.current = rotate;
 
-        engine.node.translate(nodeEntity.nodeID, [shiftX / zoom, shiftY / zoom]);
+        engine.node.translate([nodeEntity.nodeID], [shiftX / zoom, shiftY / zoom]);
 
         window.requestAnimationFrame(() => {
           if (!isTextNode) {
@@ -314,7 +314,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
         scale.current = [data.scale, data.scale];
         rotation.current = data.rotate;
 
-        engine.node.translate(nodeEntity.nodeID, [shiftX / zoom + scaleShiftX, shiftY / zoom]);
+        engine.node.translate([nodeEntity.nodeID], [shiftX / zoom + scaleShiftX, shiftY / zoom]);
 
         window.requestAnimationFrame(() => {
           // need to reset the min-width if this is the first time the container is being resized to clear the default

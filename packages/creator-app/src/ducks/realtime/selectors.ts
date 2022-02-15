@@ -1,7 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 import { getAlternativeColor } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { createRootSelector } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -11,15 +13,20 @@ import { AnyNodeLock } from './types';
 
 const rootSelector = createRootSelector(STATE_KEY);
 
+/**
+ * @deprecated
+ */
 export const realtimeDiagramIDSelector = createSelector([rootSelector], ({ diagramID }) => diagramID);
 
-export const realtimeLocksSelector = createSelector([rootSelector], ({ locks }) => locks);
+const realtimeLocksSelector = createSelector([rootSelector], ({ locks }) => locks);
+
+export const isRealtimeLoadedSelector = createSelector([realtimeLocksSelector], Boolean);
 
 export const isRealtimeConnectedSelector = createSelector([rootSelector], ({ connected }) => connected);
 
 export const isErrorStateSelector = createSelector([rootSelector], ({ errorState }) => errorState);
 
-export const isNodeLockedSelector = createSelector(
+const isNodeLockedSelector = createSelector(
   [realtimeLocksSelector],
   (locks) => (lockType: AnyNodeLock, nodeID: string) => !!locks?.blocks[lockType]?.[nodeID]
 );
@@ -32,16 +39,26 @@ export const isTabRegisteredSelector = createSelector(
       .some((id) => id === tabID)
 );
 
-export const isNodeMovementLockedSelector = createSelector(
+const _isNodeMovementLockedSelector = createSelector(
   [isNodeLockedSelector],
   (isNodeLocked) => (nodeID: string) => isNodeLocked(LockType.MOVEMENT, nodeID)
 );
 
-export const isNodeEditLockedSelector = createSelector(
-  [isNodeLockedSelector],
-  (isNodeLocked) => (nodeID: string) => isNodeLocked(LockType.EDIT, nodeID)
-);
+/**
+ * @deprecated
+ */
+export const isNodeMovementLockedSelector = Feature.createAtomicActionsPhase2Selector([_isNodeMovementLockedSelector, () => () => false]);
 
+const _isNodeEditLockedSelector = createSelector([isNodeLockedSelector], (isNodeLocked) => (nodeID: string) => isNodeLocked(LockType.EDIT, nodeID));
+
+/**
+ * @deprecated
+ */
+export const isNodeEditLockedSelector = Feature.createAtomicActionsPhase2Selector([_isNodeEditLockedSelector, () => () => false]);
+
+/**
+ * @deprecated
+ */
 export const deletionLockedNodesSelector = createSelector(
   [realtimeLocksSelector],
   (locks): Record<string, string> => ({
@@ -50,12 +67,12 @@ export const deletionLockedNodesSelector = createSelector(
   })
 );
 
-export const lockOwnerTabIDSelector = createSelector(
+const lockOwnerTabIDSelector = createSelector(
   [realtimeLocksSelector],
   (locks) => (lockType: AnyNodeLock, nodeID: string) => locks?.blocks[lockType]?.[nodeID]
 );
 
-export const resourceLockOwnerTabIDSelector = createSelector(
+const resourceLockOwnerTabIDSelector = createSelector(
   [realtimeLocksSelector],
   (locks) => (resourceType: ResourceType) => locks?.resources[resourceType]
 );
@@ -64,10 +81,7 @@ export const isSessionBusy = createSelector([rootSelector], ({ sessionBusy }) =>
 
 export const isRestrictedSelector = createSelector([rootSelector], ({ restricted }) => restricted);
 
-/**
- * get the tabID by the creatorID
- */
-export const creatorMappingSelector = createSelector(
+const creatorMappingSelector = createSelector(
   [realtimeLocksSelector, lockOwnerTabIDSelector],
   (locks, getTabID) =>
     (lockType: AnyNodeLock, nodeID: string, diagramID: string): [string, string?] => {
@@ -77,10 +91,7 @@ export const creatorMappingSelector = createSelector(
     }
 );
 
-/**
- * get the team member who has the node locked
- */
-export const lockOwnerSelector = createSelector(
+const lockOwnerSelector = createSelector(
   [CreatorV2.activeDiagramIDSelector, creatorMappingSelector, WorkspaceV2.active.getDistinctWorkspaceMemberByCreatorIDSelector],
   (diagramID, getCreatorMapping, getWorkspaceMember) => (lockType: AnyNodeLock, nodeID: string) => {
     if (!diagramID) return null;
@@ -90,15 +101,15 @@ export const lockOwnerSelector = createSelector(
   }
 );
 
-/**
- * get the team member who has the node edit locked
- */
-export const editLockOwnerSelector = createSelector([lockOwnerSelector], (getLockOwner) => (nodeID: string) => getLockOwner(LockType.EDIT, nodeID));
+const _editLockOwnerSelector = createSelector([lockOwnerSelector], (getLockOwner) => (nodeID: string) => getLockOwner(LockType.EDIT, nodeID));
 
 /**
- * get the team member who has the resource locked
+ * get the team member who has the node edit locked
+ * @deprecated
  */
-export const resourceLockOwnerSelector = createSelector(
+export const editLockOwnerSelector = Feature.createAtomicActionsPhase2Selector([_editLockOwnerSelector, () => () => null]);
+
+export const _resourceLockOwnerSelector = createSelector(
   [realtimeLocksSelector, resourceLockOwnerTabIDSelector, WorkspaceV2.active.getDistinctWorkspaceMemberByCreatorIDSelector],
   (locks, getTabID, getWorkspaceMember) => (resourceType: ResourceType) => {
     const tabID = getTabID(resourceType)!;
@@ -117,10 +128,21 @@ export const resourceLockOwnerSelector = createSelector(
   }
 );
 
-export const isResourceLockedSelector = createSelector(
+/**
+ * get the team member who has the resource locked
+ * @deprecated
+ */
+export const resourceLockOwnerSelector = Feature.createAtomicActionsPhase2Selector([_resourceLockOwnerSelector, () => () => null]);
+
+const _isResourceLockedSelector = createSelector(
   [resourceLockOwnerTabIDSelector],
   (getLockOwnerTabID) => (resourceType: ResourceType) => !!getLockOwnerTabID(resourceType)
 );
+
+/**
+ * @deprecated
+ */
+export const isResourceLockedSelector = Feature.createAtomicActionsPhase2Selector([_isResourceLockedSelector, () => () => false]);
 
 export const diagramViewersLookupSelector = createSelector(
   [realtimeLocksSelector, WorkspaceV2.active.getMemberByIDSelector],
@@ -142,11 +164,7 @@ export const diagramViewersLookupSelector = createSelector(
   }
 );
 
-/**
- * gets a count of users for the active project
- * @deprecated
- */
-export const projectViewerCountSelector = createSelector([realtimeLocksSelector, WorkspaceV2.active.workspaceSelector], (locks, team) => {
+const projectViewerCountSelector = createSelector([realtimeLocksSelector, WorkspaceV2.active.workspaceSelector], (locks, team) => {
   if (!locks || !team) {
     return 1;
   }
@@ -158,9 +176,6 @@ export const projectViewerCountSelector = createSelector([realtimeLocksSelector,
   }, new Set()).size;
 });
 
-/**
- * @deprecated
- */
 export const isOnlyViewerSelector = createSelector([projectViewerCountSelector], (projectViewerCount) => projectViewerCount === 1);
 
 /**

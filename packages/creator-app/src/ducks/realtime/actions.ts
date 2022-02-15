@@ -82,15 +82,27 @@ export const resetRealtime = (): ResetRealtime => createAction(RealtimeAction.RE
 export const updateActiveDiagramViewers = (users: RealtimeLocks['users']): UpdateDiagramViewers =>
   createAction(RealtimeAction.UPDATE_DIAGRAM_VIEWERS, users);
 
+/**
+ * @deprecated
+ */
 export const addNodeLocks = (types: AnyNodeLock[], targets: string[], tabID: string): AddNodeLocks =>
   createAction(RealtimeAction.ADD_NODE_LOCKS, { types, targets, tabID });
 
+/**
+ * @deprecated
+ */
 export const removeNodeLocks = (types: AnyNodeLock[], targets: string[]): RemoveNodeLocks =>
   createAction(RealtimeAction.REMOVE_NODE_LOCKS, { types, targets });
 
+/**
+ * @deprecated
+ */
 export const addResourceLock = (resourceID: ResourceType, tabID: string): AddResourceLock =>
   createAction(RealtimeAction.ADD_RESOURCE_LOCK, { resourceID, tabID });
 
+/**
+ * @deprecated
+ */
 export const removeResourceLock = (resourceID: ResourceType): RemoveResourceLock => createAction(RealtimeAction.REMOVE_RESOURCE_LOCK, resourceID);
 
 export const connectRealtime = (): UpdateRealtimeConnection => createAction(RealtimeAction.UPDATE_REALTIME_CONNECTION, true);

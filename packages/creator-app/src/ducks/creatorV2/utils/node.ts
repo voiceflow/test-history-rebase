@@ -5,7 +5,7 @@ import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
 import { CreatorState } from '../types';
-import { addBuiltinPort, addDynamicPort, addPort, createEmptyNodePorts } from './port';
+import { addBuiltinPort, addDynamicPort, addPort, createEmptyNodePorts, flattenAllPorts, removePort } from './port';
 
 export const addNode = (state: Draft<CreatorState>, { nodeID, data }: { nodeID: string; data: Realtime.NodeDataDescriptor<unknown> }): void => {
   state.nodes = Normal.appendOne(state.nodes, nodeID, { ...data, nodeID });
@@ -69,6 +69,54 @@ export const removeStepReferences = (state: Draft<CreatorState>, { blockID, step
   state.stepIDsByBlockID[blockID] = Utils.array.withoutValue(stepIDs, stepID);
 };
 
+export const removeManyNodes = (state: Draft<CreatorState>, nodeIDs: string[]): void => {
+  const nodesToRemove = new Set<string>(nodeIDs);
+  const portsToRemove: string[] = [];
+
+  const registerPorts = (nodeID: string) => {
+    const portIDs = flattenAllPorts(state.portsByNodeID[nodeID]);
+
+    portsToRemove.push(...portIDs);
+  };
+
+  nodeIDs.forEach((nodeID) => {
+    const stepIDs = state.stepIDsByBlockID[nodeID] ?? [];
+
+    stepIDs.forEach((stepID) => {
+      nodesToRemove.add(stepID);
+      registerPorts(stepID);
+    });
+
+    registerPorts(nodeID);
+  });
+
+  const removeNodeReferences = (nodeID: string) => {
+    const blockID = state.blockIDByStepID[nodeID] ?? null;
+
+    if (blockID && !nodesToRemove.has(blockID)) {
+      removeStepReferences(state, { blockID, stepID: nodeID });
+    }
+
+    delete state.originByNodeID[nodeID];
+    delete state.stepIDsByBlockID[nodeID];
+    delete state.blockIDByStepID[nodeID];
+    delete state.portsByNodeID[nodeID];
+    delete state.linkIDsByNodeID[nodeID];
+  };
+
+  portsToRemove.forEach((portID) => {
+    // removePort will also cleanup any relevant links
+    removePort(state, portID);
+  });
+  nodesToRemove.forEach(removeNodeReferences);
+
+  const nodesToRemoveArr = Array.from(nodesToRemove);
+
+  state.markupIDs = Utils.array.withoutValues(state.markupIDs, nodesToRemoveArr);
+  state.blockIDs = Utils.array.withoutValues(state.blockIDs, nodesToRemoveArr);
+  state.nodes = Normal.removeMany(state.nodes, nodesToRemoveArr);
+};
+
 export const addStep = (
   state: Draft<CreatorState>,
   updateSteps: (stepIDs: string[]) => string[],
@@ -79,4 +127,16 @@ export const addStep = (
 
   addStepReferences(state, updateSteps, { blockID, stepID });
   addNodeWithPorts(state, { nodeID: stepID, data, ports });
+};
+
+export const orphanStep = (state: Draft<CreatorState>, adoptOrphan: () => void, { blockID, stepID }: { blockID: string; stepID: string }): void => {
+  if (!Normal.hasMany(state.nodes, [blockID, stepID])) return;
+
+  removeStepReferences(state, { blockID, stepID });
+  adoptOrphan();
+
+  const stepIDs = state.stepIDsByBlockID[blockID] ?? [];
+  if (!stepIDs.length) {
+    removeManyNodes(state, [blockID]);
+  }
 };

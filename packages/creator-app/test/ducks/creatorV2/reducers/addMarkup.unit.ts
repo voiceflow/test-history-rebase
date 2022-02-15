@@ -13,7 +13,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addMarkup reducer', ({ expect
     const data = {
       type: Realtime.BlockType.MARKUP_IMAGE,
       name: 'node name',
-      path: [],
       url: 'http://example.com/image.png',
       width: 50,
       height: 150,
@@ -51,7 +50,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addMarkup reducer', ({ expect
         data,
       });
 
-      expect(result.nodes).to.containSubset(normalize([{ ...data, nodeID: markupID, path: [] }], (node) => node.nodeID));
+      expect(result.nodes).to.containSubset(normalize([{ ...data, nodeID: markupID }], (node) => node.nodeID));
       expect(result.markupIDs).to.eql([markupID]);
       expect(result.originByNodeID).to.eql({ [markupID]: origin });
     });

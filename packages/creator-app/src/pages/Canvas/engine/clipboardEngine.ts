@@ -21,7 +21,6 @@ import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { NodeWithData } from '@/models';
 import * as Clipboard from '@/utils/clipboard';
 import { synchronous as synchronousCrypto } from '@/utils/crypto';
 import { Coords } from '@/utils/geometry';
@@ -165,9 +164,7 @@ class ClipboardEngine extends EngineConsumer {
       (node) => node.type !== BlockType.START && node.type !== BlockType.COMMAND
     );
     const soloNodes = allNodes.filter((node) => !node.parentNode);
-    const nestedNodes = soloNodes.flatMap(({ combinedNodes }) =>
-      combinedNodes.length ? CreatorV2.nodesByIDsSelector(state, { ids: combinedNodes }) : []
-    );
+    const nestedNodes = soloNodes.flatMap(({ combinedNodes }) => CreatorV2.nodesByIDsSelector(state, { ids: combinedNodes }));
     const orphanedNodes: Realtime.Node[] = [];
 
     const extraLinks: Realtime.Link[] = [];
@@ -238,7 +235,7 @@ class ClipboardEngine extends EngineConsumer {
     copyData: ClipboardContext,
     coords: Coords
   ): Promise<{
-    nodesWithData: NodeWithData[];
+    nodesWithData: Realtime.NodeWithData[];
     ports: Realtime.Port[];
     links: Realtime.Link[];
   }> {

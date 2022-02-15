@@ -408,7 +408,6 @@ export const buildNewNode = (node: NodeDescriptor, data: DataDescriptor): [Realt
     nodeID: node.id,
     type: node.type,
     blockColor: BlockVariant.STANDARD,
-    path: [],
   };
   const newNode = nodeFactory(node.id, {
     ...node,

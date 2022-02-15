@@ -119,16 +119,16 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
     toast.info(projectVersionsV2Message, { toastId: 'canvas-container-save-hotkey-info' });
   }, []);
 
-  const onDuplicate = React.useCallback(() => {
+  const onDuplicate = React.useCallback(async () => {
     const targets = engine.activation.getTargets();
 
     if (targets.length === 1) {
       const nodeID = targets[0];
 
       engine.node.api(nodeID)?.instance?.blur?.();
-      engine.node.duplicate(nodeID);
+      await engine.node.duplicate(nodeID);
     } else if (targets.length > 1) {
-      engine.node.duplicateMany(targets);
+      await engine.node.duplicateMany(targets);
     }
   }, [isEditingMode]);
 

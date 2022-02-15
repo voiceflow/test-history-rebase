@@ -31,9 +31,9 @@ const NoMatchPathName: React.FC<NodeEditorPropsType<Realtime.NodeData.IfV2>> = (
 
   const [localNoMatch, setLocalNoMatch] = useLinkedState(data.noMatch);
 
-  const handleChangeType = (newType: BaseNode.IfV2.IfNoMatchType) => {
+  const handleChangeType = async (newType: BaseNode.IfV2.IfNoMatchType) => {
     if (noMatchLinkID && newType === BaseNode.IfV2.IfNoMatchType.NONE) {
-      engine.link.remove(noMatchLinkID);
+      await engine.link.remove(noMatchLinkID);
     }
 
     setLocalNoMatch({ ...localNoMatch, type: newType });

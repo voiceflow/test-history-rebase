@@ -35,7 +35,7 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.
   );
 
   const onRemoveChoice = React.useCallback(
-    (_: any, index: number) => engine.port.removeOutDynamic(node.ports.out.dynamic[index]),
+    (_: any, index: number) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
     [engine, node.ports.out.dynamic]
   );
 
@@ -49,7 +49,7 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.
     async (scrollToBottom: VoidFunction) => {
       onAdd();
 
-      await engine.port.addOutDynamic(node.id);
+      await engine.port.addDynamic(node.id);
 
       scrollToBottom();
     },
@@ -57,10 +57,10 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.
   );
 
   const reorderChoice = React.useCallback(
-    (from: number, to: number) => {
+    async (from: number, to: number) => {
       onReorder(from, to);
 
-      engine.port.reorderOutDynamic(node.id, from, to);
+      await engine.port.reorderDynamic(node.id, from, to);
     },
     [onReorder, engine, node]
   );

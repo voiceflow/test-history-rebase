@@ -39,10 +39,10 @@ const NoMatchEditor: React.FC<NoMatchEditorProps> = ({ onChange, noMatch, pushTo
 
   const noMatchLinkID = useSelector(Creator.focusedNoMatchLinkIDSelector);
 
-  const onChangeType = (types: BaseNode.Utils.NoMatchType[]) => {
+  const onChangeType = async (types: BaseNode.Utils.NoMatchType[]) => {
     if (noMatchLinkID && noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH) && !types.includes(BaseNode.Utils.NoMatchType.PATH)) {
       // When we switch to reprompt, clean up any links to avoid null reference bugs.
-      engine.link.remove(noMatchLinkID);
+      await engine.link.remove(noMatchLinkID);
     }
 
     onChange({ ...noMatch, types });

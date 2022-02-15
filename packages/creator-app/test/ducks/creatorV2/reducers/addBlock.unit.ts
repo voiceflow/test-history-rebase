@@ -1,5 +1,5 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import { BlockVariant } from '@/constants/canvas';
@@ -7,14 +7,14 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID } from '../_fixtures';
+import { ACTION_CONTEXT, MOCK_STATE, NODE_ID } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect, describeReducerV2 }) => {
   describeReducerV2(Realtime.node.addBlock, ({ applyAction }) => {
     const blockID = 'blockNode';
     const stepID = 'stepNode';
     const blockOrigin: Realtime.Point = [100, 200];
-    const stepData = { type: Realtime.BlockType.BUTTONS, name: 'node name', path: [] };
+    const stepData = { type: Realtime.BlockType.BUTTONS, name: 'node name' };
 
     it('ignore adding a block for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
@@ -32,41 +32,29 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
     });
 
     it('ignore adding block with duplicate ID', () => {
-      const result = applyAction(
-        {
-          ...MOCK_STATE,
-          nodes: normalize([NODE_DATA], (node) => node.nodeID),
-        },
-        {
-          ...ACTION_CONTEXT,
-          blockID: NODE_ID,
-          stepID,
-          blockOrigin,
-          blockPorts: createEmptyNodePorts(),
-          stepPorts: createEmptyNodePorts(),
-          stepData,
-        }
-      );
+      const result = applyAction(MOCK_STATE, {
+        ...ACTION_CONTEXT,
+        blockID: NODE_ID,
+        stepID,
+        blockOrigin,
+        blockPorts: createEmptyNodePorts(),
+        stepPorts: createEmptyNodePorts(),
+        stepData,
+      });
 
       expect(result).to.eql(MOCK_STATE);
     });
 
     it('ignore adding step with duplicate ID', () => {
-      const result = applyAction(
-        {
-          ...MOCK_STATE,
-          nodes: normalize([NODE_DATA], (node) => node.nodeID),
-        },
-        {
-          ...ACTION_CONTEXT,
-          blockID,
-          stepID: NODE_ID,
-          blockOrigin,
-          blockPorts: createEmptyNodePorts(),
-          stepPorts: createEmptyNodePorts(),
-          stepData,
-        }
-      );
+      const result = applyAction(MOCK_STATE, {
+        ...ACTION_CONTEXT,
+        blockID,
+        stepID: NODE_ID,
+        blockOrigin,
+        blockPorts: createEmptyNodePorts(),
+        stepPorts: createEmptyNodePorts(),
+        stepData,
+      });
 
       expect(result).to.eql(MOCK_STATE);
     });
@@ -85,7 +73,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
       expect(result.nodes).to.containSubset(
         normalize(
           [
-            { type: Realtime.BlockType.COMBINED, blockColor: BlockVariant.STANDARD, nodeID: blockID, name: 'Block', path: [] },
+            { type: Realtime.BlockType.COMBINED, blockColor: BlockVariant.STANDARD, nodeID: blockID, name: 'Block' },
             { ...stepData, nodeID: stepID },
           ],
           (node) => node.nodeID

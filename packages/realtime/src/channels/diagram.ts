@@ -45,7 +45,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     ctx.data.subscribed = true;
 
     return Realtime.creator.initialize({
-      nodes: nodes.map((node) => [node, data[node.id]]),
+      nodesWithData: nodes.map((node) => ({ node, data: data[node.id] })),
       ports,
       links,
       diagramID: ctx.params.diagramID,

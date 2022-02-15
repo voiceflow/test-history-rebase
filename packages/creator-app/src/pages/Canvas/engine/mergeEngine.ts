@@ -118,7 +118,7 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
     const sourceNodeID = this.sourceNodeID!;
 
     this.log.debug(this.log.pending('unmerging node'), this.log.slug(sourceNodeID));
-    await this.engine.node.unmerge(sourceNodeID, mousePosition);
+    await this.engine.node.isolateStep(sourceNodeID, mousePosition);
 
     this.reset();
 

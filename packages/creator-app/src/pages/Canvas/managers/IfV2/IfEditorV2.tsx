@@ -22,7 +22,7 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltIn
 
   const updateExpressions = React.useCallback((expressions, save) => onChange({ expressions }, save), [onChange]);
   const onRemoveExpression = React.useCallback(
-    (_, index) => engine.port.removeOutDynamic(node.ports.out.dynamic[index]),
+    (_, index) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
     [engine, node.ports.out.dynamic]
   );
 
@@ -34,10 +34,10 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltIn
   });
 
   const reorderExpressions = React.useCallback(
-    (from: number, to: number) => {
+    async (from: number, to: number) => {
       onReorder(from, to);
 
-      engine.port.reorderOutDynamic(node.id, from, to);
+      await engine.port.reorderDynamic(node.id, from, to);
     },
     [onReorder, engine, node.id]
   );
@@ -46,7 +46,7 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltIn
     async (scrollToBottom: (behavior?: ScrollBehavior) => void) => {
       onAdd();
 
-      await engine.port.addOutDynamic(node.id);
+      await engine.port.addDynamic(node.id);
 
       scrollToBottom();
     },
@@ -57,7 +57,7 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltIn
     async (_, item) => {
       onDuplicate(item.index, item);
 
-      await engine.port.addOutDynamic(node.id);
+      await engine.port.addDynamic(node.id);
     },
     [onDuplicate, node.id]
   );

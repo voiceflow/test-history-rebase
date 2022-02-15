@@ -314,7 +314,7 @@ export const convertToComponent =
 
       const startNode = Object.values(diagram.nodes).find((node) => node.type === BaseNode.NodeType.START);
       const connectedNode = Object.values(diagram.nodes).find((node) => node.nodeID === incomingLink.target.nodeID);
-      const startNodeNextPort: BaseModels.BasePort =
+      const startNodeNextPort =
         (startNode?.data.ports as BaseModels.BasePort[])?.find((port) => port.type === BaseModels.PortType.NEXT) ?? startNode?.data.ports?.[0];
 
       if (startNode && connectedNode && startNodeNextPort) {

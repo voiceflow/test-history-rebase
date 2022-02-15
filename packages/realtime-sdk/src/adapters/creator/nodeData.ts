@@ -34,10 +34,9 @@ const nodeDataAdapter = createSimpleAdapter<
       ...data,
       type: data.deprecatedType ? BlockType.DEPRECATED : type,
       nodeID,
-      path: [],
     };
   },
-  ({ type, path, deprecatedType, nodeID, ...appData }, { platform, context }) => {
+  ({ type, deprecatedType, nodeID, ...appData }, { platform, context }) => {
     const getNodeType = DB_BLOCK_TYPE_FROM_APP[type];
     const dbType = typeof getNodeType === 'function' ? getNodeType(appData, { context }) : getNodeType || deprecatedType || type;
 

@@ -48,9 +48,9 @@ const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.Strea
     const hasPausePort = hasPause && !!pausePortID;
 
     if (hasPausePort) {
-      await engine.port.removeOutBuiltIn(BaseModels.PortType.PAUSE, pausePortID);
+      await engine.port.removeBuiltin(BaseModels.PortType.PAUSE, pausePortID);
     } else {
-      await engine.port.addOutBuiltIn(node.id, BaseModels.PortType.PAUSE, { platform: VoiceflowConstants.PlatformType.ALEXA });
+      await engine.port.addBuiltin(node.id, BaseModels.PortType.PAUSE, { platform: VoiceflowConstants.PlatformType.ALEXA });
     }
 
     onChange({ customPause: !hasPausePort });

@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullish } from '@voiceflow/common';
+import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Draft } from 'immer';
@@ -8,6 +8,7 @@ import * as Normal from 'normal-store';
 import { portFactory } from '@/ducks/creator/diagram/factories';
 
 import { CreatorState } from '../types';
+import { removeLink } from './link';
 
 export const createEmptyNodePorts = <T = string>(): Realtime.NodePortSchema<T> => ({ in: [], out: { builtIn: {}, dynamic: [] } });
 
@@ -84,3 +85,57 @@ export const flattenOutPorts = <T>(ports: Nullish<Realtime.NodePortSchema<T>>): 
 };
 
 export const flattenAllPorts = <T>(ports: Nullish<Realtime.NodePortSchema<T>>): T[] => [...flattenInPorts(ports), ...flattenOutPorts(ports)];
+
+export type RemovePortFromNode = (port: Draft<Realtime.NodePorts>, portID: string) => void;
+
+export const createPortRemover =
+  (removePortFromNode: RemovePortFromNode) =>
+  (state: Draft<CreatorState>, nodeID: string, portID: string): void => {
+    const ports = state.portsByNodeID[nodeID];
+    const linkIDs = state.linkIDsByPortID[portID] ?? [];
+
+    linkIDs.forEach((linkID) => {
+      removeLink(state, linkID);
+    });
+
+    if (ports) {
+      removePortFromNode(ports, portID);
+    }
+
+    delete state.nodeIDByPortID[portID];
+    delete state.linkIDsByPortID[portID];
+
+    state.ports = Normal.removeOne(state.ports, portID);
+  };
+
+const deleteByValue = <T>(obj: Draft<Record<string, T>>, value: T) =>
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] === value) {
+      delete obj[key];
+    }
+  });
+
+const removeDynamicPortFromNode: RemovePortFromNode = (ports, portID) => {
+  ports.out.dynamic = Utils.array.withoutValue(ports.out.dynamic, portID);
+};
+
+const removeBuiltinPortFromNode: RemovePortFromNode = (ports, portID) => {
+  deleteByValue(ports.out.builtIn, portID);
+};
+
+export const removeDynamicPort = createPortRemover(removeDynamicPortFromNode);
+
+export const removeBuiltinPort = createPortRemover(removeBuiltinPortFromNode);
+
+export const removeAnyPort = createPortRemover((ports, portID) => {
+  removeDynamicPortFromNode(ports, portID);
+  removeBuiltinPortFromNode(ports, portID);
+});
+
+export const removePort = (state: Draft<CreatorState>, portID: string): void => {
+  const nodeID = state.nodeIDByPortID[portID] ?? null;
+
+  if (nodeID) {
+    removeAnyPort(state, nodeID, portID);
+  }
+};

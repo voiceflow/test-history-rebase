@@ -5,10 +5,10 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractResendDiagramActionControl } from '@/actions/diagram/utils';
 
-class RemoveManyNodes extends AbstractResendDiagramActionControl<Realtime.node.RemoveManyNodesPayload> {
+class RemoveManyNodes extends AbstractResendDiagramActionControl<Realtime.node.RemoveManyPayload> {
   actionCreator = Realtime.node.removeMany;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.node.RemoveManyNodesPayload>): Promise<void> => {
+  process = async (ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {
     if (!payload.nodeIDs.length) return;
 
     const { creatorID } = ctx.data;

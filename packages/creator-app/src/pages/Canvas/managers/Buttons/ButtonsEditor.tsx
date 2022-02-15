@@ -38,8 +38,8 @@ const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons, Realtime.NodeData.But
         </>
       }
       factory={factory}
-      onRemove={(_, index) => engine.port.removeOutDynamic(node.ports.out.dynamic[index])}
-      onReorder={(from, to) => engine.port.reorderOutDynamic(node.id, from, to)}
+      onRemove={(_, index) => engine.port.removeDynamic(node.ports.out.dynamic[index])}
+      onReorder={(from, to) => engine.port.reorderDynamic(node.id, from, to)}
       renderMenu={() => <OverflowMenu placement="top-end" options={[noReplyOption, buttonLayoutOption]} />}
       onChangeItems={(items) => onChange({ buttons: items })}
       itemComponent={ButtonsListItem}
@@ -49,7 +49,7 @@ const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons, Realtime.NodeData.But
         {
           label: 'Add Button',
           icon: NODE_CONFIG.icon,
-          onClick: Utils.functional.chainVoid(onAdd, () => engine.port.addOutDynamic(nodeID), scrollToBottom),
+          onClick: Utils.functional.chainVoid(onAdd, () => engine.port.addDynamic(nodeID), scrollToBottom),
           disabled: isMaxMatches,
         },
       ]}

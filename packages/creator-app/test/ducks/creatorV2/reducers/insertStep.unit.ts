@@ -12,7 +12,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
   describeReducerV2(Realtime.node.insertStep, ({ applyAction }) => {
     const blockNode = { ...NODE_DATA, nodeID: 'blockNode' };
     const stepID = 'stepNode';
-    const stepData = { type: Realtime.BlockType.BUTTONS, name: 'node name', path: [] };
+    const stepData = { type: Realtime.BlockType.BUTTONS, name: 'node name' };
 
     it('ignore inserting steps for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
@@ -29,20 +29,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
     });
 
     it('ignore inserting step with duplicate ID', () => {
-      const result = applyAction(
-        {
-          ...MOCK_STATE,
-          nodes: normalize([NODE_DATA], (node) => node.nodeID),
-        },
-        {
-          ...ACTION_CONTEXT,
-          blockID: blockNode.nodeID,
-          stepID: NODE_ID,
-          ports: createEmptyNodePorts(),
-          data: stepData,
-          index: 1,
-        }
-      );
+      const result = applyAction(MOCK_STATE, {
+        ...ACTION_CONTEXT,
+        blockID: blockNode.nodeID,
+        stepID: NODE_ID,
+        ports: createEmptyNodePorts(),
+        data: stepData,
+        index: 1,
+      });
 
       expect(result).to.eql(MOCK_STATE);
     });

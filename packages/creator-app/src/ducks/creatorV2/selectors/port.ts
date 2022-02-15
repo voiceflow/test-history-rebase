@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 
 import * as CreatorV1Selectors from '@/ducks/creator/diagram/selectors';
 import * as Feature from '@/ducks/feature';
+import { createCurriedSelector } from '@/ducks/utils';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 
 import { createEmptyNodePorts } from '../utils';
@@ -16,6 +17,8 @@ export const portByIDSelector = Feature.createAtomicActionsPhase2Selector(
   [CreatorV1Selectors.portByIDSelector, _portByIDSelector, idParamSelector],
   (getPortV1, portV2, portID) => [portID ? getPortV1(portID) : null, portV2]
 );
+
+export const getPortByIDSelector = createCurriedSelector(portByIDSelector);
 
 const _allPortsByIDsSelector = createSelector([creatorStateSelector, idsParamSelector], ({ ports }, portIDs) => Normal.getMany(ports, portIDs));
 export const allPortsByIDsSelector = Feature.createAtomicActionsPhase2Selector(

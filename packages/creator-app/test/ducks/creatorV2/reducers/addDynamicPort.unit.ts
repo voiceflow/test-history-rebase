@@ -8,7 +8,7 @@ import suite from '../../_suite';
 import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addDynamicPort reducer', ({ expect, describeReducerV2 }) => {
-  describeReducerV2(Realtime.node.addDynamicPort, ({ applyAction }) => {
+  describeReducerV2(Realtime.port.addDynamic, ({ applyAction }) => {
     it('ignore adding a dynamic port for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,

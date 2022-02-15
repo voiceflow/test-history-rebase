@@ -74,7 +74,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateStep reducer', ({ expe
       expect(result.blockIDs).to.eql([NODE_ID, blockID]);
       expect(result.nodes).to.containSubset(
         normalize(
-          [NODE_DATA, stepNode, { type: Realtime.BlockType.COMBINED, blockColor: BlockVariant.STANDARD, nodeID: blockID, name: 'Block', path: [] }],
+          [NODE_DATA, stepNode, { type: Realtime.BlockType.COMBINED, blockColor: BlockVariant.STANDARD, nodeID: blockID, name: 'Block' }],
           (node) => node.nodeID
         )
       );

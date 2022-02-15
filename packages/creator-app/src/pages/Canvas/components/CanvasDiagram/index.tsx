@@ -1,4 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop, XYCoord } from 'react-dnd';
@@ -12,7 +11,7 @@ import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, PageProgressBar } from '@/
 import { canvasNavigationSelector } from '@/ducks/ui';
 import * as Viewport from '@/ducks/viewport';
 import { connect } from '@/hocs';
-import { useSetup, useTrackingEvents } from '@/hooks';
+import { useSetup } from '@/hooks';
 import AutoPanLayer from '@/pages/Canvas/components/AutoPanLayer';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
@@ -62,7 +61,6 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const contextMenu = React.useContext(ContextMenuContext)!;
   const isEditingMode = useEditingMode();
   const isCommentingMode = useCommentingMode();
-  const [trackingEvents] = useTrackingEvents();
   const { panViewport, zoomViewport, updateViewport } = useCursorControls();
 
   const onMouseUp = React.useCallback((event: MouseEvent) => {
@@ -119,20 +117,14 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
       if (monitor.didDrop() && monitor.getDropResult()?.captured) return;
 
       const { x: mouseX, y: mouseY } = monitor.getClientOffset() || item.clientOffset;
+      const coords = new Coords([mouseX, mouseY]);
 
       if ('blockType' in item) {
         perf.action(PerfAction.STEP_DROP_CREATE);
-        await engine.node.add(item.blockType, new Coords([mouseX, mouseY]), item.factoryData);
-        trackingEvents.trackNewStepCreated({
-          stepType: item.blockType,
-        });
-      }
-
-      if (item.type === DragItem.COMPONENTS && 'searchMatchValue' in item) {
-        await engine.node.add(BlockType.COMPONENT, new Coords([mouseX, mouseY]), {
-          name: item.item.name,
-          diagramID: item.item.id,
-        } as Realtime.NodeData<any>);
+        await engine.node.add(item.blockType, coords, item.factoryData);
+      } else if (item.type === DragItem.COMPONENTS && 'searchMatchValue' in item) {
+        perf.action(PerfAction.STEP_DROP_CREATE);
+        await engine.node.add(BlockType.COMPONENT, coords, { name: item.item.name, diagramID: item.item.id });
       }
     },
     hover: _throttle(

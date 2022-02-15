@@ -6,10 +6,10 @@ import { Logger } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { CanvasAPI } from '@/components/Canvas';
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { FeatureFlagMap } from '@/ducks/feature';
-import { EntityMap, NodeWithData } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptorOptionalPorts } from '@/pages/Canvas/managers/types';
 import { Dispatcher, DispatchResult, Selector } from '@/store/types';
@@ -58,6 +58,10 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
 
   get dispatch() {
     return this.engine.store.dispatch;
+  }
+
+  get isAtomicActionsPhase2(): boolean {
+    return !!this.engine.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
   }
 
   bind<T extends Dispatcher<any[]>>(dispatcher: T) {
@@ -138,7 +142,7 @@ export const cloneLink =
 
 export const cloneNodeWithData =
   ({ getNodeID, getPortID }: CloneUtils) =>
-  ({ node, data }: NodeWithData): NodeWithData => {
+  ({ node, data }: Realtime.NodeWithData): Realtime.NodeWithData => {
     const originNode = node;
     const originNodeData: Realtime.NodeData<unknown> = data;
 
@@ -202,25 +206,25 @@ export const createCloneContext = ({ nodeIDLookup = {}, portIDLookup = {} }: Clo
   };
 };
 
-export const mergeEntityMaps = (lhs: EntityMap, rhs: EntityMap) => ({
+export const mergeEntityMaps = (lhs: Realtime.EntityMap, rhs: Realtime.EntityMap) => ({
   nodesWithData: [...lhs.nodesWithData, ...rhs.nodesWithData],
   ports: [...lhs.ports, ...rhs.ports],
   links: [...lhs.links, ...rhs.links],
 });
 
 export const cloneEntityMap = (
-  { nodesWithData, ports, links }: EntityMap,
+  { nodesWithData, ports, links }: Realtime.EntityMap,
   options?: CloneContextOptions
 ): {
   ports: Realtime.Port[];
   links: Realtime.Link[];
-  nodesWithData: NodeWithData[];
+  nodesWithData: Realtime.NodeWithData[];
 } => {
   const context = createCloneContext(options);
 
   const clonedPorts = ports.map(clonePort(context));
 
-  const clonedNodesWithData: NodeWithData[] = [];
+  const clonedNodesWithData: Realtime.NodeWithData[] = [];
 
   nodesWithData.forEach((node) => {
     const clonedNodeData = cloneNodeWithData(context)(node);

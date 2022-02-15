@@ -1,6 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { NodeWithData } from '@/models';
 import { Point } from '@/types';
 
 import { isMarkupOrCombinedBlockType } from './typeGuards';
@@ -20,7 +19,7 @@ export const {
 } = Realtime.Utils.node;
 
 export const getNodesGroupCenter = (
-  nodes: NodeWithData[],
+  nodes: Realtime.NodeWithData[],
   links: Realtime.Link[]
 ): { center: Point; minX: number; maxX: number; minY: number; maxY: number } => {
   const combinedAndMarkupNodes = nodes.filter(({ node }) => isMarkupOrCombinedBlockType(node.type));
@@ -38,4 +37,36 @@ export const getNodesGroupCenter = (
   const [centerX, centerY] = [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
 
   return { center: [centerX, centerY], minX, maxX, minY, maxY };
+};
+
+export const centerNodeGroup = (entities: Realtime.EntityMap, [originX, originY]: Realtime.Point): Realtime.EntityMap => {
+  const combinedAndMarkupNodes = entities.nodesWithData.filter(({ node }) => isMarkupOrCombinedBlockType(node.type));
+
+  const {
+    center: [centerX, centerY],
+  } = getNodesGroupCenter(combinedAndMarkupNodes, entities.links);
+
+  const adjustPathPoint = (point: Realtime.PathPoint): Realtime.PathPoint => ({
+    ...point,
+    point: [originX + (point.point[0] - centerX), originY + (point.point[1] - centerY)],
+  });
+
+  const links = entities.links.map((link) =>
+    link.data?.points ? { ...link, data: { ...link.data, points: link.data.points.map(adjustPathPoint) } } : link
+  );
+
+  const ports = entities.ports.map((port) =>
+    port.linkData?.points ? { ...port, linkData: { ...port.linkData, points: port.linkData.points.map(adjustPathPoint) } } : port
+  );
+
+  const nodesWithData = entities.nodesWithData.map(({ node, data }) => ({
+    node: { ...node, x: originX + (node.x - centerX), y: originY + (node.y - centerY) },
+    data,
+  }));
+
+  return {
+    links,
+    ports,
+    nodesWithData,
+  };
 };

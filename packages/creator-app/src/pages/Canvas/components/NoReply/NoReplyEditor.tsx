@@ -64,9 +64,9 @@ const NoReplyEditor: React.FC<NoReplyEditorProps> = ({ noReply, onChange, pushTo
     const noReplyPortID = node?.ports.out.builtIn[BaseModels.PortType.NO_REPLY];
 
     if (noReplyPortID && prevTypesIncludesPath && !newTypesIncludesPath) {
-      await engine.port.removeOutBuiltIn(BaseModels.PortType.NO_REPLY, noReplyPortID);
+      await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
     } else if (!noReplyPortID && !prevTypesIncludesPath && newTypesIncludesPath && focusedNodeID) {
-      await engine.port.addOutBuiltIn(focusedNodeID, BaseModels.PortType.NO_REPLY);
+      await engine.port.addBuiltin(focusedNodeID, BaseModels.PortType.NO_REPLY);
     }
 
     onChange({ ...noReply, types });

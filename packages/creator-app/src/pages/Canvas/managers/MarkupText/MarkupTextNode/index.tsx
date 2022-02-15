@@ -5,8 +5,6 @@ import React from 'react';
 import { Descendant, Node, Transforms } from 'slate';
 
 import SlateEditable, { SlateEditorAPI } from '@/components/SlateEditable';
-import { isNodeEditLockedSelector } from '@/ducks/realtime';
-import { compose, connect } from '@/hocs';
 import { useDebouncedCallback } from '@/hooks';
 import { useBlockAPI } from '@/pages/Canvas/components/Block/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
@@ -17,11 +15,9 @@ import { SLATE_EDITOR_CLASS_NAME } from '../constants';
 import { Border, BorderPosition, Container } from './components';
 import { addDraggableAttr, findAllDraggableParents, removeDraggableAttr } from './utils';
 
-type MarkupProps = ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Text> & {
-  isNodeLocked: (nodeID: string) => boolean;
-};
+type MarkupTextNodeProps = ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Text>;
 
-const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({ data, isNodeLocked }, ref) => {
+const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }, ref) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
 
@@ -91,7 +87,7 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
 
   const onBlur = React.useCallback(async () => {
     if (!SlateEditorAPI.serialize(cache.current.value)) {
-      engine.node.remove(nodeEntity.nodeID);
+      await engine.node.remove(nodeEntity.nodeID);
 
       addDraggableAttr(draggableParentsCache.current);
       draggableParentsCache.current = [];
@@ -107,7 +103,7 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
       await engine.node.api(nodeEntity.nodeID)?.instance?.applyTransformations?.();
       await engine.node.updateData(nodeEntity.nodeID, { content: cache.current.value });
     } else {
-      engine.node.updateData(nodeEntity.nodeID, { content: cache.current.value });
+      await engine.node.updateData(nodeEntity.nodeID, { content: cache.current.value });
     }
 
     addDraggableAttr(draggableParentsCache.current);
@@ -146,7 +142,7 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
   }, [editor.isFakeSelectionApplied()]);
 
   useDidUpdateEffect(() => {
-    const isLocked = !!isNodeLocked?.(nodeEntity.nodeID);
+    const isLocked = engine.isNodeEditLocked(nodeEntity.nodeID);
 
     if (!isFocused || isLocked) {
       setValue(data.content);
@@ -226,13 +222,6 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
       />
     </Container>
   );
-};
+});
 
-const mapStateToProps = {
-  isNodeLocked: isNodeEditLockedSelector,
-};
-
-export default compose(
-  connect(mapStateToProps, null, null, { forwardRef: true }),
-  React.forwardRef
-)(MarkupTextNode) as React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Text>>;
+export default MarkupTextNode;

@@ -114,7 +114,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
 
           event.preventDefault();
 
-          await Promise.all([engine.node.insertNested(nodeEntity.nodeID, index, target), engine.drag.reset()]);
+          await Promise.all([engine.node.relocateV2(nodeEntity.nodeID, target, index), engine.drag.reset()]);
         }
       }),
     [nodeEntity.nodeID]

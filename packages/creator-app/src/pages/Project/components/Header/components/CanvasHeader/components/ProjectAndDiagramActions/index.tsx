@@ -39,6 +39,7 @@ const ProjectAndDiagramActions: React.FC = () => {
 
   const getEngine = useEventualEngine();
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const atomicActionsPhase2 = useFeature(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const isPrototypingMode = usePrototypingMode();
@@ -62,7 +63,10 @@ const ProjectAndDiagramActions: React.FC = () => {
     updateProjectName(formattedName);
 
     setFocused(false);
-    unlockResource();
+
+    if (!atomicActionsPhase2.isEnabled) {
+      unlockResource();
+    }
   };
 
   const onFocus = () => {
@@ -71,7 +75,10 @@ const ProjectAndDiagramActions: React.FC = () => {
     }
 
     setFocused(true);
-    lockResource();
+
+    if (!atomicActionsPhase2.isEnabled) {
+      lockResource();
+    }
   };
 
   const onRename = () => {
@@ -96,14 +103,14 @@ const ProjectAndDiagramActions: React.FC = () => {
     setSelectedTargets([]);
   };
 
-  const onDuplicate = () => {
+  const onDuplicate = async () => {
     const engine = getEngine();
 
     if (!engine) {
       return;
     }
 
-    engine.node.duplicateMany(engine.activation.getTargets());
+    await engine.node.duplicateMany(engine.activation.getTargets());
   };
 
   return (

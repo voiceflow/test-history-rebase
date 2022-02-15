@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { BaseText } from '@voiceflow/base-types';
-import { Nullable, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Editor } from 'slate';
@@ -44,23 +43,17 @@ class MarkupEngine extends EngineConsumer {
   }
 
   async addTextNode(): Promise<void> {
-    const nodeData: Realtime.Markup.NodeData.Text = {
-      scale: 1,
-      rotate: 0,
-      content: [...SlateEditorAPI.createTextState('', { elementProperties: { [BaseText.ElementProperty.TEXT_ALIGN]: 'center' } })],
-      overrideWidth: 178,
-      backgroundColor: DEFAULT_BACKGROUND_COLOR,
-    };
-
-    const nodeID = await this.engine.node.add(
+    await this.engine.node.add(
       BlockType.MARKUP_TEXT,
       this.engine.getMouseCoords().sub([12 * (this.engine.canvas?.getZoom() ?? 1), 26 * (this.engine.canvas?.getZoom() ?? 1)]),
-      nodeData as Realtime.NodeData<Realtime.Markup.NodeData.Text>,
-      Utils.id.objectID(),
-      false
+      {
+        scale: 1,
+        rotate: 0,
+        content: [...SlateEditorAPI.createTextState('', { elementProperties: { [BaseText.ElementProperty.TEXT_ALIGN]: 'center' } })],
+        overrideWidth: 178,
+        backgroundColor: DEFAULT_BACKGROUND_COLOR,
+      }
     );
-
-    this.engine.focus.set(nodeID);
   }
 
   useSetupTextEditor(nodeID: string): Editor {

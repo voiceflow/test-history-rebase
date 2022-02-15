@@ -3,6 +3,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Creator from '@/ducks/creator';
 import * as RealtimeDuck from '@/ducks/realtime';
+import LinkEntity from '@/pages/Canvas/engine/entities/linkEntity';
 import { Pair } from '@/types';
 
 import { EngineConsumer, extractPoints } from './utils';
@@ -11,37 +12,45 @@ class LinkManager extends EngineConsumer {
   log = this.engine.log.child('link');
 
   internal = {
-    add: (sourcePortID: string, targetPortID: string, linkID: string) => {
+    add: async (sourcePortID: string, targetPortID: string, linkID: string): Promise<void> => {
       const sourcePort = this.engine.getPortByID(sourcePortID);
       const targetPort = this.engine.getPortByID(targetPortID);
 
       if (!sourcePort || !targetPort || sourcePort.nodeID === targetPort.nodeID) return;
 
-      this.dispatch(Creator.addLink(sourcePortID, targetPortID, linkID));
+      if (this.isAtomicActionsPhase2) {
+        await this.dispatch.sync(Realtime.link.add({ ...this.engine.context, sourcePortID, targetPortID, linkID }));
+      } else {
+        this.dispatch(Creator.addLink(sourcePortID, targetPortID, linkID));
+      }
     },
 
-    remove: (linkID: string) => {
-      if (this.engine.highlight.isLinkTarget(linkID)) {
+    removeMany: async (linkIDs: string[]): Promise<void> => {
+      if (linkIDs.some((linkID) => this.engine.highlight.isLinkTarget(linkID))) {
         this.engine.highlight.reset();
       }
 
-      this.dispatch(Creator.removeLink(linkID));
+      if (this.isAtomicActionsPhase2) {
+        await this.dispatch.sync(Realtime.link.removeMany({ ...this.engine.context, linkIDs }));
+      } else {
+        this.dispatch(Creator.removeManyLinks(linkIDs));
+      }
     },
 
-    updateData: (linkID: string, data: Partial<Realtime.LinkData>) => {
-      this.dispatch(Creator.updateLinkData(linkID, data));
-    },
-
-    updateDataMany: (payload: { linkID: string; data: Partial<Realtime.LinkData> }[]) => {
-      this.dispatch(Creator.updateLinkDataMany(payload));
+    patchMany: async (patches: Realtime.link.LinkPatch[]): Promise<void> => {
+      if (this.isAtomicActionsPhase2) {
+        await this.dispatch.sync(Realtime.link.patchMany({ ...this.engine.context, patches }));
+      } else {
+        this.dispatch(Creator.updateLinkDataMany(patches));
+      }
     },
   };
 
-  api(linkID: string) {
-    return this.engine.links.get(linkID)?.api;
+  api(linkID: string): LinkEntity | null {
+    return this.engine.links.get(linkID)?.api ?? null;
   }
 
-  isSupported(linkID: string) {
+  isSupported(linkID: string): boolean {
     const link = this.engine.getLinkByID(linkID);
     if (!link) return false;
 
@@ -50,14 +59,14 @@ class LinkManager extends EngineConsumer {
     return isPortReady('source') && isPortReady('target');
   }
 
-  isActive(linkID: string) {
+  isActive(linkID: string): boolean {
     const link = this.engine.getLinkByID(linkID);
     if (!link) return false;
 
     return this.engine.node.isBranchActive(link.source.nodeID) || this.engine.node.isBranchActive(link.target.nodeID);
   }
 
-  isVisible(linkID: string, platform: VoiceflowConstants.PlatformType) {
+  isVisible(linkID: string, platform: VoiceflowConstants.PlatformType): boolean {
     const link = this.engine.getLinkByID(linkID);
     if (!link) return false;
 
@@ -67,7 +76,7 @@ class LinkManager extends EngineConsumer {
     return !sourcePort.platform || sourcePort.platform === platform;
   }
 
-  getSourceTargetPoints(linkID: string) {
+  getSourceTargetPoints(linkID: string): Pair<Realtime.Point> | null {
     const link = this.engine.getLinkByID(linkID);
     if (!link) return null;
 
@@ -76,61 +85,99 @@ class LinkManager extends EngineConsumer {
     return extractPoints(this.engine.canvas!, getPortRect('source'), getPortRect('target'));
   }
 
-  async add(sourcePortID: string, targetPortID: string) {
+  /**
+   * adds a link between two known ports
+   */
+  async add(sourcePortID: string, targetPortID: string): Promise<void> {
     const linkID = sourcePortID;
 
     this.log.debug(this.log.pending('adding link'), this.log.slug(linkID));
-    await this.engine.realtime.sendUpdate(RealtimeDuck.addLink(sourcePortID, targetPortID, linkID));
-    this.internal.add(sourcePortID, targetPortID, linkID);
+
+    if (!this.isAtomicActionsPhase2) {
+      await this.engine.realtime.sendUpdate(RealtimeDuck.addLink(sourcePortID, targetPortID, linkID));
+    }
+
+    await this.internal.add(sourcePortID, targetPortID, linkID);
     this.engine.saveHistory();
 
     this.log.info(this.log.success('added link'), this.log.slug(linkID));
   }
 
-  async remove(linkID: string) {
-    this.log.debug(this.log.pending('removed link'), this.log.slug(linkID));
-    await this.engine.realtime.sendUpdate(RealtimeDuck.removeLink(linkID));
-    this.internal.remove(linkID);
+  /**
+   * removes multiple links by their IDs
+   */
+  async removeMany(linkIDs: string[]): Promise<void> {
+    this.log.debug(this.log.pending('removing links'), linkIDs);
+
+    if (!this.isAtomicActionsPhase2) {
+      await this.engine.realtime.sendUpdate(RealtimeDuck.removeManyLinks(linkIDs));
+    }
+
+    await this.internal.removeMany(linkIDs);
     this.engine.saveHistory();
 
-    this.log.info(this.log.success('removed link'), this.log.slug(linkID));
+    this.log.info(this.log.success('removed links'), this.log.value(linkIDs.length));
   }
 
-  async updateLinkData(linkID: string, data: Partial<Realtime.LinkData>) {
-    this.log.debug(this.log.pending('updated data'), this.log.slug(linkID));
-    this.internal.updateData(linkID, data);
-    await this.engine.realtime.sendUpdate(RealtimeDuck.updateLinkData(linkID, data));
+  /**
+   * removes a single link by its IDs
+   */
+  remove(linkID: string): Promise<void> {
+    return this.removeMany([linkID]);
+  }
+
+  /**
+   * patches multiple links
+   */
+  async patchMany(patches: Realtime.link.LinkPatch[]): Promise<void> {
+    if (!patches.length) {
+      this.log.debug('attempted to patch an empty set of links');
+
+      return;
+    }
+
+    const linkIDs = patches.map((patch) => patch.linkID);
+
+    this.log.debug(this.log.pending('patching links'), linkIDs);
+    await this.internal.patchMany(patches);
+
+    if (!this.isAtomicActionsPhase2) {
+      await this.engine.realtime.sendUpdate(RealtimeDuck.updateLinkDataMany(patches));
+    }
+
     this.engine.saveHistory();
 
-    this.log.info(this.log.success('updated data'), this.log.slug(linkID));
+    this.log.info(this.log.success('patched links'), this.log.value(linkIDs.length));
   }
 
-  async updateLinkDataMany(payload: { linkID: string; data: Partial<Realtime.LinkData> }[]) {
-    this.internal.updateDataMany(payload);
-    await this.engine.realtime.sendUpdate(RealtimeDuck.updateLinkDataMany(payload));
+  /**
+   * patches a single link by its ID
+   */
+  patch(linkID: string, data: Partial<Realtime.LinkData>): Promise<void> {
+    return this.patchMany([{ linkID, data }]);
   }
 
-  async savePointsMany(linkIDs: string[]) {
-    const payload = linkIDs
+  async savePointsMany(linkIDs: string[]): Promise<void> {
+    const patches = linkIDs
       .map((linkID) => ({ linkID, data: { points: this.api(linkID)?.instance?.getPoints().current ?? null } }))
       .filter(({ data }) => data.points);
 
-    await this.updateLinkDataMany(payload);
+    await this.patchMany(patches);
   }
 
-  translatePoint(linkID: string, movement: Pair<number>, data: { isSource: boolean; reposition: boolean; sourceAndTargetSelected: boolean }) {
+  translatePoint(linkID: string, movement: Pair<number>, data: { isSource: boolean; reposition: boolean; sourceAndTargetSelected: boolean }): void {
     this.api(linkID)?.instance?.translatePoint(movement, data);
 
     this.log.debug(`translated ${data.isSource ? 'source' : 'target'} point`, this.log.value(linkID));
   }
 
-  redraw(linkID: string) {
+  redraw(linkID: string): void {
     if (!this.engine.canvas?.isAnimating()) {
       this.engine.dispatcher.redrawLink(linkID);
     }
   }
 
-  redrawLinked(linkID: string) {
+  redrawLinked(linkID: string): void {
     const link = this.engine.getLinkByID(linkID);
 
     this.redraw(linkID);
@@ -141,7 +188,7 @@ class LinkManager extends EngineConsumer {
     }
   }
 
-  redrawPorts({ source: { portID: sourcePortID }, target: { portID: targetPortID } }: Realtime.Link) {
+  redrawPorts({ source: { portID: sourcePortID }, target: { portID: targetPortID } }: Realtime.Link): void {
     this.engine.port.redraw(sourcePortID);
     this.engine.port.redraw(targetPortID);
   }

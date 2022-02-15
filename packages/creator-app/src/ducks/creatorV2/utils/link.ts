@@ -1,11 +1,10 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
 import { CreatorState } from '../types';
-import { createActiveDiagramReducer } from './utils';
 
+// eslint-disable-next-line import/prefer-default-export
 export const removeLink = (state: Draft<CreatorState>, linkID: string): void => {
   const nodeIDs = state.nodeIDsByLinkID[linkID] ?? [];
   const portIDs = state.portIDsByLinkID[linkID] ?? [];
@@ -27,9 +26,3 @@ export const removeLink = (state: Draft<CreatorState>, linkID: string): void => 
 
   state.links = Normal.removeOne(state.links, linkID);
 };
-
-const removeLinkReducer = createActiveDiagramReducer(Realtime.link.remove, (state, { linkID }) => {
-  removeLink(state, linkID);
-});
-
-export default removeLinkReducer;

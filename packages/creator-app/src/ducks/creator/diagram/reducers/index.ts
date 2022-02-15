@@ -15,7 +15,7 @@ import {
   AddOutDynamicPort,
   AnyDiagramAction,
   DiagramAction,
-  RemoveLink,
+  RemoveManyLinks,
   removeNodes,
   RemoveOutBuiltInPort,
   RemoveOutDynamicPort,
@@ -23,7 +23,6 @@ import {
   SetDiagramState,
   SetSectionState,
   UpdateHidden,
-  UpdateLinkData,
   UpdateLinkDataMany,
   UpdateNodeData,
   UpdateNodeLocation,
@@ -42,7 +41,6 @@ import {
   patchNodeInState,
   patchPortInState,
   removeAllLinksFromState,
-  removeLinkFromState,
   removeOutBuiltInPortFromBlockInState,
   removeOutDynamicPortFromBlockInState,
   reorderOutDynamicPorts,
@@ -91,19 +89,6 @@ export const updateNodeDataReducer: Reducer<DiagramStateType, UpdateNodeData> = 
 export const updateNodeLocationReducer: Reducer<DiagramStateType, UpdateNodeLocation> = (state, { payload: { nodeID, x, y } }) =>
   patchNodeInState(nodeID, { x, y })(state);
 
-export const updateLinkDataReducer: Reducer<DiagramStateType, UpdateLinkData> = (state, { payload: { linkID, data } }) => {
-  const link = state.links.byKey[linkID];
-
-  if (!link) {
-    return state;
-  }
-
-  return Utils.functional.compose(
-    patchLinkInState(linkID, { data: { ...link.data, ...data } }),
-    patchPortInState(link.source.portID, { linkData: { ...link.data, ...data } })
-  )(state);
-};
-
 export const updateLinkDataManyReducer: Reducer<DiagramStateType, UpdateLinkDataMany> = (state, { payload }) =>
   payload.reduce((nextState, { linkID, data }) => {
     const link = nextState.links.byKey[linkID];
@@ -133,7 +118,8 @@ export const removeOutBuiltInPortReducer: Reducer<DiagramStateType, RemoveOutBui
 export const reorderOurDynamicPortsReducer: Reducer<DiagramStateType, ReorderOutDynamicPorts> = (state, { payload: { nodeID, from, to } }) =>
   reorderOutDynamicPorts(nodeID, from, to)(state);
 
-export const removeLinkReducer: Reducer<DiagramStateType, RemoveLink> = (state, { payload: linkID }) => removeLinkFromState(linkID)(state);
+export const removeManyLinksReducer: Reducer<DiagramStateType, RemoveManyLinks> = (state, { payload: linkIDs }) =>
+  removeAllLinksFromState(linkIDs)(state);
 
 export const setSectionStateReducer: Reducer<DiagramStateType, SetSectionState> = (state, { payload: { key, value } }) => {
   if (value == null) {
@@ -178,8 +164,6 @@ const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | An
       return updateNodeDataReducer(state, action);
     case DiagramAction.UPDATE_NODE_LOCATION:
       return updateNodeLocationReducer(state, action);
-    case DiagramAction.UPDATE_LINK_DATA:
-      return updateLinkDataReducer(state, action);
     case DiagramAction.UPDATE_LINK_DATA_MANY:
       return updateLinkDataManyReducer(state, action);
     case DiagramAction.UNMERGE_NODE:
@@ -208,8 +192,8 @@ const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | An
       return reorderOurDynamicPortsReducer(state, action);
     case DiagramAction.ADD_LINK:
       return addLinkReducer(state, action);
-    case DiagramAction.REMOVE_LINK:
-      return removeLinkReducer(state, action);
+    case DiagramAction.REMOVE_MANY_LINKS:
+      return removeManyLinksReducer(state, action);
     case DiagramAction.SET_SECTION_STATE:
       return setSectionStateReducer(state, action);
     case DiagramAction.SET_DIAGRAM_STATE:

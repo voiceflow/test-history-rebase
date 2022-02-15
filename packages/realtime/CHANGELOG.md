@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.38.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.37.1...@voiceflow/realtime@1.38.0) (2022-02-15)
+
+
+### Features
+
+* atomic actions part 3 (VF-2078) ([#5089](https://github.com/voiceflow/creator-app/issues/5089)) ([7477318](https://github.com/voiceflow/creator-app/commit/7477318691ad7d2952692f41b82fd7191af338c5))
+
+
+
+
+
 ## [1.37.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.37.0...@voiceflow/realtime@1.37.1) (2022-02-14)
 
 **Note:** Version bump only for package @voiceflow/realtime

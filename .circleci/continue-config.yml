@@ -513,4 +513,15 @@ workflows:
                 job_type: deployment
           requires:
             - update-track-creator-app
+      - vfcommon/post_image_push_actions:
+          <<: *prod_deploy_filters
+          context: dev-test
+          namespace: << pipeline.parameters.k8s-namespace >>
+          component: << pipeline.parameters.track-component-showcase >>
+          package: showcase
+          name: showcase-release-post-actions
+          tagged: true
+          success_slack_notify: false
+          requires:
+            - update-track-showcase
 

@@ -1,4 +1,4 @@
-import { Version } from '@voiceflow/base-types';
+import { BaseVersion } from '@voiceflow/base-types';
 
 export interface Project {
   _id: string;
@@ -83,5 +83,5 @@ export interface Project {
   skill_created: string;
   skill_name: string;
   role: string;
-  version?: Version.BaseVersion;
+  version?: BaseVersion.Version;
 }

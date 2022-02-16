@@ -28,6 +28,7 @@ export * from './types';
 
 export const tabIDPersistor = sessionPersistor<string>(STATE_KEY, 'tab_id');
 export const browserIDPersistor = localPersistor<string>(STATE_KEY, 'browser_id');
+export const anonymousIDPersistor = localPersistor<string>(STATE_KEY, 'anonymous_id');
 export const activeWorkspaceIDPersistor = localPersistor<string | null>(STATE_KEY, 'active_workspace_id');
 export const intercomUserHMACPersistor = localPersistor<string | null>(STATE_KEY, 'intercom_user_hmac');
 
@@ -109,6 +110,7 @@ export default compositeReducer(sessionReducer, {
   token: authTokenReducer,
   tabID: rehydrateReducer(tabIDPersistor, Utils.id.cuid()),
   browserID: rehydrateReducer(browserIDPersistor, Utils.id.cuid()),
+  anonymousID: rehydrateReducer(anonymousIDPersistor, `anonymous-${Utils.id.cuid()}`),
   intercomUserHMAC: persistReducer(intercomUserHMACPersistor, setIntercomUserHMACReducer),
   activeWorkspaceID: persistReducer(activeWorkspaceIDPersistor, setActiveWorkspaceIDReducer),
 });

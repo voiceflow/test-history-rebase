@@ -19,7 +19,7 @@ client.api.analytics.setBatching(true);
 
 window.addEventListener('beforeunload', () => {
   client.api.analytics.setBatching(false);
-  client.api.analytics.flushBatched();
+  client.api.analytics.flush();
 });
 
 const logux = client.realtime();

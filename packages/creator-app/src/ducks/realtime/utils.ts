@@ -18,7 +18,7 @@ export const createServerAction = (action: AnyAction): { type: ServerAction; tar
 };
 
 export const removeSelfFromLocks = ({ blocks, resources, users }: WithOptional<RealtimeLocks, 'users'>, tabID: string) => {
-  const filterByValue = (_: any, value: string) => value !== tabID;
+  const filterByValue = (_: any, value: string | undefined) => value !== tabID;
 
   return {
     blocks: Object.entries(blocks).reduce(

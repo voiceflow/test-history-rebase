@@ -5,6 +5,7 @@ import * as Prototype from '@/ducks/prototype';
 import { PrototypeLayout, PrototypeMode } from '@/ducks/prototype/types';
 import * as Recent from '@/ducks/recent';
 import { PrototypeConfig } from '@/ducks/recent';
+import * as Session from '@/ducks/session';
 import { SyncThunk } from '@/store/types';
 
 import { EventName } from '../constants';
@@ -56,8 +57,9 @@ export const trackProjectBlockPrototypeTestStart = createVersionEventTracker((op
 
 export const trackPublicPrototypeView =
   ({ versionID, ...data }: { device: string; layout: PrototypeLayout; versionID: string }): SyncThunk =>
-  () => {
-    client.api.analytics.track(EventName.PUBLIC_PROTOTYPE_VIEW, {
+  (_, getState) => {
+    client.api.analytics.trackPublic(EventName.PUBLIC_PROTOTYPE_VIEW, {
+      anonymousID: Session.anonymousIDSelector(getState()),
       properties: {
         ...data,
         skill_id: versionID,
@@ -69,8 +71,9 @@ export const trackPublicPrototypeView =
 
 export const trackPublicPrototypeInteract =
   ({ device, versionID, sessionID }: { device: string; sessionID: string; versionID: string }): SyncThunk =>
-  () => {
-    client.api.analytics.track(EventName.PUBLIC_PROTOTYPE_USED, {
+  (_, getState) => {
+    client.api.analytics.trackPublic(EventName.PUBLIC_PROTOTYPE_USED, {
+      anonymousID: Session.anonymousIDSelector(getState()),
       properties: {
         device,
         skill_id: versionID,

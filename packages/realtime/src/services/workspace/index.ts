@@ -74,8 +74,9 @@ class WorkspaceService extends AbstractControl {
 
   public async isFeatureEnabled(creatorID: number, workspaceID: string | undefined, feature: string): Promise<boolean> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const organization = workspaceID ? await client.workspace.getOrganization(workspaceID) : undefined;
 
-    return client.feature.isEnabled(feature, workspaceID);
+    return client.feature.isEnabled(feature, workspaceID, organization?.id);
   }
 }
 

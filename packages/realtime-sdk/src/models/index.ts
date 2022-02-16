@@ -7,6 +7,7 @@ export * from './Link';
 export * from './Markup';
 export * from './Node';
 export * from './NodeData';
+export * from './Organization';
 export * from './Port';
 export * from './Product';
 export * from './Project';

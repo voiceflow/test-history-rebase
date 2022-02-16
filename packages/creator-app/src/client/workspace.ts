@@ -2,8 +2,7 @@ import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { FetchOptions } from '@voiceflow/ui';
 
-import { APIKey, Price } from '@/models';
-import { DBBilling, DBPayment } from '@/models/Billing';
+import { APIKey, DBBilling, DBPayment, Price } from '@/models';
 
 import invoiceAdapter from './adapters/invoice';
 import { api, apiV2 } from './fetch';
@@ -82,6 +81,8 @@ const workspaceClient = {
   listAPIKeys: (workspaceID: string) => apiV2.get<APIKey[]>(`${WORKSPACES_PATH}/${workspaceID}/api-keys`),
 
   validateCoupon: (couponCode: string) => api.get<string>(`${WORKSPACES_PATH}/coupon/${couponCode}`).then((result) => result === 'true'),
+
+  getOrganization: (workspaceID: string) => api.get<Realtime.Organization | undefined>(`${WORKSPACES_PATH}/${workspaceID}/organization`),
 };
 
 export default workspaceClient;

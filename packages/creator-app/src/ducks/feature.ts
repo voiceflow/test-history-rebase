@@ -176,7 +176,8 @@ export const loadWorkspaceFeatures = (): Thunk => async (dispatch, getState) => 
     return;
   }
 
-  const features = await client.feature.getStatuses({ workspaceID });
+  const organization = await client.workspace.getOrganization(workspaceID);
+  const features = await client.feature.getStatuses({ workspaceID, organizationID: organization?.id });
 
   dispatch(setWorkspaceFeaturesLoaded(features));
 };

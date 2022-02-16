@@ -27,6 +27,7 @@
     "lodash": "4.17.21",
     "moize": "6.0.3",
     "polished": "3.7.2",
+    "query-string": "7.1.1",
     "regenerator-runtime": "0.13.9",
     "typescript-fsa": "3.0.0",
     "utility-types": "3.10.0"

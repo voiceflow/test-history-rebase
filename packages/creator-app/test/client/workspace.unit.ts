@@ -36,6 +36,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
       'getInviteLink',
       'listAPIKeys',
       'validateCoupon',
+      'getOrganization',
     ]);
   });
 

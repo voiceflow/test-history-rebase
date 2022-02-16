@@ -33,6 +33,8 @@ export interface WorkspaceClient {
   updateInvite: (workspaceID: string, email: string, role?: UserRole) => Promise<void>;
 
   cancelInvite: (workspaceID: string, email: string) => Promise<void>;
+
+  getOrganization: (workspaceID: string) => Promise<Realtime.Organization | undefined>;
 }
 
 const Client = ({ api }: ExtraOptions): WorkspaceClient => ({
@@ -72,6 +74,8 @@ const Client = ({ api }: ExtraOptions): WorkspaceClient => ({
   updateInvite: (workspaceID, email, role) => api.patch(`/workspaces/${workspaceID}/invite`, { email, role }),
 
   cancelInvite: (workspaceID, email) => api.delete(`/workspaces/${workspaceID}/invite`, { data: { email } }),
+
+  getOrganization: (workspaceID) => api.get<Realtime.Organization | undefined>(`/workspaces/${workspaceID}/organization`).then((res) => res.data),
 });
 
 export default Client;

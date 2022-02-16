@@ -379,18 +379,18 @@ workflows:
             - test-master
             - build-admin-test
 
-      # - vfcommon/update_track:
-      #     <<: *ignore_break_glass_deploy_filters
-      #     context: dev-test
-      #     name: update-track-showcase
-      #     force_execute: << pipeline.parameters.build-frontend >>
-      #     image_repo: << pipeline.parameters.container-image-url-showcase >>
-      #     component: << pipeline.parameters.track-component-showcase >>
-      #     build_context: packages/showcase
-      #     package: showcase
-      #     requires:
-      #       - test-master
-      #       - build-showcase-test
+      - vfcommon/update_track:
+          <<: *ignore_break_glass_deploy_filters
+          context: dev-test
+          name: update-track-showcase
+          force_execute: << pipeline.parameters.build-frontend >>
+          image_repo: << pipeline.parameters.container-image-url-showcase >>
+          component: << pipeline.parameters.track-component-showcase >>
+          build_context: packages/showcase
+          package: showcase
+          requires:
+            - test-master
+            - build-showcase-test
 
       - vfcommon/update_track:
           <<: *ignore_break_glass_deploy_filters
@@ -513,15 +513,4 @@ workflows:
                 job_type: deployment
           requires:
             - update-track-creator-app
-      # - vfcommon/post_image_push_actions:
-      #     <<: *prod_deploy_filters
-      #     context: dev-test
-      #     namespace: << pipeline.parameters.k8s-namespace >>
-      #     component: << pipeline.parameters.track-component-showcase >>
-      #     package: showcase
-      #     name: showcase-release-post-actions
-      #     tagged: true
-      #     success_slack_notify: false
-      #     requires:
-      #       - update-track-showcase
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.40.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.39.1...@voiceflow/realtime@1.40.0) (2022-02-16)
+
+
+### Features
+
+* add organization ID feature strategy (VF-2956) ([#5106](https://github.com/voiceflow/creator-app/issues/5106)) ([6c94b9e](https://github.com/voiceflow/creator-app/commit/6c94b9e3f67709b2b1c0857c89331b2cc95dc517)), closes [voiceflow/creator-api#928](https://github.com/voiceflow/creator-api/issues/928)
+
+
+
+
+
 ## [1.39.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.39.0...@voiceflow/realtime@1.39.1) (2022-02-16)
 
 **Note:** Version bump only for package @voiceflow/realtime

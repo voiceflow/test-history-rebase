@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.630.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.629.0...@voiceflow/creator-app@1.630.0) (2022-02-16)
+
+
+### Bug Fixes
+
+* step is not opened when switching diagrams (VF-2836) ([#5073](https://github.com/voiceflow/creator-app/issues/5073)) ([c3ecf6e](https://github.com/voiceflow/creator-app/commit/c3ecf6e412faa88761d0b28b3fa816be1cd4ecd9))
+
+
+### Features
+
+* add public analytics endpoints, persist anonymous id (VF-2754) ([#5091](https://github.com/voiceflow/creator-app/issues/5091)) ([669bbac](https://github.com/voiceflow/creator-app/commit/669bbace898262ccc2549e6816432051e7c4b23f))
+
+
+
+
+
 # [1.629.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.628.1...@voiceflow/creator-app@1.629.0) (2022-02-15)
 
 

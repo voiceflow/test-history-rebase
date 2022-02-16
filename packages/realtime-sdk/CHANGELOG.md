@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.58.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.57.0...@voiceflow/realtime-sdk@1.58.0) (2022-02-16)
+
+
+### Features
+
+* add public analytics endpoints, persist anonymous id (VF-2754) ([#5091](https://github.com/voiceflow/creator-app/issues/5091)) ([669bbac](https://github.com/voiceflow/creator-app/commit/669bbace898262ccc2549e6816432051e7c4b23f))
+
+
+
+
+
 # [1.57.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.56.0...@voiceflow/realtime-sdk@1.57.0) (2022-02-15)
 
 

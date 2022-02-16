@@ -4,11 +4,11 @@ import React from 'react';
 
 import { ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramDuck from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
@@ -45,7 +45,7 @@ export const useTopics = (): TopicsAPI => {
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
   const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
   const topicDiagrams = useSelector(DiagramV2.active.topicDiagramsSelector);
-  const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
+  const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const { target: focusedNodeID, isActive: isFocusedNodeActive } = useSelector(Creator.creatorFocusSelector);
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);

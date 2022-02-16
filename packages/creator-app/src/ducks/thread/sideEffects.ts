@@ -6,6 +6,7 @@ import commentAdapter from '@/client/adapters/comment';
 import threadAdapter from '@/client/adapters/thread';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
 import { Comment, DBComment, DBThread, NewThread, Thread } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
@@ -43,7 +44,7 @@ export const createThread =
   async (dispatch, getState) => {
     const state = getState();
     const projectID = Session.activeProjectIDSelector(state);
-    const diagramID = Session.activeDiagramIDSelector(state);
+    const diagramID = CreatorV2.activeDiagramIDSelector(state);
     const creatorID = Account.userIDSelector(state);
 
     Errors.assertCreatorID(creatorID);

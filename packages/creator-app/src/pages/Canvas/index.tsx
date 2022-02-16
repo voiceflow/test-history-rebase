@@ -1,11 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import * as Creator from '@/ducks/creator';
-import * as Session from '@/ducks/session';
 import { DiagramLoadingGate } from '@/gates';
 import { compose, withLoadingGate } from '@/hocs';
-import { useDispatch, useRegistration, useSelector } from '@/hooks';
+import { useRegistration } from '@/hooks';
 import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
@@ -32,22 +30,10 @@ interface CanvasProps {
 
 const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const engine = useEngine();
-
-  const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
-  const creatorDiagramID = useSelector(Creator.creatorDiagramIDSelector);
-  const loadDiagram = useDispatch(Creator.initializeCreatorForActiveDiagram);
-  const isLoaded = creatorDiagramID === activeDiagramID;
-
   // using history to do not rerender on the every location change
   const history = useHistory();
 
   const selectionSetTargetsContext = React.useContext(SelectionSetTargetsContext);
-
-  React.useEffect(() => {
-    if (!isLoaded) {
-      loadDiagram();
-    }
-  }, [isLoaded]);
 
   React.useEffect(() => {
     const { nodeID } = Query.parse(history.location.search);
@@ -78,7 +64,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
     <CanvasProviders engine={engine}>
       <Container>
         <ContextMenu />
-        <CanvasDiagram key={creatorDiagramID} />
+        <CanvasDiagram />
         <RealtimeOverlay />
 
         {!isPrototypingMode && (

@@ -3,6 +3,7 @@ import React from 'react';
 
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import { NLPTrainStageType } from '@/constants/platforms';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
@@ -158,7 +159,7 @@ const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   platform: ProjectV2.active.platformSelector,
   versionID: Session.activeVersionIDSelector,
-  diagramID: Session.activeDiagramIDSelector,
+  diagramID: CreatorV2.activeDiagramIDSelector,
   projectID: Session.activeProjectIDSelector,
 };
 

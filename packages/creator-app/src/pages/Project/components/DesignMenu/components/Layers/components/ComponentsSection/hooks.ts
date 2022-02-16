@@ -2,8 +2,8 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
@@ -35,7 +35,7 @@ export const useComponents = (): ComponentsAPI => {
   const folders = useSelector(VersionV2.active.foldersSelector);
   const components = useSelector(VersionV2.active.componentsSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
-  const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
+  const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
 
   const reorderComponents = useDispatch(Version.reorderComponents);
 

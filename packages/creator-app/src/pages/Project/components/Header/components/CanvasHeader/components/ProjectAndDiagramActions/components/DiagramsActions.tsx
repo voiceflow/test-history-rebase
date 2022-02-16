@@ -4,10 +4,10 @@ import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useFeature, useSelector } from '@/hooks';
 
@@ -20,7 +20,7 @@ const DiagramsActions: React.FC = () => {
   const goToDiagramHistoryClear = useDispatch(Router.goToDiagramHistoryClear);
 
   const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
-  const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
+  const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const previousDiagramID = useSelector(Creator.previousDiagramIDSelector);
   const activeDiagram = useSelector(DiagramV2.diagramByIDSelector, { id: activeDiagramID });
   const previousDiagram = useSelector(DiagramV2.diagramByIDSelector, { id: previousDiagramID });

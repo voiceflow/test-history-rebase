@@ -161,7 +161,7 @@ export const createTopicDiagram =
 
           const state = getState();
           const activeTopics = VersionV2.active.topicsSelector(state);
-          const activeDiagramID = Session.activeDiagramIDSelector(state);
+          const activeDiagramID = CreatorV2.activeDiagramIDSelector(state);
 
           const newTopicItem = { type: BaseModels.Version.FolderItemType.DIAGRAM, sourceID: newDiagram.id };
           const activeTopicIndex = activeDiagramID ? activeTopics.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
@@ -216,7 +216,7 @@ const addDiagramIDIntoComponentsList =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const activeDiagramID = Session.activeDiagramIDSelector(state);
+    const activeDiagramID = CreatorV2.activeDiagramIDSelector(state);
     const activeComponents = VersionV2.active.componentsSelector(state);
 
     const newTopicItem = { type: BaseModels.Version.FolderItemType.DIAGRAM, sourceID: diagramID };
@@ -411,7 +411,7 @@ export const deleteDiagram =
     Errors.assertDiagramID(rootDiagramID);
 
     // if the user is on the deleted diagram, redirect to root
-    const activeDiagramID = Session.activeDiagramIDSelector(state);
+    const activeDiagramID = CreatorV2.activeDiagramIDSelector(state);
 
     if (diagramID === activeDiagramID) {
       await dispatch(Router.goToRootDiagram());
@@ -486,7 +486,7 @@ export const convertToTopic =
           PageProgress.start(PageProgressBar.TOPIC_CREATING);
 
           const state = getState();
-          const activeDiagramID = Session.activeDiagramIDSelector(state);
+          const activeDiagramID = CreatorV2.activeDiagramIDSelector(state);
 
           if (diagramID === activeDiagramID) {
             await dispatch(Router.goToRootDiagram());

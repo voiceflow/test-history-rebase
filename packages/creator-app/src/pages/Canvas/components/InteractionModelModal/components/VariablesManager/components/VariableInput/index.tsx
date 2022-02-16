@@ -2,8 +2,8 @@ import { Badge, Dropdown, Flex, FlexApart, Input, SvgIcon, toast } from '@voicef
 import React from 'react';
 
 import InfoIcon from '@/components/InfoIcon';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagram';
-import * as Session from '@/ducks/session';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
@@ -101,7 +101,7 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
 };
 
 const mapStateToProps = {
-  diagramID: Session.activeDiagramIDSelector,
+  diagramID: CreatorV2.activeDiagramIDSelector,
 };
 
 const mapDispatchToProps = {

@@ -114,7 +114,7 @@ export const goToDiagram =
     Errors.assertVersionID(versionID);
 
     if (nodeID) {
-      dispatch(pushSearch(`?nodeID=${nodeID}`));
+      await dispatch(pushSearch(`?nodeID=${nodeID}`));
     }
 
     await dispatch(goToCanvasSwitchRealtime(versionID, diagramID));

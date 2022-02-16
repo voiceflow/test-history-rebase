@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { logger } from '@voiceflow/ui';
+import { logger, useCreateConst } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
 import moize from 'moize';
 import React from 'react';
@@ -230,7 +230,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   isRootDiagram = () => this.select(CreatorV2.isRootDiagramActiveSelector);
 
-  getDiagramID = () => this.select(Session.activeDiagramIDSelector);
+  getDiagramID = () => this.select(CreatorV2.activeDiagramIDSelector);
 
   isFeatureEnabled = (featureID: FeatureFlag) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 
@@ -593,12 +593,12 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
 const createEngine = moize.simple((...args: ConstructorParameters<typeof Engine>) => new Engine(...args));
 
-const useEngine = () => {
-  const store = useStore();
+const useEngine = (): Engine => {
+  const store = useStore() as Store;
   const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const mousePosition = React.useContext(MousePositionContext);
   const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
-  const engine = React.useMemo(() => createEngine(store as any, mousePosition!, realtimeSubscription), []);
+  const engine = useCreateConst(() => createEngine(store, mousePosition, realtimeSubscription));
 
   useMouseMove((event) => engine.emitter.emit(CanvasAction.MOVE_MOUSE, new Coords([event.clientX, event.clientY])), []);
 

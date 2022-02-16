@@ -8,7 +8,7 @@ import { SectionVariant } from '@/components/Section/constants';
 import VariableList from '@/components/VariableList';
 import VariablesSelect from '@/components/VariablesSelect';
 import { ModalType } from '@/constants';
-import * as Session from '@/ducks/session';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as VariableStateDucks from '@/ducks/variableState';
 import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 
@@ -36,7 +36,7 @@ const VariableStateEditorModal: React.FC = () => {
   const updateSelectedVariableState = useDispatch(VariableStateDucks.updateSelectedVariableState);
   const updateVariableState = useDispatch(VariableStateDucks.updateState);
   const getVariableStateByID = useSelector(VariableStateDucks.getVariableStateByIDSelector);
-  const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
+  const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const [trackingEvents] = useTrackingEvents();
 
   const getInitialValues = (): VariableStateEditorValues => {

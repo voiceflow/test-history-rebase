@@ -1,5 +1,6 @@
 import client from '@/client';
 import * as Errors from '@/config/errors';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
@@ -18,7 +19,7 @@ const compilePrototype =
     const platform = ProjectV2.active.platformSelector(state);
     const projectID = Session.activeProjectIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
-    const diagramID = Session.activeDiagramIDSelector(state);
+    const diagramID = CreatorV2.activeDiagramIDSelector(state);
 
     Errors.assertProjectID(projectID);
     Errors.assertVersionID(versionID);

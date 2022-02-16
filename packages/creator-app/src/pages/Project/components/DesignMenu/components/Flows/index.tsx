@@ -2,8 +2,8 @@ import React from 'react';
 
 import SearchableList from '@/components/SearchableList';
 import { ROOT_DIAGRAM_NAME } from '@/constants';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
@@ -51,7 +51,7 @@ const FlowList: React.FC<ConnectedFlowListProps> = ({ diagrams, rootDiagramID, a
 const mapStateToProps = {
   diagrams: DiagramV2.allDiagramsSelector,
   rootDiagramID: VersionV2.active.rootDiagramIDSelector,
-  activeDiagramID: Session.activeDiagramIDSelector,
+  activeDiagramID: CreatorV2.activeDiagramIDSelector,
 };
 
 type ConnectedFlowListProps = ConnectedProps<typeof mapStateToProps>;

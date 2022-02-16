@@ -5,6 +5,7 @@ import _orderBy from 'lodash/orderBy';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { ExportFormat, NLPProvider } from '@/constants';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
@@ -20,7 +21,7 @@ export const exportCanvas =
   async (_, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
-    const diagramID = Session.activeDiagramIDSelector(state);
+    const diagramID = CreatorV2.activeDiagramIDSelector(state);
 
     Errors.assertVersionID(versionID);
 

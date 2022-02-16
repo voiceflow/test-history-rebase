@@ -5,8 +5,7 @@ import { AutoPanningContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as UI from '@/ducks/ui';
-import { useDidUpdateEffect, useRAF, useSelector } from '@/hooks';
-import useEngine from '@/pages/Canvas/engine';
+import { useDidUpdateEffect, useEventualEngine, useRAF, useSelector } from '@/hooks';
 import { useEditingMode } from '@/pages/Project/hooks';
 import THEME from '@/styles/theme';
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '@/styles/theme/projectPage';
@@ -27,7 +26,7 @@ const calculateSpeedMultiplier = (formula: number, hotZoneSize: number) => {
 };
 
 const AutoPanLayer: React.FC = () => {
-  const engine = useEngine();
+  const getEngine = useEventualEngine();
   const isCreatorMenuHidden = useSelector(UI.isCreatorMenuHiddenSelector);
   const isEditingMode = useEditingMode();
   const disableNewStepPanningRef = React.useRef(false);
@@ -47,6 +46,7 @@ const AutoPanLayer: React.FC = () => {
 
   useDidUpdateEffect(() => {
     disableNewStepPanningRef.current = draggingNewStep;
+
     if (!draggingNewStep) reset();
   }, [draggingNewStep]);
 
@@ -64,11 +64,15 @@ const AutoPanLayer: React.FC = () => {
   };
 
   React.useEffect(() => {
+    const engine = getEngine();
+
+    if (!engine || !engine.canvas) return undefined;
+
     let movementX = 0;
     let movementY = 0;
     let isLeftClick = false;
 
-    const updateMergeDetection = _throttle((nodeID: string) => engine.merge.refreshCandidateDetection(nodeID), 150);
+    const updateMergeDetection = _throttle((nodeID: string) => getEngine()?.merge.refreshCandidateDetection(nodeID), 150);
 
     const syncBlocksAndCursor = () => {
       const isDrawingLink = engine.linkCreation.isDrawing;
@@ -83,12 +87,13 @@ const AutoPanLayer: React.FC = () => {
 
       const isDraggingChildStep = getNodeByID({ id: draggableNode })?.parentNode;
 
-      const zoom = engine.canvas!.getZoom();
+      const zoom = engine.canvas?.getZoom() ?? 1;
       const onlySingleBlock = draggingNodeIDs.length === 1;
 
-      if (isDraggingChildStep) {
-        engine.merge?.components?.mergeLayer?.handleMouseMove(mouseMoveRef.current!);
+      if (isDraggingChildStep && mouseMoveRef.current) {
+        engine.merge.components?.mergeLayer?.handleMouseMove(mouseMoveRef.current);
       }
+
       if (onlySingleBlock) {
         updateMergeDetection(draggableNode);
       }
@@ -98,6 +103,7 @@ const AutoPanLayer: React.FC = () => {
 
     const syncLinkAndCursor = () => {
       const isDrawingLink = engine.linkCreation.isDrawing;
+
       if (isDrawingLink) {
         engine.linkCreation.redrawNewLink();
       }
@@ -112,18 +118,20 @@ const AutoPanLayer: React.FC = () => {
       syncBlocksAndCursor();
       syncLinkAndCursor();
 
-      const [posX, posY] = engine.canvas!.getPosition();
-      engine.canvas!.setPosition([posX + movementX, posY + movementY]);
+      const [posX, posY] = engine.canvas?.getPosition() ?? [0, 0];
+      engine.canvas?.setPosition([posX + movementX, posY + movementY]);
 
       scheduler(setCanvasPosition);
     };
 
-    const allowAutoPan = () => {
+    const allowAutoPan = (): boolean => {
       const isDrawingLink = engine.linkCreation.isDrawing;
       const isDraggingBlock = engine.drag.hasTarget;
       const isDraggingGroup = engine.drag.hasGroup;
       const isDraggingNewStep = engine.drag.isDraggingToCreate;
+
       setDraggingNewStep(isDraggingNewStep);
+
       return isDraggingNewStep || (isLeftClick && (isDrawingLink || isDraggingBlock || isDraggingGroup));
     };
 
@@ -145,6 +153,7 @@ const AutoPanLayer: React.FC = () => {
 
     const onMouseMove = (event: MouseEvent) => {
       mouseMoveRef.current = event;
+
       if (!allowAutoPan()) {
         return;
       }
@@ -153,7 +162,7 @@ const AutoPanLayer: React.FC = () => {
       const rightOffset = rightOffsetRef.current;
 
       const { clientX, clientY } = event;
-      const { top, right, left, bottom, height, width } = engine.canvas!.getCachedRect();
+      const { top = 0, right = 0, left = 0, bottom = 0, height = 0, width = 0 } = engine.canvas?.getCachedRect() ?? {};
 
       const verticalHotZoneSize = applyMinMaxCap(HOT_ZONE_MIN, HOT_ZONE_MAX, height * VERTICAL_HOT_ZONE_PERCENT);
       const horizontalHotZoneSize = applyMinMaxCap(HOT_ZONE_MIN, HOT_ZONE_MAX, width * HORIZONTAL_HOT_ZONE_PERCENT);
@@ -218,7 +227,7 @@ const AutoPanLayer: React.FC = () => {
       }
     };
 
-    const canvasNode = engine.canvas?.getRef();
+    const canvasNode = engine.canvas.getRef();
 
     document.addEventListener('mouseup', onMouseUp);
 
@@ -230,7 +239,7 @@ const AutoPanLayer: React.FC = () => {
 
     return () => {
       document.removeEventListener('mouseup', onMouseUp);
-      canvasNode?.addEventListener('dragover', onDrag);
+      canvasNode?.removeEventListener('dragover', onDrag);
       canvasNode?.removeEventListener('mousedown', onMouseDown);
       canvasNode?.removeEventListener('mousemove', onMouseMove);
     };

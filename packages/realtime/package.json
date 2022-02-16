@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@types/ioredis": "4.28.7",
-    "@types/node": "16.11.24"
+    "@types/node": "16.11.25"
   },
   "engines": {
     "node": ">=16"

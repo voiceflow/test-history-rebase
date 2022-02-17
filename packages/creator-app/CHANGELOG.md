@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.633.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.632.0...@voiceflow/creator-app@1.633.0) (2022-02-17)
+
+
+### Features
+
+* adds variable state edited and deleted segment tracking events (VF-2550) ([#5084](https://github.com/voiceflow/creator-app/issues/5084)) ([faf4b81](https://github.com/voiceflow/creator-app/commit/faf4b81e58d6055c20f6a8ac4cec0a30ecefdf81))
+
+
+
+
+
 # [1.632.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.631.0...@voiceflow/creator-app@1.632.0) (2022-02-17)
 
 

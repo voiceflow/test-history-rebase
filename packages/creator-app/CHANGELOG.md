@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.632.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.631.0...@voiceflow/creator-app@1.632.0) (2022-02-17)
+
+
+### Features
+
+* extract selectors and dispatchers into context  (VF-839) ([#5047](https://github.com/voiceflow/creator-app/issues/5047)) ([f3b67d1](https://github.com/voiceflow/creator-app/commit/f3b67d1f0e9279c4f925c399e8911b86b6fbfea4))
+
+
+
+
+
 # [1.631.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.630.1...@voiceflow/creator-app@1.631.0) (2022-02-16)
 
 

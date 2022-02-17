@@ -4,9 +4,10 @@ import React from 'react';
 import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import Upgrade from '@/components/Upgrade';
 import * as Documentation from '@/config/documentation';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ScrollContextProvider } from '@/contexts';
-import { usePermission } from '@/hooks';
+import { useFeature, usePermission } from '@/hooks';
 import { useScrollHelpers, useScrollStickySides } from '@/hooks/scroll';
 import { FadeLeftContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
@@ -28,6 +29,7 @@ enum ActiveModal {
 
 const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
+  const { isEnabled: isVariableStateEnabled } = useFeature(FeatureFlag.VARIABLE_STATES);
 
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const [isHeaderSticky] = useScrollStickySides(bodyRef);
@@ -72,19 +74,22 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
             >
               <AppearanceAndBranding isAllowed={canCustomize} />
             </UncontrolledSection>
-            <UncontrolledSection
-              nestedIntend
-              header="Variable State"
-              headerToggle
-              collapseVariant={SectionToggleVariant.ARROW}
-              isCollapsed={activeSection !== ActiveModal.VARIABLE_STATE}
-              toggle={onToggleSection(ActiveModal.VARIABLE_STATE)}
-              customContentStyling={{ paddingLeft: 0 }}
-            >
-              <Box mb={16}>
-                <VariableStateSelect />
-              </Box>
-            </UncontrolledSection>
+
+            {isVariableStateEnabled && (
+              <UncontrolledSection
+                nestedIntend
+                header="Variable State"
+                headerToggle
+                collapseVariant={SectionToggleVariant.ARROW}
+                isCollapsed={activeSection !== ActiveModal.VARIABLE_STATE}
+                toggle={onToggleSection(ActiveModal.VARIABLE_STATE)}
+                customContentStyling={{ paddingLeft: 0 }}
+              >
+                <Box mb={16}>
+                  <VariableStateSelect />
+                </Box>
+              </UncontrolledSection>
+            )}
           </Box>
 
           <PrototypePasswordInput

@@ -108,6 +108,7 @@ jobs:
           ./vfcli track create -n  $ENV_NAME -c admin-ui -b $BRANCH --interactive false --no-telepresence
           ./vfcli track create -n  $ENV_NAME -c realtime -b $BRANCH --interactive false --no-telepresence
           ./vfcli track create -n  $ENV_NAME -c ml-gateway -b $BRANCH --interactive false --no-telepresence
+          ./vfcli track create -n  $ENV_NAME -c showcase -b $BRANCH --interactive false --no-telepresence
 
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@main

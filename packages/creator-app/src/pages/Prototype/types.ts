@@ -1,4 +1,11 @@
-import { BaseNode, BaseRequest } from '@voiceflow/base-types';
+import { BaseNode, BaseRequest, Button, Node } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
+
+import { Context, PrototypeState, PrototypeStatus, UpdatePrototypeVisualData } from '@/ducks/prototype';
+import * as Recent from '@/ducks/recent';
+import { PrototypeConfig } from '@/ducks/recent';
+import { IDSelectorParam } from '@/ducks/utils/crudV2';
 
 export type OnInteraction = (interaction: { name?: string | undefined; request: BaseRequest.BaseRequest | string }) => void;
 
@@ -87,4 +94,46 @@ export interface Interaction {
   name: string;
   request: BaseRequest.AnyRequestButton['request'] | BaseRequest.BaseRequest<undefined> | BaseRequest.BaseRequest<string>;
   isActionButton?: boolean;
+}
+
+export interface ProtoConfigType extends PrototypeConfig {
+  buttons: Button.ButtonsLayout;
+  autoplay: boolean;
+  showButtons: boolean;
+  prototypeColor: string;
+  prototypeAvatar: string;
+  locales: string[];
+  isMuted: boolean;
+  durationMilliseconds?: number;
+}
+
+export interface PrototypeRuntimeState {
+  status: PrototypeStatus;
+  activePathLinkIDs: string[];
+  activePathBlockIDs: string[];
+  contextHistory?: Partial<Context>[];
+  activeDiagramID: string | null;
+  flowIDHistory: string[];
+  webhook?: BaseRequest.BaseRequest | null;
+  contextStep: number;
+  visualDataHistory?: (Node.Visual.StepData | null)[];
+}
+
+export interface PrototypeActions {
+  updatePrototype: (data: Partial<PrototypeState>) => void;
+  savePrototypeSession: () => void;
+  getLinksByPortID?: (id: IDSelectorParam) => any[];
+  getNodeByID?: (id: string) => Realtime.Node;
+  updatePrototypeVisualsData?: (data: Nullable<Node.Visual.StepData>) => UpdatePrototypeVisualData;
+  fetchContext?: (request: Nullable<BaseRequest.BaseRequest>, config: Recent.PrototypeConfig) => Promise<Nullable<Context>>;
+  setActiveDiagramID?: (id: string) => void;
+  updatePrototypeVisualsDataHistory?: (data: Nullable<Node.Visual.StepData>[]) => void;
+  updatePrototypeStatus?: (data: PrototypeStatus) => void;
+  setError?: (data: string) => void;
+}
+
+export interface PrototypeAllTypes {
+  config: ProtoConfigType;
+  state: PrototypeRuntimeState;
+  actions: PrototypeActions;
 }

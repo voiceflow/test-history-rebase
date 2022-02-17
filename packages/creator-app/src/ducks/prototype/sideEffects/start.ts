@@ -91,7 +91,6 @@ const startPrototype =
       const parentNodeID = getNodeByID(nodeID)?.parentNode;
       prototypeStartNodeID = parentNodeID || nodeID;
     }
-
     batch(() => {
       dispatch(updatePrototype({ activePathBlockIDs: [prototypeStartNodeID!] }));
       dispatch(pushContextHistory(context));

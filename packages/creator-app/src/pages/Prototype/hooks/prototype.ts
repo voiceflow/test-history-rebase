@@ -1,49 +1,49 @@
 import { BaseRequest } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { toast } from '@voiceflow/ui';
 import _isString from 'lodash/isString';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { FeatureFlag } from '@/config/features';
-import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
-import { PrototypeConfig } from '@/ducks/recent';
-import * as Session from '@/ducks/session';
+import { IDSelectorParam } from '@/ducks/utils/crudV2';
 import { useEventualEngine, useFeature, useTrackingEvents } from '@/hooks';
 import perf, { PerfAction } from '@/performance';
-import { Dispatch } from '@/store/types';
 
 import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
-import { Interaction, Message, PMStatus } from '../types';
+import { Interaction, Message, PMStatus, PrototypeAllTypes } from '../types';
 
-const usePrototype = ({
-  debug,
-  config,
-  isPublic,
-  waitVisuals = true,
-  prototypeStatus,
-  globalDelayInMilliseconds,
-}: {
+interface Options extends PrototypeAllTypes {
   debug: boolean;
-  config: PrototypeConfig;
   isPublic?: boolean;
   waitVisuals?: boolean;
   prototypeStatus: Prototype.PrototypeStatus;
   globalDelayInMilliseconds?: number;
-}) => {
-  const dispatch = useDispatch() as Dispatch;
+}
 
-  const isMuted = useSelector(Prototype.prototypeMutedSelector);
-  const activePathLinkIDs = useSelector(Prototype.activePathLinkIDsSelector);
-  const activePathBlockIDs = useSelector(Prototype.activePathBlockIDsSelector);
-  const getLinksByPortID = useSelector(CreatorV2.getLinksByPortIDSelector);
-  const contextHistory = useSelector(Prototype.prototypeContextHistorySelector);
-  const visualDataHistory = useSelector(Prototype.prototypeVisualDataHistorySelector);
-  const webhook = useSelector(Prototype.prototypeWebhookDataSelector);
-  const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
-  const flowIDHistory = useSelector(Prototype.prototypeFlowIDHistorySelector);
-  const contextStep = useSelector(Prototype.prototypeContextStepSelector);
+const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = true, prototypeStatus, globalDelayInMilliseconds }: Options) => {
+  const { isMuted } = config;
+  const {
+    activePathLinkIDs,
+    webhook,
+    activeDiagramID = null,
+    flowIDHistory,
+    activePathBlockIDs,
+    contextHistory = [],
+    visualDataHistory = [],
+    contextStep,
+  } = state;
+  const {
+    updatePrototypeStatus,
+    updatePrototypeVisualsDataHistory = Utils.functional.noop,
+    setActiveDiagramID = Utils.functional.noop,
+    getLinksByPortID,
+    fetchContext,
+    updatePrototype,
+    updatePrototypeVisualsData = Utils.functional.noop,
+    setError = Utils.functional.noop,
+  } = actions;
+
   const [status, setStatus] = React.useState<PMStatus | null>(null);
   const [messages, updateMessages] = React.useState<Message[]>([]);
   const [interactions, setInteractions] = React.useState<Interaction[]>([]);
@@ -56,25 +56,25 @@ const usePrototype = ({
     getEngine,
     isMuted,
     isPublic,
-    setError: (error) => dispatch(Modal.setError(error)),
-    enterFlow: (diagramID) => dispatch(Session.setActiveDiagramID(diagramID)),
+    setError,
+    enterDiagram: setActiveDiagramID,
     waitVisuals,
     contextStep,
     updateStatus: setStatus,
-    fetchContext: (request) => dispatch(Prototype.fetchContext(request, config)),
+    fetchContext: async (request) => (await fetchContext?.(request, config)) || null,
     addToMessages: (message) => updateMessages([...messages, message]),
     flowIDHistory,
     contextHistory,
     activeDiagramID,
-    updatePrototype: (payload) => dispatch(Prototype.updatePrototype(payload)),
+    updatePrototype,
     setInteractions,
-    getLinksByPortID: (portID) => getLinksByPortID({ id: portID }),
+    getLinksByPortID: (portID: IDSelectorParam) => getLinksByPortID?.(portID) || [],
     activePathLinkIDs,
     visualDataHistory,
     activePathBlockIDs,
     globalMessageDelayMilliseconds: messageDelays.isEnabled ? globalDelayInMilliseconds : 0,
-    updatePrototypeVisualsData: (data) => dispatch(Prototype.updatePrototypeVisualData(data)),
-    updatePrototypeVisualsDataHistory: (dataHistory) => dispatch(Prototype.updatePrototypeVisualDataHistory(dataHistory)),
+    updatePrototypeVisualsData,
+    updatePrototypeVisualsDataHistory,
   };
 
   const cache = React.useRef(cacheData);
@@ -96,7 +96,7 @@ const usePrototype = ({
 
   React.useEffect(() => {
     if (status === PMStatus.ENDED) {
-      dispatch(Prototype.updatePrototypeStatus(Prototype.PrototypeStatus.ENDED));
+      updatePrototypeStatus?.(Prototype.PrototypeStatus.ENDED);
     }
   }, [status]);
 
@@ -138,7 +138,7 @@ const usePrototype = ({
 
   const onStepBack = React.useCallback(() => {
     setStatus(PMStatus.WAITING_USER_INTERACTION);
-    dispatch(Prototype.updatePrototypeStatus(Prototype.PrototypeStatus.ACTIVE));
+    updatePrototypeStatus?.(Prototype.PrototypeStatus.ACTIVE);
     prototype.stepBack();
     trackingEvents.trackPrototypeManualNavBackwardButton();
   }, [prototype]);

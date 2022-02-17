@@ -3,16 +3,14 @@ import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import * as PrototypeDuck from '@/ducks/prototype';
-import * as Transcripts from '@/ducks/transcript';
-import { compose, connect } from '@/hocs';
+import { compose } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useASR, useCanASR, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPrototype } from '@/pages/Prototype/hooks';
-import { OnInteraction, PMStatus } from '@/pages/Prototype/types';
+import { OnInteraction, PMStatus, PrototypeAllTypes } from '@/pages/Prototype/types';
 import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
-import { ConnectedProps } from '@/types';
 
 import Footer from '../Footer';
 import Layout from '../Layout';
@@ -26,22 +24,16 @@ interface PrototypeProps {
   globalDelayInMilliseconds: number;
 }
 
-const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
-  status,
-  isMuted,
-  settings,
-  autoplay,
-  onInteract,
-  updatePrototype,
-  savePrototypeSession,
-  globalDelayInMilliseconds,
-}) => {
+const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state, actions, settings, onInteract, globalDelayInMilliseconds }) => {
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
   const [canUseASR] = useCanASR();
   const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
   const [input, setInput] = React.useState<string>('');
 
+  const { isMuted, autoplay } = config;
+  const { status } = state;
+  const { updatePrototype, savePrototypeSession } = actions;
   const locale = settings.locales[0];
   const isVisuals = settings.layout === PrototypeDuck.PrototypeLayout.VOICE_VISUALS;
 
@@ -54,8 +46,11 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     audio,
     onStepBack,
   } = usePrototype({
+    state,
+    actions,
     debug: false,
     config: {
+      ...config,
       debug: false,
       intent: false,
       isGuided: false,
@@ -240,17 +235,4 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   );
 };
 
-const mapStateToProps = {
-  status: PrototypeDuck.prototypeStatusSelector,
-  isMuted: PrototypeDuck.prototypeMutedSelector,
-  autoplay: PrototypeDuck.prototypeAutoplaySelector,
-};
-
-const mapDispatchProps = {
-  updatePrototype: PrototypeDuck.updatePrototype,
-  savePrototypeSession: Transcripts.createTranscript,
-};
-
-type ConnectedPrototypeProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchProps>;
-
-export default compose(removeIntercom, connect(mapStateToProps, mapDispatchProps))(Prototype) as React.FC<PrototypeProps>;
+export default compose(removeIntercom)(Prototype);

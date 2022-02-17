@@ -62,7 +62,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
         debug,
         getEngine: () => engine,
         setError: stub(),
-        enterFlow: stub(),
+        enterDiagram: stub(),
         fetchContext: stub().returns(context),
         updateStatus: stub(),
         setInteractions: stub(),
@@ -134,7 +134,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
   expectSetInteractions: (controller: TraceController, interactions: { name: string; request?: BaseRequest.BaseRequest }[]) =>
     expect(controller['props']['setInteractions']).to.be.calledWith(interactions),
 
-  expectEnterFlow: (controller: TraceController) => expect(controller['props']['enterFlow']),
+  expectEnterFlow: (controller: TraceController) => expect(controller['props']['enterDiagram']),
 
   expectFocusNode: (controller: TraceController) => expect(controller['props']['getEngine']()!['node']['center']),
 

@@ -1,22 +1,17 @@
 import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
-import * as Recent from '@/ducks/recent';
-import * as VersionV2 from '@/ducks/versionV2';
-import { compose, connect } from '@/hocs';
+import { compose } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useTeardown } from '@/hooks';
 import { Identifier } from '@/styles/constants';
-import { ConnectedProps, MergeArguments } from '@/types';
 import * as Query from '@/utils/query';
 
 import { ChatDisplay, Container, Input, Start, UserSaysContainer } from './components';
 import { usePrototype, useResetPrototype, useStartPrototype } from './hooks';
-import { BotMessageTypes, Message, MessageType, PMStatus } from './types';
+import { BotMessageTypes, Message, MessageType, PMStatus, PrototypeAllTypes } from './types';
 
 export interface PrototypeProps {
   debug: boolean;
@@ -25,28 +20,26 @@ export interface PrototypeProps {
   isPublic?: boolean;
   setAtTop?: (val: boolean) => void;
   isModelTraining?: boolean;
+  locale: string;
 }
 
-const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
+const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
+  actions,
+  state,
   atTop,
   debug,
   locale,
   config,
-  status,
-  buttons,
   isPublic,
-  autoplay,
-  platform,
   setAtTop,
-  showButtons,
-  updatePrototype,
   isModelTraining,
-  prototypeColor,
-  prototypeAvatar,
 }) => {
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
-  const durationMilliseconds = useSelector(VersionV2.active.general.messageDelaySelector);
+
+  const { buttons, durationMilliseconds, autoplay, showButtons, prototypeColor, prototypeAvatar } = config;
+  const { updatePrototype } = actions;
+  const { status } = state;
 
   const {
     status: prototypeMachineStatus,
@@ -58,8 +51,10 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     onStepForward,
     prototypeTool,
   } = usePrototype({
+    actions,
+    state,
     debug,
-    config: { ...config, platform },
+    config,
     isPublic,
     prototypeStatus: status,
     globalDelayInMilliseconds: durationMilliseconds,
@@ -143,24 +138,4 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   );
 };
 
-const mapStateToProps = {
-  buttons: PrototypeDuck.prototypeButtonsSelector,
-  status: PrototypeDuck.prototypeStatusSelector,
-  locales: VersionV2.active.localesSelector,
-  autoplay: PrototypeDuck.prototypeAutoplaySelector,
-  platform: ProjectV2.active.platformSelector,
-  showButtons: PrototypeDuck.prototypeShowButtonsSelector,
-  config: Recent.recentPrototypeSelector,
-  prototypeColor: PrototypeDuck.prototypeBrandColorSelector,
-  prototypeAvatar: PrototypeDuck.prototypeAvatarSelector,
-};
-
-const mapDispatchProps = {
-  updatePrototype: PrototypeDuck.updatePrototype,
-};
-
-const mergeProps = (...[{ locales }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchProps>) => ({ locale: locales[0] });
-
-type ConnectedPrototypeProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchProps, typeof mergeProps>;
-
-export default compose(removeIntercom, connect(mapStateToProps, mapDispatchProps, mergeProps))(Prototype);
+export default compose(removeIntercom)(Prototype);

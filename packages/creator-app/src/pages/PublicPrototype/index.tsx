@@ -1,6 +1,6 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { PlanType } from '@voiceflow/internal';
-import { DEVICE_INFO, FullSpinner, toast } from '@voiceflow/ui';
+import { DEVICE_INFO, FullSpinner, toast, withProvider } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -10,20 +10,16 @@ import SeoHelmet from '@/components/SeoHelmet';
 import { Permission } from '@/config/permissions';
 import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { connect } from '@/hocs';
-import { useGuestPermission, useSelector, useSetup, useToggle, useTrackingEvents } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { useDispatch, useGuestPermission, useSelector, useSetup, useToggle, useTrackingEvents } from '@/hooks';
+import { PrototypeContext, PrototypeProvider } from '@/pages/Prototype/context';
 import { getPrototypeSessionID } from '@/utils/prototype';
 
 import { Prototype } from './components';
 import PasswordScreen from './components/PasswordScreen';
 
-const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentProps<{ versionID: string }>> = ({
-  match,
-  setupPublicPrototype,
-  updatePrototype,
-  checkSharedProtoPassword,
-}) => {
+const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({ match }) => {
+  const setupPublicPrototype = useDispatch(PrototypeDuck.setupPublicPrototype);
+  const checkSharedProtoPassword = useDispatch(PrototypeDuck.checkSharedProtoPassword);
   const prototypeID = useSelector(PrototypeDuck.prototypeIDSelector);
   const [isLoaded, toggleLoaded] = useToggle(false);
   const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings & { globalMessageDelayMilliseconds?: number }>({
@@ -36,6 +32,12 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
     projectName: '',
     globalMessageDelayMilliseconds: 0,
   });
+
+  const prototypeAPI = React.useContext(PrototypeContext);
+
+  const { config, state, actions } = prototypeAPI;
+
+  const { updatePrototype } = actions;
 
   const [isAuthenticated, setAuthenticated] = React.useState<boolean>(false);
   const [trackingEvents] = useTrackingEvents();
@@ -90,7 +92,14 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
       <RemoveIntercom />
       <SeoHelmet page={SeoPage.PROTOTYPE} />
       {isAuthenticated || !canUseSharedPassword ? (
-        <Prototype settings={settings} onInteract={onInteract} globalDelayInMilliseconds={settings.globalMessageDelayMilliseconds || 0} />
+        <Prototype
+          settings={settings}
+          onInteract={onInteract}
+          config={config}
+          state={state}
+          actions={actions}
+          globalDelayInMilliseconds={settings.globalMessageDelayMilliseconds || 0}
+        />
       ) : (
         <PasswordScreen settings={settings} checkLogin={checkLogin} />
       )}
@@ -100,12 +109,4 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
   );
 };
 
-const mapDispatchToProps = {
-  setupPublicPrototype: PrototypeDuck.setupPublicPrototype,
-  checkSharedProtoPassword: PrototypeDuck.checkSharedProtoPassword,
-  updatePrototype: PrototypeDuck.updatePrototype,
-};
-
-type ConnectedPublicPrototypeProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(PublicPrototype);
+export default withProvider(PrototypeProvider)(PublicPrototype);

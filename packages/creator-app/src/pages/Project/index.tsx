@@ -30,6 +30,7 @@ import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRout
 import ManualSaveModal from '@/pages/Canvas/components/ManualSaveModal';
 import InactivityModal from '@/pages/Inactivity';
 import { useProjectExitTracking, useProjectPreviewMode } from '@/pages/Project/hooks';
+import { PrototypeProvider } from '@/pages/Prototype/context';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 import { ConnectedProps } from '@/types';
 
@@ -134,40 +135,42 @@ const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({
 
         <RemoveIntercom />
 
-        <PublishProvider>
-          <ExportProvider>
-            <NLPProvider>
-              <SelectionProvider>
-                <LastCreatedComponentProvider>
-                  <ProjectPage
-                    scrollable={!isDiagramRoute}
-                    renderHeader={() => !canvasOnly && <Header />}
-                    renderSidebar={() => !canvasOnly && <Sidebar />}
-                  >
-                    <Switch>
-                      <Route path={DIAGRAM_ROUTES} component={Diagram} />
+        <PrototypeProvider>
+          <PublishProvider>
+            <ExportProvider>
+              <NLPProvider>
+                <SelectionProvider>
+                  <LastCreatedComponentProvider>
+                    <ProjectPage
+                      scrollable={!isDiagramRoute}
+                      renderHeader={() => !canvasOnly && <Header />}
+                      renderSidebar={() => !canvasOnly && <Sidebar />}
+                    >
+                      <Switch>
+                        <Route path={DIAGRAM_ROUTES} component={Diagram} />
 
-                      <Route path={Path.CONVERSATIONS} component={Conversations} />
+                        <Route path={Path.CONVERSATIONS} component={Conversations} />
 
-                      <Route path={Path.PROJECT_TOOLS} component={Business} />
+                        <Route path={Path.PROJECT_TOOLS} component={Business} />
 
-                      <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
+                        <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
 
-                      <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
+                        <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
-                      <Route path={Path.PROJECT_PUBLISH} component={Publish} />
+                        <Route path={Path.PROJECT_PUBLISH} component={Publish} />
 
-                      <Route path={Path.PROJECT_SETTINGS} component={Settings} />
+                        <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 
-                      <Redirect to={Path.PROJECT_CANVAS} />
-                    </Switch>
-                    <ManualSaveModal />
-                  </ProjectPage>
-                </LastCreatedComponentProvider>
-              </SelectionProvider>
-            </NLPProvider>
-          </ExportProvider>
-        </PublishProvider>
+                        <Redirect to={Path.PROJECT_CANVAS} />
+                      </Switch>
+                      <ManualSaveModal />
+                    </ProjectPage>
+                  </LastCreatedComponentProvider>
+                </SelectionProvider>
+              </NLPProvider>
+            </ExportProvider>
+          </PublishProvider>
+        </PrototypeProvider>
       </PlatformProvider>
     </MarkupProvider>
   );

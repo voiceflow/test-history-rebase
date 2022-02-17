@@ -12,20 +12,18 @@ import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as Diagram from '@/ducks/diagram';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { useEventualEngine, usePermission, useTheme } from '@/hooks';
+import { useDispatch, useEventualEngine, usePermission, useSelector, useTheme } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import { NLPContext } from '@/pages/Project/contexts';
 import Prototype from '@/pages/Prototype';
+import { PrototypeContext } from '@/pages/Prototype/context';
 import { useDebug, useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { FadeLeftContainer } from '@/styles/animations';
 import { SlideOutDirection } from '@/styles/transitions';
-import { ConnectedProps } from '@/types';
 import { canUseSoundToggle } from '@/utils/prototype';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
 import * as Sentry from '@/vendors/sentry';
@@ -43,23 +41,21 @@ export interface PrototypeSidebarProps {
   open: boolean;
 }
 
-const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSidebarProps> = ({
-  open,
-  status,
-  isMuted,
-  platform,
-  projectID,
-  versionID,
-  updatePrototype,
-  compilePrototype,
-  saveActiveDiagram,
-}) => {
+const PrototypeSidebar: React.FC<PrototypeSidebarProps> = ({ open }) => {
   const theme = useTheme();
   const debugEnabled = useDebug();
   const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
+  const prototypeAPI = React.useContext(PrototypeContext);
+  const versionID = useSelector(Session.activeVersionIDSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector);
+  const compilePrototype = useDispatch(PrototypeDuck.compilePrototype);
+  const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
+  const { state, actions, config } = prototypeAPI;
+  const { locales, platform, isMuted } = config;
+  const { status } = state;
+  const { updatePrototype } = actions;
 
   const canSeeSoundToggle = canUseSoundToggle(platform);
-
   const [trainingOpen, toggleTrainingOpen] = useToggle(false);
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const resetPrototype = useResetPrototype();
@@ -236,7 +232,16 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
             />
 
             <EmbedContainer>
-              <Prototype debug={debugEnabled} atTop={atTop} setAtTop={setAtTop} isModelTraining={isModelTraining} />
+              <Prototype
+                config={config}
+                state={state}
+                actions={actions}
+                debug={debugEnabled}
+                atTop={atTop}
+                setAtTop={setAtTop}
+                isModelTraining={isModelTraining}
+                locale={locales[0]}
+              />
             </EmbedContainer>
           </Container>
         )}
@@ -245,20 +250,4 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   );
 };
 
-const mapStateToProps = {
-  status: PrototypeDuck.prototypeStatusSelector,
-  isMuted: PrototypeDuck.prototypeMutedSelector,
-  platform: ProjectV2.active.platformSelector,
-  versionID: Session.activeVersionIDSelector,
-  projectID: Session.activeProjectIDSelector,
-};
-
-const mapDispatchToProps = {
-  updatePrototype: PrototypeDuck.updatePrototype,
-  compilePrototype: PrototypeDuck.compilePrototype,
-  saveActiveDiagram: Diagram.saveActiveDiagram,
-};
-
-type ConnectedPrototypeSidebarProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(PrototypeSidebar) as React.FC<PrototypeSidebarProps>;
+export default PrototypeSidebar;

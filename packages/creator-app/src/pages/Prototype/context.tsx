@@ -1,0 +1,136 @@
+import { ButtonsLayout } from '@voiceflow/base-types/build/common/button';
+import { useContextApi } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import React from 'react';
+
+import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Modal from '@/ducks/modal';
+import * as ProjectV2 from '@/ducks/projectV2';
+import * as Prototype from '@/ducks/prototype';
+import { PrototypeStatus } from '@/ducks/prototype';
+import * as Recent from '@/ducks/recent';
+import * as Session from '@/ducks/session';
+import * as Transcripts from '@/ducks/transcript';
+import * as VersionV2 from '@/ducks/versionV2';
+import { useDispatch, useSelector } from '@/hooks';
+
+import { ProtoConfigType, PrototypeActions, PrototypeAllTypes, PrototypeRuntimeState } from './types';
+
+const defaultPrototypeContext: PrototypeAllTypes = {
+  config: {
+    buttons: ButtonsLayout.STACKED,
+    autoplay: true,
+    showButtons: true,
+    prototypeColor: 'blue',
+    prototypeAvatar: '',
+    locales: [''],
+    platform: VoiceflowConstants.PlatformType.GENERAL,
+    isMuted: false,
+    durationMilliseconds: 0,
+    debug: false,
+    intent: true,
+    isGuided: false,
+    showVisuals: true,
+  },
+  state: {
+    status: PrototypeStatus.IDLE,
+    activePathLinkIDs: [],
+    activePathBlockIDs: [],
+    contextHistory: [],
+    visualDataHistory: [],
+    webhook: null,
+    activeDiagramID: null,
+    flowIDHistory: [],
+    contextStep: 0,
+  },
+  actions: {
+    updatePrototype: () => {},
+    savePrototypeSession: () => {},
+    getLinksByPortID: undefined,
+    updatePrototypeVisualsData: undefined,
+    fetchContext: undefined,
+    setActiveDiagramID: undefined,
+    updatePrototypeStatus: undefined,
+    setError: undefined,
+  },
+};
+
+export const PrototypeContext = React.createContext<PrototypeAllTypes>(defaultPrototypeContext);
+export const { Consumer: PrototypeConsumer } = PrototypeContext;
+
+export const PrototypeProvider: React.FC = ({ children }) => {
+  const buttons = useSelector(Prototype.prototypeButtonsSelector);
+  const status = useSelector(Prototype.prototypeStatusSelector);
+  const autoplay = useSelector(Prototype.prototypeAutoplaySelector);
+  const showButtons = useSelector(Prototype.prototypeShowButtonsSelector);
+  const prototypeColor = useSelector(Prototype.prototypeBrandColorSelector);
+  const prototypeAvatar = useSelector(Prototype.prototypeAvatarSelector);
+  const locales = useSelector(VersionV2.active.localesSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
+  const config = useSelector(Recent.recentPrototypeSelector);
+  const updatePrototype = useDispatch(Prototype.updatePrototype);
+  const isMuted = useSelector(Prototype.prototypeMutedSelector);
+  const savePrototypeSession = useDispatch(Transcripts.createTranscript);
+  const durationMilliseconds = useSelector(VersionV2.active.general.messageDelaySelector);
+
+  const activePathLinkIDs = useSelector(Prototype.activePathLinkIDsSelector);
+  const activePathBlockIDs = useSelector(Prototype.activePathBlockIDsSelector);
+  const getLinksByPortID = useSelector(CreatorV2.getLinksByPortIDSelector);
+  const contextHistory = useSelector(Prototype.prototypeContextHistorySelector);
+  const visualDataHistory = useSelector(Prototype.prototypeVisualDataHistorySelector);
+  const webhook = useSelector(Prototype.prototypeWebhookDataSelector);
+  const activeDiagramID = useSelector(Session.activeDiagramIDSelector)!;
+  const flowIDHistory = useSelector(Prototype.prototypeFlowIDHistorySelector);
+  const contextStep = useSelector(Prototype.prototypeContextStepSelector);
+  const updatePrototypeVisualsData = useDispatch(Prototype.updatePrototypeVisualData);
+  const fetchContext = useDispatch(Prototype.fetchContext);
+  const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
+  const updatePrototypeVisualsDataHistory = useDispatch(Prototype.updatePrototypeVisualDataHistory);
+  const updatePrototypeStatus = useDispatch(Prototype.updatePrototypeStatus);
+  const setError = useDispatch(Modal.setError);
+
+  const protoConfig: ProtoConfigType = {
+    buttons,
+    autoplay,
+    showButtons,
+    prototypeColor,
+    prototypeAvatar,
+    isMuted,
+    durationMilliseconds: durationMilliseconds ?? 0,
+    locales,
+    platform,
+    ...config,
+  };
+
+  const state: PrototypeRuntimeState = {
+    status,
+    activePathLinkIDs,
+    activePathBlockIDs,
+    contextHistory,
+    activeDiagramID,
+    flowIDHistory,
+    contextStep,
+    visualDataHistory,
+    webhook,
+  };
+
+  const actions: PrototypeActions = {
+    updatePrototype,
+    savePrototypeSession,
+    getLinksByPortID,
+    updatePrototypeVisualsData,
+    fetchContext,
+    setActiveDiagramID,
+    updatePrototypeVisualsDataHistory,
+    updatePrototypeStatus,
+    setError,
+  };
+
+  const api = useContextApi({
+    state,
+    actions,
+    config: protoConfig,
+  });
+
+  return <PrototypeContext.Provider value={api}>{children}</PrototypeContext.Provider>;
+};

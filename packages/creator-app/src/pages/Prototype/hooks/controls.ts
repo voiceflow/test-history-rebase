@@ -10,7 +10,6 @@ export const useStartPrototype = () => {
 
   return React.useCallback((diagramID?: string | null, nodeID?: string | null) => {
     const engine = getEngine();
-
     return engine ? engine.prototype.start(diagramID, nodeID) : dispatch(Prototype.startPrototype(diagramID, nodeID));
   }, []);
 };

@@ -9,6 +9,7 @@ import { BlockType, START_BLOCK_ID } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
+import { IDSelectorParam } from '@/ducks/utils/crudV2';
 import {
   BlockTrace,
   ChoiceTrace,
@@ -45,10 +46,10 @@ export enum StepDirection {
 export interface TraceControllerProps {
   debug: boolean;
   getEngine: () => Nullish<Engine>;
-  isMuted: boolean;
+  isMuted?: boolean;
   setError: (error: string) => void;
   isPublic?: boolean;
-  enterFlow: (diagramID: string) => void;
+  enterDiagram?: (diagramID: string) => void;
   contextStep: number;
   waitVisuals: boolean;
   updateStatus: (status: PMStatus) => void;
@@ -58,7 +59,7 @@ export interface TraceControllerProps {
   activeDiagramID: string | null;
   setInteractions: (interactions: Interaction[]) => void;
   updatePrototype: (payload: Partial<Prototype.PrototypeState>) => void;
-  getLinksByPortID: (portID: string) => Realtime.Link[];
+  getLinksByPortID: (portID: IDSelectorParam) => Realtime.Link[];
   activePathLinkIDs: string[];
   visualDataHistory: (null | BaseNode.Visual.StepData)[];
   activePathBlockIDs: string[];
@@ -202,8 +203,8 @@ class TraceController {
 
     this.resetInteractions();
 
-    if (targetDiagramID && this.props.activeDiagramID !== targetDiagramID && this.props.enterFlow) {
-      this.props.enterFlow(targetDiagramID);
+    if (targetDiagramID && this.props.activeDiagramID !== targetDiagramID && this.props.enterDiagram) {
+      this.props.enterDiagram(targetDiagramID);
       await this.waitDiagram(targetDiagramID);
     }
 
@@ -547,7 +548,7 @@ class TraceController {
   }
 
   private async processFlowTrace({ payload: { diagramID } }: FlowTrace) {
-    if (!diagramID || !this.props.enterFlow) {
+    if (!diagramID || !this.props.enterDiagram) {
       return;
     }
 
@@ -573,7 +574,8 @@ class TraceController {
   }
 
   private async navigateToFlow(diagramID: string) {
-    this.props.enterFlow(diagramID);
+    if (!this.props.enterDiagram) return;
+    this.props.enterDiagram(diagramID);
 
     const currentFlowStack = this.props.flowIDHistory;
     const flowAlreadyInHistory = currentFlowStack.includes(diagramID);
@@ -643,7 +645,7 @@ class TraceController {
     if (targetNode.type === BlockType.FLOW || targetNode.type === BlockType.COMPONENT) {
       const builtIn = (targetNode.ports.out.builtIn ?? {}) as Realtime.NodeData.FlowBuiltInPorts | Realtime.NodeData.ComponentBuiltInPorts;
 
-      const outPort = builtIn[BaseModels.PortType.NEXT];
+      const outPort = builtIn[BaseModels.PortType.NEXT] as unknown as IDSelectorParam;
       const linksByPortID = outPort ? this.props.getLinksByPortID(outPort) : [];
       const outLinkID = linksByPortID?.[0]?.id;
 

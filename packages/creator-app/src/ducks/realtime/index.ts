@@ -50,7 +50,7 @@ export const initializeRealtimeReducer: RealtimeReducer<InitializeRealtime> = (s
 export const updateDiagramViewersReducer: RealtimeReducer<UpdateDiagramViewers> = (state, { payload: users }) => {
   const tabIDs = Object.values(users).flatMap(Object.keys);
   const filterByTabID = <K extends string>(locks: Partial<Record<K, string>>): Partial<typeof locks> =>
-    Utils.object.filterEntries(locks, (_, value) => !!value && tabIDs.includes(value));
+    Utils.object.filterEntries(locks, (_: string, value: string | undefined) => !!value && tabIDs.includes(value));
 
   return {
     ...state,

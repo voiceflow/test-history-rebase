@@ -112,6 +112,8 @@ export enum EventName {
   PROFILE_PASSWORD_CHANGED = 'Profile Password Changed',
 
   VARIABLE_STATE_CREATED = 'Variable State Created',
+  VARIABLE_STATE_EDITED = 'Variable State Edited',
+  VARIABLE_STATE_DELETED = 'Variable State Deleted',
 
   SUBSCRIPTION_CREATED = 'Subscription Created',
 }

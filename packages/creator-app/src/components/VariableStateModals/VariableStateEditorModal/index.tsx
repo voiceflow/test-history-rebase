@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Box, Button, ButtonVariant, Input, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -62,6 +63,17 @@ const VariableStateEditorModal: React.FC = () => {
     name: variable,
   }));
 
+  const getDiffValues = () => {
+    const variableState = getVariableStateByID({ id: data.variableStateID });
+    if (!variableState) return [];
+    return Object.keys(
+      Utils.object.getTopLevelDiff(
+        { name: values.name, starting_block: values.stepID, variables: values.variablesValues },
+        { name: variableState.name, starting_block: variableState.startFrom?.stepID || null, variables: variableState.variables }
+      )
+    );
+  };
+
   const validateFields = () => {
     if (!values.name) {
       toast.error('Name is required');
@@ -103,11 +115,19 @@ const VariableStateEditorModal: React.FC = () => {
         if (createdVariableState) updateSelectedVariableState({ id: createdVariableState.id, variables: values.variablesValues });
         trackingEvents.trackVariableStateCreated({ diagramID });
       } else {
+        const changedFields = getDiffValues();
+
+        if (!changedFields.length) {
+          close();
+          return;
+        }
+
         await updateVariableState(data.variableStateID, {
           name: values.name,
           variables: values.variablesValues,
           startFrom,
         });
+        trackingEvents.trackVariableStateEdited({ editedFields: changedFields });
       }
       close();
     } catch (e) {

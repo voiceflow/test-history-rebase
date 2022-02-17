@@ -4,7 +4,7 @@ import React from 'react';
 import Modal, { ModalBody } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useModals, useSelector } from '@/hooks';
+import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 
 const VariableStatesManagerModal: React.FC = () => {
   const { open: openEditorModal } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
@@ -13,6 +13,7 @@ const VariableStatesManagerModal: React.FC = () => {
   const updateVariableState = useDispatch(VariableState.updateState);
   const deleteVariableState = useDispatch(VariableState.deleteState);
   const [variableStateNames, setVariableStateNames] = React.useState({} as Record<string, string>);
+  const [trackingEvents] = useTrackingEvents();
 
   const handleVariableNameChange = async (variableStateID: string) => {
     const name = variableStateNames[variableStateID];
@@ -22,6 +23,7 @@ const VariableStatesManagerModal: React.FC = () => {
 
   const handleVariableStateDelete = async (variableStateID: string) => {
     await deleteVariableState(variableStateID);
+    trackingEvents.trackVariableStateDeleted();
   };
 
   const handleEditState = (variableStateID: string) => {

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.41.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.40.0...@voiceflow/realtime@1.41.0) (2022-02-18)
+
+
+### Features
+
+* goto intent in specific diagram (VF-2338) ([#5044](https://github.com/voiceflow/creator-app/issues/5044)) ([7bafca9](https://github.com/voiceflow/creator-app/commit/7bafca92024796aec449f2bfd083afad2d232444))
+
+
+
+
+
 # [1.40.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.39.1...@voiceflow/realtime@1.40.0) (2022-02-16)
 
 

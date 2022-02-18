@@ -1,5 +1,16 @@
 import { Utils } from '@voiceflow/common';
-import { Box, FlexApart, FlexStart, Icon, KeyName, Select, SelectInputVariant, SelectMenuItemOptions, SvgIcon } from '@voiceflow/ui';
+import {
+  Box,
+  createUIOnlyMenuItemOption,
+  FlexApart,
+  FlexStart,
+  Icon,
+  KeyName,
+  Select,
+  SelectInputVariant,
+  SvgIcon,
+  UIOnlyMenuItemOption,
+} from '@voiceflow/ui';
 import _findLastIndex from 'lodash/findLastIndex';
 import React from 'react';
 
@@ -27,9 +38,7 @@ export interface BaseReportTagInputProps {
 
 export type TagInputVariantProps = Omit<BaseReportTagInputProps, 'menu' | 'tags'>;
 
-interface TagSelectOption extends ReportTag, SelectMenuItemOptions {}
-
-const customMenuLabelRenderer = (option: TagSelectOption, isSelectedFunc: (val: string) => boolean) => {
+const customMenuLabelRenderer = (option: ReportTag, isSelectedFunc: (val: string) => boolean) => {
   return (
     <FlexApart style={{ width: '100%' }}>
       <FlexStart>
@@ -73,7 +82,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
   // Only use tags that exist in redux (they can be deleted in the tags manager)
   const [selectedValidTags, setSelectedValidTags] = React.useState(() => selectedTags.filter((tag) => !!tagsMap[tag]));
 
-  const options = React.useMemo<TagSelectOption[]>(() => {
+  const options = React.useMemo(() => {
     if (selectOnly) {
       const sortedAllTags = [...allTags].sort((lTag, rTag) => Number(isBuiltInTag(rTag.id)) - Number(isBuiltInTag(lTag.id)));
       const lastBuiltInIndex = _findLastIndex(sortedAllTags, (tag) => isBuiltInTag(tag.id));
@@ -82,12 +91,11 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         return sortedAllTags;
       }
 
-      return Utils.array.insert<TagSelectOption>(sortedAllTags, lastBuiltInIndex + 1, {
-        id: 'divider',
-        label: 'divider',
-        projectID: '',
-        menuItemProps: { divider: true },
-      });
+      return Utils.array.insert<ReportTag | UIOnlyMenuItemOption>(
+        sortedAllTags,
+        lastBuiltInIndex + 1,
+        createUIOnlyMenuItemOption('divider', { divider: true })
+      );
     }
 
     return allTags.filter((tag) => !isBuiltInTag(tag.id) && filterOutSelected(tag.id, selectedValidTags));
@@ -143,7 +151,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         footerAction={footerAction}
         fullWidth
         selectedOptions={selectedValidTags}
-        renderOptionsFilter={selectOnly ? undefined : ({ id }: { id: string }) => filterOutSelected(id, selectedValidTags)}
+        renderOptionsFilter={selectOnly ? undefined : ({ id }) => filterOutSelected(id, selectedValidTags)}
         options={options}
         autoDismiss={false}
         creatable={creatable}
@@ -153,7 +161,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         searchable
         onCreate={onCreateNew}
         onSearch={(val) => onSearch(val)}
-        getOptionValue={(tag) => tag!.id}
+        getOptionValue={(tag) => tag?.id}
         getOptionLabel={(tag) => (tag ? tagsMap[tag]?.label : '')}
         createInputPlaceholder="New tag"
         placeholder={Object.keys(selectedTagObjects).length ? '' : 'Add tags'}

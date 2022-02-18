@@ -4,8 +4,6 @@ import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
 import * as Documentation from '@/config/documentation';
-import * as IntentV2 from '@/ducks/intentV2';
-import { useSelector } from '@/hooks';
 import ListEditorContent from '@/pages/Canvas/components/ListEditorContent';
 import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
 import { useButtonLayoutOption, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
@@ -22,8 +20,6 @@ const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons, Realtime.NodeData.But
   onChange,
   pushToPath,
 }) => {
-  const openIntents = useSelector(IntentV2.openIntentsSelector);
-
   const buttonLayoutOption = useButtonLayoutOption();
   const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
 
@@ -44,7 +40,7 @@ const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons, Realtime.NodeData.But
       onChangeItems={(items) => onChange({ buttons: items })}
       itemComponent={ButtonsListItem}
       howItWorksLink={Documentation.BUTTONS_STEP}
-      extraItemProps={{ openIntents, pushToPath }}
+      extraItemProps={{ pushToPath }}
       getControlOptions={({ onAdd, isMaxMatches, scrollToBottom }) => [
         {
           label: 'Add Button',

@@ -15,9 +15,17 @@ const removeIntentStepsReducer = createReducer(Realtime.node.removeMany, (state,
 
   // clear any steps from the lookup
   const diagramIntentSteps = state.intentSteps[diagramID];
+  const diagramGlobalIntents = state.globalIntentStepMap[diagramID] ?? {};
+
   if (diagramIntentSteps) {
     nodeIDs.forEach((nodeID) => {
+      const intentData = diagramIntentSteps[nodeID];
+
       delete diagramIntentSteps[nodeID];
+
+      if (intentData) {
+        diagramGlobalIntents[intentData.intentID] = Utils.array.withoutValue(diagramGlobalIntents[intentData.intentID], nodeID);
+      }
     });
   }
 });

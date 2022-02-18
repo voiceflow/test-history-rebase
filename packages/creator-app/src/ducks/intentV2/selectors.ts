@@ -5,7 +5,6 @@ import uniqBy from 'lodash/uniqBy';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
-import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as IntentSelectorsV1 from '@/ducks/intent/selectors';
 import { applyIntentNameFormatting } from '@/ducks/intent/utils';
@@ -110,10 +109,3 @@ export const allSlotsIDsByIntentIDsSelector = createSelector(
   [createCurriedSelector(slotsByIntentIDSelector), idsParamSelector],
   (getSlotIDsByIntentID, intentIDs) => Utils.array.unique(intentIDs.flatMap((intentID) => getSlotIDsByIntentID({ id: intentID })))
 );
-
-export const openIntentsSelector = createSelector([allPlatformIntentsSelector, DiagramV2.intentStepsSelector], (intents, intentSteps) => {
-  const uniqIntentIDs = Utils.array.unique(Object.values(intentSteps).flatMap((stepIntentMap) => Object.values(stepIntentMap)));
-  const openIntentIDsMap = uniqIntentIDs.reduce<Record<string, boolean>>((acc, intentID) => Object.assign(acc, { [intentID ?? '']: true }), {});
-
-  return intents.filter((intent) => openIntentIDsMap[intent.id]);
-});

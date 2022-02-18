@@ -3,6 +3,7 @@ import { COMPONENT_KEY, TOPIC_KEY, VARIABLES_KEY } from '@realtime-sdk/constants
 import { Diagram } from '@realtime-sdk/models';
 import { BaseDiagramPayload, BaseVersionPayload, Point } from '@realtime-sdk/types';
 import { diagram } from '@realtime-sdk/utils';
+import { Nullable } from '@voiceflow/base-types';
 import { Required } from 'utility-types';
 
 import { diagramType } from './utils';
@@ -25,22 +26,30 @@ export const removeLocalVariable = createAction<LocalVariablePayload>(diagramVar
 
 // intent steps
 
-export interface LoadIntentStepsPayload extends BaseVersionPayload {
-  intentSteps: { [diagramID: string]: { [nodeID: string]: string | null } };
+export interface DiagramIntentStep {
+  global: boolean;
+  intentID: string;
 }
 
-export interface ReloadIntentStepsPayload extends BaseVersionPayload {
-  diagramID: string;
-  intentSteps: { [nodeID: string]: string | null };
+export interface DiagramIntentStepMap {
+  [nodeID: string]: Nullable<DiagramIntentStep>;
+}
+
+export interface LoadIntentStepsPayload extends BaseVersionPayload {
+  intentSteps: { [diagramID: string]: DiagramIntentStepMap };
+}
+
+export interface ReloadIntentStepsPayload extends BaseDiagramPayload {
+  intentSteps: DiagramIntentStepMap;
 }
 
 export interface UpdateIntentStepsPayload extends BaseDiagramPayload {
   stepID: string;
-  intentID: string | null;
+  intent: Nullable<DiagramIntentStep>;
 }
 
 export interface RegisterIntentStepsPayload extends BaseDiagramPayload {
-  intentSteps: { stepID: string; intentID: string | null }[];
+  intentSteps: Array<{ stepID: string; intent: Nullable<DiagramIntentStep> }>;
 }
 
 export interface ReorderIntentStepsPayload extends BaseDiagramPayload {
@@ -50,9 +59,9 @@ export interface ReorderIntentStepsPayload extends BaseDiagramPayload {
 
 export const loadIntentSteps = createAction<LoadIntentStepsPayload>(diagramIntentStepsType('LOAD'));
 export const updateIntentSteps = createAction<UpdateIntentStepsPayload>(diagramIntentStepsType('UPDATE'));
-export const registerIntentSteps = createAction<RegisterIntentStepsPayload>(diagramIntentStepsType('REGISTER'));
-export const reorderIntentSteps = createAction<ReorderIntentStepsPayload>(diagramIntentStepsType('REORDER'));
 export const reloadIntentSteps = createAction<ReloadIntentStepsPayload>(diagramIntentStepsType('RELOAD'));
+export const reorderIntentSteps = createAction<ReorderIntentStepsPayload>(diagramIntentStepsType('REORDER'));
+export const registerIntentSteps = createAction<RegisterIntentStepsPayload>(diagramIntentStepsType('REGISTER'));
 
 // blocks
 

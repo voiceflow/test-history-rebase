@@ -1,15 +1,15 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, Box, Link } from '@voiceflow/ui';
+import { Badge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentHandlers, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import GoToIntentSelect from '@/components/GoToIntentSelect';
 import IntentForm, { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
-import * as Documentation from '@/config/documentation';
 import { FeatureFlag } from '@/config/features';
 import { DistinctPlatform } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -23,8 +23,6 @@ import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/plat
 import { INTENT_ACTION_OPTIONS } from './constants';
 import HelpTooltip from './HelpTooltip';
 
-const IntentSelectComponent = IntentSelect as React.FC<any>;
-
 export type DraggableItemProps = ItemComponentProps<Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>> &
   DragPreviewComponentProps &
   (
@@ -35,7 +33,6 @@ export type DraggableItemProps = ItemComponentProps<Record<DistinctPlatform, Rea
     platform: VoiceflowConstants.PlatformType;
     isOnlyItem: boolean;
     pushToPath?: PushToPath;
-    openIntents: Realtime.Intent[];
     latestCreatedKey: string | undefined;
   };
 
@@ -50,7 +47,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
     pushToPath,
     isOnlyItem,
     isDragging,
-    openIntents,
     onContextMenu,
     connectedDragRef,
     latestCreatedKey,
@@ -62,7 +58,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
   const platformItem = getDistinctPlatformValue(platform, item);
   const intents = useSelector(IntentV2.allPlatformIntentsSelector);
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: platformItem.intent });
-  const goToIntent = useSelector(IntentV2.platformIntentByIDSelector, { id: platformItem.goTo?.intentID });
 
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
@@ -73,7 +68,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
   );
 
   const onChangeGoToIntent = React.useCallback(
-    ({ intent: intentID }: { intent: string | null }) => patchPlatformData({ goTo: { ...platformItem.goTo, intentID } }),
+    (data: { intentID: string; diagramID: string | null } | null) =>
+      patchPlatformData({ goTo: { ...platformItem.goTo, intentID: data?.intentID ?? null, diagramID: data?.diagramID ?? null } }),
     [patchPlatformData, platformItem]
   );
 
@@ -110,9 +106,9 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
               paddingBottom: topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? '16px' : undefined,
             }}
           >
-            <IntentSelectComponent
+            <IntentSelect
               intent={intent}
-              intents={availableIntents}
+              options={availableIntents}
               onChange={patchPlatformData}
               clearable={!intent}
               renderEmpty={!availableIntents.length ? () => <div /> : null}
@@ -128,22 +124,11 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
 
                 {platformItem.action === BaseNode.Interaction.ChoiceAction.GO_TO && (
                   <Section isNested dividers={false} customContentStyling={{ paddingTop: 0 }}>
-                    <IntentSelectComponent
-                      intent={goToIntent}
-                      intents={openIntents}
+                    <GoToIntentSelect
                       onChange={onChangeGoToIntent}
-                      creatable={false}
-                      clearable={!goToIntent}
-                      renderEmpty={({ close, search }: { search: string; close: VoidFunction }) => (
-                        <Box flex={1} textAlign="center">
-                          {!search ? 'No open intents exists in your project. ' : 'No open intents found. '}
-                          <Link href={Documentation.OPEN_INTENT} onClick={close}>
-                            Learn more
-                          </Link>
-                        </Box>
-                      )}
+                      intentID={platformItem.goTo?.intentID}
+                      diagramID={platformItem.goTo?.diagramID}
                       placeholder="Behave as user triggered intent"
-                      withMissingAlert={false}
                     />
                   </Section>
                 )}

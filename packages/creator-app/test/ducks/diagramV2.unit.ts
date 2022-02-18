@@ -40,7 +40,12 @@ const MOCK_STATE: Diagram.DiagramState = {
   },
   intentSteps: {
     [DIAGRAM_ID]: {
-      [STEP_ID]: INTENT_ID,
+      [STEP_ID]: { intentID: INTENT_ID, global: true },
+    },
+  },
+  globalIntentStepMap: {
+    [DIAGRAM_ID]: {
+      [INTENT_ID]: [STEP_ID],
     },
   },
 };
@@ -56,8 +61,8 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram V2', ({ expect, describeReducerV2, c
           ...ACTION_CONTEXT,
           diagramID: DIAGRAM_ID,
           intentSteps: [
-            { stepID: 'foo', intentID: null },
-            { stepID: STEP_ID, intentID: null },
+            { stepID: 'foo', intent: null },
+            { stepID: STEP_ID, intent: null },
           ],
         });
 
@@ -69,14 +74,14 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram V2', ({ expect, describeReducerV2, c
           ...ACTION_CONTEXT,
           diagramID: DIAGRAM_ID,
           intentSteps: [
-            { stepID: 'foo', intentID: 'fizz' },
-            { stepID: STEP_ID, intentID: 'buzz' },
+            { stepID: 'foo', intent: { intentID: 'fizz', global: false } },
+            { stepID: STEP_ID, intent: { intentID: 'buzz', global: true } },
           ],
         });
 
         expect(result.intentSteps[DIAGRAM_ID]).to.eql({
-          foo: 'fizz',
-          [STEP_ID]: 'buzz',
+          foo: { intentID: 'fizz', global: false },
+          [STEP_ID]: { intentID: 'buzz', global: true },
         });
       });
 
@@ -85,10 +90,10 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram V2', ({ expect, describeReducerV2, c
         const result = applyAction(MOCK_STATE, {
           ...ACTION_CONTEXT,
           diagramID,
-          intentSteps: [{ stepID: 'foo', intentID: 'bar' }],
+          intentSteps: [{ stepID: 'foo', intent: { intentID: 'bar', global: true } }],
         });
 
-        expect(result.intentSteps[diagramID]).to.eql({ foo: 'bar' });
+        expect(result.intentSteps[diagramID]).to.eql({ foo: { intentID: 'bar', global: true } });
       });
     });
   });

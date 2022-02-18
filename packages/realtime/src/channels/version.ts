@@ -56,7 +56,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       // eslint-disable-next-line no-underscore-dangle
       if (isTopicsAndComponents && project._version && project._version >= Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION) {
         const topicsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.Diagram.DiagramType.TOPIC);
-        const componentsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.Diagram.DiagramType.COMPONENT);
+        const componentsDiagrams = diagrams.filter((diagram) => !diagram.type || diagram.type === BaseModels.Diagram.DiagramType.COMPONENT);
 
         if ((version.topics?.length ?? 0) !== topicsDiagrams.length || (version.components?.length ?? 0) !== componentsDiagrams.length) {
           const topics = topicsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }));

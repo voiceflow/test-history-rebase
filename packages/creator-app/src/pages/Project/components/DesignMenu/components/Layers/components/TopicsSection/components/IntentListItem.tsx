@@ -26,7 +26,7 @@ const IntentListItem: React.ForwardRefRenderFunction<HTMLDivElement, IntentListI
 ) => {
   const getEngine = useEventualEngine();
 
-  const goToDiagram = useDispatch(Router.goToDiagramHistoryPush, diagramID, stepID);
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryClear, diagramID, stepID);
 
   const onClick = () => {
     const engine = getEngine();

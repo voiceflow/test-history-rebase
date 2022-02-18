@@ -1,6 +1,7 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { createUIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { createSelector } from 'reselect';
@@ -46,7 +47,7 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
     const usedIntents = intents.filter((intent) => usedIntentIDs.includes(intent.id));
     const unusedIntents = intents.filter((intent) => !usedIntentIDs.includes(intent.id));
 
-    return [...(usedIntents.length ? [...usedIntents, { id: 'divider', name: '', menuItemProps: { divider: true } }] : []), ...unusedIntents];
+    return [...(usedIntents.length ? [...usedIntents, createUIOnlyMenuItemOption('divider', { divider: true })] : []), ...unusedIntents];
   }, [intents, usedIntentIDs]);
 
   return (

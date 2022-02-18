@@ -98,7 +98,7 @@ export namespace NodeData {
 
   export interface InteractionChoice {
     id: string;
-    goTo: Nullable<{ intentID: Nullable<string> }>;
+    goTo: Nullable<{ intentID: Nullable<string>; diagramID?: Nullable<string> }>;
     action: BaseNode.Interaction.ChoiceAction;
     intent: string | null;
     mappings: BaseModels.SlotMapping[];

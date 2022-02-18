@@ -2,12 +2,12 @@ import { Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { STRICT_LINKS_REGEXS, URL_ONLY_REGEX, VALID_LINKS_REGEXS } from '@/constants';
-import { isGeneralPlatform } from '@/utils/typeGuards';
+import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 export const createNextName = (prefix: string, items: string[], platform: VoiceflowConstants.PlatformType): string => {
   let counter = 1;
 
-  const isGeneral = isGeneralPlatform(platform);
+  const isGeneral = isAnyGeneralPlatform(platform);
 
   const genIntentName = (counter: number) => {
     const name = `${prefix} ${Utils.number.convertToWord(counter)}`;

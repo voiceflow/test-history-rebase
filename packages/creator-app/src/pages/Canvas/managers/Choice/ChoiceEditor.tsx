@@ -4,8 +4,7 @@ import React from 'react';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { HelpTooltip } from '@/components/IntentForm';
 import OverflowMenu from '@/components/OverflowMenu';
-import * as IntentV2 from '@/ducks/intentV2';
-import { useManager, useSelector, useToggle } from '@/hooks';
+import { useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
 import { useButtonsOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
@@ -24,8 +23,6 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.
   onChange,
   pushToPath,
 }) => {
-  const openIntents = useSelector(IntentV2.openIntentsSelector);
-
   const [isDragging, toggleDragging] = useToggle(false);
   const { choices } = data;
 
@@ -104,7 +101,7 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.
         onDelete={onRemove}
         onReorder={reorderChoice}
         onEndDrag={toggleDragging}
-        itemProps={{ latestCreatedKey, pushToPath, isOnlyItem: choices.length === 1, platform, openIntents, choices }}
+        itemProps={{ latestCreatedKey, pushToPath, isOnlyItem: choices.length === 1, platform, choices }}
         mapManaged={mapManaged}
         onStartDrag={toggleDragging}
         itemComponent={DraggableItem}

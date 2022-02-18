@@ -14,8 +14,7 @@ import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { connect } from '@/hocs';
 import { useEnableDisable, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
-import { formatIntentName, isCustomizableBuiltInIntent } from '@/utils/intent';
-import { isGeneralPlatform } from '@/utils/typeGuards';
+import { applyPlatformIntentNameFormatting, isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import EmptyContainer from '../EmptyContainer';
 import LeftColumn from '../LeftColumn';
@@ -38,7 +37,6 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
 }) => {
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
   const managerRef = React.useRef<{ resetPath: () => void }>(null);
-  const isGeneral = isGeneralPlatform(platform);
   const scrollbarsRef = React.useRef<Scrollbars>(null);
   const [trackingEvents] = useTrackingEvents();
 
@@ -116,7 +114,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
               getLabel={getItemLabel}
               addMessage="New Intent"
               renderItem={(item, index) => renderItem({ key: item.id, itemKey: item.id, item, index })}
-              formatValue={isGeneral ? undefined : formatIntentName}
+              formatValue={(value) => applyPlatformIntentNameFormatting(value, platform)}
               placeholder="Search Intents"
             />
           )}

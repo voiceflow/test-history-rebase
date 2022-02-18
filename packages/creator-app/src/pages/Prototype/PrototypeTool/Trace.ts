@@ -25,6 +25,7 @@ import {
 } from '@/models';
 import { Engine } from '@/pages/Canvas/engine';
 import { loadImage } from '@/utils/dom';
+import { Logger } from '@/utils/logger';
 
 import { Interaction, PMStatus } from '../types';
 import AudioController from './Audio';
@@ -71,6 +72,7 @@ export interface TraceControllerProps {
 interface Options {
   props: TraceControllerProps;
   audio: AudioController;
+  logger: Logger;
   message: MessageController;
   timeout: TimeoutController;
 }
@@ -114,6 +116,8 @@ class TraceController {
 
   private audio: Options['audio'];
 
+  private logger: Options['logger'];
+
   private stopped = false;
 
   private message: Options['message'];
@@ -134,9 +138,10 @@ class TraceController {
     this.props.setInteractions([]);
   }
 
-  constructor({ audio, props, message, timeout }: Options) {
+  constructor({ audio, props, logger, message, timeout }: Options) {
     this.props = props;
     this.audio = audio;
+    this.logger = logger;
     this.timeout = timeout;
     this.message = message;
   }
@@ -205,6 +210,7 @@ class TraceController {
 
     if (targetDiagramID && this.props.activeDiagramID !== targetDiagramID && this.props.enterDiagram) {
       this.props.enterDiagram(targetDiagramID);
+
       await this.waitDiagram(targetDiagramID);
     }
 
@@ -226,7 +232,9 @@ class TraceController {
 
     // wait for the block to render (to account for switching between flows)
     await this.waitNode(targetBlockID);
+
     this.props.getEngine()?.prototype.setFinalNodeID(null);
+
     await this.processTrace([targetBlockTraceFrame, targetStepTrace]);
 
     this.props.updatePrototype({ context: targetContext as Prototype.Context });
@@ -287,10 +295,13 @@ class TraceController {
   private async simulateLoadingDelay(trace: BotTraceType, delayMillisecondsOverride?: number) {
     const isVeryFirstMessage = this.isVeryFirstBotMessage(trace);
     const delayInMilliseconds = delayMillisecondsOverride ?? this.props.globalMessageDelayMilliseconds;
+
     if (isVeryFirstMessage || !delayInMilliseconds) return;
 
     this.props.updateStatus(PMStatus.FAKE_LOADING);
+
     await this.timeout.delay(delayInMilliseconds);
+
     this.props.updateStatus(PMStatus.NAVIGATING);
   }
 
@@ -302,9 +313,12 @@ class TraceController {
     const [topTrace, ...tailTrace] = trace;
 
     if (!topTrace) {
+      this.logger.debug('Nothing to process, waiting user interaction');
+
       this.props.updateStatus(PMStatus.WAITING_USER_INTERACTION);
       return;
     }
+
     this.props.updateStatus(PMStatus.NAVIGATING);
 
     this.trace = tailTrace;
@@ -312,6 +326,8 @@ class TraceController {
     if (!this.isPublicPrototype) {
       await this.waitEngineAndNodes();
     }
+
+    this.logger.debug('Processing trace', topTrace);
 
     switch (topTrace.type) {
       case BaseTrace.TraceType.CHOICE: {
@@ -393,23 +409,6 @@ class TraceController {
     this.props.setInteractions(interactions);
   }
 
-  private saveActivePathBlock(node: Realtime.Node) {
-    const updatedActivePathBlockArray = Utils.array.unique([...this.props.activePathBlockIDs, node!.parentNode!]);
-    const updatedContextHistory = getUpdatedContextHistory(
-      this.props.contextStep,
-      this.props.contextHistory,
-      'activePathBlockIDs',
-      updatedActivePathBlockArray
-    );
-
-    const updatePrototypeData = {
-      activePathBlockIDs: updatedActivePathBlockArray,
-      contextHistory: updatedContextHistory,
-    };
-
-    this.props.updatePrototype(updatePrototypeData);
-  }
-
   private async processBlockTrace(trace: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
     const node = this.props.getEngine()?.getNodeByID(trace.payload.blockID);
 
@@ -431,6 +430,7 @@ class TraceController {
     const { visualType } = payload;
     const isImageType = visualType === BaseNode.Visual.VisualType.IMAGE;
     const image = isImageType ? payload.image : payload.imageURL;
+
     if (image) {
       await loadImage(image).catch(() => null);
     }
@@ -444,36 +444,10 @@ class TraceController {
     }
   }
 
-  private async highlightBlock(node: Realtime.Node, skipDelay = false) {
-    const hasParent = !!node.parentNode;
-    const nodeType = node?.type;
-    const highlightedBlocks = this.props.getEngine()?.select(Prototype.activePathBlockIDsSelector);
-    const parentBlockAlreadyHighlighted = !!highlightedBlocks?.includes(node?.parentNode || '');
-
-    if (parentBlockAlreadyHighlighted) {
-      return;
-    }
-
-    const [, sourceNodeID] = Utils.array.tail(this.props.getEngine()?.select(Prototype.activePathBlockIDsSelector) || []);
-
-    if (hasParent) {
-      await this.saveActivePathBlock(node);
-    }
-
-    this.saveActivePathLink(sourceNodeID, node);
-
-    if ((hasParent && FOCUSABLE_NODES.includes(nodeType)) || this.props.debug || !nodeType) {
-      this.focusNode(node.parentNode!);
-      if (skipDelay) return;
-      await this.timeout.delay(MIN_FOCUSED_NODE_TIME);
-    }
-  }
-
   private async processStreamTrace(trace: StreamTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean }) {
-    const {
-      payload: { src, action, token },
-    } = trace;
     this.message.stream(trace);
+
+    const { src, action, token } = trace.payload;
 
     const pausing = action === BaseNode.Stream.TraceStreamAction.PAUSE;
 
@@ -509,7 +483,7 @@ class TraceController {
           onPause: (audio) => {
             this.streamState.offset = audio.currentTime;
           },
-          onError: () => this.setError(),
+          onError: this.setError,
         });
       } catch {
         return;
@@ -526,9 +500,7 @@ class TraceController {
 
   private async processSpeakTrace(trace: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
     await this.simulateLoadingDelay(trace);
-    const {
-      payload: { src },
-    } = trace;
+
     this.message.speak(trace);
 
     if (onlyMessage) {
@@ -538,12 +510,7 @@ class TraceController {
     if (this.props.isMuted) {
       await Utils.promise.delay(MUTED_MESSAGE_DELAY);
     } else {
-      await this.audio
-        .play(src, {
-          muted: this.props.isMuted,
-          onError: () => this.setError(),
-        })
-        .catch(Utils.functional.noop);
+      await this.audio.play(trace.payload.src, { muted: this.props.isMuted, onError: this.setError }).catch(Utils.functional.noop);
     }
   }
 
@@ -561,20 +528,84 @@ class TraceController {
     await this.next(request);
   }
 
-  private processNoReplyTrace(trace: NoReplyTrace) {
-    if (!trace.payload.timeout) {
+  private processNoReplyTrace({ payload: { timeout } }: NoReplyTrace) {
+    if (!timeout) {
       return;
     }
 
     // timeout is in seconds
-    this.noReplyTimeout = this.timeout.set(trace.payload.timeout * 1000, () => {
+    this.noReplyTimeout = this.timeout.set(timeout * 1000, () => {
       this.resetInteractions();
       this.next(null);
     });
   }
 
+  private async processEndTrace() {
+    this.logger.debug('Ending conversation');
+
+    const lastNodeID = findLastBlockTrace(this.context?.trace ?? [])?.payload.blockID;
+
+    this.props.getEngine()?.selection.reset();
+
+    if (lastNodeID) {
+      this.props.getEngine()?.prototype.setFinalNodeID(lastNodeID);
+    }
+
+    this.props.updateStatus(PMStatus.ENDED);
+  }
+
+  private saveActivePathBlock(node: Realtime.Node) {
+    const updatedActivePathBlockArray = Utils.array.unique([...this.props.activePathBlockIDs, node!.parentNode!]);
+
+    const updatedContextHistory = getUpdatedContextHistory(
+      this.props.contextStep,
+      this.props.contextHistory,
+      'activePathBlockIDs',
+      updatedActivePathBlockArray
+    );
+
+    const updatePrototypeData = {
+      activePathBlockIDs: updatedActivePathBlockArray,
+      contextHistory: updatedContextHistory,
+    };
+
+    this.props.updatePrototype(updatePrototypeData);
+  }
+
+  private async highlightBlock(node: Realtime.Node, skipDelay = false) {
+    const hasParent = !!node.parentNode;
+    const nodeType = node?.type;
+    const highlightedBlocks = this.props.getEngine()?.select(Prototype.activePathBlockIDsSelector);
+    const parentBlockAlreadyHighlighted = !!highlightedBlocks?.includes(node?.parentNode || '');
+
+    if (parentBlockAlreadyHighlighted) {
+      return;
+    }
+
+    this.logger.debug('Highlighting block', node, { skipDelay });
+
+    const [, sourceNodeID] = Utils.array.tail(this.props.getEngine()?.select(Prototype.activePathBlockIDsSelector) || []);
+
+    if (hasParent) {
+      await this.saveActivePathBlock(node);
+    }
+
+    this.saveActivePathLink(sourceNodeID, node);
+
+    if ((hasParent && FOCUSABLE_NODES.includes(nodeType)) || this.props.debug || !nodeType) {
+      this.focusNode(node.parentNode!);
+
+      if (skipDelay) return;
+
+      await this.timeout.delay(MIN_FOCUSED_NODE_TIME);
+    }
+  }
+
   private async navigateToFlow(diagramID: string) {
+    this.logger.debug(`Navigating to diagram: ${diagramID}`);
+
     if (!this.props.enterDiagram) return;
+
     this.props.enterDiagram(diagramID);
 
     const currentFlowStack = this.props.flowIDHistory;
@@ -586,8 +617,10 @@ class TraceController {
 
     await this.waitDiagram(diagramID);
     await this.waitEngineAndNodes();
+
     // Highlight the start block when entering a flow
     const startNode = Array.from(this.props.getEngine()?.nodes ?? []).find((data) => data[1].type === BlockType.START);
+
     // TODO: refactor block highlighting system, topics do not have startNodes
     let updatedActivePathBlockArray = Utils.array.unique([...this.props.activePathBlockIDs, ...(startNode ? [startNode[0]] : [])]);
 
@@ -601,17 +634,9 @@ class TraceController {
       updatedActivePathBlockArray = updatedActivePathBlockArray.filter((val) => val !== START_BLOCK_ID);
     }
 
-    const updatePrototypeData = { activePathBlockIDs: updatedActivePathBlockArray };
-    this.props.updatePrototype(updatePrototypeData);
-  }
-
-  private async processEndTrace() {
-    this.props.getEngine()?.selection.reset();
-    const lastNodeID = findLastBlockTrace(this.context?.trace ?? [])?.payload.blockID;
-    if (lastNodeID) {
-      this.props.getEngine()?.prototype.setFinalNodeID(lastNodeID);
-    }
-    this.props.updateStatus(PMStatus.ENDED);
+    this.props.updatePrototype({
+      activePathBlockIDs: updatedActivePathBlockArray,
+    });
   }
 
   private setError = (message = 'Unable to play an audio') => {
@@ -667,26 +692,44 @@ class TraceController {
     this.props.updatePrototype({ activePathLinkIDs: activePathLinkArray, contextHistory: updatedContextHistory });
   }
 
-  private focusNode(parentID: string) {
-    this.props.getEngine()?.node.center(parentID);
+  private focusNode(nodeID: string) {
+    this.logger.debug(`Focusing node: ${nodeID}`);
+
+    this.props.getEngine()?.node.center(nodeID);
   }
 
-  private async waitFor(condition: () => boolean) {
+  private async waitFor(condition: () => boolean, rejectTimeout = 15000) {
+    let waitingTime = 0;
+
     while (condition()) {
       // eslint-disable-next-line no-await-in-loop
       await this.timeout.delay(WAIT_ENTITY_TIME);
+
+      waitingTime += WAIT_ENTITY_TIME;
+
+      if (waitingTime >= rejectTimeout) throw new Error('Timeout');
     }
   }
 
   private async waitNode(nodeID: string) {
-    await this.waitFor(() => !!nodeID && !this.props.getEngine()?.getNodeByID(nodeID));
+    this.logger.debug(`Waiting for node: ${nodeID}`);
+
+    if (!nodeID) return;
+
+    await this.waitFor(() => !this.props.getEngine()?.getNodeByID(nodeID));
   }
 
   private async waitDiagram(diagramID: string) {
+    this.logger.debug(`Waiting for diagram: ${diagramID}`);
+
+    if (!diagramID) return;
+
     await this.waitFor(() => this.props.activeDiagramID !== diagramID);
   }
 
   private async waitEngineAndNodes() {
+    this.logger.debug('Waiting for engine and nodes');
+
     await this.waitFor(() => !this.props.getEngine());
   }
 }

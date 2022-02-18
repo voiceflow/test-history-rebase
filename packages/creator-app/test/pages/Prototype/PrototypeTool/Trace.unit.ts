@@ -14,6 +14,7 @@ import MessageController from '@/pages/Prototype/PrototypeTool/Message';
 import TimeoutController from '@/pages/Prototype/PrototypeTool/Timeout';
 import TraceController from '@/pages/Prototype/PrototypeTool/Trace';
 import { PMStatus } from '@/pages/Prototype/types';
+import logger from '@/utils/logger';
 
 const ID = 'id';
 const SRC = 'src';
@@ -82,6 +83,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
       },
       audio,
       timeout,
+      logger,
       message: stub(message) as any as MessageController,
     });
 

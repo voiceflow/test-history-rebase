@@ -1,3 +1,5 @@
+import { SelectMenuItemOptions } from '@voiceflow/ui';
+
 import { BlockVariant } from '@/constants/canvas';
 import { ModalActions } from '@/hooks';
 import { ContextMenuValue } from '@/pages/Canvas/contexts';
@@ -22,7 +24,7 @@ export interface ContextMenuOption<T> {
   label: string;
   hotkey?: string;
   options?: ContextMenuOption<any>[];
-  menuItemProps?: { divider?: boolean };
+  menuItemProps?: SelectMenuItemOptions['menuItemProps'];
 
   shouldRender?: (contextMenu: ContextMenuValue, props: OptionProps) => boolean;
 }

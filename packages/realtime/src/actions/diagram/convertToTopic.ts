@@ -49,7 +49,7 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
       };
     }
 
-    const intentSteps = Object.values(primitiveDiagram.nodes).filter((node) => node.type === BaseNode.NodeType.INTENT);
+    const intentNodes = Object.values(primitiveDiagram.nodes).filter(Realtime.Utils.typeGuards.isIntentDBNode);
 
     const [version, newDiagram] = await Promise.all([
       this.services.version.get(creatorID, payload.versionID),
@@ -59,7 +59,7 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
           type: BaseModels.Diagram.DiagramType.TOPIC,
           creatorID,
           versionID: payload.versionID,
-          intentStepIDs: intentSteps.map((node) => node.nodeID),
+          intentStepIDs: intentNodes.map((node) => node.nodeID),
         })
         .then((dbDiagram) => Realtime.Adapters.diagramAdapter.fromDB(dbDiagram, { rootDiagramID: '' })),
     ]);
@@ -80,8 +80,16 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
         Realtime.diagram.reloadIntentSteps({
           ...actionContext,
           diagramID: newDiagram.id,
-          intentSteps: intentSteps.reduce<Record<string, string | null>>(
-            (acc, node) => Object.assign(acc, { [node.nodeID]: node.data.intent ?? null }),
+          intentSteps: intentNodes.reduce<Realtime.diagram.DiagramIntentStepMap>(
+            (acc, node) => ({
+              ...acc,
+              [node.nodeID]: node.data.intent
+                ? {
+                    intentID: node.data.intent,
+                    global: !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL,
+                  }
+                : null,
+            }),
             {}
           ),
         })

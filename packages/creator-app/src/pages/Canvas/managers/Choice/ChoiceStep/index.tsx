@@ -4,11 +4,18 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant, InteractionModelTabType } from '@/constants';
+import { BlockVariant } from '@/constants';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSyncedLookup } from '@/hooks';
 import Step, { Attachment, ConnectedStep, Item, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
-import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
+import {
+  ActiveDiagramTypeContext,
+  CustomIntentMapContext,
+  DiagramMapContext,
+  EngineContext,
+  GlobalIntentStepMapContext,
+  IntentNodeDataLookupContext,
+} from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
 import { getDistinctPlatformValue } from '@/utils/platform';
 
@@ -28,9 +35,9 @@ export interface ChoiceStepProps {
   choices: ChoiceItem[];
   noMatch: Realtime.NodeData.NoMatch;
   noReply?: Nullable<Realtime.NodeData.NoReply>;
+  variant: BlockVariant;
   noMatchPortID?: Nullable<string>;
   noReplyPortID?: Nullable<string>;
-  variant: BlockVariant;
 }
 
 export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch, noReply, noMatchPortID, noReplyPortID, variant }) => (
@@ -67,34 +74,61 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
   platform,
   variant,
 }) => {
+  const engine = React.useContext(EngineContext)!;
   const intentsMap = React.useContext(CustomIntentMapContext)!;
+  const diagramMap = React.useContext(DiagramMapContext)!;
+  const activeDiagramType = React.useContext(ActiveDiagramTypeContext)!;
+  const globalIntentStepMap = React.useContext(GlobalIntentStepMapContext)!;
+  const intentNodeDataLookup = React.useContext(IntentNodeDataLookupContext)!;
 
-  const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
 
   const choicesByPortID = useSyncedLookup(ports.out.dynamic, data.choices);
 
-  const choices = React.useMemo(
-    () =>
-      ports.out.dynamic
-        .filter((portID) => choicesByPortID[portID])
-        .map<ChoiceItem>((portID) => {
-          const { id, goTo, intent, action } = getDistinctPlatformValue(platform, choicesByPortID[portID]);
+  const onGoToLinkedIntent = (diagramID: string | null, stepID: string) => () => {
+    if (!diagramID || engine.getDiagramID() === diagramID) {
+      engine.focusNode(stepID, { open: true });
+    } else {
+      goToDiagram(diagramID, stepID);
+    }
+  };
 
-          const isPath = action === BaseNode.Interaction.ChoiceAction.PATH;
-          const goToIntent = goTo?.intentID && intentsMap[goTo.intentID] ? intentsMap[goTo.intentID] ?? null : null;
+  const isComponentDiagram = activeDiagramType === BaseModels.Diagram.DiagramType.COMPONENT;
 
-          return {
-            key: id,
-            label: intent && intentsMap[intent] ? prettifyIntentName(intentsMap[intent].name) : null,
-            portID: isPath ? portID : null,
-            // TODO: uncomment when the go to specific intent step id will be implemented
-            // attachment: !isPath && !!goToIntent,
-            linkedLabel: isPath ? null : prettifyIntentName(goToIntent?.name),
-            onAttachmentClick: () => goToIntent && goToInteractionModelEntity(InteractionModelTabType.INTENTS, goToIntent.id),
-          };
-        }),
-    [platform, choicesByPortID, intentsMap, ports.out.dynamic]
-  );
+  const choices = React.useMemo(() => {
+    const items: ChoiceItem[] = [];
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const portID of ports.out.dynamic) {
+      if (!choicesByPortID[portID]) continue;
+
+      const { id, goTo, intent, action } = getDistinctPlatformValue(platform, choicesByPortID[portID]);
+
+      const isPath = action === BaseNode.Interaction.ChoiceAction.PATH;
+      const goToIntent = goTo?.intentID && intentsMap[goTo.intentID] ? intentsMap[goTo.intentID] ?? null : null;
+      const goToDiagram = goTo?.diagramID && diagramMap[goTo?.diagramID] ? diagramMap[goTo?.diagramID] ?? null : null;
+
+      const topicGoToStepID = goToIntent && goToDiagram ? globalIntentStepMap[goToDiagram.id]?.[goToIntent.id]?.[0] ?? null : null;
+      const componentGoToStepID = topicGoToStepID || (goToIntent ? intentNodeDataLookup[goToIntent.id]?.nodeID ?? null : null);
+
+      const goToStepID = isComponentDiagram ? componentGoToStepID : topicGoToStepID;
+
+      const withAttachment = !isPath && !!goToStepID;
+
+      items.push({
+        key: id,
+        label: intent && intentsMap[intent] ? prettifyIntentName(intentsMap[intent].name) : null,
+        portID: isPath ? portID : null,
+
+        attachment: withAttachment,
+        // eslint-disable-next-line no-nested-ternary
+        linkedLabel: isPath ? null : withAttachment ? prettifyIntentName(goToIntent?.name) : null,
+        onAttachmentClick: withAttachment ? onGoToLinkedIntent(goToDiagram?.id ?? null, goToStepID) : undefined,
+      });
+    }
+
+    return items;
+  }, [platform, choicesByPortID, intentsMap, ports.out.dynamic, globalIntentStepMap, isComponentDiagram, intentNodeDataLookup]);
 
   return (
     <ChoiceStep

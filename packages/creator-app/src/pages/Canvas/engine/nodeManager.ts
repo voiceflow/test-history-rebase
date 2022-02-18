@@ -303,11 +303,6 @@ class NodeManager extends EngineConsumer {
     return this.api(nodeID)?.instance?.getRect() ?? null;
   }
 
-  // crud methods
-
-  /**
-   * adds a new node to the canvas
-   */
   async add<K extends keyof Realtime.NodeDataMap>(
     type: K,
     coords: Coords,
@@ -830,7 +825,14 @@ class NodeManager extends EngineConsumer {
     const platform = this.select(ProjectV2.active.platformSelector);
     const addedIntentSteps = addedNodes.reduce<Realtime.diagram.RegisterIntentStepsPayload['intentSteps']>((acc, { node, data }) => {
       if (node.type === BlockType.INTENT) {
-        acc.push({ stepID: node.id, intentID: getDistinctPlatformValue(platform, data as Realtime.NodeData.Intent).intent ?? null });
+        const platformData = getDistinctPlatformValue(platform, data as Realtime.NodeData.Intent);
+
+        acc.push({
+          stepID: node.id,
+          intent: platformData?.intent
+            ? { intentID: platformData.intent, global: platformData.availability === BaseNode.Intent.IntentAvailability.GLOBAL }
+            : null,
+        });
       }
 
       return acc;

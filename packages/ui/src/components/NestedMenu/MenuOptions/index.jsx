@@ -47,7 +47,7 @@ function MenuOptions({
   const renderOptions = (options, optionsPath) =>
     options.map((option, i) => {
       let index = i + firstOptionIndex;
-      const elementsKey = (option?.id ? getOptionKey(option.id) : getOptionKey(option)) || i;
+      const elementsKey = (option?.id ? getOptionKey(option.id, i) : getOptionKey(option, i)) || i;
 
       if (grouped) {
         index = firstOptionIndex + groupedIndex++;
@@ -115,10 +115,11 @@ function MenuOptions({
           onMouseEnter={() => onFocusItem?.(index)}
           {...option.menuItemProps}
         >
-          {renderOptionLabel(option, searchLabel, getOptionLabel, getOptionValue, {
-            isFocused: focusedOptionIndex === index,
-            optionsPath: [...optionsPath, i],
-          })}
+          {!option.vfUIOnly &&
+            renderOptionLabel(option, searchLabel, getOptionLabel, getOptionValue, {
+              isFocused: focusedOptionIndex === index,
+              optionsPath: [...optionsPath, i],
+            })}
         </SelectItem>
       );
     });

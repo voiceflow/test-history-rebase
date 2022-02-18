@@ -2,6 +2,9 @@ import { BaseRequest } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import _isString from 'lodash/isString';
 
+import { isDebug } from '@/config';
+import logger from '@/utils/logger';
+
 import AudioController from './Audio';
 import MessageController, { MessageControllerProps } from './Message';
 import TimeoutController from './Timeout';
@@ -9,8 +12,16 @@ import TraceController, { StepDirection, TraceControllerProps } from './Trace';
 
 export type PrototypeToolProps = MessageControllerProps & TraceControllerProps;
 
+declare global {
+  interface Window {
+    vf_prototypeTool?: PrototypeTool | null;
+  }
+}
+
 class PrototypeTool {
   public audio: AudioController = new AudioController();
+
+  private logger = logger.child('prototypeTool');
 
   private props: PrototypeToolProps;
 
@@ -22,6 +33,16 @@ class PrototypeTool {
 
   constructor(props: PrototypeToolProps) {
     this.props = props;
+
+    if (isDebug()) {
+      window.vf_prototypeTool = this;
+    }
+  }
+
+  public teardown(): void {
+    window.vf_prototypeTool = null;
+
+    this.stop();
   }
 
   public start(): void {
@@ -102,6 +123,7 @@ class PrototypeTool {
     this.trace = new TraceController({
       props: this.props,
       audio: this.audio,
+      logger: this.logger.child('trace'),
       message: this.message,
       timeout: this.timeout,
     });

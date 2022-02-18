@@ -1,6 +1,6 @@
 import { Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, BlockText, NestedMenuComponents, Select, Text, ThemeColor } from '@voiceflow/ui';
+import { Badge, BlockText, createUIOnlyMenuItemOption, NestedMenuComponents, Select, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
@@ -73,7 +73,8 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
     if (!filteredSlots.length) {
       return [{ id: ENTIRE_USER_REPLY }];
     }
-    return [{ id: ENTIRE_USER_REPLY }, { menuItemProps: { divider: true } } as any, ...filteredSlots.map((slot) => ({ id: slot.id }))];
+
+    return [{ id: ENTIRE_USER_REPLY }, createUIOnlyMenuItemOption('divider', { divider: true }), ...filteredSlots.map((slot) => ({ id: slot.id }))];
   }, [filteredSlots]);
 
   const getOptionLabel = React.useCallback(

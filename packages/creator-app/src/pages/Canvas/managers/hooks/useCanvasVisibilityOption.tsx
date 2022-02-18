@@ -45,7 +45,7 @@ const useCanvasVisibilityOption = (
         ),
         disabled: true,
       },
-      { label: 'divider', disabled: true, menuItemProps: { style: { marginBottom: 0 }, divider: true } },
+      { label: '', disabled: true, menuItemProps: { style: { marginBottom: 0 }, divider: true } },
       {
         label: (
           <MenuCheckboxOption

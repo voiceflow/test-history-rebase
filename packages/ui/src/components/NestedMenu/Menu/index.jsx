@@ -232,7 +232,7 @@ function BaseNestedMenu({
 
           const option = flatOptions[focusedIndex - firstOptionIndex];
 
-          if (!option?.disabled) {
+          if (!option?.disabled && !option?.vfUIOnly) {
             onSelect(cachedRef.current.getOptionValue(flatOptions[focusedIndex - firstOptionIndex]), optionsPath, scheduleUpdate);
           }
         }
@@ -240,11 +240,15 @@ function BaseNestedMenu({
         swallowEvent(null, true)(e);
         onHide();
       } else if (e.key === KeyCodes.ARROW_UP) {
+        const nextIndex = isNotFocused ? options.length - 1 : focusedIndex - 1;
+
         swallowEvent(null, true)(e);
-        onFocusItem((isNotFocused ? options.length : focusedIndex) - 1);
+        onFocusItem(options[nextIndex - firstOptionIndex]?.vfUIOnly ? nextIndex - 1 : nextIndex);
       } else if (e.key === KeyCodes.ARROW_DOWN) {
+        const nextIndex = isNotFocused ? 0 : focusedIndex + 1;
+
         swallowEvent(null, true)(e);
-        onFocusItem(isNotFocused ? 0 : focusedIndex + 1);
+        onFocusItem(options[nextIndex - firstOptionIndex]?.vfUIOnly ? nextIndex + 1 : nextIndex);
       } else if (!isInput && multiLevelDropdown && options?.[focusedIndex - firstOptionIndex]?.options?.length && e.key === KeyCodes.ARROW_RIGHT) {
         swallowEvent(null, true)(e);
         setChildFocusItemIndex(0);
@@ -300,6 +304,7 @@ function BaseNestedMenu({
           if (cachedRef.current) {
             cachedRef.current.scheduleUpdate = scheduleUpdate;
           }
+
           return (
             <MenuPopoverContainer ref={ref} style={style} isRoot={isRoot} autoWidth={autoWidth} onMouseMove={onMouseMove}>
               <Menu

@@ -17,19 +17,18 @@ class PrototypeEngine extends EngineConsumer {
 
   teardownSubscription = Utils.functional.noop;
 
+  get isActive() {
+    const currentPath = this.engine.currentPathName();
+    const match = matchPath(currentPath, { path: Path.PROJECT_PROTOTYPE });
+
+    return !!match;
+  }
+
   /**
    * check to see if the node is highlighted
    */
   isNodeHighlightedLink(nodeID: string) {
     return this.highlightedNodeIDs.includes(nodeID);
-  }
-
-  onPrototypePage() {
-    const currentPath = this.engine.currentPathName();
-    const match = matchPath(currentPath, {
-      path: Path.PROJECT_PROTOTYPE,
-    });
-    return !!match;
   }
 
   /**

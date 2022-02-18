@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -95,23 +95,26 @@ class VersionService extends AbstractControl {
     await client.version.updatePlatformData(versionID, platformData);
   }
 
-  public async getIntentSteps(creatorID: number, versionID: string): Promise<Record<string, Record<string, string | null>>> {
+  public async getIntentSteps(creatorID: number, versionID: string): Promise<Record<string, Realtime.diagram.DiagramIntentStepMap>> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     const { diagrams: dbDiagrams } = await client.version.export(versionID);
 
-    const intentSteps: Record<string, Record<string, string | null>> = {};
+    const intentSteps: Record<string, Realtime.diagram.DiagramIntentStepMap> = {};
 
     Object.keys(dbDiagrams).forEach((diagramID) => {
       const dbDiagram = dbDiagrams[diagramID];
 
-      const diagramIntentSteps: Record<string, string | null> = {};
+      const diagramIntentSteps: Realtime.diagram.DiagramIntentStepMap = {};
+
       intentSteps[diagramID] = diagramIntentSteps;
 
       Object.values(dbDiagram.nodes).forEach((node) => {
-        if (node.type !== Realtime.BlockType.INTENT) return;
+        if (!Realtime.Utils.typeGuards.isIntentDBNode(node)) return;
 
-        diagramIntentSteps[node.nodeID] = node.data.intent ?? null;
+        diagramIntentSteps[node.nodeID] = node.data.intent
+          ? { intentID: node.data.intent, global: !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL }
+          : null;
       }, []);
     });
 

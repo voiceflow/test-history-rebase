@@ -9,6 +9,7 @@ import { distinctPlatformsData } from '@/utils/platform';
 
 export const ChoiceGoTo = define<BaseNode.Interaction.ChoiceGoTo>({
   intentID: () => lorem.word(),
+  diagramID: () => lorem.word(),
 });
 
 export const ChoiceStepData = define<BaseNode.Interaction.Choice>({

@@ -1,14 +1,15 @@
+import { MenuItemProps } from '@ui/components/Select';
 import React from 'react';
 
 import NestedMenu from './NestedMenu';
 
 export interface OptionsMenuOption {
   label: React.ReactNode;
+  onClick?: () => void;
   options?: OptionsMenuOption[];
   disabled?: boolean;
-  onClick?: () => void;
-  menuItemProps?: any;
   menuProps?: any;
+  menuItemProps?: MenuItemProps;
 }
 
 const NestedMenuAny: React.FC<any> = NestedMenu;
@@ -25,8 +26,7 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({ options = [], onToggle }, ...
       onToggle?.();
       option?.onClick?.();
     }}
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    getOptionKey={() => {}}
+    getOptionKey={(_: OptionsMenuOption, index: number) => index}
     renderOptionLabel={(option: OptionsMenuOption) => option.label}
     {...props}
   />

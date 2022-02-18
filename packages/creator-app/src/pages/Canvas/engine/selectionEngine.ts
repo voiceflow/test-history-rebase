@@ -57,7 +57,10 @@ class SelectionEngine extends EngineConsumer<{ selectionSetTargetsContext: Selec
     }
 
     this.engine.activation.toggle(nodeID, ActivationMode.SELECTION);
-    this.components.selectionSetTargetsContext?.(this.getTargets());
+
+    if (!this.engine.prototype.isActive) {
+      this.components.selectionSetTargetsContext?.(this.getTargets());
+    }
 
     const isSelected = this.isTarget(nodeID);
     this.log.info(this.log.success('toggled selection of node'), this.log.slug(nodeID), this.log.diff(!isSelected, isSelected));
@@ -74,7 +77,10 @@ class SelectionEngine extends EngineConsumer<{ selectionSetTargetsContext: Selec
     this.log.debug(this.log.pending('replacing selection'), targets);
     this.engine.focus.reset();
     this.engine.activation.replace(targets, ActivationMode.SELECTION);
-    this.components.selectionSetTargetsContext?.(this.getTargets());
+
+    if (!this.engine.prototype.isActive) {
+      this.components.selectionSetTargetsContext?.(this.getTargets());
+    }
 
     this.log.info(this.log.success('replaced selection'), this.log.diff(currentTargets.length, targets.length));
   }
@@ -89,7 +95,7 @@ class SelectionEngine extends EngineConsumer<{ selectionSetTargetsContext: Selec
 
     this.log.debug(this.log.pending('resetting selection'), currentTargets);
     this.engine.activation.reset();
-    this.components.selectionSetTargetsContext?.(this.getTargets());
+    this.components.selectionSetTargetsContext?.([]);
 
     this.log.info(this.log.reset('reset selection'), this.log.diff(currentTargets.length, 0));
   }

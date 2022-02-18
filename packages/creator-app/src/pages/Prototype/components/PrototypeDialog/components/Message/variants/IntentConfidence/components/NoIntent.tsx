@@ -78,10 +78,6 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     }
   }, [targetIntentID]);
 
-  const handleIntentSelectCreate = (id: string) => {
-    setTargetIntentID(id);
-  };
-
   const handleIMMClose = async (intentID: string, initialUtterancesArray: Realtime.IntentInput[]) => {
     if (!activeTranscriptID) return;
 
@@ -102,6 +98,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
 
   const triggerRenderer = ({ opened, ...props }: { opened: boolean }) => {
     setIsDropdownOpened(opened);
+
     return (
       <Flex {...props}>
         <TextContainer onClick={(e) => e.stopPropagation()}>
@@ -122,11 +119,11 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   return !utteranceAddedToIntentID ? (
     <Container focused={focused}>
       <IntentSelect
+        intent={null}
+        onChange={({ intent }) => setTargetIntentID(intent)}
         alwaysShowCreate
         inDropdownSearch
-        intent={null}
-        onChange={({ intent }: { intent: string }) => handleIntentSelectCreate(intent)}
-        triggerRenderer={triggerRenderer as any}
+        triggerRenderer={triggerRenderer}
       />
     </Container>
   ) : (

@@ -1,6 +1,6 @@
 import { BaseButton } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, Box } from '@voiceflow/ui';
+import { Badge, Box, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import numberToWords from 'number-to-words/src';
 import React from 'react';
@@ -20,14 +20,13 @@ import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
 import { isGooglePlatform } from '@/utils/typeGuards';
 
-const AnyIntentSelect: React.FC<any> = IntentSelect;
 const VariablesInputComponent: React.FC<any> = VariablesInput;
 
 export type ItemProps = ItemComponentProps<BaseButton.IntentButton> &
   MappedItemComponentHandlers<BaseButton.IntentButton> &
   DragPreviewComponentProps & {
     isOnlyItem: boolean;
-    dividedIntents: (Realtime.Intent | { id: string; name: string; menuItemProps: { divider: boolean } })[];
+    dividedIntents: Array<Realtime.Intent | UIOnlyMenuItemOption>;
     latestCreatedKey?: string;
     formControlProps?: { contentBottomUnits?: number };
   };
@@ -95,10 +94,10 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
           </Box>
 
           {!isGooglePlatform(platform) && (
-            <AnyIntentSelect
+            <IntentSelect
               icon="user"
               intent={intent}
-              intents={dividedIntents}
+              options={dividedIntents}
               onChange={updateIntent}
               clearable
               iconProps={{ color: '#5589eb' }}

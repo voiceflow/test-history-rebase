@@ -13,7 +13,6 @@ export const {
   isDialogflowChatPlatform,
   isDialogflowVoicePlatform,
   isIVRPlatform,
-  isGeneralPlatform,
   isVoicePlatform,
   isChatPlatform,
   isMobileAppPlatform,

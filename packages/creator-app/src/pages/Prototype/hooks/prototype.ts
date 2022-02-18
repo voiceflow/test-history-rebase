@@ -100,7 +100,7 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     }
   }, [status]);
 
-  React.useEffect(() => () => prototype.stop(), []);
+  React.useEffect(() => () => prototype.teardown(), []);
 
   React.useEffect(() => {
     if (!(webhook?.type && webhook.payload)) return;

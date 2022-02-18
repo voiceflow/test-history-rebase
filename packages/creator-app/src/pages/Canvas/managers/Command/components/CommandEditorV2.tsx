@@ -59,11 +59,7 @@ const CommandEditorV2: NodeEditor<Realtime.NodeData.Command, {}> = ({ data, onCh
       }
     >
       <Section isDividerNested variant={SectionVariant.SUBSECTION} header="Intent" tooltip={<IntentTooltip />}>
-        <IntentSelect
-          intent={intent}
-          onChange={({ intent }: { intent: string | null }) => patchPlatformData({ intent })}
-          placeholder="Select intent to trigger component"
-        />
+        <IntentSelect intent={intent} onChange={({ intent }) => patchPlatformData({ intent })} placeholder="Select intent to trigger component" />
       </Section>
 
       <IntentForm intent={intent} pushToPath={pushToPath} />

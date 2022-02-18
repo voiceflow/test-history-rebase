@@ -1,11 +1,11 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, BoxFlex, Input, Link, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
 import DividerLine from '@/components/DividerLine';
+import GoToIntentSelect from '@/components/GoToIntentSelect';
 import IntentForm from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import RadioGroup from '@/components/RadioGroup';
@@ -27,16 +27,9 @@ import { getValidHref, isAnyLink } from '@/utils/string';
 import { BUTTON_OPTIONS, ButtonAction } from '../constants';
 import HelpTooltip from './HelpTooltip';
 
-const IntentSelectComponent = IntentSelect as React.FC<any>;
 const VariablesInputComponent = VariablesInput as React.FC<any>;
 
-export type ButtonsListItemProps = ListItemComponentProps<
-  BaseNode.Buttons.Button,
-  {
-    pushToPath: (path: { type: string; label: string }) => void;
-    openIntents: Realtime.Intent[];
-  }
->;
+export type ButtonsListItemProps = ListItemComponentProps<BaseNode.Buttons.Button, { pushToPath: (path: { type: string; label: string }) => void }>;
 
 const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsListItemProps> = (
   {
@@ -47,7 +40,6 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
     isOnlyItem,
     isDragging,
     pushToPath,
-    openIntents,
     onContextMenu,
     latestCreatedKey,
     connectedDragRef,
@@ -152,26 +144,34 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
           )}
 
           <Section isNested dividers={false}>
-            <IntentSelectComponent
-              intent={intent}
-              intents={isGoToIntent && topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? openIntents : undefined}
-              onChange={({ intent }: { intent: string }) => onUpdate({ intent })}
-              clearable={isGoToIntent}
-              creatable={!isGoToIntent}
-              placeholder={isGoToIntent ? 'Behave as user triggered intent' : 'Attach intent to path (optional)'}
-              renderEmpty={
-                isGoToIntent
-                  ? ({ close, search }: { search: string; close: VoidFunction }) => (
-                      <Box flex={1} textAlign="center">
-                        {!search ? 'No open intents exists in your project. ' : 'No open intents found. '}
-                        <Link href={Documentation.OPEN_INTENT} onClick={close}>
-                          Learn more
-                        </Link>
-                      </Box>
-                    )
-                  : undefined
-              }
-            />
+            {topicsAndComponents.isEnabled && isGoToIntent && isTopicsAndComponentsVersion ? (
+              <GoToIntentSelect
+                onChange={(data) => onUpdate({ intent: data?.intentID ?? null, diagramID: data?.diagramID ?? null })}
+                intentID={item.intent}
+                diagramID={item.diagramID}
+                placeholder="Behave as user triggered intent"
+              />
+            ) : (
+              <IntentSelect
+                intent={intent}
+                onChange={({ intent }) => onUpdate({ intent, diagramID: null })}
+                clearable={isGoToIntent}
+                creatable={!isGoToIntent}
+                placeholder={isGoToIntent ? 'Behave as user triggered intent' : 'Attach intent to path (optional)'}
+                renderEmpty={
+                  isGoToIntent
+                    ? ({ close, search }) => (
+                        <Box flex={1} textAlign="center">
+                          {!search ? 'No open intents exists in your project. ' : 'No open intents found. '}
+                          <Link href={Documentation.OPEN_INTENT} onClick={close}>
+                            Learn more
+                          </Link>
+                        </Box>
+                      )
+                    : undefined
+                }
+              />
+            )}
           </Section>
 
           {!isGoToIntent && (

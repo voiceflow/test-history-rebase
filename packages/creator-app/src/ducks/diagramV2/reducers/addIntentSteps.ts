@@ -15,8 +15,16 @@ const addIntentStepsReducer = createReducer(Realtime.diagram.registerIntentSteps
   }
 
   state.intentSteps[diagramID] ??= {};
+  state.globalIntentStepMap[diagramID] ??= {};
 
-  Object.assign(state.intentSteps[diagramID], Object.fromEntries(intentSteps.map((intentStep) => [intentStep.stepID, intentStep.intentID])));
+  intentSteps.forEach((intentStep) => {
+    state.intentSteps[diagramID][intentStep.stepID] = intentStep.intent;
+
+    if (intentStep.intent?.global) {
+      state.globalIntentStepMap[diagramID][intentStep.intent.intentID] ??= [];
+      state.globalIntentStepMap[diagramID][intentStep.intent.intentID].push(intentStep.stepID);
+    }
+  });
 });
 
 export default addIntentStepsReducer;

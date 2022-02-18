@@ -1,0 +1,174 @@
+import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import {
+  Alert,
+  AlertVariant,
+  isNotUIOnlyMenuItemOption,
+  isUIOnlyMenuItemOption,
+  Select,
+  SelectProps,
+  toast,
+  UIOnlyMenuItemOption,
+} from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import React from 'react';
+
+import { CUSTOMIZABLE_INTENT_PREFIXS } from '@/constants';
+import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
+import * as SlotV2 from '@/ducks/slotV2';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { ClassName } from '@/styles/constants';
+import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent, prettifyIntentName, validateIntentName } from '@/utils/intent';
+
+import { Option } from './components';
+
+export { Option as IntentSelectOption } from './components';
+
+interface IntentSelectProps
+  extends Omit<
+    SelectProps<Realtime.Intent, string>,
+    | 'onCreate'
+    | 'className'
+    | 'value'
+    | 'options'
+    | 'onSelect'
+    | 'searchable'
+    | 'optionsFilter'
+    | 'getOptionValue'
+    | 'getOptionLabel'
+    | 'formatInputValue'
+    | 'isButtonDisabled'
+    | 'renderOptionLabel'
+  > {
+  intent?: Realtime.Intent | null;
+  options?: Array<Realtime.Intent | UIOnlyMenuItemOption>;
+  onChange: (value: { intent: string | null }) => void;
+  withMissingAlert?: boolean;
+}
+
+const IntentSelect: React.FC<IntentSelectProps> = ({
+  icon,
+  intent,
+  options: propOptions,
+  onChange,
+  creatable = true,
+  placeholder = 'Name new intent or select existing intent',
+  withMissingAlert = true,
+  createInputPlaceholder = 'intents',
+  ...props
+}) => {
+  const slots = useSelector(SlotV2.allSlotsSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
+  const intentsMap = useSelector(IntentV2.customIntentMapSelector);
+  const allIntents = useSelector(IntentV2.allPlatformIntentsSelector);
+
+  const createIntent = useDispatch(Intent.createIntent);
+
+  const [trackingEvents] = useTrackingEvents();
+
+  const options = propOptions || allIntents;
+
+  const filteredOptions = React.useMemo(
+    () =>
+      options
+        .filter((option) => isUIOnlyMenuItemOption(option) || intentFilter(option, intent))
+        .map((option) =>
+          isUIOnlyMenuItemOption(option)
+            ? { ...option, name: option.label }
+            : { ...option, name: applyPlatformIntentNameFormatting(prettifyIntentName(option.name), platform) }
+        ),
+    [intent, options, platform]
+  );
+
+  const optionLookup = React.useMemo(
+    () =>
+      filteredOptions.reduce<Record<string, string>>((acc, option) => {
+        acc[option.id] = option.name;
+
+        return acc;
+      }, {}),
+    [filteredOptions]
+  );
+
+  const onSelectIntent = async (nextIntentID: string | null) => {
+    if (nextIntentID) {
+      const isDefaultBuiltIn =
+        CUSTOMIZABLE_INTENT_PREFIXS.includes(nextIntentID.split('.')[0]) || nextIntentID === VoiceflowConstants.IntentName.NONE;
+
+      if (isDefaultBuiltIn && !intentsMap[nextIntentID]) {
+        await createIntent({ id: nextIntentID, name: nextIntentID });
+
+        trackingEvents.trackIntentCreated({ creationType: CanvasCreationType.EDITOR });
+      }
+    }
+
+    onChange({ intent: nextIntentID });
+  };
+
+  const onCreate = async (name: string) => {
+    const preparedName = Utils.string.removeTrailingUnderscores(prettifyIntentName(name));
+    const intentByName = filteredOptions.find(({ name }) => Utils.string.removeTrailingUnderscores(name) === preparedName);
+
+    if (intentByName) {
+      return onSelectIntent(intentByName.id);
+    }
+    const intentsOnly = options.filter(isNotUIOnlyMenuItemOption);
+
+    const error = validateIntentName(preparedName, intentsOnly, slots);
+
+    if (error) {
+      toast.error(error);
+    } else {
+      const nextIntentID = await createIntent({ name: preparedName });
+
+      await onSelectIntent(nextIntentID);
+
+      trackingEvents.trackIntentCreated({ creationType: CanvasCreationType.EDITOR });
+    }
+  };
+
+  React.useEffect(() => {
+    if (intent?.id && !intentsMap[intent.id]) {
+      onChange({ intent: null });
+    }
+  }, [intentsMap]);
+
+  const intentID = intent?.id;
+  const intentMissing = withMissingAlert && intentID && !optionLookup[intentID] && !isCustomizableBuiltInIntent(intent);
+
+  return (
+    <>
+      <Select
+        {...props}
+        value={intentID}
+        options={filteredOptions}
+        onCreate={onCreate}
+        onSelect={onSelectIntent}
+        clearable={props.clearable && !!intentID}
+        creatable={creatable}
+        className={ClassName.INTENT_SELECT_INPUT}
+        searchable
+        placeholder={placeholder}
+        getOptionValue={(option) => option?.id}
+        getOptionLabel={(value) => (value ? optionLookup[value] : undefined)}
+        formatInputValue={(value) => applyPlatformIntentNameFormatting(value, platform)}
+        isButtonDisabled={(newName) => filteredOptions.some(({ name }) => name === newName.toLowerCase())}
+        renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue) => (
+          <Option option={option} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />
+        )}
+        createInputPlaceholder={createInputPlaceholder}
+      />
+
+      {intentMissing && (
+        <Alert variant={AlertVariant.WARNING} mt={10}>
+          Intent is broken or has been deleted.
+        </Alert>
+      )}
+    </>
+  );
+};
+
+export default IntentSelect;

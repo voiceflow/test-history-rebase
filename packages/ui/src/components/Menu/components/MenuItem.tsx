@@ -34,6 +34,12 @@ export const itemStyles = css<MenuItemProps>`
       background: ${colors(ThemeColor.WHITE)};
     `}
 
+  ${({ divider }) =>
+    divider &&
+    css`
+      pointer-events: none;
+    `}
+
   ${({ capitalize }) =>
     capitalize &&
     css`

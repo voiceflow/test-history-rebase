@@ -1,4 +1,13 @@
-import { FlexApart, NestedMenuComponents, Select, SelectProps, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import {
+  createUIOnlyMenuItemOption,
+  FlexApart,
+  isUIOnlyMenuItemOption,
+  NestedMenuComponents,
+  Select,
+  SelectProps,
+  SvgIcon,
+  TippyTooltip,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -18,12 +27,6 @@ type TestVariableStateSelectProps = Omit<Partial<SelectProps<VariableStateOption
 
 const testVariableStateOptionRenderer = (option: VariableStateOption) => <FlexApart fullWidth>{option.label}</FlexApart>;
 
-const dividerOption = {
-  label: 'Divider 1',
-  value: 'divider',
-  menuItemProps: { divider: true },
-};
-
 const baseOptions = [
   {
     label: 'All project variables',
@@ -31,23 +34,25 @@ const baseOptions = [
   },
 ];
 
+const dividerOption = createUIOnlyMenuItemOption('divider', { divider: true });
+
 const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, loading, onChange, onUpdateStateValues, className, ...props }) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
   const isSelectedStateUnsync = useSelector(variableState.IsVariableStateUnsyncSelector);
   const { open: openVariableStateEditorModal } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
   const { open: openVariableStateManagerModal } = useModals(ModalType.VARIABLE_STATES_MANAGER_MODAL);
 
-  const variableStatesOptions = React.useMemo(() => {
+  const options = React.useMemo(() => {
     const statesOptions = variableStates.map((variableState) => ({ label: variableState.name, value: variableState.id }));
 
-    if (!statesOptions || statesOptions.length === 0) {
+    if (statesOptions.length === 0) {
       return baseOptions;
     }
 
     return [...baseOptions, dividerOption, ...statesOptions];
   }, [variableStates]);
 
-  const selected = variableStatesOptions.find((variableState) => variableState.value === value) || null;
+  const selected = React.useMemo(() => options.find((option) => !isUIOnlyMenuItemOption(option) && option.value === value) || null, [options]);
 
   const onAddNew = () => {
     openVariableStateEditorModal();
@@ -56,7 +61,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
   return (
     <Select
       value={selected?.label || null}
-      options={variableStatesOptions}
+      options={options}
       onSelect={(newValue) => onChange(newValue === value ? null : newValue)}
       searchable
       placeholder="Select a variable state"
@@ -75,7 +80,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       }
       footerAction={(hideMenu) => (
         <NestedMenuComponents.FooterActions>
-          {variableStatesOptions.length > baseOptions.length && (
+          {options.length > baseOptions.length && (
             <NestedMenuComponents.FooterAction
               onClick={() => {
                 hideMenu();
@@ -85,6 +90,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
               Manage
             </NestedMenuComponents.FooterAction>
           )}
+
           <NestedMenuComponents.FooterAction
             onClick={() => {
               hideMenu();

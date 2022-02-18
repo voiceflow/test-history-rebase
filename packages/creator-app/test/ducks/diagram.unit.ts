@@ -58,6 +58,7 @@ const MOCK_STATE: Diagram.DiagramState = {
     },
   },
   intentSteps: {},
+  globalIntentStepMap: {},
 };
 
 suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeReducerV2, describeEffectV2, createState, ...utils }) => {

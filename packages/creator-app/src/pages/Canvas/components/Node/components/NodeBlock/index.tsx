@@ -153,7 +153,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   const captureDropRef = React.useCallback((api: BlockAPI | null) => api && connectBlockDrop(api.ref.current!), [connectBlockDrop]);
 
   const onClick = React.useCallback((event: React.MouseEvent) => {
-    if (engine.prototype.onPrototypePage()) {
+    if (engine.prototype.isActive) {
       goToCurrentCanvas();
     }
 

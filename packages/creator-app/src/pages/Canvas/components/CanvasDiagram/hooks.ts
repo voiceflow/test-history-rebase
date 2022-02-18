@@ -41,14 +41,16 @@ export const useCursorControls = () => {
     (movement: Pair<number>) => {
       engine.panViewport(movement);
 
-      if (mousePosition.current !== null && engine.canvas!.isPanning()) {
-        const zoom = engine.canvas!.getZoom();
+      if (!engine.canvas) return;
+
+      if (mousePosition.current !== null && engine.canvas.isPanning()) {
+        const zoom = engine.canvas.getZoom();
         const [moveX, moveY] = movement;
         const [currX, currY] = mousePosition.current;
         const nextMousePosition: [number, number] = [currX - moveX / zoom, currY - moveY / zoom];
 
         if (engine.linkCreation.isDrawing) {
-          const transformedPosition = engine.canvas!.reverseTransformPoint(nextMousePosition, true);
+          const transformedPosition = engine.canvas.reverseTransformPoint(nextMousePosition, true);
           const sourcePortID = engine.linkCreation.sourcePortID!;
 
           engine.linkCreation.abort();
@@ -67,27 +69,23 @@ export const useCursorControls = () => {
   const updateViewport = React.useCallback(({ x, y, zoom }: Viewport) => engine.updateViewport(diagramID, x, y, zoom), [diagramID]);
 
   React.useEffect(() => {
-    if (engine.canvas) {
-      const onMouseMove = () => {
-        if (!engine.canvas!.isPanning()) {
-          try {
-            const transformedPoint = engine.getCanvasMousePosition();
+    const onMouseMove = () => {
+      if (engine.canvas && !engine.canvas.isPanning()) {
+        try {
+          const transformedPoint = engine.getCanvasMousePosition();
 
-            mousePosition.current = transformedPoint;
+          mousePosition.current = transformedPoint;
 
-            moveMouse(transformedPoint);
-          } catch {
-            // user switched to a different window
-          }
+          moveMouse(transformedPoint);
+        } catch {
+          // user switched to a different window
         }
-      };
+      }
+    };
 
-      document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mousemove', onMouseMove);
 
-      return () => document.removeEventListener('mousemove', onMouseMove);
-    }
-
-    return undefined;
+    return () => document.removeEventListener('mousemove', onMouseMove);
   }, [moveMouse]);
 
   return {

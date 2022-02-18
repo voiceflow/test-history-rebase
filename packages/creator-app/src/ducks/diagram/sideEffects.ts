@@ -419,7 +419,7 @@ export const deleteDiagram =
 
     const { type } = DiagramV2.diagramByIDSelector(state, { id: diagramID }) ?? {};
     const isTopic = type === BaseModels.Diagram.DiagramType.TOPIC;
-    const isComponent = type === BaseModels.Diagram.DiagramType.COMPONENT;
+    const isComponent = !type || type === BaseModels.Diagram.DiagramType.COMPONENT;
 
     await dispatch(
       Feature.applyAtomicSideEffect(

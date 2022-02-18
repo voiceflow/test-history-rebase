@@ -114,7 +114,9 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
               onKeyPress={withEnterPress((event) => event.currentTarget.blur())}
             />
           ) : (
-            <OverflowText>{isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}</OverflowText>
+            <OverflowText paddingY={2}>
+              {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}
+            </OverflowText>
           )}
         </ItemNameContainer>
       )}

@@ -45,7 +45,7 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.Inten
     await patchPlatformData({ intent });
 
     if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) {
-      updateIntentSteps({ ...engine.context, stepID: data.nodeID, intentID: intent });
+      updateIntentSteps({ ...engine.context, stepID: data.nodeID, intent: intent ? { intentID: intent, global: isGlobalIntent } : null });
     }
 
     validateTopicAvailability();
@@ -53,10 +53,19 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.Inten
 
   const onChangeAvailability = async () => {
     const nextAvailability = isGlobalIntent ? BaseNode.Intent.IntentAvailability.LOCAL : BaseNode.Intent.IntentAvailability.GLOBAL;
+    const nextAvailabilityIsGlobal = nextAvailability === BaseNode.Intent.IntentAvailability.GLOBAL;
 
     await patchPlatformData({ availability: nextAvailability });
 
-    if (nextAvailability !== BaseNode.Intent.IntentAvailability.GLOBAL) {
+    if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) {
+      updateIntentSteps({
+        ...engine.context,
+        stepID: data.nodeID,
+        intent: intent?.id ? { intentID: intent.id, global: nextAvailabilityIsGlobal } : null,
+      });
+    }
+
+    if (!nextAvailabilityIsGlobal) {
       validateTopicAvailability();
     }
   };

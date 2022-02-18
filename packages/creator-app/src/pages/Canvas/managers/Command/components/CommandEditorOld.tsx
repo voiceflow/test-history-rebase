@@ -70,7 +70,7 @@ const CommandEditorOld: NodeEditor<Realtime.NodeData.Command, {}, ConnectedComma
       </Section>
 
       <Section isDividerNested variant={SectionVariant.SUBSECTION} header="Intent" tooltip={<IntentTooltip />}>
-        <IntentSelect intent={intent} onChange={({ intent }: { intent: string | null }) => patchPlatformData({ intent })} />
+        <IntentSelect intent={intent} onChange={({ intent }) => patchPlatformData({ intent })} />
       </Section>
 
       <IntentForm intent={intent} pushToPath={pushToPath} />

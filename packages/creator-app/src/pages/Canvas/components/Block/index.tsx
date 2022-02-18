@@ -76,9 +76,10 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
       onMouseLeave={onMouseLeave}
       onMouseDown={onMouseDown}
       onClick={(arg) => {
-        if (engine.prototype.onPrototypePage()) {
+        if (engine.prototype.isActive) {
           goToCurrentCanvas();
         }
+
         onClick?.(arg);
       }}
       ref={blockAPI.ref}

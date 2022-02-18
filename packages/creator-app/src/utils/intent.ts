@@ -22,18 +22,25 @@ const INTENT_LABELS: Partial<Record<string, string>> = {
 
 export const isCustomizableBuiltInIntent = (intent?: Nullish<Realtime.Intent>): boolean => !!intent && builtInIntentMap.has(intent.id);
 
-export const formatIntentName = (name = ''): string =>
+export const formatIntentAndSlotName = (name = ''): string =>
   name
     .replace(' ', '_')
     .replace(/[^A-Z_a-z]/g, '')
     .toLowerCase();
 
+const CONTAIN_INTENT_REGEXP = /(\w)Intent/g;
+const CAMEL_CASE_REGEXPS = [
+  /([A-Za-z])([A-Z])(?=[a-z])/g, // camelCase
+  /([a-z])([A-Z]{2})(?=[a-z])/g, // camelCaseSH
+  /([a-z])([A-Z]+)(?=[A-Z])/g, // camelCaseSHORT
+];
+
 export const prettifyIntentName = (name = ''): string =>
   name
-    .replace(/(\w)Intent/g, '$1')
-    .replace(/([A-Za-z])([A-Z])(?=[a-z])/g, '$1 $2') // camelCase => camel Case
-    .replace(/([a-z])([A-Z]{2})(?=[a-z])/g, '$1 $2') // camelCaseSH => camel Case SH
-    .replace(/([a-z])([A-Z]+)(?=[A-Z])/g, '$1 $2') // camelCaseSHORT => camel Case SHORT
+    .replace(CONTAIN_INTENT_REGEXP, '$1')
+    .replace(CAMEL_CASE_REGEXPS[0], '$1 $2') // camelCase => camel Case
+    .replace(CAMEL_CASE_REGEXPS[1], '$1 $2') // camelCaseSH => camel Case SH
+    .replace(CAMEL_CASE_REGEXPS[2], '$1 $2') // camelCaseSHORT => camel Case SHORT
     .trim();
 
 export const prettifyIntentNames = <T extends Realtime.Intent>(intents: T[]): T[] =>
@@ -41,20 +48,22 @@ export const prettifyIntentNames = <T extends Realtime.Intent>(intents: T[]): T[
 
 export const getIntentNameLabel = (name = ''): string => INTENT_LABELS[name] ?? name;
 
-export const filterIntents = <T extends Realtime.Intent>(intents: T[], activeIntent: T): T[] =>
-  intents.filter((intent) => {
-    const isActiveIntent = intent.id === activeIntent?.id;
+export const intentFilter = <T extends Realtime.Intent>(intent: T, activeIntent?: T | null): boolean => {
+  const isActiveIntent = intent.id === activeIntent?.id;
 
-    if (isActiveIntent) {
-      return true;
-    }
-
-    if (isCustomizableBuiltInIntent(intent)) {
-      return !FILTERED_AMAZON_INTENTS.includes(intent.name.replace(AMAZON_INTENT_PREFIX, ''));
-    }
-
+  if (isActiveIntent) {
     return true;
-  });
+  }
+
+  if (isCustomizableBuiltInIntent(intent)) {
+    return !FILTERED_AMAZON_INTENTS.includes(intent.name.replace(AMAZON_INTENT_PREFIX, ''));
+  }
+
+  return true;
+};
+
+export const filterIntents = <T extends Realtime.Intent>(intents: T[], activeIntent?: T | null): T[] =>
+  intents.filter((intent) => intentFilter(intent, activeIntent));
 
 export const intentFactory =
   <T extends VoiceflowConstants.PlatformType>(platform: T) =>
@@ -152,12 +161,24 @@ export function validateUtterance(utterance: string, intentID: string, intents: 
   return err;
 }
 
-export const applyPlatformIntentNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType) => {
+export const applyPlatformIntentNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string => {
   const hasNoRules = Realtime.Utils.typeGuards.isAnyGeneralPlatform(platform) || Realtime.Utils.typeGuards.isDialogflowPlatform(platform);
 
   if (hasNoRules) return name;
 
-  return formatIntentName(name);
+  return formatIntentAndSlotName(name);
+};
+
+export const applyCustomizableBuiltInIntent = (name: string, platform: VoiceflowConstants.PlatformType): string => {
+  let newName = removeBuiltInPrefix(name);
+
+  if (Realtime.Utils.typeGuards.isAnyGeneralPlatform(platform)) {
+    newName = Utils.string.capitalizeFirstLetter(newName?.toLowerCase());
+  } else if (Realtime.Utils.typeGuards.isAlexaPlatform(platform)) {
+    newName = newName.replace(/(\w)Intent/g, '$1');
+  }
+
+  return newName;
 };
 
 export const removeSlotRefFromInput = (text: string, slotDetails: Realtime.Slot): string =>

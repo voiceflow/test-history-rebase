@@ -13,10 +13,12 @@ import { Manager, PopperProps, Reference } from 'react-popper';
 // for some reason absolute paths are not transformed for this import
 import { AdvancedMenu, defaultMenuLabelRenderer } from '../NestedMenu';
 import { InlineInputValue, InputBadge, PrefixContainer, SelectWrapper, TagsContainer, TagsInput } from './components';
-import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
+import { defaultOptionsFilter, FilterResult, searchableOptionsFilter } from './optionsFilters';
+import { isUIOnlyMenuItemOption, UIOnlyMenuItemOption } from './utils';
 
 export { defaultOptionsFilter, searchableOptionsFilter };
 export * from './components';
+export * from './utils';
 
 export enum SelectInputVariant {
   DROPDOWN = 'dropdown',
@@ -24,20 +26,13 @@ export enum SelectInputVariant {
   COUNTER = 'counter',
 }
 
-export interface MenuItemOptions {
-  menuItemProps?: {
-    ending?: boolean;
-    divider?: boolean;
-  };
-}
-
 export type GetOptionLabel<V> = (value?: Nullish<V>) => Nullish<string>;
 
 export type GetOptionValue<O, V> = (option?: Nullish<O>) => Nullish<V>;
 
-export type GroupedOption<O> = O & { options?: O[] };
+export type GroupedOption<O> = O & { options?: Array<O | UIOnlyMenuItemOption> };
 
-export type MultiLevelOption<O> = O & { options?: MultiLevelOption<O>[] };
+export type MultiLevelOption<O> = O & { options?: Array<MultiLevelOption<O> | UIOnlyMenuItemOption> };
 
 export type RenderOptionLabel<O, V> = (
   option: O,
@@ -48,7 +43,7 @@ export type RenderOptionLabel<O, V> = (
 ) => React.ReactNode;
 
 export type OptionsFilter<O, V> = (
-  options: O[],
+  options: Array<O | UIOnlyMenuItemOption>,
   searchLabel: string,
   config: {
     grouped?: boolean;
@@ -58,7 +53,7 @@ export type OptionsFilter<O, V> = (
     getOptionValue: GetOptionValue<O, V>;
     multiLevelDropdown?: boolean;
   }
-) => { filteredOptions: O[]; matchedOptions: O[]; notMatchedOptions: O[] };
+) => FilterResult<O>;
 
 export type SelectProps<O, V> = {
   id?: string;
@@ -81,13 +76,12 @@ export type SelectProps<O, V> = {
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onOpen?: () => void;
   prefix?: React.ReactNode;
-  selectedOptions?: any;
-  options: O[];
+  options: Array<O | UIOnlyMenuItemOption>;
   onClose?: () => void;
   createLabel?: string;
   grouped?: boolean;
   minWidth?: boolean;
-  renderOptionsFilter?: (option: O) => boolean;
+  renderOptionsFilter?: (option: O | UIOnlyMenuItemOption) => boolean;
   onSelect: (value: V, optionsPath: number[]) => void;
   disabled?: boolean;
   placement?: PopperProps['placement'];
@@ -105,6 +99,7 @@ export type SelectProps<O, V> = {
   renderEmpty?: Nullable<(options: { search: string; close: VoidFunction }) => React.ReactNode>;
   onMouseDown?: React.MouseEventHandler;
   renderAsSpan?: boolean;
+  selectedOptions?: unknown[];
 
   getOptionKey?: (option: O) => string;
   optionsFilter?: OptionsFilter<O, V>;
@@ -236,7 +231,7 @@ SelectProps<O, V>): JSX.Element => {
   const [opened, updateOpened] = React.useState(!!open);
   const [directMatch, setDirectMatch] = React.useState(false);
   const [searchLabel, updateSearchLabel] = React.useState(optionLabel);
-  const [optionsToRender, updateOptionsToRender] = React.useState(renderOptionsFilter ? options.filter(renderOptionsFilter) : options);
+  const [optionsToRender, updateOptionsToRender] = React.useState(() => (renderOptionsFilter ? options.filter(renderOptionsFilter) : options));
   const [inputWrapperRef, setInputWrapperRef] = React.useState<Nullable<HTMLElement>>(null);
   const [focusedOptionIndex, updateFocusedOptionIndex] = React.useState(multiLevelDropdown ? null : 0);
 
@@ -262,7 +257,8 @@ SelectProps<O, V>): JSX.Element => {
     getOptionValue,
     labelSearchable,
     inputWrapperRef,
-    firstOptionIndex: (isDropdown && searchable) || creatable ? 1 : 0,
+    firstOptionIndex:
+      ((!directMatch && ((isDropdown && searchable) || creatable)) || inDropdownSearch) && (alwaysShowCreate || !searchable || !!searchLabel) ? 1 : 0,
     multiLevelDropdown,
     showNotMatchedOptions,
   });
@@ -296,9 +292,15 @@ SelectProps<O, V>): JSX.Element => {
         multiLevelDropdown: cache.current.multiLevelDropdown,
       });
 
-      const hasExactMatch =
-        matchedOptions.length === 1 &&
-        cache.current.getOptionLabel(cache.current.getOptionValue(matchedOptions[0]))?.toLowerCase() === label.toLowerCase();
+      let hasExactMatch = false;
+
+      if (matchedOptions.length === 1) {
+        const option = matchedOptions[0];
+
+        hasExactMatch =
+          !isUIOnlyMenuItemOption(option) &&
+          cache.current.getOptionLabel(cache.current.getOptionValue(option))?.toLowerCase() === label.toLowerCase();
+      }
 
       if (
         hasExactMatch ||
@@ -309,12 +311,15 @@ SelectProps<O, V>): JSX.Element => {
         setDirectMatch(false);
       }
 
-      const findIndexCallback = (option: O) => cache.current.value === cache.current.getOptionValue(option);
+      const findIndexCallback = (option: O | UIOnlyMenuItemOption) =>
+        !isUIOnlyMenuItemOption(option) && cache.current.value === cache.current.getOptionValue(option);
 
       let activeOptionIndex;
 
       if (grouped) {
-        activeOptionIndex = (matchedOptions as GroupedOption<O>[]).flatMap((option) => option.options ?? []).findIndex(findIndexCallback);
+        activeOptionIndex = (matchedOptions as GroupedOption<O>[])
+          .flatMap((option) => (isUIOnlyMenuItemOption(option) ? option : option.options ?? []))
+          .findIndex(findIndexCallback);
       } else {
         activeOptionIndex = matchedOptions.findIndex(findIndexCallback);
       }
@@ -394,7 +399,9 @@ SelectProps<O, V>): JSX.Element => {
     (index: number) => {
       let nextIndex = index;
 
-      const flatOptions = grouped ? (optionsToRender as GroupedOption<O>[]).flatMap((option) => option.options) : optionsToRender;
+      const flatOptions = grouped
+        ? (optionsToRender as GroupedOption<O>[]).flatMap((option) => (isUIOnlyMenuItemOption(option) ? option : option.options ?? []))
+        : optionsToRender;
 
       if (index < 0) {
         nextIndex = flatOptions.length - (1 - cache.current.firstOptionIndex);
@@ -508,6 +515,8 @@ SelectProps<O, V>): JSX.Element => {
     onKeyDown,
   };
 
+  const hasOptions = !!selectedOptions?.length;
+
   return (
     <Manager>
       <Reference innerRef={setInputWrapperRef}>
@@ -538,7 +547,7 @@ SelectProps<O, V>): JSX.Element => {
                 <>
                   {inputVariant === SelectInputVariant.TAGS && tags && (
                     <TagsContainer
-                      hasTags={selectedOptions?.length}
+                      hasTags={hasOptions}
                       isActive={opened}
                       onClick={() => {
                         onOpenMenu();
@@ -546,8 +555,9 @@ SelectProps<O, V>): JSX.Element => {
                       }}
                     >
                       {tags()}
+
                       <TagsInput
-                        hastags={selectedOptions?.length}
+                        hastags={hasOptions}
                         onChange={onChangeSearchLabel}
                         placeholder={placeholder}
                         onClick={searchable ? onOpenMenu : undefined}
@@ -588,13 +598,14 @@ SelectProps<O, V>): JSX.Element => {
                       <SearchInput
                         {...inputProps}
                         ref={inputRef}
-                        value={selectedOptions.length > 0 ? displayName : ''}
+                        value={hasOptions ? displayName : ''}
                         type="search"
                         ellipsis
                         autoComplete="off"
                         onChange={() => null}
                       />
-                      {selectedOptions.length > 0 ? (
+
+                      {hasOptions ? (
                         <InputBadge>{selectedOptions.length}</InputBadge>
                       ) : (
                         <SearchInputIcon icon="caretDown" color={isDropDownOpened ? '#5D9DF5' : '#6e849a'} size={10} onClick={onIconClick} />

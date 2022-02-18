@@ -1,15 +1,13 @@
-import { BaseModels } from '@voiceflow/base-types';
 import { BoxFlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
+import { ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useFeature, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 
 import DiagramActions from './DiagramActions';
 import DiagramDivider from './DiagramDivider';
@@ -22,34 +20,29 @@ const DiagramsActions: React.FC = () => {
   const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const previousDiagramID = useSelector(Creator.previousDiagramIDSelector);
+  const rootDiagram = useSelector(DiagramV2.diagramByIDSelector, { id: rootDiagramID });
   const activeDiagram = useSelector(DiagramV2.diagramByIDSelector, { id: activeDiagramID });
   const previousDiagram = useSelector(DiagramV2.diagramByIDSelector, { id: previousDiagramID });
-
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
-  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const isOnlyRootDiagramActive = rootDiagramID === activeDiagramID;
   const rootDiagramIsPreviousDiagram = rootDiagramID === previousDiagramID;
   const dontRenderName = !rootDiagramIsPreviousDiagram && !previousDiagram;
+  const rootDiagramName = rootDiagram?.name === ROOT_DIAGRAM_NAME ? 'Home' : rootDiagram?.name;
 
   return (
     <BoxFlexCenter ml={4} overflow="hidden">
       {isOnlyRootDiagramActive ? (
-        <DiagramActions diagramID={rootDiagramID} diagramName="Home" disabled />
+        <DiagramActions diagramID={rootDiagramID} diagramName={rootDiagramName} />
       ) : (
         <>
-          {(!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) || activeDiagram?.type !== BaseModels.Diagram.DiagramType.TOPIC) && (
-            <>
-              <DiagramDivider />
-              <DiagramName onClick={() => rootDiagramID && goToDiagramHistoryClear(rootDiagramID)}>Home</DiagramName>{' '}
-            </>
-          )}
+          <DiagramDivider />
+          <DiagramName onClick={() => rootDiagramID && goToDiagramHistoryClear(rootDiagramID)}>{rootDiagramName}</DiagramName>
 
           {!dontRenderName && !!previousDiagramID && ![rootDiagramID, activeDiagramID].includes(previousDiagramID) && (
             <>
               <DiagramDivider />
               <DiagramName onClick={() => goToDiagramHistoryPop(previousDiagramID)}>
-                {rootDiagramIsPreviousDiagram ? 'Home' : previousDiagram?.name}
+                {rootDiagramIsPreviousDiagram ? rootDiagramName : previousDiagram?.name}
               </DiagramName>
             </>
           )}

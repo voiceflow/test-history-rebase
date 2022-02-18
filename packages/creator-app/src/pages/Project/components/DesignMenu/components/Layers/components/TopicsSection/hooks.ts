@@ -7,11 +7,14 @@ import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramDuck from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
+import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/intent';
 
 export interface TopicIntentItem {
   id: string;
@@ -41,6 +44,7 @@ interface TopicsAPI {
 }
 
 export const useTopics = (): TopicsAPI => {
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const intentSteps = useSelector(DiagramV2.intentStepsSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
   const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
@@ -48,7 +52,7 @@ export const useTopics = (): TopicsAPI => {
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const { target: focusedNodeID, isActive: isFocusedNodeActive } = useSelector(Creator.creatorFocusSelector);
 
-  const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryClear);
   const reorderTopics = useDispatch(Version.reorderTopics);
   const createTopicDiagram = useDispatch(DiagramDuck.createTopicDiagram);
 
@@ -77,14 +81,23 @@ export const useTopics = (): TopicsAPI => {
           id: diagram.id,
           name: rootDiagramID === diagram.id && diagram.name === ROOT_DIAGRAM_NAME ? 'Home' : diagram.name,
           intentItems: diagram.intentStepIDs.map<TopicIntentItem>((stepID) => {
-            const intentID = topicIntentStepMap[stepID] ?? null;
+            const intentID = topicIntentStepMap[stepID]?.intentID ?? null;
             const intent = getIntentByID({ id: intentID });
 
-            return { id: stepID, intent, intentID };
+            return {
+              id: stepID,
+              intent: intent
+                ? {
+                    ...intent,
+                    name: applyPlatformIntentNameFormatting(prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name), platform),
+                  }
+                : null,
+              intentID,
+            };
           }),
         };
       }),
-    [getIntentByID, rootDiagramID, topicDiagrams, intentSteps]
+    [platform, getIntentByID, rootDiagramID, topicDiagrams, intentSteps]
   );
 
   const lowerCasedSearchValue = searchValue.trim().toLowerCase();

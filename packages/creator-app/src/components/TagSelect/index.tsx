@@ -1,5 +1,13 @@
 import { Nullish, Utils } from '@voiceflow/common';
-import { FlexApart, FlexStart, NestedMenuComponents, Select, SelectInputVariant, stopImmediatePropagation } from '@voiceflow/ui';
+import {
+  FlexApart,
+  FlexStart,
+  isNotUIOnlyMenuItemOption,
+  NestedMenuComponents,
+  Select,
+  SelectInputVariant,
+  stopImmediatePropagation,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
@@ -33,13 +41,15 @@ const TagSelect = <O extends unknown>({
     setSelected(trimNulls(value));
   }, [value]);
 
+  const tagsOnly = React.useMemo(() => options.filter(isNotUIOnlyMenuItemOption), [options]);
+
   const labels = React.useMemo(
     () =>
-      options.reduce<Map<Nullish<string>, Nullish<string>>>(
+      tagsOnly.reduce<Map<Nullish<string>, Nullish<string>>>(
         (map, next) => map.set(getOptionValue(next), getOptionLabel(next)),
         new Map<Nullish<string>, Nullish<string>>()
       ),
-    [options]
+    [tagsOnly]
   );
 
   const selectedAllIntents = selected.length === options.length;
@@ -52,7 +62,7 @@ const TagSelect = <O extends unknown>({
   };
 
   const toggleSelectAll = () => {
-    onChange(selectedAllIntents ? [] : trimNulls(options.map(getOptionValue)));
+    onChange(selectedAllIntents ? [] : trimNulls(tagsOnly.map(getOptionValue)));
   };
 
   const isOptionSelected = (optionID: string) => selected.includes(optionID);

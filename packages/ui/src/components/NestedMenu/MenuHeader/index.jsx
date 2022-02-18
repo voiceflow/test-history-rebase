@@ -42,7 +42,7 @@ function MenuHeader({
             <MenuInput
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
-              ref={inDropdownSearch ? createInputRef : null}
+              ref={createInputRef}
               value={inputVal}
               onClick={() => createInputRef.current.focus()}
               onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}

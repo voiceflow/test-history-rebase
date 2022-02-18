@@ -1,5 +1,6 @@
 import React from 'react';
 
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProductV2 from '@/ducks/productV2';
@@ -53,6 +54,24 @@ export const {
   Consumer: DiagramMapConsumer,
 } = createSelectorContext(DiagramV2.diagramMapSelector);
 
+export const {
+  Context: ActiveDiagramTypeContext,
+  Provider: ActiveDiagramTypeProvider,
+  Consumer: ActiveDiagramTypeConsumer,
+} = createSelectorContext(DiagramV2.active.typeSelector);
+
+export const {
+  Context: IntentNodeDataLookupContext,
+  Provider: IntentNodeDataLookupProvider,
+  Consumer: IntentNodeDataLookupConsumer,
+} = createSelectorContext(CreatorV2.intentNodeDataLookupSelector);
+
+export const {
+  Context: GlobalIntentStepMapContext,
+  Provider: GlobalIntentStepMapProvider,
+  Consumer: GlobalIntentStepMapConsumer,
+} = createSelectorContext(DiagramV2.globalIntentStepMapSelector);
+
 export const ReduxContextsProviders: React.FC = ({ children }) => (
   <IsCanvasOnlyProvider>
     <IsCreatorMenuHiddenProvider>
@@ -62,8 +81,14 @@ export const ReduxContextsProviders: React.FC = ({ children }) => (
             <CustomIntentMapProvider>
               <SlotMapProvider>
                 <DiagramMapProvider>
-                  {/* comment to have a children on a new line */}
-                  {children}
+                  <GlobalIntentStepMapProvider>
+                    <ActiveDiagramTypeProvider>
+                      <IntentNodeDataLookupProvider>
+                        {/* comment to have a children on a new line */}
+                        {children}
+                      </IntentNodeDataLookupProvider>
+                    </ActiveDiagramTypeProvider>
+                  </GlobalIntentStepMapProvider>
                 </DiagramMapProvider>
               </SlotMapProvider>
             </CustomIntentMapProvider>

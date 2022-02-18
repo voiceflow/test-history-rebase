@@ -137,9 +137,9 @@ export const goToDiagramHistoryPop =
   };
 
 export const goToDiagramHistoryClear =
-  (diagramID: string): Thunk =>
+  (diagramID: string, nodeID?: string): Thunk =>
   async (dispatch) => {
-    await dispatch(goToDiagram(diagramID));
+    await dispatch(goToDiagram(diagramID, nodeID));
 
     dispatch(Creator.diagramsHistoryClear());
   };

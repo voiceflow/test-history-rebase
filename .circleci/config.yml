@@ -28,7 +28,9 @@ workflows:
           config-path: .circleci/continue-config.yml
           mapping: |
             packages/creator-app/.* build-creator-app true
+            packages/creator-app/.* build-frontend true
             packages/admin-app/.* build-admin-app true
+            packages/admin-app/.* build-frontend true
             packages/showcase/.* build-showcase true
             packages/realtime/.* build-realtime true
             packages/realtime-sdk/.* build-realtime true

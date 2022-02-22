@@ -33,7 +33,7 @@ const useNoMatchOptionSection = ({
 
   return [
     {
-      label: data.noMatch ? 'Remove No Match Response' : 'Add No Match Response',
+      label: data.noMatch ? 'Remove No Match' : 'Add No Match',
       onClick: toggleNoMatch,
     },
     !!data.noMatch && <NoMatchSection data={data.noMatch} pushToPath={pushToPath} />,

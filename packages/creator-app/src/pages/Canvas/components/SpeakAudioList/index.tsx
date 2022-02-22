@@ -6,11 +6,10 @@ import React from 'react';
 import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType } from '@/constants';
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs';
+import { useSelector } from '@/hooks';
 import { ControlOptions } from '@/pages/Canvas/components/Editor';
 import ListEditorContent, { ListItemComponent } from '@/pages/Canvas/components/ListEditorContent';
 import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '@/pages/Canvas/managers/Speak/constants';
-import { ConnectedProps } from '@/types';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
 export const speakFactory = ({ defaultVoice }: { defaultVoice: string }): Realtime.SpeakData => ({
@@ -51,7 +50,7 @@ export interface SpeakAudioListProps {
   onChangeRandomize?: (newRandomize: boolean) => void;
 }
 
-const SpeakAudioList = ({
+const SpeakAudioList: React.FC<SpeakAudioListProps> = ({
   items,
   itemName = 'outputs',
   children,
@@ -59,15 +58,16 @@ const SpeakAudioList = ({
   platform,
   randomize,
   renderMenu,
-  defaultVoice,
   isDeprecated,
   onChangeItems,
   itemComponent,
   getControlOptions,
   onChangeRandomize,
-}: React.PropsWithChildren<SpeakAudioListProps> & ConnectedSpeakAndAudioListProps) => {
-  const toggleRandomized = React.useCallback(() => onChangeRandomize?.(!randomize), [randomize, onChangeRandomize]);
+}) => {
   const updateItems = React.useCallback((newItems: Realtime.SpeakData[]) => onChangeItems?.(newItems), [onChangeItems]);
+  const toggleRandomized = React.useCallback(() => onChangeRandomize?.(!randomize), [randomize, onChangeRandomize]);
+
+  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
 
   const factory = React.useMemo(
     () => speakAudioFactory({ defaultVoice: defaultVoice || getPlatformDefaultVoice(platform) }),
@@ -108,7 +108,7 @@ const SpeakAudioList = ({
             })
           : [
               {
-                label: 'System',
+                label: 'Speak',
                 icon: NODE_CONFIG.getIcon?.(VOICE_MOCK_DATA),
                 onClick: Utils.functional.chainVoidAsync(() => onAdd(DialogType.VOICE), scrollToBottom),
                 disabled: isMaxMatches,
@@ -125,10 +125,4 @@ const SpeakAudioList = ({
   );
 };
 
-const mapStateToProps = {
-  defaultVoice: VersionV2.active.defaultVoiceSelector,
-};
-
-type ConnectedSpeakAndAudioListProps = ConnectedProps<typeof mapStateToProps, {}>;
-
-export default connect(mapStateToProps)(SpeakAudioList) as React.FC<SpeakAudioListProps>;
+export default SpeakAudioList;

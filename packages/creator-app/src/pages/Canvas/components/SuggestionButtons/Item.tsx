@@ -69,7 +69,7 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
       ref={ref}
       header={
         transformVariablesToReadable(item.name) ||
-        `${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'BaseButton')} ${numberToWords.toWords(index + 1)}`
+        `${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'Button')} ${numberToWords.toWords(index + 1)}`
       }
       prefix={<Badge>{index + 1}</Badge>}
       headerRef={connectedDragRef}

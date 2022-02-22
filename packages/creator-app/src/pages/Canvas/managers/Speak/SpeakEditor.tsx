@@ -4,7 +4,7 @@ import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
-import SpeakItemList from '@/pages/Canvas/components/SpeakAudioList';
+import SpeakAudioList from '@/pages/Canvas/components/SpeakAudioList';
 import { useCanvasVisibilityOption } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
@@ -27,7 +27,7 @@ const SpeakEditor: NodeEditor<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBu
   const canvasVisibilityOption = useCanvasVisibilityOption(canvasVisibility, updateCanvasVisibility);
 
   return (
-    <SpeakItemList
+    <SpeakAudioList
       renderMenu={isDeprecated ? undefined : () => <OverflowMenu placement="top" options={[canvasVisibilityOption]} />}
       getControlOptions={
         isDeprecated

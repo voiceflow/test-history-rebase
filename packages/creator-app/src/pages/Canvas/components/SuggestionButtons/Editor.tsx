@@ -58,7 +58,7 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
           menu={<OverflowMenu placement="top-end" options={[buttonLayoutOption]} />}
           options={[
             {
-              label: `Add ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'BaseButton')}`,
+              label: `Add ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'Button')}`,
               onClick: Utils.functional.compose(() => scrollToBottom('smooth'), onAdd),
             },
           ]}

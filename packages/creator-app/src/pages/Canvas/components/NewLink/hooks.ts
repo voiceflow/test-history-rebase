@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { BlockType } from '@/constants';
-import { AutoPanningContext } from '@/contexts';
+import { AutoPanningCacheContext } from '@/contexts';
 import * as Realtime from '@/ducks/realtime';
 import { useRAF } from '@/hooks';
 import { buildPath, getMarkerAttrs, getPathPoints, getVirtualPoints } from '@/pages/Canvas/components/Link';
@@ -27,7 +27,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const isPinned = React.useRef(false);
   const removeEventListeners = React.useRef(Utils.functional.noop);
   const engine = React.useContext(EngineContext)!;
-  const { isAutoPanning } = React.useContext(AutoPanningContext);
+  const isAutoPanning = React.useContext(AutoPanningCacheContext);
   const [isVisible, setVisible] = React.useState(false);
 
   const [mouseMoveStylesScheduler] = useRAF();

@@ -6,7 +6,7 @@ import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { BlockType, DragItem } from '@/constants';
-import { AutoPanningContext } from '@/contexts';
+import { AutoPanningCacheContext } from '@/contexts';
 import { useEnableDisable, useEventualEngine, useSetup } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
@@ -25,8 +25,8 @@ export interface ItemProps {
 }
 
 const Item: React.FC<ItemProps> = ({ icon, type, label, factoryData, isDraggingPreview }) => {
-  const { isAutoPanning } = React.useContext(AutoPanningContext);
   const engine = useEventualEngine();
+  const isAutoPanning = React.useContext(AutoPanningCacheContext);
   const [isClickedState, enableClickedState, clearClickedState] = useEnableDisable();
 
   const [{ isDragging }, connectDrag, connectPreview] = useDrag<StepDragItem, unknown, { isDragging: boolean }>({

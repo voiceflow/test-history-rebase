@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { RemoveIntercom } from '@/components/IntercomChat';
+import { AutoPanningStateContext } from '@/contexts';
 import * as Thread from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
-import { connect } from '@/hocs';
 import { useDispatch, useHotKeys, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import CommentThread from '@/pages/Canvas/components/CommentThread';
@@ -11,36 +11,34 @@ import { EngineContext, FocusThreadContext, ThreadEntityProvider } from '@/pages
 import { CanvasRenderGate } from '@/pages/Canvas/gates';
 import { useCanvasIdle, useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 import { useCommentingMode } from '@/pages/Project/hooks';
-import { ConnectedProps } from '@/types';
 
 import NewCommentThread from './NewCommentThread';
 
-const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ threadIDs, updateUnreadComments }) => {
+const ThreadLayer: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
-  const [isCanvasMoving, setIsCanvasMoving] = React.useState<boolean>(false);
+  const isAutoPanning = React.useContext(AutoPanningStateContext);
+
   const [trackEvents] = useTrackingEvents();
   const isCommentingMode = useCommentingMode();
 
+  const threadIDs = useSelector(Thread.activeDiagramThreadIDsSelector);
   const commentsVisible = useSelector(UI.isCommentsVisible);
+
+  const updateUnreadComments = useDispatch(Thread.updateUnreadComments);
   const toggleCommentVisibility = useDispatch(UI.toggleCommentVisibility);
 
-  const prevMoving = React.useRef(isCanvasMoving);
+  const [isCanvasMoving, setIsCanvasMoving] = React.useState<boolean>(false);
+
+  const isHidden = isCanvasMoving || isAutoPanning;
+
+  const prevIsHidden = React.useRef(isHidden);
   const containerKey = React.useRef(0);
 
   useHotKeys(Hotkey.HIDE_COMMENT_BUBBLES, toggleCommentVisibility);
-
-  useCanvasIdle(() => {
-    setIsCanvasMoving(false);
-  });
-
-  useCanvasPan(() => {
-    setIsCanvasMoving(true);
-  });
-
-  useCanvasZoom(() => {
-    setIsCanvasMoving(true);
-  });
+  useCanvasPan(() => setIsCanvasMoving(true));
+  useCanvasZoom(() => setIsCanvasMoving(true));
+  useCanvasIdle(() => setIsCanvasMoving(false));
 
   React.useEffect(() => {
     updateUnreadComments(false);
@@ -58,14 +56,14 @@ const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ threadIDs, updateUnr
 
   // incrementing the container key will cause the layer to re-render/re-position the bubbles
   // incrementing only after movement is finished to reduce the rerenders
-  if (prevMoving.current === true && !isCanvasMoving) {
+  if (prevIsHidden.current === true && !isHidden) {
     containerKey.current++;
   }
 
-  prevMoving.current = isCanvasMoving;
+  prevIsHidden.current = isHidden;
 
   return (
-    <div key={containerKey.current} style={{ visibility: isCanvasMoving ? 'hidden' : 'visible' }}>
+    <div key={containerKey.current} style={{ visibility: isHidden ? 'hidden' : 'visible' }}>
       {threadIDs.map((threadID) => (
         <ThreadEntityProvider id={threadID} key={threadID}>
           <CanvasRenderGate>
@@ -79,14 +77,4 @@ const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ threadIDs, updateUnr
   );
 };
 
-const mapStateToProps = {
-  threadIDs: Thread.activeDiagramThreadIDsSelector,
-};
-
-const mapDispatchToProps = {
-  updateUnreadComments: Thread.updateUnreadComments,
-};
-
-type ConnectedThreadLayerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(ThreadLayer);
+export default React.memo(ThreadLayer);

@@ -1,17 +1,25 @@
-import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
-export interface AutoPanningContextValue {
-  isAutoPanning: React.MutableRefObject<boolean>;
-}
-
-export const AutoPanningContext = React.createContext<AutoPanningContextValue>({ isAutoPanning: { current: false } });
-export const { Consumer: AutoPanningConsumer } = AutoPanningContext;
+export const AutoPanningSetContext = React.createContext<(value: boolean) => void>(() => undefined);
+export const AutoPanningStateContext = React.createContext<boolean>(false);
+export const AutoPanningCacheContext = React.createContext<React.MutableRefObject<boolean>>({ current: false });
 
 export const AutoPanningProvider: React.FC = ({ children }) => {
-  const isAutoPanning = React.useRef(false);
+  const [isPanning, localSetIsPanning] = React.useState(false);
+  const cache = React.useRef(isPanning);
 
-  const api = useContextApi({ isAutoPanning });
+  const setIsPanning = React.useCallback((value: boolean) => {
+    if (cache.current === value) return;
 
-  return <AutoPanningContext.Provider value={api}>{children}</AutoPanningContext.Provider>;
+    cache.current = value;
+    localSetIsPanning(value);
+  }, []);
+
+  return (
+    <AutoPanningSetContext.Provider value={setIsPanning}>
+      <AutoPanningStateContext.Provider value={isPanning}>
+        <AutoPanningCacheContext.Provider value={cache}>{children}</AutoPanningCacheContext.Provider>
+      </AutoPanningStateContext.Provider>
+    </AutoPanningSetContext.Provider>
+  );
 };

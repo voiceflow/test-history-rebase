@@ -3,7 +3,7 @@ import React from 'react';
 
 import { TabPane, TabsContent } from '@/components/Tabs';
 import { Permission } from '@/config/permissions';
-import { AutoPanningContext } from '@/contexts';
+import { AutoPanningCacheContext } from '@/contexts';
 import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useIsCanvasDesignOnly, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
@@ -24,7 +24,7 @@ const DesignMenu: React.FC = () => {
 
   const isHidden = useSelector(UI.isCreatorMenuHiddenSelector);
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
-  const { isAutoPanning } = React.useContext(AutoPanningContext);
+  const isAutoPanning = React.useContext(AutoPanningCacheContext);
 
   const setActiveTab = useDispatch(UI.setActiveCreatorMenu);
   const toggleIsHidden = useDispatch(UI.toggleCreatorMenuHidden);

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.634.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.634.0...@voiceflow/creator-app@1.634.1) (2022-02-22)
+
+
+### Bug Fixes
+
+* hide commenting bubbles on autopanning (VF-2957) ([#5111](https://github.com/voiceflow/creator-app/issues/5111)) ([4e4daff](https://github.com/voiceflow/creator-app/commit/4e4daffbefff27140760af6ed8c6fa4afa0bc146))
+* naming issues (VF-2927) ([#5112](https://github.com/voiceflow/creator-app/issues/5112)) ([9eb4ede](https://github.com/voiceflow/creator-app/commit/9eb4ede53a9c0fdfd0fd89ab6292320fbc11c96c))
+
+
+
+
+
 # [1.634.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.633.1...@voiceflow/creator-app@1.634.0) (2022-02-18)
 
 

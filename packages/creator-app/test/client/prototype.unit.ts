@@ -30,7 +30,7 @@ suite('Client - Prototype', ({ expect, stub }) => {
       const response = new Blob();
       const axiosPost = stub(axios, 'post').resolves({ data: response });
 
-      await expect(client.interact(VERSION_ID, data, sessionID)).to.eventually.eq(response);
+      await expect(client.interact(VERSION_ID, data, { sessionID })).to.eventually.eq(response);
 
       expect(axiosPost).to.be.calledWithExactly(`${GENERAL_RUNTIME_ENDPOINT}/interact/${VERSION_ID}`, data, { headers: { sessionID } });
     });

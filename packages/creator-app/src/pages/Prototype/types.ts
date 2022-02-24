@@ -125,7 +125,11 @@ export interface PrototypeActions {
   getLinksByPortID?: (id: IDSelectorParam) => any[];
   getNodeByID?: (id: string) => Realtime.Node;
   updatePrototypeVisualsData?: (data: Nullable<Node.Visual.StepData>) => UpdatePrototypeVisualData;
-  fetchContext?: (request: Nullable<BaseRequest.BaseRequest>, config: Recent.PrototypeConfig) => Promise<Nullable<Context>>;
+  fetchContext?: (
+    request: Nullable<BaseRequest.BaseRequest>,
+    config: Recent.PrototypeConfig,
+    options?: { isPublic?: boolean }
+  ) => Promise<Nullable<Context>>;
   setActiveDiagramID?: (id: string) => void;
   updatePrototypeVisualsDataHistory?: (data: Nullable<Node.Visual.StepData>[]) => void;
   updatePrototypeStatus?: (data: PrototypeStatus) => void;

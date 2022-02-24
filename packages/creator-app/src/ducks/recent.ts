@@ -12,8 +12,8 @@ export interface PrototypeConfig {
   debug: boolean;
   intent: boolean;
   isGuided: boolean;
-  showVisuals: boolean;
   platform: VoiceflowConstants.PlatformType;
+  showVisuals: boolean;
 }
 
 export interface RecentState {

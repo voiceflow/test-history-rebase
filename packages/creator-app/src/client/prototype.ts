@@ -16,11 +16,8 @@ const prototypeClient = {
   interact: (
     versionID: string,
     body: { state: Omit<PrototypeContext, 'trace'>; request: BaseRequest.BaseRequest | null; config?: BaseRequest.RequestConfig },
-    sessionID?: string
-  ): Promise<Response> =>
-    axios
-      .post<Response>(`${GENERAL_RUNTIME_ENDPOINT}/interact/${versionID}`, body, { headers: sessionID ? { sessionID } : {} })
-      .then(({ data }) => data),
+    headers: { sessionID?: string; platform?: string } = {}
+  ): Promise<Response> => axios.post<Response>(`${GENERAL_RUNTIME_ENDPOINT}/interact/${versionID}`, body, { headers }).then(({ data }) => data),
 };
 
 export default prototypeClient;

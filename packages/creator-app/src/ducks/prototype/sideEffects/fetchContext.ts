@@ -36,7 +36,7 @@ const getTargetFlowID = (trace: Trace[]) => {
 };
 
 const fetchContext =
-  (request: BaseRequest.BaseRequest | null, config: Recent.PrototypeConfig): Thunk<Context | null> =>
+  (request: BaseRequest.BaseRequest | null, config: Recent.PrototypeConfig, { isPublic }: { isPublic?: boolean } = {}): Thunk<Context | null> =>
   async (dispatch, getState) => {
     const reduxState = getState();
     const { trace: _oldTrace, ...state } = prototypeContextSelector(reduxState);
@@ -62,7 +62,7 @@ const fetchContext =
           request,
           config: { ...(!!config.isGuided && guidedConfig), excludeTypes: getPlatformExcludedTraceTypes(config.platform), tts: true },
         },
-        sessionID
+        { sessionID, platform: isPublic ? 'prototype' : 'canvas-prototype' }
       );
 
       const newState: Context = _state;

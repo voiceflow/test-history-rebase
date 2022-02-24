@@ -61,7 +61,7 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     waitVisuals,
     contextStep,
     updateStatus: setStatus,
-    fetchContext: async (request) => (await fetchContext?.(request, config)) || null,
+    fetchContext: (request) => (fetchContext ? fetchContext(request, config, { isPublic }) : Promise.resolve(null)),
     addToMessages: (message) => updateMessages([...messages, message]),
     flowIDHistory,
     contextHistory,

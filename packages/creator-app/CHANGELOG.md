@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.635.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.634.1...@voiceflow/creator-app@1.635.0) (2022-02-24)
+
+
+### Features
+
+* add platform to interaction request (VF-2925) ([#5108](https://github.com/voiceflow/creator-app/issues/5108)) ([991264c](https://github.com/voiceflow/creator-app/commit/991264cea0594a1ee1dfc60f51f0228468ce252c))
+
+
+
+
+
 ## [1.634.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.634.0...@voiceflow/creator-app@1.634.1) (2022-02-22)
 
 

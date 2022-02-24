@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.635.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.635.0...@voiceflow/creator-app@1.635.1) (2022-02-24)
+
+
+### Bug Fixes
+
+* set default back to small (VF-2985) ([#5118](https://github.com/voiceflow/creator-app/issues/5118)) ([e093f65](https://github.com/voiceflow/creator-app/commit/e093f6555a9a91a918224d1d36bff34fe96ca39a)), closes [/github.com/voiceflow/creator-app/pull/5094/files#diff-3fdb97f6eb86380ce564a3c74951af6e2adb47a43389fadb136a168533fa71e4R23-R24](https://github.com//github.com/voiceflow/creator-app/pull/5094/files/issues/diff-3fdb97f6eb86380ce564a3c74951af6e2adb47a43389fadb136a168533fa71e4R23-R24)
+* text change (VF-3000) ([#5117](https://github.com/voiceflow/creator-app/issues/5117)) ([e0ce7fd](https://github.com/voiceflow/creator-app/commit/e0ce7fd5d60a7faaf798f985f65986e96a8aa7e6))
+
+
+
+
+
 # [1.635.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.634.1...@voiceflow/creator-app@1.635.0) (2022-02-24)
 
 

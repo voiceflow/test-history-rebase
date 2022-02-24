@@ -20,7 +20,7 @@ const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ disabled, onToggle, i
     )}
 
     {variant === SectionToggleVariant.TOGGLE && (
-      <Toggle checked={!isCollapsed} onChange={onToggle as React.ChangeEventHandler} size={ToggleSize.NORMAL} />
+      <Toggle checked={!isCollapsed} onChange={onToggle as React.ChangeEventHandler} size={ToggleSize.SMALL} />
     )}
 
     {variant === SectionToggleVariant.ADD && (

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.56.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.56.0...@voiceflow/ui@1.56.1) (2022-02-24)
+
+
+### Bug Fixes
+
+* overflow cutoff (VF-3003) ([#5119](https://github.com/voiceflow/creator-app/issues/5119)) ([bba2850](https://github.com/voiceflow/creator-app/commit/bba285027421cae0b6a9d7c29d1750571804235f))
+
+
+
+
+
 # [1.56.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.55.1...@voiceflow/ui@1.56.0) (2022-02-18)
 
 

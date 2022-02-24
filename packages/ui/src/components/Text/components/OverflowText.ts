@@ -3,7 +3,9 @@ import { css, styled } from '@ui/styles';
 import Text from './Text';
 
 export const overflowTextStyles = css`
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-x: clip;
+
   white-space: nowrap;
   text-overflow: ellipsis;
 `;

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.636.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.636.0...@voiceflow/creator-app@1.636.1) (2022-02-25)
+
+
+### Bug Fixes
+
+* **creator-app:** fixes variable state sidebar layout (VF-2940) ([#5116](https://github.com/voiceflow/creator-app/issues/5116)) ([27031ed](https://github.com/voiceflow/creator-app/commit/27031ed5cfe8a23671805dfb92a86d3d78a35d4a))
+
+
+
+
+
 # [1.636.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.635.3...@voiceflow/creator-app@1.636.0) (2022-02-25)
 
 

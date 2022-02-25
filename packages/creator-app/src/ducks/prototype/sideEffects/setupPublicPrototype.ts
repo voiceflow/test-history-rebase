@@ -8,13 +8,14 @@ import { batch } from 'react-redux';
 
 import client from '@/client';
 import { FeatureFlag } from '@/config/features';
+import { getDefaultPrototypeLayout, PrototypeLayout } from '@/constants/prototype';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import * as VersionActions from '@/ducks/version/actions';
 import { Thunk } from '@/store/types';
 
 import { updatePrototype } from '../actions';
-import { PrototypeLayout, PrototypeSettings } from '../types';
+import { PrototypeSettings } from '../types';
 import resetPrototype from './reset';
 
 const setupPublicPrototype =
@@ -35,8 +36,10 @@ const setupPublicPrototype =
       throw new Error('Could not retrieve permissions for prototype share');
     }
 
+    const platform = (prototype.platform ?? VoiceflowConstants.PlatformType.GENERAL) as VoiceflowConstants.PlatformType;
+
     const rootDiagramID = prototype.context.stack?.[0].programID as string;
-    const layout = (prototype?.settings.layout ?? PrototypeLayout.TEXT_DIALOG) as PrototypeLayout;
+    const layout = (prototype?.settings.layout ?? getDefaultPrototypeLayout(platform)) as PrototypeLayout;
     const version = {
       id: versionID,
       creatorID: null as any,
@@ -76,7 +79,7 @@ const setupPublicPrototype =
       layout,
       buttons: prototype?.settings.buttons as BaseButton.ButtonsLayout,
       locales: prototype.data.locales as Realtime.AnyLocale[],
-      platform: prototype.platform as VoiceflowConstants.PlatformType,
+      platform,
       hasPassword: prototype?.settings.hasPassword ?? false,
       projectName: prototype.data.name,
     };

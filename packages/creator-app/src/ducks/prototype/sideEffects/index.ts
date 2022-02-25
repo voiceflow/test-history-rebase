@@ -2,12 +2,13 @@ import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
+import { PrototypeMode } from '@/constants/prototype';
 import * as Session from '@/ducks/session';
 import { SyncThunk, Thunk } from '@/store/types';
 
 import { updatePrototypeMode, updatePrototypeSettings } from '../actions';
 import { prototypeSettingsSelector } from '../selectors';
-import { PrototypeMode, PrototypeShareViewSettings } from '../types';
+import { PrototypeShareViewSettings } from '../types';
 
 export { default as checkSharedProtoPassword } from './checkSharedProtoPassword';
 export { default as compilePrototype } from './compilePrototype';

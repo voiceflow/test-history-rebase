@@ -1,11 +1,12 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { createSelector } from 'reselect';
 
+import { getDefaultPrototypeLayout, PrototypeMode } from '@/constants/prototype';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { createRootSelector } from '@/ducks/utils';
 
 import { STATE_KEY } from './constants';
-import { PrototypeLayout, PrototypeMode } from './types';
 
 export const prototypeSelector = createRootSelector(STATE_KEY);
 
@@ -58,7 +59,10 @@ export const prototypeSettingsSelector = createSelector([prototypeSelector], ({ 
 
 export const prototypeButtonsSelector = createSelector([prototypeSelector], ({ settings }) => settings.buttons as BaseButton.ButtonsLayout);
 
-export const prototypeLayoutSelector = createSelector([prototypeSelector], ({ settings }) => settings.layout || PrototypeLayout.TEXT_DIALOG);
+export const prototypeLayoutSelector = createSelector(
+  [prototypeSelector, ProjectV2.active.platformSelector],
+  ({ settings }, platform) => settings.layout || getDefaultPrototypeLayout(platform)
+);
 
 export const prototypeBrandColorSelector = createSelector([prototypeSelector], ({ settings }) => settings.brandColor || '#3D81E2');
 

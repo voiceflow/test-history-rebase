@@ -8,6 +8,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { RemoveIntercom } from '@/components/IntercomChat';
 import SeoHelmet from '@/components/SeoHelmet';
 import { Permission } from '@/config/permissions';
+import { PrototypeLayout } from '@/constants/prototype';
 import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { useDispatch, useGuestPermission, useSelector, useSetup, useToggle, useTrackingEvents } from '@/hooks';
@@ -24,7 +25,7 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
   const [isLoaded, toggleLoaded] = useToggle(false);
   const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings & { globalMessageDelayMilliseconds?: number }>({
     plan: PlanType.STARTER,
-    layout: PrototypeDuck.PrototypeLayout.TEXT_DIALOG,
+    layout: PrototypeLayout.TEXT_DIALOG,
     buttons: BaseButton.ButtonsLayout.STACKED,
     locales: [],
     platform: VoiceflowConstants.PlatformType.GENERAL,

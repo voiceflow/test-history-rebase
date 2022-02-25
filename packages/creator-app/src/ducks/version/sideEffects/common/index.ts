@@ -7,6 +7,7 @@ import { batch } from 'react-redux';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
+import { getDefaultPrototypeLayout, PrototypeLayout } from '@/constants/prototype';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
@@ -107,7 +108,7 @@ export const activateVersion =
         Prototype.updatePrototypeSettings(
           {
             ...dbVersion.prototype?.settings,
-            layout: (dbVersion.prototype?.settings.layout as Prototype.PrototypeLayout | undefined) ?? Prototype.PrototypeLayout.TEXT_DIALOG,
+            layout: (dbVersion.prototype?.settings.layout ?? getDefaultPrototypeLayout(platform)) as PrototypeLayout,
           },
           false
         )
@@ -123,7 +124,7 @@ export const activateVersion =
   };
 
 export const activateVersionV2 =
-  ({ workspaceID, projectID, versionID, diagramID }: Realtime.version.ActivateVersionPayload): Thunk =>
+  ({ workspaceID, projectID, versionID, diagramID, platform }: Realtime.version.ActivateVersionPayload): Thunk =>
   async (dispatch, getState) => {
     const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
     if (!isAtomicActions) return;
@@ -139,7 +140,7 @@ export const activateVersionV2 =
         Prototype.updatePrototypeSettings(
           {
             ...dbVersion.prototype?.settings,
-            layout: (dbVersion.prototype?.settings.layout as Prototype.PrototypeLayout | undefined) ?? Prototype.PrototypeLayout.TEXT_DIALOG,
+            layout: (dbVersion.prototype?.settings.layout ?? getDefaultPrototypeLayout(platform)) as PrototypeLayout,
           },
           false
         )

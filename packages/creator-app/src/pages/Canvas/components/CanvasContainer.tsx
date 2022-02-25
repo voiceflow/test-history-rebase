@@ -4,6 +4,7 @@ import React from 'react';
 
 import { DrawerContainer } from '@/components/Drawer';
 import { BlockType, ModalType } from '@/constants';
+import { PrototypeStatus } from '@/constants/prototype';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';
@@ -164,7 +165,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
         [CANVAS_HIDDEN_CLASSNAME]: isCanvasHidden,
         [CANVAS_MARKUP_CREATING_CLASSNAME]: !!markup.creatingType,
         [CANVAS_PROTOTYPE_ENABLED_CLASSNAME]: isPrototypingMode,
-        [CANVAS_PROTOTYPE_RUNNING_CLASSNAME]: prototypeStatus === Prototype.PrototypeStatus.ACTIVE,
+        [CANVAS_PROTOTYPE_RUNNING_CLASSNAME]: prototypeStatus === PrototypeStatus.ACTIVE,
         [CANVAS_COMMENTING_ENABLED_CLASSNAME]: isCommentingMode,
       })}
       data-markup-creating-type={markup.creatingType}

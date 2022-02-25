@@ -2,6 +2,7 @@ import { COMPONENTS_KEY, PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY, TOP
 import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, Version } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { createCRUDActions } from './utils';
 
@@ -21,6 +22,7 @@ export interface ActivateVersionPayload {
   projectID: string;
   versionID: string;
   diagramID: string | null;
+  platform: VoiceflowConstants.PlatformType;
 }
 
 export const activateVersion = Utils.protocol.createAction<ActivateVersionPayload>(versionRPCType('ACTIVATE'));

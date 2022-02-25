@@ -3,6 +3,7 @@ import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
 import { BlockType } from '@/constants';
+import { PrototypeStatus } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState';
@@ -10,7 +11,7 @@ import { SyncThunk, ThunkDispatch } from '@/store/types';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype } from '../actions';
 import { prototypeVariablesSelector } from '../selectors';
-import { Context, PrototypeStatus } from '../types';
+import { Context } from '../types';
 
 const INVALID_STARTING_BLOCK_TYPES = [BlockType.INTENT];
 

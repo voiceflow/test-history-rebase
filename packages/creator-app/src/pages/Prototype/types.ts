@@ -2,7 +2,8 @@ import { BaseNode, BaseRequest, Button, Node } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Context, PrototypeState, PrototypeStatus, UpdatePrototypeVisualData } from '@/ducks/prototype';
+import { PrototypeStatus } from '@/constants/prototype';
+import { Context, PrototypeState, UpdatePrototypeVisualData } from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import { PrototypeConfig } from '@/ducks/recent';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';

@@ -3,7 +3,7 @@ import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import Divider from '@/components/Divider';
-import * as Prototype from '@/ducks/prototype';
+import { PrototypeStatus } from '@/constants/prototype';
 import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
 import {
   DelayedMessageFadeUpContainer,
@@ -18,7 +18,7 @@ import { checkIfFirstInGroup, checkIfLastBotMessage, checkIfLastBubble, checkIfL
 
 interface DialogPrototypeProps {
   onPlay?: (src: string) => void;
-  status: Prototype.PrototypeStatus;
+  status: PrototypeStatus;
   messages: Message[];
   isPublic?: boolean;
   isLoading?: boolean;
@@ -188,7 +188,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
           }
         })}
 
-        {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && <Ended isTranscript={isTranscript} stepBack={stepBack} />}
+        {status === PrototypeStatus.ENDED && !hideSessionMessages && <Ended isTranscript={isTranscript} stepBack={stepBack} />}
 
         <Loading isLoading={isLoading} avatarURL={avatarURL} pmStatus={pmStatus} animationContainer={DelayedMessageFadeUpContainer} />
 

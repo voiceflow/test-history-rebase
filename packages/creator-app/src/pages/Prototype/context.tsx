@@ -3,11 +3,11 @@ import { useContextApi } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
+import { PrototypeStatus } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
-import { PrototypeStatus } from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
 import * as Transcripts from '@/ducks/transcript';

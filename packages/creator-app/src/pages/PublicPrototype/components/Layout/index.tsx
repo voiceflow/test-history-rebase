@@ -1,7 +1,7 @@
 import { Box, BoxFlexCenter, IS_IOS, IS_MOBILE, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import * as PrototypeDuck from '@/ducks/prototype';
+import { PrototypeLayout } from '@/constants/prototype';
 import { useHotKeys, useRAF, useToggle } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
@@ -18,7 +18,7 @@ interface RendererOptions {
 }
 
 export interface LayoutProps {
-  layout: PrototypeDuck.PrototypeLayout;
+  layout: PrototypeLayout;
   children: (options: RendererOptions) => React.ReactNode;
   isVisuals: boolean;
   isListening?: boolean;
@@ -94,7 +94,7 @@ const Layout: React.FC<LayoutProps> = ({
 
   return (
     <Container isMobile={isMobile} isVisuals={isVisuals} isFullScreen={isFullScreen} splashScreenPassed={splashScreenPassed}>
-      {layout !== PrototypeDuck.PrototypeLayout.TEXT_DIALOG && isMobile ? (
+      {layout !== PrototypeLayout.TEXT_DIALOG && isMobile ? (
         <BoxFlexCenter width="100%" height="100%" column p={32}>
           <SvgIcon icon="info" color="#e5b813" size={32} />
           <Box mt={16} textAlign="center">

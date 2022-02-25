@@ -1,11 +1,11 @@
 import { BaseNode, BaseRequest } from '@voiceflow/base-types';
 
-import { StoreType } from '@/constants/prototype';
+import { PrototypeMode, PrototypeStatus, StoreType } from '@/constants/prototype';
 import { createAction } from '@/ducks/utils';
 import { Store } from '@/models';
 import { Action } from '@/store/types';
 
-import { Context, PrototypeMode, PrototypeShareViewSettings, PrototypeState, PrototypeStatus } from './types';
+import { Context, PrototypeShareViewSettings, PrototypeState } from './types';
 
 // actions
 

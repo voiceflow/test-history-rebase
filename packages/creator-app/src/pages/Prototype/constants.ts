@@ -3,7 +3,7 @@ import { Icon } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
-import { PrototypeMode } from '@/ducks/prototype';
+import { PrototypeMode } from '@/constants/prototype';
 import { Identifier } from '@/styles/constants';
 import { createPlatformSelector } from '@/utils/platform';
 

@@ -94,7 +94,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.diagram.loadIntentSteps({ intentSteps, workspaceID, projectID, versionID }),
       Realtime.version.crud.add({ value: version, key: versionID, workspaceID, projectID }),
       Realtime.project.crud.add({ value: project, key: projectID, workspaceID }),
-      Realtime.version.activateVersion({ workspaceID, projectID, versionID, diagramID: action.diagramID ?? version.rootDiagramID }),
+      Realtime.version.activateVersion({ workspaceID, projectID, versionID, diagramID: action.diagramID ?? version.rootDiagramID, platform }),
     ];
   };
 }

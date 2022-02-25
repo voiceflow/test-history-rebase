@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 
+import { PrototypeMode } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import { useDebug, usePublic } from '@/pages/Prototype/hooks';
@@ -11,7 +12,7 @@ type Filter = (message: Message) => boolean;
 const VisualFilter = (): Filter => {
   const mode = useSelector(Prototype.activePrototypeModeSelector);
 
-  return () => mode !== Prototype.PrototypeMode.DISPLAY;
+  return () => mode !== PrototypeMode.DISPLAY;
 };
 
 const DebugFilter = (): Filter => {

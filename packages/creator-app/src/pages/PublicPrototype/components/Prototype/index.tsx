@@ -2,6 +2,7 @@ import { IS_IOS, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
+import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { compose } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
@@ -35,7 +36,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   const { status } = state;
   const { updatePrototype, savePrototypeSession } = actions;
   const locale = settings.locales[0];
-  const isVisuals = settings.layout === PrototypeDuck.PrototypeLayout.VOICE_VISUALS;
+  const isVisuals = settings.layout === PrototypeLayout.VOICE_VISUALS;
 
   const {
     status: prototypeMachineStatus,
@@ -64,7 +65,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   });
 
   const isVoicePrototype = React.useMemo(
-    () => [PrototypeDuck.PrototypeLayout.VOICE_VISUALS, PrototypeDuck.PrototypeLayout.VOICE_DIALOG].includes(settings.layout),
+    () => [PrototypeLayout.VOICE_VISUALS, PrototypeLayout.VOICE_DIALOG].includes(settings.layout),
     [settings.layout]
   );
 
@@ -100,8 +101,8 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
 
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING, PMStatus.FAKE_LOADING);
-  const isIdle = status === PrototypeDuck.PrototypeStatus.IDLE;
-  const isFinished = status === PrototypeDuck.PrototypeStatus.ENDED;
+  const isIdle = status === PrototypeStatus.IDLE;
+  const isFinished = status === PrototypeStatus.ENDED;
 
   const sendInteraction: OnInteraction = (interaction) => {
     onInteract?.();

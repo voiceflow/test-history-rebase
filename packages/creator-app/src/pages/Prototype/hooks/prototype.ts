@@ -5,7 +5,7 @@ import _isString from 'lodash/isString';
 import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
-import * as Prototype from '@/ducks/prototype';
+import { PrototypeStatus } from '@/constants/prototype';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';
 import { useEventualEngine, useFeature, useTrackingEvents } from '@/hooks';
 import perf, { PerfAction } from '@/performance';
@@ -17,7 +17,7 @@ interface Options extends PrototypeAllTypes {
   debug: boolean;
   isPublic?: boolean;
   waitVisuals?: boolean;
-  prototypeStatus: Prototype.PrototypeStatus;
+  prototypeStatus: PrototypeStatus;
   globalDelayInMilliseconds?: number;
 }
 
@@ -84,19 +84,19 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
   const prototype = React.useMemo(() => new PrototypeTool(cache.current), []);
 
   React.useEffect(() => {
-    if (prototypeStatus === Prototype.PrototypeStatus.IDLE) {
+    if (prototypeStatus === PrototypeStatus.IDLE) {
       setStatus(null);
       updateMessages([]);
       setInteractions([]);
       prototype.stop();
-    } else if (prototypeStatus === Prototype.PrototypeStatus.ACTIVE && status !== PMStatus.WAITING_USER_INTERACTION) {
+    } else if (prototypeStatus === PrototypeStatus.ACTIVE && status !== PMStatus.WAITING_USER_INTERACTION) {
       prototype.start();
     }
   }, [prototypeStatus]);
 
   React.useEffect(() => {
     if (status === PMStatus.ENDED) {
-      updatePrototypeStatus?.(Prototype.PrototypeStatus.ENDED);
+      updatePrototypeStatus?.(PrototypeStatus.ENDED);
     }
   }, [status]);
 
@@ -138,7 +138,7 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
 
   const onStepBack = React.useCallback(() => {
     setStatus(PMStatus.WAITING_USER_INTERACTION);
-    updatePrototypeStatus?.(Prototype.PrototypeStatus.ACTIVE);
+    updatePrototypeStatus?.(PrototypeStatus.ACTIVE);
     prototype.stepBack();
     trackingEvents.trackPrototypeManualNavBackwardButton();
   }, [prototype]);

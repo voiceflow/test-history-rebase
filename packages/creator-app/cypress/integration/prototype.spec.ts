@@ -131,6 +131,8 @@ context('Prototype', () => {
       });
 
       it('text and transcript', () => {
+        cy.configurePrototype({ layout: 'text-and-dialog' });
+
         prototypePage.goToPrototype();
         cy.shouldBeOn(prototypePage);
 

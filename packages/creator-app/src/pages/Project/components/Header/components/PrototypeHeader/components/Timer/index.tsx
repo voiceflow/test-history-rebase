@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React from 'react';
 
+import { PrototypeStatus } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
 import { useSelector } from '@/hooks';
 
@@ -29,11 +30,11 @@ const Timer: React.FC = () => {
       timeout = setTimeout(runTimeout, 1000);
     };
 
-    if (status === Prototype.PrototypeStatus.ACTIVE) {
+    if (status === PrototypeStatus.ACTIVE) {
       timeout = setTimeout(runTimeout, 1000);
     }
 
-    if (status === Prototype.PrototypeStatus.IDLE) {
+    if (status === PrototypeStatus.IDLE) {
       setDuration(INITIAL_TIME);
     }
 

@@ -1,7 +1,7 @@
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { textAndDialogGraphic, textAndDialogGraphicInactive, voiceAndVisualsGraphic, voiceAndVisualsGraphicInactive } from '@/assets';
-import { PrototypeLayout } from '@/ducks/prototype/types';
+import { PrototypeLayout } from '@/constants/prototype';
 import { createPlatformSelector, getPlatformValue } from '@/utils/platform';
 
 interface OptionDetail {
@@ -24,7 +24,7 @@ export const OPTION_DETAILS: Record<PrototypeLayout, OptionDetail> = {
     description: (platform) =>
       `Testers will use voice and ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
     activeImg: textAndDialogGraphic,
-    inactiveImg: textAndDialogGraphic,
+    inactiveImg: textAndDialogGraphicInactive,
   },
   [PrototypeLayout.VOICE_VISUALS]: {
     title: 'Voice and Visuals',

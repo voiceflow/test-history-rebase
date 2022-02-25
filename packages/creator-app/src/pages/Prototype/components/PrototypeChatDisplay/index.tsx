@@ -2,7 +2,7 @@ import { BaseButton } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
-import { PrototypeStatus } from '@/ducks/prototype';
+import { PrototypeStatus } from '@/constants/prototype';
 import { useRAF } from '@/hooks';
 import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
 import { Interaction, Message, OnInteraction, PMStatus } from '@/pages/Prototype/types';

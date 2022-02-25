@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 
+import { PrototypeInputMode, PrototypeMode, PrototypeStatus } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
 
 import suite from './_suite';
@@ -8,7 +9,7 @@ const MOCK_PROJECT_ID = Utils.generate.id();
 const MOCK_STATE = {
   ID: null,
   mode: {
-    [MOCK_PROJECT_ID]: Prototype.PrototypeMode.DISPLAY,
+    [MOCK_PROJECT_ID]: PrototypeMode.DISPLAY,
   },
   visual: {
     device: null,
@@ -17,12 +18,12 @@ const MOCK_STATE = {
   },
   muted: false,
   showButtons: true,
-  status: Prototype.PrototypeStatus.ENDED,
+  status: PrototypeStatus.ENDED,
   flowIDHistory: [],
   autoplay: true,
   activePathBlockIDs: [],
   activePathLinkIDs: [],
-  inputMode: Prototype.InputMode.TEXT,
+  inputMode: PrototypeInputMode.TEXT,
   startTime: 1,
   contextStep: 2,
   contextHistory: [],
@@ -38,7 +39,7 @@ suite(Prototype, MOCK_STATE)('Ducks - Prototype', ({ expect, describeReducer, de
     describe('updatePrototypeMode()', () => {
       it('should replace the prototype mode for the specified project', () => {
         const projectID = Utils.generate.id();
-        const mode = Prototype.PrototypeMode.VARIABLES;
+        const mode = PrototypeMode.VARIABLES;
 
         expectAction(Prototype.updatePrototypeMode(projectID, mode)).toModify({ mode: { ...MOCK_STATE.mode, [projectID]: mode } });
       });
@@ -54,15 +55,11 @@ suite(Prototype, MOCK_STATE)('Ducks - Prototype', ({ expect, describeReducer, de
 
     describe('activePrototypeModeSelector()', () => {
       it('should select the mode of the active project', () => {
-        expect(select(Prototype.activePrototypeModeSelector, { session: { activeProjectID: MOCK_PROJECT_ID } })).to.eq(
-          Prototype.PrototypeMode.DISPLAY
-        );
+        expect(select(Prototype.activePrototypeModeSelector, { session: { activeProjectID: MOCK_PROJECT_ID } })).to.eq(PrototypeMode.DISPLAY);
       });
 
       it('should select the default mode if not found', () => {
-        expect(select(Prototype.activePrototypeModeSelector, { session: { activeProjectID: Utils.generate.id() } })).to.eq(
-          Prototype.PrototypeMode.CANVAS
-        );
+        expect(select(Prototype.activePrototypeModeSelector, { session: { activeProjectID: Utils.generate.id() } })).to.eq(PrototypeMode.CANVAS);
       });
     });
   });
@@ -70,7 +67,7 @@ suite(Prototype, MOCK_STATE)('Ducks - Prototype', ({ expect, describeReducer, de
   describeSideEffects(({ applyEffect }) => {
     describe('updateActivePrototypeMode()', () => {
       it('should update the mode of the active project', async () => {
-        const mode = Prototype.PrototypeMode.SETTINGS;
+        const mode = PrototypeMode.SETTINGS;
 
         const { expectDispatch } = await applyEffect(Prototype.updateActivePrototypeMode(mode), { session: { activeProjectID: MOCK_PROJECT_ID } });
 

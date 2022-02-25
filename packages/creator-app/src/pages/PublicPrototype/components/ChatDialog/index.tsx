@@ -3,7 +3,7 @@ import { Nullable } from '@voiceflow/common';
 import { Box, BoxFlex, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
+import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
 import { useCanASR, useTheme } from '@/hooks';
 import { ChatDisplay } from '@/pages/Prototype/components';
 import { ASRSpeechbar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';

@@ -1,6 +1,7 @@
 import { Box, BoxFlex, Button, ButtonVariant, KeyName, preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
+import { PrototypeInputMode, PrototypeStatus } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
@@ -51,7 +52,7 @@ const PrototypeInput = <L extends string>({
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const setInputMode = (mode: Prototype.InputMode) => {
+  const setInputMode = (mode: PrototypeInputMode) => {
     updatePrototype({ inputMode: mode });
   };
 
@@ -75,11 +76,11 @@ const PrototypeInput = <L extends string>({
         inputRef={inputRef}
         goBackDisabled={goBackDisabled}
       />
-      {status === Prototype.PrototypeStatus.ENDED ? (
+      {status === PrototypeStatus.ENDED ? (
         <Reset onClick={resetPrototype} />
       ) : (
         <InputContainer>
-          {inputMode === Prototype.InputMode.TEXT ? (
+          {inputMode === PrototypeInputMode.TEXT ? (
             <Box pb={70}>
               <InputAreaComp
                 id={Identifier.PROTOTYPE_RESPONSE}

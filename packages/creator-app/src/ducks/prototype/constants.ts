@@ -1,4 +1,6 @@
-import { InputMode, PrototypeLayout, PrototypeState, PrototypeStatus } from './types';
+import { PrototypeInputMode, PrototypeStatus } from '@/constants/prototype';
+
+import { PrototypeState } from './types';
 
 export const STATE_KEY = 'prototype';
 
@@ -7,7 +9,7 @@ export const INITIAL_STATE: PrototypeState = {
   status: PrototypeStatus.IDLE,
   muted: false,
   startTime: 0,
-  inputMode: InputMode.TEXT,
+  inputMode: PrototypeInputMode.TEXT,
   activePathBlockIDs: [],
   activePathLinkIDs: [],
   showButtons: true,
@@ -29,10 +31,5 @@ export const INITIAL_STATE: PrototypeState = {
     variables: {},
   },
   webhook: null,
-  settings: {
-    brandColor: undefined,
-    brandImage: undefined,
-    avatar: undefined,
-    layout: PrototypeLayout.TEXT_DIALOG,
-  },
+  settings: {},
 };

@@ -2,7 +2,7 @@ import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import * as PrototypeDuck from '@/ducks/prototype';
+import { PrototypeStatus } from '@/constants/prototype';
 import { compose } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useTeardown } from '@/hooks';
@@ -98,7 +98,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
     return null;
   }
 
-  if (status === PrototypeDuck.PrototypeStatus.IDLE && !autoplay) {
+  if (status === PrototypeStatus.IDLE && !autoplay) {
     return <Start config={config} debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={startPrototype} />;
   }
 

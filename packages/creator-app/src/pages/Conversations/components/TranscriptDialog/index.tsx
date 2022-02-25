@@ -4,8 +4,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
+import { PrototypeStatus } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
-import { PrototypeStatus } from '@/ducks/prototype/types';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { currentTranscriptIDSelector } from '@/ducks/transcript';
 import PrototypeChatDisplay from '@/pages/Prototype/components/PrototypeChatDisplay';

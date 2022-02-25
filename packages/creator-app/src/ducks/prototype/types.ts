@@ -3,6 +3,7 @@ import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
+import type { PrototypeInputMode, PrototypeLayout, PrototypeMode, PrototypeStatus } from '@/constants/prototype';
 import type { PrototypeContext } from '@/models';
 
 export type PrototypeSettings = Omit<BaseModels.Version.PrototypeSettings, 'layout'> & {
@@ -25,32 +26,9 @@ export interface Context extends PrototypeContext {
 }
 
 // redux
-export enum PrototypeStatus {
-  IDLE = 'IDLE',
-  ACTIVE = 'ACTIVE',
-  ENDED = 'ENDED',
-}
-
-export enum InputMode {
-  TEXT = 'TEXT',
-  VOICE = 'VOICE',
-}
-
-export enum PrototypeMode {
-  CANVAS = 'Canvas',
-  DISPLAY = 'Display',
-  VARIABLES = 'Variables',
-  SETTINGS = 'Settings',
-}
 
 export interface WebhookData {
   utterance?: string;
-}
-
-export enum PrototypeLayout {
-  TEXT_DIALOG = 'text-and-dialog',
-  VOICE_DIALOG = 'voice-and-dialog',
-  VOICE_VISUALS = 'voice-and-visuals',
 }
 
 export interface PrototypeShareViewSettings {
@@ -72,7 +50,7 @@ export interface PrototypeState {
   autoplay: boolean;
   activePathBlockIDs: string[];
   activePathLinkIDs: string[];
-  inputMode: InputMode;
+  inputMode: PrototypeInputMode;
   platform?: VoiceflowConstants.PlatformType;
   startTime: number;
   contextStep: number;

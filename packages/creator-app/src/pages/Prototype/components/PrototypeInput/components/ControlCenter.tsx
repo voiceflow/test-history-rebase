@@ -1,6 +1,7 @@
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import * as React from 'react';
 
+import { PrototypeInputMode } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import { useHotKeys } from '@/hooks';
@@ -10,8 +11,8 @@ import { ConnectedProps } from '@/types';
 import { ButtonGroupSplitter, ControlButton, ControlsContainer } from './index';
 
 export interface ControlCenterProps {
-  inputMode: Prototype.InputMode;
-  setInputMode: (mode: Prototype.InputMode) => void;
+  inputMode: PrototypeInputMode;
+  setInputMode: (mode: PrototypeInputMode) => void;
   showButtons: boolean;
   setShowButtons: (val: boolean) => void;
   stepBack: () => void;
@@ -56,13 +57,13 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
   return (
     <ControlsContainer>
       <TippyTooltip title="Text" position="top">
-        <ControlButton active={inputMode === Prototype.InputMode.TEXT} onClick={() => setInputMode(Prototype.InputMode.TEXT)}>
+        <ControlButton active={inputMode === PrototypeInputMode.TEXT} onClick={() => setInputMode(PrototypeInputMode.TEXT)}>
           <SvgIcon icon="text" size={16} color={ICON_COLOR} />
         </ControlButton>
       </TippyTooltip>
 
       <TippyTooltip title="Voice" position="top">
-        <ControlButton active={inputMode === Prototype.InputMode.VOICE} onClick={() => setInputMode(Prototype.InputMode.VOICE)}>
+        <ControlButton active={inputMode === PrototypeInputMode.VOICE} onClick={() => setInputMode(PrototypeInputMode.VOICE)}>
           <SvgIcon icon="microphone" size={16} color={ICON_COLOR} />
         </ControlButton>
       </TippyTooltip>

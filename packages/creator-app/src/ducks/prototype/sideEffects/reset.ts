@@ -2,6 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { batch } from 'react-redux';
 
 import { BuiltInVariable } from '@/constants';
+import { PrototypeStatus } from '@/constants/prototype';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as SlotV2 from '@/ducks/slotV2';
@@ -12,7 +13,6 @@ import * as Sentry from '@/vendors/sentry';
 
 import { updatePrototype, updatePrototypeContext, updatePrototypeStatus } from '../actions';
 import { prototypeVisualSelector } from '../selectors';
-import { PrototypeStatus } from '../types';
 
 const resetPrototype = (): SyncThunk => (dispatch, getState) => {
   const state = getState();

@@ -1,8 +1,8 @@
 import { BaseNode } from '@voiceflow/base-types';
 
 import client from '@/client';
+import { PrototypeLayout, PrototypeMode } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
-import { PrototypeLayout, PrototypeMode } from '@/ducks/prototype/types';
 import * as Recent from '@/ducks/recent';
 import { PrototypeConfig } from '@/ducks/recent';
 import * as Session from '@/ducks/session';

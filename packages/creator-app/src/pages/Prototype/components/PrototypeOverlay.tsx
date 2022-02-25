@@ -2,6 +2,7 @@ import React from 'react';
 
 import Drawer from '@/components/Drawer';
 import { FeatureFlag } from '@/config/features';
+import { PrototypeMode } from '@/constants/prototype';
 import * as Creator from '@/ducks/creator';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
@@ -27,7 +28,7 @@ const PrototypeOverlay: React.FC = () => {
   const showCanvas = useDispatch(Creator.showCanvas);
 
   const widthRef = React.useRef(0);
-  const isCanvasVisible = !isPrototypingMode || prototypeMode !== Prototype.PrototypeMode.DISPLAY;
+  const isCanvasVisible = !isPrototypingMode || prototypeMode !== PrototypeMode.DISPLAY;
 
   React.useEffect(() => {
     if (isCanvasVisible) return undefined;
@@ -39,9 +40,9 @@ const PrototypeOverlay: React.FC = () => {
     };
   }, [isCanvasVisible]);
 
-  const isPrototypeDisplay = prototypeMode === Prototype.PrototypeMode.DISPLAY;
-  const isPrototypeVariables = prototypeMode === Prototype.PrototypeMode.VARIABLES;
-  const isPrototypeSettings = prototypeMode === Prototype.PrototypeMode.SETTINGS;
+  const isPrototypeDisplay = prototypeMode === PrototypeMode.DISPLAY;
+  const isPrototypeVariables = prototypeMode === PrototypeMode.VARIABLES;
+  const isPrototypeSettings = prototypeMode === PrototypeMode.SETTINGS;
 
   const getPrototypeSettingsWidth = () => {
     if (isPrototypeDisplay) {

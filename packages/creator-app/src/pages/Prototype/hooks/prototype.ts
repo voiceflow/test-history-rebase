@@ -43,7 +43,6 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     updatePrototypeVisualsData = Utils.functional.noop,
     setError = Utils.functional.noop,
   } = actions;
-
   const [status, setStatus] = React.useState<PMStatus | null>(null);
   const [messages, updateMessages] = React.useState<Message[]>([]);
   const [interactions, setInteractions] = React.useState<Interaction[]>([]);

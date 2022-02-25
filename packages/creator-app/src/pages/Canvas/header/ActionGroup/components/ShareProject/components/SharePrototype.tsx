@@ -6,6 +6,7 @@ import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
+import { VariableStateAppliedType } from '@/ducks/tracking';
 import { useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
 import { Identifier } from '@/styles/constants';
@@ -24,6 +25,7 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ inline, compile }) => {
   const password = useSelector(Prototype.prototypePasswordSelector);
   const brandImage = useSelector(Prototype.prototypeBrandImageSelector);
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
+  const { variableStateID } = useSelector(Prototype.prototypeSettingsSelector);
 
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
@@ -34,6 +36,9 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ inline, compile }) => {
   const onRenderPrototype = () => {
     if (compile) {
       compilePrototype();
+    }
+    if (variableStateID) {
+      trackingEvents.trackVariableStateApplied({ type: VariableStateAppliedType.SHAREABLE_LINK });
     }
   };
 

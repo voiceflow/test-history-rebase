@@ -1,8 +1,9 @@
 import { ButtonVariant, FlexCenter, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
+import { VariableStateAppliedType } from '@/ducks/tracking';
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import VariableStateSelectMenu from '../VariableStateSelectMenu';
@@ -16,12 +17,25 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
   const selectedVariableStateId = useSelector(VariableState.selectedVariableStateIdSelector);
   const updateSelectedVariableStateById = useDispatch(VariableState.updateSelectedVariableStateById);
+  const [trackingEvents] = useTrackingEvents();
+
+  const onStartTest = () => {
+    onStart();
+    if (selectedVariableStateId) {
+      trackingEvents.trackVariableStateApplied({ type: VariableStateAppliedType.LOCAL });
+    }
+  };
 
   return (
     <VariableStateSelectMenu
       render={({ ref, isOpen, toggleSelectMenuOpen }) => (
         <FlexCenter fullWidth style={{ marginBottom: '12px' }}>
-          <RunTestButton withIconButton={variableStates.length > 0} variant={ButtonVariant.PRIMARY} onClick={onStart} id={Identifier.PROTOTYPE_START}>
+          <RunTestButton
+            withIconButton={variableStates.length > 0}
+            variant={ButtonVariant.PRIMARY}
+            onClick={onStartTest}
+            id={Identifier.PROTOTYPE_START}
+          >
             Run Test
           </RunTestButton>
           {variableStates.length > 0 && (

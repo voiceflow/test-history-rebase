@@ -114,6 +114,7 @@ export enum EventName {
   VARIABLE_STATE_CREATED = 'Variable State Created',
   VARIABLE_STATE_EDITED = 'Variable State Edited',
   VARIABLE_STATE_DELETED = 'Variable State Deleted',
+  VARIABLE_STATE_APPLIED = 'Variable State Applied',
 
   SUBSCRIPTION_CREATED = 'Subscription Created',
 }
@@ -167,4 +168,9 @@ export enum SourceType {
   ACCOUNT_PAGE = 'Account Page',
   PROJECT = 'Project',
   STEP = 'Step',
+}
+
+export enum VariableStateAppliedType {
+  LOCAL = 'Local',
+  SHAREABLE_LINK = 'Shareable Link',
 }

@@ -30,7 +30,7 @@ export const FooterActions = styled.div`
   text-align: center;
   background: #fdfdfd;
   color: ${({ theme }) => theme.colors.blue};
-  margin-bottom: -2px;
+  margin-bottom: -5px;
   border-top: solid 1px #eaeff4;
   position: absolute;
   border-radius: 0 0 5px 5px;

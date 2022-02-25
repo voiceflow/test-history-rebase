@@ -204,6 +204,7 @@ export { default as projectDiagram } from './solid/project-diagram.svg';
 export { default as randomLoop } from './random.svg';
 export { default as receipt } from './receipt.svg';
 export { default as rectangle } from './rectangle.svg';
+export { default as refreshData } from './refresh-data.svg';
 export { default as reminder } from './reminder.svg';
 export { default as remove } from './remove.svg';
 export { default as resources } from './resources.svg';

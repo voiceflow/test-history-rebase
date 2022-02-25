@@ -74,7 +74,6 @@ export const DrawerContainer = styled(SlideOut)<DrawerProps>`
 const CloseIcon = styled.div<{ open?: boolean }>`
   position: absolute;
   top: 50%;
-  cursor: pointer;
   opacity: 0.5;
   border-radius: 3px;
   background-image: linear-gradient(to bottom, rgba(110, 132, 154, 0.85), #6e849a), linear-gradient(to bottom, white, white);
@@ -82,13 +81,20 @@ const CloseIcon = styled.div<{ open?: boolean }>`
   height: 20px;
   z-index: 25;
 
+  &:hover {
+    background-image: linear-gradient(to bottom, rgba(61, 130, 226, 0.8), #3d82e2 100%), linear-gradient(to bottom, white, white);
+    opacity: 1;
+  }
+
   ${({ open }) =>
     open
       ? css`
           right: -12px;
+          cursor: w-resize;
         `
       : css`
           left: 6px;
+          cursor: e-resize;
         `}
 `;
 

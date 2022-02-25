@@ -68,13 +68,13 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       getOptionValue={(option) => option?.value}
       renderOptionLabel={testVariableStateOptionRenderer}
       icon={loading ? 'publishSpin' : undefined}
-      iconProps={{ clickable: true, color: '#606468', spin: true }}
+      iconProps={{ clickable: true, color: '#132144', spin: true }}
       disabled={loading}
       prefix={
         isSelectedStateUnsync &&
         !loading && (
           <TippyTooltip title="Update state values">
-            <SvgIcon icon="publishSpin" clickable color="#606468" onClick={onUpdateStateValues} size={20} />
+            <SvgIcon icon="publishSpin" clickable color="#132144" onClick={onUpdateStateValues} size={20} />
           </TippyTooltip>
         )
       }

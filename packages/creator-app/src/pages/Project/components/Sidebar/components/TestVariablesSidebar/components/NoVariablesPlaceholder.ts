@@ -7,6 +7,7 @@ const NoVariablesPlaceholder = styled.div`
   color: #62778c;
   width: 100%;
   display: flex;
+  padding-bottom: 62px;
 `;
 
 export default NoVariablesPlaceholder;

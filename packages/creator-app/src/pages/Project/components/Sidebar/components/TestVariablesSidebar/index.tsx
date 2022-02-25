@@ -45,6 +45,8 @@ const TestVariablesSidebar: React.FC = () => {
   };
 
   React.useEffect(() => {
+    if (selectedVariableStateId === variableState.ALL_PROJECT_VARIABLES_ID) return;
+
     if (!selectedSavedState) {
       updateSelectedVariableStateById(null);
       return;

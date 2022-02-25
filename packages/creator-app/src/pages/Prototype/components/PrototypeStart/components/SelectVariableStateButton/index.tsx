@@ -37,8 +37,8 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
 
                   toggleSelectMenuOpen();
                 }}
-                icon={selectedVariableStateId ? 'close' : 'caretDown'}
-                iconProps={{ size: 10 }}
+                icon={selectedVariableStateId ? 'refreshData' : 'caretDown'}
+                iconProps={{ size: selectedVariableStateId ? 16 : 10, color: '#fff' }}
                 isOpen={isOpen}
               />
             </TippyTooltip>

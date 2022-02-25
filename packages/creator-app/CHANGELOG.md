@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.637.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.636.1...@voiceflow/creator-app@1.637.0) (2022-02-25)
+
+
+### Features
+
+* track variable state applied through shareable link and local prototype (VF-2552) ([#5128](https://github.com/voiceflow/creator-app/issues/5128)) ([5765304](https://github.com/voiceflow/creator-app/commit/5765304fbbf8685c8939eb2585780e5d7061a5a1))
+
+
+
+
+
 ## [1.636.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.636.0...@voiceflow/creator-app@1.636.1) (2022-02-25)
 
 

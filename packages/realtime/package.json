@@ -56,6 +56,7 @@
     "lint:quiet": "yarn lint --quiet",
     "lint:report": "yarn lint --format json -o sonar/report.json",
     "local": "vfcli mesh connect realtime",
+    "local:e2e": "yarn e2e",
     "mesh:post": "exit 0",
     "mesh:pre": "exit 0",
     "start": "PORT=8013 CREATOR_API_ENDPOINT=https:// NODE_ENV=production node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",

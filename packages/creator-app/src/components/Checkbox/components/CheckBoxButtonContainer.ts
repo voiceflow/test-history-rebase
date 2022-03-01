@@ -7,7 +7,7 @@ const CheckBoxButtonContainer = styled.div<{ padding?: boolean }>`
     padding &&
     css`
       min-width: 0;
-      margin-right: 6px;
+      margin-right: 8px;
       padding: 4px;
       padding-left: 0;
     `}

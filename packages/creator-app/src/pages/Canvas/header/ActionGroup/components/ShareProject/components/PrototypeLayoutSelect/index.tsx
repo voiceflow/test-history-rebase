@@ -1,6 +1,7 @@
 import { Box, Menu, MenuItem } from '@voiceflow/ui';
 import React from 'react';
 
+import CheckBox from '@/components/Checkbox/';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import { PrototypeLayout } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
@@ -16,8 +17,11 @@ const PrototypeLayoutSelect: React.FC = () => {
 
   const layout = useSelector(Prototype.prototypeLayoutSelector);
   const updateSettings = useDispatch(Prototype.updateSharePrototypeSettings);
+  const buttonsOnly = useSelector(Prototype.prototypeButtonsOnlySelector);
 
   const [localLayout, setLocalLayout] = useLinkedState(layout);
+
+  const isLayoutTextDialog = layout === PrototypeLayout.TEXT_DIALOG;
 
   const onClick = (option: PrototypeLayout, cb: () => void) => async () => {
     setLocalLayout(option);
@@ -27,8 +31,12 @@ const PrototypeLayoutSelect: React.FC = () => {
 
   const layoutOptions = React.useMemo(() => getLayoutOptions(platform).filter((option) => option !== layout), [layout, platform]);
 
+  const onButtonsOnlyChange = () => {
+    updateSettings({ buttonsOnly: !buttonsOnly });
+  };
+
   return (
-    <Box pb={24} pr={32}>
+    <Box pr={32}>
       <DropdownWithCaret
         fullWidth
         menu={(onToggle: () => void) => (
@@ -59,6 +67,15 @@ const PrototypeLayoutSelect: React.FC = () => {
           />
         }
       />
+      <Box pt={isLayoutTextDialog ? 12 : 0} pb={24}>
+        {isLayoutTextDialog && (
+          <CheckBox checked={buttonsOnly} onChange={onButtonsOnlyChange}>
+            <Box color="primary" fontWeight={400}>
+              Buttons only
+            </Box>
+          </CheckBox>
+        )}
+      </Box>
     </Box>
   );
 };

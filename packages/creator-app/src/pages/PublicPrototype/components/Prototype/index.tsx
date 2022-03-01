@@ -142,7 +142,6 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   }, [isFinished]);
 
   const brandColor = isCustomizedPrototypeAllowed ? settings.brandColor : undefined;
-
   return (
     <Layout
       layout={settings.layout}
@@ -204,6 +203,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
             input={input}
             color={brandColor}
             layout={settings.layout}
+            buttonsOnly={settings.buttonsOnly}
             onMute={onMute}
             isIdle={isIdle}
             onPlay={onPlay}

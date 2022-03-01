@@ -19,6 +19,7 @@ export interface ActionButtonsProps {
   disabled?: boolean;
   testEnded?: boolean;
   isMobile?: boolean;
+  buttonsOnly?: boolean;
 }
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({
@@ -33,13 +34,14 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   disabled,
   testEnded = false,
   isMobile,
+  buttonsOnly = false,
 }) => {
   const theme = useTheme();
   const { platform } = useSelector(prototypeSelector);
 
   return (
     <BoxFlexEnd ml={16}>
-      {!testEnded && (
+      {!buttonsOnly && !testEnded && (
         <>
           <TippyTooltip title="Reset Test" disabled={disabled}>
             <ActionButton
@@ -74,7 +76,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         </>
       )}
 
-      {testEnded && (
+      {(testEnded || buttonsOnly) && (
         <>
           <Box width={12} />
           <ActionButton color={color || '#3d82e2'} onClick={onReset} isMobile={isMobile} squareRadius>

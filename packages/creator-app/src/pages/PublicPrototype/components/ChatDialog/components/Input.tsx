@@ -11,13 +11,16 @@ export interface UserInputProps {
   onChange: (value: string) => void;
   testEnded?: boolean;
   onEnterPress: () => void;
+  hideInput?: boolean;
 }
 
-const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, isIdle, testEnded, isMobile, onStart }) => {
+const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, isIdle, testEnded, isMobile, onStart, hideInput = false }) => {
   const preventIOSBodyScrolling = React.useCallback((event: Event) => {
     event.preventDefault();
     event.stopPropagation();
   }, []);
+
+  const placeholder = testEnded ? 'This conversation has ended' : !hideInput && 'Type a message...';
 
   const onFocus = React.useCallback(() => {
     if (IS_IOS) {
@@ -39,7 +42,7 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
   }, [testEnded]);
 
   return (
-    <InputContent isMobile={isMobile} onClick={() => isIdle && onStart()}>
+    <InputContent isMobile={isMobile} onClick={() => isIdle && !hideInput && onStart()}>
       <Input
         key={String(!isIdle)}
         value={value}
@@ -47,11 +50,11 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
         variant={InputVariant.INLINE}
         onBlur={onBlur}
         onFocus={onFocus}
-        disabled={isIdle || testEnded}
+        disabled={isIdle || testEnded || hideInput}
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={!isIdle || testEnded}
         noOverflow
-        placeholder={testEnded ? 'This conversation has ended' : 'Type a message...'}
+        placeholder={placeholder || ''}
         onEnterPress={swallowEvent(onEnterPress)}
         onChangeText={onChange}
       />

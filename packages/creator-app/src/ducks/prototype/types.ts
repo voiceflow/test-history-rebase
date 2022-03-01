@@ -15,6 +15,7 @@ export type PrototypeSettings = Omit<BaseModels.Version.PrototypeSettings, 'layo
   hasPassword: boolean;
   buttons: BaseButton.ButtonsLayout;
   variableStateID?: string;
+  buttonsOnly: boolean;
 };
 
 // context types
@@ -39,6 +40,7 @@ export interface PrototypeShareViewSettings {
   password?: string;
   buttons?: string;
   variableStateID?: string;
+  buttonsOnly?: boolean;
 }
 
 export interface PrototypeState {

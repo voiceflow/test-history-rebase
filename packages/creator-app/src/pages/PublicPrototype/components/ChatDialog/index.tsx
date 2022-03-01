@@ -1,6 +1,6 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
-import { Box, BoxFlex, Text } from '@voiceflow/ui';
+import { Box, BoxFlex, Flex, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
@@ -9,7 +9,7 @@ import { ChatDisplay } from '@/pages/Prototype/components';
 import { ASRSpeechbar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import { Interaction, Message, OnInteraction, PMStatus } from '@/pages/Prototype/types';
 
-import { ActionButtons, DisplayContainer, InputContainer, InteractionContainer, SpeechBarContainer, UserInput } from './components';
+import { ActionButtons, DisplayContainer, FadeInWrapper, InputContainer, InteractionContainer, SpeechBarContainer, UserInput } from './components';
 
 export interface ChatDialogProps {
   input: string;
@@ -44,6 +44,7 @@ export interface ChatDialogProps {
   autoScroll?: boolean;
   onStepBack: () => void;
   pmStatus: Nullable<PMStatus>;
+  buttonsOnly: boolean;
 }
 
 const ChatDialog: React.FC<ChatDialogProps> = ({
@@ -79,9 +80,11 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   autoScroll = true,
   onStepBack,
   pmStatus,
+  buttonsOnly,
 }) => {
   const theme = useTheme();
   const [canUseASR] = useCanASR();
+  const showInput = !buttonsOnly || !isIdle || testEnded;
 
   return (
     <Box height="100%" width="100%" position="relative">
@@ -108,8 +111,8 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
       {hasInput && (
         <InteractionContainer isMobile={isMobile}>
           <InputContainer isMobile={isMobile}>
-            {layout === PrototypeLayout.TEXT_DIALOG && (
-              <>
+            {showInput && layout === PrototypeLayout.TEXT_DIALOG && (
+              <FadeInWrapper height={buttonsOnly ? 19 : 0}>
                 <UserInput
                   isMobile={isMobile}
                   isIdle={isIdle}
@@ -118,6 +121,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                   onEnterPress={() => onInteraction({ request: input })}
                   onChange={onInputChange}
                   onStart={onStart}
+                  hideInput={buttonsOnly}
                 />
                 <ActionButtons
                   color={color}
@@ -130,12 +134,14 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                   isIdle={isIdle}
                   onStart={onStart}
                   isMobile={isMobile}
+                  buttonsOnly={buttonsOnly}
+                  noSend={buttonsOnly}
                 />
-              </>
+              </FadeInWrapper>
             )}
 
             {layout === PrototypeLayout.VOICE_DIALOG && (
-              <>
+              <Flex>
                 {testEnded ? (
                   <BoxFlex flex={1}>
                     <Text fontSize={15} color={theme.colors.secondary}>
@@ -182,7 +188,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                   testEnded={testEnded}
                   isMobile={isMobile}
                 />
-              </>
+              </Flex>
             )}
           </InputContainer>
         </InteractionContainer>

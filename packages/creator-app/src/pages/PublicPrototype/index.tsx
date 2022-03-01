@@ -32,6 +32,7 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
     hasPassword: false,
     projectName: '',
     globalMessageDelayMilliseconds: 0,
+    buttonsOnly: false,
   });
 
   const prototypeAPI = React.useContext(PrototypeContext);
@@ -58,7 +59,6 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
         device: DEVICE_INFO.platform ?? 'unknown',
         versionID,
       });
-
       updatePrototype({ platform: prototypeSettings.platform });
       setSettings(prototypeSettings);
     } catch {

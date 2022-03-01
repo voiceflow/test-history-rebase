@@ -40,6 +40,8 @@ const setupPublicPrototype =
 
     const rootDiagramID = prototype.context.stack?.[0].programID as string;
     const layout = (prototype?.settings.layout ?? getDefaultPrototypeLayout(platform)) as PrototypeLayout;
+    const buttonsOnly = !!prototype?.settings.buttonsOnly;
+
     const version = {
       id: versionID,
       creatorID: null as any,
@@ -82,6 +84,7 @@ const setupPublicPrototype =
       platform,
       hasPassword: prototype?.settings.hasPassword ?? false,
       projectName: prototype.data.name,
+      buttonsOnly,
     };
   };
 

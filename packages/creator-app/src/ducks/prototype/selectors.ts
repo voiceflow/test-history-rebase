@@ -73,3 +73,5 @@ export const prototypeAvatarSelector = createSelector([prototypeSelector], ({ se
 export const prototypeBrandInfoSelector = createSelector([prototypeSelector], ({ settings: { layout: _, ...brandSettings } }) => brandSettings);
 
 export const prototypePasswordSelector = createSelector([prototypeSelector], ({ settings }) => settings.password || '');
+
+export const prototypeButtonsOnlySelector = createSelector([prototypeSelector], ({ settings }) => !!settings.buttonsOnly);

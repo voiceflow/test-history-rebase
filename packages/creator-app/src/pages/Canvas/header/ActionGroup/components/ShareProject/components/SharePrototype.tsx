@@ -14,10 +14,9 @@ import { copy } from '@/utils/clipboard';
 
 interface SharePrototypeProps {
   inline?: boolean;
-  compile?: boolean;
 }
 
-const SharePrototype: React.FC<SharePrototypeProps> = ({ inline, compile }) => {
+const SharePrototype: React.FC<SharePrototypeProps> = ({ inline }) => {
   const versionID = useSelector(Session.activeVersionIDSelector);
   const compilePrototype = useDispatch(Prototype.compilePrototype);
   const layoutType = useSelector(Prototype.prototypeLayoutSelector);
@@ -34,9 +33,8 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ inline, compile }) => {
   const testableLink = canSharePrototype ? `${window.location.origin}/prototype/${versionID}` : null;
 
   const onRenderPrototype = () => {
-    if (compile) {
-      compilePrototype();
-    }
+    compilePrototype();
+
     if (variableStateID) {
       trackingEvents.trackVariableStateApplied({ type: VariableStateAppliedType.SHAREABLE_LINK });
     }

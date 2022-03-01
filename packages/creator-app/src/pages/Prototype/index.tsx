@@ -3,7 +3,6 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { PrototypeStatus } from '@/constants/prototype';
-import { compose } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useTeardown } from '@/hooks';
 import { Identifier } from '@/styles/constants';
@@ -138,4 +137,4 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
   );
 };
 
-export default compose(removeIntercom)(Prototype);
+export default removeIntercom(Prototype);

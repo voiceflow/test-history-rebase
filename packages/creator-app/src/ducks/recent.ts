@@ -14,7 +14,6 @@ export interface PrototypeConfig {
   isGuided: boolean;
   platform: VoiceflowConstants.PlatformType;
   showVisuals: boolean;
-  variableStateID?: string;
 }
 
 export interface RecentState {

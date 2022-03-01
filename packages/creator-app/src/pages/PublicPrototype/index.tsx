@@ -39,14 +39,11 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
 
   const { config, state, actions } = prototypeAPI;
 
-  const { updatePrototype } = actions;
-
   const [isAuthenticated, setAuthenticated] = React.useState<boolean>(false);
   const [trackingEvents] = useTrackingEvents();
 
   const [isAllowedPassword] = useGuestPermission(settings.plan, Permission.SHARE_PROTOTYPE_PASSWORD);
-
-  const canUseSharedPassword = React.useMemo(() => isAllowedPassword && settings.hasPassword, [isAllowedPassword && settings]);
+  const canUseSharedPassword = isAllowedPassword && settings?.hasPassword;
 
   useSetup(async () => {
     const { versionID } = match.params;
@@ -59,7 +56,6 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
         device: DEVICE_INFO.platform ?? 'unknown',
         versionID,
       });
-      updatePrototype({ platform: prototypeSettings.platform });
       setSettings(prototypeSettings);
     } catch {
       toast.error("Prototype hasn't been shared or doesn't exist");

@@ -18,7 +18,7 @@
     "@sentry/tracing": "6.16.1",
     "@seznam/compose-react-refs": "1.0.6",
     "@voiceflow/alexa-types": "2.5.8",
-    "@voiceflow/api-sdk": "3.8.5",
+    "@voiceflow/api-sdk": "3.9.4",
     "@voiceflow/base-types": "2.14.0",
     "@voiceflow/chat-types": "2.4.12",
     "@voiceflow/common": "7.21.0",

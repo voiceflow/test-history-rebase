@@ -6,13 +6,11 @@ import * as Documentation from '@/config/documentation';
 import { FeatureFlag } from '@/config/features';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeConfig } from '@/ducks/recent';
-import { connect } from '@/hocs';
-import { useFeature, useSetup, useTrackingEvents } from '@/hooks';
+import { useFeature, useSelector, useSetup, useTrackingEvents } from '@/hooks';
 import { IdleContainer } from '@/pages/Prototype/components/PrototypeContainer';
 import perf, { PerfAction } from '@/performance';
 import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
 
 import { Container, SelectedVariableStateText, SelectVariableStateButton } from './components';
 
@@ -24,15 +22,9 @@ export interface PrototypeStartProps {
   isModelTraining?: boolean;
 }
 
-const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProps> = ({
-  isPublic,
-  onStart,
-  debug,
-  mode,
-  device,
-  isModelTraining,
-  config,
-}) => {
+const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debug, isModelTraining, config }) => {
+  const mode = useSelector(Prototype.activePrototypeModeSelector);
+  const device = useSelector(Prototype.prototypeVisualDeviceSelector);
   const [, trackEventsWrapper] = useTrackingEvents();
   const { isEnabled: isVariableStateEnabled } = useFeature(FeatureFlag.VARIABLE_STATES);
 
@@ -95,11 +87,4 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
   );
 };
 
-const mapStateToProps = {
-  mode: Prototype.activePrototypeModeSelector,
-  device: Prototype.prototypeVisualDeviceSelector,
-};
-
-type ConnectedPrototypeStartProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(PrototypeStart) as React.FC<PrototypeStartProps>;
+export default PrototypeStart;

@@ -2,9 +2,11 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { PrototypeStatus } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState';
 import { SyncThunk, ThunkDispatch } from '@/store/types';
@@ -54,11 +56,13 @@ const startPrototype =
   (diagramID?: string | null, selectedNodeID?: string | null): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
+    const isVariableStateEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.VARIABLE_STATES);
 
-    const variableStateVariables = VariableState.selectedVariablesSelector(state);
-    const startFromNodeID = VariableState.selectedStartFromNodeIDSelector(state);
+    const variables = VariableState.selectedVariablesSelector(state) || prototypeVariablesSelector(state);
+    const startFromNodeID = isVariableStateEnabled ? VariableState.selectedStartFromNodeIDSelector(state) : null;
+    const startFromDiagramID = isVariableStateEnabled ? VariableState.selectedStartFromDiagramIDSelector(state) : null;
     const nodeID = selectedNodeID || startFromNodeID;
-    const variables = variableStateVariables || prototypeVariablesSelector(state);
+
     const projectID = Session.activeProjectIDSelector(state);
     const activeDiagramID = Session.activeDiagramIDSelector(state);
     const getLinkIDsByNodeID = (nodeID: string) => CreatorV2.linkIDsByNodeIDSelector(state, { id: nodeID });
@@ -72,7 +76,7 @@ const startPrototype =
     const context: Context = {
       stack: [
         {
-          diagramID: diagramID || activeDiagramID,
+          diagramID: diagramID || startFromDiagramID || activeDiagramID,
           storage: {},
           variables: {},
           blockID: targetNodeID,
@@ -81,7 +85,7 @@ const startPrototype =
       turn: {},
       trace: [],
       storage: {},
-      variables,
+      variables: variables || {},
     };
 
     localStorage.setItem(`TEST_VARIABLES_${projectID}`, JSON.stringify(variables));
@@ -101,5 +105,4 @@ const startPrototype =
       );
     });
   };
-
 export default startPrototype;

@@ -1,4 +1,4 @@
-import { ButtonsLayout } from '@voiceflow/base-types/build/common/button';
+import { BaseButton } from '@voiceflow/base-types';
 import { useContextApi } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -18,7 +18,7 @@ import { ProtoConfigType, PrototypeActions, PrototypeAllTypes, PrototypeRuntimeS
 
 const defaultPrototypeContext: PrototypeAllTypes = {
   config: {
-    buttons: ButtonsLayout.STACKED,
+    buttons: BaseButton.ButtonsLayout.STACKED,
     autoplay: true,
     showButtons: true,
     prototypeColor: 'blue',

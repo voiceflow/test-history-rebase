@@ -18,8 +18,8 @@ const {
 export { addVariableState, addVariableStates, patchVariableState, removeVariableState, replaceVariableStates, updateVariableState };
 
 export enum VariableStateAction {
-  UPDATE_SELECTED_STATE = 'UPDATE_SELECTED_STATE',
-  UPDATE_VARIABLES = 'UPDATE_VARIABLES',
+  UPDATE_SELECTED_STATE = 'VARIABLE_STATE:UPDATE_SELECTED_STATE',
+  UPDATE_VARIABLES = 'VARIABLE_STATE:UPDATE_VARIABLES',
 }
 
 export type UpdateSelectedVariableState = Action<VariableStateAction.UPDATE_SELECTED_STATE, SelectedVariableState | null>;

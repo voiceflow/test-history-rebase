@@ -66,7 +66,7 @@ const setupPublicPrototype =
         dispatch(VersionActions.crud.add(versionID, version));
       }
 
-      dispatch(updatePrototype({ muted: layout === PrototypeLayout.TEXT_DIALOG }));
+      dispatch(updatePrototype({ muted: layout === PrototypeLayout.TEXT_DIALOG, platform }));
       dispatch(Session.setActiveVersionID(versionID));
       dispatch(Session.setActiveDiagramID(rootDiagramID));
     });

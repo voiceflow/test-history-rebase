@@ -54,6 +54,6 @@ export interface PrototypeContext {
   [StoreType.TURN]: Store;
   [StoreType.STORAGE]: Store;
   [StoreType.VARIABLES]: Store;
-  stack: Frame[];
+  stack?: Frame[];
   trace: Trace[];
 }

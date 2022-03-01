@@ -59,17 +59,30 @@ export const selectedVariablesSelector = createSelector(
 
 export const selectedStartFromNodeIDSelector = createSelector(
   [selectedVariableStateIdSelector, getVariableStateByIDSelector, Feature.isFeatureEnabledSelector, CreatorV2.getNodeByIDSelector],
-  (selectedVariableStateId, getById, getFeatureFlagEnabled, getNodeByIDSelector) => {
+  (selectedVariableStateID, getByID, getFeatureFlagEnabled, getNodeByIDSelector) => {
     const isVariableStateEnabled = getFeatureFlagEnabled(FeatureFlag.VARIABLE_STATES);
+    if (!isVariableStateEnabled || !selectedVariableStateID) return null;
 
-    if (!selectedVariableStateId || !isVariableStateEnabled) return null;
+    const selectedVariableState = getByID({ id: selectedVariableStateID });
 
-    const startFrom = getById({ id: selectedVariableStateId })?.startFrom;
-
-    if (!startFrom) return null;
+    if (!selectedVariableState?.startFrom) return null;
 
     // The selected node block contains visual data. Start from first node step id in order to get the correct node.
-    return getNodeByIDSelector({ id: startFrom?.stepID })?.combinedNodes[0] ?? null;
+    return getNodeByIDSelector({ id: selectedVariableState.startFrom?.stepID })?.combinedNodes[0] ?? null;
+  }
+);
+
+export const selectedStartFromDiagramIDSelector = createSelector(
+  [selectedVariableStateIdSelector, getVariableStateByIDSelector, Feature.isFeatureEnabledSelector],
+  (selectedVariableStateID, getByID, getFeatureFlagEnabled) => {
+    const isVariableStateEnabled = getFeatureFlagEnabled(FeatureFlag.VARIABLE_STATES);
+    if (!isVariableStateEnabled || !selectedVariableStateID) return null;
+
+    const selectedVariableState = getByID({ id: selectedVariableStateID });
+
+    if (!selectedVariableState?.startFrom) return null;
+
+    return selectedVariableState?.startFrom?.diagramID || null;
   }
 );
 

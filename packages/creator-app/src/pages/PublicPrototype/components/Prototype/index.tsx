@@ -9,7 +9,7 @@ import removeIntercom from '@/hocs/removeIntercom';
 import { useASR, useCanASR, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
-import { usePrototype, useResetPrototype, useStartPrototype } from '@/pages/Prototype/hooks';
+import { usePrototype, useResetPrototype, useStartPublicPrototype } from '@/pages/Prototype/hooks';
 import { OnInteraction, PMStatus, PrototypeAllTypes } from '@/pages/Prototype/types';
 import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
 
@@ -26,7 +26,7 @@ interface PrototypeProps {
 }
 
 const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state, actions, settings, onInteract, globalDelayInMilliseconds }) => {
-  const startPrototype = useStartPrototype();
+  const startPrototype = useStartPublicPrototype();
   const resetPrototype = useResetPrototype();
   const [canUseASR] = useCanASR();
   const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);

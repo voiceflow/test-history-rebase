@@ -14,6 +14,16 @@ export const useStartPrototype = () => {
   }, []);
 };
 
+export const useStartPublicPrototype = () => {
+  const dispatch = useDispatch();
+  const getEngine = useEventualEngine();
+
+  return React.useCallback((diagramID?: string | null, nodeID?: string | null) => {
+    const engine = getEngine();
+    return engine ? engine.prototype.start(diagramID, nodeID) : dispatch(Prototype.startPublicPrototype());
+  }, []);
+};
+
 export const useResetPrototype = () => {
   const dispatch = useDispatch();
   const getEngine = useEventualEngine();

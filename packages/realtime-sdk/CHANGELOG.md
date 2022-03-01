@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.62.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.61.0...@voiceflow/realtime-sdk@1.62.0) (2022-03-01)
+
+
+### Features
+
+* buttons only option for public prototype (VF-2946) ([#5109](https://github.com/voiceflow/creator-app/issues/5109)) ([6c1e4fa](https://github.com/voiceflow/creator-app/commit/6c1e4fa203d4225833b52d6da2743859a491fa1c))
+
+
+
+
+
 # [1.61.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.60.0...@voiceflow/realtime-sdk@1.61.0) (2022-02-25)
 
 

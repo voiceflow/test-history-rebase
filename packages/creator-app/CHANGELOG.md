@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.639.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.638.0...@voiceflow/creator-app@1.639.0) (2022-03-01)
+
+
+### Features
+
+* implement load of variable state into public and internal prototype (VF-2609) ([#5125](https://github.com/voiceflow/creator-app/issues/5125)) ([bb03d57](https://github.com/voiceflow/creator-app/commit/bb03d5730b9be0a108417b962e18222005366874))
+
+
+
+
+
 # [1.638.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.637.1...@voiceflow/creator-app@1.638.0) (2022-03-01)
 
 

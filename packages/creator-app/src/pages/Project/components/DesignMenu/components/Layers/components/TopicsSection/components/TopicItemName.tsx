@@ -53,7 +53,7 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
 ) => {
   const [isHovered, , hoverHandlers] = useHover();
 
-  const goToDiagram = useDispatch(Router.goToDiagramHistoryClear);
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
 
   const { inputRef, catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } = useDiagramRename({
     diagramID,

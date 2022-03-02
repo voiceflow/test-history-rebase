@@ -75,15 +75,17 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({
             const componentGoToStepID = topicGoToStepID || (intentEntity ? intentNodeDataLookup[intentEntity.id]?.nodeID ?? null : null);
 
             const intentName = prettifyIntentName(intentEntity?.name);
-
             const goToStepID = isComponentDiagram ? componentGoToStepID : topicGoToStepID;
             const withAttachment = isGoToIntent && !!goToStepID;
+
+            // eslint-disable-next-line no-nested-ternary
+            const linkedLabel = isGoToIntent ? (withAttachment ? intentName : null) : intentName;
 
             return (
               <Item
                 key={id}
                 icon={index === 0 ? NODE_CONFIG.icon : null}
-                label={name ? transformVariablesToReadable(name) : intentName}
+                label={name ? transformVariablesToReadable(name) : linkedLabel}
                 portID={!isGoToIntent ? dynamicPortIDs[index] : null}
                 variant={variant}
                 attachment={
@@ -92,8 +94,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({
                   ) : null
                 }
                 placeholder="Add button text"
-                // eslint-disable-next-line no-nested-ternary
-                linkedLabel={isGoToIntent ? (withAttachment ? intentName : null) : intentName}
+                linkedLabel={linkedLabel}
                 withNewLines
                 labelVariant={StepLabelVariant.PRIMARY}
                 multilineLabel

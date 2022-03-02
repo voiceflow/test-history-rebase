@@ -119,7 +119,6 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
         key: id,
         label: intent && intentsMap[intent] ? prettifyIntentName(intentsMap[intent].name) : null,
         portID: isPath ? portID : null,
-
         attachment: withAttachment,
         // eslint-disable-next-line no-nested-ternary
         linkedLabel: isPath ? null : withAttachment ? prettifyIntentName(goToIntent?.name) : null,

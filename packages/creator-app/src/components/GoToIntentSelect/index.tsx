@@ -58,7 +58,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({ intentID, diagramID
       for (const intentID of Object.keys(globalStepMap)) {
         const intent = getIntentByID({ id: intentID });
 
-        if (!intent) continue;
+        if (!intent || !globalStepMap[intentID]?.length) continue;
 
         const formattedName = applyPlatformIntentNameFormatting(prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name), platform);
 

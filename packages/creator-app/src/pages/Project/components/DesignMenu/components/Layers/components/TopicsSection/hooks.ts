@@ -52,7 +52,7 @@ export const useTopics = (): TopicsAPI => {
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const { target: focusedNodeID, isActive: isFocusedNodeActive } = useSelector(Creator.creatorFocusSelector);
 
-  const goToDiagram = useDispatch(Router.goToDiagramHistoryClear);
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
   const reorderTopics = useDispatch(Version.reorderTopics);
   const createTopicDiagram = useDispatch(DiagramDuck.createTopicDiagram);
 

@@ -17,7 +17,7 @@ interface StartIntentProps {
 
 const StartIntent: React.FC<StartIntentProps> = ({ isActive, diagramID, focusedNodeID }) => {
   const getEngine = useEventualEngine();
-  const goToDiagram = useDispatch(Router.goToDiagramHistoryClear);
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
 
   const startNodeID = useSelector(CreatorV2.startNodeIDSelector);
   const startNodeData = useSelector(CreatorV2.nodeDataByIDSelector, { id: startNodeID }) as Realtime.NodeData<Realtime.NodeData.Start> | null;

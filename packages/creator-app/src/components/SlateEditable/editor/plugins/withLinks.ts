@@ -166,52 +166,54 @@ export const withLinksEditorApi: APIPlugin = (EditorAPI: EditorAPIType): EditorA
     },
 
     wrapLink: (editor: Editor, url: string, { pasted }: { pasted?: boolean } = {}): void => {
-      let selection = editor.selection || EditorAPI.fullRange(editor);
+      EditorAPI.withoutNormalizing(editor, () => {
+        let selection = editor.selection || EditorAPI.fullRange(editor);
 
-      const selectionRef = EditorAPI.rangeRef(editor, selection);
+        const selectionRef = EditorAPI.rangeRef(editor, selection);
 
-      EditorAPI.unwrapLink(editor);
+        EditorAPI.unwrapLink(editor);
 
-      if (Range.isCollapsed(selection) || (pasted && editor.selection)) {
-        Transforms.insertNodes(
-          editor,
-          {
-            url,
-            type: ElementType.LINK,
-            children: [{ text: url, [TextProperty.COLOR]: LINK_COLOR, [TextProperty.UNDERLINE]: true }],
-          },
-          { at: selectionRef.current! }
-        );
+        if (Range.isCollapsed(selection) || (pasted && editor.selection)) {
+          Transforms.insertNodes(
+            editor,
+            {
+              url,
+              type: ElementType.LINK,
+              children: [{ text: url, [TextProperty.COLOR]: LINK_COLOR, [TextProperty.UNDERLINE]: true }],
+            },
+            { at: selectionRef.current! }
+          );
 
-        EditorAPI.removeMark(editor, TextProperty.COLOR);
-        EditorAPI.removeMark(editor, TextProperty.UNDERLINE);
-      } else {
-        Transforms.wrapNodes(
-          editor,
-          {
-            url,
-            type: ElementType.LINK,
-            children: [],
-          },
-          {
-            at: selectionRef.current!,
-            split: true,
-            match: (node) => (Text.isText(node) && !editor.isFakeSelectionApplied()) || !!(node as Text)[EditorAPI.FAKE_SELECTION_PROPERTY_NAME],
+          EditorAPI.removeMark(editor, TextProperty.COLOR);
+          EditorAPI.removeMark(editor, TextProperty.UNDERLINE);
+        } else {
+          Transforms.wrapNodes(
+            editor,
+            {
+              url,
+              type: ElementType.LINK,
+              children: [],
+            },
+            {
+              at: selectionRef.current!,
+              split: true,
+              match: (node) => (Text.isText(node) && !editor.isFakeSelectionApplied()) || !!(node as Text)[EditorAPI.FAKE_SELECTION_PROPERTY_NAME],
+            }
+          );
+
+          if (pasted) {
+            Transforms.collapse(editor, { edge: 'end' });
           }
-        );
 
-        if (pasted) {
-          Transforms.collapse(editor, { edge: 'end' });
+          EditorAPI.applyLinkStyles(editor, selectionRef.current!);
         }
 
-        EditorAPI.applyLinkStyles(editor, selectionRef.current!);
-      }
+        selection = selectionRef.unref()!;
 
-      selection = selectionRef.unref()!;
-
-      if (editor.isFakeSelectionApplied()) {
-        editor.setFakeSelectionRange(selection);
-      }
+        if (editor.isFakeSelectionApplied()) {
+          editor.setFakeSelectionRange(selection);
+        }
+      });
     },
 
     applyLinkStyles: (editor: Editor, location: Location) => {

@@ -35,7 +35,7 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
     unstable_batchedUpdates(() => {
       if (linkNode && !localUrl) {
         EditorAPI.unwrapLink(editor);
-      } else if (!linkNode && localUrl) {
+      } else {
         EditorAPI.wrapLink(editor, localUrl);
       }
 

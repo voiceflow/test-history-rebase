@@ -44,6 +44,7 @@ export const applySingleIntentNameFormatting = (platform: VoiceflowConstants.Pla
   let { name } = intent ?? { name: '' };
 
   name = getIntentNameLabel(name);
+
   if (isCustomizableBuiltInIntent(intent)) {
     name = applyCustomizableBuiltInIntent(name, platform);
   }

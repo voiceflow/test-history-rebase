@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.640.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.640.1...@voiceflow/creator-app@1.640.2) (2022-03-03)
+
+
+### Bug Fixes
+
+* **creator-app:** fixes variable state create modal layout issues (VF-2938) ([#5121](https://github.com/voiceflow/creator-app/issues/5121)) ([332800f](https://github.com/voiceflow/creator-app/commit/332800f679558e38d8f91330b81cdefd94b6cd6f))
+
+
+
+
+
 ## [1.640.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.640.0...@voiceflow/creator-app@1.640.1) (2022-03-03)
 
 

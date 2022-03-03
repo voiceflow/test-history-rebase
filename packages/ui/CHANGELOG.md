@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.57.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.56.3...@voiceflow/ui@1.57.0) (2022-03-03)
+
+
+### Features
+
+* intent modals V2 (VF-000) ([#5098](https://github.com/voiceflow/creator-app/issues/5098)) ([9b88907](https://github.com/voiceflow/creator-app/commit/9b88907e7573d0d43c97e95b853e42ac6bd99759))
+
+
+
+
+
 ## [1.56.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.56.2...@voiceflow/ui@1.56.3) (2022-02-25)
 
 

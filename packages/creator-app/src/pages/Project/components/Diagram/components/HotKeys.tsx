@@ -17,13 +17,14 @@ const HotKeys: React.FC = () => {
 
   const goToPrototype = useDispatch(Router.goToCurrentPrototype);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
-
   const markup = React.useContext(MarkupContext)!;
 
   const getEngine = useEventualEngine();
   const [, trackingEventsWrapper] = useTrackingEvents();
 
   const imModal = useModals(ModalType.INTERACTION_MODEL);
+  // const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
+  // const nluQuickView = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
 
   const onDisableModes = useDisableModes();
@@ -47,7 +48,17 @@ const HotKeys: React.FC = () => {
   }, []);
 
   // this callback is needed to do not store event object in the modals context
-  const onOpenImModel = React.useCallback(() => trackingEventsWrapper(() => imModal.open(), 'trackCanvasControlInteractionModel')(), [imModal.open]);
+  const onOpenImModel = React.useCallback(
+    () =>
+      trackingEventsWrapper(() => {
+        // if (IMM_MODALS_V2.isEnabled) {
+        //   nluQuickView.open();
+        // } else {
+        imModal.open();
+        // }
+      }, 'trackCanvasControlInteractionModel')(),
+    [imModal.open]
+  );
 
   useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true });

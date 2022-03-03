@@ -13,6 +13,7 @@ function MenuHeader({
   creatable,
   hasOptions,
   isDropdown,
+  onHide,
   searchLabel,
   createInputRef,
   newOptionLabel,
@@ -25,6 +26,7 @@ function MenuHeader({
   alwaysShowCreate,
   createInputPlaceholder,
   createLabel = 'Create',
+  renderSearchSuffix,
 }) {
   const value = searchable && !isDropdown ? searchLabel : newOptionLabel;
   const inputVal = searchable ? searchLabel : newOptionLabel;
@@ -36,7 +38,7 @@ function MenuHeader({
       {inDropdownSearch && (
         <>
           <SearchContainer onClick={stopImmediatePropagation(() => {})}>
-            <Box mr={12}>
+            <Box mr={12} display="inline-block">
               <SvgIcon icon="search" size={16} color="#6E849A" />
             </Box>
             <MenuInput
@@ -48,6 +50,7 @@ function MenuHeader({
               onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
               placeholder={`Search ${createInputPlaceholder}`}
             />
+            {renderSearchSuffix?.({ onClose: onHide })}
           </SearchContainer>
           <MenuHr />
         </>

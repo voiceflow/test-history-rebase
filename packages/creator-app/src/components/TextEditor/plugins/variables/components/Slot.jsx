@@ -4,9 +4,12 @@ import React from 'react';
 
 import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import { slotStyles, variableStyle, VariableTagTooltipStyles } from '@/components/VariableTag';
-import { InteractionModelTabType } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
-import { compose, connect, styled } from '@/hocs';
+import { compose, styled } from '@/hocs';
+import { useDispatch, useFeature, useModals } from '@/hooks';
+import { EntityModalMode } from '@/pages/Canvas/components/EntityModalV2';
 
 const Text = styled.span`
   pointer-events: none;
@@ -32,36 +35,44 @@ const Text = styled.span`
   }
 `;
 
-const Slot = ({ children, mention, goInteractionModelEntity }, ref) => (
-  <OverflowTippyTooltip
-    delay={300}
-    title={mention.name}
-    isChildrenOverflow={(node) => node.firstElementChild?.scrollWidth > node.firstElementChild?.clientWidth}
-  >
-    {(overflowRef, { isOverflow }) => (
-      <>
-        <Text
-          ref={composeRef(ref, overflowRef)}
-          color={mention.color}
-          onClick={swallowEvent(
-            () => goInteractionModelEntity(mention.isVariable ? InteractionModelTabType.VARIABLES : InteractionModelTabType.SLOTS, mention.id),
-            true
-          )}
-          onMouseUp={swallowEvent(null, true)}
-          onMouseDown={swallowEvent(null, true)}
-          isVariable={mention.isVariable}
-        >
-          {children}
-        </Text>
+const Slot = ({ children, mention }, ref) => {
+  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
+  const { open: openEntityModal } = useModals(ModalType.ENTITY);
 
-        {isOverflow && <VariableTagTooltipStyles />}
-      </>
-    )}
-  </OverflowTippyTooltip>
-);
+  const goInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
-const mapDispatchToProps = {
-  goInteractionModelEntity: Router.goToCurrentCanvasInteractionModelEntity,
+  const onClickHandler = swallowEvent(() => {
+    if (IMM_MODALS_V2.isEnabled) {
+      openEntityModal({ mode: EntityModalMode.EDITING });
+    } else {
+      goInteractionModelEntity(mention.isVariable ? InteractionModelTabType.VARIABLES : InteractionModelTabType.SLOTS, mention.id);
+    }
+  }, true);
+
+  return (
+    <OverflowTippyTooltip
+      delay={300}
+      title={mention.name}
+      isChildrenOverflow={(node) => node.firstElementChild?.scrollWidth > node.firstElementChild?.clientWidth}
+    >
+      {(overflowRef, { isOverflow }) => (
+        <>
+          <Text
+            ref={composeRef(ref, overflowRef)}
+            color={mention.color}
+            onClick={onClickHandler}
+            onMouseUp={swallowEvent(null, true)}
+            onMouseDown={swallowEvent(null, true)}
+            isVariable={mention.isVariable}
+          >
+            {children}
+          </Text>
+
+          {isOverflow && <VariableTagTooltipStyles />}
+        </>
+      )}
+    </OverflowTippyTooltip>
+  );
 };
 
-export default compose(connect(null, mapDispatchToProps, null, { forwardRef: true }), React.forwardRef)(Slot);
+export default compose(React.forwardRef)(Slot);

@@ -13,10 +13,11 @@ export * from './constants';
 export type SectionProps = Omit<UncontrolledSectionProps, 'isCollapsed'> & {
   initialOpen?: boolean;
   onToggleChange?: (collapsed: boolean) => void;
+  forceToggleChange?: boolean;
 };
 
 const Section: React.ForwardRefRenderFunction<HTMLDivElement, SectionProps> = (
-  { initialOpen = false, onToggleChange, collapseVariant = null, ...props },
+  { initialOpen = false, forceToggleChange, onToggleChange, collapseVariant = null, ...props },
   ref
 ) => {
   const [isCollapsed, toggle] = useToggle(!!collapseVariant && !initialOpen);
@@ -26,6 +27,10 @@ const Section: React.ForwardRefRenderFunction<HTMLDivElement, SectionProps> = (
       onToggleChange(isCollapsed);
     }
   }, [isCollapsed]);
+
+  useDidUpdateEffect(() => {
+    toggle(forceToggleChange);
+  }, [forceToggleChange]);
 
   return <UncontrolledSection {...props} isCollapsed={isCollapsed} collapseVariant={collapseVariant} toggle={toggle} ref={ref} />;
 };

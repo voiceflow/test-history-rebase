@@ -222,6 +222,9 @@ export enum ModalType {
 
   SLOT_EDIT = 'slot-edit',
   INTERACTION_MODEL = 'interaction-model',
+
+  NLU_MODEL_QUICK_VIEW = 'nlu-quick-view',
+
   EXPORT_MODEL = 'export-model',
 
   MANUAL_SAVE_MODAL = 'manual-save-modal',
@@ -239,6 +242,10 @@ export enum ModalType {
   PUBLISH_AMAZON = 'publish-amazon',
 
   SHORTCUTS = 'shortcuts',
+
+  INTENT_EDIT = 'intent-edit',
+  INTENT_CREATE = 'intent-create',
+  ENTITY = 'entity',
 
   IMPORT_SLOTS = 'import-slots',
   IMPORT_PROJECT = 'import-project',

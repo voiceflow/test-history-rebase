@@ -81,6 +81,7 @@ export type SelectProps<O, V> = {
   createLabel?: string;
   grouped?: boolean;
   minWidth?: boolean;
+  minMenuWidth?: number;
   renderOptionsFilter?: (option: O | UIOnlyMenuItemOption) => boolean;
   onSelect: (value: V, optionsPath: number[]) => void;
   disabled?: boolean;
@@ -100,7 +101,7 @@ export type SelectProps<O, V> = {
   onMouseDown?: React.MouseEventHandler;
   renderAsSpan?: boolean;
   selectedOptions?: unknown[];
-
+  renderSearchSuffix?: ({ onClose }: { onClose: VoidFunction }) => JSX.Element;
   getOptionKey?: (option: O) => string;
   optionsFilter?: OptionsFilter<O, V>;
   getOptionValue?: GetOptionValue<O, V>;
@@ -133,6 +134,8 @@ export type SelectProps<O, V> = {
     placeholder?: string;
     rightAction?: React.ReactNode;
     isDropDownOpened: boolean;
+    onOpenMenu?: VoidFunction;
+    onHideMenu?: VoidFunction;
   }) => React.ReactNode;
   isButtonDisabled?: (searchLabel: string) => boolean;
   formatInputValue?: (value: string) => string;
@@ -182,6 +185,7 @@ const Select = <O, V = O>({
   options = [],
   renderOptionsFilter,
   minWidth = true,
+  minMenuWidth,
   disabled,
   onSelect,
   onCreate,
@@ -217,6 +221,7 @@ const Select = <O, V = O>({
   showNotMatchedOptions,
   createInputPlaceholder,
   validateCreate,
+  renderSearchSuffix,
   tags,
   searchLabel: searchLabelProp = '',
   renderEmpty,
@@ -541,6 +546,8 @@ SelectProps<O, V>): JSX.Element => {
                 ref: inputRef,
                 value: searchLabel,
                 isOpen: opened,
+                onOpenMenu,
+                onHideMenu,
               })
             ) : (
               <Flex>
@@ -628,7 +635,9 @@ SelectProps<O, V>): JSX.Element => {
       {renderDropdown && (
         <AnyAdvancedMenu
           id={id}
+          minWidth={minMenuWidth}
           inDropdownSearch={inDropdownSearch}
+          searchSuffix={renderSearchSuffix}
           footerAction={footerAction}
           createLabel={createLabel}
           onHide={onHideMenu}

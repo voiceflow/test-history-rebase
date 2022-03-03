@@ -1,4 +1,4 @@
-import { SvgIcon } from '@voiceflow/ui';
+import { IconButton } from '@voiceflow/ui';
 
 import { css, styled, transition, units } from '@/hocs';
 
@@ -6,15 +6,9 @@ interface RemoveIconProps {
   isHidden?: boolean;
 }
 
-const RemoveIcon = styled(SvgIcon).attrs({ icon: 'remove' })<RemoveIconProps>`
-  margin-left: ${units(2)}px;
-  color: #6e849a;
-  cursor: pointer;
-  ${transition('color')}
-
-  &:hover {
-    color: #627990;
-  }
+const RemoveIcon = styled(IconButton).attrs({ icon: 'minus' })<RemoveIconProps>`
+  margin-left: ${units(1)}px;
+  ${transition('background')}
 
   ${({ isHidden }) =>
     isHidden &&

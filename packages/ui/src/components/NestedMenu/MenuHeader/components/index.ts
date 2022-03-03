@@ -1,3 +1,4 @@
+import Flex from '@ui/components/Flex';
 import { css, styled } from '@ui/styles';
 import AutosizeInput from 'react-input-autosize';
 
@@ -10,6 +11,7 @@ interface MenuInputProps {
 export const MenuInput = styled(AutosizeInput)<MenuInputProps>`
   padding: 10px 0;
   line-height: 20px;
+  flex: 100;
 
   input {
     border: none;
@@ -35,10 +37,8 @@ export const MenuHr = styled.hr`
   margin: 5px 0;
 `;
 
-export const SearchContainer = styled.div`
+export const SearchContainer = styled(Flex)`
   padding: 0 24px;
-  display: flex;
-  align-items: center;
 
   input {
     border: none !important;

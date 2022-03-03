@@ -2,6 +2,7 @@ export enum SectionToggleVariant {
   ARROW = 'arrow',
   TOGGLE = 'caretDown',
   ADD = 'add',
+  ADD_V2 = 'add_v2',
 }
 
 export enum SectionVariant {

@@ -48,8 +48,12 @@ export const prettifyIntentNames = <T extends Realtime.Intent>(intents: T[]): T[
 
 export const getIntentNameLabel = (name = ''): string => INTENT_LABELS[name] ?? name;
 
-export const intentFilter = <T extends Realtime.Intent>(intent: T, activeIntent?: T | null): boolean => {
+export const intentFilter = <T extends Realtime.Intent>(intent: T, activeIntent: T | null = null, config: { noBuiltIns?: boolean } = {}): boolean => {
+  const { noBuiltIns } = config;
   const isActiveIntent = intent.id === activeIntent?.id;
+  if (noBuiltIns) {
+    return !isCustomizableBuiltInIntent(intent);
+  }
 
   if (isActiveIntent) {
     return true;
@@ -130,7 +134,7 @@ export const isBuiltInIntent = (intentID: string): boolean =>
 
 const NUMERIC_UTTERANCE_REGEXP = /\d/;
 
-export function validateUtterance(utterance: string, intentID: string, intents: Realtime.Intent[]): string {
+export function validateUtterance(utterance: string, intentID: string | null, intents: Realtime.Intent[]): string {
   const utteranceWithoutSlots = utterance.replace(SLOT_REGEXP, '');
 
   let err = '';

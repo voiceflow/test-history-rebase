@@ -10,8 +10,12 @@ export interface FixNodeProps {
   overflowHidden?: boolean;
 }
 
-const FixNode: React.FC<FixNodeProps> = ({ fixNode, color, overflowHidden }) => (
-  <PrefixContainer overflowHidden={overflowHidden}>{_isString(fixNode) ? <SvgIcon color={color} icon={fixNode as Icon} /> : fixNode}</PrefixContainer>
-);
+const FixNode: React.FC<FixNodeProps> = ({ fixNode, color, overflowHidden }) => {
+  return (
+    <PrefixContainer overflowHidden={overflowHidden}>
+      {_isString(fixNode) ? <SvgIcon color={color} icon={fixNode as Icon} /> : fixNode}
+    </PrefixContainer>
+  );
+};
 
 export default FixNode;

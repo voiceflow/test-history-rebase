@@ -22,6 +22,7 @@ export interface SectionContainerProps {
   headerToggle?: boolean;
   isRounded?: boolean;
   fullWidth?: boolean;
+  backgroundColor?: string;
 }
 
 export const draggingStyles = css`
@@ -104,15 +105,13 @@ export const beforeDividersStyle = css<SectionContainerProps>`
 
 const SectionContainer = styled.div<SectionContainerProps>`
   position: relative;
-  background-color: #fff;
-
-  ${({ fullWidth }) =>
-    fullWidth &&
-    css`
-      width: 100%;
-    `}
-
-  & & {
+  background-color: ${({ backgroundColor = '#fff' }) => backgroundColor}
+    ${({ fullWidth }) =>
+      fullWidth &&
+      css`
+        width: 100%;
+      `}
+    & & {
     background-color: transparent;
   }
 
@@ -230,7 +229,7 @@ const SectionContainer = styled.div<SectionContainerProps>`
       }
       return css`
         ${Header} {
-          padding-bottom: 10px;
+          padding-bottom: 12px;
           padding-top: 24px;
         }
       `;

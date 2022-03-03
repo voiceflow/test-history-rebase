@@ -222,7 +222,6 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
               onUpdate={onUpdateUtterances}
               renderItem={(item, { onUpdate }) => (
                 <Utterance
-                  noSlots={isCustomizableBuiltInIntent(intent)}
                   space
                   slots={slots}
                   value={item?.text}

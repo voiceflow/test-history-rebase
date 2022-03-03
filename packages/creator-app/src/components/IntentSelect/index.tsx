@@ -13,13 +13,14 @@ import {
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { CUSTOMIZABLE_INTENT_PREFIXS } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { CUSTOMIZABLE_INTENT_PREFIXS, ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent, prettifyIntentName, validateIntentName } from '@/utils/intent';
 
@@ -47,6 +48,7 @@ interface IntentSelectProps
   options?: Array<Realtime.Intent | UIOnlyMenuItemOption>;
   onChange: (value: { intent: string | null }) => void;
   withMissingAlert?: boolean;
+  noBuiltIns?: boolean;
 }
 
 const IntentSelect: React.FC<IntentSelectProps> = ({
@@ -58,12 +60,15 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   placeholder = 'Name new intent or select existing intent',
   withMissingAlert = true,
   createInputPlaceholder = 'intents',
+  noBuiltIns,
   ...props
 }) => {
   const slots = useSelector(SlotV2.allSlotsSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
   const allIntents = useSelector(IntentV2.allPlatformIntentsSelector);
+  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
+  const { open: openCreateIntentModal } = useModals(ModalType.INTENT_CREATE);
 
   const createIntent = useDispatch(Intent.createIntent);
 
@@ -74,13 +79,13 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   const filteredOptions = React.useMemo(
     () =>
       options
-        .filter((option) => isUIOnlyMenuItemOption(option) || intentFilter(option, intent))
+        .filter((option) => isUIOnlyMenuItemOption(option) || intentFilter(option, intent, { noBuiltIns: true }))
         .map((option) =>
           isUIOnlyMenuItemOption(option)
             ? { ...option, name: option.label }
             : { ...option, name: applyPlatformIntentNameFormatting(prettifyIntentName(option.name), platform) }
         ),
-    [intent, options, platform]
+    [intent, options, platform, noBuiltIns]
   );
 
   const optionLookup = React.useMemo(
@@ -124,7 +129,11 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     } else {
       const nextIntentID = await createIntent({ name: preparedName });
 
-      await onSelectIntent(nextIntentID);
+      if (IMM_MODALS_V2.isEnabled) {
+        openCreateIntentModal({ id: nextIntentID });
+      } else {
+        await onSelectIntent(nextIntentID);
+      }
 
       trackingEvents.trackIntentCreated({ creationType: CanvasCreationType.EDITOR });
     }

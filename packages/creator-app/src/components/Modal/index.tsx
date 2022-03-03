@@ -1,4 +1,4 @@
-import { Box, BoxFlex, IconVariant, Portal, SvgIcon } from '@voiceflow/ui';
+import { Box, BoxFlex, IconButton, IconButtonVariant, Portal } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
@@ -25,6 +25,8 @@ export interface UncontrolledModalProps {
   withHeader?: boolean;
   intoTooltip?: React.ReactNode;
   headerActions?: React.ReactNode;
+  headerBorder?: boolean;
+  leftSidebar?: () => React.ReactElement;
 }
 
 export interface ModalProps extends Omit<UncontrolledModalProps, 'fade' | 'isOpened' | 'onClose'> {
@@ -41,12 +43,14 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
       closable = true,
       centered,
       isOpened,
+      headerBorder,
       maxWidth,
       children,
       className,
       withHeader = true,
       intoTooltip,
       headerActions,
+      leftSidebar,
     },
     ref
   ) => {
@@ -64,38 +68,38 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
               maxWidth={maxWidth}
               className={cn(ClassName.MODAL, className, `${ClassName.MODAL}--${id ?? 'unknown'}`)}
             >
-              {withHeader && (
-                <Header>
-                  <BoxFlex height="100%">
-                    <BoxFlex height="100%" id={Identifier.MODAL_TITLE_CONTAINER}>
-                      {title}
+              {leftSidebar?.()}
+              <Box flex={10}>
+                {withHeader && (
+                  <Header headerBorder={headerBorder}>
+                    <BoxFlex height="100%">
+                      <BoxFlex height="100%" id={Identifier.MODAL_TITLE_CONTAINER}>
+                        {title}
+                      </BoxFlex>
+
+                      {intoTooltip && (
+                        <Box ml={8}>
+                          <InfoIcon>{intoTooltip}</InfoIcon>
+                        </Box>
+                      )}
                     </BoxFlex>
+                    <BoxFlex height="100%">
+                      {headerActions && <BoxFlex mr={16}>{headerActions}</BoxFlex>}
+                      {closable && (
+                        <IconButton
+                          size={16}
+                          id={Identifier.MODAL_CLOSE_BUTTON_REGULAR}
+                          icon="close"
+                          variant={IconButtonVariant.BASIC}
+                          onClick={onClose}
+                        />
+                      )}
+                    </BoxFlex>
+                  </Header>
+                )}
 
-                    {intoTooltip && (
-                      <Box ml={8}>
-                        <InfoIcon>{intoTooltip}</InfoIcon>
-                      </Box>
-                    )}
-                  </BoxFlex>
-
-                  <BoxFlex height="100%">
-                    {headerActions && <BoxFlex mr={16}>{headerActions}</BoxFlex>}
-
-                    {closable && (
-                      <SvgIcon
-                        id={Identifier.MODAL_CLOSE_BUTTON_REGULAR}
-                        icon="close"
-                        size={14}
-                        variant={IconVariant.STANDARD}
-                        onClick={onClose}
-                        clickable
-                      />
-                    )}
-                  </BoxFlex>
-                </Header>
-              )}
-
-              <BoxFlex column>{children}</BoxFlex>
+                <BoxFlex column>{children}</BoxFlex>
+              </Box>
             </Container>
           </Root>
         </Portal>

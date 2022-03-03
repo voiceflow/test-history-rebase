@@ -30,11 +30,11 @@ const Badge = styled.div.attrs((props) => (props.onClick ? { role: 'button' } : 
   height: ${units(2.8)}px;
   margin-top: -4px;
   margin-bottom: -4px;
-  padding-right: 6px;
-  padding-left: 6px;
+  padding-right: 8px;
+  padding-left: 8px;
   font-weight: 600;
-  font-size: 13px;
-  line-height: 21px;
+  font-size: 12px;
+  line-height: 24px;
   text-align: center;
   border-radius: 5px;
 
@@ -48,7 +48,6 @@ const Badge = styled.div.attrs((props) => (props.onClick ? { role: 'button' } : 
       : css`
           color: ${colors(ThemeColor.SECONDARY)};
           background: linear-gradient(180deg, #eff5f6a3 0%, ${backgrounds('greyGreen')} 100%), ${backgrounds('white')};
-          border: 1px solid #d4d9e6;
           box-shadow: 0 1px 0 #d4d9e6;
         `}
 `;

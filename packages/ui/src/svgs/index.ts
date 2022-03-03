@@ -13,6 +13,7 @@ export { default as amazonAlexa } from './amazon-alexa.svg';
 export { default as angle } from './angle.svg';
 export { default as api } from './api.svg';
 export { default as arrow } from './arrow.svg';
+export { default as arrowDown } from './arrow-down.svg';
 export { default as arrowLeft } from './arrow-left.svg';
 export { default as arrowRight } from './arrow-right.svg';
 export { default as arrowRightTopics } from './arrow-right-topics.svg';
@@ -81,6 +82,7 @@ export { default as echoSpot } from './echo-spot.svg';
 export { default as editName } from './edit-name.svg';
 export { default as ellipsis } from './ellipsis.svg';
 export { default as else } from './else.svg';
+export { default as entities } from './entities.svg';
 export { default as equals } from './equals.svg';
 export { default as error } from './error.svg';
 export { default as event } from './event.svg';
@@ -106,6 +108,7 @@ export { default as folder } from './folder.svg';
 export { default as folderLight } from './folder-light.svg';
 export { default as forward } from './forward.svg';
 export { default as frame } from './frame.svg';
+export { default as fullExpand } from './full-expand.svg';
 export { default as fullscreen } from './fullscreen.svg';
 
 // g
@@ -192,6 +195,7 @@ export { default as payment } from './payment.svg';
 export { default as pending } from './pending.svg';
 export { default as play } from './play.svg';
 export { default as plus } from './plus.svg';
+export { default as plusSmall } from './plus-small.svg';
 export { default as portConnected } from './port-connected.svg';
 export { default as prompt } from './prompt.svg';
 export { default as publishSpin } from './publish-spin.svg';
@@ -215,6 +219,7 @@ export { default as rocket } from './rocket.svg';
 export { default as random } from './solid/random.svg';
 
 // s
+export { default as sandwichMenu } from './sandwich-menu.svg';
 export { default as save } from './save.svg';
 export { default as saveForLater } from './save-for-later.svg';
 export { default as search } from './search.svg';

@@ -2,10 +2,11 @@ import { Dropdown, Flex, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { HeaderDivider, HeaderIconButton } from '@/components/ProjectPage';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { BlockType, ModalType } from '@/constants';
 import * as Thread from '@/ducks/thread';
-import { useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
@@ -28,7 +29,8 @@ const CanvasHeader: React.FC = () => {
   const [, trackingEventsWrapper] = useTrackingEvents();
 
   const imModal = useModals(ModalType.INTERACTION_MODEL);
-
+  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
+  const nluQuickView = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const isMarkupTextActive = markup.creatingType === BlockType.MARKUP_TEXT;
   const isMarkupImageActive = markup.creatingType === BlockType.MARKUP_IMAGE;
 
@@ -98,7 +100,9 @@ const CanvasHeader: React.FC = () => {
                 icon="interactionModel"
                 active={imModal.isOpened}
                 isSmall
-                onClick={trackingEventsWrapper(() => imModal.open(), 'trackCanvasControlInteractionModel')}
+                onClick={trackingEventsWrapper(() => {
+                  IMM_MODALS_V2.isEnabled ? nluQuickView.open() : imModal.open();
+                }, 'trackCanvasControlInteractionModel')}
                 tooltip={{ title: 'NLU Model', hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL] }}
               />
             </>

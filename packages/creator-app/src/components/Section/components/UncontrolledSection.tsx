@@ -57,6 +57,8 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   truncatedHeader?: boolean;
   hiddenPrefix?: boolean;
   hiddenStatusContent?: boolean;
+  backgroundColor?: string;
+  headerEnd?: React.ReactNode;
 };
 
 const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, UncontrolledSectionProps> = (
@@ -98,6 +100,8 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
     truncatedHeader = true,
     hiddenPrefix,
     hiddenStatusContent,
+    backgroundColor,
+    headerEnd,
     ...props
   },
   ref
@@ -111,6 +115,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
   return (
     <Container
       ref={ref}
+      backgroundColor={backgroundColor}
       isDragging={isDragging}
       isDraggingPreview={isDraggingPreview}
       dividers={dividers}
@@ -157,7 +162,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
             </HeaderContent>
           )}
 
-          {(status || infix || suffix || count || collapseVariant || isLink) && (
+          {(status || infix || suffix || count || collapseVariant || isLink || headerEnd) && (
             <StatusContent overflowHidden={hiddenStatusContent}>
               {infix && <FixNode fixNode={infix} color="#becedc" />}
               {(isLink || status) && <StatusContainer>{isLink ? <SvgIcon icon="arrowRight" size={10} /> : status}</StatusContainer>}
@@ -171,6 +176,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
                   variant={collapseVariant}
                 />
               )}
+              {headerEnd}
             </StatusContent>
           )}
         </Header>

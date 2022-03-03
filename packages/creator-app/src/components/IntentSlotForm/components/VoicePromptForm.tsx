@@ -14,7 +14,6 @@ interface VoicePromptFormProps {
 const VoicePromptForm: React.FC<VoicePromptFormProps> = ({ slots, prompt: [prompt], onChange, placeholder }) => {
   const voice = prompt?.voice ?? '';
   const text = prompt?.text ?? '';
-
   return (
     <SSMLWithSlots
       icon={null}

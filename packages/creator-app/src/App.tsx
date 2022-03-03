@@ -27,6 +27,10 @@ import ConnectGoogleModal from '@/modals/ConnectGoogleModal';
 import ChangeEmailModal from '@/pages/Account/components/ChangeEmailModal';
 import ChangePasswordModal from '@/pages/Account/components/ChangePasswordModal';
 import ProfileNameModal from '@/pages/Account/components/ProfileNameModal';
+import EntityModalV2 from '@/pages/Canvas/components/EntityModalV2';
+import CreateIntentModal from '@/pages/Canvas/components/IntentModalsV2/CreateModal';
+import EditIntentModal from '@/pages/Canvas/components/IntentModalsV2/EditModal';
+import NLUQuickView from '@/pages/Canvas/components/NLUQuickView';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import TagManagerModal from '@/pages/Conversations/components/TagManagerModal';
 import ImportModal from '@/pages/Dashboard/components/ImportModal';
@@ -65,6 +69,10 @@ const App = () => {
       <ChangePasswordModal />
       <LoadingModal />
       <TagManagerModal />
+      <CreateIntentModal />
+      <EditIntentModal />
+      <EntityModalV2 />
+      <NLUQuickView />
       <VariableStatesManagerModal />
       <VariableStateEditorModal />
 

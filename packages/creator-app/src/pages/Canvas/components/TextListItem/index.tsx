@@ -38,7 +38,6 @@ const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemP
 ) => {
   const isNew = latestCreatedKey === itemKey;
   const messageDelays = useFeature(FeatureFlag.PROTOTYPE_MESSAGE_DELAYS);
-
   return (
     <EditorSection
       ref={ref}

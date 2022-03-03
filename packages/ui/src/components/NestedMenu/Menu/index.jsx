@@ -43,6 +43,7 @@ function BaseNestedMenu({
   footerAction,
   creatable,
   autoWidth,
+  minWidth,
   placement,
   searchable,
   isDropdown,
@@ -57,6 +58,7 @@ function BaseNestedMenu({
   formatInputValue,
   alwaysShowCreate,
   inDropdownSearch,
+  searchSuffix: renderSearchSuffix,
   popoverModifiers,
   disableAnimation,
   firstOptionIndex = 0,
@@ -306,7 +308,7 @@ function BaseNestedMenu({
           }
 
           return (
-            <MenuPopoverContainer ref={ref} style={style} isRoot={isRoot} autoWidth={autoWidth} onMouseMove={onMouseMove}>
+            <MenuPopoverContainer ref={ref} style={style} isRoot={isRoot} minWidth={minWidth} autoWidth={autoWidth} onMouseMove={onMouseMove}>
               <Menu
                 id={id}
                 footerAction={footerAction}
@@ -320,6 +322,8 @@ function BaseNestedMenu({
                     <MenuHeader
                       inDropdownSearch={inDropdownSearch}
                       alwaysShowCreate={alwaysShowCreate}
+                      onHide={onHide}
+                      renderSearchSuffix={renderSearchSuffix}
                       createLabel={createLabel}
                       withSearchIcon={withSearchIcon}
                       onCreate={(val) => onCreate(val, scheduleUpdate)}

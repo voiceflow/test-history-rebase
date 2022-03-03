@@ -21,13 +21,15 @@ export type SvgIconContainerProps = {
 
 const SvgIconContainer = styled.span<SvgIconContainerProps>`
   ${space}
+  ${transition('opacity', 'background', 'color')}
+
   box-sizing: content-box;
   width: ${({ size, width = size }) => width}px;
   height: ${({ size, height = size }) => height}px;
   color: ${({ theme, color, variant }) => (variant && theme.components.icon[variant]?.color) || color};
+  background: transparent;
 
   ${({ theme, transition }) => transition && theme.transition(...(typeof transition === 'string' ? [transition] : transition))}
-
   ${({ rotation }) =>
     _isNumber(rotation) &&
     css`
@@ -40,6 +42,9 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
       display: block;
       ${Spin}
     `}
+
+
+
 
   ${({ ignoreEvents }) =>
     ignoreEvents &&
@@ -59,7 +64,6 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
       display: block;
       cursor: pointer;
       opacity: 0.8;
-      ${transition('opacity', 'color')}
 
       &:hover,
       &:active {

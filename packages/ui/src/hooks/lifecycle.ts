@@ -66,8 +66,8 @@ export const useTeardown = (callback: () => void, dependencies: any[] = []) => {
   );
 };
 
-export const useOnScreen = <T extends Element>(ref: React.RefObject<T>): boolean => {
-  const [isIntersecting, setIntersecting] = useState(false);
+export const useOnScreen = <T extends Element>(ref: React.RefObject<T>, initialState = false): boolean => {
+  const [isIntersecting, setIntersecting] = useState(initialState);
 
   const observer = useCreateConst(() => new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting)));
 

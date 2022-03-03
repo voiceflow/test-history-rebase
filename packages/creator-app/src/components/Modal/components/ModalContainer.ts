@@ -13,6 +13,8 @@ export interface ModalContainerProps {
 const ModalContainer = styled.section<ModalContainerProps>`
   ${({ fade }) => fade && FadeDownDelayed}
 
+  display: flex;
+  flex-direction: row;
   border-radius: 5px;
   margin: ${({ centered }) => (centered ? 'auto' : '28px auto')};
   width: 100%;

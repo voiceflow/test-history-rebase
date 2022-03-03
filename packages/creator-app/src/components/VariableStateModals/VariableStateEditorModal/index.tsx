@@ -13,7 +13,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as VariableStateDucks from '@/ducks/variableState';
 import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 
-import { InputHint } from './components';
+import { InputHint, VariableListSection } from './components';
 
 interface VariableStateEditorValues {
   name: string;
@@ -85,11 +85,6 @@ const VariableStateEditorModal: React.FC = () => {
       return false;
     }
 
-    if (!Object.values(values.variablesValues).length) {
-      toast.error('One or more included variables are not set');
-      return false;
-    }
-
     return true;
   };
 
@@ -151,7 +146,7 @@ const VariableStateEditorModal: React.FC = () => {
 
   return (
     <Modal id={ModalType.VARIABLE_STATE_EDITOR_MODAL} title="New Variable State">
-      <ModalBody style={{ paddingBottom: 8, paddingLeft: 0, paddingRight: 0 }}>
+      <ModalBody style={{ paddingBottom: 0, paddingLeft: 0, paddingRight: 0 }}>
         <Section header="Name" variant={SectionVariant.FORM} customHeaderStyling={{ paddingTop: 8 }}>
           <Input
             onChangeText={onChangeValue('name')}
@@ -171,41 +166,40 @@ const VariableStateEditorModal: React.FC = () => {
           <VariablesSelect
             onChange={onChangeValue('variables')}
             value={values.variables}
-            placeholder="E.g., New User, Return User, Added Credit Card"
+            placeholder="Select variables to include"
             disabled={saving}
           />
           {!values.variables.length && <InputHint>Selected variables will be shown below to set values</InputHint>}
         </Section>
         {values.variables.length > 0 && (
-          <Section
-            variant={SectionVariant.FORM}
-            customContentStyling={{ maxHeight: '240px', minHeight: '40px', overflow: 'scroll', overflowX: 'hidden', padding: '24px 32px' }}
-          >
-            <VariableList
-              disabled={saving}
-              canDelete
-              onChangeList={(list) => {
-                setValues((state) => ({
-                  ...state,
-                  variables: list.map(({ name }) => name),
-                  variablesValues: list.reduce((acc, next) => ({ ...acc, [next.name]: next.value }), {}),
-                }));
-              }}
-              variables={variablesList}
-            />
+          <Section customContentStyling={{ padding: 0 }}>
+            <VariableListSection>
+              <VariableList
+                disabled={saving}
+                canDelete
+                onChangeList={(list) => {
+                  setValues((state) => ({
+                    ...state,
+                    variables: list.map(({ name }) => name),
+                    variablesValues: list.reduce((acc, next) => ({ ...acc, [next.name]: next.value }), {}),
+                  }));
+                }}
+                variables={variablesList}
+              />
+            </VariableListSection>
           </Section>
         )}
       </ModalBody>
 
       <ModalFooter>
         <Box mr="12px">
-          <Button variant={ButtonVariant.TERTIARY} onClick={close} disabled={saving}>
+          <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={close} disabled={saving}>
             Cancel
           </Button>
         </Box>
 
-        <Button variant={ButtonVariant.PRIMARY} disabled={saving} onClick={handleSave}>
-          {saving ? 'Saving...' : 'Save'}
+        <Button variant={ButtonVariant.PRIMARY} squareRadius disabled={saving} onClick={handleSave}>
+          Save
         </Button>
       </ModalFooter>
     </Modal>

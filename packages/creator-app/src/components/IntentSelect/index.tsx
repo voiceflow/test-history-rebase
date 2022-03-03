@@ -79,7 +79,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   const filteredOptions = React.useMemo(
     () =>
       options
-        .filter((option) => isUIOnlyMenuItemOption(option) || intentFilter(option, intent, { noBuiltIns: true }))
+        .filter((option) => isUIOnlyMenuItemOption(option) || intentFilter(option, intent, { noBuiltIns }))
         .map((option) =>
           isUIOnlyMenuItemOption(option)
             ? { ...option, name: option.label }

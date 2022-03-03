@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.640.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.640.0...@voiceflow/creator-app@1.640.1) (2022-03-03)
+
+
+### Reverts
+
+* Revert "feat: changes to google-intents functionality on creator side (VF-2440) (#5104)" ([77b0a7a](https://github.com/voiceflow/creator-app/commit/77b0a7a2b799227fa02d838b2f3a249ce79bcb75)), closes [#5104](https://github.com/voiceflow/creator-app/issues/5104)
+
+
+
+
+
 # [1.640.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.639.1...@voiceflow/creator-app@1.640.0) (2022-03-03)
 
 

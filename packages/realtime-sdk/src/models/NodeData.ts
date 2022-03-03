@@ -106,10 +106,11 @@ export namespace NodeData {
 
   export interface Interaction {
     name: string;
-    else: NoMatch;
+    noMatch: Nullable<NoMatch>;
     choices: Record<DistinctPlatform, InteractionChoice>[];
     buttons: BaseButton.AnyButton[] | null;
     noReply: Nullable<NoReply>;
+    intentScope?: BaseNode.Utils.IntentScope;
   }
 
   export interface InteractionBuiltInPorts {
@@ -120,7 +121,7 @@ export namespace NodeData {
   export interface Prompt {
     buttons: BaseButton.AnyButton[] | null;
     noReply: Nullable<NoReply>;
-    noMatchReprompt: NoMatch;
+    noMatch: Nullable<NoMatch>;
   }
 
   export interface PromptBuiltInPorts {
@@ -152,11 +153,12 @@ export namespace NodeData {
   }
 
   export interface CaptureV2 {
-    captureType: BaseNode.CaptureV2.CaptureType;
-    variable: Nullable<string>;
     intent?: { slots: IntentSlot[] };
     noReply: Nullable<NoReply>;
     noMatch: Nullable<NoMatch>;
+    variable: Nullable<string>;
+    captureType: BaseNode.CaptureV2.CaptureType;
+    intentScope?: BaseNode.Utils.IntentScope;
   }
 
   export interface CaptureV2BuiltInPorts {
@@ -419,8 +421,8 @@ export namespace NodeData {
 
   export interface Exit {}
 
-  export interface Buttons extends Omit<VoiceflowNode.Buttons.StepData, 'else' | 'reprompt' | 'noReply'> {
-    else: NoMatch;
+  export interface Buttons extends Omit<VoiceflowNode.Buttons.StepData, 'else' | 'noMatch' | 'reprompt' | 'noReply'> {
+    noMatch: Nullable<NoMatch>;
     noReply: Nullable<NoReply>;
   }
 

@@ -13,10 +13,10 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
       const noReply = Creator.Block.Shared.VoiceNodeDataNoReply();
-      const noMatches = Creator.Block.Shared.VoiceNodeDataNoMatch();
+      const noMatch = Creator.Block.Shared.VoiceNodeDataNoMatch();
 
       Sinon.stub(voiceNoReplyAdapter, 'fromDB').returns(noReply);
-      Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(noMatches);
+      Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(noMatch);
 
       const data = Creator.Block.Alexa.PromptStepData();
 
@@ -25,14 +25,14 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
       expect(result).eql({
         noReply,
         buttons: null,
-        noMatchReprompt: noMatches,
+        noMatch,
       });
     });
 
     it('returns correct data for empty values', () => {
-      const noMatches = Creator.Block.Shared.VoiceNodeDataNoMatch();
+      const noMatch = Creator.Block.Shared.VoiceNodeDataNoMatch();
 
-      Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(noMatches);
+      Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(noMatch);
 
       const data = Creator.Block.Alexa.PromptStepData({ reprompt: null, noReply: null });
 
@@ -41,7 +41,7 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
       expect(result).eql({
         buttons: null,
         noReply: null,
-        noMatchReprompt: noMatches,
+        noMatch,
       });
     });
   });
@@ -49,10 +49,10 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
       const noReply = Creator.Block.Shared.VoiceStepNoReply();
-      const noMatches = Creator.Block.Shared.VoiceStepNoMatch();
+      const noMatch = Creator.Block.Shared.VoiceStepNoMatch();
 
       Sinon.stub(voiceNoReplyAdapter, 'toDB').returns(noReply);
-      Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(noMatches);
+      Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(noMatch);
 
       const data = Creator.Block.Alexa.PromptNodeData();
 
@@ -63,14 +63,14 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
         chips: null,
         buttons: null,
         noReply,
-        noMatches,
+        noMatch,
       });
     });
 
     it('returns correct data for empty values', () => {
-      const noMatches = Creator.Block.Shared.VoiceStepNoMatch();
+      const noMatch = Creator.Block.Shared.VoiceStepNoMatch();
 
-      Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(noMatches);
+      Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(noMatch);
 
       const data = Creator.Block.Alexa.PromptNodeData({ noReply: null });
 
@@ -81,7 +81,7 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
         chips: null,
         buttons: null,
         noReply: null,
-        noMatches,
+        noMatch,
       });
     });
   });

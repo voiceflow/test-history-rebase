@@ -89,10 +89,6 @@ const TextColor: React.FC = () => {
     }
   };
 
-  const onSliderContainerMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
-
   useDidUpdateEffect(() => {
     if (colorGetReadableAlfa(color) !== inputOpacity) {
       setInputOpacity(colorGetReadableAlfa(color));
@@ -117,13 +113,14 @@ const TextColor: React.FC = () => {
           onChange={onChangeColor}
           onInputBlur={onPickerInputBlur}
           onInputFocus={onPickerInputFocus}
+          onContainerMouseDown={preventDefault()}
           onPickerPreviewMouseDown={preventDefault()}
           onPickerContainerMouseDown={onPickerContainerMouseDown}
         />
       }
       onChangeInput={({ target }) => onChangeOpacityInput(target)}
       onChangeSlider={onChangeOpacitySlider}
-      onSliderContainerMouseDown={onSliderContainerMouseDown}
+      onSliderContainerMouseDown={preventDefault()}
     />
   );
 };

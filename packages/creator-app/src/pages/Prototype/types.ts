@@ -1,4 +1,4 @@
-import { BaseNode, BaseRequest, Button, Node } from '@voiceflow/base-types';
+import { BaseButton, BaseNode, BaseRequest } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -98,7 +98,7 @@ export interface Interaction {
 }
 
 export interface ProtoConfigType extends PrototypeConfig {
-  buttons: Button.ButtonsLayout;
+  buttons: BaseButton.ButtonsLayout;
   autoplay: boolean;
   showButtons: boolean;
   prototypeColor: string;
@@ -117,7 +117,7 @@ export interface PrototypeRuntimeState {
   flowIDHistory: string[];
   webhook?: BaseRequest.BaseRequest | null;
   contextStep: number;
-  visualDataHistory?: (Node.Visual.StepData | null)[];
+  visualDataHistory?: (BaseNode.Visual.StepData | null)[];
 }
 
 export interface PrototypeActions {
@@ -125,14 +125,14 @@ export interface PrototypeActions {
   savePrototypeSession: () => void;
   getLinksByPortID?: (id: IDSelectorParam) => any[];
   getNodeByID?: (id: string) => Realtime.Node;
-  updatePrototypeVisualsData?: (data: Nullable<Node.Visual.StepData>) => UpdatePrototypeVisualData;
+  updatePrototypeVisualsData?: (data: Nullable<BaseNode.Visual.StepData>) => UpdatePrototypeVisualData;
   fetchContext?: (
     request: Nullable<BaseRequest.BaseRequest>,
     config: Recent.PrototypeConfig,
     options?: { isPublic?: boolean }
   ) => Promise<Nullable<Context>>;
   setActiveDiagramID?: (id: string) => void;
-  updatePrototypeVisualsDataHistory?: (data: Nullable<Node.Visual.StepData>[]) => void;
+  updatePrototypeVisualsDataHistory?: (data: Nullable<BaseNode.Visual.StepData>[]) => void;
   updatePrototypeStatus?: (data: PrototypeStatus) => void;
   setError?: (data: string) => void;
 }

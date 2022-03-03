@@ -28,7 +28,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt, Realtime.NodeData
       name: 'Prompt',
       noReply: null,
       buttons: Realtime.Utils.typeGuards.isChatPlatform(platform) ? buttonsFactory() : null,
-      noMatchReprompt: getPlatformNoMatchFactory(platform)({ defaultVoice }),
+      noMatch: getPlatformNoMatchFactory(platform)({ defaultVoice }),
     },
   }),
 };

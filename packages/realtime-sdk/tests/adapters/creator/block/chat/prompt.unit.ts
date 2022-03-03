@@ -14,10 +14,10 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
       const noReply = Creator.Block.Shared.ChatNodeDataNoReply();
-      const noMatches = Creator.Block.Shared.ChatNodeDataNoMatch();
+      const noMatch = Creator.Block.Shared.ChatNodeDataNoMatch();
 
       Sinon.stub(chatNoReplyAdapter, 'fromDB').returns(noReply);
-      Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(noMatches);
+      Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(noMatch);
 
       const data = Creator.Block.Chat.PromptStepData();
 
@@ -26,14 +26,14 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
       expect(result).eql({
         buttons: data.buttons,
         noReply,
-        noMatchReprompt: noMatches,
+        noMatch,
       });
     });
 
     it('returns correct data for empty values', () => {
-      const noMatches = Creator.Block.Shared.ChatNodeDataNoMatch();
+      const noMatch = Creator.Block.Shared.ChatNodeDataNoMatch();
 
-      Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(noMatches);
+      Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(noMatch);
 
       const data = Creator.Block.Chat.PromptStepData({ noReply: null, reprompt: null });
 
@@ -42,7 +42,7 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
       expect(result).eql({
         buttons: data.buttons,
         noReply: null,
-        noMatchReprompt: noMatches,
+        noMatch,
       });
     });
   });
@@ -50,10 +50,10 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
       const noReply = Creator.Block.Shared.ChatNodeDataNoReply();
-      const noMatches = Creator.Block.Shared.ChatStepNoMatch();
+      const noMatch = Creator.Block.Shared.ChatStepNoMatch();
 
       Sinon.stub(chatNoReplyAdapter, 'toDB').returns(noReply);
-      Sinon.stub(chatNoMatchAdapter, 'toDB').returns(noMatches);
+      Sinon.stub(chatNoMatchAdapter, 'toDB').returns(noMatch);
 
       const data = Creator.Block.Chat.PromptNodeData();
 
@@ -64,14 +64,14 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
         chips: null,
         buttons: data.buttons,
         noReply,
-        noMatches,
+        noMatch,
       });
     });
 
     it('returns correct data for empty values', () => {
-      const noMatches = Creator.Block.Shared.ChatStepNoMatch();
+      const noMatch = Creator.Block.Shared.ChatStepNoMatch();
 
-      Sinon.stub(chatNoMatchAdapter, 'toDB').returns(noMatches);
+      Sinon.stub(chatNoMatchAdapter, 'toDB').returns(noMatch);
 
       const data = Creator.Block.Chat.PromptNodeData({ noReply: null });
 
@@ -82,7 +82,7 @@ describe('Adapters | Creator | Block | Chat | promptAdapter', () => {
         chips: null,
         buttons: data.buttons,
         noReply: null,
-        noMatches,
+        noMatch,
       });
     });
   });

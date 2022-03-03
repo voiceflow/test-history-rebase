@@ -37,9 +37,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeDat
     },
     data: {
       name: 'Buttons',
-      else: getPlatformNoMatchFactory(platform)({ defaultVoice }),
+      noMatch: getPlatformNoMatchFactory(platform)({ defaultVoice }),
       buttons: [factory()],
       noReply: null,
+      intentScope: BaseNode.Utils.IntentScope.GLOBAL,
     },
   }),
 };

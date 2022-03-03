@@ -33,7 +33,7 @@ interface ChoiceItem {
 export interface ChoiceStepProps {
   nodeID: string;
   choices: ChoiceItem[];
-  noMatch: Realtime.NodeData.NoMatch;
+  noMatch: Nullable<Realtime.NodeData.NoMatch>;
   noReply?: Nullable<Realtime.NodeData.NoReply>;
   variant: BlockVariant;
   noMatchPortID?: Nullable<string>;
@@ -69,10 +69,10 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch
 );
 
 const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = ({
-  ports,
   data,
-  platform,
+  ports,
   variant,
+  platform,
 }) => {
   const engine = React.useContext(EngineContext)!;
   const intentsMap = React.useContext(CustomIntentMapContext)!;
@@ -133,11 +133,11 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
     <ChoiceStep
       nodeID={data.nodeID}
       choices={choices}
-      noMatch={data.else}
+      noMatch={data.noMatch}
       noReply={data.noReply}
+      variant={variant}
       noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
       noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
-      variant={variant}
     />
   );
 };

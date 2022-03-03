@@ -4,10 +4,10 @@ import { ExportedColorProps } from 'react-color/lib/components/common/ColorWrap'
 
 import type { ColorPickerProps } from './index';
 
-type ExportedProps = ColorPickerProps & {
+interface ExportedProps extends ColorPickerProps {
   color: Required<RGBColor>;
   onChange: (color: Required<RGBColor>) => void;
-};
+}
 
 const withHexColor =
   <P extends object>(Component: React.ComponentClass<P & ExportedColorProps>) =>

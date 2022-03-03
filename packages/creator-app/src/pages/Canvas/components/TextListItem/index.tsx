@@ -4,7 +4,7 @@ import React from 'react';
 
 import Divider from '@/components/Divider';
 import { SectionToggleVariant } from '@/components/Section';
-import SlateEditableWithVariables from '@/components/SlateEditableWithVariables';
+import { SlateTextInput } from '@/components/SlateInputs';
 import { FeatureFlag } from '@/config/features';
 import { compose } from '@/hocs';
 import { useFeature } from '@/hooks';
@@ -56,7 +56,7 @@ const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemP
     >
       {isDragging || isDraggingPreview ? null : (
         <FormControl contentBottomUnits={2.5}>
-          <SlateEditableWithVariables
+          <SlateTextInput
             value={item.content}
             onBlur={(value) => onUpdate({ content: value })}
             // eslint-disable-next-line jsx-a11y/no-autofocus

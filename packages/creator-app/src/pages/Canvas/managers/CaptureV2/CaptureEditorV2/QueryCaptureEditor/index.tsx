@@ -11,7 +11,7 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useSelector } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
-import { useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
+import { useIntentScope, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
@@ -39,8 +39,6 @@ const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeD
   const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
 
   const { onAddSlot } = useAddSlot();
-
-  const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
 
   const onSelectSlot = React.useCallback((slotID?: string | null) => {
     if (!slotID) return;
@@ -76,11 +74,14 @@ const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeD
   );
   const getOptionValue = React.useCallback((slot?: Realtime.Slot | null) => slot?.id, []);
 
+  const intentScopeOption = useIntentScope({ data, onChange });
+  const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
+
   return (
     <Content
       footer={() => (
         <Controls
-          menu={<OverflowMenu placement="top-end" options={[noReplyOption]} />}
+          menu={<OverflowMenu placement="top-end" options={[noReplyOption, intentScopeOption]} />}
           options={[
             {
               icon: 'capture',
@@ -141,6 +142,7 @@ const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeD
           </Box>
         </Section>
       </EditorSection>
+
       {noReplySection}
     </Content>
   );

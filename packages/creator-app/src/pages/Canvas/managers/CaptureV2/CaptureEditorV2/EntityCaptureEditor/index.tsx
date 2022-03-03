@@ -7,7 +7,7 @@ import OverflowMenu from '@/components/OverflowMenu';
 import { getPlatformNewSlotsCreator } from '@/ducks/intent/utils';
 import { MapManaged, useManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { useNoMatchOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
+import { useIntentScope, useNoMatchOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { HelpTooltip } from '../components';
@@ -22,8 +22,6 @@ const EntityCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.Node
   pushToPath,
 }) => {
   const [isDragging, toggleDragging] = useToggle(false);
-  const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
-  const [noMatchOption, noMatchSection] = useNoMatchOptionSection({ data, onChange, pushToPath });
 
   const slots = data.intent?.slots || [];
   const updateSlots = React.useCallback((slots: Realtime.IntentSlot[]) => onChange({ intent: { slots } }), [onChange]);
@@ -40,11 +38,15 @@ const EntityCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.Node
   const dynamicSelectedSlotIDs = React.useMemo(() => mapIntentSlots(items), [items]);
   const selectedSlotIDs = React.useMemo(() => dynamicSelectedSlotIDs, [dynamicSelectedSlotIDs.join('')]);
 
+  const intentScopeOption = useIntentScope({ data, onChange });
+  const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
+  const [noMatchOption, noMatchSection] = useNoMatchOptionSection({ data, onChange, pushToPath });
+
   return (
     <Content
       footer={({ scrollToBottom }) => (
         <Controls
-          menu={<OverflowMenu placement="top-end" options={[noMatchOption, noReplyOption]} />}
+          menu={<OverflowMenu placement="top-end" options={[noMatchOption, noReplyOption, intentScopeOption]} />}
           options={[
             {
               icon: 'capture',

@@ -9,7 +9,7 @@ import { VoiceNodeDataNoMatch, VoiceNodeDataNoReply, VoicePrompt, VoiceStepNoMat
 export const InteractionStepData = extend<ReturnType<typeof Base.InteractionStepData>, VoiceNode.Interaction.StepData<any>>(
   Base.InteractionStepData,
   {
-    else: () => VoiceStepNoMatch(),
+    noMatch: () => VoiceStepNoMatch(),
     noReply: () => VoiceStepNoReply(),
     reprompt: () => VoicePrompt(),
   }
@@ -18,7 +18,7 @@ export const InteractionStepData = extend<ReturnType<typeof Base.InteractionStep
 export const InteractionNodeData = extend<ReturnType<typeof Base.InteractionNodeData>, Omit<NodeData.Interaction, 'buttons'>>(
   Base.InteractionNodeData,
   {
-    else: () => VoiceNodeDataNoMatch(),
+    noMatch: () => VoiceNodeDataNoMatch(),
     noReply: () => VoiceNodeDataNoReply(),
   }
 );

@@ -26,14 +26,14 @@ export interface CaptureStepProps {
 export const CaptureStep: React.FC<CaptureStepProps> = ({
   slots,
   nodeID,
-  nextPortID,
   noReply,
-  noMatch,
+  noMatch = null,
+  variant,
   variable,
+  nextPortID,
   captureType,
   noMatchPortID,
   noReplyPortID,
-  variant,
 }) => (
   <Step nodeID={nodeID}>
     <Section>
@@ -59,17 +59,18 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({
           <CaptureItem key={index} isFirst={index === 0} isLast={index === slots.length - 1} slot={slot} nextPortID={nextPortID} variant={variant} />
         ))
       )}
-      {noMatch && <NoMatchItem portID={noMatchPortID} noMatch={noMatch} />}
+
+      <NoMatchItem portID={noMatchPortID} noMatch={noMatch} />
       <NoReplyItem portID={noReplyPortID} noReply={noReply} />
     </Section>
   </Step>
 );
 
 const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = ({
-  ports,
   data,
-  platform,
+  ports,
   variant,
+  platform,
 }) => {
   const slotMap = React.useContext(SlotMapContext)!;
   const slots = data.intent?.slots.map((intentSlot) => ({ ...intentSlot, slot: slotMap[intentSlot.id] }));
@@ -80,12 +81,12 @@ const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.
       nodeID={data.nodeID}
       noReply={data.noReply}
       noMatch={data.noMatch}
+      variant={variant}
       variable={data.variable}
       nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       captureType={data.captureType}
       noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
       noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
-      variant={variant}
     />
   );
 };

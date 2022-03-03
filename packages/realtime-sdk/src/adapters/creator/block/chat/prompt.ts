@@ -2,27 +2,35 @@ import { NodeData } from '@realtime-sdk/models';
 import { ChatNode } from '@voiceflow/chat-types';
 
 import { basePromptAdapter } from '../base';
-import { chatMigrateRepromptToNoReply, chatNoMatchAdapter, chatNoReplyAdapter, chipsToIntentButtons, createBlockAdapter } from '../utils';
+import {
+  chatMigrateRepromptToNoReply,
+  chatNoMatchAdapter,
+  chatNoReplyAdapter,
+  chipsToIntentButtons,
+  createBlockAdapter,
+  fallbackNoMatch,
+} from '../utils';
 
 const promptAdapter = createBlockAdapter<ChatNode.Prompt.StepData, NodeData.Prompt>(
-  ({ reprompt, noMatches, chips, buttons, noReply, ...baseData }) => {
+  ({ reprompt, noMatches, chips, buttons, noReply, noMatch, ...baseData }) => {
     const migratedNoReply = chatMigrateRepromptToNoReply(noReply, reprompt);
+    const noMatchWithFallback = fallbackNoMatch(noMatch, noMatches);
 
     return {
       ...basePromptAdapter.fromDB(baseData),
 
       buttons: buttons ?? chipsToIntentButtons(chips),
       noReply: migratedNoReply && chatNoReplyAdapter.fromDB(migratedNoReply),
-      noMatchReprompt: chatNoMatchAdapter.fromDB(noMatches),
+      noMatch: noMatchWithFallback && chatNoMatchAdapter.fromDB(noMatchWithFallback),
     };
   },
-  ({ noReply, noMatchReprompt, buttons, ...baseData }) => ({
+  ({ noReply, noMatch, buttons, ...baseData }) => ({
     ...basePromptAdapter.toDB(baseData),
 
     chips: null,
     buttons,
     noReply: noReply && chatNoReplyAdapter.toDB(noReply as ChatNode.Utils.StepNoReply),
-    noMatches: chatNoMatchAdapter.toDB(noMatchReprompt as NodeData.ChatNoMatch),
+    noMatch: noMatch && chatNoMatchAdapter.toDB(noMatch as NodeData.ChatNoMatch),
   })
 );
 

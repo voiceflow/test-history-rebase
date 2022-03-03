@@ -23,7 +23,7 @@ import { NODE_CONFIG } from '../constants';
 export interface ButtonsStepProps {
   nodeID: string;
   buttons: BaseNode.Buttons.Button[];
-  noMatch: Realtime.NodeData.NoMatch;
+  noMatch: Nullable<Realtime.NodeData.NoMatch>;
   noReply?: Nullable<Realtime.NodeData.NoReply>;
   noMatchPortID?: Nullable<string>;
   noReplyPortID?: Nullable<string>;
@@ -36,10 +36,10 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({
   buttons,
   noMatch,
   noReply,
+  variant,
   noMatchPortID,
   noReplyPortID,
   dynamicPortIDs,
-  variant,
 }) => {
   const engine = React.useContext(EngineContext)!;
   const intentsMap = React.useContext(CustomIntentMapContext)!;
@@ -117,7 +117,7 @@ const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.No
   <ButtonsStep
     nodeID={data.nodeID}
     buttons={data.buttons}
-    noMatch={data.else}
+    noMatch={data.noMatch}
     noReply={data.noReply}
     noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
     noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}

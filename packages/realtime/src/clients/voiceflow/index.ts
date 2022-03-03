@@ -19,7 +19,6 @@ interface ExtraClient {
   projectList: ProjectListClient;
   product: ProductClient;
   feature: FeatureClient;
-  variableState: VariableStateClient;
 }
 
 export interface Client extends Voiceflow.Client, ExtraClient {
@@ -30,6 +29,8 @@ export interface Client extends Voiceflow.Client, ExtraClient {
   version: Voiceflow.Client['version'] & ReturnType<typeof ExtraVersionClient>;
 
   diagram: Voiceflow.Client['diagram'] & DiagramClient;
+
+  variableState: Voiceflow.Client['variableState'] & VariableStateClient;
 }
 
 export type VoiceflowFactory = (token: string) => Client;
@@ -55,7 +56,6 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
       projectList: ExtraProjectListClient(extraOptions),
       product: ExtraProductClient(extraOptions),
       feature: ExtraFeatureClient(extraOptions),
-      variableState: ExtraVariableStateClient(extraOptions),
     };
 
     Object.assign(client, extraClient);
@@ -63,6 +63,7 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
     Object.assign(client.project, ExtraProjectClient(extraOptions));
     Object.assign(client.version, ExtraVersionClient(extraOptions));
     Object.assign(client.diagram, ExtraDiagramClient(extraOptions));
+    Object.assign(client.variableState, ExtraVariableStateClient(extraOptions));
 
     return client as Client;
   };

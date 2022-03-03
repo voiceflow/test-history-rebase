@@ -8,11 +8,11 @@ import { VoiceNodeDataNoMatch, VoiceNodeDataNoReply, VoicePrompt, VoiceStepNoMat
 
 export const PromptStepData = extend<ReturnType<typeof Base.PromptStepData>, VoiceNode.Prompt.StepData<any>>(Base.PromptStepData, {
   noReply: () => VoiceStepNoReply(),
+  noMatch: () => VoiceStepNoMatch(),
   reprompt: () => VoicePrompt(),
-  noMatches: () => VoiceStepNoMatch(),
 });
 
 export const PromptNodeData = extend<ReturnType<typeof Base.PromptNodeData>, Omit<NodeData.Prompt, 'buttons'>>(Base.PromptNodeData, {
   noReply: () => VoiceNodeDataNoReply(),
-  noMatchReprompt: () => VoiceNodeDataNoMatch(),
+  noMatch: () => VoiceNodeDataNoMatch(),
 });

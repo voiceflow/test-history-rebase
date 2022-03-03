@@ -27,6 +27,7 @@ import visualAdapter, { visualOutPortsAdapter } from './visual';
 // adapters unique per platform
 export { default as baseButtonsAdapter } from './buttons';
 export { default as baseCaptureAdapter } from './capture';
+export { default as baseCaptureV2Adapter } from './captureV2';
 export { default as baseCommandAdapter } from './command';
 export { default as baseIntentAdapter } from './intent';
 export { default as baseInteractionAdapter } from './interaction';

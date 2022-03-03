@@ -17,12 +17,12 @@ import {
 export const PromptStepData = extend<ReturnType<typeof Base.PromptStepData>, ChatNode.Prompt.StepData>(Base.PromptStepData, {
   ...BUTTON_STEP_DATA_FACTORY_CONFIG,
   noReply: () => ChatStepNoReply(),
+  noMatch: () => ChatStepNoMatch(),
   reprompt: () => ChatPrompt(),
-  noMatches: () => ChatStepNoMatch(),
 });
 
 export const PromptNodeData = extend<ReturnType<typeof Base.PromptNodeData>, NodeData.Prompt>(Base.PromptNodeData, {
   noReply: () => ChatNodeDataNoReply(),
   buttons: () => [IntentButton()],
-  noMatchReprompt: () => ChatNodeDataNoMatch(),
+  noMatch: () => ChatNodeDataNoMatch(),
 });

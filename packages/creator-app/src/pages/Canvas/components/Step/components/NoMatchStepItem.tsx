@@ -12,13 +12,13 @@ import { hasValidReprompt } from './utils';
 
 export interface NoMatchStepItemProps {
   portID?: Nullable<string>;
-  noMatch: Realtime.NodeData.NoMatch;
+  noMatch: Nullable<Realtime.NodeData.NoMatch>;
 }
 
 const NoMatchStepItem: React.FC<NoMatchStepItemProps> = ({ noMatch, portID }) => {
-  const isPath = noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH);
+  const isPath = noMatch?.types.includes(BaseNode.Utils.NoMatchType.PATH);
 
-  return noMatch.types.length ? (
+  return noMatch?.types.length ? (
     <Popper
       placement="right"
       renderContent={({ onClose }) => <NoMatchAndNoReplyStepCopyList prefix="Reprompt" onClick={onClose} reprompts={noMatch.reprompts as any} />}

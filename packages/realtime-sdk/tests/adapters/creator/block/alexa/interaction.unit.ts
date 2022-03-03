@@ -17,12 +17,12 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
       const noReply = Creator.Block.Shared.VoiceNodeDataNoReply();
-      const elseData = Creator.Block.Shared.VoiceNodeDataNoMatch();
+      const noMatch = Creator.Block.Shared.VoiceNodeDataNoMatch();
 
       const id = 'id';
 
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
-      Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(elseData);
+      Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(noMatch);
       Sinon.stub(voiceNoReplyAdapter, 'fromDB').returns(noReply);
 
       const data = Creator.Block.Alexa.InteractionStepData();
@@ -32,7 +32,6 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
       expect(result).eql(
         Creator.Block.Alexa.InteractionNodeData({
           name: data.name,
-          else: elseData,
           choices: [
             Creator.Block.Base.ChoiceDistinctPlatformsData({
               [VoiceflowConstants.PlatformType.ALEXA]: {
@@ -46,16 +45,18 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
           ],
           buttons: null,
           noReply,
+          noMatch,
+          intentScope: undefined,
         })
       );
     });
 
     it('returns correct data for empty values', () => {
-      const elseData = Creator.Block.Shared.VoiceNodeDataNoMatch();
+      const noMatch = Creator.Block.Shared.VoiceNodeDataNoMatch();
       const id = datatype.uuid();
 
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
-      Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(elseData);
+      Sinon.stub(voiceNoMatchAdapter, 'fromDB').returns(noMatch);
 
       const data = Creator.Block.Alexa.InteractionStepData({ choices: [], reprompt: null, noReply: null });
 
@@ -63,10 +64,11 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
 
       expect(result).eql({
         name: data.name,
-        else: elseData,
+        noMatch,
         choices: [],
         buttons: null,
         noReply: null,
+        intentScope: undefined,
       });
     });
   });
@@ -74,9 +76,9 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
       const noReply = Creator.Block.Shared.VoiceStepNoReply();
-      const elseData = Creator.Block.Shared.VoiceStepNoMatch();
+      const noMatch = Creator.Block.Shared.VoiceStepNoMatch();
 
-      Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(elseData);
+      Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(noMatch);
       Sinon.stub(voiceNoReplyAdapter, 'toDB').returns(noReply);
 
       const data = Creator.Block.Alexa.InteractionNodeData();
@@ -85,7 +87,7 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
 
       expect(result).eql({
         name: data.name,
-        else: elseData,
+        noMatch,
         choices: [
           {
             goTo: data.choices[0].alexa.goTo,
@@ -97,13 +99,14 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
         chips: null,
         noReply,
         buttons: null,
+        intentScope: undefined,
       });
     });
 
     it('returns correct data for empty values', () => {
-      const elseData = Creator.Block.Shared.VoiceStepNoMatch();
+      const noMatch = Creator.Block.Shared.VoiceStepNoMatch();
 
-      Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(elseData);
+      Sinon.stub(voiceNoMatchAdapter, 'toDB').returns(noMatch);
 
       const data = Creator.Block.Alexa.InteractionNodeData({ choices: [], noReply: null });
 
@@ -111,11 +114,12 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
 
       expect(result).eql({
         name: data.name,
-        else: elseData,
+        noMatch,
         chips: null,
         buttons: null,
         choices: [],
         noReply: null,
+        intentScope: undefined,
       });
     });
   });

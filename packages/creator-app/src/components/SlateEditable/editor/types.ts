@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
 import type { Text } from '@voiceflow/base-types';
-import type { BaseEditor } from 'slate';
+import type { BaseEditor, BaseRange, BaseText } from 'slate';
 import type { HistoryEditor } from 'slate-history';
 import type { ReactEditor } from 'slate-react';
 
@@ -11,10 +10,9 @@ export type { Color, Element, ElementType, LinkElement, Text, VariableElement } 
 export interface Editor extends BaseEditor, ReactEditor, HistoryEditor, PluginsEditor {}
 
 declare module 'slate' {
-  interface BaseText extends PluginsText {}
-  interface BaseRange extends PluginsRange {}
   interface CustomTypes {
-    Text: Text.Text;
+    Text: BaseText & Text.Text & PluginsText;
+    Range: BaseRange & PluginsRange;
     Editor: Editor;
     Element: Text.AnyElement;
   }

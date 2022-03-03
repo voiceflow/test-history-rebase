@@ -57,6 +57,7 @@ describe('Adapters | Creator | Block | Voice | captureV2Adapter', () => {
         variable: null,
         noReply,
         noMatch,
+        intentScope: undefined,
       });
     });
 
@@ -80,6 +81,7 @@ describe('Adapters | Creator | Block | Voice | captureV2Adapter', () => {
         variable: queryCapture.variable,
         noReply: null,
         noMatch: null,
+        intentScope: undefined,
       });
     });
   });
@@ -107,6 +109,7 @@ describe('Adapters | Creator | Block | Voice | captureV2Adapter', () => {
         },
         noReply,
         noMatch,
+        intentScope: undefined,
       });
     });
 
@@ -127,6 +130,7 @@ describe('Adapters | Creator | Block | Voice | captureV2Adapter', () => {
         },
         noReply: null,
         noMatch: null,
+        intentScope: undefined,
       });
     });
   });

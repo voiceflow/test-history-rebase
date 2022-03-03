@@ -4,16 +4,18 @@ import { NodeData } from '../../../../models';
 import { createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter } from '../utils';
 
 const buttonsAdapter = createBlockAdapter<
-  Omit<BaseNode.Buttons.StepData, 'else' | 'reprompt' | 'noReply'>,
-  Omit<NodeData.Buttons, 'else' | 'noReply'>
+  Omit<BaseNode.Buttons.StepData, 'else' | 'noMatch' | 'reprompt' | 'noReply'>,
+  Omit<NodeData.Buttons, 'else' | 'noMatch' | 'noReply'>
 >(
-  ({ buttons, buttonsLayout }) => ({
+  ({ buttons, intentScope, buttonsLayout }) => ({
     buttons,
+    intentScope,
     buttonsLayout,
   }),
-  ({ buttons, buttonsLayout }) => ({
+  ({ buttons, intentScope, buttonsLayout }) => ({
     else: { randomize: false },
     buttons,
+    intentScope,
     buttonsLayout,
   })
 );

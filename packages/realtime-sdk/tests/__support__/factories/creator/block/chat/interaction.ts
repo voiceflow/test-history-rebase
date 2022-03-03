@@ -17,13 +17,13 @@ import {
 
 export const InteractionStepData = extend<ReturnType<typeof Base.InteractionStepData>, ChatNode.Interaction.StepData>(Base.InteractionStepData, {
   ...BUTTON_STEP_DATA_FACTORY_CONFIG,
-  else: () => ChatStepNoMatch(),
+  noMatch: () => ChatStepNoMatch(),
   noReply: () => ChatStepNoReply(),
   reprompt: () => ChatPrompt(),
 });
 
 export const InteractionNodeData = extend<ReturnType<typeof Base.InteractionNodeData>, NodeData.Interaction>(Base.InteractionNodeData, {
-  else: () => ChatNodeDataNoMatch(),
+  noMatch: () => ChatNodeDataNoMatch(),
   noReply: () => ChatNodeDataNoReply(),
   buttons: () => [IntentButton()],
   choices: () => [Base.ChoiceDistinctPlatformsData({ [VoiceflowConstants.PlatformType.GENERAL]: Base.ChoicePlatformNodeData() })],

@@ -3,7 +3,7 @@ import { VoiceNode } from '@voiceflow/voice-types';
 import { DistinctPlatform } from '../../../../constants';
 import { NodeData } from '../../../../models';
 import { baseInteractionAdapter } from '../base';
-import { createBlockAdapter, voiceMigrateRepromptToNoReply, voiceNoMatchAdapter, voiceNoReplyAdapter } from '../utils';
+import { createBlockAdapter, fallbackNoMatch, voiceMigrateRepromptToNoReply, voiceNoMatchAdapter, voiceNoReplyAdapter } from '../utils';
 
 const interactionAdapter = createBlockAdapter<
   VoiceNode.Interaction.StepData<any>,
@@ -11,20 +11,21 @@ const interactionAdapter = createBlockAdapter<
   [{ platform: DistinctPlatform }],
   [{ platform: DistinctPlatform }]
 >(
-  ({ else: elseData, reprompt, noReply, ...baseData }, { platform }) => {
+  ({ else: elseData, reprompt, noReply, noMatch, ...baseData }, { platform }) => {
     const migratedNoReply = voiceMigrateRepromptToNoReply(noReply, reprompt);
+    const noMatchWithFallback = fallbackNoMatch(noMatch, elseData);
 
     return {
       ...baseInteractionAdapter.fromDB(baseData, { platform }),
 
-      else: voiceNoMatchAdapter.fromDB(elseData),
+      noMatch: noMatchWithFallback && voiceNoMatchAdapter.fromDB(noMatchWithFallback),
       noReply: migratedNoReply && voiceNoReplyAdapter.fromDB(migratedNoReply),
     };
   },
-  ({ else: elseData, noReply, ...baseData }, { platform }) => ({
+  ({ noMatch, noReply, ...baseData }, { platform }) => ({
     ...baseInteractionAdapter.toDB(baseData, { platform }),
 
-    else: voiceNoMatchAdapter.toDB(elseData as NodeData.VoiceNoMatch),
+    noMatch: noMatch && voiceNoMatchAdapter.toDB(noMatch as NodeData.VoiceNoMatch),
     noReply: noReply && voiceNoReplyAdapter.toDB(noReply as NodeData.VoiceNoReply),
   })
 );

@@ -18,6 +18,7 @@ export interface ColorPickerProps {
   onInputBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onInputFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onChangeCompleted?: (color: RGBColor) => void;
+  onContainerMouseDown?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const ColorPicker = ({
@@ -27,6 +28,7 @@ const ColorPicker = ({
   onInputBlur,
   onInputFocus,
   onChangeCompleted,
+  onContainerMouseDown,
   ...props
 }: ColorPickerProps & InjectedColorProps) => {
   const [localHex, setLocalHex] = React.useState(() => removeHashFromHex(props.hex!));
@@ -75,7 +77,7 @@ const ColorPicker = ({
   }, [props.hex]);
 
   return !props.onChange ? null : (
-    <Container width={props.width}>
+    <Container width={props.width} onMouseDown={onContainerMouseDown}>
       <SaturationContainer>
         <Saturation onChange={props.onChange} {...props} />
       </SaturationContainer>

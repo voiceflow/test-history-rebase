@@ -6,8 +6,7 @@ import { HelpTooltip } from '@/components/IntentForm';
 import OverflowMenu from '@/components/OverflowMenu';
 import { useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
-import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
-import { useButtonsOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
+import { useButtonsOptionSection, useIntentScope, useNoMatchOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { DraggableItem } from './components';
@@ -62,7 +61,9 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.
     [onReorder, engine, node]
   );
 
+  const intentScopeOption = useIntentScope({ data, onChange });
   const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
+  const [noMatchOption, noMatchSection] = useNoMatchOptionSection({ data, onChange, pushToPath });
   const [buttonsOption, buttonsSection] = useButtonsOptionSection({ data, onChange, pushToPath });
 
   return (
@@ -70,7 +71,7 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.
       footer={({ scrollToBottom }) =>
         choices.length < MAX_CHOICE_ITEMS ? (
           <Controls
-            menu={<OverflowMenu placement="top-end" options={[noReplyOption, buttonsOption]} />}
+            menu={<OverflowMenu placement="top-end" options={[noMatchOption, noReplyOption, buttonsOption, intentScopeOption]} />}
             options={[
               {
                 icon: NODE_CONFIG.icon,
@@ -94,7 +95,7 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.
         footer={
           <>
             {buttonsSection}
-            <NoMatchSection data={data.else} pushToPath={pushToPath} />
+            {noMatchSection}
             {noReplySection}
           </>
         }

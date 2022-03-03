@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 import React from 'react';
 
-import SlateEditableWithVariables from '@/components/SlateEditableWithVariables';
+import { SlateTextInput } from '@/components/SlateInputs';
 
 interface ChatPromptFormProps {
   slots: Realtime.Slot[];
@@ -18,7 +18,7 @@ const ChatPromptForm: React.FC<ChatPromptFormProps> = ({ slots, prompt: [prompt]
   const variables = React.useMemo(() => normalize(slots), [slots]);
 
   return (
-    <SlateEditableWithVariables
+    <SlateTextInput
       value={content}
       onBlur={(content) => onChange([{ ...prompt, content }])}
       variables={variables}

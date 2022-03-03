@@ -1,0 +1,42 @@
+import { Normalized } from '@voiceflow/common';
+import { toast, useContextApi } from '@voiceflow/ui';
+import React from 'react';
+
+import { SlatePluginsOptions, SlatePluginType, SlateVariableItem } from '@/components/SlateEditable';
+import * as DiagramV2 from '@/ducks/diagramV2';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
+import * as Version from '@/ducks/version';
+import { useDispatch, useSelector } from '@/hooks';
+
+interface SlateVariablesOptions {
+  variables?: Normalized<SlateVariableItem>;
+  creatable?: boolean;
+  withSlots?: boolean;
+}
+
+// eslint-disable-next-line import/prefer-default-export
+export const useSlateVariables = ({
+  creatable,
+  withSlots,
+  variables: propVariables,
+}: SlateVariablesOptions): SlatePluginsOptions[SlatePluginType.VARIABLES] | undefined => {
+  const variables = useSelector((state) => propVariables ?? DiagramV2.active.allSlotsAndVariablesNormalizedSelector(state));
+  const addGlobalVariable = useDispatch(Version.addGlobalVariable);
+
+  const onCreate = React.useCallback(
+    async (name: string) => {
+      try {
+        await addGlobalVariable(name, CanvasCreationType.EDITOR);
+
+        return { id: name, name };
+      } catch (err) {
+        toast.error(err.message);
+
+        return null;
+      }
+    },
+    [addGlobalVariable]
+  );
+
+  return useContextApi<SlatePluginsOptions[SlatePluginType.VARIABLES]>({ onCreate, variables, creatable, withSlots });
+};

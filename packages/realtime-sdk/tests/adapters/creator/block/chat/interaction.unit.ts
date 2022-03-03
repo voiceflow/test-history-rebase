@@ -16,12 +16,12 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
 
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
-      const elseData = Creator.Block.Shared.ChatNodeDataNoMatch();
+      const noMatch = Creator.Block.Shared.ChatNodeDataNoMatch();
       const noReply = Creator.Block.Shared.ChatNodeDataNoReply();
       const id = 'id';
 
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
-      Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(elseData);
+      Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(noMatch);
       Sinon.stub(chatNoReplyAdapter, 'fromDB').returns(noReply);
 
       const data = Creator.Block.Chat.InteractionStepData();
@@ -31,7 +31,7 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
       expect(result).eql(
         Creator.Block.Chat.InteractionNodeData({
           name: data.name,
-          else: elseData,
+          noMatch,
           choices: [
             Creator.Block.Base.ChoiceDistinctPlatformsData({
               [VoiceflowConstants.PlatformType.GENERAL]: {
@@ -45,16 +45,17 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
           ],
           buttons: data.buttons,
           noReply,
+          intentScope: undefined,
         })
       );
     });
 
     it('returns correct data for empty values', () => {
-      const elseData = Creator.Block.Shared.ChatNodeDataNoMatch();
+      const noMatch = Creator.Block.Shared.ChatNodeDataNoMatch();
       const id = datatype.uuid();
 
       Sinon.stub(Utils.id.cuid, 'slug').returns(id);
-      Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(elseData);
+      Sinon.stub(chatNoMatchAdapter, 'fromDB').returns(noMatch);
 
       const data = Creator.Block.Chat.InteractionStepData({ choices: [], noReply: null, reprompt: null });
 
@@ -62,10 +63,11 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
 
       expect(result).eql({
         name: data.name,
-        else: elseData,
+        noMatch,
         choices: [],
         noReply: null,
         buttons: data.buttons,
+        intentScope: undefined,
       });
     });
   });
@@ -73,9 +75,9 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
   describe('when transforming to db', () => {
     it('returns correct data for default values', () => {
       const noReply = Creator.Block.Shared.ChatStepNoReply();
-      const elseData = Creator.Block.Shared.ChatStepNoMatch();
+      const noMatch = Creator.Block.Shared.ChatStepNoMatch();
 
-      Sinon.stub(chatNoMatchAdapter, 'toDB').returns(elseData);
+      Sinon.stub(chatNoMatchAdapter, 'toDB').returns(noMatch);
       Sinon.stub(chatNoReplyAdapter, 'toDB').returns(noReply);
 
       const data = Creator.Block.Chat.InteractionNodeData();
@@ -84,7 +86,7 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
 
       expect(result).eql({
         name: data.name,
-        else: elseData,
+        noMatch,
         choices: [
           {
             goTo: data.choices[0].general.goTo,
@@ -96,13 +98,14 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
         chips: null,
         buttons: data.buttons,
         noReply,
+        intentScope: undefined,
       });
     });
 
     it('returns correct data for empty values', () => {
-      const elseData = Creator.Block.Shared.ChatStepNoMatch();
+      const noMatch = Creator.Block.Shared.ChatStepNoMatch();
 
-      Sinon.stub(chatNoMatchAdapter, 'toDB').returns(elseData);
+      Sinon.stub(chatNoMatchAdapter, 'toDB').returns(noMatch);
 
       const data = Creator.Block.Chat.InteractionNodeData({ choices: [], noReply: null });
 
@@ -110,11 +113,12 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
 
       expect(result).eql({
         name: data.name,
-        else: elseData,
+        noMatch,
         chips: null,
         buttons: data.buttons,
         choices: [],
         noReply: null,
+        intentScope: undefined,
       });
     });
   });

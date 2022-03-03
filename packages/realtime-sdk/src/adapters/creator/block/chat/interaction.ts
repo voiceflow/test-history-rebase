@@ -3,26 +3,34 @@ import { ChatNode } from '@voiceflow/chat-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { baseInteractionAdapter } from '../base';
-import { chatMigrateRepromptToNoReply, chatNoMatchAdapter, chatNoReplyAdapter, chipsToIntentButtons, createBlockAdapter } from '../utils';
+import {
+  chatMigrateRepromptToNoReply,
+  chatNoMatchAdapter,
+  chatNoReplyAdapter,
+  chipsToIntentButtons,
+  createBlockAdapter,
+  fallbackNoMatch,
+} from '../utils';
 
 const interactionAdapter = createBlockAdapter<ChatNode.Interaction.StepData, NodeData.Interaction>(
-  ({ else: elseData, reprompt, chips, noReply, buttons, ...baseData }) => {
+  ({ else: elseData, reprompt, chips, noReply, noMatch, buttons, ...baseData }) => {
     const migratedNoReply = chatMigrateRepromptToNoReply(noReply, reprompt);
+    const noMatchWithFallback = fallbackNoMatch(noMatch, elseData);
 
     return {
       ...baseInteractionAdapter.fromDB(baseData, { platform: VoiceflowConstants.PlatformType.GENERAL }),
 
-      else: chatNoMatchAdapter.fromDB(elseData),
       buttons: buttons ?? chipsToIntentButtons(chips),
+      noMatch: noMatchWithFallback && chatNoMatchAdapter.fromDB(noMatchWithFallback),
       noReply: migratedNoReply && chatNoReplyAdapter.fromDB(migratedNoReply),
     };
   },
-  ({ else: elseData, noReply, buttons, ...baseData }) => ({
+  ({ noReply, noMatch, buttons, ...baseData }) => ({
     ...baseInteractionAdapter.toDB(baseData, { platform: VoiceflowConstants.PlatformType.GENERAL }),
 
-    else: chatNoMatchAdapter.toDB(elseData as NodeData.ChatNoMatch),
     chips: null,
     buttons,
+    noMatch: noMatch && chatNoMatchAdapter.toDB(noMatch as NodeData.ChatNoMatch),
     noReply: noReply && chatNoReplyAdapter.toDB(noReply as ChatNode.Utils.StepNoReply),
   })
 );

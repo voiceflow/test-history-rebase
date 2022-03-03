@@ -7,12 +7,12 @@ import { useLinkedState } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
 interface FollowPathEditorProps {
-  name: string;
+  name?: string;
   onChange: (name: string) => void;
 }
 
 const FollowPathEditor: React.FC<FollowPathEditorProps> = ({ name, onChange }) => {
-  const [localName, setLocalName] = useLinkedState(name);
+  const [localName, setLocalName] = useLinkedState(name ?? '');
 
   const onSave = () => onChange(localName);
 

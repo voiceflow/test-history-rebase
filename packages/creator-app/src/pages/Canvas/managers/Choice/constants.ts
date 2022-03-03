@@ -30,7 +30,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.Nod
     },
     data: {
       name: 'Choice',
-      else: getPlatformNoMatchFactory(platform)({ defaultVoice }),
+      noMatch: getPlatformNoMatchFactory(platform)({ defaultVoice }),
       noReply: null,
       buttons: Realtime.Utils.typeGuards.isChatPlatform(platform) ? buttonsFactory() : null,
       choices: [
@@ -42,6 +42,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.Nod
           mappings: [],
         }),
       ],
+      intentScope: BaseNode.Utils.IntentScope.GLOBAL,
     },
   }),
 };

@@ -1,5 +1,6 @@
-import { BaseNode } from '@voiceflow/base-types';
+import { BaseNode, Nullable } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
+import { Nullish } from '@voiceflow/common';
 import { VoiceNode } from '@voiceflow/voice-types';
 import createAdapter from 'bidirectional-adapter';
 
@@ -40,3 +41,8 @@ export const voiceNoMatchAdapter = createAdapter<VoiceNode.Utils.StepNoMatch<any
     reprompts: voicePromptAdapter.mapToDB(reprompts),
   })
 );
+
+export const fallbackNoMatch = <T extends ChatNode.Utils.StepNoMatch | VoiceNode.Utils.StepNoMatch<any>>(
+  noMatch: Nullish<T>,
+  deprecatedNoMatch: Nullish<T>
+): Nullable<T> => (noMatch === undefined ? deprecatedNoMatch : noMatch) ?? null;

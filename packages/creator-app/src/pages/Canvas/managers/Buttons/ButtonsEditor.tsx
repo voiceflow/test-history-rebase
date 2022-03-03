@@ -5,8 +5,7 @@ import React from 'react';
 import OverflowMenu from '@/components/OverflowMenu';
 import * as Documentation from '@/config/documentation';
 import ListEditorContent from '@/pages/Canvas/components/ListEditorContent';
-import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
-import { useButtonLayoutOption, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
+import { useButtonLayoutOption, useIntentScope, useNoMatchOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { ButtonsListItem } from './components';
@@ -20,8 +19,10 @@ const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons, Realtime.NodeData.But
   onChange,
   pushToPath,
 }) => {
+  const intentScopeOption = useIntentScope({ data, onChange });
   const buttonLayoutOption = useButtonLayoutOption();
   const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
+  const [noMatchOption, noMatchSection] = useNoMatchOptionSection({ data, onChange, pushToPath });
 
   return (
     <ListEditorContent
@@ -29,14 +30,14 @@ const ButtonsEditor: NodeEditor<Realtime.NodeData.Buttons, Realtime.NodeData.But
       items={data.buttons}
       footer={
         <>
-          <NoMatchSection data={data.else} pushToPath={pushToPath} />
+          {noMatchSection}
           {noReplySection}
         </>
       }
       factory={factory}
       onRemove={(_, index) => engine.port.removeDynamic(node.ports.out.dynamic[index])}
       onReorder={(from, to) => engine.port.reorderDynamic(node.id, from, to)}
-      renderMenu={() => <OverflowMenu placement="top-end" options={[noReplyOption, buttonLayoutOption]} />}
+      renderMenu={() => <OverflowMenu placement="top-end" options={[noMatchOption, noReplyOption, buttonLayoutOption, intentScopeOption]} />}
       onChangeItems={(items) => onChange({ buttons: items })}
       itemComponent={ButtonsListItem}
       howItWorksLink={Documentation.BUTTONS_STEP}

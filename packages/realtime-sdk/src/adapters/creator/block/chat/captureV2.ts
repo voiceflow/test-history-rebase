@@ -1,29 +1,32 @@
 import { ChatIntentSlot, NodeData } from '@realtime-sdk/models';
 import { BaseNode } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
+import { Nullish } from '@voiceflow/common';
 
 import { chatIntentSlotSanitizer } from '../../../intent/chat';
+import { baseCaptureV2Adapter } from '../base';
 import { chatNoMatchAdapter, chatNoReplyAdapter, createBlockAdapter } from '../utils';
 
 const captureAdapter = createBlockAdapter<ChatNode.CaptureV2.StepData, Omit<NodeData.CaptureV2, 'buttons'>>(
-  ({ noReply, noMatch, capture }) => ({
-    captureType: capture.type,
-    variable: capture.type === BaseNode.CaptureV2.CaptureType.QUERY ? capture.variable : null,
+  ({ noReply, noMatch, capture, ...baseData }) => ({
+    ...baseCaptureV2Adapter.fromDB(baseData),
+
     intent: capture.type === BaseNode.CaptureV2.CaptureType.INTENT ? { slots: capture.intent.slots?.map(chatIntentSlotSanitizer) || [] } : undefined,
     noReply: noReply ? chatNoReplyAdapter.fromDB(noReply) : null,
     noMatch: noMatch ? chatNoMatchAdapter.fromDB(noMatch) : null,
+    variable: capture.type === BaseNode.CaptureV2.CaptureType.QUERY ? capture.variable : null,
+    captureType: capture.type,
   }),
-  ({ noReply, noMatch, captureType, variable, ...baseData }) => ({
+  ({ intent, noReply, noMatch, captureType, variable, ...baseData }) => ({
+    ...baseCaptureV2Adapter.toDB(baseData),
+
     capture:
       captureType === BaseNode.CaptureV2.CaptureType.INTENT
         ? {
             type: captureType,
-            intent: { key: '', name: '', inputs: [], slots: (baseData.intent?.slots as ChatIntentSlot[]).map(chatIntentSlotSanitizer) },
+            intent: { key: '', name: '', inputs: [], slots: (intent?.slots as Nullish<ChatIntentSlot[]>)?.map(chatIntentSlotSanitizer) },
           }
-        : {
-            type: captureType,
-            variable,
-          },
+        : { type: captureType, variable },
     noReply: noReply && chatNoReplyAdapter.toDB(noReply as ChatNode.Utils.StepNoReply),
     noMatch: noMatch && chatNoMatchAdapter.toDB(noMatch as NodeData.ChatNoMatch),
   })

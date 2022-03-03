@@ -31,6 +31,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeD
       intent: { slots: [{ id: '', dialog: { prompt: [], confirm: [], utterances: [], confirmEnabled: false }, required: true }] },
       noReply: null,
       noMatch: getPlatformNoMatchFactory(platform)({ defaultVoice }),
+      intentScope: BaseNode.Utils.IntentScope.GLOBAL,
     },
   }),
 };

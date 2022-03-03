@@ -9,11 +9,11 @@ import { NODE_CONFIG } from '../constants';
 
 export interface PromptStepProps {
   nodeID: string;
-  noMatch: Realtime.NodeData.NoMatch;
+  noMatch: Nullable<Realtime.NodeData.NoMatch>;
   noReply?: Nullable<Realtime.NodeData.NoReply>;
+  variant: BlockVariant;
   noMatchPortID?: Nullable<string>;
   noReplyPortID?: Nullable<string>;
-  variant: BlockVariant;
 }
 
 export const PromptStep: React.FC<PromptStepProps> = ({ nodeID, noMatch, noReply, noMatchPortID, noReplyPortID, variant }) => (
@@ -30,11 +30,11 @@ export const PromptStep: React.FC<PromptStepProps> = ({ nodeID, noMatch, noReply
 const ConnectedPromptStep: ConnectedStep<Realtime.NodeData.Prompt, Realtime.NodeData.PromptBuiltInPorts> = ({ ports, data, variant }) => (
   <PromptStep
     nodeID={data.nodeID}
-    noMatch={data.noMatchReprompt}
+    noMatch={data.noMatch}
     noReply={data.noReply}
+    variant={variant}
     noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
     noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
-    variant={variant}
   />
 );
 

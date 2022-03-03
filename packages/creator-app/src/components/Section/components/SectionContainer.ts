@@ -105,13 +105,13 @@ export const beforeDividersStyle = css<SectionContainerProps>`
 
 const SectionContainer = styled.div<SectionContainerProps>`
   position: relative;
-  background-color: ${({ backgroundColor = '#fff' }) => backgroundColor}
-    ${({ fullWidth }) =>
-      fullWidth &&
-      css`
-        width: 100%;
-      `}
-    & & {
+  background-color: ${({ backgroundColor = '#fff' }) => backgroundColor};
+  ${({ fullWidth }) =>
+    fullWidth &&
+    css`
+      width: 100%;
+    `}
+  & & {
     background-color: transparent;
   }
 

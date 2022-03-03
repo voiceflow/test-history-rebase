@@ -594,7 +594,7 @@ SelectProps<O, V>): JSX.Element => {
                       <SearchInputIcon
                         icon={clearable ? 'close' : 'caretDown'}
                         color={isDropDownOpened ? '#5D9DF5' : '#6e849a'}
-                        size={10}
+                        size={clearable ? 14 : 10}
                         onClick={onIconClick}
                       />
                     </>

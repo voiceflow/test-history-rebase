@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.8.0...@voiceflow/socket-utils@1.9.0) (2022-03-03)
+
+
+### Features
+
+* intent scoping, standardize noMatch/noReply usage (VF-2930) ([#5115](https://github.com/voiceflow/creator-app/issues/5115)) ([53ebd36](https://github.com/voiceflow/creator-app/commit/53ebd365c2dfeb90bcfcce5aeff685815cfb0e9b))
+
+
+
+
+
 # [1.8.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.7.0...@voiceflow/socket-utils@1.8.0) (2022-02-16)
 
 

@@ -14,7 +14,10 @@ const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
 const amazonBuiltInIntentsArray = Object.values(AlexaConstants.AmazonIntent) as string[];
 const generalBuiltInIntentsArray = Object.values(VoiceflowConstants.IntentName) as string[];
-const builtInIntentMap = new Map([...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray].map((id) => [id, true]));
+const googleBuiltInIntentsArray = (Object.values(GoogleConstants.GoogleIntent) as string[]).concat(
+  Object.values(GoogleConstants.GoogleStatusIntent)
+) as string[];
+const builtInIntentMap = new Map([...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray, ...googleBuiltInIntentsArray].map((id) => [id, true]));
 
 const INTENT_LABELS: Partial<Record<string, string>> = {
   [VoiceflowConstants.IntentName.NONE]: 'Fallback',
@@ -24,7 +27,7 @@ export const isCustomizableBuiltInIntent = (intent?: Nullish<Realtime.Intent>): 
 
 export const formatIntentAndSlotName = (name = ''): string =>
   name
-    .replace(' ', '_')
+    .replace(/ /g, '_')
     .replace(/[^A-Z_a-z]/g, '')
     .toLowerCase();
 
@@ -69,11 +72,18 @@ export const intentFilter = <T extends Realtime.Intent>(intent: T, activeIntent:
 export const filterIntents = <T extends Realtime.Intent>(intents: T[], activeIntent?: T | null): T[] =>
   intents.filter((intent) => intentFilter(intent, activeIntent));
 
+export const getTruncatedName = createPlatformSelector(
+  {
+    [VoiceflowConstants.PlatformType.GOOGLE]: (name: string) =>
+      Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' '),
+  },
+  (name: string) => name.split('.')[1]
+);
+
 export const intentFactory =
   <T extends VoiceflowConstants.PlatformType>(platform: T) =>
   (intent: { name: string; slots?: string[] }): Realtime.PlatformIntent<T> => {
-    const truncatedName = intent.name.split('.')[1];
-
+    const truncatedName = getTruncatedName(platform)(intent.name);
     return {
       id: intent.name,
       name: truncatedName ?? getIntentNameLabel(intent.name),
@@ -167,22 +177,23 @@ export function validateUtterance(utterance: string, intentID: string | null, in
 
 export const applyPlatformIntentNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string => {
   const hasNoRules = Realtime.Utils.typeGuards.isAnyGeneralPlatform(platform) || Realtime.Utils.typeGuards.isDialogflowPlatform(platform);
-
   if (hasNoRules) return name;
 
   return formatIntentAndSlotName(name);
 };
 
 export const applyCustomizableBuiltInIntent = (name: string, platform: VoiceflowConstants.PlatformType): string => {
-  let newName = removeBuiltInPrefix(name);
-
   if (Realtime.Utils.typeGuards.isAnyGeneralPlatform(platform)) {
-    newName = Utils.string.capitalizeFirstLetter(newName?.toLowerCase());
-  } else if (Realtime.Utils.typeGuards.isAlexaPlatform(platform)) {
-    newName = newName.replace(/(\w)Intent/g, '$1');
+    return removeBuiltInPrefix(Utils.string.capitalizeFirstLetter(name?.toLowerCase()));
+  }
+  if (Realtime.Utils.typeGuards.isAlexaPlatform(platform)) {
+    return removeBuiltInPrefix(name.replace(/(\w)Intent/g, '$1'));
+  }
+  if (Realtime.Utils.typeGuards.isGooglePlatform(platform)) {
+    return Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' ');
   }
 
-  return newName;
+  return removeBuiltInPrefix(name);
 };
 
 export const removeSlotRefFromInput = (text: string, slotDetails: Realtime.Slot): string =>

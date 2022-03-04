@@ -50,11 +50,11 @@ const Sidebar: React.FC = () => {
           <div className="sidebar-header">Customer</div>
 
           <NavLink to="/admin/coupon" className={activeClassName}>
-            <i className="fal fa-store" /> Coupons
+            <i className="fal fa-store" /> Education Partner Codes
           </NavLink>
 
           <NavLink to="/admin/referral" className={activeClassName}>
-            <i className="fal fa-store" /> Referral
+            <i className="fal fa-store" /> Discounts and Promotions
           </NavLink>
 
           <NavLink to="/admin/updates" className={activeClassName}>

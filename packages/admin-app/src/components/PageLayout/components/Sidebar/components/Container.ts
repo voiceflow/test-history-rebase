@@ -81,6 +81,7 @@ const Container = styled.div`
     padding-top: 0;
     padding-bottom: 0;
     padding-right: 0;
+    white-space: nowrap;
 
     & > * {
       display: block;

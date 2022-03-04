@@ -1,11 +1,11 @@
 import { DFESVersion } from '@voiceflow/google-dfes-types';
 
 import { googleService } from '@/client/fetch';
+import { createExportService, createModelExportService, createPrototypeService, createPublishService, createVersionService } from '@/client/services';
 import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
 import { GoogleStageType } from '@/constants/platforms';
 import { DialogflowExportJob, DialogflowPublishJob, GeneralJob } from '@/models';
 
-import { createExportService, createModelExportService, createPrototypeService, createPublishService, createVersionService } from '../utils';
 import projectService from './project';
 
 const DIALOGFLOW_ENDPOINT = `${GOOGLE_SERVICE_ENDPOINT}/dialogflow/es`;

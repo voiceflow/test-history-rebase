@@ -1,4 +1,4 @@
-import createClient from '@/client/platforms/utils/session';
+import createClient from '@/client/services/session';
 
 import suite from '../../_suite';
 

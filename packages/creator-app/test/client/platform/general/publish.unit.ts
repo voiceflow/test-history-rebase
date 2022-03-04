@@ -1,4 +1,4 @@
-import createClient from '@/client/platforms/general/publish';
+import createClient from '@/platforms/general/client/publish';
 
 import suite from '../../_suite';
 

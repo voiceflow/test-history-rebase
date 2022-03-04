@@ -1,11 +1,11 @@
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 
 import { generalService } from '@/client/fetch';
+import { createExportService, createModelExportService, createPrototypeService, createVersionService } from '@/client/services';
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
 import { GeneralStageType } from '@/constants/platforms';
 import { GeneralJob } from '@/models';
 
-import { createExportService, createModelExportService, createPrototypeService, createVersionService } from '../utils';
 import createNLPService from './nlp';
 import projectService from './project';
 import publishService from './publish';

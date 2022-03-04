@@ -1,4 +1,4 @@
-import client from '@/client/platforms/alexa';
+import client from '@/platforms/alexa/client';
 
 import suite from '../../_suite';
 

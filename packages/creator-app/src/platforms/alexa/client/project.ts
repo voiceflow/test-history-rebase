@@ -2,9 +2,8 @@ import { AlexaProject } from '@voiceflow/alexa-types';
 import { Nullable } from '@voiceflow/common';
 import axios from 'axios';
 
+import { createProjectService, PROJECT_RESOURCE_ENDPOINT } from '@/client/services';
 import { ALEXA_SERVICE_ENDPOINT } from '@/config';
-
-import { createProjectService, PROJECT_RESOURCE_ENDPOINT } from '../utils';
 
 const projectAlexaService = {
   ...createProjectService<AlexaProject.Project>(ALEXA_SERVICE_ENDPOINT),

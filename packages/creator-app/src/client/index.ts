@@ -1,3 +1,5 @@
+import { getPlatformClient, platformClients } from '@/platforms';
+
 import api from './api';
 import backup from './backup';
 import canvasExport from './canvasExport';
@@ -7,7 +9,6 @@ import file from './file';
 import integrations from './integrations';
 import maintenance from './maintenance';
 import organization from './organization';
-import platformClients, { getPlatformClient } from './platforms';
 import project from './project';
 import projectList from './projectList';
 import prototype from './prototype';

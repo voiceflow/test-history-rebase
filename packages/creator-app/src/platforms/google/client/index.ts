@@ -1,10 +1,6 @@
 import { GoogleVersion } from '@voiceflow/google-types';
 
 import { googleService } from '@/client/fetch';
-import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
-import { GoogleStageType } from '@/constants/platforms';
-import { Account, GeneralJob, GoogleExportJob, GooglePublishJob } from '@/models';
-
 import {
   createExportService,
   createModelExportService,
@@ -12,7 +8,11 @@ import {
   createPublishService,
   createSessionService,
   createVersionService,
-} from '../utils';
+} from '@/client/services';
+import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
+import { GoogleStageType } from '@/constants/platforms';
+import { Account, GeneralJob, GoogleExportJob, GooglePublishJob } from '@/models';
+
 import projectService from './project';
 
 const googleServiceClient = {

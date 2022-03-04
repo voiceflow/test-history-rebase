@@ -1,4 +1,4 @@
-import createClient from '@/client/platforms/utils/modelExport';
+import createClient from '@/client/services/modelExport';
 
 import suite from '../../_suite';
 

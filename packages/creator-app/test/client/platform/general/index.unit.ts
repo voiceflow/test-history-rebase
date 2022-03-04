@@ -1,4 +1,4 @@
-import client from '@/client/platforms/general';
+import client from '@/platforms/general/client';
 
 import suite from '../../_suite';
 

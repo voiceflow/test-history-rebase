@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.22.1...@voiceflow/admin-app@1.22.2) (2022-03-04)
+
+
+### Bug Fixes
+
+* rename admin tools Coupons and Referrals (VF-2820) ([#5141](https://github.com/voiceflow/creator-app/issues/5141)) ([66a7642](https://github.com/voiceflow/creator-app/commit/66a7642c5b0b9f1e9dff109b479ff10aeeb952b0))
+
+
+
+
+
 ## [1.22.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.22.0...@voiceflow/admin-app@1.22.1) (2022-03-03)
 
 **Note:** Version bump only for package @voiceflow/admin-app

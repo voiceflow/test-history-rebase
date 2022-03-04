@@ -35,8 +35,12 @@ const DiagramsActions: React.FC = () => {
         <DiagramActions diagramID={rootDiagramID} diagramName={rootDiagramName} />
       ) : (
         <>
-          <DiagramDivider />
-          <DiagramName onClick={() => rootDiagramID && goToDiagramHistoryClear(rootDiagramID)}>{rootDiagramName}</DiagramName>
+          {rootDiagramID !== (previousDiagramID || activeDiagramID) && (
+            <>
+              <DiagramDivider />
+              <DiagramName onClick={() => rootDiagramID && goToDiagramHistoryClear(rootDiagramID)}>{rootDiagramName}</DiagramName>
+            </>
+          )}
 
           {!!previousDiagram && activeDiagramID !== previousDiagramID && (
             <>

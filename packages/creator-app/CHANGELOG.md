@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.642.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.642.2...@voiceflow/creator-app@1.642.3) (2022-03-04)
+
+
+### Bug Fixes
+
+* do not show 2 root diagrams in the row (VF-3074) ([#5155](https://github.com/voiceflow/creator-app/issues/5155)) ([dcbf6b3](https://github.com/voiceflow/creator-app/commit/dcbf6b301dadfead1f697082cd2c8a45d8f10afc))
+* set/if jitter (VF-2986) ([#5154](https://github.com/voiceflow/creator-app/issues/5154)) ([5c526eb](https://github.com/voiceflow/creator-app/commit/5c526eb6281162a3dba2d9fd2a51517348b2e213))
+
+
+
+
+
 ## [1.642.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.642.1...@voiceflow/creator-app@1.642.2) (2022-03-03)
 
 

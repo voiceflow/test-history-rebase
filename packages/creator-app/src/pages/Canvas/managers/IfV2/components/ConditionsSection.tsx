@@ -29,7 +29,7 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
   }, [onUpdate, title]);
 
   useSetup(() => {
-    if (!(item as Realtime.ExpressionData).name) inputRef.current?.focus?.();
+    if (!(item as Realtime.ExpressionData).name) inputRef.current?.focus?.({ preventScroll: true });
   });
 
   return (

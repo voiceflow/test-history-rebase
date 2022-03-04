@@ -25,12 +25,6 @@ const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
   const [isDragging, toggleDragging] = useToggle(false);
   const labelInputRef = React.useRef<HTMLInputElement>(null);
 
-  useSetup(() => {
-    if (!stepName) {
-      labelInputRef.current?.focus();
-    }
-  });
-
   const updateSets = React.useCallback(
     (sets) => {
       onChange({ sets });
@@ -59,6 +53,12 @@ const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
     },
     [onDuplicate]
   );
+
+  useSetup(() => {
+    if (!stepName) {
+      labelInputRef.current?.focus({ preventScroll: true });
+    }
+  });
 
   return (
     <Content

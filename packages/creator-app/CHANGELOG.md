@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.644.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.643.2...@voiceflow/creator-app@1.644.0) (2022-03-07)
+
+
+### Features
+
+* Buttons only prototype show input on capture (VF-2980) ([#5156](https://github.com/voiceflow/creator-app/issues/5156)) ([68087fe](https://github.com/voiceflow/creator-app/commit/68087fe457adfff6bead1d62a1fa7d62064558aa))
+
+
+
+
+
 ## [1.643.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.643.1...@voiceflow/creator-app@1.643.2) (2022-03-07)
 
 

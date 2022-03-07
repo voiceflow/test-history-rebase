@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.58.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.58.1...@voiceflow/ui@1.58.2) (2022-03-07)
+
+
+### Bug Fixes
+
+* fixes variable states test editor layout (VF-2937) ([#5132](https://github.com/voiceflow/creator-app/issues/5132)) ([ab06508](https://github.com/voiceflow/creator-app/commit/ab06508bc96ff821aea7ba94a4ca8383f6961122))
+
+
+
+
+
 ## [1.58.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.58.0...@voiceflow/ui@1.58.1) (2022-03-03)
 
 

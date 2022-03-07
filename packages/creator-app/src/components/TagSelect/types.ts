@@ -10,4 +10,5 @@ export type TagSelectProps<O, V> = Omit<SelectProps<O, V>, NotAvailable | 'value
   onChange: (value: string[]) => void;
   getOptionLabel: GetOptionLabel<O>;
   value: Nullish<string>[];
+  isDropdown?: boolean;
 } & RequiredProps<SelectProps<O, V>, MakeItRequired>;

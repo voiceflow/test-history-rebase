@@ -1,40 +1,19 @@
-import {
-  createUIOnlyMenuItemOption,
-  FlexApart,
-  isUIOnlyMenuItemOption,
-  NestedMenuComponents,
-  Select,
-  SelectProps,
-  SvgIcon,
-  TippyTooltip,
-} from '@voiceflow/ui';
+import { FlexApart, isUIOnlyMenuItemOption, NestedMenuComponents, SelectProps, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
 import * as variableState from '@/ducks/variableState';
 import { useModals, useSelector } from '@/hooks';
 
-export interface VariableStateOption {
-  label: string;
-  value: string;
-}
+import { SelectContainer } from './components';
+import { baseOptions, dividerOption } from './constants';
+import { VariableStateOption } from './types';
 
 type TestVariableStateSelectProps = Omit<Partial<SelectProps<VariableStateOption, string>>, 'onSelect' | 'creatable' | 'onCreate'> & {
   onChange: (value: string | null) => void;
   onUpdateStateValues: () => Promise<void>;
   loading: boolean;
 };
-
-const testVariableStateOptionRenderer = (option: VariableStateOption) => <FlexApart fullWidth>{option.label}</FlexApart>;
-
-const baseOptions = [
-  {
-    label: 'All project variables',
-    value: variableState.ALL_PROJECT_VARIABLES_ID,
-  },
-];
-
-const dividerOption = createUIOnlyMenuItemOption('divider', { divider: true });
 
 const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, loading, onChange, onUpdateStateValues, className, ...props }) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
@@ -59,14 +38,14 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
   };
 
   return (
-    <Select
+    <SelectContainer
       value={selected?.label || null}
       options={options}
       onSelect={(newValue) => onChange(newValue === value ? null : newValue)}
       searchable
       placeholder="Select a variable state"
       getOptionValue={(option) => option?.value}
-      renderOptionLabel={testVariableStateOptionRenderer}
+      renderOptionLabel={(option: VariableStateOption) => <FlexApart fullWidth>{option.label}</FlexApart>}
       icon={loading ? 'publishSpin' : undefined}
       iconProps={{ clickable: true, color: '#132144', spin: true }}
       disabled={loading}
@@ -74,7 +53,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
         isSelectedStateUnsync &&
         !loading && (
           <TippyTooltip title="Update state values">
-            <SvgIcon icon="publishSpin" clickable color="#132144" onClick={onUpdateStateValues} size={20} />
+            <SvgIcon icon="publishSpin" clickable color="#132144" onClick={onUpdateStateValues} size={16} />
           </TippyTooltip>
         )
       }

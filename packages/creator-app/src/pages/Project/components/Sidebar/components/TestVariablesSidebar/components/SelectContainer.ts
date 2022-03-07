@@ -5,7 +5,6 @@ const SelectContainer = styled.div`
   background-color: #fdfdfd;
   border-bottom: 1px solid #dfe3ed;
   width: 100%;
-  overflow-y: scroll;
   scroll-padding: 1px;
 `;
 

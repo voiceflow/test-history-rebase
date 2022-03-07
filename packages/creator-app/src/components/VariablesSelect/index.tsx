@@ -24,6 +24,7 @@ const VariablesSelect: React.FC<VariablesSelectProps> = ({ onChange, value, plac
       createInputPlaceholder="variables"
       placeholder={placeholder}
       disabled={disabled}
+      isDropdown={false}
     />
   );
 };

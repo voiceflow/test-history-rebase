@@ -24,6 +24,11 @@ export const getVariableStateByIDSelector = createCurriedSelector(variableStateB
 
 export const selectedVariableStateIdSelector = createSelector([rootVariableStatesSelector], (variableStates) => variableStates?.selectedState?.id);
 
+export const isVariableStateSelected = createSelector(
+  [selectedVariableStateIdSelector],
+  (selectedVariableStateId) => selectedVariableStateId && selectedVariableStateId !== ALL_PROJECT_VARIABLES_ID
+);
+
 export const selectedVariableStateSelector = createSelector([rootVariableStatesSelector], (variableStates) => variableStates?.selectedState);
 
 export const getSelectedVariableStateNameSelector = createSelector(

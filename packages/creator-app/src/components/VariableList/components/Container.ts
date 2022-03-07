@@ -7,6 +7,7 @@ const Container = styled.ul`
   flex-direction: column;
   gap: 12px;
   width: 100%;
+  margin-bottom: 0;
 
   > li {
     display: flex;

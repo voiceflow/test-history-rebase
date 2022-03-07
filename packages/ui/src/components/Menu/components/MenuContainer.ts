@@ -58,7 +58,7 @@ const MenuContainer = styled.ul<MenuContainerProps>`
       height: ${height}px;
       max-height: ${height}px;
     `}
-  margin-top: 5px;
+  margin-top: 1px;
   margin-bottom: 5px;
   padding: ${({ padding }) => padding || `${VERTICAL_PADDING}px 0`};
   border-radius: 5px;

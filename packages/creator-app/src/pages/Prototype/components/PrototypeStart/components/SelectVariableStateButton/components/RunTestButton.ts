@@ -10,8 +10,8 @@ const RunTestButton = styled(Button)<RunTestButtonProps>`
   ${({ withIconButton }) =>
     withIconButton &&
     css`
-      border-top-right-radius: 16px;
-      border-bottom-right-radius: 16px;
+      border-top-right-radius: 2px !important;
+      border-bottom-right-radius: 2px !important;
       margin-right: 1px;
       cursor: pointer;
       width: 108px;

@@ -15,13 +15,13 @@ interface SelectVariableStateButtonProps {
 
 const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ onStart }) => {
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
-  const selectedVariableStateId = useSelector(VariableState.selectedVariableStateIdSelector);
+  const isVariableStateSelected = useSelector(VariableState.isVariableStateSelected);
   const updateSelectedVariableStateById = useDispatch(VariableState.updateSelectedVariableStateById);
   const [trackingEvents] = useTrackingEvents();
 
   const onStartTest = () => {
     onStart();
-    if (selectedVariableStateId) {
+    if (isVariableStateSelected) {
       trackingEvents.trackVariableStateApplied({ type: VariableStateAppliedType.LOCAL });
     }
   };
@@ -29,9 +29,10 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
   return (
     <VariableStateSelectMenu
       render={({ ref, isOpen, toggleSelectMenuOpen }) => (
-        <FlexCenter fullWidth style={{ marginBottom: '12px' }}>
+        <FlexCenter fullWidth style={{ marginBottom: '8px' }}>
           <RunTestButton
             withIconButton={variableStates.length > 0}
+            squareRadius
             variant={ButtonVariant.PRIMARY}
             onClick={onStartTest}
             id={Identifier.PROTOTYPE_START}
@@ -39,21 +40,22 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
             Run Test
           </RunTestButton>
           {variableStates.length > 0 && (
-            <TippyTooltip title={selectedVariableStateId ? 'Reset state' : 'Select variable state'}>
+            <TippyTooltip title={isVariableStateSelected ? 'Reset state' : 'Select variable state'}>
               <IconedButton
                 ref={ref as any}
                 variant={ButtonVariant.PRIMARY}
                 onClick={() => {
-                  if (selectedVariableStateId) {
+                  if (isVariableStateSelected) {
                     updateSelectedVariableStateById(null);
                     return;
                   }
 
                   toggleSelectMenuOpen();
                 }}
-                icon={selectedVariableStateId ? 'refreshData' : 'caretDown'}
-                iconProps={{ size: selectedVariableStateId ? 16 : 10, color: '#fff' }}
+                icon={isVariableStateSelected ? 'refreshData' : 'caretDown'}
+                iconProps={isVariableStateSelected ? { size: 16, color: '#fff', marginTop: '1px', marginLeft: '1px' } : { size: 10, color: '#fff' }}
                 isOpen={isOpen}
+                squareRadius
               />
             </TippyTooltip>
           )}

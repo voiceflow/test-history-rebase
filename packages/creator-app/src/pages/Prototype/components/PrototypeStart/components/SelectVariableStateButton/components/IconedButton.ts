@@ -8,8 +8,8 @@ interface IconedButtonProps extends PrimaryButtonProps {
 
 const IconedButton = styled(Button)<IconedButtonProps>`
   cursor: pointer;
-  border-top-left-radius: 16px;
-  border-bottom-left-radius: 16px;
+  border-top-left-radius: 2px !important;
+  border-bottom-left-radius: 2px !important;
   width: 42px;
   display: flex;
   align-items: center;
@@ -17,6 +17,8 @@ const IconedButton = styled(Button)<IconedButtonProps>`
 
   ${PrimaryButtonIcon} {
     background: none;
+    margin-right: 4px;
+    margin-top: 1px;
   }
 
   ${PrimaryButtonLabel} {

@@ -2,6 +2,8 @@ import { Button, ButtonVariant, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
+import { FeatureFlag } from '@/config/features';
+import { useFeature } from '@/hooks';
 
 import NLUContainer from './NLUContainer';
 import TrainingLoader from './TrainingLoader';
@@ -10,17 +12,21 @@ export interface TrainingProps {
   onCancelTraining: () => void;
 }
 
-const Training: React.FC<TrainingProps> = ({ onCancelTraining }) => (
-  <NLUContainer containsLoader>
-    <TrainingLoader />
+const Training: React.FC<TrainingProps> = ({ onCancelTraining }) => {
+  const { isEnabled: isVariableStatesEnabled } = useFeature(FeatureFlag.VARIABLE_STATES);
 
-    <Text fontSize={13} color="#8da2b5" fontWeight={500} my={16} lineHeight="18px">
-      This may take a few minutes. <Link href={Documentation.ASSISTANT_TRAINING}>Learn more.</Link>
-    </Text>
+  return (
+    <NLUContainer containsLoader>
+      <TrainingLoader />
 
-    <Button variant={ButtonVariant.TERTIARY} onClick={onCancelTraining}>
-      Cancel
-    </Button>
-  </NLUContainer>
-);
+      <Text fontSize={13} color="#8da2b5" fontWeight={500} my={16} lineHeight="18px">
+        This may take a few minutes. <Link href={Documentation.ASSISTANT_TRAINING}>Learn more.</Link>
+      </Text>
+
+      <Button variant={ButtonVariant.TERTIARY} squareRadius={isVariableStatesEnabled || undefined} onClick={onCancelTraining}>
+        Cancel
+      </Button>
+    </NLUContainer>
+  );
+};
 export default Training;

@@ -34,6 +34,7 @@ const TagSelect = <O extends unknown>({
   placeholder = 'Select all that apply',
   value,
   disabled,
+  isDropdown = true,
 }: TagSelectProps<O, string>): JSX.Element => {
   const [selected, setSelected] = React.useState<string[]>([]);
 
@@ -85,7 +86,7 @@ const TagSelect = <O extends unknown>({
       selectedOptions={selected}
       options={options}
       withSearchIcon
-      isDropdown
+      isDropdown={isDropdown}
       inDropdownSearch
       labelSearchable={false}
       searchable

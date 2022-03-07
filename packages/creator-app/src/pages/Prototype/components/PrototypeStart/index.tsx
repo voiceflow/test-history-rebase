@@ -50,7 +50,7 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debu
             Run your project
           </Text>
 
-          <Text fontSize={13} color="#62778c" mt={8} mb={24} lineHeight={1.54}>
+          <Text fontSize={13} color="#62778c" mt={8} mb={16} lineHeight={1.54}>
             Start a test to interact with your project using text, voice or buttons. <Link href={Documentation.PROTOTYPING}>See more.</Link>
           </Text>
 

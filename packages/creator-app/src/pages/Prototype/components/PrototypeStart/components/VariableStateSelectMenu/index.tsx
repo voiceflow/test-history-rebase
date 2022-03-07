@@ -1,10 +1,12 @@
 import { Nullish } from '@voiceflow/common';
-import { NestedMenuComponents, Select } from '@voiceflow/ui';
+import { NestedMenuComponents } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
 import * as VariableState from '@/ducks/variableState';
 import { useDispatch, useModals, useSelector, useToggle } from '@/hooks';
+
+import { SelectContainer } from './components';
 
 interface VariableStateOption {
   label: string;
@@ -34,7 +36,7 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
   const getOptionLabel = (variableStateID: Nullish<string>) => (variableStateID ? variableStateOptionsMap[variableStateID].label : '');
 
   return (
-    <Select
+    <SelectContainer
       options={variableStateOptions}
       onSelect={updateSelectedVariableStateById}
       open={isSelectMenuOpen}
@@ -43,6 +45,7 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
       getOptionLabel={getOptionLabel}
       inDropdownSearch
       alwaysShowCreate
+      isDropdown
       onClose={() => toggleSelectMenuOpen(false)}
       createInputPlaceholder="states"
       triggerRenderer={({ ref, isOpen }) => render({ ref, isOpen, toggleSelectMenuOpen })}

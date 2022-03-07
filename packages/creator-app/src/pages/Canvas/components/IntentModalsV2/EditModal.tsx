@@ -35,7 +35,7 @@ const EditModal: React.FC = () => {
           options={[
             {
               key: 'delete',
-              label: 'Delete Intent',
+              label: 'Delete intent',
               onClick: onDeleteIntent,
             },
           ]}
@@ -47,7 +47,7 @@ const EditModal: React.FC = () => {
               icon="ellipsis"
               variant={IconButtonVariant.BASIC}
               onClick={onToggle}
-              activeHover={isOpened}
+              activeClick={isOpened}
               ref={ref}
             />
           )}

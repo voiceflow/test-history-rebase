@@ -24,12 +24,12 @@ interface StrengthGauge {
   width?: number;
   thickness?: number;
   strength: StrengthLevel;
+  strengthTooltips?: Partial<Record<StrengthLevel, string>>;
 }
-
-const StrengthGauge: React.FC<StrengthGauge> = ({ thickness = 2, width = 100, strength = StrengthLevel.NOT_SET }) => {
+const StrengthGauge: React.FC<StrengthGauge> = ({ strengthTooltips, thickness = 2, width = 100, strength = StrengthLevel.NOT_SET }) => {
   const strengthLineWidth = width * StrengthLineMultiplier[strength];
   return (
-    <TippyTooltip title={StrengthTooltip[strength]}>
+    <TippyTooltip title={strengthTooltips?.[strength] || StrengthTooltip[strength]}>
       <Line width={width} thickness={thickness}>
         <StrengthLine thickness={thickness} width={strengthLineWidth} strength={strength} />
       </Line>

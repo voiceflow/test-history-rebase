@@ -1,9 +1,15 @@
-import { styled, units } from '@ui/styles';
+import { css, styled, units } from '@ui/styles';
 
-const ErrorMessage = styled.p`
-  padding-top: ${units(2)}px;
+const ErrorMessage = styled.p<{ noMarginBottom?: boolean }>`
+  padding-top: 12px;
   color: #e91e63;
   font-size: 13px;
+
+  ${({ noMarginBottom }) =>
+    noMarginBottom &&
+    css`
+      margin-bottom: 0px;
+    `}
 `;
 
 export const ErrorMessageWithDivider = styled(ErrorMessage)`

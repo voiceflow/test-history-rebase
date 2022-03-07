@@ -6,6 +6,7 @@ export interface BasicContainerProps extends BaseContainerProps {
   variant: IconButtonVariant.BASIC;
   containerSize?: number;
   activeHover?: boolean;
+  activeClick?: boolean;
 }
 
 const activeHoverStyle = css`
@@ -39,6 +40,13 @@ const BasicContainer = styled.div<BasicContainerProps>`
     activeHover &&
     css`
       ${activeHoverStyle}
+    `}
+
+  ${({ activeClick }) =>
+    activeClick &&
+    css`
+      ${activeHoverStyle}
+      color: #132144;
     `}
 `;
 

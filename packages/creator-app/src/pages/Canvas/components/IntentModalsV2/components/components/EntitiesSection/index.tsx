@@ -56,7 +56,7 @@ const EntitiesSection: React.FC<EntitiesSectionProps> = ({ entitiesVisibleRef, i
         <>
           <Box marginBottom={24} marginRight={-12}>
             <div ref={entitiesVisibleRef} />
-            <Box marginTop={-6} marginBottom={8}>
+            <Box marginTop={-8} marginBottom={8}>
               {requiredIntentSlots.map((slot) => (
                 <SlotItem
                   slots={slots}

@@ -1,13 +1,13 @@
 import { Box, Button, ButtonVariant, FlexApart, IconButton, IconButtonVariant, Input } from '@voiceflow/ui';
 import React from 'react';
 
-import Checkbox from '@/components/Checkbox';
 import Modal, { ModalFooter } from '@/components/Modal';
 import Section, { SectionVariant } from '@/components/Section';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 
 import TypeSection from './components/TypeSection';
+import { MAX_ENTITY_MODAL_WIDTH } from './constants';
 
 export enum EntityModalMode {
   CREATING = 'creating',
@@ -27,6 +27,7 @@ const EntityModalV2: React.FC<EntityModalProps> = () => {
 
   return (
     <Modal
+      maxWidth={MAX_ENTITY_MODAL_WIDTH}
       id={ModalType.ENTITY}
       title={
         creating ? (
@@ -50,7 +51,6 @@ const EntityModalV2: React.FC<EntityModalProps> = () => {
         {creating ? (
           <Box fullWidth>
             <FlexApart>
-              <Checkbox> Is list? </Checkbox>
               <Box>
                 <Button onClick={close} variant={ButtonVariant.TERTIARY} squareRadius style={{ marginRight: '10px', display: 'inline-block' }}>
                   Cancel

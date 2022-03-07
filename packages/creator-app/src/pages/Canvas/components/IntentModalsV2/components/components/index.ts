@@ -1,3 +1,5 @@
+import { SvgIconContainer } from '@voiceflow/ui';
+
 import { styled, transition } from '@/hocs';
 
 export const SlotBubble = styled.div`
@@ -17,10 +19,15 @@ export const SlotBubble = styled.div`
   font-style: normal;
   line-height: normal;
   letter-spacing: normal;
-  opacity: 0.8;
+
+  ${SvgIconContainer} {
+    opacity: 0.8;
+  }
 
   :hover {
-    opacity: 1;
+    ${SvgIconContainer} {
+      opacity: 1;
+    }
   }
 `;
 
@@ -34,4 +41,15 @@ export const JumpToEntitiesBubble = styled.div`
   font-weight: 600;
   cursor: pointer;
   padding: 4px 12px 4px 8px;
+  box-shadow: 0px 1px 3px rgb(43 47 50 / 16%);
+
+  ${SvgIconContainer} {
+    opacity: 0.8;
+  }
+
+  :hover {
+    ${SvgIconContainer} {
+      opacity: 1;
+    }
+  }
 `;

@@ -13,6 +13,7 @@ import {
   useOnScreen,
   useSetup,
 } from '@voiceflow/ui';
+import { EditorState } from 'draft-js';
 import queryString from 'query-string';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -37,9 +38,8 @@ interface UtteranceManagerProps {
   creating?: boolean;
 }
 
+const MAX_VISIBLE_UTTERANCES_HEIGHT = 545;
 const MAX_VISIBLE_UTTERANCES = 10;
-
-const UTTERANCE_EL_HEIGHT = 54;
 
 // Temporary until ML stuff is done
 const determineStrength = (count: number) => {
@@ -137,7 +137,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
     }
   };
 
-  const utteranceListStyling = showAllUtterances ? {} : { maxHeight: UTTERANCE_EL_HEIGHT * MAX_VISIBLE_UTTERANCES, overflow: 'hidden' };
+  const utteranceListStyling = showAllUtterances ? {} : { maxHeight: MAX_VISIBLE_UTTERANCES_HEIGHT, overflow: 'hidden' };
 
   return (
     <>
@@ -148,11 +148,16 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
             <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
           </TippyTooltip>
         }
+        customContentStyling={{ marginBottom: intentUtterances.length ? 6 : 0 }}
         header={
           <>
             Utterances
             <Box marginLeft={16} display="inline-block" position="relative" bottom="3px">
-              <StrengthGauge width={40} strength={determineStrength(intentUtterances.length)} />
+              <StrengthGauge
+                strengthTooltips={{ [StrengthLevel.NOT_SET]: 'No utterances' }}
+                width={40}
+                strength={determineStrength(intentUtterances.length)}
+              />
             </Box>
           </>
         }
@@ -164,7 +169,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
             <ListManagerWrapper>
               <ListManager
                 renderList={({ mapManaged, itemRenderer }) => (
-                  <Box overflow="auto" mr={-12} pt={12} style={{ ...utteranceListStyling }}>
+                  <Box overflow="auto" mr={-12} pt={!isValidUtterance && !intentUtterances.length ? 8 : 16} style={{ ...utteranceListStyling }}>
                     {mapManaged(itemRenderer)}
                   </Box>
                 )}
@@ -175,8 +180,12 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
                   utteranceRef.current?.forceUpdate();
                 }}
                 renderForm={({ value, onAdd, onChange, addError }) => (
-                  <Box mb={intentUtterances.length ? -14 : 0} position="sticky" top={62} zIndex={1000} style={{ background: 'white' }}>
+                  <Box mb={intentUtterances.length ? -18 : -4} position="sticky" top={62} zIndex={1000} style={{ background: 'white' }}>
                     <Utterance
+                      onEditorStateChange={(state: EditorState) => {
+                        const isEmpty = !state.getCurrentContent().hasText();
+                        if (isEmpty) setValidUtterance();
+                      }}
                       ref={utteranceRef}
                       space
                       slots={slots}
@@ -202,7 +211,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
                       onEnterPress={onAdd}
                       error={!isValidUtterance}
                     />
-                    {!isValidUtterance && <ErrorMessage>{addError}</ErrorMessage>}
+                    {!isValidUtterance && <ErrorMessage noMarginBottom={!intentUtterances.length}>{addError}</ErrorMessage>}
                     {!!intentUtterances.length && <hr style={!isNotAtTop ? { marginLeft: '-32px' } : undefined} />}
                   </Box>
                 )}
@@ -214,9 +223,13 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
               />
             </ListManagerWrapper>
           </FormControl>
-          {!showAllUtterances && intentUtterances.length > MAX_VISIBLE_UTTERANCES && (
+          {intentUtterances.length > MAX_VISIBLE_UTTERANCES && (
             <Box color="#62778c" paddingBottom={24}>
-              <ClickableText onClick={() => setShowAllUtterances(true)}>{`Show all utterances (${intentUtterances.length})`}</ClickableText>
+              {!showAllUtterances ? (
+                <ClickableText onClick={() => setShowAllUtterances(true)}>{`Show all utterances (${intentUtterances.length})`}</ClickableText>
+              ) : (
+                <ClickableText onClick={() => setShowAllUtterances(false)}>Hide some utterances</ClickableText>
+              )}
             </Box>
           )}
         </Box>

@@ -28,7 +28,7 @@ const SlotSelect: React.FC<SlotSelectProps> = ({ value, onChange, className, fil
       options={options}
       onSelect={onChange}
       searchable
-      placeholder="Select Entity Type"
+      placeholder="Select entity type"
       getOptionValue={(option) => option?.value}
       renderOptionLabel={slotOptionRenderer}
       {...props}

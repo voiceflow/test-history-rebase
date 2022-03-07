@@ -10,6 +10,7 @@ const InputContainer = styled.div<{ isMobile?: boolean }>`
   height: ${DESKTOP_INPUT_CONTAINER_HEIGHT}px;
   border-top: 1px solid #dfe3ed;
   padding: 16px 24px 16px 32px;
+  width: 100%;
 
   ${SpeechBarContainer} {
     flex: 1;

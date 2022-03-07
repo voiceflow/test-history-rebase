@@ -12,15 +12,28 @@ export interface UserInputProps {
   testEnded?: boolean;
   onEnterPress: () => void;
   hideInput?: boolean;
+  buttonsOnly: boolean;
 }
 
-const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, isIdle, testEnded, isMobile, onStart, hideInput = false }) => {
+const UserInput: React.FC<UserInputProps> = ({
+  value,
+  onEnterPress,
+  onChange,
+  isIdle,
+  testEnded,
+  isMobile,
+  onStart,
+  hideInput = false,
+  buttonsOnly,
+}) => {
   const preventIOSBodyScrolling = React.useCallback((event: Event) => {
     event.preventDefault();
     event.stopPropagation();
   }, []);
 
   const placeholder = testEnded ? 'This conversation has ended' : !hideInput && 'Type a message...';
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const onFocus = React.useCallback(() => {
     if (IS_IOS) {
@@ -41,10 +54,17 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
     (document.activeElement as HTMLElement)?.blur();
   }, [testEnded]);
 
+  React.useEffect(() => {
+    if (buttonsOnly) {
+      inputRef?.current?.focus?.();
+    }
+  }, [hideInput]);
+
   return (
     <InputContent isMobile={isMobile} onClick={() => isIdle && !hideInput && onStart()}>
       <Input
         key={String(!isIdle)}
+        ref={inputRef}
         value={value}
         fullWidth
         variant={InputVariant.INLINE}

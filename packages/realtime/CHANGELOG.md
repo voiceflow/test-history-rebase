@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.45.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.44.1...@voiceflow/realtime@1.45.0) (2022-03-08)
+
+
+### Features
+
+* run realtime and ml-gateway in the background during e2e tests (VF-3011) [bugfix] ([#5163](https://github.com/voiceflow/creator-app/issues/5163)) ([49e26ec](https://github.com/voiceflow/creator-app/commit/49e26ec55f5557597f501b2c29e23097f7bc6970))
+
+
+
+
+
 ## [1.44.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.44.0...@voiceflow/realtime@1.44.1) (2022-03-08)
 
 **Note:** Version bump only for package @voiceflow/realtime

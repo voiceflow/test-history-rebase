@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.644.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.644.0...@voiceflow/creator-app@1.644.1) (2022-03-08)
+
+
+### Bug Fixes
+
+* project mapping (VF-3038) ([#5165](https://github.com/voiceflow/creator-app/issues/5165)) ([110b765](https://github.com/voiceflow/creator-app/commit/110b765fafe610e52e8ca45706cdd60cdfca6449)), closes [/www.notion.so/voiceflow/Model-Platform-Separation-33ac9dbd464a4dc5bb9952315a14c3ef#3dd8fb160f0a4d47a057c0effb1deec3](https://github.com//www.notion.so/voiceflow/Model-Platform-Separation-33ac9dbd464a4dc5bb9952315a14c3ef/issues/3dd8fb160f0a4d47a057c0effb1deec3)
+
+
+
+
+
 # [1.644.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.643.2...@voiceflow/creator-app@1.644.0) (2022-03-07)
 
 

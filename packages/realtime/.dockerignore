@@ -3,3 +3,4 @@
 !./build
 !./package.json
 !./yarn.lock
+!./.env.e2e

@@ -72,6 +72,7 @@
     "build:ml-sdk": "yarn --cwd packages/ml-sdk build",
     "build:realtime": "yarn --cwd packages/realtime build",
     "build:realtime-sdk": "yarn --cwd packages/realtime-sdk build",
+    "build:services": "yarn build --scope @voiceflow/realtime --scope @voiceflow/ml-gateway",
     "build:showcase": "yarn --cwd packages/showcase build",
     "build:socket-utils": "yarn --cwd packages/socket-utils build",
     "build:ui": "yarn --cwd packages/ui build",

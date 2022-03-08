@@ -63,6 +63,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
           password,
           coupon: coupon.toLowerCase(),
           referralCode: query.referral,
+          referralRockCode: query.ref_code,
           urlSearch: search,
         });
       }

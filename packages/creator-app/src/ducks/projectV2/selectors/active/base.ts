@@ -13,6 +13,9 @@ export const projectSelector = createSelector([Session.activeProjectIDSelector, 
 
 export const platformSelector = createSelector([projectSelector], (project) => project?.platform || VoiceflowConstants.PlatformType.GENERAL);
 
+export const typeV2Selector = createSelector([projectSelector], (project) => project?.typeV2 || VoiceflowConstants.ProjectType.VOICE);
+export const platformV2Selector = createSelector([projectSelector], (project) => project?.platformV2 || VoiceflowConstants.PlatformType.VOICEFLOW);
+
 export const nameSelector = createSelector([projectSelector], (project) => project?.name ?? null);
 
 export const linkTypeSelector = createSelector([projectSelector], (project) => project?.linkType || BaseModels.Project.LinkType.STRAIGHT);

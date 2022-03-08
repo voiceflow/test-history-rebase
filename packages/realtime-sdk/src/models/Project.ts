@@ -16,6 +16,11 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Project.Membe
   linkType: BaseModels.Project.LinkType;
   prototype?: BaseModels.Project.Prototype;
   platform: VoiceflowConstants.PlatformType;
+
+  // replace all references to old platform
+  typeV2: VoiceflowConstants.ProjectType;
+  platformV2: VoiceflowConstants.PlatformType;
+
   _version?: number;
   diagramID: string;
   versionID: string;

@@ -5,7 +5,31 @@ import { Nullish } from '@voiceflow/common';
 import { GoogleConstants } from '@voiceflow/google-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
+import { legacyPlatformToProjectType } from '../constants/platform';
 import { isDistinctPlatform } from './typeGuards';
+
+export const createProjectTypeSelector =
+  <T>(
+    values: Partial<
+      Record<
+        VoiceflowConstants.ProjectType | VoiceflowConstants.PlatformType | `${VoiceflowConstants.PlatformType}:${VoiceflowConstants.ProjectType}`,
+        T
+      >
+    >,
+    defaultValue?: T
+  ) =>
+  (_platform?: Nullish<VoiceflowConstants.PlatformType>, _type?: Nullish<VoiceflowConstants.ProjectType>): T => {
+    const mapping = _platform ? legacyPlatformToProjectType(_platform, _type) : null;
+
+    // order of priority for checking in the selector:
+    // 1. compound platform + type
+    // 2. platform
+    // 3. type
+    const value = (mapping && (values[`${mapping.platform}:${mapping.type}`] ?? values[mapping.platform] ?? values[mapping.type])) ?? defaultValue;
+    if (value == null) throw new Error('no value for platform');
+
+    return value;
+  };
 
 export const createPlatformSelector: {
   <T>(platformValues: Record<VoiceflowConstants.PlatformType, T>, defaultValue?: T): (platform?: Nullish<VoiceflowConstants.PlatformType>) => T;

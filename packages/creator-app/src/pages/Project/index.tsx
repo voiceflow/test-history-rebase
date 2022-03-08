@@ -37,7 +37,7 @@ import { ConnectedProps } from '@/types';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import { TIMEOUT_COUNT } from './constants';
-import { LastCreatedComponentProvider, MarkupProvider, NLPProvider, PlatformProvider, SelectionProvider } from './contexts';
+import { LastCreatedComponentProvider, MarkupProvider, NLPProvider, ProjectProvider, SelectionProvider } from './contexts';
 
 const Diagram = lazy(() => import('./components/Diagram'));
 const Business = lazy(() => import('@/pages/Business'));
@@ -51,7 +51,9 @@ export type ProjectProps = RouteComponentProps;
 const DIAGRAM_ROUTES = [Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY];
 
 const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({
+  typeV2,
   platform,
+  platformV2,
   projectName,
   isOnlyViewer,
   resetCreator,
@@ -109,7 +111,7 @@ const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({
 
   return (
     <MarkupProvider>
-      <PlatformProvider value={platform}>
+      <ProjectProvider platform={platform} platformV2={platformV2} typeV2={typeV2}>
         <Helmet>
           <title>{projectName}</title>
         </Helmet>
@@ -171,13 +173,15 @@ const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({
             </ExportProvider>
           </PublishProvider>
         </PrototypeProvider>
-      </PlatformProvider>
+      </ProjectProvider>
     </MarkupProvider>
   );
 };
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
+  typeV2: ProjectV2.active.typeV2Selector,
+  platformV2: ProjectV2.active.platformV2Selector,
   projectName: ProjectV2.active.nameSelector,
   isConnected: Realtime.isRealtimeConnectedSelector,
   isOnlyViewer: Realtime.isOnlyViewerSelector,

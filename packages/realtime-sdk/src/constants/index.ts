@@ -1,6 +1,7 @@
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export * from './block';
+export * from './platform';
 export * from './variable';
 
 export const PROTOCOL_KEY = 'protocol';

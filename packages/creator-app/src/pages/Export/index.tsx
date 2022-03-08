@@ -17,7 +17,7 @@ import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
 import useEngine from '@/pages/Canvas/engine';
 import { getManager } from '@/pages/Canvas/managers';
-import { MarkupProvider, PlatformProvider } from '@/pages/Project/contexts';
+import { MarkupProvider, ProjectProvider } from '@/pages/Project/contexts';
 import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { ConnectedProps, Point } from '@/types';
@@ -25,7 +25,7 @@ import { isMarkupBlockType, isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark, MockRealtimeGate } from './components';
 
-const ExportCanvas: React.FC<ConnectedExportProps> = ({ platform, diagramID, initialize }) => {
+const ExportCanvas: React.FC<ConnectedExportProps> = ({ platform, platformV2, typeV2, diagramID, initialize }) => {
   const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const engine = useEngine();
@@ -38,7 +38,7 @@ const ExportCanvas: React.FC<ConnectedExportProps> = ({ platform, diagramID, ini
   }, [diagramID]);
 
   return (
-    <PlatformProvider value={platform}>
+    <ProjectProvider platform={platform} platformV2={platformV2} typeV2={typeV2}>
       <PresentationModeProvider>
         <MarkupProvider>
           <ManagerProvider value={getManager as any}>
@@ -54,7 +54,7 @@ const ExportCanvas: React.FC<ConnectedExportProps> = ({ platform, diagramID, ini
           </ManagerProvider>
         </MarkupProvider>
       </PresentationModeProvider>
-    </PlatformProvider>
+    </ProjectProvider>
   );
 };
 
@@ -145,6 +145,8 @@ const initialize =
 const mapStateToProps = {
   diagramID: Session.activeDiagramIDSelector,
   platform: ProjectV2.active.platformSelector,
+  typeV2: ProjectV2.active.typeV2Selector,
+  platformV2: ProjectV2.active.platformV2Selector,
 };
 
 const mapDispatchToProps = {

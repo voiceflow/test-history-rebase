@@ -1,7 +1,7 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 
-import { createPlatformSelector } from '@/utils/platform';
 import { getAlexaVoiceOptions, getGeneralVoiceOptions, getGoogleDialogflowVoiceOptions, getGoogleVoiceOptions } from '@/utils/voice';
 
 const PROSODY_RATE_REGEXP = /^\d+(m?s)?$/;
@@ -766,11 +766,11 @@ const GENERAL_SSML_META = {
   voiceOptions: (locales, useWavenet) => getGeneralVoiceOptions(locales, useWavenet),
 };
 
-export const getPlatformSSML = createPlatformSelector(
+export const getPlatformSSML = Utils.platform.createProjectTypeSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_SSML_META,
     [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_SSML_META,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: GOOGLE_DIALOGFLOW_SSML_META,
+    [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.VOICE}`]: GOOGLE_DIALOGFLOW_SSML_META,
   },
   GENERAL_SSML_META
 );

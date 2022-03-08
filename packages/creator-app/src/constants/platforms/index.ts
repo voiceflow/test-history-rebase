@@ -1,5 +1,6 @@
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import {
@@ -15,7 +16,6 @@ import {
 import { FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
-import { createPlatformSelector } from '@/utils/platform';
 
 import { AlexaPublishJobErrorType, AlexaStageType } from './alexa';
 import { DialogflowPublishJobErrorType, DialogflowStageType } from './dialogflow';
@@ -70,22 +70,20 @@ export * from './dialogflow';
 export * from './general';
 export * from './google';
 
-export const getPlatformName = createPlatformSelector(
+export const getPlatformName = Utils.platform.createProjectTypeSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
     [VoiceflowConstants.PlatformType.GOOGLE]: 'Google',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
   },
   ''
 );
 
-export const getDefaultPlatformLanguageLabel = createPlatformSelector(
+export const getDefaultPlatformLanguageLabel = Utils.platform.createProjectTypeSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: LOCALE_MAP[0].name,
     [VoiceflowConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[GoogleConstants.Language.EN],
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DFESConstants.Language.EN],
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DFESConstants.Language.EN],
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DFESConstants.Language.EN],
   },
   GENERAL_LOCALE_NAME_MAP[VoiceflowConstants.Locale.EN_US]
 );

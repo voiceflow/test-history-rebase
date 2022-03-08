@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.646.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.645.0...@voiceflow/creator-app@1.646.0) (2022-03-08)
+
+
+### Features
+
+* added ref_code query param for referral rock (VF-2725) ([#5052](https://github.com/voiceflow/creator-app/issues/5052)) ([6b0d04c](https://github.com/voiceflow/creator-app/commit/6b0d04c7e773910ed6c68731401f0a204fc25d27))
+
+
+
+
+
 # [1.645.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.644.1...@voiceflow/creator-app@1.645.0) (2022-03-08)
 
 

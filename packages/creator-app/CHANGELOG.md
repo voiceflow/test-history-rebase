@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.648.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.647.2...@voiceflow/creator-app@1.648.0) (2022-03-09)
+
+
+### Features
+
+* generic csv model export option (VF-3005) ([#5170](https://github.com/voiceflow/creator-app/issues/5170)) ([403b0f1](https://github.com/voiceflow/creator-app/commit/403b0f1b9f972a39517db67bb175e3dd70c53c36))
+
+
+
+
+
 ## [1.647.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.647.1...@voiceflow/creator-app@1.647.2) (2022-03-09)
 
 **Note:** Version bump only for package @voiceflow/creator-app

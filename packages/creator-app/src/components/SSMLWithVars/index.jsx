@@ -11,7 +11,7 @@ import { compose, connect } from '@/hocs';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
 const SSMLWithVars = (
-  { icon = 'alexa', voice, variables, locales, defaultVoice, platform, addGlobalVariable, updateDefaultVoice, ...props },
+  { icon = 'alexa', voice, variables, locales, defaultVoice, platform, projectType, addGlobalVariable, updateDefaultVoice, ...props },
   ref
 ) => {
   const vars = React.useMemo(() => variables.map((name) => ({ id: name, name, isVariable: true })), [variables]);
@@ -40,6 +40,7 @@ const SSMLWithVars = (
       voice={voice || defaultVoice || platformDefaultVoice}
       space
       platform={platform}
+      projectType={projectType}
       variables={vars}
       defaultVoice={defaultVoice || platformDefaultVoice}
       onAddVariable={onAddVariable}
@@ -52,6 +53,7 @@ const SSMLWithVars = (
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
+  projectType: ProjectV2.active.typeV2Selector,
   variables: DiagramV2.active.allSlotsAndVariablesSelector,
   defaultVoice: VersionV2.active.defaultVoiceSelector,
   locales: VersionV2.active.localesSelector,

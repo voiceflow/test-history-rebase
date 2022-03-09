@@ -16,10 +16,11 @@ import { AssistantConversationLogic } from './components';
 
 interface GlobalConversationLogicProps {
   platform: VoiceflowConstants.PlatformType;
+  projectType: VoiceflowConstants.ProjectType;
   platformMeta: PlatformSettingsMetaProps;
 }
 
-const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platform, platformMeta }) => {
+const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platform, projectType, platformMeta }) => {
   const wavenetVoices = useFeature(FeatureFlag.WAVENET_VOICES);
 
   const locales = useSelector(VersionV2.active.localesSelector);
@@ -39,6 +40,7 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
   const assistantLogic = (
     <AssistantConversationLogic
       platform={platform}
+      projectType={projectType}
       platformMeta={platformMeta}
       defaultVoice={defaultVoice}
       platformDefaultVoice={platformDefaultVoice}

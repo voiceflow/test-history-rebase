@@ -42,6 +42,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnected
   locales,
   defaultVoice,
   platform,
+  projectType,
   updateDefaultVoice,
   ...props
 }) => {
@@ -55,6 +56,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnected
       platformDefaultVoice={platformDefaultVoice}
       locales={locales}
       platform={platform}
+      projectType={projectType}
       space
       creatable={false}
       onChangeDefaultVoice={updateDefaultVoice}
@@ -66,6 +68,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnected
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
+  projectType: ProjectV2.active.typeV2Selector,
   defaultVoice: VersionV2.active.defaultVoiceSelector,
   locales: VersionV2.active.localesSelector,
 };

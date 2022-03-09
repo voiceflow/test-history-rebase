@@ -28,6 +28,7 @@ const SSML = (
     className,
     variables,
     characters,
+    projectType,
     placeholder,
     defaultVoice,
     onEnterPress,
@@ -42,7 +43,7 @@ const SSML = (
   },
   ref
 ) => {
-  const platformSSMLMeta = getPlatformSSML(platform);
+  const platformSSMLMeta = getPlatformSSML(platform, projectType);
   const wavenetVoices = useFeature(FeatureFlag.WAVENET_VOICES);
   const SSMLPlaceholder = placeholder ?? platformSSMLMeta.fallbackPlaceholder(voice);
   const { canChangeVoice } = platformSSMLMeta;

@@ -22,6 +22,7 @@ const SSMLComponent: any = SSML;
 
 interface AssistantConversationLogicProps {
   platform: VoiceflowConstants.PlatformType;
+  projectType: VoiceflowConstants.ProjectType;
   platformMeta: PlatformSettingsMetaProps;
   defaultVoice: Realtime.AnyVoice;
   platformDefaultVoice: Realtime.AnyVoice;
@@ -31,6 +32,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
   settings,
   session,
   platform,
+  projectType,
   platformMeta,
   defaultVoice,
   platformDefaultVoice,
@@ -144,6 +146,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
                 value={resumePrompt.content || ''}
                 onBlur={onChangeResumePromptContent}
                 platform={platform}
+                projectType={projectType}
                 defaultVoice={defaultVoice}
                 onChangeVoice={onChangeResumePromptVoice}
                 platformDefaultVoice={platformDefaultVoice}
@@ -184,6 +187,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
                   value={resumePrompt.followContent || ''}
                   onBlur={onChangeFollowUpContent}
                   platform={platform}
+                  projectType={projectType}
                   defaultVoice={defaultVoice}
                   onChangeVoice={onChangeFollowUpVoice}
                   platformDefaultVoice={platformDefaultVoice}

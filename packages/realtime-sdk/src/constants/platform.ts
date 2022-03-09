@@ -42,13 +42,11 @@ export const legacyPlatformToProjectType = (
   platform: VoiceflowConstants.PlatformType,
   type?: Nullish<VoiceflowConstants.ProjectType>
 ): { type: VoiceflowConstants.ProjectType; platform: VoiceflowConstants.PlatformType } => {
-  if (!type) {
-    const legacy = LEGACY_PLATFORM_TO_PROJECT_TYPE[platform];
+  const legacy = LEGACY_PLATFORM_TO_PROJECT_TYPE[platform];
+  if (legacy) return legacy;
 
-    if (!legacy) throw new Error(`unknown platform type: ${platform}`);
+  if (!type) throw new Error(`unknown platform: ${platform}, type: ${type}`);
 
-    return legacy;
-  }
   return { platform, type };
 };
 

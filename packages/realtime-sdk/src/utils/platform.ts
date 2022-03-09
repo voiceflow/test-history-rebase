@@ -8,7 +8,16 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { legacyPlatformToProjectType } from '../constants/platform';
 import { isDistinctPlatform } from './typeGuards';
 
-export const createProjectTypeSelector =
+export const createProjectTypeSelectorV2 =
+  <T>(values: Record<VoiceflowConstants.ProjectType, T>) =>
+  (type: VoiceflowConstants.ProjectType): T => {
+    const value = values[type];
+    if (value == null) throw new Error('no value for project type');
+
+    return value;
+  };
+
+export const createPlatformAndProjectTypeSelectorV2 =
   <T>(
     values: Partial<
       Record<
@@ -18,7 +27,7 @@ export const createProjectTypeSelector =
     >,
     defaultValue?: T
   ) =>
-  (_platform?: Nullish<VoiceflowConstants.PlatformType>, _type?: Nullish<VoiceflowConstants.ProjectType>): T => {
+  (_platform: Nullish<VoiceflowConstants.PlatformType>, _type: Nullish<VoiceflowConstants.ProjectType>): T => {
     const mapping = _platform ? legacyPlatformToProjectType(_platform, _type) : null;
 
     // order of priority for checking in the selector:
@@ -26,6 +35,17 @@ export const createProjectTypeSelector =
     // 2. platform
     // 3. type
     const value = (mapping && (values[`${mapping.platform}:${mapping.type}`] ?? values[mapping.platform] ?? values[mapping.type])) ?? defaultValue;
+    if (value == null) throw new Error('no value for platform');
+
+    return value;
+  };
+
+export const createPlatformSelectorV2 =
+  <T>(platformValues: Partial<Record<VoiceflowConstants.PlatformType, T>>, defaultValue?: T) =>
+  (_platform?: Nullish<VoiceflowConstants.PlatformType>): T => {
+    const platform = _platform ? legacyPlatformToProjectType(_platform).platform : _platform;
+
+    const value = platform && platform in platformValues ? platformValues[platform] : defaultValue;
     if (value == null) throw new Error('no value for platform');
 
     return value;

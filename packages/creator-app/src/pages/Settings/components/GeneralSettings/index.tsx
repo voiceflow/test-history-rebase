@@ -13,7 +13,7 @@ import { Basic, Canvas, DangerZone, DialogflowConsole, GlobalConversationLogic, 
 
 const SectionComponents: Record<
   SettingSections,
-  React.FC<{ platform: VoiceflowConstants.PlatformType; title: SettingSections; platformMeta: any }>
+  React.FC<{ platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType; title: SettingSections; platformMeta: any }>
 > = {
   [SettingSections.BASIC]: Basic,
   [SettingSections.CANVAS]: Canvas,
@@ -26,6 +26,7 @@ const SectionComponents: Record<
 
 const SettingsContent: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
+  const projectType = useSelector(ProjectV2.active.typeV2Selector);
   const platformMeta = getSettingsMetaProps(platform);
   const [trackingEvents] = useTrackingEvents();
 
@@ -40,7 +41,7 @@ const SettingsContent: React.FC = () => {
 
         return (
           <SettingsSection variant={variant} key={index} title={section}>
-            <SectionComponent platform={platform} title={section} key={index} platformMeta={platformMeta} />
+            <SectionComponent platform={platform} projectType={projectType} title={section} key={index} platformMeta={platformMeta} />
           </SettingsSection>
         );
       })}

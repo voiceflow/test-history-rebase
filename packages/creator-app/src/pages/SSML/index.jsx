@@ -95,7 +95,8 @@ function SSMLPage() {
             withDefaultVoice={false}
             withVariablesPlugin={false}
             onEditorStateChange={onEditorStateChange}
-            platform={VoiceflowConstants.PlatformType.ALEXA}
+            platform={VoiceflowConstants.PlatformType.VOICEFLOW}
+            projectType={VoiceflowConstants.ProjectType.VOICE}
           />
 
           {state.text && (

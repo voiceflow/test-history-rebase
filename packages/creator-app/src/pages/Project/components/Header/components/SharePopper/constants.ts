@@ -1,7 +1,7 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { ExportFormat, NLPProvider } from '@/constants';
-import { createPlatformSelector } from '@/utils/platform';
 
 export enum ExportType {
   CANVAS = 'canvas',
@@ -34,12 +34,11 @@ export const EXPORT_TYPE_OPTIONS = [
   { id: ExportType.MODEL, label: 'NLP/NLU' },
 ];
 
-export const getNplModelProvider = createPlatformSelector(
+export const getNplModelProvider = Utils.platform.createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: [NLPProvider.ALEXA],
     [VoiceflowConstants.PlatformType.GOOGLE]: [NLPProvider.DIALOGFLOW_ES],
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: [NLPProvider.DIALOGFLOW_ES],
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: [NLPProvider.DIALOGFLOW_ES],
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: [NLPProvider.DIALOGFLOW_ES],
   },
   Object.values(NLPProvider)
 );

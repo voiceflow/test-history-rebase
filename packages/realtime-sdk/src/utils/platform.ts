@@ -112,12 +112,11 @@ export const getPlatformAppName = createPlatformSelector(
   'Assistant'
 );
 
-export const getPlatformProviderName = createPlatformSelector(
+export const getPlatformProviderName = createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
     [VoiceflowConstants.PlatformType.GOOGLE]: 'Google',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
   },
   'Custom'
 );

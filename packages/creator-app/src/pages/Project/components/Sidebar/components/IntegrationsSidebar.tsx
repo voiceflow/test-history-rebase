@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -8,7 +9,6 @@ import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { usePermission, useSelector } from '@/hooks';
-import { createPlatformSelector } from '@/utils/platform';
 
 import CanvasIconMenu from './CanvasIconMenu';
 import IconMenuOffsetContainer from './IconMenuOffsetContainer';
@@ -21,7 +21,7 @@ const getDialogflowItems = (versionID: string) => [
   },
 ];
 
-const getPlatformItems = createPlatformSelector<(versionID: string) => NavLinkItem[]>(
+const getPlatformItems = Utils.platform.createPlatformSelectorV2<(versionID: string) => NavLinkItem[]>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: (versionID) => [
       { to: generatePath(Path.PUBLISH_ALEXA, { versionID }), key: 'alexa', label: 'Amazon Alexa' },
@@ -29,8 +29,7 @@ const getPlatformItems = createPlatformSelector<(versionID: string) => NavLinkIt
     [VoiceflowConstants.PlatformType.GOOGLE]: (versionID) => [
       { to: generatePath(Path.PUBLISH_GOOGLE, { versionID }), key: 'google', label: 'Google Assistant' },
     ],
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: (versionID) => getDialogflowItems(versionID),
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: (versionID) => getDialogflowItems(versionID),
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: (versionID) => getDialogflowItems(versionID),
   },
   () => []
 );

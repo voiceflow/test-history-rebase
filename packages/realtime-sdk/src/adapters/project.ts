@@ -26,7 +26,7 @@ const projectAdapter = createAdapter<BaseModels.Project.Model<AnyRecord, AnyReco
     const type = dbType as VoiceflowConstants.ProjectType;
     const platform = dbPlatform as VoiceflowConstants.PlatformType;
 
-    const { platform: platformV2, type: typeV2 } = legacyPlatformToProjectType(platform, type)!;
+    const { platform: platformV2, type: typeV2 } = legacyPlatformToProjectType(platform, type);
 
     return {
       id: _id,

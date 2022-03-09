@@ -1,6 +1,5 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-
-import { createPlatformSelector } from '@/utils/platform';
 
 import Alexa from './alexa';
 import Dialogflow from './dialogflow';
@@ -9,12 +8,11 @@ import Google from './google';
 import { PlatformClient } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const getPlatformClient = createPlatformSelector<PlatformClient>(
+export const getPlatformClient = Utils.platform.createPlatformSelectorV2<PlatformClient>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: Alexa.client,
     [VoiceflowConstants.PlatformType.GOOGLE]: Google.client,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: Dialogflow.client,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: Dialogflow.client,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: Dialogflow.client,
   },
   General.client
 );

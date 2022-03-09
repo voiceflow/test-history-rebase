@@ -2,6 +2,7 @@ import { AlexaConstants, AlexaUtils } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants, GoogleUtils } from '@voiceflow/google-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, BoxFlex, Input, Select, useDidUpdateEffect } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
@@ -22,7 +23,6 @@ import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS, getD
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
-import { getPlatformValue } from '@/utils/platform';
 import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName } from '@/utils/typeGuards';
 
 import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
@@ -74,14 +74,16 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 
   const invocationError =
     newInvocation &&
-    getPlatformValue<(name?: string, locales?: any[]) => string | null>(
-      platform,
+    Realtime.Utils.platform.createPlatformSelectorV2<(name?: string, locales?: any[]) => string | null>(
       {
         [VoiceflowConstants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
         [VoiceflowConstants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
       },
       _constant(null)
-    )(newInvocation, isGooglePlatform(platform) ? GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language] : alexaLocales);
+    )(platform)(
+      newInvocation,
+      isGooglePlatform(platform) ? GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language] : alexaLocales
+    );
 
   const saveAlexaLocales = () => (isAlexaPlatform(platform) && locales !== alexaLocales ? updateLocales(alexaLocales) : null);
 
@@ -179,8 +181,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         isDividerNested
         customContentStyling={sectionStyling}
       >
-        {getPlatformValue<() => React.ReactNode>(
-          platform,
+        {Realtime.Utils.platform.createPlatformSelectorV2<() => React.ReactNode>(
           {
             [VoiceflowConstants.PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect
@@ -208,8 +209,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
                 renderOptionLabel={(option) => option.name}
               />
             ),
-            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: DialogflowSelect,
-            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: DialogflowSelect,
+            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DialogflowSelect,
           },
           () => (
             <Select
@@ -224,7 +224,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
               renderOptionLabel={(option) => option.name}
             />
           )
-        )()}
+        )(platform)()}
       </Section>
     </>
   );

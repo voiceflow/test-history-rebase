@@ -59,7 +59,7 @@ export const updateLocales =
 
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
-    const platform = ProjectV2.active.platformSelector(state);
+    const platform = ProjectV2.active.platformV2Selector(state);
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     if (isAtomicActions) {
@@ -70,11 +70,9 @@ export const updateLocales =
         case VoiceflowConstants.PlatformType.GOOGLE:
           dispatch(google.patchPublishing({ locales: locales as GoogleConstants.Locale[] }));
           return;
-        case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT:
-        case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE:
+        case VoiceflowConstants.PlatformType.DIALOGFLOW_ES:
           dispatch(dialogflow.patchPublishing({ locales: locales as DFESConstants.Locale[] }));
           return;
-        case VoiceflowConstants.PlatformType.GENERAL:
         default:
           await dispatch(general.patchSettings({ locales: locales as VoiceflowConstants.Locale[] }));
       }
@@ -90,11 +88,9 @@ export const updateLocales =
         case VoiceflowConstants.PlatformType.GOOGLE:
           dispatch(google.updatePublishing(versionID, { locales: locales as GoogleConstants.Locale[] }));
           return;
-        case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT:
-        case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE:
+        case VoiceflowConstants.PlatformType.DIALOGFLOW_ES:
           dispatch(dialogflow.updatePublishing(versionID, { locales: locales as DFESConstants.Locale[] }));
           return;
-        case VoiceflowConstants.PlatformType.GENERAL:
         default:
           dispatch(general.updateSettings(versionID, { locales: locales as VoiceflowConstants.Locale[] }));
       }
@@ -108,7 +104,7 @@ export const updateInvocationName =
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
-    const platform = ProjectV2.active.platformSelector(state);
+    const platform = ProjectV2.active.platformV2Selector(state);
     const activeInvocationName = VersionV2.active.invocationNameSelector(state) ?? '';
     const activeInvocations = VersionV2.active.invocationsSelector(state);
 
@@ -126,8 +122,7 @@ export const updateInvocationName =
       case VoiceflowConstants.PlatformType.GOOGLE:
         await dispatch(google.patchPublishing({ pronunciation: invocationName, sampleInvocations: invocations }));
         return;
-      case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT:
-      case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE:
+      case VoiceflowConstants.PlatformType.DIALOGFLOW_ES:
         await dispatch(dialogflow.patchPublishing({ pronunciation: invocationName, sampleInvocations: invocations }));
         // eslint-disable-next-line no-useless-return
         return;

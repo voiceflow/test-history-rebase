@@ -2,6 +2,7 @@ import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Nullable, Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { FlexCenter, useDidUpdateEffect } from '@voiceflow/ui';
 import { VoiceflowConstants as GeneralConstants, VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -117,12 +118,11 @@ const NewProject: React.FC = () => {
     const getLanguage = () => {
       const defaultLabel = getDefaultPlatformLanguageLabel(selectedChannel);
 
-      return createPlatformSelector(
+      return Realtime.Utils.platform.createPlatformSelectorV2(
         {
           [VoiceflowConstants.PlatformType.ALEXA]: LOCALE_MAP.find((locale) => locale.value === alexaLocales[0])?.name ?? defaultLabel,
           [VoiceflowConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage] ?? defaultLabel,
-          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage] ?? defaultLabel,
-          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage] ?? defaultLabel,
+          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage] ?? defaultLabel,
         },
         GENERAL_LOCALE_NAME_MAP[generalLocale] ?? defaultLabel
       )(selectedChannel);

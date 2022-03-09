@@ -1,11 +1,11 @@
 import { BaseNode } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { PrototypeMode } from '@/constants/prototype';
 import { Identifier } from '@/styles/constants';
-import { createPlatformSelector } from '@/utils/platform';
 
 export interface PrototypeMenuItem extends SidebarIconMenuItem {
   value: PrototypeMode;
@@ -47,12 +47,11 @@ const DIALOGFLOW_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, deve
 
 const GENERAL_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
 
-export const getMenuOptions = createPlatformSelector(
+export const getMenuOptions = Utils.platform.createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_PROTOTYPE_MENU_OPTIONS,
     [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_PROTOTYPE_MENU_OPTIONS,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: DIALOGFLOW_PROTOTYPE_MENU_OPTIONS,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: DIALOGFLOW_PROTOTYPE_MENU_OPTIONS,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DIALOGFLOW_PROTOTYPE_MENU_OPTIONS,
   },
   GENERAL_PROTOTYPE_MENU_OPTIONS
 );
@@ -108,7 +107,7 @@ export const ALEXA_DEVICES: DeviceInfo[] = [
 
 export const ALL_DEVICES = [...ALEXA_DEVICES];
 
-export const getDeviceList = createPlatformSelector<DeviceInfo[]>(
+export const getDeviceList = Utils.platform.createPlatformSelectorV2<DeviceInfo[]>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_DEVICES,
   },

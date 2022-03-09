@@ -41,13 +41,11 @@ const LEGACY_PLATFORM_TO_PROJECT_TYPE: {
 export const legacyPlatformToProjectType = (
   platform: VoiceflowConstants.PlatformType,
   type?: Nullish<VoiceflowConstants.ProjectType>
-): { type: VoiceflowConstants.ProjectType; platform: VoiceflowConstants.PlatformType } => {
+): { platform: VoiceflowConstants.PlatformType; type: VoiceflowConstants.ProjectType } => {
   const legacy = LEGACY_PLATFORM_TO_PROJECT_TYPE[platform];
   if (legacy) return legacy;
 
-  if (!type) throw new Error(`unknown platform: ${platform}, type: ${type}`);
-
-  return { platform, type };
+  return { platform, type: type || VoiceflowConstants.ProjectType.VOICE };
 };
 
 const PROJECT_TYPE_TO_LEGACY_PLATFORM: {

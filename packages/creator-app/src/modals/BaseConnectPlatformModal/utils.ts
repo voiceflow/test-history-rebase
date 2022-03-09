@@ -1,11 +1,10 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-
-import { createPlatformSelector } from '@/utils/platform';
 
 import { PlatformModalProps } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const getPlatformModalProps = createPlatformSelector<PlatformModalProps>(
+export const getPlatformModalProps = Utils.platform.createPlatformSelectorV2<PlatformModalProps>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: {
       title: 'connect to amazon',
@@ -17,14 +16,9 @@ export const getPlatformModalProps = createPlatformSelector<PlatformModalProps>(
       platformName: 'Google',
       projectName: 'Action',
     },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: {
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
       title: 'connect to dialogflow',
-      platformName: 'Dialogflow Chat',
-      projectName: 'Dialogflow project',
-    },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: {
-      title: 'connect to dialogflow',
-      platformName: 'Dialogflow Voice',
+      platformName: 'Dialogflow',
       projectName: 'Dialogflow project',
     },
   },

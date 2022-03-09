@@ -26,12 +26,11 @@ export const voiceNoReplyFactory = (options: NoReplyFactoryOptions = {}): Realti
   reprompts: [voicePromptFactory(options)],
 });
 
-export const getDefaultNoReplyTimeoutSeconds = createPlatformSelector<number>(
+export const getDefaultNoReplyTimeoutSeconds = Realtime.Utils.platform.createPlatformSelectorV2<number>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 8,
     [VoiceflowConstants.PlatformType.GOOGLE]: 8,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: 5,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: 5,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 5,
   },
   10
 );

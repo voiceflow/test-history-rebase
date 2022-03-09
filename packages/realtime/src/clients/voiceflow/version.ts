@@ -33,12 +33,11 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions): Vers
   const dialogflowClient = PlatformClient<DFESVersion.Settings, DFESVersion.Publishing>(dialogflow);
   const generalClient = PlatformClient<VoiceflowVersion.Settings, never>(general);
 
-  const getPlatform = Realtime.Utils.platform.createPlatformSelector(
+  const getPlatform = Realtime.Utils.platform.createPlatformSelectorV2(
     {
       [VoiceflowConstants.PlatformType.ALEXA]: alexaClient as GenericVersionPlatformClient,
       [VoiceflowConstants.PlatformType.GOOGLE]: googleClient as GenericVersionPlatformClient,
-      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflowClient as GenericVersionPlatformClient,
-      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowClient as GenericVersionPlatformClient,
+      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: dialogflowClient as GenericVersionPlatformClient,
     },
     generalClient as GenericVersionPlatformClient
   );

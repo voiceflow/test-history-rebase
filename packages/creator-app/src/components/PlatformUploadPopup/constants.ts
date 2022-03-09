@@ -1,6 +1,5 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-
-import { createPlatformSelector } from '@/utils/platform';
 
 import Alexa, { getAlexaPopupLayout } from './Alexa';
 import Dialogflow, { getDialogflowPopupLayout } from './Dialogflow';
@@ -19,22 +18,20 @@ export interface PlatformContentProps {
   createNewAgent?: () => void;
 }
 
-export const getPlatformContent = createPlatformSelector(
+export const getPlatformContent = Utils.platform.createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: Alexa,
     [VoiceflowConstants.PlatformType.GOOGLE]: Google,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: Dialogflow,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: Dialogflow,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: Dialogflow,
   },
   General
 );
 
-export const getPlatformPopupLayout = createPlatformSelector(
+export const getPlatformPopupLayout = Utils.platform.createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: getAlexaPopupLayout,
     [VoiceflowConstants.PlatformType.GOOGLE]: getGooglePopupLayout,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: getDialogflowPopupLayout,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: getDialogflowPopupLayout,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: getDialogflowPopupLayout,
   },
   getGeneralPopupLayout
 );

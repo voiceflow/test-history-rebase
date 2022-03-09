@@ -1,7 +1,7 @@
 import { AdapterContext } from '@realtime-sdk/adapters/types';
 import { BlockType } from '@realtime-sdk/constants';
 import { NodeData } from '@realtime-sdk/models';
-import { createPlatformSelector } from '@realtime-sdk/utils/platform';
+import { createPlatformSelector, createPlatformSelectorV2 } from '@realtime-sdk/utils/platform';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { BidirectionalAdapter } from 'bidirectional-adapter';
@@ -80,14 +80,13 @@ const commonBlockAdapter = {
   [BlockType.MARKUP_IMAGE]: markupImageAdapter,
 };
 
-const getPlatformOutPortsAdapter = createPlatformSelector<
+const getPlatformOutPortsAdapter = createPlatformSelectorV2<
   typeof alexaOutPortAdapter | typeof googleOutPortAdapter | typeof baseOutPortAdapter | typeof dialogflowOutPortAdapter
 >(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: alexaOutPortAdapter,
     [VoiceflowConstants.PlatformType.GOOGLE]: googleOutPortAdapter,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflowOutPortAdapter,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowOutPortAdapter,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: dialogflowOutPortAdapter,
   },
   baseOutPortAdapter
 );

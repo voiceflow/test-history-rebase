@@ -8,8 +8,6 @@ import { Normalized } from 'normal-store';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
 
-import { createPlatformSelector } from './platform';
-
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
 const amazonBuiltInIntentsArray = Object.values(AlexaConstants.AmazonIntent) as string[];
@@ -72,7 +70,7 @@ export const intentFilter = <T extends Realtime.Intent>(intent: T, activeIntent:
 export const filterIntents = <T extends Realtime.Intent>(intents: T[], activeIntent?: T | null): T[] =>
   intents.filter((intent) => intentFilter(intent, activeIntent));
 
-export const getTruncatedName = createPlatformSelector(
+export const getTruncatedName = Realtime.Utils.platform.createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.GOOGLE]: (name: string) =>
       Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' '),
@@ -120,27 +118,24 @@ export const ALEXA_BUILT_INS = AlexaConstants.BUILT_IN_INTENTS.map(intentFactory
 
 export const GOOGLE_BUILT_INS = GoogleConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.GOOGLE));
 
-export const DIALOGFLOW_CHAT_BUILT_INS = DFESConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT));
-
-export const DIALOGFLOW_VOICE_BUILT_INS = DFESConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE));
+export const DIALOGFLOW_BUILT_INS = DFESConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.DIALOGFLOW_ES));
 
 export const GENERAL_BUILT_INS_MAP = Object.keys(VoiceflowConstants.DEFAULT_INTENTS_MAP).reduce<Record<string, Realtime.Intent[]>>(
   (acc, key) => Object.assign(acc, { [key]: VoiceflowConstants.DEFAULT_INTENTS_MAP[key].map(generalIntentFactory) }),
   {}
 );
 
-export const getBuiltInIntents = createPlatformSelector(
+export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_BUILT_INS,
     [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: DIALOGFLOW_CHAT_BUILT_INS,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: DIALOGFLOW_VOICE_BUILT_INS,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DIALOGFLOW_BUILT_INS,
   },
   GENERAL_BUILT_INS_MAP[VoiceflowConstants.Locale.EN_US]
 );
 
 export const isBuiltInIntent = (intentID: string): boolean =>
-  [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS, ...DIALOGFLOW_CHAT_BUILT_INS, ...DIALOGFLOW_VOICE_BUILT_INS].some((intent) => intent.id === intentID);
+  [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS, ...DIALOGFLOW_BUILT_INS].some((intent) => intent.id === intentID);
 
 const NUMERIC_UTTERANCE_REGEXP = /\d/;
 

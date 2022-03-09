@@ -14,13 +14,7 @@ const createPlatformTypeGuard = createTypeGuardCreator<VoiceflowConstants.Platfo
 
 export const isAlexaPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.ALEXA);
 export const isGooglePlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.GOOGLE);
-export const isDialogflowChatPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT);
-export const isDialogflowVoicePlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE);
-
-export const isIVRPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.IVR);
-export const isGeneralPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.GENERAL);
-export const isChatbotPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.CHATBOT);
-export const isMobileAppPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.MOBILE_APP);
+export const isDialogflowPlatformV2 = createPlatformTypeGuard(VoiceflowConstants.PlatformType.DIALOGFLOW_ES);
 
 export const isChatPlatform = createPlatformTypeGuard(CHAT_PLATFORMS);
 export const isVoicePlatform = createPlatformTypeGuard(VOICE_PLATFORMS);

@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import { Utils } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -12,10 +12,9 @@ import { useConnectState } from './BaseConnectPlatformModal/hooks';
 import { getPlatformModalProps } from './BaseConnectPlatformModal/utils';
 
 const MODAL_TYPE = ModalType.CONNECT_PLATFORM;
-const PLATFORM_TYPE = VoiceflowConstants.PlatformType;
 
 const ConnectActivePlatformModal: React.FC = () => {
-  const platform = useSelector(ProjectV2.active.platformSelector);
+  const platform = useSelector(ProjectV2.active.platformV2Selector);
   const { data, isOpened } = useModals<{
     stage: AlexaStageType | GoogleStageType | DialogflowStageType;
     updateCurrentStage: (data: unknown) => void;
@@ -24,19 +23,15 @@ const ConnectActivePlatformModal: React.FC = () => {
 
   const [state, api] = useConnectState(isOpened);
 
-  const isAlexa = platform === PLATFORM_TYPE.ALEXA;
-  const isGoogle = platform === PLATFORM_TYPE.GOOGLE;
-  const isDialogflow = platform === PLATFORM_TYPE.DIALOGFLOW_ES_CHAT || platform === PLATFORM_TYPE.DIALOGFLOW_ES_VOICE;
-
-  if (isAlexa && stage === AlexaStageType.IDLE) {
+  if (Utils.typeGuards.isAlexaPlatform(platform) && stage === AlexaStageType.IDLE) {
     return <AlexaIdleStage modalType={MODAL_TYPE} />;
   }
 
-  if (isGoogle && stage === GoogleStageType.IDLE) {
+  if (Utils.typeGuards.isGooglePlatform(platform) && stage === GoogleStageType.IDLE) {
     return <GoogleIdleStage modalType={MODAL_TYPE} />;
   }
 
-  if (isDialogflow && stage === DialogflowStageType.IDLE) {
+  if (Utils.typeGuards.isDialogflowPlatformV2(platform) && stage === DialogflowStageType.IDLE) {
     return <DialogflowIdleStage modalType={MODAL_TYPE} />;
   }
 

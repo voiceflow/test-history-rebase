@@ -41,6 +41,7 @@ export type DnDItemProps<I> = InternalItem<I> & {
   >;
   contextMenuOptions?: ContextMenuOption<I>[];
   withContextMenuDelete?: boolean;
+  contextMenuDeleteLabel?: string;
   unmountableDuringDrag?: boolean;
   withContextMenuDuplicate?: boolean;
   disableReorderingWhileDraggingX?: boolean;
@@ -53,6 +54,7 @@ const DnDItem = <P extends DnDItemProps<any>>({
   itemComponent: Item,
   contextMenuOptions,
   withContextMenuDelete,
+  contextMenuDeleteLabel = 'Delete',
   unmountableDuringDrag,
   withContextMenuDuplicate,
   disableReorderingWhileDraggingX,
@@ -76,7 +78,7 @@ const DnDItem = <P extends DnDItemProps<any>>({
     }
 
     if (withContextMenuDelete) {
-      options.push({ label: 'Delete', onClick: () => props.onRemove(props) });
+      options.push({ label: contextMenuDeleteLabel, onClick: () => props.onRemove(props) });
     }
 
     return options;

@@ -104,6 +104,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
           previewComponent={DraggableItem}
           unmountableDuringDrag
           withContextMenuDelete
+          contextMenuDeleteLabel="Remove"
         >
           {({ renderItem }) => (
             <SearchableList

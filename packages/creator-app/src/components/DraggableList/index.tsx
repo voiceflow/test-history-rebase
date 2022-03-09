@@ -46,6 +46,7 @@ export type DraggableListProps<I, D, C> = {
   contextMenuOptions?: ContextMenuOption<I>[];
   unmountableDuringDrag?: boolean;
   withContextMenuDelete?: boolean;
+  contextMenuDeleteLabel?: string;
   withContextMenuDuplicate?: boolean;
   disableReorderingWhileDraggingX?: boolean;
 } & (
@@ -106,6 +107,7 @@ const DraggableList = <I, D, C>({
   unmountableDuringDrag,
   withContextMenuDelete,
   withContextMenuDuplicate,
+  contextMenuDeleteLabel,
   disableReorderingWhileDraggingX,
   ...props
 }: DraggableListProps<I, D, C>): JSX.Element => {
@@ -186,6 +188,7 @@ const DraggableList = <I, D, C>({
       contextMenuOptions={contextMenuOptions}
       unmountableDuringDrag={unmountableDuringDrag}
       withContextMenuDelete={withContextMenuDelete}
+      contextMenuDeleteLabel={contextMenuDeleteLabel}
       withContextMenuDuplicate={withContextMenuDuplicate}
       disableReorderingWhileDraggingX={disableReorderingWhileDraggingX}
     />

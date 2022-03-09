@@ -135,6 +135,10 @@ export const exportModel =
         data = await client.platform.general.modelExport.exportBlob(versionID, 'lexV1', intents);
         downloadFromURL(`${projectName}-lex-model`, data);
         URL.revokeObjectURL(data);
+      } else if (nlpProvider === NLPProvider.VF_CSV) {
+        data = await client.platform.general.modelExport.exportBlob(versionID, 'csv', intents);
+        downloadFromURL(`${projectName}.vf.csv`, data);
+        URL.revokeObjectURL(data);
       } else {
         throw new Error(`no provider matched: ${nlpProvider}`);
       }

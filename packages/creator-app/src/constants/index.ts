@@ -78,6 +78,7 @@ export enum NLPProvider {
   WATSON = 'watson',
   EINSTEIN = 'einstein',
   DIALOGFLOW_ES = 'diagflow-es',
+  VF_CSV = 'vf-csv',
 }
 
 export const NLPProviderLabels = {
@@ -88,6 +89,7 @@ export const NLPProviderLabels = {
   [NLPProvider.LEX_V1]: 'Amazon Lex V1',
   [NLPProvider.EINSTEIN]: 'Salesforce Einstein',
   [NLPProvider.DIALOGFLOW_ES]: 'Dialogflow ES',
+  [NLPProvider.VF_CSV]: 'Voiceflow CSV',
 };
 
 export const PERMISSIONS = [

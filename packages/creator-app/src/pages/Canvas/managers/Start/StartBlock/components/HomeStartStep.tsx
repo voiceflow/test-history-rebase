@@ -19,7 +19,7 @@ const HomeStartStep: React.FC<HomeStartStepProps> = ({ label, platform, invocati
   <Step disableHighlightStyle>
     <Section>
       <Item
-        icon={getPlatformMeta(platform).icon}
+        icon={getPlatformMeta().icon}
         label={getPlatformValue(
           platform,
           {

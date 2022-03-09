@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.647.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.646.0...@voiceflow/creator-app@1.647.0) (2022-03-09)
+
+
+### Features
+
+* fix naming for right click on built-in intents (VF-3039) ([#5168](https://github.com/voiceflow/creator-app/issues/5168)) ([e6f9c8b](https://github.com/voiceflow/creator-app/commit/e6f9c8b387121e8a47d3c005f1b2beb178f3bdf6))
+
+
+
+
+
 # [1.646.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.645.0...@voiceflow/creator-app@1.646.0) (2022-03-08)
 
 

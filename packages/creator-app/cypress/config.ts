@@ -13,6 +13,6 @@ export const API_URL = 'https://creator-api.test.e2e:8003';
 
 export const PLATFORM_SERVICE_URLS = {
   alexa: 'https://alexa-service.test.e2e:8001',
-  general: 'https://general-runtime.test.e2e:8006',
+  general: 'https://general-service.test.e2e:8006',
   google: 'https://google-service.test.e2e:8008',
 };

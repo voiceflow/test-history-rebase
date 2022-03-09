@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.649.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.648.0...@voiceflow/creator-app@1.649.0) (2022-03-09)
+
+
+### Features
+
+* set all start block icons the same (VF-2997) ([#5172](https://github.com/voiceflow/creator-app/issues/5172)) ([5154b6a](https://github.com/voiceflow/creator-app/commit/5154b6a769c7eb2a397d0faba285919a2aec2d0a))
+
+
+
+
+
 # [1.648.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.647.2...@voiceflow/creator-app@1.648.0) (2022-03-09)
 
 

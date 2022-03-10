@@ -171,7 +171,7 @@ export const importProject =
         waitAsync(Realtime.project.duplicate, {
           data: { teamID: targetWorkspaceID, _version: vfVersion },
           projectID,
-          workspaceID: project.workspaceID,
+          workspaceID: targetWorkspaceID,
         })
       );
     }

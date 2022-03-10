@@ -28,12 +28,10 @@ const ContextMenu = <T extends any>({
 
   const onContextMenu = (event: React.MouseEvent<HTMLElement>) => {
     const target: any = event?.target;
-
     // .closest() - supported in all browsers except IE
     if (EXCLUDED_TAG_NAME.includes(target?.tagName.toLowerCase()) || target?.closest?.(`.${CONTEXT_MENU_IGNORED_CLASS_NAME}`)) {
       return;
     }
-
     event?.preventDefault();
     event?.stopPropagation();
 

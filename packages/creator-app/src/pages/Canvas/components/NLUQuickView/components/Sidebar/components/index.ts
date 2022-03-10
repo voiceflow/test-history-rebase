@@ -1,13 +1,40 @@
 import { Box, Input } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { UncontrolledSection } from '@/components/Section';
+import ContentContainer from '@/components/Section/components/ContentContainer';
+import SectionHeader from '@/components/Section/components/SectionHeader';
+import { InteractionModelTabType } from '@/constants';
+import { css, styled } from '@/hocs';
+
+export const SectionSection = styled(UncontrolledSection)<{ isExpanded: boolean }>`
+  ${SectionHeader} {
+    ${({ isExpanded }) =>
+      isExpanded &&
+      css`
+        background: #fdfdfd;
+        padding-bottom: 12px;
+      `}
+  }
+
+  ${ContentContainer} {
+    padding: 0px 16px;
+    max-height: calc(100vh - 374px);
+    overflow: auto;
+
+    ${({ isExpanded }) =>
+      isExpanded &&
+      css`
+        background: #fdfdfd;
+      `}
+  }
+`;
 
 export const Container = styled(Box)`
-  flex: 5;
   border-right: solid 1px #dfe3ed;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
+  max-height: 100%;
+  width: 280px;
 `;
 
 export const NLUButton = styled(Box)`
@@ -16,7 +43,14 @@ export const NLUButton = styled(Box)`
   background: #eef4f6;
   border-top: solid 1px #dfe3ed;
   display: flex;
+  font-weight: 600;
   align-items: center;
+  opacity: 0.85;
+
+  &:hover,
+  &:active {
+    opacity: 1;
+  }
 `;
 
 export const SearchInput = styled(Input)`
@@ -25,4 +59,15 @@ export const SearchInput = styled(Input)`
   border-radius: 0;
   border: none !important;
   box-shadow: none !important;
+`;
+
+export const SectionsContainer = styled.div<{ activeTab: InteractionModelTabType }>`
+  flex: 10;
+  overflow: hidden;
+
+  ${({ activeTab }) =>
+    activeTab === InteractionModelTabType.VARIABLES &&
+    css`
+      background: #fdfdfd;
+    `}
 `;

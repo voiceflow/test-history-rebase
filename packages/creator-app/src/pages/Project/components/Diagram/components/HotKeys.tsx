@@ -1,10 +1,11 @@
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useEventualEngine, useHotKeys, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useEventualEngine, useFeature, useHotKeys, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
@@ -23,8 +24,8 @@ const HotKeys: React.FC = () => {
   const [, trackingEventsWrapper] = useTrackingEvents();
 
   const imModal = useModals(ModalType.INTERACTION_MODEL);
-  // const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
-  // const nluQuickView = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
+  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
+  const nluQuickView = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
 
   const onDisableModes = useDisableModes();
@@ -51,11 +52,11 @@ const HotKeys: React.FC = () => {
   const onOpenImModel = React.useCallback(
     () =>
       trackingEventsWrapper(() => {
-        // if (IMM_MODALS_V2.isEnabled) {
-        //   nluQuickView.open();
-        // } else {
-        imModal.open();
-        // }
+        if (IMM_MODALS_V2.isEnabled) {
+          nluQuickView.open();
+        } else {
+          imModal.open();
+        }
       }, 'trackCanvasControlInteractionModel')(),
     [imModal.open]
   );

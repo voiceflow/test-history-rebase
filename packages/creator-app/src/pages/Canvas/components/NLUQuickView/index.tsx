@@ -4,8 +4,6 @@ import React from 'react';
 import Modal from '@/components/Modal';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import { useModals } from '@/hooks';
-import { SlotsManager, VariablesManager } from '@/pages/Canvas/components/InteractionModelModal/components';
-import { Manager } from '@/pages/Canvas/components/InteractionModelModal/components/IntentsManager/components';
 
 import Sidebar from './components/Sidebar';
 
@@ -21,26 +19,15 @@ const NLUQuickView: React.FC = () => {
     }
   }, [data.initialSelectedID]);
 
-  const onSetSelectedTypeAndID = React.useCallback((type: InteractionModelTabType, id: string) => {
-    setActiveTab(type);
-    setSelectedID(id);
-  }, []);
-
   return (
     <Modal
-      leftSidebar={() => <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />}
+      leftSidebar={() => <Sidebar selectedID={selectedID} activeTab={activeTab} setActiveTab={setActiveTab} setSelectedItemID={setSelectedID} />}
       maxWidth={740}
       id={ModalType.NLU_MODEL_QUICK_VIEW}
       title="Test"
       headerBorder
     >
-      <Box width="100%" overflow="auto" height="calc(100vh - 220px)">
-        {activeTab === InteractionModelTabType.SLOTS && <SlotsManager selectedID={selectedID} setSelectedID={setSelectedID} />}
-        {activeTab === InteractionModelTabType.INTENTS && <Manager id={selectedID} removeIntent={() => {}} />}
-        {activeTab === InteractionModelTabType.VARIABLES && (
-          <VariablesManager selectedID={selectedID} setSelectedID={setSelectedID} setSelectedTypeAndID={onSetSelectedTypeAndID} />
-        )}
-      </Box>
+      <Box width="100%" overflow="auto" height="calc(100vh - 120px)"></Box>
     </Modal>
   );
 };

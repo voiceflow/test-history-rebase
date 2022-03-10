@@ -11,7 +11,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeD
   type: BlockType.CAPTUREV2,
   icon: 'capture',
 
-  factory: (_, { platform, defaultVoice } = {}) => ({
+  factory: (_, { projectType, defaultVoice } = {}) => ({
     node: {
       ports: {
         in: [{}],
@@ -30,7 +30,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeD
       variable: null,
       intent: { slots: [{ id: '', dialog: { prompt: [], confirm: [], utterances: [], confirmEnabled: false }, required: true }] },
       noReply: null,
-      noMatch: getPlatformNoMatchFactory(platform)({ defaultVoice }),
+      noMatch: getPlatformNoMatchFactory(projectType)({ defaultVoice }),
       intentScope: BaseNode.Utils.IntentScope.GLOBAL,
     },
   }),

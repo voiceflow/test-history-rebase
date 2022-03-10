@@ -32,7 +32,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       this.services.workspace.isFeatureEnabled(creatorID, ctx.params.workspaceID, 'topics_and_components'),
       this.services.variableState.getAll(creatorID, ctx.params.projectID).then(Realtime.Adapters.variableStateAdapter.mapFromDB),
     ]);
-    const { platform } = project;
+    const { platform, typeV2: projectType } = project;
     const version = Realtime.Adapters.versionAdapter.fromDB(dbVersion as Realtime.AnyDBVersion, { platform });
 
     const [diagrams, intentSteps] = await Promise.all([
@@ -94,7 +94,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.diagram.loadIntentSteps({ intentSteps, workspaceID, projectID, versionID }),
       Realtime.version.crud.add({ value: version, key: versionID, workspaceID, projectID }),
       Realtime.project.crud.add({ value: project, key: projectID, workspaceID }),
-      Realtime.version.activateVersion({ workspaceID, projectID, versionID, diagramID: action.diagramID ?? version.rootDiagramID, platform }),
+      Realtime.version.activateVersion({ workspaceID, projectID, versionID, diagramID: action.diagramID ?? version.rootDiagramID, projectType }),
     ];
   };
 }

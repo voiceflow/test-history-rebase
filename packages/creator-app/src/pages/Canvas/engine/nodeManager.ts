@@ -32,13 +32,15 @@ import { DUPLICATE_OFFSET, EngineConsumer, nodeDescriptorFactory } from './utils
 const nodeFactoryOptionsSelector = createSelector(
   [
     ProjectV2.active.platformSelector,
+    ProjectV2.active.typeV2Selector,
     VersionV2.active.defaultVoiceSelector,
     Feature.allActiveFeaturesSelector,
     VersionV2.active.canvasNodeVisibilitySelector,
   ],
-  (platform, defaultVoice, allActiveFeatures, canvasNodeVisibility) => ({
+  (platform, projectType, defaultVoice, allActiveFeatures, canvasNodeVisibility) => ({
     features: allActiveFeatures,
     platform,
+    projectType,
     defaultVoice: defaultVoice || getPlatformDefaultVoice(platform),
     canvasNodeVisibility: canvasNodeVisibility || BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
   })

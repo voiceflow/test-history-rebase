@@ -22,7 +22,7 @@ export interface ActivateVersionPayload {
   projectID: string;
   versionID: string;
   diagramID: string | null;
-  platform: VoiceflowConstants.PlatformType;
+  projectType: VoiceflowConstants.ProjectType;
 }
 
 export const activateVersion = Utils.protocol.createAction<ActivateVersionPayload>(versionRPCType('ACTIVATE'));

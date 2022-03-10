@@ -1,5 +1,6 @@
 import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { batch } from 'react-redux';
 
@@ -9,7 +10,6 @@ import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
 import { Trace } from '@/models';
 import { Thunk } from '@/store/types';
-import { createPlatformSelector } from '@/utils/platform';
 import { getPrototypeSessionID } from '@/utils/prototype';
 import * as Sentry from '@/vendors/sentry';
 
@@ -17,13 +17,10 @@ import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype, up
 import { prototypeContextSelector, prototypeIDSelector, prototypeSelector, prototypeVisualDataSelector } from '../selectors';
 import { Context } from '../types';
 
-const getPlatformExcludedTraceTypes = createPlatformSelector(
-  {
-    [VoiceflowConstants.PlatformType.CHATBOT]: [BaseTrace.TraceType.SPEAK],
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: [BaseTrace.TraceType.SPEAK],
-  },
-  []
-);
+const getProjectExcludedTraceTypes = Realtime.Utils.platform.createProjectTypeSelectorV2({
+  [VoiceflowConstants.ProjectType.CHAT]: [BaseTrace.TraceType.SPEAK],
+  [VoiceflowConstants.ProjectType.VOICE]: [],
+});
 
 const getTargetFlowID = (trace: Trace[]) => {
   for (let i = trace.length - 1; i >= 0; i--) {
@@ -60,7 +57,7 @@ const fetchContext =
         {
           state,
           request,
-          config: { ...(!!config.isGuided && guidedConfig), excludeTypes: getPlatformExcludedTraceTypes(config.platform), tts: true },
+          config: { ...(!!config.isGuided && guidedConfig), excludeTypes: getProjectExcludedTraceTypes(config.projectType), tts: true },
         },
         { sessionID, platform: isPublic ? 'prototype' : 'canvas-prototype' }
       );

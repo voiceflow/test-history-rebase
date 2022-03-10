@@ -5,28 +5,25 @@ import _isPlainObject from 'lodash/isPlainObject';
 import { Normalized } from 'normal-store';
 
 import { applyCustomizableBuiltInIntent, getIntentNameLabel, isCustomizableBuiltInIntent } from '@/utils/intent';
-import { createAdvancedPlatformSelector } from '@/utils/platform';
 
 export const getUniqSlots = (inputs: Realtime.IntentInput[]): string[] => [...new Set(inputs.flatMap(({ slots }) => slots || []))];
 
-const newChatSlotsCreator = (id: string): Realtime.ChatIntentSlot => Adapters.Intent.chatIntentSlotSanitizer({ id });
-const newVoiceSlotsCreator = (id: string): Realtime.VoiceIntentSlot => Adapters.Intent.voiceIntentSlotSanitizer({ id });
+type SlotsCreator = (id: string) => Realtime.VoiceIntentSlot | Realtime.ChatIntentSlot;
+const newChatSlotsCreator: SlotsCreator = (id) => Adapters.Intent.chatIntentSlotSanitizer({ id });
+const newVoiceSlotsCreator: SlotsCreator = (id): Realtime.VoiceIntentSlot => Adapters.Intent.voiceIntentSlotSanitizer({ id });
 
-export const getPlatformNewSlotsCreator = createAdvancedPlatformSelector(
-  {
-    [VoiceflowConstants.PlatformType.CHATBOT]: newChatSlotsCreator,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: newChatSlotsCreator,
-  },
-  newVoiceSlotsCreator
-);
+export const getProjectTypeNewSlotsCreator = Realtime.Utils.platform.createProjectTypeSelectorV2({
+  [VoiceflowConstants.ProjectType.CHAT]: newChatSlotsCreator,
+  [VoiceflowConstants.ProjectType.VOICE]: newVoiceSlotsCreator,
+});
 
-export const intentProcessor = (platform: VoiceflowConstants.PlatformType, { inputs = [], slots, ...intent }: Realtime.Intent): Realtime.Intent => {
+export const intentProcessor = (projectType: VoiceflowConstants.ProjectType, { inputs = [], slots, ...intent }: Realtime.Intent): Realtime.Intent => {
   let nextSlots = slots;
 
   if (!_isPlainObject(slots)) {
     const allKeys = getUniqSlots(inputs);
     const byKey = allKeys.reduce<Record<string, Realtime.ChatIntentSlot> | Record<string, Realtime.VoiceIntentSlot>>(
-      (obj, id) => Object.assign(obj, { [id]: getPlatformNewSlotsCreator(platform)(id) }),
+      (obj, id) => Object.assign(obj, { [id]: getProjectTypeNewSlotsCreator(projectType)(id) }),
       {}
     );
 

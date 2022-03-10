@@ -6,7 +6,7 @@ import React from 'react';
 import OverflowMenu from '@/components/OverflowMenu';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import VariableSelect from '@/components/VariableSelect';
-import { getPlatformNewSlotsCreator } from '@/ducks/intent/utils';
+import { getProjectTypeNewSlotsCreator } from '@/ducks/intent/utils';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useSelector } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
@@ -22,15 +22,15 @@ const ENTIRE_USER_REPLY = '_ENTIRE_USER_REPLY_';
 const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = ({
   data,
   onChange,
-  platform,
   pushToPath,
+  projectType,
 }) => {
   const [search, setSearch] = React.useState('');
   const entityCapture = (slotID = '') => {
     onChange({
       captureType: BaseNode.CaptureV2.CaptureType.INTENT,
-      intent: { slots: [getPlatformNewSlotsCreator(platform)(slotID)] },
-      noMatch: getPlatformNoMatchFactory(platform)(),
+      intent: { slots: [getProjectTypeNewSlotsCreator(projectType)(slotID)] },
+      noMatch: getPlatformNoMatchFactory(projectType)(),
     });
   };
 

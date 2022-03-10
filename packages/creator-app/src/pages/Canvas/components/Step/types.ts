@@ -11,6 +11,7 @@ export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord
   data: Realtime.NodeData<T>;
   engine: Engine;
   platform: VoiceflowConstants.PlatformType;
+  projectType: VoiceflowConstants.ProjectType;
   variant: BlockVariant;
   withPorts: boolean;
 }

@@ -4,7 +4,7 @@ import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockVariant } from '@/constants/canvas';
-import { getPlatformNewSlotsCreator } from '@/ducks/intent/utils';
+import { getProjectTypeNewSlotsCreator } from '@/ducks/intent/utils';
 import Step, { ConnectedStep, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
 import { SlotMapContext } from '@/pages/Canvas/contexts';
 
@@ -70,14 +70,14 @@ const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.
   data,
   ports,
   variant,
-  platform,
+  projectType,
 }) => {
   const slotMap = React.useContext(SlotMapContext)!;
   const slots = data.intent?.slots.map((intentSlot) => ({ ...intentSlot, slot: slotMap[intentSlot.id] }));
 
   return (
     <CaptureStep
-      slots={slots?.length ? slots : [getPlatformNewSlotsCreator(platform)('')]}
+      slots={slots?.length ? slots : [getProjectTypeNewSlotsCreator(projectType)('')]}
       nodeID={data.nodeID}
       noReply={data.noReply}
       noMatch={data.noMatch}

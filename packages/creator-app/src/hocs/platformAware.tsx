@@ -2,46 +2,39 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import * as ProjectV2 from '@/ducks/projectV2';
-import { ConnectedProps } from '@/types';
-
-import { connect } from './connect';
-
-const getPlatformComponentSwitcher =
-  <T,>(
-    components: Partial<Record<VoiceflowConstants.PlatformType, React.FC<T>>>,
-    defaultComponent: React.FC<T>
-  ): React.FC<PlatformComponentSwitcherProps & T> =>
-  ({ platform, ...props }) => {
-    const Component = React.useMemo(() => {
-      if (platform in components) {
-        return components[platform]!;
-      }
-
-      return defaultComponent;
-    }, [platform]);
-
-    return <Component {...(props as T)} />;
-  };
-
-const mapStateToProps = {
-  platform: ProjectV2.active.platformSelector,
-};
-
-type PlatformComponentSwitcherProps = ConnectedProps<typeof mapStateToProps>;
+import { useSelector } from '@/hooks/redux';
 
 // eslint-disable-next-line import/prefer-default-export
 export const platformAware: {
-  <T extends any>(
-    components: Record<VoiceflowConstants.PlatformType, React.FC<T>>,
-    defaultComponent?: React.FC<T>,
-    skipWarning?: boolean
-  ): React.FC<T>;
-  <T extends any>(
+  <T>(components: Record<VoiceflowConstants.PlatformType, React.FC<T>>, defaultComponent?: React.FC<T>): React.FC<T>;
+  <T>(components: Partial<Record<VoiceflowConstants.PlatformType, React.FC<T>>>, defaultComponent: React.FC<T>): React.FC<T>;
+} =
+  <T,>(
     components: Partial<Record<VoiceflowConstants.PlatformType, React.FC<T>>>,
-    defaultComponent: React.FC<T>,
-    skipWarning?: boolean
-  ): React.FC<T>;
-} = <T extends any>(
-  components: Partial<Record<VoiceflowConstants.PlatformType, React.FC<T>>>,
-  defaultComponent: React.FC<T> = () => <div>Platform Component is not found!</div>
-) => connect(mapStateToProps)(getPlatformComponentSwitcher(components, defaultComponent) as React.FC<PlatformComponentSwitcherProps>) as React.FC<T>;
+    defaultComponent: React.FC<T> = () => <div>Platform Component is not found!</div>
+  ) =>
+  (props) => {
+    const platform = useSelector(ProjectV2.active.platformV2Selector);
+    const Component = React.useMemo(() => {
+      return components[platform]! || defaultComponent;
+    }, [platform]);
+
+    return <Component {...(props as unknown as T)} />;
+  };
+
+export const projectTypeAware: {
+  <T>(components: Record<VoiceflowConstants.ProjectType, React.FC<T>>, defaultComponent?: React.FC<T>): React.FC<T>;
+  <T>(components: Partial<Record<VoiceflowConstants.ProjectType, React.FC<T>>>, defaultComponent: React.FC<T>): React.FC<T>;
+} =
+  <T,>(
+    components: Partial<Record<VoiceflowConstants.ProjectType, React.FC<T>>>,
+    defaultComponent: React.FC<T> = () => <div>Platform Component is not found!</div>
+  ) =>
+  (props) => {
+    const projectType = useSelector(ProjectV2.active.typeV2Selector);
+    const Component = React.useMemo(() => {
+      return components[projectType]! || defaultComponent;
+    }, [projectType]);
+
+    return <Component {...(props as unknown as T)} />;
+  };

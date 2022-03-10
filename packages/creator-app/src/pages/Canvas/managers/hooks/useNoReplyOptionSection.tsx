@@ -8,7 +8,7 @@ import { NoReplySection } from '@/pages/Canvas/components/NoReply';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
-import { PlatformContext } from '@/pages/Project/contexts';
+import { PlatformContext, TypeV2Context } from '@/pages/Project/contexts';
 import { getPlatformNoReplyFactory } from '@/utils/noReply';
 
 import { OptionSection } from './types';
@@ -26,6 +26,7 @@ const useNoReplyOptionSection = ({
 }: NodeInterface<{ nodeID: string; noReply?: Nullable<Realtime.NodeData.NoReply> }>): OptionSection => {
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext);
+  const projectType = React.useContext(TypeV2Context);
 
   const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
 
@@ -38,8 +39,8 @@ const useNoReplyOptionSection = ({
       await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
     }
 
-    onChange({ noReply: data.noReply ? null : getPlatformNoReplyFactory(platform)({ defaultVoice }) });
-  }, [platform, data.nodeID, data.noReply, onChange, defaultVoice]);
+    onChange({ noReply: data.noReply ? null : getPlatformNoReplyFactory(projectType, platform)({ defaultVoice }) });
+  }, [projectType, platform, data.nodeID, data.noReply, onChange, defaultVoice]);
 
   return [
     {

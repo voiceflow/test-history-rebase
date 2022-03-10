@@ -13,11 +13,12 @@ export interface PrototypeConfig {
   intent: boolean;
   isGuided: boolean;
   platform: VoiceflowConstants.PlatformType;
+  projectType: VoiceflowConstants.ProjectType;
   showVisuals: boolean;
 }
 
 export interface RecentState {
-  prototype: Omit<PrototypeConfig, 'platform'>;
+  prototype: Omit<PrototypeConfig, 'platform' | 'projectType'>;
   redirect: string | null;
 }
 

@@ -1,6 +1,5 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-
-import { createPlatformSelector } from '@/utils/platform';
 
 export enum SpeakTraceAudioType {
   AUDIO = 'audio',
@@ -37,10 +36,7 @@ export enum PrototypeMode {
   SETTINGS = 'Settings',
 }
 
-export const getDefaultPrototypeLayout = createPlatformSelector(
-  {
-    [VoiceflowConstants.PlatformType.CHATBOT]: PrototypeLayout.TEXT_DIALOG,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: PrototypeLayout.TEXT_DIALOG,
-  },
-  PrototypeLayout.VOICE_DIALOG
-);
+export const getDefaultPrototypeLayout = Utils.platform.createProjectTypeSelectorV2({
+  [VoiceflowConstants.ProjectType.CHAT]: PrototypeLayout.TEXT_DIALOG,
+  [VoiceflowConstants.ProjectType.VOICE]: PrototypeLayout.VOICE_DIALOG,
+});

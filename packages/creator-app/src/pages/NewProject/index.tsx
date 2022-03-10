@@ -26,9 +26,7 @@ import { DEFAULT_PROJECT_NAME, PROJECT_CREATION_STEPS_NUMBER, StepID, StepMeta }
 
 const getTemplateTag = createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.IVR]: `default:${VoiceflowConstants.PlatformType.IVR}`,
     [VoiceflowConstants.PlatformType.CHATBOT]: `default:${VoiceflowConstants.PlatformType.CHATBOT}`,
-    [VoiceflowConstants.PlatformType.MOBILE_APP]: `default:${VoiceflowConstants.PlatformType.MOBILE_APP}`,
   },
   'default'
 );

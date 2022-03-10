@@ -36,10 +36,13 @@ const setupPublicPrototype =
       throw new Error('Could not retrieve permissions for prototype share');
     }
 
-    const platform = (prototype.platform ?? VoiceflowConstants.PlatformType.GENERAL) as VoiceflowConstants.PlatformType;
+    const { platform, type: projectType } = Realtime.legacyPlatformToProjectType(
+      prototype.platform as VoiceflowConstants.PlatformType,
+      prototype.type as VoiceflowConstants.ProjectType
+    );
 
     const rootDiagramID = prototype.context.stack?.[0].programID as string;
-    const layout = (prototype?.settings.layout ?? getDefaultPrototypeLayout(platform)) as PrototypeLayout;
+    const layout = (prototype?.settings.layout ?? getDefaultPrototypeLayout(projectType)) as PrototypeLayout;
     const buttonsOnly = !!prototype?.settings.buttonsOnly;
 
     const version = {
@@ -82,6 +85,7 @@ const setupPublicPrototype =
       buttons: prototype?.settings.buttons as BaseButton.ButtonsLayout,
       locales: prototype.data.locales as Realtime.AnyLocale[],
       platform,
+      projectType,
       hasPassword: prototype?.settings.hasPassword ?? false,
       projectName: prototype.data.name,
       buttonsOnly,

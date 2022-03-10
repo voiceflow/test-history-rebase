@@ -60,8 +60,8 @@ export const prototypeSettingsSelector = createSelector([prototypeSelector], ({ 
 export const prototypeButtonsSelector = createSelector([prototypeSelector], ({ settings }) => settings.buttons as BaseButton.ButtonsLayout);
 
 export const prototypeLayoutSelector = createSelector(
-  [prototypeSelector, ProjectV2.active.platformSelector],
-  ({ settings }, platform) => settings.layout || getDefaultPrototypeLayout(platform)
+  [prototypeSelector, ProjectV2.active.typeV2Selector],
+  ({ settings }, projectType) => settings.layout || getDefaultPrototypeLayout(projectType)
 );
 
 export const prototypeBrandColorSelector = createSelector([prototypeSelector], ({ settings }) => settings.brandColor || '#3D81E2');

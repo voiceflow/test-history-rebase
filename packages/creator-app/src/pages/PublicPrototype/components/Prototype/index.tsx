@@ -56,6 +56,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
       intent: false,
       isGuided: false,
       platform: settings.platform,
+      projectType: settings.projectType,
       showVisuals: false,
     },
     isPublic: true,

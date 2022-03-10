@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -5,16 +6,13 @@ import React from 'react';
 import { FeatureFlag } from '@/config/features';
 import { AmazonInvocationName, DialogflowInvocationName, GoogleInvocationName } from '@/pages/NewProject/DescriptionElements/InvocationName';
 import { AmazonLanguage, DialogflowLanguage, GeneralLanguage, GoogleLanguage } from '@/pages/NewProject/DescriptionElements/Languages';
-import { createPlatformSelector, getPlatformValue } from '@/utils/platform';
+import { getPlatformValue } from '@/utils/platform';
 
 export enum PlatformFeature {
   API = 'api',
   EXPORT = 'export',
   DESIGN = 'design',
   PUBLISH = 'publish',
-
-  /** @deprecated */
-  DESIGN_AND_PROTO = 'design_and_proto',
 }
 
 export enum IconType {
@@ -58,7 +56,7 @@ export interface ProjectSection {
   platforms: VoiceflowConstants.PlatformType[];
 }
 
-export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
+export const getPlatformMeta = Utils.platform.createPlatformSelectorV2<PlatformMetaType>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: {
       icon: 'amazonAlexa',
@@ -79,16 +77,7 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
       localesDescription: GoogleLanguage,
       invocationDescription: GoogleInvocationName,
     },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: {
-      icon: 'dialogflow',
-      company: 'Google',
-      localesText: 'Language',
-      platformAppType: 'Action',
-      settingsTitle: 'Agent Settings',
-      localesDescription: DialogflowLanguage,
-      invocationDescription: DialogflowInvocationName,
-    },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: {
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
       icon: 'dialogflow',
       company: 'Google',
       localesText: 'Language',
@@ -109,7 +98,7 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
   }
 );
 
-export const getChannelMeta = createPlatformSelector<ChannelMetaType>(
+export const getChannelMeta = Utils.platform.createPlatformSelector<ChannelMetaType>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: {
       name: 'Amazon Alexa',
@@ -158,26 +147,6 @@ export const getChannelMeta = createPlatformSelector<ChannelMetaType>(
       iconColor: '#85848c',
       description: 'Design, test and export a custom chat assistant for any channel (Web, Mobile, SMS etc.)',
     },
-    [VoiceflowConstants.PlatformType.IVR]: {
-      name: 'IVR',
-      icon: 'call',
-      platform: VoiceflowConstants.PlatformType.IVR,
-      features: [PlatformFeature.DESIGN_AND_PROTO],
-      iconType: IconType.ICON,
-      iconSize: 20,
-      iconColor: '#5c6bc0',
-      description: 'Design, prototype and export a conversational IVR.',
-    },
-    [VoiceflowConstants.PlatformType.MOBILE_APP]: {
-      name: 'Mobile App',
-      icon: 'mobile',
-      platform: VoiceflowConstants.PlatformType.MOBILE_APP,
-      features: [PlatformFeature.DESIGN_AND_PROTO],
-      iconType: IconType.ICON,
-      iconSize: 20,
-      iconColor: '#3a5999',
-      description: 'Design, prototype and export a mobile voice assistant.',
-    },
   },
   {
     name: 'Voice Assistant',
@@ -201,15 +170,12 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
     name: 'Export',
     color: '#c83e5a',
     description: (platform) =>
-      getPlatformValue(
-        platform,
+      Utils.platform.createPlatformSelectorV2(
         {
-          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow specific NLU model export',
-          // eslint-disable-next-line sonarjs/no-identical-functions
-          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow specific NLU model export',
+          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow specific NLU model export',
         },
         'NLU specific exports for Rasa, Dialogflow, Luis and more...'
-      ),
+      )(platform),
   },
   [PlatformFeature.DESIGN]: {
     name: 'Design',
@@ -225,31 +191,14 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
     name: 'Publish',
     color: '#558b2f',
     description: (platform) =>
-      getPlatformValue(
-        platform,
+      Utils.platform.createPlatformSelectorV2(
         {
-          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Publish agents directly through Dialogflow',
-          // eslint-disable-next-line sonarjs/no-identical-functions
-          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Publish agents directly through Dialogflow',
+          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Publish agents directly through Dialogflow',
           [VoiceflowConstants.PlatformType.ALEXA]: 'Publish live apps to the Amazon Skill store',
           [VoiceflowConstants.PlatformType.GOOGLE]: 'Publish live apps to the Google Action store',
         },
         ''
-      ),
-  },
-
-  [PlatformFeature.DESIGN_AND_PROTO]: {
-    name: 'Design & Prototype',
-    color: '#5589eb',
-    description: (platform) =>
-      getPlatformValue(
-        platform,
-        {
-          [VoiceflowConstants.PlatformType.IVR]: 'Design, prototype and share IVR system call flows',
-          [VoiceflowConstants.PlatformType.MOBILE_APP]: 'Design and test In-App Assistant prototypes for Mobile Apps',
-        },
-        'Design, prototype and share conversations for any channel or custom assistant'
-      ),
+      )(platform),
   },
 };
 

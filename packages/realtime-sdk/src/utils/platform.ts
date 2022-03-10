@@ -5,13 +5,13 @@ import { Nullish } from '@voiceflow/common';
 import { GoogleConstants } from '@voiceflow/google-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { legacyPlatformToProjectType } from '../constants/platform';
+import { legacyPlatformToProjectType, NonDeprecatedPlatform } from '../constants/platform';
 import { isDistinctPlatform } from './typeGuards';
 
 export const createProjectTypeSelectorV2 =
   <T>(values: Record<VoiceflowConstants.ProjectType, T>) =>
-  (type: VoiceflowConstants.ProjectType): T => {
-    const value = values[type];
+  (type?: VoiceflowConstants.ProjectType | null): T => {
+    const value = values[type || VoiceflowConstants.ProjectType.VOICE];
     if (value == null) throw new Error('no value for project type');
 
     return value;
@@ -19,12 +19,7 @@ export const createProjectTypeSelectorV2 =
 
 export const createPlatformAndProjectTypeSelectorV2 =
   <T>(
-    values: Partial<
-      Record<
-        VoiceflowConstants.ProjectType | VoiceflowConstants.PlatformType | `${VoiceflowConstants.PlatformType}:${VoiceflowConstants.ProjectType}`,
-        T
-      >
-    >,
+    values: Partial<Record<VoiceflowConstants.ProjectType | NonDeprecatedPlatform | `${NonDeprecatedPlatform}:${VoiceflowConstants.ProjectType}`, T>>,
     defaultValue?: T
   ) =>
   (_platform: Nullish<VoiceflowConstants.PlatformType>, _type: Nullish<VoiceflowConstants.ProjectType>): T => {
@@ -41,7 +36,7 @@ export const createPlatformAndProjectTypeSelectorV2 =
   };
 
 export const createPlatformSelectorV2 =
-  <T>(platformValues: Partial<Record<VoiceflowConstants.PlatformType, T>>, defaultValue?: T) =>
+  <T>(platformValues: Partial<Record<NonDeprecatedPlatform, T>>, defaultValue?: T) =>
   (_platform?: Nullish<VoiceflowConstants.PlatformType>): T => {
     const platform = _platform ? legacyPlatformToProjectType(_platform).platform : _platform;
 

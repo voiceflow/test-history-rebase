@@ -1,8 +1,8 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { textAndDialogGraphic, textAndDialogGraphicInactive, voiceAndVisualsGraphic, voiceAndVisualsGraphicInactive } from '@/assets';
 import { PrototypeLayout } from '@/constants/prototype';
-import { createPlatformSelector, getPlatformValue } from '@/utils/platform';
 
 interface OptionDetail {
   title: string;
@@ -15,14 +15,22 @@ export const OPTION_DETAILS: Record<PrototypeLayout, OptionDetail> = {
   [PrototypeLayout.TEXT_DIALOG]: {
     title: 'Chat Input',
     description: (platform) =>
-      `Testers will use text and ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
+      `Testers will use text and ${Utils.platform.getPlatformValue(
+        platform,
+        { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' },
+        'buttons'
+      )} input`,
     activeImg: textAndDialogGraphic,
     inactiveImg: textAndDialogGraphicInactive,
   },
   [PrototypeLayout.VOICE_DIALOG]: {
     title: 'Voice Input',
     description: (platform) =>
-      `Testers will use voice and ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
+      `Testers will use voice and ${Utils.platform.getPlatformValue(
+        platform,
+        { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' },
+        'buttons'
+      )} input`,
     activeImg: textAndDialogGraphic,
     inactiveImg: textAndDialogGraphicInactive,
   },
@@ -42,12 +50,9 @@ export const CUSTOM_MENU_WIDTH = 374;
 
 const CHATBOT_LAYOUT_OPTIONS = [PrototypeLayout.TEXT_DIALOG, PrototypeLayout.VOICE_DIALOG];
 
-const GENERAL_LAYOUT_OPTIONS = [PrototypeLayout.TEXT_DIALOG, PrototypeLayout.VOICE_DIALOG, PrototypeLayout.VOICE_VISUALS];
+const VOICE_LAYOUT_OPTIONS = [PrototypeLayout.TEXT_DIALOG, PrototypeLayout.VOICE_DIALOG, PrototypeLayout.VOICE_VISUALS];
 
-export const getLayoutOptions = createPlatformSelector(
-  {
-    [VoiceflowConstants.PlatformType.CHATBOT]: CHATBOT_LAYOUT_OPTIONS,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: CHATBOT_LAYOUT_OPTIONS,
-  },
-  GENERAL_LAYOUT_OPTIONS
-);
+export const getLayoutOptions = Utils.platform.createProjectTypeSelectorV2({
+  [VoiceflowConstants.ProjectType.CHAT]: CHATBOT_LAYOUT_OPTIONS,
+  [VoiceflowConstants.ProjectType.VOICE]: VOICE_LAYOUT_OPTIONS,
+});

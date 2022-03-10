@@ -1,13 +1,12 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { createPlatformSelector } from '@/utils/platform';
-
-export const getPlatformLabel = createPlatformSelector(
+// eslint-disable-next-line import/prefer-default-export
+export const getPlatformLabel = Utils.platform.createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
     [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Actions',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow Chat',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow Voice',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
   },
   'General Assistant'
 );

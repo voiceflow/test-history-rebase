@@ -7,7 +7,7 @@ import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, ManagerContext, NodeEntityContext, PortEntityProvider } from '@/pages/Canvas/contexts';
-import { PlatformContext } from '@/pages/Project/contexts';
+import { PlatformContext, TypeV2Context } from '@/pages/Project/contexts';
 import { buildVirtualDOMRect } from '@/utils/dom';
 
 import NodeLifecycle from '../NodeLifecycle';
@@ -24,6 +24,7 @@ export interface NodeStepProps {
 const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => {
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
+  const projectType = React.useContext(TypeV2Context)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const getManager = React.useContext(ManagerContext)!;
   const instance = useNodeInstance();
@@ -79,11 +80,27 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
           <>
             <Step.Placeholder variant={variant} isLast={isLast} />
             <Portal portalNode={engine.merge.components.mergeLayer!.ref.current!}>
-              <StepComponent ports={node.ports} data={data} engine={engine} platform={platform} withPorts={stepAPI.withPorts} variant={variant} />
+              <StepComponent
+                ports={node.ports}
+                data={data}
+                engine={engine}
+                platform={platform}
+                projectType={projectType}
+                withPorts={stepAPI.withPorts}
+                variant={variant}
+              />
             </Portal>
           </>
         ) : (
-          <StepComponent ports={node.ports} data={data} engine={engine} platform={platform} withPorts={stepAPI.withPorts} variant={variant} />
+          <StepComponent
+            ports={node.ports}
+            data={data}
+            engine={engine}
+            platform={platform}
+            projectType={projectType}
+            withPorts={stepAPI.withPorts}
+            variant={variant}
+          />
         )}
       </StepAPIProvider>
     </>

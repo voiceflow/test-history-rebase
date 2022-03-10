@@ -25,6 +25,7 @@ const defaultPrototypeContext: PrototypeAllTypes = {
     prototypeAvatar: '',
     locales: [''],
     platform: VoiceflowConstants.PlatformType.GENERAL,
+    projectType: VoiceflowConstants.ProjectType.VOICE,
     isMuted: false,
     durationMilliseconds: 0,
     debug: false,
@@ -67,6 +68,7 @@ export const PrototypeProvider: React.FC = ({ children }) => {
   const prototypeAvatar = useSelector(Prototype.prototypeAvatarSelector);
   const locales = useSelector(VersionV2.active.localesSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
+  const projectType = useSelector(ProjectV2.active.typeV2Selector);
   const config = useSelector(Recent.recentPrototypeSelector);
   const updatePrototype = useDispatch(Prototype.updatePrototype);
   const isMuted = useSelector(Prototype.prototypeMutedSelector);
@@ -99,6 +101,7 @@ export const PrototypeProvider: React.FC = ({ children }) => {
     durationMilliseconds: durationMilliseconds ?? 0,
     locales,
     platform,
+    projectType,
     ...config,
   };
 

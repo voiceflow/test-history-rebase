@@ -14,7 +14,7 @@ import { inferIntentSlotsType, inferIntentSlotType, inferIntentType, removeSlotR
 import { createNextName } from '@/utils/string';
 
 import { crud } from './actions';
-import { getPlatformNewSlotsCreator, getUniqSlots, intentProcessor } from './utils';
+import { getProjectTypeNewSlotsCreator, getUniqSlots, intentProcessor } from './utils';
 
 const NEW_INTENT_NAME = 'intent';
 
@@ -24,8 +24,8 @@ export const addManyIntents =
     if (!values.length) return;
 
     const state = getState();
-    const platform = ProjectV2.active.platformSelector(state);
-    const intents = values.map(intentProcessor.bind(null, platform));
+    const projectType = ProjectV2.active.typeV2Selector(state);
+    const intents = values.map(intentProcessor.bind(null, projectType));
 
     await dispatch(
       Feature.applyAtomicSideEffect(
@@ -47,12 +47,12 @@ export const replaceIntents =
   (values: Realtime.Intent[], meta?: any): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
-    const platform = ProjectV2.active.platformSelector(state);
+    const projectType = ProjectV2.active.typeV2Selector(state);
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     if (isAtomicActions) return;
 
-    dispatch(crud.replace(values.map(intentProcessor.bind(null, platform)), meta));
+    dispatch(crud.replace(values.map(intentProcessor.bind(null, projectType)), meta));
   };
 
 export const patchIntent =
@@ -74,8 +74,8 @@ export const patchIntent =
     }
 
     const state = getState();
-    const platform = ProjectV2.active.platformSelector(state);
-    const newSlotsCreator = getPlatformNewSlotsCreator(platform);
+    const projectType = ProjectV2.active.typeV2Selector(state);
+    const newSlotsCreator = getProjectTypeNewSlotsCreator(projectType);
 
     const intent = IntentV2.intentByIDSelector(state, { id });
     if (!intent) return;
@@ -170,6 +170,7 @@ export const createIntent =
     const id = intent?.id || Utils.id.cuid.slug();
     const state = getState();
     const platform = intent?.platform || ProjectV2.active.platformSelector(state);
+    const projectType = ProjectV2.active.typeV2Selector(state);
 
     const name =
       intent?.name ||
@@ -180,7 +181,7 @@ export const createIntent =
       );
     const slots = intent?.slots || { byKey: {}, allKeys: [] };
     const inputs = intent?.inputs || [];
-    const processedIntent = intentProcessor(platform, inferIntentType({ id, name, slots, inputs, platform }));
+    const processedIntent = intentProcessor(projectType, inferIntentType({ id, name, slots, inputs, platform }));
 
     await dispatch(
       Feature.applyAtomicSideEffect(

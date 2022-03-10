@@ -25,7 +25,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeDat
 
   mergeTerminator: true,
 
-  factory: (_, { platform, defaultVoice } = {}) => ({
+  factory: (_, { projectType, defaultVoice } = {}) => ({
     node: {
       ports: {
         in: [{}],
@@ -37,7 +37,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeDat
     },
     data: {
       name: 'Buttons',
-      noMatch: getPlatformNoMatchFactory(platform)({ defaultVoice }),
+      noMatch: getPlatformNoMatchFactory(projectType)({ defaultVoice }),
       buttons: [factory()],
       noReply: null,
       intentScope: BaseNode.Utils.IntentScope.GLOBAL,

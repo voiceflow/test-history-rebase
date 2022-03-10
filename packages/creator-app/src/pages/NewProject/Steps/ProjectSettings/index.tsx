@@ -1,6 +1,7 @@
 import { AlexaUtils } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { GoogleUtils } from '@voiceflow/google-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { FlexCenter, Input, Select, SvgIcon } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
@@ -17,7 +18,6 @@ import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS } fro
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { Identifier } from '@/styles/constants';
-import { getPlatformValue } from '@/utils/platform';
 import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform } from '@/utils/typeGuards';
 
 import { SectionDescription, SectionErrorMessage, SectionTitle } from '../components';
@@ -65,14 +65,13 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
 
   const invocationError =
     invocationName &&
-    getPlatformValue<(name?: string, locales?: any[]) => string | null>(
-      selectedChannel,
+    Realtime.Utils.platform.createPlatformSelectorV2<(name?: string, locales?: any[]) => string | null>(
       {
         [VoiceflowConstants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
         [VoiceflowConstants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
       },
       _constant(null)
-    )(invocationName, alexaLocales);
+    )(selectedChannel)(invocationName, alexaLocales);
 
   const canContinue = !invocationError && (!!alexaLocales.length || !!googleLanguage || !!generalLocale);
   const InvocationDescriptionComponent = getPlatformMeta(selectedChannel).invocationDescription!;
@@ -130,8 +129,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
       <FieldsContainer>
         <SectionTitle>{getPlatformMeta(selectedChannel).localesText}</SectionTitle>
 
-        {getPlatformValue<() => React.ReactNode>(
-          selectedChannel,
+        {Realtime.Utils.platform.createPlatformSelectorV2<() => React.ReactNode>(
           {
             [VoiceflowConstants.PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect
@@ -159,11 +157,10 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 renderOptionLabel={(option) => option.name}
               />
             ),
-            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: DialogflowSelect,
-            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: DialogflowSelect,
+            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DialogflowSelect,
           },
           GeneralLocalesSelect
-        )()}
+        )(selectedChannel)()}
 
         <SectionDescription>
           <LanguageDescriptionComponent />

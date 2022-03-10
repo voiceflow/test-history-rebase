@@ -4,7 +4,7 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import OverflowMenu from '@/components/OverflowMenu';
-import { getPlatformNewSlotsCreator } from '@/ducks/intent/utils';
+import { getProjectTypeNewSlotsCreator } from '@/ducks/intent/utils';
 import { MapManaged, useManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { useIntentScope, useNoMatchOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
@@ -18,8 +18,8 @@ const mapIntentSlots = (items: Realtime.IntentSlot[]) => items.map(({ id }) => i
 const EntityCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = ({
   data,
   onChange,
-  platform,
   pushToPath,
+  projectType,
 }) => {
   const [isDragging, toggleDragging] = useToggle(false);
 
@@ -31,7 +31,7 @@ const EntityCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.Node
   };
 
   const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(slots, updateSlots, {
-    factory: () => getPlatformNewSlotsCreator(platform)(''),
+    factory: () => getProjectTypeNewSlotsCreator(projectType)(''),
     autosave: false,
   });
 

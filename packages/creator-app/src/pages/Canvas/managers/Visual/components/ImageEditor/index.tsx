@@ -14,7 +14,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { createPlatformSelector } from '@/utils/platform';
 
 import { CANVAS_VISIBILITY_OPTIONS, DEVICE_OPTIONS, FRAME_OPTIONS } from './constants';
 
@@ -83,11 +82,9 @@ const ImageEditor: NodeEditor<BaseNode.Visual.ImageStepData, Realtime.NodeData.V
     </Section>
   );
 
-  const renderVisualSizeSection = createPlatformSelector<React.ReactNode>(
+  const renderVisualSizeSection = Realtime.Utils.platform.createPlatformSelectorV2<React.ReactNode>(
     {
-      [VoiceflowConstants.PlatformType.IVR]: visualSizeSection,
-      [VoiceflowConstants.PlatformType.GENERAL]: visualSizeSection,
-      [VoiceflowConstants.PlatformType.CHATBOT]: visualSizeSection,
+      [VoiceflowConstants.PlatformType.VOICEFLOW]: visualSizeSection,
     },
     () => null
   );

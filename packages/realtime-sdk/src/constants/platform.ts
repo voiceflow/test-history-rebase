@@ -1,8 +1,15 @@
 import { Nullish } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
+export type NonDeprecatedPlatform =
+  | VoiceflowConstants.PlatformType.ALEXA
+  | VoiceflowConstants.PlatformType.ALEXA
+  | VoiceflowConstants.PlatformType.GOOGLE
+  | VoiceflowConstants.PlatformType.VOICEFLOW
+  | VoiceflowConstants.PlatformType.DIALOGFLOW_ES;
+
 const LEGACY_PLATFORM_TO_PROJECT_TYPE: {
-  [key in VoiceflowConstants.PlatformType]?: { type: VoiceflowConstants.ProjectType; platform: VoiceflowConstants.PlatformType };
+  [key in VoiceflowConstants.PlatformType]?: { type: VoiceflowConstants.ProjectType; platform: NonDeprecatedPlatform };
 } = {
   [VoiceflowConstants.PlatformType.CHATBOT]: {
     type: VoiceflowConstants.ProjectType.CHAT,
@@ -41,11 +48,11 @@ const LEGACY_PLATFORM_TO_PROJECT_TYPE: {
 export const legacyPlatformToProjectType = (
   platform: VoiceflowConstants.PlatformType,
   type?: Nullish<VoiceflowConstants.ProjectType>
-): { platform: VoiceflowConstants.PlatformType; type: VoiceflowConstants.ProjectType } => {
+): { platform: NonDeprecatedPlatform; type: VoiceflowConstants.ProjectType } => {
   const legacy = LEGACY_PLATFORM_TO_PROJECT_TYPE[platform];
   if (legacy) return legacy;
 
-  return { platform, type: type || VoiceflowConstants.ProjectType.VOICE };
+  return { platform: platform as NonDeprecatedPlatform, type: type || VoiceflowConstants.ProjectType.VOICE };
 };
 
 const PROJECT_TYPE_TO_LEGACY_PLATFORM: {

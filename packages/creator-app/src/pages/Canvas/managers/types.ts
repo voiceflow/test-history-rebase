@@ -55,6 +55,7 @@ export interface NodeEditorPropsType<T, P extends Realtime.BuiltInPortRecord = R
   platform: VoiceflowConstants.PlatformType;
   activePath: PathEntry;
   pushToPath: PushToPath;
+  projectType: VoiceflowConstants.ProjectType;
   popFromPath: VoidFunction;
 }
 
@@ -63,6 +64,7 @@ export type NodeEditor<T, P extends Realtime.BuiltInPortRecord = Realtime.BuiltI
 interface NodeFactoryOptions {
   features?: FeatureFlagMap;
   platform?: VoiceflowConstants.PlatformType;
+  projectType?: VoiceflowConstants.ProjectType;
   defaultVoice?: string;
   canvasNodeVisibility?: BaseNode.Utils.CanvasNodeVisibility;
 }

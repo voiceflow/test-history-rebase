@@ -86,7 +86,7 @@ export const activateVersion =
     const project = await client.api.project
       .get<Realtime.AnyProjectData, Realtime.AnyProjectMemberData>(projectID)
       .then(Realtime.Adapters.projectAdapter.fromDB);
-    const { platform, workspaceID, platformData: projectPlatformData } = project;
+    const { platform, typeV2: projectType, workspaceID, platformData: projectPlatformData } = project;
 
     const version = Realtime.Adapters.versionAdapter.fromDB(dbVersion, { platform });
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbVersion.platformData.slots);
@@ -108,7 +108,7 @@ export const activateVersion =
         Prototype.updatePrototypeSettings(
           {
             ...dbVersion.prototype?.settings,
-            layout: (dbVersion.prototype?.settings.layout ?? getDefaultPrototypeLayout(platform)) as PrototypeLayout,
+            layout: (dbVersion.prototype?.settings.layout ?? getDefaultPrototypeLayout(projectType)) as PrototypeLayout,
           },
           false
         )
@@ -124,7 +124,7 @@ export const activateVersion =
   };
 
 export const activateVersionV2 =
-  ({ workspaceID, projectID, versionID, diagramID, platform }: Realtime.version.ActivateVersionPayload): Thunk =>
+  ({ workspaceID, projectID, versionID, diagramID, projectType }: Realtime.version.ActivateVersionPayload): Thunk =>
   async (dispatch, getState) => {
     const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
     if (!isAtomicActions) return;
@@ -140,7 +140,7 @@ export const activateVersionV2 =
         Prototype.updatePrototypeSettings(
           {
             ...dbVersion.prototype?.settings,
-            layout: (dbVersion.prototype?.settings.layout ?? getDefaultPrototypeLayout(platform)) as PrototypeLayout,
+            layout: (dbVersion.prototype?.settings.layout ?? getDefaultPrototypeLayout(projectType)) as PrototypeLayout,
           },
           false
         )

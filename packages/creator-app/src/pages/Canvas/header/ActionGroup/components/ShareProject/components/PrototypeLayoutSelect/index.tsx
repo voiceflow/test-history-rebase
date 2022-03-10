@@ -6,7 +6,7 @@ import DropdownWithCaret from '@/components/DropdownWithCaret';
 import { PrototypeLayout } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
 import { useDispatch, useLinkedState, useSelector } from '@/hooks';
-import { PlatformContext } from '@/pages/Project/contexts';
+import { PlatformContext, TypeV2Context } from '@/pages/Project/contexts';
 import { ClassName } from '@/styles/constants';
 
 import PrototypeLayoutItem from '../PrototypeLayoutItem';
@@ -14,6 +14,7 @@ import { CUSTOM_MENU_WIDTH, getLayoutOptions, OPTION_DETAILS } from './constants
 
 const PrototypeLayoutSelect: React.FC = () => {
   const platform = React.useContext(PlatformContext)!;
+  const projectType = React.useContext(TypeV2Context)!;
 
   const layout = useSelector(Prototype.prototypeLayoutSelector);
   const updateSettings = useDispatch(Prototype.updateSharePrototypeSettings);
@@ -29,7 +30,7 @@ const PrototypeLayoutSelect: React.FC = () => {
     cb();
   };
 
-  const layoutOptions = React.useMemo(() => getLayoutOptions(platform).filter((option) => option !== layout), [layout, platform]);
+  const layoutOptions = React.useMemo(() => getLayoutOptions(projectType).filter((option) => option !== layout), [layout, projectType]);
 
   const onButtonsOnlyChange = () => {
     updateSettings({ buttonsOnly: !buttonsOnly });

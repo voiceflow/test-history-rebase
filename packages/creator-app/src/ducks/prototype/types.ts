@@ -9,6 +9,7 @@ import type { PrototypeContext } from '@/models';
 export type PrototypeSettings = Omit<BaseModels.Version.PrototypeSettings, 'layout'> & {
   plan: PlanType;
   platform: VoiceflowConstants.PlatformType;
+  projectType: VoiceflowConstants.ProjectType;
   layout: PrototypeLayout;
   locales: Realtime.AnyLocale[];
   projectName: string;

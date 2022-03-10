@@ -29,6 +29,7 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
     buttons: BaseButton.ButtonsLayout.STACKED,
     locales: [],
     platform: VoiceflowConstants.PlatformType.GENERAL,
+    projectType: VoiceflowConstants.ProjectType.VOICE,
     hasPassword: false,
     projectName: '',
     globalMessageDelayMilliseconds: 0,

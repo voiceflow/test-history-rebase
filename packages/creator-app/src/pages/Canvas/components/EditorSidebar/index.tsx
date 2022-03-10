@@ -13,7 +13,7 @@ import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
 import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { PlatformContext } from '@/pages/Project/contexts';
+import { PlatformContext, TypeV2Context } from '@/pages/Project/contexts';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut';
 import { isMarkupBlockType } from '@/utils/typeGuards';
@@ -33,6 +33,7 @@ const EditSidebar = () => {
 
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
+  const projectType = React.useContext(TypeV2Context)!;
   const getManager = React.useContext(ManagerContext)!;
 
   const prevPathLength = React.useRef(0);
@@ -75,6 +76,7 @@ const EditSidebar = () => {
         isOpen={isOpen}
         nodeID={node.id}
         platform={platform}
+        projectType={projectType}
         onChange={updateData}
         onExpand={fullscreenEditorModal.open}
         expanded={fullscreenEditorModal.isOpened}

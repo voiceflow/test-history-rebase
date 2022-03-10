@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.651.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.650.1...@voiceflow/creator-app@1.651.0) (2022-03-10)
+
+
+### Features
+
+* display project name and link to open project when cloning a project (VF-2958) ([#5143](https://github.com/voiceflow/creator-app/issues/5143)) ([d56de05](https://github.com/voiceflow/creator-app/commit/d56de05cc32b1edae9369c8c211574719b767863))
+
+
+
+
+
 ## [1.650.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.650.0...@voiceflow/creator-app@1.650.1) (2022-03-10)
 
 

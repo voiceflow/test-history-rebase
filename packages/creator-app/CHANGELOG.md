@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.653.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.652.0...@voiceflow/creator-app@1.653.0) (2022-03-10)
+
+
+### Features
+
+* project header changes (VF-2989) ([#5169](https://github.com/voiceflow/creator-app/issues/5169)) ([9ea66f5](https://github.com/voiceflow/creator-app/commit/9ea66f5902697bd5a6eac9fae46a196387d9dcbf))
+
+
+
+
+
 # [1.652.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.651.0...@voiceflow/creator-app@1.652.0) (2022-03-10)
 
 

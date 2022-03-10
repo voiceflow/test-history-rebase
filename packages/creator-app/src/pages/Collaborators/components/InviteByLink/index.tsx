@@ -99,7 +99,7 @@ const InviteByLinkFooter: React.FC = () => {
           text={PermissionText[linkInvitePermission]}
         />
       </DropdownContainer>
-      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} onClick={handleCopyLink} disabled={!inviteCode}>
+      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} onClick={handleCopyLink} disabled={!inviteCode} squareRadius>
         <span>Copy Link</span>
       </Button>
     </Container>

@@ -1,11 +1,12 @@
-import { Box, Button, Icon, PrimaryButtonIcon, PrimaryButtonLabel, PrimaryButtonProps, SvgIconContainer, TippyTooltip } from '@voiceflow/ui';
+import { Box, Button, Flex, Icon, PrimaryButtonIcon, PrimaryButtonProps, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import { css, styled } from '@/hocs';
 import { usePermission } from '@/hooks';
-import { Spin } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
+
+import { PlatformUploadButtonLabel } from './components';
 
 export interface UploadButtonProps extends PrimaryButtonProps {
   isVendors?: boolean;
@@ -32,30 +33,18 @@ const UploadButton = styled(Button).attrs({ speed: 2000 })<UploadButtonProps>`
 
   ${PrimaryButtonIcon} {
     box-shadow: none;
+    color: #ffffff !important;
     ${({ isUploading }) =>
       isUploading &&
       `
-      background-color: #3d82e2;
-
       :hover {
         background-color: #3d82e2;
       }
     `};
-
-    ${SvgIconContainer} {
-      display: block;
-      opacity: 1;
-      ${({ isUploading }) => isUploading && Spin}
-    }
-  }
-
-  ${PrimaryButtonLabel} {
-    padding-right: 20px;
-    text-align: left;
   }
 `;
 
-interface UploadButtonContainerProps extends PrimaryButtonProps {
+interface UploadButtonContainerProps extends Partial<PrimaryButtonProps> {
   icon?: Icon;
   label?: string;
   onClick: React.MouseEventHandler;
@@ -77,8 +66,11 @@ const UploadButtonContainer: React.FC<UploadButtonContainerProps> = ({
   const component = (
     <>
       {children || (
-        <UploadButton id={Identifier.UPLOAD} icon={isActive ? 'publishSpin' : icon} onClick={onClick} isUploading={isActive} {...props}>
-          {label}
+        <UploadButton id={Identifier.UPLOAD} onClick={onClick} isUploading={isActive} squareRadius {...props}>
+          <Flex>
+            <SvgIcon icon={icon} size={16} spin={isActive} color="#ffffff" />
+            <PlatformUploadButtonLabel>{label}</PlatformUploadButtonLabel>
+          </Flex>
         </UploadButton>
       )}
     </>

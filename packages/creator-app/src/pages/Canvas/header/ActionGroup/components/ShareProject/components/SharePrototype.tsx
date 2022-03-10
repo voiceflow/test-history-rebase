@@ -74,6 +74,7 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ inline }) => {
         variant={ButtonVariant.PRIMARY}
         icon={!inline && canSharePrototype ? 'link' : null}
         onClick={onCopyLink}
+        squareRadius
       >
         <span>{canSharePrototype ? 'Copy Link' : 'Upgrade'}</span>
       </Button>

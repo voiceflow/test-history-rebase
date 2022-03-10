@@ -61,9 +61,7 @@ const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ exportMode
           <FlexApart fullWidth>
             <Link href={Documentation.MODEL_EXPORT}>Learn More</Link>
             {!canExport && <Button onClick={openPaymentsModal}>Upgrade</Button>}
-            {canExport && (
-              <PlatformUploadButton isActive={!!isExporting} label="Export" icon="publishSpin" onClick={stopImmediatePropagation(onClick)} />
-            )}
+            {canExport && <PlatformUploadButton isActive={!!isExporting} label="Export" icon="sync" onClick={stopImmediatePropagation(onClick)} />}
           </FlexApart>
         </ModalFooter>
       </Box>

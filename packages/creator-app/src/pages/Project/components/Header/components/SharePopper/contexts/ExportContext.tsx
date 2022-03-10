@@ -36,12 +36,12 @@ export const ExportProvider: React.FC = ({ children }) => {
 
   const [trackingEvents] = useTrackingEvents();
   const platform = React.useContext(PlatformContext)!;
-  const [exportType, setExportType] = React.useState<ExportType>(ExportType.CANVAS);
+  const [exportType, setExportType] = React.useState<ExportType>(ExportType.MODEL);
   const [isExporting, setExporting] = React.useState(false);
   const [canvasExportFormat, setCanvasExportFormat] = React.useState(isTemplateWorkspace ? CanvasExportFormat.VF : CanvasExportFormat.PNG);
 
   const [modelExportProvider, setModelExportProvider] = React.useState<NLPProvider | undefined>();
-  const [modelExportConfig, setModelExportConfig] = React.useState<ModelExportConfig>(ModelExportConfig.MODEL);
+  const [modelExportConfig, setModelExportConfig] = React.useState<ModelExportConfig>(ModelExportConfig.INTENTS);
   const [modelExportIntents, setModelExportIntents] = React.useState<string[]>([]);
 
   const onExport = React.useCallback(async () => {

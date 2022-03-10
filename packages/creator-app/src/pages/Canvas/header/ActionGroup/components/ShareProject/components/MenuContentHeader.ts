@@ -5,7 +5,7 @@ import { css, styled } from '@/hocs';
 const MenuContentHeader = styled(Box)<{ isScrolling?: boolean }>`
   position: relative;
   z-index: 2;
-  padding: 24px 32px;
+  padding: 24px 32px 16px;
 
   ${({ isScrolling }) =>
     isScrolling &&

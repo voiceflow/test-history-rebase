@@ -1,9 +1,8 @@
-import { Box, Link } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import Upgrade from '@/components/Upgrade';
-import * as Documentation from '@/config/documentation';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ScrollContextProvider } from '@/contexts';
@@ -13,7 +12,6 @@ import { FadeLeftContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 
 import { AppearanceAndBranding } from './AppearanceAndBranding';
-import Description from './Description';
 import Header from './Header';
 import MenuContentHeader from './MenuContentHeader';
 import PrototypeLayoutSelect from './PrototypeLayoutSelect';
@@ -44,21 +42,12 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
     <ScrollContextProvider value={scrollHelpers}>
       <Container style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <MenuContentHeader isScrolling={!!isHeaderSticky}>
-          <Header marginBottom={8}>Share Assistant with Testers</Header>
-
-          <Description fontSize={inline ? 13 : 15} lineHeight="normal">
-            <span>Share a testable version of your project in the browser on web or mobile. </span>
-            <Link href={Documentation.PROTOTYPE_SHARE}>Learn More</Link>
-          </Description>
+          <Header>Share prototype with testers</Header>
         </MenuContentHeader>
 
         <div ref={bodyRef} style={{ overflowX: 'hidden', overflowY: 'auto', paddingBottom: '50px' }}>
           <Box ref={innerRef} pl={32}>
             <Box>
-              <Header secondary marginBottom={12}>
-                Test Type
-              </Header>
-
               <PrototypeLayoutSelect />
             </Box>
 

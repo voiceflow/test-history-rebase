@@ -25,13 +25,13 @@ export const CANVAS_EXPORT_OPTIONS_LABELS: Record<string, string> = {
   [ExportFormat.VF]: 'Project file (JSON)',
 };
 
-export const CANVAS_EXPORT_OPTIONS = [ExportFormat.PDF, ExportFormat.PNG, ExportFormat.DIALOGS, ExportFormat.VF];
+export const CANVAS_EXPORT_OPTIONS = [ExportFormat.VF, ExportFormat.PDF, ExportFormat.PNG, ExportFormat.DIALOGS];
 
 export const CANVAS_OPTIONS_TEMPLATE_WORKSPACE = [ExportFormat.VF];
 
 export const EXPORT_TYPE_OPTIONS = [
-  { id: ExportType.CANVAS, label: 'Project Content' },
-  { id: ExportType.MODEL, label: 'NLP/NLU' },
+  { id: ExportType.MODEL, label: 'NLU data' },
+  { id: ExportType.CANVAS, label: 'Project content' },
 ];
 
 export const getNplModelProvider = Utils.platform.createPlatformSelectorV2(

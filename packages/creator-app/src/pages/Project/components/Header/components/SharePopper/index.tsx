@@ -57,7 +57,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
   return (
     <ExportProvider>
       <Popper
-        width="620px"
+        width="635px"
         height="575px"
         opened={sharePopper?.opened}
         onClose={sharePopper?.close}
@@ -65,15 +65,15 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
         preventOverflowPadding={24}
         renderNav={() => (
           <ExportPopperNav>
-            {canAddCollaborators && (
-              <ExportNavItem onClick={() => setPersistedTab(ShareProjectTab.INVITE)} to={ShareProjectTab.INVITE}>
-                Invite collaborators
-              </ExportNavItem>
-            )}
-
             {canSharePrototype && (
               <ExportNavItem onClick={() => setPersistedTab(ShareProjectTab.SHARE)} to={ShareProjectTab.SHARE}>
                 Share prototype
+              </ExportNavItem>
+            )}
+
+            {canAddCollaborators && (
+              <ExportNavItem onClick={() => setPersistedTab(ShareProjectTab.INVITE)} to={ShareProjectTab.INVITE}>
+                Invite teammates
               </ExportNavItem>
             )}
 
@@ -85,8 +85,8 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
         renderContent={() => (
           <PopperContent>
             <Switch>
-              <Route path={ShareProjectTab.INVITE} render={() => <InviteContent inline />} />
               <Route path={ShareProjectTab.SHARE} render={() => <ShareContent inline />} />
+              <Route path={ShareProjectTab.INVITE} render={() => <InviteContent inline />} />
               <Route path={ShareProjectTab.EXPORT} render={() => <ExportContent />} />
             </Switch>
           </PopperContent>
@@ -94,8 +94,8 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
         renderFooter={() => (
           <ExportPopperFooter>
             <Switch>
-              <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter />} />
               <Route path={ShareProjectTab.SHARE} render={() => <ShareFooter inline />} />
+              <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter />} />
               <Route path={ShareProjectTab.EXPORT} render={() => <ExportFooter />} />
             </Switch>
           </ExportPopperFooter>

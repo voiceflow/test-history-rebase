@@ -4,7 +4,6 @@ const Header = styled.div<{ marginBottom?: number; secondary?: boolean; disabled
   font-size: 15px;
   font-weight: 600;
   color: #132144;
-  margin-bottom: 6px;
   opacity: ${({ disabled = false }) => (disabled ? '0.5' : '1')};
 
   span {

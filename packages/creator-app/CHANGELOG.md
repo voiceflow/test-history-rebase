@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.652.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.651.0...@voiceflow/creator-app@1.652.0) (2022-03-10)
+
+
+### Features
+
+* nlu quickview sidebar (VF-000) ([#5152](https://github.com/voiceflow/creator-app/issues/5152)) ([2724365](https://github.com/voiceflow/creator-app/commit/2724365db97fb10759ffee50f67094be02bd2a32))
+
+
+
+
+
 # [1.651.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.650.1...@voiceflow/creator-app@1.651.0) (2022-03-10)
 
 

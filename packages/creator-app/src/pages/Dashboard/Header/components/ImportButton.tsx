@@ -43,7 +43,7 @@ const ImportButton: React.FC = () => {
       const newProject = await importProject(workspace.id, file);
       toast.success(
         <>
-          .VF file successfully imported
+          .VF file successfully imported for <strong>"{newProject.name}"</strong>
           <ToastCallToAction onClick={() => goToCanvas(newProject.versionID)}>Open Project</ToastCallToAction>
         </>
       );

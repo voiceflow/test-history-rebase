@@ -1,9 +1,10 @@
 import './ImportModal.css';
 
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, ButtonVariant, ModalImportSelect, StatusCode, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, ModalImportSelect, StatusCode, toast, ToastCallToAction } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
+import client from '@/client';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { hasRolePermission, Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
@@ -12,7 +13,7 @@ import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { extractMemberById } from '@/ducks/workspaceV2/utils';
-import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useAsyncEffect, useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
 const allowedToClone = (workspace: Realtime.Workspace, creatorID: number | null): boolean => {
@@ -25,11 +26,14 @@ const allowedToClone = (workspace: Realtime.Workspace, creatorID: number | null)
   return !!creatorRole && hasRolePermission(Permission.MANAGE_PROJECTS, creatorRole);
 };
 
+const getCopyProjectTitle = (projectName?: string) => (!projectName ? 'Copy Project' : `Copy Project: ${projectName}`);
+
 const ImportModal: React.FC = () => {
   const creatorID = useSelector(Account.userIDSelector);
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
 
+  const goToCanvas = useDispatch(Router.goToCanvas);
   const importProject = useDispatch(Workspace.importProject);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
 
@@ -40,12 +44,13 @@ const ImportModal: React.FC = () => {
   const { open: openLoadingModal, close: closeLoadingModal } = useModals(ModalType.LOADING);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const [multipleWorkspaces, setMultipleWorkspaces] = React.useState(false);
+  const [projectName, setProjectName] = React.useState<string | undefined>();
 
   const { projectID, cloning = false } = data;
 
   const renderModal = isOpened && multipleWorkspaces;
 
-  React.useEffect(() => {
+  useAsyncEffect(async () => {
     if (!projectID) return;
 
     // get a list of workspaces with editor/owner/admin role
@@ -62,13 +67,21 @@ const ImportModal: React.FC = () => {
       setTimeout(() => {
         close();
       }, 100);
+      return;
     }
     // If user has only 1 workspace with Editor/Admin/Owner role, automatically add it
-    else if (authorizedWorkspaces.length === 1) {
+    if (authorizedWorkspaces.length === 1) {
       setMultipleWorkspaces(false);
       cloneProject(authorizedWorkspaces[0].id);
     } else {
       setMultipleWorkspaces(true);
+    }
+
+    try {
+      const importingProject = await client.api.project.get<{ name: string }>(projectID, ['name']);
+      setProjectName(importingProject?.name);
+    } catch {
+      toast.error('Not able to retrieve project information');
     }
   }, [targetWorkspace, projectID]);
 
@@ -111,6 +124,15 @@ const ImportModal: React.FC = () => {
             workspaceID,
           });
         }
+        goToWorkspace(workspaceID);
+
+        toast.success(
+          <>
+            Cloned project <strong>"{importedProject.name}"</strong> successfully!
+            <ToastCallToAction onClick={() => goToCanvas(importedProject.versionID)}>Open Project</ToastCallToAction>
+          </>
+        );
+        closeLoadingModal();
       } catch (e) {
         closeLoadingModal();
 
@@ -121,14 +143,7 @@ const ImportModal: React.FC = () => {
           Sentry.error(e);
           toast.error('unable to access project');
         }
-
-        return;
       }
-      goToWorkspace(workspaceID);
-
-      toast.success('Cloned project successfully!');
-
-      closeLoadingModal();
     } else {
       toast.error(
         `You are a viewer on the workspace ${workspace.name}, and therefore don’t have the permissions to clone projects to this workspace`
@@ -137,7 +152,7 @@ const ImportModal: React.FC = () => {
   };
 
   return renderModal ? (
-    <Modal id={ModalType.IMPORT_PROJECT} title={cloning ? 'Clone Project' : 'Copy Project'}>
+    <Modal id={ModalType.IMPORT_PROJECT} title={cloning ? 'Clone Project' : getCopyProjectTitle(projectName)}>
       <ModalBody>
         <ModalImportSelect
           prefix={cloning ? 'CLONE TO' : 'COPY TO'}

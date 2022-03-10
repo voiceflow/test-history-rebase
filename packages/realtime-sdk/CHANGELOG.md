@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.65.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.64.0...@voiceflow/realtime-sdk@1.65.0) (2022-03-10)
+
+
+### Features
+
+* platform project type separation part 2 (VF-3038) ([#5175](https://github.com/voiceflow/creator-app/issues/5175)) ([066720d](https://github.com/voiceflow/creator-app/commit/066720d00d3e5c9d8c7fdbfc94d774e970764b53))
+
+
+
+
+
 # [1.64.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.63.2...@voiceflow/realtime-sdk@1.64.0) (2022-03-09)
 
 

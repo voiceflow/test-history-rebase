@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.654.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.653.0...@voiceflow/creator-app@1.654.0) (2022-03-10)
+
+
+### Features
+
+* platform project type separation part 2 (VF-3038) ([#5175](https://github.com/voiceflow/creator-app/issues/5175)) ([066720d](https://github.com/voiceflow/creator-app/commit/066720d00d3e5c9d8c7fdbfc94d774e970764b53))
+
+
+
+
+
 # [1.653.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.652.0...@voiceflow/creator-app@1.653.0) (2022-03-10)
 
 

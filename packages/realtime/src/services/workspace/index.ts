@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractControl, ControlOptions } from '../../control';
@@ -52,6 +53,12 @@ class WorkspaceService extends AbstractControl {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.workspace.create({ name, image });
+  }
+
+  public async checkout(creatorID: number, data: Realtime.workspace.CheckoutWorkspacePayload): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    return client.workspace.checkout(data.workspaceID, { ...Utils.object.omit(data, ['sourceID', 'workspaceID']), source_id: data.sourceID });
   }
 
   public async updateName(creatorID: number, workspaceID: string, name: string): Promise<void> {

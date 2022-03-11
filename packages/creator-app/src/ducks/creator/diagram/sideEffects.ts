@@ -8,9 +8,8 @@ import * as ReduxUndo from 'redux-undo';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
-import { BlockType, DiagramState } from '@/constants';
+import { DiagramState } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as DiagramActions from '@/ducks/diagram/actions';
 import * as DiagramSelectorsV2 from '@/ducks/diagramV2/selectors';
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -80,41 +79,20 @@ const initializeCreatorForDiagram =
   async (dispatch, getState) => {
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
-    const diagramType = DiagramSelectorsV2.active.typeSelector(state);
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-    const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
-    const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
 
     const { diagram: dbDiagram, timestamp } = await client.api.diagram.getRTC(diagramID);
 
-    const { offsetX: x, offsetY: y, zoom, variables } = dbDiagram;
+    const { offsetX: x, offsetY: y, zoom } = dbDiagram;
 
     const creator = Adapters.creatorAdapter.fromDB(dbDiagram, { platform, context: {} });
-
-    const getIntentStepIDs = () => creator.nodes.filter((node) => node.type === BlockType.INTENT).map((node) => node.id);
 
     mutableStore.setLastRealtimeTimestamp(timestamp);
 
     batch(() => {
       dispatch(ReduxUndo.ActionCreators.clearHistory());
-
-      if (!isAtomicActions) {
-        dispatch(DiagramActions.crud.patch(diagramID, { variables }));
-      }
-
       dispatch(Viewport.rehydrateViewport(diagramID, { x, y, zoom }));
       dispatch(initializeCreator(creator));
       dispatch(saveHistory());
-
-      if (
-        !isAtomicActions &&
-        isTopicsAndComponentsEnabled &&
-        isTopicsAndComponentsVersion &&
-        diagramType === BaseModels.Diagram.DiagramType.TOPIC &&
-        !dbDiagram.intentStepIDs?.length
-      ) {
-        dispatch(DiagramActions.crud.patch(diagramID, { intentStepIDs: getIntentStepIDs() }));
-      }
     });
   };
 

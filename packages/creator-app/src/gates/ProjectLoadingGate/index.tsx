@@ -2,49 +2,46 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import LoadingGate from '@/components/LoadingGate';
-import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
-import * as Modal from '@/ducks/modal';
-import * as Version from '@/ducks/version';
+import * as Router from '@/ducks/router';
 import * as VersionV2 from '@/ducks/versionV2';
-import { withFeatureSwitcher } from '@/hocs';
-import { useDispatch, useRouteDiagramID, useRouteVersionID, useSelector } from '@/hooks';
-import * as Sentry from '@/vendors/sentry';
+import { useDispatch, useRouteVersionID } from '@/hooks';
 
-import ProjectLoadingGateV2 from '../ProjectLoadingGateV2';
 import CommentingUpdates from './CommentingUpdates';
-import { useProjectChannelReconnect } from './hooks';
 import TranscriptUpdates from './TranscriptsUpdates';
+import VersionSubscriptionGate from './VersionSubscriptionGate';
 
 const ProjectLoadingGate: React.FC = ({ children }) => {
   const versionID = useRouteVersionID();
-  const diagramID = useRouteDiagramID() ?? undefined;
-  const activeVersion = useSelector(VersionV2.active.versionSelector);
-  const activateVersion = useDispatch(Version.activateVersion);
-  const setError = useDispatch(Modal.setError);
+  const [context, setContext] = React.useState<{ workspaceID: string; projectID: string } | null>(null);
+  const getVersionContext = useDispatch(VersionV2.getVersionContext);
+  const goToDashboard = useDispatch(Router.goToDashboard);
+  const isLoaded = !!context;
 
-  const loadProjectAndJoinChannel = React.useCallback(async () => {
+  const loadProjectContext = React.useCallback(async () => {
     try {
-      await activateVersion(versionID!, diagramID);
-    } catch (e) {
-      Sentry.error(e);
-      setError(e);
-    }
-  }, [versionID, diagramID]);
+      const context = await getVersionContext(versionID!);
 
-  useProjectChannelReconnect();
+      setContext(context);
+    } catch {
+      goToDashboard();
+    }
+  }, [versionID]);
 
   if (!versionID) {
     return <Redirect to={Path.DASHBOARD} />;
   }
 
   return (
-    <LoadingGate label="Project" isLoaded={!!activeVersion && versionID === activeVersion.id} load={loadProjectAndJoinChannel}>
+    <LoadingGate label="Project" isLoaded={isLoaded} load={loadProjectContext}>
       <CommentingUpdates />
       <TranscriptUpdates />
-      {children}
+      {/* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */}
+      <VersionSubscriptionGate workspaceID={context?.workspaceID!} projectID={context?.projectID!} versionID={versionID}>
+        {children}
+      </VersionSubscriptionGate>
     </LoadingGate>
   );
 };
 
-export default withFeatureSwitcher(FeatureFlag.ATOMIC_ACTIONS, ProjectLoadingGateV2)(ProjectLoadingGate);
+export default ProjectLoadingGate;

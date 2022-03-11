@@ -6,7 +6,7 @@ const GRID_BLOCK_PIXEL_UNIT = 300;
 
 const canvasUtils = {
   interceptSave: () => {
-    cy.intercept('/v2/diagrams/*').as('diagramSave');
+    cy.intercept('PATCH', '/v2/diagrams/*').as('diagramSave');
   },
   waitForSave: () => {
     cy.wait('@diagramSave');
@@ -26,9 +26,6 @@ const canvasUtils = {
   focusHome: () => {
     canvasUtils.focusCanvas();
     cy.sendHotkey('s');
-  },
-  toggleDesignMenu: () => {
-    cy.sendHotkey('/');
   },
   spawnNodeInGrid: (blockName: string, xUnits: number, yUnits: number) => {
     canvasUtils.focusHome();

@@ -1,46 +1,65 @@
-import { createStructuredSelector } from 'reselect';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { isType } from 'typescript-fsa';
 
-import { NEW_PRODUCT_ID } from '@/constants';
-import * as DiagramV2 from '@/ducks/diagramV2';
-import * as IntentV2 from '@/ducks/intentV2';
-import * as ProductV2 from '@/ducks/productV2';
-import * as ProjectV2 from '@/ducks/projectV2';
-import * as Realtime from '@/ducks/realtime';
-import * as Session from '@/ducks/session';
-import * as SlotV2 from '@/ducks/slotV2';
-import { CRUDAction } from '@/ducks/utils/crud';
-import * as VersionV2 from '@/ducks/versionV2';
+import * as Account from '@/ducks/account/selectors';
+import { Middleware, MiddlewareAPI } from '@/store/types';
 
-import { createRealtimeResourceUpdateMiddleware } from './utils';
+import { hideCursorCoords, setCursorCoords } from '../observables';
 
-const realtimeMiddleware = [
-  createRealtimeResourceUpdateMiddleware(
-    Realtime.ResourceType.SETTINGS,
-    createStructuredSelector({
-      settings: VersionV2.active.settingsSelector,
-      publishing: VersionV2.active.publishingSelector,
-      session: VersionV2.active.sessionSelector,
-      name: ProjectV2.active.nameSelector,
-    }),
-    { ignore: [CRUDAction.CRUD_REPLACE, Session.SessionAction.SET_ACTIVE_VERSION_ID, Session.SessionAction.SET_ACTIVE_PROJECT_ID] }
-  ),
-  createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.FLOWS, DiagramV2.allDiagramsSelector, { ignore: [CRUDAction.CRUD_REPLACE] }),
-  createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.PRODUCTS, ProductV2.allProductsSelector, {
-    ignore: [
-      CRUDAction.CRUD_REPLACE,
-      CRUDAction.CRUD_UPDATE,
-      (action) => action.type === CRUDAction.CRUD_ADD && action.payload?.key === NEW_PRODUCT_ID,
-      (action) => action.type === CRUDAction.CRUD_REMOVE && action.payload === NEW_PRODUCT_ID,
-    ],
-  }),
-  createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.INTENTS, IntentV2.allIntentsSelector, { ignore: [CRUDAction.CRUD_REPLACE] }),
-  createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.SLOTS, SlotV2.allSlotsSelector, { ignore: [CRUDAction.CRUD_REPLACE] }),
-  createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.VARIABLES, VersionV2.active.globalVariablesSelector, {
-    ignore: [CRUDAction.CRUD_REPLACE, Session.SessionAction.SET_ACTIVE_VERSION_ID],
-  }),
-  createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.DIAGRAM, DiagramV2.active.diagramSelector, {
-    ignore: [CRUDAction.CRUD_REPLACE, Session.SessionAction.SET_ACTIVE_DIAGRAM_ID],
-  }),
-];
+export const createIgnoreMiddleware =
+  (shouldIgnore: (api: MiddlewareAPI, action: any) => boolean): Middleware =>
+  (api) =>
+  (next) =>
+  (action) => {
+    if (shouldIgnore(api, action)) {
+      return;
+    }
 
-export default realtimeMiddleware;
+    next(action);
+  };
+
+/**
+ * ignore actions from own cursor movements
+ */
+export const ownCursorIgnoreMiddleware: Middleware = createIgnoreMiddleware((api, action) => {
+  if (!isType(action, Realtime.diagram.awareness.moveCursor)) return false;
+
+  const creatorID = Account.userIDSelector(api.getState());
+
+  return action.payload.creatorID === creatorID;
+});
+
+/**
+ * capture volatile cursor movement events
+ * ignores actions from own cursor movements
+ */
+export const moveCursorMiddleware = createIgnoreMiddleware((api, action) => {
+  if (!isType(action, Realtime.diagram.awareness.moveCursor)) return false;
+
+  const creatorID = Account.userIDSelector(api.getState());
+
+  if (action.payload.creatorID === creatorID) return true;
+
+  setCursorCoords(action.payload);
+
+  return true;
+});
+
+/**
+ * capture hide cursor events to pipe to observable
+ * ignores actions from own cursor movements
+ */
+export const hideCursorMiddleware = createIgnoreMiddleware((api, action) => {
+  if (!isType(action, Realtime.diagram.awareness.hideCursor)) return false;
+
+  const creatorID = Account.userIDSelector(api.getState());
+
+  if (action.payload.creatorID === creatorID) return true;
+
+  hideCursorCoords(action.payload);
+
+  return true;
+});
+
+// export default [ownCursorIgnoreMiddleware, moveCursorMiddleware, hideCursorMiddleware];
+export default [moveCursorMiddleware, hideCursorMiddleware];

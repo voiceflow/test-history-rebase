@@ -1,5 +1,6 @@
 import { LoguxControlOptions } from '../../control';
 import AddWorkspaceControl from './add';
+import CheckoutWorkspaceControl from './checkout';
 import CreateWorkspaceControl from './create';
 import LeaveWorkspaceControl from './leave';
 import {
@@ -21,6 +22,7 @@ import UpdateWorkspaceNameControl from './updateName';
 const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
   addWorkspaceControl: new AddWorkspaceControl(options),
   createWorkspaceControl: new CreateWorkspaceControl(options),
+  checkoutWorkspaceControl: new CheckoutWorkspaceControl(options),
   leaveWorkspaceControl: new LeaveWorkspaceControl(options),
   refreshWorkspacesControl: new RefreshWorkspacesControl(options),
   removeWorkspaceControl: new RemoveWorkspaceControl(options),

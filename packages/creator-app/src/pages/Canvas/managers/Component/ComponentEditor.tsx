@@ -4,7 +4,6 @@ import React from 'react';
 
 import Section from '@/components/Section';
 import * as Documentation from '@/config/documentation';
-import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector, useTheme } from '@/hooks';
@@ -20,7 +19,6 @@ const ComponentEditor: NodeEditor<Realtime.NodeData.Component, Realtime.NodeData
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: data.diagramID });
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
-  const loadComponentVariables = useDispatch(Diagram.loadLocalVariables);
 
   const addVariableMapping = React.useCallback(() => {
     const emptyVariableMap = variableMappingFactory();
@@ -37,12 +35,6 @@ const ComponentEditor: NodeEditor<Realtime.NodeData.Component, Realtime.NodeData
       goToDiagram(diagram.id);
     }
   }, [diagram]);
-
-  React.useEffect(() => {
-    if (diagram?.id) {
-      loadComponentVariables(diagram.id);
-    }
-  }, [diagram?.id]);
 
   const hasVariableMapping = !!data.inputs?.length || !!data.outputs?.length;
 

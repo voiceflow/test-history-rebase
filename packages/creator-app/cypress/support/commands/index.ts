@@ -1,4 +1,4 @@
-import './helpsers';
+import './helpers';
 import './session';
 import './fixtures';
 import './auth';

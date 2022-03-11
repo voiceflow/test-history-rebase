@@ -20,10 +20,10 @@ const parseError = (err: any) => {
 };
 
 export interface CreditCardSectionProps {
-  setStripeCompleted?: (complete: boolean) => void;
+  stripe: stripe.Stripe;
   workspaceId: string;
-  stripe: any;
-  checkChargeable: Function;
+  checkChargeable: (data: stripe.Source) => Promise<void>;
+  setStripeCompleted?: (complete: boolean) => void;
 }
 
 const CreditCardSection: React.FC<CreditCardSectionProps> = ({ setStripeCompleted, workspaceId, stripe, checkChargeable }) => {
@@ -45,18 +45,20 @@ const CreditCardSection: React.FC<CreditCardSectionProps> = ({ setStripeComplete
 
   const updateSource = async () => {
     if (updatingSource) return;
+
     try {
       setUpdatingSource(true);
-      const stripeSource = await stripe.createSource({
-        type: 'card',
-      });
+      const stripeSource = await stripe.createSource({ type: 'card' });
       const newSource = stripeSource.source;
 
       if (!newSource) {
-        return toast.error('Invalid Card Information');
+        toast.error('Invalid Card Information');
+        return;
       }
+
       await checkChargeable(newSource);
       await client.workspace.updateSource(workspaceId, newSource.id);
+
       handleSuccessfulUpdate(newSource);
     } catch (err) {
       const error = parseError(err);
@@ -64,7 +66,6 @@ const CreditCardSection: React.FC<CreditCardSectionProps> = ({ setStripeComplete
     } finally {
       setUpdatingSource(false);
     }
-    return null;
   };
 
   const actions = [{ label: usingExistingSource ? 'Update card' : 'Cancel', action: () => setUsingExistingSource(!usingExistingSource) }];

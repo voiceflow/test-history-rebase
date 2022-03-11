@@ -15,7 +15,7 @@ import { GENERAL_LOCALE_NAME_MAP, getDefaultPlatformLanguageLabel } from '@/cons
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useActiveWorkspace, useDispatch, useSelector, useSetup } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useSelector } from '@/hooks';
 import { FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
@@ -91,7 +91,6 @@ const NewProject: React.FC = () => {
   const redirectToCanvas = useDispatch(Router.redirectToCanvas);
   const goToDashboard = useDispatch(Router.goToDashboard);
   const createProject = useDispatch(Project.createProject);
-  const loadProjectsByWorkspaceID = useDispatch(Project.loadProjectsByWorkspaceID);
 
   // Once this starts getting more complex, we should move all this logic to a context, but right now that's overkill
   const [stepStack, setStepStack] = React.useState<StepID[]>([StepID.PLATFORM_SELECT]);
@@ -172,12 +171,6 @@ const NewProject: React.FC = () => {
       setStepStack((prevStepSTack) => [StepID.PROJECT_SETTINGS, ...prevStepSTack]);
     }
   };
-
-  useSetup(() => {
-    if (workspace?.id && !projects.length) {
-      loadProjectsByWorkspaceID(workspace.id);
-    }
-  });
 
   useDidUpdateEffect(() => {
     if (selectedChannel) {

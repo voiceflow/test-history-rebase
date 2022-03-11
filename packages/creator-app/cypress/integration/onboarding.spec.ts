@@ -4,10 +4,9 @@ import onboarding from '../pages/onboarding';
 
 context('Onboarding', () => {
   const regularFlow = (projectType?: string) => {
-    cy.signup();
-    onboarding.assert.verifyEmailTitle();
-    cy.verifyEmail();
+    cy.setup();
 
+    cy.visit(onboarding.meta.route);
     cy.shouldBeOn(onboarding);
     onboarding.el.getStartedButton.click();
     onboarding.completeProfile();
@@ -20,8 +19,6 @@ context('Onboarding', () => {
   };
 
   describe('regular new user flow', () => {
-    beforeEach(() => cy.removeTestAccount());
-
     it('Alexa project', () => {
       regularFlow();
     });
@@ -71,7 +68,8 @@ context('Onboarding', () => {
     });
 
     it('existing user', () => {
-      regularFlow();
+      cy.setup();
+      cy.createProject();
       cy.visit(`/onboarding?promo=student`);
       onboarding.completeInvites();
       onboarding.enterCreditCard();

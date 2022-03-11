@@ -9,7 +9,6 @@ const OWNER_ROLE_ENABLED = process.env.FF_OWNER_ROLE === 'true';
 const ASR_BYPASS_ENABLED = process.env.FF_ASR_BYPASS === 'true';
 const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
 const WAVENET_VOICES_ENABLED = process.env.FF_WAVENET_VOICES === 'true';
-const ATOMIC_ACTIONS_ENABLED = process.env.FF_ATOMIC_ACTIONS === 'true';
 const ENTERPRISE_TRIAL_ENABLED = process.env.FF_ENTERPRISE_TRIAL_ENABLED === 'true';
 const TOPICS_AND_COMPONENTS_ENABLED = process.env.FF_TOPICS_AND_COMPONENTS === 'true';
 const ACCOUNT_PAGE_REDESIGN_ENABLED = process.env.FF_ACCOUNT_PAGE_REDESIGN === 'true';
@@ -27,7 +26,6 @@ export enum FeatureFlag {
   TOPICS_AND_COMPONENTS = 'topics_and_components',
 
   // atomic actions
-  ATOMIC_ACTIONS = 'atomic_actions',
   ATOMIC_ACTIONS_PHASE_2 = 'atomic_actions_phase_2',
   ATOMIC_ACTIONS_AWARENESS = 'atomic_actions_awareness',
 
@@ -55,7 +53,6 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.ASR_BYPASS]: ASR_BYPASS_ENABLED,
   [FeatureFlag.MOTOROLA_SSO]: MOTOROLA_SSO_ENABLED,
   [FeatureFlag.WAVENET_VOICES]: WAVENET_VOICES_ENABLED,
-  [FeatureFlag.ATOMIC_ACTIONS]: ATOMIC_ACTIONS_ENABLED,
   [FeatureFlag.ENTERPRISE_TRIAL]: ENTERPRISE_TRIAL_ENABLED,
   [FeatureFlag.INTERCOM_INTEGRATION]: INTERCOM_ENABLED,
   [FeatureFlag.TOPICS_AND_COMPONENTS]: TOPICS_AND_COMPONENTS_ENABLED,

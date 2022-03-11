@@ -16,7 +16,6 @@ import * as Router from '@/ducks/router';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { DragItem as BaseDragItem, HoverItem as BaseHoverItem, withBatchLoadingGate } from '@/hocs';
 import { useDispatch, useModals, usePermission, useScrollHelpers, useSelector } from '@/hooks';
-import { ProjectListsGate } from '@/pages/Dashboard/gates';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
 import { Item as ListItem, ItemProps as ListItemProps } from './Item';
@@ -191,4 +190,4 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
   );
 };
 
-export default withBatchLoadingGate(WorkspaceFeatureLoadingGate, ProjectListsGate, WorkspaceSubscriptionGate)(ProjectListList);
+export default withBatchLoadingGate(WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate)(ProjectListList);

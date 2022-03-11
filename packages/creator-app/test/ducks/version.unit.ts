@@ -1,11 +1,9 @@
 /* eslint-disable sonarjs/no-duplicate-string, mocha/no-identical-title */
 import { BaseNode, BaseVersion } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { normalize } from 'normal-store';
 
-import { FeatureFlag } from '@/config/features';
-import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as VersionV1 from '@/ducks/version';
 import * as Version from '@/ducks/versionV2';
 
@@ -56,8 +54,6 @@ const MOCK_STATE: Version.VersionState = {
 };
 
 suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, describeEffectV2, createState }) => {
-  const v2FeatureState = { [Feature.STATE_KEY]: { features: { [FeatureFlag.ATOMIC_ACTIONS]: { isEnabled: true } } } };
-
   describe('reducer', () => {
     describeReducerV2(Realtime.version.addGlobalVariable, ({ applyAction }) => {
       it('append new variable', () => {
@@ -132,23 +128,14 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
 
   describe('selectors', () => {
     describe('versionByIDSelector()', () => {
-      it('select version from the legacy store', () => {
-        const version = { id: VERSION_ID };
-        const versionState = normalize([version]);
-
-        const result = Version.versionByIDSelector(createState(MOCK_STATE, { [VersionV1.STATE_KEY]: versionState }), { id: VERSION_ID });
-
-        expect(result).to.eq(version);
-      });
-
       it('select known version', () => {
-        const result = Version.versionByIDSelector(createState(MOCK_STATE, v2FeatureState), { id: VERSION_ID });
+        const result = Version.versionByIDSelector(createState(MOCK_STATE), { id: VERSION_ID });
 
         expect(result).to.eq(VERSION);
       });
 
       it('select unknown version', () => {
-        const result = Version.versionByIDSelector(createState(MOCK_STATE, v2FeatureState), { id: 'foo' });
+        const result = Version.versionByIDSelector(createState(MOCK_STATE), { id: 'foo' });
 
         expect(result).to.be.null;
       });
@@ -157,23 +144,12 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
 
   describe('side effects', () => {
     describeEffectV2(VersionV1.addGlobalVariable, 'addGlobalVariable()', ({ applyEffect }) => {
-      it('add variable to version locally', async () => {
-        const rootState = {
-          [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [VersionV1.STATE_KEY]: normalize([{ id: VERSION_ID, variables: ['foo', 'bar'] }]),
-        };
-
-        const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz');
-
-        expect(dispatched).to.eql([VersionV1.crud.patch(VERSION_ID, { variables: ['foo', 'bar', 'fizz'] })]);
-      });
-
       it('fail if variable name is reserved javascript keyword', async () => {
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
         };
 
-        await expect(applyEffect(createState(MOCK_STATE, rootState), 'new')).to.be.rejectedWith(
+        await expect(applyEffect(createState(MOCK_STATE, rootState), 'new', CanvasCreationType.IMM)).to.be.rejectedWith(
           "Reserved word. You can prefix with '_' to fix this issue"
         );
       });
@@ -183,10 +159,10 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
         };
 
-        await expect(applyEffect(createState(MOCK_STATE, rootState), '@$%!')).to.be.rejectedWith(
+        await expect(applyEffect(createState(MOCK_STATE, rootState), '@$%!', CanvasCreationType.IMM)).to.be.rejectedWith(
           'Variable contains invalid characters or is greater than 64 characters'
         );
-        await expect(applyEffect(createState(MOCK_STATE, rootState), 'xxxx-xxxx-xxxx-xxxx')).to.be.rejectedWith(
+        await expect(applyEffect(createState(MOCK_STATE, rootState), 'xxxx-xxxx-xxxx-xxxx', CanvasCreationType.IMM)).to.be.rejectedWith(
           'Variable contains invalid characters or is greater than 64 characters'
         );
       });
@@ -194,51 +170,27 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('fail when adding variable to version locally if variable already exists', async () => {
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [VersionV1.STATE_KEY]: normalize([{ id: VERSION_ID, variables: ['foo', 'bar'] }]),
         };
 
-        await expect(applyEffect(createState(MOCK_STATE, rootState), 'foo')).to.be.rejectedWith('No duplicate variables: foo');
+        await expect(applyEffect(createState(MOCK_STATE, rootState), 'fizz', CanvasCreationType.IMM)).to.be.rejectedWith(
+          'No duplicate variables: fizz'
+        );
       });
 
       it('add variable to version in realtime', async () => {
         const rootState = {
-          ...v2FeatureState,
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
         };
 
-        const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'foo');
+        const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'foo', CanvasCreationType.IMM);
 
         expect(dispatched).to.eql([{ sync: Realtime.version.addGlobalVariable({ ...ACTION_CONTEXT, variable: 'foo' }) }]);
       });
     });
 
     describeEffectV2(VersionV1.removeGlobalVariable, 'removeGlobalVariable()', ({ applyEffect }) => {
-      it('remove variable from version locally', async () => {
-        const rootState = {
-          [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [VersionV1.STATE_KEY]: normalize([{ id: VERSION_ID, variables: ['foo', 'bar'] }]),
-        };
-
-        const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'foo');
-
-        expect(dispatched).to.eql([VersionV1.crud.patch(VERSION_ID, { variables: ['bar'] })]);
-      });
-
-      it('do nothing when removing variable from version locally if variable does not exist', async () => {
-        const variables = ['foo', 'bar'];
-        const rootState = {
-          [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [VersionV1.STATE_KEY]: normalize([{ id: VERSION_ID, variables }]),
-        };
-
-        const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz');
-
-        expect(dispatched).to.eql([VersionV1.crud.patch(VERSION_ID, { variables })]);
-      });
-
       it('remove variable from version in realtime', async () => {
         const rootState = {
-          ...v2FeatureState,
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
         };
 

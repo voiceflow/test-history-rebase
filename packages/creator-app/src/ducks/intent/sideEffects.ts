@@ -3,8 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import _pick from 'lodash/pick';
 import * as Normal from 'normal-store';
 
-import { FeatureFlag } from '@/config/features';
-import * as Feature from '@/ducks/feature';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
@@ -13,7 +11,6 @@ import { SyncThunk, Thunk } from '@/store/types';
 import { inferIntentSlotsType, inferIntentSlotType, inferIntentType, removeSlotRefFromInput } from '@/utils/intent';
 import { createNextName } from '@/utils/string';
 
-import { crud } from './actions';
 import { getProjectTypeNewSlotsCreator, getUniqSlots, intentProcessor } from './utils';
 
 const NEW_INTENT_NAME = 'intent';
@@ -27,49 +24,14 @@ export const addManyIntents =
     const projectType = ProjectV2.active.typeV2Selector(state);
     const intents = values.map(intentProcessor.bind(null, projectType));
 
-    await dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          dispatch(crud.addMany(intents));
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.intent.crud.addMany({ ...context, values: intents }));
-        }
-      )
-    );
-  };
-
-/**
- * @deprecated replace operations will only be pushed from the server moving forward
- */
-export const replaceIntents =
-  (values: Realtime.Intent[], meta?: any): SyncThunk =>
-  (dispatch, getState) => {
-    const state = getState();
-    const projectType = ProjectV2.active.typeV2Selector(state);
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-
-    if (isAtomicActions) return;
-
-    dispatch(crud.replace(values.map(intentProcessor.bind(null, projectType)), meta));
+    await dispatch.sync(Realtime.intent.crud.addMany({ ...getActiveVersionContext(getState()), values: intents }));
   };
 
 export const patchIntent =
   (id: string, data: Partial<Realtime.Intent>): SyncThunk =>
   (dispatch, getState) => {
     if (!data.inputs) {
-      dispatch(
-        Feature.applyAtomicSideEffect(
-          getActiveVersionContext,
-          () => {
-            dispatch(crud.patch(id, data));
-          },
-          (context) => {
-            dispatch.sync(Realtime.intent.crud.patch({ ...context, key: id, value: data }));
-          }
-        )
-      );
+      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: data }));
       return;
     }
 
@@ -95,17 +57,7 @@ export const patchIntent =
       slots: inferIntentSlotsType({ byKey: newByKey, allKeys: [...keysWithoutRemoved, ...keysToAdd] }),
     });
 
-    dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        () => {
-          dispatch(crud.patch(id, patchedIntent));
-        },
-        (context) => {
-          dispatch.sync(Realtime.intent.crud.patch({ ...context, key: id, value: patchedIntent }));
-        }
-      )
-    );
+    dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent }));
   };
 
 export const patchIntentSlot =
@@ -183,16 +135,12 @@ export const createIntent =
     const inputs = intent?.inputs || [];
     const processedIntent = intentProcessor(projectType, inferIntentType({ id, name, slots, inputs, platform }));
 
-    await dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          dispatch(crud.add(id, processedIntent));
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.intent.crud.add({ ...context, key: id, value: processedIntent }));
-        }
-      )
+    await dispatch.sync(
+      Realtime.intent.crud.add({
+        ...getActiveVersionContext(getState()),
+        key: id,
+        value: processedIntent,
+      })
     );
 
     return id;
@@ -200,15 +148,11 @@ export const createIntent =
 
 export const deleteIntent =
   (intentID: string): Thunk =>
-  (dispatch) =>
-    dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          dispatch(crud.remove(intentID));
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.intent.crud.remove({ ...context, key: intentID }));
-        }
-      )
+  async (dispatch, getState) => {
+    await dispatch.sync(
+      Realtime.intent.crud.remove({
+        ...getActiveVersionContext(getState()),
+        key: intentID,
+      })
     );
+  };

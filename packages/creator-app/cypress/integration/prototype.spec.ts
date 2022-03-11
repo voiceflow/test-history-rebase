@@ -96,6 +96,9 @@ context('Prototype', () => {
       });
 
       it('brand configuration (with pro account)', () => {
+        cy.intercept('POST', '/image').as('updateImage');
+        cy.intercept('PATCH', '/v2/versions/*/prototype?path=settings').as('updateSettings');
+
         cy.upgradeTestAccount('pro');
         canvasPage.goToCanvas();
         canvasPage.el.shareButton.click();
@@ -107,7 +110,13 @@ context('Prototype', () => {
         prototypePage.uploadImage(Identifier.BRAND_IMAGE_INPUT_CONTAINER);
         prototypePage.uploadImage(Identifier.MESSAGE_ICON_INPUT_CONTAINER);
         canvasPage.el.shareLinkCopyButton.click();
-        cy.clipboard().then((clipboardData) => cy.visit(clipboardData!));
+        cy.wait('@updateImage');
+
+        cy.clipboard().then((clipboardData) => {
+          cy.wait('@updateSettings');
+          cy.visit(clipboardData!);
+        });
+
         prototypePage.el.startPrototypeButton.should('be.visible');
         prototypePage.el.startPrototypeButton.should('have.css', 'background-color').and('eq', CHANGED_BRANDING_RGB);
         prototypePage.el.publicPrototypeImage.should('have.css', 'background').and('not.contain', DEFAULT_VF_LOGO_URL);

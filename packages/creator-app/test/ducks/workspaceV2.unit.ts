@@ -1,13 +1,9 @@
 /* eslint-disable sonarjs/no-duplicate-string, mocha/no-identical-title */
-import { Utils } from '@voiceflow/common';
 import { PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { normalize } from 'normal-store';
 
-import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
-import * as Feature from '@/ducks/feature';
-import * as WorkspaceV1 from '@/ducks/workspace';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspaceV2';
 
 import suite from './_suite';
@@ -192,35 +188,99 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
   });
 
   describe('selectors', () => {
-    const v2FeatureState = { [Feature.STATE_KEY]: { features: { [FeatureFlag.ATOMIC_ACTIONS]: { isEnabled: true } } } };
+    const activeWorkspaceState = { [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID } };
 
-    describe('allWorkspacesSelector()', () => {
-      it('select all workspaces from the legacy store', () => {
-        const workspaces = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
-
-        const result = Workspace.allWorkspacesSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: normalize(workspaces) }));
-
-        expect(result).to.eql(workspaces);
+    describe('active', () => {
+      describe('workspaceSelector()', () => {
+        it('should select the active workspace', () => {
+          expect(Workspace.active.workspaceSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eq(WORKSPACE);
+        });
       });
 
+      describe('membersSelector()', () => {
+        it('should select members of the active workspace', () => {
+          expect(Workspace.active.membersSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eq(WORKSPACE.members);
+        });
+
+        it('should select an empty array if no members listed', () => {
+          expect(Workspace.active.membersSelector(createState(MOCK_STATE))).to.eql([]);
+        });
+      });
+
+      describe('memberByIDSelector()', () => {
+        it('should select a member from the active workspace by creator ID', () => {
+          expect(
+            Workspace.active.memberByIDSelector(createState(MOCK_STATE, activeWorkspaceState), {
+              creatorID: CREATOR_ID,
+            })
+          ).to.eq(WORKSPACE_MEMBER);
+        });
+
+        it('should return null if no member matches for active workspace', () => {
+          expect(
+            Workspace.active.memberByIDSelector(createState(MOCK_STATE, activeWorkspaceState), {
+              creatorID: 222,
+            })
+          ).to.be.null;
+        });
+
+        it('should return null members list', () => {
+          expect(Workspace.active.memberByIDSelector(createState(MOCK_STATE), { creatorID: 999 })).to.be.null;
+        });
+      });
+
+      describe('planSelector()', () => {
+        it('should select the plan of the active workspace', () => {
+          expect(Workspace.active.planSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eq('pro');
+        });
+      });
+
+      describe('isOnPaidPlanSelector()', () => {
+        it('should select whether the active workspace is on a paid plan', () => {
+          expect(Workspace.active.isOnPaidPlanSelector(createState(MOCK_STATE, activeWorkspaceState))).to.be.true;
+        });
+      });
+
+      describe('numberOfSeatsSelector()', () => {
+        it('should select the number of seats of the active workspace', () => {
+          expect(Workspace.active.numberOfSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eq(5);
+        });
+      });
+
+      describe('seatLimitsSelector()', () => {
+        it('should select the seat limits of the active workspace', () => {
+          expect(Workspace.active.seatLimitsSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eql({ viewer: 10, editor: 20 });
+        });
+      });
+
+      describe('usedEditorSeatsSelector()', () => {
+        it('should select the number of occupied seats in the active workspace', () => {
+          expect(Workspace.active.usedEditorSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eql(1);
+        });
+
+        it('should always have at least 1 used seat', () => {
+          expect(Workspace.active.usedEditorSeatsSelector(createState(MOCK_STATE, { [Session.STATE_KEY]: { activeWorkspaceID: 'def' } }))).to.eql(1);
+        });
+      });
+
+      describe('usedViewerSeatsSelector()', () => {
+        it('should select the number of viewers in the active workspace', () => {
+          expect(Workspace.active.usedViewerSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eql(1);
+        });
+      });
+    });
+
+    describe('allWorkspacesSelector()', () => {
       it('select all workspaces', () => {
-        const result = Workspace.allWorkspacesSelector(createState(MOCK_STATE, v2FeatureState));
+        const result = Workspace.allWorkspacesSelector(createState(MOCK_STATE));
 
         expect(result).to.eql([WORKSPACE, MOCK_STATE.byKey.abc]);
       });
     });
 
     describe('allWorkspaceIDsSelector()', () => {
-      it('select all workspace IDs from the legacy store', () => {
-        const workspaces = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
-
-        const result = Workspace.allWorkspaceIDsSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: normalize(workspaces) }));
-
-        expect(result).to.eql(workspaces.map((workspace) => workspace.id));
-      });
-
       it('select all workspace IDs', () => {
-        const result = Workspace.allWorkspaceIDsSelector(createState(MOCK_STATE, v2FeatureState));
+        const result = Workspace.allWorkspaceIDsSelector(createState(MOCK_STATE));
 
         expect(result).to.eq(MOCK_STATE.allKeys);
       });
@@ -230,13 +290,13 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('true if a templates workspace exists', () => {
         const workspaceState = { ...MOCK_STATE, byKey: { ...MOCK_STATE.byKey, [WORKSPACE_ID]: { ...WORKSPACE, templates: true } } };
 
-        const result = Workspace.hasTemplatesWorkspaceSelector(createState(workspaceState, v2FeatureState));
+        const result = Workspace.hasTemplatesWorkspaceSelector(createState(workspaceState));
 
         expect(result).to.be.true;
       });
 
       it('false if a templates workspace does not exists', () => {
-        const result = Workspace.hasTemplatesWorkspaceSelector(createState(MOCK_STATE, v2FeatureState));
+        const result = Workspace.hasTemplatesWorkspaceSelector(createState(MOCK_STATE));
 
         expect(result).to.be.false;
       });
@@ -246,30 +306,21 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('select all non-templates workspaces', () => {
         const workspaceState = { ...MOCK_STATE, byKey: { ...MOCK_STATE.byKey, [WORKSPACE_ID]: { ...WORKSPACE, templates: true } } };
 
-        const result = Workspace.personalWorkspaceIDsSelector(createState(workspaceState, v2FeatureState));
+        const result = Workspace.personalWorkspaceIDsSelector(createState(workspaceState));
 
         expect(result).to.eql(['abc']);
       });
     });
 
     describe('workspaceByIDSelector()', () => {
-      it('select workspace from the legacy store', () => {
-        const workspace = { id: WORKSPACE_ID };
-        const workspaceState = normalize([workspace]);
-
-        const result = Workspace.workspaceByIDSelector(createState(MOCK_STATE, { [WorkspaceV1.STATE_KEY]: workspaceState }), { id: WORKSPACE_ID });
-
-        expect(result).to.eq(workspace);
-      });
-
       it('select known workspace', () => {
-        const result = Workspace.workspaceByIDSelector(createState(MOCK_STATE, v2FeatureState), { id: WORKSPACE_ID });
+        const result = Workspace.workspaceByIDSelector(createState(MOCK_STATE), { id: WORKSPACE_ID });
 
         expect(result).to.eq(WORKSPACE);
       });
 
       it('select unknown workspace', () => {
-        const result = Workspace.workspaceByIDSelector(createState(MOCK_STATE, v2FeatureState), { id: 'foo' });
+        const result = Workspace.workspaceByIDSelector(createState(MOCK_STATE), { id: 'foo' });
 
         expect(result).to.be.null;
       });
@@ -277,7 +328,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
 
     describe('isAdminOfAnyWorkspaceSelector()', () => {
       it('true if member with admin role matches active user', () => {
-        const rootState = { ...v2FeatureState, [Account.STATE_KEY]: { creator_id: CREATOR_ID } };
+        const rootState = { [Account.STATE_KEY]: { creator_id: CREATOR_ID } };
 
         const result = Workspace.isAdminOfAnyWorkspaceSelector(createState(MOCK_STATE, rootState));
 
@@ -285,7 +336,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       });
 
       it('false if user is not admin of workspaces they are a member of', () => {
-        const rootState = { ...v2FeatureState, [Account.STATE_KEY]: { creator_id: 1000 } };
+        const rootState = { [Account.STATE_KEY]: { creator_id: 1000 } };
 
         const result = Workspace.isAdminOfAnyWorkspaceSelector(createState(MOCK_STATE, rootState));
 
@@ -293,7 +344,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       });
 
       it('false if no member exists that matches active user', () => {
-        const rootState = { ...v2FeatureState, [Account.STATE_KEY]: { creator_id: 1001 } };
+        const rootState = { [Account.STATE_KEY]: { creator_id: 1001 } };
 
         const result = Workspace.isAdminOfAnyWorkspaceSelector(createState(MOCK_STATE, rootState));
 

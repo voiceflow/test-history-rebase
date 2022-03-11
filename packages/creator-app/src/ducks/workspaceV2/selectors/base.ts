@@ -2,30 +2,19 @@ import { UserRole } from '@voiceflow/internal';
 import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
-import * as Feature from '@/ducks/feature';
 import { createCurriedSelector, createParameterSelector } from '@/ducks/utils';
-import { createCRUDSelectors, idParamSelector } from '@/ducks/utils/crudV2';
-import * as WorkspaceV1Selectors from '@/ducks/workspace/selectors';
+import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 
 import { STATE_KEY } from '../constants';
 
 export const workspaceIDParamSelector = createParameterSelector((params: { workspaceID: string }) => params.workspaceID);
 
-const { all: _allWorkspacesSelector, byID: _workspaceByIDSelector, allIDs: _allWorkspaceIDsSelector } = createCRUDSelectors(STATE_KEY);
-
-export const allWorkspacesSelector = Feature.createAtomicActionsSelector([WorkspaceV1Selectors.allWorkspacesSelector, _allWorkspacesSelector]);
-
-export const allWorkspaceIDsSelector = Feature.createAtomicActionsSelector([WorkspaceV1Selectors.allWorkspaceIDsSelector, _allWorkspaceIDsSelector]);
+export const { all: allWorkspacesSelector, byID: workspaceByIDSelector, allIDs: allWorkspaceIDsSelector } = createCRUDSelectors(STATE_KEY);
 
 export const hasTemplatesWorkspaceSelector = createSelector([allWorkspacesSelector], (workspaces) => workspaces.some(({ templates }) => templates));
 
 export const personalWorkspaceIDsSelector = createSelector([allWorkspacesSelector], (workspaces) =>
   workspaces.filter((workspace) => !workspace.templates).map((workspace) => workspace.id)
-);
-
-export const workspaceByIDSelector = Feature.createAtomicActionsSelector(
-  [WorkspaceV1Selectors.workspaceByIDSelector, _workspaceByIDSelector, idParamSelector],
-  (getWorkspaceV1, workspaceV2, workspaceID) => [workspaceID ? getWorkspaceV1(workspaceID) : null, workspaceV2]
 );
 
 export const getWorkspaceByIDSelector = createCurriedSelector(workspaceByIDSelector);

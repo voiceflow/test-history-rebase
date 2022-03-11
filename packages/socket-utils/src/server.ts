@@ -53,6 +53,6 @@ export class SocketServer extends Logux.Server {
   }
 
   public async processAs(creatorID: number, action: Action<any>, meta?: Partial<ServerMeta>): Promise<Readonly<ServerMeta>> {
-    return super.process({ ...action, meta: { ...action?.meta, creatorID } }, meta);
+    return this.process({ ...action, meta: { ...action?.meta, creatorID } }, meta);
   }
 }

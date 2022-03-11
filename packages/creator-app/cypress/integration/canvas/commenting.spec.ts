@@ -22,15 +22,12 @@ context('Canvas - Commenting', () => {
 
   describe('pro plan navigate', () => {
     beforeEach(() => {
-      cy.server();
       cy.createProject();
       cy.upgradeTestAccount('pro');
-      canvasPage.route.postDiagram().as('loadDiagram');
     });
 
     it('enter mode with controls', () => {
       canvasPage.goToCanvas();
-      cy.wait('@loadDiagram');
 
       canvasPage.el.commentingModeControl.click();
 
@@ -39,7 +36,6 @@ context('Canvas - Commenting', () => {
 
     it('enter mode with hotkey', () => {
       canvasPage.goToCanvas();
-      cy.wait('@loadDiagram');
 
       cy.sendHotkey('c');
 
@@ -48,7 +44,6 @@ context('Canvas - Commenting', () => {
 
     it('navigate with URL', () => {
       commentingMode.goToCanvas();
-      cy.wait('@loadDiagram');
 
       cy.shouldBeOn(commentingMode);
       commentingMode.el.historyDrawer.should('be.visible');
@@ -59,16 +54,13 @@ context('Canvas - Commenting', () => {
   describe('commenting mode', () => {
     // eslint-disable-next-line sonarjs/no-identical-functions
     beforeEach(() => {
-      cy.server();
       cy.createProject();
       cy.upgradeTestAccount('pro');
-      canvasPage.route.postDiagram().as('loadDiagram');
     });
     afterEach(() => cy.removeTestThreads());
 
     it('create new comment thread', () => {
       commentingMode.goToCanvas();
-      cy.wait('@loadDiagram');
 
       canvasPage.el.canvas.click(200, 200);
 
@@ -90,7 +82,6 @@ context('Canvas - Commenting', () => {
       beforeEach(() => {
         cy.createThread('commenting is fun!');
         commentingMode.goToCanvas();
-        cy.wait('@loadDiagram');
       });
 
       it('reply', () => {

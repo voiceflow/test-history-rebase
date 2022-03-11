@@ -1,14 +1,7 @@
 import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { createCRUDState } from '@/ducks/utils/crud';
-
-import { WorkspaceState } from './types';
-
-export const STATE_KEY = 'workspace';
-
-export const INITIAL_STATE: Omit<WorkspaceState, 'activeWorkspaceID'> = createCRUDState();
-
+// eslint-disable-next-line import/prefer-default-export
 export const UNKNOWN_MEMBER_DATA: Realtime.DBMember = {
   creator_id: 0,
   seats: 0,

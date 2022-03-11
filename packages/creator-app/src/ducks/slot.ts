@@ -1,6 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import * as Feature from '@/ducks/feature';
 import { getActiveVersionContext } from '@/ducks/version/utils';
 import { Thunk } from '@/store/types';
 
@@ -48,63 +47,26 @@ export const crud = createCRUDActionCreators(STATE_KEY);
 
 export const createSlot =
   (slotID: string, slot: Realtime.Slot): Thunk =>
-  (dispatch) =>
-    dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          dispatch(crud.add(slotID, slot));
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.slot.crud.add({ ...context, key: slotID, value: slot }));
-        }
-      )
-    );
+  async (dispatch, getState) => {
+    await dispatch.sync(Realtime.slot.crud.add({ ...getActiveVersionContext(getState()), key: slotID, value: slot }));
+  };
 
 export const addManySlots =
   (slots: Realtime.Slot[]): Thunk =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     if (!slots.length) return;
 
-    await dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          dispatch(crud.addMany(slots));
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.slot.crud.addMany({ ...context, values: slots }));
-        }
-      )
-    );
+    await dispatch.sync(Realtime.slot.crud.addMany({ ...getActiveVersionContext(getState()), values: slots }));
   };
 
 export const patchSlot =
   (slotID: string, data: Partial<Realtime.Slot>): Thunk =>
-  (dispatch) =>
-    dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          dispatch(crud.patch(slotID, data));
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.slot.crud.patch({ ...context, key: slotID, value: data }));
-        }
-      )
-    );
+  async (dispatch, getState) => {
+    await dispatch.sync(Realtime.slot.crud.patch({ ...getActiveVersionContext(getState()), key: slotID, value: data }));
+  };
 
 export const deleteSlot =
   (slotID: string): Thunk =>
-  (dispatch) =>
-    dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          dispatch(crud.remove(slotID));
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.slot.crud.remove({ ...context, key: slotID }));
-        }
-      )
-    );
+  async (dispatch, getState) => {
+    await dispatch.sync(Realtime.slot.crud.remove({ ...getActiveVersionContext(getState()), key: slotID }));
+  };

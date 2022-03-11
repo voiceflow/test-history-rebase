@@ -1,41 +1,17 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import client from '@/client';
-import * as Errors from '@/config/errors';
-import { FeatureFlag } from '@/config/features';
 import { RESERVED_JS_WORDS, VALID_VARIABLE_NAME } from '@/constants';
-import * as Feature from '@/ducks/feature';
-import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
 import { globalVariablesSelector as activeGlobalVariablesSelector } from '@/ducks/versionV2/selectors/active';
 import { Thunk } from '@/store/types';
 
-import { crud } from '../../actions';
 import { getActiveVersionContext } from '../../utils';
-
-/**
- * @deprecated global variable changes are synchronized by the new realtime system
- */
-export const saveGlobalVariables = (): Thunk => async (_dispatch, getState) => {
-  const state = getState();
-  const versionID = Session.activeVersionIDSelector(state);
-  const variables = activeGlobalVariablesSelector(state);
-  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-
-  if (isAtomicActions) return;
-
-  Errors.assertVersionID(versionID);
-
-  await client.api.version.update(versionID, { variables });
-};
 
 export const addGlobalVariable =
   (variable: string, creationType: CanvasCreationType): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
     const variables = activeGlobalVariablesSelector(state);
 
     if (!variable.match(VALID_VARIABLE_NAME)) {
@@ -46,57 +22,13 @@ export const addGlobalVariable =
       throw new Error("Reserved word. You can prefix with '_' to fix this issue");
     }
 
-    await dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          Errors.assertVersionID(versionID);
-
-          dispatch(crud.patch(versionID, { variables: [...variables, variable] }));
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.version.addGlobalVariable({ ...context, variable }));
-        }
-      )
-    );
+    await dispatch.sync(Realtime.version.addGlobalVariable({ ...getActiveVersionContext(getState()), variable }));
 
     dispatch(Tracking.trackVariableCreated({ creationType, variableType: VariableType.GLOBAL }));
   };
 
 export const removeGlobalVariable =
   (variable: string): Thunk =>
-  (dispatch, getState) =>
-    dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          const state = getState();
-          const versionID = Session.activeVersionIDSelector(state);
-          const variables = activeGlobalVariablesSelector(state);
-
-          Errors.assertVersionID(versionID);
-
-          dispatch(crud.patch(versionID, { variables: Utils.array.withoutValue(variables, variable) }));
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.version.removeGlobalVariable({ ...context, variable }));
-        }
-      )
-    );
-
-/**
- * @deprecated global variable changes are synchronized by the new realtime system
- */
-export const replaceGlobalVariables =
-  (variables: string[], meta?: object): Thunk =>
   async (dispatch, getState) => {
-    const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-
-    if (isAtomicActions) return;
-
-    Errors.assertVersionID(versionID);
-
-    dispatch(crud.patch(versionID, { variables }, meta));
+    await dispatch.sync(Realtime.version.removeGlobalVariable({ ...getActiveVersionContext(getState()), variable }));
   };

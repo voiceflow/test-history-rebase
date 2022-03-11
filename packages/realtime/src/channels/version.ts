@@ -21,10 +21,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
   ): Promise<SendBackActions> => {
     const { workspaceID, projectID, versionID } = ctx.params;
     const creatorID = Number(ctx.userId);
-    const isAtomicActions = await this.isAtomicActionsEnabled(creatorID, ctx.params.workspaceID);
-
-    // do not sync any data if not enabled for this version's workspace
-    if (!isAtomicActions) return [];
 
     const [project, dbVersion, isTopicsAndComponents, variableStates] = await Promise.all([
       this.services.project.get(creatorID, ctx.params.projectID).then(Realtime.Adapters.projectAdapter.fromDB),

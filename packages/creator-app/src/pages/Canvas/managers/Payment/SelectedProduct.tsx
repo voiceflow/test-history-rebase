@@ -22,12 +22,8 @@ export interface SelectedProductProps {
 const SelectedProduct: React.FC<SelectedProductProps> = ({ product, onClick }) => {
   const [value, setValue] = React.useState(product.purchasePrompt || '');
   const patchProduct = useDispatch(Product.patchProduct, product.id);
-  const uploadProduct = useDispatch(Product.uploadProduct, product.id);
 
-  const updateUpsellMessage = () => {
-    patchProduct({ purchasePrompt: value });
-    uploadProduct();
-  };
+  const updateUpsellMessage = () => patchProduct({ purchasePrompt: value });
 
   return (
     <NamespaceProvider value={['product', product.id]}>

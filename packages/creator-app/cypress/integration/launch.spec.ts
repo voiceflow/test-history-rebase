@@ -11,8 +11,7 @@ context('Launch', () => {
   describe('Alexa launch page', () => {
     beforeEach(() => {
       cy.createProject();
-      cy.intercept('GET', '/v2/diagrams/**').as('loadDiagram');
-      cy.intercept('GET', '/v2/versions/**').as('loadDesignTab');
+      cy.intercept('GET', '/v2/versions/**').as('loadLaunchTab');
       cy.intercept('POST', '/image/small_icon').as('uploadSmallIcon');
       cy.intercept('POST', '/image/large_icon').as('uploadLargeIcon');
 
@@ -21,7 +20,6 @@ context('Launch', () => {
 
     it('happy path', () => {
       canvas.goToCanvas();
-      cy.wait('@loadDiagram');
 
       // $TODO - Need to upload at least once to submit the Launch page
       // canvas.el.uploadButton.click()
@@ -31,7 +29,7 @@ context('Launch', () => {
       // publish.el.loginWithAmazon.click();
 
       canvas.el.tabs.launchTab.click();
-      cy.wait('@loadDesignTab');
+      cy.wait('@loadLaunchTab');
 
       /// / 1 - Basic Skill Information
       // a - Fill in the display name

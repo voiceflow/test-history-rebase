@@ -1,30 +1,13 @@
 import { GoogleVersion } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import client from '@/client';
 import * as Errors from '@/config/errors';
-import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
 
-import { UpdatePublishing, updatePublishingByVersionID, UpdateSettings, updateSettingsByVersionID } from '../actions';
 import { getActiveVersionContext } from '../utils';
 
 // action creators
-
-/**
- * @deprecated moved to the realtime service
- */
-export const updateSettings = (versionID: string, settings: Partial<GoogleVersion.VoiceSettings>): UpdateSettings<GoogleVersion.VoiceSettings> =>
-  updateSettingsByVersionID<GoogleVersion.VoiceSettings>(versionID, settings);
-
-/**
- * @deprecated moved to the realtime service
- */
-export const updatePublishing = (
-  versionID: string,
-  publishing: Partial<GoogleVersion.VoicePublishing>
-): UpdatePublishing<GoogleVersion.VoicePublishing> => updatePublishingByVersionID<GoogleVersion.VoicePublishing>(versionID, publishing);
 
 // side effects
 
@@ -36,18 +19,7 @@ export const patchSettings =
 
     Errors.assertVersionID(versionID);
 
-    await dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          dispatch(updateSettings(versionID, settings));
-          await client.platform.google.version.updateSettings(versionID, settings);
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.version.patchSettings({ ...context, settings }));
-        }
-      )
-    );
+    await dispatch.sync(Realtime.version.patchSettings({ ...getActiveVersionContext(getState()), settings }));
   };
 
 export const patchPublishing =
@@ -58,16 +30,5 @@ export const patchPublishing =
 
     Errors.assertVersionID(versionID);
 
-    await dispatch(
-      Feature.applyAtomicSideEffect(
-        getActiveVersionContext,
-        async () => {
-          dispatch(updatePublishing(versionID, publishing));
-          await client.platform.google.version.updatePublishing(versionID, publishing);
-        },
-        async (context) => {
-          await dispatch.sync(Realtime.version.patchPublishing({ ...context, publishing }));
-        }
-      )
-    );
+    await dispatch.sync(Realtime.version.patchPublishing({ ...getActiveVersionContext(getState()), publishing }));
   };

@@ -6,8 +6,6 @@ import * as Errors from '@/config/errors';
 import { saveHistory } from '@/ducks/creator/diagram/actions';
 import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import mutableStore from '@/store/mutable';
 import { SyncThunk, Thunk } from '@/store/types';
 import * as Sentry from '@/vendors/sentry';
@@ -57,17 +55,10 @@ export const updateDiagramViewers =
   async (dispatch, getState) => {
     const state = getState();
     const diagramID = Session.activeDiagramIDSelector(state);
-    const workspaceID = Session.activeWorkspaceIDSelector(state);
-    const hasWorkspaceMemberByID = WorkspaceV2.active.hasMemberByIDSelector(state);
 
     Errors.assertDiagramID(diagramID);
 
     const diagramViewers = Object.values(users[diagramID] ?? {});
-    const newMembers = diagramViewers.filter((viewer) => !hasWorkspaceMemberByID(Number(viewer)));
-
-    if (newMembers.length && workspaceID) {
-      await dispatch(Workspace.loadMembers(workspaceID));
-    }
 
     batch(() => {
       // reinitialize history if no other collaborators present

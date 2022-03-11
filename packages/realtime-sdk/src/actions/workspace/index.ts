@@ -1,6 +1,7 @@
 import { ClientCRUDPayload, createAction, createAsyncAction, createCRUDActions, getCRUDActionTargets } from '@realtime-sdk/actions/utils';
 import { Workspace } from '@realtime-sdk/models';
 import { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
+import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import { Action, AnyAction } from 'typescript-fsa';
 
 import { workspaceType } from './utils';
@@ -31,7 +32,17 @@ export interface UpdateWorkspaceImagePayload extends BaseWorkspacePayload {
   image: string;
 }
 
+export interface CheckoutWorkspacePayload extends BaseWorkspacePayload {
+  plan: PlanType;
+  seats: number;
+  period: BillingPeriod;
+  coupon?: string;
+  sourceID: string;
+}
+
 export const leave = createAction<LeaveWorkspacePayload>(workspaceType('LEAVE'));
+
+export const checkout = createAction<CheckoutWorkspacePayload>(workspaceType('CHECKOUT'));
 
 export const updateName = createAction<UpdateWorkspaceNamePayload>(workspaceType('UPDATE_NAME'));
 

@@ -3,7 +3,7 @@ import React from 'react';
 import LoadingGate from '@/components/LoadingGate';
 import { useProjectSubscription } from '@/hooks';
 
-import { useProjectChannelReconnect } from '../ProjectLoadingGate/hooks';
+import { useProjectChannelReconnect } from './hooks';
 
 export interface ProjectSubscriptionGateProps {
   workspaceID: string;

@@ -1,10 +1,8 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
-import { FeatureFlag } from '@/config/features';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
-import { withFeatureGate } from '@/hocs';
 import { useDispatch, useSelector, useWorkspaceSubscription } from '@/hooks';
 
 const WorkspaceSubscriptionGate: React.FC = ({ children }) => {
@@ -24,4 +22,4 @@ const WorkspaceSubscriptionGate: React.FC = ({ children }) => {
   );
 };
 
-export default withFeatureGate(FeatureFlag.ATOMIC_ACTIONS)(WorkspaceSubscriptionGate);
+export default WorkspaceSubscriptionGate;

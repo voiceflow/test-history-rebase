@@ -6,7 +6,6 @@ import _partition from 'lodash/partition';
 import { batch } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
@@ -219,11 +218,7 @@ class NodeManager extends EngineConsumer {
         [...node.combinedNodes, node.id].forEach((childNodeID) => removedIDs.add(childNodeID));
       });
 
-      if (this.engine.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS)) {
-        await this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodeIDs: Array.from(removedIDs) }));
-      } else {
-        this.dispatch(Creator.removeNodes(Array.from(removedIDs)));
-      }
+      await this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodeIDs: Array.from(removedIDs) }));
     },
 
     translate: (nodeID: string, movement: Pair<number>): void => {

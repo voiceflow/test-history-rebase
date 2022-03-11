@@ -31,10 +31,6 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
 
   protected load = async (ctx: DiagramChannelContext): Promise<SendBackActions> => {
     const creatorID = Number(ctx.userId);
-    const isAtomicActions = await this.isAtomicActionsEnabled(creatorID, ctx.params.workspaceID);
-
-    // do not sync any data if not enabled for this diagram's workspace
-    if (!isAtomicActions) return [];
 
     const [project, diagram] = await Promise.all([
       this.services.project.get(creatorID, ctx.params.projectID).then(Realtime.Adapters.projectAdapter.fromDB),

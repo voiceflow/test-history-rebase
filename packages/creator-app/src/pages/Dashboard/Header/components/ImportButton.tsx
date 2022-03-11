@@ -2,26 +2,21 @@ import { IconButton, IconButtonVariant, TippyTooltip, toast, ToastCallToAction }
 import React from 'react';
 
 import * as Errors from '@/config/errors';
-import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
-import * as ProjectList from '@/ducks/projectList';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useActiveWorkspace, useDispatch, useFeature, useModals, useSelector } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useModals, useSelector } from '@/hooks';
 import { readFileAsync, upload } from '@/utils/dom';
 import * as Sentry from '@/vendors/sentry';
 
 const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 
 const ImportButton: React.FC = () => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
   const projects = useSelector(ProjectV2.allProjectsSelector);
 
   const goToCanvas = useDispatch(Router.goToCanvas);
   const importProject = useDispatch(Project.importProjectFromFile);
-  const loadProjectLists = useDispatch(ProjectList.loadProjectLists);
 
   const workspace = useActiveWorkspace();
 
@@ -41,17 +36,13 @@ const ImportButton: React.FC = () => {
       const file = await readFileAsync(files[0]);
 
       const newProject = await importProject(workspace.id, file);
+
       toast.success(
         <>
           .VF file successfully imported for <strong>"{newProject.name}"</strong>
           <ToastCallToAction onClick={() => goToCanvas(newProject.versionID)}>Open Project</ToastCallToAction>
         </>
       );
-
-      if (!atomicActions.isEnabled) {
-        // reload project list just to be sure
-        loadProjectLists(workspace.id);
-      }
     } catch (err) {
       Sentry.error(err);
       toast.error('.VF file failed to import');

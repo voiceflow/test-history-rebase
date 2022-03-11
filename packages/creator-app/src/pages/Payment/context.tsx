@@ -3,7 +3,6 @@ import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import { ButtonVariant, toast, withContext, withProvider } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
-import { ReactStripeElements } from 'react-stripe-elements';
 
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
@@ -97,8 +96,8 @@ export interface PaymentContextProps {
 }
 
 interface PaymentContextProviderProps {
+  stripe: stripe.Stripe;
   children: JSX.Element;
-  stripe: ReactStripeElements.StripeProps;
   checkChargeable: (source: stripe.Source) => Promise<void>;
 }
 
@@ -107,7 +106,7 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
   const referrerID = useSelector(Account.referrerIDSelector);
   const referralCode = useSelector(Account.referralCodeSelector);
 
-  const loadActiveWorkspace = useDispatch(Workspace.loadActiveWorkspace);
+  const checkoutWorkspace = useDispatch(Workspace.checkout);
 
   const [checkingOut, startCheckingOut, stopCheckingOut] = useEnableDisable(false);
   const [fetchingPrice, startFetchingPrice, stopFetchingPrice] = useEnableDisable(false);
@@ -178,25 +177,26 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
 
       let source;
       if (!state.usingExistingSource) {
-        const stripeSource = await stripe.createSource({
-          type: 'card',
-        });
+        const stripeSource = await stripe.createSource({ type: 'card' });
+
         source = stripeSource.source;
+
         if (!source) {
           throw new Error(stripeSource.error?.message || 'Invalid Card Information');
         }
+
         await checkChargeable(source);
       }
 
-      await client.workspace.checkout(workspace.id, {
+      await checkoutWorkspace({
         plan: state.plan.id,
         seats: state.seats,
         period: state.period,
         coupon: state.usingCoupon ? state.coupon : undefined,
-        source_id: source ? source.id : '',
+        sourceID: source?.id ?? '',
+        workspaceID: workspace.id,
       });
 
-      loadActiveWorkspace();
       closePaymentsModal();
 
       const message = source?.id

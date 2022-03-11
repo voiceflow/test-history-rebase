@@ -3,34 +3,28 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { useCachedValue } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import * as Product from '@/ducks/product';
 import { createNewProduct } from '@/ducks/product/utils';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useFeature, useSelector, useTeardown } from '@/hooks';
+import { useDispatch, useSelector, useTeardown } from '@/hooks';
 
 import { ProductProvider } from './contexts';
 import ProductForm from './Product';
 
 const NewProduct: React.FC = () => {
   const locales = useSelector(VersionV2.active.localesSelector) as AlexaConstants.Locale[];
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
   const [product, setProduct] = React.useState(() => createNewProduct(locales));
   const productRef = useCachedValue(product);
 
-  const uploadNewProduct = useDispatch(Product.uploadNewProduct);
   const createProduct = useDispatch(Product.createProduct);
   const patchProduct = React.useCallback((data: Partial<Realtime.Product>) => setProduct({ ...productRef.current, ...data }), []);
 
   useTeardown(() => {
     const productState = productRef.current;
+
     if (!productState || !productState.name || !productState.summary) return;
 
-    if (atomicActions.isEnabled) {
-      createProduct(productState);
-    } else {
-      uploadNewProduct(productState);
-    }
+    createProduct(productState);
   });
 
   return (

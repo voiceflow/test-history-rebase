@@ -9,7 +9,6 @@ import { useDispatch as useReduxDispatch } from 'react-redux';
 import { Redirect, useLocation } from 'react-router-dom';
 
 import { receiptGraphic } from '@/assets';
-import client from '@/client';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
@@ -112,6 +111,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const hasTemplateWorkspace = useSelector(WorkspaceV2.hasTemplatesWorkspaceSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
 
+  const checkoutWorkspace = useDispatch(Workspace.checkout);
   const createWorkspace = useDispatch(Workspace.createWorkspace);
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
   const goToCanvas = useDispatch(Router.goToCanvas);
@@ -119,7 +119,6 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const goToDashboard = useDispatch(Router.goToDashboard);
   const goToDashboardWithSearch = useDispatch(Router.goToDashboardWithSearch);
   const setActiveWorkspaceID = useDispatch(Session.setActiveWorkspaceID);
-  const loadWorkspaces = useDispatch(Workspace.loadWorkspaces);
   const updateWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
   const updateWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
@@ -229,10 +228,10 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   };
 
   const checkPayment = async () => {
-    const stripeSource = await stripe.createSource({
-      type: 'card',
-    });
+    const stripeSource = await stripe.createSource({ type: 'card' });
+
     const { source } = stripeSource;
+
     if (!source) {
       throw new Error(stripeSource.error?.message || 'Invalid Card Information');
     }
@@ -252,15 +251,16 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     return Math.max(paymentMeta.seats, numberOfEditors);
   };
 
-  const handlePayment = async (workspaceID: string, source: any) => {
+  const handlePayment = async (workspaceID: string, source: stripe.Source) => {
     const { plan, period, couponCode, seats } = paymentMeta;
 
-    await client.workspace.checkout(workspaceID, {
+    await checkoutWorkspace({
       plan,
       seats,
       period,
       coupon: couponCode || undefined,
-      source_id: source?.id,
+      sourceID: source?.id ?? '',
+      workspaceID,
     });
   };
 
@@ -271,8 +271,6 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     if (!newWorkspaceID) {
       toast.error('Error joining workspace');
     } else {
-      await loadWorkspaces();
-
       goToWorkspace(newWorkspaceID);
       trackInvitationAccepted(newWorkspaceID, query.email, inviteSource);
 
@@ -288,7 +286,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
     const name = createWorkspaceMeta.workspaceName;
     const { workspaceImage } = createWorkspaceMeta;
-    let source;
+    let source!: stripe.Source;
 
     if (hasPaymentStep) {
       try {
@@ -296,6 +294,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       } catch (e) {
         toast.error('Something went wrong when checking out, please try again later');
         goToDashboard();
+
         return null;
       }
     }
@@ -322,15 +321,6 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
         goToDashboard();
         return;
       }
-    }
-
-    // This is so we can invite users and update redux, targeting the just created ^ workspace
-    try {
-      await loadWorkspaces();
-    } catch (e) {
-      toast.error('Error getting workspace, please try again later');
-      goToDashboard();
-      return;
     }
 
     if (hasPaymentStep) {

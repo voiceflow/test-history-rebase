@@ -7,11 +7,8 @@ import _constant from 'lodash/constant';
 import { batch } from 'react-redux';
 
 import client from '@/client';
-import { FeatureFlag } from '@/config/features';
 import { getDefaultPrototypeLayout, PrototypeLayout } from '@/constants/prototype';
-import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
-import * as VersionActions from '@/ducks/version/actions';
 import { Thunk } from '@/store/types';
 
 import { updatePrototype } from '../actions';
@@ -20,9 +17,7 @@ import resetPrototype from './reset';
 
 const setupPublicPrototype =
   (versionID: string): Thunk<PrototypeSettings> =>
-  async (dispatch, getState) => {
-    const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
-
+  async (dispatch) => {
     const [prototype, planData] = await Promise.all([
       client.api.version.getPrototype(versionID).catch(_constant(null)),
       client.api.version.getPrototypePlan(versionID).catch(_constant(null)),
@@ -62,13 +57,7 @@ const setupPublicPrototype =
 
     batch(() => {
       dispatch(resetPrototype());
-      if (isAtomicActions) {
-        // passing empty params since this will only be evaluated locally
-        dispatch.local(Realtime.version.crud.add({ workspaceID: '', projectID: '', key: versionID, value: version }));
-      } else {
-        dispatch(VersionActions.crud.add(versionID, version));
-      }
-
+      dispatch.local(Realtime.version.crud.add({ workspaceID: '', projectID: '', key: versionID, value: version }));
       dispatch(updatePrototype({ muted: layout === PrototypeLayout.TEXT_DIALOG, platform }));
       dispatch(Session.setActiveVersionID(versionID));
       dispatch(Session.setActiveDiagramID(rootDiagramID));

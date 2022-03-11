@@ -1,14 +1,16 @@
 /* eslint-disable promise/always-return, promise/no-nesting */
+import { Utils } from '@voiceflow/common';
+
 import { API_URL, PLATFORM_SERVICE_URLS } from '../../config';
-import { CREATOR_ID_KEY, DIAGRAM_ID_KEY, PROJECT_ID_KEY, SESSION_CONTEXT, TEAM_ID_KEY, VERSION_ID_KEY } from './session';
+import { CREATOR_ID_KEY, DIAGRAM_ID_KEY, PROJECT_ID_KEY, PROJECT_LIST_ID_KEY, SESSION_CONTEXT, VERSION_ID_KEY, WORKSPACE_ID_KEY } from './session';
 
 Cypress.Commands.add('createProject', (platform: 'alexa' | 'google' | 'general' = 'alexa', tag?: string) => {
   cy.request('POST', `${API_URL}/workspaces`, {
     name: 'my workspace',
   }).then((res) => {
-    const { team_id: teamID } = res.body;
+    const { team_id: workspaceID } = res.body;
 
-    SESSION_CONTEXT.set(TEAM_ID_KEY, teamID);
+    SESSION_CONTEXT.set(WORKSPACE_ID_KEY, workspaceID);
 
     cy.request(`${API_URL}/v2/templates/${platform}${tag ? `?tag=${encodeURIComponent(tag)}` : ''}`).then((res) => {
       const moduleID = res.body;
@@ -18,17 +20,28 @@ Cypress.Commands.add('createProject', (platform: 'alexa' | 'google' | 'general' 
       cy.request('POST', `${PLATFORM_SERVICE_URLS[platform]}/project/${moduleID}/copy`, {
         image: '',
         name: 'my other project',
-        teamID,
+        teamID: workspaceID,
       }).then((res) => {
         const { devVersion: versionID, _id: projectID } = res.body;
 
+        const projectListID = Utils.id.cuid();
+        const projectList = {
+          name: 'my project list',
+          board_id: projectListID,
+          projects: [projectID],
+        };
+
         SESSION_CONTEXT.set(PROJECT_ID_KEY, projectID);
+        SESSION_CONTEXT.set(PROJECT_LIST_ID_KEY, projectListID);
         SESSION_CONTEXT.set(VERSION_ID_KEY, versionID);
 
-        cy.request(`${API_URL}/v2/versions/${versionID}`).then((res) => {
-          const { rootDiagramID: diagramID } = res.body;
+        cy.request('PATCH', `${API_URL}/team/${workspaceID}/update_board`, { boards: [projectList] }).then(() => {
+          // eslint-disable-next-line max-nested-callbacks
+          cy.request(`${API_URL}/v2/versions/${versionID}`).then((res) => {
+            const { rootDiagramID: diagramID } = res.body;
 
-          SESSION_CONTEXT.set(DIAGRAM_ID_KEY, diagramID);
+            SESSION_CONTEXT.set(DIAGRAM_ID_KEY, diagramID);
+          });
         });
       });
     });

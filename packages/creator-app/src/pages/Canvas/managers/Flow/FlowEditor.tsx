@@ -2,7 +2,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Section from '@/components/Section';
-import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
@@ -17,15 +16,8 @@ import { Flow, Footer } from './components';
 const FlowEditor: NodeEditor<Realtime.NodeData.Flow, Realtime.NodeData.FlowBuiltInPorts> = ({ data, onChange }) => {
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: data.diagramID });
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
-  const loadFlowVariables = useDispatch(Diagram.loadLocalVariables);
 
   const hasVariableMapping = !!data.inputs?.length || !!data.outputs?.length;
-
-  React.useEffect(() => {
-    if (diagram?.id) {
-      loadFlowVariables(diagram.id);
-    }
-  }, [diagram?.id]);
 
   const emptyMapping = React.useCallback(() => {
     onChange({ inputs: [], outputs: [] });

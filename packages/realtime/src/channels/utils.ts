@@ -14,8 +14,4 @@ export abstract class AbstractChannelControl<P extends object, E extends object 
   protected handleExpiredAuth = async (ctx: ChannelContext<P, D>): Promise<void> => {
     await ctx.sendBack(Realtime.protocol.reloadSession(null));
   };
-
-  protected isAtomicActionsEnabled(creatorID: number, workspaceID?: string): Promise<boolean> {
-    return this.services.workspace.isFeatureEnabled(creatorID, workspaceID, 'atomic_actions');
-  }
 }

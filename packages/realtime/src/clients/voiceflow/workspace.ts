@@ -1,4 +1,4 @@
-import { UserRole } from '@voiceflow/internal';
+import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { ExtraOptions } from './types';
@@ -11,6 +11,12 @@ export interface WorkspaceClient {
   list: () => Promise<Realtime.DBWorkspace[]>;
 
   create: (data: { name: string; image?: string }) => Promise<Realtime.DBWorkspace>;
+
+  checkout: (
+    workspaceID: string,
+    // eslint-disable-next-line camelcase
+    data: { plan: PlanType; seats: number; period: BillingPeriod; coupon?: string; source_id: string }
+  ) => Promise<void>;
 
   updateName: (workspaceID: string, name: string) => Promise<void>;
 
@@ -49,6 +55,8 @@ const Client = ({ api }: ExtraOptions): WorkspaceClient => ({
   list: () => api.get<Realtime.DBWorkspace[]>(`/workspaces`).then((res) => res.data),
 
   create: (data) => api.post<Realtime.DBWorkspace>('/workspaces', data).then((res) => res.data),
+
+  checkout: (workspaceID, data) => api.post(`/workspaces/${workspaceID}/checkout`, data),
 
   updateName: (workspaceID, name) => api.patch(`/team/${workspaceID}/update_name`, { name }),
 

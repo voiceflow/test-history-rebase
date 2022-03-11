@@ -5,8 +5,6 @@ import uniqBy from 'lodash/uniqBy';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
-import * as Feature from '@/ducks/feature';
-import * as IntentSelectorsV1 from '@/ducks/intent/selectors';
 import { applyIntentNameFormatting } from '@/ducks/intent/utils';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { createCurriedSelector } from '@/ducks/utils';
@@ -17,28 +15,14 @@ import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 import { STATE_KEY } from './constants';
 
-const {
-  all: _allIntentsSelector,
-  allIDs: _allIntentIDsSelector,
-  byID: _intentByIDSelector,
-  byIDs: _intentsByIDsSelector,
+export const {
+  all: allIntentsSelector,
+  byID: intentByIDSelector,
+  byIDs: intentsByIDsSelector,
+  allIDs: allIntentIDsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const allIntentIDsSelector = Feature.createAtomicActionsSelector([IntentSelectorsV1.allIntentIDsSelector, _allIntentIDsSelector]);
-
-export const allIntentsSelector = Feature.createAtomicActionsSelector([IntentSelectorsV1.allIntentsSelector, _allIntentsSelector]);
-
-export const intentByIDSelector = Feature.createAtomicActionsSelector(
-  [IntentSelectorsV1.intentByIDSelector, _intentByIDSelector, idParamSelector],
-  (getIntentV1, intentV2, intentID) => [intentID ? getIntentV1(intentID) : null, intentV2]
-);
-
 export const getIntentByIDSelector = createCurriedSelector(intentByIDSelector);
-
-export const intentsByIDsSelector = Feature.createAtomicActionsSelector(
-  [IntentSelectorsV1.intentsByIDsSelector, _intentsByIDsSelector, idsParamSelector],
-  (getIntentsV1, intentsV2, intentIDs) => [getIntentsV1(intentIDs), intentsV2]
-);
 
 // platform-formatted
 

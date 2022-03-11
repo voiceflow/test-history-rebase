@@ -1,7 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { FeatureFlag } from '@/config/features';
-import * as Feature from '@/ducks/feature';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
@@ -21,19 +19,14 @@ export const createVariableState =
   (variableState: Omit<Realtime.VariableStateData, 'projectID'>): Thunk<Realtime.VariableState | undefined> =>
   async (dispatch, getState) => {
     const state = getState();
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
     const projectID = Session.activeProjectIDSelector(state);
-    if (!isAtomicActions || !projectID) return;
 
-    const context = dispatch(getActiveVersionContext());
+    if (!projectID) return undefined;
 
     return dispatch(
       waitAsync(Realtime.variableState.create, {
-        ...context,
-        variableState: {
-          ...variableState,
-          projectID,
-        },
+        ...getActiveVersionContext(state),
+        variableState: { ...variableState, projectID },
       })
     );
   };
@@ -73,9 +66,6 @@ export const updateSelectedVariableStateById =
 
 export const updateStateValues = (): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-  if (!isAtomicActions) return;
-
   const selectedState = getSelectedVariableState(state);
   const getVariableStateById = getVariableStateByIDSelector(state);
 
@@ -84,33 +74,37 @@ export const updateStateValues = (): Thunk => async (dispatch, getState) => {
   const variableState = getVariableStateById({ id: selectedState.id });
   const newVariableState = { ...variableState, variables: selectedState?.variables };
 
-  const context = dispatch(getActiveVersionContext());
-
-  await dispatch.sync(Realtime.variableState.crud.patch({ ...context, key: selectedState.id, value: newVariableState }));
+  await dispatch.sync(
+    Realtime.variableState.crud.patch({
+      ...getActiveVersionContext(state),
+      key: selectedState.id,
+      value: newVariableState,
+    })
+  );
 };
 
 export const updateState =
   (variableStateID: string, variableState: Partial<Realtime.VariableState>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-    if (!isAtomicActions) return;
 
-    const context = dispatch(getActiveVersionContext());
-
-    await dispatch.sync(Realtime.variableState.crud.patch({ ...context, key: variableStateID, value: variableState }));
+    await dispatch.sync(
+      Realtime.variableState.crud.patch({
+        ...getActiveVersionContext(state),
+        key: variableStateID,
+        value: variableState,
+      })
+    );
   };
 
 export const deleteState =
   (variableStateID: string): Thunk =>
   async (dispatch, getState) => {
-    const selectedVariableStateId = getSelectedVariableStateId(getState());
-    const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
-    if (!isAtomicActions) return;
+    const state = getState();
 
-    const context = dispatch(getActiveVersionContext());
+    const selectedVariableStateId = getSelectedVariableStateId(state);
 
-    await dispatch.sync(Realtime.variableState.crud.remove({ ...context, key: variableStateID }));
+    await dispatch.sync(Realtime.variableState.crud.remove({ ...getActiveVersionContext(state), key: variableStateID }));
 
     if (selectedVariableStateId === variableStateID) {
       dispatch(updateSelectedVariableState(null));

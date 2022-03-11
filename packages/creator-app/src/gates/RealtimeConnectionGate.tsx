@@ -1,9 +1,7 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
-import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
-import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { withSessionGate } from '@/hocs';
 import { useRealtimeClient, useSelector, useStore } from '@/hooks';
@@ -19,11 +17,6 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
   const userID = useSelector(Account.userIDSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
   const authToken = useSelector(Session.authTokenSelector);
-
-  // using `useSelector` over `useFeature` to avoid re-rendering
-  // when switching between workspaces with AA enabled
-
-  const isAtomicActions = useSelector((state) => Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS));
 
   const [isSynchronized, setSynchronized] = React.useState(false);
   const [isConnected, setConnected] = React.useState(false);
@@ -74,9 +67,8 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
   }, [isLoggedIn]);
 
   return (
-    <LoadingGate label="Collaboration" isLoaded={!isAtomicActions || isSynchronized}>
-      {/* eslint-disable-next-line no-nested-ternary */}
-      {isAtomicActions ? isConnected ? children : <ConnectionWarning /> : children}
+    <LoadingGate label="Collaboration" isLoaded={isSynchronized}>
+      {isConnected ? children : <ConnectionWarning />}
     </LoadingGate>
   );
 };

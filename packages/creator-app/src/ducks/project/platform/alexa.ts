@@ -2,14 +2,10 @@ import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
-import { FeatureFlag } from '@/config/features';
 import { userIDSelector } from '@/ducks/account/selectors';
-import * as Feature from '@/ducks/feature';
 import { projectSelector as alexaProjectSelector } from '@/ducks/projectV2/selectors/active/alexa';
 import * as Session from '@/ducks/session';
 import { SyncThunk } from '@/store/types';
-
-import { crud } from '../actions';
 
 // side effects
 
@@ -22,7 +18,6 @@ export const updateActiveVendor =
     const activeCreatorID = userIDSelector(state);
     const projectID = Session.activeProjectIDSelector(state);
     const workspaceID = Session.activeWorkspaceIDSelector(state);
-    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     Errors.assertProjectID(projectID);
     Errors.assertProject(projectID, activeProject);
@@ -43,11 +38,7 @@ export const updateActiveVendor =
         : member
     );
 
-    if (isAtomicActions) {
-      Errors.assertWorkspaceID(workspaceID);
+    Errors.assertWorkspaceID(workspaceID);
 
-      dispatch.local(Realtime.project.crud.patch({ workspaceID, key: projectID, value: { members: updatedMembers } }));
-    } else {
-      dispatch(crud.patch(projectID, { members: updatedMembers }));
-    }
+    dispatch.local(Realtime.project.crud.patch({ workspaceID, key: projectID, value: { members: updatedMembers } }));
   };

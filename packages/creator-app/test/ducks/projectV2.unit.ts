@@ -1,13 +1,9 @@
 import { AlexaProject } from '@voiceflow/alexa-types';
 import { BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import { normalize } from 'normal-store';
 
-import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
-import * as ProjectV1 from '@/ducks/project';
 import * as Project from '@/ducks/projectV2';
 
 import suite from './_suite';
@@ -114,17 +110,9 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
   });
 
   describe('selectors', () => {
-    const v2FeatureState = { [Feature.STATE_KEY]: { features: { [FeatureFlag.ATOMIC_ACTIONS]: { isEnabled: true } } } };
+    const v2FeatureState = { [Feature.STATE_KEY]: { features: {} } };
 
     describe('allProjectsSelector()', () => {
-      it('select all projects from the legacy store', () => {
-        const projects = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
-
-        const result = Project.allProjectsSelector(createState(MOCK_STATE, { [ProjectV1.STATE_KEY]: normalize(projects) }));
-
-        expect(result).to.eql(projects);
-      });
-
       it('select all projects', () => {
         const result = Project.allProjectsSelector(createState(MOCK_STATE, v2FeatureState));
 
@@ -133,15 +121,6 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
     });
 
     describe('projectByIDSelector()', () => {
-      it('select project from the legacy store', () => {
-        const project = { id: PROJECT_ID };
-        const projectState = normalize([project]);
-
-        const result = Project.projectByIDSelector(createState(MOCK_STATE, { [ProjectV1.STATE_KEY]: projectState }), { id: PROJECT_ID });
-
-        expect(result).to.eq(project);
-      });
-
       it('select known project', () => {
         const result = Project.projectByIDSelector(createState(MOCK_STATE, v2FeatureState), { id: PROJECT_ID });
 
@@ -156,14 +135,6 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
     });
 
     describe('projectsCountSelector()', () => {
-      it('select count of projects from the legacy store', () => {
-        const projects = Utils.generate.array(3, () => ({ id: Utils.generate.id() }));
-
-        const result = Project.projectsCountSelector(createState(MOCK_STATE, { [ProjectV1.STATE_KEY]: normalize(projects) }));
-
-        expect(result).to.eq(3);
-      });
-
       it('select count of projects', () => {
         const result = Project.projectsCountSelector(createState(MOCK_STATE, v2FeatureState));
 

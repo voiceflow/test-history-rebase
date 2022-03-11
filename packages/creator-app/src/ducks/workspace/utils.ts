@@ -2,15 +2,10 @@ import { createStructuredSelector } from 'reselect';
 
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
-import { State, SyncThunk } from '@/store/types';
+import { State } from '@/store/types';
 import { NonNullableRecord } from '@/types';
 
-import { duckLogger } from '../utils';
-import { STATE_KEY } from './constants';
-
 const WORKSPACE_FALLBACK_ERROR_MESSAGE = 'Error updating Workspace';
-
-export const log = duckLogger.child(STATE_KEY);
 
 export const extractErrorMessages = (err?: {
   body?: { errors?: Record<string, { message: string } | string> } & Record<string, { message: string } | string>;
@@ -37,8 +32,8 @@ export const activeWorkspaceContextSelector = createStructuredSelector<State, Ac
   workspaceID: Session.activeWorkspaceIDSelector,
 });
 
-export const getActiveWorkspaceContext = (): SyncThunk<NonNullableRecord<ActiveWorkspaceContext>> => (_dispatch, getState) => {
-  const context = activeWorkspaceContextSelector(getState());
+export const getActiveWorkspaceContext = (state: State): NonNullableRecord<ActiveWorkspaceContext> => {
+  const context = activeWorkspaceContextSelector(state);
 
   Errors.assertWorkspaceID(context.workspaceID);
 

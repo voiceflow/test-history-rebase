@@ -1,20 +1,13 @@
-import { Collapse, preventDefault, Spinner, SvgIcon, withProvider } from '@voiceflow/ui';
+import { Collapse, preventDefault, SvgIcon, withProvider } from '@voiceflow/ui';
 import React from 'react';
-import { compose } from 'redux';
 import validUrl from 'valid-url';
 
 import { ControlledGuidedSteps as GuidedSteps, GuidedStepsWrapper } from '@/components/GuidedSteps';
-import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
 import * as Product from '@/ducks/product';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Session from '@/ducks/session';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs';
-import { useSetup } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { useDispatch, useSelector } from '@/hooks';
 
 import BasicSkillInfoForm, { BasicSkillInfoDescription } from './components/BasicSkillInfoForm';
 import LocalesForm, { LocalesDescription } from './components/LocalesForm';
@@ -61,30 +54,20 @@ interface PublishAmazonFormProps {
   onPublish: VoidFunction;
 }
 
-const PublishAmazonForm: React.FC<PublishAmazonFormProps & ConnectedPublishAmazonForm> = ({
-  isLive,
-  skillID,
-  inReview,
-  setError,
-  onPublish,
-  versionID,
-  publishing,
-  loadProject,
-  loadVersion,
-  projectName,
-  updateAllProductLocales,
-}) => {
-  const [loaded, setLoaded] = React.useState(false);
+const PublishAmazonForm: React.FC<PublishAmazonFormProps> = ({ onPublish }) => {
   const [saving, setSaving] = React.useState(false);
   const [idCollapse, setIdCollapse] = React.useState(false);
+
   const validationContext = React.useContext(ValidationContext);
 
-  useSetup(async () => {
-    await loadVersion(versionID!);
-    await loadProject();
+  const isLive = useSelector(ProjectV2.active.isLiveSelector);
+  const skillID = useSelector(ProjectV2.active.alexa.ownSkillIDSelector);
+  const inReview = useSelector(VersionV2.active.alexa.isInReviewSelector);
+  const publishing = useSelector(VersionV2.active.alexa.publishingSelector);
+  const projectName = useSelector(ProjectV2.active.nameSelector);
 
-    setLoaded(true);
-  });
+  const setError = useDispatch(Modal.setError);
+  const updateAllProductLocales = useDispatch(Product.updateAllProductLocales);
 
   const validateForm = React.useCallback(async () => {
     const { locales, privacyPolicy, termsAndConditions, keywords = '', forExport, instructions } = publishing ?? {};
@@ -152,13 +135,6 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps & ConnectedPublishAmazo
     },
     [publishing, projectName]
   );
-
-  if (!loaded)
-    return (
-      <div className="super-center h-100 w-100">
-        <Spinner message="Getting Skill Status" />
-      </div>
-    );
 
   return (
     <>
@@ -231,26 +207,4 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps & ConnectedPublishAmazo
   );
 };
 
-const mapStateToProps = {
-  user: Account.userSelector,
-  versionID: Session.activeVersionIDSelector,
-  publishing: VersionV2.active.alexa.publishingSelector,
-  projectName: ProjectV2.active.nameSelector,
-  skillID: ProjectV2.active.alexa.ownSkillIDSelector,
-  isLive: ProjectV2.active.isLiveSelector,
-  inReview: VersionV2.active.alexa.isInReviewSelector,
-};
-
-const mapDispatchToProps = {
-  setError: Modal.setError,
-  updateAllProductLocales: Product.updateAllProductLocales,
-  loadProject: Project.loadActiveProject,
-  loadVersion: Version.loadVersionByID,
-};
-
-type ConnectedPublishAmazonForm = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withProvider(ValidationProvider)
-)(PublishAmazonForm) as React.FC<PublishAmazonFormProps>;
+export default withProvider(ValidationProvider)(PublishAmazonForm);

@@ -14,6 +14,4 @@ export { default as RealtimeConnectionGate } from './RealtimeConnectionGate';
 export { default as RealtimeLoadingGate } from './RealtimeLoadingGate';
 export { default as SocketLoadingGate } from './SocketLoadingGate';
 export { default as WorkspaceFeatureLoadingGate } from './WorkspaceFeatureLoadingGate';
-export { default as WorkspaceMembersLoadingGate } from './WorkspaceMembersLoadingGate';
-export { default as WorkspacesLoadingGate } from './WorkspacesLoadingGate';
 export { default as WorkspaceSubscriptionGate } from './WorkspaceSubscriptionGate';

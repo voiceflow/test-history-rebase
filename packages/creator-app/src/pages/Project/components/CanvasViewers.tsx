@@ -7,8 +7,6 @@ import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Realtime from '@/ducks/realtime';
-import { WorkspaceMembersLoadingGate } from '@/gates';
-import { withBatchLoadingGate } from '@/hocs';
 import { useFeature, useModals, usePermission, useSelector } from '@/hooks';
 
 interface CanvasViewersProps {
@@ -38,4 +36,4 @@ const CanvasViewers: React.FC<CanvasViewersProps> = ({ flat, withAdd = true }) =
   );
 };
 
-export default withBatchLoadingGate(WorkspaceMembersLoadingGate)(CanvasViewers) as React.FC<CanvasViewersProps>;
+export default CanvasViewers;

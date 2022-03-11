@@ -29,15 +29,13 @@ context('Canvas - Markup', () => {
   });
 
   it('create new image markup', () => {
-    cy.server({ method: 'POST' });
-    cy.route({ method: 'POST', url: /\/image/ }).as('upload-image');
+    cy.intercept('POST', '/image').as('upload-image');
 
     canvasPage.el.markupImageControl.click();
 
     canvasPage.el.markupImageUpload.attachFile({ filePath: 'image.png' }, { subject: 'input', force: true });
 
     cy.wait('@upload-image', { requestTimeout: 60000 });
-    cy.server({ enable: false });
 
     canvasPage.el.markupImage //
       .should('have.length', 1)

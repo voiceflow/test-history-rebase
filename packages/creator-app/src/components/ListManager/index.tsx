@@ -68,7 +68,7 @@ function ListManager<I>({
     <ItemWrapper key={options.key}>
       {renderItem!(item, options)}
       <RemoveIcon
-        style={{ marginRight: 0 }}
+        style={{ marginRight: 0, marginTop: 2 }}
         size={16}
         isHidden={_isNumber(requiredItemIndex) && options.index === requiredItemIndex}
         onClick={() => onRemove(options.key)}

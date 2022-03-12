@@ -9,7 +9,6 @@ import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
 import { compose, styled } from '@/hocs';
 import { useDispatch, useFeature, useModals } from '@/hooks';
-import { EntityModalMode } from '@/pages/Canvas/components/EntityModalV2';
 
 const Text = styled.span`
   pointer-events: none;
@@ -37,13 +36,13 @@ const Text = styled.span`
 
 const Slot = ({ children, mention }, ref) => {
   const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
-  const { open: openEntityModal } = useModals(ModalType.ENTITY);
+  const { open: openEntityEditModal } = useModals(ModalType.ENTITY_EDIT);
 
   const goInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
   const onClickHandler = swallowEvent(() => {
     if (IMM_MODALS_V2.isEnabled) {
-      openEntityModal({ mode: EntityModalMode.EDITING });
+      openEntityEditModal({ id: mention.id });
     } else {
       goInteractionModelEntity(mention.isVariable ? InteractionModelTabType.VARIABLES : InteractionModelTabType.SLOTS, mention.id);
     }

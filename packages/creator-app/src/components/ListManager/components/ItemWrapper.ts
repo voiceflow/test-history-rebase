@@ -4,6 +4,7 @@ import { styled, units } from '@/hocs';
 
 const ItemWrapper = styled.div.attrs({ fullWidth: true })`
   ${flexStyles}
+  align-items: start;
 
   &:not(:last-child) {
     margin-bottom: ${units(1.5)}px;

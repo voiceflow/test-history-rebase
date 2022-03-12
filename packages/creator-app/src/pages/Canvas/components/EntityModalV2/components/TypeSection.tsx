@@ -5,15 +5,22 @@ import Section, { SectionVariant } from '@/components/Section';
 import SlotSelect from '@/components/SlotSelect';
 
 interface TypeSectionProps {
-  type: string;
+  type: string | null;
   onChangeType: (type: string) => void;
 }
 
 const TypeSection: React.FC<TypeSectionProps> = ({ type, onChangeType }) => {
   return (
-    <Section dividers={false} backgroundColor="#fdfdfd" header="Type" variant={SectionVariant.SUBSECTION}>
+    <Section
+      dividers={false}
+      backgroundColor="#fdfdfd"
+      header="Type"
+      variant={SectionVariant.QUATERNARY}
+      customHeaderStyling={{ paddingTop: '16px' }}
+      customContentStyling={{ paddingBottom: '24px' }}
+    >
       <Flex>
-        <SlotSelect value={type} onChange={onChangeType} />
+        <SlotSelect value={type} onChange={onChangeType} inDropdownSearch alwaysShowCreate />
         <Box ml={16}>Color Section Area</Box>
       </Flex>
     </Section>

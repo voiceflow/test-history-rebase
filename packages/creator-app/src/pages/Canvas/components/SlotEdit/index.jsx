@@ -59,6 +59,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   const [customLines, setCustomLines] = React.useState(() =>
     inputs?.length ? inputs : (slotType === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || inputs
   );
+
   const slotTypesMap = React.useMemo(() => slotTypes.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [slotTypes]);
   const nameRef = React.useRef(null);
   const onCustomLineChange = React.useCallback(

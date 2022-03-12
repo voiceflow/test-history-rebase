@@ -51,7 +51,7 @@ const IntentSelectDropdown: React.FC = () => {
         )}
         triggerRenderer={({ onOpenMenu, onHideMenu, isOpen }) => (
           <Box onClick={isOpen ? onHideMenu : onOpenMenu} display="flex" mr={18}>
-            <IconButton size={16} activeHover={isOpen} icon="sandwichMenu" variant={IconButtonVariant.BASIC} />
+            <IconButton size={16} activeClick={isOpen} icon="sandwichMenu" variant={IconButtonVariant.BASIC} />
           </Box>
         )}
       />

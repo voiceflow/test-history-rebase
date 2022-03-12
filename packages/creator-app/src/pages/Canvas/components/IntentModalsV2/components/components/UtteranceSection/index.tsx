@@ -1,9 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import {
-  Badge,
   Box,
   ClickableText,
-  ErrorMessage,
   stopPropagation,
   StrengthGauge,
   StrengthLevel,
@@ -13,7 +11,6 @@ import {
   useOnScreen,
   useSetup,
 } from '@voiceflow/ui';
-import { EditorState } from 'draft-js';
 import queryString from 'query-string';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -29,6 +26,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useDispatch, useModals, usePermission, useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
+import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
 import { validateUtterance } from '@/utils/intent';
 
 export const PREFILLED_UTTERANCE_PARAM = 'utterance';
@@ -61,6 +59,12 @@ const determineStrength = (count: number) => {
   return StrengthLevel.NOT_SET;
 };
 
+export interface UtteranceRefProps {
+  forceFocusToTheEnd: VoidFunction;
+  forceUpdate: VoidFunction;
+  getCurrentUtterance: () => Realtime.IntentInput | null;
+}
+
 const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
   const { search } = useLocation();
   const queryParams = queryString.parse(search);
@@ -74,11 +78,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
   const slots = useSelector(SlotV2.allSlotsSelector);
 
   const patchIntent = useDispatch(Intent.patchIntent);
-  const utteranceRef = React.useRef<{
-    forceFocusToTheEnd: VoidFunction;
-    forceUpdate: VoidFunction;
-    getCurrentUtterance: () => Realtime.IntentInput | null;
-  }>(null);
+  const utteranceRef = React.useRef<UtteranceRefProps>(null);
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isEmpty, updateIsEmpty] = React.useState(true);
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
@@ -180,40 +180,21 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
                   utteranceRef.current?.forceUpdate();
                 }}
                 renderForm={({ value, onAdd, onChange, addError }) => (
-                  <Box mb={intentUtterances.length ? -18 : -4} position="sticky" top={62} zIndex={1000} style={{ background: 'white' }}>
-                    <Utterance
-                      onEditorStateChange={(state: EditorState) => {
-                        const isEmpty = !state.getCurrentContent().hasText();
-                        if (isEmpty) setValidUtterance();
-                      }}
-                      ref={utteranceRef}
-                      space
-                      slots={slots}
-                      value={value?.text || ''}
-                      onBlur={onChange}
-                      onEmpty={updateIsEmpty}
-                      onAddSlot={onAddSlot}
-                      iconProps={{ variant: 'blue' }}
-                      rightAction={
-                        !isEmpty && (
-                          <Badge
-                            slide
-                            onClick={() => {
-                              const utterance = utteranceRef.current?.getCurrentUtterance();
-                              !!utterance && onAdd(utterance);
-                            }}
-                          >
-                            Enter
-                          </Badge>
-                        )
-                      }
-                      placeholder="Enter sample phrases"
-                      onEnterPress={onAdd}
-                      error={!isValidUtterance}
-                    />
-                    {!isValidUtterance && <ErrorMessage noMarginBottom={!intentUtterances.length}>{addError}</ErrorMessage>}
-                    {!!intentUtterances.length && <hr style={!isNotAtTop ? { marginLeft: '-32px' } : undefined} />}
-                  </Box>
+                  <UtteranceInput
+                    intentUtterances={intentUtterances}
+                    setValidUtterance={setValidUtterance}
+                    ref={utteranceRef}
+                    slots={slots}
+                    value={value}
+                    updateIsEmpty={(val) => updateIsEmpty(val)}
+                    isEmpty={isEmpty}
+                    isNotAtTop={isNotAtTop}
+                    addError={addError}
+                    onAddSlot={onAddSlot}
+                    onAdd={onAdd}
+                    isValidUtterance={isValidUtterance}
+                    onChange={onChange}
+                  />
                 )}
                 addValidation={addValidation}
                 onUpdate={onUpdateUtterances}

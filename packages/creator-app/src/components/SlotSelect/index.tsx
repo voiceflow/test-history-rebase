@@ -28,6 +28,8 @@ const SlotSelect: React.FC<SlotSelectProps> = ({ value, onChange, className, fil
       options={options}
       onSelect={onChange}
       searchable
+      optionsMaxSize={9.5}
+      createInputPlaceholder="types"
       placeholder="Select entity type"
       getOptionValue={(option) => option?.value}
       renderOptionLabel={slotOptionRenderer}

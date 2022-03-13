@@ -13,7 +13,6 @@ export {
   CUSTOM_SLOT_TYPE,
   DialogType,
   DISTINCT_PLATFORMS,
-  GENERAL_PLATFORMS,
   LEGACY_CUSTOM_SLOT_TYPE,
   VoicePromptType,
 } from '@voiceflow/realtime-sdk';

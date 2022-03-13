@@ -23,7 +23,7 @@ import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS, getD
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
-import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName } from '@/utils/typeGuards';
+import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName, isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
 
@@ -100,7 +100,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   const saveSettings = async () => {
     await Promise.all([
       updateProjectName(newProjectName),
-      !isAnyGeneralPlatform(platform) ? updateInvocationName(newInvocation) : null,
+      !isVoiceflowPlatform(platform) ? updateInvocationName(newInvocation) : null,
       project && projectImage ? updateProjectImage(project.id, projectImage) : null,
       newAgentName ? updateAgentName(newAgentName as string) : null,
       saveAlexaLocales(),

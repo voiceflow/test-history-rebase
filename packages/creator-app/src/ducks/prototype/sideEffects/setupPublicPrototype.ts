@@ -58,11 +58,11 @@ const setupPublicPrototype =
     batch(() => {
       dispatch(resetPrototype());
       dispatch.local(Realtime.version.crud.add({ workspaceID: '', projectID: '', key: versionID, value: version }));
-      dispatch(updatePrototype({ muted: layout === PrototypeLayout.TEXT_DIALOG, platform }));
+      dispatch(updatePrototype({ muted: layout === PrototypeLayout.TEXT_DIALOG, platform, projectType }));
       dispatch(Session.setActiveVersionID(versionID));
       dispatch(Session.setActiveDiagramID(rootDiagramID));
     });
-    const savedMessageDelay = Realtime.Utils.typeGuards.isChatPlatform(prototype.platform)
+    const savedMessageDelay = Realtime.Utils.typeGuards.isChatProjectType(projectType)
       ? ChatVersion.defaultMessageDelay({ durationMilliseconds: prototype?.data?.messageDelay?.durationMilliseconds }).durationMilliseconds
       : 0;
 

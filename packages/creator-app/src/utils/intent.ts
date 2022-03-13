@@ -171,14 +171,14 @@ export function validateUtterance(utterance: string, intentID: string | null, in
 }
 
 export const applyPlatformIntentNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string => {
-  const hasNoRules = Realtime.Utils.typeGuards.isAnyGeneralPlatform(platform) || Realtime.Utils.typeGuards.isDialogflowPlatform(platform);
+  const hasNoRules = Realtime.Utils.typeGuards.isVoiceflowPlatform(platform) || Realtime.Utils.typeGuards.isDialogflowPlatform(platform);
   if (hasNoRules) return name;
 
   return formatIntentAndSlotName(name);
 };
 
 export const applyCustomizableBuiltInIntent = (name: string, platform: VoiceflowConstants.PlatformType): string => {
-  if (Realtime.Utils.typeGuards.isAnyGeneralPlatform(platform)) {
+  if (Realtime.Utils.typeGuards.isVoiceflowPlatform(platform)) {
     return removeBuiltInPrefix(Utils.string.capitalizeFirstLetter(name?.toLowerCase()));
   }
   if (Realtime.Utils.typeGuards.isAlexaPlatform(platform)) {

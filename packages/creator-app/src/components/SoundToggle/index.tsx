@@ -1,8 +1,7 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { ButtonVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
-
-import { canUseSoundToggle } from '@/utils/prototype';
 
 import ActionButton from '../../pages/PublicPrototype/components/ChatDialog/components/ActionButton';
 
@@ -10,13 +9,13 @@ interface SoundToggleProps {
   size?: number;
   isMuted: boolean;
   onClick: VoidFunction;
-  platform: VoiceflowConstants.PlatformType;
   isMobile?: boolean;
+  projectType: VoiceflowConstants.ProjectType;
   preventButtonDefault?: boolean;
 }
 
-const SoundToggle: React.FC<SoundToggleProps> = ({ platform, isMuted, size = 16, onClick, preventButtonDefault = false, isMobile }) => {
-  const canSeeToggle = canUseSoundToggle(platform);
+const SoundToggle: React.FC<SoundToggleProps> = ({ projectType, isMuted, size = 16, onClick, preventButtonDefault = false, isMobile }) => {
+  const canSeeToggle = Utils.typeGuards.isChatProjectType(projectType);
 
   if (!canSeeToggle) return null;
 

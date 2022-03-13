@@ -31,7 +31,7 @@ const ConnectActivePlatformModal: React.FC = () => {
     return <GoogleIdleStage modalType={MODAL_TYPE} />;
   }
 
-  if (Utils.typeGuards.isDialogflowPlatformV2(platform) && stage === DialogflowStageType.IDLE) {
+  if (Utils.typeGuards.isDialogflowPlatform(platform) && stage === DialogflowStageType.IDLE) {
     return <DialogflowIdleStage modalType={MODAL_TYPE} />;
   }
 

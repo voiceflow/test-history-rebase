@@ -6,7 +6,7 @@ import { ZOOM_FACTOR } from '@/components/Canvas/constants';
 import { useTheme } from '@/hooks';
 import { ALL_DEVICES } from '@/pages/Prototype/constants';
 import { Pair } from '@/types';
-import { isAnyGeneralPlatform } from '@/utils/typeGuards';
+import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 const DEFAULT_FILL_RATIO = 0.8;
 const DEFAULT_FRAME_DIMENSION = 400;
@@ -46,7 +46,7 @@ export const useInitialCanvas = ({ platform, dimension }: { platform: VoiceflowC
 
   return React.useMemo(() => {
     const bodyWidth = document.body.clientWidth;
-    const isGeneral = isAnyGeneralPlatform(platform);
+    const isGeneral = isVoiceflowPlatform(platform);
     const usedWidth = isGeneral ? theme.components.usedGeneralPrototypeDisplayCanvasWidth : theme.components.usedPrototypeDisplayCanvasWidth;
     const canvasWidth = bodyWidth - usedWidth;
     const canvasHeight = document.body.clientHeight - theme.components.usedPrototypeDisplayCanvasHeight;

@@ -55,6 +55,7 @@ export interface PrototypeState {
   activePathLinkIDs: string[];
   inputMode: PrototypeInputMode;
   platform?: VoiceflowConstants.PlatformType;
+  projectType?: VoiceflowConstants.ProjectType;
   startTime: number;
   contextStep: number;
   contextHistory: Partial<Context>[];

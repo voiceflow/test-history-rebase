@@ -1,24 +1,20 @@
-import {
-  CHAT_PLATFORMS,
-  DIALOGFLOW_PLATFORMS,
-  DISTINCT_PLATFORMS,
-  GENERAL_PLATFORMS,
-  PLATFORMS_WITH_INVOCATION_NAME,
-  VOICE_PLATFORMS,
-} from '@realtime-sdk/constants';
+import { DISTINCT_PLATFORMS, legacyPlatformToProjectType, PLATFORMS_WITH_INVOCATION_NAME } from '@realtime-sdk/constants';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { createTypeGuardCreator } from './utils';
 
 const createPlatformTypeGuard = createTypeGuardCreator<VoiceflowConstants.PlatformType>();
+const createProjectTypeTypeGuard = createTypeGuardCreator<VoiceflowConstants.ProjectType>();
 
 export const isAlexaPlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.ALEXA);
 export const isGooglePlatform = createPlatformTypeGuard(VoiceflowConstants.PlatformType.GOOGLE);
-export const isDialogflowPlatformV2 = createPlatformTypeGuard(VoiceflowConstants.PlatformType.DIALOGFLOW_ES);
+export const isDialogflowPlatform = (platform?: VoiceflowConstants.PlatformType | null): platform is VoiceflowConstants.PlatformType.DIALOGFLOW_ES =>
+  !!platform && legacyPlatformToProjectType(platform)?.platform === VoiceflowConstants.PlatformType.DIALOGFLOW_ES;
+export const isVoiceflowPlatform = (platform?: VoiceflowConstants.PlatformType | null): platform is VoiceflowConstants.PlatformType.VOICEFLOW =>
+  !!platform && legacyPlatformToProjectType(platform)?.platform === VoiceflowConstants.PlatformType.VOICEFLOW;
 
-export const isChatPlatform = createPlatformTypeGuard(CHAT_PLATFORMS);
-export const isVoicePlatform = createPlatformTypeGuard(VOICE_PLATFORMS);
+export const isChatProjectType = createProjectTypeTypeGuard(VoiceflowConstants.ProjectType.CHAT);
+export const isVoiceProjectType = createProjectTypeTypeGuard(VoiceflowConstants.ProjectType.VOICE);
 export const isDistinctPlatform = createPlatformTypeGuard(DISTINCT_PLATFORMS);
-export const isDialogflowPlatform = createPlatformTypeGuard(DIALOGFLOW_PLATFORMS);
-export const isAnyGeneralPlatform = createPlatformTypeGuard(GENERAL_PLATFORMS);
+
 export const isPlatformWithInvocationName = createPlatformTypeGuard(PLATFORMS_WITH_INVOCATION_NAME);

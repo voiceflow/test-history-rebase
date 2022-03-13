@@ -37,7 +37,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   buttonsOnly = false,
 }) => {
   const theme = useTheme();
-  const { platform } = useSelector(prototypeSelector);
+  const { projectType } = useSelector(prototypeSelector);
 
   return (
     <BoxFlexEnd ml={16}>
@@ -57,7 +57,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
             </ActionButton>
           </TippyTooltip>
 
-          <SoundToggle platform={platform!} isMuted={isMuted} preventButtonDefault onClick={onMute} />
+          <SoundToggle projectType={projectType!} isMuted={isMuted} preventButtonDefault onClick={onMute} />
         </>
       )}
 

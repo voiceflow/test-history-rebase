@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { IconVariant, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import SoundToggle from '@/components/SoundToggle';
 import { prototypeSelector } from '@/ducks/prototype';
 import { useSelector } from '@/hooks';
-import { canUseSoundToggle } from '@/utils/prototype';
 
 import ActionButtonContainer from './ActionButtonContainer';
 
@@ -16,8 +16,8 @@ interface ActionButtons {
 }
 
 const ActionButtons: React.FC<ActionButtons> = ({ onMute, onReset, isMuted, onFullScreen }) => {
-  const { platform } = useSelector(prototypeSelector);
-  const canSeeSoundToggle = canUseSoundToggle(platform!);
+  const { projectType } = useSelector(prototypeSelector);
+  const canSeeSoundToggle = Realtime.Utils.typeGuards.isChatProjectType(projectType);
 
   return (
     <>
@@ -29,7 +29,7 @@ const ActionButtons: React.FC<ActionButtons> = ({ onMute, onReset, isMuted, onFu
 
       {canSeeSoundToggle && (
         <ActionButtonContainer>
-          <SoundToggle platform={platform!} isMuted={isMuted} onClick={onMute} />
+          <SoundToggle projectType={projectType!} isMuted={isMuted} onClick={onMute} />
         </ActionButtonContainer>
       )}
 

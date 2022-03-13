@@ -10,10 +10,10 @@ export const {
   isAlexaPlatform,
   isGooglePlatform,
   isDialogflowPlatform,
-  isVoicePlatform,
-  isChatPlatform,
+  isVoiceProjectType,
+  isChatProjectType,
   isDistinctPlatform,
-  isAnyGeneralPlatform,
+  isVoiceflowPlatform,
   isPlatformWithInvocationName,
   truthy,
 } = Utils.typeGuards;

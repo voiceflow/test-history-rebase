@@ -40,18 +40,6 @@ export const DEFAULT_PROJECT_LIST_NAME = 'Default List';
 export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
 
-export const GENERAL_PLATFORMS = [
-  VoiceflowConstants.PlatformType.GENERAL,
-  VoiceflowConstants.PlatformType.IVR,
-  VoiceflowConstants.PlatformType.MOBILE_APP,
-  VoiceflowConstants.PlatformType.CHATBOT,
-] as const;
-
-export const DIALOGFLOW_PLATFORMS = [
-  VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT,
-  VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE,
-] as const;
-
 export const DISTINCT_PLATFORMS = [
   VoiceflowConstants.PlatformType.ALEXA,
   VoiceflowConstants.PlatformType.GOOGLE,
@@ -59,17 +47,6 @@ export const DISTINCT_PLATFORMS = [
 ] as const;
 
 export const PLATFORMS_WITH_INVOCATION_NAME = [VoiceflowConstants.PlatformType.ALEXA, VoiceflowConstants.PlatformType.GOOGLE] as const;
-
-export const VOICE_PLATFORMS = [
-  VoiceflowConstants.PlatformType.IVR,
-  VoiceflowConstants.PlatformType.ALEXA,
-  VoiceflowConstants.PlatformType.GOOGLE,
-  VoiceflowConstants.PlatformType.GENERAL,
-  VoiceflowConstants.PlatformType.MOBILE_APP,
-  VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE,
-] as const;
-
-export const CHAT_PLATFORMS = [VoiceflowConstants.PlatformType.CHATBOT, VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT] as const;
 
 export type DistinctPlatform =
   | VoiceflowConstants.PlatformType.ALEXA

@@ -11,7 +11,7 @@ import { createCurriedSelector } from '@/ducks/utils';
 import { createCRUDSelectors, idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { GENERAL_BUILT_INS_MAP, getBuiltInIntents } from '@/utils/intent';
-import { isAnyGeneralPlatform } from '@/utils/typeGuards';
+import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import { STATE_KEY } from './constants';
 
@@ -38,7 +38,7 @@ export const customIntentMapSelector = createSelector([allCustomIntentsSelector]
 export const allPlatformIntentsSelector = createSelector(
   [allCustomIntentsSelector, ProjectV2.active.platformSelector, VersionV2.active.localesSelector],
   (prettifiedIntents, platform, locales) => {
-    if (isAnyGeneralPlatform(platform)) {
+    if (isVoiceflowPlatform(platform)) {
       const lang = (locales[0] ?? VoiceflowConstants.Locale.EN_US).split('-')[0];
 
       return uniqBy([...prettifiedIntents, ...(GENERAL_BUILT_INS_MAP[lang] || GENERAL_BUILT_INS_MAP.en)], (intent) => intent.id);

@@ -11,8 +11,8 @@ import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
 export const ENTITY_PROMPT_PATH_TYPE = 'entityPrompt';
 
-const EntityPromptForm: React.FC<NodeEditorPropsType<Realtime.NodeData.CaptureV2>> = ({ data, onChange, activePath, platform }) => {
-  const isChat = Realtime.Utils.typeGuards.isChatPlatform(platform);
+const EntityPromptForm: React.FC<NodeEditorPropsType<Realtime.NodeData.CaptureV2>> = ({ data, onChange, activePath, projectType }) => {
+  const isChat = Realtime.Utils.typeGuards.isChatProjectType(projectType);
 
   const slots = data.intent?.slots || [];
   const slotIDs = React.useMemo(() => slots.map(({ id }) => id), [slots]);

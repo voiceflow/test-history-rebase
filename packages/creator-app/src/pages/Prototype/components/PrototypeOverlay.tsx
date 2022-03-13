@@ -14,7 +14,7 @@ import PrototypeSidebar from '@/pages/Prototype/components/PrototypeSidebar';
 import PrototypeVariableSettings from '@/pages/Prototype/components/PrototypeVariableSettings';
 import PrototypeVisualCanvas from '@/pages/Prototype/components/PrototypeVisualCanvas';
 import { SlideOutDirection } from '@/styles/transitions';
-import { isAnyGeneralPlatform } from '@/utils/typeGuards';
+import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 const PrototypeOverlay: React.FC = () => {
   const theme = useTheme();
@@ -58,7 +58,7 @@ const PrototypeOverlay: React.FC = () => {
 
   widthRef.current = getPrototypeSettingsWidth();
 
-  const isGeneral = isAnyGeneralPlatform(platform);
+  const isGeneral = isVoiceflowPlatform(platform);
   const isPrototypeSidebarOpened = isPrototypeVariables || isPrototypeSettings || (isPrototypeDisplay && !isGeneral);
 
   return !isPrototypingMode ? null : (

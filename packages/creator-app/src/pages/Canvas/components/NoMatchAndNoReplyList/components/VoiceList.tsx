@@ -5,7 +5,7 @@ import React from 'react';
 import { MAX_ALEXA_REPROMPTS, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
 import SpeakAudioList from '@/pages/Canvas/components/SpeakAudioList';
 import { PlatformContext } from '@/pages/Project/contexts';
-import { isAnyGeneralPlatform } from '@/utils/typeGuards';
+import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import { NoMatchVoiceListItem, NoReplyVoiceListItem } from './ListItem';
 
@@ -57,7 +57,7 @@ const VoiceList: React.FC<VoiceListProps> = ({
     <SpeakAudioList
       items={items}
       platform={platform}
-      maxItems={isAnyGeneralPlatform(platform) ? MAX_SPEAK_ITEMS_COUNT : MAX_ALEXA_REPROMPTS}
+      maxItems={isVoiceflowPlatform(platform) ? MAX_SPEAK_ITEMS_COUNT : MAX_ALEXA_REPROMPTS}
       itemName="reprompts"
       randomize={randomize}
       renderMenu={hideRandomizeMenu ? () => null : null}

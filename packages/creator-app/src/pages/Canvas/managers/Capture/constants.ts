@@ -24,7 +24,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Capture, Realtime.NodeDat
     data: {
       name: 'Capture',
       slot: null,
-      buttons: Realtime.Utils.typeGuards.isChatPlatform(options?.platform) ? buttonsFactory() : null,
+      buttons: Realtime.Utils.typeGuards.isChatProjectType(options?.projectType) ? buttonsFactory() : null,
       noReply: null,
       examples: [],
       variable: null,

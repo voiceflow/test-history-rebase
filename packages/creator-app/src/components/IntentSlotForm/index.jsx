@@ -18,7 +18,7 @@ import { connect } from '@/hocs';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { slotToString } from '@/utils/slot';
-import { isAlexaPlatform, isAnyGeneralPlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import {
   ChatPromptForm,
@@ -29,10 +29,10 @@ import {
   VoicePromptForm,
 } from './components';
 
-function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalone = false, patchIntentSlot, updateIntentSlotDialog }) {
+function IntentSlotForm({ slot, platform, projectType, intentSlot, slotsMap, intent, standalone = false, patchIntentSlot, updateIntentSlotDialog }) {
   const isAlexa = isAlexaPlatform(platform);
-  const isChat = Realtime.Utils.typeGuards.isChatPlatform(platform);
-  const isGeneral = isAnyGeneralPlatform(platform);
+  const isChat = Realtime.Utils.typeGuards.isChatProjectType(projectType);
+  const isGeneral = isVoiceflowPlatform(platform);
   const utteranceRef = React.useRef();
   const {
     required,
@@ -210,6 +210,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
+  projectType: ProjectV2.active.typeV2Selector,
   slotsMap: SlotV2.slotMapSelector,
   getIntentByID: IntentV2.getIntentByIDSelector,
   getIntentSlotByIntentIDSlotID: IntentV2.getIntentSlotByIntentIDSlotIDSelector,

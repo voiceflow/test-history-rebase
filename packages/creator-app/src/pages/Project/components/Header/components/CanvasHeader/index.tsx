@@ -6,7 +6,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, useSelector } from '@/hooks';
 import CanvasViewers from '@/pages/Project/components/CanvasViewers';
 import { PlatformContext } from '@/pages/Project/contexts';
-import { isAnyGeneralPlatform } from '@/utils/typeGuards';
+import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import { SharePopperProvider } from '../../contexts';
 import { CanvasControls, LogoButton, ProjectAndDiagramActions, Run, Share, TrialExpired, Upload } from './components';
@@ -34,7 +34,7 @@ const CanvasHeader: React.FC = () => {
 
             <Share />
 
-            {canPublish && !isAnyGeneralPlatform(platform) && <Upload />}
+            {canPublish && !isVoiceflowPlatform(platform) && <Upload />}
 
             <Run />
           </>

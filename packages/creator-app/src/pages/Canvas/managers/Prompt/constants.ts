@@ -14,7 +14,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt, Realtime.NodeData
 
   mergeTerminator: true,
 
-  factory: (_, { platform, projectType, defaultVoice } = {}) => ({
+  factory: (_, { projectType, defaultVoice } = {}) => ({
     node: {
       ports: {
         in: [{}],
@@ -27,7 +27,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt, Realtime.NodeData
     data: {
       name: 'Prompt',
       noReply: null,
-      buttons: Realtime.Utils.typeGuards.isChatPlatform(platform) ? buttonsFactory() : null,
+      buttons: Realtime.Utils.typeGuards.isChatProjectType(projectType) ? buttonsFactory() : null,
       noMatch: getPlatformNoMatchFactory(projectType)({ defaultVoice }),
     },
   }),

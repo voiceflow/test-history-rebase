@@ -24,7 +24,6 @@ import { useDebug, useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { FadeLeftContainer } from '@/styles/animations';
 import { SlideOutDirection } from '@/styles/transitions';
-import { canUseSoundToggle } from '@/utils/prototype';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
 import * as Sentry from '@/vendors/sentry';
 
@@ -51,11 +50,11 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps> = ({ open }) => {
   const compilePrototype = useDispatch(PrototypeDuck.compilePrototype);
   const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
   const { state, actions, config } = prototypeAPI;
-  const { locales, platform, isMuted } = config;
+  const { locales, projectType, isMuted } = config;
   const { status } = state;
   const { updatePrototype } = actions;
 
-  const canSeeSoundToggle = canUseSoundToggle(platform);
+  const canSeeSoundToggle = Realtime.Utils.typeGuards.isChatProjectType(projectType);
   const [trainingOpen, toggleTrainingOpen] = useToggle(false);
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const resetPrototype = useResetPrototype();
@@ -145,7 +144,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps> = ({ open }) => {
   React.useEffect(() => {
     if (!open) return undefined;
 
-    if (Realtime.Utils.typeGuards.isChatPlatform(platform)) {
+    if (Realtime.Utils.typeGuards.isChatProjectType(projectType)) {
       updatePrototype({ muted: true });
     }
 
@@ -213,7 +212,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps> = ({ open }) => {
                 <Flex>
                   {canSeeSoundToggle && (
                     <Box display="inline-block" mr={4}>
-                      <SoundToggle platform={platform} isMuted={isMuted} onClick={() => updatePrototype({ muted: !isMuted })} />
+                      <SoundToggle projectType={projectType} isMuted={isMuted} onClick={() => updatePrototype({ muted: !isMuted })} />
                     </Box>
                   )}
 

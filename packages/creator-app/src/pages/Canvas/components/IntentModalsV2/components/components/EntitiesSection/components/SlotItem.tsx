@@ -24,8 +24,8 @@ const SlotItem: React.FC<SlotItemProps> = ({ slot, slots, intent, required, name
   const patchIntentSlot = useDispatch(Intent.patchIntentSlot);
   const patchIntentSlotDialog = useDispatch(Intent.updateIntentSlotDialog);
 
-  const platform = useSelector(ProjectV2.active.platformSelector);
-  const isChat = Realtime.Utils.typeGuards.isChatPlatform(platform);
+  const projectType = useSelector(ProjectV2.active.typeV2Selector);
+  const isChat = Realtime.Utils.typeGuards.isChatProjectType(projectType);
   const { prompt } = slot.dialog ?? { prompt: [] };
 
   const onChangePrompt = (prompt: VoiceModels.IntentPrompt<any>[] | ChatModels.Prompt[]) => {

@@ -15,6 +15,7 @@ const ACCOUNT_PAGE_REDESIGN_ENABLED = process.env.FF_ACCOUNT_PAGE_REDESIGN === '
 const VARIABLE_STATES_ENABLED = process.env.FF_VARIABLE_STATES === 'true';
 const PROTOTYPE_MESSAGE_DELAYS_ENABLED = process.env.FF_PROTOTYPE_MESSAGE_DELAYS === 'true';
 const IMM_MODALS_V2 = process.env.FF_IMM_MODALS_V2 === 'true';
+const NLU_MANAGER_ENABLED = process.env.FF_NLU_MANAGER === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -43,6 +44,7 @@ export enum FeatureFlag {
   PROTOTYPE_MESSAGE_DELAYS = 'prototype_message_delays',
 
   IMM_MODALS_V2 = 'imm_modals_v2',
+  NLU_MANAGER = 'nlu_manager',
 }
 
 export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
@@ -60,4 +62,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.VARIABLE_STATES]: VARIABLE_STATES_ENABLED,
   [FeatureFlag.PROTOTYPE_MESSAGE_DELAYS]: PROTOTYPE_MESSAGE_DELAYS_ENABLED,
   [FeatureFlag.IMM_MODALS_V2]: IMM_MODALS_V2,
+  [FeatureFlag.NLU_MANAGER]: NLU_MANAGER_ENABLED,
 };

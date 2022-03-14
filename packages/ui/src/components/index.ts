@@ -32,6 +32,7 @@ export {
 } from './Button';
 export { default as Card } from './Card';
 export { default as Collapse } from './Collapse';
+export { default as ColorPicker } from './ColorPicker';
 export { default as Disable } from './Disable';
 export type { DropdownPlacement } from './Dropdown';
 export { default as Dropdown } from './Dropdown';

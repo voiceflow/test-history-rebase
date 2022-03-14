@@ -5,13 +5,12 @@ import React from 'react';
 import Section, { SectionVariant } from '@/components/Section';
 import Upgrade from '@/components/Upgrade';
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useFeature, usePermission, useSelector } from '@/hooks';
+import { useDispatch, usePermission, useSelector } from '@/hooks';
 import ColorInput from '@/pages/Canvas/header/ActionGroup/components/ShareProject/components/AppearanceAndBranding/ColorInput';
 
 const MESSAGE_DELAY_SUPPORTED_PLATFORMS = [VoiceflowConstants.PlatformType.CHATBOT, VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT];
@@ -25,10 +24,9 @@ const TestToolSettings: React.FC = () => {
   const prototypeAvatar = useSelector(Prototype.prototypeAvatarSelector);
   const updatePrototypeSettings = useDispatch(Prototype.updateSharePrototypeSettings);
   const [delayDuration, setDelayDuration] = React.useState(durationMilliseconds);
-  const messageDelays = useFeature(FeatureFlag.PROTOTYPE_MESSAGE_DELAYS);
   const platform = useSelector(ProjectV2.active.platformSelector);
 
-  const showMessageDelaySetting = messageDelays.isEnabled && MESSAGE_DELAY_SUPPORTED_PLATFORMS.includes(platform);
+  const showMessageDelaySetting = MESSAGE_DELAY_SUPPORTED_PLATFORMS.includes(platform);
   const onChangeDelay = async (val: string) => {
     const delay = parseInt(val, 10);
     setDelayDuration(delay);

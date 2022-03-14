@@ -13,7 +13,6 @@ const ENTERPRISE_TRIAL_ENABLED = process.env.FF_ENTERPRISE_TRIAL_ENABLED === 'tr
 const TOPICS_AND_COMPONENTS_ENABLED = process.env.FF_TOPICS_AND_COMPONENTS === 'true';
 const ACCOUNT_PAGE_REDESIGN_ENABLED = process.env.FF_ACCOUNT_PAGE_REDESIGN === 'true';
 const VARIABLE_STATES_ENABLED = process.env.FF_VARIABLE_STATES === 'true';
-const PROTOTYPE_MESSAGE_DELAYS_ENABLED = process.env.FF_PROTOTYPE_MESSAGE_DELAYS === 'true';
 const IMM_MODALS_V2 = process.env.FF_IMM_MODALS_V2 === 'true';
 const NLU_MANAGER_ENABLED = process.env.FF_NLU_MANAGER === 'true';
 
@@ -41,7 +40,6 @@ export enum FeatureFlag {
   ACCOUNT_PAGE_REDESIGN = 'account_page_redesign',
 
   VARIABLE_STATES = 'variable_states',
-  PROTOTYPE_MESSAGE_DELAYS = 'prototype_message_delays',
 
   IMM_MODALS_V2 = 'imm_modals_v2',
   NLU_MANAGER = 'nlu_manager',
@@ -60,7 +58,6 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.TOPICS_AND_COMPONENTS]: TOPICS_AND_COMPONENTS_ENABLED,
   [FeatureFlag.ACCOUNT_PAGE_REDESIGN]: ACCOUNT_PAGE_REDESIGN_ENABLED,
   [FeatureFlag.VARIABLE_STATES]: VARIABLE_STATES_ENABLED,
-  [FeatureFlag.PROTOTYPE_MESSAGE_DELAYS]: PROTOTYPE_MESSAGE_DELAYS_ENABLED,
   [FeatureFlag.IMM_MODALS_V2]: IMM_MODALS_V2,
   [FeatureFlag.NLU_MANAGER]: NLU_MANAGER_ENABLED,
 };

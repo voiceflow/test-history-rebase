@@ -4,10 +4,9 @@ import { toast } from '@voiceflow/ui';
 import _isString from 'lodash/isString';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { PrototypeStatus } from '@/constants/prototype';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';
-import { useEventualEngine, useFeature, useTrackingEvents } from '@/hooks';
+import { useEventualEngine, useTrackingEvents } from '@/hooks';
 import perf, { PerfAction } from '@/performance';
 
 import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
@@ -48,7 +47,6 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
   const [interactions, setInteractions] = React.useState<Interaction[]>([]);
   const [trackingEvents] = useTrackingEvents();
   const getEngine = useEventualEngine();
-  const messageDelays = useFeature(FeatureFlag.PROTOTYPE_MESSAGE_DELAYS);
 
   const cacheData: PrototypeToolProps = {
     debug,
@@ -71,7 +69,7 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     activePathLinkIDs,
     visualDataHistory,
     activePathBlockIDs,
-    globalMessageDelayMilliseconds: messageDelays.isEnabled ? globalDelayInMilliseconds : 0,
+    globalMessageDelayMilliseconds: globalDelayInMilliseconds,
     updatePrototypeVisualsData,
     updatePrototypeVisualsDataHistory,
   };

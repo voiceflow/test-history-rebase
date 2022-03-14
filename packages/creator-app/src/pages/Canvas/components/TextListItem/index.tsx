@@ -5,9 +5,7 @@ import React from 'react';
 import Divider from '@/components/Divider';
 import { SectionToggleVariant } from '@/components/Section';
 import { SlateTextInput } from '@/components/SlateInputs';
-import { FeatureFlag } from '@/config/features';
 import { compose } from '@/hocs';
-import { useFeature } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
@@ -37,7 +35,6 @@ const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemP
   ref
 ) => {
   const isNew = latestCreatedKey === itemKey;
-  const messageDelays = useFeature(FeatureFlag.PROTOTYPE_MESSAGE_DELAYS);
   return (
     <EditorSection
       ref={ref}
@@ -62,12 +59,10 @@ const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemP
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={isNew}
             extraToolbarButtons={
-              messageDelays.isEnabled ? (
-                <>
-                  <Divider isVertical height="15px" style={{ margin: 0 }} />
-                  <MessageDelayButton data={item} onUpdate={(value: Partial<BaseNode.Text.TextData>) => onUpdate(value)} />
-                </>
-              ) : undefined
+              <>
+                <Divider isVertical height="15px" style={{ margin: 0 }} />
+                <MessageDelayButton data={item} onUpdate={(value: Partial<BaseNode.Text.TextData>) => onUpdate(value)} />
+              </>
             }
           />
         </FormControl>

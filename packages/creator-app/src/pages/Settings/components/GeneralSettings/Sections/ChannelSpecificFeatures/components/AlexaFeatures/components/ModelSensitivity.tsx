@@ -27,10 +27,11 @@ const ModelSensitivity: React.FC<ConnectedModelSensitivityProps & ModelSensitivi
     customContentStyling={{ paddingBottom: '24px' }}
   >
     <Select
-      placeholder="Model Sensitivity"
       value={modelSensitivity ?? AlexaVersion.ModelSensitivity.LOW}
+      placeholder="Model Sensitivity"
       options={OPTIONS}
       onSelect={(value) => patchSettings({ modelSensitivity: value })}
+      getOptionKey={(option) => option.value}
       getOptionValue={(option) => option?.value || AlexaVersion.ModelSensitivity.LOW}
       getOptionLabel={(value) => OPTIONS.find((option) => option.value === value)?.name ?? 'Low'}
     />

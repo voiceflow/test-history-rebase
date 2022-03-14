@@ -17,8 +17,6 @@ import { Coords } from '@/utils/geometry';
 import { CanvasAction, TARGET_OPTIONS } from './constants';
 import { ContextMenuOption, OptionProps } from './types';
 
-const NestedContextMenu: React.FC<any> = NestedMenu;
-
 type OptionHandler = (contextMenu: ContextMenuValue, props: OptionProps) => Eventual<void>;
 
 const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
@@ -92,6 +90,9 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   },
 };
 
+const isBlockColorValue = (value: string): value is BlockVariant => Object.values<string>(BlockVariant).includes(value);
+const isCanvasActionValue = (value: string): value is CanvasAction => Object.values<string>(CanvasAction).includes(value);
+
 const ContextMenu: React.FC = () => {
   const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
 
@@ -119,7 +120,7 @@ const ContextMenu: React.FC = () => {
     showHintFeatures,
   });
 
-  const options = React.useMemo(() => {
+  const options = React.useMemo<ContextMenuOption[]>(() => {
     if (!contextMenu.type || !TARGET_OPTIONS[contextMenu.type]?.().length) {
       return [];
     }
@@ -139,28 +140,23 @@ const ContextMenu: React.FC = () => {
     return targetOptions;
   }, [contextMenu.type]);
 
-  const onSelect = async (_: unknown, [menuItemIndex, nestedMenuItemIndex]: [number, number]) => {
-    const option = options![menuItemIndex];
-    const blockColor = option?.options?.[nestedMenuItemIndex].value;
+  const optionsMap = React.useMemo(() => {
+    const flattenedOptions = options.flatMap(({ label, value, options = [] }) => [
+      [value, label] as const,
+      ...options.map((option) => [option.value ?? '', option.label] as const),
+    ]);
 
-    await OPTION_HANDLERS[option.value](contextMenu, { ...cache.current, blockColor });
+    return Object.fromEntries(flattenedOptions);
+  }, [options]);
+
+  const onSelect = async (value: string) => {
+    if (isBlockColorValue(value)) {
+      await OPTION_HANDLERS[CanvasAction.COLOR_BLOCK](contextMenu, { ...cache.current, blockColor: value });
+    } else if (isCanvasActionValue(value)) {
+      await OPTION_HANDLERS[value](contextMenu, cache.current);
+    }
 
     contextMenu.onHide();
-  };
-
-  const getOptionKey = (option: ContextMenuOption<CanvasAction | BlockVariant>) =>
-    option.value === CanvasAction.DIVIDER ? option.label : option.value;
-
-  const getOptionValue = (option: ContextMenuOption<CanvasAction | BlockVariant> | undefined) => option?.value;
-
-  const getOptionLabel = (selectedValue: CanvasAction | BlockVariant) => {
-    const flattenedOptions: Array<ContextMenuOption<CanvasAction> | ContextMenuOption<BlockVariant>> = options!.flatMap(
-      ({ label, value, options = [] }) => [{ value, label }, ...options.flatMap((option) => [option])]
-    );
-
-    const option = flattenedOptions.find((option) => option.value === selectedValue);
-
-    return option?.label;
   };
 
   React.useEffect(() => {
@@ -171,12 +167,9 @@ const ContextMenu: React.FC = () => {
     return () => document.removeEventListener('mousedown', onHide);
   }, [contextMenu.onHide]);
 
-  const virtualElement = React.useMemo(() => buildVirtualElement(contextMenu.position), [contextMenu.position!]);
+  const virtualElement = React.useMemo(() => buildVirtualElement(contextMenu.position), [contextMenu.position]);
 
-  const popper = useVirtualElementPopper(virtualElement, {
-    placement: 'right-start',
-    strategy: 'fixed',
-  });
+  const popper = useVirtualElementPopper(virtualElement, { strategy: 'fixed', placement: 'right-start' });
 
   if (!contextMenu.isOpen || !options?.length) {
     return null;
@@ -184,15 +177,17 @@ const ContextMenu: React.FC = () => {
 
   return (
     <div id={Identifier.CONTEXT_MENU} ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 10 }} {...popper.attributes.popper}>
-      <NestedContextMenu
+      <NestedMenu
+        onHide={contextMenu.onHide}
         options={options}
         onSelect={onSelect}
-        getOptionKey={getOptionKey}
-        getOptionValue={getOptionValue}
-        getOptionLabel={getOptionLabel}
-        renderOptionLabel={(option: ContextMenuOption<CanvasAction> | ContextMenuOption<BlockVariant>) => (
+        getOptionKey={(option) => (option?.value === CanvasAction.DIVIDER ? option.label : option.value)}
+        getOptionValue={(option) => option?.value}
+        getOptionLabel={(value) => (value ? optionsMap[value] : '')}
+        renderOptionLabel={(option) => (
           <BoxFlex width="100%" justifyContent="space-between">
             <Text>{option.label}</Text>
+
             {!!option.hotkey && (
               <Text marginLeft={32} fontSize={13} color="#8da2b5">
                 {option?.hotkey}

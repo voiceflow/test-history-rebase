@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { NestedMenuComponents } from '@voiceflow/ui';
 import React from 'react';
 
@@ -31,13 +32,8 @@ const ReportTagInput: React.ForwardRefRenderFunction<HTMLInputElement, ReportTag
         <ManageTagInput
           className={ClassName.BASE_REPORT_TAG_INPUT}
           selectedTags={selectedTags}
-          footerAction={(hideMenu) => (
-            <NestedMenuComponents.FooterActionContainer
-              onClick={() => {
-                hideMenu();
-                openTagManager();
-              }}
-            >
+          renderFooterAction={({ close }) => (
+            <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, openTagManager)}>
               Manage Tags
             </NestedMenuComponents.FooterActionContainer>
           )}
@@ -46,9 +42,7 @@ const ReportTagInput: React.ForwardRefRenderFunction<HTMLInputElement, ReportTag
       ) : (
         <SelectOnlyTagInput
           hasRadioButtons
-          isSelectedFunc={(id: string) => {
-            return selectedTags?.includes(id);
-          }}
+          isSelectedFunc={(id: string) => selectedTags?.includes(id)}
           selectedTags={selectedTags}
           onChange={onChange!}
           {...props}

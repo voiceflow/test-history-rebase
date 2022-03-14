@@ -21,7 +21,7 @@ const ExportCanva: React.FC = () => {
         value={canvasExportFormat}
         options={isTemplateWorkspace ? CANVAS_OPTIONS_TEMPLATE_WORKSPACE : CANVAS_EXPORT_OPTIONS}
         onSelect={setCanvasExportFormat}
-        getOptionLabel={(value) => CANVAS_EXPORT_OPTIONS_LABELS[value!]}
+        getOptionLabel={(value) => value && CANVAS_EXPORT_OPTIONS_LABELS[value]}
       />
 
       {!canExportWithoutBranding && (

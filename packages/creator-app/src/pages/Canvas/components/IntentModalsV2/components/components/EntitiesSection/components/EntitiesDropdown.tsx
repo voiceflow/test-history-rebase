@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, IconButton, IconButtonVariant, NestedMenuComponents, Select } from '@voiceflow/ui';
 import React from 'react';
@@ -28,17 +29,12 @@ const EntitiesDropdown: React.FC = () => {
       alwaysShowCreate
       creatable={false}
       createInputPlaceholder="Entities"
-      footerAction={(hideMenu) => (
-        <NestedMenuComponents.FooterActionContainer
-          onClick={() => {
-            hideMenu();
-            // TODO Open NLU manager
-          }}
-        >
+      renderFooterAction={({ close }) => (
+        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close)}>
           Create New Entity
         </NestedMenuComponents.FooterActionContainer>
       )}
-      triggerRenderer={({ onOpenMenu, onHideMenu, isOpen }) => (
+      renderTrigger={({ onOpenMenu, onHideMenu, isOpen }) => (
         <Box display="flex" mr={10}>
           <IconButton onClick={isOpen ? onHideMenu : onOpenMenu} variant={IconButtonVariant.BASIC} size={16} icon="plus" />
         </Box>

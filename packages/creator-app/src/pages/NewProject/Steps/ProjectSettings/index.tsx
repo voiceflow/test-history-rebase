@@ -77,29 +77,6 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   const InvocationDescriptionComponent = getPlatformMeta(selectedChannel).invocationDescription!;
   const LanguageDescriptionComponent = getPlatformMeta(selectedChannel).localesDescription!;
 
-  const GeneralLocalesSelect = () => (
-    <Select
-      value={generalLocale}
-      options={GENERAL_LOCALES_OPTIONS}
-      onSelect={setGeneralLocale}
-      placeholder="Locale"
-      getOptionValue={(option) => option?.value || VoiceflowConstants.Locale.EN_US}
-      getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as VoiceflowConstants.Locale] ?? ''}
-      renderOptionLabel={(option) => option.name}
-    />
-  );
-
-  const DialogflowSelect = () => (
-    <Select
-      value={FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage]}
-      options={FORMATTED_DIALOGFLOW_LOCALES}
-      onSelect={setDialogflowLanguage}
-      placeholder="Language"
-      getOptionValue={(option) => option?.value || ''}
-      renderOptionLabel={(option) => option.name}
-    />
-  );
-
   return (
     <Container width={420} textAlign="left">
       {!isGeneral && !isDialogflow && (
@@ -149,17 +126,41 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
             ),
             [VoiceflowConstants.PlatformType.GOOGLE]: () => (
               <Select
-                value={FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage]}
+                value={googleLanguage}
                 options={FORMATTED_LOCALES}
                 onSelect={setGoogleLanguage}
                 placeholder="Language"
-                getOptionValue={(option) => option?.value || ''}
+                getOptionKey={(option) => option.value}
+                getOptionValue={(option) => option?.value}
+                getOptionLabel={(value) => value && FORMATTED_GOOGLE_LOCALES_LABELS[value]}
                 renderOptionLabel={(option) => option.name}
               />
             ),
-            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DialogflowSelect,
+            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: () => (
+              <Select
+                value={dialogflowLanguage}
+                options={FORMATTED_DIALOGFLOW_LOCALES}
+                onSelect={setDialogflowLanguage}
+                placeholder="Language"
+                getOptionKey={(option) => option.value}
+                getOptionValue={(option) => option?.value || ''}
+                getOptionLabel={(value) => value && FORMATTED_DIALOGFLOW_LOCALES_LABELS[value]}
+                renderOptionLabel={(option) => option.name}
+              />
+            ),
           },
-          GeneralLocalesSelect
+          () => (
+            <Select
+              value={generalLocale}
+              options={GENERAL_LOCALES_OPTIONS}
+              onSelect={setGeneralLocale}
+              placeholder="Locale"
+              getOptionKey={(option) => option.value}
+              getOptionValue={(option) => option?.value || VoiceflowConstants.Locale.EN_US}
+              getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as VoiceflowConstants.Locale] ?? ''}
+              renderOptionLabel={(option) => option.name}
+            />
+          )
         )(selectedChannel)()}
 
         <SectionDescription>

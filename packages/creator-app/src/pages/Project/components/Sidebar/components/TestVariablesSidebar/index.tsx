@@ -68,10 +68,10 @@ const TestVariablesSidebar: React.FC = () => {
       <Flex column fullHeight>
         <SelectContainer>
           <TestVariableStateSelect
-            onChange={(value) => handleVariableStateSelection(value)}
-            onUpdateStateValues={onUpdateStateValues}
             value={selectedVariableStateId}
             loading={loading}
+            onChange={(value) => handleVariableStateSelection(value)}
+            onUpdateStateValues={onUpdateStateValues}
           />
         </SelectContainer>
         {selectedVariableStateId ? (

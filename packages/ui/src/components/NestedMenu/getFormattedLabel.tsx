@@ -4,11 +4,11 @@ const defaultLabelFormatted = (label: string): string => label.toLowerCase();
 
 // eslint-disable-next-line import/prefer-default-export
 export const getFormattedLabel = (
-  label: string | null = '',
+  label: React.ReactNode | null = '',
   searchLabel: string | null = '',
   formatLabel: (label: string) => string = defaultLabelFormatted
 ): React.ReactNode => {
-  if (!label || !searchLabel) {
+  if (!label || !searchLabel || typeof label !== 'string') {
     return label;
   }
 

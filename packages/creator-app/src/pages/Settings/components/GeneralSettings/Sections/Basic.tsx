@@ -113,17 +113,6 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     saveSettings();
   }, [alexaLocales, googleLanguage, generalLocale, dialogflowLanguage, projectImage]);
 
-  const DialogflowSelect = () => (
-    <Select
-      placeholder="Language"
-      value={FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage]}
-      options={FORMATTED_DIALOGFLOW_LOCALES}
-      onSelect={setDialogflowLanguage}
-      getOptionValue={(option) => option?.value || ''}
-      renderOptionLabel={(option) => option.name}
-    />
-  );
-
   return (
     <>
       <Section
@@ -201,15 +190,28 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
             ),
             [VoiceflowConstants.PlatformType.GOOGLE]: () => (
               <Select
-                placeholder="Language"
-                value={FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage]}
+                value={googleLanguage}
                 options={FORMATTED_LOCALES}
                 onSelect={setGoogleLanguage}
+                placeholder="Language"
+                getOptionKey={(option) => option.value}
                 getOptionValue={(option) => option?.value || ''}
+                getOptionLabel={(value) => value && FORMATTED_GOOGLE_LOCALES_LABELS[value]}
                 renderOptionLabel={(option) => option.name}
               />
             ),
-            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DialogflowSelect,
+            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: () => (
+              <Select
+                value={dialogflowLanguage}
+                options={FORMATTED_DIALOGFLOW_LOCALES}
+                onSelect={setDialogflowLanguage}
+                placeholder="Language"
+                getOptionKey={(option) => option.value}
+                getOptionValue={(option) => option?.value || ''}
+                getOptionLabel={(value) => value && FORMATTED_DIALOGFLOW_LOCALES_LABELS[value]}
+                renderOptionLabel={(option) => option.name}
+              />
+            ),
           },
           () => (
             <Select
@@ -219,6 +221,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
               onSelect={setGeneralLocale}
               searchable
               placeholder="Locale"
+              getOptionKey={(option) => option.value}
               getOptionValue={(option) => option?.value || VoiceflowConstants.Locale.EN_US}
               getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as VoiceflowConstants.Locale] ?? ''}
               renderOptionLabel={(option) => option.name}

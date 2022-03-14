@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from '@/hooks';
 import BaseTagInput from './BaseReportTagInput';
 
 interface ManageTagInputProps {
-  selectedTags: string[];
-  footerAction?: (hideMenu: () => void) => JSX.Element;
   className: string;
+  selectedTags: string[];
+  renderFooterAction?: (options: { close: VoidFunction }) => JSX.Element;
 }
 
 const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags, className, ...props }) => {

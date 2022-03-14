@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Box, BoxFlex, ConnectedProps, Select } from '@voiceflow/ui';
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
@@ -20,26 +21,26 @@ const Coupon: React.FC = () => {
   const { state, actions } = useContext(ReferralContext)!;
   const coupons = useSelector(Referrals.stripeCouponsSelector);
 
-  const [filteredCoupons, setfilteredCoupons] = React.useState(coupons);
+  const [filteredCoupons, setFilteredCoupons] = React.useState(coupons);
 
-  const options = filteredCoupons.map((coupon) => ({ value: coupon.id, label: coupon.name || coupon.id }));
+  const options = React.useMemo(() => filteredCoupons.map((coupon) => ({ value: coupon.id, label: coupon.name || coupon.id })), [filteredCoupons]);
+  const optionsMap = React.useMemo(() => Utils.array.createMap(options, Utils.object.selectValue), [options]);
 
-  const onChange = React.useCallback((coupon = '') => actions.update({ coupon }), [actions.update]);
   const onBlur = ({ currentTarget: { value } }: React.FocusEvent<HTMLInputElement>) => {
-    const allCoupons = options.map((option) => option.label);
+    const option = options.find((option) => option.label.toLowerCase() === value.toLowerCase());
 
     // save only if valid coupon else empty
-    if (allCoupons.includes(value)) {
-      onChange(options.find((option) => option.label === value)?.value);
+    if (option) {
+      actions.update({ coupon: option.value });
     }
   };
 
-  const getValueLabel = React.useCallback((value) => options.find((option) => option.value === value)?.label, [state]);
-
   React.useEffect(() => {
-    setfilteredCoupons(
-      state.product ? coupons.filter((coupon) => coupon.applies_to && coupon.applies_to.products?.includes(state.product)) : coupons
-    );
+    const netFilteredCoupons = state.product
+      ? coupons.filter((coupon) => coupon.applies_to && coupon.applies_to.products?.includes(state.product))
+      : coupons;
+
+    setFilteredCoupons(netFilteredCoupons);
   }, [coupons, state.product]);
 
   return (
@@ -48,16 +49,18 @@ const Coupon: React.FC = () => {
         {coupons.length ? (
           <Container maxWidth={300}>
             <Select
-              searchable
+              value={state.coupon}
               onBlur={onBlur}
               options={options}
-              onSelect={onChange}
+              onSelect={(value) => actions.update({ coupon: value ?? '' })}
+              clearable={!!state.coupon}
+              searchable
               placeholder="Select a coupon"
-              value={getValueLabel(state.coupon)}
-              clearable={!!getValueLabel(state.coupon)}
-              createInputPlaceholder="Search a coupon"
+              getOptionKey={(option) => option.value}
               getOptionValue={(option) => option?.value || ''}
+              getOptionLabel={(value) => value && optionsMap[value]?.label}
               renderOptionLabel={(option: { value: string; label: string }) => option.label}
+              createInputPlaceholder="Search a coupon"
             />
           </Container>
         ) : (

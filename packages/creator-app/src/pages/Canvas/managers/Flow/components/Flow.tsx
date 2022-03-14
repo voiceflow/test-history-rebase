@@ -87,6 +87,7 @@ const Flow: React.FC<FlowProps> = ({ onChange, diagram, diagramID, enterOnCreate
         searchable
         validateCreate={validateCreate}
         clearable={!!value}
+        getOptionKey={(option) => option.value}
         getOptionValue={(option) => option?.value}
         getOptionLabel={(optionValue) => (optionValue ? optionsMap[optionValue]?.label : null)}
         placeholder="Name new flow or select existing"

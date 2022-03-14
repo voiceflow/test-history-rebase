@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { Dropdown, DropdownPlacement, OptionsMenu, OptionsMenuOption, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,15 +8,15 @@ import Container from './components/OverflowMenuContainer';
 
 export interface OverflowMenuProps {
   menu?: React.ReactNode;
-  options?: (OptionsMenuOption | null)[];
+  options?: Nullable<OptionsMenuOption>[];
   disabled?: boolean;
   placement?: DropdownPlacement;
   selfDismiss?: boolean;
 }
 
-const OverflowMenu = ({ menu, options = [], disabled, placement, selfDismiss }: OverflowMenuProps) => (
+const OverflowMenu: React.FC<OverflowMenuProps> = ({ menu, options = [], disabled, placement, selfDismiss }) => (
   <Dropdown
-    menu={menu || ((onToggle) => <OptionsMenu options={options.filter(truthy)} onToggle={onToggle} />)}
+    menu={menu || ((onToggle) => <OptionsMenu onHide={onToggle} options={options.filter(truthy)} />)}
     placement={placement}
     selfDismiss={selfDismiss}
   >

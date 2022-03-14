@@ -55,8 +55,6 @@ const MappingVariables: React.FC<MappingVariablesProps> = ({ items, reverse, dia
             placeholder="Select Variable"
             options={componentVariables}
             fullWidth
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             onCreate={onCreateComponentVariable}
             creatable={false}
           />

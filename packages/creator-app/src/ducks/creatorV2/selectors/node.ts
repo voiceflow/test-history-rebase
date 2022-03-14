@@ -67,6 +67,10 @@ export const allBlocksDataSelector = createSelector([blockIDsSelector, createCur
   _sortBy(getDataByNodeIDs({ ids: blockIDs }), ({ name }) => name.toLowerCase())
 );
 
+export const allBlocksMapDataSelector = createSelector([blockIDsSelector, getNodeDataByIDSelector], (blockIDs, getDataByNodeID) =>
+  Object.fromEntries(blockIDs.map((id) => [id, getDataByNodeID({ id })] as const))
+);
+
 export const nodeTypeByIDSelector = createSelector([nodeDataByIDSelector], (data) => data?.type ?? null);
 
 const _blockIDByStepIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ blockIDByStepID }, stepID) =>

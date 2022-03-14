@@ -118,7 +118,7 @@ export default function Controls({
                 getOptionValue={getOptionValue}
               />
             )}
-            multiLevelDropdown
+            isMultiLevel
             createInputPlaceholder={tagsSearchPlaceholder}
           />
         </ControlsWrapper>

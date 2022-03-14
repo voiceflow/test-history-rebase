@@ -7,6 +7,8 @@ import { ActionCreatorLookup, MappedDispatchProps, MappedStateProps, MergeArgume
 
 export * from './store';
 
+export type Primitive = string | number | boolean;
+
 export type Color = Required<RGBColor>;
 
 export type Either<T extends object, R extends object> =

@@ -14,7 +14,7 @@ interface VariableStateOption {
 }
 
 interface VariableStateSelectMenuProps {
-  render: (options: { ref: React.RefObject<HTMLInputElement>; isOpen: boolean; toggleSelectMenuOpen: () => void }) => JSX.Element;
+  render: (options: { ref: React.RefObject<HTMLElement>; isOpen: boolean; toggleSelectMenuOpen: () => void }) => JSX.Element;
 }
 
 const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ render }) => {
@@ -41,6 +41,7 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
       onSelect={updateSelectedVariableStateById}
       open={isSelectMenuOpen}
       searchable
+      getOptionKey={(option) => option.value}
       getOptionValue={(option) => option?.value}
       getOptionLabel={getOptionLabel}
       inDropdownSearch
@@ -48,8 +49,8 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
       isDropdown
       onClose={() => toggleSelectMenuOpen(false)}
       createInputPlaceholder="states"
-      triggerRenderer={({ ref, isOpen }) => render({ ref, isOpen, toggleSelectMenuOpen })}
-      footerAction={() => (
+      renderTrigger={({ ref, isOpen }) => render({ ref, isOpen, toggleSelectMenuOpen })}
+      renderFooterAction={() => (
         <NestedMenuComponents.FooterActions>
           <NestedMenuComponents.FooterAction onClick={openEditorModal}>Add New State</NestedMenuComponents.FooterAction>
         </NestedMenuComponents.FooterActions>

@@ -11,6 +11,7 @@ export enum ClassName {
   LOADER = 'vf-loader',
   MENU = 'vf-menu',
   MENU_ITEM = 'vf-menu__item',
+  MENU_ITEM_GROUP = 'vf-menu__item-group',
   TOOLTIP = 'vf-tooltip',
   SVG_ICON = 'vf-svg-icon',
 }

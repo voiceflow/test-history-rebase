@@ -27,9 +27,11 @@ const ContextMenu = <T extends any>({
   const [isOpen, onToggle] = useDismissable(false);
 
   const onContextMenu = (event: React.MouseEvent<HTMLElement>) => {
-    const target: any = event?.target;
+    // eslint-disable-next-line xss/no-mixed-html
+    const target = event?.target as HTMLElement | null;
+
     // .closest() - supported in all browsers except IE
-    if (EXCLUDED_TAG_NAME.includes(target?.tagName.toLowerCase()) || target?.closest?.(`.${CONTEXT_MENU_IGNORED_CLASS_NAME}`)) {
+    if (target && (EXCLUDED_TAG_NAME.includes(target.tagName.toLowerCase()) || target.closest?.(`.${CONTEXT_MENU_IGNORED_CLASS_NAME}`))) {
       return;
     }
     event?.preventDefault();

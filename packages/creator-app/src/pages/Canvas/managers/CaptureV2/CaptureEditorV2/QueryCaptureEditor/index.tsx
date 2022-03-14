@@ -1,4 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, NestedMenuComponents, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
@@ -44,6 +45,7 @@ const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeD
     if (!slotID) return;
     entityCapture(slotID);
   }, []);
+
   const addSlot = React.useCallback(
     async (value = '') => {
       const slot = await onAddSlot(value);
@@ -116,15 +118,10 @@ const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeD
             creatable
             onCreate={addSlot}
             onSearch={setSearch}
-            footerAction={
+            renderFooterAction={
               !search
-                ? (hideMenu) => (
-                    <NestedMenuComponents.FooterActionContainer
-                      onClick={() => {
-                        hideMenu();
-                        addSlot();
-                      }}
-                    >
+                ? ({ close }) => (
+                    <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, addSlot)}>
                       Create New Entity
                     </NestedMenuComponents.FooterActionContainer>
                   )

@@ -18,11 +18,12 @@ const ModelIntentsSelect: React.FC = () => {
 
   return (
     <TagSelect
-      getOptionLabel={getIntentName}
-      getOptionValue={getIntentValue}
       value={selectedIntents}
       options={intents}
       onChange={setSelectedIntents}
+      getOptionKey={(option) => option.id}
+      getOptionLabel={getIntentName}
+      getOptionValue={getIntentValue}
       createInputPlaceholder="intents"
     />
   );

@@ -20,7 +20,7 @@ export const TimeZoneContainer = styled(GridContainer)`
 
 export const TimeZoneSelection = styled(Select)`
   margin-right: 70px;
-`;
+` as typeof Select;
 
 export const TimeLabel = styled.label`
   margin-bottom: 3px;

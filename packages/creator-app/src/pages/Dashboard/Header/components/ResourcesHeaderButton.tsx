@@ -40,6 +40,17 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
       ]
     : STATIC_RESOURCES;
 
+  const onSelect = (option: Option) => {
+    if (option.link) {
+      window.open(option.link, '_blank', 'toolbar=0,location=0,menubar=0');
+    } else {
+      option.onClick?.();
+    }
+    if (!isDashboardMode) {
+      trackEvents.trackCanvasControlHelpMenuResource({ resource: option.resourceName! });
+    }
+  };
+
   return (
     <Tooltip title="Learn" position="bottom">
       <Select
@@ -48,20 +59,11 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
         minWidth={false}
         maxHeight={225}
         placement="bottom-end"
-        onSelect={(option) => {
-          if (option.link) {
-            window.open(option.link, '_blank', 'toolbar=0,location=0,menubar=0');
-          } else {
-            option.onClick?.();
-          }
-          if (!isDashboardMode) {
-            trackEvents.trackCanvasControlHelpMenuResource({ resource: option.resourceName! });
-          }
-        }}
+        onSelect={onSelect}
         autoWidth={false}
         getOptionKey={(option) => option?.icon}
         getOptionLabel={(option) => option?.label}
-        triggerRenderer={({ isOpen }) => (
+        renderTrigger={({ isOpen }) => (
           <IconButton variant={IconButtonVariant.OUTLINE} icon="information" active={isOpen} large iconProps={{ width: 16, height: 15 }} />
         )}
         renderOptionLabel={(option) => (

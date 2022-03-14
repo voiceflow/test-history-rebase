@@ -5,6 +5,7 @@ import { FadeDownDelayedContainer } from '@ui/styles/animations';
 import { ClassName } from '@ui/styles/constants';
 import { Either } from '@ui/types';
 import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@ui/utils';
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
@@ -34,19 +35,19 @@ export type MenuProps<T extends any> = {
   id?: string;
   width?: number;
   disabled?: boolean;
-  maxHeight?: number | string;
   onHide?: () => void;
-  fullWidth?: boolean;
   onToggle?: () => void;
-  selfDismiss?: boolean;
+  fullWidth?: boolean;
+  maxHeight?: number | string;
   searchable?: React.ReactNode;
+  selfDismiss?: boolean;
   noTopPadding?: boolean;
   scrollbarsRef?: React.Ref<Scrollbars>;
   maxVisibleItems?: number;
   noBottomPadding?: boolean;
   multiSelectProps?: { buttonClick: React.MouseEventHandler; buttonLabel: React.ReactNode };
   disableAnimation?: boolean;
-  footerAction?: (onHide: () => void) => React.FC;
+  renderFooterAction?: Nullable<(options: { close: VoidFunction }) => React.ReactNode>;
 } & Either<
   {
     options: MenuOption<T>[];
@@ -61,6 +62,7 @@ const Menu = <T extends any>(
   {
     id,
     width,
+    onHide,
     options,
     disabled,
     onToggle,
@@ -70,14 +72,13 @@ const Menu = <T extends any>(
     fullWidth,
     searchable,
     selfDismiss = false,
-    footerAction,
-    onHide,
     noTopPadding,
     scrollbarsRef,
     maxVisibleItems,
     noBottomPadding,
     disableAnimation = false,
     multiSelectProps,
+    renderFooterAction,
   }: MenuProps<T>,
   ref: React.Ref<MenuRefElement>
 ) => {
@@ -119,7 +120,7 @@ const Menu = <T extends any>(
   return (
     <Container
       id={id}
-      footerAction={!!footerAction}
+      withFooterAction={!!renderFooterAction}
       ref={composeRefs(ref, menuRef)}
       className={ClassName.MENU}
       fullWidth={fullWidth}
@@ -157,7 +158,8 @@ const Menu = <T extends any>(
           {multiSelectProps.buttonLabel}
         </ButtonContainer>
       )}
-      {footerAction?.(onHideMenu)}
+
+      {renderFooterAction?.({ close: onHideMenu })}
     </Container>
   );
 };
@@ -168,6 +170,7 @@ const forwardRef = (
     props: MenuProps<any>,
     ref: ((instance: MenuRefElement | null) => void) | React.MutableRefObject<MenuRefElement | null> | null
   ) => React.ReactElement | null
-): (<G extends any>(props: MenuProps<G>) => React.ReactElement | null) => React.forwardRef<MenuRefElement, MenuProps<any>>(render);
+): (<G extends any>(props: MenuProps<G> & React.RefAttributes<MenuRefElement>) => React.ReactElement | null) =>
+  React.forwardRef<MenuRefElement, MenuProps<any>>(render);
 
 export default forwardRef(Menu);

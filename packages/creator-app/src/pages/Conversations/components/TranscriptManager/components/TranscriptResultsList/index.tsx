@@ -30,9 +30,8 @@ const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcrip
                 const data = transcriptList[index];
                 const isLastItem = transcriptList.length === index + 1;
                 return (
-                  <div style={style}>
+                  <div key={key} style={style}>
                     <TranscriptResultsItem
-                      key={key}
                       format={TranscriptExportFormat.CSV}
                       data={data}
                       active={currentTranscriptID?.toString() === data.id.toString()}

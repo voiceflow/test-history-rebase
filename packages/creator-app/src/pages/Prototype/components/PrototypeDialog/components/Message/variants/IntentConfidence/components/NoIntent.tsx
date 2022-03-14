@@ -96,7 +96,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     resetStates();
   };
 
-  const triggerRenderer = ({ opened, ...props }: { opened: boolean }) => {
+  const renderTrigger = ({ opened, ...props }: { opened: boolean }) => {
     setIsDropdownOpened(opened);
 
     return (
@@ -123,7 +123,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
         onChange={({ intent }) => setTargetIntentID(intent)}
         alwaysShowCreate
         inDropdownSearch
-        triggerRenderer={triggerRenderer}
+        renderTrigger={renderTrigger}
       />
     </Container>
   ) : (

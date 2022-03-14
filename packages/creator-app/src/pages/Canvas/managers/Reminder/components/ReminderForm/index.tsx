@@ -94,6 +94,7 @@ const ReminderForm: React.FC<ReminderFormProps> = ({ data, withDate, onChange })
             <TimeLabel className="pr-1">
               <DayPickerInput date={date} onChange={updateDate} />
             </TimeLabel>
+
             <TimeZoneSelection
               value={timezone || USER_TIMEZONE}
               onSelect={(value) => updateTimezone(value)}

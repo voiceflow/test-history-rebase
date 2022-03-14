@@ -1,3 +1,4 @@
+import { Nullish, Utils } from '@voiceflow/common';
 import { Box, IconButton, IconButtonVariant, NestedMenuComponents, Select } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,58 +10,40 @@ const EntitySelectDropdown: React.FC = () => {
   const { close, open } = useModals(ModalType.ENTITY_EDIT);
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);
-  const allSlotsMap = useSelector(SlotV2.slotMapSelector);
 
-  const slotOptions = React.useMemo(() => {
-    return allSlots.map((slot) => ({
-      id: slot.id,
-      label: slot.name,
-    }));
-  }, [allSlots]);
+  const options = React.useMemo(() => allSlots.map((slot) => ({ id: slot.id, label: slot.name })), [allSlots]);
+  const optionsMap = React.useMemo(() => Utils.array.createMap(options, Utils.object.selectID), [options]);
 
-  const onSelectSlot = (slotID: string) => {
-    close();
-    open({ id: slotID });
+  const onOpenNLU = () => {
+    // TODO: Open NLU manager
   };
-
-  const getOptionLabel = (slotID?: string | null) => (slotID ? allSlotsMap[slotID]?.name : '');
-
-  const getOptionValue = (value?: { id: string } | null) => value?.id;
 
   return (
     <>
       <Select
-        minMenuWidth={250}
-        optionsMaxSize={7.5}
+        value={null as Nullish<string>}
+        options={options}
         minWidth={false}
-        createInputPlaceholder="Slots"
-        inDropdownSearch
-        isDropdown
+        onSelect={Utils.functional.chain((slotID: string | null) => slotID && open({ id: slotID }), close)}
         placement="left-start"
-        options={slotOptions}
-        onSelect={onSelectSlot}
-        getOptionLabel={getOptionLabel}
-        getOptionValue={getOptionValue}
+        isDropdown
         searchable
-        alwaysShowCreate
-        creatable={false}
         placeholder="Name new entity or select existing entity"
-        footerAction={() => (
-          <NestedMenuComponents.FooterActionContainer
-            onClick={() => {
-              // TODO Open NLU manager
-            }}
-          >
-            Open NLU Manager
-          </NestedMenuComponents.FooterActionContainer>
+        minMenuWidth={250}
+        getOptionLabel={(value) => value && optionsMap[value]?.label}
+        getOptionValue={(option) => option?.id}
+        optionsMaxSize={7.5}
+        inDropdownSearch
+        alwaysShowCreate
+        createInputPlaceholder="Slots"
+        renderFooterAction={() => (
+          <NestedMenuComponents.FooterActionContainer onClick={onOpenNLU}>Open NLU Manager</NestedMenuComponents.FooterActionContainer>
         )}
-        triggerRenderer={({ onOpenMenu, onHideMenu, isOpen }) => {
-          return (
-            <Box onClick={isOpen ? onHideMenu : onOpenMenu} display="flex">
-              <IconButton activeClick={isOpen} variant={IconButtonVariant.BASIC} icon="sandwichMenu" size={16} style={{ marginRight: '12px' }} />
-            </Box>
-          );
-        }}
+        renderTrigger={({ onOpenMenu, onHideMenu, isOpen }) => (
+          <Box onClick={isOpen ? onHideMenu : onOpenMenu} display="flex">
+            <IconButton activeClick={isOpen} variant={IconButtonVariant.BASIC} icon="sandwichMenu" size={16} style={{ marginRight: '12px' }} />
+          </Box>
+        )}
       />
     </>
   );

@@ -87,7 +87,6 @@ const SSML = (
             <VoiceSelect
               label={voiceSelectLabel}
               placeholder="Select Voice"
-              multiLevelDropdown
               inline
               value={null}
               options={voiceOptions}
@@ -95,6 +94,7 @@ const SSML = (
               minWidth={false}
               autoWidth={false}
               borderLess
+              isMultiLevel
               optionsFilter={voiceOptionsFilter}
               getOptionValue={getOptionValue}
               getOptionLabel={getOptionLabel}

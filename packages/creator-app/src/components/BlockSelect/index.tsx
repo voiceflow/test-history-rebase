@@ -1,32 +1,31 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { FlexApart, Select, SelectProps } from '@voiceflow/ui';
+import { BaseSelectProps, FlexApart, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 
-type BlockOption = Realtime.NodeData<{}>;
-
-type BlockSelectProps = Omit<Partial<SelectProps<BlockOption, string>>, 'onSelect' | 'creatable' | 'onCreate'> & {
+interface BlockSelectProps extends BaseSelectProps {
+  value: string | null;
   onChange: (value: string) => void;
-};
-
-const testBlockOptionRenderer = (option: BlockOption) => <FlexApart fullWidth>{option.name}</FlexApart>;
+}
 
 const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, ...props }) => {
-  const allBlockData = useSelector(CreatorV2.allBlocksDataSelector);
   const selected = useSelector(CreatorV2.nodeDataByIDSelector, { id: value });
+  const allBlockData = useSelector(CreatorV2.allBlocksDataSelector);
+  const allBlockMapData = useSelector(CreatorV2.allBlocksMapDataSelector);
 
   return (
     <Select
+      searchable
+      placeholder="Select a block"
+      {...props}
       value={selected?.name || 'Start'}
       options={allBlockData}
       onSelect={(newValue) => onChange(newValue === value ? '' : newValue)}
-      searchable
-      placeholder="Select a block"
+      getOptionKey={(option) => option.nodeID}
       getOptionValue={(option) => option?.nodeID}
-      renderOptionLabel={testBlockOptionRenderer}
-      {...props}
+      getOptionLabel={(value) => value && allBlockMapData[value]?.name}
+      renderOptionLabel={(option) => <FlexApart fullWidth>{option.name}</FlexApart>}
     />
   );
 };

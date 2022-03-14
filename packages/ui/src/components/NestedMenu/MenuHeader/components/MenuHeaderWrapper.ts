@@ -5,7 +5,7 @@ interface MenuHeaderWrapperProps {
   isFocused?: boolean;
 }
 
-const MenuHeaderWrapper = styled.div<MenuHeaderWrapperProps>`
+const MenuHeaderWrapper = styled.li<MenuHeaderWrapperProps>`
   display: flex;
   align-items: center;
   padding: 0 24px;

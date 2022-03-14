@@ -2,8 +2,11 @@ import { Nullish, Utils } from '@voiceflow/common';
 import {
   FlexApart,
   FlexStart,
+  GetOptionLabel,
+  GetOptionValue,
   isNotUIOnlyMenuItemOption,
   NestedMenuComponents,
+  Primitive,
   Select,
   SelectInputVariant,
   stopImmediatePropagation,
@@ -11,8 +14,9 @@ import {
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
+import { useDidUpdateEffect } from '@/hooks';
 
-import { TagSelectProps } from './types';
+import { PrimitiveTagSelectProps, TagSelectInternalProps, TagSelectProps } from './types';
 
 const trimNulls = (list: Nullish<string>[]): string[] => list.filter(Boolean) as string[];
 
@@ -25,38 +29,36 @@ const customMenuLabelRenderer = (label: string, value: string, isSelectedFunc: (
   </FlexApart>
 );
 
-const TagSelect = <O extends unknown>({
-  createInputPlaceholder,
-  getOptionLabel,
-  getOptionValue,
-  onChange,
-  options,
-  placeholder = 'Select all that apply',
-  value,
-  disabled,
-  isDropdown = true,
-}: TagSelectProps<O, string>): JSX.Element => {
-  const [selected, setSelected] = React.useState<string[]>([]);
+const defaultGetter = (option: unknown) => option;
 
-  React.useEffect(() => {
-    setSelected(trimNulls(value));
-  }, [value]);
+function TagSelect<Option extends Primitive>(props: PrimitiveTagSelectProps<Option>): React.ReactElement;
+function TagSelect<Option>(props: TagSelectProps<Option>): React.ReactElement;
+function TagSelect({
+  value,
+  options,
+  onChange,
+  disabled,
+  placeholder = 'Select all that apply',
+  isDropdown = true,
+  getOptionLabel = defaultGetter as GetOptionLabel<unknown>,
+  getOptionValue = defaultGetter as GetOptionValue<unknown, string>,
+  getOptionKey = (option, index) => String(getOptionValue(option) || index),
+  createInputPlaceholder,
+}: TagSelectInternalProps): React.ReactElement {
+  const [selected, setSelected] = React.useState<string[]>(() => trimNulls(value));
 
   const tagsOnly = React.useMemo(() => options.filter(isNotUIOnlyMenuItemOption), [options]);
 
   const labels = React.useMemo(
-    () =>
-      tagsOnly.reduce<Map<Nullish<string>, Nullish<string>>>(
-        (map, next) => map.set(getOptionValue(next), getOptionLabel(next)),
-        new Map<Nullish<string>, Nullish<string>>()
-      ),
-    [tagsOnly]
+    () => Object.fromEntries(tagsOnly.map((tag) => [getOptionValue(tag), getOptionLabel(tag)] as const)),
+    [tagsOnly, getOptionValue, getOptionLabel]
   );
 
   const selectedAllIntents = selected.length === options.length;
 
-  const handleSelect = (option: O) => {
-    const optionValue = getOptionValue?.(option);
+  const handleSelect = (option: unknown) => {
+    const optionValue = getOptionValue(option);
+
     if (optionValue) {
       onChange(Utils.array.toggleMembership(selected, optionValue));
     }
@@ -68,30 +70,27 @@ const TagSelect = <O extends unknown>({
 
   const isOptionSelected = (optionID: string) => selected.includes(optionID);
 
+  useDidUpdateEffect(() => setSelected(trimNulls(value)), [value]);
+
   return (
     <Select
       autoWidth
-      renderOptionLabel={(option) => customMenuLabelRenderer(getOptionLabel(option) || '', getOptionValue(option) || '', isOptionSelected)}
-      footerAction={(hideMenu) => (
-        <NestedMenuComponents.FooterActionContainer
-          onClick={stopImmediatePropagation(() => {
-            hideMenu();
-            toggleSelectAll();
-          })}
-        >
+      renderOptionLabel={(option) => customMenuLabelRenderer(String(getOptionLabel(option)) || '', getOptionValue(option) || '', isOptionSelected)}
+      renderFooterAction={({ close }) => (
+        <NestedMenuComponents.FooterActionContainer onClick={stopImmediatePropagation(Utils.functional.chainVoid(close, toggleSelectAll))}>
           {selectedAllIntents ? 'Unselect all' : 'Select all'}
         </NestedMenuComponents.FooterActionContainer>
       )}
       fullWidth
       selectedOptions={selected}
       options={options}
-      withSearchIcon
       isDropdown={isDropdown}
       inDropdownSearch
       labelSearchable={false}
       searchable
       alwaysShowCreate
       autoDismiss={false}
+      getOptionValue={(option) => option}
       getOptionLabel={getOptionLabel}
       placeholder={placeholder}
       displayName={selected.map((id) => labels.get(id)).join(', ')}
@@ -99,8 +98,9 @@ const TagSelect = <O extends unknown>({
       inputVariant={SelectInputVariant.COUNTER}
       createInputPlaceholder={createInputPlaceholder}
       disabled={disabled}
+      getOptionKey={getOptionKey}
     />
   );
-};
+}
 
 export default TagSelect;

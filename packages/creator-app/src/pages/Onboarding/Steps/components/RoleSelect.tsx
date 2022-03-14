@@ -29,7 +29,6 @@ const RoleSelect: React.FC<RoleSelectProps> = ({ userRole, setUserRole }) => (
     creatable
     createInputPlaceholder="Add new role"
     onCreate={(role) => setUserRole(role)}
-    withSearchIcon={false}
   />
 );
 

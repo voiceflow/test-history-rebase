@@ -1,4 +1,4 @@
-import { useCache } from '@voiceflow/ui';
+import { useCache, useRAF } from '@voiceflow/ui';
 import React from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
 
@@ -6,7 +6,6 @@ import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { useThrottledCallback } from '@/hooks/callback';
 import { useForceUpdate } from '@/hooks/forceUpdate';
 import { useTeardown } from '@/hooks/lifecycle';
-import { useRAF } from '@/hooks/raf';
 
 export interface Options<I = any> {
   horizontalEnabled?: boolean | ((item: I, initialOffset: XYCoord, currentOffset: XYCoord) => boolean);

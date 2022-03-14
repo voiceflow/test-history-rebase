@@ -1,5 +1,6 @@
 import './ImportModal.css';
 
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, ButtonVariant, ModalImportSelect, StatusCode, toast, ToastCallToAction } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
@@ -38,7 +39,10 @@ const ImportModal: React.FC = () => {
   const goToWorkspace = useDispatch(Router.goToWorkspace);
 
   const [trackEvents] = useTrackingEvents();
+
   const workspaceOptions = useMemo(() => workspaces.map((workspace) => ({ value: workspace.id, label: workspace.name })), [workspaces]);
+  const workspaceOptionsMap = useMemo(() => Utils.array.createMap(workspaceOptions, Utils.object.selectValue), [workspaceOptions]);
+
   const [targetWorkspace, setTargetWorkspace] = useState<typeof workspaceOptions[number] | null>(workspaceOptions[0]);
   const { close, toggle, data, isOpened } = useModals<{ projectID?: string; cloning?: boolean }>(ModalType.IMPORT_PROJECT);
   const { open: openLoadingModal, close: closeLoadingModal } = useModals(ModalType.LOADING);
@@ -155,13 +159,15 @@ const ImportModal: React.FC = () => {
     <Modal id={ModalType.IMPORT_PROJECT} title={cloning ? 'Clone Project' : getCopyProjectTitle(projectName)}>
       <ModalBody>
         <ModalImportSelect
+          value={targetWorkspace?.value}
           prefix={cloning ? 'CLONE TO' : 'COPY TO'}
-          value={targetWorkspace?.label}
-          onSelect={(value: any) => chooseWorkspace(value)}
-          disabled={workspaceOptions.length === 1}
           options={workspaceOptions}
-          getOptionValue={(option: any) => option.value}
-          renderOptionLabel={(option: any) => option.label}
+          onSelect={(value) => chooseWorkspace(value)}
+          disabled={workspaceOptions.length === 1}
+          getOptionKey={(option) => option.value}
+          getOptionValue={(option) => option?.value}
+          getOptionLabel={(value) => value && workspaceOptionsMap[value]?.label}
+          renderOptionLabel={(option) => option.label}
         />
       </ModalBody>
 

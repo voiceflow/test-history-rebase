@@ -82,27 +82,31 @@ export { LoadCircle, default as Loader } from './Loader';
 export type { MenuOption, MenuProps } from './Menu';
 export { default as Menu, MenuContainer, MenuItem, menuItemStyles } from './Menu';
 export { ModalActionContainer, ModalBodyContainer, ModalBoldText, ModalButtonContainer, ModalContentContainer, ModalImportSelect } from './Modal';
-export { defaultMenuLabelRenderer, getNestedMenuFormattedLabel, default as NestedMenu, NestedMenuComponents } from './NestedMenu';
+export type {
+  BaseMenuItem,
+  GetOptionKey,
+  GetOptionLabel,
+  GetOptionValue,
+  MenuItemGrouped,
+  MenuItemMultilevel,
+  MenuItemWithID,
+  UIOnlyMenuItemOption,
+} from './NestedMenu';
+export {
+  createUIOnlyMenuItemOption,
+  defaultMenuLabelRenderer,
+  getNestedMenuFormattedLabel,
+  isNotUIOnlyMenuItemOption,
+  isUIOnlyMenuItemOption,
+  default as NestedMenu,
+  NestedMenuComponents,
+} from './NestedMenu';
 export type { OptionsMenuOption } from './OptionsMenu';
 export { default as OptionsMenu } from './OptionsMenu';
 export { default as Portal, portalRootNode } from './Portal';
 export { default as SearchInput, SearchInputIcon } from './SearchInput';
-export type {
-  GetOptionLabel,
-  GetOptionValue,
-  OptionsFilter,
-  MenuItemOptions as SelectMenuItemOptions,
-  SelectProps,
-  UIOnlyMenuItemOption,
-} from './Select';
-export {
-  createUIOnlyMenuItemOption,
-  isNotUIOnlyMenuItemOption,
-  isUIOnlyMenuItemOption,
-  default as Select,
-  SelectInputVariant,
-  SelectWrapper,
-} from './Select';
+export type { BaseSelectProps, FilterResult, OptionsFilter } from './Select';
+export { default as Select, SelectInputVariant, SelectWrapper } from './Select';
 export { FullSpinner, Spinner } from './Spinner';
 export { default as StrengthGauge } from './StrengthGauge';
 export { StrengthLevel } from './StrengthGauge/types';

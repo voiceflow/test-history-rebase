@@ -41,7 +41,7 @@ export interface MenuContainerProps {
   padding?: string;
   height?: number;
   withScrollbars?: boolean;
-  footerAction?: boolean;
+  withFooterAction?: boolean;
 }
 
 const MenuContainer = styled.ul<MenuContainerProps>`
@@ -93,8 +93,8 @@ const MenuContainer = styled.ul<MenuContainerProps>`
       padding-bottom: 0;
     `}
 
-  ${({ footerAction }) =>
-    footerAction &&
+  ${({ withFooterAction }) =>
+    withFooterAction &&
     css`
       padding-bottom: 75px;
     `}

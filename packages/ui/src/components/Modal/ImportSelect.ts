@@ -7,4 +7,4 @@ const ImportSelect = styled(Select)`
   }
 `;
 
-export default ImportSelect;
+export default ImportSelect as typeof Select;

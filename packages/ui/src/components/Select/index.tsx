@@ -1,197 +1,143 @@
 import Flex from '@ui/components/Flex';
 import Portal from '@ui/components/Portal';
 import SearchInput, { SearchInputIcon } from '@ui/components/SearchInput';
-import { Icon, SvgIconProps } from '@ui/components/SvgIcon';
 import { toast } from '@ui/components/Toast';
-import { useCache, useDidUpdateEffect } from '@ui/hooks';
-import { Nullable, Nullish } from '@voiceflow/common';
+import { useDidUpdateEffect, usePersistFunction } from '@ui/hooks';
+import { Primitive } from '@ui/types';
+import { setRef } from '@ui/utils';
+import { Nullable, Utils } from '@voiceflow/common';
 import noop from 'lodash/noop';
 import React from 'react';
-import AutosizeInput from 'react-input-autosize';
 import { Manager, PopperProps, Reference } from 'react-popper';
 
 // for some reason absolute paths are not transformed for this import
-import { AdvancedMenu, defaultMenuLabelRenderer } from '../NestedMenu';
+import {
+  defaultMenuLabelRenderer,
+  GetOptionLabel,
+  GetOptionValue,
+  isGroupedOptions,
+  isUIOnlyMenuItemOption,
+  MenuItemGrouped,
+  MenuItemMultilevel,
+  MenuItemWithID,
+} from '../NestedMenu';
+import NestedMenu from '../NestedMenu/Menu';
 import { InlineInputValue, InputBadge, PrefixContainer, SelectWrapper, TagsContainer, TagsInput } from './components';
-import { defaultOptionsFilter, FilterResult, searchableOptionsFilter } from './optionsFilters';
-import { isUIOnlyMenuItemOption, UIOnlyMenuItemOption } from './utils';
+import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
+import {
+  SelectClearableProps,
+  SelectCreatableClearableProps,
+  SelectCreatableProps,
+  SelectCreatableWithIDClearableProps,
+  SelectCreatableWithIDProps,
+  SelectGroupedClearableProps,
+  SelectGroupedProps,
+  SelectGroupedValueWithIDClearableProps,
+  SelectGroupedValueWithIDProps,
+  SelectGroupedWithIDClearableProps,
+  SelectGroupedWithIDProps,
+  SelectInputVariant,
+  SelectInternalProps,
+  SelectMultilevelClearableProps,
+  SelectMultilevelProps,
+  SelectMultilevelValueWithIDClearableProps,
+  SelectMultilevelValueWithIDProps,
+  SelectMultilevelWithIDClearableProps,
+  SelectMultilevelWithIDProps,
+  SelectPrimitiveClearableProps,
+  SelectPrimitiveCreatableClearableProps,
+  SelectPrimitiveCreatableProps,
+  SelectPrimitiveProps,
+  SelectProps,
+  SelectValueClearableProps,
+  SelectValueCreatableClearableProps,
+  SelectValueCreatableProps,
+  SelectValueCreatableWithIDClearableProps,
+  SelectValueCreatableWithIDProps,
+  SelectValueGroupedClearableProps,
+  SelectValueGroupedProps,
+  SelectValueMultilevelClearableProps,
+  SelectValueMultilevelProps,
+  SelectValueProps,
+  SelectValueWithIDClearableProps,
+  SelectValueWithIDProps,
+  SelectWithIDClearableProps,
+  SelectWithIDProps,
+} from './types';
+
+export type { BaseSelectProps, FilterResult, OptionsFilter } from './types';
+export { SelectInputVariant } from './types';
 
 export { defaultOptionsFilter, searchableOptionsFilter };
 export * from './components';
-export * from './utils';
-
-export enum SelectInputVariant {
-  DROPDOWN = 'dropdown',
-  TAGS = 'tags',
-  COUNTER = 'counter',
-}
-
-export type GetOptionLabel<V> = (value?: Nullish<V>) => Nullish<string>;
-
-export type GetOptionValue<O, V> = (option?: Nullish<O>) => Nullish<V>;
-
-export type GroupedOption<O> = O & { options?: Array<O | UIOnlyMenuItemOption> };
-
-export type MultiLevelOption<O> = O & { options?: Array<MultiLevelOption<O> | UIOnlyMenuItemOption> };
-
-export type RenderOptionLabel<O, V> = (
-  option: O,
-  searchLabel: string,
-  getOptionLabel: GetOptionLabel<V>,
-  getOptionValue: GetOptionValue<O, V>,
-  config: { isFocused: boolean; optionsPath: number[] }
-) => React.ReactNode;
-
-export type OptionsFilter<O, V> = (
-  options: Array<O | UIOnlyMenuItemOption>,
-  searchLabel: string,
-  config: {
-    grouped?: boolean;
-    maxSize?: number;
-    showNotMatched?: boolean;
-    getOptionLabel: GetOptionLabel<V>;
-    getOptionValue: GetOptionValue<O, V>;
-    multiLevelDropdown?: boolean;
-  }
-) => FilterResult<O>;
-
-export type SelectProps<O, V> = {
-  id?: string;
-  tags?: () => JSX.Element[];
-  displayName?: string;
-  inputVariant?: SelectInputVariant;
-  footerAction?: (hideMenu: () => void) => JSX.Element;
-  isDropdown?: boolean;
-  inDropdownSearch?: boolean;
-  searchLabel?: string;
-  onSearch?: (val: string) => void;
-  hasRadioButtons?: boolean;
-  isSelectedFunc?: (id: string) => boolean;
-  icon?: Icon;
-  open?: boolean;
-  inputStopProp?: boolean;
-  label?: string;
-  value?: V | null;
-  inline?: boolean;
-  onBlur?: React.FocusEventHandler<HTMLElement>;
-  onOpen?: () => void;
-  prefix?: React.ReactNode;
-  options: Array<O | UIOnlyMenuItemOption>;
-  onClose?: () => void;
-  createLabel?: string;
-  grouped?: boolean;
-  minWidth?: boolean;
-  minMenuWidth?: number;
-  renderOptionsFilter?: (option: O | UIOnlyMenuItemOption) => boolean;
-  onSelect: (value: V, optionsPath: number[]) => void;
-  disabled?: boolean;
-  placement?: PopperProps['placement'];
-  autoWidth?: boolean;
-  fullWidth?: boolean;
-  clearable?: boolean | never;
-  autoFocus?: boolean;
-  maxHeight?: number | string;
-  className?: string;
-  iconProps?: Partial<SvgIconProps>;
-  borderLess?: boolean;
-  searchable?: boolean;
-  rightAction?: React.ReactNode;
-  placeholder?: string;
-  renderEmpty?: Nullable<(options: { search: string; close: VoidFunction }) => React.ReactNode>;
-  onMouseDown?: React.MouseEventHandler;
-  renderAsSpan?: boolean;
-  selectedOptions?: unknown[];
-  renderSearchSuffix?: ({ onClose }: { onClose: VoidFunction }) => JSX.Element;
-  getOptionKey?: (option: O) => string;
-  optionsFilter?: OptionsFilter<O, V>;
-  getOptionValue?: GetOptionValue<O, V>;
-  getOptionLabel?: GetOptionLabel<V>;
-  withSearchIcon?: boolean;
-  optionsMaxSize?: number;
-  alwaysShowCreate?: boolean;
-  autoUpdatePlacement?: boolean;
-  autoDismiss?: boolean;
-  labelSearchable?: boolean;
-  onKeyDown?: (e: React.KeyboardEvent) => void;
-  triggerRenderer?: (options: {
-    ref: React.RefObject<HTMLInputElement>;
-    value: string;
-    isOpen: boolean;
-    inline: boolean;
-    onBlur?: React.FocusEventHandler<HTMLInputElement>;
-    opened: boolean;
-    onFocus?: (e?: React.FocusEvent) => void;
-    onClick?: (e?: React.MouseEvent) => void;
-    disabled?: boolean;
-    onChange: React.ChangeEventHandler;
-    isFocused: boolean;
-    fullWidth?: boolean;
-    autoFocus?: boolean;
-    leftAction?: React.ReactNode;
-    searchable?: boolean;
-    isDropdown: boolean;
-    borderLess?: boolean;
-    placeholder?: string;
-    rightAction?: React.ReactNode;
-    isDropDownOpened: boolean;
-    onOpenMenu?: VoidFunction;
-    onHideMenu?: VoidFunction;
-  }) => React.ReactNode;
-  isButtonDisabled?: (searchLabel: string) => boolean;
-  formatInputValue?: (value: string) => string;
-  renderOptionLabel?: RenderOptionLabel<O, V>;
-  multiLevelDropdown?: boolean;
-  showNotMatchedOptions?: boolean;
-  createInputPlaceholder?: string;
-  validateCreate?: (val: string) => void;
-} & (
-  | {
-      creatable: true;
-      onCreate: (label: string) => void;
-    }
-  | {
-      creatable?: false | never;
-      onCreate?: (label: string) => void;
-    }
-);
 
 const defaultGetter = (option: unknown) => option;
 
-const AnyAdvancedMenu = AdvancedMenu as React.FC<any>;
-
-const Select = <O, V = O>({
+function Select<Option extends Primitive>(props: SelectPrimitiveProps<Option>): React.ReactElement;
+function Select<Option extends Primitive>(props: SelectPrimitiveClearableProps<Option>): React.ReactElement;
+function Select<Option extends Primitive>(props: SelectPrimitiveCreatableProps<Option>): React.ReactElement;
+function Select<Option extends Primitive>(props: SelectPrimitiveCreatableClearableProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemWithID>(props: SelectWithIDProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemWithID>(props: SelectWithIDClearableProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemWithID>(props: SelectCreatableWithIDProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemWithID>(props: SelectCreatableWithIDClearableProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemWithID, Value>(props: SelectValueWithIDProps<Option, Value>): React.ReactElement;
+function Select<Option extends MenuItemWithID, Value>(props: SelectValueWithIDClearableProps<Option, Value>): React.ReactElement;
+function Select<Option extends MenuItemWithID, Value>(props: SelectValueCreatableWithIDProps<Option, Value>): React.ReactElement;
+function Select<Option extends MenuItemWithID, Value>(props: SelectValueCreatableWithIDClearableProps<Option, Value>): React.ReactElement;
+function Select<Option extends MenuItemGrouped<Option>>(props: SelectGroupedProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemGrouped<Option>>(props: SelectGroupedClearableProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemGrouped<Option>, Value>(props: SelectValueGroupedProps<Option, Value>): React.ReactElement;
+function Select<Option extends MenuItemGrouped<Option>, Value>(props: SelectValueGroupedClearableProps<Option, Value>): React.ReactElement;
+function Select<Option extends MenuItemMultilevel<Option>>(props: SelectMultilevelProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemMultilevel<Option>>(props: SelectMultilevelClearableProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemMultilevel<Option>, Value>(props: SelectValueMultilevelProps<Option, Value>): React.ReactElement;
+function Select<Option extends MenuItemMultilevel<Option>, Value>(props: SelectValueMultilevelClearableProps<Option, Value>): React.ReactElement;
+function Select<Option extends MenuItemWithID & MenuItemGrouped<Option>>(props: SelectGroupedWithIDProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemWithID & MenuItemGrouped<Option>>(props: SelectGroupedWithIDClearableProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemWithID & MenuItemGrouped<Option>, Value>(
+  props: SelectGroupedValueWithIDProps<Option, Value>
+): React.ReactElement;
+function Select<Option extends MenuItemWithID & MenuItemGrouped<Option>, Value>(
+  props: SelectGroupedValueWithIDClearableProps<Option, Value>
+): React.ReactElement;
+function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>>(props: SelectMultilevelWithIDProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>>(props: SelectMultilevelWithIDClearableProps<Option>): React.ReactElement;
+function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>, Value>(
+  props: SelectMultilevelValueWithIDProps<Option, Value>
+): React.ReactElement;
+function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>, Value>(
+  props: SelectMultilevelValueWithIDClearableProps<Option, Value>
+): React.ReactElement;
+function Select<Option>(props: SelectCreatableProps<Option>): React.ReactElement;
+function Select<Option>(props: SelectCreatableClearableProps<Option>): React.ReactElement;
+function Select<Option, Value>(props: SelectValueCreatableProps<Option, Value>): React.ReactElement;
+function Select<Option, Value>(props: SelectValueCreatableClearableProps<Option, Value>): React.ReactElement;
+function Select<Option>(props: SelectProps<Option>): React.ReactElement;
+function Select<Option>(props: SelectClearableProps<Option>): React.ReactElement;
+function Select<Option, Value>(props: SelectValueProps<Option, Value>): React.ReactElement;
+function Select<Option, Value>(props: SelectValueClearableProps<Option, Value>): React.ReactElement;
+// eslint-disable-next-line sonarjs/cognitive-complexity
+function Select({
   id,
   open,
-  inputVariant = SelectInputVariant.DROPDOWN,
-  displayName = undefined,
   icon,
-  inDropdownSearch = false,
-  inputStopProp = true,
   label = '',
-  isDropdown = !!label,
   value,
   inline = false,
-  onBlur,
-  onKeyDown,
-  footerAction,
-  onSearch,
-  createLabel,
   onOpen,
+  onBlur,
   prefix,
   onClose,
-  alwaysShowCreate = false,
   grouped,
-  selectedOptions,
   options = [],
-  renderOptionsFilter,
   minWidth = true,
-  minMenuWidth,
+  onSearch,
   disabled,
   onSelect,
   onCreate,
   iconProps,
-  autoDismiss = true,
-  autoUpdatePlacement,
+  onKeyDown,
   placement = 'bottom-start',
   autoWidth = true,
   fullWidth,
@@ -200,224 +146,198 @@ const Select = <O, V = O>({
   maxHeight,
   creatable,
   className,
+  isDropdown = !!label,
   borderLess,
   searchable,
+  renderTags,
   rightAction,
   onMouseDown,
   placeholder,
-  getOptionValue = defaultGetter as GetOptionValue<O, V>,
-  getOptionKey = getOptionValue as any as (option: O) => string,
+  createLabel,
+  searchLabel: searchLabelProp = '',
+  autoDismiss = true,
+  displayName = undefined,
+  renderEmpty,
+  inputVariant = SelectInputVariant.DROPDOWN,
   renderAsSpan,
+  minMenuWidth,
+  isMultiLevel,
+  inputStopProp = true,
   optionsFilter = searchable ? searchableOptionsFilter : defaultOptionsFilter,
-  getOptionLabel = defaultGetter as GetOptionLabel<V>,
-  withSearchIcon,
+  renderTrigger,
+  getOptionValue = defaultGetter as GetOptionValue<unknown, unknown>,
+  getOptionKey = (option, index) => String(getOptionValue(option) || index),
+  getOptionLabel = defaultGetter as GetOptionLabel<unknown>,
   optionsMaxSize,
+  validateCreate,
   labelSearchable = !label && searchable,
-  triggerRenderer,
+  selectedOptions,
   formatInputValue,
+  alwaysShowCreate = false,
+  inDropdownSearch = false,
   isButtonDisabled,
   renderOptionLabel = defaultMenuLabelRenderer,
-  multiLevelDropdown,
+  renderFooterAction,
+  renderSearchSuffix,
+  renderOptionsFilter,
+  autoUpdatePlacement,
   showNotMatchedOptions,
   createInputPlaceholder,
-  validateCreate,
-  renderSearchSuffix,
-  tags,
-  searchLabel: searchLabelProp = '',
-  renderEmpty,
-}: // eslint-disable-next-line sonarjs/cognitive-complexity
-SelectProps<O, V>): JSX.Element => {
-  const optionLabel = searchLabelProp || getOptionLabel(value) || '';
-  const cachedRef = React.useRef({ updatePopperPosition: noop });
+}: SelectInternalProps): React.ReactElement {
+  const optionLabel = searchLabelProp || String(getOptionLabel(value) ?? '') || '';
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inlineRef = React.useRef<HTMLInputElement>(null);
 
   const [initialValueLabel] = React.useState(optionLabel);
-  const inputRef = React.useRef<Nullable<HTMLInputElement>>(null);
-  const inlineRef = React.useRef<Nullable<HTMLInputElement>>(null);
   const [opened, updateOpened] = React.useState(!!open);
   const [directMatch, setDirectMatch] = React.useState(false);
   const [searchLabel, updateSearchLabel] = React.useState(optionLabel);
   const [optionsToRender, updateOptionsToRender] = React.useState(() => (renderOptionsFilter ? options.filter(renderOptionsFilter) : options));
-  const [inputWrapperRef, setInputWrapperRef] = React.useState<Nullable<HTMLElement>>(null);
-  const [focusedOptionIndex, updateFocusedOptionIndex] = React.useState(multiLevelDropdown ? null : 0);
+  const [inputWrapperNode, setInputWrapperNode] = React.useState<Nullable<HTMLDivElement>>(null);
+  const [focusedOptionIndex, updateFocusedOptionIndex] = React.useState(isMultiLevel ? null : 0);
 
-  const isDropDownOpened = isDropdown && opened;
-
-  const renderDropdown = opened && (!!options.length || searchLabel || !searchable || !!renderEmpty);
-
-  const cache = useCache({
-    value,
-    opened,
-    onOpen,
-    onClose,
-    options,
-    grouped,
-    creatable,
-    searchable,
-    optionLabel,
+  const dataRef = React.useRef({
     searchLabel,
-    optionsFilter,
     initialValueLabel,
-    getOptionLabel,
-    optionsMaxSize,
-    getOptionValue,
-    labelSearchable,
-    inputWrapperRef,
-    firstOptionIndex:
-      ((!directMatch && ((isDropdown && searchable) || creatable)) || inDropdownSearch) && (alwaysShowCreate || !searchable || !!searchLabel) ? 1 : 0,
-    multiLevelDropdown,
-    showNotMatchedOptions,
+    updatePopperPosition: noop,
   });
 
-  const menuPopoverModifiers = React.useMemo(() => {
-    const onComputedStyle = (data: { styles: Record<string, unknown> }) => {
-      if (placement === 'bottom-start' && inputWrapperRef) {
-        // eslint-disable-next-line no-param-reassign
-        data.styles.width = inputWrapperRef.getBoundingClientRect().width;
-      }
+  dataRef.current.searchLabel = searchLabel;
 
-      return data;
-    };
+  const renderDropdown = opened && (!!options.length || searchLabel || !searchable || !!renderEmpty);
+  const isDropDownOpened = isDropdown && opened;
+  const firstOptionIndex =
+    ((!directMatch && ((isDropdown && searchable) || creatable)) || inDropdownSearch) && (alwaysShowCreate || !searchable || !!searchLabel) ? 1 : 0;
 
-    return {
+  const menuPopoverModifiers = React.useMemo<NonNullable<PopperProps['modifiers']>>(
+    () => ({
       hide: { enabled: false },
-      autoSizing: { enabled: true, fn: onComputedStyle, order: 840 },
+      autoSizing: {
+        enabled: true,
+        fn: (data) => {
+          if (placement === 'bottom-start' && inputWrapperNode) {
+            // eslint-disable-next-line no-param-reassign
+            data.styles.width = `${inputWrapperNode.getBoundingClientRect().width}px`;
+          }
+
+          return data;
+        },
+        order: 840,
+      },
       preventOverflow: { enabled: false },
-    };
-  }, [inputWrapperRef, placement]);
-
-  const onUpdateOptionsToRender = React.useCallback(
-    // eslint-disable-next-line sonarjs/cognitive-complexity
-    (label: string) => {
-      const { matchedOptions } = cache.current.optionsFilter(cache.current.options, label, {
-        grouped: cache.current.grouped,
-        maxSize: cache.current.optionsMaxSize,
-        showNotMatched: cache.current.showNotMatchedOptions,
-        getOptionLabel: cache.current.getOptionLabel,
-        getOptionValue: cache.current.getOptionValue,
-        multiLevelDropdown: cache.current.multiLevelDropdown,
-      });
-
-      let hasExactMatch = false;
-
-      if (matchedOptions.length === 1) {
-        const option = matchedOptions[0];
-
-        hasExactMatch =
-          !isUIOnlyMenuItemOption(option) &&
-          cache.current.getOptionLabel(cache.current.getOptionValue(option))?.toLowerCase() === label.toLowerCase();
-      }
-
-      if (
-        hasExactMatch ||
-        (!!cache.current.initialValueLabel?.toLowerCase() && cache.current.initialValueLabel?.toLowerCase() === label.toLowerCase())
-      ) {
-        setDirectMatch(true);
-      } else {
-        setDirectMatch(false);
-      }
-
-      const findIndexCallback = (option: O | UIOnlyMenuItemOption) =>
-        !isUIOnlyMenuItemOption(option) && cache.current.value === cache.current.getOptionValue(option);
-
-      let activeOptionIndex;
-
-      if (grouped) {
-        activeOptionIndex = (matchedOptions as GroupedOption<O>[])
-          .flatMap((option) => (isUIOnlyMenuItemOption(option) ? option : option.options ?? []))
-          .findIndex(findIndexCallback);
-      } else {
-        activeOptionIndex = matchedOptions.findIndex(findIndexCallback);
-      }
-
-      if (!cache.current.multiLevelDropdown) {
-        if (cache.current.searchable) {
-          updateFocusedOptionIndex(matchedOptions.length ? cache.current.firstOptionIndex : 0);
-        } else {
-          updateFocusedOptionIndex(activeOptionIndex === -1 ? 0 : activeOptionIndex + cache.current.firstOptionIndex);
-        }
-      }
-      updateOptionsToRender(matchedOptions);
-    },
-    [grouped, updateOptionsToRender, updateFocusedOptionIndex]
+    }),
+    [inputWrapperNode, placement]
   );
 
-  React.useEffect(() => {
-    if (renderOptionsFilter && selectedOptions) {
-      const nonSelectedOptions = options.filter(renderOptionsFilter);
-      updateOptionsToRender(nonSelectedOptions);
+  // eslint-disable-next-line sonarjs/cognitive-complexity
+  const onUpdateOptionsToRender = (label: string) => {
+    const { matchedOptions } = optionsFilter(options, label, {
+      grouped,
+      maxSize: optionsMaxSize,
+      isMultiLevel,
+      getOptionLabel,
+      getOptionValue,
+      showNotMatched: showNotMatchedOptions,
+    });
+
+    let hasExactMatch = false;
+
+    if (matchedOptions.length === 1 && !isUIOnlyMenuItemOption(matchedOptions[0])) {
+      const optionLabel = getOptionLabel(getOptionValue(matchedOptions[0]));
+
+      hasExactMatch = typeof optionLabel === 'string' && optionLabel.toLowerCase() === label.toLowerCase();
     }
 
-    if (autoUpdatePlacement) {
-      cachedRef.current.updatePopperPosition();
+    const initialLabelVal = dataRef.current.initialValueLabel;
+
+    hasExactMatch = hasExactMatch || (!!initialLabelVal && initialLabelVal.toLowerCase() === label.toLowerCase());
+
+    setDirectMatch(hasExactMatch);
+
+    const findIndexCallback = (option: unknown) => !isUIOnlyMenuItemOption(option) && value === getOptionValue(option);
+
+    let activeOptionIndex;
+
+    if (isGroupedOptions(!!grouped, matchedOptions)) {
+      activeOptionIndex = matchedOptions
+        .flatMap((option) => (isUIOnlyMenuItemOption(option) ? option : option.options ?? []))
+        .findIndex(findIndexCallback);
+    } else {
+      activeOptionIndex = matchedOptions.findIndex(findIndexCallback);
     }
-  }, [selectedOptions, updateOptionsToRender]);
 
-  const onOpenMenu = React.useCallback(
-    (e?: React.MouseEvent | React.FocusEvent) => {
-      if (inputStopProp) {
-        e?.stopPropagation();
-      }
-
-      if (cache.current.searchable) {
-        inputRef.current?.focus?.();
-      }
-
-      if (!cache.current.opened) {
-        updateOpened(true);
-        cache.current.onOpen?.();
-      }
-
-      cache.current.initialValueLabel = optionLabel;
-
-      // Clear the search so all options render
-
-      const hasExistingInputLabel = cache.current.searchable && cache.current.initialValueLabel;
-      if (hasExistingInputLabel) {
-        cache.current.searchLabel = cache.current.initialValueLabel;
-        onUpdateOptionsToRender('');
-        setDirectMatch(true);
+    if (!isMultiLevel) {
+      if (searchable) {
+        updateFocusedOptionIndex(matchedOptions.length ? firstOptionIndex : 0);
       } else {
-        onUpdateOptionsToRender(cache.current.searchLabel);
+        updateFocusedOptionIndex(activeOptionIndex === -1 ? 0 : activeOptionIndex + firstOptionIndex);
       }
-    },
-    [updateOpened, onUpdateOptionsToRender, optionLabel]
-  );
+    }
+    updateOptionsToRender(matchedOptions);
+  };
 
-  const onHideMenu = React.useCallback(() => {
-    if (cache.current.searchable) {
+  const onOpenMenu = usePersistFunction((event?: React.MouseEvent | React.FocusEvent) => {
+    if (inputStopProp) {
+      event?.stopPropagation();
+    }
+
+    if (searchable) {
+      inputRef.current?.focus?.();
+    }
+
+    if (!opened) {
+      updateOpened(true);
+      onOpen?.();
+    }
+
+    dataRef.current.initialValueLabel = optionLabel;
+
+    // Clear the search so all options render
+    const hasExistingInputLabel = searchable && dataRef.current.initialValueLabel;
+
+    if (hasExistingInputLabel) {
+      dataRef.current.searchLabel = dataRef.current.initialValueLabel;
+
+      onUpdateOptionsToRender('');
+      setDirectMatch(true);
+    } else {
+      onUpdateOptionsToRender(dataRef.current.searchLabel);
+    }
+  });
+
+  const onHideMenu = usePersistFunction(() => {
+    if (searchable) {
       inputRef.current?.blur?.();
     }
 
-    if (cache.current.searchable && cache.current.searchLabel !== cache.current.optionLabel) {
-      updateSearchLabel(cache.current.optionLabel);
+    if (searchable && dataRef.current.searchLabel !== optionLabel) {
+      updateSearchLabel(optionLabel);
     }
 
-    if (cache.current.multiLevelDropdown) {
+    if (isMultiLevel) {
       updateFocusedOptionIndex(null);
     }
 
     updateOpened(false);
-    cache.current.onClose?.();
-  }, [updateOpened, updateSearchLabel]);
+    onClose?.();
+  });
 
-  const onFocusOption = React.useCallback(
-    (index: number) => {
-      let nextIndex = index;
+  const onFocusOption = usePersistFunction((index: number) => {
+    let nextIndex = index;
 
-      const flatOptions = grouped
-        ? (optionsToRender as GroupedOption<O>[]).flatMap((option) => (isUIOnlyMenuItemOption(option) ? option : option.options ?? []))
-        : optionsToRender;
+    const flatOptions = isGroupedOptions(!!grouped, optionsToRender)
+      ? optionsToRender.flatMap((option) => (isUIOnlyMenuItemOption(option) ? option : option.options ?? []))
+      : optionsToRender;
 
-      if (index < 0) {
-        nextIndex = flatOptions.length - (1 - cache.current.firstOptionIndex);
-      } else if (index > flatOptions.length - (1 - cache.current.firstOptionIndex)) {
-        nextIndex = 0;
-      }
+    if (index < 0) {
+      nextIndex = flatOptions.length - (1 - firstOptionIndex);
+    } else if (index > flatOptions.length - (1 - firstOptionIndex)) {
+      nextIndex = 0;
+    }
 
-      updateFocusedOptionIndex(nextIndex);
-    },
-    [grouped, optionsToRender, updateFocusedOptionIndex]
-  );
+    updateFocusedOptionIndex(nextIndex);
+  });
 
   const handleOnSearchLabelChange = (val: string) => {
     onUpdateOptionsToRender(val);
@@ -425,54 +345,68 @@ SelectProps<O, V>): JSX.Element => {
     onSearch?.(val);
   };
 
-  const onChangeSearchLabel = React.useCallback(
-    ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-      const input = formatInputValue ? formatInputValue(target.value) : target.value;
-      handleOnSearchLabelChange(input);
-    },
-    [onUpdateOptionsToRender]
-  );
+  const onChangeSearchLabel = ({ target }: React.ChangeEvent<HTMLInputElement>) =>
+    handleOnSearchLabelChange(formatInputValue ? formatInputValue(target.value) : target.value);
 
-  const onSelectItem = React.useCallback(
-    (value: V, optionsPath: number[], updatePopperPosition: () => void) => {
-      onSelect(value, optionsPath);
-      handleOnSearchLabelChange('');
+  const onSelectItem = (value: unknown, optionsPath: number[], updatePopperPosition: () => void) => {
+    onSelect(value, optionsPath);
+    handleOnSearchLabelChange('');
+
+    if (autoUpdatePlacement) {
+      dataRef.current.updatePopperPosition = updatePopperPosition;
+    }
+
+    if (!autoDismiss) return;
+
+    onHideMenu();
+  };
+
+  const onCreateItem = (label: string, updatePopperPosition: () => void) => {
+    try {
+      updateSearchLabel('');
+      validateCreate?.(label);
+      onCreate?.(label);
 
       if (autoUpdatePlacement) {
-        cachedRef.current.updatePopperPosition = updatePopperPosition;
+        dataRef.current.updatePopperPosition = updatePopperPosition;
       }
-      if (!autoDismiss) {
-        return;
-      }
-      onHideMenu();
-    },
-    [onSelect, onHideMenu]
-  );
 
-  const onCreateItem = React.useCallback(
-    (label: string, updatePopperPosition: () => void) => {
-      try {
-        updateSearchLabel('');
-        validateCreate?.(label);
-        onCreate?.(label);
-
-        if (autoUpdatePlacement) {
-          cachedRef.current.updatePopperPosition = updatePopperPosition;
-        }
-        if (autoDismiss) {
-          onHideMenu();
-        }
-      } catch (error) {
-        toast.warn(error?.message || error?.toString?.() || 'something went wrong');
+      if (autoDismiss) {
+        onHideMenu();
       }
-    },
-    [onCreate, onHideMenu]
-  );
+    } catch (error) {
+      toast.warn(error?.message || error?.toString?.() || 'something went wrong');
+    }
+  };
+
+  const onIconClick = () => {
+    if (clearable) {
+      onSelect(null, []);
+    } else if (!disabled || !searchable) {
+      onOpenMenu();
+    }
+  };
+
+  React.useEffect(() => {
+    if (renderOptionsFilter && selectedOptions) {
+      updateOptionsToRender(options.filter(renderOptionsFilter));
+    }
+
+    if (autoUpdatePlacement) {
+      dataRef.current.updatePopperPosition();
+    }
+  }, [selectedOptions]);
 
   React.useEffect(() => {
     onUpdateOptionsToRender(optionLabel);
     updateSearchLabel(optionLabel);
-  }, [optionLabel, onUpdateOptionsToRender]);
+  }, [optionLabel, grouped]);
+
+  React.useEffect(() => {
+    if (inline && inputWrapperNode) {
+      inputWrapperNode.style.width = `${inlineRef.current?.clientWidth}px`;
+    }
+  });
 
   useDidUpdateEffect(() => {
     if (open) {
@@ -480,21 +414,7 @@ SelectProps<O, V>): JSX.Element => {
     } else {
       onHideMenu();
     }
-  }, [onHideMenu, onOpenMenu, open]);
-
-  const onIconClick = React.useCallback(() => {
-    if (clearable) {
-      (onSelect as (value: Nullable<V>, optionsPath: number[]) => void)(null, []);
-    } else if (!disabled || !searchable) {
-      onOpenMenu();
-    }
-  }, [clearable, onOpenMenu, onSelect, disabled, searchable]);
-
-  React.useEffect(() => {
-    if (inline && inputWrapperRef) {
-      inputWrapperRef.style.width = `${inlineRef.current?.clientWidth}px`;
-    }
-  });
+  }, [open]);
 
   const inputProps = {
     icon,
@@ -509,6 +429,7 @@ SelectProps<O, V>): JSX.Element => {
     iconProps,
     fullWidth,
     autoFocus,
+    onKeyDown,
     leftAction: prefix ? <PrefixContainer>{prefix}</PrefixContainer> : null,
     searchable: labelSearchable,
     isDropdown,
@@ -517,14 +438,13 @@ SelectProps<O, V>): JSX.Element => {
     onMouseDown: searchable ? onMouseDown : undefined,
     rightAction,
     isDropDownOpened,
-    onKeyDown,
   };
 
   const hasOptions = !!selectedOptions?.length;
 
   return (
     <Manager>
-      <Reference innerRef={setInputWrapperRef}>
+      <Reference innerRef={setInputWrapperNode}>
         {/* eslint-disable-next-line sonarjs/cognitive-complexity */}
         {({ ref }) => (
           <SelectWrapper
@@ -540,42 +460,27 @@ SelectProps<O, V>): JSX.Element => {
             clearable={clearable}
             onMouseDown={!labelSearchable ? onMouseDown : undefined}
           >
-            {triggerRenderer ? (
-              triggerRenderer({
-                ...inputProps,
-                ref: inputRef,
-                value: searchLabel,
-                isOpen: opened,
-                onOpenMenu,
-                onHideMenu,
-              })
+            {renderTrigger ? (
+              renderTrigger({ ...inputProps, ref: inputRef, value: searchLabel, isOpen: opened, onOpenMenu, onHideMenu })
             ) : (
               <Flex>
                 <>
-                  {inputVariant === SelectInputVariant.TAGS && tags && (
+                  {inputVariant === SelectInputVariant.TAGS && renderTags && (
                     <TagsContainer
+                      onClick={Utils.functional.chainVoid(onOpenMenu, () => inputRef.current?.focus())}
                       hasTags={hasOptions}
                       isActive={opened}
-                      onClick={() => {
-                        onOpenMenu();
-                        inputRef?.current?.focus();
-                      }}
                     >
-                      {tags()}
+                      {renderTags()}
 
                       <TagsInput
-                        hastags={hasOptions}
-                        onChange={onChangeSearchLabel}
-                        placeholder={placeholder}
-                        onClick={searchable ? onOpenMenu : undefined}
-                        onBlur={(e) => {
-                          if (!renderDropdown) {
-                            updateOpened(false);
-                          }
-                          onBlur?.(e);
-                        }}
-                        ref={inputRef as React.RefObject<AutosizeInput>}
                         value={label || searchLabel}
+                        onBlur={Utils.functional.chain<[React.FocusEvent<HTMLElement>]>(() => !renderDropdown && updateOpened(false), onBlur)}
+                        hastags={hasOptions}
+                        onClick={searchable ? onOpenMenu : undefined}
+                        onChange={onChangeSearchLabel}
+                        inputRef={(node) => setRef(inputRef, node)}
+                        placeholder={placeholder}
                         autoComplete="off"
                       />
                     </TagsContainer>
@@ -586,15 +491,16 @@ SelectProps<O, V>): JSX.Element => {
                       <SearchInput
                         {...inputProps}
                         ref={inputRef}
-                        value={label || searchLabel}
                         type="search"
-                        autoComplete="off"
+                        value={label || searchLabel}
                         clearable={clearable}
+                        autoComplete="off"
                       />
+
                       <SearchInputIcon
                         icon={clearable ? 'close' : 'caretDown'}
-                        color={isDropDownOpened ? '#5D9DF5' : '#6e849a'}
                         size={clearable ? 14 : 10}
+                        color={isDropDownOpened ? '#5D9DF5' : '#6e849a'}
                         onClick={onIconClick}
                       />
                     </>
@@ -605,11 +511,11 @@ SelectProps<O, V>): JSX.Element => {
                       <SearchInput
                         {...inputProps}
                         ref={inputRef}
-                        value={hasOptions ? displayName : ''}
                         type="search"
+                        value={hasOptions ? displayName : ''}
                         ellipsis
-                        autoComplete="off"
                         onChange={() => null}
+                        autoComplete="off"
                       />
 
                       {hasOptions ? (
@@ -633,47 +539,46 @@ SelectProps<O, V>): JSX.Element => {
       )}
 
       {renderDropdown && (
-        <AnyAdvancedMenu
+        <NestedMenu
           id={id}
-          minWidth={minMenuWidth}
-          inDropdownSearch={inDropdownSearch}
-          searchSuffix={renderSearchSuffix}
-          footerAction={footerAction}
-          createLabel={createLabel}
           onHide={onHideMenu}
           grouped={grouped}
           options={optionsToRender}
           onSelect={onSelectItem}
           onCreate={onCreateItem}
+          minWidth={minMenuWidth}
           maxHeight={maxHeight}
           autoWidth={autoWidth}
           creatable={creatable}
           placement={placement}
           searchable={searchable}
           isDropdown={isDropdown}
-          renderEmpty={renderEmpty}
-          directSearchMatch={directMatch}
+          createLabel={createLabel}
           searchLabel={searchLabel}
-          alwaysShowCreate={alwaysShowCreate}
+          renderEmpty={renderEmpty}
+          isMultiLevel={isMultiLevel}
           getOptionKey={getOptionKey}
           onFocusOption={onFocusOption}
-          withSearchIcon={withSearchIcon}
           getOptionValue={getOptionValue}
           getOptionLabel={getOptionLabel}
-          inputWrapperRef={inputWrapperRef}
+          inputWrapperNode={inputWrapperNode}
           formatInputValue={formatInputValue}
-          firstOptionIndex={cache.current.firstOptionIndex}
+          firstOptionIndex={firstOptionIndex}
           isButtonDisabled={isButtonDisabled}
           popoverModifiers={menuPopoverModifiers}
+          inDropdownSearch={inDropdownSearch}
+          alwaysShowCreate={alwaysShowCreate}
+          directSearchMatch={directMatch}
           renderOptionLabel={renderOptionLabel}
-          multiLevelDropdown={multiLevelDropdown}
           focusedOptionIndex={focusedOptionIndex}
+          renderSearchSuffix={renderSearchSuffix}
+          renderFooterAction={renderFooterAction}
           onChangeSearchLabel={onChangeSearchLabel}
           createInputPlaceholder={createInputPlaceholder}
         />
       )}
     </Manager>
   );
-};
+}
 
 export default Select;

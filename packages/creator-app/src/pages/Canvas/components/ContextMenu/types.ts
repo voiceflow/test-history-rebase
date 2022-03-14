@@ -1,4 +1,4 @@
-import { SelectMenuItemOptions } from '@voiceflow/ui';
+import { MenuItemMultilevel } from '@voiceflow/ui';
 
 import { BlockVariant } from '@/constants/canvas';
 import { ModalActions } from '@/hooks';
@@ -19,12 +19,10 @@ export interface OptionProps {
   canUseCommenting: boolean;
 }
 
-export interface ContextMenuOption<T> {
+export interface ContextMenuOption<T extends string = string> extends MenuItemMultilevel<ContextMenuOption> {
   value: T;
   label: string;
   hotkey?: string;
-  options?: ContextMenuOption<any>[];
-  menuItemProps?: SelectMenuItemOptions['menuItemProps'];
 
   shouldRender?: (contextMenu: ContextMenuValue, props: OptionProps) => boolean;
 }

@@ -3,10 +3,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import {
   Alert,
   AlertVariant,
+  BaseSelectProps,
   isNotUIOnlyMenuItemOption,
   isUIOnlyMenuItemOption,
   Select,
-  SelectProps,
   toast,
   UIOnlyMenuItemOption,
 } from '@voiceflow/ui';
@@ -30,25 +30,16 @@ export { Option as IntentSelectOption } from './components';
 
 interface IntentSelectProps
   extends Omit<
-    SelectProps<Realtime.Intent, string>,
-    | 'onCreate'
-    | 'className'
-    | 'value'
-    | 'options'
-    | 'onSelect'
-    | 'searchable'
-    | 'optionsFilter'
-    | 'getOptionValue'
-    | 'getOptionLabel'
-    | 'formatInputValue'
-    | 'isButtonDisabled'
-    | 'renderOptionLabel'
+    BaseSelectProps,
+    'className' | 'options' | 'searchable' | 'optionsFilter' | 'formatInputValue' | 'isButtonDisabled' | 'renderOptionLabel'
   > {
   intent?: Realtime.Intent | null;
   options?: Array<Realtime.Intent | UIOnlyMenuItemOption>;
   onChange: (value: { intent: string | null }) => void;
-  withMissingAlert?: boolean;
+  clearable?: boolean;
+  creatable?: boolean;
   noBuiltIns?: boolean;
+  withMissingAlert?: boolean;
 }
 
 const IntentSelect: React.FC<IntentSelectProps> = ({
@@ -56,11 +47,12 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   intent,
   options: propOptions,
   onChange,
+  clearable,
   creatable = true,
+  noBuiltIns,
   placeholder = 'Name new intent or select existing intent',
   withMissingAlert = true,
   createInputPlaceholder = 'intents',
-  noBuiltIns,
   ...props
 }) => {
   const slots = useSelector(SlotV2.allSlotsSelector);
@@ -156,7 +148,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         options={filteredOptions}
         onCreate={onCreate}
         onSelect={onSelectIntent}
-        clearable={props.clearable && !!intentID}
+        clearable={!!clearable && !!intentID}
         creatable={creatable}
         className={ClassName.INTENT_SELECT_INPUT}
         searchable
@@ -164,7 +156,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         getOptionValue={(option) => option?.id}
         getOptionLabel={(value) => (value ? optionLookup[value] : undefined)}
         formatInputValue={(value) => applyPlatformIntentNameFormatting(value, platform)}
-        isButtonDisabled={(newName) => filteredOptions.some(({ name }) => name === newName.toLowerCase())}
+        isButtonDisabled={({ value }) => filteredOptions.some(({ name }) => name === value.toLowerCase())}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue) => (
           <Option option={option} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />
         )}

@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import { Box, IconButton, IconButtonVariant, NestedMenuComponents } from '@voiceflow/ui';
 import React from 'react';
 
@@ -39,17 +39,12 @@ const IntentSelectDropdown: React.FC = () => {
         creatable={false}
         onChange={switchIntent}
         createInputPlaceholder="Intents"
-        footerAction={(hideMenu) => (
-          <NestedMenuComponents.FooterActionContainer
-            onClick={() => {
-              hideMenu();
-              // TODO Open NLU manager
-            }}
-          >
+        renderFooterAction={({ close }) => (
+          <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close)}>
             Open NLU Manager
           </NestedMenuComponents.FooterActionContainer>
         )}
-        triggerRenderer={({ onOpenMenu, onHideMenu, isOpen }) => (
+        renderTrigger={({ onOpenMenu, onHideMenu, isOpen }) => (
           <Box onClick={isOpen ? onHideMenu : onOpenMenu} display="flex" mr={18}>
             <IconButton size={16} activeClick={isOpen} icon="sandwichMenu" variant={IconButtonVariant.BASIC} />
           </Box>

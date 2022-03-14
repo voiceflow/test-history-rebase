@@ -1,14 +1,18 @@
 import { Nullish } from '@voiceflow/common';
-import { GetOptionLabel, SelectProps } from '@voiceflow/ui';
+import { BaseSelectProps, GetOptionKey, GetOptionLabel, GetOptionValue, Primitive, UIOnlyMenuItemOption } from '@voiceflow/ui';
 
-import { RequiredProps } from '@/types';
+interface GenericProps<Option> {
+  getOptionKey: GetOptionKey<Option>;
+  getOptionLabel: GetOptionLabel<Option>;
+  getOptionValue: GetOptionValue<Option, string>;
+}
 
-type NotAvailable = 'onSelect' | 'creatable' | 'onCreate' | 'getOptionLabel';
-type MakeItRequired = 'getOptionValue';
-
-export type TagSelectProps<O, V> = Omit<SelectProps<O, V>, NotAvailable | 'value'> & {
-  onChange: (value: string[]) => void;
-  getOptionLabel: GetOptionLabel<O>;
+interface BaseTagSelectProps<Option> extends BaseSelectProps {
   value: Nullish<string>[];
-  isDropdown?: boolean;
-} & RequiredProps<SelectProps<O, V>, MakeItRequired>;
+  options: Array<Option | UIOnlyMenuItemOption>;
+  onChange: (value: string[]) => void;
+}
+
+export interface PrimitiveTagSelectProps<Option extends Primitive> extends BaseTagSelectProps<Option>, Partial<GenericProps<Option>> {}
+export interface TagSelectProps<Option> extends BaseTagSelectProps<Option>, GenericProps<Option> {}
+export interface TagSelectInternalProps extends BaseTagSelectProps<unknown>, Partial<GenericProps<unknown>> {}

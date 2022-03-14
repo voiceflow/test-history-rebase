@@ -64,10 +64,11 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
           fullWidth={false}
           searchable
           placeholder={defaultVoice}
+          isMultiLevel
+          getOptionKey={(option) => option.value ?? option.label}
           getOptionValue={(option) => (option?.value ?? null) as Realtime.AnyVoice | null}
           getOptionLabel={(value) => prettifyVoice(value ?? '')}
           renderOptionLabel={(option) => option.label || option.value}
-          multiLevelDropdown
         />
       </Section>
 

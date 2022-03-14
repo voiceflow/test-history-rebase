@@ -1,4 +1,4 @@
-import { Nullish } from '@voiceflow/common';
+import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, BlockText, createUIOnlyMenuItemOption, NestedMenuComponents, Select, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
@@ -177,19 +177,14 @@ const CaptureSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsS
               onCreate={addSlot}
               placeholder="Name new entity or select existing entity"
               onSearch={setSearch}
-              footerAction={
+              renderFooterAction={
                 !search
-                  ? (hideMenu) => (
-                      <NestedMenuComponents.FooterActionContainer
-                        onClick={() => {
-                          hideMenu();
-                          addSlot();
-                        }}
-                      >
+                  ? ({ close }) => (
+                      <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, addSlot)}>
                         Create New Entity
                       </NestedMenuComponents.FooterActionContainer>
                     )
-                  : undefined
+                  : null
               }
             />
             {selectedSlot && (

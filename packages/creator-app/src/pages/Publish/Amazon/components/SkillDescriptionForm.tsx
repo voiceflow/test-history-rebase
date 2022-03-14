@@ -102,6 +102,7 @@ const SkillDescriptionForm: React.FC = () => {
           onSelect={(value) => saveCategory(value)}
           searchable
           placeholder="Select..."
+          getOptionKey={(option) => option.value}
           getOptionValue={(option) => option?.value}
           getOptionLabel={(value) => AMAZON_CATEGORIES.find((option) => option.value === value || option.label === value)?.label}
         />

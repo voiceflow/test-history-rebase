@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Box, BoxFlex, Select, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
@@ -17,19 +18,17 @@ const StripeProduct: React.FC = () => {
   const { state, actions } = useContext(ReferralContext)!;
   const products = useSelector(Referrals.stripeProductsSelector);
 
-  const options = products.map((product) => ({ value: product.id, label: product.name || product.id }));
+  const options = React.useMemo(() => products.map((product) => ({ value: product.id, label: product.name || product.id })), [products]);
+  const optionsMap = React.useMemo(() => Utils.array.createMap(options, Utils.object.selectValue), [options]);
 
-  const onChange = (product = '') => actions.update({ product });
   const onBlur = ({ currentTarget: { value } }: React.FocusEvent<HTMLInputElement>) => {
-    const allProducts = options.map((option) => option.label);
+    const option = options.find((option) => option.label.toLowerCase() === value.toLowerCase());
 
     // save only if valid coupon else empty
-    if (allProducts.includes(value)) {
-      onChange(options.find((option) => option.label === value)?.value);
+    if (option) {
+      actions.update({ product: option.value });
     }
   };
-
-  const getValueLabel = React.useCallback((value) => options.find((option) => option.value === value)?.label, [state]);
 
   return (
     <BoxFlex cursor={state.coupon ? 'not-allowed' : 'default '}>
@@ -37,17 +36,19 @@ const StripeProduct: React.FC = () => {
         {products.length ? (
           <Container maxWidth={300}>
             <Select
-              searchable
+              value={state.product}
               onBlur={onBlur}
               options={options}
-              onSelect={onChange}
-              placeholder="Filter by Product "
-              value={getValueLabel(state.product)}
-              clearable={!!getValueLabel(state.product)}
-              createInputPlaceholder="Search a Product"
-              getOptionValue={(option) => option?.value || ''}
-              renderOptionLabel={(option: { value: string; label: string }) => option.label}
+              onSelect={(value) => actions.update({ product: value ?? '' })}
               disabled={!!state.coupon}
+              clearable={!!state.product}
+              searchable
+              placeholder="Filter by Product "
+              getOptionKey={(option) => option.value}
+              getOptionValue={(option) => option?.value || ''}
+              getOptionLabel={(value) => value && optionsMap[value]?.label}
+              renderOptionLabel={(option: { value: string; label: string }) => option.label}
+              createInputPlaceholder="Search a Product"
             />
           </Container>
         ) : (

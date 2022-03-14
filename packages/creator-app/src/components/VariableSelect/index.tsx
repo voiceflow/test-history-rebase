@@ -1,4 +1,4 @@
-import { Select, SelectProps, toast } from '@voiceflow/ui';
+import { BaseSelectProps, Select, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -6,10 +6,13 @@ import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import { useDispatch, useSelector } from '@/hooks';
 
-export type VariableSelectProps = Omit<Partial<SelectProps<string, string>>, 'onSelect' | 'creatable' | 'onCreate'> & {
+export interface VariableSelectProps extends BaseSelectProps {
+  value?: string | null;
+  options?: string[];
   onChange: (value: string) => void;
+  onCreate?: (value: string) => void;
   creatable?: boolean;
-};
+}
 
 const VariableSelect: React.FC<VariableSelectProps> = ({ value, onChange, ...props }) => {
   const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);

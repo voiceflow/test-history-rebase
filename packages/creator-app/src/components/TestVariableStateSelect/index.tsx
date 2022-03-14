@@ -1,4 +1,13 @@
-import { FlexApart, isUIOnlyMenuItemOption, NestedMenuComponents, SelectProps, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
+import {
+  BaseSelectProps,
+  FlexApart,
+  isNotUIOnlyMenuItemOption,
+  isUIOnlyMenuItemOption,
+  NestedMenuComponents,
+  SvgIcon,
+  TippyTooltip,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -9,11 +18,12 @@ import { SelectContainer } from './components';
 import { baseOptions, dividerOption } from './constants';
 import { VariableStateOption } from './types';
 
-type TestVariableStateSelectProps = Omit<Partial<SelectProps<VariableStateOption, string>>, 'onSelect' | 'creatable' | 'onCreate'> & {
+interface TestVariableStateSelectProps extends BaseSelectProps {
+  value?: string | null;
+  loading: boolean;
   onChange: (value: string | null) => void;
   onUpdateStateValues: () => Promise<void>;
-  loading: boolean;
-};
+}
 
 const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, loading, onChange, onUpdateStateValues, className, ...props }) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
@@ -24,12 +34,12 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
   const options = React.useMemo(() => {
     const statesOptions = variableStates.map((variableState) => ({ label: variableState.name, value: variableState.id }));
 
-    if (statesOptions.length === 0) {
-      return baseOptions;
-    }
+    if (statesOptions.length === 0) return baseOptions;
 
     return [...baseOptions, dividerOption, ...statesOptions];
   }, [variableStates]);
+
+  const optionsMap = React.useMemo(() => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectValue), [options]);
 
   const selected = React.useMemo(() => options.find((option) => !isUIOnlyMenuItemOption(option) && option.value === value) || null, [options]);
 
@@ -39,12 +49,14 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
 
   return (
     <SelectContainer
-      value={selected?.label || null}
+      value={selected?.value}
       options={options}
       onSelect={(newValue) => onChange(newValue === value ? null : newValue)}
       searchable
       placeholder="Select a variable state"
+      getOptionKey={(option) => option.value}
       getOptionValue={(option) => option?.value}
+      getOptionLabel={(value) => value && optionsMap[value]?.label}
       renderOptionLabel={(option: VariableStateOption) => <FlexApart fullWidth>{option.label}</FlexApart>}
       icon={loading ? 'publishSpin' : undefined}
       iconProps={{ clickable: true, color: '#132144', spin: true }}
@@ -57,27 +69,15 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
           </TippyTooltip>
         )
       }
-      footerAction={(hideMenu) => (
+      renderFooterAction={({ close }) => (
         <NestedMenuComponents.FooterActions>
           {options.length > baseOptions.length && (
-            <NestedMenuComponents.FooterAction
-              onClick={() => {
-                hideMenu();
-                openVariableStateManagerModal();
-              }}
-            >
+            <NestedMenuComponents.FooterAction onClick={Utils.functional.chainVoid(close, openVariableStateManagerModal)}>
               Manage
             </NestedMenuComponents.FooterAction>
           )}
 
-          <NestedMenuComponents.FooterAction
-            onClick={() => {
-              hideMenu();
-              onAddNew();
-            }}
-          >
-            Add New
-          </NestedMenuComponents.FooterAction>
+          <NestedMenuComponents.FooterAction onClick={Utils.functional.chainVoid(close, onAddNew)}>Add New</NestedMenuComponents.FooterAction>
         </NestedMenuComponents.FooterActions>
       )}
       {...props}

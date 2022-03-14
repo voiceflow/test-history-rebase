@@ -49,13 +49,13 @@ export default function AttributeValue({ value, name, onUpdate, tagData, attribu
       autoWidth={false}
       renderAsSpan
       getOptionKey={(option) => `${option?.name}-${option?.inputAttribute || ''}`}
-      getOptionLabel={(option) => option?.name}
-      getOptionValue={(option) => option?.name}
-      triggerRenderer={({ ref }) => (
+      renderTrigger={({ ref }) => (
         <AttributeValueText ref={ref} color={tagData.color}>
           "{value}"
         </AttributeValueText>
       )}
+      getOptionLabel={(option) => option?.name}
+      getOptionValue={(option) => option?.name}
       renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
         <SelectOption
           tag={tagData}

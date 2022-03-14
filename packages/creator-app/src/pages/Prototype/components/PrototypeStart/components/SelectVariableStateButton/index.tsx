@@ -39,10 +39,11 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
           >
             Run Test
           </RunTestButton>
+
           {variableStates.length > 0 && (
             <TippyTooltip title={isVariableStateSelected ? 'Reset state' : 'Select variable state'}>
               <IconedButton
-                ref={ref as any}
+                ref={ref as React.RefObject<HTMLButtonElement>}
                 variant={ButtonVariant.PRIMARY}
                 onClick={() => {
                   if (isVariableStateSelected) {

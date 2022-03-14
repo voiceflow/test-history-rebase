@@ -11,25 +11,20 @@ import IntentSelect from '@/components/IntentSelect';
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import { FeatureFlag } from '@/config/features';
-import { DistinctPlatform } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature, useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { PushToPath } from '@/pages/Canvas/managers/types';
-import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 
 import { INTENT_ACTION_OPTIONS } from './constants';
 import HelpTooltip from './HelpTooltip';
 
-export type DraggableItemProps = ItemComponentProps<Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>> &
+export type DraggableItemProps = ItemComponentProps<Realtime.NodeData.InteractionChoice> &
   DragPreviewComponentProps &
-  (
-    | ItemComponentHandlers<Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>>
-    | MappedItemComponentHandlers<Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>>
-  ) & {
-    choices: Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>[];
+  (ItemComponentHandlers<Realtime.NodeData.InteractionChoice> | MappedItemComponentHandlers<Realtime.NodeData.InteractionChoice>) & {
+    choices: Realtime.NodeData.InteractionChoice[];
     platform: VoiceflowConstants.PlatformType;
     isOnlyItem: boolean;
     pushToPath?: PushToPath;
@@ -38,7 +33,7 @@ export type DraggableItemProps = ItemComponentProps<Record<DistinctPlatform, Rea
 
 const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableItemProps> = (
   {
-    item,
+    item: platformItem,
     index,
     choices,
     itemKey,
@@ -55,7 +50,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
   },
   ref
 ) => {
-  const platformItem = getDistinctPlatformValue(platform, item);
   const intents = useSelector(IntentV2.allPlatformIntentsSelector);
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: platformItem.intent });
 
@@ -63,7 +57,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const patchPlatformData = React.useCallback(
-    (patch: Partial<Realtime.NodeData.InteractionChoice>) => onUpdate?.(setDistinctPlatformValue(platform, { ...platformItem, ...patch })),
+    (patch: Partial<Realtime.NodeData.InteractionChoice>) => onUpdate?.({ ...platformItem, ...patch }),
     [onUpdate, platform, platformItem]
   );
 
@@ -75,7 +69,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
 
   // filter out intents already used in interaction block
   const availableIntents = React.useMemo(
-    () => intents.filter(({ id }) => id === intent?.id || !choices.some((choice) => getDistinctPlatformValue(platform, choice)?.intent === id)),
+    () => intents.filter(({ id }) => id === intent?.id || !choices.some((choice) => choice?.intent === id)),
     [platform, intent, intents, choices]
   );
 

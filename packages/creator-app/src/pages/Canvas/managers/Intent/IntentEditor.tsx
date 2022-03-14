@@ -14,32 +14,24 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useFeature, useSelector, useSyncDispatch } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 
 import { NodeEditor } from '../types';
 
-const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({
-  data,
-  engine,
-  onChange,
-  platform,
-  pushToPath,
-}) => {
-  const platformData = getDistinctPlatformValue(platform, data);
-  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: platformData.intent });
+const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({ data, engine, onChange, pushToPath }) => {
+  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: data.intent });
 
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
   const validateTopicAvailability = useDispatch(Creator.validateTopicAvailability);
 
   const patchPlatformData = React.useCallback(
-    (patch: Partial<Realtime.NodeData.Intent.PlatformData>) => onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),
-    [onChange, platform, platformData]
+    (patch: Partial<Realtime.NodeData.Intent.PlatformData>) => onChange({ ...data, ...patch }),
+    [onChange, data]
   );
 
   const updateIntentSteps = useSyncDispatch(Realtime.diagram.updateIntentSteps);
 
-  const isGlobalIntent = platformData.availability === BaseNode.Intent.IntentAvailability.GLOBAL;
+  const isGlobalIntent = data.availability === BaseNode.Intent.IntentAvailability.GLOBAL;
 
   const onChangeIntent = async ({ intent }: { intent: Nullable<string> }) => {
     await patchPlatformData({ intent });
@@ -84,7 +76,7 @@ const IntentEditor: NodeEditor<Realtime.NodeData.Intent, Realtime.NodeData.Inten
         <AvailabilityManager isEnabled={isGlobalIntent} onChange={onChangeAvailability} />
       ) : null}
 
-      <LegacyMappings intent={intent} mappings={platformData.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
+      <LegacyMappings intent={intent} mappings={data.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
     </Content>
   );
 };

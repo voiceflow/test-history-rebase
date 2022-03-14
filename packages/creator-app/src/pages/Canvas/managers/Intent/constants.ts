@@ -2,7 +2,6 @@ import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
-import { distinctPlatformsData } from '@/utils/platform';
 
 import { NodeConfigWithoutInPorts } from '../types';
 
@@ -24,7 +23,9 @@ export const NODE_CONFIG: NodeConfigWithoutInPorts<Realtime.NodeData.Intent, Rea
     },
     data: {
       name: 'Intent',
-      ...distinctPlatformsData({ intent: null, mappings: [], availability: BaseNode.Intent.IntentAvailability.GLOBAL }),
+      intent: null,
+      mappings: [],
+      availability: BaseNode.Intent.IntentAvailability.GLOBAL,
     },
   }),
 };

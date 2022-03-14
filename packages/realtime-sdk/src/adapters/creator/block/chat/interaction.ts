@@ -1,6 +1,5 @@
 import { NodeData } from '@realtime-sdk/models';
 import { ChatNode } from '@voiceflow/chat-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { baseInteractionAdapter } from '../base';
 import {
@@ -18,7 +17,7 @@ const interactionAdapter = createBlockAdapter<ChatNode.Interaction.StepData, Nod
     const noMatchWithFallback = fallbackNoMatch(noMatch, elseData);
 
     return {
-      ...baseInteractionAdapter.fromDB(baseData, { platform: VoiceflowConstants.PlatformType.GENERAL }),
+      ...baseInteractionAdapter.fromDB(baseData),
 
       buttons: buttons ?? chipsToIntentButtons(chips),
       noMatch: noMatchWithFallback && chatNoMatchAdapter.fromDB(noMatchWithFallback),
@@ -26,7 +25,7 @@ const interactionAdapter = createBlockAdapter<ChatNode.Interaction.StepData, Nod
     };
   },
   ({ noReply, noMatch, buttons, ...baseData }) => ({
-    ...baseInteractionAdapter.toDB(baseData, { platform: VoiceflowConstants.PlatformType.GENERAL }),
+    ...baseInteractionAdapter.toDB(baseData),
 
     chips: null,
     buttons,

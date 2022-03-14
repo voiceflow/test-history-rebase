@@ -17,7 +17,6 @@ import * as Session from '@/ducks/session';
 import * as Viewport from '@/ducks/viewport';
 import mutableStore from '@/store/mutable';
 import { Dispatchable, SyncThunk, Thunk } from '@/store/types';
-import { getDistinctPlatformValue } from '@/utils/platform';
 
 import { initializeCreator } from '../actions';
 import { log } from '../constants';
@@ -57,14 +56,12 @@ export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) 
     return;
   }
 
-  const platform = ProjectV2.active.platformSelector(state);
-
   const allNodeData = CreatorV2.allNodeDataSelector(state);
 
   const isTopicAvailable = allNodeData.some((nodeData) => {
     if (!Realtime.Utils.node.isIntentNode(nodeData)) return false;
 
-    const { intent, availability } = getDistinctPlatformValue(platform, nodeData);
+    const { intent, availability } = nodeData;
 
     return !!intent && (!availability || availability === BaseNode.Intent.IntentAvailability.GLOBAL);
   });

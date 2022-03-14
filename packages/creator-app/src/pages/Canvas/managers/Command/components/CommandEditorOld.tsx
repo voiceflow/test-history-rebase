@@ -12,7 +12,6 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 
 import { Flow, HelpTooltip as FlowTooltip } from '../../Flow/components';
 import { NodeEditor, NodeEditorPropsType } from '../../types';
@@ -92,24 +91,19 @@ const mapDispatchToProps = {
 };
 
 const mergeProps = (
-  ...[{ platform, getIntentByID, getDiagramByID }, { goToDiagram }, { data, onChange }]: MergeArguments<
+  ...[{ getIntentByID, getDiagramByID }, { goToDiagram }, { data, onChange }]: MergeArguments<
     typeof mapStateToProps,
     typeof mapDispatchToProps,
     NodeEditorPropsType<Realtime.NodeData.Command>
   >
-) => {
-  const platformData = getDistinctPlatformValue(platform, data);
-
-  return {
-    platformData,
-    patchPlatformData: (patch: Partial<Realtime.NodeData.Command.PlatformData>) =>
-      onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),
-    intent: getIntentByID({ id: platformData.intent }),
-    diagram: getDiagramByID({ id: platformData.diagramID }),
-    goToDiagram: () => goToDiagram(platformData.diagramID!),
-    getDiagramByID,
-  };
-};
+) => ({
+  platformData: data,
+  patchPlatformData: (patch: Partial<Realtime.NodeData.Command.PlatformData>) => onChange({ ...data, ...patch }),
+  intent: getIntentByID({ id: data.intent }),
+  diagram: getDiagramByID({ id: data.diagramID }),
+  goToDiagram: () => goToDiagram(data.diagramID!),
+  getDiagramByID,
+});
 
 type ConnectedCommandEditorOldProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 

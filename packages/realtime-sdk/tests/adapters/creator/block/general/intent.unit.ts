@@ -1,6 +1,5 @@
 import { Creator } from '@test/factories';
 import { BaseNode } from '@voiceflow/base-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { expect } from 'chai';
 
 import intentAdapter from '@/adapters/creator/block/general/intent';
@@ -14,11 +13,9 @@ describe('Adapters | Creator | Block | General | intentAdapter', () => {
 
       expect(result).eql(
         Creator.Block.General.IntentNodeData({
-          [VoiceflowConstants.PlatformType.GENERAL]: {
-            intent: data.intent,
-            mappings: data.mappings!,
-            availability: BaseNode.Intent.IntentAvailability.GLOBAL,
-          },
+          intent: data.intent,
+          mappings: data.mappings!,
+          availability: BaseNode.Intent.IntentAvailability.GLOBAL,
         })
       );
     });
@@ -30,11 +27,9 @@ describe('Adapters | Creator | Block | General | intentAdapter', () => {
 
       expect(result).eql(
         Creator.Block.General.IntentNodeData({
-          [VoiceflowConstants.PlatformType.GENERAL]: {
-            intent: data.intent,
-            mappings: [],
-            availability: BaseNode.Intent.IntentAvailability.GLOBAL,
-          },
+          intent: data.intent,
+          mappings: [],
+          availability: BaseNode.Intent.IntentAvailability.GLOBAL,
         })
       );
     });
@@ -46,7 +41,7 @@ describe('Adapters | Creator | Block | General | intentAdapter', () => {
 
       const result = intentAdapter.toDB(data);
 
-      expect(result).eql(data.general);
+      expect(result).eql(data);
     });
   });
 });

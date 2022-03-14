@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import { BlockType, BlockVariant, DistinctPlatform, VoicePromptType } from '@realtime-sdk/constants';
+import { BlockType, BlockVariant, VoicePromptType } from '@realtime-sdk/constants';
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import { ChatModels, ChatNode } from '@voiceflow/chat-types';
@@ -107,7 +107,7 @@ export namespace NodeData {
   export interface Interaction {
     name: string;
     noMatch: Nullable<NoMatch>;
-    choices: Record<DistinctPlatform, InteractionChoice>[];
+    choices: InteractionChoice[];
     buttons: BaseButton.AnyButton[] | null;
     noReply: Nullable<NoReply>;
     intentScope?: BaseNode.Utils.IntentScope;
@@ -129,7 +129,7 @@ export namespace NodeData {
     [BaseModels.PortType.NO_REPLY]?: string;
   }
 
-  export type Command = Record<DistinctPlatform, Command.PlatformData> & { name: string };
+  export type Command = Command.PlatformData & { name: string };
   export namespace Command {
     export interface PlatformData {
       // only added some properties here
@@ -325,7 +325,7 @@ export namespace NodeData {
     [BaseModels.PortType.NEXT]: string;
   }
 
-  export type Intent = Record<DistinctPlatform, Intent.PlatformData>;
+  export type Intent = Intent.PlatformData;
 
   export interface IntentBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;

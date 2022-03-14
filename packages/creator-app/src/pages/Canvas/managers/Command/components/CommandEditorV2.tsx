@@ -7,11 +7,9 @@ import IntentSelect from '@/components/IntentSelect';
 import Section, { SectionVariant } from '@/components/Section';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 
 import { ComponentSelect, HelpTooltip as ComponentTooltip } from '../../Component/components';
 import { NodeEditor } from '../../types';
@@ -19,16 +17,13 @@ import HelpMessage from './HelpMessage';
 import HelpTooltip from './HelpTooltip';
 
 const CommandEditorV2: NodeEditor<Realtime.NodeData.Command, {}> = ({ data, onChange, pushToPath }) => {
-  const platform = useSelector(ProjectV2.active.platformSelector);
-  const platformData = getDistinctPlatformValue(platform, data);
-  const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: platformData.diagramID });
-  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: platformData.intent });
+  const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: data.diagramID });
+  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: data.intent });
 
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 
-  const goToDiagram = () => platformData.diagramID && goToDiagramHistoryPush(platformData.diagramID);
-  const patchPlatformData = (patch: Partial<Realtime.NodeData.Command.PlatformData>) =>
-    onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch }));
+  const goToDiagram = () => data.diagramID && goToDiagramHistoryPush(data.diagramID);
+  const patchPlatformData = (patch: Partial<Realtime.NodeData.Command.PlatformData>) => onChange({ ...data, ...patch });
 
   useDidUpdateEffect(() => {
     if (diagram?.name) {
@@ -65,10 +60,10 @@ const CommandEditorV2: NodeEditor<Realtime.NodeData.Command, {}> = ({ data, onCh
       <IntentForm intent={intent} pushToPath={pushToPath} />
 
       <Section variant={SectionVariant.SUBSECTION} header="Flow" tooltip={<ComponentTooltip />}>
-        <ComponentSelect diagramID={platformData.diagramID} onChange={patchPlatformData} enterOnCreate={false} />
+        <ComponentSelect diagramID={data.diagramID} onChange={patchPlatformData} enterOnCreate={false} />
       </Section>
 
-      <LegacyMappings intent={intent} mappings={platformData.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
+      <LegacyMappings intent={intent} mappings={data.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
     </Content>
   );
 };

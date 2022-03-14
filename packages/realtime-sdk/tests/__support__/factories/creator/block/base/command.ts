@@ -3,7 +3,6 @@ import { define } from 'cooky-cutter';
 import { datatype, lorem } from 'faker';
 
 import { NodeData } from '@/models';
-import { distinctPlatformsData } from '@/utils/platform';
 
 export const CommandStepData = define<BaseNode.Command.StepData>({
   name: () => lorem.word(),
@@ -20,6 +19,6 @@ export const CommandPlatformData = define<NodeData.Command.PlatformData>({
 });
 
 export const CommandNodeData = define<NodeData.Command>({
-  ...distinctPlatformsData(() => ({ ...CommandPlatformData({ intent: null, diagramID: null, mappings: [] }) })),
+  ...CommandPlatformData({ intent: null, diagramID: null, mappings: [] }),
   name: () => lorem.word(),
 });

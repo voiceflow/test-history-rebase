@@ -20,7 +20,7 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 import { centerNodeGroup, getNodesGroupCenter, isCommandNode } from '@/utils/node';
-import { getDistinctPlatformValue, getPlatformDefaultVoice } from '@/utils/platform';
+import { getPlatformDefaultVoice } from '@/utils/platform';
 import reduxBatchUndo from '@/utils/reduxBatchUndo';
 import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 import * as Sentry from '@/vendors/sentry';
@@ -819,10 +819,9 @@ class NodeManager extends EngineConsumer {
   private async registerIntentSteps<T extends { node: { id: string; type: BlockType }; data: Realtime.NodeData<any> }>(
     addedNodes: T[]
   ): Promise<void> {
-    const platform = this.select(ProjectV2.active.platformSelector);
     const addedIntentSteps = addedNodes.reduce<Realtime.diagram.RegisterIntentStepsPayload['intentSteps']>((acc, { node, data }) => {
       if (node.type === BlockType.INTENT) {
-        const platformData = getDistinctPlatformValue(platform, data as Realtime.NodeData.Intent);
+        const platformData = data as Realtime.NodeData.Intent;
 
         acc.push({
           stepID: node.id,
@@ -871,8 +870,8 @@ class NodeManager extends EngineConsumer {
     const commandNodesIDs = commandNodes.map(({ id }) => id);
     const commandNodeData = commandNodesIDs.map((nodeID) => this.engine.getDataByNodeID<Realtime.NodeData.Command>(nodeID));
     // if the deleted node is not a help intent or a stop intent
-    const deletingStopIntent = commandNodeData.some((data) => data?.alexa?.intent === AlexaConstants.AmazonIntent.STOP);
-    const deletingHelpIntent = commandNodeData.some((data) => data?.alexa?.intent === AlexaConstants.AmazonIntent.HELP);
+    const deletingStopIntent = commandNodeData.some((data) => data?.intent === AlexaConstants.AmazonIntent.STOP);
+    const deletingHelpIntent = commandNodeData.some((data) => data?.intent === AlexaConstants.AmazonIntent.HELP);
 
     if ((deletingStopIntent || deletingHelpIntent) && this.engine.isRootDiagram()) {
       const homeBlockCombinedNodesIDs = this.engine.getNodeByID(commandNodes[0].parentNode)?.combinedNodes ?? [];
@@ -881,8 +880,8 @@ class NodeManager extends EngineConsumer {
         .map((nodeID) => this.engine.getDataByNodeID<Realtime.NodeData.Command>(nodeID));
 
       // logic: user deleting stop intent and there are no more stop intent left
-      const missingStopIntent = remainedCommandsData.every((data) => data?.alexa?.intent !== AlexaConstants.AmazonIntent.STOP) && deletingStopIntent;
-      const missingHelpIntent = remainedCommandsData.every((data) => data?.alexa?.intent !== AlexaConstants.AmazonIntent.HELP) && deletingHelpIntent;
+      const missingStopIntent = remainedCommandsData.every((data) => data?.intent !== AlexaConstants.AmazonIntent.STOP) && deletingStopIntent;
+      const missingHelpIntent = remainedCommandsData.every((data) => data?.intent !== AlexaConstants.AmazonIntent.HELP) && deletingHelpIntent;
       const requiredCommand = (missingStopIntent && AlexaConstants.AmazonIntent.STOP) || (missingHelpIntent && AlexaConstants.AmazonIntent.HELP);
 
       if (requiredCommand) {

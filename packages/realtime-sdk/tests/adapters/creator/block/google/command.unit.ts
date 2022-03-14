@@ -1,5 +1,4 @@
 import { Creator } from '@test/factories';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { expect } from 'chai';
 
 import commandAdapter from '@/adapters/creator/block/google/command';
@@ -14,11 +13,9 @@ describe('Adapters | Creator | Block | Google | Command', () => {
       expect(result).to.eql(
         Creator.Block.Base.CommandNodeData({
           name: stepData.name,
-          [VoiceflowConstants.PlatformType.GOOGLE]: {
-            intent: stepData.intent,
-            mappings: [],
-            diagramID: null,
-          },
+          intent: stepData.intent,
+          mappings: [],
+          diagramID: null,
         })
       );
     });
@@ -31,11 +28,9 @@ describe('Adapters | Creator | Block | Google | Command', () => {
       expect(result).to.eql(
         Creator.Block.Base.CommandNodeData({
           name: stepData.name,
-          [VoiceflowConstants.PlatformType.GOOGLE]: {
-            intent: stepData.intent,
-            mappings: stepData.mappings!,
-            diagramID: stepData.diagramID,
-          },
+          intent: stepData.intent,
+          mappings: stepData.mappings!,
+          diagramID: stepData.diagramID,
         })
       );
     });
@@ -43,9 +38,7 @@ describe('Adapters | Creator | Block | Google | Command', () => {
 
   describe('when transforming to db', () => {
     it('returns correct default values', () => {
-      const nodeData = Creator.Block.Alexa.CommandNodeData({
-        [VoiceflowConstants.PlatformType.GOOGLE]: { diagramID: '', intent: '', mappings: [{ slot: null, variable: null }] },
-      });
+      const nodeData = Creator.Block.Alexa.CommandNodeData({ diagramID: '', intent: '', mappings: [{ slot: null, variable: null }] });
 
       const result = commandAdapter.toDB({ ...nodeData });
 
@@ -68,9 +61,9 @@ describe('Adapters | Creator | Block | Google | Command', () => {
         name: nodeData.name,
         next: null,
         ports: [],
-        intent: nodeData[VoiceflowConstants.PlatformType.GOOGLE].intent,
-        mappings: nodeData[VoiceflowConstants.PlatformType.GOOGLE].mappings,
-        diagramID: nodeData[VoiceflowConstants.PlatformType.GOOGLE].diagramID,
+        intent: nodeData.intent,
+        mappings: nodeData.mappings,
+        diagramID: nodeData.diagramID,
       });
     });
   });

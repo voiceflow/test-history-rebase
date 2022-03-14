@@ -1,27 +1,20 @@
 import { BaseNode } from '@voiceflow/base-types';
 
-import { DistinctPlatform } from '../../../../constants';
 import { NodeData } from '../../../../models';
-import { distinctPlatformsData } from '../../../../utils/platform';
 import { choiceAdapter, createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter } from '../utils';
 
 const interactionAdapter = createBlockAdapter<
   Omit<BaseNode.Interaction.StepData, 'else' | 'noMatch' | 'reprompt' | 'noReply'>,
-  Omit<NodeData.Interaction, 'else' | 'noReply' | 'noMatch' | 'buttons'>,
-  [{ platform: DistinctPlatform }],
-  [{ platform: DistinctPlatform }]
+  Omit<NodeData.Interaction, 'else' | 'noReply' | 'noMatch' | 'buttons'>
 >(
-  ({ name, choices, intentScope }, { platform }) => ({
+  ({ name, choices, intentScope }) => ({
     name,
-    choices: choices.map((choice) => ({
-      ...distinctPlatformsData(choiceAdapter.fromDB({ intent: '', mappings: [] })),
-      [platform]: choiceAdapter.fromDB(choice),
-    })),
+    choices: choices.map((choice) => choiceAdapter.fromDB(choice)),
     intentScope,
   }),
-  ({ name, choices, intentScope }, { platform }) => ({
+  ({ name, choices, intentScope }) => ({
     name,
-    choices: choices.map(({ [platform]: data }) => choiceAdapter.toDB(data)),
+    choices: choices.map((choice) => choiceAdapter.toDB(choice)),
     intentScope,
   })
 );

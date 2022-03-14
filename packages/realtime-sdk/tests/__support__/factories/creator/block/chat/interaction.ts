@@ -1,5 +1,4 @@
 import { ChatNode } from '@voiceflow/chat-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { extend } from 'cooky-cutter';
 
 import { NodeData } from '@/models';
@@ -26,5 +25,5 @@ export const InteractionNodeData = extend<ReturnType<typeof Base.InteractionNode
   noMatch: () => ChatNodeDataNoMatch(),
   noReply: () => ChatNodeDataNoReply(),
   buttons: () => [IntentButton()],
-  choices: () => [Base.ChoiceDistinctPlatformsData({ [VoiceflowConstants.PlatformType.GENERAL]: Base.ChoicePlatformNodeData() })],
+  choices: () => [Base.ChoiceData(Base.ChoicePlatformNodeData())],
 });

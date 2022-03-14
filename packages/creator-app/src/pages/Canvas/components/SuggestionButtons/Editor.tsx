@@ -8,7 +8,6 @@ import { createSelector } from 'reselect';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import OverflowMenu from '@/components/OverflowMenu';
-import { DistinctPlatform } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
 import { connect } from '@/hocs';
@@ -18,7 +17,7 @@ import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import { useButtonLayoutOption } from '@/pages/Canvas/managers/hooks';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { ConnectedProps } from '@/types';
-import { getDistinctPlatformValue, getPlatformValue } from '@/utils/platform';
+import { getPlatformValue } from '@/utils/platform';
 
 import HelpTooltip from './HelpTooltip';
 import Item from './Item';
@@ -39,8 +38,7 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
   });
 
   const usedIntentIDs = React.useMemo(
-    () =>
-      (focusedNode?.choices?.map((platformChoice) => getDistinctPlatformValue(platform, platformChoice).intent).filter(Boolean) as string[]) ?? [],
+    () => (focusedNode?.choices?.map((choice) => choice.intent).filter(Boolean) as string[]) ?? [],
     [platform, focusedNode?.choices]
   );
   const dividedIntents = React.useMemo(() => {
@@ -88,7 +86,7 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
 
 const focusedNodeWithButtonsSelector = createSelector(
   Creator.focusedNodeDataSelector,
-  (data) => data as Realtime.NodeData<{ buttons?: BaseButton.AnyButton[]; choices?: Record<DistinctPlatform, Realtime.NodeData.InteractionChoice>[] }>
+  (data) => data as Realtime.NodeData<{ buttons?: BaseButton.AnyButton[]; choices?: Realtime.NodeData.InteractionChoice[] }>
 );
 
 const mapStateToProps = {

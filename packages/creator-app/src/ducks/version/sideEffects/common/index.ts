@@ -15,7 +15,6 @@ import * as Thread from '@/ducks/thread';
 import * as VersionV2 from '@/ducks/versionV2';
 import { Thunk } from '@/store/types';
 import { storeLogger } from '@/store/utils';
-import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 
 import { getActiveVersionContext } from '../../utils';
 
@@ -56,8 +55,6 @@ export const importProjectContext =
     nodes,
     products,
     diagrams,
-    sourcePlatform,
-    targetPlatform,
   }: {
     nodes: { data: Realtime.NodeData<unknown>; node: Realtime.Node }[];
     products: Realtime.Product[];
@@ -67,32 +64,6 @@ export const importProjectContext =
   }): Thunk<{ data: Realtime.NodeData<unknown>; node: Realtime.Node }[]> =>
   async (dispatch) => {
     let mappedNodes = nodes;
-
-    if (sourcePlatform !== targetPlatform) {
-      mappedNodes = mappedNodes.map((node) => {
-        if (Realtime.Utils.node.isIntentNode(node.data)) {
-          return {
-            ...node,
-            data: { ...node.data, ...setDistinctPlatformValue(targetPlatform, getDistinctPlatformValue(sourcePlatform, node.data)) },
-          };
-        }
-
-        if (Realtime.Utils.node.isChoiceNode(node.data)) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              choices: node.data.choices.map((choice) => ({
-                ...choice,
-                ...setDistinctPlatformValue(targetPlatform, getDistinctPlatformValue(sourcePlatform, choice)),
-              })),
-            },
-          };
-        }
-
-        return node;
-      });
-    }
 
     await Promise.all(
       products.map(async (product) => {

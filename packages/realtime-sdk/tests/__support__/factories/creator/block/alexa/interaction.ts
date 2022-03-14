@@ -1,5 +1,4 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { extend } from 'cooky-cutter';
 
 import { NodeData } from '@/models';
@@ -14,5 +13,5 @@ export const InteractionStepData = extend<ReturnType<typeof Voice.InteractionSte
 
 export const InteractionNodeData = extend<ReturnType<typeof Voice.InteractionNodeData>, NodeData.Interaction>(Voice.InteractionNodeData, {
   buttons: () => null,
-  choices: () => [Base.ChoiceDistinctPlatformsData({ [VoiceflowConstants.PlatformType.ALEXA]: Base.ChoicePlatformNodeData() })],
+  choices: () => [Base.ChoiceData(Base.ChoicePlatformNodeData())],
 });

@@ -4,7 +4,7 @@ import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 
 import { Pair } from '@/types';
 
-export type { DistinctPlatform, MarkupBlockType, RootOrMarkupBlockType } from '@voiceflow/realtime-sdk';
+export type { MarkupBlockType, RootOrMarkupBlockType } from '@voiceflow/realtime-sdk';
 export {
   BlockType,
   BlockVariant,
@@ -12,7 +12,6 @@ export {
   BuiltInVariable,
   CUSTOM_SLOT_TYPE,
   DialogType,
-  DISTINCT_PLATFORMS,
   LEGACY_CUSTOM_SLOT_TYPE,
   VoicePromptType,
 } from '@voiceflow/realtime-sdk';

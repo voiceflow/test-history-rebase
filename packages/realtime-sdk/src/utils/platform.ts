@@ -1,4 +1,3 @@
-import { DISTINCT_PLATFORMS, DistinctPlatform } from '@realtime-sdk/constants';
 import { AnyVoice } from '@realtime-sdk/models';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Nullish } from '@voiceflow/common';
@@ -6,7 +5,6 @@ import { GoogleConstants } from '@voiceflow/google-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { legacyPlatformToProjectType, NonDeprecatedPlatform } from '../constants/platform';
-import { isDistinctPlatform } from './typeGuards';
 
 export const createProjectTypeSelectorV2 =
   <T>(values: Record<VoiceflowConstants.ProjectType, T>) =>
@@ -74,21 +72,11 @@ export const getPlatformValue: {
   defaultValue: T | undefined
 ) => createPlatformSelector(platformValues, defaultValue)(platform);
 
-export const getDistinctPlatformValue = <T>(platform: VoiceflowConstants.PlatformType, platformValues: Record<DistinctPlatform, T>): T =>
-  createPlatformSelector(platformValues, platformValues[VoiceflowConstants.PlatformType.GENERAL])(platform);
-
-export const setDistinctPlatformValue = <T>(platform: VoiceflowConstants.PlatformType, value: T): Partial<Record<DistinctPlatform, T>> => ({
-  [isDistinctPlatform(platform) ? platform : VoiceflowConstants.PlatformType.GENERAL]: value,
-});
-
-export const distinctPlatformsData = <T>(data: T): Record<DistinctPlatform, T> =>
-  DISTINCT_PLATFORMS.reduce((acc, platform) => Object.assign(acc, { [platform]: data }), {} as Record<DistinctPlatform, T>);
-
-export const getPlatformDefaultVoice = createPlatformSelector<AnyVoice>(
+export const getPlatformDefaultVoice = createPlatformSelectorV2<AnyVoice>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: AlexaConstants.Voice.ALEXA,
     [VoiceflowConstants.PlatformType.GOOGLE]: GoogleConstants.Voice.DEFAULT,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: GoogleConstants.Voice.DEFAULT,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: GoogleConstants.Voice.DEFAULT,
   },
   VoiceflowConstants.Voice.DEFAULT
 );

@@ -8,10 +8,8 @@ import { createSelector } from 'reselect';
 import * as CreatorV1Selectors from '@/ducks/creator/diagram/selectors';
 import * as Feature from '@/ducks/feature';
 import * as IntentSelectors from '@/ducks/intentV2/selectors';
-import * as ActiveProjectSelectors from '@/ducks/projectV2/selectors/active';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import { createCurriedSelector } from '@/ducks/utils/selector';
-import { getDistinctPlatformValue } from '@/utils/platform';
 
 import { creatorStateSelector } from './base';
 import { portsByNodeIDSelector } from './port';
@@ -151,15 +149,13 @@ export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamS
 );
 
 export const intentNodeDataLookupSelector = createSelector(
-  [allNodeDataSelector, ActiveProjectSelectors.platformSelector, IntentSelectors.getIntentByIDSelector],
-  (nodesData, platform, getIntentByID) => {
+  [allNodeDataSelector, IntentSelectors.getIntentByIDSelector],
+  (nodesData, getIntentByID) => {
     const result: { [intentID: string]: { data: Realtime.NodeData.Intent.PlatformData; intent: Realtime.Intent; nodeID: string } } = {};
 
     // eslint-disable-next-line no-restricted-syntax
-    for (const nodeData of nodesData) {
-      if (!Realtime.Utils.typeGuards.isIntentNodeData(nodeData)) continue;
-
-      const data = getDistinctPlatformValue(platform, nodeData);
+    for (const data of nodesData) {
+      if (!Realtime.Utils.typeGuards.isIntentNodeData(data)) continue;
 
       if (!data.intent || !!result[data.intent]) continue;
 
@@ -167,7 +163,7 @@ export const intentNodeDataLookupSelector = createSelector(
 
       if (!intent) continue;
 
-      result[intent.id] = { data, intent, nodeID: nodeData.nodeID };
+      result[intent.id] = { data, intent, nodeID: data.nodeID };
     }
 
     return result;

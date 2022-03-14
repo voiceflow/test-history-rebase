@@ -40,18 +40,7 @@ export const DEFAULT_PROJECT_LIST_NAME = 'Default List';
 export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
 
-export const DISTINCT_PLATFORMS = [
-  VoiceflowConstants.PlatformType.ALEXA,
-  VoiceflowConstants.PlatformType.GOOGLE,
-  VoiceflowConstants.PlatformType.GENERAL,
-] as const;
-
 export const PLATFORMS_WITH_INVOCATION_NAME = [VoiceflowConstants.PlatformType.ALEXA, VoiceflowConstants.PlatformType.GOOGLE] as const;
-
-export type DistinctPlatform =
-  | VoiceflowConstants.PlatformType.ALEXA
-  | VoiceflowConstants.PlatformType.GOOGLE
-  | VoiceflowConstants.PlatformType.GENERAL;
 
 export enum DialogType {
   AUDIO = 'audio',

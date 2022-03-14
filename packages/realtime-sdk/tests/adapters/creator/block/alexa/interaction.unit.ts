@@ -1,6 +1,5 @@
 import { Creator } from '@test/factories';
 import { Utils } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { expect } from 'chai';
 import { datatype } from 'faker';
 import Sinon from 'sinon';
@@ -33,14 +32,12 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
         Creator.Block.Alexa.InteractionNodeData({
           name: data.name,
           choices: [
-            Creator.Block.Base.ChoiceDistinctPlatformsData({
-              [VoiceflowConstants.PlatformType.ALEXA]: {
-                id,
-                goTo: data.choices[0].goTo!,
-                intent: data.choices[0].intent,
-                action: data.choices[0].action!,
-                mappings: data.choices[0].mappings!,
-              },
+            Creator.Block.Base.ChoiceData({
+              id,
+              goTo: data.choices[0].goTo!,
+              intent: data.choices[0].intent,
+              action: data.choices[0].action!,
+              mappings: data.choices[0].mappings!,
             }),
           ],
           buttons: null,
@@ -90,10 +87,10 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
         noMatch,
         choices: [
           {
-            goTo: data.choices[0].alexa.goTo,
-            action: data.choices[0].alexa.action,
-            intent: data.choices[0].alexa.intent,
-            mappings: data.choices[0].alexa.mappings,
+            goTo: data.choices[0].goTo,
+            action: data.choices[0].action,
+            intent: data.choices[0].intent,
+            mappings: data.choices[0].mappings,
           },
         ],
         chips: null,

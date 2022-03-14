@@ -26,7 +26,7 @@ const ChoiceEditor: NodeEditor<Realtime.NodeData.Interaction, Realtime.NodeData.
   const { choices } = data;
 
   const updateChoices = React.useCallback(
-    (choices: Record<Realtime.DistinctPlatform, Realtime.NodeData.InteractionChoice>[], save?: boolean) => onChange({ choices }, save),
+    (choices: Realtime.NodeData.InteractionChoice[], save?: boolean) => onChange({ choices }, save),
     [onChange]
   );
 

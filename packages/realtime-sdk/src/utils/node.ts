@@ -1,10 +1,7 @@
-import { BlockType, DistinctPlatform } from '@realtime-sdk/constants';
+import { BlockType } from '@realtime-sdk/constants';
 import { NodeData } from '@realtime-sdk/models';
 import { NonNullishRecord } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Overwrite } from 'utility-types';
-
-import { getDistinctPlatformValue } from './platform';
 
 const checkNodeType =
   <T>(type: BlockType) =>
@@ -32,17 +29,14 @@ export const isLinkedDiagramNode = (data: NodeData<unknown>): data is NodeData<{
 export const isCommandNode = checkNodeType<NodeData.Command>(BlockType.COMMAND);
 
 export const isLinkedCommandNode = (
-  data: NodeData<unknown>,
-  platform: VoiceflowConstants.PlatformType
-): data is NodeData<NodeData.Command> & Record<DistinctPlatform, NonNullishRecord<Pick<NodeData.Command.PlatformData, 'diagramID'>>> =>
-  isCommandNode(data) && !!getDistinctPlatformValue(platform, data).diagramID;
+  data: NodeData<unknown>
+): data is NodeData<NodeData.Command> & NonNullishRecord<Pick<NodeData.Command.PlatformData, 'diagramID'>> => isCommandNode(data) && !!data.diagramID;
 
 export const isIntentNode = checkNodeType<NodeData.Intent>(BlockType.INTENT);
 
-export type LinkedIntentNode = NodeData<NodeData.Intent> & Record<DistinctPlatform, NonNullishRecord<Pick<NodeData.Intent.PlatformData, 'intent'>>>;
+export type LinkedIntentNode = NodeData<NodeData.Intent> & NonNullishRecord<Pick<NodeData.Intent.PlatformData, 'intent'>>;
 
-export const isLinkedIntentNode = (data: NodeData<unknown>, platform: VoiceflowConstants.PlatformType): data is LinkedIntentNode =>
-  isIntentNode(data) && !!getDistinctPlatformValue(platform, data).intent;
+export const isLinkedIntentNode = (data: NodeData<unknown>): data is LinkedIntentNode => isIntentNode(data) && !!data.intent;
 
 export const isChoiceNode = checkNodeType<NodeData.Interaction>(BlockType.CHOICE);
 

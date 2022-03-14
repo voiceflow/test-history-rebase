@@ -3,9 +3,7 @@ import { BaseNode } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';
 import { lorem } from 'faker';
 
-import { DistinctPlatform } from '@/constants';
 import { NodeData } from '@/models';
-import { distinctPlatformsData } from '@/utils/platform';
 
 export const ChoiceGoTo = define<BaseNode.Interaction.ChoiceGoTo>({
   intentID: () => lorem.word(),
@@ -32,13 +30,12 @@ export const ChoicePlatformNodeData = define<NodeData.InteractionChoice>({
   mappings: () => [{ slot: lorem.word(), variable: lorem.word() }],
 });
 
-export const ChoiceDistinctPlatformsData = define<Record<DistinctPlatform, NodeData.InteractionChoice>>({
-  ...distinctPlatformsData(() =>
-    ChoicePlatformNodeData({ id: 'id', goTo: null, intent: '', action: BaseNode.Interaction.ChoiceAction.PATH, mappings: [] })
-  ),
+export const ChoiceData = define<NodeData.InteractionChoice>({
+  ...ChoicePlatformNodeData({ id: 'id', goTo: null, intent: '', action: BaseNode.Interaction.ChoiceAction.PATH, mappings: [] }),
 });
 
 export const InteractionNodeData = define<Omit<NodeData.Interaction, 'else' | 'noReply' | 'buttons'>>({
   name: () => lorem.word(),
-  choices: () => [ChoiceDistinctPlatformsData()],
+  choices: () => [ChoiceData()],
+  noMatch: null,
 });

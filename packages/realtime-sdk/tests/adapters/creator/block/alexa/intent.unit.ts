@@ -1,7 +1,6 @@
 import intentAdapter from '@realtime-sdk/adapters/creator/block/alexa/intent';
 import { Creator } from '@test/factories';
 import { BaseNode } from '@voiceflow/base-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { expect } from 'chai';
 
 describe('Adapters | Creator | Block | Alexa | intentAdapter', () => {
@@ -13,11 +12,9 @@ describe('Adapters | Creator | Block | Alexa | intentAdapter', () => {
 
       expect(result).eql(
         Creator.Block.Alexa.IntentNodeData({
-          [VoiceflowConstants.PlatformType.ALEXA]: {
-            intent: data.intent,
-            mappings: data.mappings!,
-            availability: BaseNode.Intent.IntentAvailability.GLOBAL,
-          },
+          intent: data.intent,
+          mappings: data.mappings!,
+          availability: BaseNode.Intent.IntentAvailability.GLOBAL,
         })
       );
     });
@@ -29,11 +26,9 @@ describe('Adapters | Creator | Block | Alexa | intentAdapter', () => {
 
       expect(result).eql(
         Creator.Block.Alexa.IntentNodeData({
-          [VoiceflowConstants.PlatformType.ALEXA]: {
-            intent: data.intent,
-            mappings: [],
-            availability: BaseNode.Intent.IntentAvailability.GLOBAL,
-          },
+          intent: data.intent,
+          mappings: [],
+          availability: BaseNode.Intent.IntentAvailability.GLOBAL,
         })
       );
     });
@@ -45,7 +40,7 @@ describe('Adapters | Creator | Block | Alexa | intentAdapter', () => {
 
       const result = intentAdapter.toDB(data);
 
-      expect(result).eql(data.alexa);
+      expect(result).eql(data);
     });
   });
 });

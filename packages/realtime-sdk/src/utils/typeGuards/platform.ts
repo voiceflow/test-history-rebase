@@ -1,4 +1,4 @@
-import { DISTINCT_PLATFORMS, legacyPlatformToProjectType, PLATFORMS_WITH_INVOCATION_NAME } from '@realtime-sdk/constants';
+import { legacyPlatformToProjectType, PLATFORMS_WITH_INVOCATION_NAME } from '@realtime-sdk/constants';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { createTypeGuardCreator } from './utils';
@@ -15,6 +15,5 @@ export const isVoiceflowPlatform = (platform?: VoiceflowConstants.PlatformType |
 
 export const isChatProjectType = createProjectTypeTypeGuard(VoiceflowConstants.ProjectType.CHAT);
 export const isVoiceProjectType = createProjectTypeTypeGuard(VoiceflowConstants.ProjectType.VOICE);
-export const isDistinctPlatform = createPlatformTypeGuard(DISTINCT_PLATFORMS);
 
 export const isPlatformWithInvocationName = createPlatformTypeGuard(PLATFORMS_WITH_INVOCATION_NAME);

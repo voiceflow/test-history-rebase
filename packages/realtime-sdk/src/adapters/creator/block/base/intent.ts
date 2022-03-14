@@ -1,29 +1,15 @@
 import { BaseNode } from '@voiceflow/base-types';
 
-import { DistinctPlatform } from '../../../../constants';
 import { NodeData } from '../../../../models';
-import { distinctPlatformsData } from '../../../../utils/platform';
 import { createBlockAdapter, createOutPortsAdapter, nextOnlyOutPortsAdapter } from '../utils';
 
-const intentAdapter = createBlockAdapter<
-  BaseNode.Intent.StepData,
-  NodeData.Intent,
-  [{ platform: DistinctPlatform }],
-  [{ platform: DistinctPlatform }]
->(
-  ({ intent, mappings, availability }, { platform }) => ({
-    ...distinctPlatformsData({ intent: null, mappings: [], availability: BaseNode.Intent.IntentAvailability.GLOBAL }),
-    [platform]: {
-      intent,
-      mappings: mappings ?? [],
-      availability: availability ?? BaseNode.Intent.IntentAvailability.GLOBAL,
-    },
+const intentAdapter = createBlockAdapter<BaseNode.Intent.StepData, NodeData.Intent>(
+  ({ intent, mappings, availability }) => ({
+    intent,
+    mappings: mappings ?? [],
+    availability: availability ?? BaseNode.Intent.IntentAvailability.GLOBAL,
   }),
-  (data, { platform }) => {
-    const { intent, mappings, availability } = data[platform];
-
-    return { intent, mappings, availability };
-  }
+  ({ intent, mappings, availability }) => ({ intent, mappings, availability })
 );
 
 export const intentOutPortsAdapter = createOutPortsAdapter<NodeData.IntentBuiltInPorts, NodeData.Intent>(

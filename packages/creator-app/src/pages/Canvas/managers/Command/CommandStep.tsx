@@ -7,7 +7,6 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { getDistinctPlatformValue } from '@/utils/platform';
 
 export interface CommandStepProps {
   nodeID: string;
@@ -35,13 +34,11 @@ const mapDispatchToProps = {
 };
 
 const mergeProps = (
-  ...[, { goToDiagram }, { data, platform }]: MergeArguments<{}, typeof mapDispatchToProps, ConnectedStepProps<Realtime.NodeData.Command>>
+  ...[, { goToDiagram }, { data }]: MergeArguments<{}, typeof mapDispatchToProps, ConnectedStepProps<Realtime.NodeData.Command>>
 ) => ({
   goToDiagram: () => {
-    const platformData = getDistinctPlatformValue(platform, data);
-
-    if (platformData.diagramID) {
-      goToDiagram(platformData.diagramID);
+    if (data.diagramID) {
+      goToDiagram(data.diagramID);
     }
   },
 });

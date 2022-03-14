@@ -12,7 +12,6 @@ export const {
   isDialogflowPlatform,
   isVoiceProjectType,
   isChatProjectType,
-  isDistinctPlatform,
   isVoiceflowPlatform,
   isPlatformWithInvocationName,
   truthy,

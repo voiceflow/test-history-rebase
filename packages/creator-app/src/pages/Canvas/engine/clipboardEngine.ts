@@ -209,7 +209,7 @@ class ClipboardEngine extends EngineConsumer {
       return acc;
     }, []);
 
-    const { intents: intentIDs, products: productIDs, diagrams: diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes, platform);
+    const { intents: intentIDs, products: productIDs, diagrams: diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes);
 
     const products = ProductV2.productsByIDsSelector(state, { ids: productIDs });
     const diagrams = DiagramV2.diagramsByIDsSelector(state, { ids: diagramIDs });

@@ -17,7 +17,6 @@ import {
   IntentNodeDataLookupContext,
 } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
-import { getDistinctPlatformValue } from '@/utils/platform';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -102,7 +101,7 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
     for (const portID of ports.out.dynamic) {
       if (!choicesByPortID[portID]) continue;
 
-      const { id, goTo, intent, action } = getDistinctPlatformValue(platform, choicesByPortID[portID]);
+      const { id, goTo, intent, action } = choicesByPortID[portID];
 
       const isPath = action === BaseNode.Interaction.ChoiceAction.PATH;
       const goToIntent = goTo?.intentID && intentsMap[goTo.intentID] ? intentsMap[goTo.intentID] ?? null : null;

@@ -3,7 +3,6 @@ import { BaseNode } from '@voiceflow/base-types';
 import { NullableRecord, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Logger } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { CanvasAPI } from '@/components/Canvas';
 import { FeatureFlag } from '@/config/features';
@@ -14,7 +13,6 @@ import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptorOptionalPorts } from '@/pages/Canvas/managers/types';
 import { Dispatcher, DispatchResult, Selector } from '@/store/types';
 import { Pair, Point } from '@/types';
-import { getDistinctPlatformValue } from '@/utils/platform';
 
 import type { Engine } from '.';
 
@@ -290,22 +288,18 @@ export const getNodesData = (nodeData: Record<string, Realtime.NodeData<unknown>
   return nodeIDs.map((nodeID) => nodeData[nodeID]);
 };
 
-export const getCopiedNodeDataIDs = (
-  nodeData: Record<string, Realtime.NodeData<unknown>>,
-  copiedNodes: Realtime.Node[],
-  platform: VoiceflowConstants.PlatformType
-) => {
+export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<unknown>>, copiedNodes: Realtime.Node[]) => {
   const copiedNodesData = getNodesData(nodeData, copiedNodes);
   const intents: string[] = [];
 
   copiedNodesData.forEach((data) => {
-    if (Realtime.Utils.node.isLinkedIntentNode(data, platform)) {
-      intents.push(getDistinctPlatformValue(platform, data).intent);
+    if (Realtime.Utils.node.isLinkedIntentNode(data) && data.intent) {
+      intents.push(data.intent);
     }
 
     if (Realtime.Utils.node.isChoiceNode(data)) {
       data.choices.forEach((choice) => {
-        const { intent } = getDistinctPlatformValue(platform, choice);
+        const { intent } = choice;
 
         if (intent) {
           intents.push(intent);

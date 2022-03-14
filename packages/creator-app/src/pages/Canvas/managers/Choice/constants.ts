@@ -5,7 +5,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { BlockType } from '@/constants';
 import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
-import { distinctPlatformsData } from '@/utils/platform';
 
 import { NodeConfig } from '../types';
 
@@ -34,13 +33,13 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.Nod
       noReply: null,
       buttons: Realtime.Utils.typeGuards.isChatProjectType(projectType) ? buttonsFactory() : null,
       choices: [
-        distinctPlatformsData({
+        {
           id: Utils.id.cuid.slug(),
           goTo: null,
           intent: null,
           action: BaseNode.Interaction.ChoiceAction.PATH,
           mappings: [],
-        }),
+        },
       ],
       intentScope: BaseNode.Utils.IntentScope.GLOBAL,
     },

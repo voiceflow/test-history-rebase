@@ -6,7 +6,6 @@ import { BlockVariant } from '@/constants';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
-import { getDistinctPlatformValue } from '@/utils/platform';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -34,10 +33,10 @@ export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, 
   </Step>
 );
 
-const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({ ports, data, platform, variant }) => {
+const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({ ports, data, variant }) => {
   const intentMap = React.useContext(CustomIntentMapContext)!;
 
-  const { intent, availability } = getDistinctPlatformValue(platform, data);
+  const { intent, availability } = data;
 
   return (
     <IntentStep

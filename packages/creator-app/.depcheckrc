@@ -1,4 +1,12 @@
 {
+  "ignorePatterns": [
+    "/build",
+    "/sonar",
+    "/.jest_cache",
+    "/.nyc_output",
+    "/jest_coverage",
+    "/nyc_coverage_unit"
+  ],
   "specials": [
     "bin",
     "istanbul",

@@ -1,5 +1,12 @@
 {
-  "specials": ["bin", "istanbul", "ttypescript"],
+  "ignorePatterns": [
+    "/build"
+  ],
+  "specials": [
+    "bin",
+    "istanbul",
+    "ttypescript"
+  ],
   "ignores": [
     "@ml-sdk/*",
     "chai"

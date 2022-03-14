@@ -1,4 +1,7 @@
 {
+  "ignorePatterns": [
+    "/build"
+  ],
   "specials": [
     "bin",
     "istanbul",

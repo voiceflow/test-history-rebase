@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.658.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.2...@voiceflow/creator-app@1.658.3) (2022-03-15)
+
+
+### Bug Fixes
+
+* removed account page redesign ff (VF-3132) ([#5201](https://github.com/voiceflow/creator-app/issues/5201)) ([dc09f55](https://github.com/voiceflow/creator-app/commit/dc09f5582d6fbbe9a32a4aa7be8b1b0b42f56105))
+
+
+
+
+
 ## [1.658.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.1...@voiceflow/creator-app@1.658.2) (2022-03-15)
 
 **Note:** Version bump only for package @voiceflow/creator-app

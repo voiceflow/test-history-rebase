@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.60.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.60.1...@voiceflow/ui@1.60.2) (2022-03-15)
+
+
+### Bug Fixes
+
+* change hue scale max value (VF-3125) ([#5197](https://github.com/voiceflow/creator-app/issues/5197)) ([dc3fd29](https://github.com/voiceflow/creator-app/commit/dc3fd293e0f5d1f8fe0d8e1a051edd6cd8983980))
+
+
+
+
+
 ## [1.60.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.60.0...@voiceflow/ui@1.60.1) (2022-03-15)
 
 

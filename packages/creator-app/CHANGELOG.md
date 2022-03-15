@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.658.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.657.2...@voiceflow/creator-app@1.658.0) (2022-03-15)
+
+
+### Features
+
+* voiceflow nlu export to alexa (VF-000) ([#5198](https://github.com/voiceflow/creator-app/issues/5198)) ([58e8348](https://github.com/voiceflow/creator-app/commit/58e834835451773860e402df1a539ddd7101055e))
+
+
+
+
+
 ## [1.657.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.657.1...@voiceflow/creator-app@1.657.2) (2022-03-15)
 
 

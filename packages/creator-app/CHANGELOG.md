@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.658.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.3...@voiceflow/creator-app@1.658.4) (2022-03-15)
+
+
+### Bug Fixes
+
+* make built-in intent names capitalized on all platforms (VF-2999) ([#5202](https://github.com/voiceflow/creator-app/issues/5202)) ([c0f6160](https://github.com/voiceflow/creator-app/commit/c0f61602920b0f2ed9402088dffc7c1c0c038dc0))
+
+
+
+
+
 ## [1.658.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.2...@voiceflow/creator-app@1.658.3) (2022-03-15)
 
 

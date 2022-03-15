@@ -37,8 +37,8 @@ export const EXPORT_TYPE_OPTIONS = [
 export const getNplModelProvider = Utils.platform.createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: [NLPProvider.ALEXA],
-    [VoiceflowConstants.PlatformType.GOOGLE]: [NLPProvider.DIALOGFLOW_ES],
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: [NLPProvider.DIALOGFLOW_ES],
+    [VoiceflowConstants.PlatformType.GOOGLE]: [NLPProvider.DIALOGFLOW_ES, NLPProvider.VF_CSV],
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: [NLPProvider.DIALOGFLOW_ES, NLPProvider.VF_CSV],
   },
   Object.values(NLPProvider)
 );

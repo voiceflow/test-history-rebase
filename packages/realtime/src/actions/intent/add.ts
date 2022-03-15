@@ -11,10 +11,10 @@ class AddIntent extends AbstractVersionResourceControl<AddIntentPayload> {
 
   protected process = async (ctx: Context, { payload }: Action<AddIntentPayload>) => {
     const { creatorID } = ctx.data;
-    const platform = await this.services.project.getPlatform(creatorID, payload.projectID);
+    const projectType = await this.services.project.getProjectType(creatorID, payload.projectID);
 
     await this.services.intent.create(creatorID, payload.versionID, {
-      ...Realtime.Adapters.getPlatformIntentAdapter<any>(platform).toDB(payload.value),
+      ...Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectType).toDB(payload.value),
       key: payload.key,
     });
   };

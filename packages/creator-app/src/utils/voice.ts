@@ -142,7 +142,7 @@ export const getPlatformVoiceOptions = (platform: VoiceflowConstants.PlatformTyp
     {
       [VoiceflowConstants.PlatformType.ALEXA]: getAlexaVoiceOptions,
       [VoiceflowConstants.PlatformType.GOOGLE]: getGoogleVoiceOptions,
-      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: getGoogleDialogflowVoiceOptions,
+      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: getGoogleDialogflowVoiceOptions,
     },
     getGeneralVoiceOptions
   )(params);

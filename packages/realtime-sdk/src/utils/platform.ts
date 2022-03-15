@@ -15,6 +15,11 @@ export const createProjectTypeSelectorV2 =
     return value;
   };
 
+export const createAdvancedProjectTypeSelectorV2 =
+  <T extends Record<VoiceflowConstants.ProjectType, any>>(values: T) =>
+  <P extends VoiceflowConstants.ProjectType>(platform: P): T[P] =>
+    createProjectTypeSelectorV2(values)(platform);
+
 export const createPlatformAndProjectTypeSelectorV2 =
   <T>(
     values: Partial<Record<VoiceflowConstants.ProjectType | NonDeprecatedPlatform | `${NonDeprecatedPlatform}:${VoiceflowConstants.ProjectType}`, T>>,

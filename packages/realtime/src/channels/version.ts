@@ -39,7 +39,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     ]);
 
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbVersion.platformData.slots);
-    const intents = Realtime.Adapters.getPlatformIntentAdapter<any>(platform).mapFromDB(dbVersion.platformData.intents, { platform });
+    const intents = Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectType).mapFromDB(dbVersion.platformData.intents, { platform });
     const products =
       'products' in project.platformData
         ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((project.platformData as Realtime.AlexaProjectData).products))

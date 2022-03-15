@@ -2,7 +2,7 @@ export { default as creatorAdapter } from './creator';
 export { default as alexaDisplayAdapter } from './creator/block/alexa/display';
 export { voicePromptToSpeakDataAdapter } from './creator/block/utils';
 export { default as diagramAdapter } from './diagram';
-export { default as getPlatformIntentAdapter } from './intent';
+export { default as getProjectTypeIntentAdapter } from './intent';
 export * as Intent from './intent';
 export { default as memberAdapter } from './member';
 export { default as productAdapter } from './product';

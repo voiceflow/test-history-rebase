@@ -17,6 +17,7 @@ import { StepDragItem } from './types';
 
 const Steps: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
+  const projectType = useSelector(ProjectV2.active.typeV2Selector);
   const expandedSections = useSelector(UI.openBlockMenuSectionsSelector);
   const toggleSection = useDispatch(UI.toggleBlockMenuSection);
   const gadgets = useFeature(FeatureFlag.GADGETS);
@@ -25,7 +26,7 @@ const Steps: React.FC = () => {
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const sections = React.useMemo(() => {
-    const platformSections = getSections(platform);
+    const platformSections = getSections(platform, projectType);
 
     return platformSections.map((platformSection) => ({
       ...platformSection,

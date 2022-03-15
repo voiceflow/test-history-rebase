@@ -11,12 +11,12 @@ class AddManyIntents extends AbstractVersionResourceControl<AddManyIntentsPayloa
 
   protected process = async (ctx: Context, { payload }: Action<AddManyIntentsPayload>) => {
     const { creatorID } = ctx.data;
-    const platform = await this.services.project.getPlatform(creatorID, payload.projectID);
+    const projectType = await this.services.project.getProjectType(creatorID, payload.projectID);
 
     await this.services.intent.createMany(
       creatorID,
       payload.versionID,
-      Realtime.Adapters.getPlatformIntentAdapter<any>(platform).mapToDB(payload.values)
+      Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectType).mapToDB(payload.values)
     );
   };
 }

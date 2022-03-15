@@ -6,7 +6,6 @@ import _isFunction from 'lodash/isFunction';
 
 import { BlockCategory } from '@/constants';
 import { getManager } from '@/pages/Canvas/managers';
-import { createPlatformSelector } from '@/utils/platform';
 
 export interface MenuStep {
   type: Realtime.BlockType;
@@ -254,13 +253,13 @@ export const DIALOGFLOW_ES_VOICE_SECTIONS = [
   },
 ];
 
-export const getSections = createPlatformSelector(
+export const getSections = Realtime.Utils.platform.createPlatformAndProjectTypeSelectorV2(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_SECTIONS,
     [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_SECTIONS,
-    [VoiceflowConstants.PlatformType.CHATBOT]: CHATBOT_SECTIONS,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: DIALOGFLOW_ES_CHAT_SECTIONS,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: DIALOGFLOW_ES_VOICE_SECTIONS,
+    [`${VoiceflowConstants.PlatformType.VOICEFLOW}:${VoiceflowConstants.ProjectType.CHAT}`]: CHATBOT_SECTIONS,
+    [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.CHAT}`]: DIALOGFLOW_ES_CHAT_SECTIONS,
+    [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.VOICE}`]: DIALOGFLOW_ES_VOICE_SECTIONS,
   },
   GENERAL_SECTIONS
 );

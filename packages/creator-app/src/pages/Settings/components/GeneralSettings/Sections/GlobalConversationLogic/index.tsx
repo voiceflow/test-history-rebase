@@ -9,7 +9,7 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useFeature, useSelector } from '@/hooks';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
-import { getPlatformDefaultVoice, getPlatformValue } from '@/utils/platform';
+import { getPlatformDefaultVoice } from '@/utils/platform';
 import { getPlatformVoiceOptions, prettifyVoice } from '@/utils/voice';
 
 import { AssistantConversationLogic } from './components';
@@ -72,15 +72,15 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
         />
       </Section>
 
-      {getPlatformValue(
-        platform,
-        {
-          [VoiceflowConstants.PlatformType.ALEXA]: assistantLogic,
-          [VoiceflowConstants.PlatformType.GOOGLE]: assistantLogic,
-          [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: assistantLogic,
-        },
-        <></>
-      )}
+      {Realtime.Utils.typeGuards.isVoiceProjectType(projectType) &&
+        Realtime.Utils.platform.createPlatformSelectorV2(
+          {
+            [VoiceflowConstants.PlatformType.ALEXA]: assistantLogic,
+            [VoiceflowConstants.PlatformType.GOOGLE]: assistantLogic,
+            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: assistantLogic,
+          },
+          <></>
+        )(platform)}
     </>
   );
 };

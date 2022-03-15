@@ -9,7 +9,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { getSections, MenuStep } from '@/pages/Project/components/DesignMenu/components/Steps/constants';
-import { PlatformContext } from '@/pages/Project/contexts';
+import { PlatformContext, TypeV2Context } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { withKeyPress } from '@/utils/dom';
 
@@ -18,6 +18,7 @@ import { Container, Select } from './components';
 const Spotlight = () => {
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
+  const projectType = React.useContext(TypeV2Context)!;
   // NOTE: extra protection against context being falsy needed for HMR
   const spotlight = React.useContext(SpotlightContext);
 
@@ -39,7 +40,7 @@ const Spotlight = () => {
 
   const options = React.useMemo(
     () =>
-      getSections(platform)
+      getSections(platform, projectType)
         .flatMap((section) => section.steps)
         .filter((step) => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;

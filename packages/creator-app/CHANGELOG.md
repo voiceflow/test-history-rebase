@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.655.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.654.0...@voiceflow/creator-app@1.655.0) (2022-03-15)
+
+
+### Bug Fixes
+
+* canvas-export loading (VF-000) ([#5186](https://github.com/voiceflow/creator-app/issues/5186)) ([1a37a26](https://github.com/voiceflow/creator-app/commit/1a37a26fd5945a77e5c4dba974dfd6a7232bd801))
+* refactor entity modals components (VF-000) ([#5162](https://github.com/voiceflow/creator-app/issues/5162)) ([ec1ea36](https://github.com/voiceflow/creator-app/commit/ec1ea36205fe9886b15ec8a73309039963c6a685))
+* remove message delays feature flag (VF-3131) ([#5192](https://github.com/voiceflow/creator-app/issues/5192)) ([0b15efc](https://github.com/voiceflow/creator-app/commit/0b15efc875c9ca0d3168231df5223b85abedd5ed))
+
+
+### Features
+
+* enable voiceflow nlu as export option (VF-3129) ([#5191](https://github.com/voiceflow/creator-app/issues/5191)) ([cf670ec](https://github.com/voiceflow/creator-app/commit/cf670ec88ef759bd3ea5b4ef6f617c1da2b59b69))
+* nlu manager feature flag (VF-000) ([#5189](https://github.com/voiceflow/creator-app/issues/5189)) ([0507ae4](https://github.com/voiceflow/creator-app/commit/0507ae4b152e4b90b150b43255976215def69931))
+* platform type separation part 3 part 1 (VF-3038) ([#5180](https://github.com/voiceflow/creator-app/issues/5180)) ([7aa0ae5](https://github.com/voiceflow/creator-app/commit/7aa0ae53e778202c07caa42f2658a8bc60cfb985))
+* refactor select and nested menu components (VF-000) ([#5158](https://github.com/voiceflow/creator-app/issues/5158)) ([791aa37](https://github.com/voiceflow/creator-app/commit/791aa3708bdc980b1d06dab1c5ed58164595109c))
+* remove atomic_actions ff (VF-3009) ([#5144](https://github.com/voiceflow/creator-app/issues/5144)) ([fed8607](https://github.com/voiceflow/creator-app/commit/fed86077a248eff9dcb4072cac0a2818b51c7798))
+* remove distinct platform (VF-3038) ([#5190](https://github.com/voiceflow/creator-app/issues/5190)) ([8cf9d2c](https://github.com/voiceflow/creator-app/commit/8cf9d2c8374df7fad5e2815ebf477ba04ff39965))
+
+
+
+
+
 # [1.654.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.653.0...@voiceflow/creator-app@1.654.0) (2022-03-10)
 
 

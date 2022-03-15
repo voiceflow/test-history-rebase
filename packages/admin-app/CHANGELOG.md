@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.23.2...@voiceflow/admin-app@1.24.0) (2022-03-15)
+
+
+### Features
+
+* refactor select and nested menu components (VF-000) ([#5158](https://github.com/voiceflow/creator-app/issues/5158)) ([791aa37](https://github.com/voiceflow/creator-app/commit/791aa3708bdc980b1d06dab1c5ed58164595109c))
+
+
+
+
+
 ## [1.23.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.23.1...@voiceflow/admin-app@1.23.2) (2022-03-10)
 
 **Note:** Version bump only for package @voiceflow/admin-app

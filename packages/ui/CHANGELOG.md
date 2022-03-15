@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.60.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.59.0...@voiceflow/ui@1.60.0) (2022-03-15)
+
+
+### Features
+
+* create color picker concept (VF-3125) ([#5187](https://github.com/voiceflow/creator-app/issues/5187)) ([eba77c0](https://github.com/voiceflow/creator-app/commit/eba77c0b53ac2306b34ccab0712fa16884fdda13))
+* refactor select and nested menu components (VF-000) ([#5158](https://github.com/voiceflow/creator-app/issues/5158)) ([791aa37](https://github.com/voiceflow/creator-app/commit/791aa3708bdc980b1d06dab1c5ed58164595109c))
+
+
+
+
+
 # [1.59.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.58.3...@voiceflow/ui@1.59.0) (2022-03-10)
 
 

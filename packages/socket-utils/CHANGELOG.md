@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.9.0...@voiceflow/socket-utils@1.10.0) (2022-03-15)
+
+
+### Features
+
+* remove atomic_actions ff (VF-3009) ([#5144](https://github.com/voiceflow/creator-app/issues/5144)) ([fed8607](https://github.com/voiceflow/creator-app/commit/fed86077a248eff9dcb4072cac0a2818b51c7798))
+
+
+
+
+
 # [1.9.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.8.0...@voiceflow/socket-utils@1.9.0) (2022-03-03)
 
 

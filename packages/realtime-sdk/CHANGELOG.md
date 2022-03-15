@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.66.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.65.0...@voiceflow/realtime-sdk@1.66.0) (2022-03-15)
+
+
+### Features
+
+* platform type separation part 3 part 1 (VF-3038) ([#5180](https://github.com/voiceflow/creator-app/issues/5180)) ([7aa0ae5](https://github.com/voiceflow/creator-app/commit/7aa0ae53e778202c07caa42f2658a8bc60cfb985))
+* remove atomic_actions ff (VF-3009) ([#5144](https://github.com/voiceflow/creator-app/issues/5144)) ([fed8607](https://github.com/voiceflow/creator-app/commit/fed86077a248eff9dcb4072cac0a2818b51c7798))
+* remove distinct platform (VF-3038) ([#5190](https://github.com/voiceflow/creator-app/issues/5190)) ([8cf9d2c](https://github.com/voiceflow/creator-app/commit/8cf9d2c8374df7fad5e2815ebf477ba04ff39965))
+
+
+
+
+
 # [1.65.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.64.0...@voiceflow/realtime-sdk@1.65.0) (2022-03-10)
 
 

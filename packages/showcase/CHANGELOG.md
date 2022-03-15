@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.1.12...@voiceflow/showcase@1.2.0) (2022-03-15)
+
+
+### Features
+
+* create color picker concept (VF-3125) ([#5187](https://github.com/voiceflow/creator-app/issues/5187)) ([eba77c0](https://github.com/voiceflow/creator-app/commit/eba77c0b53ac2306b34ccab0712fa16884fdda13))
+
+
+
+
+
 ## [1.1.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.1.11...@voiceflow/showcase@1.1.12) (2022-03-10)
 
 **Note:** Version bump only for package @voiceflow/showcase

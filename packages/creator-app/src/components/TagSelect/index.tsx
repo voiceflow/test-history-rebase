@@ -93,7 +93,7 @@ function TagSelect({
       getOptionValue={(option) => option}
       getOptionLabel={getOptionLabel}
       placeholder={placeholder}
-      displayName={selected.map((id) => labels.get(id)).join(', ')}
+      displayName={selected.map((id) => labels[id]).join(', ')}
       onSelect={handleSelect}
       inputVariant={SelectInputVariant.COUNTER}
       createInputPlaceholder={createInputPlaceholder}

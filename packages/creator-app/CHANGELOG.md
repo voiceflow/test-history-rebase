@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.658.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.0...@voiceflow/creator-app@1.658.1) (2022-03-15)
+
+
+### Bug Fixes
+
+* fixes tag select component labels getter [bugfix] (VF-000) ([#5200](https://github.com/voiceflow/creator-app/issues/5200)) ([6408a71](https://github.com/voiceflow/creator-app/commit/6408a71a9f77082adece6d9de0e25a1e6bb6c8c0))
+
+
+
+
+
 # [1.658.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.657.2...@voiceflow/creator-app@1.658.0) (2022-03-15)
 
 

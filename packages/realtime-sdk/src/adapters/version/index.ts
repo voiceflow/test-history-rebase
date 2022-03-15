@@ -1,4 +1,5 @@
 import { AnyDBVersion, AnyVersion } from '@realtime-sdk/models';
+import { typeGuards } from '@realtime-sdk/utils';
 import { AlexaVersion } from '@voiceflow/alexa-types';
 import { DFESVersion } from '@voiceflow/google-dfes-types';
 import { GoogleVersion } from '@voiceflow/google-types';
@@ -10,22 +11,26 @@ import googleVersionAdapter from './google';
 import { DFESChatVersionAdapter, DFESVoiceVersionAdapter } from './googleDFES';
 import { voiceflowChatVersionAdapter, voiceflowVoiceVersionAdapter } from './voiceflow';
 
-const versionAdapter = createAdapter<AnyDBVersion, AnyVersion, [{ platform: VoiceflowConstants.PlatformType }]>(
-  (version, { platform = VoiceflowConstants.PlatformType.ALEXA }) => {
+const versionAdapter = createAdapter<
+  AnyDBVersion,
+  AnyVersion,
+  [{ platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType }]
+>(
+  (version, { platform = VoiceflowConstants.PlatformType.ALEXA, projectType }) => {
     switch (platform) {
       case VoiceflowConstants.PlatformType.ALEXA:
         return alexaVersionAdapter.fromDB(version as AlexaVersion.Version);
       case VoiceflowConstants.PlatformType.GOOGLE:
         return googleVersionAdapter.fromDB(version as GoogleVersion.VoiceVersion);
-      case VoiceflowConstants.PlatformType.CHATBOT:
-        return voiceflowChatVersionAdapter.fromDB(version as VoiceflowVersion.ChatVersion);
-      case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT:
-        return DFESChatVersionAdapter.fromDB(version as DFESVersion.ChatVersion);
-      case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE:
-        return DFESVoiceVersionAdapter.fromDB(version as DFESVersion.VoiceVersion);
-      case VoiceflowConstants.PlatformType.GENERAL:
+      case VoiceflowConstants.PlatformType.DIALOGFLOW_ES:
+        return typeGuards.isChatProjectType(projectType)
+          ? DFESChatVersionAdapter.fromDB(version as DFESVersion.ChatVersion)
+          : DFESVoiceVersionAdapter.fromDB(version as DFESVersion.VoiceVersion);
+      case VoiceflowConstants.PlatformType.VOICEFLOW:
       default:
-        return voiceflowVoiceVersionAdapter.fromDB(version as VoiceflowVersion.VoiceVersion);
+        return typeGuards.isChatProjectType(projectType)
+          ? voiceflowChatVersionAdapter.fromDB(version as VoiceflowVersion.ChatVersion)
+          : voiceflowVoiceVersionAdapter.fromDB(version as VoiceflowVersion.VoiceVersion);
     }
   },
   () => {

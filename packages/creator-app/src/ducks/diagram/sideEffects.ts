@@ -122,7 +122,8 @@ export const convertToComponent =
     const startCoords: Point = [360, 120];
 
     const state = getState();
-    const platform = ProjectV2.active.platformSelector(state);
+    const platform = ProjectV2.active.platformV2Selector(state);
+    const projectType = ProjectV2.active.typeV2Selector(state);
     const activeComponents = VersionV2.active.componentsSelector(state);
     const name = `Flow ${activeComponents.length + 1}`;
     const diagram = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
@@ -158,7 +159,7 @@ export const convertToComponent =
         viewport: { zoom: 1, x: 0, y: 0 },
         diagramID: '',
       } as Realtime.CreatorDiagram,
-      { nodes: normalize(adjustedNodes), ports: normalize(adjustedPorts), platform, context: {} }
+      { nodes: normalize(adjustedNodes), ports: normalize(adjustedPorts), platform, projectType, context: {} }
     );
 
     diagram.nodes = { ...diagram.nodes, ...convertedDiagram.nodes };

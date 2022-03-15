@@ -1,7 +1,6 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
-
-import { createPlatformSelector } from '@/utils/platform';
 
 import { Alexa, Dialogflow, General, Google, Universal } from './components/ContentDescriptors';
 
@@ -39,7 +38,7 @@ export interface PlatformSettingsMetaProps {
   localeText?: string;
 }
 
-export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaProps>(
+export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeSelectorV2<PlatformSettingsMetaProps>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: {
       name: 'Alexa',
@@ -88,8 +87,8 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       },
       localeText: 'Language',
     },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: {
-      name: 'Dialogflow Chat',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
+      name: 'Dialogflow',
       sections: [
         SettingSections.BASIC,
         SettingSections.DIALOGFLOW_CONSOLE,
@@ -106,25 +105,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       },
       localeText: 'Language',
     },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: {
-      name: 'Dialogflow Voice',
-      sections: [
-        SettingSections.BASIC,
-        SettingSections.DIALOGFLOW_CONSOLE,
-        SettingSections.CANVAS,
-        SettingSections.TEST_TOOL,
-        SettingSections.DANGER_ZONE,
-      ],
-      descriptors: {
-        projectName: General.ProjectName,
-        agentName: Dialogflow.AgentName,
-        localesDescriptor: Dialogflow.Locales,
-        triggerPhraseDescriptor: Dialogflow.TriggerPhrase,
-        repeatEverything: General.RepeatEverything,
-      },
-      localeText: 'Language',
-    },
-    [VoiceflowConstants.PlatformType.CHATBOT]: {
+    [VoiceflowConstants.ProjectType.CHAT]: {
       name: 'Chatbot',
       sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.TEST_TOOL, SettingSections.DANGER_ZONE],
       descriptors: {

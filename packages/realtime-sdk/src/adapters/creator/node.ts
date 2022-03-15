@@ -18,6 +18,7 @@ const nodeAdapter = createAdapter<
       parentNode: BaseModels.BaseBlock | null;
       links: Link[];
       platform: VoiceflowConstants.PlatformType;
+      projectType: VoiceflowConstants.ProjectType;
       context: AdapterContext;
     }
   ],
@@ -26,15 +27,16 @@ const nodeAdapter = createAdapter<
       portToTargets: Record<string, string>;
       stepMap: Record<string, string>;
       platform: VoiceflowConstants.PlatformType;
+      projectType: VoiceflowConstants.ProjectType;
       portLinksMap: Record<string, Link>;
       context: AdapterContext;
     }
   ]
 >(
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  (dbNode, { parentNode, links, platform, context }) => {
+  (dbNode, { parentNode, links, platform, projectType, context }) => {
     const siblingSteps = parentNode?.data.steps ?? [];
-    const data = nodeDataAdapter.fromDB({ data: dbNode.data, type: dbNode.type }, { platform, nodeID: dbNode.nodeID, context });
+    const data = nodeDataAdapter.fromDB({ data: dbNode.data, type: dbNode.type }, { platform, projectType, nodeID: dbNode.nodeID, context });
 
     const ports: Port[] = [];
 
@@ -115,9 +117,9 @@ const nodeAdapter = createAdapter<
       ports,
     };
   },
-  ({ node, data, ports }, { portToTargets, stepMap, platform, portLinksMap, context }) => {
+  ({ node, data, ports }, { portToTargets, stepMap, platform, projectType, portLinksMap, context }) => {
     const portMap = ports.reduce<Record<string, Port>>((acc, port) => ({ ...acc, [port.id]: port }), {});
-    const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform, context });
+    const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform, projectType, context });
 
     const diagramNode: BaseModels.BaseDiagramNode = {
       nodeID: node.id,

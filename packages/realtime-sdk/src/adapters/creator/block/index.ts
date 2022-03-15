@@ -1,7 +1,7 @@
 import { AdapterContext } from '@realtime-sdk/adapters/types';
 import { BlockType } from '@realtime-sdk/constants';
 import { NodeData } from '@realtime-sdk/models';
-import { createPlatformSelector, createPlatformSelectorV2 } from '@realtime-sdk/utils/platform';
+import { createPlatformAndProjectTypeSelectorV2, createPlatformSelectorV2 } from '@realtime-sdk/utils/platform';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { BidirectionalAdapter } from 'bidirectional-adapter';
@@ -55,13 +55,13 @@ export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: 
   [BaseNode.NodeType.SET]: BlockType.SETV2,
 };
 
-const getPlatformAdapter = createPlatformSelector<Partial<Record<BlockType, unknown>>>(
+const getPlatformAdapter = createPlatformAndProjectTypeSelectorV2<Partial<Record<BlockType, unknown>>>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: alexaBlockAdapter,
     [VoiceflowConstants.PlatformType.GOOGLE]: googleBlockAdapter,
-    [VoiceflowConstants.PlatformType.CHATBOT]: chatBlockAdapter,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: { ...chatBlockAdapter, ...dialogflowAdapter },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowAdapter,
+    [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.CHAT}`]: { ...chatBlockAdapter, ...dialogflowAdapter },
+    [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.VOICE}`]: dialogflowAdapter,
+    [VoiceflowConstants.ProjectType.CHAT]: chatBlockAdapter,
   },
   { ...baseBlockAdapter, ...generalBlockAdapter }
 );
@@ -97,18 +97,20 @@ type PlatformBlockAdapter = Partial<
   Record<BlockType, BidirectionalAdapter<unknown, NodeData<unknown>, [{ context: AdapterContext }], [{ context: AdapterContext }]>>
 >;
 
-export const getBlockAdapter = moize((platform: VoiceflowConstants.PlatformType, migrate?: boolean): PlatformBlockAdapter => {
-  if (migrate) {
-    return migrationBlockAdapter as unknown as PlatformBlockAdapter;
-  }
+export const getBlockAdapter = moize(
+  (platform: VoiceflowConstants.PlatformType, projectType: VoiceflowConstants.ProjectType, migrate?: boolean): PlatformBlockAdapter => {
+    if (migrate) {
+      return migrationBlockAdapter as unknown as PlatformBlockAdapter;
+    }
 
-  return {
-    ...commonBlockAdapter,
-    ...baseBlockAdapter,
-    ...generalBlockAdapter,
-    ...getPlatformAdapter(platform),
-  } as unknown as PlatformBlockAdapter;
-});
+    return {
+      ...commonBlockAdapter,
+      ...baseBlockAdapter,
+      ...generalBlockAdapter,
+      ...getPlatformAdapter(platform, projectType),
+    } as unknown as PlatformBlockAdapter;
+  }
+);
 
 type PlatformOutPortAdapter = Partial<Record<BlockType, OutPortsAdapter>>;
 

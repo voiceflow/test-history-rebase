@@ -19,7 +19,7 @@ const chatVersionAdapter = createAdapter<VoiceflowVersion.ChatVersion, Version<V
     ...sharedVersionAdapter.fromDB(sharedVersion),
 
     settings: _omit(VoiceflowVersion.defaultChatSettings(settings), 'session'),
-    variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.CHATBOT).includes(variable)),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.VOICEFLOW).includes(variable)),
     publishing,
   }),
   () => {

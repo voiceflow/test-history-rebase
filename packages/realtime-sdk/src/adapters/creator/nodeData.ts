@@ -11,10 +11,10 @@ import { needsMigration } from './utils';
 const nodeDataAdapter = createSimpleAdapter<
   { data: BaseModels.BaseDiagramNode['data']; type: string },
   NodeData<unknown>,
-  [{ platform: VoiceflowConstants.PlatformType; nodeID: string; context: AdapterContext }],
-  [{ platform: VoiceflowConstants.PlatformType; context: AdapterContext }]
+  [{ platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType; nodeID: string; context: AdapterContext }],
+  [{ platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType; context: AdapterContext }]
 >(
-  ({ data: dbData, type: dbType }, { platform, nodeID, context }) => {
+  ({ data: dbData, type: dbType }, { platform, projectType, nodeID, context }) => {
     const getNodeType = APP_BLOCK_TYPE_FROM_DB[dbType];
 
     const type = typeof getNodeType === 'function' ? getNodeType(dbData, { context }) : getNodeType || dbType;
@@ -22,7 +22,7 @@ const nodeDataAdapter = createSimpleAdapter<
     let data: Partial<NodeData<unknown>> = {};
 
     try {
-      const adapters = getBlockAdapter(platform, needsMigration(dbType, type));
+      const adapters = getBlockAdapter(platform, projectType, needsMigration(dbType, type));
 
       data = adapters[type]?.fromDB(dbData, { context }) || { deprecatedType: type, ...dbData };
     } catch {
@@ -36,14 +36,14 @@ const nodeDataAdapter = createSimpleAdapter<
       nodeID,
     };
   },
-  ({ type, deprecatedType, nodeID, ...appData }, { platform, context }) => {
+  ({ type, deprecatedType, nodeID, ...appData }, { platform, projectType, context }) => {
     const getNodeType = DB_BLOCK_TYPE_FROM_APP[type];
     const dbType = typeof getNodeType === 'function' ? getNodeType(appData, { context }) : getNodeType || deprecatedType || type;
 
     let data: BaseModels.BaseDiagramNode['data'] = {};
 
     try {
-      const adapters = getBlockAdapter(platform);
+      const adapters = getBlockAdapter(platform, projectType);
 
       data = adapters[type]?.toDB(appData as any, { context }) || (appData as any);
     } catch {

@@ -81,19 +81,20 @@ export const getPlatformDefaultVoice = createPlatformSelectorV2<AnyVoice>(
   VoiceflowConstants.Voice.DEFAULT
 );
 
-export const getPlatformAppName = createPlatformSelector(
-  {
-    [VoiceflowConstants.PlatformType.IVR]: 'IVR',
-    [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa Skill',
-    [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Action',
-    [VoiceflowConstants.PlatformType.GENERAL]: 'Voice Assistant',
-    [VoiceflowConstants.PlatformType.CHATBOT]: 'Chat Assistant',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow Chat',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow Voice',
-    [VoiceflowConstants.PlatformType.MOBILE_APP]: 'Mobile App Project',
-  },
-  'Assistant'
-);
+const PROJECT_TYPE_TITLE = {
+  [VoiceflowConstants.ProjectType.CHAT]: 'Chat',
+  [VoiceflowConstants.ProjectType.VOICE]: 'Voice',
+};
+
+export const getPlatformAppName = (projectType: VoiceflowConstants.ProjectType) =>
+  createPlatformSelectorV2(
+    {
+      [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa Skill',
+      [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Action',
+      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: `Dialogflow ${PROJECT_TYPE_TITLE[projectType]}`,
+    },
+    `${PROJECT_TYPE_TITLE[projectType]} Assistant`
+  );
 
 export const getPlatformProviderName = createPlatformSelectorV2(
   {

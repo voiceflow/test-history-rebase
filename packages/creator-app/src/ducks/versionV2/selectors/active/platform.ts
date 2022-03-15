@@ -54,7 +54,7 @@ export const invocationsSelector = createSelector([ProjectV2.active.projectSelec
 });
 
 export const slotTypesSelector = createSelector(
-  [localesSelector, ProjectV2.active.platformSelector, Feature.isFeatureEnabledSelector],
+  [localesSelector, ProjectV2.active.platformV2Selector, Feature.isFeatureEnabledSelector],
   (locales, platform, isFeatureEnabled) =>
     getSlotTypes({ locales: locales as string[], platform, natoEnabled: !!isFeatureEnabled(FeatureFlag.NATO_APCO) })
 );

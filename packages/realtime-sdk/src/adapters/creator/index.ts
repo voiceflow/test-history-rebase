@@ -21,6 +21,7 @@ const creatorAdapter = createSimpleAdapter<
   [
     {
       platform: VoiceflowConstants.PlatformType;
+      projectType: VoiceflowConstants.ProjectType;
       context: AdapterContext;
     }
   ],
@@ -29,11 +30,12 @@ const creatorAdapter = createSimpleAdapter<
       nodes: Normalized<Node>;
       ports: Normalized<Port>;
       platform: VoiceflowConstants.PlatformType;
+      projectType: VoiceflowConstants.ProjectType;
       context: AdapterContext;
     }
   ]
 >(
-  (diagram, { platform, context }) => {
+  (diagram, { platform, projectType, context }) => {
     const rootNodeIDs: string[] = [];
     const nodes: Node[] = [];
     const nodeIDs = new Set<string>();
@@ -66,6 +68,7 @@ const creatorAdapter = createSimpleAdapter<
         parentNode: parentNodes[dbNode.nodeID] || null,
         links,
         platform,
+        projectType,
         context,
       });
 
@@ -111,7 +114,7 @@ const creatorAdapter = createSimpleAdapter<
       markupNodeIDs,
     };
   },
-  ({ diagramID, viewport, links, data }, { nodes, ports, platform, context }) => {
+  ({ diagramID, viewport, links, data }, { nodes, ports, platform, projectType, context }) => {
     const nodeList = denormalize(nodes);
 
     const portToTargets = links.reduce<Record<string, string>>((acc, link) => {
@@ -158,7 +161,7 @@ const creatorAdapter = createSimpleAdapter<
                   .map((portID) => ports.byKey[portID]),
               ],
             },
-            { portToTargets, stepMap, platform, portLinksMap: sourcePortLinksMap, context }
+            { portToTargets, stepMap, platform, projectType, portLinksMap: sourcePortLinksMap, context }
           ),
         }),
         {}

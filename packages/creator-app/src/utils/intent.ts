@@ -79,20 +79,20 @@ export const getTruncatedName = Realtime.Utils.platform.createPlatformSelectorV2
 );
 
 export const intentFactory =
-  <T extends VoiceflowConstants.PlatformType>(platform: T) =>
-  (intent: { name: string; slots?: string[] }): Realtime.PlatformIntent<T> => {
+  <T extends VoiceflowConstants.ProjectType>(platform: VoiceflowConstants.PlatformType) =>
+  (intent: { name: string; slots?: string[] }): Realtime.ProjectTypeIntent<T> => {
     const truncatedName = getTruncatedName(platform)(intent.name);
     return {
       id: intent.name,
       name: truncatedName ?? getIntentNameLabel(intent.name),
-      slots: { byKey: {}, allKeys: [] } as Realtime.PlatformIntent<T>['slots'],
+      slots: { byKey: {}, allKeys: [] } as Realtime.ProjectTypeIntent<T>['slots'],
       inputs: [{ text: '', slots: intent.slots ?? [] }],
       platform,
-    } as Realtime.PlatformIntent<T>;
+    } as Realtime.ProjectTypeIntent<T>;
   };
 
 export const generalIntentFactory = (generalIntent: VoiceflowConstants.DefaultIntent): Realtime.VoiceIntent => {
-  const intent = intentFactory(VoiceflowConstants.PlatformType.GENERAL)(generalIntent);
+  const intent = intentFactory<VoiceflowConstants.ProjectType.VOICE>(VoiceflowConstants.PlatformType.VOICEFLOW)(generalIntent);
 
   return {
     ...intent,
@@ -114,9 +114,13 @@ export const validateIntentName = (intentName: string, intents: Realtime.Intent[
   return null;
 };
 
-export const ALEXA_BUILT_INS = AlexaConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.ALEXA));
+export const ALEXA_BUILT_INS = AlexaConstants.BUILT_IN_INTENTS.map(
+  intentFactory<VoiceflowConstants.ProjectType.VOICE>(VoiceflowConstants.PlatformType.ALEXA)
+);
 
-export const GOOGLE_BUILT_INS = GoogleConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.GOOGLE));
+export const GOOGLE_BUILT_INS = GoogleConstants.BUILT_IN_INTENTS.map(
+  intentFactory<VoiceflowConstants.ProjectType.VOICE>(VoiceflowConstants.PlatformType.GOOGLE)
+);
 
 export const DIALOGFLOW_BUILT_INS = DFESConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.DIALOGFLOW_ES));
 

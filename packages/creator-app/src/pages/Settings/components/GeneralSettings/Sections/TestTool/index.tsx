@@ -1,5 +1,5 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import { Box, BoxFlex, Flex, Input } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
@@ -13,8 +13,6 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
 import ColorInput from '@/pages/Canvas/header/ActionGroup/components/ShareProject/components/AppearanceAndBranding/ColorInput';
 
-const MESSAGE_DELAY_SUPPORTED_PLATFORMS = [VoiceflowConstants.PlatformType.CHATBOT, VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT];
-
 const TestToolSettings: React.FC = () => {
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
   const patchSettings = useDispatch(Version.patchSettings);
@@ -24,9 +22,9 @@ const TestToolSettings: React.FC = () => {
   const prototypeAvatar = useSelector(Prototype.prototypeAvatarSelector);
   const updatePrototypeSettings = useDispatch(Prototype.updateSharePrototypeSettings);
   const [delayDuration, setDelayDuration] = React.useState(durationMilliseconds);
-  const platform = useSelector(ProjectV2.active.platformSelector);
+  const projectType = useSelector(ProjectV2.active.typeV2Selector);
 
-  const showMessageDelaySetting = MESSAGE_DELAY_SUPPORTED_PLATFORMS.includes(platform);
+  const showMessageDelaySetting = Utils.typeGuards.isChatProjectType(projectType);
   const onChangeDelay = async (val: string) => {
     const delay = parseInt(val, 10);
     setDelayDuration(delay);

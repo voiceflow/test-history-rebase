@@ -44,19 +44,21 @@ export interface ItemProps extends InjectedDraggableComponentProps {
   versionID: string;
   isDraggingPreview?: boolean;
   platform: VoiceflowConstants.PlatformType;
+  projectType: VoiceflowConstants.ProjectType;
 }
 
 export const Item: React.FC<ItemProps> = ({
   id,
   name,
   listId,
-  diagram,
-  language,
   isLive,
+  diagram,
+  platform,
+  language,
+  versionID,
   avatarUrl,
   isDragging,
-  platform,
-  versionID,
+  projectType,
   connectDragSource,
   connectDropTarget,
 }) => {
@@ -138,7 +140,7 @@ export const Item: React.FC<ItemProps> = ({
 
             <ProjectTitleCaption>
               <span>
-                {getPlatformAppName(platform)} {!!language.length && '-'}
+                {getPlatformAppName(projectType)(platform)} {!!language.length && '-'}
               </span>
               {language.map(getHumanLanguageName).join(', ')}
             </ProjectTitleCaption>

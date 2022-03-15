@@ -177,6 +177,7 @@ export const List: React.FC<ListProps> = ({
                           name={project.name}
                           diagram={project.diagramID}
                           platform={project.platform}
+                          projectType={project.typeV2}
                           onDrop={onDropProject}
                           onMove={onMoveProject}
                           onToggleDragging={setMoving}

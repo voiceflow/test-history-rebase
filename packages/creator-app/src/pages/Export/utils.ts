@@ -68,9 +68,14 @@ export const initialize =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const platform = ProjectV2.active.platformSelector(state);
+    const platform = ProjectV2.active.platformV2Selector(state);
+    const projectType = ProjectV2.active.typeV2Selector(state);
 
-    const { viewport, ...creator } = Realtime.Adapters.creatorAdapter.fromDB(await client.api.diagram.get(diagramID), { platform, context: {} });
+    const { viewport, ...creator } = Realtime.Adapters.creatorAdapter.fromDB(await client.api.diagram.get(diagramID), {
+      platform,
+      projectType,
+      context: {},
+    });
 
     const nodesWithCoordinates = creator.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y));
     const portsWithPoints = creator.ports.filter((port) => !!port.nodeID && !!port.linkData?.points?.length);

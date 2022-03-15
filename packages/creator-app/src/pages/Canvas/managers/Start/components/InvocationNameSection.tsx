@@ -9,19 +9,20 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
-import { PlatformContext } from '@/pages/Project/contexts';
+import { PlatformContext, TypeV2Context } from '@/pages/Project/contexts';
 import { getSettingsMetaProps } from '@/pages/Settings/constants';
 import { getPlatformValue } from '@/utils/platform';
 
 const InvocationNameSection: React.FC = () => {
   const platform = React.useContext(PlatformContext)!;
+  const projectType = React.useContext(TypeV2Context)!;
 
   const updateInvocationName = useDispatch(Version.updateInvocationName);
 
   const locales = useSelector(VersionV2.active.localesSelector);
   const invocationName = useSelector(VersionV2.active.invocationNameSelector);
 
-  const { descriptors } = getSettingsMetaProps(platform);
+  const { descriptors } = getSettingsMetaProps(platform, projectType);
 
   const [newInvocation, setNewInvocation] = React.useState(invocationName ?? '');
 

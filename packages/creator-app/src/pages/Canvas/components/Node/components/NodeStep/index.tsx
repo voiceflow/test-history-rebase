@@ -7,7 +7,7 @@ import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, ManagerContext, NodeEntityContext, PortEntityProvider } from '@/pages/Canvas/contexts';
-import { PlatformContext, TypeV2Context } from '@/pages/Project/contexts';
+import { PlatformV2Context, TypeV2Context } from '@/pages/Project/contexts';
 import { buildVirtualDOMRect } from '@/utils/dom';
 
 import NodeLifecycle from '../NodeLifecycle';
@@ -23,7 +23,7 @@ export interface NodeStepProps {
 
 const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => {
   const engine = React.useContext(EngineContext)!;
-  const platform = React.useContext(PlatformContext)!;
+  const platform = React.useContext(PlatformV2Context)!;
   const projectType = React.useContext(TypeV2Context)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const getManager = React.useContext(ManagerContext)!;
@@ -59,10 +59,10 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
     }
   }, [isDragging]);
 
-  const { platforms = [], ...manager } = getManager(nodeEntity.nodeType);
+  const { platforms = [], projectTypes = [], ...manager } = getManager(nodeEntity.nodeType);
   let StepComponent = manager.step || getManager(BlockType.DEPRECATED).step;
 
-  if (platforms.length && !platforms.includes(platform)) {
+  if ((platforms.length && !platforms.includes(platform)) || (projectTypes.length && !projectTypes.includes(projectType))) {
     StepComponent = getManager(BlockType.INVALID_PLATFORM).step;
   }
 

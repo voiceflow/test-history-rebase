@@ -30,7 +30,7 @@ export const fullActiveDiagramSelector = createSelector(
     if (!diagram) return null;
 
     const { variables } = diagram;
-    const { platform } = project;
+    const { platformV2: platform, typeV2: projectType } = project;
     const viewport = getViewport(diagramID);
 
     const creator = Realtime.Adapters.creatorAdapter.toDB(
@@ -42,7 +42,7 @@ export const fullActiveDiagramSelector = createSelector(
         data,
         markupNodeIDs,
       } as Realtime.CreatorDiagram,
-      { nodes, ports, platform, context: {} }
+      { nodes, ports, platform, projectType, context: {} }
     );
 
     return { ...creator, variables, type };

@@ -112,6 +112,7 @@ export type NodeManagerConfig<
   buttons?: boolean;
   reprompt?: boolean;
   platforms?: VoiceflowConstants.PlatformType[];
+  projectTypes?: VoiceflowConstants.ProjectType[];
   nameEditable?: boolean;
 
   step: ConnectedStep<T, P>;

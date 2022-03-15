@@ -28,8 +28,8 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       this.services.workspace.isFeatureEnabled(creatorID, ctx.params.workspaceID, 'topics_and_components'),
       this.services.variableState.getAll(creatorID, ctx.params.projectID).then(Realtime.Adapters.variableStateAdapter.mapFromDB),
     ]);
-    const { platform, typeV2: projectType } = project;
-    const version = Realtime.Adapters.versionAdapter.fromDB(dbVersion as Realtime.AnyDBVersion, { platform });
+    const { platform, platformV2, typeV2: projectType } = project;
+    const version = Realtime.Adapters.versionAdapter.fromDB(dbVersion as Realtime.AnyDBVersion, { platform: platformV2, projectType });
 
     const [diagrams, intentSteps] = await Promise.all([
       this.services.diagram

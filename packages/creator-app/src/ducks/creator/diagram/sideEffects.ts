@@ -75,13 +75,14 @@ const initializeCreatorForDiagram =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const platform = ProjectV2.active.platformSelector(state);
+    const platform = ProjectV2.active.platformV2Selector(state);
+    const projectType = ProjectV2.active.typeV2Selector(state);
 
     const { diagram: dbDiagram, timestamp } = await client.api.diagram.getRTC(diagramID);
 
     const { offsetX: x, offsetY: y, zoom } = dbDiagram;
 
-    const creator = Adapters.creatorAdapter.fromDB(dbDiagram, { platform, context: {} });
+    const creator = Adapters.creatorAdapter.fromDB(dbDiagram, { platform, projectType, context: {} });
 
     mutableStore.setLastRealtimeTimestamp(timestamp);
 

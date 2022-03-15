@@ -18,7 +18,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinPort reducer', ({ e
         nodeID: NODE_ID,
         portID: PORT_ID,
         type: BaseModels.PortType.NO_MATCH,
-        platform: VoiceflowConstants.PlatformType.CHATBOT,
+        platform: VoiceflowConstants.PlatformType.VOICEFLOW,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -30,7 +30,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinPort reducer', ({ e
         nodeID: NODE_ID,
         portID: PORT_ID,
         type: BaseModels.PortType.NO_MATCH,
-        platform: VoiceflowConstants.PlatformType.CHATBOT,
+        platform: VoiceflowConstants.PlatformType.VOICEFLOW,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -39,7 +39,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinPort reducer', ({ e
     it('add built-in port', () => {
       const portID = 'builtInPort';
       const type = BaseModels.PortType.NO_MATCH;
-      const platform = VoiceflowConstants.PlatformType.CHATBOT;
+      const platform = VoiceflowConstants.PlatformType.VOICEFLOW;
 
       const result = applyAction(
         {

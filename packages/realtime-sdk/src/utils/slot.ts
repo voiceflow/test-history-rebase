@@ -25,10 +25,7 @@ export const getSlotTypes = <L extends string>({
     case VoiceflowConstants.PlatformType.GOOGLE:
       builtInSlots = [...GoogleConstants.BUILT_IN_SLOTS];
       break;
-    case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT:
-      builtInSlots = [...DFESConstants.BUILT_IN_SLOTS];
-      break;
-    case VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE:
+    case VoiceflowConstants.PlatformType.DIALOGFLOW_ES:
       builtInSlots = [...DFESConstants.BUILT_IN_SLOTS];
       break;
     case VoiceflowConstants.PlatformType.ALEXA:

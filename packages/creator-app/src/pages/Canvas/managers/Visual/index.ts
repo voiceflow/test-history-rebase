@@ -10,13 +10,7 @@ const VisualManager: NodeManagerConfig<Realtime.NodeData.Visual, Realtime.NodeDa
   ...NODE_CONFIG,
 
   label: 'Visuals',
-  platforms: [
-    VoiceflowConstants.PlatformType.GENERAL,
-    VoiceflowConstants.PlatformType.IVR,
-    VoiceflowConstants.PlatformType.MOBILE_APP,
-    VoiceflowConstants.PlatformType.CHATBOT,
-    VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT,
-  ],
+  platforms: [VoiceflowConstants.PlatformType.VOICEFLOW, VoiceflowConstants.PlatformType.DIALOGFLOW_ES],
 
   step: VisualStep,
   editor: VisualEditor,

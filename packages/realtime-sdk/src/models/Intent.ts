@@ -44,12 +44,7 @@ export interface ChatIntent extends BaseIntent {
   slots: Normalized<ChatIntentSlot>;
 }
 
-export interface IntentPerPlatform {
-  [VoiceflowConstants.PlatformType.CHATBOT]: ChatIntent;
-  [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: ChatIntent;
-}
-
-export type PlatformIntent<T extends VoiceflowConstants.PlatformType> = T extends keyof IntentPerPlatform ? IntentPerPlatform[T] : VoiceIntent;
+export type ProjectTypeIntent<T extends VoiceflowConstants.ProjectType> = T extends VoiceflowConstants.ProjectType.CHAT ? ChatIntent : VoiceIntent;
 
 export type Intent = ChatIntent | VoiceIntent;
 

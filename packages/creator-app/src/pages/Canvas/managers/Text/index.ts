@@ -10,7 +10,7 @@ const TextManager: NodeManagerConfig<Realtime.NodeData.Text, Realtime.NodeData.T
   ...NODE_CONFIG,
 
   label: 'Text',
-  platforms: [VoiceflowConstants.PlatformType.CHATBOT, VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT],
+  projectTypes: [VoiceflowConstants.ProjectType.CHAT],
 
   step: TextStep,
   editor: TextEditor,

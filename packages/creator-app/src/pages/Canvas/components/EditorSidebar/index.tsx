@@ -13,7 +13,7 @@ import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
 import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { PlatformContext, TypeV2Context } from '@/pages/Project/contexts';
+import { PlatformV2Context, TypeV2Context } from '@/pages/Project/contexts';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut';
 import { isMarkupBlockType } from '@/utils/typeGuards';
@@ -32,7 +32,7 @@ const EditSidebar = () => {
   const focus = useSelector(Creator.creatorFocusSelector);
 
   const engine = React.useContext(EngineContext)!;
-  const platform = React.useContext(PlatformContext)!;
+  const platform = React.useContext(PlatformV2Context)!;
   const projectType = React.useContext(TypeV2Context)!;
   const getManager = React.useContext(ManagerContext)!;
 
@@ -54,13 +54,13 @@ const EditSidebar = () => {
   let editor = null;
 
   if (shouldRender) {
-    const { editorsByPath, editor: rootEditor, platforms = [] } = getManager(node.type);
+    const { editorsByPath, editor: rootEditor, platforms = [], projectTypes = [] } = getManager(node.type);
     const activePath = path[path.length - 1] || { label: '' };
 
     const subManager = activePath.type ? editorsByPath?.[activePath.type] ?? null : null;
     let Manager: NodeEditor<any> = subManager || rootEditor;
 
-    if (platforms.length && !platforms.includes(platform)) {
+    if ((platforms.length && !platforms.includes(platform)) || (projectTypes.length && !projectTypes.includes(projectType))) {
       Manager = getManager(BlockType.INVALID_PLATFORM).editor;
     }
 

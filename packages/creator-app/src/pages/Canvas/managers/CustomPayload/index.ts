@@ -10,7 +10,7 @@ const CustomPayloadManager: NodeManagerConfig<Realtime.NodeData.CustomPayload, R
   ...NODE_CONFIG,
 
   label: 'Custom Response',
-  platforms: [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT, VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE],
+  platforms: [VoiceflowConstants.PlatformType.DIALOGFLOW_ES],
 
   step: CustomPayloadStep,
   editor: CustomPayloadEditor,

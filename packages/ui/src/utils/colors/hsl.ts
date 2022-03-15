@@ -5,7 +5,7 @@ export const SHADES = [94, 90, 85, 80, 72, 64, 55, 44, 32, 19];
 export const COLOR_GRADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 
 export const HUE_MIN = 0;
-export const HUE_MAX = 300;
+export const HUE_MAX = 360;
 
 export type HSLShades = Record<string, string>;
 

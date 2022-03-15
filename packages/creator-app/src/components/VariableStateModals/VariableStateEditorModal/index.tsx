@@ -98,6 +98,11 @@ const VariableStateEditorModal: React.FC = () => {
           }
         : null;
 
+    const variables = values.variables.reduce((acc, variable) => {
+      const formValue = values.variablesValues[variable];
+      return { ...acc, [variable]: formValue || 0 };
+    }, {});
+
     const isValid = validateFields();
 
     if (!isValid) return;
@@ -106,7 +111,7 @@ const VariableStateEditorModal: React.FC = () => {
 
     try {
       if (!data.variableStateID) {
-        const createdVariableState = await createVariableState({ name: values.name, variables: values.variablesValues, startFrom });
+        const createdVariableState = await createVariableState({ name: values.name, variables, startFrom });
         if (createdVariableState) updateSelectedVariableState({ id: createdVariableState.id, variables: values.variablesValues });
         trackingEvents.trackVariableStateCreated({ diagramID });
       } else {

@@ -29,12 +29,14 @@ const sizeStyles = {
     }
 
     .react-toggle-thumb {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
+      top: 2px;
+      left: 2px;
     }
 
     .react-toggle--checked .react-toggle-thumb {
-      left: 19px;
+      left: 18px;
     }
   `,
 };

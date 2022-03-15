@@ -39,6 +39,7 @@ const DrawerClosableArea = styled.div<{ open?: boolean }>`
       opacity: 1;
       animation-name: changeBackgroundColorAnimation;
       animation-duration: 0.15s;
+      animation-timing-function: ease;
     }
   }
 `;

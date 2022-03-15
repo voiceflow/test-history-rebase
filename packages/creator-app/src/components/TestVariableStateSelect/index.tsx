@@ -41,7 +41,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
 
   const optionsMap = React.useMemo(() => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectValue), [options]);
 
-  const selected = React.useMemo(() => options.find((option) => !isUIOnlyMenuItemOption(option) && option.value === value) || null, [options]);
+  const selected = React.useMemo(() => options.find((option) => !isUIOnlyMenuItemOption(option) && option.value === value) || null, [options, value]);
 
   const onAddNew = () => {
     openVariableStateEditorModal();
@@ -59,13 +59,13 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       getOptionLabel={(value) => value && optionsMap[value]?.label}
       renderOptionLabel={(option: VariableStateOption) => <FlexApart fullWidth>{option.label}</FlexApart>}
       icon={loading ? 'publishSpin' : undefined}
-      iconProps={{ clickable: true, color: '#132144', spin: true }}
+      iconProps={{ clickable: true, color: '#132144', spin: true, size: 21.3, marginRight: '-4px' }}
       disabled={loading}
       prefix={
         isSelectedStateUnsync &&
         !loading && (
           <TippyTooltip title="Update state values">
-            <SvgIcon icon="publishSpin" clickable color="#132144" onClick={onUpdateStateValues} size={16} />
+            <SvgIcon icon="publishSpin" clickable color="#132144" onClick={onUpdateStateValues} size={21.3} marginRight="-4px" />
           </TippyTooltip>
         )
       }

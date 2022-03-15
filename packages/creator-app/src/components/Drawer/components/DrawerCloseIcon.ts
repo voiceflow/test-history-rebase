@@ -21,6 +21,7 @@ const DrawerCloseIcon = styled.div<{ open?: boolean }>`
 
   animation-name: backgroundColorAnimation;
   animation-duration: 0.15s;
+  animation-timing-function: ease;
 `;
 
 export default DrawerCloseIcon;

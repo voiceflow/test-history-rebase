@@ -17,7 +17,7 @@ const IconedButton = styled(Button)<IconedButtonProps>`
 
   ${PrimaryButtonIcon} {
     background: none;
-    margin-right: 4px;
+    margin-right: 1px;
     margin-top: 1px;
   }
 

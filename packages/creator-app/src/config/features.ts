@@ -11,7 +11,6 @@ const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
 const WAVENET_VOICES_ENABLED = process.env.FF_WAVENET_VOICES === 'true';
 const ENTERPRISE_TRIAL_ENABLED = process.env.FF_ENTERPRISE_TRIAL_ENABLED === 'true';
 const TOPICS_AND_COMPONENTS_ENABLED = process.env.FF_TOPICS_AND_COMPONENTS === 'true';
-const ACCOUNT_PAGE_REDESIGN_ENABLED = process.env.FF_ACCOUNT_PAGE_REDESIGN === 'true';
 const VARIABLE_STATES_ENABLED = process.env.FF_VARIABLE_STATES === 'true';
 const IMM_MODALS_V2 = process.env.FF_IMM_MODALS_V2 === 'true';
 const NLU_MANAGER_ENABLED = process.env.FF_NLU_MANAGER === 'true';
@@ -37,8 +36,6 @@ export enum FeatureFlag {
 
   ENTERPRISE_TRIAL = 'enterprise_trial',
 
-  ACCOUNT_PAGE_REDESIGN = 'account_page_redesign',
-
   VARIABLE_STATES = 'variable_states',
 
   IMM_MODALS_V2 = 'imm_modals_v2',
@@ -56,7 +53,6 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.ENTERPRISE_TRIAL]: ENTERPRISE_TRIAL_ENABLED,
   [FeatureFlag.INTERCOM_INTEGRATION]: INTERCOM_ENABLED,
   [FeatureFlag.TOPICS_AND_COMPONENTS]: TOPICS_AND_COMPONENTS_ENABLED,
-  [FeatureFlag.ACCOUNT_PAGE_REDESIGN]: ACCOUNT_PAGE_REDESIGN_ENABLED,
   [FeatureFlag.VARIABLE_STATES]: VARIABLE_STATES_ENABLED,
   [FeatureFlag.IMM_MODALS_V2]: IMM_MODALS_V2,
   [FeatureFlag.NLU_MANAGER]: NLU_MANAGER_ENABLED,

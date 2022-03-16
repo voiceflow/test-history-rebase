@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.658.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.5...@voiceflow/creator-app@1.658.6) (2022-03-16)
+
+
+### Bug Fixes
+
+* fix ui for no data model in share popover (VF-000) ([#5185](https://github.com/voiceflow/creator-app/issues/5185)) ([1f1916f](https://github.com/voiceflow/creator-app/commit/1f1916f482ee8930c4bd13a8e0fc412075dc77a4))
+
+
+
+
+
 ## [1.658.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.4...@voiceflow/creator-app@1.658.5) (2022-03-16)
 
 

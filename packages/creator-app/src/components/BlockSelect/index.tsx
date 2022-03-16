@@ -13,13 +13,14 @@ const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, .
   const selected = useSelector(CreatorV2.nodeDataByIDSelector, { id: value });
   const allBlockData = useSelector(CreatorV2.allBlocksDataSelector);
   const allBlockMapData = useSelector(CreatorV2.allBlocksMapDataSelector);
+  const startNodeID = useSelector(CreatorV2.startNodeIDSelector);
 
   return (
     <Select
       searchable
       placeholder="Select a block"
       {...props}
-      value={selected?.name || 'Start'}
+      value={selected?.nodeID || startNodeID}
       options={allBlockData}
       onSelect={(newValue) => onChange(newValue === value ? '' : newValue)}
       getOptionKey={(option) => option.nodeID}

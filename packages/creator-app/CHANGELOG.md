@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.658.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.4...@voiceflow/creator-app@1.658.5) (2022-03-16)
+
+
+### Bug Fixes
+
+* fixes variable states block select (VF-000) ([#5205](https://github.com/voiceflow/creator-app/issues/5205)) ([85064e6](https://github.com/voiceflow/creator-app/commit/85064e644a5f508e4b5b5c13fd65b9b404bb6a39))
+
+
+
+
+
 ## [1.658.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.3...@voiceflow/creator-app@1.658.4) (2022-03-15)
 
 

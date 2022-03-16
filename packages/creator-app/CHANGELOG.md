@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.659.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.659.0...@voiceflow/creator-app@1.659.1) (2022-03-16)
+
+
+### Bug Fixes
+
+* audio toggle project type [bugfix] (VF-3160) ([#5211](https://github.com/voiceflow/creator-app/issues/5211)) ([2bd49c3](https://github.com/voiceflow/creator-app/commit/2bd49c34c4c6743d8288069ad980ac3a98c1b22d))
+
+
+
+
+
 # [1.659.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.6...@voiceflow/creator-app@1.659.0) (2022-03-16)
 
 

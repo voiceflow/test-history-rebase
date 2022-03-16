@@ -15,7 +15,7 @@ interface SoundToggleProps {
 }
 
 const SoundToggle: React.FC<SoundToggleProps> = ({ projectType, isMuted, size = 16, onClick, preventButtonDefault = false, isMobile }) => {
-  const canSeeToggle = Utils.typeGuards.isChatProjectType(projectType);
+  const canSeeToggle = Utils.typeGuards.isVoiceProjectType(projectType);
 
   if (!canSeeToggle) return null;
 

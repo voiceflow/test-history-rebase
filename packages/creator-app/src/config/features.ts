@@ -14,6 +14,7 @@ const TOPICS_AND_COMPONENTS_ENABLED = process.env.FF_TOPICS_AND_COMPONENTS === '
 const VARIABLE_STATES_ENABLED = process.env.FF_VARIABLE_STATES === 'true';
 const IMM_MODALS_V2 = process.env.FF_IMM_MODALS_V2 === 'true';
 const NLU_MANAGER_ENABLED = process.env.FF_NLU_MANAGER === 'true';
+const PROJECT_CREATE_ENABLED = process.env.FF_PROJECT_CREATE === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -40,6 +41,8 @@ export enum FeatureFlag {
 
   IMM_MODALS_V2 = 'imm_modals_v2',
   NLU_MANAGER = 'nlu_manager',
+
+  PROJECT_CREATE = 'project_create',
 }
 
 export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
@@ -56,4 +59,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.VARIABLE_STATES]: VARIABLE_STATES_ENABLED,
   [FeatureFlag.IMM_MODALS_V2]: IMM_MODALS_V2,
   [FeatureFlag.NLU_MANAGER]: NLU_MANAGER_ENABLED,
+  [FeatureFlag.PROJECT_CREATE]: PROJECT_CREATE_ENABLED,
 };

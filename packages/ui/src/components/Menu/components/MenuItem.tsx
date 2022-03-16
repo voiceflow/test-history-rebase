@@ -29,7 +29,7 @@ export const itemStyles = css<MenuItemProps>`
   ${({ disabled }) =>
     disabled &&
     css`
-      cursor: default;
+      cursor: not-allowed;
       color: ${colors(ThemeColor.TERTIARY)};
       background: ${colors(ThemeColor.WHITE)};
     `}

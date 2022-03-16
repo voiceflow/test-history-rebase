@@ -43,6 +43,7 @@ import {
   RealtimeDeniedModal,
   TestableLinkModal,
 } from '@/pages/Dashboard/RestrictionModals';
+import ProjectCreateModal from '@/pages/NewProjectV2/NewProjectModal';
 import PaymentModal from '@/pages/Payment/PaymentModal';
 
 import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';
@@ -91,6 +92,7 @@ const App = () => {
       <ConnectAmazonModal />
       <ConnectGoogleModal />
       <CreateNewAgentModal />
+      <ProjectCreateModal />
 
       <RootPageProgressBar />
     </>

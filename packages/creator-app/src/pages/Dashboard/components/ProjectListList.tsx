@@ -5,6 +5,7 @@ import React from 'react';
 
 import DragLayer from '@/components/DragLayer';
 import EmptyScreen from '@/components/EmptyScreen';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
@@ -15,7 +16,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { DragItem as BaseDragItem, HoverItem as BaseHoverItem, withBatchLoadingGate } from '@/hocs';
-import { useDispatch, useModals, usePermission, useScrollHelpers, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useModals, usePermission, useScrollHelpers, useSelector } from '@/hooks';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
 import { Item as ListItem, ItemProps as ListItemProps } from './Item';
@@ -63,6 +64,9 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
+  const { open: openProjectCreateModal } = useModals(ModalType.PROJECT_CREATE_MODAL);
+
+  const projectCreateFeature = useFeature(FeatureFlag.PROJECT_CREATE);
 
   const onCreateList = React.useCallback(async () => {
     const list = await createList();
@@ -78,6 +82,8 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
         openProjectLimitModal({ projects: workspace!.projects });
       } else if (id === 'initial') {
         goToNewIntroProject();
+      } else if (projectCreateFeature.isEnabled) {
+        openProjectCreateModal();
       } else {
         goToNewProject(id);
       }

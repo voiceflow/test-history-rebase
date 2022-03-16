@@ -49,8 +49,10 @@ export const legacyPlatformToProjectType = (
   platform: VoiceflowConstants.PlatformType,
   type?: Nullish<VoiceflowConstants.ProjectType>
 ): { platform: NonDeprecatedPlatform; type: VoiceflowConstants.ProjectType } => {
+  const isAlreadyChat = platform === VoiceflowConstants.PlatformType.VOICEFLOW && type === VoiceflowConstants.ProjectType.CHAT;
+
   const legacy = LEGACY_PLATFORM_TO_PROJECT_TYPE[platform];
-  if (legacy) return legacy;
+  if (legacy && !isAlreadyChat) return legacy;
 
   return { platform: platform as NonDeprecatedPlatform, type: type || VoiceflowConstants.ProjectType.VOICE };
 };

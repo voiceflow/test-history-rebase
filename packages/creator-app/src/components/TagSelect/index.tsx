@@ -38,7 +38,7 @@ function TagSelect({
   options,
   onChange,
   disabled,
-  placeholder = 'Select all that apply',
+  placeholder = 'Select intents to export',
   isDropdown = true,
   getOptionLabel = defaultGetter as GetOptionLabel<unknown>,
   getOptionValue = defaultGetter as GetOptionValue<unknown, string>,

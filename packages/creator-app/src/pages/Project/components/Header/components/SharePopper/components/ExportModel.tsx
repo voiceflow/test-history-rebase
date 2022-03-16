@@ -41,15 +41,16 @@ const ExportModel: React.FC = () => {
         disabled={nplProviderOptions.length === 1}
       />
 
-      <Divider style={{ margin: '20px 0px', width: 'calc(100% + 64px)' }} />
-
-      {noModelData && (
+      {noModelData ? (
         <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={12}>
           No model data currently exists
         </BlockText>
+      ) : (
+        <>
+          <Divider style={{ margin: '20px 0px', width: 'calc(100% + 64px)' }} />
+          <ModelIntentsSelect />
+        </>
       )}
-
-      <ModelIntentsSelect />
     </>
   );
 };

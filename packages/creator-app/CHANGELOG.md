@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.659.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.6...@voiceflow/creator-app@1.659.0) (2022-03-16)
+
+
+### Features
+
+* project create feature flag + modal (VF-2901) ([#5135](https://github.com/voiceflow/creator-app/issues/5135)) ([a67de65](https://github.com/voiceflow/creator-app/commit/a67de65cf2c98c24d8e6bb7743748f676ea240a6))
+
+
+
+
+
 ## [1.658.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.658.5...@voiceflow/creator-app@1.658.6) (2022-03-16)
 
 

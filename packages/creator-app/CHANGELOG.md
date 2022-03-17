@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.660.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.659.2...@voiceflow/creator-app@1.660.0) (2022-03-17)
+
+
+### Bug Fixes
+
+* border radius 15 --> 12 (VF-3161) ([#5215](https://github.com/voiceflow/creator-app/issues/5215)) ([45be004](https://github.com/voiceflow/creator-app/commit/45be004cd08198efadcdf57a7c80834f58e52b3a))
+
+
+### Features
+
+* upgrade socket.io to v3.1.3 (VF-3080) [bugfix] ([#5216](https://github.com/voiceflow/creator-app/issues/5216)) ([251c8d9](https://github.com/voiceflow/creator-app/commit/251c8d97793c01295f0d6ff4c164132ceba128d7))
+
+
+
+
+
 ## [1.659.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.659.1...@voiceflow/creator-app@1.659.2) (2022-03-17)
 
 **Note:** Version bump only for package @voiceflow/creator-app

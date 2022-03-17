@@ -27,7 +27,7 @@ export const breadcrumb = (category: string, message: string, data?: Record<stri
   });
 };
 
-export const error = (error: string | Error) => {
+export const error = (error: any | Error) => {
   if (IS_DEVELOPMENT || isDebug()) {
     logger.error(error);
   }

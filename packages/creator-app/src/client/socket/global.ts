@@ -1,6 +1,8 @@
 import { AnyFunction, Callback } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import * as Sentry from '@/vendors/sentry';
+
 import client, { SocketStatus } from './client';
 import { ServerEvent, SocketEvent } from './constants';
 
@@ -35,6 +37,7 @@ const globalSocketClient = {
 
   watchForFailure: (callback: Callback) =>
     client.watch(SocketEvent.FAIL, (error?: { code?: number }) => {
+      Sentry.error(error);
       if (client.status !== SocketStatus.TRANSFERRING && typeof error === 'object' && (error?.code ?? 0 >= 400)) {
         return callback();
       }

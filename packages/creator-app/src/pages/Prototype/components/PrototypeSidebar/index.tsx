@@ -54,7 +54,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps> = ({ open }) => {
   const { status } = state;
   const { updatePrototype } = actions;
 
-  const canSeeSoundToggle = Realtime.Utils.typeGuards.isChatProjectType(projectType);
+  const canSeeSoundToggle = Realtime.Utils.typeGuards.isVoiceProjectType(projectType);
   const [trainingOpen, toggleTrainingOpen] = useToggle(false);
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const resetPrototype = useResetPrototype();

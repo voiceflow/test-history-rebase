@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.10.0...@voiceflow/socket-utils@1.10.1) (2022-03-17)
+
+
+### Bug Fixes
+
+* breaking platform type [bugfix] (VF-3162) ([#5214](https://github.com/voiceflow/creator-app/issues/5214)) ([09a0957](https://github.com/voiceflow/creator-app/commit/09a09574559581021111a73b186ef6507d9b1421))
+
+
+
+
+
 # [1.10.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.9.0...@voiceflow/socket-utils@1.10.0) (2022-03-15)
 
 

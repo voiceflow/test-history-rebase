@@ -26,7 +26,7 @@ const ImageContainer = styled.div<{ ratio: number; isFirstInSeries?: boolean }>`
   width: 100%;
 
   ${Image} {
-    border-radius: 15px;
+    border-radius: 12px;
     padding-bottom: ${({ ratio }) => ratio}%;
   }
 `;

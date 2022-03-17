@@ -2,7 +2,7 @@ import { toast, useCache, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import SpeechRecognition, { useSpeechRecognition as useReactSpeechRecognition } from 'react-speech-recognition';
 import RecordRTC from 'recordrtc';
-import io, { Socket } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
 import { BCP_LANGUAGE_CODE } from '@/constants';
@@ -85,7 +85,7 @@ export const useASR = ({ onTranscript, locale, enabled = true }: { onTranscript:
   const [processingTranscription, setProcessingTranscription] = React.useState(false);
 
   const streamRef = React.useRef<MediaStream | null>(null);
-  const socketRef = React.useRef<typeof Socket | null>(null);
+  const socketRef = React.useRef<Socket | null>(null);
   const recordRef = React.useRef<RecordRTC | null>(null);
 
   const persistedTranscript = usePersistFunction(onTranscript);

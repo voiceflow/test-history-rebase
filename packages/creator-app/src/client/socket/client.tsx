@@ -1,6 +1,6 @@
 import { DEVICE_INFO } from '@voiceflow/ui';
 import moize from 'moize';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 import { API_ENDPOINT, DEBUG_SOCKET } from '@/config';
 import * as Sentry from '@/vendors/sentry';

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.661.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.660.1...@voiceflow/creator-app@1.661.0) (2022-03-18)
+
+
+### Bug Fixes
+
+* log socketevent fail (VF-000) ([#5217](https://github.com/voiceflow/creator-app/issues/5217)) ([4879369](https://github.com/voiceflow/creator-app/commit/487936980a394fad5eff827937b73666b647c938))
+
+
+### Features
+
+* connect nlu quickview content (VF-000) ([#5179](https://github.com/voiceflow/creator-app/issues/5179)) ([5499355](https://github.com/voiceflow/creator-app/commit/5499355539543b61ed81e3c68c45128f9bd23211))
+* fix docs links (VF-2984) ([#5206](https://github.com/voiceflow/creator-app/issues/5206)) ([9272b1d](https://github.com/voiceflow/creator-app/commit/9272b1d3dc1b8107a7e0c6495c55e36a3987639b))
+
+
+
+
+
 ## [1.660.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.660.0...@voiceflow/creator-app@1.660.1) (2022-03-17)
 
 

@@ -1,16 +1,18 @@
-import { useDidUpdateEffect, useEnableDisable } from '@voiceflow/ui';
+import { useDidUpdateEffect, useEnableDisable, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
+import Resizable, { ResizablePanel } from '@/components/Resizable';
 import { TabPane, TabsContent } from '@/components/Tabs';
 import { Permission } from '@/config/permissions';
 import { AutoPanningCacheContext } from '@/contexts';
+import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useIsCanvasDesignOnly, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
 import { useAnyModeOpen } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
 
-import { Container, Content, Flows, Header, Layers, Steps } from './components';
+import { Content, Flows, FullHeightContainer, Header, Layers, ResizeDivider, ResizePanel, Steps } from './components';
 import { Tab } from './constants';
 import { useDropLagFix, useMenuHotKeys, useTabs } from './hooks';
 
@@ -25,11 +27,14 @@ const DesignMenu: React.FC = () => {
   const isHidden = useSelector(UI.isCreatorMenuHiddenSelector);
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
+  const activeProjectID = useSelector(Session.activeProjectIDSelector);
 
   const setActiveTab = useDispatch(UI.setActiveCreatorMenu);
   const toggleIsHidden = useDispatch(UI.toggleCreatorMenuHidden);
   const hideCreatorMenu = useDispatch(UI.hideCreatorMenu);
   const showCreatorMenu = useDispatch(UI.showCreatorMenu);
+
+  const [heights, setHeights] = useLocalStorageState(`design-menu-heights.${activeProjectID}`, [100, 0]);
 
   const theme = useTheme();
   const [events] = useTrackingEvents();
@@ -37,6 +42,7 @@ const DesignMenu: React.FC = () => {
   const useDropLagFixRef = useDropLagFix();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const { tabs, selectedTab } = useTabs();
+  const [resizing, onStartResizing, onEndResizing] = useEnableDisable(false);
   const [isOpenByHover, openByHover, closeByLoseHover] = useEnableDisable(false);
 
   const mouseLeaveHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -80,44 +86,59 @@ const DesignMenu: React.FC = () => {
 
   const canBeOpened = !isAnyModeOpen;
 
-  const isOpen = (!isHidden || isOpenByHover) && canBeOpened;
+  const isOpen = resizing || ((!isHidden || isOpenByHover) && canBeOpened);
 
   return (
-    <Container
-      id={Identifier.DESIGN_MENU}
-      ref={useDropLagFixRef}
-      isOpen={isOpen}
-      locked={!isHidden}
-      tabIndex={-1}
-      canvasOnly={canvasOnly || designOnly}
-      onMouseEnter={canBeOpened ? mouseEnterHandler : undefined}
-      onMouseLeave={canBeOpened ? mouseLeaveHandler : undefined}
-    >
-      <Content isOpen={isOpen} activeTab={selectedTab} ref={designMenuRef}>
-        {canEditCanvas && (
-          <Header tabs={tabs} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={setActiveTab} />
-        )}
+    <FullHeightContainer isOpen={isOpen} canvasOnly={canvasOnly || designOnly}>
+      <Resizable
+        onResized={setHeights}
+        onResizeEnd={onEndResizing}
+        onResizeStart={onStartResizing}
+        renderDivider={({ onDividerMouseDown }) => <ResizeDivider onMouseDown={onDividerMouseDown} />}
+      >
+        <ResizePanel
+          id={Identifier.DESIGN_MENU}
+          ref={useDropLagFixRef}
+          locked={!isHidden}
+          height={heights[0]}
+          isOpen={isOpen}
+          tabIndex={-1}
+          activeTab={selectedTab}
+          minHeight={300}
+          onMouseEnter={canBeOpened ? mouseEnterHandler : undefined}
+          onMouseLeave={canBeOpened ? mouseLeaveHandler : undefined}
+        >
+          {() => (
+            <Content ref={designMenuRef}>
+              {canEditCanvas && (
+                <Header tabs={tabs} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={setActiveTab} />
+              )}
 
-        <TabsContent selected={selectedTab}>
-          {canEditCanvas && (
-            <TabPane tabID={Tab.STEPS}>
-              <Steps />
-            </TabPane>
+              <TabsContent selected={selectedTab}>
+                {canEditCanvas && (
+                  <TabPane tabID={Tab.STEPS}>
+                    <Steps />
+                  </TabPane>
+                )}
+
+                <TabPane tabID={Tab.LAYERS}>
+                  <Layers />
+                </TabPane>
+
+                {/**
+                 * TODO: remove when topics and components are merged
+                 */}
+                <TabPane tabID={Tab.FLOWS}>
+                  <Flows />
+                </TabPane>
+              </TabsContent>
+            </Content>
           )}
+        </ResizePanel>
 
-          <TabPane tabID={Tab.LAYERS}>
-            <Layers />
-          </TabPane>
-
-          {/**
-           * TODO: remove when topics and components are merged
-           */}
-          <TabPane tabID={Tab.FLOWS}>
-            <Flows />
-          </TabPane>
-        </TabsContent>
-      </Content>
-    </Container>
+        <ResizablePanel height={heights[1]} />
+      </Resizable>
+    </FullHeightContainer>
   );
 };
 

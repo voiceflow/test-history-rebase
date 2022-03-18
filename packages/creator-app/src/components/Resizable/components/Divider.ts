@@ -9,6 +9,7 @@ const Divider = styled.div`
   background-color: ${({ theme }) => theme.colors.borders};
   cursor: row-resize;
   z-index: 2;
+  pointer-events: auto;
 
   &:before {
     content: '';

@@ -1,34 +1,12 @@
-import { IS_SAFARI } from '@voiceflow/ui';
+import { styled } from '@/hocs';
 
-import { css, styled, transition } from '@/hocs';
-
-import { Tab } from '../constants';
-
-interface ContentProps {
-  activeTab?: Tab;
-  isOpen?: boolean;
-}
-
-const Content = styled.div<ContentProps>`
-  ${transition('background-color', 'box-shadow')};
-
+const Content = styled.div`
   display: flex;
-  width: ${({ theme }) => theme.components.leftSidebar.contentWidth}px;
+  width: 100%;
   height: 100%;
   flex-direction: column;
-  background-color: ${({ activeTab }) => (activeTab === Tab.STEPS ? '#f9f9f9' : '#fff')};
-  overflow: hidden;
   border-radius: 6px;
-
-  ${IS_SAFARI &&
-  css`
-    transform: translateZ(0);
-  `}
-
-  box-shadow: ${({ isOpen }) =>
-    isOpen
-      ? '0 4px 8px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.06)'
-      : '0 2px 4px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.06)'};
+  overflow: hidden;
 `;
 
 export default Content;

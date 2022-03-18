@@ -1,4 +1,3 @@
-import composeRef from '@seznam/compose-react-refs';
 import { Nullable, Utils } from '@voiceflow/common';
 import { swallowEvent, useSetup } from '@voiceflow/ui';
 import React from 'react';
@@ -7,14 +6,17 @@ import { useRAF, useResizeObserver } from '@/hooks';
 
 import { Container, PanelPropsInjected } from './components';
 
-export { Panel as ResizablePanel } from './components';
+export { Divider as ResizableDivider, Panel as ResizablePanel } from './components';
 
 interface ResizableProps {
   children: React.ReactElement<PanelPropsInjected & React.RefAttributes<HTMLDivElement>>[];
   onResized?: (heights: number[]) => void;
+  onResizeEnd?: () => void;
+  renderDivider?: (props: { onDividerMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void }) => React.ReactNode;
+  onResizeStart?: () => void;
 }
 
-const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<any, any> => {
+const Resizable = ({ children, onResized, renderDivider, onResizeEnd, onResizeStart }: ResizableProps): React.ReactElement<any, any> => {
   const heightsRef = React.useRef<number[]>([]);
   const childrenRefs = React.useRef<Record<number, Nullable<HTMLDivElement>>>({});
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -47,8 +49,8 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
       const currentHeight = initialCurrentHeight + diff;
       const currentHeightPX = containerHeight * (currentHeight / 100);
 
-      const canResizeNext = nextNode && nextChildren && nextHeightPX >= nextChildren.props.minHeight;
-      const canResizeCurrent = currentNode && currentChildren && currentHeightPX >= currentChildren.props.minHeight;
+      const canResizeNext = nextNode && nextChildren && nextHeightPX >= (nextChildren.props.minHeight ?? 0);
+      const canResizeCurrent = currentNode && currentChildren && currentHeightPX >= (currentChildren.props.minHeight ?? 0);
 
       let nextMaxHeightStyle: Nullable<number> = null;
       let currentMaxHeightStyle: Nullable<number> = null;
@@ -69,7 +71,7 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
         }
       } else if (!canResizeCurrent && !prevCurrentCollapsed) {
         if (currentNode && nextNode) {
-          const minDiffPX = initialCurrentHeightPX - currentChildren.props.minHeight;
+          const minDiffPX = initialCurrentHeightPX - (currentChildren.props.minHeight ?? 0);
           const minDiff = (minDiffPX / containerHeight) * 100;
           const nextMinHeight = initialNextHeight + minDiff;
           const currentMinHeight = initialCurrentHeight - minDiff;
@@ -85,7 +87,7 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
         setCollapsedChildren((prevCollapsedChildren) => Utils.array.replace(prevCollapsedChildren, index, prevCurrentCollapsed));
       } else if (!canResizeNext && !prevNextCollapsed) {
         if (currentNode && nextNode) {
-          const minDiffPX = initialNextHeightPX - nextChildren.props.minHeight;
+          const minDiffPX = initialNextHeightPX - (nextChildren.props.minHeight ?? 0);
           const minDiff = (minDiffPX / containerHeight) * 100;
           const nextMinHeight = initialNextHeight - minDiff;
           const currentMinHeight = initialCurrentHeight + minDiff;
@@ -111,11 +113,14 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
   };
 
   const onDividerMouseDown = (index: number, { clientY, currentTarget }: React.MouseEvent<HTMLDivElement>): void => {
+    onResizeStart?.();
+
     const onResize = getOnResizeByIndex(index, clientY);
 
     const onMouseMove = ({ clientY: currentClientY }: MouseEvent) => onResize(currentClientY);
 
     const onMouseUp = (): void => {
+      onResizeEnd?.();
       onResized?.([...heightsRef.current]);
 
       currentTarget.classList.remove('resizing');
@@ -137,7 +142,9 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
     heightsRef.current = React.Children.map(children, (child) => child.props.height ?? initialChildrenHeight);
 
     setContainerHeight(containerHeight);
-    setCollapsedChildren(heightsRef.current.map((height, index) => children[index].props.minHeight >= Math.ceil(containerHeight * (height / 100))));
+    setCollapsedChildren(
+      heightsRef.current.map((height, index) => (children[index].props.minHeight ?? 0) >= Math.ceil(containerHeight * (height / 100)))
+    );
   };
 
   const setChildrenHeight = (index: number) => (height: number) => {
@@ -159,13 +166,14 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
         React.Children.map(children, (child, index: number) => (
           <React.Fragment key={child.key || index}>
             {React.cloneElement(child, {
-              ref: composeRef<HTMLDivElement>(child.props.ref, (node) => {
-                childrenRefs.current[index] = node;
-              }),
               height: heightsRef.current[index],
+              innerRef: (node: HTMLDivElement | null) => {
+                childrenRefs.current[index] = node;
+              },
               setHeight: setChildrenHeight(index),
               collapsed: collapsedChildren[index],
               withDivider: index !== childrenCount - 1,
+              renderDivider,
               onDividerMouseDown: swallowEvent<React.MouseEvent<HTMLDivElement>>((event) => onDividerMouseDown(index, event)),
             })}
           </React.Fragment>

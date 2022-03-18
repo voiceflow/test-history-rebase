@@ -2,7 +2,7 @@ import { styled } from '@/hocs';
 
 export interface PanelContainerProps {
   height?: number;
-  minHeight: number;
+  minHeight?: number;
 }
 
 const PanelContainer = styled.div<PanelContainerProps>`
@@ -10,7 +10,7 @@ const PanelContainer = styled.div<PanelContainerProps>`
   width: 100%;
   height: 100%;
   max-height: ${({ height }) => height ?? 0}%;
-  min-height: ${({ minHeight }) => minHeight}px;
+  min-height: ${({ minHeight = 0 }) => minHeight}px;
 `;
 
 export default PanelContainer;

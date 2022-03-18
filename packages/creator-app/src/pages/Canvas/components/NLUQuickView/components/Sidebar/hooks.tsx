@@ -1,0 +1,70 @@
+import React from 'react';
+
+export const useUpdateSearchCount = (setSearchLength: (length: number) => void, length = 0, isActiveTab: boolean) => {
+  React.useEffect(() => {
+    if (isActiveTab) {
+      setSearchLength(length);
+    }
+  }, [isActiveTab, length]);
+};
+
+export const useUpdateContentTitle = (isActiveTab: boolean, itemMap: Record<string, any>, selectedID: string, setTitle: (title: string) => void) => {
+  React.useEffect(() => {
+    if (itemMap[selectedID]) {
+      setTitle(itemMap[selectedID]?.name || '');
+    }
+  }, [isActiveTab, itemMap, selectedID]);
+};
+
+export const useSetInitialItem = (
+  isActiveTab: boolean,
+  selectedID: string,
+  setSelectedID: (id: string) => void,
+  list: { id: string }[],
+  itemMap: Record<string, any>
+) => {
+  const [lastItemID, setLastItemID] = React.useState('');
+
+  React.useEffect(() => {
+    const targetItemID = itemMap[selectedID]?.id;
+    if (targetItemID) {
+      setLastItemID(targetItemID);
+    }
+  }, [selectedID, itemMap]);
+
+  React.useEffect(() => {
+    if (isActiveTab && (!selectedID || !itemMap[selectedID])) {
+      if (itemMap[lastItemID]) {
+        setSelectedID(lastItemID);
+      } else {
+        setSelectedID(list[0]?.id || '');
+      }
+    }
+  }, [isActiveTab, selectedID, list, itemMap, lastItemID]);
+};
+
+interface SectionHooksProps {
+  setSearchLength: (length: number) => void;
+  listLength: number;
+  isActiveTab: boolean;
+  selectedID: string;
+  setSelectedItemID: (id: string) => void;
+  list: { id: string }[];
+  map: Record<string, any>;
+  setTitle: (title: string) => void;
+}
+
+export const useSectionHooks = ({
+  setSearchLength,
+  listLength,
+  isActiveTab,
+  selectedID,
+  setSelectedItemID,
+  list,
+  map,
+  setTitle,
+}: SectionHooksProps) => {
+  useUpdateSearchCount(setSearchLength, listLength, isActiveTab);
+  useSetInitialItem(isActiveTab, selectedID, setSelectedItemID, list, map);
+  useUpdateContentTitle(isActiveTab, map, selectedID, setTitle);
+};

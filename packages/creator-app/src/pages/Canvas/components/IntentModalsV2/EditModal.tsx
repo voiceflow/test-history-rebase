@@ -6,7 +6,6 @@ import { ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useDispatch, useModals, useSelector } from '@/hooks';
-import DescriptionSection from '@/pages/Canvas/components/IntentModalsV2/components/components/DescriptionSection';
 import IntentSelectDropdown from '@/pages/Canvas/components/IntentModalsV2/components/components/IntentSelectDropdown';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
 import { INTENT_MODAL_WIDTH } from '@/pages/Canvas/components/IntentModalsV2/constants';
@@ -14,15 +13,11 @@ import { INTENT_MODAL_WIDTH } from '@/pages/Canvas/components/IntentModalsV2/con
 const EditModal: React.FC = () => {
   const { close, data } = useModals<{ id: string }>(ModalType.INTENT_EDIT);
   const { open: openIntentCreate } = useModals<{ id: string }>(ModalType.INTENT_CREATE);
-  const [description, setDescription] = React.useState('');
   const deleteIntent = useDispatch(Intent.deleteIntent);
 
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: data.id })!;
   if (!intent) return null;
 
-  const handleDescriptionChange = (val: string) => {
-    setDescription(val);
-  };
   const onDeleteIntent = () => {
     deleteIntent(data.id);
     close();
@@ -64,7 +59,6 @@ const EditModal: React.FC = () => {
     >
       <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
         <IntentForm intent={intent} />
-        <DescriptionSection handleDescriptionChange={handleDescriptionChange} description={description} />
       </Box>
       <ModalFooter justifyContent="flex-end">
         <Button

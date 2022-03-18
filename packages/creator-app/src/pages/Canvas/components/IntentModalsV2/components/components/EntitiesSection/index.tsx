@@ -53,33 +53,31 @@ const EntitiesSection: React.FC<EntitiesSectionProps> = ({ entitiesVisibleRef, i
       forceDividers
     >
       {!!slots.length && (
-        <>
-          <Box marginBottom={24} marginRight={-12}>
-            <div ref={entitiesVisibleRef} />
-            <Box marginTop={-8} marginBottom={8}>
-              {requiredIntentSlots.map((slot) => (
-                <SlotItem
-                  slots={slots}
-                  key={slot.id}
-                  intent={intent}
-                  slot={slot}
-                  name={slotMap[slot.id].name}
-                  required={intent.slots.byKey[slot.id].required}
-                />
+        <Box marginBottom={16} marginRight={-12}>
+          <div ref={entitiesVisibleRef} />
+          <Box marginTop={-8} marginBottom={8}>
+            {requiredIntentSlots.map((slot) => (
+              <SlotItem
+                slots={slots}
+                key={slot.id}
+                intent={intent}
+                slot={slot}
+                name={slotMap[slot.id].name}
+                required={intent.slots.byKey[slot.id].required}
+              />
+            ))}
+          </Box>
+          {!!notRequiredIntentSlots.length && (
+            <Box pl={12} pr={12}>
+              {notRequiredIntentSlots.map((slot) => (
+                <SlotBubble key={slot.id} onClick={() => patchIntentSlot(intent.id, slot.id, { required: !slot.required })}>
+                  <SvgIcon icon="plusSmall" style={{ marginRight: 4 }} />
+                  {slotMap[slot.id].name}
+                </SlotBubble>
               ))}
             </Box>
-            {!!notRequiredIntentSlots.length && (
-              <Box pl={12} pr={12}>
-                {notRequiredIntentSlots.map((slot) => (
-                  <SlotBubble key={slot.id} onClick={() => patchIntentSlot(intent.id, slot.id, { required: !slot.required })}>
-                    <SvgIcon icon="plusSmall" style={{ marginRight: 4 }} />
-                    {slotMap[slot.id].name}
-                  </SlotBubble>
-                ))}
-              </Box>
-            )}
-          </Box>
-        </>
+          )}
+        </Box>
       )}
     </Section>
   );

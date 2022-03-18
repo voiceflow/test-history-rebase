@@ -25,7 +25,6 @@ import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useDispatch, useModals, usePermission, useSelector } from '@/hooks';
-import { FormControl } from '@/pages/Canvas/components/Editor';
 import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
 import { validateUtterance } from '@/utils/intent';
 
@@ -34,6 +33,7 @@ export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 interface UtteranceManagerProps {
   intent: Realtime.Intent;
   creating?: boolean;
+  withBorderTop?: boolean;
 }
 
 const MAX_VISIBLE_UTTERANCES_HEIGHT = 545;
@@ -63,9 +63,10 @@ export interface UtteranceRefProps {
   forceFocusToTheEnd: VoidFunction;
   forceUpdate: VoidFunction;
   getCurrentUtterance: () => Realtime.IntentInput | null;
+  withBorderTop?: boolean;
 }
 
-const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
+const UtteranceManager: React.FC<UtteranceManagerProps> = ({ withBorderTop, intent }) => {
   const { search } = useLocation();
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM] as string | null;
@@ -148,7 +149,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
             <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
           </TippyTooltip>
         }
-        customContentStyling={{ marginBottom: intentUtterances.length ? 6 : 0 }}
+        customContentStyling={{ marginBottom: intentUtterances.length ? 24 : 14 }}
         header={
           <>
             Utterances
@@ -162,50 +163,56 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent }) => {
           </>
         }
         variant={SectionVariant.QUATERNARY}
-        customHeaderStyling={{ paddingBottom: '16px', position: 'sticky', top: -1, background: 'white', zIndex: 2, borderTop: 'solid 1px #eaeff4' }}
+        customHeaderStyling={{
+          paddingBottom: '16px',
+          position: 'sticky',
+          paddingTop: '20px',
+          top: 0,
+          background: 'white',
+          zIndex: 2,
+          borderTop: withBorderTop ? 'solid 1px #eaeff4' : undefined,
+        }}
       >
-        <Box paddingBottom={2}>
-          <FormControl>
-            <ListManagerWrapper>
-              <ListManager
-                renderList={({ mapManaged, itemRenderer }) => (
-                  <Box overflow="auto" mr={-12} pt={!isValidUtterance && !intentUtterances.length ? 8 : 16} style={{ ...utteranceListStyling }}>
-                    {mapManaged(itemRenderer)}
-                  </Box>
-                )}
-                items={intentUtterances}
-                addToStart
-                divider={false}
-                beforeAdd={() => {
-                  utteranceRef.current?.forceUpdate();
-                }}
-                renderForm={({ value, onAdd, onChange, addError }) => (
-                  <UtteranceInput
-                    intentUtterances={intentUtterances}
-                    setValidUtterance={setValidUtterance}
-                    ref={utteranceRef}
-                    slots={slots}
-                    value={value}
-                    updateIsEmpty={(val) => updateIsEmpty(val)}
-                    isEmpty={isEmpty}
-                    isNotAtTop={isNotAtTop}
-                    addError={addError}
-                    onAddSlot={onAddSlot}
-                    onAdd={onAdd}
-                    isValidUtterance={isValidUtterance}
-                    onChange={onChange}
-                  />
-                )}
-                addValidation={addValidation}
-                onUpdate={onUpdateUtterances}
-                renderItem={(item, { onUpdate }) => (
-                  <Utterance space slots={slots} value={item?.text} onBlur={onUpdate} onEnterPress={onUpdate} onAddSlot={onAddSlot} />
-                )}
-              />
-            </ListManagerWrapper>
-          </FormControl>
+        <Box>
+          <ListManagerWrapper>
+            <ListManager
+              renderList={({ mapManaged, itemRenderer }) => (
+                <Box overflow="auto" mr={-12} pt={!isValidUtterance && !intentUtterances.length ? 8 : 16} style={{ ...utteranceListStyling }}>
+                  {mapManaged(itemRenderer)}
+                </Box>
+              )}
+              items={intentUtterances}
+              addToStart
+              divider={false}
+              beforeAdd={() => {
+                utteranceRef.current?.forceUpdate();
+              }}
+              renderForm={({ value, onAdd, onChange, addError }) => (
+                <UtteranceInput
+                  intentUtterances={intentUtterances}
+                  setValidUtterance={setValidUtterance}
+                  ref={utteranceRef}
+                  slots={slots}
+                  value={value}
+                  updateIsEmpty={(val) => updateIsEmpty(val)}
+                  isEmpty={isEmpty}
+                  isNotAtTop={isNotAtTop}
+                  addError={addError}
+                  onAddSlot={onAddSlot}
+                  onAdd={onAdd}
+                  isValidUtterance={isValidUtterance}
+                  onChange={onChange}
+                />
+              )}
+              addValidation={addValidation}
+              onUpdate={onUpdateUtterances}
+              renderItem={(item, { onUpdate }) => (
+                <Utterance space slots={slots} value={item?.text} onBlur={onUpdate} onEnterPress={onUpdate} onAddSlot={onAddSlot} />
+              )}
+            />
+          </ListManagerWrapper>
           {intentUtterances.length > MAX_VISIBLE_UTTERANCES && (
-            <Box color="#62778c" paddingBottom={24}>
+            <Box color="#62778c" pt={16}>
               {!showAllUtterances ? (
                 <ClickableText onClick={() => setShowAllUtterances(true)}>{`Show all utterances (${intentUtterances.length})`}</ClickableText>
               ) : (

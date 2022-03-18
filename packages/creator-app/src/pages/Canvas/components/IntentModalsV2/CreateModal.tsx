@@ -1,21 +1,38 @@
 import { Box, Button, ButtonVariant, toast } from '@voiceflow/ui';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useDispatch, useModals, useSelector } from '@/hooks';
+import { useAsyncEffect, useDispatch, useModals, useSelector } from '@/hooks';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
 import { INTENT_MODAL_WIDTH } from '@/pages/Canvas/components/IntentModalsV2/constants';
 
 const CreateModal: React.FC = () => {
-  const { close, data } = useModals<{ id: string }>(ModalType.INTENT_CREATE);
-  const { open: openIntentEdit } = useModals<{ id: string }>(ModalType.INTENT_EDIT);
+  const { close, data, isOpened } = useModals<{ id?: string; onCreate?: (id: string) => void; createName?: string }>(ModalType.INTENT_CREATE);
+  const { open: openIntentEdit } = useModals(ModalType.INTENT_EDIT);
   const deleteIntent = useDispatch(Intent.deleteIntent);
+  const createIntent = useDispatch(Intent.createIntent);
 
-  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: data.id })!;
-  if (!intent) return null;
+  const [intentID, setIntentID] = React.useState<string | null>(null);
+  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: intentID })!;
+
+  useAsyncEffect(async () => {
+    if (!intentID && isOpened) {
+      const nextIntentID = await createIntent({ name: data.createName });
+      setIntentID(nextIntentID);
+    }
+    if (data.id && isOpened) {
+      setIntentID(data.id);
+    }
+  }, [isOpened, intentID, data]);
+
+  useEffect(() => {
+    setIntentID(null);
+  }, [isOpened]);
+
+  if (!intentID || !intent) return null;
 
   const warnNoUtterances = () => {
     toast.warn(`Your intent (${intent.name}) has no utterances. Add utterances to make your intent triggerable.`);
@@ -25,17 +42,19 @@ const CreateModal: React.FC = () => {
     if (!intent.inputs.length) {
       warnNoUtterances();
     }
+    data.onCreate?.(intentID);
     close();
   };
+
   const handleCancel = async () => {
     close();
-    await deleteIntent(data.id);
+    await deleteIntent(intentID);
   };
 
   return (
     <Modal maxWidth={INTENT_MODAL_WIDTH} id={ModalType.INTENT_CREATE} title="Create Intent" headerBorder>
       <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
-        <IntentForm intent={intent} />
+        <IntentForm intent={intent} withDescriptionSection={false} />
       </Box>
       <ModalFooter justifyContent="flex-end">
         <Button

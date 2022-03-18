@@ -18,7 +18,7 @@ const NameSection: React.FC<NameSectionProps> = ({ intent }) => {
   };
 
   return (
-    <Section backgroundColor="#fdfdfd" header="Name" variant={SectionVariant.QUATERNARY}>
+    <Section backgroundColor="#fdfdfd" header="Name" variant={SectionVariant.QUATERNARY} customHeaderStyling={{ paddingTop: '20px' }}>
       <Box paddingBottom={24}>
         <Input placeholder="Enter intent name" value={intent?.name} onChange={handleNameChange} />
       </Box>

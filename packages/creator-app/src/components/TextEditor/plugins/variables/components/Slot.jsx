@@ -7,8 +7,9 @@ import { slotStyles, variableStyle, VariableTagTooltipStyles } from '@/component
 import { FeatureFlag } from '@/config/features';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
+import * as SlotV2 from '@/ducks/slotV2';
 import { compose, styled } from '@/hocs';
-import { useDispatch, useFeature, useModals } from '@/hooks';
+import { useDispatch, useFeature, useModals, useSelector } from '@/hooks';
 
 const Text = styled.span`
   pointer-events: none;
@@ -39,10 +40,13 @@ const Slot = ({ children, mention }, ref) => {
   const { open: openEntityEditModal } = useModals(ModalType.ENTITY_EDIT);
 
   const goInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
+  const getSlotByName = useSelector(SlotV2.slotByNameSelector);
 
   const onClickHandler = swallowEvent(() => {
     if (IMM_MODALS_V2.isEnabled) {
-      openEntityEditModal({ id: mention.id });
+      if (getSlotByName(mention.id)?.id) {
+        openEntityEditModal({ id: getSlotByName(mention.id).id });
+      }
     } else {
       goInteractionModelEntity(mention.isVariable ? InteractionModelTabType.VARIABLES : InteractionModelTabType.SLOTS, mention.id);
     }

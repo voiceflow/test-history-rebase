@@ -11,7 +11,14 @@ interface DescriptionSectionProps {
 
 const DescriptionSection: React.FC<DescriptionSectionProps> = ({ handleDescriptionChange, description }) => {
   return (
-    <Section headerToggle collapseVariant={SectionToggleVariant.ARROW} header="Description" variant={SectionVariant.PRIMARY} forceDividers>
+    <Section
+      headerToggle
+      collapseVariant={SectionToggleVariant.ARROW}
+      header="Description"
+      variant={SectionVariant.PRIMARY}
+      forceDividers
+      initialOpen
+    >
       <Box paddingBottom={14} minHeight={100}>
         <MentionEditor onChange={handleDescriptionChange} placeholder="Add intent description, or @mention" value={description} height={100} />
       </Box>

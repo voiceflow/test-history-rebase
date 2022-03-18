@@ -11,9 +11,10 @@ import ValuesSection from '../ValuesSection';
 
 interface EntityFormProps {
   slotID: string;
+  withNameSection?: boolean;
 }
 
-const EntityForm: React.FC<EntityFormProps> = ({ slotID }) => {
+const EntityForm: React.FC<EntityFormProps> = ({ slotID, withNameSection = true }) => {
   const slot = useSelector(SlotV2.slotByIDSelector, { id: slotID });
   const patchSlot = useDispatch(SlotDuck.patchSlot, slotID);
   const [type, setType] = React.useState(slot?.type || null);
@@ -39,9 +40,11 @@ const EntityForm: React.FC<EntityFormProps> = ({ slotID }) => {
 
   return (
     <>
-      <Section backgroundColor="#fdfdfd" header="Name" variant={SectionVariant.QUATERNARY} customContentStyling={{ paddingBottom: '0px' }}>
-        <Input onBlur={handleNameSave} placeholder="Enter entity name" value={name} onChange={(e) => setName(e.target.value)} />
-      </Section>
+      {withNameSection && (
+        <Section backgroundColor="#fdfdfd" header="Name" variant={SectionVariant.QUATERNARY} customContentStyling={{ paddingBottom: '0px' }}>
+          <Input onBlur={handleNameSave} placeholder="Enter entity name" value={name} onChange={(e) => setName(e.target.value)} />
+        </Section>
+      )}
       <TypeSection type={type} onChangeType={handleTypeChange} />
       <ValuesSection slot={slot} onUpdate={patchSlot} />
     </>

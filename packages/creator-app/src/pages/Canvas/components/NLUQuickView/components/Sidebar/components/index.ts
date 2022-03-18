@@ -4,7 +4,7 @@ import { UncontrolledSection } from '@/components/Section';
 import ContentContainer from '@/components/Section/components/ContentContainer';
 import SectionHeader from '@/components/Section/components/SectionHeader';
 import { InteractionModelTabType } from '@/constants';
-import { css, styled } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 
 export const SectionSection = styled(UncontrolledSection)<{ isExpanded: boolean }>`
   ${SectionHeader} {
@@ -18,7 +18,7 @@ export const SectionSection = styled(UncontrolledSection)<{ isExpanded: boolean 
 
   ${ContentContainer} {
     padding: 0px 16px;
-    max-height: calc(100vh - 374px);
+    max-height: calc(100vh - 300px);
     overflow: auto;
 
     ${({ isExpanded }) =>
@@ -38,6 +38,7 @@ export const Container = styled(Box)`
 `;
 
 export const NLUButton = styled(Box)`
+  ${transition('opacity')}
   cursor: pointer;
   padding: 22px 32px;
   background: #eef4f6;

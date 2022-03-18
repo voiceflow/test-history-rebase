@@ -9,15 +9,27 @@ import * as IntentDuck from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useAddSlot, useDispatch, useSelector } from '@/hooks';
 import { generateSlotInput } from '@/pages/Canvas/components/SlotEdit/utils';
 import { validateSlotName } from '@/utils/slot';
 
+import { useSectionHooks } from '../hooks';
 import { SectionSection } from './index';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
 
-const EntitiesSection: React.FC<SectionProps> = ({ setSearchLength, selectedID, setSelectedItemID, setActiveTab, activeTab }) => {
+const EntitiesSection: React.FC<SectionProps> = ({
+  isActiveItemRename,
+  setIsActiveItemRename,
+  setTitle,
+  setSearchLength,
+  selectedID,
+  setSelectedItemID,
+  setActiveTab,
+  activeTab,
+}) => {
+  const { onAddSlot } = useAddSlot();
+
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
   const allIntents = useSelector(IntentV2.allCustomIntentsSelector);
@@ -27,17 +39,26 @@ const EntitiesSection: React.FC<SectionProps> = ({ setSearchLength, selectedID, 
   const removeIntentSlot = useDispatch(IntentDuck.removeIntentSlot);
   const patchSlot = useDispatch(SlotDuck.patchSlot);
 
-  const sortedSlots = React.useMemo(() => _sortBy(allSlots, (slot) => slot.name.toLowerCase()), [allSlots]);
+  const sortedSlots = React.useMemo(() => _sortBy(allSlots, (slot) => slot.name?.toLowerCase()), [allSlots]);
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.SLOTS, [activeTab]);
 
-  React.useEffect(() => {
-    if (isActiveTab) {
-      setSearchLength(allSlots.length);
-    }
-  }, [allSlots, isActiveTab]);
+  useSectionHooks({
+    setSearchLength,
+    listLength: allSlots.length,
+    isActiveTab,
+    selectedID,
+    setSelectedItemID,
+    list: sortedSlots,
+    map: allSlotsMap,
+    setTitle,
+  });
 
-  const onCreateEntity = () => {
-    alert('Placeholder, opens entity create modal');
+  const onCreateEntity = async () => {
+    const numberWord = Utils.number.convertToWord(allSlots.length);
+    const newSlot = await onAddSlot(`slot_${numberWord}`);
+    if (newSlot) {
+      setSelectedItemID(newSlot.id);
+    }
   };
 
   const onDelete = React.useCallback((slotID) => {
@@ -105,6 +126,9 @@ const EntitiesSection: React.FC<SectionProps> = ({ setSearchLength, selectedID, 
           onDelete={onDelete}
           onRename={onRenameSlot}
           nameValidation={(name) => name}
+          isActiveItemRename={isActiveItemRename}
+          setIsActiveItemRename={setIsActiveItemRename}
+          activeTab={activeTab}
         />
       ))}
     </SectionSection>

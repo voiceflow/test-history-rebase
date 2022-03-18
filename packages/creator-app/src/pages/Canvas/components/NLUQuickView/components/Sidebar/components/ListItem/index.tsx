@@ -2,6 +2,8 @@ import { Input, InputVariant, OverflowText, useDidUpdateEffect, withEnterPress, 
 import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
+import { InteractionModelTabType } from '@/constants';
+import { NLU_TAB_META } from '@/pages/Canvas/components/NLUQuickView/constants';
 
 import { Container } from './components';
 
@@ -15,21 +17,41 @@ interface ListItemProps {
   nameValidation: (name: string) => string;
   isCreating?: boolean;
   onBlur?: (name: string) => void;
+  isActiveItemRename?: boolean;
+  setIsActiveItemRename?: (val: boolean) => void;
+  activeTab: InteractionModelTabType;
   ref?: React.Ref<HTMLInputElement>;
 }
 
 const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> = (
-  { id, onBlur, nameValidation, isCreating = false, name, onRename, onDelete, active, onClick },
+  { id, isActiveItemRename, activeTab, setIsActiveItemRename, onBlur, nameValidation, isCreating = false, name, onRename, onDelete, active, onClick },
   ref
 ) => {
   const [isRenaming, setIsRenaming] = React.useState(isCreating);
   const [localName, setLocalName] = React.useState(name);
+  const tabMeta = NLU_TAB_META[activeTab];
+
+  const endRename = () => {
+    if (onBlur) {
+      onBlur(localName);
+    } else {
+      onRename?.(localName, id);
+      setIsRenaming(false);
+    }
+    setIsActiveItemRename?.(false);
+  };
 
   useDidUpdateEffect(() => {
     setLocalName(name);
   }, [name]);
 
-  const renameOptions = !onRename
+  useDidUpdateEffect(() => {
+    if (active && isActiveItemRename) {
+      setIsRenaming(true);
+    }
+  }, [isActiveItemRename, active]);
+
+  const renameOptions = !tabMeta.canRename
     ? []
     : [
         { label: 'Rename', value: 'rename', onClick: () => setIsRenaming(true) },
@@ -46,14 +68,7 @@ const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> 
             <Input
               ref={ref}
               value={localName}
-              onBlur={() => {
-                if (onBlur) {
-                  onBlur(localName);
-                } else {
-                  onRename?.(localName, id);
-                  setIsRenaming(false);
-                }
-              }}
+              onBlur={endRename}
               variant={InputVariant.INLINE}
               onFocus={({ target }) => target.select()}
               onChange={withTargetValue((val) => setLocalName(nameValidation(val)))}

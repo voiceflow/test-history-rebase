@@ -118,15 +118,16 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
 
     if (error) {
       toast.error(error);
+    } else if (IMM_MODALS_V2.isEnabled) {
+      openCreateIntentModal({
+        createName: preparedName,
+        onCreate: (intentID: string) => {
+          onSelectIntent(intentID);
+        },
+      });
     } else {
       const nextIntentID = await createIntent({ name: preparedName });
-
-      if (IMM_MODALS_V2.isEnabled) {
-        openCreateIntentModal({ id: nextIntentID });
-      } else {
-        await onSelectIntent(nextIntentID);
-      }
-
+      await onSelectIntent(nextIntentID);
       trackingEvents.trackIntentCreated({ creationType: CanvasCreationType.EDITOR });
     }
   };

@@ -15,6 +15,7 @@ import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/co
 import { Variable } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/types';
 import { addPrefix } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/utils';
 import ListItem from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/components/ListItem';
+import { useSectionHooks } from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/hooks';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import { SectionSection } from '.';
@@ -23,7 +24,7 @@ import { SectionProps } from './types';
 const createVariablesList = (type: VariableType, variables: string[]) =>
   variables.map((variable) => ({ id: addPrefix(type, variable), name: variable, type }));
 
-const VariablesSection: React.FC<SectionProps> = ({ search, setSearchLength, selectedID, setSelectedItemID, setActiveTab, activeTab }) => {
+const VariablesSection: React.FC<SectionProps> = ({ setTitle, search, setSearchLength, selectedID, setSelectedItemID, setActiveTab, activeTab }) => {
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.VARIABLES, [activeTab]);
 
   const removeGlobalVariable = useDispatch(Version.removeGlobalVariable);
@@ -56,11 +57,16 @@ const VariablesSection: React.FC<SectionProps> = ({ search, setSearchLength, sel
     return [list, map, nameMap];
   }, [localVariables, globalVariables, localVariables]);
 
-  React.useEffect(() => {
-    if (isActiveTab) {
-      setSearchLength(mergedVariables.length);
-    }
-  }, [mergedVariables, isActiveTab]);
+  useSectionHooks({
+    setSearchLength,
+    listLength: mergedVariables.length,
+    isActiveTab,
+    selectedID,
+    setSelectedItemID,
+    list: mergedVariables,
+    map: mergedVariablesMap,
+    setTitle,
+  });
 
   const filteredVariables = React.useMemo(() => {
     return mergedVariables.filter((variable) => {
@@ -129,14 +135,16 @@ const VariablesSection: React.FC<SectionProps> = ({ search, setSearchLength, sel
           key="new-variable"
           name="new_variable"
           onDelete={() => {}}
-          nameValidation={(name) => name}
+          nameValidation={(name) => name.replace(' ', '_')}
           isCreating
+          activeTab={activeTab}
         />
       )}
       {filteredVariables.map((variable) => (
         <ListItem
           id={variable.id}
           active={selectedID === variable.id}
+          activeTab={activeTab}
           onClick={() => setSelectedItemID(variable.id)}
           key={variable.id}
           name={variable.name}

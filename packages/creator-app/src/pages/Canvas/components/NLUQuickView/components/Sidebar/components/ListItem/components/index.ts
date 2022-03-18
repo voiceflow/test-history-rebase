@@ -11,15 +11,6 @@ export const Container = styled.div<{ active?: boolean }>`
   cursor: pointer;
   margin-bottom: 2px;
 
-  ${({ active }) =>
-    active &&
-    css`
-      border: 1px solid #eef4f6;
-      font-weight: 600;
-      background: #eef4f6;
-      border: solid 1px #dfe3ed;
-    `}
-
   &:hover {
     background: #eef4f6;
     border: 1px solid #eef4f6;
@@ -28,4 +19,12 @@ export const Container = styled.div<{ active?: boolean }>`
   &:last-child {
     margin-bottom: 16px;
   }
+
+  ${({ active }) =>
+    active &&
+    css`
+      font-weight: 600;
+      background: #eef4f6;
+      border: 1px solid #dfe3ed !important;
+    `}
 `;

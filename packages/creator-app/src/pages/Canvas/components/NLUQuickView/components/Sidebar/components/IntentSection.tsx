@@ -12,15 +12,27 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { applyPlatformIntentNameFormatting, isCustomizableBuiltInIntent, validateIntentName } from '@/utils/intent';
 
+import { useSectionHooks } from '../hooks';
 import { SectionSection } from '.';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
 
-const IntentSection: React.FC<SectionProps> = ({ setSearchLength, search, selectedID, activeTab, setActiveTab, setSelectedItemID }) => {
+const IntentSection: React.FC<SectionProps> = ({
+  setIsActiveItemRename,
+  isActiveItemRename,
+  setTitle,
+  setSearchLength,
+  search,
+  selectedID,
+  activeTab,
+  setActiveTab,
+  setSelectedItemID,
+}) => {
   const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
   const allCustomIntentsMap = useSelector(IntentV2.customIntentMapSelector);
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
+  const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.INTENTS, [activeTab]);
 
   const deleteIntent = useDispatch(Intent.deleteIntent);
   const patchIntent = useDispatch(Intent.patchIntent);
@@ -28,7 +40,6 @@ const IntentSection: React.FC<SectionProps> = ({ setSearchLength, search, select
 
   const [isCreating, setIsCreating] = React.useState(false);
   const [newIntentID, setNewIntentID] = React.useState('');
-  const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.INTENTS, [activeTab]);
 
   const existingCustomIntents = React.useMemo(() => {
     return allCustomIntents.filter(({ id }) => id !== newIntentID);
@@ -39,11 +50,16 @@ const IntentSection: React.FC<SectionProps> = ({ setSearchLength, search, select
     [existingCustomIntents]
   );
 
-  React.useEffect(() => {
-    if (isActiveTab) {
-      setSearchLength(allCustomIntents.length);
-    }
-  }, [allCustomIntents, isActiveTab]);
+  useSectionHooks({
+    setSearchLength,
+    listLength: allCustomIntents.length,
+    isActiveTab,
+    selectedID,
+    setSelectedItemID,
+    list: sortedCustomIntents,
+    map: allCustomIntentsMap,
+    setTitle,
+  });
 
   const filteredCustomIntents = React.useMemo(() => {
     return sortedCustomIntents.filter((intent) => {
@@ -117,6 +133,7 @@ const IntentSection: React.FC<SectionProps> = ({ setSearchLength, search, select
           }}
           nameValidation={nameValidation}
           isCreating
+          activeTab={activeTab}
         />
       )}
       {filteredCustomIntents.map((intent) => (
@@ -129,6 +146,9 @@ const IntentSection: React.FC<SectionProps> = ({ setSearchLength, search, select
           onDelete={onDeleteIntent}
           onRename={onRenameIntent}
           nameValidation={nameValidation}
+          setIsActiveItemRename={setIsActiveItemRename}
+          isActiveItemRename={isActiveItemRename}
+          activeTab={activeTab}
         />
       ))}
     </SectionSection>

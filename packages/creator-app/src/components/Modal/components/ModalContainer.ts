@@ -1,12 +1,13 @@
 import { down } from 'styled-breakpoints';
 
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 import { FadeDownDelayed } from '@/styles/animations';
 
 export interface ModalContainerProps {
   fade: boolean;
   centered?: boolean;
   maxWidth?: number;
+  maxHeight?: number;
   isOpened?: boolean;
 }
 
@@ -21,6 +22,12 @@ const ModalContainer = styled.section<ModalContainerProps>`
   max-height: calc(100% - 56px);
   background: #fff;
   max-width: ${({ maxWidth = 500 }) => maxWidth}px;
+  max-width: ${({ maxHeight }) =>
+    maxHeight &&
+    css`
+      ${maxHeight}px
+    `};
+
   overflow-x: hidden;
   overflow-y: auto;
   z-index: ${({ theme }) => theme.zIndex.modal};

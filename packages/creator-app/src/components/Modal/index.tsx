@@ -21,6 +21,7 @@ export interface UncontrolledModalProps {
   closable?: boolean;
   centered?: boolean;
   maxWidth?: number;
+  maxHeight?: number;
   className?: string;
   withHeader?: boolean;
   intoTooltip?: React.ReactNode;
@@ -45,6 +46,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
       isOpened,
       headerBorder,
       maxWidth,
+      maxHeight,
       children,
       className,
       withHeader = true,
@@ -66,6 +68,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
               fade={fade}
               centered={centered}
               maxWidth={maxWidth}
+              maxHeight={maxHeight}
               className={cn(ClassName.MODAL, className, `${ClassName.MODAL}--${id ?? 'unknown'}`)}
             >
               {leftSidebar?.()}

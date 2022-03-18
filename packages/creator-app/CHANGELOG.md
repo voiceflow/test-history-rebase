@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.661.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.661.0...@voiceflow/creator-app@1.661.1) (2022-03-18)
+
+
+### Bug Fixes
+
+* socket connection and data loss (VF-000) ([#5218](https://github.com/voiceflow/creator-app/issues/5218)) ([fc21c41](https://github.com/voiceflow/creator-app/commit/fc21c41087365bdb69200085a698a4c07dd8015a)), closes [/github.com/voiceflow/creator-app/blob/850726ca9faad5d12aa4cca2b67978a165f229c5/packages/creator-app/src/client/socket/diagram.ts#L34-L40](https://github.com//github.com/voiceflow/creator-app/blob/850726ca9faad5d12aa4cca2b67978a165f229c5/packages/creator-app/src/client/socket/diagram.ts/issues/L34-L40) [/github.com/voiceflow/creator-api/blob/master/lib/services/socketManager.ts#L72-L73](https://github.com//github.com/voiceflow/creator-api/blob/master/lib/services/socketManager.ts/issues/L72-L73)
+
+
+
+
+
 # [1.661.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.660.1...@voiceflow/creator-app@1.661.0) (2022-03-18)
 
 

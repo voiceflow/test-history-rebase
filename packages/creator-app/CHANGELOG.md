@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.662.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.662.0...@voiceflow/creator-app@1.662.1) (2022-03-18)
+
+
+### Bug Fixes
+
+* updade default upload error message for dialogflow (VF-2036) ([#5221](https://github.com/voiceflow/creator-app/issues/5221)) ([d65d4ea](https://github.com/voiceflow/creator-app/commit/d65d4ea93fc2480b12d4b69dbdd852c4032cd6ab))
+
+
+
+
+
 # [1.662.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.661.1...@voiceflow/creator-app@1.662.0) (2022-03-18)
 
 

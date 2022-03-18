@@ -6,11 +6,15 @@ export enum SocketEvent {
   LOGOUT = 'logout',
   INITIALIZE = 'init',
   FAIL = 'fail',
-  ERROR = 'error',
+
+  // reservered socketio events
   CONNECT = 'connect',
   DISCONNECT = 'disconnect',
   CONNECT_ERROR = 'connect_error',
-  CONNECT_FAILED = 'connect_failed',
+}
+
+export enum SocketIOEvent {
+  ERROR = 'error',
   RECONNECT = 'reconnect',
 }
 

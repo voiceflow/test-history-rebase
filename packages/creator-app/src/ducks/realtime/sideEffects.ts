@@ -165,4 +165,5 @@ export const reestablishConnection = (): Thunk => async (dispatch) => {
   await dispatch(setupActiveDiagramConnection());
   dispatch(connectRealtime());
   await dispatch(sendRealtimeUpdate(Socket.reconnectNoop()));
+  client.socket!.global.setConnectedStatus();
 };

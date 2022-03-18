@@ -21,18 +21,12 @@ const globalSocketClient = {
 
   watchForPrototypeWebhook: (handler: AnyFunction) => client.watch(ServerEvent.PROTOTYPE_WEBHOOK, handler),
 
-  handleDisconnect: (onDisconnect: Callback, onReconnect: Callback) => {
-    if (client.status === SocketStatus.RECONNECTING) return;
-
+  setReconnectingStatus: () => {
     client.status = SocketStatus.RECONNECTING;
+  },
 
-    onDisconnect();
-
-    client.once(SocketEvent.INITIALIZE, () => {
-      onReconnect();
-
-      client.status = SocketStatus.CONNECTED;
-    });
+  setConnectedStatus: () => {
+    client.status = SocketStatus.CONNECTED;
   },
 
   watchForFailure: (callback: Callback) =>

@@ -6,7 +6,7 @@ import { API_ENDPOINT, DEBUG_SOCKET } from '@/config';
 import * as Sentry from '@/vendors/sentry';
 
 import { clientLogger } from '../utils';
-import { AnySocketEvent, CALL_MAP, SocketEvent } from './constants';
+import { AnySocketEvent, CALL_MAP, SocketEvent, SocketIOEvent } from './constants';
 
 const SOCKET_INIT_TIMEOUT = 3000;
 const SOCKET_CONNECTION_TIMEOUT = 30000;
@@ -170,8 +170,8 @@ class SocketClient {
     try {
       await this.#initializeConnection(authProfile);
 
-      this.off(SocketEvent.RECONNECT, this.#onReconnect);
-      this.on(SocketEvent.RECONNECT, this.#onReconnect);
+      this.socket.io.off(SocketIOEvent.RECONNECT, this.#onReconnect);
+      this.socket.io.on(SocketIOEvent.RECONNECT, this.#onReconnect);
 
       this.authProfile = authProfile;
     } catch (err) {
@@ -203,19 +203,21 @@ class SocketClient {
 
   #setupErrorHandlers = () => {
     this.#handleError(SocketEvent.FAIL);
-    this.#handleError(SocketEvent.ERROR);
     // to catch if the server is offline
     this.#handleError(SocketEvent.CONNECT_ERROR);
-    // catch failed connection attempts
-    this.#handleError(SocketEvent.CONNECT_FAILED);
+
+    this.#handleIOError(SocketIOEvent.ERROR);
   };
 
-  #handleError = (event: SocketEvent) =>
-    this.on(event, (data) => {
-      Sentry.breadcrumb('socket', `Received '${event}' error`, data as any);
+  #logSocketError = (event: string, data: any) => {
+    Sentry.breadcrumb('socket', `Received '${event}' error`, data as any);
 
-      log.error('socket failure from event', log.value(event), data);
-    });
+    log.error('socket failure from event', log.value(event), data);
+  };
+
+  #handleError = (event: SocketEvent) => this.on(event, (data) => this.#logSocketError(event, data));
+
+  #handleIOError = (event: SocketIOEvent) => this.socket.io.on(event, (data: any) => this.#logSocketError(event, data));
 }
 
 export default new SocketClient();

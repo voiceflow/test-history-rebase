@@ -19,12 +19,19 @@ const RealtimeDiagramLifecycle: React.FC<ConnectedRealtimeDiagramLifecycleProps>
 }) => {
   React.useEffect(
     () =>
-      client.socket.global.watchForConnectionError(() =>
-        client.socket.global.handleDisconnect(() => {
-          disconnectRealtime();
-        }, reestablishConnection)
-      ),
-    [disconnectRealtime, reestablishConnection]
+      client.socket.global.watchForConnectionError(() => {
+        disconnectRealtime();
+        client.socket.global.setReconnectingStatus();
+      }),
+    []
+  );
+
+  React.useEffect(
+    () =>
+      client.socket.global.watchForReconnected(() => {
+        reestablishConnection();
+      }),
+    [reestablishConnection]
   );
 
   React.useEffect(

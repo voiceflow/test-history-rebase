@@ -451,7 +451,7 @@ export const DEVICE_LABEL_MAP: Record<BaseNode.Visual.DeviceType, string> = {
   [BaseNode.Visual.DeviceType.GOOGLE_NEST_HUB]: 'Google Nest Hub',
 };
 
-export const DOCS_LINK = 'https://docs.voiceflow.com';
+export const DOCS_LINK = 'https://www.voiceflow.com/docs';
 export const FORUM_LINK = 'https://forum.voiceflow.com/';
 // eslint-disable-next-line no-secrets/no-secrets
 export const YOUTUBE_CHANNEL_LINK = 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ';

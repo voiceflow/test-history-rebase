@@ -1,14 +1,13 @@
 import React from 'react';
 
 import { Paragraph, Title } from '@/components/Tooltip';
-
-import { HELP_LINK } from '../constants';
+import * as Documentation from '@/config/documentation';
 
 const HelpTooltip = () => (
   <>
     <Paragraph marginBottomUnits={3}>
       Account linking enables your project to connect the user's identity with their identity in a different system. You can read more on how it works{' '}
-      <a href={HELP_LINK} target="_blank" rel="noopener noreferrer">
+      <a href={Documentation.ACCOUNT_LINKING_STEP} target="_blank" rel="noopener noreferrer">
         here
       </a>
       .

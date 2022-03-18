@@ -4,12 +4,12 @@ export const BULK_IMPORT_UTTERANCES = 'https://docs.voiceflow.com/#/features/bul
 
 // export
 export const MODEL_EXPORT = 'https://docs.voiceflow.com/#/platform/interaction-model/model-manager?id=model-export';
-export const PROJECT_EXPORT = 'https://docs.voiceflow.com/#/platform/share/share?id=export-project-files';
-export const PROTOTYPE_SHARE = 'https://docs.voiceflow.com/#/platform/share/share?id=share-prototypes';
+export const PROJECT_EXPORT = 'https://www.voiceflow.com/docs/documentation-content-exports';
+export const PROTOTYPE_SHARE = 'https://www.voiceflow.com/docs/prototyping-sharable-prototypes';
 
 // settings
-export const CANVAS_CONTROLS = 'https://docs.voiceflow.com/#/platform/canvas/the-canvas?id=canvas-controls';
-export const LINK_TYPE = 'https://docs.voiceflow.com/#/platform/canvas/the-canvas?id=change-your-path-mode';
+export const CANVAS_CONTROLS = 'https://www.voiceflow.com/docs/designing-canvas-navigation#toc-1';
+export const LINK_TYPE = 'https://www.voiceflow.com/docs/designing-canvas-navigation#toc-2';
 export const USE_A_TEMPLATE = 'https://docs.voiceflow.com/#/platform/project-creation/project-creation?id=start-with-a-template';
 
 // channels
@@ -19,24 +19,28 @@ export const GOOGLE_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/chann
 export const DIALOGFLOW_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/channel-steps/dialogflow-steps';
 
 // canvas
-export const FLOW_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic?id=flow-step';
-export const COMPONENT_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic?id=component-step';
-export const CONDITION_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic?id=condition-step';
-export const SET_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic?id=set-step';
-export const CODE_STEP = 'https://docs.voiceflow.com/#/platform/steps/integration-steps/integration?id=custom-code-step';
+export const FLOW_STEP = 'https://www.voiceflow.com/docs/designing-components-flow';
+export const COMPONENTS_LAYER = 'https://www.voiceflow.com/docs/designing-components-flow';
+export const COMPONENT_STEP = 'https://www.voiceflow.com/docs/designing-components-flow';
+export const CONDITION_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-0';
+export const SET_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-1';
+export const CODE_STEP = 'https://www.voiceflow.com/docs/designing-integration-steps#toc-2';
 export const SET_STEP_VIDEO = 'https://www.youtube.com/embed/6xgr-7GPZzU';
 export const COMMAND_STEP_VIDEO = 'https://www.youtube.com/watch?v=piU_PTL1wBQ&feature=emb_title';
-
-// TODO: this document hasn't been written yet
-export const TEXT_STEP = 'https://docs.voiceflow.com/#/platform/steps/response-steps/response?id=text-step';
-export const VISUALS_STEP = 'https://docs.voiceflow.com/#/platform/steps/response-steps/response?id=visuals-step';
-export const BUTTONS_STEP = 'https://docs.voiceflow.com/#/platform/steps/input-steps/user-input?id=buttons-step';
+export const ACCOUNT_LINKING_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-4';
+export const ALEXA_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-5';
+export const GOOGLE_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-6';
+export const BUTTONS_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-1';
+export const TEXT_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-2';
+export const VISUALS_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-4';
+export const DISPLAY_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-5';
+export const CUSTOM_RESPOSE = 'https://www.voiceflow.com/docs/designing-response-steps#toc-8';
 
 // TODO: we don't have a dedicated pages for these anymore
 export const CAPTURE_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic';
-export const CARD_STEP = 'https://docs.voiceflow.com/#/platform/steps/channel-steps/alexa-steps';
-export const REMINDER_STEP = 'https://docs.voiceflow.com/#/platform/steps/channel-steps/alexa-steps';
-export const STREAM_STEP = 'https://docs.voiceflow.com/#/platform/steps/channel-steps/alexa-steps';
+export const CARD_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-6';
+export const REMINDER_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-1';
+export const STREAM_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-7';
 
 // features
 export const MARKUP_FEATURE = 'https://docs.voiceflow.com/#/platform/canvas/markup';
@@ -47,9 +51,6 @@ export const PROTOTYPING = 'https://docs.voiceflow.com/#/platform/testing/testin
 export const ASSISTANT_TRAINING = 'https://docs.voiceflow.com/#/platform/testing/testing?id=train-the-voiceflow-assistant';
 
 export const DIALOG_MANAGER_API = 'https://www.voiceflow.com/api/dialog-manager';
-
-// TODO: this document hasn't been written yet
-export const COMPONENTS_LAYER = 'https://docs.voiceflow.com/#/platform/steps/response-steps/response?id=components';
 
 // TODO: this document hasn't been written yet
 export const OPEN_INTENT = 'https://docs.voiceflow.com/#/platform/steps/input-steps/user-input?id=open-intent';

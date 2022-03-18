@@ -58,4 +58,4 @@ export const EMPTY_ACCOUNT_DATA: AlexaVersion.AccountLinking = {
   defaultTokenExpirationInSeconds: 3600,
 };
 
-export const HELP_LINK = 'https://docs.voiceflow.com';
+export const HELP_LINK = 'https://www.voiceflow.com/docs';

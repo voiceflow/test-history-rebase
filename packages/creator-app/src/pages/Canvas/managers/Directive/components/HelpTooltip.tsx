@@ -3,7 +3,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { Paragraph } from '@/components/Tooltip';
-import { DOCS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 
 const EditorInfoPopup: React.FC<{ platform: VoiceflowConstants.PlatformType }> = ({ platform }) => {
   switch (platform) {
@@ -16,7 +16,7 @@ const EditorInfoPopup: React.FC<{ platform: VoiceflowConstants.PlatformType }> =
           <br />
           <br />
           For more information, visit our
-          <Link href={`${DOCS_LINK}/#/platform/steps/channel-steps/alexa-steps?id=directive-step`}> documentation.</Link>
+          <Link href={Documentation.ALEXA_DIRECTIVE_STEP}> documentation.</Link>
         </Paragraph>
       );
     case VoiceflowConstants.PlatformType.GOOGLE:
@@ -28,7 +28,7 @@ const EditorInfoPopup: React.FC<{ platform: VoiceflowConstants.PlatformType }> =
           <br />
           <br />
           For more information, visit our
-          <Link href={`${DOCS_LINK}/#/platform/steps/channel-steps/google-steps?id=directive-step`}> documentation.</Link>
+          <Link href={Documentation.GOOGLE_DIRECTIVE_STEP}> documentation.</Link>
         </Paragraph>
       );
     default:

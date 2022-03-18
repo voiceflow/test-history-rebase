@@ -2,6 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
+import * as Documentation from '@/config/documentation';
 import { MapManaged, useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
@@ -80,7 +81,7 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltIn
               helpMessage: (
                 <>
                   Check out this{' '}
-                  <a href="https://docs.voiceflow.com/#/steps/condition" target="_blank" rel="noopener noreferrer">
+                  <a href={Documentation.CONDITION_STEP} target="_blank" rel="noopener noreferrer">
                     doc
                   </a>{' '}
                   that goes over using IF blocks inside Voiceflow.

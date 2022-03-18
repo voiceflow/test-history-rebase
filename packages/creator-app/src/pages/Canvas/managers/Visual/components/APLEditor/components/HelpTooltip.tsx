@@ -2,6 +2,7 @@ import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import { Paragraph, Title } from '@/components/Tooltip';
+import * as Documentation from '@/config/documentation';
 
 const HelpTooltip: React.FC = () => (
   <>
@@ -12,8 +13,7 @@ const HelpTooltip: React.FC = () => (
     <Title>Having Trouble?</Title>
 
     <Paragraph>
-      Learn more about APL and multi-modal displays on Alexa{' '}
-      <Link href="https://learn.voiceflow.com/en/articles/2632588-display-block-apl">here.</Link>
+      Learn more about APL and multi-modal displays on Alexa <Link href={Documentation.DISPLAY_STEP}>here.</Link>
     </Paragraph>
   </>
 );

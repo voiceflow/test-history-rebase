@@ -2,6 +2,7 @@ import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import { Paragraph } from '@/components/Tooltip';
+import * as Documentation from '@/config/documentation';
 
 const EditorInfoPopup: React.FC = () => {
   return (
@@ -11,8 +12,7 @@ const EditorInfoPopup: React.FC = () => {
       to Dialogflow.
       <br />
       <br />
-      For more information, visit{' '}
-      <Link href="https://cloud.google.com/dialogflow/es/docs/fulfillment-webhook#webhook_response">the Dialogflow documentation.</Link>
+      For more information, visit our <Link href={Documentation.CUSTOM_RESPOSE}>documentation</Link>.
     </Paragraph>
   );
 };

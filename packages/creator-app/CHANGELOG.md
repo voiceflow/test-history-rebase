@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.662.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.661.1...@voiceflow/creator-app@1.662.0) (2022-03-18)
+
+
+### Features
+
+* design menu resize (VF-3155) ([#5220](https://github.com/voiceflow/creator-app/issues/5220)) ([4c81ef5](https://github.com/voiceflow/creator-app/commit/4c81ef5d516c473cd7d21a138c7c4ca52e51cd5d))
+
+
+
+
+
 ## [1.661.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.661.0...@voiceflow/creator-app@1.661.1) (2022-03-18)
 
 

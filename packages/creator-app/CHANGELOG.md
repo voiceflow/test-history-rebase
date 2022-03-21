@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.662.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.662.2...@voiceflow/creator-app@1.662.3) (2022-03-21)
+
+
+### Bug Fixes
+
+* update variable state modal save button label (VF-3171) ([#5227](https://github.com/voiceflow/creator-app/issues/5227)) ([41b334d](https://github.com/voiceflow/creator-app/commit/41b334d596eeeb2f9ff2f30f42a5dbc394ff9a47))
+
+
+
+
+
 ## [1.662.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.662.1...@voiceflow/creator-app@1.662.2) (2022-03-21)
 
 

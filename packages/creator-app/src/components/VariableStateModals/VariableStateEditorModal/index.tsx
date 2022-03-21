@@ -204,7 +204,7 @@ const VariableStateEditorModal: React.FC = () => {
         </Box>
 
         <Button variant={ButtonVariant.PRIMARY} squareRadius disabled={saving} onClick={handleSave}>
-          Save
+          Save State
         </Button>
       </ModalFooter>
     </Modal>

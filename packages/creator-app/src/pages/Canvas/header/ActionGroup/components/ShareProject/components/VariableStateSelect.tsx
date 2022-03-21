@@ -17,9 +17,7 @@ const VariableStateSelect: React.FC = () => {
     const variableState = variableStates.find((variableState) => variableState.name === selectedVariableStateName);
     if (!variableState?.id) return;
 
-    updateSharePrototypeSettings(
-      variableStateID === variableState.id ? { ...prototypeSettings, variableStateID: undefined } : { variableStateID: variableState.id }
-    );
+    updateSharePrototypeSettings({ variableStateID: variableStateID === variableState.id ? '' : variableState.id });
   };
 
   return <Select placeholder="Select variable state" value={variableStateName} options={options} onSelect={onSelect} />;

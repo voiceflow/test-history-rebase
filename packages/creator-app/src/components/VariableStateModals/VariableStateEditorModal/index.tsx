@@ -174,7 +174,6 @@ const VariableStateEditorModal: React.FC = () => {
             placeholder="Select variables to include"
             disabled={saving}
           />
-          {!values.variables.length && <InputHint>Selected variables will be shown below to set values</InputHint>}
         </Section>
         {values.variables.length > 0 && (
           <Section customContentStyling={{ padding: 0 }} variant={SectionVariant.FORM}>

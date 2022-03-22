@@ -4,24 +4,25 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { getPlatformValue } from '@/utils/platform';
+import { isAlexaPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 import { NewProjectContainer } from './components/Containers';
 import { ChannelSection, InvocationNameSection, NLUSection } from './components/Section';
-import { ChannelSectionType, ChannelType, channelTypeToPlatformType, getChannelMeta, NLUType } from './constants';
+import { getPlatformOrProjectTypeMeta } from './constants';
 
 const NewProject: React.FC = () => {
-  const [channel, setChannel] = React.useState<ChannelType>();
-  const [nlu, setNlu] = React.useState<NLUType | undefined>();
+  const [channel, setChannel] = React.useState<VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType>();
+  const [nlu, setNlu] = React.useState<VoiceflowConstants.PlatformType | undefined>();
   const [invocationName, setInvocationName] = React.useState<string>('');
 
-  const isChannelOneClick = channel ? getChannelMeta[channel].channelSectionType === ChannelSectionType.ONE_CLICK : false;
+  const isChannelOneClick = isAlexaPlatform(channel) || isGooglePlatform(channel);
 
-  const handleChannelSelect = (value: ChannelType) => {
+  const handleChannelSelect = (value: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType) => {
     setChannel(value);
     setNlu(undefined);
   };
 
-  const handleNLUSelect = (value: NLUType) => {
+  const handleNLUSelect = (value: VoiceflowConstants.PlatformType) => {
     setNlu(value);
   };
 
@@ -32,9 +33,8 @@ const NewProject: React.FC = () => {
   const invocationErrorMessage =
     invocationName &&
     channel &&
-    channelTypeToPlatformType[channel] &&
     getPlatformValue<(name?: string, locales?: any[]) => string | null>(
-      channelTypeToPlatformType[channel] as any,
+      channel as VoiceflowConstants.PlatformType,
       {
         [VoiceflowConstants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
         [VoiceflowConstants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
@@ -50,7 +50,7 @@ const NewProject: React.FC = () => {
         <InvocationNameSection
           invocationName={invocationName}
           onInvocationNameChange={handleInvocationNameChange}
-          invocationDescription={channel ? getChannelMeta[channel].invocationDescription : ''}
+          invocationDescription={channel ? getPlatformOrProjectTypeMeta[channel]?.invocationDescription : ''}
           invocationError={!!invocationErrorMessage}
           invocationErrorMessage={invocationErrorMessage}
         />

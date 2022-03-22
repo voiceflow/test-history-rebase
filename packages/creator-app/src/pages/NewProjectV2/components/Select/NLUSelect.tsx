@@ -1,11 +1,12 @@
 import { Select } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { getNLUMeta, NLU_SECTIONS, NLUType } from '../../constants';
+import { getPlatformOrProjectTypeMeta, NLU_SECTIONS } from '../../constants';
 
 interface NLUSelectProps {
-  value?: NLUType;
-  onSelect: (value: NLUType) => void;
+  value?: VoiceflowConstants.PlatformType;
+  onSelect: (value: VoiceflowConstants.PlatformType) => void;
 }
 
 const NLUSelect: React.FC<NLUSelectProps> = ({ value, onSelect }) => {
@@ -13,7 +14,7 @@ const NLUSelect: React.FC<NLUSelectProps> = ({ value, onSelect }) => {
     <Select
       grouped
       getOptionValue={(option) => option?.type as any}
-      getOptionLabel={(option) => (option ? getNLUMeta[option]?.name : '')}
+      getOptionLabel={(option) => (option ? getPlatformOrProjectTypeMeta[option]?.name : '')}
       value={value}
       options={NLU_SECTIONS as any[]}
       onSelect={onSelect}

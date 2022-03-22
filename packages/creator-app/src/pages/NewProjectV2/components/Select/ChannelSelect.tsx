@@ -1,11 +1,12 @@
 import { Select } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { CHANNEL_SECTIONS, ChannelType, getChannelMeta } from '../../constants';
+import { CHANNEL_SECTIONS, getPlatformOrProjectTypeMeta } from '../../constants';
 
 interface ChannelSelectProps {
-  value: ChannelType | undefined;
-  onSelect: (value: ChannelType) => void;
+  value: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType | undefined;
+  onSelect: (value: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType) => void;
 }
 
 const ChannelSelect: React.FC<ChannelSelectProps> = ({ value, onSelect }) => {
@@ -13,7 +14,7 @@ const ChannelSelect: React.FC<ChannelSelectProps> = ({ value, onSelect }) => {
     <Select
       grouped
       getOptionValue={(option) => option?.type as any}
-      getOptionLabel={(value) => (value ? getChannelMeta[value].name : '')}
+      getOptionLabel={(value) => (value ? getPlatformOrProjectTypeMeta[value]?.name : '')}
       value={value}
       options={CHANNEL_SECTIONS as any[]}
       onSelect={onSelect}

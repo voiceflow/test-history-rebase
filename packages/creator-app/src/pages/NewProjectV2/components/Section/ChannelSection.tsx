@@ -1,13 +1,13 @@
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 
-import { ChannelType } from '../../constants';
 import { ChannelSelect } from '../Select';
 
 interface ChannelSectionProps {
-  channelValue: ChannelType | undefined;
-  onChannelSelect: (value: ChannelType) => void;
+  channelValue: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType | undefined;
+  onChannelSelect: (value: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType) => void;
 }
 
 const ChannelSection: React.FC<ChannelSectionProps> = ({ channelValue, onChannelSelect }) => {

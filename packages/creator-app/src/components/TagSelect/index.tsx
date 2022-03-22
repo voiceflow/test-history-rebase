@@ -78,7 +78,7 @@ function TagSelect({
       renderOptionLabel={(option) => customMenuLabelRenderer(String(getOptionLabel(option)) || '', getOptionValue(option) || '', isOptionSelected)}
       renderFooterAction={({ close }) => (
         <NestedMenuComponents.FooterActionContainer onClick={stopImmediatePropagation(Utils.functional.chainVoid(close, toggleSelectAll))}>
-          {selectedAllIntents ? 'Unselect all' : 'Select all'}
+          {selectedAllIntents ? 'Unselect All' : 'Select All'}
         </NestedMenuComponents.FooterActionContainer>
       )}
       fullWidth

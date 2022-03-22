@@ -6,7 +6,8 @@ import Upgrade from '@/components/Upgrade';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ScrollContextProvider } from '@/contexts';
-import { useFeature, usePermission } from '@/hooks';
+import * as VariableState from '@/ducks/variableState';
+import { useFeature, usePermission, useSelector } from '@/hooks';
 import { useScrollHelpers, useScrollStickySides } from '@/hooks/scroll';
 import { FadeLeftContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
@@ -28,6 +29,7 @@ enum ActiveModal {
 const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
   const { isEnabled: isVariableStateEnabled } = useFeature(FeatureFlag.VARIABLE_STATES);
+  const variableStates = useSelector(VariableState.allVariableStatesSelector);
 
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const [isHeaderSticky] = useScrollStickySides(bodyRef);
@@ -64,7 +66,7 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
               <AppearanceAndBranding isAllowed={canCustomize} />
             </UncontrolledSection>
 
-            {isVariableStateEnabled && (
+            {isVariableStateEnabled && !!variableStates?.length && (
               <UncontrolledSection
                 nestedIntend
                 header="Variable State"

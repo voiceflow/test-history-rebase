@@ -1,4 +1,4 @@
-export const RECONNECT_TIMEOUT = 2.5 * 1000;
+export const RECONNECT_TIMEOUT = 5 * 1000;
 
 export enum ConnectionStatus {
   // client has not attempted connection

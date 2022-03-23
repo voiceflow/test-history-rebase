@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.664.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.664.1...@voiceflow/creator-app@1.664.2) (2022-03-23)
+
+
+### Bug Fixes
+
+* realtime reconnect gracefully (vf-000) [bugfix] ([#5222](https://github.com/voiceflow/creator-app/issues/5222)) ([4675ec4](https://github.com/voiceflow/creator-app/commit/4675ec45bf11c18940dabca590e1c4f210d4ab11))
+
+
+
+
+
 ## [1.664.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.664.0...@voiceflow/creator-app@1.664.1) (2022-03-23)
 
 

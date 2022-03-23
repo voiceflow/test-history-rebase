@@ -48,6 +48,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM] as string | null;
   const history = useHistory();
   const [trackingEvents] = useTrackingEvents();
+  const { isOpened: entityEditOpened } = useModals<{ name: string; onCreate: (slot: Realtime.Slot) => void }>(ModalType.ENTITY_EDIT);
 
   const slots = useSelector(SlotV2.allSlotsSelector);
   const customIntents = useSelector(IntentV2.allCustomIntentsSelector);
@@ -212,7 +213,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
                       placeholder={placeholder}
                       onEnterPress={onAdd}
                       error={!isValidUtterance}
-                      readOnly={!isInModal && interactionModelInstance}
+                      readOnly={entityEditOpened || (!isInModal && interactionModelInstance)}
                     />
                     {!isValidUtterance && <ErrorMessage>{addError}</ErrorMessage>}
                   </>
@@ -228,7 +229,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
                   onBlur={onUpdate}
                   onEnterPress={onUpdate}
                   onAddSlot={onAddSlot}
-                  readOnly={!isInModal && interactionModelInstance}
+                  readOnly={entityEditOpened || (!isInModal && interactionModelInstance)}
                 />
               )}
             />

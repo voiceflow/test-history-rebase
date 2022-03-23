@@ -1,52 +1,37 @@
-import { Input, useDidUpdateEffect } from '@voiceflow/ui';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Input } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
-import * as SlotDuck from '@/ducks/slot';
-import * as SlotV2 from '@/ducks/slotV2';
-import { useDispatch, useSelector } from '@/hooks';
 
 import TypeSection from '../TypeSection';
 import ValuesSection from '../ValuesSection';
 
 interface EntityFormProps {
-  slotID: string;
+  values: Realtime.SlotInput[];
+  saveValues?: (inputs: Realtime.SlotInput[]) => void;
+  type: string | null;
+  updateType: (type: string) => void;
+  name: string;
+  updateName: (name: string) => void;
+  saveName?: () => void;
   withNameSection?: boolean;
 }
 
-const EntityForm: React.FC<EntityFormProps> = ({ slotID, withNameSection = true }) => {
-  const slot = useSelector(SlotV2.slotByIDSelector, { id: slotID });
-  const patchSlot = useDispatch(SlotDuck.patchSlot, slotID);
-  const [type, setType] = React.useState(slot?.type || null);
-  const [name, setName] = React.useState(slot?.name || '');
-
-  useDidUpdateEffect(() => {
-    if (slot) {
-      setType(slot.type);
-      setName(slot.name);
-    }
-  }, [slotID]);
-
-  if (!slot) return null;
-
-  const handleNameSave = () => {
-    patchSlot({ name });
-  };
-
-  const handleTypeChange = (type: string) => {
-    setType(type);
-    patchSlot({ type });
+const EntityForm: React.FC<EntityFormProps> = ({ values, saveValues, type, updateType, name, updateName, saveName, withNameSection = true }) => {
+  const handleInputsChange = (inputs: Realtime.SlotInput[]) => {
+    saveValues?.(inputs);
   };
 
   return (
     <>
       {withNameSection && (
         <Section backgroundColor="#fdfdfd" header="Name" variant={SectionVariant.QUATERNARY} customContentStyling={{ paddingBottom: '0px' }}>
-          <Input onBlur={handleNameSave} placeholder="Enter entity name" value={name} onChange={(e) => setName(e.target.value)} />
+          <Input onBlur={() => saveName?.()} placeholder="Enter entity name" value={name} onChangeText={updateName} />
         </Section>
       )}
-      <TypeSection type={type} onChangeType={handleTypeChange} />
-      <ValuesSection slot={slot} onUpdate={patchSlot} />
+      <TypeSection type={type} onChangeType={updateType} />
+      <ValuesSection inputs={values} type={type} updateInputs={handleInputsChange} />
     </>
   );
 };

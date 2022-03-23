@@ -7,7 +7,7 @@ import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useModals, useSelector } from '@/hooks';
 
-import EntityForm from './components/EntityForm';
+import EditEntityForm from './components/EntityForm/EditEntityForm';
 import EntitySelectDropdown from './components/EntitySelectDropdown';
 import { MAX_ENTITY_MODAL_WIDTH } from './constants';
 
@@ -59,7 +59,7 @@ const EditModal: React.FC = () => {
       headerBorder
     >
       <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
-        <EntityForm slotID={data.id} />
+        <EditEntityForm slotID={data.id} />
       </Box>
       <ModalFooter justifyContent="flex-end">
         <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={close}>

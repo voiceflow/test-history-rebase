@@ -18,8 +18,9 @@ const MAX_VISIBLE_VALUES = 10;
 const MAX_VISIBLE_VALUE_HEIGHT = 795;
 
 interface ValuesSectionProps {
-  slot: Realtime.Slot;
-  onUpdate: (slot: Partial<Realtime.Slot>) => void;
+  updateInputs: (inputs: Realtime.SlotInput[]) => void;
+  inputs: Realtime.SlotInput[];
+  type: string | null;
 }
 
 const updateSingleLine = (id: string, inputs: Realtime.SlotInput[], values: Partial<Realtime.SlotInput>) => {
@@ -34,7 +35,7 @@ const updateSingleLine = (id: string, inputs: Realtime.SlotInput[], values: Part
   });
 };
 
-const ValuesSection: React.FC<ValuesSectionProps> = ({ onUpdate, slot }) => {
+const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInputs }) => {
   const valueRef = React.useRef<HTMLInputElement | null>(null);
   const stickyTopRef = React.useRef<HTMLDivElement>(null);
   const isNotAtTop = useOnScreen(stickyTopRef, true);
@@ -45,8 +46,12 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ onUpdate, slot }) => {
   const [newValueText, setNewValueText] = React.useState('');
   const [showAllValues, setShowAllValues] = React.useState(false);
   const [customLines, setCustomLines] = React.useState<Realtime.SlotInput[]>(() =>
-    slot.inputs?.length ? slot.inputs : (slot.type === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || slot.inputs
+    inputs?.length ? inputs : (type === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || inputs
   );
+
+  useDidUpdateEffect(() => {
+    setCustomLines(inputs);
+  }, [inputs]);
 
   const onBulkUploadClick = React.useCallback(() => {
     if (canBulkUpload) {
@@ -54,18 +59,13 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ onUpdate, slot }) => {
         onUpload: (slots: string[]) => {
           const newCustomLines = slots.map(([value, ...synonyms]) => generateSlotInput(value, synonyms.join(', ')));
           const mergedSlotInputs = mergeSlotInputs(newCustomLines, customLines);
-          onUpdate({ inputs: mergedSlotInputs });
+          updateInputs(mergedSlotInputs);
         },
       });
     } else {
       openImportBulkDeniedModal();
     }
   }, [customLines]);
-
-  // This is for the bulk upload modal
-  useDidUpdateEffect(() => {
-    setCustomLines(slot.inputs);
-  }, [slot.inputs]);
 
   const valueListStyling = showAllValues ? {} : { maxHeight: MAX_VISIBLE_VALUE_HEIGHT, overflow: 'hidden' };
 
@@ -85,7 +85,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ onUpdate, slot }) => {
   const onUpdateValueProps = (slotInput: Realtime.SlotInput, props: Partial<Realtime.SlotInput>) => {
     const newCustomLines = updateSingleLine(slotInput.id, customLines, { ...props });
     setCustomLines(newCustomLines);
-    onUpdate({ inputs: newCustomLines });
+    updateInputs(newCustomLines);
   };
 
   const updateFormValue = (value: Realtime.SlotInput, text: string) => {
@@ -159,7 +159,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ onUpdate, slot }) => {
                 )}
                 onUpdate={(lines) => {
                   setCustomLines(lines);
-                  onUpdate({ inputs: lines });
+                  updateInputs(lines);
                 }}
                 renderItem={(slotInput) => (
                   <InputItem

@@ -1,5 +1,5 @@
 import { TimeRange } from '@voiceflow/internal';
-import { Box, ButtonVariant, ClickableText, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, ButtonVariant, ClickableText } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -8,7 +8,7 @@ import ReportTagInput, { InputVariant } from '@/components/ReportTagInput';
 import SelectMenu, { MenuSection } from '@/components/SelectMenu';
 import { goToTargetTranscript } from '@/ducks/router';
 import { fetchTranscripts } from '@/ducks/transcript';
-import { useDispatch, useTrackingEvents } from '@/hooks';
+import { useAsyncEffect, useDispatch, useTrackingEvents } from '@/hooks';
 import { FILTER_TAG, isBuiltInRange } from '@/pages/Conversations/constants';
 import { ClassName } from '@/styles/constants';
 import THEME from '@/styles/theme';
@@ -83,7 +83,7 @@ const TranscriptFilters = () => {
     history.replace({ search: params.toString() });
   };
 
-  useDidUpdateEffect(async () => {
+  useAsyncEffect(async () => {
     const queryParams = queryString.stringify(queryString.parse(search));
 
     const transcripts = await updateTranscriptsList(queryParams || '');

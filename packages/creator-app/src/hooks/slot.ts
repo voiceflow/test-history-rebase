@@ -27,7 +27,8 @@ export const useAddSlot = () => {
           const createNewSlot = async () => {
             const id = Utils.id.cuid.slug();
             await createSlot(id, { id, type: null, name, color: undefined, inputs: [] });
-            openEntityCreateModal({ id, onCreate: resolve });
+
+            openEntityCreateModal({ name, onCreate: resolve, onClose: () => resolve(null) });
           };
           createNewSlot();
           return;

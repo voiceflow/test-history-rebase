@@ -72,7 +72,6 @@ function VariableSuggestion({
 
       if (onAddVariable) {
         const slot = await onAddVariable(variableName);
-
         if (slot) {
           addSlotInToEditor(slot);
         } else {

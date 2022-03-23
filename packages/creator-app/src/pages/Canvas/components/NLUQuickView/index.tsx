@@ -6,7 +6,7 @@ import { InteractionModelTabType, ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useSelector } from '@/hooks';
-import EntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm';
+import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
 
 import { TitleInput } from './components';
@@ -51,7 +51,7 @@ const NLUQuickView: React.FC = () => {
     >
       <Box width="100%" overflow="auto" height="calc(100vh - 120px)">
         {showIntentForm && <IntentForm intent={intentsMap[selectedID]} withNameSection={false} />}
-        {showEntityForm && <EntityForm slotID={selectedID} withNameSection={false} />}
+        {showEntityForm && <EditEntityForm slotID={selectedID} withNameSection={false} />}
         {showVariableForm && (
           <Box p={32} fontSize={13} color="#62778c">
             The confidence interval (measured as a value from 0 to 100) for the most recently matched intent.

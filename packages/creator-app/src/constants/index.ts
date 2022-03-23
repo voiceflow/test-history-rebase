@@ -452,8 +452,10 @@ export const DEVICE_LABEL_MAP: Record<BaseNode.Visual.DeviceType, string> = {
   [BaseNode.Visual.DeviceType.GOOGLE_NEST_HUB]: 'Google Nest Hub',
 };
 
+export const FORUM_LINK =
+  'https://community.voiceflow.com/join?invitation_token=46bca5bd506e33be4eb3e60fc77288a0b167e529-71599ae4-08cb-480a-9909-736b9ebbb16e';
 export const DOCS_LINK = 'https://www.voiceflow.com/docs';
-export const FORUM_LINK = 'https://forum.voiceflow.com/';
+
 // eslint-disable-next-line no-secrets/no-secrets
 export const YOUTUBE_CHANNEL_LINK = 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ';
 export const DESKTOP_APP_LINK = 'https://www.voiceflow.com/desktop';

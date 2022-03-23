@@ -7,8 +7,6 @@ import axios from 'axios';
 import client from '@/client';
 import { API_ENDPOINT, LOGROCKET_PROJECT, VERSION } from '@/config';
 
-import setupSocket from './client/socket';
-
 const TAB_ID_KEY = 'tabId';
 
 const ADMIN_ASCII = String.raw`
@@ -58,8 +56,6 @@ const setupAdmin = () => {
       },
     ],
   });
-
-  setupSocket(tabID);
 
   // eslint-disable-next-line no-console
   console.info(

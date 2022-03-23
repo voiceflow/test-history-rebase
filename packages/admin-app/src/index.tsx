@@ -1,4 +1,3 @@
-import './client/socket';
 // Dependent CSS
 import 'react-tippy/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';

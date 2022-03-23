@@ -42,7 +42,7 @@
     "lint:dockerfiles": "hadolint --ignore DL3018 ./Dockerfile",
     "lint:fix": "yarn lint:js --fix",
     "lint:js": "eslint \"**/*.{js,ts,jsx,tsx}\"",
-    "lint:quiet": "yarn:lint:js --rule 'prettier/prettier: off' --quiet",
+    "lint:quiet": "yarn lint:js --rule 'prettier/prettier: off' --quiet",
     "lint:report": "yarn lint:js --format json -o sonar/report.json",
     "local": "vfcli mesh connect showcase",
     "local:e2e": "yarn kill:e2e && VF_APP_E2E=true VF_APP_BUILD_ENV=e2e vite",

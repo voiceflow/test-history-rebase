@@ -3,14 +3,16 @@ import moize from 'moize';
 import { io } from 'socket.io-client';
 
 import { API_ENDPOINT, DEBUG_SOCKET } from '@/config';
+import watchSocketIO from '@/vendors/logRocket/socketIO';
 import * as Sentry from '@/vendors/sentry';
 
 import { clientLogger } from '../utils';
-import { AnySocketEvent, CALL_MAP, SocketEvent, SocketIOEvent } from './constants';
+import { AnySocketEvent, CALL_MAP, ClientEvent, ServerEvent, SocketEvent, SocketIOEvent } from './constants';
 
 const SOCKET_INIT_TIMEOUT = 3000;
 const SOCKET_CONNECTION_TIMEOUT = 30000;
 const SOCKET_REPLY_TIMEOUT = 5000;
+const LOGROCKET_IGNORED_EVENTS: string[] = [ClientEvent.DIAGRAM_HEARTBEAT, ClientEvent.VOLATILE_UPDATE_DIAGRAM, ServerEvent.VOLATILE_UPDATE_DIAGRAM];
 
 const log = clientLogger.child('socket');
 
@@ -59,6 +61,24 @@ class SocketClient {
   }
 
   constructor() {
+    watchSocketIO(this.socket, {
+      filter: (name, args) => {
+        if (LOGROCKET_IGNORED_EVENTS.includes(name)) return false;
+
+        if (name === SocketEvent.INITIALIZE) {
+          const [profile] = args as [AuthProfile | undefined];
+
+          if (profile) {
+            const { auth, ...filtered } = profile;
+
+            return [filtered];
+          }
+        }
+
+        return args;
+      },
+    });
+
     window.addEventListener('beforeunload', this.disconnect);
   }
 

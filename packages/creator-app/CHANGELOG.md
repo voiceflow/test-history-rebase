@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.665.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.665.1...@voiceflow/creator-app@1.665.2) (2022-03-23)
+
+
+### Bug Fixes
+
+* increase reconnection timeout (vf-000) ([#5242](https://github.com/voiceflow/creator-app/issues/5242)) ([4629337](https://github.com/voiceflow/creator-app/commit/462933795823fa149ef4399d0206750ebf491839))
+
+
+
+
+
 ## [1.665.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.665.0...@voiceflow/creator-app@1.665.1) (2022-03-23)
 
 

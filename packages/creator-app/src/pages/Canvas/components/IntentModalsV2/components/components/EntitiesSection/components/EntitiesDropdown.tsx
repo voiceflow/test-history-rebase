@@ -3,14 +3,25 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, IconButton, IconButtonVariant, NestedMenuComponents, Select } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Intent from '@/ducks/intent';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useSelector } from '@/hooks';
+import { useAddSlot, useDispatch, useSelector } from '@/hooks';
 
-const EntitiesDropdown: React.FC = () => {
+const EntitiesDropdown: React.FC<{ intent: Realtime.Intent }> = ({ intent }) => {
   const allSlots = useSelector(SlotV2.allSlotsSelector);
+  const { onAddSlot } = useAddSlot();
+  const addRequiredSlot = useDispatch(Intent.addRequiredSlot);
 
-  const onSlotSelect = (entity: Realtime.Slot) => {
-    alert(`Placeholder: ${entity.name}`);
+  const onSlotSelect = async (entity: Realtime.Slot) => {
+    await addRequiredSlot(intent.id, entity.id);
+  };
+
+  const handleCreateClick = async () => {
+    const numberWord = Utils.number.convertToWord(allSlots.length);
+    const newSlot = await onAddSlot(`slot_${numberWord}`);
+    if (newSlot) {
+      await onSlotSelect(newSlot);
+    }
   };
 
   return (
@@ -30,7 +41,7 @@ const EntitiesDropdown: React.FC = () => {
       creatable={false}
       createInputPlaceholder="Entities"
       renderFooterAction={({ close }) => (
-        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close)}>
+        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, handleCreateClick)}>
           Create New Entity
         </NestedMenuComponents.FooterActionContainer>
       )}

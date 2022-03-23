@@ -20,8 +20,8 @@ interface SlotItemProps {
   intent: Realtime.Intent;
 }
 
-const SlotItem: React.FC<SlotItemProps> = ({ slot, slots, intent, required, name }) => {
-  const patchIntentSlot = useDispatch(Intent.patchIntentSlot);
+const SlotItem: React.FC<SlotItemProps> = ({ slot, slots, intent, name }) => {
+  const removeRequiredSlot = useDispatch(Intent.removeRequiredSlot);
   const patchIntentSlotDialog = useDispatch(Intent.updateIntentSlotDialog);
 
   const projectType = useSelector(ProjectV2.active.typeV2Selector);
@@ -30,6 +30,10 @@ const SlotItem: React.FC<SlotItemProps> = ({ slot, slots, intent, required, name
 
   const onChangePrompt = (prompt: VoiceModels.IntentPrompt<any>[] | ChatModels.Prompt[]) => {
     patchIntentSlotDialog(intent.id, slot.id, { prompt } as any);
+  };
+
+  const onRemoveRequiredSlot = async () => {
+    await removeRequiredSlot(intent.id, slot.id);
   };
 
   const hasSlotError = false;
@@ -82,13 +86,7 @@ const SlotItem: React.FC<SlotItemProps> = ({ slot, slots, intent, required, name
             </Box>
             {name}
           </RequiredEntity>
-          <IconButton
-            size={16}
-            style={{ marginRight: 0 }}
-            icon="minus"
-            variant={IconButtonVariant.BASIC}
-            onClick={() => patchIntentSlot(intent.id, slot.id, { required: !required })}
-          />
+          <IconButton size={16} style={{ marginRight: 0 }} icon="minus" variant={IconButtonVariant.BASIC} onClick={onRemoveRequiredSlot} />
         </Flex>
       )}
     </Popper>

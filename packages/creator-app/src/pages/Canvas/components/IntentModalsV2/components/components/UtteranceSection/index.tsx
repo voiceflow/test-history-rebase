@@ -71,19 +71,21 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ withBorderTop, inte
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM] as string | null;
   const history = useHistory();
-  const intents = useSelector(IntentV2.allIntentsSelector);
-  const [showAllUtterances, setShowAllUtterances] = React.useState(false);
   const stickyTopRef = React.useRef<HTMLDivElement>(null);
   const isNotAtTop = useOnScreen(stickyTopRef, true);
 
+  const intents = useSelector(IntentV2.allIntentsSelector);
   const slots = useSelector(SlotV2.allSlotsSelector);
 
   const patchIntent = useDispatch(Intent.patchIntent);
   const utteranceRef = React.useRef<UtteranceRefProps>(null);
-  const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
+
+  const [showAllUtterances, setShowAllUtterances] = React.useState(false);
   const [isEmpty, updateIsEmpty] = React.useState(true);
+
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
+  const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const intentUtterances = intent?.inputs || [];
 

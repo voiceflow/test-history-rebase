@@ -3,6 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import _pick from 'lodash/pick';
 import * as Normal from 'normal-store';
 
+import { FeatureFlag } from '@/config/features';
+import * as Feature from '@/ducks/feature';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
@@ -37,27 +39,111 @@ export const patchIntent =
 
     const state = getState();
     const projectType = ProjectV2.active.typeV2Selector(state);
+    const nluModals = Feature.featureSelector(state)(FeatureFlag.IMM_MODALS_V2);
+    if (nluModals.isEnabled) {
+      const newSlotsCreator = getProjectTypeNewSlotsCreator(projectType);
+
+      const intent = IntentV2.intentByIDSelector(state, { id });
+      if (!intent) return;
+
+      const { slots: { byKey = {}, allKeys = [] } = {} } = intent;
+      const uniqueInputSlots = getUniqSlots(data.inputs);
+      const supersetKeys = [...new Set([...uniqueInputSlots, ...allKeys])];
+
+      const newKeys = supersetKeys.filter((slotID) => !allKeys.includes(slotID));
+
+      let updatedByKey = _pick(byKey, supersetKeys);
+
+      updatedByKey = newKeys.reduce((obj, slotID) => Object.assign(obj, { [slotID]: newSlotsCreator(slotID) }), updatedByKey);
+
+      const patchedIntent = inferIntentType({
+        ...data,
+        slots: inferIntentSlotsType({ byKey: updatedByKey, allKeys: [...supersetKeys] }),
+      });
+
+      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent }));
+    } else {
+      if (!data.inputs) {
+        dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: data }));
+        return;
+      }
+
+      const state = getState();
+      const projectType = ProjectV2.active.typeV2Selector(state);
+      const newSlotsCreator = getProjectTypeNewSlotsCreator(projectType);
+
+      const intent = IntentV2.intentByIDSelector(state, { id });
+      if (!intent) return;
+
+      const { slots: { byKey = {}, allKeys = [] } = {} } = intent;
+      const uniqSlots = getUniqSlots(data.inputs);
+
+      const keysWithoutRemoved = allKeys.filter((slotID) => uniqSlots.includes(slotID));
+      const keysToAdd = uniqSlots.filter((slotID) => !allKeys.includes(slotID));
+
+      let newByKey = _pick(byKey, keysWithoutRemoved);
+
+      newByKey = keysToAdd.reduce((obj, slotID) => Object.assign(obj, { [slotID]: newSlotsCreator(slotID) }), newByKey);
+
+      const patchedIntent = inferIntentType({
+        ...data,
+        slots: inferIntentSlotsType({ byKey: newByKey, allKeys: [...keysWithoutRemoved, ...keysToAdd] }),
+      });
+
+      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent }));
+    }
+  };
+
+export const addRequiredSlot =
+  (intentID: string, slotID: string): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const projectType = ProjectV2.active.typeV2Selector(state);
     const newSlotsCreator = getProjectTypeNewSlotsCreator(projectType);
 
-    const intent = IntentV2.intentByIDSelector(state, { id });
+    const intent = IntentV2.intentByIDSelector(state, { id: intentID });
     if (!intent) return;
 
-    const { slots: { byKey = {}, allKeys = [] } = {} } = intent;
-    const uniqSlots = getUniqSlots(data.inputs);
+    const { slots = Normal.createEmpty() } = intent;
 
-    const keysWithoutRemoved = allKeys.filter((slotID) => uniqSlots.includes(slotID));
-    const keysToAdd = uniqSlots.filter((slotID) => !allKeys.includes(slotID));
+    if (Normal.getOne(intent.slots, slotID)?.required) return;
 
-    let newByKey = _pick(byKey, keysWithoutRemoved);
-
-    newByKey = keysToAdd.reduce((obj, slotID) => Object.assign(obj, { [slotID]: newSlotsCreator(slotID) }), newByKey);
+    const byKeys = {
+      ...slots.byKey,
+      [slotID]: {
+        ...(Normal.getOne(intent.slots, slotID) ?? newSlotsCreator(slotID)),
+        required: true,
+      },
+    };
 
     const patchedIntent = inferIntentType({
-      ...data,
-      slots: inferIntentSlotsType({ byKey: newByKey, allKeys: [...keysWithoutRemoved, ...keysToAdd] }),
+      slots: inferIntentSlotsType({ byKey: byKeys, allKeys: Utils.array.unique([...intent.slots.allKeys, slotID]) }),
     });
 
-    dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent }));
+    dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent }));
+  };
+
+export const removeRequiredSlot =
+  (intentID: string, slotID: string): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const intent = IntentV2.intentByIDSelector(state, { id: intentID });
+
+    if (!intent?.slots?.byKey?.[slotID]) return;
+
+    const utteranceSlots = getUniqSlots(intent.inputs);
+
+    if (utteranceSlots.includes(slotID)) {
+      const patchedIntent = inferIntentType({
+        slots: Normal.patchOne(intent.slots, slotID, { required: false }),
+      });
+      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent }));
+    } else {
+      const patchedIntent = inferIntentType({
+        slots: Normal.removeOne(intent.slots, slotID),
+      });
+      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent }));
+    }
   };
 
 export const patchIntentSlot =

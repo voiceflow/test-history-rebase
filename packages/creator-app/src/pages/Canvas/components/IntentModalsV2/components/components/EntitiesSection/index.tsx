@@ -45,7 +45,7 @@ const EntitiesSection: React.FC<EntitiesSectionProps> = ({ entitiesVisibleRef, i
 
   return (
     <Section
-      headerEnd={<EntitiesDropdown />}
+      headerEnd={<EntitiesDropdown intent={intent} />}
       header={<Box fontWeight={hasSlots ? 600 : 'normal'}>Required entities</Box>}
       variant={SectionVariant.PRIMARY}
       customHeaderStyling={{ paddingRight: '20px', paddingBottom: hasSlots ? '16px' : '20px' }}

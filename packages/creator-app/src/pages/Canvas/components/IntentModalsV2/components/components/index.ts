@@ -19,6 +19,7 @@ export const SlotBubble = styled.div`
   font-style: normal;
   line-height: normal;
   letter-spacing: normal;
+  margin-bottom: 4px;
 
   ${SvgIconContainer} {
     opacity: 0.8;

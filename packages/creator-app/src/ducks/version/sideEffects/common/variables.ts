@@ -23,7 +23,6 @@ export const addGlobalVariable =
     }
 
     await dispatch.sync(Realtime.version.addGlobalVariable({ ...getActiveVersionContext(getState()), variable }));
-
     dispatch(Tracking.trackVariableCreated({ creationType, variableType: VariableType.GLOBAL }));
   };
 

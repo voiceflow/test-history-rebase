@@ -5,18 +5,17 @@ import { InteractionModelTabType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as SlotDuck from '@/ducks/slot';
 import { useDispatch } from '@/hooks';
-import { NLU_TAB_META } from '@/pages/Canvas/components/NLUQuickView/constants';
+import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 
 interface HeaderOptionsProps {
-  activeTab: InteractionModelTabType;
   selectedID: string;
   setIsActiveItemRename: (val: boolean) => void;
 }
 
-const HeaderOptions: React.FC<HeaderOptionsProps> = ({ setIsActiveItemRename, activeTab, selectedID }) => {
+const HeaderOptions: React.FC<HeaderOptionsProps> = ({ setIsActiveItemRename, selectedID }) => {
   const deleteIntent = useDispatch(Intent.deleteIntent);
   const deleteSlot = useDispatch(SlotDuck.deleteSlot);
-  const tabMeta = NLU_TAB_META[activeTab];
+  const { canRenameItem, activeTab } = React.useContext(NLUQuickViewContext);
 
   const onDelete = () => {
     switch (activeTab) {
@@ -35,7 +34,7 @@ const HeaderOptions: React.FC<HeaderOptionsProps> = ({ setIsActiveItemRename, ac
     }
   };
 
-  const additionalOptions = tabMeta.canRename
+  const additionalOptions = canRenameItem()
     ? [
         {
           key: 'rename',

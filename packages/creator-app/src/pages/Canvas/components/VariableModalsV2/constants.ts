@@ -1,0 +1,1 @@
+export const VARIABLE_MODAL_WIDTH = 450;

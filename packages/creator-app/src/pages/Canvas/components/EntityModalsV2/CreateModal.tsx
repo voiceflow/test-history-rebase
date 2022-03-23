@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant } from '@voiceflow/ui';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
@@ -12,13 +12,26 @@ import EntityForm from './components/EntityForm';
 import { MAX_ENTITY_MODAL_WIDTH } from './constants';
 
 const CreateModal: React.FC = () => {
-  const { close, data } = useModals<{ id: string; onCreate: (slot: Realtime.Slot) => void }>(ModalType.ENTITY_CREATE);
-  const slotID = data.id;
+  const { close, data, isOpened } = useModals<{ id: string; onCreate: (slot: Realtime.Slot) => void }>(ModalType.ENTITY_CREATE);
+
+  const [slotID, setSlotID] = React.useState<string | null>(null);
+
+  useEffect(() => {
+    if (data.id && isOpened) {
+      setSlotID(data.id);
+    }
+    if (!isOpened) {
+      setSlotID(null);
+    }
+  }, [data, isOpened]);
+
   const slot = useSelector(SlotV2.slotByIDSelector, { id: slotID });
   const deleteSlot = useDispatch(SlotDuck.deleteSlot);
 
+  if (!slot || !slotID) return null;
+
   const handleOnCreate = () => {
-    slot && data.onCreate(slot);
+    data.onCreate(slot);
     close();
   };
 

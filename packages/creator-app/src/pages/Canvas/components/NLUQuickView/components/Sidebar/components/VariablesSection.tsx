@@ -1,21 +1,21 @@
-import { IconButton, IconButtonVariant, TippyTooltip, toast, useDidUpdateEffect } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant, TippyTooltip } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
-import { InteractionModelTabType } from '@/constants';
+import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { CanvasCreationType } from '@/ducks/tracking';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useModals, useSelector } from '@/hooks';
 import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/constants';
 import { Variable } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/types';
 import { addPrefix } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/utils';
 import ListItem from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/components/ListItem';
 import { useSectionHooks } from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/hooks';
+import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import { SectionSection } from '.';
@@ -24,22 +24,21 @@ import { SectionProps } from './types';
 const createVariablesList = (type: VariableType, variables: string[]) =>
   variables.map((variable) => ({ id: addPrefix(type, variable), name: variable, type }));
 
-const VariablesSection: React.FC<SectionProps> = ({ setTitle, search, setSearchLength, selectedID, setSelectedItemID, setActiveTab, activeTab }) => {
+const VariablesSection: React.FC<SectionProps> = ({ search, setSearchLength, selectedID, setSelectedItemID, setActiveTab }) => {
+  const { activeTab } = React.useContext(NLUQuickViewContext);
+
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.VARIABLES, [activeTab]);
+  const { open: openVariableCreate } = useModals(ModalType.VARIABLE_CREATE);
+  const [justAddedVariables, setJustAddedVariables] = React.useState<string[] | null>(null);
 
   const removeGlobalVariable = useDispatch(Version.removeGlobalVariable);
   const removeVariableFromDiagram = useDispatch(Diagram.removeActiveDiagramVariable);
-  const createGlobalVariable = useDispatch(Version.addGlobalVariable);
 
   const localVariables = useSelector(DiagramV2.active.localVariablesSelector);
   const globalVariables = useSelector(VersionV2.active.globalVariablesSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const [isCreating, setIsCreating] = React.useState(false);
-  const newItemInputRef = React.useRef<HTMLInputElement>(null);
 
-  const [newVariableName, setNewVariableName] = React.useState('');
-
-  const [mergedVariables, mergedVariablesMap, mergedVariableNameMap] = React.useMemo(() => {
+  const [mergedVariables, mergedVariablesMap] = React.useMemo(() => {
     const variables = {
       [VariableType.LOCAL]: localVariables,
       [VariableType.GLOBAL]: globalVariables,
@@ -61,12 +60,20 @@ const VariablesSection: React.FC<SectionProps> = ({ setTitle, search, setSearchL
     setSearchLength,
     listLength: mergedVariables.length,
     isActiveTab,
-    selectedID,
-    setSelectedItemID,
     list: mergedVariables,
     map: mergedVariablesMap,
-    setTitle,
   });
+
+  // Auto select first new variable on creation
+  React.useEffect(() => {
+    const firstAddedVariable = justAddedVariables?.[0];
+    if (!firstAddedVariable) return;
+    mergedVariables.forEach((variable) => {
+      if (variable.name === firstAddedVariable) {
+        setSelectedItemID(variable.id);
+      }
+    });
+  }, [justAddedVariables, mergedVariables]);
 
   const filteredVariables = React.useMemo(() => {
     return mergedVariables.filter((variable) => {
@@ -87,27 +94,15 @@ const VariablesSection: React.FC<SectionProps> = ({ setTitle, search, setSearchL
     [removeGlobalVariable, removeVariableFromDiagram, mergedVariables]
   );
 
-  const onCreateVariable = async () => {
-    setIsCreating(true);
+  const onCreateVariable = () => {
+    openVariableCreate({
+      onCreate: (variableNames: string[]) => {
+        if (variableNames.length) {
+          setJustAddedVariables(variableNames);
+        }
+      },
+    });
   };
-
-  const onConfirmCreate = async (newName: string) => {
-    try {
-      setIsCreating(false);
-      await createGlobalVariable(newName, CanvasCreationType.IMM);
-      setNewVariableName(newName);
-    } catch (e) {
-      setIsCreating(true);
-      toast.error(e.message);
-      newItemInputRef.current?.focus();
-    }
-  };
-
-  const newVariableID = React.useMemo(() => mergedVariableNameMap[newVariableName]?.id, [mergedVariableNameMap, newVariableName]);
-
-  useDidUpdateEffect(() => {
-    setSelectedItemID(newVariableID);
-  }, [newVariableID]);
 
   return (
     <SectionSection
@@ -125,26 +120,10 @@ const VariablesSection: React.FC<SectionProps> = ({ setTitle, search, setSearchL
         )
       }
     >
-      {isCreating && (
-        <ListItem
-          ref={newItemInputRef}
-          id="new-variable"
-          onBlur={onConfirmCreate}
-          active
-          onClick={() => {}}
-          key="new-variable"
-          name="new_variable"
-          onDelete={() => {}}
-          nameValidation={(name) => name.replace(' ', '_')}
-          isCreating
-          activeTab={activeTab}
-        />
-      )}
       {filteredVariables.map((variable) => (
         <ListItem
           id={variable.id}
           active={selectedID === variable.id}
-          activeTab={activeTab}
           onClick={() => setSelectedItemID(variable.id)}
           key={variable.id}
           name={variable.name}

@@ -12,7 +12,6 @@ import { INTENT_MODAL_WIDTH } from '@/pages/Canvas/components/IntentModalsV2/con
 
 const EditModal: React.FC = () => {
   const { close, data } = useModals<{ id: string }>(ModalType.INTENT_EDIT);
-  const { open: openIntentCreate } = useModals<{ id: string }>(ModalType.INTENT_CREATE);
   const deleteIntent = useDispatch(Intent.deleteIntent);
 
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: data.id })!;
@@ -61,17 +60,6 @@ const EditModal: React.FC = () => {
         <IntentForm intent={intent} />
       </Box>
       <ModalFooter justifyContent="flex-end">
-        <Button
-          variant={ButtonVariant.TERTIARY}
-          squareRadius
-          onClick={() => {
-            close();
-            openIntentCreate({ id: data.id });
-          }}
-          style={{ marginRight: '10px' }}
-        >
-          Switch Mode
-        </Button>
         <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={close}>
           Close
         </Button>

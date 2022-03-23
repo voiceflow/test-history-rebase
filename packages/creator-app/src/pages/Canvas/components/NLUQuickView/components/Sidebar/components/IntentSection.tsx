@@ -1,16 +1,14 @@
-import { Utils } from '@voiceflow/common';
-import { IconButton, IconButtonVariant, TippyTooltip, toast } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant, TippyTooltip } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
-import { InteractionModelTabType } from '@/constants';
+import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as ProjectV2 from '@/ducks/projectV2';
-import * as SlotV2 from '@/ducks/slotV2';
-import { useDispatch, useSelector } from '@/hooks';
-import { applyPlatformIntentNameFormatting, isCustomizableBuiltInIntent, validateIntentName } from '@/utils/intent';
+import { useDispatch, useModals, useSelector } from '@/hooks';
+import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
+import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import { useSectionHooks } from '../hooks';
 import { SectionSection } from '.';
@@ -20,45 +18,32 @@ import { SectionProps } from './types';
 const IntentSection: React.FC<SectionProps> = ({
   setIsActiveItemRename,
   isActiveItemRename,
-  setTitle,
   setSearchLength,
   search,
   selectedID,
-  activeTab,
   setActiveTab,
   setSelectedItemID,
 }) => {
+  const { open: openIntentCreate } = useModals(ModalType.INTENT_CREATE);
+  const { onRenameIntent, nameChangeTransform, activeTab } = React.useContext(NLUQuickViewContext);
+
   const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
   const allCustomIntentsMap = useSelector(IntentV2.customIntentMapSelector);
-  const allSlots = useSelector(SlotV2.allSlotsSelector);
-  const platform = useSelector(ProjectV2.active.platformSelector);
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.INTENTS, [activeTab]);
 
   const deleteIntent = useDispatch(Intent.deleteIntent);
-  const patchIntent = useDispatch(Intent.patchIntent);
-  const createIntent = useDispatch(Intent.createIntent);
-
-  const [isCreating, setIsCreating] = React.useState(false);
-  const [newIntentID, setNewIntentID] = React.useState('');
-
-  const existingCustomIntents = React.useMemo(() => {
-    return allCustomIntents.filter(({ id }) => id !== newIntentID);
-  }, [newIntentID, allCustomIntents]);
 
   const sortedCustomIntents = React.useMemo(
-    () => _sortBy(existingCustomIntents, isCustomizableBuiltInIntent, (intent) => intent.name.toLowerCase()),
-    [existingCustomIntents]
+    () => _sortBy(allCustomIntents, isCustomizableBuiltInIntent, (intent) => intent.name.toLowerCase()),
+    [allCustomIntents]
   );
 
   useSectionHooks({
     setSearchLength,
     listLength: allCustomIntents.length,
     isActiveTab,
-    selectedID,
-    setSelectedItemID,
     list: sortedCustomIntents,
     map: allCustomIntentsMap,
-    setTitle,
   });
 
   const filteredCustomIntents = React.useMemo(() => {
@@ -71,34 +56,12 @@ const IntentSection: React.FC<SectionProps> = ({
     deleteIntent(id);
   };
 
-  const validateName = (intentName: string, id: string) =>
-    validateIntentName(
-      intentName ?? '',
-      allCustomIntents.filter((intent) => intent.id !== id),
-      allSlots
-    );
-
-  const onRenameIntent = (newName: string, id: string) => {
-    const formattedName = Utils.string.removeTrailingUnderscores(newName);
-    const error = validateName(formattedName, id);
-
-    if (error) {
-      toast.error(error);
-      return;
-    }
-
-    patchIntent(id, { id, name: formattedName });
-  };
-
-  const nameValidation = (name: string) => {
-    return applyPlatformIntentNameFormatting(name, platform);
-  };
-
-  const onCreateIntent = async () => {
-    const nextIntentID = await createIntent();
-    setSelectedItemID(nextIntentID);
-    setNewIntentID(nextIntentID);
-    setIsCreating(true);
+  const onCreateIntent = () => {
+    openIntentCreate({
+      onCreate: (id: string) => {
+        setSelectedItemID(id);
+      },
+    });
   };
 
   return (
@@ -118,24 +81,6 @@ const IntentSection: React.FC<SectionProps> = ({
         )
       }
     >
-      {isCreating && (
-        <ListItem
-          id={newIntentID}
-          active={selectedID === newIntentID}
-          onClick={() => setSelectedItemID(newIntentID)}
-          key={newIntentID}
-          name={allCustomIntentsMap[newIntentID].name}
-          onDelete={onDeleteIntent}
-          onRename={(name, id) => {
-            setNewIntentID('');
-            onRenameIntent(name, id);
-            setIsCreating(false);
-          }}
-          nameValidation={nameValidation}
-          isCreating
-          activeTab={activeTab}
-        />
-      )}
       {filteredCustomIntents.map((intent) => (
         <ListItem
           id={intent.id}
@@ -145,10 +90,9 @@ const IntentSection: React.FC<SectionProps> = ({
           name={intent.name}
           onDelete={onDeleteIntent}
           onRename={onRenameIntent}
-          nameValidation={nameValidation}
+          nameValidation={nameChangeTransform}
           setIsActiveItemRename={setIsActiveItemRename}
           isActiveItemRename={isActiveItemRename}
-          activeTab={activeTab}
         />
       ))}
     </SectionSection>

@@ -9,6 +9,7 @@ import { useSelector } from '@/hooks';
 import EntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
 
+import { TitleInput } from './components';
 import HeaderOptions from './components/HeaderOptions';
 import Sidebar from './components/Sidebar';
 import { NLUQuickViewContext, NLUQuickViewProvider } from './context';
@@ -17,20 +18,36 @@ const NLUQuickView: React.FC = () => {
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
   const slotsMap = useSelector(SlotV2.slotMapSelector);
 
-  const { title, activeTab, selectedID, setIsActiveItemRename } = React.useContext(NLUQuickViewContext);
+  const [modalTitle, setModalTitle] = React.useState('');
+
+  const { title, activeTab, selectedID, canRenameItem, setIsActiveItemRename, onNameChange, nameChangeTransform } =
+    React.useContext(NLUQuickViewContext);
 
   const showIntentForm = activeTab === InteractionModelTabType.INTENTS && intentsMap[selectedID];
   const showEntityForm = activeTab === InteractionModelTabType.SLOTS && slotsMap[selectedID];
   const showVariableForm = activeTab === InteractionModelTabType.VARIABLES;
+
+  React.useEffect(() => {
+    setModalTitle(title);
+  }, [title]);
 
   return (
     <Modal
       leftSidebar={() => <Sidebar />}
       maxWidth={740}
       id={ModalType.NLU_MODEL_QUICK_VIEW}
-      title={title}
+      title={
+        <TitleInput
+          value={modalTitle}
+          onBlur={() => onNameChange(modalTitle, selectedID)}
+          onChangeText={(text) => setModalTitle(nameChangeTransform(text))}
+          placeholder="Name"
+          onEnterPress={() => onNameChange(modalTitle, selectedID)}
+          disabled={!canRenameItem()}
+        />
+      }
       headerBorder
-      headerActions={<HeaderOptions setIsActiveItemRename={setIsActiveItemRename} activeTab={activeTab} selectedID={selectedID} />}
+      headerActions={<HeaderOptions setIsActiveItemRename={setIsActiveItemRename} selectedID={selectedID} />}
     >
       <Box width="100%" overflow="auto" height="calc(100vh - 120px)">
         {showIntentForm && <IntentForm intent={intentsMap[selectedID]} withNameSection={false} />}

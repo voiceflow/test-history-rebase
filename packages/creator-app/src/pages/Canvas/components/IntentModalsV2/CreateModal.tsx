@@ -1,5 +1,5 @@
 import { Box, Button, ButtonVariant, toast } from '@voiceflow/ui';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
@@ -11,7 +11,6 @@ import { INTENT_MODAL_WIDTH } from '@/pages/Canvas/components/IntentModalsV2/con
 
 const CreateModal: React.FC = () => {
   const { close, data, isOpened } = useModals<{ id?: string; onCreate?: (id: string) => void; createName?: string }>(ModalType.INTENT_CREATE);
-  const { open: openIntentEdit } = useModals(ModalType.INTENT_EDIT);
   const deleteIntent = useDispatch(Intent.deleteIntent);
   const createIntent = useDispatch(Intent.createIntent);
 
@@ -26,11 +25,10 @@ const CreateModal: React.FC = () => {
     if (data.id && isOpened) {
       setIntentID(data.id);
     }
+    if (!isOpened) {
+      setIntentID(null);
+    }
   }, [isOpened, intentID, data]);
-
-  useEffect(() => {
-    setIntentID(null);
-  }, [isOpened]);
 
   if (!intentID || !intent) return null;
 
@@ -57,17 +55,6 @@ const CreateModal: React.FC = () => {
         <IntentForm intent={intent} withDescriptionSection={false} />
       </Box>
       <ModalFooter justifyContent="flex-end">
-        <Button
-          variant={ButtonVariant.TERTIARY}
-          squareRadius
-          onClick={() => {
-            close();
-            openIntentEdit({ id: data.id });
-          }}
-          style={{ marginRight: '10px' }}
-        >
-          Switch Mode
-        </Button>
         <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={handleCancel} style={{ marginRight: '10px' }}>
           Cancel
         </Button>

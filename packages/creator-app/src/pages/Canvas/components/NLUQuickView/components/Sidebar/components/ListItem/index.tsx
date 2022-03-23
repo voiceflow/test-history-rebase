@@ -2,8 +2,7 @@ import { Input, InputVariant, OverflowText, useDidUpdateEffect, withEnterPress, 
 import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
-import { InteractionModelTabType } from '@/constants';
-import { NLU_TAB_META } from '@/pages/Canvas/components/NLUQuickView/constants';
+import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 
 import { Container } from './components';
 
@@ -19,17 +18,17 @@ interface ListItemProps {
   onBlur?: (name: string) => void;
   isActiveItemRename?: boolean;
   setIsActiveItemRename?: (val: boolean) => void;
-  activeTab: InteractionModelTabType;
   ref?: React.Ref<HTMLInputElement>;
 }
 
 const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> = (
-  { id, isActiveItemRename, activeTab, setIsActiveItemRename, onBlur, nameValidation, isCreating = false, name, onRename, onDelete, active, onClick },
+  { id, isActiveItemRename, setIsActiveItemRename, onBlur, nameValidation, isCreating = false, name, onRename, onDelete, active, onClick },
   ref
 ) => {
   const [isRenaming, setIsRenaming] = React.useState(isCreating);
   const [localName, setLocalName] = React.useState(name);
-  const tabMeta = NLU_TAB_META[activeTab];
+
+  const { canRenameItem } = React.useContext(NLUQuickViewContext);
 
   const endRename = () => {
     if (onBlur) {
@@ -51,14 +50,14 @@ const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> 
     }
   }, [isActiveItemRename, active]);
 
-  const renameOptions = !tabMeta.canRename
+  const getRenameOption = !canRenameItem(id)
     ? []
     : [
         { label: 'Rename', value: 'rename', onClick: () => setIsRenaming(true) },
         { label: 'Divider', divider: true },
       ];
 
-  const contextOptions = [...renameOptions, { label: 'Delete', value: 'delete', onClick: () => onDelete(id) }];
+  const contextOptions = [...getRenameOption, { label: 'Delete', value: 'delete', onClick: () => onDelete(id) }];
 
   return (
     <ContextMenu selfDismiss options={contextOptions}>
@@ -69,6 +68,7 @@ const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> 
               ref={ref}
               value={localName}
               onBlur={endRename}
+              fullWidth
               variant={InputVariant.INLINE}
               onFocus={({ target }) => target.select()}
               onChange={withTargetValue((val) => setLocalName(nameValidation(val)))}

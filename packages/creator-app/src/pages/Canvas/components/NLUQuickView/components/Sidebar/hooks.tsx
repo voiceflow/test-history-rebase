@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
+
 export const useUpdateSearchCount = (setSearchLength: (length: number) => void, length = 0, isActiveTab: boolean) => {
   React.useEffect(() => {
     if (isActiveTab) {
@@ -47,24 +49,14 @@ interface SectionHooksProps {
   setSearchLength: (length: number) => void;
   listLength: number;
   isActiveTab: boolean;
-  selectedID: string;
-  setSelectedItemID: (id: string) => void;
   list: { id: string }[];
   map: Record<string, any>;
-  setTitle: (title: string) => void;
 }
 
-export const useSectionHooks = ({
-  setSearchLength,
-  listLength,
-  isActiveTab,
-  selectedID,
-  setSelectedItemID,
-  list,
-  map,
-  setTitle,
-}: SectionHooksProps) => {
+export const useSectionHooks = ({ setSearchLength, listLength, isActiveTab, list, map }: SectionHooksProps) => {
+  const { selectedID, setSelectedID, setTitle } = React.useContext(NLUQuickViewContext);
+
   useUpdateSearchCount(setSearchLength, listLength, isActiveTab);
-  useSetInitialItem(isActiveTab, selectedID, setSelectedItemID, list, map);
+  useSetInitialItem(isActiveTab, selectedID, setSelectedID, list, map);
   useUpdateContentTitle(isActiveTab, map, selectedID, setTitle);
 };

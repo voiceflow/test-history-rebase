@@ -55,8 +55,7 @@ export const NLUButton = styled(Box)`
 `;
 
 export const SearchInput = styled(Input)`
-  border: none;
-  padding: 21.5px 24px;
+  padding: 21.5px 32px;
   border-radius: 0;
   border: none !important;
   box-shadow: none !important;

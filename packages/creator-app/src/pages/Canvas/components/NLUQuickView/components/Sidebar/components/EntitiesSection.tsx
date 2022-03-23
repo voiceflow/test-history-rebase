@@ -4,14 +4,13 @@ import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
-import { CUSTOM_SLOT_TYPE, InteractionModelTabType } from '@/constants';
+import { InteractionModelTabType } from '@/constants';
 import * as IntentDuck from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useDispatch, useSelector } from '@/hooks';
-import { generateSlotInput } from '@/pages/Canvas/components/SlotEdit/utils';
-import { validateSlotName } from '@/utils/slot';
+import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 
 import { useSectionHooks } from '../hooks';
 import { SectionSection } from './index';
@@ -21,36 +20,34 @@ import { SectionProps } from './types';
 const EntitiesSection: React.FC<SectionProps> = ({
   isActiveItemRename,
   setIsActiveItemRename,
-  setTitle,
   setSearchLength,
   selectedID,
   setSelectedItemID,
   setActiveTab,
-  activeTab,
 }) => {
   const { onAddSlot } = useAddSlot();
 
+  const { activeTab } = React.useContext(NLUQuickViewContext);
+
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
-  const allIntents = useSelector(IntentV2.allCustomIntentsSelector);
   const getIntentsUsingSlot = useSelector(IntentV2.getIntentsUsingSlotSelector);
+  const { nameChangeTransform } = React.useContext(NLUQuickViewContext);
 
   const deleteSlot = useDispatch(SlotDuck.deleteSlot);
   const removeIntentSlot = useDispatch(IntentDuck.removeIntentSlot);
-  const patchSlot = useDispatch(SlotDuck.patchSlot);
 
   const sortedSlots = React.useMemo(() => _sortBy(allSlots, (slot) => slot.name?.toLowerCase()), [allSlots]);
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.SLOTS, [activeTab]);
+
+  const { onRenameSlot } = React.useContext(NLUQuickViewContext);
 
   useSectionHooks({
     setSearchLength,
     listLength: allSlots.length,
     isActiveTab,
-    selectedID,
-    setSelectedItemID,
     list: sortedSlots,
     map: allSlotsMap,
-    setTitle,
   });
 
   const onCreateEntity = async () => {
@@ -72,33 +69,6 @@ const EntitiesSection: React.FC<SectionProps> = ({
 
     deleteSlot(slotID);
   }, []);
-
-  const onRenameSlot = async (slotName: string, id: string) => {
-    const formattedSlotName = Utils.string.removeTrailingUnderscores(slotName);
-
-    const slot = allSlotsMap[id];
-
-    const { inputs } = slot;
-    const customLines = inputs?.length ? inputs : (slot.type === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || inputs;
-    const notEmptyValues = customLines.some(({ value, synonyms }) => value.trim() || synonyms.trim());
-
-    const error = validateSlotName({
-      slots: allSlots.filter((slot) => slot.id !== id),
-      intents: allIntents,
-      slotName: formattedSlotName,
-      slotType: slot.type!,
-      notEmptyValues,
-    });
-
-    if (error) {
-      toast.error(error);
-      return;
-    }
-
-    await patchSlot?.(id, {
-      name: formattedSlotName,
-    });
-  };
 
   return (
     <SectionSection
@@ -125,10 +95,9 @@ const EntitiesSection: React.FC<SectionProps> = ({
           name={slot.name}
           onDelete={onDelete}
           onRename={onRenameSlot}
-          nameValidation={(name) => name}
+          nameValidation={nameChangeTransform}
           isActiveItemRename={isActiveItemRename}
           setIsActiveItemRename={setIsActiveItemRename}
-          activeTab={activeTab}
         />
       ))}
     </SectionSection>

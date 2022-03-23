@@ -247,6 +247,7 @@ export enum ModalType {
   INTENT_CREATE = 'intent-create',
   ENTITY_EDIT = 'entity-edit',
   ENTITY_CREATE = 'entity-create',
+  VARIABLE_CREATE = 'variable-create',
 
   IMPORT_SLOTS = 'import-slots',
   IMPORT_PROJECT = 'import-project',

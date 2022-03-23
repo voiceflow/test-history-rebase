@@ -8,9 +8,14 @@ class RemoveManyNodes extends AbstractResendDiagramActionControl<Realtime.node.R
   actionCreator = Realtime.node.removeMany;
 
   process = async (ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {
+    const { creatorID } = ctx.data;
+
     if (!payload.nodes.length) return;
 
-    await this.services.diagram.removeManyNodes(ctx.data.creatorID, payload.diagramID, payload.nodes);
+    const isAtomicActionsPhase2 = await this.services.workspace.isFeatureEnabled(creatorID, payload.workspaceID, 'atomic_actions_phase_2');
+    if (!isAtomicActionsPhase2) return;
+
+    await this.services.diagram.removeManyNodes(creatorID, payload.diagramID, payload.nodes);
   };
 }
 

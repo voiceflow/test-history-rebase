@@ -17,7 +17,7 @@ import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { PlanRestrictionGate, ProjectLockGate, VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
-import { useDispatch, useEventualEngine, useLayoutDidUpdate, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
+import { useDispatch, useEventualEngine, useLayoutDidUpdate, useLocalDispatch, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRouteIMM';
 import ManualSaveModal from '@/pages/Canvas/components/ManualSaveModal';
@@ -58,7 +58,7 @@ const Project: React.FC = () => {
   const setActiveVersionID = useDispatch(Session.setActiveVersionID);
   const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
   const resetCreator = useDispatch(Creator.resetCreator);
-  const resetCreatorV2 = useDispatch(Realtime.creator.reset);
+  const resetCreatorV2 = useLocalDispatch(Realtime.creator.reset);
 
   const inactivityModal = useModals(ModalType.INACTIVITY);
 

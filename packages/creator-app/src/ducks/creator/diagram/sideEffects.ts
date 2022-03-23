@@ -14,7 +14,6 @@ import * as DiagramSelectorsV2 from '@/ducks/diagramV2/selectors';
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import * as Viewport from '@/ducks/viewport';
 import mutableStore from '@/store/mutable';
 import { Dispatchable, SyncThunk, Thunk } from '@/store/types';
 
@@ -88,7 +87,7 @@ const initializeCreatorForDiagram =
 
     batch(() => {
       dispatch(ReduxUndo.ActionCreators.clearHistory());
-      dispatch(Viewport.rehydrateViewport(diagramID, { x, y, zoom }));
+      dispatch(Realtime.diagram.viewport.rehydrate({ viewport: { id: diagramID, x, y, zoom } }));
       dispatch(initializeCreator(creator));
       dispatch(saveHistory());
     });

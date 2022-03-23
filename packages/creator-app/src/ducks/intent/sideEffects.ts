@@ -23,26 +23,26 @@ export const addManyIntents =
     if (!values.length) return;
 
     const state = getState();
-    const projectType = ProjectV2.active.typeV2Selector(state);
-    const intents = values.map(intentProcessor.bind(null, projectType));
+    const projectMeta = ProjectV2.active.metaSelector(state);
+    const intents = values.map(intentProcessor.bind(null, projectMeta.type));
 
-    await dispatch.sync(Realtime.intent.crud.addMany({ ...getActiveVersionContext(getState()), values: intents }));
+    await dispatch.sync(Realtime.intent.crud.addMany({ ...getActiveVersionContext(getState()), values: intents, projectMeta }));
   };
 
 export const patchIntent =
   (id: string, data: Partial<Realtime.Intent>): SyncThunk =>
   (dispatch, getState) => {
+    const state = getState();
+    const projectMeta = ProjectV2.active.metaSelector(state);
+    const newSlotsCreator = getProjectTypeNewSlotsCreator(projectMeta.type);
+
     if (!data.inputs) {
-      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: data }));
+      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: data, projectMeta }));
       return;
     }
 
-    const state = getState();
-    const projectType = ProjectV2.active.typeV2Selector(state);
     const nluModals = Feature.featureSelector(state)(FeatureFlag.IMM_MODALS_V2);
     if (nluModals.isEnabled) {
-      const newSlotsCreator = getProjectTypeNewSlotsCreator(projectType);
-
       const intent = IntentV2.intentByIDSelector(state, { id });
       if (!intent) return;
 
@@ -61,16 +61,12 @@ export const patchIntent =
         slots: inferIntentSlotsType({ byKey: updatedByKey, allKeys: [...supersetKeys] }),
       });
 
-      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent }));
+      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent, projectMeta }));
     } else {
       if (!data.inputs) {
-        dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: data }));
+        dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: data, projectMeta }));
         return;
       }
-
-      const state = getState();
-      const projectType = ProjectV2.active.typeV2Selector(state);
-      const newSlotsCreator = getProjectTypeNewSlotsCreator(projectType);
 
       const intent = IntentV2.intentByIDSelector(state, { id });
       if (!intent) return;
@@ -90,7 +86,7 @@ export const patchIntent =
         slots: inferIntentSlotsType({ byKey: newByKey, allKeys: [...keysWithoutRemoved, ...keysToAdd] }),
       });
 
-      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent }));
+      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent, projectMeta }));
     }
   };
 
@@ -98,8 +94,8 @@ export const addRequiredSlot =
   (intentID: string, slotID: string): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
-    const projectType = ProjectV2.active.typeV2Selector(state);
-    const newSlotsCreator = getProjectTypeNewSlotsCreator(projectType);
+    const projectMeta = ProjectV2.active.metaSelector(state);
+    const newSlotsCreator = getProjectTypeNewSlotsCreator(projectMeta.type);
 
     const intent = IntentV2.intentByIDSelector(state, { id: intentID });
     if (!intent) return;
@@ -120,7 +116,7 @@ export const addRequiredSlot =
       slots: inferIntentSlotsType({ byKey: byKeys, allKeys: Utils.array.unique([...intent.slots.allKeys, slotID]) }),
     });
 
-    dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent }));
+    dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent, projectMeta }));
   };
 
 export const removeRequiredSlot =
@@ -128,6 +124,7 @@ export const removeRequiredSlot =
   (dispatch, getState) => {
     const state = getState();
     const intent = IntentV2.intentByIDSelector(state, { id: intentID });
+    const projectMeta = ProjectV2.active.metaSelector(state);
 
     if (!intent?.slots?.byKey?.[slotID]) return;
 
@@ -137,12 +134,12 @@ export const removeRequiredSlot =
       const patchedIntent = inferIntentType({
         slots: Normal.patchOne(intent.slots, slotID, { required: false }),
       });
-      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent }));
+      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent, projectMeta }));
     } else {
       const patchedIntent = inferIntentType({
         slots: Normal.removeOne(intent.slots, slotID),
       });
-      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent }));
+      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent, projectMeta }));
     }
   };
 
@@ -207,7 +204,7 @@ export const createIntent =
   async (dispatch, getState) => {
     const id = intent?.id || Utils.id.cuid.slug();
     const state = getState();
-    const platform = intent?.platform || ProjectV2.active.platformSelector(state);
+    const platform = intent?.platform || ProjectV2.active.platformV2Selector(state);
     const projectType = ProjectV2.active.typeV2Selector(state);
 
     const name =
@@ -226,6 +223,10 @@ export const createIntent =
         ...getActiveVersionContext(getState()),
         key: id,
         value: processedIntent,
+        projectMeta: {
+          platform,
+          type: projectType,
+        },
       })
     );
 
@@ -235,10 +236,13 @@ export const createIntent =
 export const deleteIntent =
   (intentID: string): Thunk =>
   async (dispatch, getState) => {
+    const projectMeta = ProjectV2.active.metaSelector(getState());
+
     await dispatch.sync(
       Realtime.intent.crud.remove({
         ...getActiveVersionContext(getState()),
         key: intentID,
+        projectMeta,
       })
     );
   };

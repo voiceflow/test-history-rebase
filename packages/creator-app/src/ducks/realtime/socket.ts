@@ -235,7 +235,7 @@ export const addLink = (sourcePortID: string, targetPortID: string, linkID: stri
 /**
  * @deprecated
  */
-export const updateLinkDataMany = (payload: { linkID: string; data: Partial<Realtime.LinkData> }[]): UpdateLinkDataMany =>
+export const updateLinkDataMany = (payload: Realtime.link.LinkPatch[]): UpdateLinkDataMany =>
   createAction(SocketAction.UPDATE_LINK_DATA_MANY, payload);
 
 /**

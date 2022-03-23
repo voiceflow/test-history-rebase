@@ -14,6 +14,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
         nodeID: NODE_ID,
         portID: PORT_ID,
         index: 1,
+        builtinOffset: 0,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -25,6 +26,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
         nodeID: NODE_ID,
         portID: 'foo',
         index: 1,
+        builtinOffset: 0,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -49,6 +51,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
         nodeID: NODE_ID,
         portID: PORT_ID,
         index: 2,
+        builtinOffset: 0,
       });
 
       expect(result).to.eq(initialState);
@@ -73,6 +76,33 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
           nodeID: NODE_ID,
           portID: PORT_ID,
           index: 1,
+          builtinOffset: 0,
+        }
+      );
+
+      expect(result.portsByNodeID[NODE_ID]?.out.dynamic).to.eql(['foo', PORT_ID, 'bar', 'fizz']);
+    });
+
+    it('ignore builtinOffset when reordering', () => {
+      const result = applyAction(
+        {
+          ...MOCK_STATE,
+          portsByNodeID: {
+            [NODE_ID]: {
+              in: [],
+              out: {
+                dynamic: ['foo', 'bar', PORT_ID, 'fizz'],
+                builtIn: {},
+              },
+            },
+          },
+        },
+        {
+          ...ACTION_CONTEXT,
+          nodeID: NODE_ID,
+          portID: PORT_ID,
+          index: 1,
+          builtinOffset: 20,
         }
       );
 

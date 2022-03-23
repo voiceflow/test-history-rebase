@@ -4,18 +4,18 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
-type AddIntentPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDValuePayload<Realtime.Intent>;
+interface AddIntentPayload extends Realtime.intent.BaseIntentPayload, Realtime.actionUtils.CRUDValuePayload<Realtime.Intent> {}
 
 class AddIntent extends AbstractVersionResourceControl<AddIntentPayload> {
   protected actionCreator = Realtime.intent.crud.add;
 
   protected process = async (ctx: Context, { payload }: Action<AddIntentPayload>) => {
     const { creatorID } = ctx.data;
-    const projectType = await this.services.project.getProjectType(creatorID, payload.projectID);
+    const { versionID, key, value, projectMeta } = payload;
 
-    await this.services.intent.create(creatorID, payload.versionID, {
-      ...Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectType).toDB(payload.value),
-      key: payload.key,
+    await this.services.intent.create(creatorID, versionID, {
+      ...Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectMeta.type).toDB(value),
+      key,
     });
   };
 }

@@ -79,11 +79,11 @@ export const blockIDByStepIDSelector = Feature.createAtomicActionsPhase2Selector
   (getNodeV1, blockIDV2, stepID) => [stepID ? getNodeV1(stepID)?.parentNode ?? null : null, blockIDV2]
 );
 
-const _nodeOriginByIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ originByNodeID: positionByNodeID }, nodeID) =>
+const _nodeCoordsByIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ coordsByNodeID: positionByNodeID }, nodeID) =>
   nodeID ? positionByNodeID[nodeID] ?? null : null
 );
-export const nodeOriginByIDSelector = Feature.createAtomicActionsPhase2Selector(
-  [CreatorV1Selectors.nodeByIDSelector, _nodeOriginByIDSelector, idParamSelector],
+export const nodeCoordsByIDSelector = Feature.createAtomicActionsPhase2Selector(
+  [CreatorV1Selectors.nodeByIDSelector, _nodeCoordsByIDSelector, idParamSelector],
   (getNodeV1, origin2, nodeID) => {
     const nodeV1 = nodeID ? getNodeV1(nodeID) ?? null : null;
 
@@ -118,7 +118,7 @@ export const linkedNodeIDsByNodeIDSelector = Feature.createAtomicActionsPhase2Se
 );
 
 export const nodeByIDSelector = createSelector(
-  [blockIDByStepIDSelector, nodeOriginByIDSelector, portsByNodeIDSelector, stepIDsByBlockIDSelector, nodeDataByIDSelector, idParamSelector],
+  [blockIDByStepIDSelector, nodeCoordsByIDSelector, portsByNodeIDSelector, stepIDsByBlockIDSelector, nodeDataByIDSelector, idParamSelector],
   // eslint-disable-next-line max-params
   (blockID, origin, ports, stepIDs, data, nodeID): Realtime.Node | null =>
     nodeID && data

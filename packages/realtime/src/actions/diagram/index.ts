@@ -10,6 +10,7 @@ import MoveCursorControl from './moveCursor';
 import PatchDiagramControl from './patch';
 import RemoveDiagramControl from './remove';
 import { AddLocalVariableControl, RemoveLocalVariableControl } from './variable';
+import { UpdateViewportControl } from './viewport';
 
 const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   addDiagramControl: new AddDiagramControl(options),
@@ -32,6 +33,9 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
 
   // awareness
   moveCursorControl: new MoveCursorControl(options),
+
+  // viewport
+  updateViewportControl: new UpdateViewportControl(options),
 });
 
 export default buildDiagramActionControls;

@@ -4,7 +4,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
 import { BlockVariant } from '@/constants/canvas';
-import { flattenAllPorts, flattenOutPorts } from '@/ducks/creatorV2/utils';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import { nodeFactory, portFactory } from './factories';
@@ -46,7 +45,7 @@ export const getJoiningLinkIDs =
   };
 
 export const getOutgoingLinkIDs = (state: DiagramState, node: Realtime.Node): string[] =>
-  flattenOutPorts(node.ports).flatMap((portID) => getLinkIDsByPortID(state)(portID));
+  Realtime.Utils.port.flattenOutPorts(node.ports).flatMap((portID) => getLinkIDsByPortID(state)(portID));
 
 export const getIncomingLinkIDs = (state: DiagramState, node: Realtime.Node): string[] =>
   node.ports.in.flatMap((portID) => getLinkIDsByPortID(state)(portID));
@@ -279,7 +278,7 @@ export const removeBlockFromState =
   (state: DiagramState): DiagramState =>
     Utils.functional.compose(
       removeAllLinksFromState(getLinkIDsByNodeID(state)(node.id)),
-      removeAllPortsFromState(flattenAllPorts(node.ports)),
+      removeAllPortsFromState(Realtime.Utils.port.flattenAllPorts(node.ports)),
       removeNodeFromState(node)
     )(state);
 

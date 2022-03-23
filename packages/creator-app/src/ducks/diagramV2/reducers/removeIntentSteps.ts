@@ -4,9 +4,10 @@ import * as Normal from 'normal-store';
 
 import { createReducer } from './utils';
 
-const removeIntentStepsReducer = createReducer(Realtime.node.removeMany, (state, { diagramID, nodeIDs }) => {
-  if (!nodeIDs.length) return;
+const removeIntentStepsReducer = createReducer(Realtime.node.removeMany, (state, { diagramID, nodes }) => {
+  if (!nodes.length) return;
 
+  const nodeIDs = nodes.map((node) => node.stepID ?? node.blockID);
   const diagram = Normal.getOne(state, diagramID);
 
   if (diagram) {

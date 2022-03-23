@@ -23,6 +23,9 @@ class PortManager extends EngineConsumer {
 
     addBuiltin: async (nodeID: string, portType: BaseModels.PortType, port: Realtime.PartialModel<Realtime.Port>): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
+        const ports = this.engine.select(CreatorV2.portsByNodeIDSelector, { id: nodeID });
+        const builtinOffset = Object.keys(ports.out.builtIn).length;
+
         await this.dispatch.sync(
           Realtime.port.addBuiltin({
             ...this.engine.context,
@@ -30,6 +33,7 @@ class PortManager extends EngineConsumer {
             portID: port.id,
             platform: port.platform,
             type: port.label as BaseModels.PortType,
+            builtinOffset,
           })
         );
       } else {
@@ -80,8 +84,8 @@ class PortManager extends EngineConsumer {
       this.engine.node.redrawLinks(nodeID);
     },
 
-    reorderDynamicV2: async (nodeID: string, portID: string, index: number): Promise<void> => {
-      await this.dispatch.sync(Realtime.port.reorderDynamic({ ...this.engine.context, nodeID, portID, index }));
+    reorderDynamicV2: async (nodeID: string, portID: string, index: number, builtinOffset: number): Promise<void> => {
+      await this.dispatch.sync(Realtime.port.reorderDynamic({ ...this.engine.context, nodeID, portID, index, builtinOffset }));
 
       this.engine.node.redrawLinks(nodeID);
     },
@@ -142,13 +146,14 @@ class PortManager extends EngineConsumer {
     if (this.isAtomicActionsPhase2) {
       const ports = this.engine.select(CreatorV2.portsByNodeIDSelector, { id: nodeID });
       const portID = ports.out.dynamic[from];
+      const builtinOffset = Object.keys(ports.out.builtIn).length;
 
       if (!portID) {
         this.log.warn('attempted to reorder a port that could not be found at index', this.log.value(from), 'of node', this.log.slug(nodeID));
         return;
       }
 
-      await this.internal.reorderDynamicV2(nodeID, portID, to);
+      await this.internal.reorderDynamicV2(nodeID, portID, to, builtinOffset);
     } else {
       await this.engine.realtime.sendUpdate(RealtimeDuck.reorderOutDynamicPorts(nodeID, from, to));
       this.internal.reorderDynamicV1(nodeID, from, to);

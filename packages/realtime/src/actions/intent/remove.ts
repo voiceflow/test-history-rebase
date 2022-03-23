@@ -4,7 +4,7 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
-type RemoveIntentPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDKeyPayload;
+type RemoveIntentPayload = Realtime.intent.BaseIntentPayload & Realtime.actionUtils.CRUDKeyPayload;
 
 class RemoveIntent extends AbstractVersionResourceControl<RemoveIntentPayload> {
   protected actionCreator = Realtime.intent.crud.remove;

@@ -2,7 +2,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
 
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT, PORT_ID } from '../_fixtures';
@@ -31,8 +30,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
           ...MOCK_STATE,
           ports: normalize([fooPort, PORT, barPort]),
           portsByNodeID: {
-            [NODE_ID]: createEmptyNodePorts(),
-            fooNode: createEmptyNodePorts(),
+            [NODE_ID]: Realtime.Utils.port.createEmptyNodePorts(),
+            fooNode: Realtime.Utils.port.createEmptyNodePorts(),
           },
           nodeIDByPortID: { [PORT_ID]: NODE_ID, [fooPort.id]: NODE_ID },
           linkIDsByPortID: { [PORT_ID]: [], [fooPort.id]: ['fooLink'] },
@@ -42,8 +41,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
 
       expect(result.ports).to.eql(normalize([fooPort, barPort]));
       expect(result.portsByNodeID).to.eql({
-        [NODE_ID]: createEmptyNodePorts(),
-        fooNode: createEmptyNodePorts(),
+        [NODE_ID]: Realtime.Utils.port.createEmptyNodePorts(),
+        fooNode: Realtime.Utils.port.createEmptyNodePorts(),
       });
       expect(result.nodeIDByPortID).to.eql({ [fooPort.id]: NODE_ID });
       expect(result.linkIDsByPortID).to.eql({ [fooPort.id]: ['fooLink'] });

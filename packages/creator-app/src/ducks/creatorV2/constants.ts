@@ -13,7 +13,7 @@ export const createInitialState = (): CreatorState => ({
 
   blockIDs: [],
   markupIDs: [],
-  originByNodeID: {},
+  coordsByNodeID: {},
 
   portsByNodeID: {},
   linkIDsByNodeID: {},

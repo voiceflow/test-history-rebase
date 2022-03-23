@@ -7,11 +7,11 @@ import { nodeDataFactory } from '@/ducks/creator/diagram/factories';
 import { addNode } from '../utils';
 import { createActiveDiagramReducer } from './utils';
 
-const addMarkupReducer = createActiveDiagramReducer(Realtime.node.addMarkup, (state, { nodeID, data, origin }) => {
+const addMarkupReducer = createActiveDiagramReducer(Realtime.node.addMarkup, (state, { nodeID, data, coords }) => {
   if (Normal.hasOne(state.nodes, nodeID)) return;
 
   state.markupIDs = Utils.array.append(state.markupIDs, nodeID);
-  state.originByNodeID[nodeID] = origin;
+  state.coordsByNodeID[nodeID] = coords;
 
   addNode(state, { nodeID, data: nodeDataFactory(nodeID, data) });
 });

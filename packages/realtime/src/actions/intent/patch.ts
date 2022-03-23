@@ -4,28 +4,27 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
-type PatchIntentPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.Intent>>;
+interface PatchIntentPayload extends Realtime.intent.BaseIntentPayload, Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.Intent>> {}
 
 class PatchIntent extends AbstractVersionResourceControl<PatchIntentPayload> {
   protected actionCreator = Realtime.intent.crud.patch;
 
   process = async (ctx: Context, { payload }: Action<PatchIntentPayload>) => {
     const { creatorID } = ctx.data;
-    const platform = await this.services.project.getPlatform(creatorID, payload.projectID);
-    const projectType = await this.services.project.getProjectType(creatorID, payload.projectID);
+    const { versionID, key, value, projectMeta } = payload;
 
     const intents: Realtime.Intent[] = await this.services.intent
-      .getAll(creatorID, payload.versionID)
-      .then((intents) => Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectType).mapFromDB(intents, { platform }));
+      .getAll(creatorID, versionID)
+      .then((intents) => Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectMeta.type).mapFromDB(intents, { platform: projectMeta.platform }));
 
     await this.services.intent.replaceAll(
       creatorID,
-      payload.versionID,
-      Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectType).mapToDB(
+      versionID,
+      Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectMeta.type).mapToDB(
         intents.map((intent) => {
-          if (intent.id !== payload.key) return intent;
+          if (intent.id !== key) return intent;
 
-          return { ...intent, ...sanitizePatch(payload.value) };
+          return { ...intent, ...sanitizePatch(value) };
         })
       )
     );

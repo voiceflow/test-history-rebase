@@ -10,9 +10,9 @@ export interface BaseCursorPayload extends BaseDiagramPayload {
   creatorID: number;
 }
 
-export interface MoveCursor extends BaseCursorPayload {
+export interface MoveCursorPayload extends BaseCursorPayload {
   coords: Point;
 }
 
 export const hideCursor = Utils.protocol.createAction<BaseCursorPayload>(diagramAwarenessType('HIDE_CURSOR'));
-export const moveCursor = Utils.protocol.createAction<MoveCursor>(diagramAwarenessType('MOVE_CURSOR'));
+export const moveCursor = Utils.protocol.createAction<MoveCursorPayload>(diagramAwarenessType('MOVE_CURSOR'));

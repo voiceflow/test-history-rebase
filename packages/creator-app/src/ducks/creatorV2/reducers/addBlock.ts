@@ -12,23 +12,23 @@ import { createActiveDiagramReducer } from './utils';
 
 export const addBlock = (
   state: Draft<CreatorState>,
-  { blockID, ports, origin }: { blockID: string; ports: Realtime.PortsDescriptor; origin: Realtime.Point }
+  { blockID, ports, coords, name }: { blockID: string; ports: Realtime.PortsDescriptor; coords: Realtime.Point; name: string }
 ): void => {
   state.blockIDs = Utils.array.append(state.blockIDs, blockID);
 
-  state.originByNodeID[blockID] = origin;
+  state.coordsByNodeID[blockID] = coords;
   state.stepIDsByBlockID[blockID] = [];
 
-  addNodeWithPorts(state, { nodeID: blockID, data: blockNodeDataFactory(blockID), ports });
+  addNodeWithPorts(state, { nodeID: blockID, data: blockNodeDataFactory(blockID, { name }), ports });
 };
 
 const addBlockReducer = createActiveDiagramReducer(
   Realtime.node.addBlock,
-  (state, { blockID, blockPorts, blockOrigin, stepID, stepData, stepPorts }) => {
+  (state, { blockID, blockPorts, blockCoords, blockName, stepID, stepData, stepPorts }) => {
     if (Normal.hasOne(state.nodes, blockID)) return;
     if (Normal.hasOne(state.nodes, stepID)) return;
 
-    addBlock(state, { blockID, ports: blockPorts, origin: blockOrigin });
+    addBlock(state, { blockID, ports: blockPorts, coords: blockCoords, name: blockName });
     appendStep(state, { blockID, stepID, data: stepData, ports: stepPorts });
   }
 );

@@ -14,7 +14,7 @@ import * as Viewport from '@/ducks/viewport';
 export const fullActiveDiagramSelector = createSelector(
   [
     CreatorV2.activeDiagramIDSelector,
-    Viewport.viewportByIDSelector,
+    Viewport.getViewportByIDSelector,
     creatorDiagramSelector,
     CreatorV2.allLinksSelector,
     ProjectV2.active.projectSelector,
@@ -31,7 +31,7 @@ export const fullActiveDiagramSelector = createSelector(
 
     const { variables } = diagram;
     const { platformV2: platform, typeV2: projectType } = project;
-    const viewport = getViewport(diagramID);
+    const viewport = getViewport({ id: diagramID });
 
     const creator = Realtime.Adapters.creatorAdapter.toDB(
       {

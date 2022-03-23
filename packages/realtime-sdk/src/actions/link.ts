@@ -6,15 +6,19 @@ import { Utils } from '@voiceflow/common';
 const linkType = Utils.protocol.typeFactory(LINK_KEY);
 
 export interface AddPayload extends BaseLinkPayload {
+  sourceNodeID: string;
   sourcePortID: string;
+  targetNodeID: string;
   targetPortID: string;
 }
 
 export interface RemoveManyPayload extends BaseDiagramPayload {
-  linkIDs: string[];
+  links: { nodeID: string; portID: string; linkID: string }[];
 }
 
 export interface LinkPatch {
+  nodeID: string;
+  portID: string;
   linkID: string;
   data: Partial<LinkData>;
 }

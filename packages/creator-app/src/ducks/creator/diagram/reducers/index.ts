@@ -152,7 +152,7 @@ export const updateHiddenReducer: Reducer<DiagramStateType, UpdateHidden> = (sta
 
 const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | AnyCreatorAction> = (state = INITIAL_DIAGRAM_STATE, action) => {
   if (isType(action, Realtime.node.removeMany)) {
-    return removeManyNodesReducer(state, removeNodes(action.payload.nodeIDs));
+    return removeManyNodesReducer(state, removeNodes(action.payload.nodes.map((node) => node.stepID ?? node.blockID)));
   }
 
   switch (action.type) {

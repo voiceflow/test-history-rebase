@@ -10,11 +10,19 @@ export interface AddDynamicPayload extends BasePortPayload {
   label: Nullish<string>;
 }
 
-export interface ReorderDynamicPayload extends BasePortPayload {
+export interface BuiltinOffset {
+  /**
+   * used when applying this change to mongo
+   * we need to account for the number of builtin ports that currently exist
+   */
+  builtinOffset: number;
+}
+
+export interface ReorderDynamicPayload extends BasePortPayload, BuiltinOffset {
   index: number;
 }
 
-export interface AddBuiltinPayload extends BasePortPayload {
+export interface AddBuiltinPayload extends BasePortPayload, BuiltinOffset {
   type: BaseModels.PortType;
   platform: Nullish<VoiceflowConstants.PlatformType>;
 }

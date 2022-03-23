@@ -12,6 +12,7 @@ import { MovementCalculator } from '@/components/Canvas/types';
 import { PageProgress } from '@/components/PageProgressBar';
 import { isDebug } from '@/config';
 import { FeatureFlag } from '@/config/features';
+import { Permission } from '@/config/permissions';
 import { BlockType, PageProgressBar } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
@@ -25,7 +26,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
-import * as Viewport from '@/ducks/viewport';
+import * as Workspace from '@/ducks/workspaceV2';
 import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { useMouseMove } from '@/hooks';
 import { CanvasAction } from '@/pages/Canvas/constants';
@@ -237,6 +238,10 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   isStraightLinks = () => this.select(ProjectV2.active.isStraightLinksSelector);
 
   currentPathName = () => this.select(Router.pathnameSelector);
+
+  getActivePlatform = () => this.select(ProjectV2.active.platformV2Selector);
+
+  getActiveProjectMeta = () => this.select(ProjectV2.active.metaSelector);
   /* eslint-enable @typescript-eslint/explicit-module-boundary-types */
 
   isNodeOfType = (nodeID: Nullish<string>, types: BlockType | BlockType[] | ((type: BlockType) => boolean)): boolean => {
@@ -358,8 +363,11 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
    * update the store entry for the viewport
    */
   updateViewport(diagramID: string, x: number, y: number, zoom: number): void {
+    const action = Realtime.diagram.viewport.crud.update({ key: diagramID, value: { id: diagramID, x, y, zoom } });
+    const canEditCanvas = this.select(Workspace.active.hasPermissionSelector, Permission.EDIT_CANVAS);
+
     this.emitter.emit(CanvasAction.IDLE);
-    this.store.dispatch(Viewport.updateViewportForDiagram(diagramID, { x, y, zoom }));
+    this.store.dispatch[canEditCanvas ? 'sync' : 'local'](action);
     this.comment.generateCandidates();
   }
 

@@ -4,21 +4,21 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, LINK_ID, MOCK_STATE, NODE_DATA, PORT, PORT_ID } from '../_fixtures';
+import { ACTION_CONTEXT, LINK_ID, MOCK_STATE, NODE_DATA, NODE_ID, PORT, PORT_ID } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addLink reducer', ({ expect, describeReducerV2 }) => {
   describeReducerV2(Realtime.link.add, ({ applyAction }) => {
     const linkID = 'newLink';
-    const sourcePortID = 'sourcePort';
-    const targetPortID = 'targetPort';
 
     it('ignore adding a link for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         diagramID: 'foo',
         linkID,
-        sourcePortID,
-        targetPortID,
+        sourceNodeID: NODE_ID,
+        sourcePortID: PORT_ID,
+        targetNodeID: NODE_ID,
+        targetPortID: PORT_ID,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -27,10 +27,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addLink reducer', ({ expect, 
     it('ignore adding a link with duplicate ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        diagramID: 'foo',
         linkID: LINK_ID,
-        sourcePortID,
-        targetPortID,
+        sourceNodeID: NODE_ID,
+        sourcePortID: PORT_ID,
+        targetNodeID: NODE_ID,
+        targetPortID: PORT_ID,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -40,7 +41,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addLink reducer', ({ expect, 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         linkID,
-        sourcePortID,
+        sourceNodeID: NODE_ID,
+        sourcePortID: 'foo',
+        targetNodeID: NODE_ID,
         targetPortID: PORT_ID,
       });
 
@@ -51,8 +54,36 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addLink reducer', ({ expect, 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         linkID,
+        sourceNodeID: NODE_ID,
         sourcePortID: PORT_ID,
-        targetPortID,
+        targetNodeID: NODE_ID,
+        targetPortID: 'foo',
+      });
+
+      expect(result).to.eq(MOCK_STATE);
+    });
+
+    it('ignore adding a link with unrecognized source node ID', () => {
+      const result = applyAction(MOCK_STATE, {
+        ...ACTION_CONTEXT,
+        linkID,
+        sourceNodeID: 'foo',
+        sourcePortID: NODE_ID,
+        targetNodeID: NODE_ID,
+        targetPortID: PORT_ID,
+      });
+
+      expect(result).to.eq(MOCK_STATE);
+    });
+
+    it('ignore adding a link with unrecognized target node ID', () => {
+      const result = applyAction(MOCK_STATE, {
+        ...ACTION_CONTEXT,
+        linkID,
+        sourceNodeID: NODE_ID,
+        sourcePortID: PORT_ID,
+        targetNodeID: 'foo',
+        targetPortID: PORT_ID,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -61,6 +92,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addLink reducer', ({ expect, 
     it('add link between ports', () => {
       const fooLinkID = 'fooLink';
       const barLinkID = 'barLink';
+      const sourcePortID = 'sourcePort';
+      const targetPortID = 'targetPort';
       const sourceNode = { ...NODE_DATA, nodeID: 'sourceNode' };
       const targetNode = { ...NODE_DATA, nodeID: 'targetNode' };
 
@@ -72,10 +105,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addLink reducer', ({ expect, 
             { ...PORT, id: sourcePortID },
             { ...PORT, id: targetPortID },
           ]),
-          nodeIDByPortID: {
-            [sourcePortID]: sourceNode.nodeID,
-            [targetPortID]: targetNode.nodeID,
-          },
           linkIDsByNodeID: {
             [sourceNode.nodeID]: [fooLinkID],
             [targetNode.nodeID]: [barLinkID],
@@ -88,7 +117,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addLink reducer', ({ expect, 
         {
           ...ACTION_CONTEXT,
           linkID,
+          sourceNodeID: sourceNode.nodeID,
           sourcePortID,
+          targetNodeID: targetNode.nodeID,
           targetPortID,
         }
       );

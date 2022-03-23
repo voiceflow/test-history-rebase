@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -31,11 +32,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ e
         nodesWithData: [{ node, data }],
         ports: [],
         links: [],
+        platform: VoiceflowConstants.PlatformType.ALEXA,
       });
 
       expect(result.markupIDs).to.eql([node.id]);
       expect(result.nodes).to.eql(normalize([NODE_DATA, data], (data) => data.nodeID));
-      expect(result.originByNodeID).to.eql({ [node.id]: [node.x, node.y] });
+      expect(result.coordsByNodeID).to.eql({ [node.id]: [node.x, node.y] });
     });
 
     it('register blocks and steps', () => {
@@ -50,11 +52,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ e
         ],
         ports: [],
         links: [],
+        platform: VoiceflowConstants.PlatformType.ALEXA,
       });
 
       expect(result.blockIDs).to.eql([blockNode.id]);
       expect(result.nodes).to.eql(normalize([NODE_DATA, blockData, stepData], (data) => data.nodeID));
-      expect(result.originByNodeID).to.eql({ [blockNode.id]: [blockNode.x, blockNode.y] });
+      expect(result.coordsByNodeID).to.eql({ [blockNode.id]: [blockNode.x, blockNode.y] });
       expect(result.stepIDsByBlockID).to.eql({ [blockNode.id]: [stepNode.id] });
       expect(result.blockIDByStepID).to.eql({ [stepNode.id]: blockNode.id });
       expect(result.portsByNodeID).to.eql({ [blockNode.id]: blockNode.ports, [stepNode.id]: stepNode.ports });
@@ -69,6 +72,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ e
         nodesWithData: [],
         ports: [port],
         links: [],
+        platform: VoiceflowConstants.PlatformType.ALEXA,
       });
 
       expect(result.ports).to.eql(normalize([PORT, port]));
@@ -93,6 +97,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ e
         ],
         ports: [port1, port2],
         links: [link],
+        platform: VoiceflowConstants.PlatformType.ALEXA,
       });
 
       expect(result.links).to.eql(normalize([LINK, link]));

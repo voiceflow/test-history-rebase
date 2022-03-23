@@ -4,7 +4,7 @@ import * as Normal from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, LINK, MOCK_STATE } from '../_fixtures';
+import { ACTION_CONTEXT, LINK, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - patchManyLinks reducer', ({ expect, describeReducerV2 }) => {
   describeReducerV2(Realtime.link.patchMany, ({ applyAction }) => {
@@ -30,8 +30,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - patchManyLinks reducer', ({ e
         {
           ...ACTION_CONTEXT,
           patches: [
-            { linkID: barLink.id, data: { fizz: 'buzz2', other: 'thing' } as any },
-            { linkID: fooLink.id, data: { foo: 'bar2', another: 'thing' } as any },
+            { nodeID: NODE_ID, portID: PORT_ID, linkID: barLink.id, data: { fizz: 'buzz2', other: 'thing' } as any },
+            { nodeID: NODE_ID, portID: PORT_ID, linkID: fooLink.id, data: { foo: 'bar2', another: 'thing' } as any },
           ],
         }
       );

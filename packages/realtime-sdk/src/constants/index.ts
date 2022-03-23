@@ -34,6 +34,7 @@ export const COMPONENT_KEY = 'component';
 export const COMPONENTS_KEY = 'components';
 export const RPC_KEY = 'rpc';
 export const VARIABLE_STATE_KEY = 'variable_state';
+export const VIEWPORT_KEY = 'viewport';
 
 export const DEFAULT_PROJECT_LIST_NAME = 'Default List';
 

@@ -1,4 +1,3 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
@@ -9,14 +8,9 @@ class RemoveManyNodes extends AbstractResendDiagramActionControl<Realtime.node.R
   actionCreator = Realtime.node.removeMany;
 
   process = async (ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {
-    if (!payload.nodeIDs.length) return;
+    if (!payload.nodes.length) return;
 
-    const { creatorID } = ctx.data;
-    const { intentStepIDs = [] } = await this.services.diagram.get(creatorID, payload.diagramID);
-
-    await this.services.diagram.patch(creatorID, payload.diagramID, {
-      intentStepIDs: Utils.array.withoutValues(intentStepIDs, payload.nodeIDs),
-    });
+    await this.services.diagram.removeManyNodes(ctx.data.creatorID, payload.diagramID, payload.nodes);
   };
 }
 

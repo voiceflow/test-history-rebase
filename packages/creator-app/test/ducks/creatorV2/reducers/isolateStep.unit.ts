@@ -1,27 +1,35 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import { BlockVariant } from '@/constants/canvas';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
 
 import suite from '../../_suite';
 import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateStep reducer', ({ expect, describeReducerV2 }) => {
   describeReducerV2(Realtime.node.isolateStep, ({ applyAction }) => {
+    const sourceBlockID = 'sourceBlockID';
     const blockID = 'blockID';
     const stepID = 'stepID';
-    const blockOrigin: Realtime.Point = [-90, 20];
+    const blockCoords: Realtime.Point = [-90, 20];
+    const blockName = 'New Block';
 
     it('ignore isolating step for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         diagramID: 'foo',
+        sourceBlockID: NODE_ID,
         blockID,
-        blockPorts: createEmptyNodePorts(),
-        blockOrigin,
+        blockName,
+        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
+        blockCoords,
         stepID,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
+        },
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -30,10 +38,16 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateStep reducer', ({ expe
     it('ignore isolating step with duplicate block ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        sourceBlockID: NODE_ID,
         blockID: NODE_ID,
-        blockPorts: createEmptyNodePorts(),
-        blockOrigin,
+        blockName,
+        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
+        blockCoords,
         stepID,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
+        },
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -42,10 +56,34 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateStep reducer', ({ expe
     it('ignore isolating step with unrecognized step ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        sourceBlockID: NODE_ID,
         blockID,
-        blockPorts: createEmptyNodePorts(),
-        blockOrigin,
+        blockName,
+        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
+        blockCoords,
         stepID,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
+        },
+      });
+
+      expect(result).to.eq(MOCK_STATE);
+    });
+
+    it('ignore isolating step from unrecognized source block ID', () => {
+      const result = applyAction(MOCK_STATE, {
+        ...ACTION_CONTEXT,
+        sourceBlockID,
+        blockID,
+        blockName,
+        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
+        blockCoords,
+        stepID: NODE_ID,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
+        },
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -64,17 +102,23 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateStep reducer', ({ expe
         },
         {
           ...ACTION_CONTEXT,
+          sourceBlockID: NODE_ID,
           blockID,
-          blockPorts: createEmptyNodePorts(),
-          blockOrigin,
+          blockName,
+          blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
+          blockCoords,
           stepID,
+          projectMeta: {
+            platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+            type: VoiceflowConstants.ProjectType.CHAT,
+          },
         }
       );
 
       expect(result.blockIDs).to.eql([NODE_ID, blockID]);
       expect(result.nodes).to.containSubset(
         normalize(
-          [NODE_DATA, stepNode, { type: Realtime.BlockType.COMBINED, blockColor: BlockVariant.STANDARD, nodeID: blockID, name: 'Block' }],
+          [NODE_DATA, stepNode, { type: Realtime.BlockType.COMBINED, blockColor: BlockVariant.STANDARD, nodeID: blockID, name: blockName }],
           (node) => node.nodeID
         )
       );

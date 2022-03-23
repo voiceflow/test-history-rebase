@@ -2,7 +2,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
 
 import suite from '../../_suite';
 import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
@@ -39,7 +38,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addDynamicPort reducer', ({ e
       const result = applyAction(
         {
           ...MOCK_STATE,
-          portsByNodeID: { [NODE_ID]: createEmptyNodePorts() },
+          portsByNodeID: { [NODE_ID]: Realtime.Utils.port.createEmptyNodePorts() },
         },
         {
           ...ACTION_CONTEXT,

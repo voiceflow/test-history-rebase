@@ -1,18 +1,13 @@
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as IntegrationUsers from '@/ducks/integration';
-import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
-import * as Product from '@/ducks/product';
 import * as ProductV2 from '@/ducks/productV2';
-import * as Project from '@/ducks/project';
-import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
@@ -29,10 +24,8 @@ import * as Transcript from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
 import { createCRUDState } from '@/ducks/utils/crud';
 import * as VariableState from '@/ducks/variableState';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Viewport from '@/ducks/viewport';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { State } from '@/store/types';
 
@@ -46,20 +39,14 @@ export const MOCK_STATE: State = {
     [Creator.DIAGRAMS_HISTORY_STATE_KEY]: Creator.INITIAL_DIAGRAMS_HISTORY_STATE,
   },
   [CreatorV2.STATE_KEY]: CreatorV2.INITIAL_STATE,
-  [Diagram.STATE_KEY]: createCRUDState(),
-  [Diagram.STATE_KEY]: createCRUDState(),
   [DiagramV2.STATE_KEY]: DiagramV2.INITIAL_STATE,
   [Feature.STATE_KEY]: Feature.INITIAL_STATE,
   [IntegrationUsers.STATE_KEY]: IntegrationUsers.INITIAL_STATE,
-  [Intent.STATE_KEY]: createCRUDState(),
   [IntentV2.STATE_KEY]: createCRUDState(),
   [Modal.STATE_KEY]: Modal.INITIAL_STATE,
   [Notifications.STATE_KEY]: Notifications.INITIAL_STATE,
-  [Product.STATE_KEY]: createCRUDState(),
   [ProductV2.STATE_KEY]: createCRUDState(),
-  [Project.STATE_KEY]: createCRUDState(),
   [ProjectV2.STATE_KEY]: createCRUDState(),
-  [ProjectList.STATE_KEY]: createCRUDState(),
   [ProjectListV2.STATE_KEY]: createCRUDState(),
   [Prototype.STATE_KEY]: Prototype.INITIAL_STATE as ReturnType<typeof Prototype.default>,
   [Realtime.STATE_KEY]: Realtime.INITIAL_STATE,
@@ -82,10 +69,8 @@ export const MOCK_STATE: State = {
   [Tracking.STATE_KEY]: {},
   [Transcript.STATE_KEY]: Transcript.INITIAL_STATE,
   [UI.STATE_KEY]: UI.INITIAL_STATE as ReturnType<typeof UI.default>,
-  [Version.STATE_KEY]: createCRUDState(),
   [VersionV2.STATE_KEY]: createCRUDState(),
   [Viewport.STATE_KEY]: Viewport.INITIAL_STATE as ReturnType<typeof Viewport.default>,
-  [Workspace.STATE_KEY]: createCRUDState(),
   [WorkspaceV2.STATE_KEY]: createCRUDState(),
   [VariableState.STATE_KEY]: { ...VariableState.INITIAL_STATE, selectedID: null },
 };

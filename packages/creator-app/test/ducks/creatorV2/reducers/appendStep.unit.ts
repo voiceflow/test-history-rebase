@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
 
 import suite from '../../_suite';
 import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID, PORT } from '../_fixtures';
@@ -20,7 +19,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - appendStep reducer', ({ expec
         diagramID: 'foo',
         blockID: blockNode.nodeID,
         stepID,
-        ports: createEmptyNodePorts(),
+        ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
       });
 
@@ -32,7 +31,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - appendStep reducer', ({ expec
         ...ACTION_CONTEXT,
         blockID: blockNode.nodeID,
         stepID: NODE_ID,
-        ports: createEmptyNodePorts(),
+        ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
       });
 
@@ -44,7 +43,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - appendStep reducer', ({ expec
         ...ACTION_CONTEXT,
         blockID: blockNode.nodeID,
         stepID,
-        ports: createEmptyNodePorts(),
+        ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
       });
 
@@ -62,7 +61,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - appendStep reducer', ({ expec
           ...ACTION_CONTEXT,
           blockID: blockNode.nodeID,
           stepID,
-          ports: createEmptyNodePorts(),
+          ports: Realtime.Utils.port.createEmptyNodePorts(),
           data: stepData,
         }
       );
@@ -70,7 +69,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - appendStep reducer', ({ expec
       expect(result.nodes).to.eql(normalize([blockNode, { ...stepData, nodeID: stepID }], (node) => node.nodeID));
       expect(result.blockIDByStepID).to.eql({ [stepID]: blockNode.nodeID });
       expect(result.stepIDsByBlockID).to.eql({ [blockNode.nodeID]: ['foo', 'bar', stepID] });
-      expect(result.portsByNodeID).to.eql({ [stepID]: createEmptyNodePorts() });
+      expect(result.portsByNodeID).to.eql({ [stepID]: Realtime.Utils.port.createEmptyNodePorts() });
       expect(result.linkIDsByNodeID).to.eql({ [stepID]: [] });
     });
 

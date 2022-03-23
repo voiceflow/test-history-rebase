@@ -44,15 +44,22 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
 
     ctx.data.subscribed = true;
 
-    return Realtime.creator.initialize({
-      nodesWithData: nodes.map((node) => ({ node, data: data[node.id] })),
-      ports,
-      links,
-      diagramID: ctx.params.diagramID,
-      versionID: ctx.params.versionID,
-      projectID: ctx.params.projectID,
-      workspaceID: ctx.params.workspaceID,
-    });
+    return [
+      Realtime.diagram.viewport.rehydrate({
+        viewport: {
+          id: ctx.params.diagramID,
+          x: diagram.offsetX,
+          y: diagram.offsetY,
+          zoom: diagram.zoom,
+        },
+      }),
+      Realtime.creator.initialize({
+        ...ctx.params,
+        nodesWithData: nodes.map((node) => ({ node, data: data[node.id] })),
+        ports,
+        links,
+      }),
+    ];
   };
 
   protected finally = async (ctx: DiagramChannelContext): Promise<void> => {

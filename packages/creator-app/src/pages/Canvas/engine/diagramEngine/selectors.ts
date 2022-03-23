@@ -5,7 +5,6 @@ import { createSelector } from 'reselect';
 
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { flattenAllPorts } from '@/ducks/creatorV2/utils';
 
 import { mergeEntityMaps } from '../utils';
 
@@ -17,7 +16,7 @@ export const entityMapSelector = createSelector(
       const data = getNodeData({ id: nodeID })!;
 
       return {
-        ports: flattenAllPorts(node?.ports).map((portID) => getPort({ id: portID })!),
+        ports: Realtime.Utils.port.flattenAllPorts(node?.ports).map((portID) => getPort({ id: portID })!),
         links: [],
         nodesWithData: [{ node: { ...node, ...nodeOverrides }, data: rename ? { ...data, name: `${data?.name} copy` } : data }],
       };

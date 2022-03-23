@@ -1,7 +1,7 @@
 import { BLOCK_KEY, NODE_KEY, STEP_KEY } from '@realtime-sdk/constants';
-import { BuiltInPortRecord, Markup, NodeDataDescriptor, NodePortSchema, PartialModel, Port, PortsDescriptor } from '@realtime-sdk/models';
-import { BaseBlockPayload, BaseDiagramPayload, BaseNodePayload, Point } from '@realtime-sdk/types';
-import { Utils } from '@voiceflow/common';
+import { Markup, NodeDataDescriptor, PortsDescriptor } from '@realtime-sdk/models';
+import { BaseBlockPayload, BaseDiagramPayload, BaseNodePayload, Point, ProjectMetaPayload } from '@realtime-sdk/types';
+import { Nullish, Utils } from '@voiceflow/common';
 
 const nodeType = Utils.protocol.typeFactory(NODE_KEY);
 const nodeMarkupType = Utils.protocol.typeFactory(nodeType('markup'));
@@ -13,7 +13,7 @@ export interface UpdateDataPayload extends BaseNodePayload {
 }
 
 export interface RemoveManyPayload extends BaseDiagramPayload {
-  nodeIDs: string[];
+  nodes: { blockID: string; stepID?: Nullish<string> }[];
 }
 
 export interface TranslatePayload extends BaseDiagramPayload {
@@ -27,36 +27,35 @@ export const removeMany = Utils.protocol.createAction<RemoveManyPayload>(nodeTyp
 
 // markup
 
-export interface AddMarkupPayload extends BaseNodePayload {
+export interface AddMarkupPayload extends BaseNodePayload, ProjectMetaPayload {
   data: NodeDataDescriptor<Markup.AnyNodeData>;
-  origin: Point;
+  coords: Point;
 }
 
 export const addMarkup = Utils.protocol.createAction<AddMarkupPayload>(nodeMarkupType('ADD'));
 
 // blocks
 
-export interface AddBlockPayload<T = unknown, O extends PortRecord = PortRecord> extends BaseBlockPayload {
+export interface AddBlockPayload<T = unknown> extends BaseBlockPayload, ProjectMetaPayload {
   blockPorts: PortsDescriptor;
-  blockOrigin: Point;
+  blockCoords: Point;
+  blockName: string;
   stepID: string;
   stepData: NodeDataDescriptor<T>;
-  stepPorts: NodePortSchema<PartialModel<Port>, O>;
+  stepPorts: PortsDescriptor;
 }
 
 export const addBlock = Utils.protocol.createAction<AddBlockPayload>(nodeBlockType('ADD'));
 
 // steps
 
-type PortRecord = BuiltInPortRecord<PartialModel<Port>>;
-
-export interface AppendStepPayload<T = unknown, O extends PortRecord = PortRecord> extends BaseBlockPayload {
+export interface AppendStepPayload<T = unknown> extends BaseBlockPayload, ProjectMetaPayload {
   stepID: string;
   data: NodeDataDescriptor<T>;
-  ports: NodePortSchema<PartialModel<Port>, O>;
+  ports: PortsDescriptor;
 }
 
-export interface InsertStepPayload<T = unknown, O extends PortRecord = PortRecord> extends AppendStepPayload<T, O> {
+export interface InsertStepPayload<T = unknown> extends AppendStepPayload<T> {
   index: number;
 }
 
@@ -72,9 +71,11 @@ export interface TransplantStepsPayload extends BaseDiagramPayload {
   index: number;
 }
 
-export interface IsolateStepPayload extends BaseBlockPayload {
+export interface IsolateStepPayload extends BaseBlockPayload, ProjectMetaPayload {
+  sourceBlockID: string;
   blockPorts: PortsDescriptor;
-  blockOrigin: Point;
+  blockCoords: Point;
+  blockName: string;
   stepID: string;
 }
 

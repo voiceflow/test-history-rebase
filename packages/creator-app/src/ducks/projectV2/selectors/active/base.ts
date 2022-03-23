@@ -11,10 +11,16 @@ export const projectSelector = createSelector([Session.activeProjectIDSelector, 
   getProjectByID({ id: projectID })
 );
 
+/**
+ * @deprecated
+ */
 export const platformSelector = createSelector([projectSelector], (project) => project?.platform || VoiceflowConstants.PlatformType.GENERAL);
 
 export const typeV2Selector = createSelector([projectSelector], (project) => project?.typeV2 || VoiceflowConstants.ProjectType.VOICE);
+
 export const platformV2Selector = createSelector([projectSelector], (project) => project?.platformV2 || VoiceflowConstants.PlatformType.VOICEFLOW);
+
+export const metaSelector = createSelector([typeV2Selector, platformV2Selector], (type, platform) => ({ type, platform }));
 
 export const nameSelector = createSelector([projectSelector], (project) => project?.name ?? null);
 

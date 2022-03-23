@@ -1,2 +1,2 @@
-export { default as AddLocalVariableControl } from './addLocalVariable';
-export { default as RemoveLocalVariableControl } from './removeLocalVariable';
+export { default as AddLocalVariableControl } from './addLocal';
+export { default as RemoveLocalVariableControl } from './removeLocal';

@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -9,7 +10,7 @@ import { ACTION_CONTEXT, MOCK_STATE, NODE_ID } from '../_fixtures';
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addMarkup reducer', ({ expect, describeReducerV2 }) => {
   describeReducerV2(Realtime.node.addMarkup, ({ applyAction }) => {
     const markupID = 'markupNode';
-    const origin: Realtime.Point = [100, 200];
+    const coords: Realtime.Point = [100, 200];
     const data = {
       type: Realtime.BlockType.MARKUP_IMAGE,
       name: 'node name',
@@ -24,8 +25,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addMarkup reducer', ({ expect
         ...ACTION_CONTEXT,
         diagramID: 'foo',
         nodeID: markupID,
-        origin,
+        coords,
         data,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
+        },
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -35,8 +40,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addMarkup reducer', ({ expect
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         nodeID: NODE_ID,
-        origin,
+        coords,
         data,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
+        },
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -46,13 +55,17 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addMarkup reducer', ({ expect
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         nodeID: markupID,
-        origin,
+        coords,
         data,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
+        },
       });
 
       expect(result.nodes).to.containSubset(normalize([{ ...data, nodeID: markupID }], (node) => node.nodeID));
       expect(result.markupIDs).to.eql([markupID]);
-      expect(result.originByNodeID).to.eql({ [markupID]: origin });
+      expect(result.coordsByNodeID).to.eql({ [markupID]: coords });
     });
   });
 });

@@ -1,14 +1,16 @@
 import { CREATOR_KEY } from '@realtime-sdk/constants';
 import { EntityMap } from '@realtime-sdk/models';
-import { BaseDiagramPayload } from '@realtime-sdk/types';
+import { BaseDiagramPayload, ProjectMetaPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 export const creatorType = Utils.protocol.typeFactory(CREATOR_KEY);
 
-export type SnapshotPayload = BaseDiagramPayload & EntityMap;
+export interface SnapshotPayload extends BaseDiagramPayload, EntityMap {}
+
+export interface ImportSnapshotPayload extends SnapshotPayload, ProjectMetaPayload {}
 
 export const initialize = Utils.protocol.createAction<SnapshotPayload>(creatorType('INITIALIZE'));
 
-export const importSnapshot = Utils.protocol.createAction<SnapshotPayload>(creatorType('IMPORT_SNAPSHOT'));
+export const importSnapshot = Utils.protocol.createAction<ImportSnapshotPayload>(creatorType('IMPORT_SNAPSHOT'));
 
 export const reset = Utils.protocol.createAction(creatorType('RESET'));

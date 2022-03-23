@@ -17,7 +17,12 @@ export interface NodePortSchema<T, O extends BuiltInPortRecord<T> = BuiltInPortR
 
 export type NodePorts<O extends BuiltInPortRecord = BuiltInPortRecord> = NodePortSchema<string, O>;
 
-export type PortsDescriptor = NodePortSchema<Omit<PartialModel<Port>, 'nodeID'>>;
+export type PortDescriptor = Omit<PartialModel<Port>, 'nodeID'>;
+
+export type PortsDescriptor<O extends BuiltInPortRecord<PortDescriptor> = BuiltInPortRecord<PortDescriptor>> = NodePortSchema<
+  Omit<PartialModel<Port>, 'nodeID'>,
+  O
+>;
 
 export interface Node<O extends BuiltInPortRecord = BuiltInPortRecord> {
   id: string;

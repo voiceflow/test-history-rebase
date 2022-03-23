@@ -8,7 +8,6 @@ import * as Errors from '@/config/errors';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { flattenAllPorts } from '@/ducks/creatorV2/utils';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -196,7 +195,7 @@ class ClipboardEngine extends EngineConsumer {
     const copiedNodeIDMap = copiedNodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
 
     const ports = CreatorV2.allPortsByIDsSelector(state, {
-      ids: copiedNodes.flatMap((node) => flattenAllPorts(node.ports)),
+      ids: copiedNodes.flatMap((node) => Realtime.Utils.port.flattenAllPorts(node.ports)),
     }).filter(Boolean);
 
     const links = copiedNodes.reduce<Realtime.Link[]>((acc, node) => {

@@ -2,6 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as RealtimeDuck from '@/ducks/realtime';
 import LinkEntity from '@/pages/Canvas/engine/entities/linkEntity';
 import { Pair } from '@/types';
@@ -19,7 +20,16 @@ class LinkManager extends EngineConsumer {
       if (!sourcePort || !targetPort || sourcePort.nodeID === targetPort.nodeID) return;
 
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(Realtime.link.add({ ...this.engine.context, sourcePortID, targetPortID, linkID }));
+        await this.dispatch.sync(
+          Realtime.link.add({
+            ...this.engine.context,
+            sourceNodeID: sourcePort.nodeID,
+            sourcePortID,
+            targetNodeID: targetPort.nodeID,
+            targetPortID,
+            linkID,
+          })
+        );
       } else {
         this.dispatch(Creator.addLink(sourcePortID, targetPortID, linkID));
       }
@@ -31,7 +41,9 @@ class LinkManager extends EngineConsumer {
       }
 
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(Realtime.link.removeMany({ ...this.engine.context, linkIDs }));
+        const links = this.select(CreatorV2.linksByIDsSelector, { ids: linkIDs }).map((link) => ({ ...link.source, linkID: link.id }));
+
+        await this.dispatch.sync(Realtime.link.removeMany({ ...this.engine.context, links }));
       } else {
         this.dispatch(Creator.removeManyLinks(linkIDs));
       }
@@ -129,20 +141,30 @@ class LinkManager extends EngineConsumer {
   /**
    * patches multiple links
    */
-  async patchMany(patches: Realtime.link.LinkPatch[]): Promise<void> {
-    if (!patches.length) {
+  async patchMany(patches: Omit<Realtime.link.LinkPatch, 'nodeID' | 'portID'>[]): Promise<void> {
+    const validPatches = patches
+      .map((patch) => {
+        const link = this.engine.getLinkByID(patch.linkID);
+
+        if (!link) return null;
+
+        return { ...link.source, ...patch } as Realtime.link.LinkPatch;
+      })
+      .filter((patch): patch is Realtime.link.LinkPatch => !!patch);
+
+    if (!validPatches.length) {
       this.log.debug('attempted to patch an empty set of links');
 
       return;
     }
 
-    const linkIDs = patches.map((patch) => patch.linkID);
+    const linkIDs = validPatches.map((patch) => patch.linkID);
 
     this.log.debug(this.log.pending('patching links'), linkIDs);
-    await this.internal.patchMany(patches);
+    await this.internal.patchMany(validPatches);
 
     if (!this.isAtomicActionsPhase2) {
-      await this.engine.realtime.sendUpdate(RealtimeDuck.updateLinkDataMany(patches));
+      await this.engine.realtime.sendUpdate(RealtimeDuck.updateLinkDataMany(validPatches));
     }
 
     this.engine.saveHistory();

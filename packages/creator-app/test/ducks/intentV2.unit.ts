@@ -18,7 +18,7 @@ const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versi
 const INTENT: Realtime.Intent = {
   id: INTENT_ID,
   name: 'intent',
-  platform: VoiceflowConstants.PlatformType.GENERAL,
+  platform: VoiceflowConstants.PlatformType.VOICEFLOW,
   inputs: [],
   slots: {
     allKeys: [],
@@ -120,7 +120,18 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
 
         const { dispatched } = await applyEffect(rootState, [INTENT]);
 
-        expect(dispatched).to.eql([{ sync: Realtime.intent.crud.addMany({ ...ACTION_CONTEXT, values: [INTENT] }) }]);
+        expect(dispatched).to.eql([
+          {
+            sync: Realtime.intent.crud.addMany({
+              ...ACTION_CONTEXT,
+              values: [INTENT],
+              projectMeta: {
+                platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+                type: VoiceflowConstants.ProjectType.VOICE,
+              },
+            }),
+          },
+        ]);
       });
     });
 
@@ -132,7 +143,18 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
 
         const { dispatched } = await applyEffect(rootState, INTENT_ID);
 
-        expect(dispatched).to.eql([{ sync: Realtime.intent.crud.remove({ ...ACTION_CONTEXT, key: INTENT_ID }) }]);
+        expect(dispatched).to.eql([
+          {
+            sync: Realtime.intent.crud.remove({
+              ...ACTION_CONTEXT,
+              key: INTENT_ID,
+              projectMeta: {
+                platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+                type: VoiceflowConstants.ProjectType.VOICE,
+              },
+            }),
+          },
+        ]);
       });
     });
   });

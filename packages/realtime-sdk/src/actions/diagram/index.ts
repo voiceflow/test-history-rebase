@@ -9,6 +9,7 @@ import { Required } from 'utility-types';
 import { diagramType } from './utils';
 
 export * as awareness from './awareness';
+export * as viewport from './viewport';
 
 const diagramTopicType = createType(diagramType(TOPIC_KEY));
 const diagramComponentType = createType(diagramType(COMPONENT_KEY));

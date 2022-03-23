@@ -13,7 +13,7 @@ const importNode =
 
     if (Realtime.Utils.typeGuards.isMarkupBlockType(node.type)) {
       state.markupIDs.push(nodeID);
-      state.originByNodeID[nodeID] = [node.x, node.y];
+      state.coordsByNodeID[nodeID] = [node.x, node.y];
 
       return;
     }
@@ -25,7 +25,7 @@ const importNode =
       state.blockIDByStepID[nodeID] = node.parentNode;
     } else {
       state.blockIDs.push(nodeID);
-      state.originByNodeID[nodeID] = [node.x, node.y];
+      state.coordsByNodeID[nodeID] = [node.x, node.y];
       state.stepIDsByBlockID[nodeID] = node.combinedNodes;
     }
   };

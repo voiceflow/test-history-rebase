@@ -10,8 +10,6 @@ import { portFactory } from '@/ducks/creator/diagram/factories';
 import { CreatorState } from '../types';
 import { removeLink } from './link';
 
-export const createEmptyNodePorts = <T = string>(): Realtime.NodePortSchema<T> => ({ in: [], out: { builtIn: {}, dynamic: [] } });
-
 export const addPort = (
   state: Draft<CreatorState>,
   updatePorts: (ports: Realtime.NodePorts) => void,
@@ -67,24 +65,6 @@ export const addBuiltinPort = (
       port: { label: type, platform: platform ?? null },
     }
   );
-
-export const flattenInPorts = <T>(ports: Nullish<Realtime.NodePortSchema<T>>): T[] => {
-  if (!ports) return [];
-
-  return ports.in;
-};
-
-export const flattenOutPorts = <T>(ports: Nullish<Realtime.NodePortSchema<T>>): T[] => {
-  if (!ports) return [];
-
-  const {
-    out: { builtIn, dynamic: dynamicPorts },
-  } = ports;
-
-  return [...Object.values(builtIn).filter(Boolean), ...dynamicPorts];
-};
-
-export const flattenAllPorts = <T>(ports: Nullish<Realtime.NodePortSchema<T>>): T[] => [...flattenInPorts(ports), ...flattenOutPorts(ports)];
 
 export type RemovePortFromNode = (port: Draft<Realtime.NodePorts>, portID: string) => void;
 

@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { ActionCreator } from 'typescript-fsa';
 
 export enum ErrorCode {
@@ -24,6 +25,11 @@ export interface PathPoint {
 }
 
 export type PathPoints = PathPoint[];
+
+export interface ProjectMeta {
+  type: VoiceflowConstants.ProjectType;
+  platform: VoiceflowConstants.PlatformType;
+}
 
 export type ActionPayload<T extends ActionCreator<any>> = ReturnType<T>['payload'];
 
@@ -60,4 +66,8 @@ export interface BaseBlockPayload extends BaseDiagramPayload {
 
 export interface BasePortPayload extends BaseNodePayload {
   portID: string;
+}
+
+export interface ProjectMetaPayload {
+  projectMeta: ProjectMeta;
 }

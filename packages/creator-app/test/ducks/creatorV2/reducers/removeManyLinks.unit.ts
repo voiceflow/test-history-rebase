@@ -12,7 +12,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyLinks reducer', ({ 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         diagramID: 'foo',
-        linkIDs: [LINK_ID],
+        links: [{ nodeID: NODE_ID, portID: PORT_ID, linkID: LINK_ID }],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -31,7 +31,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyLinks reducer', ({ 
           linkIDsByNodeID: { [NODE_ID]: [fooLink.id, LINK_ID, barLink.id] },
           linkIDsByPortID: { [PORT_ID]: [fooLink.id, LINK_ID, barLink.id] },
         },
-        { ...ACTION_CONTEXT, linkIDs: [LINK_ID] }
+        { ...ACTION_CONTEXT, links: [{ nodeID: NODE_ID, portID: PORT_ID, linkID: LINK_ID }] }
       );
 
       expect(result.links).to.eql(normalize([fooLink, barLink]));
@@ -54,7 +54,13 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyLinks reducer', ({ 
           linkIDsByNodeID: { [NODE_ID]: [fooLink.id, LINK_ID, barLink.id] },
           linkIDsByPortID: { [PORT_ID]: [fooLink.id, LINK_ID, barLink.id] },
         },
-        { ...ACTION_CONTEXT, linkIDs: [LINK_ID, fooLink.id] }
+        {
+          ...ACTION_CONTEXT,
+          links: [
+            { nodeID: NODE_ID, portID: PORT_ID, linkID: LINK_ID },
+            { nodeID: NODE_ID, portID: PORT_ID, linkID: fooLink.id },
+          ],
+        }
       );
 
       expect(result.links).to.eql(normalize([barLink]));

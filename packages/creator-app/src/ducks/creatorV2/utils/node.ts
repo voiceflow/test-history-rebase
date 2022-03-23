@@ -5,7 +5,7 @@ import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
 import { CreatorState } from '../types';
-import { addBuiltinPort, addDynamicPort, addPort, createEmptyNodePorts, flattenAllPorts, removePort } from './port';
+import { addBuiltinPort, addDynamicPort, addPort, removePort } from './port';
 
 export const addNode = (state: Draft<CreatorState>, { nodeID, data }: { nodeID: string; data: Realtime.NodeDataDescriptor<unknown> }): void => {
   state.nodes = Normal.appendOne(state.nodes, nodeID, { ...data, nodeID });
@@ -15,7 +15,7 @@ export const addNodeWithPorts = (
   state: Draft<CreatorState>,
   { nodeID, data, ports }: { nodeID: string; data: Realtime.NodeDataDescriptor<unknown>; ports: Realtime.PortsDescriptor }
 ): void => {
-  state.portsByNodeID[nodeID] = createEmptyNodePorts();
+  state.portsByNodeID[nodeID] = Realtime.Utils.port.createEmptyNodePorts();
   state.linkIDsByNodeID[nodeID] = [];
 
   addNode(state, { nodeID, data });
@@ -74,7 +74,7 @@ export const removeManyNodes = (state: Draft<CreatorState>, nodeIDs: string[]): 
   const portsToRemove: string[] = [];
 
   const registerPorts = (nodeID: string) => {
-    const portIDs = flattenAllPorts(state.portsByNodeID[nodeID]);
+    const portIDs = Realtime.Utils.port.flattenAllPorts(state.portsByNodeID[nodeID]);
 
     portsToRemove.push(...portIDs);
   };
@@ -97,7 +97,7 @@ export const removeManyNodes = (state: Draft<CreatorState>, nodeIDs: string[]): 
       removeStepReferences(state, { blockID, stepID: nodeID });
     }
 
-    delete state.originByNodeID[nodeID];
+    delete state.coordsByNodeID[nodeID];
     delete state.stepIDsByBlockID[nodeID];
     delete state.blockIDByStepID[nodeID];
     delete state.portsByNodeID[nodeID];

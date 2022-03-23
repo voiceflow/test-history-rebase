@@ -1,8 +1,8 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
 import { BlockType } from '@/constants';
-import { flattenOutPorts } from '@/ducks/creatorV2/utils';
 import { Reducer } from '@/store/types';
 
 import { AddManyNodes, AddNestedNode, AddNode, AddWrappedNode } from '../actions';
@@ -44,7 +44,7 @@ export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state
       const terminalBlock = Normal.getOne(state.nodes, parentNode.combinedNodes[parentNode.combinedNodes.length - 1]);
 
       if (terminalBlock) {
-        const outLinkIDs = flattenOutPorts(terminalBlock.ports).flatMap(getLinkIDsByPortID(state));
+        const outLinkIDs = Realtime.Utils.port.flattenOutPorts(terminalBlock.ports).flatMap(getLinkIDsByPortID(state));
 
         additionalActions.push(removeAllLinksFromState(outLinkIDs));
       }

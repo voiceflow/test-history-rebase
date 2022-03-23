@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
 
 import suite from '../../_suite';
 import { MOCK_STATE, NODE_ID, PORT, PORT_ID, V2_FEATURE_STATE } from '../_fixtures';
@@ -63,7 +62,9 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - port selectors', ({ expect
       });
 
       it('select empty ports if unrecognized node ID', () => {
-        expect(select((state) => CreatorV2.portsByNodeIDSelector(state, { id: 'foo' }), V2_FEATURE_STATE)).to.eql(createEmptyNodePorts());
+        expect(select((state) => CreatorV2.portsByNodeIDSelector(state, { id: 'foo' }), V2_FEATURE_STATE)).to.eql(
+          Realtime.Utils.port.createEmptyNodePorts()
+        );
       });
     });
   });

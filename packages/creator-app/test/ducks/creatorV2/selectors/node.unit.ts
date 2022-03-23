@@ -2,12 +2,11 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
 
 import suite from '../../_suite';
 import { LINK, MOCK_STATE, NODE_DATA, PORT_ID, V2_FEATURE_STATE } from '../_fixtures';
 
-const NODE_ORIGIN: Realtime.Point = [100, -100];
+const NODE_COORDS: Realtime.Point = [100, -100];
 const NODE_PORTS: Realtime.NodePorts = { in: [], out: { dynamic: [PORT_ID], builtIn: {} } };
 const START_NODE = { ...NODE_DATA, nodeID: 'startID', type: Realtime.BlockType.START, name: 'def' };
 const MARKUP_NODE = { ...NODE_DATA, nodeID: 'markupID' };
@@ -17,10 +16,10 @@ const STEP_NODE = { ...NODE_DATA, nodeID: 'stepID', type: Realtime.BlockType.COD
 const INITIAL_STATE: CreatorV2.CreatorState = {
   ...MOCK_STATE,
   nodes: normalize([START_NODE, MARKUP_NODE, BLOCK_NODE, STEP_NODE], (node) => node.nodeID),
-  originByNodeID: { [BLOCK_NODE.nodeID]: NODE_ORIGIN },
+  coordsByNodeID: { [BLOCK_NODE.nodeID]: NODE_COORDS },
   blockIDByStepID: { [STEP_NODE.nodeID]: BLOCK_NODE.nodeID },
   stepIDsByBlockID: { [BLOCK_NODE.nodeID]: [STEP_NODE.nodeID] },
-  portsByNodeID: { [BLOCK_NODE.nodeID]: NODE_PORTS, [STEP_NODE.nodeID]: createEmptyNodePorts() },
+  portsByNodeID: { [BLOCK_NODE.nodeID]: NODE_PORTS, [STEP_NODE.nodeID]: Realtime.Utils.port.createEmptyNodePorts() },
   markupIDs: [MARKUP_NODE.nodeID],
   blockIDs: [BLOCK_NODE.nodeID, START_NODE.nodeID],
 };
@@ -144,7 +143,7 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
 
     describe('nodeOriginByIDSelector()', () => {
       it('select the block ID of a step by ID', () => {
-        expect(select((state) => CreatorV2.nodeOriginByIDSelector(state, { id: BLOCK_NODE.nodeID }), V2_FEATURE_STATE)).to.eq(NODE_ORIGIN);
+        expect(select((state) => CreatorV2.nodeCoordsByIDSelector(state, { id: BLOCK_NODE.nodeID }), V2_FEATURE_STATE)).to.eq(NODE_COORDS);
       });
     });
 
@@ -189,8 +188,8 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
           parentNode: null,
           combinedNodes: [STEP_NODE.nodeID],
           ports: NODE_PORTS,
-          x: NODE_ORIGIN[0],
-          y: NODE_ORIGIN[1],
+          x: NODE_COORDS[0],
+          y: NODE_COORDS[1],
         });
       });
 
@@ -202,7 +201,7 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
           type: STEP_NODE.type,
           parentNode: BLOCK_NODE.nodeID,
           combinedNodes: [],
-          ports: createEmptyNodePorts(),
+          ports: Realtime.Utils.port.createEmptyNodePorts(),
           x: 0,
           y: 0,
         });
@@ -220,15 +219,15 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
             parentNode: null,
             combinedNodes: [STEP_NODE.nodeID],
             ports: NODE_PORTS,
-            x: NODE_ORIGIN[0],
-            y: NODE_ORIGIN[1],
+            x: NODE_COORDS[0],
+            y: NODE_COORDS[1],
           },
           {
             id: STEP_NODE.nodeID,
             type: STEP_NODE.type,
             parentNode: BLOCK_NODE.nodeID,
             combinedNodes: [],
-            ports: createEmptyNodePorts(),
+            ports: Realtime.Utils.port.createEmptyNodePorts(),
             x: 0,
             y: 0,
           },

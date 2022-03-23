@@ -45,7 +45,7 @@ export type UpdateNodeData = Action<
 
 export type UpdateNodeLocation = Action<DiagramAction.UPDATE_NODE_LOCATION, { nodeID: string; x: number; y: number }>;
 
-export type UpdateLinkDataMany = Action<DiagramAction.UPDATE_LINK_DATA_MANY, { linkID: string; data: Partial<Realtime.LinkData> }[]>;
+export type UpdateLinkDataMany = Action<DiagramAction.UPDATE_LINK_DATA_MANY, Realtime.link.LinkPatch[]>;
 
 export type UnmergeNode = Action<DiagramAction.UNMERGE_NODE, { nodeID: string; position: Point; parentNode: ParentNodeDescriptor }>;
 
@@ -138,7 +138,7 @@ export const updateNodeLocation = (nodeID: string, [x, y]: Point): UpdateNodeLoc
 /**
  * @deprecated
  */
-export const updateLinkDataMany = (payload: { linkID: string; data: Partial<Realtime.LinkData> }[]): UpdateLinkDataMany =>
+export const updateLinkDataMany = (payload: Realtime.link.LinkPatch[]): UpdateLinkDataMany =>
   createAction(DiagramAction.UPDATE_LINK_DATA_MANY, payload);
 
 /**

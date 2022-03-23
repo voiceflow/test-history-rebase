@@ -4,7 +4,6 @@ import { normalize } from 'normal-store';
 
 import { FeatureFlag } from '@/config/features';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
 import * as Feature from '@/ducks/feature';
 
 export const V2_FEATURE_STATE = {
@@ -37,7 +36,7 @@ export const NODE: Realtime.Node = {
   x: 100,
   y: 200,
   combinedNodes: [],
-  ports: createEmptyNodePorts(),
+  ports: Realtime.Utils.port.createEmptyNodePorts(),
 };
 
 export const NODE_DATA: Realtime.NodeData<unknown> = {

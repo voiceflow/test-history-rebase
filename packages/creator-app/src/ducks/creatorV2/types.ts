@@ -24,7 +24,7 @@ export interface CreatorState {
 
   blockIDs: string[];
   markupIDs: string[];
-  originByNodeID: NodeLookup<Point>;
+  coordsByNodeID: NodeLookup<Point>;
 
   portsByNodeID: NodeLookup<Realtime.NodePorts>;
   linkIDsByNodeID: NodeLookup<string[]>;

@@ -17,7 +17,7 @@ export const useObservableEffect = <T>(source$: Observable<T>, handler: (next: T
     return () => subscription.unsubscribe();
   }, dependencies);
 
-type MoveCursorPayload = Pick<Realtime.diagram.awareness.MoveCursor, 'diagramID' | 'creatorID' | 'coords'>;
+type MoveCursorPayload = Pick<Realtime.diagram.awareness.MoveCursorPayload, 'diagramID' | 'creatorID' | 'coords'>;
 type CursorPayload = Omit<MoveCursorPayload, 'coords'>;
 
 const getCursorKey = ({ diagramID, creatorID }: CursorPayload): string => [diagramID, creatorID].map(String).join('.');

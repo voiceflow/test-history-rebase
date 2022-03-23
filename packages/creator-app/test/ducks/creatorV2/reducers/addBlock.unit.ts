@@ -1,10 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import { BlockVariant } from '@/constants/canvas';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { createEmptyNodePorts } from '@/ducks/creatorV2/utils';
 
 import suite from '../../_suite';
 import { ACTION_CONTEXT, MOCK_STATE, NODE_ID } from '../_fixtures';
@@ -13,7 +13,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
   describeReducerV2(Realtime.node.addBlock, ({ applyAction }) => {
     const blockID = 'blockNode';
     const stepID = 'stepNode';
-    const blockOrigin: Realtime.Point = [100, 200];
+    const blockName = 'New Block';
+    const blockCoords: Realtime.Point = [100, 200];
     const stepData = { type: Realtime.BlockType.BUTTONS, name: 'node name' };
 
     it('ignore adding a block for a different diagram', () => {
@@ -22,10 +23,15 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         diagramID: 'foo',
         blockID,
         stepID,
-        blockOrigin,
-        blockPorts: createEmptyNodePorts(),
-        stepPorts: createEmptyNodePorts(),
+        blockCoords,
+        blockName,
+        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
+        stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepData,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
+        },
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -36,10 +42,15 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         ...ACTION_CONTEXT,
         blockID: NODE_ID,
         stepID,
-        blockOrigin,
-        blockPorts: createEmptyNodePorts(),
-        stepPorts: createEmptyNodePorts(),
+        blockCoords,
+        blockName,
+        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
+        stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepData,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
+        },
       });
 
       expect(result).to.eql(MOCK_STATE);
@@ -50,10 +61,15 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         ...ACTION_CONTEXT,
         blockID,
         stepID: NODE_ID,
-        blockOrigin,
-        blockPorts: createEmptyNodePorts(),
-        stepPorts: createEmptyNodePorts(),
+        blockCoords,
+        blockName,
+        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
+        stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepData,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
+        },
       });
 
       expect(result).to.eql(MOCK_STATE);
@@ -64,28 +80,33 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         ...ACTION_CONTEXT,
         blockID,
         stepID,
-        blockOrigin,
-        blockPorts: createEmptyNodePorts(),
-        stepPorts: createEmptyNodePorts(),
+        blockCoords,
+        blockName,
+        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
+        stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepData,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
+        },
       });
 
       expect(result.nodes).to.containSubset(
         normalize(
           [
-            { type: Realtime.BlockType.COMBINED, blockColor: BlockVariant.STANDARD, nodeID: blockID, name: 'Block' },
+            { type: Realtime.BlockType.COMBINED, blockColor: BlockVariant.STANDARD, nodeID: blockID, name: blockName },
             { ...stepData, nodeID: stepID },
           ],
           (node) => node.nodeID
         )
       );
       expect(result.blockIDs).to.eql([blockID]);
-      expect(result.originByNodeID).to.eql({ [blockID]: blockOrigin });
+      expect(result.coordsByNodeID).to.eql({ [blockID]: blockCoords });
       expect(result.stepIDsByBlockID).to.eql({ [blockID]: [stepID] });
       expect(result.blockIDByStepID).to.eql({ [stepID]: blockID });
       expect(result.portsByNodeID).to.eql({
-        [blockID]: createEmptyNodePorts(),
-        [stepID]: createEmptyNodePorts(),
+        [blockID]: Realtime.Utils.port.createEmptyNodePorts(),
+        [stepID]: Realtime.Utils.port.createEmptyNodePorts(),
       });
       expect(result.linkIDsByNodeID).to.eql({ [blockID]: [], [stepID]: [] });
     });
@@ -99,7 +120,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         ...ACTION_CONTEXT,
         blockID,
         stepID,
-        blockOrigin,
+        blockCoords,
+        blockName: 'New Block',
         stepData,
         blockPorts: {
           in: [{ id: inPortID }],
@@ -113,6 +135,10 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
               [BaseModels.PortType.NEXT]: { id: builtInPortID },
             },
           },
+        },
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+          type: VoiceflowConstants.ProjectType.CHAT,
         },
       });
 

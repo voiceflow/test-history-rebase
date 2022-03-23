@@ -10,7 +10,6 @@ import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { flattenAllPorts, flattenOutPorts } from '@/ducks/creatorV2/utils';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -51,18 +50,22 @@ class NodeManager extends EngineConsumer {
   internal = {
     addBlock: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
+        const rootNodeIDs = this.engine.getRootNodeIDs();
+
         await this.dispatch.sync(
           Realtime.node.addBlock({
             ...this.engine.context,
             blockID: parentNode.id,
             blockPorts: parentNode.ports,
-            blockOrigin: [node.x, node.y],
+            blockCoords: [node.x, node.y],
+            blockName: `New Block ${rootNodeIDs.length}`,
             stepID: node.id,
             stepData: {
               ...data,
               type: node.type,
             },
             stepPorts: node.ports,
+            projectMeta: this.engine.getActiveProjectMeta(),
           })
         );
       } else {
@@ -82,7 +85,8 @@ class NodeManager extends EngineConsumer {
               ...markupData,
               type: node.type,
             },
-            origin: [node.x, node.y],
+            coords: [node.x, node.y],
+            projectMeta: this.engine.getActiveProjectMeta(),
           })
         );
       } else {
@@ -103,7 +107,13 @@ class NodeManager extends EngineConsumer {
 
     importSnapshot: async (entities: Realtime.EntityMap): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(Realtime.creator.importSnapshot({ ...this.engine.context, ...entities }));
+        await this.dispatch.sync(
+          Realtime.creator.importSnapshot({
+            ...this.engine.context,
+            ...entities,
+            projectMeta: this.engine.getActiveProjectMeta(),
+          })
+        );
       } else {
         this.dispatch(Creator.addManyNodes(entities));
       }
@@ -121,6 +131,7 @@ class NodeManager extends EngineConsumer {
               type: node.type,
             },
             ports: node.ports,
+            projectMeta: this.engine.getActiveProjectMeta(),
           })
         );
       } else {
@@ -152,6 +163,7 @@ class NodeManager extends EngineConsumer {
           },
           ports: node.ports,
           index,
+          projectMeta: this.engine.getActiveProjectMeta(),
         })
       );
 
@@ -173,24 +185,30 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedThreads(blockID);
     },
 
-    isolateStep: async (nodeID: string, origin: Point, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
+    isolateStep: async (nodeID: string, coords: Point, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
       const node = this.engine.getNodeByID(nodeID);
       if (!node) return;
 
       this.saveLocation(node.parentNode!);
 
       if (this.isAtomicActionsPhase2) {
+        const projectMeta = this.engine.getActiveProjectMeta();
+        const rootNodeIDs = this.engine.getRootNodeIDs();
+
         await this.dispatch.sync(
           Realtime.node.isolateStep({
             ...this.engine.context,
+            sourceBlockID: node.parentNode!,
             blockID: parentNode.id,
             blockPorts: parentNode.ports,
-            blockOrigin: origin,
+            blockCoords: coords,
             stepID: nodeID,
+            blockName: `New Block ${rootNodeIDs.length}`,
+            projectMeta,
           })
         );
       } else {
-        this.dispatch(Creator.unmergeNode(nodeID, origin, parentNode));
+        this.dispatch(Creator.unmergeNode(nodeID, coords, parentNode));
       }
 
       this.redrawNestedLinks(node.parentNode!);
@@ -218,7 +236,13 @@ class NodeManager extends EngineConsumer {
         [...node.combinedNodes, node.id].forEach((childNodeID) => removedIDs.add(childNodeID));
       });
 
-      await this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodeIDs: Array.from(removedIDs) }));
+      const nodesToRemove = Array.from(removedIDs).map((nodeID) => {
+        const blockID = this.select(CreatorV2.blockIDByStepIDSelector, { id: nodeID });
+
+        return blockID ? { blockID, stepID: nodeID } : { blockID: nodeID };
+      });
+
+      await this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodes: nodesToRemove }));
     },
 
     translate: (nodeID: string, movement: Pair<number>): void => {
@@ -617,7 +641,7 @@ class NodeManager extends EngineConsumer {
   /**
    * isolates a known step into its own block on the canvas
    */
-  async isolateStep(nodeID: string, origin: Point): Promise<void> {
+  async isolateStep(nodeID: string, coords: Point): Promise<void> {
     const parentNodeID = Utils.id.objectID();
     const parentPortID = Utils.id.objectID();
     const parentNode = {
@@ -628,10 +652,10 @@ class NodeManager extends EngineConsumer {
     this.log.debug(this.log.pending('unmerging node'), this.log.slug(nodeID));
 
     if (!this.isAtomicActionsPhase2) {
-      await this.engine.realtime.sendUpdate(RealtimeDuck.unmergeNode(nodeID, origin, parentNode));
+      await this.engine.realtime.sendUpdate(RealtimeDuck.unmergeNode(nodeID, coords, parentNode));
     }
 
-    await this.internal.isolateStep(nodeID, origin, parentNode);
+    await this.internal.isolateStep(nodeID, coords, parentNode);
     this.engine.saveHistory();
 
     this.log.info(this.log.success('unmerged node'), this.log.slug(nodeID));
@@ -783,13 +807,13 @@ class NodeManager extends EngineConsumer {
   redrawLinks(nodeID: string): void {
     const ports = this.select(CreatorV2.portsByNodeIDSelector, { id: nodeID });
 
-    flattenAllPorts(ports).forEach((portID) => this.engine.port.redrawLinks(portID));
+    Realtime.Utils.port.flattenAllPorts(ports).forEach((portID) => this.engine.port.redrawLinks(portID));
     this.redrawNestedLinks(nodeID);
   }
 
   redrawPorts(nodeID: string): void {
     const ports = this.select(CreatorV2.portsByNodeIDSelector, { id: nodeID });
-    const outPortIDs = flattenOutPorts(ports);
+    const outPortIDs = Realtime.Utils.port.flattenOutPorts(ports);
 
     outPortIDs.forEach((portID) => this.engine.port.redraw(portID));
   }

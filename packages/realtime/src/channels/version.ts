@@ -79,7 +79,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
 
     return [
       Realtime.slot.crud.replace({ values: slots, workspaceID, projectID, versionID }),
-      Realtime.intent.crud.replace({ values: intents, workspaceID, projectID, versionID }),
+      Realtime.intent.crud.replace({ values: intents, workspaceID, projectID, versionID, projectMeta: { platform: platformV2, type: projectType } }),
       Realtime.product.crud.replace({ values: products, workspaceID, projectID, versionID }),
       Realtime.diagram.crud.replace({ values: diagrams, workspaceID, projectID, versionID }),
       Realtime.variableState.crud.replace({ values: variableStates, workspaceID, projectID, versionID }),

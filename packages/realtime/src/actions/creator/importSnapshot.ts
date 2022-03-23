@@ -1,0 +1,61 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
+import { normalize } from 'normal-store';
+import { Action } from 'typescript-fsa';
+
+import { AbstractDiagramResourceControl } from '@/actions/diagram/utils';
+
+const findSignificantNodes = (nodesWithData: Realtime.NodeWithData[]) => {
+  const rootNodeIDs: string[] = [];
+  const markupNodeIDs: string[] = [];
+
+  nodesWithData.forEach(({ node }) => {
+    if (Realtime.Utils.typeGuards.isMarkupBlockType(node.type)) {
+      markupNodeIDs.push(node.id);
+      return;
+    }
+
+    if (!node.parentNode) {
+      rootNodeIDs.push(node.id);
+    }
+  });
+
+  return { rootNodeIDs, markupNodeIDs };
+};
+
+class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.ImportSnapshotPayload> {
+  protected actionCreator = Realtime.creator.importSnapshot;
+
+  protected process = async (ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>) => {
+    const { creatorID } = ctx.data;
+    const { diagramID, nodesWithData, ports, links, projectMeta } = payload;
+
+    const { rootNodeIDs, markupNodeIDs } = findSignificantNodes(nodesWithData);
+
+    const { nodes: dbNodes } = Realtime.Adapters.creatorAdapter.toDB(
+      {
+        diagramID,
+        data: Object.fromEntries(nodesWithData.map(({ data }) => [data.nodeID, data])),
+        rootNodeIDs,
+        markupNodeIDs,
+        links,
+
+        // the rest of these can safely be left empty
+        viewport: { x: 0, y: 0, zoom: 0 },
+        nodes: [],
+        ports: [],
+      },
+      {
+        platform: projectMeta.platform,
+        projectType: projectMeta.type,
+        nodes: normalize(nodesWithData.map(({ node }) => node)),
+        ports: normalize(ports),
+        context: {},
+      }
+    );
+
+    await this.services.diagram.addManyNodes(creatorID, diagramID, Object.values(dbNodes));
+  };
+}
+
+export default ImportSnapshot;

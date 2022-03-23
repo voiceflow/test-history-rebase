@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 import * as CreatorV1Selectors from '@/ducks/creator/diagram/selectors';
 import * as Feature from '@/ducks/feature';
 import { createCurriedSelector, createParameterSelector } from '@/ducks/utils';
-import { idParamSelector } from '@/ducks/utils/crudV2';
+import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import { Selector } from '@/store/types';
 
 import { creatorStateSelector } from './base';
@@ -24,6 +24,8 @@ export const linkByIDSelector = Feature.createAtomicActionsPhase2Selector(
   [CreatorV1Selectors.linkByIDSelector, _linkByIDSelector, idParamSelector],
   (getLinkV1, linkV2, linkID) => [linkID ? getLinkV1(linkID) : null, linkV2]
 );
+
+export const linksByIDsSelector = createSelector([creatorStateSelector, idsParamSelector], ({ links }, linkIDs) => Normal.getMany(links, linkIDs));
 
 const _linkIDsByNodeIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ linkIDsByNodeID }, nodeID) =>
   nodeID ? linkIDsByNodeID[nodeID] ?? [] : []

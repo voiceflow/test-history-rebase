@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.664.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.663.0...@voiceflow/creator-app@1.664.0) (2022-03-23)
+
+
+### Bug Fixes
+
+* remove informational text under variable state selector (VF-3173) ([#5229](https://github.com/voiceflow/creator-app/issues/5229)) ([8aaa689](https://github.com/voiceflow/creator-app/commit/8aaa68934c282e5530d3b10c4ca6b0836c9a5063))
+* variables tag select Select All label (VF-3170) ([#5228](https://github.com/voiceflow/creator-app/issues/5228)) ([01b8cd2](https://github.com/voiceflow/creator-app/commit/01b8cd2c0699ee8ce423cc1e17f1f2248bdbfd55))
+
+
+### Features
+
+* add slots without utterances (VF-000) ([#5231](https://github.com/voiceflow/creator-app/issues/5231)) ([d4ad4f0](https://github.com/voiceflow/creator-app/commit/d4ad4f03698bb4eeed41b15bdef152ac75880b39))
+* hide variable state section if there is no variable state for the project (VF-3188) ([#5230](https://github.com/voiceflow/creator-app/issues/5230)) ([fd583f2](https://github.com/voiceflow/creator-app/commit/fd583f2755fa6fb636f52aae3d3e3b24d8fb33d3))
+* quickview feedback and updates (VF-000) ([#5223](https://github.com/voiceflow/creator-app/issues/5223)) ([bd5b8c5](https://github.com/voiceflow/creator-app/commit/bd5b8c5c42c72292bb39e049245a49c5a2235ae6))
+
+
+
+
+
 # [1.663.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.662.3...@voiceflow/creator-app@1.663.0) (2022-03-22)
 
 

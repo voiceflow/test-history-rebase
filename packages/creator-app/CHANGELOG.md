@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.665.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.664.2...@voiceflow/creator-app@1.665.0) (2022-03-23)
+
+
+### Bug Fixes
+
+* refactor entiyy create modal (VF-000) ([#5238](https://github.com/voiceflow/creator-app/issues/5238)) ([949d9f6](https://github.com/voiceflow/creator-app/commit/949d9f69397feaf574f708f66dd1040872749612))
+
+
+### Features
+
+* add socket.io-client logging to logrocket for debugging (vf-000) [bugfix] ([#5210](https://github.com/voiceflow/creator-app/issues/5210)) ([697c21e](https://github.com/voiceflow/creator-app/commit/697c21eb7038089fbe68536c4048bf81bd857058))
+* change the community link url to the current version (VF-3070) ([#5219](https://github.com/voiceflow/creator-app/issues/5219)) ([a4bf658](https://github.com/voiceflow/creator-app/commit/a4bf658e304d3b72fdaad3739e6e56da4da766d5))
+* connect realtime actions to new creator-api endpoints (VF-2079) ([#5148](https://github.com/voiceflow/creator-app/issues/5148)) ([d5907cf](https://github.com/voiceflow/creator-app/commit/d5907cf6012899824102ff7f3615c97c55d57ff9)), closes [voiceflow/creator-api#935](https://github.com/voiceflow/creator-api/issues/935)
+
+
+
+
+
 ## [1.664.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.664.1...@voiceflow/creator-app@1.664.2) (2022-03-23)
 
 

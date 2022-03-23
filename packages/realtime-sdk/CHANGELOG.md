@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.69.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.68.3...@voiceflow/realtime-sdk@1.69.0) (2022-03-23)
+
+
+### Features
+
+* connect realtime actions to new creator-api endpoints (VF-2079) ([#5148](https://github.com/voiceflow/creator-app/issues/5148)) ([d5907cf](https://github.com/voiceflow/creator-app/commit/d5907cf6012899824102ff7f3615c97c55d57ff9)), closes [voiceflow/creator-api#935](https://github.com/voiceflow/creator-api/issues/935)
+
+
+
+
+
 ## [1.68.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.68.2...@voiceflow/realtime-sdk@1.68.3) (2022-03-23)
 
 

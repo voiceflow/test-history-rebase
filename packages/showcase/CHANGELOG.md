@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.2.6...@voiceflow/showcase@1.3.0) (2022-03-23)
+
+
+### Features
+
+* add socket.io-client logging to logrocket for debugging (vf-000) [bugfix] ([#5210](https://github.com/voiceflow/creator-app/issues/5210)) ([697c21e](https://github.com/voiceflow/creator-app/commit/697c21eb7038089fbe68536c4048bf81bd857058))
+
+
+
+
+
 ## [1.2.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.2.5...@voiceflow/showcase@1.2.6) (2022-03-23)
 
 **Note:** Version bump only for package @voiceflow/showcase

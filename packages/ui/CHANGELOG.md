@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.62.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.61.3...@voiceflow/ui@1.62.0) (2022-03-23)
+
+
+### Bug Fixes
+
+* refactor entiyy create modal (VF-000) ([#5238](https://github.com/voiceflow/creator-app/issues/5238)) ([949d9f6](https://github.com/voiceflow/creator-app/commit/949d9f69397feaf574f708f66dd1040872749612))
+
+
+### Features
+
+* add socket.io-client logging to logrocket for debugging (vf-000) [bugfix] ([#5210](https://github.com/voiceflow/creator-app/issues/5210)) ([697c21e](https://github.com/voiceflow/creator-app/commit/697c21eb7038089fbe68536c4048bf81bd857058))
+
+
+
+
+
 ## [1.61.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.61.2...@voiceflow/ui@1.61.3) (2022-03-23)
 
 

@@ -11,7 +11,6 @@ export * from './withExternalResources';
 export * from './withFeature';
 export * from './withHook';
 export * from './withInnerRef';
-export * from './withLoadingGate';
 export * from './withNamespace';
 export * from './withStripe';
 export * from './withUpload';

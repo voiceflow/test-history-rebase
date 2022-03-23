@@ -21,7 +21,6 @@ export interface ActivateVersionPayload {
   workspaceID: string;
   projectID: string;
   versionID: string;
-  diagramID: string | null;
   projectType: VoiceflowConstants.ProjectType;
 }
 

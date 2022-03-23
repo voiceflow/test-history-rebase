@@ -5,7 +5,6 @@ import storageLocal from 'redux-persist/lib/storage';
 import * as Session from '@/ducks/session';
 import { Reducer, RootReducer } from '@/store/types';
 
-import { createAction } from '../utils';
 import {
   AnyUIAction,
   SetActiveCreatorMenu,
@@ -127,8 +126,6 @@ const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID
       return setLoadingProjectsReducer(state, action);
     case UIAction.TOGGLE_COMMENT_VISIBILITY:
       return toggleCommentingVisibility(state);
-    case Session.SessionAction.SET_ACTIVE_WORKSPACE_ID:
-      return setLoadingProjectsReducer(state, createAction(UIAction.SET_LOADING_PROJECTS, false));
     default:
       return state;
   }

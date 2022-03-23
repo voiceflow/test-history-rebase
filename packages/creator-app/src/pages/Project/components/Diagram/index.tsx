@@ -4,7 +4,9 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import * as Transcripts from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useEventualEngine, useRouteDiagramID, useSelector, useTeardown } from '@/hooks';
+import { RealtimeLoadingGate } from '@/gates';
+import { withBatchLoadingGate } from '@/hocs';
+import { useDispatch, useEventualEngine, useSelector, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
 import { getManager } from '@/pages/Canvas/managers';
@@ -16,6 +18,7 @@ import ReadOnlyBadge from '@/pages/Prototype/components/ReadOnlyBadge';
 import DiagramSync from '../DiagramSync';
 import MarkupImageLoading from '../MarkupImageLoading';
 import { HotKeys } from './components';
+import DiagramGate from './gates/DiagramGate';
 
 export type DiagramProps = RouteComponentProps;
 
@@ -26,7 +29,6 @@ const Diagram: React.FC<DiagramProps> = () => {
 
   const engine = useEventualEngine();
   const isDesignMode = !useAnyModeOpen();
-  const routeDiagramID = useRouteDiagramID();
   const isPrototypingMode = usePrototypingMode();
 
   const isCanvasEditable = !isPrototypingMode;
@@ -51,7 +53,7 @@ const Diagram: React.FC<DiagramProps> = () => {
 
   return (
     <>
-      {isCanvasEditable && <DiagramSync diagramID={routeDiagramID} />}
+      {isCanvasEditable && <DiagramSync />}
 
       <ManagerProvider value={getManager as any}>
         <ReadOnlyBadge />
@@ -75,4 +77,4 @@ const Diagram: React.FC<DiagramProps> = () => {
   );
 };
 
-export default Diagram;
+export default withBatchLoadingGate(DiagramGate, RealtimeLoadingGate)(Diagram);

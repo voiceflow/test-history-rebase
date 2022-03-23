@@ -25,7 +25,13 @@ const DiagramLoadingGate: React.FC = ({ children }) => {
   }, [activeDiagramID, creatorDiagramID]);
 
   return (
-    <LoadingGate key={creatorDiagramID} label="Diagrams" isLoaded={!!creatorDiagramID} withoutSpinner={prototypeMode === PrototypeMode.DISPLAY}>
+    <LoadingGate
+      key={creatorDiagramID}
+      label="Diagram"
+      internalName={DiagramLoadingGate.name}
+      isLoaded={!!creatorDiagramID}
+      withoutSpinner={prototypeMode === PrototypeMode.DISPLAY}
+    >
       {children}
     </LoadingGate>
   );

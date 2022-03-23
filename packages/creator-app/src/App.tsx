@@ -20,7 +20,6 @@ import { VariableStateEditorModal, VariableStatesManagerModal } from '@/componen
 import { SeoPage } from '@/constants/seo';
 import { GlobalSocketSubscriptionsLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
-import { useSessionTracking } from '@/hooks';
 import ConnectActivePlatformModal from '@/modals/ConnectActivePlatformModal';
 import ConnectAmazonModal from '@/modals/ConnectAmazonModal';
 import ConnectGoogleModal from '@/modals/ConnectGoogleModal';
@@ -50,55 +49,51 @@ import PaymentModal from '@/pages/Payment/PaymentModal';
 import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';
 import Routes from './Routes';
 
-const App = () => {
-  useSessionTracking();
+const App: React.FC = () => (
+  <>
+    <SeoHelmet page={SeoPage.ROOT} />
+    <ModalBackdrop />
+    <SuccessModal />
+    <ConfirmModal />
+    <ConfirmModalV2 />
+    <ErrorModal />
+    <StandardModal />
+    <ToastContainer />
+    <Routes />
+    <IntercomChat />
+    <CollaboratorsModal />
+    <ImportModal />
+    <ProfileNameModal />
+    <ChangeEmailModal />
+    <ChangePasswordModal />
+    <LoadingModal />
+    <TagManagerModal />
+    <CreateIntentModal />
+    <EditIntentModal />
+    <CreateVariableModal />
 
-  return (
-    <>
-      <SeoHelmet page={SeoPage.ROOT} />
-      <ModalBackdrop />
-      <SuccessModal />
-      <ConfirmModal />
-      <ConfirmModalV2 />
-      <ErrorModal />
-      <StandardModal />
-      <ToastContainer />
-      <Routes />
-      <IntercomChat />
-      <CollaboratorsModal />
-      <ImportModal />
-      <ProfileNameModal />
-      <ChangeEmailModal />
-      <ChangePasswordModal />
-      <LoadingModal />
-      <TagManagerModal />
-      <CreateIntentModal />
-      <EditIntentModal />
-      <CreateVariableModal />
+    <CreateEntityModal />
+    <EditEntityModal />
+    <NLUQuickView />
+    <VariableStatesManagerModal />
+    <VariableStateEditorModal />
 
-      <CreateEntityModal />
-      <EditEntityModal />
-      <NLUQuickView />
-      <VariableStatesManagerModal />
-      <VariableStateEditorModal />
+    <ProjectDownloadModal />
+    <TestableLinkModal />
+    <CanvasExportModal />
+    <ProjectLimitModal />
+    <RealtimeDeniedModal />
+    <ImportBulkDeniedModal />
+    <PaymentModal />
+    <RefreshModal />
+    <ConnectActivePlatformModal />
+    <ConnectAmazonModal />
+    <ConnectGoogleModal />
+    <CreateNewAgentModal />
+    <ProjectCreateModal />
 
-      <ProjectDownloadModal />
-      <TestableLinkModal />
-      <CanvasExportModal />
-      <ProjectLimitModal />
-      <RealtimeDeniedModal />
-      <ImportBulkDeniedModal />
-      <PaymentModal />
-      <RefreshModal />
-      <ConnectActivePlatformModal />
-      <ConnectAmazonModal />
-      <ConnectGoogleModal />
-      <CreateNewAgentModal />
-      <ProjectCreateModal />
-
-      <RootPageProgressBar />
-    </>
-  );
-};
+    <RootPageProgressBar />
+  </>
+);
 
 export default compose(withGlobalProviders, withBatchLoadingGate(GlobalSocketSubscriptionsLoadingGate))(App) as React.FC<GlobalProvidersProps>;

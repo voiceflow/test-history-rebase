@@ -6,7 +6,7 @@ import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
 const FeatureLoadingGate: React.FC<ConnectedFeatureLoadingGateProps> = ({ isLoaded, loadFeatures, children }) => (
-  <LoadingGate label="Features" isLoaded={isLoaded} load={loadFeatures}>
+  <LoadingGate label="Features" internalName={FeatureLoadingGate.name} isLoaded={isLoaded} load={loadFeatures}>
     {children}
   </LoadingGate>
 );

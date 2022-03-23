@@ -9,7 +9,12 @@ import { STATE_KEY } from '../constants';
 
 export const workspaceIDParamSelector = createParameterSelector((params: { workspaceID: string }) => params.workspaceID);
 
-export const { all: allWorkspacesSelector, byID: workspaceByIDSelector, allIDs: allWorkspaceIDsSelector } = createCRUDSelectors(STATE_KEY);
+export const {
+  all: allWorkspacesSelector,
+  byID: workspaceByIDSelector,
+  allIDs: allWorkspaceIDsSelector,
+  isEmpty: workspacesEmptySelector,
+} = createCRUDSelectors(STATE_KEY);
 
 export const hasTemplatesWorkspaceSelector = createSelector([allWorkspacesSelector], (workspaces) => workspaces.some(({ templates }) => templates));
 

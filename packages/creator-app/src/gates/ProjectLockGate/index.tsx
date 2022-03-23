@@ -32,7 +32,7 @@ const ProjectLockGate: React.FC = ({ children }) => {
   }
 
   return (
-    <LoadingGate label="Session" isLoaded={!isSessionBusy} load={lockProject}>
+    <LoadingGate label="Session" internalName={ProjectLockGate.name} isLoaded={!isSessionBusy} load={lockProject}>
       {children}
     </LoadingGate>
   );

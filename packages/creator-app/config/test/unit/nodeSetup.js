@@ -23,3 +23,4 @@ mockRequire('@logux/client', { Client: MockLoguxClient });
 mockRequire('@logux/client/react', {});
 mockRequire('@logux/redux', {});
 mockRequire('@logux/core', {});
+mockRequire('nanoevents', {});

@@ -5,7 +5,7 @@ import Countdown from 'react-countdown';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
-import { useDispatch } from '@/hooks';
+import { useDispatch, useModals, useTeardown } from '@/hooks';
 
 import { BodyContainer } from './components/BodyContainer';
 
@@ -22,7 +22,11 @@ export interface InactivityModalProps {
 }
 
 const InactivityModal: React.FC<InactivityModalProps> = ({ onActive }) => {
+  const inactivityModal = useModals(ModalType.INACTIVITY);
+
   const goToDashboard = useDispatch(Router.goToDashboard);
+
+  useTeardown(() => inactivityModal.close());
 
   return (
     <Modal id={ModalType.INACTIVITY} title="INACTIVITY">

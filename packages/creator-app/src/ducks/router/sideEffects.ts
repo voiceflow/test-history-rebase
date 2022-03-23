@@ -58,11 +58,18 @@ export const goToCurrentCanvas = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
   const diagramID = Session.activeDiagramIDSelector(state);
+  const version = VersionV2.active.versionSelector(state);
 
   Errors.assertVersionID(versionID);
-  Errors.assertDiagramID(diagramID);
 
-  dispatch(goToCanvas(versionID, diagramID));
+  if (diagramID) {
+    dispatch(goToCanvas(versionID, diagramID));
+    return;
+  }
+
+  if (!version) throw Errors.noActiveVersionID();
+
+  dispatch(goToCanvas(versionID, version.rootDiagramID));
 };
 
 export const goToCurrentCanvasCommenting = (): Thunk => async (dispatch, getState) => {

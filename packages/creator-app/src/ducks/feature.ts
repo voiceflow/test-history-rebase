@@ -27,14 +27,22 @@ export const INITIAL_STATE: FeatureState = {
 
 export enum FeatureAction {
   SET_FEATURES_LOADED = 'FEATURE:SET_LOADED',
+  UNSET_WORKSPACE_FEATURES_LOADED = 'FEATURE:UNSET_WORKSPACE_LOADED',
   SET_WORKSPACE_FEATURES_LOADED = 'FEATURE:SET_WORKSPACE_LOADED',
 }
 
 export type SetFeaturesLoaded = Action<FeatureAction.SET_FEATURES_LOADED, FeatureFlagMap>;
 
+export type UnsetWorkspaceFeaturesLoaded = Action<FeatureAction.UNSET_WORKSPACE_FEATURES_LOADED>;
+
 export type SetWorkspaceFeaturesLoaded = Action<FeatureAction.SET_WORKSPACE_FEATURES_LOADED, FeatureFlagMap>;
 
-type AnyFeatureAction = SetFeaturesLoaded | SetWorkspaceFeaturesLoaded | Session.SetAuthToken | Session.SetActiveWorkspaceID;
+type AnyFeatureAction =
+  | SetFeaturesLoaded
+  | UnsetWorkspaceFeaturesLoaded
+  | SetWorkspaceFeaturesLoaded
+  | Session.SetAuthToken
+  | Session.SetActiveWorkspaceID;
 
 // reducers
 
@@ -42,6 +50,11 @@ const setFeaturesLoadedReducer: Reducer<FeatureState, SetFeaturesLoaded> = (stat
   ...state,
   features,
   isLoaded: true,
+});
+
+const unsetWorkspaceFeaturesLoadedReducer: Reducer<FeatureState> = (state) => ({
+  ...state,
+  isWorkspaceLoaded: false,
 });
 
 const setWorkspaceFeaturesLoadedReducer: Reducer<FeatureState, SetWorkspaceFeaturesLoaded> = (state, { payload: features }) => ({
@@ -56,21 +69,16 @@ const accountChangeReducer: Reducer<FeatureState> = (state) => ({
   isWorkspaceLoaded: false,
 });
 
-const workspaceChangeReducer: Reducer<FeatureState> = (state) => ({
-  ...state,
-  isWorkspaceLoaded: false,
-});
-
 const featureReducer: RootReducer<FeatureState, AnyFeatureAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FeatureAction.SET_FEATURES_LOADED:
       return setFeaturesLoadedReducer(state, action);
     case FeatureAction.SET_WORKSPACE_FEATURES_LOADED:
       return setWorkspaceFeaturesLoadedReducer(state, action);
+    case FeatureAction.UNSET_WORKSPACE_FEATURES_LOADED:
+      return unsetWorkspaceFeaturesLoadedReducer(state);
     case Session.SessionAction.SET_AUTH_TOKEN:
       return accountChangeReducer(state);
-    case Session.SessionAction.SET_ACTIVE_WORKSPACE_ID:
-      return workspaceChangeReducer(state);
     default:
       return state;
   }
@@ -156,6 +164,8 @@ export const isWorkspaceLoadedSelector = createSelector([rootSelector], ({ isWor
 // action creators
 
 export const setFeaturesLoaded = (features: FeatureState['features']): SetFeaturesLoaded => createAction(FeatureAction.SET_FEATURES_LOADED, features);
+
+export const unsetWorkspaceFeaturesLoaded = (): UnsetWorkspaceFeaturesLoaded => createAction(FeatureAction.UNSET_WORKSPACE_FEATURES_LOADED);
 
 export const setWorkspaceFeaturesLoaded = (features: FeatureState['features']): SetWorkspaceFeaturesLoaded =>
   createAction(FeatureAction.SET_WORKSPACE_FEATURES_LOADED, features);

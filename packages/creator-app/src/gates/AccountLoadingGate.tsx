@@ -10,7 +10,7 @@ const AccountLoadingGate: React.FC = ({ children }) => {
   const restoreSession = useDispatch(Session.restoreSession);
 
   return (
-    <LoadingGate label="Account" isLoaded={!isLoggingIn} load={restoreSession}>
+    <LoadingGate label="Account" internalName={AccountLoadingGate.name} isLoaded={!isLoggingIn} load={restoreSession}>
       {children}
     </LoadingGate>
   );

@@ -1,9 +1,9 @@
+import { NonNullishRecord } from '@voiceflow/common';
 import { createStructuredSelector } from 'reselect';
 
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
 import { State } from '@/store/types';
-import { NonNullableRecord } from '@/types';
 
 const WORKSPACE_FALLBACK_ERROR_MESSAGE = 'Error updating Workspace';
 
@@ -32,10 +32,10 @@ export const activeWorkspaceContextSelector = createStructuredSelector<State, Ac
   workspaceID: Session.activeWorkspaceIDSelector,
 });
 
-export const getActiveWorkspaceContext = (state: State): NonNullableRecord<ActiveWorkspaceContext> => {
+export const getActiveWorkspaceContext = (state: State): NonNullishRecord<ActiveWorkspaceContext> => {
   const context = activeWorkspaceContextSelector(state);
 
   Errors.assertWorkspaceID(context.workspaceID);
 
-  return context as NonNullableRecord<ActiveWorkspaceContext>;
+  return context as NonNullishRecord<ActiveWorkspaceContext>;
 };

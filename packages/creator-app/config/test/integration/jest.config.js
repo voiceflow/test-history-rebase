@@ -10,6 +10,7 @@ module.exports = {
     '\\.css$': 'identity-obj-proxy',
     '^@logux/client$': 'identity-obj-proxy',
     '^@logux/redux$': 'identity-obj-proxy',
+    '^nanoevents$': 'identity-obj-proxy',
     '^murmurhash-wasm$': 'identity-obj-proxy',
     '^.+\\.(svg|csv|png)(?:\\?url)?$': '<rootDir>/config/test/integration/assetPlaceholder.js',
     '^@/(.*)': '<rootDir>/src/$1',

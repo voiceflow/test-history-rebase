@@ -24,7 +24,7 @@ const SocketLoadingGate: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <LoadingGate label="Connection" isLoaded={isConnected} load={connectSocket} unload={disconnectSocket}>
+    <LoadingGate label="Connection" internalName={SocketLoadingGate.name} isLoaded={isConnected} load={connectSocket} unload={disconnectSocket}>
       {children}
     </LoadingGate>
   );

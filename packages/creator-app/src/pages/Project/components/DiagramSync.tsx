@@ -1,46 +1,22 @@
 import React from 'react';
 
-import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { useDispatch, useRouteDiagramID, useSelector } from '@/hooks';
 
-interface DiagramSyncProps {
-  diagramID: string | null;
-}
+const DiagramSync: React.FC = () => {
+  const routeDiagramID = useRouteDiagramID();
+  const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
+  const isSynced = routeDiagramID === activeDiagramID;
 
-const DiagramSync: React.FC<DiagramSyncProps & ConnectedDiagramSyncProps> = ({
-  isDiagramSynced,
-  diagramID,
-  redirectToRootDiagram,
-  updateDiagramID,
-}) => {
+  const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
+
   React.useEffect(() => {
-    if (!diagramID) {
-      redirectToRootDiagram();
-    } else if (!isDiagramSynced) {
-      updateDiagramID(diagramID);
+    if (!isSynced) {
+      setActiveDiagramID(routeDiagramID);
     }
-  }, [diagramID, isDiagramSynced]);
+  }, [routeDiagramID, isSynced]);
 
   return null;
 };
 
-const mapStateToProps = {
-  activeDiagramID: Session.activeDiagramIDSelector,
-};
-
-const mapDispatchToProps = {
-  updateDiagramID: Session.setActiveDiagramID,
-  redirectToRootDiagram: Router.redirectToRootDiagram,
-};
-
-const mergeProps = (
-  ...[{ activeDiagramID }, , { diagramID }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, DiagramSyncProps>
-) => ({
-  isDiagramSynced: activeDiagramID === diagramID,
-});
-
-type ConnectedDiagramSyncProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(DiagramSync) as React.FC<DiagramSyncProps>;
+export default DiagramSync;

@@ -1,9 +1,9 @@
+import { NonNullishRecord } from '@voiceflow/common';
 import { createStructuredSelector } from 'reselect';
 
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
 import { State } from '@/store/types';
-import { NonNullableRecord } from '@/types';
 
 export interface ActiveVersionContext {
   workspaceID: string | null;
@@ -17,12 +17,12 @@ export const activeVersionContextSelector = createStructuredSelector<State, Acti
   versionID: Session.activeVersionIDSelector,
 });
 
-export const getActiveVersionContext = (state: State): NonNullableRecord<ActiveVersionContext> => {
+export const getActiveVersionContext = (state: State): NonNullishRecord<ActiveVersionContext> => {
   const context = activeVersionContextSelector(state);
 
   Errors.assertWorkspaceID(context.workspaceID);
   Errors.assertProjectID(context.projectID);
   Errors.assertVersionID(context.versionID);
 
-  return context as NonNullableRecord<ActiveVersionContext>;
+  return context as NonNullishRecord<ActiveVersionContext>;
 };

@@ -12,7 +12,12 @@ const WorkspaceFeatureLoadingGate: React.FC<ConnectedWorkspaceFeatureLoadingGate
   loadFeatures,
   children,
 }) => (
-  <LoadingGate label="Workspace Features" isLoaded={!hasActiveWorkspace || isLoaded} load={loadFeatures}>
+  <LoadingGate
+    label="Workspace Features"
+    internalName={WorkspaceFeatureLoadingGate.name}
+    isLoaded={!hasActiveWorkspace || isLoaded}
+    load={loadFeatures}
+  >
     {children}
   </LoadingGate>
 );

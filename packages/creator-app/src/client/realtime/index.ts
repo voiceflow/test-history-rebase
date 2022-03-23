@@ -1,6 +1,6 @@
 import { REALTIME_ENDPOINT } from '@/config';
 
-import { LoguxClient } from './utils';
+import LoguxClient from './loguxClient';
 
 const realtimeClient = (): LoguxClient =>
   new LoguxClient({

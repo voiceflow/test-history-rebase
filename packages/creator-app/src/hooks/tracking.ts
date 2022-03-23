@@ -1,12 +1,9 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import * as Session from '@/ducks/session';
 import * as TrackingEvents from '@/ducks/tracking/events';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
 
-import { useOneTimeEffect } from './effect';
 import { useActiveWorkspace } from './workspace';
 
 const wrapDispatch = <T extends Record<string, (...args: any[]) => any>>(
@@ -34,28 +31,6 @@ export const useTrackingEvents = () => {
   );
 
   return [events, wrapper] as const;
-};
-
-export const useSessionTracking = () => {
-  const [trackEvents] = useTrackingEvents();
-
-  const authToken = useSelector(Session.authTokenSelector);
-  const workspaceIDs = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
-
-  const startTime = React.useMemo(() => Date.now(), []);
-  const trackSessionTime = React.useCallback(() => trackEvents.trackSessionDuration(Date.now() - startTime), []);
-
-  useOneTimeEffect(() => {
-    if (!authToken || workspaceIDs.length === 0) {
-      return false;
-    }
-
-    trackEvents.trackSessionBegin(workspaceIDs);
-
-    window.addEventListener('beforeunload', trackSessionTime);
-
-    return true;
-  }, [authToken, workspaceIDs]);
 };
 
 export const useWorkspaceTracking = (): void => {

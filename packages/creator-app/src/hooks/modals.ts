@@ -1,3 +1,4 @@
+import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -29,6 +30,7 @@ export const useModals = <T extends object = {}>(modalId: ModalType): ModalActio
   const isOpened = openedId === modalId;
   const isInStack = React.useMemo(() => stackModalIds.includes(modalId), [modalId, stackModalIds]);
   const cacheState = React.useRef<{ isInStack: boolean; onClose?: () => void }>({ isInStack });
+  const memoData = React.useMemo(() => (isOpened ? modalData : ({} as T)), [isOpened, modalData]);
 
   const closeModal = React.useCallback(() => close(modalId), [close, modalId]);
   const updateModal = React.useCallback((data = {}) => update(modalId, data), [update, modalId]);
@@ -57,16 +59,16 @@ export const useModals = <T extends object = {}>(modalId: ModalType): ModalActio
     cacheState.current.isInStack = isInStack;
   }, [isInStack]);
 
-  return {
+  return useContextApi({
     fade,
-    data: isOpened ? modalData : ({} as T),
+    data: memoData,
     open: openModal,
     close: closeModal,
     toggle: toggleModal,
     update: updateModal,
     isOpened,
     isInStack,
-  };
+  });
 };
 
 export const useActiveModal = <T extends object = {}>() => {

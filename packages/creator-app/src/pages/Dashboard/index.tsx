@@ -2,7 +2,7 @@ import './DashBoard.css';
 
 import { Alert, AlertVariant, BoxFlexCenter, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import SeoHelmet from '@/components/SeoHelmet';
 import { ModalType } from '@/constants';
@@ -21,9 +21,8 @@ import { ProjectListList } from './components';
 import { DashboardGate } from './gates';
 import DashboardHeader from './Header';
 
-export type DashboardProps = RouteComponentProps;
-
-const Dashboard: React.FC<DashboardProps> = ({ location }) => {
+const Dashboard: React.FC = () => {
+  const location = useLocation();
   const workspace = useActiveWorkspace();
   const hasTemplatesWorkspace = useSelector(WorkspaceV2.hasTemplatesWorkspaceSelector);
   const fetchNotifications = useDispatch(Notifications.fetchNotifications);

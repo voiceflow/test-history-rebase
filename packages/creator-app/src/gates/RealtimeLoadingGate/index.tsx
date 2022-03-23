@@ -32,7 +32,13 @@ const RealtimeLoadingGate: React.FC<ConnectedRealtimeLoadingGateProps> = ({
 
   return (
     <RealtimeSubscriptionProvider>
-      <LoadingGate label="Collaboration" isLoaded={isLoaded} load={setupConnection} unload={terminateConnection}>
+      <LoadingGate
+        label="Collaboration"
+        internalName={RealtimeLoadingGate.name}
+        isLoaded={isLoaded}
+        load={setupConnection}
+        unload={terminateConnection}
+      >
         <DiagramLifecycle />
         {/* eslint-disable-next-line no-nested-ternary */}
         {isConnected ? (

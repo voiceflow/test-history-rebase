@@ -8,10 +8,10 @@ import { useCreatorSubscription, useSelector } from '@/hooks';
 const AccountSubscriptionGate: React.FC = ({ children }) => {
   const creatorID = useSelector(Account.userIDSelector);
 
-  const isSubscribed = useCreatorSubscription({ creatorID: String(creatorID) });
+  const isSubscribed = useCreatorSubscription({ creatorID: String(creatorID) }, [creatorID]);
 
   return (
-    <LoadingGate label="Account" zIndex={50} isLoaded={isSubscribed} backgroundColor="#f9f9f9">
+    <LoadingGate label="Account" internalName={AccountSubscriptionGate.name} zIndex={50} isLoaded={isSubscribed} backgroundColor="#f9f9f9">
       {children}
     </LoadingGate>
   );

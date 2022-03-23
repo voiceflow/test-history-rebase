@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import { logger } from '@voiceflow/ui';
 
-import { APP_ENV, CLOUD_ENV, IS_DEVELOPMENT, IS_PRODUCTION, isDebug, SENTRY_DSN, SENTRY_ENABLED } from '@/config';
+import { APP_ENV, CLOUD_ENV, IS_PRODUCTION, isDebug, SENTRY_DSN, SENTRY_ENABLED } from '@/config';
 
 export const init = () => {
   if (!SENTRY_ENABLED) return;
@@ -28,7 +28,7 @@ export const breadcrumb = (category: string, message: string, data?: Record<stri
 };
 
 export const error = (error: any | Error) => {
-  if (IS_DEVELOPMENT || isDebug()) {
+  if (isDebug()) {
     logger.error(error);
   }
 

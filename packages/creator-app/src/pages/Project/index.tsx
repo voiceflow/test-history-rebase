@@ -1,6 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import IdleTimer from 'react-idle-timer';
+import { batch } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch, useRouteMatch } from 'react-router-dom';
 
 import { RemoveIntercom } from '@/components/IntercomChat';
@@ -8,29 +10,24 @@ import ProjectPage from '@/components/ProjectPage';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import { ExportProvider, PublishProvider } from '@/contexts';
+import * as Creator from '@/ducks/creator';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Realtime from '@/ducks/realtime';
+import * as RealtimeDuck from '@/ducks/realtime';
+import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
-import {
-  PlanRestrictionGate,
-  ProjectLoadingGate,
-  ProjectLockGate,
-  RealtimeLoadingGate,
-  WorkspaceFeatureLoadingGate,
-  WorkspaceSubscriptionGate,
-} from '@/gates';
-import { compose, connect, lazy, withBatchLoadingGate } from '@/hocs';
-import { useDispatch, useEventualEngine, useLayoutDidUpdate, useModals, useSelector, useTheme } from '@/hooks';
+import { PlanRestrictionGate, ProjectLockGate, VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
+import { lazy, withBatchLoadingGate } from '@/hocs';
+import { useDispatch, useEventualEngine, useLayoutDidUpdate, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRouteIMM';
 import ManualSaveModal from '@/pages/Canvas/components/ManualSaveModal';
 import InactivityModal from '@/pages/Inactivity';
-import { useProjectExitTracking, useProjectPreviewMode } from '@/pages/Project/hooks';
+import { useProjectPreviewMode } from '@/pages/Project/hooks';
 import { PrototypeProvider } from '@/pages/Prototype/context';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
-import { ConnectedProps } from '@/types';
 
 import Header from './components/Header';
+import ProjectExitTracker from './components/ProjectExitTracker';
 import Sidebar from './components/Sidebar';
 import { TIMEOUT_COUNT } from './constants';
 import { LastCreatedComponentProvider, MarkupProvider, NLPProvider, ProjectProvider, SelectionProvider } from './contexts';
@@ -46,12 +43,22 @@ export type ProjectProps = RouteComponentProps;
 
 const DIAGRAM_ROUTES = [Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY];
 
-const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({ typeV2, platform, platformV2, projectName, isOnlyViewer }) => {
+const Project: React.FC = () => {
   const theme = useTheme();
   const getEngine = useEventualEngine();
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
+  const typeV2 = useSelector(ProjectV2.active.typeV2Selector);
+  const platformV2 = useSelector(ProjectV2.active.platformV2Selector);
+  const projectName = useSelector(ProjectV2.active.nameSelector);
+  const isOnlyViewer = useSelector(RealtimeDuck.isOnlyViewerSelector);
   const isDiagramRoute = useRouteMatch(DIAGRAM_ROUTES);
   const setPreviewing = useDispatch(UI.setPreviewingVersion);
+  const setActiveProjectID = useDispatch(Session.setActiveProjectID);
+  const setActiveVersionID = useDispatch(Session.setActiveVersionID);
+  const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
+  const resetCreator = useDispatch(Creator.resetCreator);
+  const resetCreatorV2 = useDispatch(Realtime.creator.reset);
 
   const inactivityModal = useModals(ModalType.INACTIVITY);
 
@@ -73,8 +80,6 @@ const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({ typeV2, platf
     idleTimer.current?.pause();
   }, []);
 
-  useProjectExitTracking({ platform });
-
   useLayoutDidUpdate(() => {
     const engine = getEngine();
 
@@ -85,6 +90,16 @@ const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({ typeV2, platf
       engine?.canvas?.setPosition([position[0], position[1] + (canvasOnly ? height : -height)]);
     }
   }, [canvasOnly]);
+
+  useTeardown(() =>
+    batch(() => {
+      setActiveProjectID(null);
+      setActiveVersionID(null);
+      setActiveDiagramID(null);
+      resetCreator();
+      resetCreatorV2();
+    })
+  );
 
   return (
     <MarkupProvider>
@@ -112,6 +127,7 @@ const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({ typeV2, platf
         <NonRouteIMM />
         <ExportModelModal />
 
+        <ProjectExitTracker platform={platform} />
         <RemoveIntercom />
 
         <PrototypeProvider>
@@ -155,24 +171,4 @@ const Project: React.FC<ProjectProps & ConnectedProjectProps> = ({ typeV2, platf
   );
 };
 
-const mapStateToProps = {
-  platform: ProjectV2.active.platformSelector,
-  typeV2: ProjectV2.active.typeV2Selector,
-  platformV2: ProjectV2.active.platformV2Selector,
-  projectName: ProjectV2.active.nameSelector,
-  isOnlyViewer: Realtime.isOnlyViewerSelector,
-};
-
-type ConnectedProjectProps = ConnectedProps<typeof mapStateToProps>;
-
-export default compose(
-  connect(mapStateToProps),
-  withBatchLoadingGate(
-    ProjectLoadingGate,
-    PlanRestrictionGate,
-    ProjectLockGate,
-    WorkspaceFeatureLoadingGate,
-    WorkspaceSubscriptionGate,
-    RealtimeLoadingGate
-  )
-)(Project) as React.FC<ProjectProps>;
+export default withBatchLoadingGate(VersionSubscriptionGate, PlanRestrictionGate, ProjectLockGate, WorkspaceFeatureLoadingGate)(Project);

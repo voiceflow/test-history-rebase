@@ -8,10 +8,10 @@ export { default as GlobalSocketSubscriptionsLoadingGate } from './GlobalSocketS
 export { default as MaintenanceGate } from './MaintenanceGate';
 export { default as PermissionGate } from './PermissionGate';
 export { default as PlanRestrictionGate } from './PlanRestrictionGate';
-export { default as ProjectLoadingGate } from './ProjectLoadingGate';
 export { default as ProjectLockGate } from './ProjectLockGate';
 export { default as RealtimeConnectionGate } from './RealtimeConnectionGate';
 export { default as RealtimeLoadingGate } from './RealtimeLoadingGate';
 export { default as SocketLoadingGate } from './SocketLoadingGate';
+export { default as VersionSubscriptionGate } from './VersionSubscriptionGate';
 export { default as WorkspaceFeatureLoadingGate } from './WorkspaceFeatureLoadingGate';
 export { default as WorkspaceSubscriptionGate } from './WorkspaceSubscriptionGate';

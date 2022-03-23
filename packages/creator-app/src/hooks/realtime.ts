@@ -1,12 +1,12 @@
 import { useClient } from '@logux/client/react';
-import { useSubscription } from '@logux/redux';
-import { NullableRecord } from '@voiceflow/common';
+import { Channel, useSubscription } from '@logux/redux';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { useCallback } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { AnyAction } from 'typescript-fsa';
 
-import { LoguxClient } from '@/client/utils';
+import LoguxClient from '@/client/realtime/loguxClient';
 import { Dispatchable, DispatchResult } from '@/store/types';
+import { NullishRecord } from '@/types';
 
 import { useStore } from './redux';
 
@@ -48,36 +48,44 @@ export const useSyncDispatch = <S extends any[], D extends any[], R extends AnyA
   return useCallback((...dynamicArgs: D) => store.dispatch.sync(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
 };
 
-export const useCreatorSubscription = ({ creatorID }: NullableRecord<Realtime.Channels.CreatorChannelParams>): boolean =>
-  !useSubscription(creatorID ? [Realtime.Channels.creator.build({ creatorID })] : []);
+const createSubscriptionHook =
+  <T>(buildChannels: (params: T) => Channel[]) =>
+  (params: T, dependencies: any[], { disabled = false }: { disabled?: boolean } = {}) => {
+    const channels = useMemo(() => buildChannels(params), dependencies);
+    const cachedChannelsRef = useRef<Channel[]>([]);
+    const isLoading = useSubscription(channels);
 
-export const useWorkspaceSubscription = ({ workspaceID }: NullableRecord<Realtime.Channels.WorkspaceChannelParams>): boolean =>
-  !useSubscription(workspaceID ? [Realtime.Channels.workspace.build({ workspaceID })] : []);
+    const cachedChannels = cachedChannelsRef.current;
 
-export const useProjectSubscription = ({ projectID, workspaceID }: NullableRecord<Realtime.Channels.ProjectChannelParams>): boolean =>
-  !useSubscription(projectID && workspaceID ? [Realtime.Channels.project.build({ projectID, workspaceID })] : []);
+    cachedChannelsRef.current = channels;
 
-export const useVersionSubscription = (
-  { versionID, projectID, workspaceID }: NullableRecord<Realtime.Channels.VersionChannelParams>,
-  extras: Realtime.Channels.VersionChannelExtras
-): boolean =>
-  !useSubscription(
-    versionID && projectID && workspaceID
+    if (disabled) return false;
+    if (!channels.length) return false;
+    if (channels !== cachedChannels) return false;
+
+    return !isLoading;
+  };
+
+export const useCreatorSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.CreatorChannelParams>>(({ creatorID }) =>
+  creatorID ? [Realtime.Channels.creator.build({ creatorID })] : []
+);
+
+export const useWorkspaceSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.WorkspaceChannelParams>>(({ workspaceID }) =>
+  workspaceID ? [Realtime.Channels.workspace.build({ workspaceID })] : []
+);
+
+export const useVersionSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.VersionChannelParams>>(
+  ({ workspaceID, projectID, versionID }) =>
+    workspaceID && projectID && versionID
       ? [
-          {
-            ...extras,
-            channel: Realtime.Channels.version.build({ versionID, projectID, workspaceID }),
-          },
+          Realtime.Channels.workspace.build({ workspaceID }),
+          Realtime.Channels.project.build({ workspaceID, projectID }),
+          Realtime.Channels.version.build({ workspaceID, projectID, versionID }),
         ]
       : []
-  );
+);
 
-export const useDiagramSubscription = ({
-  diagramID,
-  versionID,
-  projectID,
-  workspaceID,
-}: NullableRecord<Realtime.Channels.DiagramChannelParams>): boolean =>
-  !useSubscription(
-    diagramID && versionID && projectID && workspaceID ? [Realtime.Channels.diagram.build({ diagramID, versionID, projectID, workspaceID })] : []
-  );
+export const useDiagramSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.DiagramChannelParams>>(
+  ({ workspaceID, projectID, versionID, diagramID }) =>
+    workspaceID && projectID && versionID && diagramID ? [Realtime.Channels.diagram.build({ workspaceID, projectID, versionID, diagramID })] : []
+);

@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
+import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
@@ -10,6 +11,7 @@ import * as Modal from '@/ducks/modal';
 import { projectByIDSelector } from '@/ducks/projectV2/selectors';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
+import * as UI from '@/ducks/ui';
 import { waitAsync } from '@/ducks/utils';
 import { allWorkspaceIDsSelector } from '@/ducks/workspaceV2/selectors';
 import { SyncThunk, Thunk } from '@/store/types';
@@ -179,3 +181,12 @@ export const updateActiveWorkspaceImage =
       throw err;
     }
   };
+
+export const setActive =
+  (workspaceID: string): SyncThunk =>
+  (dispatch) =>
+    batch(() => {
+      dispatch(Session.setActiveWorkspaceID(workspaceID));
+      dispatch(Feature.unsetWorkspaceFeaturesLoaded());
+      dispatch(UI.setLoadingProjects(false));
+    });

@@ -1,4 +1,4 @@
-import type { Function } from '@voiceflow/common';
+import type { Function, Nullish } from '@voiceflow/common';
 import { MappedStateProps, SelectorLookup } from '@voiceflow/ui';
 import React from 'react';
 import { Overwrite } from 'utility-types';
@@ -32,7 +32,9 @@ export type Quad<T> = [T, T, T, T];
 
 export type HOC<I extends object, O extends object> = (component: React.ComponentType<I>) => React.FC<O>;
 
-export type NonNullableRecord<T extends object> = { [K in keyof T]: NonNullable<T[K]> };
+export type NullishRecord<T> = {
+  [K in keyof T]: Nullish<T[K]>;
+};
 
 export interface ControlProps<T> {
   value: T;

@@ -1,6 +1,6 @@
 import { toast } from '@voiceflow/ui';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import LoadingGate from '@/components/LoadingGate';
 import * as Account from '@/ducks/account';
@@ -12,13 +12,8 @@ import { connect } from '@/hocs';
 import { ConnectedProps, MergeArguments } from '@/types';
 import * as Query from '@/utils/query';
 
-const CheckInvitationGate: React.FC<RouteComponentProps & CheckInvitationGateProps> = ({
-  acceptInvite,
-  trackInvitationAccepted,
-  redirectToDashboard,
-  location,
-  children,
-}) => {
+const CheckInvitationGate: React.FC<CheckInvitationGateProps> = ({ acceptInvite, trackInvitationAccepted, redirectToDashboard, children }) => {
+  const location = useLocation();
   const [inviteChecked, setInviteChecked] = React.useState(false);
 
   const checkForInvite = React.useCallback(async () => {
@@ -46,7 +41,7 @@ const CheckInvitationGate: React.FC<RouteComponentProps & CheckInvitationGatePro
   }, [checkForInvite]);
 
   return (
-    <LoadingGate isLoaded={inviteChecked} load={load}>
+    <LoadingGate internalName={CheckInvitationGate.name} isLoaded={inviteChecked} load={load}>
       {children}
     </LoadingGate>
   );

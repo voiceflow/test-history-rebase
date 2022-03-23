@@ -20,7 +20,7 @@ const PlanRestrictionGate: React.FC<ConnectedPlanRestrictionGateProps> = ({ hasR
   }, [hasRestriction]);
 
   return (
-    <LoadingGate label="Plan Restriction" isLoaded={!hasRestriction} load={lockProject}>
+    <LoadingGate internalName={PlanRestrictionGate.name} isLoaded={!hasRestriction} load={lockProject}>
       {children}
     </LoadingGate>
   );

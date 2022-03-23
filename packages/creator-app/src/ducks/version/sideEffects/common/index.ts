@@ -5,7 +5,6 @@ import { batch } from 'react-redux';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { getDefaultPrototypeLayout, PrototypeLayout } from '@/constants/prototype';
-import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Integration from '@/ducks/integration';
 import * as Product from '@/ducks/product';
@@ -13,6 +12,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
 import * as VersionV2 from '@/ducks/versionV2';
+import * as Workspace from '@/ducks/workspace';
 import { Thunk } from '@/store/types';
 import { storeLogger } from '@/store/utils';
 
@@ -21,16 +21,28 @@ import { getActiveVersionContext } from '../../utils';
 export * from './topicsComponents';
 export * from './variables';
 
-export const activateVersionV2 =
-  ({ workspaceID, projectID, versionID, diagramID, projectType }: Realtime.version.ActivateVersionPayload): Thunk =>
-  async (dispatch) => {
+/**
+ * called after successfully subscribing to a realtime "version" channel
+ * this is also called when re-connecting to an existing subscription
+ */
+export const initializeVersion =
+  ({ workspaceID, projectID, versionID, projectType }: Realtime.version.ActivateVersionPayload): Thunk =>
+  async (dispatch, getState) => {
     const dbVersion = await client.api.version.get<Realtime.AnyDBVersion>(versionID);
 
     // not a dependency for project to load
     dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
 
+    const isNewWorkspace = Session.activeWorkspaceIDSelector(getState()) !== workspaceID;
+
     batch(() => {
-      dispatch(Creator.resetCreator());
+      if (isNewWorkspace) {
+        dispatch(Workspace.setActive(workspaceID));
+      }
+
+      dispatch(Session.setActiveProjectID(projectID));
+      dispatch(Session.setActiveVersionID(versionID));
+
       dispatch(
         Prototype.updatePrototypeSettings(
           {
@@ -41,10 +53,6 @@ export const activateVersionV2 =
         )
       );
       dispatch(Thread.loadThreads(projectID));
-      dispatch(Session.setActiveDiagramID(diagramID));
-      dispatch(Session.setActiveProjectID(projectID));
-      dispatch(Session.setActiveVersionID(versionID));
-      dispatch(Session.setActiveWorkspaceID(workspaceID));
     });
 
     await client.socket?.project.initialize(projectID);

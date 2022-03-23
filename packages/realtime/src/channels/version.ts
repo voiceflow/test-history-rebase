@@ -1,24 +1,20 @@
 import { SendBackActions } from '@logux/server';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ChannelContext, ChannelSubscribeAction } from '@voiceflow/socket-utils';
+import { ChannelContext } from '@voiceflow/socket-utils';
 
 import logger from '@/logger';
 
 import { AbstractChannelControl } from './utils';
 
-class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionChannelParams, Realtime.Channels.VersionChannelExtras> {
+class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionChannelParams> {
   protected channel = Realtime.Channels.version;
 
   protected access = async (ctx: ChannelContext<Realtime.Channels.VersionChannelParams>): Promise<boolean> => {
     return this.services.version.canRead(Number(ctx.userId), ctx.params.versionID);
   };
 
-  protected load = async (
-    ctx: ChannelContext<Realtime.Channels.VersionChannelParams>,
-    action: ChannelSubscribeAction<Realtime.Channels.VersionChannelExtras>
-    // eslint-disable-next-line sonarjs/cognitive-complexity
-  ): Promise<SendBackActions> => {
+  protected load = async (ctx: ChannelContext<Realtime.Channels.VersionChannelParams>): Promise<SendBackActions> => {
     const { workspaceID, projectID, versionID } = ctx.params;
     const creatorID = Number(ctx.userId);
 
@@ -90,7 +86,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.diagram.loadIntentSteps({ intentSteps, workspaceID, projectID, versionID }),
       Realtime.version.crud.add({ value: version, key: versionID, workspaceID, projectID }),
       Realtime.project.crud.add({ value: project, key: projectID, workspaceID }),
-      Realtime.version.activateVersion({ workspaceID, projectID, versionID, diagramID: action.diagramID ?? version.rootDiagramID, projectType }),
+      Realtime.version.activateVersion({ workspaceID, projectID, versionID, projectType }),
     ];
   };
 }

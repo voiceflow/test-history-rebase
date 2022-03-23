@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { DiagramLoadingGate } from '@/gates';
-import { compose, withLoadingGate } from '@/hocs';
+import { compose, withBatchLoadingGate } from '@/hocs';
 import { useRegistration } from '@/hooks';
 import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
@@ -88,4 +88,4 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   );
 };
 
-export default compose(React.memo, withLoadingGate(DiagramLoadingGate))(Canvas) as React.FC<CanvasProps>;
+export default compose(React.memo, withBatchLoadingGate(DiagramLoadingGate))(Canvas) as React.FC<CanvasProps>;

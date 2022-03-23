@@ -116,7 +116,7 @@ const Conversations: React.FC<ConversationProps> = () => {
 
   return (
     <ConversationsContainer id={Identifier.CONVERSATIONS_PAGE} isFilteredResultsEmpty={filteredReportsExist}>
-      <LoadingGate isLoaded={isLoaded} label="Conversations" load={loadReports}>
+      <LoadingGate label="Conversations" internalName={Conversations.name} isLoaded={isLoaded} load={loadReports}>
         {!noTestRuns ? (
           <>
             <TranscriptManager />

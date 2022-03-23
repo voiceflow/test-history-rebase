@@ -17,7 +17,7 @@ import Billing from './components/Billing';
 import Developer from './components/Developer';
 import General from './components/General';
 import SSO from './components/SSO';
-import { SettingsGate } from './gates';
+import SettingsGate from './gates/SettingsGate';
 
 const Settings: React.FC = () => {
   const workspace = useActiveWorkspace();

@@ -118,7 +118,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const acceptInvite = useDispatch(Workspace.acceptInvite);
   const goToDashboard = useDispatch(Router.goToDashboard);
   const goToDashboardWithSearch = useDispatch(Router.goToDashboardWithSearch);
-  const setActiveWorkspaceID = useDispatch(Session.setActiveWorkspaceID);
+  const setActiveWorkspace = useDispatch(Workspace.setActive);
   const updateWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
   const updateWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
@@ -216,7 +216,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     const usedSignupCoupon = nonTemplateWorkspaces.length === 1 && nonTemplateWorkspaces[0].name === 'Personal';
     actions.setUsedSignupCoupon(usedSignupCoupon);
     if (usedSignupCoupon) {
-      setActiveWorkspaceID(nonTemplateWorkspaces[0].id);
+      setActiveWorkspace(nonTemplateWorkspaces[0].id);
     }
   }, [workspaces.length]);
 
@@ -315,7 +315,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
           workspace = await createWorkspace({ name, image: workspaceImage || undefined });
         }
 
-        setActiveWorkspaceID(workspace.id);
+        setActiveWorkspace(workspace.id);
       } catch (e) {
         toast.error('Error creating workspace, please try again later');
         goToDashboard();

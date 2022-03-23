@@ -1,13 +1,11 @@
 import React from 'react';
 
-import LoadingGate from '@/components/LoadingGate';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { ProjectLoadingGate, WorkspaceFeatureLoadingGate } from '@/gates';
+import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useDispatch, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
@@ -17,7 +15,7 @@ import { getManager } from '@/pages/Canvas/managers';
 import { MarkupProvider, ProjectProvider } from '@/pages/Project/contexts';
 
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark, MockRealtimeGate } from './components';
-import * as Utils from './utils';
+import InitializeExportGate from './gates/InitializeExportGate';
 
 const ExportCanvas: React.FC = () => {
   const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
@@ -49,20 +47,7 @@ const ExportCanvas: React.FC = () => {
   );
 };
 
-const CanvasGate: React.FC = ({ children }) => {
-  const [loaded, setLoaded] = React.useState(false);
-
-  const initialize = useDispatch(Utils.initialize);
-  const diagramID = useSelector(Session.activeDiagramIDSelector);
-
-  React.useEffect(() => {
-    if (diagramID) initialize(diagramID).then(() => setLoaded(true));
-  }, [diagramID]);
-
-  return <LoadingGate isLoaded={loaded}>{children}</LoadingGate>;
-};
-
 export default compose(
   removeIntercom,
-  withBatchLoadingGate(ProjectLoadingGate, WorkspaceFeatureLoadingGate, MockRealtimeGate, CanvasGate)
+  withBatchLoadingGate(VersionSubscriptionGate, WorkspaceFeatureLoadingGate, MockRealtimeGate, InitializeExportGate)
 )(ExportCanvas);

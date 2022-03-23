@@ -6,16 +6,16 @@ import * as Session from '@/ducks/session';
 import { useDiagramSubscription, useSelector } from '@/hooks';
 
 const DiagramSubscriptionGate: React.FC = ({ children }) => {
-  const diagramID = useSelector(Session.activeDiagramIDSelector)!;
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
-  const versionID = useSelector(Session.activeVersionIDSelector)!;
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+  const diagramID = useSelector(Session.activeDiagramIDSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector);
+  const versionID = useSelector(Session.activeVersionIDSelector);
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const creatorDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
 
-  useDiagramSubscription({ workspaceID, projectID, versionID, diagramID });
+  useDiagramSubscription({ workspaceID, projectID, versionID, diagramID }, [workspaceID, projectID, versionID, diagramID]);
 
   return (
-    <LoadingGate key={creatorDiagramID} label="Diagram" isLoaded={!!creatorDiagramID}>
+    <LoadingGate key={creatorDiagramID} label="Diagram" internalName={DiagramSubscriptionGate.name} isLoaded={!!creatorDiagramID}>
       {children}
     </LoadingGate>
   );

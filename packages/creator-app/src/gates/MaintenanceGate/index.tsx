@@ -2,7 +2,6 @@ import { Utils } from '@voiceflow/common';
 import { Alert } from '@voiceflow/ui';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import _noop from 'lodash/noop';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -117,7 +116,7 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
   }, []);
 
   return (
-    <LoadingGate load={_noop} isLoaded={checked}>
+    <LoadingGate internalName={MaintenanceGate.name} isLoaded={checked}>
       {children}
     </LoadingGate>
   );

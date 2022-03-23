@@ -3,8 +3,6 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
-import { ProjectLoadingGate } from '@/gates';
-import { withBatchLoadingGate } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 
 import GeneralSettings from './components/GeneralSettings';
@@ -20,4 +18,4 @@ const Settings: React.FC = () => (
   </Box>
 );
 
-export default withBatchLoadingGate(ProjectLoadingGate)(Settings);
+export default React.memo(Settings);

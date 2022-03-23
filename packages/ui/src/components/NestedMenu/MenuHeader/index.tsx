@@ -60,6 +60,17 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
 
   if (!inputVal && !alwaysShowCreate) return null;
 
+  const notInDropdownInput = (
+    <MenuInput
+      value={inputVal}
+      onClick={(event) => !inDropdownSearch && event.stopPropagation()}
+      inputRef={inDropdownSearch ? undefined : (node) => setRef(createInputRef, node)}
+      onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
+      fullWidth={!inputVal}
+      placeholder={createInputPlaceholder}
+    />
+  );
+
   return (
     <>
       {inDropdownSearch && (
@@ -76,6 +87,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
               onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
+              fullWidth
               placeholder={`Search ${createInputPlaceholder}`}
             />
 
@@ -99,18 +111,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
             </Box>
           )}
 
-          {inputVal && <>"</>}
-
-          <MenuInput
-            value={inputVal}
-            onClick={(event) => !inDropdownSearch && event.stopPropagation()}
-            inputRef={inDropdownSearch ? undefined : (node) => setRef(createInputRef, node)}
-            onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
-            placeholder={createInputPlaceholder}
-            inDropdownSearch={inDropdownSearch}
-          />
-
-          {inputVal && <>"</>}
+          {inputVal ? <span>"{notInDropdownInput}"</span> : notInDropdownInput}
         </MenuHeaderWrapper>
       )}
 

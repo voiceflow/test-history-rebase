@@ -1,5 +1,6 @@
 import { Nullish, Utils } from '@voiceflow/common';
 import {
+  defaultMenuLabelRenderer,
   FlexApart,
   FlexStart,
   GetOptionLabel,
@@ -10,6 +11,7 @@ import {
   Select,
   SelectInputVariant,
   stopImmediatePropagation,
+  UIOnlyMenuItemOption,
 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -20,14 +22,24 @@ import { PrimitiveTagSelectProps, TagSelectInternalProps, TagSelectProps } from 
 
 const trimNulls = (list: Nullish<string>[]): string[] => list.filter(Boolean) as string[];
 
-const customMenuLabelRenderer = (label: string, value: string, isSelectedFunc: (val: string) => boolean) => (
-  <FlexApart style={{ width: '100%' }}>
-    <FlexStart>
-      <Checkbox readOnly checked={isSelectedFunc(value)} />
-      <div data-testid={value}>{label}</div>
-    </FlexStart>
-  </FlexApart>
-);
+const customMenuLabelRenderer = <Option extends unknown>(
+  option: Exclude<Option, UIOnlyMenuItemOption>,
+  searchLabel: string,
+  getOptionLabel: GetOptionLabel<string>,
+  getOptionValue: GetOptionValue<Option, string>,
+  isSelected: (val: string) => boolean
+) => {
+  const value = getOptionValue(option);
+
+  return (
+    <FlexApart style={{ width: '100%' }}>
+      <FlexStart>
+        <Checkbox readOnly checked={!!value && isSelected(value)} />
+        <div data-testid={value}>{defaultMenuLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue)}</div>
+      </FlexStart>
+    </FlexApart>
+  );
+};
 
 const defaultGetter = (option: unknown) => option;
 
@@ -73,9 +85,11 @@ function TagSelect({
   useDidUpdateEffect(() => setSelected(trimNulls(value)), [value]);
 
   return (
-    <Select
+    <Select<unknown, string>
       autoWidth
-      renderOptionLabel={(option) => customMenuLabelRenderer(String(getOptionLabel(option)) || '', getOptionValue(option) || '', isOptionSelected)}
+      renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue) =>
+        customMenuLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue, isOptionSelected)
+      }
       renderFooterAction={({ close }) => (
         <NestedMenuComponents.FooterActionContainer onClick={stopImmediatePropagation(Utils.functional.chainVoid(close, toggleSelectAll))}>
           {selectedAllIntents ? 'Unselect All' : 'Select All'}
@@ -90,7 +104,7 @@ function TagSelect({
       searchable
       alwaysShowCreate
       autoDismiss={false}
-      getOptionValue={(option) => option}
+      getOptionValue={getOptionValue}
       getOptionLabel={getOptionLabel}
       placeholder={placeholder}
       displayName={selected.map((id) => labels[id]).join(', ')}

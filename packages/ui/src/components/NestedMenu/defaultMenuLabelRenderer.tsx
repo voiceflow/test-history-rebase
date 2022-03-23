@@ -17,7 +17,7 @@ const defaultMenuLabelRenderer = <Option, Value>(
   getOptionLabel: GetOptionLabel<Value>,
   getOptionValue: GetOptionValue<Option, Value>,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _config: RenderOptionLabelConfig
+  _config?: RenderOptionLabelConfig
 ): React.ReactElement => {
   const label = getOptionLabel(getOptionValue(option));
 

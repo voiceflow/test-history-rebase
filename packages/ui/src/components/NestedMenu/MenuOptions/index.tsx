@@ -91,12 +91,8 @@ function MenuOptions({
   let groupedIndex = 0;
   const renderOptions = (options: unknown[], optionsPath: number[]) =>
     options.map((option, indx) => {
-      let index = indx + firstOptionIndex;
       const key = (isMenuItemWithID(option) ? option.id : getOptionKey?.(option, indx)) || String(indx);
-
-      if (grouped) {
-        index = firstOptionIndex + groupedIndex++;
-      }
+      const index = firstOptionIndex + (grouped ? groupedIndex++ : indx);
 
       const path = [...optionsPath, indx];
       const isFocused = focusedOptionIndex === index;

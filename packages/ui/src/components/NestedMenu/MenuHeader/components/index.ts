@@ -5,7 +5,7 @@ import AutosizeInput from 'react-input-autosize';
 export { default as MenuHeaderWrapper } from './MenuHeaderWrapper';
 
 interface MenuInputProps {
-  inDropdownSearch?: boolean;
+  fullWidth?: boolean;
 }
 
 export const MenuInput = styled(AutosizeInput)<MenuInputProps>`
@@ -20,11 +20,11 @@ export const MenuInput = styled(AutosizeInput)<MenuInputProps>`
     padding-left: 0px;
   }
 
-  ${({ inDropdownSearch }) =>
-    inDropdownSearch &&
+  ${({ fullWidth }) =>
+    fullWidth &&
     css`
       input {
-        cursor: pointer;
+        width: 100% !important;
       }
     `}
 

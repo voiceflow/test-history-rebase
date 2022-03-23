@@ -2,8 +2,11 @@ import { Utils } from '@voiceflow/common';
 import {
   Box,
   createUIOnlyMenuItemOption,
+  defaultMenuLabelRenderer,
   FlexApart,
   FlexStart,
+  GetOptionLabel,
+  GetOptionValue,
   Icon,
   KeyName,
   Select,
@@ -39,12 +42,18 @@ export interface BaseReportTagInputProps {
 
 export type TagInputVariantProps = Omit<BaseReportTagInputProps, 'menu' | 'tags'>;
 
-const customMenuLabelRenderer = (option: ReportTag, isSelectedFunc: (val: string) => boolean) => {
+const customMenuLabelRenderer = (
+  option: Exclude<ReportTag, UIOnlyMenuItemOption>,
+  searchLabel: string,
+  getOptionLabel: GetOptionLabel<string>,
+  getOptionValue: GetOptionValue<ReportTag, string>,
+  isSelected: (val: string) => boolean
+) => {
   return (
     <FlexApart style={{ width: '100%' }}>
       <FlexStart>
-        <Checkbox readOnly checked={isSelectedFunc(option.id)} />
-        <div data-testid={option.id}>{option.label}</div>
+        <Checkbox readOnly checked={isSelected(option.id)} />
+        <div data-testid={option.id}>{defaultMenuLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue)}</div>
       </FlexStart>
 
       {isBuiltInTag(option.id) &&
@@ -78,7 +87,6 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
   } = React.useContext(ReportTagInputContext)!;
 
   const [trackingEvents] = useTrackingEvents();
-  const containerRef = React.useRef<HTMLDivElement | null>(null);
 
   // Only use tags that exist in redux (they can be deleted in the tags manager)
   const [selectedValidTags, setSelectedValidTags] = React.useState(() => selectedTags.filter((tag) => !!tagsMap[tag]));
@@ -102,12 +110,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
     return allTags.filter((tag) => !isBuiltInTag(tag.id) && filterOutSelected(tag.id, selectedValidTags));
   }, [selectOnly, allTags, selectedValidTags]);
 
-  const selectedTagObjects =
-    selectedTags
-      ?.map((tagId) => {
-        return tagsMap[tagId] || null;
-      })
-      .filter((data) => !!data) || [];
+  const selectedTagObjects = React.useMemo(() => selectedTags?.map((tagId) => tagsMap[tagId]).filter(Boolean) || [], [selectedTags, tagsMap]);
 
   const onRemove = (tagID: string) => () => {
     removeTag(tagID);
@@ -121,8 +124,6 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
       trackingEvents.trackConversationTagAdded({ tagLabel: tagsMap[tagID].label });
     }
   };
-
-  const scrollTo = React.useCallback((...args) => containerRef.current?.scrollTo(...args), [selectedTags]);
 
   const onBackspace = (event: React.KeyboardEvent) => {
     const { key } = event;
@@ -139,16 +140,17 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
     setSelectedValidTags(validTags);
   }, [tagsMap, selectedTags]);
 
-  React.useLayoutEffect(() => {
-    scrollTo({ top: containerRef.current?.scrollHeight });
-  }, [selectedTags]);
-
   return (
     <>
       <Select
         className={className}
         autoUpdatePlacement
-        renderOptionLabel={hasRadioButtons && !!isSelectedFunc ? (option) => customMenuLabelRenderer(option, isSelectedFunc) : undefined}
+        renderOptionLabel={
+          hasRadioButtons && !!isSelectedFunc
+            ? (option, searchLabel, getOptionLabel, getOptionValue) =>
+                customMenuLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue, isSelectedFunc)
+            : undefined
+        }
         renderFooterAction={renderFooterAction}
         fullWidth
         selectedOptions={selectedValidTags}

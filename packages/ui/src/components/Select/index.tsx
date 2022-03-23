@@ -190,12 +190,12 @@ function Select({
   const inlineRef = React.useRef<HTMLInputElement>(null);
 
   const [initialValueLabel] = React.useState(optionLabel);
-  const [opened, updateOpened] = React.useState(!!open);
+  const [opened, setOpened] = React.useState(!!open);
   const [directMatch, setDirectMatch] = React.useState(false);
-  const [searchLabel, updateSearchLabel] = React.useState(optionLabel);
-  const [optionsToRender, updateOptionsToRender] = React.useState(() => (renderOptionsFilter ? options.filter(renderOptionsFilter) : options));
+  const [searchLabel, setSearchLabel] = React.useState(optionLabel);
+  const [optionsToRender, setOptionsToRender] = React.useState(() => (renderOptionsFilter ? options.filter(renderOptionsFilter) : options));
   const [inputWrapperNode, setInputWrapperNode] = React.useState<Nullable<HTMLDivElement>>(null);
-  const [focusedOptionIndex, updateFocusedOptionIndex] = React.useState(isMultiLevel ? null : 0);
+  const [focusedOptionIndex, setFocusedOptionIndex] = React.useState<Nullable<number>>(null);
 
   const dataRef = React.useRef({
     searchLabel,
@@ -231,7 +231,7 @@ function Select({
   );
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  const onUpdateOptionsToRender = (label: string) => {
+  const onUpdateOptionsToRender = (label: string, { skipIndexReset }: { skipIndexReset?: boolean } = {}) => {
     const { matchedOptions } = optionsFilter(options, label, {
       grouped,
       maxSize: optionsMaxSize,
@@ -267,14 +267,15 @@ function Select({
       activeOptionIndex = matchedOptions.findIndex(findIndexCallback);
     }
 
-    if (!isMultiLevel) {
-      if (searchable) {
-        updateFocusedOptionIndex(matchedOptions.length ? firstOptionIndex : 0);
+    if (!skipIndexReset && !isMultiLevel) {
+      if (searchable && inDropdownSearch) {
+        setFocusedOptionIndex(matchedOptions.length ? firstOptionIndex : 0);
       } else {
-        updateFocusedOptionIndex(activeOptionIndex === -1 ? 0 : activeOptionIndex + firstOptionIndex);
+        setFocusedOptionIndex(activeOptionIndex === -1 ? null : activeOptionIndex + firstOptionIndex);
       }
     }
-    updateOptionsToRender(matchedOptions);
+
+    setOptionsToRender(matchedOptions);
   };
 
   const onOpenMenu = usePersistFunction((event?: React.MouseEvent | React.FocusEvent) => {
@@ -287,7 +288,7 @@ function Select({
     }
 
     if (!opened) {
-      updateOpened(true);
+      setOpened(true);
       onOpen?.();
     }
 
@@ -312,14 +313,14 @@ function Select({
     }
 
     if (searchable && dataRef.current.searchLabel !== optionLabel) {
-      updateSearchLabel(optionLabel);
+      setSearchLabel(optionLabel);
     }
 
     if (isMultiLevel) {
-      updateFocusedOptionIndex(null);
+      setFocusedOptionIndex(null);
     }
 
-    updateOpened(false);
+    setOpened(false);
     onClose?.();
   });
 
@@ -336,12 +337,12 @@ function Select({
       nextIndex = 0;
     }
 
-    updateFocusedOptionIndex(nextIndex);
+    setFocusedOptionIndex(nextIndex);
   });
 
-  const handleOnSearchLabelChange = (val: string) => {
-    onUpdateOptionsToRender(val);
-    updateSearchLabel(val);
+  const handleOnSearchLabelChange = (val: string, { isSelectEvent }: { isSelectEvent?: boolean } = {}) => {
+    onUpdateOptionsToRender(val, { skipIndexReset: isSelectEvent && inputVariant !== SelectInputVariant.DROPDOWN });
+    setSearchLabel(val);
     onSearch?.(val);
   };
 
@@ -350,7 +351,7 @@ function Select({
 
   const onSelectItem = (value: unknown, optionsPath: number[], updatePopperPosition: () => void) => {
     onSelect(value, optionsPath);
-    handleOnSearchLabelChange('');
+    handleOnSearchLabelChange('', { isSelectEvent: true });
 
     if (autoUpdatePlacement) {
       dataRef.current.updatePopperPosition = updatePopperPosition;
@@ -363,7 +364,7 @@ function Select({
 
   const onCreateItem = (label: string, updatePopperPosition: () => void) => {
     try {
-      updateSearchLabel('');
+      setSearchLabel('');
       validateCreate?.(label);
       onCreate?.(label);
 
@@ -389,7 +390,7 @@ function Select({
 
   React.useEffect(() => {
     if (renderOptionsFilter && selectedOptions) {
-      updateOptionsToRender(options.filter(renderOptionsFilter));
+      setOptionsToRender(options.filter(renderOptionsFilter));
     }
 
     if (autoUpdatePlacement) {
@@ -399,7 +400,7 @@ function Select({
 
   React.useEffect(() => {
     onUpdateOptionsToRender(optionLabel);
-    updateSearchLabel(optionLabel);
+    setSearchLabel(optionLabel);
   }, [optionLabel, grouped]);
 
   React.useEffect(() => {
@@ -475,7 +476,7 @@ function Select({
 
                       <TagsInput
                         value={label || searchLabel}
-                        onBlur={Utils.functional.chain<[React.FocusEvent<HTMLElement>]>(() => !renderDropdown && updateOpened(false), onBlur)}
+                        onBlur={Utils.functional.chain<[React.FocusEvent<HTMLElement>]>(() => !renderDropdown && setOpened(false), onBlur)}
                         hastags={hasOptions}
                         onClick={searchable ? onOpenMenu : undefined}
                         onChange={onChangeSearchLabel}

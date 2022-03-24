@@ -17,6 +17,7 @@ import { STATE_KEY } from './constants';
 
 export const {
   all: allIntentsSelector,
+  map: intentsMapSelector,
   byID: intentByIDSelector,
   byIDs: intentsByIDsSelector,
   allIDs: allIntentIDsSelector,

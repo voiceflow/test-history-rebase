@@ -3,7 +3,6 @@ import { BaseSelectProps, GetOptionKey, GetOptionLabel, GetOptionValue, Primitiv
 
 interface GenericProps<Option> {
   getOptionKey: GetOptionKey<Option>;
-  getOptionLabel: GetOptionLabel<Option>;
   getOptionValue: GetOptionValue<Option, string>;
 }
 
@@ -13,6 +12,14 @@ interface BaseTagSelectProps<Option> extends BaseSelectProps {
   onChange: (value: string[]) => void;
 }
 
-export interface PrimitiveTagSelectProps<Option extends Primitive> extends BaseTagSelectProps<Option>, Partial<GenericProps<Option>> {}
-export interface TagSelectProps<Option> extends BaseTagSelectProps<Option>, GenericProps<Option> {}
-export interface TagSelectInternalProps extends BaseTagSelectProps<unknown>, Partial<GenericProps<unknown>> {}
+export interface PrimitiveTagSelectProps<Option extends Primitive> extends BaseTagSelectProps<Option>, Partial<GenericProps<Option>> {
+  getOptionLabel?: GetOptionLabel<Option>;
+}
+
+export interface TagSelectProps<Option> extends BaseTagSelectProps<Option>, GenericProps<Option> {
+  getOptionLabel: GetOptionLabel<string>;
+}
+
+export interface TagSelectInternalProps extends BaseTagSelectProps<unknown>, Partial<GenericProps<unknown>> {
+  getOptionLabel?: GetOptionLabel<any>;
+}

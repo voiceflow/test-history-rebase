@@ -1,5 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { GetOptionLabel, GetOptionValue } from '@voiceflow/ui';
 import startCase from 'lodash/startCase';
 import React from 'react';
 
@@ -9,12 +7,11 @@ import { useSelector } from '@/hooks';
 
 import { ExportContext } from '../contexts';
 
-const getIntentName: GetOptionLabel<Realtime.Intent> = (intent) => (intent ? startCase(intent.name.toLowerCase()) : null);
-const getIntentValue: GetOptionValue<Realtime.Intent, string> = (intent) => intent?.id || null;
-
 const ModelIntentsSelect: React.FC = () => {
   const { setModelExportIntents: setSelectedIntents, modelExportIntents: selectedIntents } = React.useContext(ExportContext)!;
+
   const intents = useSelector(IntentV2.allIntentsSelector);
+  const intentsMap = useSelector(IntentV2.intentsMapSelector);
 
   return (
     <TagSelect
@@ -22,8 +19,8 @@ const ModelIntentsSelect: React.FC = () => {
       options={intents}
       onChange={setSelectedIntents}
       getOptionKey={(option) => option.id}
-      getOptionLabel={getIntentName}
-      getOptionValue={getIntentValue}
+      getOptionLabel={(id) => id && startCase(intentsMap[id]?.name.toLowerCase())}
+      getOptionValue={(option) => option?.id ?? null}
       createInputPlaceholder="intents"
     />
   );

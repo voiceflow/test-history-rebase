@@ -61,18 +61,11 @@ function TagSelect({
 
   const tagsOnly = React.useMemo(() => options.filter(isNotUIOnlyMenuItemOption), [options]);
 
-  const labels = React.useMemo(
-    () => Object.fromEntries(tagsOnly.map((tag) => [getOptionValue(tag), getOptionLabel(tag)] as const)),
-    [tagsOnly, getOptionValue, getOptionLabel]
-  );
-
   const selectedAllIntents = selected.length === options.length;
 
-  const handleSelect = (option: unknown) => {
-    const optionValue = getOptionValue(option);
-
-    if (optionValue) {
-      onChange(Utils.array.toggleMembership(selected, optionValue));
+  const onSelect = (value: string | null) => {
+    if (value) {
+      onChange(Utils.array.toggleMembership(selected, value));
     }
   };
 
@@ -107,8 +100,11 @@ function TagSelect({
       getOptionValue={getOptionValue}
       getOptionLabel={getOptionLabel}
       placeholder={placeholder}
-      displayName={selected.map((id) => labels[id]).join(', ')}
-      onSelect={handleSelect}
+      displayName={selected
+        .map((value) => getOptionLabel(value))
+        .filter(Boolean)
+        .join(', ')}
+      onSelect={onSelect}
       inputVariant={SelectInputVariant.COUNTER}
       createInputPlaceholder={createInputPlaceholder}
       disabled={disabled}

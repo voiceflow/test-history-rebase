@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.63.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.62.0...@voiceflow/ui@1.63.0) (2022-03-24)
+
+
+### Features
+
+* create color picker component MVP (VF-3152) ([#5237](https://github.com/voiceflow/creator-app/issues/5237)) ([d76d20e](https://github.com/voiceflow/creator-app/commit/d76d20e6c5950b1e5026764ea7b7eb1557daaef7))
+
+
+
+
+
 # [1.62.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.61.3...@voiceflow/ui@1.62.0) (2022-03-23)
 
 

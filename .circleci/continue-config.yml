@@ -465,7 +465,6 @@ workflows:
           requires:
             - update-track-ml-gateway
       - vfcommon/build_push_image:
-          <<: *prod_deploy_filters
           name: build-push-ml-gateway-image-e2e
           context: dev-test
           monorepo_directory: ~/voiceflow
@@ -475,6 +474,9 @@ workflows:
           image_tag: "latest-master-e2e"
           requires:
             - update-track-ml-gateway
+          filters:
+            branches:
+              only: master
 
       - vfcommon/post_image_push_actions:
           <<: *prod_deploy_filters
@@ -488,7 +490,6 @@ workflows:
           requires:
             - update-track-realtime
       - vfcommon/build_push_image:
-          <<: *prod_deploy_filters
           name: build-push-realtime-image-e2e
           context: dev-test
           monorepo_directory: ~/voiceflow
@@ -498,6 +499,9 @@ workflows:
           image_tag: "latest-master-e2e"
           requires:
             - update-track-realtime
+          filters:
+            branches:
+              only: master
 
       - vfcommon/post_image_push_actions:
           <<: *prod_deploy_filters

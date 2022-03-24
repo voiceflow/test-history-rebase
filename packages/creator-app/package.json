@@ -155,7 +155,7 @@
     "@types/gapi.auth2": "0.0.56",
     "@types/jest": "27.4.0",
     "@types/jsonwebtoken": "8.5.8",
-    "@types/lodash": "4.14.177",
+    "@types/lodash": "4.14.180",
     "@types/loglevel": "1.6.3",
     "@types/markdown-to-jsx": "6.11.3",
     "@types/mousetrap": "1.6.9",

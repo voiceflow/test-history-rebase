@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.667.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.666.0...@voiceflow/creator-app@1.667.0) (2022-03-24)
+
+
+### Features
+
+* add Nuance Mix NLP export (VF-2981) ([#5120](https://github.com/voiceflow/creator-app/issues/5120)) ([a9f07a1](https://github.com/voiceflow/creator-app/commit/a9f07a13a16c7853658614e1c2cdbe69fdee5a9d))
+
+
+
+
+
 # [1.666.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.665.3...@voiceflow/creator-app@1.666.0) (2022-03-24)
 
 

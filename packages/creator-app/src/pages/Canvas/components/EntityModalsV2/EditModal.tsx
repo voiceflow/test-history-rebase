@@ -9,7 +9,7 @@ import { useDispatch, useModals, useSelector } from '@/hooks';
 
 import EditEntityForm from './components/EntityForm/EditEntityForm';
 import EntitySelectDropdown from './components/EntitySelectDropdown';
-import { MAX_ENTITY_MODAL_WIDTH } from './constants';
+import { MAX_ENTITY_MODAL_WIDTH, MAX_HEIGHT_CALC } from './constants';
 
 const EditModal: React.FC = () => {
   const { close, data } = useModals<{ id: string }>(ModalType.ENTITY_EDIT);
@@ -58,7 +58,7 @@ const EditModal: React.FC = () => {
       }
       headerBorder
     >
-      <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
+      <Box width="100%" overflow="auto" maxHeight={MAX_HEIGHT_CALC}>
         <EditEntityForm slotID={data.id} />
       </Box>
       <ModalFooter justifyContent="flex-end">

@@ -116,9 +116,17 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInput
         header="Values"
         variant={SectionVariant.QUATERNARY}
         forceDividers
-        customHeaderStyling={{ paddingBottom: '16px', position: 'sticky', top: -1, background: 'white', zIndex: 2, borderTop: 'solid 1px #eaeff4' }}
+        customHeaderStyling={{
+          paddingTop: '20px',
+          paddingBottom: '16px',
+          position: 'sticky',
+          top: -1,
+          background: 'white',
+          zIndex: 2,
+          borderTop: 'solid 1px #eaeff4',
+        }}
       >
-        <Box paddingBottom={12}>
+        <Box paddingBottom={0}>
           <FormControl>
             <ListManagerWrapper>
               <ListManager

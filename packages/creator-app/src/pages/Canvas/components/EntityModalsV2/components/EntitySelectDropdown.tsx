@@ -2,13 +2,14 @@ import { Nullish, Utils } from '@voiceflow/common';
 import { Box, IconButton, IconButtonVariant, NestedMenuComponents, Select } from '@voiceflow/ui';
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useModals, useSelector } from '@/hooks';
+import { useFeature, useModals, useSelector } from '@/hooks';
 
 const EntitySelectDropdown: React.FC = () => {
   const { close, open } = useModals(ModalType.ENTITY_EDIT);
-
+  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
   const allSlots = useSelector(SlotV2.allSlotsSelector);
 
   const options = React.useMemo(() => allSlots.map((slot) => ({ id: slot.id, label: slot.name })), [allSlots]);
@@ -17,6 +18,10 @@ const EntitySelectDropdown: React.FC = () => {
   const onOpenNLU = () => {
     // TODO: Open NLU manager
   };
+
+  const footerComponent = nluManager.isEnabled
+    ? () => <NestedMenuComponents.FooterActionContainer onClick={onOpenNLU}>Open NLU Manager</NestedMenuComponents.FooterActionContainer>
+    : null;
 
   return (
     <>
@@ -36,9 +41,7 @@ const EntitySelectDropdown: React.FC = () => {
         inDropdownSearch
         alwaysShowCreate
         createInputPlaceholder="Slots"
-        renderFooterAction={() => (
-          <NestedMenuComponents.FooterActionContainer onClick={onOpenNLU}>Open NLU Manager</NestedMenuComponents.FooterActionContainer>
-        )}
+        renderFooterAction={footerComponent}
         renderTrigger={({ onOpenMenu, onHideMenu, isOpen }) => (
           <Box onClick={isOpen ? onHideMenu : onOpenMenu} display="flex">
             <IconButton activeClick={isOpen} variant={IconButtonVariant.BASIC} icon="sandwichMenu" size={16} style={{ marginRight: '12px' }} />

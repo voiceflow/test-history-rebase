@@ -9,7 +9,7 @@ import * as Slot from '@/ducks/slot';
 import { useDispatch, useLinkedState, useModals } from '@/hooks';
 
 import EntityForm from './components/EntityForm';
-import { MAX_ENTITY_MODAL_WIDTH } from './constants';
+import { MAX_ENTITY_MODAL_WIDTH, MAX_HEIGHT_CALC } from './constants';
 
 const CreateModal: React.FC = () => {
   const { close, data, isInStack } = useModals<{ name: string; onCreate: (slot: Realtime.Slot | null) => void; onClose?: () => void }>(
@@ -52,7 +52,7 @@ const CreateModal: React.FC = () => {
 
   return (
     <Modal maxWidth={MAX_ENTITY_MODAL_WIDTH} id={ModalType.ENTITY_CREATE} title="Create Entity" headerBorder>
-      <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
+      <Box width="100%" overflow="auto" maxHeight={MAX_HEIGHT_CALC}>
         <EntityForm values={values} updateType={setType} updateName={setName} saveValues={setValues} name={name} type={type} />
       </Box>
       <ModalFooter justifyContent="flex-end">

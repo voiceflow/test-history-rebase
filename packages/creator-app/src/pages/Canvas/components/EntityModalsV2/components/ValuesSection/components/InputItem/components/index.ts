@@ -1,12 +1,19 @@
 import { Input } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 
-export const Container = styled.div`
+export const Container = styled.div<{ active: boolean }>`
+  ${transition('border')};
   padding: 11px 16px;
   border: solid 1px #d4d9e6;
-  border-radius: 5px;
+  border-radius: 6px;
   flex: 2;
+  box-shadow: 0 0 3px 0 rgb(17 49 96 / 6%);
+  ${({ active }) =>
+    active &&
+    css`
+      border: 1px solid #5d9df5;
+    `}
 `;
 
 export const ValueInput = styled(Input)`

@@ -26,7 +26,13 @@ const EntityForm: React.FC<EntityFormProps> = ({ values, saveValues, type, updat
   return (
     <>
       {withNameSection && (
-        <Section backgroundColor="#fdfdfd" header="Name" variant={SectionVariant.QUATERNARY} customContentStyling={{ paddingBottom: '0px' }}>
+        <Section
+          backgroundColor="#fdfdfd"
+          header="Name"
+          variant={SectionVariant.QUATERNARY}
+          customContentStyling={{ paddingBottom: '0px' }}
+          customHeaderStyling={{ paddingTop: '20px' }}
+        >
           <Input onBlur={() => saveName?.()} placeholder="Enter entity name" value={name} onChangeText={updateName} />
         </Section>
       )}

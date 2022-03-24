@@ -1,7 +1,8 @@
+import { useMouseMove } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import { useMouseMove, useRAF } from '@/hooks';
+import { useRAF } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { useCanvasIdle } from '@/pages/Canvas/hooks';
 import { MarkupTransform, TransformOverlayAPI } from '@/pages/Canvas/types';

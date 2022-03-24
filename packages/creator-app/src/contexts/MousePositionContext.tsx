@@ -1,6 +1,6 @@
+import { useMouseMove } from '@voiceflow/ui';
 import React from 'react';
 
-import { useMouseMove } from '@/hooks/mouse';
 import { Point } from '@/types';
 
 export const MousePositionContext = React.createContext<React.MutableRefObject<Point>>({ current: [0, 0] as Point });

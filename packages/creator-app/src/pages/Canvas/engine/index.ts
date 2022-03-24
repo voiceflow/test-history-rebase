@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { logger, useCreateConst } from '@voiceflow/ui';
+import { logger, useCreateConst, useMouseMove } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
 import moize from 'moize';
 import React from 'react';
@@ -28,7 +28,6 @@ import * as Thread from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
 import * as Workspace from '@/ducks/workspaceV2';
 import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
-import { useMouseMove } from '@/hooks';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { State, Store } from '@/store/types';

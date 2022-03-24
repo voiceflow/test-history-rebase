@@ -4,9 +4,10 @@ import styled from 'styled-components';
 const TRACK_HEIGHT = 12;
 
 export const RangeContainer = styled.section`
-  width: 178px;
+  width: 100%;
   position: relative;
   display: flex;
+  margin-left: -3px;
 `;
 
 export const RangeSlider = styled.input.attrs({
@@ -61,7 +62,7 @@ export const RangeTrack = styled.span`
     Hence, we make the track invisible and this component simulates the track with some invisible margins.
   */
 
-  width: calc(100% - 14px);
+  width: calc(100% - 7px);
   height: 100%;
   left: 50%;
   top: 50%;
@@ -69,21 +70,27 @@ export const RangeTrack = styled.span`
   transform: translate(-50%, -50%);
   position: absolute;
   background: linear-gradient(
-    90deg,
-    #eb450c 0%,
-    #da471b 7%,
-    #cd7d28 16%,
-    #bcd333 24%,
-    #63da3e 32%,
-    #20e074 40%,
-    #4fe1df 49%,
-    #5893e4 56%,
-    #3682e6 65%,
-    #293de8 71%,
-    #602bea 79%,
-    #bc2eed 86%,
-    #f6309d 93%,
-    #ff3232 100%
+    to right,
+    rgb(255, 48, 118),
+    rgb(243, 79, 0),
+    rgb(200, 116, 0),
+    rgb(174, 129, 0),
+    rgb(153, 137, 0),
+    rgb(129, 144, 0),
+    rgb(94, 152, 0),
+    rgb(0, 158, 58),
+    rgb(0, 155, 110),
+    rgb(0, 154, 133),
+    rgb(0, 152, 150),
+    rgb(0, 150, 166),
+    rgb(0, 148, 187),
+    rgb(0, 142, 225),
+    rgb(117, 121, 255),
+    rgb(185, 89, 255),
+    rgb(236, 0, 250),
+    rgb(248, 0, 210),
+    rgb(255, 21, 170),
+    rgb(255, 48, 118)
   );
   border-radius: ${TRACK_HEIGHT}px;
   z-index: 0;

@@ -1,6 +1,7 @@
+import { useMouseMove } from '@voiceflow/ui';
 import React from 'react';
 
-import { useMouseMove, useRAF, useRegistration } from '@/hooks';
+import { useRAF, useRegistration } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Point } from '@/types';
 

@@ -1,9 +1,8 @@
-import { preventDefault, stopPropagation } from '@voiceflow/ui';
+import { preventDefault, stopPropagation, useOnClickOutside } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { DismissableLayerProvider } from 'react-dismissable-layers';
 
-import { useOnClickOutside } from '@/hooks';
 import { Comment, Thread } from '@/models';
 import { FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCommentingMode } from '@/pages/Project/hooks';

@@ -1,8 +1,9 @@
+import { useOnClickOutside } from '@voiceflow/ui';
 import React from 'react';
 
 import { AnyStageType } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useHotKeys, useOnClickOutside, useSelector } from '@/hooks';
+import { useHotKeys, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import PopupContainer from './components/PopupContainer';

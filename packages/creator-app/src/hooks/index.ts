@@ -19,7 +19,6 @@ export * from './linked';
 export * from './manager';
 export * from './microphone';
 export * from './modals';
-export * from './mouse';
 export * from './permission';
 export * from './project';
 export * from './realtime';

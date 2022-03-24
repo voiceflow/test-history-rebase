@@ -1,5 +1,6 @@
 export * from './cache';
 export * from './lifecycle';
+export * from './mouse';
 export * from './popper';
 export * from './raf';
 export * from './reducerV2';

@@ -13,7 +13,7 @@ parameters:
 setup: true
 
 orbs:
-  vfcommon: voiceflow/common@0.0.333
+  vfcommon: voiceflow/common@0.0.334
   path-filtering: circleci/path-filtering@0.1.1
 
 workflows:

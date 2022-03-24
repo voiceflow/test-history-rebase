@@ -5,6 +5,8 @@ import { IS_DEVELOPMENT, IS_PRODUCTION } from '@voiceflow/ui';
 // Container env var-based configuration overrides
 declare global {
   interface Window {
+    VF_OVERRIDE_SEM_VER?: string; // the semantic version associated with this code
+
     VF_DEBUG?: boolean; // enter into debugging mode
 
     VF_OVERRIDE_API_HOST?: string; // API_HOST URL
@@ -60,7 +62,7 @@ export const GENERAL_SERVICE_ENDPOINT =
   IS_DEVELOPMENT && process.env.VF_OVERRIDE_GENERAL_SERVICE_ENDPOINT === '' ? GENERAL_SERVICE_LOCAL_ENDPOINT : GENERAL_SERVICE_CLOUD_ENDPOINT;
 
 export const ROOT_DOMAIN = process.env.ROOT_DOMAIN || (API_HOST === 'localhost' ? 'localhost' : '.voiceflow.com');
-export const VERSION = process.env.VERSION!;
+export const VERSION = window.VF_OVERRIDE_SEM_VER ? `v${window.VF_OVERRIDE_SEM_VER}` : process.env.VERSION!;
 
 // google
 const GOOGLE_PROD_CLIENT_ID = process.env.GOOGLE_PROD_CLIENT_ID!;

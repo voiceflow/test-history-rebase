@@ -7,6 +7,8 @@ export { IS_DEVELOPMENT, IS_PRODUCTION, IS_TEST, NODE_ENV } from '@voiceflow/ui'
 // Container env var-based configuration overrides
 declare global {
   interface Window {
+    VF_OVERRIDE_SEM_VER?: string; // the semantic version associated with this code
+
     VF_DEBUG?: boolean; // enter into debugging mode
 
     VF_OVERRIDE_IS_PERFORMANCE_TEST?: string; // API_HOST URL
@@ -72,7 +74,7 @@ export const API_ENDPOINT = `https://${API_HOST}${API_HOST === 'localhost' ? ':8
 export const API_V2_ENDPOINT = `${API_ENDPOINT}/v2`;
 
 export const ROOT_DOMAIN = process.env.ROOT_DOMAIN || (API_HOST === 'localhost' ? 'localhost' : '.voiceflow.com');
-export const VERSION = process.env.VERSION!;
+export const VERSION = window.VF_OVERRIDE_SEM_VER ? `v${window.VF_OVERRIDE_SEM_VER}` : process.env.VERSION!;
 export const IS_E2E = process.env.E2E === 'true';
 
 // logging

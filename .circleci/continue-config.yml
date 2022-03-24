@@ -81,7 +81,7 @@ parameters:
     default: false
 
 orbs:
-  vfcommon: voiceflow/common@0.0.332
+  vfcommon: voiceflow/common@0.0.333
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -337,6 +337,24 @@ workflows:
             - build-ui-test
             - build-socket-utils-test
 
+      - vfcommon/monorepo_release:
+          <<: *slack-fail-post-step
+          sentry_project: creator-app
+          avoid_post_install_scripts: false
+          ssh_key: << pipeline.parameters.ssh-fingerprint >>
+          context: dev-test
+          requires:
+            - test
+            - test-master
+            - build-app-test
+            - build-admin-test
+            - build-showcase-test
+            - build-realtime-test
+            - build-ml-gateway-test
+          filters:
+            branches:
+              only: master
+
       - vfcommon/update_track:
           <<: *ignore_break_glass_deploy_filters
           context: dev-test
@@ -354,6 +372,7 @@ workflows:
           requires:
             - test-master
             - build-app-test
+            - vfcommon/monorepo_release
 
       - vfcommon/update_track:
           <<: *ignore_break_glass_deploy_filters
@@ -367,6 +386,7 @@ workflows:
           requires:
             - test-master
             - build-admin-test
+            - vfcommon/monorepo_release
 
       - vfcommon/update_track:
           <<: *ignore_break_glass_deploy_filters
@@ -380,6 +400,7 @@ workflows:
           requires:
             - test-master
             - build-showcase-test
+            - vfcommon/monorepo_release
 
       - vfcommon/update_track:
           <<: *ignore_break_glass_deploy_filters
@@ -394,7 +415,7 @@ workflows:
           requires:
             - test-master
             - build-realtime-test
-
+            - vfcommon/monorepo_release
 
       - vfcommon/update_track:
           <<: *ignore_break_glass_deploy_filters
@@ -414,24 +435,8 @@ workflows:
           requires:
             - test-master
             - build-ml-gateway-test
+            - vfcommon/monorepo_release
 
-      - vfcommon/monorepo_release:
-          <<: *slack-fail-post-step
-          sentry_project: creator-app
-          avoid_post_install_scripts: false
-          ssh_key: << pipeline.parameters.ssh-fingerprint >>
-          context: dev-test
-          requires:
-            - test
-            - test-master
-            - build-app-test
-            - build-admin-test
-            - build-showcase-test
-            - build-realtime-test
-            - build-ml-gateway-test
-          filters:
-            branches:
-              only: master
 
       - vfcommon/sync_branches:
           check_commit_message: "[bugfix]"

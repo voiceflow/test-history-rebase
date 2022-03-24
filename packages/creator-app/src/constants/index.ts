@@ -77,6 +77,7 @@ export enum NLPProvider {
   EINSTEIN = 'einstein',
   DIALOGFLOW_ES = 'diagflow-es',
   VF_CSV = 'vf-csv',
+  NUANCE_MIX = 'nuance-mix',
 }
 
 export const NLPProviderLabels = {
@@ -88,6 +89,7 @@ export const NLPProviderLabels = {
   [NLPProvider.EINSTEIN]: 'Salesforce Einstein',
   [NLPProvider.DIALOGFLOW_ES]: 'Dialogflow ES',
   [NLPProvider.VF_CSV]: 'Voiceflow CSV',
+  [NLPProvider.NUANCE_MIX]: 'Nuance Mix',
 };
 
 export const PERMISSIONS = [

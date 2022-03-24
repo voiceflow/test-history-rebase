@@ -471,6 +471,8 @@ workflows:
           context: dev-test
           monorepo_directory: ~/voiceflow
           image_repo: << pipeline.parameters.container-image-url-ml-gateway >>
+          force_execute: << pipeline.parameters.build-backend >>
+          package: ml-gateway
           build_context: packages/ml-gateway
           dockerfile: "Dockerfile.e2e"
           image_tag: "latest-master-e2e"
@@ -498,6 +500,8 @@ workflows:
           monorepo_directory: ~/voiceflow
           image_repo: << pipeline.parameters.container-image-url-realtime >>
           build_context: packages/realtime
+          force_execute: << pipeline.parameters.build-backend >>
+          package: realtime
           dockerfile: "Dockerfile.e2e"
           image_tag: "latest-master-e2e"
           requires:

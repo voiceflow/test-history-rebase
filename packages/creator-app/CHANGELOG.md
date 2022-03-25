@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.670.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.670.2...@voiceflow/creator-app@1.670.3) (2022-03-25)
+
+
+### Bug Fixes
+
+* improve variable state scrolling style (VF-3174) ([#5249](https://github.com/voiceflow/creator-app/issues/5249)) ([941e17a](https://github.com/voiceflow/creator-app/commit/941e17a1eb04f6f913b65aa65ec54e754f83be16))
+
+
+
+
+
 ## [1.670.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.670.1...@voiceflow/creator-app@1.670.2) (2022-03-25)
 
 

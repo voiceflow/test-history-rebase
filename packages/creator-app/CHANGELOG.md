@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.670.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.669.0...@voiceflow/creator-app@1.670.0) (2022-03-25)
+
+
+### Features
+
+* migrate IMM url system to Quickview (VF-000) ([#5245](https://github.com/voiceflow/creator-app/issues/5245)) ([764e7f4](https://github.com/voiceflow/creator-app/commit/764e7f452a33dc056321e43620915d3c1e0b9e0f))
+
+
+
+
+
 # [1.669.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.668.0...@voiceflow/creator-app@1.669.0) (2022-03-25)
 
 

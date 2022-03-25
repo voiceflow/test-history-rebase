@@ -1,9 +1,11 @@
+import SimpleBar from 'simplebar-react';
+
 import { styled } from '@/hocs';
 
-const VariableListContainer = styled.div`
+const VariableListContainer = styled(SimpleBar)`
+  height: calc(100% - 83px);
   padding: 20px 24px;
   width: 100%;
-  overflow-y: scroll;
 `;
 
 export default VariableListContainer;

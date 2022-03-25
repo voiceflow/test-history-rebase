@@ -5,7 +5,7 @@ import Modal from '@/components/Modal';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useSelector } from '@/hooks';
+import { useLinkedState, useSelector } from '@/hooks';
 import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
 
@@ -18,18 +18,14 @@ const NLUQuickView: React.FC = () => {
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
   const slotsMap = useSelector(SlotV2.slotMapSelector);
 
-  const [modalTitle, setModalTitle] = React.useState('');
-
   const { title, activeTab, selectedID, canRenameItem, setIsActiveItemRename, onNameChange, nameChangeTransform } =
     React.useContext(NLUQuickViewContext);
+
+  const [modalTitle, setModalTitle] = useLinkedState(title ?? '');
 
   const showIntentForm = activeTab === InteractionModelTabType.INTENTS && intentsMap[selectedID];
   const showEntityForm = activeTab === InteractionModelTabType.SLOTS && slotsMap[selectedID];
   const showVariableForm = activeTab === InteractionModelTabType.VARIABLES;
-
-  React.useEffect(() => {
-    setModalTitle(title);
-  }, [title]);
 
   return (
     <Modal

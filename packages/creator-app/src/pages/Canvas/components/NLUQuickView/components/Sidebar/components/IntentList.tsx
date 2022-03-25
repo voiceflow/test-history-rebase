@@ -1,5 +1,5 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { IconButton, IconButtonVariant, TippyTooltip } from '@voiceflow/ui';
-import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
@@ -8,14 +8,14 @@ import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useDispatch, useModals, useSelector } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
-import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
+import { useFilteredList, useOrderedIntents } from '../../../hooks';
 import { useSectionHooks } from '../hooks';
 import { SectionSection } from '.';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
 
-const IntentSection: React.FC<SectionProps> = ({
+const IntentList: React.FC<SectionProps> = ({
   setIsActiveItemRename,
   isActiveItemRename,
   setSearchLength,
@@ -27,30 +27,22 @@ const IntentSection: React.FC<SectionProps> = ({
   const { open: openIntentCreate } = useModals(ModalType.INTENT_CREATE);
   const { onRenameIntent, nameChangeTransform, activeTab } = React.useContext(NLUQuickViewContext);
 
-  const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
+  const allIntents = useSelector(IntentV2.allIntentsSelector);
   const allCustomIntentsMap = useSelector(IntentV2.customIntentMapSelector);
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.INTENTS, [activeTab]);
 
   const deleteIntent = useDispatch(Intent.deleteIntent);
 
-  const sortedCustomIntents = React.useMemo(
-    () => _sortBy(allCustomIntents, isCustomizableBuiltInIntent, (intent) => intent.name.toLowerCase()),
-    [allCustomIntents]
-  );
+  const { sortedIntents } = useOrderedIntents();
+
+  const filteredList = useFilteredList(search, sortedIntents) as Realtime.Intent[];
 
   useSectionHooks({
     setSearchLength,
-    listLength: allCustomIntents.length,
+    listLength: allIntents.length,
     isActiveTab,
-    list: sortedCustomIntents,
     map: allCustomIntentsMap,
   });
-
-  const filteredCustomIntents = React.useMemo(() => {
-    return sortedCustomIntents.filter((intent) => {
-      return intent.name.includes(search.trim());
-    });
-  }, [search, sortedCustomIntents]);
 
   const onDeleteIntent = (id: string) => {
     deleteIntent(id);
@@ -67,7 +59,7 @@ const IntentSection: React.FC<SectionProps> = ({
   return (
     <SectionSection
       onClick={() => setActiveTab(InteractionModelTabType.INTENTS)}
-      isExpanded={isActiveTab && !!filteredCustomIntents.length}
+      isExpanded={isActiveTab && !!filteredList.length}
       header="Intents"
       forceDividers
       headerToggle
@@ -81,10 +73,10 @@ const IntentSection: React.FC<SectionProps> = ({
         )
       }
     >
-      {filteredCustomIntents.map((intent) => (
+      {filteredList.map((intent, index) => (
         <ListItem
           id={intent.id}
-          active={selectedID === intent.id}
+          active={selectedID ? selectedID === intent.id : index === 0}
           onClick={() => setSelectedItemID(intent.id)}
           key={intent.id}
           name={intent.name}
@@ -99,4 +91,4 @@ const IntentSection: React.FC<SectionProps> = ({
   );
 };
 
-export default IntentSection;
+export default IntentList;

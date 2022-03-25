@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { IconButton, IconButtonVariant, TippyTooltip, toast } from '@voiceflow/ui';
-import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
@@ -11,18 +11,20 @@ import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useDispatch, useSelector } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
+import { useFilteredList, useOrderedEntities } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
 import { useSectionHooks } from '../hooks';
 import { SectionSection } from './index';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
 
-const EntitiesSection: React.FC<SectionProps> = ({
+const EntitiesList: React.FC<SectionProps> = ({
   isActiveItemRename,
   setIsActiveItemRename,
   setSearchLength,
   selectedID,
   setSelectedItemID,
+  search,
   setActiveTab,
 }) => {
   const { onAddSlot } = useAddSlot();
@@ -37,7 +39,9 @@ const EntitiesSection: React.FC<SectionProps> = ({
   const deleteSlot = useDispatch(SlotDuck.deleteSlot);
   const removeIntentSlot = useDispatch(IntentDuck.removeIntentSlot);
 
-  const sortedSlots = React.useMemo(() => _sortBy(allSlots, (slot) => slot.name?.toLowerCase()), [allSlots]);
+  const { sortedSlots } = useOrderedEntities();
+  const filteredList = useFilteredList(search, sortedSlots) as Realtime.Slot[];
+
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.SLOTS, [activeTab]);
 
   const { onRenameSlot } = React.useContext(NLUQuickViewContext);
@@ -46,7 +50,6 @@ const EntitiesSection: React.FC<SectionProps> = ({
     setSearchLength,
     listLength: allSlots.length,
     isActiveTab,
-    list: sortedSlots,
     map: allSlotsMap,
   });
 
@@ -72,7 +75,7 @@ const EntitiesSection: React.FC<SectionProps> = ({
 
   return (
     <SectionSection
-      isExpanded={isActiveTab && !!sortedSlots.length}
+      isExpanded={isActiveTab && !!filteredList.length}
       isCollapsed={!isActiveTab}
       onClick={() => setActiveTab(InteractionModelTabType.SLOTS)}
       header="Entities"
@@ -86,10 +89,10 @@ const EntitiesSection: React.FC<SectionProps> = ({
         )
       }
     >
-      {sortedSlots.map((slot) => (
+      {filteredList.map((slot, index) => (
         <ListItem
           id={slot.id}
-          active={selectedID === slot.id}
+          active={selectedID ? selectedID === slot.id : index === 0}
           onClick={() => setSelectedItemID(slot.id)}
           key={slot.id}
           name={slot.name}
@@ -104,4 +107,4 @@ const EntitiesSection: React.FC<SectionProps> = ({
   );
 };
 
-export default EntitiesSection;
+export default EntitiesList;

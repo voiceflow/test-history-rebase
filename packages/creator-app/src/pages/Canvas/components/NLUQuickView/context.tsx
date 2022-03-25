@@ -1,14 +1,20 @@
 import { Utils } from '@voiceflow/common';
-import { toast } from '@voiceflow/ui';
+import { toast, useCachedValue, useDidUpdateEffect, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
+import { matchPath, useLocation } from 'react-router-dom';
 
-import { CUSTOM_SLOT_TYPE, InteractionModelTabType } from '@/constants';
+import { Path } from '@/config/routes';
+import { CUSTOM_SLOT_TYPE, InteractionModelTabType, ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as Router from '@/ducks/router';
+import { activeProjectIDSelector } from '@/ducks/session';
 import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { IMM_PERSISTED_STATE_KEY } from '@/pages/Canvas/components/InteractionModelModal';
+import { useOrderedEntities, useOrderedIntents, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
 import { generateSlotInput } from '@/pages/Canvas/components/SlotEdit/utils';
 import { applyPlatformIntentNameFormatting, formatIntentAndSlotName, isBuiltInIntent, validateIntentName } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
@@ -50,18 +56,47 @@ const DefaultState = {
 export const NLUQuickViewContext = React.createContext<NLUQuickViewProps>(DefaultState);
 
 export const NLUQuickViewProvider: React.FC = ({ children }) => {
-  const [activeTab, setActiveTab] = React.useState(InteractionModelTabType.INTENTS);
-  const [selectedID, setSelectedID] = React.useState('');
   const [title, setTitle] = React.useState('');
   const [isActiveItemRename, setIsActiveItemRename] = React.useState(false);
+  const activeProjectID = useSelector(activeProjectIDSelector)!;
+  const { isInStack, isOpened, open, close } = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
+
+  const [trackingEvents] = useTrackingEvents();
+
+  const location = useLocation();
 
   const patchSlot = useDispatch(SlotDuck.patchSlot);
   const patchIntent = useDispatch(Intent.patchIntent);
+  const goToQuickviewModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
+  const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
+
+  const { sortedSlots } = useOrderedEntities();
+  const { sortedIntents } = useOrderedIntents();
+  const { mergedVariables } = useOrderedVariables();
+
+  const [immPersistedState, setIMMPersistedState] = useSessionStorageState<{ tab: InteractionModelTabType; id: string | null }>(
+    `${IMM_PERSISTED_STATE_KEY}-${activeProjectID}`,
+    {
+      tab: InteractionModelTabType.INTENTS,
+      id: null,
+    }
+  );
+
+  const persistedStateRef = useCachedValue(immPersistedState);
+
+  const modelMatch = React.useMemo(() => {
+    return matchPath<{ modelType: InteractionModelTabType; modelEntityID?: string }>(location.pathname, {
+      path: [Path.CANVAS_MODEL_ENTITY, Path.CANVAS_MODEL],
+    });
+  }, [location.pathname]);
+
+  const activeTab = modelMatch?.params.modelType ?? InteractionModelTabType.INTENTS;
+  const activeID = modelMatch?.params.modelEntityID ? decodeURIComponent(modelMatch.params.modelEntityID) : '';
 
   const validateNewIntentName = React.useCallback(
     (intentName: string, id: string) =>
@@ -148,7 +183,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     // eslint-disable-next-line sonarjs/no-small-switch
     switch (activeTab) {
       case InteractionModelTabType.INTENTS:
-        return canRenameIntent(id || selectedID);
+        return canRenameIntent(id || activeID);
         break;
       case InteractionModelTabType.VARIABLES:
         return false;
@@ -159,10 +194,70 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     }
   };
 
+  const handleSetPersistState = (tab: InteractionModelTabType, id: string | null) => {
+    const persistedState = { tab, id };
+    setIMMPersistedState(persistedState);
+    persistedStateRef.current = persistedState;
+  };
+
+  const goToEntity = (tab: InteractionModelTabType, id: string) => {
+    handleSetPersistState(tab, id);
+    goToQuickviewModelEntity(tab, id);
+  };
+
+  const setSelectedTab = (tab: InteractionModelTabType) => {
+    let firstItemID = '';
+    switch (tab) {
+      case InteractionModelTabType.INTENTS:
+        firstItemID = sortedIntents[0]?.id ?? '';
+        break;
+      case InteractionModelTabType.SLOTS:
+        firstItemID = sortedSlots[0]?.id ?? '';
+        break;
+      case InteractionModelTabType.VARIABLES:
+        firstItemID = mergedVariables[0]?.id ?? '';
+        break;
+      default:
+        break;
+    }
+    goToEntity(tab, firstItemID);
+
+    trackingEvents.trackIMMNavigation({ tabName: tab });
+  };
+
+  const setSelectedID = React.useCallback(
+    (id: string) => {
+      goToEntity(activeTab, id);
+    },
+    [activeTab]
+  );
+
+  // When IMM gets opened with a variable click (with a target item)
+  React.useEffect(() => {
+    if (!!modelMatch && !isInStack) {
+      open();
+    } else if (!modelMatch && isInStack) {
+      close();
+    }
+  }, [!!modelMatch]);
+
+  useDidUpdateEffect(() => {
+    const visibleAndInStack = isInStack && isOpened;
+    if (visibleAndInStack && !modelMatch) {
+      const persistedState = persistedStateRef.current;
+      const { tab: persistedTab, id: persistedID } = persistedState;
+      if (persistedTab && persistedID) {
+        goToQuickviewModelEntity(persistedTab, persistedID);
+      }
+    } else if (!isInStack && modelMatch) {
+      goToCurrentCanvas();
+    }
+  }, [isOpened, isInStack]);
+
   const value: NLUQuickViewProps = {
     activeTab,
-    setActiveTab,
-    selectedID,
+    setActiveTab: setSelectedTab,
+    selectedID: activeID,
     setSelectedID,
     title,
     setTitle,

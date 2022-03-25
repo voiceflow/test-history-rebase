@@ -26,12 +26,7 @@ import ConnectGoogleModal from '@/modals/ConnectGoogleModal';
 import ChangeEmailModal from '@/pages/Account/components/ChangeEmailModal';
 import ChangePasswordModal from '@/pages/Account/components/ChangePasswordModal';
 import ProfileNameModal from '@/pages/Account/components/ProfileNameModal';
-import CreateEntityModal from '@/pages/Canvas/components/EntityModalsV2/CreateModal';
-import EditEntityModal from '@/pages/Canvas/components/EntityModalsV2/EditModal';
 import CreateIntentModal from '@/pages/Canvas/components/IntentModalsV2/CreateModal';
-import EditIntentModal from '@/pages/Canvas/components/IntentModalsV2/EditModal';
-import NLUQuickView from '@/pages/Canvas/components/NLUQuickView';
-import CreateVariableModal from '@/pages/Canvas/components/VariableModalsV2/CreateModal';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import TagManagerModal from '@/pages/Conversations/components/TagManagerModal';
 import ImportModal from '@/pages/Dashboard/components/ImportModal';
@@ -69,12 +64,7 @@ const App: React.FC = () => (
     <LoadingModal />
     <TagManagerModal />
     <CreateIntentModal />
-    <EditIntentModal />
-    <CreateVariableModal />
 
-    <CreateEntityModal />
-    <EditEntityModal />
-    <NLUQuickView />
     <VariableStatesManagerModal />
     <VariableStateEditorModal />
 

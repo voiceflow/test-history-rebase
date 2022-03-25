@@ -1,30 +1,22 @@
 import { IconButton, IconButtonVariant, TippyTooltip } from '@voiceflow/ui';
-import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
+import { VariableItem } from '@/components/SlateEditable/editor';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
-import * as DiagramV2 from '@/ducks/diagramV2';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
-import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useModals, useSelector } from '@/hooks';
+import { useDispatch, useModals } from '@/hooks';
 import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/constants';
-import { Variable } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/types';
-import { addPrefix } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/utils';
 import ListItem from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/components/ListItem';
 import { useSectionHooks } from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
-import { getPlatformGlobalVariables } from '@/utils/globalVariables';
+import { useFilteredList, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
 import { SectionSection } from '.';
 import { SectionProps } from './types';
 
-const createVariablesList = (type: VariableType, variables: string[]) =>
-  variables.map((variable) => ({ id: addPrefix(type, variable), name: variable, type }));
-
-const VariablesSection: React.FC<SectionProps> = ({ search, setSearchLength, selectedID, setSelectedItemID, setActiveTab }) => {
+const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, selectedID, setSelectedItemID, setActiveTab }) => {
   const { activeTab } = React.useContext(NLUQuickViewContext);
 
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.VARIABLES, [activeTab]);
@@ -34,33 +26,14 @@ const VariablesSection: React.FC<SectionProps> = ({ search, setSearchLength, sel
   const removeGlobalVariable = useDispatch(Version.removeGlobalVariable);
   const removeVariableFromDiagram = useDispatch(Diagram.removeActiveDiagramVariable);
 
-  const localVariables = useSelector(DiagramV2.active.localVariablesSelector);
-  const globalVariables = useSelector(VersionV2.active.globalVariablesSelector);
-  const platform = useSelector(ProjectV2.active.platformSelector);
+  const { mergedVariables, mergedVariablesMap } = useOrderedVariables();
 
-  const [mergedVariables, mergedVariablesMap] = React.useMemo(() => {
-    const variables = {
-      [VariableType.LOCAL]: localVariables,
-      [VariableType.GLOBAL]: globalVariables,
-      [VariableType.BUILT_IN]: getPlatformGlobalVariables(platform),
-    };
-
-    const list = Object.entries(variables).flatMap(([type, variables]) =>
-      _sortBy(createVariablesList(type as VariableType, variables), (variable) => variable.name.toLowerCase())
-    );
-
-    const map = list.reduce<Record<string, Variable>>((acc, item) => Object.assign(acc, { [item.id]: item }), {});
-
-    const nameMap = list.reduce<Record<string, Variable>>((acc, item) => Object.assign(acc, { [item.name]: item }), {});
-
-    return [list, map, nameMap];
-  }, [localVariables, globalVariables, localVariables]);
+  const filteredList = useFilteredList(search, mergedVariables) as VariableItem[];
 
   useSectionHooks({
     setSearchLength,
     listLength: mergedVariables.length,
     isActiveTab,
-    list: mergedVariables,
     map: mergedVariablesMap,
   });
 
@@ -74,12 +47,6 @@ const VariablesSection: React.FC<SectionProps> = ({ search, setSearchLength, sel
       }
     });
   }, [justAddedVariables, mergedVariables]);
-
-  const filteredVariables = React.useMemo(() => {
-    return mergedVariables.filter((variable) => {
-      return variable.name.includes(search.trim());
-    });
-  }, [search, mergedVariables]);
 
   const onDeleteVariable = React.useCallback(
     (variableID: string) => {
@@ -106,7 +73,7 @@ const VariablesSection: React.FC<SectionProps> = ({ search, setSearchLength, sel
 
   return (
     <SectionSection
-      isExpanded={isActiveTab && !!filteredVariables.length}
+      isExpanded={isActiveTab && !!filteredList.length}
       onClick={() => setActiveTab(InteractionModelTabType.VARIABLES)}
       isCollapsed={!isActiveTab}
       header="Variables"
@@ -120,10 +87,10 @@ const VariablesSection: React.FC<SectionProps> = ({ search, setSearchLength, sel
         )
       }
     >
-      {filteredVariables.map((variable) => (
+      {filteredList.map((variable, index) => (
         <ListItem
           id={variable.id}
-          active={selectedID === variable.id}
+          active={selectedID ? selectedID === variable.id : index === 0}
           onClick={() => setSelectedItemID(variable.id)}
           key={variable.id}
           name={variable.name}
@@ -135,4 +102,4 @@ const VariablesSection: React.FC<SectionProps> = ({ search, setSearchLength, sel
   );
 };
 
-export default VariablesSection;
+export default VariablesList;

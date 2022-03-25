@@ -24,13 +24,7 @@ export const useAddSlot = () => {
     (name: string) =>
       new Promise<Realtime.Slot | null>((resolve) => {
         if (IMM_MODALS_V2.isEnabled) {
-          const createNewSlot = async () => {
-            const id = Utils.id.cuid.slug();
-            await createSlot(id, { id, type: null, name, color: undefined, inputs: [] });
-
-            openEntityCreateModal({ name, onCreate: resolve, onClose: () => resolve(null) });
-          };
-          createNewSlot();
+          openEntityCreateModal({ name, onCreate: resolve, onClose: () => resolve(null) });
           return;
         }
         toggleSlotEdit(

@@ -19,6 +19,11 @@ const EntitySelectDropdown: React.FC = () => {
     // TODO: Open NLU manager
   };
 
+  const handleSelect = (slotID: string | null) => {
+    close();
+    slotID && open({ id: slotID });
+  };
+
   const footerComponent = nluManager.isEnabled
     ? () => <NestedMenuComponents.FooterActionContainer onClick={onOpenNLU}>Open NLU Manager</NestedMenuComponents.FooterActionContainer>
     : null;
@@ -29,7 +34,7 @@ const EntitySelectDropdown: React.FC = () => {
         value={null as Nullish<string>}
         options={options}
         minWidth={false}
-        onSelect={Utils.functional.chain((slotID: string | null) => slotID && open({ id: slotID }), close)}
+        onSelect={handleSelect}
         placement="left-start"
         isDropdown
         searchable

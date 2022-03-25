@@ -7,10 +7,10 @@ import { useFeature } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 
 import { Container, NLUButton, SearchInput, SectionsContainer } from './components';
-import EntitiesSection from './components/EntitiesSection';
-import IntentSection from './components/IntentSection';
+import EntitiesList from './components/EntitiesList';
+import IntentList from './components/IntentList';
 import { SectionProps } from './components/types';
-import VariablesSection from './components/VariablesSection';
+import VariablesList from './components/VariablesList';
 
 const SearchPlaceholders = {
   [InteractionModelTabType.INTENTS]: 'intent',
@@ -56,9 +56,9 @@ const Sidebar: React.FC = () => {
         iconProps={{ color: '#8da2b5', size: 14 }}
       />
       <SectionsContainer activeTab={activeTab}>
-        <IntentSection {...sectionProps} />
-        <EntitiesSection {...sectionProps} />
-        <VariablesSection {...sectionProps} />
+        <IntentList {...sectionProps} />
+        <EntitiesList {...sectionProps} />
+        <VariablesList {...sectionProps} />
       </SectionsContainer>
       {nluManager.isEnabled && (
         <NLUButton>

@@ -1,15 +1,21 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { FeatureFlag } from '@/config/features';
 import { DiagramLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
-import { useRegistration } from '@/hooks';
+import { useFeature, useRegistration } from '@/hooks';
 import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
+import CreateEntityModal from '@/pages/Canvas/components/EntityModalsV2/CreateModal';
+import EditEntityModal from '@/pages/Canvas/components/EntityModalsV2/EditModal';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
+import EditIntentModal from '@/pages/Canvas/components/IntentModalsV2/EditModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
+import NLUQuickView from '@/pages/Canvas/components/NLUQuickView';
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
+import CreateVariableModal from '@/pages/Canvas/components/VariableModalsV2/CreateModal';
 import { SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import * as Query from '@/utils/query';
 
@@ -32,6 +38,8 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const engine = useEngine();
   // using history to do not rerender on the every location change
   const history = useHistory();
+
+  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
 
   const selectionSetTargetsContext = React.useContext(SelectionSetTargetsContext);
 
@@ -77,12 +85,19 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
         )}
       </Container>
 
+      <EditIntentModal />
+      <CreateVariableModal />
+
+      <CreateEntityModal />
+      <EditEntityModal />
+
+      {IMM_MODALS_V2.isEnabled ? <NLUQuickView /> : <InteractionModelModal />}
+
       <ShortcutsModal />
       <APLPreviewModal />
       <SlotEditModal />
       <BulkImportSlots />
       <BulkImportUtterances />
-      <InteractionModelModal />
       <ExportModelModal />
     </CanvasProviders>
   );

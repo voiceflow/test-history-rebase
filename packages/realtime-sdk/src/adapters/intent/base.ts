@@ -32,15 +32,17 @@ export const baseIntentSlotSanitizer = ({
 });
 
 export const baseIntentAdapter = createAdapter<BaseModels.Intent, Omit<BaseIntent, 'slots'>, [{ platform: VoiceflowConstants.PlatformType }]>(
-  ({ key, name, inputs = [] }, { platform }) => ({
+  ({ key, name, noteID, inputs = [] }, { platform }) => ({
     id: key,
     name,
+    noteID,
     inputs: inputs.map(intentInputSanitizer),
     platform,
   }),
-  ({ id, name, inputs }) => ({
+  ({ id, name, noteID, inputs }) => ({
     key: id,
     name,
+    noteID,
     inputs: inputs.map(intentInputSanitizer),
   })
 );

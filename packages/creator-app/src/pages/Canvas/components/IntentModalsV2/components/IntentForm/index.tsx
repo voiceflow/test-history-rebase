@@ -3,8 +3,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { FlexCenter, SvgIcon, useOnScreen } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Intent from '@/ducks/intent';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import BuiltInPrompt from '@/pages/Canvas/components/IntentModalsV2/components/components/BuiltInPrompt';
 import { FadeDownContainer } from '@/styles/animations';
 import { isBuiltInIntent } from '@/utils/intent';
@@ -22,8 +23,9 @@ const IntentForm: React.FC<{ intent: Realtime.Intent; withDescriptionSection?: b
 }) => {
   const entitiesVisibleRef = React.useRef<HTMLDivElement>(null);
   const slotsMap = useSelector(SlotV2.slotMapSelector);
-  const [description, setDescription] = React.useState('');
   const isBuiltIn = isBuiltInIntent(intent.id);
+
+  const patchIntent = useDispatch(Intent.patchIntent, intent.id);
 
   const [showUtteranceSection, setShowUtteranceSection] = React.useState(false);
 
@@ -54,7 +56,9 @@ const IntentForm: React.FC<{ intent: Realtime.Intent; withDescriptionSection?: b
           <EntitiesSection entitiesVisibleRef={entitiesVisibleRef} slots={usedSlots} intent={intent} />
         </>
       )}
-      {withDescriptionSection && <DescriptionSection handleDescriptionChange={setDescription} description={description} />}
+      {withDescriptionSection && (
+        <DescriptionSection intentID={intent.id} noteID={intent.noteID} onCreateNote={(noteID) => patchIntent({ noteID })} />
+      )}
 
       {!hideScrollTo && !!usedSlots.length && (
         <FlexCenter style={{ position: 'sticky', bottom: '20px' }}>

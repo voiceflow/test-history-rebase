@@ -1,4 +1,4 @@
-import { NonNullishRecord } from '@voiceflow/common';
+import { NonNullishRecord, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
@@ -21,22 +21,19 @@ const activeWorkspaceCommentingMembersSelector = createSelector(
 );
 
 export interface MentionEditorProps {
-  onChange: (value: string, mentions: number[]) => void;
   value?: string;
-  placeholder: string;
-  inputProps?: Omit<MentionsInputProps, 'children'>;
   onBlur?: () => void;
   height?: number;
+  onChange: (value: string, mentions: number[]) => void;
+  inputProps?: Omit<MentionsInputProps, 'children'>;
+  placeholder: string;
 }
 
 export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, value = '', placeholder, inputProps, height }) => {
   const members = useSelector(activeWorkspaceCommentingMembersSelector);
 
-  const onValueChange: OnChangeHandlerFunc = (e, _, __, mentions) =>
-    onChange(
-      e.target.value,
-      mentions.map(({ id }) => parseInt(id, 10))
-    );
+  const onValueChange: OnChangeHandlerFunc = ({ target }, _, __, mentions) =>
+    onChange(target.value, Utils.array.unique(mentions.map(({ id }) => parseInt(id, 10))));
 
   const mentionsData = React.useMemo(
     () => members.map((member) => ({ id: member.creator_id, display: `@${formatNameToMention(member.name)}` })),

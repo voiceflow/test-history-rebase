@@ -5,6 +5,7 @@ import buildDiagramActionControls from './diagram';
 import buildIntentActionControls from './intent';
 import buildLinkActionControls from './link';
 import buildNodeActionControls from './node';
+import buildNoteActionControls from './note';
 import buildPortActionControls from './port';
 import buildProductActionControls from './product';
 import buildProjectActionControls from './project';
@@ -28,6 +29,7 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildVersionActionControls(options),
   ...buildWorkspaceActionControls(options),
   ...buildVariableStateActionControls(options),
+  ...buildNoteActionControls(options),
 });
 
 export default buildActions;

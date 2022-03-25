@@ -1,0 +1,15 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
+
+import { AbstractVersionResourceControl } from '@/actions/version/utils';
+
+class RemoveNote extends AbstractVersionResourceControl<Realtime.note.RemovePayload> {
+  protected actionCreator = Realtime.note.remove;
+
+  protected process = async (ctx: Context, { payload }: Action<Realtime.note.RemovePayload>) => {
+    await this.services.note.delete(ctx.data.creatorID, payload.versionID, payload.noteID);
+  };
+}
+
+export default RemoveNote;

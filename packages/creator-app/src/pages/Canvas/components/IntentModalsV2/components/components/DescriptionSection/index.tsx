@@ -1,16 +1,18 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Box, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
 import Divider from '@/components/Divider';
-import MentionEditor from '@/components/MentionEditor';
+import NoteEditor from '@/components/NoteEditor';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 
 interface DescriptionSectionProps {
-  handleDescriptionChange: (data: string) => void;
-  description: string;
+  noteID?: string;
+  intentID: string;
+  onCreateNote: (noteID: string) => void;
 }
 
-const DescriptionSection: React.FC<DescriptionSectionProps> = ({ handleDescriptionChange, description }) => {
+const DescriptionSection: React.FC<DescriptionSectionProps> = ({ noteID, intentID, onCreateNote }) => {
   const [isCollapsed, toggleIsCollapsed] = useToggle(true);
 
   const headerStyling = { paddingBottom: isCollapsed ? undefined : '16px' };
@@ -28,9 +30,17 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({ handleDescripti
         customHeaderStyling={headerStyling}
       >
         <Box paddingBottom={14} minHeight={100}>
-          <MentionEditor onChange={handleDescriptionChange} placeholder="Add intent description, or @mention" value={description} height={100} />
+          <NoteEditor<BaseModels.IntentNote>
+            id={noteID}
+            type={BaseModels.NoteType.INTENT}
+            meta={{ intentID }}
+            height={100}
+            onUpsert={(note) => !noteID && onCreateNote(note.id)}
+            placeholder="Add intent description, or @mention"
+          />
         </Box>
       </UncontrolledSection>
+
       {isCollapsed && <Divider style={{ margin: 0, background: '#eaeff4' }} />}
     </>
   );

@@ -11,6 +11,7 @@ import feature, * as Feature from '@/ducks/feature';
 import integrationUsers, * as IntegrationUsers from '@/ducks/integration';
 import intentV2, * as IntentV2 from '@/ducks/intentV2';
 import modal, * as Modal from '@/ducks/modal';
+import note, * as Note from '@/ducks/note';
 import notifications, * as Notifications from '@/ducks/notifications';
 import productV2, * as ProductV2 from '@/ducks/productV2';
 import projectListV2, * as ProjectListV2 from '@/ducks/projectListV2';
@@ -65,6 +66,7 @@ const getCombinedReducer = (history: History) =>
     [VersionV2.STATE_KEY]: versionV2,
     [ReportTag.STATE_KEY]: reportTag,
     [Transcript.STATE_KEY]: transcript,
+    [Note.STATE_KEY]: note,
   });
 
 const createReducer = (history: History) => {

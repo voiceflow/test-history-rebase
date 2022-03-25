@@ -5,6 +5,7 @@ export { default as diagramAdapter } from './diagram';
 export { default as getProjectTypeIntentAdapter } from './intent';
 export * as Intent from './intent';
 export { default as memberAdapter } from './member';
+export { default as noteAdapter } from './note';
 export { default as productAdapter } from './product';
 export { default as projectAdapter } from './project';
 export { default as projectListAdapter } from './projectList';

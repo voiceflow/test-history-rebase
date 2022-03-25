@@ -33,6 +33,7 @@ export interface BaseIntent {
   name: string;
   slots: Normalized<BaseIntentSlot>;
   inputs: IntentInput[];
+  noteID?: string;
   platform: VoiceflowConstants.PlatformType;
 }
 

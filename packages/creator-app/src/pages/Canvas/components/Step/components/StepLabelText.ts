@@ -22,6 +22,8 @@ const StepLabelText = styled.div<StepLabelTextProps>`
       white-space: normal;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: ${lineClamp};
+      overflow: hidden;
+      word-break: break-word;
     `}
 
 

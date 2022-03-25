@@ -1,7 +1,8 @@
-import EditableText from '@/components/EditableText';
+import { Input, InputVariant } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
-const EditableTextInput = styled(EditableText)`
+const EditableTextInput = styled(Input).attrs({ variant: InputVariant.INLINE })`
   height: 22px;
   margin-top: 4px;
   max-width: 100%;

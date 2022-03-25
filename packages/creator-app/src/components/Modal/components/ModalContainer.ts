@@ -22,7 +22,7 @@ const ModalContainer = styled.section<ModalContainerProps>`
   max-height: calc(100% - 56px);
   background: #fff;
   max-width: ${({ maxWidth = 500 }) => maxWidth}px;
-  max-width: ${({ maxHeight }) =>
+  max-height: ${({ maxHeight }) =>
     maxHeight &&
     css`
       ${maxHeight}px

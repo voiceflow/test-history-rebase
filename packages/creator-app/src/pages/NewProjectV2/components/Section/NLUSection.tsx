@@ -4,6 +4,7 @@ import React from 'react';
 import Section, { SectionVariant } from '@/components/Section';
 
 import { NLUSelect } from '../Select';
+import { NLUSectionHeader } from './components';
 
 interface NLUSectionProps {
   nluValue: VoiceflowConstants.PlatformType | undefined;
@@ -12,7 +13,7 @@ interface NLUSectionProps {
 
 const NLUSection: React.FC<NLUSectionProps> = ({ nluValue, onNluSelect }) => {
   return (
-    <Section header="NLU" variant={SectionVariant.TERTIARY}>
+    <Section header={<NLUSectionHeader />} variant={SectionVariant.TERTIARY}>
       <NLUSelect value={nluValue} onSelect={onNluSelect} />
     </Section>
   );

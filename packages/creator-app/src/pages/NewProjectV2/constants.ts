@@ -1,4 +1,12 @@
+import { AlexaConstants } from '@voiceflow/alexa-types';
+import { Nullish } from '@voiceflow/common';
+import { DFESConstants } from '@voiceflow/google-dfes-types';
+import { GoogleConstants } from '@voiceflow/google-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+
+import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
+import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
+import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES } from '@/pages/Publish/Google/utils';
 
 export enum PlatformTypeUpcoming {
   WHATSAPP = 'whatsapp',
@@ -13,6 +21,32 @@ export enum PlatformTypeUpcoming {
   NUANCE_MIX = 'nuance_mix',
 }
 
+export type AnyLanguage = GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale;
+export type AnyLocale = AlexaConstants.Locale;
+
+export interface LanguageSelectOption {
+  value: AnyLanguage;
+  name: string;
+}
+
+export interface LanguageSelectProps {
+  options: LanguageSelectOption[];
+  placeholder: string;
+  getOptionKey: (option: LanguageSelectOption) => string;
+  getOptionValue: (option: Nullish<LanguageSelectOption>) => string | VoiceflowConstants.Locale;
+  getOptionLabel: (value: Nullish<string>) => string;
+  renderOptionLabel: (option: LanguageSelectOption) => string;
+}
+
+export const defaultLanguageSelectProps: LanguageSelectProps = {
+  options: GENERAL_LOCALES_OPTIONS,
+  placeholder: 'Locale',
+  getOptionKey: (option) => option.value,
+  getOptionValue: (option) => option?.value || VoiceflowConstants.Locale.EN_US,
+  getOptionLabel: (value) => GENERAL_LOCALE_NAME_MAP[value as VoiceflowConstants.Locale] ?? '',
+  renderOptionLabel: (option) => option.name,
+};
+
 export interface PlatformAndProjectTypeMeta {
   name: string;
   description?: string;
@@ -20,6 +54,7 @@ export interface PlatformAndProjectTypeMeta {
   localesText?: string;
   disabled: boolean;
   type?: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType | PlatformTypeUpcoming;
+  languageSelectProps?: LanguageSelectProps;
 }
 
 export const getPlatformOrProjectTypeMeta: Partial<
@@ -54,6 +89,14 @@ export const getPlatformOrProjectTypeMeta: Partial<
     localesText: 'Language',
     disabled: false,
     type: VoiceflowConstants.PlatformType.GOOGLE,
+    languageSelectProps: {
+      options: FORMATTED_LOCALES,
+      placeholder: 'Language',
+      getOptionKey: (option) => option.value,
+      getOptionValue: (option) => option?.value || '',
+      getOptionLabel: (value) => (value && FORMATTED_GOOGLE_LOCALES_LABELS[value]) || '',
+      renderOptionLabel: (option) => option.name,
+    },
   },
   [VoiceflowConstants.PlatformType.VOICEFLOW]: {
     name: 'Voiceflow (default)',
@@ -68,6 +111,14 @@ export const getPlatformOrProjectTypeMeta: Partial<
     localesText: 'Language',
     disabled: false,
     type: VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
+    languageSelectProps: {
+      options: FORMATTED_DIALOGFLOW_LOCALES,
+      placeholder: 'Language',
+      getOptionKey: (option) => option.value,
+      getOptionValue: (option) => option?.value || '',
+      getOptionLabel: (value) => (value && FORMATTED_DIALOGFLOW_LOCALES_LABELS[value]) || '',
+      renderOptionLabel: (option) => option.name,
+    },
   },
   /* UPCOMING */
   [PlatformTypeUpcoming.WHATSAPP]: {

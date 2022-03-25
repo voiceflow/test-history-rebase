@@ -1,4 +1,3 @@
-import { ModalBodyContainer } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal from '@/components/Modal';
@@ -9,10 +8,8 @@ import NewProject from '.';
 
 const NewProjectModal: React.FC = () => {
   return (
-    <Modal id={ModalType.PROJECT_CREATE_MODAL} className={`${ClassName.MODAL}--payment`} maxWidth={545} withHeader title="Create Assistant">
-      <ModalBodyContainer fullWidth>
-        <NewProject />
-      </ModalBodyContainer>
+    <Modal id={ModalType.PROJECT_CREATE_MODAL} className={`${ClassName.MODAL}--payment`} maxWidth={450} headerBorder title="Create Assistant">
+      <NewProject />
     </Modal>
   );
 };

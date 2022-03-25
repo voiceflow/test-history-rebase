@@ -29,3 +29,5 @@ export const SectionTitle = styled.div`
   font-size: 15px;
   font-weight: 600;
 `;
+
+export { default as NLUSectionHeader } from './NLUSectionHeader';

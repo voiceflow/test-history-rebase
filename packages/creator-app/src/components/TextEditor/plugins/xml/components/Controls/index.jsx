@@ -102,10 +102,13 @@ export default function Controls({
             autoWidth={false}
             placement="bottom-end"
             borderLess
+            isDropdown
             searchable
             inputProps={{ styles: { color: '#62778c' } }}
             getOptionKey={(option) => option.name}
             getOptionLabel={(value) => value?.name}
+            inDropdownSearch
+            alwaysShowCreate
             renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused, optionsPath }) => (
               <SelectOption
                 tag={tags[option.tag]}

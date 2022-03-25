@@ -66,7 +66,7 @@ function MenuOptions({
 
     const sharedProps = {
       key,
-      ref: onItemRef?.(index),
+      ref: isFocused ? onItemRef?.(index) : null,
       // to prevent parent popper from closing onSelect
       onClick: stopImmediatePropagation(
         () => (!isBaseMenuItem(option) || !option.disabled) && onSelect(getOptionValue(option), path, updatePosition)
@@ -102,7 +102,12 @@ function MenuOptions({
           <Manager key={key}>
             <Reference>
               {({ ref }) => (
-                <SelectItem ref={composeRef(ref, onItemRef?.(index))} isFocused={isFocused} withSubLevel onMouseEnter={() => onFocusItem?.(index)}>
+                <SelectItem
+                  ref={composeRef(ref, isFocused ? onItemRef?.(index) : null)}
+                  isFocused={isFocused}
+                  withSubLevel
+                  onMouseEnter={() => onFocusItem?.(index)}
+                >
                   {renderOptionLabel(option, searchLabel, getOptionLabel, getOptionValue, {
                     isFocused,
                     optionsPath: path,

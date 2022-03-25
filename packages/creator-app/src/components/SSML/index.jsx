@@ -135,7 +135,7 @@ const SSML = (
         addOptions: platformSSMLMeta.addOptions,
         historyTooltip: 'Recent Effects',
         newLinesAllowed: true,
-        tagsSearchPlaceholder: 'Search effects',
+        tagsSearchPlaceholder: 'effects',
         additionalControlsRenderer: additionalXMLControlsRenderer,
       },
       [withVariablesPlugin ? PluginType.VARIABLES : null]: {

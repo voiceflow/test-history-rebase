@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/common';
+import { CustomSlot, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant, useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
@@ -18,7 +18,7 @@ const CreateModal: React.FC = () => {
   const createSlot = useDispatch(Slot.createSlot);
   const cache = useCache<{ created: boolean }>({ created: false });
 
-  const [type, setType] = React.useState('');
+  const [type, setType] = React.useState(CustomSlot.type);
   const [name, setName] = useLinkedState(data.name ?? '');
   const [values, setValues] = React.useState<Realtime.SlotInput[]>([]);
 
@@ -34,7 +34,7 @@ const CreateModal: React.FC = () => {
     if (!isInStack) return undefined;
 
     return () => {
-      setType('');
+      setType(CustomSlot.type);
       setName('');
       setValues([]);
 

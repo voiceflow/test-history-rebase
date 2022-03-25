@@ -20,7 +20,7 @@ const TypeSection: React.FC<TypeSectionProps> = ({ type, onChangeType }) => {
       customContentStyling={{ paddingBottom: '24px' }}
     >
       <Flex>
-        <SlotSelect value={type} onChange={onChangeType} inDropdownSearch alwaysShowCreate />
+        <SlotSelect value={type} onChange={onChangeType} />
         <Box ml={16}>Color Section Area</Box>
       </Flex>
     </Section>

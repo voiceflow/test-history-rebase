@@ -12,7 +12,7 @@ import MenuHeader from '../MenuHeader';
 // eslint-disable-next-line import/no-cycle
 import MenuOptions from '../MenuOptions';
 import { GetOptionKey, MenuItemGrouped, MenuItemMultilevel, MenuItemWithID } from '../types';
-import { isBaseMenuItem, isGroupedOptions, isMenuItemGrouped, isMenuItemMultilevel } from '../utils';
+import { isBaseMenuItem, isGroupedOptions, isMenuItemGrouped, isMenuItemMultilevel, isUIOnlyMenuItemOption } from '../utils';
 import { MenuPopoverContainer } from './components';
 import {
   NestedMenuCreatableProps,
@@ -131,17 +131,26 @@ function BaseNestedMenu({
   };
 
   const onFocusItem = (index: number) => {
-    let nextIndex = index >= options.length ? 0 : index;
-    nextIndex = nextIndex < 0 ? options.length - 1 : nextIndex;
+    let nextIndex = index;
 
-    const nextFocusedOption = options[nextIndex];
+    const flatOptions = isGroupedOptions(!!grouped, options)
+      ? options.flatMap((option) => (isUIOnlyMenuItemOption(option) ? option : option.options ?? []))
+      : options;
+
+    if (index < 0) {
+      nextIndex = flatOptions.length - (1 - firstOptionIndex);
+    } else if (index > flatOptions.length - (1 - firstOptionIndex)) {
+      nextIndex = 0;
+    }
+
+    const nextFocusedOption = options[Math.max(nextIndex - firstOptionIndex, 0)];
 
     if (isBaseMenuItem(nextFocusedOption) && (nextFocusedOption.disabled || nextFocusedOption.vfUIOnly)) return;
 
     setChildFocusItemIndex(null);
-    onFocusOption?.(index);
+    onFocusOption?.(nextIndex);
 
-    if (index === 0) {
+    if (nextIndex === 0) {
       createInputRef.current?.focus();
     } else {
       createInputRef.current?.blur();

@@ -184,7 +184,7 @@ function Select({
   showNotMatchedOptions,
   createInputPlaceholder,
 }: SelectInternalProps): React.ReactElement {
-  const optionLabel = searchLabelProp || String(getOptionLabel(value) ?? '') || '';
+  const optionLabel = isDropdown && searchable && inDropdownSearch ? '' : searchLabelProp || String(getOptionLabel(value) ?? '') || '';
 
   const inputRef = React.useRef<HTMLInputElement>(null);
   const inlineRef = React.useRef<HTMLInputElement>(null);
@@ -192,7 +192,7 @@ function Select({
   const [initialValueLabel] = React.useState(optionLabel);
   const [opened, setOpened] = React.useState(!!open);
   const [directMatch, setDirectMatch] = React.useState(false);
-  const [searchLabel, setSearchLabel] = React.useState(optionLabel);
+  const [searchLabel, setSearchLabel] = React.useState(isDropdown && searchable && inDropdownSearch ? '' : optionLabel);
   const [optionsToRender, setOptionsToRender] = React.useState(() => (renderOptionsFilter ? options.filter(renderOptionsFilter) : options));
   const [inputWrapperNode, setInputWrapperNode] = React.useState<Nullable<HTMLDivElement>>(null);
   const [focusedOptionIndex, setFocusedOptionIndex] = React.useState<Nullable<number>>(null);
@@ -322,22 +322,6 @@ function Select({
 
     setOpened(false);
     onClose?.();
-  });
-
-  const onFocusOption = usePersistFunction((index: number) => {
-    let nextIndex = index;
-
-    const flatOptions = isGroupedOptions(!!grouped, optionsToRender)
-      ? optionsToRender.flatMap((option) => (isUIOnlyMenuItemOption(option) ? option : option.options ?? []))
-      : optionsToRender;
-
-    if (index < 0) {
-      nextIndex = flatOptions.length - (1 - firstOptionIndex);
-    } else if (index > flatOptions.length - (1 - firstOptionIndex)) {
-      nextIndex = 0;
-    }
-
-    setFocusedOptionIndex(nextIndex);
   });
 
   const handleOnSearchLabelChange = (val: string, { isSelectEvent }: { isSelectEvent?: boolean } = {}) => {
@@ -475,7 +459,7 @@ function Select({
                       {renderTags()}
 
                       <TagsInput
-                        value={label || searchLabel}
+                        value={isDropdown ? label : searchLabel}
                         onBlur={Utils.functional.chain<[React.FocusEvent<HTMLElement>]>(() => !renderDropdown && setOpened(false), onBlur)}
                         hastags={hasOptions}
                         onClick={searchable ? onOpenMenu : undefined}
@@ -493,7 +477,7 @@ function Select({
                         {...inputProps}
                         ref={inputRef}
                         type="search"
-                        value={label || searchLabel}
+                        value={isDropdown ? label : searchLabel}
                         clearable={clearable}
                         autoComplete="off"
                       />
@@ -535,7 +519,7 @@ function Select({
 
       {inline && (
         <Portal>
-          <InlineInputValue ref={inlineRef}>{label || searchLabel || placeholder}</InlineInputValue>
+          <InlineInputValue ref={inlineRef}>{isDropdown ? label : searchLabel || placeholder}</InlineInputValue>
         </Portal>
       )}
 
@@ -559,7 +543,7 @@ function Select({
           renderEmpty={renderEmpty}
           isMultiLevel={isMultiLevel}
           getOptionKey={getOptionKey}
-          onFocusOption={onFocusOption}
+          onFocusOption={setFocusedOptionIndex}
           getOptionValue={getOptionValue}
           getOptionLabel={getOptionLabel}
           inputWrapperNode={inputWrapperNode}

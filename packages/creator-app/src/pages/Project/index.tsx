@@ -13,7 +13,6 @@ import { ExportProvider, PublishProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as RealtimeDuck from '@/ducks/realtime';
-import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { PlanRestrictionGate, ProjectLockGate, VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
@@ -54,9 +53,6 @@ const Project: React.FC = () => {
   const isOnlyViewer = useSelector(RealtimeDuck.isOnlyViewerSelector);
   const isDiagramRoute = useRouteMatch(DIAGRAM_ROUTES);
   const setPreviewing = useDispatch(UI.setPreviewingVersion);
-  const setActiveProjectID = useDispatch(Session.setActiveProjectID);
-  const setActiveVersionID = useDispatch(Session.setActiveVersionID);
-  const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
   const resetCreator = useDispatch(Creator.resetCreator);
   const resetCreatorV2 = useLocalDispatch(Realtime.creator.reset);
 
@@ -93,9 +89,6 @@ const Project: React.FC = () => {
 
   useTeardown(() =>
     batch(() => {
-      setActiveProjectID(null);
-      setActiveVersionID(null);
-      setActiveDiagramID(null);
       resetCreator();
       resetCreatorV2();
     })

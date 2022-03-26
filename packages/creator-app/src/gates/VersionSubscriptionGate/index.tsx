@@ -1,4 +1,5 @@
 import React from 'react';
+import { batch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import client from '@/client';
@@ -6,7 +7,7 @@ import LoadingGate from '@/components/LoadingGate';
 import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, useRouteVersionID, useSelector, useVersionSubscription } from '@/hooks';
+import { useDispatch, useRouteVersionID, useSelector, useTeardown, useVersionSubscription } from '@/hooks';
 
 import CommentingUpdates from './CommentingUpdates';
 import { ProjectReconnectGate } from './gates';
@@ -23,6 +24,9 @@ const VersionSubscriptionGate: React.FC = ({ children }) => {
 
   const [context, setContext] = React.useState<VersionContext | null>(null);
   const goToDashboard = useDispatch(Router.goToDashboard);
+  const setActiveProjectID = useDispatch(Session.setActiveProjectID);
+  const setActiveVersionID = useDispatch(Session.setActiveVersionID);
+  const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
 
   const isSubscribed = useVersionSubscription({ versionID, projectID: context?.projectID, workspaceID: context?.workspaceID }, [context], {
     disabled: !context,
@@ -40,6 +44,14 @@ const VersionSubscriptionGate: React.FC = ({ children }) => {
       goToDashboard();
     }
   }, [versionID]);
+
+  useTeardown(() =>
+    batch(() => {
+      setActiveProjectID(null);
+      setActiveVersionID(null);
+      setActiveDiagramID(null);
+    })
+  );
 
   if (!versionID) {
     return <Redirect to={Path.DASHBOARD} />;

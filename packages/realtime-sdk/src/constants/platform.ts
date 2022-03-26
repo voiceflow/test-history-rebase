@@ -8,6 +8,8 @@ export type NonDeprecatedPlatform =
   | VoiceflowConstants.PlatformType.VOICEFLOW
   | VoiceflowConstants.PlatformType.DIALOGFLOW_ES;
 
+export type PlatformProjectType = `${NonDeprecatedPlatform}:${VoiceflowConstants.ProjectType}`;
+
 const LEGACY_PLATFORM_TO_PROJECT_TYPE: {
   [key in VoiceflowConstants.PlatformType]?: { type: VoiceflowConstants.ProjectType; platform: NonDeprecatedPlatform };
 } = {
@@ -54,7 +56,6 @@ export const legacyPlatformToProjectType = (
 
   return { platform: platform as NonDeprecatedPlatform, type: type || VoiceflowConstants.ProjectType.VOICE };
 };
-
 const PROJECT_TYPE_TO_LEGACY_PLATFORM: {
   [key in `${VoiceflowConstants.PlatformType}:${VoiceflowConstants.ProjectType}`]?: VoiceflowConstants.PlatformType;
 } = {

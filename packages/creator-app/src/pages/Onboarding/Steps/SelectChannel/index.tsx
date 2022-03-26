@@ -9,10 +9,10 @@ import { OnboardingContext } from '../../context';
 const SelectChannel: React.FC = () => {
   const { state, actions } = React.useContext(OnboardingContext);
 
-  const onContinue = (platform: VoiceflowConstants.PlatformType | null) => {
-    if (!platform) return;
+  const onContinue = (option: { platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType } | null) => {
+    if (!option) return;
 
-    actions.setSelectChannelMeta({ channel: platform });
+    actions.setSelectChannelMeta(option);
     actions.stepForward(state.justCreatingWorkspace && !state.hasWorkspaces ? null : StepID.PAYMENT);
   };
 

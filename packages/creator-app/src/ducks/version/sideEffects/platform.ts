@@ -52,7 +52,7 @@ export const updateLocales =
       case VoiceflowConstants.PlatformType.DIALOGFLOW_ES:
         dispatch(dialogflow.patchPublishing({ locales: locales as DFESConstants.Locale[] }));
         return;
-      case VoiceflowConstants.PlatformType.GENERAL:
+      case VoiceflowConstants.PlatformType.VOICEFLOW:
       default:
         await dispatch(general.patchSettings({ locales: locales as VoiceflowConstants.Locale[] }));
     }

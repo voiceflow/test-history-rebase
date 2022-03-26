@@ -66,7 +66,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinPort reducer', ({ e
     it('ignore builtinOffset', () => {
       const portID = 'builtInPort';
       const type = BaseModels.PortType.NO_MATCH;
-      const platform = VoiceflowConstants.PlatformType.CHATBOT;
+      const platform = VoiceflowConstants.PlatformType.VOICEFLOW;
 
       const result = applyAction(
         {

@@ -30,7 +30,7 @@ export const createProject =
 
     Errors.assertWorkspaceID(workspaceID);
 
-    const platformType = platform ?? VoiceflowConstants.PlatformType.GENERAL;
+    const platformType = platform ?? VoiceflowConstants.PlatformType.VOICEFLOW;
     const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
     const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
 

@@ -6,7 +6,7 @@ import { PROJECT_SECTIONS } from '../constants';
 import { Container, Section } from './components';
 
 interface ChannelSelectProps {
-  onSelect: (platform: VoiceflowConstants.PlatformType | null) => void;
+  onSelect: (option: { platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType } | null) => void;
   isLoading: boolean;
 }
 
@@ -17,7 +17,7 @@ const ChannelSelect: React.FC<ChannelSelectProps> = ({ onSelect, isLoading }) =>
   return (
     <Container>
       {PROJECT_SECTIONS.map(({ name, platforms }, index) => (
-        <Section key={index} name={name} platforms={platforms} onSelect={(platform) => !isLoading && onSelect(platform)} />
+        <Section key={index} name={name} platforms={platforms} onSelect={(option) => !isLoading && onSelect(option)} />
       ))}
 
       <BoxFlexCenter mt={32}>{isLoading && <SvgIcon icon="publishSpin" color="#92a3b3" size={36} spin />}</BoxFlexCenter>

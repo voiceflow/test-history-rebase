@@ -12,7 +12,7 @@ export enum StepID {
 }
 
 interface StepMetaProps {
-  title: (platform: VoiceflowConstants.PlatformType) => string;
+  title: (platform?: VoiceflowConstants.PlatformType) => string;
   component: React.FC<any>;
 }
 
@@ -24,7 +24,7 @@ export const StepMeta: Record<StepID, StepMetaProps> = {
   [StepID.PLATFORM_SELECT]: {
     title: () => 'Project Type',
     component: ({ setSelectedChannel, creatingSkill }) => (
-      <ChannelSelect onSelect={(platform) => setSelectedChannel(platform)} isLoading={creatingSkill} />
+      <ChannelSelect onSelect={(option) => setSelectedChannel(option)} isLoading={creatingSkill} />
     ),
   },
   [StepID.PROJECT_SETTINGS]: {

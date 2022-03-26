@@ -7,8 +7,8 @@ import { Container, Content, Label } from './components';
 
 interface SectionProps {
   name: string;
-  onSelect: (platform: VoiceflowConstants.PlatformType) => void;
-  platforms: VoiceflowConstants.PlatformType[];
+  onSelect: (option: { platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType }) => void;
+  platforms: { platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType }[];
 }
 
 const Section: React.FC<SectionProps> = ({ name, platforms, onSelect }) => {
@@ -17,8 +17,8 @@ const Section: React.FC<SectionProps> = ({ name, platforms, onSelect }) => {
       <Label>{name}</Label>
 
       <Content>
-        {platforms.map((platform, index) => (
-          <Card {...getChannelMeta(platform)} key={index} onClick={() => onSelect(platform)} />
+        {platforms.map(({ platform, projectType }, index) => (
+          <Card {...getChannelMeta(platform, projectType)} key={index} onClick={() => onSelect({ platform, projectType })} />
         ))}
       </Content>
     </Container>

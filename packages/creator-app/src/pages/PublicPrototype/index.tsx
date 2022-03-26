@@ -28,7 +28,7 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
     layout: PrototypeLayout.TEXT_DIALOG,
     buttons: BaseButton.ButtonsLayout.STACKED,
     locales: [],
-    platform: VoiceflowConstants.PlatformType.GENERAL,
+    platform: VoiceflowConstants.PlatformType.VOICEFLOW,
     projectType: VoiceflowConstants.ProjectType.VOICE,
     hasPassword: false,
     projectName: '',

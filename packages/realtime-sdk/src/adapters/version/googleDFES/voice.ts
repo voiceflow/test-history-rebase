@@ -20,7 +20,7 @@ const voiceVersionAdapter = createAdapter<DFESVersion.VoiceVersion, Version<DFES
     ...sharedVersionAdapter.fromDB(baseVersion),
 
     settings: _omit(DFESVersion.defaultVoiceSettings(settings), ['session']),
-    variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.GENERAL).includes(variable)),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.VOICEFLOW).includes(variable)),
     publishing,
   }),
   () => {

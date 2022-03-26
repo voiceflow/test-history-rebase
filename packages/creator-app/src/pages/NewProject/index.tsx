@@ -19,14 +19,13 @@ import { useActiveWorkspace, useDispatch, useSelector } from '@/hooks';
 import { FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
-import { createPlatformSelector } from '@/utils/platform';
 import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import { DEFAULT_PROJECT_NAME, PROJECT_CREATION_STEPS_NUMBER, StepID, StepMeta } from './constants';
 
-const getTemplateTag = createPlatformSelector(
+const getTemplateTag = Realtime.Utils.platform.createPlatformAndProjectTypeSelectorV2(
   {
-    [VoiceflowConstants.PlatformType.CHATBOT]: `default:${VoiceflowConstants.PlatformType.CHATBOT}`,
+    [`${VoiceflowConstants.PlatformType.VOICEFLOW}:${VoiceflowConstants.ProjectType.CHAT}`]: `default:chatbot`,
   },
   'default'
 );
@@ -97,7 +96,11 @@ const NewProject: React.FC = () => {
   const currentStep = stepStack[0];
 
   const [invocationName, setInvocationName] = React.useState<string>();
-  const [selectedChannel, setSelectedChannel] = React.useState<VoiceflowConstants.PlatformType | null>(null);
+  const [selectedChannel, setSelectedChannel] = React.useState<{
+    platform: VoiceflowConstants.PlatformType;
+    projectType: VoiceflowConstants.ProjectType;
+  } | null>(null);
+
   const [alexaLocales, setAlexaLocales] = React.useState<[AlexaConstants.Locale, ...AlexaConstants.Locale[]]>([LOCALE_MAP[0].value]);
   const [googleLanguage, setGoogleLanguage] = React.useState<GoogleConstants.Language>(GoogleConstants.Language.EN);
   const [dialogflowLanguage, setDialogflowLanguage] = React.useState<DFESConstants.Language>(DFESConstants.Language.EN);
@@ -113,7 +116,7 @@ const NewProject: React.FC = () => {
     setCreatingProject(true);
 
     const getLanguage = () => {
-      const defaultLabel = getDefaultPlatformLanguageLabel(selectedChannel);
+      const defaultLabel = getDefaultPlatformLanguageLabel(selectedChannel?.platform);
 
       return Realtime.Utils.platform.createPlatformSelectorV2(
         {
@@ -122,7 +125,7 @@ const NewProject: React.FC = () => {
           [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage] ?? defaultLabel,
         },
         GENERAL_LOCALE_NAME_MAP[generalLocale] ?? defaultLabel
-      )(selectedChannel);
+      )(selectedChannel?.platform);
     };
 
     let newVersionID: string | null = null;
@@ -132,23 +135,23 @@ const NewProject: React.FC = () => {
         {
           name: DEFAULT_PROJECT_NAME,
           listID,
-          platform: selectedChannel!,
+          platform: Realtime.projectTypeToLegacyPlatform(selectedChannel!.platform, selectedChannel!.projectType),
           language: getLanguage(),
           onboarding: false,
         },
-        getTemplateTag(selectedChannel!)
+        getTemplateTag(selectedChannel?.platform, selectedChannel?.projectType)
       );
 
       newVersionID = project.versionID;
 
       // TODO: in the future make new project parameters much more platform specific
-      if (isAlexaPlatform(selectedChannel)) {
+      if (isAlexaPlatform(selectedChannel?.platform)) {
         await updateAlexaMeta(newVersionID, alexaLocales, invocationName);
-      } else if (isGooglePlatform(selectedChannel)) {
+      } else if (isGooglePlatform(selectedChannel?.platform)) {
         await updateGoogleMeta(newVersionID, googleLanguage, invocationName);
-      } else if (isDialogflowPlatform(selectedChannel)) {
+      } else if (isDialogflowPlatform(selectedChannel?.platform)) {
         await updateDialogFlowMeta(newVersionID, dialogflowLanguage);
-      } else if (isVoiceflowPlatform(selectedChannel)) {
+      } else if (isVoiceflowPlatform(selectedChannel?.platform)) {
         await updateGeneralMeta(newVersionID, generalLocale);
       }
     } finally {
@@ -186,7 +189,7 @@ const NewProject: React.FC = () => {
     <OuterContainer>
       <InnerContainer>
         <CreationHeader
-          title={StepMeta[currentStep].title(selectedChannel!)}
+          title={StepMeta[currentStep].title(selectedChannel?.platform)}
           onCancel={goToDashboard}
           stepBack={stepBack}
           canCancel
@@ -199,6 +202,7 @@ const NewProject: React.FC = () => {
 
         <FlexCenter>
           <CurrentStep
+            platform={selectedChannel?.platform}
             onContinue={onContinue}
             alexaLocales={alexaLocales}
             generalLocale={generalLocale}
@@ -208,7 +212,6 @@ const NewProject: React.FC = () => {
             setAlexaLocales={setAlexaLocales}
             setGeneralLocale={setGeneralLocale}
             finalizeCreation={finalizeCreation}
-            selectedChannel={selectedChannel}
             setGoogleLanguage={setGoogleLanguage}
             setInvocationName={setInvocationName}
             setSelectedChannel={setSelectedChannel}

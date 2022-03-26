@@ -20,7 +20,7 @@ const chatVersionAdapter = createAdapter<DFESVersion.ChatVersion, Version<DFESVe
     ...sharedVersionAdapter.fromDB(sharedVersion),
 
     settings: _omit(DFESVersion.defaultChatSettings(settings), 'session'),
-    variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.GENERAL).includes(variable)),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.VOICEFLOW).includes(variable)),
     publishing,
   }),
   () => {

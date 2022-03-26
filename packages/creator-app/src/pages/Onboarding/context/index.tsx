@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType, PromoType, UserRole } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ButtonVariant, toast } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
@@ -22,7 +23,6 @@ import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs';
 import { useDispatch, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
-import { createPlatformSelector } from '@/utils/platform';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
@@ -79,7 +79,8 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
       role: '',
     },
     selectChannelMeta: {
-      channel: VoiceflowConstants.PlatformType.ALEXA,
+      platform: VoiceflowConstants.PlatformType.ALEXA,
+      projectType: VoiceflowConstants.ProjectType.VOICE,
     },
     sendingRequests: false,
     workspaceId: '',
@@ -194,7 +195,8 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       role: '',
     },
     selectChannelMeta: {
-      channel: VoiceflowConstants.PlatformType.ALEXA,
+      platform: VoiceflowConstants.PlatformType.ALEXA,
+      projectType: VoiceflowConstants.ProjectType.VOICE,
     },
     sendingRequests: false,
     workspaceId: '',
@@ -367,27 +369,27 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
     try {
       if (isLoginFlow) {
-        const platform = state.selectChannelMeta.channel;
+        const { platform, projectType } = state.selectChannelMeta;
 
-        const getTemplateTag = createPlatformSelector(
-          {
-            [VoiceflowConstants.PlatformType.ALEXA]: 'onboarding:alexa_assistant',
-            [VoiceflowConstants.PlatformType.GOOGLE]: 'onboarding:google_assistant',
-            [VoiceflowConstants.PlatformType.GENERAL]: 'onboarding:custom_assistant',
-          },
-          `onboarding:${platform}`
-        );
+        const getTemplateTag = Realtime.Utils.platform.createPlatformAndProjectTypeSelectorV2({
+          [VoiceflowConstants.PlatformType.ALEXA]: 'onboarding:alexa_assistant',
+          [VoiceflowConstants.PlatformType.GOOGLE]: 'onboarding:google_assistant',
+          [`${VoiceflowConstants.PlatformType.VOICEFLOW}:${VoiceflowConstants.ProjectType.VOICE}`]: 'onboarding:custom_assistant', // we actually messed up on the templates and this is the correct voice project
+          [`${VoiceflowConstants.PlatformType.VOICEFLOW}:${VoiceflowConstants.ProjectType.CHAT}`]: 'onboarding:chatbot',
+          [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.VOICE}`]: 'onboarding:dialogflow_es_voice',
+          [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.CHAT}`]: 'onboarding:dialogflow_es_chat',
+        });
 
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
           const { versionID } = await createProject(
             {
-              platform,
+              platform: Realtime.projectTypeToLegacyPlatform(platform, projectType),
               language: getDefaultPlatformLanguageLabel(platform),
               onboarding: true,
             },
-            getTemplateTag(platform)
+            getTemplateTag(platform, projectType)
           );
 
           goToCanvas(versionID!);

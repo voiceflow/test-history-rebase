@@ -4,7 +4,7 @@ import { Nullish } from '@voiceflow/common';
 import { GoogleConstants } from '@voiceflow/google-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { legacyPlatformToProjectType, NonDeprecatedPlatform } from '../constants/platform';
+import { legacyPlatformToProjectType, NonDeprecatedPlatform, PlatformProjectType } from '../constants/platform';
 
 export const createProjectTypeSelectorV2 =
   <T>(values: Record<VoiceflowConstants.ProjectType, T>) =>
@@ -21,10 +21,7 @@ export const createAdvancedProjectTypeSelectorV2 =
     createProjectTypeSelectorV2(values)(platform);
 
 export const createPlatformAndProjectTypeSelectorV2 =
-  <T>(
-    values: Partial<Record<VoiceflowConstants.ProjectType | NonDeprecatedPlatform | `${NonDeprecatedPlatform}:${VoiceflowConstants.ProjectType}`, T>>,
-    defaultValue?: T
-  ) =>
+  <T>(values: Partial<Record<VoiceflowConstants.ProjectType | NonDeprecatedPlatform | PlatformProjectType, T>>, defaultValue?: T) =>
   (_platform: Nullish<VoiceflowConstants.PlatformType>, _type: Nullish<VoiceflowConstants.ProjectType>): T => {
     const mapping = _platform ? legacyPlatformToProjectType(_platform, _type) : null;
 

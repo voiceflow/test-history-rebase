@@ -24,7 +24,7 @@ const defaultPrototypeContext: PrototypeAllTypes = {
     prototypeColor: 'blue',
     prototypeAvatar: '',
     locales: [''],
-    platform: VoiceflowConstants.PlatformType.GENERAL,
+    platform: VoiceflowConstants.PlatformType.VOICEFLOW,
     projectType: VoiceflowConstants.ProjectType.VOICE,
     isMuted: false,
     durationMilliseconds: 0,

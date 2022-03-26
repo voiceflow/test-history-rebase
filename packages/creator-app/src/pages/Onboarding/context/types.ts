@@ -56,7 +56,8 @@ export interface OnboardingContextState {
     role: string;
   };
   selectChannelMeta: {
-    channel: VoiceflowConstants.PlatformType;
+    platform: VoiceflowConstants.PlatformType;
+    projectType: VoiceflowConstants.ProjectType;
   };
   sendingRequests: boolean;
   workspaceId: string;

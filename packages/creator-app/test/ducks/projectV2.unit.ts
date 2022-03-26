@@ -61,7 +61,7 @@ const MOCK_STATE: Project.ProjectState = {
       module: '',
       created: '',
       isLive: false,
-      platform: VoiceflowConstants.PlatformType.GENERAL,
+      platform: VoiceflowConstants.PlatformType.VOICEFLOW,
       linkType: BaseModels.Project.LinkType.CURVED,
       locales: [],
       members: [],

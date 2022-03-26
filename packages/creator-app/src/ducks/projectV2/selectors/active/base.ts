@@ -14,7 +14,7 @@ export const projectSelector = createSelector([Session.activeProjectIDSelector, 
 /**
  * @deprecated
  */
-export const platformSelector = createSelector([projectSelector], (project) => project?.platform || VoiceflowConstants.PlatformType.GENERAL);
+export const platformSelector = createSelector([projectSelector], (project) => project?.platform || VoiceflowConstants.PlatformType.VOICEFLOW);
 
 export const typeV2Selector = createSelector([projectSelector], (project) => project?.typeV2 || VoiceflowConstants.ProjectType.VOICE);
 

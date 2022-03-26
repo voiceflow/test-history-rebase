@@ -19,7 +19,7 @@ const voiceVersionAdapter = createAdapter<VoiceflowVersion.VoiceVersion, Version
     ...sharedVersionAdapter.fromDB(baseVersion),
 
     settings: _omit(VoiceflowVersion.defaultVoiceSettings(settings), 'session'),
-    variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.GENERAL).includes(variable)),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.VOICEFLOW).includes(variable)),
     publishing,
   }),
   () => {

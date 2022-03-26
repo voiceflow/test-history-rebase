@@ -33,7 +33,7 @@ interface PlatformSettingsProps {
   setAlexaLocales: (locales: string[]) => void;
   setGeneralLocale: (locale: string) => void;
   finalizeCreation: () => void;
-  selectedChannel: VoiceflowConstants.PlatformType;
+  platform: VoiceflowConstants.PlatformType;
   setInvocationName: (name: string) => void;
   setGoogleLanguage: (val: string) => void;
   dialogflowLanguage: string;
@@ -41,6 +41,7 @@ interface PlatformSettingsProps {
 }
 
 const ProjectSettings: React.FC<PlatformSettingsProps> = ({
+  platform,
   alexaLocales,
   generalLocale,
   invocationName,
@@ -49,15 +50,14 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   setAlexaLocales,
   finalizeCreation,
   setGeneralLocale,
-  selectedChannel,
   setInvocationName,
   setGoogleLanguage,
   dialogflowLanguage,
   setDialogflowLanguage,
 }) => {
-  const isAlexa = isAlexaPlatform(selectedChannel);
-  const isGeneral = isVoiceflowPlatform(selectedChannel);
-  const isDialogflow = isDialogflowPlatform(selectedChannel);
+  const isAlexa = isAlexaPlatform(platform);
+  const isGeneral = isVoiceflowPlatform(platform);
+  const isDialogflow = isDialogflowPlatform(platform);
 
   const alexaDisplayName = isAlexa
     ? alexaLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
@@ -71,11 +71,11 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
         [VoiceflowConstants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
       },
       _constant(null)
-    )(selectedChannel)(invocationName, alexaLocales);
+    )(platform)(invocationName, alexaLocales);
 
   const canContinue = !invocationError && (!!alexaLocales.length || !!googleLanguage || !!generalLocale);
-  const InvocationDescriptionComponent = getPlatformMeta(selectedChannel).invocationDescription!;
-  const LanguageDescriptionComponent = getPlatformMeta(selectedChannel).localesDescription!;
+  const InvocationDescriptionComponent = getPlatformMeta(platform).invocationDescription!;
+  const LanguageDescriptionComponent = getPlatformMeta(platform).localesDescription!;
 
   return (
     <Container width={420} textAlign="left">
@@ -104,7 +104,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
       )}
 
       <FieldsContainer>
-        <SectionTitle>{getPlatformMeta(selectedChannel).localesText}</SectionTitle>
+        <SectionTitle>{getPlatformMeta(platform).localesText}</SectionTitle>
 
         {Realtime.Utils.platform.createPlatformSelectorV2<() => React.ReactNode>(
           {
@@ -161,7 +161,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
               renderOptionLabel={(option) => option.name}
             />
           )
-        )(selectedChannel)()}
+        )(platform)()}
 
         <SectionDescription>
           <LanguageDescriptionComponent />

@@ -90,7 +90,7 @@ export const STEP_META: StepMetaProps = {
     trackStep: ({ selectChannelMeta }, { skip }) =>
       Tracking.trackOnboardingSelectChannel({
         skip,
-        platform: selectChannelMeta.channel as VoiceflowConstants.PlatformType,
+        platform: selectChannelMeta.platform as VoiceflowConstants.PlatformType,
       }),
   },
 };

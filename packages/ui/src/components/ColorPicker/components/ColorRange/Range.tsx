@@ -19,6 +19,7 @@ export const RangeSlider = styled.input.attrs({
   cursor: pointer;
   z-index: 1;
   width: 100%;
+  border: none;
 
   &:focus {
     outline: none;

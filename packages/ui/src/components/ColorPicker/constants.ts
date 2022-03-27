@@ -76,7 +76,6 @@ export const DEFAULT_COLORS: Colors = [
   },
   {
     hue: '9',
-    name: 'Error Path',
     palette: {
       '50': '#f8ebeb',
       '100': '#f4ddde',

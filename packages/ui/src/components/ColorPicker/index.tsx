@@ -2,9 +2,9 @@
 import { useOnClickOutside } from '@ui/hooks/mouse';
 import React, { useState } from 'react';
 
-import { ColorPickerPopOver } from './components/ColorPickerPopOver';
 import { ColorThemes } from './components/ColorThemes';
 import { Color } from './components/ColorThemes/Color';
+import { ColorPickerPopper } from './components/Poppers/ColorPickerPopper';
 import { BASE_COLORS, COLOR_WHEEL, Colors, IColor } from './constants';
 import { Wrapper } from './styles';
 
@@ -28,7 +28,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ colors, selectedColor,
       <ColorThemes small selectedColor={selectedColor} onColorSelect={(color: IColor) => onChange(color)} colors={BASE_COLORS} />
       <Color selected={isCustomColor} onClick={() => setIsShowingPicker(true)} small background={COLOR_WHEEL} />
       {isShowingPicker && (
-        <ColorPickerPopOver
+        <ColorPickerPopper
           ref={popOver}
           colors={colors}
           selectedColor={selectedColor}

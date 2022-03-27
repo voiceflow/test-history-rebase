@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.64.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.63.1...@voiceflow/ui@1.64.0) (2022-03-27)
+
+
+### Features
+
+* use popper for the color picker instead of manually positioning it (VF-000) ([#5259](https://github.com/voiceflow/creator-app/issues/5259)) ([35fe16d](https://github.com/voiceflow/creator-app/commit/35fe16dedc1d717a36b47454f9dd306e551d3c2e))
+
+
+
+
+
 ## [1.63.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.63.0...@voiceflow/ui@1.63.1) (2022-03-25)
 
 

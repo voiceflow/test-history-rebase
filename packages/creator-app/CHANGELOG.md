@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.671.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.670.6...@voiceflow/creator-app@1.671.0) (2022-03-28)
+
+
+### Features
+
+* autopan selected node into view (VF-3126) ([#5232](https://github.com/voiceflow/creator-app/issues/5232)) ([d1144e0](https://github.com/voiceflow/creator-app/commit/d1144e0161e40101711696b76acb8fca51d683ba))
+
+
+
+
+
 ## [1.670.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.670.5...@voiceflow/creator-app@1.670.6) (2022-03-27)
 
 **Note:** Version bump only for package @voiceflow/creator-app

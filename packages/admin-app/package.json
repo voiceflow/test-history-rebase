@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/admin-app",
-  "version": "1.26.3",
+  "version": "1.26.4",
   "author": "Voiceflow",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
@@ -12,7 +12,7 @@
     "@voiceflow/base-types": "2.19.0",
     "@voiceflow/common": "7.24.0",
     "@voiceflow/internal": "2.2.3",
-    "@voiceflow/realtime-sdk": "^1.70.2",
+    "@voiceflow/realtime-sdk": "^1.71.0",
     "@voiceflow/ui": "^1.64.0",
     "@voiceflow/voiceflow-types": "3.7.3",
     "axios": "0.24.0",

@@ -8,7 +8,7 @@ import { Manager, Reference } from 'react-popper';
 import Menu from '../Menu';
 import { GetOptionKey, MenuItemGrouped, MenuItemMultilevel, MenuItemWithID, RenderOptionLabelConfig } from '../types';
 import { isBaseMenuItem, isGroupedOptions, isMenuItemMultilevel, isMenuItemWithID } from '../utils';
-import { SelectItem, SubLevelIcon } from './components';
+import { GroupHeader, SelectItem, SubLevelIcon } from './components';
 import {
   MenuOptionsGroupedProps,
   MenuOptionsInternalProps,
@@ -151,9 +151,7 @@ function MenuOptions({
         {options.map((option, index) =>
           option.options ? (
             <React.Fragment key={`${option.id}-${index}`}>
-              <SelectItem as="div" isGroup className={ClassName.MENU_ITEM_GROUP}>
-                {option.label}
-              </SelectItem>
+              {option.label && <GroupHeader>{option.label}</GroupHeader>}
 
               {renderOptions(option.options, [...optionsPath, index])}
             </React.Fragment>

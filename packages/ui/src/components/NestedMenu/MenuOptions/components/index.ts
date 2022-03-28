@@ -1,6 +1,7 @@
 import SvgIcon from '@ui/components/SvgIcon';
 import { styled } from '@ui/styles';
 
+export { default as GroupHeader } from './GroupHeader';
 export { default as SelectItem } from './SelectItem';
 
 export const SubLevelIcon = styled(SvgIcon)`

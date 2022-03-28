@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.65.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.64.0...@voiceflow/ui@1.65.0) (2022-03-28)
+
+
+### Features
+
+* updated group header for select (VF-2901) ([#5209](https://github.com/voiceflow/creator-app/issues/5209)) ([d949541](https://github.com/voiceflow/creator-app/commit/d9495417c2bdb3e4e7a0bf44fbcdea5e061caec4))
+
+
+
+
+
 # [1.64.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.63.1...@voiceflow/ui@1.64.0) (2022-03-27)
 
 

@@ -220,7 +220,7 @@ declare namespace Cypress {
     cy.get('.node').should('have.coords', [123, 456])
     ```
     * */
-    (chainer: 'have.coords', coords: Coords): Chainable<Subject>;
+    (chainer: 'have.coords', coords: Coords, pixelDisparity?: number): Chainable<Subject>;
 
     /**
      * check to see if the element is at the provided coords

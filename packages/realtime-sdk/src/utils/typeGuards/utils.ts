@@ -6,6 +6,6 @@ export const createTypeGuardCreator =
 
 export const createTypedTypeGuardCreator =
   <T extends { type: string } = { type: string }>() =>
-  <R extends T>(values: R['type'] | R['type'][]) =>
+  <R extends T>(values: R['type'] | R['type'][] | ReadonlyArray<R['type']>) =>
   (value: T): value is R =>
     Array.isArray(values) ? values.includes(value.type) : value.type === values;

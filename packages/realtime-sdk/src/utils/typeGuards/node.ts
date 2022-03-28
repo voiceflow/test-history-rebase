@@ -7,7 +7,7 @@ import {
   ROOT_AND_MARKUP_NODES,
   ROOT_NODES,
 } from '@realtime-sdk/constants';
-import { NodeData } from '@realtime-sdk/models';
+import { Markup, NodeData } from '@realtime-sdk/models';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 
 import { createTypedTypeGuardCreator, createTypeGuardCreator } from './utils';
@@ -26,3 +26,5 @@ export const isDiagramReferencesBlockType = createBlockTypeGuard(DIAGRAM_REFEREN
 export const isIntentDBNode = createDBNodeTypeGuard<BaseNode.Intent.Step>(BaseNode.NodeType.INTENT);
 
 export const isIntentNodeData = createNodeDataTypeGuard<NodeData<NodeData.Intent>>(BlockType.INTENT);
+export const isMarkupTextNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Text>>(BlockType.MARKUP_TEXT);
+export const isMarkupImageNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Image>>(BlockType.MARKUP_IMAGE);

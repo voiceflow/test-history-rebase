@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.671.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.671.0...@voiceflow/creator-app@1.671.1) (2022-03-28)
+
+
+### Bug Fixes
+
+* allow viewers to navigate to flows through the canvas (VF-3109) ([#5263](https://github.com/voiceflow/creator-app/issues/5263)) ([703bf34](https://github.com/voiceflow/creator-app/commit/703bf3444bceccd8df006ed2250f1bbbadb4d16e))
+
+
+
+
+
 # [1.671.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.670.6...@voiceflow/creator-app@1.671.0) (2022-03-28)
 
 

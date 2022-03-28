@@ -2,9 +2,8 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
-import { ExportFormat as CanvasExportFormat, NLPProvider } from '@/constants';
+import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider } from '@/constants';
 import { PrototypeSettings } from '@/ducks/prototype/types';
-import { ExportType } from '@/pages/Project/components/Header/components/SharePopper/constants';
 
 import { EventName } from '../constants';
 import { VersionEventInfo } from '../types';

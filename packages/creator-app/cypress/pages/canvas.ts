@@ -75,8 +75,8 @@ export default {
       get inviteTab() {
         return cy.get(`.${ClassName.POPPER_NAV_ITEM}[href="INVITE"]`);
       },
-      get shareTab() {
-        return cy.get(`.${ClassName.POPPER_NAV_ITEM}[href="SHARE"]`);
+      get prototypeTab() {
+        return cy.get(`.${ClassName.POPPER_NAV_ITEM}[href="PROTOTYPE"]`);
       },
       get exportTab() {
         return cy.get(`.${ClassName.POPPER_NAV_ITEM}[href="EXPORT"]`);

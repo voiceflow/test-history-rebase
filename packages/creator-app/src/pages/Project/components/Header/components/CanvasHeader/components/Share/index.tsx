@@ -9,13 +9,13 @@ import SharePopper from '../../../SharePopper';
 import { ShareButton } from './components';
 
 const Share: React.FC = () => {
-  const shareModal = React.useContext(SharePopperContext)!;
+  const sharePopper = React.useContext(SharePopperContext)!;
   const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
 
   return (
     <SharePopper>
       {({ ref, isOpened }) => (
-        <ShareButton id={Identifier.SHARE_BUTTON} ref={ref} onClick={() => shareModal.open()} isActive={isOpened}>
+        <ShareButton id={Identifier.SHARE_BUTTON} ref={ref} onClick={() => sharePopper.open()} isActive={isOpened}>
           {isTemplateWorkspace ? 'Download' : 'Share'}
         </ShareButton>
       )}

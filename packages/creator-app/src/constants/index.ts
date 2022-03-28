@@ -397,6 +397,11 @@ export enum ExportFormat {
   VF = 'vf',
 }
 
+export enum ExportType {
+  CANVAS = 'canvas',
+  MODEL = 'model',
+}
+
 export enum DiagramState {
   IDLE = 'IDLE',
   CHANGED = 'CHANGED',

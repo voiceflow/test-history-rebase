@@ -6,14 +6,12 @@ import Popper, { PopperContent, PopperProps } from '@/components/Popper';
 import { Permission } from '@/config/permissions';
 import * as Session from '@/ducks/session';
 import { usePermission, useSelector } from '@/hooks';
-import { MenuContent as ShareContent, SharePrototype as ShareFooter } from '@/pages/Canvas/header/ActionGroup/components/ShareProject/components';
 import InviteContent from '@/pages/Collaborators';
 import InviteFooter from '@/pages/Collaborators/components/InviteByLink';
 
 import { ShareProjectTab } from '../../constants';
 import { SharePopperContext } from '../../contexts';
-import { ExportContent, ExportFooter, ExportNavItem, ExportPopperFooter, ExportPopperNav } from './components';
-import { ExportProvider } from './contexts';
+import { ExportContent, ExportFooter, ExportProvider, Footer, Nav, NavItem, PrototypeContent, PrototypeFooter } from './components';
 
 interface SharePopperProps {
   children: PopperProps['children'];
@@ -27,7 +25,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
 
-  const initialTab = (canAddCollaborators && ShareProjectTab.INVITE) || (canSharePrototype && ShareProjectTab.SHARE) || ShareProjectTab.EXPORT;
+  const initialTab = (canSharePrototype && ShareProjectTab.PROTOTYPE) || ShareProjectTab.EXPORT;
   const [persistedTab, setPersistedTab] = useSessionStorageState(`${PERSISTED_SESSION_SHARE_TAB}-${activeProjectID}`, initialTab);
 
   React.useEffect(() => {
@@ -38,7 +36,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
     // In the case where the persisted tab is a feature they don't have anymore
     const hasAccessToPersistedTab = (tab: ShareProjectTab) => {
       switch (tab) {
-        case ShareProjectTab.SHARE:
+        case ShareProjectTab.PROTOTYPE:
           return canSharePrototype;
         case ShareProjectTab.INVITE:
           return canAddCollaborators;
@@ -64,41 +62,41 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
         initialTab={sharePopper?.data?.defaultTab ?? persistedTab}
         preventOverflowPadding={24}
         renderNav={() => (
-          <ExportPopperNav>
+          <Nav>
             {canSharePrototype && (
-              <ExportNavItem onClick={() => setPersistedTab(ShareProjectTab.SHARE)} to={ShareProjectTab.SHARE}>
+              <NavItem onClick={() => setPersistedTab(ShareProjectTab.PROTOTYPE)} to={ShareProjectTab.PROTOTYPE}>
                 Share prototype
-              </ExportNavItem>
+              </NavItem>
             )}
 
             {canAddCollaborators && (
-              <ExportNavItem onClick={() => setPersistedTab(ShareProjectTab.INVITE)} to={ShareProjectTab.INVITE}>
+              <NavItem onClick={() => setPersistedTab(ShareProjectTab.INVITE)} to={ShareProjectTab.INVITE}>
                 Invite teammates
-              </ExportNavItem>
+              </NavItem>
             )}
 
-            <ExportNavItem onClick={() => setPersistedTab(ShareProjectTab.EXPORT)} to={ShareProjectTab.EXPORT}>
+            <NavItem onClick={() => setPersistedTab(ShareProjectTab.EXPORT)} to={ShareProjectTab.EXPORT}>
               Export as…
-            </ExportNavItem>
-          </ExportPopperNav>
+            </NavItem>
+          </Nav>
         )}
         renderContent={() => (
           <PopperContent>
             <Switch>
-              <Route path={ShareProjectTab.SHARE} render={() => <ShareContent inline />} />
+              <Route path={ShareProjectTab.PROTOTYPE} render={() => <PrototypeContent />} />
               <Route path={ShareProjectTab.INVITE} render={() => <InviteContent inline />} />
               <Route path={ShareProjectTab.EXPORT} render={() => <ExportContent />} />
             </Switch>
           </PopperContent>
         )}
         renderFooter={() => (
-          <ExportPopperFooter>
+          <Footer>
             <Switch>
-              <Route path={ShareProjectTab.SHARE} render={() => <ShareFooter inline />} />
+              <Route path={ShareProjectTab.PROTOTYPE} render={() => <PrototypeFooter />} />
               <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter />} />
               <Route path={ShareProjectTab.EXPORT} render={() => <ExportFooter />} />
             </Switch>
-          </ExportPopperFooter>
+          </Footer>
         )}
       >
         {children}

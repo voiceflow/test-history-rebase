@@ -241,7 +241,7 @@ context.skip('Conversations', () => {
 
       canvasPage.goToCanvas();
       canvasPage.el.shareButton.click();
-      canvasPage.el.shareTabs.shareTab.click();
+      canvasPage.el.shareTabs.prototypeTab.click();
       canvasPage.el.shareLinkCopyButton.click();
       cy.clipboard().then((clipboardData) => cy.visit(clipboardData!));
 

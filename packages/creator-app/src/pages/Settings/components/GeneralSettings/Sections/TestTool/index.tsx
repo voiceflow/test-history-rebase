@@ -11,7 +11,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
-import ColorInput from '@/pages/Canvas/header/ActionGroup/components/ShareProject/components/AppearanceAndBranding/ColorInput';
+import { ColorInput } from '@/pages/Project/components/Header/components/SharePopper/components/Prototype/components/AppearanceAndBranding/components';
 
 const TestToolSettings: React.FC = () => {
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);

@@ -1,5 +1,5 @@
-export { default as ExportContent } from './ExportContent';
-export { default as ExportFooter } from './ExportFooter';
-export { default as ExportNavItem } from './ExportNavItem';
-export { default as ExportPopperFooter } from './ExportPopperFooter';
-export { default as ExportPopperNav } from './ExportPopperNav';
+export * from './Export';
+export { default as Footer } from './Footer';
+export { default as Nav } from './Nav';
+export { default as NavItem } from './NavItem';
+export * from './Prototype';

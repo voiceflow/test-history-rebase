@@ -4,7 +4,7 @@ import React from 'react';
 import Popper, { PopperContent, PopperFooter } from '@/components/Popper';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
-import { MenuContent as ShareContent, SharePrototype as ShareFooter } from '@/pages/Canvas/header/ActionGroup/components/ShareProject/components';
+import { PrototypeContent, PrototypeFooter } from '@/pages/Project/components/Header/components/SharePopper/components';
 import { Identifier } from '@/styles/constants';
 
 const Share: React.FC = () => {
@@ -17,12 +17,12 @@ const Share: React.FC = () => {
       modifiers={{ offset: { offset: '0,8' } }}
       renderContent={() => (
         <PopperContent>
-          <ShareContent inline />
+          <PrototypeContent />
         </PopperContent>
       )}
       renderFooter={() => (
         <PopperFooter>
-          <ShareFooter inline />
+          <PrototypeFooter />
         </PopperFooter>
       )}
     >

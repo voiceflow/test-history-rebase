@@ -43,6 +43,8 @@ const StepLabelText = styled.div<StepLabelTextProps>`
     onClick &&
     css`
       display: inline-flex;
+      pointer-events: all;
+
       :hover {
         color: #4d8de6;
       }

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.672.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.671.1...@voiceflow/creator-app@1.672.0) (2022-03-28)
+
+
+### Bug Fixes
+
+* open steps by default (VF-3217) ([#5262](https://github.com/voiceflow/creator-app/issues/5262)) ([69fc1c2](https://github.com/voiceflow/creator-app/commit/69fc1c2b54b8e40692dfdf58550edf153d916591))
+
+
+### Features
+
+* refactor share popper (VF-3149) ([#5261](https://github.com/voiceflow/creator-app/issues/5261)) ([e6868b4](https://github.com/voiceflow/creator-app/commit/e6868b432c55aee9ba7a7abfcba81d9deb5bf56b))
+
+
+
+
+
 ## [1.671.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.671.0...@voiceflow/creator-app@1.671.1) (2022-03-28)
 
 

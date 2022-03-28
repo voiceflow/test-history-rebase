@@ -28,7 +28,7 @@ export const useTabs = (): { tabs: TabItem[]; selectedTab: Tab } => {
       return activeTab as Tab;
     }
 
-    return tabs[0].value;
+    return Tab.STEPS;
   }, [activeTab, tabs]);
 
   return { tabs, selectedTab };

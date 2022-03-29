@@ -1,9 +1,11 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
 
-import { AbstractDiagramResourceControl } from './utils';
+import { AbstractDiagramResourceControl, NewDiagramContextData } from './utils';
 
-class DuplicateDiagram extends AbstractDiagramResourceControl<Realtime.BaseDiagramPayload> {
+class DuplicateDiagram extends AbstractDiagramResourceControl<Realtime.BaseDiagramPayload, NewDiagramContextData> {
   protected actionCreator = Realtime.diagram.duplicate.started;
 
   protected process = this.reply(Realtime.diagram.duplicate, async (ctx, { payload }) => {
@@ -28,8 +30,15 @@ class DuplicateDiagram extends AbstractDiagramResourceControl<Realtime.BaseDiagr
         : { components: [...(version.components ?? []), { sourceID: newDiagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }] }
     );
 
+    ctx.data.newDiagram = { ...newDiagram, ...diagram };
+
     return newDiagram;
   });
+
+  protected finally = async (ctx: Context<NewDiagramContextData>, { payload }: Action<Realtime.BaseDiagramPayload>) => {
+    const { newDiagram } = ctx.data;
+    this.reloadStartingBlocksFromNewDiagram(ctx, payload, { id: newDiagram.id, nodes: newDiagram.nodes });
+  };
 }
 
 export default DuplicateDiagram;

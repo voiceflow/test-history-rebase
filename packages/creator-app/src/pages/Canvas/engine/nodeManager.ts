@@ -48,17 +48,49 @@ class NodeManager extends EngineConsumer {
   log = this.engine.log.child('node');
 
   internal = {
-    addBlock: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
-      if (this.isAtomicActionsPhase2) {
-        const rootNodeIDs = this.engine.getRootNodeIDs();
+    /**
+     * @deprecated remove after update atomic actions phase 2 is complete
+     */
+    addManyStartingBlocks: async (nodesWithData: Realtime.NodeWithData[]): Promise<void> => {
+      const startingBlocks = nodesWithData.map(({ node, data }) => ({ blockID: node.id, name: data.name }));
+      await this.dispatch.sync(Realtime.diagram.addNewStartingBlocks({ ...this.engine.context, startingBlocks }));
+    },
 
+    /**
+     * @deprecated remove after update atomic actions phase 2 is complete
+     */
+    addNewStartingBlock: async (newBlock: { id: string; name: string }): Promise<void> => {
+      const startingBlocks = [{ blockID: newBlock.id, name: newBlock.name }];
+      await this.dispatch.sync(Realtime.diagram.addNewStartingBlocks({ ...this.engine.context, startingBlocks }));
+    },
+
+    /**
+     * @deprecated remove after update atomic actions phase 2 is complete
+     */
+    removeStartingBlocks: async (blockIDs: string[]): Promise<void> => {
+      const blockIDsToRemove = [...new Set(blockIDs)];
+      await this.dispatch.sync(Realtime.diagram.removeStartingBlocks({ ...this.engine.context, startingBlockIds: blockIDsToRemove }));
+    },
+
+    /**
+     * @deprecated remove after update atomic actions phase 2 is complete
+     */
+    updateStartingBlock: async (startingBlock: Realtime.diagram.DiagramStartingBlock): Promise<void> => {
+      await this.dispatch.sync(Realtime.diagram.updateStartingBlock({ ...this.engine.context, startingBlock }));
+    },
+
+    addBlock: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
+      const blockName = this.getNewBlockName();
+      const blockID = parentNode.id;
+
+      if (this.isAtomicActionsPhase2) {
         await this.dispatch.sync(
           Realtime.node.addBlock({
             ...this.engine.context,
-            blockID: parentNode.id,
+            blockID,
             blockPorts: parentNode.ports,
             blockCoords: [node.x, node.y],
-            blockName: `New Block ${rootNodeIDs.length}`,
+            blockName,
             stepID: node.id,
             stepData: {
               ...data,
@@ -70,6 +102,7 @@ class NodeManager extends EngineConsumer {
         );
       } else {
         this.dispatch(Creator.addWrappedNode(node, data, parentNode));
+        this.internal.addNewStartingBlock({ id: blockID, name: blockName });
       }
     },
 
@@ -116,6 +149,7 @@ class NodeManager extends EngineConsumer {
         );
       } else {
         this.dispatch(Creator.addManyNodes(entities));
+        this.internal.addManyStartingBlocks(entities.nodesWithData);
       }
     },
 
@@ -190,10 +224,10 @@ class NodeManager extends EngineConsumer {
       if (!node) return;
 
       this.saveLocation(node.parentNode!);
+      const blockName = this.getNewBlockName();
 
       if (this.isAtomicActionsPhase2) {
         const projectMeta = this.engine.getActiveProjectMeta();
-        const rootNodeIDs = this.engine.getRootNodeIDs();
 
         await this.dispatch.sync(
           Realtime.node.isolateStep({
@@ -203,12 +237,13 @@ class NodeManager extends EngineConsumer {
             blockPorts: parentNode.ports,
             blockCoords: coords,
             stepID: nodeID,
-            blockName: `New Block ${rootNodeIDs.length}`,
+            blockName,
             projectMeta,
           })
         );
       } else {
         this.dispatch(Creator.unmergeNode(nodeID, coords, parentNode));
+        this.internal.addNewStartingBlock({ id: node.id, name: blockName });
       }
 
       this.redrawNestedLinks(node.parentNode!);
@@ -357,6 +392,11 @@ class NodeManager extends EngineConsumer {
     return nodeID;
   }
 
+  private getNewBlockName(): string {
+    const rootNodeIDs = this.engine.getRootNodeIDs();
+    return `New Block ${rootNodeIDs.length}`;
+  }
+
   private async handleNewStep<T extends { id: string; type: BlockType }>(node: T, data: Realtime.NodeData<any>, autoFocus = true) {
     this.dispatch(Tracking.trackNewStepCreated({ stepType: node.type }));
 
@@ -401,6 +441,7 @@ class NodeManager extends EngineConsumer {
       this.engine.setActive(duplicateNodeWithData.node.id);
 
       await this.registerIntentSteps([duplicateNodeWithData]);
+      await this.internal.addNewStartingBlock({ id: duplicateNodeWithData.node.id, name: duplicateNodeWithData.data.name });
 
       this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
     }
@@ -436,6 +477,7 @@ class NodeManager extends EngineConsumer {
     this.engine.saveHistory();
 
     await this.registerIntentSteps(nodesWithData);
+    await this.internal.addManyStartingBlocks(nodesWithData);
   }
 
   /**
@@ -446,6 +488,7 @@ class NodeManager extends EngineConsumer {
 
     await this.engine.realtime.sendUpdate(RealtimeDuck.updateNodeData(nodeID, data));
     this.internal.updateData(nodeID, data);
+    if (data.name) this.internal.updateStartingBlock({ blockID: nodeID, name: data.name });
     this.redraw(nodeID);
 
     if (save) {
@@ -477,6 +520,7 @@ class NodeManager extends EngineConsumer {
 
       if (!this.isAtomicActionsPhase2) {
         await this.engine.realtime.sendUpdate(RealtimeDuck.removeManyNodes(removableNodeIDs));
+        await this.internal.removeStartingBlocks(removableNodeIDs);
       }
 
       await this.internal.removeMany(removableNodeIDs);

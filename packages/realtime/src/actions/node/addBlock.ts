@@ -57,6 +57,17 @@ class AddBlock extends AbstractDiagramActionControl<Realtime.node.AddBlockPayloa
 
     await this.services.diagram.addManyNodes(creatorID, diagramID, nodes);
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.AddBlockPayload>): Promise<void> => {
+    const { creatorID } = ctx.data;
+    const { diagramID, versionID, projectID, workspaceID, blockID, blockName } = payload;
+    const actionContext = { diagramID, versionID, projectID, workspaceID };
+
+    await this.server.processAs(
+      creatorID,
+      Realtime.diagram.addNewStartingBlocks({ ...actionContext, startingBlocks: [{ blockID, name: blockName }] })
+    );
+  };
 }
 
 export default AddBlock;

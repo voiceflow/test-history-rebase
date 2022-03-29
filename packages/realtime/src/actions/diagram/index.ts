@@ -9,6 +9,12 @@ import { RegisterIntentStepsControl, ReloadIntentStepsControl, ReorderIntentStep
 import MoveCursorControl from './moveCursor';
 import PatchDiagramControl from './patch';
 import RemoveDiagramControl from './remove';
+import {
+  AddNewStartingBlocksControl,
+  RemoveDiagramStartingBlocksControl,
+  RemoveStartingBlocksControl,
+  UpdateStartingBlockControl,
+} from './startingBlocks';
 import { AddLocalVariableControl, RemoveLocalVariableControl } from './variable';
 import { UpdateViewportControl } from './viewport';
 
@@ -30,6 +36,12 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   reorderIntentStepsControl: new ReorderIntentStepsControl(options),
   updateIntentStepsControl: new UpdateIntentStepsControl(options),
   reloadIntentStepsControl: new ReloadIntentStepsControl(options),
+
+  // starting blocks
+  addNewStartingBlocksControl: new AddNewStartingBlocksControl(options),
+  removeStartingBlocksControl: new RemoveStartingBlocksControl(options),
+  updateStartingBlockControl: new UpdateStartingBlockControl(options),
+  removeDiagramStartingBlocksControl: new RemoveDiagramStartingBlocksControl(options),
 
   // awareness
   moveCursorControl: new MoveCursorControl(options),

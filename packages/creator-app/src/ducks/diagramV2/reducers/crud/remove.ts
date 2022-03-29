@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import crudReducers from './crud';
-import { createReducer } from './utils';
+import { createReducer } from '../utils';
+import crudReducers from './reducers';
 
 const removeDiagramReducer = createReducer(Realtime.diagram.crud.remove, (state, payload) => {
   const [, crudRemove] = crudReducers.remove;

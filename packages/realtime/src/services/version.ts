@@ -1,9 +1,12 @@
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import { AnyRecord, BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { AbstractControl } from '../control';
+
+type StartingBlockMap = Record<string, Realtime.diagram.DiagramStartingBlockMap>;
+type IntentStepsMap = Record<string, Realtime.diagram.DiagramIntentStepMap>;
 
 class VersionService extends AbstractControl {
   private static getCanReadKey({ versionID, creatorID }: { versionID: string; creatorID: number }): string {
@@ -95,30 +98,45 @@ class VersionService extends AbstractControl {
     await client.version.updatePlatformData(versionID, platformData);
   }
 
-  public async getIntentSteps(creatorID: number, versionID: string): Promise<Record<string, Realtime.diagram.DiagramIntentStepMap>> {
+  private intentStepsNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.DiagramIntentStep | null => {
+    if (!Realtime.Utils.typeGuards.isIntentDBNode(node) || !node.data.intent) return null;
+    return { intentID: node.data.intent, global: !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL };
+  };
+
+  private startingBlockNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.DiagramStartingBlock | null => {
+    if (node.type !== Realtime.NODE_BLOCK_TYPE && node.type !== Realtime.BlockType.START) return null;
+    return { blockID: node.nodeID, name: node.data.name };
+  };
+
+  public async getResourcesFromDiagrams(
+    creatorID: number,
+    versionID: string
+  ): Promise<{ startingBlocks: StartingBlockMap; intentSteps: IntentStepsMap }> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     const { diagrams: dbDiagrams } = await client.version.export(versionID);
 
-    const intentSteps: Record<string, Realtime.diagram.DiagramIntentStepMap> = {};
+    const startingBlocks: StartingBlockMap = {};
+    const intentSteps: IntentStepsMap = {};
 
     Object.keys(dbDiagrams).forEach((diagramID) => {
       const dbDiagram = dbDiagrams[diagramID];
 
+      const diagramStartingBlocks: Realtime.diagram.DiagramStartingBlockMap = {};
       const diagramIntentSteps: Realtime.diagram.DiagramIntentStepMap = {};
-
+      startingBlocks[diagramID] = diagramStartingBlocks;
       intentSteps[diagramID] = diagramIntentSteps;
 
       Object.values(dbDiagram.nodes).forEach((node) => {
-        if (!Realtime.Utils.typeGuards.isIntentDBNode(node)) return;
+        const startingBlockNode = this.startingBlockNodeMapper(node);
+        const intentStepsNode = this.intentStepsNodeMapper(node);
 
-        diagramIntentSteps[node.nodeID] = node.data.intent
-          ? { intentID: node.data.intent, global: !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL }
-          : null;
-      }, []);
+        if (startingBlockNode) diagramStartingBlocks[node.nodeID] = startingBlockNode;
+        if (intentStepsNode) diagramIntentSteps[node.nodeID] = intentStepsNode;
+      });
     });
 
-    return intentSteps;
+    return { startingBlocks, intentSteps };
   }
 
   public async reorderTopics(creatorID: number, versionID: string, from: number, to: number): Promise<void> {

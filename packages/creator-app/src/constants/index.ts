@@ -33,6 +33,7 @@ export const GOOGLE_OAUTH_SCOPES = [
 ];
 
 export const ROOT_DIAGRAM_NAME = 'ROOT';
+export const ROOT_DIAGRAM_LABEL = 'Home';
 export const DIAGRAM_ID_SEPARATOR = '::';
 
 export const NEW_PRODUCT_ID = 'new';

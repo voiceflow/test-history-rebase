@@ -2,7 +2,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { createReducer } from './utils';
+import { createReducer } from '../utils';
 
 const updateIntentStepsReducer = createReducer(Realtime.diagram.updateIntentSteps, (state, { diagramID, stepID, intent }) => {
   state.intentSteps[diagramID] ??= {};

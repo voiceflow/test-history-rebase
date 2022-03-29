@@ -118,8 +118,9 @@ const nodeAdapter = createAdapter<
     };
   },
   ({ node, data, ports }, { portToTargets, stepMap, platform, projectType, portLinksMap, context }) => {
-    const portMap = ports.reduce<Record<string, Port>>((acc, port) => ({ ...acc, [port.id]: port }), {});
+    const portMap = ports.reduce<Record<string, Port>>((acc, port) => (port ? { ...acc, [port.id]: port } : acc), {});
     const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform, projectType, context });
+    const allPorts = ports.filter((port) => port);
 
     const diagramNode: BaseModels.BaseDiagramNode = {
       nodeID: node.id,
@@ -135,20 +136,22 @@ const nodeAdapter = createAdapter<
     const builtInPortTypes = Utils.object.getKeys(node.ports.out.builtIn);
     let dbPorts: BaseModels.BasePort[] = [];
 
-    if (builtInPortTypes.length || node.ports.out.dynamic.length) {
+    if (allPorts.length > 0 && (builtInPortTypes.length || node.ports.out.dynamic.length)) {
       const outPortAdapter = getOutPortsAdapter(platform)?.[type as BlockType] || (defaultOutPortsAdapter as OutPortsAdapter);
 
       dbPorts = outPortAdapter.toDB(
         {
-          dynamic: node.ports.out.dynamic.map((portID) => ({
-            port: portMap[portID],
-            link: portLinksMap[portID],
-            target: portToTargets[portID] || stepMap[node.id] || null,
-          })),
+          dynamic: node.ports.out.dynamic
+            .filter((portID) => portMap[portID])
+            .map((portID) => ({
+              port: portMap[portID],
+              link: portLinksMap[portID],
+              target: portToTargets[portID] || stepMap[node.id] || null,
+            })),
           builtIn: builtInPortTypes.reduce<Parameters<typeof outPortAdapter.toDB>[0]['builtIn']>((acc, type) => {
             const portID = node.ports.out.builtIn[type];
 
-            if (portID) {
+            if (portID && portMap[portID]) {
               acc[type] = {
                 port: portMap[portID],
                 link: portLinksMap[portID],

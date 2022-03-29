@@ -1,13 +1,14 @@
 import React from 'react';
 
 import SearchableList from '@/components/SearchableList';
-import { ROOT_DIAGRAM_NAME } from '@/constants';
+import { ROOT_DIAGRAM_LABEL } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
+import { getDiagramName } from '@/utils/diagram';
 
 import { Container, Item } from './components';
 
@@ -32,12 +33,12 @@ const FlowList: React.FC<ConnectedFlowListProps> = ({ diagrams, rootDiagramID, a
         .sort((diagram1, diagram2) => sortDiagramAlphabetical(rootDiagramID, diagram1, diagram2))
         .map((diagram) => ({
           ...diagram,
-          name: diagram.id === rootDiagramID ? 'Home' : diagram.name,
+          name: diagram.id === rootDiagramID ? ROOT_DIAGRAM_LABEL : diagram.name,
         })),
     [diagrams, rootDiagramID]
   );
 
-  const getLabel = React.useCallback((item) => (item.name === ROOT_DIAGRAM_NAME ? 'Home' : item.name), []);
+  const getLabel = React.useCallback((item) => getDiagramName(item.name), []);
 
   const renderItem = React.useCallback((item) => <Item {...item} isActive={activeDiagramID === item.id} />, [activeDiagramID]);
 

@@ -5,13 +5,13 @@ import { Box, Link, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
-import { ROOT_DIAGRAM_NAME } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks';
+import { getDiagramName } from '@/utils/diagram';
 import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/intent';
 
 interface IntentOption {
@@ -66,7 +66,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({ intentID, diagramID
       }
 
       if (intentOptions.length) {
-        topicIntentOptions.push({ id: diagramID, label: diagram.name === ROOT_DIAGRAM_NAME ? 'Home' : diagram.name, options: intentOptions });
+        topicIntentOptions.push({ id: diagramID, label: getDiagramName(diagram.name), options: intentOptions });
       }
     }
 

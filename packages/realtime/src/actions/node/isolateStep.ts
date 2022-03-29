@@ -43,6 +43,17 @@ class IsolateStep extends AbstractDiagramActionControl<Realtime.node.IsolateStep
 
     await this.services.diagram.isolateStep(creatorID, diagramID, sourceBlockID, block, stepID);
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.IsolateStepPayload>): Promise<void> => {
+    const { creatorID } = ctx.data;
+    const { diagramID, versionID, projectID, workspaceID, blockID, blockName } = payload;
+    const actionContext = { diagramID, versionID, projectID, workspaceID };
+
+    await this.server.processAs(
+      creatorID,
+      Realtime.diagram.addNewStartingBlocks({ ...actionContext, startingBlocks: [{ blockID, name: blockName }] })
+    );
+  };
 }
 
 export default IsolateStep;

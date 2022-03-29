@@ -1,13 +1,13 @@
 import { BoxFlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
-import { ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
+import { getDiagramName } from '@/utils/diagram';
 
 import DiagramActions from './DiagramActions';
 import DiagramDivider from './DiagramDivider';
@@ -24,7 +24,7 @@ const DiagramsActions: React.FC = () => {
   const activeDiagram = useSelector(DiagramV2.diagramByIDSelector, { id: activeDiagramID });
   const previousDiagram = useSelector(DiagramV2.diagramByIDSelector, { id: previousDiagramID });
 
-  const rootDiagramName = rootDiagram?.name === ROOT_DIAGRAM_NAME ? 'Home' : rootDiagram?.name;
+  const rootDiagramName = getDiagramName(rootDiagram?.name);
   const rootDiagramIsActiveDiagram = rootDiagramID === activeDiagramID;
   const rootDiagramIsPreviousDiagram = rootDiagramID === previousDiagramID;
   const isOnlyRootDiagramActive = !previousDiagramID && rootDiagramIsPreviousDiagram;

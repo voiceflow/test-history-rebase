@@ -1,4 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
+import { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { BaseContextData, Context, Resend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
@@ -6,6 +7,15 @@ import type { Action } from 'typescript-fsa';
 import { AbstractActionControl } from '@/actions/utils';
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
 import { WorkspaceContextData } from '@/actions/workspace/utils';
+
+export interface NewDiagram {
+  id: string;
+  nodes?: Record<string, BaseModels.BaseDiagramNode<AnyRecord>>;
+}
+
+export interface NewDiagramContextData extends WorkspaceContextData {
+  newDiagram: NewDiagram;
+}
 
 export abstract class AbstractDiagramActionControl<
   P extends Realtime.BaseDiagramPayload,
@@ -69,5 +79,22 @@ export abstract class AbstractDiagramResourceControl<
     );
 
     return diagram;
+  };
+
+  protected reloadStartingBlocksFromNewDiagram = async (ctx: Context<WorkspaceContextData>, payload: P, newDiagram?: NewDiagram): Promise<void> => {
+    if (!newDiagram || !newDiagram.nodes) return;
+    const { creatorID } = ctx.data;
+    const { versionID, projectID, workspaceID } = payload;
+    const actionContext = { versionID, projectID, workspaceID };
+
+    const startingBlocks =
+      newDiagram.nodes &&
+      Object.values(newDiagram.nodes)
+        .filter((node) => node.type === Realtime.NODE_BLOCK_TYPE)
+        .map((node) => ({ blockID: node.nodeID, name: node.data.name }));
+
+    if (startingBlocks && startingBlocks.length > 0) {
+      await this.server.processAs(creatorID, Realtime.diagram.addNewStartingBlocks({ ...actionContext, diagramID: newDiagram.id, startingBlocks }));
+    }
   };
 }

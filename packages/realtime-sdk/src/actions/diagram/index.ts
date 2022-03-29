@@ -15,6 +15,7 @@ const diagramTopicType = createType(diagramType(TOPIC_KEY));
 const diagramComponentType = createType(diagramType(COMPONENT_KEY));
 const diagramVariablesType = createType(diagramType(VARIABLES_KEY));
 const diagramIntentStepsType = createType(diagramType('intent_steps'));
+const diagramStartingBlocksType = createType(diagramType('starting_blocks'));
 
 // variables
 
@@ -63,6 +64,43 @@ export const updateIntentSteps = createAction<UpdateIntentStepsPayload>(diagramI
 export const reloadIntentSteps = createAction<ReloadIntentStepsPayload>(diagramIntentStepsType('RELOAD'));
 export const reorderIntentSteps = createAction<ReorderIntentStepsPayload>(diagramIntentStepsType('REORDER'));
 export const registerIntentSteps = createAction<RegisterIntentStepsPayload>(diagramIntentStepsType('REGISTER'));
+
+// starting blocks
+
+export interface DiagramStartingBlock {
+  blockID: string;
+  name: string;
+}
+
+export interface DiagramStartingBlockMap {
+  [blockID: string]: Nullable<DiagramStartingBlock>;
+}
+
+export interface LoadStartingBlocksPayload extends BaseVersionPayload {
+  startingBlocks: { [diagramID: string]: DiagramStartingBlockMap };
+}
+
+export interface AddNewStartingBlocksPayload extends BaseDiagramPayload {
+  startingBlocks: Array<DiagramStartingBlock>;
+}
+
+export interface RemoveStartingBlocksPayload extends BaseDiagramPayload {
+  startingBlockIds: string[];
+}
+
+export interface UpdateStartingBlockPayload extends BaseDiagramPayload {
+  startingBlock: DiagramStartingBlock;
+}
+
+export interface RemoveDiagramStartingBlocksPayload extends BaseDiagramPayload {
+  removedDiagramID: string;
+}
+
+export const loadStartingBlocks = createAction<LoadStartingBlocksPayload>(diagramStartingBlocksType('LOAD'));
+export const addNewStartingBlocks = createAction<AddNewStartingBlocksPayload>(diagramStartingBlocksType('ADD_NEW'));
+export const removeStartingBlocks = createAction<RemoveStartingBlocksPayload>(diagramStartingBlocksType('REMOVE'));
+export const updateStartingBlock = createAction<UpdateStartingBlockPayload>(diagramStartingBlocksType('UPDATE_NAME'));
+export const removeDiagramStartingBlocks = createAction<RemoveDiagramStartingBlocksPayload>(diagramStartingBlocksType('REMOVE_DIAGRAM'));
 
 // blocks
 

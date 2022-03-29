@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import { createReducer } from './utils';
+import { createReducer } from '../utils';
 
 const removeIntentStepsReducer = createReducer(Realtime.node.removeMany, (state, { diagramID, nodes }) => {
   if (!nodes.length) return;

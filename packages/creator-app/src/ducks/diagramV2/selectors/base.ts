@@ -23,4 +23,6 @@ export const localVariablesByDiagramIDSelector = createSelector([diagramByIDSele
 
 export const intentStepsSelector = createSelector([rootDiagramSelector], ({ intentSteps }) => intentSteps);
 
+export const startingBlocksSelector = createSelector([rootDiagramSelector], ({ startingBlocks }) => startingBlocks);
+
 export const globalIntentStepMapSelector = createSelector([rootDiagramSelector], ({ globalIntentStepMap }) => globalIntentStepMap);

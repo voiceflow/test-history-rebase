@@ -1,11 +1,12 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { terminateResend } from '@voiceflow/socket-utils';
+import { Context, terminateResend } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
 
-import { AbstractDiagramResourceControl } from './utils';
+import { AbstractDiagramResourceControl, NewDiagramContextData } from './utils';
 
-class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagramPayload> {
+class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagramPayload, NewDiagramContextData> {
   protected actionCreator = Realtime.diagram.convertToTopic.started;
 
   protected resend = terminateResend;
@@ -64,6 +65,8 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
         .then((dbDiagram) => Realtime.Adapters.diagramAdapter.fromDB(dbDiagram, { rootDiagramID: '' })),
     ]);
 
+    ctx.data.newDiagram = { ...diagram, ...newDiagram };
+
     const actionContext = {
       versionID: payload.versionID,
       projectID: payload.projectID,
@@ -104,6 +107,11 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
 
     return newDiagram;
   });
+
+  protected finally = async (ctx: Context<NewDiagramContextData>, { payload }: Action<Realtime.BaseDiagramPayload>) => {
+    const { newDiagram } = ctx.data;
+    this.reloadStartingBlocksFromNewDiagram(ctx, payload, { id: newDiagram.id, nodes: newDiagram.nodes });
+  };
 }
 
 export default ConvertToTopic;

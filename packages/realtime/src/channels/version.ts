@@ -28,11 +28,11 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const { platform, platformV2, typeV2: projectType } = project;
     const version = Realtime.Adapters.versionAdapter.fromDB(dbVersion as Realtime.AnyDBVersion, { platform: platformV2, projectType });
 
-    const [diagrams, intentSteps] = await Promise.all([
+    const [diagrams, { startingBlocks, intentSteps }] = await Promise.all([
       this.services.diagram
         .getAll(creatorID, versionID)
         .then((dbDiagrams) => Realtime.Adapters.diagramAdapter.mapFromDB(dbDiagrams, { rootDiagramID: version.rootDiagramID })),
-      this.services.version.getIntentSteps(creatorID, versionID),
+      this.services.version.getResourcesFromDiagrams(creatorID, versionID),
     ]);
 
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbVersion.platformData.slots);
@@ -55,6 +55,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.diagram.crud.replace({ values: diagrams, workspaceID, projectID, versionID }),
       Realtime.variableState.crud.replace({ values: variableStates, workspaceID, projectID, versionID }),
       Realtime.diagram.loadIntentSteps({ intentSteps, workspaceID, projectID, versionID }),
+      Realtime.diagram.loadStartingBlocks({ startingBlocks, workspaceID, projectID, versionID }),
       Realtime.version.crud.add({ value: version, key: versionID, workspaceID, projectID }),
       Realtime.project.crud.add({ value: project, key: projectID, workspaceID }),
       Realtime.version.activateVersion({ workspaceID, projectID, versionID, projectType }),

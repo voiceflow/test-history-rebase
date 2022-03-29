@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.674.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.674.1...@voiceflow/creator-app@1.674.2) (2022-03-29)
+
+
+### Bug Fixes
+
+* [NLU_Manager] dont allow built in variables to be deleted (VF-000) ([#5266](https://github.com/voiceflow/creator-app/issues/5266)) ([5593c35](https://github.com/voiceflow/creator-app/commit/5593c3507c5162fcc66f1d747055da420562275e))
+
+
+
+
+
 ## [1.674.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.674.0...@voiceflow/creator-app@1.674.1) (2022-03-29)
 
 

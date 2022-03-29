@@ -1,5 +1,5 @@
 import { BaseNode, BaseRequest } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 
 import { DebugTrace, PathTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
 import {
@@ -13,6 +13,8 @@ import {
   UserMessage,
   VisualMessage,
 } from '@/pages/Prototype/types';
+
+export const VF_ELICIT = 'ELICIT';
 
 export interface CommonProperties {
   turnID?: string;
@@ -75,15 +77,25 @@ export const createVisualMessage = (trace: VisualTrace, common: CommonProperties
 const isGuidedNavRequest = (request: BaseRequest.BaseRequest): request is BaseRequest.BaseRequest<string> =>
   !!request.type.toLowerCase().match(/^port\d+$/) && typeof request.payload === 'string';
 
-export const createUserMessage = (request: BaseRequest.BaseRequest, common: CommonProperties, id = Utils.id.cuid()): UserMessage => {
+export const createUserMessage = (
+  request: BaseRequest.BaseRequest & { [VF_ELICIT]?: boolean },
+  common: CommonProperties,
+  id = Utils.id.cuid()
+): Nullable<UserMessage> => {
+  if (request[VF_ELICIT]) return null;
+
   let input = request.type;
 
   if (BaseRequest.isIntentRequest(request)) {
     input = request.payload.label || request.payload.query || request.payload.intent.name;
   } else if (BaseRequest.isTextRequest(request) || isGuidedNavRequest(request)) {
     input = request.payload;
-  } else if (typeof request.payload === 'object' && !!request.payload && typeof (request.payload as any).label === 'string') {
-    input = (request.payload as any).label;
+  } else if (
+    Utils.object.isObject(request.payload) &&
+    Utils.object.hasProperty(request.payload, 'label') &&
+    typeof request.payload.label === 'string'
+  ) {
+    input = request.payload.label;
   }
 
   return {

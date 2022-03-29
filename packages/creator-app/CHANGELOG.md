@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.675.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.674.3...@voiceflow/creator-app@1.675.0) (2022-03-29)
+
+
+### Bug Fixes
+
+* disconnect timeout (VF-000) ([#5270](https://github.com/voiceflow/creator-app/issues/5270)) ([dd76077](https://github.com/voiceflow/creator-app/commit/dd760776b8e1f133fe5c660db6c6c57c2f4b165d))
+
+
+### Features
+
+* added creating project (VF-2901) ([#5265](https://github.com/voiceflow/creator-app/issues/5265)) ([71b0a77](https://github.com/voiceflow/creator-app/commit/71b0a7765f538cc4658b030deb29ea629c160b1c))
+
+
+
+
+
 ## [1.674.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.674.2...@voiceflow/creator-app@1.674.3) (2022-03-29)
 
 

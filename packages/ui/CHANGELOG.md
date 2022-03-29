@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.67.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.66.0...@voiceflow/ui@1.67.0) (2022-03-29)
+
+
+### Features
+
+* added creating project (VF-2901) ([#5265](https://github.com/voiceflow/creator-app/issues/5265)) ([71b0a77](https://github.com/voiceflow/creator-app/commit/71b0a7765f538cc4658b030deb29ea629c160b1c))
+
+
+
+
+
 # [1.66.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.65.0...@voiceflow/ui@1.66.0) (2022-03-29)
 
 

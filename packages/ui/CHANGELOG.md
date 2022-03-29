@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.66.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.65.0...@voiceflow/ui@1.66.0) (2022-03-29)
+
+
+### Features
+
+* implement useForm hook and improved error handling in variable state editor modal (VF-3172) ([#5239](https://github.com/voiceflow/creator-app/issues/5239)) ([3cb266c](https://github.com/voiceflow/creator-app/commit/3cb266cb7a3679dafbbc8ceb28ff6fab85e13c0a))
+
+
+
+
+
 # [1.65.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.64.0...@voiceflow/ui@1.65.0) (2022-03-28)
 
 

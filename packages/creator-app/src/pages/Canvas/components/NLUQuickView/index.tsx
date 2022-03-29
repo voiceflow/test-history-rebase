@@ -8,6 +8,7 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { useLinkedState, useSelector } from '@/hooks';
 import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
+import VariablesSection from '@/pages/Canvas/components/NLUQuickView/components/VariablesSection';
 
 import { TitleInput } from './components';
 import HeaderOptions from './components/HeaderOptions';
@@ -48,11 +49,7 @@ const NLUQuickView: React.FC = () => {
       <Box width="100%" overflow="auto" height="calc(100vh - 120px)">
         {showIntentForm && <IntentForm intent={intentsMap[selectedID]} withNameSection={false} />}
         {showEntityForm && <EditEntityForm slotID={selectedID} withNameSection={false} />}
-        {showVariableForm && (
-          <Box p={32} fontSize={13} color="#62778c">
-            The confidence interval (measured as a value from 0 to 100) for the most recently matched intent.
-          </Box>
-        )}
+        {showVariableForm && <VariablesSection />}
       </Box>
     </Modal>
   );

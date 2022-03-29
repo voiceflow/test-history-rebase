@@ -1,6 +1,7 @@
-import { Input } from '@voiceflow/ui';
+import { Input, ThemeColor } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
+import THEME from '@/styles/theme';
 
 export const TitleInput = styled(Input)`
   border-radius: 0;
@@ -10,4 +11,6 @@ export const TitleInput = styled(Input)`
   height: 23px;
   min-height: 0px;
   min-width: 300px;
+  color: ${THEME.colors[ThemeColor.PRIMARY]};
+  font-weight: 600;
 `;

@@ -1,6 +1,7 @@
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
+import { VARIABLE_DESCRIPTION } from '@/components/Canvas/constants';
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
@@ -17,7 +18,7 @@ import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
 import { DraggableItem, Manager, VariableInput, VariableListContainer } from './components';
-import { VARIABLE_DESCRIPTION, VariableType } from './constants';
+import { VariableType } from './constants';
 import { Variable } from './types';
 import { addPrefix } from './utils';
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.676.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.675.0...@voiceflow/creator-app@1.676.0) (2022-03-29)
+
+
+### Features
+
+* variable states realtime starting block (VF-3163) ([#5236](https://github.com/voiceflow/creator-app/issues/5236)) ([a49a8a8](https://github.com/voiceflow/creator-app/commit/a49a8a83ddb5b98ad225c85d1f41eca374e925ec))
+
+
+
+
+
 # [1.675.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.674.3...@voiceflow/creator-app@1.675.0) (2022-03-29)
 
 

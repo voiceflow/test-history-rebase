@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.53.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.52.3...@voiceflow/realtime@1.53.0) (2022-03-29)
+
+
+### Features
+
+* variable states realtime starting block (VF-3163) ([#5236](https://github.com/voiceflow/creator-app/issues/5236)) ([a49a8a8](https://github.com/voiceflow/creator-app/commit/a49a8a83ddb5b98ad225c85d1f41eca374e925ec))
+
+
+
+
+
 ## [1.52.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.52.2...@voiceflow/realtime@1.52.3) (2022-03-28)
 
 **Note:** Version bump only for package @voiceflow/realtime

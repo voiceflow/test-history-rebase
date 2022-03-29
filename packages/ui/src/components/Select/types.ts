@@ -72,6 +72,7 @@ export interface BaseSelectProps {
   icon?: Icon;
   open?: boolean;
   label?: string;
+  error?: boolean;
   inline?: boolean;
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onOpen?: VoidFunction;

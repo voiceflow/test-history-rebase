@@ -123,6 +123,7 @@ function Select({
   open,
   icon,
   label = '',
+  error = false,
   value,
   inline = false,
   onOpen,
@@ -403,6 +404,7 @@ function Select({
 
   const inputProps = {
     icon,
+    error,
     inline,
     onBlur,
     opened,

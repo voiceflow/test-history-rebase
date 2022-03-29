@@ -56,6 +56,7 @@ function TagSelect({
   getOptionValue = defaultGetter as GetOptionValue<unknown, string>,
   getOptionKey = (option, index) => String(getOptionValue(option) || index),
   createInputPlaceholder,
+  error,
 }: TagSelectInternalProps): React.ReactElement {
   const [selected, setSelected] = React.useState<string[]>(() => trimNulls(value));
 
@@ -109,6 +110,7 @@ function TagSelect({
       createInputPlaceholder={createInputPlaceholder}
       disabled={disabled}
       getOptionKey={getOptionKey}
+      error={error}
     />
   );
 }

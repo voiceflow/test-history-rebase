@@ -9,9 +9,10 @@ interface VariablesSelectProps {
   onChange: (value: string[]) => void;
   disabled?: boolean;
   placeholder?: string;
+  error?: boolean;
 }
 
-const VariablesSelect: React.FC<VariablesSelectProps> = ({ onChange, value, placeholder, disabled }) => {
+const VariablesSelect: React.FC<VariablesSelectProps> = ({ onChange, value, placeholder, disabled, error }) => {
   const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
 
   return (
@@ -23,6 +24,7 @@ const VariablesSelect: React.FC<VariablesSelectProps> = ({ onChange, value, plac
       isDropdown={false}
       placeholder={placeholder}
       createInputPlaceholder="variables"
+      error={error}
     />
   );
 };

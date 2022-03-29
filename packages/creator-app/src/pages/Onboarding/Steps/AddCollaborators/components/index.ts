@@ -4,4 +4,3 @@ export { default as CollaboratorListContainer } from './CollaboratorListContaine
 export { default as DropdownInput } from './DropdownInput';
 export { default as HeaderLabel } from './HeaderLabel';
 export { default as Text } from './HeaderText';
-export { default as InvalidEmailError } from './InvalidEmailError';

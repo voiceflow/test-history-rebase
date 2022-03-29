@@ -53,6 +53,7 @@
     "esprima": "4.0.1",
     "eventemitter3": "4.0.7",
     "file-saver": "2.0.5",
+    "formik": "2.2.9",
     "history": "4.10.1",
     "idb-keyval": "6.1.0",
     "immer": "9.0.12",
@@ -136,7 +137,8 @@
     "userflow.js": "2.2.0",
     "utility-types": "3.10.0",
     "valid-url": "1.0.9",
-    "vite-plugin-rewrite-all": "0.1.2"
+    "vite-plugin-rewrite-all": "0.1.2",
+    "yup": "0.32.11"
   },
   "devDependencies": {
     "@babel/core": "7.15.8",

@@ -2,7 +2,7 @@ import { UserRole } from '@voiceflow/internal';
 import { ClickableText, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import InvalidEmailError from '@/components/InvalidEmailError';
+import InputError from '@/components/InputError';
 import { CollaboratorType } from '@/pages/Onboarding/types';
 
 import CollaboratorListContainer from './CollaboratorListContainer';
@@ -61,7 +61,7 @@ const AddTeamMember: React.FC<AddTeamMembersProps> = ({ errors, collaborators, o
                 />
               </CollaboratorListContainer>
 
-              {!!error && <InvalidEmailError>{error}</InvalidEmailError>}
+              {!!error && <InputError>{error}</InputError>}
             </div>
           );
         })}

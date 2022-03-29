@@ -4,7 +4,7 @@ import { Flex, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import ButtonDropdownInput, { OrientationType } from '@/components/ButtonDropdownInput';
-import InvalidEmailError from '@/components/InvalidEmailError';
+import InputError from '@/components/InputError';
 import { Permission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -99,7 +99,7 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
         </SendInviteButton>
       </Flex>
 
-      {isInvalid && <InvalidEmailError>Email is not valid.</InvalidEmailError>}
+      {isInvalid && <InputError>Email is not valid.</InputError>}
     </Container>
   );
 };

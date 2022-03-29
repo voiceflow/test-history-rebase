@@ -22,10 +22,15 @@ export const isUIOnlyMenuItemOption = (value: unknown): value is UIOnlyMenuItemO
 
 export const isNotUIOnlyMenuItemOption = <T>(value: T | UIOnlyMenuItemOption): value is T => isUIOnlyMenuItemOption(value) === false;
 
-export const createUIOnlyMenuItemOption = (id: string, menuItemProps: UIOnlyMenuItemOption['menuItemProps'] = {}): UIOnlyMenuItemOption => ({
+export const createUIOnlyMenuItemOption = (
+  id: string,
+  menuItemProps: UIOnlyMenuItemOption['menuItemProps'] = {},
+  tooltip: React.ReactNode = null
+): UIOnlyMenuItemOption => ({
   id,
   label: '',
   vfUIOnly: true,
   disabled: false,
   menuItemProps,
+  tooltip,
 });

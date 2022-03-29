@@ -12,7 +12,7 @@ interface ChannelSectionProps {
 
 const ChannelSection: React.FC<ChannelSectionProps> = ({ channelValue, onChannelSelect }) => {
   return (
-    <Section header="Channel" variant={SectionVariant.TERTIARY}>
+    <Section header="Channel" variant={SectionVariant.FORM}>
       <ChannelSelect value={channelValue} onSelect={onChannelSelect} />
     </Section>
   );

@@ -8,13 +8,8 @@ import DropdownMultiselect from '@/components/DropdownMultiselect';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { isAlexaPlatform } from '@/utils/typeGuards';
 
-import {
-  AnyLanguage,
-  AnyLocale,
-  defaultLanguageSelectProps,
-  getPlatformOrProjectTypeMeta,
-  LanguageSelectProps as SelectProps,
-} from '../../constants';
+import { defaultLanguageSelectProps, getPlatformOrProjectTypeMeta } from '../../constants';
+import { AnyLanguage, AnyLocale, LanguageSelectProps as SelectProps } from '../../types';
 
 const UnTypedDropdownMultiselect: any = DropdownMultiselect;
 

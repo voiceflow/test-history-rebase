@@ -21,7 +21,7 @@ interface LanguageSectionProps {
 const LanguageSection: React.FC<LanguageSectionProps> = (props) => {
   const headerText = props.channel ? getPlatformOrProjectTypeMeta[props.channel]?.localesText : 'Language';
   return (
-    <Section header={headerText} variant={SectionVariant.TERTIARY}>
+    <Section header={headerText} variant={SectionVariant.FORM}>
       <LanguageSelect {...props} />
     </Section>
   );

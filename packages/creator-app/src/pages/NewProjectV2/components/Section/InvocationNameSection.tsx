@@ -21,7 +21,7 @@ const InvocationNameSection: React.FC<InvocationNameSectionProps> = ({
   invocationErrorMessage,
 }) => {
   return (
-    <Section header="Invocation Name" variant={SectionVariant.TERTIARY}>
+    <Section header="Invocation Name" variant={SectionVariant.FORM}>
       <InvocationName
         invocationName={invocationName}
         onInvocationNameChange={onInvocationNameChange}

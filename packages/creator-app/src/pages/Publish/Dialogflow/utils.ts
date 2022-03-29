@@ -1,12 +1,14 @@
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 
+import { createPreferredOptionsList } from '@/pages/Publish/utils';
+
 const LOCALE_DISPLAY_NAMES: Record<DFESConstants.Language, string> = {
   [DFESConstants.Language.BN]: 'Bengali',
   [DFESConstants.Language.DA]: 'Danish',
   [DFESConstants.Language.DE]: 'German',
   [DFESConstants.Language.ES]: 'Spanish',
   [DFESConstants.Language.FI]: 'Finnish',
-  [DFESConstants.Language.FIL]: ' Filipino',
+  [DFESConstants.Language.FIL]: 'Filipino',
   [DFESConstants.Language.FR]: 'French',
   [DFESConstants.Language.HI]: 'Hindi',
   [DFESConstants.Language.ID]: 'Indonesian',
@@ -40,6 +42,8 @@ export const FORMATTED_DIALOGFLOW_LOCALES: { value: DFESConstants.Language; name
   value: DFESConstants.Language[key as keyof typeof DFESConstants.Language],
   name: LOCALE_DISPLAY_NAMES[DFESConstants.Language[key as keyof typeof DFESConstants.Language]],
 }));
+
+export const getPreferredDialogFlowLocales = () => createPreferredOptionsList(FORMATTED_DIALOGFLOW_LOCALES, [DFESConstants.Language.EN]);
 
 export const FORMATTED_DIALOGFLOW_LOCALES_LABELS: Record<string, string> = FORMATTED_DIALOGFLOW_LOCALES.reduce<Record<string, string>>(
   (acc, locale) => Object.assign(acc, { [locale.value]: locale.name }),

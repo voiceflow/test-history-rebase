@@ -13,7 +13,7 @@ interface NLUSectionProps {
 
 const NLUSection: React.FC<NLUSectionProps> = ({ nluValue, onNluSelect }) => {
   return (
-    <Section header={<NLUSectionHeader />} variant={SectionVariant.TERTIARY}>
+    <Section header={<NLUSectionHeader />} variant={SectionVariant.FORM}>
       <NLUSelect value={nluValue} onSelect={onNluSelect} />
     </Section>
   );

@@ -1,97 +1,83 @@
-import { AlexaConstants } from '@voiceflow/alexa-types';
-import { Nullish } from '@voiceflow/common';
-import { DFESConstants } from '@voiceflow/google-dfes-types';
-import { GoogleConstants } from '@voiceflow/google-types';
+import { Utils } from '@voiceflow/realtime-sdk';
+import { createUIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
-import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
-import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES } from '@/pages/Publish/Google/utils';
+import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS, getDefaultPlatformLanguageLabel } from '@/constants/platforms';
+import { FORMATTED_DIALOGFLOW_LOCALES_LABELS, getPreferredDialogFlowLocales } from '@/pages/Publish/Dialogflow/utils';
+import { FORMATTED_GOOGLE_LOCALES_LABELS, getPreferredGoogleLocales } from '@/pages/Publish/Google/utils';
+import LOCALE_MAP from '@/services/LocaleMap';
 
-export enum PlatformTypeUpcoming {
-  WHATSAPP = 'whatsapp',
-  FB_MESSENGER = 'fb_messenger',
-  TWILIO_IVR = 'twilio_ivr',
-  TWILIO_SMS = 'twilio_SMS',
-  IBM_WATSON = 'ibm_watson',
-  MICROSOFT_LUIS = 'microsoft_luis',
-  RASA = 'rasa',
-  SALESFORCE_EINSTEIN = 'salesforce_einstein',
-  DIALOGFLOW_CX = 'dialogflow_cx',
-  NUANCE_MIX = 'nuance_mix',
-}
+import getSelectTooltip from './components/SelectTooltip';
+import { AnyLanguage, AnyLocale, LanguageSelectProps, PlatformAndProjectTypeMeta, PlatformTypeUpcoming, Section } from './types';
 
-export type AnyLanguage = GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale;
-export type AnyLocale = AlexaConstants.Locale;
+export const DEFAULT_PROJECT_NAME = 'Untitled';
 
-export interface LanguageSelectOption {
-  value: AnyLanguage;
-  name: string;
-}
-
-export interface LanguageSelectProps {
-  options: LanguageSelectOption[];
-  placeholder: string;
-  getOptionKey: (option: LanguageSelectOption) => string;
-  getOptionValue: (option: Nullish<LanguageSelectOption>) => string | VoiceflowConstants.Locale;
-  getOptionLabel: (value: Nullish<string>) => string;
-  renderOptionLabel: (option: LanguageSelectOption) => string;
-}
+export const ChannelSectionErrorMessage = 'Channel selection is required';
+export const NLUSectionErrorMessage =
+  'NLU selection is required. If you don’t already use one of these providers we recommend selecting the Voiceflow option.';
+export const InvocationSectionErrorMessage = 'Invocation name is required';
 
 export const defaultLanguageSelectProps: LanguageSelectProps = {
-  options: GENERAL_LOCALES_OPTIONS,
-  placeholder: 'Locale',
+  options: [GENERAL_LOCALES_OPTIONS[0], createUIOnlyMenuItemOption('divider', { divider: true }), ...GENERAL_LOCALES_OPTIONS.slice(1)],
+  placeholder: 'Select language',
   getOptionKey: (option) => option.value,
   getOptionValue: (option) => option?.value || VoiceflowConstants.Locale.EN_US,
   getOptionLabel: (value) => GENERAL_LOCALE_NAME_MAP[value as VoiceflowConstants.Locale] ?? '',
   renderOptionLabel: (option) => option.name,
 };
 
-export interface PlatformAndProjectTypeMeta {
-  name: string;
-  description?: string;
-  invocationDescription?: string;
-  localesText?: string;
-  disabled: boolean;
-  type?: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType | PlatformTypeUpcoming;
-  languageSelectProps?: LanguageSelectProps;
-}
+export const getLanguage = (language: AnyLanguage, alexaLocales: AnyLocale[], platformType: VoiceflowConstants.PlatformType) => {
+  const defaultLabel = getDefaultPlatformLanguageLabel(platformType);
+
+  return Utils.platform.createPlatformSelectorV2(
+    {
+      [VoiceflowConstants.PlatformType.ALEXA]: LOCALE_MAP.find((locale) => locale.value === alexaLocales[0])?.name ?? defaultLabel,
+      [VoiceflowConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[language] ?? defaultLabel,
+      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[language] ?? defaultLabel,
+    },
+    // @ts-expect-error temp ignore type issue for now
+    GENERAL_LOCALE_NAME_MAP[language] ?? defaultLabel
+  )(platformType);
+};
 
 export const getPlatformOrProjectTypeMeta: Partial<
   Record<VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType | PlatformTypeUpcoming, PlatformAndProjectTypeMeta>
 > = {
   [VoiceflowConstants.ProjectType.CHAT]: {
     name: 'Chat Assistant',
-    description: 'Chat assistants can be connected to any channel or custom interface via API.',
+    tooltip: getSelectTooltip('Chat Assistant', 'Chat assistants can be connected to any channel or custom interface via API.'),
     localesText: 'Language',
     disabled: false,
     type: VoiceflowConstants.ProjectType.CHAT,
   },
   [VoiceflowConstants.ProjectType.VOICE]: {
     name: 'Voice Assistant',
-    description: 'Voice assistants can be connected to any channel or custom interface via API.',
+    tooltip: getSelectTooltip('Voice Assistant', 'Voice assistants can be connected to any channel or custom interface via API.'),
     localesText: 'Language',
     disabled: false,
     type: VoiceflowConstants.ProjectType.VOICE,
   },
   [VoiceflowConstants.PlatformType.ALEXA]: {
     name: 'Amazon Alexa',
-    description: 'Design, prototype and launch Alexa Skills with our one-click integration',
+    tooltip: getSelectTooltip('Amazon Alexa', 'Design, prototype and launch Alexa Skills with our one-click integration'),
     invocationDescription: 'The phrase users will use to interact with your Alexa Skill.',
     localesText: 'Locales',
     disabled: false,
     type: VoiceflowConstants.PlatformType.ALEXA,
+    icon: 'amazonAlexa',
   },
   [VoiceflowConstants.PlatformType.GOOGLE]: {
     name: 'Google Assistant',
-    description: 'Design, prototype and launch Google Actions with our one-click integration',
+    tooltip: getSelectTooltip('Google Assistant', 'Design, prototype and launch Google Actions with our one-click integration'),
     invocationDescription: 'The phrase users will use to interact with your Google Action.',
     localesText: 'Language',
     disabled: false,
     type: VoiceflowConstants.PlatformType.GOOGLE,
+    icon: 'googleAssistant',
+
     languageSelectProps: {
-      options: FORMATTED_LOCALES,
-      placeholder: 'Language',
+      options: getPreferredGoogleLocales(),
+      placeholder: 'Select language',
       getOptionKey: (option) => option.value,
       getOptionValue: (option) => option?.value || '',
       getOptionLabel: (value) => (value && FORMATTED_GOOGLE_LOCALES_LABELS[value]) || '',
@@ -100,20 +86,24 @@ export const getPlatformOrProjectTypeMeta: Partial<
   },
   [VoiceflowConstants.PlatformType.VOICEFLOW]: {
     name: 'Voiceflow (default)',
-    description: "If you don't already use one of these NLU providers, we recommend this option for the simplest experience.",
+    tooltip: getSelectTooltip(
+      'Voiceflow NLU',
+      "If you don't already use one of these NLU providers, we recommend this option for the simplest experience."
+    ),
     localesText: 'Language',
     disabled: false,
     type: VoiceflowConstants.PlatformType.VOICEFLOW,
   },
   [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
     name: 'Dialogflow ES',
-    description: 'Import and export/upload NLU models for Dialogflow agents.',
+    tooltip: getSelectTooltip('Dialogflow ES', 'Import and export/upload NLU models for Dialogflow agents.'),
     localesText: 'Language',
     disabled: false,
     type: VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
+    icon: 'dialogflow',
     languageSelectProps: {
-      options: FORMATTED_DIALOGFLOW_LOCALES,
-      placeholder: 'Language',
+      options: getPreferredDialogFlowLocales(),
+      placeholder: 'Select language',
       getOptionKey: (option) => option.value,
       getOptionValue: (option) => option?.value || '',
       getOptionLabel: (value) => (value && FORMATTED_DIALOGFLOW_LOCALES_LABELS[value]) || '',
@@ -173,10 +163,11 @@ export const getPlatformOrProjectTypeMeta: Partial<
   },
 };
 
-export interface Section {
-  label: string;
-  options: (PlatformAndProjectTypeMeta | undefined)[];
-}
+export const getPlatformTag: Partial<Record<VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType, string>> = {
+  [VoiceflowConstants.ProjectType.CHAT]: VoiceflowConstants.ProjectType.CHAT,
+  [VoiceflowConstants.ProjectType.VOICE]: VoiceflowConstants.ProjectType.VOICE,
+  [VoiceflowConstants.PlatformType.GOOGLE]: 'default',
+};
 
 export const CHANNEL_SECTIONS: Section[] = [
   {

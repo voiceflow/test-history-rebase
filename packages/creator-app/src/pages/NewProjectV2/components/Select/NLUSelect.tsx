@@ -1,4 +1,4 @@
-import { Select } from '@voiceflow/ui';
+import { Select, SvgIcon } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -9,9 +9,13 @@ interface NLUSelectProps {
   onSelect: (value: VoiceflowConstants.PlatformType) => void;
 }
 
+const getPrefixIcon = (value?: VoiceflowConstants.PlatformType) =>
+  value && getPlatformOrProjectTypeMeta[value]?.icon ? <SvgIcon size={16} icon={getPlatformOrProjectTypeMeta[value]!.icon!} /> : <></>;
+
 const NLUSelect: React.FC<NLUSelectProps> = ({ value, onSelect }) => {
   return (
     <Select
+      prefix={getPrefixIcon(value)}
       grouped
       getOptionValue={(option) => option?.type as any}
       getOptionLabel={(option) => (option ? getPlatformOrProjectTypeMeta[option]?.name : '')}
@@ -19,7 +23,8 @@ const NLUSelect: React.FC<NLUSelectProps> = ({ value, onSelect }) => {
       options={NLU_SECTIONS as any[]}
       onSelect={onSelect}
       placeholder="Select NLU"
-    ></Select>
+      searchable
+    />
   );
 };
 

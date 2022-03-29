@@ -13,6 +13,7 @@ export interface BaseMenuItem {
   vfUIOnly?: boolean;
   disabled?: boolean;
   menuItemProps?: MenuItemProps;
+  tooltip?: React.ReactNode;
 }
 
 export interface UIOnlyMenuItemOption extends Required<BaseMenuItem> {

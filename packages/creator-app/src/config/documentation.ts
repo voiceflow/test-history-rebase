@@ -54,3 +54,5 @@ export const DIALOG_MANAGER_API = 'https://www.voiceflow.com/api/dialog-manager'
 
 // TODO: this document hasn't been written yet
 export const OPEN_INTENT = 'https://docs.voiceflow.com/#/platform/steps/input-steps/user-input?id=open-intent';
+
+export const PROJECT_CREATE = 'https://www.voiceflow.com/docs/designing-project-creation';

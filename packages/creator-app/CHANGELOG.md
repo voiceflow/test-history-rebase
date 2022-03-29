@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.674.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.674.0...@voiceflow/creator-app@1.674.1) (2022-03-29)
+
+
+### Bug Fixes
+
+* variable create modal autofocus (VF-000) ([#5268](https://github.com/voiceflow/creator-app/issues/5268)) ([31fa04f](https://github.com/voiceflow/creator-app/commit/31fa04f3c21d11f88672b38a4d1d42d29cf31b1f))
+
+
+
+
+
 # [1.674.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.673.0...@voiceflow/creator-app@1.674.0) (2022-03-29)
 
 

@@ -8,6 +8,8 @@ import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
+const ERROR_DISCONNECT_TIMEOUT = 5000;
+
 const RealtimeDiagramLifecycle: React.FC<ConnectedRealtimeDiagramLifecycleProps> = ({
   disconnectRealtime,
   reestablishConnection,
@@ -17,31 +19,43 @@ const RealtimeDiagramLifecycle: React.FC<ConnectedRealtimeDiagramLifecycleProps>
   setError,
   setRealtimeError,
 }) => {
-  React.useEffect(
-    () =>
-      client.socket.global.watchForConnectionError(() => {
-        disconnectRealtime();
-        client.socket.global.setReconnectingStatus();
-      }),
-    []
-  );
+  const disconnectTimeout = React.useRef<NodeJS.Timeout | null>(null);
 
-  React.useEffect(
-    () =>
-      client.socket.global.watchForReconnected(() => {
-        reestablishConnection();
-      }),
-    [reestablishConnection]
-  );
+  React.useEffect(() => {
+    client.socket.global.watchForConnectionError(() => {
+      if (!disconnectTimeout.current) {
+        disconnectTimeout.current = setTimeout(() => {
+          if (!client.socket.isConnected) {
+            disconnectRealtime();
+          }
+        }, ERROR_DISCONNECT_TIMEOUT);
+      }
+      client.socket.global.setReconnectingStatus();
+    });
 
-  React.useEffect(
-    () =>
-      client.socket.global.watchForFailure(() => {
-        disconnectRealtime();
-        client.socket.disconnect();
-      }),
-    [disconnectRealtime]
-  );
+    client.socket.global.watchForReconnected(() => {
+      if (disconnectTimeout.current) {
+        clearTimeout(disconnectTimeout.current);
+      }
+      reestablishConnection();
+    });
+
+    client.socket.global.watchForFailure(() => {
+      disconnectRealtime();
+      client.socket.disconnect();
+    });
+
+    client.socket.diagram.watchForceRefresh(() => {
+      setRealtimeError();
+    });
+
+    return () => {
+      if (disconnectTimeout.current) {
+        clearTimeout(disconnectTimeout.current);
+        disconnectTimeout.current = null;
+      }
+    };
+  }, []);
 
   React.useEffect(() => client.socket.project.watchForSessionAcquired(setupActiveDiagramConnection), [setupActiveDiagramConnection]);
 
@@ -54,14 +68,6 @@ const RealtimeDiagramLifecycle: React.FC<ConnectedRealtimeDiagramLifecycleProps>
         }
       }),
     [browserID, goToDashboard, setError]
-  );
-
-  React.useEffect(
-    () =>
-      client.socket.diagram.watchForceRefresh(() => {
-        setRealtimeError();
-      }),
-    [setRealtimeError]
   );
 
   return null;

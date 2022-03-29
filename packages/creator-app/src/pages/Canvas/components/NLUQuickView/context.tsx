@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { toast, useCachedValue, useDidUpdateEffect, useSessionStorageState } from '@voiceflow/ui';
+import { toast, useCachedValue, useContextApi, useDidUpdateEffect, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { IMM_PERSISTED_STATE_KEY } from '@/pages/Canvas/components/InteractionModelModal';
+import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/constants';
 import { useOrderedEntities, useOrderedIntents, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
 import { generateSlotInput } from '@/pages/Canvas/components/SlotEdit/utils';
 import { applyPlatformIntentNameFormatting, formatIntentAndSlotName, isBuiltInIntent, validateIntentName } from '@/utils/intent';
@@ -31,9 +32,9 @@ interface NLUQuickViewProps {
   onNameChange: (name: string, id: string) => void;
   onRenameIntent: (newName: string, id: string) => void;
   onRenameSlot: (newName: string, id: string) => void;
-  nameChangeTransform: (name: string) => string;
-  canRenameIntent: (id: string) => boolean;
-  canRenameItem: (id?: string) => boolean;
+  nameChangeTransform: (name: string, tab: InteractionModelTabType) => string;
+  canRenameItem: (id: string, type: InteractionModelTabType) => boolean;
+  canDeleteItem: (id: string, type: InteractionModelTabType) => boolean;
 }
 
 const DefaultState = {
@@ -49,8 +50,8 @@ const DefaultState = {
   onRenameIntent: Utils.functional.noop,
   onRenameSlot: Utils.functional.noop,
   nameChangeTransform: (name: string) => name,
-  canRenameIntent: () => true,
   canRenameItem: () => true,
+  canDeleteItem: () => false,
 };
 
 export const NLUQuickViewContext = React.createContext<NLUQuickViewProps>(DefaultState);
@@ -77,7 +78,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
 
   const { sortedSlots } = useOrderedEntities();
   const { sortedIntents } = useOrderedIntents();
-  const { mergedVariables } = useOrderedVariables();
+  const { mergedVariables, mergedVariablesMap } = useOrderedVariables();
 
   const [immPersistedState, setIMMPersistedState] = useSessionStorageState<{ tab: InteractionModelTabType; id: string | null }>(
     `${IMM_PERSISTED_STATE_KEY}-${activeProjectID}`,
@@ -112,64 +113,73 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     return !isBuiltInIntent(id);
   };
 
-  const onRenameIntent = (newName: string, id: string) => {
-    const formattedName = Utils.string.removeTrailingUnderscores(newName);
-    const error = validateNewIntentName(formattedName, id);
+  const onRenameIntent = React.useCallback(
+    (newName: string, id: string) => {
+      const formattedName = Utils.string.removeTrailingUnderscores(newName);
+      const error = validateNewIntentName(formattedName, id);
 
-    if (!canRenameIntent(id)) {
-      toast.error('Cannot rename built-in intent');
-      return;
-    }
-    if (error) {
-      toast.error(error);
-      return;
-    }
+      if (!canRenameIntent(id)) {
+        toast.error('Cannot rename built-in intent');
+        return;
+      }
+      if (error) {
+        toast.error(error);
+        return;
+      }
 
-    patchIntent(id, { id, name: formattedName });
-  };
+      patchIntent(id, { id, name: formattedName });
+    },
+    [validateNewIntentName]
+  );
 
-  const onRenameSlot = (slotName: string, id: string) => {
-    const formattedSlotName = Utils.string.removeTrailingUnderscores(slotName);
+  const onRenameSlot = React.useCallback(
+    (slotName: string, id: string) => {
+      const formattedSlotName = Utils.string.removeTrailingUnderscores(slotName);
 
-    const slot = allSlotsMap[id];
+      const slot = allSlotsMap[id];
 
-    const { inputs } = slot;
-    const customLines = inputs?.length ? inputs : (slot.type === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || inputs;
-    const notEmptyValues = customLines.some(({ value, synonyms }) => value.trim() || synonyms.trim());
+      const { inputs } = slot;
+      const customLines = inputs?.length ? inputs : (slot.type === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || inputs;
+      const notEmptyValues = customLines.some(({ value, synonyms }) => value.trim() || synonyms.trim());
 
-    const error = validateSlotName({
-      slots: allSlots.filter((slot) => slot.id !== id),
-      intents: allCustomIntents,
-      slotName: formattedSlotName,
-      slotType: slot.type!,
-      notEmptyValues,
-    });
+      const error = validateSlotName({
+        slots: allSlots.filter((slot) => slot.id !== id),
+        intents: allCustomIntents,
+        slotName: formattedSlotName,
+        slotType: slot.type!,
+        notEmptyValues,
+      });
 
-    if (error) {
-      toast.error(error);
-      return;
-    }
+      if (error) {
+        toast.error(error);
+        return;
+      }
 
-    patchSlot?.(id, {
-      name: formattedSlotName,
-    });
-  };
+      patchSlot?.(id, {
+        name: formattedSlotName,
+      });
+    },
+    [allSlotsMap, allSlots, allCustomIntents]
+  );
 
-  const onNameChange = (name: string, id: string) => {
-    switch (activeTab) {
-      case InteractionModelTabType.INTENTS:
-        onRenameIntent(name, id);
-        break;
-      case InteractionModelTabType.SLOTS:
-        onRenameSlot(name, id);
-        break;
-      default:
-        break;
-    }
-  };
+  const onNameChange = React.useCallback(
+    (name: string, id: string) => {
+      switch (activeTab) {
+        case InteractionModelTabType.INTENTS:
+          onRenameIntent(name, id);
+          break;
+        case InteractionModelTabType.SLOTS:
+          onRenameSlot(name, id);
+          break;
+        default:
+          break;
+      }
+    },
+    [activeTab, onRenameSlot, onRenameIntent]
+  );
 
-  const nameChangeTransform = (name: string) => {
-    switch (activeTab) {
+  const nameChangeTransform = React.useCallback((name: string, tab: InteractionModelTabType) => {
+    switch (tab) {
       case InteractionModelTabType.INTENTS:
         return applyPlatformIntentNameFormatting(name, platform);
       case InteractionModelTabType.SLOTS:
@@ -177,22 +187,49 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
       default:
         return name;
     }
-  };
+  }, []);
 
-  const canRenameItem = (id?: string) => {
-    // eslint-disable-next-line sonarjs/no-small-switch
-    switch (activeTab) {
-      case InteractionModelTabType.INTENTS:
-        return canRenameIntent(id || activeID);
-        break;
-      case InteractionModelTabType.VARIABLES:
-        return false;
-        break;
-      default:
-        return true;
-        break;
-    }
-  };
+  const canRenameItem = React.useCallback(
+    (id: string, type: InteractionModelTabType) => {
+      // eslint-disable-next-line sonarjs/no-small-switch
+      switch (type) {
+        case InteractionModelTabType.INTENTS:
+          return canRenameIntent(id);
+          break;
+        case InteractionModelTabType.VARIABLES:
+          return false;
+          break;
+        default:
+          return true;
+          break;
+      }
+    },
+    [canRenameIntent]
+  );
+
+  const canDeleteVariable = React.useCallback(
+    (id: string) => {
+      return mergedVariablesMap[id]?.type !== VariableType.BUILT_IN;
+    },
+    [mergedVariablesMap]
+  );
+
+  const canDeleteItem = React.useCallback(
+    (id: string, type: InteractionModelTabType) => {
+      switch (type) {
+        case InteractionModelTabType.INTENTS:
+          return true;
+          break;
+        case InteractionModelTabType.VARIABLES:
+          return canDeleteVariable(id);
+          break;
+        default:
+          return true;
+          break;
+      }
+    },
+    [canDeleteVariable]
+  );
 
   const handleSetPersistState = (tab: InteractionModelTabType, id: string | null) => {
     const persistedState = { tab, id };
@@ -205,31 +242,34 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     goToQuickviewModelEntity(tab, id);
   };
 
-  const setSelectedTab = (tab: InteractionModelTabType) => {
-    let firstItemID = '';
-    switch (tab) {
-      case InteractionModelTabType.INTENTS:
-        firstItemID = sortedIntents[0]?.id ?? '';
-        break;
-      case InteractionModelTabType.SLOTS:
-        firstItemID = sortedSlots[0]?.id ?? '';
-        break;
-      case InteractionModelTabType.VARIABLES:
-        firstItemID = mergedVariables[0]?.id ?? '';
-        break;
-      default:
-        break;
-    }
-    goToEntity(tab, firstItemID);
+  const setSelectedTab = React.useCallback(
+    (tab: InteractionModelTabType) => {
+      let firstItemID = '';
+      switch (tab) {
+        case InteractionModelTabType.INTENTS:
+          firstItemID = sortedIntents[0]?.id ?? '';
+          break;
+        case InteractionModelTabType.SLOTS:
+          firstItemID = sortedSlots[0]?.id ?? '';
+          break;
+        case InteractionModelTabType.VARIABLES:
+          firstItemID = mergedVariables[0]?.id ?? '';
+          break;
+        default:
+          break;
+      }
+      goToEntity(tab, firstItemID);
 
-    trackingEvents.trackIMMNavigation({ tabName: tab });
-  };
+      trackingEvents.trackIMMNavigation({ tabName: tab });
+    },
+    [sortedIntents, sortedSlots, mergedVariables, goToEntity]
+  );
 
   const setSelectedID = React.useCallback(
     (id: string) => {
       goToEntity(activeTab, id);
     },
-    [activeTab]
+    [activeTab, goToEntity]
   );
 
   // When IMM gets opened with a variable click (with a target item)
@@ -254,7 +294,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     }
   }, [isOpened, isInStack]);
 
-  const value: NLUQuickViewProps = {
+  const api: NLUQuickViewProps = useContextApi({
     activeTab,
     setActiveTab: setSelectedTab,
     selectedID: activeID,
@@ -267,9 +307,9 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     onRenameIntent,
     onRenameSlot,
     nameChangeTransform,
-    canRenameIntent,
     canRenameItem,
-  };
+    canDeleteItem,
+  });
 
-  return <NLUQuickViewContext.Provider value={value}>{children}</NLUQuickViewContext.Provider>;
+  return <NLUQuickViewContext.Provider value={api}>{children}</NLUQuickViewContext.Provider>;
 };

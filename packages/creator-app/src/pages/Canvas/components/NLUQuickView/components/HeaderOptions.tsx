@@ -6,6 +6,7 @@ import * as Intent from '@/ducks/intent';
 import * as SlotDuck from '@/ducks/slot';
 import { useDispatch } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
+import { useDeleteVariable } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
 interface HeaderOptionsProps {
   selectedID: string;
@@ -15,7 +16,8 @@ interface HeaderOptionsProps {
 const HeaderOptions: React.FC<HeaderOptionsProps> = ({ setIsActiveItemRename, selectedID }) => {
   const deleteIntent = useDispatch(Intent.deleteIntent);
   const deleteSlot = useDispatch(SlotDuck.deleteSlot);
-  const { canRenameItem, activeTab } = React.useContext(NLUQuickViewContext);
+  const { canRenameItem, canDeleteItem, activeTab } = React.useContext(NLUQuickViewContext);
+  const deleteVariable = useDeleteVariable();
 
   const onDelete = () => {
     switch (activeTab) {
@@ -26,7 +28,7 @@ const HeaderOptions: React.FC<HeaderOptionsProps> = ({ setIsActiveItemRename, se
         deleteSlot(selectedID);
         break;
       case InteractionModelTabType.VARIABLES:
-        // TODO: variable delete
+        deleteVariable(selectedID);
         break;
       default:
         toast.error('Nothing to delete');
@@ -34,27 +36,33 @@ const HeaderOptions: React.FC<HeaderOptionsProps> = ({ setIsActiveItemRename, se
     }
   };
 
-  const additionalOptions = canRenameItem()
-    ? [
-        {
-          key: 'rename',
-          label: 'Rename',
-          onClick: () => setIsActiveItemRename(true),
-        },
-        { key: 'divider-1', label: 'divider', divider: true },
-      ]
-    : [];
+  const dropdownOptions = React.useMemo(() => {
+    const options = [];
+    const canRename = canRenameItem(selectedID, activeTab);
+    const canDelete = canDeleteItem(selectedID, activeTab);
 
-  const dropdownOptions = [
-    ...additionalOptions,
-    {
-      key: 'delete',
-      label: 'Delete',
-      onClick: onDelete,
-    },
-  ];
+    if (canRename) {
+      options.push({
+        key: 'rename',
+        label: 'Rename',
+        onClick: () => setIsActiveItemRename(true),
+      });
+    }
 
-  return (
+    if (canDelete && canRename) {
+      options.push({ key: 'divider-1', label: 'divider', divider: true });
+    }
+    if (canDelete) {
+      options.push({
+        key: 'delete',
+        label: 'Delete',
+        onClick: onDelete,
+      });
+    }
+    return options;
+  }, [selectedID, activeTab]);
+
+  return dropdownOptions.length ? (
     <Dropdown placement="bottom-end" selfDismiss options={dropdownOptions}>
       {(ref, onToggle, isOpened) => (
         <IconButton
@@ -68,7 +76,7 @@ const HeaderOptions: React.FC<HeaderOptionsProps> = ({ setIsActiveItemRename, se
         />
       )}
     </Dropdown>
-  );
+  ) : null;
 };
 
 export default HeaderOptions;

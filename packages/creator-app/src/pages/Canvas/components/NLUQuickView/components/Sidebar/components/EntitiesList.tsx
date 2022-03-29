@@ -92,13 +92,14 @@ const EntitiesList: React.FC<SectionProps> = ({
       {filteredList.map((slot, index) => (
         <ListItem
           id={slot.id}
+          type={InteractionModelTabType.SLOTS}
           active={selectedID ? selectedID === slot.id : index === 0}
           onClick={() => setSelectedItemID(slot.id)}
           key={slot.id}
           name={slot.name}
           onDelete={onDelete}
           onRename={onRenameSlot}
-          nameValidation={nameChangeTransform}
+          nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.SLOTS)}
           isActiveItemRename={isActiveItemRename}
           setIsActiveItemRename={setIsActiveItemRename}
         />

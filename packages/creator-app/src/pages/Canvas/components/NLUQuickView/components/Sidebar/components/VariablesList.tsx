@@ -4,14 +4,11 @@ import React from 'react';
 import { SectionToggleVariant } from '@/components/Section';
 import { VariableItem } from '@/components/SlateEditable/editor';
 import { InteractionModelTabType, ModalType } from '@/constants';
-import * as Diagram from '@/ducks/diagram';
-import * as Version from '@/ducks/version';
-import { useDispatch, useModals } from '@/hooks';
-import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/constants';
+import { useModals } from '@/hooks';
 import ListItem from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/components/ListItem';
 import { useSectionHooks } from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
-import { useFilteredList, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
+import { useDeleteVariable, useFilteredList, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
 import { SectionSection } from '.';
 import { SectionProps } from './types';
@@ -23,10 +20,8 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
   const { open: openVariableCreate } = useModals(ModalType.VARIABLE_CREATE);
   const [justAddedVariables, setJustAddedVariables] = React.useState<string[] | null>(null);
 
-  const removeGlobalVariable = useDispatch(Version.removeGlobalVariable);
-  const removeVariableFromDiagram = useDispatch(Diagram.removeActiveDiagramVariable);
-
   const { mergedVariables, mergedVariablesMap } = useOrderedVariables();
+  const deleteVariable = useDeleteVariable();
 
   const filteredList = useFilteredList(search, mergedVariables) as VariableItem[];
 
@@ -47,19 +42,6 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
       }
     });
   }, [justAddedVariables, mergedVariables]);
-
-  const onDeleteVariable = React.useCallback(
-    (variableID: string) => {
-      const variable = mergedVariablesMap[variableID];
-
-      if (variable.type === VariableType.GLOBAL) {
-        removeGlobalVariable(variable.name);
-      } else {
-        removeVariableFromDiagram(variable.name);
-      }
-    },
-    [removeGlobalVariable, removeVariableFromDiagram, mergedVariables]
-  );
 
   const onCreateVariable = () => {
     openVariableCreate({
@@ -89,12 +71,13 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
     >
       {filteredList.map((variable, index) => (
         <ListItem
+          type={InteractionModelTabType.VARIABLES}
           id={variable.id}
           active={selectedID ? selectedID === variable.id : index === 0}
           onClick={() => setSelectedItemID(variable.id)}
           key={variable.id}
           name={variable.name}
-          onDelete={onDeleteVariable}
+          onDelete={deleteVariable}
           nameValidation={(text) => text}
         />
       ))}

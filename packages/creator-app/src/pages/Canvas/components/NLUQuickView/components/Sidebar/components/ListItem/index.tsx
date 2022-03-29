@@ -2,6 +2,7 @@ import { Input, InputVariant, OverflowText, useDidUpdateEffect, withEnterPress, 
 import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
+import { InteractionModelTabType } from '@/constants';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 
 import { Container } from './components';
@@ -19,16 +20,17 @@ interface ListItemProps {
   isActiveItemRename?: boolean;
   setIsActiveItemRename?: (val: boolean) => void;
   ref?: React.Ref<HTMLInputElement>;
+  type: InteractionModelTabType;
 }
 
 const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> = (
-  { id, isActiveItemRename, setIsActiveItemRename, onBlur, nameValidation, isCreating = false, name, onRename, onDelete, active, onClick },
+  { id, isActiveItemRename, type, setIsActiveItemRename, onBlur, nameValidation, isCreating = false, name, onRename, onDelete, active, onClick },
   ref
 ) => {
   const [isRenaming, setIsRenaming] = React.useState(isCreating);
   const [localName, setLocalName] = React.useState(name);
 
-  const { canRenameItem } = React.useContext(NLUQuickViewContext);
+  const { canRenameItem, canDeleteItem } = React.useContext(NLUQuickViewContext);
 
   const endRename = () => {
     if (onBlur) {
@@ -50,19 +52,21 @@ const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> 
     }
   }, [isActiveItemRename, active]);
 
-  const getRenameOption = !canRenameItem(id)
+  const getRenameOption = !canRenameItem(id, type)
     ? []
     : [
         { label: 'Rename', value: 'rename', onClick: () => setIsRenaming(true) },
         { label: 'Divider', divider: true },
       ];
 
-  const contextOptions = [...getRenameOption, { label: 'Delete', value: 'delete', onClick: () => onDelete(id) }];
+  const getDeleteOption = !canDeleteItem(id, type) ? [] : [{ label: 'Delete', value: 'delete', onClick: () => onDelete(id) }];
+
+  const contextOptions = [...getRenameOption, ...getDeleteOption];
 
   return (
     <ContextMenu selfDismiss options={contextOptions}>
       {({ onContextMenu, isOpen }) => (
-        <Container onContextMenu={onContextMenu} onClick={onClick} active={active || isOpen}>
+        <Container onContextMenu={onContextMenu} onClick={onClick} active={active || !!(isOpen && contextOptions.length)}>
           {isRenaming ? (
             <Input
               ref={ref}

@@ -1,12 +1,14 @@
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
+import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/constants';
 import { Variable } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/types';
 import { addPrefix } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/utils';
@@ -70,4 +72,23 @@ export const useOrderedVariables = () => {
     mergedVariables,
     mergedVariablesMap,
   };
+};
+
+export const useDeleteVariable = () => {
+  const removeGlobalVariable = useDispatch(Version.removeGlobalVariable);
+  const removeVariableFromDiagram = useDispatch(Diagram.removeActiveDiagramVariable);
+  const { mergedVariables, mergedVariablesMap } = useOrderedVariables();
+
+  return React.useCallback(
+    (variableID: string) => {
+      const variable = mergedVariablesMap[variableID];
+
+      if (variable.type === VariableType.GLOBAL) {
+        removeGlobalVariable(variable.name);
+      } else {
+        removeVariableFromDiagram(variable.name);
+      }
+    },
+    [removeGlobalVariable, removeVariableFromDiagram, mergedVariables]
+  );
 };

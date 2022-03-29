@@ -36,10 +36,10 @@ const NLUQuickView: React.FC = () => {
         <TitleInput
           value={modalTitle}
           onBlur={() => onNameChange(modalTitle, selectedID)}
-          onChangeText={(text) => setModalTitle(nameChangeTransform(text))}
+          onChangeText={(text) => setModalTitle(nameChangeTransform(text, activeTab))}
           placeholder="Name"
           onEnterPress={() => onNameChange(modalTitle, selectedID)}
-          disabled={!canRenameItem()}
+          disabled={!canRenameItem(selectedID, activeTab)}
         />
       }
       headerBorder

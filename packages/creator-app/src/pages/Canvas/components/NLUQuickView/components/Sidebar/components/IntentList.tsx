@@ -76,13 +76,14 @@ const IntentList: React.FC<SectionProps> = ({
       {filteredList.map((intent, index) => (
         <ListItem
           id={intent.id}
+          type={InteractionModelTabType.VARIABLES}
           active={selectedID ? selectedID === intent.id : index === 0}
           onClick={() => setSelectedItemID(intent.id)}
           key={intent.id}
           name={intent.name}
           onDelete={onDeleteIntent}
           onRename={onRenameIntent}
-          nameValidation={nameChangeTransform}
+          nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.INTENTS)}
           setIsActiveItemRename={setIsActiveItemRename}
           isActiveItemRename={isActiveItemRename}
         />

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.674.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.673.0...@voiceflow/creator-app@1.674.0) (2022-03-29)
+
+
+### Features
+
+* filter out elicit requests (VF-2955) ([#5264](https://github.com/voiceflow/creator-app/issues/5264)) ([1b43871](https://github.com/voiceflow/creator-app/commit/1b438714c856190a36076801e46d91aee05ae7b2))
+
+
+
+
+
 # [1.673.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.672.1...@voiceflow/creator-app@1.673.0) (2022-03-29)
 
 

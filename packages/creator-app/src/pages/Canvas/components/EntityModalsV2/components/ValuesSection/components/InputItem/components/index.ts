@@ -5,7 +5,7 @@ import { css, styled, transition } from '@/hocs';
 export const Container = styled.div<{ active: boolean }>`
   ${transition('border')};
   padding: 11px 16px;
-  border: solid 1px #d4d9e6;
+  border: 1px solid #d2dae2;
   border-radius: 6px;
   flex: 2;
   box-shadow: 0 0 3px 0 rgb(17 49 96 / 6%);

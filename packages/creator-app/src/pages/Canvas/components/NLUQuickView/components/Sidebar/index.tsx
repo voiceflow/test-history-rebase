@@ -13,9 +13,18 @@ import { SectionProps } from './components/types';
 import VariablesList from './components/VariablesList';
 
 const SearchPlaceholders = {
-  [InteractionModelTabType.INTENTS]: 'intent',
-  [InteractionModelTabType.SLOTS]: 'slot',
-  [InteractionModelTabType.VARIABLES]: 'variable',
+  [InteractionModelTabType.INTENTS]: {
+    single: 'intent',
+    plural: 'intents',
+  },
+  [InteractionModelTabType.SLOTS]: {
+    single: 'entity',
+    plural: 'entities',
+  },
+  [InteractionModelTabType.VARIABLES]: {
+    single: 'variable',
+    plural: 'variables',
+  },
 };
 
 const Sidebar: React.FC = () => {
@@ -49,7 +58,7 @@ const Sidebar: React.FC = () => {
   return (
     <Container>
       <SearchInput
-        placeholder={`Search ${searchLength} ${SearchPlaceholders[activeTab]}${searchLength === 1 ? '' : 's'}`}
+        placeholder={`Search ${searchLength} ${searchLength === 1 ? SearchPlaceholders[activeTab].single : SearchPlaceholders[activeTab].plural}`}
         icon="search"
         value={search}
         onChange={(e) => setSearch(e.target.value)}

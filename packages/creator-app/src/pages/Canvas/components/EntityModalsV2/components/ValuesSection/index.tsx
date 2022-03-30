@@ -140,7 +140,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInput
                 divider={false}
                 initialValue={generateSlotInput()}
                 renderForm={({ value, onChange, onAdd }) => (
-                  <Box position="sticky" top={62} zIndex={1000} style={{ background: 'white' }}>
+                  <Box position="sticky" top={58} zIndex={1000} style={{ background: 'white' }}>
                     <Input
                       ref={valueRef}
                       value={newValueText}
@@ -183,7 +183,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInput
           {customLines.length > MAX_VISIBLE_VALUES && (
             <Box color="#62778c" paddingBottom={24}>
               <ClickableText onClick={() => setShowAllValues(!showAllValues)}>
-                {showAllValues ? `Hide some utterances` : `Show all values (${customLines.length})`}
+                {showAllValues ? `Hide some values` : `Show all values (${customLines.length})`}
               </ClickableText>
             </Box>
           )}

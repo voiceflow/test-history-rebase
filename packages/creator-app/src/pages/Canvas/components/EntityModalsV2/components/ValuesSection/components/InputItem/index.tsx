@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { useOnClickOutside } from '@voiceflow/ui';
 import React from 'react';
 
 import { Container, SynonymsInput, ValueInput } from './components';
@@ -17,22 +18,24 @@ const InputItem: React.FC<InputItemProps> = ({ onUpdateValue, onUpdateSynonym, s
   const synonymsInputRef = React.useRef<HTMLInputElement>(null);
   const valuesInputRef = React.useRef<HTMLInputElement>(null);
 
-  const handleSynonymChange = () => {
-    onUpdateSynonym(localSynonyms);
-    setActive(false);
-  };
-
-  const handleValueChange = () => {
-    onUpdateValue(localValue);
-    setActive(false);
-  };
+  const inputsRef = React.useRef(null);
+  useOnClickOutside(
+    inputsRef,
+    () => {
+      if (!active) return;
+      onUpdateSynonym(localSynonyms);
+      onUpdateValue(localValue);
+      setActive(false);
+    },
+    [localSynonyms, localValue, active]
+  );
 
   const handleInputFocus = () => {
     setActive(true);
   };
 
   return (
-    <Container active={active}>
+    <Container active={active} ref={inputsRef}>
       <ValueInput
         value={localValue}
         placeholder="Value"
@@ -41,12 +44,10 @@ const InputItem: React.FC<InputItemProps> = ({ onUpdateValue, onUpdateSynonym, s
         }}
         onFocus={handleInputFocus}
         onChangeText={setLocalValue}
-        onBlur={handleValueChange}
       />
       <SynonymsInput
         ref={synonymsInputRef}
         onFocus={handleInputFocus}
-        onBlur={handleSynonymChange}
         placeholder="Add synonyms"
         value={localSynonyms}
         onChangeText={setLocalSynonyms}

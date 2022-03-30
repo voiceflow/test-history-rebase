@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, IconButton, IconButtonVariant, NestedMenuComponents, Select } from '@voiceflow/ui';
 import React from 'react';
 
+import Popper from '@/components/Popper';
 import * as Intent from '@/ducks/intent';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useDispatch, useSelector } from '@/hooks';
@@ -24,6 +25,31 @@ const EntitiesDropdown: React.FC<{ intent: Realtime.Intent }> = ({ intent }) => 
     }
   };
 
+  const addButton = (onToggle: () => void, isOpened: boolean, ref?: React.Ref<any>) => (
+    <Box ref={ref} display="flex" mr={10}>
+      <IconButton onClick={onToggle} variant={IconButtonVariant.BASIC} activeHover={isOpened} size={16} icon="plus" />
+    </Box>
+  );
+
+  if (!allSlots.length) {
+    return (
+      <Popper
+        width="250px"
+        placement="right-start"
+        portalNode={document.body}
+        renderContent={({ onToggle }) => (
+          <Box height={70}>
+            <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(onToggle, handleCreateClick)}>
+              Create New Entity
+            </NestedMenuComponents.FooterActionContainer>
+          </Box>
+        )}
+      >
+        {({ onToggle, isOpened, ref }) => addButton(onToggle, isOpened, ref)}
+      </Popper>
+    );
+  }
+
   return (
     <Select
       options={allSlots}
@@ -33,7 +59,6 @@ const EntitiesDropdown: React.FC<{ intent: Realtime.Intent }> = ({ intent }) => 
       inDropdownSearch
       isDropdown
       searchable
-      placeholder="Ent"
       getOptionValue={(option) => option}
       getOptionLabel={(value) => value?.name}
       minWidth={false}
@@ -45,11 +70,7 @@ const EntitiesDropdown: React.FC<{ intent: Realtime.Intent }> = ({ intent }) => 
           Create New Entity
         </NestedMenuComponents.FooterActionContainer>
       )}
-      renderTrigger={({ onOpenMenu, onHideMenu, isOpen }) => (
-        <Box display="flex" mr={10}>
-          <IconButton onClick={isOpen ? onHideMenu : onOpenMenu} variant={IconButtonVariant.BASIC} size={16} icon="plus" />
-        </Box>
-      )}
+      renderTrigger={({ onOpenMenu, onHideMenu, isOpen }) => addButton(() => (isOpen ? onHideMenu?.() : onOpenMenu?.()), isOpen)}
     />
   );
 };

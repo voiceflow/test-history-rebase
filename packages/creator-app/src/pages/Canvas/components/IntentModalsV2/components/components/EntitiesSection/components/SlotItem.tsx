@@ -56,9 +56,16 @@ const SlotItem: React.FC<SlotItemProps> = ({ slot, slots, intent, name }) => {
           >
             <Box mb={24}>
               {isChat ? (
-                <ChatPromptForm slots={slots} prompt={prompt as ChatModels.Prompt[]} onChange={onChangePrompt} placeholder="Enter entity reprompt" />
+                <ChatPromptForm
+                  autofocus
+                  slots={slots}
+                  prompt={prompt as ChatModels.Prompt[]}
+                  onChange={onChangePrompt}
+                  placeholder="Enter entity reprompt"
+                />
               ) : (
                 <VoicePromptForm
+                  autofocus
                   slots={slots}
                   prompt={prompt as VoiceModels.IntentPrompt<string>[]}
                   onChange={onChangePrompt}

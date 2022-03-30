@@ -1,4 +1,4 @@
-import { useCache } from '@voiceflow/ui';
+import { useCache, useSetup } from '@voiceflow/ui';
 import React from 'react';
 import { Descendant, Editor } from 'slate';
 import { Editable, Slate } from 'slate-react';
@@ -30,6 +30,7 @@ export interface SlateEditableProps extends Omit<EditableProps, 'value' | 'onCha
   spellCheck?: boolean;
   topToolbar?: React.ReactNode;
   pluginsOptions?: PluginsOptions;
+  autofocus?: boolean;
 }
 
 const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEditableProps> = (
@@ -38,6 +39,7 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
     onBlur,
     editor,
     onChange,
+    autofocus,
     children,
     topToolbar,
     spellCheck = false,
@@ -71,6 +73,14 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
   editor.pluginsOptions = pluginsOptions;
 
   React.useImperativeHandle(ref, () => ({ focus: () => EditorAPI.focus(editor) }), [editor]);
+
+  useSetup(() => {
+    if (autofocus) {
+      EditorAPI.focus(editor);
+      const currentRangeFocus = EditorAPI.fullRange(editor).focus;
+      EditorAPI.setSelection(editor, { anchor: currentRangeFocus, focus: currentRangeFocus });
+    }
+  });
 
   return (
     <StaticEditorContextProvider value={editor}>

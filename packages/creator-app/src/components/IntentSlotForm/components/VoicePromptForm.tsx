@@ -9,9 +9,10 @@ interface VoicePromptFormProps {
   prompt: VoiceModels.IntentPrompt<string>[];
   onChange: (prompt: VoiceModels.IntentPrompt<string>[]) => void;
   placeholder: string;
+  autofocus?: boolean;
 }
 
-const VoicePromptForm: React.FC<VoicePromptFormProps> = ({ slots, prompt: [prompt], onChange, placeholder }) => {
+const VoicePromptForm: React.FC<VoicePromptFormProps> = ({ autofocus, slots, prompt: [prompt], onChange, placeholder }) => {
   const voice = prompt?.voice ?? '';
   const text = prompt?.text ?? '';
   return (
@@ -20,6 +21,7 @@ const VoicePromptForm: React.FC<VoicePromptFormProps> = ({ slots, prompt: [promp
       voice={voice}
       slots={slots}
       value={text}
+      autofocus={autofocus}
       onBlur={(ssmValue) => onChange([{ ...ssmValue, voice }])}
       placeholder={placeholder}
       onChangeVoice={(voice) => onChange([{ ...prompt, voice }])}

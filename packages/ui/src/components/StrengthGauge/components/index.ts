@@ -1,4 +1,4 @@
-import { css, styled } from '@ui/styles';
+import { css, styled, transition } from '@ui/styles';
 
 import { StrengthLevel } from '../types';
 
@@ -31,6 +31,8 @@ export const Line = styled.div<{ width: number; thickness: number }>`
 `;
 
 export const StrengthLine = styled.div<{ width: number; strength: StrengthLevel; thickness: number }>`
+  ${transition('width')}
+  width: 0;
   position: absolute;
   left: 0;
   ${({ width, strength, thickness }) =>

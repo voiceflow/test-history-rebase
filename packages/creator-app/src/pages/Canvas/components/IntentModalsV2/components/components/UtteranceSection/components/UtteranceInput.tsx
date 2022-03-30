@@ -56,7 +56,7 @@ const UtteranceInput: React.ForwardRefRenderFunction<UtteranceRefProps, Utteranc
             </Badge>
           )
         }
-        placeholder="Enter sample phrases"
+        placeholder="Add sample phrase, { to add entities"
         onEnterPress={onAdd}
         error={!isValidUtterance}
       />

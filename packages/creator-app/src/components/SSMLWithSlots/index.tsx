@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Icon } from '@voiceflow/ui';
+import { Icon, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import SSML from '@/components/SSML';
@@ -30,7 +30,7 @@ interface SSMLWithSlotsProps {
   onBlur: (data: onBlurParameters) => void; // executed if input gets unfocused
   onChangeVoice: (newVoice: string) => void; // executed if a new 'voice' vlaue is chosen
   placeholder: string; // text that is displayed in an empty input
-
+  autofocus?: boolean;
   // SSMLWithVars-specific props, from component attributes
   voice: string; // the choice of who voices the ssmlText
   slots: Realtime.Slot[]; // data for slot variables in the SSML text content
@@ -43,10 +43,18 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnected
   defaultVoice,
   platform,
   projectType,
+  autofocus,
   updateDefaultVoice,
   ...props
 }) => {
   const platformDefaultVoice = getPlatformDefaultVoice(platform);
+  const promptRef = React.useRef<{ forceFocusToTheEnd: VoidFunction } | null>(null);
+
+  useSetup(() => {
+    if (autofocus) {
+      promptRef.current?.forceFocusToTheEnd();
+    }
+  }, []);
 
   return (
     <SSML
@@ -58,6 +66,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnected
       platform={platform}
       projectType={projectType}
       space
+      ref={promptRef}
       creatable={false}
       onChangeDefaultVoice={updateDefaultVoice}
       withVariablesPlugin={isSlotsInRepromptValid(platform)}

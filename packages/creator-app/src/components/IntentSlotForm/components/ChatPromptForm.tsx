@@ -10,11 +10,11 @@ interface ChatPromptFormProps {
   prompt: ChatModels.Prompt[];
   onChange: (prompt: ChatModels.Prompt[]) => void;
   placeholder: string;
+  autofocus?: boolean;
 }
 
-const ChatPromptForm: React.FC<ChatPromptFormProps> = ({ slots, prompt: [prompt], onChange, placeholder }) => {
+const ChatPromptForm: React.FC<ChatPromptFormProps> = ({ slots, autofocus, prompt: [prompt], onChange, placeholder }) => {
   const content = prompt?.content ?? null;
-
   const variables = React.useMemo(() => normalize(slots), [slots]);
 
   return (
@@ -24,6 +24,7 @@ const ChatPromptForm: React.FC<ChatPromptFormProps> = ({ slots, prompt: [prompt]
       variables={variables}
       placeholder={placeholder}
       variablesWithSlots
+      autofocus={autofocus}
       variablesCreatable={false}
     />
   );

@@ -27,6 +27,7 @@ const SSML = (
     creatable,
     className,
     variables,
+    autofocus,
     characters,
     projectType,
     placeholder,

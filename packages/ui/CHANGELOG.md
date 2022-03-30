@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.67.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.67.0...@voiceflow/ui@1.67.1) (2022-03-30)
+
+
+### Bug Fixes
+
+* misc intent modal / form ux ui (VF-000) ([#5272](https://github.com/voiceflow/creator-app/issues/5272)) ([d4edac7](https://github.com/voiceflow/creator-app/commit/d4edac739690e09f6392c219e6ecc7601ad523d1))
+
+
+
+
+
 # [1.67.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.66.0...@voiceflow/ui@1.67.0) (2022-03-29)
 
 

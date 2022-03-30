@@ -3,14 +3,14 @@ import { IconButton, IconButtonVariant, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
-import { InteractionModelTabType, ModalType } from '@/constants';
+import { InteractionModelTabType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useDispatch, useModals, useSelector } from '@/hooks';
+import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 
 import { useFilteredList, useOrderedIntents } from '../../../hooks';
-import { useSectionHooks } from '../hooks';
+import { useCreatingItem, useSectionHooks } from '../hooks';
 import { SectionSection } from '.';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
@@ -24,11 +24,12 @@ const IntentList: React.FC<SectionProps> = ({
   setActiveTab,
   setSelectedItemID,
 }) => {
-  const { open: openIntentCreate } = useModals(ModalType.INTENT_CREATE);
-  const { onRenameIntent, nameChangeTransform, activeTab } = React.useContext(NLUQuickViewContext);
+  const { onRenameIntent, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } = React.useContext(NLUQuickViewContext);
+  const createIntent = useDispatch(Intent.createIntent);
 
   const allIntents = useSelector(IntentV2.allIntentsSelector);
   const allCustomIntentsMap = useSelector(IntentV2.customIntentMapSelector);
+
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.INTENTS, [activeTab]);
 
   const deleteIntent = useDispatch(Intent.deleteIntent);
@@ -48,13 +49,39 @@ const IntentList: React.FC<SectionProps> = ({
     deleteIntent(id);
   };
 
-  const onCreateIntent = () => {
-    openIntentCreate({
-      onCreate: (id: string) => {
-        setSelectedItemID(id);
-      },
-    });
-  };
+  const handleConfirmNewIntentName = React.useCallback(
+    (newName: string, newIntentID: string) => {
+      if (allIntents.some(({ name, id }) => name === newName && newIntentID !== id)) {
+        throw new Error('Intent name already in use, use a different name');
+      } else {
+        onRenameIntent(newName, newIntentID!);
+        resetCreating();
+      }
+    },
+    [allIntents]
+  );
+
+  const {
+    createNewItemComponent,
+    newItemID: newIntentID,
+    setNewItemID: setNewIntentID,
+    isCreating,
+    setIsCreating,
+    resetCreating,
+  } = useCreatingItem({
+    itemMap: allCustomIntentsMap,
+    nameValidation: (name: string) => nameChangeTransform(name, InteractionModelTabType.INTENTS),
+    onBlur: handleConfirmNewIntentName,
+    forceCreate: forceNewInlineIntent,
+  });
+
+  useAsyncEffect(async () => {
+    if (isCreating) {
+      const newIntentID = await createIntent();
+      setNewIntentID(newIntentID);
+      setSelectedID(newIntentID);
+    }
+  }, [isCreating]);
 
   return (
     <SectionSection
@@ -68,26 +95,31 @@ const IntentList: React.FC<SectionProps> = ({
       suffix={
         isActiveTab && (
           <TippyTooltip title="Create intent" position="top">
-            <IconButton style={{ marginRight: -12 }} onClick={onCreateIntent} variant={IconButtonVariant.BASIC} icon="plus" />
+            <IconButton style={{ marginRight: -12 }} onClick={() => setIsCreating(true)} variant={IconButtonVariant.BASIC} icon="plus" />
           </TippyTooltip>
         )
       }
     >
-      {filteredList.map((intent, index) => (
-        <ListItem
-          id={intent.id}
-          type={InteractionModelTabType.VARIABLES}
-          active={selectedID ? selectedID === intent.id : index === 0}
-          onClick={() => setSelectedItemID(intent.id)}
-          key={intent.id}
-          name={intent.name}
-          onDelete={onDeleteIntent}
-          onRename={onRenameIntent}
-          nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.INTENTS)}
-          setIsActiveItemRename={setIsActiveItemRename}
-          isActiveItemRename={isActiveItemRename}
-        />
-      ))}
+      {createNewItemComponent()}
+      {filteredList.map((intent) => {
+        if (newIntentID === intent.id) return null;
+        const isActive = !isCreating && selectedID === intent.id;
+        return (
+          <ListItem
+            id={intent.id}
+            type={InteractionModelTabType.INTENTS}
+            active={isActive}
+            onClick={() => setSelectedItemID(intent.id)}
+            key={intent.id}
+            name={intent.name}
+            onDelete={onDeleteIntent}
+            onRename={onRenameIntent}
+            nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.INTENTS)}
+            setIsActiveItemRename={setIsActiveItemRename}
+            isActiveItemRename={isActiveItemRename}
+          />
+        );
+      })}
     </SectionSection>
   );
 };

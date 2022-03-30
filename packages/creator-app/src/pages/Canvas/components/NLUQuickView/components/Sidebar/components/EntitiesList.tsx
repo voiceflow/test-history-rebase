@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import { CustomSlot } from '@voiceflow/common/build/common/constants/slot';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { IconButton, IconButtonVariant, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
@@ -7,37 +8,28 @@ import { SectionToggleVariant } from '@/components/Section';
 import { InteractionModelTabType } from '@/constants';
 import * as IntentDuck from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as SlotDuck from '@/ducks/slot';
+import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useAddSlot, useDispatch, useSelector } from '@/hooks';
+import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 import { useFilteredList, useOrderedEntities } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
-import { useSectionHooks } from '../hooks';
+import { useCreatingItem, useSectionHooks } from '../hooks';
 import { SectionSection } from './index';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
 
-const EntitiesList: React.FC<SectionProps> = ({
-  isActiveItemRename,
-  setIsActiveItemRename,
-  setSearchLength,
-  selectedID,
-  setSelectedItemID,
-  search,
-  setActiveTab,
-}) => {
-  const { onAddSlot } = useAddSlot();
-
-  const { activeTab } = React.useContext(NLUQuickViewContext);
+const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveItemRename, setSearchLength, selectedID, search, setActiveTab }) => {
+  const { activeTab, setSelectedID } = React.useContext(NLUQuickViewContext);
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
   const getIntentsUsingSlot = useSelector(IntentV2.getIntentsUsingSlotSelector);
-  const { nameChangeTransform } = React.useContext(NLUQuickViewContext);
+  const { nameChangeTransform, forceNewInlineEntity } = React.useContext(NLUQuickViewContext);
 
-  const deleteSlot = useDispatch(SlotDuck.deleteSlot);
+  const deleteSlot = useDispatch(Slot.deleteSlot);
   const removeIntentSlot = useDispatch(IntentDuck.removeIntentSlot);
+  const createSlot = useDispatch(Slot.createSlot);
 
   const { sortedSlots } = useOrderedEntities();
   const filteredList = useFilteredList(search, sortedSlots) as Realtime.Slot[];
@@ -53,14 +45,6 @@ const EntitiesList: React.FC<SectionProps> = ({
     map: allSlotsMap,
   });
 
-  const onCreateEntity = async () => {
-    const numberWord = Utils.number.convertToWord(allSlots.length);
-    const newSlot = await onAddSlot(`slot_${numberWord}`);
-    if (newSlot) {
-      setSelectedItemID(newSlot.id);
-    }
-  };
-
   const onDelete = React.useCallback((slotID) => {
     const activeIntents = getIntentsUsingSlot({ id: slotID });
 
@@ -73,6 +57,42 @@ const EntitiesList: React.FC<SectionProps> = ({
     deleteSlot(slotID);
   }, []);
 
+  const handleConfirmNewSlotName = React.useCallback(
+    (newName: string, newSlotID: string) => {
+      if (allSlots.some(({ name, id }) => name === newName && newSlotID !== id)) {
+        throw new Error('Slot name already in use, use a different name');
+      } else {
+        onRenameSlot(newName, newSlotID!);
+        resetCreating();
+      }
+    },
+    [allSlots]
+  );
+
+  const {
+    createNewItemComponent,
+    newItemID: newSlotID,
+    setNewItemID: setNewSlotID,
+    isCreating,
+    setIsCreating,
+    resetCreating,
+  } = useCreatingItem({
+    itemMap: allSlotsMap,
+    nameValidation: (name) => nameChangeTransform(name, InteractionModelTabType.INTENTS),
+    onBlur: handleConfirmNewSlotName,
+    forceCreate: forceNewInlineEntity,
+  });
+
+  useAsyncEffect(async () => {
+    if (isCreating) {
+      const numberWord = Utils.number.convertToWord(allSlots.length);
+      const id = Utils.id.cuid.slug();
+      await createSlot(id, { id, name: `slot_${numberWord}`, inputs: [], type: CustomSlot.type, color: undefined });
+      setNewSlotID(id);
+      setSelectedID(id);
+    }
+  }, [isCreating]);
+
   return (
     <SectionSection
       isExpanded={isActiveTab && !!filteredList.length}
@@ -84,26 +104,29 @@ const EntitiesList: React.FC<SectionProps> = ({
       suffix={
         isActiveTab && (
           <TippyTooltip title="Create entity" position="top">
-            <IconButton style={{ marginRight: -12 }} onClick={onCreateEntity} variant={IconButtonVariant.BASIC} icon="plus" />
+            <IconButton style={{ marginRight: -12 }} onClick={() => setIsCreating(true)} variant={IconButtonVariant.BASIC} icon="plus" />
           </TippyTooltip>
         )
       }
     >
-      {filteredList.map((slot, index) => (
-        <ListItem
-          id={slot.id}
-          type={InteractionModelTabType.SLOTS}
-          active={selectedID ? selectedID === slot.id : index === 0}
-          onClick={() => setSelectedItemID(slot.id)}
-          key={slot.id}
-          name={slot.name}
-          onDelete={onDelete}
-          onRename={onRenameSlot}
-          nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.SLOTS)}
-          isActiveItemRename={isActiveItemRename}
-          setIsActiveItemRename={setIsActiveItemRename}
-        />
-      ))}
+      {createNewItemComponent()}
+      {filteredList.map((slot) =>
+        slot.id === newSlotID ? null : (
+          <ListItem
+            id={slot.id}
+            type={InteractionModelTabType.SLOTS}
+            active={selectedID === slot.id}
+            onClick={() => setSelectedID(slot.id)}
+            key={slot.id}
+            name={slot.name}
+            onDelete={onDelete}
+            onRename={onRenameSlot}
+            nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.SLOTS)}
+            isActiveItemRename={isActiveItemRename}
+            setIsActiveItemRename={setIsActiveItemRename}
+          />
+        )
+      )}
     </SectionSection>
   );
 };

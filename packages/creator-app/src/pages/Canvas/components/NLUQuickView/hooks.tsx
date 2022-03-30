@@ -1,6 +1,7 @@
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
+import { InteractionModelTabType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -12,6 +13,7 @@ import { useDispatch, useSelector } from '@/hooks';
 import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/constants';
 import { Variable } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/types';
 import { addPrefix } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/utils';
+import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 export const useFilteredList = (search: string, list: { name: string }[]) => {
@@ -91,4 +93,34 @@ export const useDeleteVariable = () => {
     },
     [removeGlobalVariable, removeVariableFromDiagram, mergedVariables]
   );
+};
+
+export const useShowForms = () => {
+  const intentsMap = useSelector(IntentV2.customIntentMapSelector);
+  const slotsMap = useSelector(SlotV2.slotMapSelector);
+  const allIntents = useSelector(IntentV2.allIntentsSelector);
+  const slots = useSelector(SlotV2.allSlotsSelector);
+
+  const { activeTab, selectedID } = React.useContext(NLUQuickViewContext);
+
+  const showIntentForm = activeTab === InteractionModelTabType.INTENTS && intentsMap[selectedID];
+  const showEntityForm = activeTab === InteractionModelTabType.SLOTS && slotsMap[selectedID];
+  const showVariableForm = activeTab === InteractionModelTabType.VARIABLES;
+
+  const isEmpty = React.useMemo(() => {
+    if (activeTab === InteractionModelTabType.INTENTS && allIntents.length === 0) {
+      return true;
+    }
+    if (activeTab === InteractionModelTabType.SLOTS && slots.length === 0) {
+      return true;
+    }
+    return false;
+  }, [allIntents, activeTab, slots]);
+
+  return {
+    showIntentForm,
+    showEntityForm,
+    showVariableForm,
+    isEmpty,
+  };
 };

@@ -10,7 +10,7 @@ import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/Inte
 import { INTENT_MODAL_WIDTH } from '@/pages/Canvas/components/IntentModalsV2/constants';
 
 const CreateModal: React.FC = () => {
-  const { close, data, isOpened } = useModals<{ id?: string; onCreate?: (id: string) => void; createName?: string }>(ModalType.INTENT_CREATE);
+  const { close, data, isInStack } = useModals<{ id?: string; onCreate?: (id: string) => void; createName?: string }>(ModalType.INTENT_CREATE);
   const deleteIntent = useDispatch(Intent.deleteIntent);
   const createIntent = useDispatch(Intent.createIntent);
 
@@ -18,17 +18,17 @@ const CreateModal: React.FC = () => {
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: intentID })!;
 
   useAsyncEffect(async () => {
-    if (!intentID && isOpened) {
+    if (!intentID && isInStack) {
       const nextIntentID = await createIntent({ name: data.createName });
       setIntentID(nextIntentID);
     }
-    if (data.id && isOpened) {
+    if (data.id && isInStack) {
       setIntentID(data.id);
     }
-    if (!isOpened) {
+    if (!isInStack) {
       setIntentID(null);
     }
-  }, [isOpened, intentID, data]);
+  }, [isInStack, intentID, data]);
 
   if (!intentID || !intent) return null;
 

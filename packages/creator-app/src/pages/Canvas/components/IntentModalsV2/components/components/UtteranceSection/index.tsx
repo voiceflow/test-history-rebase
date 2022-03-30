@@ -92,9 +92,12 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ withBorderTop, inte
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const intentUtterances = intent?.inputs || [];
 
-  const onUpdateUtterances = React.useCallback((inputs) => {
-    patchIntent(intent.id, { inputs });
-  }, []);
+  const onUpdateUtterances = React.useCallback(
+    (inputs) => {
+      patchIntent(intent.id, { inputs });
+    },
+    [intent.id]
+  );
 
   React.useEffect(() => {
     if (prefilledNewUtterance) {

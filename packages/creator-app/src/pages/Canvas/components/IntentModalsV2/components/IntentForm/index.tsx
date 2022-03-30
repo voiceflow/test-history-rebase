@@ -24,8 +24,7 @@ const IntentForm: React.FC<{ intent: Realtime.Intent; withDescriptionSection?: b
   const entitiesVisibleRef = React.useRef<HTMLDivElement>(null);
   const slotsMap = useSelector(SlotV2.slotMapSelector);
   const isBuiltIn = isBuiltInIntent(intent.id);
-
-  const patchIntent = useDispatch(Intent.patchIntent, intent.id);
+  const patchIntent = useDispatch(Intent.patchIntent);
 
   const [showUtteranceSection, setShowUtteranceSection] = React.useState(false);
 
@@ -57,7 +56,7 @@ const IntentForm: React.FC<{ intent: Realtime.Intent; withDescriptionSection?: b
         </>
       )}
       {withDescriptionSection && (
-        <DescriptionSection intentID={intent.id} noteID={intent.noteID} onCreateNote={(noteID) => patchIntent({ noteID })} />
+        <DescriptionSection intentID={intent.id} noteID={intent.noteID} onCreateNote={(noteID) => patchIntent(intent.id, { noteID })} />
       )}
 
       {!hideScrollTo && !!usedSlots.length && (

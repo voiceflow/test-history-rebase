@@ -13,4 +13,5 @@ export const TitleInput = styled(Input)`
   min-width: 300px;
   color: ${THEME.colors[ThemeColor.PRIMARY]};
   font-weight: 600;
+  min-height: 23px;
 `;

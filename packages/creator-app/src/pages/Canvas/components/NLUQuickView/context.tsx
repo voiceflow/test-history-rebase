@@ -12,7 +12,7 @@ import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
 import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useForceUpdate, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { IMM_PERSISTED_STATE_KEY } from '@/pages/Canvas/components/InteractionModelModal';
 import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/constants';
 import { useOrderedEntities, useOrderedIntents, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
@@ -35,6 +35,10 @@ interface NLUQuickViewProps {
   nameChangeTransform: (name: string, tab: InteractionModelTabType) => string;
   canRenameItem: (id: string, type: InteractionModelTabType) => boolean;
   canDeleteItem: (id: string, type: InteractionModelTabType) => boolean;
+  triggerNewInlineIntent: () => void;
+  forceNewInlineIntent: number;
+  triggerNewInlineEntity: () => void;
+  forceNewInlineEntity: number;
 }
 
 const DefaultState = {
@@ -52,6 +56,10 @@ const DefaultState = {
   nameChangeTransform: (name: string) => name,
   canRenameItem: () => true,
   canDeleteItem: () => false,
+  triggerNewInlineIntent: Utils.functional.noop,
+  forceNewInlineIntent: 0,
+  triggerNewInlineEntity: () => Utils.functional.noop,
+  forceNewInlineEntity: 0,
 };
 
 export const NLUQuickViewContext = React.createContext<NLUQuickViewProps>(DefaultState);
@@ -60,6 +68,10 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   const [title, setTitle] = React.useState('');
   const [isActiveItemRename, setIsActiveItemRename] = React.useState(false);
   const activeProjectID = useSelector(activeProjectIDSelector)!;
+
+  const [triggerNewInlineIntent, forceNewInlineIntent] = useForceUpdate();
+  const [triggerNewInlineEntity, forceNewInlineEntity] = useForceUpdate();
+
   const { isInStack, isOpened, open, close } = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
 
   const [trackingEvents] = useTrackingEvents();
@@ -69,6 +81,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   const patchSlot = useDispatch(SlotDuck.patchSlot);
   const patchIntent = useDispatch(Intent.patchIntent);
   const goToQuickviewModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
+  const goToQuickviewTab = useDispatch(Router.goToCurrentCanvasInteractionModel);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
@@ -258,7 +271,11 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
         default:
           break;
       }
-      goToEntity(tab, firstItemID);
+      if (firstItemID) {
+        goToEntity(tab, firstItemID);
+      } else {
+        goToQuickviewTab(tab);
+      }
 
       trackingEvents.trackIMMNavigation({ tabName: tab });
     },
@@ -309,6 +326,10 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     nameChangeTransform,
     canRenameItem,
     canDeleteItem,
+    triggerNewInlineIntent,
+    forceNewInlineIntent,
+    triggerNewInlineEntity,
+    forceNewInlineEntity,
   });
 
   return <NLUQuickViewContext.Provider value={api}>{children}</NLUQuickViewContext.Provider>;

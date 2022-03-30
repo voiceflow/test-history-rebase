@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.676.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.676.1...@voiceflow/creator-app@1.676.2) (2022-03-30)
+
+
+### Bug Fixes
+
+* intent and slot create inline, and empty states (VF-000) ([#5269](https://github.com/voiceflow/creator-app/issues/5269)) ([76a6240](https://github.com/voiceflow/creator-app/commit/76a62406214611d56196dce94e86899d586766c9))
+
+
+
+
+
 ## [1.676.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.676.0...@voiceflow/creator-app@1.676.1) (2022-03-30)
 
 

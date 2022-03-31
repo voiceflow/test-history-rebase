@@ -7,6 +7,7 @@ import {
   StrengthLevel,
   SvgIcon,
   TippyTooltip,
+  useDidUpdateEffect,
   useEnableDisable,
   useOnScreen,
   useSetup,
@@ -65,11 +66,11 @@ export interface UtteranceRefProps {
   getCurrentUtterance: () => Realtime.IntentInput | null;
   withBorderTop?: boolean;
   focus: () => void;
+  clear: () => void;
 }
 
 const UtteranceManager: React.FC<UtteranceManagerProps> = ({ withBorderTop, intent }) => {
   const { search } = useLocation();
-  const { isInStack } = useModals(ModalType.INTENT_CREATE);
 
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM] as string | null;
@@ -99,6 +100,10 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ withBorderTop, inte
     [intent.id]
   );
 
+  useDidUpdateEffect(() => {
+    utteranceRef.current?.clear();
+  }, [intent.id]);
+
   React.useEffect(() => {
     if (prefilledNewUtterance) {
       utteranceRef.current?.forceFocusToTheEnd?.();
@@ -107,10 +112,6 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ withBorderTop, inte
   }, [prefilledNewUtterance, utteranceRef]);
 
   useSetup(() => {
-    if (isInStack) {
-      utteranceRef.current?.focus();
-    }
-
     // Remove the prefilled utterance query param, so on another intent select, the prefill won't persist.
     if (prefilledNewUtterance) {
       const queryParams = new URLSearchParams(search);

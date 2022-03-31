@@ -4,6 +4,7 @@ import { FlexCenter, SvgIcon, useOnScreen } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useSelector } from '@/hooks';
 import BuiltInPrompt from '@/pages/Canvas/components/IntentModalsV2/components/components/BuiltInPrompt';
@@ -16,11 +17,16 @@ import { JumpToEntitiesBubble } from '../components/index';
 import NameSection from '../components/NameSection';
 import UtteranceSection from '../components/UtteranceSection';
 
-const IntentForm: React.FC<{ intent: Realtime.Intent; withDescriptionSection?: boolean; withNameSection?: boolean }> = ({
-  withNameSection = true,
-  withDescriptionSection = true,
-  intent,
-}) => {
+interface IntentFormProps {
+  intentID: string;
+  withDescriptionSection?: boolean;
+  withNameSection?: boolean;
+}
+
+const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDescriptionSection = true, intentID }) => {
+  const intentsMap = useSelector(IntentV2.customIntentMapSelector);
+  const intent = intentsMap[intentID];
+
   const entitiesVisibleRef = React.useRef<HTMLDivElement>(null);
   const slotsMap = useSelector(SlotV2.slotMapSelector);
   const isBuiltIn = isBuiltInIntent(intent.id);
@@ -31,8 +37,16 @@ const IntentForm: React.FC<{ intent: Realtime.Intent; withDescriptionSection?: b
   const scrollToEntitiesRef = React.useRef<Nullable<HTMLDivElement>>(null);
   const hideScrollTo = useOnScreen(entitiesVisibleRef, true);
 
-  const allSlotKeys = intent?.slots.allKeys || [];
-  const usedSlots = React.useMemo(() => allSlotKeys.map((id) => slotsMap[id]), [allSlotKeys]);
+  const usedSlotKeys = intent?.slots.allKeys || [];
+  const usedSlots = React.useMemo(() => {
+    const existingUsedSlots: Realtime.Slot[] = [];
+    usedSlotKeys.forEach((key) => {
+      if (slotsMap[key]) {
+        existingUsedSlots.push(slotsMap[key]);
+      }
+    });
+    return existingUsedSlots;
+  }, [usedSlotKeys, slotsMap]);
 
   const scrollToEntities = () => {
     scrollToEntitiesRef.current?.scrollIntoView({

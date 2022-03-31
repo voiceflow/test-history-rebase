@@ -90,8 +90,8 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
 
-  const { sortedSlots } = useOrderedEntities();
   const { sortedIntents } = useOrderedIntents();
+  const { sortedSlots } = useOrderedEntities();
   const { mergedVariables, mergedVariablesMap } = useOrderedVariables();
 
   const [immPersistedState, setIMMPersistedState] = useSessionStorageState<{ tab: InteractionModelTabType; id: string | null }>(
@@ -311,6 +311,10 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
       const { tab: persistedTab, id: persistedID } = persistedState;
       if (persistedTab && persistedID) {
         goToQuickviewModelEntity(persistedTab, persistedID);
+      } else if (sortedIntents.length) {
+        goToQuickviewModelEntity(InteractionModelTabType.INTENTS, sortedIntents[0].id);
+      } else {
+        goToQuickviewTab(InteractionModelTabType.INTENTS);
       }
     } else if (!isInStack && modelMatch) {
       goToCurrentCanvas();

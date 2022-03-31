@@ -5,7 +5,8 @@ import React, { Ref } from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import * as Intent from '@/ducks/intent';
-import { useDispatch } from '@/hooks';
+import * as SlotV2 from '@/ducks/slotV2';
+import { useDispatch, useSelector } from '@/hooks';
 
 import { SlotBubble } from '../index';
 import EntitiesDropdown from './components/EntitiesDropdown';
@@ -19,9 +20,9 @@ interface EntitiesSectionProps {
 
 const EntitiesSection: React.FC<EntitiesSectionProps> = ({ entitiesVisibleRef, intent, slots }) => {
   const patchIntentSlot = useDispatch(Intent.patchIntentSlot);
+  const allSlotsMap = useSelector(SlotV2.slotMapSelector);
 
   const slotMap = React.useMemo(() => Utils.array.createMap(slots, Utils.object.selectID), [slots]);
-
   const [requiredIntentSlots, notRequiredIntentSlots] = React.useMemo(() => {
     const requiredSlots: Realtime.IntentSlot[] = [];
     const notRequiredSlots: Realtime.IntentSlot[] = [];
@@ -29,7 +30,7 @@ const EntitiesSection: React.FC<EntitiesSectionProps> = ({ entitiesVisibleRef, i
     intent.slots.allKeys.forEach((id) => {
       const slot = intent.slots.byKey[id];
 
-      if (!slot) return;
+      if (!slot || !allSlotsMap[slot.id]) return;
 
       if (slot.required) {
         requiredSlots.push(slot);
@@ -39,7 +40,7 @@ const EntitiesSection: React.FC<EntitiesSectionProps> = ({ entitiesVisibleRef, i
     });
 
     return [requiredSlots, notRequiredSlots];
-  }, [intent.slots]);
+  }, [intent.slots, allSlotsMap]);
 
   const hasSlots = !!requiredIntentSlots.length || !!notRequiredIntentSlots.length;
 

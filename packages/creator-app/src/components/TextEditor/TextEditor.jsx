@@ -130,6 +130,11 @@ function TextEditor({
           const newState = EditorState.moveFocusToEnd(EditorState.moveSelectionToEnd(store.get('editorState')));
           updateEditorState(newState);
         };
+
+        editor.clear = () => {
+          const newState = EditorState.createEmpty();
+          updateEditorState(newState);
+        };
       }
 
       setRef(forwardedRef, editor);

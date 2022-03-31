@@ -84,7 +84,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInput
     setNewValueText('');
 
     // TODO: remove this and the blur above after the editors remove the utteranceManager
-    // this fixes an input enter bug we had, evgeny and josh has context.
+    // this fixes an input enter bug we had, evgeny and josh has context
     requestAnimationFrame(() => valueRef.current?.focus());
   };
 
@@ -95,8 +95,8 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInput
   };
 
   const updateFormValue = (value: Realtime.SlotInput, text: string) => {
-    const hasColon = text.includes(':');
     const hasCommas = text.includes(',');
+    const hasColon = text.includes(':');
 
     if (hasColon) {
       const [valueName, synonymsText] = text.split(':');

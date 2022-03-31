@@ -3,6 +3,7 @@ import { Input } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
+import { formatIntentAndSlotName } from '@/utils/intent';
 
 import TypeAndColorSection from '../TypeAndColorSection';
 import ValuesSection from '../ValuesSection';
@@ -46,7 +47,12 @@ const EntityForm: React.FC<EntityFormProps> = ({
           customContentStyling={{ paddingBottom: '0px' }}
           customHeaderStyling={{ paddingTop: '20px' }}
         >
-          <Input onBlur={() => saveName?.()} placeholder="Enter entity name" value={name} onChangeText={updateName} />
+          <Input
+            onBlur={() => saveName?.()}
+            placeholder="Enter entity name"
+            value={name}
+            onChangeText={(text) => updateName(formatIntentAndSlotName(text))}
+          />
         </Section>
       )}
       <TypeAndColorSection color={color} saveColor={saveColor} type={type} onChangeType={updateType} name={name} />

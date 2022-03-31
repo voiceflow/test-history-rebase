@@ -3,8 +3,7 @@ import React from 'react';
 
 import Modal from '@/components/Modal';
 import { ModalType } from '@/constants';
-import * as IntentV2 from '@/ducks/intentV2';
-import { useLinkedState, useSelector } from '@/hooks';
+import { useLinkedState } from '@/hooks';
 import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
 import EmptyView from '@/pages/Canvas/components/NLUQuickView/components/EmptyView';
@@ -17,8 +16,6 @@ import { NLUQuickViewContext, NLUQuickViewProvider } from './context';
 import { useShowForms } from './hooks';
 
 const NLUQuickView: React.FC = () => {
-  const intentsMap = useSelector(IntentV2.customIntentMapSelector);
-
   const { title, activeTab, selectedID, canRenameItem, setIsActiveItemRename, onNameChange, nameChangeTransform } =
     React.useContext(NLUQuickViewContext);
 
@@ -49,7 +46,7 @@ const NLUQuickView: React.FC = () => {
           <EmptyView />
         ) : (
           <>
-            {showIntentForm && <IntentForm intent={intentsMap[selectedID]} withNameSection={false} />}
+            {showIntentForm && <IntentForm intentID={selectedID} withNameSection={false} />}
             {showEntityForm && <EditEntityForm slotID={selectedID} withNameSection={false} />}
             {showVariableForm && <VariablesSection />}
           </>

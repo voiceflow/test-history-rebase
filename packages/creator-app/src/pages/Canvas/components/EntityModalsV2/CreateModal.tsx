@@ -1,12 +1,15 @@
 import { CustomSlot, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, ButtonVariant, pickRandomDefaultColor, useCache, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, pickRandomDefaultColor, toast, useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as Slot from '@/ducks/slot';
-import { useDispatch, useLinkedState, useModals } from '@/hooks';
+import * as SlotV2 from '@/ducks/slotV2';
+import { useDispatch, useLinkedState, useModals, useSelector } from '@/hooks';
+import { validateSlotName } from '@/utils/slot';
 
 import EntityForm from './components/EntityForm';
 import { MAX_ENTITY_MODAL_WIDTH, MAX_HEIGHT_CALC } from './constants';
@@ -19,17 +22,35 @@ const CreateModal: React.FC = () => {
   }>(ModalType.ENTITY_CREATE);
   const createSlot = useDispatch(Slot.createSlot);
   const cache = useCache<{ created: boolean }>({ created: false });
+  const slots = useSelector(SlotV2.allSlotsSelector);
+  const intents = useSelector(IntentV2.allIntentsSelector);
 
-  const defaultColor = React.useMemo(() => pickRandomDefaultColor(), []);
   const [type, setType] = React.useState(CustomSlot.type);
   const [name, setName] = useLinkedState(data.name ?? '');
   const [values, setValues] = React.useState<Realtime.SlotInput[]>([]);
-  const [color, setColor] = React.useState<string>(defaultColor);
+  const [color, setColor] = React.useState<string>(pickRandomDefaultColor());
+
+  const notEmptyValues = React.useMemo(() => values.some(({ value, synonyms }) => value.trim() || synonyms.trim()), [values]);
 
   const onCreate = async () => {
+    const formattedSlotName = Utils.string.removeTrailingUnderscores(name);
     const id = Utils.id.cuid.slug();
-    await createSlot(id, { id, type, name, color, inputs: values });
-    data.onCreate({ id, name, color });
+
+    const error = validateSlotName({
+      slots,
+      intents,
+      slotName: formattedSlotName,
+      slotType: type,
+      notEmptyValues,
+    });
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    await createSlot(id, { id, type, name: formattedSlotName, color, inputs: values });
+    data.onCreate({ id, name, color } as Realtime.Slot);
     cache.current.created = true;
     close();
   };

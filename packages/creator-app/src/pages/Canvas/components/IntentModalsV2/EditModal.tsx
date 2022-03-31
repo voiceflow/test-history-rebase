@@ -57,7 +57,7 @@ const EditModal: React.FC = () => {
       headerBorder
     >
       <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
-        <IntentForm intent={intent} />
+        <IntentForm intentID={data.id} />
       </Box>
       <ModalFooter justifyContent="flex-end">
         <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={close}>

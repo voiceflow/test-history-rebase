@@ -52,7 +52,7 @@ const CreateModal: React.FC = () => {
   return (
     <Modal maxWidth={INTENT_MODAL_WIDTH} id={ModalType.INTENT_CREATE} title="Create Intent" headerBorder>
       <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
-        <IntentForm intent={intent} withDescriptionSection={false} />
+        <IntentForm intentID={intentID} withDescriptionSection={false} />
       </Box>
       <ModalFooter justifyContent="flex-end">
         <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={handleCancel} style={{ marginRight: '10px' }}>

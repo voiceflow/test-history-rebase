@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.678.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.678.1...@voiceflow/creator-app@1.678.2) (2022-03-31)
+
+
+### Bug Fixes
+
+* unsubscribe socket events (VF-000) ([#5281](https://github.com/voiceflow/creator-app/issues/5281)) ([2dc6fdf](https://github.com/voiceflow/creator-app/commit/2dc6fdf8a84f76d6b6d41d641661e736c6b5d35b)), closes [/github.com/voiceflow/creator-app/blob/697c21eb7038089fbe68536c4048bf81bd857058/packages/creator-app/src/client/socket/client.tsx#L111-L115](https://github.com//github.com/voiceflow/creator-app/blob/697c21eb7038089fbe68536c4048bf81bd857058/packages/creator-app/src/client/socket/client.tsx/issues/L111-L115)
+
+
+
+
+
 ## [1.678.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.678.0...@voiceflow/creator-app@1.678.1) (2022-03-31)
 
 

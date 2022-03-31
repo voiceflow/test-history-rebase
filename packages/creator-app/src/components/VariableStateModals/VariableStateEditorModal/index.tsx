@@ -12,10 +12,11 @@ import Section from '@/components/Section';
 import { SectionVariant } from '@/components/Section/constants';
 import VariableList from '@/components/VariableList';
 import VariablesSelect from '@/components/VariablesSelect';
+import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as VariableStateDucks from '@/ducks/variableState';
-import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
 
 import { InputHint, VariableListSection } from './components';
 
@@ -58,6 +59,7 @@ const VariableStateEditorModal: React.FC = () => {
   const getVariableStateByID = useSelector(VariableStateDucks.getVariableStateByIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const [trackingEvents] = useTrackingEvents();
+  const { isEnabled: isStartingBlockEnabled } = useFeature(FeatureFlag.VARIABLE_STATES_STARTING_BLOCKS);
 
   const initialValues = React.useMemo((): VariableStateEditorValues => {
     if (!data.variableStateID) return defaultValues;
@@ -154,10 +156,12 @@ const VariableStateEditorModal: React.FC = () => {
           />
           {!!formik.submitCount && formik.errors.name && <InputError>{formik.errors.name}</InputError>}
         </Section>
-        <Section header="Starting Block" variant={SectionVariant.FORM}>
-          <BlockSelect onChange={(stepID) => formik.setFieldValue('stepID', stepID)} value={formik.values.stepID} disabled={formik.isSubmitting} />
-          <InputHint>Select a block where this conversation will start from</InputHint>
-        </Section>
+        {isStartingBlockEnabled && (
+          <Section header="Starting Block" variant={SectionVariant.FORM}>
+            <BlockSelect onChange={(stepID) => formik.setFieldValue('stepID', stepID)} value={formik.values.stepID} disabled={formik.isSubmitting} />
+            <InputHint>Select a block where this conversation will start from</InputHint>
+          </Section>
+        )}
         <Section header="Variables" variant={SectionVariant.FORM}>
           <VariablesSelect
             onChange={(value: string[]) => formik.setFieldValue('variables', value)}

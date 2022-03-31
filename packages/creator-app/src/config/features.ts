@@ -12,6 +12,7 @@ const WAVENET_VOICES_ENABLED = process.env.FF_WAVENET_VOICES === 'true';
 const ENTERPRISE_TRIAL_ENABLED = process.env.FF_ENTERPRISE_TRIAL_ENABLED === 'true';
 const TOPICS_AND_COMPONENTS_ENABLED = process.env.FF_TOPICS_AND_COMPONENTS === 'true';
 const VARIABLE_STATES_ENABLED = process.env.FF_VARIABLE_STATES === 'true';
+const VARIABLE_STATES_STARTING_BLOCKS_ENABLED = process.env.VARIABLE_STATES_STARTING_BLOCKS === 'true';
 const IMM_MODALS_V2 = process.env.FF_IMM_MODALS_V2 === 'true';
 const NLU_MANAGER_ENABLED = process.env.FF_NLU_MANAGER === 'true';
 const PROJECT_CREATE_ENABLED = process.env.FF_PROJECT_CREATE === 'true';
@@ -37,7 +38,9 @@ export enum FeatureFlag {
 
   ENTERPRISE_TRIAL = 'enterprise_trial',
 
+  // variable states
   VARIABLE_STATES = 'variable_states',
+  VARIABLE_STATES_STARTING_BLOCKS = 'variable_states_starting_blocks',
 
   IMM_MODALS_V2 = 'imm_modals_v2',
   NLU_MANAGER = 'nlu_manager',
@@ -60,4 +63,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.IMM_MODALS_V2]: IMM_MODALS_V2,
   [FeatureFlag.NLU_MANAGER]: NLU_MANAGER_ENABLED,
   [FeatureFlag.PROJECT_CREATE]: PROJECT_CREATE_ENABLED,
+  [FeatureFlag.VARIABLE_STATES_STARTING_BLOCKS]: VARIABLE_STATES_STARTING_BLOCKS_ENABLED,
 };

@@ -3,8 +3,8 @@ import { Colors, IColor } from '../../constants';
 export interface ColorThemesProps {
   colors: Colors;
   small?: boolean;
-  selectedColor?: IColor;
-  onColorSelect: (color: IColor) => void;
+  selectedColor?: string;
+  onColorSelect: (color: string) => void;
 }
 
 export interface BaseColorProps {

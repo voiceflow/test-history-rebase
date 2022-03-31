@@ -46,7 +46,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInput
   const [newValueText, setNewValueText] = React.useState('');
   const [showAllValues, setShowAllValues] = React.useState(false);
   const [customLines, setCustomLines] = React.useState<Realtime.SlotInput[]>(() =>
-    inputs?.length ? inputs : (type === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || inputs
+    inputs?.length ? inputs : (type === CUSTOM_SLOT_TYPE && []) || inputs
   );
 
   useDidUpdateEffect(() => {
@@ -74,12 +74,18 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInput
     onChange: (value: Realtime.SlotInput) => void,
     value?: Realtime.SlotInput | null
   ) => {
+    valueRef.current?.blur();
+
     if (!newValueText.trim()) return;
     if (value) {
       onAdd(value);
     }
     onChange(generateSlotInput());
     setNewValueText('');
+
+    // TODO: remove this and the blur above after the editors remove the utteranceManager
+    // this fixes an input enter bug we had, evgeny and josh has context.
+    requestAnimationFrame(() => valueRef.current?.focus());
   };
 
   const onUpdateValueProps = (slotInput: Realtime.SlotInput, props: Partial<Realtime.SlotInput>) => {
@@ -131,7 +137,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInput
             <ListManagerWrapper>
               <ListManager
                 renderList={({ mapManaged, itemRenderer }) => (
-                  <Box overflow="auto" mr={-12} style={{ ...valueListStyling }}>
+                  <Box overflow="auto" mr={-12} mb={8} style={{ ...valueListStyling }}>
                     {mapManaged(itemRenderer)}
                   </Box>
                 )}

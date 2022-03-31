@@ -4,24 +4,9 @@ import React, { useState } from 'react';
 import { createExample, createSection } from './utils';
 
 const Example = () => {
-  const [colors, setColors] = useState(COLOR_PICKER_CONSTANTS.DEFAULT_COLORS);
-  const [selectedColor, setSelectedColor] = useState(COLOR_PICKER_CONSTANTS.DEFAULT_COLORS[0]);
+  const [selectedColor, setSelectedColor] = useState<string>(COLOR_PICKER_CONSTANTS.DEFAULT_COLORS[0].palette[500]);
 
-  const saveColor = (color: COLOR_PICKER_CONSTANTS.IColor) => {
-    if (!colors.find(({ hue }) => hue === color.hue)) {
-      setColors([...colors, color]);
-    }
-  };
-
-  return (
-    <ColorPicker
-      tagName="Label"
-      colors={colors}
-      selectedColor={selectedColor}
-      onChange={(color) => setSelectedColor(color)}
-      onSaveColor={(color) => saveColor(color)}
-    />
-  );
+  return <ColorPicker tagName="Label" selectedColor={selectedColor} onChange={(color) => setSelectedColor(color)} />;
 };
 
 const standard = createExample('primary', <Example />);

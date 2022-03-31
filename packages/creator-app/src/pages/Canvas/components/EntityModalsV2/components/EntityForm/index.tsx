@@ -4,7 +4,7 @@ import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 
-import TypeSection from '../TypeSection';
+import TypeAndColorSection from '../TypeAndColorSection';
 import ValuesSection from '../ValuesSection';
 
 interface EntityFormProps {
@@ -16,9 +16,22 @@ interface EntityFormProps {
   updateName: (name: string) => void;
   saveName?: () => void;
   withNameSection?: boolean;
+  color: string;
+  saveColor: (color: string) => void;
 }
 
-const EntityForm: React.FC<EntityFormProps> = ({ values, saveValues, type, updateType, name, updateName, saveName, withNameSection = true }) => {
+const EntityForm: React.FC<EntityFormProps> = ({
+  color,
+  saveColor,
+  values,
+  saveValues,
+  type,
+  updateType,
+  name,
+  updateName,
+  saveName,
+  withNameSection = true,
+}) => {
   const handleInputsChange = (inputs: Realtime.SlotInput[]) => {
     saveValues?.(inputs);
   };
@@ -36,7 +49,7 @@ const EntityForm: React.FC<EntityFormProps> = ({ values, saveValues, type, updat
           <Input onBlur={() => saveName?.()} placeholder="Enter entity name" value={name} onChangeText={updateName} />
         </Section>
       )}
-      <TypeSection type={type} onChangeType={updateType} />
+      <TypeAndColorSection color={color} saveColor={saveColor} type={type} onChangeType={updateType} name={name} />
       <ValuesSection inputs={values} type={type} updateInputs={handleInputsChange} />
     </>
   );

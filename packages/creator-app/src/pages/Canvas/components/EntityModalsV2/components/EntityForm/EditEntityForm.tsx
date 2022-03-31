@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { pickRandomDefaultColor } from '@voiceflow/ui';
 import React from 'react';
 
 import * as SlotDuck from '@/ducks/slot';
@@ -15,9 +16,11 @@ interface EditEntityFormProps {
 const EditEntityForm: React.FC<EditEntityFormProps> = ({ withNameSection, slotID }) => {
   const slot = useSelector(SlotV2.slotByIDSelector, { id: slotID });
   const patchSlot = useDispatch(SlotDuck.patchSlot, slotID);
+  const defaultColor = React.useMemo(() => pickRandomDefaultColor(), []);
 
   const [type] = useLinkedState(slot?.type ?? null);
   const [name, setName] = useLinkedState(slot?.name ?? '');
+  const [color, setColor] = useLinkedState(slot?.color || defaultColor);
 
   if (!slot) return null;
 
@@ -33,6 +36,11 @@ const EditEntityForm: React.FC<EditEntityFormProps> = ({ withNameSection, slotID
     patchSlot({ inputs: values });
   };
 
+  const saveColor = (color: string) => {
+    setColor(color);
+    patchSlot({ color });
+  };
+
   return (
     <EntityForm
       values={slot.inputs}
@@ -40,6 +48,8 @@ const EditEntityForm: React.FC<EditEntityFormProps> = ({ withNameSection, slotID
       saveValues={saveValues}
       type={type}
       name={name}
+      color={color}
+      saveColor={saveColor}
       updateName={setName}
       saveName={saveName}
       withNameSection={withNameSection}

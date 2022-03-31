@@ -82,6 +82,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   const patchIntent = useDispatch(Intent.patchIntent);
   const goToQuickviewModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
   const goToQuickviewTab = useDispatch(Router.goToCurrentCanvasInteractionModel);
+  const goToQuickviewModelTab = useDispatch(Router.goToCurrentCanvasInteractionModel);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
@@ -110,6 +111,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   }, [location.pathname]);
 
   const activeTab = modelMatch?.params.modelType ?? InteractionModelTabType.INTENTS;
+
   const activeID = modelMatch?.params.modelEntityID ? decodeURIComponent(modelMatch.params.modelEntityID) : '';
 
   const validateNewIntentName = React.useCallback(
@@ -252,7 +254,11 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
 
   const goToEntity = (tab: InteractionModelTabType, id: string) => {
     handleSetPersistState(tab, id);
-    goToQuickviewModelEntity(tab, id);
+    if (id) {
+      goToQuickviewModelEntity(tab, id);
+    } else {
+      goToQuickviewModelTab(tab);
+    }
   };
 
   const setSelectedTab = React.useCallback(

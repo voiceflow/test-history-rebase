@@ -35,6 +35,18 @@ export const hexToRGBA = (color: string) => {
   };
 };
 
+const RGBA_REGEX = /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i;
+export const RGBAToHex = (rgba: string): string => {
+  const parsedRGBA = rgba.match(RGBA_REGEX);
+  const parseSubcolor = (subcolor: string) => `0${parseInt(subcolor, 10).toString(16)}`.slice(-2);
+
+  if (parsedRGBA && parsedRGBA.length === 4) {
+    return `#${parseSubcolor(parsedRGBA[1])}${parseSubcolor(parsedRGBA[2])}${parseSubcolor(parsedRGBA[3])}`;
+  }
+
+  return '';
+};
+
 const clamp = (value: number, min: number, max: number) => Math.max(Math.min(value, max), min);
 
 export const changeColorShade = (col: string, amt: number) => {

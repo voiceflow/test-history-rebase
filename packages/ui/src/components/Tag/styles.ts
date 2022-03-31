@@ -1,3 +1,4 @@
+import { transition } from '@ui/styles';
 import { HSLShades } from '@ui/utils/colors/hsl';
 import styled from 'styled-components';
 
@@ -6,6 +7,7 @@ export interface BaseTagProps {
 }
 
 export const TagWrapper = styled.section<BaseTagProps>`
+  ${transition('background-color')}
   padding: 1px 0px 3px;
   font-weight: 600;
   font-size: 12px;
@@ -23,12 +25,14 @@ export const TagWrapper = styled.section<BaseTagProps>`
 `;
 
 export const Label = styled.section<BaseTagProps>`
+  ${transition('color')}
   margin-bottom: -1px;
 
   color: ${({ palette }) => palette[50]};
 `;
 
 export const CurlyBraces = styled.span<BaseTagProps>`
+  ${transition('color')}
   display: inline-block;
   margin: 0px 3px;
 

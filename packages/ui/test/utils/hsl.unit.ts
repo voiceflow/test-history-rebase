@@ -2,7 +2,7 @@ import * as hsl from '@ui/utils/colors/hsl';
 
 import suite from '../_suite';
 
-const { createHEXShadesFromHSL, HUE_MAX, HUE_MIN } = hsl;
+const { createShadesFromHue, HUE_MAX, HUE_MIN } = hsl;
 
 /*
   The mock below locks the saturation level to 65 so as to keep the HEX shades consistent
@@ -13,22 +13,22 @@ const { createHEXShadesFromHSL, HUE_MAX, HUE_MIN } = hsl;
 Object.defineProperty(hsl, 'SATURATION', { value: 65 });
 
 suite('hsl', ({ expect }) => {
-  describe('createHEXShadesFromHSL', () => {
+  describe('createShadesFromHue', () => {
     it('should generate ten hsl color shades for a given hue value', () => {
       const assertions: [string, Record<string, string>][] = [
         [
-          '0',
+          '1',
           {
             50: `#f9eaed`,
-            100: `#f5dce1`,
+            100: `#f5dce0`,
             200: `#f1cbd1`,
             300: `#edb9c2`,
-            400: `#e79cab`,
-            500: `#e37c93`,
-            600: `#de5277`,
-            700: `#b33e5e`,
-            800: `#842c43`,
-            900: `#541929`,
+            400: `#e89ca9`,
+            500: `#e37c91`,
+            600: `#de5275`,
+            700: `#b33e5c`,
+            800: `#842c42`,
+            900: `#551928`,
           },
         ],
         [
@@ -48,7 +48,7 @@ suite('hsl', ({ expect }) => {
         ],
       ];
 
-      assertions.forEach(([hue, hsl]) => expect(createHEXShadesFromHSL(hue)).to.deep.equal(hsl));
+      assertions.forEach(([hue, hsl]) => expect(createShadesFromHue(hue)).to.deep.equal(hsl));
     });
 
     it(`should cap hue values to min ${HUE_MIN} and max ${HUE_MAX}`, () => {
@@ -57,15 +57,15 @@ suite('hsl', ({ expect }) => {
           `${Number(HUE_MIN) - 10}`,
           {
             50: `#f9eaed`,
-            100: `#f5dce1`,
+            100: `#f5dce0`,
             200: `#f1cbd1`,
             300: `#edb9c2`,
-            400: `#e79cab`,
-            500: `#e37c93`,
-            600: `#de5277`,
-            700: `#b33e5e`,
-            800: `#842c43`,
-            900: `#541929`,
+            400: `#e89ca9`,
+            500: `#e37c91`,
+            600: `#de5275`,
+            700: `#b33e5c`,
+            800: `#842c42`,
+            900: `#551928`,
           },
         ],
         [
@@ -85,7 +85,7 @@ suite('hsl', ({ expect }) => {
         ],
       ];
 
-      assertions.forEach(([hue, hsl]) => expect(createHEXShadesFromHSL(hue)).to.deep.equal(hsl));
+      assertions.forEach(([hue, hsl]) => expect(createShadesFromHue(hue)).to.deep.equal(hsl));
     });
   });
 });

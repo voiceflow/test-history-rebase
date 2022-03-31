@@ -31,5 +31,5 @@ export const Label = styled(Text)`
   font-size: 13px;
   font-weight: 600;
   color: #62778c;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 `;

@@ -1,4 +1,4 @@
-import { COLOR_GRADES, createHEXShadesFromHSL } from '@ui/utils/colors/hsl';
+import { COLOR_GRADES, createShadesFromHue } from '@ui/utils/colors/hsl';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -31,7 +31,7 @@ export interface ColorPaletteDisplayProps {
 }
 
 export const ColorPaletteDisplay = ({ hue }: ColorPaletteDisplayProps): React.ReactElement => {
-  const hslShades = createHEXShadesFromHSL(hue);
+  const hslShades = React.useMemo(() => createShadesFromHue(hue), [hue]);
 
   return (
     <ColorPalette>

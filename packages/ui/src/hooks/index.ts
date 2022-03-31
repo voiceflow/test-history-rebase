@@ -1,4 +1,5 @@
 export * from './cache';
+export * from './callback';
 export * from './lifecycle';
 export * from './mouse';
 export * from './popper';

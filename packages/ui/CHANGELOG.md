@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.68.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.67.2...@voiceflow/ui@1.68.0) (2022-03-31)
+
+
+### Features
+
+* default to All project variable on variable state select (VF-3255) ([#5280](https://github.com/voiceflow/creator-app/issues/5280)) ([ac18854](https://github.com/voiceflow/creator-app/commit/ac1885407eecaf63a4449688bc104d3b8d0f479b))
+
+
+
+
+
 ## [1.67.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.67.1...@voiceflow/ui@1.67.2) (2022-03-30)
 
 

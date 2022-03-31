@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.677.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.676.2...@voiceflow/creator-app@1.677.0) (2022-03-31)
+
+
+### Features
+
+* **creator-app:** hides variables starting block select (VF-3256) ([#5275](https://github.com/voiceflow/creator-app/issues/5275)) ([9941e1e](https://github.com/voiceflow/creator-app/commit/9941e1e164b65e313e3fe0c78ad5de1607b4ecfa))
+
+
+
+
+
 ## [1.676.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.676.1...@voiceflow/creator-app@1.676.2) (2022-03-30)
 
 

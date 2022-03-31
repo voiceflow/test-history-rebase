@@ -51,7 +51,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
     <SelectContainer
       value={selected?.value}
       options={options}
-      onSelect={(newValue) => onChange(newValue === value ? null : newValue)}
+      onSelect={onChange}
       searchable
       placeholder="Select a variable state"
       getOptionKey={(option) => option.value}

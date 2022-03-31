@@ -1,5 +1,5 @@
 import { transformStringVariableToNumber } from '@voiceflow/common';
-import { Flex, toast } from '@voiceflow/ui';
+import { Flex, FlexCenter, LoadCircle, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
@@ -10,7 +10,7 @@ import { useDispatch, useSelector, useTheme } from '@/hooks';
 import { Variable } from '@/models';
 import { SlideOutDirection } from '@/styles/transitions';
 
-import { NoVariablesPlaceholder, SelectContainer, VariableListContainer } from './components';
+import { SelectContainer, VariableListContainer } from './components';
 
 const TestVariablesSidebar: React.FC = () => {
   const theme = useTheme();
@@ -48,7 +48,7 @@ const TestVariablesSidebar: React.FC = () => {
     if (selectedVariableStateId === variableState.ALL_PROJECT_VARIABLES_ID) return;
 
     if (!selectedSavedState) {
-      updateSelectedVariableStateById(null);
+      updateSelectedVariableStateById(variableState.ALL_PROJECT_VARIABLES_ID);
       return;
     }
 
@@ -65,23 +65,25 @@ const TestVariablesSidebar: React.FC = () => {
       closable
       onToggle={setIsOpen}
     >
-      <Flex column fullHeight>
-        <SelectContainer>
-          <TestVariableStateSelect
-            value={selectedVariableStateId}
-            loading={loading}
-            onChange={(value) => handleVariableStateSelection(value)}
-            onUpdateStateValues={onUpdateStateValues}
-          />
-        </SelectContainer>
-        {selectedVariableStateId ? (
+      {variables?.length ? (
+        <Flex column fullHeight>
+          <SelectContainer>
+            <TestVariableStateSelect
+              value={selectedVariableStateId}
+              loading={loading}
+              onChange={(value) => handleVariableStateSelection(value)}
+              onUpdateStateValues={onUpdateStateValues}
+            />
+          </SelectContainer>
           <VariableListContainer>
             <VariableList variables={variables} onChange={onChangeVariable} disabled={loading} />
           </VariableListContainer>
-        ) : (
-          <NoVariablesPlaceholder>No variable state selected</NoVariablesPlaceholder>
-        )}
-      </Flex>
+        </Flex>
+      ) : (
+        <FlexCenter style={{ height: '100%' }}>
+          <LoadCircle />
+        </FlexCenter>
+      )}
     </Drawer>
   );
 };

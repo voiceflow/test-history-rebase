@@ -326,6 +326,7 @@ function Select({
   });
 
   const handleOnSearchLabelChange = (val: string, { isSelectEvent }: { isSelectEvent?: boolean } = {}) => {
+    dataRef.current.searchLabel = val;
     onUpdateOptionsToRender(val, { skipIndexReset: isSelectEvent && inputVariant !== SelectInputVariant.DROPDOWN });
     setSearchLabel(val);
     onSearch?.(val);

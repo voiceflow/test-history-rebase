@@ -8,8 +8,6 @@ import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
-const ERROR_DISCONNECT_TIMEOUT = 5000;
-
 const RealtimeDiagramLifecycle: React.FC<ConnectedRealtimeDiagramLifecycleProps> = ({
   disconnectRealtime,
   reestablishConnection,
@@ -19,45 +17,31 @@ const RealtimeDiagramLifecycle: React.FC<ConnectedRealtimeDiagramLifecycleProps>
   setError,
   setRealtimeError,
 }) => {
-  const disconnectTimeout = React.useRef<NodeJS.Timeout | null>(null);
-
   React.useEffect(() => {
-    client.socket.global.watchForConnectionError(() => {
-      if (!disconnectTimeout.current) {
-        disconnectTimeout.current = setTimeout(() => {
-          if (!client.socket.isConnected) {
-            disconnectRealtime();
-          }
-        }, ERROR_DISCONNECT_TIMEOUT);
-      }
-      client.socket.global.setReconnectingStatus();
-    });
-
-    client.socket.global.watchForReconnected(() => {
-      if (disconnectTimeout.current) {
-        clearTimeout(disconnectTimeout.current);
-      }
-      reestablishConnection();
-    });
-
-    client.socket.global.watchForFailure(() => {
-      disconnectRealtime();
-      client.socket.disconnect();
-    });
-
-    client.socket.diagram.watchForceRefresh(() => {
-      setRealtimeError();
-    });
+    const watchers = [
+      client.socket.global.watchForConnectionError(() => {
+        if (!client.socket.isConnected) {
+          disconnectRealtime();
+        }
+        client.socket.global.setReconnectingStatus();
+      }),
+      client.socket.global.watchForReconnected(() => {
+        reestablishConnection();
+      }),
+      client.socket.global.watchForFailure(() => {
+        disconnectRealtime();
+        client.socket.disconnect();
+      }),
+      client.socket.diagram.watchForceRefresh(() => {
+        setRealtimeError();
+      }),
+      client.socket.project.watchForSessionAcquired(setupActiveDiagramConnection),
+    ];
 
     return () => {
-      if (disconnectTimeout.current) {
-        clearTimeout(disconnectTimeout.current);
-        disconnectTimeout.current = null;
-      }
+      watchers.map((off) => off());
     };
   }, []);
-
-  React.useEffect(() => client.socket.project.watchForSessionAcquired(setupActiveDiagramConnection), [setupActiveDiagramConnection]);
 
   React.useEffect(
     () =>

@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SvgIcon } from '@voiceflow/ui';
-import React, { Ref } from 'react';
+import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import * as Intent from '@/ducks/intent';
@@ -15,10 +15,9 @@ import SlotItem from './components/SlotItem';
 interface EntitiesSectionProps {
   slots: Realtime.Slot[];
   intent: Realtime.Intent;
-  entitiesVisibleRef: Ref<HTMLDivElement>;
 }
 
-const EntitiesSection: React.FC<EntitiesSectionProps> = ({ entitiesVisibleRef, intent, slots }) => {
+const EntitiesSection: React.FC<EntitiesSectionProps> = ({ intent, slots }) => {
   const patchIntentSlot = useDispatch(Intent.patchIntentSlot);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
 
@@ -55,7 +54,6 @@ const EntitiesSection: React.FC<EntitiesSectionProps> = ({ entitiesVisibleRef, i
     >
       {!!slots.length && (
         <Box marginBottom={16} marginRight={-12}>
-          <div ref={entitiesVisibleRef} />
           <Box marginTop={-8} marginBottom={8}>
             {requiredIntentSlots.map((slot) => (
               <SlotItem

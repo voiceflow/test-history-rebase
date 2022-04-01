@@ -28,15 +28,14 @@ const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDes
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
   const intent = intentsMap[intentID];
 
-  const entitiesVisibleRef = React.useRef<HTMLDivElement>(null);
   const slotsMap = useSelector(SlotV2.slotMapSelector);
   const isBuiltIn = isBuiltInIntent(intentID);
   const patchIntent = useDispatch(Intent.patchIntent);
 
   const [showUtteranceSection, setShowUtteranceSection] = React.useState(false);
 
-  const scrollToEntitiesRef = React.useRef<Nullable<HTMLDivElement>>(null);
-  const hideScrollTo = useOnScreen(entitiesVisibleRef, true);
+  const entitiesRef = React.useRef<Nullable<HTMLDivElement>>(null);
+  const isEntitiesVisible = useOnScreen(entitiesRef, true);
 
   const usedSlotKeys = intent?.slots.allKeys || [];
   const usedSlots = React.useMemo(() => {
@@ -50,7 +49,7 @@ const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDes
   }, [usedSlotKeys, slotsMap]);
 
   const scrollToEntities = () => {
-    scrollToEntitiesRef.current?.scrollIntoView({ behavior: 'smooth' });
+    entitiesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   React.useEffect(() => {
@@ -69,8 +68,8 @@ const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDes
 
       {!isBuiltIn && (
         <>
-          <div ref={scrollToEntitiesRef} />
-          <EntitiesSection entitiesVisibleRef={entitiesVisibleRef} slots={usedSlots} intent={intent} />
+          <div ref={entitiesRef} />
+          <EntitiesSection slots={usedSlots} intent={intent} />
         </>
       )}
 
@@ -78,7 +77,7 @@ const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDes
         <DescriptionSection intentID={intent.id} noteID={intent.noteID} onCreateNote={(noteID) => patchIntent(intent.id, { noteID })} />
       )}
 
-      {!hideScrollTo && !!usedSlots.length && (
+      {!isEntitiesVisible && (
         <FlexCenter style={{ position: 'sticky', bottom: '20px' }}>
           <FadeDownContainer>
             <JumpToEntitiesBubble onClick={scrollToEntities}>

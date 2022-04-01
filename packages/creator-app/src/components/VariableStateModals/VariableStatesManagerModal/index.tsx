@@ -4,10 +4,11 @@ import React from 'react';
 import Modal, { ModalBody } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useHotKeys, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { Hotkey } from '@/keymap';
 
 const VariableStatesManagerModal: React.FC = () => {
-  const { open: openEditorModal } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
+  const { open: openEditorModal, isOpened: isEditorModalOpened } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
   const { close } = useModals(ModalType.VARIABLE_STATES_MANAGER_MODAL);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
   const updateVariableState = useDispatch(VariableState.updateState);
@@ -44,6 +45,8 @@ const VariableStatesManagerModal: React.FC = () => {
     () => setVariableStateNames(variableStates.reduce((acc, variableState) => ({ ...acc, [variableState.id]: variableState.name }), {})),
     [variableStates]
   );
+
+  useHotKeys(Hotkey.CLOSE_VARIABLE_STATE_MANAGER_MODAL, close, { preventDefault: true, disable: isEditorModalOpened }, [close]);
 
   return (
     <Modal id={ModalType.VARIABLE_STATES_MANAGER_MODAL} title="Manage States">

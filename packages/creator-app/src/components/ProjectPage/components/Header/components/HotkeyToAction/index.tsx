@@ -11,10 +11,11 @@ interface HotkeyToActionProps {
   hotkey: Hotkey;
   onHotkey: (event: KeyboardEvent | React.MouseEvent) => void;
   preventDefault?: boolean;
+  disabled?: boolean;
 }
 
-const HotkeyToAction: React.FC<HotkeyToActionProps> = ({ id, label, hotkey, onHotkey, preventDefault }) => {
-  useHotKeys(hotkey, onHotkey, { preventDefault }, [onHotkey]);
+const HotkeyToAction: React.FC<HotkeyToActionProps> = ({ id, label, hotkey, onHotkey, preventDefault, disabled }) => {
+  useHotKeys(hotkey, onHotkey, { preventDefault, disable: disabled }, [onHotkey]);
 
   return (
     <Container id={id} onClick={onHotkey}>

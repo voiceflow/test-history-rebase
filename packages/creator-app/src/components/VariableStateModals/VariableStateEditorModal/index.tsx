@@ -16,7 +16,8 @@ import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as VariableStateDucks from '@/ducks/variableState';
-import { useDispatch, useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useHotKeys, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { Hotkey } from '@/keymap';
 
 import { InputHint, VariableListSection } from './components';
 
@@ -136,6 +137,8 @@ const VariableStateEditorModal: React.FC = () => {
       formik.resetForm({ values: initialValues, submitCount: 0 });
     }
   }, [isOpened]);
+
+  useHotKeys(Hotkey.CLOSE_VARIABLE_STATE_EDITOR_MODAL, close, { preventDefault: true }, [close]);
 
   if (!isOpened) return null;
 

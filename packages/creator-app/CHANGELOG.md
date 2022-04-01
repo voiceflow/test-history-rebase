@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.678.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.678.5...@voiceflow/creator-app@1.678.6) (2022-04-01)
+
+
+### Bug Fixes
+
+* **VF-3257:** fixes starting block topic bug (VF-3257) ([#5282](https://github.com/voiceflow/creator-app/issues/5282)) ([aa07c44](https://github.com/voiceflow/creator-app/commit/aa07c44d12a9d34c02f37e6195b9b21371f48f46))
+* hitting key on variable state modals closes only the  modal (VF-3185) ([#5278](https://github.com/voiceflow/creator-app/issues/5278)) ([2a94775](https://github.com/voiceflow/creator-app/commit/2a947759df749a6552d58b7fc86c3e5832eb0248))
+
+
+
+
+
 ## [1.678.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.678.4...@voiceflow/creator-app@1.678.5) (2022-04-01)
 
 

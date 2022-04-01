@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.678.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.678.6...@voiceflow/creator-app@1.678.7) (2022-04-01)
+
+
+### Bug Fixes
+
+* fix ref issue on the intent form (VF-000) ([#5286](https://github.com/voiceflow/creator-app/issues/5286)) ([1215c98](https://github.com/voiceflow/creator-app/commit/1215c989c97087d051a7cf3b597c57aa89b44566))
+
+
+
+
+
 ## [1.678.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.678.5...@voiceflow/creator-app@1.678.6) (2022-04-01)
 
 

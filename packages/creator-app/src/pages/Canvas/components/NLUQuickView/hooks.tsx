@@ -19,7 +19,7 @@ import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 export const useFilteredList = (search: string, list: { name: string }[]) => {
   return React.useMemo(() => {
     return list.filter((item) => {
-      return item.name.includes(search.trim());
+      return item.name.toLowerCase().includes(search.toLowerCase().trim());
     });
   }, [search, list]);
 };

@@ -82,11 +82,11 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   const patchIntent = useDispatch(Intent.patchIntent);
   const goToQuickviewModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
   const goToQuickviewTab = useDispatch(Router.goToCurrentCanvasInteractionModel);
-  const goToQuickviewModelTab = useDispatch(Router.goToCurrentCanvasInteractionModel);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
+
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
 
@@ -165,7 +165,10 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
         notEmptyValues,
       });
 
-      if (error) {
+      // TODO: after release, remove this check in the validateSlotName, and remove this condition
+      if (error === 'Custom entity needs at least one value') {
+        toast.warn(error);
+      } else if (error) {
         toast.error(error);
         return;
       }
@@ -229,11 +232,15 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     [mergedVariablesMap]
   );
 
+  const canDeleteIntent = (id: string) => {
+    return !isBuiltInIntent(id);
+  };
+
   const canDeleteItem = React.useCallback(
     (id: string, type: InteractionModelTabType) => {
       switch (type) {
         case InteractionModelTabType.INTENTS:
-          return true;
+          return canDeleteIntent(id);
           break;
         case InteractionModelTabType.VARIABLES:
           return canDeleteVariable(id);
@@ -257,7 +264,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     if (id) {
       goToQuickviewModelEntity(tab, id);
     } else {
-      goToQuickviewModelTab(tab);
+      goToQuickviewTab(tab);
     }
   };
 

@@ -29,7 +29,7 @@ const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDes
 
   const entitiesVisibleRef = React.useRef<HTMLDivElement>(null);
   const slotsMap = useSelector(SlotV2.slotMapSelector);
-  const isBuiltIn = isBuiltInIntent(intent.id);
+  const isBuiltIn = isBuiltInIntent(intentID);
   const patchIntent = useDispatch(Intent.patchIntent);
 
   const [showUtteranceSection, setShowUtteranceSection] = React.useState(false);
@@ -55,8 +55,10 @@ const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDes
   };
 
   React.useEffect(() => {
-    setShowUtteranceSection(!isBuiltIn || !!intent.inputs.length);
-  }, [intent.id]);
+    setShowUtteranceSection(!isBuiltIn || !!intent?.inputs.length);
+  }, [intentID]);
+
+  if (!intent) return null;
 
   return (
     <>

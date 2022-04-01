@@ -74,6 +74,8 @@ export const transformVariablesFromReadable = (text: string) => transformVariabl
 export const isVariable = (text?: string | null) => !!(text && text.match(READABLE_VARIABLE_REGEXP));
 export const slotToString = <T extends { id: string; name: string }>(slot: T): string => `{{[${slot.name}].${slot.id}}}`;
 
+export const CUSTOM_ENTITY_VALUE_ERROR_MSG = 'Custom entity needs at least one value';
+
 export const validateSlotName = ({
   slots,
   intents,
@@ -100,7 +102,7 @@ export const validateSlotName = ({
   }
 
   if (slotType === CUSTOM_SLOT_TYPE && !notEmptyValues) {
-    return 'Custom entity needs at least one value';
+    return CUSTOM_ENTITY_VALUE_ERROR_MSG;
   }
 
   const lowerCasedSlotName = slotName.toLowerCase();

@@ -10,7 +10,6 @@ import {
   useDidUpdateEffect,
   useEnableDisable,
   useOnScreen,
-  useSetup,
 } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
@@ -25,7 +24,7 @@ import { ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useAddSlot, useDispatch, useModals, usePermission, useSelector } from '@/hooks';
+import { useAddSlot, useDispatch, useModals, usePermission, useSelector, useSetup } from '@/hooks';
 import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
 import { validateUtterance } from '@/utils/intent';
 
@@ -34,6 +33,7 @@ export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 interface UtteranceManagerProps {
   intent: Realtime.Intent;
   creating?: boolean;
+  autofocus?: boolean;
   withBorderTop?: boolean;
 }
 
@@ -60,16 +60,16 @@ const determineStrength = (count: number) => {
   return StrengthLevel.NOT_SET;
 };
 
-export interface UtteranceRefProps {
-  forceFocusToTheEnd: VoidFunction;
-  forceUpdate: VoidFunction;
-  getCurrentUtterance: () => Realtime.IntentInput | null;
-  withBorderTop?: boolean;
+export interface UtteranceRef {
   focus: () => void;
   clear: () => void;
+  forceUpdate: VoidFunction;
+  withBorderTop?: boolean;
+  forceFocusToTheEnd: VoidFunction;
+  getCurrentUtterance: () => Realtime.IntentInput | null;
 }
 
-const UtteranceManager: React.FC<UtteranceManagerProps> = ({ withBorderTop, intent }) => {
+const UtteranceManager: React.FC<UtteranceManagerProps> = ({ autofocus, withBorderTop, intent }) => {
   const { search } = useLocation();
 
   const queryParams = queryString.parse(search);
@@ -82,7 +82,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ withBorderTop, inte
   const slots = useSelector(SlotV2.allSlotsSelector);
 
   const patchIntent = useDispatch(Intent.patchIntent);
-  const utteranceRef = React.useRef<UtteranceRefProps>(null);
+  const utteranceRef = React.useRef<UtteranceRef>(null);
 
   const [showAllUtterances, setShowAllUtterances] = React.useState(false);
   const [isEmpty, updateIsEmpty] = React.useState(true);
@@ -105,6 +105,10 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ withBorderTop, inte
   }, [intent.id]);
 
   React.useEffect(() => {
+    if (autofocus) {
+      utteranceRef.current?.forceFocusToTheEnd();
+    }
+
     if (prefilledNewUtterance) {
       utteranceRef.current?.forceFocusToTheEnd?.();
       updateIsEmpty(false);
@@ -197,9 +201,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ withBorderTop, inte
               items={intentUtterances}
               addToStart
               divider={false}
-              beforeAdd={() => {
-                utteranceRef.current?.forceUpdate();
-              }}
+              beforeAdd={() => utteranceRef.current?.forceUpdate()}
               renderForm={({ value, onAdd, onChange, addError }) => (
                 <UtteranceInput
                   intentUtterances={intentUtterances}
@@ -224,6 +226,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ withBorderTop, inte
               )}
             />
           </ListManagerWrapper>
+
           {intentUtterances.length > MAX_VISIBLE_UTTERANCES && (
             <Box color="#62778c" pt={16}>
               {!showAllUtterances ? (

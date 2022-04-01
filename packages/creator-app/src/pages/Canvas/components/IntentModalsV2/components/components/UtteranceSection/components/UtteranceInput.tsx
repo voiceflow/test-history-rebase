@@ -5,7 +5,7 @@ import React from 'react';
 
 import Utterance from '@/components/Utterance';
 
-import { UtteranceRefProps } from '../index';
+import { UtteranceRef } from '../index';
 
 interface UtteranceInputProps {
   intentUtterances: Realtime.IntentInput[];
@@ -22,48 +22,46 @@ interface UtteranceInputProps {
   onChange: (slot: Realtime.IntentInput) => void;
 }
 
-const UtteranceInput: React.ForwardRefRenderFunction<UtteranceRefProps, UtteranceInputProps> = (
+const UtteranceInput: React.ForwardRefRenderFunction<UtteranceRef, UtteranceInputProps> = (
   { onChange, isValidUtterance, onAdd, onAddSlot, updateIsEmpty, addError, isNotAtTop, isEmpty, value, slots, intentUtterances, setValidUtterance },
   ref
-) => {
-  return (
-    <Box mb={intentUtterances.length ? -18 : -4} position="sticky" top={62} zIndex={1000} style={{ background: 'white' }}>
-      <Utterance
-        onEditorStateChange={(state: EditorState) => {
-          const isEmpty = !state.getCurrentContent().hasText();
-          if (isEmpty) setValidUtterance();
-        }}
-        ref={ref}
-        space
-        slots={slots}
-        value={value?.text || ''}
-        onBlur={onChange}
-        onEmpty={updateIsEmpty}
-        onAddSlot={onAddSlot}
-        iconProps={{ variant: 'blue' }}
-        rightAction={
-          !isEmpty && (
-            <Badge
-              slide
-              onClick={() => {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                const utterance = ref?.current.getCurrentUtterance();
-                !!utterance && onAdd(utterance);
-              }}
-            >
-              Enter
-            </Badge>
-          )
-        }
-        placeholder="Add sample phrase, { to add entities"
-        onEnterPress={onAdd}
-        error={!isValidUtterance}
-      />
-      {!isValidUtterance && <ErrorMessage noMarginBottom={!intentUtterances.length}>{addError}</ErrorMessage>}
-      {!!intentUtterances.length && <hr style={!isNotAtTop ? { marginLeft: '-32px' } : undefined} />}
-    </Box>
-  );
-};
+) => (
+  <Box mb={intentUtterances.length ? -18 : -4} position="sticky" top={62} zIndex={1000} style={{ background: 'white' }}>
+    <Utterance
+      onEditorStateChange={(state: EditorState) => {
+        const isEmpty = !state.getCurrentContent().hasText();
+        if (isEmpty) setValidUtterance();
+      }}
+      ref={ref}
+      space
+      slots={slots}
+      value={value?.text || ''}
+      onBlur={onChange}
+      onEmpty={updateIsEmpty}
+      onAddSlot={onAddSlot}
+      iconProps={{ variant: 'blue' }}
+      rightAction={
+        !isEmpty && (
+          <Badge
+            slide
+            onClick={() => {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              const utterance = ref?.current.getCurrentUtterance();
+              !!utterance && onAdd(utterance);
+            }}
+          >
+            Enter
+          </Badge>
+        )
+      }
+      placeholder="Add sample phrase, { to add entities"
+      onEnterPress={onAdd}
+      error={!isValidUtterance}
+    />
+    {!isValidUtterance && <ErrorMessage noMarginBottom={!intentUtterances.length}>{addError}</ErrorMessage>}
+    {!!intentUtterances.length && <hr style={!isNotAtTop ? { marginLeft: '-32px' } : undefined} />}
+  </Box>
+);
 
 export default React.forwardRef(UtteranceInput);

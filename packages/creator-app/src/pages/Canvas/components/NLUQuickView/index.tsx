@@ -3,6 +3,7 @@ import React from 'react';
 
 import Modal from '@/components/Modal';
 import { ModalType } from '@/constants';
+import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import { useLinkedState } from '@/hooks';
 import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
@@ -23,8 +24,11 @@ const NLUQuickView: React.FC = () => {
 
   const [modalTitle, setModalTitle] = useLinkedState(title);
 
+  const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
+
   return (
     <Modal
+      ref={setModalRef}
       leftSidebar={() => <Sidebar />}
       maxWidth={740}
       id={ModalType.NLU_MODEL_QUICK_VIEW}
@@ -45,11 +49,13 @@ const NLUQuickView: React.FC = () => {
         {isEmpty ? (
           <EmptyView />
         ) : (
-          <>
-            {showIntentForm && <IntentForm intentID={selectedID} withNameSection={false} />}
-            {showEntityForm && <EditEntityForm slotID={selectedID} withNameSection={false} />}
-            {showVariableForm && <VariablesSection />}
-          </>
+          !!modalRef && (
+            <TextEditorVariablesPopoverProvider value={modalRef}>
+              {showIntentForm && <IntentForm intentID={selectedID} withNameSection={false} />}
+              {showEntityForm && <EditEntityForm slotID={selectedID} withNameSection={false} />}
+              {showVariableForm && <VariablesSection />}
+            </TextEditorVariablesPopoverProvider>
+          )
         )}
       </Box>
     </Modal>

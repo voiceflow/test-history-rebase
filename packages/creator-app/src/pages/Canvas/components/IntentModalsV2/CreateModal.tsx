@@ -3,6 +3,7 @@ import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
+import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useAsyncEffect, useDispatch, useModals, useSelector } from '@/hooks';
@@ -16,6 +17,8 @@ const CreateModal: React.FC = () => {
 
   const [intentID, setIntentID] = React.useState<string | null>(null);
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: intentID })!;
+
+  const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
 
   useAsyncEffect(async () => {
     if (!intentID && isInStack) {
@@ -50,14 +53,20 @@ const CreateModal: React.FC = () => {
   };
 
   return (
-    <Modal maxWidth={INTENT_MODAL_WIDTH} id={ModalType.INTENT_CREATE} title="Create Intent" headerBorder>
-      <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
-        <IntentForm intentID={intentID} withDescriptionSection={false} />
-      </Box>
+    <Modal ref={setModalRef} maxWidth={INTENT_MODAL_WIDTH} id={ModalType.INTENT_CREATE} title="Create Intent" headerBorder>
+      {!!modalRef && (
+        <TextEditorVariablesPopoverProvider value={modalRef}>
+          <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
+            <IntentForm intentID={intentID} withDescriptionSection={false} autofocusUtterance />
+          </Box>
+        </TextEditorVariablesPopoverProvider>
+      )}
+
       <ModalFooter justifyContent="flex-end">
         <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={handleCancel} style={{ marginRight: '10px' }}>
           Cancel
         </Button>
+
         <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={onIntentCreate}>
           Create Intent
         </Button>

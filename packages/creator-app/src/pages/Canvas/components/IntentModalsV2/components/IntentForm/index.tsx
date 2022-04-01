@@ -19,11 +19,12 @@ import UtteranceSection from '../components/UtteranceSection';
 
 interface IntentFormProps {
   intentID: string;
-  withDescriptionSection?: boolean;
   withNameSection?: boolean;
+  autofocusUtterance?: boolean;
+  withDescriptionSection?: boolean;
 }
 
-const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDescriptionSection = true, intentID }) => {
+const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDescriptionSection = true, intentID, autofocusUtterance }) => {
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
   const intent = intentsMap[intentID];
 
@@ -49,9 +50,7 @@ const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDes
   }, [usedSlotKeys, slotsMap]);
 
   const scrollToEntities = () => {
-    scrollToEntitiesRef.current?.scrollIntoView({
-      behavior: 'smooth',
-    });
+    scrollToEntitiesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   React.useEffect(() => {
@@ -63,14 +62,18 @@ const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDes
   return (
     <>
       {withNameSection && <NameSection intent={intent} />}
-      {(!isBuiltIn || showUtteranceSection) && <UtteranceSection withBorderTop={withNameSection} intent={intent} />}
+
+      {(!isBuiltIn || showUtteranceSection) && <UtteranceSection autofocus={autofocusUtterance} withBorderTop={withNameSection} intent={intent} />}
+
       {isBuiltIn && !showUtteranceSection && <BuiltInPrompt setShowUtteranceSection={setShowUtteranceSection} />}
+
       {!isBuiltIn && (
         <>
           <div ref={scrollToEntitiesRef} />
           <EntitiesSection entitiesVisibleRef={entitiesVisibleRef} slots={usedSlots} intent={intent} />
         </>
       )}
+
       {withDescriptionSection && (
         <DescriptionSection intentID={intent.id} noteID={intent.noteID} onCreateNote={(noteID) => patchIntent(intent.id, { noteID })} />
       )}

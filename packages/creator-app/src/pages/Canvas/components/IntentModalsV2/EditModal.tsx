@@ -3,6 +3,7 @@ import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
+import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useDispatch, useModals, useSelector } from '@/hooks';
@@ -12,17 +13,22 @@ import { INTENT_MODAL_WIDTH } from '@/pages/Canvas/components/IntentModalsV2/con
 
 const EditModal: React.FC = () => {
   const { close, data } = useModals<{ id: string }>(ModalType.INTENT_EDIT);
+
+  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: data.id });
   const deleteIntent = useDispatch(Intent.deleteIntent);
 
-  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: data.id })!;
-  if (!intent) return null;
+  const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
 
   const onDeleteIntent = () => {
     deleteIntent(data.id);
     close();
   };
+
+  if (!intent) return null;
+
   return (
     <Modal
+      ref={setModalRef}
       maxWidth={INTENT_MODAL_WIDTH}
       headerActions={
         <Dropdown
@@ -56,9 +62,14 @@ const EditModal: React.FC = () => {
       }
       headerBorder
     >
-      <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
-        <IntentForm intentID={data.id} />
-      </Box>
+      {!!modalRef && (
+        <TextEditorVariablesPopoverProvider value={modalRef}>
+          <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
+            <IntentForm intentID={data.id} />
+          </Box>
+        </TextEditorVariablesPopoverProvider>
+      )}
+
       <ModalFooter justifyContent="flex-end">
         <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={close}>
           Close

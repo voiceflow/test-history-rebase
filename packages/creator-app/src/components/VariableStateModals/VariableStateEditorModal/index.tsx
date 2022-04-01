@@ -21,18 +21,21 @@ import { Hotkey } from '@/keymap';
 
 import { InputHint, VariableListSection } from './components';
 
+interface StartFrom {
+  stepID: string;
+  diagramID: string;
+}
+
 interface VariableStateEditorValues {
   name: string;
-  stepID: string | null;
-  diagramID: string | null;
+  startFrom: StartFrom | null;
   variables: string[];
   variablesValues: Record<string, string>;
 }
 
 const defaultValues: VariableStateEditorValues = {
   name: '',
-  stepID: null,
-  diagramID: null,
+  startFrom: null,
   variables: [],
   variablesValues: {},
 };
@@ -46,7 +49,7 @@ const getDiffValues = (variableState: Realtime.VariableState | null, values: Var
   if (!variableState) return [];
   return Object.keys(
     Utils.object.getTopLevelDiff(
-      { name: values.name, starting_block: values.stepID, variables: values.variablesValues },
+      { name: values.name, starting_block: values.startFrom?.stepID, variables: values.variablesValues },
       { name: variableState.name, starting_block: variableState.startFrom?.stepID || null, variables: variableState.variables }
     )
   );
@@ -55,7 +58,6 @@ const getDiffValues = (variableState: Realtime.VariableState | null, values: Var
 const VariableStateEditorModal: React.FC = () => {
   const { isOpened, close, data } = useModals<{ variableStateID?: string }>(ModalType.VARIABLE_STATE_EDITOR_MODAL);
   const createVariableState = useDispatch(VariableStateDucks.createVariableState);
-  const updateSelectedVariableState = useDispatch(VariableStateDucks.updateSelectedVariableState);
   const updateVariableState = useDispatch(VariableStateDucks.updateState);
   const getVariableStateByID = useSelector(VariableStateDucks.getVariableStateByIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
@@ -71,22 +73,14 @@ const VariableStateEditorModal: React.FC = () => {
 
     return {
       name: variableState.name,
-      diagramID: variableState.startFrom?.diagramID || null,
-      stepID: variableState.startFrom?.stepID || null,
+      startFrom: variableState.startFrom || null,
       variables: Object.keys(variableState.variables || {}),
       variablesValues: (variableState.variables as Record<string, string>) || {},
     };
   }, [data]);
 
   const onSubmit = async (values: VariableStateEditorValues) => {
-    const diagramID = values.diagramID || activeDiagramID;
-    const startFrom =
-      values.stepID && diagramID
-        ? {
-            stepID: values.stepID,
-            diagramID,
-          }
-        : null;
+    const startFrom = values.startFrom || null;
 
     const variables = values.variables.reduce((acc, variable) => {
       const formValue = values.variablesValues[variable];
@@ -95,9 +89,8 @@ const VariableStateEditorModal: React.FC = () => {
 
     try {
       if (!data.variableStateID) {
-        const createdVariableState = await createVariableState({ name: values.name, variables, startFrom });
-        if (createdVariableState) updateSelectedVariableState({ id: createdVariableState.id, variables: values.variablesValues });
-        trackingEvents.trackVariableStateCreated({ diagramID });
+        await createVariableState({ name: values.name, variables, startFrom });
+        trackingEvents.trackVariableStateCreated({ diagramID: startFrom?.diagramID || activeDiagramID });
       } else {
         const variableState = getVariableStateByID({ id: data.variableStateID });
         const changedFields = getDiffValues(variableState, values);
@@ -161,7 +154,11 @@ const VariableStateEditorModal: React.FC = () => {
         </Section>
         {isStartingBlockEnabled && (
           <Section header="Starting Block" variant={SectionVariant.FORM}>
-            <BlockSelect onChange={(stepID) => formik.setFieldValue('stepID', stepID)} value={formik.values.stepID} disabled={formik.isSubmitting} />
+            <BlockSelect
+              onChange={(startFrom) => formik.setFieldValue('startFrom', startFrom)}
+              value={formik.values.startFrom}
+              disabled={formik.isSubmitting}
+            />
             <InputHint>Select a block where this conversation will start from</InputHint>
           </Section>
         )}

@@ -8,9 +8,14 @@ import { getDiagramName } from '@/utils/diagram';
 
 import { BlockOption, TopicBlockOption } from './types';
 
+interface StartFrom {
+  stepID: string;
+  diagramID: string;
+}
+
 interface BlockSelectProps extends BaseSelectProps {
-  value: string | null;
-  onChange: (value: string) => void;
+  value: StartFrom | null;
+  onChange: (value: StartFrom | null) => void;
 }
 
 const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, ...props }) => {
@@ -19,9 +24,9 @@ const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, .
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const allDiagrams = useSelector(DiagramV2.allDiagramsSelector);
 
-  const { options, labels } = React.useMemo(() => {
+  const { options, optionsMap } = React.useMemo(() => {
     const options: TopicBlockOption[] = [];
-    const labels: Record<string, string> = {};
+    const optionsMap: Record<string, BlockOption> = {};
 
     // eslint-disable-next-line no-restricted-syntax
     Object.entries(startingBlocks).forEach(([diagramID, diagramBlocksData]) => {
@@ -34,7 +39,8 @@ const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, .
       Object.values(diagramBlocksData).forEach((blockData) => {
         if (!blockData) return;
 
-        labels[blockData.blockID] = blockData.name;
+        optionsMap[blockData.blockID] = { id: blockData.blockID, label: blockData.name, diagramID };
+
         blockOptions.push({
           id: blockData.blockID,
           label: blockData.name,
@@ -51,20 +57,25 @@ const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, .
       }
     });
 
-    return { options, labels };
+    return { options, optionsMap };
   }, [startingBlocks, allDiagrams]);
+
+  const handleSelect = (stepID: string) => {
+    const startFrom = optionsMap[stepID];
+    onChange({ stepID: startFrom.id, diagramID: startFrom.diagramID });
+  };
 
   return (
     <Select
       searchable
       placeholder="Select a block"
       {...props}
-      value={value || startNodeID}
+      value={value?.stepID || startNodeID}
       options={options}
-      onSelect={(newValue) => onChange(newValue === value ? '' : newValue)}
+      onSelect={handleSelect}
       getOptionKey={(option) => option.id}
       getOptionValue={(option) => option?.id}
-      getOptionLabel={(value) => value && labels[value]}
+      getOptionLabel={(value) => value && optionsMap[value]?.label}
       renderOptionLabel={(option) => <FlexApart fullWidth>{option.label}</FlexApart>}
       grouped
     />

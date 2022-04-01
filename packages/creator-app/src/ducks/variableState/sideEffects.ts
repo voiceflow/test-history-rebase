@@ -4,6 +4,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveVersionContext } from '@/ducks/version/utils';
+import * as VersionV2 from '@/ducks/versionV2';
 import { VariableValue } from '@/models';
 import { Thunk } from '@/store/types';
 
@@ -16,19 +17,24 @@ import {
 } from './selectors';
 
 export const createVariableState =
-  (variableState: Omit<Realtime.VariableStateData, 'projectID'>): Thunk<Realtime.VariableState | undefined> =>
+  (variableState: Omit<Realtime.VariableStateData, 'projectID'>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
+    const version = VersionV2.active.versionSelector(state);
     const projectID = Session.activeProjectIDSelector(state);
 
-    if (!projectID) return undefined;
+    if (!projectID || !version) return;
 
-    return dispatch(
+    const createdVariableState = await dispatch(
       waitAsync(Realtime.variableState.create, {
         ...getActiveVersionContext(state),
         variableState: { ...variableState, projectID },
       })
     );
+
+    dispatch(updateSelectedVariableState({ id: createdVariableState.id, variables: variableState.variables }));
+
+    dispatch(Session.setActiveDiagramID(variableState.startFrom?.diagramID || version.rootDiagramID));
   };
 
 export const updateSelectedVariableStateVariables =
@@ -47,7 +53,12 @@ export const updateSelectedVariableStateVariables =
 export const updateSelectedVariableStateById =
   (variableStateID: string | null): Thunk =>
   async (dispatch, getState) => {
+    const version = VersionV2.active.versionSelector(getState());
+
+    if (!version?.rootDiagramID) return;
+
     if (!variableStateID) {
+      dispatch(Session.setActiveDiagramID(version.rootDiagramID));
       dispatch(updateSelectedVariableState(null));
       return;
     }
@@ -58,10 +69,16 @@ export const updateSelectedVariableStateById =
     const variables = Prototype.prototypeVariablesSelector(state);
 
     if (!variableState) {
+      dispatch(Session.setActiveDiagramID(version.rootDiagramID));
       dispatch(updateSelectedVariableState({ id: ALL_PROJECT_VARIABLES_ID, variables }));
-    } else {
-      dispatch(updateSelectedVariableState({ id: variableStateID, variables: variableState.variables }));
+      return;
     }
+
+    if (variableState.startFrom?.diagramID) {
+      dispatch(Session.setActiveDiagramID(variableState.startFrom?.diagramID));
+    }
+
+    dispatch(updateSelectedVariableState({ id: variableStateID, variables: variableState.variables }));
   };
 
 export const updateStateValues = (): Thunk => async (dispatch, getState) => {
@@ -87,6 +104,11 @@ export const updateState =
   (variableStateID: string, variableState: Partial<Realtime.VariableState>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
+    const selectedVariableStateId = getSelectedVariableStateId(state);
+
+    if (variableState.startFrom?.diagramID && selectedVariableStateId === variableStateID) {
+      dispatch(Session.setActiveDiagramID(variableState.startFrom?.diagramID));
+    }
 
     await dispatch.sync(
       Realtime.variableState.crud.patch({

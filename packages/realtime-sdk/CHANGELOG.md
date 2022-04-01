@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.72.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.72.0...@voiceflow/realtime-sdk@1.72.1) (2022-04-01)
+
+
+### Bug Fixes
+
+* create modal issue (VF-000) ([#5284](https://github.com/voiceflow/creator-app/issues/5284)) ([6815fad](https://github.com/voiceflow/creator-app/commit/6815fada9b0b3458bf192da757ebc4b3a2a69185))
+
+
+
+
+
 # [1.72.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.71.0...@voiceflow/realtime-sdk@1.72.0) (2022-03-29)
 
 

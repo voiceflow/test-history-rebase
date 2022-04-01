@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.678.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.678.4...@voiceflow/creator-app@1.678.5) (2022-04-01)
+
+
+### Bug Fixes
+
+* nlp modal issues (VF-000) ([#5285](https://github.com/voiceflow/creator-app/issues/5285)) ([b3dfddb](https://github.com/voiceflow/creator-app/commit/b3dfddb45b6de0ae5deba0a20eca9b44d4046b07))
+
+
+
+
+
 ## [1.678.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.678.3...@voiceflow/creator-app@1.678.4) (2022-04-01)
 
 

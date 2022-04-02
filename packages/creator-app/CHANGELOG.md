@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.678.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.678.7...@voiceflow/creator-app@1.678.8) (2022-04-02)
+
+
+### Bug Fixes
+
+* add check for empty required prompts (VF-000) ([#5288](https://github.com/voiceflow/creator-app/issues/5288)) ([3092856](https://github.com/voiceflow/creator-app/commit/30928563010363e08bd459bb19c5d849f9f3aad7))
+
+
+
+
+
 ## [1.678.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.678.6...@voiceflow/creator-app@1.678.7) (2022-04-01)
 
 

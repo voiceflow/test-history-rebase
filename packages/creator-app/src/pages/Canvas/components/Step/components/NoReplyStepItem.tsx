@@ -4,11 +4,11 @@ import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import Popper from '@/components/Popper';
+import { hasValidReprompt } from '@/utils/prompt';
 
 import NoMatchAndNoReplyStepCopyList from '../../NoMatchAndNoReplyStepCopyList';
 import Attachment from './StepAttachment';
 import Item from './StepItem';
-import { hasValidReprompt } from './utils';
 
 export interface NoReplyStepItemProps {
   portID?: Nullable<string>;

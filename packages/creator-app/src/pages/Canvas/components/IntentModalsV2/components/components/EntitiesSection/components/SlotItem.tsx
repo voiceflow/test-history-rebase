@@ -11,6 +11,7 @@ import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { RequiredEntity } from '@/pages/Canvas/components/IntentModalsV2/components/components/EntitiesSection/components/index';
+import { hasValidReprompt } from '@/utils/prompt';
 
 interface SlotItemProps {
   slot: Realtime.IntentSlot;
@@ -36,7 +37,7 @@ const SlotItem: React.FC<SlotItemProps> = ({ slot, slots, intent, name }) => {
     await removeRequiredSlot(intent.id, slot.id);
   };
 
-  const hasSlotError = false;
+  const hasSlotError = !hasValidReprompt(slot.dialog.prompt);
 
   return (
     <Popper

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.73.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.72.1...@voiceflow/realtime-sdk@1.73.0) (2022-04-03)
+
+
+### Features
+
+* merge separation V2 selectors (VF-3162) ([#5258](https://github.com/voiceflow/creator-app/issues/5258)) ([f42d3fe](https://github.com/voiceflow/creator-app/commit/f42d3fea8a9c742c0ae6d5b9acdc1c6ea9bf53b0))
+
+
+
+
+
 ## [1.72.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.72.0...@voiceflow/realtime-sdk@1.72.1) (2022-04-01)
 
 

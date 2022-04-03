@@ -70,7 +70,7 @@ export const intentFilter = <T extends Realtime.Intent>(intent: T, activeIntent:
 export const filterIntents = <T extends Realtime.Intent>(intents: T[], activeIntent?: T | null): T[] =>
   intents.filter((intent) => intentFilter(intent, activeIntent));
 
-export const getTruncatedName = Realtime.Utils.platform.createPlatformSelectorV2(
+export const getTruncatedName = Realtime.Utils.platform.createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.GOOGLE]: (name: string) =>
       Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' '),
@@ -129,7 +129,7 @@ export const GENERAL_BUILT_INS_MAP = Object.keys(VoiceflowConstants.DEFAULT_INTE
   {}
 );
 
-export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelectorV2(
+export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_BUILT_INS,
     [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_BUILT_INS,

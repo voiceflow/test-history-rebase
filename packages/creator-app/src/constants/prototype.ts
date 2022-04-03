@@ -36,7 +36,7 @@ export enum PrototypeMode {
   SETTINGS = 'Settings',
 }
 
-export const getDefaultPrototypeLayout = Utils.platform.createProjectTypeSelectorV2({
+export const getDefaultPrototypeLayout = Utils.platform.createProjectTypeSelector({
   [VoiceflowConstants.ProjectType.CHAT]: PrototypeLayout.TEXT_DIALOG,
   [VoiceflowConstants.ProjectType.VOICE]: PrototypeLayout.VOICE_DIALOG,
 });

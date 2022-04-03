@@ -8,7 +8,7 @@ import Google from './google';
 import { PlatformClient } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const getPlatformClient = Utils.platform.createPlatformSelectorV2<PlatformClient>(
+export const getPlatformClient = Utils.platform.createPlatformSelector<PlatformClient>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: Alexa.client,
     [VoiceflowConstants.PlatformType.GOOGLE]: Google.client,

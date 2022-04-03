@@ -68,7 +68,7 @@ export const PrototypeProvider: React.FC = ({ children }) => {
   const prototypeAvatar = useSelector(Prototype.prototypeAvatarSelector);
   const locales = useSelector(VersionV2.active.localesSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const projectType = useSelector(ProjectV2.active.typeV2Selector);
+  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const config = useSelector(Recent.recentPrototypeSelector);
   const updatePrototype = useDispatch(Prototype.updatePrototype);
   const isMuted = useSelector(Prototype.prototypeMutedSelector);

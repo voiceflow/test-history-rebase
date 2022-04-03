@@ -65,7 +65,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
 
   const invocationError =
     invocationName &&
-    Realtime.Utils.platform.createPlatformSelectorV2<(name?: string, locales?: any[]) => string | null>(
+    Realtime.Utils.platform.createPlatformSelector<(name?: string, locales?: any[]) => string | null>(
       {
         [VoiceflowConstants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
         [VoiceflowConstants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
@@ -106,7 +106,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
       <FieldsContainer>
         <SectionTitle>{getPlatformMeta(platform).localesText}</SectionTitle>
 
-        {Realtime.Utils.platform.createPlatformSelectorV2<() => React.ReactNode>(
+        {Realtime.Utils.platform.createPlatformSelector<() => React.ReactNode>(
           {
             [VoiceflowConstants.PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect

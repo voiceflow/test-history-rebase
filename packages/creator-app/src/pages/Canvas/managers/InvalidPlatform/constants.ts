@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const getPlatformLabel = Utils.platform.createPlatformSelectorV2(
+export const getPlatformLabel = Utils.platform.createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
     [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Actions',

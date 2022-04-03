@@ -59,7 +59,7 @@ export interface ProjectSection {
   }[];
 }
 
-export const getPlatformMeta = Utils.platform.createPlatformSelectorV2<PlatformMetaType>(
+export const getPlatformMeta = Utils.platform.createPlatformSelector<PlatformMetaType>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: {
       icon: 'amazonAlexa',
@@ -101,7 +101,7 @@ export const getPlatformMeta = Utils.platform.createPlatformSelectorV2<PlatformM
   }
 );
 
-export const getChannelMeta = Utils.platform.createPlatformAndProjectTypeSelectorV2<ChannelMetaType>({
+export const getChannelMeta = Utils.platform.createPlatformAndProjectTypeSelector<ChannelMetaType>({
   [VoiceflowConstants.PlatformType.ALEXA]: {
     name: 'Amazon Alexa',
     icon: 'amazonAlexa',
@@ -177,7 +177,7 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
     name: 'Export',
     color: '#c83e5a',
     description: (platform) =>
-      Utils.platform.createPlatformSelectorV2(
+      Utils.platform.createPlatformSelector(
         {
           [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow specific NLU model export',
         },
@@ -193,7 +193,7 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
     name: 'Publish',
     color: '#558b2f',
     description: (platform) =>
-      Utils.platform.createPlatformSelectorV2(
+      Utils.platform.createPlatformSelector(
         {
           [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Publish agents directly through Dialogflow',
           [VoiceflowConstants.PlatformType.ALEXA]: 'Publish live apps to the Amazon Skill store',

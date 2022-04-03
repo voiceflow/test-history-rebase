@@ -9,13 +9,13 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
-import { PlatformContext, TypeV2Context } from '@/pages/Project/contexts';
+import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { getSettingsMetaProps } from '@/pages/Settings/constants';
 import { getPlatformValue } from '@/utils/platform';
 
 const InvocationNameSection: React.FC = () => {
   const platform = React.useContext(PlatformContext)!;
-  const projectType = React.useContext(TypeV2Context)!;
+  const projectType = React.useContext(ProjectTypeContext)!;
 
   const updateInvocationName = useDispatch(Version.updateInvocationName);
 

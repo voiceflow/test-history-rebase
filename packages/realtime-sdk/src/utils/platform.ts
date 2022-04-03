@@ -6,7 +6,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { legacyPlatformToProjectType, NonDeprecatedPlatform, PlatformProjectType } from '../constants/platform';
 
-export const createProjectTypeSelectorV2 =
+export const createProjectTypeSelector =
   <T>(values: Record<VoiceflowConstants.ProjectType, T>) =>
   (type?: VoiceflowConstants.ProjectType | null): T => {
     const value = values[type || VoiceflowConstants.ProjectType.VOICE];
@@ -15,12 +15,12 @@ export const createProjectTypeSelectorV2 =
     return value;
   };
 
-export const createAdvancedProjectTypeSelectorV2 =
+export const createAdvancedProjectTypeSelector =
   <T extends Record<VoiceflowConstants.ProjectType, any>>(values: T) =>
   <P extends VoiceflowConstants.ProjectType>(platform: P): T[P] =>
-    createProjectTypeSelectorV2(values)(platform);
+    createProjectTypeSelector(values)(platform);
 
-export const createPlatformAndProjectTypeSelectorV2 =
+export const createPlatformAndProjectTypeSelector =
   <T>(values: Partial<Record<VoiceflowConstants.ProjectType | NonDeprecatedPlatform | PlatformProjectType, T>>, defaultValue?: T) =>
   (_platform: Nullish<VoiceflowConstants.PlatformType>, _type: Nullish<VoiceflowConstants.ProjectType>): T => {
     const mapping = _platform ? legacyPlatformToProjectType(_platform, _type) : null;
@@ -35,25 +35,11 @@ export const createPlatformAndProjectTypeSelectorV2 =
     return value;
   };
 
-export const createPlatformSelectorV2 =
+export const createPlatformSelector =
   <T>(platformValues: Partial<Record<NonDeprecatedPlatform, T>>, defaultValue?: T) =>
   (_platform?: Nullish<VoiceflowConstants.PlatformType>): T => {
     const platform = _platform ? legacyPlatformToProjectType(_platform).platform : _platform;
 
-    const value = platform && platform in platformValues ? platformValues[platform] : defaultValue;
-    if (value == null) throw new Error('no value for platform');
-
-    return value;
-  };
-
-export const createPlatformSelector: {
-  <T>(platformValues: Record<VoiceflowConstants.PlatformType, T>, defaultValue?: T): (platform?: Nullish<VoiceflowConstants.PlatformType>) => T;
-  <T>(platformValues: Partial<Record<VoiceflowConstants.PlatformType, T>>, defaultValue: T): (
-    platform?: Nullish<VoiceflowConstants.PlatformType>
-  ) => T;
-} =
-  <T>(platformValues: Partial<Record<VoiceflowConstants.PlatformType, T>>, defaultValue: T | undefined) =>
-  (platform?: Nullish<VoiceflowConstants.PlatformType>) => {
     const value = platform && platform in platformValues ? platformValues[platform] : defaultValue;
     if (value == null) throw new Error('no value for platform');
 
@@ -74,7 +60,7 @@ export const getPlatformValue: {
   defaultValue: T | undefined
 ) => createPlatformSelector(platformValues, defaultValue)(platform);
 
-export const getPlatformDefaultVoice = createPlatformSelectorV2<AnyVoice>(
+export const getPlatformDefaultVoice = createPlatformSelector<AnyVoice>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: AlexaConstants.Voice.ALEXA,
     [VoiceflowConstants.PlatformType.GOOGLE]: GoogleConstants.Voice.DEFAULT,
@@ -89,7 +75,7 @@ const PROJECT_TYPE_TITLE = {
 };
 
 export const getPlatformAppName = (projectType: VoiceflowConstants.ProjectType) =>
-  createPlatformSelectorV2(
+  createPlatformSelector(
     {
       [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa Skill',
       [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Action',
@@ -98,7 +84,7 @@ export const getPlatformAppName = (projectType: VoiceflowConstants.ProjectType) 
     `${PROJECT_TYPE_TITLE[projectType]} Assistant`
   );
 
-export const getPlatformProviderName = createPlatformSelectorV2(
+export const getPlatformProviderName = createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
     [VoiceflowConstants.PlatformType.GOOGLE]: 'Google',

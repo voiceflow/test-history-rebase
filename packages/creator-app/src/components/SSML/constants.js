@@ -766,7 +766,7 @@ const GENERAL_SSML_META = {
   voiceOptions: (locales, useWavenet) => getGeneralVoiceOptions(locales, useWavenet),
 };
 
-export const getPlatformSSML = Utils.platform.createPlatformAndProjectTypeSelectorV2(
+export const getPlatformSSML = Utils.platform.createPlatformAndProjectTypeSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_SSML_META,
     [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_SSML_META,

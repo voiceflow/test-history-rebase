@@ -122,8 +122,8 @@ export const convertToComponent =
     const startCoords: Point = [360, 120];
 
     const state = getState();
-    const platform = ProjectV2.active.platformV2Selector(state);
-    const projectType = ProjectV2.active.typeV2Selector(state);
+    const platform = ProjectV2.active.platformSelector(state);
+    const projectType = ProjectV2.active.projectTypeSelector(state);
     const activeComponents = VersionV2.active.componentsSelector(state);
     const name = `Flow ${activeComponents.length + 1}`;
     const diagram = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);

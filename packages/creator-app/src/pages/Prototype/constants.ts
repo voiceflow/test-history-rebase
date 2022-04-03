@@ -47,7 +47,7 @@ const DIALOGFLOW_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, deve
 
 const GENERAL_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
 
-export const getMenuOptions = Utils.platform.createPlatformSelectorV2(
+export const getMenuOptions = Utils.platform.createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_PROTOTYPE_MENU_OPTIONS,
     [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_PROTOTYPE_MENU_OPTIONS,
@@ -107,7 +107,7 @@ export const ALEXA_DEVICES: DeviceInfo[] = [
 
 export const ALL_DEVICES = [...ALEXA_DEVICES];
 
-export const getDeviceList = Utils.platform.createPlatformSelectorV2<DeviceInfo[]>(
+export const getDeviceList = Utils.platform.createPlatformSelector<DeviceInfo[]>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_DEVICES,
   },

@@ -38,7 +38,7 @@ export interface PlatformSettingsMetaProps {
   localeText?: string;
 }
 
-export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeSelectorV2<PlatformSettingsMetaProps>(
+export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeSelector<PlatformSettingsMetaProps>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: {
       name: 'Alexa',

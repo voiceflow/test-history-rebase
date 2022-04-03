@@ -25,7 +25,7 @@ export const voiceNoReplyFactory = (options: NoReplyFactoryOptions = {}): Realti
   reprompts: [voicePromptFactory(options)],
 });
 
-export const getDefaultNoReplyTimeoutSeconds = Realtime.Utils.platform.createPlatformSelectorV2<number>(
+export const getDefaultNoReplyTimeoutSeconds = Realtime.Utils.platform.createPlatformSelector<number>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 8,
     [VoiceflowConstants.PlatformType.GOOGLE]: 8,
@@ -42,7 +42,7 @@ export const getPlatformNoReplyFactory = (
 ): PromptFactory => {
   const timeout = getDefaultNoReplyTimeoutSeconds(platform);
 
-  return Realtime.Utils.platform.createProjectTypeSelectorV2<PromptFactory>({
+  return Realtime.Utils.platform.createProjectTypeSelector<PromptFactory>({
     [VoiceflowConstants.ProjectType.CHAT]: () => ({ ...chatNoReplyFactory(), timeout }),
     [VoiceflowConstants.ProjectType.VOICE]: () => ({ ...voiceNoReplyFactory(), timeout }),
   })(projectType || undefined);

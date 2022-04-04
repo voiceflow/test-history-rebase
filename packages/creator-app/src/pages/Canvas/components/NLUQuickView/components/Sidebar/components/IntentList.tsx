@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IconButton, IconButtonVariant, TippyTooltip } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
@@ -24,7 +24,8 @@ const IntentList: React.FC<SectionProps> = ({
   setActiveTab,
   setSelectedItemID,
 }) => {
-  const { onRenameIntent, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } = React.useContext(NLUQuickViewContext);
+  const { onRenameIntent, setIsCreatingItem, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } =
+    React.useContext(NLUQuickViewContext);
   const createIntent = useDispatch(Intent.createIntent);
 
   const allIntents = useSelector(IntentV2.allIntentsSelector);
@@ -77,11 +78,22 @@ const IntentList: React.FC<SectionProps> = ({
 
   useAsyncEffect(async () => {
     if (isCreating) {
-      const newIntentID = await createIntent();
-      setNewIntentID(newIntentID);
-      setSelectedID(newIntentID);
+      try {
+        const newIntentID = await createIntent();
+        setNewIntentID(newIntentID);
+        setSelectedID(newIntentID);
+      } catch (e) {
+        toast.error(e);
+      } finally {
+        setIsCreatingItem(false);
+      }
     }
   }, [isCreating]);
+
+  const triggerCreate = () => {
+    setIsCreating(true);
+    setIsCreatingItem(true);
+  };
 
   return (
     <SectionSection
@@ -95,7 +107,7 @@ const IntentList: React.FC<SectionProps> = ({
       suffix={
         isActiveTab && (
           <TippyTooltip title="Create intent" position="top">
-            <IconButton style={{ marginRight: -12 }} onClick={() => setIsCreating(true)} variant={IconButtonVariant.BASIC} icon="plus" />
+            <IconButton style={{ marginRight: -12 }} onClick={triggerCreate} variant={IconButtonVariant.BASIC} icon="plus" />
           </TippyTooltip>
         )
       }

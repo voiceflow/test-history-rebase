@@ -20,7 +20,7 @@ import ListItem from './ListItem';
 import { SectionProps } from './types';
 
 const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveItemRename, setSearchLength, selectedID, search, setActiveTab }) => {
-  const { activeTab, setSelectedID } = React.useContext(NLUQuickViewContext);
+  const { activeTab, setSelectedID, setIsCreatingItem } = React.useContext(NLUQuickViewContext);
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
@@ -87,11 +87,22 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
     if (isCreating) {
       const numberWord = Utils.number.convertToWord(allSlots.length);
       const id = Utils.id.cuid.slug();
-      await createSlot(id, { id, name: `slot_${numberWord}`, inputs: [], type: CustomSlot.type, color: undefined });
-      setNewSlotID(id);
-      setSelectedID(id);
+      try {
+        await createSlot(id, { id, name: `slot_${numberWord}`, inputs: [], type: CustomSlot.type, color: undefined });
+        setNewSlotID(id);
+        setSelectedID(id);
+      } catch (e) {
+        toast.error(e);
+      } finally {
+        setIsCreatingItem(false);
+      }
     }
   }, [isCreating]);
+
+  const triggerCreate = () => {
+    setIsCreating(true);
+    setIsCreatingItem(true);
+  };
 
   return (
     <SectionSection
@@ -104,7 +115,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
       suffix={
         isActiveTab && (
           <TippyTooltip title="Create entity" position="top">
-            <IconButton style={{ marginRight: -12 }} onClick={() => setIsCreating(true)} variant={IconButtonVariant.BASIC} icon="plus" />
+            <IconButton style={{ marginRight: -12 }} onClick={triggerCreate} variant={IconButtonVariant.BASIC} icon="plus" />
           </TippyTooltip>
         )
       }

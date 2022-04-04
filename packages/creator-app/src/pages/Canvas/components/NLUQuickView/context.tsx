@@ -39,6 +39,8 @@ interface NLUQuickViewProps {
   forceNewInlineIntent: number;
   triggerNewInlineEntity: () => void;
   forceNewInlineEntity: number;
+  isCreatingItem: boolean;
+  setIsCreatingItem: (val: boolean) => void;
 }
 
 const DefaultState = {
@@ -60,12 +62,15 @@ const DefaultState = {
   forceNewInlineIntent: 0,
   triggerNewInlineEntity: () => Utils.functional.noop,
   forceNewInlineEntity: 0,
+  isCreatingItem: false,
+  setIsCreatingItem: Utils.functional.noop,
 };
 
 export const NLUQuickViewContext = React.createContext<NLUQuickViewProps>(DefaultState);
 
 export const NLUQuickViewProvider: React.FC = ({ children }) => {
   const [title, setTitle] = React.useState('');
+  const [isCreatingItem, setIsCreatingItem] = React.useState(false);
   const [isActiveItemRename, setIsActiveItemRename] = React.useState(false);
   const activeProjectID = useSelector(activeProjectIDSelector)!;
 
@@ -347,6 +352,8 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     forceNewInlineIntent,
     triggerNewInlineEntity,
     forceNewInlineEntity,
+    isCreatingItem,
+    setIsCreatingItem,
   });
 
   return <NLUQuickViewContext.Provider value={api}>{children}</NLUQuickViewContext.Provider>;

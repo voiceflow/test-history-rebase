@@ -204,8 +204,8 @@ export const createIntent =
   async (dispatch, getState) => {
     const id = intent?.id || Utils.id.cuid.slug();
     const state = getState();
-    const platform = intent?.platform || ProjectV2.active.platformV2Selector(state);
-    const projectType = ProjectV2.active.typeV2Selector(state);
+    const platform = intent?.platform || ProjectV2.active.platformSelector(state);
+    const projectType = ProjectV2.active.projectTypeSelector(state);
 
     const name =
       intent?.name ||

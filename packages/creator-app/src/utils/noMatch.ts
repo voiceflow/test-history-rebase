@@ -18,7 +18,7 @@ export const voiceNoMatchFactory = (options: NoMatchFactoryOptions = {}): Realti
   reprompts: [voicePromptFactory(options)],
 });
 
-export const getPlatformNoMatchFactory = Realtime.Utils.platform.createProjectTypeSelectorV2<
+export const getPlatformNoMatchFactory = Realtime.Utils.platform.createProjectTypeSelector<
   (options?: PromptFactoryOptions) => Realtime.NodeData.NoMatch
 >({
   [VoiceflowConstants.ProjectType.CHAT]: chatNoMatchFactory,

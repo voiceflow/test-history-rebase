@@ -20,7 +20,7 @@ export const EXPORT_TYPE_OPTIONS = [
   { id: ExportType.CANVAS, label: 'Project content' },
 ];
 
-export const getNplModelProvider = Utils.platform.createPlatformSelectorV2(
+export const getNplModelProvider = Utils.platform.createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: [NLPProvider.ALEXA, NLPProvider.VF_CSV],
     [VoiceflowConstants.PlatformType.GOOGLE]: [NLPProvider.DIALOGFLOW_ES, NLPProvider.VF_CSV],

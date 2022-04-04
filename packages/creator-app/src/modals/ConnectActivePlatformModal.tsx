@@ -14,7 +14,7 @@ import { getPlatformModalProps } from './BaseConnectPlatformModal/utils';
 const MODAL_TYPE = ModalType.CONNECT_PLATFORM;
 
 const ConnectActivePlatformModal: React.FC = () => {
-  const platform = useSelector(ProjectV2.active.platformV2Selector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const { data, isOpened } = useModals<{
     stage: AlexaStageType | GoogleStageType | DialogflowStageType;
     updateCurrentStage: (data: unknown) => void;

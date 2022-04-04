@@ -23,14 +23,12 @@ const projectAdapter = createAdapter<BaseModels.Project.Model<AnyRecord, AnyReco
     prototype,
     platformData,
   }) => {
-    const type = dbType as VoiceflowConstants.ProjectType;
-    const platform = dbPlatform as VoiceflowConstants.PlatformType;
-
-    const { platform: platformV2, type: typeV2 } = legacyPlatformToProjectType(platform, type);
+    const { platform, type } = legacyPlatformToProjectType(dbPlatform as VoiceflowConstants.PlatformType, dbType as VoiceflowConstants.ProjectType);
 
     return {
       id: _id,
       name,
+      type,
       image,
       isLive: !!liveVersion,
       module: '',
@@ -40,8 +38,8 @@ const projectAdapter = createAdapter<BaseModels.Project.Model<AnyRecord, AnyReco
       privacy,
       linkType,
       platform,
-      typeV2,
-      platformV2,
+      typeV2: type,
+      platformV2: platform,
       _version,
       diagramID: '',
       versionID: devVersion!,

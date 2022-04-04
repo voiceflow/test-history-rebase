@@ -22,7 +22,7 @@ const TestToolSettings: React.FC = () => {
   const prototypeAvatar = useSelector(Prototype.prototypeAvatarSelector);
   const updatePrototypeSettings = useDispatch(Prototype.updateSharePrototypeSettings);
   const [delayDuration, setDelayDuration] = React.useState(durationMilliseconds);
-  const projectType = useSelector(ProjectV2.active.typeV2Selector);
+  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
 
   const showMessageDelaySetting = Utils.typeGuards.isChatProjectType(projectType);
   const onChangeDelay = async (val: string) => {

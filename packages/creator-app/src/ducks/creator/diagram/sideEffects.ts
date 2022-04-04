@@ -74,8 +74,8 @@ const initializeCreatorForDiagram =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const platform = ProjectV2.active.platformV2Selector(state);
-    const projectType = ProjectV2.active.typeV2Selector(state);
+    const platform = ProjectV2.active.platformSelector(state);
+    const projectType = ProjectV2.active.projectTypeSelector(state);
 
     const { diagram: dbDiagram, timestamp } = await client.api.diagram.getRTC(diagramID);
 

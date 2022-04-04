@@ -70,7 +70,7 @@ export * from './dialogflow';
 export * from './general';
 export * from './google';
 
-export const getPlatformName = Utils.platform.createPlatformSelectorV2(
+export const getPlatformName = Utils.platform.createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
     [VoiceflowConstants.PlatformType.GOOGLE]: 'Google',
@@ -79,7 +79,7 @@ export const getPlatformName = Utils.platform.createPlatformSelectorV2(
   ''
 );
 
-export const getDefaultPlatformLanguageLabel = Utils.platform.createPlatformSelectorV2(
+export const getDefaultPlatformLanguageLabel = Utils.platform.createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: LOCALE_MAP[0].name,
     [VoiceflowConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[GoogleConstants.Language.EN],

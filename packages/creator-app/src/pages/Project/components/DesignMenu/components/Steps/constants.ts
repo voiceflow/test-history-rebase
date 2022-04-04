@@ -253,7 +253,7 @@ export const DIALOGFLOW_ES_VOICE_SECTIONS = [
   },
 ];
 
-export const getSections = Realtime.Utils.platform.createPlatformAndProjectTypeSelectorV2(
+export const getSections = Realtime.Utils.platform.createPlatformAndProjectTypeSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_SECTIONS,
     [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_SECTIONS,

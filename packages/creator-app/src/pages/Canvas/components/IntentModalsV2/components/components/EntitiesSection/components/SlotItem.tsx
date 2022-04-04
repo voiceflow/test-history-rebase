@@ -25,7 +25,7 @@ const SlotItem: React.FC<SlotItemProps> = ({ slot, slots, intent, name }) => {
   const removeRequiredSlot = useDispatch(Intent.removeRequiredSlot);
   const patchIntentSlotDialog = useDispatch(Intent.updateIntentSlotDialog);
 
-  const projectType = useSelector(ProjectV2.active.typeV2Selector);
+  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const isChat = Realtime.Utils.typeGuards.isChatProjectType(projectType);
   const { prompt } = slot.dialog ?? { prompt: [] };
 

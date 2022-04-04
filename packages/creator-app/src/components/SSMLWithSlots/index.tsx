@@ -77,7 +77,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnected
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
-  projectType: ProjectV2.active.typeV2Selector,
+  projectType: ProjectV2.active.projectTypeSelector,
   defaultVoice: VersionV2.active.defaultVoiceSelector,
   locales: VersionV2.active.localesSelector,
 };

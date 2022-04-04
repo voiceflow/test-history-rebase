@@ -21,7 +21,7 @@ const getDialogflowItems = (versionID: string) => [
   },
 ];
 
-const getPlatformItems = Utils.platform.createPlatformSelectorV2<(versionID: string) => NavLinkItem[]>(
+const getPlatformItems = Utils.platform.createPlatformSelector<(versionID: string) => NavLinkItem[]>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: (versionID) => [
       { to: generatePath(Path.PUBLISH_ALEXA, { versionID }), key: 'alexa', label: 'Amazon Alexa' },

@@ -47,8 +47,7 @@ const Project: React.FC = () => {
   const getEngine = useEventualEngine();
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const typeV2 = useSelector(ProjectV2.active.typeV2Selector);
-  const platformV2 = useSelector(ProjectV2.active.platformV2Selector);
+  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
   const isOnlyViewer = useSelector(RealtimeDuck.isOnlyViewerSelector);
   const isDiagramRoute = useRouteMatch(DIAGRAM_ROUTES);
@@ -96,7 +95,7 @@ const Project: React.FC = () => {
 
   return (
     <MarkupProvider>
-      <ProjectProvider platform={platform} platformV2={platformV2} typeV2={typeV2}>
+      <ProjectProvider platform={platform} projectType={projectType}>
         <Helmet>
           <title>{projectName}</title>
         </Helmet>

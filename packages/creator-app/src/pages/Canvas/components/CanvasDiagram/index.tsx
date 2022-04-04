@@ -54,7 +54,7 @@ interface ComponentsDrop extends BaseDrop, FolderItemProps {}
 
 const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS];
 
-const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
+const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, children }) => {
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
@@ -178,6 +178,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         addClass={addClass}
         removeClass={removeClass}
         getZoomType={getZoomType}
+        layers={children}
       >
         <AutoPanLayer />
         <LinkLayer />
@@ -188,6 +189,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         <Crosshair portal color="red" withCoords />
         <Crosshair onCanvas />
       </Canvas>
+
       <TransformOverlay />
     </>
   );

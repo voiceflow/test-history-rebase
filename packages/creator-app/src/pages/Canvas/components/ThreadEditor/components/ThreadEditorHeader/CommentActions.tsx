@@ -1,83 +1,92 @@
+import { Nullable } from '@voiceflow/common';
 import { BoxFlex, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, MenuItem, preventDefault, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { EngineContext } from '@/pages/Canvas/contexts';
+import { Comment } from '@/models';
 
 import PostButton from './PostButton';
 
 export interface CommentActionsProps {
-  onPost: () => void;
-  onEdit?: () => void;
+  onPost: VoidFunction;
+  onEdit?: VoidFunction;
+  comment?: Nullable<Comment>;
+  onDelete?: VoidFunction;
+  onResolve?: VoidFunction;
+  isPosting?: boolean;
   isEditing?: boolean;
-  isPosted?: boolean;
   isDisabled?: boolean;
-  creatorID?: number;
-  currentUser?: number;
-  threadID?: string;
-  commentID?: string;
-  showResolve?: boolean;
+  currentUserID: number;
+  isThreadEditing?: boolean;
 }
 
 const CommentActions: React.FC<CommentActionsProps> = ({
   onPost,
   onEdit,
-  creatorID,
-  commentID,
-  threadID,
-  currentUser,
-  isDisabled = false,
-  isEditing = false,
-  showResolve,
-  isPosted,
+  comment,
+  onDelete,
+  onResolve,
+  isPosting,
+  isEditing,
+  isDisabled,
+  currentUserID,
+  isThreadEditing,
 }) => {
-  const engine = React.useContext(EngineContext)!;
-
-  const isCommentOwner = creatorID === currentUser;
+  const isCommentOwner = !!comment && comment.creatorID === currentUserID;
 
   return (
     <FlexEnd>
-      {commentID && isPosted && isCommentOwner && (
-        <Dropdown
-          portal={null}
-          menu={
-            <Menu>
-              {/* Disable edit button if there is already a comment in editing mode */}
-              <MenuItem onClick={onEdit}>Edit</MenuItem>
-              <MenuItem onClick={() => engine.comment.deleteComment(threadID!, commentID!)}>Delete</MenuItem>
-            </Menu>
-          }
-        >
-          {(ref, onToggle, isOpen) => (
-            <IconButton
-              ref={ref}
-              size={18}
-              icon="ellipsis"
-              active={isOpen}
-              variant={IconButtonVariant.SUBTLE}
-              onClick={preventDefault(onToggle)}
-              iconProps={{ color: '#becedc' }}
-              hoverColor={isOpen ? '#132144' : '#6e849a'}
-            />
+      {!isEditing ? (
+        <>
+          {isCommentOwner && (onEdit || onDelete) && (
+            <Dropdown
+              portal={null}
+              menu={
+                <Menu>
+                  {onEdit && <MenuItem onClick={onEdit}>Edit</MenuItem>}
+                  {onDelete && <MenuItem onClick={onDelete}>Delete</MenuItem>}
+                </Menu>
+              }
+            >
+              {(ref, onToggle, isOpen) => (
+                <IconButton
+                  ref={ref}
+                  size={18}
+                  icon="ellipsis"
+                  active={isOpen}
+                  variant={IconButtonVariant.SUBTLE}
+                  onClick={preventDefault(onToggle)}
+                  disabled={isThreadEditing}
+                  iconProps={{ color: '#becedc' }}
+                  hoverColor={isOpen ? '#132144' : '#6e849a'}
+                />
+              )}
+            </Dropdown>
           )}
-        </Dropdown>
-      )}
 
-      {threadID && isPosted && showResolve && (
-        <TippyTooltip title="Mark Resolved" distance={1}>
-          <BoxFlex ml={16}>
-            <IconButton
-              size={18}
-              icon="checkmark"
-              variant={IconButtonVariant.SUBTLE}
-              onClick={() => engine.comment.resolveThread(threadID)}
-              iconProps={{ color: '#becedc' }}
-              hoverColor="#6e849a"
-            />
-          </BoxFlex>
-        </TippyTooltip>
+          {!!comment && !!onResolve && (
+            <TippyTooltip title="Mark Resolved" distance={1} disabled={isThreadEditing}>
+              <BoxFlex ml={16}>
+                <IconButton
+                  size={18}
+                  icon="checkmark"
+                  variant={IconButtonVariant.SUBTLE}
+                  onClick={onResolve}
+                  disabled={isThreadEditing}
+                  iconProps={{ color: '#becedc' }}
+                  hoverColor="#6e849a"
+                />
+              </BoxFlex>
+            </TippyTooltip>
+          )}
+        </>
+      ) : (
+        <PostButton
+          isDone={!!comment?.id}
+          onClick={isDisabled ? undefined : preventDefault(onPost)}
+          disabled={isDisabled || isPosting}
+          isPosting={isPosting}
+        />
       )}
-
-      {!isPosted && <PostButton disabled={isDisabled} onClick={isDisabled ? undefined : preventDefault(onPost)} isDone={!!commentID && isEditing} />}
     </FlexEnd>
   );
 };

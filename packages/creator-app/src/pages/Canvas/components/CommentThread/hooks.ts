@@ -2,10 +2,11 @@ import { Eventual } from '@voiceflow/common';
 import React from 'react';
 
 import { useCancellable, useConstant, useLinkedRef } from '@/hooks';
+import { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor';
 import { EngineContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useVectorDragTranslate } from '@/pages/Canvas/hooks';
-import { BlockAPI } from '@/pages/Canvas/types';
+import { BlockAPI, CommentDraftValue } from '@/pages/Canvas/types';
 import { Pair } from '@/types';
 import MouseMovement from '@/utils/mouseMovement';
 
@@ -31,6 +32,7 @@ export const useThreadInstance = <T extends HTMLElement>(): InternalThreadInstan
   const ref = React.useRef<T | null>(null);
   const blockRef = React.useRef<BlockAPI>(null);
   const coords = useThreadCoords();
+  const commentRef = React.useRef<EditableCommentRef>(null);
 
   const getRect = React.useCallback(() => blockRef.current?.getRect() || null, []);
 
@@ -50,6 +52,10 @@ export const useThreadInstance = <T extends HTMLElement>(): InternalThreadInstan
 
       translate,
       forceRedraw: updateCoords,
+
+      getDraft: () => commentRef.current?.getDraft() ?? null,
+      setDraft: (value: CommentDraftValue) => commentRef.current?.setDraft(value) ?? null,
+      commentRef,
     }),
     [elementInstance]
   );

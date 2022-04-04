@@ -24,6 +24,9 @@ export default {
     get node() {
       return cy.get(`.${ClassName.CANVAS_NODE}`);
     },
+    get nodeHovered() {
+      return cy.get(`.${ClassName.CANVAS_NODE}--hovered`);
+    },
     get link() {
       return cy.get(`.${ClassName.CANVAS_LINK}`);
     },

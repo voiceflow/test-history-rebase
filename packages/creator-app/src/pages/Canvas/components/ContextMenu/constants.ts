@@ -90,7 +90,7 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Return to Start',
     value: CanvasAction.RETURN_TO_HOME,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.ROOT_NODE],
-    shouldRender: (_, { engine }) => !engine.comment.isActive,
+    shouldRender: (_, { engine }) => !engine.comment.isModeActive,
   },
   {
     label: 'Zoom In',

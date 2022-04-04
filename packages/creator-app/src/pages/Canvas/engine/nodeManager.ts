@@ -795,7 +795,7 @@ class NodeManager extends EngineConsumer {
   }
 
   translateThreads(nodeID: string, movement: Pair<number>): void {
-    if (this.engine.comment.isActive) {
+    if (this.engine.comment.isModeActive || this.engine.comment.isVisible) {
       const movementVector = this.engine.canvas!.toVector(movement);
       this.engine.getThreadIDsByNodeID(nodeID).forEach((threadID) => this.engine.comment.translateThread(threadID, movementVector));
     }

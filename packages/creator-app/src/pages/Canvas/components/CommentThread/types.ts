@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor';
 import { ThreadInstance } from '@/pages/Canvas/engine/entities/threadEntity';
 
-export type InternalThreadInstance<T extends HTMLElement> = ThreadInstance & {
+export interface InternalThreadInstance<T extends HTMLElement> extends ThreadInstance {
   ref: React.RefObject<T>;
-};
+  commentRef: React.RefObject<EditableCommentRef>;
+}

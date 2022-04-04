@@ -40,6 +40,7 @@ export interface CanvasProps {
   innerRef?: React.Ref<HTMLDivElement>;
   scrollTimeout?: number;
   className?: string;
+  layers?: React.ReactNode;
   onChange?: (viewport: Viewport) => void;
   addClass?: (className: string) => void;
   removeClass?: (className: string) => void;
@@ -463,6 +464,8 @@ class Canvas extends React.PureComponent<
           <RenderLayer ref={this.renderLayerRef} style={{ transform: transformStyle(this.position, this.zoom) }}>
             {children}
           </RenderLayer>
+
+          {this.props.layers}
         </Container>
       </CanvasProvider>
     );

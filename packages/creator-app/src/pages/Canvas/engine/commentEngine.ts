@@ -5,15 +5,12 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
-import { Comment } from '@/models';
-import { DraftCommentType, NewCommentAPI } from '@/pages/Canvas/types';
+import * as UI from '@/ducks/ui';
+import { CommentDraftValue, NewCommentAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
 
 import { EngineConsumer, getCandidates, NodeCandidate } from './utils';
-
-export const NewCommentID = 'new';
-export const NEW_COMMENT = { text: '', mentions: [] };
 
 class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   log = this.engine.log.child('comment');
@@ -30,10 +27,12 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
   isCreating = false;
 
-  draftComment: DraftCommentType | null = null;
-
-  get isActive() {
+  get isModeActive() {
     return !!this.select(createMatchSelector(Path.CANVAS_COMMENTING));
+  }
+
+  get isVisible() {
+    return this.select(UI.isCommentsVisible);
   }
 
   get hasFocus() {
@@ -54,6 +53,30 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
   activate() {
     return this.dispatch(Router.goToCurrentCanvasCommenting());
+  }
+
+  getNewOrigin(): Coords | null {
+    return this.components.newComment?.getOrigin() ?? null;
+  }
+
+  getNewDraftValue(): CommentDraftValue | null {
+    return this.components.newComment?.getDraft() ?? null;
+  }
+
+  setNewDraftValue(draft: CommentDraftValue) {
+    this.components.newComment?.setDraft(draft);
+  }
+
+  getFocusedDraftValue(): CommentDraftValue | null {
+    if (!this.focusTarget) return null;
+
+    return this.thread(this.focusTarget)?.instance?.getDraft() ?? null;
+  }
+
+  setFocusedDraftValue(draft: CommentDraftValue) {
+    if (this.focusTarget) {
+      this.thread(this.focusTarget)?.instance?.setDraft(draft);
+    }
   }
 
   async setFocus(threadID: string | null) {
@@ -87,23 +110,6 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     }
   }
 
-  setDraftComment(threadID: string, value: Pick<Comment, 'text' | 'mentions'>) {
-    this.draftComment = {
-      ...this.draftComment,
-      [threadID]: value,
-    };
-  }
-
-  resetDraftComment(threadID?: string) {
-    if (!this.draftComment) return;
-
-    if (threadID) {
-      delete this.draftComment[threadID];
-    } else {
-      this.draftComment = null;
-    }
-  }
-
   createComment = this.bind(Thread.createComment);
 
   updateComment = this.bind(Thread.updateComment);
@@ -121,15 +127,20 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
     const coords = this.engine.getMouseCoords().onPlane(this.engine.canvas!.getPlane());
 
+    this.renewThread(coords);
+
+    this.log.info(this.log.pending('started new comment'));
+  }
+
+  renewThread(coords: Coords) {
     this.isCreating = true;
     this.generateCandidates();
     this.updateCandidates(coords);
     this.components.newComment?.show(coords);
-    this.log.info(this.log.pending('started new comment'));
   }
 
   generateCandidates() {
-    if (!this.isActive) return;
+    if (!this.isModeActive || !this.isVisible) return;
 
     this.candidates = getCandidates([...this.engine.getRootNodeIDs(), ...this.select(CreatorV2.stepIDsSelector)].reverse(), this.engine);
     this.log.debug('discovered thread target candidates', this.log.value(this.candidates.length));
@@ -210,6 +221,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     }
 
     const coords = this.translateThread(threadID, movement);
+
     if (!coords) return;
 
     this.updateCandidates(coords);
@@ -281,7 +293,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   }
 
   forceRedrawThreads() {
-    if (!this.isActive) return;
+    if (!this.isModeActive || !this.isVisible) return;
 
     const plane = this.engine.canvas!.getOuterPlane();
     const threads = this.select(Thread.activeDiagramThreadsSelector);

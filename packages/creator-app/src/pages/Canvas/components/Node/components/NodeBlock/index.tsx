@@ -157,7 +157,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
       goToCurrentCanvas();
     }
 
-    if (event.defaultPrevented || !engine.comment.isActive) {
+    if (event.defaultPrevented || !engine.comment.isModeActive) {
       return;
     }
 

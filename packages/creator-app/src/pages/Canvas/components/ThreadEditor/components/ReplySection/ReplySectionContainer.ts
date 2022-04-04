@@ -3,7 +3,8 @@ import { NestedMenuComponents } from '@voiceflow/ui';
 import { styled } from '@/hocs';
 
 const ReplySectionContainer = styled(NestedMenuComponents.FooterActionContainer)`
-  position: relative;
+  position: sticky;
+  bottom: 0;
 
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;

@@ -3,26 +3,22 @@ import React from 'react';
 
 import Commenter from '@/components/Commenter';
 import * as Account from '@/ducks/account';
-import { connect } from '@/hocs';
-import { ConnectedProps } from '@/types';
+import { useSelector } from '@/hooks';
 
 import CommentActions, { CommentActionsProps } from './CommentActions';
 
-export type ThreadEditorHeaderProps = CommentActionsProps & {
-  postedTime?: string;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ThreadEditorHeaderProps extends Omit<CommentActionsProps, 'currentUserID'> {}
+
+const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps> = ({ comment, ...actionProps }) => {
+  const userID = useSelector(Account.userIDSelector)!;
+
+  return (
+    <BoxFlex justifyContent="space-between" height={33}>
+      {comment ? <Commenter creatorID={comment.creatorID} time={comment.created} /> : <Commenter creatorID={userID} />}
+      <CommentActions comment={comment} currentUserID={userID} {...actionProps} />
+    </BoxFlex>
+  );
 };
 
-const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps & ConnectedThreadEditorHeaderProps> = ({ currentUser, postedTime, ...actionProps }) => (
-  <BoxFlex justifyContent="space-between" height={33}>
-    <Commenter creatorID={actionProps.creatorID || currentUser.creator_id!} time={postedTime} />
-    <CommentActions currentUser={currentUser.creator_id!} {...actionProps} />
-  </BoxFlex>
-);
-
-const mapStateToProps = {
-  currentUser: Account.userSelector,
-};
-
-type ConnectedThreadEditorHeaderProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(ThreadEditorHeader as any) as React.FC<ThreadEditorHeaderProps>;
+export default ThreadEditorHeader;

@@ -1,52 +1,74 @@
-import { preventDefault } from '@voiceflow/ui';
+import { preventDefault, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { useEnableDisable, useTrackingEvents } from '@/hooks';
-import { Comment } from '@/models';
+import { useTrackingEvents } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
+import { CommentDraftValue } from '@/pages/Canvas/types';
 
 import { REPLY_CLASSNAME } from '../../constants';
-import EditableComment from '../EditableComment';
+import Content from '../Content';
+import EditableComment, { EditableCommentRef } from '../EditableComment';
 import ReplySectionContainer from './ReplySectionContainer';
 
 interface ReplySectionProps {
+  onReply: VoidFunction;
+  onCancel: VoidFunction;
   threadID: string;
+  isReplying: boolean;
+  isThreadEditing?: boolean;
 }
 
-const ReplySection: React.FC<ReplySectionProps> = ({ threadID }) => {
+const ReplySection: React.ForwardRefRenderFunction<EditableCommentRef, ReplySectionProps> = (
+  { onReply, onCancel, threadID, isReplying, isThreadEditing },
+  ref
+) => {
   const engine = React.useContext(EngineContext)!;
-  const [isReplying, enableReplying, disableReplying] = useEnableDisable(false);
+  const editableCommentRef = React.useRef<EditableCommentRef>(null);
+  const [initialValue, setInitialValue] = React.useState<string>('');
+  const [initialMentions, setInitialMentions] = React.useState<number[]>([]);
+
   const [trackEvents] = useTrackingEvents();
 
-  const onClick = preventDefault(() => enableReplying());
-
-  const onSave = async (values: Pick<Comment, 'text' | 'mentions'>) => {
-    await engine.comment.createComment(threadID, values);
-
-    engine.comment.resetDraftComment(threadID);
+  const onPost = async (text: string, mentions: number[]) => {
+    await engine.comment.createComment(threadID, { text, mentions });
 
     trackEvents.trackNewThreadReply();
-    disableReplying();
+    onCancel();
   };
 
-  const saveDraftValue = (values: Pick<Comment, 'text' | 'mentions'>) => engine.comment.setDraftComment(threadID, values);
+  const onPersistedReply = usePersistFunction(onReply);
+
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      getDraft: () => editableCommentRef.current?.getDraft() ?? null,
+      setDraft: (draft: CommentDraftValue) => {
+        onPersistedReply();
+        setInitialValue(draft.text);
+        setInitialMentions(draft.mentions);
+        editableCommentRef.current?.setDraft(draft);
+      },
+    }),
+    []
+  );
 
   return isReplying ? (
-    <EditableComment
-      isEditing
-      onSave={onSave}
-      initialValues={engine.comment.draftComment?.[threadID]}
-      onBlur={saveDraftValue}
-      headerProps={{
-        isPosted: !isReplying,
-      }}
-      placeholder="Comment or @mention"
-    />
+    <Content>
+      <EditableComment
+        ref={editableCommentRef}
+        onPost={onPost}
+        onCancel={onCancel}
+        isEditing
+        placeholder="Comment or @mention"
+        initialValue={initialValue}
+        initialMentions={initialMentions}
+      />
+    </Content>
   ) : (
-    <ReplySectionContainer className={REPLY_CLASSNAME} onClick={onClick}>
+    <ReplySectionContainer className={REPLY_CLASSNAME} onClick={preventDefault(onReply)} disabled={isThreadEditing}>
       Reply in Thread
     </ReplySectionContainer>
   );
 };
 
-export default ReplySection;
+export default React.forwardRef(ReplySection);

@@ -16,31 +16,39 @@ context('Canvas - Links', () => {
 
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 50]);
 
-    canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click();
+    canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click({ force: true });
     canvasPage.el.newLink.should('have.length', 1);
     canvasPage.el.node.eq(1).trigger('mouseover');
     canvasPage.el.node.eq(1).trigger('hover');
-    canvasPage.el.node.eq(1).click();
+
+    canvasPage.el.nodeHovered.click({ force: true });
 
     canvasPage.el.link.should('have.length', 1);
   });
 
-  it.skip('remove link', () => {
+  it('remove link', () => {
     cy.awaitCanvasAnimation();
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(120);
+
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 50]);
 
     canvasPage.el.canvas.click(0, 0, { force: true });
 
-    canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click();
+    canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click({ force: true });
     canvasPage.el.newLink.should('have.length', 1);
     canvasPage.el.node.eq(1).trigger('mouseover');
     canvasPage.el.node.eq(1).trigger('hover');
-    canvasPage.el.node.eq(1).click(2, 10, { force: true });
+
+    canvasPage.el.nodeHovered.click({ force: true });
+
+    canvasPage.el.link.should('have.length', 1);
 
     canvasPage.el.canvas.click(0, 0, { force: true });
 
     canvasPage.el.link.find('path').eq(0).click({ force: true });
-    canvasPage.el.linkSettings.find('.vf-svg-icon--trash').click();
+    canvasPage.el.linkSettings.find('.vf-svg-icon--trash').click({ force: true });
 
     canvasPage.el.link.should('have.length', 0);
   });

@@ -13,11 +13,12 @@ import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
 import * as Query from '@/utils/query';
 
+import { CommentAPI } from '../../types';
 import type { Engine } from '..';
 import { EntityType } from '../constants';
 import { EntityInstance, ResourceEntity } from './entity';
 
-export type ThreadInstance = EntityInstance & {
+export interface ThreadInstance extends EntityInstance, CommentAPI {
   /**
    * get the current coordinates of this thread on the canvas
    */
@@ -26,7 +27,7 @@ export type ThreadInstance = EntityInstance & {
   translate: (movement: Vector) => Coords;
 
   forceRedraw: (nextCoords: Coords) => void;
-};
+}
 
 const threadEntitySelector = createSelector(
   [CreatorV2.getNodeByIDSelector, Thread.threadByIDSelector],

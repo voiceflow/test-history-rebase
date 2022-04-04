@@ -1,5 +1,6 @@
 import { NonNullishRecord, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { portalRootNode } from '@voiceflow/ui';
 import React from 'react';
 import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
 import { createSelector } from 'reselect';
@@ -43,22 +44,23 @@ export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, 
   return (
     <MentionEditorContainer>
       <MentionsInput
-        className="mentionInput"
-        allowSuggestionsAboveCursor={true}
-        placeholder={placeholder}
         value={value}
-        onChange={onValueChange}
         style={mentionEditorStyle(height)}
         onBlur={onBlur}
+        onChange={onValueChange}
+        className="mentionInput"
+        placeholder={placeholder}
+        suggestionsPortalHost={portalRootNode}
+        allowSuggestionsAboveCursor={true}
         {...inputProps}
       >
         <Mention
-          trigger="@"
-          markup="[__display__](user:__id__)"
-          appendSpaceOnAdd
           data={mentionsData}
           style={mentionStyle}
+          markup="[__display__](user:__id__)"
+          trigger="@"
           renderSuggestion={(suggestion: SuggestionDataItem) => <Commenter bold={false} creatorID={Number(suggestion.id)} />}
+          appendSpaceOnAdd
         />
       </MentionsInput>
     </MentionEditorContainer>

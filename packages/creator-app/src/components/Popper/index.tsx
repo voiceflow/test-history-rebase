@@ -13,20 +13,22 @@ import { Body, Container } from './components';
 export { Content as PopperContent, Footer as PopperFooter, Nav as PopperNav, NavItem as PopperNavItem } from './components';
 
 interface RendererProps {
-  onClose: () => void;
+  onClose: VoidFunction;
   isOpened: boolean;
-  onToggle: () => void;
+  onToggle: VoidFunction;
+  scheduleUpdate: VoidFunction;
 }
 
-interface ChildrenProps extends RendererProps {
+interface ChildrenProps extends Omit<RendererProps, 'scheduleUpdate'> {
   ref: React.Ref<any>;
 }
 
 export interface PopperProps {
   width?: string;
   height?: string;
+  zIndex?: number;
   opened?: boolean;
-  onClose?: () => void;
+  onClose?: VoidFunction;
   children?: (props: ChildrenProps) => React.ReactNode;
   renderNav?: (props: RendererProps) => React.ReactNode;
   modifiers?: ReactPopperProps['modifiers'];
@@ -36,6 +38,7 @@ export interface PopperProps {
   dismissEvent?: DismissEventType;
   renderFooter?: (props: RendererProps) => React.ReactNode;
   renderContent: (props: RendererProps) => React.ReactNode;
+  disableLayers?: boolean;
   preventOverflowPadding?: number;
 }
 
@@ -43,6 +46,7 @@ const Popper: React.FC<PopperProps> = ({
   width,
   height,
   opened,
+  zIndex,
   onClose,
   children,
   renderNav,
@@ -53,13 +57,14 @@ const Popper: React.FC<PopperProps> = ({
   dismissEvent,
   renderFooter,
   renderContent,
+  disableLayers,
   preventOverflowPadding = 16,
 }) => {
   const theme = useTheme();
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const [isOpened, onToggle, onForceClose] = useDismissable(opened, { ref: containerRef, onClose, dismissEvent });
+  const [isOpened, onToggle, onForceClose] = useDismissable(opened, { ref: containerRef, onClose, dismissEvent, disableLayers });
 
   useDidUpdateEffect(() => {
     if ((opened && !isOpened) || (!opened && isOpened)) {
@@ -71,7 +76,7 @@ const Popper: React.FC<PopperProps> = ({
 
   const Wrapper = renderNav ? MemoryRouter : React.Fragment;
 
-  const nestedTheme = React.useMemo(() => ({ ...theme, zIndex: { ...theme.zIndex, popper: theme.zIndex.popper + 1 } }), [theme]);
+  const nestedTheme = React.useMemo(() => ({ ...theme, zIndex: { ...theme.zIndex, popper: (zIndex ?? theme.zIndex.popper) + 1 } }), [theme, zIndex]);
 
   return (
     <Manager>
@@ -99,15 +104,15 @@ const Popper: React.FC<PopperProps> = ({
                   }}
                   positionFixed
                 >
-                  {({ ref, style }) => (
-                    <div ref={ref} style={{ ...style, zIndex: theme.zIndex.popper }}>
+                  {({ ref, style, scheduleUpdate }) => (
+                    <div ref={ref} style={{ ...style, zIndex: zIndex ?? theme.zIndex.popper }}>
                       <Container className={ClassName.POPPER} style={{ width, height }}>
-                        {renderNav?.(rendererProps)}
+                        {renderNav?.({ ...rendererProps, scheduleUpdate })}
 
                         <Body>
-                          {renderContent(rendererProps)}
+                          {renderContent({ ...rendererProps, scheduleUpdate })}
 
-                          {renderFooter?.(rendererProps)}
+                          {renderFooter?.({ ...rendererProps, scheduleUpdate })}
                         </Body>
                       </Container>
                     </div>

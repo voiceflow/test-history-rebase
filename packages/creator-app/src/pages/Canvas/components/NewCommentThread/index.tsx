@@ -1,20 +1,20 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import Popper from '@/components/Popper';
 import * as Thread from '@/ducks/thread';
 import { useLinkedRef, useRegistration } from '@/hooks';
 import { CommentIndicator } from '@/pages/Canvas/components/CommentThread/components';
+import { INDICATOR_DIAMETER } from '@/pages/Canvas/components/CommentThread/constants';
 import { useThreadHandlers } from '@/pages/Canvas/components/CommentThread/hooks';
 import DragTarget from '@/pages/Canvas/components/DragTarget';
 import ThreadEditor from '@/pages/Canvas/components/ThreadEditor';
 import { CANVAS_THREAD_OPEN_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
-import { Coords } from '@/utils/geometry';
 
 import { useNewCommentAPI } from './hooks';
 
-const NewCommentThread: React.FC = () => {
+const NewCommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
   const api = useNewCommentAPI();
   const originRef = useLinkedRef(api.origin);
   const engine = React.useContext(EngineContext)!;
@@ -37,17 +37,6 @@ const NewCommentThread: React.FC = () => {
 
   useRegistration(() => engine.comment.register('newComment', api), [api]);
 
-  useCanvasPan((movement) => originRef.current && api.show(originRef.current.add(movement, Coords.WINDOW_PLANE)), []);
-
-  useCanvasZoom((calculateMovement) => {
-    if (!originRef.current) return;
-
-    const outerPlane = engine.canvas!.getOuterPlane();
-    const [moveX, moveY] = calculateMovement(originRef.current.map(outerPlane));
-
-    api.show(originRef.current.add([moveX, moveY], outerPlane));
-  }, []);
-
   React.useEffect(() => {
     if (!api.origin) return undefined;
 
@@ -61,14 +50,23 @@ const NewCommentThread: React.FC = () => {
   const origin = api.origin.map(engine.canvas!.getOuterPlane());
 
   return (
-    <>
-      <DragTarget position={origin} zIndex={10}>
-        <CommentIndicator draggable tabIndex={-1} {...handlers}>
-          {threadCount + 1}
-        </CommentIndicator>
-        <ThreadEditor isFocused />
-      </DragTarget>
-    </>
+    <Popper
+      width="350px"
+      opened={!isHidden}
+      zIndex={1}
+      modifiers={{ offset: { offset: `${-INDICATOR_DIAMETER / 2},${INDICATOR_DIAMETER / 2 + 14}` } }}
+      placement="right-start"
+      renderContent={({ scheduleUpdate }) => <ThreadEditor replyRef={api.commentRef} isFocused schedulePopperUpdate={scheduleUpdate} />}
+      disableLayers
+    >
+      {({ ref }) => (
+        <DragTarget ref={ref} position={origin} zIndex={10}>
+          <CommentIndicator draggable tabIndex={-1} {...handlers}>
+            {threadCount + 1}
+          </CommentIndicator>
+        </DragTarget>
+      )}
+    </Popper>
   );
 };
 

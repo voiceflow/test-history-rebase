@@ -13,6 +13,7 @@ export const mentionEditorStyle = (height?: number) => {
     },
     suggestions: {
       borderRadius: '5px',
+      zIndex: 1000,
       list: {
         width: '254px',
         maxHeight: '350px',

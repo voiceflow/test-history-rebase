@@ -51,7 +51,7 @@ const Node: React.FC = () => {
   };
 
   const onDoubleClick = React.useCallback(() => {
-    if (engine.comment.isActive) return;
+    if (engine.comment.isModeActive) return;
 
     engine.node.center(nodeEntity.nodeID);
   }, []);

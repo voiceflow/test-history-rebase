@@ -1,4 +1,4 @@
-import { styled, transition } from '@ui/styles';
+import { css, styled, transition } from '@ui/styles';
 
 export const MenuPopoverContainer = styled.div<{ autoWidth?: boolean; isRoot?: boolean; minWidth?: number }>`
   z-index: ${({ theme }) => theme.zIndex.popper};
@@ -7,7 +7,7 @@ export const MenuPopoverContainer = styled.div<{ autoWidth?: boolean; isRoot?: b
   min-width: ${({ minWidth }) => minWidth && `${minWidth}px`};
 `;
 
-export const FooterActionContainer = styled.div`
+export const FooterActionContainer = styled.div<{ disabled?: boolean }>`
   ${transition('color')};
   cursor: pointer;
   align-content: center;
@@ -24,6 +24,13 @@ export const FooterActionContainer = styled.div`
   :hover {
     color: ${({ theme }) => theme.colors.darkBlue};
   }
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      pointer-events: none;
+      opacity: 0.6;
+    `}
 `;
 
 export const FooterActions = styled.div`

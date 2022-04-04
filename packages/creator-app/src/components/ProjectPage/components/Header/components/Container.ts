@@ -9,6 +9,7 @@ const Container = styled(BoxFlex).attrs({ as: 'header' })`
   position: relative;
   background-color: #fff;
   border-bottom: solid 1px ${({ theme }) => theme.colors.borders};
+  z-index: 2;
 `;
 
 export default Container;

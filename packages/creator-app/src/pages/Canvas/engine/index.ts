@@ -488,7 +488,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   }
 
   focusNode(nodeID: string, { open }: { open?: boolean } = {}): void {
-    this.node.center(nodeID, !this.comment.isActive);
+    this.node.center(nodeID, !this.comment.isModeActive);
     this.setActive(nodeID, !open);
     this.comment.forceRedrawThreads();
     this.log.info(this.log.success(`focused on the ${nodeID} node`));
@@ -503,7 +503,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   }
 
   centerNode(nodeID: string): void {
-    this.node.center(nodeID, !this.comment.isActive);
+    this.node.center(nodeID, !this.comment.isModeActive);
     this.comment.forceRedrawThreads();
     this.log.info(this.log.success(`centered on the ${nodeID} node`));
   }

@@ -1,16 +1,20 @@
+import composeRef from '@seznam/compose-react-refs';
 import React from 'react';
 
+import Popper from '@/components/Popper';
 import { EngineContext, FocusThreadContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 
 import { CANVAS_THREAD_OPEN_CLASSNAME } from '../../constants';
 import { CommentIndicator, DragTarget, ThreadEditor } from './components';
+import { INDICATOR_DIAMETER } from './constants';
 import { useThreadHandlers, useThreadInstance } from './hooks';
 
-const CommentThread: React.FC = () => {
+const CommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
   const engine = React.useContext(EngineContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
   const threadEntity = React.useContext(ThreadEntityContext)!;
+
   const instance = useThreadInstance<HTMLDivElement>();
 
   const { isFocused } = threadEntity.useState((e) => ({
@@ -45,21 +49,31 @@ const CommentThread: React.FC = () => {
   const origin = instance.getCoords().map(engine.canvas!.getOuterPlane());
 
   return (
-    <DragTarget
-      isTransform
-      onDoubleClick={onDoubleClick}
-      className={ClassName.CANVAS_THREAD}
-      data-thread-id={threadEntity.threadID}
-      position={origin}
-      ref={instance.ref}
-      zIndex={isFocused ? 10 : undefined}
+    <Popper
+      width="350px"
+      zIndex={1}
+      opened={isFocused && !isHidden}
+      modifiers={{ offset: { offset: `${-INDICATOR_DIAMETER / 2},${INDICATOR_DIAMETER / 2 + 14}` } }}
+      placement="right-start"
+      disableLayers
+      renderContent={({ scheduleUpdate }) => <ThreadEditor replyRef={instance.commentRef} schedulePopperUpdate={scheduleUpdate} />}
     >
-      <CommentIndicator className={`${ClassName.CANVAS_THREAD}__indicator`} draggable tabIndex={-1} {...handlers} isFocused={isFocused}>
-        {threadEntity.threadOrder}
-      </CommentIndicator>
-
-      {isFocused && <ThreadEditor />}
-    </DragTarget>
+      {({ ref }) => (
+        <DragTarget
+          ref={composeRef(ref, instance.ref)}
+          zIndex={isFocused ? 10 : undefined}
+          position={origin}
+          className={ClassName.CANVAS_THREAD}
+          isTransform
+          onDoubleClick={onDoubleClick}
+          data-thread-id={threadEntity.threadID}
+        >
+          <CommentIndicator className={`${ClassName.CANVAS_THREAD}__indicator`} draggable tabIndex={-1} {...handlers} isFocused={isFocused}>
+            {threadEntity.threadOrder}
+          </CommentIndicator>
+        </DragTarget>
+      )}
+    </Popper>
   );
 };
 

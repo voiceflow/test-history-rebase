@@ -4,10 +4,10 @@
 
 export interface Comment {
   id: string;
-  threadID: string;
-  created: string;
   text: string;
+  created: string;
   mentions: Array<number>;
+  threadID: string;
   creatorID: number;
 }
 

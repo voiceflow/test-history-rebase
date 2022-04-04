@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { FeatureFlag } from '@/config/features';
 import { DiagramLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
-import { useFeature, useRegistration } from '@/hooks';
+import { useFeature, useRAF, useRegistration } from '@/hooks';
 import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import CreateEntityModal from '@/pages/Canvas/components/EntityModalsV2/CreateModal';
@@ -38,6 +38,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const engine = useEngine();
   // using history to do not rerender on the every location change
   const history = useHistory();
+  const [scheduler, schedulerAPI] = useRAF();
 
   const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
 
@@ -47,7 +48,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
     const { nodeID } = Query.parse(history.location.search);
     const rootNodes = engine.getRootNodeIDs();
 
-    const frame = requestAnimationFrame(() => {
+    scheduler(() => {
       if (nodeID) {
         history.push({ search: '' });
 
@@ -56,14 +57,12 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
         } else {
           engine.focusNode(nodeID, { open: true });
         }
-      } else if (rootNodes.length === 1 && !engine.comment.isActive) {
+      } else if (rootNodes.length === 1 && !engine.comment.isModeActive) {
         engine.centerNode(rootNodes[0]);
       }
     });
 
-    return () => {
-      cancelAnimationFrame(frame);
-    };
+    return schedulerAPI.current.cancel;
   }, [engine]);
 
   useRegistration(() => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext), [selectionSetTargetsContext]);
@@ -72,14 +71,21 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
     <CanvasProviders engine={engine}>
       <Container>
         <ContextMenu />
-        <CanvasDiagram />
+
+        <CanvasDiagram>
+          {!isPrototypingMode && (
+            <>
+              <ThreadLayer />
+            </>
+          )}
+        </CanvasDiagram>
+
         <RealtimeOverlay />
 
         {!isPrototypingMode && (
           <>
             <EditSidebar />
             <Spotlight />
-            <ThreadLayer />
             <ThreadHistoryDrawer />
           </>
         )}

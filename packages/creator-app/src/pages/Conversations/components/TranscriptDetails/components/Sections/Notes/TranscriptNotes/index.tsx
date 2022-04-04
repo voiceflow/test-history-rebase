@@ -1,41 +1,33 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 
+import MentionEditor from '@/components/MentionEditor';
 import { currentTranscriptSelector } from '@/ducks/transcript';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, useTrackingEvents } from '@/hooks';
-import EditableComment, { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor/components/EditableComment';
+import { useDispatch, useLinkedState, useSelector, useTrackingEvents } from '@/hooks';
 
 import { Container } from './components';
 
 const TranscriptNotes: React.FC = () => {
+  const inputRef = React.useRef<HTMLTextAreaElement>(null);
+
   const { notes } = useSelector(currentTranscriptSelector) ?? {};
-  const editableRef = React.useRef<EditableCommentRef>(null);
   const currentTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
+
+  const updateNotes = useDispatch(Transcript.updateNotes);
+
   const [trackingEvents] = useTrackingEvents();
+  const [localNotes, setLocalNotes] = useLinkedState(notes ?? '');
 
-  const saveNote = useDispatch(Transcript.updateNotes);
+  const onBlur = () => {
+    if (!currentTranscriptID) return;
 
-  const saveText = ({ text }: { text: string }) => {
-    if (!currentTranscriptID) {
-      return;
-    }
-
-    saveNote(currentTranscriptID, text);
+    updateNotes(currentTranscriptID, localNotes);
     trackingEvents.trackConversationNotesUpdated();
   };
 
   return (
-    <Container onClick={() => editableRef.current?.focus()}>
-      <EditableComment
-        ref={editableRef}
-        autoFocusInput={false}
-        placeholder="Leave notes or @mention"
-        isEditing
-        initialValues={{ text: notes || '', mentions: [] }}
-        hasHeader={false}
-        onBlur={saveText}
-      />
+    <Container onClick={() => inputRef.current?.focus()}>
+      <MentionEditor value={localNotes} onBlur={onBlur} onChange={setLocalNotes} inputProps={{ inputRef }} placeholder="Leave notes or @mention" />
     </Container>
   );
 };

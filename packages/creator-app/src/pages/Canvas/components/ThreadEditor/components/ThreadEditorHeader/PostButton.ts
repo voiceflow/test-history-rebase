@@ -1,11 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import { IS_MAC } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 const hotKey = IS_MAC ? '⌘↵' : 'Ctrl↵';
 
-const PostButton = styled.div<{ disabled?: boolean; isDone?: boolean }>`
+const PostButton = styled.div<{ disabled?: boolean; isDone?: boolean; isPosting?: boolean }>`
   margin-left: 10px;
   color: #62778c;
   min-width: ${({ isDone }) => (IS_MAC ? (isDone ? 50 : 44) : 52)}px;
@@ -17,15 +17,24 @@ const PostButton = styled.div<{ disabled?: boolean; isDone?: boolean }>`
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   text-align: center;
 
-  &:before {
-    content: '${({ isDone }) => (isDone ? 'Done' : 'Post')}';
-  }
+  ${({ isDone, isPosting }) =>
+    isPosting
+      ? css`
+          &:before {
+            content: '...';
+          }
+        `
+      : css`
+          &:before {
+            content: '${isDone ? 'Done' : 'Post'}';
+          }
 
-  &:hover {
-    &:before {
-      content: '${hotKey}';
-    }
-  }
+          &:hover {
+            &:before {
+              content: '${hotKey}';
+            }
+          }
+        `}
 `;
 
 export default PostButton;

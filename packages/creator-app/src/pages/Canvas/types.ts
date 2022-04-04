@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { Comment, LockOwner } from '@/models';
+import { LockOwner } from '@/models';
 import { Either, Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
@@ -57,7 +57,17 @@ export interface NewLinkAPI {
   unpin: () => void;
 }
 
-export interface NewCommentAPI {
+export interface CommentDraftValue {
+  text: string;
+  mentions: number[];
+}
+
+export interface CommentAPI {
+  getDraft: () => CommentDraftValue | null;
+  setDraft: (draft: CommentDraftValue) => void;
+}
+
+export interface NewCommentAPI extends CommentAPI {
   show: (origin: Coords) => void;
   hide: () => void;
   getOrigin: () => Coords | null;
@@ -95,5 +105,3 @@ export interface TransformOverlayAPI {
 export interface SelectionMarqueeAPI {
   show: () => void;
 }
-
-export type DraftCommentType = Record<string, Pick<Comment, 'text' | 'mentions'>>;

@@ -1,122 +1,129 @@
-import { Callback } from '@voiceflow/common';
-import { Box, KeyName, useTeardown } from '@voiceflow/ui';
+import { Nullable } from '@voiceflow/common';
+import { Box, KeyName, useCache } from '@voiceflow/ui';
 import React from 'react';
 
 import CommentPreview from '@/components/CommentPreview';
 import MentionEditor from '@/components/MentionEditor';
-import { useLinkedState } from '@/hooks';
+import { useLinkedState, useToggle } from '@/hooks';
 import { Comment } from '@/models';
-import { EngineContext } from '@/pages/Canvas/contexts';
+import { CommentDraftValue } from '@/pages/Canvas/types';
 
 import { COMMENT_CLASSNAME, COMMENT_EDITOR_CLASSNAME } from '../constants';
-import ThreadEditorHeader, { ThreadEditorHeaderProps } from './ThreadEditorHeader';
-import { PartialComment } from './types';
-
-const EMPTY_COMMENT: PartialComment = { text: '', mentions: [] };
-
-export interface EditableCommentRef {
-  focus: VoidFunction;
-}
+import ThreadEditorHeader from './ThreadEditorHeader';
 
 export interface EditableCommentProps {
-  onSave?: (value: PartialComment) => void;
-  onChange?: (text: string, mentions: number[]) => void;
+  onPost: (value: string, mentions: number[]) => Promise<void>;
+  onEdit?: VoidFunction;
+  comment?: Nullable<Comment>;
+  onCancel?: VoidFunction;
+  onDelete?: VoidFunction;
   isEditing?: boolean;
-  onClose?: Callback;
-  initialValues?: Pick<Comment, 'text' | 'mentions'>;
-  headerProps?: Partial<ThreadEditorHeaderProps>;
-  onBlur?: (values: Pick<Comment, 'text' | 'mentions'>) => void;
-  hasHeader?: boolean;
-  autoFocusInput?: boolean;
+  onResolve?: VoidFunction;
   placeholder: string;
+  withResolve?: boolean;
+  initialValue?: string;
+  initialMentions?: number[];
+  isThreadEditing?: boolean;
 }
+
+export interface EditableCommentRef {
+  getDraft: () => CommentDraftValue | null;
+  setDraft: (draft: CommentDraftValue) => void;
+}
+
+const INITIAL_MENTIONS: number[] = [];
 
 const EditableComment: React.ForwardRefRenderFunction<EditableCommentRef, EditableCommentProps> = (
   {
-    initialValues = EMPTY_COMMENT,
+    onPost: onPostProp,
+    onEdit,
+    comment,
+    onCancel,
+    onDelete,
     isEditing,
-    headerProps,
-    onSave,
-    onClose,
-    onBlur: saveDraftValues,
-    hasHeader = true,
-    autoFocusInput = true,
+    onResolve,
     placeholder,
-    onChange,
+    initialValue = '',
+    initialMentions = INITIAL_MENTIONS,
+    isThreadEditing,
   },
   ref
 ) => {
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
 
-  const [comment, setComment] = useLinkedState<PartialComment>(initialValues);
-  const engine = React.useContext(EngineContext)!;
+  const [value, setValue] = useLinkedState(comment?.text ?? initialValue);
+  const [mentions, setMentions] = useLinkedState(comment?.mentions ?? initialMentions);
+  const [posting, togglePosting] = useToggle();
 
-  useTeardown(() => {
-    saveDraftValues?.(comment);
-  }, [comment]);
+  const onChange = (text: string, mentions: number[]) => {
+    setValue(text);
+    setMentions(mentions);
+  };
 
-  const onBlur = () => {
-    if (comment.text) {
-      saveDraftValues?.(comment);
+  const onPost = async () => {
+    try {
+      togglePosting(true);
+
+      await onPostProp(value, mentions);
+    } finally {
+      togglePosting(false);
     }
   };
 
-  const handleOnChange = (text: string, mentions: number[]) => {
-    setComment({ text, mentions });
-    onChange?.(text, mentions);
-  };
-
-  const onPost = () => {
-    onSave?.(comment);
-
-    setComment(EMPTY_COMMENT);
-
-    onClose?.();
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === KeyName.ENTER && (event.metaKey || event.ctrlKey)) {
+      onPost();
+    } else if (event.key === KeyName.ESCAPE) {
+      onCancel?.();
+    }
   };
 
   React.useEffect(() => {
     // this is to render cursor at the end of the text
-    if (inputRef.current) {
+    if (isEditing && inputRef.current) {
       const valueLength = inputRef.current.value.length;
 
+      inputRef.current.focus({ preventScroll: true });
       inputRef.current.setSelectionRange(valueLength, valueLength);
     }
   }, [isEditing]);
 
-  const disableModes = () => engine.disableAllModes();
-
-  React.useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
+  const cache = useCache({ text: value, mentions });
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      getDraft: () => cache.current,
+      setDraft: (draft) => {
+        setValue(draft.text);
+        setMentions(draft.mentions);
+      },
+    }),
+    [cache]
+  );
 
   return (
-    <Box className={COMMENT_EDITOR_CLASSNAME} onBlur={onBlur}>
-      {hasHeader && (
-        <ThreadEditorHeader onPost={onPost} isEditing={isEditing} isDisabled={!headerProps?.threadID && !comment.text} {...headerProps} />
-      )}
+    <Box className={COMMENT_EDITOR_CLASSNAME}>
+      <ThreadEditorHeader
+        onEdit={onEdit}
+        onPost={onPost}
+        comment={comment}
+        onDelete={onDelete}
+        isPosting={posting}
+        isEditing={isEditing}
+        onResolve={onResolve}
+        isDisabled={!comment && !value}
+        isThreadEditing={isThreadEditing}
+      />
+
       <Box className={COMMENT_CLASSNAME} mt={12}>
         {isEditing ? (
-          <MentionEditor
-            onChange={handleOnChange}
-            placeholder={placeholder}
-            value={comment.text}
-            inputProps={{
-              inputRef,
-              autoFocus: isEditing && autoFocusInput,
-              onKeyDown: (e) => {
-                if ((e.metaKey || e.ctrlKey) && e.key === KeyName.ENTER) {
-                  onPost();
-                }
-                if (e.key === KeyName.ESCAPE) {
-                  disableModes();
-                }
-              },
-            }}
-          />
+          <MentionEditor value={value} onChange={onChange} placeholder={placeholder} inputProps={{ inputRef, onKeyDown }} />
         ) : (
-          <CommentPreview text={comment.text} />
+          <CommentPreview text={comment?.text} />
         )}
       </Box>
     </Box>
   );
 };
 
-export default React.forwardRef<EditableCommentRef, EditableCommentProps>(EditableComment);
+export default React.forwardRef(EditableComment);

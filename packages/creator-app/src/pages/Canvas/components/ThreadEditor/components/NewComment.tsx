@@ -1,34 +1,26 @@
 import React from 'react';
 
 import { useTrackingEvents } from '@/hooks';
-import { Comment } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { NewCommentID } from '@/pages/Canvas/engine/commentEngine';
 
-import EditableComment from './EditableComment';
+import Content from './Content';
+import EditableComment, { EditableCommentRef } from './EditableComment';
 
-const NewComment: React.FC = () => {
+const NewComment: React.ForwardRefRenderFunction<EditableCommentRef> = (_, ref) => {
   const engine = React.useContext(EngineContext)!;
   const [trackEvents] = useTrackingEvents();
 
-  const onSave = React.useCallback((comment) => {
-    engine.comment.addNewThread(comment.text, comment.mentions);
-    engine.comment.resetDraftComment(NewCommentID);
+  const onPost = async (value: string, mentions: number[]) => {
+    await engine.comment.addNewThread(value, mentions);
 
     trackEvents.trackNewThreadCreated();
-  }, []);
-
-  const saveDraftValue = (values: Pick<Comment, 'text' | 'mentions'>) => engine.comment.setDraftComment(NewCommentID, values);
+  };
 
   return (
-    <EditableComment
-      placeholder="Comment or @mention"
-      isEditing
-      onSave={onSave}
-      initialValues={engine.comment.draftComment?.[NewCommentID]}
-      onBlur={saveDraftValue}
-    />
+    <Content>
+      <EditableComment ref={ref} onPost={onPost} isEditing placeholder="Comment or @mention" onCancel={() => engine.comment.resetCreating()} />
+    </Content>
   );
 };
 
-export default NewComment;
+export default React.forwardRef(NewComment);

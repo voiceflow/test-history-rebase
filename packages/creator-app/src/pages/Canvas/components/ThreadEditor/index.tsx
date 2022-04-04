@@ -1,26 +1,35 @@
-import { preventDefault, stopPropagation, useOnClickOutside } from '@voiceflow/ui';
+import { stopPropagation, useOnClickOutside } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
-import { DismissableLayerProvider } from 'react-dismissable-layers';
+import { DismissableLayerContext } from 'react-dismissable-layers';
 
-import { Comment, Thread } from '@/models';
+import { useEnableDisable, useResizeObserver } from '@/hooks';
+import { Thread } from '@/models';
 import { FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCommentingMode } from '@/pages/Project/hooks';
-import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 
-import { CommentEditor, Container, NewComment, ReplySection } from './components';
+import { CommentEditor, Container, EditableCommentRef, NewComment, ReplySection } from './components';
 import { NEW_THREAD_EDITOR } from './constants';
+
+export type { EditableCommentRef } from './components';
 
 export interface ThreadEditorProps {
   thread?: Thread;
+  replyRef?: React.RefObject<EditableCommentRef>;
   isFocused: boolean;
+  schedulePopperUpdate?: VoidFunction;
 }
 
-const ThreadEditor: React.FC<ThreadEditorProps> = ({ isFocused, thread }) => {
-  const ref = React.useRef(null);
+const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused, schedulePopperUpdate }) => {
+  const { dismiss } = React.useContext(DismissableLayerContext);
   const focusThread = React.useContext(FocusThreadContext)!;
+
   const isCommentingMode = useCommentingMode();
+
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [editingCommentID, setEditingCommentID] = React.useState<string | null>(null);
+  const [isReplying, enableReplying, disableReplying] = useEnableDisable(false);
 
   useOnClickOutside(
     ref,
@@ -32,29 +41,51 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ isFocused, thread }) => {
     [isFocused, isCommentingMode]
   );
 
+  const scrollToBottom = () => {
+    if (isReplying) {
+      schedulePopperUpdate?.();
+      ref.current?.scrollTo({ top: ref.current.scrollHeight });
+    }
+  };
+
+  useResizeObserver(ref, scrollToBottom);
+  React.useLayoutEffect(scrollToBottom, [isReplying]);
+
   return (
-    <DismissableLayerProvider>
-      <Container
-        ref={ref}
-        draggable
-        className={cn(ClassName.THREAD_EDITOR, { [NEW_THREAD_EDITOR]: !thread })}
-        onDragStart={preventDefault()}
-        onMouseDown={stopPropagation(null, true)}
-      >
-        <FadeDownDelayedContainer>
-          {thread ? (
-            <>
-              {thread.comments.map((comment: Comment, index: number) => (
-                <CommentEditor key={comment.id} comment={comment} showResolve={index === 0} />
-              ))}
-              <ReplySection threadID={thread.id} />
-            </>
-          ) : (
-            <NewComment />
-          )}
-        </FadeDownDelayedContainer>
-      </Container>
-    </DismissableLayerProvider>
+    <Container
+      ref={ref}
+      onClick={stopPropagation(dismiss, true)}
+      className={cn(ClassName.THREAD_EDITOR, { [NEW_THREAD_EDITOR]: !thread })}
+      onDragStart={stopPropagation(null, true)}
+      onMouseDown={stopPropagation(null, true)}
+      onContextMenu={stopPropagation(null, true)}
+    >
+      {thread ? (
+        <>
+          {thread.comments.map((comment, index) => (
+            <CommentEditor
+              key={comment.id}
+              comment={comment}
+              isEditing={editingCommentID === comment.id}
+              withResolve={index === 0}
+              setEditingID={setEditingCommentID}
+              isThreadEditing={!!editingCommentID || isReplying}
+            />
+          ))}
+
+          <ReplySection
+            ref={replyRef}
+            onReply={enableReplying}
+            onCancel={disableReplying}
+            threadID={thread.id}
+            isReplying={isReplying}
+            isThreadEditing={!!editingCommentID}
+          />
+        </>
+      ) : (
+        <NewComment ref={replyRef} />
+      )}
+    </Container>
   );
 };
 

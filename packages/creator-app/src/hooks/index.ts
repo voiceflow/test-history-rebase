@@ -7,6 +7,7 @@ export * from './engine';
 export * from './expressionsValidation';
 export * from './feature';
 export * from './feature';
+export * from './focus';
 export * from './forceUpdate';
 export * from './google';
 export * from './hotkeys';

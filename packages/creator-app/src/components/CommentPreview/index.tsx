@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,14 +8,11 @@ import { useSelector, useTheme } from '@/hooks';
 
 import { Container } from './components';
 
-const MENTION_MARKUP_REGEX = /(\[@[^\]]+])\(user:\d+\)/g;
-const MENTION_REGEX = /(@[^\]]+)/g;
+const MENTION_MARKUP_REGEX = /\[(@[^\]]+)]\(user:(\d+)\)/g;
 
 export interface CommentPreviewProps {
   text?: string;
 }
-
-const extractUserID = (text: string) => text.split('user:')[1].replace(')', '');
 
 const UNKNOWN_MEMBER_MENTION = UNKNOWN_MEMBER_DATA.name.replace(' ', '').toLowerCase();
 
@@ -22,28 +20,43 @@ const CommentPreview: React.FC<CommentPreviewProps> = ({ text = '' }) => {
   const hasMemberByID = useSelector(WorkspaceV2.active.hasMemberByIDSelector);
 
   const theme = useTheme();
-  const formattedText = React.useMemo(
-    () =>
-      text.replace(MENTION_MARKUP_REGEX, (str: string) => {
-        const userID = extractUserID(str);
-        const memberExists = hasMemberByID(Number(userID));
 
-        return memberExists ? str.match(MENTION_REGEX)![0] : `@${UNKNOWN_MEMBER_MENTION}`;
-      }),
-    [text]
-  );
+  const formattedText = React.useMemo(() => {
+    const nodes: React.ReactNode[] = [];
 
-  const styledText = React.useMemo(
-    () =>
-      formattedText.split(' ').map((str: string, index: number) => (
-        <Text key={index} color={str.startsWith('@') ? theme.colors.blue : theme.colors.primary} fontSize={15}>
-          {`${str} `}
+    let prevMatch: Nullable<RegExpMatchArray> = null;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const match of text.matchAll(MENTION_MARKUP_REGEX)) {
+      const [, userMention, userID] = match;
+
+      nodes.push(
+        <Text key={nodes.length} color={theme.colors.primary} fontSize={15}>
+          {`${text.substring(prevMatch ? (prevMatch.index ?? 0) + prevMatch[0].length : 0, match.index)}`}
         </Text>
-      )),
-    [formattedText]
-  );
+      );
 
-  return !text ? null : <Container>{styledText}</Container>;
+      const memberExists = hasMemberByID(Number(userID));
+
+      nodes.push(
+        <Text key={nodes.length} color={theme.colors.blue} fontSize={15}>
+          {memberExists ? userMention : `@${UNKNOWN_MEMBER_MENTION}`}
+        </Text>
+      );
+
+      prevMatch = match;
+    }
+
+    nodes.push(
+      <Text key={nodes.length} color={theme.colors.primary} fontSize={15}>
+        {text.substring(prevMatch ? (prevMatch.index ?? 0) + prevMatch[0].length : 0, text.length)}
+      </Text>
+    );
+
+    return nodes;
+  }, [text]);
+
+  return !text ? null : <Container>{formattedText}</Container>;
 };
 
 export default CommentPreview;

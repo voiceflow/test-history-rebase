@@ -29,7 +29,7 @@ export const defaultLanguageSelectProps: LanguageSelectProps = {
 export const getLanguage = (language: AnyLanguage, alexaLocales: AnyLocale[], platformType: VoiceflowConstants.PlatformType) => {
   const defaultLabel = getDefaultPlatformLanguageLabel(platformType);
 
-  return Utils.platform.createPlatformSelector(
+  return Utils.platform.createPlatformSelectorV2(
     {
       [VoiceflowConstants.PlatformType.ALEXA]: LOCALE_MAP.find((locale) => locale.value === alexaLocales[0])?.name ?? defaultLabel,
       [VoiceflowConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[language] ?? defaultLabel,

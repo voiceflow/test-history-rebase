@@ -23,7 +23,7 @@ import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isVoiceflowPla
 
 import { DEFAULT_PROJECT_NAME, PROJECT_CREATION_STEPS_NUMBER, StepID, StepMeta } from './constants';
 
-const getTemplateTag = Realtime.Utils.platform.createPlatformAndProjectTypeSelector(
+const getTemplateTag = Realtime.Utils.platform.createPlatformAndProjectTypeSelectorV2(
   {
     [`${VoiceflowConstants.PlatformType.VOICEFLOW}:${VoiceflowConstants.ProjectType.CHAT}`]: `default:chatbot`,
   },
@@ -118,7 +118,7 @@ const NewProject: React.FC = () => {
     const getLanguage = () => {
       const defaultLabel = getDefaultPlatformLanguageLabel(selectedChannel?.platform);
 
-      return Realtime.Utils.platform.createPlatformSelector(
+      return Realtime.Utils.platform.createPlatformSelectorV2(
         {
           [VoiceflowConstants.PlatformType.ALEXA]: LOCALE_MAP.find((locale) => locale.value === alexaLocales[0])?.name ?? defaultLabel,
           [VoiceflowConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage] ?? defaultLabel,

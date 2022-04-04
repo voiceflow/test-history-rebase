@@ -21,12 +21,13 @@ const ExportCanvas: React.FC = () => {
   const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
+  const typeV2 = useSelector(ProjectV2.active.typeV2Selector);
+  const platformV2 = useSelector(ProjectV2.active.platformV2Selector);
 
   const engine = useEngine();
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
   return (
-    <ProjectProvider platform={platform} projectType={projectType}>
+    <ProjectProvider platform={platform} platformV2={platformV2} typeV2={typeV2}>
       <PresentationModeProvider>
         <MarkupProvider>
           <ManagerProvider value={getManager as any}>

@@ -26,7 +26,7 @@ const SectionComponents: Record<
 
 const SettingsContent: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
+  const projectType = useSelector(ProjectV2.active.typeV2Selector);
   const platformMeta = getSettingsMetaProps(platform, projectType);
   const [trackingEvents] = useTrackingEvents();
 

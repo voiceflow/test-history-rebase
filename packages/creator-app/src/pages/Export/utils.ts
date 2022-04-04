@@ -68,8 +68,8 @@ export const initialize =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const platform = ProjectV2.active.platformSelector(state);
-    const projectType = ProjectV2.active.projectTypeSelector(state);
+    const platform = ProjectV2.active.platformV2Selector(state);
+    const projectType = ProjectV2.active.typeV2Selector(state);
 
     const { viewport, ...creator } = Realtime.Adapters.creatorAdapter.fromDB(await client.api.diagram.get(diagramID), {
       platform,

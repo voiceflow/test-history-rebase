@@ -1,10 +1,10 @@
 import { BUILT_IN_VARIABLES, BuiltInVariable } from '@realtime-sdk/constants';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { createPlatformSelector } from './platform';
+import { createPlatformSelectorV2 } from './platform';
 
 // eslint-disable-next-line import/prefer-default-export
-export const getPlatformGlobalVariables = createPlatformSelector(
+export const getPlatformGlobalVariables = createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.GOOGLE]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],
     [VoiceflowConstants.PlatformType.VOICEFLOW]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],

@@ -17,7 +17,7 @@ import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype, up
 import { prototypeContextSelector, prototypeIDSelector, prototypeSelector, prototypeVisualDataSelector } from '../selectors';
 import { Context } from '../types';
 
-const getProjectExcludedTraceTypes = Realtime.Utils.platform.createProjectTypeSelector({
+const getProjectExcludedTraceTypes = Realtime.Utils.platform.createProjectTypeSelectorV2({
   [VoiceflowConstants.ProjectType.CHAT]: [BaseTrace.TraceType.SPEAK],
   [VoiceflowConstants.ProjectType.VOICE]: [],
 });

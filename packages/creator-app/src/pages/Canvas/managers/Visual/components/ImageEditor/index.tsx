@@ -82,7 +82,7 @@ const ImageEditor: NodeEditor<BaseNode.Visual.ImageStepData, Realtime.NodeData.V
     </Section>
   );
 
-  const renderVisualSizeSection = Realtime.Utils.platform.createPlatformSelector<React.ReactNode>(
+  const renderVisualSizeSection = Realtime.Utils.platform.createPlatformSelectorV2<React.ReactNode>(
     {
       [VoiceflowConstants.PlatformType.VOICEFLOW]: visualSizeSection,
     },

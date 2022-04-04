@@ -12,7 +12,7 @@ type SlotsCreator = (id: string) => Realtime.VoiceIntentSlot | Realtime.ChatInte
 const newChatSlotsCreator: SlotsCreator = (id) => Adapters.Intent.chatIntentSlotSanitizer({ id });
 const newVoiceSlotsCreator: SlotsCreator = (id): Realtime.VoiceIntentSlot => Adapters.Intent.voiceIntentSlotSanitizer({ id });
 
-export const getProjectTypeNewSlotsCreator = Realtime.Utils.platform.createProjectTypeSelector({
+export const getProjectTypeNewSlotsCreator = Realtime.Utils.platform.createProjectTypeSelectorV2({
   [VoiceflowConstants.ProjectType.CHAT]: newChatSlotsCreator,
   [VoiceflowConstants.ProjectType.VOICE]: newVoiceSlotsCreator,
 });

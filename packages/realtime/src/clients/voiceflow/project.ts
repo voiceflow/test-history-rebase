@@ -33,7 +33,7 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions): Proj
   const dialogflowClient = PlatformClient<Realtime.DialogflowProject>(dialogflow);
   const generalClient = PlatformClient<Realtime.VoiceflowProject>(general);
 
-  const getPlatform = Realtime.Utils.platform.createPlatformSelector<
+  const getPlatform = Realtime.Utils.platform.createPlatformSelectorV2<
     typeof alexaClient | typeof googleClient | typeof dialogflowClient | typeof generalClient
   >(
     {

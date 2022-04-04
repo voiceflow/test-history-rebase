@@ -238,7 +238,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   currentPathName = () => this.select(Router.pathnameSelector);
 
-  getActivePlatform = () => this.select(ProjectV2.active.platformSelector);
+  getActivePlatform = () => this.select(ProjectV2.active.platformV2Selector);
 
   getActiveProjectMeta = () => this.select(ProjectV2.active.metaSelector);
   /* eslint-enable @typescript-eslint/explicit-module-boundary-types */

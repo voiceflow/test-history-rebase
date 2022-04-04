@@ -14,7 +14,7 @@ export const platformAware: {
     defaultComponent: React.FC<T> = () => <div>Platform Component is not found!</div>
   ) =>
   (props) => {
-    const platform = useSelector(ProjectV2.active.platformSelector);
+    const platform = useSelector(ProjectV2.active.platformV2Selector);
     const Component = React.useMemo(() => {
       return components[platform]! || defaultComponent;
     }, [platform]);
@@ -31,7 +31,7 @@ export const projectTypeAware: {
     defaultComponent: React.FC<T> = () => <div>Platform Component is not found!</div>
   ) =>
   (props) => {
-    const projectType = useSelector(ProjectV2.active.projectTypeSelector);
+    const projectType = useSelector(ProjectV2.active.typeV2Selector);
     const Component = React.useMemo(() => {
       return components[projectType]! || defaultComponent;
     }, [projectType]);

@@ -60,7 +60,7 @@ export const prototypeSettingsSelector = createSelector([prototypeSelector], ({ 
 export const prototypeButtonsSelector = createSelector([prototypeSelector], ({ settings }) => settings.buttons as BaseButton.ButtonsLayout);
 
 export const prototypeLayoutSelector = createSelector(
-  [prototypeSelector, ProjectV2.active.projectTypeSelector],
+  [prototypeSelector, ProjectV2.active.typeV2Selector],
   ({ settings }, projectType) => settings.layout || getDefaultPrototypeLayout(projectType)
 );
 

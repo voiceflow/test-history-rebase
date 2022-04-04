@@ -73,7 +73,7 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
       </Section>
 
       {Realtime.Utils.typeGuards.isVoiceProjectType(projectType) &&
-        Realtime.Utils.platform.createPlatformSelector(
+        Realtime.Utils.platform.createPlatformSelectorV2(
           {
             [VoiceflowConstants.PlatformType.ALEXA]: assistantLogic,
             [VoiceflowConstants.PlatformType.GOOGLE]: assistantLogic,

@@ -53,7 +53,7 @@ const SSMLWithVars = (
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
-  projectType: ProjectV2.active.projectTypeSelector,
+  projectType: ProjectV2.active.typeV2Selector,
   variables: DiagramV2.active.allSlotsAndVariablesSelector,
   defaultVoice: VersionV2.active.defaultVoiceSelector,
   locales: VersionV2.active.localesSelector,

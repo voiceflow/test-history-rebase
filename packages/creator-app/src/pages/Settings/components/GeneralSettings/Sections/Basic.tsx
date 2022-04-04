@@ -74,7 +74,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 
   const invocationError =
     newInvocation &&
-    Realtime.Utils.platform.createPlatformSelector<(name?: string, locales?: any[]) => string | null>(
+    Realtime.Utils.platform.createPlatformSelectorV2<(name?: string, locales?: any[]) => string | null>(
       {
         [VoiceflowConstants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
         [VoiceflowConstants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
@@ -170,7 +170,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         isDividerNested
         customContentStyling={sectionStyling}
       >
-        {Realtime.Utils.platform.createPlatformSelector<() => React.ReactNode>(
+        {Realtime.Utils.platform.createPlatformSelectorV2<() => React.ReactNode>(
           {
             [VoiceflowConstants.PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect

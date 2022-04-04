@@ -72,7 +72,7 @@ class ProjectService extends AbstractControl {
   public async getProjectType(creatorID: number, projectID: string): Promise<VoiceflowConstants.ProjectType> {
     const project = await this.get(creatorID, projectID).then(Realtime.Adapters.projectAdapter.fromDB);
 
-    return project.type;
+    return project.typeV2;
   }
 
   public async getAll(creatorID: number, workspaceID: string): Promise<Realtime.DBProject[]> {

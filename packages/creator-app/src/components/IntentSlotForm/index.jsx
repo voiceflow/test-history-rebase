@@ -210,7 +210,7 @@ function IntentSlotForm({ slot, platform, projectType, intentSlot, slotsMap, int
 
 const mapStateToProps = {
   platform: ProjectV2.active.platformSelector,
-  projectType: ProjectV2.active.projectTypeSelector,
+  projectType: ProjectV2.active.typeV2Selector,
   slotsMap: SlotV2.slotMapSelector,
   getIntentByID: IntentV2.getIntentByIDSelector,
   getIntentSlotByIntentIDSlotID: IntentV2.getIntentSlotByIntentIDSlotIDSelector,

@@ -371,7 +371,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       if (isLoginFlow) {
         const { platform, projectType } = state.selectChannelMeta;
 
-        const getTemplateTag = Realtime.Utils.platform.createPlatformAndProjectTypeSelector({
+        const getTemplateTag = Realtime.Utils.platform.createPlatformAndProjectTypeSelectorV2({
           [VoiceflowConstants.PlatformType.ALEXA]: 'onboarding:alexa_assistant',
           [VoiceflowConstants.PlatformType.GOOGLE]: 'onboarding:google_assistant',
           [`${VoiceflowConstants.PlatformType.VOICEFLOW}:${VoiceflowConstants.ProjectType.VOICE}`]: 'onboarding:custom_assistant', // we actually messed up on the templates and this is the correct voice project

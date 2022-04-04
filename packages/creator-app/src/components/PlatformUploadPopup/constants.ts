@@ -18,7 +18,7 @@ export interface PlatformContentProps {
   createNewAgent?: () => void;
 }
 
-export const getPlatformContent = Utils.platform.createPlatformSelector(
+export const getPlatformContent = Utils.platform.createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: Alexa,
     [VoiceflowConstants.PlatformType.GOOGLE]: Google,
@@ -27,7 +27,7 @@ export const getPlatformContent = Utils.platform.createPlatformSelector(
   General
 );
 
-export const getPlatformPopupLayout = Utils.platform.createPlatformSelector(
+export const getPlatformPopupLayout = Utils.platform.createPlatformSelectorV2(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: getAlexaPopupLayout,
     [VoiceflowConstants.PlatformType.GOOGLE]: getGooglePopupLayout,

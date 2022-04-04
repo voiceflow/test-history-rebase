@@ -15,7 +15,7 @@ import * as google from './google';
 export const localesSelector = createSelector([ProjectV2.active.projectSelector, Utils.functional.identity], (activeProject, rootState) => {
   if (!activeProject) return [];
 
-  switch (activeProject.platform) {
+  switch (activeProject.platformV2) {
     case VoiceflowConstants.PlatformType.ALEXA:
       return alexa.localesSelector(rootState);
     case VoiceflowConstants.PlatformType.GOOGLE:
@@ -30,7 +30,7 @@ export const localesSelector = createSelector([ProjectV2.active.projectSelector,
 export const invocationNameSelector = createSelector([ProjectV2.active.projectSelector, Utils.functional.identity], (activeProject, rootState) => {
   if (!activeProject) return null;
 
-  switch (activeProject.platform) {
+  switch (activeProject.platformV2) {
     case VoiceflowConstants.PlatformType.ALEXA:
       return alexa.invocationNameSelector(rootState);
     case VoiceflowConstants.PlatformType.GOOGLE:
@@ -43,7 +43,7 @@ export const invocationNameSelector = createSelector([ProjectV2.active.projectSe
 export const invocationsSelector = createSelector([ProjectV2.active.projectSelector, Utils.functional.identity], (activeProject, rootState) => {
   if (!activeProject) return [];
 
-  switch (activeProject.platform) {
+  switch (activeProject.platformV2) {
     case VoiceflowConstants.PlatformType.ALEXA:
       return alexa.invocationsSelector(rootState);
     case VoiceflowConstants.PlatformType.GOOGLE:
@@ -54,7 +54,7 @@ export const invocationsSelector = createSelector([ProjectV2.active.projectSelec
 });
 
 export const slotTypesSelector = createSelector(
-  [localesSelector, ProjectV2.active.platformSelector, Feature.isFeatureEnabledSelector],
+  [localesSelector, ProjectV2.active.platformV2Selector, Feature.isFeatureEnabledSelector],
   (locales, platform, isFeatureEnabled) =>
     getSlotTypes({ locales: locales as string[], platform, natoEnabled: !!isFeatureEnabled(FeatureFlag.NATO_APCO) })
 );

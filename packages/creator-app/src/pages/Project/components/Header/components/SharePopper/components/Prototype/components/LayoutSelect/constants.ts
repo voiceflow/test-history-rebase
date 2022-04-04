@@ -52,7 +52,7 @@ const CHATBOT_LAYOUT_OPTIONS = [PrototypeLayout.TEXT_DIALOG, PrototypeLayout.VOI
 
 const VOICE_LAYOUT_OPTIONS = [PrototypeLayout.TEXT_DIALOG, PrototypeLayout.VOICE_DIALOG, PrototypeLayout.VOICE_VISUALS];
 
-export const getLayoutOptions = Utils.platform.createProjectTypeSelector({
+export const getLayoutOptions = Utils.platform.createProjectTypeSelectorV2({
   [VoiceflowConstants.ProjectType.CHAT]: CHATBOT_LAYOUT_OPTIONS,
   [VoiceflowConstants.ProjectType.VOICE]: VOICE_LAYOUT_OPTIONS,
 });

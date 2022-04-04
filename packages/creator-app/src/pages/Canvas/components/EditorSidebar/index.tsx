@@ -15,7 +15,7 @@ import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
 import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
+import { PlatformV2Context, TypeV2Context } from '@/pages/Project/contexts';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut';
 import { isMarkupBlockType } from '@/utils/typeGuards';
@@ -37,8 +37,8 @@ const EditSidebar = () => {
   const getNodeByID = useSelector(CreatorV2.getNodeByIDSelector);
 
   const engine = React.useContext(EngineContext)!;
-  const platform = React.useContext(PlatformContext)!;
-  const projectType = React.useContext(ProjectTypeContext)!;
+  const platform = React.useContext(PlatformV2Context)!;
+  const projectType = React.useContext(TypeV2Context)!;
   const getManager = React.useContext(ManagerContext)!;
 
   const prevPathLength = React.useRef(0);

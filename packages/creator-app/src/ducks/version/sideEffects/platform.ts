@@ -40,7 +40,7 @@ export const updateLocales =
     if (!locales?.length) return;
 
     const state = getState();
-    const platform = ProjectV2.active.platformSelector(state);
+    const platform = ProjectV2.active.platformV2Selector(state);
 
     switch (platform) {
       case VoiceflowConstants.PlatformType.ALEXA:
@@ -65,7 +65,7 @@ export const updateInvocationName =
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
-    const platform = ProjectV2.active.platformSelector(state);
+    const platform = ProjectV2.active.platformV2Selector(state);
     const activeInvocationName = VersionV2.active.invocationNameSelector(state) ?? '';
     const activeInvocations = VersionV2.active.invocationsSelector(state);
 

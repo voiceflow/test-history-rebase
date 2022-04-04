@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.73.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.73.0...@voiceflow/realtime-sdk@1.73.1) (2022-04-04)
+
+
+### Reverts
+
+* Revert "feat: merge separation V2 selectors (VF-3162) (#5258)" ([a68a8a4](https://github.com/voiceflow/creator-app/commit/a68a8a418d17ca2b49ea3155fc058039a50dd64b)), closes [#5258](https://github.com/voiceflow/creator-app/issues/5258)
+
+
+
+
+
 # [1.73.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.72.1...@voiceflow/realtime-sdk@1.73.0) (2022-04-03)
 
 

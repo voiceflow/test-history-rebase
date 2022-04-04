@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.679.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.679.0...@voiceflow/creator-app@1.679.1) (2022-04-04)
+
+
+### Reverts
+
+* Revert "feat: merge separation V2 selectors (VF-3162) (#5258)" ([a68a8a4](https://github.com/voiceflow/creator-app/commit/a68a8a418d17ca2b49ea3155fc058039a50dd64b)), closes [#5258](https://github.com/voiceflow/creator-app/issues/5258)
+
+
+
+
+
 # [1.679.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.678.8...@voiceflow/creator-app@1.679.0) (2022-04-03)
 
 

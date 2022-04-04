@@ -67,9 +67,11 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
     const nodeRightClicked = event.button === 2;
     const middleMouseButtonClicked = event.button === 1;
     const multiSelect = event.shiftKey;
+
     if (event.defaultPrevented || engine.isCanvasBusy || nodeRightClicked || middleMouseButtonClicked || multiSelect) {
       return;
     }
+
     engine.clearActivation();
   }, []);
 

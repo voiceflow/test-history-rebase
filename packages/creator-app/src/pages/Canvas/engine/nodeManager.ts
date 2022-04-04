@@ -224,6 +224,7 @@ class NodeManager extends EngineConsumer {
       if (!node) return;
 
       this.saveLocation(node.parentNode!);
+
       const blockName = this.getNewBlockName();
 
       if (this.isAtomicActionsPhase2) {
@@ -783,7 +784,7 @@ class NodeManager extends EngineConsumer {
     const combinedNodes = node?.combinedNodes.flatMap((childNodeID) => this.engine.getLinkIDsByNodeID(childNodeID)) ?? [];
     const linkIDs = [...nodeLinkIDs, ...combinedNodes].filter((linkID) => this.engine.links.has(linkID));
 
-    this.engine.link.savePointsMany(linkIDs);
+    this.engine.link.savePointsMany(linkIDs, { saveHistory: false });
   }
 
   translateAllThreads(nodeID: string, movement: Pair<number>): void {

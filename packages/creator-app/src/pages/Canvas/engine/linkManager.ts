@@ -141,7 +141,10 @@ class LinkManager extends EngineConsumer {
   /**
    * patches multiple links
    */
-  async patchMany(patches: Omit<Realtime.link.LinkPatch, 'nodeID' | 'portID'>[]): Promise<void> {
+  async patchMany(
+    patches: Omit<Realtime.link.LinkPatch, 'nodeID' | 'portID'>[],
+    { saveHistory = true }: { saveHistory?: boolean } = {}
+  ): Promise<void> {
     const validPatches = patches
       .map((patch) => {
         const link = this.engine.getLinkByID(patch.linkID);
@@ -167,7 +170,9 @@ class LinkManager extends EngineConsumer {
       await this.engine.realtime.sendUpdate(RealtimeDuck.updateLinkDataMany(validPatches));
     }
 
-    this.engine.saveHistory();
+    if (saveHistory) {
+      this.engine.saveHistory();
+    }
 
     this.log.info(this.log.success('patched links'), this.log.value(linkIDs.length));
   }
@@ -179,12 +184,12 @@ class LinkManager extends EngineConsumer {
     return this.patchMany([{ linkID, data }]);
   }
 
-  async savePointsMany(linkIDs: string[]): Promise<void> {
+  async savePointsMany(linkIDs: string[], options?: { saveHistory?: boolean }): Promise<void> {
     const patches = linkIDs
       .map((linkID) => ({ linkID, data: { points: this.api(linkID)?.instance?.getPoints().current ?? null } }))
       .filter(({ data }) => data.points);
 
-    await this.patchMany(patches);
+    await this.patchMany(patches, options);
   }
 
   translatePoint(linkID: string, movement: Pair<number>, data: { isSource: boolean; reposition: boolean; sourceAndTargetSelected: boolean }): void {

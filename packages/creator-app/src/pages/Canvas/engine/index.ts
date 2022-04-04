@@ -437,6 +437,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
       } else {
         this.clearActivation();
       }
+
       await this.node.removeMany(activeTargets);
     }
   }

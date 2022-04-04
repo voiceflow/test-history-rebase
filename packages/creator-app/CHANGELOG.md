@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.681.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.680.1...@voiceflow/creator-app@1.681.0) (2022-04-04)
+
+
+### Bug Fixes
+
+* on delete ux (VF-000) ([#5295](https://github.com/voiceflow/creator-app/issues/5295)) ([6839010](https://github.com/voiceflow/creator-app/commit/6839010bbf798f7c3889336006d9afbf9448aea6))
+
+
+### Features
+
+* nlu inline create loading state (VF-000) ([#5294](https://github.com/voiceflow/creator-app/issues/5294)) ([c9f5426](https://github.com/voiceflow/creator-app/commit/c9f5426a66eece6e8bb06ebcdb58f03025b83ea8))
+
+
+
+
+
 ## [1.680.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.680.0...@voiceflow/creator-app@1.680.1) (2022-04-04)
 
 

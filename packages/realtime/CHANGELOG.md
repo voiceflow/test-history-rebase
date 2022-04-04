@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.54.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.54.1...@voiceflow/realtime@1.54.2) (2022-04-04)
+
+
+### Bug Fixes
+
+* selectors merging for platform separation [bugfix] (VF-000) ([#5292](https://github.com/voiceflow/creator-app/issues/5292)) ([3a43711](https://github.com/voiceflow/creator-app/commit/3a4371135f1b3f4d2a973f80698a75243714a2a6))
+
+
+
+
+
 ## [1.54.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.54.0...@voiceflow/realtime@1.54.1) (2022-04-04)
 
 

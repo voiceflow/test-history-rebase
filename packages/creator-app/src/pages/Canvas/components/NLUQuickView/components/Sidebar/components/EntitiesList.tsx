@@ -25,9 +25,8 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
   const getIntentsUsingSlot = useSelector(IntentV2.getIntentsUsingSlotSelector);
-  const { nameChangeTransform, forceNewInlineEntity } = React.useContext(NLUQuickViewContext);
+  const { nameChangeTransform, deleteItem, forceNewInlineEntity } = React.useContext(NLUQuickViewContext);
 
-  const deleteSlot = useDispatch(Slot.deleteSlot);
   const removeIntentSlot = useDispatch(IntentDuck.removeIntentSlot);
   const createSlot = useDispatch(Slot.createSlot);
 
@@ -53,8 +52,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
 
       toast.info('Utterances containing this entity have been modified to remove the slot reference.');
     }
-
-    deleteSlot(slotID);
+    deleteItem(slotID);
   }, []);
 
   const handleConfirmNewSlotName = React.useCallback(

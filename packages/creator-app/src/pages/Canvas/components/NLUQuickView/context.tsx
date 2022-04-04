@@ -10,12 +10,12 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
-import * as SlotDuck from '@/ducks/slot';
+import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useForceUpdate, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { IMM_PERSISTED_STATE_KEY } from '@/pages/Canvas/components/InteractionModelModal';
 import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/constants';
-import { useOrderedEntities, useOrderedIntents, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
+import { useDeleteVariable, useOrderedEntities, useOrderedIntents, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
 import { generateSlotInput } from '@/pages/Canvas/components/SlotEdit/utils';
 import { applyPlatformIntentNameFormatting, formatIntentAndSlotName, isBuiltInIntent, validateIntentName } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
@@ -41,6 +41,7 @@ interface NLUQuickViewProps {
   forceNewInlineEntity: number;
   isCreatingItem: boolean;
   setIsCreatingItem: (val: boolean) => void;
+  deleteItem: (id: string, tab?: InteractionModelTabType) => void;
 }
 
 const DefaultState = {
@@ -64,6 +65,7 @@ const DefaultState = {
   forceNewInlineEntity: 0,
   isCreatingItem: false,
   setIsCreatingItem: Utils.functional.noop,
+  deleteItem: Utils.functional.noop,
 };
 
 export const NLUQuickViewContext = React.createContext<NLUQuickViewProps>(DefaultState);
@@ -83,11 +85,14 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
 
   const location = useLocation();
 
-  const patchSlot = useDispatch(SlotDuck.patchSlot);
+  const patchSlot = useDispatch(Slot.patchSlot);
   const patchIntent = useDispatch(Intent.patchIntent);
   const goToQuickviewModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
   const goToQuickviewTab = useDispatch(Router.goToCurrentCanvasInteractionModel);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
+  const deleteIntent = useDispatch(Intent.deleteIntent);
+  const deleteSlot = useDispatch(Slot.deleteSlot);
+  const deleteVariable = useDeleteVariable();
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
@@ -333,6 +338,29 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     }
   }, [isOpened, isInStack]);
 
+  const deleteItem = React.useCallback(
+    (itemID: string, tab?: InteractionModelTabType) => {
+      const targetTab = tab || activeTab;
+      switch (targetTab) {
+        case InteractionModelTabType.INTENTS:
+          deleteIntent(itemID);
+          setSelectedTab(InteractionModelTabType.INTENTS);
+          break;
+        case InteractionModelTabType.SLOTS:
+          deleteSlot(itemID);
+          setSelectedTab(InteractionModelTabType.SLOTS);
+          break;
+        case InteractionModelTabType.VARIABLES:
+          deleteVariable(itemID);
+          setSelectedTab(InteractionModelTabType.VARIABLES);
+          break;
+        default:
+          break;
+      }
+    },
+    [activeTab]
+  );
+
   const api: NLUQuickViewProps = useContextApi({
     activeTab,
     setActiveTab: setSelectedTab,
@@ -354,6 +382,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     forceNewInlineEntity,
     isCreatingItem,
     setIsCreatingItem,
+    deleteItem,
   });
 
   return <NLUQuickViewContext.Provider value={api}>{children}</NLUQuickViewContext.Provider>;

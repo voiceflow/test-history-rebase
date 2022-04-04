@@ -24,7 +24,7 @@ const IntentList: React.FC<SectionProps> = ({
   setActiveTab,
   setSelectedItemID,
 }) => {
-  const { onRenameIntent, setIsCreatingItem, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } =
+  const { onRenameIntent, deleteItem, setIsCreatingItem, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } =
     React.useContext(NLUQuickViewContext);
   const createIntent = useDispatch(Intent.createIntent);
 
@@ -32,8 +32,6 @@ const IntentList: React.FC<SectionProps> = ({
   const allCustomIntentsMap = useSelector(IntentV2.customIntentMapSelector);
 
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.INTENTS, [activeTab]);
-
-  const deleteIntent = useDispatch(Intent.deleteIntent);
 
   const { sortedIntents } = useOrderedIntents();
 
@@ -47,7 +45,7 @@ const IntentList: React.FC<SectionProps> = ({
   });
 
   const onDeleteIntent = (id: string) => {
-    deleteIntent(id);
+    deleteItem(id);
   };
 
   const handleConfirmNewIntentName = React.useCallback(

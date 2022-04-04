@@ -8,20 +8,19 @@ import { useModals } from '@/hooks';
 import ListItem from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/components/ListItem';
 import { useSectionHooks } from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
-import { useDeleteVariable, useFilteredList, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
+import { useFilteredList, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
 import { SectionSection } from '.';
 import { SectionProps } from './types';
 
 const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, selectedID, setSelectedItemID, setActiveTab }) => {
-  const { activeTab } = React.useContext(NLUQuickViewContext);
+  const { activeTab, deleteItem } = React.useContext(NLUQuickViewContext);
 
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.VARIABLES, [activeTab]);
   const { open: openVariableCreate } = useModals(ModalType.VARIABLE_CREATE);
   const [justAddedVariables, setJustAddedVariables] = React.useState<string[] | null>(null);
 
   const { mergedVariables, mergedVariablesMap } = useOrderedVariables();
-  const deleteVariable = useDeleteVariable();
 
   const filteredList = useFilteredList(search, mergedVariables) as VariableItem[];
 
@@ -77,7 +76,7 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
           onClick={() => setSelectedItemID(variable.id)}
           key={variable.id}
           name={variable.name}
-          onDelete={deleteVariable}
+          onDelete={deleteItem}
           nameValidation={(text) => text}
         />
       ))}

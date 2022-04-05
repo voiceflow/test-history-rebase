@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.74.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.73.2...@voiceflow/realtime-sdk@1.74.0) (2022-04-05)
+
+
+### Features
+
+* adds variable states plan limits (VF-3224) ([#5289](https://github.com/voiceflow/creator-app/issues/5289)) ([0dc22be](https://github.com/voiceflow/creator-app/commit/0dc22be9873b5a3453cc4ab0001be7df646f3e1d))
+
+
+
+
+
 ## [1.73.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.73.1...@voiceflow/realtime-sdk@1.73.2) (2022-04-04)
 
 

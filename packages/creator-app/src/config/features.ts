@@ -4,7 +4,6 @@ import { INTERCOM_ENABLED } from '.';
 
 const GADGETS_ENABLED = process.env.FF_GADGETS === 'true';
 const NATO_APCO_ENABLED = process.env.FF_NATO_ACPO === 'true';
-const CAPTURE_V2_ENABLED = process.env.FF_CAPTURE_V2 === 'true';
 const OWNER_ROLE_ENABLED = process.env.FF_OWNER_ROLE === 'true';
 const ASR_BYPASS_ENABLED = process.env.FF_ASR_BYPASS === 'true';
 const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
@@ -20,7 +19,6 @@ const PROJECT_CREATE_ENABLED = process.env.FF_PROJECT_CREATE === 'true';
 export enum FeatureFlag {
   GADGETS = 'gadgets',
   NATO_APCO = 'nato_apco',
-  CAPTURE_V2 = 'capture_v2',
   ASR_BYPASS = 'asr_bypass',
   MOTOROLA_SSO = 'motorola_sso',
   WAVENET_VOICES = 'wavenet_voices',
@@ -51,7 +49,6 @@ export enum FeatureFlag {
 export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.GADGETS]: GADGETS_ENABLED,
   [FeatureFlag.NATO_APCO]: NATO_APCO_ENABLED,
-  [FeatureFlag.CAPTURE_V2]: CAPTURE_V2_ENABLED,
   [FeatureFlag.OWNER_ROLE]: OWNER_ROLE_ENABLED,
   [FeatureFlag.ASR_BYPASS]: ASR_BYPASS_ENABLED,
   [FeatureFlag.MOTOROLA_SSO]: MOTOROLA_SSO_ENABLED,

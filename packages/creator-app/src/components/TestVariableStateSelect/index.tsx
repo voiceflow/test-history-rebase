@@ -12,7 +12,7 @@ import React from 'react';
 
 import { ModalType } from '@/constants';
 import * as variableState from '@/ducks/variableState';
-import { useModals, useSelector } from '@/hooks';
+import { useModals, useSelector, useVariableStatesPlanLimit } from '@/hooks';
 
 import { SelectContainer } from './components';
 import { baseOptions, dividerOption } from './constants';
@@ -30,6 +30,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
   const isSelectedStateUnsync = useSelector(variableState.IsVariableStateUnsyncSelector);
   const { open: openVariableStateEditorModal } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
   const { open: openVariableStateManagerModal } = useModals(ModalType.VARIABLE_STATES_MANAGER_MODAL);
+  const verifyStatesLimit = useVariableStatesPlanLimit();
 
   const options = React.useMemo(() => {
     const statesOptions = variableStates.map((variableState) => ({ label: variableState.name, value: variableState.id }));
@@ -43,9 +44,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
 
   const selected = React.useMemo(() => options.find((option) => !isUIOnlyMenuItemOption(option) && option.value === value) || null, [options, value]);
 
-  const onAddNew = () => {
-    openVariableStateEditorModal();
-  };
+  const onAddNew = verifyStatesLimit(openVariableStateEditorModal);
 
   return (
     <SelectContainer

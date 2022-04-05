@@ -4,7 +4,7 @@ import React from 'react';
 
 import { ModalType } from '@/constants';
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useModals, useSelector, useToggle } from '@/hooks';
+import { useDispatch, useModals, useSelector, useToggle, useVariableStatesPlanLimit } from '@/hooks';
 
 import { SelectContainer } from './components';
 
@@ -22,6 +22,7 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
   const [isSelectMenuOpen, toggleSelectMenuOpen] = useToggle(false);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
   const updateSelectedVariableStateById = useDispatch(VariableState.updateSelectedVariableStateById);
+  const verifyStatesLimit = useVariableStatesPlanLimit();
 
   const variableStateOptions = React.useMemo(
     () => variableStates.map<VariableStateOption>((state) => ({ label: state.name, value: state.id })),
@@ -52,7 +53,7 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
       renderTrigger={({ ref, isOpen }) => render({ ref, isOpen, toggleSelectMenuOpen })}
       renderFooterAction={() => (
         <NestedMenuComponents.FooterActions>
-          <NestedMenuComponents.FooterAction onClick={openEditorModal}>Add New State</NestedMenuComponents.FooterAction>
+          <NestedMenuComponents.FooterAction onClick={verifyStatesLimit(openEditorModal)}>Add New State</NestedMenuComponents.FooterAction>
         </NestedMenuComponents.FooterActions>
       )}
     />

@@ -21,6 +21,7 @@ export * from './manager';
 export * from './microphone';
 export * from './modals';
 export * from './permission';
+export * from './planLimits';
 export * from './project';
 export * from './realtime';
 export * from './reducer';

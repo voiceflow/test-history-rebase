@@ -57,6 +57,7 @@ export interface Workspace {
   templates: boolean;
   organizationID: string | null;
   organizationTrialDaysLeft: number | null;
+  variableStatesLimit: number | null;
 }
 
 export interface DBWorkspace {
@@ -77,4 +78,5 @@ export interface DBWorkspace {
   members: DBMember[];
   beta_flag: number;
   templates: boolean;
+  variableStatesLimit: number | null;
 }

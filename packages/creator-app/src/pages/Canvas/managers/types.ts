@@ -12,7 +12,7 @@ import { FeatureFlagMap } from '@/ducks/feature';
 import { PathEntry } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStep } from '@/pages/Canvas/components/Step';
-import type { Engine } from '@/pages/Canvas/engine';
+import type Engine from '@/pages/Canvas/engine';
 
 import { NodeDataUpdater } from '../types';
 

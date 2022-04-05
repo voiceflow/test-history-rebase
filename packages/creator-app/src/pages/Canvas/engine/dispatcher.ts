@@ -1,7 +1,7 @@
 import EventEmitter from 'eventemitter3';
 import React from 'react';
 
-import type { Engine } from '.';
+import type Engine from '.';
 import { EntityType } from './constants';
 import { EngineConsumer } from './utils';
 

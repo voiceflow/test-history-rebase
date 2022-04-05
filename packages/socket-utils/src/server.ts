@@ -49,7 +49,7 @@ export class SocketServer extends Logux.Server {
   }
 
   async stop(): Promise<void> {
-    await this.destroy();
+    await Promise.allSettled([this.destroy()]);
   }
 
   public async processAs(creatorID: number, action: Action<any>, meta?: Partial<ServerMeta>): Promise<Readonly<ServerMeta>> {

@@ -13,7 +13,7 @@ import { MarkupTransform } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
-import type { Engine } from '..';
+import type Engine from '..';
 import { EntityType } from '../constants';
 import { EntityInstance, ResourceEntity } from './entity';
 

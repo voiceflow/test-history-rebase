@@ -3,7 +3,7 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import { RegisterEngine } from '@/contexts';
-import type { Engine } from '@/pages/Canvas/engine';
+import type Engine from '@/pages/Canvas/engine';
 import type { NodeManagerConfig } from '@/pages/Canvas/managers/types';
 
 import { ClipboardProvider } from './ClipboardContext';

@@ -3,7 +3,7 @@ import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { useLinkedState } from '@/hooks';
-import type { Engine } from '@/pages/Canvas/engine';
+import type Engine from '@/pages/Canvas/engine';
 
 export interface SidebarHeaderAction {
   value: string;

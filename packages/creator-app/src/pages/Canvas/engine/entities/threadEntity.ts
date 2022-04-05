@@ -14,7 +14,7 @@ import { Coords, Vector } from '@/utils/geometry';
 import * as Query from '@/utils/query';
 
 import { CommentAPI } from '../../types';
-import type { Engine } from '..';
+import type Engine from '..';
 import { EntityType } from '../constants';
 import { EntityInstance, ResourceEntity } from './entity';
 

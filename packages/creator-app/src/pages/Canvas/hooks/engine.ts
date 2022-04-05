@@ -1,0 +1,64 @@
+import { useMouseMove } from '@voiceflow/ui';
+import moize from 'moize';
+import React from 'react';
+import { useSelector, useStore } from 'react-redux';
+
+import { MousePositionContext } from '@/contexts';
+import * as CreatorV2 from '@/ducks/creatorV2';
+import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
+import { useForceUpdate } from '@/hooks';
+import { CanvasAction } from '@/pages/Canvas/constants';
+import { Store } from '@/store/types';
+import { Coords } from '@/utils/geometry';
+
+import Engine from '../engine';
+
+const createEngine = moize.simple((...args: ConstructorParameters<typeof Engine>) => new Engine(...args));
+
+// used only in the HMR
+let $recreateEngine: ((Class: typeof Engine) => void) | null = null;
+
+const useCreateEngine = (): [Engine, number] => {
+  const store = useStore() as Store;
+  const [forceUpdate, engineKey] = useForceUpdate();
+  const mousePosition = React.useContext(MousePositionContext);
+  const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
+
+  const ref = React.useRef<Engine>();
+
+  if (ref.current === undefined) {
+    ref.current = createEngine(store, mousePosition, realtimeSubscription);
+
+    $recreateEngine = (Class: typeof Engine) => {
+      ref.current = new Class(store, mousePosition, realtimeSubscription);
+      forceUpdate();
+    };
+  }
+
+  return [ref.current, engineKey];
+};
+
+// eslint-disable-next-line import/prefer-default-export
+export const useEngine = (): [Engine, number] => {
+  const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
+
+  const [engine, engineKey] = useCreateEngine();
+
+  useMouseMove((event) => engine.emitter.emit(CanvasAction.MOVE_MOUSE, new Coords([event.clientX, event.clientY])), [engine]);
+
+  React.useEffect(
+    () => () => {
+      engine.reset();
+      createEngine.clear();
+    },
+    [diagramID]
+  );
+
+  return [engine, engineKey];
+};
+
+if (import.meta.hot) {
+  import.meta.hot.accept('../engine/index.ts', (module) => {
+    $recreateEngine?.(module.default);
+  });
+}

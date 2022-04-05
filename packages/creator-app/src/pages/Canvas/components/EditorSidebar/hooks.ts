@@ -5,7 +5,7 @@ import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 import { EngineContext, ManagerContext, ManagerGetter } from '@/pages/Canvas/contexts';
-import type { Engine } from '@/pages/Canvas/engine';
+import type Engine from '@/pages/Canvas/engine';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 
 export interface PathEntry {

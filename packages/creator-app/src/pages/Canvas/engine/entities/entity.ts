@@ -6,7 +6,7 @@ import shallowEqual from 'shallowequal';
 
 import { useTeardown } from '@/hooks';
 
-import type { Engine } from '..';
+import type Engine from '..';
 import { EntityType } from '../constants';
 
 export interface EntityInstance {

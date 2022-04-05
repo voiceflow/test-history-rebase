@@ -7,7 +7,7 @@ import { withRequiredEngine } from '@/contexts';
 import { useTrackingEvents } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
 import MarkupSection from '@/pages/Canvas/components/MarkupSection';
-import type { Engine } from '@/pages/Canvas/engine';
+import type Engine from '@/pages/Canvas/engine';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
 import { BackgroundColor, IconButton, IconButtonSeparator, TextAligns, TextStyles } from './components';

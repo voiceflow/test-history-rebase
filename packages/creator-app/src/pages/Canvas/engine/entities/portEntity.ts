@@ -4,7 +4,7 @@ import React from 'react';
 import { useSetup } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 
-import type { Engine } from '..';
+import type Engine from '..';
 import { EntityType } from '../constants';
 import { EntityInstance, isDirectlyEqual, ResourceEntity } from './entity';
 

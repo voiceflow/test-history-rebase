@@ -8,7 +8,7 @@ import { createSuite } from '@/../test/_suite';
 import { BlockType } from '@/constants';
 import { SpeakTraceAudioType } from '@/constants/prototype';
 import { Trace } from '@/models';
-import type { Engine } from '@/pages/Canvas/engine';
+import type Engine from '@/pages/Canvas/engine';
 import AudioController from '@/pages/Prototype/PrototypeTool/Audio';
 import MessageController from '@/pages/Prototype/PrototypeTool/Message';
 import TimeoutController from '@/pages/Prototype/PrototypeTool/Timeout';

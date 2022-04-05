@@ -66,8 +66,8 @@ export abstract class AbstractServiceManager<T extends LoguxControlOptions, M ex
   async stop(): Promise<void> {
     this.services.sync.stop();
 
-    await Promise.all(Object.values(this.actions).map((action) => action.destroy()));
-    await Promise.all(Object.values(this.channels).map((channel) => channel.destroy()));
-    await Promise.all(Object.values(this.middlewares).map((middleware) => middleware.destroy()));
+    await Promise.allSettled(Object.values(this.actions).map((action) => action.destroy()));
+    await Promise.allSettled(Object.values(this.channels).map((channel) => channel.destroy()));
+    await Promise.allSettled(Object.values(this.middlewares).map((middleware) => middleware.destroy()));
   }
 }

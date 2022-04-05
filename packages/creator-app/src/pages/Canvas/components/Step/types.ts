@@ -4,7 +4,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
-import type { Engine } from '@/pages/Canvas/engine';
+import type Engine from '@/pages/Canvas/engine';
 
 export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
   ports: Realtime.NodePorts<O>;

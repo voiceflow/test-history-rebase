@@ -10,7 +10,7 @@ import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
-import useEngine from '@/pages/Canvas/engine';
+import { useEngine } from '@/pages/Canvas/hooks';
 import { getManager } from '@/pages/Canvas/managers';
 import { MarkupProvider, ProjectProvider } from '@/pages/Project/contexts';
 
@@ -23,14 +23,14 @@ const ExportCanvas: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
 
-  const engine = useEngine();
+  const [engine, engineKey] = useEngine();
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
   return (
     <ProjectProvider platform={platform} projectType={projectType}>
       <PresentationModeProvider>
         <MarkupProvider>
           <ManagerProvider value={getManager as any}>
-            <CanvasProviders engine={engine}>
+            <CanvasProviders key={engineKey} engine={engine}>
               <ExportGlobalStyle />
               <ExportWatermark isOnPaidPlan={!!isOnPaidPlan} />
               <ExportCanvasDiagram onRegister={registerCanvas}>

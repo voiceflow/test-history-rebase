@@ -29,8 +29,11 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
     process.exit(0);
   });
 
-  process.on('unhandledRejection', (r, p) => {
+  process.on('unhandledRejection', async (r, p) => {
     logger.warn(`${r} Unhandled rejection at: ${p}`);
+
+    await serviceManager.stop();
+    await server.stop();
 
     // eslint-disable-next-line no-process-exit
     process.exit(0);

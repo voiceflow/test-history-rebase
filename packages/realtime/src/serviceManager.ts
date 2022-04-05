@@ -32,7 +32,7 @@ class ServiceManager extends AbstractServiceManager<LoguxControlOptions, Middlew
   }
 
   async stop(): Promise<void> {
-    await Promise.all([super.stop(), stopClients(this.clients)]);
+    await Promise.allSettled([super.stop(), stopClients(this.clients)]);
   }
 }
 

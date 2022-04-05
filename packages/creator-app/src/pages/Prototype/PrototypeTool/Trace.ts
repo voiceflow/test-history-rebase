@@ -23,7 +23,7 @@ import {
   V1Trace,
   VisualTrace,
 } from '@/models';
-import { Engine } from '@/pages/Canvas/engine';
+import type Engine from '@/pages/Canvas/engine';
 import { loadImage } from '@/utils/dom';
 import { Logger } from '@/utils/logger';
 

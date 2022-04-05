@@ -37,5 +37,5 @@ const buildClients = (options: BaseOptions): ClientMap => {
 export default buildClients;
 
 export const stopClients = async (clients: ClientMap): Promise<void> => {
-  await clients.metrics?.stop();
+  await Promise.allSettled([clients.metrics?.stop(), clients.redis.quit(), clients.pubsub.subscriber.quit()]);
 };

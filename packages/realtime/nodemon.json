@@ -1,13 +1,11 @@
 {
-  "restartable": false,
   "execMap": {
     "ts": "node --loader ts-node/esm --experimental-specifier-resolution=node"
   },
-  "watch": [
-    "src/"
-  ],
+  "watch": ["src/"],
   "ext": "ts",
   "env": {
     "TS_NODE_PROJECT": "tsconfig.build.json"
-  }
+  },
+  "signal": "SIGTERM"
 }

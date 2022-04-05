@@ -5,7 +5,7 @@ import { useSetup, useTeardown } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { Pair, PathPoints } from '@/types';
 
-import type { Engine } from '..';
+import type Engine from '..';
 import { EntityType } from '../constants';
 import { EntityInstance, ResourceEntity } from './entity';
 

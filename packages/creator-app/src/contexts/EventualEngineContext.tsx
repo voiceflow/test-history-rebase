@@ -2,7 +2,7 @@ import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
-import type { Engine } from '@/pages/Canvas/engine';
+import type Engine from '@/pages/Canvas/engine';
 
 export type EventualEngineContextType = null | {
   get: () => null | Engine;

@@ -14,7 +14,7 @@ import { NodeDescriptorOptionalPorts } from '@/pages/Canvas/managers/types';
 import { Dispatcher, DispatchResult, Selector } from '@/store/types';
 import { Pair, Point } from '@/types';
 
-import type { Engine } from '.';
+import type Engine from '.';
 
 export const DUPLICATE_OFFSET: Pair<number> = [40, 40];
 

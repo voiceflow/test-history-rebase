@@ -7,7 +7,7 @@ import { ActionPayload } from '@/store/types';
 import { Pair } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
-import type { Engine } from '.';
+import type Engine from '.';
 import { EngineConsumer } from './utils';
 
 const SKIP_WARNING_ACTIONS: string[] = [

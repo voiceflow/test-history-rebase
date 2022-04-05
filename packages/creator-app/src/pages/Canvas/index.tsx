@@ -28,14 +28,14 @@ import Spotlight from './components/Spotlight';
 import ThreadHistoryDrawer from './components/ThreadHistoryDrawer';
 import ThreadLayer from './components/ThreadLayer';
 import { CanvasProviders } from './contexts';
-import useEngine from './engine';
+import { useEngine } from './hooks';
 
 interface CanvasProps {
   isPrototypingMode?: boolean;
 }
 
 const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
-  const engine = useEngine();
+  const [engine, engineKey] = useEngine();
   // using history to do not rerender on the every location change
   const history = useHistory();
   const [scheduler, schedulerAPI] = useRAF();
@@ -65,10 +65,10 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
     return schedulerAPI.current.cancel;
   }, [engine]);
 
-  useRegistration(() => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext), [selectionSetTargetsContext]);
+  useRegistration(() => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext), [engine, selectionSetTargetsContext]);
 
   return (
-    <CanvasProviders engine={engine}>
+    <CanvasProviders key={engineKey} engine={engine}>
       <Container>
         <ContextMenu />
 

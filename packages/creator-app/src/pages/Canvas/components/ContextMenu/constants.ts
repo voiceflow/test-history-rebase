@@ -6,7 +6,7 @@ import { Hotkey, HOTKEY_LABEL_MAP, PLATFORM_META_KEY_LABEL } from '@/keymap';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
-import { Engine } from '../../engine';
+import type Engine from '../../engine';
 import { ContextMenuOption } from './types';
 
 export enum CanvasAction {

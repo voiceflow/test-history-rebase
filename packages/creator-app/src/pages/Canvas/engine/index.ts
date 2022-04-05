@@ -1,11 +1,9 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { logger, useCreateConst, useMouseMove } from '@voiceflow/ui';
+import { logger } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
-import moize from 'moize';
 import React from 'react';
-import { useSelector, useStore } from 'react-redux';
 
 import { CanvasAPI } from '@/components/Canvas';
 import { MovementCalculator } from '@/components/Canvas/types';
@@ -14,7 +12,6 @@ import { isDebug } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { BlockType, PageProgressBar } from '@/constants';
-import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagram';
@@ -27,7 +24,7 @@ import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
 import * as Workspace from '@/ducks/workspaceV2';
-import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
+import { RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { State, Store } from '@/store/types';
@@ -75,7 +72,7 @@ declare global {
   }
 }
 
-export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> {
+class Engine extends ComponentManager<{ container: CanvasContainerAPI }> {
   log = logger.child('engine');
 
   emitter = new EventEmitter<string>();
@@ -599,26 +596,4 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   }
 }
 
-const createEngine = moize.simple((...args: ConstructorParameters<typeof Engine>) => new Engine(...args));
-
-const useEngine = (): Engine => {
-  const store = useStore() as Store;
-  const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
-  const mousePosition = React.useContext(MousePositionContext);
-  const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
-  const engine = useCreateConst(() => createEngine(store, mousePosition, realtimeSubscription));
-
-  useMouseMove((event) => engine.emitter.emit(CanvasAction.MOVE_MOUSE, new Coords([event.clientX, event.clientY])), []);
-
-  React.useEffect(
-    () => () => {
-      engine.reset();
-      createEngine.clear();
-    },
-    [diagramID]
-  );
-
-  return engine;
-};
-
-export default useEngine;
+export default Engine;

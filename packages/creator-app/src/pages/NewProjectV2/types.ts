@@ -2,9 +2,8 @@ import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Nullish } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
-import { Icon, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { Icon, TippyTooltipProps, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import React from 'react';
 
 export enum PlatformTypeUpcoming {
   WHATSAPP = 'whatsapp',
@@ -21,7 +20,7 @@ export enum PlatformTypeUpcoming {
 
 export interface PlatformAndProjectTypeMeta {
   name: string;
-  tooltip?: React.ReactNode;
+  tooltip?: TippyTooltipProps;
   invocationDescription?: string;
   localesText?: string;
   disabled: boolean;

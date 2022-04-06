@@ -4,6 +4,7 @@ import { styled } from '@/hocs';
 import THEME from '@/styles/theme';
 
 export { default as DatePicker } from './TimeRangePicker/DatePicker';
+export type { TranscriptFiltersProps } from './TranscriptFilters';
 export { default as TranscriptFilters } from './TranscriptFilters';
 
 export const Container = styled(FlexApart)<{ hasShadow: boolean }>`

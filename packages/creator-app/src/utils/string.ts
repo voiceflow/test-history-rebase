@@ -4,6 +4,8 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { STRICT_LINKS_REGEXS, URL_ONLY_REGEX, VALID_LINKS_REGEXS } from '@/constants';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
+export const isString = (value?: unknown): value is string => typeof value === 'string';
+
 export const createNextName = (prefix: string, items: string[], platform: VoiceflowConstants.PlatformType): string => {
   let counter = 1;
 

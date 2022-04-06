@@ -9,16 +9,14 @@ import THEME from '@/styles/theme';
 import { Container, EmotionContainer, IconContainer } from './components';
 
 interface StatusIconsProps {
-  sentiment?: Sentiment;
-  reviewed?: boolean;
-  saved?: boolean;
   id: string;
+  saved?: boolean;
+  reviewed?: boolean;
+  sentiment?: Sentiment;
 }
 
 const StatusIcons: React.FC<StatusIconsProps> = ({ id, sentiment, reviewed = false, saved = false }) => {
-  if (!saved && !reviewed && !sentiment) {
-    return null;
-  }
+  if (!saved && !reviewed && !sentiment) return null;
 
   return (
     <Container className={`${ClassName.TRANSCRIPT_ITEM_STATUSES}-${id}`}>
@@ -27,11 +25,13 @@ const StatusIcons: React.FC<StatusIconsProps> = ({ id, sentiment, reviewed = fal
           <SvgIcon icon="bookmark" color={THEME.colors.red} />
         </IconContainer>
       )}
+
       {reviewed && (
         <IconContainer className={ClassName.MARK_AS_REVIEWED_CONTAINER}>
           <SvgIcon icon="checkmarkFilled" color="#3e9e3e" />
         </IconContainer>
       )}
+
       {sentiment && (
         <IconContainer isEmotion>
           <EmotionContainer src={SentimentToPNGName[sentiment]} />

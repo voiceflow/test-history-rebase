@@ -9,40 +9,43 @@ import { Transcript } from '@/models';
 import { Container, TranscriptResultsItem } from './components';
 
 interface TranscriptResultsListProps {
-  transcriptList: Transcript[];
   onScroll: (e: React.UIEvent<HTMLElement>) => void;
+  transcriptList: Transcript[];
 }
 
 const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcriptList, onScroll }) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
+
+  const currentTranscriptIndex = React.useMemo(() => transcriptList.findIndex(({ id }) => id === currentTranscriptID), [currentTranscriptID]);
+
   return (
     <Container onScroll={onScroll}>
       <AutoSizer>
-        {({ width, height }) => {
-          return (
-            <List
-              height={height}
-              width={width}
-              rowCount={transcriptList.length}
-              rowHeight={90}
-              overscanRowCount={10}
-              rowRenderer={({ key, index, style }) => {
-                const data = transcriptList[index];
-                const isLastItem = transcriptList.length === index + 1;
-                return (
-                  <div key={key} style={style}>
-                    <TranscriptResultsItem
-                      format={TranscriptExportFormat.CSV}
-                      data={data}
-                      active={currentTranscriptID?.toString() === data.id.toString()}
-                      isLastItem={isLastItem}
-                    />
-                  </div>
-                );
-              }}
-            />
-          );
-        }}
+        {({ width, height }) => (
+          <List
+            width={width}
+            height={height}
+            rowCount={transcriptList.length}
+            rowHeight={90}
+            scrollToIndex={currentTranscriptIndex}
+            overscanRowCount={10}
+            rowRenderer={({ key, index, style }) => {
+              const data = transcriptList[index];
+              const isLastItem = transcriptList.length === index + 1;
+
+              return (
+                <div key={key} style={style}>
+                  <TranscriptResultsItem
+                    data={data}
+                    format={TranscriptExportFormat.CSV}
+                    active={currentTranscriptID?.toString() === data.id.toString()}
+                    isLastItem={isLastItem}
+                  />
+                </div>
+              );
+            }}
+          />
+        )}
       </AutoSizer>
     </Container>
   );

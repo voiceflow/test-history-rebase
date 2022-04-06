@@ -90,7 +90,7 @@ export interface BaseSelectProps {
   iconProps?: Partial<SvgIconProps>;
   onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
   isDropdown?: boolean;
-  renderTags?: Nullable<() => React.ReactNode>;
+  renderTags?: Nullable<() => React.ReactNode | React.ReactNode[]>;
   borderLess?: boolean;
   searchable?: boolean;
   rightAction?: React.ReactNode;

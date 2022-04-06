@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { ClassName } from '@/styles/constants';
@@ -7,31 +8,20 @@ import BaseTagInput from './BaseReportTagInput';
 interface SelectOnlyTagInputProps {
   onChange: (tags: string[]) => void;
   selectedTags: string[];
-  hasRadioButtons: boolean;
-  isSelectedFunc: (id: string) => boolean;
 }
 
-const SelectOnlyTagInput: React.FC<SelectOnlyTagInputProps> = ({ onChange, selectedTags, ...props }) => {
-  const addTag = (tagID: string) => {
-    onChange([...selectedTags, tagID]);
-  };
-
-  const removeTag = (tagID: string) => {
-    const newTagArray = selectedTags.filter((id) => id !== tagID);
-    onChange(newTagArray);
-  };
-  return (
-    <BaseTagInput
-      className={ClassName.BASE_REPORT_TAG_INPUT}
-      onChange={onChange}
-      addTag={addTag}
-      selectedTags={selectedTags}
-      removeTag={removeTag}
-      selectOnly
-      creatable={false}
-      {...props}
-    />
-  );
-};
+const SelectOnlyTagInput: React.FC<SelectOnlyTagInputProps> = ({ onChange, selectedTags }) => (
+  <BaseTagInput
+    addTag={(tagID) => onChange(Utils.array.unique([...selectedTags, tagID]))}
+    onChange={onChange}
+    className={ClassName.BASE_REPORT_TAG_INPUT}
+    removeTag={(tagID) => onChange(selectedTags.filter((id) => id !== tagID))}
+    creatable={false}
+    selectOnly
+    selectedTags={selectedTags}
+    hasRadioButtons
+    isSelectedFunc={(id) => selectedTags.includes(id)}
+  />
+);
 
 export default SelectOnlyTagInput;

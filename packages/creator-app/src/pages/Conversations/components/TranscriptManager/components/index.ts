@@ -3,6 +3,7 @@ import { Flex } from '@voiceflow/ui';
 import { styled } from '@/hocs';
 
 export { default as TranscriptResultsList } from './TranscriptResultsList';
+export type { TranscriptsHeaderProps } from './TranscriptsHeader';
 export { default as TranscriptHeader } from './TranscriptsHeader';
 
 export const Container = styled(Flex)`

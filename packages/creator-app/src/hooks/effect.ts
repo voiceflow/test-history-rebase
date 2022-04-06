@@ -2,7 +2,7 @@ import { Callback, Eventual, Utils } from '@voiceflow/common';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
-import { useTeardown } from './lifecycle';
+import { useDidUpdateEffect, useTeardown } from './lifecycle';
 
 /**
  * ex. "8pm" or "8:30pm"
@@ -18,12 +18,17 @@ const getNextScheduledTimeout = (schedule: string[]) => {
   return dayjs.min(validTimes).valueOf() - now.valueOf();
 };
 
-export const useAsyncEffect = (effect: () => Promise<any>, dependencies: any[] = []) =>
+export const useAsyncEffect = (effect: () => Promise<void>, dependencies: unknown[] = []): void =>
   useEffect(() => {
     effect();
   }, dependencies);
 
-export const useAsyncMountUnmount = (didMount?: () => void, willUnmount?: () => void) => {
+export const useAsyncDidUpdate = (effect: () => Promise<void>, dependencies: unknown[] = []): void =>
+  useDidUpdateEffect(() => {
+    effect();
+  }, dependencies);
+
+export const useAsyncMountUnmount = (didMount?: () => void, willUnmount?: () => void): void => {
   useEffect(() => {
     didMount?.();
 
@@ -35,7 +40,7 @@ export const useAsyncMountUnmount = (didMount?: () => void, willUnmount?: () => 
   }, []);
 };
 
-export const useOneTimeEffect = (effect: () => boolean, dependencies: any[] = []) => {
+export const useOneTimeEffect = (effect: () => boolean, dependencies: unknown[] = []): void => {
   const wasTriggered = useRef(false);
 
   useEffect(() => {
@@ -45,7 +50,7 @@ export const useOneTimeEffect = (effect: () => boolean, dependencies: any[] = []
   }, dependencies);
 };
 
-export const useRegistration = (register: () => () => void, dependencies: any[] = []) => {
+export const useRegistration = (register: () => () => void, dependencies: unknown[] = []): void => {
   const teardownRef = useRef(Utils.functional.noop);
 
   useEffect(() => {
@@ -55,21 +60,21 @@ export const useRegistration = (register: () => () => void, dependencies: any[] 
   useTeardown(() => teardownRef.current());
 };
 
-export const useInterval = (callback: Callback, timeout: number, dependencies: any[] = []) =>
+export const useInterval = (callback: Callback, timeout: number, dependencies: unknown[] = []): void =>
   useEffect(() => {
     const interval = setInterval(callback, timeout);
 
     return () => clearInterval(interval);
   }, dependencies);
 
-export const useTimeout = (callback: Callback, timeout: number, dependencies: any[] = []) =>
+export const useTimeout = (callback: Callback, timeout: number, dependencies: unknown[] = []): void =>
   useEffect(() => {
     const timer = setTimeout(callback, timeout);
 
     return () => clearTimeout(timer);
   }, dependencies);
 
-export const useScheduled = (schedule: string[], effect: () => Eventual<void>, dependencies: any[] = []) => {
+export const useScheduled = (schedule: string[], effect: () => Eventual<void>, dependencies: unknown[] = []): void => {
   const [timeout, updateTimeout] = useState(() => getNextScheduledTimeout(schedule));
 
   useTimeout(

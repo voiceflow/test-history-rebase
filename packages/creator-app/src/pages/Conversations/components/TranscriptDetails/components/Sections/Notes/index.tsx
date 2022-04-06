@@ -4,7 +4,8 @@ import EmojiPicker, { EMOJI_OPTION } from '@/components/EmojiPicker';
 import { FAN_DIRECTION } from '@/components/EmojiPicker/constants';
 import { addTag, currentTranscriptIDSelector, currentTranscriptSelector, removeTag } from '@/ducks/transcript';
 import { useDispatch, useSelector } from '@/hooks';
-import { Sentiment, SentimentArray } from '@/models';
+import { Sentiment } from '@/models';
+import { isSentimentTag } from '@/utils/reportTag';
 
 import { Container, SectionTitle } from '../components';
 import TranscriptNotes from './TranscriptNotes';
@@ -27,10 +28,7 @@ const Notes: React.FC = () => {
   const dispatchAddTag = useDispatch(addTag);
   const dispatchRemoveTag = useDispatch(removeTag);
 
-  const currentSentiment = React.useMemo(
-    () => reportTags?.filter((tag) => SentimentArray.includes(tag as Sentiment)) ?? [],
-    [reportTags, currentTranscriptID]
-  );
+  const currentSentiment = React.useMemo(() => reportTags?.filter(isSentimentTag) ?? [], [reportTags, currentTranscriptID]);
   const selectedEmoji = currentSentiment?.[0] ? SentimentToEmoji[currentSentiment[0] as Sentiment] : null;
 
   const onChange = async (emotion: EMOJI_OPTION) => {

@@ -94,6 +94,7 @@ export const addTag =
 
     const { reportTags } = transcriptByIDSelector(state)(transcriptID);
     const newTagsArray = [...new Set([...reportTags, tagID])];
+
     try {
       dispatch(patchTranscript(transcriptID, { reportTags: newTagsArray }));
       await client.transcript.addTag(activeProjectID!, transcriptID, tagID);
@@ -146,13 +147,16 @@ export const updateNotes =
   async (dispatch, getState) => {
     const state = getState();
     const activeProjectID = Session.activeProjectIDSelector(state);
-    const { notes: initialNotes } = transcriptByIDSelector(state)(transcriptID);
+    const transcript = transcriptByIDSelector(state)(transcriptID);
 
     try {
       dispatch(patchTranscript(transcriptID, { notes }));
       await client.transcript.patchTranscript(activeProjectID!, transcriptID, { notes });
     } catch (e) {
-      dispatch(patchTranscript(transcriptID, { notes: initialNotes }));
+      if (transcript) {
+        dispatch(patchTranscript(transcriptID, { notes: transcript.notes }));
+      }
+
       toast.error('Failed to update transcript notes');
     }
   };
@@ -162,6 +166,7 @@ export const deleteTranscript =
   async (dispatch, getState) => {
     const state = getState();
     const activeProjectID = Session.activeProjectIDSelector(state);
+
     try {
       await client.transcript.deleteTranscript(activeProjectID!, transcriptID);
       dispatch(removeTranscript(transcriptID.toString()));

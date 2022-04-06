@@ -5,8 +5,8 @@ import { Message } from '@/pages/Prototype/types';
 
 // Never change these, they are used in the transcript_report_tags table as specific ids for tags
 export enum SystemTag {
-  REVIEWED = 'system.reviewed',
   SAVED = 'system.saved',
+  REVIEWED = 'system.reviewed',
 }
 
 // Never change these, they are used in the transcript_report_tags table as specific ids for tags
@@ -15,12 +15,6 @@ export enum Sentiment {
   EMOTION_NEGATIVE = 'system.emotion_negative',
   EMOTION_NEUTRAL = 'system.emotion_neutral',
 }
-
-export const SentimentArray = [Sentiment.EMOTION_POSITIVE, Sentiment.EMOTION_NEGATIVE, Sentiment.EMOTION_NEUTRAL];
-
-export const SystemTagArray = [SystemTag.REVIEWED, SystemTag.SAVED];
-
-export const ALL_BUILTIN_TAGS_ARRAY = [...SentimentArray, ...SystemTagArray];
 
 export enum Device {
   DESKTOP = 'desktop',

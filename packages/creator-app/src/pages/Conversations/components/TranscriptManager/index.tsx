@@ -2,25 +2,25 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import * as Transcripts from '@/ducks/transcript';
+import { useRAF } from '@/hooks';
 
-import { Container, TranscriptHeader, TranscriptResultsList } from './components';
+import { Container, TranscriptHeader, TranscriptResultsList, TranscriptsHeaderProps } from './components';
 
-interface TranscriptManagerProps {
-  loading?: boolean;
-}
-
-const TranscriptManager: React.FC<TranscriptManagerProps> = () => {
+const TranscriptManager: React.FC<Omit<TranscriptsHeaderProps, 'hasShadow' | 'resultCount'>> = (props) => {
   const [hasShadow, setHasShadow] = React.useState<boolean>(false);
-  const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
 
-  const handleScroll = React.useCallback((e: React.UIEvent<HTMLElement>) => {
-    setHasShadow(e.currentTarget.scrollTop !== 0);
-  }, []);
+  const [scheduler] = useRAF();
+
+  const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
 
   return (
     <Container>
-      <TranscriptHeader resultCount={allTranscripts.length} hasShadow={hasShadow} />
-      <TranscriptResultsList transcriptList={allTranscripts} onScroll={handleScroll} />
+      <TranscriptHeader {...props} resultCount={allTranscripts.length} hasShadow={hasShadow} />
+
+      <TranscriptResultsList
+        onScroll={({ currentTarget }) => scheduler(() => setHasShadow(currentTarget.scrollTop !== 0))}
+        transcriptList={allTranscripts}
+      />
     </Container>
   );
 };

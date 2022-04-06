@@ -1,11 +1,9 @@
 import composeRef from '@seznam/compose-react-refs';
-import Box from '@ui/components/Box';
 import TippyTooltip from '@ui/components/TippyTooltip';
 import { ClassName } from '@ui/styles/constants';
 import { stopImmediatePropagation } from '@ui/utils';
 import React from 'react';
 import { Manager, Reference } from 'react-popper';
-import { Position } from 'react-tippy';
 
 // eslint-disable-next-line import/no-cycle
 import Menu from '../Menu';
@@ -68,7 +66,6 @@ function MenuOptions({
     const isFocused = focusedOptionIndex === index;
 
     const sharedProps = {
-      key,
       ref: isFocused ? onItemRef?.(index) : null,
       // to prevent parent popper from closing onSelect
       onClick: stopImmediatePropagation(
@@ -81,12 +78,10 @@ function MenuOptions({
     };
 
     if (isBaseMenuItem(option)) {
-      const tooltipHtml = <Box width={200}>{option.tooltip}</Box>;
-      const wrapperProps = option.tooltip ? { position: 'right-end' as Position, distance: -390, offset: -30, html: tooltipHtml } : {};
       const Wrapper = option.tooltip ? TippyTooltip : React.Fragment;
 
       return (
-        <Wrapper {...wrapperProps}>
+        <Wrapper key={key} {...option.tooltip}>
           <SelectItem {...sharedProps} {...option.menuItemProps} disabled={option.disabled}>
             {!option.vfUIOnly && renderLabel(option, { isFocused, optionsPath: path })}
           </SelectItem>
@@ -94,7 +89,11 @@ function MenuOptions({
       );
     }
 
-    return <SelectItem {...sharedProps}>{renderLabel(option, { isFocused, optionsPath: path })}</SelectItem>;
+    return (
+      <SelectItem key={key} {...sharedProps}>
+        {renderLabel(option, { isFocused, optionsPath: path })}
+      </SelectItem>
+    );
   };
 
   let groupedIndex = 0;

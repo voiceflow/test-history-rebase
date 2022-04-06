@@ -19,13 +19,16 @@ interface TagLineItemProps {
 }
 
 const TagLineItem: React.FC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete, tag }) => {
+  const updateTag = useDispatch(ReportTagDuck.updateTag);
+
   const [tagVal, setTagVal] = React.useState(tag.label);
   const [tagError, setTagError] = React.useState('');
-  const allOtherTags = React.useMemo(() => tags.filter(({ id }) => id !== tag.id), [tags]);
-  const updateTag = useDispatch(ReportTagDuck.updateTag);
+
+  const otherTags = React.useMemo(() => tags.filter(({ id }) => id !== tag.id), [tags]);
 
   const onDeleteTag = () => {
     onDelete(tag.id);
+
     toast.success(
       <>
         Successfully deleted '{tag.label}' <br />
@@ -39,7 +42,7 @@ const TagLineItem: React.FC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete,
 
     const lowercaseValue = value.toLowerCase();
 
-    if (allOtherTags.some((tag) => tag.label.toLowerCase() === lowercaseValue)) {
+    if (otherTags.some((tag) => tag.label.toLowerCase() === lowercaseValue)) {
       setTagError('Tag name already exists');
     } else if (!value) {
       setTagError('Tag name is required');
@@ -63,18 +66,20 @@ const TagLineItem: React.FC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete,
         className={cn(`${ClassName.TAG_MODAL_INPUT_FIELD}-${tag.label}`)}
         onChangeText={onTagChange}
       />
+
       {tagError && (
         <FadeLeftContainer>
           <ErrorMessage style={{ marginBottom: '0', paddingTop: '8px' }}>{tagError}</ErrorMessage>
         </FadeLeftContainer>
       )}
+
       <TrashIconContainer>
         <IconButton
-          className={cn(`${ClassName.DELETE_TAG_BUTTON}-${tag.label}`)}
           icon="garbage"
           size={16}
           onClick={onDeleteTag}
           variant={IconButtonVariant.SQUARE}
+          className={cn(`${ClassName.DELETE_TAG_BUTTON}-${tag.label}`)}
         />
       </TrashIconContainer>
     </Container>

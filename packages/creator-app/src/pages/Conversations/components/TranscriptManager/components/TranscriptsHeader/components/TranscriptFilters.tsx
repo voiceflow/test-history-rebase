@@ -1,167 +1,142 @@
-import { TimeRange } from '@voiceflow/internal';
+import { Utils } from '@voiceflow/common';
 import { Box, ButtonVariant, ClickableText } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import ReportTagInput, { InputVariant } from '@/components/ReportTagInput';
 import SelectMenu, { MenuSection } from '@/components/SelectMenu';
-import { goToTargetTranscript } from '@/ducks/router';
-import { fetchTranscripts } from '@/ducks/transcript';
-import { useAsyncEffect, useDispatch, useTrackingEvents } from '@/hooks';
-import { FILTER_TAG, isBuiltInRange } from '@/pages/Conversations/constants';
+import { useLinkedState, useTrackingEvents } from '@/hooks';
+import { FilterTag, isBuiltInRange } from '@/pages/Conversations/constants';
 import { ClassName } from '@/styles/constants';
 import THEME from '@/styles/theme';
 
 import ApplyFiltersButton from './ApplyFiltersButton';
 import DatePicker from './TimeRangePicker/DatePicker';
 
-const TranscriptFilters = () => {
+export interface TranscriptFiltersProps {
+  tags: string[];
+  range: string;
+  endDate: string;
+  startDate: string;
+}
+
+const getCounter = ({ tags, range, endDate, startDate }: TranscriptFiltersProps): number => {
+  let counter = 0;
+
+  if (range || endDate || startDate) {
+    counter++;
+  }
+
+  if (tags.length) {
+    counter++;
+  }
+
+  return counter;
+};
+
+const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endDate, startDate }) => {
   const history = useHistory();
-  const location = useLocation();
 
   const [trackingEvents] = useTrackingEvents();
-  const [timeRangeOpen, setTimeRangeOpen] = React.useState(false);
-  const [tagsOpen, setTagsOpen] = React.useState(false);
-  const [currentRange, setCurrentRange] = React.useState('' as TimeRange | string);
-  const [tags, setTags] = React.useState<string[]>([]);
-  const updateTranscriptsList = useDispatch(fetchTranscripts);
-  const goToTranscript = useDispatch(goToTargetTranscript);
-  const { search } = useLocation();
 
-  const filtersCounter = React.useMemo(() => {
-    let counter = 0;
-    const params = new URLSearchParams(location.search);
+  const initialRange = React.useMemo(() => {
+    if (!endDate || !startDate) return range;
 
-    if (params.has(FILTER_TAG.RANGE) || params.has(FILTER_TAG.START_DATE) || params.has(FILTER_TAG.END_DATE)) {
-      counter++;
-    }
+    return `${new Date(parseInt(endDate, 10)).toLocaleDateString()} - ${new Date(parseInt(startDate, 10)).toLocaleDateString()}`;
+  }, [startDate, endDate]);
 
-    if (params.has(FILTER_TAG.TAG)) {
-      counter++;
-    }
+  const [tagsOpen, setTagsOpen] = React.useState(!!tags.length);
+  const [timeRangeOpen, setTimeRangeOpen] = React.useState(!!initialRange);
 
-    return counter;
-  }, [location.search]);
+  const [currentTags, setCurrentTags] = useLinkedState(tags);
+  const [currentRange, setCurrentRange] = useLinkedState(initialRange);
 
-  const clearTranscriptFilter = () => {
-    setTimeRangeOpen(false);
+  const filtersCounter = getCounter({ tags, range, endDate, startDate });
+
+  const onClear = () => {
+    setCurrentTags([]);
+    setCurrentRange('');
+
     setTagsOpen(false);
-    history.replace({ search: '' });
+    setTimeRangeOpen(false);
   };
 
-  const addDateRangeParams = (params: URLSearchParams) => {
-    if (isBuiltInRange(currentRange)) {
-      params.append(FILTER_TAG.RANGE, currentRange || '');
-    } else {
-      const split = currentRange.split('-');
-      const from = new Date(split[0]).getTime();
-      const to = new Date(split[1]).getTime();
+  const onClose = () => {
+    setTagsOpen(!!currentTags.length);
+    setTimeRangeOpen(!!currentRange);
+  };
 
-      from && params.append(FILTER_TAG.START_DATE, from.toString() || '');
-      to && params.append(FILTER_TAG.END_DATE, to.toString() || '');
+  const onToggleTags = () => {
+    if (tagsOpen) {
+      setCurrentTags([]);
     }
+
+    setTagsOpen(!tagsOpen);
   };
 
-  const addTagsParams = (params: URLSearchParams) => {
-    tags.forEach((tag) => {
-      params.append(FILTER_TAG.TAG, tag);
-    });
+  const onToggleRange = () => {
+    if (timeRangeOpen) {
+      setCurrentRange('');
+    }
+
+    setTimeRangeOpen(!currentRange);
   };
 
-  const appendURL = () => {
-    const params = new URLSearchParams();
-
-    if (!currentRange && tags.length === 0) {
+  const onApplyFilters = () => {
+    if (!currentRange && currentTags.length === 0) {
       history.replace({ search: '' });
-      return;
+    } else {
+      const params: queryString.ParsedQuery = {};
+
+      if (currentTags.length) {
+        params[FilterTag.TAG] = currentTags;
+      }
+
+      if (isBuiltInRange(currentRange)) {
+        params[FilterTag.RANGE] = currentRange;
+      } else if (currentRange) {
+        const [startStr, endStr] = currentRange.split('-');
+
+        params[FilterTag.START_DATE] = new Date(startStr).getTime().toString();
+        params[FilterTag.END_DATE] = new Date(endStr).getTime().toString();
+      }
+
+      history.replace({ search: queryString.stringify(params) });
     }
-
-    if (timeRangeOpen) addDateRangeParams(params);
-    if (tagsOpen) addTagsParams(params);
-
-    history.replace({ search: params.toString() });
   };
-
-  useAsyncEffect(async () => {
-    const queryParams = queryString.stringify(queryString.parse(search));
-
-    const transcripts = await updateTranscriptsList(queryParams || '');
-    if (transcripts.length) {
-      goToTranscript(transcripts[0].id);
-    }
-  }, [search]);
-
-  React.useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const rangeParam = params.get(FILTER_TAG.RANGE);
-    const startDateParam = params.get(FILTER_TAG.START_DATE);
-    const endDateParam = params.get(FILTER_TAG.END_DATE);
-    const tagParams = params.getAll(FILTER_TAG.TAG);
-
-    if (rangeParam) {
-      setCurrentRange(rangeParam);
-      setTimeRangeOpen(true);
-    }
-
-    if (startDateParam && endDateParam) {
-      const startDate = new Date(parseInt(startDateParam, 10)).toLocaleDateString();
-      const endDate = new Date(parseInt(endDateParam, 10)).toLocaleDateString();
-
-      setCurrentRange(`${startDate} - ${endDate}`);
-      setTimeRangeOpen(true);
-    }
-
-    if (tagParams.length > 0) {
-      setTagsOpen(true);
-      setTags(tagParams);
-    }
-  }, []);
 
   return (
     <SelectMenu
-      clearData={clearTranscriptFilter}
-      actionDisabled={!timeRangeOpen && !tagsOpen}
-      sections={({ onToggle }) => {
-        return (
-          <>
-            <MenuSection
-              title="Time Range"
-              enabled={timeRangeOpen}
-              toggleSection={() => setTimeRangeOpen(!timeRangeOpen)}
-              className={ClassName.TRANSCRIPT_FILTERS_DATE_CHECKBOX}
-            >
-              <DatePicker currentRange={currentRange} onChange={(newRange: TimeRange | string) => setCurrentRange(newRange)} placement="right" />
-            </MenuSection>
+      onClear={onClear}
+      onClose={onClose}
+      actionDisabled={!currentTags.length && !currentRange}
+      sections={({ onToggle }) => (
+        <>
+          <MenuSection
+            title="Time Range"
+            enabled={timeRangeOpen}
+            className={ClassName.TRANSCRIPT_FILTERS_DATE_CHECKBOX}
+            toggleSection={onToggleRange}
+          >
+            <DatePicker currentRange={currentRange} onChange={setCurrentRange} placement="right" />
+          </MenuSection>
 
-            <MenuSection
-              title="Tags"
-              enabled={tagsOpen}
-              toggleSection={() => setTagsOpen(!tagsOpen)}
-              className={ClassName.TRANSCRIPT_FILTERS_TAGS_CHECKBOX}
+          <MenuSection title="Tags" enabled={tagsOpen} className={ClassName.TRANSCRIPT_FILTERS_TAGS_CHECKBOX} toggleSection={onToggleTags}>
+            <ReportTagInput variant={InputVariant.SELECT_ONLY} onChange={setCurrentTags} selectedTags={currentTags} />
+          </MenuSection>
+
+          <Box borderTop={`1px solid ${THEME.colors.borders}`}>
+            <ApplyFiltersButton
+              variant={ButtonVariant.PRIMARY}
+              onClick={Utils.functional.chain(onApplyFilters, onToggle, trackingEvents.trackConversationListFiltered)}
+              className={ClassName.TRANSCRIPT_FILTERS_MENU_APPLY_BUTTON}
             >
-              <ReportTagInput
-                variant={InputVariant.SELECT_ONLY}
-                onChange={(tags: string[]) => setTags([...new Set([...tags])])}
-                selectedTags={tags}
-              />
-            </MenuSection>
-            <Box borderTop={`1px solid ${THEME.colors.borders}`}>
-              <ApplyFiltersButton
-                className={ClassName.TRANSCRIPT_FILTERS_MENU_APPLY_BUTTON}
-                variant={ButtonVariant.PRIMARY}
-                onClick={() => {
-                  appendURL();
-                  onToggle();
-                  trackingEvents.trackConversationListFiltered();
-                }}
-              >
-                Apply
-              </ApplyFiltersButton>
-            </Box>
-          </>
-        );
-      }}
+              Apply
+            </ApplyFiltersButton>
+          </Box>
+        </>
+      )}
     >
       {({ ref, isOpened, onToggle }) => (
         <ClickableText isActive={isOpened} ref={ref} onClick={onToggle} className={ClassName.TRANSCRIPT_FILTERS_MENU_TEXT}>

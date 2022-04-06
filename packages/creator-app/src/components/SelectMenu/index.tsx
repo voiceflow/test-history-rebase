@@ -7,18 +7,21 @@ import { SelectMenuHeader } from './components';
 export { MenuSection } from './components';
 
 interface SelectMenuProp extends Omit<PopperProps, 'renderContent'> {
-  sections: ({ onToggle }: { onToggle: () => void }) => React.ReactNode;
-  clearData: () => void;
+  onClose?: VoidFunction;
+  onClear: VoidFunction;
+  sections: ({ onToggle }: { onToggle: VoidFunction }) => React.ReactNode;
   actionDisabled?: boolean;
 }
 
-const SelectMenu: React.FC<SelectMenuProp> = ({ children, sections, placement = 'bottom-start', actionDisabled, clearData }) => (
+const SelectMenu: React.FC<SelectMenuProp> = ({ onClose, children, sections, placement = 'bottom-start', actionDisabled, onClear }) => (
   <Popper
     width="300px"
+    onClose={onClose}
     placement={placement}
     renderContent={({ onToggle }) => (
       <PopperContent>
-        <SelectMenuHeader actionDisabled={actionDisabled} onClear={clearData} title="All filters" />
+        <SelectMenuHeader actionDisabled={actionDisabled} onClear={onClear} title="All filters" />
+
         {sections({ onToggle })}
       </PopperContent>
     )}

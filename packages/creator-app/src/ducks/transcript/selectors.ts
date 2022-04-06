@@ -1,7 +1,7 @@
 import { matchPath } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
-import { ProjectRoute, RootRoute } from '@/config/routes';
+import { Path } from '@/config/routes';
 import { pathnameSelector } from '@/ducks/router/selectors';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 
@@ -14,10 +14,8 @@ export const {
   byID: transcriptByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const currentTranscriptIDSelector = createSelector([mapTranscriptsSelector, pathnameSelector], (_transcripts, pathname) => {
-  const match: { params: { transcriptID: string | undefined } } | null = matchPath(pathname, {
-    path: `/${RootRoute.PROJECT}/:id/${ProjectRoute.CONVERSATIONS}/:transcriptID?`,
-  });
+export const currentTranscriptIDSelector = createSelector([pathnameSelector], (pathname) => {
+  const match = matchPath<{ transcriptID?: string }>(pathname, { path: Path.CONVERSATIONS });
 
   return match?.params.transcriptID ?? null;
 });

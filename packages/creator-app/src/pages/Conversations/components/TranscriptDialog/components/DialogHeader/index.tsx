@@ -6,47 +6,32 @@ import Checkbox from '@/components/Checkbox';
 import { Container, LabelContainer } from './components';
 
 enum DialogLabel {
-  INTENT_CONFIDENCE = 'Intent confidence',
   DEBUG = 'Debug messages',
+  INTENT_CONFIDENCE = 'Intent confidence',
 }
 
 interface DialogHeaderProps {
-  isScrolling: boolean;
-  toggleDebugs: () => void;
-  toggleIntentConf: () => void;
   showDebugs: boolean;
+  isScrolling: boolean;
+  toggleDebugs: VoidFunction;
+  toggleIntentConf: VoidFunction;
   showIntentConfidence: boolean;
 }
 
 const DialogHeader: React.FC<DialogHeaderProps> = ({ showDebugs, showIntentConfidence, toggleDebugs, toggleIntentConf, isScrolling }) => {
-  const onToggle = (isDebugMessage: boolean) => {
-    isDebugMessage ? toggleDebugs() : toggleIntentConf();
-  };
-
-  const Label = (label: string, checked: boolean) => {
-    return (
-      <Checkbox
-        checked={checked}
-        onChange={() => {
-          label === DialogLabel.DEBUG ? onToggle(true) : onToggle(false);
-        }}
-      >
-        <LabelContainer>{label}</LabelContainer>
-      </Checkbox>
-    );
-  };
+  const renderLabel = (label: string, checked: boolean, onToggle: VoidFunction) => (
+    <Checkbox checked={checked} onChange={onToggle}>
+      <LabelContainer>{label}</LabelContainer>
+    </Checkbox>
+  );
 
   return (
     <Container hasShadow={isScrolling}>
       <b>Transcript</b>
       <Dropdown
         options={[
-          {
-            label: Label(DialogLabel.INTENT_CONFIDENCE, showIntentConfidence),
-          },
-          {
-            label: Label(DialogLabel.DEBUG, showDebugs),
-          },
+          { label: renderLabel(DialogLabel.INTENT_CONFIDENCE, showIntentConfidence, toggleIntentConf) },
+          { label: renderLabel(DialogLabel.DEBUG, showDebugs, toggleDebugs) },
         ]}
         placement="bottom-end"
       >

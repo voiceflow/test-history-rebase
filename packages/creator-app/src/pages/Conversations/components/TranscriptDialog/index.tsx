@@ -20,18 +20,19 @@ const DEBUG_LOCAL_STORAGE_BOOL_KEY = 'show_conversation_debugs';
 const INTENT_CONF_LOCAL_STORAGE_BOOL_KEY = 'show_conversation_intent_conf';
 
 const TranscriptDialog: React.FC = () => {
-  const [messages, setMessages] = React.useState<Message[]>([]);
+  const color = useSelector(Prototype.prototypeBrandColorSelector);
+  const avatar = useSelector(Prototype.prototypeAvatarSelector);
+  const activeProjectID = useSelector(activeProjectIDSelector)!;
+  const currentTranscriptID = useSelector(currentTranscriptIDSelector);
+
   const [atTop, setAtTop] = React.useState<boolean>(true);
   const [loading, setLoading] = React.useState(false);
+  const [messages, setMessages] = React.useState<Message[]>([]);
   const [hasNoData, setHasNoData] = React.useState(false);
-  const currentTranscriptID = useSelector(currentTranscriptIDSelector);
-  const activeProjectID = useSelector(activeProjectIDSelector)!;
+  const [dialogTurnMap, setDialogTurnMap] = React.useState<TurnMap>(() => new Map());
+
   const [showDebugs, setShowDebugs] = useLocalStorageState(DEBUG_LOCAL_STORAGE_BOOL_KEY, false);
   const [showIntentConfidence, setShowIntentConfidence] = useLocalStorageState(INTENT_CONF_LOCAL_STORAGE_BOOL_KEY, true);
-
-  const avatar = useSelector(Prototype.prototypeAvatarSelector);
-  const color = useSelector(Prototype.prototypeBrandColorSelector);
-  const [dialogTurnMap, setDialogTurnMap] = React.useState<TurnMap>(() => new Map());
 
   const cache = useCache({ currentTranscriptID });
 
@@ -40,12 +41,19 @@ const TranscriptDialog: React.FC = () => {
 
     const dialogs = await client.transcript.getTranscriptDialog(activeProjectID, targetTranscriptID);
 
-    if (cache.current.currentTranscriptID === targetTranscriptID && dialogs?.length) {
-      setDialogTurnMap(generateTurnMap(dialogs));
+    // skip state update if we're not on the active transcript
+    if (cache.current.currentTranscriptID !== targetTranscriptID) return;
+
+    if (dialogs?.length) {
       setMessages(transformDialogTimestamp(dialogs, dialogs[0].startTime));
+      setDialogTurnMap(generateTurnMap(dialogs));
+
       setLoading(false);
       setHasNoData(false);
+      setDialogTurnMap(new Map());
     } else {
+      setMessages([]);
+      setLoading(false);
       setHasNoData(true);
     }
   };
@@ -55,13 +63,9 @@ const TranscriptDialog: React.FC = () => {
       return messages.filter((message: Message) => {
         if (message.type !== MessageType.DEBUG) return true;
 
-        if (message.message.startsWith('matched intent')) {
-          if (!showIntentConfidence) {
-            return false;
-          }
-        } else if (!showDebugs) {
-          return false;
-        }
+        if (message.message.startsWith('matched intent') && !showIntentConfidence) return false;
+        if (!showDebugs) return false;
+
         return true;
       });
     },
@@ -88,10 +92,10 @@ const TranscriptDialog: React.FC = () => {
     <Container>
       <DialogHeader
         showDebugs={showDebugs}
-        showIntentConfidence={showIntentConfidence}
         isScrolling={!atTop}
         toggleDebugs={() => setShowDebugs(!showDebugs)}
         toggleIntentConf={() => setShowIntentConfidence(!showIntentConfidence)}
+        showIntentConfidence={showIntentConfidence}
       />
       {loading ? (
         <DialogLoader />

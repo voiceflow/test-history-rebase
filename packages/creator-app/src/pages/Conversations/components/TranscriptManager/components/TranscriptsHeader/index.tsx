@@ -1,19 +1,17 @@
 import React from 'react';
 
-import { Container, TranscriptFilters } from './components';
+import { Container, TranscriptFilters, TranscriptFiltersProps } from './components';
 
-interface TranscriptsHeaderProps {
-  resultCount: number;
+export interface TranscriptsHeaderProps extends TranscriptFiltersProps {
   hasShadow: boolean;
+  resultCount: number;
 }
 
-const TranscriptsHeader: React.FC<TranscriptsHeaderProps> = ({ resultCount, hasShadow }) => {
-  return (
-    <Container hasShadow={hasShadow}>
-      <b>Conversations ({resultCount})</b>
-      <TranscriptFilters />
-    </Container>
-  );
-};
+const TranscriptsHeader: React.FC<TranscriptsHeaderProps> = ({ hasShadow, resultCount, ...props }) => (
+  <Container hasShadow={hasShadow}>
+    <b>Conversations ({resultCount})</b>
+    <TranscriptFilters {...props} />
+  </Container>
+);
 
 export default TranscriptsHeader;

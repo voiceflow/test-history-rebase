@@ -14,13 +14,15 @@ import ActionButton from './components/ActionButton';
 const TranscriptActions: React.FC = () => {
   const { reportTags } = useSelector(Transcript.currentTranscriptSelector) ?? {};
   const currentTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
+
   const deleteTranscript = useDispatch(Transcript.deleteTranscript);
   const confirmDelete = useDispatch(Modal.setConfirm);
 
-  const isSaved = !!reportTags?.includes(SystemTag.SAVED);
-  const isReviewed = !!reportTags?.includes(SystemTag.REVIEWED);
-  const removeTag = useDispatch(Transcript.removeTag);
   const addTag = useDispatch(Transcript.addTag);
+  const removeTag = useDispatch(Transcript.removeTag);
+
+  const isSaved = React.useMemo(() => !!reportTags?.includes(SystemTag.SAVED), [reportTags]);
+  const isReviewed = React.useMemo(() => !!reportTags?.includes(SystemTag.REVIEWED), [reportTags]);
 
   const handleReviewedClick = () => {
     if (!currentTranscriptID) return;
@@ -58,20 +60,21 @@ const TranscriptActions: React.FC = () => {
     <Container>
       <ActionButton
         id={Identifier.MARK_AS_REVIEWED_TRANSCRIPT_BUTTON}
-        onClick={handleReviewedClick}
         icon={isReviewed ? 'checkmarkFilled' : 'check2'}
         color={isReviewed ? '#3e9e3e' : THEME.colors.tertiary}
         label="Mark as Reviewed"
+        onClick={handleReviewedClick}
         selected={isReviewed}
       />
+
       <ActionButton
         id={Identifier.SAVE_FOR_LATER_TRANSCRIPT_BUTTON}
         left={1}
-        selected={isSaved}
-        onClick={handleSavedClick}
         icon="bookmark"
         label="Save for Later"
         color={isSaved ? THEME.colors.red : THEME.colors.tertiary}
+        onClick={handleSavedClick}
+        selected={isSaved}
       />
 
       <ActionButton id={Identifier.DELETE_TRANSCRIPT_BUTTON} onClick={handleDelete} icon="garbage" label="Delete" color={THEME.colors.tertiary} />

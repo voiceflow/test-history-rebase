@@ -9,7 +9,7 @@ export enum LifecyclePhase {
   UNMOUNTING = 'unmounting',
 }
 
-export const useDidUpdateEffect = (callback: () => void | VoidFunction, dependencies: any[] = []): void => {
+export const useDidUpdateEffect = (callback: () => void | VoidFunction, dependencies: unknown[] = []): void => {
   const didMount = useRef(false);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export const useLifecycle = (): React.RefObject<LifecyclePhase> => {
   return phase;
 };
 
-export const useSetup = (callback: () => void, dependencies: any[] = []): void => {
+export const useSetup = (callback: () => void, dependencies: unknown[] = []): void => {
   const phase = useLifecycle();
   // this must be determined outside of the useEffect()
   const isMounting = phase.current === LifecyclePhase.MOUNTING;
@@ -50,7 +50,7 @@ export const useSetup = (callback: () => void, dependencies: any[] = []): void =
   }, [memoizedCallback, isMounting]);
 };
 
-export const useTeardown = (callback: () => void, dependencies: any[] = []): void => {
+export const useTeardown = (callback: () => void, dependencies: unknown[] = []): void => {
   const phase = useLifecycle();
   const memoizedCallback = useCallback(callback, dependencies);
 

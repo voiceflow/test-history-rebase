@@ -1,8 +1,9 @@
+import { Utils } from '@voiceflow/common';
 import { TimeRange } from '@voiceflow/internal';
-import { ButtonVariant } from '@voiceflow/ui';
+import { ButtonVariant, useCreateConst } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
-import { DateUtils, Modifier, RangeModifier } from 'react-day-picker';
+import { DateUtils, RangeModifier } from 'react-day-picker';
 
 import { TimeRangePicker, WEEKDAYS } from '@/components/DayPickerInput/components';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
@@ -25,59 +26,56 @@ const TIME_RANGE_OPTIONS = [
 const initialRange = { from: undefined, to: undefined, enteredTo: undefined };
 
 export interface DayPickerInputProps {
-  currentRange?: string | Date;
-  placement?: PopperProps['placement'];
   onChange: (input: TimeRange | string) => void;
+  placement?: PopperProps['placement'];
+  currentRange: string;
 }
 
-const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, onChange }) => {
+const DatePicker: React.FC<DayPickerInputProps> = ({ onChange, placement, currentRange }) => {
   const variablesInputRef = React.useRef<{ blur: Function; getEditorState: Function } | null>(null);
   const [calendarOpened, onShowCalendar, onHideCalendar] = useEnableDisable(false);
 
-  const getDefaultRange = () => {
-    if (!currentRange || isBuiltInRange(currentRange as string)) return initialRange;
+  const getDefaultRange = (): RangeModifier & { enteredTo?: Date | null } => {
+    if (!currentRange || isBuiltInRange(currentRange)) return initialRange;
 
-    const date = (currentRange as string).split('-');
-    const from = dayjs(date[0]);
+    const date = currentRange.split('-');
     const to = dayjs(date[1]);
+    const from = dayjs(date[0]);
 
     if (!from.isValid() || !to.isValid()) return initialRange;
 
     return { from: from.toDate(), to: to.toDate(), enteredTo: to.toDate() };
   };
 
-  const [range, setRange] = React.useState(getDefaultRange() as RangeModifier & { enteredTo?: Date });
+  const currentMonth = useCreateConst(() => new Date());
 
+  const [range, setRange] = React.useState(() => getDefaultRange());
+  const [input, setInput] = React.useState<TimeRange | string>(currentRange);
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const modifiers: Partial<Modifier> = {
-    start: range.from,
-    end: range.enteredTo,
-    saturdays: { daysOfWeek: [6] },
-    sundays: { daysOfWeek: [0] },
+  const onChangeInput = (input: TimeRange | string) => {
+    setInput(input);
+    onChange(input);
   };
 
-  const disabledDays = { before: range.from } as Modifier;
-  const selectedDays = [range.from, { from: range.from, to: range.enteredTo }] as Modifier[];
-  const initialMonth = range.from || new Date();
-
-  const [input, setInput] = React.useState(currentRange as TimeRange | string);
-
   const setRangeInput = (range: RangeModifier) => {
-    const start = range.from ? range.from?.toLocaleDateString() : '';
     const end = range.to ? range.to?.toLocaleDateString() : '';
-    start ? setInput(`${start} - ${end}`) : setInput('');
+    const start = range.from ? range.from?.toLocaleDateString() : '';
+
+    onChangeInput(start ? `${start} - ${end}` : '');
   };
 
   const isSelectingFirstDay = (dateRange: RangeModifier, day: Date) => {
     const { to, from } = dateRange;
     const isBeforeFirstDay = from && DateUtils.isDayBefore(day, from);
     const isRangeSelected = from && to;
+
     return !from || isBeforeFirstDay || isRangeSelected;
   };
 
   const isRangeSelected = React.useMemo(() => {
     const { enteredTo, from } = range;
+
     return from != null && enteredTo != null && DateUtils.isDayBefore(from, enteredTo);
   }, [range]);
 
@@ -92,17 +90,9 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, on
     }
 
     if (isSelectingFirstDay(range, newDate)) {
-      setRange({
-        from: newDate,
-        to: undefined,
-        enteredTo: undefined,
-      });
+      setRange({ to: undefined, from: newDate, enteredTo: undefined });
     } else {
-      setRange({
-        from: range.from,
-        to: newDate,
-        enteredTo: newDate,
-      });
+      setRange({ to: newDate, from: range.from, enteredTo: newDate });
     }
 
     variablesInputRef.current?.blur();
@@ -115,7 +105,7 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, on
   };
 
   const handleClear = () => {
-    setInput('');
+    onChangeInput('');
     resetDateRange();
   };
 
@@ -123,7 +113,7 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, on
     if (timeRange === TimeRange.CUSTOM) {
       setRangeInput(range);
     } else {
-      setInput(timeRange);
+      onChangeInput(timeRange);
     }
   };
 
@@ -133,10 +123,6 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, on
     onHideCalendar();
   };
 
-  React.useEffect(() => {
-    onChange(input);
-  }, [input]);
-
   return (
     <Popper
       placement={placement}
@@ -145,23 +131,30 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, on
           <PopperContent>
             <DayPickerContainer>
               <TimeRangePicker
-                isConversation
+                modifiers={{
+                  end: range.enteredTo ?? undefined,
+                  start: range.from ?? undefined,
+                  sundays: { daysOfWeek: [0] },
+                  saturdays: { daysOfWeek: [6] },
+                }}
                 className="DayPicker"
-                modifiers={modifiers}
-                initialMonth={initialMonth}
-                selectedDays={selectedDays}
-                disabledDays={disabledDays}
+                onDayClick={onDayClick}
+                initialMonth={range.from || currentMonth}
+                selectedDays={range.from ? [range.from, { from: range.from, to: range.enteredTo }] : undefined}
+                disabledDays={range.from ? { before: range.from } : undefined}
                 weekdaysShort={WEEKDAYS}
-                onDayClick={(date) => onDayClick(date)}
-                onDayMouseEnter={(date) => onDayMouseEnter(date)}
+                isConversation
                 numberOfMonths={2}
                 showOutsideDays
+                onDayMouseEnter={onDayMouseEnter}
                 isRangeSelected={isRangeSelected}
               />
+
               <CalendarFooter>
                 <ClearRangeLink onClick={handleClear}>
                   <b>Clear</b>
                 </ClearRangeLink>
+
                 <ApplyButton id="apply-date-button" variant={ButtonVariant.PRIMARY} onClick={handleApplyClick}>
                   Apply
                 </ApplyButton>
@@ -174,23 +167,20 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, on
       {({ ref, onToggle }) => (
         <div onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(!isOpen)} ref={ref}>
           <TimeRangeSelect
-            selfDismiss
             open={isOpen}
-            isTranscript
             options={TIME_RANGE_OPTIONS}
-            autoWidth
-            buttonDisabled={false}
-            placeholder="Time Range"
             onSelect={(timeRange: TimeRange) => setTimeRange(timeRange)}
+            withCaret
+            autoWidth
+            selfDismiss
+            buttonClick={Utils.functional.chain(onToggle, onShowCalendar)}
+            placeholder="Time Range"
             buttonLabel="Custom period"
-            buttonClick={() => {
-              onToggle();
-              onShowCalendar();
-            }}
+            isTranscript
             selectedValue={input}
             selectedItems={input}
             dropdownActive
-            withCaret
+            buttonDisabled={false}
           />
         </div>
       )}

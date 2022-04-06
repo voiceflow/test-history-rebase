@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as ReportTag from '@/ducks/reportTag';
 import { useSelector } from '@/hooks';
-import { ALL_BUILTIN_TAGS_ARRAY, Sentiment, SystemTag } from '@/models';
+import { isBuiltInTag } from '@/utils/reportTag';
 
 export interface MetaInfoSection {
   isRead: boolean;
@@ -12,7 +12,8 @@ export interface MetaInfoSection {
 
 const MetaInfoSection: React.FC<MetaInfoSection> = ({ isRead, tags }) => {
   const tagLabels = useSelector(ReportTag.reportTagsByIDsSelector)(tags).map((reportTag) => reportTag.label);
-  const hasCustomTags = tags.some((tag) => !ALL_BUILTIN_TAGS_ARRAY.includes(tag as SystemTag | Sentiment));
+
+  const hasCustomTags = tags.some((tag) => !isBuiltInTag(tag));
 
   if (!isRead) {
     return (

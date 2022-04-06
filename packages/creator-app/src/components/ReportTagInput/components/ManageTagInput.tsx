@@ -1,21 +1,26 @@
+import { Utils } from '@voiceflow/common';
+import { NestedMenuComponents } from '@voiceflow/ui';
 import React from 'react';
 
+import { ModalType } from '@/constants';
 import { addTag, currentTranscriptIDSelector, removeTag, updateTags } from '@/ducks/transcript';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useModals, useSelector } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 
 import BaseTagInput from './BaseReportTagInput';
 
 interface ManageTagInputProps {
-  className: string;
   selectedTags: string[];
-  renderFooterAction?: (options: { close: VoidFunction }) => JSX.Element;
 }
 
-const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags, className, ...props }) => {
+const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags }) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
+
   const dispatchAddTag = useDispatch(addTag);
   const dispatchRemoveTag = useDispatch(removeTag);
   const dispatchUpdateTags = useDispatch(updateTags);
+
+  const tagManagerModal = useModals(ModalType.TAG_MANAGER);
 
   const setTags = async (tags: string[]) => {
     if (!currentTranscriptID) return;
@@ -37,12 +42,16 @@ const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags, className
 
   return (
     <BaseTagInput
-      {...props}
-      className={className}
       addTag={addTagToTranscript}
-      removeTag={removeTagFromTranscript}
       onChange={setTags}
+      removeTag={removeTagFromTranscript}
+      className={ClassName.BASE_REPORT_TAG_INPUT}
       selectedTags={selectedTags}
+      renderFooterAction={({ close }) => (
+        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, tagManagerModal.open)}>
+          Manage Tags
+        </NestedMenuComponents.FooterActionContainer>
+      )}
     />
   );
 };

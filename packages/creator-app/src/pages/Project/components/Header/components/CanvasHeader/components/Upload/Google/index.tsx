@@ -1,11 +1,11 @@
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
-import Google from '@/components/PlatformUploadPopup/Google';
 import { GoogleStageType } from '@/constants/platforms';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useGooglePublish } from '@/pages/Project/hooks';
+import { Google } from '@/platforms';
 
 import Popup from '../components/Popup';
 import GoogleProgressStage from './components/GoogleProgressStage';
@@ -32,7 +32,7 @@ const GooglePublish: React.FC = () => {
         <GoogleProgressStage googleJob={job} />
 
         <Popup open={isUploadPopupOpen} onClose={onCancel} jobStage={job?.stage.type} multiSelect={multiProjects}>
-          {shouldRenderPopupContent && <Google setMultiProjects={setMultiProjects} />}
+          {shouldRenderPopupContent && <Google.Components.PlatformUploadPopup setMultiProjects={setMultiProjects} />}
         </Popup>
       </Portal>
     </>

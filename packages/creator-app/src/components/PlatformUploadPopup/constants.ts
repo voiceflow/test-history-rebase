@@ -1,10 +1,7 @@
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import Alexa, { getAlexaPopupLayout } from './Alexa';
-import Dialogflow, { getDialogflowPopupLayout } from './Dialogflow';
-import General, { getGeneralPopupLayout } from './General';
-import Google, { getGooglePopupLayout } from './Google';
+import { Alexa, Dialogflow, General, Google } from '@/platforms';
 
 export interface Project {
   id: string;
@@ -20,18 +17,18 @@ export interface PlatformContentProps {
 
 export const getPlatformContent = Utils.platform.createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: Alexa,
-    [VoiceflowConstants.PlatformType.GOOGLE]: Google,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: Dialogflow,
+    [VoiceflowConstants.PlatformType.ALEXA]: Alexa.Components.PlatformUploadPopup,
+    [VoiceflowConstants.PlatformType.GOOGLE]: Google.Components.PlatformUploadPopup,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: Dialogflow.Components.PlatformUploadPopup,
   },
-  General
+  General.Components.PlatformUploadPopup
 );
 
 export const getPlatformPopupLayout = Utils.platform.createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: getAlexaPopupLayout,
-    [VoiceflowConstants.PlatformType.GOOGLE]: getGooglePopupLayout,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: getDialogflowPopupLayout,
+    [VoiceflowConstants.PlatformType.ALEXA]: Alexa.Components.PlatformUploadPopupLayout,
+    [VoiceflowConstants.PlatformType.GOOGLE]: Google.Components.PlatformUploadPopupLayout,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: Dialogflow.Components.PlatformUploadPopupLayout,
   },
-  getGeneralPopupLayout
+  General.Components.PlatformUploadPopupLayout
 );

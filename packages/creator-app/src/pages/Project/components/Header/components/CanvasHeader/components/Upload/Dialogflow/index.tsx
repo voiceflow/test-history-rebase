@@ -1,11 +1,11 @@
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
-import Dialogflow from '@/components/PlatformUploadPopup/Dialogflow';
 import { DialogflowStageType } from '@/constants/platforms';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useDialogflowPublish } from '@/pages/Project/hooks';
+import { Dialogflow } from '@/platforms';
 
 import Popup from '../components/Popup';
 import DialogflowProgressStage from './components/DialogflowProgressStage';
@@ -49,7 +49,9 @@ const DialogflowPublish: React.FC = () => {
         <DialogflowProgressStage dialogflowPublishJob={job} />
 
         <Popup open={isUploadPopupOpen} onClose={onCancel} jobStage={job?.stage.type} multiSelect={multiProjects}>
-          {shouldRenderPopupContent && <Dialogflow setMultiProjects={setMultiProjects} createNewAgent={createNewAgent} />}
+          {shouldRenderPopupContent && (
+            <Dialogflow.Components.PlatformUploadPopup setMultiProjects={setMultiProjects} createNewAgent={createNewAgent} />
+          )}
         </Popup>
       </Portal>
     </>

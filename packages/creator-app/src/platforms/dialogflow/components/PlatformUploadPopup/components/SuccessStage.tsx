@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { DownloadStage, SubmittedStage, UploadedStage } from '@/components/PlatformUploadPopup/components';
 import { DialogflowExportJobSuccessType, DialogflowPublishJobSuccessType } from '@/constants/platforms';
 import { DIALOGFLOW_LEARN_MORE, getDialogflowAgentUrl } from '@/constants/platforms/dialogflow';
 import { DialogflowExportJob, DialogflowPublishJob, JobStageData } from '@/models';
-
-import { DownloadStage, SubmittedStage, UploadedStage } from '../components';
 
 interface SuccessStageProps {
   stage: DialogflowExportJob.SuccessStage | DialogflowPublishJob.SuccessStage;

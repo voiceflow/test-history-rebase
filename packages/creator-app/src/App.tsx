@@ -13,7 +13,6 @@ import ConfirmModalV2 from '@/components/ConfirmModal';
 import IntercomChat from '@/components/IntercomChat';
 import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, SuccessModal } from '@/components/modals';
 import { RootPageProgressBar } from '@/components/PageProgressBar';
-import CreateNewAgentModal from '@/components/PlatformUploadPopup/Dialogflow/CreateNewAgentModal';
 import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
 import { VariableStateEditorModal, VariableStatesManagerModal } from '@/components/VariableStateModals';
@@ -40,6 +39,7 @@ import {
 } from '@/pages/Dashboard/RestrictionModals';
 import ProjectCreateModal from '@/pages/NewProjectV2/NewProjectModal';
 import PaymentModal from '@/pages/Payment/PaymentModal';
+import { Dialogflow } from '@/platforms';
 
 import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';
 import Routes from './Routes';
@@ -79,7 +79,7 @@ const App: React.FC = () => (
     <ConnectActivePlatformModal />
     <ConnectAmazonModal />
     <ConnectGoogleModal />
-    <CreateNewAgentModal />
+    <Dialogflow.Components.CreateNewAgentModal />
     <ProjectCreateModal />
 
     <RootPageProgressBar />

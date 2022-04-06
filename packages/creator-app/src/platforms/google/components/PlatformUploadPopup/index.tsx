@@ -1,15 +1,13 @@
 import React from 'react';
 
+import { ErrorStage, LoaderStage, ProgressStage } from '@/components/PlatformUploadPopup/components';
+import { PlatformContentProps } from '@/components/PlatformUploadPopup/constants';
 import { GoogleStageType } from '@/constants/platforms';
 import { ExportContext, PublishContext } from '@/contexts';
 
-import { ErrorStage, LoaderStage, ProgressStage } from '../components';
-import { PlatformContentProps } from '../constants';
-import SuccessStage from './SuccessStage';
-import WaitInvocationName from './WaitInvocationName';
-import WaitProjectStage from './WaitProjectStage';
+import { SuccessStage, WaitInvocationName, WaitProjectStage } from './components';
 
-export const Google: React.FC<PlatformContentProps> = ({ export: isExport, setMultiProjects }) => {
+export const PlatformUploadPopup: React.FC<PlatformContentProps> = ({ export: isExport, setMultiProjects }) => {
   const exportContextValue = React.useContext(ExportContext)!;
   const publishContextValue = React.useContext(PublishContext)!;
 
@@ -35,6 +33,6 @@ export const Google: React.FC<PlatformContentProps> = ({ export: isExport, setMu
   }
 };
 
-export * from './constants';
+export { default as PlatformUploadPopupLayout } from './components/PopupLayout';
 
-export default Google;
+export default PlatformUploadPopup;

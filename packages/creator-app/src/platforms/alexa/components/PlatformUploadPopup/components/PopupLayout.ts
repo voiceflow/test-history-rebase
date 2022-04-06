@@ -1,12 +1,7 @@
 import { AlexaStageType, AnyStageType } from '@/constants/platforms';
 import { css } from '@/hocs';
 
-export const ALEXA_LEARN_MORE_URL = 'https://www.voiceflow.com/tutorials/uploading-and-testing-on-your-alexa-device';
-
-export const ALEXA_SIMULATOR_URL = (amazonID: string, locale: string): string =>
-  `https://developer.amazon.com/alexa/console/ask/test/${amazonID}/development/${locale}/`;
-
-export const getAlexaPopupLayout = (props?: { jobStage?: AnyStageType | null }) => {
+const PopupLayout = (props?: { jobStage?: AnyStageType | null }) => {
   switch (props?.jobStage) {
     case AlexaStageType.IDLE:
     case AlexaStageType.ERROR:
@@ -29,3 +24,5 @@ export const getAlexaPopupLayout = (props?: { jobStage?: AnyStageType | null }) 
       `;
   }
 };
+
+export default PopupLayout;

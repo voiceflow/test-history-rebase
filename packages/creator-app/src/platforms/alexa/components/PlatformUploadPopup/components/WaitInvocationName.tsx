@@ -4,14 +4,13 @@ import { BlockText, Box, BoxFlex, Button, ButtonVariant, IconVariant, Input, Svg
 import React from 'react';
 import { Assign } from 'utility-types';
 
+import { ButtonContainer, Description, LoaderStage, StageContainer } from '@/components/PlatformUploadPopup/components';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { AlexaExportJob, AlexaPublishJob } from '@/models';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
-
-import { ButtonContainer, Description, LoaderStage, StageContainer } from '../components';
 
 interface WaitInvocationNameProps {
   stage: AlexaExportJob.WaitInvocationNameStage | AlexaPublishJob.WaitInvocationNameStage;

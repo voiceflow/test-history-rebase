@@ -1,16 +1,13 @@
 import React from 'react';
 
+import { ErrorStage, LoaderStage, ProgressStage } from '@/components/PlatformUploadPopup/components';
+import { PlatformContentProps } from '@/components/PlatformUploadPopup/constants';
 import { AlexaStageType } from '@/constants/platforms';
 import { ExportContext, PublishContext } from '@/contexts';
 
-import { ErrorStage, LoaderStage, ProgressStage } from '../components';
-import { PlatformContentProps } from '../constants';
-import SelectVendorStage from './SelectVendorStage';
-import SuccessStage from './SuccessStage';
-import WaitInvocationName from './WaitInvocationName';
-import WaitVendorsStage from './WaitVendorsStage';
+import { SelectVendorStage, SuccessStage, WaitInvocationName, WaitVendorsStage } from './components';
 
-export const Alexa: React.FC<PlatformContentProps> = ({ export: isExport, loader }) => {
+export const PlatformUploadPopup: React.FC<PlatformContentProps> = ({ export: isExport, loader }) => {
   const exportContextValue = React.useContext(ExportContext)!;
   const publishContextValue = React.useContext(PublishContext)!;
 
@@ -41,6 +38,6 @@ export const Alexa: React.FC<PlatformContentProps> = ({ export: isExport, loader
   }
 };
 
-export * from './constants';
+export { default as PlatformUploadPopupLayout } from './components/PopupLayout';
 
-export default Alexa;
+export default PlatformUploadPopup;

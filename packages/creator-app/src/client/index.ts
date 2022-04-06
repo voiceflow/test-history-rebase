@@ -1,4 +1,4 @@
-import { getPlatformClient, platformClients } from '@/platforms';
+import { getPlatformClient, platformClients } from '@/platforms/selectors';
 
 import api from './api';
 import backup from './backup';

@@ -1,13 +1,12 @@
 import React from 'react';
 
+import { DownloadStage, SubmittedStage, UploadedStage } from '@/components/PlatformUploadPopup/components';
 import { AlexaExportJobSuccessType, AlexaPublishJobSuccessType } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { AlexaExportJob, AlexaPublishJob, JobStageData } from '@/models';
-
-import { DownloadStage, SubmittedStage, UploadedStage } from '../components';
-import { ALEXA_LEARN_MORE_URL, ALEXA_SIMULATOR_URL } from './constants';
+import { ALEXA_LEARN_MORE_URL, ALEXA_SIMULATOR_URL } from '@/platforms/alexa/constants';
 
 interface SuccessStageProps {
   stage: AlexaExportJob.SuccessStage | AlexaPublishJob.SuccessStage;

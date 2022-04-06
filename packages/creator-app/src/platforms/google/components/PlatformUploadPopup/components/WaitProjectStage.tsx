@@ -2,9 +2,8 @@ import { useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
+import { LoaderStage, StageAlert, StageContainer, StageEmpty, StageProjectList } from '@/components/PlatformUploadPopup/components';
 import { useAsyncMountUnmount, useTeardown } from '@/hooks';
-
-import { LoaderStage, StageAlert, StageContainer, StageEmpty, StageProjectList } from '../components';
 
 interface WaitProjectStageProps {
   cancel: () => void;

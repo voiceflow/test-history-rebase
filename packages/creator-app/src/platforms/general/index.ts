@@ -1,7 +1,2 @@
-import generalClient from './client';
-
-const GeneralConfig = {
-  client: generalClient,
-};
-
-export default GeneralConfig;
+export { default as client } from './client';
+export * as Components from './components';

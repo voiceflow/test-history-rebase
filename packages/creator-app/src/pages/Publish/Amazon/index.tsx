@@ -1,11 +1,11 @@
 import React from 'react';
 
 import Modal, { ModalBody } from '@/components/Modal';
-import Alexa from '@/components/PlatformUploadPopup/Alexa';
 import { JobStatus, ModalType } from '@/constants';
 import { PublishContext } from '@/contexts';
 import * as Account from '@/ducks/account';
 import { useDidUpdateEffect, useDispatch, useModals, useSetup, useTrackingEvents } from '@/hooks';
+import { Alexa } from '@/platforms';
 
 import PublishAmazonForm from './Form';
 
@@ -50,7 +50,7 @@ export const PublishAmazon: React.FC = () => {
 
       <Modal id={ModalType.PUBLISH_AMAZON} title="" closable={closable}>
         <ModalBody>
-          <Alexa loader />
+          <Alexa.Components.PlatformUploadPopup loader />
         </ModalBody>
       </Modal>
     </>

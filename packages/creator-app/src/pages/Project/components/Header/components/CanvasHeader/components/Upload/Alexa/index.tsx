@@ -1,11 +1,11 @@
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
-import Alexa from '@/components/PlatformUploadPopup/Alexa';
 import { AlexaStageType } from '@/constants/platforms';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useAlexaPublish } from '@/pages/Project/hooks';
+import { Alexa } from '@/platforms';
 
 import Popup from '../components/Popup';
 import AlexaProgressState from './components/AlexaProgressState';
@@ -37,7 +37,7 @@ const AlexaPublish: React.FC = () => {
         <AlexaProgressState alexaJob={job} />
 
         <Popup open={isUploadPopupOpen} onClose={onCancel} jobStage={job?.stage.type}>
-          {shouldRenderPopupContent && <Alexa />}
+          {shouldRenderPopupContent && <Alexa.Components.PlatformUploadPopup />}
         </Popup>
       </Portal>
     </>

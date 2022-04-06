@@ -1,8 +1,7 @@
 import { AnyStageType, DialogflowStageType } from '@/constants/platforms';
 import { css } from '@/hocs';
 
-// eslint-disable-next-line import/prefer-default-export
-export const getDialogflowPopupLayout = (props?: { jobStage?: AnyStageType | null }) => {
+const PopupLayout = (props?: { jobStage?: AnyStageType | null }) => {
   switch (props?.jobStage) {
     case DialogflowStageType.IDLE:
     case DialogflowStageType.WAIT_PROJECT:
@@ -25,3 +24,5 @@ export const getDialogflowPopupLayout = (props?: { jobStage?: AnyStageType | nul
       `;
   }
 };
+
+export default PopupLayout;

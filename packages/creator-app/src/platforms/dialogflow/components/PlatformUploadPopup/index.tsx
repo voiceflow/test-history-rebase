@@ -1,17 +1,19 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
+import { ErrorStage, LoaderStage, ProgressStage } from '@/components/PlatformUploadPopup/components';
+import { PlatformContentProps } from '@/components/PlatformUploadPopup/constants';
 import { DialogflowStageType } from '@/constants/platforms';
 import { ExportContext, PublishContext } from '@/contexts';
 
-import { ErrorStage, LoaderStage, ProgressStage } from '../components';
-import { PlatformContentProps } from '../constants';
-import SuccessStage from './SuccessStage';
-import WaitProjectStage from './WaitProjectState';
+import { SuccessStage, WaitProjectStage } from './components';
+import { DEFAULT_ERROR_MESSAGE } from './constants';
 
-const DEFAULT_ERROR_MESSAGE = 'Dialogflow is experiencing heavy traffic, please wait a moment and try again';
-
-export const Dialogflow: React.FC<PlatformContentProps> = ({ export: isExport, setMultiProjects, createNewAgent = Utils.functional.noop }) => {
+export const PlatformUploadPopup: React.FC<PlatformContentProps> = ({
+  export: isExport,
+  setMultiProjects,
+  createNewAgent = Utils.functional.noop,
+}) => {
   const exportContextValue = React.useContext(ExportContext)!;
   const publishContextValue = React.useContext(PublishContext)!;
 
@@ -41,6 +43,7 @@ export const Dialogflow: React.FC<PlatformContentProps> = ({ export: isExport, s
   }
 };
 
-export * from './constants';
+export { default as CreateNewAgentModal } from './components/CreateNewAgentModal';
+export { default as PlatformUploadPopupLayout } from './components/PopupLayout';
 
-export default Dialogflow;
+export default PlatformUploadPopup;

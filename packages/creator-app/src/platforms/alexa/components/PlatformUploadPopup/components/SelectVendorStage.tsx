@@ -1,12 +1,11 @@
 import { BoxFlex, Text } from '@voiceflow/ui';
 import React from 'react';
 
+import { ProjectItem, StageContainer } from '@/components/PlatformUploadPopup/components';
 import { PublishContext } from '@/contexts';
 import * as Account from '@/ducks/account';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { isReady } from '@/utils/job';
-
-import { ProjectItem, StageContainer } from '../components';
 
 const SelectVendorStage: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();

@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { DownloadStage, SubmittedStage, UploadedStage } from '@/components/PlatformUploadPopup/components';
 import { GoogleExportJobSuccessType, GooglePublishJobSuccessType } from '@/constants/platforms';
 import { GoogleExportJob, GooglePublishJob, JobStageData } from '@/models';
-
-import { DownloadStage, SubmittedStage, UploadedStage } from '../components';
-import { GOOGLE_CONSOLE_PROJECT_URL, GOOGLE_CONSOLE_URL } from './constants';
+import { GOOGLE_CONSOLE_PROJECT_URL, GOOGLE_CONSOLE_URL } from '@/platforms/google/constants';
 
 interface SuccessStageProps {
   stage: GoogleExportJob.SuccessStage | GooglePublishJob.SuccessStage;

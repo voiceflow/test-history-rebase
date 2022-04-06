@@ -2,8 +2,7 @@ import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { supportGraphicSmall } from '@/assets';
-
-import { ButtonContainer, ButtonLink, Description, StageContainer } from '../components';
+import { ButtonContainer, ButtonLink, Description, StageContainer } from '@/components/PlatformUploadPopup/components';
 
 interface WaitVendorsStageProps {
   cancel: () => void;

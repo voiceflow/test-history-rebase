@@ -2,13 +2,12 @@ import { isNetworkError, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
+import { LoaderStage, StageAlert, StageContainer, StageEmpty, StageProjectList } from '@/components/PlatformUploadPopup/components';
+import { Project } from '@/components/PlatformUploadPopup/constants';
 import * as Account from '@/ducks/account';
 import * as Version from '@/ducks/version';
 import { useAsyncMountUnmount, useDispatch, useTeardown } from '@/hooks';
 import { UploadProject } from '@/models';
-
-import { LoaderStage, StageAlert, StageContainer, StageEmpty, StageProjectList } from '../components';
-import { Project } from '../constants';
 
 interface WaitDFESProjectStageProps {
   cancel: VoidFunction;

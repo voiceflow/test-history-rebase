@@ -1,6 +1,6 @@
-import Alexa from './alexa';
-import Dialogflow from './dialogflow';
-import General from './general';
-import Google from './google';
+import * as Alexa from './alexa';
+import * as Dialogflow from './dialogflow';
+import * as General from './general';
+import * as Google from './google';
 
 export type PlatformClient = typeof Alexa.client | typeof Google.client | typeof Dialogflow.client | typeof General.client;

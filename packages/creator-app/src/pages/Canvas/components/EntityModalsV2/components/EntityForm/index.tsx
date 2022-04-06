@@ -1,12 +1,14 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Input } from '@voiceflow/ui';
+import { ClickableText, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
+import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { formatIntentAndSlotName } from '@/utils/intent';
 
 import TypeAndColorSection from '../TypeAndColorSection';
 import ValuesSection from '../ValuesSection';
+import { BuiltInIntentMessage, MessageWrapper } from './styles';
 
 interface EntityFormProps {
   values: Realtime.SlotInput[];
@@ -33,6 +35,9 @@ const EntityForm: React.FC<EntityFormProps> = ({
   saveName,
   withNameSection = true,
 }) => {
+  const [hasExtendedEntity, setHasExtendedEntity] = React.useState<boolean>(false);
+  const hasValues = Boolean(values.length);
+  const isCustomSlot = type === CUSTOM_SLOT_TYPE;
   const handleInputsChange = (inputs: Realtime.SlotInput[]) => {
     saveValues?.(inputs);
   };
@@ -56,7 +61,15 @@ const EntityForm: React.FC<EntityFormProps> = ({
         </Section>
       )}
       <TypeAndColorSection color={color} saveColor={saveColor} type={type} onChangeType={updateType} name={name} />
-      <ValuesSection inputs={values} type={type} updateInputs={handleInputsChange} />
+      {!isCustomSlot && !hasExtendedEntity && (
+        <MessageWrapper>
+          <BuiltInIntentMessage>
+            Built-in entities don't require additional sample values. If you'd like to add more you can{' '}
+            <ClickableText onClick={() => setHasExtendedEntity(true)}>extend the entity.</ClickableText>
+          </BuiltInIntentMessage>
+        </MessageWrapper>
+      )}
+      {(isCustomSlot || hasExtendedEntity || hasValues) && <ValuesSection inputs={values} type={type} updateInputs={handleInputsChange} />}
     </>
   );
 };

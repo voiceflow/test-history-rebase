@@ -1,4 +1,3 @@
-import { parseId } from '@logux/core';
 import { SendBackActions } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ChannelContext } from '@voiceflow/socket-utils';
@@ -16,13 +15,6 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     return `${Realtime.DIAGRAM_KEY}:${diagramID}:${nodeID}`;
   }
 
-  private async getViewers(diagramID: string): Promise<Realtime.Viewer[]> {
-    const nodeIDs = await this.services.diagram.getConnectedNodes(diagramID);
-    const userIDs = [...new Set(nodeIDs.map((userNodeID) => parseId(userNodeID).userId!))];
-
-    return this.services.viewer.getViewers(userIDs);
-  }
-
   protected channel = Realtime.Channels.diagram;
 
   protected access = async (ctx: DiagramChannelContext): Promise<boolean> => {
@@ -32,9 +24,10 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
   protected load = async (ctx: DiagramChannelContext): Promise<SendBackActions> => {
     const creatorID = Number(ctx.userId);
 
-    const [project, diagram] = await Promise.all([
+    const [project, diagram, diagramLocks] = await Promise.all([
       this.services.project.get(creatorID, ctx.params.projectID).then(Realtime.Adapters.projectAdapter.fromDB),
       this.services.diagram.get(creatorID, ctx.params.diagramID),
+      this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(ctx.params.diagramID),
     ]);
     const { nodes, data, ports, links } = Realtime.Adapters.creatorAdapter.fromDB(diagram, {
       platform: project.platform,
@@ -59,6 +52,10 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
         ports,
         links,
       }),
+      Realtime.diagram.awareness.updateLockedEntities({
+        ...ctx.params,
+        locks: diagramLocks,
+      }),
     ];
   };
 
@@ -81,7 +78,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
       }),
     ]);
 
-    const viewers = await this.getViewers(ctx.params.diagramID);
+    const viewers = await this.services.diagram.getConnectedViewers(ctx.params.diagramID);
 
     await this.server.processAs(
       user.creator_id,
@@ -96,6 +93,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
 
   unsubscribe = async (ctx: DiagramChannelContext): Promise<void> => {
     await Promise.all([
+      this.services.lock.unlockAllNodeEntities(ctx.params.diagramID, ctx.nodeId),
       this.services.diagram.disconnectNode(ctx.params.diagramID, ctx.nodeId),
       this.services.viewer.removeViewer(ctx.userId, DiagramChannel.getViewerEntityKey(ctx.params.diagramID, ctx.nodeId)),
     ]);
@@ -106,17 +104,32 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
       await this.services.project.disconnectDiagram(ctx.params.projectID, ctx.params.diagramID);
     }
 
-    const viewers = await this.getViewers(ctx.params.diagramID);
+    const [viewers, diagramLocks] = await Promise.all([
+      this.services.diagram.getConnectedViewers(ctx.params.diagramID),
+      this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(ctx.params.diagramID),
+    ]);
 
-    await this.server.processAs(
-      Number(ctx.userId),
-      Realtime.project.awareness.updateViewers({
-        viewers,
-        diagramID: ctx.params.diagramID,
-        projectID: ctx.params.projectID,
-        workspaceID: ctx.params.workspaceID,
-      })
-    );
+    await Promise.all([
+      this.server.processAs(
+        Number(ctx.userId),
+        Realtime.project.awareness.updateViewers({
+          viewers,
+          diagramID: ctx.params.diagramID,
+          projectID: ctx.params.projectID,
+          workspaceID: ctx.params.workspaceID,
+        })
+      ),
+      this.server.processAs(
+        Number(ctx.userId),
+        Realtime.diagram.awareness.updateLockedEntities({
+          locks: diagramLocks,
+          diagramID: ctx.params.diagramID,
+          projectID: ctx.params.projectID,
+          versionID: ctx.params.versionID,
+          workspaceID: ctx.params.workspaceID,
+        })
+      ),
+    ]);
   };
 }
 

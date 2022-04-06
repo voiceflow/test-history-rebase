@@ -5,8 +5,12 @@ import ConvertToTopicControl from './convertToTopic';
 import CreateComponentControl from './createComponent';
 import CreateTopicControl from './createTopic';
 import DuplicateDiagramControl from './duplicate';
+import HeartbeatDiagramControl from './heartbeat';
+import HideLinkControl from './hideLink';
 import { RegisterIntentStepsControl, ReloadIntentStepsControl, ReorderIntentStepsControl, UpdateIntentStepsControl } from './intentSteps';
+import { LockEntitiesControl, UnlockEntitiesControl, UpdateLockedEntitiesControl } from './locks';
 import MoveCursorControl from './moveCursor';
+import MoveLinkControl from './moveLink';
 import PatchDiagramControl from './patch';
 import RemoveDiagramControl from './remove';
 import {
@@ -44,7 +48,13 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   removeDiagramStartingBlocksControl: new RemoveDiagramStartingBlocksControl(options),
 
   // awareness
+  moveLinkControl: new MoveLinkControl(options),
+  hideLinkControl: new HideLinkControl(options),
   moveCursorControl: new MoveCursorControl(options),
+  lockEntitiesControl: new LockEntitiesControl(options),
+  unlockEntitiesControl: new UnlockEntitiesControl(options),
+  heartbeatDiagramControl: new HeartbeatDiagramControl(options),
+  updateLockedEntitiesControl: new UpdateLockedEntitiesControl(options),
 
   // viewport
   updateViewportControl: new UpdateViewportControl(options),

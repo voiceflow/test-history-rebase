@@ -1,7 +1,7 @@
 import { createRootCRUDReducer } from '@/ducks/utils/crudV2';
 
 import { INITIAL_STATE } from '../constants';
-import { loadViewers, updateDiagramViewers } from './awareness';
+import { loadViewers, lockEntities, removeDiagramLocks, unlockEntities, updateDiagramViewers, updateLockedEntities } from './awareness';
 import crudReducers, { removeDiagram } from './crud';
 import { addIntentSteps, loadIntentSteps, reloadIntentSteps, removeIntentSteps, reorderIntentSteps, updateIntentSteps } from './intentSteps';
 import { addNewStartingBlocks, loadStartingBlocks, removeDiagramStartingBlocks, removeStartingBlocks, updateStartingBlock } from './startingBlocks';
@@ -26,6 +26,10 @@ const realtimeDiagramReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers
   .immerCase(...loadViewers)
   .immerCase(...updateDiagramViewers)
   .immerCase(...reloadIntentSteps)
+  .immerCase(...lockEntities)
+  .immerCase(...removeDiagramLocks)
+  .immerCase(...unlockEntities)
+  .immerCase(...updateLockedEntities)
   .build();
 
 export default realtimeDiagramReducer;

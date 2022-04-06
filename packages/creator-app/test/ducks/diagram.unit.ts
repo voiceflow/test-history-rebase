@@ -1,6 +1,7 @@
 /* eslint-disable mocha/no-identical-title */
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 
 import * as Creator from '@/ducks/creator';
 import * as DiagramV1 from '@/ducks/diagram';
@@ -47,9 +48,12 @@ const MOCK_STATE: Diagram.DiagramState = {
   },
   allKeys: [DIAGRAM_ID, 'abc'],
   awareness: {
+    locks: {},
     viewers: {
-      [DIAGRAM_ID]: [DIAGRAM_VIEWER, { creatorID: 10, creator_id: 10, name: 'gray', color: '#777' }],
-      abc: [{ creatorID: 1000, creator_id: 1000, name: 'caleb', color: '#aaa' }],
+      [DIAGRAM_ID]: Normal.normalize([DIAGRAM_VIEWER, { creatorID: 10, creator_id: 10, name: 'gray', color: '#777' }], (viewer) =>
+        String(viewer.creatorID)
+      ),
+      abc: Normal.normalize([{ creatorID: 1000, creator_id: 1000, name: 'caleb', color: '#aaa' }], (viewer) => String(viewer.creatorID)),
     },
   },
   intentSteps: {},
@@ -97,14 +101,20 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
         expect(result.awareness.viewers).to.eql({
           ...MOCK_STATE.awareness.viewers,
-          [diagramID]: [{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '5891FB|EFF5FF' }],
+          [diagramID]: Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '5891FB|EFF5FF' }], (viewer) =>
+            String(viewer.creatorID)
+          ),
         });
       });
 
       it('replace viewers of known diagram', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, viewers: [{ creatorID: CREATOR_ID, name: 'bar' }] });
 
-        expect(result.awareness.viewers[DIAGRAM_ID]).to.eql([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '5891FB|EFF5FF' }]);
+        expect(result.awareness.viewers[DIAGRAM_ID]).to.eql(
+          Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '5891FB|EFF5FF' }], (viewer) =>
+            String(viewer.creatorID)
+          )
+        );
       });
     });
 
@@ -119,8 +129,12 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
         expect(result.awareness.viewers).to.eql({
           ...MOCK_STATE.awareness.viewers,
-          [DIAGRAM_ID]: [{ creatorID: 456, creator_id: 456, name: 'bar', color: '697986|EEF0F1' }],
-          [diagramID]: [{ creatorID: 789, creator_id: 789, name: 'cat', color: 'D58B5F|FAF2ED' }],
+          [DIAGRAM_ID]: Normal.normalize([{ creatorID: 456, creator_id: 456, name: 'bar', color: '697986|EEF0F1' }], (viewer) =>
+            String(viewer.creatorID)
+          ),
+          [diagramID]: Normal.normalize([{ creatorID: 789, creator_id: 789, name: 'cat', color: 'D58B5F|FAF2ED' }], (viewer) =>
+            String(viewer.creatorID)
+          ),
         });
       });
     });
@@ -207,21 +221,13 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
     describe('diagramViewersByIDSelector()', () => {
       it('select diagram viewers', () => {
-        expect(Diagram.diagramViewersByIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID })).to.eq(MOCK_STATE.awareness.viewers[DIAGRAM_ID]);
+        expect(Diagram.diagramViewersByIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID })).to.eql(
+          Normal.denormalize(MOCK_STATE.awareness.viewers[DIAGRAM_ID])
+        );
       });
 
       it('select viewers of unknown diagram', () => {
         expect(Diagram.diagramViewersByIDSelector(createState(MOCK_STATE), { id: 'foo' })).to.eql([]);
-      });
-    });
-
-    describe('diagramViewersIDsByIDSelector()', () => {
-      it('select creator IDs of diagram viewers', () => {
-        expect(Diagram.diagramViewersIDsByIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID })).to.eql([CREATOR_ID, 10]);
-      });
-
-      it('select creator IDs of viewers of unknown diagram', () => {
-        expect(Diagram.diagramViewersIDsByIDSelector(createState(MOCK_STATE), { id: 'foo' })).to.eql([]);
       });
     });
 

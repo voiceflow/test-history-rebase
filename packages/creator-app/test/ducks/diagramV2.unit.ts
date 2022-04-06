@@ -37,6 +37,7 @@ const MOCK_STATE: Diagram.DiagramState = {
   allKeys: [DIAGRAM_ID, 'abc'],
   awareness: {
     viewers: {},
+    locks: {},
   },
   intentSteps: {
     [DIAGRAM_ID]: {

@@ -1,13 +1,10 @@
-import { LockType, ResourceType } from './constants';
+import { LockType } from './constants';
 
 export type AnyNodeLock = LockType.MOVEMENT | LockType.EDIT;
 
 export interface RealtimeLocks {
   blocks: Record<LockType.EDIT | LockType.MOVEMENT, Record<string, string>>;
-
   users: Record<string, Record<string, string>>;
-
-  resources: Partial<Record<ResourceType, string>>;
 }
 
 export interface RealtimeState {

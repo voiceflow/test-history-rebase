@@ -6,7 +6,6 @@ import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 import * as RealtimeUtils from '@/ducks/realtime/utils';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import mutableStore from '@/store/mutable';
 
 import suite from './_suite';
@@ -24,9 +23,6 @@ const LOCKS = {
     [Realtime.LockType.EDIT]: { jkl: 'mno' },
   },
   users: USER_LOCKS,
-  resources: {
-    settings: 'mno',
-  },
 };
 const MOCK_STATE = {
   locks: LOCKS,
@@ -47,7 +43,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
             [Realtime.LockType.MOVEMENT]: { xyz: 'ghi' },
             [Realtime.LockType.EDIT]: { lmn: 'opq' },
           },
-          resources: {},
         };
 
         expectAction(Realtime.initializeRealtime(diagramID, locks)).toModify({
@@ -67,7 +62,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
             [Realtime.LockType.MOVEMENT]: { xyz: 'ghi' },
             [Realtime.LockType.EDIT]: { lmn: 'opq' },
           },
-          resources: {},
           users: {
             [diagramID]: {
               def: 'iop',
@@ -108,7 +102,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
               edit: {},
               movement: {},
             },
-            resources: {},
             users: {},
           },
         });
@@ -149,33 +142,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
               movement: { jkl: 'eea' },
               delete: {},
             } as any,
-          },
-        });
-      });
-    });
-
-    describe('addResourceLock()', () => {
-      it('should add resource lock', () => {
-        const tabID = 'abc';
-
-        expectAction(Realtime.addResourceLock(Realtime.ResourceType.VARIABLES, tabID)).toModify({
-          locks: {
-            ...LOCKS,
-            resources: {
-              ...LOCKS.resources,
-              variables: tabID,
-            },
-          },
-        });
-      });
-    });
-
-    describe('removeResourceLock()', () => {
-      it('should remove resource lock', () => {
-        expectAction(Realtime.removeResourceLock(Realtime.ResourceType.SETTINGS)).toModify({
-          locks: {
-            ...LOCKS,
-            resources: {},
           },
         });
       });
@@ -262,7 +228,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     });
   });
 
-  describeSideEffects(({ applyEffect, createState, stubEffect }) => {
+  describeSideEffects(({ applyEffect, createState }) => {
     const stubSocket = <K extends keyof SocketClient>(name: K, value: Partial<SocketClient[K]>) => {
       const { socket } = client;
       stub(client, 'socket').get(() => ({ ...socket, [name]: value }));
@@ -279,7 +245,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       it('should update active diagrams with no viewers', async () => {
         const users = {};
         stub(Session, 'activeDiagramIDSelector').returns('890');
-        stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => false);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(users));
 
@@ -289,7 +254,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
       it('should update active diagrams with a single, pre-existing viewer', async () => {
         stub(Session, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
-        stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => true);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(USER_LOCKS));
 
@@ -307,15 +271,14 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
             qwe: 'rty',
           },
         };
-        const loadMembers = stubEffect(Workspace, 'loadMembers');
+
         stub(Session, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
-        stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => false);
+
         stub(Session, 'activeWorkspaceIDSelector').returns(workspaceID);
 
-        const { dispatch, expectDispatch, expectStubCalled } = await applyEffect(Realtime.updateDiagramViewers(users));
+        const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(users));
 
         expectDispatch(Realtime.updateActiveDiagramViewers(users));
-        expectStubCalled(loadMembers, workspaceID);
         expect(dispatch).to.be.calledTwice;
       });
     });

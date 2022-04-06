@@ -5,7 +5,7 @@ import { FeatureFlag } from '@/config/features';
 import { DiagramLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
 import { useFeature, useRAF, useRegistration } from '@/hooks';
-import { SelectionSetTargetsContext } from '@/pages/Project/contexts';
+import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import * as Query from '@/utils/query';
 
 import APLPreviewModal from './components/APLPreviewModal';
@@ -43,6 +43,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
   const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
 
+  const diagramHeartbeatContext = React.useContext(DiagramHeartbeatContext);
   const selectionSetTargetsContext = React.useContext(SelectionSetTargetsContext);
 
   React.useEffect(() => {
@@ -66,6 +67,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
     return schedulerAPI.current.cancel;
   }, [engine]);
 
+  useRegistration(() => engine.register('diagramHeartbeat', diagramHeartbeatContext), [engine, diagramHeartbeatContext]);
   useRegistration(() => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext), [engine, selectionSetTargetsContext]);
 
   return (

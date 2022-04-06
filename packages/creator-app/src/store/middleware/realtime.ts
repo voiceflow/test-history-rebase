@@ -1,10 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { isType } from 'typescript-fsa';
+import { ActionCreator, isType } from 'typescript-fsa';
 
 import * as Account from '@/ducks/account/selectors';
 import { Middleware, MiddlewareAPI } from '@/store/types';
 
-import { hideCursorCoords, setCursorCoords } from '../observables';
+import { hideCursorCoords, hideLinkPoints, setCursorCoords, setLinkPoints } from '../observables';
 
 export const createIgnoreMiddleware =
   (shouldIgnore: (api: MiddlewareAPI, action: any) => boolean): Middleware =>
@@ -18,48 +18,38 @@ export const createIgnoreMiddleware =
     next(action);
   };
 
-/**
- * ignore actions from own cursor movements
- */
-export const ownCursorIgnoreMiddleware: Middleware = createIgnoreMiddleware((api, action) => {
-  if (!isType(action, Realtime.diagram.awareness.moveCursor)) return false;
+export const createOwnIgnoreMiddlewareCreator = <Payload extends { creatorID: number }>(ignoreActionCreator: ActionCreator<Payload>): Middleware =>
+  createIgnoreMiddleware((api, action) => {
+    if (!isType(action, ignoreActionCreator)) return false;
 
-  const creatorID = Account.userIDSelector(api.getState());
+    const creatorID = Account.userIDSelector(api.getState());
 
-  return action.payload.creatorID === creatorID;
-});
+    return action.payload.creatorID === creatorID;
+  });
 
-/**
- * capture volatile cursor movement events
- * ignores actions from own cursor movements
- */
-export const moveCursorMiddleware = createIgnoreMiddleware((api, action) => {
-  if (!isType(action, Realtime.diagram.awareness.moveCursor)) return false;
+export const createCaptureAndIgnoreOwnMiddleware = <Payload extends { creatorID: number }>(
+  ignoreActionCreator: ActionCreator<Payload>,
+  handler: (payload: Payload) => void
+): Middleware =>
+  createIgnoreMiddleware((api, action) => {
+    if (!isType(action, ignoreActionCreator)) return false;
 
-  const creatorID = Account.userIDSelector(api.getState());
+    const creatorID = Account.userIDSelector(api.getState());
 
-  if (action.payload.creatorID === creatorID) return true;
+    if (action.payload.creatorID === creatorID) return true;
 
-  setCursorCoords(action.payload);
+    handler(action.payload);
 
-  return true;
-});
+    return true;
+  });
 
-/**
- * capture hide cursor events to pipe to observable
- * ignores actions from own cursor movements
- */
-export const hideCursorMiddleware = createIgnoreMiddleware((api, action) => {
-  if (!isType(action, Realtime.diagram.awareness.hideCursor)) return false;
+export const ownLinkIgnoreMiddleware = createOwnIgnoreMiddlewareCreator(Realtime.diagram.awareness.moveLink);
+export const ownCursorIgnoreMiddleware = createOwnIgnoreMiddlewareCreator(Realtime.diagram.awareness.moveCursor);
 
-  const creatorID = Account.userIDSelector(api.getState());
-
-  if (action.payload.creatorID === creatorID) return true;
-
-  hideCursorCoords(action.payload);
-
-  return true;
-});
+export const moveLinkMiddleware = createCaptureAndIgnoreOwnMiddleware(Realtime.diagram.awareness.moveLink, setLinkPoints);
+export const hideLinkMiddleware = createCaptureAndIgnoreOwnMiddleware(Realtime.diagram.awareness.hideLink, hideLinkPoints);
+export const moveCursorMiddleware = createCaptureAndIgnoreOwnMiddleware(Realtime.diagram.awareness.moveCursor, setCursorCoords);
+export const hideCursorMiddleware = createCaptureAndIgnoreOwnMiddleware(Realtime.diagram.awareness.hideCursor, hideCursorCoords);
 
 // export default [ownCursorIgnoreMiddleware, moveCursorMiddleware, hideCursorMiddleware];
-export default [moveCursorMiddleware, hideCursorMiddleware];
+export default [moveCursorMiddleware, hideCursorMiddleware, moveLinkMiddleware, hideLinkMiddleware];

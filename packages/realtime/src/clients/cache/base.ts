@@ -1,19 +1,60 @@
-import { Redis } from 'ioredis';
+import { Pipeline, Redis } from 'ioredis';
 
-import { AnyAdapter, BaseKeyExtractor, CacheOptions } from './types';
+import { AnyAdapter, BaseKeyExtractor, CacheOptions, KeyOptions } from './types';
 
 abstract class BaseCache<K extends BaseKeyExtractor, A extends AnyAdapter | undefined = undefined> {
   protected redis: Redis;
+
+  protected expire?: number;
 
   protected adapter?: AnyAdapter;
 
   protected keyCreator: BaseKeyExtractor;
 
-  constructor({ redis, adapter, keyCreator }: CacheOptions<K, A>) {
+  constructor({ redis, expire, adapter, keyCreator }: CacheOptions<K, A>) {
     this.redis = redis;
+    this.expire = expire;
 
     this.adapter = adapter;
     this.keyCreator = keyCreator;
+  }
+
+  protected async setExpireInPipeline(pipeline: Pipeline, keys: string | string[]): Promise<void> {
+    const keysToExpire = Array.isArray(keys) ? keys : [keys];
+
+    if (!this.expire || !keysToExpire.length) {
+      return;
+    }
+
+    keysToExpire.forEach((key) => pipeline.expire(key, this.expire!));
+
+    await pipeline.exec();
+  }
+
+  public async unlink(keyOptions: KeyOptions<K> | KeyOptions<K>[]): Promise<void> {
+    const options = Array.isArray(keyOptions) ? keyOptions : [keyOptions];
+    const keys = options.map(this.keyCreator);
+
+    if (!keys.length) {
+      return;
+    }
+
+    await this.redis.unlink(keys);
+  }
+
+  public async updateExpire(keyOptions: KeyOptions<K> | KeyOptions<K>[]): Promise<void> {
+    const options = Array.isArray(keyOptions) ? keyOptions : [keyOptions];
+    const keys = options.map(this.keyCreator);
+
+    if (!keys.length || !this.expire) {
+      return;
+    }
+
+    if (keys.length === 1) {
+      await this.redis.expire(keys[0], this.expire);
+    } else {
+      await this.setExpireInPipeline(this.redis.pipeline(), keys);
+    }
   }
 }
 

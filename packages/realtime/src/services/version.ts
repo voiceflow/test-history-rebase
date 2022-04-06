@@ -14,6 +14,7 @@ class VersionService extends AbstractControl {
   }
 
   private canReadCache = this.clients.cache.createKeyValue({
+    expire: 60,
     adapter: this.clients.cache.adapters.booleanAdapter,
     keyCreator: VersionService.getCanReadKey,
   });

@@ -3,11 +3,16 @@ import { BaseHashAdapter, BaseKeyExtractor, HashFromDB, HashToDB, KeyOptions } f
 
 class HashCache<K extends BaseKeyExtractor, A extends BaseHashAdapter | undefined = undefined> extends BaseCache<K, A> {
   public async set(keyOptions: KeyOptions<K>, value: HashToDB<A>): Promise<void> {
-    await this.redis.hset(this.keyCreator(keyOptions), this.adapter?.toDB(value) ?? value);
-  }
+    const dbKey = this.keyCreator(keyOptions);
+    const dbValue = this.adapter?.toDB(value) ?? value;
 
-  public async remove(keyOptions: KeyOptions<K>): Promise<void> {
-    await this.redis.del(this.keyCreator(keyOptions));
+    if (this.expire) {
+      const pipeline = this.redis.pipeline().hset(dbKey, dbValue);
+
+      await this.setExpireInPipeline(pipeline, dbKey);
+    } else {
+      await this.redis.hset(dbKey, dbValue);
+    }
   }
 
   public async get(keyOptions: KeyOptions<K>): Promise<HashFromDB<A>> {

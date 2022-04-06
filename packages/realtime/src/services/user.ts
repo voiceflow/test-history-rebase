@@ -17,13 +17,12 @@ class UserService extends AbstractControl {
   }
 
   private userCache = this.clients.cache.createKeyValue({
+    expire: 60,
     adapter: this.clients.cache.adapters.jsonAdapterCreator<User | null>(),
     keyCreator: UserService.getTokenUserKey,
   });
 
-  // in case we want to get user by id, not by token, not using expire to do not expire key during request
   private tokenCache = this.clients.cache.createKeyValue({
-    expire: false,
     keyCreator: UserService.getUserIDTokenKey,
   });
 

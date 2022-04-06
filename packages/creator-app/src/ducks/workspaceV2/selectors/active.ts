@@ -17,6 +17,8 @@ export const workspaceSelector = createSelector([getWorkspaceByIDSelector, Sessi
   getWorkspace({ id: workspaceID })
 );
 
+export const hasWorkspaceSelector = createSelector([workspaceSelector], (workspace) => !!workspace);
+
 export const organizationTrialExpired = createSelector([workspaceSelector, Feature.allActiveFeaturesSelector], (workspace, features) => {
   return features[FeatureFlag.ENTERPRISE_TRIAL]?.isEnabled && workspace?.organizationTrialDaysLeft === 0;
 });
@@ -60,9 +62,9 @@ export const getMemberByIDSelector = createCurriedSelector(memberByIDSelector);
 
 export const getDistinctWorkspaceMemberByCreatorIDSelector = createSelector(
   [getMemberByIDSelector],
-  (getWorkspaceMember) => (creatorID: number, tabID: string) => {
+  (getWorkspaceMember) => (creatorID: number, nodeID: string) => {
     const workspaceMember = getWorkspaceMember({ creatorID });
-    return workspaceMember ? { ...workspaceMember, color: getAlternativeColor(tabID) } : null;
+    return workspaceMember ? { ...workspaceMember, color: getAlternativeColor(nodeID) } : null;
   }
 );
 

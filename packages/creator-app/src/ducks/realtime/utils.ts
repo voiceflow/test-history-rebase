@@ -17,15 +17,12 @@ export const createServerAction = (action: AnyAction): { type: ServerAction; tar
   return null;
 };
 
-export const removeSelfFromLocks = ({ blocks, resources, users }: WithOptional<RealtimeLocks, 'users'>, tabID: string) => {
-  const filterByValue = (_: any, value: string | undefined) => value !== tabID;
-
+export const removeSelfFromLocks = ({ blocks, users }: WithOptional<RealtimeLocks, 'users'>, tabID: string): WithOptional<RealtimeLocks, 'users'> => {
   return {
     blocks: Object.entries(blocks).reduce(
-      (acc, [key, value]) => Object.assign(acc, { [key]: Utils.object.filterEntries(value, filterByValue) }),
+      (acc, [key, value]) => Object.assign(acc, { [key]: Utils.object.pickBy(value, (_, value) => value !== tabID) }),
       {} as Record<LockType.MOVEMENT | LockType.EDIT, Record<string, string>>
     ),
-    resources: Utils.object.filterEntries(resources, filterByValue),
     users,
   };
 };

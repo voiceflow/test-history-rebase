@@ -119,6 +119,7 @@ const EditSidebar = () => {
           <MarkupEditor key={node.id} animationDistance={prevAnimationDistance.current}>
             {managerEl}
           </MarkupEditor>
+
           <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !fullscreenEditorModal.isOpened} />
         </NamespaceProvider>
       );
@@ -135,6 +136,7 @@ const EditSidebar = () => {
           >
             {managerEl}
           </BlockEditor>
+
           <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !fullscreenEditorModal.isOpened} />
         </NamespaceProvider>
       );

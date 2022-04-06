@@ -17,7 +17,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
     env: config.NODE_ENV,
     cwd: rootDir,
     logger,
-    loggerIgnoredActions: [Realtime.diagram.awareness.moveCursor.type],
+    loggerIgnoredActions: [Realtime.diagram.awareness.moveCursor.type, Realtime.diagram.awareness.moveLink.type],
   });
   const serviceManager = new ServiceManager({ server, config, log: logger });
 

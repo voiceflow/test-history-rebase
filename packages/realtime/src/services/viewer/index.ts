@@ -27,7 +27,7 @@ class ViewerService extends AbstractControl {
 
     // remove viewer from the cache only if it's not locked by other entities
     if (size === 0) {
-      await this.viewersCache.remove({ viewerID });
+      await this.viewersCache.unlink({ viewerID });
     }
   }
 

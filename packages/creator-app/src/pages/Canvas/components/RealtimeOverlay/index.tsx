@@ -3,7 +3,7 @@ import React from 'react';
 import { FeatureFlag } from '@/config/features';
 import { useFeature } from '@/hooks';
 
-import { CursorOverlay, CursorOverlayV2, LinksOverlay } from './components';
+import { CursorOverlay, CursorOverlayV2, LinksOverlay, LinksOverlayV2 } from './components';
 
 const RealtimeOverlay = () => {
   const atomicActionsAwareness = useFeature(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
@@ -11,7 +11,7 @@ const RealtimeOverlay = () => {
   return (
     <>
       {atomicActionsAwareness.isEnabled ? <CursorOverlayV2 /> : <CursorOverlay />}
-      <LinksOverlay />
+      {atomicActionsAwareness.isEnabled ? <LinksOverlayV2 /> : <LinksOverlay />}
     </>
   );
 };

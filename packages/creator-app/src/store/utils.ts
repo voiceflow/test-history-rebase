@@ -7,7 +7,8 @@ export const storeLogger = UI.logger.child('store');
 
 export const wrapDispatch = (getStore: () => Store): Dispatch =>
   Object.assign(<T extends UI.AnyAction>(action: T) => getStore().dispatch(action), {
-    local: <T extends AnyAction>(action: T) => getStore().dispatch.local(action),
     sync: <T extends AnyAction>(action: T) => getStore().dispatch.sync(action),
+    local: <T extends AnyAction>(action: T) => getStore().dispatch.local(action),
     crossTab: <T extends AnyAction>(action: T) => getStore().dispatch.crossTab(action),
+    getNodeID: () => getStore().client.nodeId,
   });

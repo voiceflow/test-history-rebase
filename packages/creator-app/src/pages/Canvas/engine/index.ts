@@ -27,6 +27,7 @@ import * as Workspace from '@/ducks/workspaceV2';
 import { RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
+import { DiagramHeartbeatContextValue } from '@/pages/Project/contexts';
 import { State, Store } from '@/store/types';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
@@ -72,7 +73,7 @@ declare global {
   }
 }
 
-class Engine extends ComponentManager<{ container: CanvasContainerAPI }> {
+class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHeartbeat: DiagramHeartbeatContextValue }> {
   log = logger.child('engine');
 
   emitter = new EventEmitter<string>();
@@ -186,19 +187,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI }> {
 
   getDataByNodeID = <T>(nodeID: string) => this.select(CreatorV2.nodeDataByIDSelector, { id: nodeID }) as Realtime.NodeData<T> | null;
 
-  /**
-   * @deprecated
-   */
   isNodeMovementLocked = (nodeID: string) => this.select(RealtimeDuck.isNodeMovementLockedSelector)(nodeID);
 
-  /**
-   * @deprecated
-   */
   isNodeEditLocked = (nodeID: string) => this.select(RealtimeDuck.isNodeEditLockedSelector)(nodeID);
 
-  /**
-   * @deprecated
-   */
   getLockOwner = (nodeID: string) => this.select(RealtimeDuck.editLockOwnerSelector)(nodeID);
 
   isNodeFocused = () => this.select(Creator.hasFocusedNode);

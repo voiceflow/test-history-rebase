@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Optional } from 'utility-types';
 
+import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
 import { AbstractControl, ControlOptions } from '../../control';
 import ProjectMemberService from './member';
 
@@ -16,11 +17,15 @@ class ProjectService extends AbstractControl {
   }
 
   private canReadCache = this.clients.cache.createKeyValue({
+    expire: 60,
     adapter: this.clients.cache.adapters.booleanAdapter,
     keyCreator: ProjectService.getCanReadKey,
   });
 
-  private connectedDiagramsCache = this.clients.cache.createSet({ keyCreator: ProjectService.getConnectedDiagramsKey });
+  private connectedDiagramsCache = this.clients.cache.createSet({
+    expire: HEARTBEAT_EXPIRE_TIMEOUT,
+    keyCreator: ProjectService.getConnectedDiagramsKey,
+  });
 
   public member: ProjectMemberService;
 

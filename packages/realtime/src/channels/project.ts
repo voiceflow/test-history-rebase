@@ -1,4 +1,3 @@
-import { parseId } from '@logux/core';
 import { SendBackActions } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ChannelContext } from '@voiceflow/socket-utils';
@@ -16,15 +15,11 @@ class ProjectChannel extends AbstractChannelControl<Realtime.Channels.ProjectCha
     const { workspaceID, projectID } = ctx.params;
 
     const diagramIDs = await this.services.project.getConnectedDiagrams(projectID);
-
-    const diagramsNodesIDs = await Promise.all(diagramIDs.map((diagramID) => this.services.diagram.getConnectedNodes(diagramID)));
-    const diagramViewers = await Promise.all(
-      diagramsNodesIDs.map((nodesIDs) => this.services.viewer.getViewers([...new Set(nodesIDs.map((nodeID) => parseId(nodeID).userId!))]))
-    );
+    const diagramsConnectedViewers = await Promise.all(diagramIDs.map((diagramID) => this.services.diagram.getConnectedViewers(diagramID)));
 
     return Realtime.project.awareness.loadViewers({
       viewers: diagramIDs.reduce<{ [diagramID: string]: Realtime.Viewer[] }>(
-        (acc, diagramID, index) => Object.assign(acc, { [diagramID]: diagramViewers[index] }),
+        (acc, diagramID, index) => Object.assign(acc, { [diagramID]: diagramsConnectedViewers[index] }),
         {}
       ),
       projectID,

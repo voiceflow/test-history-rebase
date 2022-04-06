@@ -13,7 +13,7 @@ const CREATOR_HISTORY_ACTIONS: string[] = [Creator.DiagramAction.UNDO_HISTORY, C
 
 export const creatorHistoryMiddleware: Middleware = (store) => (next) => (action) => {
   const state = store.getState();
-  const viewers = Realtime.activeDiagramViewersSelector(state);
+  const hasViewers = Realtime.activeDiagramViewersCountSelector(state) > 1;
   const activeDiagramID = Session.activeDiagramIDSelector(state); // do not apply creator middleware if no active diagram
   const canEditCanvas = WorkspaceV2.active.hasPermissionSelector(state, Permission.EDIT_CANVAS);
 
@@ -22,7 +22,6 @@ export const creatorHistoryMiddleware: Middleware = (store) => (next) => (action
     return;
   }
 
-  const hasViewers = viewers.length > 1;
   const isHistoryAction = CREATOR_HISTORY_ACTIONS.includes(action.type);
 
   const saveDiagram = () => store.dispatch(Creator.performSave(Diagram.saveActiveDiagram()));

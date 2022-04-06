@@ -1,11 +1,14 @@
 import { Utils } from '@voiceflow/common';
+import * as RealtimeSDK from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts';
+import * as Account from '@/ducks/account';
 import * as Realtime from '@/ducks/realtime';
-import { useRAF } from '@/hooks';
+import { useFeature, useRAF, useSelector, useSyncDispatch } from '@/hooks';
 import { buildPath, getMarkerAttrs, getPathPoints, getVirtualPoints } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
@@ -23,6 +26,9 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const ref = React.useRef<T>(null);
   const markerRef = React.useRef<SVGMarkerElement>(null);
   const dispatch = useDispatch();
+  const creatorID = useSelector(Account.userIDSelector)!;
+  const moveLinkV2 = useSyncDispatch(RealtimeSDK.diagram.awareness.moveLink);
+  const hideLinkV2 = useSyncDispatch(RealtimeSDK.diagram.awareness.hideLink);
   const points = React.useRef<Pair<Point> | null>(null);
   const isPinned = React.useRef(false);
   const removeEventListeners = React.useRef(Utils.functional.noop);
@@ -30,12 +36,25 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
   const [isVisible, setVisible] = React.useState(false);
 
-  const [mouseMoveStylesScheduler] = useRAF();
+  const atomicActionsAwareness = useFeature(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
+
   const [pinStylesScheduler] = useRAF();
+  const [mouseMoveStylesScheduler] = useRAF();
 
   const moveLink = React.useCallback(
-    (...args: Parameters<typeof Realtime['moveLink']>) => dispatch(Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink(...args))),
-    []
+    (points: Pair<Point>) =>
+      atomicActionsAwareness.isEnabled
+        ? moveLinkV2({ ...engine.context, creatorID, points })
+        : dispatch(Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink({ points }))),
+    [creatorID, atomicActionsAwareness.isEnabled, moveLinkV2]
+  );
+
+  const resetLink = React.useCallback(
+    () =>
+      atomicActionsAwareness.isEnabled
+        ? hideLinkV2({ ...engine.context, creatorID })
+        : dispatch(Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink({ reset: true }))),
+    [creatorID, atomicActionsAwareness.isEnabled]
   );
 
   React.useEffect(() => {
@@ -58,7 +77,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
     const virtualPoints = getVirtualPoints(nextPoints)!;
 
     points.current = nextPoints;
-    moveLink({ points: virtualPoints });
+    moveLink(virtualPoints);
 
     mouseMoveStylesScheduler(() => {
       engine.linkCreation.redrawNewLink();
@@ -92,7 +111,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         if (!nextPoints) return;
 
         points.current = nextPoints;
-        moveLink({ points: getVirtualPoints(points.current)! });
+        moveLink(getVirtualPoints(points.current)!);
 
         setVisible(true);
 
@@ -106,7 +125,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
       },
       hide: () => {
         removeEventListeners.current();
-        moveLink({ reset: true });
+        resetLink();
         setVisible(false);
       },
       pin: (position) => {
@@ -123,7 +142,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         const targetIsBlock = targetNode?.type === BlockType.COMBINED;
 
         points.current = nextPoints;
-        moveLink({ points: virtualPoints });
+        moveLink(virtualPoints);
 
         const linkEl = ref.current!;
         const markerEl = markerRef.current!;
@@ -156,6 +175,6 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         isPinned.current = false;
       },
     }),
-    [isVisible, onMouseMove, onMouseUp, moveLink]
+    [isVisible, onMouseMove, onMouseUp, moveLink, resetLink]
   );
 };

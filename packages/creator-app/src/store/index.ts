@@ -21,7 +21,7 @@ declare global {
 
 export const composeEnhancers = composeWithDevTools({
   name: 'Voiceflow Creator',
-  actionsDenylist: DEBUG_REALTIME ? [] : ['logux/state', Realtime.diagram.awareness.moveCursor.type],
+  actionsDenylist: DEBUG_REALTIME ? [] : ['logux/state', Realtime.diagram.awareness.moveCursor.type, Realtime.diagram.awareness.moveLink.type],
 });
 
 const createStore = (realtime: Client, history: History): { store: Store; persistor: Persistor } => {
@@ -38,13 +38,18 @@ const createStore = (realtime: Client, history: History): { store: Store; persis
   // thunk
   const originalDispatch = store.dispatch;
   // Object.assign is used to copy sync/crossTab/etc methods from the original dispatch method
-  store.dispatch = Object.assign((action: Dispatchable) => {
-    if (typeof action === 'function') {
-      return action(store.dispatch, store.getState, { log: store.log });
-    }
-    originalDispatch(action);
-    return action;
-  }, originalDispatch);
+  store.dispatch = Object.assign(
+    (action: Dispatchable) => {
+      if (typeof action === 'function') {
+        return action(store.dispatch, store.getState, { log: store.log });
+      }
+
+      originalDispatch(action);
+      return action;
+    },
+    originalDispatch,
+    { getNodeID: () => store.client.nodeId }
+  );
 
   const persistor = persistStore(store);
 

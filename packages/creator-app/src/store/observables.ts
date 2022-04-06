@@ -17,6 +17,26 @@ export const useObservableEffect = <T>(source$: Observable<T>, handler: (next: T
     return () => subscription.unsubscribe();
   }, dependencies);
 
+type MoveLinkPayload = Pick<Realtime.diagram.awareness.MoveLinkPayload, 'diagramID' | 'creatorID' | 'points'>;
+type LinkPayload = Omit<MoveLinkPayload, 'points'>;
+
+const getLinkKey = ({ diagramID, creatorID }: LinkPayload): string => [diagramID, creatorID].map(String).join('.');
+
+export const [linkPointsChange$, setLinkPoints] = createKeyedSignal<string, MoveLinkPayload, [payload: MoveLinkPayload]>(
+  getLinkKey,
+  (payload) => payload
+);
+
+export const [linkPointsHide$, hideLinkPoints] = createKeyedSignal<string, LinkPayload, [payload: LinkPayload]>(getLinkKey, (payload) => payload);
+
+const linkPointsMerged$ = (param: LinkPayload) => {
+  const key = getLinkKey(param);
+
+  return merge(linkPointsChange$(key).pipe(map(({ points }) => points)), linkPointsHide$(key).pipe(map(() => null)));
+};
+
+export const [useLinkPoints, linkPoints$] = bind(linkPointsMerged$);
+
 type MoveCursorPayload = Pick<Realtime.diagram.awareness.MoveCursorPayload, 'diagramID' | 'creatorID' | 'coords'>;
 type CursorPayload = Omit<MoveCursorPayload, 'coords'>;
 

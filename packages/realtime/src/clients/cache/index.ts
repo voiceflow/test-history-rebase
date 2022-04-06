@@ -2,7 +2,7 @@ import { Redis } from 'ioredis';
 
 import * as adapters from './adapters';
 import HashCache from './hash';
-import KeyValueCache, { KeyValueExtraOptions } from './keyValue';
+import KeyValueCache from './keyValue';
 import SetCache from './set';
 import { BaseAdapter, BaseHashAdapter, BaseKeyExtractor, Options } from './types';
 
@@ -23,9 +23,7 @@ class Cache {
     return new HashCache<K, A>({ redis: this.redis, ...options });
   }
 
-  createKeyValue<K extends BaseKeyExtractor, A extends BaseAdapter | undefined = undefined>(
-    options: Options<K, A> & KeyValueExtraOptions
-  ): KeyValueCache<K, A> {
+  createKeyValue<K extends BaseKeyExtractor, A extends BaseAdapter | undefined = undefined>(options: Options<K, A>): KeyValueCache<K, A> {
     return new KeyValueCache<K, A>({ redis: this.redis, ...options });
   }
 }

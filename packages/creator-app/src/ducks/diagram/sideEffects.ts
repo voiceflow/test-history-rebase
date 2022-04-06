@@ -352,3 +352,59 @@ export const reorderIntentStepIDs =
       })
     );
   };
+
+export const activeDiagramHeartbeat =
+  (locksMap: Realtime.diagram.awareness.HeartbeatLocksMap): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const diagramID = CreatorV2.activeDiagramIDSelector(state);
+
+    Errors.assertDiagramID(diagramID);
+
+    await dispatch.sync(
+      Realtime.diagram.awareness.heartbeat({
+        ...getActiveVersionContext(state),
+        locksMap,
+        diagramID,
+        loguxNodeID: dispatch.getNodeID(),
+      })
+    );
+  };
+
+export const lockActiveDiagramEntities =
+  (lockType: Realtime.diagram.awareness.LockEntityType, entityIDs: string[]): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const diagramID = CreatorV2.activeDiagramIDSelector(state);
+
+    Errors.assertDiagramID(diagramID);
+
+    await dispatch.sync(
+      Realtime.diagram.awareness.lockEntities({
+        ...getActiveVersionContext(state),
+        lockType,
+        diagramID,
+        entityIDs,
+        loguxNodeID: dispatch.getNodeID(),
+      })
+    );
+  };
+
+export const unlockActiveDiagramEntities =
+  (lockType: Realtime.diagram.awareness.LockEntityType, entityIDs: string[]): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const diagramID = CreatorV2.activeDiagramIDSelector(state);
+
+    Errors.assertDiagramID(diagramID);
+
+    await dispatch.sync(
+      Realtime.diagram.awareness.unlockEntities({
+        ...getActiveVersionContext(state),
+        lockType,
+        entityIDs,
+        diagramID,
+        loguxNodeID: dispatch.getNodeID(),
+      })
+    );
+  };

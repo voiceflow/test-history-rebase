@@ -1,27 +1,31 @@
 import { Utils } from '@voiceflow/common';
+import * as RealtimeSDK from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
+import { FeatureFlag } from '@/config/features';
 import * as Realtime from '@/ducks/realtime';
-import { useForceUpdate, useSelector } from '@/hooks';
+import { useFeature, useForceUpdate, useSelector } from '@/hooks';
 import { LockOwner } from '@/models';
-import { AnyThunk, Selector } from '@/store/types';
+import { DiagramHeartbeatContext } from '@/pages/Project/contexts';
+import { Selector } from '@/store/types';
 
 export interface LockOptions<T> {
   disabled: boolean;
-  createLockAction: (target: T) => AnyThunk;
-  createUnlockAction: (target: T) => AnyThunk;
-  lockOwnerSelector: Selector<(target: T) => LockOwner | null>;
+  createLock: (target: T) => void;
+  createUnlock: (target: T) => void;
   isLockedSelector: Selector<(target: T) => boolean>;
+  lockOwnerSelector: Selector<(target: T) => LockOwner | null>;
 }
 
-const useGenericLock = <T>(target: T, { disabled, createLockAction, createUnlockAction, lockOwnerSelector, isLockedSelector }: LockOptions<T>) => {
+const useGenericLock = <T>(target: T, { disabled, createLock, createUnlock, lockOwnerSelector, isLockedSelector }: LockOptions<T>) => {
   const [forceUpdate, forceUpdateKey] = useForceUpdate();
   const lockOwner = useSelector(lockOwnerSelector)(target);
   const isTargetLocked = useSelector(isLockedSelector)(target);
-  const teardownHandler = React.useRef<VoidFunction>(Utils.functional.noop);
+
   const prevState = React.useRef<{ target: T; lockOwner: LockOwner | null } | null>(null);
-  const dispatch = useDispatch();
+  const teardownHandler = React.useRef<VoidFunction>(Utils.functional.noop);
+  const heartbeatTimeout = React.useRef<NodeJS.Timeout | null>(null);
 
   if (prevState.current?.target !== target || (lockOwner && prevState.current?.lockOwner !== lockOwner)) {
     // initialize the state
@@ -35,9 +39,13 @@ const useGenericLock = <T>(target: T, { disabled, createLockAction, createUnlock
 
   const lockTarget = () => {
     prevState.current = null;
-    teardownHandler.current = () => dispatch(createUnlockAction(target));
+    teardownHandler.current = () => createUnlock(target);
 
-    dispatch(createLockAction(target));
+    if (heartbeatTimeout.current !== null) {
+      clearTimeout(heartbeatTimeout.current);
+    }
+
+    createLock(target);
   };
 
   const acquireLock = () => {
@@ -48,7 +56,9 @@ const useGenericLock = <T>(target: T, { disabled, createLockAction, createUnlock
   React.useEffect(() => {
     if (!disabled && !isTargetLocked) {
       const previous = prevState.current?.lockOwner;
+
       lockTarget();
+
       if (previous) {
         forceUpdate();
       }
@@ -65,26 +75,24 @@ const useGenericLock = <T>(target: T, { disabled, createLockAction, createUnlock
   };
 };
 
-/**
- * @deprecated
- */
-export const useEditLock = (nodeID: string, disabled: boolean) =>
-  useGenericLock(nodeID, {
-    disabled,
-    createLockAction: (id: string) => Realtime.sendRealtimeUpdate(Realtime.lockNodes([id], [Realtime.LockType.EDIT])),
-    createUnlockAction: (id: string) => Realtime.sendRealtimeUpdate(Realtime.unlockNodes([id], [Realtime.LockType.EDIT])),
-    lockOwnerSelector: Realtime.editLockOwnerSelector,
-    isLockedSelector: Realtime.isNodeEditLockedSelector,
-  });
+export const useEditLock = (nodeID: string, disabled: boolean) => {
+  const dispatch = useDispatch();
+  const diagramHeartbeat = React.useContext(DiagramHeartbeatContext);
+  const atomicActionsPhase2 = useFeature(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
 
-/**
- * @deprecated
- */
-export const useResourceLock = (resourceType: Realtime.ResourceType, disabled: boolean) =>
-  useGenericLock(resourceType, {
+  return useGenericLock(nodeID, {
     disabled,
-    createLockAction: (type: Realtime.ResourceType) => Realtime.sendRealtimeProjectUpdate(Realtime.lockResource(type)),
-    createUnlockAction: (type: Realtime.ResourceType) => Realtime.sendRealtimeProjectUpdate(Realtime.unlockResource(type)),
-    lockOwnerSelector: Realtime.resourceLockOwnerSelector,
-    isLockedSelector: Realtime.isResourceLockedSelector,
+    isLockedSelector: Realtime.isNodeEditLockedSelector,
+    lockOwnerSelector: Realtime.editLockOwnerSelector,
+
+    createLock: (id: string) =>
+      atomicActionsPhase2.isEnabled
+        ? diagramHeartbeat.lockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_EDIT, [id])
+        : dispatch(Realtime.sendRealtimeUpdate(Realtime.lockNodes([id], [Realtime.LockType.EDIT]))),
+
+    createUnlock: (id: string) =>
+      atomicActionsPhase2.isEnabled
+        ? diagramHeartbeat.unlockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_EDIT, [id])
+        : dispatch(Realtime.sendRealtimeUpdate(Realtime.unlockNodes([id], [Realtime.LockType.EDIT]))),
   });
+};

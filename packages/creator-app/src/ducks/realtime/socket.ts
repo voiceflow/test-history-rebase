@@ -6,7 +6,7 @@ import { createAction } from '@/ducks/utils';
 import { Action, ActionPayload } from '@/store/types';
 import { Either, Pair, Point } from '@/types';
 
-import { LockAction, LockType, ResourceType } from './constants';
+import { LockAction, LockType } from './constants';
 import { AnyNodeLock } from './types';
 
 export enum SocketAction {
@@ -35,10 +35,6 @@ export enum SocketAction {
   UPDATE_LINK_DATA_MANY = 'REALTIME:SOCKET:LINK:UPDATE_DATA_MANY',
 
   MOVE_MOUSE = 'REALTIME:SOCKET:MOUSE:MOVE',
-
-  LOCK_RESOURCE = 'REALTIME:PROJECT:SOCKET:RESOURCE:LOCK',
-  UNLOCK_RESOURCE = 'REALTIME:PROJECT:SOCKET:RESOURCE:UNLOCK',
-  UPDATE_RESOURCE = 'REALTIME:PROJECT:SOCKET:RESOURCE:UPDATE',
 }
 
 export interface LockPayload<T extends string, L extends LockType, A extends LockAction> {
@@ -54,8 +50,6 @@ type GenericLockAction<S extends SocketAction, T extends string, L extends LockT
 >;
 
 type NodeLockAction<T extends SocketAction, L extends LockAction> = GenericLockAction<T, string, AnyNodeLock, L>;
-
-export type ResourceLockAction<S extends SocketAction, A extends LockAction> = GenericLockAction<S, ResourceType, LockType.RESOURCE, A>;
 
 export type ReconnectNoop = Action<SocketAction.RECONNECT_NOOP>;
 
@@ -99,12 +93,6 @@ export type RemoveManyLinks = Action<SocketAction.REMOVE_MANY_LINKS, ActionPaylo
 
 export type MoveMouse = Action<SocketAction.MOVE_MOUSE, Point>;
 
-export type LockResource = ResourceLockAction<SocketAction.LOCK_RESOURCE, LockAction.LOCK>;
-
-export type UnlockResource = ResourceLockAction<SocketAction.UNLOCK_RESOURCE, LockAction.UNLOCK>;
-
-export type UpdateResource = Action<SocketAction.UPDATE_RESOURCE, { resourceID: ResourceType; data: unknown }>;
-
 export type AnySocketAction =
   | ReconnectNoop
   | LockNodes
@@ -126,10 +114,7 @@ export type AnySocketAction =
   | AddLink
   | UpdateLinkDataMany
   | RemoveManyLinks
-  | MoveMouse
-  | LockResource
-  | UnlockResource
-  | UpdateResource;
+  | MoveMouse;
 
 // action creators
 
@@ -246,23 +231,3 @@ export const removeManyLinks = (linkIDs: string[]): RemoveManyLinks => createAct
 // mouse
 
 export const moveMouse = (position: Point): MoveMouse => createAction(SocketAction.MOVE_MOUSE, position);
-
-// resources
-
-/**
- * @deprecated
- */
-export const lockResource = (resourceID: ResourceType): LockResource =>
-  createLockAction(SocketAction.LOCK_RESOURCE, { targets: [resourceID], types: [LockType.RESOURCE], action: LockAction.LOCK });
-
-/**
- * @deprecated
- */
-export const unlockResource = (resourceID: ResourceType): UnlockResource =>
-  createLockAction(SocketAction.UNLOCK_RESOURCE, { targets: [resourceID], types: [LockType.RESOURCE], action: LockAction.UNLOCK });
-
-/**
- * @deprecated
- */
-export const updateResource = (resourceID: ResourceType, data: unknown): UpdateResource =>
-  createAction(SocketAction.UPDATE_RESOURCE, { resourceID, data });

@@ -4,7 +4,7 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractDiagramResourceControl } from './utils';
 
-type RemoveDiagramPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDKeyPayload;
+interface RemoveDiagramPayload extends Realtime.BaseVersionPayload, Realtime.actionUtils.CRUDKeyPayload {}
 
 class RemoveDiagram extends AbstractDiagramResourceControl<RemoveDiagramPayload> {
   protected actionCreator = Realtime.diagram.crud.remove;
@@ -28,7 +28,11 @@ class RemoveDiagram extends AbstractDiagramResourceControl<RemoveDiagramPayload>
     const { creatorID } = ctx.data;
     const { key: removedDiagramID, versionID, projectID, workspaceID } = payload;
     const actionContext = { diagramID: removedDiagramID, versionID, projectID, workspaceID };
-    await this.server.processAs(creatorID, Realtime.diagram.removeDiagramStartingBlocks({ ...actionContext, removedDiagramID }));
+
+    await Promise.all([
+      this.server.processAs(creatorID, Realtime.diagram.removeDiagramStartingBlocks({ ...actionContext, removedDiagramID })),
+      this.services.lock.unlockAllEntities(removedDiagramID),
+    ]);
   };
 }
 

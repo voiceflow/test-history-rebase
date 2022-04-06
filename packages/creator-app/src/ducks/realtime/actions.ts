@@ -3,7 +3,6 @@ import { WithOptional } from '@voiceflow/common';
 import { createAction } from '@/ducks/utils';
 import { Action } from '@/store/types';
 
-import { ResourceType } from './constants';
 import { AnyNodeLock, RealtimeLocks } from './types';
 
 export enum RealtimeAction {
@@ -35,10 +34,6 @@ export type AddNodeLocks = Action<RealtimeAction.ADD_NODE_LOCKS, { types: AnyNod
 
 export type RemoveNodeLocks = Action<RealtimeAction.REMOVE_NODE_LOCKS, { types: AnyNodeLock[]; targets: string[] }>;
 
-export type AddResourceLock = Action<RealtimeAction.ADD_RESOURCE_LOCK, { resourceID: ResourceType; tabID: string }>;
-
-export type RemoveResourceLock = Action<RealtimeAction.REMOVE_RESOURCE_LOCK, ResourceType>;
-
 export type UpdateRealtimeConnection = Action<RealtimeAction.UPDATE_REALTIME_CONNECTION, boolean>;
 
 export type SetErrorState = Action<RealtimeAction.SET_ERROR_STATE, boolean>;
@@ -57,8 +52,6 @@ export type AnyRealtimeAction =
   | UpdateDiagramViewers
   | AddNodeLocks
   | RemoveNodeLocks
-  | AddResourceLock
-  | RemoveResourceLock
   | UpdateRealtimeConnection
   | SetErrorState
   | SetSessionBusy
@@ -93,17 +86,6 @@ export const addNodeLocks = (types: AnyNodeLock[], targets: string[], tabID: str
  */
 export const removeNodeLocks = (types: AnyNodeLock[], targets: string[]): RemoveNodeLocks =>
   createAction(RealtimeAction.REMOVE_NODE_LOCKS, { types, targets });
-
-/**
- * @deprecated
- */
-export const addResourceLock = (resourceID: ResourceType, tabID: string): AddResourceLock =>
-  createAction(RealtimeAction.ADD_RESOURCE_LOCK, { resourceID, tabID });
-
-/**
- * @deprecated
- */
-export const removeResourceLock = (resourceID: ResourceType): RemoveResourceLock => createAction(RealtimeAction.REMOVE_RESOURCE_LOCK, resourceID);
 
 export const connectRealtime = (): UpdateRealtimeConnection => createAction(RealtimeAction.UPDATE_REALTIME_CONNECTION, true);
 

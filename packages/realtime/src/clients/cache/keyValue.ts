@@ -1,46 +1,51 @@
 import BaseCache from './base';
-import { DEFAULT_EXPIRE_MODE, DEFAULT_EXPIRE_TIME } from './constants';
-import { BaseAdapter, BaseKeyExtractor, CacheOptions, KeyOptions, StringFromDB, StringToDB } from './types';
+import { BaseAdapter, BaseKeyExtractor, KeyOptions, StringFromDB, StringToDB } from './types';
 
-export interface KeyValueExtraOptions {
-  expire?: boolean;
-  expireMode?: string;
-  expireTime?: number;
-}
+export const DEFAULT_EXPIRE_MODE = 'EX'; // seconds
 
 class KeyValueCache<K extends BaseKeyExtractor, A extends BaseAdapter | undefined = undefined> extends BaseCache<K, A> {
-  private expire: boolean;
-
-  private expireMode: string;
-
-  private expireTime: number;
-
-  constructor({ expire = true, expireMode, expireTime, ...options }: CacheOptions<K, A> & KeyValueExtraOptions) {
-    super(options as CacheOptions<K, A>);
-
-    this.expire = expire;
-    this.expireMode = expireMode ?? DEFAULT_EXPIRE_MODE;
-    this.expireTime = expireTime ?? DEFAULT_EXPIRE_TIME;
-  }
-
-  public async get(keyOptions: KeyOptions<K>): Promise<null | StringFromDB<A>> {
-    const value = await this.redis.get(this.keyCreator(keyOptions));
-
+  private formatValue = (value: string | null): StringFromDB<A> | null => {
     if (value === null) {
       return null;
     }
 
     return this.adapter?.fromDB(value) ?? value;
+  };
+
+  public async get(keyOptions: KeyOptions<K>): Promise<null | StringFromDB<A>> {
+    const value = await this.redis.get(this.keyCreator(keyOptions));
+
+    return this.formatValue(value);
+  }
+
+  public async getMany(keyOptions: Array<KeyOptions<K>>): Promise<Array<null | StringFromDB<A>>> {
+    const values = await this.redis.mget(keyOptions.map(this.keyCreator));
+
+    return values.map(this.formatValue);
   }
 
   public async set(keyOptions: KeyOptions<K>, value: StringToDB<A>): Promise<void> {
-    const key = this.keyCreator(keyOptions);
+    const dbKey = this.keyCreator(keyOptions);
     const dbValue = this.adapter?.toDB(value) ?? value;
 
     if (this.expire) {
-      await this.redis.set(key, dbValue, this.expireMode, this.expireTime);
+      const pipeline = this.redis.pipeline().set(dbKey, dbValue);
+
+      await this.setExpireInPipeline(pipeline, dbKey);
     } else {
-      await this.redis.set(key, dbValue);
+      await this.redis.set(dbKey, dbValue);
+    }
+  }
+
+  public async setMany(sets: [keyOptions: KeyOptions<K>, value: StringToDB<A>][]): Promise<void> {
+    const setsRecord = Object.fromEntries(sets.map(([key, value]) => [this.keyCreator(key), this.adapter?.toDB(value) ?? value]));
+
+    if (this.expire) {
+      const pipeline = this.redis.pipeline().mset(setsRecord);
+
+      await this.setExpireInPipeline(pipeline, Object.keys(setsRecord));
+    } else {
+      await this.redis.mset(setsRecord);
     }
   }
 }

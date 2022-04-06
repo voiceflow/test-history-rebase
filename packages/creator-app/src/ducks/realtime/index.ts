@@ -4,17 +4,15 @@ import { Reducer, RootReducer } from '@/store/types';
 
 import {
   AddNodeLocks,
-  AddResourceLock,
   AnyRealtimeAction,
   InitializeRealtime,
   RealtimeAction,
   RemoveNodeLocks,
-  RemoveResourceLock,
   SetErrorState,
   UpdateDiagramViewers,
   UpdateRealtimeConnection,
 } from './actions';
-import { LockType, ResourceType } from './constants';
+import { LockType } from './constants';
 import { AnyNodeLock, RealtimeLocks, RealtimeState } from './types';
 
 export * from './actions';
@@ -61,7 +59,6 @@ export const updateDiagramViewersReducer: RealtimeReducer<UpdateDiagramViewers> 
         (acc, [key, value]) => Object.assign(acc, { [key]: filterByTabID(value) }),
         {}
       ),
-      resources: filterByTabID<ResourceType>(state.locks?.resources ?? {}),
     } as RealtimeLocks,
   };
 };
@@ -71,7 +68,6 @@ export const addNodeLocksReducer: RealtimeReducer<AddNodeLocks> = (state, { payl
   locks: {
     ...state.locks,
     users: state.locks?.users ?? {},
-    resources: state.locks?.resources ?? {},
     blocks: {
       [LockType.EDIT]: {},
       [LockType.MOVEMENT]: {},
@@ -97,7 +93,6 @@ export const removeNodeLocksReducer: RealtimeReducer<RemoveNodeLocks> = (state, 
   locks: {
     ...state.locks,
     users: state.locks?.users ?? {},
-    resources: state.locks?.resources ?? {},
     blocks: {
       [LockType.EDIT]: {},
       [LockType.MOVEMENT]: {},
@@ -114,33 +109,6 @@ export const removeNodeLocksReducer: RealtimeReducer<RemoveNodeLocks> = (state, 
     },
   },
 });
-
-export const addResourceLockReducer: RealtimeReducer<AddResourceLock> = (state, { payload: { resourceID, tabID } }) => ({
-  ...state,
-  locks: {
-    ...state.locks,
-    users: state.locks?.users ?? {},
-    blocks: state.locks?.blocks ?? { [LockType.EDIT]: {}, [LockType.MOVEMENT]: {} },
-    resources: {
-      ...state.locks?.resources,
-      [resourceID]: tabID,
-    },
-  },
-});
-
-export const removeResourceLockReducer: RealtimeReducer<RemoveResourceLock> = (state, { payload: resourceID }) => {
-  const { [resourceID]: _, ...nextResourceLocks } = state.locks?.resources ?? {};
-
-  return {
-    ...state,
-    locks: {
-      ...state.locks,
-      users: state.locks?.users ?? {},
-      blocks: state.locks?.blocks ?? { [LockType.EDIT]: {}, [LockType.MOVEMENT]: {} },
-      resources: nextResourceLocks,
-    },
-  };
-};
 
 export const updateRealtimeConnectionReducer: RealtimeReducer<UpdateRealtimeConnection> = (state, { payload: connected }) => ({
   ...state,
@@ -169,10 +137,6 @@ const realtimeReducer: RootReducer<RealtimeState, AnyRealtimeAction> = (state = 
       return addNodeLocksReducer(state, action);
     case RealtimeAction.REMOVE_NODE_LOCKS:
       return removeNodeLocksReducer(state, action);
-    case RealtimeAction.ADD_RESOURCE_LOCK:
-      return addResourceLockReducer(state, action);
-    case RealtimeAction.REMOVE_RESOURCE_LOCK:
-      return removeResourceLockReducer(state, action);
     case RealtimeAction.SET_ERROR_STATE:
       return setErrorStateReducer(state, action);
     case RealtimeAction.SET_SESSION_BUSY:

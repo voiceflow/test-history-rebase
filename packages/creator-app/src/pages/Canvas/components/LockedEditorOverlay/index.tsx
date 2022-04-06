@@ -2,11 +2,10 @@ import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import User from '@/components/User';
-import { FeatureFlag } from '@/config/features';
-import * as Realtime from '@/ducks/realtime';
-import { withFeatureSwitcher } from '@/hocs';
+import * as Account from '@/ducks/account';
+import { useSelector } from '@/hooks';
 import { LockOwner } from '@/models';
-import { useEditLock, useResourceLock } from '@/pages/Canvas/hooks';
+import { useEditLock } from '@/pages/Canvas/hooks';
 
 import { Container } from './components';
 
@@ -17,9 +16,9 @@ export interface LockedEditorOverlayProps {
 }
 
 const LockedEditorOverlay: React.FC<LockedEditorOverlayProps> = ({ lockOwner, prevOwner, acquireLock }) => {
-  if (!lockOwner && !prevOwner) return null;
+  const userID = useSelector(Account.userIDSelector);
 
-  if (lockOwner) {
+  if (lockOwner && lockOwner.creator_id !== userID) {
     return (
       <Container>
         <User user={lockOwner} large />
@@ -28,14 +27,18 @@ const LockedEditorOverlay: React.FC<LockedEditorOverlayProps> = ({ lockOwner, pr
     );
   }
 
-  return (
-    <Container>
-      <p>{prevOwner!.name} is all done, you can now takeover edit access</p>
-      <Button variant={ButtonVariant.SECONDARY} onClick={acquireLock}>
-        Enter
-      </Button>
-    </Container>
-  );
+  if (prevOwner && prevOwner.creator_id !== userID) {
+    return (
+      <Container>
+        <p>{prevOwner.name} is all done, you can now takeover edit access</p>
+        <Button variant={ButtonVariant.SECONDARY} onClick={acquireLock}>
+          Enter
+        </Button>
+      </Container>
+    );
+  }
+
+  return null;
 };
 
 export default LockedEditorOverlay;
@@ -48,10 +51,7 @@ export interface LockedBlockOverlayProps {
 
 export const PassthroughBlockOverlay: React.FC<LockedBlockOverlayProps> = ({ children }) => <>{children?.(-1)}</>;
 
-export const LockedBlockOverlay = withFeatureSwitcher<LockedBlockOverlayProps>(
-  FeatureFlag.ATOMIC_ACTIONS_PHASE_2,
-  PassthroughBlockOverlay
-)(({ nodeID, disabled = false, children }) => {
+export const LockedBlockOverlay: React.FC<LockedBlockOverlayProps> = ({ nodeID, disabled = false, children }) => {
   const { lockOwner, prevOwner, acquireLock, forceUpdateKey } = useEditLock(nodeID, disabled);
 
   return (
@@ -60,28 +60,4 @@ export const LockedBlockOverlay = withFeatureSwitcher<LockedBlockOverlayProps>(
       <LockedEditorOverlay lockOwner={lockOwner} prevOwner={prevOwner} acquireLock={acquireLock} />
     </>
   );
-});
-
-export interface LockedResourceOverlayProps {
-  type: Realtime.ResourceType;
-  disabled?: boolean;
-  children?: (props: { forceUpdateKey: number | null; lockOwner: LockOwner | null; prevOwner: LockOwner | null }) => React.ReactNode;
-}
-
-export const PassthroughResourceOverlay: React.FC<LockedResourceOverlayProps> = ({ children }) => {
-  return <>{children?.({ lockOwner: null, prevOwner: null, forceUpdateKey: -1 })}</>;
 };
-
-export const LockedResourceOverlay = withFeatureSwitcher<LockedResourceOverlayProps>(
-  FeatureFlag.ATOMIC_ACTIONS_PHASE_2,
-  PassthroughResourceOverlay
-)(({ type, disabled = false, children }) => {
-  const { lockOwner, prevOwner, acquireLock, forceUpdateKey } = useResourceLock(type, disabled);
-
-  return (
-    <>
-      {children?.({ lockOwner, prevOwner, forceUpdateKey })}
-      <LockedEditorOverlay lockOwner={lockOwner} prevOwner={prevOwner} acquireLock={acquireLock} />
-    </>
-  );
-});

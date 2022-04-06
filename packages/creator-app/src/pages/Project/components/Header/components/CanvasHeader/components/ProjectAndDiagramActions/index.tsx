@@ -8,7 +8,6 @@ import { Permission } from '@/config/permissions';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useEventualEngine, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
@@ -27,19 +26,15 @@ const ProjectAndDiagramActions: React.FC = () => {
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext);
 
-  const lockResource = useDispatch(() => Realtime.sendRealtimeProjectUpdate(Realtime.lockResource(Realtime.ResourceType.SETTINGS)));
-  const unlockResource = useDispatch(() => Realtime.sendRealtimeProjectUpdate(Realtime.unlockResource(Realtime.ResourceType.SETTINGS)));
   const updateProjectName = useDispatch(Project.updateActiveProjectName);
   const setActiveDesignMenuTab = useDispatch(UI.setActiveCreatorMenu);
 
-  const isLocked = useSelector((state) => Realtime.isResourceLockedSelector(state)(Realtime.ResourceType.SETTINGS));
   const projectID = useSelector(Session.activeProjectIDSelector);
   const startNodeID = useSelector(CreatorV2.startNodeIDSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
 
   const getEngine = useEventualEngine();
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
-  const atomicActionsPhase2 = useFeature(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const isPrototypingMode = usePrototypingMode();
@@ -50,7 +45,7 @@ const ProjectAndDiagramActions: React.FC = () => {
   const [focused, setFocused] = useToggle(false);
   const [formValue, updateFormValue] = useLinkedState(projectName ?? '');
 
-  const isReadOnly = isLocked || isPrototypingMode || !canEditProject;
+  const isReadOnly = isPrototypingMode || !canEditProject;
 
   const onBlur = () => {
     if (isReadOnly) {
@@ -63,10 +58,6 @@ const ProjectAndDiagramActions: React.FC = () => {
     updateProjectName(formattedName);
 
     setFocused(false);
-
-    if (!atomicActionsPhase2.isEnabled) {
-      unlockResource();
-    }
   };
 
   const onFocus = () => {
@@ -75,10 +66,6 @@ const ProjectAndDiagramActions: React.FC = () => {
     }
 
     setFocused(true);
-
-    if (!atomicActionsPhase2.isEnabled) {
-      lockResource();
-    }
   };
 
   const onRename = () => {
@@ -146,7 +133,7 @@ const ProjectAndDiagramActions: React.FC = () => {
             onFocus={onFocus}
             readOnly={isReadOnly}
             onChange={updateFormValue}
-            disabled={isLocked || !canEditProject}
+            disabled={!canEditProject}
             onKeyPress={withEnterPress(withInputBlur())}
           />
 

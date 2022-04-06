@@ -2,9 +2,7 @@ import React from 'react';
 import { RouteComponentProps, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
-import * as Realtime from '@/ducks/realtime';
 import { lazy } from '@/hocs';
-import { LockedResourceOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import PrivateRoute from '@/Routes/PrivateRoute';
 
 import { PageContainer } from './components';
@@ -22,7 +20,6 @@ const Business: React.FC<RouteComponentProps> = () => (
         <PrivateRoute path={Path.PRODUCT_DETAILS} component={EditProduct} />
       </Switch>
     </PageContainer>
-    <LockedResourceOverlay type={Realtime.ResourceType.PRODUCTS} />
   </>
 );
 

@@ -11,9 +11,16 @@ export type BaseAdapter = BidirectionalMultiAdapter<string, any, [], []>;
 
 export type BaseHashAdapter = BidirectionalMultiAdapter<Hash, any, [], []>;
 
-export type Options<K extends BaseKeyExtractor, A extends AnyAdapter | undefined = undefined> = { keyCreator: K } & (A extends AnyAdapter
-  ? { adapter: A }
-  : { adapter?: never });
+export interface BaseOptions<K extends BaseKeyExtractor> {
+  /**
+   * Expire time in seconds. Used in the redis .expire method.
+   */
+  expire?: number;
+  keyCreator: K;
+}
+
+export type Options<K extends BaseKeyExtractor, A extends AnyAdapter | undefined = undefined> = BaseOptions<K> &
+  (A extends AnyAdapter ? { adapter: A } : { adapter?: never });
 
 export type CacheOptions<K extends BaseKeyExtractor, A extends AnyAdapter | undefined = undefined> = Options<K, A> & {
   redis: Redis;

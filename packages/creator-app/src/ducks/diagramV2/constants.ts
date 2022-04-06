@@ -7,6 +7,7 @@ export const STATE_KEY = 'diagramV2';
 export const INITIAL_STATE: DiagramState = {
   ...createCRUDState(),
   awareness: {
+    locks: {},
     viewers: {},
   },
   intentSteps: {},
@@ -14,4 +15,7 @@ export const INITIAL_STATE: DiagramState = {
   globalIntentStepMap: {},
 };
 
-export const INITIAL_DIAGRAM_VIEWERS: DiagramAwarenessState['viewers'][string] = [];
+export const INITIAL_DIAGRAM_VIEWERS: DiagramAwarenessState['viewers'][string] = {
+  byKey: {},
+  allKeys: [],
+};

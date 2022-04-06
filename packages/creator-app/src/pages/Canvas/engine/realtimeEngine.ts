@@ -10,12 +10,7 @@ import * as Sentry from '@/vendors/sentry';
 import type Engine from '.';
 import { EngineConsumer } from './utils';
 
-const SKIP_WARNING_ACTIONS: string[] = [
-  Realtime.SocketAction.LOCK_RESOURCE,
-  Realtime.SocketAction.RECONNECT_NOOP,
-  Realtime.SocketAction.UNLOCK_RESOURCE,
-  Realtime.SocketAction.UPDATE_RESOURCE,
-];
+const SKIP_WARNING_ACTIONS: string[] = [Realtime.SocketAction.RECONNECT_NOOP];
 
 class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCursorOverlayAPI; [OverlayType.LINK]: RealtimeLinkOverlayAPI }> {
   log = this.engine.log.child('realtime');

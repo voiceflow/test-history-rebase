@@ -16,6 +16,9 @@ chai.use(deepEqualInAnyOrder);
 class Server {}
 mockRequire('@logux/server', { Server });
 
+const parseId = (id: string) => ({ userId: id });
+mockRequire('@logux/core', { parseId });
+
 class AbstractControl {
   constructor(options: any) {
     Object.assign(this, options);

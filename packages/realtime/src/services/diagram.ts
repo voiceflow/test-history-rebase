@@ -1,7 +1,9 @@
+import { parseId } from '@logux/core';
 import { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import { Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { HEARTBEAT_EXPIRE_TIMEOUT } from '../constants';
 import { AbstractControl } from '../control';
 
 class DiagramService extends AbstractControl {
@@ -14,11 +16,15 @@ class DiagramService extends AbstractControl {
   }
 
   private canReadCache = this.clients.cache.createKeyValue({
+    expire: 60,
     adapter: this.clients.cache.adapters.booleanAdapter,
     keyCreator: DiagramService.getCanReadKey,
   });
 
-  private connectedNodesCache = this.clients.cache.createSet({ keyCreator: DiagramService.getConnectedNodesKey });
+  private connectedNodesCache = this.clients.cache.createSet({
+    expire: HEARTBEAT_EXPIRE_TIMEOUT,
+    keyCreator: DiagramService.getConnectedNodesKey,
+  });
 
   public async canRead(creatorID: number, diagramID: string): Promise<boolean> {
     const cachedCanRead = await this.canReadCache.get({ diagramID, creatorID });
@@ -49,6 +55,13 @@ class DiagramService extends AbstractControl {
 
   public async getConnectedNodesSize(diagramID: string): Promise<number> {
     return this.connectedNodesCache.size({ diagramID });
+  }
+
+  public async getConnectedViewers(diagramID: string): Promise<Realtime.Viewer[]> {
+    const nodeIDs = await this.getConnectedNodes(diagramID);
+    const userIDs = [...new Set(nodeIDs.map((userNodeID) => parseId(userNodeID).userId!))];
+
+    return this.services.viewer.getViewers(userIDs);
   }
 
   public async get<T extends BaseModels.BaseDiagramNode>(creatorID: number, diagramID: string): Promise<BaseModels.Diagram.Model<T>> {

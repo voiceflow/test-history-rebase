@@ -14,7 +14,7 @@ import { cursorCoords$ } from '@/store/observables';
 import { RealtimeCursorContext } from '../../contexts';
 import { RealtimeCursor } from './components';
 
-const RealtimeCursorOverlay: React.FC = () => {
+const RealtimeLinksOverlayV2: React.FC = () => {
   const cursorContext = React.useContext(RealtimeCursorContext.Context);
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const userID = useSelector(Account.userIDSelector);
@@ -50,4 +50,4 @@ const RealtimeCursorOverlay: React.FC = () => {
   );
 };
 
-export default withProvider(RealtimeCursorContext.Dispatcher)(RealtimeCursorOverlay);
+export default withProvider(RealtimeCursorContext.Dispatcher)(RealtimeLinksOverlayV2);

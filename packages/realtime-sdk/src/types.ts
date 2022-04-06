@@ -15,6 +15,7 @@ export interface Viewer {
 }
 
 export type Point = [x: number, y: number];
+export type Pair<T> = [T, T];
 
 export interface PathPoint {
   point: Point;

@@ -4,6 +4,7 @@ import type { ClientMap } from '../clients';
 import type { Config } from '../types';
 import DiagramService from './diagram';
 import IntentService from './intent';
+import LockService from './lock';
 import NoteService from './note';
 import ProductService from './product';
 import ProjectService from './project';
@@ -20,6 +21,7 @@ export interface ServiceMap extends BaseServiceMap {
   user: UserService;
   slot: SlotService;
   note: NoteService;
+  lock: LockService;
   viewer: ViewerService;
   intent: IntentService;
   product: ProductService;
@@ -46,6 +48,7 @@ const buildServices = ({ config, clients }: Options): ServiceMap => {
     user: new UserService(serviceOptions),
     sync: new SyncService(serviceOptions),
     note: new NoteService(serviceOptions),
+    lock: new LockService(serviceOptions),
     viewer: new ViewerService(serviceOptions),
     intent: new IntentService(serviceOptions),
     diagram: new DiagramService(serviceOptions),

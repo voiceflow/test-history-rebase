@@ -913,9 +913,10 @@ class NodeManager extends EngineConsumer {
     const combinedNodes = nodeIDs.map(this.engine.getNodeByID).filter((node): node is Realtime.Node => node?.type === BlockType.COMBINED);
 
     const unRemovableCombinedNodeIDs = combinedNodes
-      .filter((node) => node.combinedNodes.some((nestedNodeID) => lockedNodes[nestedNodeID]))
+      .filter((node) => node.combinedNodes.some((nestedNodeID) => !!lockedNodes[nestedNodeID]))
       .map((node) => node.id);
-    const [lockedNodeIDs, unlockedNodesIDs] = _partition(nodeIDs, (id) => lockedNodes[id] || unRemovableCombinedNodeIDs.includes(id));
+
+    const [lockedNodeIDs, unlockedNodesIDs] = _partition(nodeIDs, (id) => !!lockedNodes[id] || unRemovableCombinedNodeIDs.includes(id));
 
     if (lockedNodeIDs.length) {
       // eslint-disable-next-line no-nested-ternary

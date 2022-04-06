@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.684.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.684.1...@voiceflow/creator-app@1.684.2) (2022-04-06)
+
+
+### Bug Fixes
+
+* entity reprompt zindex issues (VF-000) ([#5303](https://github.com/voiceflow/creator-app/issues/5303)) ([0665f70](https://github.com/voiceflow/creator-app/commit/0665f70d91c1f82079bcfcc18ca689dab762e1a9))
+
+
+
+
+
 ## [1.684.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.684.0...@voiceflow/creator-app@1.684.1) (2022-04-06)
 
 

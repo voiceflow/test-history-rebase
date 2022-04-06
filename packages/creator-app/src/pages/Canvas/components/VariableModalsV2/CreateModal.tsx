@@ -1,11 +1,10 @@
-import { Box, Button, ButtonVariant, Input, toast, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Input, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
-import { CanvasCreationType } from '@/ducks/tracking';
-import * as Version from '@/ducks/version';
-import { useDispatch, useModals } from '@/hooks';
+import { useModals } from '@/hooks';
+import { useCreateVariables } from '@/pages/Canvas/components/VariableModalsV2/hooks';
 
 import { VARIABLE_MODAL_WIDTH } from './constants';
 
@@ -14,7 +13,7 @@ const CreateModal: React.FC = () => {
   const { close, data, isOpened } = useModals<{ onCreate: (names: string[]) => void }>(ModalType.VARIABLE_CREATE);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const createGlobalVar = useDispatch(Version.addGlobalVariable);
+  const { onCreateMultiple } = useCreateVariables({ onCreate: data.onCreate });
 
   const handleCancel = () => {
     close();
@@ -27,25 +26,9 @@ const CreateModal: React.FC = () => {
   }, [isOpened]);
 
   const handleCreate = async () => {
-    const allNewVars = variableText.split(',');
-    const newVarNames: string[] = [];
-
-    allNewVars.forEach((varName) => {
-      try {
-        createGlobalVar(varName.trim(), CanvasCreationType.IMM);
-        newVarNames.push(varName.trim());
-      } catch (e) {
-        toast.error(e);
-      }
-    });
-
-    if (!newVarNames.length) {
-      toast.error('Please address variable name issues and try again');
-    } else {
-      data.onCreate?.(newVarNames);
-      setVariableText('');
-      close();
-    }
+    onCreateMultiple(variableText);
+    setVariableText('');
+    close();
   };
 
   return (

@@ -4,17 +4,15 @@ import { Box, IconButton, IconButtonVariant, NestedMenuComponents, Select } from
 import React from 'react';
 
 import Popper from '@/components/Popper';
-import * as Intent from '@/ducks/intent';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useAddSlot, useDispatch, useSelector } from '@/hooks';
+import { useAddSlot, useSelector } from '@/hooks';
 
-const EntitiesDropdown: React.FC<{ intent: Realtime.Intent }> = ({ intent }) => {
+const EntitiesDropdown: React.FC<{ addRequiredSlot: (slotID: string) => void }> = ({ addRequiredSlot }) => {
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const { onAddSlot } = useAddSlot();
-  const addRequiredSlot = useDispatch(Intent.addRequiredSlot);
 
   const onSlotSelect = async (entity: Realtime.Slot) => {
-    await addRequiredSlot(intent.id, entity.id);
+    await addRequiredSlot(entity.id);
   };
 
   const handleCreateClick = async () => {

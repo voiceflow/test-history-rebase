@@ -1,15 +1,15 @@
+import { ChatModels } from '@voiceflow/chat-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { FlexCenter, SvgIcon, useOnScreen } from '@voiceflow/ui';
+import { VoiceModels } from '@voiceflow/voice-types';
 import React from 'react';
 
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useSelector } from '@/hooks';
 import BuiltInPrompt from '@/pages/Canvas/components/IntentModalsV2/components/components/BuiltInPrompt';
 import { FadeDownContainer } from '@/styles/animations';
-import { isBuiltInIntent } from '@/utils/intent';
 
 import DescriptionSection from '../components/DescriptionSection';
 import EntitiesSection from '../components/EntitiesSection';
@@ -18,18 +18,41 @@ import NameSection from '../components/NameSection';
 import UtteranceSection from '../components/UtteranceSection';
 
 interface IntentFormProps {
-  intentID: string;
+  name: string;
+  noteID?: string;
+  setName: (name: string) => void;
+  saveName?: () => void;
+  inputs: Realtime.IntentInput[];
+  isBuiltIn?: boolean;
+  usedSlots: Realtime.IntentSlot[];
+  setInputs: (inputs: Realtime.IntentInput[]) => void;
+  intentID?: string;
   withNameSection?: boolean;
   autofocusUtterance?: boolean;
   withDescriptionSection?: boolean;
+  addRequiredSlot: (slotID: string) => void;
+  removeRequiredSlot: (slotID: string) => void;
+  updateSlotDialog: (slotID: string, prompt: Array<VoiceModels.IntentPrompt<string> & ChatModels.Prompt>) => void;
 }
 
-const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDescriptionSection = true, intentID, autofocusUtterance }) => {
+const IntentForm: React.FC<IntentFormProps> = ({
+  name,
+  setName,
+  saveName,
+  usedSlots,
+  isBuiltIn,
+  withNameSection = true,
+  withDescriptionSection = false,
+  intentID,
+  autofocusUtterance,
+  inputs,
+  setInputs,
+  addRequiredSlot,
+  removeRequiredSlot,
+  updateSlotDialog,
+}) => {
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
-  const intent = intentsMap[intentID];
 
-  const slotsMap = useSelector(SlotV2.slotMapSelector);
-  const isBuiltIn = isBuiltInIntent(intentID);
   const patchIntent = useDispatch(Intent.patchIntent);
 
   const [showUtteranceSection, setShowUtteranceSection] = React.useState(false);
@@ -37,44 +60,40 @@ const IntentForm: React.FC<IntentFormProps> = ({ withNameSection = true, withDes
   const entitiesRef = React.useRef<Nullable<HTMLDivElement>>(null);
   const isEntitiesVisible = useOnScreen(entitiesRef, true);
 
-  const usedSlotKeys = intent?.slots.allKeys || [];
-  const usedSlots = React.useMemo(() => {
-    const existingUsedSlots: Realtime.Slot[] = [];
-    usedSlotKeys.forEach((key) => {
-      if (slotsMap[key]) {
-        existingUsedSlots.push(slotsMap[key]);
-      }
-    });
-    return existingUsedSlots;
-  }, [usedSlotKeys, slotsMap]);
-
   const scrollToEntities = () => {
     entitiesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   React.useEffect(() => {
-    setShowUtteranceSection(!isBuiltIn || !!intent?.inputs.length);
-  }, [intentID]);
-
-  if (!intent) return null;
+    const intent = intentID && intentsMap[intentID];
+    if (!intent) return;
+    setShowUtteranceSection(!isBuiltIn || !!intent?.inputs?.length);
+  }, [intentID, intentsMap]);
 
   return (
     <>
-      {withNameSection && <NameSection intent={intent} />}
+      {withNameSection && <NameSection name={name} setName={setName} saveName={saveName} />}
 
-      {(!isBuiltIn || showUtteranceSection) && <UtteranceSection autofocus={autofocusUtterance} withBorderTop={withNameSection} intent={intent} />}
+      {(!isBuiltIn || showUtteranceSection) && (
+        <UtteranceSection inputs={inputs} onUpdateUtterances={setInputs} autofocus={autofocusUtterance} withBorderTop={withNameSection} />
+      )}
 
       {isBuiltIn && !showUtteranceSection && <BuiltInPrompt setShowUtteranceSection={setShowUtteranceSection} />}
 
       {!isBuiltIn && (
         <>
           <div ref={entitiesRef} />
-          <EntitiesSection slots={usedSlots} intent={intent} />
+          <EntitiesSection
+            updateSlotDialog={updateSlotDialog}
+            removeRequiredSlot={removeRequiredSlot}
+            addRequiredSlot={addRequiredSlot}
+            usedSlots={usedSlots}
+          />
         </>
       )}
 
-      {withDescriptionSection && (
-        <DescriptionSection intentID={intent.id} noteID={intent.noteID} onCreateNote={(noteID) => patchIntent(intent.id, { noteID })} />
+      {withDescriptionSection && intentID && (
+        <DescriptionSection intentID={intentID} onCreateNote={(noteID) => intentID && patchIntent(intentID, { noteID })} />
       )}
 
       {!isEntitiesVisible && (

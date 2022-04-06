@@ -94,6 +94,8 @@ export const addRequiredSlot =
   (intentID: string, slotID: string): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
+    const nluModals = Feature.featureSelector(state)(FeatureFlag.IMM_MODALS_V2);
+
     const projectMeta = ProjectV2.active.metaSelector(state);
     const newSlotsCreator = getProjectTypeNewSlotsCreator(projectMeta.type);
 
@@ -112,8 +114,13 @@ export const addRequiredSlot =
       },
     };
 
+    let allKeys = [...intent.slots.allKeys, slotID];
+    if (nluModals.isEnabled) {
+      allKeys = [...intent.slots.allKeys.filter((id) => id !== slotID), slotID];
+    }
+
     const patchedIntent = inferIntentType({
-      slots: inferIntentSlotsType({ byKey: byKeys, allKeys: Utils.array.unique([...intent.slots.allKeys, slotID]) }),
+      slots: inferIntentSlotsType({ byKey: byKeys, allKeys: Utils.array.unique(allKeys) }),
     });
 
     dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent, projectMeta }));

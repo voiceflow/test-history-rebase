@@ -51,11 +51,12 @@ const IntentList: React.FC<SectionProps> = ({
   const handleConfirmNewIntentName = React.useCallback(
     (newName: string, newIntentID: string) => {
       if (allIntents.some(({ name, id }) => name === newName && newIntentID !== id)) {
-        throw new Error('Intent name already in use, use a different name');
+        onRenameIntent(`${newName}_two`, newIntentID!);
+        toast.error('Intent name already in use, use a different name');
       } else {
         onRenameIntent(newName, newIntentID!);
-        resetCreating();
       }
+      resetCreating();
     },
     [allIntents]
   );

@@ -1,34 +1,32 @@
-import { Utils } from '@voiceflow/common';
+import { ChatModels } from '@voiceflow/chat-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SvgIcon } from '@voiceflow/ui';
+import { VoiceModels } from '@voiceflow/voice-types';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
-import * as Intent from '@/ducks/intent';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
 
 import { SlotBubble } from '../index';
 import EntitiesDropdown from './components/EntitiesDropdown';
 import SlotItem from './components/SlotItem';
 
 interface EntitiesSectionProps {
-  slots: Realtime.Slot[];
-  intent: Realtime.Intent;
+  usedSlots: Realtime.IntentSlot[];
+  addRequiredSlot: (slotID: string) => void;
+  removeRequiredSlot: (slotID: string) => void;
+  updateSlotDialog: (slotID: string, prompt: Array<VoiceModels.IntentPrompt<string> & ChatModels.Prompt>) => void;
 }
 
-const EntitiesSection: React.FC<EntitiesSectionProps> = ({ intent, slots }) => {
-  const patchIntentSlot = useDispatch(Intent.patchIntentSlot);
+const EntitiesSection: React.FC<EntitiesSectionProps> = ({ updateSlotDialog, removeRequiredSlot, addRequiredSlot, usedSlots }) => {
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
 
-  const slotMap = React.useMemo(() => Utils.array.createMap(slots, Utils.object.selectID), [slots]);
   const [requiredIntentSlots, notRequiredIntentSlots] = React.useMemo(() => {
     const requiredSlots: Realtime.IntentSlot[] = [];
     const notRequiredSlots: Realtime.IntentSlot[] = [];
 
-    intent.slots.allKeys.forEach((id) => {
-      const slot = intent.slots.byKey[id];
-
+    usedSlots.forEach((slot) => {
       if (!slot || !allSlotsMap[slot.id]) return;
 
       if (slot.required) {
@@ -39,39 +37,39 @@ const EntitiesSection: React.FC<EntitiesSectionProps> = ({ intent, slots }) => {
     });
 
     return [requiredSlots, notRequiredSlots];
-  }, [intent.slots, allSlotsMap]);
+  }, [usedSlots, allSlotsMap]);
 
   const hasSlots = !!requiredIntentSlots.length || !!notRequiredIntentSlots.length;
 
   return (
     <Section
-      headerEnd={<EntitiesDropdown intent={intent} />}
+      headerEnd={<EntitiesDropdown addRequiredSlot={addRequiredSlot} />}
       header={<Box fontWeight={hasSlots ? 600 : 'normal'}>Required entities</Box>}
       variant={SectionVariant.PRIMARY}
       customHeaderStyling={{ paddingRight: '20px', paddingBottom: hasSlots ? '16px' : '20px' }}
       customContentStyling={{ padding: '0 32px 0 18px' }}
       forceDividers
     >
-      {!!slots.length && (
+      {!!usedSlots.length && (
         <Box marginBottom={16} marginRight={-12}>
           <Box marginTop={-8} marginBottom={8}>
             {requiredIntentSlots.map((slot) => (
               <SlotItem
-                slots={slots}
+                updateSlotDialog={updateSlotDialog}
+                removeRequiredSlot={removeRequiredSlot}
                 key={slot.id}
-                intent={intent}
                 slot={slot}
-                name={slotMap[slot.id].name}
-                required={intent.slots.byKey[slot.id].required}
+                name={allSlotsMap[slot.id].name}
+                required={slot.required}
               />
             ))}
           </Box>
           {!!notRequiredIntentSlots.length && (
             <Box pl={12} pr={12}>
               {notRequiredIntentSlots.map((slot) => (
-                <SlotBubble key={slot.id} onClick={() => patchIntentSlot(intent.id, slot.id, { required: !slot.required })}>
+                <SlotBubble key={slot.id} onClick={() => addRequiredSlot(slot.id)}>
                   <SvgIcon icon="plusSmall" style={{ marginRight: 4 }} />
-                  {slotMap[slot.id].name}
+                  {allSlotsMap[slot.id].name}
                 </SlotBubble>
               ))}
             </Box>

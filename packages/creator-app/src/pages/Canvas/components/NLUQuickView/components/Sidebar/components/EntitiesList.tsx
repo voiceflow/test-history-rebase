@@ -6,8 +6,6 @@ import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
 import { InteractionModelTabType } from '@/constants';
-import * as IntentDuck from '@/ducks/intent';
-import * as IntentV2 from '@/ducks/intentV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
@@ -24,10 +22,8 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
-  const getIntentsUsingSlot = useSelector(IntentV2.getIntentsUsingSlotSelector);
   const { nameChangeTransform, deleteItem, forceNewInlineEntity } = React.useContext(NLUQuickViewContext);
 
-  const removeIntentSlot = useDispatch(IntentDuck.removeIntentSlot);
   const createSlot = useDispatch(Slot.createSlot);
 
   const { sortedSlots } = useOrderedEntities();
@@ -45,24 +41,18 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
   });
 
   const onDelete = React.useCallback((slotID) => {
-    const activeIntents = getIntentsUsingSlot({ id: slotID });
-
-    if (activeIntents.length > 0) {
-      activeIntents.forEach((intent) => removeIntentSlot(intent.id, slotID));
-
-      toast.info('Utterances containing this entity have been modified to remove the slot reference.');
-    }
-    deleteItem(slotID);
+    deleteItem(slotID, InteractionModelTabType.SLOTS);
   }, []);
 
   const handleConfirmNewSlotName = React.useCallback(
     (newName: string, newSlotID: string) => {
       if (allSlots.some(({ name, id }) => name === newName && newSlotID !== id)) {
-        throw new Error('Slot name already in use, use a different name');
+        onRenameSlot(`${newName}_two`, newSlotID!);
+        toast.error('Slot name already in use, use a different name');
       } else {
         onRenameSlot(newName, newSlotID!);
-        resetCreating();
       }
+      resetCreating();
     },
     [allSlots]
   );

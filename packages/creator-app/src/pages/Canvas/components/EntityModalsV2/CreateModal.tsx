@@ -9,6 +9,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useLinkedState, useModals, useSelector } from '@/hooks';
+import { formatIntentAndSlotName } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
 
 import EntityForm from './components/EntityForm';
@@ -25,14 +26,16 @@ const CreateModal: React.FC = () => {
   const slots = useSelector(SlotV2.allSlotsSelector);
   const intents = useSelector(IntentV2.allIntentsSelector);
 
+  const [isCreating, setIsCreating] = React.useState(false);
   const [type, setType] = React.useState(CustomSlot.type);
-  const [name, setName] = useLinkedState(data.name ?? '');
+  const [name, setName] = useLinkedState(formatIntentAndSlotName(data.name) ?? '');
   const [values, setValues] = React.useState<Realtime.SlotInput[]>([]);
   const [color, setColor] = React.useState<string>(pickRandomDefaultColor());
 
   const notEmptyValues = React.useMemo(() => values.some(({ value, synonyms }) => value.trim() || synonyms.trim()), [values]);
 
   const onCreate = async () => {
+    setIsCreating(true);
     const formattedSlotName = Utils.string.removeTrailingUnderscores(name);
     const id = Utils.id.cuid.slug();
 
@@ -46,12 +49,14 @@ const CreateModal: React.FC = () => {
 
     if (error) {
       toast.error(error);
+      setIsCreating(false);
       return;
     }
 
     await createSlot(id, { id, type, name: formattedSlotName, color, inputs: values });
     data.onCreate({ id, name, color } as Realtime.Slot);
     cache.current.created = true;
+    setIsCreating(false);
     close();
   };
 
@@ -90,14 +95,12 @@ const CreateModal: React.FC = () => {
         />
       </Box>
       <ModalFooter justifyContent="flex-end">
-        <Box>
-          <Button onClick={handleCancel} variant={ButtonVariant.TERTIARY} squareRadius style={{ marginRight: '10px', display: 'inline-block' }}>
-            Cancel
-          </Button>
-          <Button onClick={onCreate} style={{ display: 'inline-block' }} variant={ButtonVariant.PRIMARY} squareRadius>
-            Create Entity
-          </Button>
-        </Box>
+        <Button onClick={handleCancel} variant={ButtonVariant.TERTIARY} squareRadius style={{ marginRight: '10px' }}>
+          Cancel
+        </Button>
+        <Button disabled={isCreating} isLoading={isCreating} onClick={onCreate} variant={ButtonVariant.PRIMARY} squareRadius>
+          Create Entity
+        </Button>
       </ModalFooter>
     </Modal>
   );

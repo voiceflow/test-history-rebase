@@ -76,7 +76,7 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
           onClick={() => setSelectedItemID(variable.id)}
           key={variable.id}
           name={variable.name}
-          onDelete={deleteItem}
+          onDelete={(id) => deleteItem(id, InteractionModelTabType.VARIABLES)}
           nameValidation={(text) => text}
         />
       ))}

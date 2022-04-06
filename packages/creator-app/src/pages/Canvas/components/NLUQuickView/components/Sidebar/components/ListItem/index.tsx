@@ -1,4 +1,4 @@
-import { Input, InputVariant, OverflowText, toast, useDidUpdateEffect, withEnterPress, withInputBlur, withTargetValue } from '@voiceflow/ui';
+import { Input, InputVariant, OverflowText, useDidUpdateEffect, withEnterPress, withInputBlur, withTargetValue } from '@voiceflow/ui';
 import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
@@ -33,21 +33,14 @@ const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> 
 
   const { canRenameItem, canDeleteItem } = React.useContext(NLUQuickViewContext);
 
-  const endRename = (event: React.FocusEvent<HTMLInputElement>) => {
+  const endRename = () => {
     if (onBlur) {
-      try {
-        onBlur(localName);
-        setIsActiveItemRename?.(false);
-      } catch (e) {
-        event.preventDefault();
-        event.target.focus();
-        toast.error(e.message || 'Error renaming intent');
-      }
+      onBlur(localName);
     } else {
       onRename?.(localName, id);
-      setIsRenaming(false);
-      setIsActiveItemRename?.(false);
     }
+    setIsRenaming(false);
+    setIsActiveItemRename?.(false);
   };
 
   useDidUpdateEffect(() => {

@@ -7,34 +7,32 @@ import React from 'react';
 import { ChatPromptForm, VoicePromptForm } from '@/components/IntentSlotForm/components';
 import Popper, { PopperContent } from '@/components/Popper';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
-import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useSelector } from '@/hooks';
+import * as SlotV2 from '@/ducks/slotV2';
+import { useSelector } from '@/hooks';
 import { RequiredEntity } from '@/pages/Canvas/components/IntentModalsV2/components/components/EntitiesSection/components/index';
 import { hasValidReprompt } from '@/utils/prompt';
 
 interface SlotItemProps {
   slot: Realtime.IntentSlot;
-  slots: Realtime.Slot[];
   name: string;
   required: boolean;
-  intent: Realtime.Intent;
+  removeRequiredSlot: (slotID: string) => void;
+  updateSlotDialog: (slotID: string, prompt: Array<VoiceModels.IntentPrompt<string> & ChatModels.Prompt>) => void;
 }
 
-const SlotItem: React.FC<SlotItemProps> = ({ slot, slots, intent, name }) => {
-  const removeRequiredSlot = useDispatch(Intent.removeRequiredSlot);
-  const patchIntentSlotDialog = useDispatch(Intent.updateIntentSlotDialog);
-
+const SlotItem: React.FC<SlotItemProps> = ({ updateSlotDialog, removeRequiredSlot, slot, name }) => {
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const isChat = Realtime.Utils.typeGuards.isChatProjectType(projectType);
   const { prompt } = slot.dialog ?? { prompt: [] };
+  const allSlots = useSelector(SlotV2.allSlotsSelector);
 
-  const onChangePrompt = (prompt: VoiceModels.IntentPrompt<any>[] | ChatModels.Prompt[]) => {
-    patchIntentSlotDialog(intent.id, slot.id, { prompt } as any);
+  const onChangePrompt = (prompt: Array<VoiceModels.IntentPrompt<string> & ChatModels.Prompt>) => {
+    updateSlotDialog(slot.id, prompt);
   };
 
   const onRemoveRequiredSlot = async () => {
-    await removeRequiredSlot(intent.id, slot.id);
+    await removeRequiredSlot(slot.id);
   };
 
   const hasSlotError = !hasValidReprompt(slot.dialog.prompt);
@@ -59,17 +57,17 @@ const SlotItem: React.FC<SlotItemProps> = ({ slot, slots, intent, name }) => {
               {isChat ? (
                 <ChatPromptForm
                   autofocus
-                  slots={slots}
+                  slots={allSlots}
                   prompt={prompt as ChatModels.Prompt[]}
-                  onChange={onChangePrompt}
+                  onChange={(prompt) => onChangePrompt(prompt as Array<VoiceModels.IntentPrompt<string> & ChatModels.Prompt>)}
                   placeholder="Enter entity reprompt"
                 />
               ) : (
                 <VoicePromptForm
                   autofocus
-                  slots={slots}
+                  slots={allSlots}
                   prompt={prompt as VoiceModels.IntentPrompt<string>[]}
-                  onChange={onChangePrompt}
+                  onChange={(prompt) => onChangePrompt(prompt as Array<VoiceModels.IntentPrompt<string> & ChatModels.Prompt>)}
                   placeholder="Enter entity reprompt"
                 />
               )}

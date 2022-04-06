@@ -21,20 +21,21 @@ import Section, { SectionVariant } from '@/components/Section';
 import Utterance from '@/components/Utterance';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
-import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useAddSlot, useDispatch, useModals, usePermission, useSelector, useSetup } from '@/hooks';
+import { useAddSlot, useModals, usePermission, useSelector, useSetup } from '@/hooks';
 import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
 import { validateUtterance } from '@/utils/intent';
 
 export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
 interface UtteranceManagerProps {
-  intent: Realtime.Intent;
   creating?: boolean;
   autofocus?: boolean;
   withBorderTop?: boolean;
+  onUpdateUtterances: (data: Realtime.IntentInput[]) => void;
+  inputs: Realtime.IntentInput[];
+  intentID?: string;
 }
 
 const MAX_VISIBLE_UTTERANCES_HEIGHT = 545;
@@ -69,7 +70,7 @@ export interface UtteranceRef {
   getCurrentUtterance: () => Realtime.IntentInput | null;
 }
 
-const UtteranceManager: React.FC<UtteranceManagerProps> = ({ autofocus, withBorderTop, intent }) => {
+const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, onUpdateUtterances, autofocus, withBorderTop }) => {
   const { search } = useLocation();
 
   const queryParams = queryString.parse(search);
@@ -81,7 +82,6 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ autofocus, withBord
   const intents = useSelector(IntentV2.allIntentsSelector);
   const slots = useSelector(SlotV2.allSlotsSelector);
 
-  const patchIntent = useDispatch(Intent.patchIntent);
   const utteranceRef = React.useRef<UtteranceRef>(null);
 
   const [showAllUtterances, setShowAllUtterances] = React.useState(false);
@@ -91,18 +91,11 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ autofocus, withBord
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
-  const intentUtterances = intent?.inputs || [];
-
-  const onUpdateUtterances = React.useCallback(
-    (inputs) => {
-      patchIntent(intent.id, { inputs });
-    },
-    [intent.id]
-  );
+  const intentUtterances = inputs || [];
 
   useDidUpdateEffect(() => {
     utteranceRef.current?.clear();
-  }, [intent.id]);
+  }, [intentID]);
 
   React.useEffect(() => {
     if (autofocus) {
@@ -145,7 +138,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ autofocus, withBord
   const onBulkUploadClick = () => {
     if (canBulkUpload) {
       openUtterancesBulkUploadModal({
-        intentID: intent.id,
+        intentID,
         onUpload: (utterances: Realtime.IntentInput[]) => {
           onUpdateUtterances([...intentUtterances, ...utterances]);
         },

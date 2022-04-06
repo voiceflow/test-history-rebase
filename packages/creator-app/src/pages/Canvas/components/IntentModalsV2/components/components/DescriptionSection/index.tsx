@@ -5,15 +5,20 @@ import React from 'react';
 import Divider from '@/components/Divider';
 import NoteEditor from '@/components/NoteEditor';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
+import * as IntentV2 from '@/ducks/intentV2';
+import { useSelector } from '@/hooks';
 
 interface DescriptionSectionProps {
-  noteID?: string;
   intentID: string;
   onCreateNote: (noteID: string) => void;
 }
 
-const DescriptionSection: React.FC<DescriptionSectionProps> = ({ noteID, intentID, onCreateNote }) => {
+const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, onCreateNote }) => {
   const [isCollapsed, toggleIsCollapsed] = useToggle(true);
+  const intent = useSelector(IntentV2.getIntentByIDSelector)({ id: intentID });
+  if (!intent) return null;
+
+  const { noteID } = intent;
 
   const headerStyling = { paddingBottom: isCollapsed ? undefined : '16px' };
 

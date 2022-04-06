@@ -93,9 +93,11 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   const deleteIntent = useDispatch(Intent.deleteIntent);
   const deleteSlot = useDispatch(Slot.deleteSlot);
   const deleteVariable = useDeleteVariable();
+  const removeIntentSlot = useDispatch(Intent.removeIntentSlot);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
+  const getIntentsUsingSlot = useSelector(IntentV2.getIntentsUsingSlotSelector);
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
@@ -338,6 +340,16 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     }
   }, [isOpened, isInStack]);
 
+  const handleSlotDelete = (slotID: string) => {
+    const activeIntents = getIntentsUsingSlot({ id: slotID });
+
+    if (activeIntents.length > 0) {
+      activeIntents.forEach((intent) => removeIntentSlot(intent.id, slotID));
+      toast.info('Utterances containing this entity have been modified to remove the slot reference.');
+    }
+    deleteSlot(slotID);
+  };
+
   const deleteItem = React.useCallback(
     (itemID: string, tab?: InteractionModelTabType) => {
       const targetTab = tab || activeTab;
@@ -347,7 +359,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
           setSelectedTab(InteractionModelTabType.INTENTS);
           break;
         case InteractionModelTabType.SLOTS:
-          deleteSlot(itemID);
+          handleSlotDelete(itemID);
           setSelectedTab(InteractionModelTabType.SLOTS);
           break;
         case InteractionModelTabType.VARIABLES:
@@ -358,7 +370,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
           break;
       }
     },
-    [activeTab]
+    [activeTab, setSelectedTab]
   );
 
   const api: NLUQuickViewProps = useContextApi({

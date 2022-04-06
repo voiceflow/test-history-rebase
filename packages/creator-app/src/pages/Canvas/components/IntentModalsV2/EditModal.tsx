@@ -8,7 +8,7 @@ import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useDispatch, useModals, useSelector } from '@/hooks';
 import IntentSelectDropdown from '@/pages/Canvas/components/IntentModalsV2/components/components/IntentSelectDropdown';
-import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
+import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
 import { INTENT_MODAL_WIDTH } from '@/pages/Canvas/components/IntentModalsV2/constants';
 
 const EditModal: React.FC = () => {
@@ -65,7 +65,7 @@ const EditModal: React.FC = () => {
       {!!modalRef && (
         <TextEditorVariablesPopoverProvider value={modalRef}>
           <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
-            <IntentForm intentID={data.id} />
+            <EditIntentForm withNameSection intentID={data.id} />
           </Box>
         </TextEditorVariablesPopoverProvider>
       )}

@@ -6,7 +6,7 @@ import { ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import { useLinkedState } from '@/hooks';
 import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
-import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
+import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
 import VariablesSection from '@/pages/Canvas/components/NLUQuickView/components/VariablesSection';
 
 import { TitleInput } from './components';
@@ -55,7 +55,7 @@ const NLUQuickView: React.FC = () => {
         ) : (
           !!modalRef && (
             <TextEditorVariablesPopoverProvider value={modalRef}>
-              {showIntentForm && <IntentForm intentID={selectedID} withNameSection={false} />}
+              {showIntentForm && <EditIntentForm intentID={selectedID} />}
               {showEntityForm && <EditEntityForm slotID={selectedID} withNameSection={false} />}
               {showVariableForm && <VariablesSection />}
             </TextEditorVariablesPopoverProvider>

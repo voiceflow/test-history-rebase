@@ -7,6 +7,7 @@ import React from 'react';
 import { ChatPromptForm, VoicePromptForm } from '@/components/IntentSlotForm/components';
 import Popper, { PopperContent } from '@/components/Popper';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
+import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useSelector } from '@/hooks';
@@ -53,25 +54,27 @@ const SlotItem: React.FC<SlotItemProps> = ({ updateSlotDialog, removeRequiredSlo
             customContentStyling={{ padding: '0 24px' }}
             initialOpen
           >
-            <Box mb={24}>
-              {isChat ? (
-                <ChatPromptForm
-                  autofocus
-                  slots={allSlots}
-                  prompt={prompt as ChatModels.Prompt[]}
-                  onChange={(prompt) => onChangePrompt(prompt as Array<VoiceModels.IntentPrompt<string> & ChatModels.Prompt>)}
-                  placeholder="Enter entity reprompt"
-                />
-              ) : (
-                <VoicePromptForm
-                  autofocus
-                  slots={allSlots}
-                  prompt={prompt as VoiceModels.IntentPrompt<string>[]}
-                  onChange={(prompt) => onChangePrompt(prompt as Array<VoiceModels.IntentPrompt<string> & ChatModels.Prompt>)}
-                  placeholder="Enter entity reprompt"
-                />
-              )}
-            </Box>
+            <TextEditorVariablesPopoverProvider value={document.body}>
+              <Box mb={24}>
+                {isChat ? (
+                  <ChatPromptForm
+                    autofocus
+                    slots={allSlots}
+                    prompt={prompt as ChatModels.Prompt[]}
+                    onChange={(prompt) => onChangePrompt(prompt as Array<VoiceModels.IntentPrompt<string> & ChatModels.Prompt>)}
+                    placeholder="Enter entity reprompt"
+                  />
+                ) : (
+                  <VoicePromptForm
+                    autofocus
+                    slots={allSlots}
+                    prompt={prompt as VoiceModels.IntentPrompt<string>[]}
+                    onChange={(prompt) => onChangePrompt(prompt as Array<VoiceModels.IntentPrompt<string> & ChatModels.Prompt>)}
+                    placeholder="Enter entity reprompt"
+                  />
+                )}
+              </Box>
+            </TextEditorVariablesPopoverProvider>
           </Section>
         </PopperContent>
       )}

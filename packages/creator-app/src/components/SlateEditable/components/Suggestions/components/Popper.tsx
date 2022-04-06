@@ -19,7 +19,8 @@ import { denormalize, Normalized } from 'normal-store';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
-import { useLinkedState } from '@/hooks';
+import { TextEditorVariablesPopoverContext } from '@/contexts';
+import { useLinkedState, useTheme } from '@/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { withTargetValue } from '@/utils/dom';
 
@@ -79,7 +80,9 @@ const Popper = <T extends PopperItem>({
     ],
   });
 
+  const theme = useTheme();
   const editor = useSlateEditor();
+  const portalNode = React.useContext(TextEditorVariablesPopoverContext);
   const formattedSearch = React.useMemo(() => formatter?.(search) ?? search, [search, formatter]);
   const [localSearch, setLocalSearch] = useLinkedState(formattedSearch);
   const [activeIndex, setActiveIndex] = React.useState(0);
@@ -204,8 +207,8 @@ const Popper = <T extends PopperItem>({
   }, [referenceNode, popper.forceUpdate]);
 
   return (
-    <Portal portalNode={portalRootNode}>
-      <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 1000 }} {...popper.attributes.popper}>
+    <Portal portalNode={portalNode}>
+      <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: theme.zIndex.popper }} {...popper.attributes.popper}>
         <MenuContainer onMouseDown={onFocusPopper} onClick={stopPropagation()}>
           <FadeDownDelayedContainer>
             {withHeader && (

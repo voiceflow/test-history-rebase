@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.685.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.684.2...@voiceflow/creator-app@1.685.0) (2022-04-06)
+
+
+### Bug Fixes
+
+* force viewer tabs on preview (VF-3274) ([#5305](https://github.com/voiceflow/creator-app/issues/5305)) ([32fd862](https://github.com/voiceflow/creator-app/commit/32fd8621e801e9fd803839413347b0cf7709e273))
+
+
+### Features
+
+* give user a warning message for builtin entity values (VF-000) ([#5297](https://github.com/voiceflow/creator-app/issues/5297)) ([e8a5e0f](https://github.com/voiceflow/creator-app/commit/e8a5e0f2284d09d1e6939b836d861f6810f4e111))
+* implement locks system (VF-000) ([#5203](https://github.com/voiceflow/creator-app/issues/5203)) ([7650f36](https://github.com/voiceflow/creator-app/commit/7650f3667132704fe3022e98f1e090e665233adf))
+
+
+
+
+
 ## [1.684.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.684.1...@voiceflow/creator-app@1.684.2) (2022-04-06)
 
 

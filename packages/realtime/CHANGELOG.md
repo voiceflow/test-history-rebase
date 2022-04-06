@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.55.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.54.4...@voiceflow/realtime@1.55.0) (2022-04-06)
+
+
+### Features
+
+* implement locks system (VF-000) ([#5203](https://github.com/voiceflow/creator-app/issues/5203)) ([7650f36](https://github.com/voiceflow/creator-app/commit/7650f3667132704fe3022e98f1e090e665233adf))
+
+
+
+
+
 ## [1.54.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.54.3...@voiceflow/realtime@1.54.4) (2022-04-06)
 
 

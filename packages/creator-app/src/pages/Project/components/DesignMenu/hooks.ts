@@ -28,8 +28,12 @@ export const useTabs = (): { tabs: TabItem[]; selectedTab: Tab } => {
       return activeTab as Tab;
     }
 
-    return Tab.STEPS;
-  }, [activeTab, tabs]);
+    if (tabs.find(({ value }) => value === Tab.STEPS)) {
+      return Tab.STEPS;
+    }
+
+    return isTopicsAndComponentsVersion ? Tab.LAYERS : Tab.FLOWS;
+  }, [activeTab, tabs, isTopicsAndComponentsVersion]);
 
   return { tabs, selectedTab };
 };

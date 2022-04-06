@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.4.11...@voiceflow/showcase@1.4.12) (2022-04-06)
+
+
+### Bug Fixes
+
+* graceful shutdown, update vite  (VF-2792) ([#5276](https://github.com/voiceflow/creator-app/issues/5276)) ([00f46ff](https://github.com/voiceflow/creator-app/commit/00f46ff686205d0468470f953b9f53c715c0a720))
+
+
+
+
+
 ## [1.4.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.4.10...@voiceflow/showcase@1.4.11) (2022-04-04)
 
 **Note:** Version bump only for package @voiceflow/showcase

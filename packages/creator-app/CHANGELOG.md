@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.683.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.682.0...@voiceflow/creator-app@1.683.0) (2022-04-06)
+
+
+### Bug Fixes
+
+* graceful shutdown, update vite  (VF-2792) ([#5276](https://github.com/voiceflow/creator-app/issues/5276)) ([00f46ff](https://github.com/voiceflow/creator-app/commit/00f46ff686205d0468470f953b9f53c715c0a720))
+
+
+### Features
+
+* refactor of new intent form (VF-000) ([#5291](https://github.com/voiceflow/creator-app/issues/5291)) ([a2c578c](https://github.com/voiceflow/creator-app/commit/a2c578cd3bb619f8f95dbdb1635fed78906d622f))
+
+
+
+
+
 # [1.682.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.681.1...@voiceflow/creator-app@1.682.0) (2022-04-05)
 
 

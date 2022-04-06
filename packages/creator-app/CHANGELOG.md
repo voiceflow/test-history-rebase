@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.684.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.684.0...@voiceflow/creator-app@1.684.1) (2022-04-06)
+
+
+### Bug Fixes
+
+* canvas overscroll behaviour (VF-2474) ([#5302](https://github.com/voiceflow/creator-app/issues/5302)) ([4b3cf84](https://github.com/voiceflow/creator-app/commit/4b3cf84ea7e9b1d337143d7ef04033a7771d104d))
+
+
+
+
+
 # [1.684.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.683.0...@voiceflow/creator-app@1.684.0) (2022-04-06)
 
 

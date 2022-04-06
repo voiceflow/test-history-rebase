@@ -5,28 +5,29 @@ import { FeatureFlag } from '@/config/features';
 import { DiagramLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
 import { useFeature, useRAF, useRegistration } from '@/hooks';
-import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
-import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
-import CreateEntityModal from '@/pages/Canvas/components/EntityModalsV2/CreateModal';
-import EditEntityModal from '@/pages/Canvas/components/EntityModalsV2/EditModal';
-import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
-import EditIntentModal from '@/pages/Canvas/components/IntentModalsV2/EditModal';
-import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
-import NLUQuickView from '@/pages/Canvas/components/NLUQuickView';
-import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
-import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
-import CreateVariableModal from '@/pages/Canvas/components/VariableModalsV2/CreateModal';
 import { SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import * as Query from '@/utils/query';
 
+import APLPreviewModal from './components/APLPreviewModal';
+import { BulkImportSlots, BulkImportUtterances } from './components/BulkImportModal';
 import Container from './components/CanvasContainer';
 import CanvasDiagram from './components/CanvasDiagram';
 import ContextMenu from './components/ContextMenu';
+import DisableOverscrollBehavior from './components/DisableOverscrollBehavior';
 import EditSidebar from './components/EditorSidebar';
+import CreateEntityModal from './components/EntityModalsV2/CreateModal';
+import EditEntityModal from './components/EntityModalsV2/EditModal';
+import ExportModelModal from './components/ExportModelModal';
+import EditIntentModal from './components/IntentModalsV2/EditModal';
+import InteractionModelModal from './components/InteractionModelModal';
+import NLUQuickView from './components/NLUQuickView';
 import RealtimeOverlay from './components/RealtimeOverlay';
+import ShortcutsModal from './components/ShortcutsModal';
+import SlotEditModal from './components/SlotEdit/SlotEditModal';
 import Spotlight from './components/Spotlight';
 import ThreadHistoryDrawer from './components/ThreadHistoryDrawer';
 import ThreadLayer from './components/ThreadLayer';
+import CreateVariableModal from './components/VariableModalsV2/CreateModal';
 import { CanvasProviders } from './contexts';
 import { useEngine } from './hooks';
 
@@ -70,6 +71,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   return (
     <CanvasProviders key={engineKey} engine={engine}>
       <Container>
+        <DisableOverscrollBehavior />
         <ContextMenu />
 
         <CanvasDiagram>

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.686.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.685.1...@voiceflow/creator-app@1.686.0) (2022-04-07)
+
+
+### Bug Fixes
+
+* local intent deletion (VF-3281) ([#5309](https://github.com/voiceflow/creator-app/issues/5309)) ([89d8cc1](https://github.com/voiceflow/creator-app/commit/89d8cc11d4686ae95c6d3fb53d1a5c3cb70b4f53))
+
+
+### Features
+
+* display warning when copying share link from untrained project (VF-3156) ([#5298](https://github.com/voiceflow/creator-app/issues/5298)) ([04689cc](https://github.com/voiceflow/creator-app/commit/04689ccfe3faac1cd72a854a11f13279b23ca24b))
+
+
+
+
+
 ## [1.685.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.685.0...@voiceflow/creator-app@1.685.1) (2022-04-06)
 
 **Note:** Version bump only for package @voiceflow/creator-app

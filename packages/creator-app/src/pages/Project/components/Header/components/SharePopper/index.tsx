@@ -92,7 +92,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
         renderFooter={() => (
           <Footer>
             <Switch>
-              <Route path={ShareProjectTab.PROTOTYPE} render={() => <PrototypeFooter />} />
+              <Route path={ShareProjectTab.PROTOTYPE} render={() => <PrototypeFooter isCanvas />} />
               <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter />} />
               <Route path={ShareProjectTab.EXPORT} render={() => <ExportFooter />} />
             </Switch>

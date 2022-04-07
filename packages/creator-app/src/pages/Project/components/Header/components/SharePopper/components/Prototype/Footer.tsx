@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, Link, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, Link, toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
@@ -7,12 +7,17 @@ import { ModalType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { VariableStateAppliedType } from '@/ducks/tracking';
-import { useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useAsyncEffect, useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
+import { TrainingModelContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  isCanvas?: boolean;
+}
+
+const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
   const versionID = useSelector(Session.activeVersionIDSelector);
   const compilePrototype = useDispatch(Prototype.compilePrototype);
   const layoutType = useSelector(Prototype.prototypeLayoutSelector);
@@ -20,7 +25,9 @@ const Footer: React.FC = () => {
   const password = useSelector(Prototype.prototypePasswordSelector);
   const brandImage = useSelector(Prototype.prototypeBrandImageSelector);
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
+  const trainingModelAPI = React.useContext(TrainingModelContext);
   const { variableStateID } = useSelector(Prototype.prototypeSettingsSelector);
+  const [isCompiled, setIsCompiled] = React.useState(false);
 
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
@@ -48,8 +55,25 @@ const Footer: React.FC = () => {
 
     trackingEvents.trackTestableLinkCopy({ layout: layoutType, brandColor, password, brandImage, avatar });
 
-    toast.success('Link copied to clipboard');
+    if (trainingModelAPI.isTrained) {
+      toast.success('Link copied to clipboard');
+    } else {
+      toast.warn(
+        <>
+          Assistant is not fully trained. This may cause unexpected behaviour when prototyping.
+          <ToastCallToAction onClick={trainingModelAPI.startTraining}>Train Assistant</ToastCallToAction>
+        </>
+      );
+    }
   };
+
+  useAsyncEffect(async () => {
+    if (isCanvas) {
+      await compilePrototype();
+      await trainingModelAPI.getDiff();
+      setIsCompiled(true);
+    }
+  }, []);
 
   return (
     <Container>
@@ -65,7 +89,15 @@ const Footer: React.FC = () => {
         </span>
       </DropdownContainer>
 
-      <Button id={Identifier.SHARE_COPY_LINK_BUTTON} variant={ButtonVariant.PRIMARY} onClick={onCopyLink} squareRadius>
+      <Button
+        id={Identifier.SHARE_COPY_LINK_BUTTON}
+        variant={ButtonVariant.PRIMARY}
+        onClick={onCopyLink}
+        squareRadius
+        style={{ width: 114 }}
+        disabled={isCanvas && !isCompiled}
+        isLoading={isCanvas && !isCompiled}
+      >
         <span>{canSharePrototype ? 'Copy Link' : 'Upgrade'}</span>
       </Button>
     </Container>

@@ -1,20 +1,14 @@
-import { ClickableText, Flex, logger, TippyTooltip, toast } from '@voiceflow/ui';
+import { Flex, logger, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { PrototypeStatus } from '@/constants/prototype';
-import * as CreatorV2 from '@/ducks/creatorV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
-import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { useTrackingEvents } from '@/hooks';
-import { NLPContext } from '@/pages/Project/contexts';
-import { ConnectedProps } from '@/types';
+import { useSelector } from '@/hooks';
+import { NLPContext, TrainingModelContext } from '@/pages/Project/contexts';
 
-import { TrainingState } from '../index';
 import TrainContainer from './TrainContainer';
 import Trained from './Trained';
 import TrainFadeDown from './TrainFadeDown';
@@ -24,56 +18,14 @@ import TrainingSectionTitle, { TrainingSectionTitleVariant } from './TrainingSec
 export interface TrainingSectionProps {
   isOpen: boolean;
   onOpen: () => void;
-  isTraining: boolean;
-  isTrained: boolean;
   toggleOpen: () => void;
-  trainingState: TrainingState;
 }
 
-const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionProps> = ({
-  isOpen,
-  status,
-  onOpen,
-  trainingState,
-  platform,
-  isTrained,
-  versionID,
-  diagramID,
-  isTraining,
-  toggleOpen,
-  validateModel,
-  goToInteractionModel,
-}) => {
+const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggleOpen }) => {
   const nlp = React.useContext(NLPContext)!;
-  const [trackingEvents] = useTrackingEvents();
-
-  const onStartTraining = async () => {
-    trackingEvents.trackProjectTrainAssistant();
-
-    try {
-      const { invalid } = await validateModel();
-      if (invalid.slots.length) {
-        toast.warn(
-          <>
-            Your slots <b>({invalid.slots.map(({ name }) => name).join(', ')})</b> require custom values in order to be properly recognized during
-            testing. Update the{' '}
-            <ClickableText onClick={() => goToInteractionModel(versionID!, diagramID!, 'slots', invalid.slots[0].key)}>
-              Interaction Model
-            </ClickableText>{' '}
-            and train your assistant again.
-          </>
-        );
-      }
-      await nlp.publish();
-    } catch (err) {
-      logger.warn('Train error', err);
-      toast.error('An error occurred while training the model.');
-    }
-  };
-
-  const onCancelTraining = async () => {
-    await nlp.cancel();
-  };
+  const { cancelTraining, startTraining, isTrained, isTraining, state: trainingState } = React.useContext(TrainingModelContext);
+  const status = useSelector(PrototypeDuck.prototypeStatusSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
 
   React.useEffect(() => {
     if (status === PrototypeStatus.IDLE && !isTrained) {
@@ -134,7 +86,7 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
       <TrainContainer isModelTraining={isTraining}>
         {isTraining ? (
           <TrainFadeDown key="training">
-            <Training onCancelTraining={onCancelTraining} />
+            <Training onCancelTraining={cancelTraining} />
           </TrainFadeDown>
         ) : (
           !trainingState.fetching && (
@@ -145,7 +97,7 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
                 isTrained={isTrained}
                 trainedModel={trainingState.trainedModel}
                 lastTrainedTime={trainingState.lastTrainedTime}
-                onStartTraining={onStartTraining}
+                onStartTraining={startTraining}
               />
             </TrainFadeDown>
           )
@@ -155,19 +107,4 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
   );
 };
 
-const mapStateToProps = {
-  status: PrototypeDuck.prototypeStatusSelector,
-  platform: ProjectV2.active.platformSelector,
-  versionID: Session.activeVersionIDSelector,
-  diagramID: CreatorV2.activeDiagramIDSelector,
-  projectID: Session.activeProjectIDSelector,
-};
-
-const mapDispatchToProps = {
-  validateModel: PrototypeDuck.validateModel,
-  goToInteractionModel: Router.goToInteractionModel,
-};
-
-type ConnectedTrainingSectionProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(TrainingSection) as React.FC<TrainingSectionProps>;
+export default TrainingSection;

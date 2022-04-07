@@ -29,7 +29,7 @@ import Header from './components/Header';
 import ProjectExitTracker from './components/ProjectExitTracker';
 import Sidebar from './components/Sidebar';
 import { TIMEOUT_COUNT } from './constants';
-import { LastCreatedComponentProvider, MarkupProvider, NLPProvider, ProjectProvider, SelectionProvider } from './contexts';
+import { LastCreatedComponentProvider, MarkupProvider, NLPProvider, ProjectProvider, SelectionProvider, TrainingModelProvider } from './contexts';
 
 const Diagram = lazy(() => import('./components/Diagram'));
 const Business = lazy(() => import('@/pages/Business'));
@@ -126,34 +126,36 @@ const Project: React.FC = () => {
           <PublishProvider>
             <ExportProvider>
               <NLPProvider>
-                <SelectionProvider>
-                  <LastCreatedComponentProvider>
-                    <ProjectPage
-                      scrollable={!isDiagramRoute}
-                      renderHeader={() => !canvasOnly && <Header />}
-                      renderSidebar={() => !canvasOnly && <Sidebar />}
-                    >
-                      <Switch>
-                        <Route path={DIAGRAM_ROUTES} component={Diagram} />
+                <TrainingModelProvider>
+                  <SelectionProvider>
+                    <LastCreatedComponentProvider>
+                      <ProjectPage
+                        scrollable={!isDiagramRoute}
+                        renderHeader={() => !canvasOnly && <Header />}
+                        renderSidebar={() => !canvasOnly && <Sidebar />}
+                      >
+                        <Switch>
+                          <Route path={DIAGRAM_ROUTES} component={Diagram} />
 
-                        <Route path={Path.CONVERSATIONS} component={Conversations} />
+                          <Route path={Path.CONVERSATIONS} component={Conversations} />
 
-                        <Route path={Path.PROJECT_TOOLS} component={Business} />
+                          <Route path={Path.PROJECT_TOOLS} component={Business} />
 
-                        <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
+                          <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
 
-                        <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
+                          <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
-                        <Route path={Path.PROJECT_PUBLISH} component={Publish} />
+                          <Route path={Path.PROJECT_PUBLISH} component={Publish} />
 
-                        <Route path={Path.PROJECT_SETTINGS} component={Settings} />
+                          <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 
-                        <Redirect to={Path.PROJECT_CANVAS} />
-                      </Switch>
-                      <ManualSaveModal />
-                    </ProjectPage>
-                  </LastCreatedComponentProvider>
-                </SelectionProvider>
+                          <Redirect to={Path.PROJECT_CANVAS} />
+                        </Switch>
+                        <ManualSaveModal />
+                      </ProjectPage>
+                    </LastCreatedComponentProvider>
+                  </SelectionProvider>
+                </TrainingModelProvider>
               </NLPProvider>
             </ExportProvider>
           </PublishProvider>

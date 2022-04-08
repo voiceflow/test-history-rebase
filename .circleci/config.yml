@@ -33,6 +33,7 @@ workflows:
             packages/realtime/.* build-realtime true
             packages/realtime-sdk/.* build-realtime true
             packages/realtime-sdk/.* build-frontend true
+            packages/realtime-sdk/.* build-backend true
             packages/ml-gateway/.* build-ml-gateway true
             packages/ml-sdk/.* build-ml-gateway true
             packages/ml-sdk/.* build-creator-app true

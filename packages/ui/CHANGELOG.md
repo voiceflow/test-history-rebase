@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.71.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.71.0...@voiceflow/ui@1.71.1) (2022-04-08)
+
+
+### Bug Fixes
+
+* blurry delay svg icon (VF-2982) ([#5312](https://github.com/voiceflow/creator-app/issues/5312)) ([411e795](https://github.com/voiceflow/creator-app/commit/411e79505ce5295c09c22df8dfa710917ec5d5c5))
+
+
+
+
+
 # [1.71.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.70.0...@voiceflow/ui@1.71.0) (2022-04-08)
 
 

@@ -77,15 +77,17 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
   const onClearNewList = React.useCallback(() => setNewListID(null), []);
 
   const onCreateProject = React.useCallback(
-    (id: string) => {
+    (id?: string) => {
       if (projects.length >= workspace!.projects) {
         openProjectLimitModal({ projects: workspace!.projects });
+      } else if (projectCreateFeature.isEnabled) {
+        openProjectCreateModal({
+          listID: id,
+        });
       } else if (id === 'initial') {
         goToNewIntroProject();
-      } else if (projectCreateFeature.isEnabled) {
-        openProjectCreateModal();
       } else {
-        goToNewProject(id);
+        goToNewProject(id!);
       }
     },
     [projects, workspace]
@@ -130,7 +132,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
           title="No Projects Found"
           body="This workspace has no projects, create one."
           buttonText="New Project"
-          onClick={goToNewIntroProject}
+          onClick={projectCreateFeature.isEnabled ? () => onCreateProject() : goToNewIntroProject}
         />
       ) : (
         <div className={DashboardClassName.LISTS_CONTAINER}>

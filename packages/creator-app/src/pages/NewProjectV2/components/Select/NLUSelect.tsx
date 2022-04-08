@@ -7,16 +7,20 @@ import { getPlatformOrProjectTypeMeta, NLU_SECTIONS } from '../../constants';
 interface NLUSelectProps {
   value?: VoiceflowConstants.PlatformType;
   onSelect: (value: VoiceflowConstants.PlatformType) => void;
+  error: boolean;
 }
 
-const getPrefixIcon = (value?: VoiceflowConstants.PlatformType) =>
-  value && getPlatformOrProjectTypeMeta[value]?.icon ? <SvgIcon size={16} icon={getPlatformOrProjectTypeMeta[value]!.icon!} /> : <></>;
+// deploy
 
-const NLUSelect: React.FC<NLUSelectProps> = ({ value, onSelect }) => {
+const getPrefixIcon = (value?: VoiceflowConstants.PlatformType) =>
+  value && getPlatformOrProjectTypeMeta[value]?.icon ? <SvgIcon size={16} icon={getPlatformOrProjectTypeMeta[value]!.icon!} /> : undefined;
+
+const NLUSelect: React.FC<NLUSelectProps> = ({ value, onSelect, error }) => {
   return (
     <Select
       prefix={getPrefixIcon(value)}
       grouped
+      error={error}
       getOptionValue={(option) => option?.type as any}
       getOptionLabel={(option) => (option ? getPlatformOrProjectTypeMeta[option]?.name : '')}
       value={value}
@@ -24,6 +28,7 @@ const NLUSelect: React.FC<NLUSelectProps> = ({ value, onSelect }) => {
       onSelect={onSelect}
       placeholder="Select NLU"
       searchable
+      inputStopProp={false}
     />
   );
 };

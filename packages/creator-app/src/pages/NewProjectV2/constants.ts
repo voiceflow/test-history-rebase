@@ -1,3 +1,6 @@
+import { AlexaConstants } from '@voiceflow/alexa-types';
+import { DFESConstants } from '@voiceflow/google-dfes-types';
+import { GoogleConstants } from '@voiceflow/google-types';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { createUIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -35,10 +38,18 @@ export const getLanguage = (language: AnyLanguage, alexaLocales: AnyLocale[], pl
       [VoiceflowConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[language] ?? defaultLabel,
       [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[language] ?? defaultLabel,
     },
-    // @ts-expect-error temp ignore type issue for now
-    GENERAL_LOCALE_NAME_MAP[language] ?? defaultLabel
+    GENERAL_LOCALE_NAME_MAP[language as VoiceflowConstants.Locale] ?? defaultLabel
   )(platformType);
 };
+
+export const getDefaultLanguage = Utils.platform.createPlatformSelector<AnyLanguage | AnyLocale[]>(
+  {
+    [VoiceflowConstants.PlatformType.ALEXA]: [AlexaConstants.Locale.EN_US],
+    [VoiceflowConstants.PlatformType.GOOGLE]: GoogleConstants.Language.EN,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DFESConstants.Language.EN,
+  },
+  VoiceflowConstants.Locale.EN_US
+);
 
 export const getPlatformOrProjectTypeMeta: Partial<
   Record<VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType | PlatformTypeUpcoming, PlatformAndProjectTypeMeta>
@@ -59,7 +70,7 @@ export const getPlatformOrProjectTypeMeta: Partial<
   },
   [VoiceflowConstants.PlatformType.ALEXA]: {
     name: 'Amazon Alexa',
-    tooltip: getSelectTooltip('Amazon Alexa', 'Design, prototype and launch Alexa Skills with our one-click integration'),
+    tooltip: getSelectTooltip('Amazon Alexa', 'Design, prototype and launch Alexa Skills with our one-click integration.'),
     invocationDescription: 'The phrase users will use to interact with your Alexa Skill.',
     localesText: 'Locales',
     disabled: false,
@@ -68,7 +79,7 @@ export const getPlatformOrProjectTypeMeta: Partial<
   },
   [VoiceflowConstants.PlatformType.GOOGLE]: {
     name: 'Google Assistant',
-    tooltip: getSelectTooltip('Google Assistant', 'Design, prototype and launch Google Actions with our one-click integration'),
+    tooltip: getSelectTooltip('Google Assistant', 'Design, prototype and launch Google Actions with our one-click integration.'),
     invocationDescription: 'The phrase users will use to interact with your Google Action.',
     localesText: 'Language',
     disabled: false,

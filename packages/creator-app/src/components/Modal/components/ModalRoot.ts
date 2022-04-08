@@ -1,9 +1,9 @@
 import { css, styled } from '@/hocs';
 
-const ModalRoot = styled.div<{ hidden?: boolean; centered?: boolean }>`
+const ModalRoot = styled.div<{ hidden?: boolean; centered?: boolean; fullScreen?: boolean }>`
   display: ${({ centered }) => (centered ? 'flex' : 'block')};
   position: fixed;
-  padding: 0 0.5rem;
+  padding: ${({ fullScreen }) => (fullScreen ? '0' : '0 0.5rem')};
   width: 100%;
   height: 100%;
   z-index: ${({ theme }) => theme.zIndex.modal};

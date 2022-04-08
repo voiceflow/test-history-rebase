@@ -483,6 +483,7 @@ function Select({
                         value={isDropdown ? label : searchLabel}
                         clearable={clearable}
                         autoComplete="off"
+                        error={error}
                       />
 
                       <SearchInputIcon

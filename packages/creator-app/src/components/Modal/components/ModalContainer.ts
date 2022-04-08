@@ -9,6 +9,7 @@ export interface ModalContainerProps {
   maxWidth?: number;
   maxHeight?: number;
   isOpened?: boolean;
+  fullScreen?: boolean;
 }
 
 const ModalContainer = styled.section<ModalContainerProps>`
@@ -21,6 +22,20 @@ const ModalContainer = styled.section<ModalContainerProps>`
   width: 100%;
   max-height: calc(100% - 56px);
   background: #fff;
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    css`
+      height: 100% !important;
+      width: 100% !important;
+      max-height: 100% !important;
+      max-width: 100% !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border-radius: 0;
+    `};
+
   max-width: ${({ maxWidth = 500 }) => maxWidth}px;
   max-height: ${({ maxHeight }) =>
     maxHeight &&

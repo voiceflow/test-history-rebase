@@ -27,6 +27,7 @@ export interface UncontrolledModalProps {
   intoTooltip?: React.ReactNode;
   headerActions?: React.ReactNode;
   headerBorder?: boolean;
+  fullScreen?: boolean;
   leftSidebar?: () => React.ReactElement;
 }
 
@@ -53,6 +54,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
       intoTooltip,
       headerActions,
       leftSidebar,
+      fullScreen = false,
     },
     ref
   ) => {
@@ -63,13 +65,14 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
     return (
       <ThemeProvider theme={nestedTheme}>
         <Portal portalNode={document.body}>
-          <Root ref={ref} hidden={!isOpened} centered={centered}>
+          <Root ref={ref} hidden={!isOpened} centered={centered} fullScreen={fullScreen}>
             <Container
               fade={fade}
               centered={centered}
               maxWidth={maxWidth}
               maxHeight={maxHeight}
               className={cn(ClassName.MODAL, className, `${ClassName.MODAL}--${id ?? 'unknown'}`)}
+              fullScreen={fullScreen}
             >
               {leftSidebar?.()}
               <Box flex={10}>
@@ -101,7 +104,9 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
                   </Header>
                 )}
 
-                <BoxFlex column>{children}</BoxFlex>
+                <BoxFlex column fullHeight={fullScreen}>
+                  {children}
+                </BoxFlex>
               </Box>
             </Container>
           </Root>

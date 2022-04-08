@@ -8,14 +8,14 @@ export const SectionDescription = styled.div`
   text-align: left;
   font-size: 13px;
   color: #62778c;
-  margin-top: 10px;
+  margin-top: 12px;
 `;
 
 export const SectionErrorMessage = styled.div<SectionTitleErrorMessageProps>`
   text-align: left;
   font-size: 13px;
   color: #e91e63;
-  margin-top: 10px;
+  margin-top: 12px;
 
   ${({ marginTop }) =>
     marginTop &&
@@ -29,5 +29,3 @@ export const SectionTitle = styled.div`
   font-size: 15px;
   font-weight: 600;
 `;
-
-export { default as NLUSectionHeader } from './NLUSectionHeader';

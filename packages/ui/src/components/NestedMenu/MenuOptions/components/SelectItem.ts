@@ -27,7 +27,7 @@ const SelectItem = styled(MenuItem)<SelectItemProps>`
   ${({ isNested }) =>
     isNested &&
     css`
-      padding-left: 36px;
+      padding-left: 24px;
     `}
 
   ${({ withSubLevel }) =>

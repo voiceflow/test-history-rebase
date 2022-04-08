@@ -1,6 +1,6 @@
 import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
 
-export default [
+const LOCALE_MAP = [
   { value: AlexaConstants.Locale.EN_US, label: 'English (US)', name: 'English (US)', inSkillProduct: true },
   { value: AlexaConstants.Locale.EN_GB, label: 'English (UK)', name: 'English (UK)', inSkillProduct: true },
   { value: AlexaConstants.Locale.DE_DE, label: 'German (DE)', name: 'German (DE)', inSkillProduct: true },
@@ -17,6 +17,14 @@ export default [
   { value: AlexaConstants.Locale.PT_BR, label: 'Portuguese (BR)', name: 'Portuguese (BR)' },
   { value: AlexaConstants.Locale.HI_IN, label: 'Hindi (IN)', name: 'Hindi (IN)' },
 ];
+
+export default LOCALE_MAP;
+
+export const getLocaleLabel: Partial<Record<AlexaConstants.Locale, string>> = LOCALE_MAP.reduce(
+  (acc, cur) => ({ ...acc, [cur.value]: cur.label }),
+  {}
+);
+export const LocaleArray = Object.values(AlexaConstants.Locale);
 
 export const MarketPlaceAvailability = [
   {

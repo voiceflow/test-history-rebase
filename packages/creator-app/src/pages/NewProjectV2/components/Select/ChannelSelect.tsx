@@ -9,27 +9,28 @@ import { CHANNEL_SECTIONS, getPlatformOrProjectTypeMeta } from '../../constants'
 interface ChannelSelectProps {
   value: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType | undefined;
   onSelect: (value: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType) => void;
+  error: boolean;
 }
 
-const ChannelSelect: React.FC<ChannelSelectProps> = ({ value, onSelect }) => {
+const ChannelSelect: React.FC<ChannelSelectProps> = ({ value, onSelect, error }) => {
   const getPrefixIcon = (value?: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType) =>
     value && getPlatformOrProjectTypeMeta[value]?.icon ? (
       <SvgIcon color={isAlexaPlatform(value) ? '#5fcaf4' : ''} icon={getPlatformOrProjectTypeMeta[value]!.icon!} />
-    ) : (
-      <></>
-    );
+    ) : undefined;
 
   return (
     <Select
       prefix={getPrefixIcon(value)}
+      error={error}
       grouped
       getOptionValue={(option) => option?.type as any}
       getOptionLabel={(value) => (value ? getPlatformOrProjectTypeMeta[value]?.name : '')}
       value={value}
       options={CHANNEL_SECTIONS as any[]}
       onSelect={onSelect}
-      placeholder="Select Channel"
+      placeholder="Select channel"
       searchable
+      inputStopProp={false}
     ></Select>
   );
 };

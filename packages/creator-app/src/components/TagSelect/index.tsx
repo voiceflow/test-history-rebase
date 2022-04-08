@@ -50,6 +50,7 @@ function TagSelect({
   options,
   onChange,
   disabled,
+  maxHeight,
   placeholder = 'Select intents to export',
   isDropdown = true,
   getOptionLabel = defaultGetter as GetOptionLabel<unknown>,
@@ -111,6 +112,7 @@ function TagSelect({
       disabled={disabled}
       getOptionKey={getOptionKey}
       error={error}
+      maxHeight={maxHeight}
     />
   );
 }

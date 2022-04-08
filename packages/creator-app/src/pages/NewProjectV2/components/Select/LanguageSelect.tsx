@@ -1,17 +1,15 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
-import { Nullable, Utils } from '@voiceflow/common';
+import { Nullable, Nullish } from '@voiceflow/common';
 import { Select } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import DropdownMultiselect from '@/components/DropdownMultiselect';
-import LOCALE_MAP from '@/services/LocaleMap';
+import TagSelect from '@/components/TagSelect';
+import { getLocaleLabel, LocaleArray } from '@/services/LocaleMap';
 import { isAlexaPlatform } from '@/utils/typeGuards';
 
 import { defaultLanguageSelectProps, getPlatformOrProjectTypeMeta } from '../../constants';
 import { AnyLanguage, AnyLocale, LanguageSelectProps as SelectProps } from '../../types';
-
-const UnTypedDropdownMultiselect: any = DropdownMultiselect;
 
 interface LanguageSelectProps {
   language?: AnyLanguage;
@@ -41,35 +39,27 @@ const getLanguageSelectProps = (
 const LanguageSelect: React.FC<LanguageSelectProps> = ({ language, setLanguage, alexaLocales, setAlexaLocales, channel, nlu }) => {
   const isAlexa = isAlexaPlatform(channel);
 
-  const alexaDisplayName = React.useMemo(
-    () => (isAlexa ? alexaLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ') : ''),
-    [isAlexa]
-  );
-
-  const handleAlexaLocaleSelect = (val: AlexaConstants.Locale) => {
-    setAlexaLocales(alexaLocales.includes(val) ? Utils.array.without(alexaLocales, alexaLocales.indexOf(val)) : [...alexaLocales, val]);
-  };
-
   if (isAlexa) {
     return (
-      <UnTypedDropdownMultiselect
-        options={LOCALE_MAP}
-        withCaret
-        onSelect={handleAlexaLocaleSelect}
-        placeholder={`Select ${getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.ALEXA]?.localesText}`}
-        buttonLabel="Unselect All"
-        buttonClick={() => setAlexaLocales([])}
-        selectedItems={alexaLocales}
-        selectedValue={alexaDisplayName}
-        dropdownActive
-        searchable
-        maxVisibleItems={7.5}
-        fullWidth
+      <TagSelect
+        value={alexaLocales}
+        options={LocaleArray}
+        onChange={setAlexaLocales as (value: string[]) => void}
+        getOptionLabel={(value: Nullish<string>) => getLocaleLabel[value as AlexaConstants.Locale]}
+        getOptionValue={(option) => option}
+        placeholder="Select locales"
+        createInputPlaceholder="locales"
+        maxHeight={200}
       />
     );
   }
   return (
-    <Select value={language} onSelect={(value: Nullable<string>) => setLanguage(value as AnyLanguage)} {...getLanguageSelectProps(channel, nlu)} />
+    <Select
+      value={language}
+      onSelect={(value: Nullable<string>) => setLanguage(value as AnyLanguage)}
+      {...getLanguageSelectProps(channel, nlu)}
+      searchable
+    />
   );
 };
 

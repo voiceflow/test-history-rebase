@@ -3,7 +3,9 @@ import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 
+import { InvocationSectionErrorMessage } from '../../constants';
 import InvocationName from '../InvocationName';
+import { SectionDescription, SectionErrorMessage } from './components';
 
 interface InvocationNameSectionProps {
   invocationName: string;
@@ -21,14 +23,19 @@ const InvocationNameSection: React.FC<InvocationNameSectionProps> = ({
   invocationErrorMessage,
 }) => {
   return (
-    <Section header="Invocation Name" variant={SectionVariant.FORM}>
-      <InvocationName
-        invocationName={invocationName}
-        onInvocationNameChange={onInvocationNameChange}
-        description={invocationDescription}
-        error={invocationError}
-        errorMessage={invocationErrorMessage}
-      />
+    <Section
+      header="Invocation Name"
+      variant={SectionVariant.FORM}
+      dividers={false}
+      customHeaderStyling={{ paddingTop: '24px' }}
+      customContentStyling={{ paddingBottom: '0px' }}
+    >
+      <InvocationName invocationName={invocationName} onInvocationNameChange={onInvocationNameChange} error={invocationError} />
+      {invocationError ? (
+        <SectionErrorMessage>{invocationErrorMessage || InvocationSectionErrorMessage}</SectionErrorMessage>
+      ) : (
+        <SectionDescription>{invocationDescription}</SectionDescription>
+      )}
     </Section>
   );
 };

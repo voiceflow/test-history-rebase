@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.687.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.686.0...@voiceflow/creator-app@1.687.0) (2022-04-08)
+
+
+### Features
+
+* Project create locale select fixes + error states + ui fixes (VF-2901) ([#5271](https://github.com/voiceflow/creator-app/issues/5271)) ([5c5fa88](https://github.com/voiceflow/creator-app/commit/5c5fa884d7adb4a2c873b4e574571e6f5bd88881))
+
+
+
+
+
 # [1.686.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.685.1...@voiceflow/creator-app@1.686.0) (2022-04-07)
 
 

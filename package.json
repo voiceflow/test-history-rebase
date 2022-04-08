@@ -91,6 +91,7 @@
     "gen-certs:e2e": "yarn --cwd packages/creator-app gen-certs:e2e && yarn --cwd packages/realtime gen-certs:e2e",
     "kill:e2e": "yarn --cwd packages/creator-app kill:e2e",
     "lint": "lerna run lint --parallel",
+    "lint:commit": "yarn commit",
     "lint:dockerfiles": "lerna run lint:dockerfiles --parallel",
     "lint:fix": "lerna run lint:fix --parallel",
     "lint:quiet": "lerna run lint:quiet --parallel",

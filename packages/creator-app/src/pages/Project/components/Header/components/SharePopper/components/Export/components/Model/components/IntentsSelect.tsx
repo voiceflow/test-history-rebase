@@ -1,9 +1,10 @@
-import startCase from 'lodash/startCase';
 import React from 'react';
 
 import TagSelect from '@/components/TagSelect';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks';
+import { fmtIntentName } from '@/utils/intent';
 
 interface IntentsSelectProps {
   value: string[];
@@ -11,6 +12,7 @@ interface IntentsSelectProps {
 }
 
 const IntentsSelect: React.FC<IntentsSelectProps> = ({ value, onChange }) => {
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const intents = useSelector(IntentV2.allIntentsSelector);
   const intentsMap = useSelector(IntentV2.intentsMapSelector);
 
@@ -20,7 +22,7 @@ const IntentsSelect: React.FC<IntentsSelectProps> = ({ value, onChange }) => {
       options={intents}
       onChange={onChange}
       getOptionKey={(option) => option.id}
-      getOptionLabel={(id) => id && startCase(intentsMap[id]?.name.toLowerCase())}
+      getOptionLabel={(id) => id && fmtIntentName(intentsMap[id], platform)}
       getOptionValue={(option) => option?.id ?? null}
       createInputPlaceholder="intents"
     />

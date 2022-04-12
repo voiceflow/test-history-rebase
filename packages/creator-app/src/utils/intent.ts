@@ -50,6 +50,14 @@ export const prettifyIntentNames = <T extends Realtime.Intent>(intents: T[]): T[
 
 export const getIntentNameLabel = (name = ''): string => INTENT_LABELS[name] ?? name;
 
+export const fmtIntentName = (intent: Realtime.Intent, platform: VoiceflowConstants.PlatformType): string => {
+  let { name } = intent ?? { name: '' };
+
+  name = getIntentNameLabel(name);
+
+  return isCustomizableBuiltInIntent(intent) ? applyCustomizableBuiltInIntent(name, platform) : name;
+};
+
 export const intentFilter = <T extends Realtime.Intent>(intent: T, activeIntent: T | null = null, config: { noBuiltIns?: boolean } = {}): boolean => {
   const { noBuiltIns } = config;
   const isActiveIntent = intent.id === activeIntent?.id;

@@ -4,7 +4,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isPlainObject from 'lodash/isPlainObject';
 import { Normalized } from 'normal-store';
 
-import { applyCustomizableBuiltInIntent, getIntentNameLabel, isCustomizableBuiltInIntent } from '@/utils/intent';
+import { fmtIntentName } from '@/utils/intent';
 
 export const getUniqSlots = (inputs: Realtime.IntentInput[]): string[] => [...new Set(inputs.flatMap(({ slots }) => slots || []))];
 
@@ -38,16 +38,9 @@ export const intentProcessor = (projectType: VoiceflowConstants.ProjectType, { i
 };
 
 export const applySingleIntentNameFormatting = (platform: VoiceflowConstants.PlatformType, intent: Realtime.Intent): Realtime.Intent => {
-  let { name } = intent ?? { name: '' };
-
-  name = getIntentNameLabel(name);
-  if (isCustomizableBuiltInIntent(intent)) {
-    name = applyCustomizableBuiltInIntent(name, platform);
-  }
-
   return {
     ...intent,
-    name,
+    name: fmtIntentName(intent, platform),
   };
 };
 

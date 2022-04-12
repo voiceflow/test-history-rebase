@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.688.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.687.6...@voiceflow/creator-app@1.688.0) (2022-04-12)
+
+
+### Features
+
+* inject variables into the buttons url (VF-3260) ([#5310](https://github.com/voiceflow/creator-app/issues/5310)) ([cf7e41a](https://github.com/voiceflow/creator-app/commit/cf7e41a1c9cdf3a63d5e07aceeafbe3d0f3e2eca))
+
+
+
+
+
 ## [1.687.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.687.5...@voiceflow/creator-app@1.687.6) (2022-04-12)
 
 

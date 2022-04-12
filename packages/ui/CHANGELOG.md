@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.71.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.71.2...@voiceflow/ui@1.71.3) (2022-04-12)
+
+
+### Bug Fixes
+
+* nlu modal feedback season 4 episode 1 (VF-000) ([#5318](https://github.com/voiceflow/creator-app/issues/5318)) ([7b048a1](https://github.com/voiceflow/creator-app/commit/7b048a16fd9a6f57433507c95b6bdbaa9b378d95))
+
+
+
+
+
 ## [1.71.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.71.1...@voiceflow/ui@1.71.2) (2022-04-12)
 
 

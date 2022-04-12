@@ -2,11 +2,10 @@ import { Box, Button, ButtonVariant, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
-import { ModalType } from '@/constants';
+import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import { useModals } from '@/hooks';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
-import { INTENT_MODAL_WIDTH } from '@/pages/Canvas/components/IntentModalsV2/constants';
 import { useCreateIntent } from '@/pages/Canvas/components/IntentModalsV2/CreateModal/hooks';
 
 const CreateModal: React.FC = () => {
@@ -38,7 +37,7 @@ const CreateModal: React.FC = () => {
   };
 
   return (
-    <Modal ref={setModalRef} maxWidth={INTENT_MODAL_WIDTH} id={ModalType.INTENT_CREATE} title="Create Intent" headerBorder>
+    <Modal ref={setModalRef} maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]} id={ModalType.INTENT_CREATE} title="Create Intent" headerBorder>
       {!!modalRef && (
         <TextEditorVariablesPopoverProvider value={modalRef}>
           <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
@@ -63,7 +62,7 @@ const CreateModal: React.FC = () => {
           Cancel
         </Button>
 
-        <Button disabled={creating} variant={ButtonVariant.PRIMARY} squareRadius onClick={onCreate} isLoading={creating}>
+        <Button minWidth={150} disabled={creating} variant={ButtonVariant.PRIMARY} squareRadius onClick={onCreate} isLoading={creating}>
           Create Intent
         </Button>
       </ModalFooter>

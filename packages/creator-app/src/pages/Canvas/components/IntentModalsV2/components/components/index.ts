@@ -1,5 +1,6 @@
 import { SvgIconContainer } from '@voiceflow/ui';
 
+import Divider from '@/components/Divider';
 import { styled, transition } from '@/hocs';
 
 export const SlotBubble = styled.div`
@@ -30,6 +31,11 @@ export const SlotBubble = styled.div`
       opacity: 1;
     }
   }
+`;
+
+export const DividerBorder = styled(Divider)`
+  margin: 0;
+  background: #eaeff4;
 `;
 
 export const JumpToEntitiesBubble = styled.div`

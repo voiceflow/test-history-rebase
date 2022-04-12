@@ -30,7 +30,7 @@ interface ColorPickerPopperProps {
 
 // eslint-disable-next-line import/prefer-default-export
 export const ColorPickerPopper = React.forwardRef<HTMLDivElement, ColorPickerPopperProps>(
-  ({ selectedColor, onChange, tagName = 'my_variable', colors }, ref) => {
+  ({ selectedColor, onChange, tagName = 'label', colors }, ref) => {
     const [selectedHue] = React.useMemo(() => hexToHsluv(selectedColor), [selectedColor]);
     const [localHue, setLocalHue] = useLinkedState(String(selectedHue));
 

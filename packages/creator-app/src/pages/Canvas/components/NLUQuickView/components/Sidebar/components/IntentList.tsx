@@ -30,7 +30,6 @@ const IntentList: React.FC<SectionProps> = ({
 
   const allIntents = useSelector(IntentV2.allIntentsSelector);
   const allCustomIntentsMap = useSelector(IntentV2.customIntentMapSelector);
-
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.INTENTS, [activeTab]);
 
   const { sortedIntents } = useOrderedIntents();

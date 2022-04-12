@@ -53,6 +53,7 @@ const EditEntityForm: React.FC<EditEntityFormProps> = ({ withNameSection, slotID
       updateName={setName}
       saveName={saveName}
       withNameSection={withNameSection}
+      withBottomDivider
     />
   );
 };

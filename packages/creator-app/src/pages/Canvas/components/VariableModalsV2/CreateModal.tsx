@@ -2,11 +2,9 @@ import { Box, Button, ButtonVariant, Input, useDidUpdateEffect } from '@voiceflo
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
-import { ModalType } from '@/constants';
+import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 import { useCreateVariables } from '@/pages/Canvas/components/VariableModalsV2/hooks';
-
-import { VARIABLE_MODAL_WIDTH } from './constants';
 
 const CreateModal: React.FC = () => {
   const [variableText, setVariableText] = React.useState('');
@@ -32,7 +30,7 @@ const CreateModal: React.FC = () => {
   };
 
   return (
-    <Modal maxWidth={VARIABLE_MODAL_WIDTH} id={ModalType.VARIABLE_CREATE} title="Create Variable">
+    <Modal maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]} id={ModalType.VARIABLE_CREATE} title="Create Variable">
       <Box style={{ padding: '0 32px 24px 32px' }} fullWidth>
         <Input ref={inputRef} value={variableText} onChangeText={setVariableText} placeholder="variable 1, variable 2, variable 3..." />
       </Box>

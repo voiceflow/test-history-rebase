@@ -442,6 +442,18 @@ export const GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES = [
   'https://www.googleapis.com/auth/spreadsheets',
 ];
 
+export enum MODAL_WIDTH_VARIANTS {
+  SMALL = 'small',
+  MEDIUM = 'medium',
+  LARGE = 'large',
+}
+
+export const MODAL_WIDTHS = {
+  [MODAL_WIDTH_VARIANTS.SMALL]: 450,
+  [MODAL_WIDTH_VARIANTS.MEDIUM]: 600,
+  [MODAL_WIDTH_VARIANTS.LARGE]: 900,
+};
+
 export const START_BLOCK_ID = 'start00000000000000000000';
 
 export const DEVICE_LABEL_MAP: Record<BaseNode.Visual.DeviceType, string> = {

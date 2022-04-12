@@ -46,16 +46,16 @@ const determineStrength = (count: number) => {
   if (count === 0) {
     return StrengthLevel.NOT_SET;
   }
-  if (count < 4) {
+  if (count < 3) {
     return StrengthLevel.WEAK;
   }
-  if (count < 6) {
+  if (count < 5) {
     return StrengthLevel.MEDIUM;
   }
-  if (count < 11) {
+  if (count < 7) {
     return StrengthLevel.STRONG;
   }
-  if (count < 16) {
+  if (count >= 7) {
     return StrengthLevel.VERY_STRONG;
   }
   return StrengthLevel.NOT_SET;
@@ -180,7 +180,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, o
           top: 0,
           background: 'white',
           zIndex: 2,
-          borderTop: withBorderTop ? 'solid 1px #eaeff4' : undefined,
+          borderTop: withBorderTop && isNotAtTop ? 'solid 1px #eaeff4' : undefined,
         }}
       >
         <Box>

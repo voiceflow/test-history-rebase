@@ -12,6 +12,7 @@ export interface ButtonContainerProps extends BaseButtonProps, React.ButtonHTMLA
   variant?: ButtonVariant;
   isLoading?: boolean;
   fullWidth?: boolean;
+  minWidth?: number;
   squareRadius?: boolean;
 }
 
@@ -20,6 +21,12 @@ export const buttonContainerStyles = css<ButtonContainerProps>`
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
+  ${({ minWidth }) =>
+    minWidth &&
+    css`
+      min-width: ${minWidth}px;
+    `}
 
   width: ${({ fullWidth, square }) => {
     if (square) {

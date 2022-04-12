@@ -55,13 +55,6 @@ const SearchInput = styled(Input)<SearchInputProps>`
     (isDropDownOpened || opened) &&
     css`
       border-color: ${colors(ThemeColor.BLUE)} !important;
-
-      ${isDropDownOpened &&
-      css`
-        &[disabled] {
-          color: ${colors(ThemeColor.BLUE)} !important;
-        }
-      `}
     `}
 
   input {

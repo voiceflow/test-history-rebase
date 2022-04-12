@@ -2,14 +2,14 @@ import { Box, Button, ButtonVariant, Dropdown, IconButton, IconButtonVariant, to
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
-import { ModalType } from '@/constants';
+import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useModals, useSelector } from '@/hooks';
 
 import EditEntityForm from './components/EntityForm/EditEntityForm';
 import EntitySelectDropdown from './components/EntitySelectDropdown';
-import { MAX_ENTITY_MODAL_WIDTH, MAX_HEIGHT_CALC } from './constants';
+import { MAX_HEIGHT_CALC } from './constants';
 
 const EditModal: React.FC = () => {
   const { close, data } = useModals<{ id: string }>(ModalType.ENTITY_EDIT);
@@ -25,7 +25,7 @@ const EditModal: React.FC = () => {
 
   return (
     <Modal
-      maxWidth={MAX_ENTITY_MODAL_WIDTH}
+      maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]}
       id={ModalType.ENTITY_EDIT}
       headerActions={
         <Dropdown

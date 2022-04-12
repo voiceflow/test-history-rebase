@@ -8,7 +8,7 @@ import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import RadioGroup from '@/components/RadioGroup';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import * as Documentation from '@/config/documentation';
-import { ModalType } from '@/constants';
+import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { connect } from '@/hocs';
@@ -152,7 +152,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, get
   }, [isOpened]);
 
   return (
-    <Modal id={ModalType.IMPORT_UTTERANCES} title="Bulk import Utterances">
+    <Modal id={ModalType.IMPORT_UTTERANCES} maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]} title="Bulk import Utterances">
       <Box width="100%">
         <ModalBody>
           <Box mb={15}>
@@ -225,12 +225,12 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, get
           </Box>
 
           <Box mr={12}>
-            <Button onClick={close} variant={ButtonVariant.TERTIARY}>
+            <Button squareRadius onClick={close} variant={ButtonVariant.TERTIARY}>
               Cancel
             </Button>
           </Box>
 
-          <Button disabled={!state.editorValue.trim() || state.uploadDisabled} onClick={onUpload}>
+          <Button squareRadius disabled={!state.editorValue.trim() || state.uploadDisabled} onClick={onUpload}>
             Upload
           </Button>
         </ModalFooter>

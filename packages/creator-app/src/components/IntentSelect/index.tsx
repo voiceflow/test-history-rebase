@@ -6,6 +6,7 @@ import {
   BaseSelectProps,
   isNotUIOnlyMenuItemOption,
   isUIOnlyMenuItemOption,
+  NestedMenuComponents,
   Select,
   toast,
   UIOnlyMenuItemOption,
@@ -105,6 +106,13 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     onChange({ intent: nextIntentID });
   };
 
+  const handleOpenCreateIntentModal = (name?: string) => {
+    openCreateIntentModal({
+      createName: name,
+      onCreate: onSelectIntent,
+    });
+  };
+
   const onCreate = async (name: string) => {
     const preparedName = Utils.string.removeTrailingUnderscores(prettifyIntentName(name));
     const intentByName = filteredOptions.find(({ name }) => Utils.string.removeTrailingUnderscores(name) === preparedName);
@@ -119,12 +127,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     if (error) {
       toast.error(error);
     } else if (IMM_MODALS_V2.isEnabled) {
-      openCreateIntentModal({
-        createName: preparedName,
-        onCreate: (intentID: string) => {
-          onSelectIntent(intentID);
-        },
-      });
+      handleOpenCreateIntentModal(preparedName);
     } else {
       const nextIntentID = await createIntent({ name: preparedName });
       await onSelectIntent(nextIntentID);
@@ -140,6 +143,14 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
 
   const intentID = intent?.id;
   const intentMissing = withMissingAlert && intentID && !optionLookup[intentID] && !isCustomizableBuiltInIntent(intent);
+
+  const footerComponent = IMM_MODALS_V2.isEnabled
+    ? () => (
+        <NestedMenuComponents.FooterActionContainer onClick={() => handleOpenCreateIntentModal()}>
+          Create New Intent
+        </NestedMenuComponents.FooterActionContainer>
+      )
+    : null;
 
   return (
     <>
@@ -162,6 +173,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
           <Option option={option} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />
         )}
         createInputPlaceholder={createInputPlaceholder}
+        renderFooterAction={footerComponent}
       />
 
       {intentMissing && (

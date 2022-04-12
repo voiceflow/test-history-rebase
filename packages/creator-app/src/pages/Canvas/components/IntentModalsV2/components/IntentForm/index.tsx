@@ -56,7 +56,6 @@ const IntentForm: React.FC<IntentFormProps> = ({
   const patchIntent = useDispatch(Intent.patchIntent);
 
   const [showUtteranceSection, setShowUtteranceSection] = React.useState(false);
-
   const entitiesRef = React.useRef<Nullable<HTMLDivElement>>(null);
   const isEntitiesVisible = useOnScreen(entitiesRef, true);
 
@@ -73,7 +72,6 @@ const IntentForm: React.FC<IntentFormProps> = ({
   return (
     <>
       {withNameSection && <NameSection name={name} setName={setName} saveName={saveName} />}
-
       {(!isBuiltIn || showUtteranceSection) && (
         <UtteranceSection inputs={inputs} onUpdateUtterances={setInputs} autofocus={autofocusUtterance} withBorderTop={withNameSection} />
       )}
@@ -97,7 +95,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
       )}
 
       {!isEntitiesVisible && (
-        <FlexCenter style={{ position: 'sticky', bottom: '20px' }}>
+        <FlexCenter style={{ position: 'sticky', bottom: '20px', zIndex: 1000 }}>
           <FadeDownContainer>
             <JumpToEntitiesBubble onClick={scrollToEntities}>
               <SvgIcon icon="arrowDown" color="white" style={{ display: 'inline-block', marginRight: 4 }} />

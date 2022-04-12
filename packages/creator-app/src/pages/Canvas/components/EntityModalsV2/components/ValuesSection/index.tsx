@@ -9,6 +9,7 @@ import { Permission } from '@/config/permissions';
 import { CUSTOM_SLOT_TYPE, ModalType } from '@/constants';
 import { useModals, usePermission } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
+import { DividerBorder } from '@/pages/Canvas/components/IntentModalsV2/components/components';
 import { generateSlotInput, mergeSlotInputs } from '@/pages/Canvas/components/SlotEdit/utils';
 
 import InputItem from './components/InputItem';
@@ -21,6 +22,7 @@ interface ValuesSectionProps {
   updateInputs: (inputs: Realtime.SlotInput[]) => void;
   inputs: Realtime.SlotInput[];
   type: string | null;
+  withBottomDivider?: boolean;
 }
 
 const updateSingleLine = (id: string, inputs: Realtime.SlotInput[], values: Partial<Realtime.SlotInput>) => {
@@ -35,7 +37,7 @@ const updateSingleLine = (id: string, inputs: Realtime.SlotInput[], values: Part
   });
 };
 
-const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInputs }) => {
+const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs, type, updateInputs }) => {
   const valueRef = React.useRef<HTMLInputElement | null>(null);
   const stickyTopRef = React.useRef<HTMLDivElement>(null);
   const isNotAtTop = useOnScreen(stickyTopRef, true);
@@ -175,13 +177,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInput
                   setCustomLines(lines);
                   updateInputs(lines);
                 }}
-                renderItem={(slotInput) => (
-                  <InputItem
-                    slotInput={slotInput}
-                    onUpdateSynonym={(synonyms: string) => onUpdateValueProps(slotInput, { synonyms })}
-                    onUpdateValue={(value) => onUpdateValueProps(slotInput, { value })}
-                  />
-                )}
+                renderItem={(slotInput) => <InputItem slotInput={slotInput} onUpdateItem={(data) => onUpdateValueProps(slotInput, data)} />}
               />
             </ListManagerWrapper>
           </FormControl>
@@ -195,6 +191,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ inputs, type, updateInput
           )}
         </Box>
       </Section>
+      {withBottomDivider && <DividerBorder />}
     </>
   );
 };

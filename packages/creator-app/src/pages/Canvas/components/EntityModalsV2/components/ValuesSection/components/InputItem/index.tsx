@@ -6,11 +6,10 @@ import { Container, SynonymsInput, ValueInput } from './components';
 
 interface InputItemProps {
   slotInput: Realtime.SlotInput;
-  onUpdateSynonym: (synonyms: string) => void;
-  onUpdateValue: (value: string) => void;
+  onUpdateItem: (data: { synonyms: string; value: string }) => void;
 }
 
-const InputItem: React.FC<InputItemProps> = ({ onUpdateValue, onUpdateSynonym, slotInput }) => {
+const InputItem: React.FC<InputItemProps> = ({ onUpdateItem, slotInput }) => {
   const [localValue, setLocalValue] = React.useState(slotInput.value);
   const [active, setActive] = React.useState(false);
   const [localSynonyms, setLocalSynonyms] = React.useState(slotInput.synonyms);
@@ -19,12 +18,12 @@ const InputItem: React.FC<InputItemProps> = ({ onUpdateValue, onUpdateSynonym, s
   const valuesInputRef = React.useRef<HTMLInputElement>(null);
 
   const inputsRef = React.useRef(null);
+
   useOnClickOutside(
     inputsRef,
     () => {
       if (!active) return;
-      onUpdateSynonym(localSynonyms);
-      onUpdateValue(localValue);
+      onUpdateItem({ value: localValue, synonyms: localSynonyms });
       setActive(false);
     },
     [localSynonyms, localValue, active]
@@ -39,9 +38,7 @@ const InputItem: React.FC<InputItemProps> = ({ onUpdateValue, onUpdateSynonym, s
       <ValueInput
         value={localValue}
         placeholder="Value"
-        onEnterPress={() => {
-          valuesInputRef.current?.blur();
-        }}
+        onEnterPress={() => valuesInputRef.current?.blur()}
         onFocus={handleInputFocus}
         onChangeText={setLocalValue}
       />

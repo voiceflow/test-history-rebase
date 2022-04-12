@@ -21,23 +21,17 @@ interface EntityFormProps {
   withNameSection?: boolean;
   color: string;
   saveColor: (color: string) => void;
+  withBottomDivider?: boolean;
 }
 
-const EntityForm: React.FC<EntityFormProps> = ({
-  color,
-  saveColor,
-  values,
-  saveValues,
-  type,
-  updateType,
-  name,
-  updateName,
-  saveName,
-  withNameSection = true,
-}) => {
+const EntityForm: React.ForwardRefRenderFunction<HTMLInputElement, EntityFormProps> = (
+  { color, saveColor, values, saveValues, withBottomDivider, type, updateType, name, updateName, saveName, withNameSection = true },
+  ref
+) => {
   const [hasExtendedEntity, setHasExtendedEntity] = React.useState<boolean>(false);
   const hasValues = Boolean(values.length);
   const isCustomSlot = type === CUSTOM_SLOT_TYPE;
+
   const handleInputsChange = (inputs: Realtime.SlotInput[]) => {
     saveValues?.(inputs);
   };
@@ -53,6 +47,7 @@ const EntityForm: React.FC<EntityFormProps> = ({
           customHeaderStyling={{ paddingTop: '20px' }}
         >
           <Input
+            ref={ref}
             onBlur={() => saveName?.()}
             placeholder="Enter entity name"
             value={name}
@@ -69,9 +64,11 @@ const EntityForm: React.FC<EntityFormProps> = ({
           </BuiltInIntentMessage>
         </MessageWrapper>
       )}
-      {(isCustomSlot || hasExtendedEntity || hasValues) && <ValuesSection inputs={values} type={type} updateInputs={handleInputsChange} />}
+      {(isCustomSlot || hasExtendedEntity || hasValues) && (
+        <ValuesSection withBottomDivider={withBottomDivider} inputs={values} type={type} updateInputs={handleInputsChange} />
+      )}
     </>
   );
 };
 
-export default EntityForm;
+export default React.forwardRef(EntityForm);

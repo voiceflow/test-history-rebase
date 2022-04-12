@@ -4,7 +4,7 @@ import { Box, Button, ButtonVariant, pickRandomDefaultColor, toast, useCache, us
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
-import { ModalType } from '@/constants';
+import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
@@ -13,7 +13,7 @@ import { formatIntentAndSlotName } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
 
 import EntityForm from './components/EntityForm';
-import { MAX_ENTITY_MODAL_WIDTH, MAX_HEIGHT_CALC } from './constants';
+import { MAX_HEIGHT_CALC } from './constants';
 
 const CreateModal: React.FC = () => {
   const { close, data, isInStack } = useModals<{
@@ -31,6 +31,8 @@ const CreateModal: React.FC = () => {
   const [name, setName] = useLinkedState(formatIntentAndSlotName(data.name) ?? '');
   const [values, setValues] = React.useState<Realtime.SlotInput[]>([]);
   const [color, setColor] = React.useState<string>(pickRandomDefaultColor());
+
+  const nameInputRef = React.useRef<HTMLInputElement>(null);
 
   const notEmptyValues = React.useMemo(() => values.some(({ value, synonyms }) => value.trim() || synonyms.trim()), [values]);
 
@@ -63,6 +65,10 @@ const CreateModal: React.FC = () => {
   useDidUpdateEffect(() => {
     if (!isInStack) return undefined;
 
+    if (!name) {
+      nameInputRef.current?.focus();
+    }
+
     return () => {
       setType(CustomSlot.type);
       setName('');
@@ -81,7 +87,7 @@ const CreateModal: React.FC = () => {
   };
 
   return (
-    <Modal maxWidth={MAX_ENTITY_MODAL_WIDTH} id={ModalType.ENTITY_CREATE} title="Create Entity" headerBorder>
+    <Modal maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]} id={ModalType.ENTITY_CREATE} title="Create Entity" headerBorder>
       <Box width="100%" overflow="auto" maxHeight={MAX_HEIGHT_CALC}>
         <EntityForm
           color={color}
@@ -92,13 +98,14 @@ const CreateModal: React.FC = () => {
           saveValues={setValues}
           name={name}
           type={type}
+          ref={nameInputRef}
         />
       </Box>
       <ModalFooter justifyContent="flex-end">
         <Button onClick={handleCancel} variant={ButtonVariant.TERTIARY} squareRadius style={{ marginRight: '10px' }}>
           Cancel
         </Button>
-        <Button disabled={isCreating} isLoading={isCreating} onClick={onCreate} variant={ButtonVariant.PRIMARY} squareRadius>
+        <Button minWidth={150} disabled={isCreating} isLoading={isCreating} onClick={onCreate} variant={ButtonVariant.PRIMARY} squareRadius>
           Create Entity
         </Button>
       </ModalFooter>

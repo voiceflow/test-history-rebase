@@ -2,14 +2,13 @@ import { Box, Button, ButtonVariant, Dropdown, IconButton, IconButtonVariant } f
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
-import { ModalType } from '@/constants';
+import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useDispatch, useModals, useSelector } from '@/hooks';
 import IntentSelectDropdown from '@/pages/Canvas/components/IntentModalsV2/components/components/IntentSelectDropdown';
 import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
-import { INTENT_MODAL_WIDTH } from '@/pages/Canvas/components/IntentModalsV2/constants';
 
 const EditModal: React.FC = () => {
   const { close, data } = useModals<{ id: string }>(ModalType.INTENT_EDIT);
@@ -29,7 +28,7 @@ const EditModal: React.FC = () => {
   return (
     <Modal
       ref={setModalRef}
-      maxWidth={INTENT_MODAL_WIDTH}
+      maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]}
       headerActions={
         <Dropdown
           options={[

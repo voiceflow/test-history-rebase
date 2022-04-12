@@ -29,7 +29,8 @@ const normalizeColorToHex = (color: string) => {
   return rgbaToHex({ r, g, b, a: 1 });
 };
 
-export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, customColors = [], onChange, tagName = 'my_variable' }) => {
+export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, customColors = [], onChange, tagName }) => {
+  const trimmedTagName = tagName?.trim() || 'label';
   const colors = [...DEFAULT_COLORS, ...customColors];
   const [selectedHex, setLocalSelectedHex] = React.useState(() => normalizeColorToHex(selectedColor));
 
@@ -39,7 +40,6 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, customC
   const debouncedSetColor = useDebouncedCallback(100, (color: string) => onChange(color), []);
 
   useOnClickOutside(popOver, () => setIsShowingPicker(false), [setIsShowingPicker]);
-
   return (
     <Wrapper>
       <ColorThemes
@@ -58,7 +58,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, customC
           colors={colors}
           selectedColor={selectedHex}
           onChange={Utils.functional.chain(debouncedSetColor, setLocalSelectedHex)}
-          tagName={tagName}
+          tagName={trimmedTagName}
         />
       )}
     </Wrapper>

@@ -24,7 +24,7 @@ const EmptyView: React.FC = () => {
   return (
     <Box p="60px 74px">
       <FlexCenter>
-        <SvgIcon size={60} icon={svg} />
+        <SvgIcon size={64} icon={svg} />
       </FlexCenter>
       <FlexCenter>
         <Box mt={16} fontWeight={600}>
@@ -32,7 +32,7 @@ const EmptyView: React.FC = () => {
         </Box>
       </FlexCenter>
       <FlexCenter>
-        <Box mt={16} mb={16} textAlign="center">
+        <Box mt={8} mb={16} textAlign="center" color="#62778c">
           {description} <Link href={link}>Learn more</Link>
         </Box>
       </FlexCenter>

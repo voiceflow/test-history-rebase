@@ -24,12 +24,10 @@ const NLUQuickView: React.FC = () => {
   const { showIntentForm, showEntityForm, showVariableForm, isEmpty } = useShowForms();
 
   const [modalTitle, setModalTitle] = useLinkedState(title);
-
   const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
 
   const emptyHeader = isCreatingItem || isEmpty;
   const EmptyBody = isCreatingItem ? Loading : EmptyView;
-
   return (
     <Modal
       ref={setModalRef}

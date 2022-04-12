@@ -4,6 +4,7 @@ import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import { Language } from '@voiceflow/voiceflow-types/build/common/constants/base';
 import { Normalized } from 'normal-store';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
@@ -139,7 +140,7 @@ export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelector(
 );
 
 export const isBuiltInIntent = (intentID: string): boolean =>
-  [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS, ...DIALOGFLOW_BUILT_INS].some((intent) => intent.id === intentID);
+  [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS, ...DIALOGFLOW_BUILT_INS, ...GENERAL_BUILT_INS_MAP[Language.EN]].some((intent) => intent.id === intentID);
 
 const NUMERIC_UTTERANCE_REGEXP = /\d/;
 

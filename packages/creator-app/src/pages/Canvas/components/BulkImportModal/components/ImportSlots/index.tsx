@@ -10,7 +10,7 @@ import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import RadioGroup from '@/components/RadioGroup';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import * as Documentation from '@/config/documentation';
-import { ModalType } from '@/constants';
+import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import { useDebouncedCallback, useModals } from '@/hooks';
 import { readFileAsText } from '@/utils/file';
 
@@ -150,7 +150,7 @@ const ImportSlots: React.FC = () => {
   }, [isOpened]);
 
   return (
-    <Modal id={ModalType.IMPORT_SLOTS} title="Bulk import Entities">
+    <Modal id={ModalType.IMPORT_SLOTS} maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]} title="Bulk import Entities">
       <Box width="100%">
         <ModalBody>
           <Box mb={15}>
@@ -217,12 +217,12 @@ const ImportSlots: React.FC = () => {
           </Box>
 
           <Box mr={12}>
-            <Button onClick={close} variant={ButtonVariant.TERTIARY}>
+            <Button squareRadius onClick={close} variant={ButtonVariant.TERTIARY}>
               Cancel
             </Button>
           </Box>
 
-          <Button disabled={!state.editorValue.trim() || state.uploadDisabled} onClick={onUpload}>
+          <Button squareRadius disabled={!state.editorValue.trim() || state.uploadDisabled} onClick={onUpload}>
             Upload
           </Button>
         </ModalFooter>

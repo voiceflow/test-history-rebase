@@ -76,7 +76,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
       const numberWord = Utils.number.convertToWord(allSlots.length);
       const id = Utils.id.cuid.slug();
       try {
-        await createSlot(id, { id, name: `slot_${numberWord}`, inputs: [], type: CustomSlot.type, color: undefined });
+        await createSlot(id, { id, name: `entity_${numberWord}`, inputs: [], type: CustomSlot.type, color: undefined });
         setNewSlotID(id);
         setSelectedID(id);
       } catch (e) {

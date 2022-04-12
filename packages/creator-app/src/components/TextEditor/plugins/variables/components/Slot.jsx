@@ -34,7 +34,7 @@ const Text = styled.span`
   }
 `;
 
-const Slot = ({ children, mention }, ref) => {
+const Slot = ({ mention, children }, ref) => {
   const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
   const { open: openEntityEditModal } = useModals(ModalType.ENTITY_EDIT);
 

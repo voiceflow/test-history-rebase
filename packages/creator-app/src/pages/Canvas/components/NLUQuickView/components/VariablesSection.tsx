@@ -11,7 +11,7 @@ const VariablesSection: React.FC = () => {
   const { mergedVariablesMap } = useOrderedVariables();
   const selectedBuiltInName = mergedVariablesMap[selectedID]?.name;
   return (
-    <Box p={32} fontSize={13} color={THEME.colors[ThemeColor.SECONDARY]}>
+    <Box p="24px 32px" fontSize={13} color={THEME.colors[ThemeColor.SECONDARY]}>
       {VARIABLE_DESCRIPTION[selectedBuiltInName]}
     </Box>
   );

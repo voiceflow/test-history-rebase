@@ -2,11 +2,11 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Box, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import NoteEditor from '@/components/NoteEditor';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useSelector } from '@/hooks';
+import { DividerBorder } from '@/pages/Canvas/components/IntentModalsV2/components/components';
 
 interface DescriptionSectionProps {
   intentID: string;
@@ -46,7 +46,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, onCre
         </Box>
       </UncontrolledSection>
 
-      {isCollapsed && <Divider style={{ margin: 0, background: '#eaeff4' }} />}
+      {isCollapsed && <DividerBorder />}
     </>
   );
 };

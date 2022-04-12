@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.71.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.71.1...@voiceflow/ui@1.71.2) (2022-04-12)
+
+
+### Bug Fixes
+
+* nlu feedback part 3 (VF-000) ([#5308](https://github.com/voiceflow/creator-app/issues/5308)) ([2aab33f](https://github.com/voiceflow/creator-app/commit/2aab33f0f10c5755cef158be83b37cd06c2751b5))
+
+
+
+
+
 ## [1.71.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.71.0...@voiceflow/ui@1.71.1) (2022-04-08)
 
 

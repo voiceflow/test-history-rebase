@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.687.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.687.3...@voiceflow/creator-app@1.687.4) (2022-04-12)
+
+
+### Bug Fixes
+
+* format intent name for exports intent select (VF-3218) ([#5317](https://github.com/voiceflow/creator-app/issues/5317)) ([d49e4af](https://github.com/voiceflow/creator-app/commit/d49e4af94c6b69cd28848db89e3a2c8efc5fa0cb))
+
+
+
+
+
 ## [1.687.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.687.2...@voiceflow/creator-app@1.687.3) (2022-04-12)
 
 

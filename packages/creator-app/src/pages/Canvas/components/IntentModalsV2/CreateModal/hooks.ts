@@ -2,6 +2,8 @@ import { ChatModels } from '@voiceflow/chat-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import { VoiceModels } from '@voiceflow/voice-types';
+import _differenceWith from 'lodash/differenceWith';
+import _isEqual from 'lodash/isEqual';
 import { normalize } from 'normal-store';
 import { useCallback, useMemo, useState } from 'react';
 
@@ -57,15 +59,20 @@ export const useCreateIntent = ({ initialName, onCreate }: useCreateIntentProps)
   };
 
   const handleSetInputs = useCallback(
-    (inputs: Realtime.IntentInput[]) => {
-      const newIntentSlots = getUniqSlots(inputs).reduce<Realtime.IntentSlot[]>(
+    (newInputs: Realtime.IntentInput[]) => {
+      const newIntentSlots = getUniqSlots(newInputs).reduce<Realtime.IntentSlot[]>(
         (slots, slotId) => (currentUsedSlotIDs.includes(slotId) ? slots : [...slots, newSlotsCreator(slotId)]),
         []
       );
-      setUsedSlots([...usedSlots, ...newIntentSlots]);
-      setInputs(inputs);
+
+      const newInputSlots = getUniqSlots(newInputs);
+      const oldInputSlots = getUniqSlots(inputs);
+      const slotsToRemove = _differenceWith(oldInputSlots, newInputSlots, _isEqual);
+      const newUsedSlots = [...usedSlots, ...newIntentSlots].filter((slot) => !slotsToRemove.includes(slot.id));
+      setUsedSlots(newUsedSlots);
+      setInputs(newInputs);
     },
-    [currentUsedSlotIDs, usedSlots]
+    [currentUsedSlotIDs, usedSlots, inputs]
   );
 
   const finalizeIntentCreate = useCallback(async () => {
@@ -133,9 +140,15 @@ export const useCreateIntent = ({ initialName, onCreate }: useCreateIntentProps)
 
   const removeRequiredSlot = useCallback(
     (slotID: string) => {
-      updateSlot(slotID, { required: false });
+      const oldInputSlots = getUniqSlots(inputs);
+      if (oldInputSlots.includes(slotID)) {
+        updateSlot(slotID, { required: false });
+      } else {
+        const newUsedSlots = usedSlots.filter((slot) => slot.id !== slotID);
+        setUsedSlots(newUsedSlots);
+      }
     },
-    [updateSlot]
+    [updateSlot, inputs, usedSlots]
   );
 
   const updateSlotDialog = useCallback(

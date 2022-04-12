@@ -22,10 +22,25 @@ interface ListItemProps {
   setIsActiveItemRename?: (val: boolean) => void;
   ref?: React.Ref<HTMLInputElement>;
   type: InteractionModelTabType;
+  isBuiltIn?: boolean;
 }
 
 const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> = (
-  { id, isActiveItemRename, type, setIsActiveItemRename, onBlur, nameValidation, isCreating = false, name, onRename, onDelete, active, onClick },
+  {
+    id,
+    isBuiltIn,
+    isActiveItemRename,
+    type,
+    setIsActiveItemRename,
+    onBlur,
+    nameValidation,
+    isCreating = false,
+    name,
+    onRename,
+    onDelete,
+    active,
+    onClick,
+  },
   ref
 ) => {
   const [isRenaming, setIsRenaming] = React.useState(isCreating);
@@ -60,7 +75,7 @@ const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> 
         { label: 'Divider', divider: true },
       ];
 
-  const getDeleteOption = !canDeleteItem(id, type) ? [] : [{ label: 'Delete', value: 'delete', onClick: () => onDelete(id) }];
+  const getDeleteOption = !canDeleteItem(id, type) ? [] : [{ label: isBuiltIn ? 'Remove' : 'Delete', value: 'delete', onClick: () => onDelete(id) }];
 
   const contextOptions = [...getRenameOption, ...getDeleteOption];
 

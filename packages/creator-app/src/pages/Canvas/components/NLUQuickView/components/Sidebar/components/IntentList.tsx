@@ -8,9 +8,10 @@ import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
+import { isBuiltInIntent } from '@/utils/intent';
 
 import { useFilteredList, useOrderedIntents } from '../../../hooks';
-import { useCreatingItem, useSectionHooks } from '../hooks';
+import { useCreatingItem, useListHooks } from '../hooks';
 import { SectionSection } from '.';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
@@ -33,10 +34,9 @@ const IntentList: React.FC<SectionProps> = ({
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.INTENTS, [activeTab]);
 
   const { sortedIntents } = useOrderedIntents();
-
   const filteredList = useFilteredList(search, sortedIntents) as Realtime.Intent[];
 
-  useSectionHooks({
+  useListHooks({
     setSearchLength,
     listLength: allIntents.length,
     isActiveTab,
@@ -117,6 +117,7 @@ const IntentList: React.FC<SectionProps> = ({
         return (
           <ListItem
             id={intent.id}
+            isBuiltIn={isBuiltInIntent(intent.id)}
             type={InteractionModelTabType.INTENTS}
             active={isActive}
             onClick={() => setSelectedItemID(intent.id)}

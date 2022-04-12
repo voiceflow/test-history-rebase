@@ -59,7 +59,7 @@ const EntityForm: React.ForwardRefRenderFunction<HTMLInputElement, EntityFormPro
       {!isCustomSlot && !hasExtendedEntity && (
         <MessageWrapper>
           <BuiltInIntentMessage>
-            Built-in entities don't require additional sample values. If you'd like to add more you can{' '}
+            Entities with built-in types don't require additional sample values. If you'd like to add more you can{' '}
             <ClickableText onClick={() => setHasExtendedEntity(true)}>extend the entity.</ClickableText>
           </BuiltInIntentMessage>
         </MessageWrapper>

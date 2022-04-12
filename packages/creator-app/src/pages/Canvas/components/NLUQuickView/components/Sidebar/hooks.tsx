@@ -56,7 +56,7 @@ interface SectionHooksProps {
   map: Record<string, any>;
 }
 
-export const useSectionHooks = ({ setSearchLength, listLength, isActiveTab, map }: SectionHooksProps) => {
+export const useListHooks = ({ setSearchLength, listLength, isActiveTab, map }: SectionHooksProps) => {
   const { selectedID, setTitle } = React.useContext(NLUQuickViewContext);
 
   useUpdateSearchCount(setSearchLength, listLength, isActiveTab);

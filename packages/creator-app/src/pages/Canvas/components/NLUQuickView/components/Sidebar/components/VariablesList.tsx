@@ -6,7 +6,7 @@ import { VariableItem } from '@/components/SlateEditable/editor';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 import ListItem from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/components/ListItem';
-import { useSectionHooks } from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/hooks';
+import { useListHooks } from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 import { useFilteredList, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
@@ -24,7 +24,7 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
 
   const filteredList = useFilteredList(search, mergedVariables) as VariableItem[];
 
-  useSectionHooks({
+  useListHooks({
     setSearchLength,
     listLength: mergedVariables.length,
     isActiveTab,

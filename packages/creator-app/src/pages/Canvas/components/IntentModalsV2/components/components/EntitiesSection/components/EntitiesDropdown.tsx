@@ -62,7 +62,7 @@ const EntitiesDropdown: React.FC<{ addRequiredSlot: (slotID: string) => void }> 
       minWidth={false}
       alwaysShowCreate
       creatable={false}
-      createInputPlaceholder="Entities"
+      createInputPlaceholder="entities"
       renderFooterAction={({ close }) => (
         <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, handleCreateClick)}>
           Create New Entity

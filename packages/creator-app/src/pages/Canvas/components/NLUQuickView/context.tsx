@@ -244,15 +244,12 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     [mergedVariablesMap]
   );
 
-  const canDeleteIntent = (id: string) => {
-    return !isBuiltInIntent(id);
-  };
-
   const canDeleteItem = React.useCallback(
     (id: string, type: InteractionModelTabType) => {
       switch (type) {
         case InteractionModelTabType.INTENTS:
-          return canDeleteIntent(id);
+          // Deleting a built-in doesn't 'delete' it, but rather removes it
+          return true;
           break;
         case InteractionModelTabType.VARIABLES:
           return canDeleteVariable(id);
@@ -281,30 +278,33 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   };
 
   const setSelectedTab = React.useCallback(
-    (tab: InteractionModelTabType) => {
-      let firstItemID = '';
+    (tab: InteractionModelTabType, deletedID?: string) => {
+      let targetID = '';
+      let targetArray: { id: string }[] = [];
       switch (tab) {
         case InteractionModelTabType.INTENTS:
-          firstItemID = sortedIntents[0]?.id ?? '';
+          targetArray = sortedIntents;
           break;
         case InteractionModelTabType.SLOTS:
-          firstItemID = sortedSlots[0]?.id ?? '';
+          targetArray = sortedSlots;
           break;
         case InteractionModelTabType.VARIABLES:
-          firstItemID = mergedVariables[0]?.id ?? '';
+          targetArray = mergedVariables;
           break;
         default:
           break;
       }
-      if (firstItemID) {
-        goToEntity(tab, firstItemID);
+
+      targetID = (targetArray[0]?.id === deletedID ? targetArray[1]?.id : targetArray[0]?.id) || '';
+      if (targetID) {
+        goToEntity(tab, targetID);
       } else {
         goToQuickviewTab(tab);
       }
 
       trackingEvents.trackIMMNavigation({ tabName: tab });
     },
-    [sortedIntents, sortedSlots, mergedVariables, goToEntity]
+    [sortedIntents, sortedSlots, mergedVariables]
   );
 
   const setSelectedID = React.useCallback(
@@ -356,15 +356,15 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
       switch (targetTab) {
         case InteractionModelTabType.INTENTS:
           deleteIntent(itemID);
-          setSelectedTab(InteractionModelTabType.INTENTS);
+          setSelectedTab(InteractionModelTabType.INTENTS, itemID);
           break;
         case InteractionModelTabType.SLOTS:
           handleSlotDelete(itemID);
-          setSelectedTab(InteractionModelTabType.SLOTS);
+          setSelectedTab(InteractionModelTabType.SLOTS, itemID);
           break;
         case InteractionModelTabType.VARIABLES:
           deleteVariable(itemID);
-          setSelectedTab(InteractionModelTabType.VARIABLES);
+          setSelectedTab(InteractionModelTabType.VARIABLES, itemID);
           break;
         default:
           break;

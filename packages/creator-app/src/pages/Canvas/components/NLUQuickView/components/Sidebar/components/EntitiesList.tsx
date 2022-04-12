@@ -12,7 +12,7 @@ import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 import { useFilteredList, useOrderedEntities } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
-import { useCreatingItem, useSectionHooks } from '../hooks';
+import { useCreatingItem, useListHooks } from '../hooks';
 import { SectionSection } from './index';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
@@ -33,16 +33,16 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
 
   const { onRenameSlot } = React.useContext(NLUQuickViewContext);
 
-  useSectionHooks({
+  useListHooks({
     setSearchLength,
     listLength: allSlots.length,
     isActiveTab,
     map: allSlotsMap,
   });
 
-  const onDelete = React.useCallback((slotID) => {
+  const onDelete = (slotID: string) => {
     deleteItem(slotID, InteractionModelTabType.SLOTS);
-  }, []);
+  };
 
   const handleConfirmNewSlotName = React.useCallback(
     (newName: string, newSlotID: string) => {

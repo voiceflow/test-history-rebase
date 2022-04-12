@@ -1,5 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import _differenceWith from 'lodash/differenceWith';
+import _isEqual from 'lodash/isEqual';
 import _pick from 'lodash/pick';
 import * as Normal from 'normal-store';
 
@@ -46,9 +48,14 @@ export const patchIntent =
       const intent = IntentV2.intentByIDSelector(state, { id });
       if (!intent) return;
 
-      const { slots: { byKey = {}, allKeys = [] } = {} } = intent;
-      const uniqueInputSlots = getUniqSlots(data.inputs);
-      const supersetKeys = [...new Set([...uniqueInputSlots, ...allKeys])];
+      const { slots: { byKey = {}, allKeys = [] } = {}, inputs: oldInputs } = intent;
+
+      const oldInputSlots = getUniqSlots(oldInputs);
+      const newInputSlots = getUniqSlots(data.inputs);
+
+      const slotsToRemove = _differenceWith(oldInputSlots, newInputSlots, _isEqual);
+
+      const supersetKeys = [...new Set([...newInputSlots, ...allKeys])].filter((key) => !slotsToRemove.includes(key));
 
       const newKeys = supersetKeys.filter((slotID) => !allKeys.includes(slotID));
 

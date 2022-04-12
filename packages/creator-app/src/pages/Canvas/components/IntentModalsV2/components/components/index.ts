@@ -4,7 +4,7 @@ import Divider from '@/components/Divider';
 import { styled, transition } from '@/hocs';
 
 export const SlotBubble = styled.div`
-  ${transition('opacity')}
+  ${transition('opacity', 'border')}
   border-radius: 6px;
   border: solid 1px #eaeff4;
   padding: 3px 8px 3px 4px;
@@ -30,6 +30,8 @@ export const SlotBubble = styled.div`
     ${SvgIconContainer} {
       opacity: 1;
     }
+
+    border: solid 1px #dfe3ed;
   }
 `;
 

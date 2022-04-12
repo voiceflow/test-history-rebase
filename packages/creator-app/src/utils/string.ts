@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/common';
+import { READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { STRICT_LINKS_REGEXS, URL_ONLY_REGEX, VALID_LINKS_REGEXS } from '@/constants';
@@ -36,3 +36,7 @@ export const isAnyStrictLink = (str: string): boolean => !!STRICT_LINKS_REGEXS.s
 export const getValidHref = (href: string): string => (href.startsWith('//') || href.includes('://') || isAnyStrictLink(href) ? href : `//${href}`);
 
 export const formatProjectName = (value: string): string => value.trim() || 'Untitled Project';
+
+export const containsSlotOtVariable = (str: string): boolean => !!str.match(SLOT_REGEXP);
+
+export const containsReadableVariable = (str: string): boolean => !!str.match(READABLE_VARIABLE_REGEXP);

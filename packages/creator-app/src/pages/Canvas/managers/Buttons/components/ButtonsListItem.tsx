@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Badge, Box, BoxFlex, Input, Link, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
+import { Badge, Box, BoxFlex, Link, preventDefault, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
@@ -17,12 +17,12 @@ import { NamespaceProvider } from '@/contexts';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { compose } from '@/hocs';
-import { useFeature, useLinkedState, useSelector } from '@/hooks';
+import { useFeature, useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
 import { transformVariablesToReadable } from '@/utils/slot';
-import { getValidHref, isAnyLink } from '@/utils/string';
+import { containsSlotOtVariable, getValidHref, isAnyLink } from '@/utils/string';
 
 import { BUTTON_OPTIONS, ButtonAction } from '../constants';
 import HelpTooltip from './HelpTooltip';
@@ -53,8 +53,6 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
-  const [url, setUrl] = useLinkedState(item.url ?? '');
-
   const isNew = latestCreatedKey === itemKey;
   const urlChecked = item.actions.includes(BaseNode.Buttons.ButtonAction.URL);
   const isPathChecked = item.actions.includes(BaseNode.Buttons.ButtonAction.PATH);
@@ -83,13 +81,15 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
     onUpdate({ actions: nextActions });
   };
 
+  const { id, url, name } = item;
+
   return (
     <EditorSection
       ref={ref}
-      header={transformVariablesToReadable(item.name) || `Button ${index + 1}`}
+      header={transformVariablesToReadable(name) || `Button ${index + 1}`}
       prefix={<Badge>{index + 1}</Badge>}
       headerRef={connectedDragRef}
-      namespace={['buttonsListItem', item.id]}
+      namespace={['buttonsListItem', id]}
       isDragging={isDragging}
       initialOpen={isNew || isOnlyItem}
       headerToggle
@@ -102,7 +102,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
         <>
           <FormControl contentBottomUnits={2.5}>
             <VariablesInputComponent
-              value={item.name}
+              value={name}
               onBlur={({ text }: { text: string }) => onUpdate({ name: text.trim() })}
               fullWidth
               // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -125,15 +125,18 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
 
           {urlChecked && (
             <Section isNested isDividerNested isDividerBottom>
-              <Input
+              <VariablesInputComponent
                 value={url}
-                onBlur={() => (!url || isAnyLink(url) ? onUpdate({ url }) : toast.error('URL is not valid, please enter valid link'))}
-                onChangeText={setUrl}
-                placeholder="Enter URL"
+                onBlur={({ text }: { text: string }) =>
+                  !text || containsSlotOtVariable(text) || isAnyLink(text)
+                    ? onUpdate({ url: text })
+                    : toast.error('URL is not valid, please enter valid link')
+                }
+                placeholder="Enter URL or Variable using '{'"
                 rightAction={
-                  url ? (
+                  url && isAnyLink(url) ? (
                     <TippyTooltip title="Open link in new tab">
-                      <SvgIcon icon="openLink" color="#6e849a" clickable onClick={() => window.open(getValidHref(url), '_blank')} />
+                      <SvgIcon icon="openLink" color="#6e849a" clickable onClick={preventDefault(() => window.open(getValidHref(url), '_blank'))} />
                     </TippyTooltip>
                   ) : (
                     <></> // needs this to do not rerender nested input

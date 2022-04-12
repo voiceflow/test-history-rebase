@@ -26,7 +26,7 @@ const UtteranceInput: React.ForwardRefRenderFunction<UtteranceRef, UtteranceInpu
   { onChange, isValidUtterance, onAdd, onAddSlot, updateIsEmpty, addError, isNotAtTop, isEmpty, value, slots, intentUtterances, setValidUtterance },
   ref
 ) => (
-  <Box mb={intentUtterances.length ? -18 : -4} position="sticky" top={62} zIndex={1000} style={{ background: 'white' }}>
+  <Box mb={intentUtterances.length ? -21 : -4} position="sticky" top={58} pt={1} mt={-1} zIndex={1000} style={{ background: 'white' }}>
     <Utterance
       onEditorStateChange={(state: EditorState) => {
         const isEmpty = !state.getCurrentContent().hasText();

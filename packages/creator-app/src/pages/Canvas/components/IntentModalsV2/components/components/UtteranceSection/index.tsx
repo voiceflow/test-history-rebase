@@ -38,7 +38,7 @@ interface UtteranceManagerProps {
   intentID?: string;
 }
 
-const MAX_VISIBLE_UTTERANCES_HEIGHT = 545;
+const MAX_VISIBLE_UTTERANCES_HEIGHT = 550;
 const MAX_VISIBLE_UTTERANCES = 10;
 
 // Temporary until ML stuff is done
@@ -159,7 +159,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, o
             <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
           </TippyTooltip>
         }
-        customContentStyling={{ marginBottom: intentUtterances.length ? 24 : 14 }}
+        customContentStyling={{ marginBottom: intentUtterances.length ? 25 : 8 }}
         header={
           <>
             Utterances
@@ -187,7 +187,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, o
           <ListManagerWrapper>
             <ListManager
               renderList={({ mapManaged, itemRenderer }) => (
-                <Box overflow="auto" mr={-12} pt={!isValidUtterance && !intentUtterances.length ? 8 : 16} style={{ ...utteranceListStyling }}>
+                <Box overflow="auto" mr={-12} pt={!isValidUtterance && !intentUtterances.length ? 8 : 21} style={{ ...utteranceListStyling }}>
                   {mapManaged(itemRenderer)}
                 </Box>
               )}

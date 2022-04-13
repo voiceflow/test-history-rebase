@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.72.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.71.4...@voiceflow/ui@1.72.0) (2022-04-13)
+
+
+### Features
+
+* creates variable state limit modals (VF-000) ([#5321](https://github.com/voiceflow/creator-app/issues/5321)) ([a9fabd5](https://github.com/voiceflow/creator-app/commit/a9fabd5e128c967ae64e993e9cd0d9ee845b4f07))
+
+
+
+
+
 ## [1.71.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.71.3...@voiceflow/ui@1.71.4) (2022-04-13)
 
 

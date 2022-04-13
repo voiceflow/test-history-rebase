@@ -1,6 +1,6 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
-import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
+import { BillingPeriod, UserRole } from '@voiceflow/internal';
 
 import { Pair } from '@/types';
 
@@ -170,8 +170,6 @@ export enum VoiceType {
   ALEXA = 'Alexa',
 }
 
-export const PLAN_INFO_LINK = 'https://www.voiceflow.com/pricing';
-
 export const RESPONSE_COLOR_CODES = {
   GREEN: '#349d51',
   YELLOW: '#e1d40b',
@@ -276,6 +274,7 @@ export enum ModalType {
 
   VARIABLE_STATE_EDITOR_MODAL = 'variable-state-editor-modal',
   VARIABLE_STATES_MANAGER_MODAL = 'variable-states-manager-modal',
+  VARIABLE_STATES_LIMIT_MODAL = 'variable-states-limit-modal',
 
   PROJECT_CREATE_MODAL = 'project-create-modal',
 }
@@ -332,8 +331,6 @@ export const STRICT_LINKS_REGEXS = [
 
 export const VALID_LINKS_REGEXS = [URL_ONLY_REGEX, ...STRICT_LINKS_REGEXS];
 
-export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
-
 export const FILTERED_AMAZON_INTENTS = [
   'ScrollUpIntent',
   'ScrollRightIntent',
@@ -346,49 +343,6 @@ export const FILTERED_AMAZON_INTENTS = [
 ];
 
 export const UNLIMITED_EDITORS_CONST = 100;
-
-export const PLAN_TYPE_META = {
-  [PlanType.OLD_STARTER]: {
-    label: 'Starter',
-    color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
-  },
-  [PlanType.STARTER]: {
-    label: 'Starter',
-    color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
-  },
-  [PlanType.STUDENT]: {
-    label: 'Student',
-    color: 'linear-gradient(rgb(92, 107, 192, 0.85), #5c6bc0)',
-  },
-  [PlanType.OLD_PRO]: {
-    label: 'Pro',
-    color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
-  },
-  [PlanType.PRO]: {
-    label: 'Pro',
-    color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
-  },
-  [PlanType.OLD_ENTERPRISE]: {
-    label: 'Enterprise',
-    color: 'linear-gradient(rgba(19, 33, 68, 0.85), rgb(19, 33, 68))',
-  },
-  [PlanType.ENTERPRISE]: {
-    label: 'Enterprise',
-    color: 'linear-gradient(rgba(19, 33, 68, 0.85), rgb(19, 33, 68))',
-  },
-  [PlanType.OLD_TEAM]: {
-    label: 'Team',
-    color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
-  },
-  [PlanType.TEAM]: {
-    label: 'Team',
-    color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
-  },
-  [PlanType.CREATOR]: {
-    label: 'Creator',
-    color: 'linear-gradient(rgb(92, 107, 192, 0.85), #5c6bc0)',
-  },
-};
 
 export enum ExportFormat {
   PNG = 'png',
@@ -471,15 +425,6 @@ export const DEVICE_LABEL_MAP: Record<BaseNode.Visual.DeviceType, string> = {
   [BaseNode.Visual.DeviceType.FIRE_TV_CUBE]: 'Fire TV Cube',
   [BaseNode.Visual.DeviceType.GOOGLE_NEST_HUB]: 'Google Nest Hub',
 };
-
-export const FORUM_LINK =
-  'https://community.voiceflow.com/join?invitation_token=46bca5bd506e33be4eb3e60fc77288a0b167e529-71599ae4-08cb-480a-9909-736b9ebbb16e';
-export const DOCS_LINK = 'https://www.voiceflow.com/docs';
-
-// eslint-disable-next-line no-secrets/no-secrets
-export const YOUTUBE_CHANNEL_LINK = 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ';
-export const DESKTOP_APP_LINK = 'https://www.voiceflow.com/desktop';
-export const BOOK_DEMO_LINK = 'https://www.voiceflow.com/demo';
 
 export enum BCP_LANGUAGE_CODE {
   AR_SA = 'ar-SA',
@@ -601,3 +546,6 @@ export enum PageProgressBar {
   TOPIC_CREATING = 'TOPIC_CREATING',
   COMPONENT_CREATING = 'COMPONENT_CREATING',
 }
+
+export * from './links';
+export * from './plans';

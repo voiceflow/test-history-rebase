@@ -10,11 +10,11 @@ export const useVariableStatesPlanLimit = (): PlanLimitHandler => {
   const variableStatesLimit = useSelector(WorkspaceV2.active.variableStatesLimitSelector);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
 
-  const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
+  const { open: openVariableStateLimitModal } = useModals(ModalType.VARIABLE_STATES_LIMIT_MODAL);
 
   return (planAction: () => void) => () => {
     if (variableStatesLimit && variableStates.length >= variableStatesLimit) {
-      openPaymentModal();
+      openVariableStateLimitModal();
       return;
     }
 

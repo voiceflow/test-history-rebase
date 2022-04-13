@@ -15,7 +15,7 @@ import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, S
 import { RootPageProgressBar } from '@/components/PageProgressBar';
 import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
-import { VariableStateEditorModal, VariableStatesManagerModal } from '@/components/VariableStateModals';
+import { VariableStateEditorModal, VariableStatesLimitModal, VariableStatesManagerModal } from '@/components/VariableStateModals';
 import { SeoPage } from '@/constants/seo';
 import { GlobalSocketSubscriptionsLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
@@ -67,6 +67,7 @@ const App: React.FC = () => (
 
     <VariableStatesManagerModal />
     <VariableStateEditorModal />
+    <VariableStatesLimitModal />
 
     <ProjectDownloadModal />
     <TestableLinkModal />

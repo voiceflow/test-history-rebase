@@ -228,6 +228,7 @@ export { default as search } from './search.svg';
 export { default as send } from './send.svg';
 export { default as share } from './share.svg';
 export { default as shortcuts } from './shortcuts.svg';
+export { default as skillTemplate } from './skill-template.svg';
 export { default as smile } from './smile.svg';
 export { default as sound } from './sound.svg';
 export { default as soundOff } from './sound-off.svg';

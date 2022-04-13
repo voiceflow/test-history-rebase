@@ -5,9 +5,9 @@ import { Thunk } from '@/store/types';
 import { getActiveVersionContext } from '../../utils';
 
 export const reorderTopics =
-  (from: number, to: number): Thunk =>
+  ({ fromID, toIndex, skipPersist }: { fromID: string; toIndex: number; skipPersist?: boolean }): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.version.reorderTopics({ ...getActiveVersionContext(getState()), from, to }));
+    await dispatch.sync(Realtime.version.reorderTopics({ ...getActiveVersionContext(getState()), fromID, toIndex }, { skipPersist }));
   };
 
 export const reorderComponents =

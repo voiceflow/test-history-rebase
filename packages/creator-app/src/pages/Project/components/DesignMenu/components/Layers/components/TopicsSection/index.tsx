@@ -10,7 +10,6 @@ import { DragItem } from '@/constants';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
 
-import { useOpenedIDsToggle } from '../../hooks';
 import Header, { HEADER_MIN_HEIGHT } from '../Header';
 import SearchInput, { SEARCH_INPUT_HEIGHT } from '../SearchInput';
 import { INTENT_LIST_OFFSET, ITEM_INTENT_HEIGHT, TOPIC_ITEM_HEIGHT, TopicItem as TopicItemComponent } from './components';
@@ -24,7 +23,7 @@ const SEARCHABLE_INTENTS_COUNT = 10;
 const TopicsSection: React.FC = () => {
   const listRef = React.useRef<List>(null);
   const scrollBarsRef = React.useRef<Scrollbars>(null);
-  const { onDragEnd, onDragStart, openedIDs, onToggleOpenedID } = useOpenedIDsToggle('topics');
+
   const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
@@ -37,11 +36,15 @@ const TopicsSection: React.FC = () => {
     setSearchValue,
     activeDiagramID,
     onReorderTopics,
+    onDragStart,
+    onDragEnd,
     searchMatchValue,
     searchTopicsItems,
     searchOpenedTopics,
     lastCreatedDiagramID,
     onClearLastCreatedDiagramID,
+    openedIDs,
+    onToggleOpenedID,
   } = useTopics();
 
   const isSearch = !!searchMatchValue;

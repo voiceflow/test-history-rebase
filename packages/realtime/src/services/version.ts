@@ -140,16 +140,9 @@ class VersionService extends AbstractControl {
     return { startingBlocks, intentSteps };
   }
 
-  public async reorderTopics(creatorID: number, versionID: string, from: number, to: number): Promise<void> {
+  public async reorderTopics(creatorID: number, versionID: string, fromID: string, toIndex: number): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
-    const { topics } = await client.version.get<{ topics?: BaseModels.Version.FolderItem[] }>(versionID, ['topics']);
-
-    if (!topics?.length) {
-      throw new Error('Topics are empty');
-    }
-
-    await client.version.update(versionID, { topics: Utils.array.reorder(topics, from, to) });
+    await client.version.reorderTopics(versionID, { fromID, toIndex });
   }
 
   public async reorderComponents(creatorID: number, versionID: string, from: number, to: number): Promise<void> {

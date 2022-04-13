@@ -4758,11 +4758,6 @@
   dependencies:
     "@types/estree" "*"
 
-"@types/esrever@^0.2.0":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@types/esrever/-/esrever-0.2.1.tgz#9ff5155ef412848270ead4aaa611a8cdadcb9ab0"
-  integrity sha512-vRLFhQxGVkyUF7opxv66MQHoRSOBkbbitj1OGd6My4XR6HwCorUZxSiJejF3s4OxmEFTjfRRGwm6GUhuQETP6Q==
-
 "@types/estree@*", "@types/estree@^0.0.50":
   version "0.0.50"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.50.tgz#1e0caa9364d3fccd2931c3ed96fdbeaa5d4cca83"
@@ -5549,24 +5544,13 @@
     "@voiceflow/voiceflow-types" "^3.7.3"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/api-sdk@3.11.0":
-  version "3.11.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.11.0.tgz#9a1a20df9a37bba43314ad700cd43103c3c2ca86"
-  integrity sha512-oyPMBpKKzLD/sEB2sOcfmP4XAUsXmi4U6eIElrpGk47xrhEX3XIdkZvxHh4JlrDuyazRAnESN4th2UeMMU4b+A==
+"@voiceflow/api-sdk@3.12.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.12.0.tgz#4888c537c615895d7a98224aeb34c8a3a20e0932"
+  integrity sha512-NlbO0IoEj4mXacIVsSVhwW1EvblJwZGyY7W0t3oALlmAB6zF5kErQJ3hPMhFXRAKb8gndAz1xzKCMl87PHHrkw==
   dependencies:
-    "@voiceflow/base-types" "^2.19.0"
-    "@voiceflow/common" "^7.24.0"
-    axios "0.24.0"
-    jwt-decode "^3.1.2"
-    superstruct "^0.10.12"
-
-"@voiceflow/api-sdk@3.8.5":
-  version "3.8.5"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.8.5.tgz#fdb89c06d0235e22edcf03600f54133c27cca1c3"
-  integrity sha512-WCdCK4LsoodWuy1zq0TvTbDjP0R/E9bJL3Ng/jlKvzBPgqTg+xX3c2dSI0dOHj1mTTNlurG+Hwo+boOBIg90Yw==
-  dependencies:
-    "@voiceflow/base-types" "^2.14.0"
-    "@voiceflow/common" "^7.21.0"
+    "@voiceflow/base-types" "^2.21.0"
+    "@voiceflow/common" "^7.26.0"
     axios "0.24.0"
     jwt-decode "^3.1.2"
     superstruct "^0.10.12"
@@ -5623,13 +5607,13 @@
   dependencies:
     slate "0.72.3"
 
-"@voiceflow/base-types@^2.14.0":
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.14.0.tgz#996ec1def43d62564930eac7b27ba816dd0d3da4"
-  integrity sha512-inHecKF1M5POg2cnri27N8e/sEuQXDXdUy8NKHBhKp0G92x0PpdtJllFNa8smi+k7qhVY4ebOpVdtOR4tu06Vw==
+"@voiceflow/base-types@^2.21.0":
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.21.0.tgz#f730db6249b2b2d8bebdb03566a27dbb609fdd51"
+  integrity sha512-rIv/Eie+rihPPyMzYxvxnVgClgViakpS2PNZux3Ygbbuv8u1T9UxHGVrZRcR1+fNf8SqHZ9Lu77UUPrec+AjyQ==
   dependencies:
-    "@voiceflow/common" "^7.21.0"
-    slate "0.63.0"
+    "@voiceflow/common" "^7.26.0"
+    slate "0.73.0"
 
 "@voiceflow/chat-types@2.6.6", "@voiceflow/chat-types@^2.6.6":
   version "2.6.6"
@@ -5645,10 +5629,10 @@
   dependencies:
     "@commitlint/config-conventional" "16.0.0"
 
-"@voiceflow/common@7.24.0", "@voiceflow/common@^7.24.0":
-  version "7.24.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.24.0.tgz#267245cd6af6589a49dc92c0dc981ff5f5f2408b"
-  integrity sha512-IGI9FIkje286ewK5LWLmi8tht0L5fmjk8dKLajWob4bQNculCBMd7+aLdTUcghh02cp0u2NCelaWeQi3Bq2tHw==
+"@voiceflow/common@7.26.0", "@voiceflow/common@^7.26.0":
+  version "7.26.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.26.0.tgz#639a50637410a037b18edede207a9b6f90eefc81"
+  integrity sha512-Ztl0+MVh6c7wWBtLFYrwOT3uMW4QTco/vvflSZ2wAsCWhk7Qn0hIDc0LvD1moxOWCVqtn1acVAMJ1w/3ksMDjg==
   dependencies:
     "@types/crypto-js" "^4.0.2"
     bson-objectid "^2.0.1"
@@ -5660,16 +5644,16 @@
     number-to-words "^1.2.4"
     typescript-fsa "3.0.0"
 
-"@voiceflow/common@^7.21.0":
-  version "7.21.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.21.0.tgz#e82b6ca6d8265d93098950300de733ca0e0c9032"
-  integrity sha512-uwqYlWkmnQEgB/jx5O6v2UB4kPRHrpd0IIdVrPBGe96LyuxV4ttvcmuIvMdPu/ofpoDtylmvVI4SMsn4iHgJzw==
+"@voiceflow/common@^7.24.0":
+  version "7.24.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.24.0.tgz#267245cd6af6589a49dc92c0dc981ff5f5f2408b"
+  integrity sha512-IGI9FIkje286ewK5LWLmi8tht0L5fmjk8dKLajWob4bQNculCBMd7+aLdTUcghh02cp0u2NCelaWeQi3Bq2tHw==
   dependencies:
     "@types/crypto-js" "^4.0.2"
     bson-objectid "^2.0.1"
     crypto-js "^4.1.1"
     cuid "^2.1.8"
-    dayjs "^1.10.7"
+    dayjs "1.10.7"
     lodash "^4.17.21"
     murmurhash-wasm "^1.3.0"
     number-to-words "^1.2.4"
@@ -9302,7 +9286,7 @@ dayjs@1.10.5:
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.5.tgz#5600df4548fc2453b3f163ebb2abbe965ccfb986"
   integrity sha512-BUFis41ikLz+65iH6LHQCDm4YPMj5r1YFLdupPIyM4SGcXMmtiLQ7U37i+hGS8urIuqe7I/ou3IS1jVc4nbN4g==
 
-dayjs@1.10.7, dayjs@^1.10.4, dayjs@^1.10.7:
+dayjs@1.10.7, dayjs@^1.10.4:
   version "1.10.7"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
   integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
@@ -10791,11 +10775,6 @@ esrecurse@^4.3.0:
   integrity sha512-KmfKL3b6G+RXvP8N1vr3Tq1kL/oCFgn2NYXEtqP8/L3pKapUA4G8cFVaoF3SU323CD4XypR/ffioHmkti6/Tag==
   dependencies:
     estraverse "^5.2.0"
-
-esrever@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/esrever/-/esrever-0.2.0.tgz#96e9d28f4f1b1a76784cd5d490eaae010e7407b8"
-  integrity sha1-lunSj08bGnZ4TNXUkOquAQ50B7g=
 
 estraverse@^1.5.0:
   version "1.9.3"
@@ -12824,11 +12803,6 @@ immer@9.0.12, immer@^9.0.6:
   resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.12.tgz#2d33ddf3ee1d247deab9d707ca472c8c942a0f20"
   integrity sha512-lk7UNmSbAukB5B6dh9fnh5D0bJTOFKxVg2cyJWTYrWRfhLrLMBquONcUs3aFq507hNoIZEDDh8lb8UtOizSMhA==
 
-immer@^8.0.1:
-  version "8.0.4"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-8.0.4.tgz#3a21605a4e2dded852fb2afd208ad50969737b7a"
-  integrity sha512-jMfL18P+/6P6epANRvRk6q8t+3gGhqsJ9EuJ25AXE+9bNTYtssvzeYbEd0mXRYWCmmXSIbnlpz6vd6iJlmGGGQ==
-
 immutability-helper@2.9.1:
   version "2.9.1"
   resolved "https://registry.yarnpkg.com/immutability-helper/-/immutability-helper-2.9.1.tgz#71c423ba387e67b6c6ceba0650572f2a2a6727df"
@@ -13543,11 +13517,6 @@ is-plain-object@^2.0.3, is-plain-object@^2.0.4:
   integrity sha512-h5PpgXkWitc38BBMYawTYMWJHFZJVnBquFE57xFpjB8pJFiF6gZ+bU+WyI/yqXiFR5mdLsgYNaPe8uao6Uv9Og==
   dependencies:
     isobject "^3.0.1"
-
-is-plain-object@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-3.0.1.tgz#662d92d24c0aa4302407b0d45d21f2251c85f85b"
-  integrity sha512-Xnpx182SBMrr/aBik8y+GuR4U1L9FqMSojwDQwPMmxyC6bvEqly9UBCxhauBF5vNh2gwWJNX6oDV7O+OM4z34g==
 
 is-plain-object@^5.0.0:
   version "5.0.0"
@@ -20337,18 +20306,6 @@ slate-react@0.73.0:
     lodash "^4.17.4"
     scroll-into-view-if-needed "^2.2.20"
     tiny-invariant "1.0.6"
-
-slate@0.63.0:
-  version "0.63.0"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.63.0.tgz#63a50c45a8971d350a3ebeef25e10cd9fa5c7726"
-  integrity sha512-np24XIRsGbwVgKQR6DWLorTRQD7arUKiztCKsepBNiYtMxHqjR76i2nJA6pdGn6Vj9q88Afi9eYwCsfnzy2hBA==
-  dependencies:
-    "@types/esrever" "^0.2.0"
-    esrever "^0.2.0"
-    fast-deep-equal "^3.1.3"
-    immer "^8.0.1"
-    is-plain-object "^3.0.0"
-    tiny-warning "^1.0.3"
 
 slate@0.72.3:
   version "0.72.3"

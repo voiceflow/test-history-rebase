@@ -51,8 +51,8 @@ export interface PatchPublishingPayload extends BaseVersionPayload {
 }
 
 export interface ReorderTopicsPayload extends BaseVersionPayload {
-  to: number;
-  from: number;
+  toIndex: number;
+  fromID: string;
 }
 
 export interface ReorderComponentsPayload extends BaseVersionPayload {

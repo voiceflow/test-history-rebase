@@ -1,5 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { useCache } from '@voiceflow/ui';
 import React from 'react';
 
 import { ROOT_DIAGRAM_LABEL, ROOT_DIAGRAM_NAME } from '@/constants';
@@ -15,6 +16,8 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/intent';
+
+import { OpenedIDsToggleApi, useOpenedIDsToggle } from '../../hooks';
 
 export interface TopicIntentItem {
   id: string;
@@ -36,6 +39,8 @@ interface TopicsAPI {
   setSearchValue: (value: string) => void;
   activeDiagramID: Nullable<string>;
   onReorderTopics: (from: number, to: number) => void;
+  onDragStart: (item: TopicItem) => void;
+  onDragEnd: (item: TopicItem) => void;
   searchMatchValue: string;
   searchTopicsItems: TopicItem[];
   searchOpenedTopics: Record<string, true>;
@@ -43,7 +48,7 @@ interface TopicsAPI {
   onClearLastCreatedDiagramID: VoidFunction;
 }
 
-export const useTopics = (): TopicsAPI => {
+export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' | 'onDragEnd'> => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const intentSteps = useSelector(DiagramV2.intentStepsSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
@@ -51,6 +56,7 @@ export const useTopics = (): TopicsAPI => {
   const topicDiagrams = useSelector(DiagramV2.active.topicDiagramsSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const { target: focusedNodeID, isActive: isFocusedNodeActive } = useSelector(Creator.creatorFocusSelector);
+  const { onDragEnd: dragEnd, onDragStart: dragStart, openedIDs, onToggleOpenedID } = useOpenedIDsToggle('topics');
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
   const reorderTopics = useDispatch(Version.reorderTopics);
@@ -100,6 +106,38 @@ export const useTopics = (): TopicsAPI => {
     [platform, getIntentByID, rootDiagramID, topicDiagrams, intentSteps]
   );
 
+  const cache = useCache({
+    topicsItems,
+    dragStart,
+    dragEnd,
+    reorderTopics,
+  });
+
+  const fromIDRef = React.useRef<Nullable<string>>(null);
+  const toIndexRef = React.useRef<Nullable<number>>(null);
+
+  const onDragStart = React.useCallback((item: TopicItem) => {
+    fromIDRef.current = item.id;
+    cache.current.dragStart();
+  }, []);
+
+  const onDragEnd = React.useCallback(() => {
+    if (fromIDRef.current !== null && toIndexRef.current !== null) {
+      cache.current.reorderTopics({ fromID: fromIDRef.current, toIndex: toIndexRef.current });
+    }
+
+    fromIDRef.current = null;
+    toIndexRef.current = null;
+    cache.current.dragEnd();
+  }, []);
+
+  const onReorderTopics = React.useCallback((_from: number, to: number) => {
+    toIndexRef.current = to;
+    if (!fromIDRef.current) return;
+
+    cache.current.reorderTopics({ fromID: fromIDRef.current, toIndex: to, skipPersist: true });
+  }, []);
+
   const lowerCasedSearchValue = searchValue.trim().toLowerCase();
 
   const [searchTopicsItems, searchOpenedTopics] = React.useMemo(() => {
@@ -132,11 +170,15 @@ export const useTopics = (): TopicsAPI => {
     focusedNodeID: isFocusedNodeActive ? focusedNodeID : null,
     setSearchValue,
     activeDiagramID,
-    onReorderTopics: reorderTopics,
+    onReorderTopics,
+    onDragStart,
+    onDragEnd,
     searchMatchValue: lowerCasedSearchValue,
     searchTopicsItems,
     searchOpenedTopics,
     lastCreatedDiagramID,
     onClearLastCreatedDiagramID,
+    openedIDs,
+    onToggleOpenedID,
   };
 };

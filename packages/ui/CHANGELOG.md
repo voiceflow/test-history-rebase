@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.71.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.71.3...@voiceflow/ui@1.71.4) (2022-04-13)
+
+
+### Bug Fixes
+
+* fix topics reordering (VF-3269) ([#5316](https://github.com/voiceflow/creator-app/issues/5316)) ([b026ab2](https://github.com/voiceflow/creator-app/commit/b026ab23f560e106d1887e244323d8c173e6382d))
+
+
+
+
+
 ## [1.71.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.71.2...@voiceflow/ui@1.71.3) (2022-04-12)
 
 

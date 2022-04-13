@@ -1,12 +1,12 @@
 {
   "name": "@voiceflow/ml-gateway",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "dependencies": {
     "@logux/server": "0.10.8",
     "@voiceflow/backend-utils": "4.4.0",
     "@voiceflow/logger": "1.6.1",
-    "@voiceflow/ml-sdk": "^1.7.2",
-    "@voiceflow/socket-utils": "^1.10.2",
+    "@voiceflow/ml-sdk": "^1.7.3",
+    "@voiceflow/socket-utils": "^1.10.3",
     "axios": "0.24.0",
     "core-js": "3.20.3",
     "dotenv": "14.3.2",

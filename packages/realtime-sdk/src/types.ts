@@ -4,6 +4,7 @@ import { ActionCreator } from 'typescript-fsa';
 
 export enum ErrorCode {
   CANNOT_CONVERT_TO_TOPIC,
+  ALREADY_MEMBER_OF_WORKSPACE,
 }
 
 export type RealtimeError = Utils.protocol.AsyncError<ErrorCode>;

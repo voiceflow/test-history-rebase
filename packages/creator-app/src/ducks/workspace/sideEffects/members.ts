@@ -15,7 +15,7 @@ import { Thunk } from '@/store/types';
 import { extractErrorFromResponseData, extractErrorMessages } from '../utils';
 
 export const acceptInvite =
-  (invite: string): Thunk<string | null> =>
+  (invite: string, redirect?: () => void): Thunk<string | null> =>
   async (dispatch) => {
     try {
       const workspaceID = await dispatch(waitAsync(Realtime.workspace.member.acceptInvite, { invite }));
@@ -24,6 +24,12 @@ export const acceptInvite =
 
       return workspaceID;
     } catch (err) {
+      if (err?.code === Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE) {
+        toast.success('You are already a member of this workspace.');
+        redirect?.();
+        return null;
+      }
+
       dispatch(Modal.setError(extractErrorFromResponseData(err, 'Invite Invalid')));
       return null;
     }

@@ -21,8 +21,10 @@ export const extractErrorMessages = (err?: {
   return errorMessage || WORKSPACE_FALLBACK_ERROR_MESSAGE;
 };
 
-export const extractErrorFromResponseData = (err: Partial<Record<'response' | 'body', { data?: string }>> | undefined, defaultMessage: string) =>
-  err?.response?.data || err?.body?.data || (err && JSON.stringify(err)) || defaultMessage;
+export const extractErrorFromResponseData = (
+  err: Partial<Record<'response' | 'body' | 'message', { data?: string }>> | undefined,
+  defaultMessage: string
+) => err?.response?.data || err?.body?.data || err?.message || (err && JSON.stringify(err)) || defaultMessage;
 
 export interface ActiveWorkspaceContext {
   workspaceID: string | null;

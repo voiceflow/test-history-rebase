@@ -23,7 +23,7 @@ const CheckInvitationGate: React.FC<CheckInvitationGateProps> = ({ acceptInvite,
 
     if (!query.invite) return;
 
-    const newWorkspaceID = await acceptInvite(query.invite);
+    const newWorkspaceID = await acceptInvite(query.invite, redirectToDashboard);
     const inviteSource = query.email ? 'email' : 'link';
 
     if (!newWorkspaceID) return;

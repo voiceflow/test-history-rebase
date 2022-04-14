@@ -16,19 +16,6 @@ context('Prototype', () => {
       cy.setup();
     });
 
-    it('prototype modes (display, developer, canvas)', () => {
-      cy.createProject('general', 'prototype:speak_and_choice');
-      canvasPage.goToCanvas();
-      canvasPage.el.testButton.click();
-      prototypePage.el.prototypeMenuCanvasButton.should('be.visible');
-      prototypePage.el.prototypeMenuDisplayButton.click();
-      prototypePage.el.displayCanvasContainer.should('be.visible');
-      prototypePage.el.prototypeDeveloperDisplayButton.click();
-      prototypePage.el.protoVariablesMenuContainer.should('be.visible');
-      prototypePage.el.prototypeMenuSettingsButton.click();
-      prototypePage.el.protoSettingsMenuContainer.should('be.visible');
-    });
-
     // Flakey, need to fix
     it.skip('switching between visuals', () => {
       createSimpleDisplay();

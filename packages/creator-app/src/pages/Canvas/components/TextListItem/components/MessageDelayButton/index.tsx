@@ -40,7 +40,7 @@ const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ data, onUpdate 
             autoFocus // eslint-disable-line jsx-a11y/no-autofocus
             type="number"
             min={0}
-            placeholder="1500"
+            placeholder="1000"
             onChangeText={setMessageDelay}
             onEnterPress={preventDefault(withInputBlur())}
           />

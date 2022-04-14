@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.690.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.690.1...@voiceflow/creator-app@1.690.2) (2022-04-14)
+
+
+### Bug Fixes
+
+* update delay placeholder (VF-000) ([#5304](https://github.com/voiceflow/creator-app/issues/5304)) ([2acf163](https://github.com/voiceflow/creator-app/commit/2acf163cd9fa5f51e19121d03d74b52f6232ef73))
+
+
+
+
+
 ## [1.690.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.690.0...@voiceflow/creator-app@1.690.1) (2022-04-14)
 
 

@@ -10,6 +10,7 @@ import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
+import * as VariableState from '@/ducks/variableState';
 import * as VersionV2 from '@/ducks/versionV2';
 import { SyncThunk, Thunk } from '@/store/types';
 import * as Query from '@/utils/query';
@@ -105,13 +106,15 @@ export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
   await dispatch(goToCanvasSwitchRealtime(versionID, rootDiagramID));
 };
 
-export const redirectToRootDiagram = (): Thunk => async (dispatch, getState) => {
-  const version = VersionV2.active.versionSelector(getState());
+export const redirectToDiagram =
+  (diagramID: string): Thunk =>
+  async (dispatch, getState) => {
+    const version = VersionV2.active.versionSelector(getState());
 
-  if (!version) throw Errors.noActiveVersionID();
+    if (!version) throw Errors.noActiveVersionID();
 
-  await dispatch(redirectToCanvasSwitchRealtime(version.id, version.rootDiagramID));
-};
+    await dispatch(redirectToCanvasSwitchRealtime(version.id, diagramID));
+  };
 
 export const goToDiagram =
   (diagramID: string, nodeID?: string): Thunk =>
@@ -172,13 +175,17 @@ export const goToCurrentPrototype =
     const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
     const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
     const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
+    const isVariableStatesEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.VARIABLE_STATES);
+    const variableStatesStartFromDiagramID = VariableState.selectedStartFromDiagramIDSelector(state);
 
     Errors.assertVersionID(versionID);
 
     const isTopic = topics.find((item) => item.sourceID === diagramID);
 
-    if (!nodeID && isTopic && rootDiagramID !== diagramID && isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion) {
-      await dispatch(redirectToRootDiagram());
+    if (isVariableStatesEnabled && variableStatesStartFromDiagramID) {
+      await dispatch(redirectToDiagram(variableStatesStartFromDiagramID));
+    } else if (!nodeID && isTopic && rootDiagramID && rootDiagramID !== diagramID && isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion) {
+      await dispatch(redirectToDiagram(rootDiagramID));
     }
 
     dispatch(goToPrototype(versionID, nodeID));

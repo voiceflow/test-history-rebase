@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.689.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.689.0...@voiceflow/creator-app@1.689.1) (2022-04-14)
+
+
+### Bug Fixes
+
+* slot edit modal fix (VF-000) ([#5323](https://github.com/voiceflow/creator-app/issues/5323)) ([be3bdb6](https://github.com/voiceflow/creator-app/commit/be3bdb609985e1e78570c0cb8c8d83fffe346876))
+
+
+
+
+
 # [1.689.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.688.1...@voiceflow/creator-app@1.689.0) (2022-04-13)
 
 

@@ -1,5 +1,5 @@
 import { BlockType } from '@realtime-sdk/constants';
-import { LinkData, Port } from '@realtime-sdk/models';
+import { DBPortWithLinkData, Port } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
@@ -21,7 +21,7 @@ export const generateInPort = (nodeID: string, { platform = null, virtual = fals
   nodeID,
 });
 
-export const generateOutPort = (nodeID: string, port: BaseModels.BasePort<LinkData>, settings?: Partial<Port>): Port => ({
+export const generateOutPort = (nodeID: string, port: DBPortWithLinkData, settings?: Partial<Port>): Port => ({
   ...generateInPort(nodeID, settings),
   id: (_isString(port.id) && port.id) || Utils.id.objectID(),
   linkData: port.data,

@@ -6,7 +6,13 @@ export type NonDeprecatedPlatform =
   | VoiceflowConstants.PlatformType.ALEXA
   | VoiceflowConstants.PlatformType.GOOGLE
   | VoiceflowConstants.PlatformType.VOICEFLOW
-  | VoiceflowConstants.PlatformType.DIALOGFLOW_ES;
+  | VoiceflowConstants.PlatformType.DIALOGFLOW_ES
+  | VoiceflowConstants.PlatformType.RASA
+  | VoiceflowConstants.PlatformType.WATSON
+  | VoiceflowConstants.PlatformType.EINSTEIN
+  | VoiceflowConstants.PlatformType.LUIS
+  | VoiceflowConstants.PlatformType.LEX
+  | VoiceflowConstants.PlatformType.NUANCE_MIX;
 
 export type PlatformProjectType = `${NonDeprecatedPlatform}:${VoiceflowConstants.ProjectType}`;
 

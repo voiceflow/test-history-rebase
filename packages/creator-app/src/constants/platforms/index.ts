@@ -75,6 +75,7 @@ export const getPlatformName = Utils.platform.createPlatformSelector(
     [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
     [VoiceflowConstants.PlatformType.GOOGLE]: 'Google',
     [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
+    [VoiceflowConstants.PlatformType.RASA]: 'Rasa',
   },
   ''
 );

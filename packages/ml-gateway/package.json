@@ -3,7 +3,7 @@
   "version": "1.8.2",
   "dependencies": {
     "@logux/server": "0.10.8",
-    "@voiceflow/backend-utils": "4.4.0",
+    "@voiceflow/backend-utils": "4.5.2",
     "@voiceflow/logger": "1.6.1",
     "@voiceflow/ml-sdk": "^1.7.3",
     "@voiceflow/socket-utils": "^1.10.3",

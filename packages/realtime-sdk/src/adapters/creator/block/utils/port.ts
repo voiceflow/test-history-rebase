@@ -1,7 +1,7 @@
+import { BuiltInPortRecord, DBPortWithLinkData, Link, Node, Port } from '@realtime-sdk/models';
 import { BaseModels, Nullable } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
-import { BuiltInPortRecord, Link, LinkData, Node, Port } from '../../../../models';
 import { PathPoint, PathPoints } from '../../../../types';
 import { generateOutPort } from '../../utils';
 
@@ -33,8 +33,8 @@ interface OutPortsFromDBOptions {
 }
 
 export interface OutPortsAdapter<T extends BuiltInPortRecord = BuiltInPortRecord, D = unknown> {
-  toDB: (portsInfo: PortsInfoToDB<{ [key in keyof T]: PortData }>, options: OutPortsToDBOptions<D>) => BaseModels.BasePort<LinkData>[];
-  fromDB: (ports: BaseModels.BasePort<LinkData>[], options: OutPortsFromDBOptions) => PortsInfoFromDB<T>;
+  toDB: (portsInfo: PortsInfoToDB<{ [key in keyof T]: PortData }>, options: OutPortsToDBOptions<D>) => DBPortWithLinkData[];
+  fromDB: (ports: DBPortWithLinkData[], options: OutPortsFromDBOptions) => PortsInfoFromDB<T>;
 }
 
 export const createOutPortsAdapter = <T extends BuiltInPortRecord = BuiltInPortRecord, D = unknown>(
@@ -45,29 +45,29 @@ export const createOutPortsAdapter = <T extends BuiltInPortRecord = BuiltInPortR
   fromDB,
 });
 
-export const dbBuiltInPortFactory = (type: BaseModels.PortType, target: string | null = null): BaseModels.BasePort<LinkData> => ({
+export const dbBuiltInPortFactory = (type: BaseModels.PortType, target: string | null = null): DBPortWithLinkData => ({
   id: Utils.id.objectID(),
   data: {},
   type,
   target,
 });
 
-export const outPortDataToDB = ({ port, link, target }: PortData): BaseModels.BasePort<LinkData> => ({
+export const outPortDataToDB = ({ port, link, target }: PortData): DBPortWithLinkData => ({
   type: port.label || '',
   target,
   id: port.id,
   data: link?.data,
 });
 
-export const outPortDataFromDB = (port: BaseModels.BasePort<LinkData>, { node }: OutPortsFromDBOptions): PortData => ({
+export const outPortDataFromDB = (port: DBPortWithLinkData, { node }: OutPortsFromDBOptions): PortData => ({
   port: generateOutPort(node.nodeID, port, { label: port.type }),
   target: port.target,
 });
 
-export const outPortsDataFromDB = (ports: BaseModels.BasePort<LinkData>[], options: OutPortsFromDBOptions): PortData[] =>
+export const outPortsDataFromDB = (ports: DBPortWithLinkData[], options: OutPortsFromDBOptions): PortData[] =>
   ports.map((port) => outPortDataFromDB(port, options));
 
-export const outPortsDataToDB = (ports: PortData[]): BaseModels.BasePort<LinkData>[] => ports.map(outPortDataToDB);
+export const outPortsDataToDB = (ports: PortData[]): DBPortWithLinkData[] => ports.map(outPortDataToDB);
 
 export const getPortByLabel = (ports: PortData[], label: string): PortData | null => ports.find(({ port }) => port.label === label) ?? null;
 
@@ -85,7 +85,7 @@ const removePointsFalsyValues = (points?: PathPoints | null): PathPoints | undef
       )
     : undefined;
 
-export const removePortDataFalsyValues = (port: BaseModels.BasePort<LinkData>): BaseModels.BasePort<LinkData> => ({
+export const removePortDataFalsyValues = (port: DBPortWithLinkData): DBPortWithLinkData => ({
   ...port,
   data: port.data
     ? {
@@ -98,10 +98,10 @@ export const removePortDataFalsyValues = (port: BaseModels.BasePort<LinkData>): 
     : undefined,
 });
 
-export const findDBPortByType = (ports: BaseModels.BasePort<LinkData>[], type: BaseModels.PortType): Nullable<BaseModels.BasePort<LinkData>> =>
+export const findDBPortByType = (ports: DBPortWithLinkData[], type: BaseModels.PortType): Nullable<DBPortWithLinkData> =>
   ports.find(({ type: portType }) => portType === type) ?? null;
 
-export const migrateDBPortType = (dbPort: BaseModels.BasePort<LinkData> | null, newPortType: BaseModels.PortType): BaseModels.BasePort<LinkData> => {
+export const migrateDBPortType = (dbPort: DBPortWithLinkData | null, newPortType: BaseModels.PortType): DBPortWithLinkData => {
   if (!dbPort) {
     return dbBuiltInPortFactory(newPortType);
   }
@@ -113,21 +113,17 @@ export const migrateDBPortType = (dbPort: BaseModels.BasePort<LinkData> | null, 
   return dbPort;
 };
 
-export const findDBNoMatchPort = (ports: BaseModels.BasePort<LinkData>[]): BaseModels.BasePort<LinkData> =>
+export const findDBNoMatchPort = (ports: DBPortWithLinkData[]): DBPortWithLinkData =>
   findDBPortByType(ports, BaseModels.PortType.NO_MATCH) ?? migrateDBPortType(ports[0], BaseModels.PortType.NO_MATCH); // no match should be first
 
-export const findDBNextPort = (ports: BaseModels.BasePort<LinkData>[]): BaseModels.BasePort<LinkData> =>
+export const findDBNextPort = (ports: DBPortWithLinkData[]): DBPortWithLinkData =>
   findDBPortByType(ports, BaseModels.PortType.NEXT) ?? migrateDBPortType(ports[0], BaseModels.PortType.NEXT); // next should be first
 
-export const withoutDBPort = (
-  ports: BaseModels.BasePort<LinkData>[],
-  withoutPort: Nullable<BaseModels.BasePort<LinkData>>
-): BaseModels.BasePort<LinkData>[] => (withoutPort === null ? ports : Utils.array.withoutValue(ports, withoutPort));
+export const withoutDBPort = (ports: DBPortWithLinkData[], withoutPort: Nullable<DBPortWithLinkData>): DBPortWithLinkData[] =>
+  withoutPort === null ? ports : Utils.array.withoutValue(ports, withoutPort);
 
-export const withoutDBPorts = (
-  ports: BaseModels.BasePort<LinkData>[],
-  withoutPorts: Nullable<BaseModels.BasePort<LinkData>>[]
-): BaseModels.BasePort<LinkData>[] => Utils.array.withoutValues(ports, withoutPorts.filter(Boolean) as BaseModels.BasePort<LinkData>[]);
+export const withoutDBPorts = (ports: DBPortWithLinkData[], withoutPorts: Nullable<DBPortWithLinkData>[]): DBPortWithLinkData[] =>
+  Utils.array.withoutValues(ports, withoutPorts.filter(Boolean) as DBPortWithLinkData[]);
 
 export const nextOnlyOutPortsAdapter = createOutPortsAdapter<{ [BaseModels.PortType.NEXT]: string }>(
   (dbPorts, options) => {

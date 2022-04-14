@@ -103,7 +103,7 @@ const nodeAdapter = createAdapter<
 
       const outPortAdapter = getOutPortsAdapter(platform)?.[node.type] || (defaultOutPortsAdapter as OutPortsAdapter);
 
-      const { ports, dynamic, builtIn } = outPortAdapter.fromDB(dbNode.data.ports, { node: dbNode });
+      const { ports, dynamic, builtIn } = outPortAdapter.fromDB(dbNode.data.ports!, { node: dbNode });
 
       node.ports.out.dynamic = dynamic;
       node.ports.out.builtIn = builtIn;

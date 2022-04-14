@@ -76,6 +76,7 @@ export const getPlatformOrProjectTypeMeta: Partial<
     disabled: false,
     type: VoiceflowConstants.PlatformType.ALEXA,
     icon: 'amazonAlexa',
+    iconColor: '#5fcaf4',
   },
   [VoiceflowConstants.PlatformType.GOOGLE]: {
     name: 'Google Assistant',
@@ -104,6 +105,8 @@ export const getPlatformOrProjectTypeMeta: Partial<
     localesText: 'Language',
     disabled: false,
     type: VoiceflowConstants.PlatformType.VOICEFLOW,
+    icon: 'voiceflowV',
+    iconColor: '#132144',
   },
   [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
     name: 'Dialogflow ES',
@@ -120,6 +123,41 @@ export const getPlatformOrProjectTypeMeta: Partial<
       getOptionLabel: (value) => (value && FORMATTED_DIALOGFLOW_LOCALES_LABELS[value]) || '',
       renderOptionLabel: (option) => option.name,
     },
+  },
+  [VoiceflowConstants.PlatformType.LUIS]: {
+    name: 'Microsoft Luis',
+    tooltip: getSelectTooltip('Microsoft Luis', 'Import and export NLU models for Microsoft Luis.'),
+    localesText: 'Language',
+    disabled: false,
+    type: VoiceflowConstants.PlatformType.LUIS,
+  },
+  [VoiceflowConstants.PlatformType.RASA]: {
+    name: 'Rasa',
+    tooltip: getSelectTooltip('Rasa', 'Import and export/upload NLU models for Rasa agents.'),
+    localesText: 'Language',
+    disabled: false,
+    type: VoiceflowConstants.PlatformType.RASA,
+  },
+  [VoiceflowConstants.PlatformType.EINSTEIN]: {
+    name: 'Salesforce Einstein',
+    tooltip: getSelectTooltip('Salesforce Einstein', 'Import and export/upload NLU models for Einstein.'),
+    localesText: 'Language',
+    type: VoiceflowConstants.PlatformType.EINSTEIN,
+    disabled: false,
+  },
+  [VoiceflowConstants.PlatformType.WATSON]: {
+    name: 'IBM Watson',
+    tooltip: getSelectTooltip('IBM Watson', 'Import and export/upload NLU models for IBM Watson.'),
+    localesText: 'Language',
+    disabled: false,
+    type: VoiceflowConstants.PlatformType.WATSON,
+  },
+  [VoiceflowConstants.PlatformType.NUANCE_MIX]: {
+    name: 'Nuance Mix',
+    tooltip: getSelectTooltip('Nuance Mix', 'Import and export/upload NLU models for Nuance Mix.'),
+    localesText: 'Language',
+    disabled: false,
+    type: VoiceflowConstants.PlatformType.NUANCE_MIX,
   },
   /* UPCOMING */
   [PlatformTypeUpcoming.WHATSAPP]: {
@@ -142,42 +180,11 @@ export const getPlatformOrProjectTypeMeta: Partial<
     type: PlatformTypeUpcoming.TWILIO_SMS,
     disabled: true,
   },
-  [PlatformTypeUpcoming.IBM_WATSON]: {
-    name: 'IBM Watson',
-    disabled: true,
-    type: PlatformTypeUpcoming.IBM_WATSON,
-  },
-  [PlatformTypeUpcoming.MICROSOFT_LUIS]: {
-    name: 'Microsoft Luis',
-    disabled: true,
-    type: PlatformTypeUpcoming.MICROSOFT_LUIS,
-  },
-  [PlatformTypeUpcoming.RASA]: {
-    name: 'Rasa',
-    disabled: true,
-    type: PlatformTypeUpcoming.RASA,
-  },
-  [PlatformTypeUpcoming.SALESFORCE_EINSTEIN]: {
-    name: 'Salesforce Einstein',
-    type: PlatformTypeUpcoming.SALESFORCE_EINSTEIN,
-    disabled: true,
-  },
   [PlatformTypeUpcoming.DIALOGFLOW_CX]: {
     name: 'Dialogflow CX',
     type: PlatformTypeUpcoming.DIALOGFLOW_CX,
     disabled: true,
   },
-  [PlatformTypeUpcoming.NUANCE_MIX]: {
-    name: 'Nuance Mix',
-    type: PlatformTypeUpcoming.NUANCE_MIX,
-    disabled: true,
-  },
-};
-
-export const getPlatformTag: Partial<Record<VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType, string>> = {
-  [VoiceflowConstants.ProjectType.CHAT]: VoiceflowConstants.ProjectType.CHAT,
-  [VoiceflowConstants.ProjectType.VOICE]: VoiceflowConstants.ProjectType.VOICE,
-  [VoiceflowConstants.PlatformType.GOOGLE]: 'default',
 };
 
 export const CHANNEL_SECTIONS: Section[] = [
@@ -209,17 +216,15 @@ export const NLU_SECTIONS: Section[] = [
     options: [
       getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.VOICEFLOW],
       getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.DIALOGFLOW_ES],
+      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.WATSON],
+      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.LUIS],
+      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.RASA],
+      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.EINSTEIN],
+      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.NUANCE_MIX],
     ],
   },
   {
     label: 'Coming Soon',
-    options: [
-      getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.IBM_WATSON],
-      getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.MICROSOFT_LUIS],
-      getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.RASA],
-      getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.SALESFORCE_EINSTEIN],
-      getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.DIALOGFLOW_CX],
-      getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.NUANCE_MIX],
-    ],
+    options: [getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.DIALOGFLOW_CX]],
   },
 ];

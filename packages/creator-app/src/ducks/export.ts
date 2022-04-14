@@ -107,48 +107,56 @@ export const exportModel =
 
       await dispatch(Prototype.compilePrototype());
 
-      // TODO: This should be a switch statement
-
-      if (nlpProvider === NLPProvider.ALEXA) {
-        data = await client.platform.alexa.modelExport.exportBlob(versionID, 'ask', intents);
-        downloadFromURL(`${projectName}-alexa-model.json`, data);
-        URL.revokeObjectURL(data);
-      } else if (nlpProvider === NLPProvider.DIALOGFLOW_ES) {
-        data = await client.platform.google.modelExport.exportBlob(versionID, 'dialogflow/es', intents);
-        downloadFromURL(`${projectName}-dialogflow-es-model.zip`, data);
-        URL.revokeObjectURL(data);
-      } else if (nlpProvider === NLPProvider.RASA) {
-        data = await client.platform.general.modelExport.exportBlob(versionID, 'rasa', intents);
-        downloadFromURL(`${projectName}-rasa-model.zip`, data);
-        URL.revokeObjectURL(data);
-      } else if (nlpProvider === NLPProvider.LUIS) {
-        data = await client.platform.general.modelExport.exportBlob(versionID, 'luis', intents);
-        downloadFromURL(`${projectName}-general-model.json`, data);
-        URL.revokeObjectURL(data);
-      } else if (nlpProvider === NLPProvider.WATSON) {
-        // TODO: This is missing a file extension
-        data = await client.platform.general.modelExport.exportBlob(versionID, 'watson', intents);
-        downloadFromURL(`${projectName}-watson-model`, data);
-        URL.revokeObjectURL(data);
-      } else if (nlpProvider === NLPProvider.EINSTEIN) {
-        // TODO: This is missing a file extension
-        data = await client.platform.general.modelExport.exportBlob(versionID, 'einstein', intents);
-        downloadFromURL(`${projectName}-einstein-model`, data);
-        URL.revokeObjectURL(data);
-      } else if (nlpProvider === NLPProvider.LEX_V1) {
-        // TODO: This is missing a file extension
-        data = await client.platform.general.modelExport.exportBlob(versionID, 'lexV1', intents);
-        downloadFromURL(`${projectName}-lex-model`, data);
-        URL.revokeObjectURL(data);
-      } else if (nlpProvider === NLPProvider.VF_CSV) {
-        data = await client.platform.general.modelExport.exportBlob(versionID, 'csv', intents);
-        downloadFromURL(`${projectName}.vf.csv`, data);
-      } else if (nlpProvider === NLPProvider.NUANCE_MIX) {
-        data = await client.platform.general.modelExport.exportBlob(versionID, 'nuanceMix', intents);
-        downloadFromURL(`${projectName}-nuance-mix-model.trsx.xml`, data);
-        URL.revokeObjectURL(data);
-      } else {
-        throw new Error(`no provider matched: ${nlpProvider}`);
+      switch (nlpProvider) {
+        case NLPProvider.ALEXA:
+          data = await client.platform.alexa.modelExport.exportBlob(versionID, 'ask', intents);
+          downloadFromURL(`${projectName}-alexa-model.json`, data);
+          URL.revokeObjectURL(data);
+          break;
+        case NLPProvider.DIALOGFLOW_ES:
+          data = await client.platform.google.modelExport.exportBlob(versionID, 'dialogflow/es', intents);
+          downloadFromURL(`${projectName}-dialogflow-es-model.zip`, data);
+          URL.revokeObjectURL(data);
+          break;
+        case NLPProvider.RASA:
+          data = await client.platform.general.modelExport.exportBlob(versionID, 'rasa', intents);
+          downloadFromURL(`${projectName}-rasa-model.zip`, data);
+          URL.revokeObjectURL(data);
+          break;
+        case NLPProvider.LUIS:
+          data = await client.platform.general.modelExport.exportBlob(versionID, 'luis', intents);
+          downloadFromURL(`${projectName}-general-model.json`, data);
+          URL.revokeObjectURL(data);
+          break;
+        case NLPProvider.WATSON:
+          // TODO: This is missing a file extension
+          data = await client.platform.general.modelExport.exportBlob(versionID, 'watson', intents);
+          downloadFromURL(`${projectName}-watson-model`, data);
+          URL.revokeObjectURL(data);
+          break;
+        case NLPProvider.EINSTEIN:
+          // TODO: This is missing a file extension
+          data = await client.platform.general.modelExport.exportBlob(versionID, 'einstein', intents);
+          downloadFromURL(`${projectName}-einstein-model`, data);
+          URL.revokeObjectURL(data);
+          break;
+        case NLPProvider.LEX_V1:
+          // TODO: This is missing a file extension
+          data = await client.platform.general.modelExport.exportBlob(versionID, 'lexV1', intents);
+          downloadFromURL(`${projectName}-lex-model`, data);
+          URL.revokeObjectURL(data);
+          break;
+        case NLPProvider.VF_CSV:
+          data = await client.platform.general.modelExport.exportBlob(versionID, 'csv', intents);
+          downloadFromURL(`${projectName}.vf.csv`, data);
+          break;
+        case NLPProvider.NUANCE_MIX:
+          data = await client.platform.general.modelExport.exportBlob(versionID, 'nuanceMix', intents);
+          downloadFromURL(`${projectName}-nuance-mix-model.trsx.xml`, data);
+          URL.revokeObjectURL(data);
+          break;
+        default:
+          throw new Error(`no provider matched: ${nlpProvider}`);
       }
 
       dispatch(Tracking.trackActiveProjectExportInteractionModel({ nlpProvider }));

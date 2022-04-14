@@ -260,6 +260,8 @@ export const getSections = Realtime.Utils.platform.createPlatformAndProjectTypeS
     [`${VoiceflowConstants.PlatformType.VOICEFLOW}:${VoiceflowConstants.ProjectType.CHAT}`]: CHATBOT_SECTIONS,
     [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.CHAT}`]: DIALOGFLOW_ES_CHAT_SECTIONS,
     [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.VOICE}`]: DIALOGFLOW_ES_VOICE_SECTIONS,
+    [VoiceflowConstants.ProjectType.CHAT]: CHATBOT_SECTIONS,
+    [VoiceflowConstants.ProjectType.VOICE]: GENERAL_SECTIONS,
   },
   GENERAL_SECTIONS
 );

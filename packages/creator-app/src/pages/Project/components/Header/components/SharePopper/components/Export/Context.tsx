@@ -1,18 +1,23 @@
 import { Nullable } from '@voiceflow/common';
 import { useContextApi } from '@voiceflow/ui';
+import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
-import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider } from '@/constants';
+import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider, NLPProviderLabels } from '@/constants';
 import * as Export from '@/ducks/export';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { PlatformContext } from '@/pages/Project/contexts';
+import { isVoiceflowPlatform } from '@/utils/typeGuards';
+
+import { getNplModelProvider } from './constants';
 
 interface ExportValue {
   onExport: () => void;
   exportType: ExportType;
   isExporting: boolean;
   setExportType: (exportType: ExportType) => void;
+  nplProviderOptions: NLPProvider[];
   modelExportIntents: string[];
   canvasExportFormat: CanvasExportFormat;
   modelExportProvider?: NLPProvider;
@@ -36,7 +41,14 @@ export const ExportProvider: React.FC = ({ children }) => {
   const [isExporting, setExporting] = React.useState(false);
   const [canvasExportFormat, setCanvasExportFormat] = React.useState(isTemplateWorkspace ? CanvasExportFormat.VF : CanvasExportFormat.PNG);
 
-  const [modelExportProvider, setModelExportProvider] = React.useState<NLPProvider | undefined>();
+  const nplProviderOptions = React.useMemo(() => {
+    // order alphabetically by label
+    return _sortBy(getNplModelProvider(platform), (provider) => NLPProviderLabels[provider]);
+  }, [platform]);
+
+  const [modelExportProvider, setModelExportProvider] = React.useState<NLPProvider | undefined>(
+    !isVoiceflowPlatform(platform) ? nplProviderOptions[0] : undefined
+  );
   const [modelExportIntents, setModelExportIntents] = React.useState<string[]>([]);
 
   const onExport = React.useCallback(async () => {
@@ -64,6 +76,7 @@ export const ExportProvider: React.FC = ({ children }) => {
     exportType,
     isExporting,
     setExportType,
+    nplProviderOptions,
     canvasExportFormat,
     modelExportIntents,
     modelExportProvider,

@@ -144,7 +144,7 @@ export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelector(
     [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
     [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DIALOGFLOW_BUILT_INS,
   },
-  GENERAL_BUILT_INS_MAP[VoiceflowConstants.Locale.EN_US]
+  GENERAL_BUILT_INS_MAP[VoiceflowConstants.Language.EN]
 );
 
 export const isBuiltInIntent = (intentID: string): boolean =>

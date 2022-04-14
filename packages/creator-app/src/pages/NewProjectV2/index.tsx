@@ -19,7 +19,6 @@ import {
   isDialogflowPlatform,
   isGooglePlatform,
   isPlatformWithInvocationName,
-  isVoiceflowPlatform,
   isVoiceProjectType,
 } from '@/utils/typeGuards';
 
@@ -206,7 +205,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
         await updateGoogleMeta(newVersionID, languageToUse as GoogleConstants.Language, invocationName);
       } else if (isDialogflowPlatform(platformType)) {
         await updateDialogFlowMeta(newVersionID, languageToUse as DFESConstants.Language);
-      } else if (isVoiceflowPlatform(platformType)) {
+      } else {
         await updateGeneralMeta(newVersionID, languageToUse as VoiceflowConstants.Locale);
       }
     } finally {

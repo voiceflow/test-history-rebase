@@ -38,7 +38,7 @@ export const cleanupDBNodes = (nodesMap: NodesMap): BaseModels.BaseDiagramNode[]
 
   // reset port's targetID if the target node is not exists
   nodesList.forEach((node) => {
-    if (isStep(node)) {
+    if (isStep(node) && node.data.ports) {
       // eslint-disable-next-line no-param-reassign
       node.data.ports = cleanupStepPorts(node.data.ports, validNodeIDsMap);
     }

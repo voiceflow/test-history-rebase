@@ -2,8 +2,6 @@ import { Select, SvgIcon } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { isAlexaPlatform } from '@/utils/typeGuards';
-
 import { CHANNEL_SECTIONS, getPlatformOrProjectTypeMeta } from '../../constants';
 
 interface ChannelSelectProps {
@@ -15,9 +13,8 @@ interface ChannelSelectProps {
 const ChannelSelect: React.FC<ChannelSelectProps> = ({ value, onSelect, error }) => {
   const getPrefixIcon = (value?: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType) =>
     value && getPlatformOrProjectTypeMeta[value]?.icon ? (
-      <SvgIcon color={isAlexaPlatform(value) ? '#5fcaf4' : ''} icon={getPlatformOrProjectTypeMeta[value]!.icon!} />
+      <SvgIcon color={getPlatformOrProjectTypeMeta[value]?.iconColor} icon={getPlatformOrProjectTypeMeta[value]!.icon!} />
     ) : undefined;
-
   return (
     <Select
       prefix={getPrefixIcon(value)}

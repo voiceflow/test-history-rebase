@@ -13,8 +13,9 @@ interface NLUSelectProps {
 // deploy
 
 const getPrefixIcon = (value?: VoiceflowConstants.PlatformType) =>
-  value && getPlatformOrProjectTypeMeta[value]?.icon ? <SvgIcon size={16} icon={getPlatformOrProjectTypeMeta[value]!.icon!} /> : undefined;
-
+  value && getPlatformOrProjectTypeMeta[value]?.icon ? (
+    <SvgIcon size={16} color={getPlatformOrProjectTypeMeta[value]?.iconColor} icon={getPlatformOrProjectTypeMeta[value]!.icon!} />
+  ) : undefined;
 const NLUSelect: React.FC<NLUSelectProps> = ({ value, onSelect, error }) => {
   return (
     <Select

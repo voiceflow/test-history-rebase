@@ -10,12 +10,7 @@ export enum PlatformTypeUpcoming {
   FB_MESSENGER = 'fb_messenger',
   TWILIO_IVR = 'twilio_ivr',
   TWILIO_SMS = 'twilio_SMS',
-  IBM_WATSON = 'ibm_watson',
-  MICROSOFT_LUIS = 'microsoft_luis',
-  RASA = 'rasa',
-  SALESFORCE_EINSTEIN = 'salesforce_einstein',
   DIALOGFLOW_CX = 'dialogflow_cx',
-  NUANCE_MIX = 'nuance_mix',
 }
 
 export interface PlatformAndProjectTypeMeta {
@@ -27,6 +22,7 @@ export interface PlatformAndProjectTypeMeta {
   type?: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType | PlatformTypeUpcoming;
   languageSelectProps?: LanguageSelectProps;
   icon?: Icon;
+  iconColor?: string;
 }
 
 export type AnyLanguage = GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale;

@@ -75,7 +75,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
               fullScreen={fullScreen}
             >
               {leftSidebar?.()}
-              <Box flex={10}>
+              <Box flex={10} maxWidth="100%">
                 {withHeader && (
                   <Header headerBorder={headerBorder}>
                     <BoxFlex height="100%">

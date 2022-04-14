@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.690.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.690.3...@voiceflow/creator-app@1.690.4) (2022-04-14)
+
+
+### Bug Fixes
+
+* do not let warning text grows bigger than modal (VF-2188) ([#5330](https://github.com/voiceflow/creator-app/issues/5330)) ([d26798a](https://github.com/voiceflow/creator-app/commit/d26798aa1f6775096f3ca82ee04576b54270f692))
+
+
+
+
+
 ## [1.690.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.690.2...@voiceflow/creator-app@1.690.3) (2022-04-14)
 
 

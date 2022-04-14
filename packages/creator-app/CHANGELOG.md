@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.690.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.690.0...@voiceflow/creator-app@1.690.1) (2022-04-14)
+
+
+### Bug Fixes
+
+* fixes redirect to prototype when variable state is selected (VF-3322) ([#5324](https://github.com/voiceflow/creator-app/issues/5324)) ([0faabcd](https://github.com/voiceflow/creator-app/commit/0faabcdec426d3284949d796218d826f8b3e6367))
+
+
+
+
+
 # [1.690.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.689.1...@voiceflow/creator-app@1.690.0) (2022-04-14)
 
 

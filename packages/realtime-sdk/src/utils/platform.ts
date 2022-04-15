@@ -68,20 +68,25 @@ export const getPlatformDefaultVoice = createPlatformSelector<AnyVoice>(
   VoiceflowConstants.Voice.DEFAULT
 );
 
-const PROJECT_TYPE_TITLE = {
+export const getProjectTypeTitle: Record<VoiceflowConstants.ProjectType, string> = {
   [VoiceflowConstants.ProjectType.CHAT]: 'Chat',
   [VoiceflowConstants.ProjectType.VOICE]: 'Voice',
 };
 
-export const getPlatformAppName = (projectType: VoiceflowConstants.ProjectType) =>
-  createPlatformSelector(
-    {
-      [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa Skill',
-      [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Action',
-      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: `Dialogflow ${PROJECT_TYPE_TITLE[projectType]}`,
-    },
-    `${PROJECT_TYPE_TITLE[projectType]} Assistant`
-  );
+export const getPlatformAppName = createPlatformSelector(
+  {
+    [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa Skill',
+    [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Action',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
+    [VoiceflowConstants.PlatformType.LUIS]: 'Microsoft Luis',
+    [VoiceflowConstants.PlatformType.LEX]: 'Amazon Lex',
+    [VoiceflowConstants.PlatformType.RASA]: 'Rasa',
+    [VoiceflowConstants.PlatformType.WATSON]: 'IBM Watson',
+    [VoiceflowConstants.PlatformType.EINSTEIN]: 'Salesforce Einstein',
+    [VoiceflowConstants.PlatformType.NUANCE_MIX]: 'Nuance Mix',
+  },
+  ''
+);
 
 export const getPlatformProviderName = createPlatformSelector(
   {

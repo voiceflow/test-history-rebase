@@ -15,8 +15,9 @@ import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
-import { getPlatformAppName } from '@/utils/platform';
+import { getPlatformAppName, getProjectTypeTitle } from '@/utils/platform';
 import { formatProjectName } from '@/utils/string';
+import { isPlatformWithInvocationName } from '@/utils/typeGuards';
 
 import {
   DropdownIconWrapper,
@@ -94,6 +95,12 @@ export const Item: React.FC<ItemProps> = ({
 
   const hasOptions = !!options.length;
 
+  const platformAppName = getPlatformAppName(platform);
+
+  const platformNameLabel = isPlatformWithInvocationName(platform)
+    ? platformAppName
+    : `${getProjectTypeTitle[projectType]} Assistant${platformAppName && `, ${platformAppName}`}`;
+
   const item = (
     <div>
       <ProjectListItem hasOptions={hasOptions} to={`/${RootRoute.PROJECT}/${versionID}/canvas/${diagram}`} hidden={isDragging} tabIndex={0}>
@@ -140,7 +147,7 @@ export const Item: React.FC<ItemProps> = ({
 
             <ProjectTitleCaption>
               <span>
-                {getPlatformAppName(projectType)(platform)} {!!language.length && '-'}
+                {platformNameLabel} {!!language.length && '-'}
               </span>
               {language.map(getHumanLanguageName).join(', ')}
             </ProjectTitleCaption>

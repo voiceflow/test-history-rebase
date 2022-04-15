@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.692.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.691.0...@voiceflow/creator-app@1.692.0) (2022-04-15)
+
+
+### Features
+
+* bump eslint (VF-000) ([#5333](https://github.com/voiceflow/creator-app/issues/5333)) ([f6c1b0c](https://github.com/voiceflow/creator-app/commit/f6c1b0c7bd7324ab6d13a5429eba508a4a847cb7))
+
+
+
+
+
 # [1.691.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.690.4...@voiceflow/creator-app@1.691.0) (2022-04-15)
 
 

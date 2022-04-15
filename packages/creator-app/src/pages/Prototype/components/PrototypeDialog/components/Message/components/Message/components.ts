@@ -37,7 +37,6 @@ export const DelayedMessageFadeUpContainer = styled.div`
   ${DelayedMessageFadeUp}
 `;
 
-// eslint-disable-next-line import/prefer-default-export
 export const LogoCircle = styled(LogoContainer)<LogoCircleProps>`
   position: absolute;
   bottom: -14px;

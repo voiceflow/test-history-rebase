@@ -36,12 +36,10 @@ export abstract class AbstractActionControl<
 
   protected handleExpiredAuth?: (ctx: Context<D>) => Eventual<void>;
 
-  // eslint-disable-next-line class-methods-use-this
   protected reject<C>(message: string, code?: C): never {
     throw new AsyncRejectionError<C>(message, code);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   protected reply<R, E extends Utils.protocol.AsyncError<number>>(
     actionCreators: AsyncActionCreators<P, R, E>,
     process: (ctx: Context<D>, action: Action<P>, meta: ServerMeta) => Promise<R>
@@ -62,12 +60,10 @@ export abstract class AbstractActionControl<
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this
   protected beforeAccess(_ctx: Context<D>, _action: Action<P>, _meta: ServerMeta): void {
     // noop
   }
 
-  // eslint-disable-next-line class-methods-use-this
   protected beforeProcess(_ctx: Context<D>, _action: Action<P>, _meta: ServerMeta): void {
     // noop
   }

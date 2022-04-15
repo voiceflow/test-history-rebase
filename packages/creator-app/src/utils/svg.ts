@@ -1,6 +1,5 @@
 import { Point } from '@/types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const pathBuilder = (initialX: number, initialY: number) => {
   let str = `M ${initialX} ${initialY}`;
 

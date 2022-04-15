@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { Range } from '../ColorRange/Range';
 import { ColorPaletteDisplay } from './ColorPaletteDisplay';
 
-// eslint-disable-next-line import/prefer-default-export
 export const HueSlider = (): React.ReactElement => {
   const [hue, setHue] = useState<string>(String(HUE_MAX / 2));
   return (

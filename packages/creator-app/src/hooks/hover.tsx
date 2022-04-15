@@ -7,7 +7,6 @@ import { useEnableDisable } from './toggle';
 
 type HoverEventHandler = 'onMouseEnter' | 'onMouseLeave';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useHover = (
   {
     onStart,

@@ -1,6 +1,5 @@
 import { AlexaProject } from '@voiceflow/alexa-types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const MARKET_PLACE_AVAILABILITY = [
   {
     marketPlace: AlexaProject.MarketPlace.COM,

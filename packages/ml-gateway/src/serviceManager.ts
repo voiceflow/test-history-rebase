@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import Logger from '@voiceflow/logger';
 import { AbstractServiceManager } from '@voiceflow/socket-utils';
 

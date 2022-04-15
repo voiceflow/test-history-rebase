@@ -73,7 +73,6 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
   /**
    * clear any active data before a new diagram is being loaded
    */
-  // eslint-disable-next-line class-methods-use-this
   reset() {
     // noop
   }
@@ -82,7 +81,6 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
    * remove any subscriptions before the canvas is unmounted
    * reset() will be called before teardown()
    */
-  // eslint-disable-next-line class-methods-use-this
   teardown() {
     // noop
   }

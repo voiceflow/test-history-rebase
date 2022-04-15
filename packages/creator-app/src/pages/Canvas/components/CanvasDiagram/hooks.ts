@@ -12,7 +12,6 @@ import { useFeature, useSelector, useSyncDispatch } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Pair, Point, Viewport } from '@/types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useCursorControls = () => {
   const mousePosition = React.useRef<Point | null>(null);
   const engine = React.useContext(EngineContext)!;

@@ -9,7 +9,6 @@ export interface Feature {
   isEnabled: boolean | null;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const useFeature = (featureID: FeatureFlag): Feature => {
   const featureState = React.useContext(FeatureFlagsContext)![featureID] ?? { isEnabled: null };
   const isEnabled = (!IS_PRODUCTION && LOCAL_FEATURE_OVERRIDES[featureID]) || featureState.isEnabled;

@@ -11,7 +11,6 @@ export type Options = null | {
 
 type Callback = (e: KeyboardEvent) => void;
 
-// eslint-disable-next-line import/prefer-default-export
 export function useHotKeys(key: Hotkey, callback: Callback, options: Options = {}, deps: any[] = []) {
   const memoisedCallback = useMemo(
     () => (e: KeyboardEvent) => {

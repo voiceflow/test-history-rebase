@@ -5,7 +5,6 @@ import { useFeature } from '@/hooks/feature';
 
 const DESKTOP_APP_USERAGENT = 'Chrome Desktop App';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useCanASR = () => {
   const asrBypass = useFeature(FeatureFlag.ASR_BYPASS);
   const isDesktopApp = window.navigator.userAgent.includes(DESKTOP_APP_USERAGENT);

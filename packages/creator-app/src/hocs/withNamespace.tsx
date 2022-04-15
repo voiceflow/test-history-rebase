@@ -3,7 +3,6 @@ import { setDisplayName, wrapDisplayName } from 'recompose';
 
 import { NamespaceProvider } from '@/contexts/NamespaceContext';
 
-// eslint-disable-next-line import/prefer-default-export
 export const withNamespace = <T, P extends Record<string, unknown>>(Component: React.ComponentType<P>) =>
   setDisplayName(wrapDisplayName(Component, 'withNamespace'))(
     // eslint-disable-next-line react/display-name

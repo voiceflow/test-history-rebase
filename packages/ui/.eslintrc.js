@@ -27,7 +27,6 @@ module.exports = {
 
         'react-hooks/rules-of-hooks': 'off',
 
-        'import/prefer-default-export': 'off',
         'import/no-cycle': 'off',
         'import/no-extraneous-dependencies': 'off',
       },

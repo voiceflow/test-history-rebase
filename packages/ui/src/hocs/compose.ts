@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 export type Transform<T = any, R = T> = (value: T) => R;
 
 export interface Compose {

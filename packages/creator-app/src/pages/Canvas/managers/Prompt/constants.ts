@@ -7,7 +7,6 @@ import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt, Realtime.NodeData.PromptBuiltInPorts> = {
   type: BlockType.PROMPT,
   icon: 'prompt',

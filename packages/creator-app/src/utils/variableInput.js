@@ -1,6 +1,5 @@
 import _isObject from 'lodash/isObject';
 
-// eslint-disable-next-line import/prefer-default-export
 export const variableInputValueIsEmpty = (valueArray) => {
   let notEmpty = false;
 

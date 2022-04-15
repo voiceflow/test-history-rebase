@@ -62,6 +62,6 @@ export abstract class AbstractLoguxControl<T extends LoguxControlOptions> extend
 
   abstract setup(): Eventual<void>;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function, class-methods-use-this
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   destroy(): Eventual<void> {}
 }

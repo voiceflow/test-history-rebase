@@ -10,7 +10,6 @@ import * as Viewport from '@/ducks/viewport';
 /**
  * @deprecated
  */
-// eslint-disable-next-line import/prefer-default-export
 export const fullActiveDiagramSelector = createSelector(
   [
     CreatorV2.activeDiagramIDSelector,

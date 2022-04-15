@@ -19,7 +19,6 @@ export type InternalTransformOverlayAPI = TransformOverlayAPI & {
   startRotate: () => void;
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
   const engine = React.useContext(EngineContext)!;
 

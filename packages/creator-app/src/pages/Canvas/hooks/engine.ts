@@ -38,7 +38,6 @@ const useCreateEngine = (): [Engine, number] => {
   return [ref.current, engineKey];
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const useEngine = (): [Engine, number] => {
   const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
 

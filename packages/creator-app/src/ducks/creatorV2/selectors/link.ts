@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { Utils } from '@voiceflow/common';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';

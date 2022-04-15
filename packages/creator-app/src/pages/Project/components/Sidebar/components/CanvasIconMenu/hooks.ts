@@ -132,7 +132,6 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   };
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const useHelpOptions = () => {
   const isIntercomVisible = useSelector(Session.isIntercomVisibleSelector);
 

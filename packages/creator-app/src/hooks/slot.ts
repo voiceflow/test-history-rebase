@@ -11,7 +11,6 @@ import { useModals } from '@/hooks/modals';
 import { useDispatch } from '@/hooks/realtime';
 import { useTrackingEvents } from '@/hooks/tracking';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useAddSlot = () => {
   const { toggle: toggleSlotEdit, close: closeSlotEdit, isInStack: slotEditOpen } = useModals(ModalType.SLOT_EDIT);
   const createSlot = useDispatch(Slot.createSlot);

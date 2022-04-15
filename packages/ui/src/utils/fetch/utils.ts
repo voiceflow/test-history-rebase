@@ -13,7 +13,6 @@ export const buildHeaders = (headers: Map<string, string>) =>
     return acc;
   }, {});
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const buildOptions = (rawOpts: RequestInit, globalHeaders: Map<string, string>, body: string | object | undefined, json: boolean) => {
   let opts: RequestInit = {
     ...DEFAULT_FETCH_OPTIONS,
@@ -74,7 +73,6 @@ export const parseResponse = async <R>(res: Response, format: FetchMessageFormat
 
 export const extractBody = <R>({ body }: FetchResult<R>) => body;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const debugRequest = (url: string, opts: RequestInit, body?: string | object) => {
   fetchLogger.debug(fetchLogger.bold(opts.method || 'GET'), fetchLogger.value(url));
   fetchLogger.debug('body', fetchLogger.value(body));

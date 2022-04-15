@@ -5,7 +5,6 @@ import { Element, Node, Text } from 'slate';
 import { ElementType } from '../../constants';
 import { ProcessorNext } from './types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const matchAndProcessTextNodeToElement = (
   { type, node, regexp, next }: { type: ElementType; node: Text; regexp: RegExp; next: ProcessorNext },
   callback: (match: RegExpMatchArray, prevTextNode: Text) => Node[]

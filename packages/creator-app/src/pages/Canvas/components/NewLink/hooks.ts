@@ -21,7 +21,6 @@ type NewLinkInstance<T extends SVGElement> = NewLinkAPI & {
   isVisible: boolean;
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const useNewLinkAPI = <T extends SVGElement>() => {
   const ref = React.useRef<T>(null);
   const markerRef = React.useRef<SVGMarkerElement>(null);

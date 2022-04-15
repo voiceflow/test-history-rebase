@@ -5,7 +5,6 @@ import * as Sentry from '@/vendors/sentry';
 import { useSetup } from './lifecycle';
 import { useToggle } from './toggle';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useMicrophonePermission = ({ askOnSetup }: { askOnSetup?: boolean } = {}) => {
   const [permissionGranted, togglePermissionGranted] = useToggle(false);
 

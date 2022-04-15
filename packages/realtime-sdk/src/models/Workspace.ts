@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { PlanType, UserRole } from '@voiceflow/internal';
 
 export interface Board {

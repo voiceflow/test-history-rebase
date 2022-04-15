@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { DBProjectList, ProjectList } from '@realtime-sdk/models';
 import createAdapter from 'bidirectional-adapter';
 

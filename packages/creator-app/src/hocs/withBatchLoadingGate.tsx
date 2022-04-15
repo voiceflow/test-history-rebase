@@ -3,7 +3,6 @@ import { setDisplayName, wrapDisplayName } from 'recompose';
 
 import BatchLoadingGate, { Gate } from '@/components/BatchLoadingGate';
 
-// eslint-disable-next-line import/prefer-default-export
 export const withBatchLoadingGate =
   (...gates: Gate[]) =>
   <P extends object>(Component: React.ComponentType<P>): React.ComponentType<P> =>

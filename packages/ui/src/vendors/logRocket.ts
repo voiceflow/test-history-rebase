@@ -5,7 +5,6 @@ import { DeepPartial } from 'utility-types';
 
 export const REDACTED = '[redacted]';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 const transformBody = <T extends { body?: string | undefined }, J extends object>(entity: T, transform: (json: J) => DeepPartial<J> | undefined) => {
   try {
     const body = entity.body ? transform(JSON.parse(entity.body)) : null;
@@ -23,7 +22,6 @@ const transformBody = <T extends { body?: string | undefined }, J extends object
 export interface InitializeOptions {
   project: string;
   callback: (sessionURL: string) => void;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   sessionRequestSanitizers: { matcher: { method: string; route: string | string[] }; transform: (json: any) => object | undefined }[];
 }
 

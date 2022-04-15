@@ -4,7 +4,6 @@ import React from 'react';
 
 import { PortInstance } from '@/pages/Canvas/engine/entities/portEntity';
 
-// eslint-disable-next-line import/prefer-default-export
 export const usePortInstance = (getAnchorPoint: () => DOMRect | null) =>
   React.useMemo<PortInstance>(
     () => ({

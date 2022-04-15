@@ -1,7 +1,6 @@
 import { useContextApi, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useConnectState = (isOpen: boolean) => {
   const [state, api] = useSmartReducerV2({ error: false, loading: false });
 

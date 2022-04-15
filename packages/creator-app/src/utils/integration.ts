@@ -8,7 +8,6 @@ const keyValToDB = ({ index, key, val }: { index?: number; key: string; val: str
   val: textEditorContentAdapter.toDB(val),
 });
 
-// eslint-disable-next-line import/prefer-default-export
 export const encodeCustomAPIData = (data: Realtime.NodeData.CustomApi) => {
   const { selectedAction, bodyInputType, body, url, headers, mapping, parameters, content } = data;
   return {

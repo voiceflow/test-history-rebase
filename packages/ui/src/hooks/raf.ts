@@ -11,7 +11,6 @@ interface RafApi {
   animationFrame: number;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const useRAF = (): [scheduler: (callback: VoidFunction) => void, apiCache: React.MutableRefObject<RafApi>] => {
   const phase = useLifecycle();
 

@@ -5,7 +5,6 @@ import { css, styled } from '@/hocs';
 const SCROLLBAR_WIDTH = getScrollbarWidth();
 const MINIMUM_SCROLLBAR_WIDTH = 44;
 
-// eslint-disable-next-line import/prefer-default-export
 export const Container = styled.div`
   ${({ multiline }) =>
     !multiline &&

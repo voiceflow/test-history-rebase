@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { useDebouncedCallback } from '@ui/hooks';
 import { useOnClickOutside } from '@ui/hooks/mouse';
 import { rgbaToHex } from '@ui/utils';

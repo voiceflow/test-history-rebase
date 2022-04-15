@@ -2,7 +2,6 @@ import { useCallback, useContext } from 'react';
 
 import { ValidationContext } from './contexts';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useValidator = <T>(name: string, validate: (value: T) => string | false) => {
   const validationContext = useContext(ValidationContext);
 

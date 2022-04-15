@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { usePopper } from '@ui/hooks';
 import { stopPropagation } from '@ui/utils';
 import React from 'react';

@@ -1,7 +1,6 @@
 import { preventDefault } from '@voiceflow/ui';
 import React from 'react';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useSwallowZoom = <T extends HTMLElement>() => {
   const ref = React.useRef<T>(null);
 

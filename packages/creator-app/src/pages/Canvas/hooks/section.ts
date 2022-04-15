@@ -5,8 +5,7 @@ import { NamespaceContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { useTeardown } from '@/hooks';
 
-// eslint-disable-next-line import/prefer-default-export
-export const useSectionState = <T extends unknown>(sectionKey: null | string | string[] = null, defaultValue: T, autoSave = true) => {
+export const useSectionState = <T>(sectionKey: null | string | string[] = null, defaultValue: T, autoSave = true) => {
   const dispatch = useDispatch();
   const namespace = React.useContext(NamespaceContext);
   const localNamespace = Array.isArray(sectionKey) ? sectionKey.join('.') : sectionKey;

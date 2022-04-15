@@ -9,7 +9,6 @@ type InternalSelectionMarqueeAPI = SelectionMarqueeAPI & {
   ref: React.RefObject<HTMLDivElement>;
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const useSelectionMarqueeAPI = () => {
   const ref = React.useRef<HTMLDivElement>(null);
   const engine = React.useContext(EngineContext)!;

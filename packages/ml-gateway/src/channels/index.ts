@@ -4,7 +4,6 @@ import DiagramChannel from './diagram';
 import ProjectChannel from './project';
 import WorkspaceChannel from './workspace';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const buildChannels = (options: LoguxControlOptions) => ({
   creator: new CreatorChannel(options),
   diagram: new DiagramChannel(options),

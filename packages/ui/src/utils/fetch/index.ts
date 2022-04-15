@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { Method } from './constants';
 import createRawFetch from './raw';
 import { FetchOptions } from './types';

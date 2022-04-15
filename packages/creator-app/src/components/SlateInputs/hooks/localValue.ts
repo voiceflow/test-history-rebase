@@ -5,7 +5,6 @@ import React from 'react';
 import { SlateEditableProps, SlateEditorAPI, SlateValue } from '@/components/SlateEditable';
 import { useLinkedState } from '@/hooks';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useSlateLocalValue = (
   value?: Nullish<SlateEditableProps['value']>,
   onChange?: Nullish<SlateEditableProps['onChange']>

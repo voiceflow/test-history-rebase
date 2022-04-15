@@ -7,7 +7,6 @@ import { BlockType } from '@/constants';
 
 import { NodeConfig } from '../types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = {
   type: BlockType.TEXT,
   icon: 'textStep',

@@ -6,7 +6,6 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { chatPromptFactory, PromptFactoryOptions, voicePromptFactory } from './prompt';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface NoReplyFactoryOptions extends PromptFactoryOptions {}
 
 const BASE_NO_REPLY: BaseNode.Utils.BaseStepNoReply = {

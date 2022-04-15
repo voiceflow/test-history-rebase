@@ -2,7 +2,6 @@ import React from 'react';
 
 const defaultLabelFormatted = (label: string): string => label.toLowerCase();
 
-// eslint-disable-next-line import/prefer-default-export
 export const getFormattedLabel = (
   label: React.ReactNode | null = '',
   searchLabel: string | null = '',

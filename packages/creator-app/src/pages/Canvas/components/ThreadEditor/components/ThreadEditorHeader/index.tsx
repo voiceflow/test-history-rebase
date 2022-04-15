@@ -7,7 +7,6 @@ import { useSelector } from '@/hooks';
 
 import CommentActions, { CommentActionsProps } from './CommentActions';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ThreadEditorHeaderProps extends Omit<CommentActionsProps, 'currentUserID'> {}
 
 const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps> = ({ comment, ...actionProps }) => {

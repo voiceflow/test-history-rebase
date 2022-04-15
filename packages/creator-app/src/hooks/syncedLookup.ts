@@ -1,7 +1,6 @@
 import React from 'react';
 
-// eslint-disable-next-line import/prefer-default-export
-export const useSyncedLookup = <T extends any>(syncedKeys: string[], items: T[]) => {
+export const useSyncedLookup = <T>(syncedKeys: string[], items: T[]) => {
   const prevLookup = React.useRef<Record<string, T>>({});
 
   const lookup = React.useMemo(() => {

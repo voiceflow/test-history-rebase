@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { Nullable, Utils } from '@voiceflow/common';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-function
 import _isFunction from 'lodash/isFunction';

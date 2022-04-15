@@ -20,7 +20,6 @@ const getTokenLength = (token: string | Prism.Token): number => {
   return getTokenLength(token.content);
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const useEditorDecorate = (editor: Editor): Nullable<(entry: NodeEntry) => Range[]> => {
   const language = React.useMemo<null | PrismLanguage>(() => {
     const languages = editor.prismLanguages();

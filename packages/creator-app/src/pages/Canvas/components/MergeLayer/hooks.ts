@@ -5,7 +5,6 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { MergeLayerAPI } from '@/pages/Canvas/types';
 import MouseMovement from '@/utils/mouseMovement';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObject<T>) => {
   const pointRef = React.useRef<[number, number]>([0, 0]);
   const offsetRef = React.useRef<[number, number]>([0, 0]);

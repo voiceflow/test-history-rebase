@@ -3,7 +3,6 @@ import { NO_REPLY_PATH_PATH_TYPE, NO_REPLY_PATH_TYPE, NoReplyEditor, NoReplyPath
 
 import { ENTITY_PROMPT_PATH_TYPE, EntityPromptForm } from './components';
 
-// eslint-disable-next-line import/prefer-default-export
 export const EDITORS_BY_PATH = {
   [NO_MATCH_PATH_TYPE]: NoMatchEditor,
   [NO_REPLY_PATH_TYPE]: NoReplyEditor,

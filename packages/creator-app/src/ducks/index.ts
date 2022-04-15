@@ -94,6 +94,5 @@ export const allRPCs = [...Workspace.rpcs, ...Version.rpcs, ...Session.rpcs];
 export type State = ReturnType<ReturnType<typeof getCombinedReducer>>;
 
 declare module 'react-redux' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface DefaultRootState extends State {}
 }

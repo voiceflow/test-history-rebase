@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import { IS_DEVELOPMENT, IS_PRODUCTION } from '@voiceflow/ui';
 
 // Container env var-based configuration overrides
@@ -67,7 +65,6 @@ export const VERSION = window.VF_OVERRIDE_SEM_VER ? `v${window.VF_OVERRIDE_SEM_V
 // google
 const GOOGLE_PROD_CLIENT_ID = process.env.GOOGLE_PROD_CLIENT_ID!;
 const GOOGLE_DEV_CLIENT_ID = process.env.GOOGLE_DEV_CLIENT_ID!;
-// eslint-disable-next-line no-underscore-dangle
 const _GOOGLE_CLIENT_ID = IS_PRODUCTION_ENV ? GOOGLE_PROD_CLIENT_ID : GOOGLE_DEV_CLIENT_ID;
 export const GOOGLE_CLIENT_ID = window.VF_OVERRIDE_GOOGLE_CLIENT_ID || _GOOGLE_CLIENT_ID;
 

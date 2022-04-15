@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 export interface ProjectList {
   id: string;
   name: string;

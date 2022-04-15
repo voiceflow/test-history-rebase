@@ -2,7 +2,6 @@ import { Language, Sample } from '@/components/AceEditor/Sample';
 
 import { curl, nodeJS, python } from './constants';
 
-// eslint-disable-next-line import/prefer-default-export
 export const getSamples = (apiKey?: string): Sample[] => {
   const sampleReplace = (sample: string) => {
     return sample.replace(/{{vf\.api_key}}/gi, apiKey || '{api_key}');

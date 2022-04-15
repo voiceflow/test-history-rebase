@@ -3,7 +3,6 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { PlatformModalProps } from './types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const getPlatformModalProps = Utils.platform.createPlatformSelector<PlatformModalProps>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: {

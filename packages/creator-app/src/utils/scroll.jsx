@@ -1,7 +1,6 @@
 import React from 'react';
 import SimpleBar from 'simplebar-react';
 
-// eslint-disable-next-line import/prefer-default-export
 export const DragScroll = ({ children, ...props }) => {
   const container = React.useRef();
   const drag = React.useRef(false);

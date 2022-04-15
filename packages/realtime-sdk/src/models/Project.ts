@@ -46,7 +46,6 @@ export type AnyProjectMemberData = DFESProject.MemberPlatformData | AlexaProject
 
 export type AnyProjectMember = BaseModels.Project.Member<AnyProjectMemberData>;
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface DBProject extends BaseModels.Project.Model<AnyRecord, AnyRecord> {}
 
 export type NewProject = Partial<Omit<DBProject, '_id' | 'creatorID'>>;

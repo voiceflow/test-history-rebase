@@ -1,5 +1,4 @@
 /* eslint-disable prefer-rest-params */
-/* eslint-disable class-methods-use-this */
 /* eslint-disable no-process-env */
 
 require('regenerator-runtime/runtime');

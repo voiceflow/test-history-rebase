@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _sortBy from 'lodash/sortBy';

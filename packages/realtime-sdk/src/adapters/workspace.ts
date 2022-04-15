@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { DBMember, DBWorkspace, Workspace, WorkspaceActivationState } from '@realtime-sdk/models';
 import { sortWorkspaces } from '@realtime-sdk/utils/workspace';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';

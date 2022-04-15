@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 // Frontend type
 
 export interface Comment {

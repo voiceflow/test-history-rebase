@@ -14,7 +14,6 @@ const cleanupStepPorts = (ports: BaseModels.BasePort[], validNodesMap: ValidNode
     ...BaseModels.BasePort[]
   ];
 
-// eslint-disable-next-line import/prefer-default-export
 export const cleanupDBNodes = (nodesMap: NodesMap): BaseModels.BaseDiagramNode[] => {
   const validNodeIDsMap: ValidNodeIDsMap = {};
 

@@ -9,7 +9,6 @@ import interactionAdapter from './interaction';
 import promptAdapter from './prompt';
 import speakAdapter from './speak';
 
-// eslint-disable-next-line import/prefer-default-export
 export const generalBlockAdapter = {
   // internal
   [BlockType.COMMAND]: commandAdapter,

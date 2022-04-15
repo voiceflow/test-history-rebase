@@ -1,6 +1,5 @@
 import { PlanType } from '@voiceflow/internal';
 
-// eslint-disable-next-line import/prefer-default-export
 export const PLAN_TYPE_META = {
   [PlanType.OLD_STARTER]: {
     label: 'Starter',

@@ -28,7 +28,6 @@ interface ColorPickerPopperProps {
   onSaveColor?: (color: IColor) => void;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const ColorPickerPopper = React.forwardRef<HTMLDivElement, ColorPickerPopperProps>(
   ({ selectedColor, onChange, tagName = 'label', colors }, ref) => {
     const [selectedHue] = React.useMemo(() => hexToHsluv(selectedColor), [selectedColor]);

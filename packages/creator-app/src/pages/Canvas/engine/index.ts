@@ -180,7 +180,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   select = <T, A extends any[]>(selector: (state: State, ...args: A) => T, ...args: A): T => selector(this.store.getState(), ...args);
 
-  /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
   getNodeByID = (nodeID: Nullish<string>) => this.select(CreatorV2.nodeByIDSelector, { id: nodeID });
 
   getZoomType = () => this.select(UI.zoomTypeSelector);
@@ -230,7 +229,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   getActivePlatform = () => this.select(ProjectV2.active.platformSelector);
 
   getActiveProjectMeta = () => this.select(ProjectV2.active.metaSelector);
-  /* eslint-enable @typescript-eslint/explicit-module-boundary-types */
 
   isNodeOfType = (nodeID: Nullish<string>, types: BlockType | BlockType[] | ((type: BlockType) => boolean)): boolean => {
     const nodeType = this.select(CreatorV2.nodeTypeByIDSelector, { id: nodeID });

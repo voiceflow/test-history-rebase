@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle, consistent-return */
 import './TeamSummary.css';
 
 import { Button, ButtonVariant, ClickableText, Collapse } from '@voiceflow/ui';
@@ -47,6 +46,7 @@ class TeamSummary extends React.Component {
     if (this.props.board) {
       return this.props.board.projects.map((skill) => <SkillDetail skill={skill} key={skill._id} />);
     }
+    return null;
   };
 
   render() {

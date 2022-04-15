@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { HUE_MAX, HUE_MIN } from '@ui/utils/colors/hsl';
 import React from 'react';
 

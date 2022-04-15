@@ -4,7 +4,6 @@ import React from 'react';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks/redux';
 
-// eslint-disable-next-line import/prefer-default-export
 export const platformAware: {
   <T>(components: Record<VoiceflowConstants.PlatformType, React.FC<T>>, defaultComponent?: React.FC<T>): React.FC<T>;
   <T>(components: Partial<Record<VoiceflowConstants.PlatformType, React.FC<T>>>, defaultComponent: React.FC<T>): React.FC<T>;

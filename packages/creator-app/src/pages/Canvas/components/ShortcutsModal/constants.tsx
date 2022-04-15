@@ -10,7 +10,6 @@ interface ShortcutItem {
   shouldRender?: () => boolean;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const SHORTCUTS: ShortcutItem[] = [
   {
     title: 'Copy',

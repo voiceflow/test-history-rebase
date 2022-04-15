@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { FlexApart, SvgIconContainer } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';

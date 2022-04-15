@@ -21,7 +21,6 @@ enum EXP_TYPE {
 
 type Expression = estree.BinaryExpression & estree.LogicalExpression & estree.CallExpression;
 
-// eslint-disable-next-line import/prefer-default-export
 export const useExpressionValidation = (): [boolean, () => void, (arg: string) => boolean, string] => {
   const [error, setError, reset] = useEnableDisable(false);
   const [errorMessage, setErrorMessage] = React.useState<string>('');

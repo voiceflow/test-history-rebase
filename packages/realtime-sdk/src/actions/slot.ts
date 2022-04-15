@@ -9,5 +9,4 @@ const slotType = Utils.protocol.typeFactory(SLOT_KEY);
 
 // Other
 
-// eslint-disable-next-line import/prefer-default-export
 export const crud = createCRUDActions<Slot, BaseVersionPayload>(slotType);

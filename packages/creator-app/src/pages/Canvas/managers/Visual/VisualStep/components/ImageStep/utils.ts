@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { DEVICE_LABEL_MAP } from '@/constants';
 
-// eslint-disable-next-line import/prefer-default-export
 export const getLabel = (data: Realtime.NodeData.Visual): string => {
   if (data.visualType === BaseNode.Visual.VisualType.APL) {
     return data.title ?? 'APL Mockup';

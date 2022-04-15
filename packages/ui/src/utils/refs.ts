@@ -1,7 +1,6 @@
 import { Nullish } from '@voiceflow/common';
 import { Ref } from 'react';
 
-// eslint-disable-next-line import/prefer-default-export
 export const setRef = <T>(ref: Nullish<Ref<T | null>>, value: T | null): void => {
   if (!ref) return;
 

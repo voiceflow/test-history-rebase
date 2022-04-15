@@ -9,7 +9,6 @@ import { SyncThunk } from '@/store/types';
 
 // side effects
 
-// eslint-disable-next-line import/prefer-default-export
 export const updateActiveVendor =
   (vendorID: Nullable<string>, skillID: string | null): SyncThunk =>
   (dispatch, getState) => {

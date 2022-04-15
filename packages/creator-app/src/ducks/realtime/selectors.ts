@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { getAlternativeColor } from '@voiceflow/ui';
 import { createSelector } from 'reselect';

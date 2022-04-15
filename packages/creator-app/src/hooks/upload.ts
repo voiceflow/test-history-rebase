@@ -8,7 +8,6 @@ export interface UploadConfig {
   clientFunc: keyof typeof client.file;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const useUpload = <C extends UploadConfig>(config: C) => {
   const { fileType, clientFunc } = config;
 

@@ -99,7 +99,6 @@ const creatorAdapter = createSimpleAdapter<
     );
 
     return {
-      // eslint-disable-next-line no-underscore-dangle
       diagramID: diagram._id,
       viewport: {
         x: diagram.offsetX,

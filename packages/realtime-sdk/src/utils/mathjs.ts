@@ -32,7 +32,6 @@ const getMinMax = (v1: number, v2: number) => {
   return { min, max };
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const parser = (exp: string) => {
   let sanitized = exp;
 

@@ -1,6 +1,5 @@
 const draftToPlainText = (rawContentState) => rawContentState.blocks.reduce((acc, block) => acc + block.text, '');
 
-// eslint-disable-next-line import/prefer-default-export
 export const deepDraftToMarkdown = (object) => {
   const result = object;
   const variables = new Set();

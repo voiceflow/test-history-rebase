@@ -2,7 +2,6 @@ import { DBMember } from '@realtime-sdk/models';
 import createAdapter from 'bidirectional-adapter';
 
 const memberAdapter = createAdapter<DBMember, DBMember>(
-  // eslint-disable-next-line camelcase
   ({ creator_id, created, email, image, name, status, seats, role }) => ({
     creator_id,
     created,

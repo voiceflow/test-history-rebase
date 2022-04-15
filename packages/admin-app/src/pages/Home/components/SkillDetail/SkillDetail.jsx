@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 /* eslint no-restricted-globals: ["error", "isFinite"] */
 import './SkillDetail.css';
 

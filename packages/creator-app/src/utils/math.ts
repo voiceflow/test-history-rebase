@@ -14,7 +14,6 @@ export const applyRotation = (length: number, rotation: number): Pair<number> =>
   return [offsetX, offsetY];
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const getRotation = (offsetX: number, offsetY: number) => {
   // x / y instead of y / x because our initial arm is the positive y-axis not
   // positive x-axis and we need to rotate clockwise not counter-clockwise.

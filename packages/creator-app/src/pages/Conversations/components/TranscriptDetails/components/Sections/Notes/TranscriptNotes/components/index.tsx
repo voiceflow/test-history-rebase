@@ -2,7 +2,6 @@ import { BoxFlexStart } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-// eslint-disable-next-line import/prefer-default-export
 export const Container = styled(BoxFlexStart).attrs({ column: true })`
   flex: 1;
   max-width: 295px;

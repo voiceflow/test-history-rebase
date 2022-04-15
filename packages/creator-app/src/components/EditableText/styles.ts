@@ -1,6 +1,5 @@
 import { css } from '@/hocs';
 
-// eslint-disable-next-line import/prefer-default-export
 export const defaultTextStyles = css`
   background: none;
   color: inherit;

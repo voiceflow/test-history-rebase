@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { plus } from '@ui/svgs';
 import React from 'react';
 

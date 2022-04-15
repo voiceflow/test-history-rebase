@@ -1,7 +1,6 @@
 import SvgIcon from '@ui/components/SvgIcon';
 import { styled, units } from '@ui/styles';
 
-// eslint-disable-next-line import/prefer-default-export
 export const SearchInputIcon = styled(SvgIcon)`
   position: absolute;
   right: 1px;

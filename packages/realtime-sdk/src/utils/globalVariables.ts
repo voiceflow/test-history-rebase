@@ -3,7 +3,6 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { createPlatformSelector } from './platform';
 
-// eslint-disable-next-line import/prefer-default-export
 export const getPlatformGlobalVariables = createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.GOOGLE]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],

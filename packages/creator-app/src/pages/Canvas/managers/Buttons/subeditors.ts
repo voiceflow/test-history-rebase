@@ -3,7 +3,6 @@ import IntentSlotForm from '@/components/IntentSlotForm';
 import { NO_MATCH_PATH_PATH_TYPE, NO_MATCH_PATH_TYPE, NoMatchEditor, NoMatchPathNameEditor } from '@/pages/Canvas/components/NoMatch';
 import { NO_REPLY_PATH_PATH_TYPE, NO_REPLY_PATH_TYPE, NoReplyEditor, NoReplyPathNameEditor } from '@/pages/Canvas/components/NoReply';
 
-// eslint-disable-next-line import/prefer-default-export
 export const EDITORS_BY_PATH = {
   [SLOT_PATH_TYPE]: IntentSlotForm,
   [NO_MATCH_PATH_TYPE]: NoMatchEditor,

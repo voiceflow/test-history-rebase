@@ -63,7 +63,6 @@ const applyOffsetsToLinks = (links: Realtime.Link[], offsets: Point) =>
     data: applyOffsetsToLinkData(link.data, offsets),
   }));
 
-// eslint-disable-next-line import/prefer-default-export
 export const initialize =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {

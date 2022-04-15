@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 import { Elements, injectStripe, StripeProvider } from 'react-stripe-elements';

@@ -1,6 +1,5 @@
 import { styled } from '@/styles';
 
-// eslint-disable-next-line import/prefer-default-export
 export const TeamSummaryWrapper = styled.div`
   margin: 20px 10px;
   padding: 2rem;

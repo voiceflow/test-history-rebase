@@ -54,5 +54,4 @@ const serializeNode = (node: BaseText.Descendant, index: number): React.ReactNod
   // eslint-disable-next-line no-nested-ternary
   Text.isText(node) ? serializeTextNode(node, index) : Element.isElement(node) ? serializeElementNode(node, index) : null;
 
-// eslint-disable-next-line import/prefer-default-export
 export const serializeSlateToJSX = (content: BaseText.SlateTextValue): React.ReactNode => content.map(serializeNode);

@@ -9,5 +9,4 @@ export interface Diagram {
   intentStepIDs: string[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface DBDiagram extends Pick<BaseModels.Diagram.Model, '_id' | 'type' | 'name' | 'variables' | 'children' | 'intentStepIDs'> {}

@@ -14,7 +14,6 @@ export interface WorkspaceClient {
 
   checkout: (
     workspaceID: string,
-    // eslint-disable-next-line camelcase
     data: { plan: PlanType; seats: number; period: BillingPeriod; coupon?: string; source_id: string }
   ) => Promise<void>;
 

@@ -14,7 +14,6 @@ export const platformClients = {
   general: GeneralClient,
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const getPlatformClient = Utils.platform.createPlatformSelector<PlatformClient>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: AlexaClient,

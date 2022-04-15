@@ -6,7 +6,6 @@ import { Eventual, Utils } from '@voiceflow/common';
 
 import { AbstractLoguxControl, isUnauthorizedError, LoguxControlOptions } from './utils';
 
-// eslint-disable-next-line import/prefer-default-export
 export abstract class AbstractChannelControl<
   T extends LoguxControlOptions,
   P extends object,

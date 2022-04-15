@@ -1,6 +1,5 @@
 import { css, styled, transition } from '@ui/styles';
 
-// eslint-disable-next-line import/prefer-default-export
 export const DisableBox = styled.div<{ disabled: boolean }>`
   ${transition('opacity')};
   opacity: 1;

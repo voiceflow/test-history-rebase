@@ -8,7 +8,6 @@ import { DEFAULT_COLORS } from './constants';
 
 const normalizeColor = (color: string) => (isHexColor(color) ? color : RGBAToHex(color));
 
-// eslint-disable-next-line import/prefer-default-export
 export const useColorPalette = (hexOrRGBColor: string): HSLShades => {
   return React.useMemo(() => {
     const color = normalizeColor(hexOrRGBColor);

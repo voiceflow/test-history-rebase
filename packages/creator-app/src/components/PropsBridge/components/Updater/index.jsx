@@ -30,7 +30,6 @@ class Updater extends PureComponent {
     onUpdateProps && onUpdateProps(id, data);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   render() {
     return null;
   }

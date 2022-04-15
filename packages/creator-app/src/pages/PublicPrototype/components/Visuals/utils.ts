@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const getScale = (containerNode: HTMLDivElement | null, dimension: { width: number; height: number }): number => {
   if (!containerNode) {
     return 1;

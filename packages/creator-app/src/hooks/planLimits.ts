@@ -5,7 +5,6 @@ import { useModals, useSelector } from '@/hooks';
 
 type PlanLimitHandler = (planAction: () => void) => () => void;
 
-// eslint-disable-next-line import/prefer-default-export
 export const useVariableStatesPlanLimit = (): PlanLimitHandler => {
   const variableStatesLimit = useSelector(WorkspaceV2.active.variableStatesLimitSelector);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);

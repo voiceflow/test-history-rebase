@@ -21,7 +21,6 @@ export class Vector {
     return this._plane || Coords.WINDOW_PLANE;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   factory(point: Point, plane?: CartesianPlane) {
     return new Vector(point, plane);
   }
@@ -123,7 +122,6 @@ export class Coords extends Vector {
     return (value * sourceScale + sourceOffset - targetOffset) / targetScale;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   factory(point: Point, plane?: CartesianPlane) {
     return new Coords(point, plane);
   }
@@ -183,7 +181,6 @@ export class Quadrilateral extends Shape<Quad<Coords>> {
     ] as Quad<Coords>;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   fromPoints([topLeft, , bottomRight]: Quad<Coords>) {
     return new Quadrilateral(topLeft, bottomRight.sub(topLeft), 0) as this;
   }

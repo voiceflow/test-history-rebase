@@ -4,7 +4,6 @@ import * as Normal from 'normal-store';
 
 import { CreatorState } from '../types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const removeLink = (state: Draft<CreatorState>, linkID: string): void => {
   const nodeIDs = state.nodeIDsByLinkID[linkID] ?? [];
   const portIDs = state.portIDsByLinkID[linkID] ?? [];

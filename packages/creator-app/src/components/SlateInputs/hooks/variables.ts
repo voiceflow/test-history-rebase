@@ -14,7 +14,6 @@ interface SlateVariablesOptions {
   withSlots?: boolean;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const useSlateVariables = ({
   creatable,
   withSlots,

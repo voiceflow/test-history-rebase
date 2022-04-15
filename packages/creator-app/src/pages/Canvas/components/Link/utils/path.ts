@@ -9,7 +9,6 @@ import { getPoint, getPointsOffset, getPointX, getPointY, isEqualPoints, isLessT
 
 const getRadius = (offset: number): number => Math.max(Math.min(Math.abs(offset) / 2, STRAIGHT_PATH_RADIUS), 0);
 
-// eslint-disable-next-line import/prefer-default-export
 export const buildPath = (points: Nullable<PathPoints>, straight?: boolean): string => {
   if (!points) {
     return '';

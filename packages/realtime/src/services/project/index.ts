@@ -111,7 +111,6 @@ class ProjectService extends AbstractControl {
     };
 
     if (importJSON.project && typeof importJSON.project === 'object') {
-      // eslint-disable-next-line no-underscore-dangle
       importJSON.project._version = vfVersion;
     }
 

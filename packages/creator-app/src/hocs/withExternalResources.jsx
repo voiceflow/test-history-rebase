@@ -1,5 +1,3 @@
-/* eslint-disable react/display-name, import/prefer-default-export */
-
 import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 

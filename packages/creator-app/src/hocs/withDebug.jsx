@@ -4,7 +4,6 @@ import { getDisplayName, setDisplayName, wrapDisplayName } from 'recompose';
 
 import { IS_PRODUCTION } from '@/config';
 
-// eslint-disable-next-line import/prefer-default-export
 export const withDebug = (Component) => {
   if (IS_PRODUCTION) {
     return Component;

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const AMAZON_CATEGORIES = [
   {
     value: 'ALARMS_AND_CLOCKS',

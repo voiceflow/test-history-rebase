@@ -1,3 +1,4 @@
+/* eslint-disable prefer-exponentiation-operator */
 /* eslint-disable no-restricted-properties */
 /*
   Adapted from this implementation of the HSLUV algorithm: https://github.com/StoneCypher/hsluv.ts

@@ -11,7 +11,6 @@ import { getActiveVersionContext } from '../utils';
 
 // side effects
 
-// eslint-disable-next-line import/prefer-default-export
 export const patchSettings =
   (settings: Partial<VoiceflowVersion.Settings>): Thunk =>
   async (dispatch, getState) => {

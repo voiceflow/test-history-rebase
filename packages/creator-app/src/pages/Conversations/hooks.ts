@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom';
 import { FilterTag } from '@/pages/Conversations/constants';
 import { isString } from '@/utils/string';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useFilters = () => {
   const location = useLocation();
 

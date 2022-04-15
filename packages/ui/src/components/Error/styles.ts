@@ -1,6 +1,5 @@
 import { css } from '@ui/styles';
 
-// eslint-disable-next-line import/prefer-default-export
 export const centerContent = css`
   position: absolute;
   top: 0;

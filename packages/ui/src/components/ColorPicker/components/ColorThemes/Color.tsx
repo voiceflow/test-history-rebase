@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { transition } from '@ui/styles';
 import { isHexColor } from '@ui/utils/colors/hex';
 import React from 'react';

@@ -79,7 +79,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     // diagram.version patches can crash for non-editor users
     try {
       // perform initial conversion
-      // eslint-disable-next-line no-underscore-dangle
       if (project._version && project._version >= Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION) {
         const topicsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.Diagram.DiagramType.TOPIC);
         const componentsDiagrams = diagrams.filter((diagram) => !diagram.type || diagram.type === BaseModels.Diagram.DiagramType.COMPONENT);

@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { Assign } from 'utility-types';
 
 import { Pair } from '@/types';

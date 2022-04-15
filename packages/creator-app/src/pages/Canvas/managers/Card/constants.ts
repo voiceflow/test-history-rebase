@@ -5,7 +5,6 @@ import { BlockType } from '@/constants';
 
 import { NodeConfig } from '../types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Card, Realtime.NodeData.CardBuiltInPorts> = {
   type: BlockType.CARD,
   icon: 'logs',

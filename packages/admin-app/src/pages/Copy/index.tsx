@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { Button, ButtonVariant, KeyName, Label, toast } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';

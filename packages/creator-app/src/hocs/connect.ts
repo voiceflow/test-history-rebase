@@ -33,7 +33,6 @@ interface Connect {
   ) => React.ForwardRefRenderFunction<R, Omit<P, keyof ConnectedProps<S, D, M>>>;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const connect: Connect =
   (
     mapStateToProps: SelectorLookup<any> | null,

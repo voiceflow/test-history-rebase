@@ -5,7 +5,6 @@ import client from '@/client';
 import * as Prototype from '@/ducks/prototype';
 import { Thunk } from '@/store/types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const resolveAPL =
   ({
     title,

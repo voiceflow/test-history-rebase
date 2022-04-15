@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Struct } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { CALL_HISTORY_METHOD, push, replace } from 'connected-react-router';

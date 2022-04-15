@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { createSelector } from 'reselect';
 
 import * as CreatorV1Selectors from '@/ducks/creator/diagram/selectors';

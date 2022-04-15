@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { STANDARD_GRADE } from '@ui/utils/colors/hsl';
 import React from 'react';
 

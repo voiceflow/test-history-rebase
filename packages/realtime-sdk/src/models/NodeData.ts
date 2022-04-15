@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
 import { BlockType, BlockVariant, VoicePromptType } from '@realtime-sdk/constants';
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
@@ -319,6 +318,7 @@ export namespace NodeData {
     [BaseModels.PortType.PREVIOUS]?: string;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface AccountLinking {}
 
   export interface AccountLinkingBuiltInPorts {
@@ -384,7 +384,6 @@ export namespace NodeData {
     selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API;
   }
 
-  /* eslint-disable camelcase */
   export interface GoogleSheets extends IntegrationDefaultProps {
     user?: BaseNode.Utils.IntegrationUser;
     sheet?: BaseNode.GoogleSheets.GoogleSheetsValueLabel | null;
@@ -398,7 +397,6 @@ export namespace NodeData {
     header_column?: BaseNode.GoogleSheets.GoogleSheetsValueLabel | null;
     selectedIntegration: BaseNode.Utils.IntegrationType.GOOGLE_SHEETS;
   }
-  /* eslint-enable camelcase */
 
   export interface Zapier extends IntegrationDefaultProps {
     user?: BaseNode.Utils.IntegrationUser;
@@ -419,6 +417,7 @@ export namespace NodeData {
     [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: GoogleSheets;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Exit {}
 
   export interface Buttons extends Omit<VoiceflowNode.Buttons.StepData, 'else' | 'noMatch' | 'reprompt' | 'noReply'> {

@@ -8,7 +8,6 @@ export type InternalBlockAPI<T extends HTMLElement = HTMLElement> = BlockAPI<T> 
   titleRef: React.RefObject<EditableTextAPI>;
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const useBlockAPI = () => {
   const ref = React.useRef<HTMLDivElement>(null);
   const titleRef = React.useRef<EditableTextAPI | null>(null);

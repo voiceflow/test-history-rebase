@@ -6,5 +6,4 @@ const protocolRPCType = Utils.protocol.typeFactory(protocolType(RPC_KEY));
 
 // RPC
 
-// eslint-disable-next-line import/prefer-default-export
 export const reloadSession = Utils.protocol.createAction<null>(protocolRPCType('RELOAD_SESSION'));

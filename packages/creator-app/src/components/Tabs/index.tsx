@@ -49,7 +49,7 @@ const Tabs = <V extends string = string>({ as = 'button', options, selected, onC
       const parentNode = selectedNode.parentNode as HTMLElement; // eslint-disable-line xss/no-mixed-html
 
       scheduler(() => {
-        const { left: wrapperNodeLeft } = parentNode.getBoundingClientRect?.();
+        const { left: wrapperNodeLeft } = parentNode.getBoundingClientRect();
         const { left: selectedNodeLeft } = selectedNode.getBoundingClientRect();
 
         if (activeLineRef.current) {

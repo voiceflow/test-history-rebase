@@ -1,7 +1,6 @@
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const getPlatformHasVisualsSetting = Utils.platform.createPlatformAndProjectTypeSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: true,

@@ -8,5 +8,4 @@ const StyledInput = styled(Input)`
   padding-bottom: 9px;
 `;
 
-// eslint-disable-next-line import/prefer-default-export
 export { StyledInput as Input };

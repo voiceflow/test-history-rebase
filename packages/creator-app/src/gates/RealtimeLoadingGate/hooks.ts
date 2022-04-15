@@ -8,7 +8,6 @@ import { Dispatch } from '@/store/types';
 
 import RealtimeSubscription from './subscription';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useSubscription = () => {
   const tabID: string = useSelector(Session.tabIDSelector);
   const dispatch = useDispatch<Dispatch>();

@@ -2,7 +2,6 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { createPlatformSelector } from '@/utils/platform';
 
-// eslint-disable-next-line import/prefer-default-export
 export const PLATFORM_VERSION_HEADER_TEXT = createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 'Versions are created every time your project is uploaded to Alexa.',

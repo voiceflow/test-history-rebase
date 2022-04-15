@@ -54,7 +54,6 @@ export abstract class Entity<T extends EntityInstance = EntityInstance> {
     return !!this.instance?.isReady();
   }
 
-  // eslint-disable-next-line class-methods-use-this
   shouldUpdate() {
     return true;
   }

@@ -3,6 +3,5 @@ export interface User {
   image: string;
   email: string;
   admin: number;
-  // eslint-disable-next-line camelcase
   creator_id: number;
 }

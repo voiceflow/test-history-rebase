@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
 import { Editor, Range } from 'slate';
 
 import { compose } from '@/hocs';

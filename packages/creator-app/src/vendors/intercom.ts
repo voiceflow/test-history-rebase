@@ -7,7 +7,6 @@ import { LOGROCKET_PROJECT } from '@/config';
 import { Account } from '@/models';
 import { generateID } from '@/utils/env';
 
-// eslint-disable-next-line import/prefer-default-export
 export function createProps(
   user: NullableRecord<Account>,
   workspace: Realtime.Workspace = {} as Realtime.Workspace,

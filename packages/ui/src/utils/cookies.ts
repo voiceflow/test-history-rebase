@@ -2,7 +2,7 @@ import Cookies, { CookieGetOptions, CookieSetOptions } from 'universal-cookie';
 
 const cookies = new Cookies();
 
-export const getCookieByName = <R extends any = string>(name: string, options?: CookieGetOptions): R => cookies.get(name, options);
+export const getCookieByName = <R = string>(name: string, options?: CookieGetOptions): R => cookies.get(name, options);
 
 export const getAllCookies = () => cookies.getAll();
 

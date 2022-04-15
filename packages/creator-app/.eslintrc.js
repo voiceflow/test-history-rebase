@@ -13,17 +13,20 @@ module.exports = {
     camelcase: 'warn',
     'consistent-return': 'warn',
     'max-classes-per-file': 'warn',
+    'default-param-last': 'warn',
     'no-param-reassign': 'warn',
     'no-shadow': 'warn',
-    'no-underscore-dangle': 'warn',
+    'no-restricted-exports': 'warn',
     'no-unused-expressions': 'warn',
+    'no-promise-executor-return': 'warn',
     'lines-between-class-members': 'warn',
 
     'promise/catch-or-return': 'warn',
     'promise/always-return': 'warn',
 
+    'unicorn/prefer-set-has': 'warn',
+
     'import/no-named-as-default': 'warn',
-    'import/prefer-default-export': 'warn',
 
     'eslint-comments/disable-enable-pair': 'warn',
     'eslint-comments/no-unused-disable': 'warn',
@@ -83,7 +86,6 @@ module.exports = {
 
         'react-hooks/rules-of-hooks': 'off',
 
-        'import/prefer-default-export': 'off',
         'import/no-cycle': 'off',
         'import/no-extraneous-dependencies': 'off',
       },
@@ -122,6 +124,7 @@ module.exports = {
         '@typescript-eslint/no-empty-function': 'off',
         '@typescript-eslint/ban-types': 'off',
         '@typescript-eslint/no-namespace': 'off',
+        '@typescript-eslint/no-unnecessary-type-constraint': 'off',
       },
     },
   ],

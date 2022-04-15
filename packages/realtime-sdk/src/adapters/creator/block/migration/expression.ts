@@ -4,7 +4,7 @@ import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
-const LogicGroupConditionType: string[] = [BaseNode.Utils.ExpressionTypeV2.AND, BaseNode.Utils.ExpressionTypeV2.OR];
+const LogicGroupConditionType = new Set<string>([BaseNode.Utils.ExpressionTypeV2.AND, BaseNode.Utils.ExpressionTypeV2.OR]);
 
 // identifies the logicInterface for older IF data
 export const getLogicInterface = (expression: BaseNode.Utils.Expression, hasParent = false): BaseNode.Utils.ConditionsLogicInterface => {
@@ -21,12 +21,7 @@ export const getLogicInterface = (expression: BaseNode.Utils.Expression, hasPare
      * 3. Inner logic should NOT be of type advance, not, minus, plus, divide, multiply
      * 4. Base condition of logic group can only be AND or OR
      */
-    if (
-      !hasParent &&
-      getHighestDepth(expression) === 2 &&
-      !hasAdvanceChildExpression(expression) &&
-      LogicGroupConditionType.includes(expression.type)
-    ) {
+    if (!hasParent && getHighestDepth(expression) === 2 && !hasAdvanceChildExpression(expression) && LogicGroupConditionType.has(expression.type)) {
       return BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP;
     }
 

@@ -6,7 +6,7 @@ interface Storage {
 }
 
 const createUseStorageHook = <S extends Storage>(storage: S) => {
-  const getInitialValue = <T extends any>(name: string, defaultValue: T): T => {
+  const getInitialValue = <T>(name: string, defaultValue: T): T => {
     const strValue = storage.getItem(name);
 
     try {
@@ -16,7 +16,7 @@ const createUseStorageHook = <S extends Storage>(storage: S) => {
     }
   };
 
-  return <T extends any>(name: string, initialState: T) => {
+  return <T>(name: string, initialState: T) => {
     const [state, setState] = React.useState<T>(() => getInitialValue(name, initialState));
 
     const setStorageState = React.useCallback((value: T) => {

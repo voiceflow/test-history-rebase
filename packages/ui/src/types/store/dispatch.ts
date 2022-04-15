@@ -10,7 +10,6 @@ export type Dispatcher<A extends any[]> = (...args: A) => Dispatchable;
 
 // action
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export interface Action<T extends string = string, P = undefined, M extends object | undefined = undefined> {
   type: T;
   payload: P;

@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { NodeData } from '@realtime-sdk/models';
 import { BaseNode } from '@voiceflow/base-types';
 

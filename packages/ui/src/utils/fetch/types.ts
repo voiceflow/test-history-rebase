@@ -12,7 +12,6 @@ export type FetchOptions = Pick<RequestInit, 'credentials' | 'mode'> & {
   returns?: FetchMessageFormat;
   cache?: boolean;
   expiry?: number | false;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   body?: string | object;
   headers?: Record<string, string>;
   unauthorizedInterceptor?: boolean;

@@ -39,7 +39,7 @@ class DndSimulatorDataTransfer {
     return '';
   }
 
-  // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setDragImage(img: string, xOffset: number, yOffset: number) {}
 }
 

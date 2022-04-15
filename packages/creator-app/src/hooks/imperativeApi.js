@@ -1,6 +1,5 @@
 import React from 'react';
 
-// eslint-disable-next-line import/prefer-default-export
 export function useImperativeApi({ ref, deps = [], creator = () => ({}), nodeWithApi }) {
   const nodeRef = React.useRef();
 

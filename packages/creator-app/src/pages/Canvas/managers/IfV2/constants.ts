@@ -8,7 +8,6 @@ import { NodeConfig } from '../types';
 
 export const MAX_IF_ITEMS = 22;
 
-// eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = {
   type: BlockType.IFV2,
   icon: 'if',

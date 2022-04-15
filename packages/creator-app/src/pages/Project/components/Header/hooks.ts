@@ -12,7 +12,6 @@ import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { ShareProjectTab } from './constants';
 import { SharePopperContext } from './contexts';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boolean; shortcuts?: boolean } = {}): MenuOption<undefined>[] => {
   const goToDashboard = useDispatch(Router.goToDashboard);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);

@@ -3,10 +3,8 @@ import React from 'react';
 
 // to prevent loosing editor focus
 class Handle extends RCSliderHandle {
-  // eslint-disable-next-line class-methods-use-this
   blur() {}
 
-  // eslint-disable-next-line class-methods-use-this
   focus() {}
 }
 

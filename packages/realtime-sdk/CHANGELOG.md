@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.77.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.76.1...@voiceflow/realtime-sdk@1.77.0) (2022-04-15)
+
+
+### Features
+
+* add nlu to project description (VF-2996) ([#5332](https://github.com/voiceflow/creator-app/issues/5332)) ([84908b3](https://github.com/voiceflow/creator-app/commit/84908b38652ddf6fb149fa0dc076b029e8bea291))
+
+
+
+
+
 ## [1.76.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.76.0...@voiceflow/realtime-sdk@1.76.1) (2022-04-14)
 
 

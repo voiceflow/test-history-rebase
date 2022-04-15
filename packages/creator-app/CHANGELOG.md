@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.691.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.690.4...@voiceflow/creator-app@1.691.0) (2022-04-15)
+
+
+### Features
+
+* add nlu to project description (VF-2996) ([#5332](https://github.com/voiceflow/creator-app/issues/5332)) ([84908b3](https://github.com/voiceflow/creator-app/commit/84908b38652ddf6fb149fa0dc076b029e8bea291))
+
+
+
+
+
 ## [1.690.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.690.3...@voiceflow/creator-app@1.690.4) (2022-04-14)
 
 

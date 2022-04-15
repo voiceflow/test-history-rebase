@@ -1,6 +1,10 @@
 /* eslint-disable no-process-env */
 
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
+
 import { INTERCOM_ENABLED } from '.';
+
+export { FeatureFlag };
 
 const GADGETS_ENABLED = process.env.FF_GADGETS === 'true';
 const NATO_APCO_ENABLED = process.env.FF_NATO_ACPO === 'true';
@@ -17,36 +21,6 @@ const VARIABLE_STATES_STARTING_BLOCKS_ENABLED = process.env.VARIABLE_STATES_STAR
 const IMM_MODALS_V2 = process.env.FF_IMM_MODALS_V2 === 'true';
 const NLU_MANAGER_ENABLED = process.env.FF_NLU_MANAGER === 'true';
 const PROJECT_CREATE_ENABLED = process.env.FF_PROJECT_CREATE === 'true';
-
-export enum FeatureFlag {
-  GADGETS = 'gadgets',
-  NATO_APCO = 'nato_apco',
-  ASR_BYPASS = 'asr_bypass',
-  MOTOROLA_SSO = 'motorola_sso',
-  WAVENET_VOICES = 'wavenet_voices',
-  TOPICS_AND_COMPONENTS = 'topics_and_components',
-
-  // atomic actions
-  ATOMIC_ACTIONS_PHASE_2 = 'atomic_actions_phase_2',
-  ATOMIC_ACTIONS_AWARENESS = 'atomic_actions_awareness',
-
-  // used by select private cloud instances to add a new role type
-  OWNER_ROLE = 'owner_role',
-
-  // permanent circuit breakers for vendor integrations
-  INTERCOM_INTEGRATION = 'intercom_integration',
-
-  ENTERPRISE_TRIAL = 'enterprise_trial',
-
-  // variable states
-  VARIABLE_STATES = 'variable_states',
-  VARIABLE_STATES_STARTING_BLOCKS = 'variable_states_starting_blocks',
-
-  IMM_MODALS_V2 = 'imm_modals_v2',
-  NLU_MANAGER = 'nlu_manager',
-
-  PROJECT_CREATE = 'project_create',
-}
 
 export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.GADGETS]: GADGETS_ENABLED,

@@ -1,9 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import queryString from 'query-string';
 
 import { ExtraOptions } from './types';
 
 export interface FeatureClient {
-  isEnabled: (feature: string, workspaceID?: string, organizationID?: string) => Promise<boolean>;
+  isEnabled: (feature: Realtime.FeatureFlag, workspaceID?: string, organizationID?: string) => Promise<boolean>;
 }
 
 const Client = ({ api }: ExtraOptions): FeatureClient => ({

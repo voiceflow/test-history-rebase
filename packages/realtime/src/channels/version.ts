@@ -22,7 +22,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const [project, dbVersion, isTopicsAndComponents, variableStates] = await Promise.all([
       this.services.project.get(creatorID, projectID).then(Realtime.Adapters.projectAdapter.fromDB),
       this.services.version.get(creatorID, versionID),
-      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, 'topics_and_components'),
+      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.TOPICS_AND_COMPONENTS),
       this.services.variableState.getAll(creatorID, projectID).then(Realtime.Adapters.variableStateAdapter.mapFromDB),
     ]);
     const { platform, type: projectType } = project;

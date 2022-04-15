@@ -80,7 +80,7 @@ class WorkspaceService extends AbstractControl {
     await client.workspace.delete(workspaceID);
   }
 
-  public async isFeatureEnabled(creatorID: number, workspaceID: string | undefined, feature: string): Promise<boolean> {
+  public async isFeatureEnabled(creatorID: number, workspaceID: string | undefined, feature: Realtime.FeatureFlag): Promise<boolean> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
     const organization = workspaceID ? await client.workspace.getOrganization(workspaceID) : undefined;
 

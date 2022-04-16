@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, Box, ClickableText, Input, stopPropagation, SvgIcon, TippyTooltip, useDidUpdateEffect, useOnScreen } from '@voiceflow/ui';
+import { Badge, Box, ClickableText, Input, stopPropagation, SvgIcon, TippyTooltip, toast, useDidUpdateEffect, useOnScreen } from '@voiceflow/ui';
 import React from 'react';
 
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
@@ -71,6 +71,19 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
 
   const valueListStyling = showAllValues ? {} : { maxHeight: MAX_VISIBLE_VALUE_HEIGHT, overflow: 'hidden' };
 
+  const isValidNewInput = (input: Realtime.SlotInput) => {
+    if (!input) return false;
+
+    const { value } = input;
+
+    if (inputs.some((input) => input.value.trim() === value.trim())) {
+      toast.error(`Value ${value} already being used`);
+      return false;
+    }
+
+    return true;
+  };
+
   const handleNewInput = (
     onAdd: (value: Realtime.SlotInput) => void,
     onChange: (value: Realtime.SlotInput) => void,
@@ -79,11 +92,12 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
     valueRef.current?.blur();
 
     if (!newValueText.trim()) return;
-    if (value) {
+
+    if (value && isValidNewInput(value)) {
       onAdd(value);
+      onChange(generateSlotInput());
+      setNewValueText('');
     }
-    onChange(generateSlotInput());
-    setNewValueText('');
 
     // TODO: remove this and the blur above after the editors remove the utteranceManager
     // this fixes an input enter bug we had, evgeny and josh has context

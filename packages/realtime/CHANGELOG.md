@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.57.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.57.1...@voiceflow/realtime@1.57.2) (2022-04-16)
+
+
+### Bug Fixes
+
+* move realtime variable action (VF-3082) ([#5336](https://github.com/voiceflow/creator-app/issues/5336)) ([5f2335e](https://github.com/voiceflow/creator-app/commit/5f2335efb91134842d53ea48ea9bdd41bae0b9f2))
+
+
+
+
+
 ## [1.57.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.57.0...@voiceflow/realtime@1.57.1) (2022-04-15)
 
 

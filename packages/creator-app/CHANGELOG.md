@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.692.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.692.3...@voiceflow/creator-app@1.692.4) (2022-04-16)
+
+
+### Bug Fixes
+
+* dont count duplicate  new var names (VF-000) ([#5339](https://github.com/voiceflow/creator-app/issues/5339)) ([9cb4a91](https://github.com/voiceflow/creator-app/commit/9cb4a91ee07821d68e96af5feb13d6a1bfe0483a))
+* prevent duplicate values (VF-000) ([#5338](https://github.com/voiceflow/creator-app/issues/5338)) ([e887b16](https://github.com/voiceflow/creator-app/commit/e887b16fee4b2166228c9073680143fe00c3ee21))
+
+
+
+
+
 ## [1.692.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.692.2...@voiceflow/creator-app@1.692.3) (2022-04-16)
 
 

@@ -5,10 +5,10 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '../utils';
 
-class AddGlobalVariable extends AbstractVersionResourceControl<Realtime.version.GlobalVariablePayload> {
-  protected actionCreator = Realtime.version.addGlobalVariable;
+class AddGlobalVariable extends AbstractVersionResourceControl<Realtime.version.variable.GlobalVariablePayload> {
+  protected actionCreator = Realtime.version.variable.addGlobal;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.version.GlobalVariablePayload>) => {
+  protected process = async (ctx: Context, { payload }: Action<Realtime.version.variable.GlobalVariablePayload>) => {
     const { creatorID } = ctx.data;
     const { variables } = await this.services.version.get(creatorID, payload.versionID);
 

@@ -4,7 +4,7 @@ import * as Normal from 'normal-store';
 
 import { createReducer } from './utils';
 
-const removeGlobalVariableReducer = createReducer(Realtime.version.removeGlobalVariable, (state, { versionID, variable }) => {
+const removeGlobalVariableReducer = createReducer(Realtime.version.variable.removeGlobal, (state, { versionID, variable }) => {
   const version = Normal.getOne(state, versionID);
 
   if (version) {

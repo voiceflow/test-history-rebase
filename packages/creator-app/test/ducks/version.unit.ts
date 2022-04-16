@@ -55,7 +55,7 @@ const MOCK_STATE: Version.VersionState = {
 
 suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, describeEffectV2, createState }) => {
   describe('reducer', () => {
-    describeReducerV2(Realtime.version.addGlobalVariable, ({ applyAction }) => {
+    describeReducerV2(Realtime.version.variable.addGlobal, ({ applyAction }) => {
       it('append new variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
 
@@ -69,7 +69,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       });
     });
 
-    describeReducerV2(Realtime.version.removeGlobalVariable, ({ applyAction }) => {
+    describeReducerV2(Realtime.version.variable.removeGlobal, ({ applyAction }) => {
       it('remove a known variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
 
@@ -184,7 +184,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'foo', CanvasCreationType.IMM);
 
-        expect(dispatched).to.eql([{ sync: Realtime.version.addGlobalVariable({ ...ACTION_CONTEXT, variable: 'foo' }) }]);
+        expect(dispatched).to.eql([{ sync: Realtime.version.variable.addGlobal({ ...ACTION_CONTEXT, variable: 'foo' }) }]);
       });
     });
 
@@ -196,7 +196,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz');
 
-        expect(dispatched).to.eql([{ sync: Realtime.version.removeGlobalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
+        expect(dispatched).to.eql([{ sync: Realtime.version.variable.removeGlobal({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
       });
     });
   });

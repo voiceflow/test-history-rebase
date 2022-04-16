@@ -22,12 +22,12 @@ export const addGlobalVariable =
       throw new Error("Reserved word. You can prefix with '_' to fix this issue");
     }
 
-    await dispatch.sync(Realtime.version.addGlobalVariable({ ...getActiveVersionContext(getState()), variable }));
+    await dispatch.sync(Realtime.version.variable.addGlobal({ ...getActiveVersionContext(getState()), variable }));
     dispatch(Tracking.trackVariableCreated({ creationType, variableType: VariableType.GLOBAL }));
   };
 
 export const removeGlobalVariable =
   (variable: string): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.version.removeGlobalVariable({ ...getActiveVersionContext(getState()), variable }));
+    await dispatch.sync(Realtime.version.variable.removeGlobal({ ...getActiveVersionContext(getState()), variable }));
   };

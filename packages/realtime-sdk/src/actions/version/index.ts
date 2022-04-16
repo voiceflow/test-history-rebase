@@ -1,14 +1,15 @@
-import { COMPONENTS_KEY, PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY, TOPICS_KEY, VARIABLES_KEY, VERSION_KEY } from '@realtime-sdk/constants';
+import { COMPONENTS_KEY, PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY, TOPICS_KEY } from '@realtime-sdk/constants';
 import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, Version } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { createCRUDActions } from './utils';
+import { createCRUDActions } from '../utils';
+import { versionType } from './utils';
 
-const versionType = Utils.protocol.typeFactory(VERSION_KEY);
+export * as variable from './variable';
+
 const versionRPCType = Utils.protocol.typeFactory(versionType(RPC_KEY));
-const versionVariablesType = Utils.protocol.typeFactory(versionType(VARIABLES_KEY));
 const versionSettingsType = Utils.protocol.typeFactory(versionType(SETTINGS_KEY));
 const versionSessionType = Utils.protocol.typeFactory(versionSettingsType(SESSION_KEY));
 const versionPublishingType = Utils.protocol.typeFactory(versionType(PUBLISHING_KEY));
@@ -25,16 +26,6 @@ export interface ActivateVersionPayload {
 }
 
 export const activateVersion = Utils.protocol.createAction<ActivateVersionPayload>(versionRPCType('ACTIVATE'));
-
-// Variables
-
-export interface GlobalVariablePayload extends BaseVersionPayload {
-  variable: string;
-}
-
-export const addGlobalVariable = Utils.protocol.createAction<GlobalVariablePayload>(versionVariablesType('ADD'));
-
-export const removeGlobalVariable = Utils.protocol.createAction<GlobalVariablePayload>(versionVariablesType('REMOVE'));
 
 // Other
 

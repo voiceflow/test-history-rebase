@@ -16,10 +16,10 @@ export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) 
     });
   }, [mergedVariables]);
 
-  const alreadyExists = (name: string) => existingVariableNames.includes(name);
+  const varAlreadyExists = (name: string) => existingVariableNames.includes(name);
 
   const onCreateSingle = (varName: string) => {
-    if (!alreadyExists(varName)) {
+    if (!varAlreadyExists(varName)) {
       try {
         createGlobalVar(varName, CanvasCreationType.IMM);
       } catch (e) {
@@ -37,12 +37,14 @@ export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) 
 
       allNewVars.forEach((newVar: string) => {
         const name = newVar.trim();
-        if (!alreadyExists(name) || newVarNames.includes(name)) {
-          newVarNames.push(name);
-          try {
-            createGlobalVar(name, CanvasCreationType.IMM);
-          } catch (e) {
-            toast.error(e);
+        if (!varAlreadyExists(name)) {
+          if (!newVarNames.includes(name)) {
+            newVarNames.push(name);
+            try {
+              createGlobalVar(name, CanvasCreationType.IMM);
+            } catch (e) {
+              toast.error(e);
+            }
           }
         } else {
           toast.warn(`'${name}' already exists`);

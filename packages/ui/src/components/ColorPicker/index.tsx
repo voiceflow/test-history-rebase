@@ -1,4 +1,4 @@
-import { useDebouncedCallback } from '@ui/hooks';
+import { useDebouncedCallback, useDidUpdateEffect } from '@ui/hooks';
 import { useOnClickOutside } from '@ui/hooks/mouse';
 import { rgbaToHex } from '@ui/utils';
 import { isHexColor } from '@ui/utils/colors/hex';
@@ -37,6 +37,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, customC
   const [isShowingPicker, setIsShowingPicker] = React.useState(false);
   const isCustomColor = React.useMemo(() => !isBaseColor(selectedHex), [selectedHex]);
   const debouncedSetColor = useDebouncedCallback(100, (color: string) => onChange(color), []);
+
+  useDidUpdateEffect(() => {
+    setLocalSelectedHex(normalizeColorToHex(selectedColor));
+  }, [selectedColor]);
 
   useOnClickOutside(popOver, () => setIsShowingPicker(false), [setIsShowingPicker]);
   return (

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.693.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.693.0...@voiceflow/creator-app@1.693.1) (2022-04-18)
+
+
+### Bug Fixes
+
+* add chat card carousel ff (VF-3352) ([#5342](https://github.com/voiceflow/creator-app/issues/5342)) ([cdff01f](https://github.com/voiceflow/creator-app/commit/cdff01f9b5ca50a0515c183d1afe649daca5d5eb))
+
+
+
+
+
 # [1.693.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.692.4...@voiceflow/creator-app@1.693.0) (2022-04-18)
 
 

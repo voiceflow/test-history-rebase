@@ -1,16 +1,15 @@
-import { Box, BoxFlex, Button, ButtonVariant, KeyName, preventDefault, SvgIcon } from '@voiceflow/ui';
+import { Box, BoxFlex, Button, ButtonVariant, KeyName, preventDefault, SvgIcon, toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
 import { PrototypeInputMode, PrototypeStatus } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
-import { useDispatch } from '@/hooks';
+import * as Transcripts from '@/ducks/transcript';
+import { useDispatch, useSelector } from '@/hooks';
 import Reset from '@/pages/Prototype/components/PrototypeReset';
 import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { Identifier } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
 import { withEnterPress, withKeyPress } from '@/utils/dom';
 
 import SpeechBar from '../PrototypeSpeechBar';
@@ -25,23 +24,28 @@ export type PrototypeInputProps<L> = Pick<ControlCenterProps, 'showButtons' | 's
 };
 
 const PrototypeInput = <L extends string>({
-  inputMode,
-  showButtons,
-  updatePrototype,
   locale,
   disabled,
   setShowButtons,
   onUserInput,
   stepForward,
-  diagramID,
-  status,
   stepBack,
-  contextStep,
-}: PrototypeInputProps<L> & ConnectedPrototypeInputProps) => {
-  const resetPrototype = useResetPrototype();
+}: PrototypeInputProps<L>): React.ReactElement<any, any> | null => {
   const [value, setValue] = React.useState('');
+
+  const contextStep = useSelector(Prototype.prototypeContextStepSelector);
+  const inputMode = useSelector(Prototype.prototypeInputModeSelector);
+  const showButtons = useSelector(Prototype.prototypeShowButtonsSelector);
+  const status = useSelector(Prototype.prototypeStatusSelector);
+  const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
+
   const goBackDisabled = contextStep <= 1;
+
+  const resetPrototype = useResetPrototype();
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
+  const savePrototypeSession = useDispatch(Transcripts.createTranscript);
+  const goToTargetTranscript = useDispatch(Router.goToTargetTranscript);
+  const updatePrototype = useDispatch(Prototype.updatePrototype);
 
   const sendTextHandler = preventDefault(() => {
     if (!disabled) {
@@ -49,6 +53,25 @@ const PrototypeInput = <L extends string>({
       setValue('');
     }
   });
+
+  const onSave = async () => {
+    try {
+      const newTranscriptID = await savePrototypeSession();
+      toast.success(
+        <>
+          Test saved to Conversations <br />
+          <ToastCallToAction
+            onClick={() => {
+              goToTargetTranscript(newTranscriptID!);
+            }}
+          >
+            Go to conversation
+          </ToastCallToAction>
+        </>
+      );
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
+  };
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -73,11 +96,12 @@ const PrototypeInput = <L extends string>({
         setInputMode={setInputMode}
         showButtons={showButtons}
         setShowButtons={setShowButtons}
+        savePrototypeTest={onSave}
         inputRef={inputRef}
         goBackDisabled={goBackDisabled}
       />
       {status === PrototypeStatus.ENDED ? (
-        <Reset onClick={resetPrototype} />
+        <Reset onClick={resetPrototype} onSave={onSave} />
       ) : (
         <InputContainer>
           {inputMode === PrototypeInputMode.TEXT ? (
@@ -86,7 +110,7 @@ const PrototypeInput = <L extends string>({
                 id={Identifier.PROTOTYPE_RESPONSE}
                 value={value}
                 minRows={3}
-                onChange={(e: any) => setValue(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setValue(e.target.value)}
                 onKeyPress={withEnterPress(sendTextHandler)}
                 onKeyDown={withKeyPress(KeyName.ESCAPE, goToCurrentCanvas)}
                 placeholder="Start typing..."
@@ -111,19 +135,4 @@ const PrototypeInput = <L extends string>({
   );
 };
 
-const mapStateToProps = {
-  contextStep: Prototype.prototypeContextStepSelector,
-  inputMode: Prototype.prototypeInputModeSelector,
-  showButtons: Prototype.prototypeShowButtonsSelector,
-  status: Prototype.prototypeStatusSelector,
-  diagramID: CreatorV2.activeDiagramIDSelector,
-};
-
-const mapDispatchToProps = {
-  updatePrototype: Prototype.updatePrototype,
-  resetPrototype: Prototype.resetPrototype,
-};
-
-type ConnectedPrototypeInputProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(PrototypeInput) as <L>(props: PrototypeInputProps<L>) => React.ReactElement;
+export default PrototypeInput;

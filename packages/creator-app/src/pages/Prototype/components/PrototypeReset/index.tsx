@@ -1,39 +1,17 @@
-import { BoxFlex, Button, ButtonVariant, ClickableText, Text, ThemeColor, toast, ToastCallToAction } from '@voiceflow/ui';
+import { BoxFlex, Button, ButtonVariant, ClickableText, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
-import { goToTargetTranscript } from '@/ducks/router';
-import * as Transcripts from '@/ducks/transcript';
-import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
 
 import { Container } from './components';
 
 export interface PrototypeResetProps {
   onClick: React.MouseEventHandler<HTMLSpanElement>;
+  onSave: VoidFunction;
 }
 
-const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProps> = ({ savePrototypeSession, onClick, goToTargetTranscript }) => {
+const PrototypeReset: React.FC<PrototypeResetProps> = ({ onSave, onClick }) => {
   const [transcriptSaved, setTranscriptSaved] = React.useState(true);
-
-  const onSave = async () => {
-    try {
-      const newTranscriptID = await savePrototypeSession();
-      toast.success(
-        <>
-          Test saved to Conversations <br />
-          <ToastCallToAction
-            onClick={() => {
-              goToTargetTranscript(newTranscriptID!);
-            }}
-          >
-            Go to conversation
-          </ToastCallToAction>
-        </>
-      );
-      // eslint-disable-next-line no-empty
-    } catch (e) {}
-  };
 
   return (
     <Container>
@@ -64,11 +42,4 @@ const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProp
   );
 };
 
-const mapDispatchToProps = {
-  savePrototypeSession: Transcripts.createTranscript,
-  goToTargetTranscript,
-};
-
-type ConnectedPrototypeResetProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(PrototypeReset) as React.FC<PrototypeResetProps>;
+export default PrototypeReset;

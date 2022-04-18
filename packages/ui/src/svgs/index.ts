@@ -224,6 +224,7 @@ export { default as random } from './solid/random.svg';
 export { default as sandwichMenu } from './sandwich-menu.svg';
 export { default as save } from './save.svg';
 export { default as saveForLater } from './save-for-later.svg';
+export { default as saveTest } from './save-test.svg';
 export { default as search } from './search.svg';
 export { default as send } from './send.svg';
 export { default as share } from './share.svg';

@@ -15,9 +15,10 @@ export interface ControlCenterProps {
   setInputMode: (mode: PrototypeInputMode) => void;
   showButtons: boolean;
   setShowButtons: (val: boolean) => void;
-  stepBack: () => void;
-  stepForward: () => void;
+  stepBack: VoidFunction;
+  stepForward: VoidFunction;
   inputRef: React.RefObject<HTMLInputElement>;
+  savePrototypeTest: VoidFunction;
   goBackDisabled: boolean;
 }
 
@@ -34,6 +35,7 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
   inputRef,
   contextStep,
   goBackDisabled,
+  savePrototypeTest,
 }) => {
   const goForwardDisabled = contextStep === history.length - 1;
 
@@ -89,6 +91,11 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
       </TippyTooltip>
 
       <ButtonGroupSplitter />
+      <TippyTooltip title="Save Transcript" position="top">
+        <ControlButton active={false} onClick={savePrototypeTest}>
+          <SvgIcon icon="saveTest" size={16} color={ICON_COLOR} />
+        </ControlButton>
+      </TippyTooltip>
     </ControlsContainer>
   );
 };

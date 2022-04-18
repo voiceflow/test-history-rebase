@@ -55,9 +55,8 @@ const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
 
     trackingEvents.trackTestableLinkCopy({ layout: layoutType, brandColor, password, brandImage, avatar });
 
-    if (trainingModelAPI.isTrained) {
-      toast.success('Link copied to clipboard');
-    } else {
+    toast.success('Link copied to clipboard');
+    if (!trainingModelAPI.isTrained) {
       toast.warn(
         <>
           Assistant is not fully trained. This may cause unexpected behaviour when prototyping.

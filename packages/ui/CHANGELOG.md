@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.75.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.74.0...@voiceflow/ui@1.75.0) (2022-04-18)
+
+
+### Features
+
+* save transcript at any time during a test (VF-2964) ([#5329](https://github.com/voiceflow/creator-app/issues/5329)) ([3489e48](https://github.com/voiceflow/creator-app/commit/3489e483a58f31fe0c9b9a6d99aac87e0228f56e))
+
+
+
+
+
 # [1.74.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.73.1...@voiceflow/ui@1.74.0) (2022-04-18)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.74.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.73.1...@voiceflow/ui@1.74.0) (2022-04-18)
+
+
+### Features
+
+* nlu imports on project create (VF-2971) ([#5327](https://github.com/voiceflow/creator-app/issues/5327)) ([7a92747](https://github.com/voiceflow/creator-app/commit/7a92747c6f8cf2360a9a37b62214afb5242802c3))
+
+
+
+
+
 ## [1.73.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.73.0...@voiceflow/ui@1.73.1) (2022-04-16)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.693.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.692.4...@voiceflow/creator-app@1.693.0) (2022-04-18)
+
+
+### Bug Fixes
+
+* training toast ux (VF-3319) ([#5340](https://github.com/voiceflow/creator-app/issues/5340)) ([5575de3](https://github.com/voiceflow/creator-app/commit/5575de34c53ed5d46d8f49ff055de3711169138f))
+
+
+### Features
+
+* nlu imports on project create (VF-2971) ([#5327](https://github.com/voiceflow/creator-app/issues/5327)) ([7a92747](https://github.com/voiceflow/creator-app/commit/7a92747c6f8cf2360a9a37b62214afb5242802c3))
+
+
+
+
+
 ## [1.692.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.692.3...@voiceflow/creator-app@1.692.4) (2022-04-16)
 
 

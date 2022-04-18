@@ -26,7 +26,7 @@ import { NewProjectContainer } from './components/Containers';
 import NewProjectModalFooter from './components/NewProjectModalFooter';
 import { ChannelSection, InvocationNameSection, LanguageSection, NLUSection } from './components/Section';
 import { DEFAULT_PROJECT_NAME, getDefaultLanguage, getLanguage, getPlatformOrProjectTypeMeta } from './constants';
-import { AnyLanguage, AnyLocale } from './types';
+import { AnyLanguage, AnyLocale, ImportModel } from './types';
 
 const getDefaultAlexaVoice = (locale: AlexaConstants.Locale) => {
   return AlexaConstants.DEFAULT_LOCALE_VOICE_MAP[locale] || null;
@@ -92,6 +92,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
   const [channelError, setChannelError] = React.useState<boolean>(false);
   const [nluError, setNluError] = React.useState<boolean>(false);
   const [invocationNameError, setInvocationNameError] = React.useState<boolean>(false);
+  const [importedModel, setImportedModel] = React.useState<ImportModel>();
 
   const [alexaLocales, setAlexaLocales] = React.useState<AnyLocale[]>([LOCALE_MAP[0].value]);
   const [language, setLanguage] = React.useState<AnyLanguage>();
@@ -113,6 +114,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
     setNlu(value !== nlu ? value : undefined);
     setLanguage(undefined);
     setNluError(false);
+    setImportedModel(undefined);
   };
 
   const handleInvocationNameChange = (value: string) => {
@@ -208,6 +210,9 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
       } else {
         await updateGeneralMeta(newVersionID, languageToUse as VoiceflowConstants.Locale);
       }
+
+      if (importedModel && platformType && getPlatformOrProjectTypeMeta[platformType]?.importMeta)
+        await client.version.patchMergeIntentsAndSlots(newVersionID, importedModel);
     } finally {
       setIsCreateLoading(false);
       closeProjectCreateModal();
@@ -246,7 +251,13 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
               invocationErrorMessage={invocationErrorMessage}
             />
           ) : (
-            <NLUSection nluValue={nlu} onNluSelect={handleNLUSelect} nluError={nluError} />
+            <NLUSection
+              nluValue={nlu}
+              onNluSelect={handleNLUSelect}
+              nluError={nluError}
+              importModel={importedModel}
+              onImportModel={setImportedModel}
+            />
           )}
 
           <LanguageSection

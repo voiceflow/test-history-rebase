@@ -4,6 +4,7 @@ import { googleService } from '@/client/fetch';
 import {
   createExportService,
   createModelExportService,
+  createModelImportService,
   createPrototypeService,
   createPublishService,
   createSessionService,
@@ -18,6 +19,7 @@ import projectService from './project';
 const googleServiceClient = {
   export: createExportService<GoogleExportJob.AnyJob, GoogleStageType>(GOOGLE_SERVICE_ENDPOINT),
   modelExport: createModelExportService(googleService),
+  modelImport: createModelImportService(googleService),
   project: projectService,
   publish: createPublishService<GooglePublishJob.AnyJob, GoogleStageType>(`${GOOGLE_SERVICE_ENDPOINT}/v2`),
   session: createSessionService<Account.Google, { code: string }>(GOOGLE_SERVICE_ENDPOINT),

@@ -11,9 +11,15 @@ import { FORMATTED_GOOGLE_LOCALES_LABELS, getPreferredGoogleLocales } from '@/pa
 import LOCALE_MAP from '@/services/LocaleMap';
 
 import getSelectTooltip from './components/SelectTooltip';
-import { AnyLanguage, AnyLocale, LanguageSelectProps, PlatformAndProjectTypeMeta, PlatformTypeUpcoming, Section } from './types';
+import { AnyLanguage, AnyLocale, FileExtension, LanguageSelectProps, PlatformAndProjectTypeMeta, PlatformTypeUpcoming, Section } from './types';
 
 export const DEFAULT_PROJECT_NAME = 'Untitled';
+
+export const getFileExtensionLabel: Record<FileExtension, string> = {
+  [FileExtension.CSV]: 'CSV',
+  [FileExtension.JSON]: 'JSON',
+  [FileExtension.ZIP]: 'ZIP',
+};
 
 export const ChannelSectionErrorMessage = 'Channel selection is required';
 export const NLUSectionErrorMessage =
@@ -86,7 +92,6 @@ export const getPlatformOrProjectTypeMeta: Partial<
     disabled: false,
     type: VoiceflowConstants.PlatformType.GOOGLE,
     icon: 'googleAssistant',
-
     languageSelectProps: {
       options: getPreferredGoogleLocales(),
       placeholder: 'Select language',
@@ -107,6 +112,10 @@ export const getPlatformOrProjectTypeMeta: Partial<
     type: VoiceflowConstants.PlatformType.VOICEFLOW,
     icon: 'voiceflowV',
     iconColor: '#132144',
+    importMeta: {
+      name: 'Voiceflow',
+      fileExtensions: [FileExtension.CSV],
+    },
   },
   [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
     name: 'Dialogflow ES',
@@ -144,13 +153,32 @@ export const getPlatformOrProjectTypeMeta: Partial<
     localesText: 'Language',
     type: VoiceflowConstants.PlatformType.EINSTEIN,
     disabled: false,
+    importMeta: {
+      name: 'Einstein',
+      fileExtensions: [FileExtension.CSV],
+    },
   },
   [VoiceflowConstants.PlatformType.WATSON]: {
     name: 'IBM Watson',
     tooltip: getSelectTooltip('IBM Watson', 'Import and export/upload NLU models for IBM Watson.'),
     localesText: 'Language',
     disabled: false,
+    importMeta: {
+      name: 'Watson',
+      fileExtensions: [FileExtension.JSON],
+    },
     type: VoiceflowConstants.PlatformType.WATSON,
+  },
+  [VoiceflowConstants.PlatformType.LEX]: {
+    name: 'Amazon Lex',
+    tooltip: getSelectTooltip('Amazon Lex', 'Import and export/upload NLU models for Amazon Lex.'),
+    localesText: 'Language',
+    disabled: false,
+    importMeta: {
+      name: 'Lex',
+      fileExtensions: [FileExtension.ZIP],
+    },
+    type: VoiceflowConstants.PlatformType.LEX,
   },
   [VoiceflowConstants.PlatformType.NUANCE_MIX]: {
     name: 'Nuance Mix',
@@ -220,6 +248,7 @@ export const NLU_SECTIONS: Section[] = [
       getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.LUIS],
       getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.RASA],
       getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.EINSTEIN],
+      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.LEX],
       getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.NUANCE_MIX],
     ],
   },

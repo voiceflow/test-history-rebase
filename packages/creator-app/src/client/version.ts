@@ -1,3 +1,5 @@
+import { ImportModel } from '@/pages/NewProjectV2/types';
+
 import { apiV2 } from './fetch';
 
 export const VERSIONS_PATH = 'versions';
@@ -10,6 +12,10 @@ const versionClient = {
     return apiV2.get(
       `/${VERSIONS_PATH}/snapshot/${versionID}?manualSave=${manualSave}&saveVersionName=${versionName}&autoSaveFromRestore=${autoSaveFromRestore}`
     );
+  },
+  patchMergeIntentsAndSlots: (versionID: string, importModel: ImportModel) => {
+    const endpoint = `${VERSIONS_PATH}/${versionID}/model`;
+    return apiV2.patch(endpoint, importModel);
   },
 };
 

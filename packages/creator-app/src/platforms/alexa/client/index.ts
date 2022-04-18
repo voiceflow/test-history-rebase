@@ -4,6 +4,7 @@ import { alexaService } from '@/client/fetch';
 import {
   createExportService,
   createModelExportService,
+  createModelImportService,
   createPrototypeService,
   createPublishService,
   createSessionService,
@@ -19,6 +20,7 @@ import projectService from './project';
 const alexaClient = {
   export: createExportService<AlexaExportJob.AnyJob, AlexaStageType>(ALEXA_SERVICE_ENDPOINT),
   modelExport: createModelExportService(alexaService),
+  modelImport: createModelImportService(alexaService),
   project: projectService,
   handlers: handlersService,
   publish: createPublishService<AlexaPublishJob.AnyJob, AlexaStageType>(ALEXA_SERVICE_ENDPOINT),

@@ -1,4 +1,5 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullish } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
@@ -13,6 +14,17 @@ export enum PlatformTypeUpcoming {
   DIALOGFLOW_CX = 'dialogflow_cx',
 }
 
+export enum FileExtension {
+  ZIP = '.zip',
+  CSV = '.csv',
+  JSON = '.json',
+}
+
+export interface ImportMeta {
+  name: string;
+  fileExtensions: FileExtension[];
+}
+
 export interface PlatformAndProjectTypeMeta {
   name: string;
   tooltip?: TippyTooltipProps;
@@ -23,6 +35,7 @@ export interface PlatformAndProjectTypeMeta {
   languageSelectProps?: LanguageSelectProps;
   icon?: Icon;
   iconColor?: string;
+  importMeta?: ImportMeta;
 }
 
 export type AnyLanguage = GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale;
@@ -45,4 +58,9 @@ export interface LanguageSelectProps {
 export interface Section {
   label: string;
   options: (PlatformAndProjectTypeMeta | undefined)[];
+}
+
+export interface ImportModel {
+  intents: BaseModels.Intent[];
+  slots: BaseModels.Slot[];
 }

@@ -35,8 +35,12 @@ export const buildOptions = (rawOpts: RequestInit, globalHeaders: Map<string, st
         'content-type': 'application/json',
       },
     };
+  } else if (!json && body && body instanceof FormData) {
+    opts = {
+      ...opts,
+      body,
+    };
   }
-
   return opts;
 };
 

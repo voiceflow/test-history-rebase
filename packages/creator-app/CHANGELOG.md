@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.696.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.696.0...@voiceflow/creator-app@1.696.1) (2022-04-19)
+
+
+### Bug Fixes
+
+* add new NLU platforms to visual step (VF-3378)  ([#5346](https://github.com/voiceflow/creator-app/issues/5346)) ([aec1e40](https://github.com/voiceflow/creator-app/commit/aec1e40841c0cefcb3131dab08d0f5497bdf45ea))
+* set linting issues (VF-000) ([#5347](https://github.com/voiceflow/creator-app/issues/5347)) ([e9e6737](https://github.com/voiceflow/creator-app/commit/e9e6737e377d9aa03ac14c61f0c367e46c667501))
+
+
+
+
+
 # [1.696.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.695.0...@voiceflow/creator-app@1.696.0) (2022-04-19)
 
 

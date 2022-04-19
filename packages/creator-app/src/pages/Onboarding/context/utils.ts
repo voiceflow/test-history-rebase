@@ -83,12 +83,14 @@ export const getNumberOfSteps = ({
   hasPresetSeats,
   hasWorkspaces,
   isAdminOfEnterprisePlan,
+  isProjectCreateFeatureEnabled,
 }: {
   specificFlowType: SpecificFlowType;
   hasPresetSeats: boolean;
   hasWorkspaces: boolean;
   isAdminOfEnterprisePlan: boolean;
-}) => {
+  isProjectCreateFeatureEnabled: boolean | null;
+}): number => {
   switch (specificFlowType) {
     case SpecificFlowType.login_invite:
       return 1;
@@ -103,7 +105,7 @@ export const getNumberOfSteps = ({
     case SpecificFlowType.login_payment_new:
       return 6;
     case SpecificFlowType.login_vanilla_new:
-      return 5;
+      return isProjectCreateFeatureEnabled ? 4 : 5;
     default:
       return 4;
   }

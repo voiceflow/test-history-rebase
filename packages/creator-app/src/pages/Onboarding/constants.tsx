@@ -4,6 +4,8 @@ import React from 'react';
 import * as Tracking from '@/ducks/tracking';
 import { OnboardingContextState, SpecificFlowType } from '@/pages/Onboarding/context/types';
 
+import { CreatingForType } from './types';
+
 export enum StepID {
   WELCOME = 'welcome',
   CREATE_WORKSPACE = 'create_workspace',
@@ -13,6 +15,20 @@ export enum StepID {
   JOIN_WORKSPACE = 'join_workspace',
   SELECT_CHANNEL = 'select_channel',
 }
+
+export const StarterPlatformType = VoiceflowConstants.PlatformType.VOICEFLOW;
+
+export const CREATING_FOR_OPTIONS = [
+  { id: CreatingForType.CHAT, label: 'Chat' },
+  { id: CreatingForType.VOICE, label: 'Voice' },
+  { id: CreatingForType.BOTH, label: 'Both' },
+];
+
+export const getCreatingForProjectType: Record<CreatingForType, VoiceflowConstants.ProjectType> = {
+  [CreatingForType.CHAT]: VoiceflowConstants.ProjectType.CHAT,
+  [CreatingForType.VOICE]: VoiceflowConstants.ProjectType.VOICE,
+  [CreatingForType.BOTH]: VoiceflowConstants.ProjectType.CHAT,
+};
 
 export interface StepMetaPropsType {
   title: (val?: string) => string;
@@ -51,8 +67,12 @@ export const STEP_META: StepMetaProps = {
     title: (workspaceName) => (!workspaceName ? 'Invite teammates' : `Invite teammates to ${workspaceName}`),
     canBack: true,
     canSkip: true,
-    skipTo: ({ justCreatingWorkspace, upgradingAWorkspace }) =>
-      justCreatingWorkspace || upgradingAWorkspace ? StepID.PAYMENT : StepID.SELECT_CHANNEL,
+    skipTo: ({ justCreatingWorkspace, upgradingAWorkspace, isProjectCreateFeatureEnabled }) => {
+      if (justCreatingWorkspace || upgradingAWorkspace) {
+        return StepID.PAYMENT;
+      }
+      return isProjectCreateFeatureEnabled ? null : StepID.SELECT_CHANNEL;
+    },
     trackStep: ({ addCollaboratorMeta }, { skip }) =>
       Tracking.trackOnboardingCollaborators({
         skip,

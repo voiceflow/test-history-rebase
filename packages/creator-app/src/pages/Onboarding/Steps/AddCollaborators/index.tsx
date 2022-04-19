@@ -2,6 +2,8 @@ import { UserRole } from '@voiceflow/internal';
 import { Badge, ClickableText, FlexCenter, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
+import { useFeature } from '@/hooks';
 import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { CollaboratorType, OnboardingStepProps } from '@/pages/Onboarding/types';
@@ -16,8 +18,13 @@ const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
     actions: { setAddCollaboratorMeta, stepForward },
   } = React.useContext(OnboardingContext);
   const currentStepMeta = STEP_META[StepID.ADD_COLLABORATORS];
+  const projectCreateFeature = useFeature(FeatureFlag.PROJECT_CREATE);
 
-  const nextStepID = currentStepMeta.skipTo({ justCreatingWorkspace, upgradingAWorkspace });
+  const nextStepID = currentStepMeta.skipTo({
+    justCreatingWorkspace,
+    upgradingAWorkspace,
+    isProjectCreateFeatureEnabled: projectCreateFeature.isEnabled,
+  });
 
   const [collaborators, setCollaborators] = React.useState(() =>
     withPlaceholderCollaborators(addCollaboratorMeta.collaborators.length ? addCollaboratorMeta.collaborators : data.collaborators)

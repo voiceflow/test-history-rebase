@@ -3,10 +3,15 @@ import { FlexCenter } from '@voiceflow/ui';
 import React, { useContext } from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
+import RadioGroup from '@/components/RadioGroup';
+import { FeatureFlag } from '@/config/features';
+import { useFeature } from '@/hooks';
 import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 
-import { StepID } from '../../constants';
+import { CREATING_FOR_OPTIONS, getCreatingForProjectType, StepID } from '../../constants';
 import { OnboardingContext } from '../../context';
+import { PersonalizeWorkspaceMeta } from '../../context/types';
+import { CreatingForType } from '../../types';
 import { Label, RoleSelect } from '../components';
 import { Container, SizeButton, SizeRow, TeamSizeContainer } from './components';
 
@@ -54,23 +59,33 @@ const CHANNEL_TYPE_OPTIONS = [
     options: ChatChannelOptions,
   },
 ];
+
 const PersonalizeWorkspace: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
   const [userRole, setUserRole] = React.useState(state.personalizeWorkspaceMeta.role || '');
   const [channels, setChannels] = React.useState(state.personalizeWorkspaceMeta.channels || []);
   const [teamSize, setTeamSize] = React.useState(state.personalizeWorkspaceMeta.teamSize || '');
-  const canContinue = userRole && channels.length && teamSize;
+  const [creatingFor, setCreatingFor] = React.useState<CreatingForType>(CreatingForType.CHAT);
+  const projectCreateFeature = useFeature(FeatureFlag.PROJECT_CREATE);
+  const canContinue = userRole && teamSize && (!projectCreateFeature.isEnabled ? channels.length : true);
 
   const displayName = channels
     .map((channelValue: string) => CHANNEL_OPTIONS.find((channel: { label: string; value: string }) => channel.value === channelValue)?.label)
     .join(', ');
 
   const onContinue = () => {
-    actions.setPersonalizeWorkspaceMeta({
+    const workspaceMeta: PersonalizeWorkspaceMeta = {
       role: userRole,
-      channels,
       teamSize,
-    });
+    };
+
+    if (projectCreateFeature.isEnabled) {
+      workspaceMeta.projectType = getCreatingForProjectType[creatingFor];
+    } else {
+      workspaceMeta.channels = channels;
+    }
+
+    actions.setPersonalizeWorkspaceMeta(workspaceMeta);
     actions.stepForward(StepID.CREATE_WORKSPACE);
   };
 
@@ -78,21 +93,31 @@ const PersonalizeWorkspace: React.FC = () => {
     <Container>
       <Label>Choose your role</Label>
       <RoleSelect userRole={userRole} setUserRole={setUserRole} />
-      <Label>What channels are you creating for?</Label>
-      <ChannelSelect
-        maxHeight={190}
-        maxVisibleItems={6.5}
-        multiSectionOptions={CHANNEL_TYPE_OPTIONS}
-        buttonLabel="Done"
-        selectedValue={displayName}
-        withCaret
-        dropdownActive
-        buttonClick={(_: unknown, { onToggle }: { onToggle: () => void }) => onToggle()}
-        selectedItems={channels}
-        onSelect={(channel: string) => setChannels(Utils.array.toggleMembership(channels, channel))}
-        placeholder="Choose all that apply"
-        customOptionLabelStyling={customOptionLabelStyling}
-      />
+      {projectCreateFeature.isEnabled ? (
+        <>
+          <Label>What are you creating for?</Label>
+          <RadioGroup isFlat options={CREATING_FOR_OPTIONS} checked={creatingFor} onChange={setCreatingFor} />
+        </>
+      ) : (
+        <>
+          <Label>What channels are you creating for?</Label>
+          <ChannelSelect
+            maxHeight={190}
+            maxVisibleItems={6.5}
+            multiSectionOptions={CHANNEL_TYPE_OPTIONS}
+            buttonLabel="Done"
+            selectedValue={displayName}
+            withCaret
+            dropdownActive
+            buttonClick={(_: unknown, { onToggle }: { onToggle: () => void }) => onToggle()}
+            selectedItems={channels}
+            onSelect={(channel: string) => setChannels(Utils.array.toggleMembership(channels, channel))}
+            placeholder="Choose all that apply"
+            customOptionLabelStyling={customOptionLabelStyling}
+          />
+        </>
+      )}
+
       <Label>How big is your team?</Label>
       <TeamSizeContainer>
         <SizeRow>

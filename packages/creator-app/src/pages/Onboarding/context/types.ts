@@ -26,6 +26,13 @@ export enum SpecificFlowType {
   existing_user_general_upgrade = 'existing_user_general_upgrade',
 }
 
+export interface PersonalizeWorkspaceMeta {
+  role: string;
+  channels?: string[];
+  teamSize: string;
+  projectType?: VoiceflowConstants.ProjectType;
+}
+
 export interface OnboardingContextState {
   selectableWorkspace: boolean;
   specificFlowType: SpecificFlowType;
@@ -37,11 +44,7 @@ export interface OnboardingContextState {
     workspaceName: string;
     workspaceImage: string;
   };
-  personalizeWorkspaceMeta: {
-    role: string;
-    channels: string[];
-    teamSize: string;
-  };
+  personalizeWorkspaceMeta: PersonalizeWorkspaceMeta;
   paymentMeta: {
     plan?: PlanType;
     couponCode?: string;
@@ -66,6 +69,7 @@ export interface OnboardingContextState {
   usedSignupCoupon?: boolean;
   hasWorkspaces?: boolean;
   upgradingAWorkspace: boolean;
+  isProjectCreateFeatureEnabled?: boolean | null;
 }
 
 export interface OnboardingContextActions {

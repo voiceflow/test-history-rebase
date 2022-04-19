@@ -11,6 +11,7 @@ import { Redirect, useLocation } from 'react-router-dom';
 
 import { receiptGraphic } from '@/assets';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
+import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import { getDefaultPlatformLanguageLabel } from '@/constants/platforms';
@@ -22,11 +23,11 @@ import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs';
-import { useDispatch, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
-import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
+import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, StarterPlatformType, STEP_META, StepID } from '../constants';
 import { CollaboratorType } from '../types';
 import {
   OnboardingContextActions,
@@ -68,7 +69,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     currentStepID: StepID?.CREATE_WORKSPACE,
     numberOfSteps: 0,
     createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
-    personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '' },
+    personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '', projectType: VoiceflowConstants.ProjectType.CHAT },
     paymentMeta: {
       period: BillingPeriod.MONTHLY,
       couponCode: '',
@@ -133,6 +134,8 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const isFirstSession = firstLogin;
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
 
+  const projectCreateFeature = useFeature(FeatureFlag.PROJECT_CREATE);
+
   // if the user has existing workspaces they are owners of
   const hasWorkspaces = React.useMemo(
     () =>
@@ -166,6 +169,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     hasPresetSeats: !!seats,
     hasWorkspaces,
     isAdminOfEnterprisePlan,
+    isProjectCreateFeatureEnabled: projectCreateFeature.isEnabled,
   });
 
   const firstStep = OnboardingUtils.getFirstStep({
@@ -369,7 +373,10 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
     try {
       if (isLoginFlow) {
-        const { platform, projectType } = state.selectChannelMeta;
+        const { projectType } = state.selectChannelMeta;
+        const platform = projectCreateFeature.isEnabled
+          ? StarterPlatformType
+          : Realtime.projectTypeToLegacyPlatform(state.selectChannelMeta.platform, projectType);
 
         const getTemplateTag = Realtime.Utils.platform.createPlatformAndProjectTypeSelector({
           [VoiceflowConstants.PlatformType.ALEXA]: 'onboarding:alexa_assistant',
@@ -380,16 +387,20 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
           [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.CHAT}`]: 'onboarding:dialogflow_es_chat',
         });
 
+        const templateTag = projectCreateFeature.isEnabled
+          ? `onboarding:${state.personalizeWorkspaceMeta.projectType}`
+          : getTemplateTag(platform, projectType);
+
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
           const { versionID } = await createProject(
             {
-              platform: Realtime.projectTypeToLegacyPlatform(platform, projectType),
+              platform,
               language: getDefaultPlatformLanguageLabel(platform),
               onboarding: true,
             },
-            getTemplateTag(platform, projectType)
+            templateTag
           );
 
           goToCanvas(versionID!);

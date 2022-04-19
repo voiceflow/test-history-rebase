@@ -12,3 +12,9 @@ export interface OnboardingDataProps {
 export interface OnboardingStepProps {
   data: OnboardingDataProps;
 }
+
+export enum CreatingForType {
+  CHAT = 'CHAT',
+  VOICE = 'VOICE',
+  BOTH = 'BOTH',
+}

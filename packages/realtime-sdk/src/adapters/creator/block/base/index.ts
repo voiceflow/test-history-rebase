@@ -6,6 +6,7 @@ import { buttonsOutPortsAdapter } from './buttons';
 import { captureOutPortsAdapter } from './capture';
 import { captureV2OutPortsAdapter } from './captureV2';
 import cardAdapter, { cardOutPortsAdapter } from './card';
+import cardV2Adapter, { cardV2OutPortsAdapter } from './cardV2';
 import codeAdapter, { codeOutPortsAdapter } from './code';
 import { commandOutPortsAdapter } from './command';
 import componentAdapter, { componentOutPortsAdapter } from './component';
@@ -28,6 +29,7 @@ import visualAdapter, { visualOutPortsAdapter } from './visual';
 export { default as baseButtonsAdapter } from './buttons';
 export { default as baseCaptureAdapter } from './capture';
 export { default as baseCaptureV2Adapter } from './captureV2';
+export { default as baseCardV2Adapter } from './cardV2';
 export { default as baseCommandAdapter } from './command';
 export { default as baseIntentAdapter } from './intent';
 export { default as baseInteractionAdapter } from './interaction';
@@ -42,6 +44,7 @@ export const baseBlockAdapter = {
   [BlockType.EXIT]: exitAdapter,
   [BlockType.CODE]: codeAdapter,
   [BlockType.CARD]: cardAdapter,
+  [BlockType.CARDV2]: cardV2Adapter,
   [BlockType.FLOW]: flowAdapter,
   [BlockType.SETV2]: setAdapter,
   [BlockType.TRACE]: traceAdapter,
@@ -58,6 +61,7 @@ export const baseOutPortAdapter = {
   [BlockType.SET]: setOutPortsAdapter,
   [BlockType.EXIT]: exitOutPortsAdapter,
   [BlockType.CARD]: cardOutPortsAdapter,
+  [BlockType.CARDV2]: cardV2OutPortsAdapter,
   [BlockType.IFV2]: ifOutPortsAdapter,
   [BlockType.CODE]: codeOutPortsAdapter,
   [BlockType.FLOW]: flowOutPortsAdapter,

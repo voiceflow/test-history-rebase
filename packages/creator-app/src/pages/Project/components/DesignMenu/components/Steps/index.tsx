@@ -21,6 +21,7 @@ const Steps: React.FC = () => {
   const expandedSections = useSelector(UI.openBlockMenuSectionsSelector);
   const toggleSection = useDispatch(UI.toggleBlockMenuSection);
   const gadgets = useFeature(FeatureFlag.GADGETS);
+  const chatCardsCarousel = useFeature(FeatureFlag.CHAT_CARDS_CAROUSEL);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
@@ -31,6 +32,8 @@ const Steps: React.FC = () => {
       ...platformSection,
       steps: platformSection.steps.filter((step) => {
         if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
+        if (!chatCardsCarousel.isEnabled && step.type === BlockType.CARDV2) return false;
+
         // the CAPTURE step is deprecated and permanently hidden from users
         if (step.type === BlockType.CAPTURE) return false;
         if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;

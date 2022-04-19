@@ -41,6 +41,7 @@ const CAPTURE_STEP = createMenuStep(Realtime.BlockType.CAPTURE);
 const CAPTURE_STEP_V2 = createMenuStep(Realtime.BlockType.CAPTUREV2);
 
 const CARD_STEP = createMenuStep(Realtime.BlockType.CARD);
+const CARD_STEP_V2 = createMenuStep(Realtime.BlockType.CARDV2);
 
 const CHOICE_STEP = createMenuStep(Realtime.BlockType.CHOICE);
 
@@ -162,7 +163,7 @@ export const CHATBOT_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [TEXT_STEP, VISUAL_STEP],
+    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP_V2],
   },
   {
     type: BlockCategory.USER_INPUT,

@@ -31,6 +31,7 @@ export enum BlockType {
   TRACE = 'trace',
   // visuals
   CARD = 'card',
+  CARDV2 = 'cardV2',
   VISUAL = 'visual',
   DISPLAY = 'display',
   // user

@@ -3,6 +3,7 @@ import { BlockType } from '@realtime-sdk/constants';
 import buttonsAdapter from './buttons';
 import captureAdapter from './capture';
 import captureV2Adapter from './captureV2';
+import cardV2Adapter from './cardV2';
 import interactionAdapter from './interaction';
 import promptAdapter from './prompt';
 
@@ -13,4 +14,5 @@ export const chatBlockAdapter = {
   [BlockType.BUTTONS]: buttonsAdapter,
   [BlockType.CAPTURE]: captureAdapter,
   [BlockType.CAPTUREV2]: captureV2Adapter,
+  [BlockType.CARDV2]: cardV2Adapter,
 };

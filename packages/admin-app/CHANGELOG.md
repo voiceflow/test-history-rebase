@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.29.6...@voiceflow/admin-app@1.30.0) (2022-04-19)
+
+
+### Features
+
+* implement base structure for cardV2 (VF-3349) ([#5343](https://github.com/voiceflow/creator-app/issues/5343)) ([f02208e](https://github.com/voiceflow/creator-app/commit/f02208ef1f19442a17d8ee57864f37db99c2c1b9))
+
+
+
+
+
 ## [1.29.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.29.5...@voiceflow/admin-app@1.29.6) (2022-04-18)
 
 **Note:** Version bump only for package @voiceflow/admin-app

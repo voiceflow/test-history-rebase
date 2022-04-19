@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.696.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.695.0...@voiceflow/creator-app@1.696.0) (2022-04-19)
+
+
+### Features
+
+* implement base structure for cardV2 (VF-3349) ([#5343](https://github.com/voiceflow/creator-app/issues/5343)) ([f02208e](https://github.com/voiceflow/creator-app/commit/f02208ef1f19442a17d8ee57864f37db99c2c1b9))
+
+
+
+
+
 # [1.695.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.694.0...@voiceflow/creator-app@1.695.0) (2022-04-19)
 
 

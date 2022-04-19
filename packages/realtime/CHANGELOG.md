@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.58.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.57.3...@voiceflow/realtime@1.58.0) (2022-04-19)
+
+
+### Features
+
+* implement base structure for cardV2 (VF-3349) ([#5343](https://github.com/voiceflow/creator-app/issues/5343)) ([f02208e](https://github.com/voiceflow/creator-app/commit/f02208ef1f19442a17d8ee57864f37db99c2c1b9))
+
+
+
+
+
 ## [1.57.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.57.2...@voiceflow/realtime@1.57.3) (2022-04-18)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -20,12 +20,12 @@ interface NoIntentProps {
 }
 
 const determineNewUtterances = (previousInputArray: Realtime.IntentInput[], newInputArray: Realtime.IntentInput[]) => {
-  const previousUtteranceArray = previousInputArray.map(({ text }) => text);
+  const previousUtteranceArray = new Set(previousInputArray.map(({ text }) => text));
   const newUtteranceArray = newInputArray.map(({ text }) => text);
   const netNewUtterances: string[] = [];
 
   newUtteranceArray.forEach((utterance) => {
-    if (!previousUtteranceArray.includes(utterance)) {
+    if (!previousUtteranceArray.has(utterance)) {
       netNewUtterances.push(utterance);
     }
   });

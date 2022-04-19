@@ -11,12 +11,12 @@ import Popup from '../components/Popup';
 import AlexaProgressState from './components/AlexaProgressState';
 import AlexaUploadButton from './components/AlexaUploadButton';
 
-const JOB_STARTED_STAGES = [AlexaStageType.IDLE, AlexaStageType.PROGRESS, AlexaStageType.SUCCESS];
+const JOB_STARTED_STAGES = new Set([AlexaStageType.IDLE, AlexaStageType.PROGRESS, AlexaStageType.SUCCESS]);
 
 const AlexaPublish: React.FC = () => {
   const { job, noPopup, onCancel, onPublish, needsLogin, popupOpened, successfullyPublished } = useAlexaPublish();
 
-  const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.includes(job?.stage.type));
+  const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.has(job?.stage.type));
 
   useHotKeys(Hotkey.UPLOAD_PROJECT, onPublish, { disable: hotkeyDisabled, preventDefault: true }, [onPublish]);
 

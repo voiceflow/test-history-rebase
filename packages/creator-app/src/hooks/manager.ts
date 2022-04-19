@@ -12,7 +12,7 @@ import { IS_TEST } from '@/config';
 import { useForceUpdate } from './forceUpdate';
 import { useLazy } from './lazy';
 
-const UNIQUE_TYPES = ['object', 'function'];
+const UNIQUE_TYPES = new Set(['object', 'function']);
 
 const DEBOUNCE_TIMEOUT = 300;
 
@@ -74,7 +74,7 @@ export const useManager = <T extends {}, F extends any[]>(
   const isMaxMatches = maxItems == null ? false : items.length >= maxItems;
 
   const generateLookupKey = React.useMemo(
-    () => moize((value: T, index: number): T | [T, number] => (value !== null && UNIQUE_TYPES.includes(typeof value) ? value : [value, index])),
+    () => moize((value: T, index: number): T | [T, number] => (value !== null && UNIQUE_TYPES.has(typeof value) ? value : [value, index])),
     []
   );
 

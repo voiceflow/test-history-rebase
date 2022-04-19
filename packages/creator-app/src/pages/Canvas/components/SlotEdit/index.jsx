@@ -23,7 +23,7 @@ import EntitySection from './components/EntitySection';
 import ValueSynonymsSection from './components/ValueSynonymsSection';
 import { generateSlotInput, mergeSlotInputs } from './utils';
 
-const UNSUPPORTED_CUSTOM_VALUE_SLOTS = [
+const UNSUPPORTED_CUSTOM_VALUE_SLOTS = new Set([
   AlexaConstants.SlotType.DATE,
   AlexaConstants.SlotType.DURATION,
   AlexaConstants.SlotType.NUMBER,
@@ -32,9 +32,9 @@ const UNSUPPORTED_CUSTOM_VALUE_SLOTS = [
   AlexaConstants.SlotType.SEARCHQUERY,
   AlexaConstants.SlotType.TIME,
   AlexaConstants.SlotType.FOUR_DIGIT_NUMBER,
-];
+]);
 
-const isUnsupportedCustomSlotValues = (slotType) => UNSUPPORTED_CUSTOM_VALUE_SLOTS.includes(slotType);
+const isUnsupportedCustomSlotValues = (slotType) => UNSUPPORTED_CUSTOM_VALUE_SLOTS.has(slotType);
 
 const FlexModalFooter = styled(ModalFooter)`
   ${flexApartStyles}

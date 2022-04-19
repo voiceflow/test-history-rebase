@@ -8,7 +8,7 @@ import { MergeLayerAPI } from '@/pages/Canvas/types';
 
 import { createBoundaryTest, EngineConsumer, getCandidates, NodeCandidate } from './utils';
 
-const UNMERGEABLE_NODES = [BlockType.START];
+const UNMERGEABLE_NODES = new Set([BlockType.START]);
 
 class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
   log = this.engine.log.child('merge');
@@ -49,7 +49,7 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
 
     this.log.debug(this.log.pending('attempting initialization'), this.log.slug(sourceNodeID));
 
-    if (UNMERGEABLE_NODES.includes(sourceNode.type)) {
+    if (UNMERGEABLE_NODES.has(sourceNode.type)) {
       this.log.debug(this.log.failure('initialization skipped - node cannot be targeted with merge operation'));
 
       return;

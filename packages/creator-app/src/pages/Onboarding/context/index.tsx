@@ -39,11 +39,11 @@ import {
 } from './types';
 import * as OnboardingUtils from './utils';
 
-const UPGRADING_WORKSPACE_SPECIFIC_FLOWS = [
+const UPGRADING_WORKSPACE_SPECIFIC_FLOWS = new Set([
   SpecificFlowType.existing_user_general_upgrade,
   SpecificFlowType.login_creator_existing,
   SpecificFlowType.login_student_existing,
-];
+]);
 
 export const OnboardingContext = React.createContext<OnboardingContextProps>({
   actions: {
@@ -162,7 +162,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   );
 
   const specificFlowType = OnboardingUtils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
-  const upgradingAWorkspace = UPGRADING_WORKSPACE_SPECIFIC_FLOWS.includes(specificFlowType);
+  const upgradingAWorkspace = UPGRADING_WORKSPACE_SPECIFIC_FLOWS.has(specificFlowType);
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
   const numberOfSteps = OnboardingUtils.getNumberOfSteps({
     specificFlowType,

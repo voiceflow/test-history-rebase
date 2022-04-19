@@ -11,7 +11,7 @@ import Popup from '../components/Popup';
 import DialogflowProgressStage from './components/DialogflowProgressStage';
 import DialogflowUploadButton from './components/DialogflowUploadButton';
 
-const JOB_STARTED_STAGES = [DialogflowStageType.IDLE, DialogflowStageType.PROGRESS, DialogflowStageType.SUCCESS];
+const JOB_STARTED_STAGES = new Set([DialogflowStageType.IDLE, DialogflowStageType.PROGRESS, DialogflowStageType.SUCCESS]);
 
 const DialogflowPublish: React.FC = () => {
   const {
@@ -28,7 +28,7 @@ const DialogflowPublish: React.FC = () => {
     createNewAgentModalOpened,
   } = useDialogflowPublish();
 
-  const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.includes(job?.stage.type));
+  const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.has(job?.stage.type));
 
   useHotKeys(Hotkey.UPLOAD_PROJECT, onPublish, { disable: hotkeyDisabled, preventDefault: true }, [onPublish]);
 

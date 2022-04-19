@@ -119,12 +119,9 @@ class ClipboardEngine extends EngineConsumer {
       const state = this.engine.store.getState();
       const targetPlatform = ProjectV2.active.platformSelector(state);
       const isPlatformConversion = sourcePlatform !== targetPlatform;
-      const slotTypes = VersionV2.active.slotTypesSelector(state).map((slot) => slot.value);
-      const validSlots = isPlatformConversion ? slots.filter((slot) => slotTypes.includes(slot.type!)) : slots;
-      const isValidSlot = validSlots.reduce<Record<string, boolean>>(
-        (acc, slot) => Object.assign(acc, { [slot.id]: slotTypes.includes(slot.type!) }),
-        {}
-      );
+      const slotTypes = new Set(VersionV2.active.slotTypesSelector(state).map((slot) => slot.value));
+      const validSlots = isPlatformConversion ? slots.filter((slot) => slotTypes.has(slot.type!)) : slots;
+      const isValidSlot = validSlots.reduce<Record<string, boolean>>((acc, slot) => Object.assign(acc, { [slot.id]: slotTypes.has(slot.type!) }), {});
 
       const nodesWithData = nodes.map((node) => ({ node, data: data[node.id] }));
 

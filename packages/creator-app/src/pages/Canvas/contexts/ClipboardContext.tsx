@@ -18,7 +18,7 @@ export interface ClipboardContextValue {
   copy: (nodeID?: string | null, options?: CopyOptions) => void;
 }
 
-const IGNORED_TAGS = ['TEXTAREA', 'INPUT'];
+const IGNORED_TAGS = new Set(['TEXTAREA', 'INPUT']);
 
 export const ClipboardContext = React.createContext<ClipboardContextValue | null>(null);
 export const { Consumer: ClipboardConsumer } = ClipboardContext;
@@ -35,7 +35,7 @@ export const ClipboardProvider: React.FC = ({ children }) => {
       const target = event.target as Element;
 
       if (
-        IGNORED_TAGS.includes(target.nodeName) ||
+        IGNORED_TAGS.has(target.nodeName) ||
         // can't use .closest here since target node can be removed from the DOM in the slate past handler
         event.composedPath().some((node) => 'classList' in node && (node as HTMLElement).classList.contains(SLATE_EDITOR_CLASS_NAME))
       ) {

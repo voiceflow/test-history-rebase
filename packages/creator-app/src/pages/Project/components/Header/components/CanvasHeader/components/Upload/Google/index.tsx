@@ -11,12 +11,12 @@ import Popup from '../components/Popup';
 import GoogleProgressStage from './components/GoogleProgressStage';
 import GoogleUploadButton from './components/GoogleUploadButton';
 
-const JOB_STARTED_STAGES = [GoogleStageType.IDLE, GoogleStageType.PROGRESS, GoogleStageType.SUCCESS];
+const JOB_STARTED_STAGES = new Set([GoogleStageType.IDLE, GoogleStageType.PROGRESS, GoogleStageType.SUCCESS]);
 
 const GooglePublish: React.FC = () => {
   const { job, noPopup, onCancel, onPublish, needsLogin, popupOpened, multiProjects, setMultiProjects, successfullyPublished } = useGooglePublish();
 
-  const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.includes(job?.stage.type));
+  const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.has(job?.stage.type));
 
   useHotKeys(Hotkey.UPLOAD_PROJECT, onPublish, { disable: hotkeyDisabled, preventDefault: true }, [onPublish]);
 

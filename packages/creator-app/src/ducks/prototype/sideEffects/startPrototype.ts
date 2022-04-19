@@ -15,7 +15,7 @@ import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype } f
 import { prototypeVariablesSelector } from '../selectors';
 import { Context } from '../types';
 
-const INVALID_STARTING_BLOCK_TYPES = [BlockType.INTENT];
+const INVALID_STARTING_BLOCK_TYPES = new Set([BlockType.INTENT]);
 
 const getValidStartingNode = (
   getNodeByID: (id: string) => Realtime.Node | null,
@@ -31,7 +31,7 @@ const getValidStartingNode = (
 
   // this logic is to handle the edgecase where users try to start on a intent block,
   // which doesn't work based on the data return from the intent block handler
-  if (!INVALID_STARTING_BLOCK_TYPES.includes(targetNode.type)) return nodeID;
+  if (!INVALID_STARTING_BLOCK_TYPES.has(targetNode.type)) return nodeID;
 
   const targetParent = targetNode.parentNode ? getNodeByID(targetNode.parentNode) : null;
   const subsequentNodeID = targetParent?.combinedNodes[1];

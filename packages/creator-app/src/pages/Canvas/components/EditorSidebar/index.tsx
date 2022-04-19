@@ -24,7 +24,7 @@ import EditorModal from './components/EditorModal';
 import { SidebarHeaderAction, SidebarProvider } from './contexts';
 import { useEditorPath, useUpdateData } from './hooks';
 
-const UNEDITABLE_BLOCKS = [BlockType.MARKUP_IMAGE];
+const UNEDITABLE_BLOCKS = new Set([BlockType.MARKUP_IMAGE]);
 const EMPTY_HEADER_ACTIONS: SidebarHeaderAction[] = [];
 
 const FOCUSED_NODE_SIDEBAR_OFFSET = 20;
@@ -53,7 +53,7 @@ const EditSidebar = () => {
   const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
 
   const isMarkup = !!node && isMarkupBlockType(node.type);
-  const shouldRender = !!data && !!node && !UNEDITABLE_BLOCKS.includes(node.type);
+  const shouldRender = !!data && !!node && !UNEDITABLE_BLOCKS.has(node.type);
   const isOpen = isEditingMode && shouldRender && focus.isActive && !fullscreenEditorModal.isOpened;
   const blocKID = node?.parentNode ?? node?.id;
 

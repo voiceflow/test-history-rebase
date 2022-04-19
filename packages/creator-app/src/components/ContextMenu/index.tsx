@@ -6,7 +6,7 @@ import { Identifier } from '@/styles/constants';
 import { Point } from '@/types';
 import { buildVirtualElement } from '@/utils/dom';
 
-const EXCLUDED_TAG_NAME = ['input', 'textarea'];
+const EXCLUDED_TAG_NAME = new Set(['input', 'textarea']);
 
 export const CONTEXT_MENU_IGNORED_CLASS_NAME = 'context-menu-exclude';
 
@@ -31,7 +31,7 @@ const ContextMenu = <T extends any>({
     const target = event?.target as HTMLElement | null;
 
     // .closest() - supported in all browsers except IE
-    if (target && (EXCLUDED_TAG_NAME.includes(target.tagName.toLowerCase()) || target.closest?.(`.${CONTEXT_MENU_IGNORED_CLASS_NAME}`))) {
+    if (target && (EXCLUDED_TAG_NAME.has(target.tagName.toLowerCase()) || target.closest?.(`.${CONTEXT_MENU_IGNORED_CLASS_NAME}`))) {
       return;
     }
     event?.preventDefault();

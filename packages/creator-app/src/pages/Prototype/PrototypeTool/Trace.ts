@@ -36,7 +36,7 @@ import { getUpdatedContextHistory, isV1Trace } from './utils';
 const MUTED_MESSAGE_DELAY = 250;
 
 // Trace types that can have a faked delay
-const BOT_TRACE_TYPES = [BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK];
+const BOT_TRACE_TYPES = new Set([BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK]);
 type BotTraceType = TextTrace | SpeakTrace;
 
 export enum StepDirection {
@@ -90,7 +90,7 @@ const MIN_FOCUSED_NODE_TIME = 500;
 const WAIT_DISPLAY_TIME = 1000;
 
 // Nodes that get focused when debug mode is off
-const FOCUSABLE_NODES = [
+const FOCUSABLE_NODES = new Set([
   BlockType.START,
   BlockType.COMBINED,
   BlockType.COMMAND,
@@ -107,7 +107,7 @@ const FOCUSABLE_NODES = [
   BlockType.VISUAL,
   BlockType.DISPLAY,
   BlockType.EVENT,
-];
+]);
 
 class TraceController {
   private trace: Trace[] = [];
@@ -287,9 +287,9 @@ class TraceController {
 
   private isVeryFirstBotMessage(trace: BotTraceType) {
     if (this.props.contextStep !== 1) return false;
-    if (!BOT_TRACE_TYPES.includes(trace.type)) return false;
+    if (!BOT_TRACE_TYPES.has(trace.type)) return false;
 
-    return this.context?.trace.find(({ type }) => BOT_TRACE_TYPES.includes(type))?.id === trace.id;
+    return this.context?.trace.find(({ type }) => BOT_TRACE_TYPES.has(type))?.id === trace.id;
   }
 
   private async simulateLoadingDelay(trace: BotTraceType, delayMillisecondsOverride?: number) {
@@ -592,7 +592,7 @@ class TraceController {
 
     this.saveActivePathLink(sourceNodeID, node);
 
-    if ((hasParent && FOCUSABLE_NODES.includes(nodeType)) || this.props.debug || !nodeType) {
+    if ((hasParent && FOCUSABLE_NODES.has(nodeType)) || this.props.debug || !nodeType) {
       this.focusNode(node.parentNode!);
 
       if (skipDelay) return;

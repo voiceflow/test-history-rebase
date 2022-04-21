@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.696.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.696.1...@voiceflow/creator-app@1.696.2) (2022-04-21)
+
+
+### Bug Fixes
+
+* implement Tag component in Slot (VF-000) ([#5325](https://github.com/voiceflow/creator-app/issues/5325)) ([3318be0](https://github.com/voiceflow/creator-app/commit/3318be025a8bfea89041ace9d613e7141cfbc810))
+
+
+
+
+
 ## [1.696.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.696.0...@voiceflow/creator-app@1.696.1) (2022-04-19)
 
 

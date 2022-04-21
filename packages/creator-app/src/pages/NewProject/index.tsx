@@ -95,7 +95,7 @@ const NewProject: React.FC = () => {
   const [stepStack, setStepStack] = React.useState<StepID[]>([StepID.PLATFORM_SELECT]);
   const currentStep = stepStack[0];
 
-  const [invocationName, setInvocationName] = React.useState<string>();
+  const [invocationName, setInvocationName] = React.useState('');
   const [selectedChannel, setSelectedChannel] = React.useState<{
     platform: VoiceflowConstants.PlatformType;
     projectType: VoiceflowConstants.ProjectType;

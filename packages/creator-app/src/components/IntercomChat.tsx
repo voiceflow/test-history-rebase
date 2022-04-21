@@ -3,6 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useIntercom } from 'react-use-intercom';
 
+import { INTERCOM_ENABLED } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
@@ -22,7 +23,7 @@ export const IntercomChat: React.FC = () => {
   const isRunning = React.useRef(false);
   const intercom = useIntercom();
 
-  const showIntercom = intercomIntegration.isEnabled && isVisible && !!workspace;
+  const showIntercom = INTERCOM_ENABLED && intercomIntegration.isEnabled && isVisible && !!workspace;
 
   React.useEffect(() => {
     if (!isLoggedIn) return undefined;

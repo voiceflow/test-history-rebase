@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.697.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.696.3...@voiceflow/creator-app@1.697.0) (2022-04-21)
+
+
+### Features
+
+* added rasa import (VF-000) ([#5351](https://github.com/voiceflow/creator-app/issues/5351)) ([2e90c43](https://github.com/voiceflow/creator-app/commit/2e90c4381cead0cebdef93ac0b06303ab70845e5))
+
+
+
+
+
 ## [1.696.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.696.2...@voiceflow/creator-app@1.696.3) (2022-04-21)
 
 

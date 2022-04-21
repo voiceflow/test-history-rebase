@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.696.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.696.2...@voiceflow/creator-app@1.696.3) (2022-04-21)
+
+
+### Bug Fixes
+
+* disable intercom locally by default to avoid extraneous errors (vf-000) ([#5349](https://github.com/voiceflow/creator-app/issues/5349)) ([a7b0204](https://github.com/voiceflow/creator-app/commit/a7b020443781aceba8b7a92204012864367826ef))
+
+
+
+
+
 ## [1.696.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.696.1...@voiceflow/creator-app@1.696.2) (2022-04-21)
 
 

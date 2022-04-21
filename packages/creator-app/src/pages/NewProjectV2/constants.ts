@@ -146,6 +146,10 @@ export const getPlatformOrProjectTypeMeta: Partial<
     localesText: 'Language',
     disabled: false,
     type: VoiceflowConstants.PlatformType.RASA,
+    importMeta: {
+      name: 'Rasa',
+      fileExtensions: [FileExtension.ZIP],
+    },
   },
   [VoiceflowConstants.PlatformType.EINSTEIN]: {
     name: 'Salesforce Einstein',

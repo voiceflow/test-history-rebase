@@ -1,9 +1,9 @@
 import composeRef from '@seznam/compose-react-refs';
-import { swallowEvent } from '@voiceflow/ui';
+import { swallowEvent, Tag } from '@voiceflow/ui';
 import React from 'react';
 
 import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
-import { slotStyles, variableStyle, VariableTagTooltipStyles } from '@/components/VariableTag';
+import { VariableTagTooltipStyles } from '@/components/VariableTag';
 import { FeatureFlag } from '@/config/features';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
@@ -11,22 +11,23 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { compose, styled } from '@/hocs';
 import { useDispatch, useFeature, useModals, useSelector } from '@/hooks';
 
-const Text = styled.span`
+const StyledTag = styled(Tag)`
   pointer-events: none;
   display: inline-flex;
   max-width: 100%;
+  position: relative;
+  top: -1px;
 
   > span {
     pointer-events: all;
-    ${({ isVariable }) => (isVariable ? variableStyle : slotStyles)}
 
     word-break: normal;
-    line-height: 18px;
     cursor: pointer;
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: inline-block;
 
     &:before :after {
       content: '';
@@ -44,7 +45,7 @@ const Slot = ({ mention, children }, ref) => {
 
   const onClickHandler = swallowEvent(() => {
     if (IMM_MODALS_V2.isEnabled) {
-      if (mention.id) {
+      if (mention.id && !mention.isVariable) {
         const slotID = getSlotByName(mention.name)?.id || mention.id;
         openEntityEditModal({ id: slotID });
       }
@@ -61,7 +62,7 @@ const Slot = ({ mention, children }, ref) => {
     >
       {(overflowRef, { isOverflow }) => (
         <>
-          <Text
+          <StyledTag
             ref={composeRef(ref, overflowRef)}
             color={mention.color}
             onClick={onClickHandler}
@@ -70,7 +71,7 @@ const Slot = ({ mention, children }, ref) => {
             isVariable={mention.isVariable}
           >
             {children}
-          </Text>
+          </StyledTag>
 
           {isOverflow && <VariableTagTooltipStyles />}
         </>

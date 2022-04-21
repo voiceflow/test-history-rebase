@@ -1,6 +1,6 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, ErrorMessage } from '@voiceflow/ui';
+import { Badge, ErrorMessage, Tag } from '@voiceflow/ui';
 import React from 'react';
 import { withProps } from 'recompose';
 
@@ -8,7 +8,6 @@ import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWr
 import ListManager from '@/components/ListManager';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import Utterance from '@/components/Utterance';
-import { SlotTag } from '@/components/VariableTag';
 import { NamespaceProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -92,7 +91,7 @@ function IntentSlotForm({ slot, platform, projectType, intentSlot, slotsMap, int
     <NamespaceProvider value={['slot', slot.id]}>
       <Wrapper>
         <UncontrolledSection
-          prefix={<SlotTag color={slot.color}>{slot.name}</SlotTag>}
+          prefix={<Tag color={slot.color}>{`{${slot.name}}`}</Tag>}
           header={<SlotRequiredMessage required={required} />}
           onClick={() => patchIntentSlot(intent.id, slot.id, { required: !required })}
           isCollapsed={!required}

@@ -1,11 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ClickableText, Flex, SvgIcon, SvgIconContainer } from '@voiceflow/ui';
+import { ClickableText, Flex, SvgIcon, SvgIconContainer, Tag } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
 import { Paragraph } from '@/components/Tooltip';
-import { SlotTag, VariableTag } from '@/components/VariableTag';
 import * as Modal from '@/ducks/modal';
 import * as SlotV2 from '@/ducks/slotV2';
 import { styled } from '@/hocs';
@@ -104,9 +103,9 @@ const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappi
     >
       {validMappings.map(({ variable, slot }, index) => (
         <LegacyMappingRow key={index}>
-          <SlotTag color={slot.color}>{slot.name}</SlotTag>
+          <Tag color={slot.color}>{`{${slot.name}}`}</Tag>
           <SvgIcon icon="next" />
-          <VariableTag>{variable}</VariableTag>
+          <Tag>{`{${variable}}`}</Tag>
         </LegacyMappingRow>
       ))}
     </LegacySection>

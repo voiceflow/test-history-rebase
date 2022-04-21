@@ -45,7 +45,9 @@ export const ColorPickerPopper = React.forwardRef<HTMLDivElement, ColorPickerPop
           <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
             <StyledWrapper ref={ref}>
               <PopperContent>
-                <Tag color={selectedColor}>{tagName}</Tag>
+                <Box mb={15}>
+                  <Tag color={selectedColor}>{`{${tagName}}`}</Tag>
+                </Box>
                 <Box width={200} mb={22} mt={5}>
                   <ColorRange
                     hue={localHue}

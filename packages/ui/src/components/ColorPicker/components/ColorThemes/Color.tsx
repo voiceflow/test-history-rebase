@@ -1,5 +1,5 @@
 import { transition } from '@ui/styles';
-import { isHexColor } from '@ui/utils/colors/hex';
+import { isHexColor } from '@ui/utils/colors';
 import React from 'react';
 import styled from 'styled-components';
 

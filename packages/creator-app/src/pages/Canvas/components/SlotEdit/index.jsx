@@ -178,7 +178,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
         header="Entity"
         status={
           <SlotTag color={selectedColor} isInteraction={isInteraction}>
-            {slotName}
+            {`{${slotName}}`}
           </SlotTag>
         }
       >

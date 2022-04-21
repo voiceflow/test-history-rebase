@@ -115,6 +115,7 @@ export { default as StrengthGauge } from './StrengthGauge';
 export { StrengthLevel } from './StrengthGauge/types';
 export type { Icon, SvgIconProps } from './SvgIcon';
 export { IconVariant, default as SvgIcon, SvgIconContainer } from './SvgIcon';
+export { Tag } from './Tag';
 export type { TextProps } from './Text';
 export { BlockText, ClickableText, Description, Label, Link, OverflowText, overflowTextStyles, default as Text, Title } from './Text';
 export type { TippyTooltipProps } from './TippyTooltip';

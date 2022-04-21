@@ -1,8 +1,8 @@
+import { Tag } from '@voiceflow/ui';
 import React from 'react';
 
 import { SlotRequiredMessage } from '@/components/IntentSlotForm/components';
 import Section from '@/components/Section';
-import { SlotTag } from '@/components/VariableTag';
 import { styled } from '@/hocs';
 
 export const SlotWrapper = styled(Section)`
@@ -22,7 +22,7 @@ const DraggableSlotItem = ({ itemKey, onClick, item, slotsMap, intentSlotsMap, i
     <SlotWrapper
       key={itemKey}
       ref={ref}
-      prefix={<SlotTag color={slot.color}>{slot.name}</SlotTag>}
+      prefix={<Tag color={slot.color}>{`{${slot.name}}`}</Tag>}
       header={<SlotRequiredMessage required={intentSlot.required} />}
       isLink
       onClick={onClick ? () => onClick(item) : undefined}

@@ -1,4 +1,4 @@
-import { HSLShades } from '@ui/utils/colors/hsl';
+import { COLOR_GRADES, HSLShades } from '@ui/utils/colors/hsl';
 
 export interface IColor {
   palette: HSLShades;
@@ -9,88 +9,41 @@ export interface IColor {
 
 export type Colors = Array<IColor>;
 
+const createCustomPalette = (colors: string[]) =>
+  COLOR_GRADES.reduce((acc, grade, i) => {
+    acc[String(grade)] = colors[i];
+
+    return acc;
+  }, {} as HSLShades);
+
 export const BASE_COLORS: Colors = [
   {
     hue: '197',
-    editing: true,
-    palette: {
-      '50': '#eceeee',
-      '100': '#e0e3e3',
-      '200': '#d1d5d5',
-      '300': '#c4c7c7',
-      '400': '#aeb1b1',
-      '500': '#707577',
-      '600': '#828484',
-      '700': '#676868',
-      '800': '#4a4c4c',
-      '900': '#2d2e2e',
-    },
+    palette: createCustomPalette(['#F2F7F7', '#828788', '#707577', '#5d6264', '#94999A', '#3b4042', '#33373a', '#4B5052', '#202428', '#161a1e']),
   },
   {
     hue: '207',
-    palette: {
-      '50': '#d7f3f8',
-      '100': '#baebf4',
-      '200': '#8ee1ef',
-      '300': '#84d3e0',
-      '400': '#75bcc7',
-      '500': '#5b9fd7',
-      '600': '#568c95',
-      '700': '#436f76',
-      '800': '#2f5056',
-      '900': '#1b3235',
-    },
+    palette: createCustomPalette(['#e3eff8', '#d3e5f4', '#c3dcf0', '#a8cce9', '#81b5e0', '#5b9fd7', '#4e8bbd', '#3a6b93', '#284d6c', '#152f45']),
   },
   {
     hue: '130',
-    palette: {
-      '50': '#daf5dc',
-      '100': '#beefc1',
-      '200': '#a6e3ab',
-      '300': '#9bd49f',
-      '400': '#8abd8e',
-      '500': '#56b365',
-      '600': '#668d69',
-      '700': '#507052',
-      '800': '#39513b',
-      '900': '#223223',
-    },
+    palette: createCustomPalette(['#e0f0e3', '#cfe9d4', '#b2dcb9', '#9cd2a5', '#70bf7d', '#56b365', '#4a9b57', '#387642', '#27542e', '#17341c']),
   },
 ];
+
 export const DEFAULT_COLORS: Colors = [
   ...BASE_COLORS,
   {
     hue: '331',
-    palette: {
-      '50': '#fce8f3',
-      '100': '#fbd9ec',
-      '200': '#f9c6e3',
-      '300': '#f7b2db',
-      '400': '#f590ce',
-      '500': '#f263a7',
-      '600': '#e639b2',
-      '700': '#b82b8d',
-      '800': '#881d68',
-      '900': '#570f41',
-    },
+    palette: createCustomPalette(['#fce5f0', '#fbdaea', '#fac7df', '#f8acd0', '#f587bb', '#f263a7', '#d6528a', '#b63a65', '#922240', '#630b19']),
   },
   {
     hue: '9',
-    palette: {
-      '50': '#f8ebeb',
-      '100': '#f4ddde',
-      '200': '#efccce',
-      '300': '#eabbbd',
-      '400': '#e49ea2',
-      '500': '#dc8879',
-      '600': '#d95963',
-      '700': '#b2424b',
-      '800': '#832e35',
-      '900': '#541b1f',
-    },
+    palette: createCustomPalette(['#f8ebe8', '#f5e0dc', '#f0cdc7', '#ecbfb7', '#e4a398', '#dc8879', '#be7466', '#92564b', '#683a31', '#431f19']),
   },
 ];
+
 export const COLOR_WHEEL = `
-  radial-gradient(circle closest-side, white, black 90%),
-  conic-gradient(#ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080, #ff0000);
+radial-gradient(circle closest-side, white, black 90%),
+conic-gradient(#ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080, #ff0000);
 `;

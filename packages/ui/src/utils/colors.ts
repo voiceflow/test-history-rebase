@@ -36,6 +36,11 @@ export const hexToRGBA = (color: string) => {
 };
 
 const RGBA_REGEX = /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i;
+const HEX_REGEX = /^#(?:(?:[\da-f]{3}){1,2}|(?:[\da-f]{4}){1,2})$/i;
+
+export const isHexColor = (color: string): boolean => RegExp(HEX_REGEX).test(color);
+export const isRGBColor = (color: string): boolean => RegExp(RGBA_REGEX).test(color);
+
 export const RGBAToHex = (rgba: string): string => {
   const parsedRGBA = rgba.match(RGBA_REGEX);
   const parseSubcolor = (subcolor: string) => `0${parseInt(subcolor, 10).toString(16)}`.slice(-2);

@@ -1,9 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Tag } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { SearchableListItemContainer } from '@/components/SearchableList';
-import { SlotTag } from '@/components/VariableTag';
 
 import ItemCount from '../../ItemCount';
 
@@ -28,7 +28,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
     isDraggingPreview={isDraggingPreview}
     isContextMenuOpen={isContextMenuOpen}
   >
-    <SlotTag color={item.color}>{item.name}</SlotTag>
+    <Tag color={item.color}>{`{${item.name}}`}</Tag>
 
     {item.type && <ItemCount style={{ marginLeft: '12px' }}>{item.type?.replace('AMAZON.', '') ?? ''}</ItemCount>}
   </SearchableListItemContainer>

@@ -1,7 +1,8 @@
-import { SlotTag } from '@/components/VariableTag';
+import { Tag } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
-const StyledSlotTag = styled(SlotTag)`
+const StyledSlotTag = styled(Tag)`
   margin-right: ${({ isInteraction }) => (isInteraction ? 44 : 0)}px;
 `;
 

@@ -20,7 +20,6 @@
     "moize": "^5.4.7",
     "newpopper": "npm:react-popper",
     "object-hash": "^2.1.1",
-    "polished": "^4.1.4",
     "prop-types": "^15.7.2",
     "query-string": "^7.0.0",
     "react": "^17.0.2",

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.698.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.697.0...@voiceflow/creator-app@1.698.0) (2022-04-22)
+
+
+### Bug Fixes
+
+* remove roboto font (VF-000) ([#5353](https://github.com/voiceflow/creator-app/issues/5353)) ([f6874a3](https://github.com/voiceflow/creator-app/commit/f6874a373d708b1afa8bb1cbc5b387ff158fbe4a))
+
+
+### Features
+
+* implement empty state for CardV2 Step (VF-3350) ([#5348](https://github.com/voiceflow/creator-app/issues/5348)) ([d860932](https://github.com/voiceflow/creator-app/commit/d86093298579afa1d0d5d8d61b54efb41b4a8678))
+
+
+
+
+
 # [1.697.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.696.3...@voiceflow/creator-app@1.697.0) (2022-04-21)
 
 

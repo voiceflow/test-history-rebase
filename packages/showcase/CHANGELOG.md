@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.5.4...@voiceflow/showcase@1.5.5) (2022-04-22)
+
+
+### Bug Fixes
+
+* remove roboto font (VF-000) ([#5353](https://github.com/voiceflow/creator-app/issues/5353)) ([f6874a3](https://github.com/voiceflow/creator-app/commit/f6874a373d708b1afa8bb1cbc5b387ff158fbe4a))
+
+
+
+
+
 ## [1.5.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.5.3...@voiceflow/showcase@1.5.4) (2022-04-21)
 
 **Note:** Version bump only for package @voiceflow/showcase

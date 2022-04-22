@@ -18,6 +18,7 @@ import Section from './StepSection';
 
 export interface StepContainerProps {
   canHighlight?: boolean;
+  dividerOffset?: number;
 }
 
 const StepContainer = styled(Flex)<StepContainerProps>`
@@ -30,6 +31,13 @@ const StepContainer = styled(Flex)<StepContainerProps>`
 
   ${Section}:not(:first-of-type) {
     border-top: 1px solid #eaeff4;
+
+    ${({ dividerOffset }) =>
+      dividerOffset &&
+      css`
+        border-image-source: linear-gradient(to right, transparent ${dividerOffset}px, #eaeff4 1px);
+        border-image-slice: 1;
+      `}
   }
 
   ${MemberIcon} {

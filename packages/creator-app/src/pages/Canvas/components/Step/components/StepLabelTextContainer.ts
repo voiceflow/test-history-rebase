@@ -4,12 +4,12 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { styled } from '@/hocs';
 
 export interface StepLabelTextContainerProps {
-  variant: StepLabelVariant;
+  variant?: StepLabelVariant;
 }
 
 const StepLabelTextContainer = styled(OverflowText)<StepLabelTextContainerProps>`
   flex: 1;
-  color: ${({ variant, theme }) => theme.components.blockStep.labelText.variants[variant]};
+  color: ${({ variant = StepLabelVariant.PRIMARY, theme }) => theme.components.blockStep.labelText.variants[variant]};
 `;
 
 export default StepLabelTextContainer;

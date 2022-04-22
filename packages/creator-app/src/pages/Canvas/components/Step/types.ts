@@ -35,4 +35,5 @@ export interface ItemProps {
   multilineLabel?: boolean;
   labelLineClamp?: number;
   variant?: BlockVariant;
+  nested?: boolean;
 }

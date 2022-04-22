@@ -3,7 +3,7 @@ import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import { styled } from '@/hocs';
-import { Image } from '@/pages/Canvas/components/Step/components';
+import StepImage from '@/pages/Canvas/components/Step/components/StepImage';
 import { VisualMessage } from '@/pages/Prototype/types';
 
 import { Message } from '../components';
@@ -24,25 +24,20 @@ const VisualContainer = styled.div`
 const ImageContainer = styled.div<{ ratio: number; isFirstInSeries?: boolean }>`
   max-width: 306px;
   width: 100%;
-
-  ${Image} {
-    border-radius: 12px;
-    padding-bottom: ${({ ratio }) => ratio}%;
-  }
 `;
 
 const Visual: React.FC<VisualProps> = ({ visual, isTranscript, ...props }) => {
   const isImageType = visual.visualType === BaseNode.Visual.VisualType.IMAGE;
   const imageURL = isImageType ? visual.image : visual.imageURL;
   const { width = 0, height = 0 } = (isImageType && visual.dimensions) || {};
-  const ratio = (height / width) * 100 || 60;
+  const ratio = width / height || 1.65;
 
   return (
     <VisualContainer onClick={(e) => isTranscript && e.preventDefault()}>
       <Message bubble={false} {...props}>
         <Link href={imageURL!}>
           <ImageContainer ratio={ratio} isFirstInSeries={props.isFirstInSeries}>
-            <Image image={imageURL!} position="top center" />
+            <StepImage image={imageURL!} position="top center" borderRadius={12} aspectRatio={ratio} noContainer />
           </ImageContainer>
         </Link>
       </Message>

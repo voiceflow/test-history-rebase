@@ -2,10 +2,11 @@ import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import User from '@/components/User';
+import { StepLabelVariant } from '@/constants/canvas';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { Container, HoverContainer, Image, ImageContainer } from './components';
+import { Container, HoverContainer, Icon, Image, Item, LabelText, LabelTextContainer, Section, SubItem, SubLabelText } from './components';
 import { StepAPIContext } from './contexts';
 
 export * from './components';
@@ -17,11 +18,12 @@ export interface BaseStepProps {
   imagePosition?: string;
   imageAspectRatio?: number | null;
   disableHighlightStyle?: boolean;
+  dividerOffset?: number;
 }
 
 export type StepProps = BaseStepProps;
 
-const Step: React.FC<StepProps> = ({ nodeID, image, disableHighlightStyle, children, imagePosition, imageAspectRatio }) => {
+const Step: React.FC<StepProps> = ({ nodeID, image, disableHighlightStyle, children, imagePosition, imageAspectRatio, dividerOffset }) => {
   const stepAPI = React.useContext(StepAPIContext);
   const isEditingMode = useEditingMode();
 
@@ -34,14 +36,10 @@ const Step: React.FC<StepProps> = ({ nodeID, image, disableHighlightStyle, child
       onMouseDown={stopPropagation(null, true)}
       readOnlyMode={!isEditingMode}
     >
-      <Container canHighlight={!disableHighlightStyle} draggable={stepAPI?.isDraggable}>
+      <Container canHighlight={!disableHighlightStyle} draggable={stepAPI?.isDraggable} dividerOffset={dividerOffset}>
         {stepAPI?.lockOwner && <User user={stepAPI.lockOwner} />}
         {children}
-        {image && (
-          <ImageContainer aspectRatio={imageAspectRatio}>
-            <Image position={imagePosition} image={image} />
-          </ImageContainer>
-        )}
+        {image && <Image position={imagePosition} image={image} aspectRatio={imageAspectRatio} />}
       </Container>
     </HoverContainer>
   );
@@ -49,4 +47,14 @@ const Step: React.FC<StepProps> = ({ nodeID, image, disableHighlightStyle, child
   return stepAPI?.wrapElement(element) ?? element;
 };
 
-export default Step;
+export default Object.assign(Step, {
+  Icon,
+  Image,
+  Item,
+  LabelText,
+  LabelTextContainer,
+  Section,
+  StepLabelVariant,
+  SubItem,
+  SubLabelText,
+});

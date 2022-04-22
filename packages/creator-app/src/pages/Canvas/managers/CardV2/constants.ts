@@ -6,7 +6,13 @@ import { BlockType } from '@/constants';
 
 import { NodeConfig } from '../types';
 
-export const factory = (): BaseNode.CardV2.Card => ({ id: Utils.id.cuid.slug(), title: '', description: '', imageUrl: '', buttons: [] });
+export const factory = (): BaseNode.CardV2.Card => ({
+  id: Utils.id.cuid.slug(),
+  title: '',
+  description: '',
+  imageUrl: '',
+  buttons: [],
+});
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = {
   type: BlockType.CARDV2,

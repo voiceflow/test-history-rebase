@@ -11,9 +11,7 @@ export interface StepLabelTextProps {
   withNewLines?: boolean;
 }
 
-const StepLabelText = styled.div<StepLabelTextProps>`
-  ${overflowTextStyles}
-
+export const textLabelStyles = css<StepLabelTextProps>`
   ${({ multiline, lineClamp = 3 }) =>
     multiline &&
     css`
@@ -26,7 +24,6 @@ const StepLabelText = styled.div<StepLabelTextProps>`
       word-break: break-word;
     `}
 
-
   ${({ withNewLines }) =>
     withNewLines &&
     css`
@@ -38,6 +35,11 @@ const StepLabelText = styled.div<StepLabelTextProps>`
     css`
       word-break: break-all;
     `}
+`;
+
+const StepLabelText = styled.div<StepLabelTextProps>`
+  ${overflowTextStyles}
+  ${textLabelStyles}
 
   ${({ onClick }) =>
     onClick &&

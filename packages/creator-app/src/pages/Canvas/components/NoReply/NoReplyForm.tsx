@@ -80,7 +80,6 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
   const withoutPathAndAlwaysRandom = Realtime.Utils.platform.createPlatformSelector(
     {
       [VoiceflowConstants.PlatformType.ALEXA]: true,
-      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: true,
     },
     false
   )(platform);

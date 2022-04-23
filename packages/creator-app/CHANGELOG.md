@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.699.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.698.0...@voiceflow/creator-app@1.699.0) (2022-04-23)
+
+
+### Features
+
+* enable path for no reply on DF ES projects (VF-3040) ([#5356](https://github.com/voiceflow/creator-app/issues/5356)) ([f828f32](https://github.com/voiceflow/creator-app/commit/f828f32b7f0aadcbdd8103edf1b25b3174229d32))
+
+
+
+
+
 # [1.698.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.697.0...@voiceflow/creator-app@1.698.0) (2022-04-22)
 
 

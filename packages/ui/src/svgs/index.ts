@@ -55,12 +55,14 @@ export { default as community } from './community.svg';
 export { default as component } from './component.svg';
 export { default as connectGoogle } from './connect-google.svg';
 export { default as conversations } from './conversations.svg';
+export { default as copy } from './copy.svg';
 export { default as creditCard } from './credit-card.svg';
 export { default as cursor } from './cursor.svg';
 export { default as custom } from './custom.svg';
 export { default as customPayload } from './custom-payload.svg';
 export { default as customResponse } from './custom-response.svg';
 export { default as checked } from './images/icons/check.svg';
+
 // d
 export { default as delay } from './delay.svg';
 export { default as designer } from './designer.svg';
@@ -80,6 +82,7 @@ export { default as duplicate } from './duplicate.svg';
 export { default as echoShow } from './echo-show.svg';
 export { default as echoSpot } from './echo-spot.svg';
 export { default as editName } from './edit-name.svg';
+export { default as editorEdit } from './editor-edit.svg';
 export { default as ellipsis } from './ellipsis.svg';
 export { default as else } from './else.svg';
 export { default as entities } from './entities.svg';
@@ -246,6 +249,7 @@ export { default as support } from './support.svg';
 export { default as sync } from './sync.svg';
 
 // t
+export { default as target } from './target.svg';
 export { default as template } from './template.svg';
 export { default as text } from './text.svg';
 export { default as textAlignCenter } from './text-align-centre.svg';

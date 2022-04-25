@@ -9,6 +9,7 @@ interface TagProps {
   className?: string;
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export const Tag = React.forwardRef<HTMLSpanElement, React.PropsWithChildren<TagProps>>(
   ({ color, children, className, ...props }, ref): React.ReactElement => {
     const palette = useColorPalette(color);

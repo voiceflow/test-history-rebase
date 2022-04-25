@@ -6,7 +6,9 @@ import { uiProjectDir } from '@/config';
 
 const SectionContainer = styled.div`
   border: 1px solid #dedede;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  column-gap: 16px;
   flex-wrap: nowrap;
   border-radius: 8px;
 `;

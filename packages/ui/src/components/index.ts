@@ -107,6 +107,7 @@ export {
 export type { OptionsMenuOption } from './OptionsMenu';
 export { default as OptionsMenu } from './OptionsMenu';
 export { default as Portal, portalRootNode } from './Portal';
+export { default as Preview } from './Preview';
 export { default as SearchInput, SearchInputIcon } from './SearchInput';
 export type { BaseSelectProps, FilterResult, OptionsFilter } from './Select';
 export { default as Select, SelectInputVariant, SelectWrapper } from './Select';

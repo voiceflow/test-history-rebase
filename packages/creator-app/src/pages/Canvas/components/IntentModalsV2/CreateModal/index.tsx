@@ -62,7 +62,7 @@ const CreateModal: React.FC = () => {
           Cancel
         </Button>
 
-        <Button minWidth={150} disabled={creating} variant={ButtonVariant.PRIMARY} squareRadius onClick={onCreate} isLoading={creating}>
+        <Button width={140} disabled={creating} variant={ButtonVariant.PRIMARY} squareRadius onClick={onCreate} isLoading={creating}>
           Create Intent
         </Button>
       </ModalFooter>

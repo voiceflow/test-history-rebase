@@ -13,6 +13,7 @@ export interface ButtonContainerProps extends BaseButtonProps, React.ButtonHTMLA
   isLoading?: boolean;
   fullWidth?: boolean;
   minWidth?: number;
+  width?: number;
   squareRadius?: boolean;
 }
 
@@ -39,6 +40,12 @@ export const buttonContainerStyles = css<ButtonContainerProps>`
 
     return 'auto';
   }};
+
+  ${({ width }) =>
+    width &&
+    css`
+      width: ${width}px;
+    `}
 
   ${({ nowrap }) =>
     nowrap &&

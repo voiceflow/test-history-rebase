@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.699.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.699.0...@voiceflow/creator-app@1.699.1) (2022-04-25)
+
+
+### Bug Fixes
+
+* width of create modal buttons (VF-000) ([#5358](https://github.com/voiceflow/creator-app/issues/5358)) ([92980a1](https://github.com/voiceflow/creator-app/commit/92980a150dee40f7bba7d172f6b4db3a58d4714f))
+
+
+
+
+
 # [1.699.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.698.0...@voiceflow/creator-app@1.699.0) (2022-04-23)
 
 

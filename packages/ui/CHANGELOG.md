@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.76.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.75.1...@voiceflow/ui@1.76.0) (2022-04-25)
+
+
+### Bug Fixes
+
+* width of create modal buttons (VF-000) ([#5358](https://github.com/voiceflow/creator-app/issues/5358)) ([92980a1](https://github.com/voiceflow/creator-app/commit/92980a150dee40f7bba7d172f6b4db3a58d4714f))
+
+
+### Features
+
+* **ui:** creates preview component (VF-3345) ([#5335](https://github.com/voiceflow/creator-app/issues/5335)) ([3d4b0ad](https://github.com/voiceflow/creator-app/commit/3d4b0ad53eb1471f08e9141f1688780d0077ebf2))
+
+
+
+
+
 ## [1.75.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.75.0...@voiceflow/ui@1.75.1) (2022-04-21)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.5.5...@voiceflow/showcase@1.6.0) (2022-04-25)
+
+
+### Features
+
+* **ui:** creates preview component (VF-3345) ([#5335](https://github.com/voiceflow/creator-app/issues/5335)) ([3d4b0ad](https://github.com/voiceflow/creator-app/commit/3d4b0ad53eb1471f08e9141f1688780d0077ebf2))
+
+
+
+
+
 ## [1.5.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.5.4...@voiceflow/showcase@1.5.5) (2022-04-22)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.699.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.699.1...@voiceflow/creator-app@1.699.2) (2022-04-25)
+
+
+### Bug Fixes
+
+* long variable overflow (VF-3307) ([#5359](https://github.com/voiceflow/creator-app/issues/5359)) ([f411f83](https://github.com/voiceflow/creator-app/commit/f411f83792f6b039b4197804c69e1699e56ad397))
+
+
+
+
+
 ## [1.699.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.699.0...@voiceflow/creator-app@1.699.1) (2022-04-25)
 
 

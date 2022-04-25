@@ -1,7 +1,7 @@
 import { TippyTooltip, TippyTooltipProps, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { useToggle } from '@/hooks';
+import { useResizeObserver, useToggle } from '@/hooks';
 
 export interface OverflowTippyTooltipProps<E extends HTMLElement = HTMLElement> extends TippyTooltipProps {
   children: (ref: React.RefObject<E>, options: { isOverflow?: boolean }) => React.ReactNode;
@@ -19,14 +19,18 @@ const OverflowTippyTooltip = <E extends HTMLElement = HTMLElement>({
   const [isOverflow, toggleIsOverflow] = useToggle(false);
 
   const persistIsChildrenOverflow = usePersistFunction(isChildrenOverflow ?? defaultIsChildrenOverflow);
-
-  // eslint-disable-next-line xss/no-mixed-html
-  React.useEffect(() => {
+  const checkForOverflow = () => {
     if (!ref.current) {
       return;
     }
-
     toggleIsOverflow(persistIsChildrenOverflow(ref.current));
+  };
+
+  useResizeObserver(ref, checkForOverflow);
+
+  // eslint-disable-next-line xss/no-mixed-html
+  React.useEffect(() => {
+    checkForOverflow();
     // eslint-disable-next-line xss/no-mixed-html
   }, [props.title, props.html]);
 

@@ -1,15 +1,16 @@
 import { Utils } from '@voiceflow/common';
 import {
   BaseSelectProps,
-  FlexApart,
   isNotUIOnlyMenuItemOption,
   isUIOnlyMenuItemOption,
   NestedMenuComponents,
+  OverflowText,
   SvgIcon,
   TippyTooltip,
 } from '@voiceflow/ui';
 import React from 'react';
 
+import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import { ModalType } from '@/constants';
 import * as variableState from '@/ducks/variableState';
 import { useModals, useSelector, useVariableStatesPlanLimit } from '@/hooks';
@@ -56,7 +57,15 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       getOptionKey={(option) => option.value}
       getOptionValue={(option) => option?.value}
       getOptionLabel={(value) => value && optionsMap[value]?.label}
-      renderOptionLabel={(option: VariableStateOption) => <FlexApart fullWidth>{option.label}</FlexApart>}
+      renderOptionLabel={(option: VariableStateOption) => (
+        <OverflowTippyTooltip style={{ overflow: 'hidden' }} title={option.label} position="top-start">
+          {(overflowref) => (
+            <OverflowText ref={overflowref} style={{ display: 'block', overflow: 'hidden' }}>
+              {option.label}
+            </OverflowText>
+          )}
+        </OverflowTippyTooltip>
+      )}
       icon={loading ? 'publishSpin' : undefined}
       iconProps={{ clickable: true, color: '#132144', spin: true, size: 21.3, marginRight: '-4px' }}
       disabled={loading}

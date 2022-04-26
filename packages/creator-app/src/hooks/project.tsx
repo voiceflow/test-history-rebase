@@ -83,7 +83,7 @@ export const useDeleteProject = ({
       ),
       confirm: handleDelete,
     });
-  }, [canManageProjects]);
+  }, [canManageProjects, projectName]);
 };
 
 export const useProjectOptions = ({

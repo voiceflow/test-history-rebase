@@ -46,7 +46,7 @@ export const prettifyGoogleVoicesLong = (voiceCode: string): string => {
   return `${GoogleConstants.LocaleCodeToCountryLanguage[localeCode] || localeCode || ''} ${voiceType}`.trim();
 };
 
-export const prettifyAzureVoiceID = (voiceID: string): string => voiceID.split('-')[3].replace('RUS', '').replace('azure-', '');
+export const prettifyAzureVoiceID = (voiceID: string): string => voiceID.split('-')[3].replace('RUS', '').replace('azure-', '').replace('Neural', '');
 
 export const prettifyVoice = (voiceID: string): string => {
   const lowerCasedVoiceID = voiceID.toLowerCase();

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.700.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.699.2...@voiceflow/creator-app@1.700.0) (2022-04-26)
+
+
+### Features
+
+* move components to ui package (VF-000) ([#5357](https://github.com/voiceflow/creator-app/issues/5357)) ([a4cd9ee](https://github.com/voiceflow/creator-app/commit/a4cd9ee2f706d51d54d61a3d6b0f1bb251d1e521))
+
+
+
+
+
 ## [1.699.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.699.1...@voiceflow/creator-app@1.699.2) (2022-04-25)
 
 

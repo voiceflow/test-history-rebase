@@ -106,6 +106,8 @@ export {
 } from './NestedMenu';
 export type { OptionsMenuOption } from './OptionsMenu';
 export { default as OptionsMenu } from './OptionsMenu';
+export type { PopperProps } from './Popper';
+export { default as Popper } from './Popper';
 export { default as Portal, portalRootNode } from './Portal';
 export { default as Preview } from './Preview';
 export { default as SearchInput, SearchInputIcon } from './SearchInput';
@@ -123,3 +125,8 @@ export type { TippyTooltipProps } from './TippyTooltip';
 export { default as TippyTooltip, TooltipTheme } from './TippyTooltip';
 export { toast, ToastCallToAction, ToastContainer } from './Toast';
 export { default as Toggle, ToggleSize } from './Toggle';
+export { default as Tooltip } from './Tooltip';
+export type { TutorialInfoIconProps } from './TutorialInfoIcon';
+export { default as TutorialInfoIcon } from './TutorialInfoIcon';
+export { default as TutorialTooltip } from './TutorialTooltip';
+export { default as VideoPlayer } from './VideoPlayer';

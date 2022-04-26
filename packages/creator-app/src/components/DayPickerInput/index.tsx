@@ -1,8 +1,8 @@
 import { Utils } from '@voiceflow/common';
+import { Popper } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import Popper from '@/components/Popper';
 import VariablesInput from '@/components/VariablesInput';
 
 import { DayPickerContainer, FORMAT, TimeRangePicker, WEEKDAYS } from './components';

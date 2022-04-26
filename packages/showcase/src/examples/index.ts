@@ -1,8 +1,10 @@
-import badgeExamples from './Badge';
-import buttonExamples from './Button';
-import colorPickerExamples from './ColorPicker';
-import hueSliderExamples from './HueSlider';
-import previewExamples from './Preview';
-import { createPage } from './utils';
-
-export default createPage([badgeExamples, buttonExamples, colorPickerExamples, hueSliderExamples, previewExamples]);
+export { default as badge } from './Badge';
+export { default as button } from './Button';
+export { default as colorPicker } from './ColorPicker';
+export { default as hueSlider } from './HueSlider';
+export { default as popper } from './Popper';
+export { default as preview } from './Preview';
+export { default as tooltip } from './Tooltip';
+export { default as tutorialInfoIcon } from './TutorialInfoIcon';
+export { default as tutorialTooltip } from './TutorialTooltip';
+export { default as videoPlayer } from './VideoPlayer';

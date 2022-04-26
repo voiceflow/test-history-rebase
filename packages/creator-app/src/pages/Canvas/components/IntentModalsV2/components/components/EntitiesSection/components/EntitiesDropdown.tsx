@@ -1,9 +1,8 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, IconButton, IconButtonVariant, NestedMenuComponents, Select } from '@voiceflow/ui';
+import { Box, IconButton, IconButtonVariant, NestedMenuComponents, Popper, Select } from '@voiceflow/ui';
 import React from 'react';
 
-import Popper from '@/components/Popper';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useSelector } from '@/hooks';
 

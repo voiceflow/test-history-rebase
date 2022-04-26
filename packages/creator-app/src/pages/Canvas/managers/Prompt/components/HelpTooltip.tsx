@@ -1,16 +1,15 @@
+import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
-
-import { Paragraph } from '@/components/Tooltip';
 
 const HelpTooltip: React.FC = () => (
   <>
-    <Paragraph marginBottomUnits={3}>We can think of the prompt step as a stop and listen inside our project.</Paragraph>
+    <Tooltip.Paragraph marginBottomUnits={3}>We can think of the prompt step as a stop and listen inside our project.</Tooltip.Paragraph>
 
-    <Paragraph marginBottomUnits={3}>
+    <Tooltip.Paragraph marginBottomUnits={3}>
       The prompt step is listening to the user to trigger an intent inside your project. When an intent is matched, the conversation will jump to that
       intent step and continue from there. Prompt steps are an important tool in building non-linear conversations, an important Conversation Design
       best practice.
-    </Paragraph>
+    </Tooltip.Paragraph>
   </>
 );
 

@@ -1,8 +1,7 @@
-import { useSessionStorageState } from '@voiceflow/ui';
+import { Popper, PopperProps, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Popper, { PopperContent, PopperProps } from '@/components/Popper';
 import { Permission } from '@/config/permissions';
 import * as Session from '@/ducks/session';
 import { usePermission, useSelector } from '@/hooks';
@@ -81,13 +80,13 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
           </Nav>
         )}
         renderContent={() => (
-          <PopperContent>
+          <Popper.Content>
             <Switch>
               <Route path={ShareProjectTab.PROTOTYPE} render={() => <PrototypeContent />} />
               <Route path={ShareProjectTab.INVITE} render={() => <InviteContent inline />} />
               <Route path={ShareProjectTab.EXPORT} render={() => <ExportContent />} />
             </Switch>
-          </PopperContent>
+          </Popper.Content>
         )}
         renderFooter={() => (
           <Footer>

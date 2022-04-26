@@ -1,9 +1,8 @@
-import { Box, BoxFlex, IconButton, IconButtonVariant, Portal } from '@voiceflow/ui';
+import { Box, BoxFlex, IconButton, IconButtonVariant, Portal, TutorialInfoIcon } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import InfoIcon from '@/components/InfoIcon';
 import { ModalType } from '@/constants';
 import { useModals, useTheme } from '@/hooks';
 import { ClassName, Identifier } from '@/styles/constants';
@@ -85,7 +84,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
 
                       {intoTooltip && (
                         <Box ml={8}>
-                          <InfoIcon>{intoTooltip}</InfoIcon>
+                          <TutorialInfoIcon>{intoTooltip}</TutorialInfoIcon>
                         </Box>
                       )}
                     </BoxFlex>

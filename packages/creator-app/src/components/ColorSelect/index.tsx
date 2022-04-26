@@ -1,8 +1,8 @@
 import { Utils } from '@voiceflow/common';
+import { Popper } from '@voiceflow/ui';
 import React from 'react';
 
 import ColorPicker from '@/components/ColorPicker';
-import Popper from '@/components/Popper';
 
 import { ColorPreview } from './components';
 

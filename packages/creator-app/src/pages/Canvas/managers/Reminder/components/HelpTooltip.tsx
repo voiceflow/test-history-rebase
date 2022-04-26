@@ -1,20 +1,19 @@
+import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
-
-import { Paragraph, Title } from '@/components/Tooltip';
 
 const HelpTooltip: React.FC = () => (
   <>
-    <Paragraph>
+    <Tooltip.Paragraph>
       The reminder block can be used to send both scheduled remidners and timed reminder to the user. You can add variables to both the trigger time
       and content of the reminder message.
-    </Paragraph>
+    </Tooltip.Paragraph>
 
-    <Title>Important Consideration</Title>
+    <Tooltip.Title>Important Consideration</Tooltip.Title>
 
-    <Paragraph>
+    <Tooltip.Paragraph>
       To send a user a reminder, they must grant your project permission to do so. In order to gain this permission. You must use a Permissions block,
       and request the ability to send the user reminders.
-    </Paragraph>
+    </Tooltip.Paragraph>
   </>
 );
 

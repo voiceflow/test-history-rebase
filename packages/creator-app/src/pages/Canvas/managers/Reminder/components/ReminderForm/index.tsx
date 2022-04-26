@@ -1,10 +1,10 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { TutorialInfoIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import DayPickerInput from '@/components/DayPickerInput';
-import InfoIcon from '@/components/InfoIcon';
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
@@ -82,7 +82,7 @@ const ReminderForm: React.FC<ReminderFormProps> = ({ data, withDate, onChange })
           label={
             <>
               {reminderType === 'timer' ? 'Time From Now' : 'Time'}
-              <InfoIcon>{'In 24-hour format. Use "{" to add variables'}</InfoIcon>
+              <TutorialInfoIcon>{'In 24-hour format. Use "{" to add variables'}</TutorialInfoIcon>
             </>
           }
         />

@@ -1,6 +1,5 @@
+import { Popper, PopperProps } from '@voiceflow/ui';
 import React from 'react';
-
-import Popper, { PopperContent, PopperProps } from '@/components/Popper';
 
 import { SelectMenuHeader } from './components';
 
@@ -19,11 +18,11 @@ const SelectMenu: React.FC<SelectMenuProp> = ({ onClose, children, sections, pla
     onClose={onClose}
     placement={placement}
     renderContent={({ onToggle }) => (
-      <PopperContent>
+      <Popper.Content>
         <SelectMenuHeader actionDisabled={actionDisabled} onClear={onClear} title="All filters" />
 
         {sections({ onToggle })}
-      </PopperContent>
+      </Popper.Content>
     )}
   >
     {children}

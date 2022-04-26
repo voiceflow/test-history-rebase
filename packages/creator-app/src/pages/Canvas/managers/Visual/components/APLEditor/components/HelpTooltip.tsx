@@ -1,20 +1,19 @@
-import { Link } from '@voiceflow/ui';
+import { Link, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { Paragraph, Title } from '@/components/Tooltip';
 import * as Documentation from '@/config/documentation';
 
 const HelpTooltip: React.FC = () => (
   <>
-    <Paragraph marginBottomUnits={3}>
+    <Tooltip.Paragraph marginBottomUnits={3}>
       The display block allows you to create visuals on Alexa devices with screens using Alexa Presentation Language (APL).
-    </Paragraph>
+    </Tooltip.Paragraph>
 
-    <Title>Having Trouble?</Title>
+    <Tooltip.Title>Having Trouble?</Tooltip.Title>
 
-    <Paragraph>
+    <Tooltip.Paragraph>
       Learn more about APL and multi-modal displays on Alexa <Link href={Documentation.DISPLAY_STEP}>here.</Link>
-    </Paragraph>
+    </Tooltip.Paragraph>
   </>
 );
 

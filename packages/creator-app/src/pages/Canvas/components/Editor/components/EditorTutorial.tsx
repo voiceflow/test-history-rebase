@@ -1,6 +1,5 @@
+import { TutorialTooltip } from '@voiceflow/ui';
 import React from 'react';
-
-import TutorialTooltip from '@/components/TutorialTooltip';
 
 export interface EditorTutorialProps {
   title: React.ReactNode;

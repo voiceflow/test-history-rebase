@@ -1,6 +1,6 @@
+import { Popper } from '@voiceflow/ui';
 import React from 'react';
 
-import Popper, { PopperContent } from '@/components/Popper';
 import ProtoTypeSettings from '@/pages/Prototype/components/PrototypeSettings';
 
 import { SettingsButton } from './components';
@@ -11,9 +11,9 @@ const PrototypeHeaderSettings: React.FC = () => (
     placement="bottom"
     modifiers={{ offset: { offset: '0,8' } }}
     renderContent={() => (
-      <PopperContent>
+      <Popper.Content>
         <ProtoTypeSettings />
-      </PopperContent>
+      </Popper.Content>
     )}
   >
     {({ ref, onToggle, isOpened }) => <SettingsButton ref={ref} onClick={onToggle} icon="cog" isActive={isOpened} />}

@@ -1,10 +1,7 @@
 import { Utils } from '@voiceflow/common';
-import { Collapse, Icon, SvgIcon, swallowEvent } from '@voiceflow/ui';
-import _isFunction from 'lodash/isFunction';
+import { Collapse, Icon, SvgIcon, swallowEvent, TutorialInfoIcon, TutorialInfoIconProps } from '@voiceflow/ui';
 import React from 'react';
 import { CSSProperties } from 'styled-components';
-
-import InfoIcon, { InfoIconProps } from '@/components/InfoIcon';
 
 import { SectionToggleVariant, SectionVariant } from '../constants';
 import CollapseTrigger from './CollapseTrigger';
@@ -43,7 +40,7 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   isCollapsed?: boolean;
   headerToggle?: boolean;
   fullWidth?: boolean;
-  tooltipProps?: InfoIconProps['tooltipProps'];
+  tooltipProps?: TutorialInfoIconProps['tooltipProps'];
   nestedIntend?: boolean;
   collapseVariant?: SectionToggleVariant | null;
   isDividerNested?: boolean;
@@ -153,7 +150,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
                   {header}
                 </HeaderLabel>
               )}
-              {tooltip && <InfoIcon tooltipProps={tooltipProps}>{tooltip}</InfoIcon>}
+              {tooltip && <TutorialInfoIcon tooltipProps={tooltipProps}>{tooltip}</TutorialInfoIcon>}
               {dropdown && (
                 <DropdownContainer isCollapsed={isCollapsed} onClick={swallowEvent()}>
                   {dropdown}
@@ -185,7 +182,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
       {(children || emptyChildren) && (
         <ContentContainer noHeader={!hasHeader} isCollapsed={isCollapsed} sectionToggleVariant={collapseVariant} style={customContentStyling}>
           <ContentPrefixComponent />
-          <Collapse isOpen={!isCollapsed}>{_isFunction(children) ? children({ isCollapsed, toggle }) : children}</Collapse>
+          <Collapse isOpen={!isCollapsed}>{Utils.functional.isFunction(children) ? children({ isCollapsed, toggle }) : children}</Collapse>
           <ContentSuffixComponent />
         </ContentContainer>
       )}

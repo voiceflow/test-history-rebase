@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import { Popper } from '@voiceflow/ui';
 
-import { PopperNav } from '@/components/Popper';
+import { styled } from '@/hocs';
 
-const Nav = styled(PopperNav)`
+const Nav = styled(Popper.Nav)`
   background-color: #fdfdfd;
 `;
 

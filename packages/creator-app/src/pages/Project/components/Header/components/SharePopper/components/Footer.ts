@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import { Popper } from '@voiceflow/ui';
 
-import { PopperFooter } from '@/components/Popper';
+import { styled } from '@/hocs';
 
-const ExportFooter = styled(PopperFooter)`
+const ExportFooter = styled(Popper.Footer)`
   background-color: #fdfdfd;
 `;
 

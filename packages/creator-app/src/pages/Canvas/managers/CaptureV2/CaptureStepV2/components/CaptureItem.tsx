@@ -1,8 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { stopPropagation, Text } from '@voiceflow/ui';
+import { Popper, stopPropagation, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Popper from '@/components/Popper';
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import { BlockVariant } from '@/constants/canvas';
 import ListItem from '@/pages/Canvas/components/NoMatchAndNoReplyStepCopyList/components/Item';

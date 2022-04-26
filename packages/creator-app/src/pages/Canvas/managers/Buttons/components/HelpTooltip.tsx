@@ -1,23 +1,29 @@
+import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
-
-import { Paragraph, Title } from '@/components/Tooltip';
 
 const HelpTooltip: React.FC = () => (
   <>
-    <Title>Follow Path</Title>
+    <Tooltip.Title>Follow Path</Tooltip.Title>
 
-    <Paragraph>When selected, a button will have a ‘port’ attached to it on the canvas- allowing it to be linked to another block or step.</Paragraph>
-    <Paragraph marginBottomUnits={3}>When the button is selected by the user, they will be navigated down the corresponding path.</Paragraph>
+    <Tooltip.Paragraph>
+      When selected, a button will have a ‘port’ attached to it on the canvas- allowing it to be linked to another block or step.
+    </Tooltip.Paragraph>
 
-    <Title capitalize={false}>Go to Intent</Title>
+    <Tooltip.Paragraph marginBottomUnits={3}>
+      When the button is selected by the user, they will be navigated down the corresponding path.
+    </Tooltip.Paragraph>
 
-    <Paragraph>When selected, the corresponding button will have an intent attached to it.</Paragraph>
-    <Paragraph marginBottomUnits={3}>When the button is selected by the user, they will trigger the attached intent.</Paragraph>
+    <Tooltip.Title capitalize={false}>Go to Intent</Tooltip.Title>
 
-    <Title>URL</Title>
+    <Tooltip.Paragraph>When selected, the corresponding button will have an intent attached to it.</Tooltip.Paragraph>
 
-    <Paragraph>When selected, the corresponding button will have a URL attached to it.</Paragraph>
-    <Paragraph>When the button is selected by the user, they will open the corresponding URL in a new tab.</Paragraph>
+    <Tooltip.Paragraph marginBottomUnits={3}>When the button is selected by the user, they will trigger the attached intent.</Tooltip.Paragraph>
+
+    <Tooltip.Title>URL</Tooltip.Title>
+
+    <Tooltip.Paragraph>When selected, the corresponding button will have a URL attached to it.</Tooltip.Paragraph>
+
+    <Tooltip.Paragraph>When the button is selected by the user, they will open the corresponding URL in a new tab.</Tooltip.Paragraph>
   </>
 );
 

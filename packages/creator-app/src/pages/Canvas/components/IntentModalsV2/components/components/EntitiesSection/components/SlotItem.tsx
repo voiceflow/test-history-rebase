@@ -1,11 +1,10 @@
 import { ChatModels } from '@voiceflow/chat-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Flex, FlexCenter, IconButton, IconButtonVariant, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, Flex, FlexCenter, IconButton, IconButtonVariant, Popper, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import { VoiceModels } from '@voiceflow/voice-types';
 import React from 'react';
 
 import { ChatPromptForm, VoicePromptForm } from '@/components/IntentSlotForm/components';
-import Popper, { PopperContent } from '@/components/Popper';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -44,7 +43,7 @@ const SlotItem: React.FC<SlotItemProps> = ({ updateSlotDialog, removeRequiredSlo
       width="350px"
       placement="left-start"
       renderContent={() => (
-        <PopperContent>
+        <Popper.Content>
           <Section
             header="Entity reprompt"
             variant={SectionVariant.PRIMARY}
@@ -76,7 +75,7 @@ const SlotItem: React.FC<SlotItemProps> = ({ updateSlotDialog, removeRequiredSlo
               </Box>
             </TextEditorVariablesPopoverProvider>
           </Section>
-        </PopperContent>
+        </Popper.Content>
       )}
     >
       {({ ref, onToggle, isOpened }) => (

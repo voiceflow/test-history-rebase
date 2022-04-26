@@ -1,6 +1,7 @@
 export * from './cache';
 export * from './callback';
 export * from './lifecycle';
+export * from './linked';
 export * from './mouse';
 export * from './popper';
 export * from './raf';

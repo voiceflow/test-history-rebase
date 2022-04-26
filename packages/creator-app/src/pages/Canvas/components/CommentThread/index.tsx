@@ -1,7 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
+import { Popper } from '@voiceflow/ui';
 import React from 'react';
 
-import Popper from '@/components/Popper';
 import { EngineContext, FocusThreadContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 

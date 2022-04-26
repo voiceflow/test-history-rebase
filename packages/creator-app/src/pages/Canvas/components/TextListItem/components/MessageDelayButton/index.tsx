@@ -1,8 +1,7 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Input, preventDefault, TippyTooltip, useToggle, withHandler, withInputBlur } from '@voiceflow/ui';
+import { Input, Popper, preventDefault, TippyTooltip, useToggle, withHandler, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
-import Popper from '@/components/Popper';
 import { PopperContent, PopperTitle } from '@/components/SlateEditable';
 import IconButton from '@/components/SlateEditable/components/IconButton';
 

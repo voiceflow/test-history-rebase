@@ -1,13 +1,12 @@
-import { Link } from '@voiceflow/ui';
+import { Link, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { Paragraph } from '@/components/Tooltip';
 import * as Documentation from '@/config/documentation';
 
 const HelpMessage: React.FC = () => (
-  <Paragraph>
+  <Tooltip.Paragraph>
     Read more about reminders <Link href={Documentation.REMINDER_STEP}>here</Link>.
-  </Paragraph>
+  </Tooltip.Paragraph>
 );
 
 export default HelpMessage;

@@ -16,6 +16,8 @@ export type SvgIconProps = Partial<SvgIconContainerProps> & {
   id?: string;
   icon: Icon | React.ComponentType;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
+  onMouseEnter?: React.MouseEventHandler<HTMLSpanElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLSpanElement>;
   className?: string;
   style?: React.CSSProperties;
 };

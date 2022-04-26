@@ -1,24 +1,23 @@
-import { Link } from '@voiceflow/ui';
+import { Link, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { Paragraph, Title } from '@/components/Tooltip';
 import * as Documentation from '@/config/documentation';
 
 const HelpTooltip: React.FC = () => (
   <>
-    <Paragraph>
+    <Tooltip.Paragraph>
       The flow step allows you to organize your project into re-usable flows that can be referenced and re-used anywhere. If you have a visual design
       background, you can think of flows like symbols in Sketch or Figma. If you’re a developer, you can think of flows like functions inside your
       project.
-    </Paragraph>
+    </Tooltip.Paragraph>
 
-    <Paragraph marginBottomUnits={2}>Flows can be nested for further compartmentalization of your project.</Paragraph>
+    <Tooltip.Paragraph marginBottomUnits={2}>Flows can be nested for further compartmentalization of your project.</Tooltip.Paragraph>
 
-    <Title>Learn More</Title>
+    <Tooltip.Title>Learn More</Tooltip.Title>
 
-    <Paragraph>
+    <Tooltip.Paragraph>
       To learn more about flows, and how they can be used check our documentation <Link href={Documentation.COMPONENT_STEP}>here.</Link>
-    </Paragraph>
+    </Tooltip.Paragraph>
   </>
 );
 

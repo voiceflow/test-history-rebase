@@ -1,9 +1,8 @@
 import { BaseNode, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { stopPropagation } from '@voiceflow/ui';
+import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import Popper from '@/components/Popper';
 import { hasValidReprompt } from '@/utils/prompt';
 
 import NoMatchAndNoReplyStepCopyList from '../../NoMatchAndNoReplyStepCopyList';

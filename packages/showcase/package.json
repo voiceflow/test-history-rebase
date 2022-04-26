@@ -7,8 +7,16 @@
   },
   "dependencies": {
     "@voiceflow/ui": "^1.76.0",
+    "bootstrap": "4.6.1",
     "react": "17.0.2",
+    "react-day-picker": "7.4.10",
+    "react-dismissable-layers": "0.2.0",
     "react-dom": "17.0.2",
+    "react-router": "5.2.1",
+    "react-router-dom": "5.3.0",
+    "react-tippy": "1.4.0",
+    "react-toastify": "5.5.0",
+    "simplebar": "5.3.3",
     "styled-components": "5.3.3"
   },
   "devDependencies": {

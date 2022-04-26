@@ -1,6 +1,5 @@
+import { TutorialInfoIcon, TutorialInfoIconProps } from '@voiceflow/ui';
 import React from 'react';
-
-import InfoIcon, { InfoIconProps } from '@/components/InfoIcon';
 
 import { Content, Label } from './components';
 
@@ -8,7 +7,7 @@ export interface EditorFormControlProps {
   label?: React.ReactNode;
   contentBottomUnits?: number;
   tooltip?: React.ReactNode;
-  tooltipProps?: InfoIconProps['tooltipProps'];
+  tooltipProps?: TutorialInfoIconProps['tooltipProps'];
 }
 
 const EditorFormControl: React.FC<EditorFormControlProps> = ({ label, children, contentBottomUnits, tooltip, tooltipProps }) => (
@@ -16,7 +15,7 @@ const EditorFormControl: React.FC<EditorFormControlProps> = ({ label, children, 
     {label && (
       <Label>
         {label}
-        {tooltip && <InfoIcon tooltipProps={tooltipProps}>{tooltip}</InfoIcon>}
+        {tooltip && <TutorialInfoIcon tooltipProps={tooltipProps}>{tooltip}</TutorialInfoIcon>}
       </Label>
     )}
     {children && <Content contentBottomUnits={contentBottomUnits}>{children}</Content>}

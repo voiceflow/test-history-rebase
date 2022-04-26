@@ -11,6 +11,14 @@ export default defineConfig({
   env: {
     UI_PROJECT_DIR: process.env.NODE_ENV === 'production' ? UI_PROJECT_URL : `vscode://file/${uiProjectDir}`,
   },
+  aliases: ({ isServe }) => ({
+    ...(isServe
+      ? {
+          '@voiceflow/ui': path.resolve(rootDir, '../ui/src'),
+          '@ui': path.resolve(rootDir, '../ui/src'),
+        }
+      : {}),
+  }),
   rootDir,
   serve: {
     port: 3005,

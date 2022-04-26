@@ -1,13 +1,12 @@
-import { useLinkedState } from '@ui/hooks/linked';
+import Box from '@ui/components/Box';
+import Portal from '@ui/components/Portal';
+import { Tag } from '@ui/components/Tag';
+import { useLinkedState, usePopper } from '@ui/hooks';
+import { styled } from '@ui/styles';
 import { createStandardShadeFromHue } from '@ui/utils/colors/hsl';
 import { hexToHsluv } from '@ui/utils/colors/hsluv';
 import React from 'react';
-import styled from 'styled-components';
 
-import { usePopper } from '../../../../hooks';
-import Box from '../../../Box';
-import Portal from '../../../Portal';
-import { Tag } from '../../../Tag';
 import { IColor } from '../../constants';
 import { Label, PopperContent, Wrapper } from '../../styles';
 import { ColorRange } from '../ColorRange';

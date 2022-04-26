@@ -1,7 +1,6 @@
-import { Badge, Dropdown, Flex, FlexApart, Input, SvgIcon, toast } from '@voiceflow/ui';
+import { Badge, Dropdown, Flex, FlexApart, Input, SvgIcon, toast, TutorialInfoIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import InfoIcon from '@/components/InfoIcon';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagram';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
@@ -70,7 +69,9 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
       <FlexApart style={{ marginBottom: 8, alignItems: 'flex-end' }}>
         <Flex>
           <Label>Add Variable</Label>
-          <InfoIcon>{Info}</InfoIcon>
+          <TutorialInfoIcon>
+            <Info />
+          </TutorialInfoIcon>
         </Flex>
         <Dropdown options={menuOptions}>
           {(ref, onToggle, isOpen) => (

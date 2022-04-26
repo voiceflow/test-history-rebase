@@ -1,13 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import { TimeRange } from '@voiceflow/internal';
-import { ButtonVariant, useCreateConst } from '@voiceflow/ui';
+import { ButtonVariant, Popper, PopperProps, useCreateConst } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 import { DateUtils, RangeModifier } from 'react-day-picker';
 
 import { TimeRangePicker, WEEKDAYS } from '@/components/DayPickerInput/components';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
-import Popper, { PopperContent, PopperProps } from '@/components/Popper';
 import { useEnableDisable } from '@/hooks';
 import { isBuiltInRange } from '@/pages/Conversations/constants';
 
@@ -128,7 +127,7 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ onChange, placement, curren
       placement={placement}
       renderContent={() =>
         calendarOpened && (
-          <PopperContent>
+          <Popper.Content>
             <DayPickerContainer>
               <TimeRangePicker
                 modifiers={{
@@ -160,7 +159,7 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ onChange, placement, curren
                 </ApplyButton>
               </CalendarFooter>
             </DayPickerContainer>
-          </PopperContent>
+          </Popper.Content>
         )
       }
     >

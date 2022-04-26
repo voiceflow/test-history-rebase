@@ -1,12 +1,9 @@
-import { ButtonVariant, ClickableText } from '@voiceflow/ui';
+import { ButtonVariant, ClickableText, TutorialTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import TutorialTooltip from '@/components/TutorialTooltip';
 import { Controls } from '@/pages/Canvas/components/Editor';
 
 import HelpTooltip from './HelpTooltip';
-
-const AnyTutorialTooltip = TutorialTooltip as any;
 
 interface FooterProps {
   canRenderPreview?: boolean;
@@ -24,9 +21,9 @@ const Footer: React.FC<FooterProps> = ({ canRenderPreview, openPreviewModal }) =
       },
     ]}
   >
-    <AnyTutorialTooltip anchorRenderer={() => <ClickableText>How It Works?</ClickableText>} title="Display Block Tutorial">
+    <TutorialTooltip title="Display Block Tutorial" anchorRenderer={() => <ClickableText>How It Works?</ClickableText>}>
       <HelpTooltip />
-    </AnyTutorialTooltip>
+    </TutorialTooltip>
   </Controls>
 );
 

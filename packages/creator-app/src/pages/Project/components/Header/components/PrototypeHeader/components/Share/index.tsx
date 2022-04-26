@@ -1,7 +1,6 @@
-import { Button, ButtonVariant } from '@voiceflow/ui';
+import { Button, ButtonVariant, Popper } from '@voiceflow/ui';
 import React from 'react';
 
-import Popper, { PopperContent, PopperFooter } from '@/components/Popper';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
 import { PrototypeContent, PrototypeFooter } from '@/pages/Project/components/Header/components/SharePopper/components';
@@ -16,14 +15,14 @@ const Share: React.FC = () => {
       placement="bottom-end"
       modifiers={{ offset: { offset: '0,8' } }}
       renderContent={() => (
-        <PopperContent>
+        <Popper.Content>
           <PrototypeContent />
-        </PopperContent>
+        </Popper.Content>
       )}
       renderFooter={() => (
-        <PopperFooter>
+        <Popper.Footer>
           <PrototypeFooter />
-        </PopperFooter>
+        </Popper.Footer>
       )}
     >
       {({ ref, onToggle }) => (

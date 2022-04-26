@@ -1,6 +1,5 @@
-import { flexStyles } from '@voiceflow/ui';
+import { flexStyles, TutorialInfoIcon } from '@voiceflow/ui';
 
-import { IconContainer } from '@/components/InfoIcon';
 import { styled, units } from '@/hocs';
 
 const FormControlLabel = styled.label`
@@ -8,7 +7,7 @@ const FormControlLabel = styled.label`
 
   margin-bottom: 11px;
 
-  ${IconContainer} {
+  ${TutorialInfoIcon.IconContainer} {
     margin-left: ${units(1)}px;
   }
 `;

@@ -5,13 +5,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'styled-components';
 
-import Examples from './examples';
+import App from './App';
 
 const theme = createTheme({});
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
-    <Examples />
+    <App />
   </ThemeProvider>,
   document.getElementById('root')
 );

@@ -1,10 +1,9 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ClickableText, Flex, SvgIcon, SvgIconContainer, Tag } from '@voiceflow/ui';
+import { ClickableText, Flex, SvgIcon, SvgIconContainer, Tag, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
-import { Paragraph } from '@/components/Tooltip';
 import * as Modal from '@/ducks/modal';
 import * as SlotV2 from '@/ducks/slotV2';
 import { styled } from '@/hocs';
@@ -83,19 +82,22 @@ const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappi
       suffix={<ClickableText onClick={confirmDelete}>delete</ClickableText>}
       tooltip={
         <>
-          <Paragraph marginBottomUnits={2}>
+          <Tooltip.Paragraph marginBottomUnits={2}>
             Voiceflow now uses slots and variables interchangeably - anywhere that you can use a variable you can also use a slot.
-          </Paragraph>
-          <Paragraph marginBottomUnits={2}>
+          </Tooltip.Paragraph>
+
+          <Tooltip.Paragraph marginBottomUnits={2}>
             If you are seeing this section it is because you have previously assigned/mapped slots into variables.
-          </Paragraph>
-          <Paragraph marginBottomUnits={2}>
+          </Tooltip.Paragraph>
+
+          <Tooltip.Paragraph marginBottomUnits={2}>
             It is recommended to replace all usages of mapped variables with the slot directly or create a follow up <b>Set</b> block that does the
             mapping.
-          </Paragraph>
-          <Paragraph marginBottomUnits={2}>
+          </Tooltip.Paragraph>
+
+          <Tooltip.Paragraph marginBottomUnits={2}>
             Mappings will eventually no longer be supported and this can cause issues with future versions of your project.
-          </Paragraph>
+          </Tooltip.Paragraph>
         </>
       }
       isNested={isNested}

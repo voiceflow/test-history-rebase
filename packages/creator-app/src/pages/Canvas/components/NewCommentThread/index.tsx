@@ -1,7 +1,7 @@
+import { Popper } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import Popper from '@/components/Popper';
 import * as Thread from '@/ducks/thread';
 import { useLinkedRef, useRegistration } from '@/hooks';
 import { CommentIndicator } from '@/pages/Canvas/components/CommentThread/components';

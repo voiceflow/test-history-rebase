@@ -1,9 +1,7 @@
-import { useCachedValue } from '@voiceflow/ui';
+import { useCachedValue, useLinkedRef, useLinkedState } from '@voiceflow/ui';
 import { useCallback, useMemo, useState } from 'react';
 
 import { withTargetValue } from '@/utils/dom';
-
-import { useLinkedRef, useLinkedState } from './linked';
 
 export const useConstant = <T>(factory: () => T) => useMemo(factory, []);
 

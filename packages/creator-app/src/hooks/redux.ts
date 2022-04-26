@@ -1,9 +1,8 @@
+import { useLinkedState } from '@voiceflow/ui';
 import { useCallback } from 'react';
 import * as ReactRedux from 'react-redux';
 
 import type { Dispatchable, Selector, State, Store } from '@/store/types';
-
-import { useLinkedState } from './linked';
 
 export const useAdvancedSelector = ReactRedux.useSelector;
 

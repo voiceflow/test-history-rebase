@@ -1,8 +1,8 @@
+import { Popper } from '@voiceflow/ui';
 import React from 'react';
 import { NavLinkProps } from 'react-router-dom';
-import styled from 'styled-components';
 
-import { PopperNavItem } from '@/components/Popper';
+import { styled } from '@/hocs';
 
 const PopperNavContainer = styled.div`
   a {
@@ -25,7 +25,7 @@ const PopperNavContainer = styled.div`
 
 const ShareNavItem: React.FC<NavLinkProps> = ({ ...props }) => (
   <PopperNavContainer>
-    <PopperNavItem {...props} />
+    <Popper.NavItem {...props} />
   </PopperNavContainer>
 );
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.702.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.701.0...@voiceflow/creator-app@1.702.0) (2022-04-26)
+
+
+### Features
+
+* add new Azure voices (VF-2845) ([#5362](https://github.com/voiceflow/creator-app/issues/5362)) ([e265cb3](https://github.com/voiceflow/creator-app/commit/e265cb3de09fd4778c249950cffe88595f6be5c1))
+
+
+
+
+
 # [1.701.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.700.0...@voiceflow/creator-app@1.701.0) (2022-04-26)
 
 

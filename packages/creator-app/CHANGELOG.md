@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.702.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.702.0...@voiceflow/creator-app@1.702.1) (2022-04-26)
+
+
+### Bug Fixes
+
+* delete modal has updated project name (VF-3273) ([#5363](https://github.com/voiceflow/creator-app/issues/5363)) ([e0207a4](https://github.com/voiceflow/creator-app/commit/e0207a43c57d5db4dff907b5fead8f34f0f8b650))
+
+
+
+
+
 # [1.702.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.701.0...@voiceflow/creator-app@1.702.0) (2022-04-26)
 
 

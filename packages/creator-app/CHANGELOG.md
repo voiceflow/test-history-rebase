@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.701.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.700.0...@voiceflow/creator-app@1.701.0) (2022-04-26)
+
+
+### Features
+
+* links refactoring (VF-3312) ([#5319](https://github.com/voiceflow/creator-app/issues/5319)) ([329e3fe](https://github.com/voiceflow/creator-app/commit/329e3fef35925a34344559ccab8eb5c7c581e7e5))
+
+
+
+
+
 # [1.700.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.699.2...@voiceflow/creator-app@1.700.0) (2022-04-26)
 
 

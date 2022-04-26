@@ -36,6 +36,7 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
 
   const onClose = React.useCallback(() => {
     if (instance.hiddenPathRef.current) {
+      // eslint-disable-next-line no-param-reassign
       instance.hiddenPathRef.current.style.cursor = 'pointer';
     }
 
@@ -65,16 +66,12 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
   const updateCursor = React.useCallback(() => {
     const points = cache.current.instance.getPoints();
 
-    if (!points.current) {
-      return;
-    }
+    if (!points.current || !engine.canvas) return;
 
-    const mouseCoords = engine.canvas!.fromCoords(engine.getMouseCoords());
+    const mouseCoords = engine.canvas.fromCoords(engine.getMouseCoords());
     const activeLine = getActiveLine(points.current, mouseCoords);
 
-    if (!activeLine || !cache.current.instance.hiddenPathRef.current) {
-      return;
-    }
+    if (!activeLine || !cache.current.instance.hiddenPathRef.current) return;
 
     const isVertical = isVerticalLine(activeLine);
     const offset = Math.abs(
@@ -106,17 +103,13 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
   );
 
   const onMouseEnter = React.useCallback(() => {
-    if (cache.current.mouseDown || cache.current.isActive) {
-      return;
-    }
+    if (cache.current.mouseDown || cache.current.isActive || engine.linkCreation.isDrawing) return;
 
     engine.highlight.setLinkTarget(linkEntity.linkID);
   }, []);
 
   const onMouseLeave = React.useCallback((event: React.MouseEvent) => {
-    if (cache.current.mouseDown || cache.current.isActive) {
-      return;
-    }
+    if (cache.current.mouseDown || cache.current.isActive) return;
 
     if (event.relatedTarget instanceof Node && !cache.current.instance.containerRef.current?.contains(event.relatedTarget)) {
       engine.highlight.reset();
@@ -133,24 +126,18 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
 
       cache.current.mouseDownTimeDiff = time;
 
-      if (!instance.isStraight() || !cache.current.isActive) {
-        return;
-      }
+      if (!instance.isStraight() || !cache.current.isActive || !engine.canvas) return;
 
       const points = cache.current.instance.getPoints();
       const center = cache.current.instance.getCenter();
       const captionRect = cache.current.instance.getCaptionRect();
 
-      if (!points.current) {
-        return;
-      }
+      if (!points.current) return;
 
-      const mouseCoords = engine.canvas!.fromCoords(engine.getMouseCoords());
+      const mouseCoords = engine.canvas.fromCoords(engine.getMouseCoords());
       let activeLine = getActiveLine(points.current, mouseCoords);
 
-      if (!activeLine) {
-        return;
-      }
+      if (!activeLine) return;
 
       cache.current.mouseDown = true;
 
@@ -159,33 +146,33 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
       const onBreakpointMove = () => {
         moved = true;
 
-        const mouseCoords = engine.canvas!.fromCoords(engine.getMouseCoords());
+        if (!engine.canvas || !points.current) return;
 
-        const pathEl = instance.pathRef.current!;
-        const hiddenPathEl = instance.hiddenPathRef.current;
+        const mouseCoords = engine.canvas.fromCoords(engine.getMouseCoords());
 
-        if (!points.current) {
-          return;
-        }
+        if (!points.current) return;
 
         if (!activeLine) {
           activeLine = getActiveLine(points.current, mouseCoords);
-        }
 
-        if (!activeLine) {
-          return;
+          if (!activeLine) return;
         }
 
         points.current = transformActiveLine({ points: points.current, activeLine, mouseCoords });
 
         if (cache.current.linkData?.caption) {
-          center.current = getPathPointsCenter(points.current, { straight: instance.isStraight() });
+          center.current = getPathPointsCenter(points.current, { isStraight: true });
           captionRect.current.x = center.current[0] - captionRect.current.width / 2;
           captionRect.current.y = center.current[1] - captionRect.current.height / 2;
         }
 
         stylesScheduler(() => {
-          const nextPath = buildPath(points.current, instance.isStraight());
+          const pathEl = instance.pathRef.current;
+          const hiddenPathEl = instance.hiddenPathRef.current;
+
+          if (!pathEl || !hiddenPathEl) return;
+
+          const nextPath = buildPath(points.current, { isStraight: true });
 
           pathEl.setAttribute('d', nextPath);
           hiddenPathEl?.setAttribute('d', nextPath);
@@ -232,9 +219,7 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
   );
 
   const onMouseMove = React.useCallback(() => {
-    if (cache.current.mouseDown || !cache.current.isActive) {
-      return;
-    }
+    if (cache.current.mouseDown || !cache.current.isActive) return;
 
     if (!instance.isStraight() && cache.current.instance.hiddenPathRef.current) {
       cache.current.instance.hiddenPathRef.current.style.cursor = 'pointer';
@@ -245,9 +230,7 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
   }, []);
 
   const onToggleCaptionEditing = React.useCallback((value: unknown) => {
-    if (cache.current.mouseDown) {
-      return;
-    }
+    if (cache.current.mouseDown) return;
 
     toggleCaptionEditing(value);
   }, []);

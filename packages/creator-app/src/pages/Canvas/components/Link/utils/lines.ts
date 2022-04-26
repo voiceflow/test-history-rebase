@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { PathPoint, PathPoints, Point } from '@/types';
 

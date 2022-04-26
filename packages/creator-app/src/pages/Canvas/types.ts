@@ -50,10 +50,10 @@ export interface StepAPI<T extends HTMLElement = HTMLElement> {
 }
 
 export interface NewLinkAPI {
-  show: () => void;
+  show: (rect: DOMRect) => void;
   hide: () => void;
   isPinned: () => boolean;
-  pin: (position: Point) => void;
+  pin: (rect: DOMRect) => void;
   unpin: () => void;
 }
 
@@ -77,11 +77,12 @@ export interface MergeLayerAPI<T extends HTMLElement = HTMLElement> {
   ref: React.RefObject<T>;
   isVisible: boolean;
   isTransparent: boolean;
-  initialize: (point: Point, offset: Pair<number>) => void;
+
   reset: () => void;
+  initialize: (point: Point, offset: Pair<number>) => void;
   setTransparent: () => void;
-  clearTransparent: () => void;
   handleMouseMove: (event: MouseEvent) => void;
+  clearTransparent: () => void;
 }
 
 export interface RealtimeCursorOverlayAPI extends RealtimeCursorEvents {

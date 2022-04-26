@@ -8,7 +8,7 @@ import * as Account from '@/ducks/account';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as RealtimeDuck from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
-import { useFeature, useSelector, useSyncDispatch } from '@/hooks';
+import { useFeature, useRAF, useSelector, useSyncDispatch } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Pair, Point, Viewport } from '@/types';
 
@@ -21,6 +21,7 @@ export const useCursorControls = () => {
   const awarenessMoveCursor = useSyncDispatch(Realtime.diagram.awareness.moveCursor);
   const hasDiagramViewers = useSelector(DiagramV2.hasExternalDiagramViewersByIDSelector, { id: diagramID });
   const prevCoords = React.useRef<Point | null>(null);
+  const [scheduler] = useRAF();
 
   const moveMouse = React.useCallback(
     throttle(10, (nextCoords: Point) => {
@@ -48,16 +49,12 @@ export const useCursorControls = () => {
         const [currX, currY] = mousePosition.current;
         const nextMousePosition: [number, number] = [currX - moveX / zoom, currY - moveY / zoom];
 
-        if (engine.linkCreation.isDrawing) {
-          const transformedPosition = engine.canvas.reverseTransformPoint(nextMousePosition, true);
-          const sourcePortID = engine.linkCreation.sourcePortID!;
-
-          engine.linkCreation.abort();
-          engine.linkCreation.start(sourcePortID, transformedPosition);
-        }
-
         mousePosition.current = nextMousePosition;
         moveMouse(nextMousePosition);
+
+        if (engine.linkCreation.isDrawing) {
+          scheduler(() => engine.linkCreation.redrawNewLink());
+        }
       }
     },
     [moveMouse]

@@ -74,17 +74,19 @@ export const MarkupProvider: React.FC = ({ children }) => {
     const engine = cache.current.getEngine()!;
 
     await Utils.array.asyncForEach(allowedFiles, async (file) => {
+      if (!engine.canvas) return;
+
       try {
         const imageURL = await onUploadImage(null, file);
         const imageSize = await imageSizeFromUrl(imageURL);
 
-        const rect = engine.canvas!.getRect();
-        const zoom = engine.canvas!.getZoom();
-        const [x, y] = engine.canvas!.getPosition();
+        const rect = engine.canvas.getRect();
+        const zoom = engine.canvas.getZoom();
+        const [x, y] = engine.canvas.getPosition();
         const offsetX = 0 - x / zoom + (rect.width / zoom - imageSize.width) / 2;
         const offsetY = 0 - y / zoom + (rect.height / zoom - imageSize.height) / 2;
 
-        await engine.node.add(BlockType.MARKUP_IMAGE, engine.canvas!.toCoords([offsetX, offsetY]), {
+        await engine.node.add(BlockType.MARKUP_IMAGE, engine.canvas.toCoords([offsetX, offsetY]), {
           url: imageURL,
           width: imageSize.width,
           height: imageSize.height,

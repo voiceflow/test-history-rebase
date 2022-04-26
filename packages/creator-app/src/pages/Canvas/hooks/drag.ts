@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 

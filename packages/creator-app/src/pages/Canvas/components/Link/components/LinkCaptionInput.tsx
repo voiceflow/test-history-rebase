@@ -56,23 +56,20 @@ const LinkCaptionInput: React.FC<LinkCaptionInputProps> = ({ color, value, insta
   useTeardown(() => onSave());
 
   React.useLayoutEffect(() => {
+    if (!points.current) return;
+
     if (!center.current) {
-      center.current = getPathPointsCenter(points.current!, { straight: instance.isStraight() });
+      center.current = getPathPointsCenter(points.current, { isStraight: instance.isStraight() });
     }
 
     if (!instance.captionContainerRef.current && !isEmpty) {
       return;
     }
 
-    const width = isEmpty ? PLACEHOLDER_WIDTH : instance.captionContainerRef.current?.clientWidth ?? PLACEHOLDER_WIDTH;
-    const height = isEmpty ? MIN_HEIGHT : instance.captionContainerRef.current?.clientHeight ?? MIN_HEIGHT;
+    const width = instance.captionContainerRef.current?.clientWidth ?? PLACEHOLDER_WIDTH;
+    const height = instance.captionContainerRef.current?.clientHeight ?? MIN_HEIGHT;
 
-    captionRect.current = {
-      x: center.current[0] - width / 2,
-      y: center.current[1] - height / 2,
-      width,
-      height,
-    };
+    captionRect.current = { x: center.current[0] - width / 2, y: center.current[1] - height / 2, width, height };
 
     instance.updateCaptionPosition();
     instance.settingsRef.current?.setPosition();

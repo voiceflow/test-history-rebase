@@ -29,8 +29,8 @@ export const useHandlers = () => {
 
   const onMouseDown = React.useCallback(
     swallowEvent((event: React.MouseEvent) => {
-      if (isEditingMode && !engine.isCanvasBusy) {
-        engine.linkCreation.start(portEntity.portID, mouseEventOffset(event, engine.canvas!.getRef()));
+      if (isEditingMode && !engine.isCanvasBusy && engine.canvas) {
+        engine.linkCreation.start(portEntity.portID, mouseEventOffset(event, engine.canvas.getRef()));
       }
     }),
     [isEditingMode]

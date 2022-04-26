@@ -245,6 +245,13 @@ export const extractPoints = (canvas: CanvasAPI, start: DOMRect | null | undefin
   return [canvas.transformPoint([start.right, startY]), canvas.transformPoint([end.left, endY])];
 };
 
+export const toCanvasRect = (canvas: CanvasAPI, rect: DOMRect, options?: { relative?: boolean }): DOMRect => {
+  const zoom = canvas.getZoom();
+  const [x, y] = canvas.transformPoint([rect.x, rect.y], options);
+
+  return new DOMRect(x, y, rect.width / zoom, rect.height / zoom);
+};
+
 export const createBoundaryTest =
   ({ left, right, top, bottom }: Pick<DOMRect, 'left' | 'right' | 'top' | 'bottom'>) =>
   ([x, y]: Point) =>

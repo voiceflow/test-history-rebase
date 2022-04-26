@@ -5,13 +5,13 @@ import {
   DOUBLE_BLOCK_WIDTH,
   DOUBLE_STRAIGHT_PATH_OFFSET,
   HALF_BLOCK_WIDTH,
-  PATH_MIN_OFFSET,
+  MIN_Y_POINTS_OFFSET,
   STRAIGHT_PATH_OFFSET,
   TOP_PORT_OFFSET,
 } from '../constants';
 import { createPoint, getPointsOffset, isToTopByY } from './helpers';
 
-export const isLessThanMinPathOffset = (start: number, end: number): boolean => Math.abs(end - start) <= PATH_MIN_OFFSET;
+export const isLessThanMinPathOffset = (start: number, end: number): boolean => Math.abs(end - start) <= MIN_Y_POINTS_OFFSET;
 
 export const isTargetPortWithoutTopOffsetUnderSourcePortWithDoubleOffset = ([[, startY], [, endY]]: Pair<Point>): boolean => isToTopByY(startY, endY);
 
@@ -39,6 +39,9 @@ export const isTargetBlockEndWithDoubleOffsetToRightOfStartOfSourceBlock = ([[st
 
 export const isTargetBlockCenterToRightOfSourceBlockCenter = ([[startX], [endX]]: Pair<Point>): boolean => endX >= startX - BLOCK_WIDTH;
 
+/**
+ * @deprecated
+ */
 export const getPathPoints = (
   startEndPoints: Pair<Point> | null,
   {
@@ -70,10 +73,12 @@ export const getStraightConnectedPathPoints = (
   startEndPoints: Pair<Point>,
   { targetIsBlock, sourceBlockEndY }: { targetIsBlock: boolean; sourceBlockEndY: number | null }
 ): PathPoints => {
+  // done
   if (isTargetPortWithDoubleOffsetToRightOfSourcePort(startEndPoints)) {
     return getRightZLikePathPoints(startEndPoints, { targetIsBlock });
   }
 
+  // done
   if (isTargetPortWithOffsetToRightOfSourceBlockCenter(startEndPoints)) {
     if (targetIsBlock && isTargetPortWithoutTopOffsetUnderSourcePortWithDoubleOffset(startEndPoints)) {
       return getRightJLikeToTopPathPoints(startEndPoints);

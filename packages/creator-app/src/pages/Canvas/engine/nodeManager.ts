@@ -6,6 +6,7 @@ import _partition from 'lodash/partition';
 import { batch } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
@@ -284,7 +285,11 @@ class NodeManager extends EngineConsumer {
     translate: (nodeID: string, movement: Pair<number>): void => {
       this.api(nodeID)?.instance?.translate?.(movement);
       this.updateOrigin(nodeID, movement);
-      this.translateAllLinks(nodeID, movement);
+
+      if (!this.engine.isFeatureEnabled(FeatureFlag.EXPERIMENTAL_SYNC_LINKS)) {
+        this.translateAllLinks(nodeID, movement);
+      }
+
       this.translateAllThreads(nodeID, movement);
     },
 
@@ -758,23 +763,26 @@ class NodeManager extends EngineConsumer {
     }
   }
 
-  translateAllLinks(nodeID: string, movement: Pair<number>, { reposition = false }: { reposition?: boolean } = {}): void {
-    [nodeID, ...this.select(CreatorV2.stepIDsByBlockIDSelector, { id: nodeID })].forEach((id) => this.translateLinks(id, movement, { reposition }));
+  translateAllLinks(nodeID: string, movement: Pair<number>, { sync = false }: { sync?: boolean } = {}): void {
+    [nodeID, ...this.select(CreatorV2.stepIDsByBlockIDSelector, { id: nodeID })].forEach((id) => this.translateLinks(id, movement, { sync }));
   }
 
-  translateLinks(nodeID: string, movement: Pair<number>, { reposition }: { reposition: boolean }): void {
+  translateLinks(nodeID: string, movement: Pair<number>, { sync }: { sync: boolean }): void {
     this.engine.getLinkIDsByNodeID(nodeID).forEach((linkID) => {
-      if (this.engine.links.has(linkID)) {
-        const link = this.engine.getLinkByID(linkID)!;
-        const isSource = link.source.nodeID === nodeID;
-        const linkedNode = this.engine.getNodeByID(isSource ? link.target.nodeID : link.source.nodeID);
+      if (!this.engine.links.has(linkID)) return;
 
-        this.engine.link.translatePoint(linkID, movement, {
-          isSource,
-          reposition,
-          sourceAndTargetSelected: !!linkedNode && this.engine.drag.isInGroup(linkedNode.parentNode || linkedNode.id),
-        });
-      }
+      const link = this.engine.getLinkByID(linkID);
+
+      if (!link) return;
+
+      const isSource = link.source.nodeID === nodeID;
+      const linkedNode = this.engine.getNodeByID(isSource ? link.target.nodeID : link.source.nodeID);
+
+      this.engine.link.translatePoint(linkID, movement, {
+        sync,
+        isSource,
+        sourceAndTargetSelected: !!linkedNode && this.engine.drag.isInGroup(linkedNode.parentNode || linkedNode.id),
+      });
     });
   }
 

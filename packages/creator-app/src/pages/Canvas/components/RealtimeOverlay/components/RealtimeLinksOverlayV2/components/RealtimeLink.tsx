@@ -61,9 +61,9 @@ const RealtimeLink: React.FC<RealtimeLinkProps> = ({ color: rawColor, source$, c
 
         if (!pathEl) return;
 
-        const straight = engine.isStraightLinks();
+        const isStraight = engine.isStraightLinks();
 
-        const path = buildPath(getPathPoints(nextPoint, { straight }), straight);
+        const path = buildPath(getPathPoints(nextPoint, { straight: isStraight }), { isStraight });
 
         if (state.current !== CursorState.VISIBLE) {
           pathEl.style.opacity = String(1);

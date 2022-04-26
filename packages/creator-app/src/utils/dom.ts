@@ -3,7 +3,7 @@ import _isNumber from 'lodash/isNumber';
 import _isString from 'lodash/isString';
 
 import { IS_E2E_TEST } from '@/config';
-import { Pair, Point } from '@/types';
+import { Point } from '@/types';
 
 export { swallowKeyPress, withEnterPress, withInputBlur, withKeyPress, withTargetValue } from '@voiceflow/ui';
 
@@ -231,26 +231,11 @@ export const download = (filename: string, text: string, data = DataTypes.TEXT) 
   downloadFromURL(filename, `data:${data},${encodeURIComponent(text)}`);
 };
 
-export const buildVirtualDOMRect = ([x, y]: Point, [width, height]: Pair<number> = [0, 0]) => ({
-  x,
-  y,
-  width,
-  height,
-  left: x,
-  right: x + width,
-  top: y,
-  bottom: y + height,
-
-  toJSON() {
-    return JSON.stringify(this);
-  },
-});
-
-export const buildVirtualElement = (point?: Point) => {
-  const virtualRect = buildVirtualDOMRect(point ?? [0, 0]);
+export const buildVirtualElement = (point: Point = [0, 0]) => {
+  const rect = new DOMRect(point[0], point[1], 0, 0);
 
   return {
-    getBoundingClientRect: () => virtualRect,
+    getBoundingClientRect: () => rect,
     clientWidth: 0,
     clientHeight: 0,
   };

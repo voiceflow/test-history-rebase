@@ -64,6 +64,10 @@ class Canvas extends React.PureComponent<
     getZoomType: () => ZoomType.REGULAR,
   };
 
+  private rect: DOMRect | null = null;
+
+  private rootResizeObserver: ResizeObserver | null = null;
+
   rootRef = React.createRef<HTMLDivElement>();
 
   renderLayerRef = React.createRef<HTMLDivElement>();
@@ -78,8 +82,6 @@ class Canvas extends React.PureComponent<
 
   applyTransitionTimeout: NodeJS.Timeout | null = null;
 
-  rect: DOMRect | null = null;
-
   api = {
     getControlScheme: () => this.controls.scheme,
     applyControlScheme: (controlScheme: ControlScheme = this.props.controlScheme) => {
@@ -90,18 +92,18 @@ class Canvas extends React.PureComponent<
     getZoom: () => this.zoom / ZOOM_FACTOR,
     getPosition: () => this.position,
     getRef: () => this.rootRef.current!,
-    getRect: () => this.rootRef.current!.getBoundingClientRect(),
-    getCachedRect: () => {
+    getRect: (): DOMRect => {
       if (this.rect !== null) return this.rect;
+      if (!this.rootRef.current) return new DOMRect(0, 0, window.innerWidth, window.innerHeight);
 
-      const rect = this.rootRef.current!.getBoundingClientRect();
+      const rect = this.rootRef.current.getBoundingClientRect();
 
       this.rect = rect;
 
       return rect;
     },
     getOuterPlane: (): CartesianPlane => {
-      const { x, y } = this.api.getCachedRect();
+      const { x, y } = this.api.getRect();
 
       return {
         origin: new Coords([x, y]),
@@ -110,7 +112,7 @@ class Canvas extends React.PureComponent<
     },
     getPlane: (): CartesianPlane => {
       const [posX, posY] = this.position;
-      const { x, y } = this.api.getCachedRect();
+      const { x, y } = this.api.getRect();
 
       return {
         origin: new Coords([x + posX, y + posY]),
@@ -397,12 +399,6 @@ class Canvas extends React.PureComponent<
     this.controls.keydown(event);
   };
 
-  onResizeWindow = () => {
-    const rect = this.rootRef.current!.getBoundingClientRect();
-
-    this.rect = rect;
-  };
-
   componentDidMount() {
     this.props.onRegister?.(this.api);
 
@@ -421,11 +417,17 @@ class Canvas extends React.PureComponent<
       addListener('gesturechange');
     }
 
-    window.addEventListener('resize', this.onResizeWindow);
+    this.rootResizeObserver = new ResizeObserver(() => {
+      this.rect = null;
+    });
 
     this.rootRef.current?.addEventListener('keyup', this.onKeyUp);
     this.rootRef.current?.addEventListener('keydown', this.onKeyDown);
     this.rootRef.current?.addEventListener('mousedown', this.onMouseDown);
+
+    if (this.rootRef.current) {
+      this.rootResizeObserver.observe(this.rootRef.current);
+    }
   }
 
   componentWillUnmount() {
@@ -433,8 +435,7 @@ class Canvas extends React.PureComponent<
 
     this.controlTeardownHandlers.forEach((teardownHandler) => teardownHandler());
 
-    window.removeEventListener('resize', this.onResizeWindow);
-
+    this.rootResizeObserver?.disconnect();
     this.rootRef.current?.removeEventListener('keyup', this.onKeyUp);
     this.rootRef.current?.removeEventListener('keydown', this.onKeyDown);
     this.rootRef.current?.removeEventListener('mousedown', this.onMouseDown);
@@ -442,7 +443,7 @@ class Canvas extends React.PureComponent<
 
   componentDidUpdate(prevProps: CanvasProps) {
     if (prevProps.controlScheme !== this.props.controlScheme) {
-      this.controls = generateControls(this.props.controlScheme, this.handleControl, this.props.scrollTimeout!);
+      this.controls = generateControls(this.props.controlScheme, this.handleControl, this.props.scrollTimeout);
     }
   }
 

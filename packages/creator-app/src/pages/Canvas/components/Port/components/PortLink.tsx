@@ -7,7 +7,7 @@ import { STROKE_DEFAULT_COLOR } from '@/pages/Canvas/components/Link';
 import { EngineContext, IsStraightLinksContext, PortEntityContext } from '@/pages/Canvas/contexts';
 import { PathPoints } from '@/types';
 
-import { LINK_WIDTH } from '../constants';
+import { NODE_LINK_WIDTH } from '../constants';
 import LinkPath from './PortLinkPath';
 import LinkSvg from './PortLinkSvg';
 
@@ -25,7 +25,7 @@ const PortLink: React.FC<PortLinkProps> = ({ linkID, isHighlighted }) => {
 
   const { link } = portEntity.useState((e) => ({ link: e.resolveLink() }));
 
-  const [reversed, toggleReversed] = useToggle(false);
+  const [reversed, toggleReversed] = useToggle(link?.data?.points?.[0]?.reversed ?? false);
 
   const straight = link?.data?.type ? link.data.type === BaseModels.Project.LinkType.STRAIGHT : isStraightLinks;
 
@@ -36,12 +36,11 @@ const PortLink: React.FC<PortLinkProps> = ({ linkID, isHighlighted }) => {
   const api = React.useMemo(() => ({ updatePosition: onReverseUpdate }), []);
 
   useDidUpdateEffect(() => {
-    const points = link?.data?.points || null;
-    onReverseUpdate(points);
+    onReverseUpdate(link?.data?.points ?? null);
   }, [straight, link?.data?.points]);
 
   React.useEffect(() => {
-    const id = linkID || engine.linkCreation.sourcePortID;
+    const id = linkID ?? engine.linkCreation.sourcePortID;
 
     if (id) {
       engine.registerPortLinkInstance(id, api);
@@ -56,7 +55,7 @@ const PortLink: React.FC<PortLinkProps> = ({ linkID, isHighlighted }) => {
 
   return (
     <LinkSvg ref={ref} reversed={reversed} shapeRendering="geometricPrecision">
-      <LinkPath strokeColor={link?.data?.color ?? STROKE_DEFAULT_COLOR} isHighlighted={isHighlighted} d={`M 0 4 L ${LINK_WIDTH} 4`} />
+      <LinkPath strokeColor={link?.data?.color ?? STROKE_DEFAULT_COLOR} isHighlighted={isHighlighted} d={`M 0 4 L ${NODE_LINK_WIDTH} 4`} />
     </LinkSvg>
   );
 };

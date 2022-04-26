@@ -24,6 +24,10 @@ class PortEntity extends ResourceEntity<Realtime.Port, PortInstance> {
     return this.engine.prototype.isPortHighlighted(this.portID);
   }
 
+  get isLinkCreationHighlighted() {
+    return this.engine.linkCreation.isSourcePort(this.portID);
+  }
+
   get isFinalPrototypePort() {
     const port = this.engine.getPortByPortID(this.portID);
     if (!port) return false;

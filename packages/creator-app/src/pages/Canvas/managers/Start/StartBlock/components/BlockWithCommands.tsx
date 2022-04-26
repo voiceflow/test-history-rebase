@@ -21,7 +21,7 @@ const BlockWithCommands: React.ForwardRefRenderFunction<BlockAPI, React.PropsWit
 
   const stepRef = React.useRef<HTMLDivElement>(null);
   const sections = commands ? [{ name: 'Commands', children: commands }] : [];
-  const stepAPI = useStepAPI(stepRef, true, false);
+  const stepAPI = useStepAPI(stepRef, true, false, () => stepRef.current?.getBoundingClientRect() ?? null);
 
   const updateName = React.useCallback((name) => engine.node.updateData(nodeID, { name }), [engine, nodeID]);
 

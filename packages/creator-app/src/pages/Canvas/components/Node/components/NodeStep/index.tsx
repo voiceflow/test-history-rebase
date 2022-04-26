@@ -3,12 +3,10 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
-import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, ManagerContext, NodeEntityContext, PortEntityProvider } from '@/pages/Canvas/contexts';
 import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
-import { buildVirtualDOMRect } from '@/utils/dom';
 
 import NodeLifecycle from '../NodeLifecycle';
 import NodePort from '../NodePort';
@@ -28,7 +26,6 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const getManager = React.useContext(ManagerContext)!;
   const instance = useNodeInstance();
-  const stepAPI = useStepAPI(instance.ref, isLast, isDraggable);
   const { node, data, isDragging } = nodeEntity.useState((e) => {
     const resolved = e.resolve();
 
@@ -41,11 +38,13 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
 
   const getAnchorPoint = React.useCallback(() => {
     const rect = instance.ref.current?.getBoundingClientRect();
-    if (!rect) return null;
 
-    const { x, y } = rect;
-    return buildVirtualDOMRect([x - LINK_WIDTH * engine.canvas!.getZoom(), y]);
+    if (!rect || !engine.canvas) return null;
+
+    return rect;
   }, []);
+
+  const stepAPI = useStepAPI(instance.ref, isLast, isDraggable, getAnchorPoint);
 
   nodeEntity.useInstance(instance);
 

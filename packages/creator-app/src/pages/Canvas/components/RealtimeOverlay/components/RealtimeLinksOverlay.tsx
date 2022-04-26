@@ -17,21 +17,23 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
     moveLink: (tabID, linkData) => {
       const { engine } = this.props;
 
+      if (!engine.canvas) return;
+
       if (linkData.reset) {
         this.removeItem(tabID);
         return;
       }
 
-      const [startPoint, endPoint] = (linkData as { points: Pair<Point> }).points;
-      const nextPoint: Pair<Point> = [engine.canvas!.reverseTransformPoint(startPoint, true), engine.canvas!.reverseTransformPoint(endPoint, true)];
+      const [startPoint, endPoint] = linkData.points;
+      const nextPoint: Pair<Point> = [engine.canvas.reverseTransformPoint(startPoint, true), engine.canvas.reverseTransformPoint(endPoint, true)];
       this.linkLocations[tabID] = nextPoint;
 
       this.animateElement(tabID, (linkEl) => {
         if (!linkEl) return;
 
-        const straight = engine.isStraightLinks();
+        const isStraight = engine.isStraightLinks();
 
-        const path = buildPath(getPathPoints(nextPoint, { straight }), straight);
+        const path = buildPath(getPathPoints(nextPoint, { straight: isStraight }), { isStraight });
 
         linkEl.setAttribute('d', path);
       });
@@ -45,9 +47,9 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
   }
 
   buildMoizedPath = moize.simple((points: Pair<Point> | null) => {
-    const straight = this.props.engine.isStraightLinks();
+    const isStraight = this.props.engine.isStraightLinks();
 
-    return buildPath(getPathPoints(points, { straight }), straight);
+    return buildPath(getPathPoints(points, { straight: isStraight }), { isStraight });
   });
 
   removeLink(tabID: string) {

@@ -2,7 +2,6 @@ import { Utils } from '@voiceflow/common';
 
 import { SelectionMarqueeAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
-import { buildVirtualDOMRect } from '@/utils/dom';
 import { isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
 import { CANVAS_SELECTING_GROUP_CLASSNAME } from '../constants';
@@ -10,6 +9,8 @@ import { EngineConsumer, getCandidates, NodeCandidate } from './utils';
 
 class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionMarqueeAPI }> {
   log = this.engine.log.child('group-selection');
+
+  rect: DOMRect | null = null;
 
   candidates: NodeCandidate[] = [];
 
@@ -22,8 +23,10 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
   start(origin: Point) {
     this.log.debug(this.log.pending('starting selection'));
 
+    this.rect = new DOMRect(origin[0], origin[1], 0, 0);
     this.engine.addClass(CANVAS_SELECTING_GROUP_CLASSNAME);
     this.mouseOrigin = origin;
+
     this.candidates = getCandidates(
       [...this.engine.nodes.keys()].filter((nodeID) => this.engine.isNodeOfType(nodeID, isRootOrMarkupBlockType)),
       this.engine
@@ -36,11 +39,15 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
   }
 
   updateCandidates([mouseX, mouseY]: Point) {
-    const [originX, originY] = this.mouseOrigin!;
-    const rect = buildVirtualDOMRect(
-      [Math.min(originX, mouseX), Math.min(originY, mouseY)],
-      [Math.abs(mouseX - originX), Math.abs(mouseY - originY)]
-    );
+    const { rect, mouseOrigin } = this;
+    if (!mouseOrigin || !rect) return;
+
+    const [originX, originY] = mouseOrigin;
+
+    rect.x = Math.min(originX, mouseX);
+    rect.y = Math.min(originY, mouseY);
+    rect.width = Math.abs(mouseX - originX);
+    rect.height = Math.abs(mouseY - originY);
 
     this.log.debug(this.log.pending('updating candidates'));
 
@@ -66,6 +73,7 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
 
     this.engine.removeClass(CANVAS_SELECTING_GROUP_CLASSNAME);
 
+    this.rect = null;
     this.mouseOrigin = null;
     this.candidates = [];
 

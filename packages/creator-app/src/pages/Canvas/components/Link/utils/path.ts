@@ -3,25 +3,26 @@ import { Nullable } from '@voiceflow/common';
 import { PathPoints } from '@/types';
 import { pathBuilder } from '@/utils/svg';
 
-import { PATH_INFLECTION_OFFSET, PATH_MIN_OFFSET, STRAIGHT_PATH_RADIUS } from '../constants';
+import { MIN_Y_POINTS_OFFSET, PATH_INFLECTION_OFFSET, STRAIGHT_PATH_RADIUS } from '../constants';
+import { getPoint, getPointsOffset, getPointX, getPointY, isEqualPoints } from './helpers';
 import { createLine, isHorizontalLineReversed, isVerticalLine, isVerticalLineReversed } from './lines';
-import { getPoint, getPointsOffset, getPointX, getPointY, isEqualPoints, isLessThanMinPathOffset } from './points';
 
 const getRadius = (offset: number): number => Math.max(Math.min(Math.abs(offset) / 2, STRAIGHT_PATH_RADIUS), 0);
+const isStraightLine = (start: number, end: number): boolean => Math.abs(end - start) <= MIN_Y_POINTS_OFFSET;
 
-export const buildPath = (points: Nullable<PathPoints>, straight?: boolean): string => {
+export const buildPath = (points: Nullable<PathPoints>, { isStraight }: { isStraight: boolean }): string => {
   if (!points) {
     return '';
   }
 
-  return straight ? buildStraightPath(points) : buildCurvePath(points);
+  return isStraight ? buildStraightPath(points) : buildCurvePath(points);
 };
 
 const buildCurvePath = (points: PathPoints): string => {
   const [startX, startY] = getPoint(points[0]);
   const [endX, endY] = getPoint(points[1]);
 
-  const inflectionOffset = Math.abs(endY - startY) > PATH_MIN_OFFSET ? PATH_INFLECTION_OFFSET : 0;
+  const inflectionOffset = isStraightLine(startY, endY) ? 0 : PATH_INFLECTION_OFFSET;
 
   return `M ${startX} ${startY} C ${startX + inflectionOffset} ${startY}, ${endX - inflectionOffset} ${endY}, ${endX} ${endY}`;
 };
@@ -31,7 +32,7 @@ const buildStraightPath = (points: PathPoints): string => {
 
   const builder = pathBuilder(startX, startY);
 
-  if (points.length === 2 && isLessThanMinPathOffset(startY, getPointY(points[1]))) {
+  if (points.length === 2 && isStraightLine(startY, getPointY(points[1]))) {
     return builder.lineTo(getPointX(points[1]), getPointY(points[1])).toString();
   }
 

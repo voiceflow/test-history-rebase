@@ -1,6 +1,7 @@
 import { Portal, swallowEvent, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
+import { useRAF } from '@/hooks';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { useEditingMode } from '@/pages/Project/hooks';
@@ -12,24 +13,28 @@ import { buildHeadMarker } from './utils';
 
 export * from './components';
 export * from './constants';
+export type { LinkedRects } from './utils';
 export * from './utils';
 
 const Link: React.FC = () => {
-  const linkEntity = React.useContext(LinkEntityContext)!;
-  const isEditingMode = useEditingMode();
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
-  const { linkData, isSupported, isHighlighted, sourceTargetPoints } = linkEntity.useState((e) => ({
-    linkData: e.resolve().data ?? null,
-    isSupported: e.isSupported,
-    isHighlighted: e.isHighlighted || e.isPrototypeHighlighted,
-    sourceTargetPoints: e.getSourceTargetPoints(),
+  const linkEntity = React.useContext(LinkEntityContext)!;
+  const isEditingMode = useEditingMode();
+
+  const [scheduler] = useRAF();
+
+  const { linkData, isSupported, isHighlighted } = linkEntity.useState((entity) => ({
+    linkData: entity.resolve().data ?? null,
+    isSupported: entity.isSupported,
+    isHighlighted: entity.isHighlighted || entity.isPrototypeHighlighted,
   }));
 
   const instance = useLinkInstance();
+
   const {
-    isActive,
     onClick,
+    isActive,
     onRemove,
     onMouseMove,
     onMouseDown,
@@ -45,15 +50,9 @@ const Link: React.FC = () => {
   linkEntity.useInstance(instance);
   linkEntity.useLifecycle();
 
-  React.useLayoutEffect(() => {
-    linkEntity.portLinkInstance?.api.updatePosition(instance.getPoints().current);
-  }, [linkData?.points, sourceTargetPoints]);
-
   useDidUpdateEffect(() => {
     if (!isActive && isCaptionEditing) {
-      requestAnimationFrame(() => {
-        onToggleCaptionEditing(false);
-      });
+      scheduler(() => onToggleCaptionEditing(false));
     }
   }, [isActive]);
 

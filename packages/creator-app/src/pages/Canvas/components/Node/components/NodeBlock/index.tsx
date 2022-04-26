@@ -10,12 +10,11 @@ import { BlockVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { compose } from '@/hocs';
 import { useDispatch, useEnableDisable, useHover } from '@/hooks';
-import Block, { HEADER_HEIGHT } from '@/pages/Canvas/components/Block';
+import Block from '@/pages/Canvas/components/Block';
 import PlayButton from '@/pages/Canvas/components/PlayButton';
 import { NODE_DISABLED_CLASSNAME, NODE_HOVERED_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, NodeEntityContext, NodeEntityProvider, PortEntityProvider } from '@/pages/Canvas/contexts';
 import { BlockAPI } from '@/pages/Canvas/types';
-import { buildVirtualDOMRect } from '@/utils/dom';
 
 import NodePort from '../NodePort';
 import NodeStep from '../NodeStep';
@@ -40,12 +39,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   });
   const observer = React.useMemo(() => new ResizeObserver(() => engine.node.redrawLinks(nodeEntity.nodeID)), []);
 
-  const getAnchorPoint = React.useCallback(() => {
-    const rect = blockRef.current?.getRect() ?? null;
-
-    // account for the correct spacing for the header
-    return rect && buildVirtualDOMRect([rect.x, rect.y + 4 * engine.canvas!.getZoom()]);
-  }, []);
+  const getAnchorPoint = React.useCallback(() => blockRef.current?.getRect() ?? null, []);
 
   const [hasLinkWarning, setLinkWarning, clearLinkWarning] = useEnableDisable();
   const hasNestedInPort = engine.getNodeByID(combinedNodes[0])?.ports.in.length !== 0;
@@ -72,14 +66,9 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
 
           const anchorPoint = getAnchorPoint();
 
-          if (!anchorPoint || !nodeEntity.inPortID) {
-            return false;
-          }
+          if (!anchorPoint || !nodeEntity.inPortID) return false;
 
-          engine.linkCreation.pin(
-            nodeEntity.inPortID,
-            engine.canvas!.transformPoint([anchorPoint.x, anchorPoint.y + (HEADER_HEIGHT / 2) * engine.canvas!.getZoom()])
-          );
+          engine.linkCreation.pin(nodeEntity.inPortID, anchorPoint);
 
           return true;
         }

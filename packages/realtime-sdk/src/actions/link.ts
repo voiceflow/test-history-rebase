@@ -10,6 +10,7 @@ export interface AddPayload extends BaseLinkPayload {
   sourcePortID: string;
   targetNodeID: string;
   targetPortID: string;
+  data?: LinkData;
 }
 
 export interface RemoveManyPayload extends BaseDiagramPayload {

@@ -1,16 +1,7 @@
 import React from 'react';
 
 import { useRegistration, useTeardown } from '@/hooks';
-import {
-  buildHeadMarker,
-  buildPath,
-  getMarkerAttrs,
-  getPathPoints,
-  getVirtualPoints,
-  HeadMarker,
-  Path,
-  STROKE_DEFAULT_COLOR,
-} from '@/pages/Canvas/components/Link';
+import { buildHeadMarker, buildPath, getMarkerAttrs, getPathPointsV2, HeadMarker, Path, STROKE_DEFAULT_COLOR } from '@/pages/Canvas/components/Link';
 import { EngineContext, IsStraightLinksContext } from '@/pages/Canvas/contexts';
 import { Identifier } from '@/styles/constants';
 
@@ -22,19 +13,30 @@ export const HEAD_MARKER = buildHeadMarker(NEW_LINK_ID);
 
 const NewLink: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
-  const isStraightLinks = React.useContext(IsStraightLinksContext)!;
+  const isStraight = React.useContext(IsStraightLinksContext)!;
 
   const api = useNewLinkAPI<SVGPathElement>();
-  const points = api.getSourceTargetPoints();
+  const linkedRects = api.getLinkedRects();
 
   useRegistration(() => engine.linkCreation.register('newLink', api), [api]);
   useTeardown(() => api.hide(), [api.hide]);
 
-  const pathPoints = React.useMemo(() => getPathPoints(getVirtualPoints(points), { straight: isStraightLinks }), [points, isStraightLinks]);
-  const path = React.useMemo(() => buildPath(pathPoints, isStraightLinks), [pathPoints, isStraightLinks]);
-  const markerAttrs = React.useMemo(() => getMarkerAttrs(pathPoints, isStraightLinks), [pathPoints, isStraightLinks]);
+  const [path, markerAttrs] = React.useMemo(() => {
+    if (linkedRects === null) return [null, null];
 
-  if (!points || !api.isVisible) return null;
+    const pathPoints = getPathPointsV2(linkedRects, {
+      isStraight,
+      isConnected: engine.linkCreation.hasPin,
+      sourceNodeIsStart: engine.linkCreation.sourceNodeIsStart,
+      sourceNodeIsAction: engine.linkCreation.sourceNodeIsAction,
+      targetNodeIsCombined: engine.linkCreation.targetNodeIsCombined,
+      sourceParentNodeRect: engine.linkCreation.getSourceParentNodeRect(),
+    });
+
+    return [buildPath(pathPoints, { isStraight }), getMarkerAttrs(pathPoints, { isStraight })] as const;
+  }, [linkedRects, isStraight]);
+
+  if (path === null || !api.isVisible) return null;
 
   return (
     <Container>

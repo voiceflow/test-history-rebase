@@ -1,3 +1,4 @@
+import { useCreateConst } from '@voiceflow/ui';
 import React from 'react';
 
 import { useEnableDisable, useRAF } from '@/hooks';
@@ -6,24 +7,29 @@ import { MergeLayerAPI } from '@/pages/Canvas/types';
 import MouseMovement from '@/utils/mouseMovement';
 
 export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObject<T>) => {
-  const pointRef = React.useRef<[number, number]>([0, 0]);
-  const offsetRef = React.useRef<[number, number]>([0, 0]);
+  const engine = React.useContext(EngineContext)!;
+  const mouseMovement = useCreateConst(() => new MouseMovement());
 
   const [isVisible, show, hide] = useEnableDisable();
   const [isTransparent, setTransparent, clearTransparent] = useEnableDisable();
-  const engine = React.useContext(EngineContext)!;
-  const mouseMovement = React.useMemo(() => new MouseMovement(), []);
+
+  const pointRef = React.useRef<[number, number]>([0, 0]);
+  const offsetRef = React.useRef<[number, number]>([0, 0]);
+
   const [stylesScheduler] = useRAF();
 
-  const resposition = React.useCallback(() => {
+  const reposition = React.useCallback(() => {
     stylesScheduler(() => {
       const [x, y] = pointRef.current;
       const [offsetX, offsetY] = offsetRef.current;
 
-      previewRef.current!.style.transform = `translate(${x - offsetX}px, ${y - offsetY}px)`;
+      if (previewRef.current) {
+        // eslint-disable-next-line no-param-reassign
+        previewRef.current.style.transform = `translate(${x - offsetX}px, ${y - offsetY}px)`;
+      }
 
       if (engine.merge.sourceNodeID) {
-        engine.node.translateAllLinks(engine.merge.sourceNodeID, [0, 0], { reposition: true });
+        engine.node.translateAllLinks(engine.merge.sourceNodeID, [0, 0], { sync: true });
       }
     });
   }, []);
@@ -36,18 +42,20 @@ export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObj
     engine.merge.updateCandidates();
 
     pointRef.current = transformedPoint;
-    resposition();
+    reposition();
   }, []);
+
   const initialize = React.useCallback((point: [number, number], offset: [number, number]) => {
     pointRef.current = point;
     offsetRef.current = offset;
 
-    resposition();
+    reposition();
 
     document.addEventListener('mousemove', handleMouseMove);
 
     show();
   }, []);
+
   const reset = React.useCallback(() => {
     document.removeEventListener('mousemove', handleMouseMove);
 
@@ -57,14 +65,13 @@ export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObj
   return React.useMemo<MergeLayerAPI<T>>(
     () => ({
       ref: previewRef,
-      isVisible,
-      isTransparent,
-      initialize,
-      resposition,
       reset,
+      isVisible,
+      initialize,
+      isTransparent,
       setTransparent,
-      clearTransparent,
       handleMouseMove,
+      clearTransparent,
     }),
     [isVisible, isTransparent]
   );

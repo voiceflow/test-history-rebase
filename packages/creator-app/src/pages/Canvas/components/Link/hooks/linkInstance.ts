@@ -1,7 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { useCache } from '@voiceflow/ui';
-import moize from 'moize';
 import React from 'react';
 
 import { BlockType } from '@/constants';
@@ -12,16 +11,7 @@ import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { MIN_HEIGHT, PLACEHOLDER_WIDTH } from '../components/LinkCaptionText';
 import { STROKE_DEFAULT_COLOR } from '../constants';
 import { InternalLinkInstance } from '../types';
-import {
-  buildPath,
-  getMarkerAttrs,
-  getPathPoints,
-  getPathPointsCenter,
-  getVirtualPoints,
-  syncPointsWithSourceAndTarget,
-  updateSourceSourceTargetPoints,
-  updateTargetSourceTargetPoints,
-} from '../utils';
+import { buildPath, getMarkerAttrs, getPathPointsCenter, getPathPointsV2, syncPointsWithLinkedRects } from '../utils';
 
 const useLinkInstance = () => {
   const engine = React.useContext(EngineContext)!;
@@ -34,13 +24,13 @@ const useLinkInstance = () => {
   const hiddenPathRef = React.useRef<SVGPathElement | null>(null);
   const captionRef = React.useRef<SVGForeignObjectElement | null>(null);
   const captionContainerRef = React.useRef<HTMLDivElement | null>(null);
-  const buildPathMemoized = React.useMemo(() => moize.simple(buildPath), [buildPath]);
 
-  const { linkData, sourceNodeID, targetNodeID, sourceTargetPoints } = linkEntity.useState((e) => ({
-    linkData: e.resolve().data,
-    sourceNodeID: e.resolve().source.nodeID,
-    targetNodeID: e.resolve().target.nodeID,
-    sourceTargetPoints: e.getSourceTargetPoints(),
+  const { linkData, sourceNodeID, targetNodeID, linkedRects, sourceParentNodeRect } = linkEntity.useState((entity) => ({
+    linkData: entity.resolve().data,
+    linkedRects: entity.getLinkedRects(),
+    sourceNodeID: entity.resolve().source.nodeID,
+    targetNodeID: entity.resolve().target.nodeID,
+    sourceParentNodeRect: entity.getSourceParentNodeRect(),
   }));
 
   const isPathLocked = React.useMemo(() => !!linkData?.points?.some((point) => point.locked), [linkData?.points]);
@@ -48,118 +38,115 @@ const useLinkInstance = () => {
   const [stylesScheduler] = useRAF();
   const elementInstance = useElementInstance(containerRef);
 
-  const { straight, sourceNode, targetNodeIsBlock } = React.useMemo(() => {
-    const straight = engine.isStraightLinks();
+  const { isStraight, sourceNodeIsStart, sourceNodeIsAction, targetNodeIsCombined } = React.useMemo(() => {
+    const isStraight = engine.isStraightLinks();
     const targetNode = engine.getNodeByID(targetNodeID);
     const sourceNode = engine.getNodeByID(sourceNodeID);
-    const targetNodeIsBlock = targetNode?.type === BlockType.COMBINED;
+    // TODO: replace with the BlockType.ACTIONS
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const sourceNodeIsAction = sourceNode?.type === 'actions';
+    const sourceNodeIsStart = sourceNode?.type === BlockType.START;
+    const targetNodeIsCombined = targetNode?.type === BlockType.COMBINED;
 
     return {
-      straight: linkData?.type ? linkData.type === BaseModels.Project.LinkType.STRAIGHT : straight,
-      targetNode,
-      sourceNode,
-      targetNodeIsBlock,
+      isStraight: linkData?.type ? linkData.type === BaseModels.Project.LinkType.STRAIGHT : isStraight,
+      sourceNodeIsStart,
+      sourceNodeIsAction,
+      targetNodeIsCombined,
     };
   }, [linkData?.type, targetNodeID, sourceNodeID]);
 
-  const cache = useCache(
-    {
-      straight,
-      linkData,
-      mergeTarget: null as Nullable<boolean>,
-      isPathLocked,
-      sourceBlockEndY: null as Nullable<number>,
-    },
-    {
-      straight,
-      linkData,
-      isPathLocked,
-    }
-  );
+  const cache = useCache({
+    linkData,
+    isStraight,
+    isPathLocked,
+    sourceNodeIsStart,
+    sourceNodeIsAction,
+    targetNodeIsCombined,
+  });
 
-  const getSourceBlockEndY = React.useCallback(() => {
-    const nodeAPI = engine.node.api(sourceNode?.parentNode || sourceNodeID);
+  const points = React.useMemo(() => {
+    if (!linkedRects) return null;
 
-    if (cache.current.mergeTarget === nodeAPI?.isMergeTarget) {
-      return cache.current.sourceBlockEndY;
-    }
-
-    cache.current.mergeTarget = nodeAPI?.isMergeTarget ?? null;
-
-    const height = nodeAPI?.instance?.getRect()?.height;
-    const position = nodeAPI?.instance?.getPosition() ?? null;
-
-    if (height && position) {
-      cache.current.sourceBlockEndY = position[1] + height / engine.canvas!.getZoom();
-    } else {
-      cache.current.sourceBlockEndY = null;
+    if (isStraight && linkData?.points) {
+      return syncPointsWithLinkedRects(linkData.points, linkedRects, {
+        isStraight,
+        isConnected: true,
+        isPathLocked,
+        syncOnlySource: false,
+        syncOnlyTarget: false,
+        sourceNodeIsStart,
+        sourceNodeIsAction,
+        targetNodeIsCombined,
+        sourceParentNodeRect,
+        sourceAndTargetSelected: false,
+      });
     }
 
-    return cache.current.sourceBlockEndY;
-  }, [sourceNode?.parentNode, sourceNodeID]);
+    return getPathPointsV2(linkedRects, {
+      isStraight,
+      isConnected: true,
+      sourceNodeIsStart,
+      sourceNodeIsAction,
+      targetNodeIsCombined,
+      sourceParentNodeRect,
+    });
+  }, [isStraight, linkData?.points, isPathLocked, linkedRects, sourceNodeIsStart, sourceNodeIsAction, targetNodeIsCombined, sourceParentNodeRect]);
 
-  const sourceTargetPointsCache = useLinkedRef(React.useMemo(() => getVirtualPoints(sourceTargetPoints), [sourceTargetPoints]));
-
-  const points = useLinkedRef(
-    React.useMemo(
-      () =>
-        (straight
-          ? linkData?.points &&
-            syncPointsWithSourceAndTarget(linkData.points, sourceTargetPointsCache.current, {
-              straight: cache.current.straight,
-              isPathLocked: cache.current.isPathLocked,
-              targetIsBlock: targetNodeIsBlock,
-              sourceBlockEndY: getSourceBlockEndY(),
-            })
-          : null) ||
-        getPathPoints(sourceTargetPointsCache.current, {
-          straight,
-          connected: true,
-          targetIsBlock: targetNodeIsBlock,
-          sourceBlockEndY: getSourceBlockEndY(),
-        }),
-      [straight, linkData?.points, sourceTargetPoints]
-    )
+  const center = React.useMemo(
+    () => (!!linkData?.caption && points ? getPathPointsCenter(points, { isStraight }) : null),
+    [points, isStraight, !!linkData?.caption]
   );
 
-  const center = useLinkedRef(
-    React.useMemo(
-      () => (!!linkData?.caption && points.current ? getPathPointsCenter(points.current, { straight }) : null),
-      [straight, linkData?.points, !!linkData?.caption, sourceTargetPoints]
-    )
-  );
+  const pointsPath = React.useMemo(() => buildPath(points, { isStraight }), [points, isStraight]);
 
-  const captionRect = useLinkedRef(
-    React.useMemo(() => {
-      const width = linkData?.caption?.width ?? captionContainerRef.current?.clientWidth ?? PLACEHOLDER_WIDTH;
-      const height = linkData?.caption?.height ?? captionContainerRef.current?.clientHeight ?? MIN_HEIGHT;
-      const centerPoints = center.current ?? (points.current ? getPathPointsCenter(points.current, { straight }) : [0, 0]);
+  const captionRect = React.useMemo(() => {
+    const width = linkData?.caption?.width ?? captionContainerRef.current?.clientWidth ?? PLACEHOLDER_WIDTH;
+    const height = linkData?.caption?.height ?? captionContainerRef.current?.clientHeight ?? MIN_HEIGHT;
+    const centerPoints = center ?? (points ? getPathPointsCenter(points, { isStraight }) : [0, 0]);
 
-      return {
-        x: (centerPoints[0] ?? 0) - width / 2,
-        y: (centerPoints[1] ?? 0) - height / 2,
-        width,
-        height,
-      };
-    }, [straight, linkData?.points, linkData?.caption, sourceTargetPoints])
-  );
+    return {
+      x: (centerPoints[0] ?? 0) - width / 2,
+      y: (centerPoints[1] ?? 0) - height / 2,
+      width,
+      height,
+    };
+  }, [isStraight, points, center, linkData?.caption]);
+
+  const pointsRef = useLinkedRef(points);
+  const centerRef = useLinkedRef(center);
+  const pointsPathRef = useLinkedRef(pointsPath);
+  const captionRectRef = useLinkedRef(captionRect);
+  const linkedRectsRef = useLinkedRef(linkedRects);
 
   const updateCaptionPosition = React.useCallback(() => {
-    if (captionRef.current) {
-      captionRef.current.setAttribute('x', String(captionRect.current.x));
-      captionRef.current.setAttribute('y', String(captionRect.current.y));
-      captionRef.current.setAttribute('width', String(captionRect.current.width));
-      captionRef.current.setAttribute('height', String(captionRect.current.height));
-    }
+    const captionElm = captionRef.current;
+
+    if (!captionElm) return;
+
+    captionElm.setAttribute('x', String(captionRectRef.current.x));
+    captionElm.setAttribute('y', String(captionRectRef.current.y));
+    captionElm.setAttribute('width', String(captionRectRef.current.width));
+    captionElm.setAttribute('height', String(captionRectRef.current.height));
   }, []);
 
   const updateMarkerPosition = React.useCallback(() => {
-    const nextMarketAttrs = getMarkerAttrs(points.current, cache.current.straight)!;
+    const markerElm = markerRef.current;
 
-    Object.keys(nextMarketAttrs).forEach((attr) => markerRef.current!.setAttribute(attr, nextMarketAttrs[attr as keyof typeof nextMarketAttrs]));
+    if (!markerElm) return;
+
+    const nextMarketAttrs = getMarkerAttrs(pointsRef.current, { isStraight: cache.current.isStraight });
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const attr of Utils.object.getKeys(nextMarketAttrs)) {
+      markerElm.setAttribute(attr, nextMarketAttrs[attr]);
+    }
   }, []);
 
-  React.useEffect(() => buildPathMemoized.clear, [buildPathMemoized]);
+  React.useEffect(() => {
+    linkEntity.portLinkInstance?.api.updatePosition(points);
+  }, [points]);
 
   return React.useMemo<InternalLinkInstance>(
     () => ({
@@ -177,63 +164,75 @@ const useLinkInstance = () => {
       updateCaptionPosition,
 
       getLinkType: () =>
-        cache.current.linkData?.type ?? (cache.current.straight ? BaseModels.Project.LinkType.STRAIGHT : BaseModels.Project.LinkType.CURVED),
+        cache.current.linkData?.type ?? (cache.current.isStraight ? BaseModels.Project.LinkType.STRAIGHT : BaseModels.Project.LinkType.CURVED),
       getLinkColor: () => cache.current.linkData?.color ?? STROKE_DEFAULT_COLOR,
 
-      getCenter: () => center,
-      getPoints: () => points,
-      isStraight: () => cache.current.straight,
-      getCaptionRect: () => captionRect,
+      getCenter: () => centerRef,
+      getPoints: () => pointsRef,
+      isStraight: () => cache.current.isStraight,
+      getCaptionRect: () => captionRectRef,
 
-      translatePoint: (
-        moves,
-        { isSource, reposition, sourceAndTargetSelected }: { isSource: boolean; reposition: boolean; sourceAndTargetSelected: boolean }
-      ) => {
-        if (!points.current || !sourceTargetPointsCache.current) return;
-
+      translatePoint: (moves, { sync, isSource, sourceAndTargetSelected }) => {
+        if (!pointsRef.current || !linkedRectsRef.current) return;
         // to do not double updated points
-        if (sourceAndTargetSelected && !isSource && cache.current.straight) return;
+        if (sourceAndTargetSelected && !isSource) return;
 
-        const pathEl = pathRef.current!;
-        const hiddenPathEl = hiddenPathRef.current;
+        if (sync) {
+          linkedRectsRef.current = linkEntity.getLinkedRects();
 
-        if (reposition) {
-          sourceTargetPointsCache.current = getVirtualPoints(linkEntity.getSourceTargetPoints());
+          if (!linkedRectsRef.current) return;
         } else {
-          const updateSourceTargetPoints = isSource ? updateSourceSourceTargetPoints : updateTargetSourceTargetPoints;
+          if (isSource || sourceAndTargetSelected) {
+            linkedRectsRef.current.sourceNodeRect.x += moves[0];
+            linkedRectsRef.current.sourceNodeRect.y += moves[1];
+            linkedRectsRef.current.sourcePortRect.x += moves[0];
+            linkedRectsRef.current.sourcePortRect.y += moves[1];
+          }
 
-          sourceTargetPointsCache.current = updateSourceTargetPoints(sourceTargetPointsCache.current, moves, {
-            straight: cache.current.straight,
-            sourceAndTargetSelected,
-          });
+          if (!isSource || sourceAndTargetSelected) {
+            linkedRectsRef.current.targetNodeRect.x += moves[0];
+            linkedRectsRef.current.targetNodeRect.y += moves[1];
+            linkedRectsRef.current.targetPortRect.x += moves[0];
+            linkedRectsRef.current.targetPortRect.y += moves[1];
+          }
         }
 
-        points.current = syncPointsWithSourceAndTarget(points.current, sourceTargetPointsCache.current, {
-          straight: cache.current.straight,
+        pointsRef.current = syncPointsWithLinkedRects(pointsRef.current, linkedRectsRef.current, {
+          isStraight: cache.current.isStraight,
+          isConnected: true,
           isPathLocked: cache.current.isPathLocked,
-          targetIsBlock: targetNodeIsBlock,
           syncOnlySource: isSource,
           syncOnlyTarget: !isSource,
-          sourceBlockEndY: getSourceBlockEndY(),
+          sourceNodeIsStart: cache.current.sourceNodeIsStart,
+          sourceNodeIsAction: cache.current.sourceNodeIsAction,
+          sourceParentNodeRect: linkEntity.getSourceParentNodeRect(),
+          targetNodeIsCombined: cache.current.targetNodeIsCombined,
           sourceAndTargetSelected,
         });
 
         if (cache.current.linkData?.caption) {
-          center.current = getPathPointsCenter(points.current, { straight: cache.current.straight });
+          centerRef.current = getPathPointsCenter(pointsRef.current, { isStraight: cache.current.isStraight });
 
-          captionRect.current.x = center.current[0] - captionRect.current.width / 2;
-          captionRect.current.y = center.current[1] - captionRect.current.height / 2;
+          captionRectRef.current.x = centerRef.current[0] - captionRectRef.current.width / 2;
+          captionRectRef.current.y = centerRef.current[1] - captionRectRef.current.height / 2;
         }
 
-        const scheduler = reposition ? (callback: () => void) => callback() : stylesScheduler;
+        const scheduler = sync ? (callback: () => void) => callback() : stylesScheduler;
 
         scheduler(() => {
-          const nextPath = buildPath(points.current, cache.current.straight);
+          const pathElm = pathRef.current;
+          const hiddenPathElm = hiddenPathRef.current;
 
-          pathEl.setAttribute('d', nextPath);
-          hiddenPathEl?.setAttribute('d', nextPath);
+          if (!pathElm || !hiddenPathElm) return;
 
-          linkEntity.portLinkInstance?.api.updatePosition(points.current);
+          const nextPath = buildPath(pointsRef.current, { isStraight: cache.current.isStraight });
+
+          pointsPathRef.current = nextPath;
+
+          pathElm.setAttribute('d', nextPath);
+          hiddenPathElm?.setAttribute('d', nextPath);
+
+          linkEntity.portLinkInstance?.api.updatePosition(pointsRef.current);
 
           settingsRef.current?.setPosition();
 
@@ -242,11 +241,11 @@ const useLinkInstance = () => {
         });
       },
 
-      getPath: () => buildPathMemoized(points.current, cache.current.straight),
+      getPath: () => pointsPathRef.current,
 
-      getMarkerAttrs: () => getMarkerAttrs(points.current, cache.current.straight),
+      getMarkerAttrs: () => getMarkerAttrs(pointsRef.current, { isStraight: cache.current.isStraight }),
     }),
-    [elementInstance, getSourceBlockEndY, buildPath]
+    [elementInstance, buildPath]
   );
 };
 

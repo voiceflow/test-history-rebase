@@ -4,10 +4,11 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as RealtimeDuck from '@/ducks/realtime';
-import LinkEntity from '@/pages/Canvas/engine/entities/linkEntity';
+import { LinkedRects } from '@/pages/Canvas/components/Link';
+import LinkEntity, { TranslatePointData } from '@/pages/Canvas/engine/entities/linkEntity';
 import { Pair } from '@/types';
 
-import { EngineConsumer, extractPoints } from './utils';
+import { EngineConsumer, extractPoints, toCanvasRect } from './utils';
 
 class LinkManager extends EngineConsumer {
   log = this.engine.log.child('link');
@@ -88,13 +89,53 @@ class LinkManager extends EngineConsumer {
     return !sourcePort.platform || sourcePort.platform === platform;
   }
 
+  /**
+   * @deprecated use getLinkedRects
+   */
   getSourceTargetPoints(linkID: string): Pair<Realtime.Point> | null {
     const link = this.engine.getLinkByID(linkID);
-    if (!link) return null;
+
+    if (!link || !this.engine.canvas) return null;
 
     const getPortRect = (relationship: 'source' | 'target') => this.engine.port.getRect(link[relationship].portID);
 
-    return extractPoints(this.engine.canvas!, getPortRect('source'), getPortRect('target'));
+    return extractPoints(this.engine.canvas, getPortRect('source'), getPortRect('target'));
+  }
+
+  getLinkedRects(linkID: string): LinkedRects | null {
+    const link = this.engine.getLinkByID(linkID);
+
+    if (!link || !this.engine.canvas) return null;
+
+    const sourcePortRect = this.engine.port.getRect(link.source.portID);
+    const sourceNodeRect = this.engine.node.getRect(link.source.nodeID);
+    const targetPortRect = this.engine.port.getRect(link.target.portID);
+    const targetNodeRect = this.engine.node.getRect(link.target.nodeID);
+
+    if (!sourcePortRect || !sourceNodeRect || !targetPortRect || !targetNodeRect) return null;
+
+    return {
+      sourcePortRect: toCanvasRect(this.engine.canvas, sourcePortRect),
+      sourceNodeRect: toCanvasRect(this.engine.canvas, sourceNodeRect),
+      targetPortRect: toCanvasRect(this.engine.canvas, targetPortRect),
+      targetNodeRect: toCanvasRect(this.engine.canvas, targetNodeRect),
+    };
+  }
+
+  getSourceParentNodeRect(linkID: string): DOMRect | null {
+    const link = this.engine.getLinkByID(linkID);
+
+    if (!link || !this.engine.canvas) return null;
+
+    const node = this.engine.getNodeByID(link.source.nodeID);
+
+    if (!node?.parentNode) return null;
+
+    const sourceParentNodeRect = this.engine.node.getRect(node.parentNode);
+
+    if (!sourceParentNodeRect) return null;
+
+    return toCanvasRect(this.engine.canvas, sourceParentNodeRect);
   }
 
   /**
@@ -192,7 +233,7 @@ class LinkManager extends EngineConsumer {
     await this.patchMany(patches, options);
   }
 
-  translatePoint(linkID: string, movement: Pair<number>, data: { isSource: boolean; reposition: boolean; sourceAndTargetSelected: boolean }): void {
+  translatePoint(linkID: string, movement: Pair<number>, data: TranslatePointData): void {
     this.api(linkID)?.instance?.translatePoint(movement, data);
 
     this.log.debug(`translated ${data.isSource ? 'source' : 'target'} point`, this.log.value(linkID));

@@ -9,7 +9,13 @@ import type Engine from '..';
 import { EntityType } from '../constants';
 import { EntityInstance, ResourceEntity } from './entity';
 
-export type LinkInstance = EntityInstance & {
+export interface TranslatePointData {
+  sync: boolean;
+  isSource: boolean;
+  sourceAndTargetSelected: boolean;
+}
+
+export interface LinkInstance extends EntityInstance {
   /**
    * get the link's path points
    */
@@ -18,8 +24,8 @@ export type LinkInstance = EntityInstance & {
   /**
    * translate one of the link's points
    */
-  translatePoint: (movement: Pair<number>, data: { isSource: boolean; reposition: boolean; sourceAndTargetSelected: boolean }) => void;
-};
+  translatePoint: (movement: Pair<number>, data: TranslatePointData) => void;
+}
 
 export interface PortLinkInstance {
   updatePosition: (points: PathPoints | null) => void;
@@ -52,8 +58,19 @@ class LinkEntity extends ResourceEntity<Realtime.Link, LinkInstance> {
     this.log.debug(this.log.init('constructed link'), this.log.slug(linkID));
   }
 
+  /**
+   * @deprecated use getLinkedRects
+   */
   getSourceTargetPoints() {
     return this.engine.link.getSourceTargetPoints(this.linkID);
+  }
+
+  getLinkedRects() {
+    return this.engine.link.getLinkedRects(this.linkID);
+  }
+
+  getSourceParentNodeRect() {
+    return this.engine.link.getSourceParentNodeRect(this.linkID);
   }
 
   resolve() {

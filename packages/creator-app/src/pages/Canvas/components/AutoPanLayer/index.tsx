@@ -1,6 +1,7 @@
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import { AutoPanningCacheContext, AutoPanningSetContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -110,17 +111,27 @@ const AutoPanLayer: React.FC = () => {
       }
     };
 
+    const syncCanvas = () => {
+      const [posX, posY] = engine.canvas?.getPosition() ?? [0, 0];
+      engine.canvas?.setPosition([posX + movementX, posY + movementY]);
+    };
+
     const setCanvasPosition = (): void => {
       if (!autoPanningCache.current) {
         reset();
         return;
       }
 
+      if (engine.isFeatureEnabled(FeatureFlag.EXPERIMENTAL_SYNC_LINKS)) {
+        syncCanvas();
+      }
+
       syncBlocksAndCursor();
       syncLinkAndCursor();
 
-      const [posX, posY] = engine.canvas?.getPosition() ?? [0, 0];
-      engine.canvas?.setPosition([posX + movementX, posY + movementY]);
+      if (!engine.isFeatureEnabled(FeatureFlag.EXPERIMENTAL_SYNC_LINKS)) {
+        syncCanvas();
+      }
 
       scheduler(setCanvasPosition);
     };
@@ -155,7 +166,7 @@ const AutoPanLayer: React.FC = () => {
     const onMouseMove = (event: MouseEvent) => {
       mouseMoveRef.current = event;
 
-      if (!allowAutoPan()) {
+      if (!allowAutoPan() || !engine.canvas) {
         return;
       }
 
@@ -163,7 +174,7 @@ const AutoPanLayer: React.FC = () => {
       const rightOffset = rightOffsetRef.current;
 
       const { clientX, clientY } = event;
-      const { top = 0, right = 0, left = 0, bottom = 0, height = 0, width = 0 } = engine.canvas?.getCachedRect() ?? {};
+      const { top = 0, right = 0, left = 0, bottom = 0, height = 0, width = 0 } = engine.canvas.getRect();
 
       const verticalHotZoneSize = applyMinMaxCap(HOT_ZONE_MIN, HOT_ZONE_MAX, height * VERTICAL_HOT_ZONE_PERCENT);
       const horizontalHotZoneSize = applyMinMaxCap(HOT_ZONE_MIN, HOT_ZONE_MAX, width * HORIZONTAL_HOT_ZONE_PERCENT);

@@ -4,12 +4,11 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { FeatureFlag } from '@/config/features';
-import { BlockType } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts';
 import * as Account from '@/ducks/account';
 import * as Realtime from '@/ducks/realtime';
 import { useFeature, useRAF, useSelector, useSyncDispatch } from '@/hooks';
-import { buildPath, getMarkerAttrs, getPathPoints, getVirtualPoints } from '@/pages/Canvas/components/Link';
+import { LinkedRects } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
@@ -17,47 +16,33 @@ import { Pair, Point } from '@/types';
 type NewLinkInstance<T extends SVGElement> = NewLinkAPI & {
   ref: React.RefObject<T>;
   markerRef: React.RefObject<SVGMarkerElement>;
-  getSourceTargetPoints: () => Pair<Point> | null;
   isVisible: boolean;
+  getLinkedRects: () => LinkedRects | null;
 };
 
 export const useNewLinkAPI = <T extends SVGElement>() => {
-  const ref = React.useRef<T>(null);
-  const markerRef = React.useRef<SVGMarkerElement>(null);
-  const dispatch = useDispatch();
-  const creatorID = useSelector(Account.userIDSelector)!;
-  const moveLinkV2 = useSyncDispatch(RealtimeSDK.diagram.awareness.moveLink);
-  const hideLinkV2 = useSyncDispatch(RealtimeSDK.diagram.awareness.hideLink);
-  const points = React.useRef<Pair<Point> | null>(null);
-  const isPinned = React.useRef(false);
-  const removeEventListeners = React.useRef(Utils.functional.noop);
   const engine = React.useContext(EngineContext)!;
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
+
+  const creatorID = useSelector(Account.userIDSelector)!;
+
+  const dispatch = useDispatch();
+  const moveLinkV2 = useSyncDispatch(RealtimeSDK.diagram.awareness.moveLink);
+  const hideLinkV2 = useSyncDispatch(RealtimeSDK.diagram.awareness.hideLink);
+
   const [isVisible, setVisible] = React.useState(false);
 
   const atomicActionsAwareness = useFeature(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
 
-  const [pinStylesScheduler] = useRAF();
-  const [mouseMoveStylesScheduler] = useRAF();
+  const [redrawScheduler] = useRAF();
 
-  const moveLink = React.useCallback(
-    (points: Pair<Point>) =>
-      atomicActionsAwareness.isEnabled
-        ? moveLinkV2({ ...engine.context, creatorID, points })
-        : dispatch(Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink({ points }))),
-    [creatorID, atomicActionsAwareness.isEnabled, moveLinkV2]
-  );
-
-  const resetLink = React.useCallback(
-    () =>
-      atomicActionsAwareness.isEnabled
-        ? hideLinkV2({ ...engine.context, creatorID })
-        : dispatch(Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink({ reset: true }))),
-    [creatorID, atomicActionsAwareness.isEnabled]
-  );
+  const ref = React.useRef<T>(null);
+  const isPinned = React.useRef(false);
+  const markerRef = React.useRef<SVGMarkerElement>(null);
+  const linkedRects = React.useRef<LinkedRects | null>(null);
+  const removeEventListeners = React.useRef(Utils.functional.noop);
 
   React.useEffect(() => {
-    // eslint-disable-next-line xss/no-mixed-html
     engine.linkCreation.setElements(ref, markerRef);
 
     return () => {
@@ -65,115 +50,104 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
     };
   }, []);
 
-  const onMouseMove = React.useCallback(() => {
-    if (isPinned.current || isAutoPanning.current) return;
+  return React.useMemo<NewLinkInstance<T>>(() => {
+    const moveLink = (points: Pair<Point>) =>
+      atomicActionsAwareness.isEnabled
+        ? moveLinkV2({ ...engine.context, creatorID, points })
+        : dispatch(Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink({ points })));
 
-    const [endX, endY] = engine.getCanvasMousePosition();
+    const resetLink = () =>
+      atomicActionsAwareness.isEnabled
+        ? hideLinkV2({ ...engine.context, creatorID })
+        : dispatch(Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink({ reset: true })));
 
-    const [start] = points.current!;
+    const onMoveLink = () => {
+      if (!linkedRects.current) return;
 
-    const nextPoints: Pair<Point> = [start, [endX, endY]];
-    const virtualPoints = getVirtualPoints(nextPoints)!;
+      // TODO: refactor moveLink to accept a LinkedRects like object
+      moveLink([
+        [linkedRects.current.sourceNodeRect.right, linkedRects.current.sourcePortRect.top + linkedRects.current.sourcePortRect.height / 2],
+        [linkedRects.current.targetNodeRect.left, linkedRects.current.targetNodeRect.top],
+      ]);
+    };
 
-    points.current = nextPoints;
-    moveLink(virtualPoints);
-
-    mouseMoveStylesScheduler(() => {
-      engine.linkCreation.redrawNewLink();
-    });
-  }, [buildPath]);
-
-  const onMouseUp = React.useCallback((event: MouseEvent) => {
-    if (event.defaultPrevented) {
-      return;
-    }
-
-    if (engine.linkCreation.activeTargetPortID) {
-      engine.linkCreation.complete(engine.linkCreation.activeTargetPortID);
-    } else if (!engine.linkCreation.isCompleting) {
-      engine.linkCreation.abort();
-    }
-
-    event.preventDefault();
-  }, []);
-
-  return React.useMemo<NewLinkInstance<T>>(
-    () => ({
+    return {
       ref,
       markerRef,
       isVisible,
+
       isPinned: () => isPinned.current,
-      getSourceTargetPoints: () => points.current,
-      show: () => {
-        const nextPoints = engine.linkCreation.getLinkPoints();
 
-        if (!nextPoints) return;
+      getLinkedRects: () => linkedRects.current,
 
-        points.current = nextPoints;
-        moveLink(getVirtualPoints(points.current)!);
+      show: (rect) => {
+        const moveRect = DOMRect.fromRect(rect);
 
+        const newLinkedRects = engine.linkCreation.getLinkedRects(moveRect, { relative: true, targetIsCanvasRect: false });
+
+        if (!newLinkedRects) return;
+
+        linkedRects.current = newLinkedRects;
+
+        onMoveLink();
         setVisible(true);
 
-        document.addEventListener('mousemove', onMouseMove);
+        const onMouseMove = () => {
+          if (isPinned.current || isAutoPanning.current || !linkedRects.current || engine.linkCreation.isCompleting) return;
+
+          const mousePosition = engine.getCanvasMousePosition();
+
+          [moveRect.x, moveRect.y] = mousePosition;
+
+          linkedRects.current = engine.linkCreation.getLinkedRects(moveRect, { relative: true, targetIsCanvasRect: true });
+
+          onMoveLink();
+
+          redrawScheduler(() => engine.linkCreation.redrawNewLink(linkedRects.current));
+        };
+
+        const onMouseUp = (event: MouseEvent) => {
+          if (event.defaultPrevented) {
+            return;
+          }
+
+          if (engine.linkCreation.activeTargetPortID) {
+            engine.linkCreation.complete(engine.linkCreation.activeTargetPortID);
+          } else if (!engine.linkCreation.isCompleting) {
+            engine.linkCreation.abort();
+          }
+
+          event.preventDefault();
+        };
+
         document.addEventListener('mouseup', onMouseUp);
+        document.addEventListener('mousemove', onMouseMove);
 
         removeEventListeners.current = () => {
           document.removeEventListener('mouseup', onMouseUp);
           document.removeEventListener('mousemove', onMouseMove);
         };
       },
+
       hide: () => {
         removeEventListeners.current();
         resetLink();
         setVisible(false);
       },
-      pin: (position) => {
+
+      pin: (rect) => {
         isPinned.current = true;
 
-        const [start] = points.current!;
-        const nextPoints: Pair<Point> = [start, position];
-        const virtualPoints = getVirtualPoints(nextPoints)!;
-        const straight = engine.isStraightLinks();
-        const targetPort = engine.linkCreation.activeTargetPortID ? engine.getPortByID(engine.linkCreation.activeTargetPortID) : null;
-        const sourcePort = engine.linkCreation.sourcePortID ? engine.getPortByID(engine.linkCreation.sourcePortID) : null;
-        const targetNode = engine.getNodeByID(targetPort?.nodeID);
-        const sourceNode = engine.getNodeByID(sourcePort?.nodeID);
-        const targetIsBlock = targetNode?.type === BlockType.COMBINED;
+        linkedRects.current = engine.linkCreation.getLinkedRects(rect, { relative: false, targetIsCanvasRect: false });
 
-        points.current = nextPoints;
-        moveLink(virtualPoints);
+        onMoveLink();
 
-        const linkEl = ref.current!;
-        const markerEl = markerRef.current!;
-
-        const getSourceBlockEndY = () => {
-          const nodeAPI = sourceNode ? engine.node.api(sourceNode.parentNode ?? sourceNode.id) : null;
-          const height = nodeAPI?.instance?.getRect()?.height;
-          const sourceNodePosition = nodeAPI?.instance?.getPosition() ?? null;
-
-          if (height && sourceNodePosition) {
-            return sourceNodePosition[1] + height / engine.canvas!.getZoom();
-          }
-
-          return null;
-        };
-
-        pinStylesScheduler(() => {
-          const pathPoints = getPathPoints(virtualPoints, { straight, connected: true, targetIsBlock, sourceBlockEndY: getSourceBlockEndY() });
-
-          const path = buildPath(pathPoints, straight);
-          const marketAttrs = getMarkerAttrs(pathPoints, straight);
-
-          linkEl.setAttribute('d', path);
-          Object.keys(marketAttrs).forEach((attr) => markerEl.setAttribute(attr, marketAttrs[attr as keyof typeof marketAttrs]));
-
-          engine.portLinkInstances.get(engine.linkCreation.sourcePortID!)?.api.updatePosition(pathPoints);
-        });
+        redrawScheduler(() => engine.linkCreation.redrawNewLink(linkedRects.current, { isConnected: true }));
       },
+
       unpin: () => {
         isPinned.current = false;
       },
-    }),
-    [isVisible, onMouseMove, onMouseUp, moveLink, resetLink]
-  );
+    };
+  }, [isVisible, creatorID, atomicActionsAwareness.isEnabled, moveLinkV2]);
 };

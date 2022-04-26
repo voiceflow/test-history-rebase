@@ -1,14 +1,15 @@
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useLinkedRef } from '@/hooks';
+import { useFeature, useLinkedRef, useRAF } from '@/hooks';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
-import { useDragTranslate, useEntityDrag } from '@/pages/Canvas/hooks';
+import { useEntityDrag } from '@/pages/Canvas/hooks';
 import { BlockAPI } from '@/pages/Canvas/types';
 import { useEditingMode } from '@/pages/Project/hooks';
-import { Point } from '@/types';
+import { Pair, Point } from '@/types';
 
 import { InternalNodeInstance } from './types';
 
@@ -32,12 +33,12 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const position = useNodePosition();
-
-  const translate = useDragTranslate(ref, position);
+  const experimentalSyncLinks = useFeature(FeatureFlag.EXPERIMENTAL_SYNC_LINKS);
 
   const getRect = React.useCallback(() => blockRef.current?.getRect() || null, []);
 
   const elementInstance = useElementInstance(ref);
+  const [stylesScheduler] = useRAF();
 
   return React.useMemo<InternalNodeInstance<T>>(
     () => ({
@@ -57,9 +58,25 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
       },
       rename: () => blockRef.current?.rename(),
       blur: () => ref.current?.blur(),
-      translate,
+      translate: ([movementX, movementY]: Pair<number>) => {
+        if (!position.current) return;
+
+        const [posX, posY] = position.current;
+
+        position.current = [posX + movementX, posY + movementY];
+
+        stylesScheduler(() => {
+          if (!position.current || !ref.current) return;
+
+          ref.current.style.transform = `translate(${position.current[0]}px, ${position.current[1]}px)`;
+
+          if (experimentalSyncLinks.isEnabled) {
+            engine.node.translateAllLinks(nodeEntity.nodeID, [movementX, movementY], { sync: true });
+          }
+        });
+      },
     }),
-    [elementInstance]
+    [elementInstance, experimentalSyncLinks]
   );
 };
 

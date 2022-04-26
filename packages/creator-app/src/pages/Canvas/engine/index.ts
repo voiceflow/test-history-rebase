@@ -507,7 +507,9 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   }
 
   getCanvasMousePosition(): Point {
-    return this.canvas!.transformPoint(this.mousePosition.current!);
+    if (!this.canvas || !this.mousePosition.current) return [0, 0];
+
+    return this.canvas.transformPoint(this.mousePosition.current);
   }
 
   getMouseCoords(): Coords {

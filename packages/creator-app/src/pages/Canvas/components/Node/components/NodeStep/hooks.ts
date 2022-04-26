@@ -1,10 +1,8 @@
 import { preventDefault, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
-import { ThemeContext } from 'styled-components';
 
 import { BlockType } from '@/constants';
 import { useEnableDisable, useHover } from '@/hooks';
-import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
@@ -47,15 +45,21 @@ export const useNodeInstance = () => {
       getCenterPoint: () => {
         const rect = getRect();
 
-        return rect && engine.canvas!.transformPoint([rect.x + rect.width / 2, rect.y + rect.height / 2], { relative: true, bounding: true });
+        if (!engine.canvas || !rect) return null;
+
+        return engine.canvas.transformPoint([rect.x + rect.width / 2, rect.y + rect.height / 2], { relative: true, bounding: true });
       },
     }),
     [elementInstance]
   );
 };
 
-export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, withPorts: boolean, isDraggable: boolean) => {
-  const theme = React.useContext(ThemeContext);
+export const useStepAPI = <T extends HTMLElement>(
+  stepRef: React.RefObject<T>,
+  withPorts: boolean,
+  isDraggable: boolean,
+  getAnchorPoint: () => DOMRect | null
+) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
@@ -69,20 +73,18 @@ export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, w
   const [isHovered, wrapElement, hoverHandlers, setHovering] = useHover(
     {
       onStart: () => {
-        if (!engine.linkCreation.canTargetNode(nodeEntity.nodeID)) {
-          return false;
-        }
+        if (!engine.linkCreation.canTargetNode(nodeEntity.nodeID)) return false;
 
         if (!nodeEntity.inPortID) {
           setLinkWarning();
           return true;
         }
 
-        const { top, left } = stepRef.current!.getBoundingClientRect();
-        const zoom = engine.canvas!.getZoom();
-        const pinPoint = engine.canvas!.transformPoint([left - LINK_WIDTH * zoom, top + (theme.components.blockStep.minHeight / 2) * zoom]);
+        const rect = getAnchorPoint();
 
-        engine.linkCreation.pin(nodeEntity.inPortID, pinPoint);
+        if (!rect || !engine.canvas) return false;
+
+        engine.linkCreation.pin(nodeEntity.inPortID, rect);
 
         return true;
       },

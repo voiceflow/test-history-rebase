@@ -13,7 +13,7 @@ const Port: React.FC = () => {
   const { isConnected, isHighlighted, isFinalPrototypeUnlinkedPort } = portEntity.useState((e) => ({
     isFinalPrototypeUnlinkedPort: e.isFinalPrototypeUnlinkedPort,
     isConnected: e.isConnected,
-    isHighlighted: e.isHighlighted || e.isPrototypeHighlighted,
+    isHighlighted: e.isHighlighted || e.isPrototypeHighlighted || e.isLinkCreationHighlighted,
   }));
   const { onMouseDown, onMouseUp } = useHandlers();
 
@@ -21,6 +21,7 @@ const Port: React.FC = () => {
 
   portEntity.useConditionalStyle(PORT_HIGHLIGHTED_CLASSNAME, isHighlighted);
   portEntity.useConditionalStyle(PORT_PROTOTYPE_END_UNLINKED_CLASSNAME, isFinalPrototypeUnlinkedPort);
+
   return (
     <>
       <Lifecycle />

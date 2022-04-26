@@ -9,7 +9,7 @@ import { BlockType, ModalType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useModals, useTheme } from '@/hooks';
+import { useModals, useRAF, useTheme } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
@@ -49,6 +49,8 @@ const EditSidebar = () => {
   const isEditingMode = useEditingMode();
   const { node, path, goToPath, pushToPath, popFromPath } = useEditorPath();
 
+  const [canvasPositionScheduler] = useRAF();
+
   const updateData = useUpdateData(node?.id);
   const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
 
@@ -59,21 +61,24 @@ const EditSidebar = () => {
 
   React.useEffect(() => {
     const block = getNodeByID({ id: blocKID });
+    const { canvas } = engine;
 
-    if (!isOpen || !block || !engine.canvas || Realtime.Utils.typeGuards.isMarkupBlockType(block.type)) return;
+    if (!isOpen || !block || !canvas || Realtime.Utils.typeGuards.isMarkupBlockType(block.type)) return;
 
-    const offset = FOCUSED_NODE_SIDEBAR_OFFSET / engine.canvas.getZoom();
-    const canvasPosition = engine.canvas.getPosition();
-    const canvasRect = engine.canvas.getCachedRect();
+    const offset = FOCUSED_NODE_SIDEBAR_OFFSET / canvas.getZoom();
+    const canvasPosition = canvas.getPosition();
+    const canvasRect = canvas.getRect();
     const canvasEndX = canvasRect.width - theme.components.blockSidebar.width;
-    const [blockEndX] = engine.canvas
+    const [blockEndX] = canvas
       .toCoords([block.x, block.y])
       .add([offset + theme.components.block.width / 2, 0])
       .raw();
 
     if (blockEndX > canvasEndX) {
-      engine.canvas.applyTransition();
-      engine.canvas.setPosition([canvasPosition[0] - (blockEndX - canvasEndX), canvasPosition[1]]);
+      canvasPositionScheduler(() => {
+        canvas.applyTransition();
+        canvas.setPosition([canvasPosition[0] - (blockEndX - canvasEndX), canvasPosition[1]]);
+      });
     }
   }, [isOpen, blocKID]);
 

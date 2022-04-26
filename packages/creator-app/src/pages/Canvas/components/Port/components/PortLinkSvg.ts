@@ -1,6 +1,6 @@
 import { css, styled } from '@/hocs';
 
-import { LINK_WIDTH } from '../constants';
+import { NODE_LINK_WIDTH } from '../constants';
 
 interface PortLink {
   reversed?: boolean;
@@ -10,14 +10,14 @@ const PortLink = styled.svg<PortLink>`
   ${({ reversed }) =>
     reversed
       ? css`
-          left: -${LINK_WIDTH + 1}px;
+          left: -${NODE_LINK_WIDTH + 1}px;
         `
       : css`
-          right: -${LINK_WIDTH + 1}px;
+          right: -${NODE_LINK_WIDTH + 1}px;
         `};
 
   position: absolute;
-  width: ${LINK_WIDTH}px;
+  width: ${NODE_LINK_WIDTH}px;
   height: 4px;
 `;
 

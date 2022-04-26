@@ -49,15 +49,18 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
   const cache = useCache({ isCanvasOnly, isSidebarHidden }, { isCanvasOnly, isSidebarHidden });
 
   const setPosition = React.useCallback(() => {
+    if (!engine.canvas) return;
+
     const pathRect = instance.hiddenPathRef.current?.getBoundingClientRect();
-    const canvasRect = cache.current.isCanvasOnly ? engine.canvas!.getRect() : engine.canvas!.getCachedRect();
+    const canvasRect = engine.canvas.getRect();
     const captionRect = instance.getCaptionRect();
     const sidebarWidth = (cache.current.isCanvasOnly || cache.current.isSidebarHidden ? 0 : SIDEBAR_WIDTH) + NAV_WIDTH;
 
+    const zoom = engine.canvas.getZoom() ?? 1;
+    const zoomedOffset = OFFSET * zoom;
+
     let x = 0;
     let y = 0;
-    const zoom = engine.canvas?.getZoom() ?? 1;
-    const zoomedOffset = OFFSET * zoom;
 
     if (!pathRect) {
       x = canvasRect.width / 2 - SETTINGS_WIDTH / 2;
@@ -96,7 +99,7 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
     }
 
     if (containerRef.current) {
-      containerRef.current!.style.transform = `translate(${x}px, ${y}px)`;
+      containerRef.current.style.transform = `translate(${x}px, ${y}px)`;
     }
   }, [instance]);
 

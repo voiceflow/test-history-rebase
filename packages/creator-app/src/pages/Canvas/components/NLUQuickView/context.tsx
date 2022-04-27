@@ -208,16 +208,19 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     [activeTab, onRenameSlot, onRenameIntent]
   );
 
-  const nameChangeTransform = React.useCallback((name: string, tab: InteractionModelTabType) => {
-    switch (tab) {
-      case InteractionModelTabType.INTENTS:
-        return applyPlatformIntentNameFormatting(name, platform);
-      case InteractionModelTabType.SLOTS:
-        return formatIntentAndSlotName(name);
-      default:
-        return name;
-    }
-  }, []);
+  const nameChangeTransform = React.useCallback(
+    (name: string, tab: InteractionModelTabType) => {
+      switch (tab) {
+        case InteractionModelTabType.INTENTS:
+          return applyPlatformIntentNameFormatting(name, platform);
+        case InteractionModelTabType.SLOTS:
+          return formatIntentAndSlotName(name);
+        default:
+          return name;
+      }
+    },
+    [platform]
+  );
 
   const canRenameItem = React.useCallback(
     (id: string, type: InteractionModelTabType) => {

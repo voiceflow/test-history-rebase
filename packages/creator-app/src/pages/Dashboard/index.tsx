@@ -9,13 +9,11 @@ import { ModalType } from '@/constants';
 import { SeoPage } from '@/constants/seo';
 import * as Notifications from '@/ducks/notifications';
 import * as Router from '@/ducks/router';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withBatchLoadingGate } from '@/hocs';
-import { useActiveWorkspace, useDispatch, useModals, useSelector, useSetup, useWorkspaceTracking } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useModals, useSetup, useWorkspaceTracking } from '@/hooks';
 import perf, { PerfAction } from '@/performance';
 import { DashboardClassName } from '@/styles/constants';
 import * as Query from '@/utils/query';
-import * as Userflow from '@/vendors/userflow';
 
 import { ProjectListList } from './components';
 import { DashboardGate } from './gates';
@@ -24,7 +22,6 @@ import DashboardHeader from './Header';
 const Dashboard: React.FC = () => {
   const location = useLocation();
   const workspace = useActiveWorkspace();
-  const hasTemplatesWorkspace = useSelector(WorkspaceV2.hasTemplatesWorkspaceSelector);
   const fetchNotifications = useDispatch(Notifications.fetchNotifications);
   const clearSearch = useDispatch(Router.clearSearch);
 
@@ -46,10 +43,6 @@ const Dashboard: React.FC = () => {
       openCollaboratorsModal();
     } else if (query?.upgrade_workspace) {
       openPaymentModal();
-    }
-
-    if (hasTemplatesWorkspace) {
-      Userflow.track(Userflow.Event.DASHBOARD_VISITED);
     }
   });
 

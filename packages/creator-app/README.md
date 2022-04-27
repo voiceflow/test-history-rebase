@@ -227,21 +227,6 @@ You are also able to use the flag `--ga` to enable it from the command line.
 yarn start --ga
 ```
 
-### Userflow
-
-To enable Userflow when running locally, set the environment variable `VF_APP_USERFLOW_ENABLED` to `"true"`
-in the `.env.local` file in this directory. If this file doesn't exist then create one.
-
-```sh
-VF_APP_USERFLOW_ENABLED='true'
-```
-
-You are also able to use the flag `--userflow` to enable it from the command line.
-
-```sh
-yarn start --userflow
-```
-
 ### Sentry
 
 To enable sentry integration when running locally, set the environment variable `VF_APP_SENTRY_ENABLED` to `"true"`

@@ -14,7 +14,6 @@ import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
 import * as Query from '@/utils/query';
 import * as Sentry from '@/vendors/sentry';
-import * as Userflow from '@/vendors/userflow';
 
 import { setAuthToken, setIntercomUserHMAC } from './actions';
 import { authTokenSelector, browserIDSelector, tabIDSelector } from './selectors';
@@ -62,7 +61,6 @@ export const identifyUser =
     const externalID = generateID(creator_id);
 
     Vendors.LogRocket.identify(externalID, user);
-    await Userflow.identify(externalID, user);
   };
 
 export const restoreSession = (): Thunk => async (dispatch, getState) => {

@@ -1,4 +1,4 @@
-/* eslint-disable no-process-env, @typescript-eslint/no-non-null-assertion */
+/* eslint-disable no-process-env */
 import { IS_DEVELOPMENT, IS_PRODUCTION } from '@voiceflow/ui';
 import loglevel from 'loglevel';
 
@@ -165,14 +165,6 @@ export const MAINTENANCE_STATUS_SOURCE = window.VF_OVERRIDE_MAINTENANCE_STATUS_S
 
 // copy-paste
 export const COPY_PASTE_KEY = window.VF_OVERRIDE_COPY_PASTE_KEY || process.env.COPY_PASTE_KEY!;
-
-// userflow
-export const USERFLOW_ENABLED = (!IS_E2E && IS_PRODUCTION) || process.env.USERFLOW_ENABLED === 'true';
-const USERFLOW_PROD_TOKEN = process.env.USERFLOW_PROD_TOKEN!;
-const USERFLOW_DEV_TOKEN = process.env.USERFLOW_DEV_TOKEN!;
-export const USERFLOW_TOKEN = IS_PRODUCTION_ENV ? USERFLOW_PROD_TOKEN : USERFLOW_DEV_TOKEN;
-export const USERFLOW_ONBOARDING_FLOW_ID = process.env.USERFLOW_ONBOARDING_FLOW_ID!;
-export const USERFLOW_DASHBOARD_FLOW_ID = process.env.USERFLOW_DASHBOARD_FLOW_ID!;
 
 // canvas export
 export const CANVAS_EXPORT_CLOUD_ENDPOINT =

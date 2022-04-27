@@ -10,7 +10,6 @@ import { API_ENDPOINT, LOGROCKET_PROJECT, TRUSTED_ENDPOINTS, VERSION } from './c
 import { clearPersistedLogs } from './utils/logger';
 import * as Google from './vendors/google';
 import * as GoogleAnalytics from './vendors/googleAnalytics';
-import * as Userflow from './vendors/userflow';
 
 const LOGOUT_HANDLER_TIMEOUT = 3000;
 
@@ -105,8 +104,6 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
   Google.initialize();
 
   GoogleAnalytics.initialize(history);
-
-  Userflow.initialize();
 
   // eslint-disable-next-line no-console
   console.info(

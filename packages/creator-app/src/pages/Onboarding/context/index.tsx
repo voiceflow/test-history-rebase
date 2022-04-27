@@ -10,7 +10,7 @@ import { useDispatch as useReduxDispatch } from 'react-redux';
 import { Redirect, useLocation } from 'react-router-dom';
 
 import { receiptGraphic } from '@/assets';
-import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
+import { IS_PRIVATE_CLOUD } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
@@ -25,7 +25,6 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs';
 import { useDispatch, useFeature, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
-import * as Userflow from '@/vendors/userflow';
 
 import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, StarterPlatformType, STEP_META, StepID } from '../constants';
 import { CollaboratorType } from '../types';
@@ -404,8 +403,6 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
           );
 
           goToCanvas(versionID!);
-
-          await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
         }
       } else {
         goToWorkspace(workspace.id);

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.703.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.702.1...@voiceflow/creator-app@1.703.0) (2022-04-27)
+
+
+### Bug Fixes
+
+* intent name formatting deps (VF-000) ([#5366](https://github.com/voiceflow/creator-app/issues/5366)) ([5b57eeb](https://github.com/voiceflow/creator-app/commit/5b57eeb1b7ae3907e2fd651fe42d735b070ff0e1))
+
+
+### Features
+
+* remove userflow.js integration (VF-3417) ([#5367](https://github.com/voiceflow/creator-app/issues/5367)) ([8d11b8b](https://github.com/voiceflow/creator-app/commit/8d11b8b6c647513419b399375cbbb26b51bbae50))
+
+
+
+
+
 ## [1.702.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.702.0...@voiceflow/creator-app@1.702.1) (2022-04-26)
 
 

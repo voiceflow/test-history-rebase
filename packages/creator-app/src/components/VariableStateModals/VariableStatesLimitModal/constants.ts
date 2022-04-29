@@ -10,7 +10,7 @@ export const TEAM_LIMIT_PLANS = [PlanType.OLD_TEAM, PlanType.TEAM, PlanType.PRO,
 export const STARTER_LIMIT_PLANS = [PlanType.OLD_STARTER, PlanType.STARTER];
 
 // refactor - get plan limits from backend (VF-3328)
-export const TEAM_LIMIT = 5;
+export const TEAM_LIMIT = 3;
 
 const PRO_LABEL = getPlanTypeLabel(PlanType.PRO);
 const ENTERPRISE_LABEL = getPlanTypeLabel(PlanType.ENTERPRISE);

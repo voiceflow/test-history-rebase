@@ -299,4 +299,4 @@ Follow the interactive prompt for environment creation (if applicable). The comm
 
 ## Editor Configuration
 
-See [editor configuration docs](https://github.com/storyflow/workspace#editor-configuration)
+See [editor configuration docs](https://github.com/storyflow/workspace#editor-configuration).

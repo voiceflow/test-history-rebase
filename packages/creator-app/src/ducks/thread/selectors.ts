@@ -1,7 +1,10 @@
 import { createSelector } from 'reselect';
 
+import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as UI from '@/ducks/ui';
 import * as CRUD from '@/ducks/utils/crud';
+import { Thread } from '@/models';
 
 import { STATE_KEY } from './constants';
 
@@ -13,16 +16,26 @@ export const allThreadIdsSelector = createSelector([allThreadsSelector, CreatorV
   threads.filter((thread) => thread.diagramID === diagramID).map((thread) => thread.id)
 );
 
-export const allUndeletedTheads = createSelector(allThreadsSelector, (threads) => threads.filter((thread) => !thread.deleted));
+export const allAvailableThreads = createSelector(allThreadsSelector, (threads) => threads.filter((thread) => !thread.deleted).reverse());
 
-export const openThreads = createSelector([allUndeletedTheads], (threads) => threads.filter((thread) => !thread.resolved).reverse());
+export const threadFilter = createSelector(
+  [UI.isMentionedThreadsOnly, UI.isTopicThreadsOnly, Account.userIDSelector, CreatorV2.activeDiagramIDSelector],
+  (isMentionedThreadsOnly, isTopicThreadsOnly, creatorID, diagramID) => (thread: Thread) =>
+    (!isMentionedThreadsOnly || thread.comments.some((comment) => comment.mentions.includes(creatorID!))) &&
+    (!isTopicThreadsOnly || thread.diagramID === diagramID)
+);
 
-export const resolvedThreads = createSelector([allUndeletedTheads], (threads) => threads.filter((thread) => thread.resolved).reverse());
+export const openedThreads = createSelector([allAvailableThreads, threadFilter], (threads, filter) =>
+  threads.filter((thread) => !thread.resolved && filter(thread))
+);
+export const resolvedThreads = createSelector([allAvailableThreads, threadFilter], (threads, filter) =>
+  threads.filter((thread) => thread.resolved && filter(thread))
+);
 
 export const hasThreads = createSelector([allThreadsSelector], (threads) => !!threads.filter((thread) => !thread.deleted).length);
 
 export const activeDiagramThreadsSelector = createSelector(
-  [allUndeletedTheads, CreatorV2.activeDiagramIDSelector, CreatorV2.allNodeIDsSelector],
+  [allAvailableThreads, CreatorV2.activeDiagramIDSelector, CreatorV2.allNodeIDsSelector],
   (threads, diagramID, nodeIDs) =>
     threads.filter((thread) => thread.diagramID === diagramID && !thread.resolved && (!thread.nodeID || nodeIDs.includes(thread.nodeID)))
 );

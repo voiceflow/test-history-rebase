@@ -167,6 +167,15 @@ export const Path = {
   CONVERSATIONS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CONVERSATIONS, ':transcriptID?'),
 
   CANVAS_COMMENTING: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.COMMENTING),
+  CANVAS_COMMENTING_THREAD: toPath(
+    RootRoute.PROJECT,
+    ':versionID',
+    ProjectRoute.CANVAS,
+    ':diagramID',
+    CanvasRoute.COMMENTING,
+    ':threadID',
+    ':commentID?'
+  ),
   CANVAS_MODEL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType?'),
   CANVAS_MODEL_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType', ':modelEntityID?'),
 

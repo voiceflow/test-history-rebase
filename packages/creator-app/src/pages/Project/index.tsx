@@ -40,7 +40,14 @@ const Conversations = lazy(() => import('@/pages/Conversations'));
 
 export type ProjectProps = RouteComponentProps;
 
-const DIAGRAM_ROUTES = [Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY];
+const DIAGRAM_ROUTES = [
+  Path.PROJECT_PROTOTYPE,
+  Path.PROJECT_CANVAS,
+  Path.CANVAS_COMMENTING,
+  Path.CANVAS_COMMENTING_THREAD,
+  Path.CANVAS_MODEL,
+  Path.CANVAS_MODEL_ENTITY,
+];
 
 const Project: React.FC = () => {
   const theme = useTheme();

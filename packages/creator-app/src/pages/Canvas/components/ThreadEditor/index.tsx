@@ -5,7 +5,7 @@ import { DismissableLayerContext } from 'react-dismissable-layers';
 
 import { useEnableDisable, useResizeObserver } from '@/hooks';
 import { Thread } from '@/models';
-import { FocusThreadContext } from '@/pages/Canvas/contexts';
+import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
@@ -22,6 +22,7 @@ export interface ThreadEditorProps {
 }
 
 const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused, schedulePopperUpdate }) => {
+  const engine = React.useContext(EngineContext)!;
   const { dismiss } = React.useContext(DismissableLayerContext);
   const focusThread = React.useContext(FocusThreadContext)!;
 
@@ -30,6 +31,13 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused
   const ref = React.useRef<HTMLDivElement>(null);
   const [editingCommentID, setEditingCommentID] = React.useState<string | null>(null);
   const [isReplying, enableReplying, disableReplying] = useEnableDisable(false);
+
+  const scrollToBottom = () => {
+    if (!isReplying) return;
+
+    schedulePopperUpdate?.();
+    ref.current?.scrollTo({ top: ref.current.scrollHeight });
+  };
 
   useOnClickOutside(
     ref,
@@ -40,13 +48,6 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused
     },
     [isFocused, isCommentingMode]
   );
-
-  const scrollToBottom = () => {
-    if (isReplying) {
-      schedulePopperUpdate?.();
-      ref.current?.scrollTo({ top: ref.current.scrollHeight });
-    }
-  };
 
   useResizeObserver(ref, scrollToBottom);
   React.useLayoutEffect(scrollToBottom, [isReplying]);
@@ -66,6 +67,7 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused
             <CommentEditor
               key={comment.id}
               comment={comment}
+              isActive={isFocused && engine.comment.focusTargetComment === comment.id}
               isEditing={editingCommentID === comment.id}
               withResolve={index === 0}
               setEditingID={setEditingCommentID}

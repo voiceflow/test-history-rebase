@@ -15,23 +15,32 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comment
   const engine = React.useContext(EngineContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
 
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
   const comment = comments[0];
+  const isFocused = focusThread.focusedID === threadID;
   const hasReplies = comments.length - 1;
   const hasMultipleReplies = comments.length > 2;
 
-  const onClick = React.useCallback(async () => {
-    if (focusThread.focusedID === threadID) {
-      focusThread.resetFocus();
+  const onClick = () => {
+    if (isFocused) {
+      focusThread.resetFocus({ syncURL: true });
     } else {
-      await engine.comment.centerThread(threadID);
-      await focusThread.setFocus(threadID);
+      focusThread.setFocus(threadID, { center: true });
     }
-  }, [focusThread.focusedID, threadID]);
+  };
+
+  React.useEffect(() => {
+    if (!isFocused) return;
+
+    containerRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [isFocused]);
 
   return (
-    <ItemContainer isFocused={focusThread.focusedID === threadID} onClick={onClick}>
+    <ItemContainer ref={containerRef} isFocused={isFocused} onClick={onClick}>
       <BoxFlexApart height={42}>
         <Commenter creatorID={comment.creatorID} />
+
         {resolved && (
           <TippyTooltip title="Mark Unresolved" distance={1}>
             <IconButton
@@ -45,11 +54,14 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comment
           </TippyTooltip>
         )}
       </BoxFlexApart>
+
       <Box p="12px 0">
         <CommentPreview text={comment.text} />
       </Box>
+
       <BoxFlexApart>
         <Duration key={threadID} time={comment.created} />
+
         {!!hasReplies && (
           <Flex>
             <Text color="#8da2b5" mr={8} fontSize={13}>

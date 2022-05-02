@@ -13,11 +13,16 @@ interface FilterMenuProps {
 }
 
 const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
-  const commentsVisible = useSelector(UI.isCommentsVisible);
-  const toggleCommentVisibility = useDispatch(UI.toggleCommentVisibility);
-  const openThreads = useSelector(Thread.openThreads);
-
+  const openThreads = useSelector(Thread.openedThreads);
   const resolvedThreads = useSelector(Thread.resolvedThreads);
+  const commentsVisible = useSelector(UI.isCommentsVisible);
+  const isTopicThreadsOnly = useSelector(UI.isTopicThreadsOnly);
+  const isMentionedThreadsOnly = useSelector(UI.isMentionedThreadsOnly);
+
+  const toggleTopicThreadsOnly = useDispatch(UI.toggleTopicThreadsOnly);
+  const toggleCommentVisibility = useDispatch(UI.toggleCommentVisibility);
+  const toggleMentionedThreadsOnly = useDispatch(UI.toggleMentionedThreadsOnly);
+
   return (
     <Menu<undefined>
       noBottomPadding
@@ -25,25 +30,37 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
       options={[
         {
           note: openThreads.length ? `${openThreads.length}` : undefined,
-          label: FILTER_LABELS[FilterType.OPEN],
-          active: filter === FilterType.OPEN,
+          label: <MenuCheckboxOption checked={filter === FilterType.OPEN}>{FILTER_LABELS[FilterType.OPEN]}</MenuCheckboxOption>,
           onClick: () => setFilter(FilterType.OPEN),
         },
         {
           note: resolvedThreads.length ? `${resolvedThreads.length}` : undefined,
-          label: FILTER_LABELS[FilterType.RESOLVED],
-          active: filter === FilterType.RESOLVED,
+          label: <MenuCheckboxOption checked={filter === FilterType.RESOLVED}>{FILTER_LABELS[FilterType.RESOLVED]}</MenuCheckboxOption>,
           onClick: () => setFilter(FilterType.RESOLVED),
         },
+
+        { label: '', divider: true },
         {
-          style: { marginBottom: 0 },
-          label: '',
-          divider: true,
+          label: (
+            <MenuCheckboxOption type={CheckboxType.CHECKBOX} checked={isMentionedThreadsOnly}>
+              Only tagged threads
+            </MenuCheckboxOption>
+          ),
+          onClick: toggleMentionedThreadsOnly,
         },
         {
           label: (
+            <MenuCheckboxOption type={CheckboxType.CHECKBOX} checked={isTopicThreadsOnly}>
+              Only current topic
+            </MenuCheckboxOption>
+          ),
+          onClick: toggleTopicThreadsOnly,
+        },
+        { style: { marginBottom: 0 }, label: '', divider: true },
+        {
+          label: (
             <MenuCheckboxOption type={CheckboxType.CHECKBOX} checked={!commentsVisible}>
-              Hide Comments
+              Hide comments
             </MenuCheckboxOption>
           ),
           note: '⇧C',

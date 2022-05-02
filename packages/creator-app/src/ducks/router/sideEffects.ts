@@ -13,11 +13,11 @@ import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState';
 import * as VersionV2 from '@/ducks/versionV2';
 import { SyncThunk, Thunk } from '@/store/types';
-import * as Query from '@/utils/query';
 
 import {
   goTo,
   goToCanvasCommenting,
+  goToCanvasCommentingThread,
   goToConversations,
   goToPrototype,
   goToPublish,
@@ -26,7 +26,7 @@ import {
   goToWorkspaceSettings,
   pushSearch,
   redirectTo,
-  redirectToCanvasCommenting,
+  redirectToCanvasCommentingThread,
 } from './actions';
 
 export const goToCanvas = (versionID: string, diagramID?: string) =>
@@ -73,27 +73,35 @@ export const goToCurrentCanvas = (): Thunk => async (dispatch, getState) => {
   dispatch(goToCanvas(versionID, version.rootDiagramID));
 };
 
-export const goToCurrentCanvasCommenting = (): Thunk => async (dispatch, getState) => {
-  const state = getState();
-  const versionID = Session.activeVersionIDSelector(state);
-  const diagramID = Session.activeDiagramIDSelector(state);
+export const goToCurrentCanvasCommenting =
+  (threadID?: string, commentID?: string): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
+    const diagramID = Session.activeDiagramIDSelector(state);
 
-  Errors.assertVersionID(versionID);
-  Errors.assertDiagramID(diagramID);
+    Errors.assertVersionID(versionID);
+    Errors.assertDiagramID(diagramID);
 
-  dispatch(goToCanvasCommenting(versionID, diagramID));
-};
+    if (threadID) {
+      dispatch(goToCanvasCommentingThread(versionID, diagramID, threadID, commentID));
+    } else {
+      dispatch(goToCanvasCommenting(versionID, diagramID));
+    }
+  };
 
-export const redirectToCurrentCanvasCommenting = (): Thunk => async (dispatch, getState) => {
-  const state = getState();
-  const versionID = Session.activeVersionIDSelector(state);
-  const diagramID = Session.activeDiagramIDSelector(state);
+export const redirectToCurrentCanvasCommentingThread =
+  (threadID: string, commentID?: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
+    const diagramID = Session.activeDiagramIDSelector(state);
 
-  Errors.assertVersionID(versionID);
-  Errors.assertDiagramID(diagramID);
+    Errors.assertVersionID(versionID);
+    Errors.assertDiagramID(diagramID);
 
-  dispatch(redirectToCanvasCommenting(versionID, diagramID));
-};
+    dispatch(redirectToCanvasCommentingThread(versionID, diagramID, threadID, commentID));
+  };
 
 export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
   const state = getState();
@@ -113,6 +121,7 @@ export const redirectToDiagram =
 
     if (!version) throw Errors.noActiveVersionID();
 
+    PageProgress.start(PageProgressBar.CANVAS_LOADING);
     await dispatch(redirectToCanvasSwitchRealtime(version.id, diagramID));
   };
 
@@ -155,14 +164,21 @@ export const goToDiagramHistoryClear =
   };
 
 export const goToDiagramCommenting =
-  (diagramID: string, threadID?: string): Thunk =>
+  (diagramID: string, threadID?: string, commentID?: string): Thunk =>
   async (dispatch, getState) => {
     const versionID = Session.activeVersionIDSelector(getState());
 
     Errors.assertVersionID(versionID);
 
+    PageProgress.start(PageProgressBar.CANVAS_LOADING);
+
     await dispatch(Realtime.switchRealtimeDiagram(versionID, diagramID));
-    dispatch(goToCanvasCommenting(versionID, diagramID, Query.stringify({ thread: threadID })));
+
+    if (threadID) {
+      dispatch(goToCanvasCommentingThread(versionID, diagramID, threadID, commentID));
+    } else {
+      dispatch(goToCanvasCommenting(versionID, diagramID));
+    }
   };
 
 export const goToCurrentPrototype =
@@ -203,8 +219,6 @@ export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState)
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
   const platform = ProjectV2.active.platformSelector(state);
-
-  Errors.assertVersionID(versionID);
 
   Errors.assertVersionID(versionID);
 

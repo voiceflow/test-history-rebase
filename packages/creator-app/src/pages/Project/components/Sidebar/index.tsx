@@ -12,7 +12,10 @@ const ProjectSidebar: React.FC = () => {
 
   return (
     <Switch>
-      <Route path={[Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]} component={CanvasIconMenu} />
+      <Route
+        path={[Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_COMMENTING_THREAD, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
+        component={CanvasIconMenu}
+      />
 
       <Route path={Path.PROJECT_PROTOTYPE} component={hasVariableStates ? TestVariablesSidebar : PrototypeIconMenu} />
 

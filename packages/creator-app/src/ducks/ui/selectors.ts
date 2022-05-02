@@ -22,3 +22,7 @@ export const isPreviewingVersion = createSelector(rootSelector, ({ previewing })
 export const isLoadingProjectsSelector = createSelector(rootSelector, ({ isLoadingProjects }) => isLoadingProjects);
 
 export const isCommentsVisible = createSelector(rootSelector, ({ commentsVisible }) => commentsVisible);
+
+export const isTopicThreadsOnly = createSelector(rootSelector, ({ topicThreadsOnly }) => topicThreadsOnly);
+
+export const isMentionedThreadsOnly = createSelector(rootSelector, ({ mentionedThreadsOnly }) => mentionedThreadsOnly);

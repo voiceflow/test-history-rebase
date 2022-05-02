@@ -2,7 +2,6 @@ import { IS_SAFARI, toast, ToastCallToAction } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import { DrawerContainer } from '@/components/Drawer';
 import { BlockType, ModalType } from '@/constants';
 import { PrototypeStatus } from '@/constants/prototype';
 import * as Creator from '@/ducks/creator';
@@ -48,10 +47,6 @@ const Wrapper = styled.div`
 
   &.${CANVAS_COMMENTING_ENABLED_CLASSNAME} {
     cursor: crosshair;
-
-    ${DrawerContainer} {
-      cursor: pointer;
-    }
   }
 
   &.${CANVAS_COMMENTING_ENABLED_CLASSNAME}.${CANVAS_THREAD_OPEN_CLASSNAME} {

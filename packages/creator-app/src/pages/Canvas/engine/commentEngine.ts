@@ -19,6 +19,8 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
   focusTarget: string | null = null;
 
+  focusTargetComment: string | null = null;
+
   dragTarget: string | null = null;
 
   target: string | null = null;
@@ -79,21 +81,47 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     }
   }
 
-  async setFocus(threadID: string | null) {
+  async setFocus(threadID: string, options?: { center?: boolean; commentID?: string }) {
     if (threadID === this.focusTarget) return;
-
-    this.log.debug(this.log.pending('setting comment focus'));
-    this.reset();
-
-    this.focusTarget = threadID;
 
     const projectID = this.select(Session.activeProjectIDSelector);
 
-    if (threadID && projectID) {
-      await this.dispatch(Thread.loadThread(projectID, threadID));
-      this.redrawThread(threadID);
-      this.log.info(this.log.success('set comment focus'), this.log.slug(threadID));
+    if (!projectID) return;
+
+    this.log.debug(this.log.pending('setting comment focus'));
+
+    this.reset();
+
+    this.focusTarget = threadID;
+    this.focusTargetComment = options?.commentID ?? null;
+
+    const diagramID = this.engine.getDiagramID();
+    const thread = this.select(Thread.threadByIDSelector)(threadID);
+
+    if (thread.diagramID !== diagramID) {
+      await this.dispatch(Router.goToDiagramCommenting(thread.diagramID, threadID, options?.commentID));
+
+      return;
     }
+
+    this.dispatch(Router.goToCurrentCanvasCommenting(threadID, options?.commentID));
+
+    if (options?.center) {
+      await this.centerThread(threadID);
+    }
+
+    await this.dispatch(Thread.loadThread(projectID, threadID));
+
+    this.redrawThread(threadID);
+
+    this.log.info(this.log.success('set comment focus'), this.log.slug(threadID));
+  }
+
+  async setFocusComment(commentID: string | null) {
+    if (!this.focusTarget) return;
+
+    this.focusTargetComment = commentID;
+    this.dispatch(Router.goToCurrentCanvasCommenting(this.focusTarget, commentID ?? undefined));
   }
 
   setTarget(threadID: string | null) {
@@ -123,7 +151,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   startThread() {
     if (this.hasTarget) return;
 
-    this.reset();
+    this.reset({ syncURL: true });
 
     const coords = this.engine.getMouseCoords().onPlane(this.engine.canvas!.getPlane());
 
@@ -275,14 +303,6 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   }
 
   async centerThread(threadID: string) {
-    const diagramID = this.engine.getDiagramID();
-    const thread = this.select(Thread.threadByIDSelector)(threadID);
-
-    if (thread.diagramID !== diagramID) {
-      await this.dispatch(Router.goToDiagramCommenting(thread.diagramID, threadID));
-      return;
-    }
-
     const threadInstance = this.thread(threadID)?.instance;
     if (!threadInstance) return;
 
@@ -335,17 +355,23 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     this.log.info(this.log.reset('reset new comment'));
   }
 
-  reset() {
+  reset(options?: { syncURL?: boolean }) {
     this.resetCreating();
     this.resetTarget();
 
     this.dragTarget = null;
 
     const { focusTarget } = this;
+
     if (!focusTarget) return;
+
+    if (options?.syncURL) {
+      this.dispatch(Router.goToCurrentCanvasCommenting());
+    }
 
     this.log.debug(this.log.pending('resetting comment target'), this.log.slug(focusTarget));
     this.focusTarget = null;
+    this.focusTargetComment = null;
 
     this.redrawThread(focusTarget);
 

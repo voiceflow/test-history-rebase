@@ -11,6 +11,7 @@ const Container = styled.div<ItemContainerProps>`
   padding: 20px 32px;
   background-color: #fff;
   border-bottom: solid 1px #eaeff4;
+  cursor: pointer;
 
   ${({ isFocused }) =>
     isFocused

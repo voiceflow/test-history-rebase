@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useSetup } from '@/hooks';
 import { Comment } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
@@ -8,14 +9,17 @@ import EditableComment from './EditableComment';
 
 interface CommentEditorProps {
   comment: Comment;
+  isActive?: boolean;
   isEditing?: boolean;
   withResolve?: boolean;
   setEditingID: (commentID: string | null) => void;
   isThreadEditing?: boolean;
+  autoscrollIntoView?: boolean;
 }
 
-const CommentEditor: React.FC<CommentEditorProps> = ({ comment, isEditing, withResolve, setEditingID, isThreadEditing }) => {
+const CommentEditor: React.FC<CommentEditorProps> = ({ comment, isActive, isEditing, withResolve, setEditingID, isThreadEditing }) => {
   const engine = React.useContext(EngineContext)!;
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   const onPost = async (text: string, mentions: number[]) => {
     if (text) {
@@ -27,8 +31,18 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ comment, isEditing, withR
     setEditingID(null);
   };
 
+  useSetup(() => {
+    if (!isActive) return;
+
+    contentRef.current?.scrollIntoView({ block: 'center' });
+  });
+
   return (
-    <Content>
+    <Content
+      ref={contentRef}
+      onClick={() => !isThreadEditing && engine.comment.setFocusComment(isActive ? null : comment.id)}
+      isActive={isActive && !isEditing}
+    >
       <EditableComment
         onPost={onPost}
         onEdit={() => setEditingID(comment.id)}

@@ -91,9 +91,9 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
 
       if (isCommentingMode && !engine.comment.hasTarget) {
         if (engine.comment.isCreating || engine.comment.hasFocus) {
-          engine.comment.reset();
+          focusThread.resetFocus({ syncURL: true });
         } else {
-          focusThread.resetFocus();
+          focusThread.resetFocus({ syncURL: true });
           engine.comment.startThread();
         }
       }

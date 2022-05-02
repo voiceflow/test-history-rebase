@@ -1,17 +1,13 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import * as ConnectedReactRouter from 'connected-react-router';
 import React from 'react';
 import { createSelector } from 'reselect';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Router from '@/ducks/router';
 import * as Thread from '@/ducks/thread';
-import { useSetup } from '@/hooks';
 import * as Models from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
-import * as Query from '@/utils/query';
 
 import { CommentAPI } from '../../types';
 import type Engine from '..';
@@ -124,17 +120,6 @@ class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Realtim
         engine.expireThread(this.threadID, this.instanceID);
       };
     }, []);
-
-    useSetup(async () => {
-      const search = this.engine.select(ConnectedReactRouter.getSearch);
-      const query = Query.parse(search);
-
-      if (query.thread) {
-        this.engine.store.dispatch(Router.redirectToCurrentCanvasCommenting());
-        await engine.comment.setFocus(query.thread);
-        await engine.comment.centerThread(query.thread);
-      }
-    });
   }
 }
 

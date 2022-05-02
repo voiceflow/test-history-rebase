@@ -16,6 +16,8 @@ export enum UIAction {
   SET_VIEWING_VERSION = 'UI:SET_VIEWING_VERSION',
   SET_LOADING_PROJECTS = 'UI:SET_LOADING_PROJECTS',
   TOGGLE_COMMENT_VISIBILITY = 'UI:TOGGLE_COMMENT_VISIBILITY',
+  TOGGLE_MENTIONED_THREADS_ONLY = 'UI:TOGGLE_MENTIONED_THREADS_ONLY',
+  TOGGLE_TOPIC_THREADS_ONLY = 'UI:TOGGLE_TOPIC_THREADS_ONLY',
 }
 
 // action types
@@ -42,6 +44,10 @@ export type SetLoadingProjects = Action<UIAction.SET_LOADING_PROJECTS, boolean>;
 
 export type ToggleCommentVisibility = Action<UIAction.TOGGLE_COMMENT_VISIBILITY>;
 
+export type ToggleMentionedThreadsOnly = Action<UIAction.TOGGLE_MENTIONED_THREADS_ONLY>;
+
+export type ToggleTopicThreadsOnly = Action<UIAction.TOGGLE_TOPIC_THREADS_ONLY>;
+
 export type AnyUIAction =
   | ToggleBlockMenuSection
   | SetActiveCreatorMenu
@@ -53,7 +59,9 @@ export type AnyUIAction =
   | SetPreviewingVersion
   | SetZoomType
   | SetLoadingProjects
-  | ToggleCommentVisibility;
+  | ToggleCommentVisibility
+  | ToggleMentionedThreadsOnly
+  | ToggleTopicThreadsOnly;
 
 //  action creators
 
@@ -79,3 +87,7 @@ export const setPreviewingVersion = (previewing: boolean): SetPreviewingVersion 
 export const setLoadingProjects = (isLoadingProjects: boolean): SetLoadingProjects => createAction(UIAction.SET_LOADING_PROJECTS, isLoadingProjects);
 
 export const toggleCommentVisibility = (): ToggleCommentVisibility => createAction(UIAction.TOGGLE_COMMENT_VISIBILITY);
+
+export const toggleMentionedThreadsOnly = (): ToggleMentionedThreadsOnly => createAction(UIAction.TOGGLE_MENTIONED_THREADS_ONLY);
+
+export const toggleTopicThreadsOnly = (): ToggleTopicThreadsOnly => createAction(UIAction.TOGGLE_TOPIC_THREADS_ONLY);

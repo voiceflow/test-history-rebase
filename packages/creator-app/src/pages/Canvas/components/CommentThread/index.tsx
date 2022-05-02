@@ -17,9 +17,7 @@ const CommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
 
   const instance = useThreadInstance<HTMLDivElement>();
 
-  const { isFocused } = threadEntity.useState((e) => ({
-    isFocused: e.isFocused,
-  }));
+  const { isFocused } = threadEntity.useState((e) => ({ isFocused: e.isFocused }));
 
   const { onDoubleClick, ...handlers } = useThreadHandlers({
     drag: (movement) => engine.comment.dragThread(threadEntity.threadID, engine.canvas!.toVector(movement)),
@@ -28,9 +26,9 @@ const CommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
     mouseup: () => engine.comment.setTarget(null),
     click: async () => {
       if (threadEntity.isFocused) {
-        focusThread.resetFocus();
+        focusThread.resetFocus({ syncURL: true });
       } else {
-        await focusThread.setFocus(threadEntity.threadID);
+        focusThread.setFocus(threadEntity.threadID);
       }
     },
     doubleClick: () => engine.comment.centerThread(threadEntity.threadID),
@@ -41,7 +39,15 @@ const CommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
 
     engine.addClass(CANVAS_THREAD_OPEN_CLASSNAME);
 
-    return () => engine.removeClass(CANVAS_THREAD_OPEN_CLASSNAME);
+    // to prevent popper from closing on click outside the popper
+    const onMouseDown = (event: MouseEvent) => event.stopImmediatePropagation();
+    document.body.addEventListener('click', onMouseDown);
+
+    return () => {
+      engine.removeClass(CANVAS_THREAD_OPEN_CLASSNAME);
+
+      document.body.removeEventListener('click', onMouseDown);
+    };
   }, [isFocused]);
 
   threadEntity.useInstance(instance);

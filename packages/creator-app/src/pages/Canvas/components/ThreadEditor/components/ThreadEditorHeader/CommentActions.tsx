@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { BoxFlex, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, MenuItem, preventDefault, TippyTooltip } from '@voiceflow/ui';
+import { BoxFlex, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, MenuItem, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { Comment } from '@/models';
@@ -54,7 +54,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
                   icon="ellipsis"
                   active={isOpen}
                   variant={IconButtonVariant.SUBTLE}
-                  onClick={preventDefault(onToggle)}
+                  onClick={swallowEvent(onToggle)}
                   disabled={isThreadEditing}
                   iconProps={{ color: '#becedc' }}
                   hoverColor={isOpen ? '#132144' : '#6e849a'}
@@ -70,7 +70,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
                   size={18}
                   icon="checkmark"
                   variant={IconButtonVariant.SUBTLE}
-                  onClick={onResolve}
+                  onClick={swallowEvent(onResolve)}
                   disabled={isThreadEditing}
                   iconProps={{ color: '#becedc' }}
                   hoverColor="#6e849a"
@@ -82,7 +82,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
       ) : (
         <PostButton
           isDone={!!comment?.id}
-          onClick={isDisabled ? undefined : preventDefault(onPost)}
+          onClick={isDisabled ? undefined : swallowEvent(onPost)}
           disabled={isDisabled || isPosting}
           isPosting={isPosting}
         />

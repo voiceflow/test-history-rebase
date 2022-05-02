@@ -6,7 +6,7 @@ import { Path } from '@/config/routes';
 import { usePermission } from '@/hooks';
 import { QUERY_PARAMS } from '@/pages/Project/constants';
 
-export const useCommentingMode = () => !!useRouteMatch(Path.CANVAS_COMMENTING);
+export const useCommentingMode = () => !!useRouteMatch([Path.CANVAS_COMMENTING, Path.CANVAS_COMMENTING_THREAD]);
 
 export const usePrototypingMode = () => !!useRouteMatch([Path.PROJECT_DEMO, Path.PROJECT_PROTOTYPE]);
 

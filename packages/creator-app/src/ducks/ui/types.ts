@@ -16,4 +16,6 @@ export interface UIState {
   zoomType: ZoomType;
   isLoadingProjects: boolean;
   commentsVisible: boolean;
+  topicThreadsOnly?: boolean;
+  mentionedThreadsOnly?: boolean;
 }

@@ -81,11 +81,14 @@ export const goToEditProduct = (versionID: string, productID: string) => goTo(ge
 export const goToInteractionModel = (versionID: string, diagramID: string, modelType?: string, entityID?: string) =>
   goTo(`${generatePath(Path.CANVAS_MODEL, { versionID, diagramID, modelType, entityID })}`);
 
-export const goToCanvasCommenting = (versionID: string, diagramID: string, search = window.location.search) =>
-  goTo(`${generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID })}${search}`);
+export const goToCanvasCommenting = (versionID: string, diagramID: string) =>
+  goTo(`${generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID })}`);
 
-export const redirectToCanvasCommenting = (versionID: string, diagramID: string) =>
-  redirectTo(generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID }));
+export const goToCanvasCommentingThread = (versionID: string, diagramID: string, threadID: string, commentID?: string) =>
+  goTo(generatePath(Path.CANVAS_COMMENTING_THREAD, { versionID, diagramID, threadID, commentID }));
+
+export const redirectToCanvasCommentingThread = (versionID: string, diagramID: string, threadID: string, commentID?: string) =>
+  redirectTo(generatePath(Path.CANVAS_COMMENTING_THREAD, { versionID, diagramID, threadID, commentID }));
 
 export const redirectToDashboard = () => redirectTo(Path.DASHBOARD);
 

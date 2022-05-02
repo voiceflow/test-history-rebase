@@ -13,6 +13,7 @@ const Container = styled.div`
   border-bottom: solid 1px #eaeff4;
   background-color: #fff;
   z-index: 1;
+  cursor: default;
 `;
 
 export default Container;

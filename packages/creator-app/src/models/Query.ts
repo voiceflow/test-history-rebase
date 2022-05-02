@@ -33,7 +33,6 @@ export namespace Query {
   }>;
 
   export type Canvas = Partial<{
-    thread: string;
     nodeID: string;
   }>;
 

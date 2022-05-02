@@ -5,8 +5,8 @@ import { EngineContext } from './EngineContext';
 
 export interface FocusThreadContextValue {
   focusedID: string | null;
-  setFocus: (id: string) => Promise<void>;
-  resetFocus: () => void;
+  setFocus: (id: string, options?: { center?: boolean; commentID?: string }) => Promise<void>;
+  resetFocus: (options?: { syncURL?: boolean }) => void;
 }
 
 export const FocusThreadContext = React.createContext<FocusThreadContextValue | null>(null);
@@ -18,17 +18,21 @@ export const FocusThreadProvider: React.FC = ({ children }) => {
   const [focusedID, setFocusedID] = React.useState<string | null>(null);
 
   const setFocus = React.useCallback(
-    async (id: string) => {
+    async (id: string, options?: { center?: boolean }) => {
       setFocusedID(id);
-      await engine.comment.setFocus(id);
+
+      await engine.comment.setFocus(id, options);
     },
     [engine]
   );
 
-  const resetFocus = React.useCallback(() => {
-    setFocusedID(null);
-    engine.comment.reset();
-  }, [engine]);
+  const resetFocus = React.useCallback(
+    (options?: { syncURL?: boolean }) => {
+      setFocusedID(null);
+      engine.comment.reset(options);
+    },
+    [engine]
+  );
 
   const api = useContextApi({ focusedID, setFocus, resetFocus });
 

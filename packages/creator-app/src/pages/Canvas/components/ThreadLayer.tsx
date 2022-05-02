@@ -60,8 +60,8 @@ const ThreadLayer: React.FC = () => {
     newCommentDraftValue.current ??= engine.comment.getNewDraftValue();
     focusedCommentDraftValue.current ??= engine.comment.getFocusedDraftValue();
 
-    if (newCommentOriginRef.current) {
-      const outerPlane = engine.canvas!.getOuterPlane();
+    if (newCommentOriginRef.current && engine.canvas) {
+      const outerPlane = engine.canvas.getOuterPlane();
       const [moveX, moveY] = calculateMovement(newCommentOriginRef.current.map(outerPlane));
 
       newCommentOriginRef.current = newCommentOriginRef.current.add([moveX, moveY], outerPlane);
@@ -104,7 +104,6 @@ const ThreadLayer: React.FC = () => {
 
     if (!isCommentingMode) {
       focusThread.resetFocus();
-      engine.comment.reset();
     } else {
       trackEvents.trackCommentingOpen();
     }
@@ -134,6 +133,7 @@ const ThreadLayer: React.FC = () => {
           </CanvasRenderGate>
         </ThreadEntityProvider>
       ))}
+
       <NewCommentThread isHidden={isHidden} />
       <RemoveIntercom />
     </div>

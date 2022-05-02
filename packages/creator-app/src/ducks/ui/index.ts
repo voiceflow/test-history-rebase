@@ -92,6 +92,16 @@ export const toggleCommentingVisibility: Reducer<UIState> = (state) => ({
   commentsVisible: !state.commentsVisible,
 });
 
+export const toggleMentionedThreadsOnlyReducer: Reducer<UIState> = (state) => ({
+  ...state,
+  mentionedThreadsOnly: !state.mentionedThreadsOnly,
+});
+
+export const toggleTopicThreadsOnlyReducer: Reducer<UIState> = (state) => ({
+  ...state,
+  topicThreadsOnly: !state.topicThreadsOnly,
+});
+
 export const setPreviewingVersionReducer: Reducer<UIState, SetPreviewingVersion> = (state, { payload: previewing }) => ({
   ...state,
   previewing,
@@ -126,6 +136,10 @@ const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID
       return setLoadingProjectsReducer(state, action);
     case UIAction.TOGGLE_COMMENT_VISIBILITY:
       return toggleCommentingVisibility(state);
+    case UIAction.TOGGLE_MENTIONED_THREADS_ONLY:
+      return toggleMentionedThreadsOnlyReducer(state);
+    case UIAction.TOGGLE_TOPIC_THREADS_ONLY:
+      return toggleTopicThreadsOnlyReducer(state);
     default:
       return state;
   }

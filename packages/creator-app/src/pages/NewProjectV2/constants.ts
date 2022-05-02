@@ -132,6 +132,10 @@ export const getPlatformOrProjectTypeMeta: Partial<
       getOptionLabel: (value) => (value && FORMATTED_DIALOGFLOW_LOCALES_LABELS[value]) || '',
       renderOptionLabel: (option) => option.name,
     },
+    importMeta: {
+      name: 'Dialogflow ES',
+      fileExtensions: [FileExtension.ZIP],
+    },
   },
   [VoiceflowConstants.PlatformType.LUIS]: {
     name: 'Microsoft Luis',
@@ -139,6 +143,10 @@ export const getPlatformOrProjectTypeMeta: Partial<
     localesText: 'Language',
     disabled: false,
     type: VoiceflowConstants.PlatformType.LUIS,
+    importMeta: {
+      name: 'Luis',
+      fileExtensions: [FileExtension.JSON],
+    },
   },
   [VoiceflowConstants.PlatformType.RASA]: {
     name: 'Rasa',

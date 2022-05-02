@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.704.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.703.4...@voiceflow/creator-app@1.704.0) (2022-05-02)
+
+
+### Bug Fixes
+
+* activation reset race condition (VF-3127) ([#5307](https://github.com/voiceflow/creator-app/issues/5307)) ([98a8502](https://github.com/voiceflow/creator-app/commit/98a8502ee947f5f93155d054329a464fd16df77f))
+
+
+### Features
+
+* added dialogflow and luis imports (VF-000) ([#5355](https://github.com/voiceflow/creator-app/issues/5355)) ([30a1bce](https://github.com/voiceflow/creator-app/commit/30a1bce8b18f74896bccc9a53af020e91952ce3b))
+* improve comments navigation (VF-3220) ([#5365](https://github.com/voiceflow/creator-app/issues/5365)) ([1fef4b8](https://github.com/voiceflow/creator-app/commit/1fef4b874f07295e0354ab98a2e2af97803dbc38))
+
+
+
+
+
 ## [1.703.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.703.3...@voiceflow/creator-app@1.703.4) (2022-05-02)
 
 

@@ -1,7 +1,7 @@
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { styled } from '@/hocs';
 
-const ProfilePicUpload = styled(UploadJustIcon).attrs({ size: UploadIconVariant.EXTRA_LARGE })`
+const ProfilePicUpload = styled(UploadJustIcon).attrs({ size: UploadIconVariant.EXTRA_SMALL })`
   display: inline-block;
   margin-left: 10px;
   position: relative;

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.703.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.703.1...@voiceflow/creator-app@1.703.2) (2022-05-02)
+
+
+### Bug Fixes
+
+* correct size of profile picture image (VF-3409) ([#5368](https://github.com/voiceflow/creator-app/issues/5368)) ([02e4f5e](https://github.com/voiceflow/creator-app/commit/02e4f5ec1e49c070458401c267fd9c82a2af47f7))
+
+
+
+
+
 ## [1.703.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.703.0...@voiceflow/creator-app@1.703.1) (2022-04-29)
 
 

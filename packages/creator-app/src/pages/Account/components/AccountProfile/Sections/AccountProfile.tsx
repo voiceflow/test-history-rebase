@@ -18,6 +18,8 @@ const AccountProfile: React.FC = () => {
   const profileNameModal = useModals(ModalType.PROFILE_NAME_MODAL);
   const changeEmailModal = useModals(ModalType.CHANGE_EMAIL_MODAL);
   const changePasswordModal = useModals(ModalType.CHANGE_PASSWORD_MODAL);
+  const { gid, okta_id, fid, saml_provider_id } = user;
+  const isNotSSOUser = !gid && !okta_id && !fid && !saml_provider_id;
 
   return (
     <>
@@ -55,11 +57,13 @@ const AccountProfile: React.FC = () => {
         </BoxFlex>
       </Section>
 
-      <Section customContentStyling={sectionStyling} variant={SectionVariant.QUATERNARY} header="Password">
-        <DescriptorContainer style={{ margin: 0 }}>
-          <Link onClick={() => changePasswordModal.open()}>Change Password</Link>
-        </DescriptorContainer>
-      </Section>
+      {isNotSSOUser && (
+        <Section customContentStyling={sectionStyling} variant={SectionVariant.QUATERNARY} header="Password">
+          <DescriptorContainer style={{ margin: 0 }}>
+            <Link onClick={() => changePasswordModal.open()}>Change Password</Link>
+          </DescriptorContainer>
+        </Section>
+      )}
     </>
   );
 };

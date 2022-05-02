@@ -10,6 +10,10 @@ export interface Account {
   first_login?: boolean;
   referrer_id?: number;
   referral_code?: string;
+  gid?: string;
+  fid?: string;
+  okta_id?: string;
+  saml_provider_id?: string;
 }
 
 export type LockOwner = Account & {

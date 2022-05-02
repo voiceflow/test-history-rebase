@@ -11,4 +11,8 @@ export type AccountState = NullableRecord<Account> & {
   first_login: boolean;
   referrer_id: number | null;
   referral_code: string | null;
+  gid: string | null;
+  fid: string | null;
+  okta_id: string | null;
+  saml_provider_id: string | null;
 };

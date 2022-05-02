@@ -26,6 +26,10 @@ export const INITIAL_STATE: AccountState = {
   verified: false,
   referrer_id: null,
   referral_code: null,
+  gid: null,
+  fid: null,
+  okta_id: null,
+  saml_provider_id: null,
 };
 
 // reducers

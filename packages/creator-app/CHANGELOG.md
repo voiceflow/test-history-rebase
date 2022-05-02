@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.703.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.703.2...@voiceflow/creator-app@1.703.3) (2022-05-02)
+
+
+### Bug Fixes
+
+* hide change password from sso users (VF-3342) ([#5361](https://github.com/voiceflow/creator-app/issues/5361)) ([1541f08](https://github.com/voiceflow/creator-app/commit/1541f08af711eb8124e49f5a8949443a4f2e6db5))
+
+
+
+
+
 ## [1.703.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.703.1...@voiceflow/creator-app@1.703.2) (2022-05-02)
 
 

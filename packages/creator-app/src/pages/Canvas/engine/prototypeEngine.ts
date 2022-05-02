@@ -93,7 +93,6 @@ class PrototypeEngine extends EngineConsumer {
     this.highlightedLinkIDs = [];
 
     this.dispatch(Prototype.resetPrototype());
-    this.engine.activation.reset();
     nodeIDs.forEach((id) => this.engine.node.redraw(id));
     linkIDs.forEach((id) => this.engine.link.redrawLinked(id));
 

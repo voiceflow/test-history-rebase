@@ -20,9 +20,10 @@ class IsolateStep extends AbstractDiagramActionControl<Realtime.node.IsolateStep
       blockPorts,
       stepID,
       projectMeta,
+      schemaVersion,
     } = payload;
 
-    const [block] = extractNodes(diagramID, projectMeta, {
+    const [block] = extractNodes(diagramID, projectMeta, schemaVersion, {
       rootNodeIDs: [blockID],
       data: {
         [blockID]: { name: blockName, type: Realtime.BlockType.COMBINED },

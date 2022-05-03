@@ -1,18 +1,30 @@
 import { BlockType } from '@realtime-sdk/constants';
-import { BaseModels } from '@voiceflow/base-types';
-
-import { isBlock, isStep } from './utils';
+import { isBlock, isStep } from '@realtime-sdk/utils/typeGuards';
+import { AnyRecord, BaseModels } from '@voiceflow/base-types';
 
 type NodesMap = Record<string, BaseModels.BaseDiagramNode>;
 type ValidNodeIDsMap = Record<string, boolean>;
 
 const cleanupBlockSteps = (nodesMap: NodesMap, stepsIDs: string[]): string[] => stepsIDs.filter((stepID) => !!(stepID in nodesMap));
 
-const cleanupStepPorts = (ports: BaseModels.BasePort[], validNodesMap: ValidNodeIDsMap): [BaseModels.BasePort, ...BaseModels.BasePort[]] =>
-  ports.map((port) => ({ ...port, target: port.target && validNodesMap[port.target] ? port.target : null })) as [
-    BaseModels.BasePort,
-    ...BaseModels.BasePort[]
-  ];
+const cleanupStepPorts = (
+  data: BaseModels.StepOnlyData<BaseModels.AnyBaseStepPorts, BaseModels.BasePort[]>,
+  validNodesMap: ValidNodeIDsMap
+): BaseModels.StepOnlyData<BaseModels.AnyBaseStepPorts, BaseModels.BasePort[]> => {
+  const mapPort = (port: BaseModels.BasePort): BaseModels.BasePort => ({
+    ...port,
+    target: port.target && validNodesMap[port.target] ? port.target : null,
+  });
+
+  if (data.ports) {
+    return { ports: data.ports.map(mapPort) };
+  }
+
+  const builtIn = Object.fromEntries(Object.entries(data.portsV2.builtIn).map(([key, value]) => [key, mapPort(value)]));
+  const dynamic = data.portsV2.dynamic.map(mapPort);
+
+  return { portsV2: { builtIn, dynamic } };
+};
 
 export const cleanupDBNodes = (nodesMap: NodesMap): BaseModels.BaseDiagramNode[] => {
   const validNodeIDsMap: ValidNodeIDsMap = {};
@@ -37,9 +49,8 @@ export const cleanupDBNodes = (nodesMap: NodesMap): BaseModels.BaseDiagramNode[]
 
   // reset port's targetID if the target node is not exists
   nodesList.forEach((node) => {
-    if (isStep(node) && node.data.ports) {
-      // eslint-disable-next-line no-param-reassign
-      node.data.ports = cleanupStepPorts(node.data.ports, validNodeIDsMap);
+    if (isStep<AnyRecord, BaseModels.AnyBaseStepPorts, BaseModels.BasePort[]>(node)) {
+      Object.assign(node.data, cleanupStepPorts(node.data, validNodeIDsMap));
     }
   });
 

@@ -8,6 +8,12 @@ import { AxiosError } from 'axios';
 export const isAxiosError = (err: any): err is AxiosError => !!err.isAxiosError;
 export const isUnauthorizedError = (err: any) => isAxiosError(err) && err.response?.status === 401;
 
+export class AsyncRejectionError<C> extends Error {
+  constructor(message: string, public code?: C) {
+    super(message);
+  }
+}
+
 // control map
 
 export type LoguxControlMap = Record<string, LoguxControl>;
@@ -58,6 +64,10 @@ export abstract class AbstractLoguxControl<T extends LoguxControlOptions> extend
     this.server = options.server;
     this.actions = options.actions;
     this.channels = options.channels;
+  }
+
+  protected reject<C>(message: string, code?: C): never {
+    throw new AsyncRejectionError<C>(message, code);
   }
 
   abstract setup(): Eventual<void>;

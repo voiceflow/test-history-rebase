@@ -15,7 +15,7 @@ export const platformSelector = createSelector([projectSelector], (project) => p
 
 export const projectTypeSelector = createSelector([projectSelector], (project) => project?.type || VoiceflowConstants.ProjectType.VOICE);
 
-export const metaSelector = createSelector([projectTypeSelector, platformSelector], (type, platform) => ({ type, platform }));
+export const metaSelector = createSelector([projectTypeSelector, platformSelector], (type, platform): Realtime.ProjectMeta => ({ type, platform }));
 
 export const nameSelector = createSelector([projectSelector], (project) => project?.name ?? null);
 

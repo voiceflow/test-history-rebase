@@ -10,9 +10,9 @@ class InsertStep extends AbstractDiagramActionControl<Realtime.node.InsertStepPa
   actionCreator = Realtime.node.insertStep;
 
   process = async (ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
-    const { diagramID, blockID, stepID, data, ports, index, projectMeta } = payload;
+    const { diagramID, blockID, stepID, data, ports, index, projectMeta, schemaVersion } = payload;
 
-    const [step] = extractNodes(diagramID, projectMeta, {
+    const [step] = extractNodes(diagramID, projectMeta, schemaVersion, {
       data: { [stepID]: data },
       ports: { [stepID]: ports },
       nodes: [

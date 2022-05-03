@@ -4,13 +4,7 @@ import { ActionAccessor, BaseContextData, Context, Resender } from '@socket-util
 import { Eventual, Utils } from '@voiceflow/common';
 import type { Action, ActionCreator, AsyncActionCreators } from 'typescript-fsa';
 
-import { AbstractLoguxControl, isUnauthorizedError, LoguxControlOptions } from './utils';
-
-class AsyncRejectionError<C> extends Error {
-  constructor(message: string, public code?: C) {
-    super(message);
-  }
-}
+import { AbstractLoguxControl, AsyncRejectionError, isUnauthorizedError, LoguxControlOptions } from './utils';
 
 export abstract class AbstractActionControl<
   T extends LoguxControlOptions,
@@ -35,10 +29,6 @@ export abstract class AbstractActionControl<
   protected finally: ((ctx: Context<D>, action: Action<P>, meta: ServerMeta) => Eventual<void>) | undefined = undefined;
 
   protected handleExpiredAuth?: (ctx: Context<D>) => Eventual<void>;
-
-  protected reject<C>(message: string, code?: C): never {
-    throw new AsyncRejectionError<C>(message, code);
-  }
 
   protected reply<R, E extends Utils.protocol.AsyncError<number>>(
     actionCreators: AsyncActionCreators<P, R, E>,

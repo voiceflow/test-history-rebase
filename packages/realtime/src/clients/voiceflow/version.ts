@@ -1,5 +1,6 @@
 import { AlexaVersion } from '@voiceflow/alexa-types';
-import { Nullish } from '@voiceflow/common';
+import { BaseModels } from '@voiceflow/base-types';
+import { AnyRecord } from '@voiceflow/common';
 import { DFESVersion } from '@voiceflow/google-dfes-types';
 import { GoogleVersion } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -8,10 +9,12 @@ import { AxiosInstance } from 'axios';
 
 import { ExtraOptions } from './types';
 
-interface VersionClient {
-  canRead: (creatorID: number, versionID: string) => Promise<boolean>;
-  platform: (platform?: Nullish<VoiceflowConstants.PlatformType>) => any;
-}
+export type VersionUpdateData = Omit<
+  BaseModels.Version.Model<BaseModels.Version.PlatformData<AnyRecord, AnyRecord>>,
+  '_id' | 'creatorID' | 'projectID' | 'platformData'
+>;
+
+export type DiagramUpdateData = Omit<BaseModels.Diagram.Model, 'creatorID' | 'versionID'>;
 
 export interface VersionPlatformClient<S extends Realtime.AnyVersionSettings, P> {
   patchSettings: (versionID: string, settings: Partial<S>) => Promise<void>;
@@ -27,7 +30,7 @@ const PlatformClient = <S extends Realtime.AnyVersionSettings, P>(axios: AxiosIn
   patchPublishing: (versionID, publishing) => axios.patch(`/version/${versionID}/publishing`, publishing),
 });
 
-const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions): VersionClient => {
+const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
   const alexaClient = PlatformClient<AlexaVersion.Settings, AlexaVersion.Publishing>(alexa);
   const googleClient = PlatformClient<GoogleVersion.VoiceSettings, GoogleVersion.VoicePublishing>(google);
   const dialogflowClient = PlatformClient<DFESVersion.Settings, DFESVersion.Publishing>(dialogflow);
@@ -49,6 +52,9 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions): Vers
         .then(() => true)
         .catch(() => false),
 
+    replaceResources: (versionID: string, version: VersionUpdateData, diagrams: DiagramUpdateData[]) =>
+      api.put(`/v2/versions/${versionID}/resources`, { version, diagrams }),
+
     platform: Object.assign(getPlatform, {
       alexa: alexaClient,
       google: googleClient,
@@ -57,5 +63,7 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions): Vers
     }),
   };
 };
+
+export type VersionClient = ReturnType<typeof Client>;
 
 export default Client;

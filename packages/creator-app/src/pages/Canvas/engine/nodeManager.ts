@@ -99,6 +99,7 @@ class NodeManager extends EngineConsumer {
             },
             stepPorts: node.ports,
             projectMeta: this.engine.getActiveProjectMeta(),
+            schemaVersion: this.engine.getActiveSchemaVersion(),
           })
         );
       } else {
@@ -121,6 +122,7 @@ class NodeManager extends EngineConsumer {
             },
             coords: [node.x, node.y],
             projectMeta: this.engine.getActiveProjectMeta(),
+            schemaVersion: this.engine.getActiveSchemaVersion(),
           })
         );
       } else {
@@ -146,6 +148,7 @@ class NodeManager extends EngineConsumer {
             ...this.engine.context,
             ...entities,
             projectMeta: this.engine.getActiveProjectMeta(),
+            schemaVersion: this.engine.getActiveSchemaVersion(),
           })
         );
       } else {
@@ -167,6 +170,7 @@ class NodeManager extends EngineConsumer {
             },
             ports: node.ports,
             projectMeta: this.engine.getActiveProjectMeta(),
+            schemaVersion: this.engine.getActiveSchemaVersion(),
           })
         );
       } else {
@@ -199,6 +203,7 @@ class NodeManager extends EngineConsumer {
           ports: node.ports,
           index,
           projectMeta: this.engine.getActiveProjectMeta(),
+          schemaVersion: this.engine.getActiveSchemaVersion(),
         })
       );
 
@@ -241,6 +246,7 @@ class NodeManager extends EngineConsumer {
             stepID: nodeID,
             blockName,
             projectMeta,
+            schemaVersion: this.engine.getActiveSchemaVersion(),
           })
         );
       } else {

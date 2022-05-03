@@ -7,22 +7,22 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { BidirectionalAdapter } from 'bidirectional-adapter';
 import moize from 'moize';
 
-import { alexaBlockAdapter, alexaOutPortAdapter } from './alexa';
-import { baseBlockAdapter, baseOutPortAdapter } from './base';
+import { alexaBlockAdapter, alexaOutPortAdapter, alexaOutPortAdapterV2 } from './alexa';
+import { baseBlockAdapter, baseOutPortAdapter, baseOutPortAdapterV2 } from './base';
 import blockDataAdapter from './block';
 import { chatBlockAdapter } from './chat';
-import { dialogflowAdapter, dialogflowOutPortAdapter } from './dialogflow';
+import { dialogflowAdapter, dialogflowOutPortAdapter, dialogflowOutPortAdapterV2 } from './dialogflow';
 import { generalBlockAdapter } from './general';
-import { googleBlockAdapter, googleOutPortAdapter } from './google';
+import { googleBlockAdapter, googleOutPortAdapter, googleOutPortAdapterV2 } from './google';
 import invalidPlatformAdapter from './invalidPlatform';
 import markupImageAdapter from './markupImage';
 import markupTextAdapter from './markupText';
 import { migrationBlockAdapter } from './migration';
 import startDataAdapter from './start';
-import { OutPortsAdapter } from './utils';
+import { OutPortsAdapter, OutPortsAdapterV2 } from './utils';
 
-export type { OutPortsAdapter } from './utils';
-export { defaultOutPortsAdapter, removePortDataFalsyValues } from './utils';
+export type { OutPortsAdapter, OutPortsAdapterV2 } from './utils';
+export { defaultOutPortsAdapter, defaultOutPortsAdapterV2, removePortDataFalsyValues } from './utils';
 
 const BLOCK_TYPE_MAPPING: [string, BlockType][] = [['block', BlockType.COMBINED]];
 
@@ -91,6 +91,17 @@ const getPlatformOutPortsAdapter = createPlatformSelector<
   baseOutPortAdapter
 );
 
+const getPlatformOutPortsAdapterV2 = createPlatformSelector<
+  typeof alexaOutPortAdapterV2 | typeof googleOutPortAdapterV2 | typeof baseOutPortAdapterV2 | typeof dialogflowOutPortAdapterV2
+>(
+  {
+    [VoiceflowConstants.PlatformType.ALEXA]: alexaOutPortAdapterV2,
+    [VoiceflowConstants.PlatformType.GOOGLE]: googleOutPortAdapterV2,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: dialogflowOutPortAdapterV2,
+  },
+  baseOutPortAdapterV2
+);
+
 export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
 
 type PlatformBlockAdapter = Partial<
@@ -113,6 +124,7 @@ export const getBlockAdapter = moize(
 );
 
 type PlatformOutPortAdapter = Partial<Record<BlockType, OutPortsAdapter>>;
+type PlatformOutPortAdapterV2 = Partial<Record<BlockType, OutPortsAdapterV2>>;
 
 export const getOutPortsAdapter = moize(
   (platform: VoiceflowConstants.PlatformType): PlatformOutPortAdapter =>
@@ -120,4 +132,12 @@ export const getOutPortsAdapter = moize(
       ...baseOutPortAdapter,
       ...getPlatformOutPortsAdapter(platform),
     } as PlatformOutPortAdapter)
+);
+
+export const getOutPortsAdapterV2 = moize(
+  (platform: VoiceflowConstants.PlatformType): PlatformOutPortAdapterV2 =>
+    ({
+      ...baseOutPortAdapterV2,
+      ...getPlatformOutPortsAdapterV2(platform),
+    } as PlatformOutPortAdapterV2)
 );

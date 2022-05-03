@@ -1,8 +1,9 @@
 import { BuiltInPortRecord, DBPortWithLinkData, Link, Node, Port } from '@realtime-sdk/models';
+import { PathPoint, PathPoints } from '@realtime-sdk/types';
 import { BaseModels, Nullable } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { Nullish, Utils } from '@voiceflow/common';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { PathPoint, PathPoints } from '../../../../types';
 import { generateOutPort } from '../../utils';
 
 export interface PortData {
@@ -11,33 +12,32 @@ export interface PortData {
   target: string | null;
 }
 
-export type BuiltInPortDataRecord = { [key in BaseModels.PortType]?: PortData };
+export type BuiltInPortDataRecord = BuiltInPortRecord<PortData>;
 
-interface PortsInfoFromDB<T extends BuiltInPortRecord = BuiltInPortRecord> {
-  ports: PortData[];
-  dynamic: string[];
-  builtIn: T;
-}
-interface PortsInfoToDB<T extends BuiltInPortDataRecord = BuiltInPortDataRecord> {
+export type BuiltInPortData<T extends BuiltInPortRecord<any>> = {
+  [K in keyof T]: PortData;
+};
+
+export interface PortsInfo<T extends BuiltInPortDataRecord = BuiltInPortDataRecord> {
   dynamic: PortData[];
   builtIn: T;
 }
 
-interface OutPortsToDBOptions<D = unknown> {
+export interface OutPortsToDBOptions<D = unknown> {
   node: Node;
   data: D;
 }
 
-interface OutPortsFromDBOptions {
+export interface OutPortsFromDBOptions {
   node: BaseModels.BaseDiagramNode;
 }
 
-export interface OutPortsAdapter<T extends BuiltInPortRecord = BuiltInPortRecord, D = unknown> {
-  toDB: (portsInfo: PortsInfoToDB<{ [key in keyof T]: PortData }>, options: OutPortsToDBOptions<D>) => DBPortWithLinkData[];
-  fromDB: (ports: DBPortWithLinkData[], options: OutPortsFromDBOptions) => PortsInfoFromDB<T>;
+export interface OutPortsAdapter<T extends BuiltInPortRecord<string> = BuiltInPortRecord<string>, D = unknown> {
+  toDB: (portsInfo: PortsInfo<BuiltInPortData<T>>, options: OutPortsToDBOptions<D>) => DBPortWithLinkData[];
+  fromDB: (ports: DBPortWithLinkData[], options: OutPortsFromDBOptions) => PortsInfo<BuiltInPortData<T>>;
 }
 
-export const createOutPortsAdapter = <T extends BuiltInPortRecord = BuiltInPortRecord, D = unknown>(
+export const createOutPortsAdapter = <T extends BuiltInPortRecord<string> = BuiltInPortRecord<string>, D = unknown>(
   fromDB: OutPortsAdapter<T, D>['fromDB'],
   toDB: OutPortsAdapter<T, D>['toDB']
 ): OutPortsAdapter<T, D> => ({
@@ -125,6 +125,15 @@ export const withoutDBPort = (ports: DBPortWithLinkData[], withoutPort: Nullable
 export const withoutDBPorts = (ports: DBPortWithLinkData[], withoutPorts: Nullable<DBPortWithLinkData>[]): DBPortWithLinkData[] =>
   Utils.array.withoutValues(ports, withoutPorts.filter(Boolean) as DBPortWithLinkData[]);
 
+export const applyPortPlatform: {
+  (portData: PortData, platform: VoiceflowConstants.PlatformType): PortData;
+  (portData: Nullish<PortData>, platform: VoiceflowConstants.PlatformType): PortData | undefined;
+} = (portData: Nullish<PortData>, platform: VoiceflowConstants.PlatformType): any => {
+  if (!portData) return undefined;
+
+  return { ...portData, port: { ...portData.port, platform } };
+};
+
 export const nextOnlyOutPortsAdapter = createOutPortsAdapter<{ [BaseModels.PortType.NEXT]: string }>(
   (dbPorts, options) => {
     const dbNextPort = findDBNextPort(dbPorts);
@@ -132,9 +141,8 @@ export const nextOnlyOutPortsAdapter = createOutPortsAdapter<{ [BaseModels.PortT
     const nextPortData = outPortDataFromDB(dbNextPort, options);
 
     return {
-      ports: [nextPortData],
       dynamic: [],
-      builtIn: { [BaseModels.PortType.NEXT]: nextPortData.port.id },
+      builtIn: { [BaseModels.PortType.NEXT]: nextPortData },
     };
   },
   ({ builtIn: { [BaseModels.PortType.NEXT]: nextPortData } }) => [outPortDataToDB(nextPortData)]
@@ -145,8 +153,7 @@ export const dynamicOnlyOutPortsAdapter = createOutPortsAdapter(
     const dynamicPortsData = outPortsDataFromDB(dbPorts, options);
 
     return {
-      ports: dynamicPortsData,
-      dynamic: dynamicPortsData.map(({ port }) => port.id),
+      dynamic: dynamicPortsData,
       builtIn: {},
     };
   },
@@ -162,9 +169,8 @@ export const defaultOutPortsAdapter = createOutPortsAdapter<{ [BaseModels.PortTy
     const dynamicPortsData = outPortsDataFromDB(dbDynamicPorts, options);
 
     return {
-      ports: [nextPortData, ...dynamicPortsData],
-      dynamic: dynamicPortsData.map(({ port }) => port.id),
-      builtIn: { [BaseModels.PortType.NEXT]: nextPortData.port.id },
+      dynamic: dynamicPortsData,
+      builtIn: { [BaseModels.PortType.NEXT]: nextPortData },
     };
   },
   ({ builtIn: { [BaseModels.PortType.NEXT]: nextPortData }, dynamic }) => [outPortDataToDB(nextPortData), ...outPortsDataToDB(dynamic)]
@@ -185,12 +191,11 @@ export const nextNoMatchNoReplyOutPortsAdapter = createOutPortsAdapter<{
     const noMatchPortData = dbNoMatchPort && outPortDataFromDB(dbNoMatchPort, options);
 
     return {
-      ports: [nextPortData, ...Utils.array.filterOutNullish([noReplyPortData, noMatchPortData])],
       dynamic: [],
       builtIn: {
-        [BaseModels.PortType.NEXT]: nextPortData.port.id,
-        [BaseModels.PortType.NO_REPLY]: noReplyPortData?.port.id ?? undefined,
-        [BaseModels.PortType.NO_MATCH]: noMatchPortData?.port.id ?? undefined,
+        [BaseModels.PortType.NEXT]: nextPortData,
+        [BaseModels.PortType.NO_REPLY]: noReplyPortData ?? undefined,
+        [BaseModels.PortType.NO_MATCH]: noMatchPortData ?? undefined,
       },
     };
   },
@@ -216,11 +221,10 @@ export const nextAndFailOnlyOutPortsAdapter = createOutPortsAdapter<{ [BaseModel
     const failPortData = outPortDataFromDB(dbFailPort, options);
 
     return {
-      ports: [nextPortData, failPortData],
       dynamic: [],
       builtIn: {
-        [BaseModels.PortType.FAIL]: failPortData.port.id,
-        [BaseModels.PortType.NEXT]: nextPortData.port.id,
+        [BaseModels.PortType.FAIL]: failPortData,
+        [BaseModels.PortType.NEXT]: nextPortData,
       },
     };
   },
@@ -245,11 +249,10 @@ export const noMatchNoReplyAndDynamicOutPortsAdapter = createOutPortsAdapter<{
     const dynamicPortsData = outPortsDataFromDB(dynamicDBPorts, options);
 
     return {
-      ports: [noMatchPortData, ...Utils.array.filterOutNullish([noReplyPortData]), ...dynamicPortsData],
-      dynamic: dynamicPortsData.map(({ port }) => port.id),
+      dynamic: dynamicPortsData,
       builtIn: {
-        [BaseModels.PortType.NO_MATCH]: noMatchPortData.port.id,
-        [BaseModels.PortType.NO_REPLY]: noReplyPortData?.port.id ?? undefined,
+        [BaseModels.PortType.NO_MATCH]: noMatchPortData,
+        [BaseModels.PortType.NO_REPLY]: noReplyPortData ?? undefined,
       },
     };
   },

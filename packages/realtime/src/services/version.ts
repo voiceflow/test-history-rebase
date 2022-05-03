@@ -3,6 +3,8 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
+import type { DiagramUpdateData, VersionUpdateData } from '@/clients/voiceflow/version';
+
 import { AbstractControl } from '../control';
 
 type StartingBlockMap = Record<string, Realtime.diagram.DiagramStartingBlockMap>;
@@ -46,10 +48,20 @@ class VersionService extends AbstractControl {
     return this.services.project.getPlatform(creatorID, version.projectID);
   }
 
-  public async patch(creatorID: number, versionID: string, data: Partial<Realtime.AnyVersion>): Promise<void> {
+  public async patch(
+    creatorID: number,
+    versionID: string,
+    data: Partial<BaseModels.Version.Model<BaseModels.Version.PlatformData<AnyRecord, AnyRecord>>>
+  ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.version.update(versionID, data);
+  }
+
+  public async replaceResources(creatorID: number, versionID: string, version: VersionUpdateData, diagrams: DiagramUpdateData[]): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.version.replaceResources(versionID, version, diagrams);
   }
 
   public async updateVariables(creatorID: number, versionID: string, variables: string[]): Promise<void> {

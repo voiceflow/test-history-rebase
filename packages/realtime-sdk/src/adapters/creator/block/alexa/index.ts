@@ -1,21 +1,21 @@
 import { BlockType } from '@realtime-sdk/constants';
 
-import accountLinkingAdapter, { accountLinkingOutPortAdapter } from './accountLinking';
-import cancelPaymentAdapter, { cancelPaymentOutPortAdapter } from './cancelPayment';
+import accountLinkingAdapter, { accountLinkingOutPortAdapter, accountLinkingOutPortAdapterV2 } from './accountLinking';
+import cancelPaymentAdapter, { cancelPaymentOutPortAdapter, cancelPaymentOutPortAdapterV2 } from './cancelPayment';
 import captureAdapter from './capture';
 import captureV2Adapter from './captureV2';
 import commandAdapter from './command';
-import displayAdapter, { displayOutPortAdapter } from './display';
-import eventAdapter, { eventOutPortAdapter } from './event';
+import displayAdapter, { displayOutPortAdapter, displayOutPortAdapterV2 } from './display';
+import eventAdapter, { eventOutPortAdapter, eventOutPortAdapterV2 } from './event';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
-import paymentAdapter, { paymentOutPortAdapter } from './payment';
-import permissionAdapter, { permissionOutPortAdapter } from './permission';
+import paymentAdapter, { paymentOutPortAdapter, paymentOutPortAdapterV2 } from './payment';
+import permissionAdapter, { permissionOutPortAdapter, permissionOutPortAdapterV2 } from './permission';
 import promptAdapter from './prompt';
-import reminderAdapter, { reminderOutPortAdapter } from './reminder';
+import reminderAdapter, { reminderOutPortAdapter, reminderOutPortAdapterV2 } from './reminder';
 import speakAdapter from './speak';
-import streamAdapter, { streamOutPortsAdapter } from './stream';
-import userInfoAdapter, { userInfoOutPortAdapter } from './userInfo';
+import streamAdapter, { streamOutPortsAdapter, streamOutPortsAdapterV2 } from './stream';
+import userInfoAdapter, { userInfoOutPortAdapter, userInfoOutPortAdapterV2 } from './userInfo';
 
 export const alexaBlockAdapter = {
   // internal
@@ -49,4 +49,16 @@ export const alexaOutPortAdapter = {
   [BlockType.PERMISSION]: permissionOutPortAdapter,
   [BlockType.CANCEL_PAYMENT]: cancelPaymentOutPortAdapter,
   [BlockType.ACCOUNT_LINKING]: accountLinkingOutPortAdapter,
+};
+
+export const alexaOutPortAdapterV2 = {
+  [BlockType.EVENT]: eventOutPortAdapterV2,
+  [BlockType.STREAM]: streamOutPortsAdapterV2,
+  [BlockType.DISPLAY]: displayOutPortAdapterV2,
+  [BlockType.PAYMENT]: paymentOutPortAdapterV2,
+  [BlockType.REMINDER]: reminderOutPortAdapterV2,
+  [BlockType.USER_INFO]: userInfoOutPortAdapterV2,
+  [BlockType.PERMISSION]: permissionOutPortAdapterV2,
+  [BlockType.CANCEL_PAYMENT]: cancelPaymentOutPortAdapterV2,
+  [BlockType.ACCOUNT_LINKING]: accountLinkingOutPortAdapterV2,
 };

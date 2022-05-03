@@ -1,16 +1,19 @@
 import { BlockType } from '@realtime-sdk/constants';
 import { CreatorDiagram, Link, Node, NodeData, Port } from '@realtime-sdk/models';
-import { isDiagramReferencesBlockType, isMarkupBlockType } from '@realtime-sdk/utils/typeGuards';
+import { isBlock, isDiagramReferencesBlockType, isMarkupBlockType } from '@realtime-sdk/utils/typeGuards';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 import { denormalize, Normalized } from 'normal-store';
 
-import { AdapterContext } from '../types';
+import { AdapterContext, VersionAdapterContext } from '../types';
 import { cleanupDBNodes } from './cleanup';
 import nodeAdapter from './node';
-import { isBlock } from './utils';
+
+export { default as nodeAdapter } from './node';
+export { default as nodeDataAdapter } from './nodeData';
+export { default as stepPortsAdapter } from './stepPorts';
 
 // we will be doing a patch request.
 export type DBCreatorDiagram = Omit<BaseModels.Diagram.Model, 'created' | 'creatorID' | 'variables' | 'versionID' | 'name'>;
@@ -31,7 +34,7 @@ const creatorAdapter = createSimpleAdapter<
       ports: Normalized<Port>;
       platform: VoiceflowConstants.PlatformType;
       projectType: VoiceflowConstants.ProjectType;
-      context: AdapterContext;
+      context: VersionAdapterContext;
     }
   ]
 >(

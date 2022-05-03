@@ -59,7 +59,6 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
       const result = promptAdapter.toDB(data);
 
       expect(result).eql({
-        ports: [],
         chips: null,
         buttons: null,
         noReply,
@@ -77,7 +76,6 @@ describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
       const result = promptAdapter.toDB(data);
 
       expect(result).eql({
-        ports: [],
         chips: null,
         buttons: null,
         noReply: null,

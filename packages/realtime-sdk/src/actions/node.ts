@@ -1,6 +1,6 @@
 import { BLOCK_KEY, NODE_KEY, STEP_KEY } from '@realtime-sdk/constants';
 import { Markup, NodeDataDescriptor, PortsDescriptor } from '@realtime-sdk/models';
-import { BaseBlockPayload, BaseDiagramPayload, BaseNodePayload, Point, ProjectMetaPayload } from '@realtime-sdk/types';
+import { BaseBlockPayload, BaseDiagramPayload, BaseNodePayload, Point, ProjectMetaPayload, SchemaVersionPayload } from '@realtime-sdk/types';
 import { Nullish, Utils } from '@voiceflow/common';
 
 const nodeType = Utils.protocol.typeFactory(NODE_KEY);
@@ -27,7 +27,7 @@ export const removeMany = Utils.protocol.createAction<RemoveManyPayload>(nodeTyp
 
 // markup
 
-export interface AddMarkupPayload extends BaseNodePayload, ProjectMetaPayload {
+export interface AddMarkupPayload extends BaseNodePayload, ProjectMetaPayload, SchemaVersionPayload {
   data: NodeDataDescriptor<Markup.AnyNodeData>;
   coords: Point;
 }
@@ -36,7 +36,7 @@ export const addMarkup = Utils.protocol.createAction<AddMarkupPayload>(nodeMarku
 
 // blocks
 
-export interface AddBlockPayload<T = unknown> extends BaseBlockPayload, ProjectMetaPayload {
+export interface AddBlockPayload<T = unknown> extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload {
   blockPorts: PortsDescriptor;
   blockCoords: Point;
   blockName: string;
@@ -49,7 +49,7 @@ export const addBlock = Utils.protocol.createAction<AddBlockPayload>(nodeBlockTy
 
 // steps
 
-export interface AppendStepPayload<T = unknown> extends BaseBlockPayload, ProjectMetaPayload {
+export interface AppendStepPayload<T = unknown> extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload {
   stepID: string;
   data: NodeDataDescriptor<T>;
   ports: PortsDescriptor;
@@ -71,7 +71,7 @@ export interface TransplantStepsPayload extends BaseDiagramPayload {
   index: number;
 }
 
-export interface IsolateStepPayload extends BaseBlockPayload, ProjectMetaPayload {
+export interface IsolateStepPayload extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload {
   sourceBlockID: string;
   blockPorts: PortsDescriptor;
   blockCoords: Point;

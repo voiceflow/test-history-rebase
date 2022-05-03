@@ -1,9 +1,12 @@
 import { Utils } from '@voiceflow/common';
 
-import { CREATOR_KEY, DIAGRAM_KEY, PROJECT_KEY, VERSION_KEY, WORKSPACE_KEY } from './constants';
+import { CREATOR_KEY, DIAGRAM_KEY, PROJECT_KEY, SCHEMA_KEY, VERSION_KEY, WORKSPACE_KEY } from './constants';
 
 export const creator = Utils.protocol.createChannel(['creatorID'], ({ creatorID }) => `${CREATOR_KEY}/${creatorID}`);
 export type CreatorChannelParams = Utils.protocol.ChannelParams<typeof creator>;
+
+export const schema = Utils.protocol.createChannel(['versionID'], ({ versionID }) => `${SCHEMA_KEY}/${versionID}`);
+export type SchemaChannelParams = Utils.protocol.ChannelParams<typeof schema>;
 
 export const workspace = Utils.protocol.createChannel(['workspaceID'], ({ workspaceID }) => `${WORKSPACE_KEY}/${workspaceID}`);
 export type WorkspaceChannelParams = Utils.protocol.ChannelParams<typeof workspace>;

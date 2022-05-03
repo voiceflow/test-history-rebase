@@ -9,8 +9,14 @@ import {
 } from '@realtime-sdk/constants';
 import { Markup, NodeData } from '@realtime-sdk/models';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import { AnyRecord, Utils } from '@voiceflow/common';
 
 import { createTypedTypeGuardCreator, createTypeGuardCreator } from './utils';
+
+export const isBlock = (node: BaseModels.BaseDiagramNode): node is BaseModels.BaseBlock => Array.isArray(node.data.steps) && !!node.coords;
+export const isStep = <Data extends AnyRecord = AnyRecord, Ports = BaseModels.NextStepPorts, PortsOld = BaseModels.BasePortList>(
+  node: BaseModels.BaseDiagramNode
+): node is BaseModels.BaseStep<Data, Ports, PortsOld> => Array.isArray(node.data.ports) || Utils.object.isObject(node.data.portsV2);
 
 const createBlockTypeGuard = createTypeGuardCreator<BlockType>();
 const createDBNodeTypeGuard = createTypedTypeGuardCreator<BaseModels.BaseDiagramNode>();

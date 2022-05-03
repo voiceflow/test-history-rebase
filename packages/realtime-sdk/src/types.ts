@@ -2,9 +2,24 @@ import { Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { ActionCreator } from 'typescript-fsa';
 
+export enum SchemaVersion {
+  V1 = 1,
+  /**
+   * in this version we migrate to the new portsV2 structure
+   */
+  V2 = 2,
+}
+
+export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)
+  .filter((value): value is SchemaVersion => typeof value === 'number')
+  .sort((l, r) => l - r);
+export const LATEST_SCHEMA_VERSION = SUPPORTED_SCHEMA_VERSIONS[SUPPORTED_SCHEMA_VERSIONS.length - 1];
+
 export enum ErrorCode {
-  CANNOT_CONVERT_TO_TOPIC,
-  ALREADY_MEMBER_OF_WORKSPACE,
+  CANNOT_CONVERT_TO_TOPIC = 1000,
+  MIGRATION_IN_PROGRESS = 1001,
+  SCHEMA_VERSION_NOT_SUPPORTED = 1002,
+  ALREADY_MEMBER_OF_WORKSPACE = 1003,
 }
 
 export type RealtimeError = Utils.protocol.AsyncError<ErrorCode>;
@@ -72,4 +87,8 @@ export interface BasePortPayload extends BaseNodePayload {
 
 export interface ProjectMetaPayload {
   projectMeta: ProjectMeta;
+}
+
+export interface SchemaVersionPayload {
+  schemaVersion: SchemaVersion;
 }

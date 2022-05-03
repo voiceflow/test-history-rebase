@@ -50,7 +50,9 @@ class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.Imp
         projectType: projectMeta.type,
         nodes: normalize(nodesWithData.map(({ node }) => node)),
         ports: normalize(ports),
-        context: {},
+        context: {
+          schemaVersion: payload.schemaVersion,
+        },
       }
     );
 

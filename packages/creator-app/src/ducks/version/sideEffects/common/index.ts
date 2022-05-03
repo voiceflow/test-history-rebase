@@ -11,6 +11,7 @@ import * as Product from '@/ducks/product';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
+import { waitAsync } from '@/ducks/utils';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Workspace from '@/ducks/workspace';
 import { Thunk } from '@/store/types';
@@ -131,3 +132,8 @@ export const updateResumePrompt =
       })
     );
   };
+
+export const negotiateTargetVersion =
+  (versionID: string): Thunk<Realtime.version.schema.NegotiateResultPayload> =>
+  async (dispatch) =>
+    dispatch(waitAsync(Realtime.version.schema.negotiate, { versionID, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }));

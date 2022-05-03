@@ -13,6 +13,12 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.use(deepEqualInAnyOrder);
 
+class AsyncRejectionError extends Error {
+  constructor(message: string, public code?: number) {
+    super(message);
+  }
+}
+
 class Server {}
 mockRequire('@logux/server', { Server });
 
@@ -25,7 +31,19 @@ class AbstractLoguxControl extends AbstractControl {}
 class AbstractActionControl extends AbstractLoguxControl {
   $reply = sinon.spy(() => sinon.spy());
 
+  $reject = sinon.stub().callsFake((message, code) => {
+    throw new AsyncRejectionError(message, code);
+  });
+
   reply = this.$reply;
+
+  reject = this.$reject;
 }
 class AbstractNoopActionControl extends AbstractActionControl {}
-mockRequire('@voiceflow/socket-utils', { AbstractControl, AbstractLoguxControl, AbstractActionControl, AbstractNoopActionControl });
+mockRequire('@voiceflow/socket-utils', {
+  AsyncRejectionError,
+  AbstractControl,
+  AbstractLoguxControl,
+  AbstractActionControl,
+  AbstractNoopActionControl,
+});

@@ -50,7 +50,7 @@ export const useSyncDispatch = <S extends any[], D extends any[], R extends AnyA
 
 const createSubscriptionHook =
   <T>(buildChannels: (params: T) => Channel[]) =>
-  (params: T, dependencies: any[], { disabled = false }: { disabled?: boolean } = {}) => {
+  (params: T, dependencies: any[] = [], { disabled = false }: { disabled?: boolean } = {}) => {
     const channels = useMemo(() => buildChannels(params), dependencies);
     const cachedChannelsRef = useRef<Channel[]>([]);
     const isLoading = useSubscription(channels);
@@ -83,6 +83,10 @@ export const useVersionSubscription = createSubscriptionHook<NullishRecord<Realt
           Realtime.Channels.version.build({ workspaceID, projectID, versionID }),
         ]
       : []
+);
+
+export const useSchemaSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.SchemaChannelParams>>(({ versionID }) =>
+  versionID ? [Realtime.Channels.schema.build({ versionID })] : []
 );
 
 export const useDiagramSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.DiagramChannelParams>>(

@@ -5,8 +5,10 @@ import { Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import {
+  applyPortPlatform,
   createBlockAdapter,
   createOutPortsAdapter,
+  createOutPortsAdapterV2,
   findDBNextPort,
   findDBPortByType,
   migrateDBPortType,
@@ -47,16 +49,11 @@ export const streamOutPortsAdapter = createOutPortsAdapter<NodeData.StreamBuiltI
     const pausePortData = dbPausePort && outPortDataFromDB(dbPausePort, options);
 
     return {
-      ports: Utils.array.filterOutNullish([
-        { ...nextPortData, platform: VoiceflowConstants.PlatformType.ALEXA },
-        { ...previousPortData, platform: VoiceflowConstants.PlatformType.ALEXA },
-        pausePortData && { ...pausePortData, platform: VoiceflowConstants.PlatformType.ALEXA },
-      ]),
       dynamic: [],
       builtIn: {
-        [BaseModels.PortType.NEXT]: nextPortData.port.id,
-        [BaseModels.PortType.PAUSE]: pausePortData?.port.id ?? undefined,
-        [BaseModels.PortType.PREVIOUS]: previousPortData.port.id,
+        [BaseModels.PortType.NEXT]: applyPortPlatform(nextPortData, VoiceflowConstants.PlatformType.ALEXA),
+        [BaseModels.PortType.PAUSE]: applyPortPlatform(pausePortData, VoiceflowConstants.PlatformType.ALEXA),
+        [BaseModels.PortType.PREVIOUS]: applyPortPlatform(previousPortData, VoiceflowConstants.PlatformType.ALEXA),
       },
     };
   },
@@ -72,6 +69,41 @@ export const streamOutPortsAdapter = createOutPortsAdapter<NodeData.StreamBuiltI
       previousPortData && outPortDataToDB(previousPortData),
       pausePortData && outPortDataToDB(pausePortData),
     ])
+);
+
+export const streamOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.StreamBuiltInPorts, NodeData.Stream>(
+  (dbPorts, options) => {
+    const dbNextPort = dbPorts.builtIn[BaseModels.PortType.NEXT];
+    const dbPreviousPort = dbPorts.builtIn[BaseModels.PortType.PREVIOUS];
+    const dbPausePort = dbPorts.builtIn[BaseModels.PortType.PAUSE];
+
+    const nextPortData = outPortDataFromDB(dbNextPort, options);
+    const previousPortData = dbPreviousPort && outPortDataFromDB(dbPreviousPort, options);
+    const pausePortData = dbPausePort && outPortDataFromDB(dbPausePort, options);
+
+    return {
+      dynamic: [],
+      builtIn: {
+        [BaseModels.PortType.NEXT]: applyPortPlatform(nextPortData, VoiceflowConstants.PlatformType.ALEXA),
+        [BaseModels.PortType.PAUSE]: applyPortPlatform(pausePortData, VoiceflowConstants.PlatformType.ALEXA),
+        [BaseModels.PortType.PREVIOUS]: applyPortPlatform(previousPortData, VoiceflowConstants.PlatformType.ALEXA),
+      },
+    };
+  },
+  ({
+    builtIn: {
+      [BaseModels.PortType.NEXT]: nextPortData,
+      [BaseModels.PortType.PREVIOUS]: previousPortData,
+      [BaseModels.PortType.PAUSE]: pausePortData,
+    },
+  }) => ({
+    builtIn: {
+      [BaseModels.PortType.NEXT]: outPortDataToDB(nextPortData),
+      ...(previousPortData ? { [BaseModels.PortType.PREVIOUS]: outPortDataToDB(previousPortData) } : {}),
+      ...(pausePortData ? { [BaseModels.PortType.PAUSE]: outPortDataToDB(pausePortData) } : {}),
+    },
+    dynamic: [],
+  })
 );
 
 export default streamAdapter;

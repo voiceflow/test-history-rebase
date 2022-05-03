@@ -10,9 +10,9 @@ class AppendStep extends AbstractDiagramActionControl<Realtime.node.AppendStepPa
   actionCreator = Realtime.node.appendStep;
 
   process = async (ctx: Context, { payload }: Action<Realtime.node.AppendStepPayload>): Promise<void> => {
-    const { diagramID, blockID, stepID, data, ports, projectMeta } = payload;
+    const { diagramID, blockID, stepID, data, ports, projectMeta, schemaVersion } = payload;
 
-    const [step] = extractNodes(diagramID, projectMeta, {
+    const [step] = extractNodes(diagramID, projectMeta, schemaVersion, {
       data: { [stepID]: data },
       ports: { [stepID]: ports },
       nodes: [

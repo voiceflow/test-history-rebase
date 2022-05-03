@@ -3,7 +3,13 @@ import { AlexaNode } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter from 'bidirectional-adapter';
 
-import { createBlockAdapter, createOutPortsAdapter, nextAndFailOnlyOutPortsAdapter } from '../utils';
+import {
+  createBlockAdapter,
+  createOutPortsAdapter,
+  createOutPortsAdapterV2,
+  nextAndFailOnlyOutPortsAdapter,
+  nextAndFailOnlyOutPortsAdapterV2,
+} from '../utils';
 
 const useInfoPermissionAdapter = createAdapter<AlexaNode.UserInfo.UserInfo, NodeData.UserInfoPermission>(
   ({ type, mapTo, product }) => ({ id: Utils.id.cuid.slug(), mapTo, product, selected: type }),
@@ -18,6 +24,11 @@ const userInfoAdapter = createBlockAdapter<AlexaNode.UserInfo.StepData, NodeData
 export const userInfoOutPortAdapter = createOutPortsAdapter<NodeData.UserInfoBuiltInPorts, NodeData.UserInfo>(
   (dbPorts, options) => nextAndFailOnlyOutPortsAdapter.fromDB(dbPorts, options),
   (dbPorts, options) => nextAndFailOnlyOutPortsAdapter.toDB(dbPorts, options)
+);
+
+export const userInfoOutPortAdapterV2 = createOutPortsAdapterV2<NodeData.UserInfoBuiltInPorts, NodeData.UserInfo>(
+  (dbPorts, options) => nextAndFailOnlyOutPortsAdapterV2.fromDB(dbPorts, options),
+  (dbPorts, options) => nextAndFailOnlyOutPortsAdapterV2.toDB(dbPorts, options)
 );
 
 export default userInfoAdapter;

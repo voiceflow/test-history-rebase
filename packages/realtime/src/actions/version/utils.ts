@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ActionAccessor, BaseContextData, Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
@@ -20,11 +21,16 @@ export const accessVersion = <P extends Realtime.BaseVersionPayload, D extends B
     ).every(Boolean);
   }.bind(self);
 
-export abstract class AbstractVersionResourceControl<
+export abstract class AbstractVersionAccessResourceControl<
   P extends Realtime.BaseVersionPayload,
   D extends BaseContextData = BaseContextData
 > extends AbstractActionControl<P, D> {
   protected access: ActionAccessor<P, D> = accessVersion(this);
+}
 
+export abstract class AbstractVersionResourceControl<
+  P extends Realtime.BaseVersionPayload,
+  D extends BaseContextData = BaseContextData
+> extends AbstractVersionAccessResourceControl<P, D> {
   protected resend = resendProjectChannel;
 }

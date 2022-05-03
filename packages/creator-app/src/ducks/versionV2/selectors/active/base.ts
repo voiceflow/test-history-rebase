@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createSelector } from 'reselect';
 
@@ -24,6 +25,8 @@ export const publishingSelector = createSelector([versionSelector], (version) =>
 export const topicsSelector = createSelector([versionSelector], (version) => version?.topics ?? []);
 
 export const componentsSelector = createSelector([versionSelector], (version) => version?.components ?? []);
+
+export const schemaVersionSelector = createSelector([versionSelector], (version) => version?._version ?? Realtime.SchemaVersion.V1);
 
 export const foldersSelector = createSelector([versionSelector], (version) => version?.folders ?? {});
 

@@ -13,6 +13,7 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
     await Promise.all([
       this.services.diagram.connectNode(diagramID, ctx.nodeId),
       this.services.project.connectDiagram(projectID, diagramID),
+      this.services.migrate.renewActiveSchemaVersion(versionID),
       ...Object.entries(locksMap).map(([lockType, entities]) => this.services.lock.lockEntities(diagramID, ctx.nodeId, lockType, entities)),
     ]);
 

@@ -1,7 +1,8 @@
 import { Client } from '@logux/client';
 import type { ClientActionListener } from '@logux/client/client';
-import type { Action, LoguxError } from '@logux/core';
+import type { Action as LoguxAction, LoguxError } from '@logux/core';
 import { createNanoEvents, Unsubscribe } from 'nanoevents';
+import { Action, ActionCreator } from 'typescript-fsa';
 
 import { clientLogger } from '@/client/utils';
 
@@ -85,7 +86,7 @@ class LoguxClient extends Client {
 
   /* eslint-disable lines-between-class-members */
   on(event: 'state', listener: () => void): Unsubscribe;
-  on(event: 'preadd' | 'add' | 'clean', listener: ClientActionListener<Action>): Unsubscribe;
+  on(event: 'preadd' | 'add' | 'clean', listener: ClientActionListener<LoguxAction>): Unsubscribe;
   on(event: 'user', listener: (userId: string) => void): Unsubscribe;
   on(event: ConnectionStatus, listener: VoidFunction): Unsubscribe;
   on(event: ClientEvents, listener: VoidFunction): Unsubscribe;
@@ -97,6 +98,10 @@ class LoguxClient extends Client {
     return super.on(event as any, listener);
   }
   /* eslint-enable lines-between-class-members */
+
+  onAction<P>(actionCreator: ActionCreator<P>, listener: (action: Action<P>) => void): VoidFunction {
+    return this.type(actionCreator.type, listener);
+  }
 
   async logout(): Promise<void> {
     const { subscriptions } = this;

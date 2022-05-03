@@ -44,7 +44,6 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
       expect(result).to.eql({
         name: nodeData.name,
         next: null,
-        ports: [],
         intent: '',
         mappings: [{ variable: '', slot: '' }],
         diagramID: '',
@@ -59,7 +58,6 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
       expect(result).to.eql({
         name: nodeData.name,
         next: null,
-        ports: [],
         intent: nodeData.intent,
         mappings: nodeData.mappings,
         diagramID: nodeData.diagramID,

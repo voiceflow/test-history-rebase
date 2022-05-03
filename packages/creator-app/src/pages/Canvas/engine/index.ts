@@ -23,6 +23,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
+import * as Version from '@/ducks/versionV2';
 import * as Workspace from '@/ducks/workspaceV2';
 import { RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { CanvasAction } from '@/pages/Canvas/constants';
@@ -229,6 +230,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   getActivePlatform = () => this.select(ProjectV2.active.platformSelector);
 
   getActiveProjectMeta = () => this.select(ProjectV2.active.metaSelector);
+
+  getActiveSchemaVersion = () => this.select(Version.active.schemaVersionSelector);
 
   isNodeOfType = (nodeID: Nullish<string>, types: BlockType | BlockType[] | ((type: BlockType) => boolean)): boolean => {
     const nodeType = this.select(CreatorV2.nodeTypeByIDSelector, { id: nodeID });

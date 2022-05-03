@@ -4,6 +4,7 @@ import PatchVersionSessionControl from './patchSession';
 import PatchVersionSettingsControl from './patchSettings';
 import ReorderComponentsControl from './reorderComponents';
 import ReorderTopicsControl from './reorderTopics';
+import { MigrateSchemaDoneControl, MigrateSchemaFailedControl, MigrateSchemaStartedControl, NegotiateSchemaControl } from './schema';
 import { AddGlobalVariableControl, RemoveGlobalVariableControl } from './variable';
 
 const buildVersionActionControls = (options: LoguxControlOptions) => ({
@@ -16,6 +17,12 @@ const buildVersionActionControls = (options: LoguxControlOptions) => ({
   // variables
   addGlobalVariableControl: new AddGlobalVariableControl(options),
   removeGlobalVariableControl: new RemoveGlobalVariableControl(options),
+
+  // schema
+  negotiateSchemaControl: new NegotiateSchemaControl(options),
+  migrateSchemaDoneControl: new MigrateSchemaDoneControl(options),
+  migrateSchemaFailedControl: new MigrateSchemaFailedControl(options),
+  migrateSchemaStartedControl: new MigrateSchemaStartedControl(options),
 });
 
 export default buildVersionActionControls;

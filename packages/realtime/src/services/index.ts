@@ -5,6 +5,7 @@ import type { Config } from '../types';
 import DiagramService from './diagram';
 import IntentService from './intent';
 import LockService from './lock';
+import MigrateService from './migrate';
 import NoteService from './note';
 import ProductService from './product';
 import ProjectService from './project';
@@ -28,6 +29,7 @@ export interface ServiceMap extends BaseServiceMap {
   diagram: DiagramService;
   project: ProjectService;
   version: VersionService;
+  migrate: MigrateService;
   voiceflow: VoiceflowService;
   workspace: WorkspaceService;
   projectList: ProjectListService;
@@ -55,6 +57,7 @@ const buildServices = ({ config, clients }: Options): ServiceMap => {
     product: new ProductService(serviceOptions),
     project: new ProjectService(serviceOptions),
     version: new VersionService(serviceOptions),
+    migrate: new MigrateService(serviceOptions),
     voiceflow: new VoiceflowService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),
     projectList: new ProjectListService(serviceOptions),

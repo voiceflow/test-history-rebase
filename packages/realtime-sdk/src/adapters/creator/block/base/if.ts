@@ -2,7 +2,15 @@ import expressionAdapter from '@realtime-sdk/adapters/expression';
 import { NodeData } from '@realtime-sdk/models';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 
-import { createBlockAdapter, createOutPortsAdapter, noMatchNoReplyAndDynamicOutPortsAdapter, outPortDataToDB, outPortsDataToDB } from '../utils';
+import {
+  createBlockAdapter,
+  createOutPortsAdapter,
+  createOutPortsAdapterV2,
+  noMatchNoReplyAndDynamicOutPortsAdapter,
+  noMatchNoReplyAndDynamicOutPortsAdapterV2,
+  outPortDataToDB,
+  outPortsDataToDB,
+} from '../utils';
 
 export const defaultNoMatch: BaseNode.IfV2.IfNoMatch = {
   type: BaseNode.IfV2.IfNoMatchType.PATH,
@@ -39,6 +47,27 @@ export const ifOutPortsAdapter = createOutPortsAdapter<NodeData.IfV2BuiltInPorts
       };
     }),
   ]
+);
+
+export const ifOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.IfV2BuiltInPorts, NodeData.IfV2>(
+  (ports, options) => noMatchNoReplyAndDynamicOutPortsAdapterV2.fromDB(ports, options),
+  ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData }, dynamic }, { data }) => ({
+    builtIn: {
+      [BaseModels.PortType.NO_MATCH]: outPortDataToDB(noMatchPortData),
+    },
+    // eslint-disable-next-line sonarjs/no-identical-functions
+    dynamic: outPortsDataToDB(dynamic).map((dbPort, index) => {
+      const expressionTitle = data.expressions[index]?.name;
+
+      return {
+        ...dbPort,
+        data: {
+          ...dbPort.data,
+          event: expressionTitle ? { type: expressionTitle } : undefined,
+        },
+      };
+    }),
+  })
 );
 
 export default ifAdapter;

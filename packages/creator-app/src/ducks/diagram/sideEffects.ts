@@ -125,6 +125,7 @@ export const convertToComponent =
     const platform = ProjectV2.active.platformSelector(state);
     const projectType = ProjectV2.active.projectTypeSelector(state);
     const activeComponents = VersionV2.active.componentsSelector(state);
+    const schemaVersion = VersionV2.active.schemaVersionSelector(state);
     const name = `Flow ${activeComponents.length + 1}`;
     const diagram = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
 
@@ -159,7 +160,7 @@ export const convertToComponent =
         viewport: { zoom: 1, x: 0, y: 0 },
         diagramID: '',
       } as Realtime.CreatorDiagram,
-      { nodes: normalize(adjustedNodes), ports: normalize(adjustedPorts), platform, projectType, context: {} }
+      { nodes: normalize(adjustedNodes), ports: normalize(adjustedPorts), platform, projectType, context: { schemaVersion } }
     );
 
     diagram.nodes = { ...diagram.nodes, ...convertedDiagram.nodes };

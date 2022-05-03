@@ -1,2 +1,2 @@
-export { default as AddGlobalVariableControl } from './addGlobalVariable';
-export { default as RemoveGlobalVariableControl } from './removeGlobalVariable';
+export { default as AddGlobalVariableControl } from './addGlobal';
+export { default as RemoveGlobalVariableControl } from './removeGlobal';

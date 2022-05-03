@@ -2,7 +2,13 @@ import { NodeData } from '@realtime-sdk/models';
 import { transformVariablesFromReadable, transformVariablesToReadable } from '@realtime-sdk/utils/slot';
 import { AlexaNode } from '@voiceflow/alexa-types';
 
-import { createBlockAdapter, createOutPortsAdapter, nextAndFailOnlyOutPortsAdapter } from '../utils';
+import {
+  createBlockAdapter,
+  createOutPortsAdapter,
+  createOutPortsAdapterV2,
+  nextAndFailOnlyOutPortsAdapter,
+  nextAndFailOnlyOutPortsAdapterV2,
+} from '../utils';
 
 const reminderDataAdapter = createBlockAdapter<AlexaNode.Reminder.StepData, NodeData.Reminder>(
   ({
@@ -61,6 +67,11 @@ const reminderDataAdapter = createBlockAdapter<AlexaNode.Reminder.StepData, Node
 export const reminderOutPortAdapter = createOutPortsAdapter<NodeData.ReminderBuiltInPorts, NodeData.Reminder>(
   (dbPorts, options) => nextAndFailOnlyOutPortsAdapter.fromDB(dbPorts, options),
   (dbPorts, options) => nextAndFailOnlyOutPortsAdapter.toDB(dbPorts, options)
+);
+
+export const reminderOutPortAdapterV2 = createOutPortsAdapterV2<NodeData.ReminderBuiltInPorts, NodeData.Reminder>(
+  (dbPorts, options) => nextAndFailOnlyOutPortsAdapterV2.fromDB(dbPorts, options),
+  (dbPorts, options) => nextAndFailOnlyOutPortsAdapterV2.toDB(dbPorts, options)
 );
 
 export default reminderDataAdapter;

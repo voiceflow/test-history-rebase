@@ -2,7 +2,7 @@ import { NodeData } from '@realtime-sdk/models';
 import { BaseNode } from '@voiceflow/base-types';
 import _capitalize from 'lodash/capitalize';
 
-import { createBlockAdapter, createOutPortsAdapter, nextOnlyOutPortsAdapter } from '../utils';
+import { createBlockAdapter, createOutPortsAdapter, createOutPortsAdapterV2, nextOnlyOutPortsAdapter, nextOnlyOutPortsAdapterV2 } from '../utils';
 
 const cardAdapter = createBlockAdapter<BaseNode.Card.StepData, NodeData.Card>(
   ({ type = BaseNode.Card.CardType.SIMPLE, title, text: content, image }) => ({
@@ -27,6 +27,11 @@ const cardAdapter = createBlockAdapter<BaseNode.Card.StepData, NodeData.Card>(
 export const cardOutPortsAdapter = createOutPortsAdapter<NodeData.CardBuiltInPorts, NodeData.Card>(
   (dbPorts, options) => nextOnlyOutPortsAdapter.fromDB(dbPorts, options),
   (dbPorts, options) => nextOnlyOutPortsAdapter.toDB(dbPorts, options)
+);
+
+export const cardOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.CardBuiltInPorts, NodeData.Card>(
+  (dbPorts, options) => nextOnlyOutPortsAdapterV2.fromDB(dbPorts, options),
+  (dbPorts, options) => nextOnlyOutPortsAdapterV2.toDB(dbPorts, options)
 );
 
 export default cardAdapter;

@@ -21,6 +21,7 @@ export interface ExtractNodesOptions extends Partial<Pick<Realtime.CreatorDiagra
 export const extractNodes = (
   diagramID: string,
   projectMeta: Realtime.ProjectMeta,
+  schemaVersion: Realtime.SchemaVersion,
   { ports: portDescriptors = {}, data: dataDescriptors, nodes, ...options }: ExtractNodesOptions
 ): BaseModels.BaseDiagramNode[] => {
   const ports = Object.entries(portDescriptors).flatMap(([nodeID, ports]) => Realtime.Utils.port.flattenAllPorts(ports).map(buildPort(nodeID)));
@@ -46,7 +47,7 @@ export const extractNodes = (
       projectType: projectMeta.type,
       nodes: normalize(nodes),
       ports: normalize(ports),
-      context: {},
+      context: { schemaVersion },
     }
   );
 

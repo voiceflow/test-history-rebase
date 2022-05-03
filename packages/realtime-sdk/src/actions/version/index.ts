@@ -7,6 +7,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createCRUDActions } from '../utils';
 import { versionType } from './utils';
 
+export * as schema from './schema';
 export * as variable from './variable';
 
 const versionRPCType = Utils.protocol.typeFactory(versionType(RPC_KEY));

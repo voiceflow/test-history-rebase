@@ -21,9 +21,10 @@ class AddBlock extends AbstractDiagramActionControl<Realtime.node.AddBlockPayloa
       stepData,
       stepPorts,
       projectMeta,
+      schemaVersion,
     } = payload;
 
-    const nodes = extractNodes(diagramID, projectMeta, {
+    const nodes = extractNodes(diagramID, projectMeta, schemaVersion, {
       rootNodeIDs: [blockID],
       data: {
         [blockID]: { name: blockName, type: Realtime.BlockType.COMBINED },

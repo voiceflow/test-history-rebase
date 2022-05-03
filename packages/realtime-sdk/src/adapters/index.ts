@@ -1,4 +1,4 @@
-export { default as creatorAdapter } from './creator';
+export { default as creatorAdapter, stepPortsAdapter } from './creator';
 export { default as alexaDisplayAdapter } from './creator/block/alexa/display';
 export { voicePromptToSpeakDataAdapter } from './creator/block/utils';
 export { default as diagramAdapter } from './diagram';

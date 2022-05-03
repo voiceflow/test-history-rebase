@@ -1,14 +1,17 @@
+import { isBlock, isMarkupOrCombinedBlockType, isRootBlockType, isStep } from '@realtime-sdk/utils/typeGuards';
 import { BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { AnyRecord, Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import createAdapter from 'bidirectional-adapter';
 
 import { BlockType } from '../../constants';
 import { Link, Node, NodeData, Port } from '../../models';
-import { AdapterContext } from '../types';
-import { defaultOutPortsAdapter, getOutPortsAdapter, noInPortTypes, OutPortsAdapter, removePortDataFalsyValues } from './block';
+import { AdapterContext, VersionAdapterContext } from '../types';
+import { noInPortTypes } from './block';
+import { PortData } from './block/utils';
 import nodeDataAdapter from './nodeData';
-import { generateInPort, getInPortID, isBlock, isStep } from './utils';
+import stepPortsAdapter from './stepPorts';
+import { generateInPort, getInPortID } from './utils';
 
 const nodeAdapter = createAdapter<
   BaseModels.BaseDiagramNode,
@@ -29,7 +32,7 @@ const nodeAdapter = createAdapter<
       platform: VoiceflowConstants.PlatformType;
       projectType: VoiceflowConstants.ProjectType;
       portLinksMap: Record<string, Link>;
-      context: AdapterContext;
+      context: VersionAdapterContext;
     }
   ]
 >(
@@ -92,7 +95,7 @@ const nodeAdapter = createAdapter<
       node.combinedNodes = dbNode.data.steps;
     }
 
-    if (isStep(dbNode)) {
+    if (isStep<AnyRecord, BaseModels.AnyBaseStepPorts, BaseModels.BasePort[]>(dbNode)) {
       const stepIndex = siblingSteps.indexOf(node.id);
       const hasNextStep = stepIndex !== -1 && stepIndex + 1 < siblingSteps.length;
       const nextStep = hasNextStep ? siblingSteps[stepIndex + 1] : null;
@@ -101,14 +104,13 @@ const nodeAdapter = createAdapter<
         registerInPort(generateInPort(node.id));
       }
 
-      const outPortAdapter = getOutPortsAdapter(platform)?.[node.type] || (defaultOutPortsAdapter as OutPortsAdapter);
+      const { dynamic, builtIn } = stepPortsAdapter.fromDB(dbNode.data, { platform, nodeType: node.type, dbNode });
+      const allPorts = [...Object.values(builtIn), ...dynamic].filter(Utils.array.isNotNullish);
 
-      const { ports, dynamic, builtIn } = outPortAdapter.fromDB(dbNode.data.ports!, { node: dbNode });
+      node.ports.out.dynamic = dynamic.map(({ port }) => port.id);
+      node.ports.out.builtIn = Object.fromEntries(Object.entries(builtIn).map(([type, portData]) => [type, portData?.port.id ?? null]));
 
-      node.ports.out.dynamic = dynamic;
-      node.ports.out.builtIn = builtIn;
-
-      ports.forEach(({ port, target }) => registerOutPort(port, nextStep === target ? null : target));
+      allPorts.forEach(({ port, target }) => registerOutPort(port, nextStep === target ? null : target));
     }
 
     return {
@@ -120,7 +122,6 @@ const nodeAdapter = createAdapter<
   ({ node, data, ports }, { portToTargets, stepMap, platform, projectType, portLinksMap, context }) => {
     const portMap = ports.reduce<Record<string, Port>>((acc, port) => (port ? { ...acc, [port.id]: port } : acc), {});
     const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform, projectType, context });
-    const allPorts = ports.filter((port) => port);
 
     const diagramNode: BaseModels.BaseDiagramNode = {
       nodeID: node.id,
@@ -129,45 +130,38 @@ const nodeAdapter = createAdapter<
       data: dbData,
     };
 
-    if ([BlockType.COMBINED, BlockType.START].includes(node.type)) {
+    if (isRootBlockType(node.type)) {
       diagramNode.data.steps = node.combinedNodes;
     }
 
-    const builtInPortTypes = Utils.object.getKeys(node.ports.out.builtIn);
-    let dbPorts: BaseModels.BasePort[] = [];
+    if (!isMarkupOrCombinedBlockType(node.type)) {
+      const builtInPortTypes = Utils.object.getKeys(node.ports.out.builtIn);
 
-    if (allPorts.length > 0 && (builtInPortTypes.length || node.ports.out.dynamic.length)) {
-      const outPortAdapter = getOutPortsAdapter(platform)?.[type as BlockType] || (defaultOutPortsAdapter as OutPortsAdapter);
+      const dynamicPorts = node.ports.out.dynamic
+        .filter((portID) => portMap[portID])
+        .map((portID) => ({
+          port: portMap[portID],
+          link: portLinksMap[portID],
+          target: portToTargets[portID] || stepMap[node.id] || null,
+        }));
 
-      dbPorts = outPortAdapter.toDB(
-        {
-          dynamic: node.ports.out.dynamic
-            .filter((portID) => portMap[portID])
-            .map((portID) => ({
-              port: portMap[portID],
-              link: portLinksMap[portID],
-              target: portToTargets[portID] || stepMap[node.id] || null,
-            })),
-          builtIn: builtInPortTypes.reduce<Parameters<typeof outPortAdapter.toDB>[0]['builtIn']>((acc, type) => {
-            const portID = node.ports.out.builtIn[type];
+      const builtInPorts = builtInPortTypes.reduce<Record<string, PortData>>((acc, type) => {
+        const portID = node.ports.out.builtIn[type];
 
-            if (portID && portMap[portID]) {
-              acc[type] = {
-                port: portMap[portID],
-                link: portLinksMap[portID],
-                target: portToTargets[portID] || stepMap[node.id] || null,
-              };
-            }
+        if (portID && portMap[portID]) {
+          acc[type] = {
+            port: portMap[portID],
+            link: portLinksMap[portID],
+            target: portToTargets[portID] || stepMap[node.id] || null,
+          };
+        }
 
-            return acc;
-          }, {}),
-        },
-        { node, data }
-      );
-    }
+        return acc;
+      }, {});
 
-    if (dbPorts.length) {
-      diagramNode.data.ports = dbPorts.map(removePortDataFalsyValues);
+      const stepPortsData = stepPortsAdapter.toDB({ dynamic: dynamicPorts, builtIn: builtInPorts }, { platform, node, data, context });
+
+      Object.assign(diagramNode.data, stepPortsData);
     }
 
     return diagramNode;

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.705.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.705.1...@voiceflow/creator-app@1.705.2) (2022-05-03)
+
+
+### Bug Fixes
+
+* add logrocket to segment events (VF-3375) ([#5379](https://github.com/voiceflow/creator-app/issues/5379)) ([d915d6d](https://github.com/voiceflow/creator-app/commit/d915d6df75e62bfc75b572d60377fee7bfc3664b))
+
+
+
+
+
 ## [1.705.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.705.0...@voiceflow/creator-app@1.705.1) (2022-05-03)
 
 

@@ -151,6 +151,7 @@ export { default as jump } from './jump.svg';
 
 // l
 export { default as less } from './less.svg';
+export { default as lex } from './lex.svg';
 export { default as line } from './line.svg';
 export { default as lineCurved } from './line-curved.svg';
 export { default as lineStraight } from './line-straight.svg';
@@ -163,6 +164,7 @@ export { default as loader4 } from './loader-4.svg';
 export { default as lock } from './lock.svg';
 export { default as locked } from './locked.svg';
 export { default as logs } from './logs.svg';
+export { default as luis } from './luis.svg';
 export { default as link } from './regular/link.svg';
 export { default as longArrowLeft } from './solid/long-arrow-left.svg';
 export { default as longArrowRight } from './solid/long-arrow-right.svg';
@@ -182,6 +184,7 @@ export { default as noIntent } from './no-intent.svg';
 export { default as noMatch } from './no-match.svg';
 export { default as noReply } from './no-reply.svg';
 export { default as notifications } from './notifications.svg';
+export { default as nuanceMix } from './nuance-mix.svg';
 
 // o
 export { default as offRadioButton } from './images/icons/off-radio-button.svg';
@@ -211,6 +214,7 @@ export { default as projectDiagram } from './solid/project-diagram.svg';
 
 // r
 export { default as randomLoop } from './random.svg';
+export { default as rasa } from './rasa.svg';
 export { default as receipt } from './receipt.svg';
 export { default as rectangle } from './rectangle.svg';
 export { default as refreshData } from './refresh-data.svg';
@@ -224,6 +228,7 @@ export { default as rocket } from './rocket.svg';
 export { default as random } from './solid/random.svg';
 
 // s
+export { default as salesforce } from './salesforce.svg';
 export { default as sandwichMenu } from './sandwich-menu.svg';
 export { default as save } from './save.svg';
 export { default as saveForLater } from './save-for-later.svg';
@@ -283,6 +288,7 @@ export { default as volume } from './volume.svg';
 
 // w
 export { default as warning } from './warning.svg';
+export { default as watson } from './watson.svg';
 export { default as wind } from './wind.svg';
 
 // y

@@ -6,7 +6,7 @@ import GroupHeaderTitle from './GroupHeaderTitle';
 
 const GroupHeader: React.FC = ({ children }) => {
   return (
-    <BoxFlex pt={12} pb={8}>
+    <BoxFlex pt={16} pb={8}>
       <GroupHeaderTitle>{children}</GroupHeaderTitle>
       <GroupHeaderLine />
     </BoxFlex>

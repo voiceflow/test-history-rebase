@@ -1,4 +1,5 @@
-import { Box, Flex, Text, toast } from '@voiceflow/ui';
+import { BaseModels } from '@voiceflow/base-types';
+import { Box, Flex, pickRandomDefaultColor, Text, toast } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -20,6 +21,10 @@ interface ModelImportProps {
 export const ImportLink = styled(Text)<{ disabled: boolean }>`
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   color: ${({ disabled }) => (disabled ? 'rgba(93, 157, 245, 0.5)' : 'rgba(93, 157, 245, 1)')};
+
+  &:hover {
+    color: #3d82e2 !important;
+  }
 `;
 
 const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
@@ -35,6 +40,9 @@ const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, impo
 
       const importModelResponse: ImportModel = await platformClient.modelImport.import(platform, formData);
       if (importModelResponse) {
+        importModelResponse.slots = importModelResponse.slots?.map((slot: BaseModels.Slot) =>
+          slot.color ? slot : { ...slot, color: pickRandomDefaultColor() }
+        );
         onImportModel(importModelResponse);
       }
 
@@ -71,7 +79,7 @@ const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, impo
           <ImportLink disabled={isImportLoading} fontSize={13} onClick={onUploadClick}>
             {`Import ${importName} NLU model`}
           </ImportLink>
-          <Box color={textColor} pl={8} pr={8}>
+          <Box color="rgba(141, 162, 181, 0.5)" pl={8} pr={8}>
             •
           </Box>
           <Text fontSize={13} color={textColor}>

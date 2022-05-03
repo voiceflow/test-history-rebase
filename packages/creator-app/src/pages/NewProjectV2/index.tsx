@@ -1,5 +1,4 @@
 import { AlexaConstants, AlexaUtils } from '@voiceflow/alexa-types';
-import { Nullable } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants, GoogleUtils } from '@voiceflow/google-types';
 import { Box, toast } from '@voiceflow/ui';
@@ -27,59 +26,7 @@ import NewProjectModalFooter from './components/NewProjectModalFooter';
 import { ChannelSection, InvocationNameSection, LanguageSection, NLUSection } from './components/Section';
 import { DEFAULT_PROJECT_NAME, getDefaultLanguage, getLanguage, getPlatformOrProjectTypeMeta } from './constants';
 import { AnyLanguage, AnyLocale, ImportModel } from './types';
-
-const getDefaultAlexaVoice = (locale: AlexaConstants.Locale) => {
-  return AlexaConstants.DEFAULT_LOCALE_VOICE_MAP[locale] || null;
-};
-
-const getDefaultGoogleVoice = (language?: GoogleConstants.Language, locale?: GoogleConstants.Locale) => {
-  const languageCode = language || (locale && Object.entries(GoogleConstants.LanguageToLocale).find(([_key, value]) => value.includes(locale))?.[0]);
-
-  return GoogleConstants.DEFAULT_LANGUAGE_VOICE_MAP[languageCode as GoogleConstants.Language] || null;
-};
-
-const updateAlexaMeta = async (versionID: string, locales: [AlexaConstants.Locale, ...AlexaConstants.Locale[]], invocationName?: string) => {
-  const defaultVoice = getDefaultAlexaVoice(locales[0]);
-
-  await Promise.all([
-    client.platform.alexa.version.updatePublishing(versionID, {
-      invocationName,
-      invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
-      locales,
-    }),
-    defaultVoice && client.platform.alexa.version.updateSettings(versionID!, { defaultVoice }),
-  ]);
-};
-
-const updateGoogleMeta = async (versionID: string, googleLanguage: GoogleConstants.Language, invocationName?: string) => {
-  const defaultVoice = getDefaultGoogleVoice(googleLanguage) as Nullable<GoogleConstants.Voice>;
-  await Promise.all([
-    client.platform.google.version.updatePublishing(versionID, {
-      locales: GoogleConstants.LanguageToLocale[googleLanguage],
-      displayName: DEFAULT_PROJECT_NAME,
-      pronunciation: invocationName,
-      sampleInvocations: [`Talk to ${invocationName}`],
-    }),
-    defaultVoice && client.platform.google.version.updateSettings(versionID!, { defaultVoice }),
-  ]);
-};
-
-const updateDialogFlowMeta = async (versionID: string, dialogFlowLanguage: DFESConstants.Language) => {
-  await client.platform.dialogflow.version.updatePublishing(versionID, {
-    locales: DFESConstants.LanguageToLocale[dialogFlowLanguage],
-  });
-};
-
-const updateGeneralMeta = async (versionID: string, generalLocale: VoiceflowConstants.Locale) => {
-  const firstAlexaVoice = getDefaultAlexaVoice(generalLocale as unknown as AlexaConstants.Locale);
-  const firstGoogleVoice = !firstAlexaVoice && getDefaultGoogleVoice(undefined, generalLocale as unknown as GoogleConstants.Locale);
-  const defaultVoice = firstAlexaVoice || firstGoogleVoice || undefined;
-
-  await client.platform.general.version.updateSettings(versionID, {
-    locales: [generalLocale],
-    defaultVoice: defaultVoice ? (defaultVoice as unknown as Nullable<GoogleConstants.Voice>) : undefined,
-  });
-};
+import { updatePlatformMetaCalls } from './updatePlatformMeta';
 
 interface NewProjectProps {
   onCreatingProject: (val: boolean) => void;
@@ -99,6 +46,8 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
 
   const createProject = useDispatch(Project.createProject);
   const redirectToCanvas = useDispatch(Router.redirectToCanvas);
+
+  const { updateDialogFlowMeta, updateGeneralMeta, updateAlexaMeta, updateGoogleMeta } = updatePlatformMetaCalls();
 
   const { close: closeProjectCreateModal, data } = useModals<{
     listID?: string;
@@ -241,7 +190,6 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
       <Box fullWidth overflow="auto">
         <NewProjectContainer>
           <ChannelSection channelValue={channel} onChannelSelect={handleChannelSelect} channelError={channelError} />
-
           {isPlatformWithInvocationName(channel) ? (
             <InvocationNameSection
               invocationName={invocationName}
@@ -259,7 +207,6 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
               onImportModel={setImportedModel}
             />
           )}
-
           <LanguageSection
             language={language}
             setLanguage={setLanguage}

@@ -142,6 +142,7 @@ export const getPlatformOrProjectTypeMeta: Partial<
     tooltip: getSelectTooltip('Microsoft Luis', 'Import and export NLU models for Microsoft Luis.'),
     localesText: 'Language',
     disabled: false,
+    icon: 'luis',
     type: VoiceflowConstants.PlatformType.LUIS,
     importMeta: {
       name: 'Luis',
@@ -153,6 +154,7 @@ export const getPlatformOrProjectTypeMeta: Partial<
     tooltip: getSelectTooltip('Rasa', 'Import and export/upload NLU models for Rasa agents.'),
     localesText: 'Language',
     disabled: false,
+    icon: 'rasa',
     type: VoiceflowConstants.PlatformType.RASA,
     importMeta: {
       name: 'Rasa',
@@ -165,6 +167,7 @@ export const getPlatformOrProjectTypeMeta: Partial<
     localesText: 'Language',
     type: VoiceflowConstants.PlatformType.EINSTEIN,
     disabled: false,
+    icon: 'salesforce',
     importMeta: {
       name: 'Einstein',
       fileExtensions: [FileExtension.CSV],
@@ -175,6 +178,7 @@ export const getPlatformOrProjectTypeMeta: Partial<
     tooltip: getSelectTooltip('IBM Watson', 'Import and export/upload NLU models for IBM Watson.'),
     localesText: 'Language',
     disabled: false,
+    icon: 'watson',
     importMeta: {
       name: 'Watson',
       fileExtensions: [FileExtension.JSON],
@@ -186,6 +190,7 @@ export const getPlatformOrProjectTypeMeta: Partial<
     tooltip: getSelectTooltip('Amazon Lex', 'Import and export/upload NLU models for Amazon Lex.'),
     localesText: 'Language',
     disabled: false,
+    icon: 'lex',
     importMeta: {
       name: 'Lex',
       fileExtensions: [FileExtension.ZIP],
@@ -197,6 +202,7 @@ export const getPlatformOrProjectTypeMeta: Partial<
     tooltip: getSelectTooltip('Nuance Mix', 'Import and export/upload NLU models for Nuance Mix.'),
     localesText: 'Language',
     disabled: false,
+    icon: 'nuanceMix',
     type: VoiceflowConstants.PlatformType.NUANCE_MIX,
   },
   /* UPCOMING */
@@ -229,11 +235,11 @@ export const getPlatformOrProjectTypeMeta: Partial<
 
 export const CHANNEL_SECTIONS: Section[] = [
   {
-    label: 'Channel',
+    label: 'Custom',
     options: [getPlatformOrProjectTypeMeta[VoiceflowConstants.ProjectType.CHAT], getPlatformOrProjectTypeMeta[VoiceflowConstants.ProjectType.VOICE]],
   },
   {
-    label: 'One-click',
+    label: 'One-click publish',
     options: [
       getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.ALEXA],
       getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.GOOGLE],

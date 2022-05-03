@@ -486,7 +486,7 @@ function Select({
                         error={error}
                       />
 
-                      <SearchInputIcon icon={clearable ? 'close' : 'caretDown'} size={clearable ? 14 : 10} color="#6e849a" onClick={onIconClick} />
+                      <SearchInputIcon icon={clearable ? 'close' : 'caretDown'} size={clearable ? 14 : 8} color="#6e849a" onClick={onIconClick} />
                     </>
                   )}
 

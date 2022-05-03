@@ -7,12 +7,14 @@ interface ChannelSelectProps {
 }
 
 const SelectTooltip: React.FC<ChannelSelectProps> = ({ header, body }) => (
-  <BoxFlexAlignStart width={200} column>
-    <Text pb="8px" textAlign="start" color="rgba(255, 255, 255, 0.6);">
+  <BoxFlexAlignStart width={200} column py="4px">
+    <Text pb="4px" fontWeight={600} textAlign="start" color="#C0C5C6">
       {header}
     </Text>
 
-    <Text textAlign="start">{body}</Text>
+    <Text textAlign="start" color="#F2F7F7">
+      {body}
+    </Text>
   </BoxFlexAlignStart>
 );
 

@@ -13,7 +13,7 @@ interface ChannelSelectProps {
 const ChannelSelect: React.FC<ChannelSelectProps> = ({ value, onSelect, error }) => {
   const getPrefixIcon = (value?: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType) =>
     value && getPlatformOrProjectTypeMeta[value]?.icon ? (
-      <SvgIcon color={getPlatformOrProjectTypeMeta[value]?.iconColor} icon={getPlatformOrProjectTypeMeta[value]!.icon!} />
+      <SvgIcon size={16} color={getPlatformOrProjectTypeMeta[value]?.iconColor} icon={getPlatformOrProjectTypeMeta[value]!.icon!} />
     ) : undefined;
   return (
     <Select

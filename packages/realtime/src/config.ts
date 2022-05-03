@@ -16,7 +16,6 @@ const CONFIG: Config = {
   // Deployment information
   CLOUD_ENV,
   IS_PRIVATE_CLOUD: NODE_ENV === 'production' && CLOUD_ENV !== 'public',
-  // TODO: undo
   CREATOR_API_ENDPOINT: getRequiredProcessEnv('CREATOR_API_ENDPOINT'),
   ALEXA_SERVICE_ENDPOINT: getRequiredProcessEnv('ALEXA_SERVICE_ENDPOINT'),
   GOOGLE_SERVICE_ENDPOINT,

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.60.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.59.1...@voiceflow/realtime@1.60.0) (2022-05-03)
+
+
+### Features
+
+* use and format dialogflow es built-in intents (VF-1816) ([#5376](https://github.com/voiceflow/creator-app/issues/5376)) ([7f1e9a4](https://github.com/voiceflow/creator-app/commit/7f1e9a4513b2c9cb671888b1cc98a2f5b828d3d2))
+
+
+
+
+
 ## [1.59.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.59.0...@voiceflow/realtime@1.59.1) (2022-05-03)
 
 

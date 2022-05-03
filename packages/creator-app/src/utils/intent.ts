@@ -15,7 +15,13 @@ const generalBuiltInIntentsArray = Object.values(VoiceflowConstants.IntentName) 
 const googleBuiltInIntentsArray = (Object.values(GoogleConstants.GoogleIntent) as string[]).concat(
   Object.values(GoogleConstants.GoogleStatusIntent)
 ) as string[];
-const builtInIntentMap = new Map([...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray, ...googleBuiltInIntentsArray].map((id) => [id, true]));
+const dialogflowESBuiltInIntentsArray = Object.values(DFESConstants.DialogflowESIntent) as string[];
+const builtInIntentMap = new Map(
+  [...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray, ...googleBuiltInIntentsArray, ...dialogflowESBuiltInIntentsArray].map((id) => [
+    id,
+    true,
+  ])
+);
 
 const INTENT_LABELS: Partial<Record<string, string>> = {
   [VoiceflowConstants.IntentName.NONE]: 'Fallback',
@@ -81,6 +87,8 @@ export const filterIntents = <T extends Realtime.Intent>(intents: T[], activeInt
 export const getTruncatedName = Realtime.Utils.platform.createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.GOOGLE]: (name: string) =>
+      Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' '),
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: (name: string) =>
       Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' '),
   },
   (name: string) => name.split('.')[1]
@@ -192,7 +200,7 @@ export const applyPlatformIntentNameFormatting = (name: string, platform: Voicef
 };
 
 export const applyCustomizableBuiltInIntent = (name: string, platform: VoiceflowConstants.PlatformType): string => {
-  if (Realtime.Utils.typeGuards.isVoiceflowPlatform(platform) || Realtime.Utils.typeGuards.isDialogflowPlatform(platform)) {
+  if (Realtime.Utils.typeGuards.isVoiceflowPlatform(platform)) {
     return Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name.toLowerCase()));
   }
   if (Realtime.Utils.typeGuards.isAlexaPlatform(platform)) {
@@ -200,6 +208,11 @@ export const applyCustomizableBuiltInIntent = (name: string, platform: Voiceflow
   }
   if (Realtime.Utils.typeGuards.isGooglePlatform(platform)) {
     return Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' ');
+  }
+  if (Realtime.Utils.typeGuards.isDialogflowPlatform(platform)) {
+    if (name.startsWith('actions.intent.'))
+      return Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' ');
+    return Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name.toLowerCase()));
   }
 
   return removeBuiltInPrefix(name);

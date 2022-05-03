@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.59.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.58.2...@voiceflow/realtime@1.59.0) (2022-05-03)
+
+
+### Features
+
+* ports and migration system (VF-3082) ([#5320](https://github.com/voiceflow/creator-app/issues/5320)) ([bc4925f](https://github.com/voiceflow/creator-app/commit/bc4925f5e3ece85f830339239c375f3e33997a9a)), closes [voiceflow/database-cli#186](https://github.com/voiceflow/database-cli/issues/186) [voiceflow/libs#247](https://github.com/voiceflow/libs/issues/247) [voiceflow/creator-api#960](https://github.com/voiceflow/creator-api/issues/960)
+
+
+
+
+
 ## [1.58.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.58.1...@voiceflow/realtime@1.58.2) (2022-05-02)
 
 **Note:** Version bump only for package @voiceflow/realtime

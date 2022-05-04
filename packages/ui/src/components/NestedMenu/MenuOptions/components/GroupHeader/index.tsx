@@ -1,4 +1,4 @@
-import { BoxFlex } from '@ui/components';
+import { BoxFlex } from '@ui/components/Box';
 import React from 'react';
 
 import GroupHeaderLine from './GroupHeaderLine';

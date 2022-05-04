@@ -10,10 +10,11 @@ import * as examples from '../examples';
 
 const Content = styled.div`
   width: 100%;
-  padding-left: 2em;
+  padding: 0 2em;
   overflow-x: hidden;
   overflow-x: clip;
   overflow-y: auto;
+  background-color: #fafafa;
 `;
 
 const ExampleRoute: React.FC = () => {
@@ -30,7 +31,7 @@ const ExampleRoute: React.FC = () => {
           <Section title={section.title} path={section.path}>
             {section.examples.map((example) => (
               <Example key={example.title} title={example.title}>
-                <example.component />
+                <example.component isPage />
               </Example>
             ))}
           </Section>

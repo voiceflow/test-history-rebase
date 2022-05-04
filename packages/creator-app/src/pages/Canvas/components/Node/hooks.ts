@@ -85,23 +85,20 @@ export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const isEditingMode = useEditingMode();
 
-  const onClick = React.useCallback(
-    (event: React.MouseEvent) => {
-      if (event.defaultPrevented || skipClick?.()) return;
+  const onClick = (event: React.MouseEvent) => {
+    if (event.defaultPrevented || skipClick?.()) return;
 
-      event.preventDefault();
+    event.preventDefault();
 
-      const node = engine.select(CreatorV2.nodeByIDSelector, { id: nodeEntity.nodeID });
-      if (!node) return;
+    const node = engine.select(CreatorV2.nodeByIDSelector, { id: nodeEntity.nodeID });
+    if (!node) return;
 
-      if (!event.shiftKey && node.type === BlockType.COMBINED && node.combinedNodes.length) {
-        engine.setActive(node.combinedNodes[0]);
-      } else {
-        engine.setActive(nodeEntity.nodeID, event.shiftKey);
-      }
-    },
-    [skipClick]
-  );
+    if (!event.shiftKey && node.type === BlockType.COMBINED && node.combinedNodes.length) {
+      engine.setActive(node.combinedNodes[0]);
+    } else {
+      engine.setActive(nodeEntity.nodeID, event.shiftKey);
+    }
+  };
 
   const onDragStart = useEntityDrag(
     {
@@ -117,18 +114,32 @@ export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean
     [isEditingMode, skipDrag]
   );
 
-  const onMouseDown = React.useCallback(
-    (event: React.MouseEvent) => {
-      if (!isEditingMode) return;
+  const onMouseDown = (event: React.MouseEvent) => {
+    if (!isEditingMode) return;
 
-      event.stopPropagation();
-      event.nativeEvent.stopImmediatePropagation();
-    },
-    [isEditingMode]
-  );
+    event.stopPropagation();
+    event.nativeEvent.stopImmediatePropagation();
+  };
+
+  const onMouseUp = (event: React.MouseEvent) => {
+    if (
+      !isEditingMode ||
+      event.shiftKey ||
+      engine.prototype.isActive ||
+      engine.comment.isModeActive ||
+      engine.linkCreation.isDrawing ||
+      engine.groupSelection.isDrawing
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    engine.clearActivation({ skipUrlSync: true });
+  };
 
   return {
     onClick,
+    onMouseUp,
     onDragStart,
     onMouseDown,
   };

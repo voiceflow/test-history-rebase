@@ -13,7 +13,6 @@ const TraceManager: NodeManagerConfig<Realtime.NodeData.Trace> = {
 
   step: ConnectedActionStep,
   label: 'Custom Action',
-  tip: 'mock an example action',
 
   factory: () => ({
     node: {

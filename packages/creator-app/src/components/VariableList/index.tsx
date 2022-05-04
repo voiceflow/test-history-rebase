@@ -35,7 +35,7 @@ const VariableList: React.FC<VariableListProps> = ({ variables, onChange, onChan
             onChange={(text) => handleChange({ name, value: text }, index)}
             disabled={disabled}
           />
-          {canDelete && <SvgIcon icon="itemMinus" size={16} onClick={() => handleDelete(index)} clickable enableOpacity />}
+          {canDelete && <SvgIcon icon="itemMinus" size={16} onClick={() => handleDelete(index)} clickable />}
         </li>
       ))}
     </Container>

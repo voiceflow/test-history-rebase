@@ -4,6 +4,7 @@ import {
   Alert,
   AlertVariant,
   BaseSelectProps,
+  IconButton,
   isNotUIOnlyMenuItemOption,
   isUIOnlyMenuItemOption,
   NestedMenuComponents,
@@ -26,8 +27,6 @@ import { ClassName } from '@/styles/constants';
 import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent, prettifyIntentName, validateIntentName } from '@/utils/intent';
 
 import { Option } from './components';
-
-export { Option as IntentSelectOption } from './components';
 
 interface IntentSelectProps
   extends Omit<
@@ -60,7 +59,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   const platform = useSelector(ProjectV2.active.platformSelector);
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
   const allIntents = useSelector(IntentV2.allPlatformIntentsSelector);
-  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
+  const immModalsV2 = useFeature(FeatureFlag.IMM_MODALS_V2);
   const { open: openCreateIntentModal } = useModals(ModalType.INTENT_CREATE);
 
   const createIntent = useDispatch(Intent.createIntent);
@@ -80,6 +79,12 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         ),
     [intent, options, platform, noBuiltIns]
   );
+
+  const isIntentNameTaken = (searchValue: string) => {
+    const searchValueLower = searchValue.toLowerCase();
+
+    return filteredOptions.some(({ name }) => name.toLowerCase() === searchValueLower);
+  };
 
   const optionLookup = React.useMemo(
     () =>
@@ -106,31 +111,29 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     onChange({ intent: nextIntentID });
   };
 
-  const handleOpenCreateIntentModal = (name?: string) => {
-    openCreateIntentModal({
-      createName: name,
-      onCreate: onSelectIntent,
-    });
-  };
-
   const onCreate = async (name: string) => {
     const preparedName = Utils.string.removeTrailingUnderscores(prettifyIntentName(name));
     const intentByName = filteredOptions.find(({ name }) => Utils.string.removeTrailingUnderscores(name) === preparedName);
 
-    if (intentByName) {
-      return onSelectIntent(intentByName.id);
+    if (!immModalsV2.isEnabled && intentByName) {
+      await onSelectIntent(intentByName.id);
+
+      return;
     }
+
     const intentsOnly = options.filter(isNotUIOnlyMenuItemOption);
 
     const error = validateIntentName(preparedName, intentsOnly, slots);
 
     if (error) {
       toast.error(error);
-    } else if (IMM_MODALS_V2.isEnabled) {
-      handleOpenCreateIntentModal(preparedName);
+    } else if (immModalsV2.isEnabled) {
+      openCreateIntentModal({ createName: preparedName, onCreate: onSelectIntent });
     } else {
       const nextIntentID = await createIntent({ name: preparedName });
+
       await onSelectIntent(nextIntentID);
+
       trackingEvents.trackIntentCreated({ creationType: CanvasCreationType.EDITOR });
     }
   };
@@ -144,14 +147,6 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   const intentID = intent?.id;
   const intentMissing = withMissingAlert && intentID && !optionLookup[intentID] && !isCustomizableBuiltInIntent(intent);
 
-  const footerComponent = IMM_MODALS_V2.isEnabled
-    ? () => (
-        <NestedMenuComponents.FooterActionContainer onClick={() => handleOpenCreateIntentModal()}>
-          Create New Intent
-        </NestedMenuComponents.FooterActionContainer>
-      )
-    : null;
-
   return (
     <>
       <Select
@@ -161,19 +156,32 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         onCreate={onCreate}
         onSelect={onSelectIntent}
         clearable={!!clearable && !!intentID}
-        creatable={creatable}
+        creatable={creatable && (!immModalsV2.isEnabled || !props.inDropdownSearch)}
         className={ClassName.INTENT_SELECT_INPUT}
         searchable
         placeholder={placeholder}
         getOptionValue={(option) => option?.id}
         getOptionLabel={(value) => (value ? optionLookup[value] : undefined)}
         formatInputValue={(value) => applyPlatformIntentNameFormatting(value, platform)}
-        isButtonDisabled={({ value }) => filteredOptions.some(({ name }) => name === value.toLowerCase())}
-        renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue) => (
-          <Option option={option} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />
+        isButtonDisabled={({ value }) => isIntentNameTaken(value)}
+        renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
+          <Option option={option} isFocused={isFocused} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />
         )}
+        renderSearchSuffix={
+          immModalsV2.isEnabled
+            ? ({ searchLabel }) => <IconButton size={16} icon="plus" variant={IconButton.Variant.BASIC} onClick={() => onCreate(searchLabel)} />
+            : null
+        }
         createInputPlaceholder={createInputPlaceholder}
-        renderFooterAction={footerComponent}
+        renderFooterAction={
+          immModalsV2.isEnabled
+            ? ({ searchLabel }) => (
+                <NestedMenuComponents.FooterActionContainer onClick={() => onCreate(searchLabel)}>
+                  Create New Intent
+                </NestedMenuComponents.FooterActionContainer>
+              )
+            : null
+        }
       />
 
       {intentMissing && (
@@ -185,4 +193,6 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   );
 };
 
-export default IntentSelect;
+export default Object.assign(IntentSelect, {
+  Option,
+});

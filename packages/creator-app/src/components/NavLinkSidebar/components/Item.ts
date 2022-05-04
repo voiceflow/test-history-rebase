@@ -27,7 +27,7 @@ const Item = styled(NavLink)<ItemProps>`
 
   &.active {
     color: #5d9df5;
-    font-weight: bold;
+    font-weight: 600;
     pointer-events: none;
   }
 `;

@@ -1,10 +1,11 @@
 import { css, styled, transition } from '@ui/styles';
 
 const AnchorContainer = styled.div<{ opened?: boolean }>`
-  cursor: pointer;
+  ${transition('color')}
   color: #5d9df5;
   font-size: 15px;
-  ${transition('color')}
+  line-height: 1;
+  cursor: pointer;
 
   &:hover {
     color: #4886da;

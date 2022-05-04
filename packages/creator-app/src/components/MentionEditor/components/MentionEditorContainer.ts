@@ -1,5 +1,4 @@
 import { styled } from '@/hocs';
-import { FadeUpDelayed, Slide } from '@/styles/animations';
 
 const MentionEditorContainer = styled.div`
   position: relative;
@@ -12,14 +11,6 @@ const MentionEditorContainer = styled.div`
   /* to override default styling and text jump when switched to editing mode */
   .mentionInput__highlighter {
     border: none !important;
-  }
-
-  .mentionInput__suggestions {
-    ${Slide}
-
-    & > ul {
-      ${FadeUpDelayed}
-    }
   }
 `;
 

@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import cn from 'classnames';
 import React from 'react';
 
-import { BlockType } from '@/constants';
+import { BlockType, MarkupBlockType } from '@/constants';
 import NodeDragTarget from '@/pages/Canvas/components/Node/components/NodeDragTarget';
 import { useNodeDrag } from '@/pages/Canvas/components/Node/hooks';
 import { CANVAS_MARKUP_CREATING_CLASSNAME, ContextMenuTarget } from '@/pages/Canvas/constants';
@@ -36,7 +36,7 @@ const MarkupNode = () => {
     engine.setActive(nodeEntity.nodeID);
   };
 
-  const { markupNode: NodeComponent } = getManager(nodeEntity.nodeType)!;
+  const { markupNode: NodeComponent } = getManager(nodeEntity.nodeType as MarkupBlockType);
 
   // for optimization reason using query selector to filter click events if markup is not opened
   const skipDrag = React.useCallback(() => !!document.getElementsByClassName(CANVAS_MARKUP_CREATING_CLASSNAME).length, []);

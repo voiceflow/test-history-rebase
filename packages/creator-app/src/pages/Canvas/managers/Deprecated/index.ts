@@ -9,7 +9,6 @@ const DeprecatedManager: NodeManagerConfig<Realtime.NodeData.Deprecated> = {
   ...NODE_CONFIG,
 
   label: 'Deprecated',
-  mergeTerminator: true,
 
   step: DeprecatedStep,
   editor: DeprecatedEditor,

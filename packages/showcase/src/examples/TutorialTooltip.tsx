@@ -3,8 +3,12 @@ import React from 'react';
 
 import { createExample, createSection } from './utils';
 
-const standard = createExample('primary', () => (
-  <TutorialTooltip title="Block Tutorial" anchorRenderer={({ isOpen }) => <ClickableText>{isOpen ? 'Close' : 'open'}</ClickableText>}>
+const standard = createExample('primary', ({ isPage }) => (
+  <TutorialTooltip
+    title="Block Tutorial"
+    initialOpened={isPage}
+    anchorRenderer={({ isOpen }) => <ClickableText>{isOpen ? 'Close' : 'open'}</ClickableText>}
+  >
     <Tooltip.Paragraph>Paragraph</Tooltip.Paragraph>
 
     <Tooltip.Section>Section</Tooltip.Section>

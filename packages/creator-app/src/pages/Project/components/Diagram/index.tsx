@@ -55,7 +55,7 @@ const Diagram: React.FC<DiagramProps> = () => {
     <>
       {isCanvasEditable && <DiagramSync />}
 
-      <ManagerProvider value={getManager as any}>
+      <ManagerProvider value={getManager}>
         <ReadOnlyBadge />
 
         {/* always render the canvas, hide with CSS */}

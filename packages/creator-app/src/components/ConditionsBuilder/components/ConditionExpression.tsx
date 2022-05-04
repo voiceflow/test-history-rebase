@@ -54,6 +54,7 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, o
           skipBlurOnUnmount
           fullWidth
         />
+
         <RemoveIcon onClick={onDelete} />
       </BoxFlex>
 

@@ -53,7 +53,7 @@ const EditorHeader: React.FC<ConnectedHeaderProps & HeaderProps> = ({ path = [],
         >
           {(ref, onOpen, isOpened) => (
             <div>
-              <IconButton ref={ref} icon="ellipsis" variant={IconButtonVariant.FLAT} onClick={onOpen} active={isOpened} />
+              <IconButton ref={ref} icon="ellipsis" variant={IconButtonVariant.BASIC} onClick={onOpen} activeClick={isOpened} />
             </div>
           )}
         </Dropdown>

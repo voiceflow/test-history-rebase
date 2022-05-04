@@ -9,7 +9,6 @@ import PaymentStep from './PaymentStep';
 const PaymentManager: NodeManagerConfig<Realtime.NodeData.Payment, Realtime.NodeData.PaymentBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Request payment from user',
   label: 'Purchase',
   platforms: [VoiceflowConstants.PlatformType.ALEXA],
 

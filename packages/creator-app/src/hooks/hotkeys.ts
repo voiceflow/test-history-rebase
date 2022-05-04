@@ -9,19 +9,19 @@ export type Options = null | {
   preventDefault?: boolean;
 };
 
-type Callback = (e: KeyboardEvent) => void;
+type Callback = (event: KeyboardEvent) => void;
 
 export function useHotKeys(key: Hotkey, callback: Callback, options: Options = {}, deps: any[] = []) {
   const memoisedCallback = useMemo(
-    () => (e: KeyboardEvent) => {
+    () => (event: KeyboardEvent) => {
       if (options?.disable) return false;
 
       if (!options?.preventDefault) {
-        return callback(e);
+        return callback(event);
       }
 
-      e.preventDefault();
-      callback(e);
+      event.preventDefault();
+      callback(event);
 
       return false;
     },

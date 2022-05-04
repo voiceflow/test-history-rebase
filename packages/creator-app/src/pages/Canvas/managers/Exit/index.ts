@@ -6,7 +6,6 @@ import ExitStep from './ExitStep';
 const ExitManager: NodeManagerConfig<{}> = {
   ...NODE_CONFIG,
 
-  tip: 'End the skill on the current flow',
   label: 'Exit',
 
   step: ExitStep,

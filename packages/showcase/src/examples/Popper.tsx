@@ -32,7 +32,7 @@ const withFooter = createExample('with footer', () => (
   </Popper>
 ));
 
-const withNav = createExample('with nav', () => (
+const withNav = createExample('with nav', ({ isPage }) => (
   <Popper
     renderNav={() => (
       <>
@@ -55,6 +55,7 @@ const withNav = createExample('with nav', () => (
         </Switch>
       </Popper.Content>
     )}
+    initialOpened={isPage}
   >
     {({ ref, isOpened, onToggle }) => (
       <button ref={ref} onClick={onToggle}>

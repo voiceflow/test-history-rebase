@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 export const {
   getSlotTypes,
@@ -9,4 +9,4 @@ export const {
   isVariable,
   slotToString,
   validateSlotName,
-} = Utils.slot;
+} = Realtime.Utils.slot;

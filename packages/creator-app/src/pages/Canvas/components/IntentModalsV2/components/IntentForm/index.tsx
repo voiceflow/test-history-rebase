@@ -1,18 +1,17 @@
-import { ChatModels } from '@voiceflow/chat-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { FlexCenter, SvgIcon, useOnScreen } from '@voiceflow/ui';
-import { VoiceModels } from '@voiceflow/voice-types';
+import { FlexCenter, SectionV2, SvgIcon, useOnScreen } from '@voiceflow/ui';
+import * as Normal from 'normal-store';
 import React from 'react';
 
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useDispatch, useSelector } from '@/hooks';
 import BuiltInPrompt from '@/pages/Canvas/components/IntentModalsV2/components/components/BuiltInPrompt';
+import IntentEntitiesSection from '@/pages/Canvas/components/IntentModalsV2/components/components/IntentEntitiesSection';
 import { FadeDownContainer } from '@/styles/animations';
 
 import DescriptionSection from '../components/DescriptionSection';
-import EntitiesSection from '../components/EntitiesSection';
 import { JumpToEntitiesBubble } from '../components/index';
 import NameSection from '../components/NameSection';
 import UtteranceSection from '../components/UtteranceSection';
@@ -24,22 +23,21 @@ interface IntentFormProps {
   saveName?: () => void;
   inputs: Realtime.IntentInput[];
   isBuiltIn?: boolean;
-  usedSlots: Realtime.IntentSlot[];
   setInputs: (inputs: Realtime.IntentInput[]) => void;
   intentID?: string;
   withNameSection?: boolean;
   autofocusUtterance?: boolean;
+  intentEntities: Normal.Normalized<Realtime.IntentSlot>;
   withDescriptionSection?: boolean;
   addRequiredSlot: (slotID: string) => void;
   removeRequiredSlot: (slotID: string) => void;
-  updateSlotDialog: (slotID: string, prompt: Array<VoiceModels.IntentPrompt<string> & ChatModels.Prompt>) => void;
+  updateSlotDialog: (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => void;
 }
 
 const IntentForm: React.FC<IntentFormProps> = ({
   name,
   setName,
   saveName,
-  usedSlots,
   isBuiltIn,
   withNameSection = true,
   withDescriptionSection = false,
@@ -47,6 +45,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
   autofocusUtterance,
   inputs,
   setInputs,
+  intentEntities,
   addRequiredSlot,
   removeRequiredSlot,
   updateSlotDialog,
@@ -56,11 +55,11 @@ const IntentForm: React.FC<IntentFormProps> = ({
   const patchIntent = useDispatch(Intent.patchIntent);
 
   const [showUtteranceSection, setShowUtteranceSection] = React.useState(false);
-  const entitiesRef = React.useRef<Nullable<HTMLDivElement>>(null);
-  const isEntitiesVisible = useOnScreen(entitiesRef, true);
+  const entitiesDividerRef = React.useRef<Nullable<HTMLHRElement>>(null);
+  const isEntitiesVisible = useOnScreen(entitiesDividerRef, true);
 
   const scrollToEntities = () => {
-    entitiesRef.current?.scrollIntoView({ behavior: 'smooth' });
+    entitiesDividerRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   React.useEffect(() => {
@@ -80,12 +79,13 @@ const IntentForm: React.FC<IntentFormProps> = ({
 
       {!isBuiltIn && (
         <>
-          <div ref={entitiesRef} />
-          <EntitiesSection
-            updateSlotDialog={updateSlotDialog}
-            removeRequiredSlot={removeRequiredSlot}
-            addRequiredSlot={addRequiredSlot}
-            usedSlots={usedSlots}
+          <SectionV2.Divider ref={entitiesDividerRef} />
+
+          <IntentEntitiesSection
+            onAddRequired={addRequiredSlot}
+            intentEntities={intentEntities}
+            onChangeDialog={updateSlotDialog}
+            onRemoveRequired={removeRequiredSlot}
           />
         </>
       )}

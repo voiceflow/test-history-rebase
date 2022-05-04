@@ -37,7 +37,7 @@ const VariableStatesManagerModal: React.FC = () => {
 
   React.useEffect(() => {
     if (variableStates.length === 0) {
-      close();
+      close?.();
     }
   }, [variableStates]);
 
@@ -60,19 +60,12 @@ const VariableStatesManagerModal: React.FC = () => {
             />
             <Box mr="16px" ml="24px">
               <TippyTooltip html={<div>Edit state</div>}>
-                <SvgIcon icon="editName" size={16} color="#6e849a" clickable enableOpacity onClick={() => handleEditState(variableStateID)} />
+                <SvgIcon icon="editName" size={16} color="#6e849a" clickable onClick={() => handleEditState(variableStateID)} />
               </TippyTooltip>
             </Box>
             <Box>
               <TippyTooltip html={<div>Delete</div>}>
-                <SvgIcon
-                  icon="activeDelete"
-                  size={16}
-                  color="#6e849a"
-                  clickable
-                  enableOpacity
-                  onClick={() => handleVariableStateDelete(variableStateID)}
-                />
+                <SvgIcon icon="activeDelete" size={16} color="#6e849a" onClick={() => handleVariableStateDelete(variableStateID)} clickable />
               </TippyTooltip>
             </Box>
           </FlexCenter>

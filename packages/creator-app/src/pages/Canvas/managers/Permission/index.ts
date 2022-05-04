@@ -9,7 +9,6 @@ import PermissionStep from './PermissionStep';
 const PermissionManager: NodeManagerConfig<Realtime.NodeData.Permission, Realtime.NodeData.PermissionBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Ask users to enable permissions (User Info, Reminders, etc.)',
   label: 'Permissions',
   platforms: [VoiceflowConstants.PlatformType.ALEXA],
 

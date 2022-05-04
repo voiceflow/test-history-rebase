@@ -1,4 +1,5 @@
 import { IS_TEST } from '@ui/config';
+import { IconVariant } from '@ui/constants';
 import { ClassName } from '@ui/styles/constants';
 import * as ICONS from '@ui/svgs';
 import cn from 'classnames';
@@ -12,15 +13,15 @@ export { IconVariant } from '@ui/constants';
 
 export type Icon = keyof typeof ICONS;
 
-export type SvgIconProps = Partial<SvgIconContainerProps> & {
+export interface SvgIconProps extends Partial<SvgIconContainerProps> {
   id?: string;
   icon: Icon | React.ComponentType;
+  style?: React.CSSProperties;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
+  className?: string;
   onMouseEnter?: React.MouseEventHandler<HTMLSpanElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLSpanElement>;
-  className?: string;
-  style?: React.CSSProperties;
-};
+}
 
 const SvgIcon: React.ForwardRefRenderFunction<HTMLSpanElement, SvgIconProps> = (
   { icon, size = 16, color = 'currentColor', className, ...props },
@@ -49,4 +50,9 @@ const SvgIcon: React.ForwardRefRenderFunction<HTMLSpanElement, SvgIconProps> = (
   );
 };
 
-export default React.memo(React.forwardRef(SvgIcon));
+export default Object.assign(React.memo(React.forwardRef(SvgIcon)), {
+  ICONS,
+  Variant: IconVariant,
+
+  Container: SvgIconContainer,
+});

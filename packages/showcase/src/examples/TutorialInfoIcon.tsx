@@ -3,8 +3,8 @@ import React from 'react';
 
 import { createExample, createSection } from './utils';
 
-const standard = createExample('primary', () => (
-  <TutorialInfoIcon>
+const standard = createExample('primary', ({ isPage }) => (
+  <TutorialInfoIcon tooltipProps={{ initialOpened: isPage }}>
     <Tooltip.Paragraph>Paragraph</Tooltip.Paragraph>
 
     <Tooltip.Section>Section</Tooltip.Section>

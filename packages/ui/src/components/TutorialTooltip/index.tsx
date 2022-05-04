@@ -4,7 +4,7 @@ import React from 'react';
 
 import { AnchorContainer } from './components';
 
-export interface TutorialTooltipProps extends Pick<TooltipProps, 'placement' | 'portalNode'> {
+export interface TutorialTooltipProps extends Pick<TooltipProps, 'placement' | 'portalNode' | 'initialOpened'> {
   title?: React.ReactNode;
   helpTitle?: React.ReactNode;
   helpMessage?: React.ReactNode;
@@ -19,12 +19,14 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
   helpTitle = 'Still having trouble?',
   portalNode,
   helpMessage,
+  initialOpened,
   anchorRenderer,
   contentBottomUnits = 3,
 }) => (
   <Tooltip
     placement={placement}
     portalNode={portalNode}
+    initialOpened={initialOpened}
     anchorRenderer={({ ref, isOpen, onToggle }) => (
       <AnchorContainer opened={isOpen} onClick={stopPropagation(onToggle)} ref={ref}>
         {anchorRenderer({ isOpen })}

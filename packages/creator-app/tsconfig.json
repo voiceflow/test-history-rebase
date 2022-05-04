@@ -2,6 +2,7 @@
   "extends": "@voiceflow/tsconfig/web.json",
   "compilerOptions": {
     "allowJs": true,
+    "checkJs": false,
     "isolatedModules": false,
     "lib": ["es2019", "dom", "es2020.string", "dom.iterable"],
     "baseUrl": "..",

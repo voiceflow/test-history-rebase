@@ -3,10 +3,10 @@ import { createPortal } from 'react-dom';
 // eslint-disable-next-line xss/no-mixed-html
 export const portalRootNode = (document.querySelector('#root') || document.body) as HTMLElement; // for tests
 
-export type PortalProps = {
-  portalNode?: HTMLElement;
-};
+export interface PortalProps {
+  portalNode?: HTMLElement | null;
+}
 
-const Portal: React.FC<PortalProps> = ({ children, portalNode = portalRootNode }) => createPortal(children, portalNode);
+const Portal: React.FC<PortalProps> = ({ children, portalNode }) => createPortal(children, portalNode ?? portalRootNode);
 
 export default Portal;

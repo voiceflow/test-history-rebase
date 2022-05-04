@@ -29,7 +29,7 @@ const ExportCanvas: React.FC = () => {
     <ProjectProvider platform={platform} projectType={projectType}>
       <PresentationModeProvider>
         <MarkupProvider>
-          <ManagerProvider value={getManager as any}>
+          <ManagerProvider value={getManager}>
             <CanvasProviders key={engineKey} engine={engine}>
               <ExportGlobalStyle />
               <ExportWatermark isOnPaidPlan={!!isOnPaidPlan} />

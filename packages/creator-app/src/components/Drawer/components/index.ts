@@ -1,3 +1,3 @@
-export { default as DrawerClosableArea } from './DrawerClosableArea';
-export { default as DrawerCloseIcon } from './DrawerCloseIcon';
-export { default as DrawerContainer } from './DrawerContainer';
+export { default as ClosableArea } from './ClosableArea';
+export { default as CloseIcon } from './CloseIcon';
+export { default as Container } from './Container';

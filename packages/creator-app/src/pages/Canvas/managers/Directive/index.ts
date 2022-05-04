@@ -8,7 +8,6 @@ import DirectiveStep from './DirectiveStep';
 const DirectiveManager: NodeManagerConfig<Realtime.NodeData.Directive, Realtime.NodeData.DirectiveBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'send directive to alexa',
   label: 'Directive',
 
   step: DirectiveStep,

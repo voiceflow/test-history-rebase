@@ -9,11 +9,7 @@ import { EDITORS_BY_PATH } from './subeditors';
 const CaptureV2Manager: NodeManagerConfig<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Capture what the user says',
   label: 'Capture',
-  reprompt: true,
-
-  mergeTerminator: true,
 
   step: CaptureStepV2,
   editor: CaptureEditorV2,

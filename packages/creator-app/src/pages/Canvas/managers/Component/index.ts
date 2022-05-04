@@ -8,7 +8,6 @@ import { NODE_CONFIG } from './constants';
 const ComponentManager: NodeManagerConfig<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Organize your project into manageable sections or perform computations',
   label: 'Flow',
 
   step: ComponentStep,

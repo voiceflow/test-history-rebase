@@ -36,7 +36,7 @@ export const LeftPanelText = styled.p`
   margin: 0 auto;
   padding: 0.125rem 0.75rem;
   color: #fff;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 0.75em;
   white-space: nowrap;
   text-transform: uppercase;

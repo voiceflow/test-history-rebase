@@ -153,21 +153,22 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, o
   return (
     <>
       <div ref={stickyTopRef} />
+
       <Section
         suffix={
           <TippyTooltip title="Bulk Import">
             <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
           </TippyTooltip>
         }
-        customContentStyling={{ marginBottom: intentUtterances.length ? 25 : 8 }}
+        customContentStyling={{ marginBottom: intentUtterances.length ? 25 : 8, padding: 0 }}
         header={
           <>
             Utterances
             <Box marginLeft={16} display="inline-block" position="relative" bottom="3px">
               <StrengthGauge
-                strengthTooltips={{ [StrengthLevel.NOT_SET]: 'No utterances' }}
                 width={40}
                 strength={determineStrength(intentUtterances.length)}
+                strengthTooltips={{ [StrengthLevel.NOT_SET]: 'No utterances' }}
               />
             </Box>
           </>
@@ -187,7 +188,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, o
           <ListManagerWrapper>
             <ListManager
               renderList={({ mapManaged, itemRenderer }) => (
-                <Box overflow="auto" mr={-12} pt={!isValidUtterance && !intentUtterances.length ? 8 : 21} style={{ ...utteranceListStyling }}>
+                <Box pt={!isValidUtterance && !intentUtterances.length ? 8 : 21} px={32} style={{ ...utteranceListStyling }}>
                   {mapManaged(itemRenderer)}
                 </Box>
               )}
@@ -221,7 +222,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, o
           </ListManagerWrapper>
 
           {intentUtterances.length > MAX_VISIBLE_UTTERANCES && (
-            <Box color="#62778c" pt={16}>
+            <Box color="#62778c" pt={16} px={32}>
               {!showAllUtterances ? (
                 <ClickableText onClick={() => setShowAllUtterances(true)}>{`Show all utterances (${intentUtterances.length})`}</ClickableText>
               ) : (

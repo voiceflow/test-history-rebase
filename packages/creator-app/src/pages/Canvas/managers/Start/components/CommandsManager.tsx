@@ -28,7 +28,7 @@ const CommandsManager: React.FC<CommandsManagerProps> = ({ nodeID }) => {
             isLink
             header={name}
             prefix={<Badge>{index + 1}</Badge>}
-            onClick={() => engine?.focus.set(nodeID)}
+            onClick={() => engine?.setActive(nodeID)}
             dividers={index !== 0}
             headerVariant={HeaderVariant.LINK}
           />

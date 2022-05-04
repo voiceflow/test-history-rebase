@@ -1,26 +1,24 @@
 import { stopPropagation } from '@ui/utils/dom';
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 import ReactToggle from 'react-toggle';
 
+import { Size } from './constants';
 import ToggleContainer from './ToggleContainer';
 
-export enum ToggleSize {
-  SMALL = 'small',
-  NORMAL = 'normal',
-  EXTRA_SMALL = 'extra-small',
-}
-
 interface ToggleProps {
-  size?: ToggleSize;
+  size?: Size;
+  name?: string;
   checked?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  name?: string;
 }
 
-const Toggle = React.forwardRef<HTMLDivElement | ReactToggle, ToggleProps>(({ size = ToggleSize.NORMAL, ...props }, ref) => (
-  <ToggleContainer size={size}>
-    <ReactToggle {...props} ref={ref as React.LegacyRef<ReactToggle>} onClick={stopPropagation()} icons={false} />
-  </ToggleContainer>
-));
+const Toggle = React.forwardRef<HTMLDivElement | ReactToggle, ToggleProps>(
+  ({ size = Size.NORMAL, onChange = Utils.functional.noop, ...props }, ref) => (
+    <ToggleContainer size={size}>
+      <ReactToggle {...props} onChange={onChange} ref={ref as React.LegacyRef<ReactToggle>} onClick={stopPropagation()} icons={false} />
+    </ToggleContainer>
+  )
+);
 
-export default Toggle;
+export default Object.assign(Toggle, { Size });

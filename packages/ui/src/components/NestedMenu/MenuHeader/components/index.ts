@@ -5,7 +5,7 @@ import AutosizeInput from 'react-input-autosize';
 export { default as MenuHeaderWrapper } from './MenuHeaderWrapper';
 
 interface MenuInputProps {
-  fullWidth?: boolean;
+  $fullWidth?: boolean;
 }
 
 export const MenuInput = styled(AutosizeInput)<MenuInputProps>`
@@ -20,8 +20,8 @@ export const MenuInput = styled(AutosizeInput)<MenuInputProps>`
     padding-left: 0px;
   }
 
-  ${({ fullWidth }) =>
-    fullWidth &&
+  ${({ $fullWidth }) =>
+    $fullWidth &&
     css`
       input {
         width: 100% !important;

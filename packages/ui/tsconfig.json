@@ -2,18 +2,14 @@
   "extends": "@voiceflow/tsconfig/web.json",
   "compilerOptions": {
     "target": "es5",
+    "checkJs": false,
     "skipLibCheck": true,
     "downlevelIteration": true,
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "@ui/*": [
-        "src/*"
-      ]
+      "@ui/*": ["src/*"]
     }
   },
-  "exclude": [
-    "node_modules/**/*",
-    "build/**/*"
-  ]
+  "exclude": ["node_modules/**/*", "build/**/*"]
 }

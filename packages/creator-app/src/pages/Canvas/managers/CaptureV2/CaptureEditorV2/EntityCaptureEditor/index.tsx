@@ -4,7 +4,6 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import OverflowMenu from '@/components/OverflowMenu';
-import { getProjectTypeNewSlotsCreator } from '@/ducks/intent/utils';
 import { MapManaged, useManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { useIntentScope, useNoMatchOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
@@ -31,7 +30,7 @@ const EntityCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.Node
   };
 
   const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(slots, updateSlots, {
-    factory: () => getProjectTypeNewSlotsCreator(projectType)(''),
+    factory: () => Realtime.Utils.slot.intentSlotFactoryCreator(projectType)({ id: '' }),
     autosave: false,
   });
 

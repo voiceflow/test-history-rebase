@@ -3,13 +3,14 @@ import React from 'react';
 
 import { createExample, createSection } from './utils';
 
-const standard = createExample('primary', () => (
+const standard = createExample('primary', ({ isPage }) => (
   <Tooltip
     anchorRenderer={({ ref, onToggle, isOpen }) => (
       <button ref={ref} onClick={onToggle}>
         Click me to {isOpen ? 'Close' : 'Open'}
       </button>
     )}
+    initialOpened={isPage}
   >
     <Tooltip.Title>Tooltip Title</Tooltip.Title>
 

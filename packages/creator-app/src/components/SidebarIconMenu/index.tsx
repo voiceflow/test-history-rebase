@@ -4,7 +4,6 @@ import React from 'react';
 
 import { useTheme } from '@/hooks';
 import { ClassName } from '@/styles/constants';
-import { SlideOutDirection } from '@/styles/transitions';
 
 import Drawer from '../Drawer';
 import { Container, IconContainer, Item, StatusBubble } from './components';
@@ -63,7 +62,7 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
   };
 
   return (
-    <Drawer as="section" open={open} width={theme.components.sidebarIconMenu.width} zIndex={25} direction={SlideOutDirection.RIGHT}>
+    <Drawer open={open} width={theme.components.sidebarIconMenu.width} zIndex={25} direction={Drawer.Direction.RIGHT}>
       <Container className={cn(ClassName.SIDEBAR_ICON_MENU, open && `${ClassName.SIDEBAR_ICON_MENU}--opened`)}>
         {options.map(renderOption)}
 

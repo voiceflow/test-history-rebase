@@ -1,7 +1,8 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { matchPath, useHistory } from 'react-router-dom';
 
 import { FeatureFlag } from '@/config/features';
+import { Path } from '@/config/routes';
 import { DiagramLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
 import { useFeature, useRAF, useRegistration } from '@/hooks';
@@ -47,17 +48,18 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const selectionSetTargetsContext = React.useContext(SelectionSetTargetsContext);
 
   React.useEffect(() => {
-    const { nodeID } = Query.parse(history.location.search);
+    const nodeMatch = matchPath<{ nodeID: string }>(history.location.pathname, { path: Path.CANVAS_NODE });
     const rootNodes = engine.getRootNodeIDs();
+    const query = Query.parse(history.location.search);
 
     scheduler(() => {
-      if (nodeID) {
-        history.push({ search: '' });
+      const nodeID = nodeMatch?.params.nodeID ?? query.nodeID;
 
+      if (nodeID) {
         if (nodeID === 'start') {
-          engine.focusStart({ open: true });
+          engine.focusStart({ open: true, skipURLSync: !!nodeMatch?.params.nodeID });
         } else {
-          engine.focusNode(nodeID, { open: true });
+          engine.focusNode(nodeID, { open: true, skipURLSync: !!nodeMatch?.params.nodeID });
         }
       } else if (rootNodes.length === 1 && !engine.comment.isModeActive) {
         engine.centerNode(rootNodes[0]);

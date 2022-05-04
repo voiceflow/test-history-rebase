@@ -1,11 +1,11 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, ErrorMessage, Tag } from '@voiceflow/ui';
 import React from 'react';
 import { withProps } from 'recompose';
 
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
 import ListManager from '@/components/ListManager';
+import PromptForm from '@/components/PromptForm';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import Utterance from '@/components/Utterance';
 import { NamespaceProvider } from '@/contexts';
@@ -19,18 +19,10 @@ import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { slotToString } from '@/utils/slot';
 import { isAlexaPlatform, isVoiceflowPlatform } from '@/utils/typeGuards';
 
-import {
-  ChatPromptForm,
-  ResponseUtterancesTooltip,
-  SlotConfirmationTooltip,
-  SlotPromptTooltip,
-  SlotRequiredMessage,
-  VoicePromptForm,
-} from './components';
+import { ResponseUtterancesTooltip, SlotConfirmationTooltip, SlotPromptTooltip, SlotRequiredMessage } from './components';
 
-function IntentSlotForm({ slot, platform, projectType, intentSlot, slotsMap, intent, standalone = false, patchIntentSlot, updateIntentSlotDialog }) {
+function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalone = false, patchIntentSlot, updateIntentSlotDialog }) {
   const isAlexa = isAlexaPlatform(platform);
-  const isChat = Realtime.Utils.typeGuards.isChatProjectType(projectType);
   const isGeneral = isVoiceflowPlatform(platform);
   const utteranceRef = React.useRef();
   const {
@@ -102,21 +94,12 @@ function IntentSlotForm({ slot, platform, projectType, intentSlot, slotsMap, int
         >
           <Section header="Entity Reprompt" tooltip={<SlotPromptTooltip />} isNested dividerIsNested>
             <FormControl>
-              {isChat ? (
-                <ChatPromptForm
-                  slots={variablesSlots}
-                  prompt={prompt}
-                  onChange={onChangePrompt}
-                  placeholder="What question will we ask the user to fill this entity?"
-                />
-              ) : (
-                <VoicePromptForm
-                  slots={variablesSlots}
-                  prompt={prompt}
-                  onChange={onChangePrompt}
-                  placeholder="What question will we ask the user to fill this entity?"
-                />
-              )}
+              <PromptForm
+                slots={variablesSlots}
+                prompt={prompt}
+                onChange={onChangePrompt}
+                placeholder="What question will we ask the user to fill this entity?"
+              />
             </FormControl>
 
             {(isAlexa || isGeneral) && (
@@ -192,7 +175,7 @@ function IntentSlotForm({ slot, platform, projectType, intentSlot, slotsMap, int
               collapseVariant={SectionToggleVariant.TOGGLE}
             >
               <FormControl>
-                <VoicePromptForm
+                <PromptForm.VoiceForm
                   slots={variablesSlots}
                   prompt={confirm}
                   onChange={onChangeConfirm}

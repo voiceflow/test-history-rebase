@@ -13,14 +13,26 @@ const CreateModal: React.FC = () => {
 
   const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
 
-  const { usedSlots, reset, cancel, creating, updateSlotDialog, onCreate, name, setName, inputs, setInputs, addRequiredSlot, removeRequiredSlot } =
-    useCreateIntent({
-      initialName: data.createName,
-      onCreate: (id: string) => {
-        data.onCreate?.(id);
-        close();
-      },
-    });
+  const {
+    intentEntities,
+    reset,
+    cancel,
+    creating,
+    updateSlotDialog,
+    onCreate,
+    name,
+    setName,
+    inputs,
+    setInputs,
+    addRequiredSlot,
+    removeRequiredSlot,
+  } = useCreateIntent({
+    initialName: data.createName,
+    onCreate: (id: string) => {
+      data.onCreate?.(id);
+      close();
+    },
+  });
 
   useDidUpdateEffect(() => {
     if (isInStack) {
@@ -51,7 +63,7 @@ const CreateModal: React.FC = () => {
               withDescriptionSection={false}
               autofocusUtterance
               updateSlotDialog={updateSlotDialog}
-              usedSlots={usedSlots}
+              intentEntities={intentEntities}
             />
           </Box>
         </TextEditorVariablesPopoverProvider>

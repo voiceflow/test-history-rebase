@@ -1,9 +1,10 @@
+import { Utils } from '@voiceflow/common';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
 
-export type ModalContextType<T extends object = object> = null | {
+export interface ModalContextType<T extends object = object> {
   fade: boolean;
   open: (id: ModalType, data: object) => void;
   close: (id: ModalType) => void;
@@ -12,9 +13,17 @@ export type ModalContextType<T extends object = object> = null | {
   openedId?: ModalType;
   modalData: T;
   stackModalIds: ModalType[];
-};
+}
 
-export const ModalsContext = React.createContext<ModalContextType>(null);
+export const ModalsContext = React.createContext<ModalContextType>({
+  fade: false,
+  open: Utils.functional.noop,
+  close: Utils.functional.noop,
+  update: Utils.functional.noop,
+  toggle: Utils.functional.noop,
+  modalData: {},
+  stackModalIds: [],
+});
 
 export interface ModalStackFrame {
   id: ModalType;

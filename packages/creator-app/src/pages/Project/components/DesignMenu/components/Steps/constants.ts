@@ -16,7 +16,7 @@ export interface MenuStep {
 }
 
 const createMenuStep = (
-  type: Exclude<Realtime.BlockType, Realtime.RootOrMarkupBlockType | Realtime.DeprecatedBlockType>,
+  type: Realtime.StepBlockType,
   { publicOnly, factoryData }: { publicOnly?: boolean; factoryData?: Realtime.NodeData<any> } = {}
 ): MenuStep => {
   const manager = getManager(type);

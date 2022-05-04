@@ -1,14 +1,12 @@
-import { ChatModels } from '@voiceflow/chat-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
-import { VoiceModels } from '@voiceflow/voice-types';
 import _differenceWith from 'lodash/differenceWith';
 import _isEqual from 'lodash/isEqual';
-import { normalize } from 'normal-store';
+import * as Normal from 'normal-store';
 import { useCallback, useMemo, useState } from 'react';
 
 import * as Intent from '@/ducks/intent';
-import { getProjectTypeNewSlotsCreator, getUniqSlots } from '@/ducks/intent/utils';
+import { getUniqSlots } from '@/ducks/intent/utils';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useSelector } from '@/hooks';
@@ -27,8 +25,8 @@ interface CreateIntentProps {
   setInputs: (inputs: Realtime.IntentInput[]) => void;
   addRequiredSlot: (slotID: string) => void;
   removeRequiredSlot: (slotID: string) => void;
-  updateSlotDialog: (slotID: string, prompt: Array<VoiceModels.IntentPrompt<any> & ChatModels.Prompt>) => void;
-  usedSlots: Realtime.IntentSlot[];
+  updateSlotDialog: (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => void;
+  intentEntities: Normal.Normalized<Realtime.IntentSlot>;
   cancel: () => void;
   reset: () => void;
   creating: boolean;
@@ -39,138 +37,118 @@ export const useCreateIntent = ({ initialName, onCreate }: useCreateIntentProps)
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectMeta = useSelector(ProjectV2.active.metaSelector);
 
-  const newSlotsCreator = getProjectTypeNewSlotsCreator(projectMeta.type);
+  const intentSlotFactory = Realtime.Utils.slot.intentSlotFactoryCreator(projectMeta.type);
 
   const [name, setName] = useState<string>(initialName || '');
   const [inputs, setInputs] = useState<Realtime.IntentInput[]>([]);
-  const [usedSlots, setUsedSlots] = useState<Realtime.IntentSlot[]>([]);
+  const [intentEntities, setIntentEntities] = useState<Normal.Normalized<Realtime.IntentSlot>>(() => Normal.createEmpty());
   const [creating, setCreating] = useState(false);
 
   const createIntent = useDispatch(Intent.createIntent);
-
-  const currentUsedSlotIDs = useMemo(() => usedSlots.map(({ id }) => id), [usedSlots]);
   const allIntentNames = useMemo(() => allIntents.map((intent) => intent.name), [allIntents]);
 
   const reset = () => {
     setName('');
     setInputs([]);
-    setUsedSlots([]);
+    setIntentEntities(Normal.createEmpty());
     setCreating(false);
   };
 
   const handleSetInputs = useCallback(
     (newInputs: Realtime.IntentInput[]) => {
-      const newIntentSlots = getUniqSlots(newInputs).reduce<Realtime.IntentSlot[]>(
-        (slots, slotId) => (currentUsedSlotIDs.includes(slotId) ? slots : [...slots, newSlotsCreator(slotId)]),
+      const newIntentEntities = getUniqSlots(newInputs).reduce<Realtime.IntentSlot[]>(
+        (slots, slotID) => (Normal.hasOne(intentEntities, slotID) ? slots : [...slots, intentSlotFactory({ id: slotID })]),
         []
       );
 
       const newInputSlots = getUniqSlots(newInputs);
       const oldInputSlots = getUniqSlots(inputs);
       const slotsToRemove = _differenceWith(oldInputSlots, newInputSlots, _isEqual);
-      const newUsedSlots = [...usedSlots, ...newIntentSlots].filter((slot) => !slotsToRemove.includes(slot.id));
-      setUsedSlots(newUsedSlots);
+      const entitiesToSet = [...Normal.denormalize(intentEntities), ...newIntentEntities].filter((slot) => !slotsToRemove.includes(slot.id));
+
+      setIntentEntities(Normal.normalize(entitiesToSet));
       setInputs(newInputs);
     },
-    [currentUsedSlotIDs, usedSlots, inputs]
+    [intentEntities, inputs]
   );
 
   const finalizeIntentCreate = useCallback(async () => {
     if (creating) return;
+
     if (allIntentNames.includes(name)) {
       toast.error(`'${name}' is already being used, please use another name`);
       return;
     }
 
     setCreating(true);
-    const newIntent = {
-      name,
-      inputs,
-      slots: normalize(usedSlots),
-    } as Partial<Realtime.Intent>;
+
     try {
+      const newIntent = {
+        name,
+        slots: intentEntities,
+        inputs,
+      } as Partial<Realtime.Intent>;
+
       const intentID = await createIntent(newIntent);
+
       onCreate?.(intentID);
       reset();
     } catch (e) {
       toast.error(e);
     }
-  }, [creating, allIntentNames, name, inputs, usedSlots, onCreate]);
+  }, [creating, allIntentNames, name, inputs, intentEntities, onCreate]);
 
   const cancel = () => {
     reset();
   };
 
-  const updateSlot = useCallback(
-    (slotID: string, data: Partial<Realtime.IntentSlot>) => {
-      const updatedUsedSlots = usedSlots.map((slot) => {
-        if (slot.id === slotID) {
-          return {
-            ...slot,
-            ...data,
-          };
-        }
-        return slot;
-      }) as Realtime.IntentSlot[];
-      setUsedSlots(updatedUsedSlots);
-    },
-    [usedSlots]
-  );
+  const updateSlot = useCallback((slotID: string, data: Partial<Realtime.IntentSlot>) => {
+    setIntentEntities((prevUsedSlots) => Normal.patchOne(prevUsedSlots, slotID, data));
+  }, []);
 
-  const addRequiredSlot = useCallback(
-    (slotID: string) => {
-      if (currentUsedSlotIDs.includes(slotID)) {
-        let tempSlot = {};
-        // Move updated slot to end of array
-        const filteredSlots = usedSlots.filter((slot) => {
-          if (slot.id === slotID) {
-            tempSlot = slot;
-            return false;
-          }
-          return true;
-        });
-        setUsedSlots([...filteredSlots, { ...tempSlot, required: true }] as Realtime.IntentSlot[]);
-      } else {
-        const newIntentSlot = newSlotsCreator(slotID);
-        setUsedSlots([...usedSlots, { ...newIntentSlot, required: true }]);
+  const addRequiredSlot = useCallback((slotID: string) => {
+    setIntentEntities((prevUsedSlots) => {
+      if (Normal.hasOne(prevUsedSlots, slotID)) {
+        return Normal.patchOne(prevUsedSlots, slotID, { required: true });
       }
-    },
-    [currentUsedSlotIDs, usedSlots, updateSlot]
-  );
+
+      return Normal.appendOne(prevUsedSlots, slotID, { ...intentSlotFactory({ id: slotID }), required: true });
+    });
+  }, []);
 
   const removeRequiredSlot = useCallback(
     (slotID: string) => {
       const oldInputSlots = getUniqSlots(inputs);
+
       if (oldInputSlots.includes(slotID)) {
         updateSlot(slotID, { required: false });
       } else {
-        const newUsedSlots = usedSlots.filter((slot) => slot.id !== slotID);
-        setUsedSlots(newUsedSlots);
+        setIntentEntities((prevUsedSlots) => Normal.removeOne(prevUsedSlots, slotID));
       }
     },
-    [updateSlot, inputs, usedSlots]
+    [updateSlot, inputs]
   );
 
-  const updateSlotDialog = useCallback(
-    (slotID: string, prompt: Array<VoiceModels.IntentPrompt<any> & ChatModels.Prompt>) => {
-      // Currently, we only allow adding prompt while making a new intent
-      updateSlot(slotID, { dialog: { prompt, confirm: [], utterances: [], confirmEnabled: false } } as Partial<Realtime.IntentSlot>);
-    },
-    [updateSlot]
-  );
+  const updateSlotDialog = useCallback((slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => {
+    setIntentEntities((prevUsedSlots) =>
+      Normal.patchOne(prevUsedSlots, slotID, {
+        dialog: { ...Normal.getOne(prevUsedSlots, slotID)?.dialog, ...dialog },
+      } as Partial<Realtime.IntentSlot>)
+    );
+  }, []);
 
   return {
     name,
+    reset,
+    inputs,
+    cancel,
     setName: (name: string) => setName(applyPlatformIntentNameFormatting(name, platform)),
     onCreate: finalizeIntentCreate,
-    inputs,
-    setInputs: handleSetInputs,
-    addRequiredSlot,
-    removeRequiredSlot,
-    updateSlotDialog,
-    usedSlots,
-    cancel,
-    reset,
     creating,
+    setInputs: handleSetInputs,
+    intentEntities,
+    addRequiredSlot,
+    updateSlotDialog,
+    removeRequiredSlot,
   };
 };

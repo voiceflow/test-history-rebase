@@ -111,9 +111,7 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
   }, []);
 
   const onContainerDoubleClick = React.useCallback(() => {
-    if (editable) {
-      return;
-    }
+    if (editable) return;
 
     cache.current.doubleClicked = true;
 
@@ -171,7 +169,7 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
 
   React.useEffect(() => {
     if (isNew && isFocused && isActivated && !isInitialWidthApplied) {
-      SlateEditorAPI.focus(editor);
+      requestAnimationFrame(() => SlateEditorAPI.focus(editor));
     }
   }, [isNew, isActivated, isFocused]);
 

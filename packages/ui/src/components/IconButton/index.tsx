@@ -22,6 +22,9 @@ import {
 } from './components';
 import { IconButtonVariant } from './types';
 
+/**
+ * @deprecated use IconButton.Container, IconButton.Variant instead
+ */
 export { IconButtonContainer, IconButtonVariant };
 export type {
   ActionContainerProps as IconButtonActionContainerProps,
@@ -75,4 +78,15 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   }
 );
 
-export default IconButton;
+export default Object.assign(IconButton, {
+  Variant: IconButtonVariant,
+
+  Container: IconButtonContainer,
+  FlatContainer,
+  BasicContainer,
+  SubtleContainer,
+  SquareContainer,
+  ActionContainer,
+  OutlineContainer,
+  SuccessContainer,
+});

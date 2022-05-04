@@ -22,7 +22,7 @@ const CombinedEditor: NodeEditor<Realtime.NodeData.Combined> = ({ data: { nodeID
       {stepData.map(({ nodeID, ...data }, index) => {
         const { getIcon, icon, label } = getManager(data.type);
 
-        const svgIcon = getIcon?.(data) || icon;
+        const svgIcon = getIcon?.(data as any) || icon;
 
         return (
           <Section
@@ -30,7 +30,7 @@ const CombinedEditor: NodeEditor<Realtime.NodeData.Combined> = ({ data: { nodeID
             prefix={svgIcon ? <SvgIcon icon={svgIcon} color={THEME.buttonIconColors.default} /> : null}
             header={data.name || label}
             isLink
-            onClick={() => engine.focus.set(nodeID)}
+            onClick={() => engine.setActive(nodeID)}
             headerVariant={HeaderVariant.LINK}
             isDividerNested={index !== 0}
           />

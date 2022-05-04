@@ -34,11 +34,11 @@ export const getJSCodeStyle = (options: { colors: JSColorStyle }) => ({
   },
   'hljs-name': {
     color: options.colors.variableToken,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   'hljs-type': {
     color: '#d88',
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   'hljs-attribute': {
     color: '#d88',
@@ -83,10 +83,10 @@ export const getJSCodeStyle = (options: { colors: JSColorStyle }) => ({
     color: '#777',
   },
   'hljs-doctag': {
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   'hljs-strong': {
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   'hljs-emphasis': {
     fontStyle: 'italic',

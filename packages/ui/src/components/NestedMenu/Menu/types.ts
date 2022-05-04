@@ -35,8 +35,8 @@ interface BaseNestedMenuProps extends SharedNestedMenuProps {
   firstOptionIndex?: number;
   directSearchMatch?: boolean;
   focusedOptionIndex?: Nullable<number>;
-  renderSearchSuffix?: Nullable<(options: { close: VoidFunction }) => React.ReactNode>;
-  renderFooterAction?: Nullable<(options: { close: VoidFunction }) => React.ReactNode>;
+  renderSearchSuffix?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
+  renderFooterAction?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
   onBackFocusToParent?: VoidFunction;
   onChangeSearchLabel?: React.ChangeEventHandler<HTMLInputElement>;
   createInputPlaceholder?: string;

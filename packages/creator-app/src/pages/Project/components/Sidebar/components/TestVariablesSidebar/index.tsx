@@ -8,7 +8,6 @@ import VariableList from '@/components/VariableList';
 import * as variableState from '@/ducks/variableState';
 import { useDispatch, useSelector, useTheme } from '@/hooks';
 import { Variable } from '@/models';
-import { SlideOutDirection } from '@/styles/transitions';
 
 import { SelectContainer, VariableListContainer } from './components';
 
@@ -57,13 +56,12 @@ const TestVariablesSidebar: React.FC = () => {
 
   return (
     <Drawer
-      as="section"
       open={isOpen}
       width={theme.components.testVariablesSidebar.width}
       zIndex={25}
-      direction={SlideOutDirection.RIGHT}
       closable
       onToggle={setIsOpen}
+      direction={Drawer.Direction.RIGHT}
     >
       {variables?.length ? (
         <Flex column fullHeight>

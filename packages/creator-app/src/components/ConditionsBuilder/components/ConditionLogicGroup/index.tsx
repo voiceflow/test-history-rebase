@@ -58,7 +58,7 @@ const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, o
 
       <LogicGroupContainer>
         <DeleteButtonContainer>
-          <SvgIcon clickable icon="close" size={10} color="#6e849a" onClick={onDelete} enableOpacity />
+          <SvgIcon clickable icon="close" size={10} color="#6e849a" onClick={onDelete} />
         </DeleteButtonContainer>
 
         {!expression?.value?.length && (

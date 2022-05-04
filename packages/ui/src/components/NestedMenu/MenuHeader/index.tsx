@@ -1,6 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
 import Box from '@ui/components/Box';
 import SvgIcon from '@ui/components/SvgIcon';
+import { useSetup } from '@ui/hooks';
 import { setRef, stopImmediatePropagation } from '@ui/utils';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
@@ -24,7 +25,7 @@ interface MenuHeaderProps {
   focusedOptionRef?: React.Ref<HTMLLIElement>;
   isButtonDisabled?: (options: { value: string }) => boolean;
   updateSearchLabel: (value: string) => void;
-  renderSearchSuffix?: Nullable<(options: { close: VoidFunction }) => React.ReactNode>;
+  renderSearchSuffix?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
   focusedOptionIndex: number | null;
   onChangeSearchLabel?: React.ChangeEventHandler<HTMLInputElement>;
   createInputPlaceholder?: string;
@@ -58,6 +59,12 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
   const value = searchable && !isDropdown ? searchLabel : newOptionLabel;
   const inputVal = searchable ? searchLabel : newOptionLabel;
 
+  useSetup(() => {
+    if (inDropdownSearch) {
+      inputRef.current?.focus();
+    }
+  });
+
   if (!inputVal && !alwaysShowCreate) return null;
 
   const notInDropdownInput = (
@@ -66,7 +73,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
       onClick={(event) => !inDropdownSearch && event.stopPropagation()}
       inputRef={inDropdownSearch ? undefined : (node) => setRef(createInputRef, node)}
       onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
-      fullWidth={!inputVal}
+      $fullWidth={!inputVal}
       placeholder={createInputPlaceholder}
     />
   );
@@ -87,11 +94,11 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
               onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
-              fullWidth
+              $fullWidth
               placeholder={`Search ${createInputPlaceholder}`}
             />
 
-            {renderSearchSuffix?.({ close: onHide })}
+            {renderSearchSuffix?.({ close: onHide, searchLabel: inputVal ?? '' })}
           </SearchContainer>
           <MenuHr />
         </>

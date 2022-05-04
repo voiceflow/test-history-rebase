@@ -8,6 +8,8 @@ export const NODE_CONFIG: NodeConfigWithoutPorts<Realtime.NodeData.Deprecated> =
   type: BlockType.DEPRECATED,
   icon: 'close',
 
+  mergeTerminator: true,
+
   factory: () => ({
     node: {
       ports: {},

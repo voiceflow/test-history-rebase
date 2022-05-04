@@ -40,14 +40,14 @@ const generatePath =
       ? [
           {
             label: (type !== BlockType.COMBINED && getManager(parentType)?.label) || 'Block',
-            focus: () => engine.focus.set(parentNodeID),
+            focus: () => engine.setActive(parentNodeID),
           },
           ...(parentType === BlockType.START
             ? [
                 {
                   label: 'Commands',
                   focus: () => {
-                    engine.focus.set(parentNodeID);
+                    engine.setActive(parentNodeID);
                     updatePath([{ label: getManager(BlockType.START)?.label || 'Block' }, { label: 'Commands', type: 'commands' }]);
                   },
                 },

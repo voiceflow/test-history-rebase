@@ -309,6 +309,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   // canvas orchestration methods
 
   disableAllModes(): Promise<void> {
+    this.clearActivation({ skipUrlSync: true });
+
     return this.store.dispatch(Router.goToCurrentCanvas());
   }
 
@@ -380,23 +382,33 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     }
   }
 
-  setActive(nodeID: string, isSelection?: boolean): void {
+  setActive(nodeID: string, isSelection?: boolean, skipURLSync?: boolean): void {
     if (isSelection) {
       this.selection.toggle(nodeID);
     } else {
       this.focus.set(nodeID);
+
+      if (!skipURLSync) {
+        this.store.dispatch(Router.goToCurrentCanvasNode(nodeID));
+      }
     }
   }
 
   /**
    * clear activation state of all nodes
    */
-  clearActivation(): void {
+  clearActivation({ skipUrlSync }: { skipUrlSync?: boolean } = {}): void {
     this.saveActiveLocations();
+
+    const hasFocusTarget = this.focus.hasTarget;
 
     this.focus.reset();
     this.selection.reset();
     this.transformation.reset();
+
+    if (!skipUrlSync && hasFocusTarget) {
+      this.store.dispatch(Router.goToCurrentCanvas());
+    }
   }
 
   private getNextAvailableSibling(targetNodeID: string): string | null {
@@ -423,7 +435,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       const siblingID = isSingleTarget && focusNextChild ? this.getNextAvailableSibling(activeTargets[0]) : null;
 
       if (siblingID && focusNextChild) {
-        this.focus.set(siblingID);
+        this.setActive(siblingID);
       } else {
         this.clearActivation();
       }
@@ -458,7 +470,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     return startNode?.[0] ?? null;
   }
 
-  focusStart(options: { open?: boolean } = {}): void {
+  focusStart(options: { open?: boolean; skipURLSync?: boolean } = {}): void {
     const diagram = this.select(DiagramV2.active.diagramSelector);
     const isRootDiagramActive = this.select(CreatorV2.isRootDiagramActiveSelector);
 
@@ -478,9 +490,9 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     }
   }
 
-  focusNode(nodeID: string, { open }: { open?: boolean } = {}): void {
+  focusNode(nodeID: string, { open, skipURLSync }: { open?: boolean; skipURLSync?: boolean } = {}): void {
     this.node.center(nodeID, !this.comment.isModeActive);
-    this.setActive(nodeID, !open);
+    this.setActive(nodeID, !open, skipURLSync);
     this.comment.forceRedrawThreads();
     this.log.info(this.log.success(`focused on the ${nodeID} node`));
   }

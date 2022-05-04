@@ -5,6 +5,7 @@ import { matchPath, useLocation } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { CUSTOM_SLOT_TYPE, InteractionModelTabType, ModalType } from '@/constants';
+import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -90,12 +91,14 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   const goToQuickviewModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
   const goToQuickviewTab = useDispatch(Router.goToCurrentCanvasInteractionModel);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
+  const goToCurrentCanvasNode = useDispatch(Router.goToCurrentCanvasNode);
   const deleteIntent = useDispatch(Intent.deleteIntent);
   const deleteSlot = useDispatch(Slot.deleteSlot);
   const deleteVariable = useDeleteVariable();
   const removeIntentSlot = useDispatch(Intent.removeIntentSlot);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
+  const creatorFocus = useSelector(Creator.creatorFocusSelector);
   const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
   const getIntentsUsingSlot = useSelector(IntentV2.getIntentsUsingSlotSelector);
 
@@ -339,7 +342,11 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
         goToQuickviewTab(InteractionModelTabType.INTENTS);
       }
     } else if (!isInStack && modelMatch) {
-      goToCurrentCanvas();
+      if (creatorFocus.target && creatorFocus.isActive) {
+        goToCurrentCanvasNode(creatorFocus.target);
+      } else {
+        goToCurrentCanvas();
+      }
     }
   }, [isOpened, isInStack]);
 

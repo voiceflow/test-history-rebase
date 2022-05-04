@@ -4,23 +4,24 @@ import { StringifyEnum } from '@voiceflow/common';
 import React from 'react';
 import { Theme, Tooltip, TooltipProps } from 'react-tippy';
 
-import { HotkeyLabel } from './components';
+import { HotkeyLabel, Multiline, Title } from './components';
 
 export enum TooltipTheme {
-  WARNING = 'warning',
   DARK = 'dark',
   LIGHT = 'light',
+  WARNING = 'warning',
   TRANSPARENT = 'transparent',
 }
 
 export interface TippyTooltipProps extends Omit<TooltipProps, 'theme'> {
-  hotkey?: string;
   tag?: string;
   theme?: StringifyEnum<TooltipTheme>;
+  hotkey?: string;
+  bodyOverflow?: boolean;
 }
 
 const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChildren<TippyTooltipProps>> = (
-  { html, title, disabled, children, hotkey, theme, ...props },
+  { html, title, theme, disabled, children, hotkey, popperOptions, bodyOverflow, ...props },
   ref
 ) => {
   const withHotkey = !!hotkey;
@@ -28,7 +29,6 @@ const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChild
   // eslint-disable-next-line xss/no-mixed-html
   return (
     <Tooltip
-      className={ClassName.TOOLTIP}
       ref={ref}
       html={
         withHotkey ? (
@@ -41,8 +41,15 @@ const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChild
         )
       }
       title={withHotkey ? undefined : title}
-      disabled={disabled || IS_TEST}
       theme={theme as Theme}
+      disabled={disabled || IS_TEST}
+      className={ClassName.TOOLTIP}
+      popperOptions={{
+        ...popperOptions,
+        modifiers: bodyOverflow
+          ? { preventOverflow: { enabled: true, boundariesElement: document.body, padding: 16 }, ...popperOptions?.modifiers }
+          : popperOptions?.modifiers,
+      }}
       {...props}
     >
       {children}
@@ -50,4 +57,8 @@ const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChild
   );
 };
 
-export default React.forwardRef(TippyTooltip);
+export default Object.assign(React.forwardRef(TippyTooltip), {
+  Title,
+  Multiline,
+  HotkeyLabel,
+});

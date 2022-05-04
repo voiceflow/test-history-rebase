@@ -1,0 +1,34 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { SectionV2 } from '@voiceflow/ui';
+import React from 'react';
+
+import { hasValidPrompt } from '@/utils/prompt';
+
+interface ItemProps {
+  entity: Realtime.Slot;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
+  isActive?: boolean;
+  contentRef?: React.Ref<HTMLDivElement>;
+  intentEntity: Realtime.IntentSlot;
+  onRemoveRequired: (slotID: string) => void;
+}
+
+const Item: React.FC<ItemProps> = ({ entity, onClick, isActive, contentRef, intentEntity, onRemoveRequired }) => {
+  const hasError = React.useMemo(() => !hasValidPrompt(intentEntity.dialog.prompt), [intentEntity.dialog.prompt]);
+
+  return (
+    <SectionV2.ListItem
+      icon="entities"
+      onClick={onClick}
+      isActive={isActive}
+      contentRef={contentRef}
+      actionIcon="minus"
+      iconWarning={hasError ? 'Prompt is missing' : null}
+      onActionClick={() => onRemoveRequired(intentEntity.id)}
+    >
+      {entity.name}
+    </SectionV2.ListItem>
+  );
+};
+
+export default Item;

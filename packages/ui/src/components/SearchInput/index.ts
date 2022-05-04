@@ -7,16 +7,23 @@ export interface SearchInputProps {
   opened?: boolean;
   inline?: boolean;
   ellipsis?: boolean;
-  clearable?: boolean;
   searchable?: boolean;
   isDropdown?: boolean;
   borderLess?: boolean;
+  withLeftIcon?: boolean;
+  withClearIcon?: boolean;
   isDropDownOpened?: boolean;
 }
 
 const SearchInput = styled(Input)<SearchInputProps>`
   height: ${({ theme }) => theme.components.input.height}px;
   padding-right: 34px;
+
+  ${({ withLeftIcon }) =>
+    withLeftIcon &&
+    css`
+      padding-left: 44px;
+    `}
 
   ${({ ellipsis }) =>
     ellipsis &&
@@ -39,8 +46,8 @@ const SearchInput = styled(Input)<SearchInputProps>`
       box-shadow: none !important;
     `}
 
-  ${({ clearable }) =>
-    !!clearable &&
+  ${({ withClearIcon }) =>
+    !!withClearIcon &&
     css`
       pointer-events: none;
     `}

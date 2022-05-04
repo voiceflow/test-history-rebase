@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 const Container = styled.section`
   display: flex;
   flex: 1;
+  overflow: hidden;
 `;
 
 const GlobalStyles = createGlobalStyle`
@@ -21,7 +22,7 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  @import url('https://fonts.googleapis.com/css?family=Open+Sans:ital,wght@400,500,600');
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans:ital,wght@400,500,600,700');
 
 * {
   box-sizing: border-box;

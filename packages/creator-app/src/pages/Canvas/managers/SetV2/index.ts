@@ -8,7 +8,6 @@ import SetStep from './SetStep';
 const SetManager: NodeManagerConfig<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Set the value of a variable, or many variables at once',
   label: 'Set',
 
   step: SetStep,

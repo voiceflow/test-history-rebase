@@ -8,7 +8,7 @@ const KeyBubble = styled.div`
   color: #62778c;
   font-size: 13px;
   line-height: 18px;
-  font-weight: bold;
+  font-weight: 600;
   text-transform: lowercase;
 `;
 

@@ -1,6 +1,10 @@
+import { createGlobalStyle } from '@/hocs';
+import { FadeDownDelayed, Slide } from '@/styles/animations';
+import { Theme } from '@/styles/theme';
+
 export { default as MentionEditorContainer } from './MentionEditorContainer';
 
-export const mentionEditorStyle = (height?: number) => {
+export const mentionEditorStyle = ({ theme, height }: { theme: Theme; height?: number }) => {
   const styleObj = {
     input: {
       border: 'none',
@@ -13,7 +17,7 @@ export const mentionEditorStyle = (height?: number) => {
     },
     suggestions: {
       borderRadius: '5px',
-      zIndex: 1000,
+      zIndex: theme.zIndex.popper,
       list: {
         width: '254px',
         maxHeight: '350px',
@@ -56,3 +60,13 @@ export const mentionStyle = {
   textShadow: `1px 1px 1px white, 1px -1px 1px white, -1px 1px 1px white,
     -1px -1px 1px white`,
 };
+
+export const MentionSuggestionStyles = createGlobalStyle`
+  .mentionInput__suggestions {
+    ${Slide}
+  }
+
+  .mentionInput__suggestions__list {
+    ${FadeDownDelayed}
+  }
+`;

@@ -3,29 +3,17 @@
   "compilerOptions": {
     "module": "esnext",
     "allowJs": true,
+    "checkJs": false,
     "baseUrl": "..",
     "paths": {
       // only used to fix intra-monorepo resolution
-      "@ui/*": [
-        "ui/src/*"
-      ],
-      "@voiceflow/ui": [
-        "ui/src"
-      ],
+      "@ui/*": ["ui/src/*"],
+      "@voiceflow/ui": ["ui/src"],
       // only used to fix intra-monorepo resolution
-      "@realtime-sdk/*": [
-        "realtime-sdk/src/*"
-      ],
-      "@voiceflow/realtime-sdk": [
-        "realtime-sdk/src"
-      ],
-      "@/*": [
-        "admin-app/src/*"
-      ]
+      "@realtime-sdk/*": ["realtime-sdk/src/*"],
+      "@voiceflow/realtime-sdk": ["realtime-sdk/src"],
+      "@/*": ["admin-app/src/*"]
     }
   },
-  "exclude": [
-    "node_modules/**/*",
-    "build/**/*"
-  ]
+  "exclude": ["node_modules/**/*", "build/**/*"]
 }

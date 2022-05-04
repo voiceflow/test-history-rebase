@@ -1,28 +1,31 @@
 import { useCachedValue, useDidUpdateEffect, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
-import { matchPath, RouteComponentProps, useLocation } from 'react-router-dom';
+import { matchPath, useLocation } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { InteractionModelTabType, ModalType } from '@/constants';
+import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
-import { connect } from '@/hocs';
-import { useModals, useSelector, useTrackingEvents } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 
 import UncontrolledInteractionModel from './UncontrolledInteractionModel';
 
 export const IMM_PERSISTED_STATE_KEY = 'IMM_PERSIST_KEY';
 
-const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: InteractionModelTabType }> & InteractionModelModalConnectedProps> = ({
-  compilePrototype,
-  goToCurrentCanvas,
-  goInteractionModel,
-  goInteractionModelEntity,
-}) => {
+const InteractionModelModal: React.FC = () => {
   const location = useLocation();
+
+  const creatorFocus = useSelector(Creator.creatorFocusSelector);
   const activeProjectID = useSelector(activeProjectIDSelector)!;
+
+  const compilePrototype = useDispatch(Prototype.compilePrototype);
+  const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
+  const goToCurrentCanvasNode = useDispatch(Router.goToCurrentCanvasNode);
+  const goInteractionModel = useDispatch(Router.goToCurrentCanvasInteractionModel);
+  const goInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
+
   const [trackingEvents] = useTrackingEvents();
   const [immPersistedState, setIMMPersistedState] = useSessionStorageState<{ tab: InteractionModelTabType; id: string | null }>(
     `${IMM_PERSISTED_STATE_KEY}-${activeProjectID}`,
@@ -86,6 +89,7 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
     if (isInStack && !modelMatch) {
       const persistedState = persistedStateRef.current;
       const { tab: persistedTab, id: persistedID } = persistedState;
+
       if (persistedTab && persistedID) {
         goInteractionModelEntity(persistedTab, persistedID);
       } else if (persistedTab) {
@@ -94,7 +98,11 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
         goInteractionModel(InteractionModelTabType.INTENTS);
       }
     } else if (!isInStack && modelMatch) {
-      goToCurrentCanvas();
+      if (creatorFocus.target && creatorFocus.isActive) {
+        goToCurrentCanvasNode(creatorFocus.target);
+      } else {
+        goToCurrentCanvas();
+      }
     }
   }, [isInStack]);
 
@@ -112,13 +120,4 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
   );
 };
 
-const mapDispatchToProps = {
-  goToCurrentCanvas: Router.goToCurrentCanvas,
-  goInteractionModel: Router.goToCurrentCanvasInteractionModel,
-  goInteractionModelEntity: Router.goToCurrentCanvasInteractionModelEntity,
-  compilePrototype: Prototype.compilePrototype,
-};
-
-export type InteractionModelModalConnectedProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(InteractionModelModal) as React.FC;
+export default InteractionModelModal;

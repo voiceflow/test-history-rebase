@@ -5,7 +5,7 @@
 
 .ci__refund_link {
   color: #ff2e58;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 16px;
 }
 
@@ -15,7 +15,7 @@
 
 .ci__view_link {
   color: #00b0e6;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 16px;
 }
 
@@ -27,7 +27,7 @@
 
 .ci__refunded {
   color: #bf0026;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 16px;
 }
 

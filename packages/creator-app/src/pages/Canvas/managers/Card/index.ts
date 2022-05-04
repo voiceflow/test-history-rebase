@@ -8,7 +8,6 @@ import { NODE_CONFIG } from './constants';
 const CardManager: NodeManagerConfig<Realtime.NodeData.Card, Realtime.NodeData.CardBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Tell Alexa to show a card',
   label: 'Card',
 
   step: CardStep,

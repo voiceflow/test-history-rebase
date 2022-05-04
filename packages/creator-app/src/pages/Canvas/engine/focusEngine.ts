@@ -1,4 +1,4 @@
-import { clearFocus, setFocus } from '@/ducks/creator';
+import * as Creator from '@/ducks/creator';
 
 import { ActivationMode } from './constants';
 import { EngineConsumer } from './utils';
@@ -35,7 +35,7 @@ class FocusEngine extends EngineConsumer {
     this.engine.transformation.reset();
 
     this.engine.activation.activate(nodeID, ActivationMode.FOCUS);
-    this.dispatch(setFocus(nodeID));
+    this.dispatch(Creator.setFocus(nodeID));
     this.engine.node.redrawLinks(nodeID);
 
     this.log.info(this.log.success('focused node'), this.log.slug(nodeID));
@@ -47,7 +47,7 @@ class FocusEngine extends EngineConsumer {
     const target = this.getTarget()!;
 
     this.log.debug(this.log.pending('resetting focus'), this.log.slug(target));
-    this.dispatch(clearFocus());
+    this.dispatch(Creator.clearFocus());
     this.engine.activation.reset();
     this.engine.transformation.reset();
     this.engine.node.redrawLinks(target);

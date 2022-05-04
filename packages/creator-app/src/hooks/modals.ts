@@ -16,16 +16,7 @@ export interface ModalActions<T extends object = {}> {
 }
 
 export const useModals = <T extends object = {}>(modalId: ModalType): ModalActions<T> => {
-  const {
-    fade,
-    open,
-    close,
-    update,
-    toggle,
-    openedId,
-    modalData,
-    stackModalIds = [],
-  } = (React.useContext(ModalsContext) ?? {}) as NonNullable<ModalContextType<T>>;
+  const { fade, open, close, update, toggle, openedId, modalData, stackModalIds } = React.useContext(ModalsContext);
 
   const isOpened = openedId === modalId;
   const isInStack = React.useMemo(() => stackModalIds.includes(modalId), [modalId, stackModalIds]);
@@ -61,7 +52,7 @@ export const useModals = <T extends object = {}>(modalId: ModalType): ModalActio
 
   return useContextApi({
     fade,
-    data: memoData,
+    data: memoData as T,
     open: openModal,
     close: closeModal,
     toggle: toggleModal,

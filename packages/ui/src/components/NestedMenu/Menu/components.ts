@@ -52,6 +52,7 @@ export const FooterAction = styled.div`
   padding: 22px 18px;
   flex-grow: 1;
   cursor: pointer;
+  color: ${({ theme }) => theme.colors.blue};
 
   &:not(:first-child) {
     border-left: 1px solid #eaeff4;

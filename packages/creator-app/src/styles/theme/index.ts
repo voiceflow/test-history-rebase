@@ -13,7 +13,7 @@ const THEME = createTheme({
       height: 60,
     },
     blockSidebar: {
-      width: 480,
+      width: 450,
     },
     markupSidebar: {
       width: 360,

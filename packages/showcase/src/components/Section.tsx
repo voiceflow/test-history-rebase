@@ -20,6 +20,7 @@ const Content = styled.div<{ inline?: boolean }>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  background: #f9f9f9;
 
   ${({ inline }) =>
     !inline &&

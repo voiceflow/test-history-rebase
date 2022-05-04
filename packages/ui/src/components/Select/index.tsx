@@ -4,12 +4,13 @@ import SearchInput, { SearchInputIcon } from '@ui/components/SearchInput';
 import { toast } from '@ui/components/Toast';
 import { useDidUpdateEffect, usePersistFunction } from '@ui/hooks';
 import { Primitive } from '@ui/types';
-import { setRef } from '@ui/utils';
+import { setRef, stopPropagation } from '@ui/utils';
 import { Nullable, Utils } from '@voiceflow/common';
 import noop from 'lodash/noop';
 import React from 'react';
 import { Manager, PopperProps, Reference } from 'react-popper';
 
+import IconButton from '../IconButton';
 // for some reason absolute paths are not transformed for this import
 import {
   defaultMenuLabelRenderer,
@@ -22,7 +23,7 @@ import {
   MenuItemWithID,
 } from '../NestedMenu';
 import NestedMenu from '../NestedMenu/Menu';
-import { InlineInputValue, InputBadge, PrefixContainer, SelectWrapper, TagsContainer, TagsInput } from './components';
+import { InlineInputValue, InputBadge, LeftActionContainer, PrefixContainer, SelectWrapper, TagsContainer, TagsInput } from './components';
 import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
 import {
   SelectClearableProps,
@@ -139,6 +140,7 @@ function Select({
   onCreate,
   iconProps,
   onKeyDown,
+  modifiers,
   placement = 'bottom-start',
   autoWidth = true,
   fullWidth,
@@ -151,6 +153,7 @@ function Select({
   borderLess,
   searchable,
   renderTags,
+  leftAction,
   rightAction,
   onMouseDown,
   placeholder,
@@ -182,9 +185,11 @@ function Select({
   renderSearchSuffix,
   renderOptionsFilter,
   autoUpdatePlacement,
+  clearOnSelectActive,
   showNotMatchedOptions,
   createInputPlaceholder,
 }: SelectInternalProps): React.ReactElement {
+  const withClearIcon = clearable && !clearOnSelectActive;
   const optionLabel = isDropdown && searchable && inDropdownSearch ? '' : searchLabelProp || String(getOptionLabel(value) ?? '') || '';
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -211,25 +216,23 @@ function Select({
   const firstOptionIndex =
     ((!directMatch && ((isDropdown && searchable) || creatable)) || inDropdownSearch) && (alwaysShowCreate || !searchable || !!searchLabel) ? 1 : 0;
 
-  const menuPopoverModifiers = React.useMemo<NonNullable<PopperProps['modifiers']>>(
-    () => ({
-      hide: { enabled: false },
-      autoSizing: {
-        enabled: true,
-        fn: (data) => {
-          if (placement === 'bottom-start' && inputWrapperNode) {
-            // eslint-disable-next-line no-param-reassign
-            data.styles.width = `${inputWrapperNode.getBoundingClientRect().width}px`;
-          }
+  const menuPopoverModifiers: NonNullable<PopperProps['modifiers']> = {
+    hide: { enabled: false },
+    autoSizing: {
+      enabled: true,
+      fn: (data) => {
+        if (placement === 'bottom-start' && inputWrapperNode) {
+          // eslint-disable-next-line no-param-reassign
+          data.styles.width = `${inputWrapperNode.getBoundingClientRect().width}px`;
+        }
 
-          return data;
-        },
-        order: 840,
+        return data;
       },
-      preventOverflow: { enabled: false },
-    }),
-    [inputWrapperNode, placement]
-  );
+      order: 840,
+    },
+    preventOverflow: { enabled: false },
+    ...modifiers,
+  };
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   const onUpdateOptionsToRender = (label: string, { skipIndexReset }: { skipIndexReset?: boolean } = {}) => {
@@ -284,7 +287,7 @@ function Select({
       event?.stopPropagation();
     }
 
-    if (searchable) {
+    if (searchable && !inDropdownSearch) {
       inputRef.current?.focus?.();
     }
 
@@ -335,8 +338,13 @@ function Select({
   const onChangeSearchLabel = ({ target }: React.ChangeEvent<HTMLInputElement>) =>
     handleOnSearchLabelChange(formatInputValue ? formatInputValue(target.value) : target.value);
 
-  const onSelectItem = (value: unknown, optionsPath: number[], updatePopperPosition: () => void) => {
-    onSelect(value, optionsPath);
+  const onSelectItem = (newValue: unknown, optionsPath: number[], updatePopperPosition: () => void) => {
+    if (clearable && clearOnSelectActive && newValue === value) {
+      onSelect(null, []);
+    } else {
+      onSelect(newValue, optionsPath);
+    }
+
     handleOnSearchLabelChange('', { isSelectEvent: true });
 
     if (autoUpdatePlacement) {
@@ -367,7 +375,7 @@ function Select({
   };
 
   const onIconClick = () => {
-    if (clearable) {
+    if (withClearIcon) {
       onSelect(null, []);
     } else if (!disabled || !searchable) {
       onOpenMenu();
@@ -409,6 +417,7 @@ function Select({
     inline,
     onBlur,
     opened,
+    isEmpty: !optionsToRender.length,
     onFocus: searchable ? onOpenMenu : undefined,
     onClick: searchable ? onOpenMenu : undefined,
     disabled: disabled || !labelSearchable,
@@ -438,15 +447,14 @@ function Select({
           <SelectWrapper
             as={renderAsSpan ? 'span' : undefined}
             ref={ref}
-            onFocus={!labelSearchable ? onOpenMenu : undefined}
             onClick={!labelSearchable ? onOpenMenu : undefined}
             tabIndex={labelSearchable ? -1 : 0}
             minWidth={minWidth}
             isFocused={opened}
             className={className}
             fullWidth={fullWidth}
-            clearable={clearable}
             onMouseDown={!labelSearchable ? onMouseDown : undefined}
+            withClearIcon={withClearIcon}
           >
             {renderTrigger ? (
               renderTrigger({ ...inputProps, ref: inputRef, value: searchLabel, isOpen: opened, onOpenMenu, onHideMenu })
@@ -476,17 +484,36 @@ function Select({
 
                   {inputVariant === SelectInputVariant.DROPDOWN && (
                     <>
+                      {!!leftAction && (
+                        <LeftActionContainer>
+                          <IconButton
+                            icon={leftAction.icon}
+                            variant={IconButton.Variant.BASIC}
+                            onClick={stopPropagation(leftAction.onClick)}
+                            iconProps={leftAction.iconProps}
+                            activeClick={leftAction.isActive}
+                            transparent
+                          />
+                        </LeftActionContainer>
+                      )}
+
                       <SearchInput
                         {...inputProps}
                         ref={inputRef}
                         type="search"
-                        value={isDropdown ? label : searchLabel}
-                        clearable={clearable}
-                        autoComplete="off"
                         error={error}
+                        value={isDropdown ? label : searchLabel}
+                        autoComplete="off"
+                        withLeftIcon={!!leftAction}
+                        withClearIcon={withClearIcon}
                       />
 
-                      <SearchInputIcon icon={clearable ? 'close' : 'caretDown'} size={clearable ? 14 : 8} color="#6e849a" onClick={onIconClick} />
+                      <SearchInputIcon
+                        icon={withClearIcon ? 'close' : 'caretDown'}
+                        size={withClearIcon ? 14 : 8}
+                        color="#6e849a"
+                        onClick={onIconClick}
+                      />
                     </>
                   )}
 

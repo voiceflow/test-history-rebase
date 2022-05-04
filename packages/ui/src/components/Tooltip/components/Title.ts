@@ -1,6 +1,6 @@
 import { styled, units } from '@ui/styles';
 
-interface TitleProps {
+export interface TitleProps {
   isSubtitle?: boolean;
   capitalize?: boolean;
   marginBottomUnits?: number;

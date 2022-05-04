@@ -27,10 +27,10 @@ export interface SlateEditableProps extends Omit<EditableProps, 'value' | 'onCha
   value: SlateValue;
   editor: Editor;
   onChange: (value: SlateValue) => void;
+  autofocus?: boolean;
   spellCheck?: boolean;
   topToolbar?: React.ReactNode;
   pluginsOptions?: PluginsOptions;
-  autofocus?: boolean;
 }
 
 const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEditableProps> = (
@@ -39,8 +39,8 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
     onBlur,
     editor,
     onChange,
-    autofocus,
     children,
+    autofocus,
     topToolbar,
     spellCheck = false,
     renderLeaf = defaultRenderLeaf,

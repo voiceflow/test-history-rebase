@@ -1,31 +1,28 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { FlexApart, getNestedMenuFormattedLabel, GetOptionLabel, GetOptionValue, Icon, SvgIcon } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import { FlexApart, getNestedMenuFormattedLabel, GetOptionLabel, GetOptionValue, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { isCustomizableBuiltInIntent } from '@/utils/intent';
-import { createPlatformSelector } from '@/utils/platform';
 
-const getPlatformIcon = createPlatformSelector<Icon>(
-  {
-    [VoiceflowConstants.PlatformType.ALEXA]: 'amazon',
-    [VoiceflowConstants.PlatformType.GOOGLE]: 'google',
-  },
-  'inFlow'
-);
+import BuiltInIntentIcon from './BuiltInIntentIcon';
 
 interface IntentOptionProps {
   option: Realtime.Intent;
+  isFocused?: boolean;
   searchLabel?: string | null;
   getOptionLabel: GetOptionLabel<string>;
   getOptionValue: GetOptionValue<Realtime.Intent, string>;
 }
 
-const IntentOption: React.FC<IntentOptionProps> = ({ option, searchLabel, getOptionLabel, getOptionValue }) => (
+const IntentOption: React.FC<IntentOptionProps> = ({ option, isFocused, searchLabel, getOptionLabel, getOptionValue }) => (
   <FlexApart fullWidth>
     <span>{getNestedMenuFormattedLabel(getOptionLabel(getOptionValue(option)), searchLabel)}</span>
 
-    {isCustomizableBuiltInIntent(option) && <SvgIcon icon={getPlatformIcon(option.platform)} color="#BECEDC" />}
+    {isCustomizableBuiltInIntent(option) && (
+      <TippyTooltip position="top" title="Built-in intent" bodyOverflow>
+        <BuiltInIntentIcon isItemFocused={isFocused} />
+      </TippyTooltip>
+    )}
   </FlexApart>
 );
 

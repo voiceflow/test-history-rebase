@@ -39,7 +39,7 @@ const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActiv
       </LabelWrapper>
 
       <BoxFlex pr={16} pl={12}>
-        <SvgIcon icon="close" size={10} color="#6e849a" onClick={onDelete} enableOpacity />
+        <SvgIcon icon="close" size={10} color="#6e849a" onClick={onDelete} clickable />
       </BoxFlex>
     </ConditionDisplayContainer>
   );

@@ -28,7 +28,7 @@ const PathSection: React.FC<PathSectionProps> = ({ path, index, onUpdate, onRemo
   <Container>
     <Input
       leftAction={
-        <Text color="#62778c" fontWeight="bold" fontSize={13}>
+        <Text color="#62778c" fontWeight="600" fontSize={13}>
           PATH {index + 1}
         </Text>
       }

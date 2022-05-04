@@ -19,7 +19,6 @@ import { PrototypeContext } from '@/pages/Prototype/context';
 import { useDebug, useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { FadeLeftContainer } from '@/styles/animations';
-import { SlideOutDirection } from '@/styles/transitions';
 import { ModelDiff } from '@/utils/prototypeModel';
 import * as Sentry from '@/vendors/sentry';
 
@@ -127,7 +126,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps> = ({ open }) => {
 
   return (
     <>
-      <Drawer open={open} width={theme.components.prototypeSidebar.width} direction={SlideOutDirection.LEFT}>
+      <Drawer open={open} width={theme.components.prototypeSidebar.width} direction={Drawer.Direction.LEFT}>
         {loading ? (
           <FlexCenter style={{ height: '100%' }}>
             <FadeLeftContainer>

@@ -8,7 +8,6 @@ import RandomStep from './RandomStep';
 const RandomManager: NodeManagerConfig<Realtime.NodeData.Random> = {
   ...NODE_CONFIG,
 
-  tip: 'Choose randomly from a set number of paths',
   label: 'Random',
 
   step: RandomStep,

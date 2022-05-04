@@ -8,7 +8,6 @@ import SpeakStep from './SpeakStep';
 const SpeakManager: NodeManagerConfig<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Tell Alexa what to say, or play audio clips',
   label: 'Speak',
   getDataLabel: (data) => NODE_CONFIG.factory(data).data.name,
 

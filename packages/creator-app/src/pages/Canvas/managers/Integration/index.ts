@@ -8,7 +8,6 @@ import IntegrationStep from './IntegrationStep';
 const IntegrationManager: NodeManagerConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Integrate external services into your skill',
   label: 'Integrations',
   getDataLabel: (data) => NODE_CONFIG.factory(data).data.name,
 

@@ -4,20 +4,19 @@ import { Spin } from '@ui/styles/animations/Spin';
 import _isNumber from 'lodash/isNumber';
 import { space, SpaceProps } from 'styled-system';
 
-export type SvgIconContainerProps = {
+export interface SvgIconContainerProps extends SpaceProps {
   size: number | string;
   color: string;
   spin?: boolean;
   width?: number | string;
   height?: number | string;
+  inline?: boolean;
   variant?: IconVariant;
+  rotation?: number;
   clickable?: boolean;
   transition?: string | string[];
   ignoreEvents?: boolean;
-  inline?: boolean;
-  rotation?: number;
-  enableOpacity?: boolean;
-} & SpaceProps;
+}
 
 const SvgIconContainer = styled.span<SvgIconContainerProps>`
   ${space}
@@ -42,9 +41,6 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
       display: block;
       ${Spin}
     `}
-
-
-
 
   ${({ ignoreEvents }) =>
     ignoreEvents &&
@@ -99,16 +95,6 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
     inline &&
     css`
       display: inline-block;
-    `}
-
-  ${({ enableOpacity }) =>
-    enableOpacity &&
-    css`
-      opacity: 0.8;
-
-      &:hover {
-        opacity: 1;
-      }
     `}
 `;
 

@@ -7,7 +7,7 @@ import { createSelector } from 'reselect';
 
 import { applyIntentNameFormatting } from '@/ducks/intent/utils';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { createCurriedSelector } from '@/ducks/utils';
+import { createCurriedSelector, createParameterSelector } from '@/ducks/utils';
 import { createCRUDSelectors, idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { GENERAL_BUILT_INS_MAP, getBuiltInIntents } from '@/utils/intent';
@@ -61,6 +61,13 @@ export const getPlatformIntentByIDSelector = createCurriedSelector(platformInten
 
 // slots
 
+const slotIDParamSelector = createParameterSelector((params: { slotID: string }) => params.slotID);
+
+export const intentSlotByIntentIDSlotIDSelector = createSelector(
+  [intentByIDSelector, slotIDParamSelector],
+  (intent, slotID) => intent?.slots.byKey[slotID] ?? null
+);
+
 export const getIntentSlotByIntentIDSlotIDSelector = createSelector(
   [getIntentByIDSelector],
   (getIntentByID) => (intentID: string, slotID: string) => {
@@ -84,11 +91,11 @@ export const intentsUsingSlotSelector = createSelector([allIntentsSelector, idPa
 
 export const getIntentsUsingSlotSelector = createCurriedSelector(intentsUsingSlotSelector);
 
-export const slotsByIntentIDSelector = createSelector([intentByIDSelector], (intent): string[] => {
-  const { inputs = [] } = intent ?? {};
+export const inputsByIntentIDSelector = createSelector([intentByIDSelector], (intent) => intent?.inputs ?? null);
 
-  return Utils.array.unique(inputs.flatMap(({ slots }) => slots ?? '')).filter(Boolean);
-});
+export const slotsByIntentIDSelector = createSelector([inputsByIntentIDSelector], (inputs): string[] =>
+  inputs ? Utils.array.unique(inputs.flatMap(({ slots }) => slots ?? '')).filter(Boolean) : []
+);
 
 export const allSlotsIDsByIntentIDsSelector = createSelector(
   [createCurriedSelector(slotsByIntentIDSelector), idsParamSelector],

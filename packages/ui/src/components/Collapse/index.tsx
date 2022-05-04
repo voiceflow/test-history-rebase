@@ -30,7 +30,13 @@ const CollapseContainer = styled.div<{ status: TransitionStatus }>`
   }}
 `;
 
-const Collapse: React.FC<{ isOpen: boolean }> = ({ children, isOpen }) => {
+export interface CollapseProps extends React.HTMLAttributes<HTMLDivElement> {
+  isOpen: boolean;
+  mountOnEnter?: boolean;
+  unmountOnExit?: boolean;
+}
+
+const Collapse: React.FC<CollapseProps> = ({ isOpen, children, mountOnEnter, unmountOnExit, ...props }) => {
   const [height, setHeight] = React.useState<number | undefined>();
 
   const onHeight = React.useCallback((node: HTMLElement) => {
@@ -50,19 +56,22 @@ const Collapse: React.FC<{ isOpen: boolean }> = ({ children, isOpen }) => {
   }, []);
 
   return (
-    <Transition in={isOpen} onEntering={onHeight} onEntered={onFinished} onExit={onHeight} onExiting={onExiting} onExited={onFinished} timeout={500}>
-      {(status) => {
-        return (
-          <CollapseContainer
-            status={status}
-            style={{
-              height,
-            }}
-          >
-            <div>{children}</div>
-          </CollapseContainer>
-        );
-      }}
+    <Transition
+      in={isOpen}
+      onExit={onHeight}
+      timeout={500}
+      onExited={onFinished}
+      onEntered={onFinished}
+      onExiting={onExiting}
+      onEntering={onHeight}
+      mountOnEnter={mountOnEnter}
+      unmountOnExit={unmountOnExit}
+    >
+      {(status) => (
+        <CollapseContainer {...props} status={status} style={{ ...props.style, height }}>
+          <div>{children}</div>
+        </CollapseContainer>
+      )}
     </Transition>
   );
 };

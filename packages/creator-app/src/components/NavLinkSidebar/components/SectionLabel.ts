@@ -13,7 +13,7 @@ const GroupLabel = styled.div<{ isActive?: boolean }>`
   letter-spacing: 0.2px;
   padding-left: 32px;
   color: #132144;
-  font-weight: bold;
+  font-weight: 600;
 
   ${({ isActive }) =>
     isActive &&

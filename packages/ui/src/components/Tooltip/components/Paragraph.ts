@@ -1,6 +1,6 @@
 import { styled, units } from '@ui/styles';
 
-interface ParagraphProps {
+export interface ParagraphProps {
   marginBottomUnits?: number;
 }
 

@@ -15,7 +15,7 @@ import { SyncThunk, Thunk } from '@/store/types';
 import { inferIntentSlotsType, inferIntentSlotType, inferIntentType, removeSlotRefFromInput } from '@/utils/intent';
 import { createNextName } from '@/utils/string';
 
-import { getProjectTypeNewSlotsCreator, getUniqSlots, intentProcessor } from './utils';
+import { getUniqSlots, intentProcessor } from './utils';
 
 const NEW_INTENT_NAME = 'intent';
 
@@ -36,7 +36,7 @@ export const patchIntent =
   (dispatch, getState) => {
     const state = getState();
     const projectMeta = ProjectV2.active.metaSelector(state);
-    const newSlotsCreator = getProjectTypeNewSlotsCreator(projectMeta.type);
+    const intentSlotFactory = Realtime.Utils.slot.intentSlotFactoryCreator(projectMeta.type);
 
     if (!data.inputs) {
       dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: data, projectMeta }));
@@ -44,6 +44,7 @@ export const patchIntent =
     }
 
     const nluModals = Feature.featureSelector(state)(FeatureFlag.IMM_MODALS_V2);
+
     if (nluModals.isEnabled) {
       const intent = IntentV2.intentByIDSelector(state, { id });
       if (!intent) return;
@@ -61,7 +62,7 @@ export const patchIntent =
 
       let updatedByKey = _pick(byKey, supersetKeys);
 
-      updatedByKey = newKeys.reduce((obj, slotID) => Object.assign(obj, { [slotID]: newSlotsCreator(slotID) }), updatedByKey);
+      updatedByKey = newKeys.reduce((obj, slotID) => Object.assign(obj, { [slotID]: intentSlotFactory({ id: slotID }) }), updatedByKey);
 
       const patchedIntent = inferIntentType({
         ...data,
@@ -70,11 +71,6 @@ export const patchIntent =
 
       dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent, projectMeta }));
     } else {
-      if (!data.inputs) {
-        dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: data, projectMeta }));
-        return;
-      }
-
       const intent = IntentV2.intentByIDSelector(state, { id });
       if (!intent) return;
 
@@ -86,7 +82,7 @@ export const patchIntent =
 
       let newByKey = _pick(byKey, keysWithoutRemoved);
 
-      newByKey = keysToAdd.reduce((obj, slotID) => Object.assign(obj, { [slotID]: newSlotsCreator(slotID) }), newByKey);
+      newByKey = keysToAdd.reduce((obj, slotID) => Object.assign(obj, { [slotID]: intentSlotFactory({ id: slotID }) }), newByKey);
 
       const patchedIntent = inferIntentType({
         ...data,
@@ -104,7 +100,7 @@ export const addRequiredSlot =
     const nluModals = Feature.featureSelector(state)(FeatureFlag.IMM_MODALS_V2);
 
     const projectMeta = ProjectV2.active.metaSelector(state);
-    const newSlotsCreator = getProjectTypeNewSlotsCreator(projectMeta.type);
+    const intentSlotFactory = Realtime.Utils.slot.intentSlotFactoryCreator(projectMeta.type);
 
     const intent = IntentV2.intentByIDSelector(state, { id: intentID });
     if (!intent) return;
@@ -116,7 +112,7 @@ export const addRequiredSlot =
     const byKeys = {
       ...slots.byKey,
       [slotID]: {
-        ...(Normal.getOne(intent.slots, slotID) ?? newSlotsCreator(slotID)),
+        ...(Normal.getOne(intent.slots, slotID) ?? intentSlotFactory({ id: slotID })),
         required: true,
       },
     };
@@ -194,14 +190,14 @@ export const removeIntentSlot =
   };
 
 export const updateIntentSlotDialog =
-  (id: string, slotID: string, dialog: Realtime.IntentSlotDialog): SyncThunk =>
+  (id: string, slotID: string, dialog: Partial<Realtime.IntentSlotDialog>): SyncThunk =>
   (dispatch, getState) => {
     const intent = IntentV2.intentByIDSelector(getState(), { id });
     if (!intent) return;
 
     const slot = Utils.normalized.getNormalizedByKey(intent.slots, slotID);
 
-    dispatch(patchIntentSlot(id, slotID, inferIntentSlotType({ dialog: { ...slot.dialog, ...dialog } })));
+    dispatch(patchIntentSlot(id, slotID, inferIntentSlotType({ dialog: { ...slot.dialog, ...dialog } as Realtime.IntentSlotDialog })));
   };
 
 export const reorderIntentSlots =

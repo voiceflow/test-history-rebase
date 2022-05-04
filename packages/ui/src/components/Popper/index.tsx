@@ -42,14 +42,7 @@ export interface PopperProps {
   preventOverflowPadding?: number;
 }
 
-interface PopperComponent extends React.FC<PopperProps> {
-  Nav: typeof Nav;
-  Footer: typeof Footer;
-  Content: typeof Content;
-  NavItem: typeof NavItem;
-}
-
-const Popper: PopperComponent = ({
+const Popper: React.FC<PopperProps> = ({
   width,
   height,
   opened,
@@ -137,9 +130,4 @@ const Popper: PopperComponent = ({
   );
 };
 
-Popper.Nav = Nav;
-Popper.Footer = Footer;
-Popper.Content = Content;
-Popper.NavItem = NavItem;
-
-export default Popper;
+export default Object.assign(Popper, { Nav, Footer, Content, NavItem });

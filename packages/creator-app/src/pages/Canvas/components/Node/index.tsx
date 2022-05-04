@@ -22,7 +22,7 @@ const Node: React.FC = () => {
   const isEditingMode = useEditingMode();
   const isCanvasMode = useCanvasMode();
   const isPrototypingMode = usePrototypingMode();
-  const { onMouseDown, onClick, onDragStart } = useNodeDrag();
+  const { onClick, onMouseUp, onDragStart, onMouseDown } = useNodeDrag();
 
   const { isFocused } = nodeEntity.useState((e) => ({ isFocused: e.isFocused }));
 
@@ -91,6 +91,7 @@ const Node: React.FC = () => {
         onMouseDown={onMouseDown}
         onDragStart={onDragStart}
         onClick={onClickHandler}
+        onMouseUp={onMouseUp}
         onContextMenu={onRightClick}
         onDoubleClick={onDoubleClick}
         ref={instance.ref}

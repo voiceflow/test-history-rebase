@@ -9,7 +9,6 @@ import { NODE_CONFIG } from './constants';
 const AccountLinkingManager: NodeManagerConfig<Realtime.NodeData.AccountLinking, Realtime.NodeData.AccountLinkingBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Account Linking tips',
   label: 'Account Linking',
   platforms: [VoiceflowConstants.PlatformType.ALEXA],
 

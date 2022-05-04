@@ -3,10 +3,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 
-import { BasicNodeManagerConfig } from '../types';
+import { MarkupNodeManagerConfig } from '../types';
 import MarkupImageNode from './MarkupImageNode';
 
-const MarkupImage: BasicNodeManagerConfig<Realtime.Markup.NodeData.Image> = {
+const MarkupImage: MarkupNodeManagerConfig<Realtime.Markup.NodeData.Image> = {
   type: BlockType.MARKUP_IMAGE,
 
   markupNode: MarkupImageNode,

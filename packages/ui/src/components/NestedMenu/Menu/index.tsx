@@ -352,7 +352,9 @@ function BaseNestedMenu({
                 scrollbarsRef={scrollbarsRef}
                 maxVisibleItems={MAX_VISIBLE_ITEMS}
                 disableAnimation={disableAnimation}
-                renderFooterAction={renderFooterAction}
+                renderFooterAction={
+                  renderFooterAction && ((props) => renderFooterAction({ ...props, searchLabel: (searchable ? searchLabel : newOptionLabel) ?? '' }))
+                }
                 {...menuProps}
               >
                 <MenuOptions

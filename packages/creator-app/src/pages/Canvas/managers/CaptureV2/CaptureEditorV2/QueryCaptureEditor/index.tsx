@@ -7,7 +7,6 @@ import React from 'react';
 import OverflowMenu from '@/components/OverflowMenu';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import VariableSelect from '@/components/VariableSelect';
-import { getProjectTypeNewSlotsCreator } from '@/ducks/intent/utils';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useSelector } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
@@ -30,7 +29,7 @@ const QueryCaptureEditor: NodeEditor<Realtime.NodeData.CaptureV2, Realtime.NodeD
   const entityCapture = (slotID = '') => {
     onChange({
       captureType: BaseNode.CaptureV2.CaptureType.INTENT,
-      intent: { slots: [getProjectTypeNewSlotsCreator(projectType)(slotID)] },
+      intent: { slots: [Realtime.Utils.slot.intentSlotFactoryCreator(projectType)({ id: slotID })] },
       noMatch: getPlatformNoMatchFactory(projectType)(),
     });
   };

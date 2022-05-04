@@ -138,6 +138,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
         header="Values"
         variant={SectionVariant.QUATERNARY}
         forceDividers
+        customContentStyling={{ padding: 0 }}
         customHeaderStyling={{
           paddingTop: '20px',
           paddingBottom: '16px',
@@ -153,7 +154,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
             <ListManagerWrapper>
               <ListManager
                 renderList={({ mapManaged, itemRenderer }) => (
-                  <Box overflow="auto" mr={-12} mb={8} style={{ ...valueListStyling }}>
+                  <Box overflow="auto" mb={8} px={32} style={{ ...valueListStyling }}>
                     {mapManaged(itemRenderer)}
                   </Box>
                 )}
@@ -162,7 +163,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
                 divider={false}
                 initialValue={generateSlotInput()}
                 renderForm={({ value, onChange, onAdd }) => (
-                  <Box position="sticky" top={58} zIndex={1000} style={{ background: 'white' }}>
+                  <Box position="sticky" top={58} zIndex={1000} px={32} backgroundColor="white">
                     <Input
                       ref={valueRef}
                       value={newValueText}
@@ -197,7 +198,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
           </FormControl>
 
           {customLines.length > MAX_VISIBLE_VALUES && (
-            <Box color="#62778c" pb={24} mt={-15}>
+            <Box color="#62778c" pb={24} mt={-15} px={32}>
               <ClickableText onClick={() => setShowAllValues(!showAllValues)}>
                 {showAllValues ? `Hide some values` : `Show all values (${customLines.length})`}
               </ClickableText>

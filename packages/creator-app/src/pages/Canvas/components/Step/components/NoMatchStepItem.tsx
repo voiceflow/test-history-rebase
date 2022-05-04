@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { hasValidReprompt } from '@/utils/prompt';
+import { hasValidPrompt } from '@/utils/prompt';
 
 import NoMatchAndNoReplyStepCopyList from '../../NoMatchAndNoReplyStepCopyList';
 import Attachment from './StepAttachment';
@@ -28,7 +28,7 @@ const NoMatchStepItem: React.FC<NoMatchStepItemProps> = ({ noMatch, portID }) =>
           portID={isPath ? portID : null}
           portColor="#6e849a"
           attachment={
-            noMatch.types.includes(BaseNode.Utils.NoMatchType.REPROMPT) && hasValidReprompt(noMatch.reprompts) ? (
+            noMatch.types.includes(BaseNode.Utils.NoMatchType.REPROMPT) && hasValidPrompt(noMatch.reprompts) ? (
               <Attachment ref={ref} icon="noMatch" isActive={isOpened} onClick={stopPropagation(onToggle)} />
             ) : null
           }

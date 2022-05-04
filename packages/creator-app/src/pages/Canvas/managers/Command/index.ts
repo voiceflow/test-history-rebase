@@ -15,7 +15,6 @@ const EDITORS_BY_PATH = {
 const CommandManager: NodeManagerConfig<Realtime.NodeData.Command> = {
   type: BlockType.COMMAND,
   label: BlockType.COMMAND,
-  nameEditable: true,
 
   step: CommandStep,
   editor: CommandEditor,

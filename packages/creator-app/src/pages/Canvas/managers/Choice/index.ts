@@ -9,10 +9,7 @@ import { EDITORS_BY_PATH } from './subeditors';
 const ChoiceManager: NodeManagerConfig<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Select choices and capture slot values from user input',
   label: 'Choice',
-  buttons: true,
-  reprompt: true,
 
   step: ChoiceStep,
   editor: ChoiceEditor,

@@ -1,3 +1,4 @@
+import { Struct } from '@voiceflow/common';
 import { generatePath } from 'react-router-dom';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
@@ -24,7 +25,6 @@ import {
   goToSettings,
   goToTranscript,
   goToWorkspaceSettings,
-  pushSearch,
   redirectTo,
   redirectToCanvasCommentingThread,
 } from './actions';
@@ -32,19 +32,41 @@ import {
 export const goToCanvas = (versionID: string, diagramID?: string) =>
   goTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
 
+export const goToCanvasNode = ({
+  nodeID,
+  versionID,
+  diagramID,
+  routeState,
+  nodeSubPath,
+}: {
+  nodeID: string;
+  versionID: string;
+  diagramID: string;
+  routeState?: Struct;
+  nodeSubPath?: string;
+}) =>
+  goTo(
+    `${generatePath(Path.CANVAS_NODE, { versionID, diagramID, nodeID })}${nodeSubPath ? `/${nodeSubPath}` : ''}${window.location.search}`,
+    routeState
+  );
+
 export const goToVersions = (versionID: string) => goTo(`${generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID })}`);
 
 export const redirectToCanvas = (versionID: string, diagramID?: string) =>
   redirectTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
 
 export const goToCanvasSwitchRealtime =
-  (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk =>
+  (versionID: string, diagramID: string, { nodeID, isNewDiagram }: { nodeID?: string; isNewDiagram?: boolean } = {}): Thunk =>
   async (dispatch) => {
     PageProgress.start(PageProgressBar.CANVAS_LOADING);
 
     await dispatch(Realtime.switchRealtimeDiagram(versionID, diagramID, isNewDiagram));
 
-    dispatch(goToCanvas(versionID, diagramID));
+    if (nodeID) {
+      dispatch(goToCanvasNode({ versionID, diagramID, nodeID }));
+    } else {
+      dispatch(goToCanvas(versionID, diagramID));
+    }
   };
 
 export const redirectToCanvasSwitchRealtime =
@@ -132,11 +154,7 @@ export const goToDiagram =
 
     Errors.assertVersionID(versionID);
 
-    if (nodeID) {
-      await dispatch(pushSearch(`?nodeID=${nodeID}`));
-    }
-
-    await dispatch(goToCanvasSwitchRealtime(versionID, diagramID));
+    await dispatch(goToCanvasSwitchRealtime(versionID, diagramID, { nodeID }));
   };
 
 export const goToDiagramHistoryPush =
@@ -264,6 +282,19 @@ export const goToCurrentCanvasInteractionModelEntity =
         })
       )
     );
+  };
+
+export const goToCurrentCanvasNode =
+  (nodeID: string, nodeSubPath?: string, routeState?: Struct): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
+    const diagramID = Session.activeDiagramIDSelector(state);
+
+    Errors.assertVersionID(versionID);
+    Errors.assertDiagramID(diagramID);
+
+    dispatch(goToCanvasNode({ versionID, diagramID, nodeID, nodeSubPath, routeState }));
   };
 
 export const goToCurrentWorkspaceSettings = (): SyncThunk => (dispatch, getState) => {

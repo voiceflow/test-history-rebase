@@ -13,7 +13,6 @@ import PrototypeSettings from '@/pages/Prototype/components/PrototypeSettings';
 import PrototypeSidebar from '@/pages/Prototype/components/PrototypeSidebar';
 import PrototypeVariableSettings from '@/pages/Prototype/components/PrototypeVariableSettings';
 import PrototypeVisualCanvas from '@/pages/Prototype/components/PrototypeVisualCanvas';
-import { SlideOutDirection } from '@/styles/transitions';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 const PrototypeOverlay: React.FC = () => {
@@ -71,7 +70,7 @@ const PrototypeOverlay: React.FC = () => {
           open={isPrototypeSidebarOpened}
           width={widthRef.current}
           offset={theme.components.sidebarIconMenu.width}
-          direction={SlideOutDirection.RIGHT}
+          direction={Drawer.Direction.RIGHT}
         >
           {isPrototypeVariables && <PrototypeVariableSettings />}
           {isPrototypeDisplay && <PrototypeDisplaySettings />}

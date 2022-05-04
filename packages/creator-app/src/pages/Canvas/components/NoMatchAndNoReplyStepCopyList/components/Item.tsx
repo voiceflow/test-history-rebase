@@ -20,7 +20,7 @@ const Item: React.FC<ItemProps> = ({ label, isLast, children, onClick }) => {
     <>
       <ItemContainer onClick={canCopy ? stopPropagation(Utils.functional.chain(onClick, onClickCopy(children))) : undefined}>
         <BoxFlexApart>
-          <Text fontWeight="bold">{label}</Text>
+          <Text fontWeight="600">{label}</Text>
           {canCopy && <ClickableText>Copy</ClickableText>}
         </BoxFlexApart>
         {!!children && <BlockText mt={6}>{children}</BlockText>}

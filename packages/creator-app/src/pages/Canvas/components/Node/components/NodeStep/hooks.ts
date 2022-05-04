@@ -1,4 +1,4 @@
-import { preventDefault, stopPropagation } from '@voiceflow/ui';
+import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType } from '@/constants';
@@ -112,7 +112,12 @@ export const useStepAPI = <T extends HTMLElement>(
       hasLinkWarning,
       wrapElement,
       handlers: {
-        onClick: preventDefault(() => engine.setActive(nodeEntity.nodeID)),
+        onClick: (event: React.MouseEvent) => {
+          if (event.shiftKey) return;
+
+          event.preventDefault();
+          engine.setActive(nodeEntity.nodeID);
+        },
         onDoubleClick: stopPropagation(() => engine.node.center(nodeEntity.nodeID)),
         onContextMenu: stopPropagation((event: React.MouseEvent) => {
           if (nodeEntity.nodeType === BlockType.START || !isEditingMode) return;
@@ -120,10 +125,15 @@ export const useStepAPI = <T extends HTMLElement>(
           contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
         }),
         onMouseUp: (event: React.MouseEvent) => {
-          if (!nodeEntity.inPortID || !engine.linkCreation.canTargetNode(nodeEntity.nodeID)) return;
+          if (event.shiftKey) return;
 
           event.preventDefault();
-          engine.linkCreation.complete(nodeEntity.inPortID);
+
+          if (nodeEntity.inPortID && engine.linkCreation.canTargetNode(nodeEntity.nodeID)) {
+            engine.linkCreation.complete(nodeEntity.inPortID);
+          } else {
+            engine.clearActivation({ skipUrlSync: true });
+          }
         },
         onDragStart: async (dragEvent: React.DragEvent) => {
           if (!isEditingMode) return;

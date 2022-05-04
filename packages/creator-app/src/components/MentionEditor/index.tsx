@@ -1,6 +1,5 @@
 import { NonNullishRecord, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { portalRootNode } from '@voiceflow/ui';
 import React from 'react';
 import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
 import { createSelector } from 'reselect';
@@ -8,10 +7,10 @@ import { createSelector } from 'reselect';
 import Commenter from '@/components/Commenter';
 import { hasRolePermission, Permission } from '@/config/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useSelector } from '@/hooks';
+import { useSelector, useTheme } from '@/hooks';
 
 import MentionPreview from '../CommentPreview';
-import { MentionEditorContainer, mentionEditorStyle, mentionStyle } from './components';
+import { MentionEditorContainer, mentionEditorStyle, mentionStyle, MentionSuggestionStyles } from './components';
 import { formatNameToMention } from './utils';
 
 export { MentionPreview };
@@ -31,6 +30,7 @@ export interface MentionEditorProps {
 }
 
 export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, value = '', placeholder, inputProps, height }) => {
+  const theme = useTheme();
   const members = useSelector(activeWorkspaceCommentingMembersSelector);
 
   const onValueChange: OnChangeHandlerFunc = ({ target }, _, __, mentions) =>
@@ -43,14 +43,16 @@ export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, 
 
   return (
     <MentionEditorContainer>
+      <MentionSuggestionStyles />
+
       <MentionsInput
         value={value}
-        style={mentionEditorStyle(height)}
+        style={mentionEditorStyle({ theme, height })}
         onBlur={onBlur}
         onChange={onValueChange}
         className="mentionInput"
         placeholder={placeholder}
-        suggestionsPortalHost={portalRootNode}
+        suggestionsPortalHost={document.body}
         allowSuggestionsAboveCursor={true}
         {...inputProps}
       >

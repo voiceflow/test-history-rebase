@@ -27,6 +27,7 @@ export { default as ban } from './ban.svg';
 export { default as barGraph } from './bar-graph.svg';
 export { default as blocks } from './blocks.svg';
 export { default as bookmark } from './bookmark.svg';
+export { default as builtInIntent } from './built-in-intent.svg';
 
 // c
 export { default as call } from './call.svg';
@@ -61,6 +62,7 @@ export { default as cursor } from './cursor.svg';
 export { default as custom } from './custom.svg';
 export { default as customPayload } from './custom-payload.svg';
 export { default as customResponse } from './custom-response.svg';
+export { default as edit } from './edit.svg';
 export { default as checked } from './images/icons/check.svg';
 
 // d
@@ -150,6 +152,7 @@ export { default as js } from './js.svg';
 export { default as jump } from './jump.svg';
 
 // l
+export { default as largeArrowLeft } from './large-arrow-left.svg';
 export { default as less } from './less.svg';
 export { default as lex } from './lex.svg';
 export { default as line } from './line.svg';

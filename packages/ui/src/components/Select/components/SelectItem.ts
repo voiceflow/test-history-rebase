@@ -20,7 +20,7 @@ const SelectItem = styled(MenuItem)<SelectItemProps>`
   ${({ isGroup }) =>
     isGroup &&
     css`
-      font-weight: bold;
+      font-weight: 600;
       cursor: default;
     `}
 

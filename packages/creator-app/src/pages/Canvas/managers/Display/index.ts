@@ -9,7 +9,6 @@ import { NODE_CONFIG } from './constants';
 const DisplayManager: NodeManagerConfig<Realtime.NodeData.Visual, Realtime.NodeData.VisualBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Show a Multimodal Display on the screen using APL',
   label: 'Display',
   platforms: [VoiceflowConstants.PlatformType.ALEXA],
 

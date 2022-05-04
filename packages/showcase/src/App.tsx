@@ -4,6 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'simplebar/dist/simplebar.min.css';
 import 'react-day-picker/lib/style.css';
+// eslint-disable-next-line import/no-relative-packages
+import '../../creator-app/src/App.css';
 
 import React from 'react';
 import { DismissableLayersGlobalProvider } from 'react-dismissable-layers';

@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
@@ -49,7 +50,7 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
   nodeEntity.useInstance(instance);
 
   React.useEffect(() => {
-    engine.node.redrawNestedLinks(node.parentNode!);
+    engine.node.redrawNestedLinks(node.parentNode);
   }, [data]);
 
   React.useEffect(() => {
@@ -58,48 +59,44 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
     }
   }, [isDragging]);
 
-  const { platforms = [], projectTypes = [], ...manager } = getManager(nodeEntity.nodeType);
+  const { platforms = [], projectTypes = [], ...manager } = getManager(nodeEntity.nodeType as Realtime.StepBlockType);
   let StepComponent = manager.step || getManager(BlockType.DEPRECATED).step;
 
   if ((platforms.length && !platforms.includes(platform)) || (projectTypes.length && !projectTypes.includes(projectType))) {
     StepComponent = getManager(BlockType.INVALID_PLATFORM).step;
   }
 
+  const step = (
+    <StepComponent
+      data={data as any}
+      ports={node.ports as any}
+      engine={engine}
+      variant={variant}
+      platform={platform}
+      withPorts={stepAPI.withPorts}
+      projectType={projectType}
+    />
+  );
+
   return (
     <>
       <Styles isHovered={stepAPI.isHovered} hasLinkWarning={stepAPI.hasLinkWarning} />
       <NodeLifecycle />
+
       {nodeEntity.inPortID && (
         <PortEntityProvider id={nodeEntity.inPortID}>
           <NodePort getAnchorPoint={getAnchorPoint} />
         </PortEntityProvider>
       )}
+
       <StepAPIProvider value={stepAPI}>
         {isDragging ? (
           <>
             <Step.Placeholder variant={variant} isLast={isLast} />
-            <Portal portalNode={engine.merge.components.mergeLayer!.ref.current!}>
-              <StepComponent
-                ports={node.ports}
-                data={data}
-                engine={engine}
-                platform={platform}
-                projectType={projectType}
-                withPorts={stepAPI.withPorts}
-                variant={variant}
-              />
-            </Portal>
+            <Portal portalNode={engine.merge.components.mergeLayer?.ref.current}>{step}</Portal>
           </>
         ) : (
-          <StepComponent
-            ports={node.ports}
-            data={data}
-            engine={engine}
-            platform={platform}
-            projectType={projectType}
-            withPorts={stepAPI.withPorts}
-            variant={variant}
-          />
+          step
         )}
       </StepAPIProvider>
     </>

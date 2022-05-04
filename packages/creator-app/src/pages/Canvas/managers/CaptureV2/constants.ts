@@ -10,6 +10,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeD
   type: BlockType.CAPTUREV2,
   icon: 'capture',
 
+  mergeTerminator: true,
+
   factory: (_, { projectType, defaultVoice } = {}) => ({
     node: {
       ports: {

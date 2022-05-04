@@ -3,9 +3,9 @@ import { colors, css, styled, ThemeColor } from '@ui/styles';
 
 export interface SelectWrapperProps {
   minWidth?: boolean;
-  clearable?: boolean;
   fullWidth?: boolean;
   isFocused?: boolean;
+  withClearIcon?: boolean;
 }
 
 const SelectWrapper = styled.div<SelectWrapperProps>`
@@ -31,8 +31,8 @@ const SelectWrapper = styled.div<SelectWrapperProps>`
       width: 100%;
     `}
 
-  ${({ clearable }) =>
-    clearable &&
+  ${({ withClearIcon }) =>
+    withClearIcon &&
     css`
       cursor: not-allowed;
     `}

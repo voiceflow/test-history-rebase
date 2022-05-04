@@ -1,26 +1,34 @@
-import { IconButtonVariant } from '@ui/components';
-import { BaseContainerProps } from '@ui/components/IconButton/components/IconButtonContainer';
-import { css, styled } from '@ui/styles';
+import { css, styled, transition } from '@ui/styles';
+
+import { IconButtonVariant } from '../types';
+import { BaseContainerProps } from './IconButtonContainer';
 
 export interface BasicContainerProps extends BaseContainerProps {
   variant: IconButtonVariant.BASIC;
-  containerSize?: number;
   activeHover?: boolean;
   activeClick?: boolean;
+  transparent?: boolean;
+  containerSize?: number;
 }
 
-const activeHoverStyle = css`
+const transparentHoverStyle = css`
+  opacity: 1;
+`;
+
+const hoverStyle = css`
   background: #eef4f6;
   opacity: 1;
 `;
 
 const BasicContainer = styled.div<BasicContainerProps>`
+  ${transition('background', 'opacity', 'color')};
+
   ${({ containerSize = 10 }) => css`
     padding: ${containerSize}px;
     margin: -${containerSize}px;
   `}
+
   color: #8da2b5;
-  transition: background 0.2s ease;
   background: transparent;
 
   opacity: 0.8;
@@ -29,24 +37,27 @@ const BasicContainer = styled.div<BasicContainerProps>`
 
   &:hover,
   &:active {
-    ${activeHoverStyle}
+    ${({ transparent }) => (transparent ? transparentHoverStyle : hoverStyle)}
   }
 
   &:active {
     color: #132144;
   }
 
-  ${({ activeHover }) =>
-    activeHover &&
-    css`
-      ${activeHoverStyle}
-    `}
+  ${({ transparent, activeHover }) => activeHover && (transparent ? transparentHoverStyle : hoverStyle)}
 
-  ${({ activeClick }) =>
+  ${({ transparent, activeClick }) =>
     activeClick &&
     css`
-      ${activeHoverStyle}
+      ${transparent ? transparentHoverStyle : hoverStyle}
       color: #132144;
+    `}
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      opacity: 0.6;
+      pointer-events: none;
     `}
 `;
 

@@ -79,4 +79,6 @@ export const MARKUP_AND_COMBINED_NODES: ReadonlyArray<MarkupOrCombinedBlockType>
 export type DiagramReferenceBlockType = BlockType.COMMAND | BlockType.FLOW | BlockType.COMPONENT;
 export const DIAGRAM_REFERENCE_NODES: ReadonlyArray<DiagramReferenceBlockType> = [BlockType.COMMAND, BlockType.FLOW, BlockType.COMPONENT];
 
+export type StepBlockType = Exclude<BlockType, RootOrMarkupBlockType | DeprecatedBlockType>;
+
 export const NO_IN_PORT_NODES = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);

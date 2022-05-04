@@ -1,4 +1,3 @@
-import { IconButtonVariant } from '@voiceflow/ui';
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
 
@@ -67,13 +66,8 @@ function ListManager<I>({
   const itemRenderer = (item: I, options: ItemOptions<I>) => (
     <ItemWrapper key={options.key}>
       {renderItem!(item, options)}
-      <RemoveIcon
-        style={{ marginRight: 0, marginTop: 2 }}
-        size={16}
-        isHidden={_isNumber(requiredItemIndex) && options.index === requiredItemIndex}
-        onClick={() => onRemove(options.key)}
-        variant={IconButtonVariant.BASIC}
-      />
+
+      <RemoveIcon onClick={() => onRemove(options.key)} isHidden={_isNumber(requiredItemIndex) && options.index === requiredItemIndex} />
     </ItemWrapper>
   );
 

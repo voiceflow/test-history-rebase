@@ -117,16 +117,16 @@ context('Canvas - Blocks', () => {
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 500]);
 
-    canvasPage.el.node.eq(0).should('have.coords', [336, 249], 2);
-    canvasPage.el.node.eq(1).should('have.coords', [336, 165], 2);
-    canvasPage.el.node.eq(2).should('have.coords', [368, 565], 2);
+    canvasPage.el.node.eq(0).should('have.coords', [396, 249], 2);
+    canvasPage.el.node.eq(1).should('have.coords', [396, 165], 2);
+    canvasPage.el.node.eq(2).should('have.coords', [398, 565], 2);
 
     cy.selectAllCanvasNodes();
 
     canvasPage.el.node.eq(2).dragNode(100, 100);
 
-    canvasPage.el.node.eq(0).should('have.coords', [436, 349], 2);
-    canvasPage.el.node.eq(1).should('have.coords', [436, 265], 2);
-    canvasPage.el.node.eq(2).should('have.coords', [468, 665], 2);
+    canvasPage.el.node.eq(0).should('have.coords', [496, 349], 2);
+    canvasPage.el.node.eq(1).should('have.coords', [496, 265], 2);
+    canvasPage.el.node.eq(2).should('have.coords', [498, 665], 2);
   });
 });

@@ -1,7 +1,7 @@
 import { css, styled } from '@ui/styles';
 
 export interface FlexProps {
-  gap?: number;
+  gap?: number | [number, number];
   column?: boolean;
   inline?: boolean;
   fullWidth?: boolean;
@@ -15,7 +15,7 @@ export const flexStyles = css<FlexProps>`
   ${({ gap }) =>
     gap &&
     css`
-      gap: ${gap}px;
+      gap: ${Array.isArray(gap) ? `${gap[0]}px ${gap[1]}px` : `${gap}px`};
     `}
 
   ${({ column }) =>

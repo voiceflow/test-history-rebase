@@ -1,12 +1,9 @@
-import { ChatModels } from '@voiceflow/chat-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
-import { VoiceModels } from '@voiceflow/voice-types';
 import React from 'react';
 
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as SlotV2 from '@/ducks/slotV2';
 import { useDidUpdateEffect, useDispatch, useLinkedState, useSelector } from '@/hooks';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/index';
 import { isBuiltInIntent } from '@/utils/intent';
@@ -21,16 +18,9 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({ intentID, withNameSecti
   const [name, setName] = useLinkedState(intent?.name || '');
   const [inputs, setInputs] = useLinkedState(intent?.inputs || []);
 
-  const slotsMap = useSelector(SlotV2.slotMapSelector);
-
   const addRequiredSlot = useDispatch(Intent.addRequiredSlot);
   const removeRequiredSlot = useDispatch(Intent.removeRequiredSlot);
   const patchIntentSlotDialog = useDispatch(Intent.updateIntentSlotDialog);
-
-  const usedSlotKeys = intent?.slots.allKeys || [];
-  const usedSlots = React.useMemo(() => {
-    return usedSlotKeys.reduce<Realtime.IntentSlot[]>((slots, key) => (intent?.slots.byKey[key] ? [...slots, intent?.slots.byKey[key]] : slots), []);
-  }, [usedSlotKeys, slotsMap, intent?.slots]);
 
   const isBuiltIn = React.useMemo(() => isBuiltInIntent(intentID), [intentID]);
   const noteID = intent?.noteID;
@@ -49,8 +39,8 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({ intentID, withNameSecti
     await removeRequiredSlot(intentID, slotID);
   };
 
-  const updateSlotDialog = (slotID: string, prompt: VoiceModels.IntentPrompt<any>[] | ChatModels.Prompt[]) => {
-    patchIntentSlotDialog(intentID, slotID, { prompt } as Realtime.IntentSlotDialog);
+  const updateSlotDialog = (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => {
+    patchIntentSlotDialog(intentID, slotID, dialog);
   };
 
   const onUpdateUtterances = (inputs: Realtime.IntentInput[]) => {
@@ -68,7 +58,7 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({ intentID, withNameSecti
     <IntentForm
       withDescriptionSection
       intentID={intentID}
-      usedSlots={usedSlots}
+      intentEntities={intent.slots}
       noteID={noteID}
       isBuiltIn={isBuiltIn}
       inputs={inputs}

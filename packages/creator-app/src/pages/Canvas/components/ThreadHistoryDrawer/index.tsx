@@ -15,7 +15,6 @@ import { FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCanvasRendered } from '@/pages/Canvas/hooks';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
-import { SlideOutDirection } from '@/styles/transitions/SlideOut';
 
 import { Container as HeaderContainer, FilterMenu, NoThreads, ScrollbarsContainer, ThreadItem } from './components';
 import { FilterType } from './constants';
@@ -55,7 +54,7 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
       width={theme.components.historyDrawer.width}
       style={{ display: 'flex', flexDirection: 'column' }}
       onPaste={stopImmediatePropagation()}
-      direction={SlideOutDirection.LEFT}
+      direction={Drawer.Direction.LEFT}
     >
       <HeaderContainer>
         <Text fontSize={18} fontWeight={600}>

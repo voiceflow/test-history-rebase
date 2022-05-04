@@ -8,9 +8,7 @@ import StreamStep from './StreamStep';
 const StreamManager: NodeManagerConfig<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Stream long form audio files & URLs',
   label: 'Stream',
-  buttons: true,
 
   step: StreamStep,
   editor: StreamEditor,

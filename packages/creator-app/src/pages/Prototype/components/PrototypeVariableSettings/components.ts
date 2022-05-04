@@ -29,7 +29,7 @@ export const Variables = styled(Section).attrs({ dividers: false })`
 export const InputPrefix = styled.span`
   display: inline-block;
   font-size: 13px;
-  font-weight: bold;
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: uppercase;

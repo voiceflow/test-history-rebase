@@ -21,7 +21,7 @@ const SubjectText = styled.div`
 
   em {
     color: ${colors(ThemeColor.PRIMARY)};
-    font-weight: bold;
+    font-weight: 600;
     font-style: normal;
   }
 `;

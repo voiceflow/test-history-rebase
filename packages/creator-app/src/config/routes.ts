@@ -45,6 +45,7 @@ export enum ProjectRoute {
 }
 
 export enum CanvasRoute {
+  NODE = 'node',
   MODEL = 'model',
   MARKUP = 'markup',
   COMMENTING = 'commenting',
@@ -166,6 +167,8 @@ export const Path = {
 
   CONVERSATIONS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CONVERSATIONS, ':transcriptID?'),
 
+  CANVAS_NODE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.NODE, ':nodeID'),
+  CANVAS_MODEL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType?'),
   CANVAS_COMMENTING: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.COMMENTING),
   CANVAS_COMMENTING_THREAD: toPath(
     RootRoute.PROJECT,
@@ -176,7 +179,6 @@ export const Path = {
     ':threadID',
     ':commentID?'
   ),
-  CANVAS_MODEL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType?'),
   CANVAS_MODEL_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType', ':modelEntityID?'),
 
   NEW_PRODUCT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCT),

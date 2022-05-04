@@ -1,11 +1,11 @@
 import composeRef from '@seznam/compose-react-refs';
-import { NestedInputIconPosition } from '@ui/components/Input/constants';
-import { hideNumberArrows, inputStyle, StyledInputProps } from '@ui/components/Input/styles';
 import SvgIcon, { Icon, SvgIconProps } from '@ui/components/SvgIcon';
 import { css, styled } from '@ui/styles';
 import { Either } from '@ui/types';
 import React from 'react';
 
+import { NestedInputIconPosition } from '../constants';
+import { hideNumberArrows, inputStyle, StyledInputProps } from '../styles';
 import ChildInput from './ChildInput';
 import InlineInput, { InlineInputProps } from './InlineInput';
 import InputWrapper, { InputWrapperProps } from './InputWrapper';

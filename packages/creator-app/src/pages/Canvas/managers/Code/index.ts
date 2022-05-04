@@ -8,7 +8,6 @@ import { NODE_CONFIG } from './constants';
 const CodeManager: NodeManagerConfig<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Modify Variables directly with Code',
   label: 'Custom Code',
 
   step: CodeStep,

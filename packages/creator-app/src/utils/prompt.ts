@@ -2,6 +2,7 @@ import { ChatModels } from '@voiceflow/chat-types';
 import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceModels } from '@voiceflow/voice-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import { EditorAPI } from '@/components/SlateEditable/editor';
@@ -20,28 +21,44 @@ export const voicePromptFactory = ({ defaultVoice }: PromptFactoryOptions = {}):
   voice: defaultVoice ?? '',
   content: '',
 });
+export const voiceIntentPromptFactory = ({ defaultVoice }: PromptFactoryOptions = {}): VoiceModels.IntentPrompt<any> => ({
+  text: '',
+  slots: [],
+  voice: defaultVoice,
+});
 
-export const hasValidReprompt = (reprompts?: VoicePrompt[] | ChatModels.Prompt[] | VoiceModels.IntentPrompt<any>[]): boolean => {
-  if (!reprompts) return false;
+export const getPlatformPromptFactory = Realtime.Utils.platform.createProjectTypeSelector<
+  (options?: PromptFactoryOptions) => ChatModels.Prompt | Realtime.NodeData.VoicePrompt
+>({
+  [VoiceflowConstants.ProjectType.CHAT]: chatPromptFactory,
+  [VoiceflowConstants.ProjectType.VOICE]: voicePromptFactory,
+});
 
-  return reprompts.some((prompt): boolean => {
-    if ('type' in prompt) {
-      if (prompt.type === Realtime.VoicePromptType.TEXT) {
-        return !!prompt.content?.trim?.().length;
-      }
+export const getPlatformIntentPromptFactory = Realtime.Utils.platform.createProjectTypeSelector<
+  (options?: PromptFactoryOptions) => ChatModels.Prompt | VoiceModels.IntentPrompt<string>
+>({
+  [VoiceflowConstants.ProjectType.CHAT]: chatPromptFactory,
+  [VoiceflowConstants.ProjectType.VOICE]: voiceIntentPromptFactory,
+});
 
-      if (prompt.type === Realtime.VoicePromptType.AUDIO) {
-        return !!prompt.audio;
-      }
-      return false;
-    }
+export const isEmptyPrompt = (prompt?: ChatModels.Prompt | VoicePrompt | VoiceModels.IntentPrompt<any>): boolean => {
+  if (!prompt) return true;
 
-    if ('content' in prompt) {
-      return !!SlateEditorAPI.serialize(prompt.content);
-    }
+  if ('type' in prompt) {
+    if (prompt.type === Realtime.VoicePromptType.TEXT) return !prompt.content?.trim?.();
+    if (prompt.type === Realtime.VoicePromptType.AUDIO) return !prompt.audio;
 
-    if ('text' in prompt) return prompt.text !== '';
+    return true;
+  }
 
-    return false;
-  });
+  if ('content' in prompt) return !SlateEditorAPI.serialize(prompt.content);
+  if ('text' in prompt) return !prompt.text;
+
+  return true;
+};
+
+export const hasValidPrompt = (prompts?: VoicePrompt[] | ChatModels.Prompt[] | VoiceModels.IntentPrompt<any>[]): boolean => {
+  if (!prompts) return false;
+
+  return prompts.some((prompt): boolean => !isEmptyPrompt(prompt));
 };

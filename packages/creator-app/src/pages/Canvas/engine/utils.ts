@@ -100,7 +100,7 @@ export function nodeDescriptorFactory(
   const {
     node: { ports, ...node },
     data,
-  } = config?.factory?.(factoryData, options) ?? { node: {} as NodeDescriptorOptionalPorts, data: {} as any };
+  } = config.factory?.(factoryData, options) ?? { node: {} as NodeDescriptorOptionalPorts, data: {} as any };
 
   return {
     node: {

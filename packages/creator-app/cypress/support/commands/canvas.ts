@@ -1,5 +1,6 @@
 /* eslint-disable promise/always-return */
 
+import { ClassName } from '../../../src/styles/constants';
 import canvasPage from '../../pages/canvas';
 import buildTools from '../../utils/canvas/buildTools';
 
@@ -76,7 +77,9 @@ Cypress.Commands.add('addBlockToCanvasViaStepMenu', (blockName: string, [offsetX
 });
 
 Cypress.Commands.add('selectAllCanvasNodes', () => {
-  canvasPage.el.node.each(($node) => cy.wrap($node).click({ shiftKey: true, force: true }));
+  canvasPage.el.node.each(($node) =>
+    cy.wrap($node).click({ shiftKey: true, force: true }).should('have.class', `${ClassName.CANVAS_NODE}--selected`)
+  );
   // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(50);
 });

@@ -1,11 +1,10 @@
 import { css, styled } from '@ui/styles';
 
+import { Size } from './constants';
+
 const sizeStyles = {
-  small: css`
+  [Size.SMALL]: css`
     position: relative;
-    margin-right: -4px;
-    margin-left: -4px;
-    margin-top: -2px;
     height: 20px;
 
     .react-toggle-track {
@@ -22,7 +21,8 @@ const sizeStyles = {
       left: 23px;
     }
   `,
-  'extra-small': css`
+
+  [Size.EXTRA_SMALL]: css`
     .react-toggle-track {
       width: 32px;
       height: 16px;
@@ -41,9 +41,9 @@ const sizeStyles = {
   `,
 };
 
-const ToggleContainer = styled.div<{ size?: 'small' | 'extra-small' | 'normal' }>`
+const ToggleContainer = styled.div<{ size: Size }>`
   display: flex;
-  ${({ size }) => size !== 'normal' && sizeStyles[size as 'small' | 'extra-small']}
+  ${({ size }) => size !== Size.NORMAL && sizeStyles[size]}
 `;
 
 export default ToggleContainer;

@@ -4,9 +4,6 @@ import Section from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
-// FIXME: Remove this after migrating SSMLWithVars into TS
-const AnySSMLWithVars = SSMLWithVars as any;
-
 interface ReminderContentProps {
   value: string;
   voice?: string;
@@ -22,7 +19,7 @@ const ReminderContent: React.FC<ReminderContentProps> = ({ value, voice, onChang
     <Section isDividerNested>
       <FormControl label="Reminder Content" />
 
-      <AnySSMLWithVars
+      <SSMLWithVars
         voice={voice}
         value={value}
         onBlur={updateUpsellMessage}

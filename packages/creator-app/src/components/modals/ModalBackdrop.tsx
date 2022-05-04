@@ -27,9 +27,9 @@ export const UncontrolledBackdrop: React.FC<UncontrolledBackdropProps> = ({ onCl
 );
 
 const ModalBackdrop: React.FC = () => {
-  const { openedId, close } = React.useContext(ModalsContext) || {};
+  const { openedId, close } = React.useContext(ModalsContext);
 
-  return <>{!!openedId && <UncontrolledBackdrop onClose={() => openedId && close?.(openedId)} />}</>;
+  return <>{!!openedId && <UncontrolledBackdrop onClose={() => openedId && close(openedId)} />}</>;
 };
 
 export default ModalBackdrop;

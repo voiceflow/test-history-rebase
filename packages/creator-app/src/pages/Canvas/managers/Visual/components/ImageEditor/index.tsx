@@ -115,7 +115,7 @@ const ImageEditor: NodeEditor<BaseNode.Visual.ImageStepData, Realtime.NodeData.V
                   onChangeText={onChangeDimensions('width')}
                   placeholder="500"
                   rightAction={
-                    <Text fontSize={13} color="#62778c" fontWeight="bold">
+                    <Text fontSize={13} color="#62778c" fontWeight="600">
                       W
                     </Text>
                   }
@@ -128,7 +128,7 @@ const ImageEditor: NodeEditor<BaseNode.Visual.ImageStepData, Realtime.NodeData.V
                   onChangeText={onChangeDimensions('height')}
                   placeholder="500"
                   rightAction={
-                    <Text fontSize={13} color="#62778c" fontWeight="bold">
+                    <Text fontSize={13} color="#62778c" fontWeight="600">
                       H
                     </Text>
                   }

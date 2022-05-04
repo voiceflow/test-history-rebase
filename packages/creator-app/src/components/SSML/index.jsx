@@ -165,9 +165,9 @@ const SSML = (
   return (
     <Editor
       {...props}
-      className={cn(ClassName.SSML, className)}
       ref={ref}
       onBlur={onBlurCallback}
+      className={cn(ClassName.SSML, className)}
       placeholder={SSMLPlaceholder}
       onEnterPress={onEnterPress ? onEnterPressCallback : null}
       pluginsTypes={withVariablesPlugin ? pluginsTypes : pluginsWithoutVariablesTypes}

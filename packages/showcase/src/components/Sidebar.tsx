@@ -14,9 +14,11 @@ const List = styled.ul`
   flex-direction: column;
   width: 240px;
   height: 100%;
+  padding: 0;
   margin: 0;
-  padding: 1.5em 0;
   border-right: 1px solid #e6e6e6;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   li {
     list-style: none;
@@ -52,7 +54,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <List>
-      <li style={{ padding: '0 1em', marginBottom: '1em' }}>
+      <li style={{ padding: '1em 1.5em 1em 1em', position: 'sticky', top: 0, backgroundColor: '#f9f9f9', borderBottom: '1px solid #e6e6e6' }}>
         <Input value={search} onChangeText={setSearch} placeholder="Search example" />
       </li>
 

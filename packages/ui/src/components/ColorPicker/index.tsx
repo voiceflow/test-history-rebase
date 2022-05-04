@@ -43,13 +43,14 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, customC
         colors={BASE_COLORS}
       />
       <Color selected={isCustomColor} onClick={() => setIsShowingPicker(true)} small background={COLOR_WHEEL} />
+
       {isShowingPicker && (
         <ColorPickerPopper
           ref={popOver}
           colors={colors}
-          selectedColor={selectedHex}
-          onChange={Utils.functional.chain(debouncedSetColor, setLocalSelectedHex)}
           tagName={trimmedTagName}
+          onChange={Utils.functional.chain(debouncedSetColor, setLocalSelectedHex)}
+          selectedColor={selectedHex}
         />
       )}
     </Wrapper>

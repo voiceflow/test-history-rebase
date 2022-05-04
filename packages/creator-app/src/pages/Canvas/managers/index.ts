@@ -1,3 +1,5 @@
+import { Utils } from '@voiceflow/common';
+
 import { BlockType } from '@/constants';
 
 import AccountLinkingManager from './AccountLinking';
@@ -83,9 +85,12 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.MARKUP_IMAGE]: MarkupImageManager,
 };
 
+export type ManagersMap = typeof MANAGERS_BY_TYPE;
+
+export const getManager = <T extends BlockType>(type: T): T extends keyof ManagersMap ? ManagersMap[T] : ManagersMap[BlockType.DEPRECATED] =>
+  ((Utils.object.hasProperty(MANAGERS_BY_TYPE, type) && MANAGERS_BY_TYPE[type]) ||
+    MANAGERS_BY_TYPE[BlockType.DEPRECATED]) as T extends keyof ManagersMap ? ManagersMap[T] : ManagersMap[BlockType.DEPRECATED];
+
 const MANAGERS = Object.values(MANAGERS_BY_TYPE);
 
 export default MANAGERS;
-
-export const getManager = <T extends keyof typeof MANAGERS_BY_TYPE>(type: T): typeof MANAGERS_BY_TYPE[T] =>
-  MANAGERS_BY_TYPE[type] || MANAGERS_BY_TYPE[BlockType.DEPRECATED];

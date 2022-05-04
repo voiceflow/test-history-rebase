@@ -9,7 +9,6 @@ import UserInfoStep from './UserInfoStep';
 const UserInfoManager: NodeManagerConfig<Realtime.NodeData.UserInfo, Realtime.NodeData.UserInfoBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Get User Information and check Permissions',
   label: 'User Info',
   platforms: [VoiceflowConstants.PlatformType.ALEXA],
 

@@ -44,13 +44,8 @@ const OverflowTippyTooltip = <E extends HTMLElement = HTMLElement>({
             position: 'top',
             distance: 6,
             hideDelay: 0,
+            bodyOverflow: true,
             ...props,
-            popperOptions: {
-              modifiers: {
-                ...props?.popperOptions?.modifiers,
-                preventOverflow: { boundariesElement: document.body, ...props.popperOptions?.preventOverflow },
-              },
-            },
           }
         : {})}
     >

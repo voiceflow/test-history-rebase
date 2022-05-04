@@ -9,7 +9,6 @@ import { NODE_CONFIG } from './constants';
 const CancelPaymentManager: NodeManagerConfig<Realtime.NodeData.CancelPayment, Realtime.NodeData.CancelPaymentBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: "Refund a purchase or cancel an user's subscription",
   label: 'Cancel Purchase',
   platforms: [VoiceflowConstants.PlatformType.ALEXA],
 

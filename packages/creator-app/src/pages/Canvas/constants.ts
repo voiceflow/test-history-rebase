@@ -71,3 +71,8 @@ export enum CanvasTransformation {
   SCALE = 'scale',
   ROTATE = 'rotate',
 }
+
+export enum EditorAnimationEffect {
+  POP = 'pop',
+  PUSH = 'push',
+}

@@ -30,6 +30,7 @@ interface TriggerRendererOptions {
   isOpen: boolean;
   opened: boolean;
   inline: boolean;
+  isEmpty: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   onFocus?: (event?: React.FocusEvent) => void;
   onClick?: (event?: React.MouseEvent) => void;
@@ -82,6 +83,7 @@ export interface BaseSelectProps {
   minWidth?: boolean;
   disabled?: boolean;
   placement?: PopperProps['placement'];
+  modifiers?: PopperProps['modifiers'];
   autoWidth?: boolean;
   fullWidth?: boolean;
   autoFocus?: boolean;
@@ -93,6 +95,7 @@ export interface BaseSelectProps {
   renderTags?: Nullable<() => React.ReactNode | React.ReactNode[]>;
   borderLess?: boolean;
   searchable?: boolean;
+  leftAction?: { icon: Icon; onClick: VoidFunction; iconProps?: Partial<SvgIconProps>; isActive?: boolean };
   rightAction?: React.ReactNode;
   createLabel?: string;
   displayName?: string;
@@ -112,8 +115,9 @@ export interface BaseSelectProps {
   inDropdownSearch?: boolean;
   formatInputValue?: (value: string) => string;
   isButtonDisabled?: (options: { value: string }) => boolean;
-  renderFooterAction?: Nullable<(options: { close: VoidFunction }) => React.ReactNode>;
-  renderSearchSuffix?: Nullable<(options: { close: VoidFunction }) => React.ReactNode>;
+  renderFooterAction?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
+  renderSearchSuffix?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
+  clearOnSelectActive?: boolean;
   autoUpdatePlacement?: boolean;
   showNotMatchedOptions?: boolean;
   createInputPlaceholder?: string;

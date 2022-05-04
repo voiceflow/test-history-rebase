@@ -47,6 +47,7 @@ const DIAGRAM_ROUTES = [
   Path.CANVAS_COMMENTING_THREAD,
   Path.CANVAS_MODEL,
   Path.CANVAS_MODEL_ENTITY,
+  Path.CANVAS_NODE,
 ];
 
 const Project: React.FC = () => {

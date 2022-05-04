@@ -8,7 +8,6 @@ import EventStep from './EventStep';
 const EventManager: NodeManagerConfig<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  tip: 'Recieve special types of events from alexa',
   label: 'Event',
 
   step: EventStep,

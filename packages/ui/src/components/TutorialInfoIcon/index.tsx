@@ -9,11 +9,7 @@ export interface TutorialInfoIconProps {
   tooltipProps?: Omit<TutorialTooltipProps, 'placement' | 'portalNode' | 'anchorRenderer'>;
 }
 
-interface TutorialInfoIconComponent extends React.FC<TutorialInfoIconProps> {
-  IconContainer: typeof IconContainer;
-}
-
-const TutorialInfoIcon: TutorialInfoIconComponent = ({ children, placement = 'bottom-start', tooltipProps }) => (
+const TutorialInfoIcon: React.FC<TutorialInfoIconProps> = ({ children, placement = 'bottom-start', tooltipProps }) => (
   <TutorialTooltip
     {...tooltipProps}
     placement={placement}
@@ -28,7 +24,7 @@ const TutorialInfoIcon: TutorialInfoIconComponent = ({ children, placement = 'bo
   </TutorialTooltip>
 );
 
-// can be used to override the default styles
-TutorialInfoIcon.IconContainer = IconContainer;
-
-export default TutorialInfoIcon;
+export default Object.assign(TutorialInfoIcon, {
+  // can be used to override the default styles
+  IconContainer,
+});

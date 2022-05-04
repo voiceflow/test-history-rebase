@@ -1,34 +1,34 @@
 import React from 'react';
 
-import { StyledProps } from '@/hocs';
-import { SlideOutProps } from '@/styles/transitions';
+import { SlideOutDirection, SlideOutProps } from '@/styles/transitions';
 
-import { DrawerClosableArea, DrawerCloseIcon, DrawerContainer } from './components';
+import { ClosableArea, CloseIcon, Container } from './components';
 import { DrawerProps } from './types';
 
-type DrawerElementProps = StyledProps<any> & SlideOutProps & DrawerProps & { as?: React.ElementType };
+export interface DrawerComponentProps extends SlideOutProps, DrawerProps, Omit<React.ComponentProps<'div'>, 'ref'> {}
 
-const Drawer: React.FC<DrawerElementProps> = ({ closable, open, children, onToggle, ...props }) => {
-  return (
-    <>
-      {closable && (
-        <DrawerClosableArea open={open} onClick={() => onToggle && onToggle(!open)}>
-          <DrawerCloseIcon open={open} onClick={() => onToggle && onToggle(!open)} />
-        </DrawerClosableArea>
-      )}
-      <DrawerContainer open={open} {...props}>
-        {children}
-        {closable && (
-          <DrawerClosableArea open={open} onClick={() => onToggle && onToggle(!open)}>
-            <DrawerCloseIcon open={open} onClick={() => onToggle && onToggle(!open)} />
-          </DrawerClosableArea>
-        )}
-      </DrawerContainer>
-    </>
-  );
-};
+const Drawer: React.FC<DrawerComponentProps> = ({ open, width, zIndex, closable, children, onToggle, direction, disableAnimation, ...props }) => (
+  <>
+    {closable && (
+      <ClosableArea
+        open={open}
+        zIndex={zIndex}
+        onClick={() => onToggle?.(!open)}
+        direction={direction}
+        drawerWidth={width}
+        disableAnimation={disableAnimation}
+      >
+        <CloseIcon />
+      </ClosableArea>
+    )}
 
-export { default as DrawerContainer } from './components/DrawerContainer';
-export * from './types';
+    <Container open={open} width={width} zIndex={zIndex} direction={direction} disableAnimation={disableAnimation} {...props}>
+      {children}
+    </Container>
+  </>
+);
 
-export default Drawer;
+export default Object.assign(Drawer, {
+  Direction: SlideOutDirection,
+  Container,
+});

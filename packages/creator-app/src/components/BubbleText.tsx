@@ -8,7 +8,7 @@ const BubbleText = styled.span<{ clickable?: boolean }>`
   font-size: 11px;
   background: ${({ color = '#5D9DF5' }) => color};
   letter-spacing: 0.7px;
-  font-weight: bold;
+  font-weight: 600;
   border-radius: 20px;
   text-transform: uppercase;
   box-shadow: 0 1px 2px 0 rgba(17, 49, 96, 0.24);

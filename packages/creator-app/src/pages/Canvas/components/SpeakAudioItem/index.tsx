@@ -31,8 +31,6 @@ export type SpeakAudioItemProps = ListItemComponentProps<
 
 const isVoice = (item: Realtime.SpeakData): item is Realtime.SSMLData => item.type === DialogType.VOICE;
 
-const AnySSML = SSMLWithVars as any;
-
 const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioItemProps> = (
   {
     item,
@@ -56,11 +54,11 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
   const isGoogle = platform === VoiceflowConstants.PlatformType.GOOGLE;
   const isNew = latestCreatedKey === itemKey;
 
-  const updateContent = React.useCallback(({ text }) => onUpdate({ content: text }), [onUpdate]);
+  const updateContent = React.useCallback(({ text }: { text: string }) => onUpdate({ content: text }), [onUpdate]);
   const updateAudio = React.useCallback((url: string | null) => onUpdate({ url: url ?? '' }), [onUpdate]);
-  const updateDesc = React.useCallback(({ text: desc }) => onUpdate({ desc }), [onUpdate]);
+  const updateDesc = React.useCallback(({ text: desc }: { text: string }) => onUpdate({ desc }), [onUpdate]);
   const updateVoice = React.useCallback(
-    (value) => {
+    (value: string) => {
       onUpdate({ voice: value });
     },
     [onUpdate]
@@ -85,10 +83,11 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
       {isDragging || isDraggingPreview ? null : (
         <FormControl {...formControlProps}>
           {isVoice(item) ? (
-            <AnySSML icon={null} voice={item.voice} value={item.content} onBlur={updateContent} onChangeVoice={updateVoice} />
+            <SSMLWithVars icon={null} voice={item.voice} value={item.content} onBlur={updateContent} onChangeVoice={updateVoice} />
           ) : (
             <>
               <AudioUpload audio={item.url} update={updateAudio} />
+
               {isGoogle && item.url && (
                 <Box mt={12}>
                   <VariablesInputComponent value={item.desc || ''} onBlur={updateDesc} placeholder="Enter audio description" multiline />

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.12.0...@voiceflow/socket-utils@1.13.0) (2022-05-04)
+
+
+### Features
+
+* configuration and pubsub services (vf-000) ([#5352](https://github.com/voiceflow/creator-app/issues/5352)) ([a5e39fa](https://github.com/voiceflow/creator-app/commit/a5e39fa566e2270b9fa14131c3dfedcd99809226))
+
+
+
+
+
 # [1.12.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.11.0...@voiceflow/socket-utils@1.12.0) (2022-05-03)
 
 

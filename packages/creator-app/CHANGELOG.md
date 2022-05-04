@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.707.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.707.0...@voiceflow/creator-app@1.707.1) (2022-05-04)
+
+
+### Bug Fixes
+
+* checkbox double clicks (VF-3451) ([#5385](https://github.com/voiceflow/creator-app/issues/5385)) ([d6a46cf](https://github.com/voiceflow/creator-app/commit/d6a46cf8bbde0f23c539bbf9ba15f2e126c00fd0))
+
+
+
+
+
 # [1.707.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.706.0...@voiceflow/creator-app@1.707.0) (2022-05-04)
 
 

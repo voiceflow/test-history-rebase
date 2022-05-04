@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.708.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.707.1...@voiceflow/creator-app@1.708.0) (2022-05-04)
+
+
+### Features
+
+* send canvas export token as header (VF-3419) ([#5370](https://github.com/voiceflow/creator-app/issues/5370)) ([3e09c22](https://github.com/voiceflow/creator-app/commit/3e09c22710d209d4233843bf1975df4d79e70df7))
+
+
+
+
+
 ## [1.707.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.707.0...@voiceflow/creator-app@1.707.1) (2022-05-04)
 
 

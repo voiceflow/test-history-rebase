@@ -1,6 +1,5 @@
-import { AuthMiddleware } from '@voiceflow/socket-utils';
-
 import type { LoguxControlOptions } from '../control';
+import AuthMiddleware from './auth';
 
 const buildMiddlewares = (options: LoguxControlOptions) => ({
   auth: new AuthMiddleware(options),

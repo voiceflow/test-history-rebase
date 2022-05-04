@@ -1,6 +1,8 @@
 import BaseCache from './base';
 import { BaseAdapter, BaseKeyExtractor, KeyOptions, StringFromDB, StringToDB } from './types';
 
+export const DEFAULT_EXPIRE_MODE = 'EX'; // seconds
+
 class KeyValueCache<K extends BaseKeyExtractor, A extends BaseAdapter | undefined = undefined> extends BaseCache<K, A> {
   private formatValue = (value: string | null): StringFromDB<A> | null => {
     if (value === null) {

@@ -1,13 +1,7 @@
-import { AbstractControl, ControlOptions } from '@socket-utils/control';
-import { User } from '@socket-utils/model';
+import { AbstractControl } from '../control';
+import { User } from '../models';
 
-export class UserService extends AbstractControl<ControlOptions> {
-  // needed to explicitly add this constructor for it to be reusable for some reason
-  // without it other projects think it doesn't take any arguments
-  constructor(options: ControlOptions) {
-    super(options);
-  }
-
+class UserService extends AbstractControl {
   private static getTokenUserKey({ token }: { token: string }): string {
     return `users:${token}`;
   }
@@ -70,3 +64,5 @@ export class UserService extends AbstractControl<ControlOptions> {
     return this.getUserByToken(token);
   }
 }
+
+export default UserService;

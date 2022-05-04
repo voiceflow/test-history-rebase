@@ -1,6 +1,5 @@
-import { User } from '@voiceflow/socket-utils';
-
 import logger from '@/logger';
+import { User } from '@/models';
 
 import { ExtraOptions } from './types';
 

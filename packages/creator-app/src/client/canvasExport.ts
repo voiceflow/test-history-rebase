@@ -9,16 +9,12 @@ interface Options {
   persistedBrowserID: string;
 }
 
-const createCanvasExportEndpoint =
-  (endpoint: string) =>
-  ({ token, ...data }: Options): Promise<Blob> =>
-    axios
-      .post<Blob>(`${CANVAS_EXPORT_ENDPOINT}/export/${endpoint}`, data, { responseType: 'blob', headers: { authorization: token } })
-      .then((response) => response.data);
-
 const canvasExportClient = {
-  toPNG: createCanvasExportEndpoint('to-png'),
-  toPDF: createCanvasExportEndpoint('to-pdf'),
+  toPNG: (data: Options) =>
+    axios.post<Blob>(`${CANVAS_EXPORT_ENDPOINT}/export/to-png`, data, { responseType: 'blob' }).then((response) => response.data),
+
+  toPDF: (data: Options) =>
+    axios.post<Blob>(`${CANVAS_EXPORT_ENDPOINT}/export/to-pdf`, data, { responseType: 'blob' }).then((response) => response.data),
 };
 
 export default canvasExportClient;

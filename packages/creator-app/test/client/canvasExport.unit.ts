@@ -13,33 +13,25 @@ suite('Client - Canvas Export', ({ expect, stub }) => {
 
   describe('toPNG()', () => {
     it('should generate a PNG', async () => {
-      const token = 'token';
       const data: any = Utils.generate.object();
       const response = new Blob();
       const axiosPost = stub(axios, 'post').resolves({ data: response });
 
-      await expect(client.toPNG({ token, ...data })).to.eventually.eq(response);
+      await expect(client.toPNG(data)).to.eventually.eq(response);
 
-      expect(axiosPost).to.be.calledWithExactly(`${CANVAS_EXPORT_ENDPOINT}/export/to-png`, data, {
-        responseType: 'blob',
-        headers: { authorization: token },
-      });
+      expect(axiosPost).to.be.calledWithExactly(`${CANVAS_EXPORT_ENDPOINT}/export/to-png`, data, { responseType: 'blob' });
     });
   });
 
   describe('toPDF()', () => {
     it('should generate a PDF', async () => {
-      const token = 'token';
       const data: any = Utils.generate.object();
       const response = new Blob();
       const axiosPost = stub(axios, 'post').resolves({ data: response });
 
-      await expect(client.toPDF({ token, ...data })).to.eventually.eq(response);
+      await expect(client.toPDF(data)).to.eventually.eq(response);
 
-      expect(axiosPost).to.be.calledWithExactly(`${CANVAS_EXPORT_ENDPOINT}/export/to-pdf`, data, {
-        responseType: 'blob',
-        headers: { authorization: token },
-      });
+      expect(axiosPost).to.be.calledWithExactly(`${CANVAS_EXPORT_ENDPOINT}/export/to-pdf`, data, { responseType: 'blob' });
     });
   });
 });

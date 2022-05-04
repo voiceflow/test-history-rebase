@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.31.2...@voiceflow/admin-app@1.32.0) (2022-05-04)
+
+
+### Features
+
+* Editors V2 + new Intent editor (VF-3289) ([#5331](https://github.com/voiceflow/creator-app/issues/5331)) ([d31472f](https://github.com/voiceflow/creator-app/commit/d31472fb040c6deb7ed67aecb74a58d7c93ebd4b))
+
+
+
+
+
 ## [1.31.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.31.1...@voiceflow/admin-app@1.31.2) (2022-05-03)
 
 **Note:** Version bump only for package @voiceflow/admin-app

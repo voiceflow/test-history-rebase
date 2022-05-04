@@ -80,7 +80,7 @@ const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endD
       setCurrentRange('');
     }
 
-    setTimeRangeOpen(!currentRange);
+    setTimeRangeOpen(!timeRangeOpen);
   };
 
   const onApplyFilters = () => {

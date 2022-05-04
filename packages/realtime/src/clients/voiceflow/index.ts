@@ -1,5 +1,6 @@
 /* eslint-disable new-cap */
 import * as Voiceflow from '@voiceflow/api-sdk';
+import { BaseVoiceflowClient } from '@voiceflow/socket-utils';
 
 import logger from '@/logger';
 
@@ -21,7 +22,7 @@ interface ExtraClient {
   feature: FeatureClient;
 }
 
-export interface Client extends Voiceflow.Client, ExtraClient {
+export interface Client extends Voiceflow.Client, ExtraClient, BaseVoiceflowClient {
   user: Voiceflow.Client['user'] & UserClient;
 
   project: Voiceflow.Client['project'] & ReturnType<typeof ExtraProjectClient>;

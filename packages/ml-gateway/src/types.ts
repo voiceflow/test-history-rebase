@@ -5,6 +5,7 @@ export interface Config {
   // Deployment information
   CLOUD_ENV: string;
   IS_PRIVATE_CLOUD: boolean;
+  CREATOR_API_ENDPOINT: string;
 
   // Release information
   GIT_SHA: string | null;
@@ -22,4 +23,8 @@ export interface Config {
   // Logging
   LOG_LEVEL: string | null;
   MIDDLEWARE_VERBOSITY: string | null;
+
+  // Google
+  FIRESTORE_MODEL_COLLECTION: string;
+  PUBSUB_PROJECT_KEY: string;
 }

@@ -4,11 +4,7 @@ import logger from '@/logger';
 
 import { ExtraOptions } from './types';
 
-export interface UserClient {
-  get: () => Promise<User | null>;
-}
-
-const Client = ({ api }: ExtraOptions): UserClient => ({
+const Client = ({ api }: ExtraOptions) => ({
   get: () =>
     api
       .get<User | null>('/user')
@@ -21,3 +17,5 @@ const Client = ({ api }: ExtraOptions): UserClient => ({
 });
 
 export default Client;
+
+export type UserClient = ReturnType<typeof Client>;

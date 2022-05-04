@@ -1,7 +1,8 @@
 import { AbstractVoiceflowService } from '@voiceflow/socket-utils';
 import moize from 'moize';
 
-import { Client as VoiceflowClient } from '../clients/voiceflow';
+import type { Client as VoiceflowClient } from '@/clients/voiceflow';
+
 import { ControlOptions } from '../control';
 
 class VoiceflowService extends AbstractVoiceflowService<VoiceflowClient, ControlOptions> {

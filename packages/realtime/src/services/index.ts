@@ -1,6 +1,7 @@
-import { BaseServiceMap, SyncService } from '@voiceflow/socket-utils';
+import { BaseServiceMap, SyncService, UserService } from '@voiceflow/socket-utils';
 
 import type { ClientMap } from '../clients';
+import type { Client as VoiceflowClient } from '../clients/voiceflow';
 import type { Config } from '../types';
 import DiagramService from './diagram';
 import IntentService from './intent';
@@ -11,14 +12,13 @@ import ProductService from './product';
 import ProjectService from './project';
 import ProjectListService from './projectList';
 import SlotService from './slot';
-import UserService from './user';
 import VariableService from './variableState';
 import VersionService from './version';
 import ViewerService from './viewer';
 import VoiceflowService from './voiceflow';
 import WorkspaceService from './workspace';
 
-export interface ServiceMap extends BaseServiceMap {
+export interface ServiceMap extends BaseServiceMap<VoiceflowClient> {
   user: UserService;
   slot: SlotService;
   note: NoteService;

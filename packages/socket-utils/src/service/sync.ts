@@ -1,5 +1,5 @@
 import { Server, ServerMeta } from '@logux/server';
-import { AbstractControl, ControlOptions } from '@socket-utils/control/utils';
+import { AbstractControl, ControlOptions } from '@socket-utils/control';
 import { Utils } from '@voiceflow/common';
 import { AnyAction } from 'typescript-fsa';
 
@@ -8,7 +8,7 @@ export interface SyncServiceConfig {
 }
 
 export class SyncService extends AbstractControl<ControlOptions<SyncServiceConfig>> {
-  // needed to explicitly add this constructor for it to be reusable for some reason
+  // FIXME: needed to explicitly add this constructor for it to be reusable for some reason
   // without it other projects think it doesn't take any arguments
   constructor(options: ControlOptions<SyncServiceConfig>) {
     super(options);

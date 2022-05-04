@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import type { BaseClientMap } from '@socket-utils/client';
+import type { BaseClientMap, BaseVoiceflowClient } from '@socket-utils/client';
 import type { SocketServer } from '@socket-utils/server';
 import type { BaseServiceMap } from '@socket-utils/service';
 import { Eventual } from '@voiceflow/common';
@@ -20,10 +20,10 @@ export type LoguxControlMap = Record<string, LoguxControl>;
 
 // abstract controls
 
-export interface ControlOptions<C = any> {
+export interface ControlOptions<C = any, V extends BaseVoiceflowClient = BaseVoiceflowClient> {
   config: C;
   clients: BaseClientMap;
-  services: BaseServiceMap;
+  services: BaseServiceMap<V>;
 }
 
 export abstract class AbstractControl<T extends ControlOptions> {

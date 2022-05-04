@@ -1,11 +1,15 @@
-import type { SocketServer } from '@socket-utils/server';
-import { Eventual } from '@voiceflow/common';
+import { AbstractLoguxControl, LoguxControlOptions } from '../control';
 
-export const authenticateUser = (server: SocketServer, validate: (creatorID: number, token: string) => Eventual<boolean>) =>
-  server.auth(({ userId, token }) => {
-    const creatorID = Number(userId);
+export class AuthMiddleware extends AbstractLoguxControl<LoguxControlOptions> {
+  setup(): void {
+    this.server.auth(async ({ userId, token }) => {
+      const creatorID = Number(userId);
 
-    if (Number.isNaN(creatorID)) return false;
+      if (Number.isNaN(creatorID)) return false;
 
-    return validate(creatorID, token);
-  });
+      const user = await this.services.user.getUserByToken(token);
+
+      return user?.creator_id === creatorID;
+    });
+  }
+}

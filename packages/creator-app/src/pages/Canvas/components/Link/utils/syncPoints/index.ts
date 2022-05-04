@@ -140,7 +140,6 @@ const syncTargetPoints = (points: PathPoints, linkedRects: LinkedRects, options:
   return syncStraightTargetPoints(shouldClone ? clonePoints(points) : points, movement);
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const syncPointsWithLinkedRects = (points: PathPoints, linkedRects: LinkedRects, options: SyncPointsOptions): PathPoints => {
   let newPoints = points;
 

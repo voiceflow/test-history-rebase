@@ -42,7 +42,7 @@ abstract class BaseCache<K extends BaseKeyExtractor, A extends AnyAdapter | unde
     await this.redis.unlink(keys);
   }
 
-  public async updateExpire(keyOptions: KeyOptions<K> | KeyOptions<K>[]): Promise<void> {
+  public async renewExpire(keyOptions: KeyOptions<K> | KeyOptions<K>[]): Promise<void> {
     const options = Array.isArray(keyOptions) ? keyOptions : [keyOptions];
     const keys = options.map(this.keyCreator);
 

@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
 import { AbstractControl } from '../../control';
 import { viewerAdapter } from './adapter';
 
@@ -14,7 +15,11 @@ class ViewerService extends AbstractControl {
 
   private viewersCache = this.clients.cache.createHash({ adapter: viewerAdapter, keyCreator: ViewerService.getViewerKey });
 
-  private lockedEntitiesCache = this.clients.cache.createSet({ keyCreator: ViewerService.getViewerEntityKey });
+  private lockedEntitiesCache = this.clients.cache.createSet({
+    // setting expire just to be sure that entity is not locked after service crash/restart
+    expire: HEARTBEAT_EXPIRE_TIMEOUT,
+    keyCreator: ViewerService.getViewerEntityKey,
+  });
 
   public async addViewer(viewerID: string, lockEntity: string, viewer: Realtime.Viewer): Promise<void> {
     await Promise.all([this.lockedEntitiesCache.add({ viewerID }, lockEntity), this.viewersCache.set({ viewerID }, viewer)]);
@@ -29,6 +34,10 @@ class ViewerService extends AbstractControl {
     if (size === 0) {
       await this.viewersCache.unlink({ viewerID });
     }
+  }
+
+  public async renewEntityExpire(viewerID: string): Promise<void> {
+    await this.lockedEntitiesCache.renewExpire({ viewerID });
   }
 
   public async getViewer(viewerID: string): Promise<null | Realtime.Viewer> {

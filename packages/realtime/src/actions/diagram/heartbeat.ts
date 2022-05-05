@@ -8,21 +8,42 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
   actionCreator = Realtime.diagram.awareness.heartbeat;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.diagram.awareness.HeartbeatPayload>) => {
-    const { diagramID, projectID, versionID, locksMap, workspaceID } = payload;
+    const { lock, unlock, forceSync, diagramID, projectID, versionID, locksMap, workspaceID } = payload;
 
     await Promise.all([
       this.services.diagram.connectNode(diagramID, ctx.nodeId),
       this.services.project.connectDiagram(projectID, diagramID),
+      this.services.viewer.renewEntityExpire(ctx.userId),
       this.services.migrate.renewActiveSchemaVersion(versionID),
       ...Object.entries(locksMap).map(([lockType, entities]) => this.services.lock.lockEntities(diagramID, ctx.nodeId, lockType, entities)),
     ]);
+
+    const context = { diagramID, projectID, versionID, loguxNodeID: ctx.nodeId, workspaceID };
+
+    if (lock) {
+      // don't need to lock entities in the redis since it's already locked above
+      await this.server.processAs(
+        ctx.data.creatorID,
+        Realtime.diagram.awareness.lockEntities({ ...context, lockType: lock.type, entityIDs: lock.entityIDs })
+      );
+    }
+
+    if (unlock) {
+      await this.services.lock.unlockEntities(diagramID, ctx.nodeId, unlock.type, unlock.entityIDs);
+
+      await this.server.processAs(
+        ctx.data.creatorID,
+        Realtime.diagram.awareness.unlockEntities({ ...context, lockType: unlock.type, entityIDs: unlock.entityIDs })
+      );
+    }
+
+    // skip force sync if not requested by timeout
+    if (!forceSync) return;
 
     const [viewers, diagramLocks] = await Promise.all([
       this.services.diagram.getConnectedViewers(diagramID),
       this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(diagramID),
     ]);
-
-    const context = { diagramID, projectID, versionID, workspaceID };
 
     await Promise.all([
       ctx.sendBack(Realtime.project.awareness.updateViewers({ ...context, viewers })),

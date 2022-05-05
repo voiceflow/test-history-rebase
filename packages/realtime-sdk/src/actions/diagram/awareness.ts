@@ -1,6 +1,6 @@
 import { AWARENESS_KEY } from '@realtime-sdk/constants';
 import { BaseDiagramPayload, Pair, Point } from '@realtime-sdk/types';
-import { Utils } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 
 import { diagramType } from './utils';
 
@@ -26,8 +26,10 @@ export interface MoveLinkPayload extends BaseCursorPayload {
 export type HeartbeatLocksMap = Partial<Record<LockEntityType, string[]>>;
 
 export interface HeartbeatPayload extends BaseDiagramPayload {
+  lock: Nullable<{ type: LockEntityType; entityIDs: string[] }>;
+  unlock: Nullable<{ type: LockEntityType; entityIDs: string[] }>;
   locksMap: HeartbeatLocksMap;
-  loguxNodeID: string;
+  forceSync: boolean;
 }
 
 export interface LockUnlockEntityPayload extends BaseDiagramPayload {

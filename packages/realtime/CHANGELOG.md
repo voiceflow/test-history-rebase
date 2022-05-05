@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.62.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.61.1...@voiceflow/realtime@1.62.0) (2022-05-05)
+
+
+### Features
+
+* improve locks system (VF-3449) ([#5392](https://github.com/voiceflow/creator-app/issues/5392)) ([451ce98](https://github.com/voiceflow/creator-app/commit/451ce9838bb71750c31807143255d00dc239347c))
+
+
+
+
+
 ## [1.61.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.61.0...@voiceflow/realtime@1.61.1) (2022-05-04)
 
 **Note:** Version bump only for package @voiceflow/realtime

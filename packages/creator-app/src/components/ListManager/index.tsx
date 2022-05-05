@@ -30,6 +30,7 @@ type ListManagerProps<I> = React.PropsWithChildren<{
   addValidation?: (value: I) => { valid: boolean; error?: string };
   requiredItemIndex?: number;
   initialValue?: I;
+  maxVisibleItems?: number;
 }>;
 
 function ListManager<I>({
@@ -44,6 +45,7 @@ function ListManager<I>({
   addValidation,
   requiredItemIndex,
   initialValue,
+  maxVisibleItems,
 }: ListManagerProps<I>): React.ReactElement {
   const [addError, setAddError] = React.useState<string>();
   const [formValue, onChangeFormValue] = React.useState<I | null>(initialValue as I);
@@ -63,13 +65,15 @@ function ListManager<I>({
     }
   };
 
-  const itemRenderer = (item: I, options: ItemOptions<I>) => (
-    <ItemWrapper key={options.key}>
-      {renderItem!(item, options)}
+  const itemRenderer = (item: I, options: ItemOptions<I>) => {
+    return options.index < (maxVisibleItems || items.length) ? (
+      <ItemWrapper key={options.key}>
+        {renderItem!(item, options)}
 
-      <RemoveIcon onClick={() => onRemove(options.key)} isHidden={_isNumber(requiredItemIndex) && options.index === requiredItemIndex} />
-    </ItemWrapper>
-  );
+        <RemoveIcon onClick={() => onRemove(options.key)} isHidden={_isNumber(requiredItemIndex) && options.index === requiredItemIndex} />
+      </ItemWrapper>
+    ) : null;
+  };
 
   return (
     <>

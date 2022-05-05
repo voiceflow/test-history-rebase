@@ -16,8 +16,6 @@ import InputItem from './components/InputItem';
 
 const MAX_VISIBLE_VALUES = 10;
 
-const MAX_VISIBLE_VALUE_HEIGHT = 795;
-
 interface ValuesSectionProps {
   updateInputs: (inputs: Realtime.SlotInput[]) => void;
   inputs: Realtime.SlotInput[];
@@ -68,8 +66,6 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
       openImportBulkDeniedModal();
     }
   }, [customLines]);
-
-  const valueListStyling = showAllValues ? {} : { maxHeight: MAX_VISIBLE_VALUE_HEIGHT, overflow: 'hidden' };
 
   const isValidNewInput = (input: Realtime.SlotInput) => {
     if (!input) return false;
@@ -153,8 +149,9 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
           <FormControl>
             <ListManagerWrapper>
               <ListManager
+                maxVisibleItems={showAllValues ? customLines.length : MAX_VISIBLE_VALUES}
                 renderList={({ mapManaged, itemRenderer }) => (
-                  <Box overflow="auto" mb={8} px={32} style={{ ...valueListStyling }}>
+                  <Box overflow="auto" mb={8} px={32}>
                     {mapManaged(itemRenderer)}
                   </Box>
                 )}
@@ -198,7 +195,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
           </FormControl>
 
           {customLines.length > MAX_VISIBLE_VALUES && (
-            <Box color="#62778c" pb={24} mt={showAllValues ? -8 : -15} px={32}>
+            <Box color="#62778c" pb={24} mt={-8} px={32}>
               <ClickableText onClick={() => setShowAllValues(!showAllValues)}>
                 {showAllValues ? `Hide some values` : `Show all values (${customLines.length})`}
               </ClickableText>

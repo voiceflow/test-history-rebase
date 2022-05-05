@@ -38,7 +38,6 @@ interface UtteranceManagerProps {
   intentID?: string;
 }
 
-const MAX_VISIBLE_UTTERANCES_HEIGHT = 550;
 const MAX_VISIBLE_UTTERANCES = 10;
 
 // Temporary until ML stuff is done
@@ -148,8 +147,6 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, o
     }
   };
 
-  const utteranceListStyling = showAllUtterances ? {} : { maxHeight: MAX_VISIBLE_UTTERANCES_HEIGHT, overflow: 'hidden' };
-
   return (
     <>
       <div ref={stickyTopRef} />
@@ -187,8 +184,9 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, o
         <Box>
           <ListManagerWrapper>
             <ListManager
+              maxVisibleItems={showAllUtterances ? intentUtterances.length : MAX_VISIBLE_UTTERANCES}
               renderList={({ mapManaged, itemRenderer }) => (
-                <Box pt={!isValidUtterance && !intentUtterances.length ? 8 : 21} px={32} style={{ ...utteranceListStyling }}>
+                <Box pt={!isValidUtterance && !intentUtterances.length ? 8 : 21} px={32}>
                   {mapManaged(itemRenderer)}
                 </Box>
               )}

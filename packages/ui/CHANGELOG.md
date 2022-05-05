@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.78.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.78.0...@voiceflow/ui@1.78.1) (2022-05-05)
+
+
+### Bug Fixes
+
+* allow selection on key press (VF-3280) ([#5382](https://github.com/voiceflow/creator-app/issues/5382)) ([b000e82](https://github.com/voiceflow/creator-app/commit/b000e82f36ac423402732df0be72a01f6ed24b9d))
+
+
+
+
+
 # [1.78.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.77.2...@voiceflow/ui@1.78.0) (2022-05-04)
 
 

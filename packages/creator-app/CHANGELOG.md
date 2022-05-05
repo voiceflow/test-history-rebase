@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.710.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.710.1...@voiceflow/creator-app@1.710.2) (2022-05-05)
+
+
+### Bug Fixes
+
+* max item visibility list manager (VF-000) ([#5396](https://github.com/voiceflow/creator-app/issues/5396)) ([d051239](https://github.com/voiceflow/creator-app/commit/d051239ddab17c6e26f337df8fdf21410a3f3933))
+
+
+
+
+
 ## [1.710.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.710.0...@voiceflow/creator-app@1.710.1) (2022-05-05)
 
 

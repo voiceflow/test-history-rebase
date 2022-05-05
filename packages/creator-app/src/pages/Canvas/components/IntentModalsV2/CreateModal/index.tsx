@@ -61,7 +61,7 @@ const CreateModal: React.FC = () => {
               name={name}
               setName={setName}
               withDescriptionSection={false}
-              autofocusUtterance
+              autofocus
               updateSlotDialog={updateSlotDialog}
               intentEntities={intentEntities}
             />

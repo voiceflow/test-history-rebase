@@ -26,12 +26,13 @@ interface IntentFormProps {
   setInputs: (inputs: Realtime.IntentInput[]) => void;
   intentID?: string;
   withNameSection?: boolean;
-  autofocusUtterance?: boolean;
+  autofocus?: boolean;
   intentEntities: Normal.Normalized<Realtime.IntentSlot>;
   withDescriptionSection?: boolean;
   addRequiredSlot: (slotID: string) => void;
   removeRequiredSlot: (slotID: string) => void;
   updateSlotDialog: (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => void;
+  withDescriptionBottomBorder?: boolean;
 }
 
 const IntentForm: React.FC<IntentFormProps> = ({
@@ -42,13 +43,14 @@ const IntentForm: React.FC<IntentFormProps> = ({
   withNameSection = true,
   withDescriptionSection = false,
   intentID,
-  autofocusUtterance,
+  autofocus,
   inputs,
   setInputs,
   intentEntities,
   addRequiredSlot,
   removeRequiredSlot,
   updateSlotDialog,
+  withDescriptionBottomBorder,
 }) => {
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
 
@@ -70,9 +72,9 @@ const IntentForm: React.FC<IntentFormProps> = ({
 
   return (
     <>
-      {withNameSection && <NameSection name={name} setName={setName} saveName={saveName} />}
+      {withNameSection && <NameSection name={name} setName={setName} saveName={saveName} autofocus={!name} />}
       {(!isBuiltIn || showUtteranceSection) && (
-        <UtteranceSection inputs={inputs} onUpdateUtterances={setInputs} autofocus={autofocusUtterance} withBorderTop={withNameSection} />
+        <UtteranceSection inputs={inputs} onUpdateUtterances={setInputs} autofocus={!!name && autofocus} withBorderTop={withNameSection} />
       )}
 
       {isBuiltIn && !showUtteranceSection && <BuiltInPrompt setShowUtteranceSection={setShowUtteranceSection} />}
@@ -91,7 +93,11 @@ const IntentForm: React.FC<IntentFormProps> = ({
       )}
 
       {withDescriptionSection && intentID && (
-        <DescriptionSection intentID={intentID} onCreateNote={(noteID) => intentID && patchIntent(intentID, { noteID })} />
+        <DescriptionSection
+          withBottomBorder={withDescriptionBottomBorder}
+          intentID={intentID}
+          onCreateNote={(noteID) => intentID && patchIntent(intentID, { noteID })}
+        />
       )}
 
       {!isEntitiesVisible && (

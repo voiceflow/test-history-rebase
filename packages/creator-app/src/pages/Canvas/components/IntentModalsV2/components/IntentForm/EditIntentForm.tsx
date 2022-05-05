@@ -11,9 +11,10 @@ import { isBuiltInIntent } from '@/utils/intent';
 interface EditIntentFormProps {
   intentID: string;
   withNameSection?: boolean;
+  withDescriptionBottomBorder?: boolean;
 }
 
-const EditIntentForm: React.FC<EditIntentFormProps> = ({ intentID, withNameSection = false }) => {
+const EditIntentForm: React.FC<EditIntentFormProps> = ({ intentID, withDescriptionBottomBorder, withNameSection = false }) => {
   const intent = useSelector(IntentV2.intentByIDSelector, { id: intentID });
   const [name, setName] = useLinkedState(intent?.name || '');
   const [inputs, setInputs] = useLinkedState(intent?.inputs || []);
@@ -70,6 +71,7 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({ intentID, withNameSecti
       addRequiredSlot={addRequiredSlotToIntent}
       removeRequiredSlot={removeRequiredSlotFromIntent}
       updateSlotDialog={updateSlotDialog}
+      withDescriptionBottomBorder={withDescriptionBottomBorder}
     />
   ) : null;
 };

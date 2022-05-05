@@ -24,6 +24,7 @@ const CreateModal: React.FC = () => {
   }, [isOpened]);
 
   const handleCreate = async () => {
+    if (!variableText.trim()) return;
     onCreateMultiple(variableText);
     setVariableText('');
     close();
@@ -38,7 +39,7 @@ const CreateModal: React.FC = () => {
         <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={handleCancel} style={{ marginRight: '10px' }}>
           Cancel
         </Button>
-        <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={handleCreate}>
+        <Button disabled={!variableText.trim()} variant={ButtonVariant.PRIMARY} squareRadius onClick={handleCreate}>
           Create
         </Button>
       </ModalFooter>

@@ -51,7 +51,9 @@ const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({
 
           <ActionContainer>
             <ModalButtonContainer>
-              <Button onClick={onUnlock}>Unlock</Button>
+              <Button squareRadius onClick={onUnlock}>
+                Unlock
+              </Button>
             </ModalButtonContainer>
           </ActionContainer>
         </ModalFooter>

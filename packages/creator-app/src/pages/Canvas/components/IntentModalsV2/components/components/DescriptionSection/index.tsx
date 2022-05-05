@@ -11,9 +11,10 @@ import { DividerBorder } from '@/pages/Canvas/components/IntentModalsV2/componen
 interface DescriptionSectionProps {
   intentID: string;
   onCreateNote: (noteID: string) => void;
+  withBottomBorder?: boolean;
 }
 
-const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, onCreateNote }) => {
+const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, withBottomBorder = true, onCreateNote }) => {
   const [isCollapsed, toggleIsCollapsed] = useToggle(true);
   const intent = useSelector(IntentV2.getIntentByIDSelector)({ id: intentID });
   if (!intent) return null;
@@ -39,14 +40,14 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, onCre
             id={noteID}
             type={BaseModels.NoteType.INTENT}
             meta={{ intentID }}
-            height={100}
+            height={300}
             onUpsert={(note) => !noteID && onCreateNote(note.id)}
             placeholder="Add intent description, or @mention"
           />
         </Box>
       </UncontrolledSection>
 
-      {isCollapsed && <DividerBorder />}
+      {isCollapsed && withBottomBorder && <DividerBorder />}
     </>
   );
 };

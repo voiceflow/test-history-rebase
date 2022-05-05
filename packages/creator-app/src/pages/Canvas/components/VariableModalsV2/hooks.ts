@@ -36,7 +36,7 @@ export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) 
       const newVarNames: string[] = [];
 
       allNewVars.forEach((newVar: string) => {
-        const name = newVar.trim();
+        const name = newVar.trim().replace(' ', '_');
         if (!varAlreadyExists(name)) {
           if (!newVarNames.includes(name)) {
             newVarNames.push(name);

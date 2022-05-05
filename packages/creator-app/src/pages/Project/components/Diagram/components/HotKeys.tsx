@@ -16,6 +16,15 @@ const HotKeys: React.FC = () => {
 
   const isCanvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
 
+  const { isOpened: intentCreateModalOpened } = useModals(ModalType.INTENT_CREATE);
+  const { isOpened: intentEditModalOpened } = useModals(ModalType.INTENT_EDIT);
+  const { isOpened: entityCreateModalOpened } = useModals(ModalType.ENTITY_CREATE);
+  const { isOpened: entityEditModalOpened } = useModals(ModalType.ENTITY_EDIT);
+  const { isOpened: nluQuickviewOpened } = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
+
+  const disableCanvasHotkeys =
+    intentCreateModalOpened || entityCreateModalOpened || nluQuickviewOpened || intentEditModalOpened || entityEditModalOpened;
+
   const goToPrototype = useDispatch(Router.goToCurrentPrototype);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
   const markup = React.useContext(MarkupContext)!;
@@ -61,18 +70,21 @@ const HotKeys: React.FC = () => {
     [imModal.open]
   );
 
-  useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
-  useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true });
-  useHotKeys(Hotkey.RUN_MODE, () => goToPrototype(), { preventDefault: true, disable: imModal.isOpened });
-  useHotKeys(Hotkey.ROOT_NODE, onFocusStart, { preventDefault: true });
+  useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true, disable: disableCanvasHotkeys });
+  useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true, disable: disableCanvasHotkeys });
+  useHotKeys(Hotkey.RUN_MODE, () => goToPrototype(), { preventDefault: true, disable: imModal.isOpened || disableCanvasHotkeys });
+  useHotKeys(Hotkey.ROOT_NODE, onFocusStart, { preventDefault: true, disable: disableCanvasHotkeys });
   useHotKeys(Hotkey.MOVE_MODE, onDisableModes, { preventDefault: true, disable: imModal.isOpened }, [onDisableModes]);
   useHotKeys(Hotkey.SHOW_HIDE_UI, toggleCanvasOnly, { preventDefault: true });
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenImModel, { preventDefault: true, disable: !canEditCanvas }, [onOpenImModel]);
   useHotKeys(Hotkey.OPEN_MANUAL_SAVE_MODAL, manualSaveModal.open, { preventDefault: true, disable: !canEditCanvas }, [manualSaveModal.open]);
 
-  useHotKeys(Hotkey.OPEN_COMMENTING, onToggleCommenting, { preventDefault: true, disable: !showHintFeatures || imModal.isOpened }, [
+  useHotKeys(
+    Hotkey.OPEN_COMMENTING,
     onToggleCommenting,
-  ]);
+    { preventDefault: true, disable: !showHintFeatures || imModal.isOpened || disableCanvasHotkeys },
+    [onToggleCommenting]
+  );
   useHotKeys(Hotkey.ADD_MARKUP_TEXT, markup.toggleTextCreating, { preventDefault: true, disable: !showHintFeatures || imModal.isOpened }, [
     markup.toggleTextCreating,
   ]);

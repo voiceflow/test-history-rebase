@@ -99,6 +99,15 @@ export const useCreatingItem = ({ itemMap, nameValidation, onBlur, forceCreate }
     setNewItemID(null);
   };
 
+  const handleBlur = (newName: string, newItemID: string) => {
+    if (!newName.trim() && newItem) {
+      // if empty, go back to old name
+      onBlur(newItem.name, newItemID);
+    } else {
+      onBlur(newName, newItemID);
+    }
+  };
+
   const createNewItemComponent = () =>
     isCreating && newItem ? (
       <ListItem
@@ -110,7 +119,7 @@ export const useCreatingItem = ({ itemMap, nameValidation, onBlur, forceCreate }
         onDelete={Utils.functional.noop}
         nameValidation={(name) => nameValidation(name, InteractionModelTabType.INTENTS)}
         isCreating
-        onBlur={(newName) => onBlur(newName, newItemID!)}
+        onBlur={(newName) => handleBlur(newName, newItemID!)}
       />
     ) : null;
 

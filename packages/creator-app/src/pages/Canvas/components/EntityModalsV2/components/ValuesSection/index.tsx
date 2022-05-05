@@ -198,7 +198,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
           </FormControl>
 
           {customLines.length > MAX_VISIBLE_VALUES && (
-            <Box color="#62778c" pb={24} mt={-15} px={32}>
+            <Box color="#62778c" pb={24} mt={showAllValues ? -8 : -15} px={32}>
               <ClickableText onClick={() => setShowAllValues(!showAllValues)}>
                 {showAllValues ? `Hide some values` : `Show all values (${customLines.length})`}
               </ClickableText>

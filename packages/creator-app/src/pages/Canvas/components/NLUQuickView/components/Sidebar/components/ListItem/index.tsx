@@ -49,11 +49,16 @@ const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> 
   const { canRenameItem, canDeleteItem } = React.useContext(NLUQuickViewContext);
 
   const endRename = () => {
-    if (onBlur) {
-      onBlur(localName);
+    if (localName.trim()) {
+      if (onBlur) {
+        onBlur(localName);
+      } else {
+        onRename?.(localName, id);
+      }
     } else {
-      onRename?.(localName, id);
+      setLocalName(name);
     }
+
     setIsRenaming(false);
     setIsActiveItemRename?.(false);
   };

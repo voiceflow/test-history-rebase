@@ -64,7 +64,7 @@ const EditModal: React.FC = () => {
       {!!modalRef && (
         <TextEditorVariablesPopoverProvider value={modalRef}>
           <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
-            <EditIntentForm withNameSection intentID={data.id} />
+            <EditIntentForm withDescriptionBottomBorder={false} withNameSection intentID={data.id} />
           </Box>
         </TextEditorVariablesPopoverProvider>
       )}

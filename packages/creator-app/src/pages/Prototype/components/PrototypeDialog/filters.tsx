@@ -1,19 +1,11 @@
 import { useSelector } from 'react-redux';
 
-import { PrototypeMode } from '@/constants/prototype';
-import * as Prototype from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import { useDebug, usePublic } from '@/pages/Prototype/hooks';
 
 import { Message, MessageType, TranscriptMessageType } from '../../types';
 
 type Filter = (message: Message) => boolean;
-
-const VisualFilter = (): Filter => {
-  const mode = useSelector(Prototype.activePrototypeModeSelector);
-
-  return () => mode !== PrototypeMode.DISPLAY;
-};
 
 const DebugFilter = (): Filter => {
   const settings = useSelector(Recent.recentPrototypeSelector);
@@ -43,7 +35,6 @@ const BlockFilter = (): Filter => {
 };
 
 const filterMap: Record<string, () => Filter> = {
-  [MessageType.VISUAL]: VisualFilter,
   [MessageType.DEBUG]: DebugFilter,
   [TranscriptMessageType.BLOCK]: BlockFilter,
 };

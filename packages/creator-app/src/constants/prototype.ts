@@ -29,13 +29,6 @@ export enum PrototypeInputMode {
   VOICE = 'VOICE',
 }
 
-export enum PrototypeMode {
-  CANVAS = 'Canvas',
-  DISPLAY = 'Display',
-  VARIABLES = 'Variables',
-  SETTINGS = 'Settings',
-}
-
 export const getDefaultPrototypeLayout = Utils.platform.createProjectTypeSelector({
   [VoiceflowConstants.ProjectType.CHAT]: PrototypeLayout.TEXT_DIALOG,
   [VoiceflowConstants.ProjectType.VOICE]: PrototypeLayout.VOICE_DIALOG,

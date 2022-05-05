@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { createExample, createSection } from './utils';
 
 const standard = createExample('primary', () => {
-  const [selectedColor, setSelectedColor] = useState<string>(COLOR_PICKER_CONSTANTS.DEFAULT_COLORS[0].palette[500]);
+  const [selectedColor, setSelectedColor] = useState<string>(COLOR_PICKER_CONSTANTS.DEFAULT_COLORS.dark.palette[500]);
 
   return <ColorPicker tagName="Label" selectedColor={selectedColor} onChange={(color) => setSelectedColor(color)} />;
 });

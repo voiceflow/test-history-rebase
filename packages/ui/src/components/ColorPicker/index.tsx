@@ -6,7 +6,7 @@ import React from 'react';
 import { ColorThemes } from './components/ColorThemes';
 import { Color } from './components/ColorThemes/Color';
 import { ColorPickerPopper } from './components/Poppers/ColorPickerPopper';
-import { BASE_COLORS, COLOR_WHEEL, Colors, DEFAULT_COLORS } from './constants';
+import { BASE_COLORS, COLOR_WHEEL, Colors, DEFAULT_COLORS, DEFAULT_THEMES } from './constants';
 import { Wrapper } from './styles';
 import { isBaseColor, normalizeColor } from './utils';
 
@@ -19,7 +19,7 @@ interface ColorPickerProps {
 
 export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, customColors = [], onChange, tagName }) => {
   const trimmedTagName = tagName?.trim() || 'label';
-  const colors = [...DEFAULT_COLORS, ...customColors];
+  const colors = [...DEFAULT_THEMES, ...customColors];
   const [selectedHex, setLocalSelectedHex] = React.useState(() => normalizeColor(selectedColor));
   const popOver = React.useRef(null);
   const [isShowingPicker, setIsShowingPicker] = React.useState(false);
@@ -40,7 +40,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, customC
           debouncedSetColor(color);
           setLocalSelectedHex(color);
         }}
-        colors={BASE_COLORS}
+        colors={[DEFAULT_COLORS.dark, ...BASE_COLORS]}
       />
       <Color selected={isCustomColor} onClick={() => setIsShowingPicker(true)} small background={COLOR_WHEEL} />
 

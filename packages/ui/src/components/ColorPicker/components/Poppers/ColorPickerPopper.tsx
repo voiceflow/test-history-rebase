@@ -7,7 +7,7 @@ import { createStandardShadeFromHue } from '@ui/utils/colors/hsl';
 import { hexToHsluv } from '@ui/utils/colors/hsluv';
 import React from 'react';
 
-import { IColor } from '../../constants';
+import { DEFAULT_COLORS, IColor } from '../../constants';
 import { Label, PopperContent, Wrapper } from '../../styles';
 import { ColorRange } from '../ColorRange';
 import { ColorThemes } from '../ColorThemes';
@@ -25,10 +25,11 @@ interface ColorPickerPopperProps {
   selectedColor: string;
   onChange: (color: string) => void;
   onSaveColor?: (color: IColor) => void;
+  defaultColorScheme?: 'light' | 'dark';
 }
 
 export const ColorPickerPopper = React.forwardRef<HTMLDivElement, ColorPickerPopperProps>(
-  ({ selectedColor, onChange, tagName = 'label', colors }, ref) => {
+  ({ selectedColor, onChange, tagName = 'label', colors, defaultColorScheme = 'dark' }, ref) => {
     const [selectedHue] = React.useMemo(() => hexToHsluv(selectedColor), [selectedColor]);
     const [localHue, setLocalHue] = useLinkedState(String(selectedHue));
 
@@ -57,7 +58,7 @@ export const ColorPickerPopper = React.forwardRef<HTMLDivElement, ColorPickerPop
                   />
                 </Box>
                 <Label>Color themes</Label>
-                <ColorThemes colors={colors} selectedColor={selectedColor} onColorSelect={onChange} />
+                <ColorThemes colors={[DEFAULT_COLORS[defaultColorScheme], ...colors]} selectedColor={selectedColor} onColorSelect={onChange} />
               </PopperContent>
             </StyledWrapper>
           </div>

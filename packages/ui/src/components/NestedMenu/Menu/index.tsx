@@ -181,17 +181,29 @@ function BaseNestedMenu({
       case KeyCode.TAB:
       case KeyCode.ENTER:
         {
-          if (focusedOptionIndex === null) return;
+          // if it's a direct match or the select is grouped and only 1 option is available, select it
+          if ((directSearchMatch || (grouped && !creatable && flatOptions.length === 1)) && (focusedOptionIndex ?? 0) === 0) {
+            swallowEvent(null, true)(event);
+
+            const option = flatOptions[firstOptionIndex];
+
+            if (isBaseMenuItem(option) && (option.disabled || option.vfUIOnly)) return;
+
+            onSelect(getOptionValue(option), optionsPath, dataRef.current.scheduleUpdate);
+
+            return;
+          }
 
           const nextValue = searchable && creatable ? searchLabel : newOptionLabel;
 
-          if (creatable && focusedOptionIndex === 0 && nextValue && !isButtonDisabled?.({ value: nextValue })) {
+          if ((creatable || alwaysShowCreate) && (focusedOptionIndex ?? 0) === 0 && nextValue && !isButtonDisabled?.({ value: nextValue })) {
             swallowEvent(null, true)(event);
             onCreate?.(nextValue, dataRef.current.scheduleUpdate);
           } else if (
+            focusedOptionIndex !== null &&
             (!isInput ||
               (event.target && inputWrapperNode?.contains(event.target as Node)) ||
-              (creatable && searchable) ||
+              ((creatable || alwaysShowCreate) && searchable) ||
               (isDropdown && searchable)) &&
             (!creatable || focusedOptionIndex > 0)
           ) {

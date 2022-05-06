@@ -1,10 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IconVariant, SvgIcon } from '@voiceflow/ui';
+import { IconVariant, SvgIcon, Upload } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
-import FullImageUpload, { validateLink } from '@/components/Upload/ImageUpload/FullImage';
-import ImageGroupUpload from '@/components/Upload/ImageUpload/ImageGroup';
 import VariablesInput from '@/components/VariablesInput';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -42,11 +40,11 @@ const StreamVisualsForm: React.FC<StreamVisualsFormProps> = ({ data, onChange })
       </FormControl>
 
       <FormControl label="Icon">
-        <ImageGroupUpload image={data.iconImage} update={updateIconImage} withVariables onValidateLink={validateLink} />
+        <Upload.ImageGroup image={data.iconImage} update={updateIconImage} renderInput={VariablesInput.renderInput} />
       </FormControl>
 
       <FormControl label="Background Image">
-        <FullImageUpload image={data.backgroundImage} update={updateBackgroundImage} />
+        <Upload.FullImage image={data.backgroundImage} update={updateBackgroundImage} renderInput={VariablesInput.renderInput} />
       </FormControl>
     </EditorSection>
   );

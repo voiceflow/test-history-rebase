@@ -83,6 +83,12 @@ const THEME = {
     menuItem: {
       height: 42,
     },
+    audioPlayer: {
+      height: 108,
+    },
+    imageUpload: {
+      height: 230,
+    },
     icon: ICON_THEME,
   },
   transition(...propertyWhitelist: string[]): string {

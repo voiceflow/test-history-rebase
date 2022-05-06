@@ -1,10 +1,10 @@
 import { Nullable, Utils } from '@voiceflow/common';
-import { toast, useCache, useContextApi, useDidUpdateEffect } from '@voiceflow/ui';
+import { toast, Upload, useCache, useContextApi, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import { BlockType, MarkupBlockType } from '@/constants';
-import { useEventualEngine, usePermission, useTrackingEvents, useUpload } from '@/hooks';
+import { useEventualEngine, usePermission, useTrackingEvents } from '@/hooks';
 import { useAnyModeOpen } from '@/pages/Project/hooks/modes';
 import { ClassName, Identifier } from '@/styles/constants';
 import { upload, windowRefocused } from '@/utils/dom';
@@ -36,7 +36,7 @@ export const MarkupProvider: React.FC = ({ children }) => {
   const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(null);
   const [uploadingImages, setUploadingImages] = React.useState(false);
 
-  const { onUpload: onUploadImage, isLoading: isImageUploading } = useUpload({ fileType: 'image', clientFunc: 'uploadImage' });
+  const { onUpload: onUploadImage, isLoading: isImageUploading, loadingOn, loadingOff } = Upload.useUpload({ fileType: 'image', endpoint: '/image' });
 
   const cache = useCache({ getEngine, isAnyModeOpen, canEditCanvas, isImageUploading, uploadingImages });
 
@@ -77,8 +77,10 @@ export const MarkupProvider: React.FC = ({ children }) => {
       if (!engine.canvas) return;
 
       try {
-        const imageURL = await onUploadImage(null, file);
+        loadingOn();
+        const imageURL = await onUploadImage('/image', file);
         const imageSize = await imageSizeFromUrl(imageURL);
+        loadingOff();
 
         const rect = engine.canvas.getRect();
         const zoom = engine.canvas.getZoom();

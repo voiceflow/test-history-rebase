@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Upload } from '@voiceflow/ui';
 import React from 'react';
 
-import FullImage from '@/components/Upload/ImageUpload/FullImage';
 import VariablesInput from '@/components/VariablesInput';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -33,11 +33,11 @@ const CardForm: React.FC<CardFormProps> = ({ data, onChange, withImage }) => {
       {withImage && (
         <FadeLeftContainer>
           <FormControl label="Background Image" contentBottomUnits={!data.hasSmallImage ? 0 : undefined}>
-            <FullImage image={data.largeImage} update={updateLargeImage} />
+            <Upload.FullImage image={data.largeImage} update={updateLargeImage} renderInput={VariablesInput.renderInput} />
           </FormControl>
           {data.hasSmallImage && (
             <FormControl label="Small Screen Image" contentBottomUnits={0}>
-              <FullImage image={data.smallImage} update={updateSmallImage} />
+              <Upload.FullImage image={data.smallImage} update={updateSmallImage} renderInput={VariablesInput.renderInput} />
             </FormControl>
           )}
         </FadeLeftContainer>

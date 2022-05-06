@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, Link, Text, toast, useDidUpdateEffect, useSmartReducerV2 } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Link, Text, toast, Upload, useDidUpdateEffect, useSmartReducerV2 } from '@voiceflow/ui';
 import _tail from 'lodash/tail';
 import Papa from 'papaparse';
 import pluralize from 'pluralize';
@@ -8,7 +8,6 @@ import { slotUploadExampleCSV } from '@/assets';
 import Checkbox from '@/components/Checkbox';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import RadioGroup from '@/components/RadioGroup';
-import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import * as Documentation from '@/config/documentation';
 import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import { useDebouncedCallback, useModals } from '@/hooks';
@@ -169,7 +168,7 @@ const ImportSlots: React.FC = () => {
                 placeholder="One entity per line (value,synonym 1,…)"
               />
             ) : (
-              <DropUpload
+              <Upload.DropUpload
                 label="CSV"
                 isLoading={state.readingFile}
                 canUseLink={false}

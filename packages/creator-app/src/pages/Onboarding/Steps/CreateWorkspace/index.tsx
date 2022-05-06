@@ -1,7 +1,5 @@
-import { ClickableText, FlexCenter, KeyName, toast } from '@voiceflow/ui';
+import { ClickableText, FlexCenter, KeyName, toast, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
-
-import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 
 import ContinueButton from '../../components/ContinueButton';
 import { StepID } from '../../constants';
@@ -49,7 +47,7 @@ const CreateWorkspace: React.FC = () => {
       </FlexCenter>
 
       <FlexCenter>
-        <UploadJustIcon image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.LARGE} ref={iconUploadRef} />
+        <Upload.IconUpload image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.LARGE} ref={iconUploadRef} />
       </FlexCenter>
 
       <LabelContainer>

@@ -1,10 +1,9 @@
-import { Box, BoxFlex, BoxFlexCenter, Label } from '@voiceflow/ui';
+import { Box, BoxFlex, BoxFlexCenter, Label, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import TextInput from '@/components/Form/TextInput';
-import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
@@ -50,7 +49,7 @@ const BasicSkillInfoForm: React.FC = () => {
         <Box width="50%">
           <Label textAlign="center">Large Icon</Label>
           <BoxFlexCenter>
-            <UploadJustIcon
+            <Upload.IconUpload
               size={UploadIconVariant.EXTRA_LARGE}
               canRemove
               endpoint="/image/large_icon"
@@ -62,7 +61,7 @@ const BasicSkillInfoForm: React.FC = () => {
         <Box width="50%">
           <Label textAlign="center">Small Icon</Label>
           <BoxFlexCenter>
-            <UploadJustIcon size={UploadIconVariant.LARGE} canRemove endpoint="/image/small_icon" image={smallIcon ?? ''} update={saveSmallIcon} />
+            <Upload.IconUpload size={UploadIconVariant.LARGE} canRemove endpoint="/image/small_icon" image={smallIcon ?? ''} update={saveSmallIcon} />
           </BoxFlexCenter>
         </Box>
       </BoxFlex>

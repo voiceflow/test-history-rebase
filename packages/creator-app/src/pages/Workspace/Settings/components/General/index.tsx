@@ -1,9 +1,8 @@
-import { Box, BoxFlex, Button, Input } from '@voiceflow/ui';
+import { Box, BoxFlex, Button, Input, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import { ActionSection, SectionVariants, SettingsSection } from '@/components/Settings';
-import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
@@ -41,12 +40,11 @@ const GeneralSettingsPage: React.FC = () => {
           <BoxFlex mb={24}>
             <Input name="name" value={name} onBlur={saveName} onChangeText={updateName} placeholder="Board Name" readOnly={!canConfigureWorkspace} />
             <Box ml={16}>
-              <UploadJustIcon
+              <Upload.IconUpload
                 disabled={!canConfigureWorkspace}
                 size={UploadIconVariant.EXTRA_SMALL}
                 update={updateActiveWorkspaceImage}
                 image={workspace.image}
-                endpoint="/image"
               />
             </Box>
           </BoxFlex>

@@ -4,7 +4,7 @@ import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
 import React from 'react';
 
-interface LoaderProps {
+export interface LoaderProps {
   isMd?: boolean;
   color?: string;
   borderLess?: boolean;

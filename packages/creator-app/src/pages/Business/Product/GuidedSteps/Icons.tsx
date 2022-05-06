@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
-import { Box, Button, ButtonVariant } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
-
-import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 
 import { ProductContext } from '../../contexts';
 import { IconContainer, NextButtonContainer } from './components';
@@ -19,7 +17,7 @@ const IconForm: React.FC<IconFormProps> = ({ advanceStep }) => {
       <Box display="flex">
         <IconContainer>
           <label>Small Icon</label>
-          <UploadJustIcon
+          <Upload.IconUpload
             size={UploadIconVariant.MEDIUM}
             endpoint="/image/small_icon"
             image={product.smallIconUri}
@@ -29,7 +27,7 @@ const IconForm: React.FC<IconFormProps> = ({ advanceStep }) => {
 
         <IconContainer noBorder>
           <label>Large Icon</label>
-          <UploadJustIcon
+          <Upload.IconUpload
             size={UploadIconVariant.LARGE}
             endpoint="/image/large_icon"
             image={product.largeIconUri}

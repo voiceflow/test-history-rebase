@@ -1,7 +1,8 @@
-import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
+import { Upload, UploadIconVariant } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
-const ProfilePicUpload = styled(UploadJustIcon).attrs({ size: UploadIconVariant.EXTRA_SMALL })`
+const ProfilePicUpload = styled(Upload.IconUpload).attrs({ size: UploadIconVariant.EXTRA_LARGE })`
   display: inline-block;
   margin-left: 10px;
   position: relative;

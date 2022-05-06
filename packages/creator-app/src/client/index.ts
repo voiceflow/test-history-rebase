@@ -21,6 +21,7 @@ import sso from './sso';
 import template from './template';
 import thread from './thread';
 import transcript from './transcript';
+import upload from './upload';
 import user from './user';
 import variableStates from './variableStates';
 import version from './version';
@@ -57,6 +58,7 @@ const client = {
   realtime,
   variableStates,
   maintenance,
+  upload,
 };
 
 export default client;

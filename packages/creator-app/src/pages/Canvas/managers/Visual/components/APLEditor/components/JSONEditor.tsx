@@ -1,9 +1,8 @@
-import { IconVariant, Link, SvgIcon, toast } from '@voiceflow/ui';
+import { IconVariant, Link, SvgIcon, toast, Upload } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
 import { SectionToggleVariant, SectionVariant } from '@/components/Section';
-import JsonUpload from '@/components/Upload/JsonUpload';
 import { APL_TOOL_LINK } from '@/constants';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -69,7 +68,7 @@ const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplC
         isDividerNested
         customContentStyling={{ paddingBottom: '20px' }}
       >
-        <JsonUpload onUpload={onUpload} fileName={jsonFileName} onRemove={removeFile} />
+        <Upload.JsonUpload onUpload={onUpload} fileName={jsonFileName} onRemove={removeFile} />
 
         <Link href={APL_TOOL_LINK}>Authoring Tool</Link>
       </EditorSection>

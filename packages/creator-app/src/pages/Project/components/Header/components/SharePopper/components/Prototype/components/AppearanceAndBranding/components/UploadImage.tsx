@@ -1,6 +1,6 @@
+import { Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { useLinkedState } from '@/hooks';
 
 import Title from '../../Title';
@@ -31,7 +31,7 @@ const UploadImage: React.FC<UploadImageProps> = ({ id, image: propImage, title, 
         {title}
       </Title>
 
-      <UploadJustIcon image={image} update={updateImage} size={UploadIconVariant.SMALL} isSquare={isSquare} disabled={!isAllowed} />
+      <Upload.IconUpload image={image} update={updateImage} size={UploadIconVariant.SMALL} isSquare={isSquare} disabled={!isAllowed} />
     </UploadImageContainer>
   );
 };

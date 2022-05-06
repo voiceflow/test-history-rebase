@@ -1,20 +1,20 @@
 import { BaseVersion } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ClickableText } from '@voiceflow/ui';
+import { ClickableText, Upload } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
+import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import SSML from '@/components/SSML';
-import AudioUpload from '@/components/Upload/AudioUpload';
+import VariablesInput from '@/components/VariablesInput';
 import * as VersionDuck from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs';
+import { useDispatch, useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { ErrorMessage } from '@/pages/Settings/components';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
-import { ConnectedProps } from '@/types';
 
 import { REPEAT_OPTIONS, RESUME_PROMPT_MAX_LENGTH } from '../constants';
 
@@ -28,19 +28,21 @@ interface AssistantConversationLogicProps {
   platformDefaultVoice: Realtime.AnyVoice;
 }
 
-const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic & AssistantConversationLogicProps> = ({
-  settings,
-  session,
+const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({
   platform,
   projectType,
   platformMeta,
   defaultVoice,
   platformDefaultVoice,
-  patchSettings,
-  patchSession,
-  updateResumePrompt,
-  updateDefaultVoice,
 }) => {
+  const settings = useSelector(VersionV2.active.alexa.settingsSelector);
+  const session = useSelector(VersionV2.active.sessionSelector);
+
+  const patchSettings = useDispatch(VersionDuck.alexa.patchSettings);
+  const patchSession = useDispatch(VersionDuck.patchSession);
+  const updateResumePrompt = useDispatch(VersionDuck.updateResumePrompt);
+  const updateDefaultVoice = useDispatch(VersionDuck.updateDefaultVoice);
+
   const { descriptors } = platformMeta;
   const { continuePrevious, allowRepeat, repeatDialog, repeatEverything } = descriptors;
 
@@ -138,7 +140,12 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
           </FormControl>
 
           {resumePromptType === VoiceflowConstants.Voice.AUDIO ? (
-            <AudioUpload audio={resumePrompt.content} update={(src) => onChangeResumePromptContent({ text: src })} />
+            <Upload.AudioUpload
+              audio={resumePrompt.content}
+              update={(src) => onChangeResumePromptContent({ text: src })}
+              className={CONTEXT_MENU_IGNORED_CLASS_NAME}
+              renderInput={VariablesInput.renderInput}
+            />
           ) : (
             <>
               <SSMLComponent
@@ -178,7 +185,12 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
 
             {followUpType === VoiceflowConstants.Voice.AUDIO ? (
               <FormControl>
-                <AudioUpload audio={resumePrompt.followContent} update={(src) => onChangeFollowUpContent({ text: src })} />
+                <Upload.AudioUpload
+                  renderInput={VariablesInput.renderInput}
+                  audio={resumePrompt.followContent}
+                  update={(src) => onChangeFollowUpContent({ text: src })}
+                  className={CONTEXT_MENU_IGNORED_CLASS_NAME}
+                />
               </FormControl>
             ) : (
               <FormControl contentBottomUnits={3}>
@@ -222,18 +234,4 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
   );
 };
 
-const mapStateToProps = {
-  settings: VersionV2.active.alexa.settingsSelector,
-  session: VersionV2.active.sessionSelector,
-};
-
-const mapDispatchToProps = {
-  patchSettings: VersionDuck.alexa.patchSettings,
-  patchSession: VersionDuck.patchSession,
-  updateResumePrompt: VersionDuck.updateResumePrompt,
-  updateDefaultVoice: VersionDuck.updateDefaultVoice,
-};
-
-type ConnectedAssistantConversationLogic = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(AssistantConversationLogic) as React.FC<AssistantConversationLogicProps>;
+export default AssistantConversationLogic;

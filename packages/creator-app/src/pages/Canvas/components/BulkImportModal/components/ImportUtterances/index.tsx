@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, Link, Text, toast, useDidUpdateEffect, useSmartReducerV2 } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Link, Text, toast, Upload, useDidUpdateEffect, useSmartReducerV2 } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
 
@@ -6,7 +6,6 @@ import { utteranceUploadExampleCSV } from '@/assets';
 import Checkbox from '@/components/Checkbox';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import RadioGroup from '@/components/RadioGroup';
-import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import * as Documentation from '@/config/documentation';
 import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -173,7 +172,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, get
                 }
               />
             ) : (
-              <DropUpload
+              <Upload.DropUpload
                 label="CSV"
                 isLoading={state.readingFile}
                 canUseLink={false}

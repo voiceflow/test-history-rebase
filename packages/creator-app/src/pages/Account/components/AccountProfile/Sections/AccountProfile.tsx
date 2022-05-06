@@ -1,8 +1,7 @@
-import { Box, BoxFlex, Input, Link } from '@voiceflow/ui';
+import { Box, BoxFlex, Input, Link, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
-import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import { useDispatch, useModals, useSelector } from '@/hooks';
@@ -37,7 +36,7 @@ const AccountProfile: React.FC = () => {
           <Input value={user.name ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
 
           <Box ml={16}>
-            <UploadJustIcon image={user.image} size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} endpoint="/image" />
+            <Upload.IconUpload image={user.image} size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} />
           </Box>
         </BoxFlex>
       </Section>

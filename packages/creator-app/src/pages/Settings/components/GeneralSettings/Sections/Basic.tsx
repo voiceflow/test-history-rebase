@@ -3,14 +3,13 @@ import { Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants, GoogleUtils } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, BoxFlex, Input, Select, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, BoxFlex, Input, Select, Upload, UploadIconVariant, useDidUpdateEffect } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 import React from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import Section, { SectionVariant } from '@/components/Section';
-import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -124,7 +123,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         <BoxFlex>
           <Input value={newProjectName} onChangeText={setNewProjectName} onBlur={saveSettings} />
           <Box ml={16}>
-            <UploadJustIcon size={UploadIconVariant.EXTRA_SMALL} update={setProjectImage} image={projectImage ?? ''} endpoint="/image" />
+            <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} update={setProjectImage} image={projectImage ?? ''} />
           </Box>
         </BoxFlex>
       </Section>

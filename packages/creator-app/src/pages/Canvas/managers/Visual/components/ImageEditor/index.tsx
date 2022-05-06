@@ -1,13 +1,13 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, defaultMenuLabelRenderer, Flex, Input, Link, Select, Text } from '@voiceflow/ui';
+import { Box, defaultMenuLabelRenderer, Flex, Input, Link, Select, Text, Upload } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
-import FullImage from '@/components/Upload/ImageUpload/FullImage';
+import VariablesInput from '@/components/VariablesInput';
 import * as Documentation from '@/config/documentation';
 import { DEVICE_LABEL_MAP, NUMBERS_ONLY_REGEXP } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -180,10 +180,11 @@ const ImageEditor: NodeEditor<BaseNode.Visual.ImageStepData, Realtime.NodeData.V
           }
           contentBottomUnits={0}
         >
-          <FullImage
+          <Upload.FullImage
             image={data.image}
             ratio={ratio}
             canUseLink={false}
+            renderInput={VariablesInput.renderInput}
             update={(url) => {
               onChange({ image: url ?? null });
               setAutoFit(frameType, url);

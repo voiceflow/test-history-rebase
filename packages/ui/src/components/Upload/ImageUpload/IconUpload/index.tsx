@@ -1,0 +1,135 @@
+import { LoadCircle } from '@ui/components/Loader';
+import SvgIcon from '@ui/components/SvgIcon';
+import { stopPropagation } from '@ui/utils';
+import { Utils } from '@voiceflow/common';
+import React from 'react';
+import { useDropzone } from 'react-dropzone';
+
+import { IMAGE_FILE_FORMATS } from '../../constants';
+import { ImageInjectedWithUploadProps } from '../../types';
+import { SingleUploadConfig, useUpload } from '../../useUpload';
+import { hasValidImages } from '../../utils';
+import { ErrorText, RemoveButton } from '../styles';
+import * as S from './styles';
+
+export enum UploadIconVariant {
+  EXTRA_SMALL = 'xsmall',
+  SMALL = 'small',
+  MEDIUM = 'medium',
+  LARGE = 'large',
+  EXTRA_LARGE = 'xlarge',
+}
+
+export const SIZE_VARIANT = {
+  [UploadIconVariant.EXTRA_LARGE]: 150,
+  [UploadIconVariant.LARGE]: 120,
+  [UploadIconVariant.MEDIUM]: 100,
+  [UploadIconVariant.SMALL]: 80,
+  [UploadIconVariant.EXTRA_SMALL]: 42,
+};
+
+const MINIMUM_ICON_SIZE = 14;
+
+export interface IconUploadOwnProps {
+  size?: UploadIconVariant;
+  image?: string | null;
+  isSquare?: boolean;
+  disabled?: boolean;
+  canRemove?: boolean;
+  className?: string;
+  acceptedFileTypes?: string[];
+  update: (value: string | null) => void;
+}
+
+export interface BaseIconUploadProps extends IconUploadOwnProps, Omit<ImageInjectedWithUploadProps, 'update'> {}
+
+export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadProps>(
+  (
+    {
+      error,
+      update,
+      isLoading,
+      onDropAccepted,
+
+      size = UploadIconVariant.SMALL,
+      image,
+      isSquare,
+      disabled,
+      className,
+      canRemove = false,
+      acceptedFileTypes = IMAGE_FILE_FORMATS,
+    },
+    ref
+  ) => {
+    const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
+      accept: acceptedFileTypes,
+      disabled: isLoading,
+      onDropAccepted,
+      onDropRejected: Utils.functional.noop,
+    });
+    const iconSize = SIZE_VARIANT[size];
+    const placeholderIconSize = Math.max(SIZE_VARIANT[size] / 4.75, MINIMUM_ICON_SIZE);
+    const iconUploadInput = React.useRef<HTMLInputElement>();
+
+    const clickIconInput = () => {
+      if (disabled || isLoading) return;
+
+      iconUploadInput.current?.click();
+    };
+
+    let content = null;
+    if (isDragReject) {
+      content = <ErrorText>Invalid</ErrorText>;
+    } else if (error) {
+      content = <ErrorText>Error</ErrorText>;
+    } else if (isLoading) {
+      content = <LoadCircle color="transparent" isMd />;
+    } else if (!image) {
+      content = <SvgIcon size={placeholderIconSize} color="#BECEDC" icon="image" />;
+    }
+
+    return (
+      <S.IconUploadContainer className={className} {...(getRootProps() as any)} isActive={isDragActive}>
+        {!disabled && (
+          <S.IconUploadInput onChange={onDropAccepted} ref={iconUploadInput} type="file" accept={acceptedFileTypes} {...(getInputProps() as any)} />
+        )}
+
+        <S.ImageContainer
+          ref={ref}
+          size={iconSize}
+          image={image}
+          error={error}
+          onClick={clickIconInput}
+          isSquare={isSquare}
+          disabled={disabled}
+          isLoading={isLoading}
+          notAccepted={isDragReject}
+        >
+          {canRemove && image && (
+            <RemoveButton top={0} right={0} onClick={stopPropagation(() => update(''))}>
+              <SvgIcon size={8} icon="close" color="#8da2b5" />
+            </RemoveButton>
+          )}
+          {content}
+        </S.ImageContainer>
+      </S.IconUploadContainer>
+    );
+  }
+);
+
+export interface IconUploadProps extends IconUploadOwnProps, Omit<SingleUploadConfig, 'fileType' | 'endpoint' | 'validate' | 'update'> {
+  endpoint?: string;
+}
+
+const IconUpload = React.forwardRef<HTMLDivElement, IconUploadProps>(({ update, endpoint = '/image', ...props }, ref) => {
+  const uploadApi = useUpload({
+    fileType: 'image',
+    endpoint,
+    update,
+    validate: hasValidImages,
+  });
+
+  return <BaseIconUpload ref={ref} update={update} {...props} {...uploadApi} />;
+});
+
+export default IconUpload;

@@ -10,4 +10,5 @@ export { default as tippyTooltip } from './TippyTooltip';
 export { default as tooltip } from './Tooltip';
 export { default as tutorialInfoIcon } from './TutorialInfoIcon';
 export { default as tutorialTooltip } from './TutorialTooltip';
+export { default as upload } from './Upload';
 export { default as videoPlayer } from './VideoPlayer';

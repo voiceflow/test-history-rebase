@@ -1,10 +1,9 @@
 import { Utils } from '@voiceflow/realtime-sdk';
-import { Box, BoxFlex, Flex, Input } from '@voiceflow/ui';
+import { Box, BoxFlex, Flex, Input, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import Upgrade from '@/components/Upgrade';
-import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { Permission } from '@/config/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
@@ -77,7 +76,7 @@ const TestToolSettings: React.FC = () => {
         <BoxFlex mr={120}>
           <ColorInput isAllowed={canCustomize} disabledBorderColor="rgba(210, 218, 226, 0.65)" />
           <Box ml={16}>
-            <UploadJustIcon image={prototypeAvatar} size={UploadIconVariant.EXTRA_SMALL} update={savePrototypeImage} endpoint="/image" />
+            <Upload.IconUpload image={prototypeAvatar} size={UploadIconVariant.EXTRA_SMALL} update={savePrototypeImage} />
           </Box>
         </BoxFlex>
       </Section>

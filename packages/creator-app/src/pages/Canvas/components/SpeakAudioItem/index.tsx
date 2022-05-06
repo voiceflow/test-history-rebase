@@ -1,11 +1,11 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, SvgIcon } from '@voiceflow/ui';
+import { Box, SvgIcon, Upload } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
+import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 import { SectionToggleVariant } from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
-import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
 import { BlockVariant, DialogType } from '@/constants';
 import { compose } from '@/hocs';
@@ -86,8 +86,12 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
             <SSMLWithVars icon={null} voice={item.voice} value={item.content} onBlur={updateContent} onChangeVoice={updateVoice} />
           ) : (
             <>
-              <AudioUpload audio={item.url} update={updateAudio} />
-
+              <Upload.AudioUpload
+                audio={item.url}
+                update={updateAudio}
+                className={CONTEXT_MENU_IGNORED_CLASS_NAME}
+                renderInput={VariablesInput.renderInput}
+              />
               {isGoogle && item.url && (
                 <Box mt={12}>
                   <VariablesInputComponent value={item.desc || ''} onBlur={updateDesc} placeholder="Enter audio description" multiline />

@@ -1,3 +1,4 @@
+import { Upload } from '@voiceflow/ui';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import React from 'react';
@@ -7,6 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { IntercomProvider } from 'react-use-intercom';
 import { ThemeProvider } from 'styled-components';
 
+import client from '@/client';
 import { INTERCOM_APP_ID } from '@/config';
 import {
   AccountLoadingGate,
@@ -18,6 +20,7 @@ import {
   SocketLoadingGate,
 } from '@/gates';
 import THEME from '@/styles/theme';
+import * as Sentry from '@/vendors/sentry';
 
 import { AutoPanningProvider } from '../AutoPanningContext';
 import { DragProvider } from '../DragContext';
@@ -55,13 +58,15 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                 <DragProvider>
                                   <AutoPanningProvider>
                                     <ModalsContextProvider>
-                                      <SocketLoadingGate>
-                                        <AccountLoadingGate>
-                                          <RealtimeConnectionGate>
-                                            <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
-                                          </RealtimeConnectionGate>
-                                        </AccountLoadingGate>
-                                      </SocketLoadingGate>
+                                      <Upload.Provider client={client.upload} onError={(error) => Sentry.error(error)}>
+                                        <SocketLoadingGate>
+                                          <AccountLoadingGate>
+                                            <RealtimeConnectionGate>
+                                              <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
+                                            </RealtimeConnectionGate>
+                                          </AccountLoadingGate>
+                                        </SocketLoadingGate>
+                                      </Upload.Provider>
                                     </ModalsContextProvider>
                                   </AutoPanningProvider>
                                 </DragProvider>

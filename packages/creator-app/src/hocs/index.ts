@@ -13,4 +13,3 @@ export * from './withHook';
 export * from './withInnerRef';
 export * from './withNamespace';
 export * from './withStripe';
-export * from './withUpload';

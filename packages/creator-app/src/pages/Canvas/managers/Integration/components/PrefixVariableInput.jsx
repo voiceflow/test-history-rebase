@@ -2,7 +2,7 @@ import { Flex, FlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
 import VariablesInput from '@/components/VariablesInput';
-import { Container as VariablesContainer } from '@/components/VariablesInput/components';
+import { Container as VariablesContainer } from '@/components/VariablesInput/styles';
 import { styled } from '@/hocs';
 
 const PrefixedInput = styled(VariablesInput)`

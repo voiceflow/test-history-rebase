@@ -1,6 +1,8 @@
 import './LegacyButton/Button.css';
 
 export { default as Alert, AlertVariant } from './Alert';
+export type { AudioPlayerProps } from './AudioPlayer';
+export { default as AudioPlayer } from './AudioPlayer';
 export { default as Badge } from './Badge';
 export {
   default as Box,
@@ -131,4 +133,11 @@ export type { TutorialInfoIconProps } from './TutorialInfoIcon';
 export { default as TutorialInfoIcon } from './TutorialInfoIcon';
 export type { TutorialTooltipProps } from './TutorialTooltip';
 export { default as TutorialTooltip } from './TutorialTooltip';
+export { default as Upload } from './Upload';
+export type { UploadClient, UploadFileType } from './Upload/Context';
+export type { IconUploadOwnProps } from './Upload/ImageUpload/IconUpload';
+export { UploadIconVariant } from './Upload/ImageUpload/IconUpload';
+export type { DropUploadProps } from './Upload/Primitive/DropUpload';
+export type { InputRenderer } from './Upload/Primitive/LinkUpload';
+export type { LinkUploadProps } from './Upload/Primitive/LinkUpload';
 export { default as VideoPlayer } from './VideoPlayer';

@@ -1,7 +1,7 @@
+import { Upload } from '@voiceflow/ui';
 import React from 'react';
 
 import Section from '@/components/Section';
-import FullImage from '@/components/Upload/ImageUpload/FullImage';
 import VariablesInput from '@/components/VariablesInput';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
@@ -20,7 +20,7 @@ const SplashEditor: React.FC<SplashEditorProps> = ({ title, onChange, imageURL }
     </FormControl>
 
     <FormControl label="Background Image" contentBottomUnits={0}>
-      <FullImage update={(src) => onChange({ imageURL: src ?? '' })} image={imageURL} />
+      <Upload.FullImage update={(src) => onChange({ imageURL: src ?? '' })} image={imageURL} renderInput={VariablesInput.renderInput} />
     </FormControl>
   </Section>
 );

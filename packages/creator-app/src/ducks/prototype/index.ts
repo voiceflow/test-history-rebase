@@ -11,6 +11,7 @@ import {
   UpdatePrototype,
   UpdatePrototypeContext,
   UpdatePrototypeContextStore,
+  UpdatePrototypeMode,
   UpdatePrototypeSettings,
   UpdatePrototypeStatus,
   UpdatePrototypeVisualData,
@@ -43,6 +44,14 @@ const updatePrototypeReducer: Reducer<PrototypeState, UpdatePrototype> = (state,
 const updatePrototypeStatusReducer: Reducer<PrototypeState, UpdatePrototypeStatus> = (state, { payload: status }) => ({
   ...state,
   status,
+});
+
+const updatePrototypeModeReducer: Reducer<PrototypeState, UpdatePrototypeMode> = (state, { payload: { projectID, mode } }) => ({
+  ...state,
+  mode: {
+    ...state.mode,
+    [projectID]: mode,
+  },
 });
 
 const pushContextHistoryReducer: Reducer<PrototypeState, PushContextHistory> = (state, { payload }) => ({
@@ -117,6 +126,8 @@ const prototypeReducer: RootReducer<PrototypeState, AnyPrototypeAction> = (state
       return updatePrototypeReducer(state, action);
     case PrototypeAction.UPDATE_TEST_STATUS:
       return updatePrototypeStatusReducer(state, action);
+    case PrototypeAction.UPDATE_TEST_MODE:
+      return updatePrototypeModeReducer(state, action);
     case PrototypeAction.ADD_TEST_CONTEXT_HISTORY:
       return pushContextHistoryReducer(state, action);
     case PrototypeAction.UPDATE_TEST_VISUAL_DEVICE:

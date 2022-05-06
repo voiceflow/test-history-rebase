@@ -1,8 +1,9 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { createSelector } from 'reselect';
 
-import { getDefaultPrototypeLayout } from '@/constants/prototype';
+import { getDefaultPrototypeLayout, PrototypeMode } from '@/constants/prototype';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as Session from '@/ducks/session';
 import { createRootSelector } from '@/ducks/utils';
 
 import { STATE_KEY } from './constants';
@@ -32,6 +33,13 @@ export const prototypeMutedSelector = createSelector([prototypeSelector], ({ mut
 export const prototypeInputModeSelector = createSelector([prototypeSelector], ({ inputMode }) => inputMode);
 
 export const prototypeShowButtonsSelector = createSelector([prototypeSelector], ({ showButtons }) => showButtons);
+
+export const prototypeModeSelector = createSelector([prototypeSelector], ({ mode }) => mode);
+
+export const activePrototypeModeSelector = createSelector(
+  [Session.activeProjectIDSelector, prototypeModeSelector],
+  (projectID, mode) => (projectID && mode[projectID]) || PrototypeMode.CANVAS
+);
 
 export const prototypeVisualSelector = createSelector([prototypeSelector], ({ visual }) => visual);
 

@@ -3,7 +3,7 @@ import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import type { PrototypeInputMode, PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
+import type { PrototypeInputMode, PrototypeLayout, PrototypeMode, PrototypeStatus } from '@/constants/prototype';
 import type { PrototypeContext } from '@/models';
 
 export type PrototypeSettings = Omit<BaseModels.Version.PrototypeSettings, 'layout'> & {
@@ -60,6 +60,10 @@ export interface PrototypeState {
   contextStep: number;
   contextHistory: Partial<Context>[];
   context: Context;
+  /**
+   * map of project IDs to prototype nodes, so that each project can persist a different active mode
+   */
+  mode: Record<string, PrototypeMode>;
   visual: {
     data: Node.Visual.StepData | null;
     device: Node.Visual.DeviceType | null;

@@ -3,6 +3,59 @@ import { Utils } from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
+import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
+import { PrototypeMode } from '@/constants/prototype';
+import { Identifier } from '@/styles/constants';
+
+export interface PrototypeMenuItem extends SidebarIconMenuItem {
+  value: PrototypeMode;
+}
+
+const canvasIcon: PrototypeMenuItem = {
+  id: Identifier.PROTO_MENU_CANVAS_BUTTON,
+  icon: 'canvas',
+  value: PrototypeMode.CANVAS,
+  tooltip: { title: 'Canvas' },
+};
+
+const displayIcon: PrototypeMenuItem = {
+  id: Identifier.PROTO_MENU_DISPLAY_BUTTON,
+  icon: 'display',
+  value: PrototypeMode.DISPLAY,
+  tooltip: { title: 'Display' },
+};
+
+const developerIcon: PrototypeMenuItem = {
+  id: Identifier.PROTO_MENU_DEVELOPER_BUTTON,
+  icon: 'code',
+  value: PrototypeMode.VARIABLES,
+  tooltip: { title: 'Variables' },
+};
+
+const settingsIcon: PrototypeMenuItem = {
+  id: Identifier.PROTO_MENU_SETTINGS_BUTTON,
+  icon: 'cog',
+  value: PrototypeMode.SETTINGS,
+  tooltip: { title: 'Settings' },
+};
+
+const ALEXA_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
+
+const GOOGLE_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, developerIcon, settingsIcon];
+
+const DIALOGFLOW_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, developerIcon, settingsIcon];
+
+const GENERAL_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
+
+export const getMenuOptions = Utils.platform.createPlatformSelector(
+  {
+    [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_PROTOTYPE_MENU_OPTIONS,
+    [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_PROTOTYPE_MENU_OPTIONS,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DIALOGFLOW_PROTOTYPE_MENU_OPTIONS,
+  },
+  GENERAL_PROTOTYPE_MENU_OPTIONS
+);
+
 export interface DeviceInfo {
   name: string;
   icon: Icon;

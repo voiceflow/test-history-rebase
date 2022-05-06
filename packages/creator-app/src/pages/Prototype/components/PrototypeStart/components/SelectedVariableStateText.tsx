@@ -1,15 +1,17 @@
 import { Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import * as VariableState from '@/ducks/variableState';
-import { useSelector } from '@/hooks';
+import { useFeature, useSelector } from '@/hooks';
 
 import VariableStateSelectMenu from './VariableStateSelectMenu';
 
 const SelectedVariableStateText: React.FC = () => {
   const selectedVariableStateName = useSelector(VariableState.getSelectedVariableStateNameSelector);
+  const { isEnabled: isVariableStateEnabled } = useFeature(FeatureFlag.VARIABLE_STATES);
 
-  if (!selectedVariableStateName) return null;
+  if (!isVariableStateEnabled || !selectedVariableStateName) return null;
 
   return (
     <VariableStateSelectMenu

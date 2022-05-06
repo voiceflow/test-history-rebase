@@ -3,10 +3,11 @@ import React from 'react';
 
 import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import Upgrade from '@/components/Upgrade';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ScrollContextProvider } from '@/contexts';
 import * as VariableState from '@/ducks/variableState';
-import { usePermission, useSelector } from '@/hooks';
+import { useFeature, usePermission, useSelector } from '@/hooks';
 import { useScrollHelpers, useScrollStickySides } from '@/hooks/scroll';
 import { Identifier } from '@/styles/constants';
 
@@ -25,6 +26,7 @@ const Content: React.FC = () => {
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
 
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
+  const { isEnabled: isVariableStateEnabled } = useFeature(FeatureFlag.VARIABLE_STATES);
 
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const [isHeaderSticky] = useScrollStickySides(bodyRef);
@@ -57,7 +59,7 @@ const Content: React.FC = () => {
               <AppearanceAndBranding isAllowed={canCustomize} />
             </UncontrolledSection>
 
-            {!!variableStates?.length && (
+            {isVariableStateEnabled && !!variableStates?.length && (
               <UncontrolledSection
                 toggle={onToggleSection(ActiveModal.VARIABLE_STATE)}
                 header="Variable State"
@@ -76,7 +78,7 @@ const Content: React.FC = () => {
           </Box>
 
           <PasswordInput
-            dividers={!!variableStates?.length || activeSection !== ActiveModal.APPEARANCE}
+            dividers={(isVariableStateEnabled && !!variableStates?.length) || activeSection !== ActiveModal.APPEARANCE}
             isCollapsed={activeSection !== ActiveModal.PASSWORD}
             onToggleCollapse={onToggleSection(ActiveModal.PASSWORD)}
           />

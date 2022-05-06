@@ -14,6 +14,7 @@ export const INITIAL_STATE: PrototypeState = {
   activePathLinkIDs: [],
   showButtons: true,
   autoplay: false,
+  mode: {},
   visual: {
     data: null,
     device: null,

@@ -1,7 +1,7 @@
 import { BaseNode } from '@voiceflow/base-types';
 
 import client from '@/client';
-import { PrototypeLayout } from '@/constants/prototype';
+import { PrototypeLayout, PrototypeMode } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import { PrototypeConfig } from '@/ducks/recent';
@@ -28,6 +28,7 @@ export const trackActiveProjectPrototypeTestClick = createVersionEventTracker((o
 );
 
 export const trackActiveProjectPrototypeTestStart = createVersionEventTracker<{
+  mode: PrototypeMode;
   debug: boolean;
   config: Omit<PrototypeConfig, 'platform'>;
   display: BaseNode.Visual.DeviceType | null;
@@ -39,6 +40,7 @@ export const trackActiveProjectPrototypeTestStart = createVersionEventTracker<{
       guidedNavigation: options.config?.isGuided,
       confidenceScore: options.config?.intent,
       display: options.display,
+      mode: options.mode,
     })
   )
 );
@@ -47,9 +49,10 @@ export const trackProjectBlockPrototypeTestStart = createVersionEventTracker((op
   const state = getState();
 
   const debug = Recent.prototypeDebugSelector(state);
+  const mode = Prototype.activePrototypeModeSelector(state);
   const display = Prototype.prototypeVisualDeviceSelector(state);
 
-  client.api.analytics.track(EventName.PROJECT_BLOCK_TEST_START, createVersionEventPayload(options, { debug, display }));
+  client.api.analytics.track(EventName.PROJECT_BLOCK_TEST_START, createVersionEventPayload(options, { debug, display, mode }));
 });
 
 export const trackPublicPrototypeView =

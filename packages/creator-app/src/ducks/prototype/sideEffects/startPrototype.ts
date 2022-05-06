@@ -2,9 +2,11 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { PrototypeStatus } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState';
 import { SyncThunk, ThunkDispatch } from '@/store/types';
@@ -54,10 +56,11 @@ const startPrototype =
   (diagramID?: string | null, selectedNodeID?: string | null): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
+    const isVariableStateEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.VARIABLE_STATES);
 
     const variables = VariableState.selectedVariablesSelector(state) || prototypeVariablesSelector(state);
-    const startFromNodeID = VariableState.selectedStartFromNodeIDSelector(state);
-    const startFromDiagramID = VariableState.selectedStartFromDiagramIDSelector(state);
+    const startFromNodeID = isVariableStateEnabled ? VariableState.selectedStartFromNodeIDSelector(state) : null;
+    const startFromDiagramID = isVariableStateEnabled ? VariableState.selectedStartFromDiagramIDSelector(state) : null;
     const nodeID = selectedNodeID || startFromNodeID;
 
     const projectID = Session.activeProjectIDSelector(state);

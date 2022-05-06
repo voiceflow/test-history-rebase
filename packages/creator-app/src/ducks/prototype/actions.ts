@@ -1,6 +1,6 @@
 import { BaseNode, BaseRequest } from '@voiceflow/base-types';
 
-import { PrototypeStatus, StoreType } from '@/constants/prototype';
+import { PrototypeMode, PrototypeStatus, StoreType } from '@/constants/prototype';
 import { createAction } from '@/ducks/utils';
 import { Store } from '@/models';
 import { Action } from '@/store/types';
@@ -12,6 +12,7 @@ import { Context, PrototypeShareViewSettings, PrototypeState } from './types';
 export enum PrototypeAction {
   UPDATE_TEST = 'TEST:UPDATE',
   UPDATE_TEST_STATUS = 'TEST:STATUS:UPDATE',
+  UPDATE_TEST_MODE = 'TEST:MODE:UPDATE',
   ADD_TEST_CONTEXT_HISTORY = 'TEST:CONTEXT:ADD',
   UPDATE_TEST_CONTEXT = 'TEST:CONTEXT:UPDATE',
   UPDATE_TEST_CONTEXT_STORE = 'TEST:CONTEXT:STORE:UPDATE',
@@ -28,6 +29,8 @@ export enum PrototypeAction {
 export type UpdatePrototype = Action<PrototypeAction.UPDATE_TEST, Partial<PrototypeState>>;
 
 export type UpdatePrototypeStatus = Action<PrototypeAction.UPDATE_TEST_STATUS, PrototypeStatus>;
+
+export type UpdatePrototypeMode = Action<PrototypeAction.UPDATE_TEST_MODE, { projectID: string; mode: PrototypeMode }>;
 
 export type PushContextHistory = Action<PrototypeAction.ADD_TEST_CONTEXT_HISTORY, Context>;
 
@@ -51,6 +54,7 @@ export type AnyPrototypeAction =
   | UpdatePrototype
   | PushContextHistory
   | UpdatePrototypeStatus
+  | UpdatePrototypeMode
   | UpdatePrototypeVisualDevice
   | UpdatePrototypeVisualData
   | PushPrototypeVisualDataHistory
@@ -64,6 +68,9 @@ export type AnyPrototypeAction =
 export const updatePrototype = (payload: Partial<PrototypeState>): UpdatePrototype => createAction(PrototypeAction.UPDATE_TEST, payload);
 
 export const updatePrototypeStatus = (payload: PrototypeStatus): UpdatePrototypeStatus => createAction(PrototypeAction.UPDATE_TEST_STATUS, payload);
+
+export const updatePrototypeMode = (projectID: string, mode: PrototypeMode): UpdatePrototypeMode =>
+  createAction(PrototypeAction.UPDATE_TEST_MODE, { projectID, mode });
 
 export const pushContextHistory = (payload: Context): PushContextHistory => createAction(PrototypeAction.ADD_TEST_CONTEXT_HISTORY, payload);
 

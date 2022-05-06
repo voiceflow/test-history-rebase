@@ -2,6 +2,8 @@ import { Button, ButtonVariant, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
+import { FeatureFlag } from '@/config/features';
+import { useFeature } from '@/hooks';
 
 import NLUContainer from './NLUContainer';
 import TrainingLoader from './TrainingLoader';
@@ -11,6 +13,8 @@ export interface TrainingProps {
 }
 
 const Training: React.FC<TrainingProps> = ({ onCancelTraining }) => {
+  const { isEnabled: isVariableStatesEnabled } = useFeature(FeatureFlag.VARIABLE_STATES);
+
   return (
     <NLUContainer containsLoader>
       <TrainingLoader />
@@ -19,7 +23,7 @@ const Training: React.FC<TrainingProps> = ({ onCancelTraining }) => {
         This may take a few minutes. <Link href={Documentation.ASSISTANT_TRAINING}>Learn more.</Link>
       </Text>
 
-      <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={onCancelTraining}>
+      <Button variant={ButtonVariant.TERTIARY} squareRadius={isVariableStatesEnabled || undefined} onClick={onCancelTraining}>
         Cancel
       </Button>
     </NLUContainer>

@@ -3,7 +3,9 @@ import _ from 'lodash';
 import _sortBy from 'lodash/sortBy';
 import { createSelector } from 'reselect';
 
+import { FeatureFlag } from '@/config/features';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Feature from '@/ducks/feature';
 import * as Prototype from '@/ducks/prototype';
 import { createCurriedSelector } from '@/ducks/utils';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
@@ -51,15 +53,20 @@ export const selectAllProjectVariablesSelector = createSelector([Prototype.proto
   return createVariableList(prototypeVariables);
 });
 
-export const selectedVariablesSelector = createSelector([selectedVariableStateSelector], (selectedVariableState) => {
-  if (!selectedVariableState || selectedVariableState.id === ALL_PROJECT_VARIABLES_ID) return null;
-  return selectedVariableState.variables;
-});
+export const selectedVariablesSelector = createSelector(
+  [selectedVariableStateSelector, Feature.isFeatureEnabledSelector],
+  (selectedVariableState, getFeatureFlagEnabled) => {
+    const isVariableStateEnabled = getFeatureFlagEnabled(FeatureFlag.VARIABLE_STATES);
+    if (!isVariableStateEnabled || !selectedVariableState || selectedVariableState.id === ALL_PROJECT_VARIABLES_ID) return null;
+    return selectedVariableState.variables;
+  }
+);
 
 export const selectedStartFromNodeIDSelector = createSelector(
-  [selectedVariableStateIdSelector, getVariableStateByIDSelector, CreatorV2.getNodeByIDSelector],
-  (selectedVariableStateID, getByID, getNodeByIDSelector) => {
-    if (!selectedVariableStateID) return null;
+  [selectedVariableStateIdSelector, getVariableStateByIDSelector, Feature.isFeatureEnabledSelector, CreatorV2.getNodeByIDSelector],
+  (selectedVariableStateID, getByID, getFeatureFlagEnabled, getNodeByIDSelector) => {
+    const isVariableStateEnabled = getFeatureFlagEnabled(FeatureFlag.VARIABLE_STATES);
+    if (!isVariableStateEnabled || !selectedVariableStateID) return null;
 
     const selectedVariableState = getByID({ id: selectedVariableStateID });
 
@@ -71,9 +78,10 @@ export const selectedStartFromNodeIDSelector = createSelector(
 );
 
 export const selectedStartFromDiagramIDSelector = createSelector(
-  [selectedVariableStateIdSelector, getVariableStateByIDSelector],
-  (selectedVariableStateID, getByID) => {
-    if (!selectedVariableStateID) return null;
+  [selectedVariableStateIdSelector, getVariableStateByIDSelector, Feature.isFeatureEnabledSelector],
+  (selectedVariableStateID, getByID, getFeatureFlagEnabled) => {
+    const isVariableStateEnabled = getFeatureFlagEnabled(FeatureFlag.VARIABLE_STATES);
+    if (!isVariableStateEnabled || !selectedVariableStateID) return null;
 
     const selectedVariableState = getByID({ id: selectedVariableStateID });
 

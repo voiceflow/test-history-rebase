@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.79.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.79.0...@voiceflow/ui@1.79.1) (2022-05-06)
+
+**Note:** Version bump only for package @voiceflow/ui
+
+
+
+
+
 # [1.79.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.78.2...@voiceflow/ui@1.79.0) (2022-05-05)
 
 

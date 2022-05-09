@@ -10,6 +10,7 @@ import { Count, DropdownLabel, InnerContainer, Label, SectionLabel, TriggerConta
 function DropdownMultiselect({
   options = [],
   multiSectionOptions = null,
+  multiSelectDisabled,
   component: Component,
   onSelect,
   menu,
@@ -53,15 +54,17 @@ function DropdownMultiselect({
             maxHeight={maxHeight}
             maxVisibleItems={maxVisibleItems}
             disabled={buttonDisabled}
-            multiSelectProps={{
-              buttonClick: (e) => {
-                buttonClick?.(e, { onToggle });
-                if (selfDismiss) {
-                  onToggle();
-                }
-              },
-              buttonLabel,
-            }}
+            multiSelectProps={
+              !multiSelectDisabled && {
+                buttonClick: (e) => {
+                  buttonClick?.(e, { onToggle });
+                  if (selfDismiss) {
+                    onToggle();
+                  }
+                },
+                buttonLabel,
+              }
+            }
             searchable={searchable}
           >
             {dropdownOptions.map(({ sectionLabel, options }, index) => (

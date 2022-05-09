@@ -10,7 +10,7 @@ const Tags: React.FC = () => {
   const { reportTags = [] } = useSelector(currentTranscriptSelector) ?? {};
 
   return (
-    <Container style={{ paddingBottom: '24px' }} withBackground>
+    <Container style={{ padding: '20px 32px' }} withBackground>
       <SectionTitle>TAGS</SectionTitle>
       <ReportTagInput selectedTags={reportTags} />
     </Container>

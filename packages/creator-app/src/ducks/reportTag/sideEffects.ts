@@ -1,32 +1,16 @@
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
-import { negativeEmotion, neutralEmotion, positiveEmotion } from '@/components/EmojiPicker';
 import * as Errors from '@/config/errors';
 import { allReportTagsSelector } from '@/ducks/reportTag/selectors';
 import { activeProjectIDSelector } from '@/ducks/session';
-import { Sentiment, SystemTag } from '@/models';
+import { SystemTag } from '@/models';
 import { Thunk } from '@/store/types';
 import THEME from '@/styles/theme';
 
 import { addReportTag, patchReportTag, removeReportTag, replaceReportTags } from './actions';
 
 const BUILT_INS = [
-  {
-    id: Sentiment.EMOTION_POSITIVE,
-    label: 'Positive',
-    icon: positiveEmotion,
-  },
-  {
-    id: Sentiment.EMOTION_NEUTRAL,
-    label: 'Neutral',
-    icon: neutralEmotion,
-  },
-  {
-    id: Sentiment.EMOTION_NEGATIVE,
-    label: 'Negative',
-    icon: negativeEmotion,
-  },
   {
     id: SystemTag.SAVED,
     label: 'Saved for later',

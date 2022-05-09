@@ -39,7 +39,7 @@ export const Container = styled(Flex)<{ active?: boolean; isLastItem: boolean; m
     css`
       border-bottom: 1px solid ${({ theme }) => theme.colors.borders};
       border-top: 1px solid ${({ theme }) => theme.colors.borders};
-      border-left: 3px solid ${({ theme }) => theme.colors.blue};
+      border-left: 3px solid ${({ theme }) => theme.colors.darkerBlue};
       background: ${ACTIVE_COLOR};
       margin-top: -1px;
       padding-top: 21px;
@@ -75,6 +75,6 @@ export const ReadStatusDot = styled.div<{ read?: boolean }>`
           background-color: ${({ theme }) => theme.iconColors.disabled};
         `
       : css`
-          background-color: ${({ theme }) => theme.colors.blue};
+          background-color: ${({ theme }) => theme.colors.darkerBlue};
         `}
 `;

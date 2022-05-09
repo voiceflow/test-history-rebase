@@ -4,7 +4,7 @@ import { styled } from '@/hocs';
 import THEME from '@/styles/theme';
 
 export const Header = styled(FlexApart)`
-  padding: 15px 25px;
+  padding: 16px 24px;
   font-size: 13px;
   background: rgba(249, 249, 249, 0.6);
 `;

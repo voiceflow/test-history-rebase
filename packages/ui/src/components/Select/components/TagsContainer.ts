@@ -12,7 +12,7 @@ const TagsContainer = styled.div<{ isActive?: boolean; hasTags: boolean }>`
   overflow-y: auto;
   cursor: text;
   min-height: 42px;
-  padding: 7px 8px;
+  padding: 7px 16px;
   padding-top: 4px;
 
   ${({ isActive }) =>

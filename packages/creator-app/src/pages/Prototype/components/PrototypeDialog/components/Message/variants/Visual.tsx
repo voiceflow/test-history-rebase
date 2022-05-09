@@ -33,9 +33,9 @@ const Visual: React.FC<VisualProps> = ({ visual, isTranscript, ...props }) => {
   const ratio = width / height || 1.65;
 
   return (
-    <VisualContainer onClick={(e) => isTranscript && e.preventDefault()}>
+    <VisualContainer>
       <Message bubble={false} {...props}>
-        <Link href={imageURL!}>
+        <Link href={imageURL!} style={{ pointerEvents: 'none' }}>
           <ImageContainer ratio={ratio} isFirstInSeries={props.isFirstInSeries}>
             <StepImage image={imageURL!} position="top center" borderRadius={12} aspectRatio={ratio} noContainer />
           </ImageContainer>

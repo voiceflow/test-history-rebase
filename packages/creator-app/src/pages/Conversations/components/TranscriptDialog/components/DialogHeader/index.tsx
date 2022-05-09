@@ -35,9 +35,7 @@ const DialogHeader: React.FC<DialogHeaderProps> = ({ showDebugs, showIntentConfi
         ]}
         placement="bottom-end"
       >
-        {(ref, onToggle, isOpen) => (
-          <IconButton active={isOpen} icon="ellipsis" variant={IconButtonVariant.SUBTLE} size={15} onClick={onToggle} ref={ref} />
-        )}
+        {(ref, onToggle) => <IconButton icon="filter" variant={IconButtonVariant.BASIC} size={15} onClick={onToggle} ref={ref} />}
       </Dropdown>
     </Container>
   );

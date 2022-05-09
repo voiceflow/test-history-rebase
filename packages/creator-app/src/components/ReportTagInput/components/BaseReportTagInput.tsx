@@ -155,7 +155,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
                 )}
               </Box>
 
-              <SvgIcon size={9} icon="close" clickable onClick={onRemove(tagID)} />
+              <SvgIcon size={9} icon="closeSmall" clickable onClick={onRemove(tagID)} />
             </TagWrapper>
           );
         })

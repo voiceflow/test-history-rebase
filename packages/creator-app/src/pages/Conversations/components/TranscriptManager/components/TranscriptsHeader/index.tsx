@@ -9,7 +9,7 @@ export interface TranscriptsHeaderProps extends TranscriptFiltersProps {
 
 const TranscriptsHeader: React.FC<TranscriptsHeaderProps> = ({ hasShadow, resultCount, ...props }) => (
   <Container hasShadow={hasShadow}>
-    <b>Conversations ({resultCount})</b>
+    <b>Transcripts ({resultCount})</b>
     <TranscriptFilters {...props} />
   </Container>
 );

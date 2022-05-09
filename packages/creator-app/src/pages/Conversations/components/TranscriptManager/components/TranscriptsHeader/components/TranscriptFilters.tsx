@@ -1,5 +1,4 @@
-import { Utils } from '@voiceflow/common';
-import { Box, ButtonVariant, ClickableText } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -9,9 +8,7 @@ import SelectMenu, { MenuSection } from '@/components/SelectMenu';
 import { useLinkedState, useTrackingEvents } from '@/hooks';
 import { FilterTag, isBuiltInRange } from '@/pages/Conversations/constants';
 import { ClassName } from '@/styles/constants';
-import THEME from '@/styles/theme';
 
-import ApplyFiltersButton from './ApplyFiltersButton';
 import DatePicker from './TimeRangePicker/DatePicker';
 
 export interface TranscriptFiltersProps {
@@ -20,20 +17,6 @@ export interface TranscriptFiltersProps {
   endDate: string;
   startDate: string;
 }
-
-const getCounter = ({ tags, range, endDate, startDate }: TranscriptFiltersProps): number => {
-  let counter = 0;
-
-  if (range || endDate || startDate) {
-    counter++;
-  }
-
-  if (tags.length) {
-    counter++;
-  }
-
-  return counter;
-};
 
 const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endDate, startDate }) => {
   const history = useHistory();
@@ -51,8 +34,6 @@ const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endD
 
   const [currentTags, setCurrentTags] = useLinkedState(tags);
   const [currentRange, setCurrentRange] = useLinkedState(initialRange);
-
-  const filtersCounter = getCounter({ tags, range, endDate, startDate });
 
   const onClear = () => {
     setCurrentTags([]);
@@ -106,12 +87,17 @@ const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endD
     }
   };
 
+  React.useEffect(() => {
+    onApplyFilters();
+    trackingEvents.trackConversationListFiltered();
+  }, [currentRange, currentTags]);
+
   return (
     <SelectMenu
       onClear={onClear}
       onClose={onClose}
       actionDisabled={!currentTags.length && !currentRange}
-      sections={({ onToggle }) => (
+      sections={() => (
         <>
           <MenuSection
             title="Time Range"
@@ -125,23 +111,18 @@ const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endD
           <MenuSection title="Tags" enabled={tagsOpen} className={ClassName.TRANSCRIPT_FILTERS_TAGS_CHECKBOX} toggleSection={onToggleTags}>
             <ReportTagInput variant={InputVariant.SELECT_ONLY} onChange={setCurrentTags} selectedTags={currentTags} />
           </MenuSection>
-
-          <Box borderTop={`1px solid ${THEME.colors.borders}`}>
-            <ApplyFiltersButton
-              variant={ButtonVariant.PRIMARY}
-              onClick={Utils.functional.chain(onApplyFilters, onToggle, trackingEvents.trackConversationListFiltered)}
-              className={ClassName.TRANSCRIPT_FILTERS_MENU_APPLY_BUTTON}
-            >
-              Apply
-            </ApplyFiltersButton>
-          </Box>
         </>
       )}
     >
       {({ ref, isOpened, onToggle }) => (
-        <ClickableText isActive={isOpened} ref={ref} onClick={onToggle} className={ClassName.TRANSCRIPT_FILTERS_MENU_TEXT}>
-          Add filters {filtersCounter > 0 && `(${filtersCounter})`}
-        </ClickableText>
+        <IconButton
+          ref={ref}
+          icon="filter"
+          variant={IconButtonVariant.BASIC}
+          onClick={onToggle}
+          activeClick={isOpened}
+          className={ClassName.TRANSCRIPT_FILTERS_MENU_TEXT}
+        />
       )}
     </SelectMenu>
   );

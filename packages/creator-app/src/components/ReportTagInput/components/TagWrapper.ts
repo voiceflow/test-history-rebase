@@ -8,7 +8,7 @@ const TagWrapper = styled.span<{ onClick: (e: React.MouseEvent) => void }>`
   margin: 3px 3px 0px 0px;
 
   padding: 4px 0px 4px 12px;
-  border-radius: 5px;
+  border-radius: 6px;
   display: inline-flex;
   align-items: center;
   font-size: 13px;

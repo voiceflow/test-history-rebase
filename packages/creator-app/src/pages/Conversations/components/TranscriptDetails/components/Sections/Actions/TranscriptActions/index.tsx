@@ -60,7 +60,7 @@ const TranscriptActions: React.FC = () => {
     <Container>
       <ActionButton
         id={Identifier.MARK_AS_REVIEWED_TRANSCRIPT_BUTTON}
-        icon={isReviewed ? 'checkmarkFilled' : 'check2'}
+        icon={isReviewed ? 'checkmarkFilled' : 'success'}
         color={isReviewed ? '#3e9e3e' : THEME.colors.tertiary}
         label="Mark as Reviewed"
         onClick={handleReviewedClick}
@@ -70,14 +70,14 @@ const TranscriptActions: React.FC = () => {
       <ActionButton
         id={Identifier.SAVE_FOR_LATER_TRANSCRIPT_BUTTON}
         left={1}
-        icon="bookmark"
+        icon="bookmark2"
         label="Save for Later"
         color={isSaved ? THEME.colors.red : THEME.colors.tertiary}
         onClick={handleSavedClick}
         selected={isSaved}
       />
 
-      <ActionButton id={Identifier.DELETE_TRANSCRIPT_BUTTON} onClick={handleDelete} icon="garbage" label="Delete" color={THEME.colors.tertiary} />
+      <ActionButton id={Identifier.DELETE_TRANSCRIPT_BUTTON} onClick={handleDelete} icon="trash2" label="Delete" color={THEME.colors.tertiary} />
     </Container>
   );
 };

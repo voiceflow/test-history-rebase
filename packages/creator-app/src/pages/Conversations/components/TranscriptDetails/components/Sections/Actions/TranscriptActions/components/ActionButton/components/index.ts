@@ -1,3 +1,5 @@
+import { transition } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 export const ActionIcon = styled.div<{ selected?: boolean | undefined; left?: number }>`
@@ -28,15 +30,15 @@ export const ActionContainer = styled.div<{ selected?: boolean | undefined }>`
   border-bottom-left-radius: 8px;
   margin-left: -18px;
 
-
-
   :hover {
     background-color: rgba(238, 244, 246, 0.85);
+    ${transition('background-color')}
     ${ActionIcon} {
       opacity: 0.8;
     }
 
   :active {
+    transition: all 0.15s ease;
      ${ActionIcon} {
       opacity: 1;
     }

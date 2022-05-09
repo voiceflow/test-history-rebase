@@ -8,6 +8,7 @@ import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog'
 import {
   DelayedMessageFadeUpContainer,
   MessageFadeDownContainer,
+  MessageFadeUpContainer,
 } from '@/pages/Prototype/components/PrototypeDialog/components/Message/components/Message/components';
 import { Interaction, Message, MessageType, OnInteraction, PMStatus, UserMessage } from '@/pages/Prototype/types';
 
@@ -161,7 +162,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                   userSpeak={userSpeak}
                   {...commonProps}
                   color={color}
-                  animationContainer={MessageFadeDownContainer}
+                  animationContainer={isTranscript ? MessageFadeUpContainer : MessageFadeDownContainer}
                   {...message}
                 />
               );

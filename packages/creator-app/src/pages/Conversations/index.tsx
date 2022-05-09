@@ -126,9 +126,9 @@ const Conversations: React.FC<ConversationProps> = () => {
         ) : (
           <EmptyScreen
             id={Identifier.EMPTY_TRANSCRIPTS_CONTAINER}
-            body="Save a test, or share your assistant with sharable links to access the conversations."
-            title="No conversations exist"
-            buttonText="Go to Test"
+            body="Review conversations from your assistant. Save tests or share a prototype to generate reviewable conversations."
+            title="No transcripts exist"
+            buttonText="Test Assistant"
             onClick={goToPrototype}
           />
         )}

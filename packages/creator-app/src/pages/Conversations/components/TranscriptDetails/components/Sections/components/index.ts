@@ -18,7 +18,7 @@ export const Container = styled(Flex)<{
     `}
 
   border-color: ${({ theme }) => theme.colors.borders};
-  padding: ${({ topExtend }) => (topExtend ? 40 : 22)}px 32px;
+  padding: ${({ topExtend }) => (topExtend ? 32 : 22)}px 32px;
   background-color: ${({ theme }) => theme.backgrounds.white};
 
   ${({ rightExtend }) =>

@@ -1,6 +1,7 @@
 import { Dropdown, IconButton, IconButtonVariant, stopPropagation } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { TranscriptExportFormat } from '@/client/transcript';
 import { Permission } from '@/config/permissions';
@@ -27,6 +28,8 @@ const TranscriptResultsItem: React.FC<ResultsItem> = ({ data, format, active = f
   const [trackingEvents] = useTrackingEvents();
   const [canDeleteTranscript] = usePermission(Permission.DELETE_TRANSCRIPT);
 
+  const allTranscripts = useSelector(Transcript.allTranscriptsSelector);
+
   const markAsRead = useDispatch(Transcript.markAsRead);
   const confirmDelete = useDispatch(Modal.setConfirm);
   const deleteTranscript = useDispatch(Transcript.deleteTranscript);
@@ -44,6 +47,7 @@ const TranscriptResultsItem: React.FC<ResultsItem> = ({ data, format, active = f
       confirm: () => {
         deleteTranscript(id);
         trackingEvents.trackConversationDeleted();
+        if (allTranscripts.length) goToTargetTranscript(allTranscripts[0].id);
       },
     });
   };

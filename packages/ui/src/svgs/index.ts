@@ -27,6 +27,7 @@ export { default as ban } from './ban.svg';
 export { default as barGraph } from './bar-graph.svg';
 export { default as blocks } from './blocks.svg';
 export { default as bookmark } from './bookmark.svg';
+export { default as bookmark2 } from './bookmark-2.svg';
 export { default as builtInIntent } from './built-in-intent.svg';
 
 // c
@@ -47,6 +48,7 @@ export { default as circle } from './circle.svg';
 export { default as clip } from './clip.svg';
 export { default as clock } from './clock.svg';
 export { default as close } from './close.svg';
+export { default as closeSmall } from './close-small.svg';
 export { default as cloudUpload } from './cloud-upload.svg';
 export { default as code } from './code.svg';
 export { default as cog } from './cog.svg';
@@ -253,6 +255,7 @@ export { default as stopCircle } from './stop-circle.svg';
 export { default as strikeThrough } from './strike-through.svg';
 export { default as subArrow } from './sub-arrow.svg';
 export { default as subtract } from './subtract.svg';
+export { default as success } from './success.svg';
 export { default as support } from './support.svg';
 export { default as sync } from './sync.svg';
 
@@ -270,6 +273,7 @@ export { default as tic } from './tic.svg';
 export { default as times } from './times.svg';
 export { default as touch } from './touch.svg';
 export { default as trash } from './trash.svg';
+export { default as trash2 } from './trash-2.svg';
 export { default as trashOpen } from './trash-open.svg';
 
 // u
@@ -279,6 +283,7 @@ export { default as up } from './up.svg';
 export { default as upgrade } from './upgrade.svg';
 export { default as upload } from './upload.svg';
 export { default as user } from './user.svg';
+export { default as user2 } from './user-2.svg';
 export { default as userInfo } from './user-info.svg';
 export { default as userPlaceholder } from './user-placeholder.svg';
 

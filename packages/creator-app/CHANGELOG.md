@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.714.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.713.0...@voiceflow/creator-app@1.714.0) (2022-05-10)
+
+
+### Features
+
+* added support for XML file and Nuance support for MIX files (VF-3482) ([#5406](https://github.com/voiceflow/creator-app/issues/5406)) ([69c10f5](https://github.com/voiceflow/creator-app/commit/69c10f5b2429a279d4bbe21bb634246a5a263fb9))
+
+
+
+
+
 # [1.713.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.712.1...@voiceflow/creator-app@1.713.0) (2022-05-10)
 
 

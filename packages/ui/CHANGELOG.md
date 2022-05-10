@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.81.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.80.0...@voiceflow/ui@1.81.0) (2022-05-10)
+
+
+### Features
+
+* nlu manager (VF-000) ([#5391](https://github.com/voiceflow/creator-app/issues/5391)) ([88cf907](https://github.com/voiceflow/creator-app/commit/88cf9072b7fb1fdb73a38ad6033490918f39fad5))
+
+
+
+
+
 # [1.80.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.79.4...@voiceflow/ui@1.80.0) (2022-05-10)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.82.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.81.0...@voiceflow/ui@1.82.0) (2022-05-10)
+
+
+### Features
+
+* implement UploadV2 component (VF-3355) ([#5401](https://github.com/voiceflow/creator-app/issues/5401)) ([9e5e25c](https://github.com/voiceflow/creator-app/commit/9e5e25c60c457258053882d911512a27bb3fd286))
+
+
+
+
+
 # [1.81.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.80.0...@voiceflow/ui@1.81.0) (2022-05-10)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.713.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.712.1...@voiceflow/creator-app@1.713.0) (2022-05-10)
+
+
+### Bug Fixes
+
+* remove variable state flag (VF-3402) ([#5402](https://github.com/voiceflow/creator-app/issues/5402)) ([2b218b1](https://github.com/voiceflow/creator-app/commit/2b218b18cf65d25a5c248664b92a1abcd32d0847))
+
+
+### Features
+
+* implement UploadV2 component (VF-3355) ([#5401](https://github.com/voiceflow/creator-app/issues/5401)) ([9e5e25c](https://github.com/voiceflow/creator-app/commit/9e5e25c60c457258053882d911512a27bb3fd286))
+
+
+
+
+
 ## [1.712.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.712.0...@voiceflow/creator-app@1.712.1) (2022-05-10)
 
 

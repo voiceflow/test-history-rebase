@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.711.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.710.7...@voiceflow/creator-app@1.711.0) (2022-05-10)
+
+
+### Features
+
+* choice editor (VF-3290) ([#5380](https://github.com/voiceflow/creator-app/issues/5380)) ([a860068](https://github.com/voiceflow/creator-app/commit/a8600681d20b2ac0a3f409d9caa9a2033af57bad))
+
+
+
+
+
 ## [1.710.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.710.6...@voiceflow/creator-app@1.710.7) (2022-05-09)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.9.4...@voiceflow/showcase@1.10.0) (2022-05-10)
+
+
+### Features
+
+* choice editor (VF-3290) ([#5380](https://github.com/voiceflow/creator-app/issues/5380)) ([a860068](https://github.com/voiceflow/creator-app/commit/a8600681d20b2ac0a3f409d9caa9a2033af57bad))
+
+
+
+
+
 ## [1.9.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.9.3...@voiceflow/showcase@1.9.4) (2022-05-09)
 
 **Note:** Version bump only for package @voiceflow/showcase

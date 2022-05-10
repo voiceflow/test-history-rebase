@@ -93,6 +93,7 @@ const SSML = (
               options={voiceOptions}
               onSelect={onChangeVoice}
               minWidth={false}
+              useLayers
               autoWidth={false}
               borderLess
               isMultiLevel

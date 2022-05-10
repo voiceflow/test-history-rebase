@@ -32,28 +32,37 @@ const CollapseContainer = styled.div<{ status: TransitionStatus }>`
 
 export interface CollapseProps extends React.HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
+  onEntered?: VoidFunction;
   mountOnEnter?: boolean;
   unmountOnExit?: boolean;
 }
 
-const Collapse: React.FC<CollapseProps> = ({ isOpen, children, mountOnEnter, unmountOnExit, ...props }) => {
+const Collapse: React.ForwardRefRenderFunction<HTMLDivElement, CollapseProps> = (
+  { isOpen, children, mountOnEnter, unmountOnExit, onEntered: onEnteredProp, ...props },
+  ref
+) => {
   const [height, setHeight] = React.useState<number | undefined>();
 
-  const onHeight = React.useCallback((node: HTMLElement) => {
+  const onHeight = (node: HTMLElement) => {
     setHeight(node.scrollHeight);
-  }, []);
+  };
 
-  const onFinished = React.useCallback(() => {
+  const onFinished = () => {
     setHeight(undefined);
-  }, []);
+  };
 
-  const onExiting = React.useCallback((node: HTMLElement) => {
+  const onEntered = () => {
+    onFinished();
+    onEnteredProp?.();
+  };
+
+  const onExiting = (node: HTMLElement) => {
     // getting this variable triggers a reflow
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const unused = node.offsetHeight; // eslint-disable-line @typescript-eslint/no-unused-vars
     setHeight(0);
-  }, []);
+  };
 
   return (
     <Transition
@@ -61,14 +70,14 @@ const Collapse: React.FC<CollapseProps> = ({ isOpen, children, mountOnEnter, unm
       onExit={onHeight}
       timeout={500}
       onExited={onFinished}
-      onEntered={onFinished}
+      onEntered={onEntered}
       onExiting={onExiting}
       onEntering={onHeight}
       mountOnEnter={mountOnEnter}
       unmountOnExit={unmountOnExit}
     >
       {(status) => (
-        <CollapseContainer {...props} status={status} style={{ ...props.style, height }}>
+        <CollapseContainer {...props} ref={ref} status={status} style={{ ...props.style, height }}>
           <div>{children}</div>
         </CollapseContainer>
       )}
@@ -76,4 +85,4 @@ const Collapse: React.FC<CollapseProps> = ({ isOpen, children, mountOnEnter, unm
   );
 };
 
-export default Collapse;
+export default React.forwardRef(Collapse);

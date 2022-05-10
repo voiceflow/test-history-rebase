@@ -1,30 +1,54 @@
-import { FlexCenter } from '@ui/components/Flex';
-import IconButton, { IconButtonVariant } from '@ui/components/IconButton';
 import SvgIcon, { Icon } from '@ui/components/SvgIcon';
 import TippyTooltip from '@ui/components/TippyTooltip';
 import React from 'react';
 
-import ActionsContainer from './ActionsContainer';
+import ListItemActionsContainer from './ListItemActionsContainer';
 import ListItemContainer from './ListItemContainer';
 import ListItemContent from './ListItemContent';
 import ListItemIconContainer from './ListItemIconContainer';
 
 export interface ListItemProps {
   icon?: Icon;
+  action?: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   isActive?: boolean;
   contentRef?: React.Ref<HTMLDivElement>;
-  actionIcon?: Icon;
+  isDragging?: boolean;
   iconWarning?: string | null;
-  onActionClick?: VoidFunction;
+  actionCentred?: boolean;
+  onContextMenu?: React.MouseEventHandler;
+  isContextMenuOpen?: boolean;
+  isDraggingPreview?: boolean;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ icon, onClick, isActive, children, contentRef, actionIcon, iconWarning, onActionClick }) => (
-  <ListItemContainer>
-    <ListItemContent ref={contentRef} onClick={onClick} isActive={isActive}>
-      {(!!iconWarning || !!icon) && (
-        <ListItemIconContainer>
-          <FlexCenter style={{ height: '100%' }}>
+const ListItem = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ListItemProps>>(
+  (
+    {
+      icon,
+      action,
+      onClick,
+      isActive,
+      children,
+      contentRef,
+      isDragging,
+      iconWarning,
+      actionCentred,
+      onContextMenu,
+      isContextMenuOpen,
+      isDraggingPreview,
+    },
+    ref
+  ) => (
+    <ListItemContainer
+      ref={ref}
+      isDragging={isDragging}
+      onContextMenu={onContextMenu}
+      isContextMenuOpen={isContextMenuOpen}
+      isDraggingPreview={isDraggingPreview}
+    >
+      <ListItemContent ref={contentRef} onClick={onClick} isActive={isActive}>
+        {(!!iconWarning || !!icon) && (
+          <ListItemIconContainer>
             {iconWarning ? (
               <TippyTooltip title={iconWarning}>
                 <SvgIcon icon="warning" color="#BF395B" />
@@ -32,19 +56,15 @@ const ListItem: React.FC<ListItemProps> = ({ icon, onClick, isActive, children, 
             ) : (
               icon && <SvgIcon icon={icon} color="#6e849a" />
             )}
-          </FlexCenter>
-        </ListItemIconContainer>
-      )}
+          </ListItemIconContainer>
+        )}
 
-      {children}
-    </ListItemContent>
+        {children}
+      </ListItemContent>
 
-    {!!actionIcon && !!onActionClick && (
-      <ActionsContainer unit={0} offsetUnit={2}>
-        <IconButton size={16} icon={actionIcon} variant={IconButtonVariant.BASIC} onClick={onActionClick} />
-      </ActionsContainer>
-    )}
-  </ListItemContainer>
+      {!!action && <ListItemActionsContainer isCentred={actionCentred}>{action}</ListItemActionsContainer>}
+    </ListItemContainer>
+  )
 );
 
 export default ListItem;

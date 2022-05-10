@@ -1,3 +1,4 @@
+import composeRef from '@seznam/compose-react-refs';
 import Menu from '@ui/components/Menu';
 import { MAX_VISIBLE_ITEMS } from '@ui/components/Menu/components/MenuContainer';
 import Portal from '@ui/components/Portal';
@@ -72,8 +73,9 @@ function BaseNestedMenu({
   optionsPath = DEFAULT_PATH,
   searchLabel = '',
   createLabel,
-  getOptionKey,
   renderEmpty,
+  containerRef,
+  getOptionKey,
   isMultiLevel,
   onFocusOption,
   getOptionValue,
@@ -316,7 +318,14 @@ function BaseNestedMenu({
           dataRef.current.scheduleUpdate = scheduleUpdate;
 
           return (
-            <MenuPopoverContainer ref={ref} style={style} isRoot={isRoot} minWidth={minWidth} autoWidth={autoWidth} onMouseMove={onMouseMove}>
+            <MenuPopoverContainer
+              ref={composeRef(ref, containerRef)}
+              style={style}
+              isRoot={isRoot}
+              minWidth={minWidth}
+              autoWidth={autoWidth}
+              onMouseMove={onMouseMove}
+            >
               <Menu
                 id={id}
                 ref={menuRef}

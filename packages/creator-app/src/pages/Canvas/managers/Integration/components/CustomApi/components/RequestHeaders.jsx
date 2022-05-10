@@ -7,7 +7,7 @@ import PrefixVariableInput from '../../PrefixVariableInput';
 import LineItemsSection from './LineItemsSection';
 
 function RequestHeaders({ headers, onChange, factory }) {
-  const { onAdd, mapManaged } = useManager(headers, (headers) => onChange({ headers }), { factory });
+  const { onAdd, mapManaged } = useManager(headers ?? [], (headers) => onChange({ headers }), { factory });
 
   return (
     <LineItemsSection header="Header Assignments" onAdd={onAdd} dividers>

@@ -1,7 +1,8 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SectionV2 } from '@voiceflow/ui';
+import { Box, SectionV2 } from '@voiceflow/ui';
+import * as Normal from 'normal-store';
 import React from 'react';
 
 import { HelpTooltip, LegacyMappings } from '@/components/IntentForm';
@@ -17,11 +18,12 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 import { isBuiltInIntent } from '@/utils/intent';
 
-import EntityEditor from '../../components/EntityEditor';
+import { Entity } from '../../components';
 import AvailabilitySection from './AvailabilitySection';
 
-const IntentEditor: React.FC = () => {
+const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts>();
+  const intentModal = useModals(ModalType.INTENT_EDIT);
 
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
 
@@ -32,8 +34,11 @@ const IntentEditor: React.FC = () => {
   const onRemoveRequiredEntity = useDispatch(Intent.removeRequiredSlot);
   const validateTopicAvailability = useDispatch(Creator.validateTopicAvailability);
 
-  const intentModal = useModals(ModalType.INTENT_EDIT);
   const isBuiltIn = React.useMemo(() => !!intent && isBuiltInIntent(intent.id), [intent?.id]);
+  const hasRequiredEntity = React.useMemo(
+    () => !!intent?.slots && Normal.denormalize(intent.slots as Normal.Normalized<Realtime.IntentSlot>).some((entity) => entity.required),
+    [intent?.slots]
+  );
 
   const patchPlatformData = (patch: Partial<Realtime.NodeData.Intent.PlatformData>) => editor.onChange({ ...editor.data, ...patch });
 
@@ -86,17 +91,19 @@ const IntentEditor: React.FC = () => {
         />
       </SectionV2.SimpleSection>
 
-      {intent && !isBuiltIn && (
+      {intent && !isBuiltIn && hasRequiredEntity && (
         <>
           <SectionV2.Divider inset />
 
           <IntentRequiredEntitiesSection
-            onEntityClick={(entityID) => editor.goToNested({ path: EntityEditor.PATH, params: { intentID: intent.id, entityID } })}
+            onEntityClick={(entityID) => editor.goToNested({ path: Entity.PATH, params: { intentID: intent.id, entityID } })}
             onAddRequired={(entityID) => onAddRequiredEntity(intent.id, entityID)}
             intentEntities={intent.slots}
             onRemoveRequired={(entityID) => onRemoveRequiredEntity(intent.id, entityID)}
             addDropdownPlacement="bottom-end"
           />
+
+          <Box pt={8} />
         </>
       )}
 
@@ -112,4 +119,4 @@ const IntentEditor: React.FC = () => {
   );
 };
 
-export default IntentEditor;
+export default RootEditor;

@@ -1,8 +1,9 @@
 import { styled } from '@ui/styles';
 
 const Title = styled.div`
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 8px;
+  color: #c0c5c6;
+  font-weight: 600;
+  padding-bottom: 4px;
 `;
 
 export default Title;

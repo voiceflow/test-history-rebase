@@ -7,8 +7,6 @@ import VariablesInput from '@/components/VariablesInput';
 
 import { DayPickerContainer, FORMAT, TimeRangePicker, WEEKDAYS } from './components';
 
-const VariablesInputComponent = VariablesInput as React.FC<any>;
-
 export interface DayPickerInputProps {
   date?: string | Date;
   onChange: (date: string | Date) => void;
@@ -52,7 +50,7 @@ const DayPickerInput: React.FC<DayPickerInputProps> = ({ date, onChange }) => {
     >
       {({ ref, onToggle }) => (
         <div ref={ref} onClick={onToggle}>
-          <VariablesInputComponent value={formattedDate} onBlur={onBlur} placeholder={FORMAT} />
+          <VariablesInput value={formattedDate} onBlur={onBlur} placeholder={FORMAT} />
         </div>
       )}
     </Popper>

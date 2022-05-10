@@ -4,7 +4,6 @@ import {
   ClickableText,
   stopPropagation,
   StrengthGauge,
-  StrengthLevel,
   SvgIcon,
   TippyTooltip,
   useDidUpdateEffect,
@@ -25,7 +24,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useModals, usePermission, useSelector, useSetup } from '@/hooks';
 import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
-import { validateUtterance } from '@/utils/intent';
+import { getIntentStrengthLevel, validateUtterance } from '@/utils/intent';
 
 export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
@@ -39,26 +38,6 @@ interface UtteranceManagerProps {
 }
 
 const MAX_VISIBLE_UTTERANCES = 10;
-
-// Temporary until ML stuff is done
-const determineStrength = (count: number) => {
-  if (count === 0) {
-    return StrengthLevel.NOT_SET;
-  }
-  if (count < 3) {
-    return StrengthLevel.WEAK;
-  }
-  if (count < 5) {
-    return StrengthLevel.MEDIUM;
-  }
-  if (count < 7) {
-    return StrengthLevel.STRONG;
-  }
-  if (count >= 7) {
-    return StrengthLevel.VERY_STRONG;
-  }
-  return StrengthLevel.NOT_SET;
-};
 
 export interface UtteranceRef {
   focus: () => void;
@@ -76,7 +55,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, o
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM] as string | null;
   const history = useHistory();
   const stickyTopRef = React.useRef<HTMLDivElement>(null);
-  const isNotAtTop = useOnScreen(stickyTopRef, true);
+  const isNotAtTop = useOnScreen(stickyTopRef, { initialState: true });
 
   const intents = useSelector(IntentV2.allIntentsSelector);
   const slots = useSelector(SlotV2.allSlotsSelector);
@@ -164,8 +143,8 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, o
             <Box marginLeft={16} display="inline-block" position="relative" bottom="3px">
               <StrengthGauge
                 width={40}
-                strength={determineStrength(intentUtterances.length)}
-                strengthTooltips={{ [StrengthLevel.NOT_SET]: 'No utterances' }}
+                level={getIntentStrengthLevel(intentUtterances.length)}
+                tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }}
               />
             </Box>
           </>

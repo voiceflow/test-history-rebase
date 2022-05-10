@@ -6,15 +6,36 @@ import { EditableProps } from 'slate-react/dist/components/editable';
 
 import { useForceUpdate } from '@/hooks';
 
-import { EditorContextProvider, PluginsOptionsContextProvider, StaticEditorContextProvider } from './contexts';
-import { DEFAULT_PLUGINS_OPTIONS, EditorAPI, PluginsOptions } from './editor';
-import { useEditorDecorate, useEditorHotkeys } from './hooks';
+import * as components from './components';
+import {
+  ControlledEditorProvider,
+  EditorContextProvider,
+  PluginsOptionsContextProvider,
+  StaticEditorContextProvider,
+  useSlateEditor,
+  useSlateEditorContext,
+  useStaticSlateEditor,
+} from './contexts';
+import { DEFAULT_PLUGINS_OPTIONS, EditorAPI, PluginsOptions, PluginType } from './editor';
+import { useEditorDecorate, useEditorForceNormalize, useEditorHotkeys, useSetupEditor } from './hooks';
 import { defaultRenderElement, defaultRenderLeaf, defaultRenderPlaceholder } from './renderers';
 
+/**
+ * @deprecated use SlateEditable.PopperContent, SlateEditable.PopperTitle and etc instead
+ */
 export * from './components';
+/**
+ * @deprecated use SlateEditable.ControlledEditorProvider, SlateEditable.useSlateEditor and etc instead
+ */
 export { ControlledEditorProvider, useSlateEditor, useSlateEditorContext, useStaticSlateEditor } from './contexts';
 export type { PluginsOptions as SlatePluginsOptions, VariableItem as SlateVariableItem } from './editor';
+/**
+ * @deprecated use SlateEditable.EditorAPI, SlateEditable.PluginType and etc instead
+ */
 export { EditorAPI as SlateEditorAPI, PluginType as SlatePluginType } from './editor';
+/**
+ * @deprecated use SlateEditable.useSetupEditor, SlateEditable.useEditorForceNormalize and etc instead
+ */
 export { useSetupEditor as useSetupSlateEditor, useEditorForceNormalize as useSlateEditorForceNormalize } from './hooks';
 
 export type SlateValue = Descendant[];
@@ -108,4 +129,16 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
   );
 };
 
-export default React.forwardRef<SlateEditableRef, SlateEditableProps>(SlateEditable);
+export default Object.assign(React.forwardRef<SlateEditableRef, SlateEditableProps>(SlateEditable), {
+  ...components,
+
+  EditorAPI,
+  PluginType,
+  ControlledEditorProvider,
+
+  useEditor: useSlateEditor,
+  useSetupEditor,
+  useStaticEditor: useStaticSlateEditor,
+  useEditorContext: useSlateEditorContext,
+  useEditorForceNormalize,
+});

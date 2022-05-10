@@ -31,7 +31,7 @@ const BODY_OPTIONS = [
 ];
 
 function RequestBody({ body, content, bodyInputType, onChange, factory }) {
-  const { onAdd, mapManaged } = useManager(body, (body) => onChange({ body }), { factory });
+  const { onAdd, mapManaged } = useManager(body ?? [], (body) => onChange({ body }), { factory });
 
   const [aceContent, setAceContent] = React.useState(content);
   const setBodyDataType = (type) => onChange({ bodyInputType: type });

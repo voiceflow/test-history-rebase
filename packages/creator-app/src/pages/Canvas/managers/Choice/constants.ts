@@ -8,7 +8,13 @@ import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
 
-export const MAX_CHOICE_ITEMS = 55;
+export const choiceFactory = (): Realtime.NodeData.InteractionChoice => ({
+  id: Utils.id.cuid.slug(),
+  goTo: null,
+  intent: null,
+  action: BaseNode.Interaction.ChoiceAction.PATH,
+  mappings: [],
+});
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = {
   type: BlockType.CHOICE,
@@ -21,25 +27,18 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.Nod
       ports: {
         in: [{}],
         out: {
-          dynamic: [{}],
+          dynamic: [],
           builtIn: { [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH } },
         },
       },
     },
+
     data: {
       name: 'Choice',
       noMatch: getPlatformNoMatchFactory(projectType)({ defaultVoice }),
       noReply: null,
       buttons: Realtime.Utils.typeGuards.isChatProjectType(projectType) ? buttonsFactory() : null,
-      choices: [
-        {
-          id: Utils.id.cuid.slug(),
-          goTo: null,
-          intent: null,
-          action: BaseNode.Interaction.ChoiceAction.PATH,
-          mappings: [],
-        },
-      ],
+      choices: [],
       intentScope: BaseNode.Utils.IntentScope.GLOBAL,
     },
   }),

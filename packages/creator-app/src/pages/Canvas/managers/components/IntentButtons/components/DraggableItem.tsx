@@ -1,0 +1,111 @@
+import composeRef from '@seznam/compose-react-refs';
+import { BaseButton } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Box, SectionV2, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import React from 'react';
+
+import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import IntentSelect from '@/components/IntentSelect';
+import VariablesInput from '@/components/VariablesInput';
+import * as IntentV2 from '@/ducks/intentV2';
+import { useAutoScrollNodeIntoView, useSelector } from '@/hooks';
+import EditorV2 from '@/pages/Canvas/components/EditorV2';
+import { getPlatformValue } from '@/utils/platform';
+import { transformVariablesToReadable } from '@/utils/slot';
+import { isGooglePlatform } from '@/utils/typeGuards';
+
+import { NodeEditorV2Props } from '../../../types';
+
+export interface DraggableItemProps
+  extends ItemComponentProps<BaseButton.IntentButton>,
+    DragPreviewComponentProps,
+    MappedItemComponentHandlers<BaseButton.IntentButton> {
+  editor: NodeEditorV2Props<{ buttons: BaseButton.AnyButton[] }>;
+  intentOptions: Array<Realtime.Intent | UIOnlyMenuItemOption>;
+  latestCreatedKey?: string;
+}
+
+const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemProps> = (
+  {
+    item,
+    index,
+    editor,
+    itemKey,
+    onUpdate,
+    isDragging,
+    onContextMenu,
+    intentOptions,
+    latestCreatedKey,
+    connectedDragRef,
+    isDraggingPreview,
+    isContextMenuOpen,
+  },
+  ref
+) => {
+  const autofocus = latestCreatedKey === itemKey || editor.data.buttons.length === 1;
+
+  const intent = useSelector(IntentV2.getPlatformIntentByIDSelector)({ id: item.payload.intentID });
+
+  const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
+
+  const label = getPlatformValue(editor.platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'Button');
+
+  return (
+    <EditorV2.PersistCollapse namespace={['buttonItem', itemKey]} defaultCollapsed={!autofocus}>
+      {({ collapsed, onToggle }) => (
+        <>
+          {index !== 0 && !isDraggingPreview && <SectionV2.Divider />}
+
+          <SectionV2.CollapseSection
+            ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
+            header={
+              <SectionV2.Header ref={connectedDragRef}>
+                <SectionV2.Title bold={!collapsed}>{transformVariablesToReadable(item.name) || `${label} ${index + 1}`}</SectionV2.Title>
+
+                <SectionV2.CollapseArrowIcon collapsed={collapsed} />
+              </SectionV2.Header>
+            }
+            onToggle={onToggle}
+            collapsed={collapsed}
+            onEntered={() => scrollIntoView({ block: 'nearest' })}
+            isDragging={isDragging}
+            onContextMenu={onContextMenu}
+            containerToggle
+            isDraggingPreview={isDraggingPreview}
+            isContextMenuOpen={isContextMenuOpen}
+          >
+            {isDragging || isDraggingPreview ? null : (
+              <SectionV2.Content topOffset={1}>
+                <VariablesInput
+                  value={item.name}
+                  onBlur={({ text }) => onUpdate({ name: text })}
+                  // eslint-disable-next-line jsx-a11y/no-autofocus
+                  autoFocus={autofocus}
+                  placeholder={`Enter ${label.toLowerCase()} name`}
+                />
+
+                {!isGooglePlatform(editor.platform) && (
+                  <Box mt={16}>
+                    <IntentSelect
+                      icon="user"
+                      intent={intent}
+                      options={intentOptions}
+                      onChange={({ intent }) => onUpdate({ payload: { intentID: intent } })}
+                      clearable
+                      iconProps={{ color: '#5589eb' }}
+                      creatable={false}
+                      placeholder="Behave as user triggered intent"
+                    />
+                  </Box>
+                )}
+              </SectionV2.Content>
+            )}
+          </SectionV2.CollapseSection>
+        </>
+      )}
+    </EditorV2.PersistCollapse>
+  );
+};
+
+export default React.forwardRef<HTMLElement, DraggableItemProps>(DraggableItem);

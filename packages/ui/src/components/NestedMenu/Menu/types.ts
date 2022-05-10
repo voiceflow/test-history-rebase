@@ -25,6 +25,7 @@ interface BaseNestedMenuProps extends SharedNestedMenuProps {
   searchLabel?: string;
   optionsPath?: number[];
   createLabel?: React.ReactNode;
+  containerRef?: React.Ref<HTMLDivElement>;
   onFocusOption?: (index: number) => void;
   inputWrapperNode?: Nullable<HTMLDivElement>;
   isButtonDisabled?: (options: { value: string }) => boolean;

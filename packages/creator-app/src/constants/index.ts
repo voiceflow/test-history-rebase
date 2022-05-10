@@ -468,7 +468,7 @@ export const CUSTOMIZABLE_INTENT_PREFIXS = ['AMAZON', 'VF', 'actions'];
 
 export const MAX_ALEXA_REPROMPTS = 3;
 
-export const MAX_SPEAK_ITEMS_COUNT = 22;
+export const MAX_SYSTEM_MESSAGES_COUNT = 22;
 
 export const CANVAS_ZOOM_DELTA = 15;
 

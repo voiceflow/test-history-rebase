@@ -19,12 +19,12 @@ const Item: React.FC<ItemProps> = ({ entity, onClick, isActive, contentRef, inte
   return (
     <SectionV2.ListItem
       icon="entities"
+      action={<SectionV2.RemoveButton onClick={() => onRemoveRequired(intentEntity.id)} />}
       onClick={onClick}
       isActive={isActive}
       contentRef={contentRef}
-      actionIcon="minus"
       iconWarning={hasError ? 'Prompt is missing' : null}
-      onActionClick={() => onRemoveRequired(intentEntity.id)}
+      actionCentred
     >
       {entity.name}
     </SectionV2.ListItem>

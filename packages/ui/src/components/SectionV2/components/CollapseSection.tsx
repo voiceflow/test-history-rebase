@@ -1,10 +1,9 @@
 import { useDidUpdateEffect } from '@ui/hooks';
-import { stopPropagation } from '@ui/utils';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import Collapse from './Collapse';
-import Container from './Container';
+import Container, { ContainerProps } from './Container';
 import PreventContainerCollapse from './PreventContainerCollapse';
 
 export interface RendererProps {
@@ -12,49 +11,72 @@ export interface RendererProps {
   collapsed: boolean;
 }
 
-export interface CollapseSectionProps {
+type ReactNodeOrRenderer = React.ReactNode | ((props: RendererProps) => React.ReactNode);
+
+export interface CollapseSectionProps extends ContainerProps {
+  header: ReactNodeOrRenderer;
   onToggle?: (collapsed: boolean) => void;
-  children?: React.ReactNode | ((props: RendererProps) => React.ReactNode);
+  children?: ReactNodeOrRenderer;
   collapsed?: boolean;
-  renderHeader: (props: RendererProps) => React.ReactNode;
+  onEntered?: VoidFunction;
   mountOnEnter?: boolean;
   unmountOnExit?: boolean;
   containerToggle?: boolean;
-  initialCollapsed?: boolean;
+  defaultCollapsed?: boolean;
 }
 
-const CollapseSection: React.FC<CollapseSectionProps> = ({
-  onToggle,
-  children,
-  renderHeader,
-  mountOnEnter = true,
-  unmountOnExit = true,
-  containerToggle,
-  initialCollapsed = false,
-  collapsed: collapsedProp,
-}) => {
-  const [collapsed, setCollapsed] = React.useState(collapsedProp ?? initialCollapsed);
+const CollapseSection: React.ForwardRefRenderFunction<HTMLDivElement, CollapseSectionProps> = (
+  {
+    header,
+    onToggle: onToggleProp,
+    children,
+    onEntered,
+    mountOnEnter = true,
+    unmountOnExit = true,
+    containerToggle,
+    defaultCollapsed = false,
+    collapsed: collapsedProp,
+    ...containerProps
+  },
+  ref
+) => {
+  const preventRef = React.useRef(false);
+  const [collapsed, setCollapsed] = React.useState(collapsedProp ?? defaultCollapsed);
+
+  const onToggle = () => {
+    onToggleProp?.(!collapsed);
+    setCollapsed(!collapsed);
+  };
 
   const onClick = () => {
-    onToggle?.(!collapsed);
-    setCollapsed(!collapsed);
+    // prevent collapse if clicked inside the container
+    if (preventRef.current) {
+      preventRef.current = false;
+      return;
+    }
+
+    onToggle();
+  };
+
+  const onPreventCollapseClick = () => {
+    preventRef.current = true;
   };
 
   useDidUpdateEffect(() => setCollapsed(!!collapsedProp), [collapsedProp]);
 
-  const rendererProps = { collapsed, onToggle: onClick };
+  const rendererProps = { collapsed, onToggle };
 
   return (
-    <Container onClick={containerToggle ? onClick : undefined}>
-      {renderHeader(rendererProps)}
+    <Container isAccent={!collapsed} {...containerProps} ref={ref} onClick={containerToggle ? onClick : undefined}>
+      {Utils.functional.isFunction(header) ? header(rendererProps) : header}
 
-      <Collapse onClick={stopPropagation()} isOpen={!collapsed} mountOnEnter={mountOnEnter} unmountOnExit={unmountOnExit}>
+      <Collapse onEntered={onEntered} isOpen={!collapsed} onClick={onPreventCollapseClick} mountOnEnter={mountOnEnter} unmountOnExit={unmountOnExit}>
         {Utils.functional.isFunction(children) ? children(rendererProps) : children}
       </Collapse>
 
-      {containerToggle && !collapsed && <PreventContainerCollapse onClick={stopPropagation()} />}
+      {containerToggle && !collapsed && <PreventContainerCollapse onClick={onPreventCollapseClick} />}
     </Container>
   );
 };
 
-export default CollapseSection;
+export default React.forwardRef(CollapseSection);

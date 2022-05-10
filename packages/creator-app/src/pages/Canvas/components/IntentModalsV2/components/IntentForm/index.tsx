@@ -58,7 +58,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
 
   const [showUtteranceSection, setShowUtteranceSection] = React.useState(false);
   const entitiesDividerRef = React.useRef<Nullable<HTMLHRElement>>(null);
-  const isEntitiesVisible = useOnScreen(entitiesDividerRef, true);
+  const isEntitiesVisible = useOnScreen(entitiesDividerRef, { initialState: true });
 
   const scrollToEntities = () => {
     entitiesDividerRef.current?.scrollIntoView({ behavior: 'smooth' });

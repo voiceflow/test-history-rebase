@@ -5,13 +5,25 @@ import { NamespaceContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { useTeardown } from '@/hooks';
 
-export const useSectionState = <T>(sectionKey: null | string | string[] = null, defaultValue: T, autoSave = true) => {
+export const useSectionState = <T>({
+  autoSave = true,
+  sectionKey,
+  defaultValue,
+}: {
+  autoSave?: boolean;
+  sectionKey: null | string | string[];
+  defaultValue: T;
+}): [state: T, setState: (state: T) => void] => {
   const dispatch = useDispatch();
+  const getReduxState = useSelector(Creator.sectionStateSelector);
+
   const namespace = React.useContext(NamespaceContext);
+
   const localNamespace = Array.isArray(sectionKey) ? sectionKey.join('.') : sectionKey;
   const actualKey = namespace && localNamespace ? `${namespace}.${localNamespace}` : namespace || localNamespace;
-  const reduxState = useSelector(Creator.sectionStateSelector)(actualKey!);
-  const state = (reduxState ?? defaultValue) as T;
+
+  const reduxState = actualKey ? ((getReduxState(actualKey) ?? null) as T | null) : null;
+  const state = reduxState ?? defaultValue;
   const isStateSynced = state === reduxState;
 
   const setState = React.useCallback((value: T) => dispatch(Creator.setSectionState(actualKey!, value)), [actualKey, dispatch]);
@@ -22,5 +34,5 @@ export const useSectionState = <T>(sectionKey: null | string | string[] = null, 
     }
   }, [autoSave, isStateSynced, state, setState]);
 
-  return [state, setState] as const;
+  return [state, setState];
 };

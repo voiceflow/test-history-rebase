@@ -1,22 +1,63 @@
-import { css, styled, units } from '@ui/styles';
+import { css, styled, transition, units } from '@ui/styles';
 
-import Content from './Content';
 import Header from './Header';
+import LinkArrowIcon from './LinkArrowIcon';
 
 export interface ContainerProps {
+  isLink?: boolean;
+  isAccent?: boolean;
   isDragging?: boolean;
+  onContextMenu?: React.MouseEventHandler;
   isContextMenuOpen?: boolean;
   isDraggingPreview?: boolean;
 }
 
 const Container = styled.section<ContainerProps>`
+  ${transition('background')}
+
   position: relative;
   padding: ${units()}px 0;
+
+  ${({ onClick }) =>
+    onClick &&
+    css`
+      cursor: pointer;
+
+      & > ${Header} {
+        user-select: none;
+      }
+    `}
+
+  ${({ onClick, isLink }) =>
+    onClick &&
+    isLink &&
+    css`
+      &:hover {
+        > ${Header} ${LinkArrowIcon} {
+          transform: rotate(90deg) translateY(-4px);
+        }
+      }
+    `}
+
+  ${({ isAccent, onClick }) =>
+    onClick &&
+    !isAccent &&
+    css`
+      &:hover {
+        background: #eff5f660;
+      }
+    `}
+
+  ${({ isAccent }) =>
+    isAccent &&
+    css`
+      background: ${({ theme }) => theme.components.sectionV2.accentBackground};
+    `}
 
   ${({ isDragging }) =>
     isDragging &&
     css`
-      & > ${Content} {
+      & > * {
         opacity: 0;
       }
     `}
@@ -34,16 +75,6 @@ const Container = styled.section<ContainerProps>`
     isContextMenuOpen &&
     css`
       background: linear-gradient(-180deg, rgba(238, 244, 246, 0.3) 0%, rgba(238, 244, 246, 0.45) 100%), #fff;
-    `}
-
-  ${({ onClick }) =>
-    onClick &&
-    css`
-      cursor: pointer;
-
-      ${Header} {
-        user-select: none;
-      }
     `}
 `;
 

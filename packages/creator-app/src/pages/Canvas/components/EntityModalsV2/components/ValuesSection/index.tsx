@@ -38,7 +38,7 @@ const updateSingleLine = (id: string, inputs: Realtime.SlotInput[], values: Part
 const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs, type, updateInputs }) => {
   const valueRef = React.useRef<HTMLInputElement | null>(null);
   const stickyTopRef = React.useRef<HTMLDivElement>(null);
-  const isNotAtTop = useOnScreen(stickyTopRef, true);
+  const isNotAtTop = useOnScreen(stickyTopRef, { initialState: true });
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
   const { open: openSlotsBulkUploadModal } = useModals(ModalType.IMPORT_SLOTS);
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);

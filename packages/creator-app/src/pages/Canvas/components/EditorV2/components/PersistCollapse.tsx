@@ -1,0 +1,27 @@
+import { useConst } from '@voiceflow/ui';
+import React from 'react';
+
+import { withNamespace } from '@/hocs';
+import { useSectionState } from '@/pages/Canvas/hooks';
+
+interface PersistCollapseProps {
+  autoSave?: boolean;
+  children: (props: { collapsed: boolean; onToggle: (collapsed?: boolean) => void }) => React.ReactElement;
+  defaultCollapsed?: boolean;
+}
+
+const PersistCollapse: React.FC<PersistCollapseProps> = ({ autoSave = true, children, defaultCollapsed = false }) => {
+  const initialState = useConst({ isOpen: !defaultCollapsed });
+
+  const [state, setState] = useSectionState<{ isOpen: boolean }>({
+    autoSave,
+    sectionKey: null,
+    defaultValue: initialState,
+  });
+
+  const onToggle = React.useCallback(() => setState({ isOpen: !state.isOpen }), [state.isOpen, setState]);
+
+  return children({ collapsed: !state.isOpen, onToggle });
+};
+
+export default withNamespace<void, PersistCollapseProps>(PersistCollapse);

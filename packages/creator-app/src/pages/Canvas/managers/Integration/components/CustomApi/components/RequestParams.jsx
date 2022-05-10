@@ -7,7 +7,7 @@ import PrefixVariableInput from '../../PrefixVariableInput';
 import LineItemsSection from './LineItemsSection';
 
 function RequestParams({ parameters, onChange, factory }) {
-  const { onAdd, mapManaged } = useManager(parameters, (parameters) => onChange({ parameters }), { factory });
+  const { onAdd, mapManaged } = useManager(parameters ?? [], (parameters) => onChange({ parameters }), { factory });
 
   return (
     <LineItemsSection header="Parameter Assignments" onAdd={onAdd} dividers>

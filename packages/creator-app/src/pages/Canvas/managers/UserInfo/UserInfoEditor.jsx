@@ -15,7 +15,7 @@ const permissionFactory = () => ({
 function UserInfoEditor({ data, onChange }) {
   const [isDragging, toggleDragging] = useToggle(false);
   const updatePermissions = React.useCallback((permissions) => onChange({ permissions }), [onChange]);
-  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(data.permissions, updatePermissions, {
+  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(data.permissions ?? [], updatePermissions, {
     factory: permissionFactory,
   });
   const selectedPermissions = items.map(({ selected }) => selected).filter(Boolean);

@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
-import { DialogType, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
+import { DialogType, MAX_SYSTEM_MESSAGES_COUNT } from '@/constants';
 import SpeakAudioList from '@/pages/Canvas/components/SpeakAudioList';
 import { useCanvasVisibilityOption } from '@/pages/Canvas/managers/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
@@ -43,7 +43,7 @@ const SpeakEditor: NodeEditor<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBu
       }
       items={dialogs}
       platform={platform}
-      maxItems={MAX_SPEAK_ITEMS_COUNT}
+      maxItems={MAX_SYSTEM_MESSAGES_COUNT}
       randomize={isDeprecated ? data.randomize : undefined}
       isDeprecated={isDeprecated}
       itemComponent={StyledSpeakAudioItem}

@@ -2,39 +2,41 @@ import React from 'react';
 
 import TippyTooltip from '../TippyTooltip';
 import { Line, StrengthLine } from './components';
-import { StrengthLevel } from './types';
+import { Level } from './constants';
 
-const StrengthTooltip = {
-  [StrengthLevel.NOT_SET]: 'Empty',
-  [StrengthLevel.WEAK]: 'Weak',
-  [StrengthLevel.MEDIUM]: 'Medium',
-  [StrengthLevel.STRONG]: 'Strong',
-  [StrengthLevel.VERY_STRONG]: 'Excellent',
+const TOOLTIP_LABEL_MAP = {
+  [Level.WEAK]: 'Weak',
+  [Level.MEDIUM]: 'Medium',
+  [Level.STRONG]: 'Strong',
+  [Level.NOT_SET]: 'Empty',
+  [Level.VERY_STRONG]: 'Excellent',
 };
 
-const StrengthLineMultiplier: Record<StrengthLevel, number> = {
-  [StrengthLevel.NOT_SET]: 0,
-  [StrengthLevel.WEAK]: 0.2,
-  [StrengthLevel.MEDIUM]: 0.5,
-  [StrengthLevel.STRONG]: 0.7,
-  [StrengthLevel.VERY_STRONG]: 1,
+const LINE_MULTIPLIER_MAP: Record<Level, number> = {
+  [Level.WEAK]: 0.2,
+  [Level.MEDIUM]: 0.5,
+  [Level.STRONG]: 0.7,
+  [Level.NOT_SET]: 0,
+  [Level.VERY_STRONG]: 1,
 };
 
-interface StrengthGauge {
+interface StrengthGaugeProps {
+  level: Level;
   width?: number;
   thickness?: number;
-  strength: StrengthLevel;
-  strengthTooltips?: Partial<Record<StrengthLevel, string>>;
+  tooltipLabelMap?: Partial<Record<Level, string>>;
 }
-const StrengthGauge: React.FC<StrengthGauge> = ({ strengthTooltips, thickness = 2, width = 100, strength = StrengthLevel.NOT_SET }) => {
-  const strengthLineWidth = width * StrengthLineMultiplier[strength];
+
+const StrengthGauge: React.FC<StrengthGaugeProps> = ({ level = Level.NOT_SET, width = 100, thickness = 2, tooltipLabelMap }) => {
+  const strengthLineWidth = width * LINE_MULTIPLIER_MAP[level];
+
   return (
-    <TippyTooltip title={strengthTooltips?.[strength] || StrengthTooltip[strength]}>
+    <TippyTooltip title={tooltipLabelMap?.[level] || TOOLTIP_LABEL_MAP[level]} style={{ display: 'flex' }}>
       <Line width={width} thickness={thickness}>
-        <StrengthLine thickness={thickness} width={strengthLineWidth} strength={strength} />
+        <StrengthLine thickness={thickness} width={strengthLineWidth} strength={level} />
       </Line>
     </TippyTooltip>
   );
 };
 
-export default StrengthGauge;
+export default Object.assign(StrengthGauge, { Level });

@@ -57,7 +57,7 @@ const BasicContainer = styled.div<BasicContainerProps>`
     disabled &&
     css`
       opacity: 0.6;
-      pointer-events: none;
+      pointer-events: none !important;
     `}
 `;
 

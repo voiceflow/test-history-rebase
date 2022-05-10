@@ -2,7 +2,7 @@ import { Adapters } from '@voiceflow/realtime-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { MAX_ALEXA_REPROMPTS, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
+import { MAX_ALEXA_REPROMPTS, MAX_SYSTEM_MESSAGES_COUNT } from '@/constants';
 import SpeakAudioList from '@/pages/Canvas/components/SpeakAudioList';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
@@ -57,7 +57,7 @@ const VoiceList: React.FC<VoiceListProps> = ({
     <SpeakAudioList
       items={items}
       platform={platform}
-      maxItems={isVoiceflowPlatform(platform) ? MAX_SPEAK_ITEMS_COUNT : MAX_ALEXA_REPROMPTS}
+      maxItems={isVoiceflowPlatform(platform) ? MAX_SYSTEM_MESSAGES_COUNT : MAX_ALEXA_REPROMPTS}
       itemName="reprompts"
       randomize={randomize}
       renderMenu={hideRandomizeMenu ? () => null : null}

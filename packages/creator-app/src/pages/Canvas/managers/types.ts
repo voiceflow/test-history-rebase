@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Icon } from '@voiceflow/ui';
+import { Icon, OptionsMenuOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { ExtractRouteParams } from 'react-router';
@@ -182,4 +182,9 @@ export interface MarkupNodeManagerConfig<Data extends object, BuiltInPorts exten
   extends BaseNodeManagerConfig<Data, BuiltInPorts> {
   factory: NodeManagerFactory<Data, BuiltInPorts>;
   markupNode: Data extends Realtime.Markup.AnyNodeData ? React.FC<ConnectedMarkupNodeProps<Data>> : never;
+}
+
+export interface OptionalSectionConfig {
+  option: OptionsMenuOption | null;
+  section: React.ReactNode | false;
 }

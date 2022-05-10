@@ -17,7 +17,13 @@ const EditorSection: React.ForwardRefRenderFunction<HTMLDivElement, EditorSectio
 ) => {
   const isCollapsible = !!props.collapseVariant;
   const initialState = React.useRef(initialOpen);
-  const [sectionState, setSectionState] = useSectionState<{ isOpen: boolean }>(null, { isOpen: initialState.current }, isCollapsible && autoSave);
+
+  const [sectionState, setSectionState] = useSectionState<{ isOpen: boolean }>({
+    autoSave: isCollapsible && autoSave,
+    sectionKey: null,
+    defaultValue: { isOpen: initialState.current },
+  });
+
   const toggleCollapsed = React.useCallback(() => setSectionState({ isOpen: !sectionState.isOpen }), [sectionState.isOpen, setSectionState]);
 
   const collapseProps = isCollapsible && { isCollapsed: !sectionState.isOpen, toggle: props.disabled ? Utils.functional.noop : toggleCollapsed };

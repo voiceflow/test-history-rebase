@@ -1,4 +1,4 @@
-import { BoxFlex, Icon, Popper, SectionV2, SvgIcon } from '@voiceflow/ui';
+import { BoxFlex, Icon, Input, Popper, SectionV2, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { createExample, createSection } from './utils';
@@ -14,44 +14,55 @@ const coloredIcon = createExample('colored', () => <SvgIcon icon="edit" color="#
 const spinIcon = createExample('spin', () => <SvgIcon icon="edit" spin variant={SvgIcon.Variant.STANDARD} />);
 const clickableIcon = createExample('clickable', () => <SvgIcon icon="edit" clickable variant={SvgIcon.Variant.STANDARD} />);
 const allIcons = createExample('all icons', ({ isPage }) => {
-  const icons = (
-    <BoxFlex flexWrap="wrap">
-      {Object.keys(SvgIcon.ICONS).map((icon) => (
-        <Popper
-          key={icon}
-          renderContent={() => (
-            <BoxFlex p={12} column>
-              <SvgIcon icon={icon as Icon} color="#212121" size={80} />
+  const [search, setSearch] = React.useState('');
 
-              <BoxFlex pt={8} color="#313131" fontSize={13}>
-                {icon}
-              </BoxFlex>
-            </BoxFlex>
-          )}
-        >
-          {({ ref, onToggle }) => (
-            <BoxFlex
-              ref={ref}
-              cursor="pointer"
-              width={40}
-              height={40}
-              onClick={() => navigator.clipboard.writeText(icon)}
-              onMouseEnter={onToggle}
-              onMouseLeave={onToggle}
-              justifyContent="center"
-            >
-              <SvgIcon icon={icon as Icon} variant={SvgIcon.Variant.STANDARD} />
-            </BoxFlex>
-          )}
-        </Popper>
-      ))}
-    </BoxFlex>
+  const icons = (
+    <div>
+      <BoxFlex m="auto" pb={12} width={200}>
+        <Input value={search} onChangeText={setSearch} placeholder="Search icon" />
+      </BoxFlex>
+
+      <BoxFlex flexWrap="wrap">
+        {Object.keys(SvgIcon.ICONS).map(
+          (icon) =>
+            (!search || icon.includes(search)) && (
+              <Popper
+                key={icon}
+                renderContent={() => (
+                  <BoxFlex p={12} column>
+                    <SvgIcon icon={icon as Icon} color="#212121" size={80} />
+
+                    <BoxFlex pt={8} color="#313131" fontSize={13}>
+                      {icon}
+                    </BoxFlex>
+                  </BoxFlex>
+                )}
+              >
+                {({ ref, onToggle }) => (
+                  <BoxFlex
+                    ref={ref}
+                    cursor="pointer"
+                    width={40}
+                    height={40}
+                    onClick={() => navigator.clipboard.writeText(icon)}
+                    onMouseEnter={onToggle}
+                    onMouseLeave={onToggle}
+                    justifyContent="center"
+                  >
+                    <SvgIcon icon={icon as Icon} variant={SvgIcon.Variant.STANDARD} />
+                  </BoxFlex>
+                )}
+              </Popper>
+            )
+        )}
+      </BoxFlex>
+    </div>
   );
 
   return isPage ? (
     icons
   ) : (
-    <SectionV2.CollapseSection containerToggle initialCollapsed={!isPage} renderHeader={({ collapsed }) => (collapsed ? 'show' : 'hide')}>
+    <SectionV2.CollapseSection header={({ collapsed }) => (collapsed ? 'show' : 'hide')} containerToggle defaultCollapsed={!isPage}>
       <SectionV2.Content>{icons}</SectionV2.Content>
     </SectionV2.CollapseSection>
   );

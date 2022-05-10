@@ -1,5 +1,7 @@
 import { BaseNode } from '@voiceflow/base-types';
 
+export const MAX_CHOICE_ITEMS = 55;
+
 export const INTENT_ACTION_OPTIONS = [
   {
     id: BaseNode.Interaction.ChoiceAction.PATH,

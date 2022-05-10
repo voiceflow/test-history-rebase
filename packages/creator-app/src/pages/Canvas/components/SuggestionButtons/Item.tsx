@@ -8,7 +8,7 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import IntentSelect from '@/components/IntentSelect';
 import { SectionToggleVariant } from '@/components/Section';
-import VariablesInput from '@/components/VariablesInput';
+import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
 import * as IntentV2 from '@/ducks/intentV2';
 import { compose, connect } from '@/hocs';
 import { useSetup } from '@/hooks';
@@ -19,8 +19,6 @@ import { ConnectedProps, MergeArguments } from '@/types';
 import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
 import { isGooglePlatform } from '@/utils/typeGuards';
-
-const VariablesInputComponent: React.FC<any> = VariablesInput;
 
 export type ItemProps = ItemComponentProps<BaseButton.IntentButton> &
   MappedItemComponentHandlers<BaseButton.IntentButton> &
@@ -52,7 +50,7 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
 ) => {
   const isNew = latestCreatedKey === itemKey;
   const platform = React.useContext(PlatformContext)!;
-  const variablesInputRef = React.useRef<{ focus: () => void }>(null);
+  const variablesInputRef = React.useRef<VariablesInputRef>(null);
   const updateName = React.useCallback(({ text: name }: { text: string }) => onUpdate({ name }), [onUpdate]);
   const updateIntent = React.useCallback(({ intent }: { intent: string | null }) => onUpdate({ payload: { intentID: intent } }), [onUpdate]);
 
@@ -85,7 +83,7 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
       {isDragging || isDraggingPreview ? null : (
         <FormControl {...formControlProps}>
           <Box mb={isGooglePlatform(platform) ? 0 : 16}>
-            <VariablesInputComponent
+            <VariablesInput
               ref={variablesInputRef}
               value={item.name}
               onBlur={updateName}

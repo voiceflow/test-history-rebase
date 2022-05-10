@@ -24,13 +24,13 @@ export interface MappedItemComponentHandlers<I> {
   onDuplicate?: (props: InternalWithoutType<I>) => void;
 }
 
-export type ItemComponentProps<I> = InternalWithoutType<I> & {
+export interface ItemComponentProps<I> extends InternalWithoutType<I> {
   style?: { opacity: number };
   isDragging: boolean;
   onContextMenu?: (event: React.MouseEvent<HTMLElement>) => void;
   connectedDragRef: React.RefObject<HTMLElement>;
   isContextMenuOpen?: boolean;
-};
+}
 
 export type DnDItemProps<I> = InternalItem<I> & {
   type: string;

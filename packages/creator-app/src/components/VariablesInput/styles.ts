@@ -5,7 +5,7 @@ import { css, styled } from '@/hocs';
 const SCROLLBAR_WIDTH = getScrollbarWidth();
 const MINIMUM_SCROLLBAR_WIDTH = 44;
 
-export const Container = styled.div<{ multiline: boolean; fullWidth: boolean }>`
+export const Container = styled.div<{ multiline?: boolean; fullWidth?: boolean }>`
   ${({ multiline }) =>
     !multiline &&
     css`

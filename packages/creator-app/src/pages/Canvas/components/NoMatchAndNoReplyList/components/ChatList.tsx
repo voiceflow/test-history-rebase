@@ -2,7 +2,7 @@ import { ChatModels } from '@voiceflow/chat-types';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
-import { MAX_SPEAK_ITEMS_COUNT } from '@/constants';
+import { MAX_SYSTEM_MESSAGES_COUNT } from '@/constants';
 import TextList from '@/pages/Canvas/components/TextList';
 
 import { NoMatchChatListItem, NoReplyChatListItem } from './ListItem';
@@ -38,7 +38,7 @@ const ChatList: React.FC<ChatListProps> = ({
           )
     }
     items={reprompts}
-    maxItems={MAX_SPEAK_ITEMS_COUNT}
+    maxItems={MAX_SYSTEM_MESSAGES_COUNT}
     randomize={randomize}
     itemComponent={isNoReply ? NoReplyChatListItem : NoMatchChatListItem}
     onChangeItems={onChangeReprompts}

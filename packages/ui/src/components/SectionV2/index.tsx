@@ -1,38 +1,58 @@
 import React from 'react';
 
 import {
+  ActionCollapseSection,
+  ActionListSection,
   ActionsContainer,
-  AddCollapseSection,
+  AddButton,
+  AddButtonDropdown,
+  CollapseArrowIcon,
   CollapseSection,
   Container,
+  ContainerProps,
   Content,
   Divider,
   Header,
+  LinkArrowIcon,
+  LinkSection,
   ListItem,
+  RemoveButton,
   SimpleSection,
+  Status,
+  Sticky,
   Title,
 } from './components';
 
-interface SectionV2Props {
+interface SectionV2Props extends ContainerProps {
   header?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const SectionV2: React.FC<SectionV2Props> = ({ header, children }) => (
-  <Container>
+const SectionV2: React.ForwardRefRenderFunction<HTMLDivElement, SectionV2Props> = ({ header, children, ...containerProps }, ref) => (
+  <Container ref={ref} {...containerProps}>
     {header}
     {children}
   </Container>
 );
 
-export default Object.assign(SectionV2, {
+export default Object.assign(React.forwardRef(SectionV2), {
   Title,
+  Sticky,
+  Status,
   Header,
   Divider,
   Content,
   ListItem,
+  AddButton,
   Container,
+  LinkSection,
+  RemoveButton,
+  LinkArrowIcon,
   SimpleSection,
   CollapseSection,
   ActionsContainer,
-  AddCollapseSection,
+  CollapseArrowIcon,
+  ActionListSection,
+  AddButtonDropdown,
+  ActionCollapseSection,
 });

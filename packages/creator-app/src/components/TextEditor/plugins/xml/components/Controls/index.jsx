@@ -98,6 +98,7 @@ export default function Controls({
             onClose={onHideFakeSelection}
             options={addOptions}
             minWidth={false}
+            useLayers
             onSelect={onAddTag}
             autoWidth={false}
             placement="bottom-end"

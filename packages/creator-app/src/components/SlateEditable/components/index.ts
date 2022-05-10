@@ -2,6 +2,7 @@ export { default as DefaultElement } from './DefaultElement';
 export * from './ElementButtons';
 export { default as FontStyles } from './FontStyles';
 export { default as HyperlinkButton } from './HyperlinkButton';
+export { default as IconButton } from './IconButton';
 export { default as LinkElement } from './LinkElement';
 export { default as Placeholder } from './Placeholder';
 export { default as PopperContent } from './PopperContent';

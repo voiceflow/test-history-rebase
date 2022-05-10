@@ -7,7 +7,7 @@ import MetaDataLineItem from '../../MetaDataLineItem';
 import LineItemsSection from './LineItemsSection';
 
 function MappingOutput({ mapping, onChange, factory }) {
-  const { onAdd, mapManaged } = useManager(mapping, (mapping) => onChange({ mapping }), { factory });
+  const { onAdd, mapManaged } = useManager(mapping ?? [], (mapping) => onChange({ mapping }), { factory });
 
   return (
     <LineItemsSection header="Transform into Variables" onAdd={onAdd} dividers>

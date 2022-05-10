@@ -1,9 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, SectionV2 } from '@voiceflow/ui';
+import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import PromptForm from '@/components/PromptForm';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
@@ -11,12 +10,12 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
-import { getPlatformIntentPromptFactory, isEmptyPrompt } from '@/utils/prompt';
+import { getPlatformIntentPromptFactory } from '@/utils/prompt';
 import { isAlexaPlatform } from '@/utils/typeGuards';
 
-const PATH = ':intentID/entities/:entityID' as const;
+import PromptConfirmSection from './PromptConfirmSection';
 
-const EntityEditor: React.FC = () => {
+const Editor: React.FC = () => {
   const platform = React.useContext(PlatformContext)!;
   const projectType = React.useContext(ProjectTypeContext)!;
 
@@ -63,50 +62,41 @@ const EntityEditor: React.FC = () => {
   };
 
   const isAlexa = isAlexaPlatform(platform);
+  const hasDialogPrompt = !!intentEntity?.dialog.prompt.length;
+  const hasDialogConfirm = !!intentEntity?.dialog.confirm.length;
+  const withDialogConfirm = !!intentEntity?.dialog.confirmEnabled && hasDialogConfirm;
 
   return (
     <EditorV2 header={<EditorV2.DefaultHeader onBack={editor.goBack} />}>
       {!!intentEntity && (
         <>
-          <SectionV2.AddCollapseSection
+          <PromptConfirmSection
             title="Entity prompt"
             onAdd={onAddPrompt}
+            prompt={intentEntity.dialog.prompt}
+            onChange={(prompt) => !promptRemovingRef.current && updateIntentSlotDialog({ prompt } as Partial<Realtime.IntentSlotDialog>)}
             onRemove={onRemovePrompt}
-            collapsed={!intentEntity?.dialog.prompt.length}
-          >
-            <Box pt={4}>
-              <PromptForm
-                slots={intentEntities}
-                prompt={intentEntity.dialog.prompt}
-                onChange={(prompt) => !promptRemovingRef.current && updateIntentSlotDialog({ prompt } as Partial<Realtime.IntentSlotDialog>)}
-                autofocus={isEmptyPrompt(intentEntity.dialog.prompt[0])}
-                placeholder="Enter question to prompt user to fill entity"
-              />
-            </Box>
-          </SectionV2.AddCollapseSection>
+            collapsed={!hasDialogPrompt}
+            placeholder="Enter question to prompt user to fill entity"
+            intentEntities={intentEntities}
+          />
 
           <SectionV2.Divider />
 
           {isAlexa && (
             <>
-              <SectionV2.AddCollapseSection
+              <PromptConfirmSection
                 title="Confirmation"
                 onAdd={onAddConfirm}
+                prompt={intentEntity.dialog.confirm}
+                onChange={(confirm) =>
+                  !confirmRemovingRef.current && updateIntentSlotDialog({ confirm, confirmEnabled: true } as Partial<Realtime.IntentSlotDialog>)
+                }
                 onRemove={onRemoveConfirm}
-                collapsed={!intentEntity?.dialog.confirmEnabled || !intentEntity?.dialog.confirm.length}
-              >
-                <Box pt={4}>
-                  <PromptForm
-                    slots={intentEntities}
-                    prompt={intentEntity.dialog.confirm}
-                    onChange={(confirm) =>
-                      !confirmRemovingRef.current && updateIntentSlotDialog({ confirm, confirmEnabled: true } as Partial<Realtime.IntentSlotDialog>)
-                    }
-                    autofocus={isEmptyPrompt(intentEntity.dialog.confirm[0])}
-                    placeholder="Yes or no question to confirm the entity value"
-                  />
-                </Box>
-              </SectionV2.AddCollapseSection>
+                collapsed={!withDialogConfirm}
+                placeholder="Yes or no question to confirm the entity value"
+                intentEntities={intentEntities}
+              />
 
               <SectionV2.Divider />
             </>
@@ -117,4 +107,4 @@ const EntityEditor: React.FC = () => {
   );
 };
 
-export default Object.assign(EntityEditor, { PATH });
+export default Editor;

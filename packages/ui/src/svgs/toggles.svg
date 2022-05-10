@@ -1,0 +1,5 @@
+<svg viewBox="0 0 16 17" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g transform="translate(0 .5)" fill="none" fill-rule="evenodd">
+    <path d="M4 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM1 5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm11 7.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM9 11a3 3 0 1 1 6 0 3 3 0 0 1-6 0zM8 4.75A.75.75 0 0 1 8.75 4h5.5a.75.75 0 0 1 0 1.5h-5.5A.75.75 0 0 1 8 4.75zM1.75 10a.75.75 0 0 0 0 1.5h5.5a.75.75 0 0 0 0-1.5h-5.5z" fill="currentColor" />
+  </g>
+</svg>

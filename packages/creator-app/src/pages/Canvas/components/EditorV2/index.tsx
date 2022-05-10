@@ -6,7 +6,22 @@ import perf, { PerfAction } from '@/performance';
 import { Identifier } from '@/styles/constants';
 
 import { EditorAnimationEffect } from '../../constants';
-import { ActionsButton, AnimatedContent, Container, Content, DefaultFooter, DefaultHeader, Footer, Header, Tutorial } from './components';
+import {
+  AnimatedContent,
+  Container,
+  Content,
+  DefaultFooter,
+  DefaultHeader,
+  Footer,
+  FooterActionsButton,
+  FooterActionsContainer,
+  Header,
+  HeaderActionsButton,
+  PersistCollapse,
+  RedirectToRoot,
+  Tutorial,
+} from './components';
+import { withRedirectToRoot } from './hocs';
 import { useEditor } from './hooks';
 
 interface EditorV2Props {
@@ -43,12 +58,17 @@ const EditorV2: React.FC<EditorV2Props> = ({ header, footer, children, fillHeigh
 
 export default Object.assign(EditorV2, {
   useEditor,
+  withRedirectToRoot,
   AnimationEffect: EditorAnimationEffect,
 
   Footer,
   Header,
   Tutorial,
-  ActionsButton,
   DefaultFooter,
   DefaultHeader,
+  RedirectToRoot,
+  PersistCollapse,
+  FooterActionsButton,
+  HeaderActionsButton,
+  FooterActionsContainer,
 });

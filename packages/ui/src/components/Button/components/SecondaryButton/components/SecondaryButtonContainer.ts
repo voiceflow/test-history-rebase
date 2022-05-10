@@ -8,15 +8,34 @@ export interface SecondaryButtonContainerProps extends ButtonContainerProps {
   isActive?: boolean;
 }
 
-const hoverStyles = css<SecondaryButtonContainerProps>`
-  background-color: ${({ flat }) => (flat ? 'rgba(238, 244, 246, 1)' : '#e0ebee')};
+const hoverActiveStyles = css`
+  background-color: #e0ebee;
+
   & ${Icon} {
     color: ${({ theme }) => theme.buttonIconColors.hover};
   }
 `;
 
+const flatHoverStyles = css`
+  background-color: #eff5f6;
+  box-shadow: 0 0 0 1px rgba(204, 211, 228, 0.8);
+
+  & ${Icon} {
+    color: ${({ theme }) => theme.buttonIconColors.hover};
+  }
+`;
+
+const flatActiveStyles = css`
+  background-color: #e7f0f2;
+  box-shadow: 0 0 0 1px rgba(204, 211, 228, 1);
+
+  & ${Icon} {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
 const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonContainerProps>`
-  ${transition('background', 'opacity', 'box-shadow', 'background-color')}
+  ${transition('color', 'opacity', 'box-shadow', 'background-color')}
   box-sizing: border-box;
   padding: 9px 22px 10px;
   color: ${colors(ThemeColor.PRIMARY)};
@@ -35,12 +54,14 @@ const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonContaine
   ${({ flat }) =>
     flat &&
     css`
-      padding: 9px 18px 10px;
-      background-color: rgba(238, 244, 246, 0.7);
+      padding: 11px 20px 10px;
+      background-color: #f2f7f8;
       border-radius: 10px;
+      box-shadow: 0 0 0 1px rgba(204, 211, 228, 0.6);
+      border: 1px solid #fff;
     `}
 
-  ${({ disabled }) =>
+  ${({ flat, disabled }) =>
     disabled
       ? css`
           color: rgba(19, 33, 68, 0.5);
@@ -51,16 +72,23 @@ const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonContaine
           }
         `
       : css`
-          &:hover,
+          &:hover {
+            ${flat ? flatHoverStyles : hoverActiveStyles}
+          }
+
           &:active {
-            ${hoverStyles}
+            ${flat ? flatActiveStyles : hoverActiveStyles}
           }
         `}
 
-  ${({ isActive }) =>
+  ${({ flat, isActive }) =>
     isActive &&
     css`
-      ${hoverStyles}
+      ${flat ? flatActiveStyles : hoverActiveStyles}
+
+      &:hover {
+        ${flat ? flatActiveStyles : hoverActiveStyles}
+      }
     `}
 `;
 

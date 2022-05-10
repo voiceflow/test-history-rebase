@@ -16,8 +16,6 @@ import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '@/pages/Canvas/ma
 import { getIconColor } from '@/styles/theme/block';
 import { prettifyBucketURL } from '@/utils/audio';
 
-const VariablesInputComponent: React.FC<any> = VariablesInput;
-
 export type SpeakAudioItemProps = ListItemComponentProps<
   Realtime.SpeakData,
   {
@@ -94,7 +92,7 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
               />
               {isGoogle && item.url && (
                 <Box mt={12}>
-                  <VariablesInputComponent value={item.desc || ''} onBlur={updateDesc} placeholder="Enter audio description" multiline />
+                  <VariablesInput value={item.desc || ''} onBlur={updateDesc} placeholder="Enter audio description" multiline />
                 </Box>
               )}
             </>

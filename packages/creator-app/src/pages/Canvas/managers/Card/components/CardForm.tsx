@@ -6,8 +6,6 @@ import VariablesInput from '@/components/VariablesInput';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { FadeLeftContainer } from '@/styles/animations';
 
-const VariablesInputAny = VariablesInput as any;
-
 interface CardFormProps {
   data: Realtime.NodeData<Realtime.NodeData.Card>;
   onChange: (data: Partial<Realtime.NodeData.Card>) => void;
@@ -23,11 +21,11 @@ const CardForm: React.FC<CardFormProps> = ({ data, onChange, withImage }) => {
   return (
     <>
       <FormControl label="Title">
-        <VariablesInputAny value={data.title} onBlur={updateTitle} placeholder="Welcome to My Project!" />
+        <VariablesInput value={data.title} onBlur={updateTitle} placeholder="Welcome to My Project!" />
       </FormControl>
 
       <FormControl label="Card Text" contentBottomUnits={!withImage ? 0 : undefined}>
-        <VariablesInputAny value={data.content} onBlur={updateContent} multiline placeholder="Thanks for signing up, let's begin!" newLineOnEnter />
+        <VariablesInput value={data.content} onBlur={updateContent} multiline placeholder="Thanks for signing up, let's begin!" newLineOnEnter />
       </FormControl>
 
       {withImage && (

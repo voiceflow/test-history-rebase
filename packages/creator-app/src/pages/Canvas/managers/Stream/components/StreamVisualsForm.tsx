@@ -7,8 +7,6 @@ import VariablesInput from '@/components/VariablesInput';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 
-const VariablesInputAny = VariablesInput as any;
-
 interface StreamVisualsFormProps {
   data: Realtime.NodeData<Realtime.NodeData.Stream>;
   onChange: (data: Partial<Realtime.NodeData.Stream>) => void;
@@ -32,11 +30,11 @@ const StreamVisualsForm: React.FC<StreamVisualsFormProps> = ({ data, onChange })
       status={<>{isAdded ? 'Added' : 'Not Added'}</>}
     >
       <FormControl label="Title">
-        <VariablesInputAny placeholder="Stream title" onBlur={updateTitle} value={data.title} />
+        <VariablesInput placeholder="Stream title" onBlur={updateTitle} value={data.title} />
       </FormControl>
 
       <FormControl label="Description">
-        <VariablesInputAny placeholder="Stream description" onBlur={updateDescription} value={data.description} />
+        <VariablesInput placeholder="Stream description" onBlur={updateDescription} value={data.description} />
       </FormControl>
 
       <FormControl label="Icon">

@@ -9,8 +9,6 @@ import { useExpressionValidation } from '@/hooks';
 
 import ConditionExpressionTooltip from './ConditionExpressionTooltip';
 
-const VariablesInputComponent: any = VariablesInput;
-
 export interface ConditionExpressionProps {
   expression: Realtime.ExpressionV2;
   onChange: (value: Realtime.ExpressionV2) => void;
@@ -44,15 +42,15 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, o
       </Box>
 
       <BoxFlex fullWidth>
-        <VariablesInputComponent
+        <VariablesInput
           error={error}
-          onFocus={resetError}
-          value={expression.value}
+          value={expression.value as string}
           onBlur={onUpdate}
-          placeholder="Enter Expression"
+          onFocus={resetError}
           multiline
-          skipBlurOnUnmount
           fullWidth
+          placeholder="Enter Expression"
+          skipBlurOnUnmount
         />
 
         <RemoveIcon onClick={onDelete} />

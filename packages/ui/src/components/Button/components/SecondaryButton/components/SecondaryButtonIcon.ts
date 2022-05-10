@@ -1,6 +1,6 @@
 import { css, styled, transition } from '@ui/styles';
 
-interface SecondaryButtonIconProps {
+export interface SecondaryButtonIconProps {
   withoutChildren?: boolean;
 }
 

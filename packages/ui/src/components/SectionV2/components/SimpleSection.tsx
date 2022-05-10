@@ -1,15 +1,15 @@
 import React from 'react';
 
-import Container from './Container';
+import Container, { ContainerProps } from './Container';
 import Header from './Header';
 
-export interface SimpleSectionProps {
+export interface SimpleSectionProps extends ContainerProps {
   onClick?: VoidFunction;
 }
 
-const SimpleSection: React.FC<SimpleSectionProps> = ({ onClick, children }) => (
-  <Container>
-    <Header onClick={onClick}>{children}</Header>
+const SimpleSection: React.FC<SimpleSectionProps> = ({ isAccent, onClick, children, ...containerProps }) => (
+  <Container onClick={onClick} {...containerProps}>
+    <Header>{children}</Header>
   </Container>
 );
 

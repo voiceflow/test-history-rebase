@@ -126,7 +126,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({ intentID, diagramID
       getOptionValue={(option) => option?.id}
       getOptionLabel={(value) => (value ? optionLookup[value]?.label : undefined)}
       renderEmpty={({ close, search }) => (
-        <Box flex={1} textAlign="center">
+        <Box flex={1} fontSize={13} textAlign="center">
           {!search ? 'No open intents exists in your project. ' : 'No open intents found. '}
           <Link href={Documentation.OPEN_INTENT} onClick={close}>
             Learn more

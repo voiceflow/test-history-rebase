@@ -25,8 +25,6 @@ import { RECURRENCE_OPTIONS } from './constants';
 const USER_TIMEZONE = 'User Timezone';
 const TIMEZONE_OPTIONS = [USER_TIMEZONE, ...Utils.timezones.TIMEZONES];
 
-const VariablesInputComponent: any = VariablesInput;
-
 export interface ReminderFormProps {
   data: Realtime.NodeData.Reminder & { voice?: string };
   onChange: (data: Partial<Realtime.NodeData.Reminder>) => void;
@@ -110,13 +108,13 @@ const ReminderForm: React.FC<ReminderFormProps> = ({ data, withDate, onChange })
           <TimeLabel>MINUTES</TimeLabel>
           <TimeLabel>SECONDS</TimeLabel>
           <VariableInputContainer width={107}>
-            <VariablesInputComponent placeholder="24" value={hours} onBlur={updateTime('hours')} />
+            <VariablesInput placeholder="24" value={hours} onBlur={updateTime('hours')} />
           </VariableInputContainer>
           <VariableInputContainer width={118}>
-            <VariablesInputComponent placeholder="60" value={minutes} onBlur={updateTime('minutes')} />
+            <VariablesInput placeholder="60" value={minutes} onBlur={updateTime('minutes')} />
           </VariableInputContainer>
           <VariableInputContainer width={122}>
-            <VariablesInputComponent placeholder="60" value={seconds} onBlur={updateTime('seconds')} />
+            <VariablesInput placeholder="60" value={seconds} onBlur={updateTime('seconds')} />
           </VariableInputContainer>
         </TimeContainer>
       </Section>

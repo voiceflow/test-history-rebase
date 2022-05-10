@@ -6,6 +6,7 @@ export interface ListItemContentProps {
 }
 
 const activeStyle = css`
+  border-radius: 6px;
   background: ${({ theme }) => theme.backgrounds.greyGreen};
 
   ${SvgIconContainer} {
@@ -18,22 +19,24 @@ const ListItemContent = styled.div<ListItemContentProps>`
 
   display: flex;
   flex: 1;
-  padding: ${units(1.25)}px ${units(2)}px;
-  border-radius: 6px;
+  align-items: center;
+  min-height: ${units(5.25)}px;
+  padding: 0 ${units()}px 0 ${units(2)}px;
 
   ${({ onClick }) =>
     !!onClick &&
     css`
       cursor: pointer;
       user-select: none;
+      border-radius: 6px;
+
+      &:hover {
+        ${activeStyle}
+      }
     `}
 
   ${SvgIconContainer} {
     opacity: 0.8;
-  }
-
-  &:hover {
-    ${activeStyle}
   }
 
   ${({ isActive }) => isActive && activeStyle}

@@ -17,12 +17,12 @@ const simple = createExample(
 );
 
 const simpleWithTitleAndControl = createExample(
-  'simple with title and control',
+  'simple with title, control and accent',
   withBackground(() => {
     const [bold, onToggle] = useToggle();
 
     return (
-      <SectionV2.SimpleSection onClick={onToggle}>
+      <SectionV2.SimpleSection isAccent onClick={onToggle}>
         <SectionV2.Title bold={bold}>{bold ? 'Disable' : 'Enable'} bold Title</SectionV2.Title>
 
         <Toggle checked={bold} />
@@ -31,13 +31,22 @@ const simpleWithTitleAndControl = createExample(
   })
 );
 
+const linkSection = createExample(
+  'link section',
+  withBackground(() => (
+    <SectionV2.LinkSection onClick={console.log}>
+      <SectionV2.Title>Link</SectionV2.Title>
+    </SectionV2.LinkSection>
+  ))
+);
+
 const collapseHeaderContentToggle = createExample(
   'collapse header content toggle',
   withBackground(() => (
     <SectionV2.CollapseSection
-      renderHeader={({ onToggle, collapsed }) => (
+      header={({ onToggle, collapsed }) => (
         <SectionV2.Header>
-          <SectionV2.Title>Title</SectionV2.Title>
+          <SectionV2.Title bold={!collapsed}>Title</SectionV2.Title>
 
           <SectionV2.ActionsContainer>
             <IconButton icon={collapsed ? 'add' : 'close'} variant={IconButtonVariant.BASIC} onClick={onToggle} />
@@ -55,10 +64,10 @@ const collapseContainerToggle = createExample(
   withBackground(() => (
     <SectionV2.CollapseSection
       containerToggle
-      initialCollapsed={true}
-      renderHeader={({ collapsed }) => (
+      defaultCollapsed={true}
+      header={({ collapsed }) => (
         <SectionV2.Header>
-          <SectionV2.Title>{collapsed ? 'Open' : 'Close'}</SectionV2.Title>
+          <SectionV2.Title bold={!collapsed}>{collapsed ? 'Open' : 'Close'}</SectionV2.Title>
         </SectionV2.Header>
       )}
     >
@@ -73,23 +82,33 @@ const addCollapseSection = createExample(
     const [collapsed, setCollapsed] = React.useState(false);
 
     return (
-      <SectionV2.AddCollapseSection title="Title" collapsed={collapsed} onAdd={() => setCollapsed(false)} onRemove={() => setCollapsed(true)}>
-        <SectionV2.ListItem>Simple item</SectionV2.ListItem>
+      <SectionV2.ActionCollapseSection
+        title={<SectionV2.Title bold={!collapsed}>Title</SectionV2.Title>}
+        action={
+          collapsed ? <SectionV2.AddButton onClick={() => setCollapsed(false)} /> : <SectionV2.RemoveButton onClick={() => setCollapsed(true)} />
+        }
+        collapsed={collapsed}
+      >
+        <SectionV2.ListItem actionCentred onClick={console.log}>
+          Simple item
+        </SectionV2.ListItem>
 
-        <SectionV2.ListItem icon="entities">Item with icon</SectionV2.ListItem>
+        <SectionV2.ListItem icon="entities" actionCentred onClick={console.log}>
+          Item with icon
+        </SectionV2.ListItem>
 
-        <SectionV2.ListItem icon="entities" isActive>
+        <SectionV2.ListItem icon="entities" isActive actionCentred onClick={console.log}>
           Active icon
         </SectionV2.ListItem>
 
-        <SectionV2.ListItem icon="entities" actionIcon="minus" onActionClick={console.log}>
+        <SectionV2.ListItem icon="entities" action={<SectionV2.RemoveButton />} actionCentred onClick={console.log}>
           Item with icon and action
         </SectionV2.ListItem>
 
-        <SectionV2.ListItem icon="entities" actionIcon="minus" onActionClick={console.log} iconWarning="Some message">
+        <SectionV2.ListItem icon="entities" action={<SectionV2.RemoveButton />} iconWarning="Some message" actionCentred onClick={console.log}>
           Item with icon, action and warning
         </SectionV2.ListItem>
-      </SectionV2.AddCollapseSection>
+      </SectionV2.ActionCollapseSection>
     );
   })
 );
@@ -114,6 +133,7 @@ const sectionsWithDividerBetween = createExample(
 export default createSection('SectionV2', 'src/components/SectionV2/index.tsx', [
   simple,
   simpleWithTitleAndControl,
+  linkSection,
   collapseHeaderContentToggle,
   collapseContainerToggle,
   addCollapseSection,

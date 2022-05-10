@@ -17,8 +17,6 @@ import { PlatformContext } from '@/pages/Project/contexts';
 
 import { HelpMessage, HelpTooltip, VisualsForm } from './components';
 
-const VariablesInputAny = VariablesInput as any;
-
 const isValidURL = (url: string): boolean => !!(url.match(HTTPS_URL_REGEX) || url.match(SLOT_REGEXP));
 
 const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ data, node, engine, onChange }) => {
@@ -73,7 +71,7 @@ const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.Strea
         <FormControl>
           <label htmlFor="audio-url">Audio Url or Variable</label>
 
-          <VariablesInputAny
+          <VariablesInput
             placeholder="AAC, MP4, MP3, HLS, PLS, M3U are supported"
             value={data.audio}
             onBlur={updateAudio}

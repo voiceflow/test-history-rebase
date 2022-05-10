@@ -10,7 +10,6 @@ const IconContainer = styled.div<IconContainerProps>`
   cursor: pointer;
   display: inline-block;
   color: #becedc;
-  top: 3px;
 
   ${({ isOpen }) =>
     isOpen &&

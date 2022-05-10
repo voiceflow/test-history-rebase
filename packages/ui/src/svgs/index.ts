@@ -17,6 +17,7 @@ export { default as arrowDown } from './arrow-down.svg';
 export { default as arrowLeft } from './arrow-left.svg';
 export { default as arrowRight } from './arrow-right.svg';
 export { default as arrowRightTopics } from './arrow-right-topics.svg';
+export { default as arrowToggle } from './arrow-toggle.svg';
 export { default as audioPlayer } from './audio-player.svg';
 export { default as amazon } from './brands/amazon.svg';
 
@@ -29,6 +30,8 @@ export { default as blocks } from './blocks.svg';
 export { default as bookmark } from './bookmark.svg';
 export { default as bookmark2 } from './bookmark-2.svg';
 export { default as builtInIntent } from './built-in-intent.svg';
+export { default as radar } from './radar.svg';
+export { default as toggles } from './toggles.svg';
 
 // c
 export { default as call } from './call.svg';

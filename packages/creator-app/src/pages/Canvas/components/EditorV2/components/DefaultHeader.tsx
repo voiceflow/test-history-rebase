@@ -1,13 +1,13 @@
-import { Box, IconButton, SectionV2 } from '@voiceflow/ui';
+import { Box, IconButton, OptionsMenuOption, SectionV2, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import { useEditor } from '../hooks';
-import ActionsButton, { Action } from './ActionsButton';
 import Header, { HeaderProps } from './Header';
+import HeaderActionsButton from './HeaderActionsButton';
 
 interface DefaultHeaderProps extends Partial<HeaderProps> {
   onBack?: VoidFunction;
-  actions?: Action[];
+  actions?: Array<OptionsMenuOption | UIOnlyMenuItemOption>;
 }
 
 const DefaultHeader: React.FC<DefaultHeaderProps> = ({ title, actions, onBack }) => {
@@ -25,7 +25,7 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({ title, actions, onBack })
       }
     >
       <SectionV2.ActionsContainer>
-        <ActionsButton actions={actions} />
+        <HeaderActionsButton actions={actions} />
       </SectionV2.ActionsContainer>
     </Header>
   );

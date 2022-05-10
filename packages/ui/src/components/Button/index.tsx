@@ -4,11 +4,19 @@ import cn from 'classnames';
 import React from 'react';
 
 import {
+  BaseButton,
+  baseButtonStyles,
+  ButtonContainer,
   PrimaryButton,
+  PrimaryButtonContainer,
+  PrimaryButtonIcon,
+  PrimaryButtonLabel,
   PrimaryButtonProps,
   QuaternaryButton,
   QuaternaryButtonProps,
   SecondaryButton,
+  SecondaryButtonContainer,
+  SecondaryButtonIcon,
   SecondaryButtonProps,
   TertiaryButton,
   TertiaryButtonProps,
@@ -41,4 +49,19 @@ const Button: React.ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
   );
 };
 
-export default React.forwardRef<HTMLButtonElement, ButtonProps>(Button);
+export default Object.assign(React.forwardRef<HTMLButtonElement, ButtonProps>(Button), {
+  Variant: ButtonVariant,
+  baseButtonStyles,
+
+  BaseButton,
+  PrimaryButton,
+  TertiaryButton,
+  ButtonContainer,
+  SecondaryButton,
+  QuaternaryButton,
+  PrimaryButtonIcon,
+  PrimaryButtonLabel,
+  SecondaryButtonIcon,
+  PrimaryButtonContainer,
+  SecondaryButtonContainer,
+});

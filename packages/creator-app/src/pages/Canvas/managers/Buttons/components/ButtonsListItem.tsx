@@ -27,8 +27,6 @@ import { containsSlotOtVariable, getValidHref, isAnyLink } from '@/utils/string'
 import { BUTTON_OPTIONS, ButtonAction } from '../constants';
 import HelpTooltip from './HelpTooltip';
 
-const VariablesInputComponent = VariablesInput as React.FC<any>;
-
 export type ButtonsListItemProps = ListItemComponentProps<BaseNode.Buttons.Button, { pushToPath: (path: { type: string; label: string }) => void }>;
 
 const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsListItemProps> = (
@@ -101,9 +99,9 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
       {isDragging || isDraggingPreview ? null : (
         <>
           <FormControl contentBottomUnits={2.5}>
-            <VariablesInputComponent
+            <VariablesInput
               value={name}
-              onBlur={({ text }: { text: string }) => onUpdate({ name: text.trim() })}
+              onBlur={({ text }) => onUpdate({ name: text.trim() })}
               fullWidth
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus={isNew}
@@ -125,9 +123,9 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
 
           {urlChecked && (
             <Section isNested isDividerNested isDividerBottom>
-              <VariablesInputComponent
-                value={url}
-                onBlur={({ text }: { text: string }) =>
+              <VariablesInput
+                value={url ?? ''}
+                onBlur={({ text }) =>
                   !text || containsSlotOtVariable(text) || isAnyLink(text)
                     ? onUpdate({ url: text })
                     : toast.error('URL is not valid, please enter valid link')

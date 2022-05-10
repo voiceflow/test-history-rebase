@@ -1,19 +1,16 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { NodeManagerConfig } from '../types';
-import ChoiceEditor from './ChoiceEditor';
-import ChoiceStep from './ChoiceStep';
+import { NodeManagerConfigV2 } from '../types';
+import { Editor, Step } from './components';
 import { NODE_CONFIG } from './constants';
-import { EDITORS_BY_PATH } from './subeditors';
 
-const ChoiceManager: NodeManagerConfig<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = {
+const ChoiceManager: NodeManagerConfigV2<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = {
   ...NODE_CONFIG,
 
   label: 'Choice',
 
-  step: ChoiceStep,
-  editor: ChoiceEditor,
-  editorsByPath: EDITORS_BY_PATH,
+  step: Step,
+  editorV2: Editor,
 };
 
 export default ChoiceManager;

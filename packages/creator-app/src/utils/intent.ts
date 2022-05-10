@@ -1,8 +1,10 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
+import { BaseButton } from '@voiceflow/base-types';
 import { Nullable, Nullish, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Normalized } from 'normal-store';
 
@@ -245,3 +247,16 @@ export const inferIntentSlotType: {
     slot: Omit<Partial<Realtime.IntentSlotDialog>, 'dialog'> & { dialog: T }
   ): T extends Realtime.ChatIntentSlotDialog ? Partial<Realtime.ChatIntentSlot> : Partial<Realtime.VoiceIntentSlot>;
 } = (slot: any): any => slot;
+
+// Temporary until ML stuff is done
+export const getIntentStrengthLevel = (count: number) => {
+  if (count === 0) return StrengthGauge.Level.NOT_SET;
+  if (count < 3) return StrengthGauge.Level.WEAK;
+  if (count < 5) return StrengthGauge.Level.MEDIUM;
+  if (count < 7) return StrengthGauge.Level.STRONG;
+  if (count >= 7) return StrengthGauge.Level.VERY_STRONG;
+
+  return StrengthGauge.Level.NOT_SET;
+};
+
+export const intentButtonFactory = (): BaseButton.IntentButton => ({ name: '', type: BaseButton.ButtonType.INTENT, payload: { intentID: null } });

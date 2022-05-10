@@ -13,7 +13,7 @@ export interface TooltipProps {
 
 const Tooltip: React.FC<TooltipProps> = ({ placement = 'auto-end', children, portalNode, anchorRenderer, initialOpened }) => (
   <Popper
-    width="440px"
+    width="410px"
     maxHeight="500px"
     placement={placement}
     portalNode={portalNode}

@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import { useCachedValue, useCreateConst } from '@voiceflow/ui';
 // eslint-disable-next-line lodash/import-scope
 import type { DebouncedFunc } from 'lodash';
 import _debounce from 'lodash/debounce';
@@ -21,29 +22,40 @@ type OnChange<T extends {}> = (items: T[], save?: boolean) => void;
 interface MapManagedRenderOptions<T extends {}> {
   key: string;
   index: number;
+  isLast: boolean;
+  isFirst: boolean;
   onUpdate: (value: Partial<T>) => void;
   onRemove: () => void;
   toggleOpen: () => void;
 }
 interface MapManagedOptions<T extends {}, F extends any[]> {
   clone?: (initVal: T, targetVal: T) => T;
+  onAdd?: (value: T, index: number) => void;
   getKey?: (value: T) => string;
   factory?: (...args: F) => T;
   maxItems?: number;
   autosave?: boolean;
+  onRemove?: (value: T, index: number) => void;
   debounced?: boolean;
+  onReorder?: (from: number, to: number) => void;
+
+  /**
+   * @deprecated use onRemove instead
+   */
   handleRemove?: (value: T, index: number) => void;
 }
 
 export type MapManaged<T extends {}> = (render: (item: T, options: MapManagedRenderOptions<T>) => React.ReactNode) => React.ReactNode[];
 
 export interface MapManagedAPI<T extends {}, F extends any[]> {
+  size: number;
   keys: string[];
   items: T[];
-  onAdd: (...args: F) => void;
+  onAdd: (...args: F) => Promise<void>;
+  getIndex: (key: string) => number;
   onUpdate: (key: string, value: Partial<T>) => void;
   onRemove: (key: string) => Promise<void>;
-  onReorder: (from: number, to: number) => void;
+  onReorder: (from: number, to: number) => Promise<void>;
   toggleOpen: (key: string) => void;
   mapManaged: MapManaged<T>;
   onDuplicate: (to: number, item: T, ...args: F) => void;
@@ -53,29 +65,35 @@ export interface MapManagedAPI<T extends {}, F extends any[]> {
 }
 
 export const useManager = <T extends {}, F extends any[]>(
-  items: T[] = [],
+  items: T[],
   onChange: (items: T[], save?: boolean) => void,
   {
     clone = Utils.functional.identity,
+    onAdd: handleAdd,
     getKey,
-    maxItems,
     factory = Utils.functional.identity as any,
+    maxItems,
     autosave = true,
     debounced = true,
-    handleRemove,
+    onReorder: handleReorder,
+    handleRemove: deprecatedHandleRemove,
+    onRemove: handleRemove = deprecatedHandleRemove,
   }: MapManagedOptions<T, F> = {}
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 ): MapManagedAPI<T, F> => {
-  const keyLookup = React.useRef<Map<T | [T, number], string>>();
-  const normalized = React.useRef<Normal.Normalized<T>>();
-  const cachedOnChange = React.useRef<OnChange<T>>();
+  const [forceUpdate] = useForceUpdate();
+
+  const defaultKeyLookup = useCreateConst<Map<T | [T, number], string>>(() => new Map());
+  const defaultNormalized = useCreateConst<Normal.Normalized<T>>(() => Normal.createEmpty());
+
+  const keyLookup = React.useRef<Map<T | [T, number], string>>(defaultKeyLookup);
+  const normalized = React.useRef<Normal.Normalized<T>>(defaultNormalized);
   const latestCreatedKey = React.useRef<string>();
 
-  const [forceUpdate] = useForceUpdate();
   const isMaxMatches = maxItems == null ? false : items.length >= maxItems;
 
-  const generateLookupKey = React.useMemo(
-    () => moize((value: T, index: number): T | [T, number] => (value !== null && UNIQUE_TYPES.has(typeof value) ? value : [value, index])),
-    []
+  const generateLookupKey = useCreateConst(() =>
+    moize((value: T, index: number): T | [T, number] => (value !== null && UNIQUE_TYPES.has(typeof value) ? value : [value, index]))
   );
 
   const generateKey = React.useCallback((value: T) => getKey?.(value) || Utils.id.cuid.slug(), [getKey]);
@@ -83,28 +101,28 @@ export const useManager = <T extends {}, F extends any[]>(
   const setDependencies = useLazy(
     () => {
       keyLookup.current = new Map(items.map((item, index) => [generateLookupKey(item, index), IS_TEST ? String(index) : generateKey(item)]));
-      normalized.current = Normal.normalize<T>(items, (item, index) => keyLookup.current!.get(generateLookupKey(item, index))!);
+      normalized.current = Normal.normalize<T>(items, (item, index) => keyLookup.current.get(generateLookupKey(item, index))!);
     },
     [items],
     ([nextItems], [prevItems]) => Utils.array.hasIdenticalMembers<T>(nextItems, prevItems)
   );
 
-  cachedOnChange.current = (denormolized: T[], save?: boolean) => {
+  const cachedOnChange = useCachedValue<OnChange<T>>((denormolized: T[], save?: boolean) => {
     setDependencies([denormolized]);
     onChange(denormolized, save);
-  };
+  });
 
   const debouncedOnChange = React.useMemo<OnChange<T> | DebouncedFunc<OnChange<T>>>(
     () =>
       debounced
-        ? _debounce((denormolized: T[], save?: boolean) => cachedOnChange.current!(denormolized, save), DEBOUNCE_TIMEOUT)
-        : cachedOnChange.current!,
+        ? _debounce((denormolized: T[], save?: boolean) => cachedOnChange.current(denormolized, save), DEBOUNCE_TIMEOUT)
+        : cachedOnChange.current,
     [debounced]
   );
 
-  const getItem = React.useCallback((key: string) => normalized.current!.byKey[key], []);
+  const getItem = React.useCallback((key: string) => normalized.current.byKey[key], []);
 
-  const getIndex = React.useCallback((key: string) => normalized.current!.allKeys.indexOf(key), []);
+  const getIndex = React.useCallback((key: string) => normalized.current.allKeys.indexOf(key), []);
 
   const onSave = React.useCallback(
     (normalizedValue: Normal.Normalized<T>, { update, save = true }: { update?: boolean; save?: boolean } = {}) => {
@@ -117,7 +135,11 @@ export const useManager = <T extends {}, F extends any[]>(
       normalized.current = normalizedValue;
       forceUpdate();
 
-      update ? debouncedOnChange(denormalized) : cachedOnChange.current!(denormalized, save);
+      if (update) {
+        debouncedOnChange(denormalized);
+      } else {
+        cachedOnChange.current(denormalized, save);
+      }
     },
     [debouncedOnChange, forceUpdate]
   );
@@ -143,55 +165,51 @@ export const useManager = <T extends {}, F extends any[]>(
   );
 
   const commitInsert = React.useCallback(
-    (key, value, index, updated) => {
-      keyLookup.current!.set(generateLookupKey(value, index), key);
+    async (key, value, index, updated) => {
+      keyLookup.current.set(generateLookupKey(value, index), key);
       latestCreatedKey.current = key;
       onSave(updated, { save: autosave });
+
+      await handleAdd?.(value, index);
     },
-    [onSave, generateLookupKey]
+    [onSave, generateLookupKey, handleAdd]
   );
 
   const onAdd = React.useCallback(
-    (...args: F) => {
-      if (isMaxMatches) {
-        return;
-      }
+    async (...args: F) => {
+      if (isMaxMatches) return;
 
       const { key, value } = createKeyValue(...args);
 
-      const updated = Normal.appendOne(normalized.current!, key, value);
+      const updated = Normal.appendOne(normalized.current, key, value);
       const index = updated.allKeys.length - 1;
 
-      commitInsert(key, value, index, updated);
+      await commitInsert(key, value, index, updated);
     },
     [createKeyValue, commitInsert, isMaxMatches]
   );
 
   const onAddToStart = React.useCallback(
-    (...args: F) => {
-      if (isMaxMatches) {
-        return;
-      }
+    async (...args: F) => {
+      if (isMaxMatches) return;
 
       const { key, value } = createKeyValue(...args);
 
-      const updated = Normal.prependOne(normalized.current!, key, value);
+      const updated = Normal.prependOne(normalized.current, key, value);
       const index = 0;
 
-      commitInsert(key, value, index, updated);
+      await commitInsert(key, value, index, updated);
     },
     [createKeyValue, commitInsert, isMaxMatches]
   );
 
   const onDuplicate = React.useCallback(
-    (to: number, item: T, ...args: F) => {
-      if (isMaxMatches) {
-        return;
-      }
+    async (to: number, item: T, ...args: F) => {
+      if (isMaxMatches) return;
 
       const { key, value: dupVal } = duplicateKeyValue(item, ...args);
 
-      const withDupVal = Normal.prependOne(normalized.current!, key, dupVal);
+      const withDupVal = Normal.prependOne(normalized.current, key, dupVal);
       const dupIndex = to + 1;
 
       const updated = {
@@ -199,21 +217,23 @@ export const useManager = <T extends {}, F extends any[]>(
         allKeys: Utils.array.reorder(withDupVal.allKeys, 0, dupIndex),
       };
 
-      commitInsert(key, dupVal, dupIndex, updated);
+      await commitInsert(key, dupVal, dupIndex, updated);
     },
-    [duplicateKeyValue, commitInsert, isMaxMatches]
+    [duplicateKeyValue, commitInsert, isMaxMatches, handleAdd]
   );
 
   const onReorder = React.useCallback(
-    (from: number, to: number) => {
+    async (from: number, to: number) => {
       const updated = {
-        ...normalized.current!,
-        allKeys: Utils.array.reorder(normalized.current!.allKeys, from, to),
+        ...normalized.current,
+        allKeys: Utils.array.reorder(normalized.current.allKeys, from, to),
       };
 
       onSave(updated, { update: true });
+
+      await handleReorder?.(from, to);
     },
-    [onSave]
+    [onSave, handleReorder]
   );
 
   const onUpdate = React.useCallback(
@@ -221,14 +241,14 @@ export const useManager = <T extends {}, F extends any[]>(
       const currValue = getItem(key);
 
       const updated = Utils.normalized.updateNormalizedByKey(
-        normalized.current!,
+        normalized.current,
         key,
         currValue && !Array.isArray(currValue) && _isObject(currValue) ? { ...currValue, ...value } : value
       );
       const index = getIndex(key);
 
-      keyLookup.current!.delete(generateLookupKey(currValue, index));
-      keyLookup.current!.set(generateLookupKey(updated.byKey[key], index), key);
+      keyLookup.current.delete(generateLookupKey(currValue, index));
+      keyLookup.current.set(generateLookupKey(updated.byKey[key], index), key);
       onSave(updated, { update: true });
     },
     [generateLookupKey, getIndex, getItem, onSave]
@@ -241,9 +261,9 @@ export const useManager = <T extends {}, F extends any[]>(
       const currValue = getItem(key);
       const currIndex = getIndex(key);
 
-      const updated = Normal.removeOne(normalized.current!, key);
+      const updated = Normal.removeOne(normalized.current, key);
 
-      keyLookup.current!.delete(generateLookupKey(currValue, currIndex));
+      keyLookup.current.delete(generateLookupKey(currValue, currIndex));
 
       onSave(updated, { save: autosave });
 
@@ -260,10 +280,12 @@ export const useManager = <T extends {}, F extends any[]>(
 
   const mapManaged = React.useCallback<MapManaged<T>>(
     (render) =>
-      normalized.current!.allKeys.map((key, index) =>
+      normalized.current.allKeys.map((key, index) =>
         render(getItem(key), {
           key,
           index,
+          isLast: index === normalized.current.allKeys.length - 1,
+          isFirst: index === 0,
           onUpdate: memoizedUpdate(key),
           onRemove: memoizedRemove(key),
           toggleOpen: memoizedToggle(key),
@@ -278,9 +300,11 @@ export const useManager = <T extends {}, F extends any[]>(
   React.useEffect(() => memoizedToggle.clear, [memoizedToggle]);
 
   return {
-    keys: normalized.current!.allKeys,
+    size: normalized.current.allKeys.length,
+    keys: normalized.current.allKeys,
     items,
     onAdd,
+    getIndex,
     onUpdate,
     onRemove,
     onReorder,

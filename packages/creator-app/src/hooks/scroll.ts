@@ -132,3 +132,27 @@ export const useScrollStickySides = <T extends HTMLElement | Scrollbars>(
 
   return [isHeaderSticky, isFooterSticky];
 };
+
+export const useScrollNodeIntoView = <Elm extends Element>(): [
+  ref: React.RefObject<Elm>,
+  scrollIntoView: (options?: ScrollIntoViewOptions) => void
+] => {
+  const ref = React.useRef<Elm>(null);
+
+  return [ref, (options) => ref.current?.scrollIntoView(options)];
+};
+
+export const useAutoScrollNodeIntoView = <Elm extends Element>(
+  { options, condition }: { options?: ScrollIntoViewOptions; condition?: boolean },
+  deps: unknown[] = []
+): [ref: React.RefObject<Elm>, scrollIntoView: (options?: ScrollIntoViewOptions) => void] => {
+  const [ref, scrollIntoView] = useScrollNodeIntoView<Elm>();
+
+  React.useEffect(() => {
+    if (condition) {
+      scrollIntoView(options);
+    }
+  }, deps);
+
+  return [ref, scrollIntoView];
+};

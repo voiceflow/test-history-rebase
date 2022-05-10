@@ -92,6 +92,10 @@ const THEME = {
       height: 230,
     },
     icon: ICON_THEME,
+
+    sectionV2: {
+      accentBackground: '#fdfdfd',
+    },
   },
   transition(...propertyWhitelist: string[]): string {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];

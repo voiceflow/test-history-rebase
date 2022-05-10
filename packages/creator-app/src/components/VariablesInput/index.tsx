@@ -1,36 +1,43 @@
-import { InputRenderer, toast } from '@voiceflow/ui';
+import composeRef from '@seznam/compose-react-refs';
+import { InputRenderer, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import TextEditor, { PluginType } from '@/components/TextEditor';
+import type { TextEditorBlurData, TextEditorProps, TextEditorRef } from '@/components/TextEditor/types';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useRAF, useSelector } from '@/hooks';
 
 import * as S from './styles';
 
+export type { TextEditorRef as VariablesInputRef } from '@/components/TextEditor/types';
+
 const pluginsTypes = [PluginType.VARIABLES];
 
-type InputCallback = (value: { text: string; variables: any[] }) => void;
+type SaveCallback = (data: { text: string; variables: string[] }) => void;
 
-interface VariablesInputProps {
-  characters?: string;
-  creatable?: boolean;
-  createInputPlaceholder?: string;
+interface VariablesInputProps extends Omit<TextEditorProps, 'onBlur' | 'onEnterPress'> {
+  space?: boolean;
+  onBlur?: SaveCallback;
   fullWidth?: boolean;
   multiline?: boolean;
-  space?: boolean;
-  onBlur?: InputCallback;
-  onEnterPress?: InputCallback;
+  creatable?: boolean;
+  characters?: string;
+  onEnterPress?: SaveCallback;
+  createInputPlaceholder?: string;
 }
 
-const VariablesInput = React.forwardRef<HTMLDivElement, VariablesInputProps>(
+const AVERAGE_SYMBOL_WIDTH = 9;
+
+const VariablesInput = React.forwardRef<TextEditorRef, VariablesInputProps>(
   (
     {
       space = false,
       onBlur,
       fullWidth = false,
       multiline = false,
+      autoFocus,
       creatable,
       characters,
       onEnterPress,
@@ -39,11 +46,15 @@ const VariablesInput = React.forwardRef<HTMLDivElement, VariablesInputProps>(
     },
     ref
   ) => {
-    const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
+    const [autofocusScheduler] = useRAF();
+    const [addVariableScheduler] = useRAF();
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const textEditorRef = React.useRef<TextEditorRef>(null);
+
+    const slotsAndVariables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
     const addGlobalVariable = useDispatch(Version.addGlobalVariable);
 
-    const containerRef = React.useRef<HTMLDivElement>(null);
-    const vars = React.useMemo(() => variables.map((name) => ({ id: name, name, isVariable: true })), [variables]);
+    const variables = React.useMemo(() => slotsAndVariables.map((name) => ({ id: name, name, isVariable: true })), [slotsAndVariables]);
 
     const onAddVariable = React.useCallback(
       async (name) => {
@@ -62,39 +73,44 @@ const VariablesInput = React.forwardRef<HTMLDivElement, VariablesInputProps>(
       [addGlobalVariable]
     );
 
-    const onVariableAdded = React.useCallback(({ name }) => {
-      requestAnimationFrame(() => {
-        const scroller = containerRef.current?.querySelector('.public-DraftEditor-content');
-        if (!scroller) return;
+    const onVariableAdded = React.useCallback(({ name }: { name: string }) => {
+      addVariableScheduler(() => {
+        const draftEditorContent = containerRef.current?.querySelector('.public-DraftEditor-content');
 
-        const scrollDistance = (name.length + 2) * 9;
+        if (!draftEditorContent) return;
 
-        scroller.scrollLeft += scrollDistance;
+        draftEditorContent.scrollLeft += (name.length + 2) * AVERAGE_SYMBOL_WIDTH;
       });
     }, []);
 
     const pluginProps = React.useMemo(
       () => ({
-        [PluginType.VARIABLES]: { space, variables: vars, creatable, characters, onAddVariable, createInputPlaceholder, onVariableAdded },
+        [PluginType.VARIABLES]: { space, variables, creatable, characters, onAddVariable, createInputPlaceholder, onVariableAdded },
       }),
-      [space, vars, creatable, characters, onAddVariable, createInputPlaceholder, onVariableAdded]
+      [space, variables, creatable, characters, onAddVariable, createInputPlaceholder, onVariableAdded]
     );
 
     const onBlurCallback = React.useCallback(
-      ({ text, pluginsData }) => onBlur?.({ text, variables: pluginsData[PluginType.VARIABLES]?.variables || [] }),
+      ({ text, pluginsData }: TextEditorBlurData) => onBlur?.({ text, variables: pluginsData[PluginType.VARIABLES]?.variables || [] }),
       [onBlur]
     );
 
     const onEnterPressCallback = React.useCallback(
-      ({ text, pluginsData }) => onEnterPress?.({ text, variables: pluginsData[PluginType.VARIABLES]?.variables || [] }),
+      ({ text, pluginsData }: TextEditorBlurData) => onEnterPress?.({ text, variables: pluginsData[PluginType.VARIABLES]?.variables || [] }),
       [onEnterPress]
     );
+
+    useSetup(() => {
+      if (autoFocus) {
+        autofocusScheduler(() => textEditorRef.current?.focus());
+      }
+    });
 
     return (
       <S.Container ref={containerRef} multiline={multiline} fullWidth={fullWidth}>
         <TextEditor
           {...props}
-          ref={ref}
+          ref={composeRef(ref, textEditorRef)}
           onBlur={onBlurCallback}
           onEnterPress={onEnterPress && onEnterPressCallback}
           pluginsTypes={pluginsTypes}

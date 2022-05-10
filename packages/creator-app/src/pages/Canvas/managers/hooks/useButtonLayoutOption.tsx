@@ -15,16 +15,17 @@ const buttonLayoutLabel = {
 };
 
 const useButtonLayoutOption = (): OptionsMenuOption => {
-  const buttons = useSelector(Prototype.prototypeButtonsSelector) ?? BaseButton.ButtonsLayout.STACKED;
+  const layout = useSelector(Prototype.prototypeButtonsSelector) ?? BaseButton.ButtonsLayout.STACKED;
   const updateSharePrototypeSettings = useDispatch(Prototype.updateSharePrototypeSettings);
 
   const platform = React.useContext(PlatformContext)!;
 
-  const updateButtons = async (buttons: BaseButton.ButtonsLayout) => {
-    await updateSharePrototypeSettings({ buttons });
+  const updateButtons = async (layout: BaseButton.ButtonsLayout) => {
+    await updateSharePrototypeSettings({ buttons: layout });
+
     toast.success(
       `Global ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} layout updated to '${
-        buttonLayoutLabel[buttons]
+        buttonLayoutLabel[layout]
       }'`
     );
   };
@@ -33,23 +34,12 @@ const useButtonLayoutOption = (): OptionsMenuOption => {
     label: `${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')} Layout`,
     options: [
       {
-        label: (
-          <MenuCheckboxOption checked={buttons === BaseButton.ButtonsLayout.STACKED} onChange={() => updateButtons(BaseButton.ButtonsLayout.STACKED)}>
-            Stacked
-          </MenuCheckboxOption>
-        ),
-        disabled: true,
+        label: <MenuCheckboxOption checked={layout === BaseButton.ButtonsLayout.STACKED}>Stacked</MenuCheckboxOption>,
+        onClick: () => updateButtons(BaseButton.ButtonsLayout.STACKED),
       },
       {
-        label: (
-          <MenuCheckboxOption
-            checked={buttons === BaseButton.ButtonsLayout.CAROUSEL}
-            onChange={() => updateButtons(BaseButton.ButtonsLayout.CAROUSEL)}
-          >
-            Carousel
-          </MenuCheckboxOption>
-        ),
-        disabled: true,
+        label: <MenuCheckboxOption checked={layout === BaseButton.ButtonsLayout.CAROUSEL}>Carousel</MenuCheckboxOption>,
+        onClick: () => updateButtons(BaseButton.ButtonsLayout.CAROUSEL),
       },
     ],
   };

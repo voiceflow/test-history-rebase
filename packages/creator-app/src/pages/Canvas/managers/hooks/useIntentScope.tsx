@@ -10,34 +10,18 @@ const useIntentScope = <T extends { intentScope?: BaseNode.Utils.IntentScope }>(
 }: {
   data: T;
   onChange: (changes: { intentScope: BaseNode.Utils.IntentScope }) => void;
-}): OptionsMenuOption => {
-  return {
-    label: 'Intent Scoping',
-    options: [
-      {
-        label: (
-          <MenuCheckboxOption
-            checked={intentScope === BaseNode.Utils.IntentScope.GLOBAL}
-            onChange={() => onChange({ intentScope: BaseNode.Utils.IntentScope.GLOBAL })}
-          >
-            Listen for all intents
-          </MenuCheckboxOption>
-        ),
-        disabled: true,
-      },
-      {
-        label: (
-          <MenuCheckboxOption
-            checked={intentScope === BaseNode.Utils.IntentScope.NODE}
-            onChange={() => onChange({ intentScope: BaseNode.Utils.IntentScope.NODE })}
-          >
-            Only intents in this step
-          </MenuCheckboxOption>
-        ),
-        disabled: true,
-      },
-    ],
-  };
-};
+}): OptionsMenuOption => ({
+  label: 'Intent scoping',
+  options: [
+    {
+      label: <MenuCheckboxOption checked={intentScope === BaseNode.Utils.IntentScope.GLOBAL}>Listen for all intents</MenuCheckboxOption>,
+      onClick: () => onChange({ intentScope: BaseNode.Utils.IntentScope.GLOBAL }),
+    },
+    {
+      label: <MenuCheckboxOption checked={intentScope === BaseNode.Utils.IntentScope.NODE}>Only intents in this step</MenuCheckboxOption>,
+      onClick: () => onChange({ intentScope: BaseNode.Utils.IntentScope.NODE }),
+    },
+  ],
+});
 
 export default useIntentScope;

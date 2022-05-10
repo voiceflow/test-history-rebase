@@ -15,7 +15,6 @@ import EditorSection from '@/pages/Canvas/components/EditorSection';
 import PrefixedVariableSelect from '@/pages/Canvas/components/PrefixedVariableSelect';
 import { transformVariableToString } from '@/utils/slot';
 
-const VariablesInputComponent: any = VariablesInput;
 const INPUT_TYPE_OPTIONS = [
   {
     id: BaseNode.Utils.ExpressionTypeV2.VALUE,
@@ -105,7 +104,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
               {item.type === BaseNode.Utils.ExpressionTypeV2.VALUE ? (
                 <Input value={String(item.expression)} onChangeText={(value) => onUpdate({ expression: value })} placeholder="Enter value" />
               ) : (
-                <VariablesInputComponent
+                <VariablesInput
                   error={error}
                   onFocus={resetError}
                   value={String(item.expression)}

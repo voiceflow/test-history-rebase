@@ -20,7 +20,7 @@ export interface SvgIconContainerProps extends SpaceProps {
 
 const SvgIconContainer = styled.span<SvgIconContainerProps>`
   ${space}
-  ${transition('opacity', 'background', 'color')}
+  ${transition('opacity', 'background', 'color', 'transform')}
 
   box-sizing: content-box;
   width: ${({ size, width = size }) => width}px;

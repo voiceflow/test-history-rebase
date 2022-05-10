@@ -21,6 +21,11 @@ export const voicePromptFactory = ({ defaultVoice }: PromptFactoryOptions = {}):
   voice: defaultVoice ?? '',
   content: '',
 });
+export const voiceAudioPromptFactory = (): Realtime.NodeData.VoicePrompt => ({
+  id: Utils.id.cuid.slug(),
+  type: VoicePromptType.AUDIO,
+  content: '',
+});
 export const voiceIntentPromptFactory = ({ defaultVoice }: PromptFactoryOptions = {}): VoiceModels.IntentPrompt<any> => ({
   text: '',
   slots: [],

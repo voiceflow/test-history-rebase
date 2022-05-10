@@ -15,10 +15,10 @@ const validURL: (text: string) => Nullable<string> = (text: string) => {
 
 export interface RenderInputProps {
   creatable: boolean;
-  error: string | null;
+  error?: boolean;
   fullWidth: boolean;
   leftAction: JSX.Element | null;
-  onEditorStateChange: VoidFunction | null;
+  onEditorStateChange?: VoidFunction;
   onEnterPress: VoidFunction;
   placeholder?: string;
   ref: React.RefObject<any>;
@@ -58,7 +58,7 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUpdate, onBack, validate = va
   }, [value]);
 
   const inputProps = {
-    error,
+    error: !!error,
     fullWidth: true,
     leftAction: onBack ? <S.BackArrow icon="back" size={14} onClick={stopPropagation(onBack)} /> : null,
     placeholder,
@@ -75,12 +75,11 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUpdate, onBack, validate = va
             <Badge onClick={() => validateAndUpdate(transformVariablesToReadable(variablesRef.current?.getCurrentValue().text))}>Enter</Badge>
           ),
           onEnterPress: () => validateAndUpdate(transformVariablesToReadable(variablesRef.current?.getCurrentValue().text)),
-          onEditorStateChange: error ? () => setError(null) : null,
+          onEditorStateChange: error ? () => setError(null) : undefined,
         })
       ) : (
         <Input
           {...inputProps}
-          error={!!error}
           rightAction={<Badge onClick={() => validateAndUpdate(value)}>Enter</Badge>}
           onChangeText={setValue}
           onEnterPress={() => validateAndUpdate(value)}

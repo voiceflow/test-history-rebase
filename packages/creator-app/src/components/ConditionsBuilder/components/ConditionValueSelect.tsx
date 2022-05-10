@@ -3,13 +3,10 @@ import { Badge, Box, swallowEvent } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
-import VariablesInput from '@/components/VariablesInput';
-import { VariableInputRef } from '@/components/VariablesInput/types';
+import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
 import { useEnableDisable } from '@/hooks';
 
 import { isValidExpressionValue, isVariable } from '../utils';
-
-const AnyVariablesInput: any = VariablesInput;
 
 export interface ConditionValueSelectProps {
   value?: string;
@@ -18,7 +15,7 @@ export interface ConditionValueSelectProps {
 }
 
 const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '', onChange, onClose }) => {
-  const inputRef = React.useRef<VariableInputRef>(null);
+  const inputRef = React.useRef<VariablesInputRef>(null);
   const [error, setError, resetError] = useEnableDisable(false);
   const [show, onShow, onHide] = useEnableDisable(false);
   const [empty, updateIsEmpty] = React.useState(true);
@@ -62,16 +59,16 @@ const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '',
 
   return (
     <>
-      <AnyVariablesInput
-        fullWidth
+      <VariablesInput
         ref={inputRef}
         value={value}
         error={error}
         onFocus={onShow}
         onBlur={onSave}
         onEmpty={updateIsEmpty}
-        onEnterPress={onEnter}
+        fullWidth
         placeholder="Enter value or {variable}"
+        onEnterPress={onEnter}
         skipBlurOnUnmount
         rightAction={
           !empty &&

@@ -82,6 +82,7 @@ export interface BaseSelectProps {
   onSearch?: (value: string) => void;
   minWidth?: boolean;
   disabled?: boolean;
+  useLayers?: boolean;
   placement?: PopperProps['placement'];
   modifiers?: PopperProps['modifiers'];
   autoWidth?: boolean;

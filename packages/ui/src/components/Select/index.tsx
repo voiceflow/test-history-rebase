@@ -8,6 +8,7 @@ import { setRef, stopPropagation } from '@ui/utils';
 import { Nullable, Utils } from '@voiceflow/common';
 import noop from 'lodash/noop';
 import React from 'react';
+import { useDismissable } from 'react-dismissable-layers';
 import { Manager, PopperProps, Reference } from 'react-popper';
 
 import IconButton from '../IconButton';
@@ -138,6 +139,7 @@ function Select({
   disabled,
   onSelect,
   onCreate,
+  useLayers = false,
   iconProps,
   onKeyDown,
   modifiers,
@@ -194,9 +196,10 @@ function Select({
 
   const inputRef = React.useRef<HTMLInputElement>(null);
   const inlineRef = React.useRef<HTMLInputElement>(null);
+  const menuContainerRef = React.useRef<HTMLDivElement>(null);
 
   const [initialValueLabel] = React.useState(optionLabel);
-  const [opened, setOpened] = React.useState(!!open);
+  const [opened, toggleOpen, forceClose] = useDismissable(!!open, { disableLayers: !useLayers });
   const [directMatch, setDirectMatch] = React.useState(false);
   const [searchLabel, setSearchLabel] = React.useState(isDropdown && searchable && inDropdownSearch ? '' : optionLabel);
   const [optionsToRender, setOptionsToRender] = React.useState(() => (renderOptionsFilter ? options.filter(renderOptionsFilter) : options));
@@ -292,7 +295,7 @@ function Select({
     }
 
     if (!opened) {
-      setOpened(true);
+      toggleOpen();
       onOpen?.();
     }
 
@@ -324,7 +327,7 @@ function Select({
       setFocusedOptionIndex(null);
     }
 
-    setOpened(false);
+    forceClose();
     onClose?.();
   });
 
@@ -447,13 +450,13 @@ function Select({
           <SelectWrapper
             as={renderAsSpan ? 'span' : undefined}
             ref={ref}
-            onClick={!labelSearchable ? onOpenMenu : undefined}
-            tabIndex={labelSearchable ? -1 : 0}
+            onClick={!disabled && !labelSearchable ? onOpenMenu : undefined}
+            tabIndex={labelSearchable || disabled ? -1 : 0}
             minWidth={minWidth}
             isFocused={opened}
             className={className}
             fullWidth={fullWidth}
-            onMouseDown={!labelSearchable ? onMouseDown : undefined}
+            onMouseDown={!disabled && !labelSearchable ? onMouseDown : undefined}
             withClearIcon={withClearIcon}
           >
             {renderTrigger ? (
@@ -471,7 +474,7 @@ function Select({
 
                       <TagsInput
                         value={isDropdown ? label : searchLabel}
-                        onBlur={Utils.functional.chain<[React.FocusEvent<HTMLElement>]>(() => !renderDropdown && setOpened(false), onBlur)}
+                        onBlur={Utils.functional.chain<[React.FocusEvent<HTMLElement>]>(!renderDropdown ? forceClose : null, onBlur)}
                         hastags={hasOptions}
                         onClick={searchable ? onOpenMenu : undefined}
                         onChange={onChangeSearchLabel}
@@ -567,6 +570,7 @@ function Select({
           createLabel={createLabel}
           searchLabel={searchLabel}
           renderEmpty={renderEmpty}
+          containerRef={menuContainerRef}
           isMultiLevel={isMultiLevel}
           getOptionKey={getOptionKey}
           onFocusOption={setFocusedOptionIndex}

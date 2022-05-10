@@ -19,7 +19,7 @@ interface MappingSectionProps {
   isDividerNested?: boolean;
 }
 
-const MappingSection: React.FC<MappingSectionProps> = ({ data, header, items, onChange, reverse, tooltip, isDividerNested }) => {
+const MappingSection: React.FC<MappingSectionProps> = ({ data, header, items = [], onChange, reverse, tooltip, isDividerNested }) => {
   const { mapManaged, onAdd } = useManager(items, onChange, { factory: variableMappingFactory });
 
   const AddMappingButton = <Add onClick={onAdd} />;

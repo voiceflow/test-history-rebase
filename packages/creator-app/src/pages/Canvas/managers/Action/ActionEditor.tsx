@@ -23,7 +23,7 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
     [engine.port, node.ports.out.dynamic]
   );
 
-  const { items, onAdd, mapManaged } = useManager(data.paths, updatePaths, {
+  const { items, onAdd, mapManaged } = useManager<Realtime.NodeData.Trace['paths'][number], []>(data.paths, updatePaths, {
     factory: () => ({ label: '' }),
     autosave: false,
     handleRemove: onRemovePath,

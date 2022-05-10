@@ -2,11 +2,15 @@ import { styled, units } from '@ui/styles';
 import { space, SpaceProps } from 'styled-system';
 
 export interface ContentProps extends SpaceProps {
-  topOffset?: boolean;
+  topOffset?: boolean | number;
+  bottomOffset?: boolean | number;
 }
 
 const Content = styled.div<ContentProps>`
-  padding: ${({ theme, topOffset }) => (topOffset ? theme.unit * 0.5 : 0)}px ${units(4)}px ${units()}px ${units(4)}px;
+  padding-top: ${({ theme, topOffset = false }) => units(topOffset === true ? 0.5 : topOffset || 0)({ theme })}px;
+  padding-bottom: ${({ theme, bottomOffset = true }) => units(bottomOffset === true ? 1 : bottomOffset || 0)({ theme })}px;
+  padding-left: ${units(4)}px;
+  padding-right: ${units(4)}px;
   ${space}
 `;
 

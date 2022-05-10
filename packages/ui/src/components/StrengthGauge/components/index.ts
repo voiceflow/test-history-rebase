@@ -1,13 +1,13 @@
 import { css, styled, transition } from '@ui/styles';
 
-import { StrengthLevel } from '../types';
+import { Level } from '../constants';
 
-const StrengthLineColor: Record<StrengthLevel, string> = {
-  [StrengthLevel.NOT_SET]: '',
-  [StrengthLevel.WEAK]: '#bd425f',
-  [StrengthLevel.MEDIUM]: '#4e8bbd',
-  [StrengthLevel.STRONG]: '#50a82e',
-  [StrengthLevel.VERY_STRONG]: '#449127',
+const StrengthLineColor: Record<Level, string> = {
+  [Level.NOT_SET]: '',
+  [Level.WEAK]: '#bd425f',
+  [Level.MEDIUM]: '#4e8bbd',
+  [Level.STRONG]: '#50a82e',
+  [Level.VERY_STRONG]: '#449127',
 };
 
 export const Line = styled.div<{ width: number; thickness: number }>`
@@ -16,6 +16,7 @@ export const Line = styled.div<{ width: number; thickness: number }>`
   position: relative;
   border-radius: 5px;
   overflow: hidden;
+  margin: 2px 0;
 
   ${({ width }) =>
     width &&
@@ -30,7 +31,7 @@ export const Line = styled.div<{ width: number; thickness: number }>`
     `}
 `;
 
-export const StrengthLine = styled.div<{ width: number; strength: StrengthLevel; thickness: number }>`
+export const StrengthLine = styled.div<{ width: number; strength: Level; thickness: number }>`
   ${transition('width')}
   width: 0;
   position: absolute;

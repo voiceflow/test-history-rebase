@@ -35,10 +35,10 @@ const RequiredEntity: React.FC<RequiredEntityProps> = ({ entity, entities, inten
       portalNode={document.body}
       renderContent={({ onClose }) => (
         <Popper.Content>
-          <SectionV2.AddCollapseSection
+          <SectionV2.ActionCollapseSection
             px={20}
-            title="Entity reprompt"
-            onRemove={Utils.functional.chain(setRemoved, onClose, () => onChangeDialog(entity.id, { prompt: [] }))}
+            title={<SectionV2.Title bold>Entity reprompt</SectionV2.Title>}
+            action={<SectionV2.RemoveButton onClick={Utils.functional.chain(setRemoved, onClose, () => onChangeDialog(entity.id, { prompt: [] }))} />}
             collapsed={false}
           >
             <Box pb={8}>
@@ -52,7 +52,7 @@ const RequiredEntity: React.FC<RequiredEntityProps> = ({ entity, entities, inten
                 />
               </TextEditorVariablesPopoverProvider>
             </Box>
-          </SectionV2.AddCollapseSection>
+          </SectionV2.ActionCollapseSection>
         </Popper.Content>
       )}
     >

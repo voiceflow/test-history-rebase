@@ -18,7 +18,7 @@ const NoMatchSection: React.FC<NoMatchSectionProps> = ({ data, pushToPath }) => 
 
   return (
     <Section
-      infix={getNoMatchNoReplySectionLabel(BaseNode.Utils.NoMatchType, data.types)}
+      infix={<>{getNoMatchNoReplySectionLabel(BaseNode.Utils.NoMatchType, data.types)}</>}
       header="No Match"
       isLink
       onClick={onClick}

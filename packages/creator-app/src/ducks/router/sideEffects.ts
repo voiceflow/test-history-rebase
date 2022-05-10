@@ -210,14 +210,13 @@ export const goToCurrentPrototype =
     const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
     const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
     const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
-    const isVariableStatesEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.VARIABLE_STATES);
     const variableStatesStartFromDiagramID = VariableState.selectedStartFromDiagramIDSelector(state);
 
     Errors.assertVersionID(versionID);
 
     const isTopic = topics.find((item) => item.sourceID === diagramID);
 
-    if (isVariableStatesEnabled && variableStatesStartFromDiagramID) {
+    if (variableStatesStartFromDiagramID) {
       await dispatch(redirectToDiagram(variableStatesStartFromDiagramID));
     } else if (!nodeID && isTopic && rootDiagramID && rootDiagramID !== diagramID && isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion) {
       await dispatch(redirectToDiagram(rootDiagramID));

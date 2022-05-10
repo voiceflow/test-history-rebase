@@ -1,11 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
-import { useFeature } from '@/hooks';
 
-import { CanvasIconMenu, ConversationsSidebar, IntegrationsSidebar, PrototypeIconMenu, SettingsSidebar, TestVariablesSidebar } from './components';
+import { CanvasIconMenu, ConversationsSidebar, IntegrationsSidebar, SettingsSidebar, TestVariablesSidebar } from './components';
 
 const ALL_PROJECT_SIDEBAR_PATHS = [
   Path.PROJECT_CANVAS,
@@ -17,13 +15,11 @@ const ALL_PROJECT_SIDEBAR_PATHS = [
 ];
 
 const ProjectSidebar: React.FC = () => {
-  const { isEnabled: hasVariableStates } = useFeature(FeatureFlag.VARIABLE_STATES);
-
   return (
     <Switch>
       <Route path={ALL_PROJECT_SIDEBAR_PATHS} component={CanvasIconMenu} />
 
-      <Route path={Path.PROJECT_PROTOTYPE} component={hasVariableStates ? TestVariablesSidebar : PrototypeIconMenu} />
+      <Route path={Path.PROJECT_PROTOTYPE} component={TestVariablesSidebar} />
 
       <Route path={Path.PROJECT_PUBLISH} component={IntegrationsSidebar} />
 

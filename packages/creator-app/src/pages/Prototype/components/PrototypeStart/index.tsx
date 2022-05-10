@@ -1,12 +1,11 @@
-import { Button, ButtonVariant, Link, Text, TippyTooltip } from '@voiceflow/ui';
+import { Link, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { testingGraphic } from '@/assets';
 import * as Documentation from '@/config/documentation';
-import { FeatureFlag } from '@/config/features';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeConfig } from '@/ducks/recent';
-import { useFeature, useSelector, useSetup, useTrackingEvents } from '@/hooks';
+import { useSelector, useSetup, useTrackingEvents } from '@/hooks';
 import { IdleContainer } from '@/pages/Prototype/components/PrototypeContainer';
 import perf, { PerfAction } from '@/performance';
 import { FadeDownContainer } from '@/styles/animations';
@@ -23,16 +22,14 @@ export interface PrototypeStartProps {
 }
 
 const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debug, isModelTraining, config }) => {
-  const mode = useSelector(Prototype.activePrototypeModeSelector);
   const device = useSelector(Prototype.prototypeVisualDeviceSelector);
   const [, trackEventsWrapper] = useTrackingEvents();
-  const { isEnabled: isVariableStateEnabled } = useFeature(FeatureFlag.VARIABLE_STATES);
 
   const start = () => {
     if (isPublic) {
       onStart();
     } else {
-      trackEventsWrapper(onStart, 'trackActiveProjectPrototypeTestStart', { debug, mode, display: device, config })();
+      trackEventsWrapper(onStart, 'trackActiveProjectPrototypeTestStart', { debug, display: device, config })();
     }
   };
 
@@ -60,24 +57,10 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debu
               html={<div style={{ textAlign: 'left', width: '179px', height: '36px' }}>Once training is complete you'll be able to start a test</div>}
               position="bottom"
             >
-              {isVariableStateEnabled ? (
-                <SelectVariableStateButton onStart={start} />
-              ) : (
-                <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={start} disabled>
-                  Run Test
-                </Button>
-              )}
+              <SelectVariableStateButton onStart={start} />
             </TippyTooltip>
           ) : (
-            <>
-              {isVariableStateEnabled ? (
-                <SelectVariableStateButton onStart={start} />
-              ) : (
-                <Button variant={ButtonVariant.PRIMARY} onClick={start} squareRadius id={Identifier.PROTOTYPE_START}>
-                  Run Test
-                </Button>
-              )}
-            </>
+            <SelectVariableStateButton onStart={start} />
           )}
 
           <SelectedVariableStateText />

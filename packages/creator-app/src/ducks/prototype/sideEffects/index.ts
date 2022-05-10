@@ -2,11 +2,10 @@ import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import { PrototypeMode } from '@/constants/prototype';
 import * as Session from '@/ducks/session';
-import { SyncThunk, Thunk } from '@/store/types';
+import { Thunk } from '@/store/types';
 
-import { updatePrototypeMode, updatePrototypeSettings } from '../actions';
+import { updatePrototypeSettings } from '../actions';
 import { prototypeSettingsSelector } from '../selectors';
 import { PrototypeShareViewSettings } from '../types';
 
@@ -18,16 +17,6 @@ export { default as setupPublicPrototype } from './setupPublicPrototype';
 export { default as startPrototype } from './startPrototype';
 export { default as startPublicPrototype } from './startPublicPrototype';
 export { default as validateModel } from './validateModel';
-
-export const updateActivePrototypeMode =
-  (mode: PrototypeMode): SyncThunk =>
-  (dispatch, getState) => {
-    const projectID = Session.activeProjectIDSelector(getState());
-
-    Errors.assertProjectID(projectID);
-
-    dispatch(updatePrototypeMode(projectID, mode));
-  };
 
 export const updateSharePrototypeSettings =
   (data: Partial<PrototypeShareViewSettings>): Thunk =>

@@ -8,7 +8,7 @@ import React from 'react';
 import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useDeviceDimension } from '@/pages/Prototype/components/PrototypeVisualCanvas/hooks';
+import { useDeviceDimension } from '@/pages/Prototype/hooks/deviceDimensions';
 import { FadeContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';

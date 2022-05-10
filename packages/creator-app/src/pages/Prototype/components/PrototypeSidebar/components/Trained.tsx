@@ -5,8 +5,6 @@ import React from 'react';
 
 import { lightbulbGraphic } from '@/assets';
 import * as Documentation from '@/config/documentation';
-import { FeatureFlag } from '@/config/features';
-import { useFeature } from '@/hooks';
 import { createPlatformSelector } from '@/utils/platform';
 import { ModelDiff } from '@/utils/prototypeModel';
 
@@ -31,8 +29,6 @@ interface TrainedProps {
 }
 
 const Trained: React.FC<TrainedProps> = ({ diff, platform, isTrained, trainedModel, lastTrainedTime, onStartTraining }) => {
-  const { isEnabled: isVariableStateEnabled } = useFeature(FeatureFlag.VARIABLE_STATES);
-
   return (
     <NLUContainer fullWidth>
       {trainedModel === null ? (
@@ -59,7 +55,7 @@ const Trained: React.FC<TrainedProps> = ({ diff, platform, isTrained, trainedMod
         </>
       )}
 
-      <Button variant={ButtonVariant.TERTIARY} disabled={isTrained} squareRadius={isVariableStateEnabled || undefined} onClick={onStartTraining}>
+      <Button variant={ButtonVariant.TERTIARY} disabled={isTrained} squareRadius onClick={onStartTraining}>
         {getTrainText(platform)}
       </Button>
     </NLUContainer>

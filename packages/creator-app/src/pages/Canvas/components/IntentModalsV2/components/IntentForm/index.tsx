@@ -72,11 +72,28 @@ const IntentForm: React.FC<IntentFormProps> = ({
     setShowUtteranceSection(!isBuiltIn || !!intent?.inputs?.length);
   }, [intentID, intentsMap]);
 
+  const utteranceSectionVisible = !isBuiltIn || showUtteranceSection;
+
   return (
     <>
-      {withNameSection && <NameSection name={name} setName={setName} saveName={saveName} autofocus={!name} />}
-      {(!isBuiltIn || showUtteranceSection) && (
-        <UtteranceSection inputs={inputs} onUpdateUtterances={setInputs} autofocus={!!name && autofocus} withBorderTop={withNameSection} />
+      {withNameSection && (
+        <NameSection
+          isBuiltIn={isBuiltIn}
+          hasBottomPadding={utteranceSectionVisible}
+          name={name}
+          setName={setName}
+          saveName={saveName}
+          autofocus={!name}
+        />
+      )}
+      {utteranceSectionVisible && (
+        <UtteranceSection
+          isBuiltIn={isBuiltIn}
+          inputs={inputs}
+          onUpdateUtterances={setInputs}
+          autofocus={!!name && autofocus}
+          withBorderTop={withNameSection}
+        />
       )}
 
       {isBuiltIn && !showUtteranceSection && <BuiltInPrompt setShowUtteranceSection={setShowUtteranceSection} />}

@@ -35,6 +35,7 @@ interface UtteranceManagerProps {
   onUpdateUtterances: (data: Realtime.IntentInput[]) => void;
   inputs: Realtime.IntentInput[];
   intentID?: string;
+  isBuiltIn?: boolean;
 }
 
 const MAX_VISIBLE_UTTERANCES = 10;
@@ -48,7 +49,7 @@ export interface UtteranceRef {
   getCurrentUtterance: () => Realtime.IntentInput | null;
 }
 
-const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, onUpdateUtterances, autofocus, withBorderTop }) => {
+const UtteranceManager: React.FC<UtteranceManagerProps> = ({ isBuiltIn, intentID, inputs, onUpdateUtterances, autofocus, withBorderTop }) => {
   const { search } = useLocation();
 
   const queryParams = queryString.parse(search);
@@ -143,7 +144,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intentID, inputs, o
             <Box marginLeft={16} display="inline-block" position="relative" bottom="3px">
               <StrengthGauge
                 width={40}
-                level={getIntentStrengthLevel(intentUtterances.length)}
+                level={isBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intentUtterances.length)}
                 tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }}
               />
             </Box>

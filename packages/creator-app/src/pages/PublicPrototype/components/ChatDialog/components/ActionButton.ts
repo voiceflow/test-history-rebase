@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, changeColorShade, PrimaryButtonLabel } from '@voiceflow/ui';
+import { Button, ButtonVariant, changeColorShade, PrimaryButton } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
@@ -20,7 +20,7 @@ const ActionButton = styled(Button)<{ isMobile?: boolean; color?: string }>`
     css`
       height: 36px;
 
-      ${PrimaryButtonLabel} {
+      ${PrimaryButton.Label} {
         padding: 0 10px !important;
       }
     `}

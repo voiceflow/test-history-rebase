@@ -1,14 +1,23 @@
-import { Button, ButtonVariant } from '@voiceflow/ui';
+import { Button, ButtonVariant, Flex } from '@voiceflow/ui';
 import React from 'react';
 
 import { createExample, createSection } from './utils';
 
-const primaryButton = createExample('primary', () => <Button>Primary Button</Button>);
+const examples = [ButtonVariant.PRIMARY, ButtonVariant.SECONDARY, ButtonVariant.TERTIARY, ButtonVariant.QUATERNARY].map((variant) =>
+  createExample(variant, () => (
+    <Flex column gap={16}>
+      <Button variant={variant}>Default Button</Button>
+      <Button variant={variant} flat>
+        Flat Button
+      </Button>
+      <Button variant={variant} squareRadius>
+        Square Radius
+      </Button>
+      <Button variant={variant} isLoading>
+        is loading
+      </Button>
+    </Flex>
+  ))
+);
 
-const secondaryButton = createExample('secondary', () => <Button variant={ButtonVariant.SECONDARY}>Secondary Button</Button>);
-
-const tertiaryButton = createExample('tertiary', () => <Button variant={ButtonVariant.TERTIARY}>Tertiary Button</Button>);
-
-const quaternaryButton = createExample('quaternary', () => <Button variant={ButtonVariant.TERTIARY}>Quaternary Button</Button>);
-
-export default createSection('Button', 'src/components/Button/index.tsx', [primaryButton, secondaryButton, tertiaryButton, quaternaryButton]);
+export default createSection('Button', 'src/components/Button/index.tsx', examples);

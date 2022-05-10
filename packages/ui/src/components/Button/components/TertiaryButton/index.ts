@@ -1,7 +1,7 @@
 import { ButtonVariant } from '@ui/components/Button/constants';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
-import ButtonContainer, { ButtonContainerProps } from './ButtonContainer';
+import ButtonContainer, { ButtonContainerProps } from '../ButtonContainer';
 
 export interface TertiaryButtonProps extends ButtonContainerProps {
   variant: ButtonVariant.TERTIARY;

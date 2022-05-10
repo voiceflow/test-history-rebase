@@ -1,13 +1,26 @@
 import ButtonContainer, { ButtonContainerProps } from '@ui/components/Button/components/ButtonContainer';
+import { FlexCenter } from '@ui/components/Flex';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
-
-import Icon from './PrimaryButtonIcon';
 
 export interface PrimaryButtonContainerProps extends ButtonContainerProps {
   canHover?: boolean;
 }
 
-const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerProps>`
+export interface PrimaryButtonLabelProps {
+  isLoading?: boolean;
+}
+
+export const PrimaryButtonIcon = styled(FlexCenter)`
+  width: 30px;
+  height: 30px;
+  margin-right: 6px;
+  padding: 7px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+`;
+
+export const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerProps>`
   ${transition('background', 'opacity', 'box-shadow')}
   color: ${colors(ThemeColor.WHITE)};
   font-weight: 600;
@@ -24,7 +37,7 @@ const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerPro
           box-shadow: none;
           opacity: 0.4;
 
-          & ${Icon} {
+          & ${PrimaryButtonIcon} {
             opacity: 0.46;
           }
         `
@@ -40,4 +53,14 @@ const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerPro
   }
 `;
 
-export default PrimaryButtonContainer;
+export const PrimaryButtonLabel = styled.span<PrimaryButtonLabelProps>`
+  ${({ isLoading }) =>
+    isLoading
+      ? css`
+          padding: 0 9px;
+          pointer-events: none;
+        `
+      : css`
+          padding: 0 22px;
+        `}
+`;

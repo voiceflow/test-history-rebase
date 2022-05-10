@@ -13,9 +13,10 @@ export interface AudioPlayerProps {
   onClose: VoidFunction;
   autoplay?: boolean;
   showDuration?: boolean;
+  className?: string;
 }
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autoplay = false, showDuration = false }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autoplay = false, showDuration = false, className }) => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
   const { ref: audioElementRef, curTime, duration, playing, setPlaying, setClickedTime } = useAudioPlayer({ autoplay });
@@ -33,7 +34,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autopla
   const percent = (curTime / duration) * 100;
 
   return (
-    <Container ref={containerRef} onClick={jumpToTime}>
+    <Container ref={containerRef} onClick={jumpToTime} className={className}>
       <ProgressBar percent={percent} />
 
       <Flex fullWidth>

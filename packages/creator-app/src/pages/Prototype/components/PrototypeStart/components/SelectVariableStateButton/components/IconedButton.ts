@@ -1,4 +1,4 @@
-import { Button, PrimaryButtonIcon, PrimaryButtonLabel, PrimaryButtonProps } from '@voiceflow/ui';
+import { Button, PrimaryButton, PrimaryButtonProps } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
@@ -15,13 +15,13 @@ const IconedButton = styled(Button)<IconedButtonProps>`
   align-items: center;
   background-color: ${({ isOpen }) => (isOpen ? '#2f75d6' : '#3d82e2')};
 
-  ${PrimaryButtonIcon} {
+  ${PrimaryButton.Icon} {
     background: none;
     margin-right: 1px;
     margin-top: 1px;
   }
 
-  ${PrimaryButtonLabel} {
+  ${PrimaryButton.Label} {
     padding: 0;
   }
 `;

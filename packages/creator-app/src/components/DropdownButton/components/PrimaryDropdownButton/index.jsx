@@ -1,4 +1,4 @@
-import { PrimaryButton, PrimaryButtonContainer, SvgIcon } from '@voiceflow/ui';
+import { PrimaryButton, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { Container, Toggle } from './components';
@@ -8,11 +8,11 @@ const DropdownButton = ({ disabled, onToggle, children, buttonProps }, ref) => (
     <PrimaryButton disabled={disabled} canHover={false} {...buttonProps}>
       {children}
     </PrimaryButton>
-    <PrimaryButtonContainer disabled={disabled} canHover={false} onClick={onToggle}>
+    <PrimaryButton.Container disabled={disabled} canHover={false} onClick={onToggle}>
       <Toggle>
         <SvgIcon icon="caretDown" width={10} />
       </Toggle>
-    </PrimaryButtonContainer>
+    </PrimaryButton.Container>
   </Container>
 );
 

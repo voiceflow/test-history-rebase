@@ -23,13 +23,8 @@ export {
   ButtonContainer,
   ButtonVariant,
   PrimaryButton,
-  PrimaryButtonContainer,
-  PrimaryButtonIcon,
-  PrimaryButtonLabel,
   QuaternaryButton,
   SecondaryButton,
-  SecondaryButtonContainer,
-  SecondaryButtonIcon,
   TertiaryButton,
 } from './Button';
 export { default as Card } from './Card';
@@ -120,6 +115,7 @@ export { FullSpinner, Spinner } from './Spinner';
 export { default as StrengthGauge } from './StrengthGauge';
 export type { Icon, SvgIconProps } from './SvgIcon';
 export { IconVariant, default as SvgIcon, SvgIconContainer } from './SvgIcon';
+export { default as Tabs } from './Tabs';
 export { Tag } from './Tag';
 export type { TextProps } from './Text';
 export { BlockText, ClickableText, Description, Label, Link, OverflowText, overflowTextStyles, default as Text, Title } from './Text';
@@ -139,4 +135,5 @@ export { UploadIconVariant } from './Upload/ImageUpload/IconUpload';
 export type { DropUploadProps } from './Upload/Primitive/DropUpload';
 export type { InputRenderer } from './Upload/Primitive/LinkUpload';
 export type { LinkUploadProps } from './Upload/Primitive/LinkUpload';
+export { default as UploadV2 } from './Upload/V2';
 export { default as VideoPlayer } from './VideoPlayer';

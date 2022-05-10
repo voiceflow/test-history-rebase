@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Icon, PrimaryButtonIcon, PrimaryButtonProps, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, Button, Flex, Icon, PrimaryButton, PrimaryButtonProps, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -31,7 +31,7 @@ const UploadButton = styled(Button).attrs({ speed: 2000 })<UploadButtonProps>`
       }
     `}
 
-  ${PrimaryButtonIcon} {
+  ${PrimaryButton.Icon} {
     box-shadow: none;
     color: #ffffff !important;
     ${({ isUploading }) =>

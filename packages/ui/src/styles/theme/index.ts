@@ -93,6 +93,11 @@ const THEME = {
     imageUpload: {
       height: 230,
     },
+    uploadV2: {
+      image: {
+        height: 170,
+      },
+    },
     icon: ICON_THEME,
 
     sectionV2: {

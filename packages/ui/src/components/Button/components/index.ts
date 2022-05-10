@@ -1,10 +1,10 @@
 export { default as BaseButton, baseButtonStyles } from './BaseButton';
 export { default as ButtonContainer } from './ButtonContainer';
 export type { PrimaryButtonProps } from './PrimaryButton';
-export { default as PrimaryButton, PrimaryButtonContainer, PrimaryButtonIcon, PrimaryButtonLabel } from './PrimaryButton';
+export { default as PrimaryButton } from './PrimaryButton';
 export type { QuaternaryButtonProps } from './QuaternaryButton';
 export { default as QuaternaryButton } from './QuaternaryButton';
 export type { SecondaryButtonProps } from './SecondaryButton';
-export { default as SecondaryButton, SecondaryButtonContainer, SecondaryButtonIcon } from './SecondaryButton';
+export { default as SecondaryButton } from './SecondaryButton';
 export type { TertiaryButtonProps } from './TertiaryButton';
 export { default as TertiaryButton } from './TertiaryButton';

@@ -96,15 +96,13 @@ const FullImage = React.forwardRef<HTMLDivElement, FullImageProps>(
       >
         <S.ImageUploadInput ref={imageUploadRef} type="file" accept={IMAGE_FILE_FORMATS.join(',')} {...getInputProps()} />
 
-        <>
-          {showRemove && removeButton && (
-            <RemoveButton onClick={stopPropagation(() => update(''))}>
-              <SvgIcon size={8} icon="close" color="#8da2b5" />
-            </RemoveButton>
-          )}
+        {showRemove && removeButton && (
+          <RemoveButton onClick={stopPropagation(() => update(''))}>
+            <SvgIcon size={8} icon="close" color="#8da2b5" />
+          </RemoveButton>
+        )}
 
-          <S.ImageContainer onClick={clickImageInput}>{content}</S.ImageContainer>
-        </>
+        <S.ImageContainer onClick={clickImageInput}>{content}</S.ImageContainer>
       </S.Container>
     ) : (
       <DropUpload

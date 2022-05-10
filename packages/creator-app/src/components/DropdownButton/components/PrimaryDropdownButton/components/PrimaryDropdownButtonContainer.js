@@ -1,23 +1,23 @@
-import { FlexCenter, PrimaryButtonContainer } from '@voiceflow/ui';
+import { FlexCenter, PrimaryButton } from '@voiceflow/ui';
 import styled from 'styled-components';
 
 const PrimaryDropdownButtonContainer = styled(FlexCenter)`
-  & ${PrimaryButtonContainer} {
+  & ${PrimaryButton.Container} {
     margin-right: 2px;
   }
 
-  & ${PrimaryButtonContainer}:not(:first-of-type) {
+  & ${PrimaryButton.Container}:not(:first-of-type) {
     margin-right: 0;
     border-top-left-radius: 14px;
     border-bottom-left-radius: 14px;
   }
 
-  & ${PrimaryButtonContainer}:not(:last-of-type) {
+  & ${PrimaryButton.Container}:not(:last-of-type) {
     border-top-right-radius: 14px;
     border-bottom-right-radius: 14px;
   }
 
-  & ${PrimaryButtonContainer}:last-of-type {
+  & ${PrimaryButton.Container}:last-of-type {
     margin-right: 0;
   }
 `;

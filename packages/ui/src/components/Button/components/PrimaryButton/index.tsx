@@ -2,27 +2,31 @@ import { ButtonVariant } from '@ui/components/Button/constants';
 import SvgIcon, { SvgIconProps } from '@ui/components/SvgIcon';
 import React from 'react';
 
-import { PrimaryButtonContainer, PrimaryButtonIcon, PrimaryButtonLabel } from './components';
-import { PrimaryButtonContainerProps } from './components/PrimaryButtonContainer';
+import * as S from './styles';
 
-export * from './components';
-
-export interface PrimaryButtonProps extends PrimaryButtonContainerProps {
+export interface PrimaryButtonProps extends S.PrimaryButtonContainerProps {
   icon?: SvgIconProps['icon'] | null;
   variant?: ButtonVariant.PRIMARY;
   iconProps?: Omit<SvgIconProps, 'icon'>;
 }
 
-const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(({ icon, children, iconProps, isLoading, ...props }, ref) => (
-  <PrimaryButtonContainer ref={ref} {...props}>
-    <PrimaryButtonLabel isLoading={isLoading}>{children}</PrimaryButtonLabel>
+const PrimaryButton: React.ForwardRefRenderFunction<HTMLButtonElement, PrimaryButtonProps> = (
+  { icon, children, iconProps, isLoading, ...props },
+  ref
+) => (
+  <S.PrimaryButtonContainer ref={ref} {...props}>
+    <S.PrimaryButtonLabel isLoading={isLoading}>{children}</S.PrimaryButtonLabel>
 
     {icon && (
-      <PrimaryButtonIcon>
+      <S.PrimaryButtonIcon>
         <SvgIcon icon={icon} color="#FFF" size={16} {...iconProps} />
-      </PrimaryButtonIcon>
+      </S.PrimaryButtonIcon>
     )}
-  </PrimaryButtonContainer>
-));
+  </S.PrimaryButtonContainer>
+);
 
-export default PrimaryButton;
+export default Object.assign(React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(PrimaryButton), {
+  Container: S.PrimaryButtonContainer,
+  Icon: S.PrimaryButtonIcon,
+  Label: S.PrimaryButtonLabel,
+});

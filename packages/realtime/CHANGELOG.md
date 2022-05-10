@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.63.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.62.0...@voiceflow/realtime@1.63.0) (2022-05-10)
+
+
+### Features
+
+* update port actions (VF-3082) ([#5377](https://github.com/voiceflow/creator-app/issues/5377)) ([8c7e66b](https://github.com/voiceflow/creator-app/commit/8c7e66b3b83eaa6a00719c11392799bcbb788b41))
+
+
+
+
+
 # [1.62.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.61.1...@voiceflow/realtime@1.62.0) (2022-05-05)
 
 

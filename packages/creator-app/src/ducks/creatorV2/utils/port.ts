@@ -1,7 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
@@ -47,12 +46,7 @@ export const addDynamicPort = (
 
 export const addBuiltinPort = (
   state: Draft<CreatorState>,
-  {
-    nodeID,
-    portID,
-    type,
-    platform,
-  }: { nodeID: string; portID: string; type: BaseModels.PortType; platform: Nullish<VoiceflowConstants.PlatformType> }
+  { nodeID, portID, type }: { nodeID: string; portID: string; type: BaseModels.PortType }
 ): void =>
   addPort(
     state,
@@ -62,7 +56,7 @@ export const addBuiltinPort = (
     {
       nodeID,
       portID,
-      port: { label: type, platform: platform ?? null },
+      port: { label: type },
     }
   );
 

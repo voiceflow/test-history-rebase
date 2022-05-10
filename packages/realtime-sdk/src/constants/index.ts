@@ -26,6 +26,7 @@ export const SETTINGS_KEY = 'settings';
 export const SESSION_KEY = 'session';
 export const PUBLISHING_KEY = 'publishing';
 export const PLATFORM_DATA_KEY = 'platform_data';
+export const PROTOTYPE_KEY = 'prototype';
 export const MEMBER_KEY = 'member';
 export const INVITE_KEY = 'invite';
 export const VARIABLES_KEY = 'variables';

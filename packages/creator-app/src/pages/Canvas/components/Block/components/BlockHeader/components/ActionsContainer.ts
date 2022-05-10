@@ -1,22 +1,15 @@
-import { css, styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs';
 import { ClassName } from '@/styles/constants';
 
 const ActionsContainer = styled.div<{ onlyActions?: boolean }>`
+  ${transition('padding')}
   display: flex;
-  padding: 0 8px 0 16px;
   margin-top: 18px;
+  padding: 0;
 
-  ${({ onlyActions }) =>
-    onlyActions &&
-    css`
-      ${transition('padding')}
-
-      padding: 0;
-
-      .${ClassName.CANVAS_BLOCK}:hover & {
-        padding: 0 8px 0 16px;
-      }
-    `}
+  .${ClassName.CANVAS_BLOCK}:hover & {
+    padding: 0 8px 0 16px;
+  }
 `;
 
 export default ActionsContainer;

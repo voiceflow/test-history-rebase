@@ -6,8 +6,8 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK_ID, MOCK_STATE, NODE_DATA, NODE_ID, PORT, PORT_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addLink reducer', ({ expect, describeReducerV2 }) => {
-  describeReducerV2(Realtime.link.add, ({ applyAction }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addDynamicLink reducer', ({ expect, describeReducerV2 }) => {
+  describeReducerV2(Realtime.link.addDynamic, ({ applyAction }) => {
     const linkID = 'newLink';
 
     it('ignore adding a link for a different diagram', () => {

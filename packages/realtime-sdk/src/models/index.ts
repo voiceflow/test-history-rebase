@@ -13,6 +13,7 @@ export * from './Port';
 export * from './Product';
 export * from './Project';
 export * from './ProjectList';
+export * from './Prototype';
 export * from './Slot';
 export * from './Speak';
 export * from './Utility';

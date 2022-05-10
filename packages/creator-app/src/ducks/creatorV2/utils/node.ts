@@ -25,7 +25,6 @@ export const addNodeWithPorts = (
       nodeID,
       portID: port.id,
       type: type as BaseModels.PortType,
-      platform: port.platform,
     })
   );
 

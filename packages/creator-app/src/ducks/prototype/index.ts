@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 
@@ -12,6 +13,7 @@ import {
   UpdatePrototypeContext,
   UpdatePrototypeContextStore,
   UpdatePrototypeSettings,
+  updatePrototypeSettings,
   UpdatePrototypeStatus,
   UpdatePrototypeVisualData,
   UpdatePrototypeVisualDataHistory,
@@ -112,6 +114,10 @@ const updatePrototypeSettingsReducer: Reducer<PrototypeState, UpdatePrototypeSet
 });
 
 const prototypeReducer: RootReducer<PrototypeState, AnyPrototypeAction> = (state = INITIAL_STATE, action) => {
+  if (Realtime.version.replacePrototypeSettings.match(action)) {
+    return updatePrototypeSettingsReducer(state, updatePrototypeSettings(action.payload.settings, false));
+  }
+
   switch (action.type) {
     case PrototypeAction.UPDATE_TEST:
       return updatePrototypeReducer(state, action);

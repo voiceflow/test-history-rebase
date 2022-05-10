@@ -1,6 +1,3 @@
-import { Utils } from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-
 export enum SpeakTraceAudioType {
   AUDIO = 'audio',
   MESSAGE = 'message',
@@ -28,8 +25,3 @@ export enum PrototypeInputMode {
   TEXT = 'TEXT',
   VOICE = 'VOICE',
 }
-
-export const getDefaultPrototypeLayout = Utils.platform.createProjectTypeSelector({
-  [VoiceflowConstants.ProjectType.CHAT]: PrototypeLayout.TEXT_DIALOG,
-  [VoiceflowConstants.ProjectType.VOICE]: PrototypeLayout.VOICE_DIALOG,
-});

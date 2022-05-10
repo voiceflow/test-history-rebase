@@ -7,7 +7,7 @@ import _constant from 'lodash/constant';
 import { batch } from 'react-redux';
 
 import client from '@/client';
-import { getDefaultPrototypeLayout, PrototypeLayout } from '@/constants/prototype';
+import { PrototypeLayout } from '@/constants/prototype';
 import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
 
@@ -37,7 +37,7 @@ const setupPublicPrototype =
     );
 
     const rootDiagramID = prototype.context.stack?.[0].programID as string;
-    const layout = (prototype?.settings.layout ?? getDefaultPrototypeLayout(projectType)) as PrototypeLayout;
+    const layout = (prototype?.settings.layout ?? Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)) as PrototypeLayout;
     const buttonsOnly = !!prototype?.settings.buttonsOnly;
 
     const version = {

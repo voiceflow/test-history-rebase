@@ -4,10 +4,10 @@ import { Nullish } from '@voiceflow/common';
 export const createEmptyNodePorts = <T = string>(): NodePortSchema<T> => ({ in: [], out: { builtIn: {}, dynamic: [] } });
 
 export const extractNodePorts = (descriptor: PortsDescriptor): NodePorts => ({
-  in: descriptor.in.map((port) => port.id),
+  in: descriptor.in.map(({ id }) => id),
   out: {
-    dynamic: descriptor.out.dynamic.map((port) => port.id),
-    builtIn: Object.fromEntries(Object.entries(descriptor.out.builtIn).filter(([, portID]) => !!portID)),
+    dynamic: descriptor.out.dynamic.map(({ id }) => id),
+    builtIn: Object.fromEntries(Object.entries(descriptor.out.builtIn).map(([key, { id }]) => [key, id])),
   },
 });
 

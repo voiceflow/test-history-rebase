@@ -3,8 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { addBuiltinPort } from '../utils';
 import { createActiveDiagramReducer } from './utils';
 
-const addBuiltinPortReducer = createActiveDiagramReducer(Realtime.port.addBuiltin, (state, { nodeID, portID, type, platform }) => {
-  addBuiltinPort(state, { nodeID, portID, type, platform });
+const addBuiltinPortReducer = createActiveDiagramReducer(Realtime.port.addBuiltin, (state, { nodeID, portID, type }) => {
+  addBuiltinPort(state, { nodeID, portID, type });
 });
 
 export default addBuiltinPortReducer;

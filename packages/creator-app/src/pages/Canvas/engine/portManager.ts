@@ -23,17 +23,12 @@ class PortManager extends EngineConsumer {
 
     addBuiltin: async (nodeID: string, portType: BaseModels.PortType, port: Realtime.PartialModel<Realtime.Port>): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
-        const ports = this.engine.select(CreatorV2.portsByNodeIDSelector, { id: nodeID });
-        const builtinOffset = Object.keys(ports.out.builtIn).length;
-
         await this.dispatch.sync(
           Realtime.port.addBuiltin({
             ...this.engine.context,
             nodeID,
             portID: port.id,
-            platform: port.platform,
             type: port.label as BaseModels.PortType,
-            builtinOffset,
           })
         );
       } else {
@@ -63,7 +58,9 @@ class PortManager extends EngineConsumer {
       if (!port) return;
 
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(Realtime.port.removeBuiltin({ ...this.engine.context, nodeID: port.nodeID, portID }));
+        await this.dispatch.sync(
+          Realtime.port.removeBuiltin({ ...this.engine.context, nodeID: port.nodeID, portID, type: port.label as BaseModels.PortType })
+        );
       } else {
         const linkIDs = this.engine.getLinkIDsByPortID(portID);
 
@@ -84,8 +81,8 @@ class PortManager extends EngineConsumer {
       this.engine.node.redrawLinks(nodeID);
     },
 
-    reorderDynamicV2: async (nodeID: string, portID: string, index: number, builtinOffset: number): Promise<void> => {
-      await this.dispatch.sync(Realtime.port.reorderDynamic({ ...this.engine.context, nodeID, portID, index, builtinOffset }));
+    reorderDynamicV2: async (nodeID: string, portID: string, index: number): Promise<void> => {
+      await this.dispatch.sync(Realtime.port.reorderDynamic({ ...this.engine.context, nodeID, portID, index }));
 
       this.engine.node.redrawLinks(nodeID);
     },
@@ -146,14 +143,13 @@ class PortManager extends EngineConsumer {
     if (this.isAtomicActionsPhase2) {
       const ports = this.engine.select(CreatorV2.portsByNodeIDSelector, { id: nodeID });
       const portID = ports.out.dynamic[from];
-      const builtinOffset = Object.keys(ports.out.builtIn).length;
 
       if (!portID) {
         this.log.warn('attempted to reorder a port that could not be found at index', this.log.value(from), 'of node', this.log.slug(nodeID));
         return;
       }
 
-      await this.internal.reorderDynamicV2(nodeID, portID, to, builtinOffset);
+      await this.internal.reorderDynamicV2(nodeID, portID, to);
     } else {
       await this.engine.realtime.sendUpdate(RealtimeDuck.reorderOutDynamicPorts(nodeID, from, to));
       this.internal.reorderDynamicV1(nodeID, from, to);

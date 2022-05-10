@@ -3,14 +3,23 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 export const buildPort = (nodeID: string) => {
-  return (port: Realtime.PortDescriptor) => ({
+  return (port: Realtime.PortDescriptor): Realtime.Port => ({
     ...port,
     nodeID,
     label: port.label ?? null,
-    platform: port.platform ?? null,
     virtual: !!port.virtual,
   });
 };
+
+export const buildDBBlock = (nodeID: string, coords: Realtime.Point, data: BaseModels.BaseBlock['data']): BaseModels.BaseBlock => ({
+  type: 'block',
+  nodeID,
+  coords,
+  data,
+});
+
+export const buildDBStep = <Step extends BaseModels.BaseStep>(nodeID: string, type: Step['type'], data: Step['data']): Step =>
+  ({ nodeID, type, data } as Step);
 
 export interface ExtractNodesOptions extends Partial<Pick<Realtime.CreatorDiagram, 'rootNodeIDs' | 'markupNodeIDs'>> {
   ports?: Record<string, Realtime.PortsDescriptor>;

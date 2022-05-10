@@ -1,7 +1,9 @@
 import { parseId } from '@logux/core';
-import { AnyRecord, BaseModels } from '@voiceflow/base-types';
-import { Nullish } from '@voiceflow/common';
+import { BaseModels } from '@voiceflow/base-types';
+import { AnyRecord, Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+
+import type { PatchBuiltInLink, PatchDynamicLink, RemoveBuiltInLink, RemoveDynamicLink } from '@/clients/voiceflow/diagram';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../constants';
 import { AbstractControl } from '../control';
@@ -157,38 +159,52 @@ class DiagramService extends AbstractControl {
     await client.diagram.updateBlockCoords(diagramID, blocks);
   }
 
+  public async updateNodeData<D extends AnyRecord>(creatorID: number, diagramID: string, nodeID: string, data: D): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.diagram.updateNodeData(diagramID, nodeID, data);
+  }
+
   public async removeManyNodes(creatorID: number, diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[]): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.removeManyNodes(diagramID, nodes);
   }
 
-  public async addLink(creatorID: number, diagramID: string, nodeID: string, portID: string, target: string): Promise<void> {
+  public async addBuiltInLink(creatorID: number, diagramID: string, nodeID: string, type: BaseModels.PortType, target: string): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.addLink(diagramID, nodeID, portID, target);
+    await client.diagram.addBuiltInLink(diagramID, nodeID, type, target);
   }
 
-  public async removeManyLinks(creatorID: number, diagramID: string, links: { nodeID: string; portID: string }[]): Promise<void> {
+  public async addDynamicLink(creatorID: number, diagramID: string, nodeID: string, portID: string, target: string): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.diagram.addDynamicLink(diagramID, nodeID, portID, target);
+  }
+
+  public async removeManyLinks(creatorID: number, diagramID: string, links: (RemoveBuiltInLink | RemoveDynamicLink)[]): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.removeManyLinks(diagramID, links);
   }
 
-  public async patchManyLinks<D extends AnyRecord>(
-    creatorID: number,
-    diagramID: string,
-    patches: { nodeID: string; portID: string; data: D }[]
-  ): Promise<void> {
+  public async patchManyLinks(creatorID: number, diagramID: string, patches: (PatchBuiltInLink | PatchDynamicLink)[]): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.patchManyLinks(diagramID, patches);
   }
 
-  public async removePort(creatorID: number, diagramID: string, nodeID: string, portID: string): Promise<void> {
+  public async removeBuiltInPort(creatorID: number, diagramID: string, nodeID: string, type: BaseModels.PortType): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.removePort(diagramID, nodeID, portID);
+    await client.diagram.removeBuiltInPort(diagramID, nodeID, type);
+  }
+
+  public async removeDynamicPort(creatorID: number, diagramID: string, nodeID: string, portID: string): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.diagram.removeDynamicPort(diagramID, nodeID, portID);
   }
 
   public async reorderPorts(creatorID: number, diagramID: string, nodeID: string, portID: string, index: number): Promise<void> {
@@ -197,10 +213,22 @@ class DiagramService extends AbstractControl {
     await client.diagram.reorderPorts(diagramID, nodeID, portID, index);
   }
 
-  public async addPort(creatorID: number, diagramID: string, nodeID: string, port: BaseModels.BasePort, index?: number): Promise<void> {
+  public async addBuiltInPort(
+    creatorID: number,
+    diagramID: string,
+    nodeID: string,
+    port: BaseModels.BasePort,
+    type: BaseModels.PortType
+  ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.addPort(diagramID, nodeID, port, index);
+    await client.diagram.addBuiltInPort(diagramID, nodeID, port, type);
+  }
+
+  public async addDynamicPort(creatorID: number, diagramID: string, nodeID: string, port: BaseModels.BasePort): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.diagram.addDynamicPort(diagramID, nodeID, port);
   }
 }
 

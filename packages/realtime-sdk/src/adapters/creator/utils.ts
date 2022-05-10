@@ -8,8 +8,7 @@ import { IN_PORT_KEY, MIGRATION_BLOCKS } from './constants';
 
 export const getInPortID = (nodeID: string): string => `${nodeID}${IN_PORT_KEY}`;
 
-export const generateInPort = (nodeID: string, { platform = null, virtual = false, label = '' }: Partial<Port> = {}): Port => ({
-  platform,
+export const generateInPort = (nodeID: string, { virtual = false, label = '' }: Partial<Port> = {}): Port => ({
   virtual,
   label,
   id: getInPortID(nodeID),

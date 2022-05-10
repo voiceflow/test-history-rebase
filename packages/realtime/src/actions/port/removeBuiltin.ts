@@ -4,11 +4,11 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 
-class RemoveBuiltinPort extends AbstractDiagramActionControl<Realtime.BasePortPayload> {
+class RemoveBuiltinPort extends AbstractDiagramActionControl<Realtime.port.RemoveBuiltinPayload> {
   actionCreator = Realtime.port.removeBuiltin;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.BasePortPayload>): Promise<void> => {
-    await this.services.diagram.removePort(ctx.data.creatorID, payload.diagramID, payload.nodeID, payload.portID);
+  process = async (ctx: Context, { payload }: Action<Realtime.port.RemoveBuiltinPayload>): Promise<void> => {
+    await this.services.diagram.removeBuiltInPort(ctx.data.creatorID, payload.diagramID, payload.nodeID, payload.type);
   };
 }
 

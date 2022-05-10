@@ -1,7 +1,7 @@
 import { BaseButton } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
-import { getDefaultPrototypeLayout } from '@/constants/prototype';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { createRootSelector } from '@/ducks/utils';
 
@@ -53,7 +53,7 @@ export const prototypeButtonsSelector = createSelector([prototypeSelector], ({ s
 
 export const prototypeLayoutSelector = createSelector(
   [prototypeSelector, ProjectV2.active.projectTypeSelector],
-  ({ settings }, projectType) => settings.layout || getDefaultPrototypeLayout(projectType)
+  ({ settings }, projectType) => settings.layout || Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)
 );
 
 export const prototypeBrandColorSelector = createSelector([prototypeSelector], ({ settings }) => settings.brandColor || '#3D81E2');

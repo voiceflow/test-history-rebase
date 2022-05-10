@@ -33,17 +33,6 @@ export interface WebhookData {
   utterance?: string;
 }
 
-export interface PrototypeShareViewSettings {
-  layout?: PrototypeLayout;
-  brandColor?: string;
-  brandImage?: string;
-  avatar?: string;
-  password?: string;
-  buttons?: string;
-  variableStateID?: string;
-  buttonsOnly?: boolean;
-}
-
 export interface PrototypeState {
   ID: string | null;
   muted: boolean;
@@ -66,5 +55,5 @@ export interface PrototypeState {
     dataHistory: (Node.Visual.StepData | null)[];
   };
   webhook: Request.BaseRequest | null;
-  settings: PrototypeShareViewSettings;
+  settings: Realtime.PrototypeSettings;
 }

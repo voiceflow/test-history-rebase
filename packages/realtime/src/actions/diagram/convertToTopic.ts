@@ -4,6 +4,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context, terminateResend } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
+import { buildDBBlock, buildDBStep } from '@/actions/node/utils';
+
 import { AbstractDiagramResourceControl, NewDiagramContextData } from './utils';
 
 class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagramPayload, NewDiagramContextData> {
@@ -25,29 +27,30 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
     const startNodeID = Object.values(primitiveDiagram.nodes).find((node) => node.type === BaseNode.NodeType.START)?.nodeID;
 
     if (startNodeID) {
-      const startNode = primitiveDiagram.nodes[startNodeID];
+      const startNode = primitiveDiagram.nodes[startNodeID] as BaseNode.Start.Step;
       const intentNodeID = Utils.id.objectID();
+      const nextPortID = startNode.data.ports?.[0]?.target ?? startNode.data.portsV2?.builtIn[BaseModels.PortType.NEXT]?.target ?? null;
 
-      primitiveDiagram.nodes[startNodeID] = {
-        type: 'block',
-        nodeID: startNodeID,
-        coords: startNode.coords ?? [360, 120],
-        data: {
-          name: primitiveDiagram.name,
-          color: Realtime.BlockVariant.STANDARD,
-          steps: [intentNodeID],
-        },
-      };
+      primitiveDiagram.nodes[startNodeID] = buildDBBlock(startNodeID, startNode.coords ?? [360, 120], {
+        name: primitiveDiagram.name,
+        color: Realtime.BlockVariant.STANDARD,
+        steps: [intentNodeID],
+      });
 
-      primitiveDiagram.nodes[intentNodeID] = {
-        type: BaseNode.NodeType.INTENT,
-        nodeID: intentNodeID,
-        data: {
-          intent: null,
-          mappings: [],
-          ports: [{ type: '', target: startNode.data.ports?.[0]?.target ?? null }],
+      primitiveDiagram.nodes[intentNodeID] = buildDBStep<BaseNode.Intent.Step>(intentNodeID, BaseNode.NodeType.INTENT, {
+        intent: null,
+        mappings: [],
+        portsV2: {
+          builtIn: {
+            [BaseModels.PortType.NEXT]: {
+              id: Utils.id.objectID(),
+              type: BaseModels.PortType.NEXT,
+              target: nextPortID,
+            },
+          },
+          dynamic: [],
         },
-      };
+      });
     }
 
     const intentNodes = Object.values(primitiveDiagram.nodes).filter(Realtime.Utils.typeGuards.isIntentDBNode);

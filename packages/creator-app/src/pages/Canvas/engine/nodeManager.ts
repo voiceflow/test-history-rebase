@@ -258,8 +258,16 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedThreads(node.parentNode!);
     },
 
-    updateData: (nodeID: string, data: Partial<Realtime.NodeData<unknown>>): void => {
-      this.dispatch(Creator.updateNodeData(nodeID, data));
+    updateData: async (nodeID: string, patch: Partial<Realtime.NodeData<unknown>>): Promise<void> => {
+      if (this.isAtomicActionsPhase2) {
+        const projectMeta = this.engine.getActiveProjectMeta();
+        const data = this.engine.getDataByNodeID(nodeID);
+        if (!data) return;
+
+        await this.dispatch.sync(Realtime.node.updateData({ ...this.engine.context, nodeID, data: { ...data, ...patch }, projectMeta }));
+      } else {
+        this.dispatch(Creator.updateNodeData(nodeID, patch));
+      }
     },
 
     removeMany: async (nodeIDs: string[]): Promise<void> => {
@@ -499,8 +507,10 @@ class NodeManager extends EngineConsumer {
     this.log.debug(this.log.pending('updating node data'), this.log.slug(nodeID), data);
 
     await this.engine.realtime.sendUpdate(RealtimeDuck.updateNodeData(nodeID, data));
-    this.internal.updateData(nodeID, data);
-    if (data.name) this.internal.updateStartingBlock({ blockID: nodeID, name: data.name });
+    await this.internal.updateData(nodeID, data);
+    if (data.name) {
+      this.internal.updateStartingBlock({ blockID: nodeID, name: data.name });
+    }
     this.redraw(nodeID);
 
     if (save) {

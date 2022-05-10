@@ -27,14 +27,13 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
 
   const blockRef = React.useRef<BlockAPI>(null);
 
-  const { name, variant, combinedNodes, lockOwner, isMergeTarget } = nodeEntity.useState((e) => {
+  const { name, variant, combinedNodes, isMergeTarget } = nodeEntity.useState((e) => {
     const { node, data } = e.resolve<Realtime.NodeData.Combined>();
     return {
       name: data.name,
       variant: data.blockColor || BlockVariant.STANDARD,
       combinedNodes: node.combinedNodes,
       isMergeTarget: e.isMergeTarget,
-      lockOwner: e.lockOwner,
     };
   });
   const observer = React.useMemo(() => new ResizeObserver(() => engine.node.redrawLinks(nodeEntity.nodeID)), []);
@@ -185,10 +184,8 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
           nodeID={nodeEntity.nodeID}
           name={name}
           isDisabled={isDisabled}
-          isLocked={nodeEntity.isLocked}
           variant={variant}
           updateName={updateName}
-          lockOwner={lockOwner}
           ref={composeRefs(ref, blockRef, captureDropRef)}
           canEditTitle
           onClick={onClick}

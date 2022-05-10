@@ -1,5 +1,4 @@
 export { default as Caption } from './LinkCaption';
-export { default as Group } from './LinkGroup';
 export { default as HeadMarker } from './LinkHeadMarker';
 export { default as Overlay } from './LinkOverlay';
 export { default as Path } from './LinkPath';

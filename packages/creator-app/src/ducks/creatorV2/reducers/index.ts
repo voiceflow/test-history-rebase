@@ -4,9 +4,10 @@ import { createRootReducer } from '@/ducks/utils/reducer';
 import { INITIAL_STATE } from '../constants';
 import { CreatorState } from '../types';
 import addBlock from './addBlock';
+import addBuiltInLink from './addBuiltinLink';
 import addBuiltinPort from './addBuiltinPort';
+import addDynamicLink from './addDynamicLink';
 import addDynamicPort from './addDynamicPort';
-import addLink from './addLink';
 import addMarkup from './addMarkup';
 import appendStep from './appendStep';
 import importSnapshot from './importSnapshot';
@@ -22,6 +23,7 @@ import reorderDynamicPorts from './reorderDynamicPorts';
 import reorderSteps from './reorderSteps';
 import reset from './reset';
 import transplantSteps from './transplantSteps';
+import updateNodeData from './updateNodeData';
 
 const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...initialize)
@@ -37,6 +39,7 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...transplantSteps)
   .immerCase(...reorderSteps)
   .immerCase(...removeManyNodes)
+  .immerCase(...updateNodeData)
 
   .immerCase(...addDynamicPort)
   .immerCase(...addBuiltinPort)
@@ -44,7 +47,8 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...removeBuiltinPort)
   .immerCase(...removeDynamicPort)
 
-  .immerCase(...addLink)
+  .immerCase(...addBuiltInLink)
+  .immerCase(...addDynamicLink)
   .immerCase(...removeManyLinks)
   .immerCase(...patchManyLinks);
 

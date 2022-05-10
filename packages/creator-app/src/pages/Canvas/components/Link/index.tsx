@@ -2,12 +2,11 @@ import { Portal, swallowEvent, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { useRAF } from '@/hooks';
-import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
-import { PlatformContext } from '@/pages/Project/contexts';
+import { LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { Caption, Group, HeadMarker, Overlay, Path, Settings, Styles } from './components';
+import { Caption, HeadMarker, Overlay, Path, Settings, Styles } from './components';
 import { useLinkHandlers, useLinkInstance } from './hooks';
 import { buildHeadMarker } from './utils';
 
@@ -17,8 +16,6 @@ export type { LinkedRects } from './utils';
 export * from './utils';
 
 const Link: React.FC = () => {
-  const engine = React.useContext(EngineContext)!;
-  const platform = React.useContext(PlatformContext)!;
   const linkEntity = React.useContext(LinkEntityContext)!;
   const isEditingMode = useEditingMode();
 
@@ -62,13 +59,11 @@ const Link: React.FC = () => {
 
   if (!path) return null;
 
-  const isVisible = engine.link.isVisible(linkEntity.linkID, platform);
-
   return (
     <>
       <Styles />
 
-      <Group className={ClassName.CANVAS_LINK} isVisible={isVisible} ref={instance.containerRef}>
+      <g className={ClassName.CANVAS_LINK} ref={instance.containerRef}>
         {isEditingMode && (
           <Overlay
             d={path}
@@ -123,7 +118,7 @@ const Link: React.FC = () => {
             />
           </Portal>
         )}
-      </Group>
+      </g>
     </>
   );
 };

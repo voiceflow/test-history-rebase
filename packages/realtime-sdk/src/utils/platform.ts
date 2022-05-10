@@ -1,4 +1,4 @@
-import { AnyVoice } from '@realtime-sdk/models';
+import { AnyVoice, PrototypeLayout } from '@realtime-sdk/models';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Nullish } from '@voiceflow/common';
 import { GoogleConstants } from '@voiceflow/google-types';
@@ -96,3 +96,8 @@ export const getPlatformProviderName = createPlatformSelector(
   },
   'Custom'
 );
+
+export const getDefaultPrototypeLayout = createProjectTypeSelector({
+  [VoiceflowConstants.ProjectType.CHAT]: PrototypeLayout.TEXT_DIALOG,
+  [VoiceflowConstants.ProjectType.VOICE]: PrototypeLayout.VOICE_DIALOG,
+});

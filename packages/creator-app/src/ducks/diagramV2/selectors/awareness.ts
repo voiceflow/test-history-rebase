@@ -5,6 +5,7 @@ import _uniqBy from 'lodash/uniqBy';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
+import * as Account from '@/ducks/account';
 import { activeDiagramIDSelector } from '@/ducks/creatorV2/selectors';
 import { createParameterSelector, creatorIDParamSelector } from '@/ducks/utils';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
@@ -92,6 +93,11 @@ const activeDiagramLockOwnerClientNodeIDCreatorIDSelector = createSelector(
 );
 
 export const activeDiagramLockOwnerSelector = createSelector(
-  [activeDiagramLockOwnerClientNodeIDCreatorIDSelector, WorkspaceV2.active.getDistinctWorkspaceMemberByCreatorIDSelector],
-  ([clientNodeID, creatorID], getWorkspaceMember) => (creatorID && clientNodeID ? getWorkspaceMember(creatorID, clientNodeID) : null)
+  [Account.userIDSelector, activeDiagramLockOwnerClientNodeIDCreatorIDSelector, WorkspaceV2.active.getDistinctWorkspaceMemberByCreatorIDSelector],
+  (creatorID, [clientNodeID, lockOwnerID], getWorkspaceMember) => {
+    if (!lockOwnerID || !clientNodeID) return null;
+    if (creatorID === lockOwnerID) return null;
+
+    return getWorkspaceMember(lockOwnerID, clientNodeID);
+  }
 );

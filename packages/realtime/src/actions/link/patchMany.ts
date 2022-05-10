@@ -11,7 +11,9 @@ class PatchManyLinks extends AbstractDiagramActionControl<Realtime.link.PatchMan
     await this.services.diagram.patchManyLinks(
       ctx.data.creatorID,
       payload.diagramID,
-      payload.patches.map((patch) => ({ nodeID: patch.nodeID, portID: patch.portID, data: patch.data }))
+      payload.patches.map((patch) =>
+        patch.type ? { nodeID: patch.nodeID, type: patch.type, data: patch.data } : { nodeID: patch.nodeID, portID: patch.portID, data: patch.data }
+      )
     );
   };
 }

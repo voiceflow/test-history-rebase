@@ -23,12 +23,7 @@ export abstract class AbstractDiagramActionControl<
 > extends AbstractActionControl<P, D> {
   protected access = (ctx: Context<D>, action: Action<P>): Promise<boolean> =>
     this.services.diagram.canRead(ctx.data.creatorID, action.payload.diagramID);
-}
 
-export abstract class AbstractResendDiagramActionControl<
-  P extends Realtime.BaseDiagramPayload,
-  D extends BaseContextData = BaseContextData
-> extends AbstractDiagramActionControl<P, D> {
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
     channel: Realtime.Channels.diagram.build({
       diagramID: action.payload.diagramID,
@@ -42,7 +37,7 @@ export abstract class AbstractResendDiagramActionControl<
 export abstract class AbstractNoopDiagramActionControl<
   P extends Realtime.BaseDiagramPayload,
   D extends BaseContextData = BaseContextData
-> extends AbstractResendDiagramActionControl<P, D> {
+> extends AbstractDiagramActionControl<P, D> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   process = async (): Promise<void> => {};
 }

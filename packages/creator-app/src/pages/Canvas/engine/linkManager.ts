@@ -1,5 +1,4 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -21,16 +20,17 @@ class LinkManager extends EngineConsumer {
       if (!sourcePort || !targetPort || sourcePort.nodeID === targetPort.nodeID) return;
 
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(
-          Realtime.link.add({
-            ...this.engine.context,
-            sourceNodeID: sourcePort.nodeID,
-            sourcePortID,
-            targetNodeID: targetPort.nodeID,
-            targetPortID,
-            linkID,
-          })
-        );
+        const portType = this.select(CreatorV2.builtInPortTypeSelector, { id: sourcePortID });
+        const payload = {
+          ...this.engine.context,
+          sourceNodeID: sourcePort.nodeID,
+          sourcePortID,
+          targetNodeID: targetPort.nodeID,
+          targetPortID,
+          linkID,
+        };
+
+        await this.dispatch.sync(portType ? Realtime.link.addBuiltin({ ...payload, type: portType }) : Realtime.link.addDynamic(payload));
       } else {
         this.dispatch(Creator.addLink(sourcePortID, targetPortID, linkID));
       }
@@ -42,7 +42,15 @@ class LinkManager extends EngineConsumer {
       }
 
       if (this.isAtomicActionsPhase2) {
-        const links = this.select(CreatorV2.linksByIDsSelector, { ids: linkIDs }).map((link) => ({ ...link.source, linkID: link.id }));
+        const links = this.select(CreatorV2.linksByIDsSelector, { ids: linkIDs }).map((link) => {
+          const portType = this.select(CreatorV2.builtInPortTypeSelector, { id: link.source.portID });
+
+          return {
+            ...link.source,
+            linkID: link.id,
+            ...(portType ? { type: portType } : {}),
+          };
+        });
 
         await this.dispatch.sync(Realtime.link.removeMany({ ...this.engine.context, links }));
       } else {
@@ -52,7 +60,13 @@ class LinkManager extends EngineConsumer {
 
     patchMany: async (patches: Realtime.link.LinkPatch[]): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(Realtime.link.patchMany({ ...this.engine.context, patches }));
+        const patchesWithType = patches.map((patch) => {
+          const portType = this.select(CreatorV2.builtInPortTypeSelector, { id: patch.portID });
+
+          return { ...patch, ...(portType ? { type: portType } : {}) };
+        });
+
+        await this.dispatch.sync(Realtime.link.patchMany({ ...this.engine.context, patches: patchesWithType }));
       } else {
         this.dispatch(Creator.updateLinkDataMany(patches));
       }
@@ -79,19 +93,6 @@ class LinkManager extends EngineConsumer {
     return this.engine.node.isBranchActive(link.source.nodeID) || this.engine.node.isBranchActive(link.target.nodeID);
   }
 
-  isVisible(linkID: string, platform: VoiceflowConstants.PlatformType): boolean {
-    const link = this.engine.getLinkByID(linkID);
-    if (!link) return false;
-
-    const sourcePort = this.engine.getPortByID(link.source.portID);
-    if (!sourcePort) return false;
-
-    return !sourcePort.platform || sourcePort.platform === platform;
-  }
-
-  /**
-   * @deprecated use getLinkedRects
-   */
   getSourceTargetPoints(linkID: string): Pair<Realtime.Point> | null {
     const link = this.engine.getLinkByID(linkID);
 
@@ -159,6 +160,7 @@ class LinkManager extends EngineConsumer {
   /**
    * removes multiple links by their IDs
    */
+  // TODO: this can be refactored after AA because only a single link will ever be deleted at a time
   async removeMany(linkIDs: string[]): Promise<void> {
     this.log.debug(this.log.pending('removing links'), linkIDs);
 

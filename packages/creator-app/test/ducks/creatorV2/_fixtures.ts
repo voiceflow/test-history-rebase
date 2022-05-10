@@ -1,5 +1,4 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import { FeatureFlag } from '@/config/features';
@@ -49,7 +48,6 @@ export const PORT: Realtime.Port = {
   id: PORT_ID,
   nodeID: NODE_ID,
   label: 'first port',
-  platform: VoiceflowConstants.PlatformType.ALEXA,
   virtual: false,
 };
 

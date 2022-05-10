@@ -1,8 +1,30 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullish } from '@voiceflow/common';
+import { AnyRecord, Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { ExtraOptions } from './types';
+
+export interface RemoveBuiltInLink {
+  nodeID: string;
+  type: BaseModels.PortType;
+}
+
+export interface RemoveDynamicLink {
+  nodeID: string;
+  portID: string;
+}
+
+export interface PatchBuiltInLink {
+  nodeID: string;
+  type: BaseModels.PortType;
+  data: Partial<Realtime.LinkData>;
+}
+
+export interface PatchDynamicLink {
+  nodeID: string;
+  portID: string;
+  data: Partial<Realtime.LinkData>;
+}
 
 const Client = ({ api }: ExtraOptions) => ({
   canRead: (creatorID: number, diagramID: string) =>
@@ -29,23 +51,51 @@ const Client = ({ api }: ExtraOptions) => ({
 
   updateBlockCoords: (diagramID: string, blocks: Record<string, Realtime.Point>) => api.put(`/v2/diagrams/${diagramID}/nodes/coords`, { blocks }),
 
+  updateNodeData: <D extends AnyRecord>(diagramID: string, nodeID: string, data: D) => {
+    const entries = Object.entries(data);
+    const updates = entries.reduce<{ sets: { path: string; value: any }[]; unsets: { path: string }[] }>(
+      (acc, [path, value]) => {
+        if (value == null) {
+          acc.unsets.push({ path });
+        } else {
+          acc.sets.push({ path, value });
+        }
+
+        return acc;
+      },
+      { sets: [], unsets: [] }
+    );
+
+    return api.patch(`/v2/diagrams/${diagramID}/nodes/${nodeID}/data`, { updates });
+  },
+
   removeManyNodes: (diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[]) =>
     api.delete(`/v2/diagrams/${diagramID}/nodes`, { data: { nodes } }),
 
-  addLink: (diagramID: string, nodeID: string, portID: string, target: string) =>
-    api.post(`/v2/diagrams/${diagramID}/links`, { nodeID, portID, target }),
+  addBuiltInLink: (diagramID: string, nodeID: string, type: BaseModels.PortType, target: string) =>
+    api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/links`, { type, target }),
 
-  removeManyLinks: (diagramID: string, links: { nodeID: string; portID: string }[]) =>
+  addDynamicLink: (diagramID: string, nodeID: string, portID: string, target: string) =>
+    api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/links`, { portID, target }),
+
+  removeManyLinks: (diagramID: string, links: (RemoveBuiltInLink | RemoveDynamicLink)[]) =>
     api.delete(`/v2/diagrams/${diagramID}/links`, { data: { links } }),
 
-  patchManyLinks: (diagramID: string, patches: { nodeID: string; portID: string }[]) => api.patch(`/v2/diagrams/${diagramID}/links`, { patches }),
+  patchManyLinks: (diagramID: string, patches: (PatchBuiltInLink | PatchDynamicLink)[]) => api.patch(`/v2/diagrams/${diagramID}/links`, { patches }),
 
-  removePort: (diagramID: string, nodeID: string, portID: string) => api.delete(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports/${portID}`),
+  removeBuiltInPort: (diagramID: string, nodeID: string, type: BaseModels.PortType) =>
+    api.delete(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports`, { data: { type } }),
+
+  removeDynamicPort: (diagramID: string, nodeID: string, portID: string) =>
+    api.delete(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports`, { data: { portID } }),
 
   reorderPorts: (diagramID: string, nodeID: string, portID: string, index: number) =>
     api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports/reorder`, { portID, index }),
 
-  addPort: (diagramID: string, nodeID: string, port: BaseModels.BasePort, index?: number) =>
+  addBuiltInPort: (diagramID: string, nodeID: string, port: BaseModels.BasePort, type: BaseModels.PortType) =>
+    api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports`, { port, type }),
+
+  addDynamicPort: (diagramID: string, nodeID: string, port: BaseModels.BasePort, index: number | null = null) =>
     api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports`, { port, index }),
 });
 

@@ -1,11 +1,12 @@
 import { LINK_KEY } from '@realtime-sdk/constants';
 import { LinkData } from '@realtime-sdk/models';
 import { BaseDiagramPayload, BaseLinkPayload } from '@realtime-sdk/types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
 const linkType = Utils.protocol.typeFactory(LINK_KEY);
 
-export interface AddPayload extends BaseLinkPayload {
+export interface AddDynamicPayload extends BaseLinkPayload {
   sourceNodeID: string;
   sourcePortID: string;
   targetNodeID: string;
@@ -13,8 +14,12 @@ export interface AddPayload extends BaseLinkPayload {
   data?: LinkData;
 }
 
+export interface AddBuiltinPayload extends AddDynamicPayload {
+  type: BaseModels.PortType;
+}
+
 export interface RemoveManyPayload extends BaseDiagramPayload {
-  links: { nodeID: string; portID: string; linkID: string }[];
+  links: { nodeID: string; portID: string; linkID: string; type?: BaseModels.PortType }[];
 }
 
 export interface LinkPatch {
@@ -22,12 +27,14 @@ export interface LinkPatch {
   portID: string;
   linkID: string;
   data: Partial<LinkData>;
+  type?: BaseModels.PortType;
 }
 
 export interface PatchManyPayload extends BaseDiagramPayload {
   patches: LinkPatch[];
 }
 
-export const add = Utils.protocol.createAction<AddPayload>(linkType('ADD'));
+export const addBuiltin = Utils.protocol.createAction<AddBuiltinPayload>(linkType('ADD_BUILT_IN'));
+export const addDynamic = Utils.protocol.createAction<AddDynamicPayload>(linkType('ADD_DYNAMIC'));
 export const removeMany = Utils.protocol.createAction<RemoveManyPayload>(linkType('REMOVE_MANY'));
 export const patchMany = Utils.protocol.createAction<PatchManyPayload>(linkType('PATCH_MANY'));

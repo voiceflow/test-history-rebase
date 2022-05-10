@@ -9,7 +9,7 @@ import { BlockAPI } from '@/pages/Canvas/types';
 import { BaseStartBlockProps } from '../types';
 
 export type BlockWithCommandsProps = BaseStartBlockProps &
-  Pick<BlockProps, 'name' | 'icon' | 'lockOwner' | 'actions' | 'nodeID' | 'variant'> & {
+  Pick<BlockProps, 'name' | 'icon' | 'actions' | 'nodeID' | 'variant'> & {
     className?: string;
   };
 

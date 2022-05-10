@@ -1,5 +1,5 @@
-import { COMPONENTS_KEY, PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY, TOPICS_KEY } from '@realtime-sdk/constants';
-import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, Version } from '@realtime-sdk/models';
+import { COMPONENTS_KEY, PROTOTYPE_KEY, PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY, TOPICS_KEY } from '@realtime-sdk/constants';
+import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, PrototypeSettings, Version } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -14,6 +14,7 @@ const versionRPCType = Utils.protocol.typeFactory(versionType(RPC_KEY));
 const versionSettingsType = Utils.protocol.typeFactory(versionType(SETTINGS_KEY));
 const versionSessionType = Utils.protocol.typeFactory(versionSettingsType(SESSION_KEY));
 const versionPublishingType = Utils.protocol.typeFactory(versionType(PUBLISHING_KEY));
+const versionPrototypeType = Utils.protocol.typeFactory(versionType(PROTOTYPE_KEY));
 const topicsType = Utils.protocol.typeFactory(versionType(TOPICS_KEY));
 const componentsType = Utils.protocol.typeFactory(versionType(COMPONENTS_KEY));
 
@@ -52,6 +53,10 @@ export interface ReorderComponentsPayload extends BaseVersionPayload {
   from: number;
 }
 
+export interface ReplacePrototypeSettingsPayload extends BaseVersionPayload {
+  settings: PrototypeSettings;
+}
+
 export const patchSettings = Utils.protocol.createAction<PatchSettingsPayload>(versionSettingsType('PATCH'));
 
 export const patchSession = Utils.protocol.createAction<PatchSessionPayload>(versionSessionType('PATCH'));
@@ -61,5 +66,7 @@ export const patchPublishing = Utils.protocol.createAction<PatchPublishingPayloa
 export const reorderTopics = Utils.protocol.createAction<ReorderTopicsPayload>(topicsType('REORDER'));
 
 export const reorderComponents = Utils.protocol.createAction<ReorderComponentsPayload>(componentsType('REORDER'));
+
+export const replacePrototypeSettings = Utils.protocol.createAction<ReplacePrototypeSettingsPayload>(versionPrototypeType('REPLACE_SETTINGS'));
 
 export const crud = createCRUDActions<AnyVersion, BaseProjectPayload>(versionType);

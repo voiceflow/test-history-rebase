@@ -29,12 +29,11 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const platform = React.useContext(PlatformContext)!;
 
-  const { variant, nodeName, lockOwner, nodeLabel, nextPortID, combinedNodes } = nodeEntity.useState((e) => {
+  const { variant, nodeName, nodeLabel, nextPortID, combinedNodes } = nodeEntity.useState((e) => {
     const { node, data } = e.resolve<Realtime.NodeData.Start>();
     return {
       variant: data.blockColor,
       nodeName: data.name,
-      lockOwner: e.lockOwner,
       nodeLabel: data.label,
       nextPortID: node.ports.out.builtIn[BaseModels.PortType.NEXT]!,
       combinedNodes: node.combinedNodes,
@@ -67,7 +66,6 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
         actions={actions}
         platform={platform}
         commands={commands}
-        lockOwner={lockOwner}
         invocationName={invocationName ?? ''}
       />
     );
@@ -83,7 +81,6 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
       variant={variant}
       actions={actions}
       commands={commands}
-      lockOwner={lockOwner}
     />
   );
 };

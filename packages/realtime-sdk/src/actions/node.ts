@@ -1,15 +1,15 @@
 import { BLOCK_KEY, NODE_KEY, STEP_KEY } from '@realtime-sdk/constants';
-import { Markup, NodeDataDescriptor, PortsDescriptor } from '@realtime-sdk/models';
+import { Markup, NodeData, NodeDataDescriptor, PortsDescriptor } from '@realtime-sdk/models';
 import { BaseBlockPayload, BaseDiagramPayload, BaseNodePayload, Point, ProjectMetaPayload, SchemaVersionPayload } from '@realtime-sdk/types';
-import { Nullish, Utils } from '@voiceflow/common';
+import { AnyRecord, Nullish, Utils } from '@voiceflow/common';
 
 const nodeType = Utils.protocol.typeFactory(NODE_KEY);
 const nodeMarkupType = Utils.protocol.typeFactory(nodeType('markup'));
 const nodeBlockType = Utils.protocol.typeFactory(nodeType(BLOCK_KEY));
 const nodeStepType = Utils.protocol.typeFactory(nodeType(STEP_KEY));
 
-export interface UpdateDataPayload extends BaseNodePayload {
-  data: unknown;
+export interface UpdateDataPayload<D extends AnyRecord = AnyRecord> extends BaseNodePayload, ProjectMetaPayload {
+  data: NodeData<D>;
 }
 
 export interface RemoveManyPayload extends BaseDiagramPayload {

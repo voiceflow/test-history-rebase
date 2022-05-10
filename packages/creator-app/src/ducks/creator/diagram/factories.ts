@@ -12,7 +12,6 @@ export const linkFactory = (sourcePort: Realtime.Port, targetPort: Realtime.Port
 
 export const portFactory = (nodeID: string, portID: string, port: Partial<Realtime.Port>): Realtime.Port => ({
   label: null,
-  platform: null,
   virtual: false,
   ...port,
   id: portID,

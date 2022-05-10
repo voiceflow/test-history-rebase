@@ -3,7 +3,7 @@ import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
 import { BlockVariant } from '@/constants/canvas';
-import { useLinkedState, useTheme } from '@/hooks';
+import { useLinkedState } from '@/hooks';
 import { BLOCK_SECTION_TITLE_CLASSNAME } from '@/pages/Canvas/constants';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
@@ -27,25 +27,12 @@ export interface BlockHeaderProps {
   variant: BlockVariant;
   actions?: JSX.Element;
   titleRef?: React.Ref<EditableTextAPI | null> & { current?: any };
-  isLocked?: boolean;
   isDisabled?: boolean;
   updateName?: (value: string) => void;
   canEditTitle?: boolean;
 }
 
-const BlockHeader: React.FC<BlockHeaderProps> = ({
-  name,
-  icon,
-  nodeID,
-  variant,
-  actions,
-  isLocked,
-  titleRef,
-  updateName,
-  isDisabled,
-  canEditTitle,
-}) => {
-  const theme = useTheme();
+const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, nodeID, variant, actions, titleRef, updateName, isDisabled, canEditTitle }) => {
   const isEditingMode = useEditingMode();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [editing, setEditing] = React.useState(false);
@@ -147,13 +134,7 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({
             </RadiusContainer>
           </TitleContainer>
 
-          {(!!actions || isLocked) && (
-            <ActionsContainer onlyActions={!isLocked}>
-              {actions}
-
-              {isLocked && <SvgIcon icon="lock" color={theme.components.block.variants[variant || BlockVariant.STANDARD].color} />}
-            </ActionsContainer>
-          )}
+          {!!actions && <ActionsContainer>{actions}</ActionsContainer>}
         </>
       )}
     </Container>

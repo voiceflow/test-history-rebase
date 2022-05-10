@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
@@ -7,7 +8,6 @@ import { Thunk } from '@/store/types';
 
 import { updatePrototypeSettings } from '../actions';
 import { prototypeSettingsSelector } from '../selectors';
-import { PrototypeShareViewSettings } from '../types';
 
 export { default as checkSharedProtoPassword } from './checkSharedProtoPassword';
 export { default as compilePrototype } from './compilePrototype';
@@ -19,7 +19,7 @@ export { default as startPublicPrototype } from './startPublicPrototype';
 export { default as validateModel } from './validateModel';
 
 export const updateSharePrototypeSettings =
-  (data: Partial<PrototypeShareViewSettings>): Thunk =>
+  (data: Partial<Realtime.PrototypeSettings>): Thunk =>
   async (dispatch, getState) => {
     const versionID = Session.activeVersionIDSelector(getState());
     const currentState = prototypeSettingsSelector(getState());

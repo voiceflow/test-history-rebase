@@ -8,7 +8,7 @@ class RemoveDynamicPort extends AbstractDiagramActionControl<Realtime.BasePortPa
   actionCreator = Realtime.port.removeDynamic;
 
   process = async (ctx: Context, { payload }: Action<Realtime.BasePortPayload>): Promise<void> => {
-    await this.services.diagram.removePort(ctx.data.creatorID, payload.diagramID, payload.nodeID, payload.portID);
+    await this.services.diagram.removeDynamicPort(ctx.data.creatorID, payload.diagramID, payload.nodeID, payload.portID);
   };
 }
 

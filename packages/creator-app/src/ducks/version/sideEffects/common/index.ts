@@ -4,11 +4,9 @@ import { batch } from 'react-redux';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import { getDefaultPrototypeLayout, PrototypeLayout } from '@/constants/prototype';
 import * as Diagram from '@/ducks/diagram';
 import * as Integration from '@/ducks/integration';
 import * as Product from '@/ducks/product';
-import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
 import { waitAsync } from '@/ducks/utils';
@@ -27,10 +25,8 @@ export * from './variables';
  * this is also called when re-connecting to an existing subscription
  */
 export const initializeVersion =
-  ({ workspaceID, projectID, versionID, projectType }: Realtime.version.ActivateVersionPayload): Thunk =>
+  ({ workspaceID, projectID, versionID }: Realtime.version.ActivateVersionPayload): Thunk =>
   async (dispatch, getState) => {
-    const dbVersion = await client.api.version.get<Realtime.AnyDBVersion>(versionID);
-
     // not a dependency for project to load
     dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
 
@@ -43,16 +39,6 @@ export const initializeVersion =
 
       dispatch(Session.setActiveProjectID(projectID));
       dispatch(Session.setActiveVersionID(versionID));
-
-      dispatch(
-        Prototype.updatePrototypeSettings(
-          {
-            ...dbVersion.prototype?.settings,
-            layout: (dbVersion.prototype?.settings.layout ?? getDefaultPrototypeLayout(projectType)) as PrototypeLayout,
-          },
-          false
-        )
-      );
       dispatch(Thread.loadThreads(projectID));
     });
 

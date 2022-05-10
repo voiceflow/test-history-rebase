@@ -3,11 +3,9 @@ import { Icon } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import User from '@/components/User';
 import { BlockVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
-import { LockOwner } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { BlockAPI } from '@/pages/Canvas/types';
 import { ClassName } from '@/styles/constants';
@@ -26,11 +24,9 @@ export type BlockProps = WithOptional<BlockSectionProps, 'variant'> & {
     children?: React.ReactNode;
   }[];
   actions?: JSX.Element;
-  lockOwner?: LockOwner | null;
   blockColor?: string;
   nodeID: string;
   isDisabled?: boolean;
-  isLocked?: boolean;
   showMergeOverlay?: boolean;
   updateName?: (name: string) => void;
   onMouseMove?: (event: React.MouseEvent) => void;
@@ -45,7 +41,6 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
   {
     variant = BlockVariant.STANDARD,
     sections = [],
-    lockOwner,
     children,
     blockColor,
     onMouseEnter,
@@ -54,7 +49,6 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
     onMouseDown,
     onClick,
     isDisabled,
-    isLocked,
     nodeID,
     className,
     ...props
@@ -84,8 +78,7 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
       }}
       ref={blockAPI.ref}
     >
-      {lockOwner && <User user={lockOwner} />}
-      <Section nodeID={nodeID} variant={variant} isDisabled={isDisabled} isLocked={isLocked} titleRef={blockAPI.titleRef} {...props}>
+      <Section nodeID={nodeID} variant={variant} isDisabled={isDisabled} titleRef={blockAPI.titleRef} {...props}>
         {children}
       </Section>
       {sections.map((section, index) => (

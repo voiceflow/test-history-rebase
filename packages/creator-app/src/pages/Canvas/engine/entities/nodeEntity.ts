@@ -137,9 +137,6 @@ class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstanc
     return this.engine.prototype.isNodeHighlightedLink(this.nodeID);
   }
 
-  /**
-   * @deprecated
-   */
   get lockOwner() {
     return this.engine.getLockOwner(this.nodeID);
   }

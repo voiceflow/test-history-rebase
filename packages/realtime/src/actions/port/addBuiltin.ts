@@ -8,7 +8,7 @@ class AddBuiltinPort extends AbstractDiagramActionControl<Realtime.port.AddBuilt
   actionCreator = Realtime.port.addBuiltin;
 
   process = async (ctx: Context, { payload }: Action<Realtime.port.AddBuiltinPayload>): Promise<void> => {
-    await this.services.diagram.addPort(
+    await this.services.diagram.addBuiltInPort(
       ctx.data.creatorID,
       payload.diagramID,
       payload.nodeID,
@@ -17,7 +17,7 @@ class AddBuiltinPort extends AbstractDiagramActionControl<Realtime.port.AddBuilt
         type: payload.type,
         target: null,
       },
-      payload.builtinOffset
+      payload.type
     );
   };
 }

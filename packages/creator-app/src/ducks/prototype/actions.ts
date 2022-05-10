@@ -1,11 +1,12 @@
 import { BaseNode, BaseRequest } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { PrototypeStatus, StoreType } from '@/constants/prototype';
 import { createAction } from '@/ducks/utils';
 import { Store } from '@/models';
 import { Action } from '@/store/types';
 
-import { Context, PrototypeShareViewSettings, PrototypeState } from './types';
+import { Context, PrototypeState } from './types';
 
 // actions
 
@@ -45,7 +46,7 @@ export type UpdatePrototypeContextStore = Action<PrototypeAction.UPDATE_TEST_CON
 
 export type UpdatePrototypeWebhookData = Action<PrototypeAction.UPDATE_WEBHOOK, BaseRequest.BaseRequest>;
 
-export type UpdatePrototypeSettings = Action<PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings: PrototypeShareViewSettings; patch: boolean }>;
+export type UpdatePrototypeSettings = Action<PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings: Realtime.PrototypeSettings; patch: boolean }>;
 
 export type AnyPrototypeAction =
   | UpdatePrototype
@@ -90,7 +91,7 @@ export const updatePrototypeContextStore =
 export const updatePrototypeWebhookData = (payload: BaseRequest.BaseRequest): UpdatePrototypeWebhookData =>
   createAction(PrototypeAction.UPDATE_WEBHOOK, payload);
 
-export const updatePrototypeSettings = (settings: PrototypeShareViewSettings, patch = true): UpdatePrototypeSettings =>
+export const updatePrototypeSettings = (settings: Realtime.PrototypeSettings, patch = true): UpdatePrototypeSettings =>
   createAction(PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings, patch });
 
 export const updateVariables = updatePrototypeContextStore(StoreType.VARIABLES);

@@ -56,6 +56,16 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.variableState.crud.replace({ values: variableStates, workspaceID, projectID, versionID }),
       Realtime.diagram.loadIntentSteps({ intentSteps, workspaceID, projectID, versionID }),
       Realtime.diagram.loadStartingBlocks({ startingBlocks, workspaceID, projectID, versionID }),
+      Realtime.version.replacePrototypeSettings({
+        workspaceID,
+        projectID,
+        versionID,
+        settings: {
+          ...dbVersion.prototype?.settings,
+          layout: (dbVersion.prototype?.settings.layout ??
+            Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)) as Realtime.PrototypeLayout,
+        },
+      }),
       Realtime.version.crud.add({ value: version, key: versionID, workspaceID, projectID }),
       Realtime.project.crud.add({ value: project, key: projectID, workspaceID }),
       Realtime.version.activateVersion({ workspaceID, projectID, versionID, projectType }),

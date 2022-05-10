@@ -7,6 +7,7 @@ const CheckBoxButton = styled.input`
   position: absolute;
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   opacity: 0;
+  max-width: 20px;
 
   & ~ ${SvgIconContainer} {
     ${transition('box-shadow')}

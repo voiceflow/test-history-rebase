@@ -44,6 +44,7 @@ export { default as caretRight } from './caret-right.svg';
 export { default as chatBubbles } from './chat-bubbles.svg';
 export { default as check } from './check.svg';
 export { default as check2 } from './check-2.svg';
+export { default as checkboxDash } from './checkbox-dash.svg';
 export { default as checkmark } from './checkmark.svg';
 export { default as checkmarkFilled } from './checkmark-circle-filled.svg';
 export { default as choice } from './choice.svg';
@@ -82,6 +83,7 @@ export { default as docs } from './docs.svg';
 export { default as dollar } from './dollar.svg';
 export { default as dotsGroup } from './dots-group.svg';
 export { default as download } from './download.svg';
+export { default as downloadCircle } from './download-circle.svg';
 export { default as downloads } from './downloads.svg';
 export { default as duplicate } from './duplicate.svg';
 
@@ -149,6 +151,7 @@ export { default as inFlow } from './in-flow.svg';
 export { default as info } from './info.svg';
 export { default as information } from './information.svg';
 export { default as integrations } from './integrations.svg';
+export { default as intent } from './intent.svg';
 export { default as intentLocal } from './intent-local.svg';
 export { default as italic } from './italic.svg';
 
@@ -193,6 +196,8 @@ export { default as noMatch } from './no-match.svg';
 export { default as noReply } from './no-reply.svg';
 export { default as notifications } from './notifications.svg';
 export { default as nuanceMix } from './nuance-mix.svg';
+export { default as nubDown } from './nub-down.svg';
+export { default as nubUp } from './nub-up.svg';
 
 // o
 export { default as offRadioButton } from './images/icons/off-radio-button.svg';
@@ -292,6 +297,7 @@ export { default as userPlaceholder } from './user-placeholder.svg';
 
 // v
 export { default as variable } from './var.svg';
+export { default as variables } from './variables.svg';
 export { default as visuals } from './visuals.svg';
 export { default as visualsPlaceholder } from './visuals-placeholder.svg';
 export { default as voiceflowV } from './voiceflow-v.svg';

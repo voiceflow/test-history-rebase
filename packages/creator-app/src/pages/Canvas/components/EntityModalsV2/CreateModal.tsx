@@ -56,7 +56,7 @@ const CreateModal: React.FC = () => {
     }
 
     await createSlot(id, { id, type, name: formattedSlotName, color, inputs: values });
-    data.onCreate({ id, name, color } as Realtime.Slot);
+    data.onCreate?.({ id, name, color } as Realtime.Slot);
     cache.current.created = true;
     setIsCreating(false);
     close();

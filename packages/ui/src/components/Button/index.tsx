@@ -44,7 +44,7 @@ const Button: React.ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
 
   return (
     <Component ref={ref} className={cn(ClassName.BUTTON, className)} variant={variant} {...props}>
-      {props.isLoading ? <SvgIcon icon="publishSpin" size={24} spin /> : children}
+      {props.isLoading ? <SvgIcon icon="publishSpin" size={16} spin /> : children}
     </Component>
   );
 };

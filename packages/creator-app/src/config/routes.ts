@@ -39,6 +39,7 @@ export enum ProjectRoute {
   MIGRATE = 'migrate',
   PUBLISH = 'publish',
   CONVERSATIONS = 'transcripts',
+  NLU_MANAGER = 'nlu',
   SETTINGS = 'settings',
   PROTOTYPE_WEBHOOK = 'webhook', // TODO: temporary page, remove after updated
   EXPORT = 'export',
@@ -63,6 +64,12 @@ export enum PublishRoute {
 export enum ToolsRoute {
   PRODUCT = 'product',
   PRODUCTS = 'products',
+}
+
+export enum NLURoute {
+  INTENTS = 'intents',
+  ENTITIES = 'entities',
+  VARIABLES = 'variables',
 }
 
 export enum ProductRoute {
@@ -166,6 +173,12 @@ export const Path = {
   PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),
 
   CONVERSATIONS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CONVERSATIONS, ':transcriptID?'),
+  NLU_MANAGER: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER),
+  NLU_MANAGER_INTENTS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.INTENTS, ':entityID?'),
+  NLU_MANAGER_ENTITIES: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.ENTITIES, ':entityID?'),
+  NLU_MANAGER_VARIABLES: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.VARIABLES, ':entityID?'),
+
+  NLU_MANAGER_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, ':modelType', ':modelEntityID?'),
 
   CANVAS_NODE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.NODE, ':nodeID'),
   CANVAS_MODEL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType?'),

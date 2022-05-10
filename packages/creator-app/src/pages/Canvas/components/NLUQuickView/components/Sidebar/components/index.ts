@@ -1,4 +1,4 @@
-import { Box, Input } from '@voiceflow/ui';
+import { Box, SearchInput } from '@voiceflow/ui';
 
 import { UncontrolledSection } from '@/components/Section';
 import ContentContainer from '@/components/Section/components/ContentContainer';
@@ -54,11 +54,10 @@ export const NLUButton = styled(Box)`
   }
 `;
 
-export const SearchInput = styled(Input)`
+export const HeaderSearchInput = styled(SearchInput)`
   padding: 21.5px 32px;
   border-radius: 0;
-  border: none !important;
-  box-shadow: none !important;
+  height: 63px;
 `;
 
 export const SectionsContainer = styled.div<{ activeTab: InteractionModelTabType }>`

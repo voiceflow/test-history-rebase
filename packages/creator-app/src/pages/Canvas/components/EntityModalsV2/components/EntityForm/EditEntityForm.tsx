@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { pickRandomDefaultColor } from '@voiceflow/ui';
+import { pickRandomDefaultColor, StrictPopperModifiers } from '@voiceflow/ui';
 import React from 'react';
 
 import * as SlotDuck from '@/ducks/slot';
@@ -11,9 +11,10 @@ import EntityForm from '.';
 interface EditEntityFormProps {
   slotID: string;
   withNameSection?: boolean;
+  colorPopperModifiers?: StrictPopperModifiers;
 }
 
-const EditEntityForm: React.FC<EditEntityFormProps> = ({ withNameSection, slotID }) => {
+const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, withNameSection, slotID }) => {
   const slot = useSelector(SlotV2.slotByIDSelector, { id: slotID });
   const patchSlot = useDispatch(SlotDuck.patchSlot, slotID);
   const defaultColor = React.useMemo(() => pickRandomDefaultColor(), []);
@@ -43,6 +44,7 @@ const EditEntityForm: React.FC<EditEntityFormProps> = ({ withNameSection, slotID
 
   return (
     <EntityForm
+      colorPopperModifiers={colorPopperModifiers}
       values={slot.inputs}
       updateType={saveType}
       saveValues={saveValues}

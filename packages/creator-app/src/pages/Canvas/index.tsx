@@ -10,14 +10,11 @@ import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Pro
 import * as Query from '@/utils/query';
 
 import APLPreviewModal from './components/APLPreviewModal';
-import { BulkImportSlots, BulkImportUtterances } from './components/BulkImportModal';
 import Container from './components/CanvasContainer';
 import CanvasDiagram from './components/CanvasDiagram';
 import ContextMenu from './components/ContextMenu';
 import DisableOverscrollBehavior from './components/DisableOverscrollBehavior';
 import EditSidebar from './components/EditorSidebar';
-import CreateEntityModal from './components/EntityModalsV2/CreateModal';
-import EditEntityModal from './components/EntityModalsV2/EditModal';
 import ExportModelModal from './components/ExportModelModal';
 import EditIntentModal from './components/IntentModalsV2/EditModal';
 import InteractionModelModal from './components/InteractionModelModal';
@@ -28,7 +25,6 @@ import SlotEditModal from './components/SlotEdit/SlotEditModal';
 import Spotlight from './components/Spotlight';
 import ThreadHistoryDrawer from './components/ThreadHistoryDrawer';
 import ThreadLayer from './components/ThreadLayer';
-import CreateVariableModal from './components/VariableModalsV2/CreateModal';
 import { CanvasProviders } from './contexts';
 import { useEngine } from './hooks';
 
@@ -98,18 +94,13 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
       </Container>
 
       <EditIntentModal />
-      <CreateVariableModal />
-
-      <CreateEntityModal />
-      <EditEntityModal />
 
       {IMM_MODALS_V2.isEnabled ? <NLUQuickView /> : <InteractionModelModal />}
 
       <ShortcutsModal />
       <APLPreviewModal />
       <SlotEditModal />
-      <BulkImportSlots />
-      <BulkImportUtterances />
+
       <ExportModelModal />
     </CanvasProviders>
   );

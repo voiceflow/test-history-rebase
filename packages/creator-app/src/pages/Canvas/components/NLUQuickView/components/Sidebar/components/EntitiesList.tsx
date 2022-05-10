@@ -6,6 +6,7 @@ import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
 import { InteractionModelTabType } from '@/constants';
+import { NLUContext } from '@/contexts';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
@@ -30,8 +31,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
   const filteredList = useFilteredList(search, sortedSlots) as Realtime.Slot[];
 
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.SLOTS, [activeTab]);
-
-  const { onRenameSlot } = React.useContext(NLUQuickViewContext);
+  const { renameItem } = React.useContext(NLUContext);
 
   useListHooks({
     setSearchLength,
@@ -47,10 +47,10 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
   const handleConfirmNewSlotName = React.useCallback(
     (newName: string, newSlotID: string) => {
       if (allSlots.some(({ name, id }) => name === newName && newSlotID !== id)) {
-        onRenameSlot(`${newName}_two`, newSlotID!);
+        renameItem(`${newName}_two`, newSlotID!, InteractionModelTabType.SLOTS);
         toast.error('Slot name already in use, use a different name');
       } else {
-        onRenameSlot(newName, newSlotID!);
+        renameItem(newName, newSlotID!, InteractionModelTabType.SLOTS);
       }
       resetCreating();
     },
@@ -119,7 +119,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
             key={slot.id}
             name={slot.name}
             onDelete={onDelete}
-            onRename={onRenameSlot}
+            onRename={(name, id) => renameItem(name, id, InteractionModelTabType.SLOTS)}
             nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.SLOTS)}
             isActiveItemRename={isActiveItemRename}
             setIsActiveItemRename={setIsActiveItemRename}

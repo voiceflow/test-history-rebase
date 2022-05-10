@@ -9,37 +9,13 @@ import 'react-day-picker/lib/style.css';
 import { ToastContainer } from '@voiceflow/ui';
 import React from 'react';
 
-import ConfirmModalV2 from '@/components/ConfirmModal';
 import IntercomChat from '@/components/IntercomChat';
-import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, SuccessModal } from '@/components/modals';
 import { RootPageProgressBar } from '@/components/PageProgressBar';
-import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
-import { VariableStateEditorModal, VariableStatesLimitModal, VariableStatesManagerModal } from '@/components/VariableStateModals';
 import { SeoPage } from '@/constants/seo';
 import { GlobalSocketSubscriptionsLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
-import ConnectActivePlatformModal from '@/modals/ConnectActivePlatformModal';
-import ConnectAmazonModal from '@/modals/ConnectAmazonModal';
-import ConnectGoogleModal from '@/modals/ConnectGoogleModal';
-import ChangeEmailModal from '@/pages/Account/components/ChangeEmailModal';
-import ChangePasswordModal from '@/pages/Account/components/ChangePasswordModal';
-import ProfileNameModal from '@/pages/Account/components/ProfileNameModal';
-import CreateIntentModal from '@/pages/Canvas/components/IntentModalsV2/CreateModal';
-import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
-import TagManagerModal from '@/pages/Conversations/components/TagManagerModal';
-import ImportModal from '@/pages/Dashboard/components/ImportModal';
-import {
-  CanvasExportModal,
-  ImportBulkDeniedModal,
-  ProjectDownloadModal,
-  ProjectLimitModal,
-  RealtimeDeniedModal,
-  TestableLinkModal,
-} from '@/pages/Dashboard/RestrictionModals';
-import ProjectCreateModal from '@/pages/NewProjectV2/NewProjectModal';
-import PaymentModal from '@/pages/Payment/PaymentModal';
-import { Dialogflow } from '@/platforms';
+import AppModals from '@/modals/AppModals';
 
 import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';
 import Routes from './Routes';
@@ -47,42 +23,10 @@ import Routes from './Routes';
 const App: React.FC = () => (
   <>
     <SeoHelmet page={SeoPage.ROOT} />
-    <ModalBackdrop />
-    <SuccessModal />
-    <ConfirmModal />
-    <ConfirmModalV2 />
-    <ErrorModal />
-    <StandardModal />
     <ToastContainer />
     <Routes />
     <IntercomChat />
-    <CollaboratorsModal />
-    <ImportModal />
-    <ProfileNameModal />
-    <ChangeEmailModal />
-    <ChangePasswordModal />
-    <LoadingModal />
-    <TagManagerModal />
-    <CreateIntentModal />
-
-    <VariableStatesManagerModal />
-    <VariableStateEditorModal />
-    <VariableStatesLimitModal />
-
-    <ProjectDownloadModal />
-    <TestableLinkModal />
-    <CanvasExportModal />
-    <ProjectLimitModal />
-    <RealtimeDeniedModal />
-    <ImportBulkDeniedModal />
-    <PaymentModal />
-    <RefreshModal />
-    <ConnectActivePlatformModal />
-    <ConnectAmazonModal />
-    <ConnectGoogleModal />
-    <Dialogflow.Components.CreateNewAgentModal />
-    <ProjectCreateModal />
-
+    <AppModals />
     <RootPageProgressBar />
   </>
 );

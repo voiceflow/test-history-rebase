@@ -247,11 +247,23 @@ export const deleteIntent =
   (intentID: string): Thunk =>
   async (dispatch, getState) => {
     const projectMeta = ProjectV2.active.metaSelector(getState());
-
     await dispatch.sync(
       Realtime.intent.crud.remove({
         ...getActiveVersionContext(getState()),
         key: intentID,
+        projectMeta,
+      })
+    );
+  };
+
+export const deleteManyIntents =
+  (intentIDs: string[]): Thunk =>
+  async (dispatch, getState) => {
+    const projectMeta = ProjectV2.active.metaSelector(getState());
+    await dispatch.sync(
+      Realtime.intent.crud.removeMany({
+        ...getActiveVersionContext(getState()),
+        keys: intentIDs,
         projectMeta,
       })
     );

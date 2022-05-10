@@ -7,15 +7,16 @@ interface TagProps {
   color?: string;
   children: string;
   className?: string;
+  onClick?: React.MouseEventHandler<HTMLSpanElement>;
 }
 
 export const Tag = React.forwardRef<HTMLSpanElement, React.PropsWithChildren<TagProps>>(
-  ({ color, children, className, ...props }, ref): React.ReactElement => {
+  ({ color, onClick, children, className, ...props }, ref): React.ReactElement => {
     const palette = useColorPalette(color);
     const noColor = !color;
 
     return (
-      <TagWrapper noColor={noColor} ref={ref} {...props} className={className} palette={palette}>
+      <TagWrapper onClick={onClick} noColor={noColor} ref={ref} {...props} className={className} palette={palette}>
         <Label noColor={noColor} palette={palette}>
           {children}
         </Label>

@@ -7,15 +7,21 @@ import { useFeature } from '@/hooks';
 
 import { CanvasIconMenu, ConversationsSidebar, IntegrationsSidebar, PrototypeIconMenu, SettingsSidebar, TestVariablesSidebar } from './components';
 
+const ALL_PROJECT_SIDEBAR_PATHS = [
+  Path.PROJECT_CANVAS,
+  Path.CANVAS_COMMENTING,
+  Path.CANVAS_COMMENTING_THREAD,
+  Path.CANVAS_MODEL,
+  Path.CANVAS_MODEL_ENTITY,
+  Path.NLU_MANAGER,
+];
+
 const ProjectSidebar: React.FC = () => {
   const { isEnabled: hasVariableStates } = useFeature(FeatureFlag.VARIABLE_STATES);
 
   return (
     <Switch>
-      <Route
-        path={[Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_COMMENTING_THREAD, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
-        component={CanvasIconMenu}
-      />
+      <Route path={ALL_PROJECT_SIDEBAR_PATHS} component={CanvasIconMenu} />
 
       <Route path={Path.PROJECT_PROTOTYPE} component={hasVariableStates ? TestVariablesSidebar : PrototypeIconMenu} />
 

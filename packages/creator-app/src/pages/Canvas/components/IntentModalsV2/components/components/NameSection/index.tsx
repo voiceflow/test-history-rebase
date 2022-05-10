@@ -18,6 +18,7 @@ const NameSection: React.FC<NameSectionProps> = ({ name, setName, autofocus, sav
       inputRef.current?.focus();
     }
   });
+
   return (
     <Section backgroundColor="#fdfdfd" header="Name" variant={SectionVariant.QUATERNARY} customHeaderStyling={{ paddingTop: '20px' }}>
       <Box paddingBottom={24}>

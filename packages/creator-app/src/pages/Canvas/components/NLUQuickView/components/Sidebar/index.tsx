@@ -6,7 +6,7 @@ import { InteractionModelTabType } from '@/constants';
 import { useFeature } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 
-import { Container, NLUButton, SearchInput, SectionsContainer } from './components';
+import { Container, HeaderSearchInput, NLUButton, SectionsContainer } from './components';
 import EntitiesList from './components/EntitiesList';
 import IntentList from './components/IntentList';
 import { SectionProps } from './components/types';
@@ -57,9 +57,10 @@ const Sidebar: React.FC = () => {
 
   return (
     <Container>
-      <SearchInput
+      <HeaderSearchInput
         placeholder={`Search ${searchLength} ${searchLength === 1 ? SearchPlaceholders[activeTab].single : SearchPlaceholders[activeTab].plural}`}
         icon="search"
+        borderLess
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         iconProps={{ color: '#8da2b5', size: 14 }}

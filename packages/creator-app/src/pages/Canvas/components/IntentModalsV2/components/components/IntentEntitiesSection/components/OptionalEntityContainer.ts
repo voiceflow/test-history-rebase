@@ -17,12 +17,10 @@ const OptionalEntityContainer = styled(FlexCenter)`
     opacity: 0.8;
     margin-right: 4px;
   }
-
   &:hover {
     ${SvgIconContainer} {
       opacity: 1;
     }
-
     border-color: solid 1px ${({ theme }) => theme.colors.separatorSecondary};
   }
 `;

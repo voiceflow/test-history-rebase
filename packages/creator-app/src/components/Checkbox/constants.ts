@@ -1,6 +1,7 @@
 export enum CheckboxType {
   RADIO = 'radio',
   CHECKBOX = 'checkbox',
+  DASH = 'dash',
 }
 
 export enum CheckboxColor {

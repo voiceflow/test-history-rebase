@@ -1,6 +1,7 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { BillingPeriod, UserRole } from '@voiceflow/internal';
+import { PlatformType } from '@voiceflow/voiceflow-types/build/common/constants';
 
 import { Pair } from '@/types';
 
@@ -80,6 +81,25 @@ export enum NLPProvider {
   VF_CSV = 'vf-csv',
   NUANCE_MIX = 'nuance-mix',
 }
+
+export const PlatformToNLPProvider = {
+  [PlatformType.ALEXA]: NLPProvider.ALEXA,
+  [PlatformType.LUIS]: NLPProvider.LUIS,
+  [PlatformType.RASA]: NLPProvider.RASA,
+  [PlatformType.WATSON]: NLPProvider.WATSON,
+  [PlatformType.LEX]: NLPProvider.LEX_V1,
+  [PlatformType.EINSTEIN]: NLPProvider.EINSTEIN,
+  [PlatformType.DIALOGFLOW_ES]: NLPProvider.DIALOGFLOW_ES,
+  [PlatformType.NUANCE_MIX]: NLPProvider.NUANCE_MIX,
+  [PlatformType.GOOGLE]: undefined,
+  [PlatformType.GENERAL]: undefined,
+  [PlatformType.DIALOGFLOW_ES_CHAT]: undefined,
+  [PlatformType.DIALOGFLOW_ES_VOICE]: undefined,
+  [PlatformType.IVR]: undefined,
+  [PlatformType.MOBILE_APP]: undefined,
+  [PlatformType.VOICEFLOW]: undefined,
+  [PlatformType.CHATBOT]: undefined,
+};
 
 export const NLPProviderLabels = {
   [NLPProvider.RASA]: 'Rasa',

@@ -20,6 +20,7 @@ import {
   goToCanvasCommenting,
   goToCanvasCommentingThread,
   goToConversations,
+  goToNLUManager,
   goToPrototype,
   goToPublish,
   goToSettings,
@@ -297,6 +298,25 @@ export const goToCurrentCanvasNode =
     dispatch(goToCanvasNode({ versionID, diagramID, nodeID, nodeSubPath, routeState }));
   };
 
+export const goToCurrentNLUManagerEntity =
+  (entityType: InteractionModelTabType, entityID?: string | null): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
+
+    Errors.assertVersionID(versionID);
+
+    dispatch(
+      goTo(
+        generatePath(Path.NLU_MANAGER_ENTITY, {
+          versionID,
+          modelType: entityType,
+          modelEntityID: entityID ? encodeURIComponent(entityID) : undefined,
+        })
+      )
+    );
+  };
+
 export const goToCurrentWorkspaceSettings = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const workspaceID = Session.activeWorkspaceIDSelector(state);
@@ -312,6 +332,14 @@ export const goToCurrentTranscript = (): SyncThunk => (dispatch, getState) => {
   Errors.assertVersionID(versionID);
 
   dispatch(goToTranscript(versionID));
+};
+
+export const goToCurrentNLUManager = (): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const versionID = Session.activeVersionIDSelector(state);
+  Errors.assertVersionID(versionID);
+
+  dispatch(goToNLUManager(versionID));
 };
 
 export const goToTargetTranscript =

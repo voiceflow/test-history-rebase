@@ -1,8 +1,9 @@
+import { Utils } from '@voiceflow/common';
 import { Box, withProvider } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal from '@/components/Modal';
-import { ModalType } from '@/constants';
+import { InteractionModelTabType, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import { useLinkedState } from '@/hooks';
 import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
@@ -18,8 +19,18 @@ import { NLUQuickViewContext, NLUQuickViewProvider } from './context';
 import { useShowForms } from './hooks';
 
 const NLUQuickView: React.FC = () => {
-  const { title, activeTab, selectedID, isCreatingItem, canRenameItem, setIsActiveItemRename, onNameChange, nameChangeTransform } =
-    React.useContext(NLUQuickViewContext);
+  const {
+    title,
+    activeTab,
+    selectedID,
+    isCreatingItem,
+    triggerNewInlineIntent,
+    triggerNewInlineEntity,
+    canRenameItem,
+    setIsActiveItemRename,
+    onNameChange,
+    nameChangeTransform,
+  } = React.useContext(NLUQuickViewContext);
 
   const { showIntentForm, showEntityForm, showVariableForm, isEmpty } = useShowForms();
 
@@ -28,6 +39,16 @@ const NLUQuickView: React.FC = () => {
 
   const emptyHeader = isCreatingItem || isEmpty;
   const EmptyBody = isCreatingItem ? Loading : EmptyView;
+
+  const handleEmptyPageCreate = React.useCallback(() => {
+    const tabHandlers: Record<InteractionModelTabType, () => void> = {
+      [InteractionModelTabType.INTENTS]: triggerNewInlineIntent,
+      [InteractionModelTabType.SLOTS]: triggerNewInlineEntity,
+      [InteractionModelTabType.VARIABLES]: Utils.functional.noop,
+    };
+    tabHandlers[activeTab] && tabHandlers[activeTab]();
+  }, [activeTab, triggerNewInlineEntity, triggerNewInlineEntity]);
+
   return (
     <Modal
       ref={setModalRef}
@@ -45,11 +66,11 @@ const NLUQuickView: React.FC = () => {
         />
       }
       headerBorder
-      headerActions={emptyHeader ? null : <HeaderOptions setIsActiveItemRename={setIsActiveItemRename} selectedID={selectedID} />}
+      headerActions={emptyHeader ? null : <HeaderOptions onRename={() => setIsActiveItemRename(true)} selectedID={selectedID} itemType={activeTab} />}
     >
       <Box width="100%" overflow="auto" height="calc(100vh - 120px)">
         {emptyHeader ? (
-          <EmptyBody />
+          <EmptyBody onCreate={handleEmptyPageCreate} pageType={activeTab} />
         ) : (
           !!modalRef && (
             <TextEditorVariablesPopoverProvider value={modalRef}>

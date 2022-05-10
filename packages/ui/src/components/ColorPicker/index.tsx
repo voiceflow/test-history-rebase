@@ -1,4 +1,4 @@
-import { useDebouncedCallback, useDidUpdateEffect } from '@ui/hooks';
+import { StrictPopperModifiers, useDebouncedCallback, useDidUpdateEffect } from '@ui/hooks';
 import { useOnClickOutside } from '@ui/hooks/mouse';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
@@ -15,9 +15,10 @@ interface ColorPickerProps {
   tagName?: string;
   selectedColor: string;
   onChange: (color: string) => void;
+  modifiers?: StrictPopperModifiers;
 }
 
-export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, customColors = [], onChange, tagName }) => {
+export const ColorPicker: React.FC<ColorPickerProps> = ({ modifiers, selectedColor, customColors = [], onChange, tagName }) => {
   const trimmedTagName = tagName?.trim() || 'label';
   const colors = [...DEFAULT_THEMES, ...customColors];
   const [selectedHex, setLocalSelectedHex] = React.useState(() => normalizeColor(selectedColor));
@@ -46,6 +47,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, customC
 
       {isShowingPicker && (
         <ColorPickerPopper
+          modifiers={modifiers}
           ref={popOver}
           colors={colors}
           tagName={trimmedTagName}

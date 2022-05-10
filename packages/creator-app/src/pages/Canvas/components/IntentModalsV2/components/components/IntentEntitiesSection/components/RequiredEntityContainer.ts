@@ -16,15 +16,12 @@ const RequiredEntity = styled.div<{ active: boolean }>`
   ${SvgIconContainer} {
     opacity: 0.8;
   }
-
   &:hover {
     background: #eef4f6;
-
     ${SvgIconContainer} {
       opacity: 1;
     }
   }
-
   ${({ active }) =>
     active &&
     css`

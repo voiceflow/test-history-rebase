@@ -7,29 +7,39 @@ import { Redirect, Route, RouteComponentProps, Switch, useRouteMatch } from 'rea
 
 import { RemoveIntercom } from '@/components/IntercomChat';
 import ProjectPage from '@/components/ProjectPage';
+import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
-import { ExportProvider, PublishProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as RealtimeDuck from '@/ducks/realtime';
 import * as UI from '@/ducks/ui';
 import { PlanRestrictionGate, ProjectLockGate, VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
-import { useDispatch, useEventualEngine, useLayoutDidUpdate, useLocalDispatch, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
+import {
+  useDispatch,
+  useEventualEngine,
+  useFeature,
+  useLayoutDidUpdate,
+  useLocalDispatch,
+  useModals,
+  useSelector,
+  useTeardown,
+  useTheme,
+} from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRouteIMM';
 import ManualSaveModal from '@/pages/Canvas/components/ManualSaveModal';
 import InactivityModal from '@/pages/Inactivity';
 import { useProjectPreviewMode } from '@/pages/Project/hooks';
-import { PrototypeProvider } from '@/pages/Prototype/context';
+import Providers from '@/pages/Project/Providers';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 
 import Header from './components/Header';
 import ProjectExitTracker from './components/ProjectExitTracker';
 import Sidebar from './components/Sidebar';
 import { TIMEOUT_COUNT } from './constants';
-import { LastCreatedComponentProvider, MarkupProvider, NLPProvider, ProjectProvider, SelectionProvider, TrainingModelProvider } from './contexts';
+import { MarkupProvider, ProjectProvider } from './contexts';
 
 const Diagram = lazy(() => import('./components/Diagram'));
 const Business = lazy(() => import('@/pages/Business'));
@@ -37,6 +47,7 @@ const Migrate = lazy(() => import('@/pages/Migrate'));
 const Publish = lazy(() => import('@/pages/Publish'));
 const Settings = lazy(() => import('@/pages/Settings'));
 const Conversations = lazy(() => import('@/pages/Conversations'));
+const NLUManager = lazy(() => import('@/pages/NLUManager'));
 
 export type ProjectProps = RouteComponentProps;
 
@@ -64,6 +75,7 @@ const Project: React.FC = () => {
   const resetCreatorV2 = useLocalDispatch(Realtime.creator.reset);
 
   const inactivityModal = useModals(ModalType.INACTIVITY);
+  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
 
   const isPreviewRoute = useProjectPreviewMode();
 
@@ -130,44 +142,30 @@ const Project: React.FC = () => {
         <ProjectExitTracker platform={platform} />
         <RemoveIntercom />
 
-        <PrototypeProvider>
-          <PublishProvider>
-            <ExportProvider>
-              <NLPProvider>
-                <TrainingModelProvider>
-                  <SelectionProvider>
-                    <LastCreatedComponentProvider>
-                      <ProjectPage
-                        scrollable={!isDiagramRoute}
-                        renderHeader={() => !canvasOnly && <Header />}
-                        renderSidebar={() => !canvasOnly && <Sidebar />}
-                      >
-                        <Switch>
-                          <Route path={DIAGRAM_ROUTES} component={Diagram} />
+        <Providers>
+          <ProjectPage scrollable={!isDiagramRoute} renderHeader={() => !canvasOnly && <Header />} renderSidebar={() => !canvasOnly && <Sidebar />}>
+            <Switch>
+              <Route path={DIAGRAM_ROUTES} component={Diagram} />
 
-                          <Route path={Path.CONVERSATIONS} component={Conversations} />
+              <Route path={Path.CONVERSATIONS} component={Conversations} />
 
-                          <Route path={Path.PROJECT_TOOLS} component={Business} />
+              {nluManager.isEnabled && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
 
-                          <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
+              <Route path={Path.PROJECT_TOOLS} component={Business} />
 
-                          <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
+              <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
 
-                          <Route path={Path.PROJECT_PUBLISH} component={Publish} />
+              <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
-                          <Route path={Path.PROJECT_SETTINGS} component={Settings} />
+              <Route path={Path.PROJECT_PUBLISH} component={Publish} />
 
-                          <Redirect to={Path.PROJECT_CANVAS} />
-                        </Switch>
-                        <ManualSaveModal />
-                      </ProjectPage>
-                    </LastCreatedComponentProvider>
-                  </SelectionProvider>
-                </TrainingModelProvider>
-              </NLPProvider>
-            </ExportProvider>
-          </PublishProvider>
-        </PrototypeProvider>
+              <Route path={Path.PROJECT_SETTINGS} component={Settings} />
+
+              <Redirect to={Path.PROJECT_CANVAS} />
+            </Switch>
+            <ManualSaveModal />
+          </ProjectPage>
+        </Providers>
       </ProjectProvider>
     </MarkupProvider>
   );

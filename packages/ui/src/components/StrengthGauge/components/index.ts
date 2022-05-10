@@ -1,5 +1,6 @@
 import { css, styled, transition } from '@ui/styles';
 
+import TippyTooltip from '../../TippyTooltip';
 import { Level } from '../constants';
 
 const StrengthLineColor: Record<Level, string> = {
@@ -9,6 +10,10 @@ const StrengthLineColor: Record<Level, string> = {
   [Level.STRONG]: '#50a82e',
   [Level.VERY_STRONG]: '#449127',
 };
+
+export const Container = styled(TippyTooltip)`
+  align-items: center;
+`;
 
 export const Line = styled.div<{ width: number; thickness: number }>`
   background: #dfe3ed;

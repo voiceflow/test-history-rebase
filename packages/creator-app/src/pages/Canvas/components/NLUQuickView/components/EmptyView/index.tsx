@@ -2,29 +2,21 @@ import { Box, Button, ButtonVariant, FlexCenter, Link, SvgIcon } from '@voiceflo
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
-import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 
 import { EMPTY_VIEW_META } from './constants';
 
-const EmptyView: React.FC = () => {
-  const { activeTab, triggerNewInlineIntent, triggerNewInlineEntity } = React.useContext(NLUQuickViewContext);
-  const { namePlural, name, description, link, svg } = EMPTY_VIEW_META[activeTab];
-  const handleOnCreate = () => {
-    switch (activeTab) {
-      case InteractionModelTabType.INTENTS:
-        triggerNewInlineIntent();
-        break;
-      case InteractionModelTabType.SLOTS:
-        triggerNewInlineEntity();
-        break;
-      default:
-        break;
-    }
-  };
+interface EmptyViewProps {
+  onCreate: () => void;
+  pageType: InteractionModelTabType;
+}
+
+const EmptyView: React.FC<EmptyViewProps> = ({ onCreate, pageType }) => {
+  const { namePlural, name, description, link, svg } = EMPTY_VIEW_META[pageType];
+
   return (
     <Box p="60px 74px">
       <FlexCenter>
-        <SvgIcon size={64} icon={svg} />
+        <SvgIcon size={80} icon={svg} />
       </FlexCenter>
       <FlexCenter>
         <Box mt={16} fontWeight={600}>
@@ -32,12 +24,12 @@ const EmptyView: React.FC = () => {
         </Box>
       </FlexCenter>
       <FlexCenter>
-        <Box mt={8} mb={16} textAlign="center" color="#62778c">
+        <Box mt={8} mb={16} textAlign="center" color="#62778c" maxWidth={250}>
           {description} <Link href={link}>Learn more</Link>
         </Box>
       </FlexCenter>
       <FlexCenter>
-        <Button squareRadius variant={ButtonVariant.PRIMARY} onClick={handleOnCreate}>
+        <Button squareRadius variant={ButtonVariant.PRIMARY} onClick={onCreate}>
           Create {name}
         </Button>
       </FlexCenter>

@@ -29,6 +29,7 @@ interface IntentFormProps {
   autofocus?: boolean;
   intentEntities: Normal.Normalized<Realtime.IntentSlot>;
   withDescriptionSection?: boolean;
+  rightSlider?: boolean;
   addRequiredSlot: (slotID: string) => void;
   removeRequiredSlot: (slotID: string) => void;
   updateSlotDialog: (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => void;
@@ -51,6 +52,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
   removeRequiredSlot,
   updateSlotDialog,
   withDescriptionBottomBorder,
+  rightSlider,
 }) => {
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
 
@@ -84,6 +86,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
           <SectionV2.Divider ref={entitiesDividerRef} />
 
           <IntentEntitiesSection
+            addDropdownPlacement={rightSlider ? 'bottom-end' : 'bottom-start'}
             onAddRequired={addRequiredSlot}
             intentEntities={intentEntities}
             onChangeDialog={updateSlotDialog}

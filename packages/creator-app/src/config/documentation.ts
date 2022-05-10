@@ -1,3 +1,5 @@
+export const DOCS_BASE_LINK = 'https://docs.voiceflow.com/#/';
+
 // bulk import
 export const BULK_IMPORT_SLOTS = 'https://docs.voiceflow.com/#/platform/interaction-model/model-manager?id=bulk-import-slots';
 export const BULK_IMPORT_UTTERANCES = 'https://docs.voiceflow.com/#/features/bulk-import-utterances?id=bulk-import-utterances';

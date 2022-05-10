@@ -1,9 +1,10 @@
-import { ANIMATION_SPEED, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE } from '@ui/styles/constants';
+import { ANIMATION_SPEED, COLOR_BLUE, COLOR_GREEN, COLOR_OFF_WHITE, COLOR_RED, COLOR_WHITE } from '@ui/styles/constants';
 
 import ICON_THEME from './icon';
 
 export enum ThemeColor {
   WHITE = 'white',
+  OFF_WHITE = 'offWhite',
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
   TERTIARY = 'tertiary',
@@ -45,6 +46,7 @@ const THEME = {
   },
   colors: {
     [ThemeColor.WHITE]: COLOR_WHITE,
+    [ThemeColor.OFF_WHITE]: COLOR_OFF_WHITE,
     [ThemeColor.PRIMARY]: '#132144',
     [ThemeColor.SECONDARY]: '#62778c',
     [ThemeColor.TERTIARY]: '#8da2b5',
@@ -99,7 +101,6 @@ const THEME = {
   },
   transition(...propertyWhitelist: string[]): string {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];
-
     return `transition: ${properties.map((property) => `${property} ${ANIMATION_SPEED}s ease`).join(',')};`;
   },
 };

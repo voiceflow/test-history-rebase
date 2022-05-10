@@ -5,16 +5,17 @@ import React from 'react';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useDidUpdateEffect, useDispatch, useLinkedState, useSelector } from '@/hooks';
-import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/index';
+import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
 import { isBuiltInIntent } from '@/utils/intent';
 
 interface EditIntentFormProps {
   intentID: string;
   withNameSection?: boolean;
   withDescriptionBottomBorder?: boolean;
+  rightSlider?: boolean;
 }
 
-const EditIntentForm: React.FC<EditIntentFormProps> = ({ intentID, withDescriptionBottomBorder, withNameSection = false }) => {
+const EditIntentForm: React.FC<EditIntentFormProps> = ({ rightSlider, withDescriptionBottomBorder, intentID, withNameSection = false }) => {
   const intent = useSelector(IntentV2.intentByIDSelector, { id: intentID });
   const [name, setName] = useLinkedState(intent?.name || '');
   const [inputs, setInputs] = useLinkedState(intent?.inputs || []);
@@ -57,6 +58,7 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({ intentID, withDescripti
 
   return intent ? (
     <IntentForm
+      rightSlider={rightSlider}
       withDescriptionSection
       intentID={intentID}
       intentEntities={intent.slots}

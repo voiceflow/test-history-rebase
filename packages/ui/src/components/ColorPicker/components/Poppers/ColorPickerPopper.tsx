@@ -1,7 +1,7 @@
 import Box from '@ui/components/Box';
 import Portal from '@ui/components/Portal';
 import { Tag } from '@ui/components/Tag';
-import { useLinkedState, usePopper } from '@ui/hooks';
+import { StrictPopperModifiers, useLinkedState, usePopper } from '@ui/hooks';
 import { styled } from '@ui/styles';
 import { createStandardShadeFromHue } from '@ui/utils/colors/hsl';
 import { hexToHsluv } from '@ui/utils/colors/hsluv';
@@ -26,16 +26,17 @@ interface ColorPickerPopperProps {
   onChange: (color: string) => void;
   onSaveColor?: (color: IColor) => void;
   defaultColorScheme?: 'light' | 'dark';
+  modifiers?: StrictPopperModifiers;
 }
 
 export const ColorPickerPopper = React.forwardRef<HTMLDivElement, ColorPickerPopperProps>(
-  ({ selectedColor, onChange, tagName = 'label', colors, defaultColorScheme = 'dark' }, ref) => {
+  ({ selectedColor, modifiers = [], onChange, tagName = 'label', colors, defaultColorScheme = 'dark' }, ref) => {
     const [selectedHue] = React.useMemo(() => hexToHsluv(selectedColor), [selectedColor]);
     const [localHue, setLocalHue] = useLinkedState(String(selectedHue));
 
     const rootPopper = usePopper({
       placement: 'top-start',
-      modifiers: [{ name: 'offset', options: { offset: [-140, 20] } }],
+      modifiers: [{ name: 'offset', options: { offset: [-140, 20] } }, ...modifiers],
       strategy: 'absolute',
     });
 

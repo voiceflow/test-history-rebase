@@ -11,6 +11,9 @@ export interface PopperOptions<Modifiers> extends Omit<Partial<PopperJS.Options>
   createPopper?: typeof PopperJS.createPopper;
 }
 
+export type StrictPopperModifierNames = NonNullable<PopperJS.StrictModifiers['name']>;
+export type StrictPopperModifiers = ReadonlyArray<Modifier<StrictPopperModifierNames>>;
+
 interface BasePopperAPI {
   state: PopperJS.State | null;
   update: PopperJS.Instance['update'] | null;

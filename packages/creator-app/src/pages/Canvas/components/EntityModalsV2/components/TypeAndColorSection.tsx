@@ -1,4 +1,4 @@
-import { Box, ColorPicker, FlexApart } from '@voiceflow/ui';
+import { Box, ColorPicker, FlexApart, StrictPopperModifiers } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
@@ -10,9 +10,10 @@ interface TypeAndColorSectionProps {
   name: string;
   color: string;
   saveColor: (color: string) => void;
+  colorPopperModifiers?: StrictPopperModifiers;
 }
 
-const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({ color, saveColor, name, type, onChangeType }) => {
+const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({ color, colorPopperModifiers, saveColor, name, type, onChangeType }) => {
   return (
     <Section
       dividers={false}
@@ -26,7 +27,7 @@ const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({ color, saveCo
         <Box flex={2} mr={24}>
           <SlotSelect value={type} onChange={onChangeType} />
         </Box>
-        <ColorPicker tagName={name} selectedColor={color} onChange={saveColor} />
+        <ColorPicker modifiers={colorPopperModifiers} tagName={name} selectedColor={color} onChange={saveColor} />
       </FlexApart>
     </Section>
   );

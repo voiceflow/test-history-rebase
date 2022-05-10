@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 
-import { BackHeader, CanvasHeader, ConversationsHeader, IntegrationsHeader, PrototypeHeader, SettingsHeader } from './components';
+import { BackHeader, CanvasHeader, ConversationsHeader, IntegrationsHeader, NLUHeader, PrototypeHeader, SettingsHeader } from './components';
 
 const ProjectHeader: React.FC = () => (
   <Switch>
@@ -13,6 +13,8 @@ const ProjectHeader: React.FC = () => (
     />
 
     <Route path={Path.PROJECT_PROTOTYPE} component={PrototypeHeader} />
+
+    <Route path={Path.NLU_MANAGER} component={NLUHeader} />
 
     <Route path={Path.PROJECT_PUBLISH} component={IntegrationsHeader} />
 

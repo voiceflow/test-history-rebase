@@ -4,7 +4,7 @@ import { StringifyEnum } from '@voiceflow/common';
 import React from 'react';
 import { Theme, Tooltip, TooltipProps } from 'react-tippy';
 
-import { HotkeyLabel, Multiline, Title } from './components';
+import { Complex, FooterButton, HotkeyLabel, Multiline, Title } from './components';
 
 export enum TooltipTheme {
   DARK = 'dark',
@@ -60,5 +60,7 @@ const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChild
 export default Object.assign(React.forwardRef(TippyTooltip), {
   Title,
   Multiline,
+  Complex,
   HotkeyLabel,
+  FooterButton,
 });

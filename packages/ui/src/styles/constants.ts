@@ -5,6 +5,7 @@ export const COLOR_BLUE = '#5d9df5';
 export const COLOR_RED = '#e91e63';
 export const COLOR_GREEN = '#279745';
 export const COLOR_WHITE = '#fff';
+export const COLOR_OFF_WHITE = '#fdfdfd';
 
 export enum ClassName {
   BUTTON = 'vf-button',

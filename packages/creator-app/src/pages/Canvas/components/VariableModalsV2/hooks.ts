@@ -9,7 +9,6 @@ import { useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hook
 export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) => void }) => {
   const { mergedVariables } = useOrderedVariables();
   const createGlobalVar = useDispatch(Version.addGlobalVariable);
-
   const existingVariableNames = React.useMemo(() => {
     return mergedVariables.map((variable) => {
       return variable.name;
@@ -29,7 +28,6 @@ export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) 
       toast.warn(`'${varName}' already exists`);
     }
   };
-
   const onCreateMultiple = React.useCallback(
     (commaSeparatedNames: string) => {
       const allNewVars = commaSeparatedNames.split(',');
@@ -56,7 +54,7 @@ export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) 
         onCreate?.(newVarNames);
       }
     },
-    [mergedVariables]
+    [mergedVariables, onCreate]
   );
 
   return {

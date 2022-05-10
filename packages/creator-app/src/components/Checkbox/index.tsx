@@ -1,7 +1,7 @@
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { Button, ButtonContainer, Container } from './components';
+import { Button, ButtonContainer, Container, InnerCheckBoxContainer } from './components';
 import { CheckboxColor, CheckboxType } from './constants';
 
 export { CheckboxType } from './constants';
@@ -12,6 +12,17 @@ export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElemen
   isFlat?: boolean;
   padding?: boolean;
 }
+
+const getIcon = (type: CheckboxType, checked?: boolean) => {
+  switch (type) {
+    case CheckboxType.CHECKBOX:
+      return checked ? 'checked' : 'emptyCheckbox';
+    case CheckboxType.DASH:
+      return checked ? 'checkboxDash' : 'emptyCheckbox';
+    default:
+      return checked ? 'onRadioButton' : 'offRadioButton';
+  }
+};
 
 const Checkbox: React.FC<CheckboxProps> = ({
   type = CheckboxType.CHECKBOX,
@@ -27,8 +38,8 @@ const Checkbox: React.FC<CheckboxProps> = ({
 }) => {
   // eslint-disable-next-line no-nested-ternary
   const checkBoxColor = error && !checked ? CheckboxColor.ERROR : disabled || !checked ? CheckboxColor.DISABLED : color;
-  // eslint-disable-next-line no-nested-ternary
-  const icon = type === CheckboxType.CHECKBOX ? (checked ? 'checked' : 'emptyCheckbox') : checked ? 'onRadioButton' : 'offRadioButton';
+
+  const icon = getIcon(type, checked);
 
   // eslint-disable-next-line xss/no-mixed-html
   const onLabelClick = (event: React.MouseEvent<HTMLLabelElement>) => {
@@ -43,8 +54,10 @@ const Checkbox: React.FC<CheckboxProps> = ({
   return (
     <Container isFlat={isFlat} disabled={disabled} className={className} onClick={onLabelClick}>
       <ButtonContainer padding={padding}>
-        <Button type={type} checked={checked} disabled={disabled} color={checkBoxColor} {...props} />
-        <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents />
+        <InnerCheckBoxContainer>
+          <Button type={type} checked={checked} disabled={disabled} color={checkBoxColor} {...props} />
+          <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents />
+        </InnerCheckBoxContainer>
       </ButtonContainer>
       {children}
     </Container>

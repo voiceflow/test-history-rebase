@@ -76,3 +76,5 @@ export enum EditorAnimationEffect {
   POP = 'pop',
   PUSH = 'push',
 }
+
+export const SLOT_PATH_TYPE = 'slot';

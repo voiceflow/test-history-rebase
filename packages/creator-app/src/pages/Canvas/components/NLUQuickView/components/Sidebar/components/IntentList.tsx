@@ -4,6 +4,7 @@ import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
 import { InteractionModelTabType } from '@/constants';
+import { NLUContext } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
@@ -25,8 +26,10 @@ const IntentList: React.FC<SectionProps> = ({
   setActiveTab,
   setSelectedItemID,
 }) => {
-  const { onRenameIntent, deleteItem, setIsCreatingItem, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } =
+  const { deleteItem, setIsCreatingItem, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } =
     React.useContext(NLUQuickViewContext);
+  const { renameItem } = React.useContext(NLUContext);
+
   const createIntent = useDispatch(Intent.createIntent);
 
   const allIntents = useSelector(IntentV2.allIntentsSelector);
@@ -50,10 +53,10 @@ const IntentList: React.FC<SectionProps> = ({
   const handleConfirmNewIntentName = React.useCallback(
     (newName: string, newIntentID: string) => {
       if (allIntents.some(({ name, id }) => name === newName && newIntentID !== id)) {
-        onRenameIntent(`${newName}_two`, newIntentID!);
+        renameItem(`${newName}_two`, newIntentID!, InteractionModelTabType.INTENTS);
         toast.error('Intent name already in use, use a different name');
       } else {
-        onRenameIntent(newName, newIntentID!);
+        renameItem(newName, newIntentID!, InteractionModelTabType.INTENTS);
       }
       resetCreating();
     },
@@ -124,7 +127,7 @@ const IntentList: React.FC<SectionProps> = ({
             key={intent.id}
             name={intent.name}
             onDelete={onDeleteIntent}
-            onRename={onRenameIntent}
+            onRename={(name, id) => renameItem(name, id, InteractionModelTabType.INTENTS)}
             nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.INTENTS)}
             setIsActiveItemRename={setIsActiveItemRename}
             isActiveItemRename={isActiveItemRename}

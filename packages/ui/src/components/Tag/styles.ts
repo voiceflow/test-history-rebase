@@ -1,10 +1,12 @@
 import { transition } from '@ui/styles';
 import { HSLShades } from '@ui/utils/colors/hsl';
+import React from 'react';
 import styled from 'styled-components';
 
 export interface BaseTagProps {
   palette: HSLShades;
   noColor: boolean;
+  onClick?: React.MouseEventHandler<HTMLSpanElement>;
 }
 
 export const TagWrapper = styled.span<BaseTagProps>`
@@ -29,6 +31,12 @@ export const TagWrapper = styled.span<BaseTagProps>`
     `
     box-shadow: rgb(223 229 234) 0px 0px 0px 1px inset;
     background-color: #f4f8f9;
+  `}
+
+  ${({ onClick }) =>
+    onClick &&
+    `
+    cursor: pointer;
   `}
 
   &::before,

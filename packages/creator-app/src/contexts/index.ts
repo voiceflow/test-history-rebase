@@ -10,6 +10,7 @@ export * from './IdentityContext';
 export * from './ModalsContext';
 export * from './MousePositionContext';
 export * from './NamespaceContext';
+export * from './NLUContext';
 export * from './PublishContext';
 export * from './ScrollContext';
 export * from './TextEditorVariablesPopoverContext';

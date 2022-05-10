@@ -1,7 +1,6 @@
 import React from 'react';
 
-import TippyTooltip from '../TippyTooltip';
-import { Line, StrengthLine } from './components';
+import { Container, Line, StrengthLine } from './components';
 import { Level } from './constants';
 
 const TOOLTIP_LABEL_MAP = {
@@ -31,12 +30,12 @@ const StrengthGauge: React.FC<StrengthGaugeProps> = ({ level = Level.NOT_SET, wi
   const strengthLineWidth = width * LINE_MULTIPLIER_MAP[level];
 
   return (
-    <TippyTooltip title={tooltipLabelMap?.[level] || TOOLTIP_LABEL_MAP[level]} style={{ display: 'flex' }}>
+    <Container title={tooltipLabelMap?.[level] || TOOLTIP_LABEL_MAP[level]}>
       <Line width={width} thickness={thickness}>
         <StrengthLine thickness={thickness} width={strengthLineWidth} strength={level} />
       </Line>
-    </TippyTooltip>
+    </Container>
   );
 };
 
-export default Object.assign(StrengthGauge, { Level });
+export default Object.assign(StrengthGauge, { Level, TOOLTIP_LABEL_MAP });

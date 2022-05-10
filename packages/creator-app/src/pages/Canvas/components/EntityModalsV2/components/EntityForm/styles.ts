@@ -12,4 +12,5 @@ export const MessageWrapper = styled(Box)`
   position: relative;
   padding: 0 32px 1px;
   margin-top: -10px;
+  background: #fdfdfd;
 `;

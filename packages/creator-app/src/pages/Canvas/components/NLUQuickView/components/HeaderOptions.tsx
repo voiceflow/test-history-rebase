@@ -1,51 +1,60 @@
 import { Dropdown, IconButton, IconButtonVariant, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { InteractionModelTabType } from '@/constants';
-import * as Intent from '@/ducks/intent';
-import * as SlotDuck from '@/ducks/slot';
-import { useDispatch } from '@/hooks';
-import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
-import { useDeleteVariable } from '@/pages/Canvas/components/NLUQuickView/hooks';
+import { InteractionModelTabType, NLPProvider, PlatformToNLPProvider } from '@/constants';
+import { NLUContext } from '@/contexts';
+import * as ProjectV2 from '@/ducks/projectV2';
+import * as Session from '@/ducks/session';
+import { useSelector } from '@/hooks';
+import { NLUManagerContext } from '@/pages/NLUManager/context';
 
 interface HeaderOptionsProps {
   selectedID: string;
-  setIsActiveItemRename: (val: boolean) => void;
+  onRename: () => void;
+  itemType: InteractionModelTabType;
+  isBuiltIn?: boolean;
 }
 
-const HeaderOptions: React.FC<HeaderOptionsProps> = ({ setIsActiveItemRename, selectedID }) => {
-  const deleteIntent = useDispatch(Intent.deleteIntent);
-  const deleteSlot = useDispatch(SlotDuck.deleteSlot);
-  const { canRenameItem, canDeleteItem, activeTab } = React.useContext(NLUQuickViewContext);
-  const deleteVariable = useDeleteVariable();
-
+const HeaderOptions: React.FC<HeaderOptionsProps> = ({ onRename, isBuiltIn, selectedID, itemType }) => {
+  const { deleteItem, canRenameItem, canDeleteItem } = React.useContext(NLUContext);
+  const { activeTab, selectedItemId, exportItem } = React.useContext(NLUManagerContext);
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
+  const project = useSelector(ProjectV2.getProjectByIDSelector)({ id: projectID });
   const onDelete = () => {
-    switch (activeTab) {
-      case InteractionModelTabType.INTENTS:
-        deleteIntent(selectedID);
-        break;
-      case InteractionModelTabType.SLOTS:
-        deleteSlot(selectedID);
-        break;
-      case InteractionModelTabType.VARIABLES:
-        deleteVariable(selectedID);
-        break;
-      default:
-        toast.error('Nothing to delete');
-        break;
+    if (itemType && selectedID) {
+      deleteItem(selectedID, itemType);
+    } else {
+      toast.error('Nothing to delete');
     }
   };
 
   const dropdownOptions = React.useMemo(() => {
     const options = [];
-    const canRename = canRenameItem(selectedID, activeTab);
-    const canDelete = canDeleteItem(selectedID, activeTab);
+    if (activeTab === InteractionModelTabType.INTENTS && selectedItemId) {
+      const contextOptions = [
+        {
+          label: 'Export CSV',
+          value: 'exportCSV',
+          onClick: () => exportItem(selectedItemId, InteractionModelTabType.INTENTS, NLPProvider.VF_CSV),
+        },
+        {
+          label: 'Export JSON',
+          value: 'exportJSON',
+          onClick: () => exportItem(selectedItemId, InteractionModelTabType.INTENTS, project?.platform && PlatformToNLPProvider[project.platform]),
+        },
+        { label: 'Divider', divider: true },
+      ];
+      options.push(...contextOptions);
+    }
+
+    const canRename = canRenameItem(selectedID, itemType);
+    const canDelete = canDeleteItem(selectedID, itemType);
 
     if (canRename) {
       options.push({
         key: 'rename',
         label: 'Rename',
-        onClick: () => setIsActiveItemRename(true),
+        onClick: () => onRename(),
       });
     }
 
@@ -55,12 +64,12 @@ const HeaderOptions: React.FC<HeaderOptionsProps> = ({ setIsActiveItemRename, se
     if (canDelete) {
       options.push({
         key: 'delete',
-        label: 'Delete',
+        label: isBuiltIn ? 'Remove' : 'Delete',
         onClick: onDelete,
       });
     }
     return options;
-  }, [selectedID, activeTab]);
+  }, [selectedID, itemType, selectedItemId, activeTab]);
 
   return dropdownOptions.length ? (
     <Dropdown placement="bottom-end" selfDismiss options={dropdownOptions}>

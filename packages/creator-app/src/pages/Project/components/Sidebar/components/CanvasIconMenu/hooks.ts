@@ -4,13 +4,14 @@ import { useDismissable } from 'react-dismissable-layers';
 import { useRouteMatch } from 'react-router-dom';
 
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, ModalType, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, useHotKeys, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useHotKeys, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 
 export enum CanvasOptionType {
@@ -19,6 +20,7 @@ export enum CanvasOptionType {
   DESIGNER = 'DESIGNER',
   INTEGRATION = 'INTEGRATION',
   CONVERSATION = 'CONVERSATION',
+  NLU_MANAGER = 'NLU_MANAGER',
 }
 
 const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
@@ -27,10 +29,12 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
   [CanvasOptionType.SETTINGS]: [Path.PROJECT_SETTINGS],
   [CanvasOptionType.INTEGRATION]: [Path.PROJECT_PUBLISH],
   [CanvasOptionType.CONVERSATION]: [Path.CONVERSATIONS],
+  [CanvasOptionType.NLU_MANAGER]: [Path.NLU_MANAGER],
 };
 
 export const useCanvasMenuOptionsAndHotkeys = () => {
   const imModal = useModals(ModalType.INTERACTION_MODEL);
+  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
 
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
@@ -39,6 +43,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
   const goToCurrentSettings = useDispatch(Router.goToCurrentSettings);
   const goToCurrentTranscript = useDispatch(Router.goToCurrentTranscript);
+  const goToNLUManager = useDispatch(Router.goToCurrentNLUManager);
 
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
@@ -51,6 +56,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   useHotKeys(Hotkey.SETTINGS_PAGE, goToCurrentSettings, { preventDefault: true, disable: !canEditProject || imModal.isOpened });
   useHotKeys(Hotkey.INTEGRATION_PAGE, goToCurrentPublish, { preventDefault: true, disable: !canEditProject || imModal.isOpened });
   useHotKeys(Hotkey.CONVERSATION_PAGE, goToCurrentTranscript, { preventDefault: true, disable: imModal.isOpened });
+  useHotKeys(Hotkey.NLU_MANAGER_PAGE, goToNLUManager, { preventDefault: true, disable: !nluManager.isEnabled });
 
   const options = React.useMemo<SidebarIconMenuItem[]>(
     () => [
@@ -60,6 +66,16 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         tooltip: { title: 'Designer', hotkey: HOTKEY_LABEL_MAP[Hotkey.DESIGN_PAGE] },
         onClick: goToCurrentCanvas,
       },
+      ...(nluManager.isEnabled
+        ? [
+            {
+              value: CanvasOptionType.NLU_MANAGER,
+              icon: 'interactionModel' as const,
+              tooltip: { title: 'NLU Manager', hotkey: HOTKEY_LABEL_MAP[Hotkey.CONVERSATION_PAGE] },
+              onClick: goToNLUManager,
+            },
+          ]
+        : []),
       ...(canViewConversations
         ? [
             {

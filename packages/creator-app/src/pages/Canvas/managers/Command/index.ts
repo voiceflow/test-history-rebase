@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { SLOT_PATH_TYPE } from '@/components/IntentForm/components/Custom/components';
 import IntentSlotForm from '@/components/IntentSlotForm';
 import { BlockType } from '@/constants';
+import { SLOT_PATH_TYPE } from '@/pages/Canvas/constants';
 
 import { NodeManagerConfig } from '../types';
 import CommandEditor from './CommandEditor';

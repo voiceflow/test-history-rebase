@@ -18,6 +18,7 @@ export enum FileExtension {
   ZIP = '.zip',
   CSV = '.csv',
   JSON = '.json',
+  XML = '.xml',
 }
 
 export interface ImportMeta {

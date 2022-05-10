@@ -19,6 +19,7 @@ export const getFileExtensionLabel: Record<FileExtension, string> = {
   [FileExtension.CSV]: 'CSV',
   [FileExtension.JSON]: 'JSON',
   [FileExtension.ZIP]: 'ZIP',
+  [FileExtension.XML]: 'XML',
 };
 
 export const ChannelSectionErrorMessage = 'Channel selection is required';
@@ -203,6 +204,10 @@ export const getPlatformOrProjectTypeMeta: Partial<
     localesText: 'Language',
     disabled: false,
     icon: 'nuanceMix',
+    importMeta: {
+      name: 'Nuance Mix',
+      fileExtensions: [FileExtension.XML],
+    },
     type: VoiceflowConstants.PlatformType.NUANCE_MIX,
   },
   /* UPCOMING */

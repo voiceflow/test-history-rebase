@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.716.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.715.0...@voiceflow/creator-app@1.716.0) (2022-05-11)
+
+
+### Features
+
+* remove realtime new link preview (VF-3446) ([#5411](https://github.com/voiceflow/creator-app/issues/5411)) ([a9afce6](https://github.com/voiceflow/creator-app/commit/a9afce6beba44e2319ab1482dd62d373c2850245))
+
+
+
+
+
 # [1.715.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.714.0...@voiceflow/creator-app@1.715.0) (2022-05-10)
 
 

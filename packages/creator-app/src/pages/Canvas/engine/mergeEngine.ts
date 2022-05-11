@@ -75,14 +75,14 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
 
     this.engine.addClass(CANVAS_MERGING_CLASSNAME);
     this.sourceNodeID = sourceNodeID;
-    this.candidates = getCandidates(Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID).reverse(), this.engine);
+    this.candidates = getCandidates([...Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)].reverse(), this.engine);
 
     this.log.debug('discovered merge candidates', this.log.value(this.candidates.length));
     this.log.debug(this.log.init('merge system initialized for node'), this.log.slug(sourceNodeID));
   }
 
   refreshCandidateDetection(sourceNodeID: string) {
-    this.candidates = getCandidates(Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID).reverse(), this.engine);
+    this.candidates = getCandidates([...Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)].reverse(), this.engine);
   }
 
   updateTargetDetection() {

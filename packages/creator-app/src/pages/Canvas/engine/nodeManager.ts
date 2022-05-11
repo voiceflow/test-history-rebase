@@ -506,7 +506,9 @@ class NodeManager extends EngineConsumer {
   async updateData<T extends unknown = unknown>(nodeID: string, data: Partial<Realtime.NodeData<T>>, save = true): Promise<void> {
     this.log.debug(this.log.pending('updating node data'), this.log.slug(nodeID), data);
 
-    await this.engine.realtime.sendUpdate(RealtimeDuck.updateNodeData(nodeID, data));
+    if (!this.isAtomicActionsPhase2) {
+      await this.engine.realtime.sendUpdate(RealtimeDuck.updateNodeData(nodeID, data));
+    }
     await this.internal.updateData(nodeID, data);
     if (data.name) {
       this.internal.updateStartingBlock({ blockID: nodeID, name: data.name });

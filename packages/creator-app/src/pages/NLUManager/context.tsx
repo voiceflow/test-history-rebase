@@ -189,7 +189,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
         setSelectedID(id);
       }
     },
-    [activeID]
+    [activeID, setSelectedID]
   );
 
   const createAndSelect = React.useCallback(() => {

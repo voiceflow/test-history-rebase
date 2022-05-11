@@ -6,6 +6,7 @@ import * as Errors from '@/config/errors';
 import { saveHistory } from '@/ducks/creator/diagram/actions';
 import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
+import { duckLogger } from '@/ducks/utils';
 import mutableStore from '@/store/mutable';
 import { SyncThunk, Thunk } from '@/store/types';
 import * as Sentry from '@/vendors/sentry';
@@ -138,6 +139,8 @@ export const setupRealtimeConnection =
       dispatch(initializeRealtime(diagramID, removeSelfFromLocks(locks, tabID)));
       await dispatch(sendRealtimeUpdate(Socket.reconnectNoop()));
     } catch (e) {
+      duckLogger.warn('received realtime setup error', e);
+
       // for Starter and Pro plans users will not have Realtime feature | error: {busyBy: ['creatorId1']}
       if (e.busyBy) {
         dispatch(setRealtimeRestriction());

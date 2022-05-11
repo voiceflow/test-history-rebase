@@ -6,7 +6,6 @@ import { get, set } from 'idb-keyval';
 
 import * as Errors from '@/config/errors';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
-import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intent';
@@ -148,9 +147,8 @@ class ClipboardEngine extends EngineConsumer {
   getClipboardContext(nodeIDs: string[]): ClipboardContext {
     const state = this.engine.store.getState();
     const platform = ProjectV2.active.platformSelector(state);
-    const {
-      data: { ...data }, // cloning data to modify it later
-    } = Creator.creatorDiagramSelector(state);
+    // cloning data to modify it later
+    const { ...data } = CreatorV2.nodeDataMapSelector(state);
 
     const versionID = Session.activeVersionIDSelector(state);
 

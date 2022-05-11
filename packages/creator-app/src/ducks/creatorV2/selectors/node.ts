@@ -60,6 +60,12 @@ export const nodeDataByIDsSelector = Feature.createAtomicActionsPhase2Selector(
 const _allNodeDataSelector = createSelector([creatorStateSelector], ({ nodes }) => Normal.denormalize(nodes));
 export const allNodeDataSelector = Feature.createAtomicActionsPhase2Selector([CreatorV1Selectors.allNodeDataSelector, _allNodeDataSelector]);
 
+const _nodeDataMapSelector = createSelector([creatorStateSelector], ({ nodes }) => nodes.byKey);
+export const nodeDataMapSelector = Feature.createAtomicActionsPhase2Selector([
+  createSelector([CreatorV1Selectors.creatorDiagramSelector], ({ data }) => data),
+  _nodeDataMapSelector,
+]);
+
 export const allBlocksDataSelector = createSelector([blockIDsSelector, createCurriedSelector(nodeDataByIDsSelector)], (blockIDs, getDataByNodeIDs) =>
   _sortBy(getDataByNodeIDs({ ids: blockIDs }), ({ name }) => name.toLowerCase())
 );

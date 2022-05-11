@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.716.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.716.0...@voiceflow/creator-app@1.716.1) (2022-05-11)
+
+
+### Bug Fixes
+
+* working markup text update and drag (VF-3447) ([#5412](https://github.com/voiceflow/creator-app/issues/5412)) ([0b96934](https://github.com/voiceflow/creator-app/commit/0b96934daf9d80dd62075b1d0cd96f27709c7d89))
+
+
+
+
+
 # [1.716.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.715.0...@voiceflow/creator-app@1.716.0) (2022-05-11)
 
 

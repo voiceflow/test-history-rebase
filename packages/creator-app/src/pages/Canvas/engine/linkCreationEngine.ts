@@ -102,13 +102,15 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     return this.isSourceNode(nodeID) || !!node?.combinedNodes.some((childNodeID) => this.isSourceNode(childNodeID));
   }
 
-  async start(sourcePortID: string, mouseOrigin: [number, number]): Promise<void> {
+  start(sourcePortID: string, mouseOrigin: [number, number]): void {
     const linkIDs = this.engine.getLinkIDsByPortID(sourcePortID);
 
     this.log.debug(this.log.pending('starting to draw from port'), this.log.slug(sourcePortID));
 
     if (linkIDs.length) {
-      await this.engine.link.removeMany(linkIDs);
+      // not waiting for this to avoid any hitches while drawing
+      // creating a new link will also overwrite the old link data which should be safe
+      this.engine.link.removeMany(linkIDs).catch((err) => this.log.error('failed to remove link', err));
     }
 
     this.engine.addClass(CANVAS_CREATING_LINK_CLASSNAME);

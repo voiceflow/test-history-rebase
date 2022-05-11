@@ -21,7 +21,7 @@ declare global {
 
 export const composeEnhancers = composeWithDevTools({
   name: 'Voiceflow Creator',
-  actionsDenylist: DEBUG_REALTIME ? [] : ['logux/state', Realtime.diagram.awareness.moveCursor.type, Realtime.diagram.awareness.moveLink.type],
+  actionsDenylist: DEBUG_REALTIME ? [] : ['logux/state', Realtime.diagram.awareness.moveCursor.type],
 });
 
 const createStore = (realtime: Client, history: History): { store: Store; persistor: Persistor } => {

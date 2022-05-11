@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { LockOwner } from '@/models';
-import { Either, Pair, Point } from '@/types';
+import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
 import { RealtimeCursorEvents } from './components/RealtimeOverlay/contexts';
@@ -87,11 +87,6 @@ export interface MergeLayerAPI<T extends HTMLElement = HTMLElement> {
 
 export interface RealtimeCursorOverlayAPI extends RealtimeCursorEvents {
   moveMouse: (tabID: string, location: Point) => void;
-  removeUser: (tabID: string) => void;
-}
-
-export interface RealtimeLinkOverlayAPI {
-  moveLink: (tabID: string, linkData: Either<{ reset: true }, { points: Pair<Point> }>) => void;
   removeUser: (tabID: string) => void;
 }
 

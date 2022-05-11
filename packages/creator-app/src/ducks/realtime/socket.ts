@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import type * as Creator from '@/ducks/creator';
 import { createAction } from '@/ducks/utils';
 import { Action, ActionPayload } from '@/store/types';
-import { Either, Pair, Point } from '@/types';
+import { Pair, Point } from '@/types';
 
 import { LockAction, LockType } from './constants';
 import { AnyNodeLock } from './types';
@@ -29,7 +29,6 @@ export enum SocketAction {
   REMOVE_OUT_BUILT_IN_PORT = 'REALTIME:SOCKET:PORT:REMOVE_OUT_BUILT_IN',
   REORDER_OUT_DYNAMIC_PORTS = 'REALTIME:SOCKET:PORT:REORDER_OUT_DYNAMIC',
 
-  MOVE_LINK = 'REALTIME:SOCKET:LINK:MOVE',
   ADD_LINK = 'REALTIME:SOCKET:LINK:ADD',
   REMOVE_MANY_LINKS = 'REALTIME:SOCKET:LINK:REMOVE_MANY',
   UPDATE_LINK_DATA_MANY = 'REALTIME:SOCKET:LINK:UPDATE_DATA_MANY',
@@ -83,8 +82,6 @@ export type RemoveOutBuiltInPort = Action<SocketAction.REMOVE_OUT_BUILT_IN_PORT,
 
 export type ReorderOutDynamicPorts = Action<SocketAction.REORDER_OUT_DYNAMIC_PORTS, ActionPayload<Creator.ReorderOutDynamicPorts>>;
 
-export type MoveLink = Action<SocketAction.MOVE_LINK, Either<{ reset: true }, { points: Pair<Point> }>>;
-
 export type AddLink = Action<SocketAction.ADD_LINK, ActionPayload<Creator.AddLink>>;
 
 export type UpdateLinkDataMany = Action<SocketAction.UPDATE_LINK_DATA_MANY, ActionPayload<Creator.UpdateLinkDataMany>>;
@@ -110,7 +107,6 @@ export type AnySocketAction =
   | RemoveOutDynamicPort
   | RemoveOutBuiltInPort
   | ReorderOutDynamicPorts
-  | MoveLink
   | AddLink
   | UpdateLinkDataMany
   | RemoveManyLinks
@@ -208,8 +204,6 @@ export const reorderOutDynamicPorts = (nodeID: string, from: number, to: number)
   createAction(SocketAction.REORDER_OUT_DYNAMIC_PORTS, { nodeID, from, to });
 
 // links
-
-export const moveLink = (linkData: Either<{ reset: true }, { points: Pair<Point> }>): MoveLink => createAction(SocketAction.MOVE_LINK, linkData);
 
 /**
  * @deprecated

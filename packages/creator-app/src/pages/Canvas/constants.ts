@@ -46,7 +46,6 @@ export const DEFAULT_MARKUP_BORDER_COLOR = hexToRGBA('#5d9df5ff');
 export const DEFAULT_MARKUP_BACKGROUND_COLOR = hexToRGBA('#5d9df533');
 
 export enum OverlayType {
-  LINK = 'link',
   CURSOR = 'cursor',
 }
 

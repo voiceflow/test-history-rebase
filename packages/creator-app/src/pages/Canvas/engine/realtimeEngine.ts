@@ -2,7 +2,7 @@ import { MovementCalculator } from '@/components/Canvas/types';
 import * as Realtime from '@/ducks/realtime';
 import { RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { OverlayType } from '@/pages/Canvas/constants';
-import { RealtimeCursorOverlayAPI, RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
+import { RealtimeCursorOverlayAPI } from '@/pages/Canvas/types';
 import { ActionPayload } from '@/store/types';
 import { Pair } from '@/types';
 import * as Sentry from '@/vendors/sentry';
@@ -12,7 +12,7 @@ import { EngineConsumer } from './utils';
 
 const SKIP_WARNING_ACTIONS: string[] = [Realtime.SocketAction.RECONNECT_NOOP];
 
-class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCursorOverlayAPI; [OverlayType.LINK]: RealtimeLinkOverlayAPI }> {
+class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCursorOverlayAPI }> {
   log = this.engine.log.child('realtime');
 
   teardownHandlers: () => void;
@@ -136,9 +136,6 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
 
       await this.engine.link.internal.removeMany(linkIDs);
     },
-
-    [Realtime.SocketAction.MOVE_LINK]: (linkData: ActionPayload<Realtime.MoveLink>, tabID) =>
-      this.components[OverlayType.LINK]?.moveLink(tabID, linkData),
 
     [Realtime.SocketAction.ADD_OUT_DYNAMIC_PORT]: async ({ nodeID, port }: ActionPayload<Realtime.AddOutDynamicPort>, tabID) => {
       if (this.isAtomicActionsPhase2) return;

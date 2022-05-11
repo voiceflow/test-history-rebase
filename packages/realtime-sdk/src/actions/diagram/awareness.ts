@@ -1,5 +1,5 @@
 import { AWARENESS_KEY } from '@realtime-sdk/constants';
-import { BaseDiagramPayload, Pair, Point } from '@realtime-sdk/types';
+import { BaseDiagramPayload, Point } from '@realtime-sdk/types';
 import { Nullable, Utils } from '@voiceflow/common';
 
 import { diagramType } from './utils';
@@ -17,10 +17,6 @@ export interface BaseCursorPayload extends BaseDiagramPayload {
 
 export interface MoveCursorPayload extends BaseCursorPayload {
   coords: Point;
-}
-
-export interface MoveLinkPayload extends BaseCursorPayload {
-  points: Pair<Point>;
 }
 
 export type HeartbeatLocksMap = Partial<Record<LockEntityType, string[]>>;
@@ -42,8 +38,6 @@ export interface UpdateLocksPayload extends BaseDiagramPayload {
   locks: Partial<Record<LockEntityType, Record<string, string>>>;
 }
 
-export const hideLink = Utils.protocol.createAction<BaseCursorPayload>(diagramAwarenessType('HIDE_LINK'));
-export const moveLink = Utils.protocol.createAction<MoveLinkPayload>(diagramAwarenessType('MOVE_LINK'));
 export const hideCursor = Utils.protocol.createAction<BaseCursorPayload>(diagramAwarenessType('HIDE_CURSOR'));
 export const moveCursor = Utils.protocol.createAction<MoveCursorPayload>(diagramAwarenessType('MOVE_CURSOR'));
 

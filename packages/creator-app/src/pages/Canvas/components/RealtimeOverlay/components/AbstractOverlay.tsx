@@ -6,7 +6,7 @@ import * as RealtimeDuck from '@/ducks/realtime';
 import { compose, connect } from '@/hocs';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { InjectedEngineProps, withEngine } from '@/pages/Canvas/contexts';
-import { RealtimeCursorOverlayAPI, RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
+import { RealtimeCursorOverlayAPI } from '@/pages/Canvas/types';
 import { ConnectedProps, HOC } from '@/types';
 
 export interface RealtimeOverlayState {
@@ -15,9 +15,7 @@ export interface RealtimeOverlayState {
 
 export type RealtimeViewer = Realtime.DBMember & { color: string };
 
-abstract class AbstractOverlay<
-  T extends RealtimeCursorOverlayAPI | RealtimeLinkOverlayAPI
-> extends React.PureComponent<ConnectedRealtimeOverlayProps> {
+abstract class AbstractOverlay<T extends RealtimeCursorOverlayAPI> extends React.PureComponent<ConnectedRealtimeOverlayProps> {
   state: RealtimeOverlayState = {
     items: [],
   };

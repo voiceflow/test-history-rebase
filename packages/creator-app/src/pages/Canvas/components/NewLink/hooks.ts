@@ -1,17 +1,13 @@
 import { Utils } from '@voiceflow/common';
-import * as RealtimeSDK from '@voiceflow/realtime-sdk';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import { FeatureFlag } from '@/config/features';
 import { AutoPanningCacheContext } from '@/contexts';
 import * as Account from '@/ducks/account';
-import * as Realtime from '@/ducks/realtime';
-import { useFeature, useRAF, useSelector, useSyncDispatch } from '@/hooks';
+import { useFeature, useRAF, useSelector } from '@/hooks';
 import { LinkedRects } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
-import { Pair, Point } from '@/types';
 
 type NewLinkInstance<T extends SVGElement> = NewLinkAPI & {
   ref: React.RefObject<T>;
@@ -25,10 +21,6 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
 
   const creatorID = useSelector(Account.userIDSelector)!;
-
-  const dispatch = useDispatch();
-  const moveLinkV2 = useSyncDispatch(RealtimeSDK.diagram.awareness.moveLink);
-  const hideLinkV2 = useSyncDispatch(RealtimeSDK.diagram.awareness.hideLink);
 
   const [isVisible, setVisible] = React.useState(false);
 
@@ -51,26 +43,6 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   }, []);
 
   return React.useMemo<NewLinkInstance<T>>(() => {
-    const moveLink = (points: Pair<Point>) =>
-      atomicActionsAwareness.isEnabled
-        ? moveLinkV2({ ...engine.context, creatorID, points })
-        : dispatch(Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink({ points })));
-
-    const resetLink = () =>
-      atomicActionsAwareness.isEnabled
-        ? hideLinkV2({ ...engine.context, creatorID })
-        : dispatch(Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink({ reset: true })));
-
-    const onMoveLink = () => {
-      if (!linkedRects.current) return;
-
-      // TODO: refactor moveLink to accept a LinkedRects like object
-      moveLink([
-        [linkedRects.current.sourceNodeRect.right, linkedRects.current.sourcePortRect.top + linkedRects.current.sourcePortRect.height / 2],
-        [linkedRects.current.targetNodeRect.left, linkedRects.current.targetNodeRect.top],
-      ]);
-    };
-
     return {
       ref,
       markerRef,
@@ -89,7 +61,6 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
         linkedRects.current = newLinkedRects;
 
-        onMoveLink();
         setVisible(true);
 
         const onMouseMove = () => {
@@ -100,8 +71,6 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
           [moveRect.x, moveRect.y] = mousePosition;
 
           linkedRects.current = engine.linkCreation.getLinkedRects(moveRect, { relative: true, targetIsCanvasRect: true });
-
-          onMoveLink();
 
           redrawScheduler(() => engine.linkCreation.redrawNewLink(linkedRects.current));
         };
@@ -131,7 +100,6 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
       hide: () => {
         removeEventListeners.current();
-        resetLink();
         setVisible(false);
       },
 
@@ -140,8 +108,6 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
         linkedRects.current = engine.linkCreation.getLinkedRects(rect, { relative: false, targetIsCanvasRect: false });
 
-        onMoveLink();
-
         redrawScheduler(() => engine.linkCreation.redrawNewLink(linkedRects.current, { isConnected: true }));
       },
 
@@ -149,5 +115,5 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         isPinned.current = false;
       },
     };
-  }, [isVisible, creatorID, atomicActionsAwareness.isEnabled, moveLinkV2]);
+  }, [isVisible, creatorID, atomicActionsAwareness.isEnabled]);
 };

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.716.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.716.1...@voiceflow/creator-app@1.716.2) (2022-05-11)
+
+
+### Bug Fixes
+
+* support clipboard and duplication in realtime (VF-3444) ([#5415](https://github.com/voiceflow/creator-app/issues/5415)) ([18a6c1c](https://github.com/voiceflow/creator-app/commit/18a6c1c680e1280fea74d4d5966861383beb4bfe))
+
+
+
+
+
 ## [1.716.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.716.0...@voiceflow/creator-app@1.716.1) (2022-05-11)
 
 

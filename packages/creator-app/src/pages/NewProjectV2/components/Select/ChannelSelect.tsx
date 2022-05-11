@@ -27,7 +27,6 @@ const ChannelSelect: React.FC<ChannelSelectProps> = ({ value, onSelect, error })
       onSelect={onSelect}
       placeholder="Select channel"
       searchable
-      inputStopProp={false}
     ></Select>
   );
 };

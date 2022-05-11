@@ -33,7 +33,6 @@ const NLUSelect: React.FC<NLUSelectProps> = ({ value, onSelect, error, isImportL
       onSelect={onSelect}
       placeholder="Select NLU"
       searchable
-      inputStopProp={false}
     />
   );
 };

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.716.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.716.4...@voiceflow/creator-app@1.716.5) (2022-05-12)
+
+
+### Bug Fixes
+
+* ignore locks that belong to the user during node deletion (VF-3442) ([#5414](https://github.com/voiceflow/creator-app/issues/5414)) ([3e40074](https://github.com/voiceflow/creator-app/commit/3e40074318b03b467f753fe3e683d27bdb5b09df))
+
+
+
+
+
 ## [1.716.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.716.3...@voiceflow/creator-app@1.716.4) (2022-05-11)
 
 

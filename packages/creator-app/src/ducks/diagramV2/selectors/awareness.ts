@@ -69,10 +69,25 @@ export const isActiveDiagramEntityLockedByIDAndTypeSelector = createSelector(
   (diagramLocks, entityID, lockType) => diagramLocks[lockType]?.[entityID] != null
 );
 
-export const activeDiagramDeletionLockedNodesSelector = createSelector([activeDiagramLocksSelector], (diagramLocks) => ({
-  ...diagramLocks[Realtime.diagram.awareness.LockEntityType.NODE_EDIT],
-  ...diagramLocks[Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT],
-}));
+export const activeDiagramDeletionLockedNodesSelector = createSelector(
+  [Account.userIDSelector, activeDiagramLocksSelector],
+  (creatorID, diagramLocks) =>
+    Utils.object.pickBy(
+      {
+        ...diagramLocks[Realtime.diagram.awareness.LockEntityType.NODE_EDIT],
+        ...diagramLocks[Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT],
+      },
+      (_, clientNodeID) => {
+        if (!clientNodeID) return false;
+
+        const { userId } = parseId(clientNodeID);
+
+        if (!userId) return true;
+
+        return Number(userId) !== creatorID;
+      }
+    )
+);
 
 const activeDiagramLockOwnerClientNodeIDByTypeAndIDSelector = createSelector(
   [activeDiagramLocksSelector, entityIDParamSelector, lockTypeParamSelector],

@@ -532,15 +532,12 @@ class NodeManager extends EngineConsumer {
       return Promise.resolve();
     }
 
-    this.log.debug(this.log.pending('removing multiple nodes'), nodeIDs);
+    const allNodeIDs = this.collectNodesToRemove(nodeIDs);
 
-    return this.validateRemove(nodeIDs, async (removableNodeIDs) => {
-      const allNodeIDs = [
-        ...removableNodeIDs,
-        ...removableNodeIDs.flatMap((nodeID) => this.select(CreatorV2.stepIDsByBlockIDSelector, { id: nodeID })),
-      ];
+    this.log.debug(this.log.pending('removing multiple nodes'), allNodeIDs);
 
-      await this.engine.comment.handleNodesDelete(allNodeIDs);
+    return this.validateRemove(allNodeIDs, async (removableNodeIDs) => {
+      await this.engine.comment.handleNodesDelete(removableNodeIDs);
 
       if (!this.isAtomicActionsPhase2) {
         await this.engine.realtime.sendUpdate(RealtimeDuck.removeManyNodes(removableNodeIDs));
@@ -946,7 +943,7 @@ class NodeManager extends EngineConsumer {
 
     if (lockedNodeIDs.length) {
       // eslint-disable-next-line no-nested-ternary
-      const text = unlockedNodesIDs.length ? 'Some blocks' : nodeIDs.length > 1 ? 'These blocks' : 'This block';
+      const text = unlockedNodesIDs.length ? 'Some blocks are' : nodeIDs.length > 1 ? 'These blocks are' : 'This block is';
 
       this.dispatch(
         Modal.setConfirm({
@@ -994,6 +991,26 @@ class NodeManager extends EngineConsumer {
     }
 
     return false;
+  }
+
+  private collectNodesToRemove(nodeIDs: string[]) {
+    return Utils.array.unique([
+      ...nodeIDs,
+
+      // remove the block if all child steps are being removed
+      ...nodeIDs.flatMap((nodeID) => {
+        const blockID = this.select(CreatorV2.blockIDByStepIDSelector, { id: nodeID });
+        if (!blockID || nodeIDs.includes(blockID)) return [];
+
+        const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: blockID });
+        if (stepIDs.every((stepID) => nodeIDs.includes(stepID))) return [blockID];
+
+        return [];
+      }),
+
+      // remove all children from any blocks being removed
+      ...nodeIDs.flatMap((nodeID) => this.select(CreatorV2.stepIDsByBlockIDSelector, { id: nodeID })),
+    ]);
   }
 
   private async validateRemove(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>): Promise<void> {

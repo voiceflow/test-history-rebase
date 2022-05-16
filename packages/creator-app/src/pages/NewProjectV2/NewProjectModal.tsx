@@ -8,7 +8,8 @@ import { ClassName } from '@/styles/constants';
 import NewProject from '.';
 
 const NewProjectModal: React.FC = () => {
-  const [isCreatingProject, setIsCreatingProject] = React.useState<boolean>(false);
+  const [isCreatingProject, setIsCreatingProject] = React.useState(false);
+
   return (
     <Modal
       id={ModalType.PROJECT_CREATE_MODAL}

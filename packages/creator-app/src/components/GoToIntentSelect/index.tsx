@@ -115,7 +115,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({ intentID, diagramID
   const value = isComponentActive && !topicValue ? componentValue : topicValue;
 
   return (
-    <Select
+    <Select<IntentOption, TopicIntentOption, string>
       value={value}
       grouped
       options={options}

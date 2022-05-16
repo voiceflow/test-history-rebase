@@ -30,7 +30,7 @@ export interface MenuItemWithID extends BaseMenuItem {
 export interface MenuItemGrouped<Option> extends BaseMenuItem {
   id: string;
   label: React.ReactNode;
-  options?: Array<Option | UIOnlyMenuItemOption>;
+  options?: Option[];
 }
 
 export interface MenuItemMultilevel<Option> extends BaseMenuItem {

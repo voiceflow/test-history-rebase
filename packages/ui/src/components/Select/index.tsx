@@ -75,6 +75,26 @@ export * from './components';
 
 const defaultGetter = (option: unknown) => option;
 
+function Select<Option, GroupOption extends MenuItemGrouped<Option>>(props: SelectGroupedProps<Option, GroupOption>): React.ReactElement;
+function Select<Option, GroupOption extends MenuItemGrouped<Option>>(props: SelectGroupedClearableProps<Option, GroupOption>): React.ReactElement;
+function Select<Option, GroupOption extends MenuItemGrouped<Option>, Value>(
+  props: SelectValueGroupedProps<Option, GroupOption, Value>
+): React.ReactElement;
+function Select<Option, GroupOption extends MenuItemGrouped<Option>, Value>(
+  props: SelectValueGroupedClearableProps<Option, GroupOption, Value>
+): React.ReactElement;
+function Select<Option extends MenuItemWithID, GroupOption extends MenuItemGrouped<Option>>(
+  props: SelectGroupedWithIDProps<Option, GroupOption>
+): React.ReactElement;
+function Select<Option extends MenuItemWithID, GroupOption extends MenuItemGrouped<Option>>(
+  props: SelectGroupedWithIDClearableProps<Option, GroupOption>
+): React.ReactElement;
+function Select<Option extends MenuItemWithID, GroupOption extends MenuItemGrouped<Option>, Value>(
+  props: SelectGroupedValueWithIDProps<Option, GroupOption, Value>
+): React.ReactElement;
+function Select<Option extends MenuItemWithID, GroupOption extends MenuItemGrouped<Option>, Value>(
+  props: SelectGroupedValueWithIDClearableProps<Option, GroupOption, Value>
+): React.ReactElement;
 function Select<Option extends Primitive>(props: SelectPrimitiveProps<Option>): React.ReactElement;
 function Select<Option extends Primitive>(props: SelectPrimitiveClearableProps<Option>): React.ReactElement;
 function Select<Option extends Primitive>(props: SelectPrimitiveCreatableProps<Option>): React.ReactElement;
@@ -87,22 +107,10 @@ function Select<Option extends MenuItemWithID, Value>(props: SelectValueWithIDPr
 function Select<Option extends MenuItemWithID, Value>(props: SelectValueWithIDClearableProps<Option, Value>): React.ReactElement;
 function Select<Option extends MenuItemWithID, Value>(props: SelectValueCreatableWithIDProps<Option, Value>): React.ReactElement;
 function Select<Option extends MenuItemWithID, Value>(props: SelectValueCreatableWithIDClearableProps<Option, Value>): React.ReactElement;
-function Select<Option extends MenuItemGrouped<Option>>(props: SelectGroupedProps<Option>): React.ReactElement;
-function Select<Option extends MenuItemGrouped<Option>>(props: SelectGroupedClearableProps<Option>): React.ReactElement;
-function Select<Option extends MenuItemGrouped<Option>, Value>(props: SelectValueGroupedProps<Option, Value>): React.ReactElement;
-function Select<Option extends MenuItemGrouped<Option>, Value>(props: SelectValueGroupedClearableProps<Option, Value>): React.ReactElement;
 function Select<Option extends MenuItemMultilevel<Option>>(props: SelectMultilevelProps<Option>): React.ReactElement;
 function Select<Option extends MenuItemMultilevel<Option>>(props: SelectMultilevelClearableProps<Option>): React.ReactElement;
 function Select<Option extends MenuItemMultilevel<Option>, Value>(props: SelectValueMultilevelProps<Option, Value>): React.ReactElement;
 function Select<Option extends MenuItemMultilevel<Option>, Value>(props: SelectValueMultilevelClearableProps<Option, Value>): React.ReactElement;
-function Select<Option extends MenuItemWithID & MenuItemGrouped<Option>>(props: SelectGroupedWithIDProps<Option>): React.ReactElement;
-function Select<Option extends MenuItemWithID & MenuItemGrouped<Option>>(props: SelectGroupedWithIDClearableProps<Option>): React.ReactElement;
-function Select<Option extends MenuItemWithID & MenuItemGrouped<Option>, Value>(
-  props: SelectGroupedValueWithIDProps<Option, Value>
-): React.ReactElement;
-function Select<Option extends MenuItemWithID & MenuItemGrouped<Option>, Value>(
-  props: SelectGroupedValueWithIDClearableProps<Option, Value>
-): React.ReactElement;
 function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>>(props: SelectMultilevelWithIDProps<Option>): React.ReactElement;
 function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>>(props: SelectMultilevelWithIDClearableProps<Option>): React.ReactElement;
 function Select<Option extends MenuItemWithID & MenuItemMultilevel<Option>, Value>(

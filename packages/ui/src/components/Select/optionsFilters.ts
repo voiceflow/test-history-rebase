@@ -49,10 +49,10 @@ const multilevelSearch = <Option, Value>(
 };
 
 const groupedSearch = <Option, Value>(
-  matched: Array<MenuItemGrouped<Option> | UIOnlyMenuItemOption>,
-  notMatched: Array<MenuItemGrouped<Option> | UIOnlyMenuItemOption>,
+  matched: Array<MenuItemGrouped<Option | UIOnlyMenuItemOption> | UIOnlyMenuItemOption>,
+  notMatched: Array<MenuItemGrouped<Option | UIOnlyMenuItemOption> | UIOnlyMenuItemOption>,
   searchLabel: string | undefined,
-  option: MenuItemGrouped<Option> | UIOnlyMenuItemOption,
+  option: MenuItemGrouped<Option | UIOnlyMenuItemOption> | UIOnlyMenuItemOption,
   params: Params<Option, Value>
 ) => {
   const childOptions: Array<Option | UIOnlyMenuItemOption> = [];
@@ -74,7 +74,7 @@ const groupedSearch = <Option, Value>(
   }
 
   if (childOptions?.length) {
-    matched.push({ ...option, options: childOptions } as MenuItemGrouped<Option>);
+    matched.push({ ...option, options: childOptions } as MenuItemGrouped<Option | UIOnlyMenuItemOption>);
   } else {
     notMatched.push(option);
   }

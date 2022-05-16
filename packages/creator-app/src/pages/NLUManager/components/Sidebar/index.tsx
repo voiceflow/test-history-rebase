@@ -2,33 +2,20 @@ import { Box, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useDispatch, useSelector } from '@/hooks';
-import { getPlatformOrProjectTypeMeta } from '@/pages/NewProjectV2/constants';
+import { useDispatch } from '@/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
-import { upload } from '@/utils/dom';
 
 import { Footer, ItemSidebar, SidebarContainer } from './components';
 import MenuItem from './components/MenuItem';
 
 const Sidebar: React.FC = () => {
   const { createAndSelect, setActiveTab, activeTab } = React.useContext(NLUManagerContext);
-  const platform = useSelector(ProjectV2.active.platformSelector);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
   const canImportModel = true;
 
-  const onImport = async () => {
-    // TODO: import endpoint
-  };
-
-  const handleImport = () => {
-    const fileExtensions = platform && getPlatformOrProjectTypeMeta[platform]?.importMeta?.fileExtensions;
-    const acceptedFileFormats = fileExtensions?.join(',');
-
-    upload(onImport, { accept: acceptedFileFormats, multiple: false });
-  };
+  const handleImport = () => {};
 
   return (
     <SidebarContainer>

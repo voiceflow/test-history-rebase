@@ -58,6 +58,7 @@ function TagSelect({
   getOptionKey = (option, index) => String(getOptionValue(option) || index),
   createInputPlaceholder,
   error,
+  useLayers,
 }: TagSelectInternalProps): React.ReactElement {
   const [selected, setSelected] = React.useState<string[]>(() => trimNulls(value));
 
@@ -113,6 +114,7 @@ function TagSelect({
       getOptionKey={getOptionKey}
       error={error}
       maxHeight={maxHeight}
+      useLayers={useLayers}
     />
   );
 }

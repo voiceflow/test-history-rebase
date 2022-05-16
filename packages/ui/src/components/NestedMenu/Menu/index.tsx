@@ -41,12 +41,14 @@ export const DEFAULT_PATH = [];
 
 function BaseNestedMenu<Option extends MenuItemWithID, Value = Option>(props: NestedMenuCreatableWithIDProps<Option, Value>): React.ReactElement;
 function BaseNestedMenu<Option extends MenuItemWithID, Value = Option>(props: NestedMenuWithIDProps<Option, Value>): React.ReactElement;
-function BaseNestedMenu<Option extends MenuItemGrouped<Option>, Value = Option>(props: NestedMenuGroupedProps<Option, Value>): React.ReactElement;
+function BaseNestedMenu<Option, GroupedOption extends MenuItemGrouped<Option>, Value = Option>(
+  props: NestedMenuGroupedProps<Option, GroupedOption, Value>
+): React.ReactElement;
 function BaseNestedMenu<Option extends MenuItemMultilevel<Option>, Value = Option>(
   props: NestedMenuMultilevelProps<Option, Value>
 ): React.ReactElement;
-function BaseNestedMenu<Option extends MenuItemWithID & MenuItemGrouped<Option>, Value = Option>(
-  props: NestedMenuWithIDGroupedProps<Option, Value>
+function BaseNestedMenu<Option extends MenuItemWithID, GroupedOption extends MenuItemGrouped<Option>, Value = Option>(
+  props: NestedMenuWithIDGroupedProps<Option, GroupedOption, Value>
 ): React.ReactElement;
 function BaseNestedMenu<Option extends MenuItemWithID & MenuItemMultilevel<Option>, Value = Option>(
   props: NestedMenuWithIDMultilevelProps<Option, Value>

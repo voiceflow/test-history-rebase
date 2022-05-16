@@ -26,9 +26,19 @@ interface BaseMenuOptionsProps extends SharedNestedMenuProps {
   onChildFocusItemIndex: (index: number) => void;
 }
 
-interface GenericMenuOptionsProps<Option, Value> {
+interface BaseGenericMenuOptionsProps<Option, Value> {
   options: Array<Option | UIOnlyMenuItemOption>;
   onSelect: (value: Value, optionsPath: number[], updatePosition: VoidFunction) => void;
+}
+
+interface GenericMenuOptionsProps<Option, Value> extends BaseGenericMenuOptionsProps<Option, Value> {
+  getOptionLabel: GetOptionLabel<Value>;
+  getOptionValue: GetOptionValue<Option, Value>;
+  renderOptionLabel: RenderOptionLabel<Option, Value>;
+}
+
+interface GenericGroupedMenuOptionsProps<Option, GroupedOption extends MenuItemGrouped<Option>, Value>
+  extends BaseGenericMenuOptionsProps<GroupedOption, Value> {
   getOptionLabel: GetOptionLabel<Value>;
   getOptionValue: GetOptionValue<Option, Value>;
   renderOptionLabel: RenderOptionLabel<Option, Value>;
@@ -64,18 +74,18 @@ export interface MenuOptionsWithIDMultilevelProps<Option extends MenuItemWithID 
   isMultiLevel: true;
 }
 
-export interface MenuOptionsGroupedProps<Option extends MenuItemGrouped<Option>, Value>
+export interface MenuOptionsGroupedProps<Option, GroupedOption extends MenuItemGrouped<Option>, Value>
   extends BaseMenuOptionsProps,
     OptionalProps<Option>,
-    GenericMenuOptionsProps<Option, Value> {
+    GenericGroupedMenuOptionsProps<Option, GroupedOption, Value> {
   grouped: true;
   getOptionKey: GetOptionKey<Option>;
 }
 
-export interface MenuOptionsWithIDGroupedProps<Option extends MenuItemWithID & MenuItemGrouped<Option>, Value>
+export interface MenuOptionsWithIDGroupedProps<Option extends MenuItemWithID, GroupedOption extends MenuItemGrouped<Option>, Value>
   extends BaseMenuOptionsProps,
     OptionalProps<Option>,
-    GenericMenuOptionsProps<Option, Value> {
+    GenericGroupedMenuOptionsProps<Option, GroupedOption, Value> {
   grouped: true;
 }
 

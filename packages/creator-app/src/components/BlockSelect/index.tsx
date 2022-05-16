@@ -66,18 +66,18 @@ const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, .
   };
 
   return (
-    <Select
+    <Select<BlockOption, TopicBlockOption, string>
       searchable
       placeholder="Select a block"
       {...props}
       value={value?.stepID || startNodeID}
+      grouped
       options={options}
       onSelect={handleSelect}
       getOptionKey={(option) => option.id}
       getOptionValue={(option) => option?.id}
       getOptionLabel={(value) => value && optionsMap[value]?.label}
       renderOptionLabel={(option) => <FlexApart fullWidth>{option.label}</FlexApart>}
-      grouped
     />
   );
 };

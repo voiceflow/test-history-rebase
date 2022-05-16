@@ -7,14 +7,17 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import client from '@/client';
 import { DEFAULT_PROJECT_NAME } from '@/pages/NewProjectV2/constants';
 
-const getDefaultAlexaVoice = (locale: AlexaConstants.Locale) => {
-  return AlexaConstants.DEFAULT_LOCALE_VOICE_MAP[locale] || null;
-};
+const getDefaultAlexaVoice = (locale: AlexaConstants.Locale) => AlexaConstants.DEFAULT_LOCALE_VOICE_MAP[locale] || null;
 
-const getDefaultGoogleVoice = (language?: GoogleConstants.Language, locale?: GoogleConstants.Locale) => {
-  const languageCode = language || (locale && Object.entries(GoogleConstants.LanguageToLocale).find(([_key, value]) => value.includes(locale))?.[0]);
+const getDefaultGoogleVoice = (language?: GoogleConstants.Language, locale?: GoogleConstants.Locale): Nullable<GoogleConstants.Voice> => {
+  let languageCode: Nullable<GoogleConstants.Language> = language ?? null;
 
-  return GoogleConstants.DEFAULT_LANGUAGE_VOICE_MAP[languageCode as GoogleConstants.Language] || null;
+  if (!languageCode && locale) {
+    languageCode = (Object.values(GoogleConstants.LanguageToLocale).find((value) => value.includes(locale))?.[0] ??
+      null) as GoogleConstants.Language | null;
+  }
+
+  return (languageCode && (GoogleConstants.DEFAULT_LANGUAGE_VOICE_MAP[languageCode] as GoogleConstants.Voice)) || null;
 };
 
 export const updatePlatformMetaCalls = () => {
@@ -23,16 +26,17 @@ export const updatePlatformMetaCalls = () => {
 
     await Promise.all([
       client.platform.alexa.version.updatePublishing(versionID, {
-        invocationName,
-        invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
         locales,
+        invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
+        invocationName,
       }),
       defaultVoice && client.platform.alexa.version.updateSettings(versionID!, { defaultVoice }),
     ]);
   };
 
   const updateGoogleMeta = async (versionID: string, googleLanguage: GoogleConstants.Language, invocationName?: string) => {
-    const defaultVoice = getDefaultGoogleVoice(googleLanguage) as Nullable<GoogleConstants.Voice>;
+    const defaultVoice = getDefaultGoogleVoice(googleLanguage);
+
     await Promise.all([
       client.platform.google.version.updatePublishing(versionID, {
         locales: GoogleConstants.LanguageToLocale[googleLanguage],
@@ -57,14 +61,14 @@ export const updatePlatformMetaCalls = () => {
 
     await client.platform.general.version.updateSettings(versionID, {
       locales: [generalLocale],
-      defaultVoice: defaultVoice ? (defaultVoice as unknown as Nullable<GoogleConstants.Voice>) : undefined,
+      defaultVoice: defaultVoice ? (defaultVoice as unknown as VoiceflowConstants.Voice) : undefined,
     });
   };
 
   return {
     updateAlexaMeta,
     updateGoogleMeta,
-    updateDialogFlowMeta,
     updateGeneralMeta,
+    updateDialogFlowMeta,
   };
 };

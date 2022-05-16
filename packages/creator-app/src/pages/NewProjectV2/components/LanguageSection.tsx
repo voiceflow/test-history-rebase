@@ -6,27 +6,29 @@ import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 
-import { getPlatformOrProjectTypeMeta } from '../../constants';
-import LanguageSelect from '../Select/LanguageSelect';
+import { PLATFORM_PROJECT_META_MAP } from '../constants';
+import { SupportedPlatformProjectType, SupportedPlatformType } from '../types';
+import LanguageSelect from './LanguageSelect';
 
 interface LanguageSectionProps {
-  language?: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale;
-  setLanguage: (value: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale | undefined) => void;
-  channel?: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType;
-  nlu?: VoiceflowConstants.PlatformType;
+  nlu: SupportedPlatformType | null;
+  channel: SupportedPlatformProjectType | null;
+  language: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale | null;
+  setLanguage: (value: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale | null) => void;
   alexaLocales: AlexaConstants.Locale[];
   setAlexaLocales: (locales: AlexaConstants.Locale[]) => void;
 }
 
 const LanguageSection: React.FC<LanguageSectionProps> = (props) => {
-  const headerText = props.channel ? getPlatformOrProjectTypeMeta[props.channel]?.localesText : 'Language';
+  const headerText = props.channel ? PLATFORM_PROJECT_META_MAP[props.channel]?.localesText : 'Language';
+
   return (
     <Section
       header={headerText}
       variant={SectionVariant.FORM}
+      dividers={false}
       customHeaderStyling={{ paddingTop: '24px' }}
       customContentStyling={{ paddingBottom: '32px' }}
-      dividers={false}
     >
       <LanguageSelect {...props} />
     </Section>

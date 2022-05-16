@@ -7,8 +7,11 @@ import { ModalType } from '@/constants';
 import { useModals, useTheme } from '@/hooks';
 import { ClassName, Identifier } from '@/styles/constants';
 
-import { Container, Header, Root } from './components';
+import { Body, Container, Footer, Header, Root } from './components';
 
+/**
+ * @deprecated
+ */
 export { Body as ModalBody, Footer as ModalFooter, Header as ModalHeader } from './components';
 
 export interface UncontrolledModalProps {
@@ -121,4 +124,10 @@ const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id,
   return !isInStack ? null : <UncontrolledModal {...props} id={id} ref={ref} fade={fade} onClose={close} isOpened={isOpened} />;
 };
 
-export default React.forwardRef<HTMLDivElement, React.PropsWithChildren<ModalProps>>(Modal);
+export default Object.assign(React.forwardRef<HTMLDivElement, React.PropsWithChildren<ModalProps>>(Modal), {
+  Root,
+  Body,
+  Footer,
+  Header,
+  Container,
+});

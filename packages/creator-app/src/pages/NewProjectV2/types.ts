@@ -8,17 +8,17 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export enum PlatformTypeUpcoming {
   WHATSAPP = 'whatsapp',
-  FB_MESSENGER = 'fb_messenger',
   TWILIO_IVR = 'twilio_ivr',
   TWILIO_SMS = 'twilio_SMS',
+  FB_MESSENGER = 'fb_messenger',
   DIALOGFLOW_CX = 'dialogflow_cx',
 }
 
 export enum FileExtension {
   ZIP = '.zip',
   CSV = '.csv',
-  JSON = '.json',
   XML = '.xml',
+  JSON = '.json',
 }
 
 export interface ImportMeta {
@@ -26,17 +26,29 @@ export interface ImportMeta {
   fileExtensions: FileExtension[];
 }
 
-export interface PlatformAndProjectTypeMeta {
+export type DeprecatedPlatforms =
+  | VoiceflowConstants.PlatformType.IVR
+  | VoiceflowConstants.PlatformType.CHATBOT
+  | VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT
+  | VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE
+  | VoiceflowConstants.PlatformType.GENERAL
+  | VoiceflowConstants.PlatformType.MOBILE_APP;
+
+export type SupportedPlatformType = Exclude<VoiceflowConstants.PlatformType, DeprecatedPlatforms>;
+export type SupportedPlatformProjectType = SupportedPlatformType | VoiceflowConstants.ProjectType;
+export type PlatformAndProjectMetaType = SupportedPlatformProjectType | PlatformTypeUpcoming;
+
+export interface PlatformAndProjectMeta {
+  type: PlatformAndProjectMetaType;
+  icon?: Icon;
   name: string;
   tooltip?: TippyTooltipProps;
-  invocationDescription?: string;
-  localesText?: string;
-  disabled: boolean;
-  type?: VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType | PlatformTypeUpcoming;
-  languageSelectProps?: LanguageSelectProps;
-  icon?: Icon;
+  disabled?: boolean;
   iconColor?: string;
   importMeta?: ImportMeta;
+  localesText?: string;
+  languageSelectProps?: LanguageSelectProps;
+  invocationDescription?: string;
 }
 
 export type AnyLanguage = GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale;
@@ -48,7 +60,7 @@ export interface LanguageSelectOption {
 }
 
 export interface LanguageSelectProps {
-  options: (LanguageSelectOption | UIOnlyMenuItemOption)[];
+  options: Array<LanguageSelectOption | UIOnlyMenuItemOption>;
   placeholder: string;
   getOptionKey: (option: LanguageSelectOption) => string;
   getOptionValue: (option: Nullish<LanguageSelectOption>) => string | VoiceflowConstants.Locale;
@@ -56,12 +68,7 @@ export interface LanguageSelectProps {
   renderOptionLabel: (option: LanguageSelectOption) => string;
 }
 
-export interface Section {
-  label: string;
-  options: (PlatformAndProjectTypeMeta | undefined)[];
-}
-
 export interface ImportModel {
-  intents: BaseModels.Intent[];
   slots: BaseModels.Slot[];
+  intents: BaseModels.Intent[];
 }

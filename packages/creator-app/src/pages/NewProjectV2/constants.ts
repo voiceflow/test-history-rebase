@@ -2,7 +2,7 @@ import { AlexaConstants } from '@voiceflow/alexa-types';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import { Utils } from '@voiceflow/realtime-sdk';
-import { createUIOnlyMenuItemOption } from '@voiceflow/ui';
+import { createUIOnlyMenuItemOption, MenuItemGrouped } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS, getDefaultPlatformLanguageLabel } from '@/constants/platforms';
@@ -10,24 +10,27 @@ import { FORMATTED_DIALOGFLOW_LOCALES_LABELS, getPreferredDialogFlowLocales } fr
 import { FORMATTED_GOOGLE_LOCALES_LABELS, getPreferredGoogleLocales } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 
-import getSelectTooltip from './components/SelectTooltip';
-import { AnyLanguage, AnyLocale, FileExtension, LanguageSelectProps, PlatformAndProjectTypeMeta, PlatformTypeUpcoming, Section } from './types';
+import getSelectTooltip from './components/getSelectTooltip';
+import {
+  AnyLanguage,
+  AnyLocale,
+  FileExtension,
+  LanguageSelectProps,
+  PlatformAndProjectMeta,
+  PlatformTypeUpcoming,
+  SupportedPlatformProjectType,
+} from './types';
 
 export const DEFAULT_PROJECT_NAME = 'Untitled';
 
-export const getFileExtensionLabel: Record<FileExtension, string> = {
+export const FILE_EXTENSION_LABEL_MAP: Record<FileExtension, string> = {
   [FileExtension.CSV]: 'CSV',
-  [FileExtension.JSON]: 'JSON',
   [FileExtension.ZIP]: 'ZIP',
   [FileExtension.XML]: 'XML',
+  [FileExtension.JSON]: 'JSON',
 };
 
-export const ChannelSectionErrorMessage = 'Channel selection is required';
-export const NLUSectionErrorMessage =
-  'NLU selection is required. If you don’t already use one of these providers we recommend selecting the Voiceflow option.';
-export const InvocationSectionErrorMessage = 'Invocation name is required';
-
-export const defaultLanguageSelectProps: LanguageSelectProps = {
+export const DEFAULT_LANGUAGE_SELECT_PROPS: LanguageSelectProps = {
   options: [GENERAL_LOCALES_OPTIONS[0], createUIOnlyMenuItemOption('divider', { divider: true }), ...GENERAL_LOCALES_OPTIONS.slice(1)],
   placeholder: 'Select language',
   getOptionKey: (option) => option.value,
@@ -58,225 +61,201 @@ export const getDefaultLanguage = Utils.platform.createPlatformSelector<AnyLangu
   VoiceflowConstants.Locale.EN_US
 );
 
-export const getPlatformOrProjectTypeMeta: Partial<
-  Record<VoiceflowConstants.PlatformType | VoiceflowConstants.ProjectType | PlatformTypeUpcoming, PlatformAndProjectTypeMeta>
-> = {
+export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | PlatformTypeUpcoming, PlatformAndProjectMeta> = {
   [VoiceflowConstants.ProjectType.CHAT]: {
+    type: VoiceflowConstants.ProjectType.CHAT,
     name: 'Chat Assistant',
     tooltip: getSelectTooltip('Chat Assistant', 'Chat assistants can be connected to any channel or custom interface via API.'),
     localesText: 'Language',
-    disabled: false,
-    type: VoiceflowConstants.ProjectType.CHAT,
   },
+
   [VoiceflowConstants.ProjectType.VOICE]: {
+    type: VoiceflowConstants.ProjectType.VOICE,
     name: 'Voice Assistant',
     tooltip: getSelectTooltip('Voice Assistant', 'Voice assistants can be connected to any channel or custom interface via API.'),
     localesText: 'Language',
-    disabled: false,
-    type: VoiceflowConstants.ProjectType.VOICE,
   },
+
   [VoiceflowConstants.PlatformType.ALEXA]: {
-    name: 'Amazon Alexa',
-    tooltip: getSelectTooltip('Amazon Alexa', 'Design, prototype and launch Alexa Skills with our one-click integration.'),
-    invocationDescription: 'The phrase users will use to interact with your Alexa Skill.',
-    localesText: 'Locales',
-    disabled: false,
     type: VoiceflowConstants.PlatformType.ALEXA,
     icon: 'amazonAlexa',
+    name: 'Amazon Alexa',
+    tooltip: getSelectTooltip('Amazon Alexa', 'Design, prototype and launch Alexa Skills with our one-click integration.'),
     iconColor: '#5fcaf4',
+    localesText: 'Locales',
+    invocationDescription: 'The phrase users will use to interact with your Alexa Skill.',
   },
+
   [VoiceflowConstants.PlatformType.GOOGLE]: {
-    name: 'Google Assistant',
-    tooltip: getSelectTooltip('Google Assistant', 'Design, prototype and launch Google Actions with our one-click integration.'),
-    invocationDescription: 'The phrase users will use to interact with your Google Action.',
-    localesText: 'Language',
-    disabled: false,
     type: VoiceflowConstants.PlatformType.GOOGLE,
     icon: 'googleAssistant',
+    name: 'Google Assistant',
+    tooltip: getSelectTooltip('Google Assistant', 'Design, prototype and launch Google Actions with our one-click integration.'),
+    localesText: 'Language',
     languageSelectProps: {
+      ...DEFAULT_LANGUAGE_SELECT_PROPS,
       options: getPreferredGoogleLocales(),
-      placeholder: 'Select language',
-      getOptionKey: (option) => option.value,
       getOptionValue: (option) => option?.value || '',
       getOptionLabel: (value) => (value && FORMATTED_GOOGLE_LOCALES_LABELS[value]) || '',
-      renderOptionLabel: (option) => option.name,
     },
+    invocationDescription: 'The phrase users will use to interact with your Google Action.',
   },
+
   [VoiceflowConstants.PlatformType.VOICEFLOW]: {
+    type: VoiceflowConstants.PlatformType.VOICEFLOW,
+    icon: 'voiceflowV',
     name: 'Voiceflow (default)',
     tooltip: getSelectTooltip(
       'Voiceflow NLU',
       "If you don't already use one of these NLU providers, we recommend this option for the simplest experience."
     ),
-    localesText: 'Language',
-    disabled: false,
-    type: VoiceflowConstants.PlatformType.VOICEFLOW,
-    icon: 'voiceflowV',
     iconColor: '#132144',
-    importMeta: {
-      name: 'Voiceflow',
-      fileExtensions: [FileExtension.CSV],
-    },
-  },
-  [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
-    name: 'Dialogflow ES',
-    tooltip: getSelectTooltip('Dialogflow ES', 'Import and export/upload NLU models for Dialogflow agents.'),
+    importMeta: { name: 'Voiceflow', fileExtensions: [FileExtension.CSV] },
     localesText: 'Language',
-    disabled: false,
+  },
+
+  [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
     type: VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
     icon: 'dialogflow',
+    name: 'Dialogflow ES',
+    tooltip: getSelectTooltip('Dialogflow ES', 'Import and export/upload NLU models for Dialogflow agents.'),
+    importMeta: { name: 'Dialogflow ES', fileExtensions: [FileExtension.ZIP] },
+    localesText: 'Language',
     languageSelectProps: {
+      ...DEFAULT_LANGUAGE_SELECT_PROPS,
       options: getPreferredDialogFlowLocales(),
-      placeholder: 'Select language',
-      getOptionKey: (option) => option.value,
       getOptionValue: (option) => option?.value || '',
       getOptionLabel: (value) => (value && FORMATTED_DIALOGFLOW_LOCALES_LABELS[value]) || '',
-      renderOptionLabel: (option) => option.name,
-    },
-    importMeta: {
-      name: 'Dialogflow ES',
-      fileExtensions: [FileExtension.ZIP],
     },
   },
+
   [VoiceflowConstants.PlatformType.LUIS]: {
+    type: VoiceflowConstants.PlatformType.LUIS,
+    icon: 'luis',
     name: 'Microsoft Luis',
     tooltip: getSelectTooltip('Microsoft Luis', 'Import and export NLU models for Microsoft Luis.'),
+    importMeta: { name: 'Luis', fileExtensions: [FileExtension.JSON] },
     localesText: 'Language',
-    disabled: false,
-    icon: 'luis',
-    type: VoiceflowConstants.PlatformType.LUIS,
-    importMeta: {
-      name: 'Luis',
-      fileExtensions: [FileExtension.JSON],
-    },
   },
+
   [VoiceflowConstants.PlatformType.RASA]: {
     name: 'Rasa',
-    tooltip: getSelectTooltip('Rasa', 'Import and export/upload NLU models for Rasa agents.'),
-    localesText: 'Language',
-    disabled: false,
-    icon: 'rasa',
     type: VoiceflowConstants.PlatformType.RASA,
-    importMeta: {
-      name: 'Rasa',
-      fileExtensions: [FileExtension.ZIP],
-    },
+    icon: 'rasa',
+    tooltip: getSelectTooltip('Rasa', 'Import and export/upload NLU models for Rasa agents.'),
+    importMeta: { name: 'Rasa', fileExtensions: [FileExtension.ZIP] },
+    localesText: 'Language',
   },
+
   [VoiceflowConstants.PlatformType.EINSTEIN]: {
+    type: VoiceflowConstants.PlatformType.EINSTEIN,
+    icon: 'salesforce',
     name: 'Salesforce Einstein',
     tooltip: getSelectTooltip('Salesforce Einstein', 'Import and export/upload NLU models for Einstein.'),
+    importMeta: { name: 'Einstein', fileExtensions: [FileExtension.CSV] },
     localesText: 'Language',
-    type: VoiceflowConstants.PlatformType.EINSTEIN,
-    disabled: false,
-    icon: 'salesforce',
-    importMeta: {
-      name: 'Einstein',
-      fileExtensions: [FileExtension.CSV],
-    },
   },
+
   [VoiceflowConstants.PlatformType.WATSON]: {
+    type: VoiceflowConstants.PlatformType.WATSON,
+    icon: 'watson',
     name: 'IBM Watson',
     tooltip: getSelectTooltip('IBM Watson', 'Import and export/upload NLU models for IBM Watson.'),
+    importMeta: { name: 'Watson', fileExtensions: [FileExtension.JSON] },
     localesText: 'Language',
-    disabled: false,
-    icon: 'watson',
-    importMeta: {
-      name: 'Watson',
-      fileExtensions: [FileExtension.JSON],
-    },
-    type: VoiceflowConstants.PlatformType.WATSON,
   },
+
   [VoiceflowConstants.PlatformType.LEX]: {
+    type: VoiceflowConstants.PlatformType.LEX,
+    icon: 'lex',
     name: 'Amazon Lex',
     tooltip: getSelectTooltip('Amazon Lex', 'Import and export/upload NLU models for Amazon Lex.'),
+    importMeta: { name: 'Lex', fileExtensions: [FileExtension.ZIP] },
     localesText: 'Language',
-    disabled: false,
-    icon: 'lex',
-    importMeta: {
-      name: 'Lex',
-      fileExtensions: [FileExtension.ZIP],
-    },
-    type: VoiceflowConstants.PlatformType.LEX,
   },
+
   [VoiceflowConstants.PlatformType.NUANCE_MIX]: {
+    type: VoiceflowConstants.PlatformType.NUANCE_MIX,
+    icon: 'nuanceMix',
     name: 'Nuance Mix',
     tooltip: getSelectTooltip('Nuance Mix', 'Import and export/upload NLU models for Nuance Mix.'),
+    importMeta: { name: 'Nuance Mix', fileExtensions: [FileExtension.XML] },
     localesText: 'Language',
-    disabled: false,
-    icon: 'nuanceMix',
-    importMeta: {
-      name: 'Nuance Mix',
-      fileExtensions: [FileExtension.XML],
-    },
-    type: VoiceflowConstants.PlatformType.NUANCE_MIX,
   },
+
   /* UPCOMING */
   [PlatformTypeUpcoming.WHATSAPP]: {
-    name: 'Whatsapp',
     type: PlatformTypeUpcoming.WHATSAPP,
+    name: 'Whatsapp',
     disabled: true,
   },
+
   [PlatformTypeUpcoming.FB_MESSENGER]: {
-    name: 'Facebook Messenger',
     type: PlatformTypeUpcoming.FB_MESSENGER,
+    name: 'Facebook Messenger',
     disabled: true,
   },
+
   [PlatformTypeUpcoming.TWILIO_IVR]: {
-    name: 'Twilio IVR',
     type: PlatformTypeUpcoming.TWILIO_IVR,
+    name: 'Twilio IVR',
     disabled: true,
   },
+
   [PlatformTypeUpcoming.TWILIO_SMS]: {
-    name: 'Twilio SMS',
     type: PlatformTypeUpcoming.TWILIO_SMS,
+    name: 'Twilio SMS',
     disabled: true,
   },
+
   [PlatformTypeUpcoming.DIALOGFLOW_CX]: {
-    name: 'Dialogflow CX',
     type: PlatformTypeUpcoming.DIALOGFLOW_CX,
+    name: 'Dialogflow CX',
     disabled: true,
   },
 };
 
-export const CHANNEL_SECTIONS: Section[] = [
+export const CHANNEL_OPTIONS: MenuItemGrouped<PlatformAndProjectMeta>[] = [
   {
+    id: 'custom',
     label: 'Custom',
-    options: [getPlatformOrProjectTypeMeta[VoiceflowConstants.ProjectType.CHAT], getPlatformOrProjectTypeMeta[VoiceflowConstants.ProjectType.VOICE]],
+    options: [PLATFORM_PROJECT_META_MAP[VoiceflowConstants.ProjectType.CHAT], PLATFORM_PROJECT_META_MAP[VoiceflowConstants.ProjectType.VOICE]],
   },
   {
+    id: 'one-click-publish',
     label: 'One-click publish',
-    options: [
-      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.ALEXA],
-      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.GOOGLE],
-    ],
+    options: [PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.ALEXA], PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.GOOGLE]],
   },
   {
+    id: 'coming-soon',
     label: 'Coming Soon',
     options: [
-      getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.WHATSAPP],
-      getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.FB_MESSENGER],
-      getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.TWILIO_IVR],
-      getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.TWILIO_SMS],
+      PLATFORM_PROJECT_META_MAP[PlatformTypeUpcoming.WHATSAPP],
+      PLATFORM_PROJECT_META_MAP[PlatformTypeUpcoming.FB_MESSENGER],
+      PLATFORM_PROJECT_META_MAP[PlatformTypeUpcoming.TWILIO_IVR],
+      PLATFORM_PROJECT_META_MAP[PlatformTypeUpcoming.TWILIO_SMS],
     ],
   },
 ];
 
-export const NLU_SECTIONS: Section[] = [
+export const NLU_OPTIONS: MenuItemGrouped<PlatformAndProjectMeta>[] = [
   {
+    id: 'default',
     label: '',
     options: [
-      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.VOICEFLOW],
-      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.DIALOGFLOW_ES],
-      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.WATSON],
-      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.LUIS],
-      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.RASA],
-      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.EINSTEIN],
-      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.LEX],
-      getPlatformOrProjectTypeMeta[VoiceflowConstants.PlatformType.NUANCE_MIX],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.VOICEFLOW],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.DIALOGFLOW_ES],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.WATSON],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.LUIS],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.RASA],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.EINSTEIN],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.LEX],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.NUANCE_MIX],
     ],
   },
   {
+    id: 'coming-soon',
     label: 'Coming Soon',
-    options: [getPlatformOrProjectTypeMeta[PlatformTypeUpcoming.DIALOGFLOW_CX]],
+    options: [PLATFORM_PROJECT_META_MAP[PlatformTypeUpcoming.DIALOGFLOW_CX]],
   },
 ];

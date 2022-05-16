@@ -21,10 +21,12 @@ import {
 } from './types';
 
 function MenuOptions<Option extends MenuItemWithID, Value = Option>(props: MenuOptionsWithIDProps<Option, Value>): React.ReactElement;
-function MenuOptions<Option extends MenuItemGrouped<Option>, Value = Option>(props: MenuOptionsGroupedProps<Option, Value>): React.ReactElement;
+function MenuOptions<Option, GroupedOption extends MenuItemGrouped<Option>, Value = Option>(
+  props: MenuOptionsGroupedProps<Option, GroupedOption, Value>
+): React.ReactElement;
 function MenuOptions<Option extends MenuItemMultilevel<Option>, Value = Option>(props: MenuOptionsMultilevelProps<Option, Value>): React.ReactElement;
-function MenuOptions<Option extends MenuItemWithID & MenuItemGrouped<Option>, Value = Option>(
-  props: MenuOptionsWithIDGroupedProps<Option, Value>
+function MenuOptions<Option extends MenuItemWithID, GroupedOption extends MenuItemGrouped<Option>, Value = Option>(
+  props: MenuOptionsWithIDGroupedProps<Option, GroupedOption, Value>
 ): React.ReactElement;
 function MenuOptions<Option extends MenuItemWithID & MenuItemMultilevel<Option>, Value = Option>(
   props: MenuOptionsWithIDMultilevelProps<Option, Value>

@@ -1,18 +1,17 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Box, Flex, pickRandomDefaultColor, Text, toast } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import client from '@/client';
 import { styled } from '@/hocs';
 import { upload } from '@/utils/dom';
 
-import { getFileExtensionLabel, getPlatformOrProjectTypeMeta } from '../../constants';
-import { ImportModel } from '../../types';
+import { FILE_EXTENSION_LABEL_MAP, PLATFORM_PROJECT_META_MAP } from '../constants';
+import { ImportModel, SupportedPlatformType } from '../types';
 
 interface ModelImportProps {
-  platform: VoiceflowConstants.PlatformType;
-  importModel?: ImportModel;
+  platform: SupportedPlatformType;
+  importModel: ImportModel | null;
   onImportModel: (importModel: ImportModel) => void;
   isImportLoading: boolean;
   setIsImportLoading: (isLoadingImport: boolean) => void;
@@ -54,16 +53,16 @@ const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, impo
     }
   };
 
-  const fileExtensions = platform && getPlatformOrProjectTypeMeta[platform]?.importMeta?.fileExtensions;
+  const fileExtensions = platform && PLATFORM_PROJECT_META_MAP[platform]?.importMeta?.fileExtensions;
 
   const acceptedFileFormats = fileExtensions?.join(',');
-  const acceptedFileFormatsLabel = fileExtensions?.map((fileExtension) => getFileExtensionLabel[fileExtension]).join(', ');
+  const acceptedFileFormatsLabel = fileExtensions?.map((fileExtension) => FILE_EXTENSION_LABEL_MAP[fileExtension]).join(', ');
 
   const onUploadClick = () => {
     upload(onImport, { accept: acceptedFileFormats, multiple: false });
   };
 
-  const importName = platform && getPlatformOrProjectTypeMeta[platform]?.importMeta?.name;
+  const importName = platform && PLATFORM_PROJECT_META_MAP[platform]?.importMeta?.name;
 
   const textColor = isImportLoading ? 'rgba(98, 119, 140, 0.5)' : 'rgba(98, 119, 140, 1)';
 

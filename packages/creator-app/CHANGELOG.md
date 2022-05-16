@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.718.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.718.0...@voiceflow/creator-app@1.718.1) (2022-05-16)
+
+
+### Bug Fixes
+
+* nlu manager train button (VF-000) ([#5431](https://github.com/voiceflow/creator-app/issues/5431)) ([509830c](https://github.com/voiceflow/creator-app/commit/509830cec9a17bda3a999698fddf81d862fb98e9))
+
+
+
+
+
 # [1.718.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.717.1...@voiceflow/creator-app@1.718.0) (2022-05-16)
 
 

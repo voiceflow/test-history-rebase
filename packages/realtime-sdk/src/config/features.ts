@@ -31,4 +31,6 @@ export enum FeatureFlag {
   CHAT_CARDS_CAROUSEL = 'chat_cards_carousel',
 
   EXPERIMENTAL_SYNC_LINKS = 'experimental_sync_links',
+
+  REVISED_CREATOR_ENTITLEMENTS = 'revised_creator_entitlement',
 }

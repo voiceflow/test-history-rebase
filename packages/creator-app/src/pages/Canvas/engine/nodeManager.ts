@@ -219,7 +219,10 @@ class NodeManager extends EngineConsumer {
     },
 
     reorderSteps: async (blockID: string, stepID: string, index: number): Promise<void> => {
-      await this.dispatch.sync(Realtime.node.reorderSteps({ ...this.engine.context, blockID, stepID, index }));
+      const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: blockID });
+      const finalIndex = stepIDs.indexOf(stepID) < index ? index - 1 : index;
+
+      await this.dispatch.sync(Realtime.node.reorderSteps({ ...this.engine.context, blockID, stepID, index: finalIndex }));
 
       this.redrawNestedLinks(blockID);
       this.redrawNestedThreads(blockID);

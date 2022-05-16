@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.83.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.83.0...@voiceflow/ui@1.83.1) (2022-05-16)
+
+
+### Bug Fixes
+
+* transcripts cleanup (VF-3431) ([#5433](https://github.com/voiceflow/creator-app/issues/5433)) ([d113d10](https://github.com/voiceflow/creator-app/commit/d113d106863cc3d61ef53049b4e103f7786fa611))
+
+
+
+
+
 # [1.83.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.82.0...@voiceflow/ui@1.83.0) (2022-05-16)
 
 

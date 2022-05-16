@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.88.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.88.0...@voiceflow/realtime-sdk@1.88.1) (2022-05-16)
+
+
+### Bug Fixes
+
+* support step isolation and transplanting (VF-3516) ([#5436](https://github.com/voiceflow/creator-app/issues/5436)) ([524c2b8](https://github.com/voiceflow/creator-app/commit/524c2b84a631b1384cfefc88fd54a95d2f279e87)), closes [voiceflow/creator-api#981](https://github.com/voiceflow/creator-api/issues/981)
+
+
+
+
+
 # [1.88.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.87.0...@voiceflow/realtime-sdk@1.88.0) (2022-05-16)
 
 

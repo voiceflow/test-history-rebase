@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.718.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.718.1...@voiceflow/creator-app@1.718.2) (2022-05-16)
+
+
+### Bug Fixes
+
+* react to markup text updates (VF-3517) ([#5438](https://github.com/voiceflow/creator-app/issues/5438)) ([bfbaf96](https://github.com/voiceflow/creator-app/commit/bfbaf960493aa90e9310fcc6dc96edbf2946ece3))
+* support step isolation and transplanting (VF-3516) ([#5436](https://github.com/voiceflow/creator-app/issues/5436)) ([524c2b8](https://github.com/voiceflow/creator-app/commit/524c2b84a631b1384cfefc88fd54a95d2f279e87)), closes [voiceflow/creator-api#981](https://github.com/voiceflow/creator-api/issues/981)
+
+
+
+
+
 ## [1.718.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.718.0...@voiceflow/creator-app@1.718.1) (2022-05-16)
 
 

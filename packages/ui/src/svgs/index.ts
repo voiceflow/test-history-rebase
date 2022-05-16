@@ -29,6 +29,7 @@ export { default as barGraph } from './bar-graph.svg';
 export { default as blocks } from './blocks.svg';
 export { default as bookmark } from './bookmark.svg';
 export { default as bookmark2 } from './bookmark-2.svg';
+export { default as bookmarkActive } from './bookmark-active.svg';
 export { default as builtInIntent } from './built-in-intent.svg';
 export { default as radar } from './radar.svg';
 export { default as toggles } from './toggles.svg';

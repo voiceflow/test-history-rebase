@@ -6,7 +6,6 @@ import { allReportTagsSelector } from '@/ducks/reportTag/selectors';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { SystemTag } from '@/models';
 import { Thunk } from '@/store/types';
-import THEME from '@/styles/theme';
 
 import { addReportTag, patchReportTag, removeReportTag, replaceReportTags } from './actions';
 
@@ -14,14 +13,14 @@ const BUILT_INS = [
   {
     id: SystemTag.SAVED,
     label: 'Saved for later',
-    icon: 'bookmark',
-    iconColor: THEME.colors.red,
+    icon: 'bookmarkActive',
+    iconColor: '#bf395b',
   },
   {
     id: SystemTag.REVIEWED,
     label: 'Reviewed',
     icon: 'checkmarkFilled',
-    iconColor: '#3e9e3e',
+    iconColor: '#449127',
   },
 ];
 

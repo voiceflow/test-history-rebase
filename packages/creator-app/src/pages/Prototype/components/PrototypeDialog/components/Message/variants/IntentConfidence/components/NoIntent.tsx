@@ -129,7 +129,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   ) : (
     <Container utteranceAdded>
       <Flex>
-        <StatusIcon icon="check2" size={14} color="#3e9e3e" />
+        <StatusIcon icon="check2" size={14} color="#449127" />
       </Flex>
       {utteranceAddedCount === 1 ? '1 utterance' : `${utteranceAddedCount ?? ''} utterances`} added to&nbsp;<span>{addedIntent?.name}</span>
       &nbsp;intent

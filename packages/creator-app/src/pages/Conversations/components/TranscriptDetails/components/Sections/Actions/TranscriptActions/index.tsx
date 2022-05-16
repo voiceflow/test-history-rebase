@@ -61,7 +61,7 @@ const TranscriptActions: React.FC = () => {
       <ActionButton
         id={Identifier.MARK_AS_REVIEWED_TRANSCRIPT_BUTTON}
         icon={isReviewed ? 'checkmarkFilled' : 'success'}
-        color={isReviewed ? '#3e9e3e' : THEME.colors.tertiary}
+        color={isReviewed ? '#449127' : THEME.colors.tertiary}
         label="Mark as Reviewed"
         onClick={handleReviewedClick}
         selected={isReviewed}
@@ -70,9 +70,9 @@ const TranscriptActions: React.FC = () => {
       <ActionButton
         id={Identifier.SAVE_FOR_LATER_TRANSCRIPT_BUTTON}
         left={1}
-        icon="bookmark2"
+        icon={isSaved ? 'bookmarkActive' : 'bookmark2'}
         label="Save for Later"
-        color={isSaved ? THEME.colors.red : THEME.colors.tertiary}
+        color={isSaved ? '#bf395b' : THEME.colors.tertiary}
         onClick={handleSavedClick}
         selected={isSaved}
       />

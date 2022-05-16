@@ -4,7 +4,6 @@ import React from 'react';
 import { Sentiment } from '@/models';
 import { SentimentToPNGName } from '@/pages/Conversations/constants';
 import { ClassName } from '@/styles/constants';
-import THEME from '@/styles/theme';
 
 import { Container, EmotionContainer, IconContainer } from './components';
 
@@ -22,13 +21,13 @@ const StatusIcons: React.FC<StatusIconsProps> = ({ id, sentiment, reviewed = fal
     <Container className={`${ClassName.TRANSCRIPT_ITEM_STATUSES}-${id}`}>
       {saved && (
         <IconContainer className={ClassName.SAVED_FOR_LATER_CONTAINER}>
-          <SvgIcon icon="bookmark" color={THEME.colors.red} />
+          <SvgIcon icon="bookmarkActive" color="#bf395b" />
         </IconContainer>
       )}
 
       {reviewed && (
         <IconContainer className={ClassName.MARK_AS_REVIEWED_CONTAINER}>
-          <SvgIcon icon="checkmarkFilled" color="#3e9e3e" />
+          <SvgIcon icon="checkmarkFilled" color="#449127" />
         </IconContainer>
       )}
 

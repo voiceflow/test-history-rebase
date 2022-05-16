@@ -61,12 +61,9 @@ const TranscriptDialog: React.FC = () => {
   const messageFilter = React.useCallback(
     (messages: Message[]) => {
       return messages.filter((message: Message) => {
-        if (message.type !== MessageType.DEBUG) return true;
-
-        if (message.message.startsWith('matched intent') && !showIntentConfidence) return false;
-        if (!showDebugs) return false;
-
-        return true;
+        if (showDebugs || message.type !== MessageType.DEBUG) return true;
+        if (message.message.startsWith('matched intent') && !showDebugs && showIntentConfidence) return true;
+        return false;
       });
     },
     [showDebugs, showIntentConfidence]

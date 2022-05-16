@@ -140,7 +140,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
 
           return !tag ? null : (
             <TagWrapper key={tagID} onClick={swallowEvent()}>
-              <Box mr={6}>
+              <Box mr={8}>
                 {isSentimentTag(tagID) ? (
                   <img
                     style={{ position: 'relative', bottom: '1px' }}
@@ -155,7 +155,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
                 )}
               </Box>
 
-              <SvgIcon size={9} icon="closeSmall" clickable onClick={onRemove(tagID)} />
+              <SvgIcon size={9} icon="closeSmall" clickable onClick={onRemove(tagID)} color="#8da2b5" mt={2} />
             </TagWrapper>
           );
         })

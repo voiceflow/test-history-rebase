@@ -73,7 +73,7 @@ export const LetterContainer = styled.div<{ color: string; backgroundColor: stri
   height: 52px;
   color: ${({ color }) => color};
   font-weight: 600;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 48px;
   margin-left: -12px;
   z-index: 2;
@@ -82,6 +82,6 @@ export const LetterContainer = styled.div<{ color: string; backgroundColor: stri
   background-color: ${({ backgroundColor }) => backgroundColor};
   background-position: center;
   background-size: contain;
-  border: 2px solid white;
+  border: 2px solid #fcfcfc;
   border-radius: 100%;
 `;

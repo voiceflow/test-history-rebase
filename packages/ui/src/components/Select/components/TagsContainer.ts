@@ -1,7 +1,7 @@
 import { css, styled } from '@ui/styles';
 
 const TagsContainer = styled.div<{ isActive?: boolean; hasTags: boolean }>`
-  border-radius: 5px;
+  border-radius: 6px;
   background: white;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
   border: solid 1px #d4d9e6;
@@ -12,7 +12,7 @@ const TagsContainer = styled.div<{ isActive?: boolean; hasTags: boolean }>`
   overflow-y: auto;
   cursor: text;
   min-height: 42px;
-  padding: 7px 16px;
+  padding: ${({ hasTags }) => (hasTags ? '7px 8px' : '7px 12px')};
   padding-top: 4px;
 
   ${({ isActive }) =>

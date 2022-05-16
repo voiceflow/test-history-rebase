@@ -74,7 +74,7 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
 ) => {
   const [forceUpdate, contextKey] = useForceUpdate();
 
-  const cache = useCache({ onBlur, onChange });
+  const cache = useCache({ onBlur, onChange }, { onBlur, onChange });
   const decorate = useEditorDecorate(editor);
   const onKeyDown = useEditorHotkeys(editor, editableProps.onKeyDown);
 

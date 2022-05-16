@@ -1,5 +1,5 @@
 import { parseId } from '@logux/core';
-import { Utils } from '@voiceflow/common';
+import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _uniqBy from 'lodash/uniqBy';
 import * as Normal from 'normal-store';
@@ -64,9 +64,23 @@ export const activeDiagramLocksSelector = createSelector([awarenessLocksSelector
   !diagramID ? {} : locks[diagramID] ?? {}
 );
 
+const isLockedByOther = (creatorID: Nullish<number>, clientNodeID: Nullish<string>) => {
+  if (!clientNodeID) return false;
+
+  const { userId } = parseId(clientNodeID);
+
+  if (!userId || !creatorID) return true;
+
+  return Number(userId) !== creatorID;
+};
+
 export const isActiveDiagramEntityLockedByIDAndTypeSelector = createSelector(
-  [activeDiagramLocksSelector, entityIDParamSelector, lockTypeParamSelector],
-  (diagramLocks, entityID, lockType) => diagramLocks[lockType]?.[entityID] != null
+  [Account.userIDSelector, activeDiagramLocksSelector, entityIDParamSelector, lockTypeParamSelector],
+  (creatorID, diagramLocks, entityID, lockType) => {
+    const clientNodeID = diagramLocks[lockType]?.[entityID];
+
+    return isLockedByOther(creatorID, clientNodeID);
+  }
 );
 
 export const activeDiagramDeletionLockedNodesSelector = createSelector(
@@ -77,15 +91,7 @@ export const activeDiagramDeletionLockedNodesSelector = createSelector(
         ...diagramLocks[Realtime.diagram.awareness.LockEntityType.NODE_EDIT],
         ...diagramLocks[Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT],
       },
-      (_, clientNodeID) => {
-        if (!clientNodeID) return false;
-
-        const { userId } = parseId(clientNodeID);
-
-        if (!userId) return true;
-
-        return Number(userId) !== creatorID;
-      }
+      (_, clientNodeID) => isLockedByOther(creatorID, clientNodeID)
     )
 );
 
@@ -100,7 +106,6 @@ const activeDiagramLockOwnerClientNodeIDCreatorIDSelector = createSelector(
     if (!clientNodeID) return [null, null];
 
     const { userId } = parseId(clientNodeID);
-
     if (!userId) return [null, null];
 
     return [clientNodeID, Number(userId)];

@@ -1,11 +1,11 @@
 import composeRefs from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { useCache, useDidUpdateEffect } from '@voiceflow/ui';
+import { useCache, useDidUpdateEffect, useTeardown } from '@voiceflow/ui';
 import React from 'react';
 import { Descendant, Node, Transforms } from 'slate';
 
 import SlateEditable, { SlateEditorAPI } from '@/components/SlateEditable';
-import { useDebouncedCallback } from '@/hooks';
+import { useDebouncedCallback, useForceUpdate } from '@/hooks';
 import { useBlockAPI } from '@/pages/Canvas/components/Block/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
@@ -17,12 +17,15 @@ import { addDraggableAttr, findAllDraggableParents, removeDraggableAttr } from '
 
 type MarkupTextNodeProps = ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Text>;
 
+const UPDATE_CONTENT_DEBOUNCE = 300;
+
 const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }, ref) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
 
   const isNew = React.useMemo(() => SlateEditorAPI.isNewState(data.content), []);
 
+  const [forceUpdate, renderKey] = useForceUpdate();
   const [value, setValue] = React.useState<Descendant[]>(data.content);
   const [editable, setEditable] = React.useState(isNew);
   const [isInitialWidthApplied, setIsInitialWidthApplied] = React.useState(false);
@@ -32,7 +35,11 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
 
   const cache = useCache({ value, skipEditableFocus: false, doubleClicked: false }, { value });
 
-  const updateContentDebounced = useDebouncedCallback(300, () => engine.node.updateData(nodeEntity.nodeID, { content: cache.current.value }), []);
+  const updateContentDebounced = useDebouncedCallback(
+    UPDATE_CONTENT_DEBOUNCE,
+    (content: Descendant[]) => engine.node.updateData(nodeEntity.nodeID, { content }),
+    []
+  );
 
   const { isFocused, isActivated } = nodeEntity.useState((e) => ({
     isFocused: e.isFocused,
@@ -53,7 +60,10 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
   const onMouseUp = React.useCallback((event: React.MouseEvent) => {
     // For panning the canvas
     const middleMouseClick = event.button === 1;
-    !middleMouseClick && event.preventDefault();
+
+    if (!middleMouseClick) {
+      event.preventDefault();
+    }
   }, []);
 
   const onDragStart = React.useCallback(
@@ -64,6 +74,12 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
     },
     [editor]
   );
+
+  const onChange = React.useCallback((value: Descendant[]) => {
+    if (value !== cache.current.value) {
+      setValue(value);
+    }
+  }, []);
 
   const onFocus = React.useCallback(() => {
     setEditable(true);
@@ -101,10 +117,9 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
       setIsInitialWidthApplied(true);
 
       await engine.node.api(nodeEntity.nodeID)?.instance?.applyTransformations?.();
-      await engine.node.updateData(nodeEntity.nodeID, { content: cache.current.value });
-    } else {
-      await engine.node.updateData(nodeEntity.nodeID, { content: cache.current.value });
     }
+
+    await updateContentDebounced(cache.current.value);
 
     addDraggableAttr(draggableParentsCache.current);
     draggableParentsCache.current = [];
@@ -133,25 +148,19 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
     }
   }, [isFocused]);
 
+  const isFakeSelectionApplied = editor.isFakeSelectionApplied();
   useDidUpdateEffect(() => {
-    if (editor.isFakeSelectionApplied() && engine.transformation.isTarget(nodeEntity.nodeID)) {
+    if (isFakeSelectionApplied && engine.transformation.isTarget(nodeEntity.nodeID)) {
       engine.transformation.reset();
     }
-  }, [editor.isFakeSelectionApplied()]);
+  }, [isFakeSelectionApplied]);
 
   useDidUpdateEffect(() => {
-    const isLocked = engine.isNodeEditLocked(nodeEntity.nodeID);
-
-    if (!isFocused || isLocked) {
+    if (!isFocused) {
       setValue(data.content);
+      forceUpdate();
     }
   }, [data.content]);
-
-  useDidUpdateEffect(() => {
-    if (value !== data.content && !SlateEditorAPI.isFocused(editor)) {
-      updateContentDebounced();
-    }
-  }, [value]);
 
   useDidUpdateEffect(() => {
     if (editable && !cache.current.skipEditableFocus) {
@@ -192,6 +201,10 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
     }
   }, [value]);
 
+  useTeardown(() => {
+    updateContentDebounced(cache.current.value);
+  });
+
   return (
     <Container
       ref={composeRefs(containerRef, blockAPI.ref)}
@@ -210,11 +223,12 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
       <Border scale={data.scale} position={BorderPosition.LEFT} />
 
       <SlateEditable
+        key={renderKey}
         value={value}
         editor={editor}
         onBlur={onBlur}
         onFocus={onFocus}
-        onChange={setValue}
+        onChange={onChange}
         className={SLATE_EDITOR_CLASS_NAME}
         placeholder="Type something"
       />

@@ -189,8 +189,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   isNodeMovementLocked = (nodeID: string) => this.select(RealtimeDuck.isNodeMovementLockedSelector)(nodeID);
 
-  isNodeEditLocked = (nodeID: string) => this.select(RealtimeDuck.isNodeEditLockedSelector)(nodeID);
-
   getLockOwner = (nodeID: string) => this.select(RealtimeDuck.editLockOwnerSelector)(nodeID);
 
   isNodeFocused = () => this.select(Creator.hasFocusedNode);

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.83.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.82.0...@voiceflow/ui@1.83.0) (2022-05-16)
+
+
+### Features
+
+* refactor project create modal (VF-3164) ([#5428](https://github.com/voiceflow/creator-app/issues/5428)) ([9afa6af](https://github.com/voiceflow/creator-app/commit/9afa6af850a3311ecfc87a8e7596fcb91c56cec9))
+
+
+
+
+
 # [1.82.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.81.0...@voiceflow/ui@1.82.0) (2022-05-10)
 
 

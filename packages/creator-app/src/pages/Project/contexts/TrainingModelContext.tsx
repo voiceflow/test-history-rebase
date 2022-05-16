@@ -5,12 +5,14 @@ import React from 'react';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
+import { InteractionModelTabType } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { NLPContext } from '@/pages/Project/contexts';
 import { createPlatformSelector } from '@/utils/platform';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
@@ -72,6 +74,8 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
   const validateModel = useDispatch(PrototypeDuck.validateModel);
   const goToInteractionModel = useDispatch(Router.goToInteractionModel);
   const [trackingEvents] = useTrackingEvents();
+  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
+  const goToNLUManagerEntity = useDispatch(Router.goToCurrentNLUManagerEntity);
 
   const versionID = useSelector(Session.activeVersionIDSelector);
   const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
@@ -79,6 +83,14 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
 
   const isTraining = nlp.publishing || !!nlp.job;
   const isTrained = !isModelChanged(trainingState.diff) && (!nlp.job || nlp.job.stage.type === NLPTrainStageType.SUCCESS);
+
+  const handleGoToIMM = (slotID: string) => {
+    if (nluManager.isEnabled) {
+      goToNLUManagerEntity(InteractionModelTabType.SLOTS, slotID);
+    } else {
+      goToInteractionModel(versionID!, diagramID!, 'slots', slotID);
+    }
+  };
 
   const startTraining = async () => {
     trackingEvents.trackProjectTrainAssistant();
@@ -89,11 +101,8 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
         toast.warn(
           <>
             Your slots <b>({invalid.slots.map(({ name }) => name).join(', ')})</b> require custom values in order to be properly recognized during
-            testing. Update the{' '}
-            <ClickableText onClick={() => goToInteractionModel(versionID!, diagramID!, 'slots', invalid.slots[0].key)}>
-              Interaction Model
-            </ClickableText>{' '}
-            and train your assistant again.
+            testing. Update the <ClickableText onClick={() => handleGoToIMM(invalid.slots[0].key)}>Interaction Model</ClickableText> and train your
+            assistant again.
           </>
         );
       }

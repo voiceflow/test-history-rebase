@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, SvgIcon } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, SvgIcon, toast, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { ConfirmProps } from '@/components/ConfirmModal';
@@ -9,6 +9,7 @@ import { useHotKeys, useModals, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
+import { TrainingModelContext } from '@/pages/Project/contexts';
 
 import { Container, SearchInput, TrainButton, TrashButton } from './components';
 
@@ -19,16 +20,22 @@ const getSearchPlaceholder = {
 };
 
 const ContentHeader: React.FC = () => {
-  const [isTraining, setIsTraining] = React.useState(false);
   const { search, setSearch, activeTab, checkedItems, handleItemsDelete, exportItems, isExporting } = React.useContext(NLUManagerContext);
   const allIntents = useSelector(IntentV2.allCustomIntentsSelector);
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const { mergedVariables } = useOrderedVariables();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const canExport = activeTab === InteractionModelTabType.INTENTS;
+  const { startTraining, isTraining, isTrained } = React.useContext(TrainingModelContext);
 
   const focusInput = () => {
     inputRef.current?.focus();
+  };
+
+  const handleTrain = () => {
+    if (!isTraining) {
+      startTraining();
+    }
   };
 
   useHotKeys(Hotkey.FOCUS_NLU_MANAGER_SEARCH, focusInput, { action: 'keyup' });
@@ -62,6 +69,12 @@ const ContentHeader: React.FC = () => {
     });
   };
 
+  useDidUpdateEffect(() => {
+    if (isTrained) {
+      toast.success('Successfully trained model');
+    }
+  }, [isTrained]);
+
   return (
     <Container>
       <Box>
@@ -90,7 +103,7 @@ const ContentHeader: React.FC = () => {
           </Box>
         )}
         <Box display="inline-block" mr={16}>
-          <TrainButton active={isTraining} onClick={() => setIsTraining(!isTraining)} squareRadius variant={ButtonVariant.PRIMARY}>
+          <TrainButton active={isTraining} onClick={handleTrain} squareRadius variant={ButtonVariant.PRIMARY}>
             <Box display="inline-block" position="relative" top={2}>
               <SvgIcon icon="publishSpin" spin={isTraining} size={16} inline mr={16} />
             </Box>

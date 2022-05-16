@@ -120,7 +120,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
         />
       )}
 
-      {!isEntitiesVisible && (
+      {!isEntitiesVisible && !isBuiltIn && (
         <FlexCenter style={{ position: 'sticky', bottom: '20px', zIndex: 1000 }}>
           <FadeDownContainer>
             <JumpToEntitiesBubble onClick={scrollToEntities}>

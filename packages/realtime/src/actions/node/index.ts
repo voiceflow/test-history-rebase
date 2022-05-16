@@ -4,6 +4,7 @@ import AddMarkupControl from './addMarkup';
 import AppendStepControl from './appendStep';
 import DragManyNodesControl from './dragMany';
 import InsertStepControl from './insertStep';
+import IsolateStepControl from './isolateStep';
 import MoveManyNodesControl from './moveMany';
 import RemoveManyNodesControl from './removeMany';
 import ReorderStepsControl from './reorderSteps';
@@ -25,6 +26,7 @@ const buildNodeActionControls = (options: LoguxControlOptions) => ({
   // steps
   appendStepControl: new AppendStepControl(options),
   insertStepControl: new InsertStepControl(options),
+  IsolateStepControl: new IsolateStepControl(options),
   transplantStepsControl: new TransplantStepControl(options),
   reorderStepsControl: new ReorderStepsControl(options),
 });

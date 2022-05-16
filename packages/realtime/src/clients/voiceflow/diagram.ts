@@ -40,14 +40,18 @@ const Client = ({ api }: ExtraOptions) => ({
 
   addManyNodes: (diagramID: string, nodes: BaseModels.BaseDiagramNode[]) => api.post(`/v2/diagrams/${diagramID}/nodes/bulk`, { nodes }),
 
-  isolateStep: (diagramID: string, sourceBlockID: string, block: BaseModels.BaseDiagramNode, stepID: string) =>
-    api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/isolate`, { block, stepID }),
+  isolateStep: (diagramID: string, sourceBlockID: string, block: BaseModels.BaseDiagramNode, stepID: string, removeSource?: boolean) =>
+    api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/isolate`, { block, stepID, removeSource }),
 
   reorderSteps: (diagramID: string, blockID: string, stepID: string, index: number) =>
     api.post(`/v2/diagrams/${diagramID}/nodes/${blockID}/steps/reorder`, { stepID, index }),
 
-  transplantSteps: (diagramID: string, sourceBlockID: string, targetBlockID: string, stepIDs: string[], index: number) =>
-    api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/transplant`, { blockID: targetBlockID, stepIDs, index }),
+  transplantSteps: (
+    diagramID: string,
+    sourceBlockID: string,
+    targetBlockID: string,
+    { stepIDs, index, removeSource }: { stepIDs: string[]; index: number; removeSource?: boolean }
+  ) => api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/transplant`, { blockID: targetBlockID, stepIDs, index, removeSource }),
 
   updateBlockCoords: (diagramID: string, blocks: Record<string, Realtime.Point>) => api.put(`/v2/diagrams/${diagramID}/nodes/coords`, { blocks }),
 

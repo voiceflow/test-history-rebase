@@ -211,8 +211,8 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedThreads(blockID);
     },
 
-    transplantSteps: async (targetBlockID: string, sourceBlockID: string, stepIDs: string[], index: number): Promise<void> => {
-      await this.dispatch.sync(Realtime.node.transplantSteps({ ...this.engine.context, sourceBlockID, targetBlockID, stepIDs, index }));
+    transplantSteps: async (targetBlockID: string, sourceBlockID: string, stepIDs: string[], index: number, removeSource = false): Promise<void> => {
+      await this.dispatch.sync(Realtime.node.transplantSteps({ ...this.engine.context, sourceBlockID, targetBlockID, stepIDs, index, removeSource }));
 
       this.redrawNestedLinks(targetBlockID);
       this.redrawNestedThreads(targetBlockID);
@@ -235,6 +235,7 @@ class NodeManager extends EngineConsumer {
 
       if (this.isAtomicActionsPhase2) {
         const projectMeta = this.engine.getActiveProjectMeta();
+        const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: node.parentNode! });
 
         await this.dispatch.sync(
           Realtime.node.isolateStep({
@@ -247,6 +248,7 @@ class NodeManager extends EngineConsumer {
             blockName,
             projectMeta,
             schemaVersion: this.engine.getActiveSchemaVersion(),
+            removeSource: stepIDs.length === 1,
           })
         );
       } else {
@@ -678,8 +680,11 @@ class NodeManager extends EngineConsumer {
    * relocates a step from one block to another at some index
    */
   private async transplantStep(targetBlockID: string, sourceBlockID: string, stepID: string, index: number): Promise<void> {
+    const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: sourceBlockID });
+    const removeSource = Utils.array.hasIdenticalMembers(stepIDs, [stepID]);
+
     this.log.debug(this.log.pending('transplanting step'), this.log.slug(stepID));
-    await this.internal.transplantSteps(targetBlockID, sourceBlockID, [stepID], index);
+    await this.internal.transplantSteps(targetBlockID, sourceBlockID, [stepID], index, removeSource);
     this.log.info(this.log.success('transplanted step'), this.log.slug(stepID));
   }
 
@@ -690,7 +695,7 @@ class NodeManager extends EngineConsumer {
     const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: sourceBlockID });
 
     this.log.debug(this.log.pending('transplanting block'), this.log.slug(sourceBlockID));
-    await this.internal.transplantSteps(targetBlockID, sourceBlockID, stepIDs, index);
+    await this.internal.transplantSteps(targetBlockID, sourceBlockID, stepIDs, index, true);
     this.log.info(this.log.success('transplanted block'), this.log.slug(sourceBlockID));
   }
 

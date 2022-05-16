@@ -8,14 +8,15 @@ class TransplantSteps extends AbstractDiagramActionControl<Realtime.node.Transpl
   actionCreator = Realtime.node.transplantSteps;
 
   process = async (ctx: Context, { payload }: Action<Realtime.node.TransplantStepsPayload>): Promise<void> => {
-    await this.services.diagram.transplantSteps(
-      ctx.data.creatorID,
-      payload.diagramID,
-      payload.sourceBlockID,
-      payload.targetBlockID,
-      payload.stepIDs,
-      payload.index
-    );
+    await this.services.diagram.transplantSteps({
+      creatorID: ctx.data.creatorID,
+      diagramID: payload.diagramID,
+      sourceBlockID: payload.sourceBlockID,
+      targetBlockID: payload.targetBlockID,
+      stepIDs: payload.stepIDs,
+      index: payload.index,
+      removeSource: payload.removeSource,
+    });
   };
 }
 

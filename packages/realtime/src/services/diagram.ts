@@ -121,16 +121,24 @@ class DiagramService extends AbstractControl {
     await client.diagram.addManyNodes(diagramID, nodes);
   }
 
-  public async isolateStep(
-    creatorID: number,
-    diagramID: string,
-    sourceBlockID: string,
-    block: BaseModels.BaseDiagramNode,
-    stepID: string
-  ): Promise<void> {
+  public async isolateStep({
+    creatorID,
+    diagramID,
+    sourceBlockID,
+    block,
+    stepID,
+    removeSource,
+  }: {
+    creatorID: number;
+    diagramID: string;
+    sourceBlockID: string;
+    block: BaseModels.BaseDiagramNode;
+    stepID: string;
+    removeSource?: boolean;
+  }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.isolateStep(diagramID, sourceBlockID, block, stepID);
+    await client.diagram.isolateStep(diagramID, sourceBlockID, block, stepID, removeSource);
   }
 
   public async reorderSteps(creatorID: number, diagramID: string, blockID: string, stepID: string, index: number): Promise<void> {
@@ -139,18 +147,26 @@ class DiagramService extends AbstractControl {
     await client.diagram.reorderSteps(diagramID, blockID, stepID, index);
   }
 
-  // eslint-disable-next-line max-params
-  public async transplantSteps(
-    creatorID: number,
-    diagramID: string,
-    sourceBlockID: string,
-    targetBlockID: string,
-    stepIDs: string[],
-    index: number
-  ): Promise<void> {
+  public async transplantSteps({
+    creatorID,
+    diagramID,
+    sourceBlockID,
+    targetBlockID,
+    stepIDs,
+    index,
+    removeSource,
+  }: {
+    creatorID: number;
+    diagramID: string;
+    sourceBlockID: string;
+    targetBlockID: string;
+    stepIDs: string[];
+    index: number;
+    removeSource?: boolean;
+  }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.transplantSteps(diagramID, sourceBlockID, targetBlockID, stepIDs, index);
+    await client.diagram.transplantSteps(diagramID, sourceBlockID, targetBlockID, { stepIDs, index, removeSource });
   }
 
   public async updateBlockCoords(creatorID: number, diagramID: string, blocks: Record<string, Realtime.Point>): Promise<void> {

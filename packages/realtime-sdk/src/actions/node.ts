@@ -69,6 +69,7 @@ export interface TransplantStepsPayload extends BaseDiagramPayload {
   targetBlockID: string;
   stepIDs: string[];
   index: number;
+  removeSource?: boolean;
 }
 
 export interface IsolateStepPayload extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload {
@@ -77,6 +78,7 @@ export interface IsolateStepPayload extends BaseBlockPayload, ProjectMetaPayload
   blockCoords: Point;
   blockName: string;
   stepID: string;
+  removeSource?: boolean;
 }
 
 export const appendStep = Utils.protocol.createAction<AppendStepPayload>(nodeStepType('APPEND'));

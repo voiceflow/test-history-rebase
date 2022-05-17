@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.718.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.718.2...@voiceflow/creator-app@1.718.3) (2022-05-17)
+
+
+### Bug Fixes
+
+* account for current index during reorder (VF-3518) ([#5432](https://github.com/voiceflow/creator-app/issues/5432)) ([6cc143c](https://github.com/voiceflow/creator-app/commit/6cc143c0d455cb8e8d8f6c8985efb6101af0832a)), closes [voiceflow/creator-api#980](https://github.com/voiceflow/creator-api/issues/980)
+
+
+
+
+
 ## [1.718.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.718.1...@voiceflow/creator-app@1.718.2) (2022-05-16)
 
 

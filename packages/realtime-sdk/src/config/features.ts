@@ -33,6 +33,4 @@ export enum FeatureFlag {
   EXPERIMENTAL_SYNC_LINKS = 'experimental_sync_links',
 
   REVISED_CREATOR_ENTITLEMENTS = 'revised_creator_entitlement',
-
-  DISABLE_INTEGRATIONS = 'disable_integrations',
 }

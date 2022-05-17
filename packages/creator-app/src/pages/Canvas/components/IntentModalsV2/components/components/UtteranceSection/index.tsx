@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import {
+  Badge,
   Box,
   ClickableText,
   stopPropagation,
@@ -24,6 +25,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useModals, usePermission, useSelector, useSetup } from '@/hooks';
 import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
+import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { getIntentStrengthLevel, validateUtterance } from '@/utils/intent';
 
 export const PREFILLED_UTTERANCE_PARAM = 'utterance';
@@ -37,6 +39,7 @@ interface UtteranceManagerProps {
   intentID?: string;
   isBuiltIn?: boolean;
   prefilledUtterance?: string;
+  withRecommendations?: boolean;
 }
 
 const MAX_VISIBLE_UTTERANCES = 10;
@@ -53,6 +56,7 @@ export interface UtteranceRef {
 const UtteranceManager: React.FC<UtteranceManagerProps> = ({
   prefilledUtterance,
   isBuiltIn,
+  withRecommendations,
   intentID,
   inputs,
   onUpdateUtterances,
@@ -60,6 +64,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
   withBorderTop,
 }) => {
   const { search } = useLocation();
+  const { setShowUtteranceRecos } = React.useContext(NLUManagerContext);
 
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = prefilledUtterance || (queryParams[PREFILLED_UTTERANCE_PARAM] as string | null);
@@ -107,6 +112,8 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
     }
   });
 
+  const openRecommendations = () => setShowUtteranceRecos?.(true);
+
   const { onAddSlot } = useAddSlot();
 
   const addValidation = React.useCallback(
@@ -142,9 +149,20 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
 
       <Section
         suffix={
-          <TippyTooltip title="Bulk Import">
-            <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
-          </TippyTooltip>
+          <Box>
+            {withRecommendations && (
+              <Box mr={16} display="inline-block">
+                <Badge flat onClick={openRecommendations}>
+                  Recommend
+                </Badge>
+              </Box>
+            )}
+            <Box display="inline-flex" position="relative" top={2}>
+              <TippyTooltip title="Bulk Import">
+                <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
+              </TippyTooltip>
+            </Box>
+          </Box>
         }
         customContentStyling={{ marginBottom: intentUtterances.length ? 25 : 8, padding: 0 }}
         header={

@@ -6,6 +6,7 @@ type BadgeProps = {
   slide?: boolean;
   marginLeft?: number;
   color?: string;
+  flat?: boolean;
 };
 
 const Badge = styled.div.attrs((props) => (props.onClick ? { role: 'button' } : {}))<BadgeProps>`
@@ -50,6 +51,17 @@ const Badge = styled.div.attrs((props) => (props.onClick ? { role: 'button' } : 
           background: linear-gradient(180deg, #eff5f6a3 0%, ${backgrounds('greyGreen')} 100%), ${backgrounds('white')};
           box-shadow: 0 1px 0 #d4d9e6;
         `}
+
+  ${({ flat }) =>
+    flat &&
+    css`
+      box-shadow: none;
+      background: white;
+      border-radius: 6px;
+      border: solid 1px #dfe3ed;
+      padding: 3px 8px;
+      line-height: 15px;
+    `}
 `;
 
 export default Badge;

@@ -36,6 +36,8 @@ interface NLUManagerProps {
   exportItems: () => void;
   isExporting: boolean;
   exportItem: (itemID: string, type: InteractionModelTabType, exportType?: NLPProvider | null) => void;
+  setShowUtteranceRecos: (val: boolean) => void;
+  showUtteranceRecos: boolean;
 }
 
 const DefaultState = {
@@ -57,6 +59,8 @@ const DefaultState = {
   exportItems: Utils.functional.noop,
   isExporting: false,
   exportItem: Utils.functional.noop,
+  setShowUtteranceRecos: Utils.functional.noop,
+  showUtteranceRecos: false,
 };
 
 export const NLUManagerContext = React.createContext<NLUManagerProps>(DefaultState);
@@ -72,6 +76,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
   const [checkedItems, setCheckedItems] = React.useState<string[]>([]);
   const [selectedItem, setSelectedItem] = React.useState<AnyNLUItemType | null>(null);
   const [exporting, setIsExporting] = React.useState(false);
+  const [showUtteranceRecos, setShowUtteranceRecos] = React.useState(false);
 
   const activeProjectID = useSelector(activeProjectIDSelector)!;
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
@@ -137,6 +142,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     setSelectedID(null);
     setSearch('');
     setCheckedItems([]);
+    setShowUtteranceRecos(false);
   };
 
   const goToEntity = React.useCallback(
@@ -280,6 +286,8 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     exportItems,
     exportItem,
     isExporting: exporting,
+    setShowUtteranceRecos,
+    showUtteranceRecos,
   });
 
   return <NLUManagerContext.Provider value={api}>{children}</NLUManagerContext.Provider>;

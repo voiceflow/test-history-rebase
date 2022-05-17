@@ -90,6 +90,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
       )}
       {utteranceSectionVisible && (
         <UtteranceSection
+          withRecommendations={rightSlider}
           isBuiltIn={isBuiltIn}
           inputs={inputs}
           onUpdateUtterances={setInputs}

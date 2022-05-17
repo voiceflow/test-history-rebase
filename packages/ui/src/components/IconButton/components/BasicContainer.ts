@@ -9,6 +9,7 @@ export interface BasicContainerProps extends BaseContainerProps {
   activeClick?: boolean;
   transparent?: boolean;
   containerSize?: number;
+  inline?: boolean;
 }
 
 const transparentHoverStyle = css`
@@ -58,6 +59,12 @@ const BasicContainer = styled.div<BasicContainerProps>`
     css`
       opacity: 0.6;
       pointer-events: none !important;
+    `}
+
+  ${({ inline }) =>
+    inline &&
+    css`
+      display: inline-block;
     `}
 `;
 

@@ -2,6 +2,8 @@ import { FlexApart } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
+export const FORM_SLIDER_WIDTH = 460;
+
 export const SliderContainer = styled.div<{ opened: boolean }>`
   ${transition('right')}
   position: absolute;
@@ -10,9 +12,9 @@ export const SliderContainer = styled.div<{ opened: boolean }>`
   box-shadow: rgb(249 249 249) -5px 0px 30px 0px;
   height: 100%;
   top: 0px;
-  right: -460px;
-  width: 450px;
-  z-index: 2;
+  right: -${FORM_SLIDER_WIDTH}px;
+  width: ${FORM_SLIDER_WIDTH}px;
+  z-index: 3;
   height: 100%;
   background: white;
   border-left: 1px solid #dfe3ed;

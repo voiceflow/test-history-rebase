@@ -12,6 +12,7 @@ import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { isBuiltInIntent } from '@/utils/intent';
 
 import { SliderContainer, SliderHeader } from './components';
+import SecondarySlider from './components/SecondarySlider';
 
 const FormSlider: React.FC = () => {
   const { canRenameItem, renameItem, nameChangeTransform } = React.useContext(NLUContext);
@@ -22,58 +23,61 @@ const FormSlider: React.FC = () => {
 
   const showSlider = !!selectedItemId && (activeTab === InteractionModelTabType.SLOTS || activeTab === InteractionModelTabType.INTENTS);
   return (
-    <SliderContainer opened={showSlider && !!selectedItem}>
-      <SliderHeader>
-        {selectedItem && selectedItemId && (
-          <TitleInput
-            fontSize={18}
-            ref={titleRef}
-            minWidth={200}
-            value={headerTitle}
-            onBlur={() => renameItem(headerTitle, selectedItemId, activeTab)}
-            onChangeText={(text) => setHeaderTitle(nameChangeTransform(text, activeTab))}
-            placeholder="Name"
-            onEnterPress={() => renameItem(headerTitle, selectedItemId, activeTab)}
-            disabled={!canRenameItem(selectedItemId!, activeTab)}
-          />
-        )}
-        <BoxFlex justifyContent="center" minWidth={60}>
-          {!!selectedItemId && (
-            <Box mr={16} display="inline-block">
-              <HeaderOptions
-                isBuiltIn={!!selectedItemId && isBuiltInIntent(selectedItemId)}
-                itemType={activeTab}
-                selectedID={selectedItemId}
-                onRename={() => {
-                  titleRef.current?.focus();
-                }}
-              />
-            </Box>
+    <>
+      <SliderContainer opened={showSlider && !!selectedItem}>
+        <SliderHeader>
+          {selectedItem && selectedItemId && (
+            <TitleInput
+              fontSize={18}
+              ref={titleRef}
+              minWidth={200}
+              value={headerTitle}
+              onBlur={() => renameItem(headerTitle, selectedItemId, activeTab)}
+              onChangeText={(text) => setHeaderTitle(nameChangeTransform(text, activeTab))}
+              placeholder="Name"
+              onEnterPress={() => renameItem(headerTitle, selectedItemId, activeTab)}
+              disabled={!canRenameItem(selectedItemId!, activeTab)}
+            />
           )}
-          <IconButton
-            style={{ display: 'inline-block' }}
-            size={16}
-            icon="close"
-            variant={IconButtonVariant.BASIC}
-            onClick={() => setSelectedItemId('')}
-          />
-        </BoxFlex>
-      </SliderHeader>
-      <Box position="relative" overflow="auto">
-        {!!selectedItemId && (
-          <>
-            {activeTab === InteractionModelTabType.INTENTS && <EditIntentForm intentID={selectedItemId} rightSlider />}
-            {activeTab === InteractionModelTabType.SLOTS && (
-              <EditEntityForm
-                colorPopperModifiers={[{ name: 'offset', options: { offset: [-240, -25] } }]}
-                withNameSection={false}
-                slotID={selectedItemId}
-              />
+          <BoxFlex justifyContent="center" minWidth={60}>
+            {!!selectedItemId && (
+              <Box mr={16} display="inline-block">
+                <HeaderOptions
+                  isBuiltIn={!!selectedItemId && isBuiltInIntent(selectedItemId)}
+                  itemType={activeTab}
+                  selectedID={selectedItemId}
+                  onRename={() => {
+                    titleRef.current?.focus();
+                  }}
+                />
+              </Box>
             )}
-          </>
-        )}
-      </Box>
-    </SliderContainer>
+            <IconButton
+              style={{ display: 'inline-block' }}
+              size={16}
+              icon="close"
+              variant={IconButtonVariant.BASIC}
+              onClick={() => setSelectedItemId('')}
+            />
+          </BoxFlex>
+        </SliderHeader>
+        <Box position="relative" overflow="auto">
+          {!!selectedItemId && (
+            <>
+              {activeTab === InteractionModelTabType.INTENTS && <EditIntentForm intentID={selectedItemId} rightSlider />}
+              {activeTab === InteractionModelTabType.SLOTS && (
+                <EditEntityForm
+                  colorPopperModifiers={[{ name: 'offset', options: { offset: [-240, -25] } }]}
+                  withNameSection={false}
+                  slotID={selectedItemId}
+                />
+              )}
+            </>
+          )}
+        </Box>
+      </SliderContainer>
+      <SecondarySlider />
+    </>
   );
 };
 

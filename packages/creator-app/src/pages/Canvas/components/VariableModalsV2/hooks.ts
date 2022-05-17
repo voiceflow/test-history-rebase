@@ -17,10 +17,14 @@ export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) 
 
   const varAlreadyExists = (name: string) => existingVariableNames.includes(name);
 
+  const formatVarName = (name: string) => {
+    return name.trim().replace(/ /g, '_');
+  };
+
   const onCreateSingle = (varName: string) => {
     if (!varAlreadyExists(varName)) {
       try {
-        createGlobalVar(varName, CanvasCreationType.IMM);
+        createGlobalVar(formatVarName(varName), CanvasCreationType.IMM);
       } catch (e) {
         toast.error(e);
       }
@@ -34,7 +38,7 @@ export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) 
       const newVarNames: string[] = [];
 
       allNewVars.forEach((newVar: string) => {
-        const name = newVar.trim().replace(' ', '_');
+        const name = formatVarName(newVar);
         if (!varAlreadyExists(name)) {
           if (!newVarNames.includes(name)) {
             newVarNames.push(name);

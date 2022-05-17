@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.719.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.718.3...@voiceflow/creator-app@1.719.0) (2022-05-17)
+
+
+### Bug Fixes
+
+* add utterance to intent feature (VF-3484) ([#5420](https://github.com/voiceflow/creator-app/issues/5420)) ([e634af0](https://github.com/voiceflow/creator-app/commit/e634af0d4dc51171adfc20422f676942876e30d5))
+
+
+### Features
+
+* utterance reco ui (VF-000) ([#5434](https://github.com/voiceflow/creator-app/issues/5434)) ([a3b787a](https://github.com/voiceflow/creator-app/commit/a3b787ab22e73da13e446b13040cf50a36c2bb2d))
+
+
+
+
+
 ## [1.718.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.718.2...@voiceflow/creator-app@1.718.3) (2022-05-17)
 
 

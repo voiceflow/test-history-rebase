@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.84.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.83.1...@voiceflow/ui@1.84.0) (2022-05-17)
+
+
+### Features
+
+* utterance reco ui (VF-000) ([#5434](https://github.com/voiceflow/creator-app/issues/5434)) ([a3b787a](https://github.com/voiceflow/creator-app/commit/a3b787ab22e73da13e446b13040cf50a36c2bb2d))
+
+
+
+
+
 ## [1.83.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.83.0...@voiceflow/ui@1.83.1) (2022-05-16)
 
 

@@ -5,11 +5,13 @@ import _get from 'lodash/get';
 import React from 'react';
 
 import { DefaultModal } from '@/components/modals';
+import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
+import { useFeature } from '@/hooks/feature';
 import { useToggle } from '@/hooks/toggle';
 
 import { DEFAULT_DATA } from '../../../../constants';
@@ -31,6 +33,8 @@ function AddGoogleUser({
   deleteUser: deleteIntUser,
   versionID,
 }) {
+  const disableIntegrations = useFeature(FeatureFlag.DISABLE_INTEGRATIONS).isEnabled;
+
   const [addUserModalOpened, toggleAddUserModal] = useToggle(false);
   const [deletingUser, setDeletingUser] = React.useState(false);
 
@@ -96,7 +100,7 @@ function AddGoogleUser({
             })}
             onClick={() => selectUser(e)}
           >
-            <div className="close mt-3" onClick={(ev) => deleteUser(ev, e)} />
+            {!disableIntegrations && <div className="close mt-3" onClick={(ev) => deleteUser(ev, e)} />}
             <div className="d-flex flex-row">
               <div className="flex-row align-self-center" />
               <div className="text-left">
@@ -138,7 +142,7 @@ function AddGoogleUser({
         hideFooter={true}
         noPadding={true}
       />
-      <SquareButton onClick={() => addGoogleUser()} text="+ Add User" />
+      {!disableIntegrations && <SquareButton onClick={() => addGoogleUser()} text="+ Add User" />}
     </DropdownHeader>
   );
 }

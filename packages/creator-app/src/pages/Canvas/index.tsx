@@ -16,7 +16,6 @@ import ContextMenu from './components/ContextMenu';
 import DisableOverscrollBehavior from './components/DisableOverscrollBehavior';
 import EditSidebar from './components/EditorSidebar';
 import ExportModelModal from './components/ExportModelModal';
-import EditIntentModal from './components/IntentModalsV2/EditModal';
 import InteractionModelModal from './components/InteractionModelModal';
 import NLUQuickView from './components/NLUQuickView';
 import RealtimeOverlay from './components/RealtimeOverlay';
@@ -92,8 +91,6 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
           </>
         )}
       </Container>
-
-      <EditIntentModal />
 
       {IMM_MODALS_V2.isEnabled ? <NLUQuickView /> : <InteractionModelModal />}
 

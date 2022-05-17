@@ -36,6 +36,7 @@ interface UtteranceManagerProps {
   inputs: Realtime.IntentInput[];
   intentID?: string;
   isBuiltIn?: boolean;
+  prefilledUtterance?: string;
 }
 
 const MAX_VISIBLE_UTTERANCES = 10;
@@ -49,11 +50,19 @@ export interface UtteranceRef {
   getCurrentUtterance: () => Realtime.IntentInput | null;
 }
 
-const UtteranceManager: React.FC<UtteranceManagerProps> = ({ isBuiltIn, intentID, inputs, onUpdateUtterances, autofocus, withBorderTop }) => {
+const UtteranceManager: React.FC<UtteranceManagerProps> = ({
+  prefilledUtterance,
+  isBuiltIn,
+  intentID,
+  inputs,
+  onUpdateUtterances,
+  autofocus,
+  withBorderTop,
+}) => {
   const { search } = useLocation();
 
   const queryParams = queryString.parse(search);
-  const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM] as string | null;
+  const prefilledNewUtterance = prefilledUtterance || (queryParams[PREFILLED_UTTERANCE_PARAM] as string | null);
   const history = useHistory();
   const stickyTopRef = React.useRef<HTMLDivElement>(null);
   const isNotAtTop = useOnScreen(stickyTopRef, { initialState: true });
@@ -164,6 +173,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ isBuiltIn, intentID
         <Box>
           <ListManagerWrapper>
             <ListManager
+              initialValue={{ text: prefilledNewUtterance || '', slots: [] }}
               maxVisibleItems={showAllUtterances ? intentUtterances.length : MAX_VISIBLE_UTTERANCES}
               renderList={({ mapManaged, itemRenderer }) => (
                 <Box pt={!isValidUtterance && !intentUtterances.length ? 8 : 21} px={32}>

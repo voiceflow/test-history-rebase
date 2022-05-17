@@ -10,7 +10,6 @@ import NoIntent from './components/NoIntent';
 
 type IntentConfidenceProps = Omit<MessageProps, 'iconProps'> & {
   message: string;
-  intentConfidence?: number;
   lastUserMessage: UserMessage;
   turnID?: string;
   isTranscript?: boolean;
@@ -19,7 +18,7 @@ type IntentConfidenceProps = Omit<MessageProps, 'iconProps'> & {
   dialogTurnMap?: TurnMap;
 };
 
-const INTENT_CONFIDENCE_THRESHOLD = 30;
+const INTENT_CONFIDENCE_THRESHOLD = 0.3;
 
 const isRepromptMessage = (message: Message) => {
   return message.type === MessageType.PATH && message.path === 'reprompt';
@@ -27,7 +26,6 @@ const isRepromptMessage = (message: Message) => {
 
 export const IntentConfidence: React.FC<IntentConfidenceProps> = ({
   message,
-  intentConfidence,
   lastUserMessage,
   turnID,
   isTranscript,
@@ -36,10 +34,9 @@ export const IntentConfidence: React.FC<IntentConfidenceProps> = ({
   dialogTurnMap,
 }) => {
   const isReprompt = React.useMemo(() => turnID && dialogTurnMap?.get(turnID)?.some(isRepromptMessage), [dialogTurnMap, turnID]);
-
+  const intentConfidence = lastUserMessage?.confidence;
   const intentMessage = `${message.split('**')[1]} - `;
   const confidenceMessage = ` ${message.split('confidence interval')[1].split('_')[1]}`;
-
   const noMatch =
     isReprompt ||
     lastUserMessage.intentName === VoiceflowConstants.IntentName.NONE ||

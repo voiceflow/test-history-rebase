@@ -85,9 +85,10 @@ export const createUserMessage = (
   if (request[VF_ELICIT]) return null;
 
   let input = request.type;
-
+  let additionalData = {};
   if (BaseRequest.isIntentRequest(request)) {
     input = request.payload.label || request.payload.query || request.payload.intent.name;
+    additionalData = { confidence: request.payload.confidence };
   } else if (BaseRequest.isTextRequest(request) || isGuidedNavRequest(request)) {
     input = request.payload;
   } else if (
@@ -102,6 +103,7 @@ export const createUserMessage = (
     id,
     type: MessageType.USER,
     input,
+    ...additionalData,
     ...common,
   };
 };

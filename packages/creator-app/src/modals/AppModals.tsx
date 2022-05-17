@@ -14,6 +14,7 @@ import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components
 import CreateEntityModal from '@/pages/Canvas/components/EntityModalsV2/CreateModal';
 import EditEntityModal from '@/pages/Canvas/components/EntityModalsV2/EditModal';
 import CreateIntentModal from '@/pages/Canvas/components/IntentModalsV2/CreateModal';
+import EditIntentModal from '@/pages/Canvas/components/IntentModalsV2/EditModal';
 import CreateVariableModal from '@/pages/Canvas/components/VariableModalsV2/CreateModal';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import TagManagerModal from '@/pages/Conversations/components/TagManagerModal';
@@ -47,6 +48,7 @@ const AppModals: React.FC = () => {
       <LoadingModal />
       <TagManagerModal />
 
+      <EditIntentModal />
       <CreateIntentModal />
       <CreateEntityModal />
       <CreateVariableModal />

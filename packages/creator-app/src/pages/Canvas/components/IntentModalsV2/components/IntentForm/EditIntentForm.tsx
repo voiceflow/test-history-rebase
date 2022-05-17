@@ -13,9 +13,16 @@ interface EditIntentFormProps {
   withNameSection?: boolean;
   withDescriptionBottomBorder?: boolean;
   rightSlider?: boolean;
+  prefilledNewUtterance?: string;
 }
 
-const EditIntentForm: React.FC<EditIntentFormProps> = ({ rightSlider, withDescriptionBottomBorder, intentID, withNameSection = false }) => {
+const EditIntentForm: React.FC<EditIntentFormProps> = ({
+  prefilledNewUtterance,
+  rightSlider,
+  withDescriptionBottomBorder,
+  intentID,
+  withNameSection = false,
+}) => {
   const intent = useSelector(IntentV2.intentByIDSelector, { id: intentID });
   const [name, setName] = useLinkedState(intent?.name || '');
   const [inputs, setInputs] = useLinkedState(intent?.inputs || []);
@@ -58,6 +65,7 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({ rightSlider, withDescri
 
   return intent ? (
     <IntentForm
+      prefilledNewUtterance={prefilledNewUtterance}
       rightSlider={rightSlider}
       withDescriptionSection
       intentID={intentID}

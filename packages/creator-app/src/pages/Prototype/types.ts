@@ -44,7 +44,7 @@ export const BotMessageTypes = [MessageType.AUDIO, MessageType.SPEAK, MessageTyp
 
 type GenericMessage<T extends MessageType, D = {}> = { id: string; type: T; startTime: string; turnID?: string } & D;
 
-export type UserMessage = GenericMessage<MessageType.USER, { input: string; intentName?: string }>;
+export type UserMessage = GenericMessage<MessageType.USER, { input: string; intentName?: string; confidence?: number | null }>;
 
 export type TextMessage = GenericMessage<MessageType.TEXT, { slate: BaseNode.Text.TextData }>;
 

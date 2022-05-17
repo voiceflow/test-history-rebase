@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { ClickableText, Flex, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -8,7 +9,7 @@ import IntentSelect from '@/components/IntentSelect';
 import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
 
 import { Container, StatusIcon, TextContainer } from './index';
 
@@ -45,6 +46,8 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   const activeTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
   const dispatchAddUtteranceToIntent = useDispatch(Transcript.setUtteranceAddedTo);
   const [isDropdownOpened, setIsDropdownOpened] = React.useState(false);
+  const { open: openEditIntentModal, isOpened: editIntentModalOpened } = useModals(ModalType.INTENT_EDIT);
+  const immModalsV2 = useFeature(FeatureFlag.IMM_MODALS_V2);
 
   useDidUpdateEffect(() => {
     setChildDropdownIsOpened(isDropdownOpened);
@@ -57,6 +60,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     setTargetIntentID(null);
   };
 
+  // TODO: remove legacy modal logic
   const handleOpenIMM = (intentID: string) => {
     const params = new URLSearchParams();
 
@@ -71,14 +75,24 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     openIMM({ initialSelectedID: targetIntentID, newUtterance: utterance });
   };
 
+  const handleOpenIntentEditModal = (intentID: string) => {
+    const targetIntent = getIntentByID({ id: intentID });
+    setInitialUtterances(targetIntent?.inputs ?? []);
+    openEditIntentModal({ id: intentID, newUtterance: utterance });
+  };
+
   // We have to put this in a useEffect because on intentSelect, if it is builtIn, the intentSelect needs to create the intent first, and there can be race conditions with the inner code
   useDidUpdateEffect(() => {
     if (targetIntentID) {
-      handleOpenIMM(targetIntentID);
+      if (immModalsV2.isEnabled) {
+        handleOpenIntentEditModal(targetIntentID);
+      } else {
+        handleOpenIMM(targetIntentID);
+      }
     }
   }, [targetIntentID]);
 
-  const handleIMMClose = async (intentID: string, initialUtterancesArray: Realtime.IntentInput[]) => {
+  const handleAddedUtteranceModalClose = async (intentID: string, initialUtterancesArray: Realtime.IntentInput[]) => {
     if (!activeTranscriptID) return;
 
     const targetIntent = getIntentByID({ id: intentID });
@@ -102,7 +116,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     return (
       <Flex {...props}>
         <TextContainer onClick={(e) => e.stopPropagation()}>
-          <StatusIcon icon="info" size={14} color="#E5B813" />
+          <StatusIcon icon="information" size={12} color="#E5B813" />
           No Match - &nbsp;
         </TextContainer>
         <ClickableText>Add utterance to intent</ClickableText>
@@ -111,8 +125,15 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   };
 
   useDidUpdateEffect(() => {
-    if (!isOpenedIMM && targetIntentID && initialUtterances) {
-      handleIMMClose(targetIntentID, initialUtterances);
+    if (immModalsV2.isEnabled && !editIntentModalOpened && targetIntentID && initialUtterances) {
+      handleAddedUtteranceModalClose(targetIntentID, initialUtterances);
+    }
+  }, [targetIntentID, initialUtterances, editIntentModalOpened]);
+
+  // TODO: remove legacy modal logic
+  useDidUpdateEffect(() => {
+    if (!immModalsV2.isEnabled && !isOpenedIMM && targetIntentID && initialUtterances) {
+      handleAddedUtteranceModalClose(targetIntentID, initialUtterances);
     }
   }, [isOpenedIMM, targetIntentID, initialUtterances]);
 

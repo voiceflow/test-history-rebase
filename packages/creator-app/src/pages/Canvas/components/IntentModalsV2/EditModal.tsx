@@ -11,7 +11,7 @@ import IntentSelectDropdown from '@/pages/Canvas/components/IntentModalsV2/compo
 import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
 
 const EditModal: React.FC = () => {
-  const { close, data } = useModals<{ id: string }>(ModalType.INTENT_EDIT);
+  const { close, data } = useModals<{ id: string; newUtterance?: string }>(ModalType.INTENT_EDIT);
 
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: data.id });
   const deleteIntent = useDispatch(Intent.deleteIntent);
@@ -64,7 +64,12 @@ const EditModal: React.FC = () => {
       {!!modalRef && (
         <TextEditorVariablesPopoverProvider value={modalRef}>
           <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
-            <EditIntentForm withDescriptionBottomBorder={false} withNameSection intentID={data.id} />
+            <EditIntentForm
+              prefilledNewUtterance={data?.newUtterance || undefined}
+              withDescriptionBottomBorder={false}
+              withNameSection
+              intentID={data.id}
+            />
           </Box>
         </TextEditorVariablesPopoverProvider>
       )}

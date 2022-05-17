@@ -34,6 +34,7 @@ interface IntentFormProps {
   removeRequiredSlot: (slotID: string) => void;
   updateSlotDialog: (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => void;
   withDescriptionBottomBorder?: boolean;
+  prefilledNewUtterance?: string;
 }
 
 const IntentForm: React.FC<IntentFormProps> = ({
@@ -53,6 +54,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
   updateSlotDialog,
   withDescriptionBottomBorder,
   rightSlider,
+  prefilledNewUtterance,
 }) => {
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
 
@@ -93,6 +95,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
           onUpdateUtterances={setInputs}
           autofocus={!!name && autofocus}
           withBorderTop={withNameSection}
+          prefilledUtterance={prefilledNewUtterance}
         />
       )}
 

@@ -3,11 +3,12 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { InteractionModelTabType } from '@/constants';
 import { Variable } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/types';
 
-import { ConfidenceTooltip } from './headerTooltips';
+import { ClarityTooltip, ConfidenceTooltip } from './headerTooltips';
 
 export const IntentTableColumns = {
   name: 'Name',
   confidence: 'Confidence',
+  clarity: 'Clarity',
   utterances: 'Utterances',
   entities: 'Entities',
 };
@@ -33,8 +34,13 @@ export const TableMeta = {
       },
       {
         name: IntentTableColumns.confidence,
-        flexWidth: 3,
+        flexWidth: 2,
         Tooltip: ConfidenceTooltip,
+      },
+      {
+        name: IntentTableColumns.clarity,
+        flexWidth: 2,
+        Tooltip: ClarityTooltip,
       },
       {
         name: IntentTableColumns.utterances,

@@ -1,7 +1,10 @@
 import React from 'react';
 
-import { Container, Line, StrengthLine } from './components';
+import { Container, Line, StrengthColor, StrengthLine } from './components';
 import { Level } from './constants';
+import type { StrengthGaugeTypes } from './types';
+
+export type { StrengthGaugeTypes } from './types';
 
 const TOOLTIP_LABEL_MAP = {
   [Level.WEAK]: 'Weak',
@@ -19,14 +22,7 @@ const LINE_MULTIPLIER_MAP: Record<Level, number> = {
   [Level.VERY_STRONG]: 1,
 };
 
-interface StrengthGaugeProps {
-  level: Level;
-  width?: number;
-  thickness?: number;
-  tooltipLabelMap?: Partial<Record<Level, string>>;
-}
-
-const StrengthGauge: React.FC<StrengthGaugeProps> = ({ level = Level.NOT_SET, width = 100, thickness = 2, tooltipLabelMap }) => {
+const StrengthGauge: React.FC<StrengthGaugeTypes.Props> = ({ level = Level.NOT_SET, width = 100, thickness = 2, tooltipLabelMap }) => {
   const strengthLineWidth = width * LINE_MULTIPLIER_MAP[level];
 
   return (
@@ -38,4 +34,4 @@ const StrengthGauge: React.FC<StrengthGaugeProps> = ({ level = Level.NOT_SET, wi
   );
 };
 
-export default Object.assign(StrengthGauge, { Level, TOOLTIP_LABEL_MAP });
+export default Object.assign(StrengthGauge, { Level, TOOLTIP_LABEL_MAP, StrengthColor });

@@ -5,13 +5,13 @@ import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts';
 import { useLinkedState } from '@/hooks';
 import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
-import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
 import { TitleInput } from '@/pages/Canvas/components/NLUQuickView/components';
 import HeaderOptions from '@/pages/Canvas/components/NLUQuickView/components/HeaderOptions';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { isBuiltInIntent } from '@/utils/intent';
 
 import { SliderContainer, SliderHeader } from './components';
+import IntentSlider from './components/IntentSlider';
 import SecondarySlider from './components/SecondarySlider';
 
 const FormSlider: React.FC = () => {
@@ -64,7 +64,7 @@ const FormSlider: React.FC = () => {
         <Box position="relative" overflow="auto">
           {!!selectedItemId && (
             <>
-              {activeTab === InteractionModelTabType.INTENTS && <EditIntentForm intentID={selectedItemId} rightSlider />}
+              {activeTab === InteractionModelTabType.INTENTS && <IntentSlider intentID={selectedItemId} />}
               {activeTab === InteractionModelTabType.SLOTS && (
                 <EditEntityForm
                   colorPopperModifiers={[{ name: 'offset', options: { offset: [-240, -25] } }]}

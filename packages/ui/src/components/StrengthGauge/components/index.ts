@@ -3,7 +3,7 @@ import { css, styled, transition } from '@ui/styles';
 import TippyTooltip from '../../TippyTooltip';
 import { Level } from '../constants';
 
-const StrengthLineColor: Record<Level, string> = {
+export const StrengthColor: Record<Level, string> = {
   [Level.NOT_SET]: '',
   [Level.WEAK]: '#bd425f',
   [Level.MEDIUM]: '#4e8bbd',
@@ -44,7 +44,7 @@ export const StrengthLine = styled.div<{ width: number; strength: Level; thickne
   ${({ width, strength, thickness }) =>
     css`
       width: ${width}px;
-      background: ${StrengthLineColor[strength]};
+      background: ${StrengthColor[strength]};
       height: ${thickness}px;
     `}
 `;

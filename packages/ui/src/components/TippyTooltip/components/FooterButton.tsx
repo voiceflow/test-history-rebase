@@ -11,7 +11,7 @@ export interface ComplexProps {
   onClick: () => void;
 }
 
-const Component = styled.div`
+const ButtonContainer = styled.div`
   padding: 10px 70px;
   border-radius: 6px;
   background-color: #4b5052;
@@ -25,11 +25,11 @@ const Component = styled.div`
   cursor: pointer;
 `;
 const FooterButton: React.FC<ComplexProps> = ({ onClick, buttonText, title, width = 200, children }) => (
-  <Multiline width={width} style={{ paddingBottom: '40px' }}>
+  <Multiline width={width} style={{ paddingBottom: '46px' }}>
     {!!title && <Title>{title}</Title>}
 
     {children}
-    <Component onClick={onClick}>{buttonText}</Component>
+    <ButtonContainer onClick={onClick}>{buttonText}</ButtonContainer>
   </Multiline>
 );
 

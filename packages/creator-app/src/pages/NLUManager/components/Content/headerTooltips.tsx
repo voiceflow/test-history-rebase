@@ -17,7 +17,6 @@ export const ConfidenceTooltip = () => {
   );
 };
 
-// Not used yet until ML stuff is integrated
 export const ClarityTooltip = () => {
   return (
     <TippyTooltip.FooterButton
@@ -27,7 +26,7 @@ export const ClarityTooltip = () => {
         window.open(DOCS_BASE_LINK);
       }}
     >
-      Clarity is a meaure of an intents ability to be recognized, relative to the rest of your model.{' '}
+      Clarity is a measure of an intents ability to be recognized, relative to the rest of your model.{' '}
     </TippyTooltip.FooterButton>
   );
 };

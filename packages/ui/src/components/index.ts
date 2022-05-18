@@ -112,6 +112,7 @@ export { default as SectionV2 } from './SectionV2';
 export type { BaseSelectProps, FilterResult, OptionsFilter } from './Select';
 export { default as Select, SelectInputVariant, SelectWrapper } from './Select';
 export { FullSpinner, Spinner } from './Spinner';
+export type { StrengthGaugeTypes } from './StrengthGauge';
 export { default as StrengthGauge } from './StrengthGauge';
 export type { Icon, SvgIconProps } from './SvgIcon';
 export { IconVariant, default as SvgIcon, SvgIconContainer } from './SvgIcon';

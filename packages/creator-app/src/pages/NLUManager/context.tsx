@@ -149,6 +149,10 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     (tab: InteractionModelTabType, id?: string | null) => {
       handleSetPersistState(tab, id);
       goToNLUManagerEntity(tab, id);
+      if (!id) {
+        // TODO: refactor this to not be a flag specifically for showing utterance recos
+        setShowUtteranceRecos(false);
+      }
     },
     [goToNLUManagerEntity]
   );

@@ -40,6 +40,7 @@ export interface PopperProps {
   disableLayers?: boolean;
   initialOpened?: boolean;
   preventOverflowPadding?: number;
+  borderRadius?: string;
 }
 
 const Popper: React.FC<PopperProps> = ({
@@ -62,6 +63,7 @@ const Popper: React.FC<PopperProps> = ({
   disableLayers,
   initialOpened,
   preventOverflowPadding = 16,
+  borderRadius = '5px',
 }) => {
   const theme = useTheme();
 
@@ -109,7 +111,7 @@ const Popper: React.FC<PopperProps> = ({
                 >
                   {({ ref, style, scheduleUpdate }) => (
                     <div ref={ref} style={{ ...style, zIndex: zIndex ?? theme.zIndex.popper }}>
-                      <Container className={ClassName.POPPER} style={{ width, height, maxWidth, maxHeight }}>
+                      <Container className={ClassName.POPPER} style={{ width, height, maxWidth, maxHeight, borderRadius }}>
                         {renderNav?.({ ...rendererProps, scheduleUpdate })}
 
                         <Body>

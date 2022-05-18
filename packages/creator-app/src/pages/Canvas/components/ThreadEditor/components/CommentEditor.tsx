@@ -38,11 +38,7 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ comment, isActive, isEdit
   });
 
   return (
-    <Content
-      ref={contentRef}
-      onClick={() => !isThreadEditing && engine.comment.setFocusComment(isActive ? null : comment.id)}
-      isActive={isActive && !isEditing}
-    >
+    <Content ref={contentRef} onClick={() => !isThreadEditing && engine.comment.setFocusComment(isActive ? null : comment.id)}>
       <EditableComment
         onPost={onPost}
         onEdit={() => setEditingID(comment.id)}

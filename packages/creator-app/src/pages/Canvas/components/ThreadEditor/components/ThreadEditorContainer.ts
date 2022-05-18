@@ -3,7 +3,7 @@ import { styled } from '@/hocs';
 
 const ThreadEditorContainer = styled.div`
   max-height: calc(100vh - ${({ theme }) => theme.components.header.height + 32}px);
-  overflow-y: auto;
+  overflow: hidden;
 
   .${CANVAS_INTERACTING_CLASSNAME} & {
     pointer-events: none;

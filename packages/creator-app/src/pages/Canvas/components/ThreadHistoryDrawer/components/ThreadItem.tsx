@@ -1,4 +1,4 @@
-import { Box, BoxFlexApart, Flex, IconButton, IconButtonVariant, SvgIcon, Text, TippyTooltip } from '@voiceflow/ui';
+import { Box, BoxFlexApart, Flex, IconButton, IconButtonVariant, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Commenter from '@/components/Commenter';
@@ -60,14 +60,13 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comment
       </Box>
 
       <BoxFlexApart>
-        <Duration key={threadID} time={comment.created} />
+        <Duration key={threadID} time={comment.created} color={isFocused ? '#6e849a' : '#8da2b5'} />
 
         {!!hasReplies && (
           <Flex>
-            <Text color="#8da2b5" mr={8} fontSize={13}>
+            <Text color={isFocused ? '#6e849a' : '#8da2b5'} fontSize={13}>
               {hasReplies} {hasMultipleReplies ? 'replies' : 'reply'}
             </Text>
-            <SvgIcon icon="forward" size={14} color="#8da2b5" />
           </Flex>
         )}
       </BoxFlexApart>

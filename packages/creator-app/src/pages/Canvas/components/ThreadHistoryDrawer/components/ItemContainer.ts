@@ -16,6 +16,7 @@ const Container = styled.div<ItemContainerProps>`
   ${({ isFocused }) =>
     isFocused
       ? css`
+          ${transition('border-color')};
           background: rgba(238, 244, 246, 0.6);
           border-color: #dfe3ed;
 

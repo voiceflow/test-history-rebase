@@ -13,28 +13,22 @@ const PostButton = styled.div<{ disabled?: boolean; isDone?: boolean; isPosting?
   font-weight: 600;
   background-color: rgba(238, 244, 246, 0.85);
   padding: 3px 8px;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   text-align: center;
 
-  ${({ isDone, isPosting }) =>
-    isPosting
-      ? css`
-          &:before {
-            content: '...';
-          }
-        `
-      : css`
-          &:before {
-            content: '${isDone ? 'Done' : 'Post'}';
-          }
+  ${({ isDone }) =>
+    css`
+      &:before {
+        content: '${isDone ? 'Done' : 'Post'}';
+      }
 
-          &:hover {
-            &:before {
-              content: '${hotKey}';
-            }
-          }
-        `}
+      &:hover {
+        &:before {
+          content: '${hotKey}';
+        }
+      }
+    `}
 `;
 
 export default PostButton;

@@ -9,7 +9,7 @@ import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { CommentEditor, Container, EditableCommentRef, NewComment, ReplySection } from './components';
+import { CommentEditor, Container, EditableCommentRef, NewComment, ReplySection, ThreadCommentContainer } from './components';
 import { NEW_THREAD_EDITOR } from './constants';
 
 export type { EditableCommentRef } from './components';
@@ -63,17 +63,19 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused
     >
       {thread ? (
         <>
-          {thread.comments.map((comment, index) => (
-            <CommentEditor
-              key={comment.id}
-              comment={comment}
-              isActive={isFocused && engine.comment.focusTargetComment === comment.id}
-              isEditing={editingCommentID === comment.id}
-              withResolve={index === 0}
-              setEditingID={setEditingCommentID}
-              isThreadEditing={!!editingCommentID || isReplying}
-            />
-          ))}
+          <ThreadCommentContainer>
+            {thread.comments.map((comment, index) => (
+              <CommentEditor
+                key={comment.id}
+                comment={comment}
+                isActive={isFocused && engine.comment.focusTargetComment === comment.id}
+                isEditing={editingCommentID === comment.id}
+                withResolve={index === 0}
+                setEditingID={setEditingCommentID}
+                isThreadEditing={!!editingCommentID || isReplying}
+              />
+            ))}
+          </ThreadCommentContainer>
 
           <ReplySection
             ref={replyRef}

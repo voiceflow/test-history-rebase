@@ -50,7 +50,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
               {(ref, onToggle, isOpen) => (
                 <IconButton
                   ref={ref}
-                  size={18}
+                  size={16}
                   icon="ellipsis"
                   active={isOpen}
                   variant={IconButtonVariant.SUBTLE}
@@ -67,8 +67,8 @@ const CommentActions: React.FC<CommentActionsProps> = ({
             <TippyTooltip title="Mark Resolved" distance={1} disabled={isThreadEditing}>
               <BoxFlex ml={16}>
                 <IconButton
-                  size={18}
-                  icon="checkmark"
+                  size={16}
+                  icon="success"
                   variant={IconButtonVariant.SUBTLE}
                   onClick={swallowEvent(onResolve)}
                   disabled={isThreadEditing}

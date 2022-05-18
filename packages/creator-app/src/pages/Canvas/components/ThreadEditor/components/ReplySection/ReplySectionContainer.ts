@@ -9,6 +9,7 @@ const ReplySectionContainer = styled(NestedMenuComponents.FooterActionContainer)
 
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+  margin-bottom: 0;
 `;
 
 export default ReplySectionContainer;

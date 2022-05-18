@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Dropdown, IconButton, IconButtonVariant, preventDefault, stopImmediatePropagation, Text } from '@voiceflow/ui';
+import { Dropdown, IconButton, IconButtonVariant, preventDefault, stopImmediatePropagation, Text, useOnScreen, useToggle } from '@voiceflow/ui';
 import React from 'react';
 import { matchPath, useHistory } from 'react-router-dom';
 
@@ -37,6 +37,10 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
   const threads = useSelector((state) => (filter === FilterType.RESOLVED ? Thread.resolvedThreads(state) : Thread.openedThreads(state)));
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
 
+  const visibilityNodeRef = React.useRef<HTMLDivElement>(null);
+  const isOnScreen = useOnScreen(visibilityNodeRef);
+  const [isFirstThreadFocused, toggleFocusedThread] = useToggle(false);
+
   React.useEffect(() => {
     const match = matchPath<{ threadID: string; commentID?: string }>(history.location.pathname, { path: Path.CANVAS_COMMENTING_THREAD });
 
@@ -47,6 +51,18 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
     }
   }, [canvasRendered, activeDiagramID]);
 
+  React.useEffect(() => {
+    if (!threads.length) return;
+
+    const firstThreadId = threads[0].id;
+    if (
+      (!isFirstThreadFocused && focusThreadApi?.focusedID === firstThreadId) ||
+      (isFirstThreadFocused && focusThreadApi?.focusedID !== firstThreadId)
+    ) {
+      toggleFocusedThread();
+    }
+  }, [focusThreadApi?.focusedID, threads]);
+
   return (
     <Drawer
       id={Identifier.THREAD_HISTORY_DRAWER}
@@ -56,37 +72,41 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
       onPaste={stopImmediatePropagation()}
       direction={Drawer.Direction.LEFT}
     >
-      <HeaderContainer>
+      <HeaderContainer borderColor={!isOnScreen || isFirstThreadFocused ? '#dfe3ed' : '#eaeff4'}>
         <Text fontSize={18} fontWeight={600}>
           Threads
         </Text>
 
-        <Dropdown menu={(onToggle) => <FilterMenu filter={filter} setFilter={Utils.functional.chain(updateFilter, onToggle)} />}>
-          {(ref, onToggle, isOpen) => (
-            <IconButton
-              ref={ref}
-              size={16}
-              icon="filter"
-              active={isOpen}
-              variant={IconButtonVariant.SUBTLE}
-              onClick={preventDefault(onToggle)}
-              iconProps={{ color: '#becedc' }}
-              hoverColor={isOpen ? '#132144' : '#6e849a'}
-            />
-          )}
-        </Dropdown>
+        {isCommentingMode && (
+          <Dropdown menu={(onToggle) => <FilterMenu filter={filter} setFilter={Utils.functional.chain(updateFilter, onToggle)} />}>
+            {(ref, onToggle, isOpen) => (
+              <IconButton
+                ref={ref}
+                size={16}
+                icon="filter"
+                activeClick={isOpen}
+                variant={IconButtonVariant.BASIC}
+                onClick={preventDefault(onToggle)}
+              />
+            )}
+          </Dropdown>
+        )}
       </HeaderContainer>
 
       <ScrollbarsContainer>
         <CustomScrollbars ref={scrollbarsRef}>
           {threads.length ? (
             <EditorContentAnimation>
+              <div ref={visibilityNodeRef} />
               {threads.map((thread: ThreadType, idx: number) => (
                 <ThreadItem key={idx} {...thread} />
               ))}
             </EditorContentAnimation>
           ) : (
-            <NoThreads type={filter} />
+            <>
+              <div ref={visibilityNodeRef} />
+              <NoThreads type={filter} />
+            </>
           )}
         </CustomScrollbars>
       </ScrollbarsContainer>

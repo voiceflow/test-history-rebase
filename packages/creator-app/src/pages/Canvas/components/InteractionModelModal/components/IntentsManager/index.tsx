@@ -14,7 +14,7 @@ import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { connect } from '@/hocs';
 import { useEnableDisable, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
-import { applyPlatformIntentNameFormatting, isCustomizableBuiltInIntent } from '@/utils/intent';
+import { applyPlatformIntentAndSlotNameFormatting, isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import EmptyContainer from '../EmptyContainer';
 import LeftColumn from '../LeftColumn';
@@ -115,7 +115,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
               getLabel={getItemLabel}
               addMessage="New Intent"
               renderItem={(item, index) => renderItem({ key: item.id, itemKey: item.id, item, index })}
-              formatValue={(value) => applyPlatformIntentNameFormatting(value, platform)}
+              formatValue={(value) => applyPlatformIntentAndSlotNameFormatting(value, platform)}
               placeholder="Search Intents"
             />
           )}

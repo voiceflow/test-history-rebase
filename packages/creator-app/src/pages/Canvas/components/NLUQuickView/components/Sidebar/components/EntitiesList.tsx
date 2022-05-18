@@ -19,11 +19,11 @@ import ListItem from './ListItem';
 import { SectionProps } from './types';
 
 const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveItemRename, setSearchLength, selectedID, search, setActiveTab }) => {
-  const { activeTab, setSelectedID, setIsCreatingItem } = React.useContext(NLUQuickViewContext);
+  const { activeTab, setSelectedID, setIsCreatingItem, nameChangeTransform, deleteItem, forceNewInlineEntity } =
+    React.useContext(NLUQuickViewContext);
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
-  const { nameChangeTransform, deleteItem, forceNewInlineEntity } = React.useContext(NLUQuickViewContext);
 
   const createSlot = useDispatch(Slot.createSlot);
 
@@ -31,7 +31,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
   const filteredList = useFilteredList(search, sortedSlots) as Realtime.Slot[];
 
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.SLOTS, [activeTab]);
-  const { renameItem } = React.useContext(NLUContext);
+  const { renameItem, generateItemName } = React.useContext(NLUContext);
 
   useListHooks({
     setSearchLength,
@@ -73,10 +73,9 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
 
   useAsyncEffect(async () => {
     if (isCreating) {
-      const numberWord = Utils.number.convertToWord(allSlots.length);
       const id = Utils.id.cuid.slug();
       try {
-        await createSlot(id, { id, name: `entity_${numberWord}`, inputs: [], type: CustomSlot.type, color: undefined });
+        await createSlot(id, { id, name: generateItemName(InteractionModelTabType.SLOTS), inputs: [], type: CustomSlot.type, color: undefined });
         setNewSlotID(id);
         setSelectedID(id);
       } catch (e) {

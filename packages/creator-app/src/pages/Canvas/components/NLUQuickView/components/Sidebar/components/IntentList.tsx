@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { IconButton, IconButtonVariant, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
@@ -28,7 +29,7 @@ const IntentList: React.FC<SectionProps> = ({
 }) => {
   const { deleteItem, setIsCreatingItem, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } =
     React.useContext(NLUQuickViewContext);
-  const { renameItem } = React.useContext(NLUContext);
+  const { renameItem, generateItemName } = React.useContext(NLUContext);
 
   const createIntent = useDispatch(Intent.createIntent);
 
@@ -53,7 +54,7 @@ const IntentList: React.FC<SectionProps> = ({
   const handleConfirmNewIntentName = React.useCallback(
     (newName: string, newIntentID: string) => {
       if (allIntents.some(({ name, id }) => name === newName && newIntentID !== id)) {
-        renameItem(`${newName}_two`, newIntentID!, InteractionModelTabType.INTENTS);
+        renameItem(`${newName}_${Utils.id.cuid()}`, newIntentID!, InteractionModelTabType.INTENTS);
         toast.error('Intent name already in use, use a different name');
       } else {
         renameItem(newName, newIntentID!, InteractionModelTabType.INTENTS);
@@ -80,7 +81,7 @@ const IntentList: React.FC<SectionProps> = ({
   useAsyncEffect(async () => {
     if (isCreating) {
       try {
-        const newIntentID = await createIntent();
+        const newIntentID = await createIntent({ name: generateItemName(InteractionModelTabType.INTENTS) });
         setNewIntentID(newIntentID);
         setSelectedID(newIntentID);
       } catch (e) {

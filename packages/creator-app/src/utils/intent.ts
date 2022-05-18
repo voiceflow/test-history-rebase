@@ -9,6 +9,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Normalized } from 'normal-store';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
+import { getPlatformIntentAndSlotNameFormatter } from '@/platforms/selectors';
 
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
@@ -31,11 +32,13 @@ const INTENT_LABELS: Partial<Record<string, string>> = {
 
 export const isCustomizableBuiltInIntent = (intent?: Nullish<Realtime.Intent>): boolean => !!intent && builtInIntentMap.has(intent.id);
 
-export const formatIntentAndSlotName = (name = ''): string =>
+export const applyAlexaIntentAndSlotNameFormatting = (name = ''): string =>
   name
     .replace(/ /g, '_')
     .replace(/[^A-Z_a-z]/g, '')
     .toLowerCase();
+
+export const applyLUISIntentAndSlotNameFormatting = (name = ''): string => name.replace(/[$%&()*+:?~]/g, '');
 
 const CONTAIN_INTENT_REGEXP = /(\w)Intent/g;
 const CAMEL_CASE_REGEXPS = [
@@ -194,11 +197,8 @@ export function validateUtterance(utterance: string, intentID: string | null, in
   return err;
 }
 
-export const applyPlatformIntentNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string => {
-  const hasNoRules = Realtime.Utils.typeGuards.isVoiceflowPlatform(platform) || Realtime.Utils.typeGuards.isDialogflowPlatform(platform);
-  if (hasNoRules) return name;
-
-  return formatIntentAndSlotName(name);
+export const applyPlatformIntentAndSlotNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string => {
+  return getPlatformIntentAndSlotNameFormatter(platform)(name);
 };
 
 export const applyCustomizableBuiltInIntent = (name: string, platform: VoiceflowConstants.PlatformType): string => {

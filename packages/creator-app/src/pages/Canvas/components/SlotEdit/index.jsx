@@ -14,7 +14,7 @@ import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { styled } from '@/hocs';
 import { useModals, usePermission, useSelector, useTeardown, useTrackingEvents } from '@/hooks';
-import { formatIntentAndSlotName } from '@/utils/intent';
+import { applyAlexaIntentAndSlotNameFormatting } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
 
 import { ColorSelector, SlotTag } from './components';
@@ -55,7 +55,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   const [isSaving, setIsSaving] = React.useState(false);
   const [selectedColor, setSelectedColor] = React.useState(color);
   const [slotType, setSlotType] = React.useState(() => type || (slotTypes.length === 1 ? slotTypes[0].value : type));
-  const [slotName, setSlotName] = React.useState(() => Utils.string.removeTrailingUnderscores(formatIntentAndSlotName(name)));
+  const [slotName, setSlotName] = React.useState(() => Utils.string.removeTrailingUnderscores(applyAlexaIntentAndSlotNameFormatting(name)));
   const [customLines, setCustomLines] = React.useState(() =>
     inputs?.length ? inputs : (slotType === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || inputs
   );
@@ -155,7 +155,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   }, [slotType]);
 
   React.useEffect(() => {
-    setSlotName(formatIntentAndSlotName(name));
+    setSlotName(applyAlexaIntentAndSlotNameFormatting(name));
   }, [name]);
 
   React.useEffect(() => {
@@ -188,7 +188,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
             value={slotName}
             onBlur={isInteraction && onBlurInInteraction}
             placeholder="Enter Entity Name"
-            onChangeText={(value) => setSlotName(formatIntentAndSlotName(value))}
+            onChangeText={(value) => setSlotName(applyAlexaIntentAndSlotNameFormatting(value))}
           />
 
           {isInteraction && <RemoveDropdown onRemove={() => onRemove(id)} />}

@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast, useContextApi } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -13,7 +14,7 @@ import { useDispatch, useSelector } from '@/hooks';
 import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/constants';
 import { useDeleteVariable, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
 import { generateSlotInput } from '@/pages/Canvas/components/SlotEdit/utils';
-import { applyPlatformIntentNameFormatting, formatIntentAndSlotName, isBuiltInIntent, validateIntentName } from '@/utils/intent';
+import { applyPlatformIntentAndSlotNameFormatting, isBuiltInIntent, validateIntentName } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
 
 interface NLUProps {
@@ -23,6 +24,7 @@ interface NLUProps {
   canDeleteItem: (id: string, type: InteractionModelTabType) => boolean;
   deleteItem: (id: string, tab: InteractionModelTabType) => void;
   deleteItems: (ids: string[], tab: InteractionModelTabType) => Promise<string[]>;
+  generateItemName: (type: InteractionModelTabType) => string;
 }
 
 const DefaultState = {
@@ -32,6 +34,7 @@ const DefaultState = {
   canDeleteItem: () => false,
   deleteItem: Utils.functional.noop,
   deleteItems: async () => [],
+  generateItemName: () => '',
 };
 
 export const NLUContext = React.createContext<NLUProps>(DefaultState);
@@ -141,17 +144,31 @@ export const NLUProvider: React.FC = ({ children }) => {
     return {
       [InteractionModelTabType.INTENTS]: {
         rename: (name: string, id: string) => onRenameIntent(name, id),
-        transformName: (name: string, platform: VoiceflowConstants.PlatformType) => applyPlatformIntentNameFormatting(name, platform),
+        transformName: (name: string, platform: VoiceflowConstants.PlatformType) => applyPlatformIntentAndSlotNameFormatting(name, platform),
         canRename: (id: string) => canRenameIntent(id),
         canDelete: () => true,
         delete: (id: string) => deleteIntent(id),
+        generateName: () => {
+          const numberWord = Utils.number.convertToWord(allCustomIntents.length);
+          if (Realtime.Utils.typeGuards.isAlexaOrGooglePlatform(platform)) {
+            return `intent_${numberWord}`;
+          }
+          return `Intent ${numberWord}`;
+        },
       },
       [InteractionModelTabType.SLOTS]: {
         rename: (name: string, id: string) => onRenameSlot(name, id),
-        transformName: (name: string) => formatIntentAndSlotName(name),
+        transformName: (name: string) => applyPlatformIntentAndSlotNameFormatting(name, platform),
         canRename: () => true,
         canDelete: () => true,
         delete: (id: string) => handleSlotDelete(id),
+        generateName: () => {
+          const numberWord = Utils.number.convertToWord(allSlots.length);
+          if (Realtime.Utils.typeGuards.isAlexaOrGooglePlatform(platform)) {
+            return `entity_${numberWord}`;
+          }
+          return `Entity ${numberWord}`;
+        },
       },
       [InteractionModelTabType.VARIABLES]: {
         rename: Utils.functional.noop,
@@ -159,9 +176,11 @@ export const NLUProvider: React.FC = ({ children }) => {
         canRename: () => false,
         canDelete: (id: string) => canDeleteVariable(id),
         delete: (id: string) => deleteVariable(id),
+        // We shouldn't use this, because we can't change variable names, but it's here if needed
+        generateName: () => Utils.id.cuid(),
       },
     };
-  }, [onRenameIntent, onRenameSlot, canRenameIntent, canDeleteVariable, deleteIntent, handleSlotDelete, deleteVariable]);
+  }, [allSlots, platform, onRenameIntent, onRenameSlot, canRenameIntent, canDeleteVariable, deleteIntent, handleSlotDelete, deleteVariable]);
 
   const renameItem = React.useCallback(
     (name: string, id: string, type: InteractionModelTabType) => {
@@ -217,6 +236,10 @@ export const NLUProvider: React.FC = ({ children }) => {
     [canDeleteItem]
   );
 
+  const generateItemName = (type: InteractionModelTabType) => {
+    return itemActions[type].generateName();
+  };
+
   const api: NLUProps = useContextApi({
     renameItem,
     nameChangeTransform,
@@ -224,6 +247,7 @@ export const NLUProvider: React.FC = ({ children }) => {
     canDeleteItem,
     deleteItem,
     deleteItems,
+    generateItemName,
   });
 
   return <NLUContext.Provider value={api}>{children}</NLUContext.Provider>;

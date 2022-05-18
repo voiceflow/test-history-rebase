@@ -4,6 +4,8 @@ import { Box, IconButton, IconButtonVariant, NestedMenuComponents, PopperProps, 
 import * as Normal from 'normal-store';
 import React from 'react';
 
+import { InteractionModelTabType } from '@/constants';
+import { NLUContext } from '@/contexts';
 import { useAddSlot } from '@/hooks';
 
 interface AddDropdownProps {
@@ -15,12 +17,12 @@ interface AddDropdownProps {
 
 const AddDropdown: React.FC<AddDropdownProps> = ({ entities, placement, onAddRequired, intentEntities }) => {
   const { onAddSlot } = useAddSlot();
+  const { generateItemName } = React.useContext(NLUContext);
 
   const unusedEntities = React.useMemo(() => entities.filter((entity) => !Normal.hasOne(intentEntities, entity.id)), [entities, intentEntities]);
 
   const onCreate = async () => {
-    const numberWord = Utils.number.convertToWord(entities.length);
-    const newSlot = await onAddSlot(`slot_${numberWord}`);
+    const newSlot = await onAddSlot(generateItemName(InteractionModelTabType.SLOTS));
 
     if (newSlot) {
       await onAddRequired(newSlot.id);

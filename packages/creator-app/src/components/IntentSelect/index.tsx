@@ -24,7 +24,13 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { useDispatch, useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { ClassName } from '@/styles/constants';
-import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent, prettifyIntentName, validateIntentName } from '@/utils/intent';
+import {
+  applyPlatformIntentAndSlotNameFormatting,
+  intentFilter,
+  isCustomizableBuiltInIntent,
+  prettifyIntentName,
+  validateIntentName,
+} from '@/utils/intent';
 
 import { Option } from './components';
 
@@ -75,7 +81,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         .map((option) =>
           isUIOnlyMenuItemOption(option)
             ? { ...option, name: option.label }
-            : { ...option, name: applyPlatformIntentNameFormatting(prettifyIntentName(option.name), platform) }
+            : { ...option, name: applyPlatformIntentAndSlotNameFormatting(prettifyIntentName(option.name), platform) }
         ),
     [intent, options, platform, noBuiltIns]
   );
@@ -162,7 +168,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         placeholder={placeholder}
         getOptionValue={(option) => option?.id}
         getOptionLabel={(value) => (value ? optionLookup[value] : undefined)}
-        formatInputValue={(value) => applyPlatformIntentNameFormatting(value, platform)}
+        formatInputValue={(value) => applyPlatformIntentAndSlotNameFormatting(value, platform)}
         isButtonDisabled={({ value }) => isIntentNameTaken(value)}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
           <Option option={option} isFocused={isFocused} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />

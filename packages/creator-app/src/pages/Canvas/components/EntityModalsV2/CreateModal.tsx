@@ -9,7 +9,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useLinkedState, useModals, useSelector } from '@/hooks';
-import { formatIntentAndSlotName } from '@/utils/intent';
+import { applyAlexaIntentAndSlotNameFormatting } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
 
 import EntityForm from './components/EntityForm';
@@ -28,7 +28,7 @@ const CreateModal: React.FC = () => {
 
   const [isCreating, setIsCreating] = React.useState(false);
   const [type, setType] = React.useState(CustomSlot.type);
-  const [name, setName] = useLinkedState(formatIntentAndSlotName(data.name) ?? '');
+  const [name, setName] = useLinkedState(applyAlexaIntentAndSlotNameFormatting(data.name) ?? '');
   const [values, setValues] = React.useState<Realtime.SlotInput[]>([]);
   const [color, setColor] = React.useState<string>(pickRandomDefaultColor());
 

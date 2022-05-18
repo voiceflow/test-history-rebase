@@ -5,7 +5,7 @@ import React from 'react';
 import Section, { SectionVariant } from '@/components/Section';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { DividerBorder } from '@/pages/Canvas/components/IntentModalsV2/components/components';
-import { formatIntentAndSlotName } from '@/utils/intent';
+import { applyAlexaIntentAndSlotNameFormatting } from '@/utils/intent';
 
 import TypeAndColorSection from '../TypeAndColorSection';
 import ValuesSection from '../ValuesSection';
@@ -66,7 +66,7 @@ const EntityForm: React.ForwardRefRenderFunction<HTMLInputElement, EntityFormPro
             onBlur={() => saveName?.()}
             placeholder="Enter entity name"
             value={name}
-            onChangeText={(text) => updateName(formatIntentAndSlotName(text))}
+            onChangeText={(text) => updateName(applyAlexaIntentAndSlotNameFormatting(text))}
           />
         </Section>
       )}

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.721.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.720.0...@voiceflow/creator-app@1.721.0) (2022-05-18)
+
+
+### Bug Fixes
+
+* commenting clean-up (VF-3432) ([#5403](https://github.com/voiceflow/creator-app/issues/5403)) ([84b89a0](https://github.com/voiceflow/creator-app/commit/84b89a0da8e08635e375cc9fe41ea68388137c03))
+
+
+### Features
+
+* nlu manager import feature (VF-000) ([#5437](https://github.com/voiceflow/creator-app/issues/5437)) ([62be7d6](https://github.com/voiceflow/creator-app/commit/62be7d65377823817a8bf0acbc0b11442af80da6))
+* nlu ml notifications (VF-000) ([#5440](https://github.com/voiceflow/creator-app/issues/5440)) ([11818e9](https://github.com/voiceflow/creator-app/commit/11818e9cb69093fb052affd0c02a68514cb04bb4))
+
+
+
+
+
 # [1.720.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.719.3...@voiceflow/creator-app@1.720.0) (2022-05-18)
 
 

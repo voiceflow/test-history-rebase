@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.66.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.65.1...@voiceflow/realtime@1.66.0) (2022-05-18)
+
+
+### Features
+
+* ml-gateway configuration and interaction service implementation (VF-000) ([#5410](https://github.com/voiceflow/creator-app/issues/5410)) ([42bc642](https://github.com/voiceflow/creator-app/commit/42bc642b8a893d69a8f4f13cccdc95f7e08ac750)), closes [#5352](https://github.com/voiceflow/creator-app/issues/5352)
+
+
+
+
+
 ## [1.65.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.65.0...@voiceflow/realtime@1.65.1) (2022-05-18)
 
 **Note:** Version bump only for package @voiceflow/realtime

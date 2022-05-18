@@ -1,9 +1,17 @@
 import { Box, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
+import client from '@/client';
 import { InteractionModelTabType } from '@/constants';
+import * as Intent from '@/ducks/intent';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useDispatch } from '@/hooks';
+import * as Session from '@/ducks/session';
+import * as Slot from '@/ducks/slot';
+import { useDispatch, useSelector } from '@/hooks';
+import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
+import { useNLUImport } from '@/pages/NewProjectV2/hooks';
+import { ImportModel, SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
 import { Footer, ItemSidebar, SidebarContainer } from './components';
@@ -11,11 +19,25 @@ import MenuItem from './components/MenuItem';
 
 const Sidebar: React.FC = () => {
   const { createAndSelect, setActiveTab, activeTab } = React.useContext(NLUManagerContext);
+
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
+  const versionID = useSelector(Session.activeVersionIDSelector)!;
 
-  const canImportModel = true;
+  const refreshSlots = useDispatch(Slot.refreshSlots);
+  const refreshIntents = useDispatch(Intent.refreshIntents);
 
-  const handleImport = () => {};
+  const hasImport = platform && PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType]?.importMeta;
+  const fileExtensions = platform && PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType]?.importMeta?.fileExtensions;
+
+  const onImportModel = async (importedModel: ImportModel) => {
+    const data = await client.version.patchMergeIntentsAndSlots(versionID, importedModel);
+    if (data) {
+      await Promise.all([refreshSlots(), refreshIntents()]);
+    }
+  };
+
+  const { onUploadClick, acceptedFileFormatsLabel } = useNLUImport({ fileExtensions, platform, onImportModel });
 
   return (
     <SidebarContainer>
@@ -46,17 +68,17 @@ const Sidebar: React.FC = () => {
         />
       </ItemSidebar>
       <span>
-        {canImportModel && (
+        {hasImport && (
           <TippyTooltip
             {...{
               position: 'right-end',
               offset: -65,
               distance: -250,
-              html: <TippyTooltip.Complex title="XYZ Import">Imports must be in ABC format</TippyTooltip.Complex>,
+              html: <TippyTooltip.Complex title={`${platform} import`}>Imports must be in {acceptedFileFormatsLabel} format</TippyTooltip.Complex>,
             }}
           >
             <Box p={16} pb={12}>
-              <MenuItem onClick={handleImport} icon="downloadCircle" title="Import" />
+              <MenuItem onClick={onUploadClick} icon="downloadCircle" title="Import" />
             </Box>
           </TippyTooltip>
         )}

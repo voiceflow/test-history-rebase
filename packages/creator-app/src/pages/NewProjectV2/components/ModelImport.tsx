@@ -1,12 +1,10 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { Box, Flex, pickRandomDefaultColor, Text, toast } from '@voiceflow/ui';
+import { Box, Flex, Text, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import client from '@/client';
 import { styled } from '@/hocs';
-import { upload } from '@/utils/dom';
 
-import { FILE_EXTENSION_LABEL_MAP, PLATFORM_PROJECT_META_MAP } from '../constants';
+import { PLATFORM_PROJECT_META_MAP } from '../constants';
+import { useNLUImport } from '../hooks';
 import { ImportModel, SupportedPlatformType } from '../types';
 
 interface ModelImportProps {
@@ -27,44 +25,16 @@ export const ImportLink = styled(Text)<{ disabled: boolean }>`
 `;
 
 const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
-  const platformClient = client.platform(platform);
-
-  const onImport = async (files: FileList) => {
-    if (!files.length) return;
-
-    try {
-      setIsImportLoading(true);
-      const formData = new FormData();
-      formData.append('file', files[0]);
-
-      const importModelResponse: ImportModel = await platformClient.modelImport.import(platform, formData);
-      if (importModelResponse) {
-        importModelResponse.slots = importModelResponse.slots?.map((slot: BaseModels.Slot) =>
-          slot.color ? slot : { ...slot, color: pickRandomDefaultColor() }
-        );
-        onImportModel(importModelResponse);
-      }
-
-      toast.success(`${importModelResponse.intents.length} intents successfully imported!`);
-    } catch (err) {
-      toast.error('File failed to import');
-    } finally {
-      setIsImportLoading(false);
-    }
-  };
-
   const fileExtensions = platform && PLATFORM_PROJECT_META_MAP[platform]?.importMeta?.fileExtensions;
-
-  const acceptedFileFormats = fileExtensions?.join(',');
-  const acceptedFileFormatsLabel = fileExtensions?.map((fileExtension) => FILE_EXTENSION_LABEL_MAP[fileExtension]).join(', ');
-
-  const onUploadClick = () => {
-    upload(onImport, { accept: acceptedFileFormats, multiple: false });
-  };
+  const { onUploadClick, acceptedFileFormatsLabel, isImporting } = useNLUImport({ fileExtensions, platform, onImportModel });
 
   const importName = platform && PLATFORM_PROJECT_META_MAP[platform]?.importMeta?.name;
 
   const textColor = isImportLoading ? 'rgba(98, 119, 140, 0.5)' : 'rgba(98, 119, 140, 1)';
+
+  useDidUpdateEffect(() => {
+    setIsImportLoading(isImporting);
+  }, [isImporting]);
 
   return (
     <Box mt={12}>

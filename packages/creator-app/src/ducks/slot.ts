@@ -65,6 +65,10 @@ export const patchSlot =
     await dispatch.sync(Realtime.slot.crud.patch({ ...getActiveVersionContext(getState()), key: slotID, value: data }));
   };
 
+export const refreshSlots = (): Thunk => async (dispatch, getState) => {
+  await dispatch.sync(Realtime.slot.crud.refresh({ ...getActiveVersionContext(getState()) }));
+};
+
 export const deleteSlot =
   (slotID: string): Thunk =>
   async (dispatch, getState) => {

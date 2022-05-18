@@ -138,8 +138,9 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
         await updateGeneralMeta(newVersionID, languageToUse as VoiceflowConstants.Locale);
       }
 
-      if (importedModel && platformType && PLATFORM_PROJECT_META_MAP[platformType]?.importMeta)
+      if (importedModel && platformType && PLATFORM_PROJECT_META_MAP[platformType]?.importMeta) {
         await client.version.patchMergeIntentsAndSlots(newVersionID, importedModel);
+      }
     } finally {
       setIsCreating(false);
       closeProjectCreateModal();

@@ -13,7 +13,7 @@ const versionClient = {
       `/${VERSIONS_PATH}/snapshot/${versionID}?manualSave=${manualSave}&saveVersionName=${versionName}&autoSaveFromRestore=${autoSaveFromRestore}`
     );
   },
-  patchMergeIntentsAndSlots: (versionID: string, importModel: ImportModel) => {
+  patchMergeIntentsAndSlots: (versionID: string, importModel: ImportModel): Promise<ImportModel> => {
     const endpoint = `${VERSIONS_PATH}/${versionID}/model`;
     return apiV2.patch(endpoint, importModel);
   },

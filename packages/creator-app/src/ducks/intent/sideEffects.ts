@@ -268,3 +268,13 @@ export const deleteManyIntents =
       })
     );
   };
+
+export const refreshIntents = (): Thunk => async (dispatch, getState) => {
+  const projectMeta = ProjectV2.active.metaSelector(getState());
+  await dispatch.sync(
+    Realtime.intent.crud.refresh({
+      ...getActiveVersionContext(getState()),
+      projectMeta,
+    })
+  );
+};

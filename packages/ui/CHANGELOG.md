@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.85.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.84.0...@voiceflow/ui@1.85.0) (2022-05-18)
+
+
+### Features
+
+* clarity and confidence cards (VF-000) ([#5429](https://github.com/voiceflow/creator-app/issues/5429)) ([88c1682](https://github.com/voiceflow/creator-app/commit/88c168208f8bff2f927029baacfe527d27fcfe17))
+
+
+
+
+
 # [1.84.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.83.1...@voiceflow/ui@1.84.0) (2022-05-17)
 
 

@@ -1,13 +1,11 @@
-import { BaseClientMap, PubSub, RedisClient } from '@voiceflow/socket-utils';
+import { BaseClientMap, Cache, PubSub, RedisClient } from '@voiceflow/socket-utils';
 import axios, { AxiosStatic } from 'axios';
 
-import Cache from './cache';
 import MetricsClient, { Metrics } from './metrics';
 import { BaseOptions } from './types';
 import VoiceflowFactoryClient, { VoiceflowFactory } from './voiceflow';
 
 export interface ClientMap extends BaseClientMap {
-  cache: Cache;
   axios: AxiosStatic;
   voiceflowFactory: VoiceflowFactory;
   metrics: Metrics;

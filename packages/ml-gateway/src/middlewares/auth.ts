@@ -1,13 +1,13 @@
-import { authenticateUser } from '@voiceflow/socket-utils';
+import { AbstractLoguxControl, authenticateUser } from '@voiceflow/socket-utils';
 
-import { AbstractLoguxControl } from '../control';
+import { LoguxControlOptions } from '../control';
 
-class AuthMiddleware extends AbstractLoguxControl {
+class AuthMiddleware extends AbstractLoguxControl<LoguxControlOptions> {
   setup(): void {
-    authenticateUser(this.server, async (_creatorID, _token) => {
-      // TODO: authenticate user
+    authenticateUser(this.server, async (creatorID, token) => {
+      const user = await this.services.user.getUserByToken(token);
 
-      return false;
+      return user?.creator_id === creatorID;
     });
   }
 }

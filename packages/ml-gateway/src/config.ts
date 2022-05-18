@@ -14,6 +14,7 @@ const CONFIG: Config = {
   // Deployment information
   CLOUD_ENV,
   IS_PRIVATE_CLOUD: NODE_ENV === 'production' && CLOUD_ENV !== 'public',
+  CREATOR_API_ENDPOINT: getRequiredProcessEnv('CREATOR_API_ENDPOINT'),
 
   // Release information
   GIT_SHA: getOptionalProcessEnv('GIT_SHA'),
@@ -31,6 +32,10 @@ const CONFIG: Config = {
   // Logging
   LOG_LEVEL: getOptionalProcessEnv('LOG_LEVEL'),
   MIDDLEWARE_VERBOSITY: getOptionalProcessEnv('MIDDLEWARE_VERBOSITY'),
+
+  // Google
+  FIRESTORE_MODEL_COLLECTION: getRequiredProcessEnv('FIRESTORE_MODEL_COLLECTION'),
+  PUBSUB_PROJECT_KEY: getRequiredProcessEnv('PUBSUB_PROJECT_KEY'),
 };
 
 export default CONFIG;

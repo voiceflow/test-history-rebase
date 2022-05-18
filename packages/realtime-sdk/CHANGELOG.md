@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.88.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.88.3...@voiceflow/realtime-sdk@1.88.4) (2022-05-18)
+
+
+### Bug Fixes
+
+* platform intent and slot name rules (VF-000) ([#5423](https://github.com/voiceflow/creator-app/issues/5423)) ([dc46974](https://github.com/voiceflow/creator-app/commit/dc46974a110a1cd94a9aeb95ecb3a20f44ec74c5))
+
+
+
+
+
 ## [1.88.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.88.2...@voiceflow/realtime-sdk@1.88.3) (2022-05-18)
 
 

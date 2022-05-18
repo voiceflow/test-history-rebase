@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.719.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.719.2...@voiceflow/creator-app@1.719.3) (2022-05-18)
+
+
+### Bug Fixes
+
+* [bugfix] remove ff refs for DISABLE_INTEGRATIONS (VF-3526) ([#5448](https://github.com/voiceflow/creator-app/issues/5448)) ([be424a2](https://github.com/voiceflow/creator-app/commit/be424a23815fdfbbcf3ea7d072e9551adb7389ee))
+
+
+
+
+
 ## [1.719.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.719.1...@voiceflow/creator-app@1.719.2) (2022-05-17)
 
 

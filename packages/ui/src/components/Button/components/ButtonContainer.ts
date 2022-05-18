@@ -15,6 +15,7 @@ export interface ButtonContainerProps extends BaseButtonProps, React.ButtonHTMLA
   minWidth?: number;
   width?: number;
   squareRadius?: boolean;
+  inline?: boolean;
 }
 
 export const buttonContainerStyles = css<ButtonContainerProps>`
@@ -22,6 +23,12 @@ export const buttonContainerStyles = css<ButtonContainerProps>`
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
+  ${({ inline }) =>
+    inline &&
+    css`
+      display: inline-block;
+    `}
 
   ${({ minWidth }) =>
     minWidth &&

@@ -1,4 +1,4 @@
-import { Box, SvgIcon } from '@voiceflow/ui';
+import { Box, Popper, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -9,6 +9,7 @@ import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
 import { SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
 
 import { ErrorBubble } from './components';
+import NLUNotifications from './components/NLUNotifications';
 
 const SidebarHeader: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
@@ -23,9 +24,14 @@ const SidebarHeader: React.FC = () => {
         </Box>
         NLU Model
       </Box>
-      <ErrorBubble>
-        <SvgIcon mr={5} icon="warning" inline size={14} />2
-      </ErrorBubble>
+
+      <Popper width="370px" placement="bottom-start" renderContent={() => <NLUNotifications />}>
+        {({ ref, onToggle, isOpened }) => (
+          <ErrorBubble active={isOpened} onClick={onToggle} ref={ref}>
+            <SvgIcon mr={5} color={isOpened ? '#132144' : '#6e849a'} icon="warning" inline size={14} />2
+          </ErrorBubble>
+        )}
+      </Popper>
     </HeaderNavLinkSidebarTitle>
   );
 };

@@ -38,6 +38,7 @@ interface NLUManagerProps {
   exportItem: (itemID: string, type: InteractionModelTabType, exportType?: NLPProvider | null) => void;
   setShowUtteranceRecos: (val: boolean) => void;
   showUtteranceRecos: boolean;
+  goToEntity: (type: InteractionModelTabType, id: string) => void;
 }
 
 const DefaultState = {
@@ -61,6 +62,7 @@ const DefaultState = {
   exportItem: Utils.functional.noop,
   setShowUtteranceRecos: Utils.functional.noop,
   showUtteranceRecos: false,
+  goToEntity: Utils.functional.noop,
 };
 
 export const NLUManagerContext = React.createContext<NLUManagerProps>(DefaultState);
@@ -292,6 +294,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     isExporting: exporting,
     setShowUtteranceRecos,
     showUtteranceRecos,
+    goToEntity,
   });
 
   return <NLUManagerContext.Provider value={api}>{children}</NLUManagerContext.Provider>;

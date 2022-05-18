@@ -18,10 +18,9 @@ interface TableItemProps {
 const TableItem: React.FC<TableItemProps> = ({ additionalContextOptions = [], isBuiltIn, itemType, item, children }) => {
   const startingOptions = additionalContextOptions;
   const { inSearch } = useTableSearch(item.name);
-  const { canRenameItem } = React.useContext(NLUContext);
+  const { canRenameItem, canDeleteItem } = React.useContext(NLUContext);
 
   const { handleSelectItem, deleteItem, selectedItemId } = React.useContext(NLUManagerContext);
-  const { canDeleteItem } = React.useContext(NLUContext);
 
   if (canRenameItem(item.id, itemType)) {
     startingOptions.push(

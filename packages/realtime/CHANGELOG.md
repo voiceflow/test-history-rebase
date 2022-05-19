@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.66.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.66.0...@voiceflow/realtime@1.66.1) (2022-05-19)
+
+
+### Bug Fixes
+
+* [bugfix] revert ML gateway setup pr (VF-000) ([#5451](https://github.com/voiceflow/creator-app/issues/5451)) ([533a735](https://github.com/voiceflow/creator-app/commit/533a7359e52fbb2a9b7b310d28559df075802fc7))
+
+
+
+
+
 # [1.66.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.65.1...@voiceflow/realtime@1.66.0) (2022-05-18)
 
 

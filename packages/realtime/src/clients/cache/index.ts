@@ -6,9 +6,7 @@ import KeyValueCache from './keyValue';
 import SetCache from './set';
 import { BaseAdapter, BaseHashAdapter, BaseKeyExtractor, Options } from './types';
 
-export { Hash } from './types';
-
-export class Cache {
+class Cache {
   private redis: Redis;
 
   adapters = adapters;
@@ -29,3 +27,5 @@ export class Cache {
     return new KeyValueCache<K, A>({ redis: this.redis, ...options });
   }
 }
+
+export default Cache;

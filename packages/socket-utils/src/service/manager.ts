@@ -1,4 +1,4 @@
-import { LoguxControlMap, LoguxControlOptions } from '@socket-utils/control';
+import { LoguxControlMap, LoguxControlOptions } from '@socket-utils/control/utils';
 import type { SocketServer } from '@socket-utils/server';
 import Logger from '@voiceflow/logger';
 

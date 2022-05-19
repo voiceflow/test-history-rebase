@@ -1,6 +1,5 @@
-import { User } from '@voiceflow/socket-utils';
-
 import { AbstractControl } from '../control';
+import { User } from '../models';
 
 class UserService extends AbstractControl {
   private static getTokenUserKey({ token }: { token: string }): string {

@@ -28,7 +28,8 @@ export enum Permission {
 
   // export
   CODE_EXPORT = 'export.CODE',
-  MODEL_EXPORT = 'export.MODEL',
+  MODEL_EXPORT = 'export.MODEL', // to be removed once revised permissions feature is implemented
+  MODAL_PDF_PNG_EXPORT = 'export.MODAL_ALL',
 
   // prototype
   SHARE_PROTOTYPE = 'prototype.SHARE',
@@ -61,12 +62,17 @@ export enum Permission {
   // Transcript
   DELETE_TRANSCRIPT = 'transcripts.DELETE',
   VIEW_CONVERSATIONS = 'transcripts.VIEW',
+  TRANSCRIPTS_ENABLED = 'transcripts.ENABLED',
 
   // private cloud
   CREATE_PRIVATE_CLOUD_WORKSPACE = 'private_cloud.workspace.CREATE',
 
   // T&C
   REORDER_TOPICS_AND_COMPONENTS = 'topics_components.REORDER',
+
+  // NLU
+  NLU_EXPORT_ALL = 'nlu.EXPORT_ALL',
+  NLU_EXPORT_CSV = 'nlu.EXPORT_CSV',
 }
 
 const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.OWNER, UserRole.BILLING, UserRole.GUEST];
@@ -125,6 +131,7 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.COMMENTING]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.BULK_UPLOAD]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.MODEL_EXPORT]: ALL_BUT_STARTER_PERMISSIONS,
+  [Permission.MODAL_PDF_PNG_EXPORT]: PTE_PERMISSIONS,
   [Permission.SHARE_PROTOTYPE]: ALL_PERMISSIONS,
   [Permission.SHARE_PROTOTYPE_PASSWORD]: PTE_PERMISSIONS,
   [Permission.CUSTOMIZE_PROTOTYPE]: PTE_PERMISSIONS,
@@ -152,6 +159,9 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.CODE_EXPORT]: [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
   [Permission.CONFIGURE_ORGANIZATION]: [PlanType.ENTERPRISE],
   [Permission.FULL_PROJECT_VERSIONS]: ALL_BUT_STARTER_PERMISSIONS,
+  [Permission.TRANSCRIPTS_ENABLED]: PTE_PERMISSIONS,
+  [Permission.NLU_EXPORT_ALL]: [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
+  [Permission.NLU_EXPORT_CSV]: PTE_PERMISSIONS,
 };
 
 export const TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS = [

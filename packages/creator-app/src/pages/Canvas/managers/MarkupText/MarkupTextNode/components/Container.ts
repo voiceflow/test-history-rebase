@@ -79,6 +79,10 @@ export const Container = styled.div<{ editable?: boolean; activated?: boolean; i
       `}
   }
 
+  & [contenteditable] {
+    -webkit-user-select: text;
+  }
+
   [data-slate-node='element'] {
     ${({ isNew }) =>
       isNew &&

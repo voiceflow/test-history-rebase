@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.723.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.722.0...@voiceflow/creator-app@1.723.0) (2022-05-19)
+
+
+### Features
+
+* update config file with new limits (VF-3381) ([#5455](https://github.com/voiceflow/creator-app/issues/5455)) ([145f4fc](https://github.com/voiceflow/creator-app/commit/145f4fc62ff4fe077d79725ce1c82e1a806be1c3))
+
+
+
+
+
 # [1.722.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.721.1...@voiceflow/creator-app@1.722.0) (2022-05-18)
 
 

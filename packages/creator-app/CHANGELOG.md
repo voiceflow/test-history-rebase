@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.723.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.723.1...@voiceflow/creator-app@1.723.2) (2022-05-19)
+
+
+### Bug Fixes
+
+* fix safari contenteditable css (VF-3254) ([#5458](https://github.com/voiceflow/creator-app/issues/5458)) ([fac073b](https://github.com/voiceflow/creator-app/commit/fac073beece5fcb8f1c0fa858235faf880f08574))
+
+
+
+
+
 ## [1.723.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.723.0...@voiceflow/creator-app@1.723.1) (2022-05-19)
 
 

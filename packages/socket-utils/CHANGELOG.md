@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.14.1...@voiceflow/socket-utils@1.15.0) (2022-05-24)
+
+
+### Features
+
+* move hot actions to the socketio connection layer [bugfix] (VF-3520) ([#5450](https://github.com/voiceflow/creator-app/issues/5450)) ([ffd4697](https://github.com/voiceflow/creator-app/commit/ffd46975a7236e2e82f44c0ed73d1107121760da))
+
+
+
+
+
 ## [1.14.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.14.0...@voiceflow/socket-utils@1.14.1) (2022-05-19)
 
 

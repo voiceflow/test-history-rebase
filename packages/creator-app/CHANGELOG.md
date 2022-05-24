@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.726.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.726.0...@voiceflow/creator-app@1.726.1) (2022-05-24)
+
+
+### Bug Fixes
+
+* reset prototype on open [bugfix] (VF-000) ([#5466](https://github.com/voiceflow/creator-app/issues/5466)) ([80b8165](https://github.com/voiceflow/creator-app/commit/80b816505165edf2bfdab16fc90153aaf6abd9df)), closes [/github.com/voiceflow/creator-app/blob/d31472fb040c6deb7ed67aecb74a58d7c93ebd4b/packages/creator-app/src/pages/Project/components/Sidebar/components/TestVariablesSidebar/index.tsx#L66](https://github.com//github.com/voiceflow/creator-app/blob/d31472fb040c6deb7ed67aecb74a58d7c93ebd4b/packages/creator-app/src/pages/Project/components/Sidebar/components/TestVariablesSidebar/index.tsx/issues/L66) [/github.com/voiceflow/creator-app/blob/c3ecf6e412faa88761d0b28b3fa816be1cd4ecd9/packages/creator-app/src/ducks/prototype/sideEffects/compilePrototype.ts#L44](https://github.com//github.com/voiceflow/creator-app/blob/c3ecf6e412faa88761d0b28b3fa816be1cd4ecd9/packages/creator-app/src/ducks/prototype/sideEffects/compilePrototype.ts/issues/L44)
+
+
+
+
+
 # [1.726.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.725.1...@voiceflow/creator-app@1.726.0) (2022-05-24)
 
 

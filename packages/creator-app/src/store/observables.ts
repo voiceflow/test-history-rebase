@@ -17,22 +17,21 @@ export const useObservableEffect = <T>(source$: Observable<T>, handler: (next: T
     return () => subscription.unsubscribe();
   }, dependencies);
 
-type MoveCursorPayload = Pick<Realtime.diagram.awareness.MoveCursorPayload, 'diagramID' | 'creatorID' | 'coords'>;
-type CursorPayload = Omit<MoveCursorPayload, 'coords'>;
+const getCursorKey = ({ diagramID, creatorID }: { diagramID: string; creatorID: number }): string => [diagramID, creatorID].map(String).join('.');
 
-const getCursorKey = ({ diagramID, creatorID }: CursorPayload): string => [diagramID, creatorID].map(String).join('.');
+export const [cursorCoordsChange$, setCursorCoords] = createKeyedSignal<
+  string,
+  Realtime.IO.CursorMoveBroadcastData,
+  [payload: Realtime.IO.CursorMoveBroadcastData]
+>(getCursorKey, (payload) => payload);
 
-export const [cursorCoordsChange$, setCursorCoords] = createKeyedSignal<string, MoveCursorPayload, [payload: MoveCursorPayload]>(
-  getCursorKey,
-  (payload) => payload
-);
+export const [cursorCoordsHide$, hideCursorCoords] = createKeyedSignal<
+  string,
+  Realtime.diagram.awareness.HideCursorPayload,
+  [payload: Realtime.diagram.awareness.HideCursorPayload]
+>(getCursorKey, (payload) => payload);
 
-export const [cursorCoordsHide$, hideCursorCoords] = createKeyedSignal<string, CursorPayload, [payload: CursorPayload]>(
-  getCursorKey,
-  (payload) => payload
-);
-
-const cursorCoordsMerged$ = (param: CursorPayload) => {
+const cursorCoordsMerged$ = (param: { diagramID: string; creatorID: number }) => {
   const key = getCursorKey(param);
 
   return merge(cursorCoordsChange$(key).pipe(map(({ coords }) => coords)), cursorCoordsHide$(key).pipe(map(() => null)));

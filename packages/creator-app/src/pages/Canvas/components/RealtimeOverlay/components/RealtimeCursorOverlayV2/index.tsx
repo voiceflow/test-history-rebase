@@ -1,5 +1,4 @@
 import { Subscribe } from '@react-rxjs/core';
-import { Utils } from '@voiceflow/common';
 import { withProvider } from '@voiceflow/ui';
 import React from 'react';
 
@@ -23,12 +22,9 @@ const RealtimeLinksOverlayV2: React.FC = () => {
 
   React.useEffect(
     () =>
-      eventualEngine.get()?.realtime.register(OverlayType.CURSOR, {
-        moveMouse: Utils.functional.noop,
-        removeUser: Utils.functional.noop,
-
-        zoomViewport: (calculateMovement) => cursorContext?.emit('zoomViewport', calculateMovement),
+      eventualEngine.get()?.io.register(OverlayType.CURSOR_V2, {
         panViewport: (movement) => cursorContext?.emit('panViewport', movement),
+        zoomViewport: (calculateMovement) => cursorContext?.emit('zoomViewport', calculateMovement),
       }),
     []
   );

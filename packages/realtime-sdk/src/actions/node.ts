@@ -20,7 +20,6 @@ export interface TranslatePayload extends BaseDiagramPayload {
   blocks: { [blockID: string]: Point };
 }
 
-export const dragMany = Utils.protocol.createAction<TranslatePayload>(nodeType('DRAG_MANY'));
 export const moveMany = Utils.protocol.createAction<TranslatePayload>(nodeType('MOVE_MANY'));
 export const updateData = Utils.protocol.createAction<UpdateDataPayload>(nodeType('UPDATE_DATA'));
 export const removeMany = Utils.protocol.createAction<RemoveManyPayload>(nodeType('REMOVE_MANY'));

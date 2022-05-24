@@ -31,6 +31,7 @@ export interface CanvasProvidersProps {
 export const CanvasProviders: React.FC<CanvasProvidersProps> = ({ engine, children }) => (
   <EngineProvider value={engine}>
     <RegisterEngine engine={engine} />
+
     <ContextMenuProvider>
       <ClipboardProvider>
         <FocusThreadProvider>

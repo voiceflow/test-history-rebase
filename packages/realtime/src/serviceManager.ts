@@ -1,15 +1,31 @@
 import Logger from '@voiceflow/logger';
-import { AbstractServiceManager } from '@voiceflow/socket-utils';
+import { AbstractServiceManager, ServiceManagerOptions } from '@voiceflow/socket-utils';
 
 import buildActions, { ActionMap } from './actions';
 import buildChannels, { ChannelMap } from './channels';
 import buildClients, { ClientMap, stopClients } from './clients';
-import type { LoguxControlOptions } from './control';
+import type { IOControlOptions, LoguxControlOptions } from './control';
+import buildIO from './io';
 import buildMiddlewares, { MiddlewareMap } from './middlewares';
 import buildServices, { ServiceMap } from './services';
 import type { Config } from './types';
 
+interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
+  ioServer: IOControlOptions['ioServer'];
+}
+
 class ServiceManager extends AbstractServiceManager<LoguxControlOptions, MiddlewareMap> {
+  constructor({ ioServer, ...options }: Options) {
+    super(options);
+
+    buildIO({
+      config: options.config,
+      clients: this.clients,
+      ioServer,
+      services: this.services,
+    });
+  }
+
   buildClients(context: { config: Config; log: Logger }): ClientMap {
     return buildClients(context);
   }

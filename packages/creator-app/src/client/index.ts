@@ -12,7 +12,7 @@ import organization from './organization';
 import project from './project';
 import projectList from './projectList';
 import prototype from './prototype';
-import realtime from './realtime';
+import realtime, { realtimeIO } from './realtime';
 import reportTags from './reportTags';
 import saml from './saml';
 import session from './session';
@@ -56,6 +56,7 @@ const client = {
   version,
   reportTags,
   realtime,
+  realtimeIO,
   variableStates,
   maintenance,
   upload,

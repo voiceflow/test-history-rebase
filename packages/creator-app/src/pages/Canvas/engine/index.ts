@@ -48,6 +48,7 @@ import ThreadEntity from './entities/threadEntity';
 import FocusEngine from './focusEngine';
 import GroupSelectionEngine from './groupSelectionEngine';
 import HighlightEngine from './highlightEngine';
+import IOEngine from './ioEngine';
 import LinkCreationEngine from './linkCreationEngine';
 import LinkManager from './linkManager';
 import MarkupEngine from './markupEngine';
@@ -78,6 +79,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   log = logger.child('engine');
 
   emitter = new EventEmitter<string>();
+
+  io = new IOEngine(this);
 
   drag = new DragEngine(this);
 

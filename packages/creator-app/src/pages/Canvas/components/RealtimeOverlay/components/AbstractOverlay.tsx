@@ -24,7 +24,7 @@ abstract class AbstractOverlay<T extends RealtimeCursorOverlayAPI> extends React
 
   unmounted = false;
 
-  constructor(protected overlayType: OverlayType, props: ConnectedRealtimeOverlayProps) {
+  constructor(protected overlayType: Exclude<OverlayType, OverlayType.CURSOR_V2>, props: ConnectedRealtimeOverlayProps) {
     super(props);
   }
 

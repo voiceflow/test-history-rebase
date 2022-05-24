@@ -1,11 +1,11 @@
 import './polyfills';
 
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { SocketServer } from '@voiceflow/socket-utils';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 import config from './config';
+import IOServer from './ioServer';
 import logger from './logger';
 import ServiceManager from './serviceManager';
 
@@ -13,42 +13,54 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
 (async () => {
   const server = new SocketServer({
-    port: config.PORT,
     env: config.NODE_ENV,
     cwd: rootDir,
+    port: config.PORT,
     logger,
-    loggerIgnoredActions: [Realtime.diagram.awareness.moveCursor.type],
   });
-  const serviceManager = new ServiceManager({ server, config, log: logger });
+
+  const ioServer = new IOServer({
+    env: config.NODE_ENV,
+    port: config.PORT_IO,
+  });
+
+  const serviceManager = new ServiceManager({ server, ioServer, config, log: logger });
+
+  const gracefulShutdown = async () => {
+    await serviceManager.stop();
+    await ioServer.stop();
+    await server.stop();
+
+    // eslint-disable-next-line no-process-exit
+    process.exit(0);
+  };
 
   // Graceful shutdown from SIGTERM
   process.on('SIGTERM', async () => {
     logger.warn('SIGTERM received stopping server...');
 
-    await serviceManager.stop();
-    await server.stop();
-    // eslint-disable-next-line no-process-exit
-    process.exit(0);
+    await gracefulShutdown();
   });
 
   process.on('unhandledRejection', async (r, p) => {
     logger.warn(`${r} Unhandled rejection at: ${p}`);
 
-    await serviceManager.stop();
-    await server.stop();
-
-    // eslint-disable-next-line no-process-exit
-    process.exit(0);
+    await gracefulShutdown();
   });
 
   try {
     server.on('fatal', (error) => logger.error({ error }));
     server.on('error', (error, action, meta) => logger.warn({ error, action, meta }));
+    ioServer.on('error', (error) => error && logger.warn({ error }));
+    ioServer.on('fatal', (error) => error && logger.error({ error }));
 
     await serviceManager.start();
+    await ioServer.start();
     await server.start();
   } catch (e) {
     logger.error('Failed to start server');
     logger.error(e);
+
+    await gracefulShutdown();
   }
 })();

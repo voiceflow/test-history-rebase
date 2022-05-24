@@ -20,6 +20,7 @@ declare global {
     VF_OVERRIDE_ALEXA_SERVICE_ENDPOINT?: string; // google-service public endpoint
     VF_OVERRIDE_GENERAL_SERVICE_ENDPOINT?: string; // general-service public endpoint
     VF_OVERRIDE_REALTIME_ENDPOINT?: string; // realtime public endpoint
+    VF_OVERRIDE_REALTIME_IO_ENDPOINT?: string; // realtime public endpoint
     VF_OVERRIDE_INTERCOM_APP_ID?: string;
     VF_OVERRIDE_AMAZON_APP_ID?: string;
     VF_OVERRIDE_GOOGLE_CLIENT_ID?: string; // Override the Google OAuth2 Client
@@ -101,6 +102,13 @@ export const REALTIME_ENDPOINT =
   window.VF_OVERRIDE_REALTIME_ENDPOINT ||
   process.env.VF_OVERRIDE_REALTIME_ENDPOINT ||
   (IS_DEVELOPMENT ? REALTIME_LOCAL_ENDPOINT : REALTIME_CLOUD_ENDPOINT);
+
+const REALTIME_IO_LOCAL_ENDPOINT = process.env.REALTIME_IO_LOCAL_ENDPOINT!;
+const REALTIME_IO_CLOUD_ENDPOINT = process.env.REALTIME_IO_CLOUD_ENDPOINT!;
+export const REALTIME_IO_ENDPOINT =
+  window.VF_OVERRIDE_REALTIME_IO_ENDPOINT ||
+  process.env.VF_OVERRIDE_REALTIME_IO_ENDPOINT ||
+  (IS_DEVELOPMENT ? REALTIME_IO_LOCAL_ENDPOINT : REALTIME_IO_CLOUD_ENDPOINT);
 
 const _ADMIN_HOST =
   // eslint-disable-next-line no-nested-ternary

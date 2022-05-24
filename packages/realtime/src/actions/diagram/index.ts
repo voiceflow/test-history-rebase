@@ -8,7 +8,6 @@ import DuplicateDiagramControl from './duplicate';
 import HeartbeatDiagramControl from './heartbeat';
 import { RegisterIntentStepsControl, ReloadIntentStepsControl, ReorderIntentStepsControl, UpdateIntentStepsControl } from './intentSteps';
 import { LockEntitiesControl, UnlockEntitiesControl, UpdateLockedEntitiesControl } from './locks';
-import MoveCursorControl from './moveCursor';
 import PatchDiagramControl from './patch';
 import RemoveDiagramControl from './remove';
 import {
@@ -46,7 +45,6 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   removeDiagramStartingBlocksControl: new RemoveDiagramStartingBlocksControl(options),
 
   // awareness
-  moveCursorControl: new MoveCursorControl(options),
   lockEntitiesControl: new LockEntitiesControl(options),
   unlockEntitiesControl: new UnlockEntitiesControl(options),
   heartbeatDiagramControl: new HeartbeatDiagramControl(options),

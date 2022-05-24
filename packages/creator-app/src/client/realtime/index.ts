@@ -1,6 +1,16 @@
-import { REALTIME_ENDPOINT } from '@/config';
+import { io } from 'socket.io-client';
+
+import { REALTIME_ENDPOINT, REALTIME_IO_ENDPOINT } from '@/config';
 
 import LoguxClient from './loguxClient';
+
+export const realtimeIO = (token: string) =>
+  io(`${REALTIME_IO_ENDPOINT}`, {
+    auth: { token },
+
+    // do not allow downgrading to HTTP
+    transports: ['websocket'],
+  });
 
 const realtimeClient = (): LoguxClient =>
   new LoguxClient({

@@ -25,7 +25,7 @@ import Spotlight from './components/Spotlight';
 import ThreadHistoryDrawer from './components/ThreadHistoryDrawer';
 import ThreadLayer from './components/ThreadLayer';
 import { CanvasProviders } from './contexts';
-import { useEngine } from './hooks';
+import { useEngine, useIO } from './hooks';
 
 interface CanvasProps {
   isPrototypingMode?: boolean;
@@ -33,6 +33,7 @@ interface CanvasProps {
 
 const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const [engine, engineKey] = useEngine();
+
   // using history to do not rerender on the every location change
   const history = useHistory();
   const [scheduler, schedulerAPI] = useRAF();
@@ -63,6 +64,8 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
     return schedulerAPI.current.cancel;
   }, [engine]);
+
+  useIO(engine);
 
   useRegistration(() => engine.register('diagramHeartbeat', diagramHeartbeatContext), [engine, diagramHeartbeatContext]);
   useRegistration(() => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext), [engine, selectionSetTargetsContext]);

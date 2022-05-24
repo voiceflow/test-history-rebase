@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { AbstractControl as BaseAbstractControl, AbstractLoguxControl as BaseAbstractLoguxControl, SocketServer } from '@voiceflow/socket-utils';
+import { Server as IOServer } from 'socket.io';
 
 import type { ActionMap } from './actions';
 import type { ChannelMap } from './channels';
@@ -14,6 +15,10 @@ export interface ControlOptions {
 }
 
 export abstract class AbstractControl extends BaseAbstractControl<ControlOptions> {}
+
+export interface IOControlOptions extends ControlOptions {
+  ioServer: IOServer;
+}
 
 export interface LoguxControlOptions extends ControlOptions {
   server: SocketServer;

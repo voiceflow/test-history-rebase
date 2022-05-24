@@ -47,6 +47,7 @@ export const DEFAULT_MARKUP_BACKGROUND_COLOR = hexToRGBA('#5d9df533');
 
 export enum OverlayType {
   CURSOR = 'cursor',
+  CURSOR_V2 = 'cursorV2',
 }
 
 export enum ContextMenuTarget {

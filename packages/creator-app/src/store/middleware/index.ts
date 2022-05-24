@@ -7,11 +7,10 @@ import * as Session from '@/ducks/session';
 
 import { Middleware, Store } from '../types';
 import creatorMiddleware from './creator';
-import realtimeMiddleware from './realtime';
 import { mapMiddleware } from './utils';
 
 const createMiddleware = (history: History, rpcMiddleware: Middleware, getStore: () => Store) => {
-  const middleware = [routerMiddleware(history), ...mapMiddleware([rpcMiddleware, ...creatorMiddleware, ...realtimeMiddleware], getStore)];
+  const middleware = [routerMiddleware(history), ...mapMiddleware([rpcMiddleware, ...creatorMiddleware], getStore)];
 
   if (LOGROCKET_ENABLED) {
     middleware.push(

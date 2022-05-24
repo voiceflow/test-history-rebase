@@ -1,26 +1,26 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { throttle } from 'throttle-debounce';
 
 import { MovementCalculator } from '@/components/Canvas/types';
 import { FeatureFlag } from '@/config/features';
-import * as Account from '@/ducks/account';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as RealtimeDuck from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
-import { useFeature, useRAF, useSelector, useSyncDispatch } from '@/hooks';
+import { useFeature, useRAF, useSelector } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Pair, Point, Viewport } from '@/types';
 
 export const useCursorControls = () => {
-  const mousePosition = React.useRef<Point | null>(null);
   const engine = React.useContext(EngineContext)!;
-  const atomicActionsAwareness = useFeature(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
-  const creatorID = useSelector(Account.userIDSelector)!;
+
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
-  const awarenessMoveCursor = useSyncDispatch(Realtime.diagram.awareness.moveCursor);
   const hasDiagramViewers = useSelector(DiagramV2.hasExternalDiagramViewersByIDSelector, { id: diagramID });
+
+  const atomicActionsAwareness = useFeature(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
+
   const prevCoords = React.useRef<Point | null>(null);
+  const mousePosition = React.useRef<Point | null>(null);
+
   const [scheduler] = useRAF();
 
   const moveMouse = React.useCallback(
@@ -28,7 +28,7 @@ export const useCursorControls = () => {
       if (atomicActionsAwareness.isEnabled) {
         if (hasDiagramViewers && prevCoords.current !== nextCoords) {
           prevCoords.current = nextCoords;
-          awarenessMoveCursor({ ...engine.context, creatorID, coords: nextCoords });
+          engine.io.cursorMove(nextCoords);
         }
       } else {
         engine.realtime.sendVolatileUpdate(RealtimeDuck.moveMouse(nextCoords));

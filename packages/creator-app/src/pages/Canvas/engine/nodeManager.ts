@@ -320,7 +320,13 @@ class NodeManager extends EngineConsumer {
       }
     },
 
-    translateMany: (nodeIDs: string[], movement: Pair<number>) => nodeIDs.forEach((nodeID) => this.internal.translate(nodeID, movement)),
+    translateMany: (nodeIDs: string[], movement: Pair<number>, origins: Point[]) => {
+      nodeIDs.forEach((nodeID) => this.internal.translate(nodeID, movement));
+
+      if (this.isAtomicActionsAwareness) {
+        this.engine.io.nodeDragMany(nodeIDs, movement, origins);
+      }
+    },
 
     translateManyOnOrigins: (nodeIDs: string[], movement: Pair<number>, origins: Point[]) => {
       nodeIDs.forEach((nodeID, i) => this.internal.translateBaseOnOrigin(nodeID, movement, origins[i]));
@@ -744,13 +750,13 @@ class NodeManager extends EngineConsumer {
       return [node.x, node.y];
     });
 
-    this.internal.translateMany(activeNodeIDs, movement);
+    await this.internal.translateMany(activeNodeIDs, movement, origins);
 
     const action = RealtimeDuck.moveManyNodes(activeNodeIDs, movement, origins);
 
-    if (volatile) {
+    if (volatile && !this.isAtomicActionsAwareness) {
       this.engine.realtime.sendVolatileUpdate(action);
-    } else if (!this.isAtomicActionsPhase2) {
+    } else if (!volatile && !this.isAtomicActionsPhase2) {
       await this.engine.realtime.sendUpdate(action);
     }
   }

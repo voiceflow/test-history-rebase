@@ -26,7 +26,6 @@ export const composeEnhancers = composeWithDevTools({
     : [
         'logux/state',
         Realtime.project.awareness.updateViewers.type,
-        Realtime.diagram.awareness.moveCursor.type,
         Realtime.diagram.awareness.heartbeat.type,
         Realtime.diagram.awareness.updateLockedEntities.type,
       ],

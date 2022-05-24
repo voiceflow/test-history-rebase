@@ -3,6 +3,7 @@ export * as Adapters from './adapters';
 export * as Channels from './channels';
 export * from './config';
 export * from './constants';
+export * as IO from './io';
 export * from './models';
 export * from './types';
 export * as Utils from './utils';

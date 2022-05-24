@@ -6,6 +6,6 @@ export * from './redis';
 export * from './types';
 
 export interface BaseClientMap {
-  pubsub: PubSub;
   redis: Redis;
+  pubsub: PubSub;
 }

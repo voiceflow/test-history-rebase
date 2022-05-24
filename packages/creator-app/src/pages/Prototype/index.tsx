@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { PrototypeStatus } from '@/constants/prototype';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useTeardown } from '@/hooks';
+import { useSetup, useTeardown } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import * as Query from '@/utils/query';
 
@@ -78,6 +78,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
     prototypeTool.navigateToStep(message.id);
   };
 
+  useSetup(() => resetPrototype(), []);
   useTeardown(() => resetPrototype(), []);
 
   const start = async (nodeID?: string) => {

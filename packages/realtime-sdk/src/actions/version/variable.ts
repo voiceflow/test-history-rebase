@@ -16,6 +16,8 @@ export interface GlobalManyVariablesPayload extends BaseVersionPayload {
 
 export const addGlobal = Utils.protocol.createAction<GlobalVariablePayload>(variablesType('ADD'));
 
+export const addManyGlobal = Utils.protocol.createAction<GlobalManyVariablesPayload>(variablesType('ADD_MANY'));
+
 export const removeGlobal = Utils.protocol.createAction<GlobalVariablePayload>(variablesType('REMOVE'));
 
 export const removeManyGlobal = Utils.protocol.createAction<GlobalManyVariablesPayload>(variablesType('REMOVE_MANY'));

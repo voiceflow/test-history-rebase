@@ -184,7 +184,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'foo', CanvasCreationType.IMM);
 
-        expect(dispatched).to.eql([{ sync: Realtime.version.variable.addGlobal({ ...ACTION_CONTEXT, variable: 'foo' }) }]);
+        expect(dispatched).to.eql([{ sync: Realtime.version.variable.addManyGlobal({ ...ACTION_CONTEXT, variables: ['foo'] }) }]);
       });
     });
 

@@ -5,7 +5,7 @@ import PatchVersionSettingsControl from './patchSettings';
 import ReorderComponentsControl from './reorderComponents';
 import ReorderTopicsControl from './reorderTopics';
 import { MigrateSchemaDoneControl, MigrateSchemaFailedControl, MigrateSchemaStartedControl, NegotiateSchemaControl } from './schema';
-import { AddGlobalVariableControl, RemoveGlobalVariableControl, RemoveManyGlobalVariablesControl } from './variable';
+import { AddGlobalVariableControl, AddManyGlobalVariablesControl, RemoveGlobalVariableControl, RemoveManyGlobalVariablesControl } from './variable';
 
 const buildVersionActionControls = (options: LoguxControlOptions) => ({
   reorderTopicsControl: new ReorderTopicsControl(options),
@@ -16,6 +16,7 @@ const buildVersionActionControls = (options: LoguxControlOptions) => ({
 
   // variables
   addGlobalVariableControl: new AddGlobalVariableControl(options),
+  addManyGlobalVariablesControl: new AddManyGlobalVariablesControl(options),
   removeGlobalVariableControl: new RemoveGlobalVariableControl(options),
   removeManyGlobalVariablesControl: new RemoveManyGlobalVariablesControl(options),
 

@@ -3,6 +3,7 @@ import { createRootCRUDReducer } from '@/ducks/utils/crudV2';
 import { INITIAL_STATE } from '../constants';
 import addDiagram from './addDiagram';
 import addGlobalVariable from './addGlobalVariable';
+import addManyGlobalVariables from './addManyGlobalVariables';
 import crudReducers from './crud';
 import patchPublishing from './patchPublishing';
 import patchSession from './patchSession';
@@ -17,6 +18,7 @@ const versionReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
   .immerCase(...addDiagram)
   .immerCase(...removeDiagram)
   .immerCase(...addGlobalVariable)
+  .immerCase(...addManyGlobalVariables)
   .immerCase(...removeGlobalVariable)
   .immerCase(...removeManyGlobalVariables)
   .immerCase(...patchPublishing)

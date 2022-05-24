@@ -8,7 +8,8 @@ import { useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hook
 
 export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) => void }) => {
   const { mergedVariables } = useOrderedVariables();
-  const createGlobalVar = useDispatch(Version.addGlobalVariable);
+  const createGlobalVars = useDispatch(Version.addManyGlobalVariables);
+
   const existingVariableNames = React.useMemo(() => {
     return mergedVariables.map((variable) => {
       return variable.name;
@@ -24,7 +25,7 @@ export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) 
   const onCreateSingle = (varName: string) => {
     if (!varAlreadyExists(varName)) {
       try {
-        createGlobalVar(formatVarName(varName), CanvasCreationType.IMM);
+        createGlobalVars([formatVarName(varName)], CanvasCreationType.IMM);
       } catch (e) {
         toast.error(e);
       }
@@ -33,25 +34,12 @@ export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) 
     }
   };
   const onCreateMultiple = React.useCallback(
-    (commaSeparatedNames: string) => {
+    async (commaSeparatedNames: string) => {
       const allNewVars = commaSeparatedNames.split(',');
-      const newVarNames: string[] = [];
+      let newVarNames: string[] = [];
 
-      allNewVars.forEach((newVar: string) => {
-        const name = formatVarName(newVar);
-        if (!varAlreadyExists(name)) {
-          if (!newVarNames.includes(name)) {
-            newVarNames.push(name);
-            try {
-              createGlobalVar(name, CanvasCreationType.IMM);
-            } catch (e) {
-              toast.error(e);
-            }
-          }
-        } else {
-          toast.warn(`'${name}' already exists`);
-        }
-      });
+      newVarNames = allNewVars.map(formatVarName).filter((name) => !varAlreadyExists(name));
+      await createGlobalVars(newVarNames, CanvasCreationType.IMM);
 
       if (newVarNames.length) {
         toast.success(`${newVarNames.length} variable(s) successfully created`);

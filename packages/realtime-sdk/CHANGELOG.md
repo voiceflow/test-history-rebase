@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.90.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.89.0...@voiceflow/realtime-sdk@1.90.0) (2022-05-24)
+
+
+### Features
+
+* multi slot and variable delete actions (VF-3565) ([#5461](https://github.com/voiceflow/creator-app/issues/5461)) ([69d0691](https://github.com/voiceflow/creator-app/commit/69d069117702657ed0bb28d9995dbf8e3150449e))
+
+
+
+
+
 # [1.89.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.88.4...@voiceflow/realtime-sdk@1.89.0) (2022-05-24)
 
 

@@ -11,6 +11,9 @@ import { Normalized } from 'normal-store';
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
 import { getPlatformIntentAndSlotNameFormatter } from '@/platforms/selectors';
 
+const ALL_NUMBERS_REGEXP = /(\d*)/g;
+const SLOT_REGEXP2 = /({{\[\w*].\w*}})/g;
+
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
 const amazonBuiltInIntentsArray = Object.values(AlexaConstants.AmazonIntent) as string[];
@@ -196,6 +199,17 @@ export function validateUtterance(utterance: string, intentID: string | null, in
 
   return err;
 }
+
+export const formatUtterance = (text = ''): string =>
+  text
+    .split(SLOT_REGEXP2)
+    .map((part) => {
+      if (!part.match(SLOT_REGEXP2)) {
+        return part.replace(ALL_NUMBERS_REGEXP, '');
+      }
+      return part;
+    })
+    .join('');
 
 export const applyPlatformIntentAndSlotNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string => {
   return getPlatformIntentAndSlotNameFormatter(platform)(name);

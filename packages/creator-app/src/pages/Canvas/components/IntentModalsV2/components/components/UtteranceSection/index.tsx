@@ -7,6 +7,7 @@ import {
   StrengthGauge,
   SvgIcon,
   TippyTooltip,
+  toast,
   useDidUpdateEffect,
   useEnableDisable,
   useOnScreen,
@@ -26,7 +27,7 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useModals, usePermission, useSelector, useSetup } from '@/hooks';
 import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
-import { getIntentStrengthLevel, validateUtterance } from '@/utils/intent';
+import { formatUtterance, getIntentStrengthLevel, validateUtterance } from '@/utils/intent';
 
 export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
@@ -143,6 +144,19 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
     }
   };
 
+  const onUpdateUtterancesHandler = (intentUtterances: Realtime.IntentInput[]) => {
+    const cleanedUtterances = intentUtterances.map((utterance) => {
+      const text = formatUtterance(utterance.text);
+      if (text !== utterance.text) {
+        toast.error('Utterances cannot contain numbers');
+        return { ...utterance, text };
+      }
+      return utterance;
+    });
+
+    onUpdateUtterances(cleanedUtterances);
+  };
+
   return (
     <>
       <div ref={stickyTopRef} />
@@ -220,7 +234,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
                 />
               )}
               addValidation={addValidation}
-              onUpdate={onUpdateUtterances}
+              onUpdate={onUpdateUtterancesHandler}
               renderItem={(item, { onUpdate }) => (
                 <Utterance space slots={slots} value={item?.text} onBlur={onUpdate} onEnterPress={onUpdate} onAddSlot={onAddSlot} />
               )}

@@ -17,6 +17,7 @@ export enum PrototypeLayout {
 
 export enum PrototypeStatus {
   IDLE = 'IDLE',
+  LOADING = 'LOADING',
   ACTIVE = 'ACTIVE',
   ENDED = 'ENDED',
 }

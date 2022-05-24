@@ -85,22 +85,27 @@ context('Prototype', () => {
       it('brand configuration (with pro account)', () => {
         cy.intercept('POST', '/image').as('updateImage');
         cy.intercept('PATCH', '/v2/versions/*/prototype?path=settings').as('updateSettings');
+        cy.intercept('POST', '/prototype/*/renderSync').as('renderSync');
 
         cy.upgradeTestAccount('pro');
         canvasPage.goToCanvas();
         canvasPage.el.shareButton.click();
         canvasPage.el.shareTabs.prototypeTab.click();
-        canvasPage.el.shareLinkCopyButton.click();
+        cy.wait('@renderSync');
         canvasPage.el.brandingDropdown.click();
         canvasPage.el.brandingColorInput.clear();
         canvasPage.el.brandingColorInput.type(CHANGED_BRANDING_HEX_COLOR);
+        canvasPage.el.brandingColorInput.blur();
+        cy.wait('@updateSettings');
         prototypePage.uploadImage(Identifier.BRAND_IMAGE_INPUT_CONTAINER);
-        prototypePage.uploadImage(Identifier.MESSAGE_ICON_INPUT_CONTAINER);
-        canvasPage.el.shareLinkCopyButton.click();
         cy.wait('@updateImage');
+        cy.wait('@updateSettings');
+        prototypePage.uploadImage(Identifier.MESSAGE_ICON_INPUT_CONTAINER);
+        cy.wait('@updateImage');
+        cy.wait('@updateSettings');
+        canvasPage.el.shareLinkCopyButton.click();
 
         cy.clipboard().then((clipboardData) => {
-          cy.wait('@updateSettings');
           cy.visit(clipboardData!);
         });
 

@@ -1,4 +1,3 @@
-import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -19,6 +18,7 @@ export interface PrototypeProps {
   isPublic?: boolean;
   setAtTop?: (val: boolean) => void;
   isModelTraining?: boolean;
+  renderingPromise?: Promise<void>;
   locale: string;
 }
 
@@ -31,6 +31,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
   config,
   isPublic,
   setAtTop,
+  renderingPromise,
   isModelTraining,
 }) => {
   const startPrototype = useStartPrototype();
@@ -62,7 +63,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
   const location = useLocation();
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING, PMStatus.FAKE_LOADING);
-  const initialLoadFinished = React.useRef(false);
+
   const isBubbleMessageShown = React.useMemo(
     () => messages.some((message) => BotMessageTypes.includes(message.type) || message.type === MessageType.USER),
     [messages]
@@ -77,28 +78,20 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
     prototypeTool.navigateToStep(message.id);
   };
 
-  React.useEffect(() => {
-    initialLoadFinished.current = true;
-
-    if ((nodeID || autoplay) && !!initialLoadFinished.current) {
-      startPrototype(null, nodeID ?? null);
-    }
-  }, [initialLoadFinished.current]);
-
-  useDidUpdateEffect(() => {
-    if (autoplay) {
-      startPrototype(null, nodeID ?? null);
-    }
-  }, [autoplay]);
-
   useTeardown(() => resetPrototype(), []);
 
-  if (!initialLoadFinished.current) {
-    return null;
-  }
+  const start = async (nodeID?: string) => {
+    actions.updatePrototypeStatus?.(PrototypeStatus.LOADING);
+    await renderingPromise;
+    startPrototype(nodeID ?? null);
+  };
+
+  React.useEffect(() => {
+    if (autoplay) start(nodeID);
+  }, [autoplay]);
 
   if (status === PrototypeStatus.IDLE && !autoplay) {
-    return <Start config={config} debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={startPrototype} />;
+    return <Start config={config} debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={start} />;
   }
 
   return (

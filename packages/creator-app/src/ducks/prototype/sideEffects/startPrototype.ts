@@ -51,7 +51,7 @@ const getValidStartingNode = (
 };
 
 const startPrototype =
-  (diagramID?: string | null, selectedNodeID?: string | null): SyncThunk =>
+  (selectedNodeID?: string | null): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
 
@@ -73,7 +73,7 @@ const startPrototype =
     const context: Context = {
       stack: [
         {
-          diagramID: diagramID || startFromDiagramID || activeDiagramID,
+          diagramID: startFromDiagramID || activeDiagramID,
           storage: {},
           variables: {},
           blockID: targetNodeID,

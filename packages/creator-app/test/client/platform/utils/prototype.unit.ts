@@ -8,6 +8,6 @@ const client = createClient(SERVICE_ENDPOINT);
 
 suite('Platform Client - Utils - Prototype', ({ expect }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['run', 'cancel', 'getStatus']);
+    expect(Object.keys(client)).to.have.members(['run', 'cancel', 'getStatus', 'renderSync']);
   });
 });

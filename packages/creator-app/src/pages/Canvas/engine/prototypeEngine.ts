@@ -47,9 +47,9 @@ class PrototypeEngine extends EngineConsumer {
     return !!linkIDs.length && this.highlightedLinkIDs.includes(linkIDs[0]);
   }
 
-  start(diagramID?: string | null, nodeID?: string | null) {
+  start(nodeID?: string | null) {
     this.log.debug(this.log.pending('initializing prototype'));
-    this.dispatch(Prototype.startPrototype(diagramID, nodeID));
+    this.dispatch(Prototype.startPrototype(nodeID));
     this.teardownSubscription = this.engine.store.subscribe(() => this.redrawHighlighted());
 
     this.log.info(this.log.success('prototype initialized'));

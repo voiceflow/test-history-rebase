@@ -6,11 +6,7 @@ import PrototypeSidebar from '@/pages/Prototype/components/PrototypeSidebar';
 const PrototypeOverlay: React.FC = () => {
   const isPrototypingMode = usePrototypingMode();
 
-  return !isPrototypingMode ? null : (
-    <>
-      <PrototypeSidebar open />
-    </>
-  );
+  return !isPrototypingMode ? null : <PrototypeSidebar />;
 };
 
 export default PrototypeOverlay;

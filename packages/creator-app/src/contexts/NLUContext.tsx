@@ -10,6 +10,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as Version from '@/ducks/version';
 import { useDispatch, useSelector } from '@/hooks';
 import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/constants';
 import { useDeleteVariable, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
@@ -45,8 +46,10 @@ export const NLUProvider: React.FC = ({ children }) => {
   const deleteIntent = useDispatch(Intent.deleteIntent);
   const deleteIntents = useDispatch(Intent.deleteManyIntents);
   const deleteSlot = useDispatch(Slot.deleteSlot);
+  const deleteSlots = useDispatch(Slot.deleteSlots);
   const deleteVariable = useDeleteVariable();
   const removeIntentSlot = useDispatch(Intent.removeIntentSlot);
+  const removeGlobalVariables = useDispatch(Version.removeGlobalVariables);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
@@ -229,6 +232,11 @@ export const NLUProvider: React.FC = ({ children }) => {
 
       if (type === InteractionModelTabType.INTENTS) {
         await deleteIntents(validDeleteIDs);
+      } else if (type === InteractionModelTabType.SLOTS) {
+        await deleteSlots(validDeleteIDs);
+      } else if (type === InteractionModelTabType.VARIABLES) {
+        const cleanedNames = validDeleteIDs.map((name) => name.replace(`${VariableType.GLOBAL}:`, ''));
+        await removeGlobalVariables(cleanedNames);
       }
 
       return validDeleteIDs;

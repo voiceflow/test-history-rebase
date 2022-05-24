@@ -84,7 +84,6 @@ export const useDeleteVariable = () => {
   return React.useCallback(
     (variableID: string) => {
       const variable = mergedVariablesMap[variableID];
-
       if (variable.type === VariableType.GLOBAL) {
         removeGlobalVariable(variable.name);
       } else {

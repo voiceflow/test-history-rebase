@@ -45,6 +45,16 @@ class SlotService extends AbstractControl {
       currentSlots.filter((slot) => slot.key !== slotID)
     );
   }
+
+  public async deleteMany<T extends BaseModels.Version.PlatformData>(creatorID: number, versionID: string, slotIDs: string[]): Promise<void> {
+    const currentSlots = await this.getAll<T>(creatorID, versionID);
+
+    await this.replaceAll(
+      creatorID,
+      versionID,
+      currentSlots.filter((slot) => !slotIDs.includes(slot.key))
+    );
+  }
 }
 
 export default SlotService;

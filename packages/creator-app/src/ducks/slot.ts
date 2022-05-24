@@ -72,5 +72,11 @@ export const refreshSlots = (): Thunk => async (dispatch, getState) => {
 export const deleteSlot =
   (slotID: string): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.slot.crud.remove({ ...getActiveVersionContext(getState()), key: slotID }));
+    await dispatch.sync(Realtime.slot.crud.removeMany({ ...getActiveVersionContext(getState()), keys: [slotID] }));
+  };
+
+export const deleteSlots =
+  (slotIDs: string[]): Thunk =>
+  async (dispatch, getState) => {
+    await dispatch.sync(Realtime.slot.crud.removeMany({ ...getActiveVersionContext(getState()), keys: slotIDs }));
   };

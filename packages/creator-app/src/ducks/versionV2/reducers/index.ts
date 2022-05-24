@@ -9,6 +9,7 @@ import patchSession from './patchSession';
 import patchSettings from './patchSettings';
 import removeDiagram from './removeDiagram';
 import removeGlobalVariable from './removeGlobalVariable';
+import removeManyGlobalVariables from './removeManyGlobalVariables';
 import reorderComponents from './reorderComponents';
 import reorderTopics from './reorderTopics';
 
@@ -17,6 +18,7 @@ const versionReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
   .immerCase(...removeDiagram)
   .immerCase(...addGlobalVariable)
   .immerCase(...removeGlobalVariable)
+  .immerCase(...removeManyGlobalVariables)
   .immerCase(...patchPublishing)
   .immerCase(...patchSession)
   .immerCase(...patchSettings)

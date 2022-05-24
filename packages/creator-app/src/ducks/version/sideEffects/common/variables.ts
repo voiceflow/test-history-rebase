@@ -31,3 +31,9 @@ export const removeGlobalVariable =
   async (dispatch, getState) => {
     await dispatch.sync(Realtime.version.variable.removeGlobal({ ...getActiveVersionContext(getState()), variable }));
   };
+
+export const removeGlobalVariables =
+  (variables: string[]): Thunk =>
+  async (dispatch, getState) => {
+    await dispatch.sync(Realtime.version.variable.removeManyGlobal({ ...getActiveVersionContext(getState()), variables }));
+  };

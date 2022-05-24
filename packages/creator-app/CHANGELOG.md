@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.726.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.725.1...@voiceflow/creator-app@1.726.0) (2022-05-24)
+
+
+### Bug Fixes
+
+* multi variable add action (VF-3570) ([#5462](https://github.com/voiceflow/creator-app/issues/5462)) ([ac40e20](https://github.com/voiceflow/creator-app/commit/ac40e2066f29a025bdf23cf91ffc730e19b5ed2a))
+
+
+### Features
+
+* speed up prototype (VF-3534) ([#5452](https://github.com/voiceflow/creator-app/issues/5452)) ([90c893e](https://github.com/voiceflow/creator-app/commit/90c893ece38a2d5285a8fe898bef0c8b94f07f33))
+
+
+
+
+
 ## [1.725.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.725.0...@voiceflow/creator-app@1.725.1) (2022-05-24)
 
 

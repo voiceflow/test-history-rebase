@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.725.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.725.0...@voiceflow/creator-app@1.725.1) (2022-05-24)
+
+
+### Bug Fixes
+
+* add a filter check after editing utterance (VF-3242) ([#5424](https://github.com/voiceflow/creator-app/issues/5424)) ([c7f67a2](https://github.com/voiceflow/creator-app/commit/c7f67a2e1d589b0e57a2ee2a9c192b841a37ea99))
+
+
+
+
+
 # [1.725.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.724.0...@voiceflow/creator-app@1.725.0) (2022-05-24)
 
 

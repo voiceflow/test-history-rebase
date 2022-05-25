@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.91.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.90.1...@voiceflow/realtime-sdk@1.91.0) (2022-05-25)
+
+
+### Features
+
+* step canvas updates (VF-3366) ([#5360](https://github.com/voiceflow/creator-app/issues/5360)) ([b1b091c](https://github.com/voiceflow/creator-app/commit/b1b091ca6dd47201479f36ec4b910da25e2c012a))
+
+
+
+
+
 ## [1.90.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.90.0...@voiceflow/realtime-sdk@1.90.1) (2022-05-24)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.727.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.726.1...@voiceflow/creator-app@1.727.0) (2022-05-25)
+
+
+### Features
+
+* add segment event for NLU imported (VF-3589) ([#5469](https://github.com/voiceflow/creator-app/issues/5469)) ([a56657d](https://github.com/voiceflow/creator-app/commit/a56657d319d3f91f7c5f467201a283bf2e33acac))
+* step canvas updates (VF-3366) ([#5360](https://github.com/voiceflow/creator-app/issues/5360)) ([b1b091c](https://github.com/voiceflow/creator-app/commit/b1b091ca6dd47201479f36ec4b910da25e2c012a))
+
+
+
+
+
 ## [1.726.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.726.0...@voiceflow/creator-app@1.726.1) (2022-05-24)
 
 

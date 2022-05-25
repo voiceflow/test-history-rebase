@@ -130,11 +130,6 @@ jobs:
           at: ~/voiceflow
       - vfcommon/install_node_modules
       - restore_cache:
-          name: Restoring jest Cache
-          keys:
-            - jest-cache-{{ .Branch }}
-            - jest-cache-master
-      - restore_cache:
           name: Restoring eslint Cache
           keys:
             - eslint-cache-{{ .Branch }}
@@ -157,12 +152,6 @@ jobs:
       - vfcommon/monorepo_dependency_tests:
           force_execution: << pipeline.parameters.build-all >>
           run_on_root: << pipeline.parameters.build-all >>
-      - save_cache:
-          name: Saving jest Cache
-          key: jest-cache-{{ .Branch }}-{{ .BuildNum }}
-          paths:
-            - ~/voiceflow/packages/creator-app/.jest_cache
-            - ~/voiceflow/packages/ui/.jest_cache
       - save_cache:
           name: Saving eslint Cache
           key: eslint-cache-{{ .Branch }}-{{ .BuildNum }}

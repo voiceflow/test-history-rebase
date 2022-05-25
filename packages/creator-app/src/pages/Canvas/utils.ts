@@ -13,19 +13,26 @@ const getPromptContent = (prompt: VoiceModels.IntentPrompt<string>[] | ChatModel
   return slate.toPlaintext(promptContent.content?.[0].children);
 };
 
+export const transformSlotIntoPrompt = (slotData: Realtime.Slot, slot: Realtime.VoiceIntentSlot<string> | Realtime.ChatIntentSlot) => {
+  if (!slot.required || !slot.dialog.prompt.length) return null;
+
+  const content = getPromptContent(slot.dialog.prompt);
+  const name = slotData?.name;
+  const color = slotData?.color;
+
+  if (!content || !name || !color) return null;
+
+  const entityPrompt: EntityPrompt = { id: slot.id, name, content, color };
+  return entityPrompt;
+};
+
 export const transformSlotsIntoPrompts = (slots: Slots, slotsMap: Record<string, Realtime.Slot>): EntityPrompt[] => {
   return slots.reduce((acc, slot) => {
     const slotData = slotsMap[slot.id];
+    const entityPrompt = transformSlotIntoPrompt(slotData, slot);
 
-    if (!slot.required || !slot.dialog.prompt.length) return acc;
+    if (!entityPrompt) return acc;
 
-    const content = getPromptContent(slot.dialog.prompt);
-    const name = slotData?.name;
-    const color = slotData?.color;
-
-    if (!content || !name || !color) return acc;
-
-    const entityPrompt: EntityPrompt = { id: slot.id, name, content, color };
     return [...acc, entityPrompt];
   }, [] as EntityPrompt[]);
 };

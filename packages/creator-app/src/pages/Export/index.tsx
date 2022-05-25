@@ -11,7 +11,7 @@ import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
 import { useEngine } from '@/pages/Canvas/hooks';
-import { getManager } from '@/pages/Canvas/managers';
+import { useManager } from '@/pages/Canvas/managers';
 import { MarkupProvider, ProjectProvider } from '@/pages/Project/contexts';
 
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark, MockRealtimeGate } from './components';
@@ -25,6 +25,8 @@ const ExportCanvas: React.FC = () => {
 
   const [engine, engineKey] = useEngine();
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
+  const getManager = useManager();
+
   return (
     <ProjectProvider platform={platform} projectType={projectType}>
       <PresentationModeProvider>

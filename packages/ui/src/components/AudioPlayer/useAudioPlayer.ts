@@ -2,13 +2,36 @@ import { useEffect, useRef, useState } from 'react';
 
 const NETWORK_NO_SOURCE = 3;
 
-function useAudioPlayer({ autoplay = false }) {
+interface AudioPlayerProps {
+  autoplay?: boolean;
+  audioURL?: string;
+  isUsingDOMElement?: boolean;
+}
+
+function useAudioPlayer({ autoplay = false, audioURL, isUsingDOMElement = false }: AudioPlayerProps) {
   const ref = useRef<HTMLAudioElement | null>(null);
   const [duration, setDuration] = useState<number>(0);
   const [curTime, setCurTime] = useState<number>(0);
   const [playing, setPlaying] = useState(autoplay);
   const [clickedTime, setClickedTime] = useState<null | number>(null);
   const [error, setError] = useState<Event | null | string>(null);
+
+  const resetState = () => {
+    ref.current = null;
+    setDuration(0);
+    setPlaying(false);
+    setClickedTime(null);
+    setError(null);
+  };
+
+  useEffect(() => {
+    if (isUsingDOMElement) return;
+    if (audioURL) {
+      ref.current = new Audio(audioURL);
+    } else {
+      resetState();
+    }
+  }, [audioURL]);
 
   useEffect(() => {
     const audio = ref.current;
@@ -49,7 +72,7 @@ function useAudioPlayer({ autoplay = false }) {
       audio.removeEventListener('loadeddata', setAudioData);
       audio.removeEventListener('timeupdate', setAudioTime);
     };
-  }, []);
+  }, [audioURL]);
 
   useEffect(() => {
     const audio = ref.current;

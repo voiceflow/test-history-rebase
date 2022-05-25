@@ -5,7 +5,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isFunction from 'lodash/isFunction';
 
 import { BlockCategory } from '@/constants';
-import { getManager } from '@/pages/Canvas/managers';
+import { getManager } from '@/pages/Canvas/managers/constants';
 
 export interface MenuStep {
   type: Realtime.BlockType;

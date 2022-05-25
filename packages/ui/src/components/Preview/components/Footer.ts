@@ -9,6 +9,7 @@ const PreviewFooter = styled.div<{ noBackground?: boolean }>`
   justify-content: flex-end;
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
+  width: 100%;
 
   ${({ noBackground }) =>
     noBackground &&

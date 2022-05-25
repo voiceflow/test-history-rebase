@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StepLabelVariant } from '@/constants/canvas';
+import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import Port from '@/pages/Canvas/components/Port';
 import { PortEntityProvider } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
@@ -14,16 +14,19 @@ import StepLabelTextContainer from './StepLabelTextContainer';
 import StepLinkedLabelContainer from './StepLinkedLabelContainer';
 import StepLinkedLabelIcon from './StepLinkedLabelIcon';
 import StepLinkedLabelText from './StepLinkedLabelText';
+import StepTitle from './StepTitle';
 
 const StepItem: React.FC<ItemProps> = ({
   children,
   icon,
   iconColor,
   label,
+  title,
   portID,
   onClick,
   wordBreak,
   attachment,
+  prefix,
   placeholder,
   linkedLabel,
   labelVariant = StepLabelVariant.PRIMARY,
@@ -32,15 +35,37 @@ const StepItem: React.FC<ItemProps> = ({
   labelLineClamp,
   variant,
   nested,
+  textColor,
+  iconSize,
+  iconStyle,
+  nestedWithIcon,
+  v2,
+  style,
 }) => {
   const stepAPI = React.useContext(StepAPIContext);
 
   return (
-    <Container className={ClassName.CANVAS_STEP_ITEM} nested={nested}>
+    <Container className={ClassName.CANVAS_STEP_ITEM} nested={nested} nestedWithIcon={nestedWithIcon} style={style}>
       {children ?? (
         <>
-          <StepIcon variant={variant} iconColor={iconColor} icon={icon} />
+          {prefix}
+          {v2 && icon && <StepIcon variant={variant as BlockVariant} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
+          {!v2 && <StepIcon variant={variant as BlockVariant} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
           <StepLabelTextContainer variant={label ? labelVariant : StepLabelVariant.PLACEHOLDER}>
+            {title && (
+              <StepTitle
+                onClick={onClick}
+                className={ClassName.CANVAS_STEP_ITEM_LABEL}
+                multiline={multilineLabel}
+                lineClamp={labelLineClamp}
+                withNewLines={withNewLines}
+                wordBreak={wordBreak}
+                color={textColor}
+              >
+                {title}
+              </StepTitle>
+            )}
+
             <StepLabelText
               onClick={onClick}
               className={ClassName.CANVAS_STEP_ITEM_LABEL}
@@ -48,6 +73,8 @@ const StepItem: React.FC<ItemProps> = ({
               lineClamp={labelLineClamp}
               withNewLines={withNewLines}
               wordBreak={wordBreak}
+              color={textColor}
+              hasTitle={!!title}
             >
               {label || placeholder}
             </StepLabelText>

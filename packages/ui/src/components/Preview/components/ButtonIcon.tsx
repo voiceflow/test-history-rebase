@@ -1,16 +1,14 @@
 import SvgIcon from '@ui/components/SvgIcon';
-import { styled } from '@ui/styles';
-import { ClassName } from '@ui/styles/constants';
+import { styled, transition } from '@ui/styles';
 import React from 'react';
 import { space, SpaceProps } from 'styled-system';
 
 import { PreviewColors } from '../constants';
 
 const ButtonContainer = styled.div`
+  ${transition('background-color', 'color')};
   width: 40px;
   height: 28px;
-  min-width: 40px;
-  min-height: 28px;
   background-color: ${PreviewColors.GREY_LIGHT_BACKGROUND_COLOR};
   display: flex;
   justify-content: center;
@@ -21,21 +19,25 @@ const ButtonContainer = styled.div`
 
   &:hover {
     background-color: ${PreviewColors.GREY_HOVER_BACKGROUND_COLOR};
-
-    ${ClassName.SVG_ICON} {
-      color: #fff;
-    }
   }
 `;
 
-export interface PreviewButtonIconProps extends SpaceProps {
+const ButtonIcon = styled(SvgIcon)`
+  color: rgba(255, 255, 255, 0.85);
+
+  &:hover {
+    color: #f2f7f7;
+  }
+`;
+
+export interface PreviewButtonIconProps extends SpaceProps, React.HTMLAttributes<HTMLDivElement> {
   icon: string;
 }
 
 const PreviewButtonIcon: React.FC<PreviewButtonIconProps> = ({ icon, ...props }) => {
   return (
     <ButtonContainer {...props}>
-      <SvgIcon icon={icon as any} color="#fff" />
+      <ButtonIcon icon={icon as any} color="rgba(255, 255, 255, 0.85)" />
     </ButtonContainer>
   );
 };

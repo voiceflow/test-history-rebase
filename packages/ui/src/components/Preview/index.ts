@@ -2,6 +2,7 @@ import ButtonIcon from './components/ButtonIcon';
 import Code from './components/Code';
 import Container from './components/Container';
 import Content from './components/Content';
+import ContentIcon from './components/ContentIcon';
 import ContentItem from './components/ContentItem';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -19,4 +20,5 @@ export default Object.assign(Container, {
   Popover,
   ButtonIcon,
   ContentItem,
+  ContentIcon,
 });

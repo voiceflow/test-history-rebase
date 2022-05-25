@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullish } from '@voiceflow/common';
+import { Nullish, Struct } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { logger } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
@@ -383,14 +383,22 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     }
   }
 
-  setActive(nodeID: string, isSelection?: boolean, skipURLSync?: boolean): void {
-    if (isSelection) {
+  setActive(
+    nodeID: string,
+    options?: {
+      routeState?: Struct;
+      isSelection?: boolean;
+      skipURLSync?: boolean;
+      nodeSubPath?: string;
+    }
+  ): void {
+    if (options?.isSelection) {
       this.selection.toggle(nodeID);
     } else {
       this.focus.set(nodeID);
 
-      if (!skipURLSync) {
-        this.store.dispatch(Router.goToCurrentCanvasNode(nodeID));
+      if (!options?.skipURLSync) {
+        this.store.dispatch(Router.goToCurrentCanvasNode(nodeID, options?.nodeSubPath, options?.routeState));
       }
     }
   }
@@ -493,7 +501,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   focusNode(nodeID: string, { open, skipURLSync }: { open?: boolean; skipURLSync?: boolean } = {}): void {
     this.node.center(nodeID, !this.comment.isModeActive);
-    this.setActive(nodeID, !open, skipURLSync);
+    this.setActive(nodeID, { isSelection: !open, skipURLSync });
     this.comment.forceRedrawThreads();
     this.log.info(this.log.success(`focused on the ${nodeID} node`));
   }

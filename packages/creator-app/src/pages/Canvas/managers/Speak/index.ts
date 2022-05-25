@@ -4,6 +4,7 @@ import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import SpeakEditor from './SpeakEditor';
 import SpeakStep from './SpeakStep';
+import SpeakManagerV2 from './v2';
 
 const SpeakManager: NodeManagerConfig<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = {
   ...NODE_CONFIG,
@@ -13,6 +14,8 @@ const SpeakManager: NodeManagerConfig<Realtime.NodeData.Speak, Realtime.NodeData
 
   step: SpeakStep,
   editor: SpeakEditor,
+
+  v2: SpeakManagerV2,
 };
 
 export default SpeakManager;

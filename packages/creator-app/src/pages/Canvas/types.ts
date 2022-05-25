@@ -17,6 +17,13 @@ export interface MarkupTransform {
   origin: Coords;
 }
 
+export interface EntityPrompt {
+  id: string;
+  name: string;
+  content: string;
+  color: string;
+}
+
 export type NodeDataUpdater<T> = (value: Partial<Realtime.NodeData<T>>, save?: boolean) => Promise<void>;
 
 export interface CanvasContainerAPI {

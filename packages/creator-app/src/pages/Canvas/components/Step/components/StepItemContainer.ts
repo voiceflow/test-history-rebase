@@ -2,10 +2,16 @@ import { Flex } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
-const StepItemContainer = styled(Flex)<{ nested?: boolean }>`
+const StepItemContainer = styled(Flex)<{ nested?: boolean; nestedWithIcon?: boolean }>`
   position: relative;
-  ${({ nested }) =>
-    nested
+  ${({ nested, nestedWithIcon }) => {
+    if (nestedWithIcon)
+      return css`
+        min-height: ${({ theme }) => theme.components.blockStep.minHeight}px;
+        padding: 16px 16px 16px 55px;
+      `;
+
+    return nested
       ? css`
           :before {
             display: none;
@@ -15,7 +21,9 @@ const StepItemContainer = styled(Flex)<{ nested?: boolean }>`
       : css`
           min-height: ${({ theme }) => theme.components.blockStep.minHeight}px;
           padding: 16px 16px 16px 22px;
-        `}
+        `;
+  }}
+
   width: 100%;
 `;
 

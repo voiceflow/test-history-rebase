@@ -9,7 +9,7 @@ import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { FeatureFlagMap } from '@/ducks/feature';
-import { getManager } from '@/pages/Canvas/managers';
+import { getManager } from '@/pages/Canvas/managers/constants';
 import { NodeDescriptorOptionalPorts } from '@/pages/Canvas/managers/types';
 import { Dispatcher, DispatchResult, Selector } from '@/store/types';
 import { Pair, Point } from '@/types';

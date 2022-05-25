@@ -15,7 +15,6 @@ export enum ClassName {
   MENU_ITEM_GROUP = 'vf-menu__item-group',
   TOOLTIP = 'vf-tooltip',
   SVG_ICON = 'vf-svg-icon',
-
   POPPER = 'vf-popper',
   POPPER_NAV_ITEM = 'vf-popper__nav_item',
 }

@@ -1,1 +1,3 @@
-export const PATH = 'no-match' as const;
+import { SubEditorPaths } from '@/pages/Canvas/constants';
+
+export const PATH = SubEditorPaths.NO_MATCH as const;

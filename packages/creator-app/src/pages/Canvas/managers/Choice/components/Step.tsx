@@ -1,10 +1,8 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant } from '@/constants';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSyncedLookup } from '@/hooks';
 import Step, { Attachment, ConnectedStep, Item, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
@@ -19,25 +17,7 @@ import {
 import { prettifyIntentName } from '@/utils/intent';
 
 import { NODE_CONFIG } from '../constants';
-
-interface ChoiceItem {
-  key: string;
-  label: Nullable<string>;
-  portID: Nullable<string>;
-  attachment?: boolean;
-  linkedLabel?: Nullable<string>;
-  onAttachmentClick?: VoidFunction;
-}
-
-export interface ChoiceStepProps {
-  nodeID: string;
-  choices: ChoiceItem[];
-  noMatch: Nullable<Realtime.NodeData.NoMatch>;
-  noReply?: Nullable<Realtime.NodeData.NoReply>;
-  variant: BlockVariant;
-  noMatchPortID?: Nullable<string>;
-  noReplyPortID?: Nullable<string>;
-}
+import { ChoiceItem, ChoiceStepProps } from '../types';
 
 export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch, noReply, noMatchPortID, noReplyPortID, variant }) => (
   <Step nodeID={nodeID}>

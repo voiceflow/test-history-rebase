@@ -1,10 +1,10 @@
-import { flexStyles } from '@voiceflow/ui';
+import { flexStyles, units } from '@voiceflow/ui';
 
-import { styled, units } from '@/hocs';
+import { styled } from '@/hocs';
 
 import StepItemContainer from './StepItemContainer';
 
-const StepSection = styled.section`
+const StepSection = styled.section<{ v2?: boolean; withIcon?: boolean }>`
   ${flexStyles}
 
   flex-direction: column;
@@ -15,6 +15,13 @@ const StepSection = styled.section`
     top: -1px;
     height: 1px;
     left: ${units(6.5)}px;
+
+    ${({ v2, withIcon }) =>
+      v2 &&
+      `
+      left: ${withIcon ? '54px' : '22px'};
+    `};
+
     right: 0;
     content: '';
     border-top: 1px solid #eaeff4;

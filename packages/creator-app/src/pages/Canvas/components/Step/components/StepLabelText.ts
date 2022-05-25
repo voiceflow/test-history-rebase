@@ -9,6 +9,8 @@ export interface StepLabelTextProps {
   lineClamp?: number;
   wordBreak?: boolean;
   withNewLines?: boolean;
+  color?: string;
+  hasTitle?: boolean;
 }
 
 export const textLabelStyles = css<StepLabelTextProps>`
@@ -38,6 +40,12 @@ export const textLabelStyles = css<StepLabelTextProps>`
 `;
 
 const StepLabelText = styled.div<StepLabelTextProps>`
+  ${({ color }) =>
+    color &&
+    css`
+      color: ${color};
+    `};
+
   ${overflowTextStyles}
   ${textLabelStyles}
 
@@ -51,6 +59,17 @@ const StepLabelText = styled.div<StepLabelTextProps>`
         color: #4d8de6;
       }
     `}
+
+  ${({ hasTitle }) =>
+    hasTitle &&
+    css`
+      font-size: 13px;
+      color: #62778c;
+
+      span {
+        color: #62778c;
+      }
+    `};
 `;
 
 export default StepLabelText;

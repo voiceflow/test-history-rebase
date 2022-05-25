@@ -45,6 +45,11 @@ export const DEFAULT_MARKUP_LINE_COLOR = hexToRGBA('#62778cff');
 export const DEFAULT_MARKUP_BORDER_COLOR = hexToRGBA('#5d9df5ff');
 export const DEFAULT_MARKUP_BACKGROUND_COLOR = hexToRGBA('#5d9df533');
 
+export enum SubEditorPaths {
+  NO_REPLY = 'no-reply',
+  NO_MATCH = 'no-match',
+}
+
 export enum OverlayType {
   CURSOR = 'cursor',
   CURSOR_V2 = 'cursorV2',
@@ -78,3 +83,5 @@ export enum EditorAnimationEffect {
 }
 
 export const SLOT_PATH_TYPE = 'slot';
+
+export const WAITING_FOR_INTENT_PLACEHOLDER = 'Listening for an intent…';

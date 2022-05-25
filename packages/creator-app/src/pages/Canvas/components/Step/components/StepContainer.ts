@@ -25,7 +25,7 @@ const StepContainer = styled(Flex)<StepContainerProps>`
   position: relative;
   flex-direction: column;
   min-height: ${({ theme }) => theme.components.blockStep.minHeight}px;
-  border-radius: 5px;
+  border-radius: 6px;
   background-color: #fff;
   border: 1px solid #d3d9e4;
 

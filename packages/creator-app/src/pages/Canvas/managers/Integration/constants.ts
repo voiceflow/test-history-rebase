@@ -54,6 +54,7 @@ export const DEFAULT_DATA: Record<BaseNode.Utils.IntegrationType, Realtime.NodeD
     selectedIntegration: BaseNode.Utils.IntegrationType.GOOGLE_SHEETS,
   },
 };
+
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = {
   type: BlockType.INTEGRATION,
 

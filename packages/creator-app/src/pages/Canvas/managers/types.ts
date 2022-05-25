@@ -155,6 +155,10 @@ export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends
    * @deprecated use nested routes instead
    */
   editorsByPath?: Record<string, React.FC<any>>;
+
+  step?: ConnectedStep<Data, BuiltInPorts>;
+
+  v2?: Partial<BaseNodeManagerConfig<Data, BuiltInPorts>>;
 }
 
 export interface NodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
@@ -167,6 +171,8 @@ export interface NodeManagerConfig<Data extends object, BuiltInPorts extends Rea
    * @deprecated use editorV2 instead
    */
   editor: NodeEditor<Data, BuiltInPorts>;
+
+  v2?: Partial<NodeManagerConfig<Data, BuiltInPorts>>;
 }
 
 export interface NodeManagerConfigV2<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
@@ -176,6 +182,7 @@ export interface NodeManagerConfigV2<Data extends object, BuiltInPorts extends R
 
   step: ConnectedStep<Data, BuiltInPorts>;
   editorV2: NodeEditorV2<Data, BuiltInPorts>;
+  v2?: Partial<NodeManagerConfig<Data, BuiltInPorts>>;
 }
 
 export interface MarkupNodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
@@ -188,3 +195,4 @@ export interface OptionalSectionConfig {
   option: OptionsMenuOption | null;
   section: React.ReactNode | false;
 }
+export type ManagerConfig = NodeManagerConfig<any, any> | BaseNodeManagerConfig<any, any>;

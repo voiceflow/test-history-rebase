@@ -6,7 +6,27 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { Container, HoverContainer, Icon, Image, Item, LabelText, LabelTextContainer, Section, SubItem, SubLabelText } from './components';
+import {
+  Attachment,
+  Container,
+  HoverContainer,
+  Icon,
+  Image,
+  Item,
+  LabelText,
+  LabelTextContainer,
+  Section,
+  StepButton,
+  StepIconContainer,
+  StepItemContainer,
+  StepLabelRow,
+  StepLabelText,
+  StepLabelTextContainer,
+  StepPort,
+  StepPreviewButton,
+  SubItem,
+  SubLabelText,
+} from './components';
 import { StepAPIContext } from './contexts';
 
 export * from './components';
@@ -38,8 +58,8 @@ const Step: React.FC<StepProps> = ({ nodeID, image, disableHighlightStyle, child
     >
       <Container canHighlight={!disableHighlightStyle} draggable={stepAPI?.isDraggable} dividerOffset={dividerOffset}>
         {stepAPI?.lockOwner && <User user={stepAPI.lockOwner} />}
-        {children}
         {image && <Image position={imagePosition} image={image} aspectRatio={imageAspectRatio} />}
+        {children}
       </Container>
     </HoverContainer>
   );
@@ -57,4 +77,13 @@ export default Object.assign(Step, {
   StepLabelVariant,
   SubItem,
   SubLabelText,
+  Attachment,
+  StepButton,
+  StepIconContainer,
+  StepPreviewButton,
+  StepLabelRow,
+  StepItemContainer,
+  StepLabelTextContainer,
+  StepLabelText,
+  StepPort,
 });

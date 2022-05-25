@@ -96,7 +96,7 @@ export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean
     if (!event.shiftKey && node.type === BlockType.COMBINED && node.combinedNodes.length) {
       engine.setActive(node.combinedNodes[0]);
     } else {
-      engine.setActive(nodeEntity.nodeID, event.shiftKey);
+      engine.setActive(nodeEntity.nodeID, { isSelection: event.shiftKey });
     }
   };
 

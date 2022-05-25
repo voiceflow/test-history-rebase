@@ -6,8 +6,7 @@ const PreviewContent = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 16px;
-  padding-top: 7px;
-  max-height: 207px;
+  max-height: 400px;
   overflow: hidden;
   overflow-y: scroll;
   -ms-overflow-style: none;

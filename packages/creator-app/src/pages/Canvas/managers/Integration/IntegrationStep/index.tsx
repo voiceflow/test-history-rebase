@@ -6,7 +6,7 @@ import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
-import { getLabel, getPlaceholder } from './utils';
+import { getLabel, getPlaceholder } from '../utils';
 
 export interface IntegrationStepProps {
   data: Realtime.NodeData.Integration;
@@ -26,6 +26,7 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPort
         variant={variant}
         placeholder={getPlaceholder(data)}
         labelVariant={StepLabelVariant.SECONDARY}
+        iconColor="#62778c"
       />
     </Section>
 

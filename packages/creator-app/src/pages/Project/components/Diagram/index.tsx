@@ -9,7 +9,7 @@ import { withBatchLoadingGate } from '@/hocs';
 import { useDispatch, useEventualEngine, useSelector, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
-import { getManager } from '@/pages/Canvas/managers';
+import { useManager } from '@/pages/Canvas/managers';
 import DesignMenu from '@/pages/Project/components/DesignMenu';
 import { useAnyModeOpen, usePrototypingMode } from '@/pages/Project/hooks';
 import PrototypeOverlay from '@/pages/Prototype/components/PrototypeOverlay';
@@ -26,6 +26,7 @@ const Diagram: React.FC<DiagramProps> = () => {
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
   const checkUnreadTranscripts = useDispatch(Transcripts.updateHasUnreadTranscripts);
+  const getManager = useManager();
 
   const engine = useEventualEngine();
   const isDesignMode = !useAnyModeOpen();

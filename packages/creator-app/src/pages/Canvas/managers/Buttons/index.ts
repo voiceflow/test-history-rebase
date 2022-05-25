@@ -6,6 +6,7 @@ import ButtonsEditor from './ButtonsEditor';
 import ButtonsStep from './ButtonsStep';
 import { NODE_CONFIG } from './constants';
 import { EDITORS_BY_PATH } from './subeditors';
+import ButtonsManagerV2 from './v2';
 
 const ButtonsManager: NodeManagerConfig<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = {
   ...NODE_CONFIG,
@@ -16,6 +17,8 @@ const ButtonsManager: NodeManagerConfig<Realtime.NodeData.Buttons, Realtime.Node
   step: ButtonsStep,
   editor: ButtonsEditor,
   editorsByPath: EDITORS_BY_PATH,
+
+  v2: ButtonsManagerV2,
 };
 
 export default ButtonsManager;

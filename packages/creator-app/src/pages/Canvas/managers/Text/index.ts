@@ -5,6 +5,7 @@ import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import TextEditor from './TextEditor';
 import TextStep from './TextStep';
+import TextManagerV2 from './v2';
 
 const TextManager: NodeManagerConfig<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = {
   ...NODE_CONFIG,
@@ -14,6 +15,8 @@ const TextManager: NodeManagerConfig<Realtime.NodeData.Text, Realtime.NodeData.T
 
   step: TextStep,
   editor: TextEditor,
+
+  v2: TextManagerV2,
 };
 
 export default TextManager;

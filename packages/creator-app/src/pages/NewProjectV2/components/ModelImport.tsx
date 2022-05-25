@@ -1,6 +1,7 @@
 import { Box, Flex, Text, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
+import { NLUImportOrigin } from '@/constants';
 import { styled } from '@/hocs';
 
 import { PLATFORM_PROJECT_META_MAP } from '../constants';
@@ -45,7 +46,7 @@ const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, impo
         </Text>
       ) : (
         <Flex>
-          <ImportLink disabled={isImportLoading} fontSize={13} onClick={onUploadClick}>
+          <ImportLink disabled={isImportLoading} fontSize={13} onClick={() => onUploadClick(NLUImportOrigin.PROJECT)}>
             {`Import ${importName} NLU model`}
           </ImportLink>
           <Box color="rgba(141, 162, 181, 0.5)" pl={8} pr={8}>

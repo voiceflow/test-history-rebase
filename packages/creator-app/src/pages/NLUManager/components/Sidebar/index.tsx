@@ -2,7 +2,7 @@ import { Box, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { InteractionModelTabType } from '@/constants';
+import { InteractionModelTabType, NLUImportOrigin } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
@@ -78,7 +78,7 @@ const Sidebar: React.FC = () => {
             }}
           >
             <Box p={16} pb={12}>
-              <MenuItem onClick={onUploadClick} icon="downloadCircle" title="Import" />
+              <MenuItem onClick={() => onUploadClick(NLUImportOrigin.NLU_MANAGER)} icon="downloadCircle" title="Import" />
             </Box>
           </TippyTooltip>
         )}

@@ -4,6 +4,8 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import client from '@/client';
+import { NLUImportOrigin, PlatformToNLPProvider } from '@/constants';
+import { useTrackingEvents } from '@/hooks';
 import { FILE_EXTENSION_LABEL_MAP } from '@/pages/NewProjectV2/constants';
 import { FileExtension, ImportModel } from '@/pages/NewProjectV2/types';
 import { upload } from '@/utils/dom';
@@ -18,6 +20,7 @@ export const useNLUImport = ({
   onImportModel?: (data: any) => void;
 }) => {
   const [isImporting, setIsImporting] = React.useState(false);
+  const [trackingEvents] = useTrackingEvents();
   const platformClient = client.platform(platform);
   const acceptedFileFormats = fileExtensions?.join(',');
   const acceptedFileFormatsLabel = fileExtensions?.map((fileExtension) => FILE_EXTENSION_LABEL_MAP[fileExtension]).join(', ');
@@ -45,9 +48,14 @@ export const useNLUImport = ({
     }
   };
 
-  const onUploadClick = () => {
+  const onUploadClick = (origin: NLUImportOrigin) => {
     if (acceptedFileFormats) {
       upload(onImport, { accept: acceptedFileFormats, multiple: false });
+      trackingEvents.trackProjectNLUImport({
+        platform,
+        origin,
+        nluType: PlatformToNLPProvider[platform],
+      });
     }
   };
 

@@ -2,7 +2,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
-import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider } from '@/constants';
+import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider, NLUImportOrigin } from '@/constants';
 import { PrototypeSettings } from '@/ducks/prototype/types';
 
 import { EventName } from '../constants';
@@ -148,6 +148,14 @@ export const trackProjectExported = createProjectEventTracker<{
       export_format: exportFormat,
     })
   )
+);
+
+export const trackProjectNLUImport = createProjectEventTracker<{
+  nluType: NLPProvider | undefined;
+  platform: VoiceflowConstants.PlatformType;
+  origin: NLUImportOrigin;
+}>(({ nluType, platform, origin, ...options }) =>
+  client.api.analytics.track(EventName.PROJECT_NLU_IMPORT, createProjectEventPayload(options, { nlu_type: nluType, project_type: platform, origin }))
 );
 
 export const trackTopicCreated = createProjectEventTracker((options) =>

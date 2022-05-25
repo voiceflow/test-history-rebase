@@ -565,5 +565,10 @@ export enum PageProgressBar {
   COMPONENT_CREATING = 'COMPONENT_CREATING',
 }
 
+export enum NLUImportOrigin {
+  PROJECT = 'Project Create',
+  NLU_MANAGER = 'NLU Manager',
+}
+
 export * from './links';
 export * from './plans';

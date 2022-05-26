@@ -1,29 +1,52 @@
-import { BlockText, Box, BoxFlex, Button, ButtonVariant, FullSpinner, Input, Link, SvgIcon, Text, ThemeColor, toast, useToggle } from '@voiceflow/ui';
+import {
+  BlockText,
+  Box,
+  BoxFlex,
+  Button,
+  ButtonVariant,
+  FullSpinner,
+  Label,
+  Link,
+  SvgIcon,
+  Text,
+  ThemeColor,
+  TippyTooltip,
+  toast,
+  useToggle,
+} from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import SampleEditor from '@/components/AceEditor/Sample';
+import { ConfirmProps } from '@/components/ConfirmModal';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
+import { ModalType } from '@/constants';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useIsAdmin, useSetup, useTrackingEvents } from '@/hooks';
-import CreateAPIKeyModal from '@/pages/Workspace/Settings/components/Developer/modal';
+import { useAsyncEffect, useIsAdmin, useModals, useSetup, useTrackingEvents } from '@/hooks';
+import { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
 
 import { ContentContainer, ContentSection, FlatCard, Section } from '../components';
+import ProjectAPIKeyInput from './components/input';
 import { getSamples } from './utils';
 
 const API: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
-  const [key, setKey] = React.useState('');
-  const [showKey, toggleShowKey] = useToggle(false);
+  const [primaryKey, setPrimaryKey] = React.useState<ProjectAPIKey | null>(null);
+  const [secondaryKey, setSecondaryKey] = React.useState<ProjectAPIKey | null>(null);
+  const [showPrimaryKey, togglePrimaryKey] = useToggle(false);
+  const [showSecondaryKey, toggleSecondaryKey] = useToggle(false);
 
   const isAdmin = useIsAdmin();
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
-  const samples = getSamples(showKey ? key : '');
+  const { open: openConfirmPromoteModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
+  const { open: openConfirmDeleteModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
+
+  const samples = getSamples(showSecondaryKey || showPrimaryKey ? secondaryKey?.key ?? primaryKey?.key : '');
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -33,22 +56,79 @@ const API: React.FC = () => {
 
   useAsyncEffect(async () => {
     if (isAdmin) {
+      setLoading(true);
       const apiKeys = await client.project.listAPIKeys(projectID);
+
+      // TODO maybe refactor, tiny bit ugly
+      let fetchedApiKey: ProjectAPIKey | null = null;
       if (apiKeys.length > 0) {
-        setKey(apiKeys[0].key);
+        [fetchedApiKey] = apiKeys;
       } else {
         const apiKey = await client.project.createAPIKey({ workspaceID, projectID });
-        setKey(apiKey.key);
+        fetchedApiKey = apiKey;
       }
+      setPrimaryKey(fetchedApiKey);
+
+      // find secondary key
+      const fetchedSecondaryKey = apiKeys.filter((key) => key.secondaryKeyID !== null).find((key) => fetchedApiKey!.secondaryKeyID === key._id);
+      setSecondaryKey(fetchedSecondaryKey || null);
     }
 
     setLoading(false);
   }, [isAdmin, projectID]);
 
-  const copyKey = React.useCallback(() => {
+  const createSecondaryKey = async () => {
+    const fetchedSecondaryKey = await client.project.createSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+    setSecondaryKey(fetchedSecondaryKey);
+  };
+
+  const deleteSecondaryKey = async () => {
+    openConfirmDeleteModal({
+      header: 'Delete Secondary API Key',
+      body: (
+        <Box>
+          <BlockText>
+            <span>Your Secondary Key will be removed and will no longer be usable.</span>
+          </BlockText>
+          <BlockText mt={12}>
+            <p>This action cannot be undone.</p>
+          </BlockText>
+        </Box>
+      ),
+      confirm: async () => {
+        await client.project.deleteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+        setSecondaryKey(null);
+      },
+      canCancel: true,
+    });
+  };
+
+  const promoteSecondaryKey = async () => {
+    openConfirmPromoteModal({
+      header: 'Promote Secondary API Key',
+      body: (
+        <Box>
+          <BlockText>
+            <span>Your Primary Key will be removed, and your Secondary Key will become the new Primary Key.</span>
+          </BlockText>
+          <BlockText mt={12}>
+            <p>This action cannot be undone.</p>
+          </BlockText>
+        </Box>
+      ),
+      confirm: async () => {
+        await client.project.promoteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+        setPrimaryKey(secondaryKey);
+        setSecondaryKey(null);
+      },
+      canCancel: true,
+    });
+  };
+
+  const copyKey = (key: string) => {
     copy(key);
     toast.success('Copied API Key');
-  }, [key]);
+  };
 
   if (loading) {
     return <FullSpinner />;
@@ -56,8 +136,6 @@ const API: React.FC = () => {
 
   return (
     <>
-      <CreateAPIKeyModal />
-
       <ContentContainer>
         <ContentSection>
           <FlatCard m={12}>
@@ -79,31 +157,44 @@ const API: React.FC = () => {
         {isAdmin && (
           <ContentSection>
             <Section title="Dialog API Key">
-              <BoxFlex mb={12}>
-                <Input
-                  value={key}
-                  type={showKey ? 'text' : 'password'}
-                  readOnly
-                  rightAction={
-                    <SvgIcon
-                      icon={showKey ? 'eye' : 'eyeHide'}
-                      onClick={() => toggleShowKey()}
-                      color="#becedc"
-                      clickable
-                      style={{ userSelect: 'none' }}
-                    />
-                  }
-                />
-                <Box ml={16}>
-                  <Button onClick={copyKey} variant={ButtonVariant.PRIMARY} squareRadius>
-                    Copy
+              <Label>Primary Key</Label>
+              {!!primaryKey && <ProjectAPIKeyInput value={primaryKey.key} show={showPrimaryKey} onCopy={copyKey} onToggleShow={togglePrimaryKey} />}
+
+              {!secondaryKey ? (
+                <BoxFlex>
+                  <Button onClick={createSecondaryKey} variant={ButtonVariant.SECONDARY} squareRadius>
+                    Create Secondary Key
                   </Button>
-                </Box>
-              </BoxFlex>
-              <Text fontSize={13}>
-                <SvgIcon icon="warning" inline mb={-3} mr={10} />
-                Always store your token securely to protect your account.
-              </Text>
+                  <TippyTooltip title="A secondary key can be used to rotate the active key.">
+                    <Box ml={8}>
+                      <SvgIcon icon="info" size={16} color="#6E849A" />
+                    </Box>
+                  </TippyTooltip>
+                </BoxFlex>
+              ) : (
+                <>
+                  <Label>Secondary Key</Label>
+                  <ProjectAPIKeyInput value={secondaryKey.key} show={showSecondaryKey} onCopy={copyKey} onToggleShow={toggleSecondaryKey}>
+                    <Box ml={12}>
+                      <Button onClick={promoteSecondaryKey} variant={ButtonVariant.PRIMARY} squareRadius>
+                        Promote
+                      </Button>
+                    </Box>
+                    <Box ml={12}>
+                      <Button onClick={deleteSecondaryKey} variant={ButtonVariant.SECONDARY} squareRadius>
+                        Delete
+                      </Button>
+                    </Box>
+                  </ProjectAPIKeyInput>
+                </>
+              )}
+
+              <Box mt={12}>
+                <Text fontSize={13}>
+                  <SvgIcon icon="warning" inline mb={-3} mr={10} />
+                  Always store your key securely to protect your account.
+                </Text>
+              </Box>
             </Section>
           </ContentSection>
         )}

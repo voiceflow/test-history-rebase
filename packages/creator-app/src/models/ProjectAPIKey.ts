@@ -4,4 +4,5 @@ export interface ProjectAPIKey {
   projectID: string;
   creatorID: number;
   data?: unknown;
+  secondaryKeyID?: string;
 }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.91.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.91.0...@voiceflow/realtime-sdk@1.91.1) (2022-05-26)
+
+
+### Bug Fixes
+
+* prune extra IF dynamic ports (VF-3597) ([#5474](https://github.com/voiceflow/creator-app/issues/5474)) ([0219c06](https://github.com/voiceflow/creator-app/commit/0219c065e5954e6e181a1f35b19875132b580128)), closes [/github.com/voiceflow/creator-app/blob/f6c1b0c7bd7324ab6d13a5429eba508a4a847cb7/packages/creator-app/src/hooks/syncedLookup.ts#L3-L7](https://github.com//github.com/voiceflow/creator-app/blob/f6c1b0c7bd7324ab6d13a5429eba508a4a847cb7/packages/creator-app/src/hooks/syncedLookup.ts/issues/L3-L7)
+
+
+
+
+
 # [1.91.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.90.1...@voiceflow/realtime-sdk@1.91.0) (2022-05-25)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.728.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.728.1...@voiceflow/creator-app@1.728.2) (2022-05-26)
+
+
+### Bug Fixes
+
+* remove render e2e test [bugfix] (VF-000) ([#5481](https://github.com/voiceflow/creator-app/issues/5481)) ([afa73b5](https://github.com/voiceflow/creator-app/commit/afa73b531b0e24bceae145752aa7c1fe48f0490f))
+
+
+
+
+
 ## [1.728.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.728.0...@voiceflow/creator-app@1.728.1) (2022-05-26)
 
 **Note:** Version bump only for package @voiceflow/creator-app

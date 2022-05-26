@@ -49,31 +49,12 @@ Cypress.Commands.add('createProject', (platform: 'alexa' | 'google' | 'general' 
 });
 
 Cypress.Commands.add('renderTest', (platform: 'alexa' | 'google' | 'general') => {
-  const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
-
-  const getStatus = (): Cypress.Chainable<any> =>
-    cy.request('GET', `${PLATFORM_SERVICE_URLS[platform]}/prototype/${projectID}/status`).then((res) => {
-      const { status, stage } = res.body;
-
-      if (status === 'FINISHED') {
-        if (stage.type === 'ERROR') {
-          throw new Error('prototype render failed');
-        } else {
-          return;
-        }
-      }
-
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(1000);
-
-      return getStatus();
-    });
-
+  const versionID = SESSION_CONTEXT.get(VERSION_ID_KEY);
   cy.request({
     method: 'POST',
-    url: `${PLATFORM_SERVICE_URLS[platform]}/prototype/${projectID}/render`,
+    url: `${PLATFORM_SERVICE_URLS[platform]}/prototype/${versionID}/renderSync`,
     timeout: 5000,
-  }).then(() => getStatus());
+  });
 });
 
 Cypress.Commands.add('configurePrototype', (settings: Partial<{ layout: 'voice-and-dialog' | 'text-and-dialog' | 'voice-and-visuals' }>) => {

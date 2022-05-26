@@ -32,7 +32,14 @@ const ifAdapter = createBlockAdapter<BaseNode.IfV2.StepData, NodeData.IfV2>(
 );
 
 export const ifOutPortsAdapter = createOutPortsAdapter<NodeData.IfV2BuiltInPorts, NodeData.IfV2>(
-  (ports, options) => noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(ports, options),
+  (ports, options) => {
+    const adaptedPorts = noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(ports, options);
+    const expressionLength: number = options.node.data?.expressions?.length ?? 0;
+    return {
+      ...adaptedPorts,
+      dynamic: adaptedPorts.dynamic.slice(0, expressionLength),
+    };
+  },
   ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData }, dynamic }, { data }) => [
     outPortDataToDB(noMatchPortData), // should be first for backward compatible
     ...outPortsDataToDB(dynamic).map((dbPort, index) => {
@@ -50,7 +57,14 @@ export const ifOutPortsAdapter = createOutPortsAdapter<NodeData.IfV2BuiltInPorts
 );
 
 export const ifOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.IfV2BuiltInPorts, NodeData.IfV2>(
-  (ports, options) => noMatchNoReplyAndDynamicOutPortsAdapterV2.fromDB(ports, options),
+  (ports, options) => {
+    const adaptedPorts = noMatchNoReplyAndDynamicOutPortsAdapterV2.fromDB(ports, options);
+    const expressionLength: number = options.node.data?.expressions?.length ?? 0;
+    return {
+      ...adaptedPorts,
+      dynamic: adaptedPorts.dynamic.slice(0, expressionLength),
+    };
+  },
   ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData }, dynamic }, { data }) => ({
     builtIn: {
       [BaseModels.PortType.NO_MATCH]: outPortDataToDB(noMatchPortData),

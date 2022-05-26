@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.32.28...@voiceflow/admin-app@1.33.0) (2022-05-26)
+
+
+### Features
+
+* implement color picker general (VF-3153) ([#5459](https://github.com/voiceflow/creator-app/issues/5459)) ([3e1462c](https://github.com/voiceflow/creator-app/commit/3e1462ca2d6a182acc47a33dca91c6d82bc7f608))
+
+
+
+
+
 ## [1.32.28](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.32.27...@voiceflow/admin-app@1.32.28) (2022-05-26)
 
 **Note:** Version bump only for package @voiceflow/admin-app

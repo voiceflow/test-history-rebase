@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.69.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.68.3...@voiceflow/realtime@1.69.0) (2022-05-26)
+
+
+### Features
+
+* implement color picker general (VF-3153) ([#5459](https://github.com/voiceflow/creator-app/issues/5459)) ([3e1462c](https://github.com/voiceflow/creator-app/commit/3e1462ca2d6a182acc47a33dca91c6d82bc7f608))
+
+
+
+
+
 ## [1.68.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.68.2...@voiceflow/realtime@1.68.3) (2022-05-26)
 
 **Note:** Version bump only for package @voiceflow/realtime

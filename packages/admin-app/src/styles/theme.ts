@@ -42,7 +42,7 @@ export const mainTheme = createTheme({
       strong: '#8C94A6',
     },
     background: {
-      default: '#f9f9f9',
+      default: 'gray',
       highlight: '#fff',
     },
     link: {

@@ -8,7 +8,6 @@ import { createSelector } from 'reselect';
 
 import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
-import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Feature from '@/ducks/feature';
@@ -914,11 +913,11 @@ class NodeManager extends EngineConsumer {
     [nodeID, ...this.select(CreatorV2.stepIDsByBlockIDSelector, { id: nodeID })].forEach((childNodeID) => this.redrawThreads(childNodeID));
   }
 
-  updateBlockColor(nodeID: string, color: BlockVariant): Promise<void> {
+  updateBlockColor(nodeID: string, color: string): Promise<void> {
     return this.updateData(nodeID, { blockColor: color });
   }
 
-  async updateManyBlocksColor(nodeIDs: string[], color: BlockVariant): Promise<void> {
+  async updateManyBlocksColor(nodeIDs: string[], color: string): Promise<void> {
     await Promise.all(nodeIDs.map((nodeID) => this.updateData(nodeID, { blockColor: color })));
   }
 

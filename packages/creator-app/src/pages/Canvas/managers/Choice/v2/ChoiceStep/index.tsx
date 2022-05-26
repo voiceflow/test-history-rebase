@@ -18,7 +18,7 @@ export const ChoiceStepV2: React.FC<ChoiceStepProps> = ({
   noReply,
   noMatchPortID,
   noReplyPortID,
-  variant,
+  palette,
   onOpenEditor,
 }) => (
   <Step nodeID={nodeID}>
@@ -49,7 +49,7 @@ export const ChoiceStepV2: React.FC<ChoiceStepProps> = ({
               label={label}
               portID={portID}
               iconColor="#8da2b5"
-              variant={variant}
+              palette={palette}
               attachment={attachment}
               linkedLabel={linkedLabel}
               placeholder="Select intent"
@@ -60,7 +60,7 @@ export const ChoiceStepV2: React.FC<ChoiceStepProps> = ({
           );
         })
       ) : (
-        <Item label={WAITING_FOR_INTENT_PLACEHOLDER} icon={CHOICE_PLACEHOLDER_ICON} variant={variant} v2 />
+        <Item label={WAITING_FOR_INTENT_PLACEHOLDER} icon={CHOICE_PLACEHOLDER_ICON} palette={palette} v2 />
       )}
 
       <NoMatchStepItemV2 nodeID={nodeID} portID={noMatchPortID} noMatch={noMatch} nestedWithIcon />
@@ -72,7 +72,7 @@ export const ChoiceStepV2: React.FC<ChoiceStepProps> = ({
 const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = ({
   data,
   ports,
-  variant,
+  palette,
   platform,
   engine,
 }) => {
@@ -84,7 +84,7 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
       choices={choices}
       noMatch={data.noMatch}
       noReply={data.noReply}
-      variant={variant}
+      palette={palette}
       noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
       noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
       onOpenEditor={() => engine.setActive(data.nodeID)}

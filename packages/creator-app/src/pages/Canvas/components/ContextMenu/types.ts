@@ -1,6 +1,5 @@
 import { MenuItemMultilevel } from '@voiceflow/ui';
 
-import { BlockVariant } from '@/constants/canvas';
 import { ModalActions } from '@/hooks';
 import { ContextMenuValue } from '@/pages/Canvas/contexts';
 import { ClipboardContextValue } from '@/pages/Canvas/contexts/ClipboardContext';
@@ -11,7 +10,7 @@ export interface OptionProps {
   engine: Engine;
   markup: MarkupContextType;
   clipboard: ClipboardContextValue;
-  blockColor?: BlockVariant;
+  blockColor?: string;
   isTemplate?: boolean;
   upgradeModal: ModalActions;
   toggleCanvasOnly: () => void;
@@ -25,4 +24,5 @@ export interface ContextMenuOption<T extends string = string> extends MenuItemMu
   hotkey?: string;
 
   shouldRender?: (contextMenu: ContextMenuValue, props: OptionProps) => boolean;
+  render?: React.FC;
 }

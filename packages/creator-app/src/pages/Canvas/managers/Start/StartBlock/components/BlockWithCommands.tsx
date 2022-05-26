@@ -9,12 +9,12 @@ import { BlockAPI } from '@/pages/Canvas/types';
 import { BaseStartBlockProps } from '../types';
 
 export type BlockWithCommandsProps = BaseStartBlockProps &
-  Pick<BlockProps, 'name' | 'icon' | 'actions' | 'nodeID' | 'variant'> & {
+  Pick<BlockProps, 'name' | 'icon' | 'actions' | 'nodeID' | 'palette'> & {
     className?: string;
   };
 
 const BlockWithCommands: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<BlockWithCommandsProps>> = (
-  { nodeID, commands, children, ...props },
+  { nodeID, commands, children, palette, ...props },
   ref
 ) => {
   const engine = React.useContext(EngineContext)!;
@@ -27,7 +27,7 @@ const BlockWithCommands: React.ForwardRefRenderFunction<BlockAPI, React.PropsWit
 
   return (
     <StepAPIProvider value={stepAPI}>
-      <Block {...props} ref={ref} nodeID={nodeID} sections={sections} updateName={updateName} canEditTitle>
+      <Block {...props} palette={palette} ref={ref} nodeID={nodeID} sections={sections} updateName={updateName} canEditTitle>
         {children}
       </Block>
     </StepAPIProvider>

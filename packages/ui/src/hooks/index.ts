@@ -1,3 +1,4 @@
+export { useColorPalette, useColorPaletteForBlocks } from '../components/ColorPicker/hooks';
 export * from './cache';
 export * from './callback';
 export * from './lifecycle';

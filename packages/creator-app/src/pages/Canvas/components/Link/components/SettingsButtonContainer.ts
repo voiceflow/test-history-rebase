@@ -5,13 +5,12 @@ import { css, styled, transition } from '@/hocs';
 const SettingsButtonContainer = styled(BoxFlexCenter)<{ isActive?: boolean; isSimple?: boolean }>`
   ${transition('color', 'background-color', 'opacity')}
 
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   background-color: transparent;
   color: #6e849a;
   cursor: pointer;
   opacity: 0.8;
-  border-radius: 5px;
 
   &:hover {
     background-color: ${({ isSimple }) => (isSimple ? 'transparent' : '#eef4f6')};

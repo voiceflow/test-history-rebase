@@ -2,7 +2,8 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 import { transformVariablesToReadable } from '@/utils/slot';
 
@@ -14,13 +15,13 @@ export interface ReminderStepProps {
   withPorts: boolean;
   successPortID: string;
   failurePortID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, nodeID, successPortID, failurePortID, variant }) => (
+export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, nodeID, successPortID, failurePortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item icon={NODE_CONFIG.icon} label={label} variant={variant} placeholder="Set a reminder" labelVariant={StepLabelVariant.SECONDARY} />
+      <Item icon={NODE_CONFIG.icon} label={label} palette={palette} placeholder="Set a reminder" labelVariant={StepLabelVariant.SECONDARY} />
     </Section>
     <Section>
       {withPorts && (
@@ -37,7 +38,7 @@ const ConnectedReminderStep: ConnectedStep<Realtime.NodeData.Reminder, Realtime.
   ports,
   data,
   withPorts,
-  variant,
+  palette,
 }) => (
   <ReminderStep
     label={transformVariablesToReadable(data.text)}
@@ -45,7 +46,7 @@ const ConnectedReminderStep: ConnectedStep<Realtime.NodeData.Reminder, Realtime.
     withPorts={withPorts}
     successPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
     failurePortID={ports.out.builtIn[BaseModels.PortType.FAIL]}
-    variant={variant}
+    palette={palette}
   />
 );
 

@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature, useSelector } from '@/hooks';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
@@ -9,10 +10,10 @@ import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 export interface FlowStartStepProps {
   label?: string;
   portID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-const FlowStartStep: React.FC<FlowStartStepProps> = ({ label, portID, variant }) => {
+const FlowStartStep: React.FC<FlowStartStepProps> = ({ label, portID, palette }) => {
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
@@ -23,7 +24,7 @@ const FlowStartStep: React.FC<FlowStartStepProps> = ({ label, portID, variant })
           icon="inFlow"
           label={label || (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? 'Flow starts here' : 'Conversation continues here')}
           portID={portID}
-          variant={variant}
+          palette={palette}
           labelVariant={StepLabelVariant.PRIMARY}
         />
       </Section>

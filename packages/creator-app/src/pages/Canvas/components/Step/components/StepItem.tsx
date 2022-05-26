@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { StepLabelVariant } from '@/constants/canvas';
 import Port from '@/pages/Canvas/components/Port';
 import { PortEntityProvider } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
@@ -33,7 +33,7 @@ const StepItem: React.FC<ItemProps> = ({
   withNewLines,
   multilineLabel,
   labelLineClamp,
-  variant,
+  palette,
   nested,
   textColor,
   iconSize,
@@ -49,8 +49,8 @@ const StepItem: React.FC<ItemProps> = ({
       {children ?? (
         <>
           {prefix}
-          {v2 && icon && <StepIcon variant={variant as BlockVariant} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
-          {!v2 && <StepIcon variant={variant as BlockVariant} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
+          {v2 && icon && <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
+          {!v2 && <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
           <StepLabelTextContainer variant={label ? labelVariant : StepLabelVariant.PLACEHOLDER}>
             {title && (
               <StepTitle

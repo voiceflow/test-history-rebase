@@ -1,15 +1,24 @@
-import { createShadesFromHue, HSLShades, STANDARD_GRADE } from '@ui/utils/colors/hsl';
+import { createShadesFromHue, createShadesFromHueWithDynamicSaturation, HSLShades, STANDARD_GRADE } from '@ui/utils/colors/hsl';
 import { hexToHsluv } from '@ui/utils/colors/hsluv';
 import React from 'react';
 
-import { ALL_COLORS } from './constants';
+import { ALL_COLORS, BLOCK_STANDARD_COLOR } from './constants';
 import { normalizeColor } from './utils';
 
-export const useColorPalette = (hexOrRGBColor: string | undefined): HSLShades => {
+export const useColorPaletteForBlocks = (color: string | undefined = BLOCK_STANDARD_COLOR): HSLShades => {
   return React.useMemo(() => {
-    const color = normalizeColor(hexOrRGBColor);
-    const isDefaultColor = ALL_COLORS.find(({ palette }) => palette[STANDARD_GRADE] === color);
+    const normalizedColor = normalizeColor(color);
+    const isDefaultColor = ALL_COLORS.find(({ palette }) => palette[STANDARD_GRADE] === normalizedColor);
 
-    return isDefaultColor?.palette || createShadesFromHue(String(hexToHsluv(color)[0]));
-  }, [hexOrRGBColor]);
+    return isDefaultColor?.palette || createShadesFromHueWithDynamicSaturation(String(hexToHsluv(normalizedColor)[0]));
+  }, [color]);
+};
+
+export const useColorPalette = (color: string | undefined = BLOCK_STANDARD_COLOR): HSLShades => {
+  return React.useMemo(() => {
+    const normalizedColor = normalizeColor(color);
+    const isDefaultColor = ALL_COLORS.find(({ palette }) => palette[STANDARD_GRADE] === normalizedColor);
+
+    return isDefaultColor?.palette || createShadesFromHue(String(hexToHsluv(normalizedColor)[0]));
+  }, [color]);
 };

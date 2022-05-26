@@ -19,7 +19,7 @@ import { prettifyIntentName } from '@/utils/intent';
 import { NODE_CONFIG } from '../constants';
 import { ChoiceItem, ChoiceStepProps } from '../types';
 
-export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch, noReply, noMatchPortID, noReplyPortID, variant }) => (
+export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch, noReply, noMatchPortID, noReplyPortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       {choices.length ? (
@@ -29,7 +29,7 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch
             icon={index === 0 ? NODE_CONFIG.icon : null}
             label={label}
             portID={portID}
-            variant={variant}
+            palette={palette}
             attachment={attachment ? <Attachment icon="clip" onClick={stopPropagation(onAttachmentClick)} /> : null}
             linkedLabel={linkedLabel}
             placeholder={attachment ? 'Create or select an intent' : `Path ${index + 1}`}
@@ -38,7 +38,7 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch
           />
         ))
       ) : (
-        <Item placeholder="Add choices" icon={NODE_CONFIG.icon} variant={variant} />
+        <Item placeholder="Add choices" icon={NODE_CONFIG.icon} palette={palette} />
       )}
 
       <NoMatchItem portID={noMatchPortID} noMatch={noMatch} />
@@ -50,7 +50,7 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ nodeID, choices, noMatch
 const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = ({
   data,
   ports,
-  variant,
+  palette,
   platform,
 }) => {
   const engine = React.useContext(EngineContext)!;
@@ -114,7 +114,7 @@ const ConnectedChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime
       choices={choices}
       noMatch={data.noMatch}
       noReply={data.noReply}
-      variant={variant}
+      palette={palette}
       noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
       noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
     />

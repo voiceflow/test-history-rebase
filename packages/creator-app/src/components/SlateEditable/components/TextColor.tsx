@@ -109,6 +109,7 @@ const TextColor: React.FC = () => {
       sliderProps={{ min: 0, autoFocus: false, handle: OpacitySliderHandle }}
       sliderPrefix={
         <ColorSelect
+          type="text"
           color={color}
           onChange={onChangeColor}
           onInputBlur={onPickerInputBlur}

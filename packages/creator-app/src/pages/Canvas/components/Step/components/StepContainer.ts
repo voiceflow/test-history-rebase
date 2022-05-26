@@ -27,7 +27,7 @@ const StepContainer = styled(Flex)<StepContainerProps>`
   min-height: ${({ theme }) => theme.components.blockStep.minHeight}px;
   border-radius: 6px;
   background-color: #fff;
-  border: 1px solid #d3d9e4;
+  box-shadow: rgb(0 0 0 / 6%) 0px 0px 0px 1px;
 
   ${Section}:not(:first-of-type) {
     border-top: 1px solid #eaeff4;
@@ -54,7 +54,7 @@ const StepContainer = styled(Flex)<StepContainerProps>`
     ${({ theme, canHighlight }) =>
       canHighlight &&
       css`
-        border: 1px solid ${theme.components.blockStep.activeBorderColor};
+        box-shadow: ${theme.components.blockStep.activeBorderColor} 0px 0px 0px 1.5px;
       `}
   }
 
@@ -66,7 +66,7 @@ const StepContainer = styled(Flex)<StepContainerProps>`
   .${CANVAS_CREATING_LINK_CLASSNAME} .${ClassName.CANVAS_STEP}.${NODE_HOVERED_CLASSNAME} & {
     ${({ theme }) =>
       css`
-        box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.06), 0 0 0 1px ${theme.components.blockStep.activeBorderColor};
+        box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.06), 0 0 0 1.5px ${theme.components.blockStep.activeBorderColor};
         cursor: copy;
       `}
   }

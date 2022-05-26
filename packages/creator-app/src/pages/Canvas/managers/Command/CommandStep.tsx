@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant } from '@/constants';
+import { HSLShades } from '@/constants';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
@@ -11,14 +11,14 @@ import { ConnectedProps, MergeArguments } from '@/types';
 export interface CommandStepProps {
   nodeID: string;
   name?: string;
-  variant: BlockVariant;
+  palette: HSLShades;
   onCommandClick: () => void;
 }
 
-export const CommandStep: React.FC<CommandStepProps> = ({ nodeID, name, variant, onCommandClick }) => (
+export const CommandStep: React.FC<CommandStepProps> = ({ nodeID, name, palette, onCommandClick }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item icon="flow" variant={variant} label={name} onClick={stopPropagation(onCommandClick)} />
+      <Item icon="flow" palette={palette} label={name} onClick={stopPropagation(onCommandClick)} />
     </Section>
   </Step>
 );
@@ -26,8 +26,8 @@ export const CommandStep: React.FC<CommandStepProps> = ({ nodeID, name, variant,
 const ConnectedCommandStep: React.FC<ConnectedStepProps<Realtime.NodeData.Command> & ConnectedCommandStepProps> = ({
   data,
   goToDiagram,
-  variant,
-}) => <CommandStep nodeID={data.nodeID} onCommandClick={goToDiagram} name={data.name} variant={variant} />;
+  palette,
+}) => <CommandStep nodeID={data.nodeID} onCommandClick={goToDiagram} name={data.name} palette={palette} />;
 
 const mapDispatchToProps = {
   goToDiagram: Router.goToDiagramHistoryPush,

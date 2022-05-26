@@ -6,7 +6,7 @@ import { createExample, createSection } from './utils';
 const standard = createExample('primary', () => {
   const [selectedColor, setSelectedColor] = useState<string>(COLOR_PICKER_CONSTANTS.DEFAULT_COLORS.dark.palette[500]);
 
-  return <ColorPicker tagName="Label" selectedColor={selectedColor} onChange={(color) => setSelectedColor(color)} />;
+  return <ColorPicker tagName="Label" onChange={(color) => setSelectedColor(color)} selectedColor={selectedColor} />;
 });
 
 export default createSection('ColorPicker', 'src/components/ColorPicker/index.tsx', [standard]);

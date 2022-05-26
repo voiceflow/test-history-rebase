@@ -6,9 +6,7 @@ import _styled, {
   withTheme as _withTheme,
   WithThemeFnInterface,
 } from 'styled-components';
-import { ValuesType } from 'utility-types';
 
-import { BlockVariant } from '@/constants/canvas';
 import { Theme } from '@/styles/theme';
 
 export { createGlobalStyle, keyframes } from 'styled-components';
@@ -30,8 +28,3 @@ export const units =
   (count = 1) =>
   ({ theme }: { theme: Theme }): number =>
     theme.unit * count;
-
-export const withBlockVariantStyle =
-  (createStyle: (variant: ValuesType<Theme['components']['block']['variants']>) => any) =>
-  ({ variant, theme }: { variant: BlockVariant; theme: Theme }) =>
-    createStyle(theme.components.block.variants[variant]);

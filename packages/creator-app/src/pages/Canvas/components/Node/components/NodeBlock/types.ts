@@ -1,8 +1,8 @@
-import { BlockVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
 
 export interface ReorderIndicatorProps {
   index: number;
   isEnabled: boolean;
-  variant: BlockVariant;
+  palette: HSLShades;
   onMouseUp: (event: React.MouseEvent) => void;
 }

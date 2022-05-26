@@ -7,12 +7,12 @@ import { Color } from './Color';
 import { ColorsList } from './styles';
 import { ColorThemesProps } from './types';
 
-export const ColorThemes: React.FC<ColorThemesProps> = ({ colors, small, selectedColor, onColorSelect }) => {
+export const ColorThemes: React.FC<ColorThemesProps> = ({ colors, small, selectedColor = '', onColorSelect }) => {
   return (
     <ColorsList>
       {colors.map((color: IColor) => {
         const { palette, hue, name } = color;
-        const selected = palette[STANDARD_GRADE] === selectedColor;
+        const selected = palette[STANDARD_GRADE].toLowerCase() === selectedColor.toLowerCase();
 
         return (
           <Color

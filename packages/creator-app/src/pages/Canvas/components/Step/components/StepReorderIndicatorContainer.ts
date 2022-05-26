@@ -1,12 +1,12 @@
-import { BlockVariant } from '@/constants/canvas';
-import { css, styled, transition, withBlockVariantStyle } from '@/hocs';
+import { HSLShades } from '@/constants';
+import { css, styled, transition } from '@/hocs';
 import { NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 
 import CaptureZone from './StepReorderCaptureZone';
 
 export interface StepReorderIndicatorContainerProps {
   isActive: boolean;
-  variant: BlockVariant;
+  palette: HSLShades;
   isHovered?: boolean;
   isLast?: boolean;
 }
@@ -33,7 +33,7 @@ const StepReorderIndicatorContainer = styled.span<StepReorderIndicatorContainerP
   display: none;
   width: 100%;
   height: 0;
-  background-color: ${withBlockVariantStyle((variant) => variant.color)}22;
+  background-color: ${({ palette }) => palette[700]}22;
   border-radius: 5px;
 
   &&& {
@@ -46,7 +46,7 @@ const StepReorderIndicatorContainer = styled.span<StepReorderIndicatorContainerP
     right: 1px;
     left: 1px;
     height: 2px;
-    background-color: ${withBlockVariantStyle((variant) => variant.color)}AA;
+    background-color: ${({ palette }) => palette[700]}AA;
     border-radius: 2px;
     content: '';
   }

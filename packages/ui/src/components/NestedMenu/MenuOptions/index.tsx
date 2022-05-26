@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import composeRef from '@seznam/compose-react-refs';
 import TippyTooltip from '@ui/components/TippyTooltip';
 import { ClassName } from '@ui/styles/constants';
@@ -99,7 +100,7 @@ function MenuOptions({
   };
 
   let groupedIndex = 0;
-  const renderOptions = (options: unknown[], optionsPath: number[]) =>
+  const renderOptions = (options: any[], optionsPath: number[]) =>
     options.map((option, indx) => {
       const key = (isMenuItemWithID(option) ? option.id : getOptionKey?.(option, indx)) || String(indx);
       const index = firstOptionIndex + (grouped ? groupedIndex++ : indx);
@@ -107,7 +108,7 @@ function MenuOptions({
       const path = [...optionsPath, indx];
       const isFocused = focusedOptionIndex === index;
 
-      if (isMenuItemMultilevel(!!isMultiLevel, option) && !!option.options?.length) {
+      if ((isMenuItemMultilevel(!!isMultiLevel, option) && !!option.options?.length) || option?.render) {
         return (
           <Manager key={key}>
             <Reference>
@@ -128,26 +129,29 @@ function MenuOptions({
               )}
             </Reference>
 
-            {isFocused && (
-              <Menu
-                isRoot={false}
-                onHide={onHide}
-                options={option.options ?? []}
-                onSelect={onSelect}
-                placement={placement}
-                menuProps={option.menuProps}
-                optionsPath={path}
-                searchLabel={searchLabel}
-                getOptionKey={getOptionKey as GetOptionKey<unknown>}
-                isMultiLevel={!!option.options}
-                onFocusOption={onChildFocusItemIndex}
-                getOptionLabel={getOptionLabel}
-                getOptionValue={getOptionValue}
-                renderOptionLabel={renderOptionLabel}
-                focusedOptionIndex={childFocusItemIndex}
-                {...menuProps}
-              />
-            )}
+            {isFocused &&
+              (option.render ? (
+                option.render?.()
+              ) : (
+                <Menu
+                  isRoot={false}
+                  onHide={onHide}
+                  options={option.options ?? []}
+                  onSelect={onSelect}
+                  placement={placement}
+                  menuProps={option.menuProps}
+                  optionsPath={path}
+                  searchLabel={searchLabel}
+                  getOptionKey={getOptionKey as GetOptionKey<unknown>}
+                  isMultiLevel={!!option.options}
+                  onFocusOption={onChildFocusItemIndex}
+                  getOptionLabel={getOptionLabel}
+                  getOptionValue={getOptionValue}
+                  renderOptionLabel={renderOptionLabel}
+                  focusedOptionIndex={childFocusItemIndex}
+                  {...menuProps}
+                />
+              ))}
           </Manager>
         );
       }

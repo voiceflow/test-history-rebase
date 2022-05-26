@@ -1,12 +1,12 @@
 import composeRefs from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { COLOR_PICKER_CONSTANTS, useColorPaletteForBlocks } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import moize from 'moize';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
-import { BlockVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { compose } from '@/hocs';
 import { useDispatch, useEnableDisable, useHover } from '@/hooks';
@@ -27,15 +27,18 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
 
   const blockRef = React.useRef<BlockAPI>(null);
 
-  const { name, variant, combinedNodes, isMergeTarget } = nodeEntity.useState((e) => {
+  const { name, blockColor, combinedNodes, isMergeTarget } = nodeEntity.useState((e) => {
     const { node, data } = e.resolve<Realtime.NodeData.Combined>();
     return {
       name: data.name,
-      variant: data.blockColor || BlockVariant.STANDARD,
+      blockColor: data.blockColor || COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR,
       combinedNodes: node.combinedNodes,
       isMergeTarget: e.isMergeTarget,
     };
   });
+
+  const palette = useColorPaletteForBlocks(blockColor);
+
   const observer = React.useMemo(() => new ResizeObserver(() => engine.node.redrawLinks(nodeEntity.nodeID)), []);
 
   const getAnchorPoint = React.useCallback(() => blockRef.current?.getRect() ?? null, []);
@@ -184,22 +187,22 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
           nodeID={nodeEntity.nodeID}
           name={name}
           isDisabled={isDisabled}
-          variant={variant}
+          palette={palette}
           updateName={updateName}
           ref={composeRefs(ref, blockRef, captureDropRef)}
           canEditTitle
           onClick={onClick}
-          actions={<PlayButton nodeID={combinedNodes[0]} variant={variant} />}
+          actions={<PlayButton nodeID={combinedNodes[0]} palette={palette} />}
           {...hoverHandlers}
         >
           {combinedNodes.map((stepNodeID, index) => (
             <NodeEntityProvider id={stepNodeID} key={stepNodeID}>
-              {index === 0 && <SourceReorderIndicator isEnabled={isMergeTarget} index={0} onMouseUp={onInsert(0)} variant={variant} />}
-              <NodeStep isDraggable isLast={index === combinedNodes.length - 1} variant={variant} />
+              {index === 0 && <SourceReorderIndicator isEnabled={isMergeTarget} index={0} onMouseUp={onInsert(0)} palette={palette} />}
+              <NodeStep isDraggable isLast={index === combinedNodes.length - 1} palette={palette} />
               {index === combinedNodes.length - 1 ? (
-                <TerminalReorderIndicator isEnabled={isMergeTarget} index={index + 1} onMouseUp={onInsert(index + 1)} variant={variant} />
+                <TerminalReorderIndicator isEnabled={isMergeTarget} index={index + 1} onMouseUp={onInsert(index + 1)} palette={palette} />
               ) : (
-                <ReorderIndicator isEnabled={isMergeTarget} index={index + 1} onMouseUp={onInsert(index + 1)} variant={variant} />
+                <ReorderIndicator isEnabled={isMergeTarget} index={index + 1} onMouseUp={onInsert(index + 1)} palette={palette} />
               )}
             </NodeEntityProvider>
           ))}

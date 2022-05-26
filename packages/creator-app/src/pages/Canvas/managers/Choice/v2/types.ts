@@ -1,7 +1,7 @@
 import { Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { BlockVariant } from '@/constants';
+import { HSLShades } from '@/constants';
 import { EntityPrompt } from '@/pages/Canvas/types';
 
 export interface ChoiceItem {
@@ -20,7 +20,7 @@ export interface ChoiceStepProps {
   choices: ChoiceItem[];
   noMatch: Nullable<Realtime.NodeData.NoMatch>;
   noReply?: Nullable<Realtime.NodeData.NoReply>;
-  variant: BlockVariant;
+  palette: HSLShades;
   noMatchPortID?: Nullable<string>;
   noReplyPortID?: Nullable<string>;
   onOpenEditor: () => void;

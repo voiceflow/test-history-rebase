@@ -11,6 +11,7 @@ import { AlphaContainer, Colors, Container, HueContainer, InputAction, InputCont
 import withHexColor from './withHexColor';
 
 export interface ColorPickerProps {
+  type?: 'background' | 'text';
   width?: number;
   colors?: boolean;
   hexInput?: boolean;
@@ -22,6 +23,7 @@ export interface ColorPickerProps {
 }
 
 const ColorPicker = ({
+  type = 'background',
   colors = true,
   hexInput = true,
   alphaSlider = true,
@@ -105,7 +107,7 @@ const ColorPicker = ({
         </InputContainer>
       )}
 
-      {colors && <Colors onSelect={onSelectColor} />}
+      {colors && <Colors type={type} selectedColor={localHex} onSelect={onSelectColor} />}
     </Container>
   );
 };

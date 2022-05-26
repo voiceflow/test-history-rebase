@@ -108,7 +108,7 @@ export const dataByNodeIDSelector = createSelector(
   [normalizedDataSelector],
   (data) =>
     <T>(nodeID: string) =>
-      data[nodeID] as Realtime.NodeData<T>
+      data[nodeID] as Realtime.NodeData<T> | Realtime.BlockNodeData<T>
 );
 
 /**

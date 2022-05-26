@@ -1,7 +1,7 @@
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { BlockVariant } from '@/constants';
+import { HSLShades } from '@/constants';
 
 export interface ChoiceItem {
   key: string;
@@ -17,7 +17,7 @@ export interface ChoiceStepProps {
   choices: ChoiceItem[];
   noMatch: Nullable<Realtime.NodeData.NoMatch>;
   noReply?: Nullable<Realtime.NodeData.NoReply>;
-  variant: BlockVariant;
+  palette: HSLShades;
   noMatchPortID?: Nullable<string>;
   noReplyPortID?: Nullable<string>;
 }

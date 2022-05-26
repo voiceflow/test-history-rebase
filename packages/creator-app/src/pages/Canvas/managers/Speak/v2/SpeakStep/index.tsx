@@ -9,7 +9,7 @@ import { prettifyBucketURL } from '@/utils/audio';
 import { getDialogStepComponent } from './constants';
 import { SpeakStepProps } from './types';
 
-export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, nodeID, nextPortID, variant, onOpenEditor }) => {
+export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, nodeID, nextPortID, palette, onOpenEditor }) => {
   const itemsToRender = random && items.length ? [items[0]] : items;
 
   return (
@@ -29,7 +29,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
                 platform={platform}
                 nodeID={nodeID}
                 nextPortID={nextPortID}
-                variant={variant}
+                palette={palette}
                 isLastItem={index === itemsToRender.length - 1}
                 onOpenEditor={onOpenEditor}
                 {...props}
@@ -37,7 +37,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
             );
           })
         ) : (
-          <Item placeholder="Enter speak reply" variant={variant} />
+          <Item placeholder="Enter speak reply" palette={palette} />
         )}
       </Section>
     </Step>
@@ -48,7 +48,7 @@ const ConnectedSpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeDa
   ports,
   data,
   platform,
-  variant,
+  palette,
   engine,
 }) => {
   const items = data.dialogs.map((item) => ({
@@ -65,7 +65,7 @@ const ConnectedSpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeDa
       nodeID={data.nodeID}
       platform={platform}
       nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
-      variant={variant}
+      palette={palette}
       onOpenEditor={() => engine.setActive(data.nodeID)}
     />
   );

@@ -11,9 +11,9 @@ import { Wrapper } from './styles';
 import { isBaseColor, normalizeColor } from './utils';
 
 interface ColorPickerProps {
-  customColors?: Colors;
   tagName?: string;
   selectedColor: string;
+  customColors?: Colors;
   onChange: (color: string) => void;
   modifiers?: StrictPopperModifiers;
 }
@@ -43,7 +43,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ modifiers, selectedCol
         }}
         colors={[DEFAULT_COLORS.dark, ...BASE_COLORS]}
       />
-      <Color selected={isCustomColor} onClick={() => setIsShowingPicker(true)} small background={COLOR_WHEEL} />
+      <Color selected={isCustomColor} onClick={() => setIsShowingPicker(true)} small background={isCustomColor ? selectedHex : COLOR_WHEEL} />
 
       {isShowingPicker && (
         <ColorPickerPopper

@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
@@ -48,6 +49,12 @@ export const nodeDataByIDSelector = Feature.createAtomicActionsPhase2Selector(
   [CreatorV1Selectors.dataByNodeIDSelector, _nodeDataByIDSelector, idParamSelector],
   (getNodeDataV1, nodeDataV2, nodeID) => [nodeID ? getNodeDataV1(nodeID) ?? null : null, nodeDataV2]
 );
+
+export const blockColorSelector = createSelector([nodeDataByIDSelector], (data) => {
+  const blockData = data as Realtime.BlockNodeData<unknown>;
+
+  return blockData && 'blockColor' in blockData ? blockData.blockColor : COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR;
+});
 
 export const getNodeDataByIDSelector = createCurriedSelector(nodeDataByIDSelector);
 

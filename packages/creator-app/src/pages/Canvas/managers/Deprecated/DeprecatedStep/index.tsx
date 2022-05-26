@@ -2,7 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { BlockVariant } from '@/constants';
+import { HSLShades } from '@/constants';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -10,13 +10,13 @@ import { NODE_CONFIG } from '../constants';
 export interface DeprecatedStepProps {
   nodeID: string;
   ports: string[];
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-const DeprecatedStep: React.FC<DeprecatedStepProps> = ({ nodeID, ports, variant }) => (
+const DeprecatedStep: React.FC<DeprecatedStepProps> = ({ nodeID, ports, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item icon={NODE_CONFIG.icon} variant={variant} placeholder="Deprecated" />
+      <Item icon={NODE_CONFIG.icon} palette={palette} placeholder="Deprecated" />
     </Section>
 
     <Section>
@@ -27,8 +27,8 @@ const DeprecatedStep: React.FC<DeprecatedStepProps> = ({ nodeID, ports, variant 
   </Step>
 );
 
-const ConnectedDeprecatedStep: React.FC<ConnectedStepProps<Realtime.NodeData.Deprecated>> = ({ ports, data, variant }) => (
-  <DeprecatedStep nodeID={data.nodeID} ports={[ports.out.builtIn[BaseModels.PortType.NEXT]!, ...ports.out.dynamic]} variant={variant} />
+const ConnectedDeprecatedStep: React.FC<ConnectedStepProps<Realtime.NodeData.Deprecated>> = ({ ports, data, palette }) => (
+  <DeprecatedStep nodeID={data.nodeID} ports={[ports.out.builtIn[BaseModels.PortType.NEXT]!, ...ports.out.dynamic]} palette={palette} />
 );
 
 export default ConnectedDeprecatedStep;

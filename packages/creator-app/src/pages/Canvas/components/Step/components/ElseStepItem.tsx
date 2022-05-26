@@ -8,9 +8,9 @@ import Section from './StepSection';
 
 export type ElseStepItemProps = Omit<ItemProps, 'icon' | 'portColor' | 'iconColor' | 'labelVariant'>;
 
-const ElseStepItem: React.FC<ElseStepItemProps> = ({ label = 'Else', variant, ...props }) => (
+const ElseStepItem: React.FC<ElseStepItemProps> = ({ label = 'Else', palette, ...props }) => (
   <Section>
-    <Item icon="else" label={label} variant={variant} labelVariant={StepLabelVariant.SECONDARY} portColor="#8da2b5" {...props} />
+    <Item icon="else" label={label} palette={palette} labelVariant={StepLabelVariant.SECONDARY} portColor="#8da2b5" {...props} />
   </Section>
 );
 

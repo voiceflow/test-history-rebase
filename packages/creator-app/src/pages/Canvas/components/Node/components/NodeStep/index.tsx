@@ -2,8 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockType } from '@/constants';
-import { BlockVariant } from '@/constants/canvas';
+import { BlockType, HSLShades } from '@/constants';
 import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, ManagerContext, NodeEntityContext, PortEntityProvider } from '@/pages/Canvas/contexts';
@@ -16,11 +15,11 @@ import Styles from './NodeStepStyles';
 
 export interface NodeStepProps {
   isLast: boolean;
-  variant: BlockVariant;
+  palette: HSLShades;
   isDraggable: boolean;
 }
 
-const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => {
+const NodeStep: React.FC<NodeStepProps> = ({ isLast, palette, isDraggable }) => {
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
   const projectType = React.useContext(ProjectTypeContext)!;
@@ -71,7 +70,7 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
       data={data as any}
       ports={node.ports as any}
       engine={engine}
-      variant={variant}
+      palette={palette}
       platform={platform}
       withPorts={stepAPI.withPorts}
       projectType={projectType}
@@ -92,7 +91,7 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
       <StepAPIProvider value={stepAPI}>
         {isDragging ? (
           <>
-            <Step.Placeholder variant={variant} isLast={isLast} />
+            <Step.Placeholder palette={palette} isLast={isLast} />
             <Portal portalNode={engine.merge.components.mergeLayer?.ref.current}>{step}</Portal>
           </>
         ) : (

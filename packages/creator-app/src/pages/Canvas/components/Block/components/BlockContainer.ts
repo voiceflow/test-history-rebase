@@ -1,6 +1,6 @@
 import { MemberIcon } from '@/components/User';
-import { BlockVariant } from '@/constants/canvas';
-import { styled, transition, withBlockVariantStyle } from '@/hocs';
+import { HSLShades } from '@/constants';
+import { styled, transition } from '@/hocs';
 import {
   CANVAS_ACTIVATION_CLASSNAME,
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
@@ -22,12 +22,11 @@ import { ClassName, Identifier } from '@/styles/constants';
 
 import { BLOCK_CONTAINER_PADDING } from '../constants';
 
-interface BlockContainerProps {
-  variant: BlockVariant;
-  blockColor?: string;
+interface StyledBlockContainerProps {
+  palette: HSLShades;
 }
 
-const BlockContainer = styled.div<BlockContainerProps>`
+const BlockContainer = styled.div<StyledBlockContainerProps>`
   ${transition('opacity')}
 
   width: ${({ theme }) => theme.components.block.width}px;
@@ -35,8 +34,8 @@ const BlockContainer = styled.div<BlockContainerProps>`
   cursor: pointer;
   border: solid 2px #fff;
   padding: 0 ${BLOCK_CONTAINER_PADDING}px ${BLOCK_CONTAINER_PADDING}px ${BLOCK_CONTAINER_PADDING}px;
-  background-color: #fff;
-  background-image: ${withBlockVariantStyle((variant) => variant.backgroundImage)};
+
+  background-color: ${({ palette }) => palette[100]};
   position: relative;
   opacity: 1;
 
@@ -58,7 +57,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
     right: -3px;
     bottom: -3px;
 
-    border: 1px solid ${withBlockVariantStyle((variant) => variant.borderColor)};
+    border: 1px solid ${({ palette }) => palette[200]};
 
     content: '';
 
@@ -66,8 +65,8 @@ const BlockContainer = styled.div<BlockContainerProps>`
   }
 
   &:hover::before {
-    box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.2);
-    border-color: ${withBlockVariantStyle((variant) => variant.activeBorderColor)};
+    box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.12);
+    border-color: ${({ palette }) => palette[200]};
   }
 
   .${NODE_HIGHLIGHTED_CLASSNAME} &,
@@ -109,8 +108,8 @@ const BlockContainer = styled.div<BlockContainerProps>`
     position: absolute;
     top: 6px;
     left: 6px;
-    transform: translate(-50%, -50%);
     z-index: 99;
+    transform: translate(-50%, -50%);
   }
 
   #${Identifier.CANVAS_CONTAINER}.${CANVAS_SELECTING_GROUP_CLASSNAME} {

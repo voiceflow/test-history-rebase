@@ -1,5 +1,3 @@
-export { BlockVariant } from '@voiceflow/realtime-sdk';
-
 export enum BlockState {
   REGULAR = 'regular',
   ACTIVE = 'active',

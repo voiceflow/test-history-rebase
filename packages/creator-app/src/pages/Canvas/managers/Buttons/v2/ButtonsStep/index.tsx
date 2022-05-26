@@ -3,7 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item, NoMatchStepItemV2, NoReplyItemV2, Section, StepButton } from '@/pages/Canvas/components/Step';
 import { WAITING_FOR_INTENT_PLACEHOLDER } from '@/pages/Canvas/constants';
 
@@ -20,7 +21,7 @@ export interface ButtonsStepProps {
   noMatchPortID?: Nullable<string>;
   noReplyPortID?: Nullable<string>;
   dynamicPortIDs: string[];
-  variant: BlockVariant;
+  palette: HSLShades;
   onOpenEditor: () => void;
 }
 
@@ -29,7 +30,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({
   buttons,
   noMatch,
   noReply,
-  variant,
+  palette,
   noMatchPortID,
   noReplyPortID,
   onOpenEditor,
@@ -62,7 +63,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({
                 nestedWithIcon={index > 0}
                 label={button.label}
                 portID={button.portID}
-                variant={variant}
+                palette={palette}
                 attachment={attachment}
                 placeholder="Add button label"
                 withNewLines
@@ -75,7 +76,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({
             );
           })
         ) : (
-          <Item label={WAITING_FOR_INTENT_PLACEHOLDER} icon={PLACEHOLDER_ICON} variant={variant} v2 />
+          <Item label={WAITING_FOR_INTENT_PLACEHOLDER} icon={PLACEHOLDER_ICON} palette={palette} v2 />
         )}
 
         <NoMatchStepItemV2 nodeID={nodeID} portID={noMatchPortID} noMatch={noMatch} nestedWithIcon />
@@ -85,7 +86,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({
   );
 };
 
-const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = ({ ports, data, variant, engine }) => {
+const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = ({ ports, data, palette, engine }) => {
   const { buttons } = useButtons({ ports, data });
 
   return (
@@ -97,7 +98,7 @@ const ConnectedButtonsStep: ConnectedStep<Realtime.NodeData.Buttons, Realtime.No
       noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
       noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
       dynamicPortIDs={ports.out.dynamic}
-      variant={variant}
+      palette={palette}
       onOpenEditor={() => engine.setActive(data.nodeID)}
     />
   );

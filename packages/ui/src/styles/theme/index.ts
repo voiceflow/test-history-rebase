@@ -28,7 +28,7 @@ const THEME = {
     xl: '1200px',
   },
   backgrounds: {
-    offWhite: '#f9f9f9',
+    offWhite: '#f8f8f8',
     offWhiteBlue: '#fafafc',
     white: '#ffffff',
     lightBlue: '#eff6fe',

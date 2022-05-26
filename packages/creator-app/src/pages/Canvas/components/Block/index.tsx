@@ -1,9 +1,7 @@
-import { WithOptional } from '@voiceflow/common';
 import { Icon } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import { BlockVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -15,9 +13,8 @@ import { BlockSectionProps } from './components/BlockSection';
 import { useBlockAPI } from './hooks';
 
 export * from './constants';
-export * from './types';
 
-export type BlockProps = WithOptional<BlockSectionProps, 'variant'> & {
+export type BlockProps = BlockSectionProps & {
   sections?: {
     name: string;
     icon?: Icon;
@@ -38,21 +35,7 @@ export type BlockProps = WithOptional<BlockSectionProps, 'variant'> & {
 };
 
 const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<BlockProps>> = (
-  {
-    variant = BlockVariant.STANDARD,
-    sections = [],
-    children,
-    blockColor,
-    onMouseEnter,
-    onMouseLeave,
-    onMouseMove,
-    onMouseDown,
-    onClick,
-    isDisabled,
-    nodeID,
-    className,
-    ...props
-  },
+  { sections = [], children, palette, onMouseEnter, onMouseLeave, onMouseMove, onMouseDown, onClick, isDisabled, nodeID, className, ...props },
   ref
 ) => {
   const blockAPI = useBlockAPI();
@@ -64,7 +47,7 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
   return (
     <Container
       className={cn(ClassName.CANVAS_BLOCK, className)}
-      variant={variant}
+      palette={palette}
       onMouseMove={onMouseMove}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -78,11 +61,11 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
       }}
       ref={blockAPI.ref}
     >
-      <Section nodeID={nodeID} variant={variant} isDisabled={isDisabled} titleRef={blockAPI.titleRef} {...props}>
+      <Section nodeID={nodeID} palette={palette} isDisabled={isDisabled} titleRef={blockAPI.titleRef} {...props}>
         {children}
       </Section>
       {sections.map((section, index) => (
-        <Section nodeID={nodeID} variant={variant} isDisabled={isDisabled} {...section} key={index} />
+        <Section nodeID={nodeID} palette={palette} isDisabled={isDisabled} {...section} key={index} />
       ))}
     </Container>
   );

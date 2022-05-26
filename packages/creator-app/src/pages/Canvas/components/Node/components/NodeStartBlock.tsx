@@ -1,9 +1,8 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { useDidUpdateEffect } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, useColorPaletteForBlocks, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant } from '@/constants/canvas';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -29,16 +28,18 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const platform = React.useContext(PlatformContext)!;
 
-  const { variant, nodeName, nodeLabel, nextPortID, combinedNodes } = nodeEntity.useState((e) => {
+  const { blockColor, nodeName, nodeLabel, nextPortID, combinedNodes } = nodeEntity.useState((e) => {
     const { node, data } = e.resolve<Realtime.NodeData.Start>();
     return {
-      variant: data.blockColor,
+      blockColor: data.blockColor,
       nodeName: data.name,
       nodeLabel: data.label,
       nextPortID: node.ports.out.builtIn[BaseModels.PortType.NEXT]!,
       combinedNodes: node.combinedNodes,
     };
   });
+
+  const palette = useColorPaletteForBlocks(blockColor);
 
   useDidUpdateEffect(() => {
     engine.node.redrawLinks(nodeEntity.nodeID);
@@ -47,12 +48,12 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
   const commands = combinedNodes.length
     ? combinedNodes.map((commandNodeID) => (
         <NodeEntityProvider id={commandNodeID} key={commandNodeID}>
-          <NodeStep isDraggable={false} variant={variant ?? BlockVariant.STANDARD} isLast />
+          <NodeStep isDraggable={false} palette={palette ?? COLOR_PICKER_CONSTANTS} isLast />
         </NodeEntityProvider>
       ))
     : null;
 
-  const actions = <PlayButton nodeID={nodeEntity.nodeID} />;
+  const actions = <PlayButton nodeID={nodeEntity.nodeID} palette={palette} />;
 
   if (isRootDiagram) {
     return (
@@ -62,7 +63,7 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
         label={nodeLabel}
         nodeID={nodeEntity.nodeID}
         portID={nextPortID}
-        variant={variant}
+        palette={palette}
         actions={actions}
         platform={platform}
         commands={commands}
@@ -78,7 +79,7 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
       label={nodeLabel}
       nodeID={nodeEntity.nodeID}
       portID={nextPortID}
-      variant={variant}
+      palette={palette}
       actions={actions}
       commands={commands}
     />

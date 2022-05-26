@@ -1,20 +1,19 @@
 import { Icon, SvgIcon, SvgIconProps } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant } from '@/constants/canvas';
-import { getIconColor } from '@/styles/theme/block';
+import { HSLShades } from '@/constants';
 
 import IconContainer from './StepIconContainer';
 
-export interface StepIconProps extends Omit<SvgIconProps, 'variant' | 'icon'> {
+export interface StepIconProps extends Omit<SvgIconProps, 'icon'> {
   icon?: Icon | null;
   iconColor?: string;
   iconSize?: number;
-  variant?: BlockVariant;
+  palette?: HSLShades;
 }
 
-const StepIcon: React.FC<StepIconProps> = ({ variant, icon, iconColor, iconSize = 18, style, ...props }) => (
-  <IconContainer color={variant ? getIconColor(variant) : iconColor} style={style}>
+const StepIcon: React.FC<StepIconProps> = ({ palette, icon, iconColor, iconSize = 18, style, ...props }) => (
+  <IconContainer color={palette ? palette?.[600] : iconColor} style={style}>
     {icon && <SvgIcon icon={icon} size={iconSize} {...props} />}
   </IconContainer>
 );

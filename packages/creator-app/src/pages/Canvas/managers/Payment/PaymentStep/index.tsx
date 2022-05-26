@@ -2,7 +2,8 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
 import { ProductMapContext } from '@/pages/Canvas/contexts';
 
@@ -15,19 +16,19 @@ export interface PaymentStepProps {
   upsellMessage?: string | null;
   successPortID: string;
   failurePortID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, withPorts, nodeID, successPortID, failurePortID, variant }) => (
+export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, withPorts, nodeID, successPortID, failurePortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item icon={NODE_CONFIG.icon} label={label} variant={variant} placeholder="Select a product" labelVariant={StepLabelVariant.SECONDARY} />
+      <Item icon={NODE_CONFIG.icon} label={label} palette={palette} placeholder="Select a product" labelVariant={StepLabelVariant.SECONDARY} />
     </Section>
 
     {label && (
       <>
         <Section>
-          <Item icon="alexa" variant={variant} label={upsellMessage} placeholder="Add Upsell Message" />
+          <Item icon="alexa" palette={palette} label={upsellMessage} placeholder="Add Upsell Message" />
         </Section>
 
         <Section>
@@ -57,7 +58,7 @@ const ConnectedPaymentStep: ConnectedStep<Realtime.NodeData.Payment, Realtime.No
   ports,
   data,
   withPorts,
-  variant,
+  palette,
 }) => {
   const productMap = React.useContext(ProductMapContext)!;
 
@@ -71,7 +72,7 @@ const ConnectedPaymentStep: ConnectedStep<Realtime.NodeData.Payment, Realtime.No
       upsellMessage={product?.purchasePrompt}
       successPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       failurePortID={ports.out.builtIn[BaseModels.PortType.FAIL]}
-      variant={variant}
+      palette={palette}
     />
   );
 };

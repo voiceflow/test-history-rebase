@@ -56,14 +56,6 @@ export enum VoicePromptType {
   AUDIO = 'audio',
 }
 
-export enum BlockVariant {
-  STANDARD = 'standard',
-  RED = 'red',
-  BLUE = 'blue',
-  GREEN = 'green',
-  PURPLE = 'purple',
-}
-
+export const BLOCK_STANDARD_COLOR = '#A1ADBA';
 export const CURRENT_PROJECT_VERSION = 1.0;
-
 export const TOPICS_AND_COMPONENTS_PROJECT_VERSION = 1.2;

@@ -3,7 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
@@ -17,10 +18,10 @@ export interface FlowStepProps {
   nodeID: string;
   nextPortID: string;
   onClickFlow?: () => void;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, nextPortID, onClickFlow, variant }) => (
+export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, nextPortID, onClickFlow, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
@@ -28,7 +29,7 @@ export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, nextPortID, o
         label={label}
         portID={nextPortID}
         onClick={label ? stopPropagation(onClickFlow) : undefined}
-        variant={variant}
+        palette={palette}
         labelVariant={StepLabelVariant.PRIMARY}
         placeholder="Connect a flow to this step"
       />
@@ -36,7 +37,7 @@ export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, nextPortID, o
   </Step>
 );
 
-const ConnectedFlowStep: ConnectedStep<Realtime.NodeData.Flow, Realtime.NodeData.FlowBuiltInPorts> = ({ ports, data, variant }) => {
+const ConnectedFlowStep: ConnectedStep<Realtime.NodeData.Flow, Realtime.NodeData.FlowBuiltInPorts> = ({ ports, data, palette }) => {
   const diagramMap = React.useContext(DiagramMapContext)!;
 
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
@@ -55,7 +56,7 @@ const ConnectedFlowStep: ConnectedStep<Realtime.NodeData.Flow, Realtime.NodeData
       nodeID={data.nodeID}
       nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       onClickFlow={goToDiagram}
-      variant={variant}
+      palette={palette}
     />
   );
 };

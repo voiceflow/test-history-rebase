@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
 import Step, { ConnectedStep, NoMatchStepItemV2, NoReplyItemV2, Section } from '@/pages/Canvas/components/Step';
 import { SlotMapContext } from '@/pages/Canvas/contexts';
 import { transformSlotIntoPrompt } from '@/pages/Canvas/utils';
@@ -21,7 +21,7 @@ export interface CaptureStepProps {
   captureType: BaseNode.CaptureV2.CaptureType;
   noMatchPortID?: Nullable<string>;
   noReplyPortID?: Nullable<string>;
-  variant: BlockVariant;
+  palette: HSLShades;
   onOpenEditor: () => void;
 }
 
@@ -30,7 +30,7 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({
   nodeID,
   noReply,
   noMatch = null,
-  variant,
+  palette,
   variable,
   nextPortID,
   captureType,
@@ -55,7 +55,7 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({
             </>
           }
           nextPortID={nextPortID}
-          variant={variant}
+          palette={palette}
           onOpenEditor={onOpenEditor}
         />
       ) : (
@@ -66,7 +66,7 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({
             isLast={index === slots.length - 1}
             slot={slot}
             nextPortID={nextPortID}
-            variant={variant}
+            palette={palette}
             onOpenEditor={onOpenEditor}
           />
         ))
@@ -81,7 +81,7 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({
 const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = ({
   data,
   ports,
-  variant,
+  palette,
   projectType,
   engine,
 }) => {
@@ -105,7 +105,7 @@ const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.
       nodeID={data.nodeID}
       noReply={data.noReply}
       noMatch={data.noMatch}
-      variant={variant}
+      palette={palette}
       variable={data.variable}
       nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       captureType={data.captureType}

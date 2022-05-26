@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
 import Step, { ConnectedStep, FailureStepItemV2, Item, Section, StepButton, SuccessStepItemV2 } from '@/pages/Canvas/components/Step';
 
 import CodePreview from '../CodePreview';
@@ -15,7 +15,7 @@ export interface CodeStepProps {
   withPorts: boolean;
   successPortID: string;
   failurePortID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
   onOpenEditor: () => void;
 }
 
@@ -58,7 +58,7 @@ const ConnectedCodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData
   ports,
   data,
   withPorts,
-  variant,
+  palette,
   engine,
 }) => (
   <CodeStep
@@ -67,7 +67,7 @@ const ConnectedCodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData
     withPorts={withPorts}
     successPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
     failurePortID={ports.out.builtIn[BaseModels.PortType.FAIL]}
-    variant={variant}
+    palette={palette}
     onOpenEditor={() => engine.setActive(data.nodeID)}
   />
 );

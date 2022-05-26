@@ -1,11 +1,11 @@
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { connect, styled } from '@/hocs';
-import { useTheme, useTrackingEvents } from '@/hooks';
+import { useTrackingEvents } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
@@ -48,12 +48,10 @@ const Container = styled.div`
 
 interface PlayButtonProps {
   nodeID?: string;
-  variant?: BlockVariant;
+  palette: HSLShades;
 }
 
-const PlayButton: React.FC<ConnectedPlayButtonProps & PlayButtonProps> = ({ nodeID, variant, updatePrototype, goToPrototype }) => {
-  const theme = useTheme();
-
+const PlayButton: React.FC<ConnectedPlayButtonProps & PlayButtonProps> = ({ nodeID, palette, updatePrototype, goToPrototype }) => {
   const [trackingEvents] = useTrackingEvents();
 
   return (
@@ -62,7 +60,7 @@ const PlayButton: React.FC<ConnectedPlayButtonProps & PlayButtonProps> = ({ node
         <SvgIcon
           icon="play"
           clickable
-          color={theme.components.block.variants[variant || BlockVariant.STANDARD].color}
+          color={palette[700]}
           onClick={(e) => {
             e.stopPropagation();
 

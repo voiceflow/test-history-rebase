@@ -15,7 +15,7 @@ import { AudioTitle } from './styles';
 export const AudioDialogStep: React.FC<SpeakStepItem & SpeakStepProps> = ({
   items,
   random,
-  variant,
+  palette,
   content,
   url,
   isLastItem,
@@ -63,7 +63,7 @@ export const AudioDialogStep: React.FC<SpeakStepItem & SpeakStepProps> = ({
         label={label}
         prefix={<PlayButton content={content} playing={playing} onPlay={() => setPlaying(true)} onStop={() => setPlaying(false)} />}
         portID={isLastItem ? nextPortID : null}
-        variant={variant}
+        palette={palette}
         withNewLines
         labelVariant={StepLabelVariant.PRIMARY}
         labelLineClamp={100}

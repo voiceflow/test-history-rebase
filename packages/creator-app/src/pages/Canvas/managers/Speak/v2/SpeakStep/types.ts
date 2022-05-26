@@ -1,7 +1,6 @@
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { DialogType } from '@/constants';
-import { BlockVariant } from '@/constants/canvas';
+import { DialogType, HSLShades } from '@/constants';
 
 export interface SpeakStepItem {
   id: string;
@@ -21,7 +20,7 @@ export interface SpeakStepProps {
   random?: boolean;
   nodeID: string;
   platform: VoiceflowConstants.PlatformType;
-  variant: BlockVariant;
+  palette: HSLShades;
   nextPortID: string;
   onOpenEditor: () => void;
 }

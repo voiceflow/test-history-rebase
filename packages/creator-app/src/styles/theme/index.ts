@@ -1,6 +1,6 @@
 import { createTheme } from '@voiceflow/ui';
 
-import BLOCK_THEME, { BLOCK_WIDTH } from './block';
+import { BLOCK_WIDTH } from './block';
 import BLOCK_STEP_THEME from './blockStep';
 import { ANIMATION_SPEED } from './constants';
 import PROJECT_PAGE from './projectPage';
@@ -30,7 +30,9 @@ const THEME = createTheme({
     menuDrawer: {
       width: 250,
     },
-    block: BLOCK_THEME,
+    block: {
+      width: BLOCK_WIDTH,
+    },
     blockStep: BLOCK_STEP_THEME,
     audioPlayer: {
       height: 108,

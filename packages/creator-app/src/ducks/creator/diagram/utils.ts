@@ -1,9 +1,9 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 
-import { BlockVariant } from '@/constants/canvas';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import { nodeFactory, portFactory } from './factories';
@@ -406,7 +406,7 @@ export const buildNewNode = (node: NodeDescriptor, data: DataDescriptor): [Realt
     ...data,
     nodeID: node.id,
     type: node.type,
-    blockColor: BlockVariant.STANDARD,
+    blockColor: COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR,
   };
   const newNode = nodeFactory(node.id, {
     ...node,

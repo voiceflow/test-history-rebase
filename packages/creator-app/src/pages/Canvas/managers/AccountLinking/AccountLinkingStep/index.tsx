@@ -3,7 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import _isEqual from 'lodash/isEqual';
 import React from 'react';
 
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { AccountLinkingContext } from '@/pages/Canvas/contexts';
 
@@ -13,17 +14,17 @@ export interface AccountLinkingStepProps {
   nodeID: string;
   nextPortID: string;
   isConfigured: boolean;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfigured, nodeID, nextPortID, variant }) => (
+export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfigured, nodeID, nextPortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
         icon={NODE_CONFIG.icon}
         label={isConfigured && 'Sending Account Linking card'}
         portID={nextPortID}
-        variant={variant}
+        palette={palette}
         placeholder="Configure Account Linking"
         labelVariant={StepLabelVariant.SECONDARY}
       />
@@ -34,7 +35,7 @@ export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfig
 const ConnectedAccountLinkingStep: ConnectedStep<Realtime.NodeData.AccountLinking, Realtime.NodeData.AccountLinkingBuiltInPorts> = ({
   ports,
   data,
-  variant,
+  palette,
 }) => {
   const accountLinkingData = React.useContext(AccountLinkingContext)!;
 
@@ -45,7 +46,7 @@ const ConnectedAccountLinkingStep: ConnectedStep<Realtime.NodeData.AccountLinkin
       nodeID={data.nodeID}
       nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       isConfigured={!!accountLinkingData && notEmpty}
-      variant={variant}
+      palette={palette}
     />
   );
 };

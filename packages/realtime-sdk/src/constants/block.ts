@@ -15,6 +15,7 @@ export enum BlockType {
   IF = 'if',
   IFV2 = 'ifV2',
   RANDOM = 'random',
+
   // advanced
   CHOICE = 'interaction',
   BUTTONS = 'buttons',

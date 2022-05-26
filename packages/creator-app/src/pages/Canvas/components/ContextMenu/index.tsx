@@ -1,10 +1,10 @@
+/* eslint-disable no-console */
 import { Eventual, Utils } from '@voiceflow/common';
 import { BoxFlex, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
-import { BlockVariant } from '@/constants/canvas';
 import * as UIDuck from '@/ducks/ui';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useModals, usePermission, useSelector } from '@/hooks';
@@ -47,14 +47,7 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
     }
   },
 
-  [CanvasAction.COLOR_BLOCK]: ({ target: nodeID }, { engine, blockColor }) => {
-    if (!blockColor) {
-      return;
-    }
-
-    nodeID ? engine.node.updateBlockColor(nodeID, blockColor) : engine.node.updateManyBlocksColor(engine.activation.getTargets(), blockColor);
-    engine.selection.reset();
-  },
+  [CanvasAction.COLOR_BLOCK]: Utils.functional.noop,
 
   [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusStart(),
 
@@ -90,7 +83,6 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   },
 };
 
-const isBlockColorValue = (value: string): value is BlockVariant => Object.values<string>(BlockVariant).includes(value);
 const isCanvasActionValue = (value: string): value is CanvasAction => Object.values<string>(CanvasAction).includes(value);
 
 const ContextMenu: React.FC = () => {
@@ -150,22 +142,12 @@ const ContextMenu: React.FC = () => {
   }, [options]);
 
   const onSelect = async (value: string) => {
-    if (isBlockColorValue(value)) {
-      await OPTION_HANDLERS[CanvasAction.COLOR_BLOCK](contextMenu, { ...cache.current, blockColor: value });
-    } else if (isCanvasActionValue(value)) {
+    contextMenu.onHide();
+
+    if (isCanvasActionValue(value)) {
       await OPTION_HANDLERS[value](contextMenu, cache.current);
     }
-
-    contextMenu.onHide();
   };
-
-  React.useEffect(() => {
-    const { onHide } = contextMenu;
-
-    document.addEventListener('mousedown', onHide);
-
-    return () => document.removeEventListener('mousedown', onHide);
-  }, [contextMenu.onHide]);
 
   const virtualElement = React.useMemo(() => buildVirtualElement(contextMenu.position), [contextMenu.position]);
 

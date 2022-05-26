@@ -1,6 +1,7 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { BillingPeriod, UserRole } from '@voiceflow/internal';
+import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import { PlatformType } from '@voiceflow/voiceflow-types/build/common/constants';
 
 import { Pair } from '@/types';
@@ -8,7 +9,6 @@ import { Pair } from '@/types';
 export type { MarkupBlockType, RootOrMarkupBlockType } from '@voiceflow/realtime-sdk';
 export {
   BlockType,
-  BlockVariant,
   BUILT_IN_VARIABLES,
   BuiltInVariable,
   CUSTOM_SLOT_TYPE,
@@ -22,8 +22,8 @@ export const ACTION_BUILDER_SCOPE = 'https://www.googleapis.com/auth/actions.bui
 export const CLOUD_RESOURCE_SCOPE_READONLY = 'https://www.googleapis.com/auth/cloudplatformprojects.readonly';
 export const CLOUD_RESOURCE_SCOPE = 'https://www.googleapis.com/auth/cloudplatformprojects';
 export const FIREBASE_SCOPE = 'https://www.googleapis.com/auth/firebase';
-export const SERVICE_MANAGEMENT_SCOPE = 'https://www.googleapis.com/auth/service.management';
 export const DIALOGFLOW_SCOPE = 'https://www.googleapis.com/auth/dialogflow';
+export const SERVICE_MANAGEMENT_SCOPE = 'https://www.googleapis.com/auth/service.management';
 export const GOOGLE_OAUTH_SCOPES = [
   CLOUD_RESOURCE_SCOPE,
   USER_INFO_SCOPE,
@@ -313,6 +313,8 @@ export const SLOT_COLORS = [
   '#BF9677',
   '#4C4C4C',
 ];
+
+export type HSLShades = COLOR_PICKER_CONSTANTS.HSLShades;
 
 export const SPACE_REGEXP = / /g;
 

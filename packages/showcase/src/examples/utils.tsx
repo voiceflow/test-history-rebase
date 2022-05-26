@@ -13,8 +13,8 @@ export interface Example {
 }
 
 export interface Section {
-  path: string;
   title: string;
+  path: string;
   examples: Example[];
 }
 

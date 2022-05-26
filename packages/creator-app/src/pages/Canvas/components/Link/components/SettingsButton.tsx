@@ -16,7 +16,7 @@ const SettingsButton: React.ForwardRefRenderFunction<HTMLDivElement, SettingsBut
   { children, onClick, isActive, isSimple, tooltipTitle, tooltipHotkey },
   ref
 ) => (
-  <Box ref={ref} p={8}>
+  <Box ref={ref}>
     <TippyTooltip style={{ display: 'block' }} title={tooltipTitle} position="top" distance={6} hotkey={tooltipHotkey} disabled={!tooltipTitle}>
       <ButtonContainer onClick={onClick} isActive={isActive} isSimple={isSimple}>
         {children}

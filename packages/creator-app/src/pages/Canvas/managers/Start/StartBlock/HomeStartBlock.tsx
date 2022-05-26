@@ -9,11 +9,11 @@ import HomeStartStep, { HomeStartStepProps } from './components/HomeStartStep';
 export type HomeStartBlockProps = Omit<BlockWithCommandsProps, 'icon'> & HomeStartStepProps;
 
 const HomeStartBlock: React.ForwardRefRenderFunction<BlockAPI, HomeStartBlockProps> = (
-  { name, label, portID, platform, invocationName, children, commands, variant, ...props },
+  { name, label, portID, platform, invocationName, children, commands, palette, ...props },
   ref
 ) => (
-  <BlockWithCommands name={name || 'Start'} commands={commands || children} {...props} className={HOME_BLOCK_CLASSNAME} ref={ref} variant={variant}>
-    <HomeStartStep label={label} platform={platform} invocationName={invocationName} portID={portID} variant={variant} />
+  <BlockWithCommands name={name || 'Start'} commands={commands || children} {...props} className={HOME_BLOCK_CLASSNAME} ref={ref} palette={palette}>
+    <HomeStartStep label={label} platform={platform} invocationName={invocationName} portID={portID} palette={palette} />
   </BlockWithCommands>
 );
 

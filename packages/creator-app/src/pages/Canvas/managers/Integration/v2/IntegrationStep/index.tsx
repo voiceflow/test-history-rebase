@@ -2,7 +2,8 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, FailureStepItemV2, Item, Section, SuccessStepItemV2 } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -14,16 +15,16 @@ export interface IntegrationStepProps {
   withPorts: boolean;
   successPortID: string;
   failurePortID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPorts, nodeID, successPortID, failurePortID, variant }) => (
+export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPorts, nodeID, successPortID, failurePortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section v2 withIcon>
       <Item
         icon={NODE_CONFIG.getIcon!(data)}
         label={getLabel(data)}
-        variant={variant}
+        palette={palette}
         title={getDescriptions(data).title}
         placeholder={getDescriptions(data).label}
         labelVariant={StepLabelVariant.PRIMARY}
@@ -45,7 +46,7 @@ const ConnectedIntegrationStep: ConnectedStep<Realtime.NodeData.Integration, Rea
   ports,
   data,
   withPorts,
-  variant,
+  palette,
 }) => (
   <IntegrationStep
     data={data}
@@ -53,7 +54,7 @@ const ConnectedIntegrationStep: ConnectedStep<Realtime.NodeData.Integration, Rea
     withPorts={withPorts}
     successPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
     failurePortID={ports.out.builtIn[BaseModels.PortType.FAIL]}
-    variant={variant}
+    palette={palette}
   />
 );
 

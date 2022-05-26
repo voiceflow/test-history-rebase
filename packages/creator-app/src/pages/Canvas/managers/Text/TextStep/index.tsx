@@ -3,7 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { serializeSlateToJSX } from '@/utils/slate';
 
@@ -19,10 +20,10 @@ export interface TextStepProps {
   nodeID: string;
   preview: boolean;
   nextPortID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, preview, nextPortID, variant }) => {
+export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, preview, nextPortID, palette }) => {
   const itemsToRender = preview && items.length ? [items[0]] : items;
 
   return (
@@ -35,7 +36,7 @@ export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, preview, next
               icon={NODE_CONFIG.icon}
               label={content}
               portID={index === itemsToRender.length - 1 ? nextPortID : null}
-              variant={variant}
+              palette={palette}
               placeholder="Add text reply"
               withNewLines
               labelVariant={StepLabelVariant.PRIMARY}
@@ -44,14 +45,14 @@ export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, preview, next
             />
           ))
         ) : (
-          <Item placeholder="Add text reply" icon={NODE_CONFIG.icon} variant={variant} />
+          <Item placeholder="Add text reply" icon={NODE_CONFIG.icon} palette={palette} />
         )}
       </Section>
     </Step>
   );
 };
 
-const ConnectedTextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = ({ ports, data, variant }) => {
+const ConnectedTextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = ({ ports, data, palette }) => {
   const items = React.useMemo(
     () => data.texts.map(({ id, content }) => ({ id, content: SlateEditorAPI.isNewState(content) ? '' : serializeSlateToJSX(content) })),
     [data.texts]
@@ -63,7 +64,7 @@ const ConnectedTextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData
       nodeID={data.nodeID}
       preview={data.canvasVisibility === BaseNode.Utils.CanvasNodeVisibility.PREVIEW}
       nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
-      variant={variant}
+      palette={palette}
     />
   );
 };

@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, SvgIcon, Upload } from '@voiceflow/ui';
+import { Box, COLOR_PICKER_CONSTANTS, SvgIcon, Upload } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -7,13 +7,12 @@ import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 import { SectionToggleVariant } from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
 import VariablesInput from '@/components/VariablesInput';
-import { BlockVariant, DialogType } from '@/constants';
+import { DialogType } from '@/constants';
 import { compose } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
 import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '@/pages/Canvas/managers/Speak/constants';
-import { getIconColor } from '@/styles/theme/block';
 import { prettifyBucketURL } from '@/utils/audio';
 
 export type SpeakAudioItemProps = ListItemComponentProps<
@@ -23,7 +22,6 @@ export type SpeakAudioItemProps = ListItemComponentProps<
     platform: VoiceflowConstants.PlatformType;
     isRandomized?: boolean;
     formControlProps?: { contentBottomUnits?: number };
-    variant?: BlockVariant;
   }
 >;
 
@@ -45,7 +43,6 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
     isDraggingPreview,
     isContextMenuOpen,
     formControlProps,
-    variant,
   },
   ref
 ) => {
@@ -68,7 +65,9 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
       namespace={['speakAudioItem', item.id]}
       initialOpen={isNew || isOnlyItem}
       header={header || (isVoice(item) ? 'System Says' : prettifyBucketURL(item.url) || 'Audio')}
-      prefix={<SvgIcon icon={NODE_CONFIG.getIcon!(isVoice(item) ? VOICE_MOCK_DATA : AUDIO_MOCK_DATA)} color={getIconColor(variant)} />}
+      prefix={
+        <SvgIcon icon={NODE_CONFIG.getIcon!(isVoice(item) ? VOICE_MOCK_DATA : AUDIO_MOCK_DATA)} color={COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR} />
+      }
       suffix={isRandomized && 'randomLoop'}
       isDragging={isDragging}
       headerRef={connectedDragRef}

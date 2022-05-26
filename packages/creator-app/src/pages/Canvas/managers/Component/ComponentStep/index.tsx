@@ -3,7 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
@@ -17,10 +18,10 @@ export interface ComponentStepProps {
   nodeID: string;
   nextPortID: string;
   onClickComponent?: () => void;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, nextPortID, onClickComponent, variant }) => (
+export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, nextPortID, onClickComponent, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
@@ -28,7 +29,7 @@ export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, nex
         label={label}
         portID={nextPortID}
         onClick={label ? stopPropagation(onClickComponent) : undefined}
-        variant={variant}
+        palette={palette}
         placeholder="Select a flow"
         labelVariant={StepLabelVariant.PRIMARY}
       />
@@ -36,7 +37,7 @@ export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, nex
   </Step>
 );
 
-const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ ports, data, variant }) => {
+const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ ports, data, palette }) => {
   const diagramMap = React.useContext(DiagramMapContext)!;
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 
@@ -54,7 +55,7 @@ const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtim
       nodeID={data.nodeID}
       nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       onClickComponent={onClickComponent}
-      variant={variant}
+      palette={palette}
     />
   );
 };

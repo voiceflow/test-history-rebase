@@ -1,4 +1,4 @@
-import { COLOR_GRADES, createShadesFromHue } from '@ui/utils/colors/hsl';
+import { COLOR_GRADES, createShadesFromHue, HSLShades } from '@ui/utils/colors/hsl';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -31,13 +31,17 @@ export interface ColorPaletteDisplayProps {
 }
 
 export const ColorPaletteDisplay = ({ hue }: ColorPaletteDisplayProps): React.ReactElement => {
-  const hslShades = React.useMemo(() => createShadesFromHue(hue), [hue]);
+  const hslShades = React.useMemo<HSLShades>(() => createShadesFromHue(hue), [hue]);
 
   return (
     <ColorPalette>
-      {Object.keys(hslShades).map((shade: string, i: number) => (
-        <Color key={shade} backgroundColor={hslShades[shade]} fontColor={i < 5 ? hslShades[COLOR_GRADES[9]] : hslShades[COLOR_GRADES[1]]}>
-          {shade}
+      {Object.keys(hslShades).map((value, i: number) => (
+        <Color
+          key={value}
+          backgroundColor={hslShades[value as keyof HSLShades]}
+          fontColor={i < 5 ? hslShades[COLOR_GRADES[9]] : hslShades[COLOR_GRADES[1]]}
+        >
+          {value}
         </Color>
       ))}
     </ColorPalette>

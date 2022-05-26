@@ -42,7 +42,6 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
 
   const [colorOpened, toggleColorOpened] = useToggle(false);
   const [linkTypeOpened, toggleLinkTypeOpened] = useToggle(false);
-  const [colorPickerOpened, toggleColorPickerOpened] = useToggle(false);
 
   const { linkData } = linkEntity.useState((e) => ({ linkData: e.resolve().data }));
 
@@ -108,24 +107,18 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
     toggleLinkTypeOpened(false);
   };
 
-  const onChangeLinkColor = (color: string) => {
-    onChangeColor(color);
-    toggleColorOpened(false);
-    toggleColorPickerOpened(false);
-  };
+  const onChangeLinkColor = (color: string) => onChangeColor(color);
 
   const onToggleColor = () => {
     toggleColorOpened();
     onToggleText(false);
     toggleLinkTypeOpened(false);
-    toggleColorPickerOpened(false);
   };
 
   const onToggleLinkType = () => {
     onToggleText(false);
     toggleColorOpened(false);
     toggleLinkTypeOpened();
-    toggleColorPickerOpened(false);
   };
 
   useHotKeys(Hotkey.DELETE, onRemove);
@@ -142,15 +135,7 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
   return (
     <Container ref={containerRef} className={ClassName.LINK_SETTINGS} onClick={stopPropagation(null, true)}>
       <Content>
-        <SettingsColor
-          color={linkColor}
-          isOpen={colorOpened}
-          onChange={onChangeLinkColor}
-          onToggle={onToggleColor}
-          isPickerOpen={colorPickerOpened}
-          onPickerChange={onChangeColor}
-          onPickerToggle={toggleColorPickerOpened}
-        />
+        <SettingsColor color={linkColor} isOpen={colorOpened} onChange={onChangeLinkColor} onToggle={onToggleColor} />
 
         <Divider />
 

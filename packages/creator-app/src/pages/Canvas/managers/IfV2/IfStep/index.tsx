@@ -2,7 +2,7 @@ import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { BlockVariant } from '@/constants';
+import { HSLShades } from '@/constants';
 import { useSyncedLookup } from '@/hooks';
 import Step, { ConnectedStep, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { expressionPreview } from '@/utils/expression';
@@ -21,10 +21,10 @@ export interface IfStepProps {
   noMatchPortID: string;
   noMatchPathName: string;
   withNoMatchPort: boolean;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-export const IfStep: React.FC<IfStepProps> = ({ nodeID, expressions, noMatchPortID, noMatchPathName, withNoMatchPort, variant }) => (
+export const IfStep: React.FC<IfStepProps> = ({ nodeID, expressions, noMatchPortID, noMatchPathName, withNoMatchPort, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       {expressions.length ? (
@@ -34,21 +34,21 @@ export const IfStep: React.FC<IfStepProps> = ({ nodeID, expressions, noMatchPort
             icon={index === 0 ? NODE_CONFIG.icon : null}
             label={name || label}
             portID={portID}
-            variant={variant}
+            palette={palette}
             placeholder="Name conditional path"
             multilineLabel
           />
         ))
       ) : (
-        <Item icon="if" variant={variant} placeholder="Add a Condition" />
+        <Item icon="if" palette={palette} placeholder="Add a Condition" />
       )}
     </Section>
 
-    {withNoMatchPort && <ElseItem portID={noMatchPortID} label={noMatchPathName} variant={variant} />}
+    {withNoMatchPort && <ElseItem portID={noMatchPortID} label={noMatchPathName} palette={palette} />}
   </Step>
 );
 
-const ConnectedIfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ ports, data, engine, variant }) => {
+const ConnectedIfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ ports, data, engine, palette }) => {
   const noMatchPortID = ports.out.builtIn[BaseModels.PortType.NO_MATCH];
 
   const hasNoMatchLink = engine.hasLinksByPortID(noMatchPortID); // also show the else port if a link exists
@@ -78,7 +78,7 @@ const ConnectedIfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.I
       noMatchPortID={noMatchPortID}
       noMatchPathName={data.noMatch.pathName ?? ''}
       withNoMatchPort={withNoMatchPort}
-      variant={variant}
+      palette={palette}
     />
   );
 };

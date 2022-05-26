@@ -1,12 +1,13 @@
 import { Nullish } from '@voiceflow/common';
+import React from 'react';
 
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
-import { BlockVariant } from '@/constants/canvas';
 import { Hotkey, HOTKEY_LABEL_MAP, PLATFORM_META_KEY_LABEL } from '@/keymap';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import type Engine from '../../engine';
+import { ContextColorPicker } from './components/ContextColorPicker';
 import { ContextMenuOption } from './types';
 
 export enum CanvasAction {
@@ -25,29 +26,6 @@ export enum CanvasAction {
   ADD_IMAGE = 'add_image',
   ADD_COMMENT = 'add_comment',
 }
-
-export const BLOCK_COLORS: ContextMenuOption<BlockVariant>[] = [
-  {
-    value: BlockVariant.BLUE,
-    label: 'Blue',
-  },
-  {
-    value: BlockVariant.GREEN,
-    label: 'Green',
-  },
-  {
-    value: BlockVariant.PURPLE,
-    label: 'Purple',
-  },
-  {
-    value: BlockVariant.RED,
-    label: 'Red',
-  },
-  {
-    value: BlockVariant.STANDARD,
-    label: 'Gray',
-  },
-];
 
 export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
@@ -128,8 +106,8 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Block color',
     value: CanvasAction.COLOR_BLOCK,
-    options: BLOCK_COLORS,
     shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID, engine) || isStart(nodeID, engine),
+    render: () => <ContextColorPicker />,
   },
   {
     label: 'Rename',
@@ -191,7 +169,7 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Block color',
     value: CanvasAction.COLOR_BLOCK,
-    options: BLOCK_COLORS,
+    render: () => <ContextColorPicker />,
   },
   {
     label: 'Divider 2',

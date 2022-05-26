@@ -2,7 +2,7 @@ import { Icon, stopPropagation, SvgIcon, usePersistFunction } from '@voiceflow/u
 import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
-import { BlockVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
 import { useLinkedState } from '@/hooks';
 import { BLOCK_SECTION_TITLE_CLASSNAME } from '@/pages/Canvas/constants';
 import { useEditingMode } from '@/pages/Project/hooks';
@@ -24,7 +24,7 @@ export interface BlockHeaderProps {
   name?: string;
   icon?: Icon;
   nodeID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
   actions?: JSX.Element;
   titleRef?: React.Ref<EditableTextAPI | null> & { current?: any };
   isDisabled?: boolean;
@@ -32,7 +32,7 @@ export interface BlockHeaderProps {
   canEditTitle?: boolean;
 }
 
-const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, nodeID, variant, actions, titleRef, updateName, isDisabled, canEditTitle }) => {
+const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, nodeID, palette, actions, titleRef, updateName, isDisabled, canEditTitle }) => {
   const isEditingMode = useEditingMode();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [editing, setEditing] = React.useState(false);
@@ -104,7 +104,7 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, nodeID, variant, 
             value={blockLabel}
             nodeID={nodeID}
             onBlur={handleOnBlur}
-            variant={variant}
+            palette={palette}
             onClick={stopPropagation()}
             inputRef={textareaRef}
             onChange={withTargetValue(setBlockLabel)}
@@ -123,7 +123,7 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, nodeID, variant, 
               <TitleContainerInner>
                 <Title
                   nodeID={nodeID}
-                  variant={variant}
+                  palette={palette}
                   onClick={stopPropagation(() => setEditing(true))}
                   disabled={readOnly}
                   className={BLOCK_SECTION_TITLE_CLASSNAME}

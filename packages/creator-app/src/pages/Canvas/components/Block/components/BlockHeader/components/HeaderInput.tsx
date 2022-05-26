@@ -2,8 +2,8 @@ import React from 'react';
 
 import { EditableTextProps } from '@/components/EditableText';
 import TextArea from '@/components/TextArea';
-import { BlockVariant } from '@/constants/canvas';
-import { css, styled, transition, withBlockVariantStyle } from '@/hocs';
+import { HSLShades } from '@/constants';
+import { css, styled, transition } from '@/hocs';
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_CREATING_LINK_CLASSNAME,
@@ -15,7 +15,7 @@ import {
 
 export interface BlockHeaderProps {
   nodeID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
 export type HeaderInputProps = EditableTextProps & BlockHeaderProps;
@@ -48,21 +48,17 @@ export const headerInputStyles = css`
 const HeaderInput = styled(TextArea)<HeaderInputProps>`
   ${headerInputStyles};
 
-  background: ${({ theme, variant }) => theme.components.block.variants[variant].editTitleColor};
+  background: ${({ palette }) => palette[200]};
 
   border: none !important;
   box-shadow: none;
   min-height: 23px;
   line-height: 1.5;
 
-  color: ${withBlockVariantStyle((variant) => variant.color)};
-
-  :focus-within {
-    background: ${({ theme, variant }) => theme.components.block.variants[variant].editTitleColor};
-  }
+  color: ${({ palette }) => palette[700]};
 
   .${NODE_ACTIVE_CLASSNAME}[data-node-id="${({ nodeID }) => nodeID}"] && {
-    color: ${withBlockVariantStyle((variant) => variant.activeColor)};
+    color: ${({ palette }) => palette[700]};
   }
 `;
 

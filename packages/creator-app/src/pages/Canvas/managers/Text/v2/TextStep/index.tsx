@@ -4,7 +4,8 @@ import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item as StepItem, Section, StepButton } from '@/pages/Canvas/components/Step';
 import { ClassName } from '@/styles/constants';
 import { serializeSlateToJSX, serializeSlateToText } from '@/utils/slate';
@@ -18,7 +19,7 @@ export interface TextStepProps {
   nodeID: string;
   preview: boolean;
   nextPortID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
   onOpenEditor: () => void;
 }
 
@@ -29,7 +30,7 @@ export const TextStepV2: React.FC<TextStepProps> = ({
   preview,
   nodeID,
   nextPortID,
-  variant,
+  palette,
   onOpenEditor,
   itemsToRender: itemsWithContent,
 }) => {
@@ -73,14 +74,14 @@ export const TextStepV2: React.FC<TextStepProps> = ({
             );
           })
         ) : (
-          <StepItem placeholder={TEXT_PLACEHOLDER} variant={variant} />
+          <StepItem placeholder={TEXT_PLACEHOLDER} palette={palette} />
         )}
       </Section>
     </Step>
   );
 };
 
-const ConnectedTextStepV2: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = ({ ports, data, variant, engine }) => {
+const ConnectedTextStepV2: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = ({ ports, data, palette, engine }) => {
   const items = React.useMemo(
     () =>
       data.texts.map(({ id, content }) => ({
@@ -100,7 +101,7 @@ const ConnectedTextStepV2: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeDa
       nodeID={data.nodeID}
       preview={data.canvasVisibility === BaseNode.Utils.CanvasNodeVisibility.PREVIEW}
       nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
-      variant={variant}
+      palette={palette}
       onOpenEditor={() => engine.setActive(data.nodeID)}
     />
   );

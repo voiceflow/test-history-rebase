@@ -1,10 +1,12 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, stopPropagation } from '@voiceflow/ui';
+import { Box, stopPropagation, useColorPalette } from '@voiceflow/ui';
 import React from 'react';
 
 import { LinkEntityContext } from '@/pages/Canvas/contexts';
 
+import { PALETTE_SHADE } from '../constants';
 import { InternalLinkInstance } from '../types';
+import { migrateColor } from '../utils/colors';
 import CaptionInput from './LinkCaptionInput';
 import CaptionText from './LinkCaptionText';
 
@@ -24,7 +26,7 @@ interface LinkCaptionProps {
 }
 
 const LinkCaption: React.FC<LinkCaptionProps> = ({
-  color,
+  color: legacyColor,
   instance,
   onChange,
   disabled,
@@ -36,6 +38,10 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
   onToggleActive,
   onToggleEditing,
 }) => {
+  // This next line ensures backwards compatibility
+  const color = migrateColor(legacyColor);
+  const palette = useColorPalette(color);
+  const shade = palette[PALETTE_SHADE];
   const linkEntity = React.useContext(LinkEntityContext)!;
 
   const captionRect = instance.getCaptionRect();
@@ -60,7 +66,7 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
         {isEditing ? (
           <CaptionInput
             value={linkValue}
-            color={color}
+            color={shade}
             instance={instance}
             onChange={onChange}
             isLineActive={isLineActive}
@@ -68,7 +74,7 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
             onToggleEditing={onToggleEditing}
           />
         ) : (
-          <CaptionText color={color} isLineActive={isLineActive} isHighlighted={isHighlighted}>
+          <CaptionText color={shade} isLineActive={isLineActive} isHighlighted={isHighlighted}>
             {linkValue}
           </CaptionText>
         )}

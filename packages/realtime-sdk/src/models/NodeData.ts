@@ -1,4 +1,4 @@
-import { BlockType, BlockVariant, VoicePromptType } from '@realtime-sdk/constants';
+import { BlockType, VoicePromptType } from '@realtime-sdk/constants';
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import { ChatModels, ChatNode } from '@voiceflow/chat-types';
@@ -21,7 +21,7 @@ export type NodeData<T> = T & {
 export type NodeDataDescriptor<T> = Omit<NodeData<T>, 'nodeID'>;
 
 export type BlockNodeData<T> = NodeData<T> & {
-  blockColor: BlockVariant;
+  blockColor: string;
 };
 
 export namespace NodeData {
@@ -61,12 +61,12 @@ export namespace NodeData {
   export interface Start {
     name: string;
     label: string;
-    blockColor: BlockVariant;
+    blockColor: string;
   }
 
   export interface Combined {
     name: string;
-    blockColor: BlockVariant;
+    blockColor: string;
   }
 
   export interface Code {

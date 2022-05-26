@@ -2,7 +2,7 @@ import { BaseModels, BaseNode, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { BlockVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
 import Step, { ConnectedStep } from '@/pages/Canvas/components/Step';
 
 import Button from './Button/Button';
@@ -11,7 +11,7 @@ import Image from './Image';
 
 export interface CardStepV2Props {
   nodeID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
 
   cards: BaseNode.CardV2.Card[];
   noMatch: Nullable<Realtime.NodeData.NoMatch>;
@@ -50,7 +50,7 @@ export const CardStepV2: React.FC<CardStepV2Props> = ({ nodeID, cards }) => (
   </Step>
 );
 
-const ConnectedCardStepV2: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = ({ ports, data, variant }) => {
+const ConnectedCardStepV2: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = ({ ports, data, palette }) => {
   return (
     <CardStepV2
       nodeID={data.nodeID}
@@ -59,7 +59,7 @@ const ConnectedCardStepV2: ConnectedStep<Realtime.NodeData.CardV2, Realtime.Node
       noReply={data.noReply}
       noMatchPortID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
       noReplyPortID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
-      variant={variant}
+      palette={palette}
     />
   );
 };

@@ -4,8 +4,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { DialogType } from '@/constants';
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { DialogType, HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { prettifyBucketURL } from '@/utils/audio';
 import { getPlatformValue } from '@/utils/platform';
@@ -26,11 +26,11 @@ export interface SpeakStepProps {
   random?: boolean;
   nodeID: string;
   platform: VoiceflowConstants.PlatformType;
-  variant: BlockVariant;
+  palette: HSLShades;
   nextPortID: string;
 }
 
-export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, nodeID, nextPortID, variant }) => {
+export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, nodeID, nextPortID, palette }) => {
   const itemsToRender = random && items.length ? [items[0]] : items;
 
   return (
@@ -51,7 +51,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
               label={content ? Utils.string.stripHTMLTags(transformVariablesToReadable(content)) : null}
               icon={NODE_CONFIG.getIcon!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA)}
               portID={index === itemsToRender.length - 1 ? nextPortID : null}
-              variant={variant}
+              palette={palette}
               withNewLines
               labelVariant={isAudio ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
               multilineLabel={!isAudio}
@@ -69,7 +69,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
               'Add Assistant reply'
             )}
             icon={NODE_CONFIG.getIcon!(VOICE_MOCK_DATA)}
-            variant={variant}
+            palette={palette}
           />
         )}
       </Section>
@@ -77,7 +77,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
   );
 };
 
-const ConnectedSpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = ({ ports, data, platform, variant }) => {
+const ConnectedSpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = ({ ports, data, platform, palette }) => {
   const items = data.dialogs.map((item) => ({
     id: item.id,
     type: item.type,
@@ -92,7 +92,7 @@ const ConnectedSpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeDa
       nodeID={data.nodeID}
       platform={platform}
       nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
-      variant={variant}
+      palette={palette}
     />
   );
 };

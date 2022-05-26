@@ -2,7 +2,8 @@ import { Text } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
 import { getPlatformValue } from '@/utils/platform';
@@ -12,10 +13,10 @@ export interface HomeStartStepProps {
   portID: string;
   platform: VoiceflowConstants.PlatformType;
   invocationName: string;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-const HomeStartStep: React.FC<HomeStartStepProps> = ({ label, platform, invocationName, portID, variant }) => (
+const HomeStartStep: React.FC<HomeStartStepProps> = ({ label, platform, invocationName, portID, palette }) => (
   <Step disableHighlightStyle>
     <Section>
       <Item
@@ -29,7 +30,7 @@ const HomeStartStep: React.FC<HomeStartStepProps> = ({ label, platform, invocati
           <>{label || 'Project starts here'}</>
         )}
         portID={portID}
-        variant={variant}
+        palette={palette}
         labelVariant={StepLabelVariant.PRIMARY}
       />
     </Section>

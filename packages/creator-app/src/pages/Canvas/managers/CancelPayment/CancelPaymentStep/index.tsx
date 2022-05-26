@@ -2,7 +2,8 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 import { ProductMapContext } from '@/pages/Canvas/contexts';
 
@@ -14,16 +15,16 @@ export interface CancelPaymentStepProps {
   withPorts: boolean;
   successPortID: string;
   failurePortID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, nodeID, successPortID, failurePortID, withPorts, variant }) => (
+export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, nodeID, successPortID, failurePortID, withPorts, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
         label={label}
         icon={NODE_CONFIG.icon}
-        variant={variant}
+        palette={palette}
         placeholder="Select a product to cancel"
         labelVariant={StepLabelVariant.SECONDARY}
       />
@@ -46,7 +47,7 @@ const ConnectedCancelPaymentStep: ConnectedStep<Realtime.NodeData.CancelPayment,
   ports,
   data,
   withPorts,
-  variant,
+  palette,
 }) => {
   const productMap = React.useContext(ProductMapContext)!;
 
@@ -59,7 +60,7 @@ const ConnectedCancelPaymentStep: ConnectedStep<Realtime.NodeData.CancelPayment,
       withPorts={withPorts}
       successPortID={ports.out.builtIn[BaseModels.PortType.NEXT] ?? null}
       failurePortID={ports.out.builtIn[BaseModels.PortType.FAIL] ?? null}
-      variant={variant}
+      palette={palette}
     />
   );
 };

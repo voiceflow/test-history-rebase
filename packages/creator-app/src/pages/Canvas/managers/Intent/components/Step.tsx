@@ -2,7 +2,7 @@ import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { BlockVariant } from '@/constants';
+import { HSLShades } from '@/constants';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
@@ -14,17 +14,17 @@ export interface IntentStepProps {
   nodeID: string;
   isLocal?: boolean;
   nextPortID?: string;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, nextPortID, variant }) => (
+export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, nextPortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
         icon={isLocal ? 'intentLocal' : NODE_CONFIG.icon}
         label={label}
         portID={nextPortID}
-        variant={variant}
+        palette={palette}
         placeholder="Create or select an intent"
         multilineLabel
         labelLineClamp={5}
@@ -33,7 +33,7 @@ export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, 
   </Step>
 );
 
-const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({ ports, data, variant }) => {
+const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({ ports, data, palette }) => {
   const intentMap = React.useContext(CustomIntentMapContext)!;
 
   const { intent, availability } = data;
@@ -43,7 +43,7 @@ const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.Node
       label={intentMap[intent!] ? prettifyIntentName(intentMap[intent!].name) : null}
       nodeID={data.nodeID}
       isLocal={availability === BaseNode.Intent.IntentAvailability.LOCAL}
-      variant={variant}
+      palette={palette}
       nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
     />
   );

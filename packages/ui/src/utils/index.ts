@@ -1,4 +1,4 @@
-export { pickRandomDefaultColor } from '../components/ColorPicker/utils';
+export { normalizeColor, pickRandomDefaultColor } from '../components/ColorPicker/utils';
 export * from './colors';
 export * from './cookies';
 export * from './dom';

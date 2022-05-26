@@ -2,7 +2,8 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { BlockVariant, StepLabelVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../constants';
@@ -11,17 +12,17 @@ export interface SetStepProps {
   title?: string;
   nodeID: string;
   nextPortID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
 }
 
-export const SetStep: React.FC<SetStepProps> = ({ title, nodeID, nextPortID, variant }) => (
+export const SetStep: React.FC<SetStepProps> = ({ title, nodeID, nextPortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
         icon={NODE_CONFIG.icon}
         label={title || ''}
         portID={nextPortID}
-        variant={variant}
+        palette={palette}
         placeholder="Name Set step"
         labelVariant={StepLabelVariant.PRIMARY}
         multilineLabel
@@ -30,8 +31,8 @@ export const SetStep: React.FC<SetStepProps> = ({ title, nodeID, nextPortID, var
   </Step>
 );
 
-const ConnectedSetStep: ConnectedStep<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = ({ ports, data, variant }) => (
-  <SetStep title={data.title} nodeID={data.nodeID} nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]} variant={variant} />
+const ConnectedSetStep: ConnectedStep<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = ({ ports, data, palette }) => (
+  <SetStep title={data.title} nodeID={data.nodeID} nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]} palette={palette} />
 );
 
 export default ConnectedSetStep;

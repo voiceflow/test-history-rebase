@@ -5,7 +5,7 @@ import { Text } from '../../../Text';
 
 export const ColorsList = styled(BoxFlex)`
   width: 100%;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-wrap: wrap;
 
   .vf-tooltip {

@@ -15,7 +15,7 @@ const MergePreview = styled.div<MergePreviewProps>`
 
   ${({ isVisible, isTransparent }) => ({
     visibility: isVisible ? 'visible' : 'hidden',
-    opacity: isTransparent ? 0.85 : 1,
+    opacity: isTransparent ? 0.9 : 1,
   })}
 
   ${StepContainer} {

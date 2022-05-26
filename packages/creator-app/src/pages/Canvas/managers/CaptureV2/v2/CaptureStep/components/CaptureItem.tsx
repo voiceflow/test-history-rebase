@@ -1,7 +1,7 @@
 import { Popper, stopPropagation, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockVariant } from '@/constants/canvas';
+import { HSLShades } from '@/constants';
 import { Item, StepButton } from '@/pages/Canvas/components/Step';
 
 import CapturePreview from '../../CapturePreview';
@@ -14,11 +14,11 @@ export interface CaptureItemProps {
   isLast: boolean;
   isFirst: boolean;
   nextPortID: string;
-  variant: BlockVariant;
+  palette: HSLShades;
   onOpenEditor: () => void;
 }
 
-export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, isLast, nextPortID = null, variant, onOpenEditor }) => {
+export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, isLast, nextPortID = null, palette, onOpenEditor }) => {
   const icon = isFirst ? CAPTURE_STEP_ICON : null;
   const portID = isLast ? nextPortID : null;
 
@@ -26,7 +26,7 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
   const slotPrompt = slot?.prompt;
 
   if (!slot?.id || !slot?.slot) {
-    return <Item icon={icon} portID={portID} variant={variant} wordBreak withNewLines placeholder="Select entity to capture" label={label} v2 />;
+    return <Item icon={icon} portID={portID} palette={palette} wordBreak withNewLines placeholder="Select entity to capture" label={label} v2 />;
   }
 
   return (
@@ -34,7 +34,7 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
       {({ ref, onToggle, isOpened }) => (
         <Item
           icon={icon}
-          variant={variant}
+          palette={palette}
           label={
             name ? (
               <>

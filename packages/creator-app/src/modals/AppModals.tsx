@@ -1,9 +1,9 @@
 import React from 'react';
 
 import ConfirmModalV2 from '@/components/ConfirmModal';
-import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, SuccessModal } from '@/components/modals';
+import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, SuccessModal, UpgradeModal } from '@/components/modals';
 import RefreshModal from '@/components/RefreshModal';
-import { VariableStateEditorModal, VariableStatesLimitModal, VariableStatesManagerModal } from '@/components/VariableStateModals';
+import { VariableStateEditorModal, VariableStatesManagerModal } from '@/components/VariableStateModals';
 import ConnectActivePlatformModal from '@/modals/ConnectActivePlatformModal';
 import ConnectAmazonModal from '@/modals/ConnectAmazonModal';
 import ConnectGoogleModal from '@/modals/ConnectGoogleModal';
@@ -42,6 +42,7 @@ const AppModals: React.FC = () => {
       <StandardModal />
       <CollaboratorsModal />
       <ImportModal />
+      <UpgradeModal />
       <ProfileNameModal />
       <ChangeEmailModal />
       <ChangePasswordModal />
@@ -56,7 +57,6 @@ const AppModals: React.FC = () => {
 
       <VariableStatesManagerModal />
       <VariableStateEditorModal />
-      <VariableStatesLimitModal />
       <ProjectDownloadModal />
       <TestableLinkModal />
       <CanvasExportModal />

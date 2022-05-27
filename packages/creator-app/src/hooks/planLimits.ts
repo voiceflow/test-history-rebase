@@ -1,3 +1,4 @@
+import { getVariableStatesPlanLimitDetails } from '@/config/planLimits/variableStates';
 import { ModalType } from '@/constants';
 import * as VariableState from '@/ducks/variableState';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -8,12 +9,13 @@ type PlanLimitHandler = (planAction: () => void) => () => void;
 export const useVariableStatesPlanLimit = (): PlanLimitHandler => {
   const variableStatesLimit = useSelector(WorkspaceV2.active.variableStatesLimitSelector);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
-
-  const { open: openVariableStateLimitModal } = useModals(ModalType.VARIABLE_STATES_LIMIT_MODAL);
+  const plan = useSelector(WorkspaceV2.active.planSelector);
+  const LimitDetails = plan && getVariableStatesPlanLimitDetails(plan);
+  const { open: openVariableStateLimitModal } = useModals(ModalType.UPGRADE_MODAL);
 
   return (planAction: () => void) => () => {
     if (variableStatesLimit && variableStates.length >= variableStatesLimit) {
-      openVariableStateLimitModal();
+      openVariableStateLimitModal({ planLimitDetails: LimitDetails });
       return;
     }
 

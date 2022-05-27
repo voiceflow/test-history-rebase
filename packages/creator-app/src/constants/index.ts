@@ -292,9 +292,10 @@ export enum ModalType {
 
   VARIABLE_STATE_EDITOR_MODAL = 'variable-state-editor-modal',
   VARIABLE_STATES_MANAGER_MODAL = 'variable-states-manager-modal',
-  VARIABLE_STATES_LIMIT_MODAL = 'variable-states-limit-modal',
 
   PROJECT_CREATE_MODAL = 'project-create-modal',
+
+  UPGRADE_MODAL = 'upgrade-modal',
 }
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER]; // billing not included in seat roles

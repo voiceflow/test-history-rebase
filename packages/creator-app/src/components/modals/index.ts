@@ -5,3 +5,4 @@ export { default as LoadingModal } from './LoadingModal';
 export { default as ModalBackdrop } from './ModalBackdrop';
 export { default as StandardModal } from './StandardModal';
 export { default as SuccessModal } from './SuccessModal';
+export { default as UpgradeModal } from './UpgradeModal';

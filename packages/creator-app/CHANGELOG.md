@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.733.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.732.0...@voiceflow/creator-app@1.733.0) (2022-05-27)
+
+
+### Features
+
+* adds new step icons to menu (VF-3598) ([#5475](https://github.com/voiceflow/creator-app/issues/5475)) ([93ebcf2](https://github.com/voiceflow/creator-app/commit/93ebcf2dbdcccd0f83f444d69b4884139ff7c128))
+
+
+
+
+
 # [1.732.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.731.1...@voiceflow/creator-app@1.732.0) (2022-05-27)
 
 

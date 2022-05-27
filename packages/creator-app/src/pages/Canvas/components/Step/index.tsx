@@ -58,8 +58,8 @@ const Step: React.FC<StepProps> = ({ nodeID, image, disableHighlightStyle, child
     >
       <Container canHighlight={!disableHighlightStyle} draggable={stepAPI?.isDraggable} dividerOffset={dividerOffset}>
         {stepAPI?.lockOwner && <User user={stepAPI.lockOwner} />}
-        {image && <Image position={imagePosition} image={image} aspectRatio={imageAspectRatio} />}
         {children}
+        {image && <Image position={imagePosition} image={image} aspectRatio={imageAspectRatio} />}
       </Container>
     </HoverContainer>
   );

@@ -49,6 +49,5 @@ const getCurvePathPointsCenter = (points: PathPoints): Point => {
   return [startX + (endX - startX) / 2, startY + (endY - startY) / 2];
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const getPathPointsCenter = (points: PathPoints, { isStraight }: { isStraight: boolean }): Point =>
   isStraight ? getStraightPathPointsCenter(points) : getCurvePathPointsCenter(points);

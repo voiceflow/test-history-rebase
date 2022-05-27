@@ -1,10 +1,10 @@
 /* eslint-disable max-classes-per-file */
 import { EmptyObject } from '@voiceflow/common';
 import { IO } from '@voiceflow/realtime-sdk';
+import { User } from '@voiceflow/socket-utils';
 import { Socket as IOSocket } from 'socket.io';
 
 import type { IOControlOptions } from '../control';
-import { User } from '../models';
 
 export interface AuthorizedCtx {
   user: User;

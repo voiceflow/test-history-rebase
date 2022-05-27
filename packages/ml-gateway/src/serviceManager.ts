@@ -6,7 +6,7 @@ import buildChannels, { ChannelMap } from './channels';
 import buildClients, { ClientMap } from './clients';
 import type { LoguxControlOptions } from './control';
 import buildMiddlewares, { MiddlewareMap } from './middlewares';
-import buildServices, { ServiceMap } from './services';
+import buildServices, { ServiceMap, stopServices } from './services';
 import type { Config } from './types';
 
 class ServiceManager extends AbstractServiceManager<LoguxControlOptions, MiddlewareMap> {
@@ -28,6 +28,15 @@ class ServiceManager extends AbstractServiceManager<LoguxControlOptions, Middlew
 
   buildChannels(context: LoguxControlOptions): ChannelMap {
     return buildChannels(context);
+  }
+
+  async start(): Promise<void> {
+    await super.start();
+    await this.services.configuration.start(this.server.nodeId);
+  }
+
+  async stop(): Promise<void> {
+    await Promise.all([super.stop(), stopServices(this.services)]);
   }
 }
 

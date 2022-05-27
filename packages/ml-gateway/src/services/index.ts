@@ -1,9 +1,20 @@
 import { BaseServiceMap, SyncService } from '@voiceflow/socket-utils';
 
+import logger from '@/logger';
+
 import type { ClientMap } from '../clients';
 import type { Config } from '../types';
+import ConfigurationService from './configuration';
+import InteractionService from './interaction';
+import UserService from './user';
+import VoiceflowService from './voiceflow';
 
-export type ServiceMap = BaseServiceMap;
+export interface ServiceMap extends BaseServiceMap {
+  user: UserService;
+  voiceflow: VoiceflowService;
+  interaction: InteractionService;
+  configuration: ConfigurationService;
+}
 
 interface Options {
   config: Config;
@@ -15,7 +26,11 @@ const buildServices = ({ config, clients }: Options): ServiceMap => {
   const serviceOptions = { config, clients, services };
 
   const serviceMap: ServiceMap = {
+    user: new UserService(serviceOptions),
     sync: new SyncService(serviceOptions),
+    interaction: new InteractionService(serviceOptions),
+    configuration: new ConfigurationService(serviceOptions),
+    voiceflow: new VoiceflowService(serviceOptions),
   };
 
   Object.assign(services, serviceMap);
@@ -24,3 +39,11 @@ const buildServices = ({ config, clients }: Options): ServiceMap => {
 };
 
 export default buildServices;
+
+export const stopServices = async (services: ServiceMap): Promise<void> => {
+  try {
+    await Promise.all([services.configuration?.stop(), services.interaction?.stop()]);
+  } catch (error) {
+    logger.error({ message: 'error while tearing down services', error });
+  }
+};

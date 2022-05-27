@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.14.0...@voiceflow/ml-gateway@1.14.1) (2022-05-27)
+
+
+### Bug Fixes
+
+* do not block the HTTP server from starting ([#5482](https://github.com/voiceflow/creator-app/issues/5482)) ([650d3da](https://github.com/voiceflow/creator-app/commit/650d3da863c3b9cd74be0e49b5fca92e75af1046))
+
+
+
+
+
 # [1.14.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.13.2...@voiceflow/ml-gateway@1.14.0) (2022-05-27)
 
 

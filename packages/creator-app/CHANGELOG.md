@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.732.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.731.1...@voiceflow/creator-app@1.732.0) (2022-05-27)
+
+
+### Features
+
+* refactor and update variable states upgrade prompt (VF-3551) ([#5464](https://github.com/voiceflow/creator-app/issues/5464)) ([55fe590](https://github.com/voiceflow/creator-app/commit/55fe59042ea5db9b5909289f7961f28ef39c6123))
+
+
+
+
+
 ## [1.731.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.731.0...@voiceflow/creator-app@1.731.1) (2022-05-27)
 
 

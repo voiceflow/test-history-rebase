@@ -15,18 +15,29 @@ export interface MenuStep {
   factoryData?: Realtime.NodeData<any>;
 }
 
-const createMenuStep = (
-  type: Realtime.StepBlockType,
-  { publicOnly, factoryData }: { publicOnly?: boolean; factoryData?: Realtime.NodeData<any> } = {}
-): MenuStep => {
-  const manager = getManager(type);
+interface StepProps {
+  factoryData?: Realtime.NodeData<any>;
+  manager: ReturnType<typeof getManager>;
+}
 
+interface MenuStepsConfig {
+  publicOnly?: boolean;
+  factoryData?: Realtime.NodeData<any>;
+}
+
+export const getStepIcon = ({ factoryData, manager }: StepProps) =>
+  (_isFunction(manager.getIcon) && factoryData && manager.getIcon(factoryData)) || manager.icon!;
+
+export const getStepLabel = ({ factoryData, manager }: StepProps) =>
+  (_isFunction(manager.getDataLabel) && factoryData && manager.getDataLabel(factoryData)) || manager.label;
+
+const createMenuStep = (type: Realtime.StepBlockType, { publicOnly, factoryData }: MenuStepsConfig = {}) => {
   return {
     type,
-    icon: (_isFunction(manager.getIcon) && factoryData && manager.getIcon(factoryData)) || manager.icon!,
-    label: (_isFunction(manager.getDataLabel) && factoryData && manager.getDataLabel(factoryData)) || manager.label,
     publicOnly,
     factoryData,
+    getIcon: (manager?: ReturnType<typeof getManager>) => getStepIcon({ factoryData, manager: manager || getManager(type) }),
+    getLabel: (manager?: ReturnType<typeof getManager>) => getStepLabel({ factoryData, manager: manager || getManager(type) }),
   };
 };
 

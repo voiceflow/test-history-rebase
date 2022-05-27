@@ -1,26 +1,12 @@
 import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Icon, SVG } from '@voiceflow/ui';
 
-import { BlockType } from '@/constants';
+import { buildNodeConfig, EMPTY_KEY_VALUE_ITEM, getDefaultData, getIconMap, getNameMap } from '../constants';
 
-import { NodeConfig } from '../../types';
+const NAME_MAP_V2 = getNameMap({ [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'API' });
 
-const ICON_MAP: Record<BaseNode.Utils.IntegrationType, Icon> = {
-  [BaseNode.Utils.IntegrationType.ZAPIER]: 'zapier',
-  [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'editor',
-  [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'googleSheets',
-};
+const ICON_MAP_V2 = getIconMap({ [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'editor' });
 
-const EMPTY_KEY_VALUE_ITEM = { key: '', val: '' };
-
-export const DEFAULT_DATA: Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration> = {
-  [BaseNode.Utils.IntegrationType.ZAPIER]: {
-    user: {},
-    value: '',
-    selectedAction: BaseNode.Zapier.ZapierActionType.START_A_ZAP,
-    selectedIntegration: BaseNode.Utils.IntegrationType.ZAPIER,
-  },
+const DEFAULT_DATA_V2 = getDefaultData({
   [BaseNode.Utils.IntegrationType.CUSTOM_API]: {
     url: '',
     body: [EMPTY_KEY_VALUE_ITEM],
@@ -32,25 +18,6 @@ export const DEFAULT_DATA: Record<BaseNode.Utils.IntegrationType, Realtime.NodeD
     selectedAction: BaseNode.Api.APIActionType.GET,
     selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API,
   },
-  [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: {
-    user: {},
-    sheet: null,
-    mapping: [],
-    end_row: '',
-    start_row: '',
-    row_values: [],
-    row_number: '',
-    match_value: '',
-    spreadsheet: null,
-    header_column: null,
-    selectedAction: '',
-    selectedIntegration: BaseNode.Utils.IntegrationType.GOOGLE_SHEETS,
-  },
-};
-export const NODE_CONFIG: Partial<NodeConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts>> = {
-  type: BlockType.INTEGRATION,
-  // for older version
-  icon: SVG.globeIcon as any,
-  // for block redesign
-  getIcon: (data) => ICON_MAP[data.selectedIntegration!],
-};
+});
+
+export const NODE_CONFIG_V2 = buildNodeConfig({ iconMap: ICON_MAP_V2, nameMap: NAME_MAP_V2, defaultData: DEFAULT_DATA_V2 });

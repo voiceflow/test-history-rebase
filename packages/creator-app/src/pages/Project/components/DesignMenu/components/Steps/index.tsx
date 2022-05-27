@@ -8,6 +8,7 @@ import { BlockCategory, BlockType, DragItem } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useDragPreview, useFeature, useSelector } from '@/hooks';
+import { useManager } from '@/pages/Canvas/managers';
 import { Identifier } from '@/styles/constants';
 
 import ScrollbarsContainer from '../ScrollbarsContainer';
@@ -24,24 +25,30 @@ const Steps: React.FC = () => {
   const chatCardsCarousel = useFeature(FeatureFlag.CHAT_CARDS_CAROUSEL);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
+  const getManager = useManager();
 
   const sections = React.useMemo(() => {
     const platformSections = getSections(platform, projectType);
 
     return platformSections.map((platformSection) => ({
       ...platformSection,
-      steps: platformSection.steps.filter((step) => {
-        if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
-        if (!chatCardsCarousel.isEnabled && step.type === BlockType.CARDV2) return false;
+      steps: platformSection.steps
+        .filter((step) => {
+          if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
+          if (!chatCardsCarousel.isEnabled && step.type === BlockType.CARDV2) return false;
 
-        // the CAPTURE step is deprecated and permanently hidden from users
-        if (step.type === BlockType.CAPTURE) return false;
-        if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
-        if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
-        if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
+          // the CAPTURE step is deprecated and permanently hidden from users
+          if (step.type === BlockType.CAPTURE) return false;
+          if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
+          if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
+          if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
 
-        return true;
-      }),
+          return true;
+        })
+        .map((step) => {
+          const manager = getManager(step.type);
+          return { ...step, icon: step.getIcon(manager), label: step.getLabel(manager) };
+        }),
     }));
   }, [platform, isTopicsAndComponentsVersion]);
 

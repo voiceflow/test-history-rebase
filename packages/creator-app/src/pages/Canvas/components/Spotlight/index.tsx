@@ -8,6 +8,7 @@ import { BlockType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
+import { useManager } from '@/pages/Canvas/managers';
 import { getSections, MenuStep } from '@/pages/Project/components/DesignMenu/components/Steps/constants';
 import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
@@ -29,6 +30,7 @@ const Spotlight = () => {
   const chatCardsCarousel = useFeature(FeatureFlag.CHAT_CARDS_CAROUSEL);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
+  const getManager = useManager();
 
   const isVisible = !!spotlight?.isVisible;
 
@@ -51,6 +53,10 @@ const Spotlight = () => {
           if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
           return true;
+        })
+        .map((step) => {
+          const manager = getManager(step.type);
+          return { ...step, icon: step.getIcon(manager), label: step.getLabel(manager) };
         }),
     [gadgets.isEnabled, topicsAndComponents.isEnabled, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]
   );

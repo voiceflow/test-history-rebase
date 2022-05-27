@@ -6,7 +6,7 @@ import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStep, FailureStepItemV2, Item, Section, SuccessStepItemV2 } from '@/pages/Canvas/components/Step';
 
-import { NODE_CONFIG } from '../constants';
+import { NODE_CONFIG_V2 } from '../constants';
 import { getDescriptions, getLabel } from '../utils';
 
 export interface IntegrationStepProps {
@@ -22,7 +22,7 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPort
   <Step nodeID={nodeID}>
     <Section v2 withIcon>
       <Item
-        icon={NODE_CONFIG.getIcon!(data)}
+        icon={NODE_CONFIG_V2.getIcon!(data)}
         label={getLabel(data)}
         palette={palette}
         title={getDescriptions(data).title}

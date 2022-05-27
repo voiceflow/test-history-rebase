@@ -13,7 +13,7 @@ const NAME_MAP: Record<DialogType, string> = {
 };
 
 const ICON_MAP: Record<DialogType, Icon> = {
-  [DialogType.AUDIO]: 'volume',
+  [DialogType.AUDIO]: 'audio',
   [DialogType.VOICE]: 'speak',
 };
 

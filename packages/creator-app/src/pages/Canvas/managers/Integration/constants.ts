@@ -7,21 +7,29 @@ import * as Creator from '@/ducks/creator';
 
 import { NodeConfig } from '../types';
 
-const NAME_MAP: Record<BaseNode.Utils.IntegrationType, string> = {
+export const getNameMap = (
+  nameMapOverride?: Partial<Record<BaseNode.Utils.IntegrationType, string>>
+): Record<BaseNode.Utils.IntegrationType, string> => ({
   [BaseNode.Utils.IntegrationType.ZAPIER]: 'Zapier',
   [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'API',
   [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'Google Sheets',
-};
+  ...nameMapOverride,
+});
 
-const ICON_MAP: Record<BaseNode.Utils.IntegrationType, Icon> = {
+export const getIconMap = (
+  iconMapOverride?: Partial<Record<BaseNode.Utils.IntegrationType, Icon>>
+): Record<BaseNode.Utils.IntegrationType, Icon> => ({
   [BaseNode.Utils.IntegrationType.ZAPIER]: 'zapier',
   [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'variable',
   [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'googleSheets',
-};
+  ...iconMapOverride,
+});
 
-const EMPTY_KEY_VALUE_ITEM = { key: '', val: '' };
+export const EMPTY_KEY_VALUE_ITEM = { key: '', val: '' };
 
-export const DEFAULT_DATA: Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration> = {
+export const getDefaultData = (
+  defaultDataOverride?: Partial<Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration>>
+): Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration> => ({
   [BaseNode.Utils.IntegrationType.ZAPIER]: {
     user: {},
     value: '',
@@ -53,16 +61,29 @@ export const DEFAULT_DATA: Record<BaseNode.Utils.IntegrationType, Realtime.NodeD
     selectedAction: '',
     selectedIntegration: BaseNode.Utils.IntegrationType.GOOGLE_SHEETS,
   },
-};
+  ...defaultDataOverride,
+});
 
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = {
+export const DEFAULT_DATA = getDefaultData();
+export const NAME_MAP = getNameMap();
+export const ICON_MAP = getIconMap();
+
+export const buildNodeConfig = ({
+  iconMap,
+  defaultData,
+  nameMap,
+}: {
+  iconMap: Record<BaseNode.Utils.IntegrationType, Icon>;
+  defaultData: Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration>;
+  nameMap: Record<BaseNode.Utils.IntegrationType, string>;
+}): NodeConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> => ({
   type: BlockType.INTEGRATION,
 
   // for older version
   icon: SVG.globeIcon as any,
 
   // for block redesign
-  getIcon: (data) => ICON_MAP[data.selectedIntegration!],
+  getIcon: (data) => iconMap[data.selectedIntegration!],
 
   factory: (data) => ({
     node: {
@@ -78,9 +99,11 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration, Realtime.Nod
       },
     },
     data: {
-      name: data?.selectedIntegration ? NAME_MAP[data.selectedIntegration] : 'Integrations',
+      name: data?.selectedIntegration ? nameMap[data.selectedIntegration] : 'Integrations',
       ...data,
-      ...(data && DEFAULT_DATA[data.selectedIntegration!]),
+      ...(data && defaultData[data.selectedIntegration!]),
     } as Creator.DataDescriptor<Realtime.NodeData.Integration>,
   }),
-};
+});
+
+export const NODE_CONFIG = buildNodeConfig({ iconMap: ICON_MAP, defaultData: DEFAULT_DATA, nameMap: NAME_MAP });

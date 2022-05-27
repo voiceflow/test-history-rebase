@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.89.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.89.0...@voiceflow/ui@1.89.1) (2022-05-27)
+
+
+### Bug Fixes
+
+* canvas updates layout rollback rollback (VF-000) ([#5483](https://github.com/voiceflow/creator-app/issues/5483)) ([a48b103](https://github.com/voiceflow/creator-app/commit/a48b10380c5e9b11a9f7ae2222ae5415632c5ba4))
+
+
+
+
+
 # [1.89.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.88.0...@voiceflow/ui@1.89.0) (2022-05-26)
 
 

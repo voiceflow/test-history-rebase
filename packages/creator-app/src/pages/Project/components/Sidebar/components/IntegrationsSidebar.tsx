@@ -4,11 +4,12 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import NavLinkSidebar, { NavLinkItem, NavLinkSection } from '@/components/NavLinkSidebar';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { usePermission, useSelector } from '@/hooks';
+import { useFeature, usePermission, useSelector } from '@/hooks';
 
 import CanvasIconMenu from './CanvasIconMenu';
 import IconMenuOffsetContainer from './IconMenuOffsetContainer';
@@ -40,6 +41,8 @@ const IntegrationsSidebar: React.FC = () => {
 
   const [canExportCode] = usePermission(Permission.CODE_EXPORT);
 
+  const disableCodeExports = useFeature(FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
+
   const items = React.useMemo<NavLinkSection[]>(() => {
     const platformItems = getPlatformItems(platform)(versionID);
 
@@ -58,7 +61,9 @@ const IntegrationsSidebar: React.FC = () => {
         key: 'developer',
         items: [
           { to: generatePath(Path.PUBLISH_API, { versionID }), key: 'api', label: 'API' },
-          ...(canExportCode ? [{ to: generatePath(Path.PUBLISH_EXPORT, { versionID }), key: 'code-export', label: 'Code Export' }] : []),
+          ...(!disableCodeExports && canExportCode
+            ? [{ to: generatePath(Path.PUBLISH_EXPORT, { versionID }), key: 'code-export', label: 'Code Export' }]
+            : []),
         ],
       },
     ];

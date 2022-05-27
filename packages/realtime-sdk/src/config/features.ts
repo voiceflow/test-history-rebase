@@ -35,4 +35,6 @@ export enum FeatureFlag {
   REVISED_CREATOR_ENTITLEMENTS = 'revised_creator_entitlement',
   CANVAS_PREVIEW = 'step_editor_update',
   STEP_EDITOR_UPDATES = 'step_editor_update',
+
+  DISABLE_CODE_EXPORTS = 'disable_code_exports',
 }

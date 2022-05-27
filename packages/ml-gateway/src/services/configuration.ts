@@ -52,6 +52,7 @@ class ConfigurationService extends AbstractControl {
 
       if (!this.config.FIRESTORE_MODEL_COLLECTION) {
         logger.error('model collection not provided, unable to setup firestore subscription');
+        resolve();
         return;
       }
 

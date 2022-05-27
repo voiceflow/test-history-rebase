@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.70.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.69.0...@voiceflow/realtime@1.70.0) (2022-05-27)
+
+
+### Features
+
+* ml gateway handoff with optional env vars (VF-000) ([#5480](https://github.com/voiceflow/creator-app/issues/5480)) ([e6f7e58](https://github.com/voiceflow/creator-app/commit/e6f7e58af169d5d820f1dc9a0956ea8fa510647b))
+
+
+
+
+
 # [1.69.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.68.3...@voiceflow/realtime@1.69.0) (2022-05-26)
 
 

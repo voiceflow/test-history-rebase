@@ -5,6 +5,7 @@ import { Editable, Slate } from 'slate-react';
 import { EditableProps } from 'slate-react/dist/components/editable';
 
 import { useForceUpdate } from '@/hooks';
+import { serializeSlateToJSX } from '@/utils/slate';
 
 import * as components from './components';
 import {
@@ -134,6 +135,7 @@ export default Object.assign(React.forwardRef<SlateEditableRef, SlateEditablePro
 
   EditorAPI,
   PluginType,
+  serializeToJSX: serializeSlateToJSX,
   ControlledEditorProvider,
 
   useEditor: useSlateEditor,

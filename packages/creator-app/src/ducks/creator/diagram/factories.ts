@@ -28,6 +28,7 @@ export const nodeFactory = <T extends string | null>(
   ports: {
     in: [],
     out: {
+      byKey: {},
       dynamic: [],
       builtIn: {},
     },

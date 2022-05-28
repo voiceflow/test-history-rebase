@@ -30,6 +30,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeDat
       ports: {
         in: [{}],
         out: {
+          byKey: {},
           dynamic: [{}],
           builtIn: { [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH } },
         },

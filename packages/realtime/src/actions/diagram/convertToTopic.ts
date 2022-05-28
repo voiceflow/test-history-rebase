@@ -41,6 +41,7 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
         intent: null,
         mappings: [],
         portsV2: {
+          byKey: {},
           builtIn: {
             [BaseModels.PortType.NEXT]: {
               id: Utils.id.objectID(),

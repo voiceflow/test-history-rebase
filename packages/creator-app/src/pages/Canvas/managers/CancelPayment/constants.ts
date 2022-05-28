@@ -14,6 +14,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CancelPayment, Realtime.N
       ports: {
         in: [{}],
         out: {
+          byKey: {},
           dynamic: [],
           builtIn: {
             [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },

@@ -79,6 +79,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
 
     it('register all ports of an inserted step', () => {
       const inPortID = 'inPort';
+      const byKeyPortKey = 'byKeyPortKey';
+      const byKeyPortID = 'byKeyPortID';
       const dynamicPortID = 'dynamicPort';
       const builtInPortID = 'builtInPort';
 
@@ -95,6 +97,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
           ports: {
             in: [{ id: inPortID }],
             out: {
+              byKey: {
+                [byKeyPortKey]: { id: byKeyPortID },
+              },
               dynamic: [{ id: dynamicPortID }],
               builtIn: {
                 [BaseModels.PortType.NEXT]: { id: builtInPortID },
@@ -106,18 +111,19 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         }
       );
 
-      expect(result.ports).to.containSubset(normalize([PORT, { id: inPortID }, { id: dynamicPortID }, { id: builtInPortID }]));
+      expect(result.ports).to.containSubset(normalize([PORT, { id: inPortID }, { id: dynamicPortID }, { id: builtInPortID }, { id: byKeyPortID }]));
       expect(result.portsByNodeID).to.eql({
         [stepID]: {
           in: [inPortID],
           out: {
+            byKey: { [byKeyPortKey]: byKeyPortID },
             dynamic: [dynamicPortID],
             builtIn: { [BaseModels.PortType.NEXT]: builtInPortID },
           },
         },
       });
-      expect(result.nodeIDByPortID).to.eql({ [inPortID]: stepID, [dynamicPortID]: stepID, [builtInPortID]: stepID });
-      expect(result.linkIDsByPortID).to.eql({ [inPortID]: [], [dynamicPortID]: [], [builtInPortID]: [] });
+      expect(result.nodeIDByPortID).to.eql({ [inPortID]: stepID, [dynamicPortID]: stepID, [builtInPortID]: stepID, [byKeyPortID]: stepID });
+      expect(result.linkIDsByPortID).to.eql({ [inPortID]: [], [dynamicPortID]: [], [builtInPortID]: [], [byKeyPortID]: [] });
     });
   });
 });

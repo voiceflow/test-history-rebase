@@ -15,6 +15,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Random> = {
       ports: {
         in: [{}],
         out: {
+          byKey: {},
           dynamic: [{}, {}],
           builtIn: {},
         },

@@ -53,6 +53,7 @@ const nodeAdapter = createAdapter<
       ports: {
         in: [],
         out: {
+          byKey: {},
           builtIn: {},
           dynamic: [],
         },
@@ -104,11 +105,12 @@ const nodeAdapter = createAdapter<
         registerInPort(generateInPort(node.id));
       }
 
-      const { dynamic, builtIn } = stepPortsAdapter.fromDB(dbNode.data, { platform, nodeType: node.type, dbNode });
-      const allPorts = [...Object.values(builtIn), ...dynamic].filter(Utils.array.isNotNullish);
+      const { dynamic, builtIn, byKey } = stepPortsAdapter.fromDB(dbNode.data, { platform, nodeType: node.type, dbNode });
+      const allPorts = [...Object.values(builtIn), ...Object.values(byKey), ...dynamic].filter(Utils.array.isNotNullish);
 
       node.ports.out.dynamic = dynamic.map(({ port }) => port.id);
-      node.ports.out.builtIn = Object.fromEntries(Object.entries(builtIn).map(([type, portData]) => [type, portData?.port.id ?? null]));
+      node.ports.out.builtIn = Utils.object.mapValue(builtIn, (portData) => portData?.port.id ?? null);
+      node.ports.out.byKey = Utils.object.mapValue(byKey, (portData) => portData?.port.id ?? null);
 
       allPorts.forEach(({ port, target }) => registerOutPort(port, nextStep === target ? null : target));
     }
@@ -159,7 +161,23 @@ const nodeAdapter = createAdapter<
         return acc;
       }, {});
 
-      const stepPortsData = stepPortsAdapter.toDB({ dynamic: dynamicPorts, builtIn: builtInPorts }, { platform, node, data, context });
+      const byKeyPorts = Object.fromEntries(
+        Object.entries(node.ports.out.byKey || {})
+          .filter(([, portID]) => portMap[portID])
+          .map(([key, portID]) => [
+            key,
+            {
+              port: portMap[portID],
+              link: portLinksMap[portID],
+              target: portToTargets[portID] || stepMap[node.id] || null,
+            },
+          ])
+      );
+
+      const stepPortsData = stepPortsAdapter.toDB(
+        { dynamic: dynamicPorts, builtIn: builtInPorts, byKey: byKeyPorts },
+        { platform, node, data, context }
+      );
 
       Object.assign(diagramNode.data, stepPortsData);
     }

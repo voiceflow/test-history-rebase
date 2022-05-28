@@ -66,6 +66,7 @@ export const ifOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.IfV2BuiltInP
     };
   },
   ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData }, dynamic }, { data }) => ({
+    byKey: {},
     builtIn: {
       [BaseModels.PortType.NO_MATCH]: outPortDataToDB(noMatchPortData),
     },

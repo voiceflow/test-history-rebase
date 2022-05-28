@@ -188,13 +188,17 @@ export namespace NodeData {
   export interface CardBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
   }
+  export namespace CardV2 {
+    export type Card = BaseNode.CardV2.Card;
+    export type CardButton = BaseNode.CardV2.CardButton;
+  }
   export interface CardV2 extends Omit<VoiceflowNode.CardV2.StepData, 'noMatch' | 'noReply'> {
     noMatch: Nullable<NoMatch>;
     noReply: Nullable<NoReply>;
   }
 
   export interface CardV2BuiltInPorts {
-    [BaseModels.PortType.NO_MATCH]: string;
+    [BaseModels.PortType.NO_MATCH]?: string;
     [BaseModels.PortType.NO_REPLY]?: string;
   }
 

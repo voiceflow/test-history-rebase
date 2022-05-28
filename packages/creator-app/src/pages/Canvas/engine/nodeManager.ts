@@ -400,7 +400,7 @@ class NodeManager extends EngineConsumer {
 
     const { node, data } = nodeDescriptorFactory(type, factoryData, this.select(nodeFactoryOptionsSelector));
     const augmentedNode = { ...node, x, y, id: nodeID };
-    const parentNode = { id: Utils.id.objectID(), ports: { in: [{ id: Utils.id.objectID() }], out: { dynamic: [], builtIn: {} } } };
+    const parentNode = { id: Utils.id.objectID(), ports: { in: [{ id: Utils.id.objectID() }], out: { dynamic: [], builtIn: {}, byKey: {} } } };
 
     this.log.debug(this.log.pending('adding node'), this.log.slug(nodeID));
 
@@ -601,7 +601,7 @@ class NodeManager extends EngineConsumer {
   private async insertStepV1(blockID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor, index: number): Promise<void> {
     const parentNode = {
       id: Utils.id.objectID(),
-      ports: { in: [{ id: Utils.id.objectID() }], out: { dynamic: [], builtIn: {} } },
+      ports: { in: [{ id: Utils.id.objectID() }], out: { byKey: {}, dynamic: [], builtIn: {} } },
     };
 
     this.log.debug(this.log.pending('adding nested node'), this.log.slug(node.id));
@@ -724,7 +724,7 @@ class NodeManager extends EngineConsumer {
     const parentPortID = Utils.id.objectID();
     const parentNode = {
       id: parentNodeID,
-      ports: { in: [{ id: parentPortID }], out: { dynamic: [], builtIn: {} } },
+      ports: { in: [{ id: parentPortID }], out: { dynamic: [], builtIn: {}, byKey: {} } },
     };
 
     this.log.debug(this.log.pending('unmerging node'), this.log.slug(nodeID));

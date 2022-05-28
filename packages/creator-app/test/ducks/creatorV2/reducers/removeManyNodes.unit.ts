@@ -106,6 +106,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
     it('remove all ports and links from a node', () => {
       const blockNode = { ...NODE_DATA, nodeID: 'blockNode' };
       const stepNode = { ...NODE_DATA, nodeID: 'stepNode' };
+      const byKeyPort = { ...PORT, id: 'byKeyPort' };
       const fooPort = { ...PORT, id: 'fooPort' };
       const barPort = { ...PORT, id: 'barPort' };
 
@@ -117,11 +118,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
           portsByNodeID: {
             [blockNode.nodeID]: {
               in: [],
-              out: { dynamic: [fooPort.id], builtIn: {} },
+              out: { dynamic: [fooPort.id], builtIn: {}, byKey: { byKeyPortKey: byKeyPort.id } },
             },
             [stepNode.nodeID]: {
               in: [],
-              out: { dynamic: [], builtIn: { [BaseModels.PortType.NEXT]: barPort.id } },
+              out: { dynamic: [], builtIn: { [BaseModels.PortType.NEXT]: barPort.id }, byKey: {} },
             },
           },
           nodeIDByPortID: { [fooPort.id]: blockNode.nodeID, [barPort.id]: stepNode.nodeID },

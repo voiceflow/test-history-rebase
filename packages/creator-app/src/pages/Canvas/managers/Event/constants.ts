@@ -15,6 +15,7 @@ export const NODE_CONFIG: NodeConfigWithoutInPorts<Realtime.NodeData.Event, Real
     node: {
       ports: {
         out: {
+          byKey: {},
           dynamic: [],
           builtIn: { [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT } },
         },

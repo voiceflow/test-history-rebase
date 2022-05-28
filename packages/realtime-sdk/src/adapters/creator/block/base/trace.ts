@@ -49,6 +49,7 @@ export const traceOutPortsAdapterV2 = createOutPortsAdapterV2<AnyRecord, NodeDat
     const dbPorts = dynamicOnlyOutPortsAdapterV2.toDB(ports, options);
 
     return {
+      byKey: {},
       builtIn: {},
       // eslint-disable-next-line sonarjs/no-identical-functions
       dynamic: dbPorts.dynamic.map((port, index) => {

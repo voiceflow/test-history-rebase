@@ -7,12 +7,15 @@ import { PartialModel } from './Utility';
 
 export type BuiltInPortRecord<T = string> = { [key in BaseModels.PortType]?: T };
 
+export interface NodeOutPortSchema<T, O extends BuiltInPortRecord<T> = BuiltInPortRecord<T>> {
+  byKey: Record<string, T>;
+  dynamic: T[];
+  builtIn: O;
+}
+
 export interface NodePortSchema<T, O extends BuiltInPortRecord<T> = BuiltInPortRecord<T>> {
   in: T[];
-  out: {
-    dynamic: T[];
-    builtIn: O;
-  };
+  out: NodeOutPortSchema<T, O>;
 }
 
 export type NodePorts<O extends BuiltInPortRecord = BuiltInPortRecord> = NodePortSchema<string, O>;

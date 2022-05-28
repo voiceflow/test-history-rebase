@@ -112,6 +112,7 @@ export function nodeDescriptorFactory(
       ports: {
         in: ports?.in?.map((port) => ({ ...port, id: Utils.id.objectID() })) ?? [],
         out: {
+          byKey: Utils.object.mapValue(ports?.out?.byKey || {}, (port) => ({ ...port, id: Utils.id.objectID() })),
           dynamic: ports?.out?.dynamic?.map((port) => ({ ...port, id: Utils.id.objectID() })) ?? [],
           builtIn: Object.entries(ports?.out?.builtIn ?? {})
             .filter(([, port]) => !!port)
@@ -158,6 +159,7 @@ export const cloneNodeWithData =
           ...originNode.ports,
           in: originNode.ports.in.map(getPortID),
           out: {
+            byKey: Utils.object.mapValue(originNode.ports.out.byKey, getPortID),
             dynamic: originNode.ports.out.dynamic.map(getPortID),
             builtIn: Object.entries(originNode.ports.out.builtIn)
               .filter(([, portID]) => !!portID)

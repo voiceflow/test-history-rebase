@@ -33,6 +33,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Permission, Realtime.Node
       ports: {
         in: [{}],
         out: {
+          byKey: {},
           dynamic: [],
           builtIn: {
             [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },

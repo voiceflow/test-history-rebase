@@ -17,6 +17,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeD
       ports: {
         in: [{}],
         out: {
+          byKey: {},
           dynamic: [],
           builtIn: {
             [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },

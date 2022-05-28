@@ -49,6 +49,17 @@ export const parentEntityMapSelector = createSelector(
           },
         ]);
 
+      const byKeyPorts = Object.entries(node.ports.out.byKey)
+        .filter(([, portID]) => !!portID)
+        .map<[string, Realtime.Port]>(([key, portID]) => [
+          key as string,
+          {
+            ...getPort({ id: portID })!,
+            id: Utils.id.objectID(),
+            nodeID: newNodeID,
+          },
+        ]);
+
       return {
         nodesWithData: [
           {
@@ -59,6 +70,7 @@ export const parentEntityMapSelector = createSelector(
               ports: {
                 in: inPorts.map(({ id }) => id),
                 out: {
+                  byKey: byKeyPorts.reduce((acc, [key, port]) => Object.assign(acc, { [key]: port.id }), {}),
                   dynamic: outDynamicPorts.map(({ id }) => id),
                   builtIn: outBuiltInPortsEntities.reduce((acc, [type, port]) => Object.assign(acc, { [type]: port.id }), {}),
                 },
@@ -71,7 +83,7 @@ export const parentEntityMapSelector = createSelector(
             },
           },
         ],
-        ports: [...inPorts, ...outDynamicPorts, ...outBuiltInPortsEntities.map(([, port]) => port)],
+        ports: [...inPorts, ...outDynamicPorts, ...outBuiltInPortsEntities.map(([, port]) => port), ...byKeyPorts.map(([, port]) => port)],
         links: [],
       };
     }

@@ -1,5 +1,6 @@
 import { BuiltInPortRecord, DBPortWithLinkData, Link, Node, Port } from '@realtime-sdk/models';
 import { PathPoint, PathPoints } from '@realtime-sdk/types';
+import * as RealtimeUtilsPort from '@realtime-sdk/utils/port';
 import { BaseModels, Nullable } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -21,6 +22,7 @@ export type BuiltInPortData<T extends BuiltInPortRecord<any>> = {
 export interface PortsInfo<T extends BuiltInPortDataRecord = BuiltInPortDataRecord> {
   dynamic: PortData[];
   builtIn: T;
+  byKey: Record<string, PortData>;
 }
 
 export interface OutPortsToDBOptions<D = unknown> {
@@ -141,7 +143,7 @@ export const nextOnlyOutPortsAdapter = createOutPortsAdapter<{ [BaseModels.PortT
     const nextPortData = outPortDataFromDB(dbNextPort, options);
 
     return {
-      dynamic: [],
+      ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
       builtIn: { [BaseModels.PortType.NEXT]: nextPortData },
     };
   },
@@ -153,8 +155,8 @@ export const dynamicOnlyOutPortsAdapter = createOutPortsAdapter(
     const dynamicPortsData = outPortsDataFromDB(dbPorts, options);
 
     return {
+      ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
       dynamic: dynamicPortsData,
-      builtIn: {},
     };
   },
   ({ dynamic }) => outPortsDataToDB(dynamic)
@@ -169,6 +171,7 @@ export const defaultOutPortsAdapter = createOutPortsAdapter<{ [BaseModels.PortTy
     const dynamicPortsData = outPortsDataFromDB(dbDynamicPorts, options);
 
     return {
+      ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
       dynamic: dynamicPortsData,
       builtIn: { [BaseModels.PortType.NEXT]: nextPortData },
     };
@@ -191,7 +194,7 @@ export const nextNoMatchNoReplyOutPortsAdapter = createOutPortsAdapter<{
     const noMatchPortData = dbNoMatchPort && outPortDataFromDB(dbNoMatchPort, options);
 
     return {
-      dynamic: [],
+      ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
       builtIn: {
         [BaseModels.PortType.NEXT]: nextPortData,
         [BaseModels.PortType.NO_REPLY]: noReplyPortData ?? undefined,
@@ -221,7 +224,7 @@ export const nextAndFailOnlyOutPortsAdapter = createOutPortsAdapter<{ [BaseModel
     const failPortData = outPortDataFromDB(dbFailPort, options);
 
     return {
-      dynamic: [],
+      ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
       builtIn: {
         [BaseModels.PortType.FAIL]: failPortData,
         [BaseModels.PortType.NEXT]: nextPortData,
@@ -249,6 +252,7 @@ export const noMatchNoReplyAndDynamicOutPortsAdapter = createOutPortsAdapter<{
     const dynamicPortsData = outPortsDataFromDB(dynamicDBPorts, options);
 
     return {
+      ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
       dynamic: dynamicPortsData,
       builtIn: {
         [BaseModels.PortType.NO_MATCH]: noMatchPortData,
@@ -264,6 +268,6 @@ export const noMatchNoReplyAndDynamicOutPortsAdapter = createOutPortsAdapter<{
 );
 
 export const emptyOutPortsAdapter = createOutPortsAdapter(
-  () => ({ ports: [], dynamic: [], builtIn: {} }),
+  () => ({ ...RealtimeUtilsPort.createEmptyNodeOutPorts(), ports: [] }),
   () => []
 );

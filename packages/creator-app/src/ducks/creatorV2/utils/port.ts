@@ -28,6 +28,22 @@ export const addPort = (
   state.ports = Normal.appendOne(state.ports, portID, portFactory(nodeID, portID, port));
 };
 
+export const addByKeyPort = (
+  state: Draft<CreatorState>,
+  { nodeID, portID, label, key }: { nodeID: string; portID: string; label: Nullish<string>; key: string }
+): void =>
+  addPort(
+    state,
+    (ports) => {
+      Object.assign(ports.out.byKey, { [key]: portID });
+    },
+    {
+      nodeID,
+      portID,
+      port: { label: label ?? null },
+    }
+  );
+
 export const addDynamicPort = (
   state: Draft<CreatorState>,
   { nodeID, portID, label }: { nodeID: string; portID: string; label: Nullish<string> }
@@ -89,6 +105,10 @@ const deleteByValue = <T>(obj: Draft<Record<string, T>>, value: T) =>
     }
   });
 
+const removeByKeyPortFromNode: RemovePortFromNode = (ports, portID) => {
+  deleteByValue(ports.out.byKey, portID);
+};
+
 const removeDynamicPortFromNode: RemovePortFromNode = (ports, portID) => {
   ports.out.dynamic = Utils.array.withoutValue(ports.out.dynamic, portID);
 };
@@ -102,6 +122,7 @@ export const removeDynamicPort = createPortRemover(removeDynamicPortFromNode);
 export const removeBuiltinPort = createPortRemover(removeBuiltinPortFromNode);
 
 export const removeAnyPort = createPortRemover((ports, portID) => {
+  removeByKeyPortFromNode(ports, portID);
   removeDynamicPortFromNode(ports, portID);
   removeBuiltinPortFromNode(ports, portID);
 });

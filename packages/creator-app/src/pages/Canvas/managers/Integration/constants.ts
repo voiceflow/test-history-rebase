@@ -90,6 +90,7 @@ export const buildNodeConfig = ({
       ports: {
         in: [{}],
         out: {
+          byKey: {},
           dynamic: [],
           builtIn: {
             [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },

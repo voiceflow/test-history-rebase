@@ -5,7 +5,7 @@ import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
 import { CreatorState } from '../types';
-import { addBuiltinPort, addDynamicPort, addPort, removePort } from './port';
+import { addBuiltinPort, addByKeyPort, addDynamicPort, addPort, removePort } from './port';
 
 export const addNode = (state: Draft<CreatorState>, { nodeID, data }: { nodeID: string; data: Realtime.NodeDataDescriptor<unknown> }): void => {
   state.nodes = Normal.appendOne(state.nodes, nodeID, { ...data, nodeID });
@@ -25,6 +25,15 @@ export const addNodeWithPorts = (
       nodeID,
       portID: port.id,
       type: type as BaseModels.PortType,
+    })
+  );
+
+  Object.entries(ports.out.byKey || {}).forEach(([key, port]) =>
+    addByKeyPort(state, {
+      key,
+      nodeID,
+      portID: port.id,
+      label: port.label,
     })
   );
 

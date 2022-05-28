@@ -12,7 +12,7 @@ export const buildPort = (nodeID: string) => {
 };
 
 export const buildDBBlock = (nodeID: string, coords: Realtime.Point, data: BaseModels.BaseBlock['data']): BaseModels.BaseBlock => ({
-  type: 'block',
+  type: BaseModels.BaseNodeType.BLOCK,
   nodeID,
   coords,
   data,

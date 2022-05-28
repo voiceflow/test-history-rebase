@@ -297,6 +297,28 @@ export const addAllPortsToState = (ports: Realtime.Port[]): DiagramStateComposeR
 export const addBlockToState = (node: Realtime.Node, ports: Realtime.Port[], data: Realtime.NodeData<unknown>): DiagramStateComposeReducer =>
   Utils.functional.compose(addNodeToState(node, data), addAllPortsToState(ports));
 
+export const addOutByKeyPortToBlockInState =
+  (key: string, port: Realtime.Port) =>
+  (state: DiagramState): DiagramState => {
+    const node = Utils.normalized.getNormalizedByKey(state.nodes, port.nodeID);
+
+    return Utils.functional.compose(
+      patchNodeInState(port.nodeID, {
+        ports: {
+          ...node.ports,
+          out: {
+            ...node.ports.out,
+            byKey: {
+              ...node.ports.out.byKey,
+              [key]: port.id,
+            },
+          },
+        },
+      }),
+      addPortToState(port)
+    )(state);
+  };
+
 export const addOutDynamicPortToBlockInState =
   (port: Realtime.Port) =>
   (state: DiagramState): DiagramState => {
@@ -396,11 +418,13 @@ export const buildPortForNode =
     portFactory(nodeID, port.id, port);
 
 export const buildNewNode = (node: NodeDescriptor, data: DataDescriptor): [Realtime.Node, Realtime.Port[], Realtime.NodeData<unknown>] => {
-  const inPorts = node.ports.in.map(buildPortForNode(node.id));
-  const outDynamicPorts = node.ports.out.dynamic.map(buildPortForNode(node.id));
+  const buildPort = buildPortForNode(node.id);
+  const inPorts = node.ports.in.map(buildPort);
+  const outDynamicPorts = node.ports.out.dynamic.map(buildPort);
+  const outByKeyPorts = Utils.object.mapValue(node.ports.out.byKey, buildPort);
   const outBuiltInPortsEntities = Object.entries(node.ports.out.builtIn)
     .filter(([, port]) => !!port)
-    .map(([type, port]) => [type, buildPortForNode(node.id)(port)] as const);
+    .map(([type, port]) => [type, buildPort(port)] as const);
 
   const newNodeData = {
     ...data,
@@ -413,11 +437,16 @@ export const buildNewNode = (node: NodeDescriptor, data: DataDescriptor): [Realt
     ports: {
       in: inPorts.map((port) => port.id),
       out: {
+        byKey: Utils.object.mapValue(outByKeyPorts, (port) => port.id),
         dynamic: outDynamicPorts.map((port) => port.id),
         builtIn: outBuiltInPortsEntities.reduce((acc, [type, port]) => ({ ...acc, [type]: port.id }), {}),
       },
     },
   });
 
-  return [newNode, [...inPorts, ...outDynamicPorts, ...outBuiltInPortsEntities.map(([, port]) => port)], newNodeData];
+  return [
+    newNode,
+    [...inPorts, ...outDynamicPorts, ...outBuiltInPortsEntities.map(([, port]) => port), ...Object.values(outByKeyPorts)],
+    newNodeData,
+  ];
 };

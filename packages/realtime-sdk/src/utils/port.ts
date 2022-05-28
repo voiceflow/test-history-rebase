@@ -1,13 +1,15 @@
-import { NodePorts, NodePortSchema, PortsDescriptor } from '@realtime-sdk/models';
-import { Nullish } from '@voiceflow/common';
+import { NodeOutPortSchema, NodePorts, NodePortSchema, PortsDescriptor } from '@realtime-sdk/models';
+import { Nullish, Utils } from '@voiceflow/common';
 
-export const createEmptyNodePorts = <T = string>(): NodePortSchema<T> => ({ in: [], out: { builtIn: {}, dynamic: [] } });
+export const createEmptyNodePorts = <T = string>(): NodePortSchema<T> => ({ in: [], out: { byKey: {}, builtIn: {}, dynamic: [] } });
+export const createEmptyNodeOutPorts = <T = string>(): NodeOutPortSchema<T> => ({ byKey: {}, builtIn: {}, dynamic: [] });
 
 export const extractNodePorts = (descriptor: PortsDescriptor): NodePorts => ({
   in: descriptor.in.map(({ id }) => id),
   out: {
+    byKey: Utils.object.mapValue(descriptor.out.byKey, ({ id }) => id),
     dynamic: descriptor.out.dynamic.map(({ id }) => id),
-    builtIn: Object.fromEntries(Object.entries(descriptor.out.builtIn).map(([key, { id }]) => [key, id])),
+    builtIn: Utils.object.mapValue(descriptor.out.builtIn, ({ id }) => id),
   },
 });
 

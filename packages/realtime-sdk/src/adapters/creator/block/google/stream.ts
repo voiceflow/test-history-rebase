@@ -40,6 +40,7 @@ export const streamOutPortsAdapter = createOutPortsAdapter<NodeData.StreamBuiltI
     const nextPortData = outPortDataFromDB(dbNextPort, options);
 
     return {
+      byKey: {},
       dynamic: [],
       builtIn: { [BaseModels.PortType.NEXT]: applyPortPlatform(nextPortData, VoiceflowConstants.PlatformType.GOOGLE) },
     };
@@ -53,11 +54,13 @@ export const streamOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.StreamBu
     const nextPortData = outPortDataFromDB(dbNextPort, options);
 
     return {
+      byKey: {},
       dynamic: [],
       builtIn: { [BaseModels.PortType.NEXT]: applyPortPlatform(nextPortData, VoiceflowConstants.PlatformType.GOOGLE) },
     };
   },
   ({ builtIn: { [BaseModels.PortType.NEXT]: nextPortData } }) => ({
+    byKey: {},
     builtIn: { [BaseModels.PortType.NEXT]: outPortDataToDB(nextPortData) },
     dynamic: [],
   })

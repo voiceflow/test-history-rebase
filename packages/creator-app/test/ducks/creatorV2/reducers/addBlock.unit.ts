@@ -113,6 +113,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
 
     it('register all ports of an added block and step', () => {
       const inPortID = 'inPort';
+      const byKeyPortKey = 'byKeyPortKey';
+      const byKeyPortID = 'byKeyPort';
       const dynamicPortID = 'dynamicPort';
       const builtInPortID = 'builtInPort';
 
@@ -125,11 +127,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         stepData,
         blockPorts: {
           in: [{ id: inPortID }],
-          out: { dynamic: [], builtIn: {} },
+          out: { byKey: {}, dynamic: [], builtIn: {} },
         },
         stepPorts: {
           in: [],
           out: {
+            byKey: {
+              [byKeyPortKey]: { id: byKeyPortID },
+            },
             dynamic: [{ id: dynamicPortID }],
             builtIn: {
               [BaseModels.PortType.NEXT]: { id: builtInPortID },
@@ -142,19 +147,22 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         },
       });
 
-      expect(result.ports).to.containSubset(normalize([{ id: builtInPortID }, { id: dynamicPortID }, { id: inPortID }]));
+      expect(result.ports).to.containSubset(normalize([{ id: builtInPortID }, { id: dynamicPortID }, { id: inPortID }, { id: byKeyPortID }]));
       expect(result.portsByNodeID).to.eql({
-        [blockID]: { in: [inPortID], out: { dynamic: [], builtIn: {} } },
+        [blockID]: { in: [inPortID], out: { byKey: {}, dynamic: [], builtIn: {} } },
         [stepID]: {
           in: [],
           out: {
+            byKey: {
+              [byKeyPortKey]: byKeyPortID,
+            },
             dynamic: [dynamicPortID],
             builtIn: { [BaseModels.PortType.NEXT]: builtInPortID },
           },
         },
       });
-      expect(result.nodeIDByPortID).to.eql({ [inPortID]: blockID, [dynamicPortID]: stepID, [builtInPortID]: stepID });
-      expect(result.linkIDsByPortID).to.eql({ [inPortID]: [], [dynamicPortID]: [], [builtInPortID]: [] });
+      expect(result.nodeIDByPortID).to.eql({ [inPortID]: blockID, [dynamicPortID]: stepID, [builtInPortID]: stepID, [byKeyPortID]: stepID });
+      expect(result.linkIDsByPortID).to.eql({ [inPortID]: [], [dynamicPortID]: [], [builtInPortID]: [], [byKeyPortID]: [] });
     });
   });
 });

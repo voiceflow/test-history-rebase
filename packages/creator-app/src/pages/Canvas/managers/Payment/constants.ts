@@ -35,6 +35,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Payment, Realtime.NodeDat
       ports: {
         in: [{}],
         out: {
+          byKey: {},
           dynamic: [],
           builtIn: {
             [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },

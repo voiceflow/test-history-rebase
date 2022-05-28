@@ -15,6 +15,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AccountLinking, Realtime.
       ports: {
         in: [{}],
         out: {
+          byKey: {},
           dynamic: [],
           builtIn: { [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT } },
         },

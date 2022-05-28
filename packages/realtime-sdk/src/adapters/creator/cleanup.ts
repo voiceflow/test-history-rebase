@@ -1,6 +1,7 @@
 import { BlockType } from '@realtime-sdk/constants';
 import { isBlock, isStep } from '@realtime-sdk/utils/typeGuards';
 import { AnyRecord, BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 
 type NodesMap = Record<string, BaseModels.BaseDiagramNode>;
 type ValidNodeIDsMap = Record<string, boolean>;
@@ -20,10 +21,11 @@ const cleanupStepPorts = (
     return { ports: data.ports.map(mapPort) };
   }
 
-  const builtIn = Object.fromEntries(Object.entries(data.portsV2.builtIn).map(([key, value]) => [key, mapPort(value)]));
+  const byKey = Utils.object.mapValue(data.portsV2.byKey || {}, mapPort);
+  const builtIn = Utils.object.mapValue(data.portsV2.builtIn, mapPort);
   const dynamic = data.portsV2.dynamic.map(mapPort);
 
-  return { portsV2: { builtIn, dynamic } };
+  return { portsV2: { byKey, builtIn, dynamic } };
 };
 
 export const cleanupDBNodes = (nodesMap: NodesMap): BaseModels.BaseDiagramNode[] => {
@@ -34,7 +36,7 @@ export const cleanupDBNodes = (nodesMap: NodesMap): BaseModels.BaseDiagramNode[]
     if (isBlock(node)) {
       const steps = cleanupBlockSteps(nodesMap, node.data.steps);
 
-      if (!steps.length && node.type === BlockType.COMBINED) {
+      if (!steps.length && (node.type as string) === BlockType.COMBINED) {
         return false;
       }
 

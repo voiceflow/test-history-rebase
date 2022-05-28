@@ -60,6 +60,7 @@ describe('Migrate service - v2 migration unit tests', () => {
               data: {
                 code: '',
                 portsV2: {
+                  byKey: {},
                   builtIn: {
                     [BaseModels.PortType.NEXT]: {
                       type: BaseModels.PortType.NEXT,
@@ -131,6 +132,7 @@ describe('Migrate service - v2 migration unit tests', () => {
             data: {
               code: '',
               portsV2: {
+                byKey: {},
                 builtIn: {
                   [BaseModels.PortType.NEXT]: nextPort,
                   [BaseModels.PortType.FAIL]: failPort,

@@ -23,6 +23,7 @@ export type PortDescriptor = Partial<Omit<Realtime.Port, 'id'>>;
 interface NodeDescriptorPorts<T extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
   in: PortDescriptor[];
   out: {
+    byKey: Record<string, PortDescriptor>;
     dynamic: PortDescriptor[];
     builtIn: { [key in keyof T]: PortDescriptor };
   };

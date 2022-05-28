@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.33.2...@voiceflow/admin-app@1.34.0) (2022-05-28)
+
+
+### Features
+
+* add byKeyPorts to migration system (VF-3527) ([#5477](https://github.com/voiceflow/creator-app/issues/5477)) ([5131021](https://github.com/voiceflow/creator-app/commit/513102131b65e40829baf1bda51b47392beb1ce0))
+
+
+
+
+
 ## [1.33.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.33.1...@voiceflow/admin-app@1.33.2) (2022-05-27)
 
 **Note:** Version bump only for package @voiceflow/admin-app

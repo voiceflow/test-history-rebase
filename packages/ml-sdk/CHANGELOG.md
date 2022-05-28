@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.7.3...@voiceflow/ml-sdk@1.8.0) (2022-05-28)
+
+
+### Features
+
+* add byKeyPorts to migration system (VF-3527) ([#5477](https://github.com/voiceflow/creator-app/issues/5477)) ([5131021](https://github.com/voiceflow/creator-app/commit/513102131b65e40829baf1bda51b47392beb1ce0))
+
+
+
+
+
 ## [1.7.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.7.2...@voiceflow/ml-sdk@1.7.3) (2022-04-13)
 
 

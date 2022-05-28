@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.71.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.70.1...@voiceflow/realtime@1.71.0) (2022-05-28)
+
+
+### Features
+
+* add byKeyPorts to migration system (VF-3527) ([#5477](https://github.com/voiceflow/creator-app/issues/5477)) ([5131021](https://github.com/voiceflow/creator-app/commit/513102131b65e40829baf1bda51b47392beb1ce0))
+
+
+
+
+
 ## [1.70.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.70.0...@voiceflow/realtime@1.70.1) (2022-05-27)
 
 **Note:** Version bump only for package @voiceflow/realtime

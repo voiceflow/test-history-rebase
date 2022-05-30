@@ -5,11 +5,14 @@ import React from 'react';
 
 import PlanBubble from '@/components/PlanBubble';
 import { IS_PRIVATE_CLOUD } from '@/config';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
+import { canAddWorkspace, WorkspacesLimitDetails } from '@/config/planLimits/workspaces';
+import { ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, usePermission, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useModals, usePermission, useSelector } from '@/hooks';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
 import { ClassName } from '@/styles/constants';
 
@@ -24,12 +27,22 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
   const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
   const isAdminOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOfAnyWorkspaceSelector);
   const isLoadingProjects = useSelector(UI.isLoadingProjectsSelector);
+  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
+  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const goToNewWorkspace = useDispatch(Router.goToNewWorkspace);
 
   const privateCloudCreateCondition = isAdminOfAnyWorkspace || canCreatePrivateCloudWorkspace;
   const showCreateWorkspaceButton = !IS_PRIVATE_CLOUD || privateCloudCreateCondition;
+
+  const canAddNewWorkspace = () => {
+    if (revisedEntitlements.isEnabled && !canAddWorkspace(plan)) {
+      openUpgradeModal({ WorkspacesLimitDetails });
+    } else {
+      goToNewWorkspace();
+    }
+  };
 
   return (
     <>
@@ -51,7 +64,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
               {showCreateWorkspaceButton && (
                 <>
                   <MenuItem divider />
-                  <MenuItem onClick={() => goToNewWorkspace()} bottomAction id="createWorkspace">
+                  <MenuItem onClick={canAddNewWorkspace} bottomAction id="createWorkspace">
                     Create New Workspace
                   </MenuItem>
                 </>

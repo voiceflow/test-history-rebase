@@ -19,6 +19,7 @@ export enum PlanLimitCategories {
   STARTER = 'starter',
 }
 
+export const ENTERPRISE_LIMIT_PLANS = [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE];
 export const TEAM_LIMIT_PLANS = [PlanType.OLD_TEAM, PlanType.TEAM, PlanType.PRO, PlanType.OLD_PRO];
 export const STARTER_LIMIT_PLANS = [PlanType.OLD_STARTER, PlanType.STARTER];
 

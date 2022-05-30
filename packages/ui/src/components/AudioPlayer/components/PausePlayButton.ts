@@ -11,8 +11,8 @@ const PausePlayButton = styled(IconButton)`
     css`
       svg {
         position: relative;
-        top: 1px;
-        left: 2px;
+        left: 1px;
+        transform: scale(1.2);
       }
     `}
 `;

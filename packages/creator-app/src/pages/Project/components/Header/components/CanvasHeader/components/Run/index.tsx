@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, PrimaryButtonProps, SvgIcon, SvgIconContainer, TippyTooltip } from '@voiceflow/ui';
+import { Button, ButtonVariant, PrimaryButtonProps, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Router from '@/ducks/router';
@@ -8,9 +8,8 @@ import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { Identifier } from '@/styles/constants';
 
 const RunButton = styled(Button)<PrimaryButtonProps>`
-  ${SvgIconContainer} {
-    position: relative;
-    left: 1px;
+  svg {
+    transform: scale(1.15);
   }
 `;
 
@@ -27,7 +26,7 @@ const Run: React.FC = () => {
         id={Identifier.TEST}
         variant={ButtonVariant.PRIMARY}
       >
-        <SvgIcon icon="play" width={14} height={18} />
+        <SvgIcon icon="play" width={16} height={16} />
       </RunButton>
     </TippyTooltip>
   );

@@ -61,6 +61,7 @@ const PlayButton: React.FC<ConnectedPlayButtonProps & PlayButtonProps> = ({ node
           icon="play"
           clickable
           color={palette[700]}
+          style={{ transform: 'scale(1.2)' }}
           onClick={(e) => {
             e.stopPropagation();
 

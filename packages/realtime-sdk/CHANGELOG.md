@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.95.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.94.0...@voiceflow/realtime-sdk@1.95.0) (2022-05-30)
+
+
+### Features
+
+* allow disabling transcripts save during transcripts migration (VF-3505) ([#5486](https://github.com/voiceflow/creator-app/issues/5486)) ([62dc3d3](https://github.com/voiceflow/creator-app/commit/62dc3d3acac1c0f65ef93d20bfd5f2961ace956e))
+
+
+
+
+
 # [1.94.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.93.0...@voiceflow/realtime-sdk@1.94.0) (2022-05-28)
 
 

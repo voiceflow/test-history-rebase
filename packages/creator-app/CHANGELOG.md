@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.736.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.736.0...@voiceflow/creator-app@1.736.1) (2022-05-30)
+
+
+### Bug Fixes
+
+* update azure tts formatting (VF-3459) ([#5491](https://github.com/voiceflow/creator-app/issues/5491)) ([bb7133b](https://github.com/voiceflow/creator-app/commit/bb7133bc96233e1281df055920799e24d05b62d0))
+
+
+
+
+
 # [1.736.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.735.0...@voiceflow/creator-app@1.736.0) (2022-05-30)
 
 

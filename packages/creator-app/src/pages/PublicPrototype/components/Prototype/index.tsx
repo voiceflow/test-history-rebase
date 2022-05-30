@@ -1,12 +1,14 @@
 import { IS_IOS, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
+import * as Feature from '@/ducks/feature';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { compose } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useASR, useCanASR, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';
+import { useASR, useCanASR, useGuestPermission, useSelector, useSpeechRecognition, useTeardown } from '@/hooks';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPublicPrototype } from '@/pages/Prototype/hooks';
@@ -26,6 +28,8 @@ interface PrototypeProps {
 }
 
 const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state, actions, settings, onInteract, globalDelayInMilliseconds }) => {
+  const isTranscriptsMigrationOngoing = useSelector(Feature.isFeatureEnabledSelector)(FeatureFlag.TRANSCRIPTS_MIGRATION_ONGOING);
+
   const startPrototype = useStartPublicPrototype();
   const resetPrototype = useResetPrototype();
   const [canUseASR] = useCanASR();
@@ -138,7 +142,9 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   useDidUpdateEffect(() => {
     if (isFinished) {
       onStopListening();
-      savePrototypeSession();
+      if (!isTranscriptsMigrationOngoing) {
+        savePrototypeSession();
+      }
     }
   }, [isFinished]);
 

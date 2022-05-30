@@ -37,4 +37,5 @@ export enum FeatureFlag {
   STEP_EDITOR_UPDATES = 'step_editor_update',
 
   DISABLE_CODE_EXPORTS = 'disable_code_exports',
+  TRANSCRIPTS_MIGRATION_ONGOING = 'transcripts_migration_ongoing',
 }

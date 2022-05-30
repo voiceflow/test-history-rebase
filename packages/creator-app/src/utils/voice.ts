@@ -46,13 +46,13 @@ export const prettifyGoogleVoicesLong = (voiceCode: string): string => {
   return `${GoogleConstants.LocaleCodeToCountryLanguage[localeCode] || localeCode || ''} ${voiceType}`.trim();
 };
 
-export const prettifyAzureVoiceID = (voiceID: string): string => voiceID.split('-')[3].replace('RUS', '').replace('azure-', '').replace('Neural', '');
+export const prettifyAzureVoiceID = (voiceID: string): string => voiceID.split('-')[2].replace('Neural', '');
 
 export const prettifyVoice = (voiceID: string): string => {
   const lowerCasedVoiceID = voiceID.toLowerCase();
 
   // As we add more voices from different platforms, we can add to this util to prettify any voice ID
-  if (lowerCasedVoiceID.includes('azure')) return prettifyAzureVoiceID(voiceID);
+  if (lowerCasedVoiceID.includes('neural')) return prettifyAzureVoiceID(voiceID);
   if (lowerCasedVoiceID.includes('standard') || lowerCasedVoiceID.includes('wavenet')) return prettifyGoogleVoicesLong(voiceID);
 
   return voiceID;

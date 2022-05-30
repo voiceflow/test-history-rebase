@@ -19,7 +19,7 @@ export interface AudioPlayerProps {
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autoplay = false, showDuration = false, className }) => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-  const { ref: audioElementRef, curTime, duration, playing, setPlaying, setClickedTime } = useAudioPlayer({ autoplay });
+  const { curTime, duration, playing, setPlaying, setClickedTime } = useAudioPlayer({ autoplay, audioURL: link });
 
   const jumpToTime = ({ clientX: xCoord }: { clientX: number }) => {
     if (!containerRef.current) return;
@@ -51,10 +51,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autopla
         </DurationText>
       )}
       {onClose && <CloseButton icon="close" size={10} onClick={swallowEvent(() => onClose())} />}
-      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-      <audio ref={audioElementRef}>
-        <source src={link} type="audio/mpeg" />
-      </audio>
     </Container>
   );
 };

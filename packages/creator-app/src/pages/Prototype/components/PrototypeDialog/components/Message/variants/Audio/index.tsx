@@ -16,8 +16,7 @@ type AudioProps = Omit<MessageProps, 'iconProps'> & {
 };
 
 const Audio: React.FC<AudioProps> = ({ onPlay, audioSrc, autoplay = true, name, isCurrent, allowPause, ...props }) => {
-  const { ref, curTime, playing, duration, setPlaying, restart } = AudioPlayer.useAudioPlayer({ autoplay });
-  const audioRef: any = ref;
+  const { curTime, playing, duration, setPlaying, restart } = AudioPlayer.useAudioPlayer({ autoplay, audioURL: audioSrc });
 
   const onClickHandler = () => {
     if (allowPause) {
@@ -45,10 +44,6 @@ const Audio: React.FC<AudioProps> = ({ onPlay, audioSrc, autoplay = true, name, 
           {AudioPlayer.formatTime(curTime)}
         </Box>
       </Flex>
-      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-      <audio ref={audioRef} muted={!allowPause}>
-        <source src={audioSrc} type="audio/mpeg" />
-      </audio>
     </Message>
   );
 };

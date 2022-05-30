@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.90.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.90.1...@voiceflow/ui@1.90.2) (2022-05-30)
+
+
+### Bug Fixes
+
+* changes play icon globally (VF-000) ([#5484](https://github.com/voiceflow/creator-app/issues/5484)) ([3192591](https://github.com/voiceflow/creator-app/commit/319259182e9b53d3e3720ba074877f2fe819cfc7))
+
+
+
+
+
 ## [1.90.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.90.0...@voiceflow/ui@1.90.1) (2022-05-30)
 
 

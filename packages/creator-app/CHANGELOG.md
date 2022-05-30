@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.737.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.737.0...@voiceflow/creator-app@1.737.1) (2022-05-30)
+
+
+### Bug Fixes
+
+* usage of useAudioPlayer hook (VF-000) ([#5495](https://github.com/voiceflow/creator-app/issues/5495)) ([659178f](https://github.com/voiceflow/creator-app/commit/659178f5828e70e55982e1fd2927615dd40ae02d))
+
+
+
+
+
 # [1.737.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.736.1...@voiceflow/creator-app@1.737.0) (2022-05-30)
 
 

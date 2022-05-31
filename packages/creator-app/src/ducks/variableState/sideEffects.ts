@@ -1,6 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Prototype from '@/ducks/prototype';
+import * as RealtimeDucks from '@/ducks/realtime';
+import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveVersionContext } from '@/ducks/version/utils';
@@ -15,6 +17,20 @@ import {
   selectedVariableStateIdSelector as getSelectedVariableStateId,
   selectedVariableStateSelector as getSelectedVariableState,
 } from './selectors';
+
+export const redirectToDiagram =
+  (diagramID: string): Thunk =>
+  async (dispatch, getState) => {
+    const versionID = Session.activeVersionIDSelector(getState());
+
+    if (!versionID) return;
+
+    await dispatch(RealtimeDucks.switchRealtimeDiagram(versionID, diagramID));
+
+    dispatch(Prototype.resetPrototype());
+    dispatch(Router.goToPrototype(versionID, undefined));
+    dispatch(Session.setActiveDiagramID(diagramID));
+  };
 
 export const createVariableState =
   (variableState: Omit<Realtime.VariableStateData, 'projectID'>): Thunk =>
@@ -34,7 +50,7 @@ export const createVariableState =
 
     dispatch(updateSelectedVariableState({ id: createdVariableState.id, variables: variableState.variables }));
 
-    dispatch(Session.setActiveDiagramID(variableState.startFrom?.diagramID || version.rootDiagramID));
+    await dispatch(redirectToDiagram(variableState.startFrom?.diagramID || version.rootDiagramID));
   };
 
 export const updateSelectedVariableStateVariables =
@@ -50,6 +66,11 @@ export const updateSelectedVariableStateVariables =
     dispatch(updateVariables({ ...variable }));
   };
 
+export const resetVariableStates = (): Thunk => async (dispatch, getState) => {
+  const variables = Prototype.prototypeVariablesSelector(getState());
+  dispatch(updateSelectedVariableState({ id: ALL_PROJECT_VARIABLES_ID, variables }));
+};
+
 export const updateSelectedVariableStateById =
   (variableStateID: string | null): Thunk =>
   async (dispatch, getState) => {
@@ -58,7 +79,7 @@ export const updateSelectedVariableStateById =
     if (!version?.rootDiagramID) return;
 
     if (!variableStateID) {
-      dispatch(Session.setActiveDiagramID(version.rootDiagramID));
+      await dispatch(redirectToDiagram(version.rootDiagramID));
       dispatch(updateSelectedVariableState(null));
       return;
     }
@@ -69,13 +90,13 @@ export const updateSelectedVariableStateById =
     const variables = Prototype.prototypeVariablesSelector(state);
 
     if (!variableState) {
-      dispatch(Session.setActiveDiagramID(version.rootDiagramID));
+      await dispatch(redirectToDiagram(version.rootDiagramID));
       dispatch(updateSelectedVariableState({ id: ALL_PROJECT_VARIABLES_ID, variables }));
       return;
     }
 
     if (variableState.startFrom?.diagramID) {
-      dispatch(Session.setActiveDiagramID(variableState.startFrom?.diagramID));
+      await dispatch(redirectToDiagram(variableState.startFrom?.diagramID));
     }
 
     dispatch(updateSelectedVariableState({ id: variableStateID, variables: variableState.variables }));
@@ -107,7 +128,7 @@ export const updateState =
     const selectedVariableStateId = getSelectedVariableStateId(state);
 
     if (variableState.startFrom?.diagramID && selectedVariableStateId === variableStateID) {
-      dispatch(Session.setActiveDiagramID(variableState.startFrom?.diagramID));
+      await dispatch(redirectToDiagram(variableState.startFrom?.diagramID));
     }
 
     await dispatch.sync(

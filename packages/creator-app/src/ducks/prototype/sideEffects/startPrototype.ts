@@ -55,13 +55,15 @@ const startPrototype =
   (dispatch, getState) => {
     const state = getState();
 
+    const projectID = Session.activeProjectIDSelector(state);
     const variables = VariableState.selectedVariablesSelector(state) || prototypeVariablesSelector(state);
     const startFromNodeID = VariableState.selectedStartFromNodeIDSelector(state);
     const startFromDiagramID = VariableState.selectedStartFromDiagramIDSelector(state);
-    const nodeID = selectedNodeID || startFromNodeID;
-
-    const projectID = Session.activeProjectIDSelector(state);
     const activeDiagramID = Session.activeDiagramIDSelector(state);
+    const shouldApplyVariableState = !selectedNodeID && startFromNodeID && startFromDiagramID && activeDiagramID === startFromDiagramID;
+    const nodeID = shouldApplyVariableState ? startFromNodeID : selectedNodeID;
+    const selectedDiagramID = shouldApplyVariableState ? startFromDiagramID : activeDiagramID;
+
     const getLinkIDsByNodeID = (nodeID: string) => CreatorV2.linkIDsByNodeIDSelector(state, { id: nodeID });
     const getLinkedNodeIDsByNodeID = (nodeID: string) => CreatorV2.linkedNodeIDsByNodeIDSelector(state, { id: nodeID });
     const getNodeByID = (nodeID: string) => CreatorV2.nodeByIDSelector(state, { id: nodeID });
@@ -73,7 +75,7 @@ const startPrototype =
     const context: Context = {
       stack: [
         {
-          diagramID: startFromDiagramID || activeDiagramID,
+          diagramID: selectedDiagramID as string,
           storage: {},
           variables: {},
           blockID: targetNodeID,

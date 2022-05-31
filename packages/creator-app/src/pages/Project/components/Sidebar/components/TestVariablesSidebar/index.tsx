@@ -17,6 +17,7 @@ const TestVariablesSidebar: React.FC = () => {
   const selectedVariableStateId = useSelector(variableState.selectedVariableStateIdSelector);
   const updateSelectedVariableStateById = useDispatch(variableState.updateSelectedVariableStateById);
   const updateSelectedVariableStateVariables = useDispatch(variableState.updateSelectedVariableStateVariables);
+  const resetVariableStates = useDispatch(variableState.resetVariableStates);
   const updateStateValues = useDispatch(variableState.updateStateValues);
   const selectedSavedState = useSelector(variableState.selectedVariableStateSavedStateSelector);
   const [loading, setLoading] = React.useState(false);
@@ -47,7 +48,7 @@ const TestVariablesSidebar: React.FC = () => {
     if (selectedVariableStateId === variableState.ALL_PROJECT_VARIABLES_ID) return;
 
     if (!selectedSavedState) {
-      updateSelectedVariableStateById(variableState.ALL_PROJECT_VARIABLES_ID);
+      resetVariableStates();
       return;
     }
 

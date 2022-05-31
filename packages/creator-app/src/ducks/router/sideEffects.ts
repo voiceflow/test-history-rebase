@@ -216,7 +216,11 @@ export const goToCurrentPrototype =
 
     const isTopic = topics.find((item) => item.sourceID === diagramID);
 
-    if (variableStatesStartFromDiagramID) {
+    if (nodeID && variableStatesStartFromDiagramID && variableStatesStartFromDiagramID !== diagramID) {
+      dispatch(VariableState.resetVariableStates());
+    }
+
+    if (!nodeID && variableStatesStartFromDiagramID) {
       await dispatch(redirectToDiagram(variableStatesStartFromDiagramID));
     } else if (!nodeID && isTopic && rootDiagramID && rootDiagramID !== diagramID && isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion) {
       await dispatch(redirectToDiagram(rootDiagramID));

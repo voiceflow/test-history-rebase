@@ -374,13 +374,14 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   }
 
   saveActiveLocations(): void {
+    const targets: Nullish<string>[] = [];
     if (this.selection.hasTargets) {
-      this.selection.getTargets().forEach((nodeID) => this.node.saveLocation(nodeID));
+      targets.push(...this.selection.getTargets());
     }
-
     if (this.drag.hasTarget) {
-      this.node.saveLocation(this.drag.target);
+      targets.push(this.drag.target);
     }
+    this.node.saveLocations(targets);
   }
 
   setActive(

@@ -109,7 +109,7 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
 
       if (!options?.volatile && !this.isAtomicActionsPhase2) {
         Sentry.breadcrumb('realtime', 'Remote user finished moving multiple nodes', { tabID });
-        await Promise.all(nodeIDs.map((nodeID) => this.engine.node.internal.saveLocation(nodeID)));
+        await this.engine.node.internal.saveLocations(nodeIDs);
       }
     },
 

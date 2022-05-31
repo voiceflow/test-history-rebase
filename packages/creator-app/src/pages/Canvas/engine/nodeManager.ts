@@ -231,13 +231,14 @@ class NodeManager extends EngineConsumer {
       const node = this.engine.getNodeByID(nodeID);
       if (!node) return;
 
-      this.saveLocation(node.parentNode!);
-
       const blockName = this.getNewBlockName();
 
       if (this.isAtomicActionsPhase2) {
         const projectMeta = this.engine.getActiveProjectMeta();
         const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: node.parentNode! });
+
+        const removeSource = stepIDs.length === 1;
+        if (!removeSource) this.saveLocations([node.parentNode!]);
 
         await this.dispatch.sync(
           Realtime.node.isolateStep({
@@ -250,10 +251,11 @@ class NodeManager extends EngineConsumer {
             blockName,
             projectMeta,
             schemaVersion: this.engine.getActiveSchemaVersion(),
-            removeSource: stepIDs.length === 1,
+            removeSource,
           })
         );
       } else {
+        this.saveLocations([node.parentNode!]);
         this.dispatch(Creator.unmergeNode(nodeID, coords, parentNode));
         this.internal.addNewStartingBlock({ id: node.id, name: blockName });
       }
@@ -282,14 +284,13 @@ class NodeManager extends EngineConsumer {
       nodes.forEach((node) => {
         this.engine.activation.deactivate(node.id);
 
-        // save last location of parent node in case unmerging
-        if (node.parentNode && !parentIDs.has(node.parentNode)) {
-          parentIDs.add(node.parentNode);
-          this.saveLocation(node.parentNode);
-        }
+        if (node.parentNode) parentIDs.add(node.parentNode);
 
         [...node.combinedNodes, node.id].forEach((childNodeID) => removedIDs.add(childNodeID));
       });
+
+      // save last location of parent nodes in case unmerging
+      this.saveLocations(Array.from(parentIDs).filter((parentNodeID) => !removedIDs.has(parentNodeID)));
 
       const nodesToRemove = Array.from(removedIDs).map((nodeID) => {
         const blockID = this.select(CreatorV2.blockIDByStepIDSelector, { id: nodeID });
@@ -331,23 +332,24 @@ class NodeManager extends EngineConsumer {
       nodeIDs.forEach((nodeID, i) => this.internal.translateBaseOnOrigin(nodeID, movement, origins[i]));
     },
 
-    saveLocation: async (nodeID: string): Promise<void> => {
-      const node = this.engine.nodes.get(nodeID);
-      if (!node) return;
+    saveLocations: async (nodeIDs: string[]): Promise<void> => {
+      const nodes = nodeIDs.reduce<Record<string, [number, number]>>((acc, nodeID) => {
+        const node = this.engine.nodes.get(nodeID);
+        if (node) acc[nodeID] = [node.x, node.y];
+        return acc;
+      }, {});
 
-      if (this.isAtomicActionsPhase2) {
+      if (this.isAtomicActionsPhase2 && !!Object.keys(nodes).length) {
         await this.dispatch
           .sync(
             Realtime.node.moveMany({
               ...this.engine.context,
-              blocks: {
-                [nodeID]: [node.x, node.y],
-              },
+              blocks: nodes,
             })
           )
           .catch(Sentry.error);
       } else {
-        this.dispatch(Creator.updateNodeLocation(nodeID, [node.x, node.y]));
+        Object.entries(nodes).forEach(([nodeID, coords]) => this.dispatch(Creator.updateNodeLocation(nodeID, coords)));
       }
     },
   };
@@ -760,17 +762,18 @@ class NodeManager extends EngineConsumer {
     }
   }
 
-  saveLocation(nodeID: Nullish<string>): void {
-    if (!nodeID || !this.engine.nodes.has(nodeID)) return;
+  saveLocations(nodeIDs: Nullish<string>[]): void {
+    const existingNodeIDs = nodeIDs?.filter((nodeID): nodeID is string => !!nodeID && this.engine.nodes.has(nodeID));
+    if (!existingNodeIDs?.length) return;
 
     reduxBatchUndo.start();
 
-    this.saveLinks(nodeID);
-    this.internal.saveLocation(nodeID);
+    existingNodeIDs.forEach((nodeID) => this.saveLinks(nodeID));
+    this.internal.saveLocations(existingNodeIDs);
 
     reduxBatchUndo.end();
 
-    this.log.debug('location saved', this.log.slug(nodeID));
+    this.log.debug(`location saved for ${this.log.value(existingNodeIDs.length)} nodes`);
   }
 
   updateOrigin(nodeID: string, [moveX, moveY]: Pair<number>): void {

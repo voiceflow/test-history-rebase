@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.737.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.737.3...@voiceflow/creator-app@1.737.4) (2022-05-31)
+
+
+### Bug Fixes
+
+* batch move nodes (VF-000) ([#5492](https://github.com/voiceflow/creator-app/issues/5492)) ([f1bdca5](https://github.com/voiceflow/creator-app/commit/f1bdca5a26e2558b62180f01ef0d02abc0d58ecf))
+
+
+
+
+
 ## [1.737.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.737.2...@voiceflow/creator-app@1.737.3) (2022-05-31)
 
 

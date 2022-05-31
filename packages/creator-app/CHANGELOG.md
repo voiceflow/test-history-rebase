@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.737.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.737.2...@voiceflow/creator-app@1.737.3) (2022-05-31)
+
+
+### Bug Fixes
+
+* do not freeze immer results (VF-3519) ([#5493](https://github.com/voiceflow/creator-app/issues/5493)) ([a170ecc](https://github.com/voiceflow/creator-app/commit/a170ecc78b330cfcb31eb97bbf9cda3722d4d6dc))
+* starting test from block (VF-3512) ([#5443](https://github.com/voiceflow/creator-app/issues/5443)) ([39ca69d](https://github.com/voiceflow/creator-app/commit/39ca69d12a836eac5c3d017b939cbb2e23899bd9))
+
+
+
+
+
 ## [1.737.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.737.1...@voiceflow/creator-app@1.737.2) (2022-05-30)
 
 

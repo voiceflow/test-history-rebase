@@ -13,11 +13,11 @@ export interface IntentStepProps {
   label?: string | null;
   nodeID: string;
   isLocal?: boolean;
-  nextPortID?: string;
   palette: HSLShades;
+  nextPortID?: string;
 }
 
-export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, nextPortID, palette }) => (
+export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, palette, nextPortID }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item

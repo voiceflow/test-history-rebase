@@ -117,24 +117,33 @@ function TextEditor({
   const onEditorRef = React.useCallback(
     (editor) => {
       if (editor) {
-        editor.forceUpdate = forceUpdate;
-        editor.getCurrentValue = () => {
-          const nextValue = fromStateWithAdapter(store.get('editorState'));
+        Object.assign(editor, {
+          forceUpdate,
 
-          store.set('textValue', nextValue.text);
+          clear: () => {
+            const newState = EditorState.createEmpty();
+            const nextValue = fromStateWithAdapter(newState);
 
-          return nextValue;
-        };
+            store.set('textValue', nextValue.text);
+            store.set('editorState', newState);
 
-        editor.forceFocusToTheEnd = () => {
-          const newState = EditorState.moveFocusToEnd(EditorState.moveSelectionToEnd(store.get('editorState')));
-          updateEditorState(newState);
-        };
+            updateEditorState(newState);
+          },
 
-        editor.clear = () => {
-          const newState = EditorState.createEmpty();
-          updateEditorState(newState);
-        };
+          getCurrentValue: () => {
+            const nextValue = fromStateWithAdapter(store.get('editorState'));
+
+            store.set('textValue', nextValue.text);
+
+            return nextValue;
+          },
+
+          forceFocusToTheEnd: () => {
+            const newState = EditorState.moveFocusToEnd(EditorState.moveSelectionToEnd(store.get('editorState')));
+
+            updateEditorState(newState);
+          },
+        });
       }
 
       setRef(forwardedRef, editor);

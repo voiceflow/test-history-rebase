@@ -133,7 +133,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
                             iconProps={{ variant: 'blue' }}
                             rightAction={
                               !isResponseUtteranceEmpty && (
-                                <Badge slide onClick={() => onAdd(utteranceRef.current.getCurrentValue())}>
+                                <Badge slide onClick={() => utteranceRef.current && onAdd(utteranceRef.current.getCurrentUtterance())}>
                                   Enter
                                 </Badge>
                               )

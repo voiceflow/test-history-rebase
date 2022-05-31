@@ -44,7 +44,7 @@ const IntentRequiredEntitiesSection: React.FC<IntentRequiredEntitiesSectionProps
       }
     >
       {!!requiredEntities.length && (
-        <SectionV2.Content bottomOffset={0}>
+        <SectionV2.Content bottomOffset={2}>
           {requiredEntities.map((entity) => (
             <Item
               key={entity.id}

@@ -14,6 +14,7 @@ export { default as LinkArrowIcon } from './LinkArrowIcon';
 export { default as LinkSection } from './LinkSection';
 export { default as ListItem } from './ListItem';
 export { default as RemoveButton } from './RemoveButton';
+export { default as SimpleContentSection } from './SimpleContentSection';
 export { default as SimpleSection } from './SimpleSection';
 export { default as Status } from './Status';
 export { default as Sticky } from './Sticky';

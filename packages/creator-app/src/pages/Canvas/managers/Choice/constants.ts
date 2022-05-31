@@ -7,6 +7,7 @@ import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
+import { CHOICE_ICON } from './v2';
 
 export const choiceFactory = (): Realtime.NodeData.InteractionChoice => ({
   id: Utils.id.cuid.slug(),
@@ -18,7 +19,7 @@ export const choiceFactory = (): Realtime.NodeData.InteractionChoice => ({
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts> = {
   type: BlockType.CHOICE,
-  icon: 'choice',
+  icon: CHOICE_ICON,
 
   mergeTerminator: true,
 

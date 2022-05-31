@@ -31,7 +31,7 @@ const useButtonLayoutOption = (): OptionsMenuOption => {
   };
 
   return {
-    label: `${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')} Layout`,
+    label: `${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')} layout`,
     options: [
       {
         label: <MenuCheckboxOption checked={layout === BaseButton.ButtonsLayout.STACKED}>Stacked</MenuCheckboxOption>,

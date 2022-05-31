@@ -1,7 +1,8 @@
 import { Eventual } from '@voiceflow/common';
+import { useCreateConst } from '@voiceflow/ui';
 import React from 'react';
 
-import { useCancellable, useConstant, useLinkedRef } from '@/hooks';
+import { useCancellable, useLinkedRef } from '@/hooks';
 import { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor';
 import { EngineContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
@@ -82,7 +83,7 @@ export const useThreadHandlers = (
   const engine = React.useContext(EngineContext)!;
   const stateRef = React.useRef(CommentState.IDLE);
 
-  const mouseMovement = useConstant(() => new MouseMovement());
+  const mouseMovement = useCreateConst(() => new MouseMovement());
 
   const [addDragListener, teardownDragListener] = useCancellable(() => {
     const onDrag = async (event: MouseEvent) => {

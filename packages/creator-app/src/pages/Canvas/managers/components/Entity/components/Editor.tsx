@@ -9,22 +9,13 @@ import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { getPlatformIntentPromptFactory } from '@/utils/prompt';
 import { isAlexaPlatform } from '@/utils/typeGuards';
 
-import PromptConfirmSection from './PromptConfirmSection';
+import EntityPromptSection from '../../EntityPromptSection';
 
 const Editor: React.FC = () => {
-  const platform = React.useContext(PlatformContext)!;
-  const projectType = React.useContext(ProjectTypeContext)!;
-
   const editor = EditorV2.useEditor();
-
-  // onBlur event can be fired after the user clicks on the remove button
-  // in this case prompt will not be removed, using ref to prevent that
-  const promptRemovingRef = React.useRef(false);
-  const confirmRemovingRef = React.useRef(false);
 
   const { intentID, entityID } = useParams<{ intentID: string; entityID: string }>();
 
@@ -33,36 +24,11 @@ const Editor: React.FC = () => {
   const intentEntityIDs = useSelector(IntentV2.slotsByIntentIDSelector, { id: intentID });
   const intentEntities = useSelector(SlotV2.slotsByIDsSelector, { ids: intentEntityIDs });
 
-  const updateIntentSlotDialog = useDispatch(Intent.updateIntentSlotDialog, intentID, entityID);
+  const onChangeDialog = useDispatch(Intent.updateIntentSlotDialog, intentID, entityID);
 
-  const intentPromptFactory = getPlatformIntentPromptFactory(projectType);
+  const intentPromptFactory = getPlatformIntentPromptFactory(editor.projectType);
 
-  const onAddPrompt = () => {
-    promptRemovingRef.current = false;
-
-    updateIntentSlotDialog({ prompt: [intentPromptFactory({ defaultVoice })] } as Partial<Realtime.IntentSlotDialog>);
-  };
-
-  const onRemovePrompt = () => {
-    promptRemovingRef.current = true;
-
-    updateIntentSlotDialog({ prompt: [] });
-  };
-
-  const onAddConfirm = () => {
-    confirmRemovingRef.current = false;
-
-    updateIntentSlotDialog({ confirm: [intentPromptFactory({ defaultVoice })], confirmEnabled: true } as Partial<Realtime.IntentSlotDialog>);
-  };
-
-  const onRemoveConfirm = () => {
-    confirmRemovingRef.current = true;
-
-    updateIntentSlotDialog({ confirm: [], confirmEnabled: false });
-  };
-
-  const isAlexa = isAlexaPlatform(platform);
-  const hasDialogPrompt = !!intentEntity?.dialog.prompt.length;
+  const isAlexa = isAlexaPlatform(editor.platform);
   const hasDialogConfirm = !!intentEntity?.dialog.confirm.length;
   const withDialogConfirm = !!intentEntity?.dialog.confirmEnabled && hasDialogConfirm;
 
@@ -70,13 +36,13 @@ const Editor: React.FC = () => {
     <EditorV2 header={<EditorV2.DefaultHeader onBack={editor.goBack} />}>
       {!!intentEntity && (
         <>
-          <PromptConfirmSection
+          <EntityPromptSection
             title="Entity prompt"
-            onAdd={onAddPrompt}
+            onAdd={() => onChangeDialog({ prompt: [intentPromptFactory({ defaultVoice })] } as Partial<Realtime.IntentSlotDialog>)}
             prompt={intentEntity.dialog.prompt}
-            onChange={(prompt) => !promptRemovingRef.current && updateIntentSlotDialog({ prompt } as Partial<Realtime.IntentSlotDialog>)}
-            onRemove={onRemovePrompt}
-            collapsed={!hasDialogPrompt}
+            onChange={(prompt) => onChangeDialog({ prompt } as Partial<Realtime.IntentSlotDialog>)}
+            onRemove={() => onChangeDialog({ prompt: [] })}
+            collapsed={!intentEntity?.dialog.prompt.length}
             placeholder="Enter question to prompt user to fill entity"
             intentEntities={intentEntities}
           />
@@ -85,14 +51,14 @@ const Editor: React.FC = () => {
 
           {isAlexa && (
             <>
-              <PromptConfirmSection
+              <EntityPromptSection
                 title="Confirmation"
-                onAdd={onAddConfirm}
-                prompt={intentEntity.dialog.confirm}
-                onChange={(confirm) =>
-                  !confirmRemovingRef.current && updateIntentSlotDialog({ confirm, confirmEnabled: true } as Partial<Realtime.IntentSlotDialog>)
+                onAdd={() =>
+                  onChangeDialog({ confirm: [intentPromptFactory({ defaultVoice })], confirmEnabled: true } as Partial<Realtime.IntentSlotDialog>)
                 }
-                onRemove={onRemoveConfirm}
+                prompt={intentEntity.dialog.confirm}
+                onChange={(confirm) => onChangeDialog({ confirm, confirmEnabled: true } as Partial<Realtime.IntentSlotDialog>)}
+                onRemove={() => onChangeDialog({ confirm: [], confirmEnabled: false })}
                 collapsed={!withDialogConfirm}
                 placeholder="Yes or no question to confirm the entity value"
                 intentEntities={intentEntities}

@@ -13,10 +13,10 @@ const CheckBoxButton = styled.input`
     ${transition('box-shadow')}
   }
 
-  &:focus ~ ${SvgIconContainer} {
+  ${SvgIconContainer} {
     display: block;
+    box-shadow: none;
     border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(17, 49, 96, 0.24), 0 0 0 rgba(17, 49, 96, 0.04);
   }
 
   &:hover ~ ${SvgIconContainer} {

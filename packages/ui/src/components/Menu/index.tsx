@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-constraint */
 import composeRefs from '@seznam/compose-react-refs';
 import { FlexLabel } from '@ui/components/Flex';
 import { useTheme } from '@ui/hooks';
@@ -117,10 +118,12 @@ const Menu = <T extends any>(
     };
   }, []);
 
+  const footerAction = renderFooterAction?.({ close: onHideMenu });
+
   return (
     <Container
       id={id}
-      withFooterAction={!!renderFooterAction}
+      withFooterAction={!!footerAction}
       ref={composeRefs(ref, menuRef)}
       className={ClassName.MENU}
       fullWidth={fullWidth}
@@ -159,7 +162,7 @@ const Menu = <T extends any>(
         </ButtonContainer>
       )}
 
-      {renderFooterAction?.({ close: onHideMenu })}
+      {footerAction}
     </Container>
   );
 };

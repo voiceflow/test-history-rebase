@@ -3,7 +3,6 @@ import { useCachedValue, useCreateConst } from '@voiceflow/ui';
 // eslint-disable-next-line lodash/import-scope
 import type { DebouncedFunc } from 'lodash';
 import _debounce from 'lodash/debounce';
-import _isObject from 'lodash/isObject';
 import moize from 'moize';
 import * as Normal from 'normal-store';
 import React from 'react';
@@ -33,6 +32,7 @@ interface MapManagedOptions<T extends {}, F extends any[]> {
   onAdd?: (value: T, index: number) => void;
   getKey?: (value: T) => string;
   factory?: (...args: F) => T;
+  validate?: (value: T, options: { index: number; isUpdate: boolean; originalValue: T | null }) => boolean;
   maxItems?: number;
   autosave?: boolean;
   onRemove?: (value: T, index: number) => void;
@@ -59,7 +59,7 @@ export interface MapManagedAPI<T extends {}, F extends any[]> {
   toggleOpen: (key: string) => void;
   mapManaged: MapManaged<T>;
   onDuplicate: (to: number, item: T, ...args: F) => void;
-  onAddToStart: (...args: F) => void;
+  onAddToStart: (...args: F) => Promise<void>;
   isMaxMatches: boolean;
   latestCreatedKey: string | undefined;
 }
@@ -72,6 +72,7 @@ export const useManager = <T extends {}, F extends any[]>(
     onAdd: handleAdd,
     getKey,
     factory = Utils.functional.identity as any,
+    validate,
     maxItems,
     autosave = true,
     debounced = true,
@@ -179,28 +180,32 @@ export const useManager = <T extends {}, F extends any[]>(
     async (...args: F) => {
       if (isMaxMatches) return;
 
+      const index = normalized.current.allKeys.length;
       const { key, value } = createKeyValue(...args);
 
+      if (validate?.(value, { index, isUpdate: false, originalValue: null }) === false) return;
+
       const updated = Normal.appendOne(normalized.current, key, value);
-      const index = updated.allKeys.length - 1;
 
       await commitInsert(key, value, index, updated);
     },
-    [createKeyValue, commitInsert, isMaxMatches]
+    [createKeyValue, commitInsert, isMaxMatches, validate]
   );
 
   const onAddToStart = React.useCallback(
     async (...args: F) => {
       if (isMaxMatches) return;
 
+      const index = 0;
       const { key, value } = createKeyValue(...args);
 
+      if (validate?.(value, { index, isUpdate: false, originalValue: null }) === false) return;
+
       const updated = Normal.prependOne(normalized.current, key, value);
-      const index = 0;
 
       await commitInsert(key, value, index, updated);
     },
-    [createKeyValue, commitInsert, isMaxMatches]
+    [createKeyValue, commitInsert, isMaxMatches, validate]
   );
 
   const onDuplicate = React.useCallback(
@@ -238,14 +243,14 @@ export const useManager = <T extends {}, F extends any[]>(
 
   const onUpdate = React.useCallback(
     (key: string, value: Partial<T>) => {
+      const index = getIndex(key);
       const currValue = getItem(key);
 
-      const updated = Utils.normalized.updateNormalizedByKey(
-        normalized.current,
-        key,
-        currValue && !Array.isArray(currValue) && _isObject(currValue) ? { ...currValue, ...value } : value
-      );
-      const index = getIndex(key);
+      const nextValue = currValue && !Array.isArray(currValue) && Utils.object.isObject(currValue) ? { ...currValue, ...value } : (value as T);
+
+      if (validate?.(nextValue, { index, isUpdate: true, originalValue: currValue }) === false) return;
+
+      const updated = Utils.normalized.updateNormalizedByKey(normalized.current, key, nextValue);
 
       keyLookup.current.delete(generateLookupKey(currValue, index));
       keyLookup.current.set(generateLookupKey(updated.byKey[key], index), key);

@@ -1,44 +1,34 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, SectionV2 } from '@voiceflow/ui';
-import * as Normal from 'normal-store';
+import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { HelpTooltip, LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import { FeatureFlag } from '@/config/features';
-import { ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
-import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useFeature, useModals, useSelector, useSyncDispatch } from '@/hooks';
+import { useDispatch, useFeature, useIntent, useSelector, useSyncDispatch } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
-import { isBuiltInIntent } from '@/utils/intent';
 
 import { Entity } from '../../components';
 import AvailabilitySection from './AvailabilitySection';
 
 const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts>();
-  const intentModal = useModals(ModalType.INTENT_EDIT);
 
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
 
-  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: editor.data.intent });
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const onAddRequiredEntity = useDispatch(Intent.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(Intent.removeRequiredSlot);
   const validateTopicAvailability = useDispatch(Creator.validateTopicAvailability);
 
-  const isBuiltIn = React.useMemo(() => !!intent && isBuiltInIntent(intent.id), [intent?.id]);
-  const hasRequiredEntity = React.useMemo(
-    () => !!intent?.slots && Normal.denormalize(intent.slots as Normal.Normalized<Realtime.IntentSlot>).some((entity) => entity.required),
-    [intent?.slots]
-  );
+  const { intent, intentEditModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(editor.data.intent);
 
   const patchPlatformData = (patch: Partial<Realtime.NodeData.Intent.PlatformData>) => editor.onChange({ ...editor.data, ...patch });
 
@@ -83,7 +73,7 @@ const RootEditor: React.FC = () => {
           onChange={onChangeIntent}
           fullWidth
           clearable
-          leftAction={intent ? { icon: 'edit', onClick: () => intentModal.open({ id: intent.id }) } : undefined}
+          leftAction={intent ? { icon: 'edit', onClick: () => intentEditModal.open({ id: intent.id }) } : undefined}
           placeholder="Select trigger intent"
           inDropdownSearch
           alwaysShowCreate
@@ -91,7 +81,7 @@ const RootEditor: React.FC = () => {
         />
       </SectionV2.SimpleSection>
 
-      {intent && !isBuiltIn && hasRequiredEntity && (
+      {intent && !intentIsBuiltIn && intentHasRequiredEntity && (
         <>
           <SectionV2.Divider inset />
 
@@ -102,8 +92,6 @@ const RootEditor: React.FC = () => {
             onRemoveRequired={(entityID) => onRemoveRequiredEntity(intent.id, entityID)}
             addDropdownPlacement="bottom-end"
           />
-
-          <Box pt={8} />
         </>
       )}
 

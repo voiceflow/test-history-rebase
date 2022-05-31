@@ -13,6 +13,7 @@ export * from './google';
 export * from './hotkeys';
 export * from './hover';
 export * from './imperativeApi';
+export * from './intent';
 export * from './keygen';
 export * from './lazy';
 export * from './lifecycle';

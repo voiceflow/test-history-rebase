@@ -76,7 +76,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
             isContextMenuOpen={isContextMenuOpen}
           >
             {isDragging || isDraggingPreview ? null : (
-              <SectionV2.Content topOffset={1}>
+              <SectionV2.Content bottomOffset={2.5}>
                 <VariablesInput
                   value={item.name}
                   onBlur={({ text }) => onUpdate({ name: text })}

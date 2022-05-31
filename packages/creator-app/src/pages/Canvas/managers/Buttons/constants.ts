@@ -6,22 +6,17 @@ import { BlockType } from '@/constants';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
+import { BUTTONS_ICON } from './v2';
 
-export const factory = (): BaseNode.Buttons.Button => ({ id: Utils.id.cuid.slug(), name: '', actions: [BaseNode.Buttons.ButtonAction.PATH] });
-
-export enum ButtonAction {
-  FOLLOW_PATH = 'FOLLOW_PATH',
-  GO_TO_INTENT = 'GO_TO_INTENT',
-}
-
-export const BUTTON_OPTIONS = [
-  { id: ButtonAction.FOLLOW_PATH, label: 'Follow Path' },
-  { id: ButtonAction.GO_TO_INTENT, label: 'Go to Intent' },
-];
+export const buttonFactory = (): BaseNode.Buttons.Button => ({
+  id: Utils.id.cuid.slug(),
+  name: '',
+  actions: [BaseNode.Buttons.ButtonAction.PATH],
+});
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = {
   type: BlockType.BUTTONS,
-  icon: 'action',
+  icon: BUTTONS_ICON,
 
   mergeTerminator: true,
 
@@ -31,7 +26,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeDat
         in: [{}],
         out: {
           byKey: {},
-          dynamic: [{}],
+          dynamic: [],
           builtIn: { [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH } },
         },
       },
@@ -39,7 +34,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeDat
     data: {
       name: 'Buttons',
       noMatch: getPlatformNoMatchFactory(projectType)({ defaultVoice }),
-      buttons: [factory()],
+      buttons: [],
       noReply: null,
       intentScope: BaseNode.Utils.IntentScope.GLOBAL,
     },

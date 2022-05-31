@@ -1,3 +1,4 @@
+import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import Footer from './Footer';
@@ -9,12 +10,13 @@ interface DefaultFooterTutorial extends TutorialProps {
 }
 
 interface DefaultFooterProps {
-  tutorial?: DefaultFooterTutorial;
+  tutorial?: DefaultFooterTutorial | string;
 }
 
 const DefaultFooter: React.FC<DefaultFooterProps> = ({ tutorial, children }) => (
   <Footer>
-    {tutorial ? <Tutorial {...tutorial}>{tutorial.content}</Tutorial> : <div />}
+    {(tutorial &&
+      (typeof tutorial === 'string' ? <Link href={tutorial}>How it works?</Link> : <Tutorial {...tutorial}>{tutorial.content}</Tutorial>)) || <div />}
     {children ? <FooterActionsContainer>{children}</FooterActionsContainer> : null}
   </Footer>
 );

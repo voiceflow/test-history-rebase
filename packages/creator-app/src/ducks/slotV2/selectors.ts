@@ -11,6 +11,7 @@ export const {
   byID: slotByIDSelector,
   byIDs: slotsByIDsSelector,
   allIDs: allSlotIDsSelector,
+  withoutIDs: slotsWithoutIDsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
 export const getSlotByIDSelector = createCurriedSelector(slotByIDSelector);

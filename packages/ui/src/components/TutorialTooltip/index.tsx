@@ -28,7 +28,7 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
     portalNode={portalNode}
     initialOpened={initialOpened}
     anchorRenderer={({ ref, isOpen, onToggle }) => (
-      <AnchorContainer opened={isOpen} onClick={stopPropagation(onToggle)} ref={ref}>
+      <AnchorContainer ref={ref} isActive={isOpen} onClick={stopPropagation(onToggle)}>
         {anchorRenderer({ isOpen })}
       </AnchorContainer>
     )}

@@ -151,6 +151,7 @@ interface CRUDSelectors<K extends keyof CRUDStateSubset> {
   byID: ParametricSelector<State, IDSelectorParam, NormalizedValue<CRUDStateSubset[K]> | null>;
   byIDs: ParametricSelector<State, IDsSelectorParam, NormalizedValue<CRUDStateSubset[K]>[]>;
   allIDs: Selector<State, string[]>;
+  withoutIDs: ParametricSelector<State, IDsSelectorParam, NormalizedValue<CRUDStateSubset[K]>[]>;
 }
 
 export const idParamSelector = createParameterSelector((params: IDSelectorParam) => params.id);
@@ -170,6 +171,7 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
 
   const byID = createSelector([root, idParamSelector], (normalized, id) => (id ? Normal.getOne(normalized, id) : null));
   const byIDs = createSelector([root, idsParamSelector], (normalized, ids) => Normal.getMany(normalized, ids));
+  const withoutIDs = createSelector([all, idsParamSelector], (items, ids) => items.filter((item) => !ids.includes(item.id)));
 
   return {
     isEmpty,
@@ -182,5 +184,6 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
     byID,
     byIDs,
     allIDs,
+    withoutIDs,
   };
 };

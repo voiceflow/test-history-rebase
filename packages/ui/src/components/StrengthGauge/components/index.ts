@@ -12,6 +12,7 @@ export const StrengthColor: Record<Level, string> = {
 };
 
 export const Container = styled(TippyTooltip)`
+  display: flex !important;
   align-items: center;
 `;
 

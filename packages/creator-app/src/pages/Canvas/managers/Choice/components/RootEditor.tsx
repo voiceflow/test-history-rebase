@@ -14,24 +14,13 @@ import DraggableItem from './DraggableItem';
 
 const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts>();
+  const { onAdd, onReorder, onRemove } = EditorV2.useSyncDynamicPorts();
 
   const [isDragging, toggleDragging] = useToggle(false);
 
   const onUpdateChoices = React.useCallback(
     (choices: Realtime.NodeData.InteractionChoice[], save?: boolean) => editor.onChange({ choices }, save),
     [editor.onChange]
-  );
-
-  const onAdd = React.useCallback(() => editor.engine.port.addDynamic(editor.nodeID), [editor.engine.port, editor.nodeID]);
-
-  const onReorder = React.useCallback(
-    (from: number, to: number) => editor.engine.port.reorderDynamic(editor.nodeID, from, to),
-    [editor.engine.port, editor.nodeID]
-  );
-
-  const onRemove = React.useCallback(
-    (_: unknown, index: number) => editor.engine.port.removeDynamic(editor.node.ports.out.dynamic[index]),
-    [editor.engine.port, editor.node.ports.out.dynamic]
   );
 
   const managerAPI = useManager(editor.data.choices, onUpdateChoices, {

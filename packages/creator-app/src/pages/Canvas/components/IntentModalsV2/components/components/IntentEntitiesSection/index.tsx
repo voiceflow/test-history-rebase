@@ -59,7 +59,7 @@ const EntitiesSection: React.FC<EntitiesSectionProps> = ({
       }
     >
       {hasIntentEntities && (
-        <SectionV2.Content>
+        <SectionV2.Content bottomOffset={2}>
           {requiredEntities.map((entity) => (
             <RequiredEntity
               key={entity.id}

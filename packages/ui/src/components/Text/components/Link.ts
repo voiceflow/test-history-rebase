@@ -1,34 +1,50 @@
-import { TextProps } from '@ui/components/Text/types';
-import { css, styled } from '@ui/styles';
+import { css, styled, transition } from '@ui/styles';
 import { changeColorShade } from '@ui/utils/colors';
-import { layout, space } from 'styled-system';
+import { layout, LayoutProps, space, SpaceProps } from 'styled-system';
 
-type LinkProps = {
-  disabled?: boolean;
+export interface LinkProps extends LayoutProps, SpaceProps {
   link?: string;
+  color?: string;
+  isActive?: boolean;
+  disabled?: boolean;
   textDecoration?: boolean;
-} & TextProps;
+}
 
 const PROTOCOL_POSTFIX_REGEXP = /:?\/\//;
 
 const formatHref = (href: string | undefined, isBlank: boolean) => (!isBlank || !href || !!href.match(PROTOCOL_POSTFIX_REGEXP) ? href : `//${href}`);
 
-const Link = styled.a.attrs<LinkProps>(({ link, href, target = '_blank', rel = 'noopener noreferrer' }) => ({
-  target,
-  rel,
-  href: formatHref(link || href, target === '_blank'),
-}))<LinkProps>`
+export const linkStyles = css<LinkProps>`
+  ${transition('color')}
+
   color: ${({ color, theme }) => color ?? theme.colors.blue};
+  cursor: pointer;
+  user-select: none;
 
   :hover {
     color: ${({ color, theme }) => changeColorShade(color || theme.colors.blue, -40)};
-    ${({ textDecoration }) => !textDecoration && 'text-decoration: none !important;'}
   }
 
-  ${({ disabled }) =>
+  :active {
+    color: ${({ color, theme }) => changeColorShade(color || theme.colors.blue, -60)};
+  }
+
+  ${({ color, theme, isActive }) =>
+    isActive &&
+    css`
+      color: ${changeColorShade(color || theme.colors.blue, -60)};
+    `}
+
+  ${({ textDecoration }) =>
+    !textDecoration &&
+    css`
+      text-decoration: none !important;
+    `}
+
+  ${({ theme, disabled }) =>
     disabled
       ? css`
-          color: ${({ theme }) => theme.colors.tertiary};
+          color: ${theme.colors.tertiary};
           pointer-events: none;
         `
       : css`
@@ -37,6 +53,14 @@ const Link = styled.a.attrs<LinkProps>(({ link, href, target = '_blank', rel = '
 
   ${space}
   ${layout}
+`;
+
+const Link = styled.a.attrs<LinkProps>(({ link, href, target = '_blank', rel = 'noopener noreferrer' }) => ({
+  rel,
+  href: formatHref(link || href, target === '_blank'),
+  target,
+}))<LinkProps>`
+  ${linkStyles}
 `;
 
 export default Link;

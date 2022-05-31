@@ -6,6 +6,7 @@ import LinkArrowIcon from './LinkArrowIcon';
 export interface ContainerProps {
   isLink?: boolean;
   isAccent?: boolean;
+  isCollapse?: boolean;
   isDragging?: boolean;
   onContextMenu?: React.MouseEventHandler;
   isContextMenuOpen?: boolean;
@@ -16,7 +17,7 @@ const Container = styled.section<ContainerProps>`
   ${transition('background')}
 
   position: relative;
-  padding: ${units()}px 0;
+  min-height: 58px;
 
   ${({ onClick }) =>
     onClick &&
@@ -39,13 +40,20 @@ const Container = styled.section<ContainerProps>`
       }
     `}
 
-  ${({ isAccent, onClick }) =>
+  ${({ isAccent, onClick, isCollapse }) =>
     onClick &&
     !isAccent &&
     css`
       &:hover {
         background: #eff5f660;
       }
+
+      ${isCollapse &&
+      css`
+        & &:hover {
+          background: none;
+        }
+      `}
     `}
 
   ${({ isAccent }) =>
@@ -74,7 +82,7 @@ const Container = styled.section<ContainerProps>`
   ${({ isContextMenuOpen }) =>
     isContextMenuOpen &&
     css`
-      background: linear-gradient(-180deg, rgba(238, 244, 246, 0.3) 0%, rgba(238, 244, 246, 0.45) 100%), #fff;
+      background: #eff5f660;
     `}
 `;
 

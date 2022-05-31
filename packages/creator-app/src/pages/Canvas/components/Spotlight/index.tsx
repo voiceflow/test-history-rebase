@@ -47,8 +47,6 @@ const Spotlight = () => {
         .filter((step) => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
           if (!chatCardsCarousel.isEnabled && step.type === BlockType.CARDV2) return false;
-          // the CAPTURE step is deprecated and permanently hidden from users
-          if (step.type === BlockType.CAPTURE) return false;
           if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
           if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;

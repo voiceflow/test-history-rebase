@@ -1,24 +1,19 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { NodeManagerConfig } from '../types';
-import ButtonsEditor from './ButtonsEditor';
-import ButtonsStep from './ButtonsStep';
+import { NodeManagerConfigV2 } from '../types';
+import { Editor } from './components';
 import { NODE_CONFIG } from './constants';
-import { EDITORS_BY_PATH } from './subeditors';
-import ButtonsManagerV2 from './v2';
+import { Step } from './v2';
 
-const ButtonsManager: NodeManagerConfig<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = {
+const ButtonsManager: NodeManagerConfigV2<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = {
   ...NODE_CONFIG,
 
   label: 'Buttons',
   projectTypes: [VoiceflowConstants.ProjectType.CHAT],
 
-  step: ButtonsStep,
-  editor: ButtonsEditor,
-  editorsByPath: EDITORS_BY_PATH,
-
-  v2: ButtonsManagerV2,
+  step: Step,
+  editorV2: Editor,
 };
 
 export default ButtonsManager;

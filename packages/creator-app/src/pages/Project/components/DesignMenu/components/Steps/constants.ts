@@ -47,8 +47,6 @@ const ACCOUNT_LINKING_STEP = createMenuStep(Realtime.BlockType.ACCOUNT_LINKING);
 
 const CANCEL_PURCHASE_STEP = createMenuStep(Realtime.BlockType.CANCEL_PAYMENT);
 
-const CAPTURE_STEP = createMenuStep(Realtime.BlockType.CAPTURE);
-
 const CAPTURE_STEP_V2 = createMenuStep(Realtime.BlockType.CAPTUREV2);
 
 const CARD_STEP = createMenuStep(Realtime.BlockType.CARD);
@@ -126,7 +124,7 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -155,7 +153,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -184,7 +182,7 @@ export const CHATBOT_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -208,7 +206,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -232,7 +230,7 @@ export const DIALOGFLOW_ES_CHAT_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -256,7 +254,7 @@ export const DIALOGFLOW_ES_VOICE_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,

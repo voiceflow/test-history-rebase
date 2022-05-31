@@ -96,7 +96,7 @@ export interface BaseSelectProps {
   renderTags?: Nullable<() => React.ReactNode | React.ReactNode[]>;
   borderLess?: boolean;
   searchable?: boolean;
-  leftAction?: { icon: Icon; onClick: VoidFunction; iconProps?: Partial<SvgIconProps>; isActive?: boolean };
+  leftAction?: { icon: Icon; onClick: VoidFunction; iconProps?: Partial<SvgIconProps>; disabled?: boolean; isActive?: boolean };
   rightAction?: React.ReactNode;
   createLabel?: string;
   displayName?: string;

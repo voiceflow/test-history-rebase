@@ -19,7 +19,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
 import ListManager from '@/components/ListManager';
 import Section, { SectionVariant } from '@/components/Section';
-import Utterance from '@/components/Utterance';
+import Utterance, { UtteranceRef } from '@/components/Utterance';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -44,15 +44,6 @@ interface UtteranceManagerProps {
 }
 
 const MAX_VISIBLE_UTTERANCES = 10;
-
-export interface UtteranceRef {
-  focus: () => void;
-  clear: () => void;
-  forceUpdate: VoidFunction;
-  withBorderTop?: boolean;
-  forceFocusToTheEnd: VoidFunction;
-  getCurrentUtterance: () => Realtime.IntentInput | null;
-}
 
 const UtteranceManager: React.FC<UtteranceManagerProps> = ({
   prefilledUtterance,

@@ -1,11 +1,9 @@
+import composeRef from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, Box, ErrorMessage } from '@voiceflow/ui';
-import { EditorState } from 'draft-js';
+import { Badge, Box, ErrorMessage, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Utterance from '@/components/Utterance';
-
-import { UtteranceRef } from '../index';
+import Utterance, { UtteranceRef } from '@/components/Utterance';
 
 interface UtteranceInputProps {
   intentUtterances: Realtime.IntentInput[];
@@ -25,43 +23,39 @@ interface UtteranceInputProps {
 const UtteranceInput: React.ForwardRefRenderFunction<UtteranceRef, UtteranceInputProps> = (
   { onChange, isValidUtterance, onAdd, onAddSlot, updateIsEmpty, addError, isNotAtTop, isEmpty, value, slots, intentUtterances, setValidUtterance },
   ref
-) => (
-  <Box mb={intentUtterances.length ? -21 : -4} mt={-1} pt={1} px={32} top={58} zIndex={1000} position="sticky" backgroundColor="white">
-    <Utterance
-      onEditorStateChange={(state: EditorState) => {
-        const isEmpty = !state.getCurrentContent().hasText();
-        if (isEmpty) setValidUtterance();
-      }}
-      ref={ref}
-      space
-      slots={slots}
-      value={value?.text || ''}
-      onBlur={onChange}
-      onEmpty={updateIsEmpty}
-      onAddSlot={onAddSlot}
-      iconProps={{ variant: 'blue' }}
-      rightAction={
-        !isEmpty && (
-          <Badge
-            slide
-            onClick={() => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              const utterance = ref?.current.getCurrentUtterance();
-              !!utterance && onAdd(utterance);
-            }}
-          >
-            Enter
-          </Badge>
-        )
-      }
-      placeholder="Add sample phrase, { to add entities"
-      onEnterPress={onAdd}
-      error={!isValidUtterance}
-    />
-    {!isValidUtterance && <ErrorMessage noMarginBottom={!intentUtterances.length}>{addError}</ErrorMessage>}
-    {!!intentUtterances.length && <hr style={!isNotAtTop ? { marginLeft: '-32px' } : undefined} />}
-  </Box>
-);
+) => {
+  const utteranceRef = React.useRef<UtteranceRef>(null);
+
+  return (
+    <Box mb={intentUtterances.length ? -21 : -4} mt={-1} pt={1} px={32} top={58} zIndex={1000} position="sticky" backgroundColor="white">
+      <Utterance
+        onEditorStateChange={(state) => {
+          const isEmpty = !state.getCurrentContent().hasText();
+          if (isEmpty) setValidUtterance();
+        }}
+        ref={composeRef(ref, utteranceRef)}
+        space
+        slots={slots}
+        value={value?.text || ''}
+        onBlur={onChange}
+        onEmpty={updateIsEmpty}
+        onAddSlot={onAddSlot}
+        iconProps={{ variant: SvgIcon.Variant.BLUE }}
+        rightAction={
+          !isEmpty && (
+            <Badge slide onClick={() => utteranceRef.current && onAdd(utteranceRef.current.getCurrentUtterance())}>
+              Enter
+            </Badge>
+          )
+        }
+        placeholder="Add sample phrase, { to add entities"
+        onEnterPress={onAdd}
+        error={!isValidUtterance}
+      />
+      {!isValidUtterance && <ErrorMessage noMarginBottom={!intentUtterances.length}>{addError}</ErrorMessage>}
+      {!!intentUtterances.length && <hr style={!isNotAtTop ? { marginLeft: '-32px' } : undefined} />}
+    </Box>
+  );
+};
 
 export default React.forwardRef(UtteranceInput);

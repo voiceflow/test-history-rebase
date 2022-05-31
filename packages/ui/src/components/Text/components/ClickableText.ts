@@ -1,32 +1,12 @@
-import { TextProps } from '@ui/components/Text/types';
-import { css, styled, transition } from '@ui/styles';
-import { changeColorShade } from '@ui/utils/colors';
+import { styled } from '@ui/styles';
 
-import Text from './Text';
+import { LinkProps, linkStyles } from './Link';
+import Text, { TextProps } from './Text';
 
-export const ClickableText = styled(Text)<TextProps & { isActive?: boolean; disabled?: boolean }>`
-  ${transition('color')}
+export const ClickableText = styled(Text)<TextProps & LinkProps>`
   display: inline-block;
-  color: ${({ color, theme }) => color ?? theme.colors.blue};
-  cursor: pointer;
-  user-select: none;
 
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      text-decoration: underline;
-    `}
-
-  :hover {
-    color: ${({ color, theme }) => (color ? changeColorShade(color, -20) : theme.colors.darkBlue)};
-  }
-
-  ${({ disabled }) =>
-    disabled &&
-    css`
-      opacity: 0.5;
-      pointer-events: none;
-    `}
+  ${linkStyles}
 `;
 
 export default ClickableText;

@@ -93,10 +93,6 @@ const MANAGERS_BY_FEATURE: Partial<Record<BlockType, FeatureFlag>> = {
   [BlockType.CODE]: FeatureFlag.CANVAS_PREVIEW,
   [BlockType.SPEAK]: FeatureFlag.CANVAS_PREVIEW,
   [BlockType.TEXT]: FeatureFlag.CANVAS_PREVIEW,
-  [BlockType.BUTTONS]: FeatureFlag.STEP_EDITOR_UPDATES,
-  [BlockType.CHOICE]: FeatureFlag.STEP_EDITOR_UPDATES,
-  [BlockType.CAPTURE]: FeatureFlag.STEP_EDITOR_UPDATES,
-  [BlockType.CAPTUREV2]: FeatureFlag.STEP_EDITOR_UPDATES,
 };
 
 export type ManagersMap = typeof MANAGERS_BY_TYPE;

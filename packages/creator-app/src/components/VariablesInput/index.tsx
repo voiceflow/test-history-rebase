@@ -3,7 +3,7 @@ import { InputRenderer, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import TextEditor, { PluginType } from '@/components/TextEditor';
-import type { TextEditorBlurData, TextEditorProps, TextEditorRef } from '@/components/TextEditor/types';
+import type { TextEditorBlurData, TextEditorProps, TextEditorRef, VariablesPluginsData } from '@/components/TextEditor/types';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
@@ -17,15 +17,13 @@ const pluginsTypes = [PluginType.VARIABLES];
 
 type SaveCallback = (data: { text: string; variables: string[] }) => void;
 
-interface VariablesInputProps extends Omit<TextEditorProps, 'onBlur' | 'onEnterPress'> {
-  space?: boolean;
+interface VariablesInputProps
+  extends Omit<TextEditorProps, 'onBlur' | 'onEnterPress' | 'pluginsTypes' | 'pluginsProps'>,
+    Omit<VariablesPluginsData, 'variables' | 'onAddVariable' | 'onVariableAdded'> {
   onBlur?: SaveCallback;
   fullWidth?: boolean;
   multiline?: boolean;
-  creatable?: boolean;
-  characters?: string;
   onEnterPress?: SaveCallback;
-  createInputPlaceholder?: string;
 }
 
 const AVERAGE_SYMBOL_WIDTH = 9;
@@ -57,7 +55,7 @@ const VariablesInput = React.forwardRef<TextEditorRef, VariablesInputProps>(
     const variables = React.useMemo(() => slotsAndVariables.map((name) => ({ id: name, name, isVariable: true })), [slotsAndVariables]);
 
     const onAddVariable = React.useCallback(
-      async (name) => {
+      async (name?: string) => {
         if (!name) return null;
 
         try {

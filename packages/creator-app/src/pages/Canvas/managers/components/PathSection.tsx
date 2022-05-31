@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Input, SectionV2 } from '@voiceflow/ui';
+import { Input, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { useEnableDisable, useLinkedState, useScrollNodeIntoView } from '@/hooks';
@@ -33,17 +33,16 @@ const PathSection: React.FC<PathSectionProps> = ({ title = 'Path', onAdd, pathNa
       }
       collapsed={collapsed}
       onEntered={() => scrollIntoView({ block: 'end' })}
+      contentProps={{ bottomOffset: 2.5 }}
     >
-      <Box pt={4}>
-        <Input
-          value={name}
-          onBlur={() => onRename(name)}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus={autofocus}
-          onChangeText={setName}
-          onEnterPress={withInputBlur()}
-        />
-      </Box>
+      <Input
+        value={name}
+        onBlur={() => onRename(name)}
+        // eslint-disable-next-line jsx-a11y/no-autofocus
+        autoFocus={autofocus}
+        onChangeText={setName}
+        onEnterPress={withInputBlur()}
+      />
     </SectionV2.ActionCollapseSection>
   );
 };

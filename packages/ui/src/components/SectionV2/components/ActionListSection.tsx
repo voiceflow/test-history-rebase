@@ -1,27 +1,29 @@
 import React from 'react';
 
 import Container, { ContainerProps } from './Container';
-import Content from './Content';
-import Header from './Header';
+import Content, { ContentProps } from './Content';
+import Header, { HeaderProps } from './Header';
 import Sticky from './Sticky';
 
 export interface ActionListSectionProps extends ContainerProps {
   title: React.ReactNode;
   action: React.ReactNode;
   sticky?: boolean;
+  headerProps?: Omit<HeaderProps, 'sticky' | 'sticked'>;
+  contentProps?: ContentProps;
 }
 
-const ActionListSection: React.FC<ActionListSectionProps> = ({ title, children, action, sticky, ...containerProps }) => (
+const ActionListSection: React.FC<ActionListSectionProps> = ({ title, children, action, sticky, headerProps, contentProps, ...containerProps }) => (
   <Sticky disabled={!sticky}>
     {({ sticked }) => (
       <Container {...containerProps}>
-        <Header sticky={sticky} sticked={sticked}>
+        <Header {...headerProps} sticky={sticky} sticked={sticked}>
           {title}
 
           {action}
         </Header>
 
-        {!!children && <Content topOffset>{children}</Content>}
+        {!!children && <Content {...contentProps}>{children}</Content>}
       </Container>
     )}
   </Sticky>

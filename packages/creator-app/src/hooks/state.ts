@@ -1,9 +1,7 @@
 import { useCachedValue, useLinkedRef, useLinkedState } from '@voiceflow/ui';
-import { useCallback, useMemo, useState } from 'react';
+import React from 'react';
 
 import { withTargetValue } from '@/utils/dom';
-
-export const useConstant = <T>(factory: () => T) => useMemo(factory, []);
 
 export const useBufferedValue = <T>(
   externalValue: T,
@@ -13,7 +11,7 @@ export const useBufferedValue = <T>(
   const [value, setValue] = useLinkedState(externalValue);
   const valueCache = useCachedValue(value);
 
-  const saveValue = useCallback(() => {
+  const saveValue = React.useCallback(() => {
     updateValue(valueCache.current!);
   }, dependencies);
 
@@ -27,7 +25,7 @@ export const useInputValue = (
 ): [value: string, setValue: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>, saveValue: VoidFunction] => {
   const [value, setValue, saveValue] = useBufferedValue(externalValue, updateValue, dependencies);
 
-  const handleChange = useCallback(withTargetValue(setValue), [setValue]);
+  const handleChange = React.useCallback(withTargetValue(setValue), [setValue]);
 
   return [value, handleChange, saveValue];
 };
@@ -38,8 +36,21 @@ export const useInputValue = (
  * invoke the update callback when you want to force a re-render
  */
 export const useStatefulRef = <T>(initialValue: T): [React.MutableRefObject<T>, (value: T) => void] => {
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = React.useState(initialValue);
   const valueCache = useLinkedRef(value);
 
   return [valueCache, setValue];
+};
+
+export const usePreviousValue = <T>(value: T): T | null => {
+  const previousRef = React.useRef<T | null>(null);
+
+  React.useEffect(
+    () => () => {
+      previousRef.current = value;
+    },
+    [value]
+  );
+
+  return previousRef.current;
 };

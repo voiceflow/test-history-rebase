@@ -1,22 +1,17 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { NodeManagerConfig } from '../types';
-import CaptureEditorV2 from './CaptureEditorV2';
-import CaptureStepV2 from './CaptureStepV2';
+import { NodeManagerConfigV2 } from '../types';
+import { Editor } from './components';
 import { NODE_CONFIG } from './constants';
-import { EDITORS_BY_PATH } from './subeditors';
-import CaptureV2Config from './v2';
+import { Step } from './v2';
 
-const CaptureV2Manager: NodeManagerConfig<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = {
+const CaptureV2Manager: NodeManagerConfigV2<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = {
   ...NODE_CONFIG,
 
   label: 'Capture',
 
-  step: CaptureStepV2,
-  editor: CaptureEditorV2,
-  editorsByPath: EDITORS_BY_PATH,
-
-  v2: CaptureV2Config,
+  step: Step,
+  editorV2: Editor,
 };
 
 export default CaptureV2Manager;

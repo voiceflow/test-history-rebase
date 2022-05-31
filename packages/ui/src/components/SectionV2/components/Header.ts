@@ -3,6 +3,7 @@ import { css, styled, units } from '@ui/styles';
 import { space, SpaceProps } from 'styled-system';
 
 export interface HeaderProps extends SpaceProps {
+  top?: number;
   sticky?: boolean;
   sticked?: boolean;
 }
@@ -10,7 +11,6 @@ export interface HeaderProps extends SpaceProps {
 const Header = styled.header<HeaderProps>`
   ${flexApartStyles}
   padding: ${units(2.5)}px ${units(4)}px ${units(2)}px ${units(4)}px;
-  margin: ${units(-1)}px 0px ${units(-0.5)}px 0px;
   line-height: 1;
   ${space}
 
@@ -20,10 +20,10 @@ const Header = styled.header<HeaderProps>`
       cursor: pointer;
     `}
 
-  ${({ sticky }) =>
+  ${({ top = 0, sticky }) =>
     sticky &&
     css`
-      top: 0;
+      top: ${top}px;
       position: sticky;
       z-index: 2;
     `}

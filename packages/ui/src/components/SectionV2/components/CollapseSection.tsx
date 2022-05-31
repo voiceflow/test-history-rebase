@@ -4,7 +4,6 @@ import React from 'react';
 
 import Collapse from './Collapse';
 import Container, { ContainerProps } from './Container';
-import PreventContainerCollapse from './PreventContainerCollapse';
 
 export interface RendererProps {
   onToggle: VoidFunction;
@@ -67,14 +66,12 @@ const CollapseSection: React.ForwardRefRenderFunction<HTMLDivElement, CollapseSe
   const rendererProps = { collapsed, onToggle };
 
   return (
-    <Container isAccent={!collapsed} {...containerProps} ref={ref} onClick={containerToggle ? onClick : undefined}>
+    <Container isCollapse isAccent={!collapsed} {...containerProps} ref={ref} onClick={containerToggle ? onClick : undefined}>
       {Utils.functional.isFunction(header) ? header(rendererProps) : header}
 
       <Collapse onEntered={onEntered} isOpen={!collapsed} onClick={onPreventCollapseClick} mountOnEnter={mountOnEnter} unmountOnExit={unmountOnExit}>
         {Utils.functional.isFunction(children) ? children(rendererProps) : children}
       </Collapse>
-
-      {containerToggle && !collapsed && <PreventContainerCollapse onClick={onPreventCollapseClick} />}
     </Container>
   );
 };

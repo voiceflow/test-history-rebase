@@ -10,3 +10,25 @@ export const useEditor = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord 
 > => {
   return React.useContext(EditorSidebarContext)! as NodeEditorV2Props<Data, BuiltInPorts>;
 };
+
+export const useSyncDynamicPorts = (): {
+  onAdd: () => Promise<void>;
+  onRemove: (_: unknown, index: number) => Promise<void>;
+  onReorder: (from: number, to: number) => Promise<void>;
+} => {
+  const editor = useEditor();
+
+  const onAdd = React.useCallback(() => editor.engine.port.addDynamic(editor.nodeID), [editor.engine.port, editor.nodeID]);
+
+  const onRemove = React.useCallback(
+    (_: unknown, index: number) => editor.engine.port.removeDynamic(editor.node.ports.out.dynamic[index]),
+    [editor.engine.port, editor.node.ports.out.dynamic]
+  );
+
+  const onReorder = React.useCallback(
+    (from: number, to: number) => editor.engine.port.reorderDynamic(editor.nodeID, from, to),
+    [editor.engine.port, editor.nodeID]
+  );
+
+  return { onAdd, onRemove, onReorder };
+};

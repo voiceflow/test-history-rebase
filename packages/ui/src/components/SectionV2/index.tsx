@@ -17,6 +17,7 @@ import {
   LinkSection,
   ListItem,
   RemoveButton,
+  SimpleContentSection,
   SimpleSection,
   Status,
   Sticky,
@@ -54,5 +55,6 @@ export default Object.assign(React.forwardRef(SectionV2), {
   CollapseArrowIcon,
   ActionListSection,
   AddButtonDropdown,
+  SimpleContentSection,
   ActionCollapseSection,
 });

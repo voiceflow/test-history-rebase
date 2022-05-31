@@ -1,1 +1,1 @@
-export { default as ButtonsListItem } from './ButtonsListItem';
+export { default as Editor } from './Editor';

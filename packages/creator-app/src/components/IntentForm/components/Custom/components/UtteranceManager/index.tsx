@@ -17,7 +17,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import ListManager from '@/components/ListManager';
 import { ContentContainer, SectionToggleVariant } from '@/components/Section';
-import Utterance from '@/components/Utterance';
+import Utterance, { UtteranceRef } from '@/components/Utterance';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -57,11 +57,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   const patchIntent = useDispatch(Intent.patchIntent);
 
   const intentID = intent.id;
-  const utteranceRef = React.useRef<{
-    forceFocusToTheEnd: VoidFunction;
-    forceUpdate: VoidFunction;
-    getCurrentUtterance: () => Realtime.IntentInput | null;
-  }>();
+  const utteranceRef = React.useRef<UtteranceRef>(null);
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isEmpty, updateIsEmpty] = React.useState(true);
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
@@ -202,7 +198,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
                       onBlur={onChange}
                       onEmpty={updateIsEmpty}
                       onAddSlot={onAddSlot}
-                      iconProps={{ variant: 'blue' }}
+                      iconProps={{ variant: SvgIcon.Variant.BLUE }}
                       rightAction={
                         !isEmpty && (
                           <Badge slide onClick={() => onAdd(utteranceRef.current?.getCurrentUtterance() ?? null)}>

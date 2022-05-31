@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Popper, SectionV2 } from '@voiceflow/ui';
+import { Popper, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import PromptForm from '@/components/PromptForm';
@@ -36,22 +36,21 @@ const RequiredEntity: React.FC<RequiredEntityProps> = ({ entity, entities, inten
       renderContent={({ onClose }) => (
         <Popper.Content>
           <SectionV2.ActionCollapseSection
-            px={20}
             title={<SectionV2.Title bold>Entity reprompt</SectionV2.Title>}
             action={<SectionV2.RemoveButton onClick={Utils.functional.chain(setRemoved, onClose, () => onChangeDialog(entity.id, { prompt: [] }))} />}
             collapsed={false}
+            headerProps={{ px: 20 }}
+            contentProps={{ px: 20, bottomOffset: 2 }}
           >
-            <Box pb={8}>
-              <TextEditorVariablesPopoverProvider value={document.body}>
-                <PromptForm
-                  slots={entities}
-                  prompt={intentEntity.dialog.prompt ?? []}
-                  autofocus
-                  onChange={(prompt) => !removedRef.current && onChangeDialog(intentEntity.id, { prompt } as Partial<Realtime.IntentSlotDialog>)}
-                  placeholder="Enter entity reprompt"
-                />
-              </TextEditorVariablesPopoverProvider>
-            </Box>
+            <TextEditorVariablesPopoverProvider value={document.body}>
+              <PromptForm
+                slots={entities}
+                prompt={intentEntity.dialog.prompt ?? []}
+                autofocus
+                onChange={(prompt) => !removedRef.current && onChangeDialog(intentEntity.id, { prompt } as Partial<Realtime.IntentSlotDialog>)}
+                placeholder="Enter entity reprompt"
+              />
+            </TextEditorVariablesPopoverProvider>
           </SectionV2.ActionCollapseSection>
         </Popper.Content>
       )}

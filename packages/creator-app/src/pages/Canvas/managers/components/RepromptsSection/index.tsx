@@ -45,10 +45,11 @@ const RepromptsSection: React.FC<RepromptsSectionProps> = ({ title, active, repr
         )
       }
       sticky
+      contentProps={{ bottomOffset: 2.5 }}
     >
       {hasReprompts &&
         mapManagedApi.mapManaged((item, { key, isLast, onUpdate, onRemove }) => (
-          <Box key={key} pb={isLast ? 8 : 16}>
+          <Box key={key} pb={isLast ? 0 : 16}>
             <ListItem
               message={item}
               onChange={onUpdate}

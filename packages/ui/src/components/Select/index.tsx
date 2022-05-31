@@ -284,7 +284,7 @@ function Select({
 
     if (!skipIndexReset && !isMultiLevel) {
       if (searchable && inDropdownSearch) {
-        setFocusedOptionIndex(matchedOptions.length ? firstOptionIndex : 0);
+        setFocusedOptionIndex(!alwaysShowCreate && matchedOptions.length ? firstOptionIndex : 0);
       } else {
         setFocusedOptionIndex(activeOptionIndex === -1 ? null : activeOptionIndex + firstOptionIndex);
       }
@@ -501,6 +501,7 @@ function Select({
                             icon={leftAction.icon}
                             variant={IconButton.Variant.BASIC}
                             onClick={stopPropagation(leftAction.onClick)}
+                            disabled={leftAction.disabled}
                             iconProps={leftAction.iconProps}
                             activeClick={leftAction.isActive}
                             transparent

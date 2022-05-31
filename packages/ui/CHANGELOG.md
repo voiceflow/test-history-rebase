@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.91.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.90.2...@voiceflow/ui@1.91.0) (2022-05-31)
+
+
+### Features
+
+* buttons editor (VF-3292) ([#5416](https://github.com/voiceflow/creator-app/issues/5416)) ([5deb249](https://github.com/voiceflow/creator-app/commit/5deb2495d64d6d22cbbf747a738194b54ef6164d))
+* export canvas upgrade triggers (VF-3550) ([#5485](https://github.com/voiceflow/creator-app/issues/5485)) ([401173d](https://github.com/voiceflow/creator-app/commit/401173d160514c4887862abe933c77b1ce50d09c))
+
+
+
+
+
 ## [1.90.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.90.1...@voiceflow/ui@1.90.2) (2022-05-30)
 
 

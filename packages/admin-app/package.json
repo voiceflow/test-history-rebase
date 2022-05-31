@@ -14,7 +14,7 @@
     "@voiceflow/internal": "2.3.0",
     "@voiceflow/realtime-sdk": "^1.95.0",
     "@voiceflow/ui": "^1.90.2",
-    "@voiceflow/voiceflow-types": "3.10.2",
+    "@voiceflow/voiceflow-types": "3.15.9",
     "axios": "0.24.0",
     "bootstrap": "4.6.1",
     "classnames": "2.3.1",

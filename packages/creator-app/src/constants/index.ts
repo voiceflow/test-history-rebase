@@ -2,7 +2,7 @@ import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { BillingPeriod, UserRole } from '@voiceflow/internal';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
-import { PlatformType } from '@voiceflow/voiceflow-types/build/common/constants';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { Pair } from '@/types';
 
@@ -83,22 +83,22 @@ export enum NLPProvider {
 }
 
 export const PlatformToNLPProvider = {
-  [PlatformType.ALEXA]: NLPProvider.ALEXA,
-  [PlatformType.LUIS]: NLPProvider.LUIS,
-  [PlatformType.RASA]: NLPProvider.RASA,
-  [PlatformType.WATSON]: NLPProvider.WATSON,
-  [PlatformType.LEX]: NLPProvider.LEX_V1,
-  [PlatformType.EINSTEIN]: NLPProvider.EINSTEIN,
-  [PlatformType.DIALOGFLOW_ES]: NLPProvider.DIALOGFLOW_ES,
-  [PlatformType.NUANCE_MIX]: NLPProvider.NUANCE_MIX,
-  [PlatformType.GOOGLE]: undefined,
-  [PlatformType.GENERAL]: undefined,
-  [PlatformType.DIALOGFLOW_ES_CHAT]: undefined,
-  [PlatformType.DIALOGFLOW_ES_VOICE]: undefined,
-  [PlatformType.IVR]: undefined,
-  [PlatformType.MOBILE_APP]: undefined,
-  [PlatformType.VOICEFLOW]: undefined,
-  [PlatformType.CHATBOT]: undefined,
+  [VoiceflowConstants.PlatformType.ALEXA]: NLPProvider.ALEXA,
+  [VoiceflowConstants.PlatformType.LUIS]: NLPProvider.LUIS,
+  [VoiceflowConstants.PlatformType.RASA]: NLPProvider.RASA,
+  [VoiceflowConstants.PlatformType.WATSON]: NLPProvider.WATSON,
+  [VoiceflowConstants.PlatformType.LEX]: NLPProvider.LEX_V1,
+  [VoiceflowConstants.PlatformType.EINSTEIN]: NLPProvider.EINSTEIN,
+  [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: NLPProvider.DIALOGFLOW_ES,
+  [VoiceflowConstants.PlatformType.NUANCE_MIX]: NLPProvider.NUANCE_MIX,
+  [VoiceflowConstants.PlatformType.GOOGLE]: undefined,
+  [VoiceflowConstants.PlatformType.GENERAL]: undefined,
+  [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: undefined,
+  [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: undefined,
+  [VoiceflowConstants.PlatformType.IVR]: undefined,
+  [VoiceflowConstants.PlatformType.MOBILE_APP]: undefined,
+  [VoiceflowConstants.PlatformType.VOICEFLOW]: undefined,
+  [VoiceflowConstants.PlatformType.CHATBOT]: undefined,
 };
 
 export const NLPProviderLabels = {

@@ -14,7 +14,7 @@
     "@voiceflow/google-types": "2.12.3",
     "@voiceflow/internal": "2.3.0",
     "@voiceflow/voice-types": "2.5.31",
-    "@voiceflow/voiceflow-types": "3.10.2",
+    "@voiceflow/voiceflow-types": "3.15.9",
     "bidirectional-adapter": "^1.0.0",
     "dayjs": "1.10.7",
     "is-var-name": "^2.0.0",

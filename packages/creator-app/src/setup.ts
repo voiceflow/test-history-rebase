@@ -1,6 +1,7 @@
 import { GLOBAL_FETCH_HEADERS, IS_SAFARI, setUnauthorizedHandler, StatusCode, toast, Vendors } from '@voiceflow/ui';
 import axios from 'axios';
 import { History } from 'history';
+import { setAutoFreeze } from 'immer';
 import _throttle from 'lodash/throttle';
 
 import client from './client';
@@ -22,6 +23,9 @@ const VOICEFLOW_ASCII = String.raw`
 `;
 
 const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout: () => void; history: History; browserID: string }) => {
+  // disable immer freezing
+  setAutoFreeze(false);
+
   clearPersistedLogs();
 
   const logoutHandler = _throttle(

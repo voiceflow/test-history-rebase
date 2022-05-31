@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.95.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.95.0...@voiceflow/realtime-sdk@1.95.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* update voiceflow types (VF-3459) ([#5499](https://github.com/voiceflow/creator-app/issues/5499)) ([fd3ccf1](https://github.com/voiceflow/creator-app/commit/fd3ccf17d2ce13651f8303cc794a723384b1df06))
+
+
+
+
+
 # [1.95.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.94.0...@voiceflow/realtime-sdk@1.95.0) (2022-05-30)
 
 

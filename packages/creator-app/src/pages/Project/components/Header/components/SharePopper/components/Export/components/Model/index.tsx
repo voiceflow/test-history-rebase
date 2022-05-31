@@ -10,24 +10,24 @@ import { ExportContext } from '../../Context';
 import { IntentsSelect } from './components';
 
 const ExportModel: React.FC = () => {
-  const { modelExportProvider, setModelExportProvider, setModelExportIntents, modelExportIntents, nplProviderOptions } =
+  const { modelExportProvider, setModelExportProvider, setModelExportIntents, modelExportIntents, nlpProviderOptions } =
     React.useContext(ExportContext)!;
   const intents = useSelector(IntentV2.allIntentsSelector);
   const noModelData = intents.length === 0;
 
   React.useEffect(() => {
-    if (nplProviderOptions.length === 1) {
-      setModelExportProvider(nplProviderOptions[0]);
+    if (nlpProviderOptions.length === 1) {
+      setModelExportProvider(nlpProviderOptions[0]);
     }
-  }, [nplProviderOptions]);
+  }, [nlpProviderOptions]);
 
   return (
     <>
       <Select
         value={modelExportProvider}
-        options={nplProviderOptions}
+        options={nlpProviderOptions}
         onSelect={setModelExportProvider}
-        disabled={nplProviderOptions.length === 1}
+        disabled={nlpProviderOptions.length === 1}
         searchable
         placeholder="Choose an option"
         getOptionLabel={(value) => value && NLPProviderLabels[value]}

@@ -12,7 +12,7 @@ export interface ComplexProps {
 }
 
 const ButtonContainer = styled.div`
-  padding: 10px 70px;
+  padding: 10px 0px;
   border-radius: 6px;
   background-color: #4b5052;
   position: absolute;

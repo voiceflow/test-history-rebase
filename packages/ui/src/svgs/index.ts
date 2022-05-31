@@ -218,6 +218,7 @@ export { default as outlinedMinus } from './outlined-minus.svg';
 
 // p
 export { default as power } from './images/icons/power.svg';
+export { default as paid } from './paid.svg';
 export { default as pause } from './pause.svg';
 export { default as payment } from './payment.svg';
 export { default as pending } from './pending.svg';

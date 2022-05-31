@@ -3,21 +3,25 @@ import { useContextApi } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
+import { Permission } from '@/config/permissions';
+import { GATED_EXPORT_TYPES } from '@/config/planLimits/canvasExport';
 import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider, NLPProviderLabels } from '@/constants';
 import * as Export from '@/ducks/export';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
-import { getNplModelProvider } from './constants';
+import { getNlpModelProvider } from './constants';
 
 interface ExportValue {
-  onExport: () => void;
+  onExport: VoidFunction;
   exportType: ExportType;
   isExporting: boolean;
+  canExport: boolean;
   setExportType: (exportType: ExportType) => void;
-  nplProviderOptions: NLPProvider[];
+  setCanExport: (canExport: boolean) => void;
+  nlpProviderOptions: NLPProvider[];
   modelExportIntents: string[];
   canvasExportFormat: CanvasExportFormat;
   modelExportProvider?: NLPProvider;
@@ -34,20 +38,22 @@ export const ExportProvider: React.FC = ({ children }) => {
   const exportCanvas = useDispatch(Export.exportCanvas);
   const exportModel = useDispatch(Export.exportModel);
   const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
+  const [permissionToExport] = usePermission(Permission.MODEL_EXPORT);
 
   const [trackingEvents] = useTrackingEvents();
   const platform = React.useContext(PlatformContext)!;
   const [exportType, setExportType] = React.useState<ExportType>(ExportType.MODEL);
   const [isExporting, setExporting] = React.useState(false);
   const [canvasExportFormat, setCanvasExportFormat] = React.useState(isTemplateWorkspace ? CanvasExportFormat.VF : CanvasExportFormat.PNG);
+  const [canExport, setCanExport] = React.useState(permissionToExport || !GATED_EXPORT_TYPES.has(canvasExportFormat));
 
-  const nplProviderOptions = React.useMemo(() => {
+  const nlpProviderOptions = React.useMemo(() => {
     // order alphabetically by label
-    return _sortBy(getNplModelProvider(platform), (provider) => NLPProviderLabels[provider]);
+    return _sortBy(getNlpModelProvider(platform), (provider) => NLPProviderLabels[provider]);
   }, [platform]);
 
   const [modelExportProvider, setModelExportProvider] = React.useState<NLPProvider | undefined>(
-    !isVoiceflowPlatform(platform) ? nplProviderOptions[0] : undefined
+    !isVoiceflowPlatform(platform) ? nlpProviderOptions[0] : undefined
   );
   const [modelExportIntents, setModelExportIntents] = React.useState<string[]>([]);
 
@@ -75,8 +81,10 @@ export const ExportProvider: React.FC = ({ children }) => {
     onExport,
     exportType,
     isExporting,
+    canExport,
     setExportType,
-    nplProviderOptions,
+    setCanExport,
+    nlpProviderOptions,
     canvasExportFormat,
     modelExportIntents,
     modelExportProvider,

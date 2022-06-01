@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.739.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.738.1...@voiceflow/creator-app@1.739.0) (2022-06-01)
+
+
+### Features
+
+* nlu item menu hook (VF-3591) ([#5476](https://github.com/voiceflow/creator-app/issues/5476)) ([426ff4d](https://github.com/voiceflow/creator-app/commit/426ff4d3e1001abb6edf75cad08ef0f65ae0ec83))
+
+
+
+
+
 ## [1.738.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.738.0...@voiceflow/creator-app@1.738.1) (2022-05-31)
 
 **Note:** Version bump only for package @voiceflow/creator-app

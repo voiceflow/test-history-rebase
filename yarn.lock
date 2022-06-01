@@ -5897,20 +5897,6 @@
   dependencies:
     "@commitlint/config-conventional" "16.0.0"
 
-"@voiceflow/common@7.13.4":
-  version "7.13.4"
-  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.13.4.tgz#7bcdf74b589cfc5101ab7929ef4a994d3dbf428c"
-  integrity sha512-XedDikgXbuzTnC+8nv67C9hy6LwNYneo2lyUGLKzK95AokRCzNm1BDKdQTxzS4ya1dmZrJ//3pwA5hHsF2jWhw==
-  dependencies:
-    "@types/crypto-js" "^4.0.2"
-    bson-objectid "^2.0.1"
-    crypto-js "^4.1.1"
-    cuid "^2.1.8"
-    dayjs "^1.10.7"
-    lodash "^4.17.21"
-    number-to-words "^1.2.4"
-    typescript-fsa "3.0.0"
-
 "@voiceflow/common@7.27.0", "@voiceflow/common@^7.27.0":
   version "7.27.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.27.0.tgz#6a11cf276f0bbcfc24021815f1e912b9b17c9d59"
@@ -9722,11 +9708,6 @@ dayjs@1.10.7, dayjs@^1.10.4:
   version "1.10.7"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
   integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
-
-dayjs@^1.10.7:
-  version "1.11.1"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.1.tgz#90b33a3dda3417258d48ad2771b415def6545eb0"
-  integrity sha512-ER7EjqVAMkRRsxNCC5YqJ9d9VQYuWdGt7aiH2qA5R5wt8ZmWaP2dLUSIK6y/kVzLMlmh1Tvu5xUf4M/wdGJ5KA==
 
 debounce@^1.0.0:
   version "1.2.1"

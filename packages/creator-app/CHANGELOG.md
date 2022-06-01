@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.739.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.739.1...@voiceflow/creator-app@1.739.2) (2022-06-01)
+
+
+### Bug Fixes
+
+* do not await isolate operation before ending drag (VF-3643) ([#5494](https://github.com/voiceflow/creator-app/issues/5494)) ([e8a0674](https://github.com/voiceflow/creator-app/commit/e8a06742281fbf5c64fbe3b373a991f5a9c91b88))
+
+
+
+
+
 ## [1.739.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.739.0...@voiceflow/creator-app@1.739.1) (2022-06-01)
 
 

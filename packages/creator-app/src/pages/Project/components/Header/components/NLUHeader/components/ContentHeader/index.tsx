@@ -20,7 +20,7 @@ const getSearchPlaceholder = {
 };
 
 const ContentHeader: React.FC = () => {
-  const { search, setSearch, activeTab, checkedItems, handleItemsDelete, exportItems, isExporting } = React.useContext(NLUManagerContext);
+  const { search, setSearch, activeTab, checkedItems, handleItemsDelete } = React.useContext(NLUManagerContext);
   const allIntents = useSelector(IntentV2.allCustomIntentsSelector);
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const { mergedVariables } = useOrderedVariables();
@@ -96,7 +96,7 @@ const ContentHeader: React.FC = () => {
       <Box>
         {canExport && (
           <Box display="inline-block" mr={10}>
-            <Button squareRadius variant={ButtonVariant.SECONDARY} isLoading={isExporting} onClick={exportItems} disabled={!checkedItems.length}>
+            <Button squareRadius variant={ButtonVariant.SECONDARY} disabled={!checkedItems.length}>
               Export
               {!!checkedItems.length && ` (${checkedItems.length})`}
             </Button>

@@ -19,8 +19,7 @@ import ListItem from './ListItem';
 import { SectionProps } from './types';
 
 const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveItemRename, setSearchLength, selectedID, search, setActiveTab }) => {
-  const { activeTab, setSelectedID, setIsCreatingItem, nameChangeTransform, deleteItem, forceNewInlineEntity } =
-    React.useContext(NLUQuickViewContext);
+  const { activeTab, setSelectedID, setIsCreatingItem, nameChangeTransform, forceNewInlineEntity } = React.useContext(NLUQuickViewContext);
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
@@ -39,10 +38,6 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
     isActiveTab,
     map: allSlotsMap,
   });
-
-  const onDelete = (slotID: string) => {
-    deleteItem(slotID, InteractionModelTabType.SLOTS);
-  };
 
   const handleConfirmNewSlotName = React.useCallback(
     (newName: string, newSlotID: string) => {
@@ -117,7 +112,6 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
             onClick={() => setSelectedID(slot.id)}
             key={slot.id}
             name={slot.name}
-            onDelete={onDelete}
             onRename={(name, id) => renameItem(name, id, InteractionModelTabType.SLOTS)}
             nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.SLOTS)}
             isActiveItemRename={isActiveItemRename}

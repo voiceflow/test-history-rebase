@@ -5,9 +5,8 @@ import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
-import { InteractionModelTabType, ModalType, NLPProvider } from '@/constants';
+import { InteractionModelTabType, ModalType } from '@/constants';
 import { NLUContext } from '@/contexts';
-import * as Export from '@/ducks/export';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
@@ -33,9 +32,6 @@ interface NLUManagerProps {
   deleteItem: (id: string, type: InteractionModelTabType) => void;
   selectedItem: AnyNLUItemType | null;
   createAndSelect: () => void;
-  exportItems: () => void;
-  isExporting: boolean;
-  exportItem: (itemID: string, type: InteractionModelTabType, exportType?: NLPProvider | null) => void;
   setShowUtteranceRecos: (val: boolean) => void;
   showUtteranceRecos: boolean;
   goToEntity: (type: InteractionModelTabType, id: string) => void;
@@ -57,9 +53,6 @@ const DefaultState = {
   deleteItem: Utils.functional.noop,
   selectedItem: null,
   createAndSelect: Utils.functional.noop,
-  exportItems: Utils.functional.noop,
-  isExporting: false,
-  exportItem: Utils.functional.noop,
   setShowUtteranceRecos: Utils.functional.noop,
   showUtteranceRecos: false,
   goToEntity: Utils.functional.noop,
@@ -77,7 +70,6 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
   const [search, setSearch] = React.useState('');
   const [checkedItems, setCheckedItems] = React.useState<string[]>([]);
   const [selectedItem, setSelectedItem] = React.useState<AnyNLUItemType | null>(null);
-  const [exporting, setIsExporting] = React.useState(false);
   const [showUtteranceRecos, setShowUtteranceRecos] = React.useState(false);
 
   const activeProjectID = useSelector(activeProjectIDSelector)!;
@@ -85,7 +77,6 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
 
   const location = useLocation();
-  const exportModel = useDispatch(Export.exportModel);
 
   const modelMatch = React.useMemo(() => {
     return matchPath<{ modelType: InteractionModelTabType; modelEntityID?: string }>(location.pathname, {
@@ -124,21 +115,6 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     setNluManagerPersistedState(persistedState);
     persistedStateRef.current = persistedState;
   };
-
-  const exportItems = React.useCallback(async () => {
-    setIsExporting(true);
-    await exportModel(NLPProvider.VF_CSV, checkedItems);
-    setIsExporting(false);
-  }, [checkedItems]);
-
-  const exportItem = React.useCallback(async (itemID: string, type: InteractionModelTabType, exportType?: NLPProvider | null) => {
-    if (type === InteractionModelTabType.INTENTS && exportType) {
-      toast.warn('Exporting...');
-      setIsExporting(true);
-      await exportModel(exportType, [itemID]);
-      setIsExporting(false);
-    }
-  }, []);
 
   const reset = () => {
     setSelectedID(null);
@@ -289,9 +265,6 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     deleteItem,
     selectedItem,
     createAndSelect,
-    exportItems,
-    exportItem,
-    isExporting: exporting,
     setShowUtteranceRecos,
     showUtteranceRecos,
     goToEntity,

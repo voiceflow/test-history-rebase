@@ -14,7 +14,7 @@ import { SectionSection } from '.';
 import { SectionProps } from './types';
 
 const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, selectedID, setSelectedItemID, setActiveTab }) => {
-  const { activeTab, deleteItem } = React.useContext(NLUQuickViewContext);
+  const { activeTab } = React.useContext(NLUQuickViewContext);
 
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.VARIABLES, [activeTab]);
   const { open: openVariableCreate } = useModals(ModalType.VARIABLE_CREATE);
@@ -76,7 +76,6 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
           onClick={() => setSelectedItemID(variable.id)}
           key={variable.id}
           name={variable.name}
-          onDelete={(id) => deleteItem(id, InteractionModelTabType.VARIABLES)}
           nameValidation={(text) => text}
         />
       ))}

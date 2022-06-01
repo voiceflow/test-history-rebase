@@ -99,7 +99,7 @@ export const PlatformToNLPProvider = {
   [VoiceflowConstants.PlatformType.MOBILE_APP]: undefined,
   [VoiceflowConstants.PlatformType.VOICEFLOW]: undefined,
   [VoiceflowConstants.PlatformType.CHATBOT]: undefined,
-};
+} as const;
 
 export const NLPProviderLabels = {
   [NLPProvider.RASA]: 'Rasa',

@@ -116,7 +116,6 @@ export const useCreatingItem = ({ itemMap, nameValidation, onBlur, forceCreate }
         name={newItem.name}
         active
         onClick={Utils.functional.noop}
-        onDelete={Utils.functional.noop}
         nameValidation={(name) => nameValidation(name, InteractionModelTabType.INTENTS)}
         isCreating
         onBlur={(newName) => handleBlur(newName, newItemID!)}

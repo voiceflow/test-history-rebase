@@ -1,9 +1,8 @@
-import { MenuOption } from '@voiceflow/ui';
 import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
 import { InteractionModelTabType } from '@/constants';
-import { NLUContext } from '@/contexts';
+import { useNLUItemMenu } from '@/contexts/NLUContext/hooks';
 import { ItemContainer } from '@/pages/NLUManager/components/Content/components/Table/components/TableItem/components';
 import { useTableSearch } from '@/pages/NLUManager/components/Content/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
@@ -12,41 +11,22 @@ interface TableItemProps {
   item: { name: string; id: string };
   itemType: InteractionModelTabType;
   isBuiltIn?: boolean;
-  additionalContextOptions?: MenuOption<any>[];
 }
 
-const TableItem: React.FC<TableItemProps> = ({ additionalContextOptions = [], isBuiltIn, itemType, item, children }) => {
-  const startingOptions = additionalContextOptions;
+const TableItem: React.FC<TableItemProps> = ({ isBuiltIn, itemType, item, children }) => {
   const { inSearch } = useTableSearch(item.name);
-  const { canRenameItem, canDeleteItem } = React.useContext(NLUContext);
 
-  const { handleSelectItem, deleteItem, selectedItemId } = React.useContext(NLUManagerContext);
-
-  if (canRenameItem(item.id, itemType)) {
-    startingOptions.push(
-      ...[
-        {
-          key: 'rename',
-          label: 'Rename',
-          onClick: () => alert('rename'),
-        },
-        { label: 'Divider', divider: true },
-      ]
-    );
-  }
-
-  const contextOptions = !canDeleteItem(item.id, itemType)
-    ? startingOptions
-    : [...startingOptions, { label: isBuiltIn ? 'Remove' : 'Delete', value: 'delete', onClick: () => deleteItem(item.id, itemType) }];
+  const { handleSelectItem, selectedItemId } = React.useContext(NLUManagerContext);
+  const { options } = useNLUItemMenu({ itemID: item.id, itemType, isBuiltIn, onRename: () => alert('placeholder') });
 
   return (
-    <ContextMenu selfDismiss options={contextOptions}>
+    <ContextMenu selfDismiss options={options}>
       {({ onContextMenu, isOpen }) => (
         <ItemContainer
-          onContextMenu={onContextMenu}
           hide={!inSearch}
-          selected={item.id === selectedItemId || isOpen}
           onClick={() => handleSelectItem(item.id)}
+          selected={item.id === selectedItemId || isOpen}
+          onContextMenu={onContextMenu}
         >
           {children}
         </ItemContainer>

@@ -27,8 +27,7 @@ const IntentList: React.FC<SectionProps> = ({
   setActiveTab,
   setSelectedItemID,
 }) => {
-  const { deleteItem, setIsCreatingItem, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } =
-    React.useContext(NLUQuickViewContext);
+  const { setIsCreatingItem, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } = React.useContext(NLUQuickViewContext);
   const { renameItem, generateItemName } = React.useContext(NLUContext);
 
   const createIntent = useDispatch(Intent.createIntent);
@@ -46,10 +45,6 @@ const IntentList: React.FC<SectionProps> = ({
     isActiveTab,
     map: allCustomIntentsMap,
   });
-
-  const onDeleteIntent = (id: string) => {
-    deleteItem(id);
-  };
 
   const handleConfirmNewIntentName = React.useCallback(
     (newName: string, newIntentID: string) => {
@@ -127,7 +122,6 @@ const IntentList: React.FC<SectionProps> = ({
             onClick={() => setSelectedItemID(intent.id)}
             key={intent.id}
             name={intent.name}
-            onDelete={onDeleteIntent}
             onRename={(name, id) => renameItem(name, id, InteractionModelTabType.INTENTS)}
             nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.INTENTS)}
             setIsActiveItemRename={setIsActiveItemRename}

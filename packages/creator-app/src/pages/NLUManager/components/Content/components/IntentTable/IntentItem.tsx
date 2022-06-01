@@ -6,10 +6,7 @@ import * as Normal from 'normal-store';
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
-import { InteractionModelTabType, NLPProvider, PlatformToNLPProvider } from '@/constants';
-import * as ProjectV2 from '@/ducks/projectV2';
-import * as Session from '@/ducks/session';
-import { useSelector } from '@/hooks';
+import { InteractionModelTabType } from '@/constants';
 import { useIsCheckedItem } from '@/pages/NLUManager/components/Content/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { getIntentStrengthLevel, isBuiltInIntent } from '@/utils/intent';
@@ -21,10 +18,7 @@ import NameBox from '../TableItem/NameBox';
 import { Clarity, Confidence, Entities, UtteranceCount } from './components';
 
 const IntentItem: React.FC<{ item: Realtime.Intent }> = ({ item }) => {
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
-  const project = useSelector(ProjectV2.getProjectByIDSelector)({ id: projectID });
-
-  const { toggleCheckedItem, exportItem } = React.useContext(NLUManagerContext);
+  const { toggleCheckedItem } = React.useContext(NLUManagerContext);
   const { isChecked } = useIsCheckedItem(item.id);
 
   const isBuiltIn = isBuiltInIntent(item.id);
@@ -43,25 +37,8 @@ const IntentItem: React.FC<{ item: Realtime.Intent }> = ({ item }) => {
 
   const requiredSlots = React.useMemo(() => Normal.denormalize<Realtime.IntentSlot>(item.slots).filter(({ required }) => required), [item.slots]);
 
-  const contextOptions = [
-    {
-      label: 'Export CSV',
-      value: 'exportCSV',
-      onClick: () => exportItem(item.id, InteractionModelTabType.INTENTS, NLPProvider.VF_CSV),
-    },
-    {
-      label: 'Export JSON',
-      value: 'exportJSON',
-      onClick: () => {
-        const nlpProvider = (project?.platform && PlatformToNLPProvider[project.platform]) || null;
-        exportItem(item.id, InteractionModelTabType.INTENTS, nlpProvider);
-      },
-    },
-    { label: 'Divider', divider: true },
-  ];
-
   return (
-    <TableItem isBuiltIn={isBuiltIn} itemType={InteractionModelTabType.INTENTS} item={item} additionalContextOptions={contextOptions}>
+    <TableItem isBuiltIn={isBuiltIn} itemType={InteractionModelTabType.INTENTS} item={item}>
       <Box minWidth={40}>
         {hasEntityError ? (
           <TippyTooltip title="Required entity error">

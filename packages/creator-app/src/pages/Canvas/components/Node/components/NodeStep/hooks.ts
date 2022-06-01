@@ -141,11 +141,7 @@ export const useStepAPI = <T extends HTMLElement>(
           dragEvent.preventDefault();
 
           const handleMouseUp = async (event: MouseEvent) => {
-            if (!event.defaultPrevented) {
-              await engine.merge.unmerge();
-            }
-
-            await engine.drag.reset();
+            await Promise.all([event.defaultPrevented ? Promise.resolve() : engine.merge.unmerge(), engine.drag.reset()]);
           };
 
           document.addEventListener('mouseup', handleMouseUp, { once: true });

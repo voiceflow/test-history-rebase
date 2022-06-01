@@ -29,7 +29,7 @@
     "@voiceflow/realtime-sdk": "^1.95.1",
     "@voiceflow/ui": "^1.91.1",
     "@voiceflow/voice-types": "2.5.31",
-    "@voiceflow/voiceflow-types": "3.15.6",
+    "@voiceflow/voiceflow-types": "3.15.9",
     "apl-viewhost-web": "1.8.2",
     "axios": "0.24.0",
     "bidirectional-adapter": "1.0.0",

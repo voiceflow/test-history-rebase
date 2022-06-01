@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.15.1...@voiceflow/ml-gateway@1.15.2) (2022-06-01)
+
+
+### Bug Fixes
+
+* **ml-gateway:** bumps voiceflow common library version (VF-000) ([#5502](https://github.com/voiceflow/creator-app/issues/5502)) ([d5aa733](https://github.com/voiceflow/creator-app/commit/d5aa73319f67b4f82340db1c31585e88e254cbd8))
+
+
+
+
+
 ## [1.15.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.15.0...@voiceflow/ml-gateway@1.15.1) (2022-05-31)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

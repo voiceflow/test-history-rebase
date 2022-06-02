@@ -15,6 +15,8 @@ import {
   SecondaryButtonProps,
   TertiaryButton,
   TertiaryButtonProps,
+  WhiteButton,
+  WhiteButtonProps,
 } from './components';
 import { ButtonVariant } from './constants';
 
@@ -27,9 +29,10 @@ const BUTTON_VARIANTS = {
   [ButtonVariant.TERTIARY]: TertiaryButton,
   [ButtonVariant.SECONDARY]: SecondaryButton,
   [ButtonVariant.QUATERNARY]: QuaternaryButton,
+  [ButtonVariant.WHITE]: WhiteButton,
 };
 
-type ButtonProps = PrimaryButtonProps | SecondaryButtonProps | TertiaryButtonProps | QuaternaryButtonProps;
+type ButtonProps = PrimaryButtonProps | SecondaryButtonProps | TertiaryButtonProps | QuaternaryButtonProps | WhiteButtonProps;
 
 const Button: React.ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
   { variant = ButtonVariant.PRIMARY, className, children, ...props },
@@ -54,4 +57,5 @@ export default Object.assign(React.forwardRef<HTMLButtonElement, ButtonProps>(Bu
   ButtonContainer,
   SecondaryButton,
   QuaternaryButton,
+  WhiteButton,
 });

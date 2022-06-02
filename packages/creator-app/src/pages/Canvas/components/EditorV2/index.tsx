@@ -21,7 +21,7 @@ import {
   RedirectToRoot,
   Tutorial,
 } from './components';
-import { withRedirectToRoot } from './hocs';
+import { withGoBack, withRedirectToRoot } from './hocs';
 import { useEditor, useSyncDynamicPorts } from './hooks';
 
 interface EditorV2Props {
@@ -61,6 +61,7 @@ export default Object.assign(EditorV2, {
   useEditor,
   useSyncDynamicPorts,
 
+  withGoBack,
   withRedirectToRoot,
 
   AnimationEffect: EditorAnimationEffect,

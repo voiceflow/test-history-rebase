@@ -71,7 +71,12 @@ interface GoBack {
 
 interface GoToNested {
   <S extends string>(path: S): void;
-  <S extends string>(config: { path: S; params?: ExtractRouteParams<S>; animationEffect?: EditorAnimationEffect }): void;
+  <S extends string>(config: {
+    path: S;
+    params?: ExtractRouteParams<S>;
+    animationEffect?: EditorAnimationEffect;
+    state?: Record<string, unknown>;
+  }): void;
 }
 
 export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {

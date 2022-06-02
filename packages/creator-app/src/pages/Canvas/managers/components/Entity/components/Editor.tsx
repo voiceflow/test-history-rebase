@@ -14,7 +14,11 @@ import { isAlexaPlatform } from '@/utils/typeGuards';
 
 import EntityPromptSection from '../../EntityPromptSection';
 
-const Editor: React.FC = () => {
+interface EditorProps {
+  goBack?: VoidFunction;
+}
+
+const Editor: React.FC<EditorProps> = ({ goBack }) => {
   const editor = EditorV2.useEditor();
 
   const { intentID, entityID } = useParams<{ intentID: string; entityID: string }>();
@@ -33,7 +37,7 @@ const Editor: React.FC = () => {
   const withDialogConfirm = !!intentEntity?.dialog.confirmEnabled && hasDialogConfirm;
 
   return (
-    <EditorV2 header={<EditorV2.DefaultHeader onBack={editor.goBack} />}>
+    <EditorV2 header={<EditorV2.DefaultHeader onBack={goBack ?? editor.goBack} />}>
       {!!intentEntity && (
         <>
           <EntityPromptSection

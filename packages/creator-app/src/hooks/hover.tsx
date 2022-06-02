@@ -7,18 +7,15 @@ import { useEnableDisable } from './toggle';
 
 type HoverEventHandler = 'onMouseEnter' | 'onMouseLeave';
 
+interface HoverOptions {
+  onStart?: () => boolean | void;
+  onEnd?: () => boolean | void;
+  onMove?: () => boolean | void;
+  cleanupOnOverride?: boolean;
+}
+
 export const useHover = (
-  {
-    onStart,
-    onEnd,
-    onMove,
-    cleanupOnOverride = true,
-  }: {
-    onStart?: () => boolean | void;
-    onEnd?: () => boolean | void;
-    onMove?: () => boolean | void;
-    cleanupOnOverride?: boolean;
-  } = { onStart: () => true },
+  { onStart, onEnd, onMove, cleanupOnOverride = true }: HoverOptions = { onStart: () => true },
   dependencies: any[] = []
 ): [boolean, (el: JSX.Element) => JSX.Element, Record<HoverEventHandler, () => void>, (hovering: boolean) => void] => {
   const onHoverEnd = React.useRef<(() => void) | null>(null);

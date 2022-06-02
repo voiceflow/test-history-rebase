@@ -8,3 +8,5 @@ export type { SecondaryButtonProps } from './SecondaryButton';
 export { default as SecondaryButton } from './SecondaryButton';
 export type { TertiaryButtonProps } from './TertiaryButton';
 export { default as TertiaryButton } from './TertiaryButton';
+export type { WhiteButtonProps } from './WhiteButton';
+export { default as WhiteButton } from './WhiteButton';

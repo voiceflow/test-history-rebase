@@ -1,15 +1,14 @@
-import { css, styled, units } from '@ui/styles';
+import { styled, units } from '@ui/styles';
+import { space, SpaceProps } from 'styled-system';
 
-const ErrorMessage = styled.p<{ noMarginBottom?: boolean }>`
+export interface ErrorMessageProps extends SpaceProps {}
+
+const ErrorMessage = styled.p<ErrorMessageProps>`
   padding-top: 12px;
   color: #e91e63;
   font-size: 13px;
-
-  ${({ noMarginBottom }) =>
-    noMarginBottom &&
-    css`
-      margin-bottom: 0px;
-    `}
+  line-height: normal;
+  ${space}
 `;
 
 export const ErrorMessageWithDivider = styled(ErrorMessage)`

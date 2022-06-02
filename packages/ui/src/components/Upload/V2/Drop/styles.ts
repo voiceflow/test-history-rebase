@@ -6,13 +6,14 @@ import { css, styled, transition } from '@ui/styles';
 
 interface ContainerProps {
   active?: boolean;
+  hasError?: boolean;
 }
 
 export const Container = styled(FlexCenter)<ContainerProps>`
   height: 100%;
   min-height: 115px;
   border: 1px dashed #d4d9e6;
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 16px;
   color: #62778c;
   cursor: auto;
@@ -40,12 +41,17 @@ export const Container = styled(FlexCenter)<ContainerProps>`
     css`
       background: rgba(238, 244, 246, 0.5);
     `}
-`;
 
-export const ReturnButton = styled.div`
-  color: #8da2b5;
-  display: inline-block;
-  cursor: pointer;
+  ${({ hasError }) =>
+    hasError &&
+    css`
+      color: #bd425f;
+      border-color: #bd425f;
+      background-color: #bd425f0e;
+      &:hover {
+        background-color: #bd425f0e;
+      }
+    `}
 `;
 
 export const UploadingSpinner = styled(LoadCircle)<LoaderProps>``;

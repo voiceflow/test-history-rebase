@@ -32,6 +32,8 @@ export const foldersSelector = createSelector([versionSelector], (version) => ve
 
 export const canvasNodeVisibilitySelector = createSelector([settingsSelector], (settings) => settings?.defaultCanvasNodeVisibility ?? null);
 
+export const cardLayoutSelector = createSelector([settingsSelector], (settings) => settings?.defaultCardLayout ?? null);
+
 export const defaultVoiceSelector = createSelector(
   [settingsSelector],
   (settings) => (settings as VoiceflowVersion.VoiceSettings)?.defaultVoice ?? null

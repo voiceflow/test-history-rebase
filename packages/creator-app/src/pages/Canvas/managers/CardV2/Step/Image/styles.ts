@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { css, styled } from '@/hocs';
 
 const baseFrameStyles = css`
@@ -7,16 +5,19 @@ const baseFrameStyles = css`
   height: 40px;
   border-radius: 8px;
   box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.12);
+`;
+
+export const Container = styled.div`
   margin-right: 16px;
 `;
 
-const Image = styled.div<{ src: string }>`
+export const Image = styled.div<{ src: string }>`
   ${baseFrameStyles}
   background: ${({ src }) => `url(${src}) no-repeat center center`};
   background-size: cover;
 `;
 
-const Placeholder = styled.div`
+export const Placeholder = styled.div`
   overflow: hidden;
   position: relative;
   ${baseFrameStyles}
@@ -39,11 +40,3 @@ const Placeholder = styled.div`
     height: 20px;
   }
 `;
-
-export interface CardStepV2ImageProps {
-  imageUrl: string | null;
-}
-
-const CardStepV2Image: React.FC<CardStepV2ImageProps> = ({ imageUrl }) => (imageUrl ? <Image src={imageUrl} /> : <Placeholder />);
-
-export default CardStepV2Image;

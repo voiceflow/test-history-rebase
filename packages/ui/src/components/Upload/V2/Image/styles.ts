@@ -28,22 +28,26 @@ export const Controls = styled.div`
   gap: 16px;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 10;
-  border-radius: 5px;
+  border-radius: 6px;
   inset: 0;
 `;
 
 export const Container = styled.div<{ src: string }>`
+  z-index: 1;
   position: relative;
   background-color: #ffffff;
   position: relative;
-  border-radius: 5px;
+  border-radius: 6px;
   overflow: hidden;
   width: 100%;
 
   background-image: url(${({ src }) => src});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   &:before {
     content: '';
-    border-radius: 5px;
+    border-radius: 6px;
     display: block;
     position: absolute;
     -webkit-backdrop-filter: blur(16px);

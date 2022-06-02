@@ -22,31 +22,35 @@ export const ToastCallToAction: React.FC<{ onClick: () => void }> = ({ onClick, 
   );
 };
 
-const wrapWithMessage: (method: ToastMethod, icon?: Icon, color?: string) => ToastMethod & Partial<Record<ToastMethodName, ToastMethod>> =
-  (method, icon, color) => (message, options) =>
-    method(
-      <Message icon={icon} iconColor={color}>
-        {message}
-      </Message>,
-      {
-        ...options,
-        ...(options?.closeButton === true && { closeButton: <SvgIcon icon="close" variant={IconVariant.TERTIARY} clickable size={10} ml={24} /> }),
-      }
-    );
+type ToastMethodFactory = (method: ToastMethod, icon?: Icon, color?: string) => ToastMethod & Partial<Record<ToastMethodName, ToastMethod>>;
+type CustomToastMethod = (method: ToastMethodName, icon?: Icon, color?: string) => ToastMethod & Partial<Record<ToastMethodName, ToastMethod>>;
+
+const wrapWithMessage: ToastMethodFactory = (method, icon, color) => (message, options) =>
+  method(
+    <Message icon={icon} iconColor={color}>
+      {message}
+    </Message>,
+    {
+      ...options,
+      ...(options?.closeButton === true && { closeButton: <SvgIcon icon="close" variant={IconVariant.TERTIARY} clickable size={10} ml={24} /> }),
+    }
+  );
 
 const toast = wrapWithMessage(Toastify.toast) as ToastMethod &
-  Overwrite<Toastify.Toast, Record<ToastMethodName, ToastMethod>> & { genericError: VoidFunction };
+  Overwrite<Toastify.Toast, Record<ToastMethodName, ToastMethod>> & { genericError: VoidFunction; custom: CustomToastMethod };
 
-(Object.keys(Toastify.toast) as any[]).forEach((methodName: keyof Toastify.Toast) => {
+(Object.keys(Toastify.toast) as any[]).forEach((methodName: ToastMethodName) => {
   toast[methodName] = Toastify.toast[methodName] as any;
 });
 
-toast.info = wrapWithMessage(Toastify.toast.info, 'info', COLOR_BLUE);
-toast.error = wrapWithMessage(Toastify.toast.error, 'error', COLOR_RED);
-toast.success = wrapWithMessage(Toastify.toast.success, 'checkmark', '#42B761');
-toast.warn = wrapWithMessage(Toastify.toast.warn, 'warning', '#E5B813');
-
-toast.genericError = () => toast.error('Something went wrong. Please try again');
+Object.assign(toast, {
+  info: wrapWithMessage(Toastify.toast.info, 'info', COLOR_BLUE),
+  error: wrapWithMessage(Toastify.toast.error, 'error', COLOR_RED),
+  success: wrapWithMessage(Toastify.toast.success, 'checkmark', '#42B761'),
+  warn: wrapWithMessage(Toastify.toast.warn, 'warning', '#E5B813'),
+  genericError: () => toast.error('Something went wrong. Please try again'),
+  custom: (methodName: ToastMethodName, icon?: Icon, color?: string) => wrapWithMessage(Toastify.toast[methodName], icon, color),
+});
 
 const ToastGlobalStyles = createGlobalStyle`
   .Toastify {

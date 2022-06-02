@@ -4,8 +4,8 @@ import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 import ButtonContainer, { ButtonContainerProps } from '../ButtonContainer';
 
 export interface TertiaryButtonProps extends ButtonContainerProps {
-  variant: ButtonVariant.TERTIARY;
   isGray?: boolean;
+  variant: ButtonVariant.TERTIARY;
 }
 
 const TertiaryButton = styled(ButtonContainer)<TertiaryButtonProps>`

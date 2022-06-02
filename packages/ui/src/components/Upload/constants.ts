@@ -4,13 +4,15 @@ export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,
 export const UPLOAD_ERROR = {
   BACKEND: 'There was a problem uploading the file',
   INVALID_FILE_TYPE: 'Invalid file type',
-  INVALID_URL: 'The link is invalid, make sure to use https',
+  INVALID_URL: 'Link invalid, make sure to use https links.',
   ONE_FILE_LIMIT: 'Only single file uploads allowed',
   TOO_LARGE: 'File exceeds 10MB, upload as a link',
+  UNKNOWN: 'There was an error',
 };
 
 export const LINK_ERROR = {
-  INVALID_URL: 'The link is invalid, make sure to use https',
+  INVALID_URL: 'Link invalid, make sure to use https links.',
+  INVALID_FILE: 'Link invalid, make sure to use link for a valid file.',
 };
 
 export const MAX_SIZE = 10 * 1024 * 1024;

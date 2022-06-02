@@ -4,14 +4,14 @@ export const Container = styled.div`
   width: 100%;
   max-width: 100%;
   display: flex;
-  height: 38px;
-  padding: 3px;
+  height: 36px;
+  padding: 2px;
   border-radius: 8px;
-  background-color: #f6f7f9;
+  background-color: #f4f4f4;
 `;
 
 export const Tab = styled.button<{ isActive?: boolean }>`
-  ${transition('background', 'box-shadow', 'color')}
+  ${transition('background', 'box-shadow')}
   border: 0;
   display: inline-flex;
   align-items: center;
@@ -26,13 +26,13 @@ export const Tab = styled.button<{ isActive?: boolean }>`
   ${({ isActive }) =>
     isActive
       ? css`
+          color: #132144;
           background-color: #ffffff;
           background-image: linear-gradient(to bottom, var(--white), #fdfdfd);
           box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
-          color: #132144;
         `
       : css`
-          color: #62778c;
+          color: rgb(19 33 68 / 80%);
           background: transparent;
         `}
 `;

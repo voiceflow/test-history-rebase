@@ -11,7 +11,7 @@ import Item from './StepItem';
 
 export interface NoMatchStepItemProps {
   portID?: Nullable<string>;
-  noMatch: Nullable<Realtime.NodeData.NoMatch>;
+  noMatch?: Nullable<Realtime.NodeData.NoMatch>;
 }
 
 const NoMatchStepItem: React.FC<NoMatchStepItemProps> = ({ noMatch, portID }) => {

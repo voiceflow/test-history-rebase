@@ -6,8 +6,8 @@ import * as S from './styles';
 
 export interface PrimaryButtonProps extends S.PrimaryButtonContainerProps {
   icon?: SvgIconProps['icon'] | null;
-  variant?: ButtonVariant.PRIMARY;
   iconProps?: Omit<SvgIconProps, 'icon'>;
+  variant?: ButtonVariant.PRIMARY;
 }
 
 const PrimaryButton: React.ForwardRefRenderFunction<HTMLButtonElement, PrimaryButtonProps> = (

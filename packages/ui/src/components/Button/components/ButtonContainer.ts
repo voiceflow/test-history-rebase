@@ -1,4 +1,3 @@
-import { ButtonVariant } from '@ui/components/Button/constants';
 import { css, styled } from '@ui/styles';
 import React from 'react';
 
@@ -9,7 +8,6 @@ export const BUTTON_HEIGHT = 42;
 export interface ButtonContainerProps extends BaseButtonProps, React.ButtonHTMLAttributes<HTMLButtonElement> {
   square?: boolean;
   nowrap?: boolean;
-  variant?: ButtonVariant;
   isLoading?: boolean;
   fullWidth?: boolean;
   minWidth?: number;

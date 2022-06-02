@@ -126,7 +126,7 @@ export interface BaseSelectProps {
 
 interface GenericSelectProps<Option, Value> {
   options: Array<Option | UIOnlyMenuItemOption>;
-  onSelect: (value: Value, optionsPath: number[]) => void;
+  onSelect: (value: Value, optionsPath: number[]) => void | Promise<void>;
 }
 
 interface OptionalProps<Option, Value> {

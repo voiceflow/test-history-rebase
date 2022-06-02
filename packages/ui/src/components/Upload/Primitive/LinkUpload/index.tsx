@@ -17,12 +17,17 @@ export interface RenderInputProps {
   creatable: boolean;
   error?: boolean;
   fullWidth: boolean;
-  leftAction: JSX.Element | null;
+  leftAction?: JSX.Element | null;
   onEditorStateChange?: VoidFunction;
-  onEnterPress: VoidFunction;
+  onEnterPress?: VoidFunction;
+  onBlur?: VoidFunction;
   placeholder?: string;
+  multiline?: boolean;
+  skipBlurOnUnmount?: boolean;
   ref: React.RefObject<any>;
-  rightAction: JSX.Element | null;
+  rightAction?: JSX.Element | null;
+
+  value?: string | null;
 }
 
 export type InputRenderer = (props: RenderInputProps) => JSX.Element;
@@ -40,8 +45,6 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUpdate, onBack, validate = va
   const variablesRef = React.useRef<any>();
 
   const validateAndUpdate = (value: string) => {
-    setError(null);
-
     const newError = validate(value);
 
     setError(newError);
@@ -85,7 +88,7 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUpdate, onBack, validate = va
           onEnterPress={() => validateAndUpdate(value)}
         />
       )}
-      <S.ErrorMessage>{error}</S.ErrorMessage>
+      {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
     </S.LinkUploadInputContainer>
   );
 };

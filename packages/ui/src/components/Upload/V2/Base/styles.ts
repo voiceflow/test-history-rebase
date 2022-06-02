@@ -1,4 +1,7 @@
 import { styled } from '@ui/styles';
+import { space, SpaceProps } from 'styled-system';
+
+export interface RootDropAreaProps extends SpaceProps {}
 
 export const Container = styled.div`
   width: 100%;
@@ -12,4 +15,6 @@ export const DropContainer = styled.div`
   height: 170px;
 `;
 
-export const RootDropArea = styled.div``;
+export const RootDropArea = styled.div<RootDropAreaProps>`
+  ${space}
+`;

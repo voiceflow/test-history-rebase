@@ -28,6 +28,7 @@ class PortManager extends EngineConsumer {
         this.dispatch(Creator.addOutByKeyPort(nodeID, key, port));
       }
     },
+
     addDynamic: async (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
         await this.dispatch.sync(Realtime.port.addDynamic({ ...this.engine.context, nodeID, portID: port.id, label: port.label }));
@@ -66,6 +67,26 @@ class PortManager extends EngineConsumer {
       }
 
       this.engine.node.redrawLinks(port.nodeID);
+    },
+
+    removeManyByKey: async (portsToRemove: { portID: string; key: string }[], syncRemove?: () => Promise<void> | void): Promise<void> => {
+      const ports = portsToRemove.map(({ portID }) => this.engine.getPortByID(portID)!).filter(Boolean);
+
+      if (!ports.length) return;
+      const [{ nodeID }] = ports;
+
+      if (this.isAtomicActionsPhase2) {
+        await this.dispatch.sync(Realtime.port.removeManyByKey({ ...this.engine.context, nodeID, keys: portsToRemove.map(({ key }) => key) }));
+      } else {
+        const portIDs = portsToRemove.map(({ portID }) => portID);
+        const linkIDs = portIDs.flatMap((portID) => this.engine.getLinkIDsByPortID(portID));
+
+        await this.engine.link.removeMany(linkIDs);
+        await syncRemove?.();
+        this.dispatch(Creator.removeManyOutByKeyPort(portsToRemove));
+      }
+
+      this.engine.node.redrawLinks(nodeID);
     },
 
     removeDynamic: async (portID: string, syncRemove?: () => Promise<void> | void): Promise<void> => {
@@ -220,6 +241,18 @@ class PortManager extends EngineConsumer {
     this.engine.saveHistory();
 
     this.log.info(this.log.success('removed out byKey port'), this.log.slug(portID));
+  }
+
+  /**
+   * removes many byKey out port by its key and ID
+   */
+  async removeManyByKey(portsToRemove: { key: string; portID: string }[]): Promise<void> {
+    const portIDs = portsToRemove.map(({ portID }) => portID).join(', ');
+    this.log.debug(this.log.pending('removing out many byKey ports'), this.log.value(portIDs));
+    await this.internal.removeManyByKey(portsToRemove, () => this.engine.realtime.sendUpdate(RealtimeDuck.removeManyOutByKeyPorts(portsToRemove)));
+    this.engine.saveHistory();
+
+    this.log.info(this.log.success('removed out byKey port'), this.log.value(portIDs));
   }
 
   /**

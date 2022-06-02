@@ -21,6 +21,7 @@ export { default as arrowToggle } from './arrow-toggle.svg';
 export { default as audio } from './audio.svg';
 export { default as audioPlayer } from './audio-player.svg';
 export { default as amazon } from './brands/amazon.svg';
+export { default as button } from './button.svg';
 
 // b
 export { default as back } from './back.svg';

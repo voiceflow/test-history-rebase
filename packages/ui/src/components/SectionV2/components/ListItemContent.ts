@@ -19,6 +19,7 @@ const ListItemContent = styled.div<ListItemContentProps>`
 
   display: flex;
   flex: 1;
+  overflow: hidden;
   align-items: center;
   min-height: ${units(5.25)}px;
   padding: 0 ${units()}px 0 ${units(2)}px;

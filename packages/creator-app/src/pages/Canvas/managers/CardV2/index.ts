@@ -1,16 +1,16 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { NodeManagerConfig } from '../types';
-import CardEditor from './CardEditor';
-import CardStep from './CardStep';
+import { NodeManagerConfigV2 } from '../types';
 import { NODE_CONFIG } from './constants';
+import Editor from './Editor';
+import CardStep from './Step';
 
-const CardManager: NodeManagerConfig<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = {
+const CardManager: NodeManagerConfigV2<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = {
   ...NODE_CONFIG,
-  label: 'Card',
+  label: 'Carousel',
 
   step: CardStep,
-  editor: CardEditor,
+  editorV2: Editor,
 };
 
 export default CardManager;

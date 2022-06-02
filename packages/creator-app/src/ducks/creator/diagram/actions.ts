@@ -82,7 +82,7 @@ export type AddOutBuiltInPort = Action<
 
 export type RemoveOutByKeyPort = Action<DiagramAction.REMOVE_OUT_BY_KEY_PORT, { key: string; portID: string }>;
 
-export type RemoveManyOutByKeyPort = Action<DiagramAction.REMOVE_MANY_OUT_BY_KEY_PORT, { key: string; portID: string }[]>;
+export type RemoveManyOutByKeyPorts = Action<DiagramAction.REMOVE_MANY_OUT_BY_KEY_PORT, { key: string; portID: string }[]>;
 
 export type RemoveOutDynamicPort = Action<DiagramAction.REMOVE_OUT_DYNAMIC_PORT, string>;
 
@@ -123,7 +123,7 @@ export type AnyDiagramAction =
   | AddOutDynamicPort
   | AddOutBuiltInPort
   | RemoveOutByKeyPort
-  | RemoveManyOutByKeyPort
+  | RemoveManyOutByKeyPorts
   | RemoveOutDynamicPort
   | RemoveOutBuiltInPort
   | ReorderOutDynamicPorts
@@ -220,7 +220,7 @@ export const removeOutByKeyPort = (key: string, portID: string): RemoveOutByKeyP
 /**
  * @deprecated
  */
-export const removeManyOutByKeyPort = (ports: { key: string; portID: string }[]): RemoveManyOutByKeyPort =>
+export const removeManyOutByKeyPort = (ports: { key: string; portID: string }[]): RemoveManyOutByKeyPorts =>
   createAction(DiagramAction.REMOVE_MANY_OUT_BY_KEY_PORT, ports);
 
 /**

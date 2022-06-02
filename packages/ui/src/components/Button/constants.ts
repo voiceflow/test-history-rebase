@@ -3,4 +3,5 @@ export enum ButtonVariant {
   SECONDARY = 'secondary',
   TERTIARY = 'tertiary',
   QUATERNARY = 'quaternary',
+  WHITE = 'white',
 }

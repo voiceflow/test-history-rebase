@@ -6,8 +6,8 @@ import * as S from './styles';
 
 export interface SecondaryButtonProps extends S.SecondaryButtonContainerProps {
   icon?: SvgIconProps['icon'] | null;
-  variant: ButtonVariant.SECONDARY;
   iconProps?: Omit<SvgIconProps, 'icon'>;
+  variant: ButtonVariant.SECONDARY;
 }
 
 const SecondaryButton = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<SecondaryButtonProps>>(

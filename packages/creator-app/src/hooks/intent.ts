@@ -15,6 +15,7 @@ interface IntentData {
   intentEditModal: ModalActions<{ id: string }>;
   intentIsBuiltIn: boolean;
   intentHasRequiredEntity: boolean;
+  shouldDisplayRequiredEntities: boolean;
 }
 
 export const useIntent = (intentID: Nullish<string>): IntentData => {
@@ -29,10 +30,13 @@ export const useIntent = (intentID: Nullish<string>): IntentData => {
     [intent?.slots]
   );
 
+  const shouldDisplayRequiredEntities = !!intent && !intentIsBuiltIn && intentHasRequiredEntity;
+
   return {
     intent,
     intentEditModal,
     intentIsBuiltIn,
     intentHasRequiredEntity,
+    shouldDisplayRequiredEntities,
   };
 };

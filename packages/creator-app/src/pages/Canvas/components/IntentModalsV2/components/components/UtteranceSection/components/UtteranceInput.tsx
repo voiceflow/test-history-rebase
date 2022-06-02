@@ -52,7 +52,7 @@ const UtteranceInput: React.ForwardRefRenderFunction<UtteranceRef, UtteranceInpu
         onEnterPress={onAdd}
         error={!isValidUtterance}
       />
-      {!isValidUtterance && <ErrorMessage noMarginBottom={!intentUtterances.length}>{addError}</ErrorMessage>}
+      {!isValidUtterance && <ErrorMessage mb={!intentUtterances.length ? 0 : undefined}>{addError}</ErrorMessage>}
       {!!intentUtterances.length && <hr style={!isNotAtTop ? { marginLeft: '-32px' } : undefined} />}
     </Box>
   );

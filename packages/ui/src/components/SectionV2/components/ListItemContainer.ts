@@ -13,6 +13,7 @@ export interface ListItemContainerProps {
 const ListItemContainer = styled(Flex)<ListItemContainerProps>`
   min-height: ${units(5.25)}px;
   margin-left: ${units(-2)}px;
+  max-width: calc(100% + 16px);
 
   ${({ isDragging }) =>
     isDragging &&

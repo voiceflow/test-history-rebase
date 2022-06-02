@@ -1,57 +1,43 @@
+import { ErrorMessage } from '@ui/components/Error';
 import Input from '@ui/components/Input';
 import { useDidUpdateEffect } from '@ui/hooks';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
-import validUrl from 'valid-url';
 
-import { transformVariablesToReadable } from '../../utils';
-import * as S from './styles';
+import { InputRenderer } from '../../Primitive/LinkUpload';
+import { transformVariablesToReadable, validateURL } from '../../utils';
 
-const validURL: (text: string) => Nullable<string> = (text: string) => {
-  if (!validUrl.isUri(text)) return 'Bad URL';
-  return null;
-};
-
-export interface RenderInputProps {
-  creatable: boolean;
-  error: string | null;
-  fullWidth: boolean;
-  onEditorStateChange: VoidFunction | null;
-  onEnterPress: VoidFunction;
-  placeholder?: string;
-  ref: React.RefObject<any>;
-  value?: string | null;
-}
-
-export type InputRenderer = (props: RenderInputProps) => JSX.Element;
 export interface UploadLinkInputProps {
   onChangeText: (value: string) => void;
   placeholder: string;
   renderInput?: InputRenderer;
-  validate?: (text: string) => Nullable<string>;
+  validate?: (text: string) => Nullable<string> | Promise<null>;
   value?: string | null;
 }
 
-const UploadLinkInput: React.FC<UploadLinkInputProps> = ({ onChangeText, value = '', validate = validURL, placeholder, renderInput }) => {
-  const [error, setError] = React.useState<Nullable<string>>(null);
-  const variablesRef = React.useRef<HTMLDivElement & { getCurrentValue: () => { text: string } }>();
+export type { InputRenderer };
 
-  const validateAndUpdate = (value: string | null) => {
+const UploadLinkInput: React.FC<UploadLinkInputProps> = ({ onChangeText, value = '', validate = validateURL, placeholder, renderInput }) => {
+  const [error, setError] = React.useState<Nullable<string>>(null);
+  const inputRef = React.useRef<HTMLDivElement & { getCurrentValue: () => { text: string } }>();
+
+  const validateAndUpdate = async (value: string | null) => {
     if (!value) {
       setError(null);
       onChangeText('');
       return;
     }
 
-    const newError = validate(value);
+    try {
+      const error = await validate(value);
+      if (error) {
+        throw error;
+      }
 
-    setError(newError || null);
-
-    if (newError) {
-      return;
+      onChangeText(value);
+    } catch (error) {
+      setError(error);
     }
-
-    onChangeText(value);
   };
 
   useDidUpdateEffect(() => {
@@ -59,27 +45,29 @@ const UploadLinkInput: React.FC<UploadLinkInputProps> = ({ onChangeText, value =
   }, [value]);
 
   const inputProps = {
-    error,
+    error: !!error,
     fullWidth: true,
     placeholder,
   };
 
   return (
-    <S.Container>
+    <div>
       {renderInput ? (
         renderInput({
           ...inputProps,
-          ref: variablesRef,
+          ref: inputRef,
           creatable: false,
-          onEnterPress: () => validateAndUpdate(transformVariablesToReadable(variablesRef.current?.getCurrentValue().text)),
-          onEditorStateChange: error ? () => setError(null) : null,
+          skipBlurOnUnmount: true,
+          onBlur: () => validateAndUpdate(transformVariablesToReadable(inputRef.current?.getCurrentValue().text)),
+          onEnterPress: () => validateAndUpdate(transformVariablesToReadable(inputRef.current?.getCurrentValue().text)),
           value,
+          multiline: true,
         })
       ) : (
         <Input {...inputProps} error={!!error} onChangeText={onChangeText} onEnterPress={() => validateAndUpdate(value)} value={value || ''} />
       )}
-      <S.ErrorMessage>{error}</S.ErrorMessage>
-    </S.Container>
+      {error && <ErrorMessage mb={0}>{error}</ErrorMessage>}
+    </div>
   );
 };
 

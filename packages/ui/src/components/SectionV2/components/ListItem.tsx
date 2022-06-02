@@ -1,4 +1,5 @@
 import SvgIcon, { Icon } from '@ui/components/SvgIcon';
+import { OverflowText } from '@ui/components/Text';
 import TippyTooltip from '@ui/components/TippyTooltip';
 import React from 'react';
 
@@ -58,8 +59,7 @@ const ListItem = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ListIt
             )}
           </ListItemIconContainer>
         )}
-
-        {children}
+        {typeof children === 'string' ? <OverflowText>{children}</OverflowText> : children}
       </ListItemContent>
 
       {!!action && <ListItemActionsContainer isCentred={actionCentred}>{action}</ListItemActionsContainer>}

@@ -17,7 +17,7 @@ import {
   AnyDiagramAction,
   DiagramAction,
   RemoveManyLinks,
-  RemoveManyOutByKeyPort,
+  RemoveManyOutByKeyPorts,
   removeNodes,
   RemoveOutBuiltInPort,
   RemoveOutByKeyPort,
@@ -126,7 +126,7 @@ const getLinkIdsByManyPorts = (state: DiagramStateType, ports: { portID: string 
   return ports.flatMap(({ portID }) => getLinkIds(portID));
 };
 
-export const removeManyOutByKeyPortReducer: Reducer<DiagramStateType, RemoveManyOutByKeyPort> = (state, { payload: ports }) =>
+export const removeManyOutByKeyPortReducer: Reducer<DiagramStateType, RemoveManyOutByKeyPorts> = (state, { payload: ports }) =>
   Utils.functional.compose(removeManyOutByKeyPortFromBlockInState(ports), removeAllLinksFromState(getLinkIdsByManyPorts(state, ports)))(state);
 
 export const removeOutDynamicPortReducer: Reducer<DiagramStateType, RemoveOutDynamicPort> = (state, { payload: portID }) =>

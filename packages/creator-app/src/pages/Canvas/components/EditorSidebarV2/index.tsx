@@ -73,13 +73,18 @@ const EditorSidebarV2 = () => {
   );
 
   const goToNested = React.useCallback(
-    <S extends string>(configOrPath: S | { path: S; params?: ExtractRouteParams<S>; animationEffect?: EditorAnimationEffect }) => {
+    <S extends string>(
+      configOrPath: S | { path: S; params?: ExtractRouteParams<S>; animationEffect?: EditorAnimationEffect; state?: Record<string, unknown> }
+    ) => {
       if (!node?.id) return;
 
       if (typeof configOrPath === 'string') {
         goToNode(node.id, configOrPath);
       } else {
-        goToNode(node.id, generatePath(configOrPath.path, configOrPath.params), { animationEffect: configOrPath.animationEffect });
+        goToNode(node.id, generatePath(configOrPath.path, configOrPath.params), {
+          animationEffect: configOrPath.animationEffect,
+          ...configOrPath.state,
+        });
       }
     },
     [goToNode, node?.id]

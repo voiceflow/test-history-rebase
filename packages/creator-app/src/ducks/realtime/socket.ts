@@ -27,6 +27,7 @@ export enum SocketAction {
   ADD_OUT_DYNAMIC_PORT = 'REALTIME:SOCKET:PORT:ADD_OUT_DYNAMIC',
   ADD_OUT_BUILT_IN_PORT = 'REALTIME:SOCKET:PORT:ADD_OUT_BUILT_IN',
   REMOVE_OUT_BY_KEY_PORT = 'REALTIME:SOCKET:PORT:REMOVE_OUT_BY_KEY',
+  REMOVE_MANY_OUT_BY_KEY_PORTS = 'REALTIME:SOCKET:PORT:REMOVE_MANY_OUT_BY_KEY',
   REMOVE_OUT_DYNAMIC_PORT = 'REALTIME:SOCKET:PORT:REMOVE_OUT_DYNAMIC',
   REMOVE_OUT_BUILT_IN_PORT = 'REALTIME:SOCKET:PORT:REMOVE_OUT_BUILT_IN',
   REORDER_OUT_DYNAMIC_PORTS = 'REALTIME:SOCKET:PORT:REORDER_OUT_DYNAMIC',
@@ -82,6 +83,8 @@ export type AddOutBuiltInPort = Action<SocketAction.ADD_OUT_BUILT_IN_PORT, Actio
 
 export type RemoveOutByKeyPort = Action<SocketAction.REMOVE_OUT_BY_KEY_PORT, ActionPayload<Creator.RemoveOutByKeyPort>>;
 
+export type RemoveManyOutByKeyPorts = Action<SocketAction.REMOVE_MANY_OUT_BY_KEY_PORTS, ActionPayload<Creator.RemoveManyOutByKeyPorts>>;
+
 export type RemoveOutDynamicPort = Action<SocketAction.REMOVE_OUT_DYNAMIC_PORT, ActionPayload<Creator.RemoveOutDynamicPort>>;
 
 export type RemoveOutBuiltInPort = Action<SocketAction.REMOVE_OUT_BUILT_IN_PORT, ActionPayload<Creator.RemoveOutBuiltInPort>>;
@@ -112,6 +115,7 @@ export type AnySocketAction =
   | AddOutDynamicPort
   | AddOutBuiltInPort
   | RemoveOutByKeyPort
+  | RemoveManyOutByKeyPorts
   | RemoveOutDynamicPort
   | RemoveOutBuiltInPort
   | ReorderOutDynamicPorts
@@ -205,6 +209,12 @@ export const addOutBuiltInPort = (nodeID: string, portType: BaseModels.PortType,
  */
 export const removeOutByKeyPort = (key: string, portID: string): RemoveOutByKeyPort =>
   createAction(SocketAction.REMOVE_OUT_BY_KEY_PORT, { key, portID });
+
+/**
+ * @deprecated
+ */
+export const removeManyOutByKeyPorts = (ports: { key: string; portID: string }[]): RemoveManyOutByKeyPorts =>
+  createAction(SocketAction.REMOVE_MANY_OUT_BY_KEY_PORTS, ports);
 
 /**
  * @deprecated

@@ -7,6 +7,7 @@ const portType = Utils.protocol.typeFactory(PORT_KEY);
 
 export interface AddDynamicPayload extends BasePortPayload {
   label: Nullish<string>;
+  index?: number;
 }
 
 export interface ReorderDynamicPayload extends BasePortPayload {

@@ -6,6 +6,7 @@ export interface SecondaryButtonIconProps {
 }
 export interface SecondaryButtonContainerProps extends ButtonContainerProps {
   flat?: boolean;
+  noShadow?: boolean;
   isActive?: boolean;
   opaque?: boolean;
 }
@@ -68,6 +69,12 @@ export const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonC
       border-radius: 10px;
       box-shadow: 0 0 0 1px rgba(204, 211, 228, 0.6);
       border: 1px solid #fff;
+    `}
+
+  ${({ noShadow }) =>
+    noShadow &&
+    css`
+      box-shadow: none !important;
     `}
   ${({ flat, disabled }) =>
     disabled

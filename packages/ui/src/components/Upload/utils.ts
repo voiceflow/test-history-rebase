@@ -3,6 +3,23 @@ import { READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
 import { BUCKET_PREFIX_REGEX, BUCKET_STRING, HTTPS_URL_REGEX, IMAGE_FILE_FORMATS, LINK_ERROR, MAX_SIZE, UPLOAD_ERROR } from './constants';
 
 export const transformVariablesToReadable = (text?: string) => text?.replace(SLOT_REGEXP, '{$1}').trim() || '';
+export const hasVariables = (value: string) => !!value.match(READABLE_VARIABLE_REGEXP);
+
+export const validateImageUrl = async (value: string): Promise<null> => {
+  return new Promise((resolve, reject) => {
+    const urlError = validateURL(value);
+    if (urlError) {
+      reject(urlError);
+      return;
+    }
+
+    const image = new Image();
+    image.onload = () => resolve(null);
+    image.onerror = () => reject(LINK_ERROR.INVALID_FILE);
+    image.src = value;
+  });
+};
+
 export const validateURL = (value: string) => {
   if (!value.match(READABLE_VARIABLE_REGEXP) && !value.match(HTTPS_URL_REGEX)) {
     return LINK_ERROR.INVALID_URL;

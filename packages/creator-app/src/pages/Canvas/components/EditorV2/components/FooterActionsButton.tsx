@@ -27,6 +27,8 @@ const FooterActionsButton: React.FC<FooterActionsButtonProps> = ({ actions, plac
         squareRadius
       />
     )}
+    selectedOptions={[]}
+    renderOptionsFilter={() => true}
     getOptionLabel={(option) => option?.label}
   />
 );

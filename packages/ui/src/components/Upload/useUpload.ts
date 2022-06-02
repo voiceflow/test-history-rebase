@@ -1,6 +1,7 @@
 import { useEnableDisable } from '@ui/hooks';
 import React from 'react';
 
+import { UPLOAD_ERROR } from './constants';
 import { Context, UploadFileType } from './Context';
 import { AnyWithUploadProps, WithMultiUploadProps, WithSingleUploadProps } from './types';
 
@@ -9,6 +10,7 @@ export interface UploadConfig {
   validate?: (files: File[]) => string | null;
   errorMessage?: string;
   endpoint: string;
+  onError?: (error: string) => void;
 }
 
 const isMultiUploadProps = (config: AnyWithUploadProps): config is WithMultiUploadProps => Array.isArray(config.endpoint);
@@ -32,7 +34,7 @@ export interface UploadAPI {
 export function useUpload<C extends SingleUploadConfig>(config: C): UploadAPI;
 export function useUpload<C extends MultiUploadConfig>(config: C): UploadAPI;
 export function useUpload<C extends AnyUploadConfig>(config: C): UploadAPI {
-  const { fileType, validate = () => null, errorMessage, update, endpoint } = config;
+  const { fileType, validate = () => null, errorMessage, update, endpoint, onError } = config;
   const uploadApi = React.useContext(Context)!;
 
   const [isLoading, loadingOn, loadingOff] = useEnableDisable();
@@ -60,6 +62,7 @@ export function useUpload<C extends AnyUploadConfig>(config: C): UploadAPI {
       setError(err);
 
       if (err) {
+        onError?.(err);
         return;
       }
 
@@ -78,7 +81,9 @@ export function useUpload<C extends AnyUploadConfig>(config: C): UploadAPI {
       } catch (error) {
         config.update?.(null);
         uploadApi.onError(error);
-        setError(errorMessage || 'There was an error');
+        const finalErrorMessage = errorMessage || UPLOAD_ERROR.UNKNOWN;
+        onError?.(finalErrorMessage);
+        setError(finalErrorMessage);
       } finally {
         loadingOff();
       }
@@ -87,7 +92,8 @@ export function useUpload<C extends AnyUploadConfig>(config: C): UploadAPI {
   );
 
   const onDropRejected = React.useCallback(() => {
-    setError('Invalid file type');
+    onError?.(UPLOAD_ERROR.INVALID_FILE_TYPE);
+    setError(UPLOAD_ERROR.INVALID_FILE_TYPE);
   }, []);
 
   return { isLoading, loadingOn, loadingOff, error, setError, onDropRejected, onDropAccepted, onUpload };

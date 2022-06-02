@@ -7,17 +7,18 @@ import { Redirect, RouteComponentProps, useHistory } from 'react-router-dom';
 
 import EmptyScreen from '@/components/EmptyScreen';
 import LoadingGate from '@/components/LoadingGate';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Transcripts from '@/ducks/transcript';
-import { useAsyncDidUpdate, useDispatch, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
+import { useAsyncDidUpdate, useDispatch, useFeature, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
 import { FilterTag } from '@/pages/Conversations/constants';
 import { Identifier } from '@/styles/constants';
 
-import { ConversationsContainer, TranscriptDetails, TranscriptDialog, TranscriptManager } from './components';
+import { ConversationsContainer, GatedTranscripts, TranscriptDetails, TranscriptDialog, TranscriptManager } from './components';
 import { useFilters } from './hooks';
 
 const PREVIOUS_TRANSCRIPT_ID_KEY = 'previous-transcript-id-key';
@@ -30,6 +31,8 @@ const Conversations: React.FC<ConversationProps> = () => {
 
   const [trackingEvents] = useTrackingEvents();
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
+  const [canOpenConversations] = usePermission(Permission.TRANSCRIPTS_ENABLED);
+  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
 
   const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
@@ -101,38 +104,42 @@ const Conversations: React.FC<ConversationProps> = () => {
 
   return (
     <ConversationsContainer id={Identifier.CONVERSATIONS_PAGE} isFilteredResultsEmpty={!filteredReportsExist}>
-      <LoadingGate label="Conversations" internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts}>
-        {!noTestRuns ? (
-          <>
-            <TranscriptManager tags={tags} range={range} endDate={endDate} startDate={startDate} />
+      {revisedEntitlements.isEnabled && !canOpenConversations ? (
+        <GatedTranscripts />
+      ) : (
+        <LoadingGate label="Conversations" internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts}>
+          {!noTestRuns ? (
+            <>
+              <TranscriptManager tags={tags} range={range} endDate={endDate} startDate={startDate} />
 
-            {allTranscripts.length ? (
-              <>
-                <TranscriptDialog />
-                <TranscriptDetails />
-              </>
-            ) : (
-              <Box flex={4}>
-                <EmptyScreen
-                  id={Identifier.EMPTY_REPORTS_CONTAINER}
-                  body="No reports exist with the current filters applied"
-                  title="No reports exist"
-                  onClick={() => history.replace({ search: '' })}
-                  buttonText="Clear Filters"
-                />
-              </Box>
-            )}
-          </>
-        ) : (
-          <EmptyScreen
-            id={Identifier.EMPTY_TRANSCRIPTS_CONTAINER}
-            body="Review conversations from your assistant. Save tests or share a prototype to generate reviewable conversations."
-            title="No transcripts exist"
-            buttonText="Test Assistant"
-            onClick={goToPrototype}
-          />
-        )}
-      </LoadingGate>
+              {allTranscripts.length ? (
+                <>
+                  <TranscriptDialog />
+                  <TranscriptDetails />
+                </>
+              ) : (
+                <Box flex={4}>
+                  <EmptyScreen
+                    id={Identifier.EMPTY_REPORTS_CONTAINER}
+                    body="No reports exist with the current filters applied"
+                    title="No reports exist"
+                    onClick={() => history.replace({ search: '' })}
+                    buttonText="Clear Filters"
+                  />
+                </Box>
+              )}
+            </>
+          ) : (
+            <EmptyScreen
+              id={Identifier.EMPTY_TRANSCRIPTS_CONTAINER}
+              body="Review conversations from your assistant. Save tests or share a prototype to generate reviewable conversations."
+              title="No transcripts exist"
+              buttonText="Test Assistant"
+              onClick={goToPrototype}
+            />
+          )}
+        </LoadingGate>
+      )}
     </ConversationsContainer>
   );
 };

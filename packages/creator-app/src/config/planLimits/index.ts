@@ -1,5 +1,6 @@
 import { PlanType } from '@voiceflow/internal';
 
+import { BOOK_DEMO_LINK } from '@/constants/links';
 import { getPlanTypeLabel } from '@/utils/plans';
 
 export interface LimitSubmitProps {
@@ -28,5 +29,8 @@ export const ENTERPRISE_LABEL = getPlanTypeLabel(PlanType.ENTERPRISE);
 
 export const UPRADE_TO_TEAM_ACTION_LABEL = `Upgrade to ${TEAM_LABEL}`;
 export const UPGRADE_TO_ENTERPRISE_ACTION_LABEL = 'Contact Sales';
+
+export const upgradeToTeamAction = ({ openPaymentModal }: LimitSubmitProps) => openPaymentModal();
+export const upgradeToEnterpriseAction = () => window.open(BOOK_DEMO_LINK, '_blank');
 
 export * from './variableStates';

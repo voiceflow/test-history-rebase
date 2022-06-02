@@ -43,6 +43,7 @@ export { default as textAndDialogGraphicInactive } from '@/assets/svgs/text-and-
 export { default as voiceAndVisualsGraphic } from '@/assets/svgs/voice-and-visuals.svg?url';
 export { default as voiceAndVisualsGraphicInactive } from '@/assets/svgs/voice-and-visuals-inactive.svg?url';
 export { default as imageDropzoneGraphic } from '@/assets/svgs/image-dropzone.svg?url';
+export { default as blurryTranscripts } from '@/assets/images/coversation-upgrade-convo.png';
 
 // placeholders
 export { default as itemDragPlaceholder } from '@/assets/svgs/item-drag-placeholder.svg?url';

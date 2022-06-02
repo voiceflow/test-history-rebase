@@ -768,7 +768,7 @@ class NodeManager extends EngineConsumer {
 
     reduxBatchUndo.start();
 
-    existingNodeIDs.forEach((nodeID) => this.saveLinks(nodeID));
+    this.saveLinks(existingNodeIDs);
     this.internal.saveLocations(existingNodeIDs);
 
     reduxBatchUndo.end();
@@ -817,13 +817,17 @@ class NodeManager extends EngineConsumer {
     });
   }
 
-  saveLinks(nodeID: string): void {
-    const node = this.engine.getNodeByID(nodeID);
-    const nodeLinkIDs = this.engine.getLinkIDsByNodeID(nodeID);
-    const combinedNodes = node?.combinedNodes.flatMap((childNodeID) => this.engine.getLinkIDsByNodeID(childNodeID)) ?? [];
-    const linkIDs = [...nodeLinkIDs, ...combinedNodes].filter((linkID) => this.engine.links.has(linkID));
+  saveLinks(nodeIDs: string[]): void {
+    const linkIDs = nodeIDs.flatMap((nodeID) => {
+      const node = this.engine.getNodeByID(nodeID);
+      const nodeLinkIDs = this.engine.getLinkIDsByNodeID(nodeID);
+      const combinedNodes = node?.combinedNodes.flatMap((childNodeID) => this.engine.getLinkIDsByNodeID(childNodeID)) ?? [];
+      return [...nodeLinkIDs, ...combinedNodes];
+    });
 
-    this.engine.link.savePointsMany(linkIDs, { saveHistory: false });
+    const validLinkIDs = Utils.array.unique(linkIDs).filter((linkID) => this.engine.links.has(linkID));
+
+    this.engine.link.savePointsMany(validLinkIDs, { saveHistory: false });
   }
 
   translateAllThreads(nodeID: string, movement: Pair<number>): void {

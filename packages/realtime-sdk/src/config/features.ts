@@ -17,6 +17,9 @@ export enum FeatureFlag {
   // permanent circuit breakers for vendor integrations
   INTERCOM_INTEGRATION = 'intercom_integration',
 
+  // permanent circuit breaker for ml-gateway integration
+  ML_GATEWAY_INTEGRATION = 'ml_gateway_integration',
+
   ENTERPRISE_TRIAL = 'enterprise_trial',
 
   // variable states

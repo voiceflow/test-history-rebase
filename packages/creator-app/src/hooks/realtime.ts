@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { useCallback, useMemo, useRef } from 'react';
 import { AnyAction } from 'typescript-fsa';
 
-import LoguxClient from '@/client/realtime/loguxClient';
+import LoguxClient from '@/client/logux';
 import { Dispatchable, DispatchResult } from '@/store/types';
 import { NullishRecord } from '@/types';
 

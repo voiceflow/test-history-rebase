@@ -1,0 +1,22 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+import React from 'react';
+
+import client from '@/client';
+import LoguxClient from '@/client/logux';
+import { withFeatureGate } from '@/hocs';
+import { useLoguxSetup } from '@/hooks/logux';
+
+export const MLContext = React.createContext<LoguxClient | null>(null);
+export const { Consumer: MLConsumer } = MLContext;
+
+const MLProvider: React.FC = ({ children }) => {
+  const mlClient = React.useMemo(() => client.mlGateway(), []);
+
+  useLoguxSetup(mlClient);
+
+  return <MLContext.Provider value={mlClient}>{children}</MLContext.Provider>;
+};
+
+const FeatureGatedMLProvider = withFeatureGate(Realtime.FeatureFlag.ML_GATEWAY_INTEGRATION)(MLProvider);
+
+export { FeatureGatedMLProvider as MLProvider };

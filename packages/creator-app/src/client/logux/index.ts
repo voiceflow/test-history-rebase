@@ -8,6 +8,8 @@ import { clientLogger } from '@/client/utils';
 
 import { CLIENT_EVENTS, ClientEvents, ConnectionStatus, RECONNECT_TIMEOUT } from './constants';
 
+export * from './constants';
+
 class LoguxClient extends Client {
   connectionStatus = ConnectionStatus.IDLE;
 

@@ -8,6 +8,7 @@ import feature from './feature';
 import file from './file';
 import integrations from './integrations';
 import maintenance from './maintenance';
+import mlGateway from './mlGateway';
 import organization from './organization';
 import project from './project';
 import projectList from './projectList';
@@ -60,6 +61,7 @@ const client = {
   variableStates,
   maintenance,
   upload,
+  mlGateway,
 };
 
 export default client;

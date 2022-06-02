@@ -28,6 +28,7 @@ import { EventualEngineProvider } from '../EventualEngineContext';
 import { FeatureFlagsProvider } from '../FeatureFlagsContext';
 import { IdentityProvider } from '../IdentityContext';
 import LifecycleProvider from '../LifecycleProvider';
+import { MLProvider } from '../MLContext';
 import { ModalsContextProvider } from '../ModalsContext';
 import { MousePositionProvider } from '../MousePositionContext';
 import StoreProvider, { StoreProviderProps } from '../StoreProvider';
@@ -62,7 +63,9 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                         <SocketLoadingGate>
                                           <AccountLoadingGate>
                                             <RealtimeConnectionGate>
-                                              <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
+                                              <MLProvider>
+                                                <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
+                                              </MLProvider>
                                             </RealtimeConnectionGate>
                                           </AccountLoadingGate>
                                         </SocketLoadingGate>

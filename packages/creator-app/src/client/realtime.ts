@@ -2,7 +2,7 @@ import { io } from 'socket.io-client';
 
 import { REALTIME_ENDPOINT, REALTIME_IO_ENDPOINT } from '@/config';
 
-import LoguxClient from './loguxClient';
+import LoguxClient from './logux';
 
 export const realtimeIO = (token: string) =>
   io(`${REALTIME_IO_ENDPOINT}`, {
@@ -14,7 +14,7 @@ export const realtimeIO = (token: string) =>
 
 const realtimeClient = (): LoguxClient =>
   new LoguxClient({
-    server: REALTIME_ENDPOINT || '',
+    server: REALTIME_ENDPOINT,
     subprotocol: '1.0.0',
 
     // no user specified initially

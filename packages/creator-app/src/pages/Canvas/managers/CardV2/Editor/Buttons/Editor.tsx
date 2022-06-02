@@ -5,6 +5,8 @@ import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 import VariablesInput from '@/components/VariablesInput';
+import { FeatureFlag } from '@/config/features';
+import { useFeature } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
@@ -41,6 +43,7 @@ const findButtonInfo = (cards: Card[], buttonID: string): ButtonInfo => {
 };
 
 const CardV2ButtonsEditor: React.FC = () => {
+  const chatCarouselIntent = useFeature(FeatureFlag.CHAT_CAROUSEL_INTENT);
   const editor = EditorV2.useEditor<Realtime.NodeData.CardV2>();
   const params = useParams<{ buttonID: string }>();
   const { state } = useLocation<{ waitForData?: boolean }>();
@@ -83,7 +86,9 @@ const CardV2ButtonsEditor: React.FC = () => {
             </FormControl>
           </SectionV2.Content>
           <SectionV2.Divider inset />
-          <IntentSection intentID={button?.intent} buttonID={params.buttonID} onChange={(intent) => onChangeButton({ intent })} editor={editor} />
+          {chatCarouselIntent.isEnabled && (
+            <IntentSection intentID={button?.intent} buttonID={params.buttonID} onChange={(intent) => onChangeButton({ intent })} editor={editor} />
+          )}
         </>
       )}
     </EditorV2>

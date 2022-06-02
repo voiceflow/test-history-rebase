@@ -32,6 +32,7 @@ export enum FeatureFlag {
   PROJECT_CREATE = 'project_create',
 
   CHAT_CARDS_CAROUSEL = 'chat_cards_carousel',
+  CHAT_CAROUSEL_INTENT = 'chat_carousel_intent',
 
   EXPERIMENTAL_SYNC_LINKS = 'experimental_sync_links',
 

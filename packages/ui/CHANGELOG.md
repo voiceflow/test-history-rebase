@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.92.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.91.1...@voiceflow/ui@1.92.0) (2022-06-02)
+
+
+### Features
+
+* render link popper portals within the settings element (VF-000) ([#5487](https://github.com/voiceflow/creator-app/issues/5487)) ([c9e6e74](https://github.com/voiceflow/creator-app/commit/c9e6e740a6d599b2be721d6ecbb1ccb3c457dcdc))
+
+
+
+
+
 ## [1.91.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.91.0...@voiceflow/ui@1.91.1) (2022-05-31)
 
 **Note:** Version bump only for package @voiceflow/ui

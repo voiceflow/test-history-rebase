@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.746.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.745.0...@voiceflow/creator-app@1.746.0) (2022-06-02)
+
+
+### Features
+
+* Implement CardV2 Editor with basic attributes and buttons (VF-3358) ([#5425](https://github.com/voiceflow/creator-app/issues/5425)) ([9457f35](https://github.com/voiceflow/creator-app/commit/9457f355ca9e2f6f89d3b6f0295641838feb8f4a))
+
+
+
+
+
 # [1.745.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.744.0...@voiceflow/creator-app@1.745.0) (2022-06-02)
 
 

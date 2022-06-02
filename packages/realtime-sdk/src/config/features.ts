@@ -35,6 +35,8 @@ export enum FeatureFlag {
 
   EXPERIMENTAL_SYNC_LINKS = 'experimental_sync_links',
 
+  ASSISTANT_INTEGRATION = 'assistant_integration',
+
   REVISED_CREATOR_ENTITLEMENTS = 'revised_creator_entitlement',
   CANVAS_PREVIEW = 'step_editor_update',
   STEP_EDITOR_UPDATES = 'step_editor_update',

@@ -134,7 +134,7 @@ export default {
       return cy.get(`.${ClassName.CANVAS_NODE}--${BlockType.MARKUP_IMAGE}`);
     },
     get markupImageUpload() {
-      return cy.get('body input[type="file"]');
+      return cy.get('body input#vf-upload[type="file"]');
     },
   },
 

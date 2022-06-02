@@ -63,6 +63,7 @@ const UserInput: React.FC<UserInputProps> = ({
   return (
     <InputContent isMobile={isMobile} onClick={() => isIdle && !hideInput && onStart()}>
       <Input
+        id="vf-prototype-user-input"
         key={String(!isIdle)}
         ref={inputRef}
         value={value}

@@ -186,6 +186,7 @@ export const readFileAsync = (file: File): Promise<string> =>
 export const upload = (onChange: (files: FileList) => void, options: { accept?: string; multiple?: boolean } = {}) => {
   const element = document.createElement('input');
 
+  element.setAttribute('id', 'vf-upload');
   element.setAttribute('type', 'file');
   element.setAttribute('multiple', `${!!options.multiple}`);
 

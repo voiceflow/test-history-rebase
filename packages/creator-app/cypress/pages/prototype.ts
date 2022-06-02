@@ -34,7 +34,7 @@ export default {
       return cy.get(`.${ClassName.PROTOTYPE_MESSAGE_ICON}:first`);
     },
     get messageInput() {
-      return cy.get('input');
+      return cy.get('input#vf-prototype-user-input');
     },
     get voiceInput() {
       return cy.get('#vf-speech-bar');

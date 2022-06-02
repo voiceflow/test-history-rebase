@@ -31,8 +31,8 @@ const helper = {
       return cy.get('button').contains(TARGET_ELEMENT_TEXT.GetStartedButton);
     },
 
-    get activeDropdown() {
-      return cy.get('.vf-menu');
+    get activeMenuItems() {
+      return cy.get('.vf-menu li');
     },
   },
 };
@@ -40,9 +40,9 @@ const helper = {
 export default {
   completeProfile: () => {
     helper.getInputByPlaceholder(TARGET_ELEMENT_TEXT.RoleDropdown).parent().click();
-    helper.el.activeDropdown.get('li').first().click();
+    helper.el.activeMenuItems.first().click();
     helper.getDivByText(TARGET_ELEMENT_TEXT.ChannelDropdown).parent().click();
-    helper.el.activeDropdown.get('li').first().click();
+    helper.el.activeMenuItems.first().click();
     helper.getDivByText('Amazon Alexa').click();
     helper.getDivByText(TARGET_ELEMENT_TEXT.OnlyMeButton).click();
   },
@@ -72,7 +72,7 @@ export default {
   },
   selectWorkspace: () => {
     helper.getDivByText('Select a Workspace').click();
-    helper.el.activeDropdown.get('li').first().click();
+    helper.el.activeMenuItems.first().click();
   },
   assert: {
     planBubble: (planString = 'Free') => {

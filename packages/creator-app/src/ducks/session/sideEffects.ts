@@ -14,6 +14,7 @@ import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
 import * as Query from '@/utils/query';
 import * as Sentry from '@/vendors/sentry';
+import * as Support from '@/vendors/support';
 
 import { setAuthToken, setIntercomUserHMAC } from './actions';
 import { authTokenSelector, browserIDSelector, tabIDSelector } from './selectors';
@@ -56,11 +57,14 @@ export const logout = (): Thunk => async (dispatch, getState) => {
 };
 
 export const identifyUser =
-  ({ creator_id, ...user }: Models.Account): Thunk =>
+  (user: Models.Account): Thunk =>
   async () => {
+    // eslint-disable-next-line camelcase
+    const { creator_id, ...userWithoutID } = user;
     const externalID = generateID(creator_id);
 
-    Vendors.LogRocket.identify(externalID, user);
+    Vendors.LogRocket.identify(externalID, userWithoutID);
+    Support.identify(user);
   };
 
 export const restoreSession = (): Thunk => async (dispatch, getState) => {

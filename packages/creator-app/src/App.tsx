@@ -1,4 +1,5 @@
 // Import Dependent CSS
+
 import 'react-tippy/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,6 +13,7 @@ import React from 'react';
 import IntercomChat from '@/components/IntercomChat';
 import { RootPageProgressBar } from '@/components/PageProgressBar';
 import SeoHelmet from '@/components/SeoHelmet';
+import SupportChat from '@/components/SupportChat';
 import { SeoPage } from '@/constants/seo';
 import { GlobalSocketSubscriptionsLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
@@ -28,6 +30,7 @@ const App: React.FC = () => (
     <IntercomChat />
     <AppModals />
     <RootPageProgressBar />
+    <SupportChat />
   </>
 );
 

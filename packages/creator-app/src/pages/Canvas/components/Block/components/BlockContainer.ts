@@ -87,7 +87,7 @@ const BlockContainer = styled.div<StyledBlockContainerProps>`
   .${NODE_HIGHLIGHTED_CLASSNAME} &,
   .${NODE_THREAD_TARGET_CLASSNAME} &,
   .${CANVAS_CREATING_LINK_CLASSNAME} .${NODE_HOVERED_CLASSNAME}:not(.${NODE_DISABLED_CLASSNAME}) & {
-    border-color: #2c85ff;
+    border-color: #3d82e2;
 
     ::before {
       display: none;

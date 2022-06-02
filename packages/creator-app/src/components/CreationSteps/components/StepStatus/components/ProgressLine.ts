@@ -9,7 +9,7 @@ const ProgressLine = styled.div<{ active?: boolean }>`
   ${({ active }) =>
     active &&
     css`
-      background: #2c85ff;
+      background: #3d82e2;
     `}
 `;
 

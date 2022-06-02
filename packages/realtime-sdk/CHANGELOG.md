@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.98.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.97.0...@voiceflow/realtime-sdk@1.98.0) (2022-06-02)
+
+
+### Features
+
+* implement support to add/remove byKey links and ports (VF-3627) ([#5497](https://github.com/voiceflow/creator-app/issues/5497)) ([72b5d4c](https://github.com/voiceflow/creator-app/commit/72b5d4c64f915393c844fa05fbbfb7c1981d3b5b))
+
+
+
+
+
 # [1.97.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.96.0...@voiceflow/realtime-sdk@1.97.0) (2022-06-02)
 
 

@@ -150,7 +150,7 @@
     "@types/esprima": "4.0.3",
     "@types/estree": "0.0.51",
     "@types/file-saver": "2.0.5",
-    "@types/gapi": "0.0.41",
+    "@types/gapi": "0.0.42",
     "@types/gapi.auth2": "0.0.56",
     "@types/jest": "27.4.0",
     "@types/jsonwebtoken": "8.5.8",

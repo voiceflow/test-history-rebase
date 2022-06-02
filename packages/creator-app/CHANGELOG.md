@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.740.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.739.3...@voiceflow/creator-app@1.740.0) (2022-06-02)
+
+
+### Features
+
+* connect frontend to ml-gateway (VF-3472) ([#5506](https://github.com/voiceflow/creator-app/issues/5506)) ([5a4193a](https://github.com/voiceflow/creator-app/commit/5a4193a53584a0575f0f4ca7390a88b60db13fef))
+
+
+
+
+
 ## [1.739.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.739.2...@voiceflow/creator-app@1.739.3) (2022-06-02)
 
 **Note:** Version bump only for package @voiceflow/creator-app

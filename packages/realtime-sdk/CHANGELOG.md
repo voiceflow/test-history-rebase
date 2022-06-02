@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.96.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.95.1...@voiceflow/realtime-sdk@1.96.0) (2022-06-02)
+
+
+### Features
+
+* connect frontend to ml-gateway (VF-3472) ([#5506](https://github.com/voiceflow/creator-app/issues/5506)) ([5a4193a](https://github.com/voiceflow/creator-app/commit/5a4193a53584a0575f0f4ca7390a88b60db13fef))
+
+
+
+
+
 ## [1.95.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.95.0...@voiceflow/realtime-sdk@1.95.1) (2022-05-31)
 
 

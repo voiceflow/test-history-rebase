@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.100.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.99.0...@voiceflow/realtime-sdk@1.100.0) (2022-06-02)
+
+
+### Features
+
+* add ff for carousel intent (VF-3717) ([#5522](https://github.com/voiceflow/creator-app/issues/5522)) ([7d48e75](https://github.com/voiceflow/creator-app/commit/7d48e75064f60497004d8d8aa62aa5f045e97a2a))
+
+
+
+
+
 # [1.99.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.98.0...@voiceflow/realtime-sdk@1.99.0) (2022-06-02)
 
 

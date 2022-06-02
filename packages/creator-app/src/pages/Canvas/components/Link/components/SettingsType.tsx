@@ -1,6 +1,8 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Portal, stopPropagation, SvgIcon, usePopper } from '@voiceflow/ui';
+import { Portal, stopPropagation, SvgIcon, usePersistFunction, usePopper } from '@voiceflow/ui';
 import React from 'react';
+
+import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 
 import Button from './SettingsButton';
 import Content from './SettingsContent';
@@ -23,6 +25,11 @@ const SettingsType: React.FC<SettingsTypeProps> = ({ type, isOpen, onToggle, onC
     ],
     strategy: 'fixed',
   });
+
+  const updatePosition = usePersistFunction(() => popper.update?.());
+
+  useCanvasPan(updatePosition);
+  useCanvasZoom(updatePosition);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import composeRefs from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { COLOR_PICKER_CONSTANTS, useColorPaletteForBlocks } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, useColorPaletteWithDynamicSaturation } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import moize from 'moize';
 import React from 'react';
@@ -37,7 +37,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
     };
   });
 
-  const palette = useColorPaletteForBlocks(blockColor);
+  const palette = useColorPaletteWithDynamicSaturation(blockColor);
 
   const observer = React.useMemo(() => new ResizeObserver(() => engine.node.redrawLinks(nodeEntity.nodeID)), []);
 

@@ -24,6 +24,9 @@ export const Wrapper = styled(BoxFlex)`
   position: relative;
   align-items: center;
   justify-content: center;
+  width: 255px;
+  top: 0px;
+  left: 0px;
 `;
 
 export const Label = styled(Text)`

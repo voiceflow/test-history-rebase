@@ -1,6 +1,16 @@
-import { Box, ColorPicker, FlexApart, StrictPopperModifiers } from '@voiceflow/ui';
+import {
+  BoxFlex,
+  COLOR_PICKER_CONSTANTS,
+  ColorThemes,
+  ColorThemeUnit,
+  FlexApart,
+  isBaseColor,
+  StrictPopperModifiers,
+  useOnClickOutside,
+} from '@voiceflow/ui';
 import React from 'react';
 
+import { ColorPickerPopper } from '@/components/ColorPickerPopper';
 import Section, { SectionVariant } from '@/components/Section';
 import SlotSelect from '@/components/SlotSelect';
 
@@ -13,7 +23,20 @@ interface TypeAndColorSectionProps {
   colorPopperModifiers?: StrictPopperModifiers;
 }
 
-const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({ color, colorPopperModifiers, saveColor, name, type, onChangeType }) => {
+const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({
+  color,
+  colorPopperModifiers = [{ name: 'offset', options: { offset: [-20, -21] } }],
+  saveColor,
+  name,
+  type,
+  onChangeType,
+}) => {
+  const popperContainerRef = React.useRef<HTMLDivElement>(null);
+  const [isShowingPicker, setIsShowingPicker] = React.useState(false);
+  const { DEFAULT_COLORS, BASE_COLORS, COLOR_WHEEL } = COLOR_PICKER_CONSTANTS;
+
+  useOnClickOutside(popperContainerRef, () => setIsShowingPicker(false), [setIsShowingPicker]);
+
   return (
     <Section
       dividers={false}
@@ -24,10 +47,28 @@ const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({ color, colorP
       customContentStyling={{ paddingBottom: '24px' }}
     >
       <FlexApart>
-        <Box flex={2} mr={24}>
+        <BoxFlex flex={2} mr={24}>
           <SlotSelect value={type} onChange={onChangeType} />
-        </Box>
-        <ColorPicker modifiers={colorPopperModifiers} tagName={name} selectedColor={color} onChange={saveColor} />
+        </BoxFlex>
+        <BoxFlex>
+          <ColorThemes small selectedColor={color} onColorSelect={saveColor} colors={[DEFAULT_COLORS.dark, ...BASE_COLORS]} />
+          <ColorThemeUnit
+            background={!isBaseColor(color) ? color : COLOR_WHEEL}
+            onClick={() => setIsShowingPicker(true)}
+            selected={!isBaseColor(color)}
+            small
+          />
+
+          {isShowingPicker && (
+            <ColorPickerPopper
+              popperContainerRef={popperContainerRef}
+              modifiers={colorPopperModifiers}
+              tagName={name}
+              selectedColor={color}
+              onChange={saveColor}
+            />
+          )}
+        </BoxFlex>
       </FlexApart>
     </Section>
   );

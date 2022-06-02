@@ -29,10 +29,10 @@ export {
 } from './Button';
 export { default as Card } from './Card';
 export { default as Collapse } from './Collapse';
+export type { ColorPickerProps } from './ColorPicker';
 export { ColorPicker } from './ColorPicker';
-export { ColorThemes } from './ColorPicker/components/ColorThemes';
-export { HueSlider } from './ColorPicker/components/HueSliderShowcase/HueSlider';
-export { ColorPickerPopper } from './ColorPicker/components/Poppers/ColorPickerPopper';
+export { Range as ColorPickerRange } from './ColorPicker/components/ColorRange/Range';
+export { ColorThemes, ColorThemeUnit } from './ColorPicker/components/ColorThemes';
 export * as COLOR_PICKER_CONSTANTS from './ColorPicker/constants';
 export { default as Disable } from './Disable';
 export type { DropdownPlacement } from './Dropdown';

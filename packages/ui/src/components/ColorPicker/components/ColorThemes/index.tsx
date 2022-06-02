@@ -7,6 +7,7 @@ import { Color } from './Color';
 import { ColorsList } from './styles';
 import { ColorThemesProps } from './types';
 
+export const ColorThemeUnit = Color;
 export const ColorThemes: React.FC<ColorThemesProps> = ({ colors, small, selectedColor = '', onColorSelect }) => {
   return (
     <ColorsList>

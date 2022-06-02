@@ -1,60 +1,65 @@
-import { StrictPopperModifiers, useDebouncedCallback, useDidUpdateEffect } from '@ui/hooks';
-import { useOnClickOutside } from '@ui/hooks/mouse';
+import Box from '@ui/components/Box';
+import { Tag } from '@ui/components/Tag';
+import { useDebouncedCallback } from '@ui/hooks';
+import { stopPropagation } from '@ui/utils';
+import { createStandardShadeFromHue } from '@ui/utils/colors/hsl';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
+import { ColorRange } from './components/ColorRange';
 import { ColorThemes } from './components/ColorThemes';
-import { Color } from './components/ColorThemes/Color';
-import { ColorPickerPopper } from './components/Poppers/ColorPickerPopper';
-import { BASE_COLORS, COLOR_WHEEL, Colors, DEFAULT_COLORS, DEFAULT_THEMES } from './constants';
-import { Wrapper } from './styles';
-import { isBaseColor, normalizeColor } from './utils';
+import { Colors, DEFAULT_COLORS, DEFAULT_THEMES } from './constants';
+import { Label, PopperContent, Wrapper } from './styles';
+import { hexToHue, normalizeColor } from './utils';
 
-interface ColorPickerProps {
-  tagName?: string;
+const { compose, chain } = Utils.functional;
+
+export interface ColorPickerProps {
+  defaultColorScheme?: 'light' | 'dark';
+  onChange: (color: string) => void;
   selectedColor: string;
   customColors?: Colors;
-  onChange: (color: string) => void;
-  modifiers?: StrictPopperModifiers;
+  tagName?: string;
 }
 
-export const ColorPicker: React.FC<ColorPickerProps> = ({ modifiers, selectedColor, customColors = [], onChange, tagName }) => {
-  const trimmedTagName = tagName?.trim() || 'label';
-  const colors = [...DEFAULT_THEMES, ...customColors];
-  const [selectedHex, setLocalSelectedHex] = React.useState(() => normalizeColor(selectedColor));
-  const popOver = React.useRef(null);
-  const [isShowingPicker, setIsShowingPicker] = React.useState(false);
-  const isCustomColor = React.useMemo(() => !isBaseColor(selectedHex), [selectedHex]);
+export const ColorPicker: React.FC<ColorPickerProps> = ({
+  defaultColorScheme = 'dark',
+  selectedColor,
+  customColors = [],
+  onChange,
+  tagName = '',
+}) => {
   const debouncedSetColor = useDebouncedCallback(100, (color: string) => onChange(color), []);
+  const [selectedHex, setLocalSelectedHex] = React.useState<string>(() => normalizeColor(selectedColor));
+  const [localHue, setLocalHue] = React.useState(() => String(hexToHue(selectedHex)));
 
-  useDidUpdateEffect(() => {
-    setLocalSelectedHex(normalizeColor(selectedColor));
-  }, [selectedColor]);
-
-  useOnClickOutside(popOver, () => setIsShowingPicker(false), [setIsShowingPicker]);
   return (
     <Wrapper>
-      <ColorThemes
-        small
-        selectedColor={selectedHex}
-        onColorSelect={(color) => {
-          debouncedSetColor(color);
-          setLocalSelectedHex(color);
-        }}
-        colors={[DEFAULT_COLORS.dark, ...BASE_COLORS]}
-      />
-      <Color selected={isCustomColor} onClick={() => setIsShowingPicker(true)} small background={isCustomColor ? selectedHex : COLOR_WHEEL} />
+      <PopperContent onClick={stopPropagation(null, true)}>
+        {tagName.trim() && (
+          <Box mb={15}>
+            <Tag color={selectedHex}>{`{${tagName}}`}</Tag>
+          </Box>
+        )}
 
-      {isShowingPicker && (
-        <ColorPickerPopper
-          modifiers={modifiers}
-          ref={popOver}
-          colors={colors}
-          tagName={trimmedTagName}
-          onChange={Utils.functional.chain(debouncedSetColor, setLocalSelectedHex)}
+        <Box width={200} mb={22} mt={5}>
+          <ColorRange
+            hue={localHue}
+            setHue={chain(
+              setLocalHue,
+              compose(debouncedSetColor, String, createStandardShadeFromHue),
+              compose(setLocalSelectedHex, String, createStandardShadeFromHue)
+            )}
+          />
+        </Box>
+
+        <Label>Color themes</Label>
+        <ColorThemes
+          colors={[DEFAULT_COLORS[defaultColorScheme], ...DEFAULT_THEMES, ...customColors]}
           selectedColor={selectedHex}
+          onColorSelect={chain(debouncedSetColor, setLocalSelectedHex, compose(setLocalHue, String, hexToHue))}
         />
-      )}
+      </PopperContent>
     </Wrapper>
   );
 };

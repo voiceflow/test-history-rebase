@@ -27,7 +27,7 @@ interface StyledBlockContainerProps {
 }
 
 const BlockContainer = styled.div<StyledBlockContainerProps>`
-  ${transition('opacity')}
+  ${transition('opacity', 'background-color')}
 
   width: ${({ theme }) => theme.components.block.width}px;
   border-radius: 8px;

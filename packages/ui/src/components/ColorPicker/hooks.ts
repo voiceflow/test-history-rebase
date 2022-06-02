@@ -5,7 +5,7 @@ import React from 'react';
 import { ALL_COLORS, BLOCK_STANDARD_COLOR } from './constants';
 import { normalizeColor } from './utils';
 
-export const useColorPaletteForBlocks = (color: string | undefined = BLOCK_STANDARD_COLOR): HSLShades => {
+export const useColorPaletteWithDynamicSaturation = (color: string | undefined = BLOCK_STANDARD_COLOR): HSLShades => {
   return React.useMemo(() => {
     const normalizedColor = normalizeColor(color);
     const isDefaultColor = ALL_COLORS.find(({ palette }) => palette[STANDARD_GRADE] === normalizedColor);

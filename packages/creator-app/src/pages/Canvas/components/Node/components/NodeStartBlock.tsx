@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { COLOR_PICKER_CONSTANTS, useColorPaletteForBlocks, useDidUpdateEffect } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, useColorPaletteWithDynamicSaturation, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -39,7 +39,7 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
     };
   });
 
-  const palette = useColorPaletteForBlocks(blockColor);
+  const palette = useColorPaletteWithDynamicSaturation(blockColor);
 
   useDidUpdateEffect(() => {
     engine.node.redrawLinks(nodeEntity.nodeID);

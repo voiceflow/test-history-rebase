@@ -13,6 +13,7 @@ export interface PopperOptions<Modifiers> extends Omit<Partial<PopperJS.Options>
 
 export type StrictPopperModifierNames = NonNullable<PopperJS.StrictModifiers['name']>;
 export type StrictPopperModifiers = ReadonlyArray<Modifier<StrictPopperModifierNames>>;
+export type VirtualElement = PopperJS.VirtualElement;
 
 interface BasePopperAPI {
   state: PopperJS.State | null;
@@ -22,7 +23,8 @@ interface BasePopperAPI {
   forceUpdate: PopperJS.Instance['forceUpdate'] | null;
 }
 
-interface PopperAPI<TriggerRef extends Nullable<Element | PopperJS.VirtualElement>, PopperRef extends Nullable<HTMLElement>> extends BasePopperAPI {
+export interface PopperAPI<TriggerRef extends Nullable<Element | PopperJS.VirtualElement>, PopperRef extends Nullable<HTMLElement>>
+  extends BasePopperAPI {
   popperElement: Nullable<PopperRef>;
   setPopperElement: React.Dispatch<React.SetStateAction<Nullable<PopperRef>>>;
   referenceElement: Nullable<TriggerRef>;

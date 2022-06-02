@@ -13,6 +13,21 @@ class PortManager extends EngineConsumer {
   log = this.engine.log.child('port');
 
   internal = {
+    addByKey: async (nodeID: string, key: string, port: Realtime.PartialModel<Realtime.Port>): Promise<void> => {
+      if (this.isAtomicActionsPhase2) {
+        await this.dispatch.sync(
+          Realtime.port.addByKey({
+            ...this.engine.context,
+            nodeID,
+            portID: port.id,
+            label: port.label,
+            key,
+          })
+        );
+      } else {
+        this.dispatch(Creator.addOutByKeyPort(nodeID, key, port));
+      }
+    },
     addDynamic: async (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
         await this.dispatch.sync(Realtime.port.addDynamic({ ...this.engine.context, nodeID, portID: port.id, label: port.label }));
@@ -34,6 +49,23 @@ class PortManager extends EngineConsumer {
       } else {
         this.dispatch(Creator.addOutBuiltInPort(nodeID, portType, port));
       }
+    },
+
+    removeByKey: async (key: string, portID: string, syncRemove?: () => Promise<void> | void): Promise<void> => {
+      const port = this.engine.getPortByID(portID);
+      if (!port) return;
+
+      if (this.isAtomicActionsPhase2) {
+        await this.dispatch.sync(Realtime.port.removeByKey({ ...this.engine.context, nodeID: port.nodeID, portID, key }));
+      } else {
+        const linkIDs = this.engine.getLinkIDsByPortID(portID);
+
+        await this.engine.link.removeMany(linkIDs);
+        await syncRemove?.();
+        this.dispatch(Creator.removeOutByKeyPort(key, portID));
+      }
+
+      this.engine.node.redrawLinks(port.nodeID);
     },
 
     removeDynamic: async (portID: string, syncRemove?: () => Promise<void> | void): Promise<void> => {
@@ -94,6 +126,25 @@ class PortManager extends EngineConsumer {
 
   getRect(portID: string): DOMRect | null {
     return this.api(portID)?.instance?.getRect() ?? null;
+  }
+
+  /**
+   * adds a new byKey out port to a known step
+   */
+  async addByKey(nodeID: string, key: string, port?: Partial<Realtime.Port>): Promise<void> {
+    const portID = Utils.id.objectID();
+    const augmentedPort = { ...port, id: portID };
+
+    this.log.debug(this.log.pending('adding out byKey port'), this.log.slug(portID));
+
+    if (!this.isAtomicActionsPhase2) {
+      await this.engine.realtime.sendUpdate(RealtimeDuck.addOutByKeyPort(nodeID, key, augmentedPort));
+    }
+
+    await this.internal.addByKey(nodeID, key, augmentedPort);
+    this.engine.saveHistory();
+
+    this.log.info(this.log.success('added out byKey port'), this.log.slug(portID));
   }
 
   /**
@@ -158,6 +209,17 @@ class PortManager extends EngineConsumer {
     this.engine.saveHistory();
 
     this.log.info(this.log.success('reordered out dynamic ports'), this.log.slug(nodeID), this.log.diff(from, to));
+  }
+
+  /**
+   * removes a byKey out port by its key and ID
+   */
+  async removeByKey(key: string, portID: string): Promise<void> {
+    this.log.debug(this.log.pending('removing out byKey port'), this.log.slug(portID));
+    await this.internal.removeByKey(key, portID, () => this.engine.realtime.sendUpdate(RealtimeDuck.removeOutByKeyPort(key, portID)));
+    this.engine.saveHistory();
+
+    this.log.info(this.log.success('removed out byKey port'), this.log.slug(portID));
   }
 
   /**

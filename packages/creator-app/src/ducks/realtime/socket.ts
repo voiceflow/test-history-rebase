@@ -23,8 +23,10 @@ export enum SocketAction {
   UPDATE_NODE_DATA = 'REALTIME:SOCKET:NODE:UPDATE_DATA',
   MOVE_MANY_NODES = 'REALTIME:SOCKET:NODE:MOVE_MANY',
 
+  ADD_OUT_BY_KEY_PORT = 'REALTIME:SOCKET:PORT:ADD_OUT_BY_KEY',
   ADD_OUT_DYNAMIC_PORT = 'REALTIME:SOCKET:PORT:ADD_OUT_DYNAMIC',
   ADD_OUT_BUILT_IN_PORT = 'REALTIME:SOCKET:PORT:ADD_OUT_BUILT_IN',
+  REMOVE_OUT_BY_KEY_PORT = 'REALTIME:SOCKET:PORT:REMOVE_OUT_BY_KEY',
   REMOVE_OUT_DYNAMIC_PORT = 'REALTIME:SOCKET:PORT:REMOVE_OUT_DYNAMIC',
   REMOVE_OUT_BUILT_IN_PORT = 'REALTIME:SOCKET:PORT:REMOVE_OUT_BUILT_IN',
   REORDER_OUT_DYNAMIC_PORTS = 'REALTIME:SOCKET:PORT:REORDER_OUT_DYNAMIC',
@@ -72,9 +74,13 @@ export type UpdateNodeData = Action<SocketAction.UPDATE_NODE_DATA, Omit<ActionPa
 
 export type MoveManyNodes = Action<SocketAction.MOVE_MANY_NODES, { nodeIDs: string[]; movement: Pair<number>; origins: Point[] }>;
 
+export type AddOutByKeyPort = Action<SocketAction.ADD_OUT_BY_KEY_PORT, ActionPayload<Creator.AddOutByKeyPort>>;
+
 export type AddOutDynamicPort = Action<SocketAction.ADD_OUT_DYNAMIC_PORT, ActionPayload<Creator.AddOutDynamicPort>>;
 
 export type AddOutBuiltInPort = Action<SocketAction.ADD_OUT_BUILT_IN_PORT, ActionPayload<Creator.AddOutBuiltInPort>>;
+
+export type RemoveOutByKeyPort = Action<SocketAction.REMOVE_OUT_BY_KEY_PORT, ActionPayload<Creator.RemoveOutByKeyPort>>;
 
 export type RemoveOutDynamicPort = Action<SocketAction.REMOVE_OUT_DYNAMIC_PORT, ActionPayload<Creator.RemoveOutDynamicPort>>;
 
@@ -102,8 +108,10 @@ export type AnySocketAction =
   | RemoveManyNodes
   | UpdateNodeData
   | MoveManyNodes
+  | AddOutByKeyPort
   | AddOutDynamicPort
   | AddOutBuiltInPort
+  | RemoveOutByKeyPort
   | RemoveOutDynamicPort
   | RemoveOutBuiltInPort
   | ReorderOutDynamicPorts
@@ -177,6 +185,12 @@ export const moveManyNodes = (nodeIDs: string[], movement: Pair<number>, origins
 /**
  * @deprecated
  */
+export const addOutByKeyPort = (nodeID: string, key: string, port: Realtime.PartialModel<Realtime.Port>): AddOutByKeyPort =>
+  createAction(SocketAction.ADD_OUT_BY_KEY_PORT, { nodeID, port, key });
+
+/**
+ * @deprecated
+ */
 export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): AddOutDynamicPort =>
   createAction(SocketAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port });
 
@@ -185,6 +199,12 @@ export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Re
  */
 export const addOutBuiltInPort = (nodeID: string, portType: BaseModels.PortType, port: Realtime.PartialModel<Realtime.Port>): AddOutBuiltInPort =>
   createAction(SocketAction.ADD_OUT_BUILT_IN_PORT, { nodeID, port, portType });
+
+/**
+ * @deprecated
+ */
+export const removeOutByKeyPort = (key: string, portID: string): RemoveOutByKeyPort =>
+  createAction(SocketAction.REMOVE_OUT_BY_KEY_PORT, { key, portID });
 
 /**
  * @deprecated

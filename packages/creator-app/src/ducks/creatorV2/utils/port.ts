@@ -121,6 +121,30 @@ export const removeDynamicPort = createPortRemover(removeDynamicPortFromNode);
 
 export const removeBuiltinPort = createPortRemover(removeBuiltinPortFromNode);
 
+export const removeByKeyPort = createPortRemover(removeByKeyPortFromNode);
+
+export const removeManyByKeyPort = (state: Draft<CreatorState>, nodeID: string, keys: string[]): void => {
+  state.portsByNodeID;
+  const ports = state.portsByNodeID[nodeID];
+  const portIDs = keys.map((key) => ports?.out.byKey[key]).filter(Boolean) as string[];
+  const linkIDs = portIDs.flatMap((portID) => state.linkIDsByPortID[portID] ?? []);
+
+  linkIDs.forEach((linkID) => {
+    removeLink(state, linkID);
+  });
+
+  portIDs.forEach((portID) => {
+    if (ports) {
+      deleteByValue(ports.out.byKey, portID);
+    }
+
+    delete state.nodeIDByPortID[portID];
+    delete state.linkIDsByPortID[portID];
+  });
+
+  state.ports = Normal.removeMany(state.ports, portIDs);
+};
+
 export const removeAnyPort = createPortRemover((ports, portID) => {
   removeByKeyPortFromNode(ports, portID);
   removeDynamicPortFromNode(ports, portID);

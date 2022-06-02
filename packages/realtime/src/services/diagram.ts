@@ -3,7 +3,14 @@ import { BaseModels } from '@voiceflow/base-types';
 import { AnyRecord, Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import type { PatchBuiltInLink, PatchDynamicLink, RemoveBuiltInLink, RemoveDynamicLink } from '@/clients/voiceflow/diagram';
+import type {
+  PatchBuiltInLink,
+  PatchByKeyLink,
+  PatchDynamicLink,
+  RemoveBuiltInLink,
+  RemoveByKeyLink,
+  RemoveDynamicLink,
+} from '@/clients/voiceflow/diagram';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../constants';
 import { AbstractControl } from '../control';
@@ -187,6 +194,12 @@ class DiagramService extends AbstractControl {
     await client.diagram.removeManyNodes(diagramID, nodes);
   }
 
+  public async addByKeyLink(creatorID: number, diagramID: string, nodeID: string, key: string, target: string): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.diagram.addByKeyLink(diagramID, nodeID, key, target);
+  }
+
   public async addBuiltInLink(creatorID: number, diagramID: string, nodeID: string, type: BaseModels.PortType, target: string): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
@@ -199,16 +212,36 @@ class DiagramService extends AbstractControl {
     await client.diagram.addDynamicLink(diagramID, nodeID, portID, target);
   }
 
-  public async removeManyLinks(creatorID: number, diagramID: string, links: (RemoveBuiltInLink | RemoveDynamicLink)[]): Promise<void> {
+  public async removeManyLinks(
+    creatorID: number,
+    diagramID: string,
+    links: (RemoveBuiltInLink | RemoveDynamicLink | RemoveByKeyLink)[]
+  ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.removeManyLinks(diagramID, links);
   }
 
-  public async patchManyLinks(creatorID: number, diagramID: string, patches: (PatchBuiltInLink | PatchDynamicLink)[]): Promise<void> {
+  public async patchManyLinks(
+    creatorID: number,
+    diagramID: string,
+    patches: (PatchBuiltInLink | PatchDynamicLink | PatchByKeyLink)[]
+  ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.patchManyLinks(diagramID, patches);
+  }
+
+  public async removeByKeyPort(creatorID: number, diagramID: string, nodeID: string, key: string): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.diagram.removeByKeyPort(diagramID, nodeID, key);
+  }
+
+  public async removeManyByKeyPort(creatorID: number, diagramID: string, nodeID: string, keys: string[]): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.diagram.removeManyByKeyPort(diagramID, nodeID, keys);
   }
 
   public async removeBuiltInPort(creatorID: number, diagramID: string, nodeID: string, type: BaseModels.PortType): Promise<void> {
@@ -227,6 +260,12 @@ class DiagramService extends AbstractControl {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.reorderPorts(diagramID, nodeID, portID, index);
+  }
+
+  public async addByKeyPort(creatorID: number, diagramID: string, nodeID: string, port: BaseModels.BasePort, key: string): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.diagram.addByKeyPort(diagramID, nodeID, port, key);
   }
 
   public async addBuiltInPort(

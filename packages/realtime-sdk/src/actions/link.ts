@@ -18,8 +18,12 @@ export interface AddBuiltinPayload extends AddDynamicPayload {
   type: BaseModels.PortType;
 }
 
+export interface AddByKeyPayload extends AddDynamicPayload {
+  key: string;
+}
+
 export interface RemoveManyPayload extends BaseDiagramPayload {
-  links: { nodeID: string; portID: string; linkID: string; type?: BaseModels.PortType }[];
+  links: { nodeID: string; portID: string; linkID: string; type?: BaseModels.PortType; key?: string }[];
 }
 
 export interface LinkPatch {
@@ -28,6 +32,7 @@ export interface LinkPatch {
   linkID: string;
   data: Partial<LinkData>;
   type?: BaseModels.PortType;
+  key?: string;
 }
 
 export interface PatchManyPayload extends BaseDiagramPayload {
@@ -36,5 +41,6 @@ export interface PatchManyPayload extends BaseDiagramPayload {
 
 export const addBuiltin = Utils.protocol.createAction<AddBuiltinPayload>(linkType('ADD_BUILT_IN'));
 export const addDynamic = Utils.protocol.createAction<AddDynamicPayload>(linkType('ADD_DYNAMIC'));
+export const addByKey = Utils.protocol.createAction<AddByKeyPayload>(linkType('ADD_BY_KEY'));
 export const removeMany = Utils.protocol.createAction<RemoveManyPayload>(linkType('REMOVE_MANY'));
 export const patchMany = Utils.protocol.createAction<PatchManyPayload>(linkType('PATCH_MANY'));

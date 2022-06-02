@@ -158,6 +158,9 @@ const creatorAdapter = createSimpleAdapter<
               data: data[node.id],
               ports: [
                 ...node.ports.out.dynamic.map((portID) => ports.byKey[portID]),
+                ...Object.values(node.ports.out.byKey)
+                  .filter(Boolean)
+                  .map((portID) => ports.byKey[portID]),
                 ...Object.values(node.ports.out.builtIn)
                   .filter(Boolean)
                   .map((portID) => ports.byKey[portID]),

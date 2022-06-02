@@ -6,6 +6,8 @@ import { CreatorState } from '../types';
 import addBlock from './addBlock';
 import addBuiltInLink from './addBuiltinLink';
 import addBuiltinPort from './addBuiltinPort';
+import addByKeyLink from './addByKeyLink';
+import addByKeyPort from './addByKeyPort';
 import addDynamicLink from './addDynamicLink';
 import addDynamicPort from './addDynamicPort';
 import addMarkup from './addMarkup';
@@ -16,7 +18,9 @@ import insertStep from './insertStep';
 import isolateStep from './isolateStep';
 import patchManyLinks from './patchManyLinks';
 import removeBuiltinPort from './removeBuiltinPort';
+import removeByKeyPort from './removeByKeyPort';
 import removeDynamicPort from './removeDynamicPort';
+import removeManyByKeyPorts from './removeManyByKeyPorts';
 import removeManyLinks from './removeManyLinks';
 import removeManyNodes from './removeManyNodes';
 import reorderDynamicPorts from './reorderDynamicPorts';
@@ -41,12 +45,16 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...removeManyNodes)
   .immerCase(...updateNodeData)
 
+  .immerCase(...addByKeyPort)
   .immerCase(...addDynamicPort)
   .immerCase(...addBuiltinPort)
   .immerCase(...reorderDynamicPorts)
+  .immerCase(...removeByKeyPort)
+  .immerCase(...removeManyByKeyPorts)
   .immerCase(...removeBuiltinPort)
   .immerCase(...removeDynamicPort)
 
+  .immerCase(...addByKeyLink)
   .immerCase(...addBuiltInLink)
   .immerCase(...addDynamicLink)
   .immerCase(...removeManyLinks)

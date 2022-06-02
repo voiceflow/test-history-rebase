@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Creator from '@/ducks/creator';
@@ -8,6 +9,20 @@ import LinkEntity, { TranslatePointData } from '@/pages/Canvas/engine/entities/l
 import { Pair } from '@/types';
 
 import { EngineConsumer, extractPoints, toCanvasRect } from './utils';
+
+const addAction = ({
+  portType,
+  portKey,
+  payload,
+}: {
+  portType: BaseModels.PortType | null;
+  portKey: string | null;
+  payload: Realtime.link.AddBuiltinPayload | Realtime.link.AddByKeyPayload | Realtime.link.AddDynamicPayload;
+}) => {
+  if (portType) return Realtime.link.addBuiltin({ ...payload, type: portType });
+  if (portKey) Realtime.link.addByKey({ ...payload, key: portKey });
+  return Realtime.link.addDynamic(payload);
+};
 
 class LinkManager extends EngineConsumer {
   log = this.engine.log.child('link');
@@ -21,6 +36,7 @@ class LinkManager extends EngineConsumer {
 
       if (this.isAtomicActionsPhase2) {
         const portType = this.select(CreatorV2.builtInPortTypeSelector, { id: sourcePortID });
+        const portKey = this.select(CreatorV2.byKeyPortKeySelector, { id: sourcePortID });
         const payload = {
           ...this.engine.context,
           sourceNodeID: sourcePort.nodeID,
@@ -30,7 +46,7 @@ class LinkManager extends EngineConsumer {
           linkID,
         };
 
-        await this.dispatch.sync(portType ? Realtime.link.addBuiltin({ ...payload, type: portType }) : Realtime.link.addDynamic(payload));
+        await this.dispatch.sync(addAction({ payload, portKey, portType }));
       } else {
         this.dispatch(Creator.addLink(sourcePortID, targetPortID, linkID));
       }
@@ -44,11 +60,13 @@ class LinkManager extends EngineConsumer {
       if (this.isAtomicActionsPhase2) {
         const links = this.select(CreatorV2.linksByIDsSelector, { ids: linkIDs }).map((link) => {
           const portType = this.select(CreatorV2.builtInPortTypeSelector, { id: link.source.portID });
+          const portKey = this.select(CreatorV2.byKeyPortKeySelector, { id: link.source.portID });
 
           return {
             ...link.source,
             linkID: link.id,
             ...(portType ? { type: portType } : {}),
+            ...(portKey ? { key: portKey } : {}),
           };
         });
 
@@ -62,8 +80,9 @@ class LinkManager extends EngineConsumer {
       if (this.isAtomicActionsPhase2) {
         const patchesWithType = patches.map((patch) => {
           const portType = this.select(CreatorV2.builtInPortTypeSelector, { id: patch.portID });
+          const portKey = this.select(CreatorV2.byKeyPortKeySelector, { id: patch.portID });
 
-          return { ...patch, ...(portType ? { type: portType } : {}) };
+          return { ...patch, ...(portType ? { type: portType } : {}), ...(portKey ? { key: portKey } : {}) };
         });
 
         await this.dispatch.sync(Realtime.link.patchMany({ ...this.engine.context, patches: patchesWithType }));

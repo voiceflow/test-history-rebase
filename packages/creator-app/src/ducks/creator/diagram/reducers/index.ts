@@ -12,12 +12,15 @@ import reduxBatchUndo from '@/utils/reduxBatchUndo';
 import { AnyCreatorAction, CreatorAction, InitializeCreator } from '../../actions';
 import {
   AddOutBuiltInPort,
+  AddOutByKeyPort,
   AddOutDynamicPort,
   AnyDiagramAction,
   DiagramAction,
   RemoveManyLinks,
+  RemoveManyOutByKeyPort,
   removeNodes,
   RemoveOutBuiltInPort,
+  RemoveOutByKeyPort,
   RemoveOutDynamicPort,
   ReorderOutDynamicPorts,
   SetDiagramState,
@@ -32,6 +35,7 @@ import { portFactory } from '../factories';
 import { DiagramState as DiagramStateType } from '../types';
 import {
   addOutBuiltInPortToBlockInState,
+  addOutByKeyPortToBlockInState,
   addOutDynamicPortToBlockInState,
   buildLinkedNodesByNodeID,
   buildLinksByNodeID,
@@ -41,7 +45,9 @@ import {
   patchNodeInState,
   patchPortInState,
   removeAllLinksFromState,
+  removeManyOutByKeyPortFromBlockInState,
   removeOutBuiltInPortFromBlockInState,
+  removeOutByKeyPortFromBlockInState,
   removeOutDynamicPortFromBlockInState,
   reorderOutDynamicPorts,
 } from '../utils';
@@ -103,11 +109,25 @@ export const updateLinkDataManyReducer: Reducer<DiagramStateType, UpdateLinkData
     )(nextState);
   }, state);
 
+export const addOutByKeyPortReducer: Reducer<DiagramStateType, AddOutByKeyPort> = (state, { payload: { nodeID, port, key } }) =>
+  addOutByKeyPortToBlockInState(key, portFactory(nodeID, port.id, port))(state);
+
 export const addOutDynamicPortReducer: Reducer<DiagramStateType, AddOutDynamicPort> = (state, { payload: { nodeID, port } }) =>
   addOutDynamicPortToBlockInState(portFactory(nodeID, port.id, port))(state);
 
 export const addOutBuiltInPortReducer: Reducer<DiagramStateType, AddOutBuiltInPort> = (state, { payload: { nodeID, port, portType } }) =>
   addOutBuiltInPortToBlockInState(portType, portFactory(nodeID, port.id, port))(state);
+
+export const removeOutByKeyPortReducer: Reducer<DiagramStateType, RemoveOutByKeyPort> = (state, { payload: { portID, key } }) =>
+  Utils.functional.compose(removeOutByKeyPortFromBlockInState(key, portID), removeAllLinksFromState(getLinkIDsByPortID(state)(portID)))(state);
+
+const getLinkIdsByManyPorts = (state: DiagramStateType, ports: { portID: string }[]) => {
+  const getLinkIds = getLinkIDsByPortID(state);
+  return ports.flatMap(({ portID }) => getLinkIds(portID));
+};
+
+export const removeManyOutByKeyPortReducer: Reducer<DiagramStateType, RemoveManyOutByKeyPort> = (state, { payload: ports }) =>
+  Utils.functional.compose(removeManyOutByKeyPortFromBlockInState(ports), removeAllLinksFromState(getLinkIdsByManyPorts(state, ports)))(state);
 
 export const removeOutDynamicPortReducer: Reducer<DiagramStateType, RemoveOutDynamicPort> = (state, { payload: portID }) =>
   Utils.functional.compose(removeOutDynamicPortFromBlockInState(portID), removeAllLinksFromState(getLinkIDsByPortID(state)(portID)))(state);
@@ -180,10 +200,16 @@ const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | An
       return addWrappedNodeReducer(state, action);
     case DiagramAction.REMOVE_MANY_NODES:
       return removeManyNodesReducer(state, action);
+    case DiagramAction.ADD_OUT_BY_KEY_PORT:
+      return addOutByKeyPortReducer(state, action);
     case DiagramAction.ADD_OUT_DYNAMIC_PORT:
       return addOutDynamicPortReducer(state, action);
     case DiagramAction.ADD_OUT_BUILT_IN_PORT:
       return addOutBuiltInPortReducer(state, action);
+    case DiagramAction.REMOVE_MANY_OUT_BY_KEY_PORT:
+      return removeManyOutByKeyPortReducer(state, action);
+    case DiagramAction.REMOVE_OUT_BY_KEY_PORT:
+      return removeOutByKeyPortReducer(state, action);
     case DiagramAction.REMOVE_OUT_DYNAMIC_PORT:
       return removeOutDynamicPortReducer(state, action);
     case DiagramAction.REMOVE_OUT_BUILT_IN_PORT:

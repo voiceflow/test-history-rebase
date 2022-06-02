@@ -137,6 +137,14 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
       await this.engine.link.internal.removeMany(linkIDs);
     },
 
+    [Realtime.SocketAction.ADD_OUT_BY_KEY_PORT]: async ({ nodeID, port, key }: ActionPayload<Realtime.AddOutByKeyPort>, tabID) => {
+      if (this.isAtomicActionsPhase2) return;
+
+      Sentry.breadcrumb('realtime', 'Remote user added byKey port', { tabID });
+
+      await this.engine.port.internal.addByKey(nodeID, key, port);
+    },
+
     [Realtime.SocketAction.ADD_OUT_DYNAMIC_PORT]: async ({ nodeID, port }: ActionPayload<Realtime.AddOutDynamicPort>, tabID) => {
       if (this.isAtomicActionsPhase2) return;
 
@@ -150,6 +158,14 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
       Sentry.breadcrumb('realtime', 'Remote user added builtIn port', { tabID });
 
       await this.engine.port.internal.addBuiltin(nodeID, portType, port);
+    },
+
+    [Realtime.SocketAction.REMOVE_OUT_BY_KEY_PORT]: async ({ portID, key }: ActionPayload<Realtime.RemoveOutByKeyPort>, tabID) => {
+      if (this.isAtomicActionsPhase2) return;
+
+      Sentry.breadcrumb('realtime', 'Remote user removed byKey port', { tabID });
+
+      await this.engine.port.internal.removeByKey(key, portID);
     },
 
     [Realtime.SocketAction.REMOVE_OUT_DYNAMIC_PORT]: async (portID: ActionPayload<Realtime.RemoveOutDynamicPort>, tabID) => {

@@ -14,6 +14,11 @@ export interface RemoveDynamicLink {
   portID: string;
 }
 
+export interface RemoveByKeyLink {
+  nodeID: string;
+  key: string;
+}
+
 export interface PatchBuiltInLink {
   nodeID: string;
   type: BaseModels.PortType;
@@ -23,6 +28,12 @@ export interface PatchBuiltInLink {
 export interface PatchDynamicLink {
   nodeID: string;
   portID: string;
+  data: Partial<Realtime.LinkData>;
+}
+
+export interface PatchByKeyLink {
+  nodeID: string;
+  key: string;
   data: Partial<Realtime.LinkData>;
 }
 
@@ -76,25 +87,38 @@ const Client = ({ api }: ExtraOptions) => ({
   removeManyNodes: (diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[]) =>
     api.delete(`/v2/diagrams/${diagramID}/nodes`, { data: { nodes } }),
 
+  addByKeyLink: (diagramID: string, nodeID: string, key: string, target: string) =>
+    api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/links`, { target, key }),
+
   addBuiltInLink: (diagramID: string, nodeID: string, type: BaseModels.PortType, target: string) =>
     api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/links`, { type, target }),
 
   addDynamicLink: (diagramID: string, nodeID: string, portID: string, target: string) =>
     api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/links`, { portID, target }),
 
-  removeManyLinks: (diagramID: string, links: (RemoveBuiltInLink | RemoveDynamicLink)[]) =>
+  removeManyLinks: (diagramID: string, links: (RemoveBuiltInLink | RemoveDynamicLink | RemoveByKeyLink)[]) =>
     api.delete(`/v2/diagrams/${diagramID}/links`, { data: { links } }),
 
-  patchManyLinks: (diagramID: string, patches: (PatchBuiltInLink | PatchDynamicLink)[]) => api.patch(`/v2/diagrams/${diagramID}/links`, { patches }),
+  patchManyLinks: (diagramID: string, patches: (PatchBuiltInLink | PatchDynamicLink | PatchByKeyLink)[]) =>
+    api.patch(`/v2/diagrams/${diagramID}/links`, { patches }),
 
   removeBuiltInPort: (diagramID: string, nodeID: string, type: BaseModels.PortType) =>
     api.delete(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports`, { data: { type } }),
+
+  removeByKeyPort: (diagramID: string, nodeID: string, key: string) =>
+    api.delete(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports`, { data: { key } }),
+
+  removeManyByKeyPort: (diagramID: string, nodeID: string, keys: string[]) =>
+    api.delete(`/v2/diagrams/${diagramID}/nodes/${nodeID}/many-ports`, { data: { keys } }),
 
   removeDynamicPort: (diagramID: string, nodeID: string, portID: string) =>
     api.delete(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports`, { data: { portID } }),
 
   reorderPorts: (diagramID: string, nodeID: string, portID: string, index: number) =>
     api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports/reorder`, { portID, index }),
+
+  addByKeyPort: (diagramID: string, nodeID: string, port: BaseModels.BasePort, key: string) =>
+    api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports`, { port, key }),
 
   addBuiltInPort: (diagramID: string, nodeID: string, port: BaseModels.BasePort, type: BaseModels.PortType) =>
     api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports`, { port, type }),

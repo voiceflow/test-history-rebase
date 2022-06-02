@@ -49,3 +49,16 @@ export const builtInPortTypeSelector = createSelector(
     return found[0] as BaseModels.PortType;
   }
 );
+
+export const byKeyPortKeySelector = createSelector(
+  [creatorStateSelector, createCurriedSelector(portsByNodeIDSelector), idParamSelector],
+  ({ nodeIDByPortID }, getPorts, portID) => {
+    const nodeID = portID && nodeIDByPortID[portID];
+    if (!nodeID) return null;
+
+    const found = Object.entries(getPorts({ id: nodeID }).out.byKey).find(([, value]) => value === portID);
+    if (!found) return null;
+
+    return found[0];
+  }
+);

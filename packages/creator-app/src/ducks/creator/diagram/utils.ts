@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
+import _groupBy from 'lodash/groupBy';
 import * as Normal from 'normal-store';
 
 import { isMarkupBlockType } from '@/utils/typeGuards';
@@ -74,6 +75,32 @@ export const removeReferenceByKey =
           [key]: Utils.array.withoutValue(lookup[key], referenceValue),
         }
       : lookup;
+
+export const removeManyOutByKeyPortFromNode = (node: Realtime.Node, keys: string[]): { ports: Realtime.NodePorts } => ({
+  ports: {
+    ...node.ports,
+    out: {
+      ...node.ports.out,
+      byKey: Object.entries(node.ports.out.byKey)
+        .filter(([key]) => !keys.includes(key))
+        .reduce((acc, [key, value]) => Object.assign(acc, { [key]: value }), {}),
+    },
+  },
+});
+
+export const removeOutByKeyPortFromNode = (node: Realtime.Node, key: string): { ports: Realtime.NodePorts } => {
+  const { [key]: _, ...byKey } = node.ports.out.byKey;
+
+  return {
+    ports: {
+      ...node.ports,
+      out: {
+        ...node.ports.out,
+        byKey,
+      },
+    },
+  };
+};
 
 export const removeOutDynamicPortFromNode = (node: Realtime.Node, portID: string): { ports: Realtime.NodePorts } => ({
   ports: {
@@ -178,6 +205,13 @@ export const removeLinkFromState =
 export const removeAllLinksFromState = (linkIDs: string[]): DiagramStateComposeReducer =>
   Utils.functional.compose(...linkIDs.map(removeLinkFromState));
 
+export const removeManyPortsFromState =
+  (portIDs: string[]) =>
+  (state: DiagramState): DiagramState => ({
+    ...state,
+    ports: Normal.removeMany(state.ports, portIDs),
+  });
+
 export const removePortFromState =
   (portID: string) =>
   (state: DiagramState): DiagramState => ({
@@ -196,6 +230,39 @@ export const removeOutDynamicPortFromBlockInState = (portID: string): DiagramSta
     return {
       ...state,
       nodes: Normal.patchOne(state.nodes, node.id, removeOutDynamicPortFromNode(node, portID)),
+    };
+  });
+
+export const removeOutByKeyPortFromBlockInState = (key: string, portID: string): DiagramStateComposeReducer =>
+  Utils.functional.compose(removePortFromState(portID), (state: DiagramState) => {
+    const port = Utils.normalized.getNormalizedByKey(state.ports, portID);
+    const node = Utils.normalized.getNormalizedByKey(state.nodes, port.nodeID);
+
+    return {
+      ...state,
+      nodes: Normal.patchOne(state.nodes, node.id, removeOutByKeyPortFromNode(node, key)),
+    };
+  });
+
+export const removeManyOutByKeyPortFromBlockInState = (portsToRemove: { key: string; portID: string }[]): DiagramStateComposeReducer =>
+  Utils.functional.compose(removeManyPortsFromState(portsToRemove.map(({ portID }) => portID)), (state: DiagramState) => {
+    const portIDs = portsToRemove.map(({ portID }) => portID);
+    const ports = Utils.normalized.getAllNormalizedByKeys(state.ports, portIDs);
+    const groupedPorts = _groupBy(ports, 'nodeID');
+
+    const portsToRemoveByPortID = Utils.normalized.normalize(portsToRemove, ({ portID }) => portID);
+
+    const nodes = Utils.normalized.getAllNormalizedByKeys(state.nodes, Object.keys(groupedPorts));
+
+    const updatedNodes = nodes.map((node) => {
+      const ports = groupedPorts[node.id];
+      const keys = ports.map(({ id }) => portsToRemoveByPortID.byKey[id].key);
+      return { key: node.id, value: removeManyOutByKeyPortFromNode(node, keys) };
+    });
+
+    return {
+      ...state,
+      nodes: Normal.patchMany(state.nodes, updatedNodes),
     };
   });
 

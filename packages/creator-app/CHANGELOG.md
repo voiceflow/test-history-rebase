@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.745.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.744.0...@voiceflow/creator-app@1.745.0) (2022-06-02)
+
+
+### Features
+
+* transcripts upgrade page (VF-3543) ([#5516](https://github.com/voiceflow/creator-app/issues/5516)) ([0ebaa40](https://github.com/voiceflow/creator-app/commit/0ebaa40d2354e20c9ace4e66e6135a209ab9fd35))
+
+
+
+
+
 # [1.744.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.743.0...@voiceflow/creator-app@1.744.0) (2022-06-02)
 
 

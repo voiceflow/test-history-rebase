@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.97.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.96.0...@voiceflow/realtime-sdk@1.97.0) (2022-06-02)
+
+
+### Features
+
+* BETA VF in app assistant (VF-3480) ([#5407](https://github.com/voiceflow/creator-app/issues/5407)) ([c9509e2](https://github.com/voiceflow/creator-app/commit/c9509e2c71f691fa6e2b4bbc5499e876dba85a91))
+
+
+
+
+
 # [1.96.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.95.1...@voiceflow/realtime-sdk@1.96.0) (2022-06-02)
 
 

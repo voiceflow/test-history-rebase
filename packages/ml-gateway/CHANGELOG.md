@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.15.2...@voiceflow/ml-gateway@1.15.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* rename CardV2 to carousel (VF-3722) ([#5529](https://github.com/voiceflow/creator-app/issues/5529)) ([fd1485d](https://github.com/voiceflow/creator-app/commit/fd1485d1d8e8e8f73007281415714a749c8a718f))
+
+
+
+
+
 ## [1.15.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.15.1...@voiceflow/ml-gateway@1.15.2) (2022-06-01)
 
 

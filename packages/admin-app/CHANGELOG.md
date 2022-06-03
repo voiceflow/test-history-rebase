@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.16](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.34.15...@voiceflow/admin-app@1.34.16) (2022-06-03)
+
+
+### Bug Fixes
+
+* rename CardV2 to carousel (VF-3722) ([#5529](https://github.com/voiceflow/creator-app/issues/5529)) ([fd1485d](https://github.com/voiceflow/creator-app/commit/fd1485d1d8e8e8f73007281415714a749c8a718f))
+
+
+
+
+
 ## [1.34.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.34.14...@voiceflow/admin-app@1.34.15) (2022-06-03)
 
 **Note:** Version bump only for package @voiceflow/admin-app

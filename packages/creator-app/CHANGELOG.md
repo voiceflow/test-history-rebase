@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.751.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.750.3...@voiceflow/creator-app@1.751.0) (2022-06-03)
+
+
+### Bug Fixes
+
+* rename CardV2 to carousel (VF-3722) ([#5529](https://github.com/voiceflow/creator-app/issues/5529)) ([fd1485d](https://github.com/voiceflow/creator-app/commit/fd1485d1d8e8e8f73007281415714a749c8a718f))
+
+
+### Features
+
+* markup cleanup (VF-3433) ([#5511](https://github.com/voiceflow/creator-app/issues/5511)) ([8d3583a](https://github.com/voiceflow/creator-app/commit/8d3583ac5dced64e0d161af6df1ef08fd55bfeca))
+
+
+
+
+
 ## [1.750.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.750.2...@voiceflow/creator-app@1.750.3) (2022-06-03)
 
 

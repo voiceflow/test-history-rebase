@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.750.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.750.0...@voiceflow/creator-app@1.750.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* fixes capture step required entity prompt logic (VF-000) ([#5503](https://github.com/voiceflow/creator-app/issues/5503)) ([eb3f132](https://github.com/voiceflow/creator-app/commit/eb3f13231f75ad0c2b969d1f36687dadbfe35574))
+
+
+
+
+
 # [1.750.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.749.0...@voiceflow/creator-app@1.750.0) (2022-06-03)
 
 

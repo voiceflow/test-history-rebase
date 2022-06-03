@@ -1,9 +1,11 @@
 import { Box, Flex, Preview, stopPropagation, Tag, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import { Permission } from '@/config/permissions';
 import { InteractionModelTabType } from '@/constants';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
+import { usePermission } from '@/hooks/permission';
 import { EntityPrompt } from '@/pages/Canvas/types';
 import { copy } from '@/utils/clipboard';
 
@@ -14,6 +16,8 @@ interface ButtonsPreviewProps {
 }
 
 const CapturePreview: React.FC<ButtonsPreviewProps> = ({ prompt, onOpenEditor, onClose }) => {
+  const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
+
   const goToQuickviewModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
   const copyTextToClipboard = (value: string) => {
@@ -53,9 +57,11 @@ const CapturePreview: React.FC<ButtonsPreviewProps> = ({ prompt, onOpenEditor, o
         </Preview.ContentItem>
       </Preview.Content>
 
-      <Preview.Footer>
-        <Preview.ButtonIcon icon="editorEdit" onClick={handleEditorClick} />
-      </Preview.Footer>
+      {canOpenEditor && (
+        <Preview.Footer>
+          <Preview.ButtonIcon icon="editorEdit" onClick={handleEditorClick} />
+        </Preview.Footer>
+      )}
     </Preview>
   );
 };

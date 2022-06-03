@@ -1,9 +1,11 @@
 import { Box, Flex, Preview, stopPropagation, Tag, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import { Permission } from '@/config/permissions';
 import { InteractionModelTabType } from '@/constants';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
+import { usePermission } from '@/hooks/permission';
 import { copy } from '@/utils/clipboard';
 
 import { EntityPrompt } from '../types';
@@ -15,6 +17,7 @@ interface ButtonsPreviewProps {
 }
 
 const ButtonsPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, onClose }) => {
+  const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
   const openEntityModal = useDispatch(Router.goToCurrentCanvasInteractionModelEntity, InteractionModelTabType.SLOTS);
 
   const copyTextToClipboard = (value: string) => {
@@ -50,9 +53,11 @@ const ButtonsPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, 
         ))}
       </Preview.Content>
 
-      <Preview.Footer>
-        <Preview.ButtonIcon icon="editorEdit" onClick={handleEditorClick} />
-      </Preview.Footer>
+      {canOpenEditor && (
+        <Preview.Footer>
+          <Preview.ButtonIcon icon="editorEdit" onClick={handleEditorClick} />
+        </Preview.Footer>
+      )}
     </Preview>
   );
 };

@@ -13,7 +13,7 @@ import {
   outPortDataToDB,
 } from '../utils';
 
-const cardV2Adapter = createBlockAdapter<Omit<BaseNode.CardV2.StepData, 'noMatch' | 'noReply'>, Omit<NodeData.CardV2, 'noMatch' | 'noReply'>>(
+const carouselAdapter = createBlockAdapter<Omit<BaseNode.Carousel.StepData, 'noMatch' | 'noReply'>, Omit<NodeData.Carousel, 'noMatch' | 'noReply'>>(
   ({ cards, layout }) => ({
     cards,
     layout,
@@ -24,7 +24,7 @@ const cardV2Adapter = createBlockAdapter<Omit<BaseNode.CardV2.StepData, 'noMatch
   })
 );
 
-export const cardV2OutPortsAdapter = createOutPortsAdapter<NodeData.CardV2BuiltInPorts, NodeData.CardV2>(
+export const carouselOutPortsAdapter = createOutPortsAdapter<NodeData.CarouselBuiltInPorts, NodeData.Carousel>(
   (dbPorts, options) => {
     const dbNoMatchPort = findDBNoMatchPort(dbPorts);
     const dbNoReplyPort = findDBPortByType(dbPorts, BaseModels.PortType.NO_REPLY);
@@ -46,7 +46,7 @@ export const cardV2OutPortsAdapter = createOutPortsAdapter<NodeData.CardV2BuiltI
   ]
 );
 
-export const cardV2OutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.CardV2BuiltInPorts, NodeData.CardV2>(
+export const carouselOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.CarouselBuiltInPorts, NodeData.Carousel>(
   (dbPorts, options) => {
     const dbNoReplyPort = dbPorts.builtIn[BaseModels.PortType.NO_REPLY];
     const dbNoMatchPort = dbPorts.builtIn[BaseModels.PortType.NO_MATCH];
@@ -56,7 +56,7 @@ export const cardV2OutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.CardV2Bu
 
     return {
       ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
-      byKey: Utils.object.mapValue(dbPorts.byKey || {}, (port) => outPortDataFromDB(port, options)),
+      byKey: Utils.object.mapValue(dbPorts.byKey || {}, (port) => outPortDataFromDB(port!, options)),
       builtIn: {
         [BaseModels.PortType.NO_MATCH]: noMatchPortData,
         [BaseModels.PortType.NO_REPLY]: noReplyPortData ?? undefined,
@@ -73,4 +73,4 @@ export const cardV2OutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.CardV2Bu
   })
 );
 
-export default cardV2Adapter;
+export default carouselAdapter;

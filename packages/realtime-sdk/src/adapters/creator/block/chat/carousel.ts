@@ -1,21 +1,21 @@
 import { NodeData } from '@realtime-sdk/models';
 import { ChatNode } from '@voiceflow/chat-types';
 
-import { baseCardV2Adapter } from '../base';
+import { baseCarouselAdapter } from '../base';
 import { chatNoMatchAdapter, chatNoReplyAdapter, createBlockAdapter } from '../utils';
 
-const cardV2Adapter = createBlockAdapter<ChatNode.CardV2.StepData, NodeData.CardV2>(
+const carouselAdapter = createBlockAdapter<ChatNode.Carousel.StepData, NodeData.Carousel>(
   ({ noReply, noMatch, ...baseData }) => ({
-    ...baseCardV2Adapter.fromDB(baseData),
+    ...baseCarouselAdapter.fromDB(baseData),
     noReply: noReply ? chatNoReplyAdapter.fromDB(noReply) : null,
     noMatch: noMatch ? chatNoMatchAdapter.fromDB(noMatch) : null,
   }),
   ({ noMatch, noReply, ...baseData }) => ({
-    ...baseCardV2Adapter.toDB(baseData),
+    ...baseCarouselAdapter.toDB(baseData),
 
-    noMatch: chatNoMatchAdapter.toDB(noMatch as NodeData.ChatNoMatch),
+    noMatch: noMatch && chatNoMatchAdapter.toDB(noMatch as NodeData.ChatNoMatch),
     noReply: noReply && chatNoReplyAdapter.toDB(noReply as ChatNode.Utils.StepNoReply),
   })
 );
 
-export default cardV2Adapter;
+export default carouselAdapter;

@@ -14,15 +14,15 @@ import { transformVariablesToReadable } from '@/utils/slot';
 
 import Buttons from './Buttons';
 
-export interface CardV2StepDraggableItemProps
-  extends ItemComponentProps<Realtime.NodeData.CardV2.Card>,
+export interface CarouselStepDraggableCardrops
+  extends ItemComponentProps<Realtime.NodeData.Carousel.Card>,
     DragPreviewComponentProps,
-    MappedItemComponentHandlers<Realtime.NodeData.CardV2.Card> {
-  editor: NodeEditorV2Props<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts>;
+    MappedItemComponentHandlers<Realtime.NodeData.Carousel.Card> {
+  editor: NodeEditorV2Props<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts>;
   latestCreatedKey: string | undefined;
 }
 
-const CardV2StepDraggableItem: React.ForwardRefRenderFunction<HTMLElement, CardV2StepDraggableItemProps> = (
+const CarouselStepDraggableCard: React.ForwardRefRenderFunction<HTMLElement, CarouselStepDraggableCardrops> = (
   { item, index, editor, itemKey, onUpdate, isDragging, onContextMenu, connectedDragRef, latestCreatedKey, isDraggingPreview, isContextMenuOpen },
   ref
 ) => {
@@ -31,8 +31,8 @@ const CardV2StepDraggableItem: React.ForwardRefRenderFunction<HTMLElement, CardV
   const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 
   const onChange =
-    <Key extends keyof Realtime.NodeData.CardV2.Card>(field: Key) =>
-    (value: Realtime.NodeData.CardV2.Card[Key]) =>
+    <Key extends keyof Realtime.NodeData.Carousel.Card>(field: Key) =>
+    (value: Realtime.NodeData.Carousel.Card[Key]) =>
       onUpdate({
         [field]: value,
       });
@@ -105,4 +105,4 @@ const CardV2StepDraggableItem: React.ForwardRefRenderFunction<HTMLElement, CardV
   );
 };
 
-export default React.forwardRef(CardV2StepDraggableItem);
+export default React.forwardRef(CarouselStepDraggableCard);

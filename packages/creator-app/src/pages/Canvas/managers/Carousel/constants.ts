@@ -7,7 +7,7 @@ import { BlockType } from '@/constants';
 
 import { NodeConfig } from '../types';
 
-export const factory = (): BaseNode.CardV2.Card => ({
+export const factory = (): BaseNode.Carousel.CarouselCard => ({
   id: Utils.id.cuid.slug(),
   title: '',
   description: SlateEditorAPI.getEmptyState(),
@@ -15,8 +15,8 @@ export const factory = (): BaseNode.CardV2.Card => ({
   buttons: [],
 });
 
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = {
-  type: BlockType.CARDV2,
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = {
+  type: BlockType.CAROUSEL,
   icon: 'logs',
 
   factory: () => ({
@@ -28,7 +28,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CardV2, Realtime.NodeData
     },
     data: {
       name: 'Card',
-      layout: BaseNode.CardV2.CardLayout.CAROUSEL,
+      layout: BaseNode.Carousel.CarouselLayout.CAROUSEL,
       cards: [factory()],
       noMatch: null,
       noReply: null,

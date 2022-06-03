@@ -21,7 +21,7 @@ const cleanupStepPorts = (
     return { ports: data.ports.map(mapPort) };
   }
 
-  const byKey = Utils.object.mapValue(data.portsV2.byKey || {}, mapPort);
+  const byKey = Utils.object.mapValue((data.portsV2.byKey || {}) as Record<string, BaseModels.BasePort>, mapPort);
   const builtIn = Utils.object.mapValue(data.portsV2.builtIn, mapPort);
   const dynamic = data.portsV2.dynamic.map(mapPort);
 

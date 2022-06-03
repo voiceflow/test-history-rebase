@@ -10,11 +10,11 @@ import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import { NoMatchV2, NoReplyV2 } from '../../components';
 import { factory } from '../constants';
-import DraggableItem from './DraggableItem';
-import { useCardLayoutOption } from './hooks';
+import DraggableItem from './DraggableCard';
+import { useCarouselLayoutOption } from './hooks';
 
-const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = () => {
-  const editor = EditorV2.useEditor<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts>();
+const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = () => {
+  const editor = EditorV2.useEditor<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts>();
   const parentNode = useSelector(CreatorV2.nodeByIDSelector, { id: editor.node.parentNode });
 
   const isLast = React.useMemo(() => {
@@ -25,7 +25,7 @@ const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData
   const [isDragging, toggleDragging] = useToggle(false);
 
   const onChange = React.useCallback(
-    (cards: Realtime.NodeData.CardV2['cards'], save?: boolean) => editor.onChange({ cards }, save),
+    (cards: Realtime.NodeData.Carousel['cards'], save?: boolean) => editor.onChange({ cards }, save),
     [editor.onChange]
   );
 
@@ -47,9 +47,9 @@ const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData
 
   const noMatchConfig = NoMatchV2.useConfig();
   const noReplyConfig = NoReplyV2.useConfig();
-  const cardLayoutOption = useCardLayoutOption(editor.data.layout, (layout) => editor.onChange({ layout }, true));
+  const carouselLayoutOption = useCarouselLayoutOption(editor.data.layout, (layout) => editor.onChange({ layout }, true));
 
-  const actions = [cardLayoutOption, ...(isLast ? [noMatchConfig.option, noReplyConfig.option] : [])];
+  const actions = [carouselLayoutOption, ...(isLast ? [noMatchConfig.option, noReplyConfig.option] : [])];
 
   return (
     <EditorV2
@@ -90,4 +90,4 @@ const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData
   );
 };
 
-export default CardV2EditorRoot;
+export default CarouselEditorRoot;

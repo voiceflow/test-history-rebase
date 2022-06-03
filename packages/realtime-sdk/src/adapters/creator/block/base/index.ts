@@ -6,7 +6,7 @@ import { buttonsOutPortsAdapter, buttonsOutPortsAdapterV2 } from './buttons';
 import { captureOutPortsAdapter, captureOutPortsAdapterV2 } from './capture';
 import { captureV2OutPortsAdapter, captureV2OutPortsAdapterV2 } from './captureV2';
 import cardAdapter, { cardOutPortsAdapter, cardOutPortsAdapterV2 } from './card';
-import cardV2Adapter, { cardV2OutPortsAdapter, cardV2OutPortsAdapterV2 } from './cardV2';
+import carouselAdapter, { carouselOutPortsAdapter, carouselOutPortsAdapterV2 } from './carousel';
 import codeAdapter, { codeOutPortsAdapter, codeOutPortsAdapterV2 } from './code';
 import { commandOutPortsAdapter, commandOutPortsAdapterV2 } from './command';
 import componentAdapter, { componentOutPortsAdapter, componentOutPortsAdapterV2 } from './component';
@@ -29,7 +29,7 @@ import visualAdapter, { visualOutPortsAdapter, visualOutPortsAdapterV2 } from '.
 export { default as baseButtonsAdapter } from './buttons';
 export { default as baseCaptureAdapter } from './capture';
 export { default as baseCaptureV2Adapter } from './captureV2';
-export { default as baseCardV2Adapter } from './cardV2';
+export { default as baseCarouselAdapter } from './carousel';
 export { default as baseCommandAdapter } from './command';
 export { default as baseIntentAdapter } from './intent';
 export { default as baseInteractionAdapter } from './interaction';
@@ -44,7 +44,7 @@ export const baseBlockAdapter = {
   [BlockType.EXIT]: exitAdapter,
   [BlockType.CODE]: codeAdapter,
   [BlockType.CARD]: cardAdapter,
-  [BlockType.CARDV2]: cardV2Adapter,
+  [BlockType.CAROUSEL]: carouselAdapter,
   [BlockType.FLOW]: flowAdapter,
   [BlockType.SETV2]: setAdapter,
   [BlockType.TRACE]: traceAdapter,
@@ -61,7 +61,7 @@ export const baseOutPortAdapter = {
   [BlockType.SET]: setOutPortsAdapter,
   [BlockType.EXIT]: exitOutPortsAdapter,
   [BlockType.CARD]: cardOutPortsAdapter,
-  [BlockType.CARDV2]: cardV2OutPortsAdapter,
+  [BlockType.CAROUSEL]: carouselOutPortsAdapter,
   [BlockType.IFV2]: ifOutPortsAdapter,
   [BlockType.CODE]: codeOutPortsAdapter,
   [BlockType.FLOW]: flowOutPortsAdapter,
@@ -95,7 +95,7 @@ export const baseOutPortAdapterV2 = {
   [BlockType.SET]: setOutPortsAdapterV2,
   [BlockType.EXIT]: exitOutPortsAdapterV2,
   [BlockType.CARD]: cardOutPortsAdapterV2,
-  [BlockType.CARDV2]: cardV2OutPortsAdapterV2,
+  [BlockType.CAROUSEL]: carouselOutPortsAdapterV2,
   [BlockType.IFV2]: ifOutPortsAdapterV2,
   [BlockType.CODE]: codeOutPortsAdapterV2,
   [BlockType.FLOW]: flowOutPortsAdapterV2,

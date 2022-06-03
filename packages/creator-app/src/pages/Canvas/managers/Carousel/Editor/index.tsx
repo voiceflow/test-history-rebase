@@ -12,7 +12,7 @@ import Root from './Root';
 
 const EntityEditor = EditorV2.withGoBack(`${Buttons.PATH}`)(Entity.Editor);
 
-const CardV2Editor: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = () => (
+const CarouselEditor: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = () => (
   <Switch>
     <Route path={`${Path.CANVAS_NODE}/${Buttons.PATH}/${Entity.PATH}`} component={EntityEditor} />
     <Route path={`${Path.CANVAS_NODE}/${Buttons.PATH}`} component={Buttons.Editor} />
@@ -22,4 +22,4 @@ const CardV2Editor: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData.Car
   </Switch>
 );
 
-export default CardV2Editor;
+export default CarouselEditor;

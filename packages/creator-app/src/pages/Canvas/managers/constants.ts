@@ -12,7 +12,7 @@ import CancelPaymentManager from './CancelPayment';
 import CaptureManager from './Capture';
 import CaptureManagerV2 from './CaptureV2';
 import CardManager from './Card';
-import CardManagerV2 from './CardV2';
+import CarouselManager from './Carousel';
 import ChoiceManager from './Choice';
 import CodeManager from './Code';
 import CombinedManager from './Combined';
@@ -69,7 +69,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.CODE]: CodeManager,
   [BlockType.EXIT]: ExitManager,
   [BlockType.CARD]: CardManager,
-  [BlockType.CARDV2]: CardManagerV2,
+  [BlockType.CAROUSEL]: CarouselManager,
   [BlockType.DISPLAY]: DisplayManager,
   [BlockType.PERMISSION]: PermissionManager,
   [BlockType.ACCOUNT_LINKING]: AccountLinkingManager,

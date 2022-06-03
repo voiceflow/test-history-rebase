@@ -8,15 +8,15 @@ import { transformVariablesToReadable } from '@/utils/slot';
 
 import { PATH } from './constants';
 
-export interface CardV2EditorDraggableItemProps
-  extends ItemComponentProps<Realtime.NodeData.CardV2.CardButton>,
+export interface CarouselEditorDraggableItemProps
+  extends ItemComponentProps<Realtime.NodeData.Carousel.Button>,
     DragPreviewComponentProps,
-    MappedItemComponentHandlers<Realtime.NodeData.CardV2.CardButton> {
-  editor: NodeEditorV2Props<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts>;
+    MappedItemComponentHandlers<Realtime.NodeData.Carousel.Button> {
+  editor: NodeEditorV2Props<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts>;
 }
 
 // eslint-disable-next-line xss/no-mixed-html
-const CardV2EditorDraggableItem: React.ForwardRefRenderFunction<HTMLElement, CardV2EditorDraggableItemProps> = (
+const CarouselEditorDraggableItem: React.ForwardRefRenderFunction<HTMLElement, CarouselEditorDraggableItemProps> = (
   { item: button, editor, onRemove, isDragging, connectedDragRef, isDraggingPreview },
   ref
 ) => (
@@ -34,4 +34,4 @@ const CardV2EditorDraggableItem: React.ForwardRefRenderFunction<HTMLElement, Car
   </div>
 );
 
-export default React.forwardRef(CardV2EditorDraggableItem);
+export default React.forwardRef(CarouselEditorDraggableItem);

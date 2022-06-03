@@ -12,11 +12,16 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import IntentSection from './IntentSection';
 
-type CardButton = Realtime.NodeData.CardV2.CardButton;
-type Card = Realtime.NodeData.CardV2.Card;
+type ButtonInfo = Partial<{
+  cardID: string;
+  buttonID: string;
+  buttonIndex: number;
+  cardIndex: number;
+  button: Realtime.NodeData.Carousel.Button;
+  card: Realtime.NodeData.Carousel.Card;
+}>;
 
-type ButtonInfo = Partial<{ cardID: string; buttonID: string; buttonIndex: number; cardIndex: number; button: CardButton; card: Card }>;
-const findButtonInfo = (cards: Card[], buttonID: string): ButtonInfo => {
+const findButtonInfo = (cards: Realtime.NodeData.Carousel.Card[], buttonID: string): ButtonInfo => {
   const result: ButtonInfo = { buttonID };
   let button = null;
 
@@ -42,9 +47,9 @@ const findButtonInfo = (cards: Card[], buttonID: string): ButtonInfo => {
   return result;
 };
 
-const CardV2ButtonsEditor: React.FC = () => {
+const CarouselButtonsEditor: React.FC = () => {
   const chatCarouselIntent = useFeature(FeatureFlag.CHAT_CAROUSEL_INTENT);
-  const editor = EditorV2.useEditor<Realtime.NodeData.CardV2>();
+  const editor = EditorV2.useEditor<Realtime.NodeData.Carousel>();
   const params = useParams<{ buttonID: string }>();
   const { state } = useLocation<{ waitForData?: boolean }>();
 
@@ -53,7 +58,7 @@ const CardV2ButtonsEditor: React.FC = () => {
     [editor.data.cards, params.buttonID]
   );
 
-  const onChangeButton = (partialButton: Partial<CardButton>) => {
+  const onChangeButton = (partialButton: Partial<Realtime.NodeData.Carousel.Button>) => {
     if (!button || !card || cardIndex == null || buttonIndex == null) return;
 
     const buttons = Utils.array.replace(card.buttons, buttonIndex, { ...button, ...partialButton });
@@ -95,4 +100,4 @@ const CardV2ButtonsEditor: React.FC = () => {
   );
 };
 
-export default CardV2ButtonsEditor;
+export default CarouselButtonsEditor;

@@ -32,7 +32,7 @@ export enum BlockType {
   TRACE = 'trace',
   // visuals
   CARD = 'card',
-  CARDV2 = 'cardV2',
+  CAROUSEL = 'carousel',
   VISUAL = 'visual',
   DISPLAY = 'display',
   // user

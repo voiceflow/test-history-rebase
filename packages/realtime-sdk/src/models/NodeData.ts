@@ -189,15 +189,15 @@ export namespace NodeData {
     [BaseModels.PortType.NEXT]: string;
   }
 
-  export namespace CardV2 {
-    export type Card = BaseNode.CardV2.Card;
-    export type CardButton = BaseNode.CardV2.CardButton;
+  export namespace Carousel {
+    export type Card = BaseNode.Carousel.CarouselCard;
+    export type Button = BaseNode.Carousel.CarouselButton;
   }
-  export interface CardV2 extends Omit<VoiceflowNode.CardV2.StepData, 'noMatch' | 'noReply'> {
+  export interface Carousel extends Omit<VoiceflowNode.Carousel.StepData, 'noMatch' | 'noReply'> {
     noMatch: Nullable<NoMatch>;
     noReply: Nullable<NoReply>;
   }
-  export interface CardV2BuiltInPorts {
+  export interface CarouselBuiltInPorts {
     [BaseModels.PortType.NO_MATCH]?: string;
     [BaseModels.PortType.NO_REPLY]?: string;
   }
@@ -488,7 +488,7 @@ export interface NodeDataMap {
   [BlockType.TRACE]: NodeData.Trace;
 
   [BlockType.CARD]: NodeData.Card;
-  [BlockType.CARDV2]: NodeData.CardV2;
+  [BlockType.CAROUSEL]: NodeData.Carousel;
   [BlockType.VISUAL]: NodeData.Visual;
   [BlockType.DISPLAY]: unknown;
 

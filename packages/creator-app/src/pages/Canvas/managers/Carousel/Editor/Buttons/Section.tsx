@@ -9,18 +9,14 @@ import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { buttonFactory, PATH } from './constants';
 import DraggableItem from './DraggableItem';
 
-export type ReorderButtonCallback = (from: number, to: number, button: Realtime.NodeData.CardV2.CardButton) => Promise<void>;
-export type RemoveButtonCallback = (button: Realtime.NodeData.CardV2.CardButton) => Promise<void>;
-export type AddButtonCallback = (cardID: string) => Promise<void>;
-
-interface CardV2EditorButtonsSectionProps {
+interface CarouselEditorButtonsSectionProps {
   cardID: string;
-  editor: NodeEditorV2Props<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts>;
-  buttons: Realtime.NodeData.CardV2.CardButton[];
-  onUpdate: (value: Partial<Realtime.NodeData.CardV2.Card>) => void;
+  editor: NodeEditorV2Props<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts>;
+  buttons: Realtime.NodeData.Carousel.Button[];
+  onUpdate: (value: Partial<Realtime.NodeData.Carousel.Card>) => void;
 }
 
-const CardV2EditorButtonsSection: React.FC<CardV2EditorButtonsSectionProps> = ({ editor, buttons, onUpdate }) => {
+const CarouselEditorButtonsSection: React.FC<CarouselEditorButtonsSectionProps> = ({ editor, buttons, onUpdate }) => {
   const onAddNew = () => {
     const newButton = buttonFactory();
     onUpdate({
@@ -31,11 +27,11 @@ const CardV2EditorButtonsSection: React.FC<CardV2EditorButtonsSectionProps> = ({
     editor.goToNested({ state: { waitForData: true }, path: PATH, params: { buttonID: newButton.id } });
   };
 
-  const onChange = (newButtons: Realtime.NodeData.CardV2.CardButton[]) => {
+  const onChange = (newButtons: Realtime.NodeData.Carousel.Button[]) => {
     onUpdate({ buttons: newButtons });
   };
 
-  const onRemove = (button: Realtime.NodeData.CardV2.CardButton) => {
+  const onRemove = (button: Realtime.NodeData.Carousel.Button) => {
     const portID = editor.node.ports.out.byKey[button.id];
     editor.engine.port.removeByKey(button.id, portID);
   };
@@ -68,4 +64,4 @@ const CardV2EditorButtonsSection: React.FC<CardV2EditorButtonsSectionProps> = ({
   );
 };
 
-export default CardV2EditorButtonsSection;
+export default CarouselEditorButtonsSection;

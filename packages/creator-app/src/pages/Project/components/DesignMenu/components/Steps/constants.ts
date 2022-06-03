@@ -50,7 +50,7 @@ const CANCEL_PURCHASE_STEP = createMenuStep(Realtime.BlockType.CANCEL_PAYMENT);
 const CAPTURE_STEP_V2 = createMenuStep(Realtime.BlockType.CAPTUREV2);
 
 const CARD_STEP = createMenuStep(Realtime.BlockType.CARD);
-const CARD_STEP_V2 = createMenuStep(Realtime.BlockType.CARDV2);
+const CAROUSEL_STEP = createMenuStep(Realtime.BlockType.CAROUSEL);
 
 const CHOICE_STEP = createMenuStep(Realtime.BlockType.CHOICE);
 
@@ -172,7 +172,7 @@ export const CHATBOT_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP_V2],
+    steps: [TEXT_STEP, VISUAL_STEP, CAROUSEL_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,

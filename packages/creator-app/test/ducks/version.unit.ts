@@ -40,7 +40,7 @@ const VERSION: Realtime.AnyVersion = {
     error: null,
     repeat: BaseVersion.RepeatType.DIALOG,
     defaultCanvasNodeVisibility: BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
-    defaultCardLayout: BaseNode.CardV2.CardLayout.CAROUSEL,
+    defaultCarouselLayout: BaseNode.Carousel.CarouselLayout.CAROUSEL,
   },
   publishing: {
     foo: 'bar',

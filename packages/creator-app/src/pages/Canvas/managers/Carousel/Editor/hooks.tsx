@@ -12,18 +12,21 @@ const baseOption = {
   disabled: true,
 };
 
-export const useCardLayoutOption = (
-  layout: BaseNode.CardV2.CardLayout,
-  onChange: (layout: BaseNode.CardV2.CardLayout) => void
+export const useCarouselLayoutOption = (
+  layout: BaseNode.Carousel.CarouselLayout,
+  onChange: (layout: BaseNode.Carousel.CarouselLayout) => void
 ): OptionsMenuOption => {
   const patchSettings = useDispatch(Version.patchSettings);
-  const savedCardLayout = useSelector(VersionV2.active.cardLayoutSelector);
-  const defaultCardLayout = savedCardLayout || BaseNode.CardV2.CardLayout.CAROUSEL;
+  const savedCarouselLayout = useSelector(VersionV2.active.carouselLayoutSelector);
+  const defaultCarouselLayout = savedCarouselLayout || BaseNode.Carousel.CarouselLayout.CAROUSEL;
 
-  const toggleDefaultCardLayout = React.useCallback(() => {
-    const value = defaultCardLayout === BaseNode.CardV2.CardLayout.CAROUSEL ? BaseNode.CardV2.CardLayout.LIST : BaseNode.CardV2.CardLayout.CAROUSEL;
-    return patchSettings({ defaultCardLayout: value });
-  }, [defaultCardLayout]);
+  const toggleDefaultCarouselLayout = React.useCallback(() => {
+    const value =
+      defaultCarouselLayout === BaseNode.Carousel.CarouselLayout.CAROUSEL
+        ? BaseNode.Carousel.CarouselLayout.LIST
+        : BaseNode.Carousel.CarouselLayout.CAROUSEL;
+    return patchSettings({ defaultCarouselLayout: value });
+  }, [defaultCarouselLayout]);
 
   return {
     label: 'Buttons layout',
@@ -31,14 +34,20 @@ export const useCardLayoutOption = (
       {
         ...baseOption,
         label: (
-          <MenuCheckboxOption checked={layout === BaseNode.CardV2.CardLayout.CAROUSEL} onChange={() => onChange(BaseNode.CardV2.CardLayout.CAROUSEL)}>
+          <MenuCheckboxOption
+            checked={layout === BaseNode.Carousel.CarouselLayout.CAROUSEL}
+            onChange={() => onChange(BaseNode.Carousel.CarouselLayout.CAROUSEL)}
+          >
             Carousel
           </MenuCheckboxOption>
         ),
       },
       {
         label: (
-          <MenuCheckboxOption checked={layout === BaseNode.CardV2.CardLayout.LIST} onChange={() => onChange(BaseNode.CardV2.CardLayout.LIST)}>
+          <MenuCheckboxOption
+            checked={layout === BaseNode.Carousel.CarouselLayout.LIST}
+            onChange={() => onChange(BaseNode.Carousel.CarouselLayout.LIST)}
+          >
             List
           </MenuCheckboxOption>
         ),
@@ -47,7 +56,7 @@ export const useCardLayoutOption = (
       { label: '', disabled: true, menuItemProps: { style: { marginBottom: 0 }, divider: true } },
       {
         label: (
-          <MenuCheckboxOption type={CheckboxType.CHECKBOX} checked={defaultCardLayout === layout} onChange={toggleDefaultCardLayout}>
+          <MenuCheckboxOption type={CheckboxType.CHECKBOX} checked={defaultCarouselLayout === layout} onChange={toggleDefaultCarouselLayout}>
             Set as default
           </MenuCheckboxOption>
         ),

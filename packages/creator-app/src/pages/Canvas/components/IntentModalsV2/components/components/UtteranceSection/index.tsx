@@ -56,7 +56,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
   withBorderTop,
 }) => {
   const { search } = useLocation();
-  const { setShowUtteranceRecos } = React.useContext(NLUManagerContext);
+  const { setShowUtteranceRecos, showUtteranceRecos } = React.useContext(NLUManagerContext);
 
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = prefilledUtterance || (queryParams[PREFILLED_UTTERANCE_PARAM] as string | null);
@@ -104,7 +104,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
     }
   });
 
-  const openRecommendations = () => setShowUtteranceRecos?.(true);
+  const toggleShowUtteranceRecos = () => setShowUtteranceRecos?.(!showUtteranceRecos);
 
   const { onAddSlot } = useAddSlot();
 
@@ -157,7 +157,12 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
           <Box>
             {withRecommendations && (
               <Box mr={16} display="inline-block">
-                <Badge flat onClick={openRecommendations}>
+                <Badge
+                  active={showUtteranceRecos}
+                  flat
+                  onClick={toggleShowUtteranceRecos}
+                  style={{ fontSize: '13px', lineHeight: '16px', minHeight: '24px' }}
+                >
                   Recommend
                 </Badge>
               </Box>

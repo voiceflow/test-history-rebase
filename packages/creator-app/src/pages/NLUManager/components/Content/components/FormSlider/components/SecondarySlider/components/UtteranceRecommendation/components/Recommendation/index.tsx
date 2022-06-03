@@ -16,7 +16,7 @@ const Recommendation: React.FC<RecommendationProps> = ({ onDecline, text, onAcce
       <Input value={localText} onChangeText={setLocalText} />
       <Box display="flex" width={80} ml={24} alignItems="center">
         <IconButton inline style={{ marginRight: 16 }} onClick={onDecline} icon="close" variant={IconButtonVariant.BASIC} />
-        <IconButton inline onClick={() => onAccept(localText)} icon="check" variant={IconButtonVariant.BASIC} />
+        <IconButton inline onClick={() => onAccept(localText)} icon="checkSquare" containerSize={8} size={20} variant={IconButtonVariant.BASIC} />
       </Box>
     </Container>
   );

@@ -32,13 +32,13 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data }) => {
   };
   return (
     <Container display="flex" onClick={jumpToItem} flexDirection="row">
-      <Box width={70}>
+      <Box width={60}>
         <IconContainer>
           <SvgIcon icon={NOTIFICATION_ITEM_ICONS[type] as Icon} color="#6e849a" />
         </IconContainer>
       </Box>
       <Box flex={2}>
-        <Box color="#bd425f" fontWeight={600}>
+        <Box color="#bd425f" fontWeight={600} fontSize={13} mb={4}>
           {title}
         </Box>
         <Box>{message}</Box>

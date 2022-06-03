@@ -33,8 +33,8 @@ const HeaderItem: React.FC<HeaderItemProps> = ({ column, setOrderType, orderType
       </NameWrapper>
       {hasSorter && (
         <OrderBox show={isActive} width={20} ml={6} position="relative" top="1px">
-          <SvgIcon icon="nubUp" color={nubUpColor} size={7} style={{ position: 'relative', top: '0px' }} />
-          <SvgIcon icon="nubDown" size={7} color={nubDownColor} />
+          <SvgIcon icon="nubUp" color={nubUpColor} size={6} style={{ position: 'relative', top: '0px' }} />
+          <SvgIcon icon="nubDown" size={6} color={nubDownColor} />
         </OrderBox>
       )}
     </HeaderItemComponent>

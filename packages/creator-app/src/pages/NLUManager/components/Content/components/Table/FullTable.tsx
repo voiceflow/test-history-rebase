@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { Variable } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/types';
 import { TableContainer } from '@/pages/NLUManager/components/Content/components';
-import TableHeader from '@/pages/NLUManager/components/Content/components/IntentTable/TableHeader';
+import TableHeader from '@/pages/NLUManager/components/Content/components/Table/components/TableHeader';
 import Table from '@/pages/NLUManager/components/Content/components/Table/index';
 
 interface FullTableProps {

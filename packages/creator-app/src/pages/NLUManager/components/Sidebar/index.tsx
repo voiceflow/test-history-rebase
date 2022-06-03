@@ -14,7 +14,7 @@ import { useNLUImport } from '@/pages/NewProjectV2/hooks';
 import { ImportModel, SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
-import { Footer, ItemSidebar, SidebarContainer } from './components';
+import { Footer, ImportTooltipTitle, ItemSidebar, SidebarContainer } from './components';
 import MenuItem from './components/MenuItem';
 
 const Sidebar: React.FC = () => {
@@ -74,7 +74,11 @@ const Sidebar: React.FC = () => {
               position: 'right-end',
               offset: -65,
               distance: -250,
-              html: <TippyTooltip.Complex title={`${platform} import`}>Imports must be in {acceptedFileFormatsLabel} format</TippyTooltip.Complex>,
+              html: (
+                <TippyTooltip.Complex title={<ImportTooltipTitle>{platform} import</ImportTooltipTitle>}>
+                  Imports must be in {acceptedFileFormatsLabel} format
+                </TippyTooltip.Complex>
+              ),
             }}
           >
             <Box p={16} pb={12}>
@@ -83,7 +87,7 @@ const Sidebar: React.FC = () => {
           </TippyTooltip>
         )}
         <Footer onClick={goToCurrentCanvas}>
-          <SvgIcon icon="arrowDown" size={18} color="#6e849a" inline style={{ marginRight: '10px', transform: 'rotate(90deg)' }} />
+          <SvgIcon icon="arrowDown" size={18} color="#6e849a" inline style={{ marginRight: '10px' }} />
           Go to Designer
         </Footer>
       </span>

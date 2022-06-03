@@ -53,20 +53,19 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
     const options: NLUItem[] = [];
     const nlpProvider: null | Exclude<NLPProvider, NLPProvider.VF_CSV> = (project?.platform && PlatformToNLPProvider[project.platform]) || null;
 
-    if (canRename) {
-      options.push({ key: 'rename', label: 'Rename', onClick: onRename });
-    }
-
     if (canExport) {
-      if (options.length) {
-        options.push({ key: 'divider-1', label: 'divider-1', divider: true });
-      }
-
       options.push({ key: 'export-csv', label: 'Export CSV', onClick: () => onExport(NLPProvider.VF_CSV) });
 
       if (nlpProvider) {
         options.push({ key: 'export-json', label: 'Export JSON', onClick: () => onExport(nlpProvider) });
       }
+    }
+
+    if (canRename) {
+      if (options.length) {
+        options.push({ key: 'divider-1', label: 'divider-1', divider: true });
+      }
+      options.push({ key: 'rename', label: 'Rename', onClick: onRename });
     }
 
     if (canDelete) {

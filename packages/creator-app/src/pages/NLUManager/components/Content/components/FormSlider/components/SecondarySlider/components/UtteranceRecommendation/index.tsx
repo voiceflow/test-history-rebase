@@ -1,4 +1,4 @@
-import { Box, IconButton, IconButtonVariant, toast } from '@voiceflow/ui';
+import { Box, IconButton, IconButtonVariant, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Intent from '@/ducks/intent';
@@ -55,9 +55,10 @@ const UtteranceRecommendation: React.FC<UtteranceRecommendationProps> = ({ inten
         <Box fontWeight={600} fontSize={18} margin="-2px 0">
           Recommendations
         </Box>
-
         <Box display="flex">
-          <IconButton icon="publishSpin" inline style={{ marginRight: 14 }} variant={IconButtonVariant.BASIC} />
+          <TippyTooltip title="Refresh" style={{ display: 'flex' }} distance={20}>
+            <IconButton icon="publishSpin" inline style={{ marginRight: 14 }} variant={IconButtonVariant.BASIC} />
+          </TippyTooltip>
           <IconButton onClick={() => setShowUtteranceRecos(false)} icon="close" inline variant={IconButtonVariant.BASIC} />
         </Box>
       </SliderHeader>

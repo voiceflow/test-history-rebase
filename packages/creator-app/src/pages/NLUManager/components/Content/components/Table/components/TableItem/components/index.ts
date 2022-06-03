@@ -5,6 +5,8 @@ export const ItemContainer = styled.div<{ hide: boolean; selected: boolean }>`
   display: flex;
   padding: 16px 32px;
   border-bottom: solid 1px #eaeff4;
+  gap: 16px;
+
   background: white;
   cursor: pointer;
 

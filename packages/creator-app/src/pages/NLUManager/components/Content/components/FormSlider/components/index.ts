@@ -4,12 +4,17 @@ import { css, styled, transition } from '@/hocs';
 
 export const FORM_SLIDER_WIDTH = 460;
 
-export const SliderContainer = styled.div<{ opened: boolean }>`
+export const SliderContainer = styled.div<{ opened: boolean; secondarySliderOpened: boolean }>`
   ${transition('right')}
   position: absolute;
   display: flex;
   flex-direction: column;
-  box-shadow: rgb(249 249 249) -5px 0px 30px 0px;
+
+  ${({ secondarySliderOpened }) =>
+    !secondarySliderOpened &&
+    css`
+      box-shadow: rgb(249 249 249) -5px 0px 30px 0px;
+    `}
   height: 100%;
   top: 0px;
   right: -${FORM_SLIDER_WIDTH}px;

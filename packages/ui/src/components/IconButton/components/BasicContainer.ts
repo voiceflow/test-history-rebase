@@ -24,6 +24,9 @@ const hoverStyle = css`
 const BasicContainer = styled.div<BasicContainerProps>`
   ${transition('background', 'opacity', 'color')};
 
+  height: 36px;
+  width: 36px;
+
   ${({ containerSize = 10 }) => css`
     padding: ${containerSize}px;
     margin: -${containerSize}px;

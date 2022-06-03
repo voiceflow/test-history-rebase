@@ -1,8 +1,20 @@
 import { css, styled, transition } from '@/hocs';
 
+export const SidebarHeaderContainer = styled.div`
+  font-weight: 600;
+  color: #132144;
+  display: flex;
+  font-weight: 600;
+  color: #132144;
+  padding: 20px 24px 20px 8px;
+  justify-content: space-between;
+  min-width: ${({ theme }) => theme.components.navLinkSidebar.width - 18}px;
+  border-right: 1px solid ${({ theme }) => theme.colors.borders};
+`;
+
 export const ErrorBubble = styled.div<{ active: boolean }>`
   ${transition()}
-  padding: 1px 8px;
+  padding: 2px 8px;
   background: white;
   border-radius: 6px;
   display: flex;
@@ -15,5 +27,6 @@ export const ErrorBubble = styled.div<{ active: boolean }>`
     active &&
     css`
       background: #eef4f6;
+      border-collapse: #dfe3ed;
     `}
 `;

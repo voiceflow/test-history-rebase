@@ -2,6 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { InteractionModelTabType } from '@/constants';
 import { Variable } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/types';
+import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import { ClarityTooltip, ConfidenceTooltip } from './headerTooltips';
 
@@ -30,21 +31,21 @@ export const TableMeta = {
     columns: [
       {
         name: IntentTableColumns.name,
-        flexWidth: 3,
+        flexWidth: 1.5,
       },
       {
         name: IntentTableColumns.confidence,
-        flexWidth: 2,
+        flexWidth: 1,
         Tooltip: ConfidenceTooltip,
       },
       {
         name: IntentTableColumns.clarity,
-        flexWidth: 2,
+        flexWidth: 1,
         Tooltip: ClarityTooltip,
       },
       {
         name: IntentTableColumns.utterances,
-        flexWidth: 2,
+        flexWidth: 1,
       },
       {
         name: IntentTableColumns.entities,
@@ -89,7 +90,10 @@ export const TableMeta = {
 export const TableSorters = {
   [InteractionModelTabType.INTENTS]: {
     [IntentTableColumns.name]: (intentA: Realtime.Intent, intentB: Realtime.Intent) => intentA.name.localeCompare(intentB.name),
-    [IntentTableColumns.confidence]: (intentA: Realtime.Intent, intentB: Realtime.Intent) => intentA.inputs.length - intentB.inputs.length,
+    [IntentTableColumns.confidence]: (intentA: Realtime.Intent, intentB: Realtime.Intent) => {
+      if (isCustomizableBuiltInIntent(intentA)) return 1;
+      return intentA.inputs.length - intentB.inputs.length;
+    },
     [IntentTableColumns.utterances]: (intentA: Realtime.Intent, intentB: Realtime.Intent) => intentA.inputs.length - intentB.inputs.length,
   },
   [InteractionModelTabType.SLOTS]: {

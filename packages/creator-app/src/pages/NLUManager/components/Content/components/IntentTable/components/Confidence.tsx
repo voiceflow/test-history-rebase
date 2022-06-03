@@ -11,11 +11,11 @@ interface ConfidenceProps {
 const Confidence: React.FC<ConfidenceProps> = ({ flex, intentStrength }) => {
   return (
     <StrengthContainer flex={flex}>
-      <Box display="inline-block" mt={-6}>
-        <StrengthGauge tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }} width={40} level={intentStrength} />
+      <Box display="inline-block" mt={1}>
+        <StrengthGauge tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'Empty' }} width={40} level={intentStrength} />
       </Box>
       <StrengthDescriptorContainer>
-        {intentStrength === StrengthGauge.Level.NOT_SET ? 'No utterances' : StrengthGauge.TOOLTIP_LABEL_MAP[intentStrength]}
+        {intentStrength === StrengthGauge.Level.NOT_SET ? 'Empty' : StrengthGauge.TOOLTIP_LABEL_MAP[intentStrength]}
       </StrengthDescriptorContainer>
     </StrengthContainer>
   );

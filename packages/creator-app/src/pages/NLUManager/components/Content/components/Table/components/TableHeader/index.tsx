@@ -4,7 +4,7 @@ import React from 'react';
 import Checkbox, { CheckboxType } from '@/components/Checkbox';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
-import { Header } from '../../Table/components';
+import { Header } from '..';
 import HeaderItem from './components/HeaderItem';
 
 interface TableHeaderProps {
@@ -21,7 +21,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({ hasScrolled, sorters, orderDi
 
   return (
     <Header hasScrolled={hasScrolled}>
-      <Box display="inline-block" mr={12}>
+      <Box display="inline-block">
         <Checkbox type={CheckboxType.DASH} checked={!!checkedItems.length} onClick={toggleAllCheckedItems} />
       </Box>
       {columns.map((column) => (

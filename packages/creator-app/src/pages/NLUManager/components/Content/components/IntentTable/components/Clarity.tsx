@@ -11,7 +11,7 @@ interface ConfidenceProps {
 const Clarity: React.FC<ConfidenceProps> = ({ flex, clarityStrength }) => {
   return (
     <StrengthContainer flex={flex}>
-      <Box display="inline-block" mt={-6}>
+      <Box display="inline-block" mt={1}>
         <StrengthGauge width={40} level={clarityStrength} />
       </Box>
       <StrengthDescriptorContainer>{StrengthGauge.TOOLTIP_LABEL_MAP[clarityStrength]}</StrengthDescriptorContainer>

@@ -85,7 +85,7 @@ const Cards: React.FC<CardsProps> = ({ intentID }) => {
           body={<>{confidenceMeta.message}</>}
           handleClose={() => {}}
         />
-        <Box mt={12}>
+        <Box mt={16}>
           <Card
             color={StrengthGauge.StrengthColor[strengthLevel]}
             title={

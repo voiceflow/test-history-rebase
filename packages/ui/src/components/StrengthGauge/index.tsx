@@ -26,7 +26,7 @@ const StrengthGauge: React.FC<StrengthGaugeTypes.Props> = ({ level = Level.NOT_S
   const strengthLineWidth = width * LINE_MULTIPLIER_MAP[level];
 
   return (
-    <Container title={tooltipLabelMap?.[level] || TOOLTIP_LABEL_MAP[level]}>
+    <Container title={tooltipLabelMap?.[level] || TOOLTIP_LABEL_MAP[level]} distance={8}>
       <Line width={width} thickness={thickness}>
         <StrengthLine thickness={thickness} width={strengthLineWidth} strength={level} />
       </Line>

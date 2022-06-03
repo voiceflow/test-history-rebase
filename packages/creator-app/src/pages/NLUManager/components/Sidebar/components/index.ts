@@ -2,6 +2,10 @@ import { SvgIconContainer, ThemeColor } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs';
 
+export const ImportTooltipTitle = styled.div`
+  text-transform: capitalize;
+`;
+
 export const SidebarContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -31,7 +35,7 @@ export const Footer = styled.div`
   align-items: center;
   font-size: 15px;
   cursor: pointer;
-  background: rgba(238, 244, 246, 0.8);
+  background: rgba(238, 244, 246, 1);
 
   &:hover,
   &:active {
@@ -40,12 +44,14 @@ export const Footer = styled.div`
 
   ${SvgIconContainer} {
     opacity: 0.85;
+    transform: rotate(90deg);
   }
 
   &:hover,
   &:active {
     ${SvgIconContainer} {
       opacity: 1;
+      transform: translateX(-4px) rotate(90deg);
     }
   }
 `;

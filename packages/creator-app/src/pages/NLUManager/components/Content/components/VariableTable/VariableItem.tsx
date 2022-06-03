@@ -29,7 +29,7 @@ const VariableItem: React.FC<{ item: Variable }> = ({ item }) => {
   const checkboxWrapperStyles = checkDisabled ? { opacity: 0.5, cursor: 'disabled' } : {};
   return (
     <TableItem isBuiltIn={isBuiltIn} itemType={InteractionModelTabType.VARIABLES} item={item}>
-      <Box display="inline-block" mr={12} style={checkboxWrapperStyles}>
+      <Box display="inline-block" style={checkboxWrapperStyles}>
         <CheckBoxWrapper {...checkboxWrapperProps}>
           <Checkbox disabled={checkDisabled} checked={isChecked} onChange={() => toggleCheckedItem(item.id)} />
         </CheckBoxWrapper>
@@ -38,12 +38,14 @@ const VariableItem: React.FC<{ item: Variable }> = ({ item }) => {
       <Box flex={VariableTableColumnMeta[1].flexWidth} style={{ textTransform: 'capitalize' }}>
         {item.type}
       </Box>
-      <Box flex={VariableTableColumnMeta[2].flexWidth}>
-        {description || (
-          <BoxFlex alignItems="center" style={{ height: '100%' }}>
-            <EmptyDash />
-          </BoxFlex>
-        )}
+      <Box flex={VariableTableColumnMeta[2].flexWidth} style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+        <TippyTooltip delay={500} title={description}>
+          {description || (
+            <BoxFlex alignItems="center" style={{ height: '100%' }}>
+              <EmptyDash />
+            </BoxFlex>
+          )}
+        </TippyTooltip>
       </Box>
     </TableItem>
   );

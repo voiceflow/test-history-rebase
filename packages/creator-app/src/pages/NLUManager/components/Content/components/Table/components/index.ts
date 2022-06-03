@@ -14,10 +14,12 @@ export const OrderBox = styled(Box)<{ show: boolean }>`
 export const Header = styled.div<{ hasScrolled: boolean }>`
   ${transition('border-bottom')};
   display: flex;
+  gap: 16px;
+
   padding: 12px 32px;
   flex-direction: row;
   width: 100%;
-  border-bottom: solid 1px #eaeff4;
+  border-bottom: solid 1px #dfe3ed;
   align-items: center;
   background: #fdfdfd;
   position: sticky;

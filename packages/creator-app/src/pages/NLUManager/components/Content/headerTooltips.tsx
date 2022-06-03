@@ -6,7 +6,6 @@ import { DOCS_BASE_LINK } from '@/config/documentation';
 export const ConfidenceTooltip = () => {
   return (
     <TippyTooltip.FooterButton
-      width={150}
       buttonText="More"
       onClick={() => {
         window.open(DOCS_BASE_LINK);
@@ -20,7 +19,6 @@ export const ConfidenceTooltip = () => {
 export const ClarityTooltip = () => {
   return (
     <TippyTooltip.FooterButton
-      width={150}
       buttonText="More"
       onClick={() => {
         window.open(DOCS_BASE_LINK);

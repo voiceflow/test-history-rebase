@@ -1,4 +1,4 @@
-import { backgrounds, colors, css, styled, ThemeColor, units } from '@ui/styles';
+import { backgrounds, colors, css, styled, ThemeColor, transition, units } from '@ui/styles';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type BadgeProps = {
@@ -7,9 +7,11 @@ type BadgeProps = {
   marginLeft?: number;
   color?: string;
   flat?: boolean;
+  active?: boolean;
 };
 
 const Badge = styled.div.attrs((props) => (props.onClick ? { role: 'button' } : {}))<BadgeProps>`
+  ${transition('background', 'color')}
   ${({ marginLeft }) =>
     marginLeft &&
     css`
@@ -61,6 +63,14 @@ const Badge = styled.div.attrs((props) => (props.onClick ? { role: 'button' } : 
       border: solid 1px #dfe3ed;
       padding: 3px 8px;
       line-height: 15px;
+    `}
+
+  ${({ active }) =>
+    active &&
+    css`
+      background: #eef4f6;
+      font-weight: 600;
+      color: #132144;
     `}
 `;
 

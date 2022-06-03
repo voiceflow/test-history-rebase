@@ -78,25 +78,24 @@ const ContentHeader: React.FC = () => {
   return (
     <Container>
       <Box>
-        {checkedItems.length ? (
-          <TrashButton variant={ButtonVariant.SECONDARY} squareRadius onClick={confirmDelete}>
-            <SvgIcon icon="trash" size={15} inline />
-          </TrashButton>
-        ) : (
-          <SearchInput
-            ref={inputRef}
-            iconProps={{ color: '#8da2b5', size: 16 }}
-            onChangeText={setSearch}
-            value={search}
-            icon="search"
-            placeholder={`Search ${itemCount()} ${getSearchPlaceholder[activeTab](itemCount())}`}
-          />
-        )}
+        <SearchInput
+          ref={inputRef}
+          iconProps={{ color: '#8da2b5', size: 16 }}
+          onChangeText={setSearch}
+          value={search}
+          icon="search"
+          placeholder={`Search ${itemCount()} ${getSearchPlaceholder[activeTab](itemCount())}`}
+        />
       </Box>
       <Box>
+        {!!checkedItems.length && (
+          <TrashButton variant={ButtonVariant.SECONDARY} flat squareRadius onClick={confirmDelete}>
+            <SvgIcon icon="trash" size={15} inline />
+          </TrashButton>
+        )}
         {canExport && (
           <Box display="inline-block" mr={10}>
-            <Button squareRadius variant={ButtonVariant.SECONDARY} disabled={!checkedItems.length}>
+            <Button squareRadius variant={ButtonVariant.SECONDARY} disabled={!checkedItems.length} flat>
               Export
               {!!checkedItems.length && ` (${checkedItems.length})`}
             </Button>

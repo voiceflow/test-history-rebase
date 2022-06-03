@@ -22,7 +22,7 @@ const EntityItem: React.FC<{ item: Realtime.Slot }> = ({ item }) => {
 
   return (
     <TableItem itemType={InteractionModelTabType.SLOTS} item={item}>
-      <Box display="inline-block" mr={12}>
+      <Box display="inline-block">
         <Checkbox checked={isChecked} onChange={() => toggleCheckedItem(item.id)} />
       </Box>
       <NameBox flex={EntityTableColumnMeta[0].flexWidth} name={item.name} />

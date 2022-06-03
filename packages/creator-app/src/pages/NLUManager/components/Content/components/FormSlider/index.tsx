@@ -18,13 +18,13 @@ const FormSlider: React.FC = () => {
   const { canRenameItem, renameItem, nameChangeTransform } = React.useContext(NLUContext);
   const titleRef = React.useRef<HTMLInputElement>(null);
 
-  const { selectedItemId, selectedItem, setSelectedItemId, activeTab } = React.useContext(NLUManagerContext);
+  const { selectedItemId, selectedItem, setSelectedItemId, activeTab, showUtteranceRecos } = React.useContext(NLUManagerContext);
   const [headerTitle, setHeaderTitle] = useLinkedState(selectedItem?.name || '');
 
   const showSlider = !!selectedItemId && (activeTab === InteractionModelTabType.SLOTS || activeTab === InteractionModelTabType.INTENTS);
   return (
     <>
-      <SliderContainer opened={showSlider && !!selectedItem}>
+      <SliderContainer opened={showSlider && !!selectedItem} secondarySliderOpened={showUtteranceRecos}>
         <SliderHeader>
           {selectedItem && selectedItemId && (
             <TitleInput

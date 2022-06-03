@@ -76,15 +76,15 @@ const NLUNotifications: React.FC = () => {
         </Box>
       )}
       <Box display="flex" p="0px 32px" justifyContent="flex-end" mt={14}>
-        <Button style={{ marginRight: 14 }} variant={ButtonVariant.SECONDARY} onClick={handleDelete} squareRadius inline>
+        <Button style={{ marginRight: 12 }} variant={ButtonVariant.SECONDARY} onClick={handleDelete} flat squareRadius>
           <Flex>
-            <SvgIcon color="#6e849a" icon="trash" mr={8} inline />
+            <SvgIcon color="#6e849a" icon="trash" mr={12} inline />
             Delete
           </Flex>
         </Button>
-        <Button variant={ButtonVariant.SECONDARY} onClick={handleRefresh} squareRadius inline>
+        <Button variant={ButtonVariant.SECONDARY} onClick={handleRefresh} flat squareRadius>
           <Flex>
-            <SvgIcon color="#6e849a" icon="publishSpin" mr={8} inline />
+            <SvgIcon color="#6e849a" icon="publishSpin" mr={12} inline />
             Refresh
           </Flex>
         </Button>

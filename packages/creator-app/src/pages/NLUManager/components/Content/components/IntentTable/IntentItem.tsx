@@ -39,11 +39,11 @@ const IntentItem: React.FC<{ item: Realtime.Intent }> = ({ item }) => {
 
   return (
     <TableItem isBuiltIn={isBuiltIn} itemType={InteractionModelTabType.INTENTS} item={item}>
-      <Box minWidth={40}>
+      <Box minWidth={28}>
         {hasEntityError ? (
           <TippyTooltip title="Required entity error">
-            <Box pt={4} pl={1}>
-              <SvgIcon icon="warning" color="#BF395B" size={16} />
+            <Box ml={-1} pt={4} pl={1} mr={1}>
+              <SvgIcon icon="warning" color="#BF395B" size={17} />
             </Box>
           </TippyTooltip>
         ) : (

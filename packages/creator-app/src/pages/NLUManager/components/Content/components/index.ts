@@ -11,7 +11,6 @@ export const Container = styled.div`
 
 export const TableContainer = styled(Box)`
   flex: 1;
-  height: 100%;
 `;
 
 export const EllipsisCell = styled(Box)`

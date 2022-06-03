@@ -1,6 +1,8 @@
 import { Preview, stopPropagation, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import { Permission } from '@/config/permissions';
+import { usePermission } from '@/hooks/permission';
 import { copy } from '@/utils/clipboard';
 
 import { AudioItem } from '../../types';
@@ -12,6 +14,8 @@ interface AudioPreviewProps {
 }
 
 const AudioPreview: React.FC<AudioPreviewProps> = ({ audioVariants, onOpenEditor, onClose }) => {
+  const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
+
   const copyTextToClipboard = (value: string) => {
     copy(value);
     toast.success('Copied to clipboard');
@@ -46,7 +50,7 @@ const AudioPreview: React.FC<AudioPreviewProps> = ({ audioVariants, onOpenEditor
       </Preview.Content>
 
       <Preview.Footer>
-        <Preview.ButtonIcon icon="editorEdit" mr={8} onClick={handleEditorClick} />
+        {canOpenEditor && <Preview.ButtonIcon icon="editorEdit" mr={8} onClick={handleEditorClick} />}
         <Preview.ButtonIcon icon="copy" onClick={copyAllToClipboard} />
       </Preview.Footer>
     </Preview>

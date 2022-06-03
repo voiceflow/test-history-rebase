@@ -54,6 +54,7 @@ export enum Permission {
   CANVAS_EXPORT = 'canvas.EXPORT',
   CANVAS_PUBLISH = 'canvas.PUBLISH',
   HINT_FEATURES = 'canvas.HINT_FEATURES',
+  OPEN_EDITOR = 'canvas.OPEN_EDITOR',
 
   // features
   COMMENTING = 'feature.COMMENTING',
@@ -104,6 +105,7 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.EDIT_PROJECT]: EDITOR_USER_ROLES,
 
   [Permission.EDIT_CANVAS]: EDITOR_USER_ROLES,
+  [Permission.OPEN_EDITOR]: EDITOR_USER_ROLES,
   [Permission.CANVAS_REALTIME]: SIGNED_USER_ROLES,
   [Permission.COMMENTING]: SIGNED_USER_ROLES,
   [Permission.SHARE_PROTOTYPE]: SIGNED_USER_ROLES,

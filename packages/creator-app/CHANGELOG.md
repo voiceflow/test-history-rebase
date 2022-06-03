@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.748.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.747.0...@voiceflow/creator-app@1.748.0) (2022-06-03)
+
+
+### Features
+
+* adds editor permission verification to speak step preview (VF-3696) ([#5515](https://github.com/voiceflow/creator-app/issues/5515)) ([3d5905f](https://github.com/voiceflow/creator-app/commit/3d5905fc20ede4b654bfd9c6d18eca2010477860))
+
+
+
+
+
 # [1.747.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.746.0...@voiceflow/creator-app@1.747.0) (2022-06-02)
 
 

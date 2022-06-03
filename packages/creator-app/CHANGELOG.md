@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.749.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.748.0...@voiceflow/creator-app@1.749.0) (2022-06-03)
+
+
+### Features
+
+* adds permission to open editor on capture/choice/button previews (VF-3700) ([#5523](https://github.com/voiceflow/creator-app/issues/5523)) ([5a9fb96](https://github.com/voiceflow/creator-app/commit/5a9fb96b6d0234b4a745b34d6312961737597e1f))
+* text and code step open editor permission (VF-3699) ([#5524](https://github.com/voiceflow/creator-app/issues/5524)) ([ec09767](https://github.com/voiceflow/creator-app/commit/ec097675dca380d9c066c8d86b8b8d70675beed4))
+
+
+
+
+
 # [1.748.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.747.0...@voiceflow/creator-app@1.748.0) (2022-06-03)
 
 

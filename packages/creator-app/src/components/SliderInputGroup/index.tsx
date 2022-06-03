@@ -33,7 +33,7 @@ const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
     leftColumn={
       <>
         <SliderPrefixContainer>{sliderPrefix}</SliderPrefixContainer>
-        <Box width="100%" onMouseDown={onSliderContainerMouseDown}>
+        <Box pr={4} width="100%" onMouseDown={onSliderContainerMouseDown}>
           <Slider {...sliderProps} value={sliderValue} onChange={onChangeSlider} />
         </Box>
       </>

@@ -121,7 +121,7 @@ const SectionContainer = styled.div<SectionContainerProps>`
     (isNested || isDividerNested || forceDividers
       ? beforeDividersStyle
       : css`
-          :not(${isDividerBottom ? ':last-child' : ':first-child'}) {
+          :not(${isDividerBottom ? ':last-child' : ':first-child :last-child'}) {
             ${beforeDividersStyle}
           }
         `)}

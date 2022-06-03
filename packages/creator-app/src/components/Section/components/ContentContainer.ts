@@ -11,7 +11,7 @@ const ContentContainer = styled.div<ContentContainerProps>`
   padding: ${({ noHeader }) => (noHeader ? '20px 32px' : '0 32px')};
 
   ${({ sectionToggleVariant, isCollapsed }) =>
-    sectionToggleVariant === SectionToggleVariant.ADD &&
+    (sectionToggleVariant === SectionToggleVariant.ADD || sectionToggleVariant === SectionToggleVariant.ADD_V2) &&
     !isCollapsed &&
     `
     padding-bottom: 17px;

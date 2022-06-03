@@ -155,7 +155,7 @@ export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends
   /**
    * @deprecated use editorV2 instead
    */
-  editor?: NodeEditor<Data, BuiltInPorts>;
+  editor?: NodeEditor<Data, BuiltInPorts> | null;
 
   /**
    * @deprecated use nested routes instead
@@ -164,7 +164,7 @@ export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends
 
   step?: ConnectedStep<Data, BuiltInPorts>;
 
-  v2?: Partial<BaseNodeManagerConfig<Data, BuiltInPorts>>;
+  v2?: Partial<NodeManagerConfig<Data, BuiltInPorts>> | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
 }
 
 export interface NodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
@@ -178,7 +178,7 @@ export interface NodeManagerConfig<Data extends object, BuiltInPorts extends Rea
    */
   editor: NodeEditor<Data, BuiltInPorts>;
 
-  v2?: Partial<NodeManagerConfig<Data, BuiltInPorts>>;
+  v2?: Partial<NodeManagerConfig<Data, BuiltInPorts>> | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
 }
 
 export interface NodeManagerConfigV2<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
@@ -188,7 +188,7 @@ export interface NodeManagerConfigV2<Data extends object, BuiltInPorts extends R
 
   step: ConnectedStep<Data, BuiltInPorts>;
   editorV2: NodeEditorV2<Data, BuiltInPorts>;
-  v2?: Partial<NodeManagerConfig<Data, BuiltInPorts>>;
+  v2?: Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
 }
 
 export interface MarkupNodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>

@@ -89,10 +89,12 @@ export const MANAGERS_BY_TYPE = {
 };
 
 const MANAGERS_BY_FEATURE: Partial<Record<BlockType, FeatureFlag>> = {
-  [BlockType.INTEGRATION]: FeatureFlag.CANVAS_PREVIEW,
-  [BlockType.CODE]: FeatureFlag.CANVAS_PREVIEW,
-  [BlockType.SPEAK]: FeatureFlag.CANVAS_PREVIEW,
-  [BlockType.TEXT]: FeatureFlag.CANVAS_PREVIEW,
+  [BlockType.INTEGRATION]: FeatureFlag.INTEGRATION_STEP_CLEANUP,
+  [BlockType.CODE]: FeatureFlag.CODE_STEP_CLEANUP,
+  [BlockType.SPEAK]: FeatureFlag.SPEAK_STEP_CLEANUP,
+  [BlockType.TEXT]: FeatureFlag.TEXT_STEP_CLEANUP,
+  [BlockType.SETV2]: FeatureFlag.SET_STEP_CLEANUP,
+  [BlockType.SET]: FeatureFlag.SET_STEP_CLEANUP,
 };
 
 export type ManagersMap = typeof MANAGERS_BY_TYPE;

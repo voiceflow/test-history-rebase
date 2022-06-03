@@ -37,7 +37,7 @@
     "utility-types": "3.10.0"
   },
   "devDependencies": {
-    "@types/node": "16.11.37"
+    "@types/node": "16.11.38"
   },
   "engines": {
     "node": ">=16"

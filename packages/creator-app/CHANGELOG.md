@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.751.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.751.0...@voiceflow/creator-app@1.751.1) (2022-06-05)
+
+
+### Bug Fixes
+
+* realtime cursor subscribe to events (VF-3724) ([#5533](https://github.com/voiceflow/creator-app/issues/5533)) ([5c93337](https://github.com/voiceflow/creator-app/commit/5c93337d46eb7dab0ee5ae8a1ab359ff37fe3124))
+
+
+
+
+
 # [1.751.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.750.3...@voiceflow/creator-app@1.751.0) (2022-06-03)
 
 

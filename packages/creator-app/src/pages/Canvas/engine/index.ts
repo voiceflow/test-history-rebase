@@ -366,11 +366,13 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   panViewport(movement: Pair<number>): void {
     this.emitter.emit(CanvasAction.PAN, movement);
     this.realtime.panViewport(movement);
+    this.io.panViewport(movement);
   }
 
   zoomViewport(calculateMovement: MovementCalculator): void {
     this.emitter.emit(CanvasAction.ZOOM, calculateMovement);
     this.realtime.zoomViewport(calculateMovement);
+    this.io.zoomViewport(calculateMovement);
   }
 
   saveActiveLocations(): void {

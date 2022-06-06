@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.752.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.751.1...@voiceflow/creator-app@1.752.0) (2022-06-06)
+
+
+### Features
+
+* creates new code editor feature flag (VF-3733) ([#5537](https://github.com/voiceflow/creator-app/issues/5537)) ([62d647e](https://github.com/voiceflow/creator-app/commit/62d647ed688b43f73c4bc32912c653bcf3599feb))
+* creates new set editor UI (VF-3694) ([#5526](https://github.com/voiceflow/creator-app/issues/5526)) ([b59e801](https://github.com/voiceflow/creator-app/commit/b59e8019946e369efa3faf8a049ba1afd6343128))
+
+
+
+
+
 ## [1.751.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.751.0...@voiceflow/creator-app@1.751.1) (2022-06-05)
 
 

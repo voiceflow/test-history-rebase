@@ -1,59 +1,21 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Link } from '@voiceflow/ui';
 import React from 'react';
-import type AceEditorType from 'react-ace';
-import { useSelector } from 'react-redux';
 
 import AceEditor from '@/components/AceEditor';
 import OverflowMenu from '@/components/OverflowMenu';
 import * as Documentation from '@/config/documentation';
-import * as DiagramV2 from '@/ducks/diagramV2';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import { HelpTooltip } from './components';
+import { useAceEditor, useVariableList } from './hooks';
 
 const CodeEditor: NodeEditor<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = ({ data, onChange, onExpand, expanded, platform }) => {
-  const editorRef = React.useRef<AceEditorType | null>(null);
+  const wordList = useVariableList(platform);
+  const editorRef = useAceEditor(wordList);
   const [editorState, onUpdateEditorState] = React.useState(data.code);
   const onUpdateCode = React.useCallback(() => onChange({ code: editorState }), [editorState, onChange]);
-  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
-
-  const completer = React.useMemo<AceEditorType['editor']['completers'][number]>(
-    () => ({
-      getCompletions: (_editor, _session, _pos, _prefix, callback) => {
-        const wordList = [...getPlatformGlobalVariables(platform), ...variables, 'voiceflow', '_system'];
-
-        callback(
-          null,
-          wordList.map((word) => ({
-            caption: word,
-            value: word,
-            meta: 'variable',
-            score: 1,
-          }))
-        );
-      },
-    }),
-    [platform, variables]
-  );
-
-  // add & remove completer from ace editor
-  React.useEffect(() => {
-    if (editorRef.current) {
-      editorRef.current.editor.completers = Utils.array.append(editorRef.current.editor.completers, completer);
-
-      return () => {
-        if (editorRef.current) {
-          editorRef.current.editor.completers = Utils.array.withoutValue(editorRef.current.editor.completers, completer);
-        }
-      };
-    }
-
-    return undefined;
-  }, [completer]);
 
   React.useEffect(() => {
     if (data.code !== editorState) {
@@ -85,10 +47,7 @@ const CodeEditor: NodeEditor<Realtime.NodeData.Code, Realtime.NodeData.CodeBuilt
         <AceEditor
           fullHeight={!expanded}
           placeholder="Enter Javascript code here"
-          ref={(instance: AceEditorType | null) => {
-            editorRef.current = instance;
-            instance?.editor.completers.push(completer);
-          }}
+          ref={editorRef}
           value={editorState}
           onChange={(value) => onUpdateEditorState(value)}
           onBlur={onUpdateCode}

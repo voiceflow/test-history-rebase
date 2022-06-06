@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const EditorInfoPopup = () => (
+const HelpTooltip = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={2}>The Voiceflow code block uses ES6 Javascript.</Tooltip.Paragraph>
 
@@ -16,4 +16,4 @@ const EditorInfoPopup = () => (
   </>
 );
 
-export default EditorInfoPopup;
+export default HelpTooltip;

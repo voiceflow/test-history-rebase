@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { OptionsMenuOption, Select, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
-import { useEditor } from '../hooks';
+import { useEditorDefaultActions } from '../hooks';
 import StyledHeaderActionsButton from './StyledHeaderActionsButton';
 
 interface HeaderActionsButtonProps {
@@ -10,12 +10,8 @@ interface HeaderActionsButtonProps {
 }
 
 const HeaderActionsButton: React.FC<HeaderActionsButtonProps> = ({ actions }) => {
-  const editor = useEditor();
-
-  const options: Array<OptionsMenuOption | UIOnlyMenuItemOption | null> = actions ?? [
-    { label: 'Duplicate', onClick: () => editor.engine.node.duplicate(editor.nodeID) },
-    { label: 'Delete', onClick: () => editor.engine.node.remove(editor.nodeID) },
-  ];
+  const defaultActions = useEditorDefaultActions();
+  const options = actions || defaultActions;
 
   return (
     <Select<OptionsMenuOption>

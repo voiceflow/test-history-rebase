@@ -22,18 +22,19 @@ import {
   Tutorial,
 } from './components';
 import { withGoBack, withRedirectToRoot } from './hocs';
-import { useEditor, useSyncDynamicPorts } from './hooks';
+import { useEditor, useEditorDefaultActions, useSyncDynamicPorts } from './hooks';
 
 interface EditorV2Props {
   header?: React.ReactNode;
   footer?: React.ReactNode;
   fillHeight?: boolean;
   disableAnimation?: boolean;
+  withoutContentContainer?: boolean;
 }
 
 const ANIMATION_DISTANCE = 40;
 
-const EditorV2: React.FC<EditorV2Props> = ({ header, footer, children, fillHeight, disableAnimation }) => {
+const EditorV2: React.FC<EditorV2Props> = ({ header, footer, children, fillHeight, disableAnimation, withoutContentContainer }) => {
   const { scrollbars } = useEditor();
 
   const { state } = useLocation<{ animationEffect?: EditorAnimationEffect }>();
@@ -47,9 +48,13 @@ const EditorV2: React.FC<EditorV2Props> = ({ header, footer, children, fillHeigh
       {header}
 
       <AnimatedContent distance={disableAnimation ? 0 : ANIMATION_DISTANCE * (isPopAnimation ? 1 : -1)}>
-        <Content ref={scrollbars} $fillHeight={fillHeight} autoHeight autoHeightMax="100%" hideTracksWhenNotNeeded>
-          {children}
-        </Content>
+        {withoutContentContainer ? (
+          children
+        ) : (
+          <Content ref={scrollbars} $fillHeight={fillHeight} autoHeight autoHeightMax="100%" hideTracksWhenNotNeeded>
+            {children}
+          </Content>
+        )}
 
         {footer}
       </AnimatedContent>
@@ -60,6 +65,7 @@ const EditorV2: React.FC<EditorV2Props> = ({ header, footer, children, fillHeigh
 export default Object.assign(EditorV2, {
   useEditor,
   useSyncDynamicPorts,
+  useEditorDefaultActions,
 
   withGoBack,
   withRedirectToRoot,

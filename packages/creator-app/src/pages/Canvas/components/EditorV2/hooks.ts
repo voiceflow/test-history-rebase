@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { OptionsMenuOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import { NodeEditorV2Props } from '../../managers/types';
@@ -31,4 +32,15 @@ export const useSyncDynamicPorts = (): {
   );
 
   return { onAdd, onRemove, onReorder };
+};
+
+export const useEditorDefaultActions = () => {
+  const editor = useEditor();
+
+  const options: Array<OptionsMenuOption | UIOnlyMenuItemOption | null> = [
+    { label: 'Duplicate', onClick: () => editor.engine.node.duplicate(editor.nodeID) },
+    { label: 'Delete', onClick: () => editor.engine.node.remove(editor.nodeID) },
+  ];
+
+  return options;
 };

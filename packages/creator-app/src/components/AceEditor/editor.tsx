@@ -13,7 +13,7 @@ import './modes/utterance';
 /* eslint-enable simple-import-sort/imports */
 import { css, styled } from '@/hocs';
 
-import { InputMode } from './constants';
+import { InputMode, AceEditorColors } from './constants';
 
 export type AceEditorProps = AceEditorBaseProps & {
   variant?: string;
@@ -21,6 +21,7 @@ export type AceEditorProps = AceEditorBaseProps & {
   placeholder?: string;
   hasBorder?: boolean;
   inputMode?: InputMode;
+  editorColors?: AceEditorColors;
 };
 
 const StyledEditor = styled(AceEditor).attrs({
@@ -69,6 +70,11 @@ const StyledEditor = styled(AceEditor).attrs({
     background: #fdfdfd !important;
     color: #8da2b5 !important;
     border-right: 1px solid #dfe3ed;
+    ${({ setOptions }) =>
+      setOptions?.fontFamily &&
+      css`
+        font-family: ${setOptions.fontFamily}, monospace;
+      `};
   }
 
   .ace_utterance {
@@ -81,7 +87,7 @@ const StyledEditor = styled(AceEditor).attrs({
 
   .ace_comment.ace_placeholder {
     font-size: 13px;
-    font-family: 'Monaco', monospace;
+    font-family: ${({ setOptions }) => (setOptions?.fontFamily ? `${setOptions.fontFamily}, monospace` : `'Monaco, monospace'`)};
     padding-left: 2px !important;
   }
 
@@ -108,7 +114,7 @@ const StyledEditor = styled(AceEditor).attrs({
       }
     `}
 
-  ${({ variant }) => {
+  ${({ variant, editorColors }) => {
     // eslint-disable-next-line sonarjs/no-small-switch
     switch (variant) {
       // TODO:: add other variants here (datasource, etc.)
@@ -118,14 +124,36 @@ const StyledEditor = styled(AceEditor).attrs({
           & {
             box-sizing: border-box;
             outline: none;
-
-            color: #0b1a38;
+            color: ${editorColors?.defaultColor || '#0b1a38'};
             background: #fefefe;
             cursor: text;
             resize: none;
             .ace_text-input {
               position: absolute !important;
             }
+
+            ${editorColors &&
+            css`
+              .ace_regexp {
+                color: ${editorColors.regexp} !important;
+              }
+
+              .ace_constant.ace_language.ace_escape {
+                color: ${editorColors.regexp} !important;
+              }
+
+              .ace_boolean {
+                color: ${editorColors.boolean} !important;
+              }
+
+              .ace_storage.ace_type {
+                color: ${editorColors.reservedWord} !important;
+              }
+
+              .ace_comment {
+                color: ${editorColors.comment} !important;
+              }
+            `}
           }
 
           /* stylelint-disable-next-line selector-pseudo-class-no-unknown */

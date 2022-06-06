@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.94.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.93.2...@voiceflow/ui@1.94.0) (2022-06-06)
+
+
+### Features
+
+* created new custom code editor ui (VF-3679) ([#5541](https://github.com/voiceflow/creator-app/issues/5541)) ([f8f0ed6](https://github.com/voiceflow/creator-app/commit/f8f0ed6123c7cf85b9142b40e0aa828797d90534))
+
+
+
+
+
 ## [1.93.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.93.1...@voiceflow/ui@1.93.2) (2022-06-03)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.752.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.752.0...@voiceflow/creator-app@1.752.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* do not sync realtime viewport (VF-3727) ([#5534](https://github.com/voiceflow/creator-app/issues/5534)) ([c0650a8](https://github.com/voiceflow/creator-app/commit/c0650a8d1fde0113520dd6f8a9d7b9a9fcec8713))
+
+
+
+
+
 # [1.752.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.751.1...@voiceflow/creator-app@1.752.0) (2022-06-06)
 
 

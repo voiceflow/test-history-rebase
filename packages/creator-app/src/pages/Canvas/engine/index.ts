@@ -10,7 +10,6 @@ import { MovementCalculator } from '@/components/Canvas/types';
 import { PageProgress } from '@/components/PageProgressBar';
 import { isDebug } from '@/config';
 import { FeatureFlag } from '@/config/features';
-import { Permission } from '@/config/permissions';
 import { BlockType, PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -24,7 +23,6 @@ import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
 import * as Version from '@/ducks/versionV2';
-import * as Workspace from '@/ducks/workspaceV2';
 import { RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
@@ -356,10 +354,9 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
    */
   updateViewport(diagramID: string, x: number, y: number, zoom: number): void {
     const action = Realtime.diagram.viewport.crud.update({ key: diagramID, value: { id: diagramID, x, y, zoom } });
-    const canEditCanvas = this.select(Workspace.active.hasPermissionSelector, Permission.EDIT_CANVAS);
 
     this.emitter.emit(CanvasAction.IDLE);
-    this.store.dispatch[canEditCanvas ? 'sync' : 'local'](action);
+    this.store.dispatch(action);
     this.comment.generateCandidates();
   }
 

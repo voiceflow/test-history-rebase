@@ -41,7 +41,7 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, onChange, ...p
       placeholder="Select or create variable"
       inDropdownSearch
       alwaysShowCreate
-      getOptionLabel={(value) => `{${value}}`}
+      getOptionLabel={(value) => value && `{${value}}`}
       renderOptionLabel={(option, searchLabel, _, getOptionValue, config) =>
         defaultMenuLabelRenderer<string, string>(option, searchLabel, (value) => value, getOptionValue, config)
       }

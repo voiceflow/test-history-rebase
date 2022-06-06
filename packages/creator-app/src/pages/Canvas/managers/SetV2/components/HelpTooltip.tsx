@@ -16,8 +16,9 @@ const HelpTooltip: React.FC = () => (
     <Tooltip.Title>Example</Tooltip.Title>
 
     <Tooltip.Paragraph marginBottomUnits={2}>
-      Let’s say we’re making a quiz game and we’d like to update the users {'{score}'} variable based on the correct answer that was given. In this
-      example we’d use a set block to set the variable {'{score}'} to {'{score}'} + 5. Assuming the question was worth five points.
+      Let&apos;s say we&apos;re making a quiz game and we&apos;d like to update the users {'{score}'} variable based on the correct answer that was
+      given. In this example we&apos;d use a set block to set the variable {'{score}'} to {'{score}'} + 5. Assuming the question was worth five
+      points.
     </Tooltip.Paragraph>
 
     <Tooltip.Paragraph>

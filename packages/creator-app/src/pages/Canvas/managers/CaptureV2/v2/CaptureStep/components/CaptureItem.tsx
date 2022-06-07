@@ -26,19 +26,7 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
   const slotPrompt = slot?.prompt;
 
   if (!slot?.id || !slot?.slot) {
-    return (
-      <Item
-        icon={icon}
-        portID={portID}
-        palette={palette}
-        wordBreak
-        withNewLines
-        placeholder="Select entity to capture"
-        label={label}
-        v2
-        nestedWithIcon={!label}
-      />
-    );
+    return <Item icon={icon} portID={portID} palette={palette} wordBreak withNewLines placeholder="Select entity to capture" label={label} />;
   }
 
   return (
@@ -60,7 +48,6 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
           wordBreak
           withNewLines
           attachment={slotPrompt?.content && <StepButton ref={ref} icon="systemSet" isActive={isOpened} onClick={stopPropagation(onToggle)} />}
-          v2
         />
       )}
     </Popper>

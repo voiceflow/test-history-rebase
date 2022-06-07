@@ -11,7 +11,6 @@ const Container = styled.div`
   height: ${HEADER_HEIGHT}px;
   padding-top: ${units(2.5)}px;
   padding-bottom: ${units(2)}px;
-  border-bottom: 1px solid #dfe3ed;
   background-color: #fff;
   z-index: 1;
 `;

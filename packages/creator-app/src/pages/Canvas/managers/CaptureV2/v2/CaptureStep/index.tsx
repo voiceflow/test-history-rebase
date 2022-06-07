@@ -39,7 +39,7 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({
   onOpenEditor,
 }) => (
   <Step nodeID={nodeID}>
-    <Section v2 withIcon>
+    <Section>
       {captureType === BaseNode.CaptureV2.CaptureType.QUERY ? (
         <CaptureItem
           isLast

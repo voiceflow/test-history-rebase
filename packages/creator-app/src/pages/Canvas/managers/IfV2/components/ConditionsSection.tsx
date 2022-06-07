@@ -47,10 +47,11 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
       onContextMenu={onContextMenu}
       isContextMenuOpen={isContextMenuOpen}
       customContentStyling={{ padding: '0px' }}
+      isDividerBottom
     >
       {isDragging || isDraggingPreview ? null : (
         <>
-          <Section customContentStyling={{ paddingTop: '0px' }}>
+          <Section>
             <Input ref={inputRef} value={title} onBlur={onBlur} placeholder="Condition Label" onChangeText={setTitle} />
           </Section>
           <Section isDividerNested customContentStyling={{ paddingTop: '0px', paddingBottom: '0px' }}>

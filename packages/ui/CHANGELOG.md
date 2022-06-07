@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.95.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.95.0...@voiceflow/ui@1.95.1) (2022-06-07)
+
+
+### Bug Fixes
+
+* bump logrocket [bugfix] (VF-3755) ([#5551](https://github.com/voiceflow/creator-app/issues/5551)) ([b6427db](https://github.com/voiceflow/creator-app/commit/b6427dbe67dd36a511bc00f383c325e917abd59e))
+
+
+
+
+
 # [1.95.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.94.0...@voiceflow/ui@1.95.0) (2022-06-07)
 
 

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.757.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.756.0...@voiceflow/creator-app@1.757.0) (2022-06-07)
+
+
+### Bug Fixes
+
+* bump logrocket [bugfix] (VF-3755) ([#5551](https://github.com/voiceflow/creator-app/issues/5551)) ([b6427db](https://github.com/voiceflow/creator-app/commit/b6427dbe67dd36a511bc00f383c325e917abd59e))
+* fixes conditions editor layout (VF-3757) ([#5548](https://github.com/voiceflow/creator-app/issues/5548)) ([c00c6cd](https://github.com/voiceflow/creator-app/commit/c00c6cd8459fdd28364aef78f4bfdd0d49c0e3ed))
+* revert section styling ui [bugfix] (VF-000) ([#5552](https://github.com/voiceflow/creator-app/issues/5552)) ([f06b8cb](https://github.com/voiceflow/creator-app/commit/f06b8cb129949df925f2da0d50fb304916326f6b))
+
+
+### Features
+
+* update icon/label for set step v2 (VF-3370) ([#5543](https://github.com/voiceflow/creator-app/issues/5543)) ([451d311](https://github.com/voiceflow/creator-app/commit/451d31120f1be9724e4c0d3d8f7259132986def2))
+
+
+
+
+
 # [1.756.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.755.0...@voiceflow/creator-app@1.756.0) (2022-06-07)
 
 

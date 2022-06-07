@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.754.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.753.0...@voiceflow/creator-app@1.754.0) (2022-06-07)
+
+
+### Features
+
+* add nlu export button dropdown (VF-3556) ([#5508](https://github.com/voiceflow/creator-app/issues/5508)) ([4a9f878](https://github.com/voiceflow/creator-app/commit/4a9f878a26182549492b8fd27f6479ce8daf9a48))
+
+
+
+
+
 # [1.753.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.752.1...@voiceflow/creator-app@1.753.0) (2022-06-06)
 
 

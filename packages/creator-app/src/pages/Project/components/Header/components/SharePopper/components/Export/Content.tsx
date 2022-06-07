@@ -10,7 +10,10 @@ import { Canvas, Model } from './components';
 import { EXPORT_TYPE_OPTIONS } from './constants';
 import { ExportContext } from './Context';
 
-const Content: React.FC = () => {
+const Content: React.FC<{
+  withDataTypes?: boolean;
+  checkedItems?: string[];
+}> = ({ checkedItems, withDataTypes = true }) => {
   const { exportType, setExportType } = React.useContext(ExportContext)!;
 
   return (
@@ -19,15 +22,16 @@ const Content: React.FC = () => {
         Export Type
       </Title>
 
-      <Box mb={16}>
-        <RadioGroup isFlat options={EXPORT_TYPE_OPTIONS} checked={exportType} onChange={setExportType} />
-      </Box>
+      {withDataTypes && (
+        <Box mb={16}>
+          <RadioGroup isFlat options={EXPORT_TYPE_OPTIONS} checked={exportType} onChange={setExportType} />
+        </Box>
+      )}
 
       <TabsContent selected={exportType}>
         <TabPane tabID={ExportType.MODEL}>
-          <Model />
+          <Model selectedIntents={checkedItems} />
         </TabPane>
-
         <TabPane tabID={ExportType.CANVAS}>
           <Canvas />
         </TabPane>

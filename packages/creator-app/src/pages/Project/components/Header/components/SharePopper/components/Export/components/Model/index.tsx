@@ -9,7 +9,9 @@ import * as IntentV2 from '@/ducks/intentV2';
 import { ExportContext } from '../../Context';
 import { IntentsSelect } from './components';
 
-const ExportModel: React.FC = () => {
+const ExportModel: React.FC<{
+  selectedIntents?: string[];
+}> = ({ selectedIntents }) => {
   const { modelExportProvider, setModelExportProvider, setModelExportIntents, modelExportIntents, nlpProviderOptions } =
     React.useContext(ExportContext)!;
   const intents = useSelector(IntentV2.allIntentsSelector);
@@ -20,6 +22,12 @@ const ExportModel: React.FC = () => {
       setModelExportProvider(nlpProviderOptions[0]);
     }
   }, [nlpProviderOptions]);
+
+  React.useEffect(() => {
+    if (selectedIntents) {
+      setModelExportIntents(selectedIntents);
+    }
+  }, [selectedIntents]);
 
   return (
     <>

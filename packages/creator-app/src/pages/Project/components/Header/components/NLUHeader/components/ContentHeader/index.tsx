@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, SvgIcon, toast, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, ButtonVariant, SvgIcon, toast, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { ConfirmProps } from '@/components/ConfirmModal';
@@ -12,6 +12,7 @@ import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { TrainingModelContext } from '@/pages/Project/contexts';
 
 import { Container, SearchInput, TrainButton, TrashButton } from './components';
+import Export from './components/Export';
 
 const getSearchPlaceholder = {
   [InteractionModelTabType.INTENTS]: (length: number) => (length === 1 ? 'intent' : 'intents'),
@@ -95,10 +96,7 @@ const ContentHeader: React.FC = () => {
         )}
         {canExport && (
           <Box display="inline-block" mr={10}>
-            <Button squareRadius variant={ButtonVariant.SECONDARY} disabled={!checkedItems.length} flat>
-              Export
-              {!!checkedItems.length && ` (${checkedItems.length})`}
-            </Button>
+            <Export checkedItems={checkedItems} />
           </Box>
         )}
         <Box display="inline-block" mr={16}>

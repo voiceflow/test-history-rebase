@@ -11,7 +11,9 @@ import { useFeature, useModals, useSelector } from '@/hooks';
 
 import { ExportContext } from './Context';
 
-const ExportFooter: React.FC = () => {
+const ExportFooter: React.FC<{
+  withoutLink?: boolean;
+}> = ({ withoutLink }) => {
   const { isExporting, onExport, exportType, canExport, canvasExportFormat } = React.useContext(ExportContext)!;
   const intents = useSelector(IntentV2.allIntentsSelector);
   const noModelData = exportType === ExportType.MODEL && intents.length === 0;
@@ -35,12 +37,11 @@ const ExportFooter: React.FC = () => {
 
   return (
     <FlexApart fullWidth>
-      {exportType === ExportType.MODEL ? (
+      {!withoutLink && exportType === ExportType.MODEL ? (
         <Link onClick={() => (IMM_MODALS_V2.isEnabled ? openNLUQuickview() : openInteractionModelModal())}>Open NLU Manager</Link>
       ) : (
         <Link href={Documentation.PROJECT_EXPORT}>Learn More</Link>
       )}
-
       <PlatformUploadButton icon="sync" label="Export" onClick={checkIfCanExport} isActive={!!isExporting} disabled={noModelData} />
     </FlexApart>
   );

@@ -10,7 +10,7 @@ interface SectionHeaderProps {
 
 const SectionHeader = styled(FlexApart)<SectionHeaderProps>`
   height: auto;
-  padding: ${units(2.5)}px ${units(4)}px ${units(2)}px;
+  padding: ${units(2.5)}px ${units(4)}px;
   overflow: visible;
   cursor: default;
 

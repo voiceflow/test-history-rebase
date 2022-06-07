@@ -33,7 +33,7 @@ const BackgroundColor: React.FC<BackgroundColorProps> = ({ nodeID, data }) => {
       header="Background"
       headerVariant={HeaderVariant.ADD}
       initialOpen={data.backgroundColor != null}
-      collapseVariant={SectionToggleVariant.ADD_V2}
+      collapseVariant={SectionToggleVariant.ADD}
       onToggleChange={handleToggleChange}
     >
       <BackgroundColorSlider color={data.backgroundColor ?? DEFAULT_BACKGROUND_COLOR} onChangeColor={updateBackgroundColor} />

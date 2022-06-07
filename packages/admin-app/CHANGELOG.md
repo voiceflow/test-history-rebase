@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.20](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.34.19...@voiceflow/admin-app@1.34.20) (2022-06-07)
+
+**Note:** Version bump only for package @voiceflow/admin-app
+
+
+
+
+
 ## [1.34.19](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.34.18...@voiceflow/admin-app@1.34.19) (2022-06-07)
 
 **Note:** Version bump only for package @voiceflow/admin-app

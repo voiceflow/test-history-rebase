@@ -84,14 +84,9 @@ export enum FormatType {
 }
 
 export interface TranscriptMessage {
-  ingested_at: string;
-  metadata: { end: boolean; locale: string };
-  session_id: string;
-  state: unknown;
-  timestamp: string;
-  turn_id: string;
+  turnID: string;
+  startTime: string;
   type: string;
-  version_id: string;
   format: string;
   payload: unknown;
 }

@@ -37,8 +37,8 @@ const transformSpeakTrace = (trace: SpeakTrace): SpeakTrace => {
 const dialogAdapter = createAdapter<AnyTranscriptMessage, Message | null>(
   (transcriptMessage) => {
     const commonProperties = {
-      turnID: transcriptMessage.turn_id,
-      startTime: transcriptMessage.timestamp,
+      turnID: transcriptMessage.turnID,
+      startTime: transcriptMessage.startTime,
       withAnimation: true,
     };
 

@@ -35,7 +35,7 @@ const Canvas: React.FC = () => {
           onSelect={canvasExportSelection}
           getOptionLabel={(value) => value && CANVAS_EXPORT_OPTIONS_LABELS[value]}
           renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
-            <UpgradeOption<ExportFormat>
+            <UpgradeOption<ExportFormat, ExportFormat>
               option={option}
               isFocused={isFocused}
               searchLabel={searchLabel}

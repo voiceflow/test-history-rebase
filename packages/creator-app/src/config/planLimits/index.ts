@@ -27,7 +27,7 @@ export const STARTER_LIMIT_PLANS = [PlanType.OLD_STARTER, PlanType.STARTER];
 export const TEAM_LABEL = getPlanTypeLabel(PlanType.TEAM);
 export const ENTERPRISE_LABEL = getPlanTypeLabel(PlanType.ENTERPRISE);
 
-export const UPRADE_TO_TEAM_ACTION_LABEL = `Upgrade to ${TEAM_LABEL}`;
+export const UPGRADE_TO_TEAM_ACTION_LABEL = `Upgrade to ${TEAM_LABEL}`;
 export const UPGRADE_TO_ENTERPRISE_ACTION_LABEL = 'Contact Sales';
 
 export const upgradeToTeamAction = ({ openPaymentModal }: LimitSubmitProps) => openPaymentModal();

@@ -38,7 +38,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
 
   const canAddNewWorkspace = () => {
     if (revisedEntitlements.isEnabled && !canAddWorkspace(plan)) {
-      openUpgradeModal({ WorkspacesLimitDetails });
+      openUpgradeModal({ planLimitDetails: WorkspacesLimitDetails });
     } else {
       goToNewWorkspace();
     }

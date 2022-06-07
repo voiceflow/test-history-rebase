@@ -1,7 +1,14 @@
 import { PlanType } from '@voiceflow/internal';
 
-import { LimitDetails, LimitSubmitProps, PlanLimitCategories, STARTER_LIMIT_PLANS, TEAM_LABEL, TEAM_LIMIT_PLANS } from '@/config/planLimits/index';
-import { BOOK_DEMO_LINK } from '@/constants/links';
+import {
+  LimitDetails,
+  PlanLimitCategories,
+  STARTER_LIMIT_PLANS,
+  TEAM_LABEL,
+  TEAM_LIMIT_PLANS,
+  upgradeToEnterpriseAction,
+  upgradeToTeamAction,
+} from '@/config/planLimits';
 
 // refactor - get plan limits from backend (VF-3328)
 export const VARIABLE_STATES_TEAM_LIMIT = 3;
@@ -12,14 +19,14 @@ const VariableStatesLimitDetails: Record<PlanLimitCategories, LimitDetails> = {
     title: 'Need more personas?',
     description: `You’ve used your free persona. Upgrade to ${TEAM_LABEL} to unlock up to ${VARIABLE_STATES_TEAM_LIMIT} variable states.`,
     submitText: `Upgrade to ${TEAM_LABEL}`,
-    onSubmit: ({ openPaymentModal }: LimitSubmitProps) => openPaymentModal(),
+    onSubmit: upgradeToTeamAction,
   },
   [PlanLimitCategories.TEAM]: {
     modalTitle: 'Personas',
     title: `Need more variable states?`,
     description: `You’ve used ${VARIABLE_STATES_TEAM_LIMIT}/${VARIABLE_STATES_TEAM_LIMIT} personas. Contact sales to unlock unlimited personas.`,
     submitText: 'Contact Sales',
-    onSubmit: () => window.open(BOOK_DEMO_LINK, '_blank'),
+    onSubmit: upgradeToEnterpriseAction,
   },
 };
 

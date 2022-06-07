@@ -8,18 +8,18 @@ import { useModals } from '@/hooks';
 
 import GatedFeatureIcon from './components/GatedFeatureIcon';
 
-interface UpgradeOptionProps<T> {
+interface UpgradeOptionProps<T, U> {
   option: T;
   isFocused?: boolean;
   searchLabel?: string | null;
-  getOptionLabel: GetOptionLabel<T>;
-  getOptionValue: GetOptionValue<T, T>;
+  getOptionLabel: GetOptionLabel<U>;
+  getOptionValue: GetOptionValue<T, U>;
   isGated?: boolean;
   tooltipTitle?: string;
   plan?: PlanType;
 }
 
-const UpgradeOption = <T extends unknown>({
+const UpgradeOption = <T extends unknown, U extends unknown>({
   option,
   isFocused,
   searchLabel,
@@ -28,7 +28,7 @@ const UpgradeOption = <T extends unknown>({
   isGated,
   tooltipTitle,
   plan,
-}: UpgradeOptionProps<T>): React.ReactElement | null => {
+}: UpgradeOptionProps<T, U>): React.ReactElement | null => {
   const optionLabel = getOptionLabel(getOptionValue(option));
   const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
 

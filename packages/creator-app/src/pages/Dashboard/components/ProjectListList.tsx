@@ -7,6 +7,7 @@ import DragLayer from '@/components/DragLayer';
 import EmptyScreen from '@/components/EmptyScreen';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
+import { ProjectLimitDetails } from '@/config/planLimits/projects';
 import { ModalType } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
 import * as Modal from '@/ducks/modal';
@@ -65,6 +66,8 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { open: openProjectCreateModal } = useModals(ModalType.PROJECT_CREATE_MODAL);
+  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
+  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
 
   const projectCreateFeature = useFeature(FeatureFlag.PROJECT_CREATE);
 
@@ -78,7 +81,9 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
 
   const onCreateProject = React.useCallback(
     (id?: string) => {
-      if (projects.length >= workspace!.projects) {
+      if (projects.length >= workspace!.projects && revisedEntitlements.isEnabled) {
+        openUpgradeModal({ planLimitDetails: ProjectLimitDetails });
+      } else if (projects.length >= workspace!.projects) {
         openProjectLimitModal({ projects: workspace!.projects });
       } else if (projectCreateFeature.isEnabled) {
         openProjectCreateModal({

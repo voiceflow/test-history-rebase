@@ -1,29 +1,21 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlex, Input, useSetup } from '@voiceflow/ui';
+import { BoxFlex, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import Section from '@/components/Section';
 import { useManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
+import { useSetTitleForm } from '@/pages/Canvas/managers/SetV2/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { DraggableItemV2, HelpMessage, HelpTooltip } from './components';
-import { NODE_CONFIG } from './constants';
-
-const MAX_SETS = 20;
-
-const setFactory = () => NODE_CONFIG.factory(undefined).data.sets[0];
-
-const setClone = (initVal: Realtime.NodeData.SetExpressionV2, targetVal: Realtime.NodeData.SetExpressionV2) => ({
-  ...initVal,
-  variable: targetVal.variable,
-  expression: targetVal.expression,
-});
+import { MAX_SETS } from './constants';
+import { setClone, setFactory } from './utils';
 
 const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = ({ data, onChange }) => {
   const [isDragging, toggleDragging] = useToggle(false);
-  const labelInputRef = React.useRef<HTMLInputElement>(null);
+  const { inputRef: labelInputRef, stepName, setStepName } = useSetTitleForm(data.title);
 
   const updateSets = React.useCallback(
     (sets) => {
@@ -36,8 +28,6 @@ const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
     factory: () => setFactory(),
     clone: setClone,
   });
-
-  const [stepName, setStepName] = React.useState(data.title);
 
   const addExpression = React.useCallback(
     async (scrollToBottom: (behavior?: ScrollBehavior) => void) => {
@@ -53,12 +43,6 @@ const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
     },
     [onDuplicate]
   );
-
-  useSetup(() => {
-    if (!stepName) {
-      labelInputRef.current?.focus({ preventScroll: true });
-    }
-  });
 
   return (
     <Content

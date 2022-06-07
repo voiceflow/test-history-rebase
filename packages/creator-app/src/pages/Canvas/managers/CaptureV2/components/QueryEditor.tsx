@@ -6,7 +6,7 @@ import React from 'react';
 import { HelpTooltip } from '@/components/IntentForm';
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useAddSlot, useSelector } from '@/hooks';
+import { useAddSlot, useSelector, useVariableCreation } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
@@ -19,6 +19,7 @@ import { useEntitiesOptions } from './hooks';
 const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation }) => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts>();
   const allSlots = useSelector(SlotV2.allSlotsSelector);
+  const { variables, createVariable } = useVariableCreation();
 
   const options = useEntitiesOptions(allSlots);
 
@@ -77,6 +78,8 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
                   <Box mt={16}>
                     <VariableSelectV2
                       value={editor.data.variable}
+                      options={variables}
+                      onCreate={createVariable}
                       prefix={<SvgIcon icon="entities" color="#6e849ad9" />}
                       onChange={(variable) => editor.onChange({ variable })}
                     />

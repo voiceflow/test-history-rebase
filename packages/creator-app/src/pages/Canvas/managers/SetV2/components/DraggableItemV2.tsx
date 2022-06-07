@@ -1,7 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, Box, BoxFlex, Input, Text, useDidUpdateEffect } from '@voiceflow/ui';
-import isEmpty from 'lodash/isEmpty';
+import { Badge, Box, BoxFlex, Input, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { ConditionExpressionTooltip } from '@/components/ConditionsBuilder/components';
@@ -9,11 +8,10 @@ import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandl
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
-import { useExpressionValidation } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import PrefixedVariableSelect from '@/pages/Canvas/components/PrefixedVariableSelect';
-import { transformVariableToString } from '@/utils/slot';
+import { useSetItem } from '@/pages/Canvas/managers/SetV2/hooks';
 
 const INPUT_TYPE_OPTIONS = [
   {
@@ -37,27 +35,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
   { itemKey, item, index, isOnlyItem, isDragging, isDraggingPreview, onUpdate, latestCreatedKey, connectedDragRef, onContextMenu, isContextMenuOpen },
   ref
 ) => {
-  const [error, resetError, isValidExpression, errorMessage] = useExpressionValidation();
-
-  const updateExpression = React.useCallback(
-    (text) => {
-      if (!isEmpty(text) && isValidExpression(text)) {
-        resetError();
-        onUpdate({ expression: text });
-      }
-    },
-    [isValidExpression, item.expression, onUpdate]
-  );
-
-  const updateVariable = React.useCallback((variable) => onUpdate({ variable }), [onUpdate]);
+  const { error, errorMessage, resetError, updateExpression, updateVariable } = useSetItem({ item, onUpdate });
   const isNew = latestCreatedKey === itemKey;
-
-  useDidUpdateEffect(() => {
-    if (item.type === BaseNode.Utils.ExpressionTypeV2.VALUE) {
-      onUpdate({ expression: transformVariableToString(String(item.expression)) });
-    }
-    resetError();
-  }, [item.type]);
 
   return (
     <EditorSection

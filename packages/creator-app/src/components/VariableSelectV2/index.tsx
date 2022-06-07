@@ -2,29 +2,19 @@ import { Utils } from '@voiceflow/common';
 import { BaseSelectProps, defaultMenuLabelRenderer, IconButton, NestedMenuComponents, Select, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import * as DiagramV2 from '@/ducks/diagramV2';
-import { CanvasCreationType } from '@/ducks/tracking/constants';
-import * as Version from '@/ducks/version';
-import { useDispatch, useSelector } from '@/hooks';
-
 export interface VariableSelectProps extends BaseSelectProps {
   value?: string | null;
-  options?: string[];
-  onChange: (value: string) => void;
-  onCreate?: (value: string) => void;
+  options: string[];
   creatable?: boolean;
+  onChange: (value: string) => void;
+  onCreate: (value: string) => void | Promise<void>;
 }
 
-const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, onChange, ...props }) => {
-  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
-  const addVariable = useDispatch(Version.addGlobalVariable);
-
-  const onCreate = async (item: string) => {
-    if (!item) return;
-
+const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, options, onChange, onCreate, ...props }) => {
+  const handleCreation = async (value: string) => {
     try {
-      await addVariable(item, CanvasCreationType.EDITOR);
-      onChange(item);
+      await onCreate(value);
+      onChange(value);
     } catch (err) {
       toast.error(err.message);
     }
@@ -33,9 +23,9 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, onChange, ...p
   return (
     <Select
       value={value}
-      options={variables}
+      options={options}
       onSelect={onChange}
-      onCreate={onCreate}
+      onCreate={handleCreation}
       creatable={false}
       searchable
       placeholder="Select or create variable"
@@ -46,11 +36,11 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, onChange, ...p
         defaultMenuLabelRenderer<string, string>(option, searchLabel, (value) => value, getOptionValue, config)
       }
       renderSearchSuffix={({ searchLabel }) => (
-        <IconButton size={16} icon="plus" variant={IconButton.Variant.BASIC} onClick={() => onCreate(searchLabel)} />
+        <IconButton size={16} icon="plus" variant={IconButton.Variant.BASIC} onClick={() => handleCreation(searchLabel)} />
       )}
       clearOnSelectActive
       renderFooterAction={({ close, searchLabel }) => (
-        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>
+        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, () => handleCreation(searchLabel))}>
           Create New Variable
         </NestedMenuComponents.FooterActionContainer>
       )}

@@ -7,8 +7,8 @@ import { useModals } from '@/hooks';
 import { useCreateVariables } from '@/pages/Canvas/components/VariableModalsV2/hooks';
 
 const CreateModal: React.FC = () => {
-  const [variableText, setVariableText] = React.useState('');
-  const { close, data, isOpened } = useModals<{ onCreate: (names: string[]) => void }>(ModalType.VARIABLE_CREATE);
+  const { close, data, isOpened } = useModals<{ variableName?: string; onCreate: (names: string[]) => void }>(ModalType.VARIABLE_CREATE);
+  const [variableText, setVariableText] = React.useState(data.variableName || '');
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const { onCreateMultiple } = useCreateVariables({ onCreate: data.onCreate });

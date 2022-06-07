@@ -39,5 +39,6 @@ export * from './syncedLookup';
 export * from './theme';
 export * from './toggle';
 export * from './tracking';
+export * from './variable';
 export * from './workspace';
 export { useLinkedRef, useLinkedState, useRAF } from '@voiceflow/ui';

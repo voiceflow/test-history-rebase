@@ -6,6 +6,15 @@ import { BlockType } from '@/constants';
 
 import { NodeConfig } from '../types';
 
+export const MAX_SETS = 20;
+
+export const setFactory = (): Realtime.NodeData.SetExpressionV2 => ({
+  id: Utils.id.cuid.slug(),
+  variable: null,
+  type: BaseNode.Utils.ExpressionTypeV2.VALUE,
+  expression: '',
+});
+
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = {
   type: BlockType.SETV2,
   icon: 'code',

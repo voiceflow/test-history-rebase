@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.755.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.754.0...@voiceflow/creator-app@1.755.0) (2022-06-07)
+
+
+### Features
+
+* adapt transcripts format to new event-ingestion service response [bugfix] (VF-3505) ([#5454](https://github.com/voiceflow/creator-app/issues/5454)) ([f2445bb](https://github.com/voiceflow/creator-app/commit/f2445bb718d33550c902b328008ffb4c82b5d0a1))
+
+
+
+
+
 # [1.754.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.753.0...@voiceflow/creator-app@1.754.0) (2022-06-07)
 
 

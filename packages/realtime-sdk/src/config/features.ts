@@ -49,4 +49,5 @@ export enum FeatureFlag {
   SPEAK_STEP_CLEANUP = 'speak_step_cleanup',
   TEXT_STEP_CLEANUP = 'text_step_cleanup',
   SET_STEP_CLEANUP = 'set_step_cleanup',
+  IF_STEP_CLEANUP = 'if_step_cleanup',
 }

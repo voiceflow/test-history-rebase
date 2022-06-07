@@ -5,6 +5,7 @@ import { NODE_CONFIG } from './constants';
 import IfEditor from './IfEditorV2';
 import IfStep from './IfStep';
 import { EDITORS_BY_PATH } from './subeditors';
+import NodeConfigV2 from './v2';
 
 const IfManagerV2: NodeManagerConfig<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = {
   ...NODE_CONFIG,
@@ -15,6 +16,8 @@ const IfManagerV2: NodeManagerConfig<Realtime.NodeData.IfV2, Realtime.NodeData.I
   editor: IfEditor,
 
   editorsByPath: EDITORS_BY_PATH,
+
+  v2: NodeConfigV2,
 };
 
 export default IfManagerV2;

@@ -15,7 +15,7 @@
     "csstype": "^3.0.8",
     "lodash": "^4.17.21",
     "loglevel": "^1.7.1",
-    "logrocket": "2.2.0",
+    "logrocket": "3.0.0",
     "logrocket-react": "5.0.1",
     "moize": "^5.4.7",
     "newpopper": "npm:react-popper",

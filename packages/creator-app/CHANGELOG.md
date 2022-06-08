@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.759.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.758.0...@voiceflow/creator-app@1.759.0) (2022-06-08)
+
+
+### Bug Fixes
+
+* border (VF-000) ([#5557](https://github.com/voiceflow/creator-app/issues/5557)) ([13cf55c](https://github.com/voiceflow/creator-app/commit/13cf55c7284ba18a39db8b55c8219fea8e208103))
+
+
+### Features
+
+* **creator-app:** adds api editor structure with feature flag (VF-3685) ([#5553](https://github.com/voiceflow/creator-app/issues/5553)) ([54ea9c5](https://github.com/voiceflow/creator-app/commit/54ea9c578c4d1fefc48aa980877bf240cb4224d2))
+
+
+
+
+
 # [1.758.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.757.0...@voiceflow/creator-app@1.758.0) (2022-06-07)
 
 

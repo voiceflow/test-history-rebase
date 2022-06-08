@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.96.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.95.1...@voiceflow/ui@1.96.0) (2022-06-08)
+
+
+### Features
+
+* **creator-app:** adds api editor structure with feature flag (VF-3685) ([#5553](https://github.com/voiceflow/creator-app/issues/5553)) ([54ea9c5](https://github.com/voiceflow/creator-app/commit/54ea9c578c4d1fefc48aa980877bf240cb4224d2))
+
+
+
+
+
 ## [1.95.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.95.0...@voiceflow/ui@1.95.1) (2022-06-07)
 
 

@@ -8,6 +8,7 @@ const Container = styled.div`
   ${flexApartStyles}
   ${sectionStyles}
 
+  border-bottom: 1px solid #dfe3ed;
   height: ${HEADER_HEIGHT}px;
   padding-top: ${units(2.5)}px;
   padding-bottom: ${units(2)}px;

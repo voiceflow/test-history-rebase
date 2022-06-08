@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.761.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.760.0...@voiceflow/creator-app@1.761.0) (2022-06-08)
+
+
+### Features
+
+* if editor (VF-3684) ([#5545](https://github.com/voiceflow/creator-app/issues/5545)) ([698f5b4](https://github.com/voiceflow/creator-app/commit/698f5b4406797549a44ce9e92a53dd28f0075bce))
+
+
+
+
+
 # [1.760.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.759.0...@voiceflow/creator-app@1.760.0) (2022-06-08)
 
 

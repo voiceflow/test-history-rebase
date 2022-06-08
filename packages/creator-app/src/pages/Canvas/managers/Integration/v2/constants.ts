@@ -2,7 +2,9 @@ import { BaseNode } from '@voiceflow/base-types';
 
 import { buildNodeConfig, EMPTY_KEY_VALUE_ITEM, getDefaultData, getIconMap, getNameMap } from '../constants';
 
-const NAME_MAP_V2 = getNameMap({ [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'API' });
+export const CUSTOM_API_NAME = 'API';
+
+const NAME_MAP_V2 = getNameMap({ [BaseNode.Utils.IntegrationType.CUSTOM_API]: CUSTOM_API_NAME });
 
 const ICON_MAP_V2 = getIconMap({ [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'editor' });
 

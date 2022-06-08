@@ -7,6 +7,22 @@ import * as Creator from '@/ducks/creator';
 
 import { NodeConfig } from '../types';
 
+export const API_REQUEST_OPTIONS = [
+  BaseNode.Api.APIActionType.GET,
+  BaseNode.Api.APIActionType.POST,
+  BaseNode.Api.APIActionType.PUT,
+  BaseNode.Api.APIActionType.DELETE,
+  BaseNode.Api.APIActionType.PATCH,
+];
+
+export const API_REQUEST_OPTIONS_MAP = {
+  [BaseNode.Api.APIActionType.GET]: 'GET',
+  [BaseNode.Api.APIActionType.POST]: 'POST',
+  [BaseNode.Api.APIActionType.PUT]: 'PUT',
+  [BaseNode.Api.APIActionType.DELETE]: 'DELETE',
+  [BaseNode.Api.APIActionType.PATCH]: 'PATCH',
+};
+
 export const getNameMap = (
   nameMapOverride?: Partial<Record<BaseNode.Utils.IntegrationType, string>>
 ): Record<BaseNode.Utils.IntegrationType, string> => ({

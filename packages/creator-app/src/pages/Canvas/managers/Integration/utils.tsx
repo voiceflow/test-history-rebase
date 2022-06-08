@@ -4,6 +4,8 @@ import React from 'react';
 
 import { VariableLabel } from '@/pages/Canvas/components/Step';
 
+export const isCustomAPI = (selectedIntegration: BaseNode.Utils.IntegrationType) => selectedIntegration === BaseNode.Utils.IntegrationType.CUSTOM_API;
+
 const getCustomApiAction = (action: string | undefined) => {
   switch (action) {
     case BaseNode.Api.APIActionType.POST:

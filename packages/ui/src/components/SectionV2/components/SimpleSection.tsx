@@ -1,15 +1,16 @@
 import React from 'react';
+import { StyledProps } from 'styled-components';
 
 import Container, { ContainerProps } from './Container';
 import Header, { HeaderProps } from './Header';
 
-export interface SimpleSectionProps extends ContainerProps {
+export interface SimpleSectionProps extends ContainerProps, StyledProps<any> {
   onClick?: VoidFunction;
   headerProps?: HeaderProps;
 }
 
-const SimpleSection: React.FC<SimpleSectionProps> = ({ onClick, children, headerProps, ...containerProps }) => (
-  <Container onClick={onClick} {...containerProps}>
+const SimpleSection: React.FC<SimpleSectionProps> = ({ onClick, children, headerProps, style, ...containerProps }) => (
+  <Container onClick={onClick} {...containerProps} style={style}>
     <Header {...headerProps}>{children}</Header>
   </Container>
 );

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.760.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.759.0...@voiceflow/creator-app@1.760.0) (2022-06-08)
+
+
+### Features
+
+* remove FF code for transcripts migration (VF-3505) ([#5547](https://github.com/voiceflow/creator-app/issues/5547)) ([aa4c706](https://github.com/voiceflow/creator-app/commit/aa4c706bf0e3cebbf6293193cd83901c53229b2d))
+
+
+
+
+
 # [1.759.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.758.0...@voiceflow/creator-app@1.759.0) (2022-06-08)
 
 

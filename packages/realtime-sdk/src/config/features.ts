@@ -41,8 +41,6 @@ export enum FeatureFlag {
   REVISED_CREATOR_ENTITLEMENTS = 'revised_creator_entitlement',
 
   DISABLE_CODE_EXPORTS = 'disable_code_exports',
-  TRANSCRIPTS_MIGRATION_ONGOING = 'transcripts_migration_ongoing',
-
   // canvas and editor updates
   INTEGRATION_STEP_CLEANUP = 'integration_step_cleanup',
   CODE_STEP_CLEANUP = 'code_step_cleanup',

@@ -1,12 +1,10 @@
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import * as React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { PrototypeInputMode } from '@/constants/prototype';
-import * as Feature from '@/ducks/feature';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useHotKeys, useSelector } from '@/hooks';
+import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ConnectedProps } from '@/types';
 
@@ -39,7 +37,6 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
   goBackDisabled,
   savePrototypeTest,
 }) => {
-  const isTranscriptsMigrationOngoing = useSelector(Feature.isFeatureEnabledSelector)(FeatureFlag.TRANSCRIPTS_MIGRATION_ONGOING);
   const goForwardDisabled = contextStep === history.length - 1;
 
   const handleOnForward = React.useCallback(() => {
@@ -93,16 +90,12 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
         </ControlButton>
       </TippyTooltip>
 
-      {isTranscriptsMigrationOngoing ? null : (
-        <>
-          <ButtonGroupSplitter />
-          <TippyTooltip title="Save Transcript" position="top">
-            <ControlButton active={false} onClick={savePrototypeTest}>
-              <SvgIcon icon="saveTest" size={16} color={ICON_COLOR} />
-            </ControlButton>
-          </TippyTooltip>
-        </>
-      )}
+      <ButtonGroupSplitter />
+      <TippyTooltip title="Save Transcript" position="top">
+        <ControlButton active={false} onClick={savePrototypeTest}>
+          <SvgIcon icon="saveTest" size={16} color={ICON_COLOR} />
+        </ControlButton>
+      </TippyTooltip>
     </ControlsContainer>
   );
 };

@@ -9,12 +9,13 @@ interface PathSectionProps {
   onAdd: VoidFunction;
   title?: string;
   pathName: string;
+  placeholder?: string;
   onRename: (pathName: string) => void;
   onRemove: VoidFunction;
   collapsed: boolean;
 }
 
-const PathSection: React.FC<PathSectionProps> = ({ title = 'Path', onAdd, pathName, onRemove, onRename, collapsed }) => {
+const PathSection: React.FC<PathSectionProps> = ({ title = 'Path', onAdd, pathName, onRemove, onRename, collapsed, placeholder }) => {
   const [name, setName] = useLinkedState(pathName);
   const [autofocus, enableAutofocus, disableAutofocus] = useEnableDisable(false);
 
@@ -42,6 +43,7 @@ const PathSection: React.FC<PathSectionProps> = ({ title = 'Path', onAdd, pathNa
         autoFocus={autofocus}
         onChangeText={setName}
         onEnterPress={withInputBlur()}
+        placeholder={placeholder}
       />
     </SectionV2.ActionCollapseSection>
   );

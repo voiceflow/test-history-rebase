@@ -4,13 +4,14 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 
-import { NoReplyV2 } from '../../../components';
+import { NoMatchV2 } from '../../../components';
 import { NodeEditorV2 } from '../../../types';
+import IfNoMatchEditor from './components/IfNoMatchEditor';
 import IfRootEditor from './components/IfRootEditor';
 
 const IfEditor: NodeEditorV2<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = () => (
   <Switch>
-    <Route path={`${Path.CANVAS_NODE}/${NoReplyV2.PATH}`} component={NoReplyV2.Editor} />
+    <Route path={`${Path.CANVAS_NODE}/${NoMatchV2.PATH}`} component={IfNoMatchEditor} />
     <Route path={Path.CANVAS_NODE} component={IfRootEditor} />
   </Switch>
 );

@@ -2,16 +2,17 @@ import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, BoxFlex } from '@voiceflow/ui';
 import React from 'react';
+import { StyledProps } from 'styled-components';
 
 import { ConditionLabel, ConditionSelect, LogicInterfaceHandler } from './components';
 import { getAddionalLogicData, getDefaultValue } from './utils';
 
-export interface ConditionsBuilderProps {
+export interface ConditionsBuilderProps extends StyledProps<any> {
   onChange: (value: Realtime.ExpressionData) => void;
   expression?: Realtime.ExpressionData;
 }
 
-const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, expression }) => {
+const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, expression, style }) => {
   const addNewCondition = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => {
     const values = getDefaultValue(logicInterface);
     onChange({ ...expression, value: [{ ...values }] } as Realtime.ExpressionData);
@@ -38,7 +39,7 @@ const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, express
   };
 
   return (
-    <Box pt={16} pb={17}>
+    <Box pt={16} pb={17} style={style}>
       {/* if new expression */}
       {!expression?.value?.length && (
         <BoxFlex>

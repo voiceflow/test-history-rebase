@@ -8,6 +8,13 @@ import { NodeConfig } from '../types';
 
 export const MAX_IF_ITEMS = 22;
 
+export const expressionFactory = (): Realtime.ExpressionData => ({
+  id: Utils.id.cuid.slug(),
+  type: null,
+  value: [],
+  name: '',
+});
+
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = {
   type: BlockType.IFV2,
   icon: 'if',
@@ -27,13 +34,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2, Realtime.NodeData.I
     },
     data: {
       name: 'If',
-      expressions: [
-        {
-          id: Utils.id.cuid.slug(),
-          type: null,
-          value: [],
-        },
-      ],
+      expressions: [expressionFactory()],
       noMatch: {
         type: BaseNode.IfV2.IfNoMatchType.NONE,
         pathName: 'No Match',

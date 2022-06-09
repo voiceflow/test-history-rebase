@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.73.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.72.7...@voiceflow/realtime@1.73.0) (2022-06-09)
+
+
+### Features
+
+* batch node update (VF-3725) ([#5531](https://github.com/voiceflow/creator-app/issues/5531)) ([58df569](https://github.com/voiceflow/creator-app/commit/58df569f4598707857b7bf77950534a70c68c11e))
+
+
+
+
+
 ## [1.72.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.72.6...@voiceflow/realtime@1.72.7) (2022-06-08)
 
 **Note:** Version bump only for package @voiceflow/realtime

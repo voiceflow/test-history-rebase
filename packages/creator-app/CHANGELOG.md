@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.762.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.761.1...@voiceflow/creator-app@1.762.0) (2022-06-09)
+
+
+### Features
+
+* batch node update (VF-3725) ([#5531](https://github.com/voiceflow/creator-app/issues/5531)) ([58df569](https://github.com/voiceflow/creator-app/commit/58df569f4598707857b7bf77950534a70c68c11e))
+
+
+
+
+
 ## [1.761.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.761.0...@voiceflow/creator-app@1.761.1) (2022-06-09)
 
 **Note:** Version bump only for package @voiceflow/creator-app

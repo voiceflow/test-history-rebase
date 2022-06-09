@@ -37,6 +37,23 @@ export interface PatchByKeyLink {
   data: Partial<Realtime.LinkData>;
 }
 
+// utility function to format node update data
+const nodeDataUpdates = <D extends AnyRecord>(nodeID: string, data: D) => {
+  const entries = Object.entries(data);
+  return entries.reduce<{ sets: { path: string; value: any }[]; unsets: { path: string }[]; nodeID: string }>(
+    (acc, [path, value]) => {
+      if (value == null) {
+        acc.unsets.push({ path });
+      } else {
+        acc.sets.push({ path, value });
+      }
+
+      return acc;
+    },
+    { sets: [], unsets: [], nodeID }
+  );
+};
+
 const Client = ({ api }: ExtraOptions) => ({
   canRead: (creatorID: number, diagramID: string) =>
     api
@@ -66,22 +83,14 @@ const Client = ({ api }: ExtraOptions) => ({
 
   updateBlockCoords: (diagramID: string, blocks: Record<string, Realtime.Point>) => api.put(`/v2/diagrams/${diagramID}/nodes/coords`, { blocks }),
 
+  /** @deprecated in favor of updateManyNodeData */
   updateNodeData: <D extends AnyRecord>(diagramID: string, nodeID: string, data: D) => {
-    const entries = Object.entries(data);
-    const updates = entries.reduce<{ sets: { path: string; value: any }[]; unsets: { path: string }[] }>(
-      (acc, [path, value]) => {
-        if (value == null) {
-          acc.unsets.push({ path });
-        } else {
-          acc.sets.push({ path, value });
-        }
+    const { sets, unsets } = nodeDataUpdates(nodeID, data);
+    return api.patch(`/v2/diagrams/${diagramID}/nodes/${nodeID}/data`, { updates: { sets, unsets } });
+  },
 
-        return acc;
-      },
-      { sets: [], unsets: [] }
-    );
-
-    return api.patch(`/v2/diagrams/${diagramID}/nodes/${nodeID}/data`, { updates });
+  updateManyNodeData: <D extends AnyRecord>(diagramID: string, nodes: { nodeID: string; data: D }[]) => {
+    return api.patch(`/v2/diagrams/${diagramID}/nodes/data`, { nodeUpdates: nodes.map(({ nodeID, data }) => nodeDataUpdates(nodeID, data)) });
   },
 
   removeManyNodes: (diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[]) =>

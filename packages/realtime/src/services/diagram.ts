@@ -182,10 +182,17 @@ class DiagramService extends AbstractControl {
     await client.diagram.updateBlockCoords(diagramID, blocks);
   }
 
+  /** @deprecated in favor of updateManyNodeData */
   public async updateNodeData<D extends AnyRecord>(creatorID: number, diagramID: string, nodeID: string, data: D): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.updateNodeData(diagramID, nodeID, data);
+  }
+
+  public async updateManyNodeData<D extends AnyRecord>(creatorID: number, diagramID: string, nodes: { nodeID: string; data: D }[]): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.diagram.updateManyNodeData(diagramID, nodes);
   }
 
   public async removeManyNodes(creatorID: number, diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[]): Promise<void> {

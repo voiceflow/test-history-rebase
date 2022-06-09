@@ -8,8 +8,8 @@ const nodeMarkupType = Utils.protocol.typeFactory(nodeType('markup'));
 const nodeBlockType = Utils.protocol.typeFactory(nodeType(BLOCK_KEY));
 const nodeStepType = Utils.protocol.typeFactory(nodeType(STEP_KEY));
 
-export interface UpdateDataPayload<D extends AnyRecord = AnyRecord> extends BaseNodePayload, ProjectMetaPayload {
-  data: NodeData<D>;
+export interface UpdateManyDataPayload<D extends AnyRecord = AnyRecord> extends BaseDiagramPayload, ProjectMetaPayload {
+  nodes: NodeData<D>[];
 }
 
 export interface RemoveManyPayload extends BaseDiagramPayload {
@@ -21,7 +21,7 @@ export interface TranslatePayload extends BaseDiagramPayload {
 }
 
 export const moveMany = Utils.protocol.createAction<TranslatePayload>(nodeType('MOVE_MANY'));
-export const updateData = Utils.protocol.createAction<UpdateDataPayload>(nodeType('UPDATE_DATA'));
+export const updateDataMany = Utils.protocol.createAction<UpdateManyDataPayload>(nodeType('UPDATE_DATA_MANY'));
 export const removeMany = Utils.protocol.createAction<RemoveManyPayload>(nodeType('REMOVE_MANY'));
 
 // markup

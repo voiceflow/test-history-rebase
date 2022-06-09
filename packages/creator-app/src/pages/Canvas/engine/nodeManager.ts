@@ -264,15 +264,24 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedThreads(node.parentNode!);
     },
 
-    updateData: async (nodeID: string, patch: Partial<Realtime.NodeData<unknown>>): Promise<void> => {
+    updateManyData: async (updates: { nodeID: string; patch: Partial<Realtime.NodeData<unknown>> }[]): Promise<void> => {
+      if (!updates.length) return;
+
       if (this.isAtomicActionsPhase2) {
         const projectMeta = this.engine.getActiveProjectMeta();
-        const data = this.engine.getDataByNodeID(nodeID);
-        if (!data) return;
+        const nodes = updates.reduce<Realtime.NodeData<unknown>[]>((acc, { nodeID, patch }) => {
+          const data = this.engine.getDataByNodeID(nodeID);
+          if (data) {
+            acc.push({ ...data, ...patch });
+          }
+          return acc;
+        }, []);
 
-        await this.dispatch.sync(Realtime.node.updateData({ ...this.engine.context, nodeID, data: { ...data, ...patch }, projectMeta }));
+        await this.dispatch.sync(Realtime.node.updateDataMany({ ...this.engine.context, nodes, projectMeta }));
       } else {
-        this.dispatch(Creator.updateNodeData(nodeID, patch));
+        updates.forEach(({ nodeID, patch }) => {
+          this.dispatch(Creator.updateNodeData(nodeID, patch));
+        });
       }
     },
 
@@ -515,23 +524,33 @@ class NodeManager extends EngineConsumer {
   /**
    * patches a node's data by its ID
    */
-  async updateData<T extends unknown = unknown>(nodeID: string, data: Partial<Realtime.NodeData<T>>, save = true): Promise<void> {
-    this.log.debug(this.log.pending('updating node data'), this.log.slug(nodeID), data);
+  async updateData<T extends unknown = unknown>(nodeID: string, patch: Partial<Realtime.NodeData<T>>, save = true): Promise<void> {
+    this.updateManyData([{ nodeID, patch }], save);
+  }
+
+  /**
+   * patches multiple nodes data by ID
+   */
+  async updateManyData<T extends unknown = unknown>(updates: { nodeID: string; patch: Partial<Realtime.NodeData<T>> }[], save = true): Promise<void> {
+    this.log.debug(this.log.pending('updating many node data'), this.log.value(updates.length));
 
     if (!this.isAtomicActionsPhase2) {
-      await this.engine.realtime.sendUpdate(RealtimeDuck.updateNodeData(nodeID, data));
+      await Promise.all(updates.map(({ nodeID, patch }) => this.engine.realtime.sendUpdate(RealtimeDuck.updateNodeData(nodeID, patch))));
     }
-    await this.internal.updateData(nodeID, data);
-    if (data.name) {
-      this.internal.updateStartingBlock({ blockID: nodeID, name: data.name });
-    }
-    this.redraw(nodeID);
+    await this.internal.updateManyData(updates);
+
+    updates.forEach(({ nodeID, patch }) => {
+      if (patch.name && this.engine.getDataByNodeID(nodeID)?.type === Realtime.BlockType.COMBINED) {
+        this.internal.updateStartingBlock({ blockID: nodeID, name: patch.name });
+      }
+      this.redraw(nodeID);
+    });
 
     if (save) {
       this.engine.saveHistory();
     }
 
-    this.log.info(this.log.success('updated node data'), this.log.slug(nodeID));
+    this.log.info(this.log.success('updated many node data'), this.log.value(updates.length));
   }
 
   /**
@@ -920,12 +939,8 @@ class NodeManager extends EngineConsumer {
     [nodeID, ...this.select(CreatorV2.stepIDsByBlockIDSelector, { id: nodeID })].forEach((childNodeID) => this.redrawThreads(childNodeID));
   }
 
-  updateBlockColor(nodeID: string, color: string): Promise<void> {
-    return this.updateData(nodeID, { blockColor: color });
-  }
-
   async updateManyBlocksColor(nodeIDs: string[], color: string): Promise<void> {
-    await Promise.all(nodeIDs.map((nodeID) => this.updateData(nodeID, { blockColor: color })));
+    await this.updateManyData(nodeIDs.map((nodeID) => ({ nodeID, patch: { blockColor: color } })));
   }
 
   private async registerIntentSteps<T extends { node: { id: string; type: BlockType }; data: Realtime.NodeData<any> }>(

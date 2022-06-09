@@ -102,7 +102,7 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
     [Realtime.SocketAction.UPDATE_NODE_DATA]: ({ nodeID, data }: ActionPayload<Realtime.UpdateNodeData>, tabID) => {
       Sentry.breadcrumb('realtime', 'Remote user updated node data', { tabID, data });
 
-      return this.engine.node.internal.updateData(nodeID, data);
+      return this.engine.node.internal.updateManyData([{ nodeID, patch: data }]);
     },
     [Realtime.SocketAction.MOVE_MANY_NODES]: async ({ nodeIDs, movement, origins }: ActionPayload<Realtime.MoveManyNodes>, tabID, options) => {
       this.engine.node.internal.translateManyOnOrigins(nodeIDs, movement, origins);

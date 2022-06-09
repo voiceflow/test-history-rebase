@@ -8,12 +8,12 @@ import MoveManyNodesControl from './moveMany';
 import RemoveManyNodesControl from './removeMany';
 import ReorderStepsControl from './reorderSteps';
 import TransplantStepControl from './transplantSteps';
-import UpdateNodeDataControl from './updateData';
+import UpdateManyNodeDataControl from './updateManyData';
 
 const buildNodeActionControls = (options: LoguxControlOptions) => ({
   moveManyNodesControl: new MoveManyNodesControl(options),
   removeManyNodesControl: new RemoveManyNodesControl(options),
-  updateNodeDataControl: new UpdateNodeDataControl(options),
+  updateManyNodeDataControl: new UpdateManyNodeDataControl(options),
 
   // blocks
   addBlockControl: new AddBlockControl(options),

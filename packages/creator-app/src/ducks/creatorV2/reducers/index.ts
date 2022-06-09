@@ -27,7 +27,7 @@ import reorderDynamicPorts from './reorderDynamicPorts';
 import reorderSteps from './reorderSteps';
 import reset from './reset';
 import transplantSteps from './transplantSteps';
-import updateNodeData from './updateNodeData';
+import updateManyNodeData from './updateManyNodeData';
 
 const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...initialize)
@@ -43,7 +43,7 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...transplantSteps)
   .immerCase(...reorderSteps)
   .immerCase(...removeManyNodes)
-  .immerCase(...updateNodeData)
+  .immerCase(...updateManyNodeData)
 
   .immerCase(...addByKeyPort)
   .immerCase(...addDynamicPort)

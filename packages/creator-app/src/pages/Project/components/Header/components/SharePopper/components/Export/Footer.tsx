@@ -5,6 +5,7 @@ import PlatformUploadButton from '@/components/PlatformUploadButton';
 import * as Documentation from '@/config/documentation';
 import { FeatureFlag } from '@/config/features';
 import { getCanvasExportLimitDetails } from '@/config/planLimits/canvasExport';
+import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
 import { ExportType, ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useFeature, useModals, useSelector } from '@/hooks';
@@ -14,7 +15,7 @@ import { ExportContext } from './Context';
 const ExportFooter: React.FC<{
   withoutLink?: boolean;
 }> = ({ withoutLink }) => {
-  const { isExporting, onExport, exportType, canExport, canvasExportFormat } = React.useContext(ExportContext)!;
+  const { isExporting, onExport, exportType, canExport, canvasExportFormat, modelExportProvider } = React.useContext(ExportContext)!;
   const intents = useSelector(IntentV2.allIntentsSelector);
   const noModelData = exportType === ExportType.MODEL && intents.length === 0;
 
@@ -29,6 +30,9 @@ const ExportFooter: React.FC<{
     if (isExporting) return;
     if (revisedEntitlements.isEnabled && exportType === ExportType.CANVAS && canvasExportFormat && !canExport) {
       const planLimitDetails = getCanvasExportLimitDetails(canvasExportFormat);
+      openUpgradeModal({ planLimitDetails });
+    } else if (revisedEntitlements.isEnabled && exportType === ExportType.MODEL && modelExportProvider && !canExport) {
+      const planLimitDetails = getNLUExportLimitDetails(modelExportProvider);
       openUpgradeModal({ planLimitDetails });
     } else {
       onExport();

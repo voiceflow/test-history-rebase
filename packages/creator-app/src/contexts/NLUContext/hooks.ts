@@ -2,12 +2,14 @@ import { MenuOption, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
-import { InteractionModelTabType, NLPProvider, PlatformToNLPProvider } from '@/constants';
+import { Permission } from '@/config/permissions';
+import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
+import { InteractionModelTabType, ModalType, NLPProvider, PlatformToNLPProvider } from '@/constants';
 import { NLUContext } from '@/contexts';
 import * as Export from '@/ducks/export';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useDispatch, useFeature, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useModals, usePermission, useSelector } from '@/hooks';
 
 type NLUItem = MenuOption<undefined>;
 
@@ -22,6 +24,10 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
   const { deleteItem, canDeleteItem, canRenameItem } = React.useContext(NLUContext);
   const [exporting, setIsExporting] = React.useState(false);
   const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
+  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
+  const [permissionToExport] = usePermission(revisedEntitlements.isEnabled ? Permission.NLU_EXPORT_ALL : Permission.MODEL_EXPORT);
+  const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
+  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const project = useSelector(ProjectV2.getProjectByIDSelector)({ id: projectID });
@@ -32,13 +38,19 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
 
   const onExport = React.useCallback(
     async (exportType: NLPProvider) => {
-      setIsExporting(true);
-
-      toast.warn('Exporting...');
-      await exportModel(exportType, [itemID]);
-      toast.success('Successfully Exported');
-
-      setIsExporting(false);
+      if (
+        (revisedEntitlements.isEnabled && ((exportType === NLPProvider.VF_CSV && permissionToExportCSV) || permissionToExport)) ||
+        !revisedEntitlements.isEnabled
+      ) {
+        setIsExporting(true);
+        toast.warn('Exporting...');
+        await exportModel(exportType, [itemID]);
+        toast.success('Successfully Exported');
+        setIsExporting(false);
+      } else {
+        const planLimits = getNLUExportLimitDetails(exportType);
+        openUpgradeModal({ planLimitDetails: planLimits });
+      }
     },
     [itemID, exportModel]
   );

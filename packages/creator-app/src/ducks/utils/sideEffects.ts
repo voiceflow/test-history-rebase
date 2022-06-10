@@ -2,6 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { Action, AsyncActionCreators } from 'typescript-fsa';
 
 import { Thunk } from '@/store/types';
+import { extendMeta } from '@/store/utils';
 
 type ErrorCode<T> = T extends Utils.protocol.AsyncError<infer R> ? R : never;
 
@@ -37,7 +38,7 @@ export const waitAsync =
         unsubscribeFailed();
       };
 
-      await dispatch.sync({ ...action, meta: { ...action.meta, actionID } });
+      await dispatch.sync(extendMeta(action, { actionID }));
       unsubscribe();
 
       const processedAction = processedActions.find((action) => action.meta?.actionID === actionID)!;

@@ -11,7 +11,8 @@ import createReducer, { allRPCs } from '@/ducks';
 
 import createMiddleware from './middleware';
 import { RPCController } from './rpc';
-import { Dispatchable, Store } from './types';
+import { Store } from './types';
+import { rewriteDispatch } from './utils';
 
 declare global {
   interface Window {
@@ -42,21 +43,7 @@ const createStore = (realtime: Client, history: History): { store: Store; persis
     composeEnhancers(Redux.applyMiddleware(...createMiddleware(history, rpcController.createMiddleware(allRPCs), () => store)))
   ) as Store;
 
-  // thunk
-  const originalDispatch = store.dispatch;
-  // Object.assign is used to copy sync/crossTab/etc methods from the original dispatch method
-  store.dispatch = Object.assign(
-    (action: Dispatchable) => {
-      if (typeof action === 'function') {
-        return action(store.dispatch, store.getState, { log: store.log });
-      }
-
-      originalDispatch(action);
-      return action;
-    },
-    originalDispatch,
-    { getNodeID: () => store.client.nodeId }
-  );
+  store.dispatch = rewriteDispatch(store);
 
   const persistor = persistStore(store);
 

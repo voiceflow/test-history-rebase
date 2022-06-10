@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/common';
+import { Eventual, Utils } from '@voiceflow/common';
 import { useCachedValue, useCreateConst } from '@voiceflow/ui';
 // eslint-disable-next-line lodash/import-scope
 import type { DebouncedFunc } from 'lodash';
@@ -8,6 +8,7 @@ import * as Normal from 'normal-store';
 import React from 'react';
 
 import { IS_TEST } from '@/config';
+import { TransactionContext } from '@/contexts/TransactionContext';
 
 import { useForceUpdate } from './forceUpdate';
 import { useLazy } from './lazy';
@@ -16,7 +17,7 @@ const UNIQUE_TYPES = new Set(['object', 'function']);
 
 const DEBOUNCE_TIMEOUT = 300;
 
-type OnChange<T extends {}> = (items: T[], save?: boolean) => void;
+export type OnManagerChange<T extends {}> = (items: T[], save?: boolean) => Eventual<void>;
 
 interface MapManagedRenderOptions<T extends {}> {
   key: string;
@@ -27,22 +28,23 @@ interface MapManagedRenderOptions<T extends {}> {
   onRemove: () => void;
   toggleOpen: () => void;
 }
-interface MapManagedOptions<T extends {}, F extends any[]> {
+
+export interface MapManagedOptions<T extends {}, F extends any[]> {
   clone?: (initVal: T, targetVal: T) => T;
-  onAdd?: (value: T, index: number) => void;
+  onAdd?: (value: T, index: number) => Eventual<void>;
   getKey?: (value: T) => string;
   factory?: (...args: F) => T;
   validate?: (value: T, options: { index: number; isUpdate: boolean; originalValue: T | null }) => boolean;
   maxItems?: number;
   autosave?: boolean;
-  onRemove?: (value: T, index: number) => void;
+  onRemove?: (value: T, index: number) => Eventual<void>;
   debounced?: boolean;
-  onReorder?: (from: number, to: number) => void;
+  onReorder?: (from: number, to: number) => Eventual<void>;
 
   /**
    * @deprecated use onRemove instead
    */
-  handleRemove?: (value: T, index: number) => void;
+  handleRemove?: (value: T, index: number) => Eventual<void>;
 }
 
 export type MapManaged<T extends {}> = (render: (item: T, options: MapManagedRenderOptions<T>) => React.ReactNode) => React.ReactNode[];
@@ -53,12 +55,12 @@ export interface MapManagedAPI<T extends {}, F extends any[]> {
   items: T[];
   onAdd: (...args: F) => Promise<void>;
   getIndex: (key: string) => number;
-  onUpdate: (key: string, value: Partial<T>) => void;
+  onUpdate: (key: string, value: Partial<T>) => Promise<void>;
   onRemove: (key: string) => Promise<void>;
   onReorder: (from: number, to: number) => Promise<void>;
-  toggleOpen: (key: string) => void;
+  toggleOpen: (key: string) => Promise<void>;
   mapManaged: MapManaged<T>;
-  onDuplicate: (to: number, item: T, ...args: F) => void;
+  onDuplicate: (to: number, item: T, ...args: F) => Promise<void>;
   onAddToStart: (...args: F) => Promise<void>;
   isMaxMatches: boolean;
   latestCreatedKey: string | undefined;
@@ -66,7 +68,7 @@ export interface MapManagedAPI<T extends {}, F extends any[]> {
 
 export const useManager = <T extends {}, F extends any[]>(
   items: T[],
-  onChange: (items: T[], save?: boolean) => void,
+  onChange: OnManagerChange<T>,
   {
     clone = Utils.functional.identity,
     onAdd: handleAdd,
@@ -93,6 +95,7 @@ export const useManager = <T extends {}, F extends any[]>(
 
   const isMaxMatches = maxItems == null ? false : items.length >= maxItems;
 
+  const transaction = React.useContext(TransactionContext);
   const generateLookupKey = useCreateConst(() =>
     moize((value: T, index: number): T | [T, number] => (value !== null && UNIQUE_TYPES.has(typeof value) ? value : [value, index]))
   );
@@ -108,12 +111,12 @@ export const useManager = <T extends {}, F extends any[]>(
     ([nextItems], [prevItems]) => Utils.array.hasIdenticalMembers<T>(nextItems, prevItems)
   );
 
-  const cachedOnChange = useCachedValue<OnChange<T>>((denormolized: T[], save?: boolean) => {
+  const cachedOnChange = useCachedValue<OnManagerChange<T>>((denormolized: T[], save?: boolean) => {
     setDependencies([denormolized]);
     onChange(denormolized, save);
   });
 
-  const debouncedOnChange = React.useMemo<OnChange<T> | DebouncedFunc<OnChange<T>>>(
+  const debouncedOnChange = React.useMemo<OnManagerChange<T> | DebouncedFunc<OnManagerChange<T>>>(
     () =>
       debounced
         ? _debounce((denormolized: T[], save?: boolean) => cachedOnChange.current(denormolized, save), DEBOUNCE_TIMEOUT)
@@ -126,7 +129,7 @@ export const useManager = <T extends {}, F extends any[]>(
   const getIndex = React.useCallback((key: string) => normalized.current.allKeys.indexOf(key), []);
 
   const onSave = React.useCallback(
-    (normalizedValue: Normal.Normalized<T>, { update, save = true }: { update?: boolean; save?: boolean } = {}) => {
+    async (normalizedValue: Normal.Normalized<T>, { update, save = true }: { update?: boolean; save?: boolean } = {}) => {
       const denormalized = Normal.denormalize(normalizedValue);
 
       if (!update && 'cancel' in debouncedOnChange) {
@@ -137,7 +140,7 @@ export const useManager = <T extends {}, F extends any[]>(
       forceUpdate();
 
       if (update) {
-        debouncedOnChange(denormalized);
+        await debouncedOnChange(denormalized);
       } else {
         cachedOnChange.current(denormalized, save);
       }
@@ -169,9 +172,8 @@ export const useManager = <T extends {}, F extends any[]>(
     async (key, value, index, updated) => {
       keyLookup.current.set(generateLookupKey(value, index), key);
       latestCreatedKey.current = key;
-      onSave(updated, { save: autosave });
 
-      await handleAdd?.(value, index);
+      await Promise.all([onSave(updated, { save: autosave }), handleAdd?.(value, index)]);
     },
     [onSave, generateLookupKey, handleAdd]
   );
@@ -187,7 +189,7 @@ export const useManager = <T extends {}, F extends any[]>(
 
       const updated = Normal.appendOne(normalized.current, key, value);
 
-      await commitInsert(key, value, index, updated);
+      await transaction(() => commitInsert(key, value, index, updated));
     },
     [createKeyValue, commitInsert, isMaxMatches, validate]
   );
@@ -203,7 +205,7 @@ export const useManager = <T extends {}, F extends any[]>(
 
       const updated = Normal.prependOne(normalized.current, key, value);
 
-      await commitInsert(key, value, index, updated);
+      await transaction(() => commitInsert(key, value, index, updated));
     },
     [createKeyValue, commitInsert, isMaxMatches, validate]
   );
@@ -222,7 +224,7 @@ export const useManager = <T extends {}, F extends any[]>(
         allKeys: Utils.array.reorder(withDupVal.allKeys, 0, dupIndex),
       };
 
-      await commitInsert(key, dupVal, dupIndex, updated);
+      await transaction(() => commitInsert(key, dupVal, dupIndex, updated));
     },
     [duplicateKeyValue, commitInsert, isMaxMatches, handleAdd]
   );
@@ -234,15 +236,15 @@ export const useManager = <T extends {}, F extends any[]>(
         allKeys: Utils.array.reorder(normalized.current.allKeys, from, to),
       };
 
-      onSave(updated, { update: true });
-
-      await handleReorder?.(from, to);
+      await transaction(async () => {
+        await Promise.all([onSave(updated, { update: true }), handleReorder?.(from, to)]);
+      });
     },
     [onSave, handleReorder]
   );
 
   const onUpdate = React.useCallback(
-    (key: string, value: Partial<T>) => {
+    async (key: string, value: Partial<T>) => {
       const index = getIndex(key);
       const currValue = getItem(key);
 
@@ -254,7 +256,8 @@ export const useManager = <T extends {}, F extends any[]>(
 
       keyLookup.current.delete(generateLookupKey(currValue, index));
       keyLookup.current.set(generateLookupKey(updated.byKey[key], index), key);
-      onSave(updated, { update: true });
+
+      await transaction(() => onSave(updated, { update: true }));
     },
     [generateLookupKey, getIndex, getItem, onSave]
   );
@@ -270,9 +273,9 @@ export const useManager = <T extends {}, F extends any[]>(
 
       keyLookup.current.delete(generateLookupKey(currValue, currIndex));
 
-      onSave(updated, { save: autosave });
-
-      await handleRemove?.(currValue, currIndex);
+      await transaction(async () => {
+        await Promise.all([onSave(updated, { save: autosave }), handleRemove?.(currValue, currIndex)]);
+      });
     },
     [getItem, getIndex, generateLookupKey, onSave, autosave, handleRemove]
   );

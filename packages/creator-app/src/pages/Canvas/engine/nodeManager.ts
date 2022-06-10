@@ -11,6 +11,7 @@ import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Feature from '@/ducks/feature';
+import * as History from '@/ducks/history';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as RealtimeDuck from '@/ducks/realtime';
@@ -419,14 +420,19 @@ class NodeManager extends EngineConsumer {
       await this.engine.realtime.sendUpdate(RealtimeDuck.addNode(augmentedNode, data, parentNode));
     }
 
-    if (isMarkupBlockType(type)) {
-      await this.internal.addMarkup(augmentedNode, data);
-    } else {
-      await this.internal.addBlock(augmentedNode, data, parentNode);
-    }
+    await this.dispatch(
+      History.transaction(async () => {
+        if (isMarkupBlockType(type)) {
+          await this.internal.addMarkup(augmentedNode, data);
+        } else {
+          await this.internal.addBlock(augmentedNode, data, parentNode);
+        }
 
-    this.engine.saveHistory();
-    await this.handleNewStep(augmentedNode, data, autoFocus);
+        this.engine.saveHistory();
+        // TODO: fold this into the actions that add new steps to have better atomicity
+        await this.handleNewStep(augmentedNode, data, autoFocus);
+      })
+    );
 
     this.log.info(this.log.success('added node'), this.log.slug(nodeID));
 
@@ -461,10 +467,14 @@ class NodeManager extends EngineConsumer {
       await this.engine.realtime.sendUpdate(RealtimeDuck.addManyNodes(centeredEntities, point));
     }
 
-    await this.internal.importSnapshot(centeredEntities);
-    this.engine.saveHistory();
+    await this.dispatch(
+      History.transaction(async () => {
+        await this.internal.importSnapshot(centeredEntities);
+        this.engine.saveHistory();
 
-    await this.registerIntentSteps(entities.nodesWithData);
+        await this.registerIntentSteps(entities.nodesWithData);
+      })
+    );
 
     this.log.info(this.log.success('added multiple entities from snapshot'), this.log.value(entities.nodesWithData.length));
   }
@@ -608,10 +618,15 @@ class NodeManager extends EngineConsumer {
       await this.engine.realtime.sendUpdate(RealtimeDuck.addNestedNode(blockID, nodeWithID, data));
     }
 
-    await this.internal.appendStep(blockID, nodeWithID, data);
+    await this.dispatch(
+      History.transaction(async () => {
+        await this.internal.appendStep(blockID, nodeWithID, data);
 
-    this.engine.saveHistory();
-    await this.handleNewStep(nodeWithID, data);
+        this.engine.saveHistory();
+        // TODO: fold this into the actions that add new steps to have better atomicity
+        await this.handleNewStep(nodeWithID, data);
+      })
+    );
 
     this.log.info(this.log.success('added nested node'), this.log.slug(stepID));
   }
@@ -661,9 +676,13 @@ class NodeManager extends EngineConsumer {
 
     this.log.debug(this.log.pending('inserting step'), this.log.slug(nodeWithID.id));
 
-    await this.internal.insertStepV2(blockID, nodeWithID, data, index);
-
-    await this.handleNewStep(nodeWithID, data);
+    await this.dispatch(
+      History.transaction(async () => {
+        await this.internal.insertStepV2(blockID, nodeWithID, data, index);
+        // TODO: fold this into the actions that add new steps to have better atomicity
+        await this.handleNewStep(nodeWithID, data);
+      })
+    );
 
     this.log.info(this.log.success('inserted step'), this.log.slug(nodeWithID.id));
   }
@@ -781,14 +800,13 @@ class NodeManager extends EngineConsumer {
     }
   }
 
-  saveLocations(nodeIDs: Nullish<string>[]): void {
+  async saveLocations(nodeIDs: Nullish<string>[]): Promise<void> {
     const existingNodeIDs = nodeIDs?.filter((nodeID): nodeID is string => !!nodeID && this.engine.nodes.has(nodeID));
     if (!existingNodeIDs?.length) return;
 
     reduxBatchUndo.start();
 
-    this.saveLinks(existingNodeIDs);
-    this.internal.saveLocations(existingNodeIDs);
+    await Promise.all([this.saveLinks(existingNodeIDs), this.internal.saveLocations(existingNodeIDs)]);
 
     reduxBatchUndo.end();
 
@@ -817,7 +835,7 @@ class NodeManager extends EngineConsumer {
     [nodeID, ...this.select(CreatorV2.stepIDsByBlockIDSelector, { id: nodeID })].forEach((id) => this.translateLinks(id, movement, { sync }));
   }
 
-  translateLinks(nodeID: string, movement: Pair<number>, { sync }: { sync: boolean }): void {
+  private translateLinks(nodeID: string, movement: Pair<number>, { sync }: { sync: boolean }): void {
     this.engine.getLinkIDsByNodeID(nodeID).forEach((linkID) => {
       if (!this.engine.links.has(linkID)) return;
 
@@ -836,7 +854,7 @@ class NodeManager extends EngineConsumer {
     });
   }
 
-  saveLinks(nodeIDs: string[]): void {
+  async saveLinks(nodeIDs: string[]): Promise<void> {
     const linkIDs = nodeIDs.flatMap((nodeID) => {
       const node = this.engine.getNodeByID(nodeID);
       const nodeLinkIDs = this.engine.getLinkIDsByNodeID(nodeID);
@@ -846,7 +864,7 @@ class NodeManager extends EngineConsumer {
 
     const validLinkIDs = Utils.array.unique(linkIDs).filter((linkID) => this.engine.links.has(linkID));
 
-    this.engine.link.savePointsMany(validLinkIDs, { saveHistory: false });
+    await this.engine.link.savePointsMany(validLinkIDs, { saveHistory: false });
   }
 
   translateAllThreads(nodeID: string, movement: Pair<number>): void {

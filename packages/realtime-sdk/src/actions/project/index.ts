@@ -8,6 +8,7 @@ import { projectType } from './utils';
 
 export * as awareness from './awareness';
 export * from './platform';
+export * from './utils';
 
 export interface ImportProjectFromFilePayload extends BaseWorkspacePayload {
   data: string;

@@ -3,7 +3,8 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
-import { MapManaged, useManager, useToggle } from '@/hooks';
+import * as History from '@/ducks/history';
+import { MapManaged, useDispatch, useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
@@ -20,10 +21,14 @@ const expressionFactory = () => NODE_CONFIG.factory(undefined).data.expressions[
 
 const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ data, node, engine, pushToPath, onChange }) => {
   const [isDragging, toggleDragging] = useToggle(false);
+  const transaction = useDispatch(History.transaction);
 
-  const updateExpressions = React.useCallback((expressions, save) => onChange({ expressions }, save), [onChange]);
+  const updateExpressions = React.useCallback(
+    (expressions: Realtime.ExpressionData[], save?: boolean) => onChange({ expressions }, save),
+    [onChange]
+  );
   const onRemoveExpression = React.useCallback(
-    (_, index) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
+    (_: Realtime.ExpressionData, index: number) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
     [engine, node.ports.out.dynamic]
   );
 
@@ -35,19 +40,18 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltIn
   });
 
   const reorderExpressions = React.useCallback(
-    async (from: number, to: number) => {
-      onReorder(from, to);
-
-      await engine.port.reorderDynamic(node.id, from, to);
-    },
+    async (from: number, to: number) =>
+      transaction(async () => {
+        await Promise.all([onReorder(from, to), engine.port.reorderDynamic(node.id, from, to)]);
+      }),
     [onReorder, engine, node.id]
   );
 
   const addExpression = React.useCallback(
     async (scrollToBottom: (behavior?: ScrollBehavior) => void) => {
-      onAdd();
-
-      await engine.port.addDynamic(node.id);
+      await transaction(async () => {
+        await Promise.all([onAdd(), engine.port.addDynamic(node.id)]);
+      });
 
       scrollToBottom();
     },
@@ -55,11 +59,10 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltIn
   );
 
   const onDuplicationExp = React.useCallback(
-    async (_, item) => {
-      onDuplicate(item.index, item);
-
-      await engine.port.addDynamic(node.id);
-    },
+    (_, item) =>
+      transaction(async () => {
+        await Promise.all([onDuplicate(item.index, item), engine.port.addDynamic(node.id)]);
+      }),
     [onDuplicate, node.id]
   );
 

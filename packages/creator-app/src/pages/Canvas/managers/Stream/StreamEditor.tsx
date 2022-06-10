@@ -10,7 +10,8 @@ import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
 import { HTTPS_URL_REGEX } from '@/constants';
-import { useEnableDisable } from '@/hooks';
+import * as History from '@/ducks/history';
+import { useDispatch, useEnableDisable } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { PlatformContext } from '@/pages/Project/contexts';
@@ -23,6 +24,8 @@ const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.Strea
   const platform = React.useContext(PlatformContext);
 
   const [invalidAudio, setValidAudio, setInvalidAudio] = useEnableDisable(false);
+
+  const transaction = useDispatch(History.transaction);
 
   const hasPause = data.customPause;
   const isAlexa = platform === VoiceflowConstants.PlatformType.ALEXA;
@@ -45,13 +48,15 @@ const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.Strea
 
     const hasPausePort = hasPause && !!pausePortID;
 
-    if (hasPausePort) {
-      await engine.port.removeBuiltin(BaseModels.PortType.PAUSE, pausePortID);
-    } else {
-      await engine.port.addBuiltin(node.id, BaseModels.PortType.PAUSE);
-    }
+    await transaction(async () => {
+      if (hasPausePort) {
+        await engine.port.removeBuiltin(BaseModels.PortType.PAUSE, pausePortID);
+      } else {
+        await engine.port.addBuiltin(node.id, BaseModels.PortType.PAUSE);
+      }
 
-    onChange({ customPause: !hasPausePort });
+      await onChange({ customPause: !hasPausePort });
+    });
   }, [onChange, hasPause, engine, node.id, node.ports.out.builtIn]);
 
   return (

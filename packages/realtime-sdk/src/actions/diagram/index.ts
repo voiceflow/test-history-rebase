@@ -1,7 +1,7 @@
 import { createAction, createAsyncAction, createCRUDActions, createType } from '@realtime-sdk/actions/utils';
 import { COMPONENT_KEY, TOPIC_KEY, VARIABLES_KEY } from '@realtime-sdk/constants';
 import { Diagram } from '@realtime-sdk/models';
-import { BaseDiagramPayload, BaseVersionPayload, Point } from '@realtime-sdk/types';
+import { BaseDiagramPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { diagram } from '@realtime-sdk/utils';
 import { Nullable } from '@voiceflow/base-types';
 import { Required } from 'utility-types';
@@ -101,15 +101,6 @@ export const addNewStartingBlocks = createAction<AddNewStartingBlocksPayload>(di
 export const removeStartingBlocks = createAction<RemoveStartingBlocksPayload>(diagramStartingBlocksType('REMOVE'));
 export const updateStartingBlock = createAction<UpdateStartingBlockPayload>(diagramStartingBlocksType('UPDATE_NAME'));
 export const removeDiagramStartingBlocks = createAction<RemoveDiagramStartingBlocksPayload>(diagramStartingBlocksType('REMOVE_DIAGRAM'));
-
-// blocks
-
-export interface DragMoveBlocksPayload extends BaseDiagramPayload {
-  blocks: { [blockID: string]: Point };
-}
-
-export const moveBlocks = createAction<DragMoveBlocksPayload>(diagramType('MOVE_BLOCKS'));
-export const dragBlocks = createAction<DragMoveBlocksPayload>(diagramType('DRAG_BLOCKS'));
 
 // crud
 

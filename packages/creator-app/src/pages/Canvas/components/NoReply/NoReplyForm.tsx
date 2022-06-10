@@ -9,7 +9,8 @@ import Divider from '@/components/Divider';
 import { CheckboxGroup, CheckboxOption } from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import { NUMBERS_ONLY_REGEXP } from '@/constants';
-import { useLinkedState } from '@/hooks';
+import * as History from '@/ducks/history';
+import { useDispatch, useLinkedState } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { FollowPathSection } from '@/pages/Canvas/components/FollowPath';
 import NoMatchAndNoReplyList from '@/pages/Canvas/components/NoMatchAndNoReplyList';
@@ -35,7 +36,7 @@ const ELSE_OPTIONS: CheckboxOption<BaseNode.Utils.NoReplyType>[] = [
 
 export interface NoReplyFormProps {
   noReply: Realtime.NodeData.NoReply;
-  onChange: (noReply: Realtime.NodeData.NoReply) => void;
+  onChange: (noReply: Realtime.NodeData.NoReply) => Promise<void>;
   pushToPath?: PushToPath;
 }
 
@@ -46,6 +47,8 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
   const platform = React.useContext(PlatformContext)!;
 
   const [timeout, setTimeout] = useLinkedState(String(noReply.timeout || getDefaultNoReplyTimeoutSeconds(platform)));
+
+  const transaction = useDispatch(History.transaction);
 
   const onChangeTimeout = (value: string) => {
     if (value !== '' && (!value.match(NUMBERS_ONLY_REGEXP) || value.length > 2)) {
@@ -63,13 +66,15 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
 
     const noReplyPortID = node?.ports.out.builtIn[BaseModels.PortType.NO_REPLY];
 
-    if (noReplyPortID && prevTypesIncludesPath && !newTypesIncludesPath) {
-      await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
-    } else if (!noReplyPortID && !prevTypesIncludesPath && newTypesIncludesPath && focusedNodeID) {
-      await engine.port.addBuiltin(focusedNodeID, BaseModels.PortType.NO_REPLY);
-    }
+    await transaction(async () => {
+      if (noReplyPortID && prevTypesIncludesPath && !newTypesIncludesPath) {
+        await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
+      } else if (!noReplyPortID && !prevTypesIncludesPath && newTypesIncludesPath && focusedNodeID) {
+        await engine.port.addBuiltin(focusedNodeID, BaseModels.PortType.NO_REPLY);
+      }
 
-    onChange({ ...noReply, types });
+      await onChange({ ...noReply, types });
+    });
   };
 
   const withPath = noReply.types.includes(BaseNode.Utils.NoReplyType.PATH);

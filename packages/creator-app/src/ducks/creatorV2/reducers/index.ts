@@ -61,3 +61,5 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...patchManyLinks);
 
 export default creatorReducer;
+
+export const reverters = [];

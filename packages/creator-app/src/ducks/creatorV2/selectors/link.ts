@@ -49,7 +49,7 @@ const _linkIDsByPortIDSelector = createSelector([creatorStateSelector, idParamSe
 );
 export const linkIDsByPortIDSelector = Feature.createAtomicActionsPhase2Selector(
   [CreatorV1Selectors.linkIDsByPortIDSelector, _linkIDsByPortIDSelector, idParamSelector],
-  (getLinkIDsV1, linkIDsV2, nodeID) => [nodeID ? getLinkIDsV1(nodeID) : [], linkIDsV2]
+  (getLinkIDsV1, linkIDsV2, portID) => [portID ? getLinkIDsV1(portID) : [], linkIDsV2]
 );
 
 export const getLinkIDsByPortIDSelector = createCurriedSelector(linkIDsByPortIDSelector);

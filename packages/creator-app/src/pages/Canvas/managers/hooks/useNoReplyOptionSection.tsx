@@ -2,8 +2,9 @@ import { BaseModels, Nullable } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
+import * as History from '@/ducks/history';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import { NoReplySection } from '@/pages/Canvas/components/NoReply';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { PushToPath } from '@/pages/Canvas/managers/types';
@@ -30,16 +31,20 @@ const useNoReplyOptionSection = ({
 
   const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
 
+  const transaction = useDispatch(History.transaction);
+
   const toggleNoReply = React.useCallback(async () => {
     const node = engine.getNodeByID(data.nodeID);
 
     const noReplyPortID = node?.ports.out.builtIn[BaseModels.PortType.NO_REPLY];
 
-    if (data.noReply && noReplyPortID) {
-      await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
-    }
+    await transaction(async () => {
+      if (data.noReply && noReplyPortID) {
+        await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
+      }
 
-    onChange({ noReply: data.noReply ? null : getPlatformNoReplyFactory(projectType, platform)({ defaultVoice }) });
+      await onChange({ noReply: data.noReply ? null : getPlatformNoReplyFactory(projectType, platform)({ defaultVoice }) });
+    });
   }, [projectType, platform, data.nodeID, data.noReply, onChange, defaultVoice]);
 
   return [

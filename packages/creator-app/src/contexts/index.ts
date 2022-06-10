@@ -15,3 +15,4 @@ export * from './NLUContext';
 export * from './PublishContext';
 export * from './ScrollContext';
 export * from './TextEditorVariablesPopoverContext';
+export * from './TransactionContext';

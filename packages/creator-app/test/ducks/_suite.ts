@@ -1,12 +1,13 @@
+/* eslint-disable no-unused-expressions */
 import { Eventual, Utils } from '@voiceflow/common';
 import { Normalized } from 'normal-store';
 import { SinonSpy, SinonStub, stub } from 'sinon';
-import { ActionCreator, AnyAction as AnyFSAction } from 'typescript-fsa';
+import { Action, ActionCreator, AnyAction as AnyFSAction } from 'typescript-fsa';
 import { DeepPartial } from 'utility-types';
 
 import { createSuite } from '@/../test/_suite';
 import type { State } from '@/ducks';
-import { createAction } from '@/ducks/utils';
+import { ActionReverter, createAction } from '@/ducks/utils';
 import { createCRUDState } from '@/ducks/utils/crud';
 import { AnyAction, AnyThunk, Dispatch, Dispatchable, RootReducer, Selector, SyncThunk } from '@/store/types';
 
@@ -16,6 +17,7 @@ interface ReduxDuck<S, A extends AnyAction> {
   default: RootReducer<S, A>;
   STATE_KEY: string;
   INITIAL_STATE?: any;
+  reverters?: ActionReverter<any>[];
 }
 
 const INIT_ACTION: any = createAction('@@INIT');
@@ -236,6 +238,49 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
     const describeReducerV2 = <P>(actionCreator: ActionCreator<P>, tests: (utils: ReducerUtilsV2<P>) => void) =>
       describe(`"${actionCreator.type}" reducer`, () => tests(createReducerUtilsV2(actionCreator)));
 
+    // reverter utils
+
+    interface ReverterUtils<P> {
+      revertAction: (rootState: State, payload: P) => void;
+      expectToInvalidate: (origin: Action<P>, subject: AnyFSAction) => void;
+      expectToIgnore: (origin: Action<P>, subject: AnyFSAction) => void;
+    }
+
+    const createReverterUtils = <P>(actionCreator: ActionCreator<P>): ReverterUtils<P> => {
+      const checkInvalidate = (origin: Action<P>, subject: AnyFSAction) => {
+        const reverter = Duck.reverters?.find((reverter) => reverter.actionCreator.match(subject));
+
+        utils.expect(reverter).to.be.ok;
+
+        const invalidator = reverter?.invalidators.find((invalidator) => invalidator.actionCreator.match(subject));
+
+        utils.expect(invalidator).to.be.ok;
+
+        return !!invalidator?.invalidate(origin, subject);
+      };
+
+      return {
+        revertAction: (rootState, payload) => {
+          const reverter = Duck.reverters?.find((reverter) => reverter.actionCreator === actionCreator);
+
+          utils.expect(reverter).to.be.ok;
+
+          return reverter?.revert(payload, () => rootState);
+        },
+
+        expectToInvalidate: (origin, subject) => {
+          return utils.expect(checkInvalidate(origin, subject)).to.be.true;
+        },
+
+        expectToIgnore: (origin, subject) => {
+          return utils.expect(checkInvalidate(origin, subject)).to.be.false;
+        },
+      };
+    };
+
+    const describeReverter = <P>(actionCreator: ActionCreator<P>, tests: (utils: ReverterUtils<P>) => void) =>
+      describe(`"${actionCreator.type}" reverter`, () => tests(createReverterUtils(actionCreator)));
+
     // assertions
 
     const assertIgnoresOtherActions = () =>
@@ -272,5 +317,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
 
       describeSideEffects: (tests: (utils: typeof thunkUtils) => void) => describe('side effects', () => tests(thunkUtils)),
       describeEffectV2,
+
+      describeReverter,
     };
   });

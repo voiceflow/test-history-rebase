@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import { FeatureFlag } from '@/config/features';
@@ -9,6 +10,14 @@ export const V2_FEATURE_STATE = {
   [Feature.STATE_KEY]: {
     features: {
       [FeatureFlag.ATOMIC_ACTIONS_PHASE_2]: { isEnabled: true },
+    },
+  },
+};
+
+export const V2_HISTORY_STATE = {
+  [Feature.STATE_KEY]: {
+    features: {
+      [Realtime.FeatureFlag.HISTORY_SYSTEM]: { isEnabled: true },
     },
   },
 };
@@ -26,6 +35,11 @@ export const ACTION_CONTEXT = {
   projectID: PROJECT_ID,
   versionID: VERSION_ID,
   diagramID: DIAGRAM_ID,
+};
+
+export const PROJECT_META = {
+  platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+  type: VoiceflowConstants.ProjectType.CHAT,
 };
 
 export const NODE: Realtime.Node = {

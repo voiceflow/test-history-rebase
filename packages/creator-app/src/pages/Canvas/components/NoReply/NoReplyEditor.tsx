@@ -6,7 +6,7 @@ import NoReplyForm, { NoReplyFormProps } from './NoReplyForm';
 
 interface NoReplyEditorProps<T extends { noReply?: Nullish<Realtime.NodeData.NoReply> }> extends Omit<NoReplyFormProps, 'noReply' | 'onChange'> {
   data: T;
-  onChange: (data: { noReply: Realtime.NodeData.NoReply }) => void;
+  onChange: (data: { noReply: Realtime.NodeData.NoReply }) => Promise<void>;
 }
 
 const NoReplyEditor = <T extends { noReply?: Nullish<Realtime.NodeData.NoReply> }>({

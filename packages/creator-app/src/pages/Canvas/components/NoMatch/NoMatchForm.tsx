@@ -6,7 +6,8 @@ import Divider from '@/components/Divider';
 import { CheckboxGroup, CheckboxOption } from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import * as Creator from '@/ducks/creator';
-import { useSelector } from '@/hooks';
+import * as History from '@/ducks/history';
+import { useDispatch, useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { FollowPathSection } from '@/pages/Canvas/components/FollowPath';
 import NoMatchAndNoReplyList from '@/pages/Canvas/components/NoMatchAndNoReplyList';
@@ -28,7 +29,7 @@ const ELSE_OPTIONS: CheckboxOption<BaseNode.Utils.NoMatchType>[] = [
 
 export interface NoMatchFormProps {
   noMatch: Realtime.NodeData.NoMatch;
-  onChange: (noMatch: Realtime.NodeData.NoMatch) => void;
+  onChange: (noMatch: Realtime.NodeData.NoMatch) => Promise<void>;
   pushToPath?: PushToPath;
 }
 
@@ -39,14 +40,17 @@ const NoMatchForm: React.FC<NoMatchFormProps> = ({ onChange, noMatch, pushToPath
 
   const noMatchLinkID = useSelector(Creator.focusedNoMatchLinkIDSelector);
 
-  const onChangeType = async (types: BaseNode.Utils.NoMatchType[]) => {
-    if (noMatchLinkID && noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH) && !types.includes(BaseNode.Utils.NoMatchType.PATH)) {
-      // When we switch to reprompt, clean up any links to avoid null reference bugs.
-      await engine.link.remove(noMatchLinkID);
-    }
+  const transaction = useDispatch(History.transaction);
 
-    onChange({ ...noMatch, types });
-  };
+  const onChangeType = async (types: BaseNode.Utils.NoMatchType[]) =>
+    transaction(async () => {
+      if (noMatchLinkID && noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH) && !types.includes(BaseNode.Utils.NoMatchType.PATH)) {
+        // When we switch to reprompt, clean up any links to avoid null reference bugs.
+        await engine.link.remove(noMatchLinkID);
+      }
+
+      await onChange({ ...noMatch, types });
+    });
 
   const withPath = noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH);
   const withReprompt = noMatch.types.includes(BaseNode.Utils.NoMatchType.REPROMPT);

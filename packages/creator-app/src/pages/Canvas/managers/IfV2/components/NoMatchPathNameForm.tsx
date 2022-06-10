@@ -36,6 +36,8 @@ const NoMatchPathName: React.FC<NodeEditorPropsType<Realtime.NodeData.IfV2>> = (
       await engine.link.remove(noMatchLinkID);
     }
 
+    // TODO: try to make this a direct call to `onChange` rather than using this local state
+    // so all changes can be under a single transaction
     setLocalNoMatch({ ...localNoMatch, type: newType });
   };
 

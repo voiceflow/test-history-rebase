@@ -5,10 +5,11 @@ import React from 'react';
 import { BlockType, ModalType } from '@/constants';
 import { PrototypeStatus } from '@/constants/prototype';
 import * as Creator from '@/ducks/creator';
+import * as History from '@/ducks/history';
 import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';
-import { connect, styled } from '@/hocs';
-import { useActiveModal, useDispatch, useHotKeys, useModals, useRegistration } from '@/hooks';
+import { styled } from '@/hocs';
+import { useActiveModal, useDispatch, useHotKeys, useModals, useRegistration, useSelector } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
@@ -16,7 +17,6 @@ import { DesignMenuTab } from '@/pages/Project/components/DesignMenu';
 import { LastCreatedComponentContext, MarkupContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode, usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
 
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
@@ -54,7 +54,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, undoHistory, redoHistory, isCanvasHidden, prototypeStatus }) => {
+const CanvasContainer: React.FC = ({ children }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupContext)!;
@@ -64,14 +64,18 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
   const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
   const imModal = useModals(ModalType.INTERACTION_MODEL);
+  const activeModal = useActiveModal();
 
   const isEditingMode = useEditingMode();
   const isCommentingMode = useCommentingMode();
   const isPrototypingMode = usePrototypingMode();
 
-  const setActiveDesignMenuTab = useDispatch(UI.setActiveCreatorMenu);
+  const setActiveCreatorMenu = useDispatch(UI.setActiveCreatorMenu);
+  const undoHistory = useDispatch(History.undo);
+  const redoHistory = useDispatch(History.redo);
 
-  const activeModal = useActiveModal();
+  const isCanvasHidden = useSelector(Creator.isHiddenSelector);
+  const prototypeStatus = useSelector(Prototype.prototypeStatusSelector);
 
   const canDelete = isEditingMode && !activeModal;
   const disableSpotlight = !isEditingMode || !!activeModal;
@@ -130,7 +134,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
 
   const onCreateComponent = React.useCallback(async () => {
     if (engine.activation.getTargets().length > 1) {
-      setActiveDesignMenuTab(DesignMenuTab.LAYERS);
+      setActiveCreatorMenu(DesignMenuTab.LAYERS);
 
       const diagramID = await engine.createComponent();
 
@@ -145,8 +149,8 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
   useHotKeys(Hotkey.CUT, cutActive, { preventDefault: true }, [cutActive]);
   useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true, disable: !isEditingMode || imModal.isOpened }, [isEditingMode]);
   useHotKeys(Hotkey.DELETE, deleteActive, { preventDefault: true }, [deleteActive]);
-  useHotKeys(Hotkey.UNDO, undoHistory as VoidFunction, { preventDefault: true });
-  useHotKeys(Hotkey.REDO, redoHistory as VoidFunction, { preventDefault: true });
+  useHotKeys(Hotkey.UNDO, undoHistory, { preventDefault: true });
+  useHotKeys(Hotkey.REDO, redoHistory, { preventDefault: true });
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { action: 'keyup', preventDefault: true }, [showSpotlight]);
   useHotKeys(Hotkey.DUPLICATE, onDuplicate, { preventDefault: true, disable: !isEditingMode || imModal.isOpened }, [isEditingMode]);
   useHotKeys(Hotkey.CREATE_COMPONENT, onCreateComponent, { preventDefault: true });
@@ -170,16 +174,4 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, un
   );
 };
 
-const mapStateToProps = {
-  isCanvasHidden: Creator.isHiddenSelector,
-  prototypeStatus: Prototype.prototypeStatusSelector,
-};
-
-const mapDispatchToProps = {
-  undoHistory: Creator.undoHistory,
-  redoHistory: Creator.redoHistory,
-};
-
-type ConnectedCanvasContainerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(CanvasContainer) as React.FC;
+export default CanvasContainer;

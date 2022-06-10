@@ -81,6 +81,10 @@ export interface BaseBlockPayload extends BaseDiagramPayload {
   blockID: string;
 }
 
+export interface BaseStepPayload extends BaseBlockPayload {
+  stepID: string;
+}
+
 export interface BasePortPayload extends BaseNodePayload {
   portID: string;
 }

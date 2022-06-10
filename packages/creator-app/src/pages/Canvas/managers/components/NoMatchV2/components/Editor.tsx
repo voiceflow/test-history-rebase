@@ -6,7 +6,8 @@ import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
-import { useSelector } from '@/hooks';
+import * as History from '@/ducks/history';
+import { useDispatch, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
@@ -23,6 +24,8 @@ const Editor: React.FC = () => {
   const editor = EditorV2.useEditor<Data>();
 
   const noMatchLinkID = useSelector(Creator.focusedNoMatchLinkIDSelector);
+
+  const transaction = useDispatch(History.transaction);
 
   const { noMatch } = editor.data;
 
@@ -45,13 +48,14 @@ const Editor: React.FC = () => {
     await onChange({ types: Utils.array.unique([...noMatch.types, BaseNode.Utils.NoMatchType.PATH]) });
   };
 
-  const onRemovePath = async () => {
-    if (noMatchLinkID) {
-      await engine.link.remove(noMatchLinkID);
-    }
+  const onRemovePath = () =>
+    transaction(async () => {
+      if (noMatchLinkID) {
+        await engine.link.remove(noMatchLinkID);
+      }
 
-    await onChange({ types: Utils.array.withoutValue(noMatch.types, BaseNode.Utils.NoMatchType.PATH) });
-  };
+      await onChange({ types: Utils.array.withoutValue(noMatch.types, BaseNode.Utils.NoMatchType.PATH) });
+    });
 
   return (
     <EditorV2

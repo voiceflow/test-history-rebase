@@ -251,8 +251,14 @@ export const addLink = (sourcePortID: string, targetPortID: string, linkID: stri
  */
 export const removeManyLinks = (linkIDs: string[]): RemoveManyLinks => createAction(DiagramAction.REMOVE_MANY_LINKS, linkIDs);
 
+/**
+ * @deprecated
+ */
 export const undoHistory = (): UndoHistory => createAction(DiagramAction.UNDO_HISTORY);
 
+/**
+ * @deprecated
+ */
 export const redoHistory = (): RedoHistory => createAction(DiagramAction.REDO_HISTORY);
 
 export const saveHistory = ({ force, preventUpdate }: { force?: boolean; preventUpdate?: boolean } = {}): SaveHistory =>

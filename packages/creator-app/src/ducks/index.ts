@@ -1,5 +1,5 @@
 import { connectRouter } from 'connected-react-router';
-import { History } from 'history';
+import { History as BrowserHistory } from 'history';
 import { AnyAction, combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
@@ -8,6 +8,7 @@ import creator, * as Creator from '@/ducks/creator';
 import creatorV2, * as CreatorV2 from '@/ducks/creatorV2';
 import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
 import feature, * as Feature from '@/ducks/feature';
+import history, * as History from '@/ducks/history';
 import integrationUsers, * as IntegrationUsers from '@/ducks/integration';
 import intentV2, * as IntentV2 from '@/ducks/intentV2';
 import modal, * as Modal from '@/ducks/modal';
@@ -28,6 +29,7 @@ import thread, * as Thread from '@/ducks/thread';
 import tracking, * as Tracking from '@/ducks/tracking';
 import transcript, * as Transcript from '@/ducks/transcript';
 import ui, * as UI from '@/ducks/ui';
+import { ActionReverter } from '@/ducks/utils';
 import variableState, * as VariableState from '@/ducks/variableState';
 import * as Version from '@/ducks/version';
 import versionV2, * as VersionV2 from '@/ducks/versionV2';
@@ -35,9 +37,9 @@ import viewport, * as Viewport from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
 import workspaceV2, * as WorkspaceV2 from '@/ducks/workspaceV2';
 
-const getCombinedReducer = (history: History) =>
+const getCombinedReducer = (browserHistory: BrowserHistory) =>
   combineReducers({
-    [Router.STATE_KEY]: connectRouter(history),
+    [Router.STATE_KEY]: connectRouter(browserHistory),
     form: formReducer,
     [ProjectListV2.STATE_KEY]: projectListV2,
     [Modal.STATE_KEY]: modal,
@@ -67,10 +69,11 @@ const getCombinedReducer = (history: History) =>
     [ReportTag.STATE_KEY]: reportTag,
     [Transcript.STATE_KEY]: transcript,
     [Note.STATE_KEY]: note,
+    [History.STATE_KEY]: history,
   });
 
-const createReducer = (history: History) => {
-  const rootReducer = getCombinedReducer(history);
+const createReducer = (browserHistory: BrowserHistory) => {
+  const rootReducer = getCombinedReducer(browserHistory);
 
   return (state: State | undefined, action: AnyAction) => {
     let nextState: Partial<State | undefined> = state;
@@ -90,6 +93,8 @@ const createReducer = (history: History) => {
 export default createReducer;
 
 export const allRPCs = [...Workspace.rpcs, ...Version.rpcs, ...Session.rpcs];
+
+export const allReverters: ActionReverter<any>[] = [...CreatorV2.reverters];
 
 export type State = ReturnType<ReturnType<typeof getCombinedReducer>>;
 

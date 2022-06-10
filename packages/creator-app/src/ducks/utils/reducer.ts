@@ -37,11 +37,14 @@ export const createRootReducer = <State>(initialState: State): ReducerBuilder<St
   return reducer;
 };
 
-export interface CreateReducer<State, BasePayload = any> {
+export interface CreateSimpleReducer<State, BasePayload = any> {
   <Payload extends BasePayload>(actionCreator: ActionCreator<Payload>, handler: ImmerHandler<State, Payload>): [
     actionCreator: ActionCreator<Payload>,
     handler: ImmerHandler<State, Payload>
   ];
+}
+
+export interface CreateReducer<State, BasePayload = any> extends CreateSimpleReducer<State, BasePayload> {
   <Payload extends BasePayload>(actionCreators: ActionCreator<Payload>[], handler: ImmerHandler<State, Payload>): [
     actionCreators: ActionCreator<Payload>[],
     handler: ImmerHandler<State, Payload>

@@ -16,6 +16,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
+import * as History from '@/ducks/history';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as RealtimeDuck from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
@@ -572,23 +573,27 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = await this.store.dispatch(Diagram.convertToComponent(clipboardData));
 
-    // TODO: would be good if we could have the removal of these targets
-    // and link creation as part of the component creation operation
-    // probably by creating its own explicit action on the realtime service
-    await this.node.removeMany(targets);
+    await this.store.dispatch(
+      History.transaction(async () => {
+        // TODO: would be good if we could have the removal of these targets
+        // and link creation as part of the component creation operation
+        // probably by creating its own explicit action on the realtime service
+        await this.node.removeMany(targets);
 
-    const componentNodeID = await this.node.add(BlockType.COMPONENT, coords, { name, diagramID });
+        const componentNodeID = await this.node.add(BlockType.COMPONENT, coords, { name, diagramID });
 
-    const componentNode = this.getNodeByID(componentNodeID);
+        const componentNode = this.getNodeByID(componentNodeID);
 
-    if (componentNode) {
-      await Promise.all([
-        incomingLinkSource && this.link.add(incomingLinkSource.portID, componentNode.ports.in[0]),
-        outgoingLinkTarget && this.link.add(componentNode.ports.out.builtIn[BaseModels.PortType.NEXT]!, outgoingLinkTarget.portID),
-      ]);
-    }
+        if (componentNode) {
+          await Promise.all([
+            incomingLinkSource && this.link.add(incomingLinkSource.portID, componentNode.ports.in[0]),
+            outgoingLinkTarget && this.link.add(componentNode.ports.out.builtIn[BaseModels.PortType.NEXT]!, outgoingLinkTarget.portID),
+          ]);
+        }
 
-    PageProgress.stop(PageProgressBar.COMPONENT_CREATING);
+        PageProgress.stop(PageProgressBar.COMPONENT_CREATING);
+      })
+    );
 
     return diagramID;
   }

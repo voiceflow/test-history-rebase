@@ -4,7 +4,8 @@ import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import { BlockType, MarkupBlockType } from '@/constants';
-import { useEventualEngine, usePermission, useTrackingEvents } from '@/hooks';
+import * as History from '@/ducks/history';
+import { useDispatch, useEventualEngine, usePermission, useTrackingEvents } from '@/hooks';
 import { useAnyModeOpen } from '@/pages/Project/hooks/modes';
 import { ClassName, Identifier } from '@/styles/constants';
 import { upload, windowRefocused } from '@/utils/dom';
@@ -40,6 +41,8 @@ export const MarkupProvider: React.FC = ({ children }) => {
 
   const cache = useCache({ getEngine, isAnyModeOpen, canEditCanvas, isImageUploading, uploadingImages });
 
+  const transaction = useDispatch(History.transaction);
+
   const [trackEvents] = useTrackingEvents();
 
   const setCreatingType = React.useCallback((type: Nullable<MarkupBlockType>) => {
@@ -73,31 +76,33 @@ export const MarkupProvider: React.FC = ({ children }) => {
 
     const engine = cache.current.getEngine()!;
 
-    await Utils.array.asyncForEach(allowedFiles, async (file) => {
-      if (!engine.canvas) return;
+    await transaction(() =>
+      Utils.array.asyncForEach(allowedFiles, async (file) => {
+        if (!engine.canvas) return;
 
-      try {
-        loadingOn();
-        const imageURL = await onUploadImage('/image', file);
-        const imageSize = await imageSizeFromUrl(imageURL);
-        loadingOff();
+        try {
+          loadingOn();
+          const imageURL = await onUploadImage('/image', file);
+          const imageSize = await imageSizeFromUrl(imageURL);
+          loadingOff();
 
-        const rect = engine.canvas.getRect();
-        const zoom = engine.canvas.getZoom();
-        const [x, y] = engine.canvas.getPosition();
-        const offsetX = 0 - x / zoom + (rect.width / zoom - imageSize.width) / 2;
-        const offsetY = 0 - y / zoom + (rect.height / zoom - imageSize.height) / 2;
+          const rect = engine.canvas.getRect();
+          const zoom = engine.canvas.getZoom();
+          const [x, y] = engine.canvas.getPosition();
+          const offsetX = 0 - x / zoom + (rect.width / zoom - imageSize.width) / 2;
+          const offsetY = 0 - y / zoom + (rect.height / zoom - imageSize.height) / 2;
 
-        await engine.node.add(BlockType.MARKUP_IMAGE, engine.canvas.toCoords([offsetX, offsetY]), {
-          url: imageURL,
-          width: imageSize.width,
-          height: imageSize.height,
-          rotate: 0,
-        });
-      } catch {
-        toast.error('There was an error');
-      }
-    });
+          await engine.node.add(BlockType.MARKUP_IMAGE, engine.canvas.toCoords([offsetX, offsetY]), {
+            url: imageURL,
+            width: imageSize.width,
+            height: imageSize.height,
+            rotate: 0,
+          });
+        } catch {
+          toast.error('There was an error');
+        }
+      })
+    );
 
     setCreatingType(null);
     setUploadingImages(false);

@@ -3,6 +3,7 @@ import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
+import * as History from '@/ducks/history';
 import * as IntegrationUsers from '@/ducks/integration';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Modal from '@/ducks/modal';
@@ -73,4 +74,5 @@ export const MOCK_STATE: State = {
   [Viewport.STATE_KEY]: Viewport.INITIAL_STATE as ReturnType<typeof Viewport.default>,
   [WorkspaceV2.STATE_KEY]: createCRUDState(),
   [VariableState.STATE_KEY]: { ...VariableState.INITIAL_STATE, selectedID: null },
+  [History.STATE_KEY]: History.INITIAL_STATE,
 };

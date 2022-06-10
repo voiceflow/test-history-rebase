@@ -5,6 +5,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import * as History from '@/ducks/history';
+import { useDispatch } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
@@ -20,6 +22,8 @@ interface Data {
 const Editor: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const editor = EditorV2.useEditor<Data>();
+
+  const transaction = useDispatch(History.transaction);
 
   const { noReply } = editor.data;
 
@@ -38,19 +42,22 @@ const Editor: React.FC = () => {
     }
   };
 
-  const onAddPath = async () => {
-    await engine.port.addBuiltin(editor.nodeID, BaseModels.PortType.NO_REPLY);
-    await onChange({ types: Utils.array.unique([...noReply.types, BaseNode.Utils.NoReplyType.PATH]) });
-  };
+  const onAddPath = () =>
+    transaction(async () => {
+      await engine.port.addBuiltin(editor.nodeID, BaseModels.PortType.NO_REPLY);
+      await onChange({ types: Utils.array.unique([...noReply.types, BaseNode.Utils.NoReplyType.PATH]) });
+    });
 
   const onRemovePath = async () => {
     const noReplyPortID = editor.node.ports.out.builtIn[BaseModels.PortType.NO_REPLY];
 
-    if (noReplyPortID) {
-      await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
-    }
+    await transaction(async () => {
+      if (noReplyPortID) {
+        await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
+      }
 
-    await onChange({ types: Utils.array.withoutValue(noReply.types, BaseNode.Utils.NoReplyType.PATH) });
+      await onChange({ types: Utils.array.withoutValue(noReply.types, BaseNode.Utils.NoReplyType.PATH) });
+    });
   };
 
   return (

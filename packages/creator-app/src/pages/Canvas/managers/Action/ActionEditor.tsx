@@ -5,7 +5,8 @@ import React from 'react';
 import Divider from '@/components/Divider';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import TextArea from '@/components/TextArea';
-import { useManager } from '@/hooks';
+import * as History from '@/ducks/history';
+import { useDispatch, useManager } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
@@ -16,6 +17,8 @@ import { HelpTooltip, Path } from './components';
 const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine, onChange }) => {
   const [name, setName] = React.useState(data.name);
   const [value, setValue] = React.useState(data.body);
+
+  const transaction = useDispatch(History.transaction);
 
   const updatePaths = React.useCallback((paths: Realtime.NodeData.Trace['paths']) => onChange({ paths }), [onChange]);
   const onRemovePath = React.useCallback(
@@ -38,10 +41,10 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
   };
 
   const addPath = React.useCallback(
-    async (scrollToBottom) => {
-      onAdd();
-
-      await engine.port.addDynamic(node.id, {});
+    async (scrollToBottom: VoidFunction) => {
+      await transaction(async () => {
+        await Promise.all([onAdd(), engine.port.addDynamic(node.id, {})]);
+      });
 
       scrollToBottom();
     },

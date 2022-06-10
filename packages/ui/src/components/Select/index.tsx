@@ -544,7 +544,7 @@ function Select({
                       {hasOptions ? (
                         <InputBadge>{selectedOptions.length}</InputBadge>
                       ) : (
-                        <SearchInputIcon icon="caretDown" color={isDropDownOpened ? '#5D9DF5' : '#6e849a'} size={10} onClick={onIconClick} />
+                        <SearchInputIcon icon="caretDown" color={isDropDownOpened ? '#5D9DF5' : '#6e849a'} size={8} onClick={onIconClick} />
                       )}
                     </>
                   )}

@@ -49,11 +49,11 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
       alwaysShowCreate
       isDropdown
       onClose={() => toggleSelectMenuOpen(false)}
-      createInputPlaceholder="states"
+      createInputPlaceholder="personas"
       renderTrigger={({ ref, isOpen }) => render({ ref, isOpen, toggleSelectMenuOpen })}
       renderFooterAction={() => (
         <NestedMenuComponents.FooterActions>
-          <NestedMenuComponents.FooterAction onClick={verifyStatesLimit(openEditorModal)}>Add New State</NestedMenuComponents.FooterAction>
+          <NestedMenuComponents.FooterAction onClick={verifyStatesLimit(openEditorModal)}>Add New Persona</NestedMenuComponents.FooterAction>
         </NestedMenuComponents.FooterActions>
       )}
     />

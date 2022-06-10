@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { SvgIcon } from '@voiceflow/ui';
+import { IconButton } from '@voiceflow/ui';
 import React from 'react';
 
 import { Variable } from '@/models';
@@ -35,7 +35,7 @@ const VariableList: React.FC<VariableListProps> = ({ variables, onChange, onChan
             onChange={(text) => handleChange({ name, value: text }, index)}
             disabled={disabled}
           />
-          {canDelete && <SvgIcon icon="itemMinus" size={16} onClick={() => handleDelete(index)} clickable />}
+          {canDelete && <IconButton icon="minus" onClick={() => handleDelete(index)} variant={IconButton.Variant.BASIC} />}
         </li>
       ))}
     </Container>

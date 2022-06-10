@@ -1,5 +1,5 @@
 import { transformStringVariableToNumber } from '@voiceflow/common';
-import { Flex, FlexCenter, LoadCircle, toast } from '@voiceflow/ui';
+import { Flex, FlexCenter, LoadCircle, toast, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
@@ -21,7 +21,7 @@ const TestVariablesSidebar: React.FC = () => {
   const updateStateValues = useDispatch(variableState.updateStateValues);
   const selectedSavedState = useSelector(variableState.selectedVariableStateSavedStateSelector);
   const [loading, setLoading] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(true);
+  const [isOpen, setIsOpen] = useSessionStorageState('sidebarOpen', false);
 
   const onChangeVariable = ({ name, value }: Variable) => {
     updateSelectedVariableStateVariables({ [name]: transformStringVariableToNumber(value as string | number | null) });

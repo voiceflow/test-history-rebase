@@ -14,7 +14,6 @@ interface SelectVariableStateButtonProps {
 }
 
 const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ onStart }) => {
-  const variableStates = useSelector(VariableState.allVariableStatesSelector);
   const isVariableStateSelected = useSelector(VariableState.isVariableStateSelected);
   const updateSelectedVariableStateById = useDispatch(VariableState.updateSelectedVariableStateById);
   const [trackingEvents] = useTrackingEvents();
@@ -30,36 +29,28 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
     <VariableStateSelectMenu
       render={({ ref, isOpen, toggleSelectMenuOpen }) => (
         <FlexCenter fullWidth style={{ marginBottom: '8px' }}>
-          <RunTestButton
-            withIconButton={variableStates.length > 0}
-            squareRadius
-            variant={ButtonVariant.PRIMARY}
-            onClick={onStartTest}
-            id={Identifier.PROTOTYPE_START}
-          >
+          <RunTestButton withIconButton squareRadius variant={ButtonVariant.PRIMARY} onClick={onStartTest} id={Identifier.PROTOTYPE_START}>
             Run Test
           </RunTestButton>
 
-          {variableStates.length > 0 && (
-            <TippyTooltip title={isVariableStateSelected ? 'Reset state' : 'Select variable state'}>
-              <IconedButton
-                ref={ref as React.RefObject<HTMLButtonElement>}
-                variant={ButtonVariant.PRIMARY}
-                onClick={() => {
-                  if (isVariableStateSelected) {
-                    updateSelectedVariableStateById(null);
-                    return;
-                  }
+          <TippyTooltip title={isVariableStateSelected ? 'Reset state' : 'Select variable state'}>
+            <IconedButton
+              ref={ref as React.RefObject<HTMLButtonElement>}
+              variant={ButtonVariant.PRIMARY}
+              onClick={() => {
+                if (isVariableStateSelected) {
+                  updateSelectedVariableStateById(null);
+                  return;
+                }
 
-                  toggleSelectMenuOpen();
-                }}
-                icon={isVariableStateSelected ? 'refreshData' : 'caretDown'}
-                iconProps={isVariableStateSelected ? { size: 16, color: '#fff', marginTop: '1px', marginLeft: '1px' } : { size: 10, color: '#fff' }}
-                isOpen={isOpen}
-                squareRadius
-              />
-            </TippyTooltip>
-          )}
+                toggleSelectMenuOpen();
+              }}
+              icon={isVariableStateSelected ? 'refreshData' : 'caretDown'}
+              iconProps={isVariableStateSelected ? { size: 16, color: '#fff', marginTop: '1px', marginLeft: '1px' } : { size: 10, color: '#fff' }}
+              isOpen={isOpen}
+              squareRadius
+            />
+          </TippyTooltip>
         </FlexCenter>
       )}
     />

@@ -15,7 +15,7 @@ import { ModalType } from '@/constants';
 import * as variableState from '@/ducks/variableState';
 import { useModals, useSelector, useVariableStatesPlanLimit } from '@/hooks';
 
-import { SelectContainer } from './components';
+import { OuterWrapper, SelectContainer } from './components';
 import { baseOptions, dividerOption } from './constants';
 import { VariableStateOption } from './types';
 
@@ -58,11 +58,20 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       getOptionValue={(option) => option?.value}
       getOptionLabel={(value) => value && optionsMap[value]?.label}
       renderOptionLabel={(option: VariableStateOption) => (
-        <OverflowTippyTooltip style={{ overflow: 'hidden' }} title={option.label} position="top-start">
+        <OverflowTippyTooltip style={{ overflow: 'hidden', width: '275px' }} title={option.label} position="top-start">
           {(overflowref) => (
-            <OverflowText ref={overflowref} style={{ display: 'block', overflow: 'hidden' }}>
-              {option.label}
-            </OverflowText>
+            <OuterWrapper>
+              <OverflowText style={{ display: 'block', overflow: 'hidden' }}>{option.label}</OverflowText>
+
+              {option.label !== 'All project variables' && (
+                <SvgIcon
+                  icon="edit"
+                  ref={overflowref}
+                  variant={SvgIcon.Variant.STANDARD}
+                  onClick={() => openVariableStateManagerModal({ variableStateID: option.value })}
+                />
+              )}
+            </OuterWrapper>
           )}
         </OverflowTippyTooltip>
       )}
@@ -73,19 +82,15 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
         isSelectedStateUnsync &&
         !loading && (
           <TippyTooltip title="Update state values">
-            <SvgIcon icon="publishSpin" clickable color="#132144" onClick={onUpdateStateValues} size={21.3} marginRight="-4px" />
+            <SvgIcon icon="publishSpin" clickable color="#132144" onClick={onUpdateStateValues} size={16} marginRight="12px" />
           </TippyTooltip>
         )
       }
       renderFooterAction={({ close }) => (
         <NestedMenuComponents.FooterActions>
-          {options.length > baseOptions.length && (
-            <NestedMenuComponents.FooterAction onClick={Utils.functional.chainVoid(close, openVariableStateManagerModal)}>
-              Manage
-            </NestedMenuComponents.FooterAction>
-          )}
-
-          <NestedMenuComponents.FooterAction onClick={Utils.functional.chainVoid(close, onAddNew)}>Add New</NestedMenuComponents.FooterAction>
+          <NestedMenuComponents.FooterAction onClick={Utils.functional.chainVoid(close, onAddNew)}>
+            Create New Persona
+          </NestedMenuComponents.FooterAction>
         </NestedMenuComponents.FooterActions>
       )}
       {...props}

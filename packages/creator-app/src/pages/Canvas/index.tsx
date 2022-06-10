@@ -52,10 +52,16 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
       const nodeID = nodeMatch?.params.nodeID ?? query.nodeID;
 
       if (nodeID) {
+        const isPrototype = engine.prototype.isActive;
+
+        if (query.nodeID) {
+          history.push({ search: '' });
+        }
+
         if (nodeID === 'start') {
-          engine.focusStart({ open: true, skipURLSync: !!nodeMatch?.params.nodeID });
+          engine.focusStart({ open: !isPrototype, skipURLSync: !!nodeMatch?.params.nodeID || isPrototype });
         } else {
-          engine.focusNode(nodeID, { open: true, skipURLSync: !!nodeMatch?.params.nodeID });
+          engine.focusNode(nodeID, { open: !isPrototype, skipURLSync: !!nodeMatch?.params.nodeID || isPrototype });
         }
       } else if (rootNodes.length === 1 && !engine.comment.isModeActive) {
         engine.centerNode(rootNodes[0]);

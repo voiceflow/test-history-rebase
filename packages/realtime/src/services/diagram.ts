@@ -110,16 +110,24 @@ class DiagramService extends AbstractControl {
     await client.diagram.delete(diagramID);
   }
 
-  public async addStep(
-    creatorID: number,
-    diagramID: string,
-    blockID: string,
-    step: BaseModels.BaseDiagramNode,
-    index?: Nullish<number>
-  ): Promise<void> {
+  public async addStep({
+    creatorID,
+    diagramID,
+    blockID,
+    step,
+    index,
+    nodePortRemaps,
+  }: {
+    creatorID: number;
+    diagramID: string;
+    blockID: string;
+    step: BaseModels.BaseDiagramNode;
+    index?: Nullish<number>;
+    nodePortRemaps?: Realtime.node.NodePortRemap[];
+  }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.addStep(diagramID, blockID, step, index);
+    await client.diagram.addStep(diagramID, blockID, step, index, nodePortRemaps);
   }
 
   public async addManyNodes(creatorID: number, diagramID: string, nodes: BaseModels.BaseDiagramNode[]): Promise<void> {
@@ -135,6 +143,7 @@ class DiagramService extends AbstractControl {
     block,
     stepID,
     removeSource,
+    nodePortRemaps,
   }: {
     creatorID: number;
     diagramID: string;
@@ -142,16 +151,31 @@ class DiagramService extends AbstractControl {
     block: BaseModels.BaseDiagramNode;
     stepID: string;
     removeSource?: boolean;
+    nodePortRemaps: Realtime.node.NodePortRemap[];
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.isolateStep(diagramID, sourceBlockID, block, stepID, removeSource);
+    await client.diagram.isolateStep({ diagramID, sourceBlockID, block, stepID, removeSource, nodePortRemaps });
   }
 
-  public async reorderSteps(creatorID: number, diagramID: string, blockID: string, stepID: string, index: number): Promise<void> {
+  public async reorderSteps({
+    creatorID,
+    diagramID,
+    blockID,
+    stepID,
+    index,
+    nodePortRemaps,
+  }: {
+    creatorID: number;
+    diagramID: string;
+    blockID: string;
+    stepID: string;
+    index: number;
+    nodePortRemaps: Realtime.node.NodePortRemap[];
+  }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.reorderSteps(diagramID, blockID, stepID, index);
+    await client.diagram.reorderSteps(diagramID, blockID, stepID, index, nodePortRemaps);
   }
 
   public async transplantSteps({
@@ -162,6 +186,7 @@ class DiagramService extends AbstractControl {
     stepIDs,
     index,
     removeSource,
+    nodePortRemaps,
   }: {
     creatorID: number;
     diagramID: string;
@@ -170,10 +195,11 @@ class DiagramService extends AbstractControl {
     stepIDs: string[];
     index: number;
     removeSource?: boolean;
+    nodePortRemaps: Realtime.node.NodePortRemap[];
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.transplantSteps(diagramID, sourceBlockID, targetBlockID, { stepIDs, index, removeSource });
+    await client.diagram.transplantSteps(diagramID, sourceBlockID, targetBlockID, { stepIDs, index, removeSource, nodePortRemaps });
   }
 
   public async updateBlockCoords(creatorID: number, diagramID: string, blocks: Record<string, Realtime.Point>): Promise<void> {
@@ -195,10 +221,15 @@ class DiagramService extends AbstractControl {
     await client.diagram.updateManyNodeData(diagramID, nodes);
   }
 
-  public async removeManyNodes(creatorID: number, diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[]): Promise<void> {
+  public async removeManyNodes(
+    creatorID: number,
+    diagramID: string,
+    nodes: { blockID: string; stepID?: Nullish<string> }[],
+    nodePortRemaps: Realtime.node.NodePortRemap[]
+  ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.removeManyNodes(diagramID, nodes);
+    await client.diagram.removeManyNodes(diagramID, nodes, nodePortRemaps);
   }
 
   public async addByKeyLink(creatorID: number, diagramID: string, nodeID: string, key: string, target: string): Promise<void> {

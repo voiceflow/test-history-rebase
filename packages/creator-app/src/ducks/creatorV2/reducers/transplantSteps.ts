@@ -2,12 +2,12 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import { addStepReferences, orphanStep } from '../utils';
+import { addStepReferences, orphanStep, removeNodePortRemapLinks } from '../utils';
 import { createActiveDiagramReducer } from './utils';
 
 const transplantStepsReducer = createActiveDiagramReducer(
   Realtime.node.transplantSteps,
-  (state, { sourceBlockID, targetBlockID, stepIDs, index }) => {
+  (state, { sourceBlockID, targetBlockID, stepIDs, index, nodePortRemaps }) => {
     if (!Normal.hasMany(state.nodes, [sourceBlockID, targetBlockID, ...stepIDs])) return;
 
     stepIDs.forEach((stepID, stepIndex) =>
@@ -19,6 +19,8 @@ const transplantStepsReducer = createActiveDiagramReducer(
         { blockID: sourceBlockID, stepID }
       )
     );
+
+    removeNodePortRemapLinks(state, nodePortRemaps);
   }
 );
 

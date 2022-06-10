@@ -16,6 +16,7 @@ class TransplantSteps extends AbstractDiagramActionControl<Realtime.node.Transpl
       stepIDs: payload.stepIDs,
       index: payload.index,
       removeSource: payload.removeSource,
+      nodePortRemaps: payload.nodePortRemaps,
     });
   };
 }

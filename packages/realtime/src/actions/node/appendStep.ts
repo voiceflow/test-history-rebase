@@ -28,7 +28,7 @@ class AppendStep extends AbstractDiagramActionControl<Realtime.node.AppendStepPa
       ],
     });
 
-    await this.services.diagram.addStep(ctx.data.creatorID, diagramID, blockID, step);
+    await this.services.diagram.addStep({ creatorID: ctx.data.creatorID, diagramID, blockID, step });
   };
 }
 

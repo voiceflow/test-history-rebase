@@ -22,6 +22,7 @@ class IsolateStep extends AbstractDiagramActionControl<Realtime.node.IsolateStep
       projectMeta,
       schemaVersion,
       removeSource,
+      nodePortRemaps,
     } = payload;
 
     const [block] = extractNodes(diagramID, projectMeta, schemaVersion, {
@@ -43,7 +44,7 @@ class IsolateStep extends AbstractDiagramActionControl<Realtime.node.IsolateStep
       ],
     });
 
-    await this.services.diagram.isolateStep({ creatorID, diagramID, sourceBlockID, block, stepID, removeSource });
+    await this.services.diagram.isolateStep({ creatorID, diagramID, sourceBlockID, block, stepID, removeSource, nodePortRemaps });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.IsolateStepPayload>): Promise<void> => {

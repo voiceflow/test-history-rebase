@@ -128,7 +128,17 @@ export const removeManyNodes = (state: Draft<CreatorState>, nodeIDs: string[]): 
 export const addStep = (
   state: Draft<CreatorState>,
   updateSteps: (stepIDs: string[]) => string[],
-  { blockID, stepID, data, ports }: { blockID: string; stepID: string; data: Realtime.NodeDataDescriptor<unknown>; ports: Realtime.PortsDescriptor }
+  {
+    blockID,
+    stepID,
+    data,
+    ports,
+  }: {
+    blockID: string;
+    stepID: string;
+    data: Realtime.NodeDataDescriptor<unknown>;
+    ports: Realtime.PortsDescriptor;
+  }
 ): void => {
   if (Normal.hasOne(state.nodes, stepID)) return;
   if (!Normal.hasOne(state.nodes, blockID)) return;

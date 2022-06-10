@@ -8,12 +8,22 @@ const nodeMarkupType = Utils.protocol.typeFactory(nodeType('markup'));
 const nodeBlockType = Utils.protocol.typeFactory(nodeType(BLOCK_KEY));
 const nodeStepType = Utils.protocol.typeFactory(nodeType(STEP_KEY));
 
+export interface NodePortRemap {
+  nodeID: string;
+  ports: {
+    key?: string;
+    type?: string;
+    portID: string;
+  }[];
+  targetNodeID: string | null;
+}
 export interface UpdateManyDataPayload<D extends AnyRecord = AnyRecord> extends BaseDiagramPayload, ProjectMetaPayload {
   nodes: NodeData<D>[];
 }
 
 export interface RemoveManyPayload extends BaseDiagramPayload {
   nodes: { blockID: string; stepID?: Nullish<string> }[];
+  nodePortRemaps: NodePortRemap[];
 }
 
 export interface TranslatePayload extends BaseDiagramPayload {
@@ -56,11 +66,12 @@ export interface AppendStepPayload<T = unknown> extends BaseBlockPayload, Projec
 
 export interface InsertStepPayload<T = unknown> extends AppendStepPayload<T> {
   index: number;
+  nodePortRemaps: NodePortRemap[];
 }
-
 export interface ReorderStepsPayload extends BaseBlockPayload {
   stepID: string;
   index: number;
+  nodePortRemaps: NodePortRemap[];
 }
 
 export interface TransplantStepsPayload extends BaseDiagramPayload {
@@ -69,6 +80,7 @@ export interface TransplantStepsPayload extends BaseDiagramPayload {
   stepIDs: string[];
   index: number;
   removeSource?: boolean;
+  nodePortRemaps: NodePortRemap[];
 }
 
 export interface IsolateStepPayload extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload {
@@ -78,6 +90,7 @@ export interface IsolateStepPayload extends BaseBlockPayload, ProjectMetaPayload
   blockName: string;
   stepID: string;
   removeSource?: boolean;
+  nodePortRemaps: NodePortRemap[];
 }
 
 export const appendStep = Utils.protocol.createAction<AppendStepPayload>(nodeStepType('APPEND'));

@@ -63,23 +63,53 @@ const Client = ({ api }: ExtraOptions) => ({
 
   patch: (diagramID: string, data: Partial<Realtime.Diagram>) => api.patch(`/v3/diagrams/${diagramID}`, data),
 
-  addStep: (diagramID: string, blockID: string, step: BaseModels.BaseDiagramNode, index?: Nullish<number>) =>
-    api.post(`/v2/diagrams/${diagramID}/nodes/${blockID}/steps`, { step, index }),
+  addStep: (
+    diagramID: string,
+    blockID: string,
+    step: BaseModels.BaseDiagramNode,
+    index?: Nullish<number>,
+    nodePortRemaps?: Realtime.node.NodePortRemap[]
+  ) => api.post(`/v2/diagrams/${diagramID}/nodes/${blockID}/steps`, { step, index, nodePortRemaps }),
 
   addManyNodes: (diagramID: string, nodes: BaseModels.BaseDiagramNode[]) => api.post(`/v2/diagrams/${diagramID}/nodes/bulk`, { nodes }),
 
-  isolateStep: (diagramID: string, sourceBlockID: string, block: BaseModels.BaseDiagramNode, stepID: string, removeSource?: boolean) =>
-    api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/isolate`, { block, stepID, removeSource }),
+  isolateStep: ({
+    diagramID,
+    sourceBlockID,
+    block,
+    stepID,
+    removeSource,
+    nodePortRemaps,
+  }: {
+    diagramID: string;
+    sourceBlockID: string;
+    block: BaseModels.BaseDiagramNode;
+    stepID: string;
+    removeSource?: boolean;
+    nodePortRemaps: Realtime.node.NodePortRemap[];
+  }) => api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/isolate`, { block, stepID, removeSource, nodePortRemaps }),
 
-  reorderSteps: (diagramID: string, blockID: string, stepID: string, index: number) =>
-    api.post(`/v2/diagrams/${diagramID}/nodes/${blockID}/steps/reorder`, { stepID, index }),
+  reorderSteps: (diagramID: string, blockID: string, stepID: string, index: number, nodePortRemaps: Realtime.node.NodePortRemap[]) =>
+    api.post(`/v2/diagrams/${diagramID}/nodes/${blockID}/steps/reorder`, { stepID, index, nodePortRemaps }),
 
   transplantSteps: (
     diagramID: string,
     sourceBlockID: string,
     targetBlockID: string,
-    { stepIDs, index, removeSource }: { stepIDs: string[]; index: number; removeSource?: boolean }
-  ) => api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/transplant`, { blockID: targetBlockID, stepIDs, index, removeSource }),
+    {
+      stepIDs,
+      index,
+      removeSource,
+      nodePortRemaps,
+    }: { stepIDs: string[]; index: number; removeSource?: boolean; nodePortRemaps: Realtime.node.NodePortRemap[] }
+  ) =>
+    api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/transplant`, {
+      blockID: targetBlockID,
+      stepIDs,
+      index,
+      removeSource,
+      nodePortRemaps,
+    }),
 
   updateBlockCoords: (diagramID: string, blocks: Record<string, Realtime.Point>) => api.put(`/v2/diagrams/${diagramID}/nodes/coords`, { blocks }),
 
@@ -93,8 +123,8 @@ const Client = ({ api }: ExtraOptions) => ({
     return api.patch(`/v2/diagrams/${diagramID}/nodes/data`, { nodeUpdates: nodes.map(({ nodeID, data }) => nodeDataUpdates(nodeID, data)) });
   },
 
-  removeManyNodes: (diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[]) =>
-    api.delete(`/v2/diagrams/${diagramID}/nodes`, { data: { nodes } }),
+  removeManyNodes: (diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[], nodePortRemaps: Realtime.node.NodePortRemap[]) =>
+    api.delete(`/v2/diagrams/${diagramID}/nodes`, { data: { nodes, nodePortRemaps } }),
 
   addByKeyLink: (diagramID: string, nodeID: string, key: string, target: string) =>
     api.post(`/v2/diagrams/${diagramID}/nodes/${nodeID}/links`, { target, key }),

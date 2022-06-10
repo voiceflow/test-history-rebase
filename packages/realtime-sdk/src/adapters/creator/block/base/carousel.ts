@@ -7,6 +7,7 @@ import {
   createBlockAdapter,
   createOutPortsAdapter,
   createOutPortsAdapterV2,
+  findDBNextPort,
   findDBNoMatchPort,
   findDBPortByType,
   outPortDataFromDB,
@@ -28,7 +29,9 @@ export const carouselOutPortsAdapter = createOutPortsAdapter<NodeData.CarouselBu
   (dbPorts, options) => {
     const dbNoMatchPort = findDBNoMatchPort(dbPorts);
     const dbNoReplyPort = findDBPortByType(dbPorts, BaseModels.PortType.NO_REPLY);
+    const dbNextPort = findDBNextPort(dbPorts);
 
+    const nextPortData = dbNextPort && outPortDataFromDB(dbNextPort, options);
     const noMatchPortData = dbNoMatchPort && outPortDataFromDB(dbNoMatchPort, options);
     const noReplyPortData = dbNoReplyPort && outPortDataFromDB(dbNoReplyPort, options);
 
@@ -37,10 +40,18 @@ export const carouselOutPortsAdapter = createOutPortsAdapter<NodeData.CarouselBu
       builtIn: {
         [BaseModels.PortType.NO_MATCH]: noMatchPortData ?? undefined,
         [BaseModels.PortType.NO_REPLY]: noReplyPortData ?? undefined,
+        [BaseModels.PortType.NEXT]: nextPortData ?? undefined,
       },
     };
   },
-  ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData, [BaseModels.PortType.NO_REPLY]: noReplyPortData } }) => [
+  ({
+    builtIn: {
+      [BaseModels.PortType.NO_MATCH]: noMatchPortData,
+      [BaseModels.PortType.NO_REPLY]: noReplyPortData,
+      [BaseModels.PortType.NEXT]: nextPortData,
+    },
+  }) => [
+    ...[nextPortData && outPortDataToDB(nextPortData)].filter(Utils.array.isNotNullish),
     ...[noMatchPortData && outPortDataToDB(noMatchPortData)].filter(Utils.array.isNotNullish),
     ...[noReplyPortData && outPortDataToDB(noReplyPortData)].filter(Utils.array.isNotNullish),
   ]
@@ -48,9 +59,11 @@ export const carouselOutPortsAdapter = createOutPortsAdapter<NodeData.CarouselBu
 
 export const carouselOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.CarouselBuiltInPorts, NodeData.Carousel>(
   (dbPorts, options) => {
+    const dbNextPort = dbPorts.builtIn[BaseModels.PortType.NEXT];
     const dbNoReplyPort = dbPorts.builtIn[BaseModels.PortType.NO_REPLY];
     const dbNoMatchPort = dbPorts.builtIn[BaseModels.PortType.NO_MATCH];
 
+    const nextPortData = dbNextPort && outPortDataFromDB(dbNextPort, options);
     const noReplyPortData = dbNoReplyPort && outPortDataFromDB(dbNoReplyPort, options);
     const noMatchPortData = dbNoMatchPort && outPortDataFromDB(dbNoMatchPort, options);
 
@@ -58,15 +71,24 @@ export const carouselOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.Carous
       ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
       byKey: Utils.object.mapValue(dbPorts.byKey || {}, (port) => outPortDataFromDB(port!, options)),
       builtIn: {
+        [BaseModels.PortType.NEXT]: nextPortData ?? undefined,
         [BaseModels.PortType.NO_MATCH]: noMatchPortData,
         [BaseModels.PortType.NO_REPLY]: noReplyPortData ?? undefined,
       },
     };
   },
-  ({ byKey, builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData, [BaseModels.PortType.NO_REPLY]: noReplyPortData } }) => ({
+  ({
+    byKey,
+    builtIn: {
+      [BaseModels.PortType.NEXT]: nextPortData,
+      [BaseModels.PortType.NO_MATCH]: noMatchPortData,
+      [BaseModels.PortType.NO_REPLY]: noReplyPortData,
+    },
+  }) => ({
     ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
     byKey: Utils.object.mapValue(byKey, outPortDataToDB),
     builtIn: {
+      ...(nextPortData ? { [BaseModels.PortType.NEXT]: outPortDataToDB(nextPortData) } : {}),
       ...(noReplyPortData ? { [BaseModels.PortType.NO_REPLY]: outPortDataToDB(noReplyPortData) } : {}),
       ...(noMatchPortData ? { [BaseModels.PortType.NO_MATCH]: outPortDataToDB(noMatchPortData) } : {}),
     },

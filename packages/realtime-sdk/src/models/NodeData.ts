@@ -200,6 +200,7 @@ export namespace NodeData {
   export interface CarouselBuiltInPorts {
     [BaseModels.PortType.NO_MATCH]?: string;
     [BaseModels.PortType.NO_REPLY]?: string;
+    [BaseModels.PortType.NEXT]?: string;
   }
 
   export interface VariableMapping {

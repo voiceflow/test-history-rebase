@@ -1,6 +1,7 @@
 export { useColorPalette, useColorPaletteWithDynamicSaturation } from '../components/ColorPicker/hooks';
 export * from './cache';
 export * from './callback';
+export * from './hover';
 export * from './lifecycle';
 export * from './linked';
 export * from './mouse';

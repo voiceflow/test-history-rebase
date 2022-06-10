@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.98.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.97.0...@voiceflow/ui@1.98.0) (2022-06-10)
+
+
+### Features
+
+* variable states cleanup (VF-3503) ([#5479](https://github.com/voiceflow/creator-app/issues/5479)) ([c184485](https://github.com/voiceflow/creator-app/commit/c1844858ac50c2535af326a3181f6fd5ef61edb2))
+
+
+
+
+
 # [1.97.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.96.1...@voiceflow/ui@1.97.0) (2022-06-10)
 
 

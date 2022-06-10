@@ -87,7 +87,7 @@ const StyledEditor = styled(AceEditor).attrs({
 
   .ace_comment.ace_placeholder {
     font-size: 13px;
-    font-family: ${({ setOptions }) => (setOptions?.fontFamily ? `${setOptions.fontFamily}, monospace` : `'Monaco, monospace'`)};
+    font-family: ${({ setOptions }) => (setOptions?.fontFamily ? `${setOptions.fontFamily}, monospace` : `'Monaco', monospace`)};
     padding-left: 2px !important;
   }
 

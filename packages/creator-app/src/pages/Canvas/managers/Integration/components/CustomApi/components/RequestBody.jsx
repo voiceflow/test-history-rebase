@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
+import AceEditor, { ACE_EDITOR_OPTIONS_V2 } from '@/components/AceEditor';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import { useManager } from '@/hooks';
@@ -61,10 +61,9 @@ function RequestBody({ body, content, bodyInputType, onChange, factory }) {
         value={aceContent}
         onChange={(newValue) => setAceContent(newValue)}
         onBlur={() => onChange({ content: aceContent })}
-        name="code"
         mode="javascript"
         hasBorder
-        setOptions={ACE_EDITOR_OPTIONS}
+        setOptions={ACE_EDITOR_OPTIONS_V2}
       />
     );
   }

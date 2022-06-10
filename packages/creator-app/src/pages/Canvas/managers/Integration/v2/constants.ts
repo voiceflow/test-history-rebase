@@ -22,4 +22,11 @@ const DEFAULT_DATA_V2 = getDefaultData({
   },
 });
 
+export const expressionFactory = () => ({
+  key: '',
+  val: '',
+});
+
+export const mappingFactory = () => ({ path: '', var: null });
+
 export const NODE_CONFIG_V2 = buildNodeConfig({ iconMap: ICON_MAP_V2, nameMap: NAME_MAP_V2, defaultData: DEFAULT_DATA_V2 });

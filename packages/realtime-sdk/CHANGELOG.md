@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.105.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.104.0...@voiceflow/realtime-sdk@1.105.0) (2022-06-10)
+
+
+### Features
+
+* add undo / redo system (VF-945) ([#5422](https://github.com/voiceflow/creator-app/issues/5422)) ([312c5a2](https://github.com/voiceflow/creator-app/commit/312c5a22b692f233c96e9896461d266e7c3e62ae))
+
+
+
+
+
 # [1.104.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.103.0...@voiceflow/realtime-sdk@1.104.0) (2022-06-09)
 
 

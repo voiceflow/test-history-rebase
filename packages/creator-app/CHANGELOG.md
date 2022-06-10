@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.764.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.763.1...@voiceflow/creator-app@1.764.0) (2022-06-10)
+
+
+### Bug Fixes
+
+* prototype flow navigation (VF-3720) ([#5569](https://github.com/voiceflow/creator-app/issues/5569)) ([99975d8](https://github.com/voiceflow/creator-app/commit/99975d838f79dbbebf64120d5df167df94e430a7))
+
+
+### Features
+
+* add undo / redo system (VF-945) ([#5422](https://github.com/voiceflow/creator-app/issues/5422)) ([312c5a2](https://github.com/voiceflow/creator-app/commit/312c5a22b692f233c96e9896461d266e7c3e62ae))
+* api editor sections (VF-3687) ([#5558](https://github.com/voiceflow/creator-app/issues/5558)) ([3e3767d](https://github.com/voiceflow/creator-app/commit/3e3767d0169711a67e8189d2cf3b9f682df876f0))
+
+
+
+
+
 ## [1.763.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.763.0...@voiceflow/creator-app@1.763.1) (2022-06-09)
 
 **Note:** Version bump only for package @voiceflow/creator-app

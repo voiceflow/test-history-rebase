@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.765.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.764.0...@voiceflow/creator-app@1.765.0) (2022-06-10)
+
+
+### Features
+
+* add next port to carousel step (VF-3790) ([#5571](https://github.com/voiceflow/creator-app/issues/5571)) ([f7a14e2](https://github.com/voiceflow/creator-app/commit/f7a14e278ced135d4a91d1e377d804b88c805255))
+
+
+
+
+
 # [1.764.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.763.1...@voiceflow/creator-app@1.764.0) (2022-06-10)
 
 

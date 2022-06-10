@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.107.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.106.0...@voiceflow/realtime-sdk@1.107.0) (2022-06-10)
+
+
+### Features
+
+* node port remap (VF-3521) ([#5560](https://github.com/voiceflow/creator-app/issues/5560)) ([3f94671](https://github.com/voiceflow/creator-app/commit/3f9467157ed1e7a87b05fa8dbd04aa44d8b94082)), closes [step#3](https://github.com/step/issues/3) [step#2](https://github.com/step/issues/2) [step#4](https://github.com/step/issues/4) [step#5](https://github.com/step/issues/5) [step#6](https://github.com/step/issues/6) [step#4](https://github.com/step/issues/4) [step#A1](https://github.com/step/issues/A1) [step#A2](https://github.com/step/issues/A2) [step#B1](https://github.com/step/issues/B1) [step#B2](https://github.com/step/issues/B2) [step#B1](https://github.com/step/issues/B1) [step#A1](https://github.com/step/issues/A1) [step#A2](https://github.com/step/issues/A2) [step#B2](https://github.com/step/issues/B2)
+
+
+
+
+
 # [1.106.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.105.0...@voiceflow/realtime-sdk@1.106.0) (2022-06-10)
 
 

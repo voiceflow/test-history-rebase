@@ -1,12 +1,11 @@
 import { PlanType } from '@voiceflow/internal';
-import { FlexApart, getNestedMenuFormattedLabel, GetOptionLabel, GetOptionValue, TippyTooltip } from '@voiceflow/ui';
+import { Box, GetOptionLabel, GetOptionValue, stopPropagation, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
-import { ENTERPRISE_LIMIT_PLANS, TEAM_LIMIT_PLANS } from '@/config/planLimits';
-import { ModalType } from '@/constants';
-import { useModals } from '@/hooks';
+import { LimitDetails } from '@/config/planLimits';
+import { useToggle } from '@/hooks';
 
-import GatedFeatureIcon from './components/GatedFeatureIcon';
+import { UpgradeLabel, UpgradePopper } from './components';
 
 interface UpgradeOptionProps<T, U> {
   option: T;
@@ -15,8 +14,10 @@ interface UpgradeOptionProps<T, U> {
   getOptionLabel: GetOptionLabel<U>;
   getOptionValue: GetOptionValue<T, U>;
   isGated?: boolean;
+  popperEnabled?: boolean;
   tooltipTitle?: string;
   plan?: PlanType;
+  getPlanDetails?: (option: T) => LimitDetails | undefined;
 }
 
 const UpgradeOption = <T extends unknown, U extends unknown>({
@@ -26,46 +27,41 @@ const UpgradeOption = <T extends unknown, U extends unknown>({
   getOptionLabel,
   getOptionValue,
   isGated,
+  popperEnabled = false,
   tooltipTitle,
   plan,
+  getPlanDetails,
 }: UpgradeOptionProps<T, U>): React.ReactElement | null => {
-  const optionLabel = getOptionLabel(getOptionValue(option));
-  const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
+  const popper = usePopper({
+    placement: 'right',
+    strategy: 'fixed',
+    modifiers: [
+      { name: 'offset', options: { offset: [0, 5] } },
+      { name: 'preventOverflow', options: { boundary: document.body } },
+    ],
+  });
 
-  const handleOnClick = () => {
-    if (plan && TEAM_LIMIT_PLANS.includes(plan)) {
-      openPaymentModal();
-    } else if (plan && ENTERPRISE_LIMIT_PLANS.includes(plan)) {
-      window.open('https://www.voiceflow.com/demo');
-    }
-  };
-
-  const getButtonText = () => {
-    if (plan && TEAM_LIMIT_PLANS.includes(plan)) {
-      return 'Upgrade to Team';
-    }
-    if (plan && ENTERPRISE_LIMIT_PLANS.includes(plan)) {
-      return 'Contact Sales';
-    }
-    return '';
-  };
+  const popperContainerRef = React.useRef<HTMLDivElement>(null);
+  const [isShowingPopper, setIsShowingPopper] = useToggle();
 
   return (
-    <FlexApart fullWidth>
-      <span>{getNestedMenuFormattedLabel(optionLabel, searchLabel)}</span>
-
-      {isGated && (
-        <TippyTooltip
-          {...{
-            position: 'left',
-            interactive: true,
-            html: <TippyTooltip.FooterButton buttonText={getButtonText()} width={200} onClick={handleOnClick} title={tooltipTitle} />,
-          }}
-        >
-          <GatedFeatureIcon isItemFocused={isFocused} />
-        </TippyTooltip>
+    <>
+      <Box ref={popper.setReferenceElement} onClick={isGated && popperEnabled ? stopPropagation(setIsShowingPopper) : undefined} width="100%">
+        <UpgradeLabel
+          option={option}
+          isFocused={isFocused}
+          searchLabel={searchLabel}
+          getOptionLabel={getOptionLabel}
+          getOptionValue={getOptionValue}
+          isGated={isGated}
+          tooltipTitle={tooltipTitle}
+          plan={plan}
+        />
+      </Box>
+      {isShowingPopper && popperEnabled && (
+        <UpgradePopper planLimits={getPlanDetails ? getPlanDetails(option) : undefined} popperContainerRef={popperContainerRef} />
       )}
-    </FlexApart>
+    </>
   );
 };
 

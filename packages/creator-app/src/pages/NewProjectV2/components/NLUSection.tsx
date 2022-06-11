@@ -1,5 +1,4 @@
 import { MenuItemGrouped, Select, SvgIcon } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
@@ -7,8 +6,7 @@ import UpgradeOption from '@/components/UpgradeOption';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { getProjectNluLimitDetails, getProjectNLULimitPlan, getProjectNLUTooltipTitle, isGatedNLUType } from '@/config/planLimits/projects';
-import { ModalType } from '@/constants';
-import { useFeature, useHover, useModals, usePermission } from '@/hooks';
+import { useFeature, useHover, usePermission } from '@/hooks';
 
 import { NLU_OPTIONS, PLATFORM_PROJECT_META_MAP } from '../constants';
 import { ImportModel, PlatformAndProjectMeta, PlatformAndProjectMetaType, SupportedPlatformType } from '../types';
@@ -36,15 +34,11 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImpor
   const [isImportLoading, setIsImportLoading] = React.useState(false);
   const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
   const [permissionCustomNLU] = usePermission(Permission.NLU_CUSTOM);
-  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
   const [isHovered, , hoverHandlers] = useHover();
   const hasImport = value && PLATFORM_PROJECT_META_MAP[value]?.importMeta;
 
   const chooseCustomNLU = (value: PlatformAndProjectMetaType) => {
-    if (revisedEntitlements.isEnabled && isGatedNLUType(value, permissionCustomNLU)) {
-      const planLimitDetails = getProjectNluLimitDetails(value as VoiceflowConstants.PlatformType);
-      openUpgradeModal({ planLimitDetails });
-    } else {
+    if (!revisedEntitlements.isEnabled || (revisedEntitlements.isEnabled && !isGatedNLUType(value, permissionCustomNLU))) {
       onSelect(value as SupportedPlatformType);
     }
   };
@@ -80,8 +74,10 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImpor
               getOptionLabel={getOptionLabel}
               getOptionValue={getOptionValue}
               isGated={isGatedNLUType(option.type, permissionCustomNLU)}
+              popperEnabled={true}
               tooltipTitle={getProjectNLUTooltipTitle(option)}
               plan={getProjectNLULimitPlan()}
+              getPlanDetails={getProjectNluLimitDetails}
             />
           )}
         />

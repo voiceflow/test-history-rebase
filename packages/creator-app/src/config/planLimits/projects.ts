@@ -40,7 +40,7 @@ const projectNLUEnterpisePlanLimitDetails = (nlpExport: NLPProvider) => {
   };
 };
 
-export const getProjectNluLimitDetails = Utils.platform.createPlatformSelector<LimitDetails>({
+const projectNluLimitDetailsSelector = Utils.platform.createPlatformSelector<LimitDetails>({
   [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: projectNLUEnterpisePlanLimitDetails(NLPProvider.DIALOGFLOW_ES),
   [VoiceflowConstants.PlatformType.EINSTEIN]: projectNLUEnterpisePlanLimitDetails(NLPProvider.EINSTEIN),
   [VoiceflowConstants.PlatformType.LEX]: projectNLUEnterpisePlanLimitDetails(NLPProvider.LEX_V1),
@@ -49,6 +49,9 @@ export const getProjectNluLimitDetails = Utils.platform.createPlatformSelector<L
   [VoiceflowConstants.PlatformType.RASA]: projectNLUEnterpisePlanLimitDetails(NLPProvider.RASA),
   [VoiceflowConstants.PlatformType.WATSON]: projectNLUEnterpisePlanLimitDetails(NLPProvider.WATSON),
 });
+
+export const getProjectNluLimitDetails = (option: PlatformAndProjectMeta) =>
+  !NOT_GATED_PROJECT_NLUS.has(option.type) ? projectNluLimitDetailsSelector(option.type as VoiceflowConstants.PlatformType) : undefined;
 
 export const getProjectNLULimitPlan = (): PlanType => PlanType.ENTERPRISE;
 

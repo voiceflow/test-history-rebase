@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.768.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.767.0...@voiceflow/creator-app@1.768.0) (2022-06-11)
+
+
+### Features
+
+* supported nlu upgrade (VF-3383) ([#5565](https://github.com/voiceflow/creator-app/issues/5565)) ([0ceef7e](https://github.com/voiceflow/creator-app/commit/0ceef7ed22cb856b4ea8bf098b30cd9198d140be))
+
+
+
+
+
 # [1.767.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.766.0...@voiceflow/creator-app@1.767.0) (2022-06-10)
 
 

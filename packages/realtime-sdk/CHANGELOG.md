@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.107.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.107.0...@voiceflow/realtime-sdk@1.107.1) (2022-06-13)
+
+
+### Bug Fixes
+
+* add block reverter (VF-945) ([#5584](https://github.com/voiceflow/creator-app/issues/5584)) ([9452888](https://github.com/voiceflow/creator-app/commit/94528888438e87ac1f0d07420f37c916ae989e25))
+
+
+
+
+
 # [1.107.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.106.0...@voiceflow/realtime-sdk@1.107.0) (2022-06-10)
 
 

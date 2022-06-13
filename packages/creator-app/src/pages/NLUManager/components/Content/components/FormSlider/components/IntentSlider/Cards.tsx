@@ -1,8 +1,12 @@
 import { Box, Button, ButtonVariant, StrengthGauge } from '@voiceflow/ui';
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
+import { Permission } from '@/config/permissions';
+import { NluViewConflictsLimitDetails } from '@/config/planLimits/nluConflicts';
+import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useSelector } from '@/hooks';
+import { useFeature, useModals, usePermission, useSelector } from '@/hooks';
 import { Card, CardsContainer } from '@/pages/NLUManager/components/Content/components/FormSlider/components/IntentSlider/components';
 import { FadeDownContainer } from '@/styles/animations';
 import { getIntentStrengthLevel, isBuiltInIntent } from '@/utils/intent';
@@ -65,8 +69,16 @@ const Cards: React.FC<CardsProps> = ({ intentID }) => {
   const clarityMeta = CLARITY_META[strengthLevel];
   const isBuiltIn = isBuiltInIntent(intentID);
 
+  const [permissionToViewConflicts] = usePermission(Permission.NLU_CONFLICTS);
+  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
+  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
+
   const triggerConflictsSlider = () => {
-    alert('placeholder');
+    if (!permissionToViewConflicts && revisedEntitlements.isEnabled) {
+      openUpgradeModal({ planLimitDetails: NluViewConflictsLimitDetails });
+    } else {
+      alert('placeholder');
+    }
   };
 
   if (isBuiltIn) return null;

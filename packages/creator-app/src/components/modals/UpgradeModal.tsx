@@ -20,7 +20,7 @@ const UpgradeModal: React.FC = () => {
   return (
     <Modal id={ModalType.UPGRADE_MODAL} title={data.planLimitDetails.modalTitle} maxWidth={392}>
       <ModalBody>
-        <Flex style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+        <Flex style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '0 4px 4px 4px' }}>
           <Box mb="16px" mt="24px">
             <SvgIcon icon="skillTemplate" size={80} />
           </Box>

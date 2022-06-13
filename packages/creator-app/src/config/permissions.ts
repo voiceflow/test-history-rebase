@@ -75,6 +75,7 @@ export enum Permission {
   NLU_EXPORT_ALL = 'nlu.EXPORT_ALL',
   NLU_EXPORT_CSV = 'nlu.EXPORT_CSV',
   NLU_CUSTOM = 'nlu.CUSTOM_PROJECT',
+  NLU_CONFLICTS = 'nlu.VIEW_CONFLICTS',
 }
 
 const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.OWNER, UserRole.BILLING, UserRole.GUEST];
@@ -166,6 +167,7 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.NLU_EXPORT_ALL]: [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
   [Permission.NLU_EXPORT_CSV]: PTE_PERMISSIONS,
   [Permission.NLU_CUSTOM]: [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
+  [Permission.NLU_CONFLICTS]: [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
 };
 
 export const TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS = [

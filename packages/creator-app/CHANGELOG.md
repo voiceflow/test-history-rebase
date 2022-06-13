@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.769.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.769.0...@voiceflow/creator-app@1.769.1) (2022-06-13)
+
+
+### Bug Fixes
+
+* format intent name in the edit modal (VF-3794) ([#5580](https://github.com/voiceflow/creator-app/issues/5580)) ([a567b19](https://github.com/voiceflow/creator-app/commit/a567b192c8c3dfdab3fe3c5c85d1744460a6f595))
+
+
+
+
+
 # [1.769.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.768.0...@voiceflow/creator-app@1.769.0) (2022-06-13)
 
 

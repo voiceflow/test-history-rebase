@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.75.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.75.1...@voiceflow/realtime@1.75.2) (2022-06-13)
+
+
+### Bug Fixes
+
+* isolate multiple steps (VF-945) ([#5579](https://github.com/voiceflow/creator-app/issues/5579)) ([21f2521](https://github.com/voiceflow/creator-app/commit/21f2521b528997eb4a503de1dcf4b3dd5525866a))
+
+
+
+
+
 ## [1.75.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.75.0...@voiceflow/realtime@1.75.1) (2022-06-13)
 
 

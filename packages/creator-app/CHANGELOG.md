@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.770.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.769.2...@voiceflow/creator-app@1.770.0) (2022-06-13)
+
+
+### Bug Fixes
+
+* isolate multiple steps (VF-945) ([#5579](https://github.com/voiceflow/creator-app/issues/5579)) ([21f2521](https://github.com/voiceflow/creator-app/commit/21f2521b528997eb4a503de1dcf4b3dd5525866a))
+* modal body padding (VF-000) ([#5585](https://github.com/voiceflow/creator-app/issues/5585)) ([67e5b6f](https://github.com/voiceflow/creator-app/commit/67e5b6f18c7dca69f7520d6a73f5b3f5d615dfbb))
+
+
+### Features
+
+* gate intent conflicts in nlu manager (VF-3593) ([#5583](https://github.com/voiceflow/creator-app/issues/5583)) ([88d9da9](https://github.com/voiceflow/creator-app/commit/88d9da9a1915bad1be9956c484a897910dc1cc67))
+
+
+
+
+
 ## [1.769.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.769.1...@voiceflow/creator-app@1.769.2) (2022-06-13)
 
 

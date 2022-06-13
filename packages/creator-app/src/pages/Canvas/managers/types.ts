@@ -96,6 +96,8 @@ export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPo
   scrollbars: React.RefObject<Scrollbars>;
   goToNested: GoToNested;
   projectType: VoiceflowConstants.ProjectType;
+  isFullscreen: boolean;
+  onToggleFullscreen: () => void;
 }
 
 export type NodeEditorV2<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<

@@ -24,11 +24,11 @@ const CodeRootEditor: React.FC = () => {
     <EditorV2
       header={
         <EditorV2.Header title="Javascript">
-          <SvgIcon icon={editor.isExpanded ? 'systemMinimize' : 'systemExpand'} color="#6E849A" onClick={editor.onExpand} clickable />
+          <SvgIcon icon={editor.isFullscreen ? 'systemMinimize' : 'systemExpand'} color="#6E849A" onClick={editor.onToggleFullscreen} clickable />
         </EditorV2.Header>
       }
       footer={
-        !editor.isExpanded && (
+        !editor.isFullscreen && (
           <EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }}>
             <EditorV2.FooterActionsButton />
           </EditorV2.DefaultFooter>

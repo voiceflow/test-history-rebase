@@ -29,12 +29,14 @@ export const DIAGRAM_ID = 'diagramID';
 export const NODE_ID = 'nodeID';
 export const PORT_ID = 'portID';
 export const LINK_ID = 'linkID';
+export const SCHEMA_VERSION = 1;
 
 export const ACTION_CONTEXT = {
   workspaceID: WORKSPACE_ID,
   projectID: PROJECT_ID,
   versionID: VERSION_ID,
   diagramID: DIAGRAM_ID,
+  schemaVersion: SCHEMA_VERSION,
 };
 
 export const PROJECT_META = {

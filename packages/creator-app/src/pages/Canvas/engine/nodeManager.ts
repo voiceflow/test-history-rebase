@@ -288,13 +288,13 @@ class NodeManager extends EngineConsumer {
         ]);
 
         await this.dispatch.sync(
-          Realtime.node.isolateStep({
+          Realtime.node.isolateSteps({
             ...this.engine.context,
             sourceBlockID: node.parentNode!,
             blockID: parentNode.id,
             blockPorts: parentNode.ports,
             blockCoords: coords,
-            stepID: nodeID,
+            stepIDs: [nodeID],
             blockName,
             projectMeta,
             schemaVersion: this.engine.getActiveSchemaVersion(),

@@ -15,7 +15,7 @@ import appendStep from './appendStep';
 import importSnapshot from './importSnapshot';
 import initialize from './initialize';
 import insertStep from './insertStep';
-import isolateStep from './isolateStep';
+import isolateSteps from './isolateSteps';
 import patchManyLinks from './patchManyLinks';
 import removeBuiltinPort from './removeBuiltinPort';
 import removeByKeyPort from './removeByKeyPort';
@@ -39,7 +39,7 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
 
   .immerCase(...appendStep)
   .immerCase(...insertStep)
-  .immerCase(...isolateStep)
+  .immerCase(...isolateSteps)
   .immerCase(...transplantSteps)
   .immerCase(...reorderSteps)
   .immerCase(...removeManyNodes)

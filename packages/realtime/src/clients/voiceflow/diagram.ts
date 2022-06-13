@@ -73,21 +73,21 @@ const Client = ({ api }: ExtraOptions) => ({
 
   addManyNodes: (diagramID: string, nodes: BaseModels.BaseDiagramNode[]) => api.post(`/v2/diagrams/${diagramID}/nodes/bulk`, { nodes }),
 
-  isolateStep: ({
+  isolateSteps: ({
     diagramID,
     sourceBlockID,
     block,
-    stepID,
+    stepIDs,
     removeSource,
     nodePortRemaps,
   }: {
     diagramID: string;
     sourceBlockID: string;
     block: BaseModels.BaseDiagramNode;
-    stepID: string;
+    stepIDs: string[];
     removeSource?: boolean;
     nodePortRemaps: Realtime.node.NodePortRemap[];
-  }) => api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/isolate`, { block, stepID, removeSource, nodePortRemaps }),
+  }) => api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/isolate`, { block, stepIDs, removeSource, nodePortRemaps }),
 
   reorderSteps: (diagramID: string, blockID: string, stepID: string, index: number, nodePortRemaps: Realtime.node.NodePortRemap[]) =>
     api.post(`/v2/diagrams/${diagramID}/nodes/${blockID}/steps/reorder`, { stepID, index, nodePortRemaps }),

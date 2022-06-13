@@ -6,10 +6,10 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 
 import { extractNodes } from './utils';
 
-class IsolateStep extends AbstractDiagramActionControl<Realtime.node.IsolateStepPayload> {
-  actionCreator = Realtime.node.isolateStep;
+class IsolateStep extends AbstractDiagramActionControl<Realtime.node.IsolateStepsPayload> {
+  actionCreator = Realtime.node.isolateSteps;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.node.IsolateStepPayload>): Promise<void> => {
+  process = async (ctx: Context, { payload }: Action<Realtime.node.IsolateStepsPayload>): Promise<void> => {
     const { creatorID } = ctx.data;
     const {
       diagramID,
@@ -18,7 +18,7 @@ class IsolateStep extends AbstractDiagramActionControl<Realtime.node.IsolateStep
       blockName,
       blockCoords: [blockX, blockY],
       blockPorts,
-      stepID,
+      stepIDs,
       projectMeta,
       schemaVersion,
       removeSource,
@@ -39,15 +39,15 @@ class IsolateStep extends AbstractDiagramActionControl<Realtime.node.IsolateStep
           y: blockY,
           parentNode: null,
           ports: Realtime.Utils.port.extractNodePorts(blockPorts),
-          combinedNodes: [stepID],
+          combinedNodes: stepIDs,
         },
       ],
     });
 
-    await this.services.diagram.isolateStep({ creatorID, diagramID, sourceBlockID, block, stepID, removeSource, nodePortRemaps });
+    await this.services.diagram.isolateSteps({ creatorID, diagramID, sourceBlockID, block, stepIDs, removeSource, nodePortRemaps });
   };
 
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.IsolateStepPayload>): Promise<void> => {
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.IsolateStepsPayload>): Promise<void> => {
     const { creatorID } = ctx.data;
     const { diagramID, versionID, projectID, workspaceID, blockID, blockName } = payload;
     const actionContext = { diagramID, versionID, projectID, workspaceID };

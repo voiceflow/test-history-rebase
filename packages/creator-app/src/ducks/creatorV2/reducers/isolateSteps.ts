@@ -1,23 +1,22 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import { addStepReferences, orphanStep, removeNodePortRemapLinks } from '../utils';
+import { addStepReferences, orphanSteps, removeNodePortRemapLinks } from '../utils';
 import { addBlock } from './addBlock';
 import { createActiveDiagramReducer } from './utils';
 
 const isolateStepReducer = createActiveDiagramReducer(
-  Realtime.node.isolateStep,
-  (state, { sourceBlockID, blockID, blockPorts, blockCoords, blockName, stepID, nodePortRemaps }) => {
+  Realtime.node.isolateSteps,
+  (state, { sourceBlockID, blockID, blockPorts, blockCoords, blockName, stepIDs, nodePortRemaps }) => {
     if (Normal.hasOne(state.nodes, blockID)) return;
 
-    orphanStep(
+    orphanSteps(
       state,
       () => {
         addBlock(state, { blockID, ports: blockPorts, coords: blockCoords, name: blockName });
-        addStepReferences(state, (stepIDs) => Utils.array.append(stepIDs, stepID), { blockID, stepID });
+        addStepReferences(state, (currentStepIDs) => [...currentStepIDs, ...stepIDs], { blockID, stepIDs });
       },
-      { blockID: sourceBlockID, stepID }
+      { blockID: sourceBlockID, stepIDs }
     );
 
     removeNodePortRemapLinks(state, nodePortRemaps);

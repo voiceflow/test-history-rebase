@@ -61,20 +61,22 @@ export const addNodeWithPorts = (
 
 export const addStepReferences = (
   state: Draft<CreatorState>,
-  updateSteps: (stepIDs: string[]) => string[],
-  { blockID, stepID }: { blockID: string; stepID: string }
+  updateSteps: (currentStepIDs: string[]) => string[],
+  { blockID, stepIDs }: { blockID: string; stepIDs: string[] }
 ): void => {
-  const stepIDs = state.stepIDsByBlockID[blockID] ?? [];
+  const currentStepIDs = state.stepIDsByBlockID[blockID] ?? [];
 
-  state.blockIDByStepID[stepID] = blockID;
-  state.stepIDsByBlockID[blockID] = updateSteps(stepIDs);
+  stepIDs.forEach((stepID) => {
+    state.blockIDByStepID[stepID] = blockID;
+  });
+  state.stepIDsByBlockID[blockID] = updateSteps(currentStepIDs);
 };
 
-export const removeStepReferences = (state: Draft<CreatorState>, { blockID, stepID }: { blockID: string; stepID: string }): void => {
-  const stepIDs = state.stepIDsByBlockID[blockID] ?? [];
+export const removeStepReferences = (state: Draft<CreatorState>, { blockID, stepIDs }: { blockID: string; stepIDs: string[] }): void => {
+  const currentStepIDs = state.stepIDsByBlockID[blockID] ?? [];
 
-  delete state.blockIDByStepID[stepID];
-  state.stepIDsByBlockID[blockID] = Utils.array.withoutValue(stepIDs, stepID);
+  stepIDs.forEach((stepID) => delete state.blockIDByStepID[stepID]);
+  state.stepIDsByBlockID[blockID] = Utils.array.withoutValues(currentStepIDs, stepIDs);
 };
 
 export const removeManyNodes = (state: Draft<CreatorState>, nodeIDs: string[]): void => {
@@ -102,7 +104,7 @@ export const removeManyNodes = (state: Draft<CreatorState>, nodeIDs: string[]): 
     const blockID = state.blockIDByStepID[nodeID] ?? null;
 
     if (blockID && !nodesToRemove.has(blockID)) {
-      removeStepReferences(state, { blockID, stepID: nodeID });
+      removeStepReferences(state, { blockID, stepIDs: [nodeID] });
     }
 
     delete state.coordsByNodeID[nodeID];
@@ -143,18 +145,22 @@ export const addStep = (
   if (Normal.hasOne(state.nodes, stepID)) return;
   if (!Normal.hasOne(state.nodes, blockID)) return;
 
-  addStepReferences(state, updateSteps, { blockID, stepID });
+  addStepReferences(state, updateSteps, { blockID, stepIDs: [stepID] });
   addNodeWithPorts(state, { nodeID: stepID, data, ports });
 };
 
-export const orphanStep = (state: Draft<CreatorState>, adoptOrphan: () => void, { blockID, stepID }: { blockID: string; stepID: string }): void => {
-  if (!Normal.hasMany(state.nodes, [blockID, stepID])) return;
+export const orphanSteps = (
+  state: Draft<CreatorState>,
+  adoptOrphan: () => void,
+  { blockID, stepIDs }: { blockID: string; stepIDs: string[] }
+): void => {
+  if (!Normal.hasMany(state.nodes, [blockID, ...stepIDs])) return;
 
-  removeStepReferences(state, { blockID, stepID });
+  removeStepReferences(state, { blockID, stepIDs });
   adoptOrphan();
 
-  const stepIDs = state.stepIDsByBlockID[blockID] ?? [];
-  if (!stepIDs.length) {
+  const currentStepIDs = state.stepIDsByBlockID[blockID] ?? [];
+  if (!currentStepIDs.length) {
     removeManyNodes(state, [blockID]);
   }
 };

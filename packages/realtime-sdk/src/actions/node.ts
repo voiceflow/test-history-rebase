@@ -83,12 +83,12 @@ export interface TransplantStepsPayload extends BaseDiagramPayload {
   nodePortRemaps: NodePortRemap[];
 }
 
-export interface IsolateStepPayload extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload {
+export interface IsolateStepsPayload extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload {
   sourceBlockID: string;
   blockPorts: PortsDescriptor;
   blockCoords: Point;
   blockName: string;
-  stepID: string;
+  stepIDs: string[];
   removeSource?: boolean;
   nodePortRemaps: NodePortRemap[];
 }
@@ -97,4 +97,4 @@ export const appendStep = Utils.protocol.createAction<AppendStepPayload>(nodeSte
 export const insertStep = Utils.protocol.createAction<InsertStepPayload>(nodeStepType('INSERT'));
 export const reorderSteps = Utils.protocol.createAction<ReorderStepsPayload>(nodeStepType('REORDER'));
 export const transplantSteps = Utils.protocol.createAction<TransplantStepsPayload>(nodeStepType('TRANSPLANT'));
-export const isolateStep = Utils.protocol.createAction<IsolateStepPayload>(nodeStepType('ISOLATE'));
+export const isolateSteps = Utils.protocol.createAction<IsolateStepsPayload>(nodeStepType('ISOLATE'));

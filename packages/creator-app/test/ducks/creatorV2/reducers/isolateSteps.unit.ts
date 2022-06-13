@@ -8,11 +8,11 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateStep reducer', ({ expect, describeReducerV2 }) => {
-  describeReducerV2(Realtime.node.isolateStep, ({ applyAction }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ expect, describeReducerV2 }) => {
+  describeReducerV2(Realtime.node.isolateSteps, ({ applyAction }) => {
     const sourceBlockID = 'sourceBlockID';
     const blockID = 'blockID';
-    const stepID = 'stepID';
+    const stepIDs = ['stepID'];
     const blockCoords: Realtime.Point = [-90, 20];
     const blockName = 'New Block';
 
@@ -25,11 +25,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateStep reducer', ({ expe
         blockName,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         blockCoords,
-        stepID,
+        stepIDs,
         projectMeta: {
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
+        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -43,11 +44,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateStep reducer', ({ expe
         blockName,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         blockCoords,
-        stepID,
+        stepIDs,
         projectMeta: {
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
+        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -61,11 +63,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateStep reducer', ({ expe
         blockName,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         blockCoords,
-        stepID,
+        stepIDs,
         projectMeta: {
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
+        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -79,17 +82,19 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateStep reducer', ({ expe
         blockName,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         blockCoords,
-        stepID: NODE_ID,
+        stepIDs: [NODE_ID],
         projectMeta: {
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
+        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
     });
 
     it('isolate a step from its block', () => {
+      const stepID = stepIDs[0];
       const stepNode = { ...NODE_DATA, nodeID: stepID };
 
       const result = applyAction(
@@ -107,11 +112,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateStep reducer', ({ expe
           blockName,
           blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
           blockCoords,
-          stepID,
+          stepIDs: [stepID],
           projectMeta: {
             platform: VoiceflowConstants.PlatformType.VOICEFLOW,
             type: VoiceflowConstants.ProjectType.CHAT,
           },
+          nodePortRemaps: [],
         }
       );
 

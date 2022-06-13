@@ -136,12 +136,12 @@ class DiagramService extends AbstractControl {
     await client.diagram.addManyNodes(diagramID, nodes);
   }
 
-  public async isolateStep({
+  public async isolateSteps({
     creatorID,
     diagramID,
     sourceBlockID,
     block,
-    stepID,
+    stepIDs,
     removeSource,
     nodePortRemaps,
   }: {
@@ -149,13 +149,13 @@ class DiagramService extends AbstractControl {
     diagramID: string;
     sourceBlockID: string;
     block: BaseModels.BaseDiagramNode;
-    stepID: string;
+    stepIDs: string[];
     removeSource?: boolean;
     nodePortRemaps: Realtime.node.NodePortRemap[];
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.isolateStep({ diagramID, sourceBlockID, block, stepID, removeSource, nodePortRemaps });
+    await client.diagram.isolateSteps({ diagramID, sourceBlockID, block, stepIDs, removeSource, nodePortRemaps });
   }
 
   public async reorderSteps({

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.769.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.768.0...@voiceflow/creator-app@1.769.0) (2022-06-13)
+
+
+### Features
+
+* adds full screen mode to code editor (VF-3682) ([#5578](https://github.com/voiceflow/creator-app/issues/5578)) ([7dca6b4](https://github.com/voiceflow/creator-app/commit/7dca6b4c0188f5b7cade82d2ce9f05e52f246d55))
+
+
+
+
+
 # [1.768.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.767.0...@voiceflow/creator-app@1.768.0) (2022-06-11)
 
 

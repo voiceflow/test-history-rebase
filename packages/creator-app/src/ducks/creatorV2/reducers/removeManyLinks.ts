@@ -1,7 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { createReverter } from '@/ducks/utils';
+
+import { blockIDByStepIDSelector, linkByIDSelector } from '../selectors';
 import { removeLink } from '../utils';
-import { createActiveDiagramReducer } from './utils';
+import { createActiveDiagramReducer, createDiagramInvalidator, DIAGRAM_INVALIDATORS } from './utils';
 
 const removeManyLinksReducer = createActiveDiagramReducer(Realtime.link.removeMany, (state, { links }) => {
   links.forEach((link) => {
@@ -10,3 +13,43 @@ const removeManyLinksReducer = createActiveDiagramReducer(Realtime.link.removeMa
 });
 
 export default removeManyLinksReducer;
+
+export const removeManyLinksReverter = createReverter(
+  Realtime.link.removeMany,
+
+  ({ workspaceID, projectID, versionID, diagramID, links }, getState) => {
+    const ctx = { workspaceID, projectID, versionID, diagramID };
+    const state = getState();
+
+    return links.map((link) => {
+      const prevLink = linkByIDSelector(state, { id: link.linkID });
+      const sourceBlockID = blockIDByStepIDSelector(state, { id: link.nodeID });
+      const payload = {
+        sourceBlockID,
+        sourceNodeID: link.nodeID,
+        sourcePortID: link.portID,
+        targetNodeID: prevLink!.target.nodeID,
+        targetPortID: prevLink!.target.portID,
+        linkID: link.linkID,
+        data: prevLink?.data,
+      };
+
+      if (link.type) {
+        return Realtime.link.addBuiltin({ ...ctx, ...payload, type: link.type });
+      }
+
+      if (link.key) {
+        return Realtime.link.addByKey({ ...ctx, ...payload, key: link.key });
+      }
+
+      return Realtime.link.addDynamic({ ...ctx, ...payload });
+    });
+  },
+
+  [
+    ...DIAGRAM_INVALIDATORS,
+    createDiagramInvalidator(Realtime.link.removeMany, (origin, subject) =>
+      origin.links.some((originLink) => subject.links.some((link) => link.nodeID === originLink.nodeID))
+    ),
+  ]
+);

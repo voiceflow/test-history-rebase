@@ -37,8 +37,10 @@ class LinkManager extends EngineConsumer {
       if (this.isAtomicActionsPhase2) {
         const portType = this.select(CreatorV2.builtInPortTypeSelector, { id: sourcePortID });
         const portKey = this.select(CreatorV2.byKeyPortKeySelector, { id: sourcePortID });
+        const sourceBlockID = this.select(CreatorV2.blockIDByStepIDSelector, { id: sourcePort.nodeID });
         const payload = {
           ...this.engine.context,
+          sourceBlockID,
           sourceNodeID: sourcePort.nodeID,
           sourcePortID,
           targetNodeID: targetPort.nodeID,

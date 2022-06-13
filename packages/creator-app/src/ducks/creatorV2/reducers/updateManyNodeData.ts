@@ -1,7 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import { createActiveDiagramReducer } from './utils';
+import { createReverter } from '@/ducks/utils';
+
+import { nodeDataByIDSelector } from '../selectors';
+import { createActiveDiagramReducer, createDiagramInvalidator, DIAGRAM_INVALIDATORS } from './utils';
 
 const updateManyNodeDataReducer = createActiveDiagramReducer(Realtime.node.updateDataMany, (state, payload) => {
   payload.nodes.forEach(({ nodeID, ...data }) => {
@@ -12,3 +15,36 @@ const updateManyNodeDataReducer = createActiveDiagramReducer(Realtime.node.updat
 });
 
 export default updateManyNodeDataReducer;
+
+export const updateManyNodeDataReverter = createReverter(
+  Realtime.node.updateDataMany,
+
+  ({ workspaceID, projectID, versionID, diagramID, nodes, projectMeta }, getState) => {
+    const prevNodes = nodes.flatMap((node) => {
+      const data = nodeDataByIDSelector(getState(), { id: node.nodeID });
+
+      return data ? [{ ...node, data }] : [];
+    });
+
+    return prevNodes.length
+      ? Realtime.node.updateDataMany({
+          workspaceID,
+          projectID,
+          versionID,
+          diagramID,
+          nodes: prevNodes,
+          projectMeta,
+        })
+      : [];
+  },
+
+  [
+    ...DIAGRAM_INVALIDATORS,
+    createDiagramInvalidator(Realtime.node.updateDataMany, (origin, subject) =>
+      origin.nodes.some(({ nodeID }) => subject.nodes.some((subjectNode) => nodeID === subjectNode.nodeID))
+    ),
+    createDiagramInvalidator(Realtime.node.removeMany, (origin, subject) =>
+      subject.nodes.some((node) => origin.nodes.some(({ nodeID }) => nodeID === (node.stepID ?? node.blockID)))
+    ),
+  ]
+);

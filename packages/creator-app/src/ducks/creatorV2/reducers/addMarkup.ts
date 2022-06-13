@@ -3,9 +3,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
 import { nodeDataFactory } from '@/ducks/creator/diagram/factories';
+import { createReverter } from '@/ducks/utils';
 
 import { addNode } from '../utils';
-import { createActiveDiagramReducer } from './utils';
+import { createActiveDiagramReducer, DIAGRAM_INVALIDATORS } from './utils';
 
 const addMarkupReducer = createActiveDiagramReducer(Realtime.node.addMarkup, (state, { nodeID, data, coords }) => {
   if (Normal.hasOne(state.nodes, nodeID)) return;
@@ -17,3 +18,12 @@ const addMarkupReducer = createActiveDiagramReducer(Realtime.node.addMarkup, (st
 });
 
 export default addMarkupReducer;
+
+export const addMarkupReverter = createReverter(
+  Realtime.node.addMarkup,
+
+  ({ workspaceID, projectID, versionID, diagramID, nodeID }) =>
+    Realtime.node.removeMany({ workspaceID, projectID, versionID, diagramID, nodes: [{ blockID: nodeID }] }),
+
+  DIAGRAM_INVALIDATORS
+);

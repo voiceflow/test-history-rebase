@@ -225,7 +225,7 @@ class DiagramService extends AbstractControl {
     creatorID: number,
     diagramID: string,
     nodes: { blockID: string; stepID?: Nullish<string> }[],
-    nodePortRemaps: Realtime.node.NodePortRemap[]
+    nodePortRemaps?: Realtime.node.NodePortRemap[]
   ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 

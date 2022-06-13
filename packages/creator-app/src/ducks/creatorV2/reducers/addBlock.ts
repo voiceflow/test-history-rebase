@@ -4,11 +4,12 @@ import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
 import { blockNodeDataFactory } from '@/ducks/creator/diagram/factories';
+import { createReverter } from '@/ducks/utils';
 
 import { CreatorState } from '../types';
 import { addNodeWithPorts } from '../utils';
 import { appendStep } from './appendStep';
-import { createActiveDiagramReducer } from './utils';
+import { createActiveDiagramReducer, DIAGRAM_INVALIDATORS } from './utils';
 
 export const addBlock = (
   state: Draft<CreatorState>,
@@ -34,3 +35,12 @@ const addBlockReducer = createActiveDiagramReducer(
 );
 
 export default addBlockReducer;
+
+export const addBlockReverter = createReverter(
+  Realtime.node.addBlock,
+
+  ({ workspaceID, projectID, versionID, diagramID, blockID, stepID }) =>
+    Realtime.node.removeMany({ workspaceID, projectID, versionID, diagramID, nodes: [{ blockID }, { blockID, stepID }] }),
+
+  DIAGRAM_INVALIDATORS
+);

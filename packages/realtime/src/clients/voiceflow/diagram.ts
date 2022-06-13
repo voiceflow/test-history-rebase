@@ -123,7 +123,7 @@ const Client = ({ api }: ExtraOptions) => ({
     return api.patch(`/v2/diagrams/${diagramID}/nodes/data`, { nodeUpdates: nodes.map(({ nodeID, data }) => nodeDataUpdates(nodeID, data)) });
   },
 
-  removeManyNodes: (diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[], nodePortRemaps: Realtime.node.NodePortRemap[]) =>
+  removeManyNodes: (diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[], nodePortRemaps?: Realtime.node.NodePortRemap[]) =>
     api.delete(`/v2/diagrams/${diagramID}/nodes`, { data: { nodes, nodePortRemaps } }),
 
   addByKeyLink: (diagramID: string, nodeID: string, key: string, target: string) =>

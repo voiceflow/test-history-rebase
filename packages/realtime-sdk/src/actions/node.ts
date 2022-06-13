@@ -23,7 +23,7 @@ export interface UpdateManyDataPayload<D extends AnyRecord = AnyRecord> extends 
 
 export interface RemoveManyPayload extends BaseDiagramPayload {
   nodes: { blockID: string; stepID?: Nullish<string> }[];
-  nodePortRemaps: NodePortRemap[];
+  nodePortRemaps?: NodePortRemap[];
 }
 
 export interface TranslatePayload extends BaseDiagramPayload {

@@ -3,10 +3,8 @@ import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Intent from '@/ducks/intent';
-import * as IntentV2 from '@/ducks/intentV2';
-import { useDidUpdateEffect, useDispatch, useLinkedState, useSelector } from '@/hooks';
+import { useDidUpdateEffect, useDispatch, useIntent, useLinkedState } from '@/hooks';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
-import { isBuiltInIntent } from '@/utils/intent';
 
 interface EditIntentFormProps {
   intentID: string;
@@ -16,23 +14,23 @@ interface EditIntentFormProps {
   prefilledNewUtterance?: string;
 }
 
+const DEFAULT_INPUTS: Realtime.IntentInput[] = [];
+
 const EditIntentForm: React.FC<EditIntentFormProps> = ({
-  prefilledNewUtterance,
-  rightSlider,
-  withDescriptionBottomBorder,
   intentID,
+  rightSlider,
   withNameSection = false,
+  prefilledNewUtterance,
+  withDescriptionBottomBorder,
 }) => {
-  const intent = useSelector(IntentV2.intentByIDSelector, { id: intentID });
-  const [name, setName] = useLinkedState(intent?.name || '');
-  const [inputs, setInputs] = useLinkedState(intent?.inputs || []);
+  const { intent, intentIsBuiltIn } = useIntent(intentID);
+
+  const [name, setName] = useLinkedState(intent?.name ?? '');
+  const [inputs, setInputs] = useLinkedState(intent?.inputs || DEFAULT_INPUTS);
 
   const addRequiredSlot = useDispatch(Intent.addRequiredSlot);
   const removeRequiredSlot = useDispatch(Intent.removeRequiredSlot);
   const patchIntentSlotDialog = useDispatch(Intent.updateIntentSlotDialog);
-
-  const isBuiltIn = React.useMemo(() => isBuiltInIntent(intentID), [intentID]);
-  const noteID = intent?.noteID;
 
   const patchIntent = useDispatch(Intent.patchIntent);
 
@@ -65,22 +63,22 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
 
   return intent ? (
     <IntentForm
-      prefilledNewUtterance={prefilledNewUtterance}
-      rightSlider={rightSlider}
-      withDescriptionSection
-      intentID={intentID}
-      intentEntities={intent.slots}
-      noteID={noteID}
-      isBuiltIn={isBuiltIn}
-      inputs={inputs}
-      setInputs={onUpdateUtterances}
       name={name}
+      noteID={intent?.noteID}
+      inputs={inputs}
       setName={setName}
+      intentID={intentID}
       saveName={saveName}
+      isBuiltIn={intentIsBuiltIn}
+      setInputs={onUpdateUtterances}
+      rightSlider={rightSlider}
+      intentEntities={intent.slots}
       withNameSection={withNameSection}
       addRequiredSlot={addRequiredSlotToIntent}
-      removeRequiredSlot={removeRequiredSlotFromIntent}
       updateSlotDialog={updateSlotDialog}
+      removeRequiredSlot={removeRequiredSlotFromIntent}
+      prefilledNewUtterance={prefilledNewUtterance}
+      withDescriptionSection
       withDescriptionBottomBorder={withDescriptionBottomBorder}
     />
   ) : null;

@@ -211,23 +211,26 @@ export const formatUtterance = (text = ''): string =>
     })
     .join('');
 
-export const applyPlatformIntentAndSlotNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string => {
-  return getPlatformIntentAndSlotNameFormatter(platform)(name);
-};
+export const applyPlatformIntentAndSlotNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string =>
+  getPlatformIntentAndSlotNameFormatter(platform)(name);
 
 export const applyCustomizableBuiltInIntent = (name: string, platform: VoiceflowConstants.PlatformType): string => {
   if (Realtime.Utils.typeGuards.isVoiceflowPlatform(platform)) {
     return Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name.toLowerCase()));
   }
+
   if (Realtime.Utils.typeGuards.isAlexaPlatform(platform)) {
     return removeBuiltInPrefix(name.replace(/(\w)Intent/g, '$1'));
   }
+
   if (Realtime.Utils.typeGuards.isGooglePlatform(platform)) {
     return Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' ');
   }
+
   if (Realtime.Utils.typeGuards.isDialogflowPlatform(platform)) {
     if (name.startsWith('actions.intent.'))
       return Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' ');
+
     return Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name.toLowerCase()));
   }
 

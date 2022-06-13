@@ -1,3 +1,4 @@
+import { flexCenterStyles } from '@ui/components/Flex';
 import { css, styled, transition } from '@ui/styles';
 
 import { IconButtonVariant } from '../types';
@@ -21,23 +22,25 @@ const hoverStyle = css`
   opacity: 1;
 `;
 
-const BasicContainer = styled.div<BasicContainerProps>`
+const BasicContainer = styled.button<BasicContainerProps>`
+  ${flexCenterStyles};
   ${transition('background', 'opacity', 'color')};
 
-  height: 36px;
   width: 36px;
+  height: 36px;
+
+  color: #8da2b5;
+  background: transparent;
+  border: none;
+
+  opacity: 0.8;
+  border-radius: 6px;
+  cursor: pointer;
 
   ${({ containerSize = 10 }) => css`
     padding: ${containerSize}px;
     margin: -${containerSize}px;
   `}
-
-  color: #8da2b5;
-  background: transparent;
-
-  opacity: 0.8;
-  border-radius: 6px;
-  cursor: pointer;
 
   &:hover,
   &:active {

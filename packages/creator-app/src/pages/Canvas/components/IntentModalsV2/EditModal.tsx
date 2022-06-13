@@ -30,24 +30,16 @@ const EditModal: React.FC = () => {
       ref={setModalRef}
       maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]}
       headerActions={
-        <Dropdown
-          options={[
-            {
-              key: 'delete',
-              label: 'Delete intent',
-              onClick: onDeleteIntent,
-            },
-          ]}
-        >
+        <Dropdown options={[{ key: 'delete', label: 'Delete intent', onClick: onDeleteIntent }]}>
           {(ref, onToggle, isOpened) => (
             <IconButton
-              style={{ marginRight: '0px' }}
+              ref={ref}
               size={14}
               icon="ellipsis"
+              style={{ marginRight: '0px' }}
               variant={IconButtonVariant.BASIC}
               onClick={onToggle}
               activeClick={isOpened}
-              ref={ref}
             />
           )}
         </Dropdown>

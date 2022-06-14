@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.773.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.772.1...@voiceflow/creator-app@1.773.0) (2022-06-14)
+
+
+### Features
+
+* redesign api key ui (VF-3718) ([#5542](https://github.com/voiceflow/creator-app/issues/5542)) ([ccb1fdc](https://github.com/voiceflow/creator-app/commit/ccb1fdc9fcd9c4f123011dcbd789256dc9c40fde))
+
+
+
+
+
 ## [1.772.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.772.0...@voiceflow/creator-app@1.772.1) (2022-06-14)
 
 

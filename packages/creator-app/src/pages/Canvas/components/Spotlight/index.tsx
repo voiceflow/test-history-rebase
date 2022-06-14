@@ -29,6 +29,7 @@ const Spotlight = () => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
   const chatCardsCarousel = useFeature(FeatureFlag.CHAT_CARDS_CAROUSEL);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const promptStep = useFeature(FeatureFlag.PROMPT_STEP);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
   const getManager = useManager();
 
@@ -50,6 +51,7 @@ const Spotlight = () => {
           if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
           if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
+          if (!promptStep.isEnabled && step.type === BlockType.PROMPT) return false;
           return true;
         })
         .map((step) => {

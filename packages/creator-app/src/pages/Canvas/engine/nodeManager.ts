@@ -971,7 +971,6 @@ class NodeManager extends EngineConsumer {
 
       await (translateFirst ? this.translate([nodeID], movement) : this.engine.drag.setTarget(nodeID));
       await (translateFirst ? this.engine.drag.setTarget(nodeID) : this.translate([nodeID], movement));
-      this.engine.transformation.components.transformOverlay?.translate(movement);
 
       this.engine.merge.updateCandidates();
     }

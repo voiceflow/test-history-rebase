@@ -1,41 +1,24 @@
+import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { useRAF } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
-import { Pair } from '@/types';
+import { useCanvasPanApplied, useCanvasZoomApplied } from '@/pages/Canvas/hooks';
 
-import { OverlayState } from '../../types';
-
-const useCanvasInteractions = (onPan: (movement: Pair<number>) => void, { ref, position, size, zoom }: OverlayState) => {
+const useCanvasInteractions = (resizeOverlay: (rect: DOMRect) => void) => {
   const engine = React.useContext(EngineContext)!;
 
-  const [stylesScheduler] = useRAF();
+  const onCanvasInteraction = usePersistFunction(() => {
+    if (!engine.transformation.isActive || !engine.focus.hasTarget) return;
 
-  useCanvasPan(onPan, [onPan]);
+    const transform = engine.node.api(engine.focus.getTarget()!)?.instance?.getTransform?.();
 
-  useCanvasZoom((calculateMovement) => {
-    if (!position.current) return;
+    if (!transform) return;
 
-    const el = ref.current!;
-    const [x, y] = position.current!;
-    const [moveX, moveY, zoomDiffFactor] = calculateMovement(engine.canvas!.mapPoint([x, y]));
-    const nextX = x + moveX;
-    const nextY = y + moveY;
-    const nextZoom = zoom.current * zoomDiffFactor;
-
-    position.current = [nextX, nextY];
-    zoom.current = nextZoom;
-
-    stylesScheduler(() => {
-      if (!position.current || !size.current) return;
-
-      el.style.left = `${position.current[0]}px`;
-      el.style.top = `${position.current[1]}px`;
-      el.style.width = `${size.current[0] * zoom.current}px`;
-      el.style.height = `${size.current[1] * zoom.current}px`;
-    });
+    resizeOverlay(transform.rect);
   });
+
+  useCanvasPanApplied(onCanvasInteraction);
+  useCanvasZoomApplied(onCanvasInteraction);
 };
 
 export default useCanvasInteractions;

@@ -19,6 +19,7 @@ import MergeLayer from '@/pages/Canvas/components/MergeLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
+import { CanvasAction } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { FolderItemProps } from '@/pages/Project/components/DesignMenu/components/Layers/components/ComponentsSection/components/FolderItem';
 import { StepDragItem } from '@/pages/Project/components/DesignMenu/components/Steps/types';
@@ -181,6 +182,8 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
         removeClass={removeClass}
         getZoomType={getZoomType}
         layers={children}
+        onPanApplied={(movement) => engine.emitter.emit(CanvasAction.PAN_APPLIED, movement)}
+        onZoomApplied={(calculateMovement) => engine.emitter.emit(CanvasAction.ZOOM_APPLIED, calculateMovement)}
       >
         <AutoPanLayer />
         <LinkLayer />

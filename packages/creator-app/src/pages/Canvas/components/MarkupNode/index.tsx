@@ -14,6 +14,9 @@ import { Border, Container, NodeStyles } from './components';
 import { useMarkupInstance } from './hooks';
 import { ResizableMarkupNodeData } from './types';
 
+// for optimization reason using query selector to filter click events if markup is not opened
+const skipDrag = () => !!document.getElementsByClassName(CANVAS_MARKUP_CREATING_CLASSNAME).length;
+
 const MarkupNode = () => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
@@ -31,56 +34,51 @@ const MarkupNode = () => {
       data: resolved.data,
     };
   });
-
-  const doubleClickHandler = () => {
-    engine.setActive(nodeEntity.nodeID);
-  };
-
   const { markupNode: NodeComponent } = getManager(nodeEntity.nodeType as MarkupBlockType);
-
-  // for optimization reason using query selector to filter click events if markup is not opened
-  const skipDrag = React.useCallback(() => !!document.getElementsByClassName(CANVAS_MARKUP_CREATING_CLASSNAME).length, []);
 
   const { onClick, onMouseDown, onDragStart } = useNodeDrag({ skipDrag });
 
-  const onRightClick = React.useCallback(
-    (event: React.MouseEvent) => {
-      event.stopPropagation();
+  const onDoubleClick = () => {
+    engine.setActive(nodeEntity.nodeID);
+  };
 
-      if (isEditingMode) {
-        contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
-      }
-    },
-    [isEditingMode]
-  );
+  const onRightClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+
+    if (isEditingMode) {
+      contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
+    }
+  };
 
   nodeEntity.useInstance(instance);
+
+  const isText = nodeEntity.nodeType === BlockType.MARKUP_TEXT;
 
   return (
     <>
       <NodeStyles />
 
       <NodeDragTarget
+        ref={instance.ref}
+        onClick={onClick}
+        position={instance.getPosition()}
+        tabIndex={-1}
         draggable
         className={cn(ClassName.CANVAS_NODE, `${ClassName.CANVAS_NODE}--${nodeEntity.nodeType}`)}
-        position={instance.getPosition()}
         isTransform={!isPresentationMode}
         onMouseDown={onMouseDown}
         onDragStart={onDragStart}
-        onClick={onClick}
         onContextMenu={onRightClick}
-        ref={instance.ref}
-        tabIndex={-1}
       >
         {NodeComponent && (
           <Container
-            onDoubleClick={doubleClickHandler}
-            isText={nodeEntity.nodeType === BlockType.MARKUP_TEXT}
-            rotate={(data as ResizableMarkupNodeData).rotate || 0}
-            scale={(data as Realtime.Markup.NodeData.Text).scale ?? 1}
-            maxWidth={(data as Realtime.Markup.NodeData.Text).overrideWidth ?? null}
-            backgroundColor={(data as Realtime.Markup.NodeData.Text).backgroundColor ?? null}
             ref={instance.transformRef}
+            scale={(data as Realtime.Markup.NodeData.Text).scale ?? 1}
+            rotate={(data as ResizableMarkupNodeData).rotate || 0}
+            isText={isText}
+            maxWidth={(data as Realtime.Markup.NodeData.Text).overrideWidth ?? null}
+            onDoubleClick={onDoubleClick}
+            backgroundColor={(data as Realtime.Markup.NodeData.Text).backgroundColor ?? null}
           >
             <NodeComponent ref={instance.blockRef} data={data as any} />
 

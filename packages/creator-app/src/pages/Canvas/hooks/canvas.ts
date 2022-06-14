@@ -27,41 +27,26 @@ export const useCanvasRendered = () => {
   return isRendered;
 };
 
-export const useCanvasIdle = (onIdle: () => void, dependencies: any[] = []) => {
-  const engine = React.useContext(EngineContext)!;
+const createUseCanvasAction =
+  <Args extends any[] = []>(action: CanvasAction) =>
+  (onAction: (...args: Args) => void, dependencies: any[] = []) => {
+    const engine = React.useContext(EngineContext)!;
 
-  React.useEffect(() => {
-    engine.emitter.on(CanvasAction.IDLE, onIdle);
+    React.useEffect(() => {
+      engine.emitter.on(action, onAction as (...args: any[]) => void);
 
-    return () => {
-      engine.emitter.off(CanvasAction.IDLE, onIdle);
-    };
-  }, dependencies);
-};
+      return () => {
+        engine.emitter.off(action, onAction as (...args: any[]) => void);
+      };
+    }, dependencies);
+  };
 
-export const useCanvasPan = (onPan: (movement: Pair<number>) => void, dependencies: any[] = []) => {
-  const engine = React.useContext(EngineContext)!;
-
-  React.useEffect(() => {
-    engine.emitter.on(CanvasAction.PAN, onPan);
-
-    return () => {
-      engine.emitter.off(CanvasAction.PAN, onPan);
-    };
-  }, dependencies);
-};
-
-export const useCanvasZoom = (onZoom: (calulateMovement: MovementCalculator) => void, dependencies: any[] = []) => {
-  const engine = React.useContext(EngineContext)!;
-
-  React.useEffect(() => {
-    engine.emitter.on(CanvasAction.ZOOM, onZoom);
-
-    return () => {
-      engine.emitter.off(CanvasAction.ZOOM, onZoom);
-    };
-  }, dependencies);
-};
+export const useCanvasPan = createUseCanvasAction<[movement: Pair<number>]>(CanvasAction.PAN);
+export const useCanvasIdle = createUseCanvasAction(CanvasAction.IDLE);
+export const useCanvasZoom = createUseCanvasAction<[calulateMovement: MovementCalculator]>(CanvasAction.ZOOM);
+export const useCanvasMouse = createUseCanvasAction<[point: Coords]>(CanvasAction.MOVE_MOUSE);
+export const useCanvasPanApplied = createUseCanvasAction<[movement: Pair<number>]>(CanvasAction.PAN_APPLIED);
+export const useCanvasZoomApplied = createUseCanvasAction<[calulateMovement: MovementCalculator]>(CanvasAction.ZOOM_APPLIED);
 
 export const useCanvasZoomLifecycle = (onZoomStart: () => void, onZoom: (calculateMovement: MovementCalculator) => void, onZoomEnd: () => void) => {
   const zoomingRef = React.useRef(false);
@@ -83,16 +68,4 @@ export const useCanvasZoomLifecycle = (onZoomStart: () => void, onZoom: (calcula
     }
     zoomingRef.current = false;
   }, [onZoomEnd]);
-};
-
-export const useCanvasMouse = (onMove: (point: Coords) => void, dependencies: any[] = []) => {
-  const engine = React.useContext(EngineContext)!;
-
-  React.useEffect(() => {
-    engine.emitter.on(CanvasAction.MOVE_MOUSE, onMove);
-
-    return () => {
-      engine.emitter.off(CanvasAction.MOVE_MOUSE, onMove);
-    };
-  }, dependencies);
 };

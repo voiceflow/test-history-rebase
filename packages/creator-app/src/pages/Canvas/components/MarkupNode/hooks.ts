@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { useConst, useCreateConst } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType } from '@/constants';
@@ -6,15 +7,14 @@ import { useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
 import { InternalNodeInstance } from '@/pages/Canvas/components/Node/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { Pair } from '@/types';
-import { Coords, Vector } from '@/utils/geometry';
-import { getCenter } from '@/utils/rotation';
+import { Coords } from '@/utils/geometry';
 
 import { ResizableMarkupNodeData } from './types';
-import { isResizableShape, isText } from './utils';
+import { isResizableShape } from './utils';
 
-export type InternalMarkupInstance<T extends HTMLElement> = InternalNodeInstance<T> & {
+export interface InternalMarkupInstance<T extends HTMLElement> extends InternalNodeInstance<T> {
   transformRef: React.RefObject<T>;
-};
+}
 
 /**
  * Returns an interface for manipulating a Markup Node, e.g, an Image node or a Text Node. Markup's
@@ -33,7 +33,17 @@ export type InternalMarkupInstance<T extends HTMLElement> = InternalNodeInstance
  *
  */
 export const useMarkupInstance = <T extends HTMLElement>() => {
+  const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+  const nodeInstance = useNodeInstance<T>();
+
+  const scale = React.useRef<Pair<number>>([1, 1]);
+  const rotation = React.useRef<number>(0);
+  const textWidth = React.useRef<number | null>(null);
+  const transformRef = React.useRef<T>(null);
+
+  const isText = nodeEntity.nodeType === BlockType.MARKUP_TEXT;
+
   const { width, height } = nodeEntity.useState((e) => {
     const { data } = e.resolve<ResizableMarkupNodeData>();
 
@@ -42,94 +52,64 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
       height: data.height,
     };
   });
-  const engine = React.useContext(EngineContext)!;
-  const scale = React.useRef<Pair<number>>([1, 1]);
-  const rotation = React.useRef<number>(0);
-  const transformRef = React.useRef<T>(null);
-  const textWidth = React.useRef<number | null>(null);
-  const nodeInstance = useNodeInstance<T>();
-  const heightCache = React.useRef<number | null>(null);
 
-  const resizeObserver = React.useMemo(
-    () =>
-      new ResizeObserver((entries: ResizeObserverEntry[]) =>
-        entries.forEach((entry) => {
-          const nextHeight = entry.contentRect.height;
-          if (nextHeight !== heightCache.current) {
-            engine.transformation.resizeOverlay(nextHeight);
-            heightCache.current = nextHeight;
-          }
-        })
-      ),
-    []
-  );
+  const getRectNode = useConst(() => {
+    if (isText) {
+      return nodeInstance.blockRef.current?.ref.current ?? null;
+    }
+
+    return transformRef.current ?? null;
+  });
+
+  const resizeOverlay = useConst(() => {
+    const rect = getRectNode()?.getBoundingClientRect();
+
+    if (rect) {
+      engine.transformation.resizeOverlay(rect);
+    }
+  });
+
+  const resizeObserver = useCreateConst(() => new ResizeObserver(resizeOverlay));
 
   /**
    * Returns an object containing information about the final state, such as size and position, of the
    * markup overlay at the end of a transformation like resizing.
    */
   const getTransform = React.useCallback(() => {
-    const { data } = nodeEntity.resolve<Realtime.Markup.AnyNodeData>();
-    const zoom = engine.canvas!.getZoom();
-    const position = engine.node.api(nodeEntity.nodeID)!.instance!.getPosition();
-    const [left, top] = engine.canvas!.reverseMapPoint(engine.canvas!.reverseTransformPoint(position, true));
+    const position = engine.node.api(nodeEntity.nodeID)?.instance?.getPosition();
+    const rect = getRectNode()?.getBoundingClientRect();
 
-    if (isText(data)) {
-      // Get the Ref to the actual Node.
-      const el = transformRef.current!;
-
-      // Determine the final width and height of the Node after the transformation has completed.
-      const scaledWidth = data.overrideWidth ? data.overrideWidth : el.offsetWidth;
-      const [finalWidth, finalHeight] = [scaledWidth * data.scale * zoom, el.offsetHeight * data.scale * zoom];
-
-      // Now compute the position of the top-left corner of the Node, after scaling is applied, but before any
-      // rotations are applied.
-
-      // 1 - Get the position and size of the bounding box (not the same thing as the Node).
-      const { left: clientLeft, top: clientTop, width: clientWidth, height: clientHeight } = el.getBoundingClientRect();
-
-      // 2 - Compute the center of the bounding box, which has the same value as the center of the Node.
-      const centerPoint = new Coords(getCenter([clientLeft, clientTop], [clientWidth, clientHeight]));
-
-      // 3 - Now compute a vector to calculate the top-left corner from the center point.
-      const vecToTopleft = new Vector([finalWidth, finalHeight]).scalarDiv(2).scalarMul(-1);
-
-      // 4 - Now compute the final top-left corner of the Node.
-      const origin = centerPoint.add(vecToTopleft);
-
+    if (!engine.canvas || !position || !transformRef.current || !rect) {
       return {
-        width: finalWidth,
-        height: finalHeight,
-        rotate: data.rotate,
-        scale: data.scale,
+        rect: new DOMRect(),
+        origin: new Coords([0, 0]),
+        rotate: 0,
         invertX: false,
         invertY: false,
-        origin,
       };
     }
 
+    const { data } = nodeEntity.resolve<Realtime.Markup.AnyNodeData>();
+
+    const [left, top] = engine.canvas.reverseMapPoint(engine.canvas.reverseTransformPoint(position, true));
     const resizableData = data as ResizableMarkupNodeData;
 
     return {
-      width: resizableData.width * zoom,
-      height: resizableData.height * zoom,
+      rect,
       rotate: resizableData.rotate,
-      scale: 1,
+      origin: new Coords([left, top]),
       invertX: false,
       invertY: false,
-      origin: new Coords([left, top]),
     };
   }, []);
 
   React.useEffect(
     () => () => {
-      const transformEl = transformRef.current;
-
       window.requestAnimationFrame(() => {
-        if (!transformEl) return;
+        if (!transformRef.current) return;
 
-        transformEl.style.transformOrigin = '';
-        transformEl.style.transform = '';
+        transformRef.current.style.transformOrigin = '';
+        transformRef.current.style.transform = '';
       });
     },
     [width, height]
@@ -138,30 +118,36 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
   return React.useMemo<InternalMarkupInstance<T>>(
     () => ({
       ...nodeInstance,
+
       transformRef,
       getTransform,
+
+      translate: (movement: Pair<number>) => nodeInstance.translate?.(movement, resizeOverlay),
+
       /**
        * Used prepare the local state for transformation.
        */
       prepareForTransformation: () => {
-        if (nodeEntity.nodeType === BlockType.MARKUP_TEXT) {
-          resizeObserver.observe(transformRef.current!);
-        }
+        const rectNode = getRectNode();
+
+        if (!transformRef.current || !isText || !rectNode) return;
+
+        resizeObserver.observe(rectNode);
       },
+
       /**
        * Used at the end of a transformation to publish the final state of the node into
        * the Redux store.
        */
       applyTransformations: async () => {
+        if (!scale.current) return;
+
         const data = engine.getDataByNodeID<any>(nodeEntity.nodeID);
-        const [scaleX, scaleY] = scale.current!;
+        const [scaleX, scaleY] = scale.current;
         const angle = rotation.current;
         const maxWidth = textWidth.current;
 
-        if (nodeEntity.nodeType === BlockType.MARKUP_TEXT) {
-          resizeObserver.disconnect();
-          heightCache.current = null;
-        }
+        resizeObserver.disconnect();
 
         if (isResizableShape(data)) {
           await engine.node.updateData<ResizableMarkupNodeData>(nodeEntity.nodeID, {
@@ -169,7 +155,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
             height: data.height * scaleY,
             rotate: angle % (2 * Math.PI),
           });
-        } else if (isText(data)) {
+        } else if (isText) {
           await engine.node.updateData<Realtime.Markup.NodeData.Text>(nodeEntity.nodeID, {
             scale: scaleX,
             rotate: angle % (2 * Math.PI),
@@ -181,21 +167,19 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
         rotation.current = 0;
         textWidth.current = null;
       },
+
       /**
        * Accumulates the effects of a rotation operation and applies the changes so far as a style
        * to the Node.
        */
       rotate: (angle) => {
-        const transformEl = transformRef.current!;
         rotation.current = angle;
 
         const { data } = nodeEntity.resolve<Realtime.Markup.AnyNodeData>();
         const curScale = (data as Realtime.Markup.NodeData.Text).scale;
         const maxWidth = (data as Realtime.Markup.NodeData.Text).overrideWidth;
 
-        const isTextNode = data.type === BlockType.MARKUP_TEXT;
-
-        if (isTextNode) {
+        if (isText) {
           /**
            * We need to track the current scaling on the Markup Text, even if it's not relevant to the rotation
            * operation, because of how we've implemented scaling for Markup Text.
@@ -235,11 +219,15 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
          * width and height from the Redux store and receive it as props for its rendering. The CSS styling is
          * only needed to render Markup Imaegs during a resize.
          */
-        const transformation = `${isTextNode ? `scale(${curScale}, ${curScale})` : ''} rotate(${angle}rad)`;
+        const transformation = `${isText ? `scale(${curScale}, ${curScale})` : ''} rotate(${angle}rad)`;
 
         window.requestAnimationFrame(() => {
-          transformEl.style.transformOrigin = 'center';
-          transformEl.style.transform = transformation;
+          if (!transformRef.current) return;
+
+          transformRef.current.style.transformOrigin = 'center';
+          transformRef.current.style.transform = transformation;
+
+          resizeOverlay();
         });
       },
 
@@ -248,9 +236,10 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
        * the Node.
        */
       scale: ([scaleX, scaleY], [shiftX, shiftY], rotate, [rotationOffsetX, rotationOffsetY]) => {
+        if (engine.canvas == null) return;
+
+        const zoom = engine.canvas.getZoom();
         const { data } = nodeEntity.resolve<Realtime.Markup.AnyNodeData>();
-        const transformEl = transformRef.current!;
-        const zoom = engine.canvas!.getZoom();
         const isTextNode = data.type === BlockType.MARKUP_TEXT;
 
         /**
@@ -269,8 +258,10 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
         engine.node.translate([nodeEntity.nodeID], [shiftX / zoom, shiftY / zoom]);
 
         window.requestAnimationFrame(() => {
+          if (!transformRef.current) return;
+
           if (!isTextNode) {
-            transformEl.style.transformOrigin = 'left top';
+            transformRef.current.style.transformOrigin = 'left top';
           }
 
           // A number of transformations are applied here
@@ -280,7 +271,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
           //  - rotate(...)     - This MUST be included, otherwise, any existing rotations get overwritten
           //                      causing the node to snap back to a rotation of 0.
           //
-          //  - translate(...)  - `transformEl.style.transformOrigin = "left top"` causes the scaling to occur
+          //  - translate(...)  - `transformRef.current.style.transformOrigin = "left top"` causes the scaling to occur
           //                      at the original, unrotated top-left corner of the node. This can cause the
           //                      markup node to be offset from the overlay if the node has been rotated.
           //                      We MUST translate node, so that the `transformOrigin` corresponds with the
@@ -289,9 +280,11 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
           //                      This issue currently only appears for Markup Images since Markup Text is
           //                      transformed relative to its center-point.
 
-          transformEl.style.transform = `translate(${rotationOffsetX / zoom}px, ${
+          transformRef.current.style.transform = `translate(${rotationOffsetX / zoom}px, ${
             rotationOffsetY / zoom
           }px) scale(${nextScaleX}, ${nextScaleY}) rotate(${(data as ResizableMarkupNodeData).rotate}rad)`;
+
+          resizeOverlay();
         });
       },
 
@@ -300,7 +293,6 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
        * of a Markup Text node and applies the changes so far as a style to the Node.
        */
       scaleText: (maxWidth: number, [shiftX, shiftY]: Pair<number>) => {
-        const transformEl = transformRef.current!;
         const { data } = nodeEntity.resolve<Realtime.Markup.NodeData.Text>();
         const zoom = engine.canvas!.getZoom();
 
@@ -310,16 +302,20 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
         const scaleDiff = (1 - data.scale) / 2;
         const scaleShiftX = diffX * -scaleDiff;
 
-        textWidth.current = nextWidth;
         scale.current = [data.scale, data.scale];
         rotation.current = data.rotate;
+        textWidth.current = nextWidth;
 
         engine.node.translate([nodeEntity.nodeID], [shiftX / zoom + scaleShiftX, shiftY / zoom]);
 
         window.requestAnimationFrame(() => {
+          if (!transformRef.current) return;
+
           // need to reset the min-width if this is the first time the container is being resized to clear the default
-          transformEl.style.minWidth = '0';
-          transformEl.style.width = `${nextWidth}px`;
+          transformRef.current.style.minWidth = '0';
+          transformRef.current.style.width = `${nextWidth}px`;
+
+          resizeOverlay();
         });
       },
     }),

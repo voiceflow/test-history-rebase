@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 
 import { BlockType, ZERO_VECTOR } from '@/constants';
@@ -6,7 +7,7 @@ import { Coords, Vector } from '@/utils/geometry';
 import { getCenter, rotateCoords } from '@/utils/rotation';
 
 import { HandlePosition, TEXT_WIDTH_HANDLES } from '../../../../constants';
-import { getResizeTransformations } from '../../../../utils';
+import { calculateRotatedBoundingRect, getResizeTransformations } from '../../../../utils';
 import { OverlayState } from '../../types';
 
 const useResize = (nodeType: BlockType | null, { ref, handlePosition, position, size, snapshot, rotation }: OverlayState) => {
@@ -14,17 +15,28 @@ const useResize = (nodeType: BlockType | null, { ref, handlePosition, position, 
 
   const handleResize = React.useCallback(
     (event: MouseEvent) => {
-      const mousePosition = engine.mousePosition.current!;
-      const handle = handlePosition.current!;
-      const el = ref.current!;
-      const transform = snapshot.current!;
-      const [width, height] = size.current!;
-      const [left, top] = position.current!;
+      if (
+        size.current === null ||
+        snapshot.current === null ||
+        position.current === null ||
+        rotation.current === null ||
+        handlePosition.current === null ||
+        engine.mousePosition.current === null
+      )
+        return;
+
+      const handle = handlePosition.current;
+      const transform = snapshot.current;
+      const [left, top] = position.current;
+      const curRotation = rotation.current;
+      const [width, height] = size.current;
+      const mousePosition = engine.mousePosition.current;
+
       const mousePos = new Coords(mousePosition);
-      const curRotation = rotation.current!;
       const isTextNode = nodeType === BlockType.MARKUP_TEXT;
 
       const result = getResizeTransformations(transform, handle, [left, top], [width, height], mousePos.raw(), event, isTextNode);
+
       let [nextLeft, nextTop] = result.position;
       let [nextWidth, nextHeight] = result.size;
 
@@ -55,7 +67,7 @@ const useResize = (nodeType: BlockType | null, { ref, handlePosition, position, 
             engine.transformation.scaleTextTarget(nextWidth, ZERO_VECTOR);
           }
         } else {
-          const transformSize = new Vector([transform.width, transform.height]);
+          const transformSize = new Vector([transform.rect.width, transform.rect.height]);
           const origin = transform.origin.add(transformSize.scalarDiv(2));
 
           const diff = mousePos.sub(origin).applyElementwise(Math.abs);
@@ -64,9 +76,9 @@ const useResize = (nodeType: BlockType | null, { ref, handlePosition, position, 
           const maxScale = Math.max(...scale.point);
 
           const nextSize = transformSize.scalarMul(maxScale);
-          const nextTopleft = origin.sub(nextSize.scalarDiv(2));
+          const nextTopLeft = origin.sub(nextSize.scalarDiv(2));
 
-          [nextLeft, nextTop] = nextTopleft.raw();
+          [nextLeft, nextTop] = nextTopLeft.raw();
           [nextWidth, nextHeight] = transformSize.scalarMul(maxScale).raw();
 
           engine.transformation.scaleTarget([maxScale, maxScale], ZERO_VECTOR, curRotation, ZERO_VECTOR);
@@ -74,45 +86,29 @@ const useResize = (nodeType: BlockType | null, { ref, handlePosition, position, 
       } else {
         // TODO - Refactor resize to use Coords so we don't need to manually convert
         const rotationAxis = new Coords(getCenter([nextLeft, nextTop], [nextWidth, nextHeight]));
-        const nextTopleft = new Coords([nextLeft, nextTop]);
-        const rotatedNextTopleft = rotateCoords(nextTopleft, rotationAxis, curRotation);
-        const rotationOffset = rotatedNextTopleft.sub(nextTopleft).raw();
+        const nextTopLeft = new Coords([nextLeft, nextTop]);
+        const rotatedNextTopLeft = rotateCoords(nextTopLeft, rotationAxis, curRotation);
+        const rotationOffset = rotatedNextTopLeft.sub(nextTopLeft).raw();
 
         engine.transformation.scaleTarget(result.scale, result.shift, curRotation, rotationOffset);
       }
-
-      position.current = [nextLeft, nextTop];
-      size.current = [nextWidth, nextHeight];
-
-      window.requestAnimationFrame(() => {
-        el.style.left = `${nextLeft}px`;
-        el.style.top = `${nextTop}px`;
-        el.style.width = `${nextWidth}px`;
-        el.style.height = `${nextHeight}px`;
-      });
     },
     [nodeType]
   );
 
-  const resizeOverlay = React.useCallback((height: number) => {
-    const el = ref.current!;
-    const [width, currHeight] = size.current!;
-    const [left, currTop] = position.current!;
-    const { scale } = snapshot.current!;
-    const zoomedHeight = height * engine.canvas!.getZoom();
-    const nextHeight = zoomedHeight * scale;
-    const diffY = zoomedHeight - currHeight / scale;
-    const scaleDiff = (1 - scale) / 2;
-    const scaleShiftY = scaleDiff * diffY;
-    const nextTop = currTop + scaleShiftY;
+  const resizeOverlay = React.useCallback((rect: DOMRect) => {
+    const { width, height, left, top } = calculateRotatedBoundingRect(rect, rotation.current ?? 0);
 
-    position.current = [left, nextTop];
-    size.current = [width, nextHeight];
+    size.current = [width, height];
+    position.current = [left, top];
 
-    window.requestAnimationFrame(() => {
-      el.style.height = `${nextHeight}px`;
-      el.style.top = `${nextTop}px`;
-    });
+    if (!ref.current) return;
+
+    ref.current.style.top = `${top}px`;
+    ref.current.style.left = `${left}px`;
+    ref.current.style.width = `${width}px`;
+    ref.current.style.height = `${height}px`;
+    ref.current.style.transform = `rotate(${rotation.current ?? 0}rad)`;
   }, []);
 
   const startResize = React.useCallback((handle: HandlePosition) => {
@@ -124,10 +120,10 @@ const useResize = (nodeType: BlockType | null, { ref, handlePosition, position, 
   }, []);
 
   return {
+    endResize,
+    startResize,
     handleResize,
     resizeOverlay,
-    startResize,
-    endResize,
   };
 };
 

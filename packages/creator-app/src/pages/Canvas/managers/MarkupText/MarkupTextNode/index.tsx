@@ -15,7 +15,7 @@ import { SLATE_EDITOR_CLASS_NAME } from '../constants';
 import { Border, BorderPosition, Container } from './components';
 import { addDraggableAttr, findAllDraggableParents, removeDraggableAttr } from './utils';
 
-type MarkupTextNodeProps = ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Text>;
+interface MarkupTextNodeProps extends ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Text> {}
 
 const UPDATE_CONTENT_DEBOUNCE = 300;
 
@@ -49,39 +49,36 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
   const editor = engine.markup.useSetupTextEditor(nodeEntity.nodeID);
   const blockAPI = useBlockAPI();
 
-  const removeDraggableParents = React.useCallback(() => {
+  const removeDraggableParents = () => {
     const draggableParents = findAllDraggableParents(containerRef.current);
 
     removeDraggableAttr(draggableParents);
 
     draggableParentsCache.current = draggableParents;
-  }, []);
+  };
 
-  const onMouseUp = React.useCallback((event: React.MouseEvent) => {
-    // For panning the canvas
+  const onMouseUp = (event: React.MouseEvent) => {
     const middleMouseClick = event.button === 1;
 
+    // For panning the canvas
     if (!middleMouseClick) {
       event.preventDefault();
     }
-  }, []);
+  };
 
-  const onDragStart = React.useCallback(
-    (event: React.DragEvent) => {
-      if (SlateEditorAPI.isFocused(editor)) {
-        event.stopPropagation();
-      }
-    },
-    [editor]
-  );
+  const onDragStart = (event: React.DragEvent) => {
+    if (SlateEditorAPI.isFocused(editor)) {
+      event.stopPropagation();
+    }
+  };
 
-  const onChange = React.useCallback((value: Descendant[]) => {
+  const onChange = (value: Descendant[]) => {
     if (value !== cache.current.value) {
       setValue(value);
     }
-  }, []);
+  };
 
-  const onFocus = React.useCallback(() => {
+  const onFocus = () => {
     setEditable(true);
 
     if (draggableParentsCache?.current?.length === 0) {
@@ -99,9 +96,9 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
     }
 
     cache.current.doubleClicked = false;
-  }, [engine]);
+  };
 
-  const onBlur = React.useCallback(async () => {
+  const onBlur = async () => {
     if (!SlateEditorAPI.serialize(cache.current.value)) {
       await engine.node.remove(nodeEntity.nodeID);
 
@@ -123,15 +120,17 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
 
     addDraggableAttr(draggableParentsCache.current);
     draggableParentsCache.current = [];
-  }, []);
+  };
 
-  const onContainerDoubleClick = React.useCallback(() => {
+  const onContainerDoubleClick = () => {
     if (editable) return;
 
     cache.current.doubleClicked = true;
 
     setEditable(true);
-  }, [editable]);
+  };
+
+  const isFakeSelectionApplied = editor.isFakeSelectionApplied();
 
   React.useImperativeHandle(ref, () => blockAPI, [blockAPI]);
 
@@ -148,7 +147,6 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
     }
   }, [isFocused]);
 
-  const isFakeSelectionApplied = editor.isFakeSelectionApplied();
   useDidUpdateEffect(() => {
     if (isFakeSelectionApplied && engine.transformation.isTarget(nodeEntity.nodeID)) {
       engine.transformation.reset();
@@ -194,9 +192,9 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
       engine.node.api(nodeEntity.nodeID)?.instance?.scaleText?.(width, [0, 0]);
     }
 
-    if (!isNew && isFocused && engine.transformation.isTarget(nodeEntity.nodeID)) {
-      engine.transformation.reinitialize();
-    } else if (!isNew && isFocused) {
+    if ((!isNew || isInitialWidthApplied) && isFocused && engine.transformation.isTarget(nodeEntity.nodeID)) {
+      engine.transformation.resizeOverlay(containerRef.current?.getBoundingClientRect() ?? new DOMRect());
+    } else if ((!isNew || isInitialWidthApplied) && isFocused) {
       engine.transformation.initialize(nodeEntity.nodeID);
     }
   }, [value]);

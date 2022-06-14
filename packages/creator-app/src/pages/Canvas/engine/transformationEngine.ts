@@ -39,13 +39,14 @@ class TransformationEngine extends EngineConsumer<{ transformOverlay: TransformO
 
   reinitialize() {
     const transform = this.engine.node.api(this.getTarget()!)?.instance?.getTransform?.();
+
     if (!transform) return;
 
     this.components.transformOverlay?.initialize(transform);
   }
 
-  resizeOverlay(height: number) {
-    this.components.transformOverlay?.resize(height);
+  resizeOverlay(rect: DOMRectReadOnly) {
+    this.components.transformOverlay?.resize(rect);
   }
 
   start() {

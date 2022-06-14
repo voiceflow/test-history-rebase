@@ -58,7 +58,7 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
       },
       rename: () => blockRef.current?.rename(),
       blur: () => ref.current?.blur(),
-      translate: ([movementX, movementY]: Pair<number>) => {
+      translate: ([movementX, movementY]: Pair<number>, onStylesApplied?: VoidFunction) => {
         if (!position.current) return;
 
         const [posX, posY] = position.current;
@@ -73,6 +73,8 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
           if (experimentalSyncLinks.isEnabled) {
             engine.node.translateAllLinks(nodeEntity.nodeID, [movementX, movementY], { sync: true });
           }
+
+          onStylesApplied?.();
         });
       },
     }),

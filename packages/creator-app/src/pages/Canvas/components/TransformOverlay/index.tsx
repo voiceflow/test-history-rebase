@@ -14,6 +14,7 @@ const TransformOverlay = () => (
             {TEXT_HANDLES.map((handle) => (
               <ResizeHandle position={handle} onDragStart={onResizeStart(handle)} key={handle} />
             ))}
+
             <RotateHandle onDragStart={onRotateStart} />
           </>
         );
@@ -25,6 +26,7 @@ const TransformOverlay = () => (
             {SCALE_HANDLES.map((handle) => (
               <ResizeHandle position={handle} onDragStart={onResizeStart(handle)} key={handle} />
             ))}
+
             <RotateHandle onDragStart={onRotateStart} />
           </>
         );

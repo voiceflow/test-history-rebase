@@ -21,4 +21,5 @@ export interface StyleOptions {
   raf?: boolean;
   zoom?: number;
   position?: Point;
+  onApplied?: VoidFunction;
 }

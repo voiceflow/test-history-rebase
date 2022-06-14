@@ -47,7 +47,7 @@ export type NodeInstance = EntityInstance & {
   /**
    * only Block nodes can be translated
    */
-  translate?: (movement: Pair<number>) => void;
+  translate?: (movement: Pair<number>, onStylesApplied?: VoidFunction) => void;
 
   /**
    * only Markup nodes expose a rect for transformation

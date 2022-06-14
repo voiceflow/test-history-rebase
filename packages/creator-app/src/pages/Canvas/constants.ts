@@ -62,12 +62,14 @@ export enum ContextMenuTarget {
 }
 
 export enum CanvasAction {
-  ZOOM = 'zoom',
   PAN = 'pan',
   IDLE = 'idle',
-  MOVE_MOUSE = 'moveMouse',
+  ZOOM = 'zoom',
   CLICK = 'click',
   RENDERED = 'rendered',
+  MOVE_MOUSE = 'moveMouse',
+  PAN_APPLIED = 'panApplied',
+  ZOOM_APPLIED = 'zoomApplied',
 }
 
 export enum CanvasTransformation {

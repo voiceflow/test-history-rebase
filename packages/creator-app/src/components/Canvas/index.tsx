@@ -54,6 +54,8 @@ export interface CanvasProps {
   onRegister?: (api: CanvasAPI | null) => void;
   onDragStart?: (event: React.DragEvent) => void;
   getZoomType: () => ZoomType;
+  onPanApplied?: (movement: Pair<number>) => void;
+  onZoomApplied?: (translateZoom: MovementCalculator) => void;
 }
 
 class Canvas extends React.PureComponent<
@@ -198,27 +200,25 @@ class Canvas extends React.PureComponent<
 
   removeClass = (className: string) => this.rootRef.current?.classList.remove(className);
 
-  onChange = () =>
-    this.props.onChange?.({
-      x: this.position[0],
-      y: this.position[1],
-      zoom: this.zoom,
-    });
+  onChange = () => this.props.onChange?.({ x: this.position[0], y: this.position[1], zoom: this.zoom });
 
   onPan = (offsetX: number, offsetY: number) => {
     const [posX, posY] = this.position;
     const nextPosition: Point = [posX + offsetX, posY + offsetY];
+    const movement: Pair<number> = [offsetX, offsetY];
+
     this.position = nextPosition;
 
     this.onTransitionEnd();
 
-    this.styleRenderLayer({ position: nextPosition });
+    this.styleRenderLayer({ position: nextPosition, onApplied: () => this.props.onPanApplied?.(movement) });
 
-    this.props.onPan?.([offsetX, offsetY]);
+    this.props.onPan?.(movement);
   };
 
   onZoom = (control: ZoomAction) => {
     const isInversed = this.props.getZoomType() === ZoomType.INVERSE;
+
     // scale or delta type zoom
     if (control.scale) {
       const scale = isInversed ? 2 - control.scale : control.scale;
@@ -268,11 +268,12 @@ class Canvas extends React.PureComponent<
     renderLayerEl.style.transition = `transform ease-in-out ${duration}s ${delay}s`;
   };
 
-  styleRenderLayer({ raf = true, zoom = this.zoom, position = this.position }: StyleOptions = {}) {
+  styleRenderLayer({ raf = true, zoom = this.zoom, position = this.position, onApplied }: StyleOptions = {}) {
     const renderLayerEl = this.renderLayerRef.current!;
 
     const applyStyles = () => {
       renderLayerEl.style.transform = transformStyle(position, zoom);
+      onApplied?.();
     };
 
     if (raf) {
@@ -312,19 +313,18 @@ class Canvas extends React.PureComponent<
 
     this.position = nextPosition;
 
-    this.styleRenderLayer({ raf, zoom: nextZoom, position: nextPosition });
+    const calculateMovement = (position: Point) =>
+      calculateScrollTranslation(origin, prevZoom, nextZoom, position, this.rootRef.current!.getBoundingClientRect(), zoomDiffFactor);
 
-    this.props.onZoom?.((position) =>
-      calculateScrollTranslation(origin, prevZoom, nextZoom, position, this.rootRef.current!.getBoundingClientRect(), zoomDiffFactor)
-    );
+    this.styleRenderLayer({ raf, zoom: nextZoom, position: nextPosition, onApplied: () => this.props.onZoomApplied?.(calculateMovement) });
+
+    this.props.onZoom?.(calculateMovement);
 
     if (this.zoomComplete) {
       clearTimeout(this.zoomComplete);
     }
 
-    this.zoomComplete = window.setTimeout(() => {
-      this.onChange();
-    }, ZOOM_FINISH_DURATION);
+    this.zoomComplete = window.setTimeout(() => this.onChange(), ZOOM_FINISH_DURATION);
   };
 
   resetPosition = () => {

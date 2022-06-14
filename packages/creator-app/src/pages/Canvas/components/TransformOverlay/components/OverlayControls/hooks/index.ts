@@ -10,69 +10,48 @@ import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
 import { HandlePosition } from '../../../constants';
+import { calculateRotatedBoundingRect } from '../../../utils';
 import { OverlayState } from '../types';
 import { useCanvasInteractions, useResize, useRotate } from './transforms';
 
-export type InternalTransformOverlayAPI = TransformOverlayAPI & {
+export interface InternalTransformOverlayAPI extends TransformOverlayAPI {
   ref: React.RefObject<HTMLDivElement>;
   startResize: (handle: HandlePosition) => () => void;
   startRotate: () => void;
-};
+}
 
 export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
   const engine = React.useContext(EngineContext)!;
 
   const ref = React.useRef<HTMLDivElement>(null);
-  const handlePosition = React.useRef<HandlePosition | null>(null);
+  const size = React.useRef<Pair<number> | null>(null);
   const snapshot = React.useRef<MarkupTransform | null>(null);
   const position = React.useRef<Point | null>(null);
-  const size = React.useRef<Pair<number> | null>(null);
   const rotation = React.useRef<number | null>(null);
   const isRotating = React.useRef(false);
-  const zoom = React.useRef(0);
+  const handlePosition = React.useRef<HandlePosition | null>(null);
 
-  const [panStylesScheduler] = useRAF();
   const [resetStylesScheduler] = useRAF();
   const [initializeStylesScheduler] = useRAF();
 
   const state: OverlayState = {
     ref,
-    handlePosition,
+    size,
     position,
     snapshot,
-    size,
     rotation,
     isRotating,
-    zoom,
+    handlePosition,
   };
-
-  const onPan = React.useCallback(
-    ([moveX, moveY]: Pair<number>) => {
-      if (!position.current) return;
-
-      const el = ref.current!;
-      const [left, top] = position.current!;
-
-      const nextX = left + moveX;
-      const nextY = top + moveY;
-
-      position.current = [nextX, nextY];
-
-      panStylesScheduler(() => {
-        if (!position.current) return;
-
-        el.style.left = `${position.current[0]}px`;
-        el.style.top = `${position.current[1]}px`;
-      });
-    },
-    [nodeType]
-  );
 
   const { startResize, resizeOverlay, endResize, handleResize } = useResize(nodeType, state);
   const { startRotate, endRotate, handleRotate } = useRotate(state);
 
   const onTransformStart = React.useCallback(() => {
-    const markupNodeID = engine.focus.getTarget()!;
+    const markupNodeID = engine.focus.getTarget();
+
+    if (markupNodeID === null) return;
+
     engine.drag.setTarget(markupNodeID);
 
     document.addEventListener(
@@ -91,8 +70,7 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
   }, []);
 
   useCanvasIdle(() => engine.transformation.reinitialize());
-
-  useCanvasInteractions(onPan, state);
+  useCanvasInteractions(resizeOverlay);
 
   useMouseMove(
     (event) => {
@@ -110,46 +88,40 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
       ref,
 
       initialize: (transform) => {
-        const el = ref.current!;
-        const rawOrigin = transform.origin.raw();
+        const rotatedRect = calculateRotatedBoundingRect(transform.rect, transform.rotate);
 
-        snapshot.current = transform;
-        position.current = rawOrigin;
+        snapshot.current = { ...transform, rect: rotatedRect };
+
+        position.current = [rotatedRect.left, rotatedRect.top];
         rotation.current = transform.rotate;
-        size.current = [transform.width, transform.height];
-        zoom.current = 1;
+        size.current = [rotatedRect.width, rotatedRect.height];
 
         initializeStylesScheduler(() => {
-          if (!position.current || !snapshot.current) {
-            return;
-          }
+          if (ref.current === null || position.current === null || size.current === null) return;
 
-          el.style.display = 'block';
-          el.style.left = `${position.current[0]}px`;
-          el.style.top = `${position.current[1]}px`;
-          el.style.width = `${snapshot.current.width}px`;
-          el.style.height = `${snapshot.current.height}px`;
-          el.style.transform = `rotate(${rotation.current}rad)`;
+          ref.current.style.display = 'block';
+          ref.current.style.left = `${position.current[0]}px`;
+          ref.current.style.top = `${position.current[1]}px`;
+          ref.current.style.width = `${size.current[0]}px`;
+          ref.current.style.height = `${size.current[1]}px`;
+          ref.current.style.transform = `rotate(${rotation.current}rad)`;
         });
       },
 
       resize: resizeOverlay,
 
       clearTransformations: () => {
+        const rotate = rotation.current ?? 0;
         const [width, height] = size.current ?? [0, 0];
         const [originX, originY] = position.current ?? [0, 0];
-        const rotate = rotation.current ?? 0;
 
         snapshot.current = {
+          rect: new DOMRect(originX, originY, width, height),
           origin: new Coords([originX, originY]),
-          width,
-          height,
           rotate,
-          scale: 1,
           invertX: false,
           invertY: false,
         };
-        zoom.current = 1;
       },
 
       startResize: (handle) => () => {
@@ -164,30 +136,22 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
         onTransformStart();
       },
 
-      translate: ([moveX, moveY]) => {
-        const canvasZoom = engine.canvas!.getZoom();
-
-        onPan([moveX * canvasZoom, moveY * canvasZoom]);
-      },
-
       reset: () => {
+        size.current = null;
+
         snapshot.current = null;
         position.current = null;
-        size.current = null;
-        handlePosition.current = null;
-        zoom.current = 0;
         isRotating.current = false;
-
-        const el = ref.current;
+        handlePosition.current = null;
 
         resetStylesScheduler(() => {
-          if (!el) return;
+          if (!ref.current) return;
 
-          el.style.display = 'none';
-          el.style.transform = '';
+          ref.current.style.display = 'none';
+          ref.current.style.transform = '';
         });
       },
     }),
-    [onPan, onTransformStart]
+    [onTransformStart]
   );
 };

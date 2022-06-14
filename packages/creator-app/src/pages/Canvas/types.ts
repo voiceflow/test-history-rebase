@@ -8,13 +8,11 @@ import { Coords } from '@/utils/geometry';
 import { RealtimeCursorEvents } from './components/RealtimeOverlay/contexts';
 
 export interface MarkupTransform {
-  scale: number;
-  width: number;
-  height: number;
+  rect: DOMRect;
+  origin: Coords;
   rotate: number;
   invertX: boolean;
   invertY: boolean;
-  origin: Coords;
 }
 
 export interface EntityPrompt {
@@ -98,11 +96,10 @@ export interface RealtimeCursorOverlayAPI extends RealtimeCursorEvents {
 }
 
 export interface TransformOverlayAPI {
-  initialize: (transform: MarkupTransform) => void;
-  translate: (movement: Pair<number>) => void;
-  resize: (height: number) => void;
-  clearTransformations: () => void;
   reset: () => void;
+  resize: (rect: DOMRect) => void;
+  initialize: (transform: MarkupTransform) => void;
+  clearTransformations: () => void;
 }
 
 export interface SelectionMarqueeAPI {

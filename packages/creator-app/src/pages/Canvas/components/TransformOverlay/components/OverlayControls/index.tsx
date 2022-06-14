@@ -4,17 +4,16 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import { connect } from '@/hocs';
+import { useSelector } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { ConnectedProps } from '@/types';
 
 import { HandlePosition } from '../../constants';
 import Overlay from '../Overlay';
 import { useTransformOverlayAPI } from './hooks';
 
 export interface OverlayControlsRenderProps {
-  nodeType: BlockType | null;
   data: Realtime.NodeData<Realtime.Markup.AnyNodeData> | null;
+  nodeType: BlockType | null;
   onRotateStart: () => void;
   onResizeStart: (handle: HandlePosition) => () => void;
 }
@@ -23,14 +22,15 @@ export interface OverlayControlsProps {
   children: (renderProps: OverlayControlsRenderProps) => React.ReactNode;
 }
 
-const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsProps> = ({ node, children }) => {
+const OverlayControls: React.FC<OverlayControlsProps> = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
-  const data = node ? engine.getDataByNodeID<Realtime.Markup.AnyNodeData>(node.nodeID) : null;
-  const nodeType = node?.type || null;
+
+  const data = useSelector(Creator.focusedNodeDataSelector) as Realtime.NodeData<Realtime.Markup.AnyNodeData> | null;
+  const nodeType = data?.type || null;
 
   const api = useTransformOverlayAPI(nodeType);
 
-  React.useEffect(() => engine.transformation.register('transformOverlay', api), [api]);
+  React.useLayoutEffect(() => engine.transformation.register('transformOverlay', api), [api]);
 
   return (
     <Portal>
@@ -39,10 +39,4 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
   );
 };
 
-const mapStateToProps = {
-  node: Creator.focusedNodeDataSelector,
-};
-
-type ConnectedOverlayControlsProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(OverlayControls) as React.FC<OverlayControlsProps>;
+export default OverlayControls;

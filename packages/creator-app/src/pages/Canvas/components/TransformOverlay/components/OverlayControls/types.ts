@@ -7,11 +7,10 @@ import { HandlePosition } from '../../constants';
 
 export interface OverlayState {
   ref: React.MutableRefObject<HTMLDivElement | null>;
-  handlePosition: React.MutableRefObject<HandlePosition | null>;
+  size: React.MutableRefObject<Pair<number> | null>;
   snapshot: React.MutableRefObject<MarkupTransform | null>;
   position: React.MutableRefObject<Point | null>;
-  size: React.MutableRefObject<Pair<number> | null>;
   rotation: React.MutableRefObject<number | null>;
   isRotating: React.MutableRefObject<boolean>;
-  zoom: React.MutableRefObject<number>;
+  handlePosition: React.MutableRefObject<HandlePosition | null>;
 }

@@ -6,7 +6,7 @@ import React from 'react';
 
 import BlockSelect from '@/components/BlockSelect';
 import InputError from '@/components/InputError';
-import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
+import Modal, { ModalFooter } from '@/components/Modal';
 import Section from '@/components/Section';
 import { SectionVariant } from '@/components/Section/constants';
 import VariableList from '@/components/VariableList';
@@ -128,9 +128,9 @@ const VariableStatesModal: React.FC<{
   }, [isOpened]);
 
   return (
-    <Modal id={modalType} title={title} headerActions={headerActions} headerBorder>
-      <ModalBody>
-        <Section header="Name" dividers={false} variant={SectionVariant.TERTIARY} customHeaderStyling={{ padding: '0px 32px' }}>
+    <Modal id={modalType} title={title} headerActions={headerActions}>
+      <Box fullWidth>
+        <Section header="Name" dividers={false} variant={SectionVariant.TERTIARY}>
           <Input
             name="name"
             onChange={formik.handleChange}
@@ -153,19 +153,22 @@ const VariableStatesModal: React.FC<{
             />
           </Section>
         )}
-        <Section header="Variables" dividers={false} variant={SectionVariant.TERTIARY}>
-          <VariablesSelect
-            onChange={(value: string[]) => formik.setFieldValue('variables', value)}
-            error={!!formik.submitCount && !!formik.errors.variables}
-            value={formik.values.variables}
-            placeholder="Select variables to include"
-            disabled={formik.isSubmitting}
-          />
-          {formik.values.variables.length === 0 && <InputHint>Selected variables will be shown below to set values.</InputHint>}
-          {!!formik.submitCount && formik.errors.variables && <InputError>{formik.errors.variables}</InputError>}
-        </Section>
+        <Box pb={8}>
+          <Section header="Variables" dividers={false} variant={SectionVariant.TERTIARY}>
+            <VariablesSelect
+              onChange={(value: string[]) => formik.setFieldValue('variables', value)}
+              error={!!formik.submitCount && !!formik.errors.variables}
+              value={formik.values.variables}
+              placeholder="Select variables to include"
+              disabled={formik.isSubmitting}
+            />
+            {formik.values.variables.length === 0 && <InputHint>Selected variables will be shown below to set values.</InputHint>}
+            {!!formik.submitCount && formik.errors.variables && <InputError>{formik.errors.variables}</InputError>}
+          </Section>
+        </Box>
+
         {formik.values.variables.length > 0 && (
-          <Section customContentStyling={{ padding: 0 }} forceDividers variant={SectionVariant.TERTIARY}>
+          <Section customContentStyling={{ padding: 0 }} forceDividers isDividerNested variant={SectionVariant.TERTIARY}>
             <VariableListSection>
               <VariableList
                 disabled={formik.isSubmitting}
@@ -182,7 +185,7 @@ const VariableStatesModal: React.FC<{
             </VariableListSection>
           </Section>
         )}
-      </ModalBody>
+      </Box>
 
       <ModalFooter>
         <Box mr="12px">

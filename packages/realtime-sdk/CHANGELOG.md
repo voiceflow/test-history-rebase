@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.108.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.107.3...@voiceflow/realtime-sdk@1.108.0) (2022-06-14)
+
+
+### Features
+
+* add prompt step feature flag (VF-3585) ([#5582](https://github.com/voiceflow/creator-app/issues/5582)) ([0dfd16c](https://github.com/voiceflow/creator-app/commit/0dfd16c24cf5bbb9860d91ac0e8eeb1d445d1eb5))
+
+
+
+
+
 ## [1.107.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.107.2...@voiceflow/realtime-sdk@1.107.3) (2022-06-13)
 
 

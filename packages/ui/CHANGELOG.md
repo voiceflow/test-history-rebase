@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.99.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.98.1...@voiceflow/ui@1.99.0) (2022-06-14)
+
+
+### Features
+
+* api editor send request modal (VF-3768) ([#5561](https://github.com/voiceflow/creator-app/issues/5561)) ([120a87e](https://github.com/voiceflow/creator-app/commit/120a87e884bcd0be691212b88e44aefd99ce7286))
+
+
+
+
+
 ## [1.98.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.98.0...@voiceflow/ui@1.98.1) (2022-06-13)
 
 

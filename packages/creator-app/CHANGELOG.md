@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.771.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.770.1...@voiceflow/creator-app@1.771.0) (2022-06-14)
+
+
+### Features
+
+* add prompt step feature flag (VF-3585) ([#5582](https://github.com/voiceflow/creator-app/issues/5582)) ([0dfd16c](https://github.com/voiceflow/creator-app/commit/0dfd16c24cf5bbb9860d91ac0e8eeb1d445d1eb5))
+* api editor send request modal (VF-3768) ([#5561](https://github.com/voiceflow/creator-app/issues/5561)) ([120a87e](https://github.com/voiceflow/creator-app/commit/120a87e884bcd0be691212b88e44aefd99ce7286))
+
+
+
+
+
 ## [1.770.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.770.0...@voiceflow/creator-app@1.770.1) (2022-06-13)
 
 

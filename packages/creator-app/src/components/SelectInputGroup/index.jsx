@@ -10,7 +10,16 @@ export const OrientationType = {
   RIGHT: 'right',
 };
 
-function SelectInputGroup({ inputValue, orientation = OrientationType.RIGHT, placeholder, regularInput, onInputBlur, ...props }) {
+function SelectInputGroup({
+  inputValue,
+  orientation = OrientationType.RIGHT,
+  placeholder,
+  regularInput,
+  onInputBlur,
+  multiline = false,
+  showDropdownColorOnActive = false,
+  ...props
+}) {
   const [text, setText] = React.useState(inputValue);
   const inputRef = React.useRef();
 
@@ -42,14 +51,14 @@ function SelectInputGroup({ inputValue, orientation = OrientationType.RIGHT, pla
     </InputWrapper>
   ) : (
     <InputWrapper>
-      <VariablesInput ref={inputRef} variant="inline" value={text} onBlur={onBlurVariables} placeholder={placeholder} />
+      <VariablesInput ref={inputRef} variant="inline" value={text} onBlur={onBlurVariables} placeholder={placeholder} multiline={multiline} />
     </InputWrapper>
   );
 
   return (
     <Container regularInput={regularInput} onClick={onClick}>
       {orientation === OrientationType.LEFT && input}
-      <Select {...props} inline minWidth={false} borderLess />
+      <Select {...props} inline minWidth={false} borderLess showDropdownColorOnActive={showDropdownColorOnActive} />
       {orientation === OrientationType.RIGHT && input}
     </Container>
   );

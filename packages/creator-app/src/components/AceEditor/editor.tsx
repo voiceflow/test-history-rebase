@@ -22,6 +22,7 @@ export type AceEditorProps = AceEditorBaseProps & {
   hasBorder?: boolean;
   inputMode?: InputMode;
   editorColors?: AceEditorColors;
+  editorSpacing?: boolean;
 };
 
 const StyledEditor = styled(AceEditor).attrs({
@@ -95,6 +96,20 @@ const StyledEditor = styled(AceEditor).attrs({
     transform: none;
   }
 
+  ${({ editorSpacing }) =>
+    editorSpacing &&
+    css`
+      .ace_text-layer {
+        margin: 0px 12px !important;
+      }
+
+      .ace_content,
+      .ace_comment.ace_placeholder,
+      .ace_gutter {
+        padding-top: 12px !important;
+      }
+    `}
+
   ${({ inputMode }) =>
     inputMode === InputMode.INPUT &&
     css`
@@ -136,6 +151,18 @@ const StyledEditor = styled(AceEditor).attrs({
             css`
               .ace_regexp {
                 color: ${editorColors.regexp} !important;
+              }
+
+              .ace_variable {
+                color: ${editorColors.variable} !important;
+              }
+
+              .ace_numeric {
+                color: ${editorColors.numeric} !important;
+              }
+
+              .ace_string {
+                color: ${editorColors.string} !important;
               }
 
               .ace_constant.ace_language.ace_escape {

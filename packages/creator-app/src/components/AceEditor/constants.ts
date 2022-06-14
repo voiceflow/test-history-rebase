@@ -17,6 +17,9 @@ export const ACE_EDITOR_COLORS = {
   boolean: '#1c368e',
   comment: '#8da2b5',
   reservedWord: '#1c368e',
+  string: 'rgb(3, 106, 7)',
+  numeric: 'rgb(0, 0, 205)',
+  variable: '#A156D7',
 };
 
 export const ACE_EDITOR_OPTIONS_V2 = {

@@ -44,6 +44,8 @@ const RequestTypeSection: React.FC = () => {
         placeholder="Request URL or {variable}"
         onInputBlur={setEndpoint}
         getOptionLabel={(value: BaseNode.Api.APIActionType) => API_REQUEST_OPTIONS_MAP[value]}
+        multiline
+        showDropdownColorOnActive
       />
     </SectionV2.SimpleSection>
   );

@@ -122,6 +122,7 @@ export interface BaseSelectProps {
   autoUpdatePlacement?: boolean;
   showNotMatchedOptions?: boolean;
   createInputPlaceholder?: string;
+  showDropdownColorOnActive?: boolean;
 }
 
 interface GenericSelectProps<Option, Value> {

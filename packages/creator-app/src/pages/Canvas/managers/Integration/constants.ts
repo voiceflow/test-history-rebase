@@ -23,6 +23,8 @@ export const API_REQUEST_OPTIONS_MAP = {
   [BaseNode.Api.APIActionType.PATCH]: 'PATCH',
 };
 
+export const TEST_API_ENDPOINT = '/test/api';
+
 export const getNameMap = (
   nameMapOverride?: Partial<Record<BaseNode.Utils.IntegrationType, string>>
 ): Record<BaseNode.Utils.IntegrationType, string> => ({

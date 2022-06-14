@@ -62,6 +62,7 @@ export { default as closeSmall } from './close-small.svg';
 export { default as cloudUpload } from './cloud-upload.svg';
 export { default as code } from './code.svg';
 export { default as cog } from './cog.svg';
+export { default as collon } from './collon.svg';
 export { default as comment } from './comment.svg';
 export { default as commentReply } from './comment-reply.svg';
 export { default as community } from './community.svg';

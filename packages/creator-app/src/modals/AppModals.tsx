@@ -16,6 +16,7 @@ import EditEntityModal from '@/pages/Canvas/components/EntityModalsV2/EditModal'
 import CreateIntentModal from '@/pages/Canvas/components/IntentModalsV2/CreateModal';
 import EditIntentModal from '@/pages/Canvas/components/IntentModalsV2/EditModal';
 import CreateVariableModal from '@/pages/Canvas/components/VariableModalsV2/CreateModal';
+import IntegrationEditorSendRequestModal from '@/pages/Canvas/managers/Integration/v2/IntegrationEditor/IntegrationEditorSendRequestModal';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import TagManagerModal from '@/pages/Conversations/components/TagManagerModal';
 import ImportModal from '@/pages/Dashboard/components/ImportModal';
@@ -73,6 +74,8 @@ const AppModals: React.FC = () => {
       <BulkImportSlots />
       <BulkImportUtterances />
       <ProjectCreateModal />
+
+      <IntegrationEditorSendRequestModal />
     </>
   );
 };

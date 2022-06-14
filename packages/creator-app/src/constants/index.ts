@@ -296,6 +296,8 @@ export enum ModalType {
   PROJECT_CREATE_MODAL = 'project-create-modal',
 
   UPGRADE_MODAL = 'upgrade-modal',
+
+  INTEGRATION_EDITOR_SEND_REQUEST_MODAL = 'integration-editor-send-request-modal',
 }
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER]; // billing not included in seat roles

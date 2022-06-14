@@ -198,6 +198,7 @@ function Select({
   clearOnSelectActive,
   showNotMatchedOptions,
   createInputPlaceholder,
+  showDropdownColorOnActive = false,
 }: SelectInternalProps): React.ReactElement {
   const withClearIcon = clearable && !clearOnSelectActive;
   const optionLabel = isDropdown && searchable && inDropdownSearch ? '' : searchLabelProp || String(getOptionLabel(value) ?? '') || '';
@@ -518,12 +519,13 @@ function Select({
                         autoComplete="off"
                         withLeftIcon={!!leftAction}
                         withClearIcon={withClearIcon}
+                        color={showDropdownColorOnActive && opened ? '#4a88de' : undefined}
                       />
 
                       <SearchInputIcon
                         icon={withClearIcon ? 'close' : 'caretDown'}
                         size={withClearIcon ? 14 : 8}
-                        color="#6e849a"
+                        color={showDropdownColorOnActive && opened ? '#4a88de' : '#6e849a'}
                         onClick={onIconClick}
                       />
                     </>

@@ -18,6 +18,11 @@ export interface SearchInputProps {
 const SearchInput = styled(Input)<SearchInputProps>`
   height: ${({ theme }) => theme.components.input.height}px;
   padding-right: 34px;
+  ${({ color }) =>
+    color &&
+    css`
+      color: ${color} !important;
+    `};
 
   ${({ withLeftIcon }) =>
     withLeftIcon &&

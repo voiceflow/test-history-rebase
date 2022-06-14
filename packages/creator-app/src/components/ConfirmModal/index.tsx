@@ -1,8 +1,9 @@
 import { Box, Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
+import Modal, { ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
+import { styled, units } from '@/hocs';
 import { useModals } from '@/hooks/modals';
 import { useEnableDisable } from '@/hooks/toggle';
 
@@ -13,6 +14,12 @@ export interface ConfirmProps {
   confirmButtonText?: string;
   confirm?: () => void | Promise<void>;
 }
+
+const ModalBody = styled(Box)`
+  width: 100%;
+  position: relative;
+  padding: 0 ${units(4)}px ${units(4)}px ${units(4)}px;
+`;
 
 const ConfirmModal: React.FC = () => {
   const [loading, enableLoading, disableLoading] = useEnableDisable(false);
@@ -26,13 +33,13 @@ const ConfirmModal: React.FC = () => {
   }, [isOpened]);
 
   return (
-    <Modal id={ModalType.CONFIRM} title={data.header}>
+    <Modal id={ModalType.CONFIRM} title={data.header} maxWidth={400}>
       <Box width="100%">
         <ModalBody>{data.body}</ModalBody>
         <ModalFooter>
           {data.canCancel && (
             <Box display="inline-block" mr={6}>
-              <Button onClick={close} variant={ButtonVariant.TERTIARY}>
+              <Button onClick={close} variant={ButtonVariant.TERTIARY} squareRadius>
                 Cancel
               </Button>
             </Box>
@@ -45,6 +52,7 @@ const ConfirmModal: React.FC = () => {
               close();
               disableLoading();
             }}
+            squareRadius
           >
             {data.confirmButtonText || 'Confirm'}
           </Button>

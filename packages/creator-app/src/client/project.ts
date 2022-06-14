@@ -18,6 +18,12 @@ const projectClient = {
 
   promoteSecondaryAPIKey: ({ projectID, apiKey }: { projectID: string; apiKey: string }) =>
     apiV2.delete<ProjectAPIKey>(`${PROJECTS_PATH}/${projectID}/api-keys/${apiKey}`),
+
+  regeneratePrimaryAPIKey: ({ projectID, apiKey }: { projectID: string; apiKey: string }) =>
+    apiV2.post<ProjectAPIKey>(`${PROJECTS_PATH}/${projectID}/api-keys/${apiKey}/regenerate`),
+
+  regenerateSecondaryAPIKey: ({ projectID, apiKey }: { projectID: string; apiKey: string }) =>
+    apiV2.post<ProjectAPIKey>(`${PROJECTS_PATH}/${projectID}/api-keys/${apiKey}/secondary/regenerate`),
 };
 
 export default projectClient;

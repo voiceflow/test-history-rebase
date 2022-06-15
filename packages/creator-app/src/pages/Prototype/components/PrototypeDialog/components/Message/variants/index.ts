@@ -1,4 +1,5 @@
 export { default as Audio } from './Audio';
+export { default as Carousel } from './Carousel';
 export { default as Debug } from './Debug';
 export { default as IntentConfidence } from './IntentConfidence';
 export { default as Loading } from './Loading';

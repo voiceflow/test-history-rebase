@@ -16,6 +16,7 @@ export type StreamTrace = TraceWithID<BaseTrace.StreamTrace>;
 export type VisualTrace = TraceWithID<BaseTrace.VisualTrace>;
 export type PathTrace = TraceWithID<BaseTrace.PathTrace>;
 export type TextTrace = TraceWithID<BaseTrace.TextTrace>;
+export type CarouselTrace = TraceWithID<BaseTrace.CarouselTrace>;
 export type GoToTrace = TraceWithID<BaseTrace.GoToTrace>;
 export type NoReplyTrace = TraceWithID<BaseTrace.NoReplyTrace>;
 export type V1Trace = Required<BaseNode.Utils.BaseTraceFrame>;
@@ -33,7 +34,8 @@ export type Trace =
   | TextTrace
   | PathTrace
   | GoToTrace
-  | NoReplyTrace;
+  | NoReplyTrace
+  | CarouselTrace;
 
 // context types
 

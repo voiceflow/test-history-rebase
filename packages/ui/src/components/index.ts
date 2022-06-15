@@ -28,6 +28,7 @@ export {
   SecondaryButton,
   TertiaryButton,
 } from './Button';
+export { default as ButtonGroup } from './ButtonGroup';
 export { default as Canvas } from './Canvas';
 export { default as Card } from './Card';
 export { default as Collapse } from './Collapse';

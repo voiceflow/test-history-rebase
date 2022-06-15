@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { OverflowText } from '@voiceflow/ui';
+import { OverflowText, Thumbnail } from '@voiceflow/ui';
 import React from 'react';
 
 import SlateEditable from '@/components/SlateEditable';
@@ -8,7 +8,6 @@ import Step, { NoMatchItem, NoReplyItem } from '@/pages/Canvas/components/Step';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
-import Image from './Image';
 import * as S from './styles';
 
 const slateDescription = (description: Realtime.NodeData.Carousel.Card['description']) =>
@@ -37,7 +36,7 @@ const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.
       {cards.map((card) => (
         <Step.Section key={card.id}>
           <Step.Item>
-            <Image imageUrl={isVariable(card.imageUrl) ? null : card.imageUrl} />
+            <Thumbnail src={isVariable(card.imageUrl) ? null : card.imageUrl} mr={16} />
             <Step.LabelTextContainer>
               <Step.LabelText>{card.title || 'Card title'}</Step.LabelText>
               <Step.SubLabelText variant={card.description ? Step.StepLabelVariant.SECONDARY : Step.StepLabelVariant.PLACEHOLDER}>

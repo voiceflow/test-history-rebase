@@ -1,33 +1,50 @@
 import { css, styled } from '@ui/styles';
+import { space, SpaceProps } from 'styled-system';
 
-const baseFrameStyles = css`
-  width: 40px;
-  height: 40px;
+enum Sizes {
+  sm = '40px',
+  md = '64px',
+}
+
+export interface BaseFrameStylesProps extends SpaceProps {
+  size: keyof typeof Sizes;
+}
+
+const baseFrameStyles = css<BaseFrameStylesProps>`
+  width: ${({ size }) => Sizes[size]};
+  height: ${({ size }) => Sizes[size]};
   border-radius: 8px;
   box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.12);
 `;
 
-export const Container = styled.div`
-  margin-right: 16px;
-`;
+export interface ContainerProps extends SpaceProps {}
 
-export const Image = styled.div<{ src: string }>`
+export const Container = styled.div<ContainerProps>`
+  ${space}
+`;
+export interface ImageProps extends BaseFrameStylesProps {
+  src: string;
+}
+
+export const Image = styled.div<ImageProps>`
   ${baseFrameStyles}
   background: ${({ src }) => `url(${src}) no-repeat center center`};
   background-size: cover;
 `;
 
-export const Placeholder = styled.div`
+export const Placeholder = styled.div<BaseFrameStylesProps>`
   overflow: hidden;
   position: relative;
+
   ${baseFrameStyles}
+
   &:before {
     content: '';
     display: block;
     position: absolute;
     background-color: rgb(93 157 245 / 50%);
-    width: 20px;
-    height: 20px;
+    width: 50%;
+    height: 50%;
   }
   &:after {
     content: '';
@@ -36,7 +53,7 @@ export const Placeholder = styled.div`
     bottom: 0;
     position: absolute;
     background-color: rgb(93 157 245 / 50%);
-    width: 20px;
-    height: 20px;
+    width: 50%;
+    height: 50%;
   }
 `;

@@ -12,6 +12,7 @@ import * as Router from '@/ducks/router';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';
 import {
   BlockTrace,
+  CarouselTrace,
   ChoiceTrace,
   FlowTrace,
   GoToTrace,
@@ -96,6 +97,7 @@ const FOCUSABLE_NODES = new Set([
   BlockType.COMMAND,
   BlockType.SPEAK,
   BlockType.TEXT,
+  BlockType.CAROUSEL,
   BlockType.CAPTURE,
   BlockType.CAPTUREV2,
   BlockType.CHOICE,
@@ -350,6 +352,10 @@ class TraceController {
         await this.processTextTrace(topTrace);
         break;
       }
+      case BaseTrace.TraceType.CAROUSEL: {
+        await this.processCarouselTrace(topTrace);
+        break;
+      }
       case BaseTrace.TraceType.FLOW: {
         await this.processFlowTrace(topTrace);
         break;
@@ -496,6 +502,10 @@ class TraceController {
   private async processTextTrace(trace: TextTrace) {
     await this.simulateLoadingDelay(trace, trace.payload?.slate?.messageDelayMilliseconds);
     await this.message.text(trace);
+  }
+
+  private async processCarouselTrace(trace: CarouselTrace) {
+    await this.message.carousel(trace);
   }
 
   private async processSpeakTrace(trace: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {

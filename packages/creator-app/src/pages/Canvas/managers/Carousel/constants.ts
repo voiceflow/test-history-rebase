@@ -27,6 +27,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Carousel, Realtime.NodeDa
           ...Realtime.Utils.port.createEmptyNodeOutPorts(),
           builtIn: {
             [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },
+            [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH },
           },
         },
       },

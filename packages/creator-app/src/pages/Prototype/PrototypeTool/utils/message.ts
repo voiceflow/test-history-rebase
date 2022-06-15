@@ -1,9 +1,10 @@
 import { BaseNode, BaseRequest } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 
-import { DebugTrace, PathTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
+import { CarouselTrace, DebugTrace, PathTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
 import {
   AudioMessage,
+  CarouselMessage,
   DebugMessage,
   MessageType,
   PathMessage,
@@ -56,6 +57,14 @@ export const createTextMessage = (trace: TextTrace, common: CommonProperties): T
   id: trace.id,
   type: MessageType.TEXT,
   slate: trace.payload.slate,
+  ...common,
+});
+
+export const createCarouselMessage = (trace: CarouselTrace, common: CommonProperties): CarouselMessage => ({
+  id: trace.id,
+  type: MessageType.CAROUSEL,
+  cards: trace.payload.cards,
+  layout: trace.payload.layout,
   ...common,
 });
 

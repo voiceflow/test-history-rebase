@@ -13,7 +13,7 @@ import {
 import { Interaction, Message, MessageType, OnInteraction, PMStatus, UserMessage } from '@/pages/Prototype/types';
 
 import { Container, Ended, InlineInteractions, MessagesContainer, StickyInteractions } from './components';
-import { Audio, Debug, IntentConfidence, Loading, Speak, Text, User, Visual } from './components/Message';
+import { Audio, Carousel, Debug, IntentConfidence, Loading, Speak, Text, User, Visual } from './components/Message';
 import useMessageFilters from './filters';
 import { checkIfFirstInGroup, checkIfLastBotMessage, checkIfLastBubble, checkIfLastInGroup } from './utils';
 
@@ -184,6 +184,8 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
               );
             case MessageType.VISUAL:
               return <Visual isTranscript={isTranscript} {...botMessageProps} {...commonProps} visual={message} avatarURL={avatarURL} />;
+            case MessageType.CAROUSEL:
+              return <Carousel {...botMessageProps} {...commonProps} cards={message.cards} onInteraction={interactionProps.onInteraction} />;
             default:
               return null;
           }

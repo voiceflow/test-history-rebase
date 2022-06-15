@@ -15,6 +15,10 @@ const StepSubLabelText = styled.div<StepSubLabelTextProps>`
 
   font-size: 13px;
   color: ${({ variant = StepLabelVariant.SECONDARY, theme }) => theme.components.blockStep.labelText.variants[variant]};
+
+  > * {
+    ${overflowTextStyles}
+  }
 `;
 
 export default StepSubLabelText;

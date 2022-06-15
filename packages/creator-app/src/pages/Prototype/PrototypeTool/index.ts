@@ -1,5 +1,6 @@
 import { BaseRequest } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+// eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';
 
 import { isDebug } from '@/config';
@@ -14,6 +15,7 @@ export type PrototypeToolProps = MessageControllerProps & TraceControllerProps;
 
 declare global {
   interface Window {
+    // eslint-disable-next-line camelcase
     vf_prototypeTool?: PrototypeTool | null;
   }
 }

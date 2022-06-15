@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.76.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.76.0...@voiceflow/realtime@1.76.1) (2022-06-15)
+
+
+### Bug Fixes
+
+* remove ports v2 creation code [bugfix] (VF-000) ([#5595](https://github.com/voiceflow/creator-app/issues/5595)) ([fded331](https://github.com/voiceflow/creator-app/commit/fded33171511fb739fb1b6beaa692ea9af744f2c))
+
+
+
+
+
 # [1.76.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.75.4...@voiceflow/realtime@1.76.0) (2022-06-15)
 
 

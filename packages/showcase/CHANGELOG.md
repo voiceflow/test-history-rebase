@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.14.11...@voiceflow/showcase@1.15.0) (2022-06-15)
+
+
+### Features
+
+* reduce actions PR, part 1 (VF-000) ([#5570](https://github.com/voiceflow/creator-app/issues/5570)) ([e48d896](https://github.com/voiceflow/creator-app/commit/e48d896ef978d6b2555f46a21a9e7e4d73fbe34a))
+
+
+
+
+
 ## [1.14.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.14.10...@voiceflow/showcase@1.14.11) (2022-06-14)
 
 **Note:** Version bump only for package @voiceflow/showcase

@@ -52,7 +52,7 @@ export const INTENTS_VIDEO = 'https://www.youtube.com/embed/vuEmXn-lGK0';
 export const PROTOTYPING = 'https://docs.voiceflow.com/#/platform/testing/testing';
 export const ASSISTANT_TRAINING = 'https://docs.voiceflow.com/#/platform/testing/testing?id=train-the-voiceflow-assistant';
 
-export const DIALOG_MANAGER_API = 'https://www.voiceflow.com/api/dialog-manager';
+export const DIALOG_MANAGER_API = 'https://developer.voiceflow.com/reference';
 
 // TODO: this document hasn't been written yet
 export const OPEN_INTENT = 'https://docs.voiceflow.com/#/platform/steps/input-steps/user-input?id=open-intent';

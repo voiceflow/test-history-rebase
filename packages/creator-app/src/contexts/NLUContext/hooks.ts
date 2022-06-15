@@ -9,6 +9,7 @@ import { NLUContext } from '@/contexts';
 import * as Export from '@/ducks/export';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
+import { UpgradePrompt } from '@/ducks/tracking';
 import { useDispatch, useFeature, useModals, usePermission, useSelector } from '@/hooks';
 
 type NLUItem = MenuOption<undefined>;
@@ -49,7 +50,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
         setIsExporting(false);
       } else {
         const planLimits = getNLUExportLimitDetails(exportType);
-        openUpgradeModal({ planLimitDetails: planLimits });
+        openUpgradeModal({ planLimitDetails: planLimits, promptOrigin: UpgradePrompt.EXPORT_NLU });
       }
     },
     [itemID, exportModel]

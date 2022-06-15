@@ -15,6 +15,7 @@ import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
+import { UpgradePrompt } from '@/ducks/tracking';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { DragItem as BaseDragItem, HoverItem as BaseHoverItem, withBatchLoadingGate } from '@/hocs';
 import { useDispatch, useFeature, useModals, usePermission, useScrollHelpers, useSelector } from '@/hooks';
@@ -82,7 +83,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
   const onCreateProject = React.useCallback(
     (id?: string) => {
       if (projects.length >= workspace!.projects && revisedEntitlements.isEnabled) {
-        openUpgradeModal({ planLimitDetails: ProjectLimitDetails });
+        openUpgradeModal({ planLimitDetails: ProjectLimitDetails, promptOrigin: UpgradePrompt.PROJECT_LIMIT });
       } else if (projects.length >= workspace!.projects) {
         openProjectLimitModal({ projects: workspace!.projects });
       } else if (projectCreateFeature.isEnabled) {

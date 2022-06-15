@@ -7,6 +7,7 @@ import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { GATED_EXPORT_TYPES, getCanvasExportLimitDetails, isGatedCanvasExportType } from '@/config/planLimits/canvasExport';
 import { ExportFormat } from '@/constants';
+import { UpgradePrompt } from '@/ducks/tracking';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature, usePermission, useSelector } from '@/hooks';
 
@@ -43,6 +44,7 @@ const Canvas: React.FC = () => {
               getOptionValue={getOptionValue}
               isGated={isGatedCanvasExportType(option, permissionToExport)}
               planDetails={getCanvasExportLimitDetails(option)}
+              promptOrigin={UpgradePrompt.EXPORT_PROJECT}
             />
           )}
         />

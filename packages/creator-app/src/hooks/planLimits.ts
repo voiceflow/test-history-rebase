@@ -1,5 +1,6 @@
 import { getVariableStatesPlanLimitDetails } from '@/config/planLimits/variableStates';
 import { ModalType } from '@/constants';
+import { UpgradePrompt } from '@/ducks/tracking';
 import * as VariableState from '@/ducks/variableState';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useModals, useSelector } from '@/hooks';
@@ -15,7 +16,7 @@ export const useVariableStatesPlanLimit = (): PlanLimitHandler => {
 
   return (planAction: () => void) => () => {
     if (variableStatesLimit && variableStates.length >= variableStatesLimit) {
-      openVariableStateLimitModal({ planLimitDetails: LimitDetails });
+      openVariableStateLimitModal({ planLimitDetails: LimitDetails, promptOrigin: UpgradePrompt.VARIABLE_STATES_LIMIT });
       return;
     }
 

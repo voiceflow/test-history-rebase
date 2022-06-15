@@ -41,3 +41,12 @@ export const trackUpgradePrompt = createWorkspaceEventTracker<TrackUpgradePrompt
 export const trackUpgradeModal = createWorkspaceEventTracker((options) =>
   client.api.analytics.track(EventName.UPGRADE_MODAL, createWorkspaceEventPayload(options))
 );
+
+export const trackContactSales = createWorkspaceEventTracker<TrackUpgradePromptOptions>((options) =>
+  client.api.analytics.track(
+    EventName.CONTACT_SALES,
+    createWorkspaceEventPayload(options, {
+      prompt_type: options.promptType,
+    })
+  )
+);

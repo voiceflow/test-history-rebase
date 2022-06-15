@@ -1,7 +1,8 @@
-import { BoxFlex, GetOptionLabel, GetOptionValue, stopPropagation, useOnClickOutside, usePopper } from '@voiceflow/ui';
+import { Box, GetOptionLabel, GetOptionValue, stopPropagation, useOnClickOutside, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { LimitDetails } from '@/config/planLimits';
+import { UpgradePrompt } from '@/ducks/tracking';
 import { useToggle } from '@/hooks';
 
 import { UpgradeLabel, UpgradePopper } from './components';
@@ -15,6 +16,7 @@ interface UpgradeOptionProps<T, U> {
   isGated?: boolean;
   popperEnabled?: boolean;
   planDetails?: LimitDetails | null;
+  promptOrigin: UpgradePrompt;
 }
 
 const UpgradeOption = <T extends unknown, U extends unknown>({
@@ -26,6 +28,7 @@ const UpgradeOption = <T extends unknown, U extends unknown>({
   isGated,
   popperEnabled = false,
   planDetails,
+  promptOrigin,
 }: UpgradeOptionProps<T, U>): React.ReactElement | null => {
   const popper = usePopper({
     placement: 'right',
@@ -43,8 +46,8 @@ const UpgradeOption = <T extends unknown, U extends unknown>({
   useOnClickOutside(labelRef, () => setIsShowingPopper(false), [isShowingPopper]);
 
   return (
-    <BoxFlex ref={labelRef} width="100%" height="100%">
-      <BoxFlex
+    <Box.Flex ref={labelRef} width="100%" height="100%">
+      <Box.Flex
         ref={popper.setReferenceElement}
         onClick={isGated && popperEnabled ? stopPropagation(setIsShowingPopper) : undefined}
         width="100%"
@@ -59,9 +62,11 @@ const UpgradeOption = <T extends unknown, U extends unknown>({
           isGated={isGated}
           planDetails={planDetails}
         />
-      </BoxFlex>
-      {isShowingPopper && popperEnabled && <UpgradePopper planLimits={planDetails} popperContainerRef={popperContainerRef} />}
-    </BoxFlex>
+      </Box.Flex>
+      {isShowingPopper && popperEnabled && (
+        <UpgradePopper planLimits={planDetails} popperContainerRef={popperContainerRef} promptOrigin={promptOrigin} />
+      )}
+    </Box.Flex>
   );
 };
 

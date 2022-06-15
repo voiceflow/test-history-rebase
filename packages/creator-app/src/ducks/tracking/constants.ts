@@ -85,6 +85,7 @@ export enum EventName {
   EXPORT_BUTTON_CLICK = 'Export Button Click',
   UPGRADE_PROMPT = 'Upgrade Prompt',
   UPGRADE_MODAL = 'Upgrade Modal',
+  CONTACT_SALES = 'Contact Sales',
 
   UPGRADE = 'Upgrade',
 
@@ -163,6 +164,14 @@ export enum CanvasControlHelpMenuResource {
 export enum UpgradePrompt {
   REAL_TIME_COLLABORATION = 'Real Time Collaboration',
   PROJECT_LIMIT = 'Project Limit',
+  WORKSPACE_LIMIT = 'Workspace Limit',
+  EXPORT_CSV_NLU = 'Export NLU as CSV',
+  EXPORT_NLU = 'Export NLU',
+  SUPPORTED_NLUS = 'Supported NLUs',
+  EXPORT_PROJECT = 'Export Project as PNG or PDF',
+  EXPORT_PROJECT_CSV = 'Export Project as CSV',
+  TRANSCRIPTS = 'Transcripts',
+  VARIABLE_STATES_LIMIT = 'Variable States Limit',
 }
 
 export enum SourceType {

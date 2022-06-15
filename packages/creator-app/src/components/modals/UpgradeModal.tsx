@@ -3,15 +3,20 @@ import { Box, Button, ButtonVariant, Flex, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
-import { LimitDetails } from '@/config/planLimits';
+import { LimitDetails, upgradeToEnterpriseAction } from '@/config/planLimits';
 import { ModalType } from '@/constants';
-import { useModals } from '@/hooks';
+import { UpgradePrompt } from '@/ducks/tracking';
+import { useModals, useTrackingEvents } from '@/hooks';
 
 const UpgradeModal: React.FC = () => {
-  const { close, data } = useModals<{ planLimitDetails: LimitDetails }>(ModalType.UPGRADE_MODAL);
+  const { close, data } = useModals<{ planLimitDetails: LimitDetails; promptOrigin: UpgradePrompt }>(ModalType.UPGRADE_MODAL);
   const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
+  const [trackingEvents] = useTrackingEvents();
 
   const handleSubmit = () => {
+    if (data.planLimitDetails.onSubmit === upgradeToEnterpriseAction) {
+      trackingEvents.trackContactSales({ promptType: data.promptOrigin });
+    }
     data.planLimitDetails?.onSubmit({ openPaymentModal });
   };
 

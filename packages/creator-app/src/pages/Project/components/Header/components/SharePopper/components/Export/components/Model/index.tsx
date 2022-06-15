@@ -9,6 +9,7 @@ import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails, isGatedNLUExportType } from '@/config/planLimits/nluExport';
 import { NLPProvider, NLPProviderLabels } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
+import { UpgradePrompt } from '@/ducks/tracking';
 import { useFeature, usePermission } from '@/hooks';
 
 import { ExportContext } from '../../Context';
@@ -62,6 +63,7 @@ const ExportModel: React.FC<{
               getOptionValue={getOptionValue}
               isGated={isGatedNLUExportType(option, permissionToExport, permissionToExportCSV)}
               planDetails={getNLUExportLimitDetails(option)}
+              promptOrigin={UpgradePrompt.EXPORT_NLU}
             />
           )}
         />

@@ -6,6 +6,7 @@ import UpgradeOption from '@/components/UpgradeOption';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { getProjectNluLimitDetails, isGatedNLUType } from '@/config/planLimits/projects';
+import { UpgradePrompt } from '@/ducks/tracking';
 import { useFeature, useHover, usePermission } from '@/hooks';
 
 import { NLU_OPTIONS, PLATFORM_PROJECT_META_MAP } from '../constants';
@@ -76,6 +77,7 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImpor
               isGated={isGatedNLUType(option.type, permissionCustomNLU)}
               popperEnabled={true}
               planDetails={getProjectNluLimitDetails(option)}
+              promptOrigin={UpgradePrompt.SUPPORTED_NLUS}
             />
           )}
         />

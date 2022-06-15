@@ -8,6 +8,7 @@ import { getCanvasExportLimitDetails } from '@/config/planLimits/canvasExport';
 import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
 import { ExportType, ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
+import { UpgradePrompt } from '@/ducks/tracking';
 import { useFeature, useModals, useSelector } from '@/hooks';
 
 import { ExportContext } from './Context';
@@ -30,10 +31,10 @@ const ExportFooter: React.FC<{
     if (isExporting) return;
     if (revisedEntitlements.isEnabled && exportType === ExportType.CANVAS && canvasExportFormat && !canExport) {
       const planLimitDetails = getCanvasExportLimitDetails(canvasExportFormat);
-      openUpgradeModal({ planLimitDetails });
+      openUpgradeModal({ planLimitDetails, promptOrigin: UpgradePrompt.EXPORT_PROJECT });
     } else if (revisedEntitlements.isEnabled && exportType === ExportType.MODEL && modelExportProvider && !canExport) {
       const planLimitDetails = getNLUExportLimitDetails(modelExportProvider);
-      openUpgradeModal({ planLimitDetails });
+      openUpgradeModal({ planLimitDetails, promptOrigin: UpgradePrompt.EXPORT_NLU });
     } else {
       onExport();
     }

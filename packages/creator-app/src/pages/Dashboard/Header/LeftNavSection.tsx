@@ -10,6 +10,7 @@ import { Permission } from '@/config/permissions';
 import { canAddWorkspace, WorkspacesLimitDetails } from '@/config/planLimits/workspaces';
 import { ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
+import { UpgradePrompt } from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, useModals, usePermission, useSelector } from '@/hooks';
@@ -38,7 +39,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
 
   const canAddNewWorkspace = () => {
     if (revisedEntitlements.isEnabled && !canAddWorkspace(plan)) {
-      openUpgradeModal({ planLimitDetails: WorkspacesLimitDetails });
+      openUpgradeModal({ planLimitDetails: WorkspacesLimitDetails, promptOrigin: UpgradePrompt.WORKSPACE_LIMIT });
     } else {
       goToNewWorkspace();
     }

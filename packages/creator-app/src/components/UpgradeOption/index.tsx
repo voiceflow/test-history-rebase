@@ -3,7 +3,7 @@ import React from 'react';
 
 import { LimitDetails } from '@/config/planLimits';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { useToggle } from '@/hooks';
+import { useToggle, useTrackingEvents } from '@/hooks';
 
 import { UpgradeLabel, UpgradePopper } from './components';
 
@@ -42,6 +42,13 @@ const UpgradeOption = <T extends unknown, U extends unknown>({
   const popperContainerRef = React.useRef<HTMLDivElement>(null);
   const labelRef = React.useRef<HTMLDivElement>(null);
   const [isShowingPopper, setIsShowingPopper] = useToggle();
+  const [trackingEvents] = useTrackingEvents();
+
+  React.useEffect(() => {
+    if (!isShowingPopper) return;
+
+    trackingEvents.trackUpgradePrompt({ promptType: promptOrigin });
+  }, [isShowingPopper]);
 
   useOnClickOutside(labelRef, () => setIsShowingPopper(false), [isShowingPopper]);
 

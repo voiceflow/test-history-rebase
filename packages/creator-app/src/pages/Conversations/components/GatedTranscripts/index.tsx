@@ -4,12 +4,15 @@ import React from 'react';
 
 import { TranscriptsLimitDetails } from '@/config/planLimits/transcripts';
 import { ModalType, PLAN_INFO_LINK } from '@/constants';
-import { useModals } from '@/hooks';
+import { UpgradePrompt } from '@/ducks/tracking';
+import { useModals, useTrackingEvents } from '@/hooks';
 
 import { SvgShadow, TranscriptsBackgroundContainer, UpgradeBox } from './components';
 
 const GatedTranscripts: React.FC = () => {
   const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
+  const [trackingEvents] = useTrackingEvents();
+  trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.TRANSCRIPTS });
 
   return (
     <>

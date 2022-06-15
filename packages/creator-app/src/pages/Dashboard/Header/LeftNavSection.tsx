@@ -13,7 +13,7 @@ import * as Router from '@/ducks/router';
 import { UpgradePrompt } from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useFeature, useModals, usePermission, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
 import { ClassName } from '@/styles/constants';
 
@@ -29,6 +29,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
   const isAdminOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOfAnyWorkspaceSelector);
   const isLoadingProjects = useSelector(UI.isLoadingProjectsSelector);
   const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
+  const [trackingEvents] = useTrackingEvents();
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
@@ -39,6 +40,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
 
   const canAddNewWorkspace = () => {
     if (revisedEntitlements.isEnabled && !canAddWorkspace(plan)) {
+      trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.WORKSPACE_LIMIT });
       openUpgradeModal({ planLimitDetails: WorkspacesLimitDetails, promptOrigin: UpgradePrompt.WORKSPACE_LIMIT });
     } else {
       goToNewWorkspace();

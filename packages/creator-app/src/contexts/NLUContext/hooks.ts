@@ -10,7 +10,7 @@ import * as Export from '@/ducks/export';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { useDispatch, useFeature, useModals, usePermission, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 
 type NLUItem = MenuOption<undefined>;
 
@@ -29,6 +29,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
   const [permissionToExport] = usePermission(revisedEntitlements.isEnabled ? Permission.NLU_EXPORT_ALL : Permission.MODEL_EXPORT);
   const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
+  const [trackingEvents] = useTrackingEvents();
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const project = useSelector(ProjectV2.getProjectByIDSelector)({ id: projectID });
@@ -49,6 +50,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
         toast.success('Successfully Exported');
         setIsExporting(false);
       } else {
+        trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_NLU });
         const planLimits = getNLUExportLimitDetails(exportType);
         openUpgradeModal({ planLimitDetails: planLimits, promptOrigin: UpgradePrompt.EXPORT_NLU });
       }

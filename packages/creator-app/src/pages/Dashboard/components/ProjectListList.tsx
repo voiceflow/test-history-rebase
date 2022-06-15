@@ -18,7 +18,7 @@ import * as Router from '@/ducks/router';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { DragItem as BaseDragItem, HoverItem as BaseHoverItem, withBatchLoadingGate } from '@/hocs';
-import { useDispatch, useFeature, useModals, usePermission, useScrollHelpers, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useModals, usePermission, useScrollHelpers, useSelector, useTrackingEvents } from '@/hooks';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
 import { Item as ListItem, ItemProps as ListItemProps } from './Item';
@@ -69,6 +69,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
   const { open: openProjectCreateModal } = useModals(ModalType.PROJECT_CREATE_MODAL);
   const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
+  const [trackingEvents] = useTrackingEvents();
 
   const projectCreateFeature = useFeature(FeatureFlag.PROJECT_CREATE);
 
@@ -83,6 +84,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
   const onCreateProject = React.useCallback(
     (id?: string) => {
       if (projects.length >= workspace!.projects && revisedEntitlements.isEnabled) {
+        trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.PROJECT_LIMIT });
         openUpgradeModal({ planLimitDetails: ProjectLimitDetails, promptOrigin: UpgradePrompt.PROJECT_LIMIT });
       } else if (projects.length >= workspace!.projects) {
         openProjectLimitModal({ projects: workspace!.projects });

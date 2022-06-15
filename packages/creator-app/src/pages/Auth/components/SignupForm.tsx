@@ -1,4 +1,16 @@
-import { Box, BoxFlexApart, Button, ButtonVariant, ClickableText, ControlledInput, Input, preventDefault, ThemeColor, toast } from '@voiceflow/ui';
+import {
+  Box,
+  BoxFlexApart,
+  Button,
+  ButtonVariant,
+  ClickableText,
+  ControlledInput,
+  Input,
+  Link,
+  preventDefault,
+  ThemeColor,
+  toast,
+} from '@voiceflow/ui';
 import { getSearch } from 'connected-react-router';
 import _throttle from 'lodash/throttle';
 import React from 'react';
@@ -23,6 +35,7 @@ import HeaderBox from './HeaderBox';
 import InputContainer from './InputContainer';
 import PasswordInput from './PasswordInput';
 import SocialLogin from './SocialLogin';
+import TermsAndConditionsContainer from './TermsAndConditionsContainer';
 
 export interface SignupFormProps {
   query: Query.Auth;
@@ -177,6 +190,18 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
                 </Button>
               </div>
             </BoxFlexApart>
+
+            <TermsAndConditionsContainer>
+              By clicking "Create account", I agree to Voiceflow's{' '}
+              <Link color="#3d82e2" href="https://www.voiceflow.com/terms">
+                TOS
+              </Link>{' '}
+              and{' '}
+              <Link color="#3d82e2" href="https://www.voiceflow.com/privacy">
+                Privacy Policy
+              </Link>
+              .
+            </TermsAndConditionsContainer>
           </div>
         </form>
 

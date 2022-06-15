@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.776.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.775.0...@voiceflow/creator-app@1.776.0) (2022-06-15)
+
+
+### Bug Fixes
+
+* update api doc link (VF-3818) ([#5593](https://github.com/voiceflow/creator-app/issues/5593)) ([bb65c33](https://github.com/voiceflow/creator-app/commit/bb65c336860c02b11b66c9a178e50a36b9961ba6))
+
+
+### Features
+
+* contact sales segment event (VF-3382) ([#5581](https://github.com/voiceflow/creator-app/issues/5581)) ([b8fcd82](https://github.com/voiceflow/creator-app/commit/b8fcd8293c52e5a452f98f6618a139b4c6d0fbb3))
+
+
+
+
+
 # [1.775.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.774.0...@voiceflow/creator-app@1.775.0) (2022-06-15)
 
 

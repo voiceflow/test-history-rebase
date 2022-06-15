@@ -6,6 +6,7 @@ import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWr
 import ListManager from '@/components/ListManager';
 import Section, { SectionVariant } from '@/components/Section';
 import { Permission } from '@/config/permissions';
+import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
 import { CUSTOM_SLOT_TYPE, ModalType } from '@/constants';
 import { useModals, usePermission } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -39,7 +40,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
   const valueRef = React.useRef<HTMLInputElement | null>(null);
   const stickyTopRef = React.useRef<HTMLDivElement>(null);
   const isNotAtTop = useOnScreen(stickyTopRef, { initialState: true });
-  const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
+  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
   const { open: openSlotsBulkUploadModal } = useModals(ModalType.IMPORT_SLOTS);
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
 
@@ -63,7 +64,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
         },
       });
     } else {
-      openImportBulkDeniedModal();
+      openUpgradeModal({ planLimitDetails: BulkImportLimitDetails });
     }
   }, [customLines]);
 

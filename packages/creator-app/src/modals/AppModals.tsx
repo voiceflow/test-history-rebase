@@ -22,7 +22,6 @@ import TagManagerModal from '@/pages/Conversations/components/TagManagerModal';
 import ImportModal from '@/pages/Dashboard/components/ImportModal';
 import {
   CanvasExportModal,
-  ImportBulkDeniedModal,
   ProjectDownloadModal,
   ProjectLimitModal,
   RealtimeDeniedModal,
@@ -63,7 +62,6 @@ const AppModals: React.FC = () => {
       <CanvasExportModal />
       <ProjectLimitModal />
       <RealtimeDeniedModal />
-      <ImportBulkDeniedModal />
       <PaymentModal />
       <RefreshModal />
       <ConnectActivePlatformModal />

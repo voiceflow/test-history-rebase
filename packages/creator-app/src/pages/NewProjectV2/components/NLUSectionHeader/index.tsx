@@ -9,7 +9,7 @@ interface NLUSectionHeaderProps {
 
 const NLUSectionHeader: React.FC<NLUSectionHeaderProps> = ({ showInfoIcon }) => (
   <Flex>
-    <Box pr={12}>NLU</Box>{' '}
+    <Box pr={8}>NLU</Box>{' '}
     <InfoIconContainer show={showInfoIcon}>
       <TutorialInfoIcon>
         <NLUTooltip />

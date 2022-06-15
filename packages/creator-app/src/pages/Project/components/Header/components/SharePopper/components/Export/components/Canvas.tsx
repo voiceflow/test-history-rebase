@@ -5,7 +5,7 @@ import Upgrade from '@/components/Upgrade';
 import UpgradeOption from '@/components/UpgradeOption';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
-import { GATED_EXPORT_TYPES, getCanvasExportLimitPlan, getCanvasExportTooltipTitle, isGatedCanvasExportType } from '@/config/planLimits/canvasExport';
+import { GATED_EXPORT_TYPES, getCanvasExportLimitDetails, isGatedCanvasExportType } from '@/config/planLimits/canvasExport';
 import { ExportFormat } from '@/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature, usePermission, useSelector } from '@/hooks';
@@ -42,8 +42,7 @@ const Canvas: React.FC = () => {
               getOptionLabel={getOptionLabel}
               getOptionValue={getOptionValue}
               isGated={isGatedCanvasExportType(option, permissionToExport)}
-              tooltipTitle={getCanvasExportTooltipTitle(option)}
-              plan={getCanvasExportLimitPlan(option)}
+              planDetails={getCanvasExportLimitDetails(option)}
             />
           )}
         />

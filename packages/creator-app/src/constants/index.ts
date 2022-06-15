@@ -271,7 +271,6 @@ export enum ModalType {
   IMPORT_SLOTS = 'import-slots',
   IMPORT_PROJECT = 'import-project',
   IMPORT_UTTERANCES = 'import-utterances',
-  IMPORT_BULK_DENIED = 'import-bulk-denied',
 
   LOADING = 'loading',
   CONFIRM = 'confirm',

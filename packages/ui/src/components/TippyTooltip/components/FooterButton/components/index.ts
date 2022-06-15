@@ -15,11 +15,10 @@ export const ButtonContainer = styled.div<{ isVisible: boolean }>`
   color: white;
   pointer-events: auto;
   cursor: pointer;
-  transition: background-color ${ANIMATION_SPEED}s ease;
+  transition: all ${ANIMATION_SPEED}s ease;
   &:hover {
     background-color: #5d6264;
   }
-  transition: opacity 0.15s ease;
   transition-delay: 150ms;
 
   ${({ isVisible }) =>

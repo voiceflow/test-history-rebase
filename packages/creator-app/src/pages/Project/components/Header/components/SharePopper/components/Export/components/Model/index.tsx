@@ -6,7 +6,7 @@ import Divider from '@/components/Divider';
 import UpgradeOption from '@/components/UpgradeOption';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
-import { getNLUExportLimitPlan, getNLUExportTooltipTitle, isGatedNLUExportType } from '@/config/planLimits/nluExport';
+import { getNLUExportLimitDetails, isGatedNLUExportType } from '@/config/planLimits/nluExport';
 import { NLPProvider, NLPProviderLabels } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useFeature, usePermission } from '@/hooks';
@@ -61,8 +61,7 @@ const ExportModel: React.FC<{
               getOptionLabel={getOptionLabel}
               getOptionValue={getOptionValue}
               isGated={isGatedNLUExportType(option, permissionToExport, permissionToExportCSV)}
-              tooltipTitle={getNLUExportTooltipTitle(option)}
-              plan={getNLUExportLimitPlan(option)}
+              planDetails={getNLUExportLimitDetails(option)}
             />
           )}
         />

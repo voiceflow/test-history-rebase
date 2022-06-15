@@ -1,5 +1,3 @@
-import { PlanType } from '@voiceflow/internal';
-
 import { LimitDetails, TEAM_LABEL, UPGRADE_TO_TEAM_ACTION_LABEL, upgradeToTeamAction } from '@/config/planLimits';
 import { ExportFormat } from '@/constants';
 
@@ -32,6 +30,9 @@ const canvasExportTeamPlanLimitDetails = (exportFormat: ExportUpgradeFormat) => 
     description: `${ExportUpgradeFormatLabels[exportFormat]} export is a ${TEAM_LABEL} feature. Upgrade to the ${TEAM_LABEL} plan to unlock this feature.`,
     submitText: UPGRADE_TO_TEAM_ACTION_LABEL,
     onSubmit: upgradeToTeamAction,
+    tooltipText: `${ExportUpgradeFormatLabels[exportFormat]} is a team feature.`,
+    tooltipButtonText: UPGRADE_TO_TEAM_ACTION_LABEL,
+    tooltipOnClick: upgradeToTeamAction,
   };
 };
 
@@ -41,14 +42,6 @@ export const CanvasExportLimitDetails: Record<ExportUpgradeFormat, LimitDetails>
   [ExportUpgradeFormat.PNG]: canvasExportTeamPlanLimitDetails(ExportUpgradeFormat.PNG),
 };
 
-export const getCanvasExportTooltipTitle = (option: ExportFormat) => {
-  const exportOption = ExportToExportUpgradeFormat[option];
-  if (exportOption) {
-    return `${ExportUpgradeFormatLabels[exportOption]} is a team feature.`;
-  }
-  return undefined;
-};
-
 export const getCanvasExportLimitDetails = (exportType: ExportFormat): LimitDetails | null => {
   const exportOption = ExportToExportUpgradeFormat[exportType];
   if (exportOption) {
@@ -56,8 +49,5 @@ export const getCanvasExportLimitDetails = (exportType: ExportFormat): LimitDeta
   }
   return null;
 };
-
-export const getCanvasExportLimitPlan = (exportType: ExportFormat): PlanType =>
-  GATED_EXPORT_TYPES.has(exportType) ? PlanType.TEAM : PlanType.STARTER;
 
 export const isGatedCanvasExportType = (exportType: ExportFormat, canExport: boolean) => !canExport && GATED_EXPORT_TYPES.has(exportType);

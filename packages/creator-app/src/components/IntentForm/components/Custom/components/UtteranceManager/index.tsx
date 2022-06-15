@@ -19,6 +19,7 @@ import ListManager from '@/components/ListManager';
 import { ContentContainer, SectionToggleVariant } from '@/components/Section';
 import Utterance, { UtteranceRef } from '@/components/Utterance';
 import { Permission } from '@/config/permissions';
+import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
 import { ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
@@ -60,7 +61,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   const utteranceRef = React.useRef<UtteranceRef>(null);
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isEmpty, updateIsEmpty] = React.useState(true);
-  const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
+  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
   const { isOpened: interactionModelInstance } = useModals(ModalType.INTERACTION_MODEL);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
@@ -127,7 +128,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
         },
       });
     } else {
-      openImportBulkDeniedModal();
+      openUpgradeModal({ planLimitDetails: BulkImportLimitDetails });
     }
   };
 

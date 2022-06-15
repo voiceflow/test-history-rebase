@@ -1,4 +1,3 @@
-import { PlanType } from '@voiceflow/internal';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
@@ -16,10 +15,14 @@ import { PlatformAndProjectMeta, PlatformAndProjectMetaType } from '@/pages/NewP
 
 const STARTER_PROJECT_LIMIT = 2;
 
-const NOT_GATED_PROJECT_NLUS = new Set([
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.ALEXA,
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.GOOGLE,
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.VOICEFLOW,
+const GATED_PROJECT_NLUS = new Set([
+  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
+  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.EINSTEIN,
+  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.LEX,
+  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.LUIS,
+  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.NUANCE_MIX,
+  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.RASA,
+  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.WATSON,
 ]);
 
 export const ProjectLimitDetails: LimitDetails = {
@@ -30,13 +33,19 @@ export const ProjectLimitDetails: LimitDetails = {
   onSubmit: upgradeToTeamAction,
 };
 
-const projectNLUEnterpisePlanLimitDetails = (nlpExport: NLPProvider) => {
+const projectNLUEnterpisePlanLimitDetails = (nlpSelection: NLPProvider) => {
   return {
-    modalTitle: 'NLU Export',
+    modalTitle: 'NLU',
     title: 'Upgrade to use this NLU',
-    description: `${NLPProviderLabels[nlpExport]} is an ${ENTERPRISE_LABEL} feautre. Upgrade to import and export data for this NLU.`,
+    description: `${NLPProviderLabels[nlpSelection]} is an ${ENTERPRISE_LABEL} feautre. Upgrade to import and export data for this NLU.`,
     submitText: UPGRADE_TO_ENTERPRISE_ACTION_LABEL,
     onSubmit: upgradeToEnterpriseAction,
+    tooltipText: `${NLPProviderLabels[nlpSelection]} is a enterprise feature.`,
+    tooltipButtonText: UPGRADE_TO_ENTERPRISE_ACTION_LABEL,
+    tooltipOnClick: upgradeToEnterpriseAction,
+    hasLabelTooltip: true,
+    labelTooltipTitle: NLPProviderLabels[nlpSelection],
+    labelTooltipText: `Import and export/upload NLU models for ${NLPProviderLabels[nlpSelection]}.`,
   };
 };
 
@@ -51,11 +60,6 @@ const projectNluLimitDetailsSelector = Utils.platform.createPlatformSelector<Lim
 });
 
 export const getProjectNluLimitDetails = (option: PlatformAndProjectMeta) =>
-  !NOT_GATED_PROJECT_NLUS.has(option.type) ? projectNluLimitDetailsSelector(option.type as VoiceflowConstants.PlatformType) : undefined;
+  GATED_PROJECT_NLUS.has(option.type) ? projectNluLimitDetailsSelector(option.type as VoiceflowConstants.PlatformType) : undefined;
 
-export const getProjectNLULimitPlan = (): PlanType => PlanType.ENTERPRISE;
-
-export const getProjectNLUTooltipTitle = (option: PlatformAndProjectMeta) => `${option.name} is a enterprise feature.`;
-
-export const isGatedNLUType = (nluType: PlatformAndProjectMetaType, canUseCustomNLU: boolean) =>
-  !canUseCustomNLU && !NOT_GATED_PROJECT_NLUS.has(nluType);
+export const isGatedNLUType = (nluType: PlatformAndProjectMetaType, canUseCustomNLU: boolean) => !canUseCustomNLU && GATED_PROJECT_NLUS.has(nluType);

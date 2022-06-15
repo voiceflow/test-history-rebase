@@ -5,12 +5,12 @@ import { Utils } from '@voiceflow/realtime-sdk';
 import { createUIOnlyMenuItemOption, MenuItemGrouped } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
+import { getLabelTooltip } from '@/components/UpgradeOption/components/getOptionTooltips';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS, getDefaultPlatformLanguageLabel } from '@/constants/platforms';
 import { FORMATTED_DIALOGFLOW_LOCALES_LABELS, getPreferredDialogFlowLocales } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS, getPreferredGoogleLocales } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 
-import getSelectTooltip from './components/getSelectTooltip';
 import {
   AnyLanguage,
   AnyLocale,
@@ -65,14 +65,14 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
   [VoiceflowConstants.ProjectType.CHAT]: {
     type: VoiceflowConstants.ProjectType.CHAT,
     name: 'Chat Assistant',
-    tooltip: getSelectTooltip('Chat Assistant', 'Chat assistants can be connected to any channel or custom interface via API.'),
+    tooltip: getLabelTooltip('Chat Assistant', 'Chat assistants can be connected to any channel or custom interface via API.'),
     localesText: 'Language',
   },
 
   [VoiceflowConstants.ProjectType.VOICE]: {
     type: VoiceflowConstants.ProjectType.VOICE,
     name: 'Voice Assistant',
-    tooltip: getSelectTooltip('Voice Assistant', 'Voice assistants can be connected to any channel or custom interface via API.'),
+    tooltip: getLabelTooltip('Voice Assistant', 'Voice assistants can be connected to any channel or custom interface via API.'),
     localesText: 'Language',
   },
 
@@ -80,7 +80,7 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
     type: VoiceflowConstants.PlatformType.ALEXA,
     icon: 'amazonAlexa',
     name: 'Amazon Alexa',
-    tooltip: getSelectTooltip('Amazon Alexa', 'Design, prototype and launch Alexa Skills with our one-click integration.'),
+    tooltip: getLabelTooltip('Amazon Alexa', 'Design, prototype and launch Alexa Skills with our one-click integration.'),
     iconColor: '#5fcaf4',
     localesText: 'Locales',
     invocationDescription: 'The phrase users will use to interact with your Alexa Skill.',
@@ -90,7 +90,7 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
     type: VoiceflowConstants.PlatformType.GOOGLE,
     icon: 'googleAssistant',
     name: 'Google Assistant',
-    tooltip: getSelectTooltip('Google Assistant', 'Design, prototype and launch Google Actions with our one-click integration.'),
+    tooltip: getLabelTooltip('Google Assistant', 'Design, prototype and launch Google Actions with our one-click integration.'),
     localesText: 'Language',
     languageSelectProps: {
       ...DEFAULT_LANGUAGE_SELECT_PROPS,
@@ -105,7 +105,7 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
     type: VoiceflowConstants.PlatformType.VOICEFLOW,
     icon: 'voiceflowV',
     name: 'Voiceflow (default)',
-    tooltip: getSelectTooltip(
+    tooltip: getLabelTooltip(
       'Voiceflow NLU',
       "If you don't already use one of these NLU providers, we recommend this option for the simplest experience."
     ),
@@ -118,7 +118,6 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
     type: VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
     icon: 'dialogflow',
     name: 'Dialogflow ES',
-    tooltip: getSelectTooltip('Dialogflow ES', 'Import and export/upload NLU models for Dialogflow agents.'),
     importMeta: { name: 'Dialogflow ES', fileExtensions: [FileExtension.ZIP] },
     localesText: 'Language',
     languageSelectProps: {
@@ -133,7 +132,6 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
     type: VoiceflowConstants.PlatformType.LUIS,
     icon: 'luis',
     name: 'Microsoft Luis',
-    tooltip: getSelectTooltip('Microsoft Luis', 'Import and export NLU models for Microsoft Luis.'),
     importMeta: { name: 'Luis', fileExtensions: [FileExtension.JSON] },
     localesText: 'Language',
   },
@@ -142,7 +140,6 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
     name: 'Rasa',
     type: VoiceflowConstants.PlatformType.RASA,
     icon: 'rasa',
-    tooltip: getSelectTooltip('Rasa', 'Import and export/upload NLU models for Rasa agents.'),
     importMeta: { name: 'Rasa', fileExtensions: [FileExtension.ZIP] },
     localesText: 'Language',
   },
@@ -151,7 +148,6 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
     type: VoiceflowConstants.PlatformType.EINSTEIN,
     icon: 'salesforce',
     name: 'Salesforce Einstein',
-    tooltip: getSelectTooltip('Salesforce Einstein', 'Import and export/upload NLU models for Einstein.'),
     importMeta: { name: 'Einstein', fileExtensions: [FileExtension.CSV] },
     localesText: 'Language',
   },
@@ -160,7 +156,6 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
     type: VoiceflowConstants.PlatformType.WATSON,
     icon: 'watson',
     name: 'IBM Watson',
-    tooltip: getSelectTooltip('IBM Watson', 'Import and export/upload NLU models for IBM Watson.'),
     importMeta: { name: 'Watson', fileExtensions: [FileExtension.JSON] },
     localesText: 'Language',
   },
@@ -169,7 +164,6 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
     type: VoiceflowConstants.PlatformType.LEX,
     icon: 'lex',
     name: 'Amazon Lex',
-    tooltip: getSelectTooltip('Amazon Lex', 'Import and export/upload NLU models for Amazon Lex.'),
     importMeta: { name: 'Lex', fileExtensions: [FileExtension.ZIP] },
     localesText: 'Language',
   },
@@ -178,7 +172,6 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
     type: VoiceflowConstants.PlatformType.NUANCE_MIX,
     icon: 'nuanceMix',
     name: 'Nuance Mix',
-    tooltip: getSelectTooltip('Nuance Mix', 'Import and export/upload NLU models for Nuance Mix.'),
     importMeta: { name: 'Nuance Mix', fileExtensions: [FileExtension.XML] },
     localesText: 'Language',
   },

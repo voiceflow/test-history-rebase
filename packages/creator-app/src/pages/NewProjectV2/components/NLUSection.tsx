@@ -5,7 +5,7 @@ import Section, { SectionVariant } from '@/components/Section';
 import UpgradeOption from '@/components/UpgradeOption';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
-import { getProjectNluLimitDetails, getProjectNLULimitPlan, getProjectNLUTooltipTitle, isGatedNLUType } from '@/config/planLimits/projects';
+import { getProjectNluLimitDetails, isGatedNLUType } from '@/config/planLimits/projects';
 import { useFeature, useHover, usePermission } from '@/hooks';
 
 import { NLU_OPTIONS, PLATFORM_PROJECT_META_MAP } from '../constants';
@@ -75,9 +75,7 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImpor
               getOptionValue={getOptionValue}
               isGated={isGatedNLUType(option.type, permissionCustomNLU)}
               popperEnabled={true}
-              tooltipTitle={getProjectNLUTooltipTitle(option)}
-              plan={getProjectNLULimitPlan()}
-              getPlanDetails={getProjectNluLimitDetails}
+              planDetails={getProjectNluLimitDetails(option)}
             />
           )}
         />

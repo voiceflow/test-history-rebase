@@ -2,18 +2,12 @@ import { PlanType } from '@voiceflow/internal';
 import { FlexApart, getNestedMenuFormattedLabel, GetOptionLabel, GetOptionValue, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import {
-  ENTERPRISE_LIMIT_PLANS,
-  TEAM_LIMIT_PLANS,
-  UPGRADE_TO_ENTERPRISE_ACTION_LABEL,
-  UPGRADE_TO_TEAM_ACTION_LABEL,
-  upgradeToEnterpriseAction,
-  upgradeToTeamAction,
-} from '@/config/planLimits';
+import { LimitDetails } from '@/config/planLimits';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 
 import { GatedFeatureIcon } from '.';
+import { getLabelTooltip, getUpgradeTooltip } from './getOptionTooltips';
 
 interface UpgradeLabelProps<T, U> {
   option: T;
@@ -22,8 +16,7 @@ interface UpgradeLabelProps<T, U> {
   getOptionLabel: GetOptionLabel<U>;
   getOptionValue: GetOptionValue<T, U>;
   isGated?: boolean;
-  tooltipTitle?: string;
-  plan?: PlanType;
+  planDetails?: LimitDetails | null;
 }
 
 const UpgradeLabel = <T extends unknown, U extends unknown>({
@@ -32,42 +25,27 @@ const UpgradeLabel = <T extends unknown, U extends unknown>({
   searchLabel,
   getOptionLabel,
   getOptionValue,
-  isGated,
-  tooltipTitle,
-  plan,
+  isGated = false,
+  planDetails,
 }: UpgradeLabelProps<T, U>): React.ReactElement | null => {
   const optionLabel = getOptionLabel(getOptionValue(option));
   const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
 
   const handleTooltipOnClick = () => {
-    if (plan && TEAM_LIMIT_PLANS.includes(plan)) {
-      upgradeToTeamAction({ openPaymentModal });
-    } else if (plan && ENTERPRISE_LIMIT_PLANS.includes(plan)) {
-      upgradeToEnterpriseAction();
-    }
-  };
-
-  const getButtonText = () => {
-    if (plan && TEAM_LIMIT_PLANS.includes(plan)) {
-      return UPGRADE_TO_TEAM_ACTION_LABEL;
-    }
-    if (plan && ENTERPRISE_LIMIT_PLANS.includes(plan)) {
-      return UPGRADE_TO_ENTERPRISE_ACTION_LABEL;
-    }
-    return '';
+    if (planDetails?.tooltipOnClick) planDetails?.tooltipOnClick({ openPaymentModal });
   };
 
   return (
     <FlexApart fullWidth>
-      <span>{getNestedMenuFormattedLabel(optionLabel, searchLabel)}</span>
+      {planDetails?.hasLabelTooltip ? (
+        <TippyTooltip {...getLabelTooltip(planDetails.labelTooltipTitle, planDetails.labelTooltipText, isGated)}>
+          <span>{getNestedMenuFormattedLabel(optionLabel, searchLabel)}</span>
+        </TippyTooltip>
+      ) : (
+        <span>{getNestedMenuFormattedLabel(optionLabel, searchLabel)}</span>
+      )}
       {isGated && (
-        <TippyTooltip
-          {...{
-            position: 'left',
-            interactive: true,
-            html: <TippyTooltip.FooterButton buttonText={getButtonText()} width={200} onClick={handleTooltipOnClick} title={tooltipTitle} />,
-          }}
-        >
+        <TippyTooltip {...getUpgradeTooltip(planDetails?.tooltipText, planDetails?.tooltipButtonText, handleTooltipOnClick)}>
           <GatedFeatureIcon isItemFocused={isFocused} />
         </TippyTooltip>
       )}

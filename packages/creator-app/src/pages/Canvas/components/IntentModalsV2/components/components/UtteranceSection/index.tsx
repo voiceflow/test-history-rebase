@@ -21,6 +21,7 @@ import ListManager from '@/components/ListManager';
 import Section, { SectionVariant } from '@/components/Section';
 import Utterance, { UtteranceRef } from '@/components/Utterance';
 import { Permission } from '@/config/permissions';
+import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
 import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
@@ -72,7 +73,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
   const [showAllUtterances, setShowAllUtterances] = React.useState(false);
   const [isEmpty, updateIsEmpty] = React.useState(true);
 
-  const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
+  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
@@ -131,7 +132,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
         },
       });
     } else {
-      openImportBulkDeniedModal();
+      openUpgradeModal({ planLimitDetails: BulkImportLimitDetails });
     }
   };
 

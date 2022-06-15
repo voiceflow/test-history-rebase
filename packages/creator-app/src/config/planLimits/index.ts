@@ -13,6 +13,12 @@ export interface LimitDetails {
   description: string;
   submitText: string;
   onSubmit: (props: LimitSubmitProps) => void;
+  tooltipText?: string;
+  tooltipButtonText?: string;
+  tooltipOnClick?: (props: LimitSubmitProps) => void;
+  hasLabelTooltip?: boolean;
+  labelTooltipTitle?: string;
+  labelTooltipText?: string;
 }
 
 export enum PlanLimitCategories {

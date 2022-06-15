@@ -21,7 +21,7 @@ const GatedTranscripts: React.FC = () => {
               <SvgIcon icon="skillTemplate" size={80} />
             </SvgShadow>
             <Text fontWeight={600}>{TranscriptsLimitDetails.title}</Text>
-            <Box mt="16px" mb="20px" textAlign="center">
+            <Box mt="8px" mb="20px" textAlign="center">
               <Text color="#62778c">{TranscriptsLimitDetails.description}</Text>
               <Link href={PLAN_INFO_LINK}>Learn more</Link>
             </Box>

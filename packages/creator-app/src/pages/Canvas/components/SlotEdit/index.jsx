@@ -8,6 +8,7 @@ import { ModalFooter } from '@/components/Modal';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
 import { Permission } from '@/config/permissions';
+import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
 import { CUSTOM_SLOT_TYPE, ModalType, SLOT_COLORS } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
@@ -50,7 +51,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
 
   const isDeleteable = !isCreate && !!onDelete;
 
-  const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
+  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
   const { open: openSlotsBulkUploadModal } = useModals(ModalType.IMPORT_SLOTS);
   const [isSaving, setIsSaving] = React.useState(false);
   const [selectedColor, setSelectedColor] = React.useState(color);
@@ -139,7 +140,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
         },
       });
     } else {
-      openImportBulkDeniedModal();
+      openUpgradeModal({ planLimitDetails: BulkImportLimitDetails });
     }
   };
 

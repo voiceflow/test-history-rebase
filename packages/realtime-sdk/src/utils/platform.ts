@@ -40,7 +40,7 @@ export const createPlatformSelector =
   (_platform?: Nullish<VoiceflowConstants.PlatformType>): T => {
     const platform = _platform ? legacyPlatformToProjectType(_platform).platform : _platform;
     const value = platform && platform in platformValues ? platformValues[platform] : defaultValue;
-    if (value == null) throw new Error('no value for platform');
+    if (value == null) throw new Error(`no value for platform ${platform}`);
 
     return value;
   };

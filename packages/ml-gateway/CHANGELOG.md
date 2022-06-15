@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.15.3...@voiceflow/ml-gateway@1.16.0) (2022-06-15)
+
+
+### Features
+
+* implement list layout for carousel on prototype (VF-3359) ([#5589](https://github.com/voiceflow/creator-app/issues/5589)) ([e6d4737](https://github.com/voiceflow/creator-app/commit/e6d4737269b44e91bbdf34f4986dcff278a40e45))
+
+
+
+
+
 ## [1.15.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.15.2...@voiceflow/ml-gateway@1.15.3) (2022-06-03)
 
 

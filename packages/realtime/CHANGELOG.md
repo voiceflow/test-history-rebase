@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.77.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.76.1...@voiceflow/realtime@1.77.0) (2022-06-15)
+
+
+### Features
+
+* implement list layout for carousel on prototype (VF-3359) ([#5589](https://github.com/voiceflow/creator-app/issues/5589)) ([e6d4737](https://github.com/voiceflow/creator-app/commit/e6d4737269b44e91bbdf34f4986dcff278a40e45))
+
+
+
+
+
 ## [1.76.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.76.0...@voiceflow/realtime@1.76.1) (2022-06-15)
 
 

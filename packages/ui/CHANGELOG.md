@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.101.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.100.0...@voiceflow/ui@1.101.0) (2022-06-15)
+
+
+### Bug Fixes
+
+* entitlements feedback (VF-3806) ([#5587](https://github.com/voiceflow/creator-app/issues/5587)) ([ac619d9](https://github.com/voiceflow/creator-app/commit/ac619d99c6fc4e54d57156cfa405f59747c5e969))
+
+
+### Features
+
+* implement list layout for carousel on prototype (VF-3359) ([#5589](https://github.com/voiceflow/creator-app/issues/5589)) ([e6d4737](https://github.com/voiceflow/creator-app/commit/e6d4737269b44e91bbdf34f4986dcff278a40e45))
+
+
+
+
+
 # [1.100.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.99.0...@voiceflow/ui@1.100.0) (2022-06-15)
 
 

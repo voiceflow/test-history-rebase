@@ -1,6 +1,5 @@
-import SvgIcon, { Icon } from '@ui/components/SvgIcon';
+import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import { colors, styled, ThemeColor } from '@ui/styles';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 const MessageWrapper = styled.div`
@@ -13,10 +12,11 @@ const MessageIcon = styled(SvgIcon)`
   padding-top: 4px;
 `;
 
-export type MessageProps = React.PropsWithChildren<{
-  icon?: Icon;
+export interface MessageProps {
+  icon?: SvgIconTypes.Icon;
+  children?: React.ReactNode;
   iconColor?: string;
-}>;
+}
 
 const Message: React.FC<MessageProps> = ({ icon, children, iconColor }) => (
   <MessageWrapper>
@@ -24,11 +24,5 @@ const Message: React.FC<MessageProps> = ({ icon, children, iconColor }) => (
     <div>{children}</div>
   </MessageWrapper>
 );
-
-Message.propTypes = {
-  icon: PropTypes.string as any,
-  children: PropTypes.elementType.isRequired,
-  iconColor: PropTypes.string,
-};
 
 export default Message;

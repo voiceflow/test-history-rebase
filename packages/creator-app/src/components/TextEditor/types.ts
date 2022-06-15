@@ -1,4 +1,4 @@
-import { Icon, SvgIconProps } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 import { EditorState } from 'draft-js';
 
 import { PluginType } from './plugins';
@@ -38,7 +38,7 @@ export interface VariablesPluginsData {
 
 export interface TextEditorProps {
   id?: string;
-  icon?: Icon;
+  icon?: SvgIconTypes.Icon;
   error?: boolean | null;
   value?: string | null;
   onBlur?: (data: TextEditorBlurData) => void;
@@ -46,7 +46,7 @@ export interface TextEditorProps {
   onEmpty?: (isEmpty: boolean) => void;
   readOnly?: boolean;
   autoFocus?: boolean;
-  iconProps?: Omit<SvgIconProps, 'icon'>;
+  iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
   placeholder?: string;
   rightAction?: React.ReactNode;
   pluginsTypes?: PluginType[];

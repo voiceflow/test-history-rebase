@@ -1,7 +1,7 @@
 import { Nullish } from '@voiceflow/common';
 import React from 'react';
 
-export const useCache = <T extends Record<string, unknown>>(defaultData: T, dataToUpdate: Partial<T> = defaultData): React.MutableRefObject<T> => {
+export const useCache = <T extends Record<string, any>>(defaultData: T, dataToUpdate: Partial<T> = defaultData): React.MutableRefObject<T> => {
   const cache = React.useRef(defaultData);
 
   Object.assign(cache.current, dataToUpdate);

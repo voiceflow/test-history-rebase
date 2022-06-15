@@ -1,6 +1,6 @@
 import './DashBoard.css';
 
-import { Alert, AlertVariant, BoxFlexCenter, SvgIcon } from '@voiceflow/ui';
+import { Alert, BoxFlexCenter, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -59,7 +59,7 @@ const Dashboard: React.FC = () => {
       {isLocked && (
         <BoxFlexCenter height="100%" width="100%" position="absolute" zIndex={10}>
           {/* TODO: flush out subscription failed logic */}
-          <Alert variant={AlertVariant.DANGER} className="pointer text-center">
+          <Alert variant={Alert.Variant.DANGER} className="pointer text-center">
             <SvgIcon icon="ban" size={32} inline />
             <br />
             Your subscription has failed

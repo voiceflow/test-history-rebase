@@ -31,9 +31,16 @@ interface GoToIntentSelectProps {
   intentID?: Nullable<string>;
   diagramID?: Nullable<string>;
   placeholder?: string;
+  clearOnSelectActive?: boolean;
 }
 
-const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({ intentID, diagramID, onChange, placeholder = 'Behave as user triggered intent' }) => {
+const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
+  intentID,
+  diagramID,
+  onChange,
+  placeholder = 'Behave as user triggered intent',
+  clearOnSelectActive,
+}) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const intentSteps = useSelector(DiagramV2.intentStepsSelector);
   const activeDiagram = useSelector(DiagramV2.active.diagramSelector);
@@ -128,6 +135,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({ intentID, diagramID
       placeholder={placeholder}
       getOptionValue={(option) => option?.id}
       getOptionLabel={(value) => (value ? optionLookup[value]?.label : undefined)}
+      clearOnSelectActive={clearOnSelectActive}
       renderEmpty={({ close, search }) => (
         <Box flex={1} fontSize={13} textAlign="center">
           {!search ? 'No open intents exists in your project. ' : 'No open intents found. '}

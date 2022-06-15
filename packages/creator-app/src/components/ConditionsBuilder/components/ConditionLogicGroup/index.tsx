@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, BoxFlex, SvgIcon } from '@voiceflow/ui';
+import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { BaseLogicType, LogicUnitDataType } from '../../types';
@@ -62,12 +62,13 @@ const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, o
         </DeleteButtonContainer>
 
         {!expression?.value?.length && (
-          <BoxFlex>
-            <BoxFlex mr={16}>
+          <Box.Flex>
+            <Box.Flex mr={16}>
               <ConditionLabel>IF</ConditionLabel>
-            </BoxFlex>
+            </Box.Flex>
+
             <ConditionSelect onChange={addNewCondition} isLogicGroup />
-          </BoxFlex>
+          </Box.Flex>
         )}
 
         {expression?.value?.map((item: Realtime.ExpressionV2, index: number) => (

@@ -2,7 +2,7 @@ import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { ConnectedStep } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { APLStep, ImageStep } from './components';
 

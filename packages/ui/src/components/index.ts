@@ -1,9 +1,10 @@
 import './LegacyButton/Button.css';
 
-export { default as Alert, AlertVariant } from './Alert';
+export { default as Alert } from './Alert';
 export type { AudioPlayerProps } from './AudioPlayer';
 export { default as AudioPlayer } from './AudioPlayer';
 export { default as Badge } from './Badge';
+export type { BoxProps } from './Box';
 export {
   default as Box,
   BoxFlex,
@@ -27,6 +28,7 @@ export {
   SecondaryButton,
   TertiaryButton,
 } from './Button';
+export { default as Canvas } from './Canvas';
 export { default as Card } from './Card';
 export { default as Collapse } from './Collapse';
 export type { ColorPickerProps } from './ColorPicker';
@@ -116,8 +118,8 @@ export { default as Select, SelectInputVariant, SelectWrapper } from './Select';
 export { FullSpinner, Spinner } from './Spinner';
 export type { StrengthGaugeTypes } from './StrengthGauge';
 export { default as StrengthGauge } from './StrengthGauge';
-export type { Icon, SvgIconProps } from './SvgIcon';
-export { IconVariant, default as SvgIcon, SvgIconContainer } from './SvgIcon';
+export type { SvgIconTypes } from './SvgIcon';
+export { default as SvgIcon } from './SvgIcon';
 export { default as Tabs } from './Tabs';
 export { Tag } from './Tag';
 export type { TextProps } from './Text';

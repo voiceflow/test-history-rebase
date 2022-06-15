@@ -1,6 +1,6 @@
 import { ButtonContainer } from '@ui/components/Button';
 import { IconButtonVariant } from '@ui/components/IconButton/types';
-import { SvgIconContainer } from '@ui/components/SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
 import { BaseContainerProps } from './IconButtonContainer';
@@ -15,7 +15,7 @@ const activeStyles = css<SquareContainerProps>`
   background: rgba(238, 244, 246, 0.85);
   border: solid 1px ${colors(ThemeColor.BORDERS)};
 
-  & ${SvgIconContainer} {
+  & ${SvgIcon.Container} {
     color: ${({ outlined }) => colors(outlined ? ThemeColor.PRIMARY : ThemeColor.SECONDARY)};
     opacity: 1;
   }
@@ -28,7 +28,7 @@ const SquareContainer = styled(ButtonContainer)<SquareContainerProps>`
   border: solid 1px ${({ outlined }) => (outlined ? colors(ThemeColor.BORDERS) : 'transparent')};
   border-radius: 5px;
 
-  & ${SvgIconContainer} {
+  & ${SvgIcon.Container} {
     max-width: 16px;
 
     color: ${colors(ThemeColor.SECONDARY)};
@@ -39,7 +39,7 @@ const SquareContainer = styled(ButtonContainer)<SquareContainerProps>`
     background: rgba(238, 244, 246, 0.85);
     border: solid 1px ${colors(ThemeColor.BORDERS)};
 
-    & ${SvgIconContainer} {
+    & ${SvgIcon.Container} {
       opacity: ${({ outlined }) => (outlined ? 1 : 0.85)};
     }
   }

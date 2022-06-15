@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
@@ -26,7 +26,7 @@ const WorkspaceDropdownContainer = styled.div<{ isLoading: boolean }>`
     display: inline;
   }
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     display: inline-block;
     margin-left: 12px;
   }

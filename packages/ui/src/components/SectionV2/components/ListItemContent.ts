@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@ui/components/SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled, transition, units } from '@ui/styles';
 
 export interface ListItemContentProps {
@@ -9,7 +9,7 @@ const activeStyle = css`
   border-radius: 6px;
   background: ${({ theme }) => theme.backgrounds.greyGreen};
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     opacity: 1;
   }
 `;
@@ -36,7 +36,7 @@ const ListItemContent = styled.div<ListItemContentProps>`
       }
     `}
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     opacity: 0.8;
   }
 

@@ -1,5 +1,5 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
-import { BaseButton } from '@voiceflow/base-types';
+import { BaseButton, BaseModels } from '@voiceflow/base-types';
 import { Nullable, Nullish, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
@@ -277,3 +277,39 @@ export const getIntentStrengthLevel = (count: number) => {
 };
 
 export const intentButtonFactory = (): BaseButton.IntentButton => ({ name: '', type: BaseButton.ButtonType.INTENT, payload: { intentID: null } });
+
+export const getGoToIntentMeta = ({
+  intentID,
+  diagramID,
+  intentsMap,
+  diagramMap,
+  activeDiagramType,
+  globalIntentStepMap,
+  intentNodeDataLookup,
+}: {
+  intentID?: Nullable<string>;
+  diagramID?: Nullable<string>;
+  intentsMap: Record<string, Realtime.Intent>;
+  diagramMap: Record<string, Realtime.Diagram>;
+  activeDiagramType: BaseModels.Diagram.DiagramType;
+  globalIntentStepMap: Record<string, Record<string, string[]>>;
+  intentNodeDataLookup: Record<string, { data: Realtime.NodeData.Intent.PlatformData; intent: Realtime.Intent; nodeID: string }>;
+}) => {
+  const goToIntent = intentID ? intentsMap[intentID] ?? null : null;
+  const goToDiagram = diagramID ? diagramMap[diagramID] ?? null : null;
+
+  const topicGoToNodeID = goToIntent && goToDiagram ? globalIntentStepMap[goToDiagram.id]?.[goToIntent.id]?.[0] ?? null : null;
+  const componentGoToNodeID = topicGoToNodeID || (goToIntent ? intentNodeDataLookup[goToIntent.id]?.nodeID ?? null : null);
+
+  const isComponentDiagram = activeDiagramType === BaseModels.Diagram.DiagramType.COMPONENT;
+
+  const goToNodeID = isComponentDiagram ? componentGoToNodeID : topicGoToNodeID;
+  const goToIntentName = prettifyIntentName(goToIntent?.name);
+
+  return {
+    goToNodeID,
+    goToIntent,
+    goToDiagram,
+    goToIntentName,
+  };
+};

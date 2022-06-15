@@ -1,4 +1,13 @@
-import { defaultMenuLabelRenderer, FlexApart, FlexStart, GetOptionLabel, GetOptionValue, Icon, SvgIcon, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import {
+  defaultMenuLabelRenderer,
+  FlexApart,
+  FlexStart,
+  GetOptionLabel,
+  GetOptionValue,
+  SvgIcon,
+  SvgIconTypes,
+  UIOnlyMenuItemOption,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
@@ -20,7 +29,7 @@ const customMenuLabelRenderer = (
 
     {isBuiltInTag(option.id) &&
       (!isSentimentTag(option.id) && option.icon ? (
-        <SvgIcon icon={option.icon as Icon} color={option.iconColor} />
+        <SvgIcon icon={option.icon as SvgIconTypes.Icon} color={option.iconColor} />
       ) : (
         <img alt="" width={18} height={18} src={option.icon} />
       ))}

@@ -1,4 +1,4 @@
-import { Box, Icon, SvgIcon, toast } from '@voiceflow/ui';
+import { Box, SvgIcon, SvgIconTypes, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
@@ -11,9 +11,9 @@ interface NotificationItemProps {
   data: NLUNotificationItem;
 }
 
-const NOTIFICATION_ITEM_ICONS = {
-  [InteractionModelTabType.INTENTS]: 'intent',
+const NOTIFICATION_ITEM_ICONS: Record<InteractionModelTabType, SvgIconTypes.Icon> = {
   [InteractionModelTabType.SLOTS]: 'entities',
+  [InteractionModelTabType.INTENTS]: 'intent',
   [InteractionModelTabType.VARIABLES]: 'variables',
 };
 
@@ -34,7 +34,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data }) => {
     <Container display="flex" onClick={jumpToItem} flexDirection="row">
       <Box width={60}>
         <IconContainer>
-          <SvgIcon icon={NOTIFICATION_ITEM_ICONS[type] as Icon} color="#6e849a" />
+          <SvgIcon icon={NOTIFICATION_ITEM_ICONS[type]} color="#6e849a" />
         </IconContainer>
       </Box>
       <Box flex={2}>

@@ -144,13 +144,22 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSele
                       item={item}
                       index={index}
                       style={{ opacity: 1 }}
+                      isLast={index === mergedVariables.length - 1}
+                      isFirst={index === 0}
                       itemKey={item.id}
                       isDragging={false}
                       selectedVariableID={selectedVariableID}
                       onSelectVariableID={setSelectedID}
                     />
                   ) : (
-                    renderItem({ key: item.id, itemKey: item.id, item, index })
+                    renderItem({
+                      key: item.id,
+                      item,
+                      index,
+                      isLast: index === mergedVariables.length - 1,
+                      isFirst: index === 0,
+                      itemKey: item.id,
+                    })
                   )
                 }
                 placeholder="Search Variables"

@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { BoxFlex, SvgIcon, Text } from '@voiceflow/ui';
+import { Box, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { transformVariableToString } from '@/utils/slot';
@@ -38,9 +38,9 @@ const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActiv
         </Text>
       </LabelWrapper>
 
-      <BoxFlex pr={16} pl={12}>
+      <Box.Flex pr={16} pl={12}>
         <SvgIcon icon="close" size={10} color="#6e849a" onClick={onDelete} clickable />
-      </BoxFlex>
+      </Box.Flex>
     </ConditionDisplayContainer>
   );
 };

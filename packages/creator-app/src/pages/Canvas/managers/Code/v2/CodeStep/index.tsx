@@ -4,7 +4,8 @@ import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { HSLShades } from '@/constants';
-import Step, { ConnectedStep, FailureStepItemV2, Item, Section, StepButton, SuccessStepItemV2 } from '@/pages/Canvas/components/Step';
+import Step, { FailureStepItemV2, Item, Section, StepButton, SuccessStepItemV2 } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import CodePreview from '../CodePreview';
 import { CODE_STEP_ICON } from '../constants';

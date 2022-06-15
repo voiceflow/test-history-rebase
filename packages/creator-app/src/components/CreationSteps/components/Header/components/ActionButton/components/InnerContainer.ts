@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
@@ -7,7 +7,7 @@ const InnerContainer = styled.div`
   height: 100%;
   cursor: pointer;
 
-  :hover ${SvgIconContainer} {
+  :hover ${SvgIcon.Container} {
     /* doing 'color' doesnt work for some reason */
     color: #8da2b5;
     transition: all 0.15s ease;

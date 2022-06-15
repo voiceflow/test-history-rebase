@@ -1,4 +1,4 @@
-import { IconVariant } from '@ui/constants';
+import { Variant as SvgIconVariant } from '@ui/components/SvgIcon/constants';
 import { COLOR_BLUE, COLOR_WHITE } from '@ui/styles/constants';
 
 const PRIMARY_COLOR = '#6E849A';
@@ -6,32 +6,32 @@ const SECONDARY_COLOR = '#787878';
 const TERTIARY_COLOR = '#BECEDC';
 
 const ICON_THEME = {
-  [IconVariant.STANDARD]: {
+  [SvgIconVariant.STANDARD]: {
     color: PRIMARY_COLOR,
     hoverColor: PRIMARY_COLOR,
     activeColor: null,
   },
-  [IconVariant.POPOVER]: {
+  [SvgIconVariant.POPOVER]: {
     color: PRIMARY_COLOR,
     hoverColor: PRIMARY_COLOR,
     activeColor: COLOR_BLUE,
   },
-  [IconVariant.SECONDARY]: {
+  [SvgIconVariant.SECONDARY]: {
     color: SECONDARY_COLOR,
     hoverColor: SECONDARY_COLOR,
     activeColor: null,
   },
-  [IconVariant.TERTIARY]: {
+  [SvgIconVariant.TERTIARY]: {
     color: TERTIARY_COLOR,
     hoverColor: TERTIARY_COLOR,
     activeColor: TERTIARY_COLOR,
   },
-  [IconVariant.BLUE]: {
+  [SvgIconVariant.BLUE]: {
     color: COLOR_BLUE,
     hoverColor: null,
     activeColor: null,
   },
-  [IconVariant.WHITE]: {
+  [SvgIconVariant.WHITE]: {
     color: COLOR_WHITE,
     hoverColor: null,
     activeColor: null,

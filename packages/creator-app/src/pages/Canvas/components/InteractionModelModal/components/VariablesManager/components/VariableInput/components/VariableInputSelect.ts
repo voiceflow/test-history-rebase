@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
@@ -12,7 +12,7 @@ const Select = styled.div<{ active: boolean }>`
     color: #5d9df5;
   }
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     display: inline-block;
   }
 `;

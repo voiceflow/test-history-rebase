@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Icon, PrimaryButton, PrimaryButtonProps, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, Button, Flex, PrimaryButton, PrimaryButtonProps, SvgIcon, SvgIconTypes, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -45,7 +45,7 @@ const UploadButton = styled(Button).attrs({ speed: 2000 })<UploadButtonProps>`
 `;
 
 interface UploadButtonContainerProps extends Partial<PrimaryButtonProps> {
-  icon?: Icon;
+  icon?: SvgIconTypes.Icon;
   label?: string;
   onClick: React.MouseEventHandler;
   tooltip?: string;

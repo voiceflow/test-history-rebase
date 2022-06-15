@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, BoxFlex, Select, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, Select, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -31,7 +31,7 @@ const StripeProduct: React.FC = () => {
   };
 
   return (
-    <BoxFlex cursor={state.coupon ? 'not-allowed' : 'default '}>
+    <Box.Flex cursor={state.coupon ? 'not-allowed' : 'default '}>
       <Box ml={20}>
         {products.length ? (
           <Container maxWidth={300}>
@@ -74,7 +74,7 @@ const StripeProduct: React.FC = () => {
           </Box>
         </TippyTooltip>
       )}
-    </BoxFlex>
+    </Box.Flex>
   );
 };
 

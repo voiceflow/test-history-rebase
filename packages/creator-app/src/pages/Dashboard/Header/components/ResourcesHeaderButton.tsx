@@ -1,4 +1,4 @@
-import { Icon, IconButton, IconButtonVariant, Select, SvgIcon } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant, Select, SvgIcon, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
@@ -13,7 +13,7 @@ import OptionLabel from './ResourceOptionLabel';
 
 interface Option {
   link?: string;
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   label: string;
   onClick?: () => void;
   resourceName?: Tracking.CanvasControlHelpMenuResource;

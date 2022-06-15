@@ -5,8 +5,9 @@ import React from 'react';
 
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStep, Item, NoMatchStepItemV2, NoReplyItemV2, Section, StepButton } from '@/pages/Canvas/components/Step';
+import Step, { Item, NoMatchStepItemV2, NoReplyItemV2, Section, StepButton } from '@/pages/Canvas/components/Step';
 import { WAITING_FOR_INTENT_PLACEHOLDER } from '@/pages/Canvas/constants';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import ButtonsPreview from '../ButtonsPreview';
 import { BUTTONS_ICON, PLACEHOLDER_ICON } from '../constants';

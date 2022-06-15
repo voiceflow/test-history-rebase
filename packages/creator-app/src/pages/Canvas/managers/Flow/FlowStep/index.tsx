@@ -7,8 +7,9 @@ import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
-import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { DiagramMapContext } from '@/pages/Canvas/contexts';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import perf, { PerfAction } from '@/performance';
 
 import { NODE_CONFIG } from '../constants';

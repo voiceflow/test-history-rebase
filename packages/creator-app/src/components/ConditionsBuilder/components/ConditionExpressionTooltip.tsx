@@ -1,4 +1,4 @@
-import { Box, BoxFlex, Text, TutorialInfoIcon } from '@voiceflow/ui';
+import { Box, Text, TutorialInfoIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import ListItem from '@/components/ConditionsBuilder/components/ListItem';
@@ -13,12 +13,12 @@ const ConditionExpressionTooltip: React.FC = () => (
       <Box mt={8} color="#62778c">
         {SupportedOperations.map(({ label, icon }, index) => (
           <ListItem key={index}>
-            <BoxFlex mb={6}>
+            <Box.Flex mb={6}>
               <Text fontWeight={600} color="#131244">
                 {icon}
               </Text>
               <Text>{label}</Text>
-            </BoxFlex>
+            </Box.Flex>
           </ListItem>
         ))}
       </Box>

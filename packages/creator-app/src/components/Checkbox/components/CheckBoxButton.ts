@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs';
 
@@ -9,17 +9,17 @@ const CheckBoxButton = styled.input`
   opacity: 0;
   max-width: 20px;
 
-  & ~ ${SvgIconContainer} {
+  & ~ ${SvgIcon.Container} {
     ${transition('box-shadow')}
   }
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     display: block;
     box-shadow: none;
     border-radius: 4px;
   }
 
-  &:hover ~ ${SvgIconContainer} {
+  &:hover ~ ${SvgIcon.Container} {
     color: ${({ color }) => color || '#5d9df5'};
   }
 `;

@@ -1,4 +1,4 @@
-import { Box, Icon, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import { Box, SvgIconTypes, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
@@ -10,7 +10,7 @@ import { Container, IconContainer, Item, StatusBubble } from './components';
 
 export interface SidebarIconMenuItem {
   id?: string;
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   value: string;
   small?: boolean;
   tooltip?: TippyTooltipProps;

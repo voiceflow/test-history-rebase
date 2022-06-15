@@ -24,19 +24,19 @@ import {
   Title,
 } from './components';
 
-interface SectionV2Props extends ContainerProps {
+export interface SectionV2Props extends ContainerProps {
   header?: React.ReactNode;
   children?: React.ReactNode;
 }
 
-const SectionV2: React.ForwardRefRenderFunction<HTMLDivElement, SectionV2Props> = ({ header, children, ...containerProps }, ref) => (
+const SectionV2 = React.forwardRef<HTMLDivElement, SectionV2Props>(({ header, children, ...containerProps }, ref) => (
   <Container ref={ref} {...containerProps}>
     {header}
     {children}
   </Container>
-);
+));
 
-export default Object.assign(React.forwardRef(SectionV2), {
+export default Object.assign(SectionV2, {
   Title,
   Sticky,
   Status,

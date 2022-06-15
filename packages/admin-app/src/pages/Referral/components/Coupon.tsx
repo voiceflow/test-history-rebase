@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, BoxFlex, ConnectedProps, Select } from '@voiceflow/ui';
+import { Box, ConnectedProps, Select } from '@voiceflow/ui';
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -45,7 +45,7 @@ const Coupon: React.FC = () => {
 
   return (
     <FormSection label="Stripe Coupon" labelFor="coupon">
-      <BoxFlex>
+      <Box.Flex>
         {coupons.length ? (
           <Container maxWidth={300}>
             <Select
@@ -79,7 +79,7 @@ const Coupon: React.FC = () => {
           </Box>
         )}
         <StripeProduct />
-      </BoxFlex>
+      </Box.Flex>
     </FormSection>
   );
 };

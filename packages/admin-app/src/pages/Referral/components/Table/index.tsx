@@ -1,4 +1,4 @@
-import { Box, BoxFlex, BoxFlexCenter, ConnectedProps } from '@voiceflow/ui';
+import { Box, ConnectedProps } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 import { Table } from 'reactstrap';
@@ -33,9 +33,9 @@ const ReferralsTable: React.FC<ConnectReferralsTableProps> = ({ referrals, getRe
 
   return (
     <>
-      <BoxFlexCenter pt={20} pb={2} backgroundColor="#efefef">
+      <Box.FlexCenter pt={20} pb={2} backgroundColor="#efefef">
         <Pagination currentPage={currentPage} pageCount={pageCount} handleClick={onPaginationClick} />
-        <BoxFlex mb={12} width={180}>
+        <Box.Flex mb={12} width={180}>
           <Box mr={8} fontWeight={600}>
             Filter by:
           </Box>
@@ -53,8 +53,8 @@ const ReferralsTable: React.FC<ConnectReferralsTableProps> = ({ referrals, getRe
             value={filter}
             noBorder
           />
-        </BoxFlex>
-      </BoxFlexCenter>
+        </Box.Flex>
+      </Box.FlexCenter>
 
       <Table>
         <thead>
@@ -94,9 +94,9 @@ const ReferralsTable: React.FC<ConnectReferralsTableProps> = ({ referrals, getRe
         </tbody>
       </Table>
 
-      <BoxFlexCenter pt={20} pb={2} backgroundColor="#efefef">
+      <Box.FlexCenter pt={20} pb={2} backgroundColor="#efefef">
         <Pagination currentPage={currentPage} pageCount={pageCount} handleClick={onPaginationClick} />
-        <BoxFlex mb={12} width={180}>
+        <Box.Flex mb={12} width={180}>
           <Box mr={8} fontWeight={600}>
             Filter by:
           </Box>
@@ -114,8 +114,8 @@ const ReferralsTable: React.FC<ConnectReferralsTableProps> = ({ referrals, getRe
             value={filter}
             noBorder
           />
-        </BoxFlex>
-      </BoxFlexCenter>
+        </Box.Flex>
+      </Box.FlexCenter>
     </>
   );
 };

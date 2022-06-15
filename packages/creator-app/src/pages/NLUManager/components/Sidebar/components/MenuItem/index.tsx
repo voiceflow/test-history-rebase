@@ -1,11 +1,11 @@
-import { Box, BoxFlex, Icon, IconButtonVariant, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, BoxFlex, IconButtonVariant, SvgIcon, SvgIconTypes, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { AddButton, Container } from './components';
 
 interface ItemProps {
+  icon: SvgIconTypes.Icon;
   title: string;
-  icon: Icon;
   onAdd?: () => void;
   onClick: () => void;
   isActive?: boolean;

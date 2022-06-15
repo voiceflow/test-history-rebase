@@ -1,4 +1,4 @@
-import { defaultMenuLabelRenderer, Input, Popper, SvgIcon, SvgIconContainer, Text } from '@voiceflow/ui';
+import { defaultMenuLabelRenderer, Input, Popper, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
@@ -39,7 +39,7 @@ const Link = styled(NavLink)`
     color: #00bcd4;
   }
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     margin-left: 0.8em;
   }
 `;

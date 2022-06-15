@@ -4,7 +4,8 @@ import React from 'react';
 
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStep, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
+import Step, { FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -28,6 +29,7 @@ export const CodeStep: React.FC<CodeStepProps> = ({ withCode, withPorts, nodeID,
         labelVariant={StepLabelVariant.SECONDARY}
       />
     </Section>
+
     <Section>
       {withPorts && (
         <>
@@ -42,11 +44,11 @@ export const CodeStep: React.FC<CodeStepProps> = ({ withCode, withPorts, nodeID,
 const ConnectedCodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = ({ ports, data, withPorts, palette }) => (
   <CodeStep
     nodeID={data.nodeID}
+    palette={palette}
     withCode={!!data.code}
     withPorts={withPorts}
     successPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
     failurePortID={ports.out.builtIn[BaseModels.PortType.FAIL]}
-    palette={palette}
   />
 );
 

@@ -2,7 +2,6 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import {
   Alert,
-  AlertVariant,
   BaseSelectProps,
   IconButton,
   isNotUIOnlyMenuItemOption,
@@ -191,7 +190,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
       />
 
       {intentMissing && (
-        <Alert variant={AlertVariant.WARNING} mt={10}>
+        <Alert variant={Alert.Variant.WARNING} mt={10}>
           Intent is broken or has been deleted.
         </Alert>
       )}

@@ -11,7 +11,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useAsyncEffect, useToggle } from '@/hooks';
 import { SAMLProvider } from '@/models';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
-import { onClickCopy } from '@/utils/clipboard';
+import { copyWithToast } from '@/utils/clipboard';
 
 const ENTITY_ID = 'https://voiceflow.com';
 const TITLE = 'SAML SSO';
@@ -80,12 +80,12 @@ const SSOPage: React.FC = () => {
     <SettingsSection title={TITLE}>
       <Section variant={SectionVariant.QUATERNARY} dividers={false} header="Audience URI (SP Entity ID)">
         <Box maxWidth={480}>
-          <Input value={ENTITY_ID} disabled rightAction={<ClickableText onClick={onClickCopy(ENTITY_ID)}>copy</ClickableText>} />
+          <Input value={ENTITY_ID} disabled rightAction={<ClickableText onClick={copyWithToast(ENTITY_ID)}>copy</ClickableText>} />
         </Box>
       </Section>
       <Section variant={SectionVariant.QUATERNARY} dividers={false} header="ACS/Callback URL">
         <Box mb={24} maxWidth={480}>
-          <Input value={ACS_URL} disabled rightAction={<ClickableText onClick={onClickCopy(ACS_URL)}>copy</ClickableText>} />
+          <Input value={ACS_URL} disabled rightAction={<ClickableText onClick={copyWithToast(ACS_URL)}>copy</ClickableText>} />
           <DescriptorContainer>
             This may be called <b>Assertion Consumer Service URL</b>, <b>Post-back URL</b>, or <b>Callback URL</b>. The endpoint where the IdP will
             redirect with its authentication response.

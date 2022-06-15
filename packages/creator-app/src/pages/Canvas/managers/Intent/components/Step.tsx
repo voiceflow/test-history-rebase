@@ -3,8 +3,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { HSLShades } from '@/constants';
-import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { prettifyIntentName } from '@/utils/intent';
 
 import { NODE_CONFIG } from '../constants';

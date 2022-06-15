@@ -1,8 +1,7 @@
-import { Text, TippyTooltip } from '@voiceflow/ui';
+import { SvgIconTypes, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { HeaderIconButtonProps } from '@/components/ProjectPage';
 import { getPlatformName } from '@/constants/platforms';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { PlatformContext } from '@/pages/Project/contexts';
@@ -24,11 +23,15 @@ interface ConnectButtonProps {
   progress?: number;
 }
 
-const getButtonProps = (
-  platform: VoiceflowConstants.PlatformType,
-  { variant, progress }: ConnectButtonProps
-): HeaderIconButtonProps & { key?: string } => {
-  const loadIconProps: HeaderIconButtonProps = { icon: 'loader', color: '#132144', withOpacity: true, size: 18 };
+interface ButtonProps {
+  key?: string;
+  icon?: SvgIconTypes.Icon;
+  tooltip?: TippyTooltipProps;
+  iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
+}
+
+const getButtonProps = (platform: VoiceflowConstants.PlatformType, { variant, progress }: ConnectButtonProps): ButtonProps => {
+  const loadIconProps: ButtonProps = { icon: 'loader' as const };
 
   switch (variant) {
     case ButtonVariant.CONNECT:
@@ -42,7 +45,7 @@ const getButtonProps = (
         tooltip: { title: `Upload to ${getPlatformName(platform)}`, hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT] },
       };
     case ButtonVariant.SUCCESS:
-      return { icon: 'greenCheckMark', size: 18, tooltip: { html: <span>Successfully Uploaded</span> } };
+      return { icon: 'greenCheckMark', tooltip: { html: <span>Successfully Uploaded</span> } };
     case ButtonVariant.LOADING:
       return {
         ...loadIconProps,

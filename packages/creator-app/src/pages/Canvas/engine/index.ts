@@ -32,7 +32,6 @@ import { State, Store } from '@/store/types';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 import { getNodesGroupCenter } from '@/utils/node';
-import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
 import ActivationEngine from './activationEngine';
 import ClipboardEngine from './clipboardEngine';
@@ -563,11 +562,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     const clipboardData = this.clipboard.getClipboardContext(targets);
 
-    const combinedAndMarkupNodes = clipboardData.nodes
-      .filter(({ type }) => isMarkupOrCombinedBlockType(type))
-      .map((node) => ({ data: clipboardData.data[node.id], node }));
-
-    const { center } = getNodesGroupCenter(combinedAndMarkupNodes, clipboardData.links);
+    const { center } = getNodesGroupCenter(
+      clipboardData.nodes.map((node) => ({ data: clipboardData.data[node.id], node })),
+      clipboardData.links
+    );
 
     const coords = this.canvas!.toCoords(center);
 

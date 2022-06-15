@@ -1,4 +1,4 @@
-import { Box, Icon, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, preventDefault, SvgIcon, SvgIconTypes, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 import { CardElement, ReactStripeElements } from 'react-stripe-elements';
 
@@ -22,7 +22,7 @@ const getColor = (error: string, complete: boolean, focused?: boolean): string =
   return '#d4d9e6';
 };
 
-const getIcon = (error: string, complete: boolean): Icon => {
+const getIcon = (error: string, complete: boolean): SvgIconTypes.Icon => {
   if (error) {
     return 'error';
   }

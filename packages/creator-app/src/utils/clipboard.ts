@@ -36,7 +36,9 @@ export const deserialize = <T>(text: string): Nullable<T> => {
   return null;
 };
 
-export const onClickCopy = (text: string) => (): void => {
-  copy(text);
-  toast.success('Copied to clipboard');
-};
+export const copyWithToast =
+  (text: string, toastMessage = 'Copied to clipboard') =>
+  (): void => {
+    copy(text);
+    toast.success(toastMessage);
+  };

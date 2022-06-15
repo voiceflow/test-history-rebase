@@ -1,4 +1,4 @@
-import { SvgIconContainer, transition } from '@voiceflow/ui';
+import { SvgIcon, transition } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
@@ -13,12 +13,12 @@ const RequiredEntity = styled.div<{ active: boolean }>`
   margin-right: 16px;
   display: flex;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     opacity: 0.8;
   }
   &:hover {
     background: #eef4f6;
-    ${SvgIconContainer} {
+    ${SvgIcon.Container} {
       opacity: 1;
     }
   }

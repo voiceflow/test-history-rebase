@@ -4,7 +4,8 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { HSLShades } from '@/constants';
-import Step, { ConnectedStep, Item } from '@/pages/Canvas/components/Step';
+import Step, { Item } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { getLabel } from '@/pages/Canvas/managers/Visual/utils';
 import { isVariable } from '@/utils/slot';
 

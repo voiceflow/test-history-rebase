@@ -16,9 +16,11 @@ interface StartFrom {
 interface BlockSelectProps extends BaseSelectProps {
   value: StartFrom | null;
   onChange: (value: StartFrom | null) => void;
+  clearable?: boolean;
+  startNodeIsDefault?: boolean;
 }
 
-const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, ...props }) => {
+const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, clearable, startNodeIsDefault, ...props }) => {
   const startNodeID = useSelector(CreatorV2.startNodeIDSelector);
   const startingBlocks = useSelector(DiagramV2.startingBlocksSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
@@ -28,7 +30,6 @@ const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, .
     const options: TopicBlockOption[] = [];
     const optionsMap: Record<string, BlockOption> = {};
 
-    // eslint-disable-next-line no-restricted-syntax
     Object.entries(startingBlocks).forEach(([diagramID, diagramBlocksData]) => {
       const diagram = getDiagramByID({ id: diagramID });
 
@@ -60,20 +61,29 @@ const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, .
     return { options, optionsMap };
   }, [startingBlocks, allDiagrams]);
 
-  const handleSelect = (stepID: string) => {
+  const onSelect = (stepID: string | null) => {
+    if (!stepID) {
+      onChange(null);
+      return;
+    }
+
     const startFrom = optionsMap[stepID];
+
     onChange({ stepID: startFrom.id, diagramID: startFrom.diagramID });
   };
 
+  const selectValue = value?.stepID || (startNodeIsDefault ? startNodeID : null);
+
   return (
     <Select<BlockOption, TopicBlockOption, string>
+      clearable={!!clearable && !!selectValue}
       searchable
       placeholder="Select a block"
       {...props}
-      value={value?.stepID || startNodeID}
+      value={selectValue}
       grouped
       options={options}
-      onSelect={handleSelect}
+      onSelect={onSelect}
       getOptionKey={(option) => option.id}
       getOptionValue={(option) => option?.id}
       getOptionLabel={(value) => value && optionsMap[value]?.label}

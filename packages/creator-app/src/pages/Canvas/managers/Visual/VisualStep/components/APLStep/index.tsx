@@ -4,8 +4,9 @@ import React from 'react';
 
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { NODE_CONFIG } from '@/pages/Canvas/managers/Display/constants';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
 export interface APLStepProps {

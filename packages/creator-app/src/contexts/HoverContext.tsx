@@ -2,8 +2,8 @@ import React from 'react';
 
 export interface HoverValue {
   isHovered: boolean;
-  setOverride: () => void;
-  clearOverride: () => void;
+  setOverride: (event?: React.MouseEvent<HTMLElement>) => void;
+  clearOverride: (event?: React.MouseEvent<HTMLElement>) => void;
 }
 
 export const HoverContext = React.createContext<HoverValue | null>(null);

@@ -1,13 +1,13 @@
 import { ButtonVariant } from '@ui/components/Button/constants';
-import SvgIcon, { SvgIconProps } from '@ui/components/SvgIcon';
+import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import React from 'react';
 
 import * as S from './styles';
 
 export interface SecondaryButtonProps extends S.SecondaryButtonContainerProps {
-  icon?: SvgIconProps['icon'] | null;
-  iconProps?: Omit<SvgIconProps, 'icon'>;
+  icon?: SvgIconTypes.Icon | null;
   variant: ButtonVariant.SECONDARY;
+  iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
 }
 
 const SecondaryButton = React.forwardRef<HTMLButtonElement, React.PropsWithChildren<SecondaryButtonProps>>(

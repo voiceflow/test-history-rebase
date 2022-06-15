@@ -4,7 +4,8 @@ import React from 'react';
 
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStep, FailureStepItemV2, Item, Section, SuccessStepItemV2 } from '@/pages/Canvas/components/Step';
+import Step, { FailureStepItemV2, Item, Section, SuccessStepItemV2 } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG_V2 } from '../constants';
 import { getDescriptions, getLabel } from '../utils';

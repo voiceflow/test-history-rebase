@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, BoxFlex } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 import { StyledProps } from 'styled-components';
 
@@ -42,12 +42,12 @@ const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, express
     <Box pt={16} pb={17} style={style}>
       {/* if new expression */}
       {!expression?.value?.length && (
-        <BoxFlex>
-          <BoxFlex mr={16}>
+        <Box.Flex>
+          <Box.Flex mr={16}>
             <ConditionLabel>IF</ConditionLabel>
-          </BoxFlex>
+          </Box.Flex>
           <ConditionSelect onChange={addNewCondition} />
-        </BoxFlex>
+        </Box.Flex>
       )}
 
       {expression && (

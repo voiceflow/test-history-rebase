@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ClickableText, Flex, SvgIcon, SvgIconContainer, Tag, Tooltip } from '@voiceflow/ui';
+import { ClickableText, Flex, SvgIcon, Tag, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
@@ -31,7 +31,7 @@ const LegacyMappingRow = styled(Flex)`
   opacity: 0.5;
   margin-bottom: 6px;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     color: #949db0;
     margin: 0 5px;
   }

@@ -1,4 +1,4 @@
-import { IconButton, IconButtonVariant, IconVariant, preventDefault, SvgIcon, Toggle } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant, preventDefault, SvgIcon, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '../../constants';
@@ -15,7 +15,7 @@ const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ disabled, onToggle, i
   <Container disabled={disabled}>
     {variant === SectionToggleVariant.ARROW && (
       <ToggleArrowContainer onClick={onToggle as React.MouseEventHandler} isCollapsed={isCollapsed}>
-        <SvgIcon variant={IconVariant.TERTIARY} icon="arrowLeft" size={12} />
+        <SvgIcon variant={SvgIcon.Variant.TERTIARY} icon="arrowLeft" size={12} />
       </ToggleArrowContainer>
     )}
 
@@ -27,7 +27,7 @@ const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ disabled, onToggle, i
       <ToggleAddContainer>
         <SvgIcon
           onClick={onToggle as React.MouseEventHandler}
-          variant={IconVariant.TERTIARY}
+          variant={SvgIcon.Variant.TERTIARY}
           icon={isCollapsed ? 'outlinedAdd' : 'outlinedMinus'}
           size={16}
         />

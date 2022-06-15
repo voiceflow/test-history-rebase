@@ -1,11 +1,11 @@
-import { Icon, SvgIcon } from '@voiceflow/ui';
+import { SvgIcon, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { ActionContainer, ActionIcon, ActionLabel } from './components';
 
 interface StyledActionProps {
   id: string;
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   left?: number;
   label: string;
   color?: string;

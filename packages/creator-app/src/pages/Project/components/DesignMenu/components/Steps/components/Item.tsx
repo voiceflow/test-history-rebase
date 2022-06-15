@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Icon, SvgIcon } from '@voiceflow/ui';
+import { SvgIcon, SvgIconTypes } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { useDrag } from 'react-dnd';
@@ -18,7 +18,7 @@ import StepIcon from './StepIcon';
 
 export interface ItemProps {
   type: BlockType;
-  icon: Icon | React.FC;
+  icon: SvgIconTypes.Icon | React.FC;
   label: string;
   factoryData?: Partial<Realtime.NodeData<unknown>>;
   isDraggingPreview?: boolean;

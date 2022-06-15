@@ -1,4 +1,4 @@
-import { FlexApart, IconButton, SvgIconContainer } from '@voiceflow/ui';
+import { FlexApart, IconButton, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
@@ -20,21 +20,21 @@ export const Container = styled(FlexApart)<{ active?: boolean }>`
       border: solid 1px #dfe3ed;
     `}
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     opacity: 0.85;
     align-self: center;
   }
 
   &:hover {
     background: #eef4f6;
-    ${SvgIconContainer} {
+    ${SvgIcon.Container} {
       opacity: 1;
     }
   }
 
   &:active {
     border: solid 1px #dfe3ed;
-    ${SvgIconContainer} {
+    ${SvgIcon.Container} {
       opacity: 1;
     }
   }

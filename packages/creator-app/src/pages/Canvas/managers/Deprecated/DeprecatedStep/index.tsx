@@ -3,7 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { HSLShades } from '@/constants';
-import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { Item, Section } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -27,7 +28,7 @@ const DeprecatedStep: React.FC<DeprecatedStepProps> = ({ nodeID, ports, palette 
   </Step>
 );
 
-const ConnectedDeprecatedStep: React.FC<ConnectedStepProps<Realtime.NodeData.Deprecated>> = ({ ports, data, palette }) => (
+const ConnectedDeprecatedStep: ConnectedStep<Realtime.NodeData.Deprecated> = ({ ports, data, palette }) => (
   <DeprecatedStep nodeID={data.nodeID} ports={[ports.out.builtIn[BaseModels.PortType.NEXT]!, ...ports.out.dynamic]} palette={palette} />
 );
 

@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Menu, MenuOption, MenuProps, PopperPlacement, Portal, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
@@ -11,7 +12,7 @@ const EXCLUDED_TAG_NAME = new Set(['input', 'textarea']);
 export const CONTEXT_MENU_IGNORED_CLASS_NAME = 'context-menu-exclude';
 
 interface ContextMenuProps<T> extends Omit<MenuProps<T>, 'options' | 'children'> {
-  options: MenuOption<T>[];
+  options: Array<MenuOption<T> | null>;
   children: (props: { isOpen: boolean; onContextMenu: (event: React.MouseEvent<HTMLElement>) => void }) => React.ReactNode;
   placement?: PopperPlacement;
 }
@@ -44,14 +45,16 @@ const ContextMenu = <T extends any>({
     }
   };
 
+  const optionsToRender = options.filter(Utils.array.isNotNullish);
+
   return (
     <>
       {children({ isOpen, onContextMenu })}
 
-      {isOpen && !!options.length && (
+      {isOpen && !!optionsToRender.length && (
         <Portal portalNode={document.body}>
           <div id={Identifier.CONTEXT_MENU} ref={popper.setPopperElement} style={{ ...popper.styles.popper }} {...popper.attributes.popper}>
-            <Menu onToggle={onToggle} options={options} {...props} />
+            <Menu onToggle={onToggle} options={optionsToRender} {...props} />
           </div>
         </Portal>
       )}

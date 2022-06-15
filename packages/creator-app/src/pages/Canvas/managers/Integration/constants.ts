@@ -1,6 +1,6 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Icon, SVG } from '@voiceflow/ui';
+import { SVG, SvgIconTypes } from '@voiceflow/ui';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -35,8 +35,8 @@ export const getNameMap = (
 });
 
 export const getIconMap = (
-  iconMapOverride?: Partial<Record<BaseNode.Utils.IntegrationType, Icon>>
-): Record<BaseNode.Utils.IntegrationType, Icon> => ({
+  iconMapOverride?: Partial<Record<BaseNode.Utils.IntegrationType, SvgIconTypes.Icon>>
+): Record<BaseNode.Utils.IntegrationType, SvgIconTypes.Icon> => ({
   [BaseNode.Utils.IntegrationType.ZAPIER]: 'zapier',
   [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'variable',
   [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'googleSheets',
@@ -91,7 +91,7 @@ export const buildNodeConfig = ({
   defaultData,
   nameMap,
 }: {
-  iconMap: Record<BaseNode.Utils.IntegrationType, Icon>;
+  iconMap: Record<BaseNode.Utils.IntegrationType, SvgIconTypes.Icon>;
   defaultData: Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration>;
   nameMap: Record<BaseNode.Utils.IntegrationType, string>;
 }): NodeConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> => ({

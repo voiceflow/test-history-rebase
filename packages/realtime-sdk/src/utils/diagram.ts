@@ -76,7 +76,7 @@ export const topicDiagramFactory = (name: string) => {
     intentStepIDs: [intentNodeID],
     nodes: [
       {
-        type: 'block',
+        type: BaseModels.BaseNodeType.BLOCK,
         nodeID: Utils.id.objectID(),
         coords: [360, 120],
         data: {

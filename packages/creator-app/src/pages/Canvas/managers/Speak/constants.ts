@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Icon } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 
 import { BlockType, DialogType } from '@/constants';
 
@@ -12,7 +12,7 @@ const NAME_MAP: Record<DialogType, string> = {
   [DialogType.VOICE]: 'Speak',
 };
 
-const ICON_MAP: Record<DialogType, Icon> = {
+const ICON_MAP: Record<DialogType, SvgIconTypes.Icon> = {
   [DialogType.AUDIO]: 'audio',
   [DialogType.VOICE]: 'speak',
 };

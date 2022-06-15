@@ -56,8 +56,6 @@ export enum BlockType {
   MARKUP_IMAGE = 'markup_image',
 }
 
-export const NODE_BLOCK_TYPE = 'block';
-
 export type DeprecatedBlockType = BlockType.COMMENT | BlockType.CHOICE_OLD;
 
 export type RootBlockType = BlockType.COMBINED | BlockType.START;

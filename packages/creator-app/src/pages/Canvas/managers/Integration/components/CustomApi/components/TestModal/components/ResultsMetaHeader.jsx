@@ -1,4 +1,4 @@
-import { SvgIcon, SvgIconContainer } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { RESPONSE_COLOR_CODES as COLOR_CODES } from '@/constants';
@@ -13,7 +13,7 @@ const Container = styled.div`
   font-weight: 600;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
-  & ${SvgIconContainer} {
+  & ${SvgIcon.Container} {
     display: inline-block;
     position: relative;
     top: 3px;

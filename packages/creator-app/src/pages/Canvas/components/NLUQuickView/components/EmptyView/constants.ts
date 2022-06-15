@@ -1,4 +1,4 @@
-import { Icon } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 
 import { InteractionModelTabType } from '@/constants';
 
@@ -7,7 +7,7 @@ interface EmptyViewProps {
   namePlural: string;
   description: string;
   link: string;
-  svg: Icon;
+  svg: SvgIconTypes.Icon;
 }
 
 export const EMPTY_VIEW_META: Record<InteractionModelTabType, EmptyViewProps> = {

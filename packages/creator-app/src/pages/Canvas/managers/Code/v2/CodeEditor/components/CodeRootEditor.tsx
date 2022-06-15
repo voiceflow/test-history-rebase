@@ -38,7 +38,6 @@ const CodeRootEditor: React.FC = () => {
       withoutContentContainer
     >
       <AceEditor
-        fullHeight={!editor.isExpanded}
         placeholder="Enter custom code"
         ref={editorRef}
         value={editorState}

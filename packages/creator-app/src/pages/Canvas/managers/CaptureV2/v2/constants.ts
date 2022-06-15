@@ -1,3 +1,3 @@
-import { Icon } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 
-export const CAPTURE_STEP_ICON: Icon = 'captureV2';
+export const CAPTURE_STEP_ICON: SvgIconTypes.Icon = 'captureV2';

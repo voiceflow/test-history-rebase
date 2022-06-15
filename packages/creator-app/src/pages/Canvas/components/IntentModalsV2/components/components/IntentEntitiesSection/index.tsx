@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlex, PopperProps, SectionV2 } from '@voiceflow/ui';
+import { Box, PopperProps, SectionV2 } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
@@ -72,11 +72,11 @@ const EntitiesSection: React.FC<EntitiesSectionProps> = ({
           ))}
 
           {!!optionalEntities.length && (
-            <BoxFlex mt={8} gap={[4, 8]} flexWrap="wrap">
+            <Box.Flex mt={8} gap={[4, 8]} flexWrap="wrap">
               {optionalEntities.map((entity) => (
                 <OptionalEntity key={entity.id} entity={entitiesMap[entity.id]} onClick={() => onAddRequired(entity.id)} />
               ))}
-            </BoxFlex>
+            </Box.Flex>
           )}
         </SectionV2.Content>
       )}

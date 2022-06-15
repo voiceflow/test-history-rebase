@@ -16,7 +16,7 @@ const StepButton = styled(IconButton).attrs({
   margin-top: -3px;
   margin-bottom: -3px;
 
-  :not(:last-child) {
+  :not(:last-of-type) {
     margin-right: 4px;
   }
 

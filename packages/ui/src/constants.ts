@@ -1,12 +1,3 @@
-export enum IconVariant {
-  BLUE = 'blue',
-  WHITE = 'white',
-  POPOVER = 'popover',
-  STANDARD = 'standard',
-  TERTIARY = 'tertiary',
-  SECONDARY = 'secondary',
-}
-
 export enum KeyName {
   TAB = 'Tab',
   ENTER = 'Enter',

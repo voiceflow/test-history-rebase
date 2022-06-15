@@ -1,24 +1,24 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
-import { ExtractRouteParams } from 'react-router';
+import type { ExtractRouteParams } from 'react-router';
 import { generatePath, useRouteMatch } from 'react-router-dom';
 
 import { Scrollbars } from '@/components/CustomScrollbars';
+import Drawer from '@/components/Drawer';
 import { RemoveIntercom } from '@/components/IntercomChat';
 import { Path } from '@/config/routes';
-import { BlockType, ModalType } from '@/constants';
+import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Router from '@/ducks/router';
-import { useDispatch, useModals, useSelector, useTheme, useToggle } from '@/hooks';
+import { useDispatch, useSelector, useTheme, useToggle } from '@/hooks';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { useEditingMode } from '@/pages/Project/hooks';
 
 import { EditorAnimationEffect } from '../../constants';
-import EditorModal from '../EditorModal';
 import { LockedBlockOverlay } from '../LockedEditorOverlay';
-import SidebarDrawer from './components/SidebarDrawer';
 import { EditorSidebarProvider } from './context';
 import { useUseAutopanBlockIntoView } from './hooks';
 
@@ -26,7 +26,6 @@ export { EditorSidebarContext } from './context';
 
 const EditorSidebarV2 = () => {
   const theme = useTheme();
-  const editorModal = useModals(ModalType.FULLSCREEN_EDITOR);
   const isEditingMode = useEditingMode();
 
   const scrollbars = React.useRef<Scrollbars>(null);
@@ -39,6 +38,7 @@ const EditorSidebarV2 = () => {
   const node = useSelector(Creator.focusedNodeSelector);
   const data = useSelector(Creator.focusedNodeDataSelector);
   const focus = useSelector(Creator.creatorFocusSelector);
+
   const [isFullscreen, toggleFullscreen] = useToggle(false);
 
   const goToNode = useDispatch(Router.goToCurrentCanvasNode);
@@ -124,13 +124,11 @@ const EditorSidebarV2 = () => {
       platform,
       onChange,
       goToRoot,
-      isFullscreen,
-      onToggleFullscreen: toggleFullscreen,
-      onExpand: editorModal.open,
-      isExpanded: editorModal.isOpened,
       goToNested,
       scrollbars,
       projectType,
+      isFullscreen,
+      onToggleFullscreen: toggleFullscreen,
     };
 
     return (
@@ -146,26 +144,25 @@ const EditorSidebarV2 = () => {
 
   const width = isMarkup ? theme.components.markupSidebar.width : theme.components.blockSidebar.width;
 
-  if (isFullscreen)
-    return (
-      <SidebarDrawer hasData={hasData} isFullscreen={isFullscreen} isOpened={isOpened} width={width}>
-        {hasData && getEditor(node, data)}
-      </SidebarDrawer>
-    );
-
-  if (editorModal.isOpened && isOpened) {
-    return (
-      <React.Fragment key={focus.target ?? 'unknown'}>
-        <EditorModal editor={hasData && getEditor(node, data)} />
-        <RemoveIntercom />
-      </React.Fragment>
-    );
-  }
+  const editor = hasData && getEditor(node, data);
 
   return (
-    <SidebarDrawer hasData={hasData} isOpened={isOpened} width={width}>
-      {hasData && getEditor(node, data)}
-    </SidebarDrawer>
+    <React.Fragment key={focus.target ?? 'unknown'}>
+      <Drawer
+        open={isOpened}
+        width={width}
+        style={isFullscreen ? { width: 'calc(100% - 355px' } : {}}
+        onPaste={stopImmediatePropagation()}
+        direction={Drawer.Direction.LEFT}
+        animatedWidth
+        overflowHidden
+        disableAnimation={!hasData}
+      >
+        {editor}
+      </Drawer>
+
+      {isOpened && <RemoveIntercom />}
+    </React.Fragment>
   );
 };
 

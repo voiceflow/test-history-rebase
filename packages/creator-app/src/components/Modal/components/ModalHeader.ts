@@ -1,4 +1,4 @@
-import { flexApartStyles, SvgIconContainer } from '@voiceflow/ui';
+import { flexApartStyles, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled, units } from '@/hocs';
 
@@ -18,7 +18,7 @@ const ModalHeader = styled.header<{ headerBorder?: boolean }>`
   position: relative;
   z-index: 1;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     cursor: pointer;
   }
 `;

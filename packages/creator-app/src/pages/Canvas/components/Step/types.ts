@@ -1,27 +1,12 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Icon } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import { SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 import { StyledProps } from 'styled-components';
 
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import type Engine from '@/pages/Canvas/engine';
-
-export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
-  ports: Realtime.NodePorts<O>;
-  data: Realtime.NodeData<T>;
-  engine: Engine;
-  platform: VoiceflowConstants.PlatformType;
-  projectType: VoiceflowConstants.ProjectType;
-  palette: HSLShades;
-  withPorts: boolean;
-}
-
-export type ConnectedStep<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<ConnectedStepProps<T, O>>;
 
 export interface ItemProps extends StyledProps<any> {
-  icon?: Icon | null;
+  icon?: SvgIconTypes.Icon | null;
   label?: React.ReactNode | null;
   title?: React.ReactNode | null;
   portID?: string | null;

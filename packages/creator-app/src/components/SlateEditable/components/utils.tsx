@@ -1,4 +1,4 @@
-import { Icon, preventDefault } from '@voiceflow/ui';
+import { preventDefault, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 import { Editor } from 'slate';
 import { PickByValue } from 'utility-types';
@@ -13,7 +13,7 @@ import IconButton from './IconButton';
 type BooleanTextPropertyKey = keyof PickByValue<Pick<Text, TextProperty>, boolean | undefined>;
 
 interface CreatePropertyButtonBaseOptions {
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   hotkey?: Hotkey;
 }
 
@@ -37,14 +37,14 @@ interface CreateToggleTextPropertyButtonOptions<P extends BooleanTextPropertyKey
 }
 
 interface CreateButtonOptions {
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   hotkey?: Hotkey;
   onAction: (editor: Editor, active: boolean) => void;
   isActive: (editor: Editor) => boolean;
 }
 
 interface IconButtonProps {
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   active: boolean;
   onMouseDown: React.MouseEventHandler<HTMLButtonElement>;
 }

@@ -1,4 +1,4 @@
-import { SvgIconContainer, ThemeColor } from '@voiceflow/ui';
+import { SvgIcon, ThemeColor } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs';
 
@@ -42,14 +42,14 @@ export const Footer = styled.div`
     background: rgba(238, 244, 246, 1);
   }
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     opacity: 0.85;
     transform: rotate(90deg);
   }
 
   &:hover,
   &:active {
-    ${SvgIconContainer} {
+    ${SvgIcon.Container} {
       opacity: 1;
       transform: translateX(-4px) rotate(90deg);
     }

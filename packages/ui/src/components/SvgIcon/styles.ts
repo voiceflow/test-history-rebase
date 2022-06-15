@@ -1,24 +1,25 @@
-import { IconVariant } from '@ui/constants';
 import { css, styled, transition } from '@ui/styles';
 import { Spin } from '@ui/styles/animations/Spin';
 import _isNumber from 'lodash/isNumber';
 import { space, SpaceProps } from 'styled-system';
 
-export interface SvgIconContainerProps extends SpaceProps {
+import { Variant } from './constants';
+
+export interface ContainerProps extends SpaceProps {
   size: number | string;
   color: string;
   spin?: boolean;
   width?: number | string;
   height?: number | string;
   inline?: boolean;
-  variant?: IconVariant;
+  variant?: Variant;
   rotation?: number;
   clickable?: boolean;
   transition?: string | string[];
   ignoreEvents?: boolean;
 }
 
-const SvgIconContainer = styled.span<SvgIconContainerProps>`
+export const Container = styled.span<ContainerProps>`
   ${space}
   ${transition('opacity', 'background', 'color', 'transform')}
 
@@ -86,7 +87,7 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
 
       &:active {
         /* stylelint-disable-next-line value-keyword-case */
-        color: ${variant === IconVariant.STANDARD && clickable ? '#132144' : iconVariant?.activeColor || iconVariant?.hoverColor || color};
+        color: ${variant === Variant.STANDARD && clickable ? '#132144' : iconVariant?.activeColor || iconVariant?.hoverColor || color};
       }
     `;
   }}
@@ -97,5 +98,3 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
       display: inline-block;
     `}
 `;
-
-export default SvgIconContainer;

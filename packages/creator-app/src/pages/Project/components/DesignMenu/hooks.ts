@@ -1,9 +1,8 @@
 import React from 'react';
-import { ConnectDropTarget, useDrop } from 'react-dnd';
 
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
-import { DragItem, ModalType } from '@/constants';
+import { ModalType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
 import { useFeature, useHasPermissions, useHotKeys, useModals, usePermission, useSelector } from '@/hooks';
@@ -36,22 +35,6 @@ export const useTabs = (): { tabs: TabItem[]; selectedTab: Tab } => {
   }, [activeTab, tabs, isTopicsAndComponentsVersion]);
 
   return { tabs, selectedTab };
-};
-
-/* This hook doesn't do anything functional,
- * but it prevents the awful lag when dropping steps back onto the step menu
- */
-export const useDropLagFix = (): ConnectDropTarget => {
-  const [, dropRef] = useDrop({ accept: [DragItem.BLOCK_MENU, DragItem.TOPICS, DragItem.COMPONENTS] });
-
-  React.useEffect(
-    () => () => {
-      dropRef(null);
-    },
-    [dropRef]
-  );
-
-  return dropRef;
 };
 
 interface HotkeysOptions {

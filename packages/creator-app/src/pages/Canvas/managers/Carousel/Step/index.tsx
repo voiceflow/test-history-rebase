@@ -4,7 +4,8 @@ import { OverflowText } from '@voiceflow/ui';
 import React from 'react';
 
 import SlateEditable from '@/components/SlateEditable';
-import Step, { ConnectedStep, NoMatchItem, NoReplyItem } from '@/pages/Canvas/components/Step';
+import Step, { NoMatchItem, NoReplyItem } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
 import Image from './Image';

@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { BoxFlex, Dropdown, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
+import { Box, Dropdown, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import ConditionLabelContainer from './ConditionLabelContainer';
@@ -22,9 +22,9 @@ const ConditionLabel: React.FC<ConditionLabelProps> = ({ actionable = false, onC
       {(ref, onToggle, isOpen) => (
         <ConditionLabelContainer hasCaret ref={ref} onClick={onToggle} isOpen={isOpen} secondary>
           {children}
-          <BoxFlex ml={6} zIndex={2}>
+          <Box.Flex ml={6} zIndex={2}>
             <SvgIcon icon="caretDown" size={8} />
-          </BoxFlex>
+          </Box.Flex>
         </ConditionLabelContainer>
       )}
     </Dropdown>

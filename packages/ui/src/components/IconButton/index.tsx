@@ -1,4 +1,4 @@
-import SvgIcon, { SvgIconProps } from '@ui/components/SvgIcon';
+import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import React from 'react';
 
 import {
@@ -38,9 +38,9 @@ export type {
   SuccessContainerProps as IconButtonSuccessContainerProps,
 };
 
-export interface BaseIconButtonProps extends Pick<SvgIconProps, 'icon' | 'size'> {
-  iconProps?: Omit<SvgIconProps, 'icon' | 'size'>;
+export interface BaseIconButtonProps extends Pick<SvgIconTypes.Props, 'icon' | 'size'> {
   style?: React.CSSProperties;
+  iconProps?: Omit<SvgIconTypes.Props, 'icon' | 'size'>;
 }
 
 export type IconButtonProps = BaseIconButtonProps &

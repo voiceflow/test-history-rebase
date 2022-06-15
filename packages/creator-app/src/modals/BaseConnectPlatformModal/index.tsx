@@ -1,7 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import {
   Alert,
-  AlertVariant,
   Box,
   Button,
   ButtonVariant,
@@ -93,7 +92,7 @@ const BaseConnectPlatformModal: React.FC<BaseConnectPlatformModalProps> = ({
             </>
           )}
           {hasError && (
-            <Alert variant={AlertVariant.DANGER} mb={0} mt={8}>
+            <Alert variant={Alert.Variant.DANGER} mb={0} mt={8}>
               Login With {platformName} Failed
             </Alert>
           )}

@@ -5,7 +5,7 @@ import Page from '@/components/Page';
 import { API_ENDPOINT, GENERAL_RUNTIME_ENDPOINT_TAG, GENERAL_SERVICE_ENDPOINT } from '@/config';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
-import { onClickCopy } from '@/utils/clipboard';
+import { copyWithToast } from '@/utils/clipboard';
 import * as Cookies from '@/utils/cookies';
 
 const GENERAL_RUNTIME_REPO = 'https://github.com/voiceflow/general-runtime';
@@ -52,7 +52,7 @@ const RuntimeConfig: React.FC = () => {
           </Alert>
           <Input value={auth} readOnly disabled />
           <Box mt={8}>
-            <ClickableText onClick={onClickCopy(auth)}>Copy To Clipboard</ClickableText>
+            <ClickableText onClick={copyWithToast(auth)}>Copy To Clipboard</ClickableText>
           </Box>
         </Box>
         <hr />
@@ -60,7 +60,7 @@ const RuntimeConfig: React.FC = () => {
           <label>Creator API Endpoint (CREATOR_API_ENDPOINT)</label>
           <Input value={API_ENDPOINT} readOnly disabled />
           <Box mt={8}>
-            <ClickableText onClick={onClickCopy(API_ENDPOINT)}>Copy To Clipboard</ClickableText>
+            <ClickableText onClick={copyWithToast(API_ENDPOINT)}>Copy To Clipboard</ClickableText>
           </Box>
         </Box>
         <hr />
@@ -68,7 +68,7 @@ const RuntimeConfig: React.FC = () => {
           <label>General Service Endpoint (GENERAL_SERVICE_ENDPOINT)</label>
           <Input value={GENERAL_SERVICE_ENDPOINT} readOnly disabled />
           <Box mt={8}>
-            <ClickableText onClick={onClickCopy(GENERAL_SERVICE_ENDPOINT)}>Copy To Clipboard</ClickableText>
+            <ClickableText onClick={copyWithToast(GENERAL_SERVICE_ENDPOINT)}>Copy To Clipboard</ClickableText>
           </Box>
         </Box>
       </Box>

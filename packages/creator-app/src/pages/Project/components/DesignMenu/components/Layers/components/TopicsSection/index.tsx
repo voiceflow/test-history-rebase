@@ -1,4 +1,4 @@
-import { IconVariant, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
+import { SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { List } from 'react-virtualized';
 
@@ -127,7 +127,7 @@ const TopicsSection: React.FC = () => {
           header={
             <Header
               label="Topics"
-              rightAction={canEditCanvas && <SvgIcon icon="addTopic" variant={IconVariant.STANDARD} clickable onClick={onCreateTopic} />}
+              rightAction={canEditCanvas && <SvgIcon icon="addTopic" variant={SvgIcon.Variant.STANDARD} clickable onClick={onCreateTopic} />}
             >
               {withSearch ? <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" /> : null}
             </Header>
@@ -137,7 +137,14 @@ const TopicsSection: React.FC = () => {
           renderItem={(index) => {
             const item = topics[index];
 
-            return renderItem({ key: item.id, itemKey: item.id, item, index });
+            return renderItem({
+              key: item.id,
+              item,
+              index,
+              isLast: index === topics.length - 1,
+              isFirst: index === 0,
+              itemKey: item.id,
+            });
           }}
         />
       )}

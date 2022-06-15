@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs';
 
@@ -21,7 +21,7 @@ const StyledBackButton = styled.button`
   outline: none !important;
   box-shadow: none;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     margin-top: 2px;
     margin-right: 10px;
   }

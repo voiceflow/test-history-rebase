@@ -1,11 +1,11 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/realtime-sdk';
-import { Icon } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export interface DeviceInfo {
   name: string;
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   type: BaseNode.Visual.DeviceType;
   dimension: BaseNode.Visual.Dimensions & { density: number };
 }

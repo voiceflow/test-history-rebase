@@ -24,7 +24,7 @@ import { OutPortsAdapter, OutPortsAdapterV2 } from './utils';
 export type { OutPortsAdapter, OutPortsAdapterV2 } from './utils';
 export { defaultOutPortsAdapter, defaultOutPortsAdapterV2, removePortDataFalsyValues } from './utils';
 
-const BLOCK_TYPE_MAPPING: [string, BlockType][] = [['block', BlockType.COMBINED]];
+const BLOCK_TYPE_MAPPING: [string, BlockType][] = [[BaseModels.BaseNodeType.BLOCK, BlockType.COMBINED]];
 
 export const APP_BLOCK_TYPE_FROM_DB: Record<
   string,

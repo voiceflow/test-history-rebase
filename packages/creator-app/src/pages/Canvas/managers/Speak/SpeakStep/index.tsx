@@ -6,7 +6,8 @@ import React from 'react';
 
 import { DialogType, HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { Item, Section } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { prettifyBucketURL } from '@/utils/audio';
 import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';

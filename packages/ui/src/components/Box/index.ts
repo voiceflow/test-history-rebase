@@ -38,7 +38,7 @@ export type BoxProps = ColorProps &
     fullWidth?: boolean;
   };
 
-const Box = styled.div<BoxProps>(
+export const Box = styled.div<BoxProps>(
   space,
   color,
   layout,
@@ -68,36 +68,80 @@ const Box = styled.div<BoxProps>(
   `
 );
 
-export default Box;
-
-export const BoxFlex = styled(Box)`
+const Flex = styled(Box)`
   ${flexStyles}
 `;
 
-export const BoxFlexApart = styled(Box)`
+const FlexApart = styled(Box)`
   ${flexApartStyles}
 `;
 
-export const BoxFlexAround = styled(Box)`
+const FlexAround = styled(Box)`
   ${flexAroundStyles}
 `;
 
-export const BoxFlexCenter = styled(Box)`
+const FlexCenter = styled(Box)`
   ${flexCenterStyles}
 `;
 
-export const BoxFlexEnd = styled(Box)`
+const FlexEnd = styled(Box)`
   ${flexEndStyles}
 `;
 
-export const BoxFlexStart = styled(Box)`
+const FlexStart = styled(Box)`
   ${flexStartStyles}
 `;
 
-export const BoxFlexAlignStart = styled(BoxFlex)`
+const FlexAlignStart = styled(Flex)`
   align-items: flex-start;
 `;
 
-export const BoxFlexAlignEnd = styled(BoxFlex)`
+const FlexAlignEnd = styled(Flex)`
   align-items: flex-end;
 `;
+
+/**
+ * @deprecated use Box.Flex instead
+ */
+export const BoxFlex = Flex;
+
+/**
+ * @deprecated use Box.FlexEnd instead
+ */
+export const BoxFlexEnd = FlexEnd;
+
+/**
+ * @deprecated use Box.FlexStart instead
+ */
+export const BoxFlexStart = FlexStart;
+/**
+ * @deprecated use Box.FlexApart instead
+ */
+export const BoxFlexApart = FlexApart;
+/**
+ * @deprecated use Box.FlexAround instead
+ */
+export const BoxFlexAround = FlexAround;
+/**
+ * @deprecated use Box.FlexCenter instead
+ */
+export const BoxFlexCenter = FlexCenter;
+/**
+ * @deprecated use Box.FlexAlignEnd instead
+ */
+export const BoxFlexAlignEnd = FlexAlignEnd;
+/**
+ * @deprecated use Box.FlexAlignStart instead
+ */
+export const BoxFlexAlignStart = FlexAlignStart;
+
+export default Object.assign(Box, {
+  Flex,
+  FlexEnd,
+  FlexApart,
+  FlexStart,
+  FlexAround,
+  FlexCenter,
+  FlexAlignEnd,
+  FlexAlignStart,
+});

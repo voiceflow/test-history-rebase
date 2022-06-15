@@ -1,4 +1,4 @@
-import { IconVariant, Link, SvgIcon, toast, Upload } from '@voiceflow/ui';
+import { Link, SvgIcon, toast, Upload } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
@@ -63,7 +63,7 @@ const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplC
     <>
       <EditorSection
         header="JSON File"
-        suffix={documentData && datasource && <SvgIcon variant={IconVariant.STANDARD} icon="downloads" onClick={downloadAPL} size={14} />}
+        suffix={documentData && datasource && <SvgIcon variant={SvgIcon.Variant.STANDARD} icon="downloads" onClick={downloadAPL} size={14} />}
         variant={SectionVariant.TERTIARY}
         isDividerNested
         customContentStyling={{ paddingBottom: '20px' }}

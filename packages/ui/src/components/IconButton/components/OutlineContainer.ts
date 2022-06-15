@@ -1,5 +1,5 @@
 import { IconButtonVariant } from '@ui/components/IconButton/types';
-import { SvgIconContainer } from '@ui/components/SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
 import IconButtonContainer, { IconButtonContainerSharedProps } from './IconButtonContainer';
@@ -30,7 +30,7 @@ const OutlineContainer = styled(IconButtonContainer as React.FC<OutlineContainer
   border: 1px solid ${colors(ThemeColor.SEPARATOR_SECONDARY)};
   box-shadow: none !important;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     opacity: 1;
   }
 

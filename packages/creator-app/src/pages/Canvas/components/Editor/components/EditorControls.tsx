@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, FlexApart, SvgIconProps } from '@voiceflow/ui';
+import { Button, ButtonVariant, FlexApart, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType } from '@/constants';
@@ -9,12 +9,12 @@ import ControlsContainer from './ControlsContainer';
 import EditorTutorial from './EditorTutorial';
 
 export interface ControlOptions {
-  icon?: SvgIconProps['icon'];
+  icon?: SvgIconTypes.Icon;
   label: string;
   onClick: React.MouseEventHandler;
   variant?: ButtonVariant;
   disabled?: boolean;
-  iconProps?: Omit<SvgIconProps, 'icon'>;
+  iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
 }
 
 export interface EditorControlsProps {

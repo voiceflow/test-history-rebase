@@ -1,4 +1,4 @@
-import { Flex, SvgIconContainer } from '@voiceflow/ui';
+import { Flex, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
@@ -12,7 +12,7 @@ export const Container = styled(Flex)<{ runBlink: boolean }>`
   padding: 10px;
   z-index: 1;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     ${transition('color')}
     display: inline-block;
     margin-right: 8px;
@@ -25,7 +25,7 @@ export const Container = styled(Flex)<{ runBlink: boolean }>`
     css`
       color: ${theme.colors.blue};
 
-      ${SvgIconContainer} {
+      ${SvgIcon.Container} {
         color: ${theme.colors.blue};
       }
     `}

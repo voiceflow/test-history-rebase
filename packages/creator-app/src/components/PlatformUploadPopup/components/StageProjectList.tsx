@@ -1,4 +1,4 @@
-import { Box, BoxFlex, Text } from '@voiceflow/ui';
+import { Box, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { Project } from '../constants';
@@ -25,9 +25,9 @@ const StageProjectList: React.FC<StageProjectListProps> = ({ projects, title, on
 
       <Box maxHeight={400} style={{ overflow: 'auto' }} pb={12}>
         {projects.map(({ id, name }) => (
-          <BoxFlex key={id} fullWidth onClick={() => onProjectSelected({ id, name })}>
+          <Box.Flex key={id} fullWidth onClick={() => onProjectSelected({ id, name })}>
             <ProjectItem>{name}</ProjectItem>
-          </BoxFlex>
+          </Box.Flex>
         ))}
       </Box>
 

@@ -1,4 +1,4 @@
-import { Flex, SvgIconContainer } from '@voiceflow/ui';
+import { Flex, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
@@ -22,7 +22,7 @@ export const ButtonContainer = styled.div`
   opacity: 0.85;
   background-color: #6e849a;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     color: white;
   }
 

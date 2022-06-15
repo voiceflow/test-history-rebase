@@ -1,4 +1,4 @@
-import { Icon, stopPropagation } from '@voiceflow/ui';
+import { stopPropagation, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { PlayButtonContainer, PlayButtonIcon } from '../styles';
@@ -10,7 +10,7 @@ interface PlayButtonProps {
   onStop: () => void;
 }
 
-const PlayButtonIcons: Record<string, Icon> = {
+const PlayButtonIcons: Record<string, SvgIconTypes.Icon> = {
   STOP: 'stopOutline',
   PLAY: 'playV2',
   AUDIO: 'audio',

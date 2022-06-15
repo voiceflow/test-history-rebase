@@ -1,4 +1,4 @@
-import { Collapse, SvgIconProps } from '@voiceflow/ui';
+import { Collapse, SvgIconTypes } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
@@ -13,7 +13,7 @@ interface UncontrolledCollapseProps {
   isOpen: boolean;
   onToggle: () => void;
   rightIcon?: boolean;
-  iconProps?: Partial<SvgIconProps>;
+  iconProps?: Partial<SvgIconTypes.Props>;
 }
 
 export const UncontrolledCollapse: React.FC<UncontrolledCollapseProps> = ({

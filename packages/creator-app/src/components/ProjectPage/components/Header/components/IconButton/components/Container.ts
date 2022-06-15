@@ -1,9 +1,9 @@
-import { BoxFlex } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 import { ClassName } from '@/styles/constants';
 
-const Container = styled(BoxFlex)`
+const Container = styled(Box.Flex)`
   position: relative;
   height: 100%;
 

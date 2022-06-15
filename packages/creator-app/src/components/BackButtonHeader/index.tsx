@@ -1,4 +1,4 @@
-import { BoxFlex, FlexApart, FlexEnd, SVG, SvgIcon } from '@voiceflow/ui';
+import { Box, FlexApart, FlexEnd, SVG, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { BackButton } from '@/components/Header/components';
@@ -25,7 +25,7 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps> = ({ render, header, sub
     <>
       {publishContextValue?.job?.stage.data && <ProgressStage progress={(publishContextValue.job.stage.data as any).progress} />}
       <HeaderContainer style={{ minWidth: '100%' }}>
-        <BoxFlex style={{ padding: 'none', height: '70px', backgroundColor: '#fff' }}>
+        <Box.Flex style={{ padding: 'none', height: '70px', backgroundColor: '#fff' }}>
           <FlexApart style={{ minWidth: '100%', height: '100%', padding: 'none' }}>
             {onNavigateBack && (
               <BackButtonComp hasBackText={!!navigateBackText} onClick={onNavigateBack} id={Identifier.HEADER_BACK}>
@@ -46,7 +46,7 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps> = ({ render, header, sub
               {children}
             </FlexEnd>
           </FlexApart>
-        </BoxFlex>
+        </Box.Flex>
         {subHeader && <SubHeader>{subHeader}</SubHeader>}
       </HeaderContainer>
     </>

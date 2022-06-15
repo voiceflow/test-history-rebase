@@ -5,7 +5,8 @@ import React from 'react';
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { Item, Section } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { serializeSlateToJSX } from '@/utils/slate';
 
 import { NODE_CONFIG } from '../constants';

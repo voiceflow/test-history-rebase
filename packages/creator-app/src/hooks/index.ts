@@ -1,6 +1,7 @@
 export * from './asr';
 export * from './atoms';
 export * from './callback';
+export * from './dnd';
 export * from './dragPreview';
 export * from './effect';
 export * from './engine';

@@ -1,4 +1,4 @@
-import { Alert, AlertVariant, Box, Button, ButtonVariant } from '@voiceflow/ui';
+import { Alert, Box, Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { supportGraphic } from '@/assets';
@@ -29,13 +29,13 @@ const ErrorModal: React.FC = () => {
               <Box my={20}>{error.message}</Box>
 
               {error.violations?.map((violation, i) => (
-                <Alert key={i} color="danger">
+                <Alert key={i} variant={Alert.Variant.DANGER}>
                   {violation.message}
                 </Alert>
               ))}
             </>
           ) : (
-            <Alert variant={AlertVariant.DANGER}>{typeof error === 'string' ? error : error.error}</Alert>
+            <Alert variant={Alert.Variant.DANGER}>{typeof error === 'string' ? error : error.error}</Alert>
           )}
         </ModalBody>
 

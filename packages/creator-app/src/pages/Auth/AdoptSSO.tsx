@@ -1,4 +1,4 @@
-import { Box, BoxFlex, Button, ButtonVariant, FlexApart, preventDefault, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, FlexApart, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import { GoogleLoginResponse } from 'react-google-login';
@@ -87,10 +87,10 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
         </form>
 
         <SocialLoginContainer>
-          <BoxFlex>
+          <Box.Flex>
             <GoogleLoginButton light onLogin={onGoogleLogin} />
             <FacebookLoginButton light onLogin={onFacebookLogin} />
-          </BoxFlex>
+          </Box.Flex>
         </SocialLoginContainer>
       </AuthBox>
     </AuthenticationContainer>

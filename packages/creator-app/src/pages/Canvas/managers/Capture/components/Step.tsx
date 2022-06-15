@@ -4,7 +4,8 @@ import React from 'react';
 
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStep, Item, NoReplyItem, Section, VariableLabel } from '@/pages/Canvas/components/Step';
+import Step, { Item, NoReplyItem, Section, VariableLabel } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 

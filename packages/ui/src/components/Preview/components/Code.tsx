@@ -8,19 +8,17 @@ export interface PreviewCodeProps {
   code: string;
 }
 
-const previwCodeStyle = getJSCodeStyle({ colors: CodeColorStyle });
+const previewCodeStyle = getJSCodeStyle({ colors: CodeColorStyle });
 
-const PreviewCode: React.FC<PreviewCodeProps> = ({ code }) => {
-  return (
-    <SyntaxHighlighter
-      language="javascript"
-      style={previwCodeStyle}
-      customStyle={{ fontFamily: 'Fira Code', fontSize: '13px', padding: 0 }}
-      wrapLongLines
-    >
-      {code}
-    </SyntaxHighlighter>
-  );
-};
+const PreviewCode: React.FC<PreviewCodeProps> = ({ code }) => (
+  <SyntaxHighlighter
+    style={previewCodeStyle}
+    language="javascript"
+    customStyle={{ fontFamily: 'Fira Code', fontSize: '13px', padding: 0 }}
+    wrapLongLines
+  >
+    {code}
+  </SyntaxHighlighter>
+);
 
 export default PreviewCode;

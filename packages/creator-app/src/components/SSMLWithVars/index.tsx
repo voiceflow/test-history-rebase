@@ -1,4 +1,4 @@
-import { Icon, toast, useSetup } from '@voiceflow/ui';
+import { SvgIconTypes, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import SSML from '@/components/SSML';
@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from '@/hooks';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
 interface SSMLWithVarsProps {
-  icon?: Icon | null;
+  icon?: SvgIconTypes.Icon | null;
   value: string;
   voice?: string;
   onBlur: (data: { text: string; slots: string[] }) => void;

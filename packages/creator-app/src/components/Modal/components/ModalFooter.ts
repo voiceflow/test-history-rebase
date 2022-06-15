@@ -1,8 +1,8 @@
-import { backgrounds, BoxFlex, colors, ThemeColor } from '@voiceflow/ui';
+import { backgrounds, Box, colors, ThemeColor } from '@voiceflow/ui';
 
 import { styled, units } from '@/hocs';
 
-const ModalFooter = styled(BoxFlex)`
+const ModalFooter = styled(Box.Flex)`
   width: 100%;
   justify-content: ${({ justifyContent }) => justifyContent || 'flex-end'};
   padding: ${units(3)}px ${units(4)}px;

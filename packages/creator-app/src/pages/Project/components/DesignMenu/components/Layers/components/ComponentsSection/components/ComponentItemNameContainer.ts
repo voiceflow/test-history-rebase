@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 
 import { dragPlaceholderStyles } from '@/components/DragPlaceholder';
 import { css, styled, transition } from '@/hocs';
@@ -15,7 +15,7 @@ const ComponentItemNameContainer = styled(ItemNameContainer)<{
 
   padding: 6px 12px 6px 16px;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     ${transition('opacity')}
     display: block;
     margin-left: 8px;
@@ -25,7 +25,7 @@ const ComponentItemNameContainer = styled(ItemNameContainer)<{
   ${({ isDraggingPreview }) =>
     isDraggingPreview &&
     css`
-      ${SvgIconContainer} {
+      ${SvgIcon.Container} {
         opacity: 1;
       }
     `}
@@ -41,7 +41,7 @@ const ComponentItemNameContainer = styled(ItemNameContainer)<{
 
       ${dragPlaceholderStyles}
 
-      ${SvgIconContainer} {
+      ${SvgIcon.Container} {
         opacity: 0 !important;
       }
     `}
@@ -54,7 +54,7 @@ const ComponentItemNameContainer = styled(ItemNameContainer)<{
       background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.3), rgba(238, 244, 246, 0.6)), linear-gradient(to bottom, #ffffff, #ffffff);
       transform: rotate(-2deg);
 
-      ${SvgIconContainer} {
+      ${SvgIcon.Container} {
         opacity: 0 !important;
       }
     `}

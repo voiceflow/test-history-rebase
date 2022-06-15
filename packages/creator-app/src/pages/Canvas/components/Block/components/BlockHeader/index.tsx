@@ -1,4 +1,4 @@
-import { Icon, stopPropagation, SvgIcon, usePersistFunction } from '@voiceflow/ui';
+import { stopPropagation, SvgIcon, SvgIconTypes, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
@@ -22,7 +22,7 @@ import {
 
 export interface BlockHeaderProps {
   name?: string;
-  icon?: Icon;
+  icon?: SvgIconTypes.Icon;
   nodeID: string;
   palette: HSLShades;
   actions?: JSX.Element;

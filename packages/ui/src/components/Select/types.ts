@@ -1,4 +1,4 @@
-import { Icon, SvgIconProps } from '@ui/components/SvgIcon';
+import { SvgIconTypes } from '@ui/components/SvgIcon';
 import { Primitive } from '@ui/types';
 import { Nullable, Nullish } from '@voiceflow/common';
 import React from 'react';
@@ -70,7 +70,7 @@ export enum SelectInputVariant {
 
 export interface BaseSelectProps {
   id?: string;
-  icon?: Icon;
+  icon?: SvgIconTypes.Icon;
   open?: boolean;
   label?: string;
   error?: boolean;
@@ -90,13 +90,19 @@ export interface BaseSelectProps {
   autoFocus?: boolean;
   maxHeight?: number | string;
   className?: string;
-  iconProps?: Partial<SvgIconProps>;
+  iconProps?: Partial<Omit<SvgIconTypes.Props, 'icon'>>;
   onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
   isDropdown?: boolean;
   renderTags?: Nullable<() => React.ReactNode | React.ReactNode[]>;
   borderLess?: boolean;
   searchable?: boolean;
-  leftAction?: { icon: Icon; onClick: VoidFunction; iconProps?: Partial<SvgIconProps>; disabled?: boolean; isActive?: boolean };
+  leftAction?: {
+    icon: SvgIconTypes.Icon;
+    onClick: VoidFunction;
+    disabled?: boolean;
+    isActive?: boolean;
+    iconProps?: Partial<Omit<SvgIconTypes.Props, 'icon'>>;
+  };
   rightAction?: React.ReactNode;
   createLabel?: string;
   displayName?: string;

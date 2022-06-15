@@ -1,4 +1,4 @@
-import { Input, SvgIconContainer } from '@voiceflow/ui';
+import { Input, SvgIcon } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
@@ -13,7 +13,7 @@ const SearchInput = styled(Input).attrs({ icon: 'search', iconProps: { size: 16,
   font-size: 13px;
   line-height: 18px;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     margin-right: 10px;
   }
 `;

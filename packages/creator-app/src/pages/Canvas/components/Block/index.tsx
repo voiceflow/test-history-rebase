@@ -1,4 +1,4 @@
-import { Icon } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
@@ -17,7 +17,7 @@ export * from './constants';
 export type BlockProps = BlockSectionProps & {
   sections?: {
     name: string;
-    icon?: Icon;
+    icon?: SvgIconTypes.Icon;
     children?: React.ReactNode;
   }[];
   actions?: JSX.Element;
@@ -26,11 +26,11 @@ export type BlockProps = BlockSectionProps & {
   isDisabled?: boolean;
   showMergeOverlay?: boolean;
   updateName?: (name: string) => void;
-  onMouseMove?: (event: React.MouseEvent) => void;
-  onMouseEnter?: (event: React.MouseEvent) => void;
-  onMouseLeave?: (event: React.MouseEvent) => void;
-  onMouseDown?: (event: React.MouseEvent) => void;
-  onClick?: (event: React.MouseEvent) => void;
+  onMouseMove?: React.MouseEventHandler<HTMLElement>;
+  onMouseEnter?: React.MouseEventHandler<HTMLElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLElement>;
+  onMouseDown?: React.MouseEventHandler<HTMLElement>;
+  onClick?: React.MouseEventHandler<HTMLElement>;
   className?: string;
 };
 

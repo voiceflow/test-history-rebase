@@ -6,22 +6,24 @@ import { usePermission } from '@/hooks/permission';
 import { copy } from '@/utils/clipboard';
 
 interface CodePreviewProps {
+  onClose: VoidFunction;
   codeData: string;
-  onOpenEditor: () => void;
-  onClose: () => void;
+  onOpenEditor: VoidFunction;
 }
 
 const CodePreview: React.FC<CodePreviewProps> = ({ codeData, onOpenEditor, onClose }) => {
   const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
 
   return (
-    <Preview onClick={stopPropagation(() => {})} id="canvas-preview">
+    <Preview onClick={stopPropagation()} id="canvas-preview">
       <Preview.Header>
         <Preview.Title>Javascript</Preview.Title>
       </Preview.Header>
+
       <Preview.Content>
         <Preview.Code code={codeData} />
       </Preview.Content>
+
       <Preview.Footer>
         {canOpenEditor && (
           <Preview.ButtonIcon

@@ -5,7 +5,8 @@ import React from 'react';
 import { HSLShades } from '@/constants';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
-import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { Item, Section } from '@/pages/Canvas/components/Step';
+import { ConnectedStepProps } from '@/pages/Canvas/managers/types';
 import { ConnectedProps, MergeArguments } from '@/types';
 
 export interface CommandStepProps {

@@ -1,3 +1,4 @@
+import { useCache } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { DragSourceMonitor, useDrop } from 'react-dnd';
@@ -32,13 +33,15 @@ export type DraggableListProps<I, D, C> = {
   filter?: (item: I) => boolean;
   footer?: React.ReactNode;
   onDrop?: (item: DnDInternalItem<I>) => unknown;
-  canDrag?: boolean | ((monitor: DragSourceMonitor) => boolean);
+  canDrag?: DnDHandlers<I>['canDrag'];
+  canDrop?: DnDHandlers<I>['canDrop'];
   itemProps?: C;
-  onEndDrag?: (item: I, monitor: DragSourceMonitor) => unknown;
-  onReorder?: (dragIndex: number, hoverIndex: number) => void;
+  onEndDrag?: DnDHandlers<I>['onDragEnd'];
+  onReorder?: DnDHandlers<I>['onReorder'];
+  canReorder?: DnDHandlers<I>['canReorder'];
   fullHeight?: boolean;
   getItemKey?: (item: I) => string;
-  onStartDrag?: (item: I, monitor: DragSourceMonitor) => void;
+  onStartDrag?: DnDHandlers<I>['onDragStart'];
   deleteProps?: D;
   previewOptions?: PreviewOptions;
   deleteComponent?: React.NamedExoticComponent<React.PropsWithoutRef<D> & React.RefAttributes<any>>;
@@ -91,11 +94,13 @@ const DraggableList = <I, D, C>({
   filter,
   onDrop,
   canDrag,
+  canDrop,
   itemProps,
   onEndDrag,
   onReorder,
   fullHeight = true,
   getItemKey = (item) => item as any,
+  canReorder,
   onStartDrag,
   deleteProps,
   itemComponent,
@@ -111,7 +116,6 @@ const DraggableList = <I, D, C>({
   disableReorderingWhileDraggingX,
   ...props
 }: DraggableListProps<I, D, C>): JSX.Element => {
-  const handlers = React.useRef<DnDHandlers<I>>({});
   const [dragging, updateDragging] = React.useState(false);
   const [deleteHovered, updateDeleteHovered] = React.useState(false);
 
@@ -173,7 +177,17 @@ const DraggableList = <I, D, C>({
     [connectDrop]
   );
 
-  handlers.current = { onDrop, onDragEnd, onReorder, onDragStart, onDeleteDrop, deleteHovered, canDrag };
+  const handlers = useCache<DnDHandlers<I>>({
+    onDrop,
+    canDrag,
+    canDrop,
+    onDragEnd,
+    onReorder,
+    canReorder,
+    onDragStart,
+    onDeleteDrop,
+    deleteHovered,
+  });
 
   const renderItem = (data: (BaseItemData<I> & MappedItemComponentHandlers<I>) | BaseItemData<I>) => (
     <DnDItem
@@ -198,11 +212,13 @@ const DraggableList = <I, D, C>({
     <ListContainer ref={connectDrop} fullHeight={fullHeight}>
       {!props.children &&
         (props.mapManaged
-          ? props.mapManaged((item, { key, index, onRemove, onUpdate }) => {
+          ? props.mapManaged((item, { key, index, isFirst, isLast, onRemove, onUpdate }) => {
               const itemData: BaseItemData<I> & MappedItemComponentHandlers<I> = {
                 key,
                 item,
                 index,
+                isLast,
+                isFirst,
                 itemKey: key,
                 onRemove,
                 onUpdate,
@@ -220,6 +236,8 @@ const DraggableList = <I, D, C>({
                 key: getItemKey(item),
                 item,
                 index,
+                isLast: index === props.items.length - 1,
+                isFirst: index === 0,
                 itemKey: getItemKey(item),
                 isDragActive: dragging,
               };

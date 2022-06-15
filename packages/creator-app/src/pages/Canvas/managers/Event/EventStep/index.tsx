@@ -3,7 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { HSLShades } from '@/constants';
-import Step, { ConnectedStep, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { Item, Section } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 

@@ -44,13 +44,13 @@ export interface StepAPI<T extends HTMLElement = HTMLElement> {
   lockOwner: LockOwner | null;
   wrapElement: (el: JSX.Element) => JSX.Element;
   handlers: {
-    onClick: (event: React.MouseEvent) => void;
-    onDoubleClick: (event: React.MouseEvent) => void;
-    onMouseUp: (event: React.MouseEvent) => void;
-    onContextMenu: (event: React.MouseEvent) => void;
-    onMouseEnter: (event: React.MouseEvent) => void;
-    onMouseLeave: (event?: React.MouseEvent) => void;
-    onDragStart: (event: React.DragEvent) => void;
+    onClick: React.MouseEventHandler<T>;
+    onMouseUp: React.MouseEventHandler<T>;
+    onDragStart: React.DragEventHandler<T>;
+    onMouseEnter: React.MouseEventHandler<T>;
+    onMouseLeave: React.MouseEventHandler<T>;
+    onDoubleClick: React.MouseEventHandler<T>;
+    onContextMenu: React.MouseEventHandler<T>;
   };
 }
 

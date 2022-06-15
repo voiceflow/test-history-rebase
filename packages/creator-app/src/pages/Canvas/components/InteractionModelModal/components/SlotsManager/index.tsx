@@ -123,7 +123,16 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
               addMessage="New Entity"
               onChange={onFilter}
               getLabel={getItemLabel}
-              renderItem={(item: Realtime.Slot, index) => renderItem({ item, index, itemKey: item.id, key: item.id })}
+              renderItem={(item: Realtime.Slot, index) =>
+                renderItem({
+                  key: item.id,
+                  item,
+                  index,
+                  isLast: index === slots.length - 1,
+                  isFirst: index === 0,
+                  itemKey: item.id,
+                })
+              }
               placeholder="Search Entities"
             />
           )}

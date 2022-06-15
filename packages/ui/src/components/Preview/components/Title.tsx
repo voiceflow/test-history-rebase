@@ -4,12 +4,10 @@ import { SpaceProps } from 'styled-system';
 
 import { PreviewColors } from '../constants';
 
-const PreviewTitle: React.FC<SpaceProps> = ({ children, ...props }) => {
-  return (
-    <Text color={PreviewColors.GREY_TITLE_COLOR} fontSize={13} fontWeight={600} {...props}>
-      {children}
-    </Text>
-  );
-};
+const PreviewTitle: React.FC<SpaceProps> = ({ children, ...props }) => (
+  <Text color={PreviewColors.GREY_TITLE_COLOR} fontSize={13} fontWeight={600} {...props}>
+    {children}
+  </Text>
+);
 
 export default PreviewTitle;

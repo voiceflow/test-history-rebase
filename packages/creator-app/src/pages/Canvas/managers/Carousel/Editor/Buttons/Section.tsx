@@ -46,7 +46,7 @@ const CarouselEditorButtonsSection: React.FC<CarouselEditorButtonsSectionProps> 
     <SectionV2.ActionListSection
       title={<SectionV2.Title bold={!!buttons.length}>Buttons</SectionV2.Title>}
       action={<SectionV2.AddButton onClick={onAddNew} />}
-      contentProps={{ pb: 16 }}
+      contentProps={{ bottomOffset: 2 }}
     >
       {!!buttons.length && (
         <DraggableList

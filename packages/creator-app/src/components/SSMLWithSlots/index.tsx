@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Icon, useSetup } from '@voiceflow/ui';
+import { SvgIconTypes, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import SSML from '@/components/SSML';
@@ -12,7 +12,7 @@ import { getPlatformDefaultVoice } from '@/utils/platform';
 import { isSlotsInRepromptValid } from './utils';
 
 interface SSMLWithSlotsProps {
-  icon?: Icon | null;
+  icon?: SvgIconTypes.Icon | null;
   value: string;
   slots: Realtime.Slot[];
   voice?: string;

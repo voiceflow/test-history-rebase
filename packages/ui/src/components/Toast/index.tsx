@@ -1,6 +1,6 @@
 import Box from '@ui/components/Box';
 import Portal from '@ui/components/Portal';
-import SvgIcon, { Icon, IconVariant } from '@ui/components/SvgIcon';
+import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import { ClickableText } from '@ui/components/Text';
 import { createGlobalStyle } from '@ui/styles';
 import { COLOR_BLUE, COLOR_RED } from '@ui/styles/constants';
@@ -14,16 +14,23 @@ type ToastMethodName = 'info' | 'error' | 'success' | 'warn';
 
 type ToastMethod = (content: Toastify.ToastContent, options?: Toastify.ToastOptions) => Toastify.ToastId;
 
-export const ToastCallToAction: React.FC<{ onClick: () => void }> = ({ onClick, children }) => {
-  return (
-    <Box mt={8} textAlign="right">
-      <ClickableText onClick={onClick}>{children}</ClickableText>
-    </Box>
-  );
-};
+export const ToastCallToAction: React.FC<{ onClick: () => void }> = ({ onClick, children }) => (
+  <Box mt={8} textAlign="right">
+    <ClickableText onClick={onClick}>{children}</ClickableText>
+  </Box>
+);
 
-type ToastMethodFactory = (method: ToastMethod, icon?: Icon, color?: string) => ToastMethod & Partial<Record<ToastMethodName, ToastMethod>>;
-type CustomToastMethod = (method: ToastMethodName, icon?: Icon, color?: string) => ToastMethod & Partial<Record<ToastMethodName, ToastMethod>>;
+type ToastMethodFactory = (
+  method: ToastMethod,
+  icon?: SvgIconTypes.Icon,
+  color?: string
+) => ToastMethod & Partial<Record<ToastMethodName, ToastMethod>>;
+
+type CustomToastMethod = (
+  method: ToastMethodName,
+  icon?: SvgIconTypes.Icon,
+  color?: string
+) => ToastMethod & Partial<Record<ToastMethodName, ToastMethod>>;
 
 const wrapWithMessage: ToastMethodFactory = (method, icon, color) => (message, options) =>
   method(
@@ -32,7 +39,7 @@ const wrapWithMessage: ToastMethodFactory = (method, icon, color) => (message, o
     </Message>,
     {
       ...options,
-      ...(options?.closeButton === true && { closeButton: <SvgIcon icon="close" variant={IconVariant.TERTIARY} clickable size={10} ml={24} /> }),
+      ...(options?.closeButton === true && { closeButton: <SvgIcon icon="close" variant={SvgIcon.Variant.TERTIARY} clickable size={10} ml={24} /> }),
     }
   );
 
@@ -49,7 +56,7 @@ Object.assign(toast, {
   success: wrapWithMessage(Toastify.toast.success, 'checkmark', '#42B761'),
   warn: wrapWithMessage(Toastify.toast.warn, 'warning', '#E5B813'),
   genericError: () => toast.error('Something went wrong. Please try again'),
-  custom: (methodName: ToastMethodName, icon?: Icon, color?: string) => wrapWithMessage(Toastify.toast[methodName], icon, color),
+  custom: (methodName: ToastMethodName, icon?: SvgIconTypes.Icon, color?: string) => wrapWithMessage(Toastify.toast[methodName], icon, color),
 });
 
 const ToastGlobalStyles = createGlobalStyle`

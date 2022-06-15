@@ -1,4 +1,4 @@
-import { Box, BoxFlex, Button, compose, ConnectedProps, SvgIcon, TippyTooltip, useSetup } from '@voiceflow/ui';
+import { Box, Button, compose, ConnectedProps, SvgIcon, TippyTooltip, useSetup } from '@voiceflow/ui';
 import React from 'react';
 import { Col, Form } from 'reactstrap';
 import { ThemeContext } from 'styled-components';
@@ -37,9 +37,9 @@ const Referral: React.FC<ConnectedReferralsProps> = ({ setReferral, getReferralD
           <Expiry />
           <Status />
           <Creator />
-          <BoxFlex p={theme.unit * 2}>
+          <Box.Flex p={theme.unit * 2}>
             <Col sm={2} />
-            <BoxFlex>
+            <Box.Flex>
               {' '}
               <Button type="submit" disabled={!(state.code && (state.coupon || state.creatorID))}>
                 Submit
@@ -49,8 +49,8 @@ const Referral: React.FC<ConnectedReferralsProps> = ({ setReferral, getReferralD
                   <SvgIcon icon="info" size={14} color="#6E849A" />
                 </Box>
               </TippyTooltip>
-            </BoxFlex>
-          </BoxFlex>
+            </Box.Flex>
+          </Box.Flex>
         </Form>
       </Box>
       <Box pt={theme.unit * 2} pb={theme.unit * 2}>

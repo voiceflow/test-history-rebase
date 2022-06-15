@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, BoxFlex } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import Label from '@/components/Label';
@@ -33,15 +33,15 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, o
   return (
     <Box mb={3}>
       <Box mb={11}>
-        <BoxFlex>
+        <Box.Flex>
           <Label inline>Expression</Label>
           <Box ml={6}>
             <ConditionExpressionTooltip />
           </Box>
-        </BoxFlex>
+        </Box.Flex>
       </Box>
 
-      <BoxFlex fullWidth>
+      <Box.Flex fullWidth>
         <VariablesInput
           error={error}
           value={expression.value as string}
@@ -54,7 +54,7 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, o
         />
 
         <RemoveIcon onClick={onDelete} />
-      </BoxFlex>
+      </Box.Flex>
 
       {error && (
         <Box fontSize={13} color="#e91e63" mt={16}>

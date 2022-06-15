@@ -30,7 +30,7 @@ const ExampleRoute: React.FC = () => {
         {section ? (
           <Section title={section.title} path={section.path}>
             {section.examples.map((example) => (
-              <Example key={example.title} title={example.title}>
+              <Example {...example.options} key={example.title} title={example.title}>
                 <example.component isPage />
               </Example>
             ))}

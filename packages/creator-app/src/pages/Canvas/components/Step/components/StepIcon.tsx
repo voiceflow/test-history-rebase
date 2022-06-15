@@ -1,12 +1,12 @@
-import { Icon, SvgIcon, SvgIconProps } from '@voiceflow/ui';
+import { SvgIcon, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { HSLShades } from '@/constants';
 
 import IconContainer from './StepIconContainer';
 
-export interface StepIconProps extends Omit<SvgIconProps, 'icon'> {
-  icon?: Icon | null;
+export interface StepIconProps extends Omit<SvgIconTypes.Props, 'icon'> {
+  icon?: SvgIconTypes.Icon | null;
   iconColor?: string;
   iconSize?: number;
   palette?: HSLShades;

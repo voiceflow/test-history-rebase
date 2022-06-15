@@ -4,8 +4,9 @@ import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { HSLShades } from '@/constants';
-import Step, { ConnectedStep, NoMatchStepItemV2, NoReplyItemV2, Section } from '@/pages/Canvas/components/Step';
+import Step, { NoMatchStepItemV2, NoReplyItemV2, Section } from '@/pages/Canvas/components/Step';
 import { SlotMapContext } from '@/pages/Canvas/contexts';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { transformSlotIntoPrompt } from '@/pages/Canvas/utils';
 
 import { CaptureSlot } from '../types';

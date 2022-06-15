@@ -1,4 +1,4 @@
-import SvgIcon from '@ui/components/SvgIcon';
+import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import { styled, transition } from '@ui/styles';
 import React from 'react';
 import { space, SpaceProps } from 'styled-system';
@@ -31,15 +31,13 @@ const ButtonIcon = styled(SvgIcon)`
 `;
 
 export interface PreviewButtonIconProps extends SpaceProps, React.HTMLAttributes<HTMLDivElement> {
-  icon: string;
+  icon: SvgIconTypes.Icon;
 }
 
-const PreviewButtonIcon: React.FC<PreviewButtonIconProps> = ({ icon, ...props }) => {
-  return (
-    <ButtonContainer {...props}>
-      <ButtonIcon icon={icon as any} color="rgba(255, 255, 255, 0.85)" />
-    </ButtonContainer>
-  );
-};
+const PreviewButtonIcon: React.FC<PreviewButtonIconProps> = ({ icon, ...props }) => (
+  <ButtonContainer {...props}>
+    <ButtonIcon icon={icon} color="rgba(255, 255, 255, 0.85)" />
+  </ButtonContainer>
+);
 
 export default PreviewButtonIcon;

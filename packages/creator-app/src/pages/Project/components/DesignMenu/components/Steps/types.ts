@@ -1,11 +1,11 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Icon } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 
 import { BlockType, DragItem } from '@/constants';
 
 export interface StepDragItem {
   type: DragItem;
-  icon: Icon | React.FC;
+  icon: SvgIconTypes.Icon | React.FC;
   label: string;
   blockType: BlockType;
   factoryData?: Realtime.NodeData<any>;

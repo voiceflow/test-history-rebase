@@ -4,17 +4,18 @@ import React from 'react';
 import Resizable, { ResizablePanel } from '@/components/Resizable';
 import { TabPane, TabsContent } from '@/components/Tabs';
 import { Permission } from '@/config/permissions';
+import { DragItem } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useIsCanvasDesignOnly, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
+import { useDispatch, useDropLagFix, useIsCanvasDesignOnly, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
 import { useAnyModeOpen } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
 
 import { Content, Flows, FullHeightContainer, Header, Layers, ResizeDivider, ResizePanel, Steps } from './components';
 import { Tab } from './constants';
-import { useDropLagFix, useMenuHotKeys, useTabs } from './hooks';
+import { useMenuHotKeys, useTabs } from './hooks';
 
 export { Tab as DesignMenuTab } from './constants';
 
@@ -39,7 +40,7 @@ const DesignMenu: React.FC = () => {
   const theme = useTheme();
   const [events] = useTrackingEvents();
   const isAnyModeOpen = useAnyModeOpen();
-  const useDropLagFixRef = useDropLagFix();
+  const dropLagFixRef = useDropLagFix([DragItem.BLOCK_MENU, DragItem.TOPICS, DragItem.COMPONENTS]);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const { tabs, selectedTab } = useTabs();
   const [resizing, onStartResizing, onEndResizing] = useEnableDisable(false);
@@ -98,7 +99,7 @@ const DesignMenu: React.FC = () => {
       >
         <ResizePanel
           id={Identifier.DESIGN_MENU}
-          ref={useDropLagFixRef}
+          ref={dropLagFixRef}
           locked={!isHidden}
           height={heights[0]}
           isOpen={isOpen}

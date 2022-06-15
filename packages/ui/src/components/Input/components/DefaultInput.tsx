@@ -1,5 +1,5 @@
 import composeRef from '@seznam/compose-react-refs';
-import SvgIcon, { Icon, SvgIconProps } from '@ui/components/SvgIcon';
+import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import { css, styled } from '@ui/styles';
 import { Either } from '@ui/types';
 import React from 'react';
@@ -25,13 +25,13 @@ const PlainInput = styled.input<StyledInputProps>`
 PlainInput.displayName = 'Input';
 
 export interface NestedInputProps extends PlainInputProps, InlineInputProps {
-  icon?: Icon | React.ComponentType;
+  icon?: SvgIconTypes.Icon | React.ComponentType;
   error?: boolean;
   nested?: boolean;
   children?: (props: { ref: React.Ref<HTMLInputElement> }) => React.ReactElement;
   disabled?: boolean;
   className?: string;
-  iconProps?: Partial<SvgIconProps>;
+  iconProps?: Partial<Omit<SvgIconTypes.Props, 'icon'>>;
   leftAction?: React.ReactNode;
   rightAction?: React.ReactNode;
   iconPosition?: NestedInputIconPosition;

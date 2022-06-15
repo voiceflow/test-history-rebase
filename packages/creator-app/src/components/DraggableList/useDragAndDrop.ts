@@ -37,6 +37,7 @@ const useDragAndDrop = <I extends { id: string } | any>(
 
   const [, connectDrop] = useDrop<DnDItem<I>, void, void>({
     drop: (item, monitor) => handlers.current.onDrop?.(item, monitor),
+    canDrop: handlers.current.canDrop,
     accept: type,
     hover: _throttle((item: DnDItem<I>, monitor: DropTargetMonitor) => {
       item.deleteHovered = false;
@@ -48,29 +49,21 @@ const useDragAndDrop = <I extends { id: string } | any>(
       const dragIndex = item.index;
       const hoverIndex = props.index;
 
-      if (dragIndex === hoverIndex) {
-        return;
-      }
+      if (dragIndex === hoverIndex) return;
+      if (handlers.current.canReorder && !handlers.current.canReorder(dragIndex, hoverIndex)) return;
 
       const { top, bottom } = rootRef.current.getBoundingClientRect();
       const hoverMiddleY = (bottom - top) / 2;
       const clientOffset = monitor.getClientOffset();
 
-      if (!clientOffset) {
-        return;
-      }
+      if (!clientOffset) return;
 
       const hoverClientY = clientOffset.y - top;
 
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
-      }
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
-
-      handlers.current.onReorder?.(dragIndex, hoverIndex);
+      handlers.current.onReorder(dragIndex, hoverIndex);
 
       item.index = hoverIndex;
     }, HOVER_THROTTLE_TIMEOUT),
@@ -78,30 +71,35 @@ const useDragAndDrop = <I extends { id: string } | any>(
 
   const persistedSetIsDraggingXEnabled = usePersistFunction((value: boolean) => dragItemsMap.get(cacheRef.current.id)?.(value));
 
+  const dragItem = {
+    ...props,
+    type,
+    getStyle: () => {
+      if (!unmountableDuringDrag || !(cacheRef.current.styles.width && cacheRef.current.styles.height)) {
+        cacheRef.current.styles = {
+          width: rootRef.current?.clientWidth,
+          height: rootRef.current?.clientHeight,
+        };
+      }
+
+      return cacheRef.current.styles;
+    },
+    setIsDraggingXEnabled: persistedSetIsDraggingXEnabled,
+  };
+
   const [{ isDragging }, connectDrag, connectPreview] = useDrag<
     DnDItem<I> & { getStyle: DragContextPreviewProps['getStyle']; setIsDraggingXEnabled: (value: boolean) => void },
     void,
     { isDragging: boolean }
   >({
-    item: {
-      ...props,
-      type,
-      getStyle: () => {
-        if (!unmountableDuringDrag || !(cacheRef.current.styles.width && cacheRef.current.styles.height)) {
-          cacheRef.current.styles = {
-            width: rootRef.current?.clientWidth,
-            height: rootRef.current?.clientHeight,
-          };
-        }
-
-        return cacheRef.current.styles;
-      },
-      setIsDraggingXEnabled: persistedSetIsDraggingXEnabled,
-    },
+    item: dragItem,
     end: (_result, monitor) => handlers.current.onDragEnd?.(props.item as I, monitor),
     begin: (monitor) => handlers.current.onDragStart?.(props.item as I, monitor),
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
-    canDrag: handlers.current.canDrag,
+    canDrag:
+      typeof handlers.current.canDrag === 'function'
+        ? (monitor) => (handlers.current.canDrag as Function)(dragItem, monitor)
+        : handlers.current.canDrag,
     options: { dropEffect: 'move' },
     isDragging: unmountableDuringDrag
       ? (monitor) => {

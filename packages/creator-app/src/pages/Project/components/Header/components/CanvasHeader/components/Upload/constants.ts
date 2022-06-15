@@ -1,9 +1,13 @@
 import { Utils } from '@voiceflow/realtime-sdk';
+import { SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { HeaderIconButtonProps } from '@/components/ProjectPage';
+interface PlatformIconProps {
+  icon: SvgIconTypes.Icon;
+  iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
+}
 
-export const getPlatformIconProps = Utils.platform.createPlatformSelector<HeaderIconButtonProps>(
+export const getPlatformIconProps = Utils.platform.createPlatformSelector<PlatformIconProps>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: { icon: 'amazonAlexa', iconProps: { color: '#5fcaf4' } },
     [VoiceflowConstants.PlatformType.GOOGLE]: { icon: 'googleAssistant' },

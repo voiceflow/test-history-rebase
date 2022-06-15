@@ -3,7 +3,7 @@ import { BlockText, BoxFlexApart, ClickableText, stopPropagation, Text } from '@
 import React from 'react';
 
 import Divider from '@/components/Divider';
-import { onClickCopy } from '@/utils/clipboard';
+import { copyWithToast } from '@/utils/clipboard';
 
 import ItemContainer from './ItemContainer';
 
@@ -18,7 +18,7 @@ const Item: React.FC<ItemProps> = ({ label, isLast, children, onClick }) => {
 
   return (
     <>
-      <ItemContainer onClick={canCopy ? stopPropagation(Utils.functional.chain(onClick, onClickCopy(children))) : undefined}>
+      <ItemContainer onClick={canCopy ? stopPropagation(Utils.functional.chain(onClick, copyWithToast(children))) : undefined}>
         <BoxFlexApart>
           <Text fontWeight="600">{label}</Text>
           {canCopy && <ClickableText>Copy</ClickableText>}

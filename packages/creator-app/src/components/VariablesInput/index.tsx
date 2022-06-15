@@ -15,7 +15,12 @@ export type { TextEditorRef as VariablesInputRef } from '@/components/TextEditor
 
 const pluginsTypes = [PluginType.VARIABLES];
 
-type SaveCallback = (data: { text: string; variables: string[] }) => void;
+export interface VariablesInputValue {
+  text: string;
+  variables: string[];
+}
+
+export type SaveCallback = (data: VariablesInputValue) => void;
 
 interface VariablesInputProps
   extends Omit<TextEditorProps, 'onBlur' | 'onEnterPress' | 'pluginsTypes' | 'pluginsProps'>,

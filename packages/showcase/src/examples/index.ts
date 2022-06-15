@@ -1,5 +1,7 @@
 export { default as badge } from './Badge';
 export { default as button } from './Button';
+export { default as canvasAction } from './CanvasAction';
+export { default as canvasPort } from './CanvasPort';
 export { default as colorPicker } from './ColorPicker';
 export { default as hueSlider } from './HueSlider';
 export { default as popper } from './Popper';

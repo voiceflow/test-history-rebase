@@ -1,4 +1,4 @@
-import { FlexApart, SvgIconContainer } from '@voiceflow/ui';
+import { FlexApart, SvgIcon } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs';
 
@@ -8,16 +8,16 @@ const LabelContainer = styled(FlexApart).attrs({ fullWidth: true })`
   height: 100%;
   width: 300px;
 
-  & ${SvgIconContainer} {
+  & ${SvgIcon.Container} {
     ${transition('opacity')}
     opacity: 0;
   }
 
-  &:hover ${SvgIconContainer} {
+  &:hover ${SvgIcon.Container} {
     opacity: 0.85;
   }
 
-  ${SvgIconContainer}:hover {
+  ${SvgIcon.Container}:hover {
     opacity: 1;
   }
 `;

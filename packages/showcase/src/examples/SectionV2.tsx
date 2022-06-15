@@ -1,24 +1,20 @@
 /* eslint-disable no-console */
-import { Box, IconButton, IconButtonVariant, SectionV2, Toggle, useToggle } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant, SectionV2, Toggle, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
+import { withBox } from './hocs';
 import { createExample, createSection } from './utils';
 
-const withBackground = (Component: React.FC) => () =>
-  (
-    <Box width={300} backgroundColor="#fff">
-      <Component />
-    </Box>
-  );
+const wrapContainer = withBox({ width: 300, backgroundColor: '#fff' });
 
 const simple = createExample(
   'simple',
-  withBackground(() => <SectionV2.SimpleSection>content</SectionV2.SimpleSection>)
+  wrapContainer(() => <SectionV2.SimpleSection>content</SectionV2.SimpleSection>)
 );
 
 const simpleWithTitleAndControl = createExample(
   'simple with title, control and accent',
-  withBackground(() => {
+  wrapContainer(() => {
     const [bold, onToggle] = useToggle();
 
     return (
@@ -33,7 +29,7 @@ const simpleWithTitleAndControl = createExample(
 
 const linkSection = createExample(
   'link section',
-  withBackground(() => (
+  wrapContainer(() => (
     <SectionV2.LinkSection onClick={console.log}>
       <SectionV2.Title>Link</SectionV2.Title>
     </SectionV2.LinkSection>
@@ -42,7 +38,7 @@ const linkSection = createExample(
 
 const collapseHeaderContentToggle = createExample(
   'collapse header content toggle',
-  withBackground(() => (
+  wrapContainer(() => (
     <SectionV2.CollapseSection
       header={({ onToggle, collapsed }) => (
         <SectionV2.Header>
@@ -61,7 +57,7 @@ const collapseHeaderContentToggle = createExample(
 
 const collapseContainerToggle = createExample(
   'collapse container toggle',
-  withBackground(() => (
+  wrapContainer(() => (
     <SectionV2.CollapseSection
       containerToggle
       defaultCollapsed={true}
@@ -78,7 +74,7 @@ const collapseContainerToggle = createExample(
 
 const addCollapseSection = createExample(
   'add collapse',
-  withBackground(() => {
+  wrapContainer(() => {
     const [collapsed, setCollapsed] = React.useState(false);
 
     return (
@@ -115,7 +111,7 @@ const addCollapseSection = createExample(
 
 const sectionsWithDividerBetween = createExample(
   'multiple sections with divider between',
-  withBackground(() => (
+  wrapContainer(() => (
     <>
       <simpleWithTitleAndControl.component />
 

@@ -3,7 +3,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Nullish } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
-import { Icon, TippyTooltipProps, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { SvgIconTypes, TippyTooltipProps, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export enum PlatformTypeUpcoming {
@@ -40,7 +40,7 @@ export type PlatformAndProjectMetaType = SupportedPlatformProjectType | Platform
 
 export interface PlatformAndProjectMeta {
   type: PlatformAndProjectMetaType;
-  icon?: Icon;
+  icon?: SvgIconTypes.Icon;
   name: string;
   tooltip?: TippyTooltipProps;
   disabled?: boolean;

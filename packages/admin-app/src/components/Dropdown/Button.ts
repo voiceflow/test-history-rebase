@@ -1,8 +1,8 @@
-import { BoxFlex, SvgIconContainer, transition } from '@voiceflow/ui';
+import { Box, SvgIcon, transition } from '@voiceflow/ui';
 
 import { css, styled } from '@/styles';
 
-const Button = styled(BoxFlex)<{ isOpen: boolean; noBorder: boolean }>`
+const Button = styled(Box.Flex)<{ isOpen: boolean; noBorder: boolean }>`
   ${transition()};
   color: ${({ isOpen }) => (isOpen ? '#5d9df5' : '#132042')};
   font-size: 15px;
@@ -18,7 +18,7 @@ const Button = styled(BoxFlex)<{ isOpen: boolean; noBorder: boolean }>`
       box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
     `}
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     display: inline-block;
     margin-left: 5px;
     color: ${({ isOpen }) => (isOpen ? '#5d9df5' : '#62778c')};

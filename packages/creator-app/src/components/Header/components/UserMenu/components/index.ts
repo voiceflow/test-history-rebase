@@ -1,4 +1,4 @@
-import { FlexApart, SvgIconContainer } from '@voiceflow/ui';
+import { FlexApart, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
@@ -26,7 +26,7 @@ export const UserNameContainer = styled(FlexApart)<UserNameContainerProps>`
       color: #5d9df5;
     `}
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     display: inline-block;
     margin-left: 12px;
   }

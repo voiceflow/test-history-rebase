@@ -1,5 +1,5 @@
 import { AlexaProject } from '@voiceflow/alexa-types';
-import { Alert, AlertVariant, Box, BoxFlex, Button, Input, Select, toast } from '@voiceflow/ui';
+import { Alert, Box, BoxFlex, Button, Input, Select, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -106,7 +106,7 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
 
   return (
     <Box>
-      <Alert variant={AlertVariant.DANGER}>
+      <Alert variant={Alert.Variant.DANGER}>
         Updating the Skill ID will cause Voiceflow to overwrite any existing content on the development version of the Skill on Alexa Developer
         Console - <b>Applies on next upload</b>
       </Alert>

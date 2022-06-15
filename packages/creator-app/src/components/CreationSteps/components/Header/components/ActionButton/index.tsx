@@ -1,14 +1,14 @@
-import { Icon, SvgIcon } from '@voiceflow/ui';
+import { SvgIcon, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { Container, IconContainer, InnerContainer, Label } from './components';
 
 interface ActionButtonProps {
-  shouldRender: boolean;
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   label: string;
   onClick: () => void;
   className?: string;
+  shouldRender: boolean;
 }
 
 const ActionButton: React.FC<ActionButtonProps> = ({ className, shouldRender, icon, label, onClick }) => (

@@ -1,6 +1,6 @@
 import { AlexaConstants, AlexaUtils } from '@voiceflow/alexa-types';
 import { Nullable } from '@voiceflow/common';
-import { BlockText, Box, BoxFlex, Button, ButtonVariant, IconVariant, Input, SvgIcon, TippyTooltip, useSmartReducerV2 } from '@voiceflow/ui';
+import { BlockText, Box, BoxFlex, Button, ButtonVariant, Input, SvgIcon, TippyTooltip, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 import { Assign } from 'utility-types';
 
@@ -70,7 +70,7 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
           }
           position="bottom"
         >
-          <SvgIcon icon="info" clickable variant={IconVariant.STANDARD} />
+          <SvgIcon icon="info" clickable variant={SvgIcon.Variant.STANDARD} />
         </TippyTooltip>
       </BoxFlex>
 

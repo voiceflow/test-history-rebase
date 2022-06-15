@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { styled } from '@/hocs';
@@ -23,7 +23,7 @@ const TagWrapper = styled.span<{ onClick: (e: React.MouseEvent) => void }>`
     white-space: nowrap;
   }
 
-  & > ${SvgIconContainer} {
+  & > ${SvgIcon.Container} {
     color: ${({ theme }) => theme.iconColors.disabled};
     padding-right: 12px;
   }

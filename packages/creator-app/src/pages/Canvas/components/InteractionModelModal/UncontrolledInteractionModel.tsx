@@ -1,4 +1,4 @@
-import { IconVariant, SvgIcon } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import Tabs from '@/components/Tabs';
@@ -34,7 +34,7 @@ const UncontrolledInteractionModel: React.FC<UncontrolledInteractionModelProps> 
       ref={setModalRef}
       title={<Tabs selected={activeTab} options={TABS} onChange={onChangeTab} />}
       maxWidth={780}
-      headerActions={<SvgIcon icon="exportModel" variant={IconVariant.STANDARD} clickable size={16} onClick={openExportModal} />}
+      headerActions={<SvgIcon icon="exportModel" variant={SvgIcon.Variant.STANDARD} clickable size={16} onClick={openExportModal} />}
     >
       {!!modalRef && (
         <TextEditorVariablesPopoverProvider value={modalRef}>

@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Icon } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isFunction from 'lodash/isFunction';
 
@@ -9,7 +9,7 @@ import { getManager } from '@/pages/Canvas/managers/constants';
 
 export interface MenuStep {
   type: Realtime.BlockType;
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   label: string;
   publicOnly?: boolean;
   factoryData?: Realtime.NodeData<any>;

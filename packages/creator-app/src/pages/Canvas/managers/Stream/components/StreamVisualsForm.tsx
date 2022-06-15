@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IconVariant, SvgIcon, Upload } from '@voiceflow/ui';
+import { SvgIcon, Upload } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
@@ -25,7 +25,7 @@ const StreamVisualsForm: React.FC<StreamVisualsFormProps> = ({ data, onChange })
       namespace="visuals"
       header="Visuals"
       headerToggle
-      prefix={<SvgIcon variant={IconVariant.STANDARD} icon="blocks" />}
+      prefix={<SvgIcon variant={SvgIcon.Variant.STANDARD} icon="blocks" />}
       collapseVariant={SectionToggleVariant.ARROW}
       status={<>{isAdded ? 'Added' : 'Not Added'}</>}
     >

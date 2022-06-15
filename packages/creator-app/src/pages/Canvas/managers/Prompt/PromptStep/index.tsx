@@ -4,8 +4,9 @@ import React from 'react';
 
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { ConnectedStep, Item, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
+import Step, { Item, NoMatchItem, NoReplyItem, Section } from '@/pages/Canvas/components/Step';
 import { WAITING_FOR_INTENT_PLACEHOLDER } from '@/pages/Canvas/constants';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 

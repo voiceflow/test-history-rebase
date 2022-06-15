@@ -1,4 +1,4 @@
-import { inputStyle, SvgIconContainer } from '@voiceflow/ui';
+import { inputStyle, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
@@ -31,10 +31,12 @@ const DropdownButton = styled.button`
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         `}
-  ${SvgIconContainer} {
+
+  ${SvgIcon.Container} {
     margin-left: 5px;
     margin-top: 2px;
   }
+
   ${({ active }) =>
     active &&
     css`

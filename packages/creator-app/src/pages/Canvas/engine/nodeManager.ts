@@ -580,11 +580,11 @@ class NodeManager extends EngineConsumer {
   async duplicateMany(nodeIDs: string[]): Promise<void> {
     const clipboardData = this.engine.clipboard.getClipboardContext(nodeIDs);
 
-    const combinedAndMarkupNodes = clipboardData.nodes
-      .filter(({ type }) => isMarkupOrCombinedBlockType(type))
-      .map((node) => ({ data: clipboardData.data[node.id], node }));
+    const { center: centerCoords } = getNodesGroupCenter(
+      clipboardData.nodes.map((node) => ({ data: clipboardData.data[node.id], node })),
+      clipboardData.links
+    );
 
-    const { center: centerCoords } = getNodesGroupCenter(combinedAndMarkupNodes, clipboardData.links);
     const coords = this.engine.canvas!.toCoords(centerCoords).add(DUPLICATE_OFFSET);
 
     const { nodesWithData } = await this.engine.clipboard.cloneClipboardContext(clipboardData, coords);

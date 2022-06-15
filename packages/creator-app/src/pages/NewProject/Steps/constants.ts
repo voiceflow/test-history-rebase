@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/realtime-sdk';
-import { Icon } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -20,7 +20,7 @@ export enum IconType {
 }
 
 export interface PlatformMetaType {
-  icon?: Icon;
+  icon?: SvgIconTypes.Icon;
   company: string;
   iconColor?: string;
   localesText?: string;
@@ -32,7 +32,7 @@ export interface PlatformMetaType {
 
 export interface ChannelMetaType {
   name: string;
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   platform: VoiceflowConstants.PlatformType;
   projectType: VoiceflowConstants.ProjectType;
   features: PlatformFeature[];

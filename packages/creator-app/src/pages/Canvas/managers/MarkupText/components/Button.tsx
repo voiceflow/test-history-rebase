@@ -1,10 +1,10 @@
-import { Icon } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import IconButton from './IconButton';
 
 interface ButtonProps {
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   active: boolean;
   onMouseDown: React.MouseEventHandler<HTMLButtonElement>;
 }

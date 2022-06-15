@@ -150,6 +150,7 @@ const VariableStatesModal: React.FC<{
               onChange={(startFrom) => formik.setFieldValue('startFrom', startFrom)}
               value={formik.values.startFrom}
               disabled={formik.isSubmitting}
+              startNodeIsDefault
             />
           </Section>
         )}

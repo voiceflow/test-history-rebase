@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 
 import Divider from '@/components/Divider';
 import { styled, transition } from '@/hocs';
@@ -22,12 +22,12 @@ export const SlotBubble = styled.div`
   letter-spacing: normal;
   margin-bottom: 4px;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     opacity: 0.8;
   }
 
   :hover {
-    ${SvgIconContainer} {
+    ${SvgIcon.Container} {
       opacity: 1;
     }
 
@@ -52,12 +52,12 @@ export const JumpToEntitiesBubble = styled.div`
   padding: 4px 12px 4px 8px;
   box-shadow: 0px 1px 3px rgb(43 47 50 / 16%);
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     opacity: 0.8;
   }
 
   :hover {
-    ${SvgIconContainer} {
+    ${SvgIcon.Container} {
       opacity: 1;
     }
   }

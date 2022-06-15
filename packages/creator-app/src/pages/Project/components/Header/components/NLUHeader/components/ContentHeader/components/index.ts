@@ -1,4 +1,4 @@
-import { Button, FlexApart, Input, SvgIconContainer } from '@voiceflow/ui';
+import { Button, FlexApart, Input, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
@@ -12,14 +12,14 @@ export const TrashButton = styled(Button)`
   display: inline-block;
   padding: 10px 20px !important;
   margin-right: 10px;
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     ${transition()}
     opacity: 0.55;
   }
 
   &:hover,
   &:active {
-    ${SvgIconContainer} {
+    ${SvgIcon.Container} {
       opacity: 1;
     }
   }
@@ -34,20 +34,20 @@ export const SearchInput = styled(Input)`
 
 export const TrainButton = styled(Button)<{ active?: boolean }>`
   ${transition()}
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     opacity: 0.8;
   }
 
   ${({ active }) =>
     active &&
     css`
-      ${SvgIconContainer} {
+      ${SvgIcon.Container} {
         opacity: 1;
       }
     `}
 
   &:hover, &:active {
-    ${SvgIconContainer} {
+    ${SvgIcon.Container} {
       opacity: 1;
     }
   }

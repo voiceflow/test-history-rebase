@@ -146,7 +146,14 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
           renderItem={(index) => {
             const item = components[index];
 
-            return renderItem({ key: item.id, itemKey: item.id, item, index });
+            return renderItem({
+              key: item.id,
+              item,
+              index,
+              isLast: index === components.length - 1,
+              isFirst: index === 0,
+              itemKey: item.id,
+            });
           }}
           renderPlaceholder={({ width }) => (
             <Placeholder width={width}>

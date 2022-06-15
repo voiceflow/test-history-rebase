@@ -114,7 +114,16 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
               onChange={onChange}
               getLabel={getItemLabel}
               addMessage="New Intent"
-              renderItem={(item, index) => renderItem({ key: item.id, itemKey: item.id, item, index })}
+              renderItem={(item, index) =>
+                renderItem({
+                  key: item.id,
+                  item,
+                  index,
+                  itemKey: item.id,
+                  isLast: index === intents.length - 1,
+                  isFirst: index === 0,
+                })
+              }
               formatValue={(value) => applyPlatformIntentAndSlotNameFormatting(value, platform)}
               placeholder="Search Intents"
             />

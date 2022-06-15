@@ -1,4 +1,4 @@
-import { Box, BoxFlex, IconButton, IconButtonVariant, Portal, TutorialInfoIcon } from '@voiceflow/ui';
+import { Box, IconButton, IconButtonVariant, Portal, TutorialInfoIcon } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
@@ -80,19 +80,19 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
               <Box flex={10} maxWidth="100%">
                 {withHeader && (
                   <Header headerBorder={headerBorder}>
-                    <BoxFlex height="100%">
-                      <BoxFlex height="100%" id={Identifier.MODAL_TITLE_CONTAINER}>
+                    <Box.Flex height="100%">
+                      <Box.Flex height="100%" id={Identifier.MODAL_TITLE_CONTAINER}>
                         {title}
-                      </BoxFlex>
+                      </Box.Flex>
 
                       {intoTooltip && (
                         <Box ml={8}>
                           <TutorialInfoIcon>{intoTooltip}</TutorialInfoIcon>
                         </Box>
                       )}
-                    </BoxFlex>
-                    <BoxFlex height="100%">
-                      {headerActions && <BoxFlex mr={16}>{headerActions}</BoxFlex>}
+                    </Box.Flex>
+                    <Box.Flex height="100%">
+                      {headerActions && <Box.Flex mr={16}>{headerActions}</Box.Flex>}
                       {closable && (
                         <IconButton
                           size={16}
@@ -102,13 +102,13 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
                           onClick={onClose}
                         />
                       )}
-                    </BoxFlex>
+                    </Box.Flex>
                   </Header>
                 )}
 
-                <BoxFlex column fullHeight={fullScreen}>
+                <Box.Flex column fullHeight={fullScreen}>
                   {children}
-                </BoxFlex>
+                </Box.Flex>
               </Box>
             </Container>
           </Root>

@@ -1,11 +1,11 @@
-import { Icon } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 
 import * as Documentation from '@/config/documentation';
 import { DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 
 export interface StaticResource {
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   link: string;
   label: string;
   resourceName: Tracking.CanvasControlHelpMenuResource;

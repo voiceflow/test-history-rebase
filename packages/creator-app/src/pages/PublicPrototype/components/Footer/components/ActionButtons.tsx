@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IconVariant, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import SoundToggle from '@/components/SoundToggle';
@@ -23,7 +23,7 @@ const ActionButtons: React.FC<ActionButtons> = ({ onMute, onReset, isMuted, onFu
     <>
       <ActionButtonContainer>
         <TippyTooltip title="Fullscreen" hotkey="F">
-          <SvgIcon variant={IconVariant.STANDARD} size={18} icon="fullscreen" clickable onClick={onFullScreen} />
+          <SvgIcon variant={SvgIcon.Variant.STANDARD} size={18} icon="fullscreen" clickable onClick={onFullScreen} />
         </TippyTooltip>
       </ActionButtonContainer>
 
@@ -35,7 +35,7 @@ const ActionButtons: React.FC<ActionButtons> = ({ onMute, onReset, isMuted, onFu
 
       <ActionButtonContainer>
         <TippyTooltip title="Reset Test">
-          <SvgIcon icon="restart" size={18} variant={IconVariant.STANDARD} onClick={onReset} clickable />
+          <SvgIcon icon="restart" size={18} variant={SvgIcon.Variant.STANDARD} onClick={onReset} clickable />
         </TippyTooltip>
       </ActionButtonContainer>
     </>

@@ -31,22 +31,23 @@ interface BaseDefaultVariantInputProps extends SharedProps {
 
 export type DefaultVariantInputProps = BaseDefaultVariantInputProps & DefaultInputProps;
 
-const Input: React.ForwardRefRenderFunction<HTMLInputElement, Either<InlineVariantInputProps, DefaultVariantInputProps>> = (
-  { variant = InputVariant.DEFAULT, onChange, onKeyPress, onChangeText, onEnterPress, ...props },
-  ref
-) => {
-  const Component = INPUT_VARIANTS[variant];
+const Input = React.forwardRef<HTMLInputElement, Either<InlineVariantInputProps, DefaultVariantInputProps>>(
+  ({ variant = InputVariant.DEFAULT, onChange, onKeyPress, onChangeText, onEnterPress, ...props }, ref) => {
+    const Component = INPUT_VARIANTS[variant];
 
-  return variant === InputVariant.INLINE && props.children ? (
-    props.children({ ref })
-  ) : (
-    <Component
-      {...props}
-      ref={ref}
-      onChange={Utils.functional.chain(onChange, onChangeText && withTargetValue(onChangeText))}
-      onKeyPress={Utils.functional.chain(onKeyPress, onEnterPress && withEnterPress(onEnterPress))}
-    />
-  );
-};
+    return variant === InputVariant.INLINE && props.children ? (
+      props.children({ ref })
+    ) : (
+      <Component
+        {...props}
+        ref={ref}
+        onChange={Utils.functional.chain(onChange, onChangeText && withTargetValue(onChangeText))}
+        onKeyPress={Utils.functional.chain(onKeyPress, onEnterPress && withEnterPress(onEnterPress))}
+      />
+    );
+  }
+);
 
-export default React.forwardRef(Input);
+export default Object.assign(Input, {
+  Variant: InputVariant,
+});

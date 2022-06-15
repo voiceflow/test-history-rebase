@@ -85,7 +85,7 @@ export abstract class AbstractDiagramResourceControl<
     const startingBlocks =
       newDiagram.nodes &&
       Object.values(newDiagram.nodes)
-        .filter((node) => node.type === Realtime.NODE_BLOCK_TYPE)
+        .filter((node) => node.type === BaseModels.BaseNodeType.BLOCK)
         .map((node) => ({ blockID: node.nodeID, name: node.data.name }));
 
     if (startingBlocks && startingBlocks.length > 0) {

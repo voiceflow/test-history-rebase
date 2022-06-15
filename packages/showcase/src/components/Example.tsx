@@ -1,11 +1,11 @@
+import { Box, BoxFlexCenter } from '@voiceflow/ui';
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  display: flex;
+import type { ExampleOptions } from '../examples/utils';
+
+const Container = styled(BoxFlexCenter)`
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   margin: 2em;
 `;
 
@@ -15,13 +15,13 @@ const Title = styled.h4`
   margin-top: 0.6em;
 `;
 
-interface ExampleProps {
+interface ExampleProps extends ExampleOptions {
   title: string;
 }
 
-const Example: React.FC<ExampleProps> = ({ title, children }) => (
-  <Container>
-    <div>{children}</div>
+const Example: React.FC<ExampleProps> = ({ title, children, fullWidth }) => (
+  <Container width={fullWidth ? '100%' : undefined}>
+    <Box width={fullWidth ? '100%' : undefined}>{children}</Box>
     <Title id={title}>{title}</Title>
   </Container>
 );

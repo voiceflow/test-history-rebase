@@ -1,3 +1,4 @@
+import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 import { throttle } from 'throttle-debounce';
 
@@ -39,6 +40,8 @@ export const useCursorControls = () => {
 
   const panViewport = React.useCallback(
     (movement: Pair<number>) => {
+      TippyTooltip.closeAll();
+
       engine.panViewport(movement);
 
       if (!engine.canvas) return;
@@ -60,7 +63,10 @@ export const useCursorControls = () => {
     [moveMouse]
   );
 
-  const zoomViewport = React.useCallback((calculateMovement: MovementCalculator) => engine.zoomViewport(calculateMovement), []);
+  const zoomViewport = React.useCallback((calculateMovement: MovementCalculator) => {
+    TippyTooltip.closeAll();
+    engine.zoomViewport(calculateMovement);
+  }, []);
 
   const updateViewport = React.useCallback(({ x, y, zoom }: Viewport) => engine.updateViewport(diagramID, x, y, zoom), [diagramID]);
 

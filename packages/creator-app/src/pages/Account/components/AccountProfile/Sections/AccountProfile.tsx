@@ -1,4 +1,4 @@
-import { Box, BoxFlex, Input, Link, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Input, Link, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
@@ -32,13 +32,13 @@ const AccountProfile: React.FC = () => {
         )}
         header="Name"
       >
-        <BoxFlex mr={120}>
+        <Box.Flex mr={120}>
           <Input value={user.name ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
 
           <Box ml={16}>
             <Upload.IconUpload image={user.image} size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} />
           </Box>
-        </BoxFlex>
+        </Box.Flex>
       </Section>
 
       <Section
@@ -51,9 +51,9 @@ const AccountProfile: React.FC = () => {
         )}
         header="Email"
       >
-        <BoxFlex mr={120}>
+        <Box.Flex mr={120}>
           <Input value={user.email ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
-        </BoxFlex>
+        </Box.Flex>
       </Section>
 
       {isNotSSOUser && (

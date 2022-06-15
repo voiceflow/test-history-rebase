@@ -1,13 +1,4 @@
-import {
-  BoxFlex,
-  COLOR_PICKER_CONSTANTS,
-  ColorThemes,
-  ColorThemeUnit,
-  FlexApart,
-  isBaseColor,
-  StrictPopperModifiers,
-  useOnClickOutside,
-} from '@voiceflow/ui';
+import { Box, COLOR_PICKER_CONSTANTS, ColorThemes, ColorThemeUnit, isBaseColor, StrictPopperModifiers, useOnClickOutside } from '@voiceflow/ui';
 import React from 'react';
 
 import { ColorPickerPopper } from '@/components/ColorPickerPopper';
@@ -46,11 +37,12 @@ const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({
       customHeaderStyling={{ paddingTop: '16px' }}
       customContentStyling={{ paddingBottom: '24px' }}
     >
-      <FlexApart>
-        <BoxFlex flex={2} mr={24}>
+      <Box.FlexApart>
+        <Box.Flex flex={2} mr={24}>
           <SlotSelect value={type} onChange={onChangeType} />
-        </BoxFlex>
-        <BoxFlex>
+        </Box.Flex>
+
+        <Box.Flex>
           <ColorThemes small selectedColor={color} onColorSelect={saveColor} colors={[DEFAULT_COLORS.dark, ...BASE_COLORS]} />
           <ColorThemeUnit
             background={!isBaseColor(color) ? color : COLOR_WHEEL}
@@ -68,8 +60,8 @@ const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({
               onChange={saveColor}
             />
           )}
-        </BoxFlex>
-      </FlexApart>
+        </Box.Flex>
+      </Box.FlexApart>
     </Section>
   );
 };

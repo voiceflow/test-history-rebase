@@ -25,7 +25,6 @@ import { BLOCK_WIDTH } from '@/styles/theme';
 import { PathPoint, Point } from '@/types';
 import logger from '@/utils/logger';
 import { getNodesGroupCenter } from '@/utils/node';
-import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
 import { fullActiveDiagramSelector } from './fullDiagram';
 
@@ -134,8 +133,10 @@ export const convertToComponent =
     const incomingLinks = allNodesLinks.filter(({ source, target }) => nodeIDMap[target.nodeID] && !nodeIDMap[source.nodeID]);
     const outgoingLinks = allNodesLinks.filter(({ source, target }) => !nodeIDMap[target.nodeID] && nodeIDMap[source.nodeID]);
 
-    const combinedAndMarkupNodes = nodes.filter(({ type }) => isMarkupOrCombinedBlockType(type)).map((node) => ({ data: data[node.id], node }));
-    const { center, minX } = getNodesGroupCenter(combinedAndMarkupNodes, links);
+    const { center, minX } = getNodesGroupCenter(
+      nodes.map((node) => ({ data: data[node.id], node })),
+      links
+    );
 
     const adjustX = startCoords[0] - minX + BLOCK_WIDTH * 1.5;
     const adjustY = startCoords[1] - center[1];

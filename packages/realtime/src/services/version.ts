@@ -117,7 +117,7 @@ class VersionService extends AbstractControl {
   };
 
   private startingBlockNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.DiagramStartingBlock | null => {
-    if (node.type !== Realtime.NODE_BLOCK_TYPE && node.type !== Realtime.BlockType.START) return null;
+    if (node.type !== BaseModels.BaseNodeType.BLOCK && node.type !== Realtime.BlockType.START) return null;
     return { blockID: node.nodeID, name: node.data.name };
   };
 

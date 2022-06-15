@@ -1,4 +1,4 @@
-import { Icon, Input, Popper, preventDefault, useToggle, withHandler } from '@voiceflow/ui';
+import { Input, Popper, preventDefault, SvgIconTypes, useToggle, withHandler } from '@voiceflow/ui';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
@@ -12,7 +12,7 @@ import PopperTitle from '../PopperTitle';
 
 interface ChildrenOptions {
   ref: React.Ref<any>;
-  icon: Icon;
+  icon: SvgIconTypes.Icon;
   active: boolean;
   onClick: React.MouseEventHandler<any>;
 }

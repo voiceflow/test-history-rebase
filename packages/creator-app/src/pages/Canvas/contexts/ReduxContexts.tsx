@@ -72,6 +72,12 @@ export const {
   Consumer: GlobalIntentStepMapConsumer,
 } = createSelectorContext(DiagramV2.globalIntentStepMapSelector);
 
+export const {
+  Context: StartingBlocksContext,
+  Provider: StartingBlocksProvider,
+  Consumer: StartingBlocksConsumer,
+} = createSelectorContext(DiagramV2.startingBlocksSelector);
+
 export const ReduxContextsProviders: React.FC = ({ children }) => (
   <IsCanvasOnlyProvider>
     <IsCreatorMenuHiddenProvider>
@@ -84,8 +90,10 @@ export const ReduxContextsProviders: React.FC = ({ children }) => (
                   <GlobalIntentStepMapProvider>
                     <ActiveDiagramTypeProvider>
                       <IntentNodeDataLookupProvider>
-                        {/* comment to have a children on a new line */}
-                        {children}
+                        <StartingBlocksProvider>
+                          {/* comment to have a children on a new line */}
+                          {children}
+                        </StartingBlocksProvider>
                       </IntentNodeDataLookupProvider>
                     </ActiveDiagramTypeProvider>
                   </GlobalIntentStepMapProvider>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useSetup } from '@/hooks';
+import { useDropLagFix, useSetup } from '@/hooks';
 import perf, { PerfAction } from '@/performance';
 import { Identifier } from '@/styles/constants';
 
@@ -28,14 +28,17 @@ interface EditorV2Props {
   header?: React.ReactNode;
   footer?: React.ReactNode;
   fillHeight?: boolean;
+  dropLagAccept?: string | string[];
   disableAnimation?: boolean;
   withoutContentContainer?: boolean;
 }
 
 const ANIMATION_DISTANCE = 40;
 
-const EditorV2: React.FC<EditorV2Props> = ({ header, footer, children, fillHeight, disableAnimation, withoutContentContainer }) => {
+const EditorV2: React.FC<EditorV2Props> = ({ header, footer, children, fillHeight, dropLagAccept, disableAnimation, withoutContentContainer }) => {
   const { scrollbars } = useEditor();
+
+  const dropLagFixRef = useDropLagFix(dropLagAccept ?? []);
 
   const { state } = useLocation<{ animationEffect?: EditorAnimationEffect }>();
 
@@ -44,7 +47,7 @@ const EditorV2: React.FC<EditorV2Props> = ({ header, footer, children, fillHeigh
   const isPopAnimation = state?.animationEffect === EditorAnimationEffect.POP;
 
   return (
-    <Container id={Identifier.BLOCK_EDITOR}>
+    <Container id={Identifier.BLOCK_EDITOR} ref={!dropLagAccept || !dropLagAccept?.length ? undefined : dropLagFixRef}>
       {header}
 
       <AnimatedContent distance={disableAnimation ? 0 : ANIMATION_DISTANCE * (isPopAnimation ? 1 : -1)}>

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Eventual, Utils } from '@voiceflow/common';
-import { BoxFlex, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
+import { Box, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -167,7 +167,7 @@ const ContextMenu: React.FC = () => {
         getOptionValue={(option) => option?.value}
         getOptionLabel={(value) => (value ? optionsMap[value] : '')}
         renderOptionLabel={(option) => (
-          <BoxFlex width="100%" justifyContent="space-between">
+          <Box.Flex width="100%" justifyContent="space-between">
             <Text>{option.label}</Text>
 
             {!!option.hotkey && (
@@ -175,7 +175,7 @@ const ContextMenu: React.FC = () => {
                 {option?.hotkey}
               </Text>
             )}
-          </BoxFlex>
+          </Box.Flex>
         )}
       />
     </div>

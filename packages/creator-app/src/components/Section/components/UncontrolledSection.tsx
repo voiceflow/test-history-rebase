@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Collapse, Icon, SvgIcon, swallowEvent, TutorialInfoIcon, TutorialInfoIconProps } from '@voiceflow/ui';
+import { Collapse, SvgIcon, SvgIconTypes, swallowEvent, TutorialInfoIcon, TutorialInfoIconProps } from '@voiceflow/ui';
 import React from 'react';
 import { CSSProperties } from 'styled-components';
 
@@ -19,9 +19,9 @@ import StatusContent from './StatusContent';
 export type UncontrolledSectionProps = SectionContainerProps & {
   id?: string;
   count?: number;
-  prefix?: Icon | React.ReactNode;
-  suffix?: Icon | React.ReactNode;
-  infix?: Icon | React.ReactNode;
+  prefix?: SvgIconTypes.Icon | React.ReactNode;
+  suffix?: SvgIconTypes.Icon | React.ReactNode;
+  infix?: SvgIconTypes.Icon | React.ReactNode;
   header?: React.ReactNode;
   toggle?: () => void;
   isLink?: boolean;

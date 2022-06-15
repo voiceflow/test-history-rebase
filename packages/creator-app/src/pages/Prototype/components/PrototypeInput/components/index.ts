@@ -1,4 +1,4 @@
-import { Flex, FlexCenter, SvgIconContainer } from '@voiceflow/ui';
+import { Flex, FlexCenter, SvgIcon } from '@voiceflow/ui';
 import * as React from 'react';
 
 import TextArea from '@/components/TextArea';
@@ -35,7 +35,7 @@ export const InputContainer = styled.div`
 const activeButtonStyle = css`
   background: #eef4f6;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     ${transition('color')}
 
     color: #7b8895;
@@ -58,7 +58,7 @@ export const ControlButton = styled(FlexCenter)<{ active: boolean; disabled?: bo
     css`
       ${activeButtonStyle}
 
-      ${SvgIconContainer} {
+      ${SvgIcon.Container} {
         ${transition('color')}
 
         color: #132144 !important;
@@ -70,7 +70,7 @@ export const ControlButton = styled(FlexCenter)<{ active: boolean; disabled?: bo
       ? css`
           cursor: not-allowed;
 
-          ${SvgIconContainer} {
+          ${SvgIcon.Container} {
             ${transition('color')}
 
             color: #becedc !important;
@@ -84,7 +84,7 @@ export const ControlButton = styled(FlexCenter)<{ active: boolean; disabled?: bo
           :active {
             ${activeButtonStyle}
 
-            ${SvgIconContainer} {
+            ${SvgIcon.Container} {
               ${transition('color')}
 
               color: #132144 !important;

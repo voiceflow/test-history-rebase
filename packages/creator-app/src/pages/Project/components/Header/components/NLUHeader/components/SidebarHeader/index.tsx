@@ -1,4 +1,4 @@
-import { Box, Icon, Popper, SvgIcon } from '@voiceflow/ui';
+import { Box, Popper, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -17,14 +17,13 @@ const SidebarHeader: React.FC = () => {
   const platform = project?.platform;
   const platformMeta = PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType];
   const showIcon = !isVoiceflowPlatform(platform);
-  const hasIcon = !!platformMeta?.icon;
 
   return (
     <SidebarHeaderContainer>
       <Box display="flex" alignItems="center">
-        {showIcon && hasIcon && (
+        {showIcon && !!platformMeta?.icon && (
           <Box display="inline-block" mr={12}>
-            <SvgIcon size={16} color={platformMeta?.iconColor} icon={platformMeta.icon as Icon} />
+            <SvgIcon size={16} color={platformMeta?.iconColor} icon={platformMeta.icon} />
           </Box>
         )}
         NLU Model

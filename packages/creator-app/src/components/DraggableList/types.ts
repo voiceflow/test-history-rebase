@@ -5,6 +5,8 @@ export interface InternalItem<I> {
   type?: string;
   item: I;
   index: number;
+  isLast: boolean;
+  isFirst: boolean;
   itemKey: string;
   isDragActive?: boolean;
   deleteHovered?: boolean;
@@ -13,13 +15,23 @@ export interface InternalItem<I> {
 
 export type DnDItem<I extends { id: string } | any> = Omit<InternalItem<I>, 'type'> & { type: string | symbol };
 
+interface DnDDropTargetMonitor<I> extends DropTargetMonitor {
+  getItem: () => DnDItem<I>;
+}
+
+interface DnDDragSourceMonitor<I> extends DragSourceMonitor {
+  getItem: () => DnDItem<I>;
+}
+
 export interface DnDHandlers<I> {
-  onDrop?: (item: DnDItem<I>, monitor: DropTargetMonitor) => void;
-  canDrag?: boolean | ((monitor: DragSourceMonitor) => boolean);
-  onDragEnd?: (item: I, monitor: DragSourceMonitor) => void;
+  onDrop?: (item: DnDItem<I>, monitor: DnDDropTargetMonitor<I>) => void;
+  canDrag?: boolean | ((item: DnDItem<I>, monitor: DnDDragSourceMonitor<I>) => boolean);
+  canDrop?: (item: DnDItem<I>, monitor: DnDDropTargetMonitor<I>) => boolean;
+  onDragEnd?: (item: I, monitor: DnDDragSourceMonitor<I>) => void;
   onReorder?: (from: number, to: number) => void;
-  onDragStart?: (item: I, monitor: DragSourceMonitor) => void;
-  onDeleteDrop?: (item: DnDItem<I>, monitor?: DropTargetMonitor) => void;
+  canReorder?: (from: number, to: number) => boolean;
+  onDragStart?: (item: I, monitor: DnDDragSourceMonitor<I>) => void;
+  onDeleteDrop?: (item: DnDItem<I>, monitor?: DnDDropTargetMonitor<I>) => void;
 
   deleteHovered?: boolean;
 }

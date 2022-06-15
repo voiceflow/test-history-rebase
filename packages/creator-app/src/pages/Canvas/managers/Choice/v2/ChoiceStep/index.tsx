@@ -3,8 +3,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import Step, { ConnectedStep, Item, NoMatchStepItemV2, NoReplyItemV2, Section, StepButton } from '@/pages/Canvas/components/Step';
+import Step, { Item, NoMatchStepItemV2, NoReplyItemV2, Section, StepButton } from '@/pages/Canvas/components/Step';
 import { WAITING_FOR_INTENT_PLACEHOLDER } from '@/pages/Canvas/constants';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import ChoicePreview from '../ChoicePreview';
 import { CHOICE_ICON, CHOICE_PLACEHOLDER_ICON, CHOICE_PREVIEW_ICON } from '../constants';

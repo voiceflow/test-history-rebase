@@ -4,7 +4,8 @@ import React from 'react';
 
 import { HSLShades } from '@/constants';
 import { useSyncedLookup } from '@/hooks';
-import Step, { ConnectedStep, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { expressionPreview } from '@/utils/expression';
 
 import { NODE_CONFIG } from '../constants';

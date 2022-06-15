@@ -3,7 +3,8 @@ import React from 'react';
 
 import { HSLShades } from '@/constants';
 import { useSyncedLookup } from '@/hooks';
-import Step, { ConnectedStep, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
+import Step, { Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
+import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 interface Path {
   label: string;

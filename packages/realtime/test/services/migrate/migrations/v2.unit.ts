@@ -34,7 +34,7 @@ describe('Migrate service - v2 migration unit tests', () => {
           nodes: {
             [nodeID]: {
               nodeID,
-              type: 'block',
+              type: BaseModels.BaseNodeType.BLOCK,
               data: {},
             },
           } as any,

@@ -1,4 +1,4 @@
-import { FlexCenter, SvgIconContainer } from '@voiceflow/ui';
+import { FlexCenter, SvgIcon } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs';
 
@@ -13,12 +13,12 @@ const OptionalEntityContainer = styled(FlexCenter)`
   font-weight: 600;
   cursor: pointer;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     opacity: 0.8;
     margin-right: 4px;
   }
   &:hover {
-    ${SvgIconContainer} {
+    ${SvgIcon.Container} {
       opacity: 1;
     }
     border-color: solid 1px ${({ theme }) => theme.colors.separatorSecondary};

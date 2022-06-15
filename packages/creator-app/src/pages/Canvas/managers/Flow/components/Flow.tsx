@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Alert, AlertVariant, Select } from '@voiceflow/ui';
+import { Alert, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import { DIAGRAM_ID_SEPARATOR, ROOT_DIAGRAM_NAME } from '@/constants';
@@ -94,7 +94,7 @@ const Flow: React.FC<FlowProps> = ({ onChange, diagram, diagramID, enterOnCreate
         createInputPlaceholder="New Flow Name"
       />
       {flowDoesNotExist && (
-        <Alert variant={AlertVariant.WARNING} mt={10}>
+        <Alert variant={Alert.Variant.WARNING} mt={10}>
           Previously selected Flow is broken or has been deleted
         </Alert>
       )}

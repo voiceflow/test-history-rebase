@@ -6,10 +6,6 @@ import { useEditingMode } from '@/pages/Project/hooks';
 
 import { EngineContext } from './EngineContext';
 
-export const BufferType = {
-  BLOCK: 'block',
-};
-
 interface CopyOptions {
   disableSuccessToast?: boolean;
 }

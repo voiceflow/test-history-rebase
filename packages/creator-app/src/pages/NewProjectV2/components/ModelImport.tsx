@@ -1,8 +1,13 @@
 import { Box, Flex, Text, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { NLUImportOrigin } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { Permission } from '@/config/permissions';
+import { NLUImportLimitDetails } from '@/config/planLimits/nluImport';
+import { ModalType, NLUImportOrigin } from '@/constants';
+import { UpgradePrompt } from '@/ducks/tracking';
 import { styled } from '@/hocs';
+import { useFeature, useModals, usePermission, useTrackingEvents } from '@/hooks';
 
 import { PLATFORM_PROJECT_META_MAP } from '../constants';
 import { useNLUImport } from '../hooks';
@@ -29,9 +34,23 @@ const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, impo
   const fileExtensions = platform && PLATFORM_PROJECT_META_MAP[platform]?.importMeta?.fileExtensions;
   const { onUploadClick, acceptedFileFormatsLabel, isImporting } = useNLUImport({ fileExtensions, platform, onImportModel });
 
+  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
+  const [permissionImportNLU] = usePermission(Permission.BULK_UPLOAD);
+  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
+  const [trackingEvents] = useTrackingEvents();
+
   const importName = platform && PLATFORM_PROJECT_META_MAP[platform]?.importMeta?.name;
 
   const textColor = isImportLoading ? 'rgba(98, 119, 140, 0.5)' : 'rgba(98, 119, 140, 1)';
+
+  const onHandleImportClick = () => {
+    if (revisedEntitlements.isEnabled && !permissionImportNLU) {
+      trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.IMPORT_NLU });
+      openUpgradeModal({ planLimitDetails: NLUImportLimitDetails, promptOrigin: UpgradePrompt.IMPORT_NLU });
+    } else {
+      onUploadClick(NLUImportOrigin.PROJECT);
+    }
+  };
 
   useDidUpdateEffect(() => {
     setIsImportLoading(isImporting);
@@ -46,7 +65,7 @@ const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, impo
         </Text>
       ) : (
         <Flex>
-          <ImportLink disabled={isImportLoading} fontSize={13} onClick={() => onUploadClick(NLUImportOrigin.PROJECT)}>
+          <ImportLink disabled={isImportLoading} fontSize={13} onClick={onHandleImportClick}>
             {`Import ${importName} NLU model`}
           </ImportLink>
           <Box color="rgba(141, 162, 181, 0.5)" pl={8} pr={8}>

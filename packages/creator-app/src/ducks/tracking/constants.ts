@@ -167,6 +167,7 @@ export enum UpgradePrompt {
   WORKSPACE_LIMIT = 'Workspace Limit',
   EXPORT_CSV_NLU = 'Export NLU as CSV',
   EXPORT_NLU = 'Export NLU',
+  IMPORT_NLU = 'Import NLU',
   SUPPORTED_NLUS = 'Supported NLUs',
   EXPORT_PROJECT = 'Export Project as PNG or PDF',
   EXPORT_PROJECT_CSV = 'Export Project as CSV',

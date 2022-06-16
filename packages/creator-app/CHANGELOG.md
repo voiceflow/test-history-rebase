@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.779.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.779.0...@voiceflow/creator-app@1.779.1) (2022-06-16)
+
+
+### Bug Fixes
+
+* ungate nlu export for enterprise (VF-3852) ([#5605](https://github.com/voiceflow/creator-app/issues/5605)) ([eca5d8f](https://github.com/voiceflow/creator-app/commit/eca5d8fae1b74b8f81bb79eb7735ec5216d3e4cb))
+
+
+
+
+
 # [1.779.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.778.0...@voiceflow/creator-app@1.779.0) (2022-06-16)
 
 

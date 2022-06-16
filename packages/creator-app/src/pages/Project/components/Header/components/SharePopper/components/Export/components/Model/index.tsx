@@ -27,7 +27,14 @@ const ExportModel: React.FC<{
 
   const modelExportSelection = (value: NLPProvider) => {
     setModelExportProvider(value);
-    setCanExport(!(revisedEntitlements.isEnabled && (!permissionToExport || !(permissionToExportCSV && value === NLPProvider.VF_CSV))));
+    if (
+      revisedEntitlements.isEnabled &&
+      ((!permissionToExportCSV && value === NLPProvider.VF_CSV) || (value !== NLPProvider.VF_CSV && !permissionToExport))
+    ) {
+      setCanExport(false);
+    } else {
+      setCanExport(true);
+    }
   };
 
   React.useEffect(() => {

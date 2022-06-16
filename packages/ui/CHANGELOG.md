@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.102.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.101.0...@voiceflow/ui@1.102.0) (2022-06-16)
+
+
+### Bug Fixes
+
+* components reorder (VF-2781) ([#5594](https://github.com/voiceflow/creator-app/issues/5594)) ([1838b41](https://github.com/voiceflow/creator-app/commit/1838b41b9cebd41b552429494084cff667cf1eb5))
+
+
+### Features
+
+* nlu tables refactor (VF-000) ([#5588](https://github.com/voiceflow/creator-app/issues/5588)) ([08a3b2d](https://github.com/voiceflow/creator-app/commit/08a3b2deb3b51074c74919a2aacb276445a48fd6))
+
+
+
+
+
 # [1.101.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.100.0...@voiceflow/ui@1.101.0) (2022-06-15)
 
 

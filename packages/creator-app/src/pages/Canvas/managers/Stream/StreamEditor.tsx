@@ -1,11 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ErrorMessageWithDivider } from '@voiceflow/ui';
+import { Checkbox, ErrorMessageWithDivider } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import Checkbox from '@/components/Checkbox';
 import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';

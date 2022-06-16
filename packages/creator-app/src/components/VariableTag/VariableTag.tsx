@@ -1,11 +1,10 @@
+import { OverflowTippyTooltip, OverflowTippyTooltipTypes } from '@voiceflow/ui';
 import React from 'react';
-
-import OverflowTippyTooltip, { OverflowTippyTooltipProps } from '@/components/OverflowTippyTooltip';
 
 import { BaseVariableTagProps, VariableTagContent, VariableTagTooltipStyles, VariableTagWrapper } from './styles';
 
 export interface VariableTagProps extends BaseVariableTagProps {
-  tooltip?: Omit<OverflowTippyTooltipProps, 'children' | 'title'>;
+  tooltip?: Omit<OverflowTippyTooltipTypes.Props, 'children' | 'title'>;
   children: string;
 }
 

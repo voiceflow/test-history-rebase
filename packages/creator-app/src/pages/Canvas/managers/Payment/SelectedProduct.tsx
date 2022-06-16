@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Divider } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import TextArea from '@/components/TextArea';
 import { NamespaceProvider } from '@/contexts';

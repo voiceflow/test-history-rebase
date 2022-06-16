@@ -1,7 +1,6 @@
-import { Box, BoxFlexCenter, Input, swallowEvent, Text, TippyTooltip } from '@voiceflow/ui';
+import { Box, BoxFlexCenter, Checkbox, Input, swallowEvent, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Checkbox from '@/components/Checkbox';
 import { Minus } from '@/components/InteractiveIcon';
 import { styled } from '@/hocs';
 

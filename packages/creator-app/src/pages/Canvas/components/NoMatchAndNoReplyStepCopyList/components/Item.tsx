@@ -1,8 +1,7 @@
 import { Utils } from '@voiceflow/common';
-import { BlockText, BoxFlexApart, ClickableText, stopPropagation, Text } from '@voiceflow/ui';
+import { BlockText, BoxFlexApart, ClickableText, Divider, stopPropagation, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import { copyWithToast } from '@/utils/clipboard';
 
 import ItemContainer from './ItemContainer';

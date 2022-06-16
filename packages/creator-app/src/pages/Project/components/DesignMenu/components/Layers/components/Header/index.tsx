@@ -1,7 +1,6 @@
-import { BlockText, BoxFlexApart } from '@voiceflow/ui';
+import { BlockText, BoxFlexApart, CustomScrollbarsTypes } from '@voiceflow/ui';
 import React from 'react';
 
-import { Scrollbars } from '@/components/CustomScrollbars';
 import { useScrollContext, useScrollStickySides } from '@/hooks';
 
 import { Container } from './components';
@@ -16,7 +15,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ label, children, collapsed, forceSticky, rightAction }) => {
-  const { scrollRef } = useScrollContext<Scrollbars>()!;
+  const { scrollRef } = useScrollContext<CustomScrollbarsTypes.Scrollbars>();
   const [isHeaderSticky] = useScrollStickySides(scrollRef);
 
   return (

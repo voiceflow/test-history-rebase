@@ -1,13 +1,12 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Struct } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
+import { CustomScrollbarsTypes, OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { ExtractRouteParams } from 'react-router';
 import { Optional, Overwrite } from 'utility-types';
 
-import { Scrollbars } from '@/components/CustomScrollbars';
 import { BlockType, HSLShades } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { FeatureFlagMap } from '@/ducks/feature';
@@ -116,7 +115,7 @@ export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPo
   platform: VoiceflowConstants.PlatformType;
   onChange: (value: Partial<Realtime.NodeData<Data>>, save?: boolean) => Promise<void>;
   goToRoot: (animationEffect?: EditorAnimationEffect) => void;
-  scrollbars: React.RefObject<Scrollbars>;
+  scrollbars: React.RefObject<CustomScrollbarsTypes.Scrollbars>;
   goToNested: GoToNested;
   projectType: VoiceflowConstants.ProjectType;
   isFullscreen: boolean;

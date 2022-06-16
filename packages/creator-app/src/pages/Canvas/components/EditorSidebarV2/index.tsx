@@ -1,10 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { stopImmediatePropagation } from '@voiceflow/ui';
+import { CustomScrollbarsTypes, stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
 import type { ExtractRouteParams } from 'react-router';
 import { generatePath, useRouteMatch } from 'react-router-dom';
 
-import { Scrollbars } from '@/components/CustomScrollbars';
 import Drawer from '@/components/Drawer';
 import { RemoveIntercom } from '@/components/IntercomChat';
 import { Path } from '@/config/routes';
@@ -28,7 +27,7 @@ const EditorSidebarV2 = () => {
   const theme = useTheme();
   const isEditingMode = useEditingMode();
 
-  const scrollbars = React.useRef<Scrollbars>(null);
+  const scrollbars = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;

@@ -1,7 +1,7 @@
+import { CustomScrollbars } from '@voiceflow/ui';
 import React from 'react';
 
 import { UncontrolledCollapse } from '@/components/Collapsable';
-import CustomScrollbars from '@/components/CustomScrollbars';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { BlockCategory, BlockType, DragItem } from '@/constants';

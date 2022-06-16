@@ -1,8 +1,8 @@
 import composeRef from '@seznam/compose-react-refs';
+import { CustomScrollbars, CustomScrollbarsTypes } from '@voiceflow/ui';
 import React from 'react';
 import { AutoSizer, Index, List, WindowScroller } from 'react-virtualized';
 
-import CustomScrollbars, { Scrollbars } from '@/components/CustomScrollbars';
 import { ScrollContextProvider } from '@/contexts';
 import { useScrollHelpers } from '@/hooks';
 
@@ -20,12 +20,12 @@ export interface VirtualListProps {
   renderPlaceholder?: (props: { width: number; height: number }) => React.ReactNode;
 }
 
-const VirtualList: React.ForwardRefRenderFunction<Scrollbars, VirtualListProps> = (
+const VirtualList: React.ForwardRefRenderFunction<CustomScrollbarsTypes.Scrollbars, VirtualListProps> = (
   { id, size, header, listRef, className, rowHeight = 42, listStyle, renderItem, renderPlaceholder },
   ref
 ) => {
-  const [scrollbars, setCustomScrollBars] = React.useState<Scrollbars | null>(null);
-  const { bodyRef, scrollHelpers } = useScrollHelpers<Scrollbars>();
+  const [scrollbars, setCustomScrollBars] = React.useState<CustomScrollbarsTypes.Scrollbars | null>(null);
+  const { bodyRef, scrollHelpers } = useScrollHelpers<CustomScrollbarsTypes.Scrollbars>();
 
   const rowRenderer = React.useCallback(
     ({ key, index, style }: { key: string; index: number; style: object }) => (
@@ -37,7 +37,7 @@ const VirtualList: React.ForwardRefRenderFunction<Scrollbars, VirtualListProps> 
   );
 
   return (
-    <CustomScrollbars ref={composeRef<Scrollbars>(ref, bodyRef, setCustomScrollBars)}>
+    <CustomScrollbars ref={composeRef<CustomScrollbarsTypes.Scrollbars>(ref, bodyRef, setCustomScrollBars)}>
       <ScrollContextProvider value={scrollHelpers}>
         {header}
 
@@ -78,4 +78,4 @@ const VirtualList: React.ForwardRefRenderFunction<Scrollbars, VirtualListProps> 
   );
 };
 
-export default React.memo(React.forwardRef<Scrollbars, VirtualListProps>(VirtualList));
+export default React.memo(React.forwardRef<CustomScrollbarsTypes.Scrollbars, VirtualListProps>(VirtualList));

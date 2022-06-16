@@ -1,32 +1,43 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as Slot from '@/ducks/slot';
+import * as SlotV2 from '@/ducks/slotV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { useFeature } from '@/hooks/feature';
 import { useModals } from '@/hooks/modals';
 import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
 
-export const useAddSlot = () => {
-  const { toggle: toggleSlotEdit, close: closeSlotEdit, isInStack: slotEditOpen } = useModals(ModalType.SLOT_EDIT);
-  const createSlot = useDispatch(Slot.createSlot);
-  const [trackingEvents] = useTrackingEvents();
-  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
+export const useOrderedEntities = () => {
+  const allSlots = useSelector(SlotV2.allSlotsSelector);
 
-  const { open: openEntityCreateModal } = useModals(ModalType.ENTITY_CREATE);
+  return React.useMemo(() => _sortBy(allSlots, (slot) => slot.name?.toLowerCase()), [allSlots]);
+};
+
+export const useAddSlot = () => {
+  const slotEditModal = useModals(ModalType.SLOT_EDIT);
+  const entityCreateModal = useModals(ModalType.ENTITY_CREATE);
+
+  const createSlot = useDispatch(Slot.createSlot);
+
+  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
+  const [trackingEvents] = useTrackingEvents();
 
   const onAddSlot = React.useCallback(
     (name: string) =>
       new Promise<Realtime.Slot | null>((resolve) => {
         if (IMM_MODALS_V2.isEnabled) {
-          openEntityCreateModal({ name, onCreate: resolve, onClose: () => resolve(null) });
+          entityCreateModal.open({ name, onCreate: resolve, onClose: () => resolve(null) });
           return;
         }
-        toggleSlotEdit(
+
+        slotEditModal.toggle(
           {
             name,
             isCreate: true,
@@ -37,7 +48,7 @@ export const useAddSlot = () => {
               resolve({ id, name, color, type, inputs });
 
               trackingEvents.trackEntityCreated({ creationType: CanvasCreationType.EDITOR });
-              closeSlotEdit();
+              slotEditModal.close();
             },
           },
           () => resolve(null)
@@ -46,5 +57,5 @@ export const useAddSlot = () => {
     []
   );
 
-  return { onAddSlot, slotEditOpen };
+  return { onAddSlot, slotEditOpen: slotEditModal.isInStack };
 };

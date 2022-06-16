@@ -31,13 +31,18 @@ export {
 export { default as ButtonGroup } from './ButtonGroup';
 export { default as Canvas } from './Canvas';
 export { default as Card } from './Card';
+export type { CheckboxTypes } from './Checkbox';
+export { default as Checkbox } from './Checkbox';
 export { default as Collapse } from './Collapse';
 export type { ColorPickerProps } from './ColorPicker';
 export { ColorPicker } from './ColorPicker';
 export { Range as ColorPickerRange } from './ColorPicker/components/ColorRange/Range';
 export { ColorThemes, ColorThemeUnit } from './ColorPicker/components/ColorThemes';
 export * as COLOR_PICKER_CONSTANTS from './ColorPicker/constants';
+export type { CustomScrollbarsTypes } from './CustomScrollbars';
+export { default as CustomScrollbars } from './CustomScrollbars';
 export { default as Disable } from './Disable';
+export { default as Divider } from './Divider';
 export type { DropdownPlacement } from './Dropdown';
 export { default as Dropdown } from './Dropdown';
 export { ErrorBoundaryWrapper, ErrorDescription, ErrorMessage, ErrorMessageWithDivider, Page404, Page404Wrapper, PageError } from './Error';
@@ -61,6 +66,7 @@ export type {
   BaseIconButtonProps,
   IconButtonActionContainerProps,
   IconButtonBaseContainerProps,
+  IconButtonBasicContainerProps,
   IconButtonContainerProps,
   IconButtonFlatContainerProps,
   IconButtonOutlineContainerProps,
@@ -108,6 +114,8 @@ export {
 } from './NestedMenu';
 export type { OptionsMenuOption } from './OptionsMenu';
 export { default as OptionsMenu } from './OptionsMenu';
+export type { OverflowTippyTooltipTypes } from './OverflowTippyTooltip';
+export { default as OverflowTippyTooltip } from './OverflowTippyTooltip';
 export type { PopperProps } from './Popper';
 export { default as Popper } from './Popper';
 export { default as Portal, portalRootNode } from './Portal';
@@ -116,11 +124,15 @@ export { default as SearchInput, SearchInputIcon } from './SearchInput';
 export { default as SectionV2 } from './SectionV2';
 export type { BaseSelectProps, FilterResult, OptionsFilter } from './Select';
 export { default as Select, SelectInputVariant, SelectWrapper } from './Select';
+export type { SidebarEditorTypes } from './SidebarEditor';
+export { default as SidebarEditor } from './SidebarEditor';
 export { FullSpinner, Spinner } from './Spinner';
 export type { StrengthGaugeTypes } from './StrengthGauge';
 export { default as StrengthGauge } from './StrengthGauge';
 export type { SvgIconTypes } from './SvgIcon';
 export { default as SvgIcon } from './SvgIcon';
+export type { TableTypes } from './Table';
+export { default as Table } from './Table';
 export { default as Tabs } from './Tabs';
 export { Tag } from './Tag';
 export type { TextProps } from './Text';

@@ -1,8 +1,8 @@
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { OverflowTippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine, useSelector } from '@/hooks';

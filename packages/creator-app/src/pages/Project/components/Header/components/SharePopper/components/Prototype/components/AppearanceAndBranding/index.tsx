@@ -1,7 +1,6 @@
-import { Box } from '@voiceflow/ui';
+import { Box, Divider } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import * as Prototype from '@/ducks/prototype';
 import { useDispatch, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';

@@ -1,10 +1,9 @@
 import composeRefs from '@seznam/compose-react-refs';
 import { Nullable } from '@voiceflow/common';
-import { getNestedMenuFormattedLabel } from '@voiceflow/ui';
+import { getNestedMenuFormattedLabel, OverflowTippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
-import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine } from '@/hooks';
 

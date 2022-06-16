@@ -1,6 +1,5 @@
+import { CheckboxTypes } from '@voiceflow/ui';
 import React from 'react';
-
-import { CheckboxProps } from '@/components/Checkbox';
 
 import Container from './RadioGroupContainer';
 import RadioItem from './RadioItem';
@@ -11,7 +10,7 @@ export interface RadioOption<T extends any> {
   customCheckedCondition?: (checked?: T) => boolean;
 }
 
-export interface RadioGroupProps<T extends any> extends Omit<CheckboxProps, 'id' | 'value' | 'checked' | 'onChange'> {
+export interface RadioGroupProps<T extends any> extends Omit<CheckboxTypes.Props, 'id' | 'value' | 'checked' | 'onChange'> {
   column?: boolean;
   options?: RadioOption<T>[];
   checked?: T;

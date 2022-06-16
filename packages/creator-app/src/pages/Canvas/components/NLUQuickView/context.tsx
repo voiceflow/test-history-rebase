@@ -9,9 +9,17 @@ import { NLUContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
-import { useDispatch, useForceUpdate, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import {
+  useDispatch,
+  useForceUpdate,
+  useModals,
+  useOrderedEntities,
+  useOrderedIntents,
+  useOrderedVariables,
+  useSelector,
+  useTrackingEvents,
+} from '@/hooks';
 import { IMM_PERSISTED_STATE_KEY } from '@/pages/Canvas/components/InteractionModelModal';
-import { useOrderedEntities, useOrderedIntents, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
 interface NLUQuickViewProps {
   activeTab: InteractionModelTabType;
@@ -83,9 +91,9 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
 
   const { renameItem, deleteItem: deleteNLUItem, canDeleteItem, canRenameItem, nameChangeTransform } = React.useContext(NLUContext);
 
-  const { sortedIntents } = useOrderedIntents();
-  const { sortedSlots } = useOrderedEntities();
-  const { mergedVariables } = useOrderedVariables();
+  const sortedSlots = useOrderedEntities();
+  const sortedIntents = useOrderedIntents();
+  const [sortedVariables] = useOrderedVariables();
 
   const [immPersistedState, setIMMPersistedState] = useSessionStorageState<{ tab: InteractionModelTabType; id: string | null }>(
     `${IMM_PERSISTED_STATE_KEY}-${activeProjectID}`,
@@ -141,7 +149,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
           targetArray = sortedSlots;
           break;
         case InteractionModelTabType.VARIABLES:
-          targetArray = mergedVariables;
+          targetArray = sortedVariables;
           break;
         default:
           break;
@@ -156,7 +164,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
 
       trackingEvents.trackIMMNavigation({ tabName: tab });
     },
-    [sortedIntents, sortedSlots, mergedVariables]
+    [sortedIntents, sortedSlots, sortedVariables]
   );
 
   const setSelectedID = React.useCallback(

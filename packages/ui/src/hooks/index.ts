@@ -8,6 +8,7 @@ export * from './mouse';
 export * from './popper';
 export * from './raf';
 export * from './reducerV2';
+export * from './resize';
 export * from './storage';
 export * from './theme';
 export * from './toggle';

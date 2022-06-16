@@ -1,7 +1,6 @@
-import { Box, Menu, MenuItem } from '@voiceflow/ui';
+import { Box, Checkbox, Menu, MenuItem } from '@voiceflow/ui';
 import React from 'react';
 
-import CheckBox from '@/components/Checkbox/';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import { PrototypeLayout } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
@@ -71,11 +70,11 @@ const LayoutSelect: React.FC = () => {
       />
       <Box pt={isLayoutTextDialog ? 12 : 0} pb={24}>
         {isLayoutTextDialog && (
-          <CheckBox checked={buttonsOnly} onChange={onButtonsOnlyChange}>
+          <Checkbox checked={buttonsOnly} onChange={onButtonsOnlyChange}>
             <Box color="primary" fontWeight={400}>
               Buttons only
             </Box>
-          </CheckBox>
+          </Checkbox>
         )}
       </Box>
     </Box>

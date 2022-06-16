@@ -1,12 +1,11 @@
+import { Checkbox, CheckboxTypes } from '@voiceflow/ui';
 import React, { ReactNode } from 'react';
-
-import Checkbox, { CheckboxType } from '@/components/Checkbox';
 
 import RadioButtonContainer from './RadioButtonContainer';
 
 export interface RadioItemProps<T> {
   id: T;
-  type?: CheckboxType;
+  type?: CheckboxTypes.Type;
   label: ReactNode;
   column?: boolean;
   onChange: (value: T) => void;
@@ -15,7 +14,7 @@ export interface RadioItemProps<T> {
 
 const RadioItem = <T extends any>({
   id,
-  type = CheckboxType.RADIO,
+  type = Checkbox.Type.RADIO,
   label,
   column,
   isChecked,

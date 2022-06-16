@@ -1,7 +1,6 @@
-import { Input } from '@voiceflow/ui';
+import { Divider, Input } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import Section from '@/components/Section';
 import { useLinkedState } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';

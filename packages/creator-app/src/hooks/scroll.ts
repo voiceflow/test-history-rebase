@@ -1,22 +1,22 @@
-import { useCache, useContextApi, useRAF } from '@voiceflow/ui';
+import { CustomScrollbarsTypes, useCache, useContextApi, useRAF } from '@voiceflow/ui';
 import React from 'react';
 
-import { Scrollbars } from '@/components/CustomScrollbars';
 import { ScrollContext, ScrollContextValue } from '@/contexts/ScrollContext';
 import { getOffsetLeftToNode, getOffsetToNode, scrollTo, setScrollbarOffset } from '@/utils/dom';
 import { xnor, xor } from '@/utils/logic';
 
 import { useToggle } from './toggle';
 
-interface ScrollHelpers<B extends HTMLElement | Scrollbars, I extends HTMLElement | null> {
+interface ScrollHelpers<B extends HTMLElement | CustomScrollbarsTypes.Scrollbars, I extends HTMLElement | null> {
   bodyRef: React.RefObject<B>;
   innerRef: React.RefObject<I>;
   scrollHelpers: ScrollContextValue<B>;
 }
 
-const isScrollbars = (value?: null | HTMLElement | Scrollbars): value is Scrollbars => !!value && 'getValues' in value;
+const isScrollbars = (value?: null | HTMLElement | CustomScrollbarsTypes.Scrollbars): value is CustomScrollbarsTypes.Scrollbars =>
+  !!value && 'getValues' in value;
 
-export const useScrollHelpers = <B extends HTMLElement | Scrollbars, I extends HTMLElement | null = null>({
+export const useScrollHelpers = <B extends HTMLElement | CustomScrollbarsTypes.Scrollbars, I extends HTMLElement | null = null>({
   enableScrollbarOffset,
 }: { enableScrollbarOffset?: boolean } = {}): ScrollHelpers<B, I> => {
   const [scheduler] = useRAF();
@@ -67,7 +67,7 @@ export const useScrollHelpers = <B extends HTMLElement | Scrollbars, I extends H
   });
 };
 
-export const useScrollContext = <T extends HTMLElement | Scrollbars>(): ScrollContextValue<T> | null =>
+export const useScrollContext = <T extends HTMLElement | CustomScrollbarsTypes.Scrollbars>(): ScrollContextValue<T> =>
   React.useContext(ScrollContext) as ScrollContextValue<T>;
 
 export const useHorizontalScrollToNode = <T extends HTMLElement>(
@@ -86,7 +86,7 @@ export const useHorizontalScrollToNode = <T extends HTMLElement>(
   }, recallEffectFields);
 };
 
-export const useScrollStickySides = <T extends HTMLElement | Scrollbars>(
+export const useScrollStickySides = <T extends HTMLElement | CustomScrollbarsTypes.Scrollbars>(
   bodyRef: React.RefObject<T>,
   updateByProps: unknown[] = []
 ): [isHeaderSticky: boolean, isFooterSticky: boolean] => {

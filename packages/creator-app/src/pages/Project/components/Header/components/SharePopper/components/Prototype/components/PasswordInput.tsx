@@ -1,7 +1,6 @@
-import { BlockText, ClickableText, Input, NestedInputIconPosition } from '@voiceflow/ui';
+import { BlockText, ClickableText, Divider, Input, NestedInputIconPosition } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 import { Permission } from '@/config/permissions';
 import { ModalType, RESPONSE_COLOR_CODES as COLOR_CODES } from '@/constants';

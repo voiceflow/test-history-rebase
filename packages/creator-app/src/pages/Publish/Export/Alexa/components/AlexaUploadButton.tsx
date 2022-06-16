@@ -1,7 +1,6 @@
-import { Menu, MenuItem } from '@voiceflow/ui';
+import { Checkbox, Menu, MenuItem } from '@voiceflow/ui';
 import React from 'react';
 
-import Checkbox from '@/components/Checkbox';
 import DropdownButton from '@/components/DropdownButton';
 import UploadButton from '@/components/PlatformUploadButton';
 import * as Account from '@/ducks/account';

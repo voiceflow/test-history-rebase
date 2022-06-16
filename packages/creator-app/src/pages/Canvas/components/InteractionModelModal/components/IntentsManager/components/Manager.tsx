@@ -1,4 +1,3 @@
-import { Utils } from '@voiceflow/common';
 import { ClickableText, ErrorMessage, FlexApart, Input } from '@voiceflow/ui';
 import React from 'react';
 
@@ -10,13 +9,12 @@ import * as Intents from '@/ducks/intent';
 import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as SlotV2 from '@/ducks/slotV2';
 import { IntentEditType } from '@/ducks/tracking/constants';
 import { compose, connect } from '@/hocs';
-import { useTrackingEvents } from '@/hooks';
+import { useIntentNameProcessor, useTrackingEvents } from '@/hooks';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { applyPlatformIntentAndSlotNameFormatting, isCustomizableBuiltInIntent, validateIntentName } from '@/utils/intent';
+import { applyPlatformIntentAndSlotNameFormatting, isCustomizableBuiltInIntent } from '@/utils/intent';
 
 export interface ManagerProps {
   id: string;
@@ -24,7 +22,7 @@ export interface ManagerProps {
 }
 
 const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, ManagerProps & ConnectedManagerProps> = (
-  { id: intentID, intent: selectedIntent, platform, slots, removeIntent, patchIntent, allIntents },
+  { id: intentID, intent: selectedIntent, platform, removeIntent, patchIntent },
   ref
 ) => {
   const [name, setName] = React.useState(selectedIntent?.name ?? '');
@@ -36,21 +34,17 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 
   const slotEdit = path.type === 'slot';
 
-  const validateName = (intentName?: string | null) =>
-    validateIntentName(
-      intentName ?? '',
-      allIntents.filter((intent) => intent.id !== intentID),
-      slots
-    );
+  const intentNameProcessor = useIntentNameProcessor();
 
   const onBlur = () => {
-    const formattedName = Utils.string.removeTrailingUnderscores(name);
-    const error = validateName(formattedName);
+    const { error, formattedName } = intentNameProcessor(name, intentID);
 
     setName(formattedName);
 
     if (error) {
-      return setNameError(error);
+      setNameError(error);
+
+      return;
     }
 
     setNameError(null);
@@ -65,7 +59,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 
   React.useEffect(() => {
     if (selectedIntent) {
-      setNameError(validateName(selectedIntent?.name));
+      setNameError(intentNameProcessor(selectedIntent.name).error);
     }
   }, [intentID]);
 
@@ -116,9 +110,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 };
 
 const mapStateToProps = {
-  slots: SlotV2.allSlotsSelector,
   intent: IntentV2.getIntentByIDSelector,
-  allIntents: IntentV2.allIntentsSelector,
   platform: ProjectV2.active.platformSelector,
 };
 

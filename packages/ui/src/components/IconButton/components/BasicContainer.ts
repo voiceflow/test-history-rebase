@@ -6,11 +6,12 @@ import { BaseContainerProps } from './IconButtonContainer';
 
 export interface BasicContainerProps extends BaseContainerProps {
   variant: IconButtonVariant.BASIC;
+  inline?: boolean;
+  offsetSize?: number;
   activeHover?: boolean;
   activeClick?: boolean;
   transparent?: boolean;
   containerSize?: number;
-  inline?: boolean;
 }
 
 const transparentHoverStyle = css`
@@ -37,9 +38,9 @@ const BasicContainer = styled.button<BasicContainerProps>`
   border-radius: 6px;
   cursor: pointer;
 
-  ${({ containerSize = 10 }) => css`
+  ${({ containerSize = 10, offsetSize = containerSize }) => css`
     padding: ${containerSize}px;
-    margin: -${containerSize}px;
+    margin: -${offsetSize}px;
   `}
 
   &:hover,

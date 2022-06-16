@@ -1,8 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Input } from '@voiceflow/ui';
+import { Box, Divider, Input } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import TextArea from '@/components/TextArea';
 import * as History from '@/ducks/history';

@@ -9,9 +9,9 @@ import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
+import { useAsyncEffect, useDispatch, useOrderedEntities, useSelector } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
-import { useFilteredList, useOrderedEntities } from '@/pages/Canvas/components/NLUQuickView/hooks';
+import { useFilteredList } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
 import { useCreatingItem, useListHooks } from '../hooks';
 import { SectionSection } from './index';
@@ -26,7 +26,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
 
   const createSlot = useDispatch(Slot.createSlot);
 
-  const { sortedSlots } = useOrderedEntities();
+  const sortedSlots = useOrderedEntities();
   const filteredList = useFilteredList(search, sortedSlots) as Realtime.Slot[];
 
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.SLOTS, [activeTab]);

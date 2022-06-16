@@ -3,49 +3,48 @@ import { toast } from '@voiceflow/ui';
 import _differenceWith from 'lodash/differenceWith';
 import _isEqual from 'lodash/isEqual';
 import * as Normal from 'normal-store';
-import { useCallback, useMemo, useState } from 'react';
+import React from 'react';
 
 import * as Intent from '@/ducks/intent';
 import { getUniqSlots } from '@/ducks/intent/utils';
-import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useIntentNameProcessor, useSelector } from '@/hooks';
 import { applyPlatformIntentAndSlotNameFormatting } from '@/utils/intent';
 
-interface useCreateIntentProps {
-  initialName?: string;
+interface CreateIntentProps {
   onCreate?: (id: string) => void;
+  initialName?: string;
 }
 
-interface CreateIntentProps {
+interface CreateIntentAPI {
   name: string;
+  reset: () => void;
+  cancel: () => void;
+  inputs: Realtime.IntentInput[];
   setName: (text: string) => void;
   onCreate: () => void;
-  inputs: Realtime.IntentInput[];
-  setInputs: (inputs: Realtime.IntentInput[]) => void;
-  addRequiredSlot: (slotID: string) => void;
-  removeRequiredSlot: (slotID: string) => void;
-  updateSlotDialog: (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => void;
-  intentEntities: Normal.Normalized<Realtime.IntentSlot>;
-  cancel: () => void;
-  reset: () => void;
   creating: boolean;
+  setInputs: (inputs: Realtime.IntentInput[]) => void;
+  intentEntities: Normal.Normalized<Realtime.IntentSlot>;
+  addRequiredSlot: (slotID: string) => void;
+  updateSlotDialog: (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => void;
+  removeRequiredSlot: (slotID: string) => void;
 }
 
-export const useCreateIntent = ({ initialName, onCreate }: useCreateIntentProps): CreateIntentProps => {
-  const allIntents = useSelector(IntentV2.allIntentsSelector);
+export const useCreateIntent = ({ initialName, onCreate }: CreateIntentProps): CreateIntentAPI => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectMeta = useSelector(ProjectV2.active.metaSelector);
 
   const intentSlotFactory = Realtime.Utils.slot.intentSlotFactoryCreator(projectMeta.type);
 
-  const [name, setName] = useState<string>(initialName || '');
-  const [inputs, setInputs] = useState<Realtime.IntentInput[]>([]);
-  const [intentEntities, setIntentEntities] = useState<Normal.Normalized<Realtime.IntentSlot>>(() => Normal.createEmpty());
-  const [creating, setCreating] = useState(false);
+  const [name, setName] = React.useState(initialName || '');
+  const [inputs, setInputs] = React.useState<Realtime.IntentInput[]>([]);
+  const [creating, setCreating] = React.useState(false);
+  const [intentEntities, setIntentEntities] = React.useState<Normal.Normalized<Realtime.IntentSlot>>(() => Normal.createEmpty());
+
+  const intentNameProcessor = useIntentNameProcessor();
 
   const createIntent = useDispatch(Intent.createIntent);
-  const allIntentNames = useMemo(() => allIntents.map((intent) => intent.name), [allIntents]);
 
   const reset = () => {
     setName('');
@@ -54,29 +53,28 @@ export const useCreateIntent = ({ initialName, onCreate }: useCreateIntentProps)
     setCreating(false);
   };
 
-  const handleSetInputs = useCallback(
-    (newInputs: Realtime.IntentInput[]) => {
-      const newIntentEntities = getUniqSlots(newInputs).reduce<Realtime.IntentSlot[]>(
-        (slots, slotID) => (Normal.hasOne(intentEntities, slotID) ? slots : [...slots, intentSlotFactory({ id: slotID })]),
-        []
-      );
+  const handleSetInputs = (newInputs: Realtime.IntentInput[]) => {
+    const newIntentEntities = getUniqSlots(newInputs).reduce<Realtime.IntentSlot[]>(
+      (slots, slotID) => (Normal.hasOne(intentEntities, slotID) ? slots : [...slots, intentSlotFactory({ id: slotID })]),
+      []
+    );
 
-      const newInputSlots = getUniqSlots(newInputs);
-      const oldInputSlots = getUniqSlots(inputs);
-      const slotsToRemove = _differenceWith(oldInputSlots, newInputSlots, _isEqual);
-      const entitiesToSet = [...Normal.denormalize(intentEntities), ...newIntentEntities].filter((slot) => !slotsToRemove.includes(slot.id));
+    const newInputSlots = getUniqSlots(newInputs);
+    const oldInputSlots = getUniqSlots(inputs);
+    const slotsToRemove = _differenceWith(oldInputSlots, newInputSlots, _isEqual);
+    const entitiesToSet = [...Normal.denormalize(intentEntities), ...newIntentEntities].filter((slot) => !slotsToRemove.includes(slot.id));
 
-      setIntentEntities(Normal.normalize(entitiesToSet));
-      setInputs(newInputs);
-    },
-    [intentEntities, inputs]
-  );
+    setIntentEntities(Normal.normalize(entitiesToSet));
+    setInputs(newInputs);
+  };
 
-  const finalizeIntentCreate = useCallback(async () => {
+  const finalizeIntentCreate = async () => {
     if (creating) return;
 
-    if (allIntentNames.includes(name)) {
-      toast.error(`'${name}' is already being used, please use another name`);
+    const { error, formattedName } = intentNameProcessor(name);
+
+    if (error) {
+      toast.error(error);
       return;
     }
 
@@ -84,7 +82,7 @@ export const useCreateIntent = ({ initialName, onCreate }: useCreateIntentProps)
 
     try {
       const newIntent = {
-        name,
+        name: formattedName,
         slots: intentEntities,
         inputs,
       } as Partial<Realtime.Intent>;
@@ -96,17 +94,17 @@ export const useCreateIntent = ({ initialName, onCreate }: useCreateIntentProps)
     } catch (e) {
       toast.error(e);
     }
-  }, [creating, allIntentNames, name, inputs, intentEntities, onCreate]);
+  };
 
   const cancel = () => {
     reset();
   };
 
-  const updateSlot = useCallback((slotID: string, data: Partial<Realtime.IntentSlot>) => {
+  const updateSlot = (slotID: string, data: Partial<Realtime.IntentSlot>) => {
     setIntentEntities((prevUsedSlots) => Normal.patchOne(prevUsedSlots, slotID, data));
-  }, []);
+  };
 
-  const addRequiredSlot = useCallback((slotID: string) => {
+  const addRequiredSlot = (slotID: string) => {
     setIntentEntities((prevUsedSlots) => {
       if (Normal.hasOne(prevUsedSlots, slotID)) {
         return Normal.patchOne(prevUsedSlots, slotID, { required: true });
@@ -114,28 +112,25 @@ export const useCreateIntent = ({ initialName, onCreate }: useCreateIntentProps)
 
       return Normal.appendOne(prevUsedSlots, slotID, { ...intentSlotFactory({ id: slotID }), required: true });
     });
-  }, []);
+  };
 
-  const removeRequiredSlot = useCallback(
-    (slotID: string) => {
-      const oldInputSlots = getUniqSlots(inputs);
+  const removeRequiredSlot = (slotID: string) => {
+    const oldInputSlots = getUniqSlots(inputs);
 
-      if (oldInputSlots.includes(slotID)) {
-        updateSlot(slotID, { required: false });
-      } else {
-        setIntentEntities((prevUsedSlots) => Normal.removeOne(prevUsedSlots, slotID));
-      }
-    },
-    [updateSlot, inputs]
-  );
+    if (oldInputSlots.includes(slotID)) {
+      updateSlot(slotID, { required: false });
+    } else {
+      setIntentEntities((prevUsedSlots) => Normal.removeOne(prevUsedSlots, slotID));
+    }
+  };
 
-  const updateSlotDialog = useCallback((slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => {
+  const updateSlotDialog = (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => {
     setIntentEntities((prevUsedSlots) =>
       Normal.patchOne(prevUsedSlots, slotID, {
         dialog: { ...Normal.getOne(prevUsedSlots, slotID)?.dialog, ...dialog },
       } as Partial<Realtime.IntentSlot>)
     );
-  }, []);
+  };
 
   return {
     name,

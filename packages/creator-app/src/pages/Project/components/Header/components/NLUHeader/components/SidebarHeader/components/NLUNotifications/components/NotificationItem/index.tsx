@@ -18,7 +18,7 @@ const NOTIFICATION_ITEM_ICONS: Record<InteractionModelTabType, SvgIconTypes.Icon
 };
 
 const NotificationItem: React.FC<NotificationItemProps> = ({ data }) => {
-  const { goToEntity } = React.useContext(NLUManagerContext);
+  const nluManager = React.useContext(NLUManagerContext);
 
   const { title, message, itemID, type } = data;
 
@@ -27,9 +27,10 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data }) => {
     if (true) {
       toast.warn('Placeholder');
     } else {
-      goToEntity(type, itemID);
+      nluManager.goToTab(type, itemID);
     }
   };
+
   return (
     <Container display="flex" onClick={jumpToItem} flexDirection="row">
       <Box width={60}>
@@ -37,10 +38,12 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data }) => {
           <SvgIcon icon={NOTIFICATION_ITEM_ICONS[type]} color="#6e849a" />
         </IconContainer>
       </Box>
+
       <Box flex={2}>
         <Box color="#bd425f" fontWeight={600} fontSize={13} mb={4}>
           {title}
         </Box>
+
         <Box>{message}</Box>
       </Box>
     </Container>

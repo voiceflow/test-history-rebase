@@ -3,15 +3,16 @@ import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Intent from '@/ducks/intent';
-import { useDidUpdateEffect, useDispatch, useIntent, useLinkedState } from '@/hooks';
-import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
+import { useDidUpdateEffect, useDispatch, useIntent, useIntentNameProcessor, useLinkedState } from '@/hooks';
+
+import IntentForm from './index';
 
 interface EditIntentFormProps {
   intentID: string;
-  withNameSection?: boolean;
-  withDescriptionBottomBorder?: boolean;
   rightSlider?: boolean;
+  withNameSection?: boolean;
   prefilledNewUtterance?: string;
+  withDescriptionBottomBorder?: boolean;
 }
 
 const DEFAULT_INPUTS: Realtime.IntentInput[] = [];
@@ -34,7 +35,18 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
 
   const patchIntent = useDispatch(Intent.patchIntent);
 
+  const intentNameProcessor = useIntentNameProcessor();
+
   const saveName = () => {
+    const { error, formattedName } = intentNameProcessor(name, intentID);
+
+    setName(formattedName);
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
     patchIntent(intentID, { name });
   };
 

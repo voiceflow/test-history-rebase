@@ -7,268 +7,240 @@ import { matchPath, useLocation } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import { NLUContext } from '@/contexts';
-import * as IntentV2 from '@/ducks/intentV2';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
-import * as SlotV2 from '@/ducks/slotV2';
-import { useDispatch, useModals, useSelector } from '@/hooks';
-import { VariableType } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/constants';
-import { Variable } from '@/pages/Canvas/components/InteractionModelModal/components/VariablesManager/types';
-import { useOrderedEntities, useOrderedIntents, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
+import { OrderedVariable, useDispatch, useModals, useOrderedEntities, useOrderedIntents, useOrderedVariables, useSelector } from '@/hooks';
 
-interface NLUManagerProps {
+type AnyItem = OrderedVariable | Realtime.Intent | Realtime.Slot;
+
+export interface NLUManagerContextValue<I extends AnyItem = AnyItem> {
+  items: I[];
   search: string;
+  goToTab: (type: InteractionModelTabType, itemID?: string | null) => void;
+  goToItem: (id: string | null) => void;
+  itemsMap: Record<string, I>;
   setSearch: (text: string) => void;
   activeTab: InteractionModelTabType;
-  setActiveTab: (tab: InteractionModelTabType) => void;
-  checkedItems: string[];
-  setCheckedItems: (items: string[]) => void;
-  toggleCheckedItem: (itemID: string) => void;
-  selectedItemId: string | null;
-  setSelectedItemId: (id: string) => void;
-  handleItemsDelete: () => void;
-  handleSelectItem: (id: string) => void;
-  toggleAllCheckedItems: () => void;
-  deleteItem: (id: string, type: InteractionModelTabType) => void;
-  selectedItem: AnyNLUItemType | null;
-  createAndSelect: () => void;
-  setShowUtteranceRecos: (val: boolean) => void;
-  showUtteranceRecos: boolean;
-  goToEntity: (type: InteractionModelTabType, id: string) => void;
+  deleteItem: (id: string) => void;
+  activeItem: I | null;
+  activeItemID: string | null;
+  renamingItemID: string | null;
+  selectedItemIDs: Set<string>;
+  createAndGoToItem: (name?: string) => void;
+  setRenamingItemID: (itemID: string | null) => void;
+  setSelectedItemIDs: (itemIDs: string[]) => void;
+  toggleActiveItemID: (id: string) => void;
+  deleteSelectedItems: VoidFunction;
+  toggleSelectedItemID: (itemID: string) => void;
+  showUtteranceRecommendations: boolean;
+  setShowUtteranceRecommendations: (shown: boolean) => void;
 }
 
-const DefaultState = {
+const INITIAL_STATE: NLUManagerContextValue = {
+  items: [],
   search: '',
+  goToTab: Utils.functional.noop,
+  itemsMap: {},
+  goToItem: Utils.functional.noop,
   setSearch: Utils.functional.noop,
   activeTab: InteractionModelTabType.INTENTS,
-  setActiveTab: Utils.functional.noop,
-  checkedItems: [],
-  setCheckedItems: Utils.functional.noop,
-  toggleCheckedItem: Utils.functional.noop,
-  selectedItemId: '',
-  setSelectedItemId: Utils.functional.noop,
-  handleItemsDelete: Utils.functional.noop,
-  handleSelectItem: Utils.functional.noop,
-  toggleAllCheckedItems: Utils.functional.noop,
   deleteItem: Utils.functional.noop,
-  selectedItem: null,
-  createAndSelect: Utils.functional.noop,
-  setShowUtteranceRecos: Utils.functional.noop,
-  showUtteranceRecos: false,
-  goToEntity: Utils.functional.noop,
+  activeItem: null,
+  activeItemID: null,
+  renamingItemID: null,
+  selectedItemIDs: new Set(),
+  createAndGoToItem: Utils.functional.noop,
+  setRenamingItemID: Utils.functional.noop,
+  setSelectedItemIDs: Utils.functional.noop,
+  toggleActiveItemID: Utils.functional.noop,
+  deleteSelectedItems: Utils.functional.noop,
+  toggleSelectedItemID: Utils.functional.noop,
+  showUtteranceRecommendations: false,
+  setShowUtteranceRecommendations: Utils.functional.noop,
 };
 
-export const NLUManagerContext = React.createContext<NLUManagerProps>(DefaultState);
+export const NLUManagerContext = React.createContext<NLUManagerContextValue>(INITIAL_STATE);
 
 const NLU_MANAGER_PERSISTED_STATE_KEY = 'NLU_MANAGER_PERSIST_KEY';
 
-type AnyNLUItemType = Realtime.Intent | Realtime.Slot | Variable;
+interface MatchPathParams {
+  modelType: InteractionModelTabType;
+  modelEntityID?: string;
+}
+
+const activeTabSelector = <T, R, S>(
+  activeTab: InteractionModelTabType,
+  selectors: {
+    [InteractionModelTabType.SLOTS]?: () => T;
+    [InteractionModelTabType.INTENTS]?: () => R;
+    [InteractionModelTabType.VARIABLES]?: () => S;
+  }
+) => selectors[activeTab]?.() ?? null;
 
 export const NLUManagerProvider: React.FC = ({ children }) => {
-  const { deleteItem: deleteNLUItem, canDeleteItem, deleteItems: deleteNLUItems } = React.useContext(NLUContext);
+  const nlu = React.useContext(NLUContext);
 
   const [search, setSearch] = React.useState('');
-  const [checkedItems, setCheckedItems] = React.useState<string[]>([]);
-  const [selectedItem, setSelectedItem] = React.useState<AnyNLUItemType | null>(null);
-  const [showUtteranceRecos, setShowUtteranceRecos] = React.useState(false);
-
-  const activeProjectID = useSelector(activeProjectIDSelector)!;
-  const allSlotsMap = useSelector(SlotV2.slotMapSelector);
-  const intentsMap = useSelector(IntentV2.customIntentMapSelector);
+  const [renamingItemID, setRenamingItemID] = React.useState<string | null>(null);
+  const [selectedItemIDs, setSelectedItemIDsSet] = React.useState<Set<string>>(() => new Set());
+  const [showUtteranceRecommendations, setShowUtteranceRecommendations] = React.useState(false);
 
   const location = useLocation();
 
-  const modelMatch = React.useMemo(() => {
-    return matchPath<{ modelType: InteractionModelTabType; modelEntityID?: string }>(location.pathname, {
-      path: [Path.NLU_MANAGER_ENTITY],
-    });
-  }, [location.pathname]);
+  const intents = useOrderedIntents();
+  const entities = useOrderedEntities();
+  const [variables] = useOrderedVariables();
+
+  const activeProjectID = useSelector(activeProjectIDSelector)!;
+
+  const modelMatch = React.useMemo(() => matchPath<MatchPathParams>(location.pathname, { path: [Path.NLU_MANAGER_ENTITY] }), [location.pathname]);
 
   const goToNLUManagerEntity = useDispatch(Router.goToCurrentNLUManagerEntity);
 
-  const addIntentModal = useModals(ModalType.INTENT_CREATE);
   const addSlotModal = useModals(ModalType.ENTITY_CREATE);
+  const addIntentModal = useModals(ModalType.INTENT_CREATE);
   const addVariableModal = useModals(ModalType.VARIABLE_CREATE);
 
-  const { sortedSlots } = useOrderedEntities();
-  const { sortedIntents } = useOrderedIntents();
-  const { mergedVariables, mergedVariablesMap } = useOrderedVariables();
-
-  const [nluManagerPersistedState, setNluManagerPersistedState] = useSessionStorageState<{ tab: InteractionModelTabType; id?: string | null }>(
+  const [nluManagerPersistedState, setNluManagerPersistedState] = useSessionStorageState<{ id?: string | null; tab: InteractionModelTabType }>(
     `${NLU_MANAGER_PERSISTED_STATE_KEY}-${activeProjectID}`,
-    {
-      tab: InteractionModelTabType.INTENTS,
-      id: null,
-    }
+    { id: null, tab: InteractionModelTabType.INTENTS }
   );
 
   const persistedStateRef = useCachedValue(nluManagerPersistedState);
 
   const activeTab = modelMatch?.params.modelType ?? persistedStateRef.current.tab ?? InteractionModelTabType.INTENTS;
-  const activeID = modelMatch?.params.modelEntityID ? decodeURIComponent(modelMatch.params.modelEntityID) : persistedStateRef.current.id ?? '';
+  const activeItemID = modelMatch?.params.modelEntityID ? decodeURIComponent(modelMatch.params.modelEntityID) : persistedStateRef.current.id ?? '';
 
-  const activeTabSelector = (activeTab: InteractionModelTabType, selectors: Partial<Record<InteractionModelTabType, () => any>>) =>
-    selectors[activeTab]?.() ?? null;
+  const items = activeTabSelector(activeTab, {
+    [InteractionModelTabType.SLOTS]: () => entities,
+    [InteractionModelTabType.INTENTS]: () => intents,
+    [InteractionModelTabType.VARIABLES]: () => variables,
+  })!;
 
-  const handleSetPersistState = (tab: InteractionModelTabType, id?: string | null) => {
-    const persistedState = { tab, id };
-    setNluManagerPersistedState(persistedState);
-    persistedStateRef.current = persistedState;
-  };
+  const itemsMap = React.useMemo(() => Utils.array.createMap(Utils.array.inferUnion(items), (item) => item.id), [items]);
 
-  const reset = () => {
-    setSelectedID(null);
-    setSearch('');
-    setCheckedItems([]);
-    setShowUtteranceRecos(false);
-  };
+  const goToTab = React.useCallback(
+    (tab: InteractionModelTabType, itemID?: string | null) => {
+      const persistedState = { tab, id: itemID };
 
-  const goToEntity = React.useCallback(
-    (tab: InteractionModelTabType, id?: string | null) => {
-      handleSetPersistState(tab, id);
-      goToNLUManagerEntity(tab, id);
-      if (!id) {
-        // TODO: refactor this to not be a flag specifically for showing utterance recos
-        setShowUtteranceRecos(false);
+      persistedStateRef.current = persistedState;
+
+      setNluManagerPersistedState(persistedState);
+      goToNLUManagerEntity(tab, itemID);
+
+      // TODO: refactor this to not be a flag specifically for showing utterance recommendations
+      if (!itemID) {
+        setShowUtteranceRecommendations(false);
       }
     },
-    [goToNLUManagerEntity]
+    [activeTab, goToNLUManagerEntity, setNluManagerPersistedState, setShowUtteranceRecommendations]
   );
 
-  const setSelectedTab = React.useCallback(
-    (tab: InteractionModelTabType) => {
-      if (activeTab === tab) return;
-      goToEntity(tab);
+  const goToItem = React.useCallback(
+    (itemID: string | null) => {
+      if (activeItemID === itemID) return;
+
+      goToTab(activeTab, itemID);
     },
-    [goToEntity, activeTab]
+    [goToTab, activeTab, activeItemID]
   );
 
-  const setSelectedID = React.useCallback(
-    (id?: string | null) => {
-      goToEntity(activeTab, id);
+  const toggleActiveItemID = React.useCallback((id: string) => goToItem(activeItemID === id ? null : id), [activeItemID, goToItem]);
+
+  const createAndGoToItem = React.useCallback(
+    (name?: string) => {
+      activeTabSelector(activeTab, {
+        [InteractionModelTabType.SLOTS]: () => addSlotModal.open({ name, onCreate: (slot: Realtime.Slot) => goToItem(slot.id) }),
+        [InteractionModelTabType.INTENTS]: () => addIntentModal.open({ name, onCreate: (id: string) => goToItem(id) }),
+        [InteractionModelTabType.VARIABLES]: () => addVariableModal.open({ name, onCreate: (slot: Realtime.Slot) => goToItem(slot.id) }),
+      });
     },
-    [activeTab, goToEntity]
+    [activeTab, addVariableModal, addIntentModal, addSlotModal, goToItem]
   );
 
-  const toggleAllCheckedItems = React.useCallback(() => {
-    let targetIDs: string[] = [];
-    let targetArray: { name: string; id: string }[] = [];
-    if (checkedItems.length) {
-      setCheckedItems([]);
-    } else {
-      targetArray =
-        activeTabSelector(activeTab, {
-          [InteractionModelTabType.INTENTS]: () => sortedIntents,
-          [InteractionModelTabType.SLOTS]: () => sortedSlots,
-          [InteractionModelTabType.VARIABLES]: () => mergedVariables.filter(({ type }) => type !== VariableType.BUILT_IN),
-        }) ?? [];
-    }
-
-    const formattedSearch = search.trim().toLowerCase();
-    targetIDs = targetArray.filter(({ name }) => name.toLowerCase().includes(formattedSearch)).map(({ id }) => id);
-    setCheckedItems(targetIDs);
-  }, [sortedIntents, sortedSlots, mergedVariables, activeTab, checkedItems, search]);
-
-  const handleSelectItem = React.useCallback(
-    (id: string) => {
-      if (activeID === id) {
-        setSelectedID(null);
+  const setSelectedItemIDs = React.useCallback(
+    (ids: string[] | ((ids: string[], set: Set<string>) => string[])) => {
+      if (Array.isArray(ids)) {
+        setSelectedItemIDsSet(new Set(ids));
       } else {
-        setSelectedID(id);
+        setSelectedItemIDsSet((selectedItemIDs) => new Set(ids(Array.from(selectedItemIDs), selectedItemIDs)));
       }
     },
-    [activeID, setSelectedID]
+    [setSelectedItemIDsSet]
   );
-
-  const createAndSelect = React.useCallback(() => {
-    activeTabSelector(activeTab, {
-      [InteractionModelTabType.INTENTS]: () => addIntentModal.open({ onCreate: (id: string) => setSelectedID(id) }),
-      [InteractionModelTabType.SLOTS]: () => addSlotModal.open({ onCreate: (slot: Realtime.Slot) => setSelectedID(slot.id) }),
-      [InteractionModelTabType.VARIABLES]: () => addVariableModal.open({ onCreate: (slot: Realtime.Slot) => setSelectedID(slot.id) }),
-    });
-  }, [activeTab, addVariableModal, addIntentModal, addSlotModal]);
 
   const deleteItem = React.useCallback(
-    async (id: string, type: InteractionModelTabType) => {
-      const deletedItemIDs: string[] = [];
-      if (canDeleteItem(id, type)) {
-        deletedItemIDs.push(id);
-        await deleteNLUItem(id, type);
-        if (id === activeID) {
-          setSelectedID(null);
-        }
-      } else {
-        toast.error(`Cannot delete ${id}`);
+    async (id: string) => {
+      if (!nlu.canDeleteItem(id, activeTab)) {
+        toast.error(`Cannot delete item`);
+        return;
       }
 
-      const newCheckedItems = checkedItems.filter((itemID) => !deletedItemIDs.includes(itemID));
-      setCheckedItems(newCheckedItems);
-    },
-    [activeID, checkedItems]
-  );
+      await nlu.deleteItem(id, activeTab);
 
-  const handleItemsDelete = React.useCallback(async () => {
-    const deletedItemIDs = await deleteNLUItems(checkedItems, activeTab);
-    const newCheckedItems = checkedItems.filter((itemID) => {
-      return !deletedItemIDs.includes(itemID);
-    });
-    setCheckedItems(newCheckedItems);
+      setSelectedItemIDs((selectedItemIDs) => Utils.array.withoutValue(selectedItemIDs, id));
 
-    if (deletedItemIDs.length) {
-      toast.success(`Deleted ${deletedItemIDs.length} items`);
-    }
-  }, [deleteItem, deleteItem, checkedItems]);
-
-  const toggleCheckedItem = React.useCallback(
-    (id: string) => {
-      if (checkedItems.includes(id)) {
-        setCheckedItems([...checkedItems.filter((itemID) => itemID !== id)]);
-      } else {
-        setCheckedItems([...checkedItems, id]);
+      if (id === activeItemID) {
+        goToItem(null);
       }
     },
-    [checkedItems]
+    [goToItem, activeTab, activeItemID, nlu.canDeleteItem, nlu.deleteItem]
   );
 
-  useDidUpdateEffect(() => {
-    if (!activeID) {
-      setSelectedItem(null);
+  const deleteSelectedItems = React.useCallback(async () => {
+    const deletedItemIDs = await nlu.deleteItems(Array.from(selectedItemIDs), activeTab);
+
+    if (!deletedItemIDs.length) {
+      toast.error(`Cannot delete these items`);
       return;
     }
 
-    const activeItemData = activeTabSelector(activeTab, {
-      [InteractionModelTabType.INTENTS]: () => intentsMap[activeID],
-      [InteractionModelTabType.SLOTS]: () => allSlotsMap[activeID],
-      [InteractionModelTabType.VARIABLES]: () => mergedVariablesMap[activeID],
-    });
+    setSelectedItemIDs(Utils.array.withoutValues(Array.from(selectedItemIDs), deletedItemIDs));
 
-    setSelectedItem(activeItemData);
-  }, [activeID, activeTab, intentsMap, allSlotsMap, mergedVariablesMap]);
+    toast.success(`Deleted ${deletedItemIDs.length} items`);
+
+    if (deletedItemIDs.includes(activeItemID)) {
+      goToItem(null);
+    }
+  }, [activeTab, selectedItemIDs, activeItemID, deleteItem, deleteItem]);
+
+  const toggleSelectedItemID = React.useCallback((itemID: string) => {
+    setSelectedItemIDs((selectedItemIDs, selectedItemIDsSet) =>
+      selectedItemIDsSet.has(itemID) ? Utils.array.withoutValue(selectedItemIDs, itemID) : [...selectedItemIDs, itemID]
+    );
+  }, []);
 
   useDidUpdateEffect(() => {
-    reset();
+    setSearch('');
+    setRenamingItemID(null);
+    setSelectedItemIDs([]);
+    setShowUtteranceRecommendations(false);
   }, [activeTab]);
 
-  const api: NLUManagerProps = useContextApi({
+  const api = useContextApi<NLUManagerContextValue>({
+    items,
     search,
+    goToTab,
+    itemsMap,
+    goToItem,
     setSearch,
     activeTab,
-    setActiveTab: setSelectedTab,
-    checkedItems,
-    setCheckedItems,
-    toggleCheckedItem,
-    selectedItemId: activeID,
-    setSelectedItemId: setSelectedID,
-    handleItemsDelete,
-    handleSelectItem,
-    toggleAllCheckedItems,
     deleteItem,
-    selectedItem,
-    createAndSelect,
-    setShowUtteranceRecos,
-    showUtteranceRecos,
-    goToEntity,
+    activeItem: itemsMap[activeItemID] ?? null,
+    activeItemID,
+    renamingItemID,
+    selectedItemIDs,
+    createAndGoToItem,
+    setRenamingItemID,
+    setSelectedItemIDs,
+    toggleActiveItemID,
+    deleteSelectedItems,
+    toggleSelectedItemID,
+    showUtteranceRecommendations,
+    setShowUtteranceRecommendations,
   });
 
   return <NLUManagerContext.Provider value={api}>{children}</NLUManagerContext.Provider>;
 };
+
+export const useNLUManager = <I extends AnyItem>(): NLUManagerContextValue<I> => React.useContext(NLUManagerContext) as NLUManagerContextValue<I>;

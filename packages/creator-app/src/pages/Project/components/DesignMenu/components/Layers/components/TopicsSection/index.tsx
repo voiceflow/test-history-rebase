@@ -1,8 +1,7 @@
-import { SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
+import { CustomScrollbarsTypes, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { List } from 'react-virtualized';
 
-import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
 import { Permission } from '@/config/permissions';
@@ -22,7 +21,7 @@ const SEARCHABLE_INTENTS_COUNT = 10;
 
 const TopicsSection: React.FC = () => {
   const listRef = React.useRef<List>(null);
-  const scrollBarsRef = React.useRef<Scrollbars>(null);
+  const scrollBarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
   const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);

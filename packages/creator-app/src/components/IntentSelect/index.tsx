@@ -1,16 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import {
-  Alert,
-  BaseSelectProps,
-  IconButton,
-  isNotUIOnlyMenuItemOption,
-  isUIOnlyMenuItemOption,
-  NestedMenuComponents,
-  Select,
-  toast,
-  UIOnlyMenuItemOption,
-} from '@voiceflow/ui';
+import { Alert, BaseSelectProps, IconButton, isUIOnlyMenuItemOption, NestedMenuComponents, Select, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -19,17 +9,10 @@ import { CUSTOMIZABLE_INTENT_PREFIXS, ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as SlotV2 from '@/ducks/slotV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import { useDispatch, useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useIntentNameProcessor, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { ClassName } from '@/styles/constants';
-import {
-  applyPlatformIntentAndSlotNameFormatting,
-  intentFilter,
-  isCustomizableBuiltInIntent,
-  prettifyIntentName,
-  validateIntentName,
-} from '@/utils/intent';
+import { applyPlatformIntentAndSlotNameFormatting, intentFilter, isCustomizableBuiltInIntent, prettifyIntentName } from '@/utils/intent';
 
 import { Option } from './components';
 
@@ -60,12 +43,13 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   createInputPlaceholder = 'intents',
   ...props
 }) => {
-  const slots = useSelector(SlotV2.allSlotsSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
   const allIntents = useSelector(IntentV2.allPlatformIntentsSelector);
   const immModalsV2 = useFeature(FeatureFlag.IMM_MODALS_V2);
   const { open: openCreateIntentModal } = useModals(ModalType.INTENT_CREATE);
+
+  const intentNameProcessor = useIntentNameProcessor();
 
   const createIntent = useDispatch(Intent.createIntent);
 
@@ -117,8 +101,9 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   };
 
   const onCreate = async (name: string) => {
-    const preparedName = Utils.string.removeTrailingUnderscores(prettifyIntentName(name));
-    const intentByName = filteredOptions.find(({ name }) => Utils.string.removeTrailingUnderscores(name) === preparedName);
+    const { error, formattedName } = intentNameProcessor(name);
+
+    const intentByName = filteredOptions.find(({ name }) => Utils.string.removeTrailingUnderscores(name) === formattedName);
 
     if (!immModalsV2.isEnabled && intentByName) {
       await onSelectIntent(intentByName.id);
@@ -126,16 +111,12 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
       return;
     }
 
-    const intentsOnly = options.filter(isNotUIOnlyMenuItemOption);
-
-    const error = validateIntentName(preparedName, intentsOnly, slots);
-
     if (error) {
       toast.error(error);
     } else if (immModalsV2.isEnabled) {
-      openCreateIntentModal({ createName: preparedName, onCreate: onSelectIntent });
+      openCreateIntentModal({ name: formattedName, onCreate: onSelectIntent });
     } else {
-      const nextIntentID = await createIntent({ name: preparedName });
+      const nextIntentID = await createIntent({ name: formattedName });
 
       await onSelectIntent(nextIntentID);
 

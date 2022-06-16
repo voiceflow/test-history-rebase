@@ -1,26 +1,23 @@
+import { CustomScrollbarsTypes } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
-import { VARIABLE_DESCRIPTION } from '@/components/Canvas/constants';
-import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
-import { InteractionModelTabType } from '@/constants';
+import { InteractionModelTabType, VariableType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useEnableDisable, useSelector, useSetup } from '@/hooks';
+import { OrderedVariable, useDispatch, useEnableDisable, useSelector, useSetup } from '@/hooks';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
+import { addVariablePrefix, getVariableDescription } from '@/utils/variable';
 
 import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
 import { DraggableItem, Manager, VariableInput, VariableListContainer } from './components';
-import { VariableType } from './constants';
-import { Variable } from './types';
-import { addPrefix } from './utils';
 
 export interface VariablesManagerProps {
   selectedID?: string;
@@ -29,7 +26,7 @@ export interface VariablesManagerProps {
 }
 
 const createVariablesList = (type: VariableType, variables: string[]) =>
-  variables.map((variable) => ({ id: addPrefix(type, variable), name: variable, type }));
+  variables.map((variable) => ({ id: addVariablePrefix(type, variable), name: variable, type }));
 
 const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSelectedID, setSelectedTypeAndID }) => {
   const removeGlobalVariable = useDispatch(Version.removeGlobalVariable);
@@ -50,7 +47,7 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSele
       _sortBy(createVariablesList(type as VariableType, variables), (variable) => variable.name.toLowerCase())
     );
 
-    const map = list.reduce<Record<string, Variable>>((acc, item) => Object.assign(acc, { [item.id]: item }), {});
+    const map = list.reduce<Record<string, OrderedVariable>>((acc, item) => Object.assign(acc, { [item.id]: item }), {});
 
     return [list, map];
   }, [localVariables, globalVariables]);
@@ -60,13 +57,13 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSele
 
   const selectedVariable = selectedVariableID ? mergedVariablesMap[selectedVariableID] : null;
 
-  const scrollbarsRef = React.useRef<Scrollbars>(null);
+  const scrollbarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
-  const getItemKey = React.useCallback((item: Variable) => item.id, []);
-  const getItemLabel = React.useCallback((item: Variable) => item.name, []);
+  const getItemKey = React.useCallback((item: OrderedVariable) => item.id, []);
+  const getItemLabel = React.useCallback((item: OrderedVariable) => item.name, []);
 
   const onDelete = React.useCallback(
-    (_, { item }: { item: Variable }) => {
+    (_, { item }: { item: OrderedVariable }) => {
       if (item.type === VariableType.GLOBAL) {
         removeGlobalVariable(item.name);
       } else {
@@ -89,7 +86,7 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSele
   }, [onDelete, localVariables, globalVariables, selectedVariable]);
 
   const onFilter = React.useCallback(
-    (_, items: Variable[]) => {
+    (_, items: OrderedVariable[]) => {
       if (!items.some((variable) => variable.id === selectedVariable?.id)) {
         setSelectedID(items[0]?.id);
       }
@@ -99,12 +96,12 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSele
 
   useSetup(() => {
     if (selectedID && !selectedID.match(new RegExp(`(${Object.values(VariableType).join('|')}):.+`))) {
-      if (mergedVariablesMap[addPrefix(VariableType.LOCAL, selectedID)]) {
-        setSelectedID(addPrefix(VariableType.LOCAL, selectedID));
-      } else if (mergedVariablesMap[addPrefix(VariableType.GLOBAL, selectedID)]) {
-        setSelectedID(addPrefix(VariableType.GLOBAL, selectedID));
-      } else if (mergedVariablesMap[addPrefix(VariableType.BUILT_IN, selectedID)]) {
-        setSelectedID(addPrefix(VariableType.BUILT_IN, selectedID));
+      if (mergedVariablesMap[addVariablePrefix(VariableType.LOCAL, selectedID)]) {
+        setSelectedID(addVariablePrefix(VariableType.LOCAL, selectedID));
+      } else if (mergedVariablesMap[addVariablePrefix(VariableType.GLOBAL, selectedID)]) {
+        setSelectedID(addVariablePrefix(VariableType.GLOBAL, selectedID));
+      } else if (mergedVariablesMap[addVariablePrefix(VariableType.BUILT_IN, selectedID)]) {
+        setSelectedID(addVariablePrefix(VariableType.BUILT_IN, selectedID));
       } else if (slots.find((slot) => slot.name === selectedID)) {
         setSelectedTypeAndID(InteractionModelTabType.SLOTS, slots.find((slot) => slot.name === selectedID)!.id);
       }
@@ -114,7 +111,7 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSele
   return (
     <>
       <LeftColumn isDragging={isDragging}>
-        <VariableInput setSelected={(type: VariableType, variable: string) => setSelectedID(addPrefix(type, variable))} />
+        <VariableInput setSelected={(type: VariableType, variable: string) => setSelectedID(addVariablePrefix(type, variable))} />
 
         <VariableListContainer>
           <DraggableList
@@ -137,7 +134,7 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSele
                 items={mergedVariables}
                 onChange={onFilter}
                 getLabel={getItemLabel}
-                renderItem={(item: Variable, index) =>
+                renderItem={(item: OrderedVariable, index) =>
                   item.type === VariableType.BUILT_IN ? (
                     <DraggableItem
                       key={item.id}
@@ -172,8 +169,8 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSele
       <RightColumn withTopPadding>
         <Manager
           variable={selectedVariable?.name ?? ''}
-          description={selectedVariable ? VARIABLE_DESCRIPTION[selectedVariable.name] : ''}
           isBuiltIn={selectedVariable?.type === VariableType.BUILT_IN}
+          description={getVariableDescription(selectedVariable?.name)}
           removeVariable={deleteSelectedVariable}
         />
       </RightColumn>

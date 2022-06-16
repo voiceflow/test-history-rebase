@@ -5,34 +5,42 @@ import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
 import { InteractionModelTabType, ModalType, NLPProvider, PlatformToNLPProvider } from '@/constants';
-import { NLUContext } from '@/contexts';
 import * as Export from '@/ducks/export';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { useDispatch, useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 
-type NLUItem = MenuOption<undefined>;
+import { NLUContext } from './Context';
+
+interface NLUItem extends MenuOption<undefined> {
+  key: string;
+  onClick?: VoidFunction;
+}
 
 interface useNLUItemMenuProps {
-  itemID: string;
+  itemID?: string | null;
   itemType: InteractionModelTabType;
   onRename?: () => void;
   isBuiltIn?: boolean;
 }
 
 export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRenameProp }: useNLUItemMenuProps) => {
-  const { deleteItem, canDeleteItem, canRenameItem } = React.useContext(NLUContext);
-  const [exporting, setIsExporting] = React.useState(false);
-  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
-  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
-  const [permissionToExport] = usePermission(revisedEntitlements.isEnabled ? Permission.NLU_EXPORT_ALL : Permission.MODEL_EXPORT);
-  const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
-  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
-  const [trackingEvents] = useTrackingEvents();
+  const nlu = React.useContext(NLUContext);
+  const upgradeModal = useModals(ModalType.UPGRADE_MODAL);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
-  const project = useSelector(ProjectV2.getProjectByIDSelector)({ id: projectID });
+  const project = useSelector(ProjectV2.projectByIDSelector, { id: projectID });
+
+  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
+  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
+
+  const [permissionToExport] = usePermission(revisedEntitlements.isEnabled ? Permission.NLU_EXPORT_ALL : Permission.MODEL_EXPORT);
+  const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
+
+  const [trackingEvents] = useTrackingEvents();
+
+  const [exporting, setIsExporting] = React.useState(false);
 
   const exportModel = useDispatch(Export.exportModel);
 
@@ -40,27 +48,35 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
 
   const onExport = React.useCallback(
     async (exportType: NLPProvider) => {
+      if (!itemID) return;
+
       if (
         (revisedEntitlements.isEnabled && ((exportType === NLPProvider.VF_CSV && permissionToExportCSV) || permissionToExport)) ||
         !revisedEntitlements.isEnabled
       ) {
         setIsExporting(true);
-        toast.warn('Exporting...');
+
+        toast.info('Exporting...');
+
         await exportModel(exportType, [itemID]);
+
         toast.success('Successfully Exported');
+
         setIsExporting(false);
       } else {
         trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_NLU });
+
         const planLimits = getNLUExportLimitDetails(exportType);
-        openUpgradeModal({ planLimitDetails: planLimits, promptOrigin: UpgradePrompt.EXPORT_NLU });
+
+        upgradeModal.open({ planLimitDetails: planLimits, promptOrigin: UpgradePrompt.EXPORT_NLU });
       }
     },
-    [itemID, exportModel]
+    [itemID, exportModel, upgradeModal.open]
   );
 
-  const canDelete = canDeleteItem(itemID, itemType);
-  const canRename = !!onRenameProp && canRenameItem(itemID, itemType);
-  const canExport = nluManager.isEnabled && itemType === InteractionModelTabType.INTENTS;
+  const canDelete = !!itemID && nlu.canDeleteItem(itemID, itemType);
+  const canRename = !!itemID && !!onRenameProp && nlu.canRenameItem(itemID, itemType);
+  const canExport = !!itemID && nluManager.isEnabled && itemType === InteractionModelTabType.INTENTS;
 
   const memoizedOptions = React.useMemo<NLUItem[]>(() => {
     if (!itemID) return [];
@@ -80,6 +96,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
       if (options.length) {
         options.push({ key: 'divider-1', label: 'divider-1', divider: true });
       }
+
       options.push({ key: 'rename', label: 'Rename', onClick: onRename });
     }
 
@@ -88,10 +105,10 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
         options.push({ key: 'divider-2', label: 'divider-2', divider: true });
       }
 
-      options.push({ key: 'delete', label: isBuiltIn ? 'Remove' : 'Delete', onClick: () => deleteItem(itemID, itemType) });
+      options.push({ key: 'delete', label: isBuiltIn ? 'Remove' : 'Delete', onClick: () => nlu.deleteItem(itemID, itemType) });
     }
     return options;
-  }, [itemID, itemType, onRename, isBuiltIn, canDelete, canRename, canExport, deleteItem]);
+  }, [itemID, itemType, onRename, isBuiltIn, canDelete, canRename, canExport, nlu.deleteItem, onExport]);
 
   return {
     options: memoizedOptions,

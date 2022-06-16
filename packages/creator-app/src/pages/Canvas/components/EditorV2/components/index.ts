@@ -1,13 +1,6 @@
 export { default as AnimatedContent } from './AnimatedContent';
-export { default as Container } from './Container';
-export { default as Content } from './Content';
 export { default as DefaultFooter } from './DefaultFooter';
 export { default as DefaultHeader } from './DefaultHeader';
-export { default as Footer } from './Footer';
-export { default as FooterActionsButton } from './FooterActionsButton';
-export { default as FooterActionsContainer } from './FooterActionsContainer';
-export { default as Header } from './Header';
-export { default as HeaderActionsButton } from './HeaderActionsButton';
 export { default as PersistCollapse } from './PersistCollapse';
 export { default as RedirectToRoot } from './RedirectToRoot';
 export { default as Tutorial } from './Tutorial';

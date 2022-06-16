@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Box, Button, ButtonVariant, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,44 +10,36 @@ import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/Inte
 import { useCreateIntent } from '@/pages/Canvas/components/IntentModalsV2/CreateModal/hooks';
 
 const CreateModal: React.FC = () => {
-  const { close, data, isInStack } = useModals<{ id?: string; onCreate?: (id: string) => void; createName?: string }>(ModalType.INTENT_CREATE);
+  const { close, data, isInStack } = useModals<{ id?: string; onCreate?: (id: string) => void; name?: string }>(ModalType.INTENT_CREATE);
 
   const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
 
   const {
-    intentEntities,
+    name,
     reset,
     cancel,
-    creating,
-    updateSlotDialog,
-    onCreate,
-    name,
-    setName,
     inputs,
+    setName,
+    creating,
+    onCreate,
     setInputs,
     addRequiredSlot,
+    intentEntities,
+    updateSlotDialog,
     removeRequiredSlot,
   } = useCreateIntent({
-    initialName: data.createName,
-    onCreate: (id: string) => {
-      data.onCreate?.(id);
-      close();
-    },
+    onCreate: Utils.functional.chain(data.onCreate, close),
+    initialName: data.name,
   });
 
   useDidUpdateEffect(() => {
     if (isInStack) {
       reset();
-      setName(data?.createName || '');
+      setName(data?.name || '');
     } else {
       cancel();
     }
   }, [isInStack]);
-
-  const handleCancel = async () => {
-    cancel();
-    close();
-  };
 
   return (
     <Modal ref={setModalRef} maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]} id={ModalType.INTENT_CREATE} title="Create Intent" headerBorder>
@@ -54,25 +47,26 @@ const CreateModal: React.FC = () => {
         <TextEditorVariablesPopoverProvider value={modalRef}>
           <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
             <IntentForm
-              removeRequiredSlot={removeRequiredSlot}
-              addRequiredSlot={addRequiredSlot}
-              inputs={inputs}
-              setInputs={setInputs}
               name={name}
+              inputs={inputs}
               setName={setName}
-              withDescriptionSection={false}
               autofocus
-              updateSlotDialog={updateSlotDialog}
+              setInputs={setInputs}
               intentEntities={intentEntities}
+              addRequiredSlot={addRequiredSlot}
+              updateSlotDialog={updateSlotDialog}
+              removeRequiredSlot={removeRequiredSlot}
+              withDescriptionSection={false}
             />
           </Box>
         </TextEditorVariablesPopoverProvider>
       )}
 
-      <ModalFooter justifyContent="flex-end">
-        <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={handleCancel} style={{ marginRight: '10px' }}>
+      <ModalFooter gap={10} justifyContent="flex-end">
+        <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={Utils.functional.chain(cancel, close)}>
           Cancel
         </Button>
+
         <Button width={140} disabled={creating} variant={ButtonVariant.PRIMARY} squareRadius onClick={onCreate} isLoading={creating}>
           Create Intent
         </Button>

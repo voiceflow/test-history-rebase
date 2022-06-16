@@ -1,4 +1,5 @@
 import {
+  Checkbox,
   defaultMenuLabelRenderer,
   FlexApart,
   FlexStart,
@@ -10,7 +11,6 @@ import {
 } from '@voiceflow/ui';
 import React from 'react';
 
-import Checkbox from '@/components/Checkbox';
 import { ReportTag } from '@/models';
 import { isBuiltInTag, isSentimentTag } from '@/utils/reportTag';
 

@@ -5,12 +5,12 @@ import {
   isUIOnlyMenuItemOption,
   NestedMenuComponents,
   OverflowText,
+  OverflowTippyTooltip,
   SvgIcon,
   TippyTooltip,
 } from '@voiceflow/ui';
 import React from 'react';
 
-import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import { ModalType } from '@/constants';
 import * as variableState from '@/ducks/variableState';
 import { useModals, useSelector, useVariableStatesPlanLimit } from '@/hooks';

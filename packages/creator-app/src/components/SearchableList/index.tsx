@@ -1,8 +1,7 @@
-import { useDidUpdateEffect } from '@voiceflow/ui';
+import { CustomScrollbarsTypes, useDidUpdateEffect } from '@voiceflow/ui';
 import _toLower from 'lodash/toLower';
 import React from 'react';
 
-import { Scrollbars } from '@/components/CustomScrollbars';
 import VirtualList, { VirtualListProps } from '@/components/VirtualList';
 
 import { AddButton, Container, ScrollContainer, SearchContainer, SearchInput } from './components';
@@ -20,7 +19,7 @@ export interface SearchableListProps<T> extends Pick<VirtualListProps, 'id' | 'r
   formatValue?: (value: string) => string;
 }
 
-const SearchableList: React.ForwardRefRenderFunction<Scrollbars, SearchableListProps<any>> = (
+const SearchableList: React.ForwardRefRenderFunction<CustomScrollbarsTypes.Scrollbars, SearchableListProps<any>> = (
   { items, getLabel, onAdd, addMessage, onChange, rowHeight, renderItem, placeholder, formatValue = (value) => value, id },
   ref
 ) => {

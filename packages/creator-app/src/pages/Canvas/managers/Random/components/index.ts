@@ -1,4 +1,5 @@
-import Checkbox from '@/components/Checkbox';
+import { Checkbox } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 import InfoTooltip from './InfoTooltip';

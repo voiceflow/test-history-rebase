@@ -1,7 +1,6 @@
-import { Box, Link, preventDefault, Text } from '@voiceflow/ui';
+import { Box, Link, OverflowTippyTooltip, preventDefault, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import { Identifier } from '@/styles/constants';
 
 import StartButton from './StartButton';

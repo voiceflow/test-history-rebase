@@ -1,8 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
-import { swallowEvent, Tag } from '@voiceflow/ui';
+import { OverflowTippyTooltip, swallowEvent, Tag } from '@voiceflow/ui';
 import React from 'react';
 
-import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import { VariableTagTooltipStyles } from '@/components/VariableTag';
 import { FeatureFlag } from '@/config/features';
 import { InteractionModelTabType, ModalType } from '@/constants';

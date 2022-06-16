@@ -406,6 +406,12 @@ export enum JobBuiltinStageType {
   PROGRESS = 'PROGRESS',
 }
 
+export enum VariableType {
+  LOCAL = 'local',
+  GLOBAL = 'global',
+  BUILT_IN = 'built-in',
+}
+
 export enum GooglePromptType {
   CONSENT = 'consent',
   SELECT_ACCOUNT = 'select_account',

@@ -8,11 +8,11 @@ import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
+import { useAsyncEffect, useDispatch, useOrderedIntents, useSelector } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 import { isBuiltInIntent } from '@/utils/intent';
 
-import { useFilteredList, useOrderedIntents } from '../../../hooks';
+import { useFilteredList } from '../../../hooks';
 import { useCreatingItem, useListHooks } from '../hooks';
 import { SectionSection } from '.';
 import ListItem from './ListItem';
@@ -36,7 +36,7 @@ const IntentList: React.FC<SectionProps> = ({
   const allCustomIntentsMap = useSelector(IntentV2.customIntentMapSelector);
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.INTENTS, [activeTab]);
 
-  const { sortedIntents } = useOrderedIntents();
+  const sortedIntents = useOrderedIntents();
   const filteredList = useFilteredList(search, sortedIntents) as Realtime.Intent[];
 
   useListHooks({

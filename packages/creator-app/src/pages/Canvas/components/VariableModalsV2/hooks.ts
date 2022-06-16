@@ -3,18 +3,13 @@ import React from 'react';
 
 import { CanvasCreationType } from '@/ducks/tracking';
 import * as Version from '@/ducks/version';
-import { useDispatch } from '@/hooks';
-import { useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
+import { useDispatch, useOrderedVariables } from '@/hooks';
 
 export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) => void }) => {
-  const { mergedVariables } = useOrderedVariables();
+  const [variables] = useOrderedVariables();
   const createGlobalVars = useDispatch(Version.addManyGlobalVariables);
 
-  const existingVariableNames = React.useMemo(() => {
-    return mergedVariables.map((variable) => {
-      return variable.name;
-    });
-  }, [mergedVariables]);
+  const existingVariableNames = React.useMemo(() => variables.map((variable) => variable.name), [variables]);
 
   const varAlreadyExists = (name: string) => existingVariableNames.includes(name);
 
@@ -46,7 +41,7 @@ export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) 
         onCreate?.(newVarNames);
       }
     },
-    [mergedVariables, onCreate]
+    [variables, onCreate]
   );
 
   return {

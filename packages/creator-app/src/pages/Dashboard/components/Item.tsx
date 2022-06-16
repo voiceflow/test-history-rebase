@@ -1,11 +1,10 @@
-import { Dropdown, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Dropdown, OverflowTippyTooltip, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 import React from 'react';
 
 import Avatar from '@/components/Avatar';
 import { EditableTextAPI } from '@/components/EditableText';
-import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
 import * as Project from '@/ducks/project';
@@ -124,7 +123,7 @@ export const Item: React.FC<ItemProps> = ({
 
         <ProjectNameWrapper>
           <ProjectTitleDetails>
-            <OverflowTippyTooltip title={name}>
+            <OverflowTippyTooltip title={name} style={{ display: 'block', width: '100%' }} bodyOverflow>
               {(ref) => (
                 <ProjectTitle
                   ref={(editableText) => {

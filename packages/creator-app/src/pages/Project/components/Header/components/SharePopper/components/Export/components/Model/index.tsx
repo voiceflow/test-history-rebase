@@ -1,8 +1,7 @@
-import { BlockText, Select } from '@voiceflow/ui';
+import { BlockText, Divider, Select } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import Divider from '@/components/Divider';
 import UpgradeOption from '@/components/UpgradeOption';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';

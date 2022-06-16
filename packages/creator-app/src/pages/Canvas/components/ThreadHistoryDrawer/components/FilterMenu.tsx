@@ -1,11 +1,11 @@
-import { Menu } from '@voiceflow/ui';
+import { Checkbox, Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Thread from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useSelector } from '@/hooks';
 import { FILTER_LABELS, FilterType } from '@/pages/Canvas/components/ThreadHistoryDrawer/constants';
-import MenuCheckboxOption, { CheckboxType } from '@/pages/Canvas/managers/components/MenuCheckboxOption';
+import MenuCheckboxOption from '@/pages/Canvas/managers/components/MenuCheckboxOption';
 
 interface FilterMenuProps {
   filter: FilterType;
@@ -42,7 +42,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
         { label: '', divider: true },
         {
           label: (
-            <MenuCheckboxOption type={CheckboxType.CHECKBOX} checked={isMentionedThreadsOnly}>
+            <MenuCheckboxOption type={Checkbox.Type.CHECKBOX} checked={isMentionedThreadsOnly}>
               Only tagged threads
             </MenuCheckboxOption>
           ),
@@ -50,7 +50,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
         },
         {
           label: (
-            <MenuCheckboxOption type={CheckboxType.CHECKBOX} checked={isTopicThreadsOnly}>
+            <MenuCheckboxOption type={Checkbox.Type.CHECKBOX} checked={isTopicThreadsOnly}>
               Only current topic
             </MenuCheckboxOption>
           ),
@@ -59,7 +59,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
         { style: { marginBottom: 0 }, label: '', divider: true },
         {
           label: (
-            <MenuCheckboxOption type={CheckboxType.CHECKBOX} checked={!commentsVisible}>
+            <MenuCheckboxOption type={Checkbox.Type.CHECKBOX} checked={!commentsVisible}>
               Hide comments
             </MenuCheckboxOption>
           ),

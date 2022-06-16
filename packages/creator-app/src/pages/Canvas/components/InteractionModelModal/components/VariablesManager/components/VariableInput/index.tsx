@@ -1,6 +1,7 @@
 import { Badge, Dropdown, Flex, FlexApart, Input, SvgIcon, toast, TutorialInfoIcon } from '@voiceflow/ui';
 import React from 'react';
 
+import { VariableType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagram';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
@@ -8,7 +9,6 @@ import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
-import { VariableType } from '../../constants';
 import { Container, Info, Label, Select } from './components';
 
 const VARIABLE_LABELS: Record<VariableType, string> = {

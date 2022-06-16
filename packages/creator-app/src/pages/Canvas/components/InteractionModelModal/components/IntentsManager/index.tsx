@@ -1,10 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { CustomScrollbarsTypes } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 import { createSelector } from 'reselect';
 
 import { noIntentsGraphic } from '@/assets';
-import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
 import * as IntentDuck from '@/ducks/intent';
@@ -37,7 +37,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
 }) => {
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
   const managerRef = React.useRef<{ resetPath: () => void }>(null);
-  const scrollbarsRef = React.useRef<Scrollbars>(null);
+  const scrollbarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
   const [trackingEvents] = useTrackingEvents();
 
   const getItemKey = React.useCallback((item: Realtime.Intent) => item.id, []);

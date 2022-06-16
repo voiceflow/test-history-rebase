@@ -1,11 +1,10 @@
-import { Box, Button, ButtonVariant, Link, Text, toast, Upload, useDidUpdateEffect, useSmartReducerV2 } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Checkbox, Link, Text, toast, Upload, useDidUpdateEffect, useSmartReducerV2 } from '@voiceflow/ui';
 import _tail from 'lodash/tail';
 import Papa from 'papaparse';
 import pluralize from 'pluralize';
 import React from 'react';
 
 import { slotUploadExampleCSV } from '@/assets';
-import Checkbox from '@/components/Checkbox';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import RadioGroup from '@/components/RadioGroup';
 import * as Documentation from '@/config/documentation';

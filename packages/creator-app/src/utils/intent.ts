@@ -128,7 +128,7 @@ export const validateIntentName = (intentName: string, intents: Realtime.Intent[
   const lowerCasedIntentName = intentName.toLowerCase();
 
   if (intents.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {
-    return `The '${intentName}' intent already exists.`;
+    return `The '${intentName}' intent already exists. `;
   }
 
   if (slots.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {

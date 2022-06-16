@@ -1,10 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Link, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
+import { CustomScrollbarsTypes, Link, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { XYCoord } from 'react-dnd';
 import { List } from 'react-virtualized';
 
-import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
 import * as Documentation from '@/config/documentation';
@@ -32,7 +31,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
   const getEngine = useEventualEngine();
 
   const listRef = React.useRef<List>(null);
-  const scrollBarsRef = React.useRef<Scrollbars>(null);
+  const scrollBarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
   const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
 
   const {

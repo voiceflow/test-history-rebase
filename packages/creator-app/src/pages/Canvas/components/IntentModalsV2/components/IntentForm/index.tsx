@@ -7,12 +7,12 @@ import React from 'react';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useDispatch, useSelector } from '@/hooks';
-import BuiltInPrompt from '@/pages/Canvas/components/IntentModalsV2/components/components/BuiltInPrompt';
-import IntentEntitiesSection from '@/pages/Canvas/components/IntentModalsV2/components/components/IntentEntitiesSection';
 import { FadeDownContainer } from '@/styles/animations';
 
+import BuiltInPrompt from '../components/BuiltInPrompt';
 import DescriptionSection from '../components/DescriptionSection';
 import { JumpToEntitiesBubble } from '../components/index';
+import IntentEntitiesSection from '../components/IntentEntitiesSection';
 import NameSection from '../components/NameSection';
 import UtteranceSection from '../components/UtteranceSection';
 

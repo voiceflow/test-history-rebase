@@ -4,11 +4,11 @@ import React from 'react';
 import { SectionToggleVariant } from '@/components/Section';
 import { VariableItem } from '@/components/SlateEditable/editor';
 import { InteractionModelTabType, ModalType } from '@/constants';
-import { useModals } from '@/hooks';
+import { useModals, useOrderedVariables } from '@/hooks';
 import ListItem from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/components/ListItem';
 import { useListHooks } from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
-import { useFilteredList, useOrderedVariables } from '@/pages/Canvas/components/NLUQuickView/hooks';
+import { useFilteredList } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
 import { SectionSection } from '.';
 import { SectionProps } from './types';
@@ -20,27 +20,29 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
   const { open: openVariableCreate } = useModals(ModalType.VARIABLE_CREATE);
   const [justAddedVariables, setJustAddedVariables] = React.useState<string[] | null>(null);
 
-  const { mergedVariables, mergedVariablesMap } = useOrderedVariables();
+  const [variables, variablesMap] = useOrderedVariables();
 
-  const filteredList = useFilteredList(search, mergedVariables) as VariableItem[];
+  const filteredList = useFilteredList(search, variables) as VariableItem[];
 
   useListHooks({
-    setSearchLength,
-    listLength: mergedVariables.length,
+    map: variablesMap,
+    listLength: variables.length,
     isActiveTab,
-    map: mergedVariablesMap,
+    setSearchLength,
   });
 
   // Auto select first new variable on creation
   React.useEffect(() => {
     const firstAddedVariable = justAddedVariables?.[0];
+
     if (!firstAddedVariable) return;
-    mergedVariables.forEach((variable) => {
+
+    variables.forEach((variable) => {
       if (variable.name === firstAddedVariable) {
         setSelectedItemID(variable.id);
       }
     });
-  }, [justAddedVariables, mergedVariables]);
+  }, [justAddedVariables, variables]);
 
   const onCreateVariable = () => {
     openVariableCreate({

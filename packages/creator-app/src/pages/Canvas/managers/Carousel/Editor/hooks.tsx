@@ -1,11 +1,11 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { OptionsMenuOption } from '@voiceflow/ui';
+import { Checkbox, OptionsMenuOption } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
-import MenuCheckboxOption, { CheckboxType } from '@/pages/Canvas/managers/components/MenuCheckboxOption';
+import MenuCheckboxOption from '@/pages/Canvas/managers/components/MenuCheckboxOption';
 
 const baseOption = {
   menuItemProps: { style: { cursor: 'initial' } },
@@ -56,7 +56,7 @@ export const useCarouselLayoutOption = (
       { label: '', disabled: true, menuItemProps: { style: { marginBottom: 0 }, divider: true } },
       {
         label: (
-          <MenuCheckboxOption type={CheckboxType.CHECKBOX} checked={defaultCarouselLayout === layout} onChange={toggleDefaultCarouselLayout}>
+          <MenuCheckboxOption type={Checkbox.Type.CHECKBOX} checked={defaultCarouselLayout === layout} onChange={toggleDefaultCarouselLayout}>
             Set as default
           </MenuCheckboxOption>
         ),

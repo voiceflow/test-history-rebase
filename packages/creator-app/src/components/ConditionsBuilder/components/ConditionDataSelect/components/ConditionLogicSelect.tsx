@@ -1,8 +1,7 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Box, BoxFlexAlignStart } from '@voiceflow/ui';
+import { Box, BoxFlexAlignStart, Checkbox } from '@voiceflow/ui';
 import React from 'react';
 
-import Checkbox, { CheckboxType } from '@/components/Checkbox';
 import { ExpressionDisplayLabel, ExpressionWithNoSecondValue } from '@/components/ConditionsBuilder/constants';
 import { ExpressionDataLogicType } from '@/components/ConditionsBuilder/types';
 import { RadioOption } from '@/components/RadioGroup';
@@ -95,7 +94,7 @@ const ConditionLogicSelect: React.FC<ConditionLogicSelectProps> = ({
         return (
           <BoxFlexAlignStart column fullWidth key={index}>
             <RadioButtonContainer noBottomPadding={isLast && !isChecked} paddingBottom={8} column cursor="pointer">
-              <Checkbox type={CheckboxType.RADIO} value={id} checked={isChecked} onChange={changeLogic(id)} isFlat>
+              <Checkbox type={Checkbox.Type.RADIO} value={id} checked={isChecked} onChange={changeLogic(id)} isFlat>
                 <div>{label}</div>
               </Checkbox>
             </RadioButtonContainer>

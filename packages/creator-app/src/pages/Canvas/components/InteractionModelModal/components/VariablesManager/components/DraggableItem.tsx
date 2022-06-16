@@ -3,12 +3,12 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { SearchableListItemContainer } from '@/components/SearchableList';
 import { VariableTag } from '@/components/VariableTag';
+import { VariableType } from '@/constants';
+import { OrderedVariable } from '@/hooks';
 
 import ItemCount from '../../ItemCount';
-import { VariableType } from '../constants';
-import { Variable } from '../types';
 
-export type DraggableItemProps = Omit<ItemComponentProps<Variable>, 'connectedDragRef' | 'onRemove'> &
+export type DraggableItemProps = Omit<ItemComponentProps<OrderedVariable>, 'connectedDragRef' | 'onRemove'> &
   DragPreviewComponentProps & {
     withoutHover?: boolean;
     onSelectVariableID?: (id: string) => void;

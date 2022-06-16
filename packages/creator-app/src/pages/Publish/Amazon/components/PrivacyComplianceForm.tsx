@@ -1,9 +1,8 @@
-import { Label } from '@voiceflow/ui';
+import { Checkbox, Label } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import Checkbox from '@/components/Checkbox';
 import TextBox from '@/components/Form/TextBox';
 import RadioGroup from '@/components/RadioGroup';
 import * as Version from '@/ducks/version';

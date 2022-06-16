@@ -1,12 +1,11 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast } from '@voiceflow/ui';
+import { CustomScrollbarsTypes, toast } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 import { createSelector } from 'reselect';
 
 import { noSlotsGraphic } from '@/assets';
-import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
 import { ModalType } from '@/constants';
@@ -43,7 +42,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
   const [trackingEvents] = useTrackingEvents();
 
-  const scrollbarsRef = React.useRef<Scrollbars>(null);
+  const scrollbarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
   const getItemKey = React.useCallback((item: Realtime.Slot) => item.id, []);
   const getItemLabel = React.useCallback((item: Realtime.Slot) => item.name, []);

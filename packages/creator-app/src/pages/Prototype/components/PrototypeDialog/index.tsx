@@ -1,8 +1,8 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
+import { Divider } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import { PrototypeStatus } from '@/constants/prototype';
 import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
 import {

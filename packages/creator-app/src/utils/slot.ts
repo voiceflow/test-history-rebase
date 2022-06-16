@@ -9,4 +9,5 @@ export const {
   isVariable,
   slotToString,
   validateSlotName,
+  CUSTOM_ENTITY_VALUE_ERROR_MSG,
 } = Realtime.Utils.slot;

@@ -1,8 +1,7 @@
 import { BlockType } from '@voiceflow/realtime-sdk';
-import { Box, ClickableText } from '@voiceflow/ui';
+import { Box, ClickableText, Divider } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import * as Prototype from '@/ducks/prototype';
 import { useEventualEngine, useSelector } from '@/hooks';
 

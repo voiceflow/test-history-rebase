@@ -1,0 +1,63 @@
+import { createUIOnlyMenuItemOption, IconButton, SectionV2, SidebarEditor, SidebarEditorTypes, useLinkedState } from '@voiceflow/ui';
+import React from 'react';
+
+import Drawer from '@/components/Drawer';
+import EditableText from '@/components/EditableText';
+import { NLUContext, useNLUItemMenu } from '@/contexts';
+
+import { useNLUManager } from '../context';
+
+const ItemEditSidebar: React.FC = ({ children }) => {
+  const nlu = React.useContext(NLUContext);
+  const nluManager = useNLUManager();
+
+  const [name, setName] = useLinkedState(nluManager.activeItem?.name ?? '');
+
+  const { options } = useNLUItemMenu({
+    itemID: nluManager.activeItemID,
+    itemType: nluManager.activeTab,
+  });
+
+  const actions = options.map<SidebarEditorTypes.Action>((option) =>
+    option.divider ? createUIOnlyMenuItemOption(option.key, { divider: true }) : { id: option.key, label: option.label, onClick: option.onClick }
+  );
+
+  const onBlurName = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.currentTarget.parentElement?.parentElement?.scrollTo({ left: 0 });
+
+    if (nluManager.activeItem) {
+      nlu.renameItem(name, nluManager.activeItem.id, nluManager.activeTab);
+    }
+  };
+
+  return (
+    <Drawer open={!!nluManager.activeItem} width={450} direction={Drawer.Direction.LEFT}>
+      <SidebarEditor.Container>
+        <SidebarEditor.Header>
+          <SidebarEditor.HeaderTitle fontWeight={600}>
+            <EditableText
+              value={name}
+              onBlur={onBlurName}
+              onChange={setName}
+              startEditingOnFocus={!!nluManager.activeItemID && nlu.canRenameItem(nluManager.activeItemID, nluManager.activeTab)}
+            >
+              {nluManager.activeItem?.name ?? ''}
+            </EditableText>
+          </SidebarEditor.HeaderTitle>
+
+          <SectionV2.ActionsContainer gap={8}>
+            <SidebarEditor.HeaderActionsButton actions={actions} />
+
+            <IconButton size={16} icon="close" variant={IconButton.Variant.BASIC} onClick={() => nluManager.goToItem(null)} offsetSize={0} />
+          </SectionV2.ActionsContainer>
+        </SidebarEditor.Header>
+
+        <SidebarEditor.Content $fillHeight autoHeight autoHeightMax="100%" hideTracksWhenNotNeeded>
+          {nluManager.activeItem && children}
+        </SidebarEditor.Content>
+      </SidebarEditor.Container>
+    </Drawer>
+  );
+};
+
+export default ItemEditSidebar;

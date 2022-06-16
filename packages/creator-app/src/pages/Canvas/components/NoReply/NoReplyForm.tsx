@@ -1,11 +1,10 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/realtime-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlex, Input, Text, ThemeColor, TippyTooltip } from '@voiceflow/ui';
+import { BoxFlex, Divider, Input, Text, ThemeColor, TippyTooltip } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import { CheckboxGroup, CheckboxOption } from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import { NUMBERS_ONLY_REGEXP } from '@/constants';

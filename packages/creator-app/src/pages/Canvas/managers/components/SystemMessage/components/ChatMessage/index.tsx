@@ -1,6 +1,6 @@
+import { Divider } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import { SlateTextInput } from '@/components/SlateInputs';
 
 import { ChatMessageProps } from '../../types';

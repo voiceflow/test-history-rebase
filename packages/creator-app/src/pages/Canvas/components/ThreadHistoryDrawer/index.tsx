@@ -1,9 +1,19 @@
 import { Utils } from '@voiceflow/common';
-import { Dropdown, IconButton, IconButtonVariant, preventDefault, stopImmediatePropagation, Text, useOnScreen, useToggle } from '@voiceflow/ui';
+import {
+  CustomScrollbars,
+  CustomScrollbarsTypes,
+  Dropdown,
+  IconButton,
+  IconButtonVariant,
+  preventDefault,
+  stopImmediatePropagation,
+  Text,
+  useOnScreen,
+  useToggle,
+} from '@voiceflow/ui';
 import React from 'react';
 import { matchPath, useHistory } from 'react-router-dom';
 
-import CustomScrollbars, { Scrollbars } from '@/components/CustomScrollbars';
 import Drawer from '@/components/Drawer';
 import { Path } from '@/config/routes';
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -31,7 +41,7 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
   const isCommentingMode = useCommentingMode();
   const [focusScheduler] = useRAF();
 
-  const scrollbarsRef = React.useRef<Scrollbars>(null);
+  const scrollbarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
   const [filter, updateFilter] = React.useState<FilterType>(FilterType.OPEN);
 
   const threads = useSelector((state) => (filter === FilterType.RESOLVED ? Thread.resolvedThreads(state) : Thread.openedThreads(state)));

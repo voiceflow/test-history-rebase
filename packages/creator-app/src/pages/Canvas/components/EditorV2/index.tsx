@@ -1,3 +1,4 @@
+import { SidebarEditor } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -6,21 +7,7 @@ import perf, { PerfAction } from '@/performance';
 import { Identifier } from '@/styles/constants';
 
 import { EditorAnimationEffect } from '../../constants';
-import {
-  AnimatedContent,
-  Container,
-  Content,
-  DefaultFooter,
-  DefaultHeader,
-  Footer,
-  FooterActionsButton,
-  FooterActionsContainer,
-  Header,
-  HeaderActionsButton,
-  PersistCollapse,
-  RedirectToRoot,
-  Tutorial,
-} from './components';
+import { AnimatedContent, DefaultFooter, DefaultHeader, PersistCollapse, RedirectToRoot, Tutorial } from './components';
 import { withGoBack, withRedirectToRoot } from './hocs';
 import { useEditor, useEditorDefaultActions, useSyncDynamicPorts } from './hooks';
 
@@ -47,21 +34,21 @@ const EditorV2: React.FC<EditorV2Props> = ({ header, footer, children, fillHeigh
   const isPopAnimation = state?.animationEffect === EditorAnimationEffect.POP;
 
   return (
-    <Container id={Identifier.BLOCK_EDITOR} ref={!dropLagAccept || !dropLagAccept?.length ? undefined : dropLagFixRef}>
+    <SidebarEditor.Container id={Identifier.BLOCK_EDITOR} ref={!dropLagAccept || !dropLagAccept?.length ? undefined : dropLagFixRef}>
       {header}
 
       <AnimatedContent distance={disableAnimation ? 0 : ANIMATION_DISTANCE * (isPopAnimation ? 1 : -1)}>
         {withoutContentContainer ? (
           children
         ) : (
-          <Content ref={scrollbars} $fillHeight={fillHeight} autoHeight autoHeightMax="100%" hideTracksWhenNotNeeded>
+          <SidebarEditor.Content ref={scrollbars} $fillHeight={fillHeight} autoHeight autoHeightMax="100%" hideTracksWhenNotNeeded>
             {children}
-          </Content>
+          </SidebarEditor.Content>
         )}
 
         {footer}
       </AnimatedContent>
-    </Container>
+    </SidebarEditor.Container>
   );
 };
 
@@ -75,14 +62,15 @@ export default Object.assign(EditorV2, {
 
   AnimationEffect: EditorAnimationEffect,
 
-  Footer,
-  Header,
+  Footer: SidebarEditor.Footer,
+  Header: SidebarEditor.Header,
   Tutorial,
+  HeaderTitle: SidebarEditor.HeaderTitle,
   DefaultFooter,
   DefaultHeader,
   RedirectToRoot,
   PersistCollapse,
-  FooterActionsButton,
-  HeaderActionsButton,
-  FooterActionsContainer,
+  FooterActionsButton: SidebarEditor.FooterActionsButton,
+  HeaderActionsButton: SidebarEditor.HeaderActionsButton,
+  FooterActionsContainer: SidebarEditor.FooterActionsContainer,
 });

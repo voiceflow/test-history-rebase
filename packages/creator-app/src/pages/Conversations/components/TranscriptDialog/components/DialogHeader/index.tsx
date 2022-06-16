@@ -1,7 +1,5 @@
-import { Dropdown, IconButton, IconButtonVariant } from '@voiceflow/ui';
+import { Checkbox, Dropdown, IconButton, IconButtonVariant } from '@voiceflow/ui';
 import React from 'react';
-
-import Checkbox from '@/components/Checkbox';
 
 import { Container, LabelContainer } from './components';
 

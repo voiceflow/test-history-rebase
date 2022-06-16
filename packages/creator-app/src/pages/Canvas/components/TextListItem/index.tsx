@@ -1,8 +1,7 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { SvgIcon } from '@voiceflow/ui';
+import { Divider, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import { SectionToggleVariant } from '@/components/Section';
 import { SlateTextInput } from '@/components/SlateInputs';
 import { compose } from '@/hocs';

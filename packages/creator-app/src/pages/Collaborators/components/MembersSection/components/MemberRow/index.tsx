@@ -1,9 +1,8 @@
 import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, BoxFlex, Menu } from '@voiceflow/ui';
+import { Box, BoxFlex, Menu, OverflowTippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import OverflowTippyTooltip from '@/components/OverflowTippyTooltip';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';

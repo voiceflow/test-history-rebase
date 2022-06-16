@@ -13,6 +13,7 @@ const CodeRootEditor: React.FC = () => {
   const editorRef = useAceEditor(wordList);
   const [editorState, onUpdateEditorState] = React.useState(editor.data.code);
   const onUpdateCode = React.useCallback(() => editor.onChange({ code: editorState }), [editorState, editor.onChange]);
+  const editorActions = EditorV2.useEditorDefaultActions();
 
   React.useEffect(() => {
     if (editor.data.code !== editorState) {
@@ -23,14 +24,16 @@ const CodeRootEditor: React.FC = () => {
   return (
     <EditorV2
       header={
-        <EditorV2.Header title="Javascript">
+        <EditorV2.Header>
+          <EditorV2.HeaderTitle>Javascript</EditorV2.HeaderTitle>
+
           <SvgIcon icon={editor.isFullscreen ? 'systemMinimize' : 'systemExpand'} color="#6E849A" onClick={editor.onToggleFullscreen} clickable />
         </EditorV2.Header>
       }
       footer={
         !editor.isFullscreen && (
           <EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }}>
-            <EditorV2.FooterActionsButton />
+            <EditorV2.FooterActionsButton actions={editorActions} />
           </EditorV2.DefaultFooter>
         )
       }

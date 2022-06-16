@@ -1,9 +1,8 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Checkbox, Divider } from '@voiceflow/ui';
 import React from 'react';
 
-import { CheckboxType } from '@/components/Checkbox';
-import Divider from '@/components/Divider';
 import RadioGroup, { RadioOption } from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import * as Creator from '@/ducks/creator';
@@ -51,7 +50,7 @@ const NoMatchPathName: React.FC<NodeEditorPropsType<Realtime.NodeData.IfV2>> = (
     <>
       <Section>
         <FormControl label="No Match Type" contentBottomUnits={0}>
-          <RadioGroup type={CheckboxType.RADIO} isFlat options={ELSE_OPTIONS} checked={localNoMatch.type} onChange={handleChangeType} />
+          <RadioGroup type={Checkbox.Type.RADIO} isFlat options={ELSE_OPTIONS} checked={localNoMatch.type} onChange={handleChangeType} />
         </FormControl>
       </Section>
 

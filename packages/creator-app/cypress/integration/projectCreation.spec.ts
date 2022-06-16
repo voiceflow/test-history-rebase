@@ -1,7 +1,7 @@
 import dashboard from '../pages/dashboard';
 import projectCreationPage, { helper } from '../pages/projectCreation';
 
-context('Project Creation Flow', () => {
+context.skip('Project Creation Flow', () => {
   beforeEach(() => {
     cy.setup();
     cy.createWorkspace();

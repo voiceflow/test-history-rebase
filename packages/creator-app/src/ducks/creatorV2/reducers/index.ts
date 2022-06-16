@@ -11,7 +11,6 @@ import addByKeyPort, { addByKeyPortReverter } from './addByKeyPort';
 import addDynamicLink, { addDynamicLinkReverter } from './addDynamicLink';
 import addDynamicPort, { addDynamicPortReverter } from './addDynamicPort';
 import addMarkup from './addMarkup';
-import appendStep from './appendStep';
 import importSnapshot from './importSnapshot';
 import initialize from './initialize';
 import insertStep from './insertStep';
@@ -37,7 +36,6 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...addBlock)
   .immerCase(...addMarkup)
 
-  .immerCase(...appendStep)
   .immerCase(...insertStep)
   .immerCase(...isolateSteps)
   .immerCase(...transplantSteps)

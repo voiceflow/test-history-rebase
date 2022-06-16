@@ -159,8 +159,9 @@ class NodeManager extends EngineConsumer {
 
     appendStep: async (blockID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
+        const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: blockID });
         await this.dispatch.sync(
-          Realtime.node.appendStep({
+          Realtime.node.insertStep({
             ...this.engine.context,
             blockID,
             stepID: node.id,
@@ -171,6 +172,8 @@ class NodeManager extends EngineConsumer {
             ports: node.ports,
             projectMeta: this.engine.getActiveProjectMeta(),
             schemaVersion: this.engine.getActiveSchemaVersion(),
+            index: stepIDs.length,
+            nodePortRemaps: [],
           })
         );
       } else {

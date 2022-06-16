@@ -26,7 +26,6 @@ export const addBuiltinLinkReverter = createReverter(
       Realtime.link.addBuiltin,
       (origin, subject) => origin.sourceNodeID === subject.sourceNodeID && origin.type === subject.type
     ),
-    createDiagramInvalidator(Realtime.node.appendStep, (origin, subject) => origin.sourceBlockID === subject.blockID),
     createDiagramInvalidator(Realtime.node.insertStep, (origin, subject) => origin.sourceBlockID === subject.blockID),
     createDiagramInvalidator(Realtime.node.reorderSteps, (origin, subject) => origin.sourceBlockID === subject.blockID),
     createDiagramInvalidator(

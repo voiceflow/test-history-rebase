@@ -6,7 +6,7 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 
 import { extractNodes } from './utils';
 
-class IsolateStep extends AbstractDiagramActionControl<Realtime.node.IsolateStepsPayload> {
+class IsolateSteps extends AbstractDiagramActionControl<Realtime.node.IsolateStepsPayload> {
   actionCreator = Realtime.node.isolateSteps;
 
   process = async (ctx: Context, { payload }: Action<Realtime.node.IsolateStepsPayload>): Promise<void> => {
@@ -59,4 +59,4 @@ class IsolateStep extends AbstractDiagramActionControl<Realtime.node.IsolateStep
   };
 }
 
-export default IsolateStep;
+export default IsolateSteps;

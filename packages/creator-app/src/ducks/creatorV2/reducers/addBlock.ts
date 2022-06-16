@@ -7,8 +7,7 @@ import { blockNodeDataFactory } from '@/ducks/creator/diagram/factories';
 import { createReverter } from '@/ducks/utils';
 
 import { CreatorState } from '../types';
-import { addNodeWithPorts } from '../utils';
-import { appendStep } from './appendStep';
+import { addNodeWithPorts, addStep } from '../utils';
 import { createActiveDiagramReducer, DIAGRAM_INVALIDATORS } from './utils';
 
 export const addBlock = (
@@ -30,7 +29,7 @@ const addBlockReducer = createActiveDiagramReducer(
     if (Normal.hasOne(state.nodes, stepID)) return;
 
     addBlock(state, { blockID, ports: blockPorts, coords: blockCoords, name: blockName });
-    appendStep(state, { blockID, stepID, data: stepData, ports: stepPorts });
+    addStep(state, (stepIDs) => Utils.array.append(stepIDs, stepID), { blockID, stepID, data: stepData, ports: stepPorts });
   }
 );
 

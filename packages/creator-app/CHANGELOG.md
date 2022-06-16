@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.777.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.776.0...@voiceflow/creator-app@1.777.0) (2022-06-16)
+
+
+### Features
+
+* add import NLU upgrade prompt (VF-3839) ([#5598](https://github.com/voiceflow/creator-app/issues/5598)) ([0c2f4c8](https://github.com/voiceflow/creator-app/commit/0c2f4c866831052b76e75c87920715ee1fba55de))
+* add terms and conditions disclaimer (VF-3331) ([#5592](https://github.com/voiceflow/creator-app/issues/5592)) ([79af18b](https://github.com/voiceflow/creator-app/commit/79af18bfe382e61c0aeadeac0baf34455fa733e1))
+* upgrade prompt segment event (VF-3538) ([#5572](https://github.com/voiceflow/creator-app/issues/5572)) ([76261ae](https://github.com/voiceflow/creator-app/commit/76261ae9f1c2947f9f3bfa9a147d9da3ed88cf9e))
+
+
+
+
+
 # [1.776.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.775.0...@voiceflow/creator-app@1.776.0) (2022-06-15)
 
 

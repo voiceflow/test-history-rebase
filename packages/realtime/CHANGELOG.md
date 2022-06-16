@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.78.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.77.1...@voiceflow/realtime@1.78.0) (2022-06-16)
+
+
+### Features
+
+* port remap to null (VF-945) ([#5599](https://github.com/voiceflow/creator-app/issues/5599)) ([28691a5](https://github.com/voiceflow/creator-app/commit/28691a5b44e94a652952700c0b5e536bc6001d4c))
+
+
+
+
+
 ## [1.77.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.77.0...@voiceflow/realtime@1.77.1) (2022-06-16)
 
 

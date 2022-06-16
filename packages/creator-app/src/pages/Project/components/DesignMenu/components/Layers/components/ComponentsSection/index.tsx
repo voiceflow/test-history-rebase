@@ -1,4 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { CustomScrollbarsTypes, Link, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { XYCoord } from 'react-dnd';
@@ -8,8 +7,8 @@ import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
 import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
-import { BlockType, DragItem } from '@/constants';
-import { useDidUpdateEffect, useEventualEngine, usePermission } from '@/hooks';
+import { DragItem } from '@/constants';
+import { useDidUpdateEffect, usePermission } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
 
 import Header, { HEADER_MIN_HEIGHT } from '../Header';
@@ -28,13 +27,13 @@ interface ComponentsSectionProps {
 }
 
 const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSectionHeight }) => {
-  const getEngine = useEventualEngine();
-
   const listRef = React.useRef<List>(null);
   const scrollBarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
   const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
 
   const {
+    onDragEnd,
+    onDragStart,
     searchValue,
     setSearchValue,
     componentsItems,
@@ -65,26 +64,6 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
     (_: ComponentItem, initialOffset: XYCoord, currentOffset: XYCoord) => currentOffset.x - initialOffset.x >= HORIZONTAL_DRAG_OFFSET
   );
 
-  const onStartDrag = React.useCallback(
-    (item: ComponentItem) => {
-      const engine = getEngine();
-
-      if (!engine || !item) {
-        return;
-      }
-
-      engine.merge.setVirtualSource(BlockType.COMPONENT, {
-        name: item.name,
-        diagramID: item.id,
-      } as Realtime.NodeData<any>);
-    },
-    [getEngine]
-  );
-
-  const onEndDrag = React.useCallback(() => {
-    getEngine()?.merge.reset();
-  }, [getEngine]);
-
   const getItemKey = useConst((item: ComponentItem) => item.id);
 
   const withSearch = !collapsed && (isSearch || components.length >= SEARCHABLE_COMPONENTS_COUNT);
@@ -111,9 +90,9 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
         onClearLastCreatedDiagramID,
       }}
       onReorder={onReorderComponents}
-      onEndDrag={onEndDrag}
+      onEndDrag={onDragEnd}
       getItemKey={getItemKey}
-      onStartDrag={onStartDrag}
+      onStartDrag={onDragStart}
       itemComponent={FolderItem}
       previewOptions={{ horizontalEnabled }}
       previewComponent={FolderItem}

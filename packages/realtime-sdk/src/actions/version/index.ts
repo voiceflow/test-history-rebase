@@ -49,8 +49,8 @@ export interface ReorderTopicsPayload extends BaseVersionPayload {
 }
 
 export interface ReorderComponentsPayload extends BaseVersionPayload {
-  to: number;
-  from: number;
+  toIndex: number;
+  fromID: string;
 }
 
 export interface ReplacePrototypeSettingsPayload extends BaseVersionPayload {

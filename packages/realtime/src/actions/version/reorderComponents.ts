@@ -7,8 +7,10 @@ import { AbstractVersionResourceControl } from './utils';
 class ReorderComponents extends AbstractVersionResourceControl<Realtime.version.ReorderComponentsPayload> {
   protected actionCreator = Realtime.version.reorderComponents;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.version.ReorderComponentsPayload>): Promise<void> => {
-    await this.services.version.reorderComponents(ctx.data.creatorID, payload.versionID, payload.from, payload.to);
+  protected process = async (ctx: Context, { payload, meta }: Action<Realtime.version.ReorderComponentsPayload>): Promise<void> => {
+    if (meta?.skipPersist) return;
+
+    await this.services.version.reorderComponents(ctx.data.creatorID, payload.versionID, payload.fromID, payload.toIndex);
   };
 }
 

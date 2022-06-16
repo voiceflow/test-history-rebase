@@ -1,5 +1,5 @@
-import { AnyRecord, BaseModels, BaseNode } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import { AnyRecord } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
@@ -154,19 +154,14 @@ class VersionService extends AbstractControl {
 
   public async reorderTopics(creatorID: number, versionID: string, fromID: string, toIndex: number): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
     await client.version.reorderTopics(versionID, { fromID, toIndex });
   }
 
-  public async reorderComponents(creatorID: number, versionID: string, from: number, to: number): Promise<void> {
+  public async reorderComponents(creatorID: number, versionID: string, fromID: string, toIndex: number): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    const { components } = await client.version.get<{ components?: BaseModels.Version.FolderItem[] }>(versionID, ['components']);
-
-    if (!components?.length) {
-      throw new Error('Components are empty');
-    }
-
-    await client.version.update(versionID, { components: Utils.array.reorder(components, from, to) });
+    await client.version.reorderComponents(versionID, { fromID, toIndex });
   }
 }
 

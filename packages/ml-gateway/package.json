@@ -6,7 +6,7 @@
     "@google-cloud/pubsub": "2.18.5",
     "@logux/server": "0.10.8",
     "@opentelemetry/api-metrics": "0.26.0",
-    "@voiceflow/api-sdk": "3.13.24",
+    "@voiceflow/api-sdk": "3.14.1",
     "@voiceflow/backend-utils": "4.7.1",
     "@voiceflow/common": "7.27.0",
     "@voiceflow/logger": "1.6.1",

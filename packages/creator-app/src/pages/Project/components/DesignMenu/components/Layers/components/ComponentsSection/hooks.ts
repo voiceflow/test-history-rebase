@@ -1,12 +1,15 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
+import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useDnDReorder, useEventualEngine, useSelector } from '@/hooks';
 import { LastCreatedComponentContext } from '@/pages/Project/contexts';
 
 export interface ComponentItem {
@@ -17,6 +20,8 @@ export interface ComponentItem {
 }
 
 export interface ComponentsAPI {
+  onDragEnd: (item: ComponentItem) => void;
+  onDragStart: (item: ComponentItem) => void;
   searchValue: string;
   setSearchValue: (value: string) => void;
   componentsItems: ComponentItem[];
@@ -39,11 +44,32 @@ export const useComponents = (): ComponentsAPI => {
 
   const reorderComponents = useDispatch(Version.reorderComponents);
 
+  const getEngine = useEventualEngine();
+
+  const dndReorder = useDnDReorder({
+    getID: (item: ComponentItem) => item.id,
+    onPersist: (fromID: string, toIndex: number) => reorderComponents({ fromID, toIndex }),
+    onReorder: (fromID: string, toIndex: number) => reorderComponents({ fromID, toIndex, skipPersist: true }),
+  });
+
   const [searchValue, setSearchValue] = React.useState<string>('');
 
-  const onClearLastCreatedDiagramID = React.useCallback(() => {
-    lastCreatedComponent.setComponentID(null);
-  }, []);
+  const onClearLastCreatedDiagramID = React.useCallback(() => lastCreatedComponent.setComponentID(null), []);
+
+  const onDragStart = usePersistFunction((item: ComponentItem) => {
+    const engine = getEngine();
+
+    dndReorder.onStart(item);
+
+    if (engine && item) {
+      engine.merge.setVirtualSource(BlockType.COMPONENT, { name: item.name, diagramID: item.id } as Realtime.NodeData<any>);
+    }
+  });
+
+  const onDragEnd = usePersistFunction(() => {
+    dndReorder.onEnd();
+    getEngine()?.merge.reset();
+  });
 
   const lowerCasedSearchValue = searchValue.trim().toLowerCase();
 
@@ -89,12 +115,14 @@ export const useComponents = (): ComponentsAPI => {
   }, [componentsItems, lowerCasedSearchValue]);
 
   return {
+    onDragEnd,
+    onDragStart,
     searchValue,
     setSearchValue,
     activeDiagramID,
     componentsItems,
     searchMatchValue: lowerCasedSearchValue,
-    onReorderComponents: reorderComponents,
+    onReorderComponents: dndReorder.onReorder,
     lastCreatedDiagramID: lastCreatedComponent.componentID,
     searchComponentsItems,
     searchOpenedComponents,

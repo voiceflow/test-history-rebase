@@ -11,7 +11,7 @@ export const reorderTopics =
   };
 
 export const reorderComponents =
-  (from: number, to: number): Thunk =>
+  ({ fromID, toIndex, skipPersist }: { fromID: string; toIndex: number; skipPersist?: boolean }): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.version.reorderComponents({ ...getActiveVersionContext(getState()), from, to }));
+    await dispatch.sync(Realtime.version.reorderComponents({ ...getActiveVersionContext(getState()), fromID, toIndex }, { skipPersist }));
   };

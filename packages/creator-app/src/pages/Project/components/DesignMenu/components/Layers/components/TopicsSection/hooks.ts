@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { useCache } from '@voiceflow/ui';
+import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { ROOT_DIAGRAM_LABEL, ROOT_DIAGRAM_NAME } from '@/constants';
@@ -14,7 +14,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useDnDReorder, useSelector } from '@/hooks';
 import { applyPlatformIntentAndSlotNameFormatting, prettifyIntentName } from '@/utils/intent';
 
 import { OpenedIDsToggleApi, useOpenedIDsToggle } from '../../hooks';
@@ -31,6 +31,8 @@ export interface TopicItem {
 }
 
 interface TopicsAPI {
+  onDragEnd: (item: TopicItem) => void;
+  onDragStart: (item: TopicItem) => void;
   searchValue: string;
   topicsItems: TopicItem[];
   onCreateTopic: VoidFunction;
@@ -39,8 +41,6 @@ interface TopicsAPI {
   setSearchValue: (value: string) => void;
   activeDiagramID: Nullable<string>;
   onReorderTopics: (from: number, to: number) => void;
-  onDragStart: (item: TopicItem) => void;
-  onDragEnd: (item: TopicItem) => void;
   searchMatchValue: string;
   searchTopicsItems: TopicItem[];
   searchOpenedTopics: Record<string, true>;
@@ -56,7 +56,6 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
   const topicDiagrams = useSelector(DiagramV2.active.topicDiagramsSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const { target: focusedNodeID, isActive: isFocusedNodeActive } = useSelector(Creator.creatorFocusSelector);
-  const { onDragEnd: dragEnd, onDragStart: dragStart, openedIDs, onToggleOpenedID } = useOpenedIDsToggle('topics');
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
   const reorderTopics = useDispatch(Version.reorderTopics);
@@ -65,18 +64,13 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [lastCreatedDiagramID, setLastCreatedDiagramID] = React.useState<Nullable<string>>(null);
 
-  const onCreateTopic = React.useCallback(async () => {
-    setSearchValue('');
+  const dndReorder = useDnDReorder({
+    getID: (item: TopicItem) => item.id,
+    onPersist: (fromID: string, toIndex: number) => reorderTopics({ fromID, toIndex }),
+    onReorder: (fromID: string, toIndex: number) => reorderTopics({ fromID, toIndex, skipPersist: true }),
+  });
 
-    const newDiagram = await createTopicDiagram(`Topic ${topicDiagrams.length + 1}`);
-
-    setLastCreatedDiagramID(newDiagram.id);
-    goToDiagram(newDiagram.id, newDiagram.intentStepIDs[0]);
-  }, [topicDiagrams]);
-
-  const onClearLastCreatedDiagramID = React.useCallback(() => {
-    setLastCreatedDiagramID(null);
-  }, []);
+  const openedIDsToggle = useOpenedIDsToggle('topics');
 
   const topicsItems = React.useMemo(
     () =>
@@ -109,37 +103,28 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
     [platform, getIntentByID, rootDiagramID, topicDiagrams, intentSteps]
   );
 
-  const cache = useCache({
-    topicsItems,
-    dragStart,
-    dragEnd,
-    reorderTopics,
+  const onCreateTopic = React.useCallback(async () => {
+    setSearchValue('');
+
+    const newDiagram = await createTopicDiagram(`Topic ${topicDiagrams.length + 1}`);
+
+    setLastCreatedDiagramID(newDiagram.id);
+    goToDiagram(newDiagram.id, newDiagram.intentStepIDs[0]);
+  }, [topicDiagrams]);
+
+  const onClearLastCreatedDiagramID = React.useCallback(() => {
+    setLastCreatedDiagramID(null);
+  }, []);
+
+  const onDragStart = usePersistFunction((item: TopicItem) => {
+    dndReorder.onStart(item);
+    openedIDsToggle.onDragStart();
   });
 
-  const fromIDRef = React.useRef<Nullable<string>>(null);
-  const toIndexRef = React.useRef<Nullable<number>>(null);
-
-  const onDragStart = React.useCallback((item: TopicItem) => {
-    fromIDRef.current = item.id;
-    cache.current.dragStart();
-  }, []);
-
-  const onDragEnd = React.useCallback(() => {
-    if (fromIDRef.current !== null && toIndexRef.current !== null) {
-      cache.current.reorderTopics({ fromID: fromIDRef.current, toIndex: toIndexRef.current });
-    }
-
-    fromIDRef.current = null;
-    toIndexRef.current = null;
-    cache.current.dragEnd();
-  }, []);
-
-  const onReorderTopics = React.useCallback((_from: number, to: number) => {
-    toIndexRef.current = to;
-    if (!fromIDRef.current) return;
-
-    cache.current.reorderTopics({ fromID: fromIDRef.current, toIndex: to, skipPersist: true });
-  }, []);
+  const onDragEnd = usePersistFunction(() => {
+    dndReorder.onEnd();
+    openedIDsToggle.onDragEnd();
+  });
 
   const lowerCasedSearchValue = searchValue.trim().toLowerCase();
 
@@ -166,6 +151,9 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
   }, [topicsItems, lowerCasedSearchValue]);
 
   return {
+    onDragEnd,
+    openedIDs: openedIDsToggle.openedIDs,
+    onDragStart,
     searchValue,
     topicsItems,
     onCreateTopic,
@@ -173,15 +161,12 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
     focusedNodeID: isFocusedNodeActive ? focusedNodeID : null,
     setSearchValue,
     activeDiagramID,
-    onReorderTopics,
-    onDragStart,
-    onDragEnd,
+    onReorderTopics: dndReorder.onReorder,
     searchMatchValue: lowerCasedSearchValue,
+    onToggleOpenedID: openedIDsToggle.onToggleOpenedID,
     searchTopicsItems,
     searchOpenedTopics,
     lastCreatedDiagramID,
     onClearLastCreatedDiagramID,
-    openedIDs,
-    onToggleOpenedID,
   };
 };

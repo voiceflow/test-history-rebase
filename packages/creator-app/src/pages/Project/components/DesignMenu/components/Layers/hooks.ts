@@ -28,9 +28,7 @@ export const useOpenedIDsToggle = (name: string): OpenedIDsToggleApi => {
   const onDragStart = React.useCallback(() => {
     openedIDsCache.current = openedIDs;
 
-    scheduler(() => {
-      setOpenedIDs({});
-    });
+    scheduler(() => setOpenedIDs({}));
   }, [openedIDs]);
 
   const onToggleOpenedID = React.useCallback(

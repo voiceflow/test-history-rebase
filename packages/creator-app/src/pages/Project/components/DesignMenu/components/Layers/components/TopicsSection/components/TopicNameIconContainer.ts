@@ -4,6 +4,7 @@ import { styled } from '@/hocs';
 
 const TopicNameIconContainer = styled(FlexCenter)`
   width: 22px;
+  min-width: 22px;
   height: 22px;
   margin-right: 3px;
 `;

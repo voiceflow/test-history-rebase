@@ -27,15 +27,3 @@ export interface Link {
   };
   data?: LinkData;
 }
-
-export interface DBLink {
-  id: string;
-  source: string;
-  sourcePort: string;
-  target: string;
-  targetPort: string;
-  virtual?: {
-    nodeID: string;
-    portID: string;
-  };
-}

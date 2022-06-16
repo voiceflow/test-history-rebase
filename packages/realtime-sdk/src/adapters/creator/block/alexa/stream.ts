@@ -3,10 +3,8 @@ import * as RealtimeUtils from '@realtime-sdk/utils';
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import {
-  applyPortPlatform,
   createBlockAdapter,
   createOutPortsAdapter,
   createOutPortsAdapterV2,
@@ -52,9 +50,9 @@ export const streamOutPortsAdapter = createOutPortsAdapter<NodeData.StreamBuiltI
     return {
       ...RealtimeUtils.port.createEmptyNodeOutPorts(),
       builtIn: {
-        [BaseModels.PortType.NEXT]: applyPortPlatform(nextPortData, VoiceflowConstants.PlatformType.ALEXA),
-        [BaseModels.PortType.PAUSE]: applyPortPlatform(pausePortData, VoiceflowConstants.PlatformType.ALEXA),
-        [BaseModels.PortType.PREVIOUS]: applyPortPlatform(previousPortData, VoiceflowConstants.PlatformType.ALEXA),
+        [BaseModels.PortType.NEXT]: nextPortData,
+        [BaseModels.PortType.PAUSE]: pausePortData || undefined,
+        [BaseModels.PortType.PREVIOUS]: previousPortData,
       },
     };
   },
@@ -85,9 +83,9 @@ export const streamOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.StreamBu
     return {
       ...RealtimeUtils.port.createEmptyNodeOutPorts(),
       builtIn: {
-        [BaseModels.PortType.NEXT]: applyPortPlatform(nextPortData, VoiceflowConstants.PlatformType.ALEXA),
-        [BaseModels.PortType.PAUSE]: applyPortPlatform(pausePortData, VoiceflowConstants.PlatformType.ALEXA),
-        [BaseModels.PortType.PREVIOUS]: applyPortPlatform(previousPortData, VoiceflowConstants.PlatformType.ALEXA),
+        [BaseModels.PortType.NEXT]: nextPortData,
+        [BaseModels.PortType.PAUSE]: pausePortData,
+        [BaseModels.PortType.PREVIOUS]: previousPortData,
       },
     };
   },

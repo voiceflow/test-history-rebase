@@ -19,7 +19,7 @@ class RemoveManyNodes extends AbstractDiagramActionControl<Realtime.node.RemoveM
     );
     if (!isAtomicActionsPhase2) return;
 
-    await this.services.diagram.removeManyNodes(creatorID, payload.diagramID, payload.nodes, payload.nodePortRemaps);
+    await this.services.diagram.removeManyNodes(creatorID, payload.diagramID, payload.nodes);
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {

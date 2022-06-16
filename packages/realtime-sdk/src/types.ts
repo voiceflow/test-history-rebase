@@ -96,3 +96,17 @@ export interface ProjectMetaPayload {
 export interface SchemaVersionPayload {
   schemaVersion: SchemaVersion;
 }
+
+export interface NodePortRemap {
+  nodeID: string;
+  ports: {
+    key?: string;
+    type?: string;
+    portID: string;
+  }[];
+  targetNodeID: string | null;
+}
+
+export interface NodePortRemapsPayload {
+  nodePortRemaps?: NodePortRemap[];
+}

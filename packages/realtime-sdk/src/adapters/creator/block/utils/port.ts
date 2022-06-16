@@ -2,8 +2,7 @@ import { BuiltInPortRecord, DBPortWithLinkData, Link, Node, Port } from '@realti
 import { PathPoint, PathPoints } from '@realtime-sdk/types';
 import * as RealtimeUtilsPort from '@realtime-sdk/utils/port';
 import { BaseModels, Nullable } from '@voiceflow/base-types';
-import { Nullish, Utils } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import { Utils } from '@voiceflow/common';
 
 import { generateOutPort } from '../../utils';
 
@@ -126,15 +125,6 @@ export const withoutDBPort = (ports: DBPortWithLinkData[], withoutPort: Nullable
 
 export const withoutDBPorts = (ports: DBPortWithLinkData[], withoutPorts: Nullable<DBPortWithLinkData>[]): DBPortWithLinkData[] =>
   Utils.array.withoutValues(ports, withoutPorts.filter(Boolean) as DBPortWithLinkData[]);
-
-export const applyPortPlatform: {
-  (portData: PortData, platform: VoiceflowConstants.PlatformType): PortData;
-  (portData: Nullish<PortData>, platform: VoiceflowConstants.PlatformType): PortData | undefined;
-} = (portData: Nullish<PortData>, platform: VoiceflowConstants.PlatformType): any => {
-  if (!portData) return undefined;
-
-  return { ...portData, port: { ...portData.port, platform } };
-};
 
 export const nextOnlyOutPortsAdapter = createOutPortsAdapter<{ [BaseModels.PortType.NEXT]: string }>(
   (dbPorts, options) => {

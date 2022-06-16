@@ -123,17 +123,22 @@ class DiagramService extends AbstractControl {
     blockID: string;
     step: BaseModels.BaseDiagramNode;
     index?: Nullish<number>;
-    nodePortRemaps?: Realtime.node.NodePortRemap[];
+    nodePortRemaps?: Realtime.NodePortRemap[];
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.addStep(diagramID, blockID, step, index, nodePortRemaps);
   }
 
-  public async addManyNodes(creatorID: number, diagramID: string, nodes: BaseModels.BaseDiagramNode[]): Promise<void> {
+  public async addManyNodes(
+    creatorID: number,
+    diagramID: string,
+    nodes: BaseModels.BaseDiagramNode[],
+    nodePortRemaps?: Realtime.NodePortRemap[]
+  ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.addManyNodes(diagramID, nodes);
+    await client.diagram.addManyNodes(diagramID, nodes, nodePortRemaps);
   }
 
   public async isolateSteps({
@@ -143,7 +148,6 @@ class DiagramService extends AbstractControl {
     block,
     stepIDs,
     removeSource,
-    nodePortRemaps,
   }: {
     creatorID: number;
     diagramID: string;
@@ -151,11 +155,10 @@ class DiagramService extends AbstractControl {
     block: BaseModels.BaseDiagramNode;
     stepIDs: string[];
     removeSource?: boolean;
-    nodePortRemaps: Realtime.node.NodePortRemap[];
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.isolateSteps({ diagramID, sourceBlockID, block, stepIDs, removeSource, nodePortRemaps });
+    await client.diagram.isolateSteps({ diagramID, sourceBlockID, block, stepIDs, removeSource });
   }
 
   public async reorderSteps({
@@ -171,7 +174,7 @@ class DiagramService extends AbstractControl {
     blockID: string;
     stepID: string;
     index: number;
-    nodePortRemaps: Realtime.node.NodePortRemap[];
+    nodePortRemaps?: Realtime.NodePortRemap[];
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
@@ -195,7 +198,7 @@ class DiagramService extends AbstractControl {
     stepIDs: string[];
     index: number;
     removeSource?: boolean;
-    nodePortRemaps: Realtime.node.NodePortRemap[];
+    nodePortRemaps?: Realtime.NodePortRemap[];
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
@@ -208,28 +211,16 @@ class DiagramService extends AbstractControl {
     await client.diagram.updateBlockCoords(diagramID, blocks);
   }
 
-  /** @deprecated in favor of updateManyNodeData */
-  public async updateNodeData<D extends AnyRecord>(creatorID: number, diagramID: string, nodeID: string, data: D): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
-    await client.diagram.updateNodeData(diagramID, nodeID, data);
-  }
-
   public async updateManyNodeData<D extends AnyRecord>(creatorID: number, diagramID: string, nodes: { nodeID: string; data: D }[]): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.updateManyNodeData(diagramID, nodes);
   }
 
-  public async removeManyNodes(
-    creatorID: number,
-    diagramID: string,
-    nodes: { blockID: string; stepID?: Nullish<string> }[],
-    nodePortRemaps?: Realtime.node.NodePortRemap[]
-  ): Promise<void> {
+  public async removeManyNodes(creatorID: number, diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[]): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.removeManyNodes(diagramID, nodes, nodePortRemaps);
+    await client.diagram.removeManyNodes(diagramID, nodes);
   }
 
   public async addByKeyLink(creatorID: number, diagramID: string, nodeID: string, key: string, target: string): Promise<void> {

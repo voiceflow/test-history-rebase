@@ -1,13 +1,13 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import { addStepReferences, orphanSteps, removeNodePortRemapLinks } from '../utils';
+import { addStepReferences, orphanSteps } from '../utils';
 import { addBlock } from './addBlock';
 import { createActiveDiagramReducer } from './utils';
 
 const isolateStepReducer = createActiveDiagramReducer(
   Realtime.node.isolateSteps,
-  (state, { sourceBlockID, blockID, blockPorts, blockCoords, blockName, stepIDs, nodePortRemaps }) => {
+  (state, { sourceBlockID, blockID, blockPorts, blockCoords, blockName, stepIDs }) => {
     if (Normal.hasOne(state.nodes, blockID)) return;
 
     orphanSteps(
@@ -18,8 +18,6 @@ const isolateStepReducer = createActiveDiagramReducer(
       },
       { blockID: sourceBlockID, stepIDs }
     );
-
-    removeNodePortRemapLinks(state, nodePortRemaps);
   }
 );
 

@@ -26,7 +26,7 @@ import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuar
 import * as Sentry from '@/vendors/sentry';
 
 import NodeEntity from './entities/nodeEntity';
-import { createPortRemaps, DUPLICATE_OFFSET, EngineConsumer, nodeDescriptorFactory } from './utils';
+import { createPortRemap, DUPLICATE_OFFSET, EngineConsumer, nodeDescriptorFactory } from './utils';
 
 const nodeFactoryOptionsSelector = createSelector(
   [
@@ -195,12 +195,7 @@ class NodeManager extends EngineConsumer {
 
     insertStepV2: async (blockID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor, index: number): Promise<void> => {
       const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: blockID });
-      const previousStep = this.engine.getNodeByID(stepIDs[index - 1]);
-      const nextStepID = stepIDs[index];
-      const nodePortRemaps = [
-        ...createPortRemaps([{ node: previousStep, targetNodeID: node.id }]),
-        { nodeID: node.id, ports: [], targetNodeID: nextStepID },
-      ];
+      const nodePortRemaps = index === stepIDs.length ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : undefined;
 
       await this.dispatch.sync(
         Realtime.node.insertStep({
@@ -226,15 +221,19 @@ class NodeManager extends EngineConsumer {
     transplantSteps: async (targetBlockID: string, sourceBlockID: string, stepIDs: string[], index: number, removeSource = false): Promise<void> => {
       if (!stepIDs.length) return;
 
-      const targetBlockStepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: targetBlockID });
-      const previousStep = this.engine.getNodeByID(targetBlockStepIDs[index - 1]);
-      const nextStepID = targetBlockStepIDs[index] || null;
-      const lastTransplatedStep = this.engine.getNodeByID(stepIDs[stepIDs.length - 1]);
+      const sourceStepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: sourceBlockID });
+      const targetStepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: targetBlockID });
 
-      const nodePortRemaps = createPortRemaps([
-        { node: previousStep, targetNodeID: stepIDs[0] },
-        { node: lastTransplatedStep, targetNodeID: nextStepID },
-      ]);
+      const sourceBlockLastStepID = sourceStepIDs[sourceStepIDs.length - 1];
+      const isMovingSourceLastStep = stepIDs.includes(sourceBlockLastStepID) && index !== targetStepIDs.length;
+
+      const targetBlockLastStepID = targetStepIDs[targetStepIDs.length - 1];
+      const isMovingTargetLastStep = index === targetStepIDs.length;
+
+      const nodePortRemaps = [
+        ...((isMovingSourceLastStep && createPortRemap(this.engine.getNodeByID(sourceBlockLastStepID))) || []),
+        ...((isMovingTargetLastStep && createPortRemap(this.engine.getNodeByID(targetBlockLastStepID))) || []),
+      ];
 
       await this.dispatch.sync(
         Realtime.node.transplantSteps({ ...this.engine.context, sourceBlockID, targetBlockID, stepIDs, index, removeSource, nodePortRemaps })
@@ -249,18 +248,9 @@ class NodeManager extends EngineConsumer {
       const currentIndex = stepIDs.indexOf(stepID);
       if (currentIndex === -1) return;
 
-      const currentStep = this.engine.getNodeByID(stepID);
-      const oldPreviousStep = this.engine.getNodeByID(stepIDs[currentIndex - 1]);
-      const newPreviousStep = index - 1 !== currentIndex ? this.engine.getNodeByID(stepIDs[index - 1]) : null; // don't map a step to itself
-
-      const oldNextStepID = stepIDs[currentIndex + 1];
-      const newNextStepID = stepIDs[index];
-
-      const nodePortRemaps = createPortRemaps([
-        { node: oldPreviousStep, targetNodeID: oldNextStepID },
-        { node: newPreviousStep, targetNodeID: stepID },
-        { node: currentStep, targetNodeID: newNextStepID },
-      ]);
+      const lastStepID = stepIDs[stepIDs.length - 1];
+      const isLastStepMoved = index === stepIDs.length || stepID === lastStepID;
+      const nodePortRemaps = isLastStepMoved ? createPortRemap(this.engine.getNodeByID(lastStepID)) : undefined;
 
       const finalIndex = currentIndex < index ? index - 1 : index;
       await this.dispatch.sync(Realtime.node.reorderSteps({ ...this.engine.context, blockID, stepID, index: finalIndex, nodePortRemaps }));
@@ -282,14 +272,6 @@ class NodeManager extends EngineConsumer {
         const removeSource = parentBlockStepIDs.length === 1;
         if (!removeSource) this.saveLocations([node.parentNode!]);
 
-        const index = parentBlockStepIDs.indexOf(nodeID);
-        const previousStep = this.engine.getNodeByID(parentBlockStepIDs[index - 1]);
-        const nextStepID = parentBlockStepIDs[index + 1];
-        const nodePortRemaps = createPortRemaps([
-          { node: previousStep, targetNodeID: nextStepID },
-          ...(nextStepID ? [{ node, targetNodeID: null }] : []), // remove node's targets if its not the last step
-        ]);
-
         await this.dispatch.sync(
           Realtime.node.isolateSteps({
             ...this.engine.context,
@@ -302,7 +284,6 @@ class NodeManager extends EngineConsumer {
             projectMeta,
             schemaVersion: this.engine.getActiveSchemaVersion(),
             removeSource,
-            nodePortRemaps,
           })
         );
       } else {
@@ -349,33 +330,6 @@ class NodeManager extends EngineConsumer {
         [...node.combinedNodes, node.id].forEach((childNodeID) => removedIDs.add(childNodeID));
       });
 
-      const notRemovedParentIDs = Array.from(parentIDs).filter((parentID) => !removedIDs.has(parentID));
-
-      // begin calculation of nodePortRemaps
-      // if node x and node y are deleted, the node before x needs to point to the node after y
-      const remaps: { node: Realtime.Node | null; targetNodeID?: string | null }[] = [];
-      notRemovedParentIDs.forEach((parentID) => {
-        const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: parentID });
-
-        // only keep indexes of not-removed nodes, so if we are removing steps at index 0, 3, 4 - we get [1,2,5,6]
-        const remainingStepIDIndexes = stepIDs.reduce<number[]>((acc, stepID, index) => {
-          if (!removedIDs?.has(stepID)) acc.push(index);
-          return acc;
-        }, []);
-        remainingStepIDIndexes.push(stepIDs.length);
-
-        for (let x = 0; x < remainingStepIDIndexes.length - 1; x++) {
-          const currentIndex = remainingStepIDIndexes[x];
-          const nextIndex = remainingStepIDIndexes[x + 1];
-          // if the difference at [x] and [x+1] is greater than 1, it means there have been nodes removed inbetween
-          if (nextIndex - currentIndex > 1) {
-            remaps.push({ node: this.engine.getNodeByID(stepIDs[currentIndex]), targetNodeID: stepIDs[nextIndex] || null });
-          }
-        }
-      });
-      const nodePortRemaps = createPortRemaps(remaps);
-      // end calculation of nodePortRemaps
-
       const nodesToRemove = Array.from(removedIDs).map((nodeID) => {
         const blockID = this.select(CreatorV2.blockIDByStepIDSelector, { id: nodeID });
 
@@ -383,9 +337,10 @@ class NodeManager extends EngineConsumer {
       });
 
       // save last location of parent nodes in case unmerging
+      const notRemovedParentIDs = Array.from(parentIDs).filter((parentID) => !removedIDs.has(parentID));
       this.saveLocations(notRemovedParentIDs);
 
-      await this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodes: nodesToRemove, nodePortRemaps }));
+      await this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodes: nodesToRemove }));
     },
 
     translate: (nodeID: string, movement: Pair<number>): void => {

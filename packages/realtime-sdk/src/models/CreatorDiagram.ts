@@ -1,5 +1,5 @@
-import { DBLink, Link } from './Link';
-import { DBNode, Node } from './Node';
+import { Link } from './Link';
+import { Node } from './Node';
 import { NodeData } from './NodeData';
 import { Port } from './Port';
 import { Viewport } from './Viewport';
@@ -13,14 +13,4 @@ export interface CreatorDiagram {
   ports: Port[];
   data: Record<string, NodeData<unknown>>;
   markupNodeIDs: string[];
-}
-
-export interface DBCreatorDiagram {
-  id: string;
-  offsetX: number;
-  offsetY: number;
-  zoom: number;
-  links: DBLink[];
-  nodes: DBNode[];
-  blockRedesignOffset: boolean;
 }

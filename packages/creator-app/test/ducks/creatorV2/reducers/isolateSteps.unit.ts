@@ -30,7 +30,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
-        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -49,7 +48,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
-        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -68,7 +66,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
-        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -87,7 +84,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
-        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -117,7 +113,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
             platform: VoiceflowConstants.PlatformType.VOICEFLOW,
             type: VoiceflowConstants.ProjectType.CHAT,
           },
-          nodePortRemaps: [],
         }
       );
 

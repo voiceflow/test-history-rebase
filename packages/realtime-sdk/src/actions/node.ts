@@ -1,6 +1,14 @@
 import { BLOCK_KEY, NODE_KEY, STEP_KEY } from '@realtime-sdk/constants';
 import { Markup, NodeData, NodeDataDescriptor, PortsDescriptor } from '@realtime-sdk/models';
-import { BaseBlockPayload, BaseDiagramPayload, BaseNodePayload, Point, ProjectMetaPayload, SchemaVersionPayload } from '@realtime-sdk/types';
+import {
+  BaseBlockPayload,
+  BaseDiagramPayload,
+  BaseNodePayload,
+  NodePortRemapsPayload,
+  Point,
+  ProjectMetaPayload,
+  SchemaVersionPayload,
+} from '@realtime-sdk/types';
 import { AnyRecord, Nullish, Utils } from '@voiceflow/common';
 
 const nodeType = Utils.protocol.typeFactory(NODE_KEY);
@@ -8,22 +16,12 @@ const nodeMarkupType = Utils.protocol.typeFactory(nodeType('markup'));
 const nodeBlockType = Utils.protocol.typeFactory(nodeType(BLOCK_KEY));
 const nodeStepType = Utils.protocol.typeFactory(nodeType(STEP_KEY));
 
-export interface NodePortRemap {
-  nodeID: string;
-  ports: {
-    key?: string;
-    type?: string;
-    portID: string;
-  }[];
-  targetNodeID: string | null;
-}
 export interface UpdateManyDataPayload<D extends AnyRecord = AnyRecord> extends BaseDiagramPayload, ProjectMetaPayload {
   nodes: NodeData<D>[];
 }
 
 export interface RemoveManyPayload extends BaseDiagramPayload {
   nodes: { blockID: string; stepID?: Nullish<string> }[];
-  nodePortRemaps?: NodePortRemap[];
 }
 
 export interface TranslatePayload extends BaseDiagramPayload {
@@ -64,23 +62,20 @@ export interface AppendStepPayload<T = unknown> extends BaseBlockPayload, Projec
   ports: PortsDescriptor;
 }
 
-export interface InsertStepPayload<T = unknown> extends AppendStepPayload<T> {
+export interface InsertStepPayload<T = unknown> extends AppendStepPayload<T>, NodePortRemapsPayload {
   index: number;
-  nodePortRemaps: NodePortRemap[];
 }
-export interface ReorderStepsPayload extends BaseBlockPayload {
+export interface ReorderStepsPayload extends BaseBlockPayload, NodePortRemapsPayload {
   stepID: string;
   index: number;
-  nodePortRemaps: NodePortRemap[];
 }
 
-export interface TransplantStepsPayload extends BaseDiagramPayload {
+export interface TransplantStepsPayload extends BaseDiagramPayload, NodePortRemapsPayload {
   sourceBlockID: string;
   targetBlockID: string;
   stepIDs: string[];
   index: number;
   removeSource?: boolean;
-  nodePortRemaps: NodePortRemap[];
 }
 
 export interface IsolateStepsPayload extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload {
@@ -90,7 +85,6 @@ export interface IsolateStepsPayload extends BaseBlockPayload, ProjectMetaPayloa
   blockName: string;
   stepIDs: string[];
   removeSource?: boolean;
-  nodePortRemaps: NodePortRemap[];
 }
 
 export const appendStep = Utils.protocol.createAction<AppendStepPayload>(nodeStepType('APPEND'));

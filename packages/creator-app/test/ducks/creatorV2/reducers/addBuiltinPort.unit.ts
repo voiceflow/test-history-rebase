@@ -49,7 +49,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinPort reducer', ({ e
         }
       );
 
-      expect(result.ports).to.containSubset(normalize([{ id: portID, nodeID: NODE_ID, label: type, virtual: false }]));
+      expect(result.ports).to.containSubset(normalize([{ id: portID, nodeID: NODE_ID, label: type }]));
       expect(result.portsByNodeID[NODE_ID]?.out.builtIn[type]).to.eq(portID);
       expect(result.nodeIDByPortID).to.eql({ [portID]: NODE_ID });
       expect(result.linkIDsByPortID).to.eql({ [portID]: [] });

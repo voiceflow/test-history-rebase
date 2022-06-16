@@ -29,7 +29,7 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
     if (startNodeID) {
       const startNode = primitiveDiagram.nodes[startNodeID] as BaseNode.Start.Step;
       const intentNodeID = Utils.id.objectID();
-      const nextPortID = startNode.data.ports?.[0]?.target ?? null;
+      const nextPortID = startNode.data.ports?.[0]?.target ?? startNode.data.portsV2?.builtIn[BaseModels.PortType.NEXT]?.target ?? null;
 
       primitiveDiagram.nodes[startNodeID] = buildDBBlock(startNodeID, startNode.coords ?? [360, 120], {
         name: primitiveDiagram.name,
@@ -40,13 +40,17 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
       primitiveDiagram.nodes[intentNodeID] = buildDBStep<BaseNode.Intent.Step>(intentNodeID, BaseNode.NodeType.INTENT, {
         intent: null,
         mappings: [],
-        ports: [
-          {
-            id: Utils.id.objectID(),
-            type: BaseModels.PortType.NEXT,
-            target: nextPortID,
+        portsV2: {
+          byKey: {},
+          builtIn: {
+            [BaseModels.PortType.NEXT]: {
+              id: Utils.id.objectID(),
+              type: BaseModels.PortType.NEXT,
+              target: nextPortID,
+            },
           },
-        ],
+          dynamic: [],
+        },
       });
     }
 

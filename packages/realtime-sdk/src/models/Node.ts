@@ -1,8 +1,7 @@
 import { BlockType } from '@realtime-sdk/constants';
 import { BaseModels } from '@voiceflow/base-types';
-import { WithRequired } from '@voiceflow/common';
 
-import { DBPort, Port } from './Port';
+import { Port } from './Port';
 import { PartialModel } from './Utility';
 
 export type BuiltInPortRecord<T = string> = { [key in BaseModels.PortType]?: T };
@@ -35,33 +34,4 @@ export interface Node<O extends BuiltInPortRecord = BuiltInPortRecord> {
   ports: NodePorts<O>;
   parentNode: string | null;
   combinedNodes: string[];
-}
-
-export interface DBNode {
-  id: string;
-  name: string;
-  x?: number;
-  y?: number;
-  ports: DBPort[];
-  combines?: DBNode[] | null;
-  parentNode?: string;
-  extras: DBNode.Extras;
-}
-
-export namespace DBNode {
-  export type WithCoords = WithRequired<DBNode, 'x' | 'y'>;
-
-  export interface Extras {
-    type: string;
-    virtualExtras?: VirtualExtras;
-    [key: string]: any;
-  }
-
-  export interface VirtualExtras {
-    color?: string;
-    name?: string;
-    id?: string;
-    inPortID?: string;
-    reusePorts?: boolean;
-  }
 }

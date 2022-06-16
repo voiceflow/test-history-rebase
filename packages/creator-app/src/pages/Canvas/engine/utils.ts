@@ -326,19 +326,17 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<
   return { intents: Utils.array.unique(intents), products, diagrams };
 };
 
-export const createPortRemaps = (nodeMappings: { node: Realtime.Node | null; targetNodeID?: string | null }[]) =>
-  nodeMappings.reduce<Realtime.node.NodePortRemap[]>((acc, { node, targetNodeID }) => {
-    if (!node) return acc;
-
-    acc.push({
-      nodeID: node.id,
-      ports: [
-        ...Object.entries(node.ports.out.builtIn).map(([type, portID]) => ({ type, portID })),
-        ...Object.entries(node.ports.out.byKey).map(([key, portID]) => ({ key, portID })),
-        ...node.ports.out.dynamic.map((portID) => ({ portID })),
-      ],
-      targetNodeID: targetNodeID || null,
-    });
-
-    return acc;
-  }, []);
+export const createPortRemap = (node: Realtime.Node | null, targetNodeID: string | null = null): Realtime.NodePortRemap[] | undefined =>
+  node
+    ? [
+        {
+          nodeID: node.id,
+          ports: [
+            ...node.ports.out.dynamic.map((portID) => ({ portID })),
+            ...Object.entries(node.ports.out.builtIn).map(([type, portID]) => ({ type, portID })),
+            // do not remap ports.out.byKey, they should always retain their targets
+          ],
+          targetNodeID,
+        },
+      ]
+    : undefined;

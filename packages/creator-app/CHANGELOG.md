@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.786.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.785.0...@voiceflow/creator-app@1.786.0) (2022-06-17)
+
+
+### Features
+
+* import snapshot reverter (VF-945) ([#5618](https://github.com/voiceflow/creator-app/issues/5618)) ([1c7c49c](https://github.com/voiceflow/creator-app/commit/1c7c49c536c513009a42d57340dae4b504853d7a))
+
+
+
+
+
 # [1.785.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.784.0...@voiceflow/creator-app@1.785.0) (2022-06-17)
 
 

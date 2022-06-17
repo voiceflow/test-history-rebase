@@ -15,6 +15,7 @@ import importSnapshot from './importSnapshot';
 import initialize from './initialize';
 import insertStep, { insertStepReverter } from './insertStep';
 import isolateSteps, { isolateStepsReverter } from './isolateSteps';
+import moveManyNodes, { moveManyNodesReverter } from './moveManyNodes';
 import patchManyLinks from './patchManyLinks';
 import removeBuiltinPort from './removeBuiltinPort';
 import removeByKeyPort from './removeByKeyPort';
@@ -42,6 +43,7 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...reorderSteps)
   .immerCase(...removeManyNodes)
   .immerCase(...updateManyNodeData)
+  .immerCase(...moveManyNodes)
 
   .immerCase(...addByKeyPort)
   .immerCase(...addBuiltinPort)
@@ -68,6 +70,7 @@ export const reverters = [
   isolateStepsReverter,
   removeManyNodesReverter,
   updateManyNodeDataReverter,
+  moveManyNodesReverter,
 
   addByKeyPortReverter,
   addBuiltinPortReverter,

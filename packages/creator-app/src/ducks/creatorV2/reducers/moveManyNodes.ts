@@ -1,0 +1,33 @@
+import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
+
+import { createReverter } from '@/ducks/utils';
+
+import { nodeCoordsByIDSelector } from '../selectors';
+import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
+
+const moveManyNodesReducer = createActiveDiagramReducer(Realtime.node.moveMany, (state, { blocks }) => {
+  Object.entries(blocks).forEach(([nodeID, coords]) => {
+    if (!Utils.object.hasProperty(state.coordsByNodeID, nodeID)) return;
+
+    state.coordsByNodeID[nodeID] = coords;
+  });
+});
+
+export default moveManyNodesReducer;
+
+export const moveManyNodesReverter = createReverter(
+  Realtime.node.moveMany,
+  ({ workspaceID, projectID, versionID, diagramID, blocks }, getState) => {
+    const state = getState();
+    const prevCoords = Object.fromEntries(Object.keys(blocks).map((nodeID) => [nodeID, nodeCoordsByIDSelector(state, { id: nodeID })!]));
+
+    return Realtime.node.moveMany({ workspaceID, projectID, versionID, diagramID, blocks: prevCoords });
+  },
+
+  [
+    ...DIAGRAM_INVALIDATORS,
+    ...createNodeRemovalInvalidators<Realtime.node.TranslatePayload>((origin, nodeID) => !!origin.blocks[nodeID]),
+    createDiagramInvalidator(Realtime.node.moveMany, (origin, subject) => Object.keys(origin.blocks).some((nodeID) => !!subject.blocks[nodeID])),
+  ]
+);

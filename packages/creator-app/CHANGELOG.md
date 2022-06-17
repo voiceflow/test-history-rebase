@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.781.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.780.0...@voiceflow/creator-app@1.781.0) (2022-06-17)
+
+
+### Features
+
+* revert isolate steps (VF-3810) ([#5602](https://github.com/voiceflow/creator-app/issues/5602)) ([0fe8213](https://github.com/voiceflow/creator-app/commit/0fe8213d8f02e5f405ea14562a0547da37fd3c82))
+
+
+
+
+
 # [1.780.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.779.1...@voiceflow/creator-app@1.780.0) (2022-06-17)
 
 

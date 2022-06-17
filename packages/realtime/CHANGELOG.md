@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.79.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.78.2...@voiceflow/realtime@1.79.0) (2022-06-17)
+
+
+### Features
+
+* removeManyByKeyPorts reverter (VF-945) ([#5617](https://github.com/voiceflow/creator-app/issues/5617)) ([59ee0b6](https://github.com/voiceflow/creator-app/commit/59ee0b6ea294c925d7e18f3b73d3e6f11887f80b))
+
+
+
+
+
 ## [1.78.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.78.1...@voiceflow/realtime@1.78.2) (2022-06-17)
 
 **Note:** Version bump only for package @voiceflow/realtime

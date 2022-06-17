@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.787.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.786.0...@voiceflow/creator-app@1.787.0) (2022-06-17)
+
+
+### Features
+
+* removeManyByKeyPorts reverter (VF-945) ([#5617](https://github.com/voiceflow/creator-app/issues/5617)) ([59ee0b6](https://github.com/voiceflow/creator-app/commit/59ee0b6ea294c925d7e18f3b73d3e6f11887f80b))
+* revert transplant steps (VF-3810) ([#5607](https://github.com/voiceflow/creator-app/issues/5607)) ([2cd01b9](https://github.com/voiceflow/creator-app/commit/2cd01b9f262b1c3fa8181ce3c5287367ec9d1487))
+
+
+
+
+
 # [1.786.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.785.0...@voiceflow/creator-app@1.786.0) (2022-06-17)
 
 

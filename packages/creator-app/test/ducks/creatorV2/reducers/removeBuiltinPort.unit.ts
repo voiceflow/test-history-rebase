@@ -5,14 +5,15 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT, PORT_ID } from '../_fixtures';
+import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT, PORT_ID, V2_FEATURE_STATE } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', ({ expect, describeReducerV2 }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', ({ expect, describeReducerV2, describeReverter, createState }) => {
   describeReducerV2(Realtime.port.removeBuiltin, ({ applyAction }) => {
     const fooLink = { ...LINK, id: 'fooLink' };
     const barLink = { ...LINK, id: 'barLink' };
     const fooPort = { ...PORT, id: 'fooPort' };
     const barPort = { ...PORT, id: 'barPort' };
+    const portType = BaseModels.PortType.NO_REPLY;
 
     it('ignore removing port for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
@@ -20,6 +21,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
         diagramID: 'foo',
         nodeID: NODE_ID,
         portID: PORT_ID,
+        type: portType,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -37,7 +39,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
           nodeIDByPortID: { [PORT_ID]: NODE_ID, [fooPort.id]: NODE_ID },
           linkIDsByPortID: { [PORT_ID]: [], [fooPort.id]: ['fooLink'] },
         },
-        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID }
+        {
+          ...ACTION_CONTEXT,
+          nodeID: NODE_ID,
+          portID: PORT_ID,
+          type: portType,
+        }
       );
 
       expect(result.ports).to.eql(normalize([fooPort, barPort]));
@@ -58,6 +65,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
               in: [fooPort.id],
               out: {
                 dynamic: [],
+                byKey: {},
                 builtIn: {
                   [BaseModels.PortType.FAIL]: barPort.id,
                   [BaseModels.PortType.NEXT]: PORT_ID,
@@ -66,13 +74,19 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
             },
           },
         },
-        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID }
+        {
+          ...ACTION_CONTEXT,
+          nodeID: NODE_ID,
+          portID: PORT_ID,
+          type: portType,
+        }
       );
 
       expect(result.portsByNodeID[NODE_ID]).to.eql({
         in: [fooPort.id],
         out: {
           dynamic: [],
+          byKey: {},
           builtIn: {
             [BaseModels.PortType.FAIL]: barPort.id,
           },
@@ -90,13 +104,69 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
           linkIDsByNodeID: { [NODE_ID]: [fooLink.id, LINK_ID, barLink.id] },
           linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
         },
-        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID }
+        {
+          ...ACTION_CONTEXT,
+          nodeID: NODE_ID,
+          portID: PORT_ID,
+          type: portType,
+        }
       );
 
       expect(result.links).to.eql(normalize([]));
       expect(result.nodeIDsByLinkID).to.eql({ [fooLink.id]: [NODE_ID] });
       expect(result.portIDsByLinkID).to.eql({ [barLink.id]: [PORT_ID] });
       expect(result.linkIDsByNodeID).to.eql({ [NODE_ID]: [fooLink.id, barLink.id] });
+    });
+  });
+
+  describeReverter(Realtime.port.removeBuiltin, ({ revertAction }) => {
+    it('registers an action reverter', () => {
+      const type = BaseModels.PortType.NEXT;
+      const targetNodeID = 'targetNodeID';
+      const targetPortID = 'targetPortID';
+      const linkData: any = { foo: 'bar' };
+      const rootState = createState(
+        {
+          ...MOCK_STATE,
+          linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
+          links: normalize([
+            {
+              id: LINK_ID,
+              source: { nodeID: NODE_ID, portID: PORT_ID },
+              target: { nodeID: targetNodeID, portID: targetPortID },
+              data: linkData,
+            },
+          ]),
+        },
+        V2_FEATURE_STATE
+      );
+
+      const result = revertAction(rootState, {
+        ...ACTION_CONTEXT,
+        nodeID: NODE_ID,
+        portID: PORT_ID,
+        type,
+      });
+
+      expect(result).to.eql([
+        Realtime.port.addBuiltin({
+          ...ACTION_CONTEXT,
+          nodeID: NODE_ID,
+          portID: PORT_ID,
+          type,
+        }),
+        Realtime.link.addBuiltin({
+          ...ACTION_CONTEXT,
+          sourceBlockID: null,
+          sourceNodeID: NODE_ID,
+          sourcePortID: PORT_ID,
+          targetNodeID,
+          targetPortID,
+          linkID: LINK_ID,
+          data: linkData,
+          type,
+        }),
+      ]);
     });
   });
 });

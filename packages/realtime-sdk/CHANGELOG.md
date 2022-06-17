@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.113.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.112.0...@voiceflow/realtime-sdk@1.113.0) (2022-06-17)
+
+
+### Features
+
+* remove many nodes (VF-945) ([#5611](https://github.com/voiceflow/creator-app/issues/5611)) ([faffe4a](https://github.com/voiceflow/creator-app/commit/faffe4acca8e7fda943ee321beb30b959a5ca765))
+
+
+
+
+
 # [1.112.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.111.0...@voiceflow/realtime-sdk@1.112.0) (2022-06-17)
 
 

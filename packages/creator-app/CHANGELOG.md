@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.782.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.781.1...@voiceflow/creator-app@1.782.0) (2022-06-17)
+
+
+### Features
+
+* add moveManyNodes reverter (VF-945) ([#5612](https://github.com/voiceflow/creator-app/issues/5612)) ([925e923](https://github.com/voiceflow/creator-app/commit/925e923aa430d7db4eab3ec3c3638b9f834610d5))
+* remove many nodes (VF-945) ([#5611](https://github.com/voiceflow/creator-app/issues/5611)) ([faffe4a](https://github.com/voiceflow/creator-app/commit/faffe4acca8e7fda943ee321beb30b959a5ca765))
+
+
+
+
+
 ## [1.781.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.781.0...@voiceflow/creator-app@1.781.1) (2022-06-17)
 
 

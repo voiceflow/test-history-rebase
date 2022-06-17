@@ -9,10 +9,10 @@ const reorderComponentsReducer = createReducer(Realtime.version.reorderComponent
 
   if (!version) return;
 
-  const from = version.topics.findIndex((topic) => topic.sourceID === fromID);
+  const from = version.components.findIndex((component) => component.sourceID === fromID);
 
   if (from !== toIndex) {
-    version.topics = Utils.array.reorder(version.topics, from, toIndex);
+    version.components = Utils.array.reorder(version.components, from, toIndex);
   }
 });
 

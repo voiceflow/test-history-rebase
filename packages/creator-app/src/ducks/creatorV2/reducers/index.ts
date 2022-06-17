@@ -19,11 +19,11 @@ import moveManyNodes, { moveManyNodesReverter } from './moveManyNodes';
 import patchManyLinks from './patchManyLinks';
 import removeBuiltinPort from './removeBuiltinPort';
 import removeByKeyPort from './removeByKeyPort';
-import removeDynamicPort from './removeDynamicPort';
+import removeDynamicPort, { removeDynamicPortReverter } from './removeDynamicPort';
 import removeManyByKeyPorts from './removeManyByKeyPorts';
 import removeManyLinks, { removeManyLinksReverter } from './removeManyLinks';
 import removeManyNodes, { removeManyNodesReverter } from './removeManyNodes';
-import reorderDynamicPorts from './reorderDynamicPorts';
+import reorderDynamicPorts, { reorderDynamicPortsReverter } from './reorderDynamicPorts';
 import reorderSteps from './reorderSteps';
 import reset from './reset';
 import transplantSteps from './transplantSteps';
@@ -75,6 +75,8 @@ export const reverters = [
   addByKeyPortReverter,
   addBuiltinPortReverter,
   addDynamicPortReverter,
+  reorderDynamicPortsReverter,
+  removeDynamicPortReverter,
 
   addByKeyLinkReverter,
   addBuiltinLinkReverter,

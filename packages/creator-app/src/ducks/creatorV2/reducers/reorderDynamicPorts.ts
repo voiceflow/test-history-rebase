@@ -2,7 +2,10 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import { createActiveDiagramReducer } from './utils';
+import { createReverter } from '@/ducks/utils';
+
+import { portsByNodeIDSelector } from '../selectors';
+import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
 
 const reorderDynamicPortsReducer = createActiveDiagramReducer(Realtime.port.reorderDynamic, (state, { nodeID, portID, index }) => {
   if (!Normal.hasOne(state.ports, portID)) return;
@@ -19,3 +22,21 @@ const reorderDynamicPortsReducer = createActiveDiagramReducer(Realtime.port.reor
 });
 
 export default reorderDynamicPortsReducer;
+
+export const reorderDynamicPortsReverter = createReverter(
+  Realtime.port.reorderDynamic,
+
+  ({ workspaceID, projectID, versionID, diagramID, nodeID, portID }, getState) => {
+    const prevIndex = portsByNodeIDSelector(getState(), { id: nodeID }).out.dynamic.indexOf(portID);
+
+    return Realtime.port.reorderDynamic({ workspaceID, projectID, versionID, diagramID, nodeID, portID, index: prevIndex });
+  },
+
+  [
+    ...DIAGRAM_INVALIDATORS,
+    ...createNodeRemovalInvalidators<Realtime.port.ReorderDynamicPayload>((origin, nodeID) => origin.nodeID === nodeID),
+    createDiagramInvalidator(Realtime.port.addDynamic, (origin, subject) => origin.nodeID === subject.nodeID),
+    createDiagramInvalidator(Realtime.port.removeDynamic, (origin, subject) => origin.nodeID === subject.nodeID),
+    createDiagramInvalidator(Realtime.port.reorderDynamic, (origin, subject) => origin.nodeID === subject.nodeID),
+  ]
+);

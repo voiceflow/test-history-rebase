@@ -3,9 +3,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
+import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PORT_ID, V2_FEATURE_STATE } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer', ({ expect, describeReducerV2 }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer', ({ expect, createState, describeReducerV2, describeReverter }) => {
   describeReducerV2(Realtime.port.reorderDynamic, ({ applyAction }) => {
     it('ignore reordering ports for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
@@ -14,7 +14,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
         nodeID: NODE_ID,
         portID: PORT_ID,
         index: 1,
-        builtinOffset: 0,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -26,7 +25,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
         nodeID: NODE_ID,
         portID: 'foo',
         index: 1,
-        builtinOffset: 0,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -40,6 +38,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
             in: [],
             out: {
               dynamic: ['foo', 'bar', 'fizz'],
+              byKey: {},
               builtIn: {},
             },
           },
@@ -51,7 +50,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
         nodeID: NODE_ID,
         portID: PORT_ID,
         index: 2,
-        builtinOffset: 0,
       });
 
       expect(result).to.eq(initialState);
@@ -66,6 +64,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
               in: [],
               out: {
                 dynamic: ['foo', 'bar', PORT_ID, 'fizz'],
+                byKey: {},
                 builtIn: {},
               },
             },
@@ -76,37 +75,28 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
           nodeID: NODE_ID,
           portID: PORT_ID,
           index: 1,
-          builtinOffset: 0,
         }
       );
 
       expect(result.portsByNodeID[NODE_ID]?.out.dynamic).to.eql(['foo', PORT_ID, 'bar', 'fizz']);
     });
+  });
 
-    it('ignore builtinOffset when reordering', () => {
-      const result = applyAction(
+  describeReverter(Realtime.port.reorderDynamic, ({ revertAction }) => {
+    it('registers an action reverter', () => {
+      const rootState = createState(
         {
           ...MOCK_STATE,
           portsByNodeID: {
-            [NODE_ID]: {
-              in: [],
-              out: {
-                dynamic: ['foo', 'bar', PORT_ID, 'fizz'],
-                builtIn: {},
-              },
-            },
+            [NODE_ID]: { in: [], out: { builtIn: {}, byKey: {}, dynamic: ['first', PORT_ID, 'third', 'fourth'] } },
           },
         },
-        {
-          ...ACTION_CONTEXT,
-          nodeID: NODE_ID,
-          portID: PORT_ID,
-          index: 1,
-          builtinOffset: 20,
-        }
+        V2_FEATURE_STATE
       );
 
-      expect(result.portsByNodeID[NODE_ID]?.out.dynamic).to.eql(['foo', PORT_ID, 'bar', 'fizz']);
+      const result = revertAction(rootState, { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, index: 2 });
+
+      expect(result).to.eql(Realtime.port.reorderDynamic({ ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, index: 1 }));
     });
   });
 });

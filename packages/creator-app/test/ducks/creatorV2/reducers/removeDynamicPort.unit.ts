@@ -4,9 +4,9 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT, PORT_ID } from '../_fixtures';
+import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT, PORT_ID, V2_FEATURE_STATE } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', ({ expect, describeReducerV2 }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', ({ expect, describeReducerV2, describeReverter, createState }) => {
   describeReducerV2(Realtime.port.removeDynamic, ({ applyAction }) => {
     const fooLink = { ...LINK, id: 'fooLink' };
     const barLink = { ...LINK, id: 'barLink' };
@@ -57,6 +57,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
               in: [fooPort.id],
               out: {
                 dynamic: [barPort.id, PORT_ID],
+                byKey: {},
                 builtIn: {},
               },
             },
@@ -69,6 +70,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
         in: [fooPort.id],
         out: {
           dynamic: [barPort.id],
+          byKey: {},
           builtIn: {},
         },
       });
@@ -91,6 +93,58 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
       expect(result.nodeIDsByLinkID).to.eql({ [fooLink.id]: [NODE_ID] });
       expect(result.portIDsByLinkID).to.eql({ [barLink.id]: [PORT_ID] });
       expect(result.linkIDsByNodeID).to.eql({ [NODE_ID]: [fooLink.id, barLink.id] });
+    });
+  });
+
+  describeReverter(Realtime.port.removeDynamic, ({ revertAction }) => {
+    it('registers an action reverter', () => {
+      const targetNodeID = 'targetNodeID';
+      const targetPortID = 'targetPortID';
+      const portLabel = 'my port';
+      const linkData: any = { foo: 'bar' };
+      const rootState = createState(
+        {
+          ...MOCK_STATE,
+          linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
+          portsByNodeID: { [NODE_ID]: { in: [], out: { byKey: {}, builtIn: {}, dynamic: ['first', 'second', PORT_ID, 'fourth'] } } },
+          ports: normalize([{ id: PORT_ID, nodeID: NODE_ID, label: portLabel, virtual: false }]),
+          links: normalize([
+            {
+              id: LINK_ID,
+              source: { nodeID: NODE_ID, portID: PORT_ID },
+              target: { nodeID: targetNodeID, portID: targetPortID },
+              data: linkData,
+            },
+          ]),
+        },
+        V2_FEATURE_STATE
+      );
+
+      const result = revertAction(rootState, {
+        ...ACTION_CONTEXT,
+        nodeID: NODE_ID,
+        portID: PORT_ID,
+      });
+
+      expect(result).to.eql([
+        Realtime.port.addDynamic({
+          ...ACTION_CONTEXT,
+          nodeID: NODE_ID,
+          portID: PORT_ID,
+          index: 2,
+          label: portLabel,
+        }),
+        Realtime.link.addDynamic({
+          ...ACTION_CONTEXT,
+          sourceBlockID: null,
+          sourceNodeID: NODE_ID,
+          sourcePortID: PORT_ID,
+          targetNodeID,
+          targetPortID,
+          linkID: LINK_ID,
+          data: linkData,
+        }),
+      ]);
     });
   });
 });

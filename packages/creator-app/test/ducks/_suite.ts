@@ -58,11 +58,12 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
     const createDispatch = (
       handler: (dispatchable: Dispatchable) => any = Utils.functional.noop,
       loguxHandler: (key: keyof Dispatch) => (action: AnyFSAction) => any = () => Utils.functional.noop
-    ) =>
+    ): Dispatch =>
       Object.assign(utils.spy(handler), {
         local: utils.spy(loguxHandler('local')),
         crossTab: utils.spy(loguxHandler('crossTab')),
         sync: utils.spy(loguxHandler('sync')),
+        getNodeID: () => 'mockNodeID',
       });
 
     const reducerUtils = {
@@ -263,7 +264,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
         revertAction: (rootState, payload) => {
           const reverter = Duck.reverters?.find((reverter) => reverter.actionCreator === actionCreator);
 
-          utils.expect(reverter).to.be.ok;
+          utils.expect(reverter, `should register a reverter for the ${actionCreator.type} action`).to.be.ok;
 
           return reverter?.revert(payload, () => rootState);
         },

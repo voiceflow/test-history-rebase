@@ -23,10 +23,6 @@ export interface BuiltinPayload extends BasePortPayload {
   type: BaseModels.PortType;
 }
 
-export interface RemoveByKeyPayload extends BasePortPayload {
-  key: string;
-}
-
 export interface RemoveManyByKeyPayload extends BaseNodePayload {
   keys: string[];
 }
@@ -37,5 +33,4 @@ export const addByKey = Utils.protocol.createAction<AddByKeyPayload>(portType('A
 export const reorderDynamic = Utils.protocol.createAction<ReorderDynamicPayload>(portType('REORDER_DYNAMIC'));
 export const removeDynamic = Utils.protocol.createAction<BasePortPayload>(portType('REMOVE_DYNAMIC'));
 export const removeBuiltin = Utils.protocol.createAction<BuiltinPayload>(portType('REMOVE_BUILTIN'));
-export const removeByKey = Utils.protocol.createAction<RemoveByKeyPayload>(portType('REMOVE_BY_KEY'));
 export const removeManyByKey = Utils.protocol.createAction<RemoveManyByKeyPayload>(portType('REMOVE_MANY_BY_KEY'));

@@ -45,7 +45,9 @@ export const patchManyLinksReverter = createReverter(
     ),
     createDiagramInvalidator(Realtime.node.reorderSteps, (origin, subject) => remapTargetsPatchedLink(subject.nodePortRemaps ?? [], origin.patches)),
     createDiagramInvalidator(Realtime.port.removeBuiltin, (origin, subject) => origin.patches.some((patch) => patch.portID === subject.portID)),
-    createDiagramInvalidator(Realtime.port.removeByKey, (origin, subject) => origin.patches.some((patch) => patch.portID === subject.portID)),
+    createDiagramInvalidator(Realtime.port.removeManyByKey, (origin, subject) =>
+      origin.patches.some((patch) => patch.nodeID === subject.nodeID && patch.key && subject.keys.includes(patch.key))
+    ),
     createDiagramInvalidator(Realtime.port.removeDynamic, (origin, subject) => origin.patches.some((patch) => patch.portID === subject.portID)),
     createDiagramInvalidator(Realtime.link.patchMany, (origin, subject) =>
       origin.patches.some((originPatch) => subject.patches.some((patch) => originPatch.linkID === patch.linkID))

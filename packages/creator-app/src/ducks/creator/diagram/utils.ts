@@ -233,17 +233,6 @@ export const removeOutDynamicPortFromBlockInState = (portID: string): DiagramSta
     };
   });
 
-export const removeOutByKeyPortFromBlockInState = (key: string, portID: string): DiagramStateComposeReducer =>
-  Utils.functional.compose(removePortFromState(portID), (state: DiagramState) => {
-    const port = Utils.normalized.getNormalizedByKey(state.ports, portID);
-    const node = Utils.normalized.getNormalizedByKey(state.nodes, port.nodeID);
-
-    return {
-      ...state,
-      nodes: Normal.patchOne(state.nodes, node.id, removeOutByKeyPortFromNode(node, key)),
-    };
-  });
-
 export const removeManyOutByKeyPortFromBlockInState = (portsToRemove: { key: string; portID: string }[]): DiagramStateComposeReducer =>
   Utils.functional.compose(removeManyPortsFromState(portsToRemove.map(({ portID }) => portID)), (state: DiagramState) => {
     const portIDs = portsToRemove.map(({ portID }) => portID);

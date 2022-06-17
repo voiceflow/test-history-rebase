@@ -52,23 +52,6 @@ class PortManager extends EngineConsumer {
       }
     },
 
-    removeByKey: async (key: string, portID: string, syncRemove?: () => Promise<void> | void): Promise<void> => {
-      const port = this.engine.getPortByID(portID);
-      if (!port) return;
-
-      if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(Realtime.port.removeByKey({ ...this.engine.context, nodeID: port.nodeID, portID, key }));
-      } else {
-        const linkIDs = this.engine.getLinkIDsByPortID(portID);
-
-        await this.engine.link.removeMany(linkIDs);
-        await syncRemove?.();
-        this.dispatch(Creator.removeOutByKeyPort(key, portID));
-      }
-
-      this.engine.node.redrawLinks(port.nodeID);
-    },
-
     removeManyByKey: async (portsToRemove: { portID: string; key: string }[], syncRemove?: () => Promise<void> | void): Promise<void> => {
       const ports = portsToRemove.map(({ portID }) => this.engine.getPortByID(portID)!).filter(Boolean);
 
@@ -233,26 +216,15 @@ class PortManager extends EngineConsumer {
   }
 
   /**
-   * removes a byKey out port by its key and ID
-   */
-  async removeByKey(key: string, portID: string): Promise<void> {
-    this.log.debug(this.log.pending('removing out byKey port'), this.log.slug(portID));
-    await this.internal.removeByKey(key, portID, () => this.engine.realtime.sendUpdate(RealtimeDuck.removeOutByKeyPort(key, portID)));
-    this.engine.saveHistory();
-
-    this.log.info(this.log.success('removed out byKey port'), this.log.slug(portID));
-  }
-
-  /**
    * removes many byKey out port by its key and ID
    */
   async removeManyByKey(portsToRemove: { key: string; portID: string }[]): Promise<void> {
     const portIDs = portsToRemove.map(({ portID }) => portID).join(', ');
-    this.log.debug(this.log.pending('removing out many byKey ports'), this.log.value(portIDs));
+    this.log.debug(this.log.pending(`removing ${portIDs.length} byKey ports`));
     await this.internal.removeManyByKey(portsToRemove, () => this.engine.realtime.sendUpdate(RealtimeDuck.removeManyOutByKeyPorts(portsToRemove)));
     this.engine.saveHistory();
 
-    this.log.info(this.log.success('removed out byKey port'), this.log.value(portIDs));
+    this.log.info(this.log.success('removed many out byKey ports'));
   }
 
   /**

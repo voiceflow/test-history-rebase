@@ -14,8 +14,8 @@ export default addByKeyPortReducer;
 export const addByKeyPortReverter = createReverter(
   Realtime.port.addByKey,
 
-  ({ workspaceID, projectID, versionID, diagramID, nodeID, portID, key }) =>
-    Realtime.port.removeByKey({ workspaceID, projectID, versionID, diagramID, nodeID, portID, key }),
+  ({ workspaceID, projectID, versionID, diagramID, nodeID, key }) =>
+    Realtime.port.removeManyByKey({ workspaceID, projectID, versionID, diagramID, nodeID, keys: [key] }),
 
   [
     ...DIAGRAM_INVALIDATORS,

@@ -22,7 +22,6 @@ export enum DiagramAction {
   ADD_OUT_BY_KEY_PORT = 'CREATOR:PORT:ADD_OUT_BY_KEY',
   ADD_OUT_DYNAMIC_PORT = 'CREATOR:PORT:ADD_OUT_DYNAMIC',
   ADD_OUT_BUILT_IN_PORT = 'CREATOR:PORT:ADD_OUT_BUILT_IN',
-  REMOVE_OUT_BY_KEY_PORT = 'CREATOR:PORT:REMOVE_OUT_BY_KEY',
   REMOVE_MANY_OUT_BY_KEY_PORT = 'CREATOR:PORT:REMOVE_MANY_OUT_BY_KEY',
   REMOVE_OUT_DYNAMIC_PORT = 'CREATOR:PORT:REMOVE_OUT_DYNAMIC',
   REMOVE_OUT_BUILT_IN_PORT = 'CREATOR:PORT:REMOVE_OUT_BUILT_IN',
@@ -80,8 +79,6 @@ export type AddOutBuiltInPort = Action<
   { nodeID: string; port: Realtime.PartialModel<Realtime.Port>; portType: BaseModels.PortType }
 >;
 
-export type RemoveOutByKeyPort = Action<DiagramAction.REMOVE_OUT_BY_KEY_PORT, { key: string; portID: string }>;
-
 export type RemoveManyOutByKeyPorts = Action<DiagramAction.REMOVE_MANY_OUT_BY_KEY_PORT, { key: string; portID: string }[]>;
 
 export type RemoveOutDynamicPort = Action<DiagramAction.REMOVE_OUT_DYNAMIC_PORT, string>;
@@ -122,7 +119,6 @@ export type AnyDiagramAction =
   | AddOutByKeyPort
   | AddOutDynamicPort
   | AddOutBuiltInPort
-  | RemoveOutByKeyPort
   | RemoveManyOutByKeyPorts
   | RemoveOutDynamicPort
   | RemoveOutBuiltInPort
@@ -210,12 +206,6 @@ export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Re
  */
 export const addOutBuiltInPort = (nodeID: string, portType: BaseModels.PortType, port: Realtime.PartialModel<Realtime.Port>): AddOutBuiltInPort =>
   createAction(DiagramAction.ADD_OUT_BUILT_IN_PORT, { nodeID, port, portType });
-
-/**
- * @deprecated
- */
-export const removeOutByKeyPort = (key: string, portID: string): RemoveOutByKeyPort =>
-  createAction(DiagramAction.REMOVE_OUT_BY_KEY_PORT, { key, portID });
 
 /**
  * @deprecated

@@ -20,7 +20,6 @@ import {
   RemoveManyOutByKeyPorts,
   removeNodes,
   RemoveOutBuiltInPort,
-  RemoveOutByKeyPort,
   RemoveOutDynamicPort,
   ReorderOutDynamicPorts,
   SetDiagramState,
@@ -47,7 +46,6 @@ import {
   removeAllLinksFromState,
   removeManyOutByKeyPortFromBlockInState,
   removeOutBuiltInPortFromBlockInState,
-  removeOutByKeyPortFromBlockInState,
   removeOutDynamicPortFromBlockInState,
   reorderOutDynamicPorts,
 } from '../utils';
@@ -117,9 +115,6 @@ export const addOutDynamicPortReducer: Reducer<DiagramStateType, AddOutDynamicPo
 
 export const addOutBuiltInPortReducer: Reducer<DiagramStateType, AddOutBuiltInPort> = (state, { payload: { nodeID, port, portType } }) =>
   addOutBuiltInPortToBlockInState(portType, portFactory(nodeID, port.id, port))(state);
-
-export const removeOutByKeyPortReducer: Reducer<DiagramStateType, RemoveOutByKeyPort> = (state, { payload: { portID, key } }) =>
-  Utils.functional.compose(removeOutByKeyPortFromBlockInState(key, portID), removeAllLinksFromState(getLinkIDsByPortID(state)(portID)))(state);
 
 const getLinkIdsByManyPorts = (state: DiagramStateType, ports: { portID: string }[]) => {
   const getLinkIds = getLinkIDsByPortID(state);
@@ -208,8 +203,6 @@ const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | An
       return addOutBuiltInPortReducer(state, action);
     case DiagramAction.REMOVE_MANY_OUT_BY_KEY_PORT:
       return removeManyOutByKeyPortReducer(state, action);
-    case DiagramAction.REMOVE_OUT_BY_KEY_PORT:
-      return removeOutByKeyPortReducer(state, action);
     case DiagramAction.REMOVE_OUT_DYNAMIC_PORT:
       return removeOutDynamicPortReducer(state, action);
     case DiagramAction.REMOVE_OUT_BUILT_IN_PORT:

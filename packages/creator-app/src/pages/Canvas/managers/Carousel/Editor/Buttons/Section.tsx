@@ -33,7 +33,7 @@ const CarouselEditorButtonsSection: React.FC<CarouselEditorButtonsSectionProps> 
 
   const onRemove = (button: Realtime.NodeData.Carousel.Button) => {
     const portID = editor.node.ports.out.byKey[button.id];
-    editor.engine.port.removeByKey(button.id, portID);
+    editor.engine.port.removeManyByKey([{ key: button.id, portID }]);
   };
 
   const managerAPI = useManager(buttons, onChange, {

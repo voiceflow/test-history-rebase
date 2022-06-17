@@ -23,6 +23,9 @@ export const addByKeyLinkReverter = createReverter(
       (origin, nodeID) => origin.sourceNodeID === nodeID || origin.targetNodeID === nodeID
     ),
     createDiagramInvalidator(Realtime.link.addByKey, (origin, subject) => origin.sourceNodeID === subject.sourceNodeID && origin.key === subject.key),
-    createDiagramInvalidator(Realtime.port.removeByKey, (origin, subject) => origin.sourceNodeID === subject.nodeID && origin.key === subject.key),
+    createDiagramInvalidator(
+      Realtime.port.removeManyByKey,
+      (origin, subject) => origin.sourceNodeID === subject.nodeID && subject.keys.includes(origin.key)
+    ),
   ]
 );

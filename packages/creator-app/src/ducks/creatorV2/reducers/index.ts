@@ -18,9 +18,8 @@ import isolateSteps, { isolateStepsReverter } from './isolateSteps';
 import moveManyNodes, { moveManyNodesReverter } from './moveManyNodes';
 import patchManyLinks, { patchManyLinksReverter } from './patchManyLinks';
 import removeBuiltinPort, { removeBuiltinPortReverter } from './removeBuiltinPort';
-import removeByKeyPort from './removeByKeyPort';
 import removeDynamicPort, { removeDynamicPortReverter } from './removeDynamicPort';
-import removeManyByKeyPorts from './removeManyByKeyPorts';
+import removeManyByKeyPorts, { removeManyByKeyPortsReverter } from './removeManyByKeyPorts';
 import removeManyLinks, { removeManyLinksReverter } from './removeManyLinks';
 import removeManyNodes, { removeManyNodesReverter } from './removeManyNodes';
 import reorderDynamicPorts, { reorderDynamicPortsReverter } from './reorderDynamicPorts';
@@ -49,7 +48,6 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...addBuiltinPort)
   .immerCase(...addDynamicPort)
   .immerCase(...reorderDynamicPorts)
-  .immerCase(...removeByKeyPort)
   .immerCase(...removeManyByKeyPorts)
   .immerCase(...removeBuiltinPort)
   .immerCase(...removeDynamicPort)
@@ -80,6 +78,7 @@ export const reverters = [
   addBuiltinPortReverter,
   addDynamicPortReverter,
   reorderDynamicPortsReverter,
+  removeManyByKeyPortsReverter,
   removeBuiltinPortReverter,
   removeDynamicPortReverter,
 

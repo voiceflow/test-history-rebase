@@ -160,12 +160,12 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
       await this.engine.port.internal.addBuiltin(nodeID, portType, port);
     },
 
-    [Realtime.SocketAction.REMOVE_OUT_BY_KEY_PORT]: async ({ portID, key }: ActionPayload<Realtime.RemoveOutByKeyPort>, tabID) => {
+    [Realtime.SocketAction.REMOVE_MANY_OUT_BY_KEY_PORTS]: async (ports: ActionPayload<Realtime.RemoveManyOutByKeyPorts>, tabID) => {
       if (this.isAtomicActionsPhase2) return;
 
-      Sentry.breadcrumb('realtime', 'Remote user removed byKey port', { tabID });
+      Sentry.breadcrumb('realtime', 'Remote user removed many byKey ports', { tabID });
 
-      await this.engine.port.internal.removeByKey(key, portID);
+      await this.engine.port.internal.removeManyByKey(ports);
     },
 
     [Realtime.SocketAction.REMOVE_OUT_DYNAMIC_PORT]: async (portID: ActionPayload<Realtime.RemoveOutDynamicPort>, tabID) => {

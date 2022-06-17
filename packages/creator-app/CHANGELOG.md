@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.780.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.779.1...@voiceflow/creator-app@1.780.0) (2022-06-17)
+
+
+### Features
+
+* insert step reverter (VF-3810) ([#5601](https://github.com/voiceflow/creator-app/issues/5601)) ([00b1f1e](https://github.com/voiceflow/creator-app/commit/00b1f1ef21950e797e0f46debdf77af58326bcd5))
+
+
+
+
+
 ## [1.779.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.779.0...@voiceflow/creator-app@1.779.1) (2022-06-16)
 
 

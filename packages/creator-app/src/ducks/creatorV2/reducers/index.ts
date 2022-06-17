@@ -16,7 +16,7 @@ import initialize from './initialize';
 import insertStep, { insertStepReverter } from './insertStep';
 import isolateSteps, { isolateStepsReverter } from './isolateSteps';
 import moveManyNodes, { moveManyNodesReverter } from './moveManyNodes';
-import patchManyLinks from './patchManyLinks';
+import patchManyLinks, { patchManyLinksReverter } from './patchManyLinks';
 import removeBuiltinPort from './removeBuiltinPort';
 import removeByKeyPort from './removeByKeyPort';
 import removeDynamicPort, { removeDynamicPortReverter } from './removeDynamicPort';
@@ -81,5 +81,6 @@ export const reverters = [
   addByKeyLinkReverter,
   addBuiltinLinkReverter,
   addDynamicLinkReverter,
+  patchManyLinksReverter,
   removeManyLinksReverter,
 ];

@@ -1,7 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import { createActiveDiagramReducer } from './utils';
+import { createReverter } from '@/ducks/utils';
+
+import { linksByIDsSelector } from '../selectors';
+import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
 
 const patchManyLinksReducer = createActiveDiagramReducer(Realtime.link.patchMany, (state, { patches }) => {
   patches.forEach(({ linkID, data }) => {
@@ -14,3 +17,41 @@ const patchManyLinksReducer = createActiveDiagramReducer(Realtime.link.patchMany
 });
 
 export default patchManyLinksReducer;
+
+export const remapTargetsPatchedLink = (portRemaps: Realtime.NodePortRemap[], patches: Realtime.link.LinkPatch[]) =>
+  patches.some((patch) => portRemaps.some((portRemap) => portRemap.ports.some((port) => port.portID === patch.portID)));
+
+export const patchManyLinksReverter = createReverter(
+  Realtime.link.patchMany,
+
+  ({ workspaceID, projectID, versionID, diagramID, patches }, getState) => {
+    const links = linksByIDsSelector(getState(), { ids: patches.map((patch) => patch.linkID) });
+    const prevPatches: Realtime.link.LinkPatch[] = links.map((link) => ({
+      nodeID: link.source.nodeID,
+      portID: link.source.portID,
+      linkID: link.id,
+      data: link.data ?? {},
+    }));
+
+    return Realtime.link.patchMany({ workspaceID, projectID, versionID, diagramID, patches: prevPatches });
+  },
+
+  [
+    ...DIAGRAM_INVALIDATORS,
+    ...createNodeRemovalInvalidators<Realtime.link.PatchManyPayload>((origin, nodeID) => origin.patches.some((patch) => patch.nodeID === nodeID)),
+    createDiagramInvalidator(Realtime.node.insertStep, (origin, subject) => remapTargetsPatchedLink(subject.nodePortRemaps ?? [], origin.patches)),
+    createDiagramInvalidator(Realtime.node.transplantSteps, (origin, subject) =>
+      remapTargetsPatchedLink(subject.nodePortRemaps ?? [], origin.patches)
+    ),
+    createDiagramInvalidator(Realtime.node.reorderSteps, (origin, subject) => remapTargetsPatchedLink(subject.nodePortRemaps ?? [], origin.patches)),
+    createDiagramInvalidator(Realtime.port.removeBuiltin, (origin, subject) => origin.patches.some((patch) => patch.portID === subject.portID)),
+    createDiagramInvalidator(Realtime.port.removeByKey, (origin, subject) => origin.patches.some((patch) => patch.portID === subject.portID)),
+    createDiagramInvalidator(Realtime.port.removeDynamic, (origin, subject) => origin.patches.some((patch) => patch.portID === subject.portID)),
+    createDiagramInvalidator(Realtime.link.patchMany, (origin, subject) =>
+      origin.patches.some((originPatch) => subject.patches.some((patch) => originPatch.linkID === patch.linkID))
+    ),
+    createDiagramInvalidator(Realtime.link.removeMany, (origin, subject) =>
+      origin.patches.some((originPatch) => subject.links.some((link) => originPatch.linkID === link.linkID))
+    ),
+  ]
+);

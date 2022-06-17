@@ -35,7 +35,7 @@ export const createNodeRemovalInvalidators = <Origin extends Realtime.BaseDiagra
   ),
 ];
 
-export const remapTargetsSamePorts = (originPortRemaps?: Realtime.NodePortRemap[], subjectPortRemaps?: Realtime.NodePortRemap[]) =>
+export const remapsTargetSamePorts = (originPortRemaps?: Realtime.NodePortRemap[], subjectPortRemaps?: Realtime.NodePortRemap[]) =>
   !!originPortRemaps?.some((originPortRemap) =>
     subjectPortRemaps?.some((subjectPortRemap) =>
       originPortRemap.ports.some((originPort) => subjectPortRemap.ports.some((subjectPort) => originPort.portID === subjectPort.portID))

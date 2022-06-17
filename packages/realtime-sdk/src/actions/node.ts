@@ -56,15 +56,13 @@ export const addBlock = Utils.protocol.createAction<AddBlockPayload>(nodeBlockTy
 
 // steps
 
-export interface AppendStepPayload<T = unknown> extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload {
+export interface InsertStepPayload<T = unknown> extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload, NodePortRemapsPayload {
   stepID: string;
   data: NodeDataDescriptor<T>;
   ports: PortsDescriptor;
-}
-
-export interface InsertStepPayload<T = unknown> extends AppendStepPayload<T>, NodePortRemapsPayload {
   index: number;
 }
+
 export interface ReorderStepsPayload extends BaseBlockPayload, NodePortRemapsPayload {
   stepID: string;
   index: number;
@@ -87,7 +85,6 @@ export interface IsolateStepsPayload extends BaseBlockPayload, ProjectMetaPayloa
   removeSource?: boolean;
 }
 
-export const appendStep = Utils.protocol.createAction<AppendStepPayload>(nodeStepType('APPEND'));
 export const insertStep = Utils.protocol.createAction<InsertStepPayload>(nodeStepType('INSERT'));
 export const reorderSteps = Utils.protocol.createAction<ReorderStepsPayload>(nodeStepType('REORDER'));
 export const transplantSteps = Utils.protocol.createAction<TransplantStepsPayload>(nodeStepType('TRANSPLANT'));

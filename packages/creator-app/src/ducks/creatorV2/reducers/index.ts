@@ -21,7 +21,7 @@ import removeByKeyPort from './removeByKeyPort';
 import removeDynamicPort from './removeDynamicPort';
 import removeManyByKeyPorts from './removeManyByKeyPorts';
 import removeManyLinks, { removeManyLinksReverter } from './removeManyLinks';
-import removeManyNodes from './removeManyNodes';
+import removeManyNodes, { removeManyNodesReverter } from './removeManyNodes';
 import reorderDynamicPorts from './reorderDynamicPorts';
 import reorderSteps from './reorderSteps';
 import reset from './reset';
@@ -66,6 +66,7 @@ export const reverters = [
 
   insertStepReverter,
   isolateStepsReverter,
+  removeManyNodesReverter,
   updateManyNodeDataReverter,
 
   addByKeyPortReverter,

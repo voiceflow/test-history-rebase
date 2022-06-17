@@ -1,7 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { createReverter } from '@/ducks/utils';
+
+import { builtInPortTypeSelector } from '../selectors';
 import { CreatorState } from '../types';
-import { createActiveDiagramReducer } from './utils';
+import { createActiveDiagramReducer, DIAGRAM_INVALIDATORS } from './utils';
 
 const importNode =
   (state: CreatorState) =>
@@ -69,3 +72,41 @@ const importSnapshotReducer = createActiveDiagramReducer(Realtime.creator.import
 });
 
 export default importSnapshotReducer;
+
+export const importSnapshotReverter = createReverter(
+  Realtime.creator.importSnapshot,
+
+  ({ workspaceID, projectID, versionID, diagramID, nodesWithData, links, ports }, getState) => {
+    const state = getState();
+    const ctx = { workspaceID, projectID, versionID, diagramID };
+
+    return [
+      Realtime.link.removeMany({
+        ...ctx,
+        links: links.map((link) => {
+          const type = builtInPortTypeSelector(state, { id: link.source.portID });
+
+          return {
+            nodeID: link.source.nodeID,
+            portID: link.source.portID,
+            linkID: link.id,
+            type: type || undefined,
+          };
+        }),
+      }),
+      ...ports.map((port) => {
+        const type = builtInPortTypeSelector(state, { id: port.id });
+
+        return type
+          ? Realtime.port.removeBuiltin({ ...ctx, nodeID: port.nodeID, portID: port.id, type })
+          : Realtime.port.removeDynamic({ ...ctx, nodeID: port.nodeID, portID: port.id });
+      }),
+      Realtime.node.removeMany({
+        ...ctx,
+        nodes: nodesWithData.map(({ node }) => (node.parentNode ? { blockID: node.parentNode, stepID: node.id } : { blockID: node.id })),
+      }),
+    ];
+  },
+
+  DIAGRAM_INVALIDATORS
+);

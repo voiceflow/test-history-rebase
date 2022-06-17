@@ -11,7 +11,7 @@ import addByKeyPort, { addByKeyPortReverter } from './addByKeyPort';
 import addDynamicLink, { addDynamicLinkReverter } from './addDynamicLink';
 import addDynamicPort, { addDynamicPortReverter } from './addDynamicPort';
 import addMarkup, { addMarkupReverter } from './addMarkup';
-import importSnapshot from './importSnapshot';
+import importSnapshot, { importSnapshotReverter } from './importSnapshot';
 import initialize from './initialize';
 import insertStep, { insertStepReverter } from './insertStep';
 import isolateSteps, { isolateStepsReverter } from './isolateSteps';
@@ -63,6 +63,8 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
 export default creatorReducer;
 
 export const reverters = [
+  importSnapshotReverter,
+
   addBlockReverter,
   addMarkupReverter,
 

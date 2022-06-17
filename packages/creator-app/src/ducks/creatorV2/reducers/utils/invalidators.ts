@@ -1,7 +1,11 @@
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ActionCreator } from 'typescript-fsa';
 
+import type { State } from '@/ducks';
 import { ActionInvalidator, createInvalidator } from '@/ducks/utils';
+
+import { blockIDByStepIDSelector, linksByPortIDSelector } from '../../selectors';
 
 export const createDiagramInvalidator = <Origin extends Realtime.BaseDiagramPayload, Payload extends Realtime.BaseDiagramPayload>(
   actionCreator: ActionCreator<Payload>,
@@ -37,3 +41,30 @@ export const remapTargetsSamePorts = (originPortRemaps?: Realtime.NodePortRemap[
       originPortRemap.ports.some((originPort) => subjectPortRemap.ports.some((subjectPort) => originPort.portID === subjectPort.portID))
     )
   );
+
+export const buildLinkRecreateActions = (state: State, ctx: Realtime.BaseDiagramPayload, portRemap: Realtime.NodePortRemap) =>
+  portRemap.ports.flatMap((port) => {
+    const links = linksByPortIDSelector(state, { id: port.portID });
+
+    return links.map((link) => {
+      const payload = {
+        ...ctx,
+        sourceBlockID: blockIDByStepIDSelector(state, { id: portRemap.nodeID }),
+        sourceNodeID: portRemap.nodeID,
+        sourcePortID: port.portID,
+        targetNodeID: link.target.nodeID,
+        targetPortID: link.target.portID,
+        linkID: link.id,
+      };
+
+      if (port.key) {
+        return Realtime.link.addByKey({ ...payload, key: port.key });
+      }
+
+      if (port.type) {
+        return Realtime.link.addBuiltin({ ...payload, type: port.type as BaseModels.PortType });
+      }
+
+      return Realtime.link.addDynamic(payload);
+    });
+  });

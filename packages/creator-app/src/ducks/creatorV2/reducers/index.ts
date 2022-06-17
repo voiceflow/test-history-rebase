@@ -10,11 +10,11 @@ import addByKeyLink, { addByKeyLinkReverter } from './addByKeyLink';
 import addByKeyPort, { addByKeyPortReverter } from './addByKeyPort';
 import addDynamicLink, { addDynamicLinkReverter } from './addDynamicLink';
 import addDynamicPort, { addDynamicPortReverter } from './addDynamicPort';
-import addMarkup from './addMarkup';
+import addMarkup, { addMarkupReverter } from './addMarkup';
 import importSnapshot from './importSnapshot';
 import initialize from './initialize';
 import insertStep, { insertStepReverter } from './insertStep';
-import isolateSteps from './isolateSteps';
+import isolateSteps, { isolateStepsReverter } from './isolateSteps';
 import patchManyLinks from './patchManyLinks';
 import removeBuiltinPort from './removeBuiltinPort';
 import removeByKeyPort from './removeByKeyPort';
@@ -62,8 +62,10 @@ export default creatorReducer;
 
 export const reverters = [
   addBlockReverter,
+  addMarkupReverter,
 
   insertStepReverter,
+  isolateStepsReverter,
   updateManyNodeDataReverter,
 
   addByKeyPortReverter,

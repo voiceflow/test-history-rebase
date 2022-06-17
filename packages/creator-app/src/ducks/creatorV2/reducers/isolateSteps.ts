@@ -1,11 +1,14 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
+import { createReverter } from '@/ducks/utils';
+
+import { stepIDsByBlockIDSelector } from '../selectors';
 import { addStepReferences, orphanSteps } from '../utils';
 import { addBlock } from './addBlock';
-import { createActiveDiagramReducer } from './utils';
+import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
 
-const isolateStepReducer = createActiveDiagramReducer(
+const isolateStepsReducer = createActiveDiagramReducer(
   Realtime.node.isolateSteps,
   (state, { sourceBlockID, blockID, blockPorts, blockCoords, blockName, stepIDs }) => {
     if (Normal.hasOne(state.nodes, blockID)) return;
@@ -21,4 +24,51 @@ const isolateStepReducer = createActiveDiagramReducer(
   }
 );
 
-export default isolateStepReducer;
+export default isolateStepsReducer;
+
+export const isolateStepsReverter = createReverter(
+  Realtime.node.isolateSteps,
+
+  ({ workspaceID, projectID, versionID, diagramID, sourceBlockID, blockID, stepIDs }, getState) => {
+    const state = getState();
+    const index = stepIDsByBlockIDSelector(state, { id: sourceBlockID }).indexOf(stepIDs[0]);
+    const ctx = { workspaceID, projectID, versionID, diagramID };
+
+    return Realtime.node.transplantSteps({
+      ...ctx,
+      sourceBlockID: blockID,
+      targetBlockID: sourceBlockID,
+      stepIDs,
+      index,
+      nodePortRemaps: [],
+      removeSource: true,
+    });
+  },
+
+  [
+    ...DIAGRAM_INVALIDATORS,
+    ...createNodeRemovalInvalidators<Realtime.node.IsolateStepsPayload>((origin, nodeID) =>
+      (origin.removeSource ? [origin.sourceBlockID, ...origin.stepIDs] : origin.stepIDs).includes(nodeID)
+    ),
+    createDiagramInvalidator(
+      Realtime.node.insertStep,
+      (origin, subject) =>
+        // other steps inserted into the source, should no longer be able to remove
+        !!origin.removeSource && origin.sourceBlockID === subject.blockID
+    ),
+    createDiagramInvalidator(
+      Realtime.node.isolateSteps,
+      (origin, subject) =>
+        // both removing the same source
+        (!!origin.removeSource || !!subject.removeSource) && origin.sourceBlockID === subject.sourceBlockID
+    ),
+    createDiagramInvalidator(
+      Realtime.node.transplantSteps,
+      (origin, subject) =>
+        // both removing the same source
+        ((!!origin.removeSource || !!subject.removeSource) && origin.sourceBlockID === subject.sourceBlockID) ||
+        // other steps transplanted to the source, should no longer be able to remove
+        (!!origin.removeSource && origin.sourceBlockID === subject.targetBlockID)
+    ),
+  ]
+);

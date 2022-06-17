@@ -6,9 +6,9 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID } from '../_fixtures';
+import { ACTION_CONTEXT, LINK_ID, MOCK_STATE, NODE_DATA, NODE_ID, PORT_ID, PROJECT_META, V2_FEATURE_STATE } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ expect, describeReducerV2 }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ expect, createState, describeReducerV2, describeReverter }) => {
   describeReducerV2(Realtime.node.isolateSteps, ({ applyAction }) => {
     const sourceBlockID = 'sourceBlockID';
     const blockID = 'blockID';
@@ -30,6 +30,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
+        schemaVersion: 2,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -48,6 +49,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
+        schemaVersion: 2,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -66,6 +68,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
+        schemaVersion: 2,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -84,6 +87,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
+        schemaVersion: 2,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -113,6 +117,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
             platform: VoiceflowConstants.PlatformType.VOICEFLOW,
             type: VoiceflowConstants.ProjectType.CHAT,
           },
+          schemaVersion: 2,
         }
       );
 
@@ -132,6 +137,50 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
         [NODE_ID]: ['fooStep', 'barStep'],
         [blockID]: [stepID],
       });
+    });
+  });
+
+  describeReverter(Realtime.node.isolateSteps, ({ revertAction }) => {
+    it('registers an action reverter', () => {
+      const blockID = 'blockID';
+      const stepID = 'stepID';
+      const sourceBlockID = 'sourceBlockID';
+      const targetNodeID = 'targetNodeID';
+      const targetPortID = 'targetPortID';
+      const rootState = createState(
+        {
+          ...MOCK_STATE,
+          links: normalize([{ id: LINK_ID, source: { nodeID: NODE_ID, portID: PORT_ID }, target: { nodeID: targetNodeID, portID: targetPortID } }]),
+          blockIDByStepID: { [NODE_ID]: blockID },
+          stepIDsByBlockID: { [sourceBlockID]: ['first', stepID, 'third'] },
+          linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
+        },
+        V2_FEATURE_STATE
+      );
+
+      const result = revertAction(rootState, {
+        ...ACTION_CONTEXT,
+        sourceBlockID,
+        blockID,
+        blockCoords: [100, -100],
+        blockName: 'New Block',
+        blockPorts: { in: [], out: { byKey: {}, builtIn: {}, dynamic: [] } },
+        stepIDs: [stepID],
+        projectMeta: PROJECT_META,
+        schemaVersion: 2,
+      });
+
+      expect(result).to.eql(
+        Realtime.node.transplantSteps({
+          ...ACTION_CONTEXT,
+          sourceBlockID: blockID,
+          targetBlockID: sourceBlockID,
+          stepIDs: [stepID],
+          index: 1,
+          nodePortRemaps: [],
+          removeSource: true,
+        })
+      );
     });
   });
 });

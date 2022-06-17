@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.783.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.782.0...@voiceflow/creator-app@1.783.0) (2022-06-17)
+
+
+### Features
+
+* add dynamic port reverters (VF-945) ([#5613](https://github.com/voiceflow/creator-app/issues/5613)) ([e2fd867](https://github.com/voiceflow/creator-app/commit/e2fd867300a3d8cabbeaac9b464641133ecce484))
+
+
+
+
+
 # [1.782.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.781.1...@voiceflow/creator-app@1.782.0) (2022-06-17)
 
 

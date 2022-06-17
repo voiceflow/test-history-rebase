@@ -16,7 +16,7 @@ export interface ReorderDynamicPayload extends BasePortPayload {
 
 export interface AddByKeyPayload extends BasePortPayload {
   key: string;
-  label: Nullish<string>;
+  label?: Nullish<string>;
 }
 
 export interface BuiltinPayload extends BasePortPayload {

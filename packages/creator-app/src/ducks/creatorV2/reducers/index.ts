@@ -13,7 +13,7 @@ import addDynamicPort, { addDynamicPortReverter } from './addDynamicPort';
 import addMarkup from './addMarkup';
 import importSnapshot from './importSnapshot';
 import initialize from './initialize';
-import insertStep from './insertStep';
+import insertStep, { insertStepReverter } from './insertStep';
 import isolateSteps from './isolateSteps';
 import patchManyLinks from './patchManyLinks';
 import removeBuiltinPort from './removeBuiltinPort';
@@ -44,8 +44,8 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...updateManyNodeData)
 
   .immerCase(...addByKeyPort)
-  .immerCase(...addDynamicPort)
   .immerCase(...addBuiltinPort)
+  .immerCase(...addDynamicPort)
   .immerCase(...reorderDynamicPorts)
   .immerCase(...removeByKeyPort)
   .immerCase(...removeManyByKeyPorts)
@@ -62,12 +62,16 @@ export default creatorReducer;
 
 export const reverters = [
   addBlockReverter,
-  addBuiltinLinkReverter,
-  addBuiltinPortReverter,
-  addByKeyLinkReverter,
-  addByKeyPortReverter,
-  addDynamicLinkReverter,
-  addDynamicPortReverter,
-  removeManyLinksReverter,
+
+  insertStepReverter,
   updateManyNodeDataReverter,
+
+  addByKeyPortReverter,
+  addBuiltinPortReverter,
+  addDynamicPortReverter,
+
+  addByKeyLinkReverter,
+  addBuiltinLinkReverter,
+  addDynamicLinkReverter,
+  removeManyLinksReverter,
 ];

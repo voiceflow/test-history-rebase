@@ -36,7 +36,6 @@ export const ACTION_CONTEXT = {
   projectID: PROJECT_ID,
   versionID: VERSION_ID,
   diagramID: DIAGRAM_ID,
-  schemaVersion: SCHEMA_VERSION,
 };
 
 export const PROJECT_META = {
@@ -64,7 +63,6 @@ export const PORT: Realtime.Port = {
   id: PORT_ID,
   nodeID: NODE_ID,
   label: 'first port',
-  virtual: false,
 };
 
 export const LINK: Realtime.Link = {

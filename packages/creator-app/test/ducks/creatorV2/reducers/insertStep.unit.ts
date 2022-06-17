@@ -5,9 +5,9 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID, PORT } from '../_fixtures';
+import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID, PORT, PROJECT_META, V2_FEATURE_STATE } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expect, describeReducerV2 }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expect, createState, describeReducerV2, describeReverter }) => {
   describeReducerV2(Realtime.node.insertStep, ({ applyAction }) => {
     const blockNode = { ...NODE_DATA, nodeID: 'blockNode' };
     const stepID = 'stepNode';
@@ -22,6 +22,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
         index: 1,
+        projectMeta: PROJECT_META,
+        nodePortRemaps: [],
+        schemaVersion: 2,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -35,6 +38,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
         index: 1,
+        projectMeta: PROJECT_META,
+        nodePortRemaps: [],
+        schemaVersion: 2,
       });
 
       expect(result).to.eql(MOCK_STATE);
@@ -48,6 +54,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
         index: 1,
+        projectMeta: PROJECT_META,
+        nodePortRemaps: [],
+        schemaVersion: 2,
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -67,6 +76,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
           ports: Realtime.Utils.port.createEmptyNodePorts(),
           data: stepData,
           index: 1,
+          projectMeta: PROJECT_META,
+          nodePortRemaps: [],
+          schemaVersion: 2,
         }
       );
 
@@ -108,6 +120,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
           },
           data: stepData,
           index: 1,
+          projectMeta: PROJECT_META,
+          nodePortRemaps: [],
+          schemaVersion: 2,
         }
       );
 
@@ -124,6 +139,75 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
       });
       expect(result.nodeIDByPortID).to.eql({ [inPortID]: stepID, [dynamicPortID]: stepID, [builtInPortID]: stepID, [byKeyPortID]: stepID });
       expect(result.linkIDsByPortID).to.eql({ [inPortID]: [], [dynamicPortID]: [], [builtInPortID]: [], [byKeyPortID]: [] });
+    });
+  });
+
+  describeReverter(Realtime.node.insertStep, ({ revertAction }) => {
+    it('registers an action reverter', () => {
+      const blockID = 'blockID';
+      const stepID = 'stepID';
+      const firstNode = 'node1';
+      const secondNode = 'node2';
+      const thirdNode = 'node3';
+      const firstPort = 'port1';
+      const secondPort = 'port2';
+      const firstLink = 'link1';
+      const secondLink = 'link2';
+      const rootState = createState(
+        {
+          ...MOCK_STATE,
+          links: normalize([
+            {
+              id: firstLink,
+              source: { nodeID: firstNode, portID: firstPort },
+              target: { nodeID: secondNode, portID: secondPort },
+            },
+            {
+              id: secondLink,
+              source: { nodeID: thirdNode, portID: secondPort },
+              target: { nodeID: firstNode, portID: firstPort },
+            },
+          ]),
+          blockIDByStepID: { [thirdNode]: blockID },
+          linkIDsByPortID: {
+            [firstPort]: [firstLink],
+            [secondPort]: [secondLink],
+          },
+        },
+        V2_FEATURE_STATE
+      );
+
+      const result = revertAction(rootState, {
+        ...ACTION_CONTEXT,
+        blockID,
+        stepID,
+        ports: { in: [], out: { dynamic: [], builtIn: {}, byKey: {} } },
+        data: { type: Realtime.BlockType.BUTTONS, name: 'buttons' },
+        index: 1,
+        projectMeta: PROJECT_META,
+        nodePortRemaps: [
+          { nodeID: firstNode, ports: [{ portID: firstPort }], targetNodeID: secondNode },
+          {
+            nodeID: thirdNode,
+            ports: [{ portID: secondPort }],
+            targetNodeID: null,
+          },
+        ],
+        schemaVersion: 2,
+      });
+
+      expect(result).to.eql([
+        Realtime.node.removeMany({ ...ACTION_CONTEXT, nodes: [{ blockID, stepID }] }),
+        Realtime.link.addDynamic({
+          ...ACTION_CONTEXT,
+          sourceBlockID: blockID,
+          sourceNodeID: thirdNode,
+          sourcePortID: secondPort,
+          targetNodeID: firstNode,
+          targetPortID: firstPort,
+          linkID: secondLink,
+        }),
+      ]);
     });
   });
 });

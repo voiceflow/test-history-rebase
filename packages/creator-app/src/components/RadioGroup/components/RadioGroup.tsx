@@ -1,5 +1,8 @@
 import { CheckboxTypes } from '@voiceflow/ui';
+import cn from 'classnames';
 import React from 'react';
+
+import { ClassName } from '@/styles/constants';
 
 import Container from './RadioGroupContainer';
 import RadioItem from './RadioItem';
@@ -30,7 +33,7 @@ const RadioGroup = <T extends any = boolean>({
   column,
   ...props
 }: RadioGroupProps<T>): React.ReactElement => (
-  <Container className={className} column={column}>
+  <Container className={cn(className, ClassName.RADIO_GROUP)} column={column}>
     {options.map((option, index) => {
       const { id, label, customCheckedCondition } = option;
 

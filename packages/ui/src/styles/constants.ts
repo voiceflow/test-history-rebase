@@ -17,4 +17,5 @@ export enum ClassName {
   SVG_ICON = 'vf-svg-icon',
   POPPER = 'vf-popper',
   POPPER_NAV_ITEM = 'vf-popper__nav_item',
+  SELECT = 'vf-select',
 }

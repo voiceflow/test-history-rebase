@@ -36,6 +36,8 @@
     "chai",
     "chai-as-promised",
     "react-hot-loader",
-    "stream-browserify"
+    "null-loader",
+    "stream-browserify",
+    "webpack"
   ]
 }

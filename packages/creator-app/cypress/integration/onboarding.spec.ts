@@ -2,11 +2,8 @@ import canvasPage from '../pages/canvas';
 import dashboard from '../pages/dashboard';
 import onboarding from '../pages/onboarding';
 
-context.skip('Onboarding', () => {
-  const regularFlow = (projectType?: string) => {
-    cy.setup();
-
-    cy.visit(onboarding.meta.route);
+context('Onboarding', () => {
+  const completeBasicOnboarding = () => {
     cy.shouldBeOn(onboarding);
     onboarding.el.getStartedButton.click();
     onboarding.completeProfile();
@@ -14,54 +11,28 @@ context.skip('Onboarding', () => {
     onboarding.completeCreateWorkspace();
     onboarding.continueStep();
     onboarding.completeInvites();
-    onboarding.completeSelectChannel(projectType);
-    cy.shouldBeOn(canvasPage);
   };
 
   describe('regular new user flow', () => {
-    it('Alexa project', () => {
-      regularFlow();
-    });
+    it('add a new project from scratch', () => {
+      cy.setup();
 
-    it('Google project', () => {
-      regularFlow('Google Assistant');
-    });
-
-    it('Voice Assistant project', () => {
-      regularFlow('Voice Assistant');
-    });
-
-    it('Chat Assistant project', () => {
-      regularFlow('Chat Assistant');
-    });
-
-    // do not have IVR and mobile projects
-    it.skip('Mobile App project', () => {
-      regularFlow('Mobile App');
-    });
-
-    it.skip('IVR project', () => {
-      regularFlow('IVR');
+      cy.visit(onboarding.meta.route);
+      completeBasicOnboarding();
+      cy.shouldBeOn(canvasPage);
     });
   });
 
   describe('Student promo plan', () => {
     beforeEach(() => cy.removeTestAccount());
 
-    it('new user', () => {
+    it.skip('new user', () => {
       const queryParam = '?promo=student';
       cy.signup(queryParam);
       onboarding.assert.verifyEmailTitle();
       cy.verifyEmail(queryParam);
 
-      cy.shouldBeOn(onboarding);
-      onboarding.el.getStartedButton.click();
-      onboarding.completeProfile();
-      onboarding.continueStep();
-      onboarding.completeCreateWorkspace();
-      onboarding.continueStep();
-      onboarding.completeInvites();
-      onboarding.completeSelectChannel();
+      completeBasicOnboarding();
       onboarding.enterCreditCard();
       cy.get('button.vf-button').click();
       cy.shouldBeOn(canvasPage);
@@ -84,20 +55,13 @@ context.skip('Onboarding', () => {
   describe('Creator promo plan', () => {
     beforeEach(() => cy.removeTestAccount());
 
-    it('new user creator signup flow', () => {
+    it.skip('new user creator signup flow', () => {
       const queryParam = '?ob_payment=true&ob_plan=creator&ob_period=MO';
       cy.signup(queryParam);
       onboarding.assert.verifyEmailTitle();
       cy.verifyEmail(queryParam);
 
-      cy.shouldBeOn(onboarding);
-      onboarding.el.getStartedButton.click();
-      onboarding.completeProfile();
-      onboarding.continueStep();
-      onboarding.completeCreateWorkspace();
-      onboarding.continueStep();
-      onboarding.completeInvites();
-      onboarding.completeSelectChannel();
+      completeBasicOnboarding();
       onboarding.enterCreditCard();
       cy.get('button.vf-button').click();
       cy.shouldBeOn(canvasPage);
@@ -113,14 +77,7 @@ context.skip('Onboarding', () => {
 
       cy.visit('?ob_payment=true&ob_plan=creator&ob_period=MO');
 
-      cy.shouldBeOn(onboarding);
-      onboarding.el.getStartedButton.click();
-      onboarding.completeProfile();
-      onboarding.continueStep();
-      onboarding.completeCreateWorkspace();
-      onboarding.continueStep();
-      onboarding.completeInvites();
-      onboarding.completeSelectChannel();
+      completeBasicOnboarding();
       onboarding.enterCreditCard();
       cy.get('button.vf-button').click();
       cy.shouldBeOn(canvasPage);

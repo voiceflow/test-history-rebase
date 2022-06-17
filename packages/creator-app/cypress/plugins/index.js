@@ -1,4 +1,5 @@
 const webpackPreprocessor = require('@cypress/webpack-preprocessor');
+const webpack = require('webpack');
 
 module.exports = (on) => {
   on(
@@ -9,8 +10,17 @@ module.exports = (on) => {
           extensions: ['.tsx', '.ts', '.js'],
         },
         mode: 'development',
+        plugins: [
+          new webpack.DefinePlugin({
+            'process.env': JSON.stringify({}),
+          }),
+        ],
         module: {
           rules: [
+            {
+              test: /\.(svg|css)$/,
+              loader: 'null-loader',
+            },
             {
               test: /node_modules\/@voiceflow\/@base-types\/.*\/\.js$/,
               use: [

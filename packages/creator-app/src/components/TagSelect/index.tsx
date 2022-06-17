@@ -46,6 +46,7 @@ const defaultGetter = (option: unknown) => option;
 function TagSelect<Option extends Primitive>(props: PrimitiveTagSelectProps<Option>): React.ReactElement;
 function TagSelect<Option>(props: TagSelectProps<Option>): React.ReactElement;
 function TagSelect({
+  id,
   value,
   options,
   onChange,
@@ -82,6 +83,7 @@ function TagSelect({
 
   return (
     <Select<unknown, string>
+      id={id}
       autoWidth
       renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue) =>
         customMenuLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue, isOptionSelected)

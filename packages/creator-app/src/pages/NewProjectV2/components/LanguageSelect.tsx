@@ -4,6 +4,7 @@ import React from 'react';
 
 import TagSelect from '@/components/TagSelect';
 import { getLocaleLabel, LocaleArray } from '@/services/LocaleMap';
+import { Identifier } from '@/styles/constants';
 import { isAlexaPlatform } from '@/utils/typeGuards';
 
 import { DEFAULT_LANGUAGE_SELECT_PROPS, PLATFORM_PROJECT_META_MAP } from '../constants';
@@ -34,6 +35,7 @@ const getLanguageSelectProps = (channel: SupportedPlatformProjectType | null, nl
 const LanguageSelect: React.FC<LanguageSelectProps> = ({ language, setLanguage, alexaLocales, setAlexaLocales, channel, nlu }) =>
   isAlexaPlatform(channel) ? (
     <TagSelect
+      id={Identifier.PROJECT_CREATE_SELECT_LOCALE}
       value={alexaLocales}
       options={LocaleArray}
       useLayers
@@ -45,7 +47,14 @@ const LanguageSelect: React.FC<LanguageSelectProps> = ({ language, setLanguage, 
       createInputPlaceholder="locales"
     />
   ) : (
-    <Select {...getLanguageSelectProps(channel, nlu)} value={language} useLayers onSelect={(value) => setLanguage(value as AnyLanguage)} searchable />
+    <Select
+      {...getLanguageSelectProps(channel, nlu)}
+      id={Identifier.PROJECT_CREATE_SELECT_LANGUAGE}
+      value={language}
+      useLayers
+      onSelect={(value) => setLanguage(value as AnyLanguage)}
+      searchable
+    />
   );
 
 export default LanguageSelect;

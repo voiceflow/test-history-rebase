@@ -65,6 +65,10 @@ export enum Identifier {
   // Project Creation
   PROJECT_CREATION_STEP_TITLE = 'vf-project-creation-step-title',
   INVOCATION_NAME_INPUT = 'vf-invocation-name-input',
+  PROJECT_CREATE_SELECT_CHANNEL = 'vf-project-create__select--channel',
+  PROJECT_CREATE_SELECT_NLU = 'vf-project-create__select--nlu',
+  PROJECT_CREATE_SELECT_LANGUAGE = 'vf-project-create__select--language',
+  PROJECT_CREATE_SELECT_LOCALE = 'vf-project-create__select--locale',
 
   // Transcripts
   SAVE_TRANSCRIPT_BUTTON = 'vf-save-conversations-button',
@@ -175,6 +179,9 @@ export enum ClassName {
   BASE_REPORT_TAG_INPUT_ICON = 'vf-base-report-tag-input-icon',
 
   FORMS_MULTIPLE_BUTTON = 'vf-forms-multiple-button',
+
+  RADIO_GROUP = 'vf-radio-group',
+  RADIO_GROUP_ITEM = 'vf-radio-group__item',
 }
 
 export enum ExternalClassName {

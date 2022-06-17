@@ -8,6 +8,7 @@ import { Permission } from '@/config/permissions';
 import { getProjectNluLimitDetails, isGatedNLUType } from '@/config/planLimits/projects';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { useFeature, useHover, usePermission } from '@/hooks';
+import { Identifier } from '@/styles/constants';
 
 import { NLU_OPTIONS, PLATFORM_PROJECT_META_MAP } from '../constants';
 import { ImportModel, PlatformAndProjectMeta, PlatformAndProjectMetaType, SupportedPlatformType } from '../types';
@@ -55,6 +56,7 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImpor
     >
       {revisedEntitlements.isEnabled ? (
         <Select<PlatformAndProjectMeta, MenuItemGrouped<PlatformAndProjectMeta>, PlatformAndProjectMetaType>
+          id={Identifier.PROJECT_CREATE_SELECT_NLU}
           value={value as PlatformAndProjectMetaType}
           error={error}
           prefix={getPrefixIcon(isImportLoading, value)}

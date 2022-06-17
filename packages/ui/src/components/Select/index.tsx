@@ -3,9 +3,11 @@ import Portal from '@ui/components/Portal';
 import SearchInput, { SearchInputIcon } from '@ui/components/SearchInput';
 import { toast } from '@ui/components/Toast';
 import { useDidUpdateEffect, usePersistFunction } from '@ui/hooks';
+import { ClassName } from '@ui/styles/constants';
 import { Primitive } from '@ui/types';
 import { setRef, stopPropagation } from '@ui/utils';
 import { Nullable, Utils } from '@voiceflow/common';
+import cn from 'classnames';
 import noop from 'lodash/noop';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
@@ -457,13 +459,14 @@ function Select({
         {/* eslint-disable-next-line sonarjs/cognitive-complexity */}
         {({ ref }) => (
           <SelectWrapper
+            id={id}
             as={renderAsSpan ? 'span' : undefined}
             ref={ref}
             onClick={!disabled && !labelSearchable ? onOpenMenu : undefined}
             tabIndex={labelSearchable || disabled ? -1 : 0}
             minWidth={minWidth}
             isFocused={opened}
-            className={className}
+            className={cn(className, ClassName.SELECT)}
             fullWidth={fullWidth}
             onMouseDown={!disabled && !labelSearchable ? onMouseDown : undefined}
             withClearIcon={withClearIcon}
@@ -565,7 +568,7 @@ function Select({
 
       {renderDropdown && (
         <NestedMenu
-          id={id}
+          id={`${id}__nested-menu`}
           onHide={onHideMenu}
           grouped={grouped}
           options={optionsToRender}

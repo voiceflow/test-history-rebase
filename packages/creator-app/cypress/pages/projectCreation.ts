@@ -1,52 +1,80 @@
 import { ClassName, Identifier } from '../../src/styles/constants';
 import canvasPage from './canvas';
+import { createSelectControl } from './utils';
 
 const PROJECT_NAME = 'Untitled';
 
-export const helper = {
-  clickProjectCreateButton: () => {
-    cy.get(`#${Identifier.NEW_PROJECT_BUTTON}`).click();
-  },
-  clickButtonWithText: (text: string) => {
-    cy.get(`.${ClassName.BUTTON}`).contains(text).click();
-  },
-  getHomeStep: () => cy.get(`.${ClassName.HOME_BLOCK}`).find(`.${ClassName.CANVAS_STEP}`).first(),
-  goBackStep: () => {
-    cy.get(`.${ClassName.CREATE_PROJECT_LEFT_ACTION}`).contains('back').click();
-  },
-  cancelFlow: () => {
-    cy.get(`.${ClassName.CREATE_PROJECT_RIGHT_ACTION}`).contains('cancel').click();
-  },
-  completePlatformSelect: (platformKeyword: string) => {
-    cy.get(`.${ClassName.PLATFORM_CARD}`).contains(platformKeyword).click();
-  },
-  completeInvocationLanguage: (language?: string, invocationName?: string) => {
-    if (language) {
-      cy.get(`.${ClassName.MULTISELECT_DROPDOWN}`).first().click();
-      cy.get(`.${ClassName.MULTISELECT_ITEM}`).contains(language).first().click({ force: true });
-    }
-    if (invocationName) {
-      cy.get(`#${Identifier.INVOCATION_NAME_INPUT}`).clear().type(invocationName);
-    }
-    helper.clickButtonWithText('Create Project');
-  },
-  el: {
-    get projectCreationStepTitle() {
-      return cy.get(`#${Identifier.PROJECT_CREATION_STEP_TITLE}`);
-    },
-  },
-};
+export type ProjectChannel = 'Chat Assistant' | 'Voice Assistant' | 'Amazon Alexa' | 'Google Assistant';
+export type NLU = 'Voiceflow';
 
 export default {
-  createProject: (platformKeyword: string, language?: string, invocationName?: string) => {
+  createProject(
+    channel: ProjectChannel,
+    { nlu, language, locale, invocationName }: { nlu?: NLU; language?: string; locale?: string; invocationName?: string } = {}
+  ) {
     cy.visit('/');
-    helper.clickProjectCreateButton();
-    helper.completePlatformSelect(platformKeyword);
-    helper.completeInvocationLanguage(language, invocationName);
+    this.el.newProject.click();
+    this.el.channelSelect.open();
+    this.el.channelSelect.select(channel);
+
+    if (nlu) {
+      this.el.nluSelect.open();
+      this.el.nluSelect.select(nlu);
+    }
+
+    if (invocationName) {
+      this.el.invocationNameInput.clear().type(invocationName);
+    }
+
+    if (language) {
+      this.el.languageSelect.open();
+      this.el.languageSelect.select(language);
+    }
+
+    if (locale) {
+      this.el.localeSelect.open();
+      this.el.localeSelect.select(locale);
+    }
+
+    this.el.createProject.click();
     canvasPage.el.projectTitle.should('be.visible');
     canvasPage.el.projectTitle.should('have.text', PROJECT_NAME);
   },
-  el: helper.el,
+  el: {
+    get invocationNameInput() {
+      return cy.get(`#${Identifier.INVOCATION_NAME_INPUT}`);
+    },
+    get homeStep() {
+      return cy.get(`.${ClassName.HOME_BLOCK}`).find(`.${ClassName.CANVAS_STEP}`).first();
+    },
+    get projectCreationStepTitle() {
+      return cy.get(`#${Identifier.PROJECT_CREATION_STEP_TITLE}`);
+    },
+    get cancelButton() {
+      return cy.get(`.${ClassName.CREATE_PROJECT_RIGHT_ACTION}`).contains('cancel');
+    },
+    get backButton() {
+      return cy.get(`.${ClassName.CREATE_PROJECT_LEFT_ACTION}`).contains('back').click();
+    },
+    get newProject() {
+      return cy.get(`#${Identifier.NEW_PROJECT_BUTTON}`);
+    },
+    get createProject() {
+      return cy.get(`.${ClassName.BUTTON}`).contains('Create');
+    },
+    get channelSelect() {
+      return createSelectControl(Identifier.PROJECT_CREATE_SELECT_CHANNEL);
+    },
+    get nluSelect() {
+      return createSelectControl(Identifier.PROJECT_CREATE_SELECT_NLU);
+    },
+    get languageSelect() {
+      return createSelectControl(Identifier.PROJECT_CREATE_SELECT_LANGUAGE);
+    },
+    get localeSelect() {
+      return createSelectControl(Identifier.PROJECT_CREATE_SELECT_LOCALE);
+    },
+  },
 
   meta: {
     route: /\/workspace\/template\/.*/,

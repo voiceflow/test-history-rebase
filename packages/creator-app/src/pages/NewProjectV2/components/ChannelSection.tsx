@@ -2,6 +2,7 @@ import { MenuItemGrouped, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
+import { Identifier } from '@/styles/constants';
 
 import { CHANNEL_OPTIONS, PLATFORM_PROJECT_META_MAP } from '../constants';
 import { PlatformAndProjectMeta, PlatformAndProjectMetaType, SupportedPlatformProjectType } from '../types';
@@ -25,6 +26,7 @@ const ChannelSection: React.FC<ChannelSectionProps> = ({ value, onSelect, error 
       customContentStyling={{ paddingBottom: '0px' }}
     >
       <Select<PlatformAndProjectMeta, MenuItemGrouped<PlatformAndProjectMeta>, PlatformAndProjectMetaType>
+        id={Identifier.PROJECT_CREATE_SELECT_CHANNEL}
         error={error}
         value={value as PlatformAndProjectMetaType}
         prefix={valueMeta?.icon ? <SvgIcon size={16} color={valueMeta.iconColor} icon={valueMeta.icon} /> : undefined}

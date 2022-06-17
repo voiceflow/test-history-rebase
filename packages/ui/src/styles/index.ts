@@ -2,6 +2,7 @@ import _styled, { css as _css, DefaultTheme, ThemedCssFunction, ThemedStyledInte
 
 import { ThemeColor } from './theme';
 
+export { ClassName } from './constants';
 export { createTheme, ThemeColor } from './theme';
 export { createGlobalStyle, keyframes } from 'styled-components';
 

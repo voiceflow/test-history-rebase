@@ -40,7 +40,7 @@ export const ACTION_CONTEXT = {
 
 export const PROJECT_META = {
   platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-  type: VoiceflowConstants.ProjectType.CHAT,
+  type: VoiceflowConstants.ProjectType.VOICE,
 };
 
 export const NODE: Realtime.Node = {
@@ -80,3 +80,36 @@ export const MOCK_STATE: CreatorV2.CreatorState = {
   ports: normalize([PORT]),
   links: normalize([LINK]),
 };
+
+const remappedBlockID = 'block1';
+const remappedStepID = 'step1';
+const remappedPortID = 'port1';
+const remappedLinkID = 'link1';
+const differentBlockStepID = 'step2';
+const differentBlockPortID = 'port2';
+
+export const NODE_PORT_REMAPS_STATE = {
+  links: normalize([
+    {
+      id: remappedLinkID,
+      source: { nodeID: remappedStepID, portID: remappedPortID },
+      target: { nodeID: differentBlockStepID, portID: differentBlockPortID },
+    },
+  ]),
+  blockIDByStepID: { [remappedStepID]: remappedBlockID },
+  linkIDsByPortID: {
+    [remappedPortID]: [remappedLinkID],
+  },
+};
+
+export const NODE_PORT_REMAPS = [{ nodeID: remappedStepID, ports: [{ portID: remappedPortID }], targetNodeID: null }];
+
+export const REVERT_NODE_PORT_REMAPS_ACTION = Realtime.link.addDynamic({
+  ...ACTION_CONTEXT,
+  sourceBlockID: remappedBlockID,
+  sourceNodeID: remappedStepID,
+  sourcePortID: remappedPortID,
+  targetNodeID: differentBlockStepID,
+  targetPortID: differentBlockPortID,
+  linkID: remappedLinkID,
+});

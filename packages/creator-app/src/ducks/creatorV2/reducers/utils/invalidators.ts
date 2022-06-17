@@ -19,6 +19,13 @@ export const DIAGRAM_INVALIDATORS: ActionInvalidator<Realtime.BaseDiagramPayload
   createInvalidator(Realtime.diagram.convertToTopic.started, (origin, subject) => origin.diagramID === subject.diagramID),
 ];
 
+export const remapsTargetSamePorts = (originPortRemaps?: Realtime.NodePortRemap[], subjectPortRemaps?: Realtime.NodePortRemap[]) =>
+  !!originPortRemaps?.some((originPortRemap) =>
+    subjectPortRemaps?.some((subjectPortRemap) =>
+      originPortRemap.ports.some((originPort) => subjectPortRemap.ports.some((subjectPort) => originPort.portID === subjectPort.portID))
+    )
+  );
+
 export const createNodeRemovalInvalidators = <Origin extends Realtime.BaseDiagramPayload>(
   compareNode: (origin: Origin, nodeID: string) => boolean
 ) => [
@@ -35,12 +42,47 @@ export const createNodeRemovalInvalidators = <Origin extends Realtime.BaseDiagra
   ),
 ];
 
-export const remapsTargetSamePorts = (originPortRemaps?: Realtime.NodePortRemap[], subjectPortRemaps?: Realtime.NodePortRemap[]) =>
-  !!originPortRemaps?.some((originPortRemap) =>
-    subjectPortRemaps?.some((subjectPortRemap) =>
-      originPortRemap.ports.some((originPort) => subjectPortRemap.ports.some((subjectPort) => originPort.portID === subjectPort.portID))
-    )
-  );
+export const createNodeIndexInvalidators = <Origin extends Realtime.BaseDiagramPayload>(
+  getIndex: (origin: Origin) => { index: number; blockID: string }
+) => [
+  createDiagramInvalidator(Realtime.node.insertStep, (origin: Origin, subject) => {
+    const { index, blockID } = getIndex(origin);
+    return blockID === subject.blockID && index >= subject.index;
+  }),
+  createDiagramInvalidator(Realtime.node.transplantSteps, (origin: Origin, subject) => {
+    const { index, blockID } = getIndex(origin);
+    return blockID === subject.targetBlockID && index >= subject.index;
+  }),
+  createDiagramInvalidator(Realtime.node.reorderSteps, (origin: Origin, subject) => {
+    const { blockID } = getIndex(origin);
+    return blockID === subject.blockID;
+  }),
+  createDiagramInvalidator(Realtime.node.removeMany, (origin: Origin, subject) => {
+    const { blockID } = getIndex(origin);
+    return subject.nodes.some((node) => node.blockID === blockID);
+  }),
+];
+
+export const createNodePortRemapsInvalidators = <Origin extends Realtime.BaseDiagramPayload>(
+  getRemaps: (origin: Origin) => { nodePortRemaps: Realtime.NodePortRemap[]; blockID: string }
+) => [
+  createDiagramInvalidator(Realtime.node.insertStep, (origin: Origin, subject) => {
+    const { nodePortRemaps, blockID } = getRemaps(origin);
+    return blockID === subject.blockID && remapsTargetSamePorts(nodePortRemaps, subject.nodePortRemaps);
+  }),
+  createDiagramInvalidator(Realtime.node.transplantSteps, (origin: Origin, subject) => {
+    const { nodePortRemaps, blockID } = getRemaps(origin);
+    return (blockID === subject.targetBlockID || blockID === subject.sourceBlockID) && remapsTargetSamePorts(nodePortRemaps, subject.nodePortRemaps);
+  }),
+  createDiagramInvalidator(Realtime.node.reorderSteps, (origin: Origin, subject) => {
+    const { nodePortRemaps, blockID } = getRemaps(origin);
+    return blockID === subject.blockID && remapsTargetSamePorts(nodePortRemaps, subject.nodePortRemaps);
+  }),
+  createDiagramInvalidator(Realtime.link.patchMany, (origin: Origin, subject) => {
+    const { nodePortRemaps } = getRemaps(origin);
+    return !!nodePortRemaps?.some((portRemap) => portRemap.ports.some((port) => subject.patches.some((patch) => patch.portID === port.portID)));
+  }),
+];
 
 export const buildLinkRecreateActions = (state: State, ctx: Realtime.BaseDiagramPayload, portRemap: Realtime.NodePortRemap) =>
   portRemap.ports.flatMap((port) => {

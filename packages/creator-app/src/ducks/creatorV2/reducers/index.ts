@@ -24,9 +24,9 @@ import removeManyByKeyPorts from './removeManyByKeyPorts';
 import removeManyLinks, { removeManyLinksReverter } from './removeManyLinks';
 import removeManyNodes, { removeManyNodesReverter } from './removeManyNodes';
 import reorderDynamicPorts, { reorderDynamicPortsReverter } from './reorderDynamicPorts';
-import reorderSteps from './reorderSteps';
+import reorderSteps, { reorderStepsReverter } from './reorderSteps';
 import reset from './reset';
-import transplantSteps from './transplantSteps';
+import transplantSteps, { transplantStepsReverter } from './transplantSteps';
 import updateManyNodeData, { updateManyNodeDataReverter } from './updateManyNodeData';
 
 const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
@@ -70,7 +70,9 @@ export const reverters = [
 
   insertStepReverter,
   isolateStepsReverter,
+  reorderStepsReverter,
   removeManyNodesReverter,
+  transplantStepsReverter,
   updateManyNodeDataReverter,
   moveManyNodesReverter,
 

@@ -7,10 +7,10 @@ import { addStep, removeNodePortRemapLinks } from '../utils';
 import {
   buildLinkRecreateActions,
   createActiveDiagramReducer,
-  createDiagramInvalidator,
+  createNodeIndexInvalidators,
+  createNodePortRemapsInvalidators,
   createNodeRemovalInvalidators,
   DIAGRAM_INVALIDATORS,
-  remapsTargetSamePorts,
 } from './utils';
 
 const insertStepReducer = createActiveDiagramReducer(Realtime.node.insertStep, (state, { blockID, stepID, index, data, ports, nodePortRemaps }) => {
@@ -44,18 +44,7 @@ export const insertStepReverter = createReverter(
   [
     ...DIAGRAM_INVALIDATORS,
     ...createNodeRemovalInvalidators<Realtime.node.InsertStepPayload>((origin, nodeID) => origin.blockID === nodeID),
-    createDiagramInvalidator(Realtime.node.insertStep, (origin, subject) => remapsTargetSamePorts(origin.nodePortRemaps, subject.nodePortRemaps)),
-    createDiagramInvalidator(Realtime.node.isolateSteps, (origin, subject) => !!subject.removeSource && origin.blockID === subject.sourceBlockID),
-    createDiagramInvalidator(
-      Realtime.node.transplantSteps,
-      (origin, subject) =>
-        (!!subject.removeSource && origin.blockID === subject.sourceBlockID) || remapsTargetSamePorts(origin.nodePortRemaps, subject.nodePortRemaps)
-    ),
-    createDiagramInvalidator(Realtime.node.reorderSteps, (origin, subject) => remapsTargetSamePorts(origin.nodePortRemaps, subject.nodePortRemaps)),
-    createDiagramInvalidator(
-      Realtime.link.patchMany,
-      (origin, subject) =>
-        !!origin.nodePortRemaps?.some((portRemap) => portRemap.ports.some((port) => subject.patches.some((patch) => patch.portID === port.portID)))
-    ),
+    ...createNodeIndexInvalidators<Realtime.node.InsertStepPayload>(({ blockID, index }) => ({ blockID, index })),
+    ...createNodePortRemapsInvalidators<Realtime.node.InsertStepPayload>(({ blockID, nodePortRemaps = [] }) => ({ blockID, nodePortRemaps })),
   ]
 );

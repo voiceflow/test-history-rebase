@@ -4,9 +4,18 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID } from '../_fixtures';
+import {
+  ACTION_CONTEXT,
+  MOCK_STATE,
+  NODE_DATA,
+  NODE_ID,
+  NODE_PORT_REMAPS,
+  NODE_PORT_REMAPS_STATE,
+  REVERT_NODE_PORT_REMAPS_ACTION,
+  V2_FEATURE_STATE,
+} from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ expect, describeReducerV2 }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ expect, describeReducerV2, describeReverter, createState }) => {
   describeReducerV2(Realtime.node.reorderSteps, ({ applyAction }) => {
     const blockID = 'blockID';
     const stepID = 'stepID';
@@ -79,6 +88,34 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ exp
       });
 
       expect(result.stepIDsByBlockID[blockID]).to.eql(['fizz', stepID, 'foo', 'bar', 'buzz']);
+    });
+  });
+
+  describeReverter(Realtime.node.reorderSteps, ({ revertAction }) => {
+    it('registers an action reverter', () => {
+      const blockID = 'blockID';
+      const stepID = 'stepID';
+      const rootState = createState(
+        {
+          ...MOCK_STATE,
+          ...NODE_PORT_REMAPS_STATE,
+          stepIDsByBlockID: { [blockID]: ['first', stepID, 'third', 'fourth'] },
+        },
+        V2_FEATURE_STATE
+      );
+
+      const result = revertAction(rootState, {
+        ...ACTION_CONTEXT,
+        blockID,
+        stepID,
+        index: 2,
+        nodePortRemaps: NODE_PORT_REMAPS,
+      });
+
+      expect(result).to.eql([
+        Realtime.node.reorderSteps({ ...ACTION_CONTEXT, blockID, stepID, index: 1, nodePortRemaps: [] }),
+        REVERT_NODE_PORT_REMAPS_ACTION,
+      ]);
     });
   });
 });

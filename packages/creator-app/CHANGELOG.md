@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.785.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.784.0...@voiceflow/creator-app@1.785.0) (2022-06-17)
+
+
+### Features
+
+* removeBuiltinPort reverters (VF-945) ([#5615](https://github.com/voiceflow/creator-app/issues/5615)) ([5ad464b](https://github.com/voiceflow/creator-app/commit/5ad464ba6963c86a4048b99ecf324b27323d1615))
+
+
+
+
+
 # [1.784.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.783.0...@voiceflow/creator-app@1.784.0) (2022-06-17)
 
 

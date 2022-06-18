@@ -16,7 +16,7 @@ export interface VersionChannelSubscriptionGateProps
 const VersionChannelSubscriptionGate: React.FC<VersionChannelSubscriptionGateProps> = ({ workspaceID, projectID, versionID, children }) => {
   const activeVersionID = useSelector(Session.activeVersionIDSelector);
 
-  const isSubscribed = useVersionSubscription({ versionID, projectID, workspaceID });
+  const isSubscribed = useVersionSubscription({ versionID, projectID, workspaceID }, [versionID]);
 
   return (
     <LoadingGate

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.79.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.79.1...@voiceflow/realtime@1.79.2) (2022-06-20)
+
+
+### Bug Fixes
+
+* no remove source on isolate step (VF-3869) ([#5628](https://github.com/voiceflow/creator-app/issues/5628)) ([187690b](https://github.com/voiceflow/creator-app/commit/187690b5804d94ad0078eba6c7d76cc73128c38a))
+* node data reverter correct action payload (VF-3871) ([#5627](https://github.com/voiceflow/creator-app/issues/5627)) ([4833c62](https://github.com/voiceflow/creator-app/commit/4833c62908b15bc1e8cbdad6794f82b4ad098f3c))
+
+
+
+
+
 ## [1.79.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.79.0...@voiceflow/realtime@1.79.1) (2022-06-20)
 
 **Note:** Version bump only for package @voiceflow/realtime

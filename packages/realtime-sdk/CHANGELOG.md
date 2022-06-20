@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.114.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.114.1...@voiceflow/realtime-sdk@1.114.2) (2022-06-20)
+
+
+### Bug Fixes
+
+* no remove source on isolate step (VF-3869) ([#5628](https://github.com/voiceflow/creator-app/issues/5628)) ([187690b](https://github.com/voiceflow/creator-app/commit/187690b5804d94ad0078eba6c7d76cc73128c38a))
+
+
+
+
+
 ## [1.114.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.114.0...@voiceflow/realtime-sdk@1.114.1) (2022-06-20)
 
 

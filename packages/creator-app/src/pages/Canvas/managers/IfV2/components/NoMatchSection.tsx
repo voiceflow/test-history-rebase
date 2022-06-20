@@ -14,7 +14,7 @@ export interface NoMatchSectionProps {
 export const NO_MATCH_TYPE: IFV2ManagerEditors = 'noMatchPath';
 
 const NoMatchSection: React.FC<NoMatchSectionProps> = ({ noMatch, pushToPath }) => {
-  const onOpenNoMatchSection = React.useCallback(() => pushToPath && pushToPath({ type: NO_MATCH_TYPE, label: 'No Match' }), [pushToPath]);
+  const onOpenNoMatchSection = React.useCallback(() => pushToPath && pushToPath({ type: NO_MATCH_TYPE, label: 'No match' }), [pushToPath]);
 
   return (
     <Section

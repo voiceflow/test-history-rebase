@@ -8,7 +8,7 @@ interface NoMatchFactoryOptions extends PromptFactoryOptions {}
 
 const BASE_NO_MATCH: Realtime.NodeData.BaseNoMatch = {
   types: [BaseNode.Utils.NoMatchType.REPROMPT],
-  pathName: 'No Match',
+  pathName: 'No match',
   randomize: false,
 };
 

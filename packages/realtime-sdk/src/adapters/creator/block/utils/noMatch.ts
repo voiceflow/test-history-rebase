@@ -8,7 +8,7 @@ import { NodeData } from '../../../../models';
 import { chatPromptAdapter, voicePromptAdapter } from './prompt';
 
 export const baseNoMatchAdapter = createAdapter<BaseNode.Utils.BaseStepNoMatch, NodeData.BaseNoMatch>(
-  ({ type = BaseNode.Utils.NoMatchType.REPROMPT, types, pathName = 'No Match', randomize }) => ({
+  ({ type = BaseNode.Utils.NoMatchType.REPROMPT, types, pathName = 'No match', randomize }) => ({
     types:
       types ??
       (type === BaseNode.Utils.NoMatchType.BOTH

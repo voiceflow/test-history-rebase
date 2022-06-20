@@ -24,7 +24,7 @@ const NoMatchStepItem: React.FC<NoMatchStepItemProps> = ({ noMatch, portID }) =>
     >
       {({ ref, onToggle, isOpened }) => (
         <Item
-          label={(isPath ? noMatch.pathName : null) ?? 'No Match'}
+          label={(isPath ? noMatch.pathName : null) ?? 'No match'}
           portID={isPath ? portID : null}
           portColor="#6e849a"
           attachment={

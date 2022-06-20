@@ -37,7 +37,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2, Realtime.NodeData.I
       expressions: [expressionFactory()],
       noMatch: {
         type: BaseNode.IfV2.IfNoMatchType.NONE,
-        pathName: 'No Match',
+        pathName: 'No match',
       },
     },
   }),

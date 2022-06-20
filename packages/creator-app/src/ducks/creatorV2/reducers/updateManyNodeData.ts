@@ -23,7 +23,7 @@ export const updateManyNodeDataReverter = createReverter(
     const prevNodes = nodes.flatMap((node) => {
       const data = nodeDataByIDSelector(getState(), { id: node.nodeID });
 
-      return data ? [{ ...node, data }] : [];
+      return data ? [data] : [];
     });
 
     return prevNodes.length

@@ -147,18 +147,16 @@ class DiagramService extends AbstractControl {
     sourceBlockID,
     block,
     stepIDs,
-    removeSource,
   }: {
     creatorID: number;
     diagramID: string;
     sourceBlockID: string;
     block: BaseModels.BaseDiagramNode;
     stepIDs: string[];
-    removeSource?: boolean;
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.isolateSteps({ diagramID, sourceBlockID, block, stepIDs, removeSource });
+    await client.diagram.isolateSteps({ diagramID, sourceBlockID, block, stepIDs });
   }
 
   public async reorderSteps({

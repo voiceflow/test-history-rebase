@@ -79,14 +79,12 @@ const Client = ({ api }: ExtraOptions) => ({
     sourceBlockID,
     block,
     stepIDs,
-    removeSource,
   }: {
     diagramID: string;
     sourceBlockID: string;
     block: BaseModels.BaseDiagramNode;
     stepIDs: string[];
-    removeSource?: boolean;
-  }) => api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/isolate`, { block, stepIDs, removeSource }),
+  }) => api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/isolate`, { block, stepIDs }),
 
   reorderSteps: (diagramID: string, blockID: string, stepID: string, index: number, nodePortRemaps?: Realtime.NodePortRemap[]) =>
     api.post(`/v2/diagrams/${diagramID}/nodes/${blockID}/steps/reorder`, { stepID, index, nodePortRemaps }),

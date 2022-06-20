@@ -47,28 +47,12 @@ export const isolateStepsReverter = createReverter(
 
   [
     ...DIAGRAM_INVALIDATORS,
-    ...createNodeRemovalInvalidators<Realtime.node.IsolateStepsPayload>((origin, nodeID) =>
-      (origin.removeSource ? [origin.sourceBlockID, ...origin.stepIDs] : origin.stepIDs).includes(nodeID)
-    ),
-    createDiagramInvalidator(
-      Realtime.node.insertStep,
-      (origin, subject) =>
-        // other steps inserted into the source, should no longer be able to remove
-        !!origin.removeSource && origin.sourceBlockID === subject.blockID
-    ),
-    createDiagramInvalidator(
-      Realtime.node.isolateSteps,
-      (origin, subject) =>
-        // both removing the same source
-        (!!origin.removeSource || !!subject.removeSource) && origin.sourceBlockID === subject.sourceBlockID
-    ),
+    ...createNodeRemovalInvalidators<Realtime.node.IsolateStepsPayload>((origin, nodeID) => origin.stepIDs.includes(nodeID)),
     createDiagramInvalidator(
       Realtime.node.transplantSteps,
       (origin, subject) =>
         // both removing the same source
-        ((!!origin.removeSource || !!subject.removeSource) && origin.sourceBlockID === subject.sourceBlockID) ||
-        // other steps transplanted to the source, should no longer be able to remove
-        (!!origin.removeSource && origin.sourceBlockID === subject.targetBlockID)
+        !!subject.removeSource && origin.sourceBlockID === subject.sourceBlockID
     ),
   ]
 );

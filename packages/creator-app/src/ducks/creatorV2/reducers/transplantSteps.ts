@@ -74,7 +74,6 @@ export const transplantStepsReverter = createReverter(
           blockName: sourceBlock.name,
           projectMeta,
           schemaVersion,
-          removeSource: false,
         }),
         ...reAddLinks,
       ];

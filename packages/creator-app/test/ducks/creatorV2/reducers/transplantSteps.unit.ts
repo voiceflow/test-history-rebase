@@ -203,7 +203,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
           projectMeta: PROJECT_META,
           schemaVersion: SCHEMA_VERSION,
           stepIDs: [fooStepID, barStepID],
-          removeSource: false,
         }),
       ]);
     });

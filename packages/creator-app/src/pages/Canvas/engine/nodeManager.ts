@@ -268,24 +268,28 @@ class NodeManager extends EngineConsumer {
       if (this.isAtomicActionsPhase2) {
         const projectMeta = this.engine.getActiveProjectMeta();
         const parentBlockStepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: node.parentNode! });
+        const stepIDs = [nodeID];
 
-        const removeSource = parentBlockStepIDs.length === 1;
-        if (!removeSource) this.saveLocations([node.parentNode!]);
-
-        await this.dispatch.sync(
-          Realtime.node.isolateSteps({
-            ...this.engine.context,
-            sourceBlockID: node.parentNode!,
-            blockID: parentNode.id,
-            blockPorts: parentNode.ports,
-            blockCoords: coords,
-            stepIDs: [nodeID],
-            blockName,
-            projectMeta,
-            schemaVersion: this.engine.getActiveSchemaVersion(),
-            removeSource,
-          })
-        );
+        // if we are isolating every step in a block, we are simply just moving the block
+        const movingEntireBlock = parentBlockStepIDs.length === stepIDs.length;
+        if (movingEntireBlock) {
+          this.setOrigin(node.parentNode!, coords);
+          await this.saveLocations([node.parentNode!]);
+        } else {
+          await this.dispatch.sync(
+            Realtime.node.isolateSteps({
+              ...this.engine.context,
+              sourceBlockID: node.parentNode!,
+              blockID: parentNode.id,
+              blockPorts: parentNode.ports,
+              blockCoords: coords,
+              stepIDs,
+              blockName,
+              projectMeta,
+              schemaVersion: this.engine.getActiveSchemaVersion(),
+            })
+          );
+        }
       } else {
         this.saveLocations([node.parentNode!]);
         this.dispatch(Creator.unmergeNode(nodeID, coords, parentNode));

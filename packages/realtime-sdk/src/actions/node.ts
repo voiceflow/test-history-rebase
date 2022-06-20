@@ -82,7 +82,6 @@ export interface IsolateStepsPayload extends BaseBlockPayload, ProjectMetaPayloa
   blockCoords: Point;
   blockName: string;
   stepIDs: string[];
-  removeSource?: boolean;
 }
 
 export const insertStep = Utils.protocol.createAction<InsertStepPayload>(nodeStepType('INSERT'));

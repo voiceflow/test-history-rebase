@@ -30,10 +30,6 @@ export const createNodeRemovalInvalidators = <Origin extends Realtime.BaseDiagra
   compareNode: (origin: Origin, nodeID: string) => boolean
 ) => [
   createDiagramInvalidator(
-    Realtime.node.isolateSteps,
-    (origin: Origin, subject) => !!subject.removeSource && compareNode(origin, subject.sourceBlockID)
-  ),
-  createDiagramInvalidator(
     Realtime.node.transplantSteps,
     (origin: Origin, subject) => !!subject.removeSource && compareNode(origin, subject.sourceBlockID)
   ),

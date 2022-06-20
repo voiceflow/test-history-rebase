@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.787.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.787.0...@voiceflow/creator-app@1.787.1) (2022-06-20)
+
+
+### Bug Fixes
+
+* no match label (CT-422) ([#5625](https://github.com/voiceflow/creator-app/issues/5625)) ([2ed7fd8](https://github.com/voiceflow/creator-app/commit/2ed7fd833911a3828a392da236c59e923c4ed8e4))
+* version history hangs (CT-63) ([#5624](https://github.com/voiceflow/creator-app/issues/5624)) ([3f81586](https://github.com/voiceflow/creator-app/commit/3f81586ce05f9d9e2476b30204ceac2a48512583)), closes [/github.com/voiceflow/creator-app/blob/5a4193a53584a0575f0f4ca7390a88b60db13fef/packages/creator-app/src/hooks/realtime.ts#L64](https://github.com//github.com/voiceflow/creator-app/blob/5a4193a53584a0575f0f4ca7390a88b60db13fef/packages/creator-app/src/hooks/realtime.ts/issues/L64)
+
+
+
+
+
 # [1.787.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.786.0...@voiceflow/creator-app@1.787.0) (2022-06-17)
 
 

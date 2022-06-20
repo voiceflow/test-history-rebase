@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.114.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.114.0...@voiceflow/realtime-sdk@1.114.1) (2022-06-20)
+
+
+### Bug Fixes
+
+* no match label (CT-422) ([#5625](https://github.com/voiceflow/creator-app/issues/5625)) ([2ed7fd8](https://github.com/voiceflow/creator-app/commit/2ed7fd833911a3828a392da236c59e923c4ed8e4))
+
+
+
+
+
 # [1.114.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.113.0...@voiceflow/realtime-sdk@1.114.0) (2022-06-17)
 
 

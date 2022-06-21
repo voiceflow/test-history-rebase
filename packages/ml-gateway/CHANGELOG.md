@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.16.1...@voiceflow/ml-gateway@1.17.0) (2022-06-21)
+
+
+### Features
+
+* persist colors (VF-3266) ([#5567](https://github.com/voiceflow/creator-app/issues/5567)) ([32fab67](https://github.com/voiceflow/creator-app/commit/32fab67f1905471fb2dc277945458016c460a62b))
+
+
+
+
+
 ## [1.16.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.16.0...@voiceflow/ml-gateway@1.16.1) (2022-06-16)
 
 

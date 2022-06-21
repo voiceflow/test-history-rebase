@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.115.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.114.2...@voiceflow/realtime-sdk@1.115.0) (2022-06-21)
+
+
+### Features
+
+* persist colors (VF-3266) ([#5567](https://github.com/voiceflow/creator-app/issues/5567)) ([32fab67](https://github.com/voiceflow/creator-app/commit/32fab67f1905471fb2dc277945458016c460a62b))
+
+
+
+
+
 ## [1.114.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.114.1...@voiceflow/realtime-sdk@1.114.2) (2022-06-20)
 
 

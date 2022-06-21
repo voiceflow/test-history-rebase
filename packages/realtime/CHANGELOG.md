@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.79.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.79.2...@voiceflow/realtime@1.79.3) (2022-06-21)
+
+
+### Bug Fixes
+
+* **deps:** pin dependencies (vf-000) ([#5630](https://github.com/voiceflow/creator-app/issues/5630)) ([47dfb8e](https://github.com/voiceflow/creator-app/commit/47dfb8e3e6b6db1348a31904faaa8bbfa58f357d))
+
+
+
+
+
 ## [1.79.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.79.1...@voiceflow/realtime@1.79.2) (2022-06-20)
 
 

@@ -8,6 +8,7 @@ export interface ModalContainerProps {
   centered?: boolean;
   maxWidth?: number;
   maxHeight?: number;
+  verticalMargin?: number;
   isOpened?: boolean;
   fullScreen?: boolean;
 }
@@ -18,7 +19,7 @@ const ModalContainer = styled.section<ModalContainerProps>`
   display: flex;
   flex-direction: row;
   border-radius: 5px;
-  margin: ${({ centered }) => (centered ? 'auto' : '28px auto')};
+  margin: ${({ verticalMargin = 28, centered }) => (centered ? 'auto' : `${verticalMargin}px auto;`)}
   width: 100%;
   max-height: calc(100% - 56px);
   background: #fff;

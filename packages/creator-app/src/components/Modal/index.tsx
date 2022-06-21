@@ -24,6 +24,7 @@ export interface UncontrolledModalProps {
   centered?: boolean;
   maxWidth?: number;
   maxHeight?: number;
+  verticalMargin?: number;
   className?: string;
   withHeader?: boolean;
   intoTooltip?: React.ReactNode;
@@ -50,6 +51,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
       headerBorder,
       maxWidth,
       maxHeight,
+      verticalMargin,
       children,
       className,
       withHeader = true,
@@ -73,6 +75,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
               centered={centered}
               maxWidth={maxWidth}
               maxHeight={maxHeight}
+              verticalMargin={verticalMargin}
               className={cn(ClassName.MODAL, className, `${ClassName.MODAL}--${id ?? 'unknown'}`)}
               fullScreen={fullScreen}
             >

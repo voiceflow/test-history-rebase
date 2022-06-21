@@ -9,4 +9,5 @@ export interface SessionState {
   intercomVisible: boolean;
   intercomUserHMAC: null | string;
   websocketsEnabled: boolean;
+  prototypeSidebarVisible: boolean;
 }

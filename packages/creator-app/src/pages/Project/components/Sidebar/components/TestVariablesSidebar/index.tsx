@@ -5,6 +5,7 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import TestVariableStateSelect from '@/components/TestVariableStateSelect';
 import VariableList from '@/components/VariableList';
+import * as Session from '@/ducks/session';
 import * as variableState from '@/ducks/variableState';
 import { useDispatch, useSelector, useTheme } from '@/hooks';
 import { Variable } from '@/models';
@@ -15,10 +16,13 @@ const TestVariablesSidebar: React.FC = () => {
   const theme = useTheme();
   const variables = useSelector(variableState.selectedVariablesStateVariablesSelector);
   const selectedVariableStateId = useSelector(variableState.selectedVariableStateIdSelector);
+  const isTestVariablesSidebarOpen = useSelector(Session.isPrototypeSidebarVisibleSelector);
+
   const updateSelectedVariableStateById = useDispatch(variableState.updateSelectedVariableStateById);
   const updateSelectedVariableStateVariables = useDispatch(variableState.updateSelectedVariableStateVariables);
   const resetVariableStates = useDispatch(variableState.resetVariableStates);
   const updateStateValues = useDispatch(variableState.updateStateValues);
+  const updateIsTestVariablesSidebarOpen = useDispatch(Session.setPrototypeSidebarVisible);
   const selectedSavedState = useSelector(variableState.selectedVariableStateSavedStateSelector);
   const [loading, setLoading] = React.useState(false);
   const [isOpen, setIsOpen] = useSessionStorageState('sidebarOpen', false);
@@ -44,6 +48,11 @@ const TestVariablesSidebar: React.FC = () => {
     }
   };
 
+  const handleToggle = (value: boolean) => {
+    setIsOpen(value);
+    updateIsTestVariablesSidebarOpen(value);
+  };
+
   React.useEffect(() => {
     if (selectedVariableStateId === variableState.ALL_PROJECT_VARIABLES_ID) return;
 
@@ -55,13 +64,19 @@ const TestVariablesSidebar: React.FC = () => {
     updateSelectedVariableStateVariables(selectedSavedState.variables);
   }, [selectedSavedState]);
 
+  React.useEffect(() => {
+    if (isTestVariablesSidebarOpen !== isOpen) {
+      setIsOpen(isTestVariablesSidebarOpen);
+    }
+  }, [isTestVariablesSidebarOpen]);
+
   return (
     <Drawer
       open={isOpen}
       width={theme.components.testVariablesSidebar.width}
       zIndex={25}
       closable
-      onToggle={setIsOpen}
+      onToggle={handleToggle}
       direction={Drawer.Direction.RIGHT}
     >
       {variables?.length ? (

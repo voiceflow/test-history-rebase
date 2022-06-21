@@ -81,6 +81,7 @@ export const updateSelectedVariableStateById =
     if (!variableStateID) {
       await dispatch(redirectToDiagram(version.rootDiagramID));
       dispatch(updateSelectedVariableState(null));
+      dispatch(Session.setPrototypeSidebarVisible(true));
       return;
     }
 
@@ -92,6 +93,7 @@ export const updateSelectedVariableStateById =
     if (!variableState) {
       await dispatch(redirectToDiagram(version.rootDiagramID));
       dispatch(updateSelectedVariableState({ id: ALL_PROJECT_VARIABLES_ID, variables }));
+      dispatch(Session.setPrototypeSidebarVisible(true));
       return;
     }
 
@@ -100,6 +102,7 @@ export const updateSelectedVariableStateById =
     }
 
     dispatch(updateSelectedVariableState({ id: variableStateID, variables: variableState.variables }));
+    dispatch(Session.setPrototypeSidebarVisible(true));
   };
 
 export const updateStateValues = (): Thunk => async (dispatch, getState) => {

@@ -15,6 +15,7 @@ import {
   SetAuthToken,
   SetIntercomUserHMAC,
   SetIntercomVisible,
+  SetPrototypeSidebarVisible,
 } from './actions';
 import { INITIAL_STATE, STATE_KEY } from './constants';
 import { SessionState } from './types';
@@ -89,6 +90,11 @@ export const setActiveDiagramIDReducer: Reducer<SessionState, SetActiveDiagramID
   activeDiagramID: payload,
 });
 
+export const setPrototypeSidebarVisibleReducer: Reducer<SessionState, SetPrototypeSidebarVisible> = (state, { payload }) => ({
+  ...state,
+  prototypeSidebarVisible: payload,
+});
+
 const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INITIAL_STATE as SessionState, action) => {
   switch (action.type) {
     case SessionAction.DISABLE_WEBSOCKETS:
@@ -101,6 +107,8 @@ const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INI
       return setActiveVersionIDReducer(state, action);
     case SessionAction.SET_ACTIVE_DIAGRAM_ID:
       return setActiveDiagramIDReducer(state, action);
+    case SessionAction.SET_PROTOTYPE_SIDEBAR_VISIBLE:
+      return setPrototypeSidebarVisibleReducer(state, action);
     default:
       return state;
   }

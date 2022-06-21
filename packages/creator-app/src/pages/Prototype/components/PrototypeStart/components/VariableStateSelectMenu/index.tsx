@@ -25,7 +25,10 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
   const verifyStatesLimit = useVariableStatesPlanLimit();
 
   const variableStateOptions = React.useMemo(
-    () => variableStates.map<VariableStateOption>((state) => ({ label: state.name, value: state.id })),
+    () =>
+      variableStates.length
+        ? variableStates.map<VariableStateOption>((state) => ({ label: state.name, value: state.id }))
+        : [{ label: 'All project variables', value: ' ' }],
     [variableStates]
   );
 
@@ -53,7 +56,7 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
       renderTrigger={({ ref, isOpen }) => render({ ref, isOpen, toggleSelectMenuOpen })}
       renderFooterAction={() => (
         <NestedMenuComponents.FooterActions>
-          <NestedMenuComponents.FooterAction onClick={verifyStatesLimit(openEditorModal)}>Add New Persona</NestedMenuComponents.FooterAction>
+          <NestedMenuComponents.FooterAction onClick={verifyStatesLimit(openEditorModal)}>Create New Persona</NestedMenuComponents.FooterAction>
         </NestedMenuComponents.FooterActions>
       )}
     />

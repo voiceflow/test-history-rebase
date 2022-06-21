@@ -154,6 +154,7 @@ const SectionContainer = styled.div<SectionContainerProps>`
     ${({ variant, isCollapsed }) => {
       switch (variant) {
         case SectionVariant.TERTIARY:
+        case SectionVariant.TERTIARY_TITLE:
         case SectionVariant.SUBSECTION:
         case SectionVariant.QUATERNARY:
           return css`
@@ -201,6 +202,15 @@ const SectionContainer = styled.div<SectionContainerProps>`
         }
         ${ContentContainer} {
           padding-bottom: ${units(2)}px;
+        }
+      `;
+    }
+
+    if (variant === SectionVariant.TERTIARY_TITLE) {
+      return css`
+        ${Header} {
+          padding-bottom: 12px;
+          padding-top: 24px;
         }
       `;
     }

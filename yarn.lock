@@ -21063,7 +21063,7 @@ socket.io-redis@6.0.1:
     socket.io-adapter "~2.0.0"
     uid2 "0.0.3"
 
-socket.io@^3.1.2:
+socket.io@3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/socket.io/-/socket.io-3.1.2.tgz#06e27caa1c4fc9617547acfbb5da9bc1747da39a"
   integrity sha512-JubKZnTQ4Z8G4IZWtaAZSiRP3I/inpy8c/Bsx2jrwGrTbKeVU5xd6qkKMHpChYeM3dWZSO0QACiGK+obhBNwYw==

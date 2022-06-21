@@ -22,6 +22,7 @@ const projectAdapter = createAdapter<BaseModels.Project.Model<AnyRecord, AnyReco
     liveVersion,
     prototype,
     platformData,
+    customThemes,
   }) => {
     const { platform, type } = legacyPlatformToProjectType(dbPlatform as VoiceflowConstants.PlatformType, dbType as VoiceflowConstants.ProjectType);
 
@@ -43,6 +44,7 @@ const projectAdapter = createAdapter<BaseModels.Project.Model<AnyRecord, AnyReco
       _version,
       diagramID: '',
       versionID: devVersion!,
+      customThemes,
       reportTags,
       prototype,
       workspaceID: teamID,

@@ -46,6 +46,7 @@ const PROJECT: Realtime.AnyProject = {
   locales: ['en-us', 'eu-sp'],
   members: [PROJECT_MEMBER],
   platformData: {},
+  customThemes: [],
 };
 
 const MOCK_STATE: Project.ProjectState = {
@@ -66,6 +67,7 @@ const MOCK_STATE: Project.ProjectState = {
       locales: [],
       members: [],
       platformData: {},
+      customThemes: [],
     },
   },
   allKeys: [PROJECT_ID, 'abc'],

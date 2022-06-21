@@ -1,10 +1,9 @@
 import { BaseVersion } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ClickableText, Upload } from '@voiceflow/ui';
+import { ClickableText, CONTEXT_MENU_IGNORED_CLASS_NAME, Upload } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import SSML from '@/components/SSML';

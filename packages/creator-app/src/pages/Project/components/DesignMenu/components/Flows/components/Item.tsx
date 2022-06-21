@@ -1,7 +1,6 @@
-import { InputVariant, OverflowText } from '@voiceflow/ui';
+import { ContextMenu, InputVariant, OverflowText } from '@voiceflow/ui';
 import React from 'react';
 
-import ContextMenu from '@/components/ContextMenu';
 import Members from '@/components/Members';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';

@@ -5,7 +5,7 @@ import { Text } from '../../../Text';
 
 export const ColorsList = styled(BoxFlex)`
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
 
   .vf-tooltip {
@@ -26,19 +26,16 @@ export const ColorsContainer = styled.section`
   display: inline-block;
 `;
 
-export const WrapperTooltip = styled(Text)`
-  height: 40px;
+export const WrapperTooltip = styled.div`
   display: flex;
   align-items: flex-start;
 `;
 
 export const Tooltip = styled(Text)`
   font-family: 'Open Sans';
-  padding: 0px 16px;
-  height: 34px;
   border-radius: 6px;
-  background-color: #2b2f32;
-  font-size: 13px;
+
+  font-size: 12px;
   color: white;
   display: flex;
   align-items: center;

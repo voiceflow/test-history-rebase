@@ -128,6 +128,57 @@ export const updateProjectNameByID =
     await dispatch.sync(Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { name } }));
   };
 
+export const addCustomThemeToProject =
+  (theme: BaseModels.Project.Theme): Thunk =>
+  async (dispatch, getState) => {
+    const projectID = Session.activeProjectIDSelector(getState());
+    const customThemes = ProjectV2.active.customThemesSelector(getState());
+
+    if (customThemes.find(({ standardColor }) => standardColor === theme.standardColor)) return;
+
+    Errors.assertProjectID(projectID);
+
+    await dispatch.sync(
+      Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { customThemes: [...customThemes, theme] } })
+    );
+  };
+
+export const editCustomThemeOnProject =
+  (theme: BaseModels.Project.Theme): Thunk =>
+  async (dispatch, getState) => {
+    const projectID = Session.activeProjectIDSelector(getState());
+    const customThemes = ProjectV2.active.customThemesSelector(getState());
+
+    if (!customThemes.find(({ standardColor }) => standardColor === theme.standardColor)) return;
+
+    Errors.assertProjectID(projectID);
+
+    await dispatch.sync(
+      Realtime.project.crud.patch({
+        ...getActiveWorkspaceContext(getState()),
+        key: projectID,
+        value: { customThemes: customThemes.map((oldTheme) => (oldTheme.standardColor === theme.standardColor ? theme : oldTheme)) },
+      })
+    );
+  };
+
+export const removeCustomThemeOnProject =
+  (theme: BaseModels.Project.Theme): Thunk =>
+  async (dispatch, getState) => {
+    const projectID = Session.activeProjectIDSelector(getState());
+    const customThemes = ProjectV2.active.customThemesSelector(getState());
+
+    Errors.assertProjectID(projectID);
+
+    await dispatch.sync(
+      Realtime.project.crud.patch({
+        ...getActiveWorkspaceContext(getState()),
+        key: projectID,
+        value: { customThemes: customThemes.filter((oldTheme) => oldTheme.standardColor !== theme.standardColor) },
+      })
+    );
+  };
+
 export const updateActiveProjectName =
   (name: string): Thunk =>
   async (dispatch, getState) => {

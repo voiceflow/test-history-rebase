@@ -26,9 +26,9 @@ export interface CursorMoveUserData extends DiagramChannelData {
 export interface CursorMoveBroadcastData extends BaseBroadcastData, CursorMoveUserData {}
 
 export interface NodeDragManyUserData extends DiagramChannelData {
+  movement: Pair<number>;
   nodeIDs: string[];
   origins: Point[];
-  movement: Pair<number>;
 }
 
 export interface NodeDragManyBroadcastData extends BaseBroadcastData, NodeDragManyUserData {}

@@ -1,8 +1,7 @@
 import { Nullable, Utils } from '@voiceflow/common';
-import { getNestedMenuFormattedLabel, OverflowText, SvgIcon, useEnableDisable, usePersistFunction } from '@voiceflow/ui';
+import { ContextMenu, getNestedMenuFormattedLabel, OverflowText, SvgIcon, useEnableDisable, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import ContextMenu from '@/components/ContextMenu';
 import { Permission } from '@/config/permissions';
 import * as Router from '@/ducks/router';
 import { compose } from '@/hocs';

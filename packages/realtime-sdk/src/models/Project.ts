@@ -15,6 +15,7 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Project.Membe
   privacy?: BaseModels.Project.Privacy;
   linkType: BaseModels.Project.LinkType;
   prototype?: BaseModels.Project.Prototype;
+  customThemes: BaseModels.Project.Themes;
 
   type: VoiceflowConstants.ProjectType;
   platform: VoiceflowConstants.PlatformType;

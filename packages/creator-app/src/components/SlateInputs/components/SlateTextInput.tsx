@@ -33,9 +33,7 @@ const SlateTextInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateText
 ) => {
   const editor = useSetupSlateEditor(SlatePluginType.LINKS, SlatePluginType.VARIABLES);
   const [localValue, setLocalValue] = useSlateLocalValue(props.value, props.onChange);
-
   const variablesOptions = useSlateVariables({ variables, creatable: variablesCreatable, withSlots: variablesWithSlots });
-
   const localPluginsOptions = useContextApi<SlatePluginsOptions>({
     ...pluginsOptions,
     [SlatePluginType.VARIABLES]: variablesOptions,

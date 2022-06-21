@@ -1,7 +1,6 @@
-import { Input, InputVariant, OverflowText, useDidUpdateEffect, withEnterPress, withInputBlur, withTargetValue } from '@voiceflow/ui';
+import { ContextMenu, Input, InputVariant, OverflowText, useDidUpdateEffect, withEnterPress, withInputBlur, withTargetValue } from '@voiceflow/ui';
 import React from 'react';
 
-import ContextMenu from '@/components/ContextMenu';
 import { InteractionModelTabType } from '@/constants';
 import { useNLUItemMenu } from '@/contexts/NLUContext/hooks';
 import { useLinkedState } from '@/hooks';

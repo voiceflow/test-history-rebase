@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Eventual, Utils } from '@voiceflow/common';
-import { Box, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
+import { Box, buildVirtualElement, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -11,7 +11,6 @@ import { useDispatch, useModals, usePermission, useSelector } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
-import { buildVirtualElement } from '@/utils/dom';
 import { Coords } from '@/utils/geometry';
 
 import { CanvasAction, TARGET_OPTIONS } from './constants';

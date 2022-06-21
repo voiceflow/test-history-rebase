@@ -12,7 +12,7 @@ class PatchProject extends AbstractWorkspaceChannelControl<PatchProjectPayload> 
 
   protected process = async (ctx: Context, { payload }: Action<PatchProjectPayload>): Promise<void> => {
     await this.services.project.patch(ctx.data.creatorID, payload.key, {
-      ..._.pick(payload.value, 'name', 'privacy', 'linkType'),
+      ..._.pick(payload.value, 'name', 'privacy', 'linkType', 'customThemes'),
       ...('image' in payload.value && { image: payload.value.image ?? undefined }),
     });
   };

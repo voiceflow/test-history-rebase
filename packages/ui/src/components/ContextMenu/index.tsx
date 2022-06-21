@@ -1,31 +1,35 @@
-import { Utils } from '@voiceflow/common';
-import { Menu, MenuOption, MenuProps, PopperPlacement, Portal, useVirtualElementPopper } from '@voiceflow/ui';
+import Menu, { MenuOption, MenuProps } from '@ui/components/Menu';
+import Portal from '@ui/components/Portal';
+import { PopperPlacement, useVirtualElementPopper } from '@ui/hooks';
+import { Identifier } from '@ui/styles/constants';
+import { Point } from '@ui/types';
+import { buildVirtualElement } from '@ui/utils/dom';
 import React from 'react';
-import { useDismissable } from 'react-dismissable-layers';
-
-import { Identifier } from '@/styles/constants';
-import { Point } from '@/types';
-import { buildVirtualElement } from '@/utils/dom';
+import { DismissEventType, useDismissable } from 'react-dismissable-layers';
 
 const EXCLUDED_TAG_NAME = new Set(['input', 'textarea']);
 
 export const CONTEXT_MENU_IGNORED_CLASS_NAME = 'context-menu-exclude';
 
 interface ContextMenuProps<T> extends Omit<MenuProps<T>, 'options' | 'children'> {
-  options: Array<MenuOption<T> | null>;
+  options: MenuOption<T>[];
   children: (props: { isOpen: boolean; onContextMenu: (event: React.MouseEvent<HTMLElement>) => void }) => React.ReactNode;
   placement?: PopperPlacement;
+  dismissEvent?: DismissEventType;
+  disableLayers?: boolean;
 }
 
-const ContextMenu = <T extends any>({
+const ContextMenu = <T,>({
+  options,
   children,
   placement = 'bottom-start',
-  options,
+  dismissEvent,
+  disableLayers,
   ...props
 }: ContextMenuProps<T>): React.ReactElement<any, any> => {
   const [virtualElement, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement> | null>(null);
   const popper = useVirtualElementPopper(virtualElement, { placement });
-  const [isOpen, onToggle] = useDismissable(false);
+  const [isOpen, onToggle] = useDismissable(false, { disableLayers, dismissEvent });
 
   const onContextMenu = (event: React.MouseEvent<HTMLElement>) => {
     // eslint-disable-next-line xss/no-mixed-html
@@ -45,16 +49,14 @@ const ContextMenu = <T extends any>({
     }
   };
 
-  const optionsToRender = options.filter(Utils.array.isNotNullish);
-
   return (
     <>
       {children({ isOpen, onContextMenu })}
 
-      {isOpen && !!optionsToRender.length && (
+      {isOpen && !!options.length && (
         <Portal portalNode={document.body}>
           <div id={Identifier.CONTEXT_MENU} ref={popper.setPopperElement} style={{ ...popper.styles.popper }} {...popper.attributes.popper}>
-            <Menu onToggle={onToggle} options={optionsToRender} {...props} />
+            <Menu onToggle={onToggle} options={options} {...props} />
           </div>
         </Portal>
       )}

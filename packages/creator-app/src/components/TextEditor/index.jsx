@@ -1,7 +1,7 @@
+import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 import { ClassName } from '@/styles/constants';
 
 import { Input } from './components';

@@ -1,9 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, COLOR_PICKER_CONSTANTS, SvgIcon, Upload } from '@voiceflow/ui';
+import { Box, COLOR_PICKER_CONSTANTS, CONTEXT_MENU_IGNORED_CLASS_NAME, SvgIcon, Upload } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 import { SectionToggleVariant } from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
 import VariablesInput from '@/components/VariablesInput';

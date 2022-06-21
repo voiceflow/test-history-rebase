@@ -14,8 +14,8 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 (async () => {
   const server = new SocketServer({
     env: config.NODE_ENV,
-    cwd: rootDir,
     port: config.PORT,
+    cwd: rootDir,
     logger,
   });
 

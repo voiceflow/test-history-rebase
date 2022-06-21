@@ -1,24 +1,30 @@
-import { usePopper } from '@ui/hooks';
+import { useOnClickOutside, usePopper } from '@ui/hooks';
 import { stopPropagation } from '@ui/utils';
 import React from 'react';
 import styled from 'styled-components';
 
 import Badge from '../../../Badge';
 import Input from '../../../Input';
-import Portal from '../../../Portal';
 import { Label, PopperContent } from '../../styles';
 
 const StyledInput = styled(Input)`
   min-height: 25px;
   font-size: 15px;
-  width: calc(100% - 35px);
+`;
+
+const StyledBadge = styled(Badge)`
+  cursor: pointer;
 `;
 
 interface PopperProps {
   isEditing: boolean;
+  onSubmit?: (name: string) => void;
+  value?: string;
 }
 
-export const AddNamePopper: React.FC<PopperProps> = ({ isEditing }) => {
+export const AddNamePopper: React.FC<PopperProps> = ({ isEditing, onSubmit, value = '' }) => {
+  const popperContainerRef = React.useRef<HTMLDivElement>(null);
+  const [name, setName] = React.useState<string>(value);
   const rootPopper = usePopper({
     placement: 'bottom',
     modifiers: [
@@ -28,17 +34,38 @@ export const AddNamePopper: React.FC<PopperProps> = ({ isEditing }) => {
     strategy: 'fixed',
   });
 
+  useOnClickOutside(popperContainerRef, () => onSubmit?.(name));
+
+  const onSaveColor = React.useCallback(() => {
+    onSubmit?.(name);
+  }, [name]);
+
   return (
     <div ref={rootPopper.setReferenceElement}>
       {isEditing && (
-        <Portal portalNode={document.body}>
-          <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
+        <div ref={popperContainerRef}>
+          <div ref={rootPopper.setPopperElement} style={{ ...rootPopper.styles.popper, width: '260px' }} {...rootPopper.attributes.popper}>
             <PopperContent onClick={stopPropagation(null, true)}>
               <Label>Color Label</Label>
-              <StyledInput rightAction={<Badge>Enter</Badge>} />
+              <StyledInput
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus
+                autoSelectText
+                value={name}
+                placeholder="Enter label"
+                onChangeText={setName}
+                onEnterPress={onSaveColor}
+                rightAction={
+                  name ? (
+                    <StyledBadge slide onClick={onSaveColor}>
+                      Enter
+                    </StyledBadge>
+                  ) : null
+                }
+              />
             </PopperContent>
           </div>
-        </Portal>
+        </div>
       )}
     </div>
   );

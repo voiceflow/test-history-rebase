@@ -232,16 +232,6 @@ export const download = (filename: string, text: string, data = DataTypes.TEXT) 
   downloadFromURL(filename, `data:${data},${encodeURIComponent(text)}`);
 };
 
-export const buildVirtualElement = (point: Point = [0, 0]) => {
-  const rect = new DOMRect(point[0], point[1], 0, 0);
-
-  return {
-    getBoundingClientRect: () => rect,
-    clientWidth: 0,
-    clientHeight: 0,
-  };
-};
-
 export const unhighlightAllText = () => {
   if (window.getSelection) {
     window.getSelection()?.removeAllRanges();

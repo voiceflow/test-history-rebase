@@ -1,9 +1,8 @@
-import { Box, Flex, Portal, Text, useVirtualElementPopper } from '@voiceflow/ui';
+import { Box, buildVirtualElement, Flex, Portal, Text, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { useThrottledCallback } from '@/hooks';
 import { Point } from '@/types';
-import { buildVirtualElement } from '@/utils/dom';
 
 import { ChartContainer, LegendItem, Piece, PieceContainer, TooltipContainer, TooltipContent } from './components';
 

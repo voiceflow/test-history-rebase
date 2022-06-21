@@ -20,3 +20,6 @@ export type ConnectedProps<
   D extends ActionCreatorLookup = {},
   M extends Function<MergeArguments<S, D, any>, object> = () => {}
 > = Overwrite<Overwrite<MappedStateProps<S> & MappedDispatchProps<D>, MappedDispatchProps<D>> & ReturnType<M>, ReturnType<M>>;
+
+export type Point = [x: number, y: number];
+export type Pair<T> = [T, T];

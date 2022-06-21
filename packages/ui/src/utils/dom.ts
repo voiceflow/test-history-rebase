@@ -1,4 +1,5 @@
 import { KeyName } from '@ui/constants';
+import { Point } from '@ui/types';
 
 /**
  * Get the width of the browser scrollbar
@@ -89,3 +90,13 @@ export const withInputBlur =
     // eslint-disable-next-line callback-return
     cb?.(event);
   };
+
+export const buildVirtualElement = (point: Point = [0, 0]) => {
+  const rect = new DOMRect(point[0], point[1], 0, 0);
+
+  return {
+    getBoundingClientRect: () => rect,
+    clientWidth: 0,
+    clientHeight: 0,
+  };
+};

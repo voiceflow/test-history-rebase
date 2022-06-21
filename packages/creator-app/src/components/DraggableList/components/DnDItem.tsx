@@ -1,7 +1,5 @@
-import { MenuOption } from '@voiceflow/ui';
+import { ContextMenu, MenuOption } from '@voiceflow/ui';
 import React from 'react';
-
-import ContextMenu from '@/components/ContextMenu';
 
 import { DnDHandlers, InternalItem } from '../types';
 import useDragAndDrop from '../useDragAndDrop';

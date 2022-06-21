@@ -21,6 +21,8 @@ export const nameSelector = createSelector([projectSelector], (project) => proje
 
 export const linkTypeSelector = createSelector([projectSelector], (project) => project?.linkType || BaseModels.Project.LinkType.STRAIGHT);
 
+export const customThemesSelector = createSelector([projectSelector], (project) => project?.customThemes || []);
+
 export const isStraightLinksSelector = createSelector([linkTypeSelector], (linkType) => linkType === BaseModels.Project.LinkType.STRAIGHT);
 
 export const isLiveSelector = createSelector([projectSelector], (project) => !!project?.isLive);

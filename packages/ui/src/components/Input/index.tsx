@@ -1,3 +1,5 @@
+import composeRefs from '@seznam/compose-react-refs';
+import { useSetup } from '@ui/hooks';
 import { Either } from '@ui/types';
 import { withEnterPress, withTargetValue } from '@ui/utils/dom';
 import { Utils } from '@voiceflow/common';
@@ -18,6 +20,7 @@ const INPUT_VARIANTS = {
 interface SharedProps {
   onChangeText?: (value: string) => void;
   onEnterPress?: React.KeyboardEventHandler<HTMLInputElement>;
+  autoSelectText?: boolean;
 }
 
 export interface InlineVariantInputProps extends InlineInputProps, SharedProps, Omit<React.ComponentProps<'input'>, 'ref' | 'children'> {
@@ -32,15 +35,22 @@ interface BaseDefaultVariantInputProps extends SharedProps {
 export type DefaultVariantInputProps = BaseDefaultVariantInputProps & DefaultInputProps;
 
 const Input = React.forwardRef<HTMLInputElement, Either<InlineVariantInputProps, DefaultVariantInputProps>>(
-  ({ variant = InputVariant.DEFAULT, onChange, onKeyPress, onChangeText, onEnterPress, ...props }, ref) => {
+  ({ variant = InputVariant.DEFAULT, onChange, autoSelectText, onKeyPress, onChangeText, onEnterPress, ...props }, ref) => {
     const Component = INPUT_VARIANTS[variant];
+    const localRef = React.useRef<HTMLInputElement>(null);
+
+    useSetup(() => {
+      if (autoSelectText) {
+        localRef?.current?.select();
+      }
+    });
 
     return variant === InputVariant.INLINE && props.children ? (
       props.children({ ref })
     ) : (
       <Component
         {...props}
-        ref={ref}
+        ref={composeRefs(ref, localRef)}
         onChange={Utils.functional.chain(onChange, onChangeText && withTargetValue(onChangeText))}
         onKeyPress={Utils.functional.chain(onKeyPress, onEnterPress && withEnterPress(onEnterPress))}
       />

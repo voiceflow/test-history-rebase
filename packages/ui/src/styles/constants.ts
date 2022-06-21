@@ -7,6 +7,10 @@ export const COLOR_GREEN = '#279745';
 export const COLOR_WHITE = '#fff';
 export const COLOR_OFF_WHITE = '#fdfdfd';
 
+export enum Identifier {
+  CONTEXT_MENU = 'vf-context-menu',
+}
+
 export enum ClassName {
   BUTTON = 'vf-button',
   LOADER = 'vf-loader',

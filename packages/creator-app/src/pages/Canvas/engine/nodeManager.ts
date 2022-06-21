@@ -842,7 +842,7 @@ class NodeManager extends EngineConsumer {
 
     reduxBatchUndo.start();
 
-    await Promise.all([this.saveLinks(existingNodeIDs), this.internal.saveLocations(existingNodeIDs)]);
+    await Promise.all([this.internal.saveLocations(existingNodeIDs), this.saveLinks(existingNodeIDs)]);
 
     reduxBatchUndo.end();
 

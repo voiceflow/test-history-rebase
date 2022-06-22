@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.789.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.788.1...@voiceflow/creator-app@1.789.0) (2022-06-22)
+
+
+### Features
+
+* revised canvas menu ff (CT-2) ([#5644](https://github.com/voiceflow/creator-app/issues/5644)) ([1748d31](https://github.com/voiceflow/creator-app/commit/1748d3153cbd3a448599b986a63849c772fc739e))
+
+
+
+
+
 ## [1.788.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.788.0...@voiceflow/creator-app@1.788.1) (2022-06-21)
 
 

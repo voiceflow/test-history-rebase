@@ -4,7 +4,9 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { HSLShades } from '@/constants';
+import Port from '@/pages/Canvas/components/Port';
 import Step, { Item } from '@/pages/Canvas/components/Step';
+import { PortEntityProvider } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { getLabel } from '@/pages/Canvas/managers/Visual/utils';
 import { isVariable } from '@/utils/slot';
@@ -20,7 +22,29 @@ export interface ImageStepProps {
 
 export const ImageStep: React.FC<ImageStepProps> = ({ nodeID, image, nextPortID, aspectRatio, palette }) => (
   <Step nodeID={nodeID} image={image} imageAspectRatio={aspectRatio} imagePosition="top center">
-    <Item image={image} portID={nextPortID} palette={palette} />
+    {!image && (
+      <Item
+        icon="display"
+        iconSize={30}
+        iconStyle={{
+          position: 'relative',
+          top: '10px',
+        }}
+        title="Image"
+        image={image}
+        portID={nextPortID}
+        palette={palette}
+        placeholder="Upload an image or GIF"
+      />
+    )}
+
+    {image && nextPortID && (
+      <PortEntityProvider id={nextPortID}>
+        <Port.ImageContainer>
+          <Port />
+        </Port.ImageContainer>
+      </PortEntityProvider>
+    )}
   </Step>
 );
 

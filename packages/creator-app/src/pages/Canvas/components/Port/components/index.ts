@@ -1,3 +1,4 @@
+export { default as ImageContainer } from './ImageContainer';
 export { default as Connector } from './PortConnector';
 export { default as Container } from './PortContainer';
 export { default as Lifecycle } from './PortLifecycle';

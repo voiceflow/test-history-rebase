@@ -4,7 +4,7 @@ import { PORT_HIGHLIGHTED_CLASSNAME, PORT_PROTOTYPE_END_UNLINKED_CLASSNAME } fro
 import { PortEntityContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 
-import { Connector, Container, Lifecycle, Link } from './components';
+import { Connector, Container, ImageContainer, Lifecycle, Link } from './components';
 import { useHandlers, usePortInstance } from './hooks';
 
 const Port: React.FC = () => {
@@ -35,4 +35,4 @@ const Port: React.FC = () => {
   );
 };
 
-export default React.memo(Port);
+export default Object.assign(React.memo(Port), { ImageContainer });

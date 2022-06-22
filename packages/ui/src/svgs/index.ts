@@ -123,6 +123,7 @@ export { default as fireHD10 } from './fire-hd-10.svg';
 export { default as fireTV } from './fire-tv.svg';
 export { default as flag } from './flag.svg';
 export { default as flow } from './flow.svg';
+export { default as flowV2 } from './flow-v2.svg';
 export { default as flows } from './flows.svg';
 export { default as folder } from './folder.svg';
 export { default as folderLight } from './folder-light.svg';

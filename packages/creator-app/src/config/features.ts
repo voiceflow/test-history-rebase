@@ -35,6 +35,7 @@ const SPEAK_STEP_CLEANUP = process.env.FF_SPEAK_STEP_CLEANUP === 'true';
 const TEXT_STEP_CLEANUP = process.env.FF_TEXT_STEP_CLEANUP === 'true';
 const SET_STEP_CLEANUP = process.env.FF_SET_STEP_CLEANUP === 'true';
 const IF_STEP_CLEANUP = process.env.FF_IF_STEP_CLEANUP === 'true';
+const FLOW_STEP_CLEANUP = process.env.FF_IF_STEP_CLEANUP === 'true';
 
 export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.GADGETS]: GADGETS_ENABLED,
@@ -67,4 +68,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.TEXT_STEP_CLEANUP]: TEXT_STEP_CLEANUP,
   [FeatureFlag.SET_STEP_CLEANUP]: SET_STEP_CLEANUP,
   [FeatureFlag.IF_STEP_CLEANUP]: IF_STEP_CLEANUP,
+  [FeatureFlag.FLOW_STEP_CLEANUP]: FLOW_STEP_CLEANUP,
 };

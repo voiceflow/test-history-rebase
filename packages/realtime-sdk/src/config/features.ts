@@ -44,6 +44,9 @@ export enum FeatureFlag {
   PROMPT_STEP = 'prompt_step',
 
   DISABLE_CODE_EXPORTS = 'disable_code_exports',
+
+  REVISED_CANVAS_MENU = 'revised_canvas_menu',
+
   // canvas and editor updates
   INTEGRATION_STEP_CLEANUP = 'integration_step_cleanup',
   CODE_STEP_CLEANUP = 'code_step_cleanup',
@@ -51,6 +54,5 @@ export enum FeatureFlag {
   TEXT_STEP_CLEANUP = 'text_step_cleanup',
   SET_STEP_CLEANUP = 'set_step_cleanup',
   IF_STEP_CLEANUP = 'if_step_cleanup',
-
-  REVISED_CANVAS_MENU = 'revised_canvas_menu',
+  FLOW_STEP_CLEANUP = 'flow_step_cleanup',
 }

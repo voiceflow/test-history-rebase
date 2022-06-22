@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { get, set } from 'idb-keyval';
+import { MD5 } from 'object-hash';
 
 import * as Errors from '@/config/errors';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
@@ -62,7 +63,7 @@ class ClipboardEngine extends EngineConsumer {
 
       const encryptedData = synchronousCrypto.encrypt(JSON.stringify(copyData), keyToEncrypt);
 
-      await set(CLIPBOARD_DATA_KEY, Crypto.Base64.encodeJSON({ key: keyToStore, data: encryptedData, version: CURRENT_VERSION }));
+      await set(CLIPBOARD_DATA_KEY, Crypto.Base64.encodeJSON({ key: keyToStore, data: encryptedData, version: this.getCurrentVersion() }));
 
       if (!disableSuccessToast) {
         toast.success(`${copiedBlocks.length} block(s) copied to clipboard`);
@@ -74,7 +75,7 @@ class ClipboardEngine extends EngineConsumer {
 
       const { data, key, version: sourceVersion } = Crypto.Base64.decodeJSON(b64Data);
 
-      if (sourceVersion !== CURRENT_VERSION) {
+      if (sourceVersion !== this.getCurrentVersion()) {
         throw new Error('clipboard version mismatch');
       }
 
@@ -143,6 +144,15 @@ class ClipboardEngine extends EngineConsumer {
       );
     },
   };
+
+  getCurrentVersion(): string {
+    const schemaVersion = this.engine.select(VersionV2.active.schemaVersionSelector);
+
+    return MD5({
+      clipboardVersion: CURRENT_VERSION,
+      schemaVersion,
+    });
+  }
 
   getClipboardContext(nodeIDs: string[]): ClipboardContext {
     const state = this.engine.store.getState();

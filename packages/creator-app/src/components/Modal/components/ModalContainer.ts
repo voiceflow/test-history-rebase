@@ -19,7 +19,7 @@ const ModalContainer = styled.section<ModalContainerProps>`
   display: flex;
   flex-direction: row;
   border-radius: 5px;
-  margin: ${({ verticalMargin = 28, centered }) => (centered ? 'auto' : `${verticalMargin}px auto;`)}
+  margin: ${({ verticalMargin = 28, centered }) => (centered ? 'auto' : `${verticalMargin}px auto;`)};
   width: 100%;
   max-height: calc(100% - 56px);
   background: #fff;

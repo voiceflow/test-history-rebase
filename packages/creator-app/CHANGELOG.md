@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.791.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.790.2...@voiceflow/creator-app@1.791.0) (2022-06-22)
+
+
+### Features
+
+* include schema version in clipboard version (VF-3888) ([#5648](https://github.com/voiceflow/creator-app/issues/5648)) ([838fa09](https://github.com/voiceflow/creator-app/commit/838fa09ffe6ceaecce78a1138812fb85caaa8156))
+
+
+
+
+
 ## [1.790.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.790.1...@voiceflow/creator-app@1.790.2) (2022-06-22)
 
 

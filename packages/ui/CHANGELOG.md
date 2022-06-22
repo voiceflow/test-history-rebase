@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.105.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.104.0...@voiceflow/ui@1.105.0) (2022-06-22)
+
+
+### Features
+
+* update if step ui (VF-3371) ([#5550](https://github.com/voiceflow/creator-app/issues/5550)) ([e1e58d4](https://github.com/voiceflow/creator-app/commit/e1e58d4f9cf6d6a8923532026c427f3ad0715316))
+
+
+
+
+
 # [1.104.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.103.0...@voiceflow/ui@1.104.0) (2022-06-22)
 
 

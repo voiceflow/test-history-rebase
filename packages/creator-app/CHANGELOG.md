@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.790.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.789.0...@voiceflow/creator-app@1.790.0) (2022-06-22)
+
+
+### Features
+
+* update image step (VF-3374) ([#5575](https://github.com/voiceflow/creator-app/issues/5575)) ([363e566](https://github.com/voiceflow/creator-app/commit/363e566a551b83e2a9e283ac8b071e6e5a63dd3c))
+
+
+
+
+
 # [1.789.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.788.1...@voiceflow/creator-app@1.789.0) (2022-06-22)
 
 

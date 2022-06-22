@@ -271,7 +271,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
 
         const { dispatched } = await applyEffect(rootState, () => {});
 
-        expect(dispatched).to.eql([History.startTransaction({ transactionID }), History.flushTransaction({ transactionID })]);
+        expect(dispatched).to.eql([{ local: History.startTransaction({ transactionID }) }, { local: History.flushTransaction({ transactionID }) }]);
       });
     });
 
@@ -302,7 +302,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
         expect(dispatched).to.eql([
           { sync: { type: 'bar/a', payload: null, meta: { [REPLAY_KEY]: true } } },
           { sync: { type: 'bar/b', payload: null, meta: { [REPLAY_KEY]: true } } },
-          History.undoTransaction({ transactionID: '2', revertID }),
+          { local: History.undoTransaction({ transactionID: '2', revertID }) },
         ]);
       });
     });
@@ -334,7 +334,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
         expect(dispatched).to.eql([
           { sync: { type: 'fee/1', payload: null, meta: { [REPLAY_KEY]: true } } },
           { sync: { type: 'fee/2', payload: null, meta: { [REPLAY_KEY]: true } } },
-          History.redoTransaction({ transactionID: '4', revertID }),
+          { local: History.redoTransaction({ transactionID: '4', revertID }) },
         ]);
       });
     });

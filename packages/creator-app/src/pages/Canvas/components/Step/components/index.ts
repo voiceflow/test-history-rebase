@@ -1,4 +1,5 @@
 export { default as ElseItem } from './ElseStepItem';
+export { default as ElseStepItemV2 } from './ElseStepItemV2';
 export { default as FailureItem } from './FailureStepItem';
 export { default as FailureStepItemV2 } from './FailureStepItemV2';
 export { default as HoverContainer } from './HoverContainer';

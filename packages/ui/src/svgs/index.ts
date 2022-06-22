@@ -153,6 +153,7 @@ export { default as hyperlink } from './hyperlink.svg';
 export { default as itemAdd } from './expression-add.svg';
 export { default as itemMinus } from './expression-minus.svg';
 export { default as if } from './if.svg';
+export { default as ifV2 } from './if-v2.svg';
 export { default as image } from './image.svg';
 export { default as imageDropzone } from './image-dropzone.svg';
 export { default as interactionModel } from './imm-icon.svg';

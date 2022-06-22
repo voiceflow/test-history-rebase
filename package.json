@@ -126,7 +126,7 @@
     "start:meshed:realtime": "yarn --cwd packages/realtime start:meshed",
     "start:meshed:showcase": "yarn --cwd packages/showcase start:meshed",
     "start:proxy": "yarn --cwd packages/creator-app start:proxy",
-    "test": "lerna run test --parallel",
+    "test": "lerna run test --parallel ",
     "test:dependencies": "lerna run test:dependencies --parallel",
     "test:integration": "lerna run test:integration --parallel",
     "test:run": "lerna run test:run --parallel",

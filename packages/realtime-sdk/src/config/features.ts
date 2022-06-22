@@ -51,4 +51,6 @@ export enum FeatureFlag {
   TEXT_STEP_CLEANUP = 'text_step_cleanup',
   SET_STEP_CLEANUP = 'set_step_cleanup',
   IF_STEP_CLEANUP = 'if_step_cleanup',
+
+  REVISED_CANVAS_MENU = 'revised_canvas_menu',
 }

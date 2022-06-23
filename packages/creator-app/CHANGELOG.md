@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.794.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.793.1...@voiceflow/creator-app@1.794.0) (2022-06-23)
+
+
+### Features
+
+* steps menu top level  container (CT-11) ([#5645](https://github.com/voiceflow/creator-app/issues/5645)) ([46f58ca](https://github.com/voiceflow/creator-app/commit/46f58ca9797bc317544fe72662de933a0d03780b))
+
+
+
+
+
 ## [1.793.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.793.0...@voiceflow/creator-app@1.793.1) (2022-06-23)
 
 

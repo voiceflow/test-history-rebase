@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.794.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.794.0...@voiceflow/creator-app@1.794.1) (2022-06-23)
+
+
+### Bug Fixes
+
+* speak input redo (VF-3892) ([#5651](https://github.com/voiceflow/creator-app/issues/5651)) ([582b020](https://github.com/voiceflow/creator-app/commit/582b0206590c9f0b503561f308022bc4383b9de0)), closes [/github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/components/TextEditor/TextEditor.jsx#L194-L198](https://github.com//github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/components/TextEditor/TextEditor.jsx/issues/L194-L198) [/github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/hooks/manager.ts#L103-L112](https://github.com//github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/hooks/manager.ts/issues/L103-L112) [/github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/hooks/manager.ts#L249](https://github.com//github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/hooks/manager.ts/issues/L249)
+* undo import snapshot lag (VF-3893) ([#5652](https://github.com/voiceflow/creator-app/issues/5652)) ([ba91f7a](https://github.com/voiceflow/creator-app/commit/ba91f7aa5f2b331a36f1529aea7e7a4e040959e0))
+
+
+
+
+
 # [1.794.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.793.1...@voiceflow/creator-app@1.794.0) (2022-06-23)
 
 

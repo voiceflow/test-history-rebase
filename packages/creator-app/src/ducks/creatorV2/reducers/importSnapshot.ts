@@ -79,6 +79,9 @@ export const importSnapshotReverter = createReverter(
   ({ workspaceID, projectID, versionID, diagramID, nodesWithData, links, ports }, getState) => {
     const state = getState();
     const ctx = { workspaceID, projectID, versionID, diagramID };
+    const removedNodeIDs = new Set(nodesWithData.map(({ node }) => node.id));
+    // no need to remove the port if the node is already being removed
+    const portsToRemove = ports.filter((port) => !removedNodeIDs.has(port.nodeID));
 
     return [
       Realtime.link.removeMany({
@@ -94,7 +97,7 @@ export const importSnapshotReverter = createReverter(
           };
         }),
       }),
-      ...ports.map((port) => {
+      ...portsToRemove.map((port) => {
         const type = builtInPortTypeSelector(state, { id: port.id });
 
         return type

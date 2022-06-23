@@ -2,15 +2,17 @@ import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
+import { FeatureFlag } from '@/config/features';
 import * as Transcripts from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
 import { RealtimeLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
-import { useDispatch, useEventualEngine, useSelector, useTeardown } from '@/hooks';
+import { useDispatch, useEventualEngine, useFeature, useSelector, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers';
 import DesignMenu from '@/pages/Project/components/DesignMenu';
+import StepMenu from '@/pages/Project/components/StepMenu';
 import { useAnyModeOpen, usePrototypingMode } from '@/pages/Project/hooks';
 import PrototypeOverlay from '@/pages/Prototype/components/PrototypeOverlay';
 import ReadOnlyBadge from '@/pages/Prototype/components/ReadOnlyBadge';
@@ -31,6 +33,8 @@ const Diagram: React.FC<DiagramProps> = () => {
   const engine = useEventualEngine();
   const isDesignMode = !useAnyModeOpen();
   const isPrototypingMode = usePrototypingMode();
+
+  const revisedCanvasMenu = useFeature(FeatureFlag.REVISED_CANVAS_MENU);
 
   const isCanvasEditable = !isPrototypingMode;
 
@@ -68,6 +72,7 @@ const Diagram: React.FC<DiagramProps> = () => {
         {isDesignMode && (
           <>
             <DesignMenu />
+            {revisedCanvasMenu.isEnabled && <StepMenu />}
             <MarkupImageLoading />
           </>
         )}

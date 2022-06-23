@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.796.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.795.0...@voiceflow/creator-app@1.796.0) (2022-06-23)
+
+
+### Bug Fixes
+
+* do not update if shallow partial equals (VF-3887) ([#5650](https://github.com/voiceflow/creator-app/issues/5650)) ([09ca09d](https://github.com/voiceflow/creator-app/commit/09ca09d4d61be50673d7d22cc6d9280d5c7cfb37)), closes [/github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/components/TextListItem/index.tsx#L57](https://github.com//github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/components/TextListItem/index.tsx/issues/L57) [/github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/components/SpeakAudioItem/index.tsx#L82](https://github.com//github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/components/SpeakAudioItem/index.tsx/issues/L82) [/github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/managers/IfV2/components/ConditionsSection.tsx#L27-L29](https://github.com//github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/managers/IfV2/components/ConditionsSection.tsx/issues/L27-L29) [/github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/managers/Code/CodeEditor.tsx#L53](https://github.com//github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/managers/Code/CodeEditor.tsx/issues/L53)
+
+
+### Features
+
+* step menu top level buttons (CT-12) ([#5655](https://github.com/voiceflow/creator-app/issues/5655)) ([8b02d3c](https://github.com/voiceflow/creator-app/commit/8b02d3c6a3f01962edee0f0dc4f79f8badb6cd61))
+
+
+
+
+
 # [1.795.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.794.1...@voiceflow/creator-app@1.795.0) (2022-06-23)
 
 

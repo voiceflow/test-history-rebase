@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.16.1...@voiceflow/socket-utils@1.16.2) (2022-06-23)
+
+
+### Bug Fixes
+
+* do not update if shallow partial equals (VF-3887) ([#5650](https://github.com/voiceflow/creator-app/issues/5650)) ([09ca09d](https://github.com/voiceflow/creator-app/commit/09ca09d4d61be50673d7d22cc6d9280d5c7cfb37)), closes [/github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/components/TextListItem/index.tsx#L57](https://github.com//github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/components/TextListItem/index.tsx/issues/L57) [/github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/components/SpeakAudioItem/index.tsx#L82](https://github.com//github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/components/SpeakAudioItem/index.tsx/issues/L82) [/github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/managers/IfV2/components/ConditionsSection.tsx#L27-L29](https://github.com//github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/managers/IfV2/components/ConditionsSection.tsx/issues/L27-L29) [/github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/managers/Code/CodeEditor.tsx#L53](https://github.com//github.com/voiceflow/creator-app/blob/master/packages/creator-app/src/pages/Canvas/managers/Code/CodeEditor.tsx/issues/L53)
+
+
+
+
+
 ## [1.16.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.16.0...@voiceflow/socket-utils@1.16.1) (2022-05-31)
 
 

@@ -14,7 +14,7 @@ const PreviewCode: React.FC<PreviewCodeProps> = ({ code }) => (
   <SyntaxHighlighter
     style={previewCodeStyle}
     language="javascript"
-    customStyle={{ fontFamily: 'Fira Code', fontSize: '13px', padding: 0 }}
+    customStyle={{ fontFamily: 'Fira Code', fontSize: '13px', padding: 0, margin: 0 }}
     wrapLongLines
   >
     {code}

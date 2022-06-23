@@ -56,7 +56,7 @@ function SelectInputGroup({
   );
 
   return (
-    <Container regularInput={regularInput} onClick={onClick}>
+    <Container regularInput={regularInput} onClick={onClick} multiline>
       {orientation === OrientationType.LEFT && input}
       <Select {...props} inline minWidth={false} borderLess showDropdownColorOnActive={showDropdownColorOnActive} />
       {orientation === OrientationType.RIGHT && input}

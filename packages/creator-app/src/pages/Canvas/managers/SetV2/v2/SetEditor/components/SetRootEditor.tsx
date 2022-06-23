@@ -16,7 +16,7 @@ const SetRootEditor: React.FC = () => {
   const managerAPI = useSetManager();
   const { inputRef, stepName, setStepName } = useSetTitleForm(editor.data.title);
   const [isDragging, toggleDragging] = useToggle(false);
-  const canCreateMoreItems = managerAPI.items.length <= MAX_SETS;
+  const canCreateMoreItems = managerAPI.items.length < MAX_SETS;
 
   const onDuplicate: MapManagedEditActionHandler<Realtime.NodeData.SetExpressionV2> = (_, item) => {
     managerAPI.onDuplicate(item.index, { ...item, ...item.item });
@@ -37,7 +37,7 @@ const SetRootEditor: React.FC = () => {
         )
       }
     >
-      <SectionV2.SimpleSection>
+      <SectionV2.SimpleSection headerProps={{ padding: '24px 32px' }}>
         <Input
           ref={inputRef}
           value={stepName}

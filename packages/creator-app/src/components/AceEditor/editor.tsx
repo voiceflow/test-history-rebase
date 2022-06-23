@@ -41,7 +41,7 @@ const StyledEditor = styled(AceEditor).attrs({
   ${({ hasBorder = false }) =>
     hasBorder &&
     css`
-      border-radius: 5px;
+      border-radius: 6px;
       box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
       border: solid 1px #d4d9e6;
     `}
@@ -99,14 +99,8 @@ const StyledEditor = styled(AceEditor).attrs({
   ${({ editorSpacing }) =>
     editorSpacing &&
     css`
-      .ace_text-layer {
-        margin: 0px 12px !important;
-      }
-
-      .ace_content,
-      .ace_comment.ace_placeholder,
-      .ace_gutter {
-        padding-top: 12px !important;
+      .ace_placeholder {
+        margin-top: 12px !important;
       }
     `}
 
@@ -197,6 +191,14 @@ const StyledEditor = styled(AceEditor).attrs({
   }}
 `;
 
-const Editor = React.forwardRef<AceEditor, AceEditorProps>((props, ref) => <StyledEditor {...(props as any)} ref={ref} />);
+const Editor = React.forwardRef<AceEditor, AceEditorProps>((props, ref) => {
+  const onLoad = React.useCallback((editor?: any) => {
+    if (props.editorSpacing) {
+      editor?.renderer?.setPadding(12);
+    }
+  }, []);
+
+  return <StyledEditor {...(props as any)} ref={ref} onLoad={onLoad} />;
+});
 
 export default Editor;

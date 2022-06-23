@@ -30,7 +30,7 @@ const ParametersSection: React.FC = () => {
           {index > 0 && <APIEditorSectionStyles.IntegrationEditorSectionDivider />}
           <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />} key={index}>
             <APIEditorSectionStyles.IntegrationEditorSectionItem>
-              <VariablesInput placeholder="Enter parameter key" value={parameter.key} onBlur={({ text }) => onUpdate({ key: text })} />
+              <VariablesInput placeholder="Enter parameter key" value={parameter.key} onBlur={({ text }) => onUpdate({ key: text })} multiline />
               <VariableSelectV2
                 options={variables}
                 onCreate={createVariable}

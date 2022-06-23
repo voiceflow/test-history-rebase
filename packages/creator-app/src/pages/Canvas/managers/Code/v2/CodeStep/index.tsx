@@ -20,7 +20,7 @@ export interface CodeStepProps {
   onOpenEditor: () => void;
 }
 
-export const CodeStep: React.FC<CodeStepProps> = ({ codeData, withPorts, nodeID, successPortID, failurePortID, onOpenEditor }) => {
+export const CodeStep: React.FC<CodeStepProps> = ({ codeData, withPorts, nodeID, successPortID, failurePortID, onOpenEditor, palette }) => {
   const hasCode = codeData?.length > 0;
 
   return (
@@ -28,7 +28,7 @@ export const CodeStep: React.FC<CodeStepProps> = ({ codeData, withPorts, nodeID,
       <Section v2 withIcon>
         <Item
           icon={CODE_STEP_ICON}
-          iconColor="#8da2b5"
+          palette={palette}
           label={hasCode ? 'Custom code' : null}
           placeholder="Add custom code"
           attachment={

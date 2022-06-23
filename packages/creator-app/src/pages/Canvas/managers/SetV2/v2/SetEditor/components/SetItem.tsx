@@ -42,7 +42,7 @@ const SetItem: React.ForwardRefRenderFunction<HTMLElement, SetItemProps> = (
                 ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
                 header={
                   <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
-                    <SectionV2.Title bold={!collapsed}>Set variable {index}</SectionV2.Title>
+                    <SectionV2.Title bold={!collapsed}>Set variable {index + 1}</SectionV2.Title>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />
                   </SectionV2.Header>
@@ -56,7 +56,7 @@ const SetItem: React.ForwardRefRenderFunction<HTMLElement, SetItemProps> = (
                 isDraggingPreview={isDraggingPreview}
                 isContextMenuOpen={isContextMenuOpen}
               >
-                <SectionV2.Content bottomOffset={2.5}>
+                <SectionV2.Content bottomOffset={3}>
                   <VariableSelectV2
                     options={variables}
                     onCreate={createVariable}

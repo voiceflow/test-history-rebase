@@ -6,6 +6,11 @@ const Container = styled(Flex)`
   ${inputStyle};
   display: flex;
   overflow: hidden;
+  ${({ multiline }) =>
+    multiline &&
+    css`
+      align-items: flex-start;
+    `};
 
   ${SelectWrapper} {
     height: 40px;

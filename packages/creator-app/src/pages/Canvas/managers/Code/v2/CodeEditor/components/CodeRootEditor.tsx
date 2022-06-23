@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIcon } from '@voiceflow/ui';
+import { Box, IconButton, IconButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor, { ACE_EDITOR_COLORS, ACE_EDITOR_OPTIONS_V2 } from '@/components/AceEditor';
@@ -27,7 +27,12 @@ const CodeRootEditor: React.FC = () => {
         <EditorV2.Header>
           <EditorV2.HeaderTitle>Javascript</EditorV2.HeaderTitle>
 
-          <SvgIcon icon={editor.isFullscreen ? 'systemMinimize' : 'systemExpand'} color="#6E849A" onClick={editor.onToggleFullscreen} clickable />
+          <IconButton
+            icon={editor.isFullscreen ? 'systemMinimize' : 'systemExpand'}
+            onClick={editor.onToggleFullscreen}
+            variant={IconButtonVariant.BASIC}
+            style={{ borderRadius: '50%' }}
+          />
         </EditorV2.Header>
       }
       footer={
@@ -40,17 +45,22 @@ const CodeRootEditor: React.FC = () => {
       fillHeight
       withoutContentContainer
     >
-      <AceEditor
-        placeholder="Enter custom code"
-        ref={editorRef}
-        value={editorState}
-        onChange={(value) => onUpdateEditorState(value)}
-        onBlur={onUpdateCode}
-        name="code"
-        mode="javascript"
-        editorColors={ACE_EDITOR_COLORS}
-        setOptions={ACE_EDITOR_OPTIONS_V2}
-      />
+      <Box height="100vh">
+        <AceEditor
+          placeholder="Enter custom code"
+          ref={editorRef}
+          value={editorState}
+          onChange={(value) => onUpdateEditorState(value)}
+          onBlur={onUpdateCode}
+          name="code"
+          mode="javascript"
+          editorColors={ACE_EDITOR_COLORS}
+          setOptions={ACE_EDITOR_OPTIONS_V2}
+          fullHeight
+          editorSpacing
+          scrollMargin={[12, 12, 0, 0]}
+        />
+      </Box>
     </EditorV2>
   );
 };

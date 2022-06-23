@@ -39,18 +39,21 @@ const BodySection: React.FC = () => {
         )
       }
       collapsed={!hasBody}
+      contentProps={{ paddingBottom: '24px' }}
     >
-      <RadioGroup options={BODY_OPTIONS} checked={bodyInputType} onChange={onChangeBodyType} />
+      <Box mb="20px">
+        <RadioGroup options={BODY_OPTIONS} checked={bodyInputType} onChange={onChangeBodyType} />
+      </Box>
 
       {bodyData && (
-        <Box mt="20px" mb="24px">
+        <Box>
           {mapManaged((body, { index, onUpdate, onRemove }) => (
             <>
               {index > 0 && <APIEditorSectionStyles.IntegrationEditorSectionDivider />}
               <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />} key={index}>
                 <APIEditorSectionStyles.IntegrationEditorSectionItem>
-                  <VariablesInput placeholder="Enter key" value={body.key} onBlur={({ text }) => onUpdate({ key: text })} />
-                  <VariablesInput placeholder="Enter value or {variable}" value={body.val} onBlur={({ text }) => onUpdate({ val: text })} />
+                  <VariablesInput placeholder="Enter key" value={body.key} onBlur={({ text }) => onUpdate({ key: text })} multiline />
+                  <VariablesInput placeholder="Enter value or {variable}" value={body.val} onBlur={({ text }) => onUpdate({ val: text })} multiline />
                 </APIEditorSectionStyles.IntegrationEditorSectionItem>
               </SectionV2.ListItem>
             </>
@@ -59,18 +62,20 @@ const BodySection: React.FC = () => {
       )}
 
       {bodyInputType === BaseNode.Api.APIBodyType.RAW_INPUT && (
-        <Box mt="20px" mb="24px" height="245px">
+        <Box height="245px">
           <AceEditor
             placeholder="Enter Body Content"
             value={aceContent}
             onChange={setAceContent}
             onBlur={() => editor.onChange({ content: aceContent })}
-            name="code"
             mode="javascript"
+            name="code"
             hasBorder
             setOptions={ACE_EDITOR_OPTIONS_V2}
             editorColors={ACE_EDITOR_COLORS}
             fullHeight
+            editorSpacing
+            scrollMargin={[12, 12, 0, 0]}
           />
         </Box>
       )}

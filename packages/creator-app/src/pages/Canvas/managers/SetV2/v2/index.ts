@@ -7,6 +7,7 @@ import ConnectedSetStep from './SetStep';
 const SetManagerV2: Partial<NodeManagerConfigV2<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts>> = {
   editorV2: SetEditor,
   step: ConnectedSetStep,
+  icon: 'systemSet',
 };
 
 export default SetManagerV2;

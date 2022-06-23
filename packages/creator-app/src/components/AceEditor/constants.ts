@@ -17,7 +17,7 @@ export const ACE_EDITOR_COLORS = {
   boolean: '#1c368e',
   comment: '#8da2b5',
   reservedWord: '#1c368e',
-  string: 'rgb(3, 106, 7)',
+  string: '#92564b',
   numeric: 'rgb(0, 0, 205)',
   variable: '#A156D7',
 };

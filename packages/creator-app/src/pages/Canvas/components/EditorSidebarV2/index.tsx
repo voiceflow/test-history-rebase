@@ -145,12 +145,18 @@ const EditorSidebarV2 = () => {
 
   const editor = hasData && getEditor(node, data);
 
+  React.useEffect(() => {
+    if (!isOpened) {
+      toggleFullscreen(false);
+    }
+  }, [isOpened]);
+
   return (
     <React.Fragment key={focus.target ?? 'unknown'}>
       <Drawer
         open={isOpened}
         width={width}
-        style={isFullscreen ? { width: 'calc(100% - 355px' } : {}}
+        style={isOpened && isFullscreen ? { width: 'calc(100% - 355px' } : {}}
         onPaste={stopImmediatePropagation()}
         direction={Drawer.Direction.LEFT}
         animatedWidth

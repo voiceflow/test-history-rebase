@@ -6,6 +6,7 @@ export const IntegrationEditorSectionItem = styled(Box)`
   width: 100%;
   display: grid;
   grid-gap: 16px;
+  align-items: center;
 `;
 
 export const IntegrationEditorSectionDivider = styled(SectionV2.Divider)`

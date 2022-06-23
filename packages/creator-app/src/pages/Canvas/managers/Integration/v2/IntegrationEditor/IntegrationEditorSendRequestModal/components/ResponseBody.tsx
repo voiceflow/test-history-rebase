@@ -27,6 +27,8 @@ const ResponseBody: React.FC<ResponseBodyProps> = ({ response }) => {
             hasBorder
             setOptions={{ ...ACE_EDITOR_OPTIONS_V2, readOnly: true, showGutter: false }}
             editorColors={RAW_ACE_EDITOR_COLORS}
+            editorSpacing
+            scrollMargin={[12, 12, 0, 0]}
           />
         ) : (
           <AceEditor
@@ -37,6 +39,8 @@ const ResponseBody: React.FC<ResponseBodyProps> = ({ response }) => {
             hasBorder
             setOptions={{ ...ACE_EDITOR_OPTIONS_V2, readOnly: true, showGutter: true }}
             editorColors={ACE_EDITOR_COLORS}
+            editorSpacing
+            scrollMargin={[12, 12, 0, 0]}
           />
         )}
       </Box>

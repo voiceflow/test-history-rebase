@@ -28,8 +28,8 @@ const HeaderSection: React.FC = () => {
           {index > 0 && <APIEditorSectionStyles.IntegrationEditorSectionDivider />}
           <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />} key={index}>
             <APIEditorSectionStyles.IntegrationEditorSectionItem>
-              <VariablesInput placeholder="Enter parameter key" value={header.key} onBlur={({ text }) => onUpdate({ key: text })} />
-              <VariablesInput placeholder="Enter value or {variable}" value={header.val} onBlur={({ text }) => onUpdate({ val: text })} />
+              <VariablesInput placeholder="Enter parameter key" value={header.key} onBlur={({ text }) => onUpdate({ key: text })} multiline />
+              <VariablesInput placeholder="Enter value or {variable}" value={header.val} onBlur={({ text }) => onUpdate({ val: text })} multiline />
             </APIEditorSectionStyles.IntegrationEditorSectionItem>
           </SectionV2.ListItem>
         </>

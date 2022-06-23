@@ -7,7 +7,7 @@ import { NodeConfigWithoutInPorts } from '../types';
 
 export const NODE_CONFIG: NodeConfigWithoutInPorts<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = {
   type: BlockType.INTENT,
-  icon: 'user',
+  icon: 'systemIntent',
 
   mergeInitializer: true,
 

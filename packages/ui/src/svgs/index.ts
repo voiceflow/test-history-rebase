@@ -285,6 +285,7 @@ export { default as sync } from './sync.svg';
 export { default as systemButtons } from './system-buttons.svg';
 export { default as systemCode } from './system-code.svg';
 export { default as systemExpand } from './system-expand.svg';
+export { default as systemIntent } from './system-intents.svg';
 export { default as systemMinimize } from './system-minimize.svg';
 export { default as systemNoReply } from './system-no-reply.svg';
 export { default as systemSet } from './system-set.svg';

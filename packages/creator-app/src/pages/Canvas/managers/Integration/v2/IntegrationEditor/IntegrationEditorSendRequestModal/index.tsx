@@ -43,7 +43,7 @@ const IntegrationEditorSendRequestModal: React.FC = () => {
 
   return (
     <Modal id={ModalType.INTEGRATION_EDITOR_SEND_REQUEST_MODAL} title="Test Request">
-      <Modal.Body>
+      <Modal.Body padding="0 32px 24px 32px">
         <Tabs value={activeTab} onChange={setActiveTab}>
           <Tabs.Tab value={IntegrationEditorSendRequestModalTabs.BODY}>Body</Tabs.Tab>
           <Tabs.Tab value={IntegrationEditorSendRequestModalTabs.HEADERS}>Headers</Tabs.Tab>

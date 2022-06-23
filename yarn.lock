@@ -5482,11 +5482,6 @@
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.1.tgz#18845205e86ff0038517aab7a18a62a6b9f71275"
   integrity sha512-EaCxbanVeyxDRTQBkdLb3Bvl/HK7PBK6UJjsSixB0iHKoWxE5uu2Q/DgtpOhPIojN0Zl1whvOd7PoHs2P0s5eA==
 
-"@types/shallowequal@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@types/shallowequal/-/shallowequal-1.1.1.tgz#aad262bb3f2b1257d94c71d545268d592575c9b1"
-  integrity sha512-Lhni3aX80zbpdxRuWhnuYPm8j8UQaa571lHP/xI4W+7BAFhSIhRReXnqjEgT/XzPoXZTJkCqstFMJ8CZTK6IlQ==
-
 "@types/sinon-chai@3.2.8":
   version "3.2.8"
   resolved "https://registry.yarnpkg.com/@types/sinon-chai/-/sinon-chai-3.2.8.tgz#5871d09ab50d671d8e6dd72e9073f8e738ac61dc"
@@ -5777,13 +5772,13 @@
     "@voiceflow/voiceflow-types" "^3.16.10"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/api-sdk@3.14.2":
-  version "3.14.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.14.2.tgz#ca9bd6e08081b4cf0cc83f7766a9ccbcd7e3b965"
-  integrity sha512-1/UPIuMtflrxi1eThn/6a1aY/7sHFH61wgvmejyKdxdODr4NQeLGv7RcW7xuSpIsBwawACntOe2KjTVBz83c/Q==
+"@voiceflow/api-sdk@3.14.4":
+  version "3.14.4"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.14.4.tgz#d44b837f9356bbd37c02490ef92eccdf9c9c57a2"
+  integrity sha512-rJ0gN2XXHAwz3iUP9YSkAc4ziqvTtxOiWjN2NyftiLg6DlQVYczSFNnLzuu8Jn3rd/CG9wHgkO+o3yy7by+jOA==
   dependencies:
-    "@voiceflow/base-types" "^2.43.0"
-    "@voiceflow/common" "^7.27.0"
+    "@voiceflow/base-types" "^2.44.1"
+    "@voiceflow/common" "^7.27.1"
     axios "0.24.0"
     jwt-decode "^3.1.2"
     superstruct "^0.10.12"
@@ -5838,6 +5833,14 @@
     "@voiceflow/common" "^7.27.0"
     slate "0.73.0"
 
+"@voiceflow/base-types@^2.44.1":
+  version "2.44.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.44.1.tgz#026da2bf4987a054464428134c27429651914a35"
+  integrity sha512-PjEJ3Buw9bOLuYQi/K4eVHL7L5xuKLlyLiH1hMFCTp5uhO5r1qGhLKvm6WEpLy+xXSxmwxoCaS0NzsXlBCMKnA==
+  dependencies:
+    "@voiceflow/common" "^7.27.1"
+    slate "0.73.0"
+
 "@voiceflow/chat-types@2.8.10", "@voiceflow/chat-types@^2.8.10":
   version "2.8.10"
   resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-2.8.10.tgz#59991541d3b2579eb80e794ce77ea5006b594f62"
@@ -5853,10 +5856,26 @@
   dependencies:
     "@commitlint/config-conventional" "16.0.0"
 
-"@voiceflow/common@7.27.0", "@voiceflow/common@^7.27.0":
-  version "7.27.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.27.0.tgz#6a11cf276f0bbcfc24021815f1e912b9b17c9d59"
-  integrity sha512-XHvWdO8nax/jgQFbGT0ieDekjWfPJQhhqGH2bIHLNcNpjelUz7lAZ17q+DUbsk7Q0JqZqGl8ky973TbSVenvIQ==
+"@voiceflow/common@7.27.1", "@voiceflow/common@^7.27.1":
+  version "7.27.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.27.1.tgz#e496a946c6eb96788f517d1001e28318d0b52fc6"
+  integrity sha512-xURC0znhDoJ0KJo8kZknoYa/OS4ArN5rszQH3Ofa7v4AlRqExQD2wfP3yK9DmlK/ogSWA8nsVWAaRuExkTO5Nw==
+  dependencies:
+    "@types/crypto-js" "^4.0.2"
+    bson-objectid "^2.0.1"
+    crypto-js "^4.1.1"
+    cuid "^2.1.8"
+    dayjs "1.10.7"
+    lodash "^4.17.21"
+    murmurhash-wasm "^1.3.0"
+    number-to-words "^1.2.4"
+    shallowequal "^1.1.0"
+    typescript-fsa "3.0.0"
+
+"@voiceflow/common@^7.25.1":
+  version "7.25.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.25.2.tgz#e78f314d6dbc7f51a3d9a530bb643cc4f5ab27a9"
+  integrity sha512-gB/FZmtu/fDs+RQhRWDR826c7QN7DLF+Iu2WnuwxLKMM91bMH73Bn85/F3aAvq/m1HvEcyWEt/T00pniDilsqQ==
   dependencies:
     "@types/crypto-js" "^4.0.2"
     bson-objectid "^2.0.1"
@@ -5868,10 +5887,10 @@
     number-to-words "^1.2.4"
     typescript-fsa "3.0.0"
 
-"@voiceflow/common@^7.25.1":
-  version "7.25.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.25.2.tgz#e78f314d6dbc7f51a3d9a530bb643cc4f5ab27a9"
-  integrity sha512-gB/FZmtu/fDs+RQhRWDR826c7QN7DLF+Iu2WnuwxLKMM91bMH73Bn85/F3aAvq/m1HvEcyWEt/T00pniDilsqQ==
+"@voiceflow/common@^7.27.0":
+  version "7.27.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-7.27.0.tgz#6a11cf276f0bbcfc24021815f1e912b9b17c9d59"
+  integrity sha512-XHvWdO8nax/jgQFbGT0ieDekjWfPJQhhqGH2bIHLNcNpjelUz7lAZ17q+DUbsk7Q0JqZqGl8ky973TbSVenvIQ==
   dependencies:
     "@types/crypto-js" "^4.0.2"
     bson-objectid "^2.0.1"
@@ -13229,10 +13248,15 @@ immediate@~3.0.5:
   resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
   integrity sha1-nbHb0Pr43m++D13V5Wu2BigN5ps=
 
-immer@9.0.12, immer@^9.0.6:
+immer@9.0.12:
   version "9.0.12"
   resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.12.tgz#2d33ddf3ee1d247deab9d707ca472c8c942a0f20"
   integrity sha512-lk7UNmSbAukB5B6dh9fnh5D0bJTOFKxVg2cyJWTYrWRfhLrLMBquONcUs3aFq507hNoIZEDDh8lb8UtOizSMhA==
+
+immer@^9.0.6:
+  version "9.0.15"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.15.tgz#0b9169e5b1d22137aba7d43f8a81a495dd1b62dc"
+  integrity sha512-2eB/sswms9AEUSkOm4SbV5Y7Vmt/bKRwByd52jfLkW4OLYeaTP3EEiJ9agqU0O/tq6Dk62Zfj+TJSqfm1rLVGQ==
 
 immutability-helper@2.9.1:
   version "2.9.1"
@@ -20737,7 +20761,7 @@ shallow-clone@^3.0.0:
   dependencies:
     kind-of "^6.0.2"
 
-shallowequal@1.1.0, shallowequal@^1.1.0:
+shallowequal@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
   integrity sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==

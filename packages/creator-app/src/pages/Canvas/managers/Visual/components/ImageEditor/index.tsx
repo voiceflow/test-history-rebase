@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, defaultMenuLabelRenderer, Flex, Input, Link, Select, Text, Upload } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -66,12 +66,14 @@ const ImageEditor: NodeEditor<BaseNode.Visual.ImageStepData, Realtime.NodeData.V
   };
 
   const onBlurDimensions = () => {
-    onChange({
-      dimensions: {
-        width: Number(dimensions?.width ?? '0') || data.dimensions?.width || DEFAULT_DIMENSIONS.width,
-        height: Number(dimensions?.height ?? '0') || data.dimensions?.height || DEFAULT_DIMENSIONS.height,
-      },
-    });
+    const newDimensions = {
+      width: Number(dimensions?.width ?? '0') || data.dimensions?.width || DEFAULT_DIMENSIONS.width,
+      height: Number(dimensions?.height ?? '0') || data.dimensions?.height || DEFAULT_DIMENSIONS.height,
+    };
+
+    if (Utils.object.shallowEquals(data.dimensions, newDimensions)) return;
+
+    onChange({ dimensions: newDimensions });
   };
 
   const visualSizeSection = (

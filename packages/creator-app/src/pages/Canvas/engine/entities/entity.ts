@@ -2,7 +2,6 @@
 import { Utils } from '@voiceflow/common';
 import { logger } from '@voiceflow/ui';
 import React from 'react';
-import shallowEqual from 'shallowequal';
 
 import { useTeardown } from '@/hooks';
 
@@ -73,7 +72,7 @@ export abstract class Entity<T extends EntityInstance = EntityInstance> {
 
         this.log.debug(this.log.pending('reselecting'), nextValue);
 
-        if (!shallowEqual(nextValue, prevValue)) {
+        if (!Utils.object.shallowEquals(nextValue, prevValue)) {
           this.log.debug(this.log.success('selection updated'), this.log.diff(prevValue, nextValue));
           setValue(nextValue);
         }

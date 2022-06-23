@@ -1,7 +1,7 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { createSelector } from 'reselect';
-import shallowEqual from 'shallowequal';
 
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -172,7 +172,7 @@ class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstanc
     const engine = React.useContext(EngineContext)!;
 
     super.useInstance(instance);
-    this.useSubscription(this.nodeID, () => this.resolve(), shallowEqual);
+    this.useSubscription(this.nodeID, () => this.resolve(), Utils.object.shallowEquals);
 
     React.useEffect(() => {
       engine.registerNode(this.nodeID, this);

@@ -1,4 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Checkbox, Divider } from '@voiceflow/ui';
 import React from 'react';
@@ -41,9 +42,8 @@ const NoMatchPathName: React.FC<NodeEditorPropsType<Realtime.NodeData.IfV2>> = (
   };
 
   useDidUpdateEffect(() => {
-    if (localNoMatch !== data.noMatch) {
-      onChange({ noMatch: localNoMatch });
-    }
+    if (Utils.object.shallowEquals(localNoMatch, data.noMatch)) return;
+    onChange({ noMatch: localNoMatch });
   }, [localNoMatch]);
 
   return (

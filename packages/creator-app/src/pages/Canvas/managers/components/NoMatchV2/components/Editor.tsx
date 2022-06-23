@@ -30,6 +30,7 @@ const Editor: React.FC = () => {
   const { noMatch } = editor.data;
 
   const onChange = async (data: Partial<Realtime.NodeData.NoMatch>) => {
+    if (Utils.object.shallowPartialEquals(noMatch, data)) return;
     await editor.onChange({ noMatch: { ...noMatch, ...data } as Realtime.NodeData.NoMatch });
   };
 

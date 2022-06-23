@@ -247,8 +247,12 @@ export const useManager = <T extends {}, F extends any[]>(
     async (key: string, value: Partial<T>) => {
       const index = getIndex(key);
       const currValue = getItem(key);
+      const currValueIsObject = Utils.object.isObject(currValue);
+      const valueIsObject = Utils.object.isObject(value);
 
-      const nextValue = currValue && !Array.isArray(currValue) && Utils.object.isObject(currValue) ? { ...currValue, ...value } : (value as T);
+      if (currValueIsObject && valueIsObject && Utils.object.shallowPartialEquals(currValue, value)) return;
+
+      const nextValue = currValue && !Array.isArray(currValue) && currValueIsObject ? { ...currValue, ...value } : (value as T);
 
       if (validate?.(nextValue, { index, isUpdate: true, originalValue: currValue }) === false) return;
 

@@ -28,6 +28,7 @@ const Editor: React.FC = () => {
   const { noReply } = editor.data;
 
   const onChange = async (data: Partial<Realtime.NodeData.NoReply>) => {
+    if (Utils.object.shallowPartialEquals(noReply, data)) return;
     await editor.onChange({ noReply: { ...noReply, ...data } as Realtime.NodeData.NoReply });
   };
 

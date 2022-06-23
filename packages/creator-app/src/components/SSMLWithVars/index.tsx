@@ -18,6 +18,7 @@ interface SSMLWithVarsProps {
   autofocus?: boolean;
   placeholder?: string;
   onChangeVoice: (newVoice: string) => void;
+  skipBlurOnUnmount?: boolean;
 }
 
 const SSMLWithVars: React.FC<SSMLWithVarsProps> = ({ icon = 'alexa', voice, autofocus, ...props }) => {

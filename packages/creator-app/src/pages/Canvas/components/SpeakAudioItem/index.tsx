@@ -79,7 +79,7 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
       {isDragging || isDraggingPreview ? null : (
         <FormControl {...formControlProps}>
           {isVoice(item) ? (
-            <SSMLWithVars icon={null} voice={item.voice} value={item.content} onBlur={updateContent} onChangeVoice={updateVoice} />
+            <SSMLWithVars icon={null} voice={item.voice} value={item.content} onBlur={updateContent} onChangeVoice={updateVoice} skipBlurOnUnmount />
           ) : (
             <>
               <Upload.AudioUpload

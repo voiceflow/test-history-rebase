@@ -62,7 +62,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
     () => [
       {
         value: CanvasOptionType.DESIGNER,
-        icon: 'designer',
+        icon: 'systemLayers',
         tooltip: { title: 'Designer', hotkey: HOTKEY_LABEL_MAP[Hotkey.DESIGN_PAGE] },
         onClick: goToCurrentCanvas,
       },
@@ -70,7 +70,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         ? [
             {
               value: CanvasOptionType.NLU_MANAGER,
-              icon: 'interactionModel' as const,
+              icon: 'systemModel' as const,
               tooltip: { title: 'NLU Manager', hotkey: HOTKEY_LABEL_MAP[Hotkey.CONVERSATION_PAGE] },
               onClick: goToNLUManager,
             },
@@ -80,7 +80,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         ? [
             {
               value: CanvasOptionType.CONVERSATION,
-              icon: 'conversations' as const,
+              icon: 'systemTranscripts' as const,
               tooltip: { title: 'Transcripts', hotkey: HOTKEY_LABEL_MAP[Hotkey.CONVERSATION_PAGE] },
               onClick: goToCurrentTranscript,
               withBadge: hasUnreadTranscripts,
@@ -91,13 +91,13 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         ? [
             {
               value: CanvasOptionType.INTEGRATION,
-              icon: 'integrations' as const,
+              icon: 'systemIntegrations' as const,
               tooltip: { title: 'Integration', hotkey: HOTKEY_LABEL_MAP[Hotkey.INTEGRATION_PAGE] },
               onClick: goToCurrentPublish,
             },
             {
               value: CanvasOptionType.SETTINGS,
-              icon: 'cog' as const,
+              icon: 'systemSettings' as const,
               tooltip: { title: 'Project Settings', hotkey: HOTKEY_LABEL_MAP[Hotkey.SETTINGS_PAGE] },
               onClick: goToCurrentSettings,
             },

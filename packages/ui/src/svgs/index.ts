@@ -285,10 +285,15 @@ export { default as sync } from './sync.svg';
 export { default as systemButtons } from './system-buttons.svg';
 export { default as systemCode } from './system-code.svg';
 export { default as systemExpand } from './system-expand.svg';
+export { default as systemIntegrations } from './system-integrations.svg';
 export { default as systemIntent } from './system-intents.svg';
+export { default as systemLayers } from './system-layers.svg';
 export { default as systemMinimize } from './system-minimize.svg';
+export { default as systemModel } from './system-model.svg';
 export { default as systemNoReply } from './system-no-reply.svg';
 export { default as systemSet } from './system-set.svg';
+export { default as systemSettings } from './system-settings.svg';
+export { default as systemTranscripts } from './system-transcripts.svg';
 
 // t
 export { default as target } from './target.svg';

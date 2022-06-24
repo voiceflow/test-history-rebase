@@ -314,6 +314,7 @@ export namespace NodeData {
     name: string;
     body: string;
     paths: { label: string; isDefault?: boolean }[];
+    isBlocking: boolean;
   }
 
   export interface Stream {

@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Divider, Input } from '@voiceflow/ui';
+import { Box, Checkbox, Divider, Input, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionToggleVariant } from '@/components/Section';
@@ -24,6 +24,7 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
     (_, index: number) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
     [engine.port, node.ports.out.dynamic]
   );
+  const toggleIsBlocking = React.useCallback(() => onChange({ isBlocking: !data.isBlocking }), [data.isBlocking, onChange]);
 
   const { items, onAdd, mapManaged } = useManager<Realtime.NodeData.Trace['paths'][number], []>(data.paths, updatePaths, {
     factory: () => ({ label: '' }),
@@ -78,6 +79,22 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
           onChangeText={(value) => setName(value)}
         />
       </Section>
+      <Section
+        tooltip={
+          <>
+            <Tooltip.Title>Stop On Action</Tooltip.Title>
+
+            <Tooltip.Section marginBottomUnits={2}>
+              If checked, we will stop the conversation on this block until another interact is triggered.
+            </Tooltip.Section>
+          </>
+        }
+        header={
+          <Checkbox checked={!!data.isBlocking} onChange={toggleIsBlocking}>
+            <span>Stop on action</span>
+          </Checkbox>
+        }
+      />
       <EditorSection namespace="action" header="Action Body (optional)" headerToggle collapseVariant={SectionToggleVariant.ARROW} isDividerNested>
         <div>
           <Box pb={20}>

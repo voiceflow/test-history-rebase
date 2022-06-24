@@ -29,6 +29,7 @@ const TraceManager: NodeManagerConfig<Realtime.NodeData.Trace> = {
       name: '',
       body: '',
       paths: [{ label: '', isDefault: true }],
+      isBlocking: false,
     },
   }),
 };

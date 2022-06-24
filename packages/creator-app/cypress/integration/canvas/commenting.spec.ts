@@ -1,24 +1,10 @@
 import canvasPage from '../../pages/canvas';
-import paymentModal from '../../pages/modals/payment';
 
 const commentingMode = canvasPage.mode.commenting;
 
 context('Canvas - Commenting', () => {
   beforeEach(() => cy.setup());
   afterEach(() => cy.teardown());
-
-  describe('starter plan navigate', () => {
-    beforeEach(() => {
-      cy.createProject();
-      canvasPage.goToCanvas();
-    });
-
-    it('show upgrade modal if starter', () => {
-      canvasPage.el.commentingModeControl.click();
-
-      paymentModal.el.root.should('be.visible');
-    });
-  });
 
   describe('pro plan navigate', () => {
     beforeEach(() => {

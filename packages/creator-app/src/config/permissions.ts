@@ -132,7 +132,8 @@ const PTE_PERMISSIONS = [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType
 
 export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.CANVAS_EXPORT]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
-  [Permission.COMMENTING]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
+  [Permission.CANVAS_REALTIME]: ALL_PERMISSIONS,
+  [Permission.COMMENTING]: ALL_PERMISSIONS,
   [Permission.BULK_UPLOAD]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.MODEL_EXPORT]: ALL_BUT_STARTER_PERMISSIONS,
   [Permission.MODAL_PDF_PNG_EXPORT]: PTE_PERMISSIONS,

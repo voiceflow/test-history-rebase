@@ -190,10 +190,10 @@ const Popper = <T extends PopperItem>({
       }
     };
 
-    document.addEventListener('keydown', onKeydown);
+    document.addEventListener('keydown', onKeydown, { capture: true });
 
     return () => {
-      document.removeEventListener('keydown', onKeydown);
+      document.removeEventListener('keydown', onKeydown, { capture: true });
 
       editor.blurPrevented = false;
       togglePopperFocused(false);

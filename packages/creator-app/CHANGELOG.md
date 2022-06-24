@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.800.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.800.0...@voiceflow/creator-app@1.800.1) (2022-06-24)
+
+
+### Bug Fixes
+
+* new email regex [bugfix] (VF-3921) ([#5671](https://github.com/voiceflow/creator-app/issues/5671)) ([ac192c9](https://github.com/voiceflow/creator-app/commit/ac192c94c6f6fd31b693d000c4e9fdaad8109c9d))
+
+
+
+
+
 # [1.800.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.799.0...@voiceflow/creator-app@1.800.0) (2022-06-24)
 
 

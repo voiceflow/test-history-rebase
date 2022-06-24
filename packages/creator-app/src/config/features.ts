@@ -26,7 +26,7 @@ const CHAT_CAROUSEL_INTENT_ENABLED = process.env.FF_CHAT_CAROUSEL_INTENT === 'tr
 const REVISED_CREATOR_ENTITLEMENTS_ENABLED = process.env.FF_REVISED_CREATOR_ENTITLEMENTS === 'true';
 const MIGRATION_SYSTEM_ENABLED = process.env.FF_MIGRATION_SYSTEM === 'true';
 const PROMPT_STEP_ENABLED = process.env.FF_PROMPT_STEP === 'true';
-const REVISED_CANVAS_MENU_ENABLED = process.env.FF_REVISED_CREATOR_ENTITLEMENTS === 'true';
+const REVISED_CANVAS_MENU_ENABLED = process.env.FF_REVISED_CANVAS_MENU === 'true';
 
 // canvas and editor updates
 const INTEGRATION_STEP_CLEANUP = process.env.FF_INTEGRATION_STEP_CLEANUP === 'true';

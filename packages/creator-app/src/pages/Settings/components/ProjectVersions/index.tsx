@@ -27,16 +27,14 @@ export interface ProjectVersion {
   versionID: string;
   creatorID: number;
   name?: string;
-  manualSave?: boolean;
-  autoSaveFromRestore?: boolean;
+  manualSave: boolean;
+  autoSaveFromRestore: boolean;
   created: string;
 }
 
 const DEFAULT_FETCH_LIMIT = 10;
 
-const versionListAdapter = (
-  version: BaseModels.Version.Model<BaseModels.Version.PlatformData> & { manualSave?: boolean; autoSaveFromRestore?: boolean }
-) => ({
+const versionListAdapter = (version: BaseModels.Version.Model<BaseModels.Version.PlatformData>) => ({
   creatorID: version.creatorID,
   versionID: version._id,
   manualSave: version.manualSave,
@@ -111,7 +109,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
         ...versionList,
         ...moreVersions
           .filter(({ _id }) => _id !== activeVersionID)
-          .map((version: BaseModels.Version.Model<BaseModels.Version.PlatformData> & { manualSave?: boolean }) => versionListAdapter(version)),
+          .map((version: BaseModels.Version.Model<BaseModels.Version.PlatformData>) => versionListAdapter(version)),
       ]);
     } catch (err) {
       toast.error('Error fetching versions');

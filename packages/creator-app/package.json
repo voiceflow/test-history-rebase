@@ -19,7 +19,7 @@
     "@seznam/compose-react-refs": "1.0.6",
     "@voiceflow/alexa-types": "2.9.4",
     "@voiceflow/api-sdk": "3.14.4",
-    "@voiceflow/base-types": "2.43.0",
+    "@voiceflow/base-types": "2.47.0",
     "@voiceflow/chat-types": "2.8.10",
     "@voiceflow/common": "7.27.1",
     "@voiceflow/draft-js-mention-plugin": "3.3.15",

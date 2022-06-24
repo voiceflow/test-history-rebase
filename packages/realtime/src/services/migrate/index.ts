@@ -151,14 +151,7 @@ class MigrateService extends AbstractControl {
       await this.services.version.replaceResources(
         creatorID,
         versionID,
-        Utils.object.omit({ ...migrationResult.version, _version: targetSchemaVersion }, [
-          '_id',
-          'creatorID',
-          'projectID',
-          'platformData',
-          'autoSaveFromRestore',
-          'manualSave',
-        ]),
+        Utils.object.omit({ ...migrationResult.version, _version: targetSchemaVersion }, ['_id', 'creatorID', 'projectID', 'platformData']),
         migrationResult.diagrams.map((diagram) => Utils.object.omit(diagram, ['creatorID', 'versionID']))
       );
 

@@ -68,6 +68,11 @@ Cypress.Commands.add('createThread', (text: string) => {
   const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
   const diagramID = SESSION_CONTEXT.get(DIAGRAM_ID_KEY);
 
+  cy.request('PATCH', `${API_URL}/v3/diagrams/${diagramID}`, {
+    offsetX: 500,
+    offsetY: 200,
+  });
+
   cy.request('POST', `${API_URL}/commenting/project/${projectID}/threads`, {
     position: [-400, -100],
     resolved: false,

@@ -5,7 +5,6 @@ import React from 'react';
 
 import { EventualEngineContext } from '@/contexts';
 import { useLocalDispatch, useRAF } from '@/hooks';
-import { cursorCoords$, useObservableEffect } from '@/store/observables';
 
 import { ANIMATION_DURATION, CURSOR_EXPIRY_TIMEOUT } from '../../../constants';
 import { RealtimeCursorContext } from '../../../contexts';
@@ -23,10 +22,9 @@ export interface RealtimeCursorProps {
   creatorID: number;
   name: string;
   color: string;
-  source$: ReturnType<typeof cursorCoords$>;
 }
 
-const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ source$, diagramID, creatorID, name, color: rawColor }, ref) => {
+const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ diagramID, creatorID, name, color: rawColor }, ref) => {
   const [stylesScheduler] = useRAF();
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const cursorContext = React.useContext(RealtimeCursorContext.Context)!;
@@ -80,46 +78,38 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
       const cursorEl = innerRef.current;
       if (!cursorEl) return;
 
-      cursorEl.style.left = `${nextPoint[0]}px`;
-      cursorEl.style.top = `${nextPoint[1]}px`;
+      cursorEl.style.setProperty('transform', `translate(${nextPoint[0]}px, ${nextPoint[1]}px)`);
     });
   }, []);
 
-  useObservableEffect(
-    source$,
-    (coords) => {
-      if (!coords) {
-        clearTimers();
-        hideCursor();
+  cursorContext.useSubscription(`realtimeCursorMove:${diagramID}:${creatorID}`, (coords) => {
+    if (!coords) {
+      clearTimers();
+      hideCursor();
+      return;
+    }
 
-        return;
+    // using eventual engine to avoid having to re-bind this subscription when changing diagrams
+    const point = eventualEngine.get()!.canvas!.reverseTransformPoint(coords, true);
+    prevCoords.current = point;
+
+    stylesScheduler(() => {
+      const cursorEl = innerRef.current;
+
+      if (!cursorEl) return;
+
+      if (state.current !== CursorState.VISIBLE) {
+        cursorEl.style.opacity = String(1);
+        cursorEl.style.transition = 'transform 50ms ease';
+        state.current = CursorState.VISIBLE;
       }
 
-      // using eventual engine to avoid having to re-bind this subscription when changing diagrams
-      const point = eventualEngine.get()!.canvas!.reverseTransformPoint(coords, true);
-      prevCoords.current = point;
+      cursorEl.style.setProperty('transform', `translate(${point[0]}px, ${point[1]}px)`);
+    });
 
-      stylesScheduler(() => {
-        const cursorEl = innerRef.current;
-
-        if (!cursorEl) return;
-
-        if (state.current !== CursorState.VISIBLE) {
-          cursorEl.style.opacity = String(1);
-          cursorEl.style.transition = '';
-          state.current = CursorState.VISIBLE;
-        }
-
-        cursorEl.style.left = `${point[0]}px`;
-        cursorEl.style.top = `${point[1]}px`;
-      });
-
-      clearTimers();
-      setTimers();
-    },
-    [hideCursor, setTimers, clearTimers]
-  );
-
+    clearTimers();
+    setTimers();
+  });
   cursorContext.useSubscription('panViewport', ([moveX, moveY]) => translateCursor(([x, y]) => [x + moveX, y + moveY]), [translateCursor]);
   cursorContext.useSubscription(
     'zoomViewport',

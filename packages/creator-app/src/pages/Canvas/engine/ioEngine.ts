@@ -3,16 +3,15 @@ import { IO } from '@voiceflow/realtime-sdk';
 import client from '@/client';
 import { MovementCalculator } from '@/components/Canvas/types';
 import { OverlayType } from '@/pages/Canvas/constants';
-import { setCursorCoords } from '@/store/observables';
 import { Pair, Point } from '@/types';
 
-import { RealtimeCursorEvents } from '../components/RealtimeOverlay/contexts';
+import { IORealtimeCursorEvents } from '../components/RealtimeOverlay/contexts';
 import type Engine from '.';
 import { EngineConsumer } from './utils';
 
 type IOClient = ReturnType<typeof client['realtimeIO']>;
 
-class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: RealtimeCursorEvents }> {
+class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: IORealtimeCursorEvents }> {
   log = this.engine.log.child('io');
 
   io: IOClient | null = null;
@@ -24,7 +23,7 @@ class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: RealtimeCursorE
   }
 
   private onCursorMove = (data: IO.CursorMoveBroadcastData) => {
-    setCursorCoords(data);
+    this.components[OverlayType.CURSOR_V2]?.realtimeCursorMove(data);
   };
 
   private onNodeDragMany = ({ nodeIDs, movement, origins }: IO.NodeDragManyBroadcastData) => {

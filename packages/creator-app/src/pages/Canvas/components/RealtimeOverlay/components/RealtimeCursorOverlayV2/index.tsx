@@ -1,4 +1,3 @@
-import { Subscribe } from '@react-rxjs/core';
 import { withProvider } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +7,6 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
 import { OverlayType } from '@/pages/Canvas/constants';
-import { cursorCoords$ } from '@/store/observables';
 
 import { RealtimeCursorContext } from '../../contexts';
 import { RealtimeCursor } from './components';
@@ -25,6 +23,7 @@ const RealtimeCursorOverlayV2: React.FC = () => {
       eventualEngine.get()?.io.register(OverlayType.CURSOR_V2, {
         panViewport: (movement) => cursorContext?.emit('panViewport', movement),
         zoomViewport: (calculateMovement) => cursorContext?.emit('zoomViewport', calculateMovement),
+        realtimeCursorMove: ({ diagramID, creatorID, coords }) => cursorContext?.emit(`realtimeCursorMove:${diagramID}:${creatorID}`, coords),
       }),
     []
   );
@@ -33,14 +32,7 @@ const RealtimeCursorOverlayV2: React.FC = () => {
     <>
       {viewers.map((viewer) => {
         if (userID === viewer.creatorID) return null;
-
-        const source$ = cursorCoords$({ diagramID, creatorID: viewer.creatorID });
-
-        return (
-          <Subscribe key={viewer.creatorID} source$={source$}>
-            <RealtimeCursor source$={source$} diagramID={diagramID} creatorID={viewer.creatorID} name={viewer.name} color={viewer.color} />
-          </Subscribe>
-        );
+        return <RealtimeCursor key={viewer.creatorID} diagramID={diagramID} creatorID={viewer.creatorID} name={viewer.name} color={viewer.color} />;
       })}
     </>
   );

@@ -14,7 +14,7 @@ export const createDispatcherContext = <E extends EventsMap>() => {
     const emitter = useCreateConst(() => createNanoEvents<E>());
 
     const api = useConst<DispatcherContextValue<E>>({
-      useSubscription: (event, cb, dependencies) => React.useEffect(() => emitter.on(event, cb), dependencies),
+      useSubscription: (event, cb, dependencies = []) => React.useEffect(() => emitter.on(event, cb), dependencies),
       emit: (event, ...args) => emitter.emit(event, ...args),
     });
 

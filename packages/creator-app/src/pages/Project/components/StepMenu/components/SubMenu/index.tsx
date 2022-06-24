@@ -26,7 +26,7 @@ const SubMenu = React.forwardRef<
         <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
           <SubMenuContainer ref={subMenuRef}>
             {steps.map((step) => (
-              <SubMenuButton key={step.name} />
+              <SubMenuButton key={step.name} step={step} />
             ))}
           </SubMenuContainer>
         </div>

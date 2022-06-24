@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.799.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.798.0...@voiceflow/creator-app@1.799.0) (2022-06-24)
+
+
+### Features
+
+* remove optionality from version autoSaveFromRestore and manualSave (VF-3633) ([#5666](https://github.com/voiceflow/creator-app/issues/5666)) ([f96ed49](https://github.com/voiceflow/creator-app/commit/f96ed49b334876e6524bb3799a7974ae17ea1618))
+
+
+
+
+
 # [1.798.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.797.0...@voiceflow/creator-app@1.798.0) (2022-06-24)
 
 

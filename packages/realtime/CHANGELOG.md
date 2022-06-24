@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.81.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.80.4...@voiceflow/realtime@1.81.0) (2022-06-24)
+
+
+### Features
+
+* remove optionality from version autoSaveFromRestore and manualSave (VF-3633) ([#5666](https://github.com/voiceflow/creator-app/issues/5666)) ([f96ed49](https://github.com/voiceflow/creator-app/commit/f96ed49b334876e6524bb3799a7974ae17ea1618))
+
+
+
+
+
 ## [1.80.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.80.3...@voiceflow/realtime@1.80.4) (2022-06-24)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -14,7 +14,7 @@ interface ChildrenOptions {
   ref: React.Ref<any>;
   icon: SvgIconTypes.Icon;
   active: boolean;
-  onClick: React.MouseEventHandler<any>;
+  onMouseDown: React.MouseEventHandler<any>;
 }
 
 interface HyperlinkButtonProps {
@@ -77,9 +77,9 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
     >
       {({ ref, isOpened }) =>
         children ? (
-          children({ ref, icon: 'hyperlink', active: !!url || isOpened, onClick: preventDefault(toggleOpen) })
+          children({ ref, icon: 'hyperlink', active: !!url || isOpened, onMouseDown: preventDefault(toggleOpen) })
         ) : (
-          <IconButton ref={ref} icon="hyperlink" active={!!url || isOpened} onClick={preventDefault(toggleOpen)} />
+          <IconButton ref={ref} icon="hyperlink" active={!!url || isOpened} onMouseDown={preventDefault(toggleOpen)} />
         )
       }
     </Popper>

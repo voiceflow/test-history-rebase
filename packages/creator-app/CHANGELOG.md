@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.801.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.800.1...@voiceflow/creator-app@1.801.0) (2022-06-24)
+
+
+### Bug Fixes
+
+* e2e thread centering (VF-000) ([#5672](https://github.com/voiceflow/creator-app/issues/5672)) ([0674bd6](https://github.com/voiceflow/creator-app/commit/0674bd674d602e23e3db8bee449b927658a077de))
+
+
+### Features
+
+* steps menu sub menu buttons (CT-15) ([#5670](https://github.com/voiceflow/creator-app/issues/5670)) ([6470c97](https://github.com/voiceflow/creator-app/commit/6470c97867d20ee284a979b837e7c629269b704e))
+
+
+
+
+
 ## [1.800.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.800.0...@voiceflow/creator-app@1.800.1) (2022-06-24)
 
 

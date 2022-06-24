@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.118.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.117.1...@voiceflow/realtime-sdk@1.118.0) (2022-06-24)
+
+
+### Features
+
+* add custom action isBlocking checkbox support (VF-3675) ([#5626](https://github.com/voiceflow/creator-app/issues/5626)) ([0123d0a](https://github.com/voiceflow/creator-app/commit/0123d0a161a53cbf16bdc815b7259570a30aa60b))
+
+
+
+
+
 ## [1.117.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.117.0...@voiceflow/realtime-sdk@1.117.1) (2022-06-23)
 
 

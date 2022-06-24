@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.802.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.801.0...@voiceflow/creator-app@1.802.0) (2022-06-24)
+
+
+### Features
+
+* update starter plan feature access (CT-430) ([#5673](https://github.com/voiceflow/creator-app/issues/5673)) ([d5e4fcd](https://github.com/voiceflow/creator-app/commit/d5e4fcd4fbc6bc630e2a882068d1a7df50f8405b))
+
+
+
+
+
 # [1.801.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.800.1...@voiceflow/creator-app@1.801.0) (2022-06-24)
 
 

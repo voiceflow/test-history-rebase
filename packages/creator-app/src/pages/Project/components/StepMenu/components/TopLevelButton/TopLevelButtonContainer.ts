@@ -7,6 +7,7 @@ export const TopLevelButtonContainer = styled.div<{ focused?: boolean }>`
   align-items: center;
   padding: 12px 21px 11px;
   border-radius: 6px;
+  cursor: pointer;
 
   ${transition('background-color')}
 

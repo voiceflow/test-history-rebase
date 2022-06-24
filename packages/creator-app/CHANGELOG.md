@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.800.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.799.0...@voiceflow/creator-app@1.800.0) (2022-06-24)
+
+
+### Bug Fixes
+
+* realtime cursor performance [bugfix] (VF-3905) ([#5663](https://github.com/voiceflow/creator-app/issues/5663)) ([81fdc40](https://github.com/voiceflow/creator-app/commit/81fdc40c7e2c96f6e1cb8602fcafad3cdf6e2216))
+* select variable using enter key (VF-3712) ([#5620](https://github.com/voiceflow/creator-app/issues/5620)) ([8d9bf88](https://github.com/voiceflow/creator-app/commit/8d9bf88bcbf5a70cd081a64f5376c7b87d87633f))
+
+
+### Features
+
+* steps menu sub menu container (CT-14) ([#5667](https://github.com/voiceflow/creator-app/issues/5667)) ([9230d24](https://github.com/voiceflow/creator-app/commit/9230d248aeb35791c81a6c88a4698b72720bc107))
+
+
+
+
+
 # [1.799.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.798.0...@voiceflow/creator-app@1.799.0) (2022-06-24)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.15.13...@voiceflow/showcase@1.16.0) (2022-06-25)
+
+
+### Features
+
+* add realtime cursor to showcase (VF-000) ([#5675](https://github.com/voiceflow/creator-app/issues/5675)) ([b890639](https://github.com/voiceflow/creator-app/commit/b8906396540a6792d44e58368938ddd785ee3c10))
+
+
+
+
+
 ## [1.15.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.15.12...@voiceflow/showcase@1.15.13) (2022-06-24)
 
 **Note:** Version bump only for package @voiceflow/showcase

@@ -1,14 +1,11 @@
-import { preventDefault, SvgIcon } from '@voiceflow/ui';
+import { Cursor, CursorConstants, CursorNametag, preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { OverlayType } from '@/pages/Canvas/constants';
 import { RealtimeCursorOverlayAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
 
-import { ANIMATION_DURATION, CURSOR_EXPIRY_TIMEOUT } from '../constants';
 import AbstractOverlay, { ConnectedRealtimeOverlayProps, connectOverlay, RealtimeViewer } from './AbstractOverlay';
-import Cursor from './RealtimeOverlayCursor';
-import Nametag from './RealtimeOverlayNametag';
 
 function clearTimer(timers: Record<string, NodeJS.Timeout | null>, id: string) {
   if (timers[id] !== null) {
@@ -39,8 +36,11 @@ class RealtimeCursorOverlay extends AbstractOverlay<RealtimeCursorOverlayAPI> {
 
       this.clearCursorTimers(tabID);
 
-      this.cursorTimers[tabID] = setTimeout(() => this.removeCursor(tabID), CURSOR_EXPIRY_TIMEOUT);
-      this.cursorAnimationTimers[tabID] = setTimeout(() => this.fadeCursor(tabID), CURSOR_EXPIRY_TIMEOUT - ANIMATION_DURATION);
+      this.cursorTimers[tabID] = setTimeout(() => this.removeCursor(tabID), CursorConstants.CURSOR_EXPIRY_TIMEOUT);
+      this.cursorAnimationTimers[tabID] = setTimeout(
+        () => this.fadeCursor(tabID),
+        CursorConstants.CURSOR_EXPIRY_TIMEOUT - CursorConstants.ANIMATION_DURATION
+      );
     },
 
     zoomViewport: (calculateMovement) =>
@@ -105,9 +105,9 @@ class RealtimeCursorOverlay extends AbstractOverlay<RealtimeCursorOverlayAPI> {
       <Cursor key={tabID} style={{ left: `${x}px`, top: `${y}px` }} onClick={preventDefault()} ref={ref}>
         <SvgIcon icon="cursor" color={color} />
         <div style={{ position: 'relative' }}>
-          <Nametag color={color} backgroundColor={backgroundColor}>
+          <CursorNametag color={color} backgroundColor={backgroundColor}>
             {viewer.name}
-          </Nametag>
+          </CursorNametag>
         </div>
       </Cursor>
     );

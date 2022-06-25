@@ -1,12 +1,15 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@ui/styles';
 
-import { CURSOR_EXPIRY_TIMEOUT } from '../constants';
+import { CURSOR_EXPIRY_TIMEOUT } from './constants';
 
-export interface RealtimeOverlayCursorProps {
+export { CursorNametag } from './components/CursorNametag';
+export * as CursorConstants from './constants';
+
+export interface CursorProps {
   withTransition?: boolean;
 }
 
-const RealtimeOverlayCursor = styled.div<RealtimeOverlayCursorProps>`
+const Cursor = styled.div<CursorProps>`
   ${({ withTransition }) =>
     withTransition &&
     css`
@@ -21,4 +24,4 @@ const RealtimeOverlayCursor = styled.div<RealtimeOverlayCursorProps>`
   }
 `;
 
-export default RealtimeOverlayCursor;
+export default Cursor;

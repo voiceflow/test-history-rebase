@@ -40,6 +40,7 @@ export { Range as ColorPickerRange } from './ColorPicker/components/ColorRange/R
 export { ColorThemes, ColorThemeUnit } from './ColorPicker/components/ColorThemes';
 export * as COLOR_PICKER_CONSTANTS from './ColorPicker/constants';
 export { CONTEXT_MENU_IGNORED_CLASS_NAME, default as ContextMenu } from './ContextMenu';
+export { default as Cursor, CursorConstants, CursorNametag } from './Cursor';
 export type { CustomScrollbarsTypes } from './CustomScrollbars';
 export { default as CustomScrollbars } from './CustomScrollbars';
 export { default as Disable } from './Disable';

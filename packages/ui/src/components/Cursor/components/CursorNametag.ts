@@ -1,11 +1,11 @@
-import { styled } from '@/hocs';
+import { styled } from '@ui/styles';
 
-export interface RealtimeOverlayNametagProps {
+export interface CursorNametagProps {
   color: string;
   backgroundColor: string;
 }
 
-const RealtimeOverlayNametag = styled.div<RealtimeOverlayNametagProps>`
+export const CursorNametag = styled.div<CursorNametagProps>`
   position: absolute;
   left: 50%;
   box-sizing: border-box;
@@ -19,5 +19,3 @@ const RealtimeOverlayNametag = styled.div<RealtimeOverlayNametagProps>`
   box-shadow: 0px 1px 3px rgba(19, 33, 68, 0.0810122);
   background: ${({ backgroundColor }) => backgroundColor};
 `;
-
-export default RealtimeOverlayNametag;

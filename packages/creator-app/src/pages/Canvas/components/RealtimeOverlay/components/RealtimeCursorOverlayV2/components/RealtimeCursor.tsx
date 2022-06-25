@@ -1,15 +1,12 @@
 import composeRefs from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { preventDefault, SvgIcon } from '@voiceflow/ui';
+import { Cursor, CursorConstants, CursorNametag, preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { EventualEngineContext } from '@/contexts';
 import { useLocalDispatch, useRAF } from '@/hooks';
 
-import { ANIMATION_DURATION, CURSOR_EXPIRY_TIMEOUT } from '../../../constants';
 import { RealtimeCursorContext } from '../../../contexts';
-import Cursor from '../../RealtimeOverlayCursor';
-import Nametag from '../../RealtimeOverlayNametag';
 
 enum CursorState {
   VISIBLE = 'visible',
@@ -45,15 +42,18 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
       const el = innerRef.current;
       if (!el) return;
 
-      el.style.transition = `opacity ${CURSOR_EXPIRY_TIMEOUT / 2000}s ease`;
+      el.style.transition = `opacity ${CursorConstants.CURSOR_EXPIRY_TIMEOUT / 2000}s ease`;
       el.style.opacity = String(0);
     });
   }, []);
 
   const setTimers = React.useCallback(() => {
-    removeTimerRef.current = setTimeout(() => awarenessHideCursor({ ...eventualEngine.get()!.context, creatorID }), CURSOR_EXPIRY_TIMEOUT);
+    removeTimerRef.current = setTimeout(
+      () => awarenessHideCursor({ ...eventualEngine.get()!.context, creatorID }),
+      CursorConstants.CURSOR_EXPIRY_TIMEOUT
+    );
 
-    fadeoutTimerRef.current = setTimeout(hideCursor, CURSOR_EXPIRY_TIMEOUT - ANIMATION_DURATION);
+    fadeoutTimerRef.current = setTimeout(hideCursor, CursorConstants.CURSOR_EXPIRY_TIMEOUT - CursorConstants.ANIMATION_DURATION);
   }, [hideCursor, diagramID, creatorID]);
 
   const clearTimers = React.useCallback(() => {
@@ -134,9 +134,9 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
     <Cursor withTransition={false} ref={composeRefs(innerRef, ref)} style={{ left: 0, top: 0, opacity: 0 }} onClick={preventDefault()}>
       <SvgIcon icon="cursor" color={color} />
       <div style={{ position: 'relative' }}>
-        <Nametag color={color} backgroundColor={backgroundColor}>
+        <CursorNametag color={color} backgroundColor={backgroundColor}>
           {name}
-        </Nametag>
+        </CursorNametag>
       </div>
     </Cursor>
   );

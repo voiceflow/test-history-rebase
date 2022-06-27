@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.110.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.109.0...@voiceflow/ui@1.110.0) (2022-06-27)
+
+
+### Features
+
+* implement new DesignMenu container (CT-17) ([#5674](https://github.com/voiceflow/creator-app/issues/5674)) ([8224f59](https://github.com/voiceflow/creator-app/commit/8224f594d8eaf3af8c2df5b49bf50bc335df87e8))
+
+
+
+
+
 # [1.109.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.108.0...@voiceflow/ui@1.109.0) (2022-06-25)
 
 

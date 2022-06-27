@@ -50,7 +50,7 @@ export const IntercomChat: React.FC = () => {
 
 export default IntercomChat;
 
-export const RemoveIntercom: React.FC = ({ children }) => {
+export const RemoveIntercom = React.memo(() => {
   const dispatch = useDispatch();
   const intercomIntegration = useFeature(FeatureFlag.INTERCOM_INTEGRATION);
 
@@ -64,5 +64,5 @@ export const RemoveIntercom: React.FC = ({ children }) => {
     };
   }, []);
 
-  return <>{children}</>;
-};
+  return null;
+});

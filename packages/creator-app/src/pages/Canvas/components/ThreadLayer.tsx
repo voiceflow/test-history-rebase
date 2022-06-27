@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { RemoveIntercom } from '@/components/IntercomChat';
 import { AutoPanningStateContext } from '@/contexts';
 import * as Thread from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
@@ -135,7 +134,6 @@ const ThreadLayer: React.FC = () => {
       ))}
 
       <NewCommentThread isHidden={isHidden} />
-      <RemoveIntercom />
     </div>
   );
 };

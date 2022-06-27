@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { RemoveIntercom } from '@/components/IntercomChat';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
-import { compose, withBatchLoadingGate } from '@/hocs';
-import removeIntercom from '@/hocs/removeIntercom';
+import { withBatchLoadingGate } from '@/hocs';
 import { useSelector } from '@/hooks';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
@@ -33,6 +33,7 @@ const ExportCanvas: React.FC = () => {
         <MarkupProvider>
           <ManagerProvider value={getManager}>
             <CanvasProviders key={engineKey} engine={engine}>
+              <RemoveIntercom />
               <ExportGlobalStyle />
               <ExportWatermark isOnPaidPlan={!!isOnPaidPlan} />
               <ExportCanvasDiagram onRegister={registerCanvas}>
@@ -48,7 +49,4 @@ const ExportCanvas: React.FC = () => {
   );
 };
 
-export default compose(
-  removeIntercom,
-  withBatchLoadingGate(VersionSubscriptionGate, WorkspaceFeatureLoadingGate, MockRealtimeGate, InitializeExportGate)
-)(ExportCanvas);
+export default withBatchLoadingGate(VersionSubscriptionGate, WorkspaceFeatureLoadingGate, MockRealtimeGate, InitializeExportGate)(ExportCanvas);

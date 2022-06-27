@@ -4,8 +4,6 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { compose } from '@/hocs';
-import removeIntercom from '@/hocs/removeIntercom';
 import { useASR, useCanASR, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
@@ -237,4 +235,4 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   );
 };
 
-export default compose(removeIntercom)(Prototype);
+export default Prototype;

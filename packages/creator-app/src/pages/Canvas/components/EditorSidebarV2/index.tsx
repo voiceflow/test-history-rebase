@@ -5,7 +5,6 @@ import type { ExtractRouteParams } from 'react-router';
 import { generatePath, useRouteMatch } from 'react-router-dom';
 
 import Drawer from '@/components/Drawer';
-import { RemoveIntercom } from '@/components/IntercomChat';
 import { Path } from '@/config/routes';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
@@ -165,8 +164,6 @@ const EditorSidebarV2 = () => {
       >
         {editor}
       </Drawer>
-
-      {isOpened && <RemoveIntercom />}
     </React.Fragment>
   );
 };

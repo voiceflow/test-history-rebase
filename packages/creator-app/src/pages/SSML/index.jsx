@@ -4,11 +4,11 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Header from '@/components/Header';
+import { RemoveIntercom } from '@/components/IntercomChat';
 import MadeInVoiceflow from '@/components/MadeInVoiceflow';
 import SeoHelmet from '@/components/SeoHelmet';
 import SSML from '@/components/SSML';
 import { SeoPage } from '@/constants/seo';
-import removeIntercom from '@/hocs/removeIntercom';
 import { useDebouncedCallback } from '@/hooks/callback';
 import { useEnableDisable } from '@/hooks/toggle';
 import { copy } from '@/utils/clipboard';
@@ -73,6 +73,7 @@ function SSMLPage() {
 
   return (
     <>
+      <RemoveIntercom />
       <MadeInVoiceflow />
       <Header
         withLogo
@@ -118,4 +119,4 @@ function SSMLPage() {
   );
 }
 
-export default removeIntercom(SSMLPage);
+export default SSMLPage;

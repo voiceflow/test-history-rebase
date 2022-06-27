@@ -4,7 +4,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import Drawer from '@/components/Drawer';
-import { RemoveIntercom } from '@/components/IntercomChat';
 import { BlockType, ModalType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
@@ -164,8 +163,6 @@ const EditSidebar = () => {
       >
         {!fullscreenEditorModal.isOpened && !!path.length && editor}
       </Drawer>
-
-      {isOpen && !fullscreenEditorModal.isOpened && <RemoveIntercom />}
 
       {fullscreenEditorModal.isOpened && <EditorModal editor={editor} />}
     </SidebarProvider>

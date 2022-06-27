@@ -12,7 +12,7 @@ import Canvas from '@/pages/Canvas';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers';
 import DesignMenu from '@/pages/Project/components/DesignMenu';
-import StepMenu from '@/pages/Project/components/StepMenu';
+import DesignMenuV2 from '@/pages/Project/components/DesignMenu/V2';
 import { useAnyModeOpen, usePrototypingMode } from '@/pages/Project/hooks';
 import PrototypeOverlay from '@/pages/Prototype/components/PrototypeOverlay';
 import ReadOnlyBadge from '@/pages/Prototype/components/ReadOnlyBadge';
@@ -71,8 +71,7 @@ const Diagram: React.FC<DiagramProps> = () => {
         {/* design mode */}
         {isDesignMode && (
           <>
-            <DesignMenu />
-            {revisedCanvasMenu.isEnabled && <StepMenu />}
+            {revisedCanvasMenu.isEnabled ? <DesignMenuV2 canvasOnly={canvasOnly} /> : <DesignMenu />}
             <MarkupImageLoading />
           </>
         )}

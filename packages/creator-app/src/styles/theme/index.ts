@@ -40,6 +40,15 @@ const THEME = createTheme({
     imageUpload: {
       height: 230,
     },
+    designMenu: {
+      minWidth: 200,
+      maxWidth: 350,
+      width: 228,
+      hiddenWidth: 16,
+      get contentWidth() {
+        return this.width - this.hiddenWidth;
+      },
+    },
     leftSidebar: {
       width: 250,
       hiddenWidth: 16,

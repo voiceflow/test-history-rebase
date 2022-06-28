@@ -9,7 +9,7 @@ import VersionItem from './components/VersionItem';
 
 interface VersionListProps {
   versions: ProjectVersion[];
-  swapVersions: (versionID: string) => void;
+  swapVersions: (versionID: string) => Promise<void>;
   fetchVersions: () => void;
 }
 

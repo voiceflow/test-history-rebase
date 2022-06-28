@@ -26,7 +26,7 @@ const RESTORE_VERSION_MESSAGE = createPlatformSelector(
 
 interface Index {
   version: ProjectVersion;
-  swapVersions: (versionID: string) => void;
+  swapVersions: (versionID: string) => Promise<void>;
   creatorID: number;
 }
 
@@ -55,8 +55,8 @@ const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
           {RESTORE_VERSION_MESSAGE(platform)}
         </span>
       ),
-      confirm: () => {
-        swapVersions(versionID);
+      confirm: async () => {
+        await swapVersions(versionID);
         trackingEvents.trackProjectRestore({ versionID });
       },
     });

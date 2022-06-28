@@ -34,7 +34,7 @@ export interface ProjectVersion {
 
 const DEFAULT_FETCH_LIMIT = 10;
 
-const versionListAdapter = (version: BaseModels.Version.Model<BaseModels.Version.PlatformData>) => ({
+const versionAdapter = (version: BaseModels.Version.Model<BaseModels.Version.PlatformData>) => ({
   creatorID: version.creatorID,
   versionID: version._id,
   manualSave: version.manualSave,
@@ -86,11 +86,10 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
     }
 
     try {
-      // Don't await snapshot (Creates another version)
-      client.version.getVersionSnapshot(activeVersionID!, '', { manualSave: false, autoSaveFromRestore: true });
-      await client.backup.restore(projectID, versionID);
-      goToCanvas(versionID);
-      toast.success('Successfully restored version');
+      const clonedVersion = await client.backup.restore(projectID, versionID);
+      const { versionID: clonedVersionID } = versionAdapter(clonedVersion);
+      goToCanvas(clonedVersionID);
+      toast.success('Version successfully restored.');
     } catch (err) {
       toast.error('Unable to restore version');
     }
@@ -109,7 +108,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
         ...versionList,
         ...moreVersions
           .filter(({ _id }) => _id !== activeVersionID)
-          .map((version: BaseModels.Version.Model<BaseModels.Version.PlatformData>) => versionListAdapter(version)),
+          .map((version: BaseModels.Version.Model<BaseModels.Version.PlatformData>) => versionAdapter(version)),
       ]);
     } catch (err) {
       toast.error('Error fetching versions');

@@ -1,14 +1,12 @@
-import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Draft } from 'immer';
 
-export interface MigrationData<
-  Node extends BaseModels.BaseDiagramNode = BaseModels.BaseDiagramNode,
-  VersionPlatformData extends BaseModels.Version.PlatformData = BaseModels.Version.PlatformData
-> {
-  version: BaseModels.Version.Model<VersionPlatformData>;
-  diagrams: BaseModels.Diagram.Model<Node>[];
+import type { DiagramUpdateData, VersionUpdateData } from '@/clients/voiceflow/version';
+
+export interface MigrationData {
+  version: VersionUpdateData;
+  diagrams: DiagramUpdateData[];
 }
 
 export interface MigrationContext {

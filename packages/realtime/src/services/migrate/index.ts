@@ -1,7 +1,9 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { produce } from 'immer';
 
+import type { DiagramUpdateData, VersionUpdateData } from '@/clients/voiceflow/version';
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
 import { AbstractControl } from '@/control';
 import logger from '@/logger';
@@ -23,6 +25,14 @@ class MigrateService extends AbstractControl {
 
   public static getPendingMigrations(currentVersion: Realtime.SchemaVersion, targetVersion: Realtime.SchemaVersion): Migration[] {
     return migrations.filter((migration) => migration.version > currentVersion && migration.version <= targetVersion);
+  }
+
+  public static getVersionPatch(version: BaseModels.Version.Model<BaseModels.Version.PlatformData>): VersionUpdateData {
+    return Utils.object.pick(version, ['_version', 'name', 'variables', 'rootDiagramID']);
+  }
+
+  public static getDiagramPatch(diagram: BaseModels.Diagram.Model): DiagramUpdateData {
+    return Utils.object.omit(diagram, ['creatorID', 'versionID']);
   }
 
   public async acquireMigrationLock(versionID: string, nodeID: string): Promise<void> {
@@ -144,15 +154,19 @@ class MigrateService extends AbstractControl {
       ]);
 
       const migrationContext: MigrationContext = { platform: project.platform, projectType: project.type };
-      const migrationResult = produce<MigrationData>({ version, diagrams }, (draft) =>
-        pendingMigrations.forEach((migration) => migration.transform(draft, migrationContext))
+      const migrationResult = produce<MigrationData>(
+        {
+          version: MigrateService.getVersionPatch(version),
+          diagrams: diagrams.map(MigrateService.getDiagramPatch),
+        },
+        (draft) => pendingMigrations.forEach((migration) => migration.transform(draft, migrationContext))
       );
 
       await this.services.version.replaceResources(
         creatorID,
         versionID,
-        Utils.object.omit({ ...migrationResult.version, _version: targetSchemaVersion }, ['_id', 'creatorID', 'projectID', 'platformData']),
-        migrationResult.diagrams.map((diagram) => Utils.object.omit(diagram, ['creatorID', 'versionID']))
+        { ...migrationResult.version, _version: targetSchemaVersion },
+        migrationResult.diagrams
       );
 
       await this.setActiveSchemaVersion(versionID, targetSchemaVersion);

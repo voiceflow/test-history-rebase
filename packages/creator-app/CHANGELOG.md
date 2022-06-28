@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.805.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.804.3...@voiceflow/creator-app@1.805.0) (2022-06-28)
+
+
+### Features
+
+* restrict dispatch options to side-effect, local or sync (VF-3970) ([#5682](https://github.com/voiceflow/creator-app/issues/5682)) ([3ae8191](https://github.com/voiceflow/creator-app/commit/3ae819130734bf8ef1b0ddd6ea8ecfec978d35e2))
+
+
+
+
+
 ## [1.804.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.804.2...@voiceflow/creator-app@1.804.3) (2022-06-28)
 
 

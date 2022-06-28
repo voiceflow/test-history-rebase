@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.81.2...@voiceflow/realtime@1.81.3) (2022-06-28)
+
+
+### Bug Fixes
+
+* use pick to choose the specific fields which can be migrated (VF-3969) ([#5681](https://github.com/voiceflow/creator-app/issues/5681)) ([09e2389](https://github.com/voiceflow/creator-app/commit/09e2389ab7faf25465dd4b02074cb7453f08a3cc))
+
+
+
+
+
 ## [1.81.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.81.1...@voiceflow/realtime@1.81.2) (2022-06-27)
 
 **Note:** Version bump only for package @voiceflow/realtime

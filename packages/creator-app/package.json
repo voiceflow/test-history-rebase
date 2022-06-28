@@ -201,7 +201,7 @@
     "rewiremock": "3.14.3",
     "ts-jest": "27.1.5",
     "tslib": "2.3.1",
-    "vite": "2.9.12"
+    "vite": "2.9.13"
   },
   "homepage": "https://github.com/voiceflow/creator-app#readme",
   "keywords": [

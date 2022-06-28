@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@voiceflow/vite-config": "1.4.1",
-    "vite": "2.9.12"
+    "vite": "2.9.13"
   },
   "files": [
     "build"

@@ -21,11 +21,7 @@
   },
   "devDependencies": {
     "@voiceflow/vite-config": "1.4.1",
-    "vite": "2.9.12"
-  },
-  "peerDependencies": {
-    "react-router": "5.2.1",
-    "react-router-dom": "5.3.0"
+    "vite": "2.9.13"
   },
   "files": [
     "build"
@@ -33,6 +29,10 @@
   "homepage": "https://github.com/voiceflow/creator-app#readme",
   "license": "UNLICENSED",
   "main": "build/index.js",
+  "peerDependencies": {
+    "react-router": "5.2.1",
+    "react-router-dom": "5.3.0"
+  },
   "private": true,
   "repository": {
     "type": "git",

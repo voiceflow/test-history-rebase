@@ -9,11 +9,10 @@ import * as Integration from '@/ducks/integration';
 import * as Product from '@/ducks/product';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
-import { waitAsync } from '@/ducks/utils';
+import { duckLogger, waitAsync } from '@/ducks/utils';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Workspace from '@/ducks/workspace';
 import { Thunk } from '@/store/types';
-import { storeLogger } from '@/store/utils';
 
 import { getActiveVersionContext } from '../../utils';
 
@@ -28,7 +27,7 @@ export const initializeVersion =
   ({ workspaceID, projectID, versionID }: Realtime.version.ActivateVersionPayload): Thunk =>
   async (dispatch, getState) => {
     // not a dependency for project to load
-    dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
+    dispatch(Integration.fetchIntegrationUsers()).catch(() => duckLogger.warn('Unable to fetch integration users'));
 
     const isNewWorkspace = Session.activeWorkspaceIDSelector(getState()) !== workspaceID;
 

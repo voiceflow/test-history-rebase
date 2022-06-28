@@ -23,9 +23,7 @@ export interface Dispatch extends Redux.Dispatch<AnyAction> {
   <T extends Dispatchable>(action: T): DispatchResult<T>;
 
   // cannot dispatch thunks via logux
-  local: <T extends AnyAction>(action: T) => Promise<ClientMeta>;
   sync: <T extends AnyAction>(action: T) => Promise<ClientMeta>;
-  crossTab: <T extends AnyAction>(action: T) => Promise<ClientMeta>;
 
   // logux node id getter
   getNodeID: () => string;

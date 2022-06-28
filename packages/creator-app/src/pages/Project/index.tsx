@@ -16,17 +16,7 @@ import * as RealtimeDuck from '@/ducks/realtime';
 import * as UI from '@/ducks/ui';
 import { PlanRestrictionGate, ProjectLockGate, VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
-import {
-  useDispatch,
-  useEventualEngine,
-  useFeature,
-  useLayoutDidUpdate,
-  useLocalDispatch,
-  useModals,
-  useSelector,
-  useTeardown,
-  useTheme,
-} from '@/hooks';
+import { useDispatch, useEventualEngine, useFeature, useLayoutDidUpdate, useModals, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRouteIMM';
 import ManualSaveModal from '@/pages/Canvas/components/ManualSaveModal';
@@ -72,7 +62,7 @@ const Project: React.FC = () => {
   const isDiagramRoute = useRouteMatch(DIAGRAM_ROUTES);
   const setPreviewing = useDispatch(UI.setPreviewingVersion);
   const resetCreator = useDispatch(Creator.resetCreator);
-  const resetCreatorV2 = useLocalDispatch(Realtime.creator.reset);
+  const resetCreatorV2 = useDispatch(Realtime.creator.reset);
 
   const inactivityModal = useModals(ModalType.INACTIVITY);
   const nluManager = useFeature(FeatureFlag.NLU_MANAGER);

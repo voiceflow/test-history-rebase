@@ -21,24 +21,6 @@ export const useDispatch = <S extends any[], D extends any[], R extends Dispatch
   return useCallback((...dynamicArgs: D): DispatchResult<R> => store.dispatch(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
 };
 
-export const useLocalDispatch = <S extends any[], D extends any[], R extends AnyAction>(
-  createAction: (...args: [...S, ...D]) => R,
-  ...staticArgs: S
-) => {
-  const store = useStore();
-
-  return useCallback((...dynamicArgs: D) => store.dispatch.local(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
-};
-
-export const useCrossTabDispatch = <S extends any[], D extends any[], R extends AnyAction>(
-  createAction: (...args: [...S, ...D]) => R,
-  ...staticArgs: S
-) => {
-  const store = useStore();
-
-  return useCallback((...dynamicArgs: D) => store.dispatch.crossTab(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
-};
-
 export const useSyncDispatch = <S extends any[], D extends any[], R extends AnyAction>(
   createAction: (...args: [...S, ...D]) => R,
   ...staticArgs: S

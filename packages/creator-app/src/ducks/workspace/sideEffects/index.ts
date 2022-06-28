@@ -112,7 +112,7 @@ export const ejectFromWorkspace =
   ({ workspaceID, workspaceName }: Realtime.workspace.member.EjectPayload): Thunk =>
   async (dispatch) => {
     dispatch(navigateToNextWorkspace(workspaceID));
-    dispatch.local(Realtime.workspace.crud.remove({ key: workspaceID }));
+    dispatch(Realtime.workspace.crud.remove({ key: workspaceID }));
 
     toast.info(`You are no longer a collaborator for "${workspaceName}" workspace`);
   };
@@ -129,7 +129,7 @@ export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
     Errors.assertCreatorID(creatorID);
 
     dispatch(navigateToNextWorkspace(workspaceID));
-    dispatch.local(Realtime.workspace.crud.remove({ key: workspaceID }));
+    dispatch(Realtime.workspace.crud.remove({ key: workspaceID }));
 
     await dispatch.sync(Realtime.workspace.leave({ creatorID, workspaceID }));
 

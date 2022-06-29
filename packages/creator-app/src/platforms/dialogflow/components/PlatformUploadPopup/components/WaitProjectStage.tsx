@@ -1,4 +1,4 @@
-import { isNetworkError, useSmartReducerV2 } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Input, isNetworkError, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -19,6 +19,7 @@ interface WaitDFESProjectStageProps {
 
 const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurrentStage, setMultiProjects, createNewAgent, retry }) => {
   const [projects, setProjects] = React.useState<UploadProject.Dialogflow[]>([]);
+  const [dialogflowProjectID, setDialogflowProjectID] = React.useState('');
   const projectList = projects.map((project) => ({ id: project.googleProjectID, name: project.agentName }));
 
   const loadGoogleAccount = useDispatch(Account.google.loadAccount);
@@ -58,7 +59,22 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
   const stateContent = React.useMemo(() => {
     if (state.loading) return <LoaderStage />;
 
-    if (state.error) return <StageAlert>Failed to retrieve projects for your Google developer account</StageAlert>;
+    if (state.error)
+      return (
+        <StageAlert>
+          Failed to retrieve projects for your Google developer account
+          <hr />
+          <Box.FlexCenter mt={16} flexDirection="column">
+            <b>Manually Enter Google Cloud Project ID</b>
+            <Box my={12}>
+              <Input value={dialogflowProjectID} onChange={(e) => setDialogflowProjectID(e.target.value)} placeholder="Project ID" />
+            </Box>
+            <Button onClick={() => handleProjectSelected({ id: dialogflowProjectID, name: 'test' })} variant={ButtonVariant.TERTIARY}>
+              Submit
+            </Button>
+          </Box.FlexCenter>
+        </StageAlert>
+      );
 
     if (projects.length > 0)
       return (
@@ -78,7 +94,7 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
         onFooterClick={createNewAgent}
       />
     );
-  }, [state, projects]);
+  }, [state, projects, dialogflowProjectID]);
 
   return <StageContainer noPadding>{stateContent}</StageContainer>;
 };

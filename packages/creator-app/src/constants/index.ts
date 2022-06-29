@@ -283,7 +283,7 @@ export enum ModalType {
 
   TAG_MANAGER = 'tag-manager',
 
-  DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agen',
+  DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agent',
 
   PROFILE_NAME_MODAL = 'profile-name-modal',
   CHANGE_PASSWORD_MODAL = 'change-password-modal',

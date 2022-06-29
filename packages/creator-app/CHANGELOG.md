@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.807.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.807.0...@voiceflow/creator-app@1.807.1) (2022-06-29)
+
+
+### Bug Fixes
+
+* click contact sales on upgrade popper (VF-000) ([#5614](https://github.com/voiceflow/creator-app/issues/5614)) ([120e6f7](https://github.com/voiceflow/creator-app/commit/120e6f7189893ddce3f88bdc7b50a48d41c57e52))
+
+
+
+
+
 # [1.807.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.806.0...@voiceflow/creator-app@1.807.0) (2022-06-29)
 
 

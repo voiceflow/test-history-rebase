@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.809.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.809.1...@voiceflow/creator-app@1.809.2) (2022-06-29)
+
+
+### Bug Fixes
+
+* add hover transition (CT-476) ([#5697](https://github.com/voiceflow/creator-app/issues/5697)) ([50dfece](https://github.com/voiceflow/creator-app/commit/50dfecec2ad9673e5a89bb3593880ddd6305d8d0))
+
+
+
+
+
 ## [1.809.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.809.0...@voiceflow/creator-app@1.809.1) (2022-06-29)
 
 

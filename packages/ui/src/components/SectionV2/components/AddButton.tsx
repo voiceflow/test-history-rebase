@@ -8,16 +8,7 @@ export interface AddButtonProps {
 }
 
 const AddButton: React.ForwardRefRenderFunction<HTMLButtonElement, AddButtonProps> = ({ onClick, isActive, disabled }, ref) => (
-  <IconButton
-    ref={ref}
-    size={16}
-    icon="plus"
-    onClick={onClick}
-    variant={IconButtonVariant.BASIC}
-    disabled={disabled}
-    activeClick={isActive}
-    style={{ borderRadius: '50%' }}
-  />
+  <IconButton ref={ref} size={16} icon="plus" onClick={onClick} variant={IconButtonVariant.BASIC} disabled={disabled} activeClick={isActive} />
 );
 
 export default React.forwardRef(AddButton);
